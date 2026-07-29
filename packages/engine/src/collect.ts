@@ -29,6 +29,7 @@ import { OCCULTIST_SCHOOLS } from "./occultist-implements.js";
 import { ORACLE_CURSES } from "./oracle-curses.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { polymorphFormOption } from "./polymorph.js";
+import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { RACIAL_TRAITS, vendoredTraitSuppressTargets } from "./racial-traits.js";
 import { resolveInvestigatorTalent } from "./investigator-talents.js";
 import { resolveNinjaTrick } from "./ninja-tricks.js";
@@ -545,6 +546,37 @@ export function collectModifiers(
     }
   }
 
+  // --- psychic discipline powers (build choice, promotion audit) -----------
+  // Hand-authored clean-room content (not in the vendored Foundry data pack —
+  // see `@pf1/engine` `psychic-disciplines.ts`), gated on the character
+  // actually having psychic levels and a chosen discipline — same posture as
+  // the sorcerer/bloodrager bloodline loops above, at each power's own
+  // 1st/5th/13th gate. `archetypes.ts`'s `collectGrantedFeatures` surfaces
+  // every power as a note; this loop additionally applies the rare few whose
+  // `changes` are genuinely unconditional (see that file's doc comment).
+  const psychicLevel = doc.identity.classes.find((cl) => cl.tag === "psychic")?.level ?? 0;
+  if (psychicLevel > 0 && doc.build.psychicDiscipline) {
+    const discipline = PSYCHIC_DISCIPLINES[doc.build.psychicDiscipline];
+    if (discipline) {
+      for (const power of discipline.powers) {
+        if (power.level > psychicLevel) continue;
+        for (const ch of power.changes ?? []) {
+          if (!gateOpen(ch)) continue;
+          evalChange(
+            ch.formula,
+            rollData,
+            ch.target,
+            ch.type,
+            `${power.name} (${discipline.name} Discipline)`,
+            `discipline:${discipline.tag}:${power.name}`,
+            out,
+            ch.operator,
+          );
+        }
+      }
+    }
+  }
+
   // --- arcanist exploits (build choice, issue #42) -------------------------
   // Exploit ids are hand-authored clean-room content (not in the vendored
   // Foundry data pack — see `@pf1/engine` `arcanist-exploits.ts`), same
@@ -669,21 +701,42 @@ export function collectModifiers(
 
   // --- shaman hexes (build choice, issue #65, general catalog #74) --------
   // Hex ids may be spirit-scoped (`<spiritTag>:<name>` — `findShamanHex`,
-  // hand-authored in `shaman-spirits.ts`, always `displayOnly`/no
-  // `changes[]` at all — see that file's doc comment) or drawn from the
-  // vendored, spirit-agnostic GENERAL catalog (`resolveGeneralShamanHex`,
-  // `shaman-hexes.ts`). Only the general catalog can ever carry a live
-  // Change, so a spirit-scoped id resolves to nothing here and is skipped —
-  // same "gate on the granting class's level, never crash on an
-  // unknown/stale id" shape the witch-hex loop above uses. Every general
-  // hex is `displayOnly` with `changes: []` today (see `shaman-hexes.ts`'s
-  // doc comment), so this loop currently contributes no numeric modifiers —
-  // wired the same way for a future hex with a real unconditional/buff-gated
-  // Change to work for free.
+  // hand-authored in `shaman-spirits.ts`) or drawn from the vendored,
+  // spirit-agnostic GENERAL catalog (`resolveGeneralShamanHex`,
+  // `shaman-hexes.ts`). A spirit-scoped hex's `changes[]` only applies while
+  // it belongs to the CURRENTLY chosen spirit — same "tolerate but don't
+  // apply a leftover pick from an abandoned spirit" rule
+  // `collectGrantedFeatures` (archetypes.ts) already uses for display,
+  // extended to numbers so switching away from a spirit silently drops any
+  // Change its hexes granted rather than leaving it stuck on. Almost every
+  // spirit hex is `displayOnly` with `changes: []` (see `shaman-spirits.ts`'s
+  // doc comment) — one promotion exists (Flame's Cinder Dance, a flat
+  // landSpeed bump) — and every general hex is `displayOnly` with `changes:
+  // []` today (see `shaman-hexes.ts`'s doc comment) — wired the same way for
+  // a future entry with a real unconditional/buff-gated Change to work for
+  // free.
   const shamanLevel = doc.identity.classes.find((c) => c.tag === "shaman")?.level ?? 0;
   if (shamanLevel > 0) {
+    const currentSpiritTag = doc.build.shamanSpirit;
     for (const hexId of doc.build.shamanHexes ?? []) {
-      if (findShamanHex(hexId)) continue;
+      const spiritHex = findShamanHex(hexId);
+      if (spiritHex) {
+        if (hexId.split(":")[0] !== currentSpiritTag) continue;
+        for (const ch of spiritHex.changes) {
+          if (!gateOpen(ch)) continue;
+          evalChange(
+            ch.formula,
+            rollData,
+            ch.target,
+            ch.type,
+            spiritHex.name,
+            spiritHex.id,
+            out,
+            ch.operator,
+          );
+        }
+        continue;
+      }
       const hex = resolveGeneralShamanHex(hexId, refData);
       if (!hex) continue;
       for (const ch of hex.changes) {

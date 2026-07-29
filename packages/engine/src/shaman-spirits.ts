@@ -52,20 +52,44 @@
  *     would be an inconsistent, confusing half-measure).
  *   - `hexes`: each spirit grants access to 5 exclusive hexes via the
  *     shaman's Hex/Wandering Hex class features (see `model/shamanHexes.ts`
- *     for the pick-level budget). Verified against aonprd.com's per-spirit
- *     pages. Every entry is `displayOnly: true` (`changes: []`) — a numeric
- *     witch/shaman hex-effects table is out of scope here (another agent
- *     may be building witch's hex
- *     table in parallel — this module intentionally does NOT share a hex
- *     table with witch, to avoid stepping on that work).
+ *     for the pick-level budget). Verified against a legacy.aonprd.com mirror
+ *     of the published Advanced Class Guide per-spirit text (paizo.com's own
+ *     PRD page redirects there). Almost every hex is a foe/ally-targeted,
+ *     activated, or limited-duration ability with no flat always-on number
+ *     on the shaman's OWN sheet, so stays `displayOnly: true` (`changes:
+ *     []`) — same bar `shaman-hexes.ts` (the general catalog) applies. One
+ *     promotion (issue #75-style, same bar as `oracle-revelations.ts`'s
+ *     promoted set): `flame:cinderDance` grants a genuine unconditional
+ *     +10 ft. to base land speed (Ex, no action, no per-day limit — see its
+ *     entry's citation); its two bonus-feat grants (Nimble Moves,
+ *     Acrobatic Steps) have no Change target for a specific named feat, so
+ *     stay prose-only. Two close near-misses, deliberately left blocked:
+ *     `bones:deathlyBeing` (a living shaman's bonus is scoped to "saves
+ *     against death effects and effects that drain energy" — a save-
+ *     CATEGORY, not a whole save type, same shape as `oracle-
+ *     revelations.ts`'s `bones:nearDeath`) and `stone:stoneStability` (its
+ *     +4 CMD vs. bull rush/trip only applies "as long as she is standing on
+ *     the ground" — a situational condition this table has no state for,
+ *     so an unconditional Change would overstate it while flying/swimming/
+ *     prone). A prior authoring pass had gotten five Battle hexes, one
+ *     Bones hex, and one Heavens hex factually wrong (describing mechanics
+ *     that don't match the published text at all, e.g. Battle Master's
+ *     "grant an ally a bonus feat" vs. RAW's actual extra attack of
+ *     opportunity) — corrected in place; see each entry's inline citation.
  *   - `spiritAnimalNote` is the spirit's "Spirit Animal" flavor bonus prose
  *     (display-only — the shaman's "spirit animal" is a familiar-like
  *     conduit for preparing spells, not a trackable creature this app models
  *     as a stat block, unlike `@pf1/engine` `companion.ts`'s animal
- *     companion).
+ *     companion). This project also doesn't model each spirit's Greater/True
+ *     Spirit Ability or 20th-level Manifestation at all (no fields for them
+ *     exist on `ShamanSpiritDef`) — out of scope for this pass; several are
+ *     themselves promotion candidates for a future one (e.g. Heavens' Void
+ *     Adaptation grants unconditional darkvision 60 ft., the same shape as
+ *     `oracle-revelations.ts`'s `dark_tapestry:pierceTheVeil`), but adding
+ *     them means extending the table's shape, not auditing what's here.
  */
 
-import type { RefData, ShamanSpirit, SourceRef } from "@pf1/schema";
+import type { Change, RefData, ShamanSpirit, SourceRef } from "@pf1/schema";
 
 export interface ShamanSpiritMagicSpell {
   /** The spell's own level, 1-9 (see file doc comment — NOT a shaman class-level threshold). */
@@ -88,6 +112,10 @@ export interface ShamanSpiritHex {
   name: string;
   /** Short rules summary shown in the UI (paraphrased, not verbatim SRD text). */
   summary: string;
+  /** Typed modifiers granted by the hex (empty for every entry except Flame's Cinder Dance — see file doc comment). */
+  changes: Change[];
+  /** True when `changes` is empty (mirrors `RagePowerDef`/`ShamanGeneralHexDef`'s convention). */
+  displayOnly: boolean;
 }
 
 export interface ShamanSpiritDef {
@@ -103,9 +131,22 @@ export interface ShamanSpiritDef {
   spiritAnimalNote: string;
 }
 
-function hex(spiritTag: string, id: string, name: string, summary: string): ShamanSpiritHex {
-  return { id: `${spiritTag}:${id}`, name, summary };
+function hex(
+  spiritTag: string,
+  id: string,
+  name: string,
+  summary: string,
+  changes: Change[] = [],
+): ShamanSpiritHex {
+  return { id: `${spiritTag}:${id}`, name, summary, changes, displayOnly: changes.length === 0 };
 }
+
+/** `c()` mirrors `oracle-revelations.ts`'s helper — a terse Change literal for Cinder Dance's promotion below. */
+const c = (formula: string, target: string, type = "untyped"): Change => ({
+  formula,
+  target,
+  type,
+});
 
 const SPIRIT_LIST: ShamanSpiritDef[] = [
   {
@@ -132,31 +173,63 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         "battle",
         "battleMaster",
         "Battle Master",
-        "Grant an ally a bonus combat feat for 1 round, using the shaman's own base attack bonus to qualify.",
+        // RAW (aonprd.com/legacy, "Spirits - Shaman" - Battle): "The shaman
+        // makes an extra attack of opportunity each round. This ability
+        // stacks with the attacks of opportunity granted by the Combat
+        // Reflexes feat. At 8th level, the shaman gains the Weapon
+        // Specialization feat for a weapon of her choice as a bonus feat. At
+        // 16th level, the shaman gains the Greater Weapon Focus feat..." An
+        // extra-AoO/round grant has no engine target (not a flat number),
+        // and the bonus feats are specific named grants (no Change target
+        // for that either, same gap `shaman-hexes.ts` documents for
+        // Fetish/Secret). Corrected from a prior description ("grant an
+        // ally a bonus combat feat") that didn't match published text at all.
+        "Gain an extra attack of opportunity each round (stacks with Combat Reflexes); a bonus Weapon Specialization feat at 8th level, and Greater Weapon Focus (same weapon) at 16th, ignoring prerequisites.",
       ),
       hex(
         "battle",
         "battleWard",
         "Battle Ward",
-        "Grant a touched creature a scaling deflection bonus to AC for a number of rounds.",
+        // RAW: a touched creature gets a ward that activates on the NEXT
+        // attack against it (+3 deflection, dropping by 1 per subsequent hit
+        // to +2 then +1; +4/+5 starting bonus at 8th/16th), fading at +0 or
+        // after 24 hours - not "for a number of rounds" as previously
+        // described. Single-use-per-trigger ward on a touched creature
+        // (possibly not the shaman), no unconditional self number.
+        "Touch a willing creature (including yourself): the next attack against it gets a +3 deflection bonus to AC, dropping by 1 each subsequent hit (+4 at 8th level, +5 at 16th), until the ward expires or 24 hours pass.",
       ),
       hex(
         "battle",
         "curseOfSuffering",
         "Curse of Suffering",
-        "Curse a creature so its critical hit multiplier drops by 1 (minimum x2) for a number of rounds.",
+        // RAW: "the shaman causes a creature within 30 feet to take more
+        // damage from bleed effects... an additional 1 point of bleed
+        // damage... effects that restore hit points restore only half the
+        // normal amount." Not a crit-multiplier reduction - corrected from a
+        // prior description that didn't match published text.
+        "Curse a creature so it takes an extra point of bleed damage and heals only half as much from any source, for a number of rounds equal to the shaman's level.",
       ),
       hex(
         "battle",
         "eyesOfBattle",
         "Eyes of Battle",
-        "Grant an ally a scaling insight bonus on initiative checks and a limited number of extra AoOs.",
+        // RAW: swift action, +10 insight bonus on the SHAMAN's own
+        // Perception checks to notice/pinpoint invisible creatures within 30
+        // ft. for 1 round, OR ignore cover/partial cover on her next attack;
+        // usable a number of times/day equal to shaman level. Not an ally
+        // buff on initiative/AoOs - corrected from a prior description that
+        // didn't match published text.
+        "Swift action: gain a +10 insight bonus on your own Perception checks to spot invisible creatures within 30 ft. for 1 round, or ignore cover on your next attack instead. Usable a number of times/day equal to your shaman level.",
       ),
       hex(
         "battle",
         "hamperingHex",
         "Hampering Hex",
-        "Curse a creature with a penalty to its speed for a number of rounds.",
+        // RAW: "-2 penalty to AC and CMD for a number of rounds equal to the
+        // shaman's level... At 8th level, the penalty becomes -4." AC/CMD,
+        // not speed - corrected from a prior description that named the
+        // wrong stat entirely.
+        "Curse a creature within 30 ft. with a -2 penalty to AC and CMD (-4 at 8th level) for a number of rounds equal to the shaman's level; a Will save shortens this to 1 round.",
       ),
     ],
     spiritAnimalNote:
@@ -186,13 +259,24 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         "bones",
         "boneLock",
         "Bone Lock",
-        "Bind a corpse-based construct or undead more securely to the shaman's control.",
+        // RAW: "the shaman causes a creature within 30 feet to suffer
+        // stiffness in its joints and bones, causing the target to be
+        // staggered 1 round. A successful Fortitude saving throw negates
+        // this effect. At 8th level, the duration increases to a number of
+        // rounds equal to her shaman level..." Not an undead-binding
+        // ability - corrected from a prior description that didn't match
+        // published text at all (no undead-control theme in RAW).
+        "Curse a creature within 30 ft. with stiff joints, staggering it for 1 round (Fortitude negates); scales to a save-each-round duration at 8th level and a no-further-saves duration at 16th.",
       ),
       hex(
         "bones",
         "boneWard",
         "Bone Ward",
-        "Grant a touched creature a scaling armor bonus to AC from spectral bone plating.",
+        // RAW: "+2 deflection bonus to AC for a number of rounds equal to
+        // the shaman's level. At 8th level, the bonus increases to +3 and
+        // lasts for 1 minute. At 16th level, the bonus increases to +4 and
+        // lasts for 1 hour." Deflection, not armor - corrected bonus type.
+        "Grant a touched creature a +2 deflection bonus to AC (+3 at 8th level, +4 at 16th) for a number of rounds equal to the shaman's level, extending to 1 minute at 8th and 1 hour at 16th.",
       ),
       hex(
         "bones",
@@ -239,7 +323,20 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         "flame",
         "cinderDance",
         "Cinder Dance",
-        "Gain a scaling enhancement bonus to speed and bonus feats related to mobility at higher levels.",
+        // RAW (aonprd.com/legacy, "Spirits - Shaman" - Flame): "The shaman's
+        // base speed increases by 10 feet. At 5th level, the shaman
+        // receives Nimble Moves as a bonus feat. At 10th level, the shaman
+        // receives Acrobatic Steps as a bonus feat." Constant (Ex), no
+        // action to activate, no per-day limit - genuinely unconditional,
+        // unlike this file's touch-attack/curse/ward hexes. No bonus type
+        // named (not "enhancement" - corrected from a prior description
+        // that guessed a type), so `c()` defaults to untyped, same posture
+        // as `racial-traits.ts`'s Sylph "Like the Wind" (+5 ft, untyped).
+        // The two bonus feats (Nimble Moves, Acrobatic Steps) are specific
+        // named grants with no Change target (`targets.ts`'s `bonusFeats`
+        // only tracks the free-choice budget count) - left as prose.
+        "The shaman's base speed increases by 10 ft.; gains Nimble Moves as a bonus feat at 5th level and Acrobatic Steps at 10th, ignoring prerequisites (feats not modeled here).",
+        [c("10", "landSpeed")],
       ),
       hex(
         "flame",
@@ -299,7 +396,17 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         "heavens",
         "guidingStar",
         "Guiding Star",
-        "Never get lost outdoors at night and gain a bonus on Survival checks to navigate by starlight.",
+        // RAW: "Whenever the shaman can see the open sky at night, she can
+        // determine her precise location and can add both her Wisdom
+        // modifier and her Charisma modifier on all Charisma-based skill
+        // checks. In addition, once per night while outdoors, she can cast
+        // one spell as if modified by Empower/Extend/Silent/Still Spell..."
+        // No Survival-check bonus in RAW at all - corrected from a prior
+        // description that didn't match published text. Situationally
+        // conditional (open sky at night) and targets an unsupported
+        // aggregate ("Cha-based skill checks" has no discrete engine
+        // target) - blocked for promotion regardless.
+        "Outdoors under open sky at night, add your Wisdom modifier to Charisma-based skill checks and always know your exact location; once per night you can also apply an Empower/Extend/Silent/Still Spell-like boost to a spell you cast.",
       ),
       hex(
         "heavens",
@@ -347,7 +454,11 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
         "life",
         "curseOfSuffering",
         "Curse of Suffering",
-        "Curse a creature so its critical hit multiplier drops by 1 (minimum x2) for a number of rounds.",
+        // RAW: identical text to Battle's own Curse of Suffering hex (see
+        // that entry's citation) - extra bleed damage, half-effective
+        // healing. Not a crit-multiplier reduction - corrected from a prior
+        // description that didn't match published text.
+        "Curse a creature so it takes an extra point of bleed damage and heals only half as much from any source, for a number of rounds equal to the shaman's level.",
       ),
       hex(
         "life",

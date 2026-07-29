@@ -125,8 +125,9 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
             <>
               <p className="hint revelation-picker-hint">
                 Pick hexes as you level (2nd, 4th, 8th, 10th, 12th, 16th, 18th, 20th; +1 per Extra
-                Hex feat). Free-choice — never blocks past the expected count. Every hex here is
-                note-tier (no numeric effect modeled).
+                Hex feat). Free-choice — never blocks past the expected count. Almost every hex here
+                is note-tier; entries marked <span className="badge-modeled">M</span> carry a real,
+                live mechanical effect (see Class Features).
               </p>
               <input
                 className="search"
@@ -141,7 +142,18 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
                   return (
                     <div key={h.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                       <div className="pmain">
-                        <div className="pname">{h.name}</div>
+                        <div className="pname">
+                          {h.name}
+                          {!h.displayOnly && (
+                            <span
+                              className="badge-modeled"
+                              title="Carries a real, live mechanical effect (see Class Features)"
+                            >
+                              {" "}
+                              M
+                            </span>
+                          )}
+                        </div>
                         <div className="preq">
                           <span className="desc-text">{h.summary}</span>
                         </div>

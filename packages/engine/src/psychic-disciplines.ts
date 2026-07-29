@@ -63,17 +63,39 @@
  * same "automatic once you qualify" shape as a sorcerer bloodline power);
  * some disciplines name two powers at 1st level (both un-numbered on the same
  * page, e.g. Dream's Dream Leech + Oneiromancy). Modelling posture mirrors
- * `ORACLE_REVELATIONS`'/`WITCH_HEXES`' honesty bar: every power here is a
- * swift-action/limited-use/passive-substitution ability with no flat
+ * `ORACLE_REVELATIONS`'/`WITCH_HEXES`' honesty bar: almost every power here is
+ * a swift-action/limited-use/passive-substitution ability with no flat
  * always-on number this engine's `Change` pipeline could safely apply
- * unconditionally (several scale with psychic level or a Wisdom/Charisma
- * modifier in ways that would need per-power formula plumbing this table
- * doesn't carry) — so these are surfaced as note-tier `GrantedFeature`s
- * (`archetypes.ts`'s `collectGrantedFeatures`, new `origin.kind: "discipline"`)
- * with a summary only, same posture as a shaman's spirit ability.
+ * unconditionally — those stay note-tier `GrantedFeature`s (`archetypes.ts`'s
+ * `collectGrantedFeatures`, `origin.kind: "discipline"`) with a summary only,
+ * same posture as a shaman's spirit ability. A handful (promotion audit,
+ * verified 2026-07-29) genuinely are unconditional and always-on once
+ * gained, so they additionally carry a real `changes` array collected the
+ * same way `bloodline.powers`/`bloodragerBloodline.powers` are (see
+ * `collect.ts`'s psychic discipline power loop): Faith's Resilience of the
+ * Faithful (resistance bonus on all saves), Rebirth's Past-Life Memories
+ * (flat Knowledge bonus), Ferocity's Enhanced Senses (scent — its
+ * phrenic-pool-activated blindsense upgrade is NOT modeled), Abomination's
+ * Psychic Safeguard (the constant base SR only — its dark-half-manifested
+ * increase is conditional and NOT modeled), and Self-Perfection's AC Bonus
+ * (Wis-to-AC/CMD, gated on armor/shield/encumbrance the same way the
+ * vendored Monk "AC Bonus (MNK)" class feature's own `changes[]` does — its
+ * "loses this while immobilized or helpless" clause is likewise not modeled
+ * there, so leaving it unmodeled here matches existing engine precedent
+ * rather than a new gap) and Pure Body (immunity to disease and poison, the
+ * same `immEffect.disease`/`immEffect.poison` shape the data-pipeline's
+ * `SUPPLEMENTAL_CLASS_FEATURE_EFFECT_IMMUNITY` already uses for the Monk's
+ * Purity of Body / Diamond Body).
  */
 
-import type { PsychicDiscipline, RefData, SourceRef } from "@pf1/schema";
+import type { Change, PsychicDiscipline, RefData, SourceRef } from "@pf1/schema";
+
+const c = (formula: string, target: string, type: string, operator?: "add" | "set"): Change => ({
+  formula,
+  target,
+  type,
+  ...(operator ? { operator } : {}),
+});
 
 export interface PsychicDisciplinePower {
   /** Psychic level this power is gained — 1, 5, or 13 (PF1 RAW: "Discipline Powers" gained at 1st, 5th, and 13th level). */
@@ -81,6 +103,8 @@ export interface PsychicDisciplinePower {
   name: string;
   /** Short rules summary shown in the UI (paraphrased, not verbatim SRD text). */
   summary: string;
+  /** Unconditional numeric modifiers (rare — see file doc comment). */
+  changes?: Change[];
 }
 
 export interface PsychicDisciplineBonusSpell {
@@ -142,6 +166,12 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
         name: "Psychic Safeguard",
         summary:
           "Constant spell resistance 8 + caster level, increasing to 16 + caster level while manifesting your dark half.",
+        // AoN (PsychicDisciplinesDisplay.aspx?ItemName=Abomination): "You
+        // project constant mental defenses, gaining spell resistance equal
+        // to 8 + your caster level." Only the constant base is modeled —
+        // the dark-half-manifested increase to 16 + caster level is
+        // conditional on the (activated, limited-use) Dark Half power.
+        changes: [c("8 + @classes.psychic.level", "spellResist", "untyped", "set")],
       },
     ],
   },
@@ -261,6 +291,15 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
         level: 5,
         name: "Resilience of the Faithful",
         summary: "+2 resistance bonus on all saving throws, +1 more per 5 levels beyond 5th.",
+        // AoN (PsychicDisciplinesDisplay.aspx?ItemName=Faith): "At 5th
+        // level, you gain a +2 resistance bonus on all saving throws. This
+        // bonus increases by 1 for every 5 levels you possess beyond 5th."
+        // Unconditional and always-on once gained (the collect.ts loop
+        // already gates this power on psychic level >= 5, so the formula
+        // itself doesn't need to).
+        changes: [
+          c("2 + floor((@classes.psychic.level - 5) / 5)", "allSavingThrows", "resistance"),
+        ],
       },
       {
         level: 13,
@@ -286,12 +325,22 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       { level: 18, id: "vl7yer8k1leyuxld", name: "Foresight" },
     ],
     powers: [
-      { level: 1, name: "Enhanced Senses", summary: "Gain scent, as the universal monster rule." },
+      {
+        level: 1,
+        name: "Enhanced Senses",
+        summary: "Gain scent, as the universal monster rule.",
+        // AoN (PsychicDisciplinesDisplay.aspx?ItemName=Ferocity): "You gain
+        // scent as per the universal monster rule." Only the constant scent
+        // grant is modeled — the same power also lets you spend a phrenic
+        // pool point (permanent from 11th level on) to activate blindsense,
+        // an activated/limited-use effect this table doesn't carry.
+        changes: [c("1", "sensesc", "untyped")],
+      },
       {
         level: 1,
         name: "Survival Instinct",
         summary:
-          "Add your Wisdom bonus (if any) to Constitution for the purpose of your negative-hp death threshold and stabilization checks.",
+          "Add your Wisdom bonus (minimum +1) to Constitution for the purpose of your negative-hp death threshold and stabilization checks.",
       },
       {
         level: 5,
@@ -490,6 +539,15 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
         name: "Past-Life Memories",
         summary:
           "Add half your psychic level (min 1) to all Knowledge checks, and make every Knowledge check untrained.",
+        // AoN (PsychicDisciplinesDisplay.aspx?ItemName=Rebirth): "You add a
+        // bonus equal to half your psychic level (minimum 1) to all
+        // Knowledge checks and can attempt all Knowledge skill checks
+        // untrained." Same target/shape as Cloistered Cleric's Breadth of
+        // Knowledge (`archetype-effects.ts`) — `skill.knowledge` fans out to
+        // every Knowledge subskill (`tables.ts`'s `SKILL_GROUPS`). Only the
+        // flat bonus is modeled; the untrained-usability half isn't
+        // mechanized anywhere in this engine (same as Breadth of Knowledge).
+        changes: [c("max(1, floor(@classes.psychic.level / 2))", "skill.knowledge", "untyped")],
       },
       {
         level: 1,
@@ -532,6 +590,28 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
         name: "AC Bonus",
         summary:
           "When unarmored, unencumbered, and not immobilized/helpless, add your Wisdom bonus to AC and CMD, even against touch attacks or while flat-footed.",
+        // AoN (PsychicDisciplinesDisplay.aspx?ItemName=Self-Perfection):
+        // "When unarmored and unencumbered, you add your Wisdom bonus (if
+        // any) to your AC and CMD." Same armor/shield/encumbrance gate and
+        // "untyped" bonus type (so it applies to touch AC and while
+        // flat-footed, matching the RAW clause) as the vendored Monk "AC
+        // Bonus (MNK)" class feature's own `changes[]` — see
+        // `compute.test.ts`'s "compute: monk AC Bonus" suite for the
+        // identical gate shape. The "loses this while immobilized or
+        // helpless" clause isn't modeled, matching that same vendored
+        // feature (which doesn't model it either).
+        changes: [
+          c(
+            "if(and(and(lt(@shield.type, 1), lt(@armor.type, 1)), lt(@attributes.encumbrance.level, 1)), 1) * @abilities.wis.mod",
+            "ac",
+            "untyped",
+          ),
+          c(
+            "if(and(and(lt(@shield.type, 1), lt(@armor.type, 1)), lt(@attributes.encumbrance.level, 1)), 1) * @abilities.wis.mod",
+            "cmd",
+            "untyped",
+          ),
+        ],
       },
       {
         level: 1,
@@ -545,7 +625,18 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
         summary:
           "A pool of 3d8 healing dice/day, spent as a standard action to heal hit points or as lesser restoration.",
       },
-      { level: 13, name: "Pure Body", summary: "Immunity to diseases and poisons." },
+      {
+        level: 13,
+        name: "Pure Body",
+        summary: "Immunity to diseases and poisons.",
+        // AoN (PsychicDisciplinesDisplay.aspx?ItemName=Self-Perfection): "At
+        // 13th level, you gain immunity to diseases and poisons." Same
+        // `immEffect.<slug>` shape the data-pipeline's
+        // `SUPPLEMENTAL_CLASS_FEATURE_EFFECT_IMMUNITY` uses for the Monk's
+        // Purity of Body / Diamond Body (disease/poison immunity granted the
+        // same way, at different levels).
+        changes: [c("1", "immEffect.disease", "untyped"), c("1", "immEffect.poison", "untyped")],
+      },
     ],
   },
   {

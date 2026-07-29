@@ -29,6 +29,7 @@ function makeDoc(
   classes: { tag: string; level: number }[],
   abilities: CharacterDoc["abilities"],
   psychicDiscipline?: string,
+  gear: CharacterDoc["build"]["gear"] = [],
 ): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -43,7 +44,7 @@ function makeDoc(
       skillRanks: {},
       classFeatureChoices: [],
       spells: { known: [] },
-      gear: [],
+      gear,
       ...(psychicDiscipline ? { psychicDiscipline } : {}),
     },
     live: {
@@ -203,5 +204,159 @@ describe("Discipline Powers grant collection (issue #65 follow-through)", () => 
     const doc = makeDoc([{ tag: "mesmerist", level: 13 }], BASE_ABILITIES, "dream");
     const sheet = compute(doc, ref);
     expect(sheet.classFeatures.some((f) => f.name === "Dream Leech")).toBe(false);
+  });
+});
+
+/**
+ * Promotion audit (2026-07-29): the handful of Discipline Powers that are
+ * genuinely unconditional and always-on once gained, verified against
+ * aonprd.com's individual discipline pages and hand-computed here the same
+ * way `sorcererBloodline.test.ts` / `bloodragerBloodline.test.ts` verify
+ * their own promoted bloodline powers.
+ */
+describe("promoted discipline power: Faith's Resilience of the Faithful (5th)", () => {
+  // AoN: "At 5th level, you gain a +2 resistance bonus on all saving
+  // throws. This bonus increases by 1 for every 5 levels you possess
+  // beyond 5th." → +2 at 5th, +3 at 10th, +4 at 15th, +5 at 20th.
+  it("grants +2 resistance on all saves at 5th level", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 5 }], BASE_ABILITIES, "faith");
+    const sheet = compute(doc, ref);
+    expect(sheet.saves.fort.total).toBe(1 + 0 + 2); // poor base floor(5/3)=1 + Con 0 + resistance 2
+    expect(sheet.saves.will.total).toBe(4 + 3 + 2); // good base floor(5/2)+2=4 + Wis 3 + resistance 2
+  });
+
+  it("scales to +3 at 10th level and +5 at 20th", () => {
+    const at10 = compute(makeDoc([{ tag: "psychic", level: 10 }], BASE_ABILITIES, "faith"), ref);
+    expect(at10.saves.ref.total).toBe(3 + 0 + 3); // poor base floor(10/3)=3 + Dex 0 + resistance 3
+    const at20 = compute(makeDoc([{ tag: "psychic", level: 20 }], BASE_ABILITIES, "faith"), ref);
+    expect(at20.saves.ref.total).toBe(6 + 0 + 5); // poor base floor(20/3)=6 + Dex 0 + resistance 5
+  });
+
+  it("grants nothing below 5th level", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 4 }], BASE_ABILITIES, "faith");
+    const sheet = compute(doc, ref);
+    expect(sheet.saves.will.total).toBe(4 + 3); // good base floor(4/2)+2=4 + Wis 3, no resistance yet
+  });
+});
+
+describe("promoted discipline power: Rebirth's Past-Life Memories (1st)", () => {
+  // AoN: "You add a bonus equal to half your psychic level (minimum 1) to
+  // all Knowledge checks and can attempt all Knowledge skill checks
+  // untrained." Same `skill.knowledge` fan-out target as Cloistered
+  // Cleric's Breadth of Knowledge (archetypeEffects.test.ts).
+  it("grants the minimum +1 at 1st level on every Knowledge subskill", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 1 }], BASE_ABILITIES, "rebirth");
+    const sheet = compute(doc, ref);
+    const arcana = sheet.skills["kar"]!; // Knowledge (arcana)
+    const comp = arcana.components.find(
+      (c) => c.source === "Past-Life Memories (Rebirth Discipline)",
+    );
+    expect(comp?.value).toBe(1); // max(1, floor(1/2))
+  });
+
+  it("scales to floor(level/2) at higher level", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 10 }], BASE_ABILITIES, "rebirth");
+    const sheet = compute(doc, ref);
+    const religion = sheet.skills["kre"]!; // Knowledge (religion)
+    const comp = religion.components.find(
+      (c) => c.source === "Past-Life Memories (Rebirth Discipline)",
+    );
+    expect(comp?.value).toBe(5); // floor(10/2)
+  });
+
+  it("contributes nothing under a different discipline", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 10 }], BASE_ABILITIES, "faith");
+    const sheet = compute(doc, ref);
+    const arcana = sheet.skills["kar"]!;
+    expect(
+      arcana.components.some((c) => c.source === "Past-Life Memories (Rebirth Discipline)"),
+    ).toBe(false);
+  });
+});
+
+describe("promoted discipline power: Ferocity's Enhanced Senses (1st)", () => {
+  // AoN: "You gain scent as per the universal monster rule." (The same
+  // power's phrenic-pool-activated blindsense upgrade is NOT modeled.)
+  it("grants scent at 1st level", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 1 }], BASE_ABILITIES, "ferocity");
+    const sheet = compute(doc, ref);
+    expect(sheet.senses.map((s) => s.kind)).toContain("scent");
+  });
+
+  it("grants nothing under a different discipline", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 1 }], BASE_ABILITIES, "faith");
+    const sheet = compute(doc, ref);
+    expect(sheet.senses.map((s) => s.kind)).not.toContain("scent");
+  });
+});
+
+describe("promoted discipline power: Abomination's Psychic Safeguard (13th)", () => {
+  // AoN: "You project constant mental defenses, gaining spell resistance
+  // equal to 8 + your caster level." Only the constant base is modeled —
+  // the dark-half-manifested increase to 16 + caster level is conditional
+  // on the (activated) Dark Half power, so it's excluded.
+  it("grants SR 8 + caster level at 13th level (21)", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 13 }], BASE_ABILITIES, "abomination");
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.sr?.total).toBe(21); // 8 + 13
+  });
+
+  it("grants nothing below 13th level", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 12 }], BASE_ABILITIES, "abomination");
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.sr).toBeUndefined();
+  });
+});
+
+describe("promoted discipline power: Self-Perfection's Pure Body (13th)", () => {
+  // AoN: "At 13th level, you gain immunity to diseases and poisons."
+  it("grants disease and poison immunity at 13th level", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 13 }], BASE_ABILITIES, "self-perfection");
+    const sheet = compute(doc, ref);
+    expect((sheet.defenses?.effectImmunities ?? []).map((e) => e.qualifier).sort()).toEqual([
+      "disease",
+      "poison",
+    ]);
+  });
+
+  it("grants nothing below 13th level", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 12 }], BASE_ABILITIES, "self-perfection");
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.effectImmunities).toBeUndefined();
+  });
+});
+
+describe("promoted discipline power: Self-Perfection's AC Bonus (1st)", () => {
+  // AoN: "When unarmored and unencumbered, you add your Wisdom bonus (if
+  // any) to your AC and CMD." Same armor/shield/encumbrance gate as the
+  // vendored Monk "AC Bonus (MNK)" class feature (compute.test.ts's "compute:
+  // monk AC Bonus" suite) — this power carries no separate level-scaling
+  // term, unlike the monk's.
+  it("unarmored psychic with positive Wis gets the AC/CMD bonus", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 1 }], BASE_ABILITIES, "self-perfection");
+    const sheet = compute(doc, ref);
+    // wis 16 => +3. ac.normal = 10 base + dex0 + wisToAc3 = 13.
+    expect(sheet.ac.normal).toBe(13);
+    expect(sheet.ac.touch).toBe(13);
+    // cmd = 10 + bab0 + str0 + dex0 + size0 + wisToAc3(explicit cmd copy) = 13
+    expect(sheet.cmd).toBe(13);
+  });
+
+  it("armored psychic does NOT get the AC/CMD bonus", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 1 }], BASE_ABILITIES, "self-perfection", [
+      {
+        equipped: true,
+        name: "Studded Leather",
+        armor: { slot: "armor", ac: 3, maxDex: 5, acp: -1, type: 1 },
+      },
+    ]);
+    const sheet = compute(doc, ref);
+    expect(sheet.ac.normal).toBe(10 + 3); // 10 base + armor 3, no Wis-to-AC
+  });
+
+  it("contributes nothing under a different discipline", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 1 }], BASE_ABILITIES, "faith");
+    const sheet = compute(doc, ref);
+    expect(sheet.ac.normal).toBe(10); // no Dex (10), no Wis-to-AC
   });
 });
