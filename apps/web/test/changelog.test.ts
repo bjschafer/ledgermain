@@ -7,6 +7,11 @@ import {
   latestEntryId,
   type ChangelogEntry,
 } from "../src/model/changelog.js";
+import { expectNoDashes, expectWithinBudget } from "./houseStyle.js";
+
+/** Sized just above the longest shipped entry, so it ratchets. */
+const NOTE_BUDGET = 175;
+const TITLE_BUDGET = 12;
 
 function entry(id: string, date = "2026-01-01"): ChangelogEntry {
   return { id, date, title: "t", note: "n" };
@@ -42,6 +47,20 @@ describe("CHANGELOG", () => {
     for (const e of CHANGELOG) {
       expect(e.title).not.toMatch(/#\d+/);
       expect(e.note).not.toMatch(/#\d+/);
+    }
+  });
+
+  it("uses no em or en dashes", () => {
+    for (const e of CHANGELOG) {
+      expectNoDashes(`${e.id} (title)`, e.title);
+      expectNoDashes(`${e.id} (note)`, e.note);
+    }
+  });
+
+  it("keeps entries short enough to skim in a panel", () => {
+    for (const e of CHANGELOG) {
+      expectWithinBudget(`${e.id} (title)`, e.title, TITLE_BUDGET);
+      expectWithinBudget(`${e.id} (note)`, e.note, NOTE_BUDGET);
     }
   });
 });

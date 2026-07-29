@@ -13,6 +13,15 @@
  *
  * Dated, not versioned: the app ships continuously and has no release number
  * to hang entries off.
+ *
+ * House style applies to every string here: no em or en dashes, since this
+ * copy renders in the app. Restructure the sentence (a colon, a period, a
+ * pair of commas) rather than printing the ` -- ` substitute on screen.
+ * `test/changelog.test.ts` enforces that, and a per-entry word budget.
+ *
+ * This file is the counterpart to `coverageNotes.ts`, and the two must not
+ * converge: shipped work is announced here and nowhere else, while that file
+ * only ever describes what is still missing.
  */
 
 export interface ChangelogEntry {
@@ -35,31 +44,31 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-07-29-kineticist-all-seven-elements",
     date: "2026-07-29",
     title: "Kineticists get all seven elements, fully written up",
-    note: "Void and wood join the five core elements as pickable elemental focuses, each with its own blasts (gravity or negative; wood or positive), elemental defense, basic utility talent, and class skills. And the wild-talent catalog is now complete: every published infusion and utility talent across all seven elements has a proper write-up with its level gate and burn cost — around 160 more than before — along with all twenty-two composite blasts, including the void and wood admixtures and the seasonal blasts. Spark of Life's description also got corrected: it summons an elemental, it never granted temporary hit points.",
+    note: "Void and wood join the five core elements as pickable elemental focuses, each with its own blasts (gravity or negative; wood or positive), elemental defense, basic utility talent, and class skills. And the wild-talent catalog is now complete: every published infusion and utility talent across all seven elements has a proper write-up with its level gate and burn cost, around 160 more than before, along with all twenty-two composite blasts, including the void and wood admixtures and the seasonal blasts. Spark of Life's description also got corrected: it summons an elemental, it never granted temporary hit points.",
   },
   {
     id: "2026-07-29-chosen-energy-and-stacking-darkvision",
     date: "2026-07-29",
     title: "Pick your energy type, and darkvision that really adds up",
-    note: "Rage powers that make you choose an energy type when you take them now let you make that choice right in the picker — and apply it. Energy Resistance scales with your level in the type you picked, Draconic Blood adds its resistance 5 alongside its natural armor, Elemental Blood reads the element you chose at its Lesser pick, and Greater Elemental Blood grants the matching movement (burrow, swim, fly, or faster land speed) the moment you rage. Separately, abilities worded \"gain darkvision, or extend it if you already have it\" now truly extend it: a dwarf raging with Lesser Moon Totem sees 90 feet, not 60, the shifter's Wolf aspect lengthens scent you already have, and the shadow oracle's Pierce the Shadows adds its full 60 feet on top of any racial darkvision.",
+    note: "Rage powers that make you choose an energy type when you take them now let you make that choice right in the picker, and they apply it. Energy Resistance scales with your level in the type you picked, Draconic Blood adds its resistance 5 alongside its natural armor, Elemental Blood reads the element you chose at its Lesser pick, and Greater Elemental Blood grants the matching movement (burrow, swim, fly, or faster land speed) the moment you rage. Separately, abilities worded \"gain darkvision, or extend it if you already have it\" now truly extend it: a dwarf raging with Lesser Moon Totem sees 90 feet, not 60, the shifter's Wolf aspect lengthens scent you already have, and the shadow oracle's Pierce the Shadows adds its full 60 feet on top of any racial darkvision.",
   },
   {
     id: "2026-07-29-shapechanger-race-trait-swaps",
     date: "2026-07-29",
     title: "Skinwalkers, changelings, and gathlains trade traits honestly",
-    note: "The three trickiest races caught up with the other twenty-five: picking an alternate racial trait now retires the standard bonus it replaces. A skinwalker heritage's alternate skill bonuses replace Animal-Minded's Handle Animal bonus instead of stacking on it, a changeling's Witchborn really swaps +2 Wisdom for +2 Intelligence, and a gathlain trading its natural armor loses it. Bigger still: a changeling's hag heritage — Brine May through Waker May — now applies its full ability-score spread for real, replacing the standard one, and the gathlain's Tree-Born drops the Constitution penalty and slows its speeds just like the book says.",
+    note: "The three trickiest races caught up with the other twenty-five: picking an alternate racial trait now retires the standard bonus it replaces. A skinwalker heritage's alternate skill bonuses replace Animal-Minded's Handle Animal bonus instead of stacking on it, a changeling's Witchborn really swaps +2 Wisdom for +2 Intelligence, and a gathlain trading its natural armor loses it. Bigger still: a changeling's hag heritage, Brine May through Waker May, now applies its full ability-score spread for real, replacing the standard one, and the gathlain's Tree-Born drops the Constitution penalty and slows its speeds just like the book says.",
   },
   {
     id: "2026-07-29-every-pick-list-written-up",
     date: "2026-07-29",
     title: "Every class pick list is now fully written up",
-    note: "The last seven pick lists caught up with the big ones: rage powers, ninja tricks, investigator talents, vigilante talents (both the social and vigilante pools), monk ki powers, mesmerist tricks, and bold stares now have every published entry written up with its level requirement flagged — no more raw rules text for the later-splatbook picks. Rage powers got the deepest treatment: twenty-five more of them now move real numbers the moment you rage, including the totem resistance and damage-reduction lines, Beast Totem's scaling natural armor, darkvision and scent grants, and the Linnorm death curses' extra melee damage. Look for the \"M\" badge in any picker to spot the entries that apply themselves.",
+    note: "The last seven pick lists caught up with the big ones: rage powers, ninja tricks, investigator talents, vigilante talents (both the social and vigilante pools), monk ki powers, mesmerist tricks, and bold stares now have every published entry written up with its level requirement flagged. No more raw rules text for the later-splatbook picks. Rage powers got the deepest treatment: twenty-five more of them now move real numbers the moment you rage, including the totem resistance and damage-reduction lines, Beast Totem's scaling natural armor, darkvision and scent grants, and the Linnorm death curses' extra melee damage. Look for the \"M\" badge in any picker to spot the entries that apply themselves.",
   },
   {
     id: "2026-07-29-more-race-trait-swaps",
     date: "2026-07-29",
     title: "Eleven more races trade traits honestly",
-    note: "Alternate racial traits now retire what they replace for ifrits, oreads, undines, drow, kobolds, duergar, hobgoblins, goblins, fetchlings, catfolk, and vine leshies — same treatment the core and featured races already had. A drow alternate that trades away Keen Senses really removes the Perception bonus, a kobold that swaps its scales loses the natural armor, and a duergar alternate that gives up the dwarven immunities drops them from the sheet. As before, a heritage's different ability-score spread stays yours to apply by hand — with one exception: the vine leshy's Agile trait swaps its full spread for real.",
+    note: "Alternate racial traits now retire what they replace for ifrits, oreads, undines, drow, kobolds, duergar, hobgoblins, goblins, fetchlings, catfolk, and vine leshies, the same treatment the core and featured races already had. A drow alternate that trades away Keen Senses really removes the Perception bonus, a kobold that swaps its scales loses the natural armor, and a duergar alternate that gives up the dwarven immunities drops them from the sheet. As before, a heritage's different ability-score spread stays yours to apply by hand, with one exception: the vine leshy's Agile trait swaps its full spread for real.",
   },
   {
     id: "2026-07-28-featured-race-trait-swaps",
@@ -71,31 +80,31 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-07-28-every-pick-list-written-up",
     date: "2026-07-28",
     title: "The five big pick lists, fully written up",
-    note: "Witch hexes, magus arcana, arcanist exploits, rogue talents, and alchemist discoveries are now complete: every published entry — over 600 across the five lists — has a proper write-up, a level requirement that's flagged when you're not there yet, and notes on prerequisites and activation costs, instead of a wall of raw rules text. Along the way, everything that could honestly be automatic became so. A dozen rogue talents that grant a specific feat (Finesse Rogue's Weapon Finesse, Strong Impression's Intimidating Prowess, Unbalancing Trick's Improved Trip, and friends) now add it to your sheet themselves, and Stony Skin's DR 2/adamantine meets incoming damage for real. For alchemists, Awakened Intellect raises your Intelligence, Chameleon and Webbed Extremities boost Stealth and Swim, Pheromones lifts your social skills, and Mummification's cold, paralysis, and sleep immunities all land on the sheet. The witch's Iceplant hex applies its natural armor too. Rogue talents also now say which list they belong to — chained, unchained, or both.",
+    note: "Witch hexes, magus arcana, arcanist exploits, rogue talents, and alchemist discoveries are now complete: every published entry, over 600 across the five lists, has a proper write-up, a level requirement that's flagged when you're not there yet, and notes on prerequisites and activation costs, instead of a wall of raw rules text. Along the way, everything that could honestly be automatic became so. A dozen rogue talents that grant a specific feat (Finesse Rogue's Weapon Finesse, Strong Impression's Intimidating Prowess, Unbalancing Trick's Improved Trip, and friends) now add it to your sheet themselves, and Stony Skin's DR 2/adamantine meets incoming damage for real. For alchemists, Awakened Intellect raises your Intelligence, Chameleon and Webbed Extremities boost Stealth and Swim, Pheromones lifts your social skills, and Mummification's cold, paralysis, and sleep immunities all land on the sheet. The witch's Iceplant hex applies its natural armor too. Rogue talents also now say which list they belong to: chained, unchained, or both.",
   },
   {
     id: "2026-07-28-more-picks-move-real-numbers",
     date: "2026-07-28",
     title: "More of your picks move real numbers",
-    note: "A sweep through the pick lists promoted everything that honestly could be automatic. Eleven oracle revelations now compute live — Iron Constitution's Fortitude bonus, the elemental- and spellscar-resistance lines, the energy-skin revelations up through their 17th-level immunity, Face in the Crowd's Stealth bonus, Pierce the Veil's darkvision. The ninja's Wall Climber and the vigilante's Rooftop Infiltrator grant their climb speeds for real — and that fix ran deeper: rogue, ninja, investigator, and vigilante talent picks weren't feeding the sheet's numbers at all, so the vigilante's Shadow's Speed and Monkey's Paws now actually do what their badge claimed. The sweep also corrected four rage-power write-ups that didn't match the printed rules, and removed one — \"Sixth Sense\" — that turns out not to exist in any book. If your barbarian had it picked, that slot is free again.",
+    note: "A sweep through the pick lists promoted everything that honestly could be automatic. Eleven oracle revelations now compute live: Iron Constitution's Fortitude bonus, the elemental- and spellscar-resistance lines, the energy-skin revelations up through their 17th-level immunity, Face in the Crowd's Stealth bonus, Pierce the Veil's darkvision. The ninja's Wall Climber and the vigilante's Rooftop Infiltrator grant their climb speeds for real, and that fix ran deeper: rogue, ninja, investigator, and vigilante talent picks weren't feeding the sheet's numbers at all, so the vigilante's Shadow's Speed and Monkey's Paws now actually do what their badge claimed. The sweep also corrected four rage-power write-ups that didn't match the printed rules, and removed one, \"Sixth Sense\", that turns out not to exist in any book. If your barbarian had it picked, that slot is free again.",
   },
   {
     id: "2026-07-28-every-eidolon-subtype",
     date: "2026-07-28",
     title: "Eidolons of every stripe",
-    note: "Thirteen more eidolon subtypes join the builder — Aberrant, Aeon, Ancestor, Astral, Deepwater, Genie, Kami, Kyton, Radiant, Shadow, Storykin, Twinned, and Void — each with its forms, attacks, and level-by-level grants spelled out, and the free evolutions and pool bonuses applied for real. The Aberrant base form is here too (bite, tentacle, and a swim speed), and you can finally make your eidolon Small: its dice step down, its size modifiers land on AC and attacks, and its Fly and Stealth pick up the bonuses, all computed.",
+    note: "Thirteen more eidolon subtypes join the builder: Aberrant, Aeon, Ancestor, Astral, Deepwater, Genie, Kami, Kyton, Radiant, Shadow, Storykin, Twinned, and Void, each with its forms, attacks, and level-by-level grants spelled out, and the free evolutions and pool bonuses applied for real. The Aberrant base form is here too (bite, tentacle, and a swim speed), and you can finally make your eidolon Small: its dice step down, its size modifiers land on AC and attacks, and its Fly and Stealth pick up the bonuses, all computed.",
   },
   {
     id: "2026-07-28-every-oracle-mystery",
     date: "2026-07-28",
     title: "Every oracle mystery, revelations and all",
-    note: "Oracles were the class with the biggest hole: only the eleven core mysteries knew their class skills, bonus spells, and revelations. All thirty-four published mysteries are in now — pick Dark Tapestry or Reaper or Whimsy and your class skills appear, your bonus spells arrive on schedule, and the full revelation list is right there to choose from, level requirements and all. That's two hundred twenty-six newly written-up revelations. What each revelation does when you use it is still applied at the table, same as before.",
+    note: "Oracles were the class with the biggest hole: only the eleven core mysteries knew their class skills, bonus spells, and revelations. All thirty-four published mysteries are in now. Pick Dark Tapestry or Reaper or Whimsy and your class skills appear, your bonus spells arrive on schedule, and the full revelation list is right there to choose from, level requirements and all. That's two hundred twenty-six newly written-up revelations. What each revelation does when you use it is still applied at the table, same as before.",
   },
   {
     id: "2026-07-28-class-immunities-and-talent-catalogs",
     date: "2026-07-28",
     title: "Your class's immunities show up on their own",
-    note: "A paladin who hits 3rd level now sees disease and fear immunity on the sheet without typing anything, and trying to mark her shaken gets flagged. Same for the monk's Purity of Body and Diamond Body, the druid's Venom Immunity and Timeless Body, the alchemist's and investigator's Poison Immunity, the antipaladin's Plague Bringer, and the paladin's charm and compulsion auras when they arrive. Alongside that, the shaman's general hexes and the slayer's full talent list got real write-ups in their pickers — every entry summarized with its level gate and table notes, and a slayer in full plate with Armored Marauder watches the armor check penalty actually shrink.",
+    note: "A paladin who hits 3rd level now sees disease and fear immunity on the sheet without typing anything, and trying to mark her shaken gets flagged. Same for the monk's Purity of Body and Diamond Body, the druid's Venom Immunity and Timeless Body, the alchemist's and investigator's Poison Immunity, the antipaladin's Plague Bringer, and the paladin's charm and compulsion auras when they arrive. Alongside that, the shaman's general hexes and the slayer's full talent list got real write-ups in their pickers, every entry summarized with its level gate and table notes. A slayer in full plate with Armored Marauder watches the armor check penalty actually shrink.",
   },
   {
     id: "2026-07-27-the-app-keeps-your-place",
