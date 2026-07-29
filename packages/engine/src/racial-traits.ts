@@ -620,30 +620,66 @@ export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boo
 /**
  * Verified mapping from a race's STANDARD trait name (as it appears in the
  * vendored catalog's `RacialTrait.replacedTraitNames`) to the `Race.changes`
- * targets that standard trait contributes — the six most-played featured
- * races, audited by hand against `races.json`'s change lists exactly like the
- * core-race `suppressTargets` audit above. `collect.ts` uses this to drop a
- * replaced standard trait's structured bonus while a vendored alternate that
- * names it is active, so e.g. an Aasimar taking Deathless Spirit stops
- * showing Celestial Resistance's acid/cold/electricity 5 alongside it.
+ * targets that standard trait contributes — audited by hand against
+ * `races.json`'s change lists exactly like the core-race `suppressTargets`
+ * audit above. `collect.ts` uses this to drop a replaced standard trait's
+ * structured bonus while a vendored alternate that names it is active, so
+ * e.g. an Aasimar taking Deathless Spirit stops showing Celestial
+ * Resistance's acid/cold/electricity 5 alongside it.
  *
  * Deliberately unmapped names, recorded here so the next audit doesn't
  * re-litigate them:
- *   - "Base Statistics" (every heritage's ability-score swap): the heritage
- *     entries carry NO structured replacement stats of their own, so
- *     suppressing the standard ability changes would zero the character's
- *     racial modifiers instead of swapping them — worse than the double-count
- *     it prevents. Heritage ability swaps stay prose.
+ *   - "Base Statistics" (every heritage's ability-score swap, e.g. Ifrit's
+ *     Sunsoul/Lavasoul, Oread's Ironsoul/Gemsoul, Undine's Rimesoul/Mistsoul):
+ *     the heritage entries carry NO structured replacement stats of their
+ *     own, so suppressing the standard ability changes would zero the
+ *     character's racial modifiers instead of swapping them — worse than the
+ *     double-count it prevents. Heritage ability swaps stay prose. Goblin's
+ *     "Base Statistics" (Oversized Goblins) is the same story for a
+ *     different reason: its own `changes` (`size` +1, `str` +4, `dex` -2)
+ *     don't even match its own prose ("+2 Str, +2 Dex, -2 Cha") — a vendored
+ *     data inconsistency, not a clean swap, so it's left alone rather than
+ *     risk compounding it.
  *   - Prose-only standard traits (Spell-Like Ability, Fiendish Sorcery,
  *     Swordtrained, Natural Weapon, Kitsune Magic, Swarming, Rodent Empathy,
- *     Light Sensitivity, Languages, Subtype/Type): no structured change to
- *     drop.
- *   - Ratfolk "Slow Speed" (Surface Sprinter): base speed reads off
- *     `Race.speeds`, not a change — Surface Sprinter's own `landSpeed`
- *     change already carries the delta.
- *   - Ratfolk "Tinker"'s Craft (alchemy) half: the vendored race changes
- *     only carry Tinker's Perception/UMD bonuses (no crf subskill target),
- *     so those two are what suppression can honestly drop.
+ *     Light Sensitivity, Languages, Subtype/Type, Fire/Earth/Water Affinity,
+ *     Cat's Luck, Change Shape, Verdant Burst, Pass without Trace,
+ *     Plantspeech, Poison Use, Shadow Blending): no structured change to
+ *     drop. Fetchling's "Shadowy Resistance" belongs here too despite
+ *     naming a resistance in prose (cold/electricity 5) — this vendored
+ *     slice carries no `eres.cold`/`eres.electricity` change for Fetchling
+ *     at all, so there's nothing to suppress.
+ *   - Ratfolk "Slow Speed" (Surface Sprinter), Goblin "Fast Movement",
+ *     Hobgoblin "Normal Speed", Catfolk "Sprinter": base/bonus speed reads
+ *     off `Race.speeds`, not a change target.
+ *   - Ratfolk "Tinker"'s Craft (alchemy) half and Kobold "Crafty"'s Craft
+ *     (trapmaking)/Profession (miner) halves: the vendored race changes only
+ *     carry the Perception (and, for Ratfolk, UMD) half as a structured
+ *     target, so that's what suppression can honestly drop.
+ *   - Duergar "Stability" and Vine Leshy "Unassuming Foliage": both are
+ *     modeled as a `Race.contextNotes` line (+4 CMD vs. bull rush/trip;
+ *     +4 Stealth in forests), not a `Race.changes` entry — this suppression
+ *     mechanism only reaches `changes` targets, so it can't touch either.
+ *   - Drow "Spell Resistance": the vendored `Race` record carries no `sr`
+ *     field at all (SR isn't modeled as a structured value anywhere in this
+ *     slice), so there is nothing for suppression to drop; alternates that
+ *     name it (Daylight Adaptation, Champion of Dark Powers, Poison Minion)
+ *     have no numeric effect on SR either way.
+ *
+ * Two names are intentional aliases for the same real trait rather than
+ * separate ones: Drow's "Keen Sight" (named by Ambitious Schemer) is the
+ * vendored pack's own literal text for what its description note calls "a
+ * likely reference to the Keen Senses (Drow) trait" — both keys point at the
+ * same `skill.per` target. Likewise Drow's "Darkvision" (named by Surface
+ * Infiltrator) is this race's actual "Superior Darkvision" trait; the pack
+ * just doesn't say "Superior" there, unlike Duergar's Daysighted which does.
+ *
+ * Vine Leshy's "Ability Scores" (named by Agile) is the one heritage-shaped
+ * exception to the Base Statistics rule above: unlike every other race's
+ * empty-`changes` heritage bundle, Agile ships a real, internally consistent
+ * full replacement (`dex` +2, `wis` +2, `int` -2 in place of `con` +2,
+ * `wis` +2, `int` -2) — safe to suppress because there's a genuine
+ * replacement landing, not a zeroed-out gap.
  */
 export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
   Record<string, Readonly<Record<string, readonly string[]>>>
@@ -676,6 +712,52 @@ export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
     Sneaky: ["skill.per", "skill.ste"],
     "Gifted Linguist": ["skill.lin"],
     "Low-Light Vision": ["sensell"],
+  },
+  Ifrit: {
+    "Energy Resistance": ["eres.fire"],
+  },
+  Oread: {
+    "Energy Resistance": ["eres.acid"],
+  },
+  Undine: {
+    "Energy Resistance": ["eres.cold"],
+    Darkvision: ["sensedv"],
+  },
+  Drow: {
+    "Drow Immunities": ["immEffect.magicSleep"],
+    "Keen Senses": ["skill.per"],
+    "Keen Sight": ["skill.per"],
+    Darkvision: ["sensedv"],
+  },
+  Kobold: {
+    Armor: ["nac"],
+    Crafty: ["skill.per"],
+    Darkvision: ["sensedv"],
+  },
+  Duergar: {
+    "Duergar Immunities": ["immEffect.paralysis", "immEffect.phantasms", "immEffect.poison"],
+    "Superior Darkvision": ["sensedv"],
+  },
+  Hobgoblin: {
+    Sneaky: ["skill.ste"],
+    Darkvision: ["sensedv"],
+  },
+  Goblin: {
+    Skilled: ["skill.rid", "skill.ste"],
+  },
+  Fetchling: {
+    Skilled: ["skill.kpl", "skill.ste"],
+    "Low-Light Vision": ["sensell"],
+  },
+  Catfolk: {
+    "Natural Hunter": ["skill.per", "skill.ste", "skill.sur"],
+    "Low-Light Vision": ["sensell"],
+  },
+  "Vine Leshy": {
+    Climber: ["skill.clm"],
+    Darkvision: ["sensedv"],
+    "Low-Light Vision": ["sensell"],
+    "Ability Scores": ["int", "con", "wis"],
   },
 };
 

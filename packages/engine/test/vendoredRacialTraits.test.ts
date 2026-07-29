@@ -67,13 +67,14 @@ function makeDoc(
   };
 }
 
-describe("Oread Granite Skin (vendored, +1 racial natural armor)", () => {
+describe("Oread Granite Skin (vendored, +1 racial natural armor, issue #74 Phase 6)", () => {
   // Verified against the source: "Rocky growths cover the skin of oreads
   // with this racial trait. They gain a +1 racial bonus to natural armor.
   // This racial trait replaces energy resistance." (replacedTraitNames:
-  // ["Energy Resistance"]) — Oread is NOT one of the 8 hand-authored races,
-  // so this proves the fill plan's new coverage, not just re-testing the
-  // existing table.
+  // ["Energy Resistance"]) — Oread is now mapped in
+  // `VENDORED_STANDARD_TRAIT_TARGETS`, so Energy Resistance's acid
+  // resistance 5 is suppressed while Granite Skin is active (it names
+  // nothing else, so Oread's ability-score changes are untouched).
   const graniteSkin = traitId("Granite Skin");
 
   it("adds +1 to natural armor (flat-footed AC, which includes natural but not Dex)", () => {
@@ -89,14 +90,19 @@ describe("Oread Granite Skin (vendored, +1 racial natural armor)", () => {
     expect(withTrait.ac.touch).toBe(base.ac.touch);
   });
 
-  it("leaves the race's own standard changes untouched (no suppression)", () => {
-    // Oread's standard ability changes (Str/Wis up, Dex down) still apply in
-    // full alongside the vendored grant — nothing here suppresses them.
+  it("suppresses the standard Energy Resistance it replaces (acid resistance 5 disappears)", () => {
+    const base = compute(makeDoc("Oread"), ref);
+    expect(base.defenses?.resistances.find((r) => r.qualifier === "acid")?.total).toBe(5);
+    const withTrait = compute(makeDoc("Oread", [graniteSkin]), ref);
+    expect(withTrait.defenses?.resistances ?? []).toEqual([]);
+  });
+
+  it("leaves the race's own ability-score changes untouched (Granite Skin names nothing else)", () => {
     const base = compute(makeDoc("Oread"), ref);
     const withTrait = compute(makeDoc("Oread", [graniteSkin]), ref);
     expect(withTrait.abilities.str.total).toBe(base.abilities.str.total);
     expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total);
-    expect(withTrait.abilities.dex.total).toBe(base.abilities.dex.total);
+    expect(withTrait.abilities.cha.total).toBe(base.abilities.cha.total);
   });
 });
 
@@ -243,18 +249,201 @@ describe("featured-race vendored suppression (issue #74 Phase 6)", () => {
     expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total);
   });
 
-  it("an unmapped race keeps the historical apply-on-top posture (Oread above is the proof)", () => {
-    // Oread has no `VENDORED_STANDARD_TRAIT_TARGETS` entry, so Granite
-    // Skin's replaced Energy Resistance still applies alongside it — covered
-    // by the Granite Skin describe block; this fixture pins the map itself.
-    expect(VENDORED_STANDARD_TRAIT_TARGETS["Oread"]).toBeUndefined();
+  it("Ifrit Wildfire Heart (ARG): fire resistance 5 drops, +4 initiative lands", () => {
+    const base = compute(makeDoc("Ifrit"), ref);
+    expect(base.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(5);
+    const withTrait = compute(makeDoc("Ifrit", [traitId("Wildfire Heart")]), ref);
+    expect(withTrait.defenses?.resistances ?? []).toEqual([]);
+    expect(withTrait.initiative.total).toBe(base.initiative.total + 4);
+  });
+
+  it("Undine Water Sense (ARG): cold resistance 5 drops (Energy Resistance replaced)", () => {
+    const base = compute(makeDoc("Undine"), ref);
+    expect(base.defenses?.resistances.find((r) => r.qualifier === "cold")?.total).toBe(5);
+    const withTrait = compute(makeDoc("Undine", [traitId("Water Sense (Undine)")]), ref);
+    expect(withTrait.defenses?.resistances ?? []).toEqual([]);
+  });
+
+  it("Undine Deepsight (ARG): standard darkvision 60 is swapped away", () => {
+    const base = compute(makeDoc("Undine"), ref);
+    expect(base.senses.some((s) => s.label === "Darkvision" && s.range === 60)).toBe(true);
+    const withTrait = compute(makeDoc("Undine", [traitId("Deepsight")]), ref);
+    expect(withTrait.senses.some((s) => s.label === "Darkvision")).toBe(false);
+  });
+
+  it("Drow Poison Minion (ARG): Drow Immunities' magic-sleep immunity drops", () => {
+    const base = compute(makeDoc("Drow"), ref);
+    expect(base.defenses?.effectImmunities?.some((i) => i.qualifier === "magicSleep")).toBe(true);
+    const withTrait = compute(makeDoc("Drow", [traitId("Poison Minion (Drow)")]), ref);
+    expect(withTrait.defenses?.effectImmunities ?? []).toEqual([]);
+  });
+
+  it("Drow Darklands Guide (ARG): Keen Senses' +2 Perception drops", () => {
+    const base = compute(makeDoc("Drow"), ref);
+    const withTrait = compute(makeDoc("Drow", [traitId("Darklands Guide")]), ref);
+    expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total - 2);
+  });
+
+  it("Kobold Prehensile Tail (ARG): Armor's +1 natural armor drops, +2 Acrobatics/Climb lands", () => {
+    const base = compute(makeDoc("Kobold"), ref);
+    const withTrait = compute(makeDoc("Kobold", [traitId("Prehensile Tail (Kobold)")]), ref);
+    expect(withTrait.ac.flatFooted).toBe(base.ac.flatFooted - 1);
+    expect(withTrait.skills["acr"]!.total).toBe(base.skills["acr"]!.total + 2);
+    expect(withTrait.skills["clm"]!.total).toBe(base.skills["clm"]!.total + 2);
+  });
+
+  it("Kobold Wild Forest Kobold (ARG): Crafty's +2 Perception drops, +2 Stealth/Survival lands", () => {
+    const base = compute(makeDoc("Kobold"), ref);
+    const withTrait = compute(makeDoc("Kobold", [traitId("Wild Forest Kobold")]), ref);
+    expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total - 2);
+    expect(withTrait.skills["ste"]!.total).toBe(base.skills["ste"]!.total + 2);
+    expect(withTrait.skills["sur"]!.total).toBe(base.skills["sur"]!.total + 2);
+  });
+
+  it("Duergar Dwarf Traits (ARG): Duergar Immunities' paralysis/phantasms/poison immunity drops", () => {
+    const base = compute(makeDoc("Duergar"), ref);
+    for (const q of ["paralysis", "phantasms", "poison"]) {
+      expect(base.defenses?.effectImmunities?.some((i) => i.qualifier === q)).toBe(true);
+    }
+    const withTrait = compute(makeDoc("Duergar", [traitId("Dwarf Traits")]), ref);
+    expect(withTrait.defenses?.effectImmunities ?? []).toEqual([]);
+  });
+
+  it("Duergar Daysighted (ARG): superior darkvision 120 drops to plain darkvision 60", () => {
+    const base = compute(makeDoc("Duergar"), ref);
+    expect(base.senses.some((s) => s.label === "Darkvision" && s.range === 120)).toBe(true);
+    const withTrait = compute(makeDoc("Duergar", [traitId("Daysighted")]), ref);
+    expect(withTrait.senses.some((s) => s.label === "Darkvision" && s.range === 60)).toBe(true);
+    expect(withTrait.senses.some((s) => s.range === 120)).toBe(false);
+  });
+
+  it("Hobgoblin Scarred (ARG): Darkvision is swapped away, +1 natural armor lands", () => {
+    const base = compute(makeDoc("Hobgoblin"), ref);
+    expect(base.senses.some((s) => s.label === "Darkvision" && s.range === 60)).toBe(true);
+    const withTrait = compute(makeDoc("Hobgoblin", [traitId("Scarred")]), ref);
+    expect(withTrait.senses.some((s) => s.label === "Darkvision")).toBe(false);
+    expect(withTrait.ac.flatFooted).toBe(base.ac.flatFooted + 1);
+  });
+
+  it("Hobgoblin Slave Hunter (ARG): Sneaky's +4 Stealth drops, +2 Survival lands", () => {
+    const base = compute(makeDoc("Hobgoblin"), ref);
+    const withTrait = compute(makeDoc("Hobgoblin", [traitId("Slave Hunter")]), ref);
+    expect(withTrait.skills["ste"]!.total).toBe(base.skills["ste"]!.total - 4);
+    expect(withTrait.skills["sur"]!.total).toBe(base.skills["sur"]!.total + 2);
+  });
+
+  it("Goblin City Scavenger (ARG): Skilled's +4 Ride/Stealth drops, +2 Survival/Perception lands", () => {
+    const base = compute(makeDoc("Goblin"), ref);
+    const withTrait = compute(makeDoc("Goblin", [traitId("City Scavenger")]), ref);
+    expect(withTrait.skills["rid"]!.total).toBe(base.skills["rid"]!.total - 4);
+    expect(withTrait.skills["ste"]!.total).toBe(base.skills["ste"]!.total - 4);
+    expect(withTrait.skills["sur"]!.total).toBe(base.skills["sur"]!.total + 2);
+    expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total + 2);
+  });
+
+  it("Fetchling World Walker (ARG): Skilled's +2 Knowledge (planes)/Stealth drops, its own trio lands", () => {
+    const base = compute(makeDoc("Fetchling"), ref);
+    const withTrait = compute(makeDoc("Fetchling", [traitId("World Walker")]), ref);
+    expect(withTrait.skills["kpl"]!.total).toBe(base.skills["kpl"]!.total - 2);
+    expect(withTrait.skills["kna"]!.total).toBe(base.skills["kna"]!.total + 1);
+    expect(withTrait.skills["klo"]!.total).toBe(base.skills["klo"]!.total + 1);
+    // World Walker's own Stealth +2 replaces Skilled's Stealth +2 1-for-1.
+    expect(withTrait.skills["ste"]!.total).toBe(base.skills["ste"]!.total);
+  });
+
+  it("Fetchling Umbral Escort (ARG): standard low-light vision is swapped away", () => {
+    const base = compute(makeDoc("Fetchling"), ref);
+    expect(base.senses.some((s) => s.label === "Low-light vision")).toBe(true);
+    const withTrait = compute(makeDoc("Fetchling", [traitId("Umbral Escort")]), ref);
+    expect(withTrait.senses.some((s) => s.label === "Low-light vision")).toBe(false);
+  });
+
+  it("Catfolk Clever Cat (ARG): Natural Hunter's +2 Perception/Stealth/Survival drops, its own trio lands", () => {
+    const base = compute(makeDoc("Catfolk"), ref);
+    const withTrait = compute(makeDoc("Catfolk", [traitId("Clever Cat")]), ref);
+    expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total - 2);
+    expect(withTrait.skills["ste"]!.total).toBe(base.skills["ste"]!.total - 2);
+    expect(withTrait.skills["sur"]!.total).toBe(base.skills["sur"]!.total - 2);
+    expect(withTrait.skills["blf"]!.total).toBe(base.skills["blf"]!.total + 2);
+    expect(withTrait.skills["dip"]!.total).toBe(base.skills["dip"]!.total + 2);
+    expect(withTrait.skills["sen"]!.total).toBe(base.skills["sen"]!.total + 2);
+  });
+
+  it("Catfolk Scent (ARG): standard low-light vision is swapped away for scent", () => {
+    const base = compute(makeDoc("Catfolk"), ref);
+    expect(base.senses.some((s) => s.label === "Low-light vision")).toBe(true);
+    const withTrait = compute(makeDoc("Catfolk", [traitId("Scent (Catfolk)")]), ref);
+    expect(withTrait.senses.some((s) => s.label === "Low-light vision")).toBe(false);
+    expect(withTrait.senses.some((s) => s.label === "Scent" && s.range === 30)).toBe(true);
+  });
+
+  it("Vine Leshy Swamp Leshy (ARG): Climber's +2 Climb drops, +2 Swim lands", () => {
+    const base = compute(makeDoc("Vine Leshy"), ref);
+    const withTrait = compute(makeDoc("Vine Leshy", [traitId("Swamp Leshy")]), ref);
+    expect(withTrait.skills["clm"]!.total).toBe(base.skills["clm"]!.total - 2);
+    expect(withTrait.skills["swm"]!.total).toBe(base.skills["swm"]!.total + 2);
+  });
+
+  it("Vine Leshy Writhing Eye (ARG): standard darkvision and low-light vision are both swapped away", () => {
+    const base = compute(makeDoc("Vine Leshy"), ref);
+    expect(base.senses.some((s) => s.label === "Darkvision")).toBe(true);
+    expect(base.senses.some((s) => s.label === "Low-light vision")).toBe(true);
+    const withTrait = compute(makeDoc("Vine Leshy", [traitId("Writhing Eye")]), ref);
+    expect(withTrait.senses.some((s) => s.label === "Darkvision")).toBe(false);
+    expect(withTrait.senses.some((s) => s.label === "Low-light vision")).toBe(false);
+  });
+
+  it("Vine Leshy Agile (ARG): Ability Scores' Con swap is replaced by Dex, Wis/Int unchanged", () => {
+    // Standard: Con +2, Wis +2, Int -2. Agile: Dex +2, Wis +2, Int -2 —
+    // suppressing the standard trio and applying Agile's own leaves the net
+    // effect as "Con +2 becomes Dex +2", matching the source text exactly.
+    const base = compute(makeDoc("Vine Leshy"), ref);
+    const withTrait = compute(makeDoc("Vine Leshy", [traitId("Agile (Vine Leshy)")]), ref);
+    expect(withTrait.abilities.con.total).toBe(base.abilities.con.total - 2);
+    expect(withTrait.abilities.dex.total).toBe(base.abilities.dex.total + 2);
+    expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total);
+    expect(withTrait.abilities.int.total).toBe(base.abilities.int.total);
+  });
+
+  it("an unmapped race keeps the historical apply-on-top posture (Skinwalker Fanglord)", () => {
+    // Skinwalker has no `VENDORED_STANDARD_TRAIT_TARGETS` entry. Its standard
+    // Animal-Minded grants +2 Handle Animal; the Fanglord heritage's
+    // "Alternate Skill Modifiers" does name `replacedTraitNames: ["Animal-
+    // Minded"]`, but `vendoredTraitSuppressTargets` looks that name up in
+    // `VENDORED_STANDARD_TRAIT_TARGETS["Skinwalker"]`, which doesn't exist —
+    // so the lookup is empty regardless, and its own +2 Acrobatics/+2
+    // Perception stack on top of the untouched Handle Animal bonus, the
+    // historical (pre-Phase-6) posture for every unmapped race.
+    expect(VENDORED_STANDARD_TRAIT_TARGETS["Skinwalker"]).toBeUndefined();
+    const base = compute(makeDoc("Skinwalker"), ref);
+    const withTrait = compute(
+      makeDoc("Skinwalker", [traitId("Alternate Skill Modifiers (Skinwalker - Fanglord)")]),
+      ref,
+    );
+    expect(withTrait.skills["han"]!.total).toBe(base.skills["han"]!.total);
+    expect(withTrait.skills["acr"]!.total).toBe(base.skills["acr"]!.total + 2);
+    expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total + 2);
+  });
+
+  it("pins the full set of mapped featured races (issue #74 Phase 6 follow-up)", () => {
     expect(Object.keys(VENDORED_STANDARD_TRAIT_TARGETS).sort()).toEqual([
       "Aasimar",
+      "Catfolk",
       "Dhampir",
+      "Drow",
+      "Duergar",
+      "Fetchling",
+      "Goblin",
+      "Hobgoblin",
+      "Ifrit",
       "Kitsune",
+      "Kobold",
+      "Oread",
       "Ratfolk",
       "Tengu",
       "Tiefling",
+      "Undine",
+      "Vine Leshy",
     ]);
   });
 });
