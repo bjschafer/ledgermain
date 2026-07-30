@@ -97,18 +97,11 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "236 hand-authored wild talents, 22 composite blasts, 7 elements, display-only per the honesty bar (activated abilities with action, save, and burn state). Blast attack and damage rolls aren't computed, since there's no blast weapon model. Burn is a real resource pool, but its nonlethal damage stays player-applied.",
   },
   {
-    category: "Summoner (Unchained) eidolon",
-    group: "not-modeled",
-    note: 'Every published Paizo subtype and base form is in. A subtype\'s resistances, immunities, and spell-like abilities show as reference chips rather than live numbers, and a grant that says "choose one" is yours to apply. An avian or tauric eidolon is built at its Medium baseline, with the start-Small option yours to apply. The third-party Tapestry-Warped subtype is absent.',
-    issueDetail:
-      "28 subtype defs. Choose-one-of evolution grants have no structured mechanism; Tapestry-Warped is non-Paizo with no verifiable source and is excluded on provenance.",
-  },
-  {
     category: "Alternate racial traits",
     group: "not-modeled",
     note: "Every race's published alternates are browsable, and picking one applies the bonuses it spells out as numbers while retiring the replaced standard trait's numbers. What stays yours to apply: a swap whose replaced trait is a situational reminder line rather than a number (the reminder stays on your sheet), and a heritage rider that only works while shapechanged.",
     issueDetail:
-      "860 vendored across all 80 races, 289 carrying structured changes applied live. The map reaches every race whose replaced standard traits have structured targets. Unreachable: context-note-only replaced traits, shapechange riders, and the flexible +2 that human, half-elf, and half-orc apply outside Race.changes.",
+      "860 vendored across all 80 races, 289 carrying structured changes applied live. The map reaches every race whose replaced standard traits have structured targets. Unreachable: context-note-only replaced traits and shapechange riders.",
   },
   {
     category: "Character traits",

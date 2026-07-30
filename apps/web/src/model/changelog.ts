@@ -41,6 +41,18 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-30-eidolon-defenses-live",
+    date: "2026-07-30",
+    title: "Eidolon subtype defenses are live numbers now",
+    note: "An unchained eidolon's subtype resistances, immunities, and DR now compute from its level and show in a Defenses block on its stat panel, instead of sitting inside the grant write-ups. Resistance-evolution grants scale as printed, 5 rising to 15 by 10th, and an immunity earned later cleanly replaces its matching resistance. The genie's choices are real picks too: its chosen energy resistance, the immunity that grows out of it at 12th, and the 8th-level flight, burrow, or gills-and-swim package. And avian and tauric eidolons now start Small as printed, with the two-point Medium upgrade as a toggle, including the avian's 5th-level flight bump when Medium.",
+  },
+  {
+    id: "2026-07-30-flexible-plus-two-trades-away",
+    date: "2026-07-30",
+    title: "Trait swaps that trade the flexible +2 actually trade it",
+    note: "A human, half-elf, or half-orc alternate that replaces the choose-your-own +2, like Dual Talent, Kindred-Raised, or Orc Atavism, now retires that bonus instead of stacking its fixed abilities on top. The builder greys the ability choice out and says which trait took it. Half-elf and half-orc alternates that replace Adaptability, Keen Senses, Elven Immunities, Intimidating, Darkvision, or low-light vision also retire those numbers now.",
+  },
+  {
     id: "2026-07-30-human-trait-swap-fixes",
     date: "2026-07-30",
     title: "Human and halfling trait swaps trade the right things",

@@ -1852,6 +1852,13 @@ export function deriveEidolon(
   if (acc.swimPicks > 0) speeds.swim = landSpeed + 20 * (acc.swimPicks - 1);
   if (acc.hasFlight) speeds.fly = landSpeed;
   if (acc.hasBurrow) speeds.burrow = Math.floor(landSpeed / 2);
+  // Avian's own 5th-level rider (Cohorts and Companions sidebar, same
+  // source as `mediumSizeUpgrade`'s quote): "At 5th level, a Medium or
+  // larger avian eidolon's flight speed increases by 40 feet, as if it had
+  // 2 more points in the flight evolution." Small avians never get it.
+  if (build.baseForm === "avian" && level >= 5 && size !== "sm" && speeds.fly !== undefined) {
+    speeds.fly += 40;
+  }
 
   // --- AC: unchained base forms grant a flat +2 natural armor the chained
   // forms don't (see `eidolon-unchained.ts`'s module doc comment) ---------

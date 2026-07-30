@@ -687,6 +687,27 @@ describe("deriveEidolon (Avian/Tauric mediumSizeUpgrade — spends 2 points to b
     expect(derived.abilities.str).toEqual({ score: 14, mod: 2 });
     expect(derived.attacks[0]).toMatchObject({ name: "Claw", damageDice: "1d4" });
   });
+
+  it("a Medium avian's fly speed gains +40 ft at 5th (the sidebar's own rider); a Small one never does", () => {
+    // "At 5th level, a Medium or larger avian eidolon's flight speed
+    // increases by 40 feet, as if it had 2 more points in the flight
+    // evolution." (Cohorts and Companions p.9, aonprd.com.)
+    const medium5 = makeDoc({
+      classes: [{ tag: "summoner", level: 5 }],
+      eidolon: { baseForm: "avian", name: "Skree", evolutions: [], mediumSizeUpgrade: true },
+    });
+    expect(deriveEidolon(medium5, buildRollData(medium5, ref))!.speeds["fly"]).toBe(70); // 30 + 40
+    const small5 = makeDoc({
+      classes: [{ tag: "summoner", level: 5 }],
+      eidolon: { baseForm: "avian", name: "Skree", evolutions: [] },
+    });
+    expect(deriveEidolon(small5, buildRollData(small5, ref))!.speeds["fly"]).toBe(30);
+    const medium4 = makeDoc({
+      classes: [{ tag: "summoner", level: 4 }],
+      eidolon: { baseForm: "avian", name: "Skree", evolutions: [], mediumSizeUpgrade: true },
+    });
+    expect(deriveEidolon(medium4, buildRollData(medium4, ref))!.speeds["fly"]).toBe(30);
+  });
 });
 
 describe("deriveEidolon (mediumSizeUpgrade is a no-op on any form other than Avian/Tauric)", () => {
