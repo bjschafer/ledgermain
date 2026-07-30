@@ -182,6 +182,13 @@ export interface TraitDef {
   sources?: SourceRef[];
   /** Free-form tags carried from the vendored catalog (e.g. faction names). */
   tags?: string[];
+  /**
+   * Limited-use resource, mirroring `Feat.uses`/`RacialTrait.uses` — a
+   * once-per-day campaign/faction trait like "A Sure Thing". Vendored catalog
+   * entries only (~290 of the 1,998 `RefData.traits` carry it); the 28
+   * hand-authored entries have none.
+   */
+  uses?: { maxFormula?: string; per?: string };
 }
 
 /** Base fields shared by every reference-data entity. */

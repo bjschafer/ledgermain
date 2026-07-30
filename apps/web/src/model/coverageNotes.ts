@@ -154,11 +154,6 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
       "Situational/activated effects, prestige-class prereq structuring, and Paths of Prestige-tier mechanics tables have no machine-readable source and must be hand-authored against the published rules.",
   },
   {
-    category: "Foundry use counters in vendored notes",
-    detail:
-      'About 78 vendored inline rolls read `@resources.*`, Foundry\'s per-day use counter, which has no roll-data equivalent here since this app meters uses through `deriveResourcePools` instead. Those resolve to nothing rather than to a wrong 0, dropping the "(N remaining uses)" clause; the note\'s own "once per day" wording carries the frequency.',
-  },
-  {
     category: "Timed conditions",
     detail:
       "`live.conditionRounds` gives a condition a countdown the round clock ticks, but nothing in the catalog except the rage/bloodrage fatigue aftermath states its duration in rounds structurally, so every other condition is applied untimed and cleared by hand.",

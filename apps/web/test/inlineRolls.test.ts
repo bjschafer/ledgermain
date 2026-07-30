@@ -1,6 +1,13 @@
 import { describe, expect, it } from "bun:test";
 import { loadRefData } from "@pf1/data-pipeline";
+import {
+  buildRollData,
+  compute,
+  deriveResourcePools,
+  resourcePoolRollDataResources,
+} from "@pf1/engine";
 import type { RollData } from "@pf1/engine";
+import type { CharacterDoc } from "@pf1/schema";
 
 import { resolveInlineRolls } from "../src/model/inlineRolls.js";
 
@@ -130,5 +137,79 @@ describe("resolveInlineRolls over the vendored catalogs", () => {
       const resolved = resolveInlineRolls(text, ROLL_DATA);
       expect(`${label}: ${resolved}`).not.toMatch(/\(\s*\)/);
     }
+  });
+});
+
+describe("resolveInlineRolls against a live @resources pool (same path RollDataProvider builds)", () => {
+  const refData = loadRefData();
+
+  function raceId(name: string): string {
+    const entry = Object.entries(refData.races).find(([, r]) => r.name === name);
+    if (!entry) throw new Error(`race not found: ${name}`);
+    return entry[0];
+  }
+
+  function racialTraitId(name: string): string {
+    const entry = Object.values(refData.racialTraits).find((t) => t.name === name);
+    if (!entry) throw new Error(`vendored racial trait not found: ${name}`);
+    return entry.id;
+  }
+
+  const adaptableLuck = racialTraitId("Adaptable Luck");
+
+  function doc(used: number): CharacterDoc {
+    return {
+      schemaVersion: 1,
+      id: "test",
+      ownerId: "owner",
+      version: 1,
+      updatedAt: "2026-01-01T00:00:00.000Z",
+      identity: {
+        name: "Pip",
+        race: raceId("Halfling"),
+        classes: [{ tag: "fighter", level: 1 }],
+      },
+      abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        vendoredRacialTraits: [adaptableLuck],
+      },
+      live: {
+        hp: { current: 0, temp: 0, nonlethal: 0 },
+        conditions: [],
+        activeBuffs: [],
+        resources: { [adaptableLuck]: { used, max: 3 } },
+      },
+    } as CharacterDoc;
+  }
+
+  /** The same roll-data assembly `state/rollData.tsx`'s `RollDataProvider` does. */
+  function rollDataFor(d: CharacterDoc): RollData {
+    const sheet = compute(d, refData);
+    const base = buildRollData(d, refData, sheet.abilities, sheet.speeds);
+    const pools = deriveResourcePools(d, refData, sheet.abilities);
+    return { ...base, resources: resourcePoolRollDataResources(pools, d) };
+  }
+
+  it("max 3, 1 used -> renders 2 remaining uses", () => {
+    const text = "([[@resources.adaptableLuck.value]] remaining uses)";
+    expect(resolveInlineRolls(text, rollDataFor(doc(1)))).toBe("(2 remaining uses)");
+  });
+
+  it("max 3, none used -> renders 3 remaining uses", () => {
+    const text = "([[@resources.adaptableLuck.value]] remaining uses)";
+    expect(resolveInlineRolls(text, rollDataFor(doc(0)))).toBe("(3 remaining uses)");
+  });
+
+  it("Adaptable Luck's own vendored contextNotes now render the live count instead of dropping the parenthetical", () => {
+    const note = refData.racialTraits[adaptableLuck]!.contextNotes[0]!.text;
+    expect(note).toContain("[[@resources.adaptableLuck.value]]");
+    const resolved = resolveInlineRolls(note, rollDataFor(doc(1)));
+    expect(resolved).toContain("2 remaining uses");
+    expect(resolved).not.toContain("[[");
   });
 });

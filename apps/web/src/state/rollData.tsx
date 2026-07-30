@@ -16,7 +16,7 @@
 import { createContext, useContext, useMemo } from "react";
 import type { ReactNode } from "react";
 
-import { buildRollData } from "@pf1/engine";
+import { buildRollData, deriveResourcePools, resourcePoolRollDataResources } from "@pf1/engine";
 import type { RollData } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
@@ -39,10 +39,17 @@ export function RollDataProvider({
 }) {
   // The same roll-data shape compute() evaluated this character's changes
   // against, so a resolved inline roll agrees with the numbers on the sheet.
-  const rollData = useMemo(
-    () => buildRollData(doc, refData, sheet.abilities, sheet.speeds),
-    [doc, refData, sheet.abilities, sheet.speeds],
-  );
+  // `resources` is layered on afterward rather than built into
+  // `buildRollData` itself (engine-pure: that function stays independent of
+  // pool derivation) — `deriveResourcePools`/`resourcePoolRollDataResources`
+  // populate `@resources.<tag>.value` with each pool's LIVE remaining count,
+  // the map vendored note text like "[[@resources.grit.value]]" resolves
+  // against.
+  const rollData = useMemo(() => {
+    const base = buildRollData(doc, refData, sheet.abilities, sheet.speeds);
+    const pools = deriveResourcePools(doc, refData, sheet.abilities);
+    return { ...base, resources: resourcePoolRollDataResources(pools, doc) };
+  }, [doc, refData, sheet.abilities, sheet.speeds]);
   return <RollDataContext.Provider value={rollData}>{children}</RollDataContext.Provider>;
 }
 

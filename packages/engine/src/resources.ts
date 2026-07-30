@@ -34,11 +34,17 @@
  * `AlternateRacialTrait.resourcePool`, and
  * `deriveVendoredRacialTraitResourcePools` off `RacialTrait.uses` for the
  * vendored catalog (heritage spell-like abilities, mostly).
+ *
+ * Character traits meter the same way off `Trait.uses` (~290 of the 1,998
+ * vendored campaign/faction traits, e.g. "A Sure Thing") —
+ * `deriveTraitResourcePools` scans `doc.build.traits`, resolved through
+ * `resolveTraitDef` so a hand-authored trait id (never carries `uses`) is a
+ * cheap no-op rather than a special case.
  */
 
 import type { CharacterDoc, ClassFeature, FeatureAction, RefData } from "@pf1/schema";
 
-import { collectGrantedFeatures, isPsychokinetcist } from "./archetypes.js";
+import { collectGrantedFeatures, isPsychokinetcist, type GrantedFeature } from "./archetypes.js";
 import { BLOODRAGE_BUFF_ID } from "./bloodrage.js";
 import { COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
 import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
@@ -47,6 +53,7 @@ import { judgmentPoolDetail, judgmentToggleOptions } from "./judgments.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
 import { RAGING_SONG_DETAIL, SKALD_INSPIRED_RAGE } from "./raging-song.js";
+import { resourceTagSlug } from "./resource-tag.js";
 import { buildRollData, type AbilityView } from "./rolldata.js";
 import {
   bombDamageDetail,
@@ -57,6 +64,7 @@ import {
   smiteGoodLabel,
 } from "./tables.js";
 import type { ToggleBuffOption } from "./toggle-buffs.js";
+import { resolveTraitDef } from "./traits.js";
 
 export interface DerivedResourcePool {
   /** Stable pool id (the class-feature id). */
@@ -151,7 +159,27 @@ export function deriveResourcePools(
 
   const clericWisdomHouserule = doc.build.settings?.clericWisdomHouserule ?? false;
 
-  for (const { classTag, grant, resourcePool } of collectGrantedFeatures(doc, refData)) {
+  const grants = collectGrantedFeatures(doc, refData);
+  // A vendored `uses.maxFormula` referencing `@resources.<tag>` (Foundry's
+  // per-day-use-counter namespace) is a live LINK to another pool, not an
+  // independent daily allotment — deriving a counted pool from it would
+  // invent a per-day limit the published rules don't state. The only vendored
+  // occurrence is Gunslinger Utility Shot (`@resources.grit.value`), whose
+  // RAW (Ultimate Combat, deeds: "if the gunslinger has at least 1 grit
+  // point, she can perform all of the following utility shots") gates on
+  // HAVING grit at all, with no use count — so such grants are skipped
+  // outright rather than surfacing a counter that isn't in the book. (The
+  // web app's `RollData.resources` — what vendored NOTE text like
+  // "[[@resources.grit.value]]" resolves against — is unrelated to this
+  // skip: see `resourcePoolRollDataResources` below.)
+  const referencesResources = (g: GrantedFeature): boolean => {
+    const formula = g.resourcePool
+      ? g.resourcePool.usesFormula
+      : refData.classFeatures[g.grant.featureId]?.uses?.maxFormula;
+    return typeof formula === "string" && formula.includes("@resources");
+  };
+
+  const processGrant = ({ classTag, grant, resourcePool }: GrantedFeature): void => {
     const classLevel = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
     // `@class.unlevel` inside a feature formula refers to THIS (granting) class's
     // level — for a domain/school grant that's the cleric/wizard level.
@@ -178,10 +206,10 @@ export function deriveResourcePools(
       try {
         poolMax = tryEvaluateFormula(resourcePool.usesFormula, rollData);
       } catch {
-        continue;
+        return;
       }
-      if (poolMax === null || Number.isNaN(poolMax) || poolMax <= 0) continue;
-      if (pools.some((p) => p.id === grant.featureId)) continue;
+      if (poolMax === null || Number.isNaN(poolMax) || poolMax <= 0) return;
+      if (pools.some((p) => p.id === grant.featureId)) return;
       const truncatedMax = Math.trunc(poolMax);
       pools.push({
         id: grant.featureId,
@@ -195,11 +223,11 @@ export function deriveResourcePools(
         // `ClassFeature`s, so there's no `grantsBuffs` to resolve here.
         linkedBuffIds: [],
       });
-      continue;
+      return;
     }
 
     const feature = refData.classFeatures[grant.featureId];
-    if (!feature) continue;
+    if (!feature) return;
     const formula = feature.uses?.maxFormula;
     if (!formula) {
       // No maxFormula — either nothing (most features) or a `uses.source`
@@ -211,7 +239,7 @@ export function deriveResourcePools(
       if (linkedTag && (feature.actions?.length || feature.grantsBuffs.length > 0)) {
         linkedFeatures.push({ feature, featureRollData: featureRollData as RollData, linkedTag });
       }
-      continue;
+      return;
     }
     // Psychic Phrenic Pool ability correction (Occult Adventures): the
     // vendored feature's `uses.maxFormula` (`floor(@class.unlevel / 2) +
@@ -244,10 +272,10 @@ export function deriveResourcePools(
     try {
       max = tryEvaluateFormula(effectiveFormula, featureRollData);
     } catch {
-      continue;
+      return;
     }
-    if (max === null || Number.isNaN(max) || max <= 0) continue;
-    if (pools.some((p) => p.id === feature.id)) continue;
+    if (max === null || Number.isNaN(max) || max <= 0) return;
+    if (pools.some((p) => p.id === feature.id)) return;
 
     // Smite Evil's attack/damage/AC scaling has no vendored action data at
     // all (only a bare "Use" activation) — kept hand-authored. Everything
@@ -376,6 +404,11 @@ export function deriveResourcePools(
       linkedBuffIds,
       tableOptions,
     });
+  };
+
+  for (const g of grants) {
+    if (referencesResources(g)) continue;
+    processGrant(g);
   }
 
   for (const { feature, featureRollData, linkedTag } of linkedFeatures) {
@@ -409,6 +442,11 @@ export function deriveResourcePools(
 
   // The vendored catalog's counterpart, off `RacialTrait.uses`.
   pools.push(...deriveVendoredRacialTraitResourcePools(doc, refData, rollData));
+
+  // Character traits carrying a vendored `uses.maxFormula` (campaign/faction
+  // traits like "A Sure Thing") — same character-level roll data as the
+  // scans above.
+  pools.push(...deriveTraitResourcePools(doc, refData, rollData));
 
   return pools;
 }
@@ -828,4 +866,86 @@ function deriveVendoredRacialTraitResourcePools(
   }
 
   return pools;
+}
+
+/**
+ * Character traits carrying a vendored `uses.maxFormula` (~290 of the 1,998
+ * vendored `RefData.traits`, mostly campaign/faction traits like "A Sure
+ * Thing" — a once-per-day reroll) — the `Trait.uses` counterpart to a racial
+ * trait's `uses.maxFormula` above. Resolved through `resolveTraitDef` (the
+ * hand-authored/vendored merge `collect.ts` already uses) rather than reading
+ * `refData.traits` directly, so a hand-authored trait id (never carries
+ * `uses`) is a harmless no-op instead of a special case. Same character-level
+ * `rollData` as the feat/racial-trait scans (traits carry no "granting class"
+ * either). Pool id = the trait's id; `classTag` is the synthetic marker
+ * `"trait"` (never a real class tag), same honest-origin posture as
+ * `"feat"`/`"racial"`.
+ */
+function deriveTraitResourcePools(
+  doc: CharacterDoc,
+  refData: RefData,
+  rollData: RollData,
+): DerivedResourcePool[] {
+  const pools: DerivedResourcePool[] = [];
+  const seen = new Set<string>();
+
+  for (const id of doc.build.traits ?? []) {
+    if (seen.has(id)) continue;
+    const trait = resolveTraitDef(id, refData);
+    const formula = trait?.uses?.maxFormula;
+    if (!trait || !formula) continue;
+    seen.add(id);
+
+    let max: number | null;
+    try {
+      max = tryEvaluateFormula(formula, rollData);
+    } catch {
+      continue;
+    }
+    if (max === null || Number.isNaN(max) || max <= 0) continue;
+
+    const truncatedMax = Math.trunc(max);
+    pools.push({
+      id: trait.id,
+      name: trait.name,
+      max: truncatedMax,
+      restValue: truncatedMax,
+      per: trait.uses?.per,
+      classTag: "trait",
+      linkedBuffIds: [],
+    });
+  }
+
+  return pools;
+}
+
+/**
+ * Foundry's `@resources.<tag>` roll-data slice, for vendored note text like
+ * "[[@resources.grit.value]]" (`apps/web/src/model/inlineRolls.ts`) — maps
+ * each derived pool's granting-item NAME (via `resourceTagSlug`) to its LIVE
+ * remaining/max, read from `doc.live.resources`. Kept OUT of `buildRollData`
+ * itself (`rolldata.ts`) so the engine's general-purpose roll-data builder
+ * stays independent of pool derivation — a caller who only needs ability/
+ * skill/class context never pays for a `deriveResourcePools` pass just to get
+ * one. The web app's `RollDataProvider` calls this to augment `buildRollData`'s
+ * output; nothing in the engine itself consumes it (a pool's OWN
+ * `uses.maxFormula` referencing `@resources.*` is deliberately skipped, not
+ * resolved — see `deriveResourcePools`'s comment on why a linked formula
+ * must not become a counted pool). A pool name that slugs to a tag another pool already
+ * claimed keeps whichever pool came first in `pools` — shouldn't happen with
+ * real vendored data (every granting item has a distinct name), kept
+ * defensive rather than silently overwritten.
+ */
+export function resourcePoolRollDataResources(
+  pools: readonly DerivedResourcePool[],
+  doc: CharacterDoc,
+): Record<string, { value: number; max: number }> {
+  const resources: Record<string, { value: number; max: number }> = {};
+  for (const pool of pools) {
+    const tag = resourceTagSlug(pool.name);
+    if (tag in resources) continue;
+    const used = doc.live.resources[pool.id]?.used ?? 0;
+    resources[tag] = { value: Math.max(0, pool.max - used), max: pool.max };
+  }
+  return resources;
 }

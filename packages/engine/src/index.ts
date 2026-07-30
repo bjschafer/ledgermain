@@ -640,7 +640,12 @@ export {
   type AdvanceConditionsResult,
   type AdvanceResult,
 } from "./duration.js";
-export { deriveResourcePools, type DerivedResourcePool } from "./resources.js";
+export {
+  deriveResourcePools,
+  resourcePoolRollDataResources,
+  type DerivedResourcePool,
+} from "./resources.js";
+export { resourceTagSlug } from "./resource-tag.js";
 export type { ToggleBuffOption } from "./toggle-buffs.js";
 export {
   INQUISITOR_JUDGMENTS,

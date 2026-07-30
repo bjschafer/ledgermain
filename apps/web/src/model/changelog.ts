@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-29-trait-uses-tracked",
+    date: "2026-07-29",
+    title: "Traits with daily uses get real counters",
+    note: "Around 290 published traits meter a benefit, once per day or a few times per day, and the sheet now tracks them. Pick a trait like A Sure Thing or Secrets of the Sphinx and a counter for it appears in the Resources panel, spends by tap, and refills on rest, exactly like grit or ki. The rules notes on those traits also sharpened: a note that says how many uses you have left now shows the live number instead of silently dropping that clause.",
+  },
+  {
     id: "2026-07-29-weapon-dice-at-every-size",
     date: "2026-07-29",
     title: "Weapon dice scale right at every size",

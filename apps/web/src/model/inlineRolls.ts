@@ -12,14 +12,20 @@
  * Two outcomes, and the distinction matters:
  *
  * - Every `@` path in the expression exists in the roll data → substitute the
- *   evaluated number.
+ *   evaluated number. `@resources.<tag>.value` (Foundry's per-day use
+ *   counter) resolves this way for any item that grants a tracked resource
+ *   pool (`state/rollData.tsx`'s `RollDataProvider` populates `resources`
+ *   from `deriveResourcePools` — see `@pf1/engine` `resources.ts`'s
+ *   `resourcePoolRollDataResources`), so a note like "Once per day, … ([[N +
+ *   @resources.grit.value]] remaining uses)" prints the character's actual
+ *   remaining count.
  * - Any path is absent → the expression is NOT evaluated. Foundry resolves a
  *   missing path to 0, which here would print a confident, wrong number
- *   ("0 remaining uses"). Almost every such case is `@resources.*`, Foundry's
- *   per-day use counter, which this app tracks in its own resource pools
- *   rather than in roll data; the surrounding prose already states the
- *   frequency ("Once per day, … ([[…]] remaining uses)"), so the parenthetical
- *   is dropped whole and anything else becomes an em dash.
+ *   ("0 remaining uses"). This is now the minority case — a granting item
+ *   with no tracked pool (untaken, or one this app doesn't yet meter) — and
+ *   the surrounding prose already states the frequency ("Once per day, …
+ *   ([[…]] remaining uses)"), so the parenthetical is dropped whole and
+ *   anything else becomes an em dash.
  */
 
 import { tryEvaluateFormula } from "@pf1/engine";

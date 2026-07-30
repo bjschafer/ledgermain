@@ -455,6 +455,7 @@ function vendoredTraitToDef(tr: Trait): TraitDef {
     description: tr.description,
     sources: tr.sources,
     tags: tr.tags,
+    uses: tr.uses,
   };
 }
 
