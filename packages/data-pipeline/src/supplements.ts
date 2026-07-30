@@ -53,6 +53,157 @@ export const SUPPLEMENTAL_BLOODLINE_SPELLS: Record<string, Record<number, string
     8: ["Mind Blank"],
     9: ["Shapechange"],
   },
+
+  /* The eleven splatbook bloodlines whose bonus spells no vendored spell
+   * tags via `learnedAt.bloodline` — transcribed clean-room from each
+   * bloodline's aonprd.com page, spell names matched to the vendored
+   * spelling (comma-suffix convention, e.g. "Charm Monster, Mass"). */
+
+  // Astral sorcerer bloodline — Distant Realms.
+  Astral: {
+    1: ["True Strike"],
+    2: ["False Life"],
+    3: ["Sands of Time"],
+    4: ["Wandering Star Motes"],
+    5: ["Permanency"],
+    6: ["Contingency"],
+    7: ["Ethereal Jaunt"],
+    8: ["Create Demiplane"],
+    9: ["Time Stop"],
+  },
+
+  // Deep Earth sorcerer bloodline — APG.
+  "Deep Earth": {
+    1: ["Expeditious Excavation"],
+    2: ["Darkvision"],
+    3: ["Shifting Sand"],
+    4: ["Stoneskin"],
+    5: ["Spike Stones"],
+    6: ["Stone Tell"],
+    7: ["Repel Metal or Stone"],
+    8: ["Earthquake"],
+    9: ["Clashing Rocks"],
+  },
+
+  // Naga sorcerer bloodline — Blood of the Beast.
+  Naga: {
+    1: ["Ray of Enfeeblement"],
+    2: ["Invisibility"],
+    3: ["Lightning Bolt"],
+    4: ["Poison"],
+    5: ["Dominate Person"],
+    6: ["Veil"],
+    7: ["Limited Wish"],
+    8: ["Charm Monster, Mass"],
+    9: ["Shapechange"],
+  },
+
+  // Phoenix sorcerer bloodline — Heroes of Golarion.
+  Phoenix: {
+    1: ["Color Spray"],
+    2: ["See Invisibility"],
+    3: ["Magic Circle against Evil"],
+    4: ["Wall of Fire"],
+    5: ["Break Enchantment"],
+    6: ["Path of the Winds"],
+    7: ["Firebrand"],
+    8: ["Prismatic Wall"],
+    9: ["Fiery Body"],
+  },
+
+  // Possessed sorcerer bloodline — Haunted Heroes Handbook.
+  Possessed: {
+    1: ["Anticipate Peril"],
+    2: ["Share Memory"],
+    3: ["Purge Spirit"],
+    4: ["Entrap Spirit"],
+    5: ["Possession"],
+    6: ["Telepathy"],
+    7: ["Insanity"],
+    8: ["Bilocation"],
+    9: ["Divide Mind"],
+  },
+
+  // Salamander sorcerer bloodline — Elemental Master's Handbook.
+  Salamander: {
+    1: ["Magic Weapon"],
+    2: ["Molten Orb"],
+    3: ["Magic Vestment"],
+    4: ["Fire Shield"],
+    5: ["Fire Snake"],
+    6: ["Tar Pool"],
+    7: ["Firebrand"],
+    8: ["Wall of Lava"],
+    9: ["Meteor Swarm"],
+  },
+
+  // Scorpion sorcerer bloodline — Potions & Poisons. AoN's own page has the
+  // typo "vermin shap II"; the real spell is Vermin Shape II.
+  Scorpion: {
+    1: ["Thorn Javelin"],
+    2: ["Spider Climb"],
+    3: ["Poison"],
+    4: ["Giant Vermin"],
+    5: ["Vermin Shape II"],
+    6: ["Sirocco"],
+    7: ["Creeping Doom"],
+    8: ["Horrid Wilting"],
+    9: ["Transmute Blood To Acid"],
+  },
+
+  // Shapechanger sorcerer bloodline — Legacy of the First World.
+  Shapechanger: {
+    1: ["Disguise Self"],
+    2: ["Alter Self"],
+    3: ["Fly"],
+    4: ["Beast Shape II"],
+    5: ["Polymorph"],
+    6: ["Transformation"],
+    7: ["Polymorph, Greater"],
+    8: ["Frightful Aspect"],
+    9: ["Shapechange"],
+  },
+
+  // Solar sorcerer bloodline — Qadira, Jewel of the East. Level 4 is RAW
+  // "shield of dawn" (Inner Sea Gods), which exists neither in the vendored
+  // spell set nor on AoN's own spell index — omitted rather than guessed,
+  // so that one grant (sorcerer level 9) simply shows no bonus spell.
+  Solar: {
+    1: ["Searing Light"],
+    2: ["Fury of the Sun"],
+    3: ["Daylight"],
+    5: ["Flame Strike"],
+    6: ["True Seeing"],
+    7: ["Sunbeam"],
+    8: ["Sunburst"],
+    9: ["Overwhelming Presence"],
+  },
+
+  // Unicorn sorcerer bloodline — Heroes of Golarion.
+  Unicorn: {
+    1: ["Cure Light Wounds"],
+    2: ["Cure Moderate Wounds"],
+    3: ["Cure Serious Wounds"],
+    4: ["Neutralize Poison"],
+    5: ["Atonement"],
+    6: ["Heal"],
+    7: ["Restoration, Greater"],
+    8: ["Cure Critical Wounds, Mass"],
+    9: ["Heal, Mass"],
+  },
+
+  // Vestige sorcerer bloodline — Blood of the Ancients.
+  Vestige: {
+    1: ["Identify"],
+    2: ["Share Memory"],
+    3: ["Arcane Sight"],
+    4: ["Hypercognition"],
+    5: ["Telepathic Bond"],
+    6: ["Analyze Dweomer"],
+    7: ["Vision"],
+    8: ["Discern Location"],
+    9: ["Foresight"],
+  },
 };
 
 /** Bloodline tags carried by the hand-authored supplement above. */

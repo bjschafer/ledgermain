@@ -54,6 +54,17 @@
     "8": ["ol9newf4vrcx0kpf"],
     "9": ["nnj51dwfkwd15ngj"]
   },
+  "Astral": {
+    "1": ["xco22162bwgxn7pj"],
+    "2": ["3ze0kso9hxff5u2f"],
+    "3": ["l7tmsbg37zr1q382"],
+    "4": ["ni93l43asrq29ytd"],
+    "5": ["nsxngq65mbrzgwnm"],
+    "6": ["4br9puuneexco5hx"],
+    "7": ["btccs4sjo2nog1a0"],
+    "8": ["wniqskqkk0cubu9u"],
+    "9": ["7mstq5c76h3e6zzx"]
+  },
   "Boreal": {
     "1": ["jnlr9cuepka1l26e"],
     "2": ["8u1xa5javcxc6szk"],
@@ -86,6 +97,17 @@
     "7": ["9f3hf9h3j8q8062b"],
     "8": ["e8zen5nzixnt7bde"],
     "9": ["dlo03ajt55yofj4q"]
+  },
+  "Deep Earth": {
+    "1": ["3v1k7qnzd13s5dj3"],
+    "2": ["mz9yr5yhr0f3oqtp"],
+    "3": ["gfpijdqnckv9i34s"],
+    "4": ["knyako6zopc1chrv"],
+    "5": ["hfyycpn0wdimx1n9"],
+    "6": ["wgm8mm1za909pwch"],
+    "7": ["oeemcnfjod9zd7my"],
+    "8": ["a5gcbpwfhu4hh5ic"],
+    "9": ["o8jhvddxgunzx94i"]
   },
   "Destined": {
     "1": ["nee6cxpoekp3aklq"],
@@ -282,6 +304,17 @@
     "8": ["blvetbc929cfx4m8"],
     "9": ["xuuzj9lr2xbwaim4"]
   },
+  "Naga": {
+    "1": ["mczdgwo3xl8c6e26"],
+    "2": ["oylikodnyku2zewu"],
+    "3": ["m84969gni5iu4bdt"],
+    "4": ["vdh0yuzpjwhky6kr"],
+    "5": ["q070n0zoq3zojpas"],
+    "6": ["fxwycv6d7xwzua4t"],
+    "7": ["s2p7a4biy7bl4ks2"],
+    "8": ["q2r6jrgsbwjgssdg"],
+    "9": ["n3lp01euzcdmtbw5"]
+  },
   "Nanite": {
     "1": ["oj36nfak6jc2s5ky"],
     "2": ["22xn589bmr7ginow"],
@@ -326,6 +359,28 @@
     "8": ["e8zen5nzixnt7bde"],
     "9": ["51ob5y7phwlhcuzz"]
   },
+  "Phoenix": {
+    "1": ["qcjskol4ac3eemhy"],
+    "2": ["nokru6mxk9p3r513"],
+    "3": ["1i8b1v3dngkxj6jp"],
+    "4": ["92hth51cs9oi0nfe"],
+    "5": ["myg2b9ww43nnlbr2"],
+    "6": ["pgsw180d62ekw83m"],
+    "7": ["hfca2lb4tlmrzoxm"],
+    "8": ["ijwcwnt3oatnfghq"],
+    "9": ["qk3oeq4awbc1smjw"]
+  },
+  "Possessed": {
+    "1": ["ja1p1uuf8fp6fiox"],
+    "2": ["9hi94t05i449j5ul"],
+    "3": ["l8xwrepcmkdgb2wf"],
+    "4": ["flqg043abb5xryh5"],
+    "5": ["4mw83czf7b62rar3"],
+    "6": ["lovx4kiq18gbvg4e"],
+    "7": ["s6q72tw2zra9sycu"],
+    "8": ["v39qnirlhgje2c0e"],
+    "9": ["q8nety5obvbbd5xs"]
+  },
   "Protean": {
     "1": ["ja005kj1gh7g0dnk"],
     "2": ["18kryvj2dfuymk9d"],
@@ -358,6 +413,28 @@
     "7": ["t44p3oeq43jwcgwg"],
     "8": ["blvetbc929cfx4m8"],
     "9": ["66s5qm8kwycgobce"]
+  },
+  "Salamander": {
+    "1": ["cvv6oimqks9n62vy"],
+    "2": ["6h3p3zr2hbrjea8k"],
+    "3": ["73han2zqxg59u18g"],
+    "4": ["nfm6i9z9r3n2fku7"],
+    "5": ["d3a93wcwatqhywqy"],
+    "6": ["hzkaqaa8n6ygwmub"],
+    "7": ["hfca2lb4tlmrzoxm"],
+    "8": ["h17ad4lpmphnospf"],
+    "9": ["xhzme0v6tjq95fg6"]
+  },
+  "Scorpion": {
+    "1": ["6vx3lvbhp6h220wq"],
+    "2": ["3mfmhx8avu7h3iom"],
+    "3": ["vdh0yuzpjwhky6kr"],
+    "4": ["pa6mgkl4caihdrhm"],
+    "5": ["j8fufy7sr3bty5du"],
+    "6": ["nk37t5em8q4v1djs"],
+    "7": ["f828mjoo5afszqnk"],
+    "8": ["e8zen5nzixnt7bde"],
+    "9": ["jg2n48yy9pk9mpdr"]
   },
   "Serpentine": {
     "1": ["3ntxp3zun1j9mf0m"],
@@ -392,6 +469,27 @@
     "8": ["mkrjbrp57yfdqrx0"],
     "9": ["nnj51dwfkwd15ngj"]
   },
+  "Shapechanger": {
+    "1": ["oj36nfak6jc2s5ky"],
+    "2": ["kouqz0pm1xl8xilm"],
+    "3": ["7d6sv5ecvi7kho3m"],
+    "4": ["774kmgcb7ygviht0"],
+    "5": ["d40ia71c2eljm91k"],
+    "6": ["9pbl3ktd5oqejl19"],
+    "7": ["t44p3oeq43jwcgwg"],
+    "8": ["ukacuu0cvdjkqxwu"],
+    "9": ["n3lp01euzcdmtbw5"]
+  },
+  "Solar": {
+    "1": ["dnet1tyxbsnwailm"],
+    "2": ["myeqz367l1vb5fje"],
+    "3": ["7x2z0i8rcx7s81fk"],
+    "5": ["gmugktarbieojt59"],
+    "6": ["jbqo4o2b2tmdz7wv"],
+    "7": ["vax8ojz8g3oovwzu"],
+    "8": ["j2mwv9wfxhqch10g"],
+    "9": ["xuuzj9lr2xbwaim4"]
+  },
   "Starsoul": {
     "1": ["jhyb2ana8jrk2lut"],
     "2": ["ec2zmvdzi4m3puh4"],
@@ -425,6 +523,17 @@
     "8": ["e8zen5nzixnt7bde"],
     "9": ["khfprkujokr9uigq"]
   },
+  "Unicorn": {
+    "1": ["xoc3vhg3btmfjauq"],
+    "2": ["e67esdjp4nojtbr7"],
+    "3": ["norn02g8zdsspf2j"],
+    "4": ["6l904edkt8jv9jor"],
+    "5": ["qr6qcx8zqum6jhc4"],
+    "6": ["4re1j2w8wkvsvnsi"],
+    "7": ["igmb8lisqcnsxd2d"],
+    "8": ["6346rs0f4sra9gt4"],
+    "9": ["klcvk9ct1l7mhjwp"]
+  },
   "Verdant": {
     "1": ["2nn2tshkn4p7k25l"],
     "2": ["la7kuehewu85ybnt"],
@@ -435,5 +544,16 @@
     "7": ["sheso071mxbywlah"],
     "8": ["qt0xmkag6ahtvesm"],
     "9": ["bp4s030vn5iwwf58"]
+  },
+  "Vestige": {
+    "1": ["llxrra87kbofmyhl"],
+    "2": ["9hi94t05i449j5ul"],
+    "3": ["2dc7e9wby8qpi6m0"],
+    "4": ["pyr472hvqn8c8es2"],
+    "5": ["zuqlok69lapqc6lg"],
+    "6": ["f2awecndqcmhavq7"],
+    "7": ["aqeaxoaozlv9vg35"],
+    "8": ["gw2sgj93dgarpem8"],
+    "9": ["vl7yer8k1leyuxld"]
   }
 }
