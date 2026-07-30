@@ -1,14 +1,16 @@
 /**
  * Hand-computed fixture tests for shaman spirits + hexes (issue #65). Almost
  * every hex in `SHAMAN_SPIRITS[tag].hexes` is note-tier prose with `changes:
- * []` — one promotion exists (Flame's Cinder Dance, a flat landSpeed bump —
- * see `shaman-spirits.ts`'s doc comment for its RAW citation and the
- * near-misses left blocked). What IS exercised: the table's shape (8 spirits
- * × 9 spirit-magic spells × 5 hexes), the spirit ability + hexes surfacing
- * through `collectGrantedFeatures`/`resolveClassFeatures` gated on actual
- * shaman levels AND a chosen spirit, per-spirit hex scoping (display AND
- * numeric), unknown-id tolerance, and Cinder Dance's real `compute()` effect
- * on `speeds.land` — same pattern as `oracleRevelations.test.ts`.
+ * []` — two promotions exist (Flame's Cinder Dance, a flat landSpeed bump,
+ * and Dark Tapestry's Pierce the Veil, additive darkvision plus a
+ * level-8-gated see-in-darkness flag — see `shaman-spirits.ts`'s doc comment
+ * for RAW citations and the near-misses left blocked). What IS exercised: the
+ * table's shape (18 spirits × 9 spirit-magic spells × 5 hexes, except Slums'
+ * 4), the spirit ability + hexes surfacing through
+ * `collectGrantedFeatures`/`resolveClassFeatures` gated on actual shaman
+ * levels AND a chosen spirit, per-spirit hex scoping (display AND numeric),
+ * unknown-id tolerance, and the promoted hexes'/tiers' real `compute()`
+ * effects — same pattern as `oracleRevelations.test.ts`.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -75,9 +77,28 @@ function spiritAndHexFeatureNames(doc: CharacterDoc): string[] {
 }
 
 describe("SHAMAN_SPIRITS table", () => {
-  it("covers exactly the 8 ACG core spirits", () => {
+  it("covers all 18 published spirits (8 ACG core + 10 splatbook)", () => {
     expect([...SHAMAN_SPIRIT_TAGS].sort()).toEqual(
-      ["battle", "bones", "flame", "heavens", "life", "nature", "stone", "waves"].sort(),
+      [
+        "ancestors",
+        "battle",
+        "bones",
+        "dark_tapestry",
+        "flame",
+        "frost",
+        "heavens",
+        "life",
+        "lore",
+        "mammoth",
+        "nature",
+        "restoration",
+        "slums",
+        "stone",
+        "tribe",
+        "waves",
+        "wind",
+        "wood",
+      ].sort(),
     );
   });
 
@@ -91,10 +112,10 @@ describe("SHAMAN_SPIRITS table", () => {
     }
   });
 
-  it("every spirit has exactly 5 hexes, ids prefixed with the spirit's own tag", () => {
+  it("every spirit has 5 hexes (Slums genuinely has only 4 — confirmed on aonprd.com, not a vendoring gap), ids prefixed with the spirit's own tag", () => {
     for (const tag of SHAMAN_SPIRIT_TAGS) {
       const spirit = SHAMAN_SPIRITS[tag]!;
-      expect(spirit.hexes).toHaveLength(5);
+      expect(spirit.hexes).toHaveLength(tag === "slums" ? 4 : 5);
       for (const h of spirit.hexes) {
         expect(h.id.startsWith(`${tag}:`)).toBe(true);
       }
@@ -139,12 +160,14 @@ describe("SHAMAN_SPIRITS table", () => {
     expect(findShamanHex("not-a-spirit:foo")).toBeUndefined();
   });
 
-  it("exactly one hex across all 40 carries a real Change — Flame's Cinder Dance", () => {
+  it("exactly two hexes across all 89 carry a real Change — Flame's Cinder Dance and Dark Tapestry's Pierce the Veil", () => {
     const withChanges = SHAMAN_SPIRIT_TAGS.flatMap((tag) =>
       SHAMAN_SPIRITS[tag]!.hexes.filter((h) => h.changes.length > 0),
     );
-    expect(withChanges.map((h) => h.id)).toEqual(["flame:cinderDance"]);
-    expect(withChanges[0]!.displayOnly).toBe(false);
+    expect(withChanges.map((h) => h.id).sort()).toEqual(
+      ["dark_tapestry:pierceTheVeil", "flame:cinderDance"].sort(),
+    );
+    expect(withChanges.every((h) => h.displayOnly === false)).toBe(true);
   });
 
   it("Cinder Dance's Change: RAW +10 ft. to base land speed (Ex, no action, no per-day limit)", () => {
@@ -339,6 +362,211 @@ describe('Life\'s Manifestation (20th) — RAW: "gains immunity to bleed, death 
   it("grants death-effects, fatigue, and exhaustion immunity at 20th level, not before", () => {
     const at20 = compute(makeShaman(20, "life"), ref);
     const at19 = compute(makeShaman(19, "life"), ref);
+    for (const slug of ["deathEffects", "fatigue", "exhaustion"]) {
+      expect(hasEffectImmunity(at20, slug)).toBe(true);
+      expect(hasEffectImmunity(at19, slug)).toBe(false);
+    }
+  });
+});
+
+describe('Frost\'s Frigid Blast (greater, 8th) — RAW: "gains cold resistance 10"', () => {
+  it("grants cold resistance 10 at 8th level", () => {
+    expect(resistanceTotal(compute(makeShaman(8, "frost"), ref), "cold")).toBe(10);
+  });
+
+  it("does NOT grant cold resistance below 8th level", () => {
+    expect(resistanceTotal(compute(makeShaman(7, "frost"), ref), "cold")).toBeUndefined();
+  });
+});
+
+describe('Wind\'s Spark Soul (greater, 8th) and Manifestation (20th) — RAW: electricity resistance 10, then "gains electricity resistance 30"', () => {
+  it("grants electricity resistance 10 at 8th level", () => {
+    expect(resistanceTotal(compute(makeShaman(8, "wind"), ref), "electricity")).toBe(10);
+  });
+
+  it("resolves to electricity resistance 30 (not 40) at 20th level — same qualifier, highest wins", () => {
+    expect(resistanceTotal(compute(makeShaman(20, "wind"), ref), "electricity")).toBe(30);
+  });
+
+  it("does NOT grant electricity resistance below 8th level", () => {
+    expect(resistanceTotal(compute(makeShaman(7, "wind"), ref), "electricity")).toBeUndefined();
+  });
+});
+
+describe('Lore\'s Perfect Knowledge (true, 16th) — RAW: "+10 competence bonus on all Knowledge, Linguistics, and Spellcraft checks"', () => {
+  it("adds +10 to Knowledge, Linguistics, and Spellcraft at 16th level", () => {
+    const base = compute(makeShaman(16, "battle"), ref);
+    const withLore = compute(makeShaman(16, "lore"), ref);
+    for (const skillId of ["kar", "khi", "lin", "spl"] as const) {
+      if (!base.skills[skillId] || !withLore.skills[skillId]) continue;
+      expect(withLore.skills[skillId]!.total).toBe(base.skills[skillId]!.total + 10);
+    }
+    expect(withLore.skills.lin!.total).toBe(base.skills.lin!.total + 10);
+    expect(withLore.skills.spl!.total).toBe(base.skills.spl!.total + 10);
+  });
+
+  it("does NOT apply below 16th level", () => {
+    const base = compute(makeShaman(15, "battle"), ref);
+    const withLore = compute(makeShaman(15, "lore"), ref);
+    expect(withLore.skills.spl!.total).toBe(base.skills.spl!.total);
+  });
+});
+
+describe('Mammoth\'s Strength of the Beast (greater, 8th) — RAW: "+2 enhancement bonus to Strength... increases by 2 every 6 shaman levels thereafter (at 14th and 20th levels for her spirit)"', () => {
+  it("grants +2 Str enhancement at 8th level", () => {
+    const base = compute(makeShaman(8, "battle"), ref);
+    const withMammoth = compute(makeShaman(8, "mammoth"), ref);
+    expect(withMammoth.abilities.str.total).toBe(base.abilities.str.total + 2);
+  });
+
+  it("stays at +2 just below 14th level", () => {
+    const base = compute(makeShaman(13, "battle"), ref);
+    const withMammoth = compute(makeShaman(13, "mammoth"), ref);
+    expect(withMammoth.abilities.str.total).toBe(base.abilities.str.total + 2);
+  });
+
+  it("scales to +4 at 14th level and +6 at 20th level", () => {
+    const base14 = compute(makeShaman(14, "battle"), ref);
+    const withMammoth14 = compute(makeShaman(14, "mammoth"), ref);
+    expect(withMammoth14.abilities.str.total).toBe(base14.abilities.str.total + 4);
+
+    const base20 = compute(makeShaman(20, "battle"), ref);
+    const withMammoth20 = compute(makeShaman(20, "mammoth"), ref);
+    expect(withMammoth20.abilities.str.total).toBe(base20.abilities.str.total + 6);
+  });
+
+  it("does NOT apply below 8th level", () => {
+    const base = compute(makeShaman(7, "battle"), ref);
+    const withMammoth = compute(makeShaman(7, "mammoth"), ref);
+    expect(withMammoth.abilities.str.total).toBe(base.abilities.str.total);
+  });
+});
+
+describe('Ancestors\' Manifestation (20th) — RAW: "bonus on Will saving throws equal to her Charisma modifier, blindsense out to a range of 60 feet"', () => {
+  it("adds Charisma modifier to Will only (not Fort/Ref) at 20th level", () => {
+    const base = compute(makeShaman(20, "battle"), ref);
+    const withAncestors = compute(makeShaman(20, "ancestors"), ref);
+    expect(withAncestors.saves.will.total).toBe(base.saves.will.total + 1); // Cha 12 -> +1
+    expect(withAncestors.saves.fort.total).toBe(base.saves.fort.total);
+    expect(withAncestors.saves.ref.total).toBe(base.saves.ref.total);
+  });
+
+  it("grants blindsense 60 ft. at 20th level", () => {
+    const sheet = compute(makeShaman(20, "ancestors"), ref);
+    expect(sheet.senses.find((s) => s.kind === "blindsense")?.range).toBe(60);
+  });
+
+  it("does NOT apply the save bonus or blindsense below 20th level", () => {
+    const sheet = compute(makeShaman(19, "ancestors"), ref);
+    const base = compute(makeShaman(19, "battle"), ref);
+    expect(sheet.saves.will.total).toBe(base.saves.will.total);
+    expect(sheet.senses.find((s) => s.kind === "blindsense")).toBeUndefined();
+  });
+});
+
+describe('Dark Tapestry\'s Manifestation (20th) — RAW: "gains damage reduction 5/- and immunity to acid, critical hits, and sneak attacks"', () => {
+  it("grants DR 5/-, acid immunity, and critical-hit immunity at 20th level", () => {
+    const sheet = compute(makeShaman(20, "dark_tapestry"), ref);
+    expect(drTotal(sheet, "—")).toBe(5);
+    expect(sheet.defenses?.immunities?.some((i) => i.qualifier === "acid")).toBe(true);
+    expect(hasEffectImmunity(sheet, "criticalHits")).toBe(true);
+  });
+
+  it("does NOT apply DR, acid immunity, or critical-hit immunity below 20th level", () => {
+    const sheet = compute(makeShaman(19, "dark_tapestry"), ref);
+    expect(drTotal(sheet, "—")).toBeUndefined();
+    expect(sheet.defenses?.immunities?.some((i) => i.qualifier === "acid")).toBeFalsy();
+    expect(hasEffectImmunity(sheet, "criticalHits")).toBe(false);
+  });
+});
+
+describe('Dark Tapestry\'s Pierce the Veil hex — RAW: "gains darkvision to a range of up to 30 feet... At 8th level... see perfectly in darkness of any kind"', () => {
+  it("grants darkvision 30 ft. as soon as the hex is picked (no level gate on the base grant)", () => {
+    const sheet = compute(makeShaman(2, "dark_tapestry", ["dark_tapestry:pierceTheVeil"]), ref);
+    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(30);
+  });
+
+  it("grants see-in-darkness at 8th level", () => {
+    const sheet = compute(makeShaman(8, "dark_tapestry", ["dark_tapestry:pierceTheVeil"]), ref);
+    expect(sheet.senses.find((s) => s.kind === "seeInDarkness")).toBeDefined();
+  });
+
+  it("does NOT grant see-in-darkness below 8th level", () => {
+    const sheet = compute(makeShaman(7, "dark_tapestry", ["dark_tapestry:pierceTheVeil"]), ref);
+    expect(sheet.senses.find((s) => s.kind === "seeInDarkness")).toBeUndefined();
+  });
+});
+
+describe('Slums\' Manifestation (20th) — RAW: "immune to all diseases and poisons"', () => {
+  it("grants disease and poison immunity at 20th level, not before", () => {
+    const at20 = compute(makeShaman(20, "slums"), ref);
+    const at19 = compute(makeShaman(19, "slums"), ref);
+    for (const slug of ["disease", "poison"]) {
+      expect(hasEffectImmunity(at20, slug)).toBe(true);
+      expect(hasEffectImmunity(at19, slug)).toBe(false);
+    }
+  });
+});
+
+describe('Tribe\'s Manifestation (20th) — RAW: "bonus on all of her saving throws equal to her Charisma modifier and becomes immune to compulsion spells and spell-like abilities"', () => {
+  it("adds Charisma modifier to all three saves at 20th level", () => {
+    const base = compute(makeShaman(20, "battle"), ref);
+    const withTribe = compute(makeShaman(20, "tribe"), ref);
+    expect(withTribe.saves.fort.total).toBe(base.saves.fort.total + 1); // Cha 12 -> +1
+    expect(withTribe.saves.ref.total).toBe(base.saves.ref.total + 1);
+    expect(withTribe.saves.will.total).toBe(base.saves.will.total + 1);
+  });
+
+  it("grants compulsion immunity at 20th level", () => {
+    expect(hasEffectImmunity(compute(makeShaman(20, "tribe"), ref), "compulsion")).toBe(true);
+  });
+
+  it("does NOT apply the save bonus or compulsion immunity below 20th level", () => {
+    const base = compute(makeShaman(19, "battle"), ref);
+    const withTribe = compute(makeShaman(19, "tribe"), ref);
+    expect(withTribe.saves.will.total).toBe(base.saves.will.total);
+    expect(hasEffectImmunity(withTribe, "compulsion")).toBe(false);
+  });
+});
+
+describe('Wood\'s Manifestation (20th) — RAW: "+4 natural armor bonus to her Armor Class... immunity to paralysis, poison, polymorph, sleep, and stun"', () => {
+  it("grants +4 natural armor and paralysis/poison/sleep/stunned immunity at 20th level", () => {
+    const base = compute(makeShaman(20, "battle"), ref);
+    const withWood = compute(makeShaman(20, "wood"), ref);
+    expect(withWood.ac.normal).toBe(base.ac.normal + 4);
+    for (const slug of ["paralysis", "poison", "sleep", "stunned"]) {
+      expect(hasEffectImmunity(withWood, slug)).toBe(true);
+    }
+  });
+
+  it("does NOT apply below 20th level", () => {
+    const base = compute(makeShaman(19, "battle"), ref);
+    const withWood = compute(makeShaman(19, "wood"), ref);
+    expect(withWood.ac.normal).toBe(base.ac.normal);
+    for (const slug of ["paralysis", "poison", "sleep", "stunned"]) {
+      expect(hasEffectImmunity(withWood, slug)).toBe(false);
+    }
+  });
+});
+
+describe("Restoration's Healer's Touch (greater, 8th) — RAW (d20pfsrd.com): \"gains a +4 bonus on Heal checks\"", () => {
+  it("adds +4 to the Heal skill at 8th level", () => {
+    const base = compute(makeShaman(8, "battle"), ref);
+    const withRestoration = compute(makeShaman(8, "restoration"), ref);
+    expect(withRestoration.skills.hea!.total).toBe(base.skills.hea!.total + 4);
+  });
+
+  it("does NOT apply below 8th level", () => {
+    const base = compute(makeShaman(7, "battle"), ref);
+    const withRestoration = compute(makeShaman(7, "restoration"), ref);
+    expect(withRestoration.skills.hea!.total).toBe(base.skills.hea!.total);
+  });
+});
+
+describe('Restoration\'s Manifestation (20th) — RAW (d20pfsrd.com): "immunity to bleed, death attacks, and negative energy, as well as to the exhausted, fatigued, nauseated, and sickened conditions" (the slices with immEffect slugs)', () => {
+  it("grants death-effects, fatigue, and exhaustion immunity at 20th level, not before", () => {
+    const at20 = compute(makeShaman(20, "restoration"), ref);
+    const at19 = compute(makeShaman(19, "restoration"), ref);
     for (const slug of ["deathEffects", "fatigue", "exhaustion"]) {
       expect(hasEffectImmunity(at20, slug)).toBe(true);
       expect(hasEffectImmunity(at19, slug)).toBe(false);

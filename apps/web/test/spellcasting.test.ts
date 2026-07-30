@@ -469,6 +469,12 @@ describe("shamanSpiritSpellsKnown()", () => {
     expect(spells[0]!.name).toBe("Hydraulic Push");
   });
 
+  it("a splatbook spirit (Frost) resolves its own spirit-magic spell list, same as a core spirit", () => {
+    const spells = shamanSpiritSpellsKnown(ref, "frost", 1);
+    expect(spells.length).toBe(1);
+    expect(spells[0]!.name).toBe("Frostbite");
+  });
+
   it("returns [] for an unknown spirit tag (soft fail, no throw)", () => {
     expect(shamanSpiritSpellsKnown(ref, "notARealSpirit", 20)).toEqual([]);
   });

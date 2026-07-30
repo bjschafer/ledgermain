@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-30-every-shaman-spirit-fully-in",
+    date: "2026-07-30",
+    title: "Every shaman spirit is fully in, top to bottom",
+    note: "All 18 published spirits, from the core eight to Frost, Lore, Mammoth, and the rest, now carry their full write-up: spirit magic spells feed your spell list, each spirit's own hexes are pickable, and the greater and true spirit abilities and 20th-level manifestation show at their levels. Where an ability is a flat, always-on number, the sheet moves it for you: Bones' and Stone's damage reduction, elemental resistances for Flame, Frost, Wind, and Waves, Lore's +10 knowledge bonuses, Mammoth's Strength surge, and a spread of 20th-level immunities.",
+  },
+  {
     id: "2026-07-30-spell-resistance-lines",
     date: "2026-07-30",
     title: "Spell cards now print their Spell Resistance line",
