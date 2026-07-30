@@ -48,15 +48,16 @@
  * into four separate subtype ids (air/earth/fire/water) since the eidolon's
  * element is chosen permanently at first summoning.
  *
- * Every subtype grant is either a paraphrased display-only `note` (the
- * overwhelming majority — resistances, immunities, DR, spell-likes, and
- * every other prose-only rule this codebase doesn't have a numeric hook
- * for) or one of a small, explicit set of STRUCTURED numeric fields
- * (`poolBonus`, `abilityIncrease`, `landSpeedBonus`, `evolutionIds`) —
- * same honesty-bar split `eidolon.ts`'s own `displayOnly` evolutions use.
- * `evolutionIds` free-grants a real {@link EIDOLON_EVOLUTIONS} entry (e.g.
- * "flight", "burrow", "swim") at zero pool cost, reusing that evolution's
- * own numeric shape rather than re-deriving the effect here.
+ * Every subtype grant carries a paraphrased `note` (always, for the grant
+ * timeline display) plus any of a small, explicit set of STRUCTURED fields:
+ * `poolBonus`, `abilityIncrease`, `landSpeedBonus`, `evolutionIds`, and the
+ * defense quartet (`resistances`/`damageImmunities`/`effectImmunities`/
+ * `dr`, folded into `DerivedEidolon.defenses` by `deriveEidolon`). What has
+ * no numeric hook (spell-likes, auras, activated abilities) stays prose in
+ * the `note` — same honesty-bar split `eidolon.ts`'s own `displayOnly`
+ * evolutions use. `evolutionIds` free-grants a real {@link EIDOLON_EVOLUTIONS}
+ * entry (e.g. "flight", "burrow", "swim") at zero pool cost, reusing that
+ * evolution's own numeric shape rather than re-deriving the effect here.
  */
 
 import type { CharacterDoc } from "@pf1/schema";
@@ -157,6 +158,20 @@ export function eidolonUnchainedAbilityIncreaseSlots(level: number): number {
   return EIDOLON_UNCHAINED_ABILITY_INCREASE_LEVELS.filter((l) => l <= level).length;
 }
 
+/** One energy resistance a subtype grant carries (e.g. cold 10). */
+export interface EidolonGrantResistance {
+  /** Energy slug in the character sheet's `eres.<energy>` vocabulary ("fire", "cold", "electricity", "acid", "sonic"). */
+  energy: string;
+  amount: number;
+}
+
+/** Damage reduction a subtype grant carries. */
+export interface EidolonGrantDr {
+  amount: number;
+  /** Bypass qualifier in the character sheet's dr convention — a material/alignment word ("evil", "good", "silver") or `DR_NONE_QUALIFIER` ("—") for DR n/—. */
+  bypass: string;
+}
+
 /** One themed grant a subtype gives at a specific milestone level (1st/4th/8th/12th/16th/20th). */
 export interface EidolonSubtypeGrant {
   level: number;
@@ -170,6 +185,19 @@ export interface EidolonSubtypeGrant {
   abilityIncrease?: boolean;
   /** Flat feet added to LAND speed once unlocked (e.g. the Fire Elemental's +20 ft. at 8th) — derived speeds (climb/swim/fly/burrow) are based on the resulting land speed. */
   landSpeedBonus?: number;
+  /**
+   * Energy resistances this grant confers. Across all unlocked grants the
+   * highest amount per energy applies, and a `damageImmunities` entry for
+   * the same energy supersedes the resistance entirely (RAW's "replacing
+   * the 1st-level resistance" upgrades fall out of that rule for free).
+   */
+  resistances?: readonly EidolonGrantResistance[];
+  /** Energy types this grant makes the eidolon immune to (same slug vocabulary as `resistances`). */
+  damageImmunities?: readonly string[];
+  /** Non-damage effect immunities — slugs into `EFFECT_IMMUNITY_LABELS` (`defenses.ts`); unknown slugs are dropped at derive time, same posture as `computeDefenses`. */
+  effectImmunities?: readonly string[];
+  /** Damage reduction. Across unlocked grants the highest amount per bypass qualifier applies. */
+  dr?: EidolonGrantDr;
 }
 
 /** One base form's subtype-specific free evolutions and resulting natural attacks. */
