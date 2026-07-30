@@ -169,6 +169,7 @@ import { ABILITY_IDS } from "@pf1/schema";
 
 import { scaleWeaponDamageDice } from "./compute.js";
 import { CONDITIONS } from "./conditions.js";
+import { EFFECT_IMMUNITY_LABELS } from "./defenses.js";
 import {
   eidolonSubtypeGrantedEvolutions,
   eidolonUnchainedAbilityIncreaseSlots,
@@ -176,6 +177,7 @@ import {
   eidolonUnchainedSpecialAbilityNames,
   eidolonVariant,
   EIDOLON_SUBTYPES,
+  type EidolonSubtypeGrant,
 } from "./eidolon-unchained.js";
 import {
   classifyNaturalAttacks,
@@ -1386,6 +1388,99 @@ export interface DerivedEidolon {
   abilityIncreaseSlots: number;
   /** Whether the Pathfinder Unchained "Small eidolon" sidebar variant is in effect (`EidolonBuild.small`, unchained-only) — see `deriveEidolon`'s small-size block. Always `false` for a chained eidolon or one with the Large evolution (mutually exclusive with Small; Large wins if both are somehow picked). */
   small: boolean;
+  /** Unchained-subtype-sourced DR/resistances/immunities, folded from the subtype's unlocked grants (see `foldEidolonGrantDefenses`). `undefined` for a chained eidolon, an unmodeled/no subtype, or a subtype whose unlocked grants carry no structured defense fields. */
+  defenses?: DerivedEidolonDefenses;
+}
+
+/** One resolved defense line folded from a subtype's structured grant fields — see `foldEidolonGrantDefenses`. */
+export interface DerivedEidolonDefenses {
+  resistances: { energy: string; amount: number }[];
+  damageImmunities: string[];
+  effectImmunities: string[];
+  dr: { amount: number; bypass: string }[];
+}
+
+/**
+ * Folds a subtype's structured defense grant fields (`resistances`/
+ * `damageImmunities`/`effectImmunities`/`dr`, see `EidolonSubtypeGrant`'s doc
+ * comments) into one deduplicated summary, counting only grants with
+ * `grant.level <= level` ("unlocked"). Pure and independent of
+ * `computeDefenses`'s `CollectedModifier` pipeline — a subtype grant is a
+ * flat, unconditional table entry, not a `Change` collected off the
+ * character sheet.
+ *
+ * Rules (RAW's own "immunity to X, replacing the Nth-level resistance"
+ * upgrades fall out of the first one for free, no special-casing needed):
+ *   - Resistances: highest amount per energy, across all unlocked grants.
+ *   - A `damageImmunities` entry for an energy removes any resistance to
+ *     that same energy, regardless of which grant unlocked first.
+ *   - Damage immunities: deduplicated by energy slug.
+ *   - Effect immunities: deduplicated by slug, resolved to their display
+ *     label via `EFFECT_IMMUNITY_LABELS`; a slug absent from that table is
+ *     dropped silently — same closed-vocabulary posture as `computeDefenses`.
+ *   - DR: highest amount per distinct bypass qualifier (two different
+ *     bypasses both surface as separate lines).
+ *
+ * Ordering is deterministic: first-seen by ascending grant level. Returns
+ * `undefined` when nothing survives all of the above — same "don't render an
+ * empty block" posture as `computeDefenses`.
+ */
+export function foldEidolonGrantDefenses(
+  grants: readonly EidolonSubtypeGrant[],
+  level: number,
+): DerivedEidolonDefenses | undefined {
+  const unlocked = [...grants].filter((g) => g.level <= level).sort((a, b) => a.level - b.level);
+
+  const resistanceByEnergy = new Map<string, number>();
+  for (const g of unlocked) {
+    for (const r of g.resistances ?? []) {
+      // `scales` marks a "gains the resistance (X) evolution" grant: 5, +5
+      // per 5 summoner levels, max 15 at 10th (see EidolonGrantResistance).
+      const amount = r.scales ? Math.min(15, 5 + 5 * Math.floor(level / 5)) : r.amount;
+      const best = resistanceByEnergy.get(r.energy);
+      if (best === undefined || amount > best) resistanceByEnergy.set(r.energy, amount);
+    }
+  }
+
+  const damageImmunities: string[] = [];
+  for (const g of unlocked) {
+    for (const energy of g.damageImmunities ?? []) {
+      if (!damageImmunities.includes(energy)) damageImmunities.push(energy);
+      resistanceByEnergy.delete(energy);
+    }
+  }
+
+  const effectImmunities: string[] = [];
+  for (const g of unlocked) {
+    for (const slug of g.effectImmunities ?? []) {
+      const label = EFFECT_IMMUNITY_LABELS[slug];
+      if (label && !effectImmunities.includes(label)) effectImmunities.push(label);
+    }
+  }
+
+  const drByBypass = new Map<string, number>();
+  for (const g of unlocked) {
+    if (!g.dr) continue;
+    const best = drByBypass.get(g.dr.bypass);
+    if (best === undefined || g.dr.amount > best) drByBypass.set(g.dr.bypass, g.dr.amount);
+  }
+
+  const resistances = [...resistanceByEnergy.entries()].map(([energy, amount]) => ({
+    energy,
+    amount,
+  }));
+  const dr = [...drByBypass.entries()].map(([bypass, amount]) => ({ amount, bypass }));
+
+  if (
+    resistances.length === 0 &&
+    damageImmunities.length === 0 &&
+    effectImmunities.length === 0 &&
+    dr.length === 0
+  ) {
+    return undefined;
+  }
+
+  return { resistances, damageImmunities, effectImmunities, dr };
 }
 
 /** A skeletal minimal skills set surfaced for an eidolon — the six physical/perceptual skills every companion-style creature in this codebase surfaces, plus any "Skilled" evolution chip note is left to the UI (see module doc comment). */
@@ -1869,5 +1964,6 @@ export function deriveEidolon(
     grantedEvolutions: eidolonSubtypeGrantedEvolutions(subtypeId, level),
     abilityIncreaseSlots,
     small,
+    defenses: subtype ? foldEidolonGrantDefenses(subtype.grants, level) : undefined,
   };
 }

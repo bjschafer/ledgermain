@@ -62,6 +62,7 @@
 
 import type { CharacterDoc } from "@pf1/schema";
 
+import { DR_NONE_QUALIFIER } from "./damage-types.js";
 import {
   eidolonProgressionRow,
   eidolonSummonerLevel,
@@ -163,6 +164,16 @@ export interface EidolonGrantResistance {
   /** Energy slug in the character sheet's `eres.<energy>` vocabulary ("fire", "cold", "electricity", "acid", "sonic"). */
   energy: string;
   amount: number;
+  /**
+   * RAW granted "the resistance (X) evolution" rather than a printed flat
+   * number: the amount follows that evolution's own scaling ("increases by 5
+   * for every 5 levels the summoner possesses, to a maximum of 15 at 10th
+   * level" — legacy.aonprd.com, Unchained summoner evolutions), so `amount`
+   * here is the level-1 base and the fold computes 5/10/15 from the real
+   * level. Every subtype's own 4th-level "X resistance 10" grant is a flat
+   * printed number instead and leaves this unset.
+   */
+  scales?: boolean;
 }
 
 /** Damage reduction a subtype grant carries. */
@@ -259,6 +270,8 @@ interface ElementalVariant {
   eighthEvolutionIds?: readonly string[];
   eighthLandSpeedBonus?: number;
   twentiethNote: string;
+  /** Earth alone: "gain the earth mastery ability ... and DR 5/—" (aonprd.com). */
+  twentiethDr?: EidolonGrantDr;
 }
 
 /** The four elements — same shared form/grant shape, differing only in which energy they're immune to and their 8th/20th-level element flavor (see module doc comment for why this is 4 separate subtype ids rather than an element sub-choice). */
@@ -282,6 +295,7 @@ const ELEMENTAL_VARIANTS: readonly ElementalVariant[] = [
     eighthEvolutionIds: ["burrow"],
     twentiethNote:
       "Earth mastery (a bonus on attack and damage rolls when both combatants touch the ground) and DR 5/—.",
+    twentiethDr: { amount: 5, bypass: DR_NONE_QUALIFIER },
   },
   {
     id: "elemental-fire",
@@ -315,6 +329,8 @@ function elementalSubtype(v: ElementalVariant): EidolonSubtypeDef {
       {
         level: 1,
         note: `Immunity to paralysis and sleep effects, and immunity to ${v.immuneEnergy}.`,
+        damageImmunities: [v.immuneEnergy],
+        effectImmunities: ["paralysis", "sleep"],
       },
       { level: 4, note: "+1 evolution pool point.", poolBonus: 1 },
       {
@@ -323,9 +339,19 @@ function elementalSubtype(v: ElementalVariant): EidolonSubtypeDef {
         evolutionIds: v.eighthEvolutionIds,
         landSpeedBonus: v.eighthLandSpeedBonus,
       },
-      { level: 12, note: "Immunity to bleed and poison, and cannot be flanked." },
-      { level: 16, note: "Immunity to critical hits and precision damage." },
-      { level: 20, note: v.twentiethNote },
+      {
+        level: 12,
+        // aonprd.com: "all elemental eidolons gain immunity to bleed, poison,
+        // and stun" — the prior note dropped "stun".
+        note: "Immunity to bleed, poison, and stun, and cannot be flanked.",
+        effectImmunities: ["bleed", "poison", "stunned"],
+      },
+      {
+        level: 16,
+        note: "Immunity to critical hits and precision damage.",
+        effectImmunities: ["criticalHits", "precisionDamage"],
+      },
+      { level: 20, note: v.twentiethNote, dr: v.twentiethDr },
     ],
   };
 }
@@ -380,8 +406,13 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 8,
         note: "Immunity to mind-affecting effects, including effects that grant morale bonuses.",
+        effectImmunities: ["mindAffecting"],
       },
-      { level: 12, note: "DR 5/slashing, and the Blindsense evolution as a bonus evolution." },
+      {
+        level: 12,
+        note: "DR 5/slashing, and the Blindsense evolution as a bonus evolution.",
+        dr: { amount: 5, bypass: "slashing" },
+      },
       { level: 16, note: "The Blindsight evolution, and telepathy with a range of 100 feet." },
       {
         level: 20,
@@ -407,19 +438,37 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
     grants: [
       {
         level: 1,
-        note: "Resistance to electricity 5, plus a +4 racial bonus on saves against poison and petrification.",
+        note: "Resistance to electricity 5 (scaling to 15 by 10th), plus a +4 racial bonus on saves against poison and petrification.",
+        resistances: [{ energy: "electricity", amount: 5, scales: true }],
       },
-      { level: 4, note: "Cold resistance 10 and sonic resistance 10." },
+      {
+        level: 4,
+        note: "Cold resistance 10 and sonic resistance 10.",
+        resistances: [
+          { energy: "cold", amount: 10 },
+          { energy: "sonic", amount: 10 },
+        ],
+      },
       {
         level: 8,
         note: "Lay on hands, usable as a paladin whose level equals the eidolon's Hit Dice.",
       },
-      { level: 12, note: "DR 5/evil, immunity to petrification, and truespeech." },
+      {
+        level: 12,
+        note: "DR 5/evil, immunity to petrification, and truespeech.",
+        dr: { amount: 5, bypass: "evil" },
+        effectImmunities: ["petrification"],
+      },
       {
         level: 16,
         note: "Immunity to electricity (replacing the 1st-level resistance) and the ability to speak with animals.",
+        damageImmunities: ["electricity"],
       },
-      { level: 20, note: "Detect thoughts at will, and DR 10/evil (replacing the 12th-level DR)." },
+      {
+        level: 20,
+        note: "Detect thoughts at will, and DR 10/evil (replacing the 12th-level DR).",
+        dr: { amount: 10, bypass: "evil" },
+      },
     ],
   },
   angel: {
@@ -436,18 +485,35 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
     grants: [
       {
         level: 1,
-        note: "Resistance to acid 5 and cold 5, plus a +4 racial bonus on saves against poison.",
+        note: "Resistance to acid 5 and cold 5 (each scaling to 15 by 10th), plus a +4 racial bonus on saves against poison.",
+        resistances: [
+          { energy: "acid", amount: 5, scales: true },
+          { energy: "cold", amount: 5, scales: true },
+        ],
       },
-      { level: 4, note: "Electricity resistance 10 and fire resistance 10." },
+      {
+        level: 4,
+        note: "Electricity resistance 10 and fire resistance 10.",
+        resistances: [
+          { energy: "electricity", amount: 10 },
+          { energy: "fire", amount: 10 },
+        ],
+      },
       {
         level: 8,
         note: "Gains the Flight evolution for free (a fly speed equal to its base land speed).",
         evolutionIds: ["flight"],
       },
-      { level: 12, note: "DR 5/evil, immunity to petrification, and truespeech." },
+      {
+        level: 12,
+        note: "DR 5/evil, immunity to petrification, and truespeech.",
+        dr: { amount: 5, bypass: "evil" },
+        effectImmunities: ["petrification"],
+      },
       {
         level: 16,
         note: "Immunity to acid and immunity to cold (replacing the 1st-level resistances).",
+        damageImmunities: ["acid", "cold"],
       },
       { level: 20, note: "A protective aura that wards nearby allies from harm." },
     ],
@@ -466,7 +532,8 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
     grants: [
       {
         level: 1,
-        note: "Resistance to electricity 5, the Skilled evolution (Intimidate), and a +4 racial bonus on saves against poison.",
+        note: "Resistance to electricity 5 (scaling to 15 by 10th), the Skilled evolution (Intimidate), and a +4 racial bonus on saves against poison.",
+        resistances: [{ energy: "electricity", amount: 5, scales: true }],
       },
       { level: 4, note: "+1 evolution pool point.", poolBonus: 1 },
       {
@@ -474,10 +541,16 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
         note: "A free +2 ability score increase (summoner's choice).",
         abilityIncrease: true,
       },
-      { level: 12, note: "DR 5/evil, immunity to petrification, and truespeech." },
+      {
+        level: 12,
+        note: "DR 5/evil, immunity to petrification, and truespeech.",
+        dr: { amount: 5, bypass: "evil" },
+        effectImmunities: ["petrification"],
+      },
       {
         level: 16,
         note: "Immunity to electricity (replacing the 1st-level resistance) and an aura of menace that shakes nearby foes.",
+        damageImmunities: ["electricity"],
       },
       {
         level: 20,
@@ -503,19 +576,33 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
     grants: [
       {
         level: 1,
-        note: "Resistance to electricity 5, and weapon training (proficiency with all simple and martial weapons).",
+        note: "Resistance to electricity 5 (scaling to 15 by 10th), and weapon training (proficiency with all simple and martial weapons).",
+        resistances: [{ energy: "electricity", amount: 5, scales: true }],
       },
-      { level: 4, note: "Cold resistance 10 and fire resistance 10." },
+      {
+        level: 4,
+        note: "Cold resistance 10 and fire resistance 10.",
+        resistances: [
+          { energy: "cold", amount: 10 },
+          { energy: "fire", amount: 10 },
+        ],
+      },
       {
         level: 8,
         note: "Gains the Flight evolution for free (a fly speed equal to its base land speed).",
         evolutionIds: ["flight"],
       },
-      { level: 12, note: "DR 5/evil, immunity to petrification, and truespeech." },
+      {
+        level: 12,
+        note: "DR 5/evil, immunity to petrification, and truespeech.",
+        dr: { amount: 5, bypass: "evil" },
+        effectImmunities: ["petrification"],
+      },
       {
         level: 16,
         note: "Immunity to electricity (replacing the 1st-level resistance) and a free +2 ability score increase (summoner's choice).",
         abilityIncrease: true,
+        damageImmunities: ["electricity"],
       },
       {
         level: 20,
@@ -548,14 +635,29 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
     grants: [
       {
         level: 1,
-        note: "Resistance to acid 5, plus a +4 racial bonus on saves against death effects, disease, and poison.",
+        note: "Resistance to acid 5 (scaling to 15 by 10th), plus a +4 racial bonus on saves against death effects, disease, and poison.",
+        resistances: [{ energy: "acid", amount: 5, scales: true }],
       },
-      { level: 4, note: "Cold resistance 10, electricity resistance 10, and fire resistance 10." },
+      {
+        level: 4,
+        note: "Cold resistance 10, electricity resistance 10, and fire resistance 10.",
+        resistances: [
+          { energy: "cold", amount: 10 },
+          { energy: "electricity", amount: 10 },
+          { energy: "fire", amount: 10 },
+        ],
+      },
       { level: 8, note: "+1 evolution pool point.", poolBonus: 1 },
-      { level: 12, note: "DR 5/good, and immunity to death effects, disease, and poison." },
+      {
+        level: 12,
+        note: "DR 5/good, and immunity to death effects, disease, and poison.",
+        dr: { amount: 5, bypass: "good" },
+        effectImmunities: ["deathEffects", "disease", "poison"],
+      },
       {
         level: 16,
         note: "Immunity to acid (replacing the 1st-level resistance) and telepathy 100 ft.",
+        damageImmunities: ["acid"],
       },
       {
         level: 20,
@@ -588,22 +690,36 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
     grants: [
       {
         level: 1,
-        note: "Resistance to electricity 5 and fire 5, plus a +4 racial bonus on saves against poison.",
+        note: "Resistance to electricity 5 and fire 5 (each scaling to 15 by 10th), plus a +4 racial bonus on saves against poison.",
+        resistances: [
+          { energy: "electricity", amount: 5, scales: true },
+          { energy: "fire", amount: 5, scales: true },
+        ],
       },
-      { level: 4, note: "Acid resistance 10 and cold resistance 10." },
+      {
+        level: 4,
+        note: "Acid resistance 10 and cold resistance 10.",
+        resistances: [
+          { energy: "acid", amount: 10 },
+          { energy: "cold", amount: 10 },
+        ],
+      },
       {
         level: 8,
         note: "Immunity to poison (replacing the 1st-level save bonus) and +1 evolution pool point.",
         poolBonus: 1,
+        effectImmunities: ["poison"],
       },
       {
         level: 12,
         note: "DR 5/good and a free +2 ability score increase (summoner's choice).",
         abilityIncrease: true,
+        dr: { amount: 5, bypass: "good" },
       },
       {
         level: 16,
         note: "Immunity to electricity (replacing the 1st-level resistance) and telepathy 100 ft.",
+        damageImmunities: ["electricity"],
       },
       { level: 20, note: "Constant true seeing." },
     ],
@@ -622,14 +738,27 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
     grants: [
       {
         level: 1,
-        note: "Resistance to fire 5, the Skilled evolution (Bluff), and a +4 racial bonus on saves against poison.",
+        note: "Resistance to fire 5 (scaling to 15 by 10th), the Skilled evolution (Bluff), and a +4 racial bonus on saves against poison.",
+        resistances: [{ energy: "fire", amount: 5, scales: true }],
       },
-      { level: 4, note: "Acid resistance 10 and cold resistance 10." },
-      { level: 8, note: "The Skilled evolution (Diplomacy) and immunity to poison." },
-      { level: 12, note: "DR 5/good and see in darkness." },
+      {
+        level: 4,
+        note: "Acid resistance 10 and cold resistance 10.",
+        resistances: [
+          { energy: "acid", amount: 10 },
+          { energy: "cold", amount: 10 },
+        ],
+      },
+      {
+        level: 8,
+        note: "The Skilled evolution (Diplomacy) and immunity to poison.",
+        effectImmunities: ["poison"],
+      },
+      { level: 12, note: "DR 5/good and see in darkness.", dr: { amount: 5, bypass: "good" } },
       {
         level: 16,
         note: "Immunity to fire (replacing the 1st-level resistance) and telepathy 100 ft.",
+        damageImmunities: ["fire"],
       },
       { level: 20, note: "Regeneration 5, overcome only by good-aligned weapons or spells." },
     ],
@@ -646,17 +775,30 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       },
     },
     grants: [
-      { level: 1, note: "Resistance to fire 5, plus a +4 racial bonus on saves against poison." },
-      { level: 4, note: "Acid resistance 10 and electricity resistance 10." },
+      {
+        level: 1,
+        note: "Resistance to fire 5 (scaling to 15 by 10th), plus a +4 racial bonus on saves against poison.",
+        resistances: [{ energy: "fire", amount: 5, scales: true }],
+      },
+      {
+        level: 4,
+        note: "Acid resistance 10 and electricity resistance 10.",
+        resistances: [
+          { energy: "acid", amount: 10 },
+          { energy: "electricity", amount: 10 },
+        ],
+      },
       {
         level: 8,
         note: "+1 evolution pool point and immunity to poison.",
         poolBonus: 1,
+        effectImmunities: ["poison"],
       },
-      { level: 12, note: "DR 5/good and see in darkness." },
+      { level: 12, note: "DR 5/good and see in darkness.", dr: { amount: 5, bypass: "good" } },
       {
         level: 16,
         note: "Immunity to fire (replacing the 1st-level resistance) and telepathy 100 ft.",
+        damageImmunities: ["fire"],
       },
       {
         level: 20,
@@ -683,16 +825,32 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 4,
         note: "A +4 racial bonus on saves against mind-affecting effects, and immunity to nonlethal damage, fatigue, and exhaustion.",
+        effectImmunities: ["nonlethalDamage", "fatigue", "exhaustion"],
       },
-      { level: 8, note: "Immunity to death effects, disease, and poison." },
-      { level: 12, note: "DR 5/chaotic, immunity to sleep effects, and truespeech." },
+      {
+        level: 8,
+        note: "Immunity to death effects, disease, and poison.",
+        effectImmunities: ["deathEffects", "disease", "poison"],
+      },
+      {
+        level: 12,
+        note: "DR 5/chaotic, immunity to sleep effects, and truespeech.",
+        dr: { amount: 5, bypass: "chaotic" },
+        effectImmunities: ["sleep"],
+      },
       {
         level: 16,
-        note: "Immunity to ability damage, ability drain, energy drain, and necromancy effects (replacing the 4th-level bonus against necromancy).",
+        // aonprd.com: "At 16th level, inevitable eidolons lose the +4 bonus
+        // on saving throws against necromancy effects" — that bonus was part
+        // of the 1st-level save-bonus list, not a 4th-level grant (the prior
+        // note misattributed it).
+        note: "Immunity to ability damage, ability drain, energy drain, and necromancy effects (replacing the 1st-level bonus against necromancy effects).",
+        effectImmunities: ["abilityDamage", "abilityDrain", "energyDrain", "necromancyEffects"],
       },
       {
         level: 20,
-        note: "Immunity to paralysis, sleep, stun, and any effect that allows a Fortitude save, unless it can affect objects.",
+        note: "Immunity to paralysis, sleep, stun, and any effect that requires a Fortitude save, unless it also works on objects.",
+        effectImmunities: ["paralysis", "sleep", "stunned"],
       },
     ],
   },
@@ -711,17 +869,38 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       },
     },
     grants: [
-      { level: 1, note: "Resistance to acid 5 and the Grab evolution." },
-      { level: 4, note: "Electricity resistance 10 and sonic resistance 10." },
+      {
+        level: 1,
+        note: "Resistance to acid 5 (scaling to 15 by 10th) and the Grab evolution.",
+        resistances: [{ energy: "acid", amount: 5, scales: true }],
+      },
+      {
+        level: 4,
+        note: "Electricity resistance 10 and sonic resistance 10.",
+        resistances: [
+          { energy: "electricity", amount: 10 },
+          { energy: "sonic", amount: 10 },
+        ],
+      },
       { level: 8, note: "The Constrict evolution." },
       {
         level: 12,
         note: "DR 5/lawful, blindsense, and the Flight evolution for free (perfect maneuverability, no wings needed).",
         evolutionIds: ["flight"],
+        dr: { amount: 5, bypass: "lawful" },
       },
       {
         level: 16,
-        note: "Immunity to acid (replacing the 1st-level resistance) and an amorphous anatomy that resists precision damage and critical hits.",
+        // aonprd.com's Amorphous Anatomy special quality (Bestiary 2 p.308,
+        // cross-referenced from the Protean subtype entry): "a 50% chance to
+        // ignore additional damage caused by critical hits and sneak
+        // attacks, and ... immunity to polymorph effects (unless the
+        // protean is a willing target)" — the prior note dropped the
+        // (unconditional) polymorph immunity clause; the 50% crit/sneak
+        // reduction stays prose (conditional, not a flat immunity).
+        note: "Immunity to acid (replacing the 1st-level resistance) and immunity to polymorph effects; also an amorphous anatomy giving it a 50% chance to ignore extra damage from critical hits and sneak attacks.",
+        damageImmunities: ["acid"],
+        effectImmunities: ["polymorph"],
       },
       {
         level: 20,
@@ -752,14 +931,29 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       },
     },
     grants: [
-      { level: 1, note: "Immunity to death effects, disease, and poison." },
-      { level: 4, note: "Cold resistance 10 and electricity resistance 10." },
+      {
+        level: 1,
+        note: "Immunity to death effects, disease, and poison.",
+        effectImmunities: ["deathEffects", "disease", "poison"],
+      },
+      {
+        level: 4,
+        note: "Cold resistance 10 and electricity resistance 10.",
+        resistances: [
+          { energy: "cold", amount: 10 },
+          { energy: "electricity", amount: 10 },
+        ],
+      },
       {
         level: 8,
         note: "Spirit touch (natural attacks count as magic against incorporeal creatures) and +1 evolution pool point.",
         poolBonus: 1,
       },
-      { level: 12, note: "DR 5/adamantine and spiritsense." },
+      {
+        level: 12,
+        note: "DR 5/adamantine and spiritsense.",
+        dr: { amount: 5, bypass: "adamantine" },
+      },
       {
         level: 16,
         note: "A free +2 ability score increase (summoner's choice) and invisibility (self only), usable at will.",
@@ -768,6 +962,8 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 20,
         note: "DR 10/adamantine (replacing the 12th-level DR), plus immunity to cold and immunity to electricity.",
+        dr: { amount: 10, bypass: "adamantine" },
+        damageImmunities: ["cold", "electricity"],
       },
     ],
   },
@@ -859,7 +1055,11 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
         level: 12,
         note: "As a standard action, can influence either emotions (crushing despair on up to 5 targets in 30 ft., each failed save then spreading good hope to one other creature) or time (as above, but slow/haste) — usable a number of times per day equal to 1/5 HD, and the summoner can change which it affects whenever he gains a level.",
       },
-      { level: 16, note: "Immunity to critical hits, poison, and sneak attacks." },
+      {
+        level: 16,
+        note: "Immunity to critical hits, poison, and sneak attacks.",
+        effectImmunities: ["criticalHits", "poison", "precisionDamage"],
+      },
       {
         level: 20,
         note: "Moment of prescience (caster level 20th) as a spell-like ability, 3/day.",
@@ -939,6 +1139,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 1,
         note: "Immunity to aging, and a +4 racial bonus on saves against curses, diseases, and poisons. The summoner's class level is halved when determining the eidolon's Str/Dex table bonus.",
+        effectImmunities: ["aging"],
       },
       {
         level: 4,
@@ -956,6 +1157,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 16,
         note: "Immunity to curses, diseases, and poisons (replacing the 1st-level bonus); the summoner's aspect/greater aspect diversion pool grows by 50% (or is granted at 1 point if he lacks it), and no longer suffers ability penalties from aging.",
+        effectImmunities: ["curse", "disease", "poison"],
       },
       {
         level: 20,
@@ -985,6 +1187,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
         level: 1,
         note: "Gains the Gills evolution (breathes water indefinitely), Resistance (cold) evolution, and Swim evolution for free (a swim speed equal to its base land speed).",
         evolutionIds: ["swim"],
+        resistances: [{ energy: "cold", amount: 5, scales: true }],
       },
       {
         level: 4,
@@ -997,10 +1200,12 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 12,
         note: "DR 5/magic, and the Rend evolution on tentacle attacks (in place of the usual claw-attack requirement).",
+        dr: { amount: 5, bypass: "magic" },
       },
       {
         level: 16,
         note: "Loses the 1st-level Resistance (cold) evolution and instead gains Immunity (cold).",
+        damageImmunities: ["cold"],
       },
       { level: 20, note: "Constant freedom of movement, and fast healing 5." },
     ],
@@ -1024,8 +1229,16 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 1,
         note: "The Resistance (fire) evolution, and the 4-point Weapon Training evolution (proficiency with martial weapons).",
+        resistances: [{ energy: "fire", amount: 5, scales: true }],
       },
-      { level: 4, note: "Acid resistance 10 and cold resistance 10." },
+      {
+        level: 4,
+        note: "Acid resistance 10 and cold resistance 10.",
+        resistances: [
+          { energy: "acid", amount: 10 },
+          { energy: "cold", amount: 10 },
+        ],
+      },
       {
         level: 8,
         note: "As a standard action, can declare a ward once per day (an object, a plant, or a creature with Int 2 or less); while within 60 ft. of its ward, both gain a +2 sacred bonus on saves.",
@@ -1037,6 +1250,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 16,
         note: "Immunity to bleed, mind-affecting, petrification, and polymorph effects.",
+        effectImmunities: ["bleed", "mindAffecting", "petrification", "polymorph"],
       },
       {
         level: 20,
@@ -1063,6 +1277,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 1,
         note: "The Resistance (cold) and Skilled (Heal) evolutions, and proficiency with the spiked chain.",
+        resistances: [{ energy: "cold", amount: 5, scales: true }],
       },
       { level: 4, note: "+1 evolution pool point.", poolBonus: 1 },
       {
@@ -1072,10 +1287,12 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 12,
         note: "DR 5/good; its unnerving gaze now lasts 1d3 rounds and can target up to 2 creatures per round.",
+        dr: { amount: 5, bypass: "good" },
       },
       {
         level: 16,
         note: "Loses the 1st-level Resistance (cold) evolution and instead gains Immunity (cold); its unnerving gaze now staggers instead of sickens, and can target up to 3 creatures per round.",
+        damageImmunities: ["cold"],
       },
       {
         level: 20,
@@ -1105,6 +1322,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 1,
         note: "Immunity to death effects and energy drain. Unaffected — neither helped nor harmed — by the Positive Energy Plane's positive-dominant trait, and regains 1 additional hit point per die from magical healing.",
+        effectImmunities: ["deathEffects", "energyDrain"],
       },
       {
         level: 4,
@@ -1155,7 +1373,11 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
     grants: [
       {
         level: 1,
-        note: "Resistance to cold 5 and electricity 5, and the ability to cast darkness as a spell-like ability three times per day (caster level equal to its Hit Dice).",
+        note: "Resistance to cold 5 and electricity 5 (each scaling to 15 by 10th), and the ability to cast darkness as a spell-like ability three times per day (caster level equal to its Hit Dice).",
+        resistances: [
+          { energy: "cold", amount: 5, scales: true },
+          { energy: "electricity", amount: 5, scales: true },
+        ],
       },
       {
         level: 4,
@@ -1165,6 +1387,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
         level: 8,
         note: "DR 5/magic, darkvision out to 90 feet, and +1 evolution pool point.",
         poolBonus: 1,
+        dr: { amount: 5, bypass: "magic" },
       },
       {
         level: 12,
@@ -1173,6 +1396,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 16,
         note: "Damage reduction improves to DR 10/magic (replacing the 8th-level DR), and gains the Spell Resistance evolution.",
+        dr: { amount: 10, bypass: "magic" },
       },
       {
         level: 20,
@@ -1211,23 +1435,43 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
     grants: [
       {
         level: 1,
-        note: "Resistance to sonic 5. Depending on the harrow card's suit, also a +2 bonus on Fortitude saves (Hammers or Shields), Reflex saves (Books or Keys), or Will saves (Crowns or Stars).",
+        note: "Resistance to sonic 5 (scaling to 15 by 10th). Depending on the harrow card's suit, also a +2 bonus on Fortitude saves (Hammers or Shields), Reflex saves (Books or Keys), or Will saves (Crowns or Stars).",
+        resistances: [{ energy: "sonic", amount: 5, scales: true }],
       },
-      { level: 4, note: "Cold resistance 10 and electricity resistance 10." },
+      {
+        level: 4,
+        note: "Cold resistance 10 and electricity resistance 10.",
+        resistances: [
+          { energy: "cold", amount: 10 },
+          { energy: "electricity", amount: 10 },
+        ],
+      },
       {
         level: 8,
         note: "Gains the Ability Increase evolution (+2 to the ability score tied to its harrow card's suit — Strength for Hammers, Dexterity for Keys, Constitution for Shields, Intelligence for Books, Wisdom for Stars, or Charisma for Crowns).",
         abilityIncrease: true,
       },
-      { level: 12, note: "Immunity to bleed, poison, and stun, plus DR 5/adamantine." },
+      {
+        level: 12,
+        note: "Immunity to bleed, poison, and stun, plus DR 5/adamantine.",
+        effectImmunities: ["bleed", "poison", "stunned"],
+        dr: { amount: 5, bypass: "adamantine" },
+      },
       {
         level: 16,
         note: "Trades its sonic resistance for immunity to sonic damage (replacing the 1st-level resistance), and gains immunity to mind-affecting effects.",
+        damageImmunities: ["sonic"],
+        effectImmunities: ["mindAffecting"],
       },
       {
         level: 20,
         note: "Gains the Ability Increase evolution again, applied to the same ability score as at 8th level, plus immunity to ability damage and ability drain against that score and immunity to energy drain.",
         abilityIncrease: true,
+        // Ability damage/drain immunity here is scoped to ONE score (the
+        // harrow suit's), not the general abilityDamage/abilityDrain slugs
+        // used elsewhere for full-immunity grants — stays prose so the
+        // display doesn't overclaim protection on the other five scores.
+        effectImmunities: ["energyDrain"],
       },
     ],
   },
@@ -1255,7 +1499,11 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
         note: "Can cast a spell known by its summoner (at least one level below the summoner's highest castable spell level) as a spell-like ability once per day; requires Charisma 10 + the spell's level, caster level equal to the eidolon's Hit Dice minus 2, save DC 10 + half its Hit Dice + its Charisma modifier.",
       },
       { level: 8, note: "Gains the Shared Slot evolution." },
-      { level: 12, note: "DR 5/magic and the Extra Feat evolution (one bonus feat)." },
+      {
+        level: 12,
+        note: "DR 5/magic and the Extra Feat evolution (one bonus feat).",
+        dr: { amount: 5, bypass: "magic" },
+      },
       {
         level: 16,
         note: "Gains the Skilled evolution again (a new skill) and the Ability Increase evolution, both targeting a skill and an ability score of the summoner's choice.",
@@ -1285,10 +1533,12 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 1,
         note: "Negative energy affinity (healed by negative energy, harmed by positive energy), plus immunity to death effects, disease, energy drain, and poison.",
+        effectImmunities: ["deathEffects", "disease", "energyDrain", "poison"],
       },
       {
         level: 4,
-        note: "Resistance to cold 5, and its natural attacks strike incorporeal creatures as though they were ghost touch weapons.",
+        note: "Resistance to cold 5 (scaling to 15 by 10th), and its natural attacks strike incorporeal creatures as though they were ghost touch weapons.",
+        resistances: [{ energy: "cold", amount: 5, scales: true }],
       },
       {
         level: 8,
@@ -1302,10 +1552,13 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       {
         level: 16,
         note: "Trades its cold resistance for immunity to cold (replacing the 4th-level resistance), and gains DR 5/adamantine.",
+        damageImmunities: ["cold"],
+        dr: { amount: 5, bypass: "adamantine" },
       },
       {
         level: 20,
         note: "Its bite can bestow up to 2 negative levels per hit, the daily negative-level cap increases by its Constitution modifier, and its damage reduction improves to DR 10/adamantine (replacing the 16th-level DR).",
+        dr: { amount: 10, bypass: "adamantine" },
       },
     ],
   },

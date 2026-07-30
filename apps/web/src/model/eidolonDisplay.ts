@@ -7,8 +7,9 @@
  */
 
 import type { DerivedEidolon, DerivedEidolonAttack } from "@pf1/engine";
+import { qualifierLabel } from "@pf1/engine";
 
-import { signed, skillName } from "./names.js";
+import { capitalizeFirst, signed, skillName } from "./names.js";
 
 const SIZE_LABEL: Record<"sm" | "med" | "lg", string> = {
   sm: "Small",
@@ -89,4 +90,24 @@ export function formatEidolonEvolutionBudget(eidolon: DerivedEidolon): string {
  */
 export function eidolonAttackInstanceCount(eidolon: DerivedEidolon): number {
   return eidolon.attacks.reduce((sum, a) => sum + a.count, 0);
+}
+
+/** "DR 5/evil" (or "DR 5/—" for no bypass, via `qualifierLabel`'s em-dash passthrough). */
+export function formatEidolonDrLine(entry: { amount: number; bypass: string }): string {
+  return `DR ${entry.amount}/${qualifierLabel(entry.bypass)}`;
+}
+
+/** "fire 10" — one energy-resistance line. */
+export function formatEidolonResistanceLine(entry: { energy: string; amount: number }): string {
+  return `${qualifierLabel(entry.energy)} ${entry.amount}`;
+}
+
+/** "Immune: Fire" — one energy damage-immunity line. */
+export function formatEidolonDamageImmunityLine(energy: string): string {
+  return `Immune: ${capitalizeFirst(qualifierLabel(energy))}`;
+}
+
+/** "Immune: Poison" — one non-damage effect-immunity line (already resolved to its display label by the engine). */
+export function formatEidolonEffectImmunityLine(label: string): string {
+  return `Immune: ${capitalizeFirst(label)}`;
 }

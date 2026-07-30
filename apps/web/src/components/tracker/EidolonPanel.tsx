@@ -26,7 +26,11 @@ import {
   formatEidolonAttackName,
   formatEidolonAttackRoll,
   formatEidolonAttackTypeSuffix,
+  formatEidolonDamageImmunityLine,
+  formatEidolonDrLine,
+  formatEidolonEffectImmunityLine,
   formatEidolonEvolutionBudget,
+  formatEidolonResistanceLine,
   formatEidolonSummary,
 } from "../../model/eidolonDisplay.js";
 import { signed } from "../../model/names.js";
@@ -319,6 +323,34 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
                   <span className="desc-text">{g.note}</span>
                 </p>
               ))}
+          </div>
+        </>
+      )}
+
+      {eidolon.defenses && (
+        <>
+          <h4 className="tracker-sub">Defenses</h4>
+          <div className="chips familiar-abilities">
+            {eidolon.defenses.dr.map((entry) => (
+              <span key={`dr-${entry.bypass}`} className="chip display-only">
+                {formatEidolonDrLine(entry)}
+              </span>
+            ))}
+            {eidolon.defenses.resistances.map((entry) => (
+              <span key={`eres-${entry.energy}`} className="chip display-only">
+                {formatEidolonResistanceLine(entry)}
+              </span>
+            ))}
+            {eidolon.defenses.damageImmunities.map((energy) => (
+              <span key={`imm-${energy}`} className="chip display-only">
+                {formatEidolonDamageImmunityLine(energy)}
+              </span>
+            ))}
+            {eidolon.defenses.effectImmunities.map((label) => (
+              <span key={`immEffect-${label}`} className="chip display-only">
+                {formatEidolonEffectImmunityLine(label)}
+              </span>
+            ))}
           </div>
         </>
       )}

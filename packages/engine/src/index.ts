@@ -597,6 +597,7 @@ export {
   eidolonSpecialAbilityNames,
   eidolonSummonerLevel,
   eidolonBaseFormIdsForVariant,
+  foldEidolonGrantDefenses,
   type EidolonBaseForm,
   type EidolonAttackGrant,
   type EidolonProgressionRow,
@@ -607,6 +608,7 @@ export {
   type DerivedEidolonAc,
   type DerivedEidolonAttack,
   type DerivedEidolonSkill,
+  type DerivedEidolonDefenses,
 } from "./eidolon.js";
 export {
   EIDOLON_UNCHAINED_POOL,

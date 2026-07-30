@@ -141,6 +141,17 @@ export const EFFECT_IMMUNITY_LABELS: Readonly<Record<string, string>> = {
   staggered: "being staggered",
   deathEffects: "death effects",
   nonlethalDamage: "nonlethal damage",
+  bleed: "bleed",
+  polymorph: "polymorph effects",
+  curse: "curses",
+  energyDrain: "energy drain",
+  abilityDamage: "ability damage",
+  abilityDrain: "ability drain",
+  necromancyEffects: "necromancy effects",
+  // "immunity to aging" (e.g. the astral eidolon subtype) is broader than
+  // the constructs' "magical aging" above — kept separate, same posture as
+  // magicSleep vs sleep.
+  aging: "aging",
 };
 
 const IMM_EFFECT_PREFIX = "immEffect.";
