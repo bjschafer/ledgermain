@@ -25,7 +25,8 @@ describe("mergedSorcererBloodlineCatalog", () => {
     expect(merged).toHaveLength(vendoredCount);
   });
 
-  it("all 10 hand-authored bloodlines matched a vendored entry by name and kept their own powers/arcana", () => {
+  it("every hand-authored bloodline matched a vendored entry by name and kept its own powers/arcana", () => {
+    expect(BLOODLINE_TAGS).toHaveLength(51);
     for (const tag of BLOODLINE_TAGS) {
       const entry = byTag.get(tag);
       expect(entry).toBeDefined();
@@ -36,13 +37,15 @@ describe("mergedSorcererBloodlineCatalog", () => {
     }
   });
 
-  it("a vendored-only bloodline (no hand-authored counterpart) resolves display-only with its own prose", () => {
-    const entry = byTag.get("Accursed")!;
-    expect(entry.displayOnly).toBe(true);
-    expect(entry.powers).toEqual([]);
-    expect(entry.bonusFeatSlugs).toEqual([]);
+  it("no vendored bloodline is left display-only (the whole catalog is hand-authored)", () => {
+    expect(merged.filter((b) => b.displayOnly)).toEqual([]);
+  });
+
+  it('"Kobold" (spell-list tag) carries the vendored "Kobold Sorcerer" prose via the alias map', () => {
+    const entry = byTag.get("Kobold")!;
+    expect(entry.displayOnly).toBe(false);
     expect(entry.description).toBeDefined();
-    expect(BLOODLINES.Accursed).toBeUndefined();
+    expect(merged.some((b) => b.tag === "Kobold Sorcerer")).toBe(false);
   });
 
   it("every tag is unique", () => {
@@ -58,10 +61,10 @@ describe("resolveSorcererBloodline", () => {
     expect(bloodline?.powers).toEqual(BLOODLINES.Aberrant!.powers);
   });
 
-  it("falls back to the vendored catalog for a vendored-only tag", () => {
+  it("resolves a splatbook tag to its hand-authored entry", () => {
     const bloodline = resolveSorcererBloodline("Accursed", ref);
-    expect(bloodline?.displayOnly).toBe(true);
-    expect(bloodline?.name).toBe("Accursed");
+    expect(bloodline?.displayOnly).toBe(false);
+    expect(bloodline?.powers.length).toBeGreaterThan(0);
   });
 
   it("returns undefined for a tag in neither table", () => {

@@ -25,7 +25,8 @@ describe("mergedBloodragerBloodlineCatalog", () => {
     expect(merged).toHaveLength(vendoredCount);
   });
 
-  it("all 11 hand-authored bloodlines matched a vendored entry by name and kept their own powers", () => {
+  it("every hand-authored bloodline matched a vendored entry by name and kept its own powers", () => {
+    expect(BLOODRAGER_BLOODLINE_TAGS).toHaveLength(24);
     for (const tag of BLOODRAGER_BLOODLINE_TAGS) {
       const entry = byTag.get(tag);
       expect(entry).toBeDefined();
@@ -35,12 +36,8 @@ describe("mergedBloodragerBloodlineCatalog", () => {
     }
   });
 
-  it("a vendored-only later-splatbook bloodline still resolves display-only", () => {
-    const entry = byTag.get("Aquatic")!;
-    expect(entry.displayOnly).toBe(true);
-    expect(entry.powers).toEqual([]);
-    expect(entry.description).toBeDefined();
-    expect(BLOODRAGER_BLOODLINES.Aquatic).toBeUndefined();
+  it("no vendored bloodline is left display-only (the whole catalog is hand-authored)", () => {
+    expect(merged.filter((b) => b.displayOnly)).toEqual([]);
   });
 
   it("every tag is unique", () => {
@@ -56,10 +53,10 @@ describe("resolveBloodragerBloodline", () => {
     expect(bloodline?.powers).toEqual(BLOODRAGER_BLOODLINES.Abyssal!.powers);
   });
 
-  it("falls back to the vendored catalog for a vendored-only tag", () => {
+  it("resolves a splatbook tag to its hand-authored entry", () => {
     const bloodline = resolveBloodragerBloodline("Aquatic", ref);
-    expect(bloodline?.displayOnly).toBe(true);
-    expect(bloodline?.name).toBe("Aquatic");
+    expect(bloodline?.displayOnly).toBe(false);
+    expect(bloodline?.powers.length).toBeGreaterThan(0);
   });
 
   it("returns undefined for a tag in neither table", () => {

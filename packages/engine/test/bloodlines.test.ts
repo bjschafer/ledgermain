@@ -188,3 +188,57 @@ describe("sorcerer bloodline power resource pools (deriveResourcePools)", () => 
     expect(pools).toEqual([]);
   });
 });
+
+describe("splatbook bloodline fixtures (hand-computed)", () => {
+  // Ghoul (Ultimate Magic): Leathery Skin at 3rd is +1 natural armor and
+  // resist cold 5; at 9th the armor rises to +2 and the resistance to 10.
+  it("a Ghoul sorcerer L9 gets +2 natural armor and cold resistance 10", () => {
+    const doc = makeSorcerer(9, "Ghoul");
+    const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+    expect(
+      mods.find((m) => m.target === "nac" && m.sourceId === "bloodline:Ghoul:leatherySkin")!.value,
+    ).toBe(2);
+    expect(mods.find((m) => m.target === "eres.cold")!.value).toBe(10);
+  });
+
+  // Orc (Orcs of Golarion): the arcana's orc subtype carries darkvision 60;
+  // Strength of the Beast at 9th is a +2 inherent bonus to Strength.
+  it("an Orc sorcerer L9 gets darkvision 60 and +2 inherent Str", () => {
+    const doc = makeSorcerer(9, "Orc");
+    const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+    expect(mods.find((m) => m.target === "sensedv")!.value).toBe(60);
+    const str = mods.find((m) => m.target === "str" && m.sourceId?.startsWith("bloodline:"))!;
+    expect(str.value).toBe(2);
+    expect(str.type).toBe("inherent");
+  });
+
+  // Salamander (Elemental Master's Handbook): Reforged Flesh at 20th is fire
+  // immunity plus DR 10/adamantine and magic (a compound -and- qualifier).
+  it("a Salamander sorcerer L20 gets DR 10/adamantine-and-magic and fire immunity", () => {
+    const doc = makeSorcerer(20, "Salamander");
+    const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+    expect(mods.find((m) => m.target === "dr.adamantine-and-magic")!.value).toBe(10);
+    expect(mods.find((m) => m.target === "imm.fire")!.value).toBe(1);
+  });
+
+  // Possessed (Haunted Heroes Handbook): Sight Unseen at 3rd grants
+  // darkvision 30, or +30 to existing darkvision (grant == rider, so the
+  // change carries operator "add"); lifesense only arrives at 9th.
+  it("a Possessed sorcerer L3 gets an additive darkvision-30 grant and no lifesense yet", () => {
+    const doc = makeSorcerer(3, "Possessed");
+    const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+    const dv = mods.find((m) => m.target === "sensedv")!;
+    expect(dv.value).toBe(30);
+    expect(dv.operator).toBe("add");
+    expect(mods.find((m) => m.target === "sensels")?.value ?? 0).toBe(0);
+  });
+
+  // Accursed (Blood of the Coven): Fearsome Survival at 20th is DR 10/cold
+  // iron and SR equal to sorcerer level + 6 (26 at 20th).
+  it("an Accursed sorcerer L20 gets DR 10/cold-iron and SR 26", () => {
+    const doc = makeSorcerer(20, "Accursed");
+    const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+    expect(mods.find((m) => m.target === "dr.cold-iron")!.value).toBe(10);
+    expect(mods.find((m) => m.target === "spellResist")!.value).toBe(26);
+  });
+});

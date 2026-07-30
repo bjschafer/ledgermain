@@ -461,3 +461,44 @@ describe("BLOODRAGE_BUFF formula (bloodrage.ts)", () => {
     expect(evaluateFormula("2 + floor((@classes.bloodrager.level - 2) / 9)", rollData)).toBe(4);
   });
 });
+
+describe("splatbook bloodrager bloodline fixtures (hand-computed)", () => {
+  // Kyton (Blood of Shadows): Armor of Chains at 8th is cold resistance 5
+  // and a +4 armor bonus to AC; at 16th both double (10 and +8).
+  it("a Kyton bloodrager L8 gets cold resistance 5 and a +4 armor bonus", () => {
+    const doc = makeBloodrager(8, "Kyton");
+    const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+    expect(mods.find((m) => m.target === "eres.cold")!.value).toBe(5);
+    const ac = mods.find(
+      (m) => m.target === "ac" && m.sourceId?.startsWith("bloodragerBloodline:"),
+    )!;
+    expect(ac.value).toBe(4);
+    expect(ac.type).toBe("armor");
+  });
+
+  it("a Kyton bloodrager L20 gets DR 10/good-and-silver from Kyton Immunities", () => {
+    const doc = makeBloodrager(20, "Kyton");
+    const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+    expect(mods.find((m) => m.target === "dr.good-and-silver")!.value).toBe(10);
+  });
+
+  // Sphinx (Heroes of Golarion): Master of Mysteries at 16th is SR equal to
+  // 11 + bloodrager level (27 at 16th).
+  it("a Sphinx bloodrager L16 gets SR 27", () => {
+    const doc = makeBloodrager(16, "Sphinx");
+    const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+    expect(mods.find((m) => m.target === "spellResist")!.value).toBe(27);
+  });
+
+  // Aquatic (Advanced Class Origins): Aquatic Adaptation's swim speed only
+  // becomes constant at 12th (below that it exists solely while
+  // bloodraging, which the static sheet doesn't model).
+  it("an Aquatic bloodrager gets no standing swim speed at L8 but swim 30 at L12", () => {
+    const low = makeBloodrager(8, "Aquatic");
+    const lowMods = collectModifiers(low, ref, buildRollData(low, ref));
+    expect(lowMods.find((m) => m.target === "swimSpeed")!.value).toBe(0);
+    const high = makeBloodrager(12, "Aquatic");
+    const highMods = collectModifiers(high, ref, buildRollData(high, ref));
+    expect(highMods.find((m) => m.target === "swimSpeed")!.value).toBe(30);
+  });
+});
