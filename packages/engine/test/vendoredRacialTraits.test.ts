@@ -12,10 +12,16 @@
 
 import { describe, expect, it } from "bun:test";
 
-import type { CharacterDoc } from "@pf1/schema";
+import type { AbilityId, CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute, deriveResourcePools, VENDORED_STANDARD_TRAIT_TARGETS } from "../src/index.js";
+import {
+  compute,
+  deriveResourcePools,
+  FLEXIBLE_ABILITY_SUPPRESS_TARGET,
+  vendoredTraitSuppressTargets,
+  VENDORED_STANDARD_TRAIT_TARGETS,
+} from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -67,6 +73,11 @@ function makeDoc(
       resources: {},
     },
   };
+}
+
+/** Sets a player-picked flexible +2 ability (Human/Half-Elf/Half-Orc) on a fixture doc. */
+function withFlexibleAbility(doc: CharacterDoc, ability: AbilityId): CharacterDoc {
+  return { ...doc, identity: { ...doc.identity, flexibleAbility: ability } };
 }
 
 describe("Oread Granite Skin (vendored, +1 racial natural armor, issue #74 Phase 6)", () => {
@@ -144,6 +155,98 @@ describe("Half-Elf Kindred-Raised open change (issue #102)", () => {
     const picked = compute(makeDoc("Human", [dualTalent], { [dualTalent]: ["", "wis"] }), ref);
     expect(picked.abilities.wis.total).toBe(base.abilities.wis.total + 2);
     expect(picked.abilities.str.total).toBe(base.abilities.str.total);
+  });
+});
+
+describe("Half-Elf / Half-Orc flexible +2 suppression (Ability Score Modifiers key, issue #35 follow-up)", () => {
+  it("Half-Elf Kindred-Raised retires the flexible +2 and drops adaptability/elven immunities/keen senses", () => {
+    // Kindred-Raised: "This racial trait replaces the half-elf's usual
+    // racial ability score modifiers, as well as adaptability, elven
+    // immunities, keen senses, and multitalented." Without the trait, a
+    // player-chosen flexible +2 (here Str) lands as normal.
+    const kindredRaised = traitId("Kindred-Raised");
+    const base = compute(withFlexibleAbility(makeDoc("Half-Elf"), "str"), ref);
+    expect(base.abilities.str.total).toBe(12);
+    expect(base.skills["per"]!.total).toBeGreaterThan(0);
+    expect(base.defenses?.effectImmunities?.some((i) => i.qualifier === "magicSleep")).toBe(true);
+
+    const picked = compute(withFlexibleAbility(makeDoc("Half-Elf", [kindredRaised]), "str"), ref);
+    // The flexible +2 to Str no longer applies...
+    expect(picked.abilities.str.total).toBe(10);
+    // ...but Kindred-Raised's own fixed +2 Cha still lands.
+    expect(picked.abilities.cha.total).toBe(base.abilities.cha.total + 2);
+    // Keen Senses' +2 Perception and Elven Immunities' magic-sleep immunity
+    // are also retired.
+    expect(picked.skills["per"]!.total).toBe(base.skills["per"]!.total - 2);
+    expect(picked.defenses?.effectImmunities ?? []).toEqual([]);
+  });
+
+  it("Half-Orc Orc Atavism retires the flexible +2 and drops intimidating, but its own Str +2 and open mental penalty land", () => {
+    // Orc Atavism: "This racial trait replaces the half-orc's usual racial
+    // ability score modifiers, as well as intimidating, orc blood, and orc
+    // ferocity. They gain a +2 bonus to Strength and a -2 penalty to one
+    // mental ability score of their choice."
+    // Flexible ability picked as Dex (not Str/Wis/Int/Cha) so it never
+    // overlaps with Orc Atavism's own changes or Intimidate's key ability
+    // (Cha) and so isolates the suppression's effect cleanly.
+    const orcAtavism = traitId("Orc Atavism");
+    const base = compute(withFlexibleAbility(makeDoc("Half-Orc"), "dex"), ref);
+    expect(base.abilities.dex.total).toBe(12);
+    expect(base.skills["int"]!.total).toBeGreaterThan(0);
+
+    const picked = compute(
+      withFlexibleAbility(makeDoc("Half-Orc", [orcAtavism], { [orcAtavism]: ["wis"] }), "dex"),
+      ref,
+    );
+    // The flexible +2 to Dex no longer applies...
+    expect(picked.abilities.dex.total).toBe(10);
+    // ...but Orc Atavism's own fixed +2 Str and chosen -2 Wis still land.
+    expect(picked.abilities.str.total).toBe(base.abilities.str.total + 2);
+    expect(picked.abilities.wis.total).toBe(base.abilities.wis.total - 2);
+    // Intimidating's +2 Intimidate is retired too.
+    expect(picked.skills["int"]!.total).toBe(base.skills["int"]!.total - 2);
+  });
+
+  it("a non-replacing Half-Orc alternate leaves the flexible +2 intact", () => {
+    // Scavenger only names Intimidating in `replacedTraitNames` — it never
+    // touches "Ability Score Modifiers", so the flexible +2 keeps applying
+    // alongside it.
+    const scavenger = traitId("Scavenger");
+    expect(vendoredTraitSuppressTargets(ref.racialTraits[scavenger]!, "Half-Orc")).not.toContain(
+      FLEXIBLE_ABILITY_SUPPRESS_TARGET,
+    );
+    const base = compute(withFlexibleAbility(makeDoc("Half-Orc"), "dex"), ref);
+    const picked = compute(withFlexibleAbility(makeDoc("Half-Orc", [scavenger]), "dex"), ref);
+    expect(picked.abilities.dex.total).toBe(base.abilities.dex.total);
+    expect(picked.abilities.dex.total).toBe(12);
+  });
+
+  it("an unrelated race's flexible +2 (Human) is unaffected by the sentinel key", () => {
+    // Human's vendored literal for the flexible +2 is "+2 to One Ability
+    // Score", not "Ability Score Modifiers" — the two keys are independent,
+    // and a Human doc with no alternate picked is never gated.
+    expect(VENDORED_STANDARD_TRAIT_TARGETS["Human"]?.["Ability Score Modifiers"]).toBeUndefined();
+    const base = compute(withFlexibleAbility(makeDoc("Human"), "wis"), ref);
+    expect(base.abilities.wis.total).toBe(12);
+  });
+
+  it("Human Dual Talent retires the flexible +2 while its own two chosen +2s land", () => {
+    // Dual Talent: "This racial trait replaces the +2 bonus to any one
+    // ability score, the bonus feat, and the skilled traits." Its own two
+    // +2s are open changes targeted via `vendoredRacialTraitTargets`.
+    const dualTalent = traitId("Dual Talent");
+    const base = compute(withFlexibleAbility(makeDoc("Human"), "dex"), ref);
+    expect(base.abilities.dex.total).toBe(12);
+
+    const picked = compute(
+      withFlexibleAbility(makeDoc("Human", [dualTalent], { [dualTalent]: ["str", "wis"] }), "dex"),
+      ref,
+    );
+    // The flexible +2 to Dex no longer applies...
+    expect(picked.abilities.dex.total).toBe(10);
+    // ...while Dual Talent's own chosen +2 Str / +2 Wis both land.
+    expect(picked.abilities.str.total).toBe(base.abilities.str.total + 2);
+    expect(picked.abilities.wis.total).toBe(base.abilities.wis.total + 2);
   });
 });
 
@@ -434,6 +537,8 @@ describe("featured-race vendored suppression (issue #74 Phase 6)", () => {
       "Gathlain",
       "Ghoran",
       "Goblin",
+      "Half-Elf",
+      "Half-Orc",
       "Hobgoblin",
       "Human",
       "Ifrit",

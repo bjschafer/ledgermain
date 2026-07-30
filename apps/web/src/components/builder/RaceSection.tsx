@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
-import { raceGrantsFlexibleAbility } from "@pf1/engine";
+import { FLEXIBLE_ABILITY_SUPPRESS_TARGET, raceGrantsFlexibleAbility } from "@pf1/engine";
 import { ABILITY_IDS } from "@pf1/schema";
 
 import { setBonusLanguages, setFlexibleAbility, setRace } from "../../model/doc.js";
@@ -15,6 +15,7 @@ import {
   availableRacialTraits,
   conflictingRacialTraitIds,
   hasRacialTrait,
+  suppressedRaceTargets,
   toggleRacialTrait,
 } from "../../model/racialTraits.js";
 import { groupRacesByRarity, type Rarity } from "../../model/rarity.js";
@@ -91,6 +92,9 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   const searchActive = query.trim().length > 0;
   const selected = refData.races[doc.identity.race];
   const flexible = selected ? raceGrantsFlexibleAbility(selected) : false;
+  const flexibleSuppressed = suppressedRaceTargets(doc, refData).has(
+    FLEXIBLE_ABILITY_SUPPRESS_TARGET,
+  );
   const racialTraits = availableRacialTraits(doc, refData);
   const racialTraitConflicts = conflictingRacialTraitIds(doc, refData);
   const pendingRace = pendingRaceId != null ? refData.races[pendingRaceId] : undefined;
@@ -194,13 +198,25 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
       )}
       {flexible && (
         <div style={{ marginTop: 12 }}>
-          <p className="hint">+2 to an ability of your choice</p>
+          <p className="hint">
+            +2 to an ability of your choice
+            {flexibleSuppressed ? (
+              <span
+                className="soft"
+                style={{ marginLeft: 6 }}
+                title="An active alternate racial trait replaces this bonus with a fixed ability change instead."
+              >
+                ⚠ retired by an active alternate racial trait
+              </span>
+            ) : null}
+          </p>
           <div className="chips" style={{ marginTop: 6 }}>
             {ABILITY_IDS.map((id) => (
               <button
                 key={id}
                 type="button"
                 className="chip"
+                disabled={flexibleSuppressed}
                 aria-pressed={doc.identity.flexibleAbility === id}
                 onClick={() =>
                   update((d) =>

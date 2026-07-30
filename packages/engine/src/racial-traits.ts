@@ -620,6 +620,21 @@ export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boo
   return !slowAndSteadySuppressedBy(activeRacialTraits);
 }
 
+/* -------------------------------------------------- flexible ability +2 --- */
+
+/**
+ * Virtual `suppressTargets`/`VENDORED_STANDARD_TRAIT_TARGETS` entry an
+ * alternate racial trait can use to retire the flexible +2 ability bonus
+ * (Human/Half-Elf/Half-Orc's player-chosen `doc.identity.flexibleAbility`,
+ * granted by `tables.ts`'s `raceGrantsFlexibleAbility`). Not a real `Change`
+ * target, same posture as {@link SLOW_AND_STEADY_SUPPRESS_TARGET} above: the
+ * flexible +2 is pushed directly in `collect.ts` from
+ * `doc.identity.flexibleAbility` rather than a `Race.changes` entry (there is
+ * no vendored target to suppress by name), so only that push site reads this
+ * sentinel out of the `suppressed` set — never `evalChange`.
+ */
+export const FLEXIBLE_ABILITY_SUPPRESS_TARGET = "flexibleAbility";
+
 /* ------------------- vendored alternate-trait suppression (issue #74) ------ */
 
 /**
@@ -680,8 +695,9 @@ export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boo
  *     (which the pack's `replacedTraitNames` misspell "Nature Magic"),
  *     Past-Life Knowledge / Past Life Knowledge and Kasatha's Stalker
  *     (class-skill grants), Aphorite's Skilled and Samsaran's Shards of the
- *     Past (player-chosen skills, no fixed target)): no structured change
- *     to drop. Fetchling's "Shadowy Resistance" belongs here too despite
+ *     Past (player-chosen skills, no fixed target), Half-Elf's Multitalented,
+ *     Elf Blood, and Bonus Languages, and Half-Orc's Orc Ferocity and Orc
+ *     Blood): no structured change to drop. Fetchling's "Shadowy Resistance" belongs here too despite
  *     naming a resistance in prose (cold/electricity 5) — this vendored
  *     slice carries no `eres.cold`/`eres.electricity` change for Fetchling
  *     at all, so there's nothing to suppress. Suli's "Energy Resistance" is
@@ -789,6 +805,23 @@ export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boo
  * and the net effect is exactly the published "no Constitution penalty,
  * slower speeds." Mapping only `con` would instead double-display Cha/Dex
  * (and double-count Dex, whose replacement is typed `base`, not `racial`).
+ *
+ * Half-Elf and Half-Orc's "Ability Score Modifiers" key is a different shape
+ * again: neither race's flexible +2 is a `Race.changes` entry at all (it's
+ * `doc.identity.flexibleAbility`, pushed directly in `collect.ts` — see
+ * {@link FLEXIBLE_ABILITY_SUPPRESS_TARGET}), so there is no real target to
+ * suppress. The key instead names that sentinel, gating the flexible-+2 push
+ * itself rather than dropping a `Race.changes` entry. Verified against the
+ * two vendored entries that name it: Half-Elf's Kindred-Raised ("This
+ * racial trait replaces the half-elf's usual racial ability score
+ * modifiers, as well as adaptability, elven immunities, keen senses, and
+ * multitalented.") and Half-Orc's Orc Atavism ("This racial trait replaces
+ * the half-orc's usual racial ability score modifiers, as well as
+ * intimidating, orc blood, and orc ferocity."). Human's flexible +2 is the
+ * same shape under a different vendored literal, "+2 to One Ability Score"
+ * (named by Dual Talent and Versatile Human: "This racial trait replaces
+ * the +2 bonus to any one ability score, the bonus feat, and the skilled
+ * traits."), so that key carries the sentinel too.
  */
 export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
   Record<string, Readonly<Record<string, readonly string[]>>>
@@ -881,6 +914,19 @@ export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
   Human: {
     "Bonus Feat": ["bonusFeats"],
     Skilled: ["bonusSkillRanks"],
+    "+2 to One Ability Score": [FLEXIBLE_ABILITY_SUPPRESS_TARGET],
+  },
+  "Half-Elf": {
+    Adaptability: ["bonusFeats"],
+    "Keen Senses": ["skill.per"],
+    "Elven Immunities": ["immEffect.magicSleep"],
+    "Low-Light Vision": ["sensell"],
+    "Ability Score Modifiers": [FLEXIBLE_ABILITY_SUPPRESS_TARGET],
+  },
+  "Half-Orc": {
+    Intimidating: ["skill.int"],
+    Darkvision: ["sensedv"],
+    "Ability Score Modifiers": [FLEXIBLE_ABILITY_SUPPRESS_TARGET],
   },
   Changeling: {
     "Ability Score Modifiers": ["cha", "con", "wis"],

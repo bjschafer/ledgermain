@@ -30,7 +30,11 @@ import { ORACLE_CURSES } from "./oracle-curses.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { polymorphFormOption } from "./polymorph.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
-import { RACIAL_TRAITS, vendoredTraitSuppressTargets } from "./racial-traits.js";
+import {
+  FLEXIBLE_ABILITY_SUPPRESS_TARGET,
+  RACIAL_TRAITS,
+  vendoredTraitSuppressTargets,
+} from "./racial-traits.js";
 import { resolveInvestigatorTalent } from "./investigator-talents.js";
 import { resolveNinjaTrick } from "./ninja-tricks.js";
 import { resolveRagePower } from "./rage-powers.js";
@@ -200,8 +204,16 @@ export function collectModifiers(
       evalChange(ch.formula, rollData, ch.target, ch.type, race.name, race.id, out, ch.operator);
     }
     // Flexible +2 (Human / Half-Elf / Half-Orc): no fixed ability changes,
-    // player picks one ability score at character creation.
-    if (raceGrantsFlexibleAbility(race) && doc.identity.flexibleAbility) {
+    // player picks one ability score at character creation. An alternate
+    // racial trait that RAW-replaces this bonus with a fixed one (Half-Orc
+    // Orc Atavism, Half-Elf Kindred-Raised) suppresses it via the
+    // `FLEXIBLE_ABILITY_SUPPRESS_TARGET` sentinel — not a real `Change`
+    // target, so it's checked here rather than in the `ch.target` loop above.
+    if (
+      raceGrantsFlexibleAbility(race) &&
+      doc.identity.flexibleAbility &&
+      !suppressed.has(FLEXIBLE_ABILITY_SUPPRESS_TARGET)
+    ) {
       out.push({
         target: doc.identity.flexibleAbility,
         type: "racial",
