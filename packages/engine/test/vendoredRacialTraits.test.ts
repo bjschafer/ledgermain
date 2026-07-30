@@ -3,9 +3,9 @@
  * (issue #74, `RefData.racialTraits`) — distinct from the
  * hand-authored 8-race `RACIAL_TRAITS` table covered by `racial-traits.test.ts`.
  * A vendored pick's `changes[]` apply; whether the race's standard `Change`s
- * are suppressed alongside depends on the race: the six featured races in
+ * are suppressed alongside depends on the race: races in
  * `VENDORED_STANDARD_TRAIT_TARGETS` drop the replaced standard trait's
- * verified targets (Phase 6 fixtures below), every other race keeps the
+ * verified targets (fixtures below), every other race keeps the
  * historical apply-on-top posture (see `RacialTrait`'s doc comment in
  * `@pf1/schema`), which the Granite Skin fixtures prove.
  */
@@ -25,8 +25,10 @@ function raceId(name: string): string {
   return entry[0];
 }
 
-function traitId(name: string): string {
-  const entry = Object.values(ref.racialTraits).find((t) => t.name === name);
+function traitId(name: string, race?: string): string {
+  const entry = Object.values(ref.racialTraits).find(
+    (t) => t.name === name && (race == null || [t.race].flat().includes(race)),
+  );
   if (!entry) throw new Error(`vendored racial trait not found: ${name}`);
   return entry.id;
 }
@@ -405,44 +407,56 @@ describe("featured-race vendored suppression (issue #74 Phase 6)", () => {
     expect(withTrait.abilities.int.total).toBe(base.abilities.int.total);
   });
 
-  it("an unmapped race keeps the historical apply-on-top posture (Duskwalker Fosterling)", () => {
-    // Duskwalker has no `VENDORED_STANDARD_TRAIT_TARGETS` entry. Its standard
-    // Skilled grants +2 Heal/+2 Knowledge (religion); Fosterling does name
-    // `replacedTraitNames: ["Skilled"]`, but `vendoredTraitSuppressTargets`
-    // looks that name up in `VENDORED_STANDARD_TRAIT_TARGETS["Duskwalker"]`,
-    // which doesn't exist — so the lookup is empty regardless, and its own
-    // +2 Handle Animal/+2 Diplomacy stack on top of the untouched standard
-    // bonuses, the historical (pre-Phase-6) posture for every unmapped race.
-    expect(VENDORED_STANDARD_TRAIT_TARGETS["Duskwalker"]).toBeUndefined();
-    const base = compute(makeDoc("Duskwalker"), ref);
-    const withTrait = compute(makeDoc("Duskwalker", [traitId("Fosterling")]), ref);
-    expect(withTrait.skills["hea"]!.total).toBe(base.skills["hea"]!.total);
-    expect(withTrait.skills["han"]!.total).toBe(base.skills["han"]!.total + 2);
-    expect(withTrait.skills["dip"]!.total).toBe(base.skills["dip"]!.total + 2);
+  it("an unmapped race keeps the historical apply-on-top posture (Kasatha Stealthy)", () => {
+    // Kasatha has no `VENDORED_STANDARD_TRAIT_TARGETS` entry. Stealthy names
+    // `replacedTraitNames: ["Jumper", "Stalker"]`, but both replaced traits
+    // are prose-only (a conditional jump bonus; a class-skill grant), so
+    // there is nothing to suppress and its own +2 Stealth lands on top of
+    // the untouched standard changes, the posture for every unmapped race.
+    expect(VENDORED_STANDARD_TRAIT_TARGETS["Kasatha"]).toBeUndefined();
+    const base = compute(makeDoc("Kasatha"), ref);
+    const withTrait = compute(makeDoc("Kasatha", [traitId("Stealthy", "Kasatha")]), ref);
+    expect(withTrait.skills["ste"]!.total).toBe(base.skills["ste"]!.total + 2);
+    expect(withTrait.ac.normal).toBe(base.ac.normal);
   });
 
-  it("pins the full set of mapped featured races (issue #74 Phase 6 follow-up)", () => {
+  it("pins the full set of mapped races", () => {
     expect(Object.keys(VENDORED_STANDARD_TRAIT_TARGETS).sort()).toEqual([
       "Aasimar",
+      "Aquatic Elf",
       "Catfolk",
       "Changeling",
       "Dhampir",
       "Drow",
       "Duergar",
+      "Duskwalker",
       "Fetchling",
       "Gathlain",
+      "Ghoran",
       "Goblin",
       "Hobgoblin",
       "Ifrit",
       "Kitsune",
       "Kobold",
+      "Locathah",
+      "Merfolk",
+      "Nagaji",
       "Oread",
       "Ratfolk",
+      "Shabti",
       "Skinwalker",
+      "Suli",
+      "Svirfneblin",
+      "Sylph",
       "Tengu",
       "Tiefling",
       "Undine",
+      "Vanara",
       "Vine Leshy",
+      "Vishkanya",
+      "Wayang",
+      "Wyrwood",
+      "Wyvaran",
     ]);
   });
 });
@@ -523,5 +537,67 @@ describe("Skinwalker / Changeling / Gathlain suppression (issue #74, messy-race 
     expect(withTrait.abilities.dex.total).toBe(base.abilities.dex.total);
     expect(withTrait.speeds.land).toBe(20);
     expect(withTrait.speeds.fly).toBe(30);
+  });
+});
+
+describe("uncommon-race vendored suppression (issue #74)", () => {
+  it("Vanara Acrobatic: Nimble's +2 Stealth drops, its own Acrobatics/Escape Artist land", () => {
+    // Standard Nimble: +2 Acrobatics/+2 Stealth. Acrobatic re-supplies the
+    // +2 Acrobatics itself, so the net effect is Stealth for Escape Artist.
+    const base = compute(makeDoc("Vanara"), ref);
+    const withTrait = compute(makeDoc("Vanara", [traitId("Acrobatic (Vanara)")]), ref);
+    expect(withTrait.skills["acr"]!.total).toBe(base.skills["acr"]!.total);
+    expect(withTrait.skills["ste"]!.total).toBe(base.skills["ste"]!.total - 2);
+    expect(withTrait.skills["esc"]!.total).toBe(base.skills["esc"]!.total + 2);
+  });
+
+  it("Svirfneblin Healthy: Fortunate's +2 on all saves drops", () => {
+    // Healthy's own +4 vs. disease/poison is conditional prose; the traded
+    // Fortunate is the structured +2 racial on every save.
+    const base = compute(makeDoc("Svirfneblin"), ref);
+    const withTrait = compute(makeDoc("Svirfneblin", [traitId("Healthy", "Svirfneblin")]), ref);
+    expect(withTrait.saves.fort.total).toBe(base.saves.fort.total - 2);
+    expect(withTrait.saves.ref.total).toBe(base.saves.ref.total - 2);
+    expect(withTrait.saves.will.total).toBe(base.saves.will.total - 2);
+  });
+
+  it("Wayang In the Shadows: Lurker's +2 Perception/Stealth drops", () => {
+    const base = compute(makeDoc("Wayang"), ref);
+    const withTrait = compute(makeDoc("Wayang", [traitId("In the Shadows")]), ref);
+    expect(withTrait.skills["per"]!.total).toBe(base.skills["per"]!.total - 2);
+    expect(withTrait.skills["ste"]!.total).toBe(base.skills["ste"]!.total - 2);
+  });
+
+  it("Aquatic Elf Deep Sea Dweller: low-light vision and the magic-sleep immunity drop, darkvision 60 lands", () => {
+    const base = compute(makeDoc("Aquatic Elf"), ref);
+    expect(base.senses.some((s) => s.kind === "lowLight")).toBe(true);
+    expect(base.defenses?.effectImmunities?.some((i) => i.qualifier === "magicSleep")).toBe(true);
+    const withTrait = compute(makeDoc("Aquatic Elf", [traitId("Deep Sea Dweller")]), ref);
+    expect(withTrait.senses.some((s) => s.kind === "lowLight")).toBe(false);
+    expect(withTrait.senses.some((s) => s.label === "Darkvision" && s.range === 60)).toBe(true);
+    expect(withTrait.defenses?.effectImmunities ?? []).toEqual([]);
+  });
+
+  it("Merfolk Secret Magic: Armor's +2 natural armor drops", () => {
+    const base = compute(makeDoc("Merfolk"), ref);
+    const withTrait = compute(makeDoc("Merfolk", [traitId("Secret Magic")]), ref);
+    expect(withTrait.ac.flatFooted).toBe(base.ac.flatFooted - 2);
+    expect(withTrait.ac.touch).toBe(base.ac.touch);
+  });
+
+  it("Shabti Facsimile: the undeath-transform immunity drops", () => {
+    const base = compute(makeDoc("Shabti"), ref);
+    expect(base.defenses?.effectImmunities?.some((i) => i.qualifier === "undeath")).toBe(true);
+    const withTrait = compute(makeDoc("Shabti", [traitId("Facsimile")]), ref);
+    expect(withTrait.defenses?.effectImmunities ?? []).toEqual([]);
+  });
+
+  it("Duskwalker Fosterling: Skilled's +2 Heal/Knowledge (religion) drops, +2 Handle Animal/Diplomacy lands", () => {
+    const base = compute(makeDoc("Duskwalker"), ref);
+    const withTrait = compute(makeDoc("Duskwalker", [traitId("Fosterling")]), ref);
+    expect(withTrait.skills["hea"]!.total).toBe(base.skills["hea"]!.total - 2);
+    expect(withTrait.skills["kre"]!.total).toBe(base.skills["kre"]!.total - 2);
+    expect(withTrait.skills["han"]!.total).toBe(base.skills["han"]!.total + 2);
+    expect(withTrait.skills["dip"]!.total).toBe(base.skills["dip"]!.total + 2);
   });
 });

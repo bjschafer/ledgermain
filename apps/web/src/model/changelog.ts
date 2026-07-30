@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-30-alternate-trait-swaps-enforced-everywhere",
+    date: "2026-07-30",
+    title: "Alternate racial traits retire what they replace, for every race",
+    note: "Picking an alternate racial trait already applied its own bonuses; for most of the rarer races, the standard trait it replaced also kept applying. Fifteen more races now retire the replaced trait's numbers properly, Sylph and Merfolk through Svirfneblin, Wayang, and Vishkanya, closing real double-counts like an Acrobatic vanara keeping Nimble's Stealth bonus or a Healthy svirfneblin keeping Fortunate's +2 on every save. Every race whose standard traits carry sheet numbers is covered; a swap that only trades away a situational reminder line still leaves the reminder showing.",
+  },
+  {
     id: "2026-07-30-every-shaman-spirit-fully-in",
     date: "2026-07-30",
     title: "Every shaman spirit is fully in, top to bottom",

@@ -106,9 +106,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
     category: "Alternate racial traits",
     group: "not-modeled",
-    note: "Every race's published alternates are browsable, and picking one applies whatever bonuses it spells out as numbers. What differs is the trade. For twenty-eight races, taking an alternate also retires the standard trait it replaces. For every other race the swap is yours to make: the entry names what it replaces, but nothing takes that standard trait away for you, and a heritage's different ability-score spread stays yours to apply.",
+    note: "Every race's published alternates are browsable, and picking one applies the bonuses it spells out as numbers while retiring the replaced standard trait's numbers. Two trades stay yours to make by hand: a heritage's different ability-score spread, and a swap whose replaced trait is a situational reminder line rather than a number (the reminder stays on your sheet).",
     issueDetail:
-      "860 vendored across all 80 races, 252 of them carrying structured changes that collect.ts applies live. Replacement enforcement reaches 28 races through a verified standard-trait-name to change-target map. Elsewhere the vendored entries name a replaced trait with no verified target, so they apply on top. Deliberate non-mappings are documented at the map.",
+      "860 vendored across all 80 races, 252 carrying structured changes applied live. The name-to-target map reaches every race whose replaced standard traits have structured targets; deliberate non-mappings are documented at the map. Unreachable: heritage ability-score swaps (no structured replacement arrays) and replaced traits modeled only as context notes.",
   },
   {
     category: "Character traits",

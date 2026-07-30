@@ -642,24 +642,51 @@ export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boo
  *     risk compounding it.
  *   - Prose-only standard traits (Spell-Like Ability, Fiendish Sorcery,
  *     Swordtrained, Natural Weapon, Kitsune Magic, Swarming, Rodent Empathy,
- *     Light Sensitivity, Languages, Subtype/Type, Fire/Earth/Water Affinity,
- *     Cat's Luck, Change Shape, Verdant Burst, Pass without Trace,
- *     Plantspeech, Poison Use, Shadow Blending): no structured change to
- *     drop. Fetchling's "Shadowy Resistance" belongs here too despite
+ *     Light Sensitivity, Languages, Subtype/Type, Fire/Earth/Water/Air
+ *     Affinity, Cat's Luck, Change Shape, Verdant Burst, Pass without Trace,
+ *     Plantspeech, Poison Use, Shadow Blending, Ferocity, Weapon
+ *     Familiarity, Elemental Assault, Blood Frenzy, Speak with Sharks, Ink
+ *     Cloud, Tentacle Sense, Frenzy, Seasoned, Lifebound, Nanite Surge,
+ *     Ganzi Oddity, Water Dependent, Amphibious, Swamp Stride, Slapping
+ *     Tail, Shadow Magic, Light and Dark, Seed, Ghoran's Natural Magic
+ *     (which the pack's `replacedTraitNames` misspell "Nature Magic"),
+ *     Past-Life Knowledge / Past Life Knowledge and Kasatha's Stalker
+ *     (class-skill grants), Aphorite's Skilled and Samsaran's Shards of the
+ *     Past (player-chosen skills, no fixed target)): no structured change
+ *     to drop. Fetchling's "Shadowy Resistance" belongs here too despite
  *     naming a resistance in prose (cold/electricity 5) — this vendored
  *     slice carries no `eres.cold`/`eres.electricity` change for Fetchling
- *     at all, so there's nothing to suppress.
+ *     at all, so there's nothing to suppress. Suli's "Energy Resistance" is
+ *     the same story: the published trait grants acid/cold/electricity/fire
+ *     5, but Suli's vendored `Race.changes` carry no `eres.*` at all.
  *   - Ratfolk "Slow Speed" (Surface Sprinter), Goblin "Fast Movement",
- *     Hobgoblin "Normal Speed", Catfolk "Sprinter": base/bonus speed reads
- *     off `Race.speeds`, not a change target.
+ *     Hobgoblin "Normal Speed", Catfolk "Sprinter", Wyvaran "Flight",
+ *     Vanara "Normal Speed" (its climb speed), Locathah "Fast Swimmer" and
+ *     "Slow Speed", Merfolk "Slow Speed" (Strongtail), Trox "Burrow":
+ *     base/bonus speed reads off `Race.speeds`, not a change target.
+ *     Alternates that state their own new speeds (Tree Stranger, Strongtail,
+ *     Secret Magic, Strong Limbs) ship `set`-operator `landSpeed`/
+ *     `swimSpeed` changes that already override correctly on their own.
  *   - Ratfolk "Tinker"'s Craft (alchemy) half and Kobold "Crafty"'s Craft
  *     (trapmaking)/Profession (miner) halves: the vendored race changes only
  *     carry the Perception (and, for Ratfolk, UMD) half as a structured
- *     target, so that's what suppression can honestly drop.
+ *     target, so that's what suppression can honestly drop. Same
+ *     partial-halves shape: Ghoran "Delicious" (the Escape Artist -2 is
+ *     structured, the CMB-to-escape-grapples half has no target), Nagaji
+ *     "Serpent's Sense" (Perception is structured, the vs.-reptiles Handle
+ *     Animal half is a contextNote), Duskwalker "Ward against Corruption"
+ *     (the undeath-transform immunity is structured, the +2 save vs.
+ *     negative energy/death effects is a contextNote).
  *   - Duergar "Stability" and Vine Leshy "Unassuming Foliage": both are
  *     modeled as a `Race.contextNotes` line (+4 CMD vs. bull rush/trip;
  *     +4 Stealth in forests), not a `Race.changes` entry — this suppression
  *     mechanism only reaches `changes` targets, so it can't touch either.
+ *     Also contextNotes-only, audited the same way: Gillman "Enchantment
+ *     Resistance", Grippli "Camouflage", Strix "Nocturnal" and "Suspicious",
+ *     Wayang "Shadow Resistance", Nagaji "Resistant", Syrinx "Nocturnal" and
+ *     "Pride", Svirfneblin "Hatred", Aquatic Elf "Elven Magic", and
+ *     "Aphorite Resistances" (whose electricity resistance 5 is folded into
+ *     the same save note rather than an `eres` change).
  *   - Drow "Spell Resistance": the vendored `Race` record carries no `sr`
  *     field at all (SR isn't modeled as a structured value anywhere in this
  *     slice), so there is nothing for suppression to drop; alternates that
@@ -697,6 +724,13 @@ export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boo
  * same `skill.per` target. Likewise Drow's "Darkvision" (named by Surface
  * Infiltrator) is this race's actual "Superior Darkvision" trait; the pack
  * just doesn't say "Superior" there, unlike Duergar's Daysighted which does.
+ *
+ * One outright pack mislabel, harmless either way: Strix Wing-Clipped's
+ * `replacedTraitNames` say "Normal Speed", but the published text replaces
+ * Suspicious (verified on two mirrors; there is no speed-replacement
+ * language at all). Neither key would suppress anything — Suspicious is
+ * contextNotes-only and base speed isn't a change target — so the wrong
+ * label costs nothing, but don't mistake it for a real speed swap.
  *
  * Vine Leshy's "Ability Scores" (named by Agile) is the one heritage-shaped
  * exception to the Base Statistics rule above: unlike every other race's
@@ -818,6 +852,65 @@ export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
     "Low-Light Vision": ["sensell"],
     // Tree-Born's full-replacement bundle — see the module doc comment.
     "Constitution Penalty": ["cha", "con", "dex"],
+  },
+  Sylph: {
+    "Energy Resistance": ["eres.electricity"],
+  },
+  Ghoran: {
+    "Natural Armor": ["nac"],
+    // The Escape Artist half only — see the partial-halves note above.
+    Delicious: ["skill.esc"],
+  },
+  Wyvaran: {
+    Darkvision: ["sensedv"],
+  },
+  Vanara: {
+    Nimble: ["skill.acr", "skill.ste"],
+  },
+  Locathah: {
+    "Low-Light Vision": ["sensell"],
+    "Natural Armor": ["nac"],
+  },
+  Shabti: {
+    "Immune to Undeath": ["immEffect.undeath"],
+  },
+  Merfolk: {
+    "Low-Light Vision": ["sensell"],
+    Armor: ["nac"],
+  },
+  Suli: {
+    "Low-Light Vision": ["sensell"],
+  },
+  Wyrwood: {
+    Darkvision: ["sensedv"],
+    "Low-Light Vision": ["sensell"],
+  },
+  Wayang: {
+    Lurker: ["skill.per", "skill.ste"],
+  },
+  Duskwalker: {
+    // The undeath-immunity half only — see the partial-halves note above.
+    "Ward against Corruption": ["immEffect.undeath"],
+    Skilled: ["skill.hea", "skill.kre"],
+  },
+  "Aquatic Elf": {
+    "Elven Immunities": ["immEffect.magicSleep"],
+    "Low-Light Vision": ["sensell"],
+    "Keen Senses": ["skill.per"],
+  },
+  Vishkanya: {
+    "Keen Senses": ["skill.per"],
+    "Low-Light Vision": ["sensell"],
+    // The pack's name for the Escape Artist half of Limber.
+    "Escape Artist Racial Bonus": ["skill.esc"],
+  },
+  Svirfneblin: {
+    Skilled: ["skill.ste", "skill.crf", "skill.per"],
+    Fortunate: ["allSavingThrows"],
+  },
+  Nagaji: {
+    // The Perception half only — see the partial-halves note above.
+    "Serpent's Sense": ["skill.per"],
   },
 };
 
