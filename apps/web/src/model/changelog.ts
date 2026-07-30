@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-29-every-bloodline-hand-authored",
+    date: "2026-07-29",
+    title: "Every sorcerer and bloodrager bloodline, fully powered",
+    note: 'All 51 published sorcerer bloodlines and all 24 bloodrager bloodlines now work like the core ones instead of showing raw rules text. Pick any of them and your sheet grants each bloodline power at the right level, restricts your Bloodline Feat choices to the bloodline\'s own list, and adds your bonus spells known on schedule, including hand-transcribed spell lists for eleven splatbook bloodlines that never carried them: Astral, Deep Earth, Naga, Phoenix, Possessed, Salamander, Scorpion, Shapechanger, Solar, Unicorn, and Vestige. Powers with unconditional numbers (capstone immunities and damage reduction, natural armor, energy resistances, uses-per-day pools) apply themselves; anything conditional shows on the power as text to apply at the table. The "M" badge in both bloodline pickers sharpened to match: it now marks the bloodlines that move real numbers or track uses on your sheet, since simply being written up no longer sets one apart.',
+  },
+  {
     id: "2026-07-29-capstone-immunities-and-new-eidolon-forms",
     date: "2026-07-29",
     title: "Capstone immunities land, and eidolons get three more base forms",

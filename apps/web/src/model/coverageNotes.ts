@@ -70,7 +70,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "All sixteen lists sit at full vendored parity (rage powers 243, rogue talents 234, alchemist discoveries 168, witch hexes 104, down to monk style strikes 15), so the gap is promotion rather than coverage: only 31 rage powers and a scattering of talents and discoveries carry live changes[]. Candidates blocked on a missing mechanism are recorded inline in their table files.",
   },
   {
-    category: "Bloodlines, spirits, disciplines, implements, orders, patrons, and shifter aspects",
+    category: "Spirits, disciplines, implements, orders, patrons, and shifter aspects",
     note: "The full published lists are browsable. Beyond the core-book ones, they show their rules text without wiring up the per-level powers you gain. That's deliberate, rather than inventing mechanics that might be wrong.",
   },
   {
