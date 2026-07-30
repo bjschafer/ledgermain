@@ -66,6 +66,7 @@ function makeEidolon(overrides: Partial<DerivedEidolon> = {}): DerivedEidolon {
     grantedEvolutions: [],
     abilityIncreaseSlots: 0,
     small: false,
+    formDefaultsSmall: false,
     ...overrides,
   };
 }

@@ -73,6 +73,22 @@ export function setEidolonSmall(doc: CharacterDoc, small: boolean): CharacterDoc
 }
 
 /**
+ * Toggle Avian/Tauric's own "spends 2 points to be Medium" sidebar option
+ * (`EidolonBuild.mediumSizeUpgrade`) — meaningful only when the current base
+ * form is Avian or Tauric (see that field's doc comment); harmless to set on
+ * any other form, since `@pf1/engine` `deriveEidolon` ignores it there. No-op
+ * if there's no eidolon yet.
+ */
+export function setEidolonMediumSizeUpgrade(
+  doc: CharacterDoc,
+  mediumSizeUpgrade: boolean,
+): CharacterDoc {
+  const current = doc.build.eidolon;
+  if (!current) return doc;
+  return { ...doc, build: { ...doc.build, eidolon: { ...current, mediumSizeUpgrade } } };
+}
+
+/**
  * Base-form ids to offer in the builder's picker for `doc`'s current eidolon
  * variant — filters out unchained-only forms (currently just Aberrant) for
  * a chained summoner, so the picker never offers an option that would

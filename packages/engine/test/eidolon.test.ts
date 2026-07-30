@@ -340,13 +340,14 @@ describe("deriveEidolon base-form variants", () => {
   // Player Companion: Cohorts and Companions p.9 (aonprd.com "Base Forms -
   // Eidolon"): "Speed 30 ft., fly 30 ft. (good); ... Saves Fort (bad), Ref
   // (good), Will (good); Attack 2 claws (1d3); ... Str 12, Dex 16, Con 13
-  // ...; Free Evolutions claws, flight, limbs (legs)". (The form's own note
-  // that it starts Small unless 2 evolution points are spent isn't modeled
-  // — see eidolon.ts's module doc comment.)
+  // ...; Free Evolutions claws, flight, limbs (legs)". `mediumSizeUpgrade` is
+  // set here so this fixture tests the form's Medium-baseline numbers same as
+  // every other base-form variant test in this describe block; the form's
+  // own default-Small state has its own dedicated describe block below.
   it("Avian: Ref/Will good, Fort poor; innate fly speed equal to land speed; 2 claws (1d3), no ×1.5 (2 total attacks)", () => {
     const doc = makeDoc({
       classes: [{ tag: "summoner", level: 1 }],
-      eidolon: { baseForm: "avian", name: "Skree", evolutions: [] },
+      eidolon: { baseForm: "avian", name: "Skree", evolutions: [], mediumSizeUpgrade: true },
     });
     const rollData = buildRollData(doc, ref);
     const eidolon = deriveEidolon(doc, rollData)!;
@@ -374,12 +375,12 @@ describe("deriveEidolon base-form variants", () => {
   // Player Companion: Cohorts and Companions p.9 (aonprd.com "Base Forms -
   // Eidolon"): "Speed 40 ft.; ... Saves Fort (good), Ref (bad), Will (good);
   // Attack 2 claws (1d4); ... Str 14, Dex 14, Con 13 ...; Free Evolutions
-  // claws, limbs (arms), limbs (legs) (2)". (Same unmodeled Small-unless-
-  // 2-points note as Avian's — see eidolon.ts's module doc comment.)
+  // claws, limbs (arms), limbs (legs) (2)". Same Medium-upgrade opt-in as
+  // Avian's fixture above, for the same reason.
   it("Tauric: Fort/Will good, Ref poor; land speed 40 with no other movement mode; 2 claws (1d4)", () => {
     const doc = makeDoc({
       classes: [{ tag: "summoner", level: 1 }],
-      eidolon: { baseForm: "tauric", name: "Centaur", evolutions: [] },
+      eidolon: { baseForm: "tauric", name: "Centaur", evolutions: [], mediumSizeUpgrade: true },
     });
     const rollData = buildRollData(doc, ref);
     const eidolon = deriveEidolon(doc, rollData)!;
@@ -588,5 +589,121 @@ describe("baseAbilities override (player-set starting scores)", () => {
     expect(deriveEidolon(empty, buildRollData(empty, ref))!.abilities).toEqual(
       deriveEidolon(raw, buildRollData(raw, ref))!.abilities,
     );
+  });
+});
+
+describe("deriveEidolon (Avian/Tauric default-Small sidebar rule, chained summoner-1)", () => {
+  // aonprd.com "Base Forms - Eidolon", Avian's own Size Note: "When summoned,
+  // an avian eidolon is Small unless it spends 2 points from its evolution
+  // pool." The form's single printed ability-score line (Str 12, Dex 16, Con
+  // 13) is unchanged either way — neither the Avian nor the Tauric sidebar
+  // text states an ability-score delta for the Small state, unlike the
+  // unrelated Pathfinder Unchained "Small eidolon" variant (`EidolonBuild.small`).
+  const doc = makeDoc({
+    classes: [{ tag: "summoner", level: 1 }],
+    eidolon: { baseForm: "avian", name: "Skree", evolutions: [] },
+  });
+  const eidolon = deriveEidolon(doc, buildRollData(doc, ref))!;
+
+  it("is Small by default, with 0 evolution points spent on the upgrade", () => {
+    expect(eidolon.size).toBe("sm");
+    expect(eidolon.formDefaultsSmall).toBe(true);
+    expect(eidolon.small).toBe(false); // the unrelated Unchained sidebar flag, not this rule
+    expect(eidolon.evolutionPointsSpent).toBe(0);
+  });
+
+  it("ability scores are the form's printed Str 12/Dex 16/Con 13, unaffected by being Small", () => {
+    expect(eidolon.abilities.str).toEqual({ score: 12, mod: 1 });
+    expect(eidolon.abilities.dex).toEqual({ score: 16, mod: 3 });
+    expect(eidolon.abilities.con).toEqual({ score: 13, mod: 1 });
+  });
+
+  it("AC/CMB/CMD carry the Small size modifier (base 10 + Dex 3 + size 1 = 14 AC; CMB +1; CMD 14)", () => {
+    expect(eidolon.ac.normal).toBe(14);
+    expect(eidolon.cmb).toBe(1);
+    expect(eidolon.cmd).toBe(14);
+  });
+
+  it("the free Claw attack's damage die steps down for Small (1d3 -> 1d2), attack roll includes the +1 size bonus", () => {
+    expect(eidolon.attacks).toHaveLength(1);
+    // baseAttackBonus = bab(1) + strMod(1) + sizeAcMod(1) = 3.
+    expect(eidolon.attacks[0]).toMatchObject({
+      name: "Claw",
+      count: 2,
+      attack: 3,
+      damageDice: "1d2",
+      damageBonus: 1,
+    });
+  });
+
+  it("Fly +2 / Stealth +4 size-based skill bonuses apply, same as any other Small creature", () => {
+    // dexMod(3) + racial(2) = 5 for Fly; dexMod(3) + racial(4) = 7 for Stealth.
+    expect(eidolon.skills.fly!.total).toBe(5);
+    expect(eidolon.skills.ste!.total).toBe(7);
+  });
+});
+
+describe("deriveEidolon (Avian/Tauric mediumSizeUpgrade — spends 2 points to be Medium)", () => {
+  const doc = makeDoc({
+    classes: [{ tag: "summoner", level: 1 }],
+    eidolon: {
+      baseForm: "avian",
+      name: "Skree",
+      evolutions: [],
+      mediumSizeUpgrade: true,
+    },
+  });
+  const eidolon = deriveEidolon(doc, buildRollData(doc, ref))!;
+
+  it("derives Medium, with the 2-point upgrade counted in evolutionPointsSpent", () => {
+    expect(eidolon.size).toBe("med");
+    expect(eidolon.formDefaultsSmall).toBe(false);
+    expect(eidolon.evolutionPointsSpent).toBe(2);
+    expect(eidolon.evolutionPointsAvailable).toBe(3); // the pool itself is untouched by the spend
+  });
+
+  it("ability scores are still the same printed Str 12/Dex 16/Con 13 — no delta for either size", () => {
+    expect(eidolon.abilities.str).toEqual({ score: 12, mod: 1 });
+    expect(eidolon.abilities.dex).toEqual({ score: 16, mod: 3 });
+    expect(eidolon.abilities.con).toEqual({ score: 13, mod: 1 });
+  });
+
+  it("AC/CMB/CMD/attacks drop the Small size bonus, and the claw damage die is back to its printed 1d3", () => {
+    expect(eidolon.ac.normal).toBe(13);
+    expect(eidolon.cmb).toBe(2);
+    expect(eidolon.cmd).toBe(15);
+    expect(eidolon.attacks[0]).toMatchObject({ attack: 2, damageDice: "1d3" });
+    expect(eidolon.skills.fly!.total).toBe(3); // dexMod(3) only, no size racial bonus
+  });
+
+  it("Tauric's own Size Note reads the same way (Str 14/Dex 14/Con 13 unchanged, Medium via the flag)", () => {
+    const tauric = makeDoc({
+      classes: [{ tag: "summoner", level: 1 }],
+      eidolon: { baseForm: "tauric", name: "Bront", evolutions: [], mediumSizeUpgrade: true },
+    });
+    const derived = deriveEidolon(tauric, buildRollData(tauric, ref))!;
+    expect(derived.size).toBe("med");
+    expect(derived.evolutionPointsSpent).toBe(2);
+    expect(derived.abilities.str).toEqual({ score: 14, mod: 2 });
+    expect(derived.attacks[0]).toMatchObject({ name: "Claw", damageDice: "1d4" });
+  });
+});
+
+describe("deriveEidolon (mediumSizeUpgrade is a no-op on any form other than Avian/Tauric)", () => {
+  it("a Biped with the flag set derives identically to one without it", () => {
+    const withFlag = makeDoc({
+      classes: [{ tag: "summoner", level: 1 }],
+      eidolon: { baseForm: "biped", name: "Grix", evolutions: [], mediumSizeUpgrade: true },
+    });
+    const withoutFlag = makeDoc({
+      classes: [{ tag: "summoner", level: 1 }],
+      eidolon: { baseForm: "biped", name: "Grix", evolutions: [] },
+    });
+    const a = deriveEidolon(withFlag, buildRollData(withFlag, ref));
+    const b = deriveEidolon(withoutFlag, buildRollData(withoutFlag, ref));
+    expect(a).toEqual(b);
+    expect(a!.size).toBe("med");
+    expect(a!.evolutionPointsSpent).toBe(0);
+    expect(a!.formDefaultsSmall).toBe(false);
   });
 });

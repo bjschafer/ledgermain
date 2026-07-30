@@ -33,6 +33,7 @@ import {
   setEidolonAbilityIncrease,
   setEidolonBaseAbility,
   setEidolonEvolutionChoice,
+  setEidolonMediumSizeUpgrade,
   setEidolonNotes,
   setEidolonSmall,
   setEidolonSubtype,
@@ -143,6 +144,19 @@ export function EidolonPicker({ doc, refData, update }: EidolonPickerProps) {
                   aria-label="Eidolon name"
                 />
               </div>
+              {(eidolon.baseForm === "avian" || eidolon.baseForm === "tauric") && (
+                <label className="hint" style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                  <input
+                    type="checkbox"
+                    checked={eidolon.mediumSizeUpgrade ?? false}
+                    onChange={(e) =>
+                      update((d) => setEidolonMediumSizeUpgrade(d, e.target.checked))
+                    }
+                  />
+                  Medium size (spends 2 evolution points from the pool; unchecked, this form starts
+                  Small)
+                </label>
+              )}
               <BaseAbilitiesSection doc={doc} update={update} derivedEidolon={derivedEidolon} />
               {eidolonVariant(doc) === "unchained" && (
                 <SubtypeSection

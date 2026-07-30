@@ -1976,14 +1976,13 @@ export interface EidolonEvolutionPick {
  */
 export interface EidolonBuild {
   /**
-   * Base form id — key into `@pf1/engine` `EIDOLON_BASE_FORMS`. Four are
-   * offered: `"biped" | "quadruped" | "serpentine"` (the three forms every
-   * eidolon-optimization guide treats as core) plus `"aberrant"`
-   * (Pathfinder Campaign Setting: Horror Realms, UNCHAINED-ONLY — a chained
-   * doc carrying this id derives nothing, see `eidolon.ts`'s
-   * `eidolonBaseFormIdsForVariant`). APG's other three forms (Aquatic,
-   * Avian, Tauric) are a documented deferral — see `eidolon.ts`'s module
-   * doc comment.
+   * Base form id — key into `@pf1/engine` `EIDOLON_BASE_FORMS`: the three
+   * APG core forms (`"biped" | "quadruped" | "serpentine"`), Ultimate
+   * Magic's `"aquatic"`, Player Companion: Cohorts and Companions's
+   * `"avian"`/`"tauric"` (see `mediumSizeUpgrade` below for their own
+   * default-Small sidebar rule), plus `"aberrant"` (Pathfinder Campaign
+   * Setting: Horror Realms, UNCHAINED-ONLY — a chained doc carrying this id
+   * derives nothing, see `eidolon.ts`'s `eidolonBaseFormIdsForVariant`).
    */
   baseForm: string;
   /**
@@ -2054,6 +2053,24 @@ export interface EidolonBuild {
    * for combining a size increase and a size decrease).
    */
   small?: boolean;
+  /**
+   * The Avian/Tauric base forms' OWN sidebar rule (Player Companion: Cohorts
+   * and Companions p.9 — aonprd.com "Base Forms - Eidolon"): "When summoned,
+   * an avian eidolon is Small unless it spends 2 points from its evolution
+   * pool" / "...a tauric eidolon is Small unless it spends 2 points from its
+   * evolution pool, in which case it is Medium." Setting this pays the 2
+   * points (counted in `DerivedEidolon.evolutionPointsSpent`) and derives
+   * the eidolon at its printed Medium baseline; unset (the default) derives
+   * it Small. Ignored for every other base form (no cost, no effect) —
+   * they're already Medium and have no such option. Unlike `small` above,
+   * neither sidebar sentence states an ability-score change for the Small
+   * state, so `@pf1/engine` `deriveEidolon` applies none: only what
+   * genuinely follows from the SIZE CATEGORY itself (AC/attack/CMB/CMD size
+   * modifier, natural attack damage dice stepped down, Fly/Stealth skill
+   * size bonus) changes, never Str/Dex/Con. See that function for the
+   * Large-evolution and `small`-flag interactions.
+   */
+  mediumSizeUpgrade?: boolean;
   /** Player-given name (e.g. "Grix"). */
   name: string;
   /**

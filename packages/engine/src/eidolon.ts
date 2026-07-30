@@ -130,12 +130,15 @@
  *     one of these three simply falls back to the form's own `baseAttacks`,
  *     the same soft-fallback posture an unrecognized/unmodeled subtype+form
  *     combination already gets.
- *   - Avian and Tauric's own sidebar text ("a[n] avian/tauric eidolon is
- *     Small unless it spends 2 points from its evolution pool") is NOT
- *     modeled — both are derived at their printed Medium baseline only, a
- *     documented v1 simplification (the toggle has no attached named
- *     evolution to hang a pick on, unlike the unrelated, already-modeled
- *     Pathfinder Unchained "Small eidolon" sidebar variant, `EidolonBuild.small`).
+ *   - **Avian and Tauric default to Small**, per their own sidebar text
+ *     ("a[n] avian/tauric eidolon is Small unless it spends 2 points from
+ *     its evolution pool") — modeled as `EidolonBuild.mediumSizeUpgrade`
+ *     (unlike the unrelated Pathfinder Unchained "Small eidolon" sidebar
+ *     variant, `EidolonBuild.small`, this one has no attached named
+ *     evolution to hang a pick on, so it's a build flag instead). See
+ *     `deriveEidolon`'s size block for exactly what changes and what
+ *     deliberately doesn't (neither form's text states an ability-score
+ *     delta for the Small state, unlike `small`'s own printed deltas).
  *   - Aquatic's free "Improved Natural Armor" evolution (part of its printed
  *     "+4 natural armor" starting AC) is a display-only chip like every
  *     other form's free evolutions that aren't already baked into
@@ -277,8 +280,11 @@ export interface EidolonBaseForm {
  * limbs (legs)"; Tauric "Speed 40 ft.; ... Saves Fort (good), Ref (bad),
  * Will (good); Attack 2 claws (1d4); ... Str 14, Dex 14, Con 13 ...; Free
  * Evolutions claws, limbs (arms), limbs (legs) (2)" — both forms' own text
- * also says they start Small unless 2 evolution points are spent, which
- * this module doesn't model, see module doc comment), plus Aberrant
+ * also says they start Small unless 2 evolution points are spent, in which
+ * case they're Medium (see `EidolonBuild.mediumSizeUpgrade`, module doc
+ * comment, and `deriveEidolon`'s size block); the Str/Dex/Con above are the
+ * SAME array either way — neither form's text states an ability-score
+ * change for the Small state), plus Aberrant
  * (Pathfinder Campaign Setting: Horror Realms, unchained-only — aonprd.com's
  * "Subtypes - Eidolon (Unchained)" page/d20pfsrd.com's "Eidolons
  * (Unchained)" page: "Base Form: Aberrant (bite, grab [tentacle mass],
@@ -1386,8 +1392,10 @@ export interface DerivedEidolon {
   grantedEvolutions: { level: number; note: string; unlocked: boolean }[];
   /** Automatic Ability Score Increase slots earned so far (unchained 5th/10th/15th — see `eidolon-unchained.ts`). Always 0 for a chained eidolon, which has no automatic ASI slots at all. */
   abilityIncreaseSlots: number;
-  /** Whether the Pathfinder Unchained "Small eidolon" sidebar variant is in effect (`EidolonBuild.small`, unchained-only) — see `deriveEidolon`'s small-size block. Always `false` for a chained eidolon or one with the Large evolution (mutually exclusive with Small; Large wins if both are somehow picked). */
+  /** Whether the Pathfinder Unchained "Small eidolon" sidebar variant is in effect (`EidolonBuild.small`, unchained-only) — see `deriveEidolon`'s size block. Always `false` for a chained eidolon, one with the Large evolution, or an Avian/Tauric (that pair has its own, separate default-Small rule — see `size`/`mediumSizeUpgrade` below — instead of this one). */
   small: boolean;
+  /** Whether Avian/Tauric's own default-Small sidebar rule is in effect (`size === "sm"` for a reason OTHER than the `small` flag above) — see `EidolonBuild.mediumSizeUpgrade`'s doc comment. Always `false` for every other base form. */
+  formDefaultsSmall: boolean;
   /** Unchained-subtype-sourced DR/resistances/immunities, folded from the subtype's unlocked grants (see `foldEidolonGrantDefenses`). `undefined` for a chained eidolon, an unmodeled/no subtype, or a subtype whose unlocked grants carry no structured defense fields. */
   defenses?: DerivedEidolonDefenses;
 }
@@ -1690,11 +1698,36 @@ export function deriveEidolon(
     acc.abilityBonus[ability] += 1;
   }
 
+  // --- Avian/Tauric's own sidebar text ("...is Small unless it spends 2
+  // points from its evolution pool" — see module doc comment and
+  // `EidolonBuild.mediumSizeUpgrade`'s doc comment for the verbatim quotes),
+  // modeled as a build flag rather than a synthetic `EIDOLON_EVOLUTIONS`
+  // entry (no printed evolution name to hang a pick on). Applies to BOTH
+  // variants — these two forms are offered to unchained docs too, see
+  // `EIDOLON_BASE_FORMS`'s own doc comment — and is ignored (no cost, no
+  // effect) for every other base form. The "Large" evolution below prints
+  // its own "Requires Medium size" line, read here as: you can't jump
+  // straight from this form's default Small to Large, you pass through
+  // Medium first — so Large, once picked, wins outright (mirroring the
+  // pre-existing Small-vs-Large exclusion right below) WITHOUT this
+  // derivation retroactively charging the implied 2-point Medium spend for
+  // a build that set the "large" evolution without also setting this flag;
+  // a soft simplification, not a promise of fully-audited evolution-point
+  // bookkeeping (matches `minLevel`'s own soft-noted-only posture elsewhere
+  // in this file).
+  const isAvianOrTauric = build.baseForm === "avian" || build.baseForm === "tauric";
+  const mediumSizeUpgrade = isAvianOrTauric && !!build.mediumSizeUpgrade;
+  if (mediumSizeUpgrade) evolutionPointsSpent += 2;
+  const formDefaultsSmall = isAvianOrTauric && !mediumSizeUpgrade && !acc.isLarge;
+
   // --- Pathfinder Unchained "Small eidolon" sidebar variant (`EidolonBuild.small`),
   // unchained-only, mutually exclusive with the Large evolution (Large wins
   // if a build somehow has both picked — RAW never combines them, and Large
-  // is the pre-existing mechanic). d20pfsrd.com "Eidolons (Unchained)": "If
-  // the eidolon is Small, it gains a +2 bonus to Dexterity. It takes a -4
+  // is the pre-existing mechanic), and excluded for Avian/Tauric — those two
+  // forms are already Small (or Medium) by their OWN rule above, and no RAW
+  // text supports stacking or re-selecting the Unchained variant's ability
+  // penalties on top of that. d20pfsrd.com "Eidolons (Unchained)": "If the
+  // eidolon is Small, it gains a +2 bonus to Dexterity. It takes a -4
   // penalty to Strength and a -2 penalty to Constitution. It also has a +1
   // size bonus to AC and on attack rolls, a -1 penalty on combat maneuver
   // checks and to CMD, a +2 bonus on Fly checks, and a +4 bonus on Stealth
@@ -1702,7 +1735,15 @@ export function deriveEidolon(
   // attack/CMB/CMD deltas fall straight out of `size` below (SIZE_AC_MOD/
   // `specialSizeMod` already have a "sm" row); only the ability deltas,
   // Fly/Stealth racial bonuses, and attack-die stepping need dedicated code.
-  const small = variant === "unchained" && !!build.small && !acc.isLarge;
+  const small = variant === "unchained" && !!build.small && !acc.isLarge && !isAvianOrTauric;
+  // Whether the eidolon ends up Small in SIZE terms, for either reason above
+  // — drives `size`/attack-die-scaling/Fly-Stealth skill bonus below, all of
+  // which are universal PF1 size-category consequences (same "sm" rows
+  // already used elsewhere in this file, e.g. `SIZE_AC_MOD`) rather than
+  // anything specific to the Unchained sidebar text. Ability-score deltas
+  // stay keyed to `small` alone (see `smallDelta` below) since ONLY the
+  // Unchained sidebar states one.
+  const isSmallSize = formDefaultsSmall || small;
 
   // --- ability scores: starting scores (form + universal, or the player's own
   // `baseAbilities` override) + table strDexBonus (both Str and Dex) + Large's
@@ -1732,7 +1773,7 @@ export function deriveEidolon(
     cha: { score: baseCha, mod: abilityMod(baseCha) },
   };
 
-  const size: SizeId = acc.isLarge ? "lg" : small ? "sm" : "med";
+  const size: SizeId = acc.isLarge ? "lg" : isSmallSize ? "sm" : "med";
   const sizeAcMod = SIZE_AC_MOD[size];
 
   // --- shared buffs: evaluate + bucket by target (mirrors companion.ts/phantom.ts) --
@@ -1872,7 +1913,7 @@ export function deriveEidolon(
   // (The Large evolution's own attack lines are the base template's numbers
   // as printed and aren't rescaled here — a separate, pre-existing gap.)
   const attackDieFromSize: SizeId = "med";
-  const attackDieToSize: SizeId = small ? "sm" : "med";
+  const attackDieToSize: SizeId = isSmallSize ? "sm" : "med";
   const attacks: DerivedEidolonAttack[] = classifiedAttacks.map((a) => ({
     name: a.name,
     count: a.count,
@@ -1898,8 +1939,8 @@ export function deriveEidolon(
     let racial = 0;
     if (id === "clm" && hasClimbSpeed) racial += 8;
     if (id === "swm" && hasSwimSpeed) racial += 8;
-    if (id === "fly" && small) racial += 2;
-    if (id === "ste" && small) racial += 4;
+    if (id === "fly" && isSmallSize) racial += 2;
+    if (id === "ste" && isSmallSize) racial += 4;
 
     const miscStack = resolveStack([...(routed.skill.get(id) ?? []), ...routed.skillsGlobal]);
     const components: ModifierComponent[] = [];
@@ -1964,6 +2005,7 @@ export function deriveEidolon(
     grantedEvolutions: eidolonSubtypeGrantedEvolutions(subtypeId, level),
     abilityIncreaseSlots,
     small,
+    formDefaultsSmall,
     defenses: subtype ? foldEidolonGrantDefenses(subtype.grants, level) : undefined,
   };
 }
