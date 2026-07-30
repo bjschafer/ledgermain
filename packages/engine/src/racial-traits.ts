@@ -166,10 +166,12 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     race: "Human",
     name: "Eye for Talent",
     summary:
-      "+2 racial bonus on Sense Motive checks; a chosen companion/cohort/etc. gains +2 to one ability score (in place of the extra skill rank).",
-    replaces: ["Skilled"],
+      "+2 racial bonus on Sense Motive checks; a chosen companion/cohort/etc. gains +2 to one ability score (in place of the bonus feat).",
+    // ARG: "This racial trait replaces the bonus feat trait." (The vendored
+    // pack's own entry agrees.)
+    replaces: ["Bonus Feat"],
     changes: [c("2", "skill.sen")],
-    suppressTargets: ["bonusSkillRanks"],
+    suppressTargets: ["bonusFeats"],
     contextNotes: [
       {
         target: "skill.sen",
@@ -363,10 +365,13 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     race: "Halfling",
     name: "Practicality",
     summary:
-      "+2 racial bonus on Sense Motive and on any one Craft or Profession; +2 racial on saves vs illusions (in place of sure-footed).",
-    replaces: ["Sure-Footed"],
+      "+2 racial bonus on Sense Motive and on any one Craft or Profession; +2 racial on saves vs illusions (in place of fearless and sure-footed).",
+    // ARG: "This racial trait replaces fearless and sure-footed." Fearless is
+    // the race's "+2 Racial vs Fear" contextNote, hence the suppressNotes.
+    replaces: ["Fearless", "Sure-Footed"],
     changes: [c("2", "skill.sen")],
     suppressTargets: ["skill.acr", "skill.clm"],
+    suppressNotes: ["vs Fear"],
     contextNotes: [
       {
         target: "allSavingThrows",

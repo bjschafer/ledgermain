@@ -95,6 +95,7 @@ import {
   applyRaceEnergyResistanceSupplements,
   applyRaceSenseSupplements,
   applyRaceSpellResistanceSupplements,
+  applyRacialTraitAliasSupplements,
   applyRacialTraitChangesSupplements,
   applySpellProjectileSupplements,
   resolveBloodlineSupplements,
@@ -442,6 +443,7 @@ export function normalize(opts: NormalizeOptions): {
     if (rt) racialTraits.push(rt);
   }
   applyRacialTraitChangesSupplements(racialTraits);
+  applyRacialTraitAliasSupplements(racialTraits);
 
   // --- feats: system pack (all of them; prereq refs point within this set) --
   const systemFeats: Feat[] = readPack(join(packsDir, "feats"))

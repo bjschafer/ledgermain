@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-30-human-trait-swap-fixes",
+    date: "2026-07-30",
+    title: "Human and halfling trait swaps trade the right things",
+    note: "Eye for Talent now costs the human bonus feat, as printed, instead of wrongly costing a skill rank. Versatile Human works at all now: it grants Dual Talent's two chosen +2s and shrinks the feat and skill budgets to match. And a halfling taking Practicality gives up the Fearless save reminder along with Sure-Footed, matching its published trade.",
+  },
+  {
     id: "2026-07-30-heritage-ability-arrays-swap-for-real",
     date: "2026-07-30",
     title: "Heritage ability swaps move your real stats",

@@ -241,6 +241,17 @@ describe("race contextNote suppression (issue #41)", () => {
     expect(notes.some((n) => n.text.includes("Humanoids (Reptillian, Goblinoid)"))).toBe(false);
   });
 
+  it("Halfling Practicality: Fearless's +2 vs Fear note drops (ARG: replaces fearless AND sure-footed)", () => {
+    const halflingId = Object.entries(ref.races).find(([, r]) => r.name === "Halfling")![0];
+    const base = raceContextNotesFor(makeDoc("Halfling"), ref.races[halflingId]);
+    expect(base.some((n) => n.text.includes("vs Fear"))).toBe(true);
+    const notes = raceContextNotesFor(
+      makeDoc("Halfling", ["halfling-practicality"]),
+      ref.races[halflingId],
+    );
+    expect(notes.some((n) => n.text.includes("vs Fear"))).toBe(false);
+  });
+
   it("a trait id that doesn't match the character's current race suppresses nothing (stale/mismatched id)", () => {
     const notes = raceContextNotesFor(makeDoc("Dwarf", ["elf-fleet-footed"]), ref.races[dwarfId]);
     expect(notes.some((n) => n.text.includes("Appraise Items with Gems"))).toBe(true);

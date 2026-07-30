@@ -139,11 +139,22 @@ describe("model-layer budgets respect swaps", () => {
     ).toBe(true);
   });
 
-  it("Eye for Talent drops the Human bonus skill rank from the skill budget", () => {
-    const plain = skillBudget(makeDoc("Human"), ref, 0).total;
-    const swapped = skillBudget(makeDoc("Human", ["human-eye-for-talent"]), ref, 0).total;
-    // Human Skilled grants +1 rank per Hit Die; a level-1 fighter loses exactly 1.
-    expect(swapped).toBe(plain - 1);
+  it("Eye for Talent drops the Human bonus FEAT (ARG: it replaces the bonus feat trait)", () => {
+    const withTrait = makeDoc("Human", ["human-eye-for-talent"]);
+    expect(expectedFeatCount(withTrait, ref)).toBe(expectedFeatCount(makeDoc("Human"), ref) - 1);
+    // The skill budget stays whole: Skilled is not what it trades away.
+    expect(skillBudget(withTrait, ref, 0).total).toBe(skillBudget(makeDoc("Human"), ref, 0).total);
+  });
+
+  it("Versatile Human aliases Dual Talent: open +2s apply, both budgets shrink", () => {
+    const vh = Object.values(ref.racialTraits).find((t) => t.name === "Versatile Human");
+    if (!vh) throw new Error("vendored Versatile Human not found");
+    expect(vh.openChanges?.length).toBe(2);
+    const withTrait = makeDoc("Human", undefined, [vh.id]);
+    expect(expectedFeatCount(withTrait, ref)).toBe(expectedFeatCount(makeDoc("Human"), ref) - 1);
+    expect(skillBudget(withTrait, ref, 0).total).toBe(
+      skillBudget(makeDoc("Human"), ref, 0).total - 1,
+    );
   });
 
   it("a VENDORED pick suppresses budgets too: Dual Talent retires both the bonus feat and the skill rank", () => {

@@ -3011,3 +3011,57 @@ export function applyRacialTraitChangesSupplements(traits: RacialTrait[]): void 
     trait.changes = s.changes;
   }
 }
+
+/**
+ * Racial traits that are pure by-reference aliases of another modeled trait,
+ * shipped inert upstream. The one entry so far: Versatile Human's whole
+ * published text is "Replace the +2 bonus to any ability score, the skilled
+ * racial trait, and the bonus feat racial trait with dual talent" — so it
+ * receives Dual Talent's two open +2 changes and its replaced-trait names
+ * (the pack labels it only "Base Statistics", which for Human is the inert
+ * bundle tag). Same drift-guard posture as
+ * `SUPPLEMENTAL_RACIAL_TRAIT_CHANGES`.
+ */
+export const SUPPLEMENTAL_RACIAL_TRAIT_ALIASES: Record<
+  string,
+  { name: string; keyword: string; openChanges: Change[]; replacedTraitNames: string[] }
+> = {
+  quudBE0oHTdD4ulL: {
+    name: "Versatile Human",
+    keyword: "with dual talent",
+    openChanges: [
+      { formula: "2", target: "", type: "racial" },
+      { formula: "2", target: "", type: "racial" },
+    ],
+    replacedTraitNames: ["+2 to One Ability Score", "Bonus Feat", "Skilled"],
+  },
+};
+
+/** Apply `SUPPLEMENTAL_RACIAL_TRAIT_ALIASES` in place, same guards as above. */
+export function applyRacialTraitAliasSupplements(traits: RacialTrait[]): void {
+  const byId = new Map(traits.map((t) => [t.id, t]));
+  for (const [id, s] of Object.entries(SUPPLEMENTAL_RACIAL_TRAIT_ALIASES)) {
+    const trait = byId.get(id);
+    if (trait === undefined) {
+      throw new Error(`[supplements] racial trait "${s.name}" (${id}) not found in vendored set`);
+    }
+    if (trait.name !== s.name) {
+      throw new Error(
+        `[supplements] racial trait ${id} is now named "${trait.name}", expected "${s.name}"`,
+      );
+    }
+    const prose = (trait.description ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
+    if (!prose.includes(s.keyword)) {
+      throw new Error(
+        `[supplements] racial trait "${s.name}" (${id}) description no longer says "${s.keyword}" — re-verify before re-aliasing`,
+      );
+    }
+    if ((trait.openChanges ?? []).length > 0 || trait.changes.length > 0) {
+      throw new Error(
+        `[supplements] racial trait "${s.name}" (${id}) now carries vendored changes — retire its alias entry`,
+      );
+    }
+    trait.openChanges = s.openChanges;
+    trait.replacedTraitNames = s.replacedTraitNames;
+  }
+}
