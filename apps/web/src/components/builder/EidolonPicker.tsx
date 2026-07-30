@@ -5,6 +5,7 @@ import {
   EIDOLON_EVOLUTION_IDS,
   EIDOLON_EVOLUTIONS,
   EIDOLON_SUBTYPE_IDS,
+  EIDOLON_CHOICE_ENERGIES,
   EIDOLON_SUBTYPES,
   eidolonVariant,
   type DerivedEidolon,
@@ -54,6 +55,13 @@ interface EidolonPickerProps {
   refData: RefData;
   update: Updater;
 }
+
+/** Player-facing labels for `EidolonSubtypeGrant.choiceEvolutions` package keys (currently only the Genie's 8th-level movement packages). */
+const CHOICE_EVOLUTION_LABELS: Record<string, string> = {
+  flight: "Flight (fly speed equal to land speed)",
+  burrow: "Burrow",
+  aquatic: "Gills plus Swim twice",
+};
 
 const ABILITY_OPTIONS: { id: AbilityId; label: string }[] = [
   { id: "str", label: "Str" },
@@ -476,6 +484,12 @@ function SubtypeSection({
   const abilityIncreaseGrants = (subtype?.grants ?? []).filter(
     (g) => g.abilityIncrease && g.level <= level,
   );
+  const choiceResistanceGrants = (subtype?.grants ?? []).filter(
+    (g) => g.choiceResistance && g.level <= level,
+  );
+  const choiceEvolutionGrants = (subtype?.grants ?? []).filter(
+    (g) => g.choiceEvolutions && g.level <= level,
+  );
 
   return (
     <div className="subsection">
@@ -541,13 +555,55 @@ function SubtypeSection({
             className="familiar-select"
             value={eidolon.subtypeGrantChoices?.[String(g.level)] ?? "str"}
             onChange={(e) =>
-              update((d) => setEidolonSubtypeGrantChoice(d, g.level, e.target.value as AbilityId))
+              update((d) => setEidolonSubtypeGrantChoice(d, g.level, e.target.value))
             }
             aria-label={`Subtype ability increase target (${grantOrdinal(g.level)})`}
           >
             {ABILITY_OPTIONS.map((a) => (
               <option key={a.id} value={a.id}>
                 {a.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      ))}
+
+      {choiceResistanceGrants.map((g) => (
+        <div key={`res-${g.level}`} className="animal-companion-asi">
+          <span className="hint">Subtype energy resistance ({grantOrdinal(g.level)}):</span>
+          <select
+            className="familiar-select"
+            value={eidolon.subtypeGrantChoices?.[String(g.level)] ?? ""}
+            onChange={(e) =>
+              update((d) => setEidolonSubtypeGrantChoice(d, g.level, e.target.value))
+            }
+            aria-label={`Subtype energy resistance choice (${grantOrdinal(g.level)})`}
+          >
+            <option value="">Choose an energy...</option>
+            {EIDOLON_CHOICE_ENERGIES.map((energy) => (
+              <option key={energy} value={energy}>
+                {energy[0]!.toUpperCase() + energy.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+      ))}
+
+      {choiceEvolutionGrants.map((g) => (
+        <div key={`evo-${g.level}`} className="animal-companion-asi">
+          <span className="hint">Subtype free evolution ({grantOrdinal(g.level)}):</span>
+          <select
+            className="familiar-select"
+            value={eidolon.subtypeGrantChoices?.[String(g.level)] ?? ""}
+            onChange={(e) =>
+              update((d) => setEidolonSubtypeGrantChoice(d, g.level, e.target.value))
+            }
+            aria-label={`Subtype free evolution choice (${grantOrdinal(g.level)})`}
+          >
+            <option value="">Choose one...</option>
+            {Object.keys(g.choiceEvolutions ?? {}).map((key) => (
+              <option key={key} value={key}>
+                {CHOICE_EVOLUTION_LABELS[key] ?? key}
               </option>
             ))}
           </select>

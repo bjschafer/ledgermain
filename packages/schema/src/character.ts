@@ -2014,15 +2014,18 @@ export interface EidolonBuild {
    */
   abilityIncreases?: AbilityId[];
   /**
-   * Target ability for each subtype grant that hands over a free +2 Ability
-   * Increase (e.g. Archon 8th, Demon 12th — see `@pf1/engine`
-   * `EidolonSubtypeGrant.abilityIncrease`), keyed by the grant's milestone
-   * level AS A STRING (e.g. `{ "8": "cha" }`) since a subtype grants at most
-   * one such bonus per level. Missing/invalid entries for an unlocked grant
-   * default to Strength, same convention as `abilityIncreases` above.
-   * Unchained-only; ignored for a chained eidolon.
+   * The player's pick for each subtype grant that offers a choice, keyed by
+   * the grant's milestone level AS A STRING (a subtype grants at most one
+   * choice per level). What the value means is grant-defined (`@pf1/engine`
+   * `EidolonSubtypeGrant`): an `AbilityId` for an `abilityIncrease` grant
+   * (e.g. `{ "8": "cha" }`; missing/invalid entries default to Strength,
+   * same convention as `abilityIncreases` above), an energy slug for a
+   * `choiceResistance` grant, or a package key for a `choiceEvolutions`
+   * grant (those two grant NOTHING until a valid choice is stored — the
+   * open-changes posture, never a guessed default). Unchained-only; ignored
+   * for a chained eidolon.
    */
-  subtypeGrantChoices?: Record<string, AbilityId>;
+  subtypeGrantChoices?: Record<string, string>;
   /**
    * Player-set STARTING ability scores, overriding the defaults `@pf1/engine`
    * `deriveEidolon` would otherwise use (the base form's own Str/Dex/Con plus

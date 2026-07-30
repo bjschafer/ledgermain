@@ -122,21 +122,22 @@ export function setEidolonAbilityIncrease(
 }
 
 /**
- * Set the target ability for the subtype's free +2 Ability Increase grant at
- * `level` (e.g. Archon 8th, Demon 12th — see `EidolonSubtypeGrant.abilityIncrease`),
- * keyed by the grant's milestone level as a string. No-ops if there's no
- * eidolon yet.
+ * Store the player's pick for the subtype grant at `level` that offers a
+ * choice — an `AbilityId` for an `abilityIncrease` grant (e.g. Archon 8th,
+ * Demon 12th), an energy slug for a `choiceResistance` grant, or a package
+ * key for a `choiceEvolutions` grant (see `EidolonSubtypeGrant`). Keyed by
+ * the grant's milestone level as a string. No-ops if there's no eidolon yet.
  */
 export function setEidolonSubtypeGrantChoice(
   doc: CharacterDoc,
   level: number,
-  ability: AbilityId,
+  choice: string,
 ): CharacterDoc {
   const current = doc.build.eidolon;
   if (!current) return doc;
   const subtypeGrantChoices = {
     ...current.subtypeGrantChoices,
-    [String(level)]: ability,
+    [String(level)]: choice,
   };
   return { ...doc, build: { ...doc.build, eidolon: { ...current, subtypeGrantChoices } } };
 }

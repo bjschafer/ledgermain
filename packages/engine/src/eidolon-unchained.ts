@@ -209,7 +209,38 @@ export interface EidolonSubtypeGrant {
   effectImmunities?: readonly string[];
   /** Damage reduction. Across unlocked grants the highest amount per bypass qualifier applies. */
   dr?: EidolonGrantDr;
+  /**
+   * Choose-one grant: the scaling Resistance evolution against ONE energy of
+   * the summoner's choice (Genie 1st). The energy slug is read from
+   * `EidolonBuild.subtypeGrantChoices[String(level)]`; until a valid energy
+   * is chosen, nothing is granted (the open-changes posture — never a
+   * guessed default; the picker flags the empty slot instead).
+   */
+  choiceResistance?: boolean;
+  /**
+   * This grant upgrades the energy chosen by the `choiceResistance` grant at
+   * the given milestone level to full immunity (Genie 12th: "Loses the
+   * 1st-level Resistance evolution and instead gains Immunity to that same
+   * energy type"). Grants nothing while that choice is unset.
+   */
+  choiceImmunityFromLevel?: number;
+  /**
+   * Choose-one-of free evolution packages (Genie 8th): package key (stored
+   * in `EidolonBuild.subtypeGrantChoices[String(level)]`) → the evolution
+   * ids granted at zero pool cost. Until a valid key is chosen, nothing is
+   * granted.
+   */
+  choiceEvolutions?: Readonly<Record<string, readonly string[]>>;
 }
+
+/** Energy slugs a `choiceResistance` grant accepts — the Resistance evolution's own printed list ("acid, cold, electricity, fire, or sonic"). */
+export const EIDOLON_CHOICE_ENERGIES: readonly string[] = [
+  "acid",
+  "cold",
+  "electricity",
+  "fire",
+  "sonic",
+];
 
 /** One base form's subtype-specific free evolutions and resulting natural attacks. */
 export interface EidolonSubtypeForm {
@@ -979,8 +1010,11 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
   // gives the summoner two fully independent free choices (any one energy
   // type at 1st/12th; flight, burrow, or gills+swim at 8th), and a variant
   // split would forbid RAW-legal combinations (e.g. fire resistance plus
-  // flight). Both choices stay prose until a choose-one-of grant mechanism
-  // exists (see the coverage note).
+  // flight). Both choices are modeled via `choiceResistance`/
+  // `choiceImmunityFromLevel`/`choiceEvolutions`, each keyed off
+  // `EidolonBuild.subtypeGrantChoices`; the 20th-level "an Elemental
+  // eidolon's 20th-level evolutions, any one element" stays prose (it
+  // references a whole grant block, not a scalar).
   genie: {
     id: "genie",
     name: "Genie",
@@ -995,7 +1029,8 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
     grants: [
       {
         level: 1,
-        note: "The 4-point Weapon Training evolution (proficiency with all simple and martial weapons), and the Resistance evolution against any one energy type of the summoner's choice.",
+        note: "The 4-point Weapon Training evolution (proficiency with all simple and martial weapons), and the Resistance evolution against any one energy type of the summoner's choice (5, scaling to 15 by 10th).",
+        choiceResistance: true,
       },
       {
         level: 4,
@@ -1003,11 +1038,17 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       },
       {
         level: 8,
-        note: "Gains one of the following for free (summoner's choice): the Flight evolution (a magic fly speed equal to its base land speed), the Burrow evolution, or the Gills evolution plus the Swim evolution twice (swim speed equal to base land speed + 20 ft.). The pick isn't automated here — apply the chosen evolution by hand.",
+        note: "Gains one of the following for free (summoner's choice): the Flight evolution (a magic fly speed equal to its base land speed), the Burrow evolution, or the Gills evolution plus the Swim evolution twice (swim speed equal to base land speed + 20 ft.).",
+        choiceEvolutions: {
+          flight: ["flight"],
+          burrow: ["burrow"],
+          aquatic: ["gills", "swim", "swim"],
+        },
       },
       {
         level: 12,
         note: "Loses the 1st-level Resistance evolution and instead gains Immunity to that same energy type; plane shift (self plus willing targets, to the Astral Plane, an Elemental Plane, or the Material Plane only) as a spell-like ability once per day, CL 12th.",
+        choiceImmunityFromLevel: 1,
       },
       {
         level: 16,

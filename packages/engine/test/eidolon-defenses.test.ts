@@ -240,6 +240,45 @@ describe("deriveEidolon defenses: Angel end to end", () => {
     });
   });
 
+  it("genie choose-one grants: nothing until chosen, then the chosen energy scales and upgrades", () => {
+    // aonprd.com: 1st "gain the resistance evolution for any one energy
+    // type"; 12th "lose the resistance evolution gained at 1st level and
+    // instead gain the immunity evolution".
+    function genieAt(level: number, choices?: Record<string, string>) {
+      const doc = makeDoc({
+        classTag: "summonerUnchained",
+        level,
+        eidolon: {
+          baseForm: "biped",
+          subtype: "genie",
+          name: "Zeph",
+          evolutions: [],
+          subtypeGrantChoices: choices,
+        },
+      });
+      return deriveEidolon(doc, buildRollData(doc, ref))!;
+    }
+
+    // Unchosen: the choice grants contribute nothing at all.
+    expect(genieAt(12).defenses).toBeUndefined();
+    // Chosen fire at 1st: the scaling Resistance evolution (10 at summoner 7).
+    expect(genieAt(7, { "1": "fire" }).defenses?.resistances).toEqual([
+      { energy: "fire", amount: 10 },
+    ]);
+    // At 12th the same chosen energy flips to immunity.
+    const at12 = genieAt(12, { "1": "fire" }).defenses;
+    expect(at12?.resistances).toEqual([]);
+    expect(at12?.damageImmunities).toEqual(["fire"]);
+    // An invalid stored value grants nothing rather than guessing.
+    expect(genieAt(12, { "1": "radiant" }).defenses).toBeUndefined();
+
+    // 8th-level movement package: flight only once chosen.
+    expect(genieAt(8).speeds["fly"]).toBeUndefined();
+    expect(genieAt(8, { "8": "flight" }).speeds["fly"]).toBeGreaterThan(0);
+    const aquatic = genieAt(8, { "8": "aquatic" });
+    expect(aquatic.speeds["swim"]).toBeGreaterThan(0);
+  });
+
   it("at 16th: acid and cold flip from resistance to immunity; electricity and fire stay 10", () => {
     expect(angelAt(16)).toEqual({
       resistances: [

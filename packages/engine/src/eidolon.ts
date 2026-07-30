@@ -179,6 +179,7 @@ import {
   eidolonUnchainedProgressionRow,
   eidolonUnchainedSpecialAbilityNames,
   eidolonVariant,
+  EIDOLON_CHOICE_ENERGIES,
   EIDOLON_SUBTYPES,
   type EidolonSubtypeGrant,
 } from "./eidolon-unchained.js";
@@ -1432,29 +1433,54 @@ export interface DerivedEidolonDefenses {
  * Ordering is deterministic: first-seen by ascending grant level. Returns
  * `undefined` when nothing survives all of the above — same "don't render an
  * empty block" posture as `computeDefenses`.
+ *
+ * `choices` is `EidolonBuild.subtypeGrantChoices`: a `choiceResistance`
+ * grant reads its own level's entry as the chosen energy (the scaling
+ * Resistance evolution), and a `choiceImmunityFromLevel` grant upgrades
+ * that same chosen energy to immunity. Either grants nothing until a valid
+ * energy is stored — the open-changes posture, never a guessed default.
  */
 export function foldEidolonGrantDefenses(
   grants: readonly EidolonSubtypeGrant[],
   level: number,
+  choices?: Readonly<Record<string, string>>,
 ): DerivedEidolonDefenses | undefined {
   const unlocked = [...grants].filter((g) => g.level <= level).sort((a, b) => a.level - b.level);
 
+  const chosenEnergy = (grantLevel: number): string | undefined => {
+    const value = choices?.[String(grantLevel)];
+    return value !== undefined && EIDOLON_CHOICE_ENERGIES.includes(value) ? value : undefined;
+  };
+
+  // The Resistance evolution's own schedule: 5, +5 per 5 summoner levels,
+  // max 15 at 10th (see EidolonGrantResistance.scales).
+  const evolutionScaledAmount = Math.min(15, 5 + 5 * Math.floor(level / 5));
+
   const resistanceByEnergy = new Map<string, number>();
+  const putResistance = (energy: string, amount: number) => {
+    const best = resistanceByEnergy.get(energy);
+    if (best === undefined || amount > best) resistanceByEnergy.set(energy, amount);
+  };
   for (const g of unlocked) {
     for (const r of g.resistances ?? []) {
-      // `scales` marks a "gains the resistance (X) evolution" grant: 5, +5
-      // per 5 summoner levels, max 15 at 10th (see EidolonGrantResistance).
-      const amount = r.scales ? Math.min(15, 5 + 5 * Math.floor(level / 5)) : r.amount;
-      const best = resistanceByEnergy.get(r.energy);
-      if (best === undefined || amount > best) resistanceByEnergy.set(r.energy, amount);
+      putResistance(r.energy, r.scales ? evolutionScaledAmount : r.amount);
+    }
+    if (g.choiceResistance) {
+      const energy = chosenEnergy(g.level);
+      if (energy) putResistance(energy, evolutionScaledAmount);
     }
   }
 
   const damageImmunities: string[] = [];
+  const putImmunity = (energy: string) => {
+    if (!damageImmunities.includes(energy)) damageImmunities.push(energy);
+    resistanceByEnergy.delete(energy);
+  };
   for (const g of unlocked) {
-    for (const energy of g.damageImmunities ?? []) {
-      if (!damageImmunities.includes(energy)) damageImmunities.push(energy);
-      resistanceByEnergy.delete(energy);
+    for (const energy of g.damageImmunities ?? []) putImmunity(energy);
+    if (g.choiceImmunityFromLevel !== undefined) {
+      const energy = chosenEnergy(g.choiceImmunityFromLevel);
+      if (energy) putImmunity(energy);
     }
   }
 
@@ -1672,12 +1698,22 @@ export function deriveEidolon(
       subtypePoolBonus += grant.poolBonus ?? 0;
       subtypeLandSpeedBonus += grant.landSpeedBonus ?? 0;
       if (grant.abilityIncrease) {
-        const choice = build.subtypeGrantChoices?.[String(grant.level)] ?? "str";
+        const raw = build.subtypeGrantChoices?.[String(grant.level)];
+        const choice = raw !== undefined && raw in acc.abilityBonus ? (raw as AbilityId) : "str";
         acc.abilityBonus[choice] += 2;
       }
       for (const id of grant.evolutionIds ?? []) {
         const evoDef = EIDOLON_EVOLUTIONS[id];
         if (evoDef) applyEvolutionEffect(acc, evoDef);
+      }
+      // Choose-one-of package (Genie 8th): grants nothing until the player
+      // picks — see `EidolonSubtypeGrant.choiceEvolutions`.
+      if (grant.choiceEvolutions) {
+        const key = build.subtypeGrantChoices?.[String(grant.level)];
+        for (const id of (key !== undefined && grant.choiceEvolutions[key]) || []) {
+          const evoDef = EIDOLON_EVOLUTIONS[id];
+          if (evoDef) applyEvolutionEffect(acc, evoDef);
+        }
       }
     }
   }
@@ -2006,6 +2042,8 @@ export function deriveEidolon(
     abilityIncreaseSlots,
     small,
     formDefaultsSmall,
-    defenses: subtype ? foldEidolonGrantDefenses(subtype.grants, level) : undefined,
+    defenses: subtype
+      ? foldEidolonGrantDefenses(subtype.grants, level, build.subtypeGrantChoices)
+      : undefined,
   };
 }
