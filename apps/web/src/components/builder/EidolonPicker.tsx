@@ -25,6 +25,7 @@ import {
   eidolonHasCustomBaseAbilities,
   eidolonSubtypeAlignmentWarning,
   eidolonSubtypeFormWarning,
+  eidolonSubtypeVendoredEntry,
   eidolonSummonerLevel,
   removeLastEidolonEvolution,
   resetEidolonBaseAbilities,
@@ -41,6 +42,7 @@ import {
 import { signed } from "../../model/names.js";
 import { evaluatePrereqs } from "../../model/prereqs.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
+import { FeatureDescription } from "./ClassFeaturesList.js";
 import { NumberField } from "./NumberField.js";
 import { Caret } from "../Caret.js";
 
@@ -143,7 +145,12 @@ export function EidolonPicker({ doc, refData, update }: EidolonPickerProps) {
               </div>
               <BaseAbilitiesSection doc={doc} update={update} derivedEidolon={derivedEidolon} />
               {eidolonVariant(doc) === "unchained" && (
-                <SubtypeSection doc={doc} update={update} derivedEidolon={derivedEidolon} />
+                <SubtypeSection
+                  doc={doc}
+                  refData={refData}
+                  update={update}
+                  derivedEidolon={derivedEidolon}
+                />
               )}
               <textarea
                 className="familiar-notes"
@@ -433,16 +440,19 @@ function grantOrdinal(level: number): string {
  */
 function SubtypeSection({
   doc,
+  refData,
   update,
   derivedEidolon,
 }: {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
   derivedEidolon: DerivedEidolon | undefined;
 }) {
   const eidolon = doc.build.eidolon!;
   const subtypeId = eidolon.subtype;
   const subtype = subtypeId ? EIDOLON_SUBTYPES[subtypeId] : undefined;
+  const vendoredSubtype = subtypeId ? eidolonSubtypeVendoredEntry(subtypeId, refData) : undefined;
   const formWarning = eidolonSubtypeFormWarning(doc);
   const alignmentWarning = eidolonSubtypeAlignmentWarning(doc);
   const level = derivedEidolon?.level ?? 0;
@@ -544,6 +554,10 @@ function SubtypeSection({
           ))}
         </div>
       )}
+
+      {vendoredSubtype?.description ? (
+        <FeatureDescription html={vendoredSubtype.description} />
+      ) : null}
     </div>
   );
 }

@@ -662,6 +662,60 @@ describe("deriveEidolon (unchained, Astral L8 serpentine — free Flight stacks 
   });
 });
 
+// AoN: https://www.aonprd.com/EidolonUCSubtypes.aspx ("Astral", Plane-
+// Hopper's Handbook p.24): "A summoner's class level is halved for the
+// purpose of determining the rate at which his astral eidolon's Strength
+// and Dexterity increase." Only the Str/Dex Bonus column is affected; HD/
+// BAB/saves/evolution pool/armor bonus all stay keyed on the real level
+// (see the L8 fixture above, whose pool is the unmodified L8 column).
+describe("deriveEidolon (unchained, Astral — halved Str/Dex table level, RAW rounds down)", () => {
+  // Biped starts Str 16/Dex 12 (`EIDOLON_BASE_FORMS.biped`). At L7 the
+  // eidolon has one automatic Ability Score Increase slot (unlocked at 5th),
+  // defaulting to Str, on top of both subtypes here.
+  it("L7 biped: Astral's Str/Dex bonus is the L3 column (halved from 7), not the real L7 column", () => {
+    const astralDoc = makeDoc({
+      classTag: "summonerUnchained",
+      level: 7,
+      eidolon: { baseForm: "biped", subtype: "astral", name: "Cordwalker", evolutions: [] },
+    });
+    const angelDoc = makeDoc({
+      classTag: "summonerUnchained",
+      level: 7,
+      eidolon: { baseForm: "biped", subtype: "angel", name: "Seraph", evolutions: [] },
+    });
+    const astral = deriveEidolon(astralDoc, buildRollData(astralDoc, ref))!;
+    const angel = deriveEidolon(angelDoc, buildRollData(angelDoc, ref))!;
+
+    // Real L7 column strDexBonus is 3; L3 (floor(7/2)) column strDexBonus is
+    // 1 — a 2-point gap on both Str and Dex.
+    expect(angel.abilities.str.score).toBe(20); // 16 + 3 (L7) + 1 (ASI slot, defaults Str)
+    expect(angel.abilities.dex.score).toBe(15); // 12 + 3 (L7)
+    expect(astral.abilities.str.score).toBe(18); // 16 + 1 (L3) + 1 (ASI slot, defaults Str)
+    expect(astral.abilities.dex.score).toBe(13); // 12 + 1 (L3)
+
+    // Every other progression-table column is untouched by the halving.
+    expect(astral.hd).toBe(angel.hd);
+    expect(astral.bab).toBe(angel.bab);
+    expect(astral.evolutionPointsAvailable).toBe(angel.evolutionPointsAvailable);
+  });
+
+  it("L13 biped: floor(13/2)=3rd row (level6), not a rounded 7th-row lookup", () => {
+    const doc = makeDoc({
+      classTag: "summonerUnchained",
+      level: 13,
+      eidolon: { baseForm: "biped", subtype: "astral", name: "Cordwalker", evolutions: [] },
+    });
+    const eidolon = deriveEidolon(doc, buildRollData(doc, ref))!;
+
+    // floor(13/2) = 6; the L6 column's strDexBonus is 2 (the L7 column's is
+    // 3 — rounding instead of flooring would produce Str 21/Dex 15 here).
+    // Two automatic ASI slots (5th, 10th) have unlocked by L13, both
+    // defaulting to Str.
+    expect(eidolon.abilities.str.score).toBe(20); // 16 + 2 (L6) + 2 (two ASI slots, default Str)
+    expect(eidolon.abilities.dex.score).toBe(14); // 12 + 2 (L6)
+  });
+});
+
 // Snippet for eidolon-unchained.test.ts — assumes that file's existing
 // `ref`/`raceId`/`makeDoc` helpers are already in scope; shown here with
 // the same imports for standalone runnability.

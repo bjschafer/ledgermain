@@ -1,6 +1,7 @@
 import { describe, expect, it } from "bun:test";
 
 import { loadRefData } from "@pf1/data-pipeline";
+import { EIDOLON_SUBTYPE_IDS } from "@pf1/engine";
 import type { CharacterDoc } from "@pf1/schema";
 
 import { addClass, createEmptyDoc, setAlignment, setClassLevel } from "../src/model/doc.js";
@@ -19,6 +20,7 @@ import {
   eidolonHasWeaponFinesse,
   eidolonSubtypeAlignmentWarning,
   eidolonSubtypeFormWarning,
+  eidolonSubtypeVendoredEntry,
   eidolonSupersedingCondition,
   hasEidolonCondition,
   healEidolon,
@@ -454,6 +456,31 @@ describe("eidolon subtype soft warnings", () => {
     d = setEidolonSubtype(d, "archon");
     d = { ...d, identity: { ...d.identity, alignment: "???" } };
     expect(eidolonSubtypeAlignmentWarning(d)).toBeUndefined();
+  });
+});
+
+describe("eidolonSubtypeVendoredEntry", () => {
+  it("matches a hand-authored id directly against the vendored dataset", () => {
+    const entry = eidolonSubtypeVendoredEntry("angel", ref);
+    expect(entry?.name).toBe("Angel");
+    expect(entry?.description).toBeTruthy();
+  });
+
+  it("maps all four Elemental variant ids to the single vendored 'elemental' entry", () => {
+    const shared = ref.eidolonSubtypes.elemental;
+    for (const id of ["elemental-air", "elemental-earth", "elemental-fire", "elemental-water"]) {
+      expect(eidolonSubtypeVendoredEntry(id, ref)).toBe(shared);
+    }
+  });
+
+  it("every hand-authored subtype id resolves to a vendored entry", () => {
+    for (const id of EIDOLON_SUBTYPE_IDS) {
+      expect(eidolonSubtypeVendoredEntry(id, ref)).toBeDefined();
+    }
+  });
+
+  it("is undefined for an id with no vendored counterpart", () => {
+    expect(eidolonSubtypeVendoredEntry("tapestry-warped", ref)).toBeUndefined();
   });
 });
 

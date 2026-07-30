@@ -1530,6 +1530,18 @@ export function deriveEidolon(
   const subtype = subtypeId ? EIDOLON_SUBTYPES[subtypeId] : undefined;
   const subtypeForm = subtype?.baseForms[build.baseForm];
 
+  // Astral-only RAW modifier (aonprd.com "Subtypes - Eidolon (Unchained)",
+  // Astral): "A summoner's class level is halved for the purpose of
+  // determining the rate at which his astral eidolon's Strength and
+  // Dexterity increase." Only the table's Str/Dex Bonus column is looked up
+  // at the halved level; `row` above (HD, BAB via `row.hd`, evolution pool,
+  // armor bonus, skill points, bonus feats) stays keyed on the eidolon's
+  // real level. PF1's default rounding (round down unless stated otherwise)
+  // applies to the halving itself.
+  const strDexBonus = subtype?.halveStrDexTableLevel
+    ? eidolonProgressionRow(Math.floor(level / 2)).strDexBonus
+    : row.strDexBonus;
+
   const picks = build.evolutions ?? [];
   const chosenEvolutions: { id: string; name: string; cost: number; choice?: string }[] = [];
   let evolutionPointsSpent = 0;
@@ -1609,10 +1621,8 @@ export function deriveEidolon(
 
   const start = eidolonStartingAbilities(build.baseForm, build.baseAbilities);
 
-  const baseStr =
-    start.str + row.strDexBonus + largeDelta.str + smallDelta.str + acc.abilityBonus.str;
-  const baseDex =
-    start.dex + row.strDexBonus + largeDelta.dex + smallDelta.dex + acc.abilityBonus.dex;
+  const baseStr = start.str + strDexBonus + largeDelta.str + smallDelta.str + acc.abilityBonus.str;
+  const baseDex = start.dex + strDexBonus + largeDelta.dex + smallDelta.dex + acc.abilityBonus.dex;
   const baseCon = start.con + largeDelta.con + smallDelta.con + acc.abilityBonus.con;
   const baseInt = start.int + acc.abilityBonus.int;
   const baseWis = start.wis + acc.abilityBonus.wis;

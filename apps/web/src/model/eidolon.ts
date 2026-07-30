@@ -23,7 +23,13 @@ import {
   featNameSlug,
   type DerivedEidolon,
 } from "@pf1/engine";
-import type { AbilityId, CharacterDoc, EidolonEvolutionPick, RefData } from "@pf1/schema";
+import type {
+  AbilityId,
+  CharacterDoc,
+  EidolonEvolutionPick,
+  EidolonSubtype,
+  RefData,
+} from "@pf1/schema";
 
 import { toggleConditionIn } from "./conditions.js";
 import { ABILITY_IDS } from "./doc.js";
@@ -444,6 +450,27 @@ export function eidolonSubtypeAlignmentWarning(doc: CharacterDoc): string | unde
   if (!code) return undefined;
   if (subtype.alignments.includes(code)) return undefined;
   return `${subtype.name} eidolons require ${subtype.alignmentText}; the summoner's alignment doesn't match.`;
+}
+
+/**
+ * The vendored `refData.eidolonSubtypes` prose entry matching a hand-authored
+ * `EIDOLON_SUBTYPES` id, for surfacing RAW description text next to the
+ * hand-authored mechanics in `EidolonPicker` (same idiom as
+ * `BloodlinePicker`/`RagePowerPicker` showing catalog prose via
+ * `FeatureDescription`). The vendored dataset doesn't split Elemental by
+ * element, so the four hand-authored variant ids (`elemental-air`/
+ * `elemental-earth`/`elemental-fire`/`elemental-water` — split because the
+ * eidolon's element is chosen permanently, see `eidolon-unchained.ts`'s
+ * module doc comment) all map to the single vendored "elemental" entry.
+ * Every other hand-authored id matches the vendored id directly. Returns
+ * `undefined` when there's no matching vendored entry.
+ */
+export function eidolonSubtypeVendoredEntry(
+  subtypeId: string,
+  refData: RefData,
+): EidolonSubtype | undefined {
+  const vendoredId = subtypeId.startsWith("elemental-") ? "elemental" : subtypeId;
+  return refData.eidolonSubtypes[vendoredId];
 }
 
 /**

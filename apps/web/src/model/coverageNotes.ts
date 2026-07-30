@@ -89,7 +89,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     category: "Summoner (Unchained) eidolon",
     note: 'Every published Paizo subtype and base form is in. A subtype\'s resistances, immunities, and spell-like abilities show as reference chips rather than live numbers, and a grant that says "choose one" is yours to apply. An avian or tauric eidolon is built at its Medium baseline, with the start-Small option yours to apply. The third-party Tapestry-Warped subtype is absent.',
     issueDetail:
-      "28 subtype defs. Astral's halved Str/Dex table-accrual has no per-subtype override hook; choose-one-of evolution grants have no structured mechanism; Tapestry-Warped is non-Paizo with no verifiable source and is excluded on provenance. Vendored subtype prose is not surfaced in the picker.",
+      "28 subtype defs. Choose-one-of evolution grants have no structured mechanism; Tapestry-Warped is non-Paizo with no verifiable source and is excluded on provenance.",
   },
   {
     category: "Alternate racial traits",

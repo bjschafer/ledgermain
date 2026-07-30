@@ -194,6 +194,14 @@ export interface EidolonSubtypeDef {
   baseForms: Readonly<Record<string, EidolonSubtypeForm>>;
   /** Themed grants at 1st/4th/8th/12th/16th/20th — not every subtype has an entry at every one of those levels. */
   grants: readonly EidolonSubtypeGrant[];
+  /**
+   * RAW halves the summoner's class level when looking up the eidolon's
+   * Str/Dex Bonus column on the base statistics table (currently only
+   * Astral — see that entry's source comment for the exact wording).
+   * Applies to that ONE column only; HD, BAB, saves, evolution pool, armor
+   * bonus, skill points, and bonus feats all stay keyed on the real level.
+   */
+  halveStrDexTableLevel?: boolean;
 }
 
 const ELEMENTAL_BASE_FORMS: Readonly<Record<string, EidolonSubtypeForm>> = {
@@ -876,8 +884,10 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
     ],
   },
   // Source: https://www.aonprd.com/EidolonUCSubtypes.aspx ("Astral" entry,
-  // Plane-Hopper's Handbook p.24), cross-checked against the pinned pfdata
-  // JSON's "astral" entry. See astral.report.md for details.
+  // Plane-Hopper's Handbook p.24): "A summoner's class level is halved for
+  // the purpose of determining the rate at which his astral eidolon's
+  // Strength and Dexterity increase." Cross-checked against the pinned
+  // pfdata JSON's "astral" entry.
   astral: {
     id: "astral",
     name: "Astral",
@@ -896,10 +906,11 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
         ],
       },
     },
+    halveStrDexTableLevel: true,
     grants: [
       {
         level: 1,
-        note: "Immunity to aging, and a +4 racial bonus on saves against curses, diseases, and poisons. The summoner's class level is halved for the purpose of the eidolon's Str/Dex table bonus (an unmodeled reduction — see report).",
+        note: "Immunity to aging, and a +4 racial bonus on saves against curses, diseases, and poisons. The summoner's class level is halved when determining the eidolon's Str/Dex table bonus.",
       },
       {
         level: 4,
