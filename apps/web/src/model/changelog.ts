@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-30-heritage-ability-arrays-swap-for-real",
+    date: "2026-07-30",
+    title: "Heritage ability swaps move your real stats",
+    note: "Picking a heritage that changes your race's ability modifiers now swaps the numbers instead of showing prose next to the unchanged base array. Covered: all ten tiefling spawn lines and six aasimar blooded lines, the four dhampir vampire-born lines, the eight elemental soul geniekin variants, and the nine skinwalker were-kin (their extra +2 while shapechanged stays yours to apply). A human taking Dual Talent, or any trait that trades away the bonus feat or Skilled, sees the feat and skill budgets shrink to match.",
+  },
+  {
     id: "2026-07-30-alternate-trait-swaps-enforced-everywhere",
     date: "2026-07-30",
     title: "Alternate racial traits retire what they replace, for every race",

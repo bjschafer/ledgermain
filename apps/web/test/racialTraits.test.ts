@@ -145,6 +145,21 @@ describe("model-layer budgets respect swaps", () => {
     // Human Skilled grants +1 rank per Hit Die; a level-1 fighter loses exactly 1.
     expect(swapped).toBe(plain - 1);
   });
+
+  it("a VENDORED pick suppresses budgets too: Dual Talent retires both the bonus feat and the skill rank", () => {
+    // Dual Talent trades the human bonus feat AND Skilled (and the +2-any,
+    // which has no budget) for two chosen +2s. The budgets must shrink with
+    // it, through the same map the engine's collect.ts consults.
+    const dualTalent = Object.values(ref.racialTraits).find((t) => t.name === "Dual Talent");
+    if (!dualTalent) throw new Error("vendored Dual Talent not found");
+    const plain = makeDoc("Human");
+    const withTrait = makeDoc("Human", undefined, [dualTalent.id]);
+    expect(expectedFeatCount(withTrait, ref)).toBe(expectedFeatCount(plain, ref) - 1);
+    expect(skillBudget(withTrait, ref, 0).total).toBe(skillBudget(plain, ref, 0).total - 1);
+    const suppressed = suppressedRaceTargets(withTrait, ref);
+    expect(suppressed.has("bonusFeats")).toBe(true);
+    expect(suppressed.has("bonusSkillRanks")).toBe(true);
+  });
 });
 
 describe("Dual Minded disables Multitalented", () => {

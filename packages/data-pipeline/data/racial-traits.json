@@ -53,7 +53,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.09c76EsW9zGXAEZ0"
   },
   "0CISUAPF2V91vvoo": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "cha",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Undine<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Rimesoul undines are distant and imperious, aloof in their intellect and hesitant to change their ways.</p><p><strong>Typical Alignment</strong> LN <br /><strong>Ability Modifiers</strong> +2 Dex, +2 Int, -2 Cha <br /><strong>Alternate Spell-Like Ability</strong> Rimesouls gain chill touch as a spell-like ability. <br /><strong>Ice Affinity</strong> This racial trait functions as and can be replaced as the base undine's water affinity, except it benefits sorcerers with the boreal bloodline and spellcasters with the Ice subdomain.</p><p>Like their ice-coated ancestors, rimesouls represent the solidification of change. They have precise, ordered minds that take well to individual pursuits. Rimesouls often choose to live in sparsely populated areas in Irrisen and Varisia. When they do live in cities, they prefer areas of disciplined culture such as Druma and Cheliax.</p><p>In appearance, rimesouls are frequently pale, sometimes with translucent or blue-tinged skin. Rimesouls usually dress in crisp, understated fashions that present an impression of austerity.</p>",
     "id": "0CISUAPF2V91vvoo",
@@ -69,7 +85,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.0CISUAPF2V91vvoo"
   },
   "0iFqZXfHNt2vAJ8h": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "int",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Tiefling<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>An innate sense of jealousy and pure malice drives spitespawn to spread misery and despair. Unable to experience joy themselves, they devote their lives to promoting gloom, all the while hiding the hatefulness that lurks at their core. </p><p><b>Ancestry </b>Div<br /> <b>Typical Alignment</b> NE<br /> <b>Ability Modifiers</b> +2 Dex, +2 Cha, -2 Int<br /><b>Alternate Skill Modifiers</b> Diplomacy, Linguistics<br /> <b>Alternate Spell-Like Ability</b> Spitespawn gain <i>misdirection </i>as a spell-like ability.</p>",
     "id": "0iFqZXfHNt2vAJ8h",
@@ -1249,7 +1281,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.3gVV8juxNQF8nTYx"
   },
   "3haIOIRYDeFc1YZH": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Aasimar<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Lawbringers are champions of justice and of doling out punishment to the wicked, and often believe chaos is the cause of all mortal suffering.</p><p><b>Ancestry </b>Archon<br /> <b>Typical Alignment</b> LG<br /><b>Ability Modifiers</b> +2 Con, +2 Wis<br /> <b>Alternate Skill Modifiers</b> Intimidate, Sense Motive<br /> <b>Alternate Spell-Like Ability</b> Lawbringers gain <i>continual flame</i> as a spell-like ability.</p>",
     "id": "3haIOIRYDeFc1YZH",
@@ -3658,7 +3701,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.BZvAxBgK3Qcj0J99"
   },
   "BgNdXPtHRUJOuPwF": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "cha",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Tiefling<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Endowed with brawny muscles and thick bones, hungerseed always seem poised to explode into some larger, more powerful form, and have a voracious appetite for sensory pleasures and carnal delights.</p><p>  <b>Ancestry </b>Oni<br /> <b>Typical Alignment </b>LE<br /> <b>Ability Modifiers </b>+2 Str, +2 Wis, -2 Cha<br /> <b>Alternate Skill Modifiers </b>Disguise, Intimidate<br /> <b>Alternate Spell-Like Ability</b> Hungerseed gain <i>alter self </i>as a spell-like ability.</p>",
     "id": "BgNdXPtHRUJOuPwF",
@@ -4132,7 +4191,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.DEowtAtiVIQOh2dj"
   },
   "DFWkrIYLx6L7Vs6W": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "con",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Sylph<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Veiled and surreptitious, smokesoul sylphs are natural deceivers, always concealing their true intentions.</p><p><strong>Typical Alignment</strong> CE <br /><strong>Ability Modifiers</strong> +2 Dex, +2 Cha, -2 Con <br /><strong>Alternate Spell-Like Ability</strong> Smokesouls gain blurred movement as a spell-like ability. <br /><strong>Smoke Affinity</strong> This racial trait functions as and can be replaced as the base sylph's air affinity, except it benefits sorcerers with the shadow bloodline and spellcasters with the Smoke subdomain.</p><p>Obfuscation, secrecy, and the shape of things not there: all these are the natural realms of smokesouls. They are experts at concealing both their bodies and motivations, and at making the insubstantial seem as real as any physical object. Smokesouls are drawn to areas of dangerous politics and intrigue, and many can be found in Nidal and Brevoy pursuing whatever machinations amuse them.</p><p>With few distinguishing features save ashen skin and dark hair, smokesouls can be mistaken for any number of other races. Smokesouls often change their clothing, cosmetics, or style to keep their appearance in a constant state of flux.</p>",
     "id": "DFWkrIYLx6L7Vs6W",
@@ -5518,7 +5593,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.HomUlBQh0EYivpPx"
   },
   "Hp26XuRpA7QNUOZO": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "dex",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Oread<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Stolid and indomitable, ironsoul oreads undertake great works, both physical and conceptual, with unwavering determination.</p><p><strong>Typical Alignment</strong> LN <br /><strong>Ability Modifiers</strong> +2 Con, +2 Wis, -2 Dex <br /><strong>Alternate Spell-Like Ability</strong> Ironsouls gain unerring weapon as a spell-like ability. <br /><strong>Metal Affinity</strong> This racial trait functions as and can be replaced as the base oread's earth affinity, except it benefits sorcerers with the shaitan bloodline and spellcasters with the Metal subdomain.</p><p>Possessed of patience and a sense of self-refinement through struggle, ironsouls reflect their ancestry in their continuous and determined efforts towards self-improvement. Ironsouls are most at home in areas that reflect that same sense of directed and intentional growth, and they operate best within existing formal structures.</p><p>Ironsouls wear their elemental heritage on their skin, with most having some amount of metallic sheen. Their skin tone varies, with colors ranging from gold and silver to copper-green and dull, oxide gray.</p>",
     "id": "Hp26XuRpA7QNUOZO",
@@ -6077,7 +6168,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.JAbeHqFork30yKAt"
   },
   "JLGJMVewolF9XNVW": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Tiefling<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Beastbrood regard themselves as deserving of appreciation and opulence. Through deceit and sheer willpower, they often achieve privileged stations in society. </p><p><b>Ancestry </b>Rakshasa<br /> <b>Typical Alignment </b>LE<br /> <b>Ability Modifiers </b>+2 Dex, +2 Cha, -2 Wis<br /><b>Alternate Skill Modifiers </b>Disguise, Sense Motive<br /> <b>Alternate Spell-Like Ability </b>Beastbrood gain <i>detect thoughts </i>as a spell-like ability.</p>",
     "id": "JLGJMVewolF9XNVW",
@@ -6379,7 +6486,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.KCaTgWITt5MUDVQT"
   },
   "KEXruHT9nIp41wT1": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Aasimar<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Masters of fire magic, emberkin feel the dual pull of their peri forebear as well as that of a fallen angel further down their ancestry, and wrestle with their urges to do both good and evil.</p><p><b>Ancestry </b>Peri<br /> <b>Typical Alignment </b>NG<br /> <b>Ability Modifiers</b> +2 Int, +2 Cha<br /> <b>Alternate Skill Modifiers</b> Knowledge (planes), Spellcraft<br /> <b>Alternate Spell-Like Ability</b> Emberkin gain <i>pyrotechnics </i>as a spell-like ability.</p>",
     "id": "KEXruHT9nIp41wT1",
@@ -7042,7 +7160,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.MQnZG0JAiMqtO91T"
   },
   "Mb0hz0BAj51wOmUr": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "cha",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Skinwalker<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p><strong>Ancestry</strong> wereboar<br /><strong>Typical Alignment</strong> CN<br /><strong>Ability Modifiers</strong> +2 Wis, -2 Cha (+2 Con while shapechanged)<br /><strong>Alternate Skill Modifiers</strong> Handle Animal, Perception<br /><strong>Alternate Spell-Like Ability</strong> <em>speak with animals</em> (pigs and boars only) 3/day<br /><strong>Bestial Features</strong></p><ul><li>+10 ft. racial bonus to base speed</li><li>Gore attack that deals 1d6 points of damage</li><li>2 hoof attacks that each deal 1d4 points of damage</li><li>Scent to a range of 30 ft.</li></ul><p></p>",
     "id": "Mb0hz0BAj51wOmUr",
@@ -7284,7 +7413,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.NBbiF9fQTgRfNaFb"
   },
   "NBmeuhkyRCjD3kV4": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "int",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Tiefling<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Lacking any sense of empathy or pity, faultspawn often abhor all ways of life but their own. They inflict severe emotional and physical pain on others, and never stop picking at the resulting psychological scars.</p><p>  <b>Ancestry </b>Asura<br /> <b>Typical Alignment </b>LE<br /> <b>Ability Modifiers </b>+2 Dex, +2 Wis, -2 Int<br /> <b>Alternate Skill Modifiers </b>Appraise, Knowledge (local)<br /> <b>Alternate Spell-Like Ability </b>Faultspawn gain <i>hideous laughter </i>as a spell-like ability.</p>",
     "id": "NBmeuhkyRCjD3kV4",
@@ -7554,7 +7699,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.NhfWDtVQtBcpKMBP"
   },
   "Ni5twdUyps9MQyOX": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "dex",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Dhampir<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Ru-shis possess an unsettling, graceless bearing, as well as a fierce determination to accomplish their mysterious goals.</p><p><strong>Ancestry </strong>Jiang-shi<br /><strong>Ability Modifiers </strong>+2 Str, +2 Int, -2 Dex<br /><strong>Alternate Skill Modifiers</strong> Acrobatics, Knowledge (engineering)<br /><strong>Alternate Spell-Like Ability </strong>Ru-shis gain <em>erase </em>as a spell-like ability.<br /><strong>Alternate Weakness</strong> Ru-shis take a -1 penalty on saves against sonic effects and spells.</p><hr /><p><strong>Note</strong></p><p>Blood of the Night sourcebook lists: <span style=\"font-family: Signika, sans-serif\"><strong style=\"box-sizing: border-box; user-select: text; scrollbar-width: thin; scrollbar-color: rgb(93, 20, 43) rgba(0, 0, 0, 0); color: rgb(25, 24, 19); font-family: Signika, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;\">Ability Modifiers </strong>+2 Dex, +2 Int, -2 Wis, these were replaced in Inner Sea Races.</span></p>",
     "id": "Ni5twdUyps9MQyOX",
@@ -8652,7 +8813,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.QuCU7zACopBCx8Ob"
   },
   "R7UDXRs0E5klyzCY": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Aasimar<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Their shimmering avian features make plumekith instantly recognizable. Though they can act rashly, plumekith never shirk their duty after making a commitment. </p><p><b>Ancestry </b>Garuda<br /> <b>Typical Alignment</b> CG<br /> <b>Ability Modifiers</b> +2 Dex, +2 Wis<br /><b>Alternate Skill Modifiers</b> Acrobatics, Fly<br /> <b>Alternate Spell-Like Ability</b> Plumekith gain see <i>invisibility </i>as a spell-like ability.</p>",
     "id": "R7UDXRs0E5klyzCY",
@@ -9028,7 +9200,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.S2NJixZYq3fBtPig"
   },
   "S2fAbQom6ogn4gh9": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "cha",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Skinwalker<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p><strong>Ancestry</strong> wereraptor<br /><strong>Typical Alignment</strong> LN<br /><strong>Ability Modifiers</strong> +2 Wis, -2 Cha (+2 Dex while shapechanged)<br /><strong>Alternate Skill Modifiers</strong> Perception, Sense Motive<br /><strong>Alternate Spell-Like Ability</strong> <em>feather fall</em> 1/day<br /><strong>Bestial Features</strong></p><ul><li>Bite attack that deals 1d6 points of damage</li><li>2 talon attacks that each deal 1d4 points of damage</li><li>+4 racial bonus on Perception checks</li><li>Increase fly speeds from other sources by 10 ft.</li></ul><p></p>",
     "id": "S2fAbQom6ogn4gh9",
@@ -9060,7 +9243,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.S54OGr1E0tI6V4jQ"
   },
   "SFD4dGofogr1c1S9": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "con",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Dhampir<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Many of the ancient-born dhampirs possess a deep hatred for humanity-a hatred most humans return in kind. <br /><strong>Alternate Ability Modifiers</strong>: +2 Strength, +2 Wisdom, -2 Constitution. <br /><strong>Alternate Skill Modifiers</strong>: Climb, Survival. <br /><strong>Alternate Spell-Like Ability</strong>: Doom<br /><strong>Alternate Weakness</strong>: Ancient-born take a -1 penalty on saves against effects that damage, drain, or reduce physical ability scores.</p>",
     "id": "SFD4dGofogr1c1S9",
@@ -9675,7 +9874,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.Tb0QQbLa6WuRfUzG"
   },
   "TbnWNAk91q2wgqCP": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Aasimar<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Angelkin are mortal paragons of exceptional beauty, and they serve as exemplars of good and light regardless of the myriad forms they may take.</p><p><b>Ancestry </b>Angel<br /> <b>Typical Alignment </b>Any good<br /> <b>Ability Modifiers </b>+2 Str, +2 Cha<br /> <b>Alternate Skill Modifiers </b>Heal, Knowledge (planes)<br /> <b>Alternate Spell-Like Ability </b>Angelkin gain <i>alter self </i>as a spell-like ability.</p>",
     "id": "TbnWNAk91q2wgqCP",
@@ -9861,7 +10071,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.U0rMPYJhgW4Fg6WL"
   },
   "U8dkiXDmSDOETLxv": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Aasimar<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>The musetouched epitomize freedom and joy, and travel the world to liberate less fortunate individuals.</p><p><b>Ancestry </b>Azata<br /><b>Typical Alignment </b>CG<br /> <b>Ability Modifiers </b>+2 Dex, +2 Cha<br /> <b>Alternate Skill Modifiers</b> Diplomacy, Perform<br /><b>Alternate Spell-Like Ability</b> Musetouched gain <i>glitterdust </i>as a spell-like ability.</p>",
     "id": "U8dkiXDmSDOETLxv",
@@ -9877,7 +10098,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.U8dkiXDmSDOETLxv"
   },
   "UMT2CcRjz9uXlsvb": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Tiefling<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Shackleborn are fascinated by mutilation and torture. Though they prefer to practice their cruel art on others, they accept that sometimes the wheel must turn and greet their own moments of anguish and confinement with an odd serenity. </p><p><b>Ancestry </b>Kyton<br /> <b>Typical Alignment </b>LE<br /> <b>Ability Modifiers</b> +2 Con, +2 Cha, -2 Wis<br /> <b>Alternate Skill Modifiers</b> Escape Artist, Intimidate<br /><b>Alternate Spell-Like Ability</b> Shackleborn gain <i>web </i>as a spell-like ability.</p>",
     "id": "UMT2CcRjz9uXlsvb",
@@ -10486,7 +10723,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.WDeyEgmjJDg4h1TC"
   },
   "WE57FyExdDq2mjnV": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Ifrit<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Strong in character and in body, sunsoul ifrits are incurably optimistic agents of positive change.</p><p><strong>Typical Alignment</strong> LG <br /><strong>Ability Modifiers</strong> +2 Str, +2 Cha, -2 Wis <br /><strong>Alternate Spell-Like Ability</strong> Sunsouls gain sun metal as a spell-like ability.<br /><strong>Solar Affinity</strong> This racial trait functions as and can be replaced as the base ifrit's fire affinity, except it benefits sorcerers with the celestial bloodline and spellcasters with the Sun domain.</p><p>With fire comes light, and the brightness of the sunsouls comes both from their affinity for positive energy and their own luminous attitudes. Where others despair, they labor on, striving to lead by example. Strong leaders and passionate ethos attract sunsouls, drawing them toward powerful religions or crusading nations such as Mendev. They can also be found in places where darkness is settling in; both Taldor and Ustalav have their share of sunsouls working to return these nations to the light.</p><p>Sunsouls cannot easily hide their presence, and most would never try. Most sunsouls tend to have fair hair, often nearly white, and eyes that glow with a twinkle all their own. Some seem to glow from within, as if lit from inside by an inner sunlight. Unafraid to be seen, they dress in whatever styles please them, even when it means they stand out among populations either more daring or more conservative.</p>",
     "id": "WE57FyExdDq2mjnV",
@@ -11375,7 +11628,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.ZDYzHXisxHABCWza"
   },
   "ZLFxIufcHBwiIZrl": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "cha",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Skinwalker<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p><strong>Ancestry</strong> werebear<br /><strong>Typical Alignment</strong> LG<br /><strong>Ability Modifiers</strong> +2 Con, -2 Cha (+2 Wis while shapechanged)<br /><strong>Alternate Skill Modifiers</strong> Climb, wild empathy<br /><strong>Alternate Spell-Like Ability</strong> <em>calm animals</em> 1/day<br /><strong>Bestial Features</strong></p><ul><li>Bite attack that deals 1d6 points of damage</li><li>2 claw attacks that each deal 1d4 points of damage</li><li>Climb speed of 20 ft.</li><li>Scent to a range of 30 ft.</li></ul><p></p>",
     "id": "ZLFxIufcHBwiIZrl",
@@ -11641,7 +11905,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.Zty4nj3QFPOC0hYX"
   },
   "a1otKF9eFw6gSfvB": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Oread<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>With scintillating personalities to match their captivating appearances, gemsoul oreads command attention-and prefer it that way.</p><p><strong>Typical Alignment</strong> N <br /><strong>Ability Modifiers</strong> +2 Str, +2 Cha, -2 Wis <br /><strong>Alternate Spell-Like Ability</strong> Gemsouls gain color spray as a spell-like ability. <br /><strong>Crystal Affinity</strong> This racial trait functions as and can be replaced as the base oread's earth affinity, except it benefits sorcerers with the deep earth bloodline and spellcasters with the Charm domain.</p><p>Gemsouls tend to have large egos and are flashy in their relationships. They gravitate towards artistic pursuits, most frequently of a performative nature, though they also have a strong tradition of symmetric poetry. Gemsouls prefer to make their homes in flamboyant societies or places where they can make meaningful personal contributions, as well as in nations that appreciate cultivated beauty, like Kyonin.</p><p>Gemsouls typically have dazzling, faceted skin, along with a cluster of crystalline formations instead of hair and pupil-less eyes of vivid colors. Some favor tattoos in complex, branching geometric shapes, and they can frequently be seen wearing silks or brightly dyed linen to contrast their complexions.</p>",
     "id": "a1otKF9eFw6gSfvB",
@@ -12623,7 +12903,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.cUYl6WPG3gIKBkIe"
   },
   "calSa82WwxgUFwXr": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "int",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Skinwalker<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p><strong>Ancestry</strong> werewolf<br /><strong>Typical Alignment</strong> CE<br /><strong>Ability Modifiers</strong> +2 Con, -2 Int (+2 Wis while shapechanged)<br /><strong>Alternate Skill Modifiers</strong> Perception, wild empathy<br /><strong>Alternate Spell-Like Ability</strong> <em>magic fang</em> 1/day<br /><strong>Bestial Features</strong></p><ul><li>Bite attack that deals 1d6 points of damage</li><li>2 claw attacks that each deal 1d4 points of damage</li><li>Darkvision 60 ft.</li><li>+2 racial bonus on all saving throws</li></ul><p></p>",
     "id": "calSa82WwxgUFwXr",
@@ -13408,7 +13699,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.eew9hWENxwAiLP8S"
   },
   "emgcgmgSjpuv1GHa": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "int",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Tiefling<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Pitborn delight in destruction, especially while unleashing their havoc on what others consider valuable or precious. Perhaps because of this volatility, others tend to simply defer to pitborn, an act that often grants them the dominance they crave.</p><p><b>Ancestry </b>Demon<br /><b>Typical Alignment </b>CE<br /> <b>Ability Modifiers </b>+2 Str, +2 Cha, -2 Int<br /> <b>Alternate Skill Modifiers </b>Disable Device, Perception<br /> <b>Alternate Spell-Like Ability </b>Pitborn gain <i>shatter </i>as a spell-like ability.</p>",
     "id": "emgcgmgSjpuv1GHa",
@@ -13547,7 +13854,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.f6rFJHkiEHN54rA8"
   },
   "f91ILsrKfkpL9uUG": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "con",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Dhampir<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>These dhampirs are blessed with unnatural grace, beauty, and charm, and they often feel most at home among a region's aristocracy. <br /><strong>Alternate Ability Modifiers</strong>: +2 Strength, +2 Charisma, -2 Constitution. <br /><strong>Alternate Skill Modifiers</strong>: Diplomacy, Knowledge (nobility). <br /><strong>Alternate Spell-Like Ability</strong>: Obscuring mist<br /><strong>Alternate Weakness</strong>: Svetochers take a -1 penalty on saves against effects that deal positive energy damage.</p>",
     "id": "f91ILsrKfkpL9uUG",
@@ -14879,7 +15202,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.iSHRZjOWa5TnYKXe"
   },
   "iWZjiKTQnGS5XnB0": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "str",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "int",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Tiefling<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>No woman survives the birth of a babe whose qlippoth ancestry has emerged. At best, qlippoth-spawn rip their mothers apart during labor. At worst, they tear themselves out even earlier.</p><p><b>Ancestry </b>Qlippoth<br /> <b>Typical Alignment</b> CE<br /> <b>Ability Modifiers</b> +2 Str, +2 Wis, -2 Int<br /> <b>Alternate Skill Modifiers</b> Escape Artist, Survival<br /> <b>Alternate Spell-Like Ability</b> The motherless gain <i>blur </i>as a spell-like ability.</p>",
     "id": "iWZjiKTQnGS5XnB0",
@@ -15013,7 +15352,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.iy6e5v8YWE9upybn"
   },
   "izCRmMUEyikdfpiq": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "cha",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Tiefling<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>While often rigid, stubborn, and highly focused on sticking to plans and schedules, hellspawn also have a rare talent for penetrating others' facades. They know a lie when they hear one, and can often determine what hidden vice or secret shame motivates another.</p><p><b>Ancestry </b>Devil <b>Typical Alignment </b>LE<br /> <b>Ability Modifiers </b>+2 Con, +2 Wis, -2 Cha<br /> <b>Alternate Skill Modifiers </b>Diplomacy, Sense Motive<br /> <b>Alternate Spell-Like Ability</b> Hellspawn gain <i>pyrotechnics </i>as a spell-like ability.</p>",
     "id": "izCRmMUEyikdfpiq",
@@ -15029,7 +15384,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.izCRmMUEyikdfpiq"
   },
   "jAQXQDgwCX0eKxZ2": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "dex",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Ifrit<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Like the primal fires of creation, lavasoul ifrits are both fluid and fixed, alternating between stability and violent alteration.</p><p><strong>Typical Alignment</strong> CN <br /><strong>Ability Modifiers</strong> +2 Con, +2 Int, -2 Dex <br /><strong>Alternate Spell-Like Ability</strong> Lavasouls gain burning sands as a spell-like ability. <br /><strong>Magma Affinity</strong> This racial trait functions as and can be replaced as the base ifrit's fire affinity, except it benefits sorcerers with the efreeti bloodline and spellcasters with the Ash subdomain.</p><p>Mutable and intense, lavasouls evoke the cycle of creation and destruction in their colorful lives, unafraid to pursue new paradigms when the old ones no longer suit them. Many are dark-skinned but riven with blazing lines, which are sometimes also reflected in bright hair or eye colors. They tend to embrace body modification, acquiring and discarding tattoos and piercings as they feel appropriate.</p><p>Lavasouls can be found in places where seismic change is commonplace and destructive creation is not seen as a contradiction; they excel in the fast-paced markets of Katapesh and the constant flux of Galt.</p>",
     "heritage": "Lavasoul",
@@ -15314,7 +15685,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.kD8isApIfN4y1ty0"
   },
   "kLPypNzy62fMbj3d": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Sylph<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>With an abundance of confidence and a shortage of patience, stormsoul sylphs are personalities who cannot be ignored.</p><p><strong>Typical Alignment</strong> CN <br /><strong>Ability Modifiers</strong> +2 Dex, +2 Cha, -2 Wis <br /><strong>Alternate Spell-Like Ability</strong> Stormsouls gain shocking grasp as a spell-like ability. <br /><strong>Lightning Affinity</strong> This racial trait functions as and can be replaced as the base sylph's air affinity, except it benefits sorcerers with the stormborn bloodline and spellcasters with the Weather domain.</p><p>When a stormsoul moves, either in word or in action, the world notices. Unafraid to speak their minds, they are both direct and unsubtle, and they make fierce allies. When friends are in need, stormsouls act without thinking and are always the first to leap to their aid.</p><p>A stormsoul sylph has hair that always seems to move, even when there is no breeze, and acts with a sudden intensity that can seem out of control. Their eyes are the color of stormy water or lightning-lit skies, and even a casual glance from a stormsoul can seem severe.</p>",
     "id": "kLPypNzy62fMbj3d",
@@ -15945,7 +16332,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.m6anXBE7DQrCaNPS"
   },
   "mBfn8hCLwEsAxlnl": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Skinwalker<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p><strong>Ancestry</strong> werebat <br /><strong>Typical Alignment</strong> NE<br /><strong>Ability Modifiers</strong> +2 Int, -2 Wis (+2 Dex while shapechanged) <br /><strong>Alternate Skill Modifiers</strong> Fly, Perception at night <br /><strong>Alternate Spell-Like Ability</strong> <em>obscuring mist</em> 1/day<br /><strong>Bestial Features</strong></p><ul><li>Bite attack that deals 1d6 points of damage</li><li>+4 racial bonus on Perception checks</li><li>Scent to a range of 30 ft.</li><li>Treat falling damage as 20 ft. less than it actually is</li></ul><p></p>",
     "id": "mBfn8hCLwEsAxlnl",
@@ -16047,7 +16445,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.mIoJHEWhujpANeaM"
   },
   "mNPzfPRAdgvumhww": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "str",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Skinwalker<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p><strong>Ancestry</strong> wererat<br /><strong>Typical Alignment</strong> LE<br /><strong>Ability Modifiers</strong> +2 Int, -2 Str (+2 Dex while shapechanged)<br /><strong>Alternate Skill Modifiers</strong> Handle Animal, Stealth in urban environments<br /><strong>Alternate Spell-Like Ability</strong> <em>speak with animals</em> (rodents only) 3/day<br /><strong>Bestial Features</strong></p><ul><li>Bite attack that deals 1d6 points of damage</li><li>Climb speed of 30 ft.</li><li>Distraction (<em>Pathfinder RPG Bestiary</em> 299)</li><li>Scent to a range of 30 ft.</li></ul><p></p>",
     "id": "mNPzfPRAdgvumhww",
@@ -16388,7 +16797,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.nOZ9tdmFZ4sWgXv0"
   },
   "nPKsivL973H9L7y7": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "cha",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Aasimar<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Idyllkin possess bestial aspects and calm dispositions, and often act as peaceful intermediaries between lawful and chaotic agents of good.</p><p>  <b>Ancestry </b>Agathion<br /> <b>Typical Alignment </b>NG<br /> <b>Ability Modifiers </b>+2 Con, +2 Cha<br /> <b>Alternate Skill Modifiers </b>Handle Animal, Survival<br /> <b>Alternate Spell-Like Ability </b>Idyllkin gain <i>summon nature's ally II </i>as a spell-like ability.</p>",
     "id": "nPKsivL973H9L7y7",
@@ -16625,7 +17045,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.noLFpNL6xVCMBkRp"
   },
   "nopyUgzhxcD4G8uD": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Skinwalker<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p><strong>Ancestry</strong> weretiger<br /><strong>Typical Alignment</strong> NE<br /><strong>Ability Modifiers</strong> +2 Dex, -2 Wis (+2 Cha while shapechanged)<br /><strong>Alternate Skill Modifiers</strong> Acrobatics, Perception<br /><strong>Alternate Spell-Like Ability</strong> <em>jump</em> 1/day<br /><strong>Bestial Features</strong></p><ul><li>Bite attack that deals 1d6 points of damage</li><li>2 claw attacks that each deal 1d4 points of damage</li><li>+10 ft. racial bonus to base speed</li><li>See in darkness</li></ul><p></p>",
     "id": "nopyUgzhxcD4G8uD",
@@ -18941,7 +19372,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.ugVzv2fQAGFUy6Si"
   },
   "uj0JvFUtrmpOSNVa": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Skinwalker<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p><strong>Ancestry</strong> werecrocodile<br /><strong>Typical Alignment</strong> NE<br /><strong>Ability Modifiers</strong> +2 Int, -2 Wis (+2 Str while shapechanged)<br /><strong>Alternate Skill Modifiers</strong> Stealth, wild empathy<br /><strong>Alternate Spell-Like Ability</strong> <em>scare</em> 1/day<br /><strong>Bestial Features</strong></p><ul><li>Bite attack that deals 1d6 points of damage</li><li>Darkvision to a range of 60 ft.</li><li>Swim speed of 30 ft.</li><li>Ferocity (<em>Pathfinder RPG Bestiary</em> 300)</li></ul><p></p>",
     "id": "uj0JvFUtrmpOSNVa",
@@ -19733,7 +20175,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.wo6yWJXwBCZjPNHm"
   },
   "wrqUJsULTxngAMQb": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "int",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Skinwalker<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p><strong>Ancestry</strong> wereshark<br /><strong>Typical Alignment</strong> N<br /><strong>Ability Modifiers</strong> +2 Wis, -2 Int (+2 Con while shapechanged)<br /><strong>Alternate Skill Modifiers</strong> Perception, Swim<br /><strong>Alternate Spell-Like Ability</strong> <em>charm animal</em> (aquatic animals only) 3/day<br /><strong>Bestial Features</strong></p><ul><li>Amphibious</li><li>Bite attack that deals 1d6 points of damage</li><li>Ferocity (<em>Pathfinder RPG Bestiary</em> 300)</li><li>Swim speed of 30 ft.</li></ul><p></p>",
     "id": "wrqUJsULTxngAMQb",
@@ -20394,7 +20847,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.yQFgtsFjg71gdHoO"
   },
   "yRISJZyDwhGV0jFO": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "int",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Undine<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Soothing and insightful, mistsoul undines move through the world with airy resilience and earnest action.</p><p><strong>Typical Alignment</strong> NG <br /><strong>Ability Modifiers</strong> +2 Con, +2 Wis, -2 Int <br /><strong>Alternate Spell-Like Ability</strong> Mistsouls gain obscuring mist as a spell-like ability. <br /><strong>Mist Affinity</strong> This racial trait functions as and can be replaced as the base undine's water affinity, except it benefits sorcerers with the dreamspun bloodline and spellcasters with the Repose domain.</p><p>With gentle spirits and contemplative minds, mistsouls are drawn to the more mystic aspects of their element. Their ephemeral, vaporous natures can allow them to lull others into a dreamlike state, or facilitate a peaceful transition into the next life. They tend to seek out places where ideological and political struggles converge, and thus they are at home in communities like those of the common folk of Brevoy.</p><p>Physically, mistsouls have rounded features and graceful deliberation in their movement. They prefer soft, highquality garments of neutral or earth tones and simple jewelry chosen for significance rather than expense.</p>",
     "id": "yRISJZyDwhGV0jFO",
@@ -20512,7 +20981,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.yoGRjHSNTbIJE7e3"
   },
   "yodj1nKWZ1hzQVVv": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Dhampir<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>With skin like faded brass, ajibachanas reveal their undead taint through their unnatural agility and childlike trains of thought.</p><p><strong>Ancestry </strong>Vetala<br /><strong>Ability Modifiers </strong>+2 Dex, +2 Int, -2 Wis<br /><strong>Alternate Skill Modifiers </strong>Escape Artist, Use Magic Device<br /><strong>Alternate Spell-Like Ability </strong>Ajibachanas gain Comprehend Languages<em> </em>as a spell-like ability.<br /><strong>Alternate Weakness </strong>Ajibachanas take a -1 penalty to their caster level whenever they are in an area affected by <em>consecrate</em>, <em>hallow</em>, or a similar spell that makes an area holy.</p><hr /><p><strong>Note</strong></p><p>Blood of the Night sourcebook lists: <span style=\"font-family: Signika, sans-serif\"><strong style=\"box-sizing: border-box; user-select: text; scrollbar-width: thin; scrollbar-color: rgb(93, 20, 43) rgba(0, 0, 0, 0); color: rgb(25, 24, 19); font-family: Signika, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;\">Ability Modifiers </strong>+2 Dex, +2 Wis, -2 Int, these were replaced in Inner Sea Races.</span></p>",
     "id": "yodj1nKWZ1hzQVVv",
@@ -20876,7 +21361,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.zZg9G22ykBGKWCuw"
   },
   "zaQk4Qx8fsdxsOSW": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "con",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "int",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Tiefling<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Crude and boorish, foulspawn take a particular delight in giving offense and scandalizing polite society. They enjoy violating taboos even more than breaking laws, especially if it means degrading or repulsing an innocent.</p><p>  <b>Ancestry </b>Demodand<br /> <b>Typical Alignment </b>CE<br /> <b>Ability Modifiers </b>+2 Con, +2 Wis, -2 Int<br /><b>Alternate Skill </b>Modifiers Intimidate, Knowledge (religion)<br /><b>Alternate Spell-Like Ability </b>Foulspawn gain <i>bear's endurance </i>as a spell-like ability.</p>",
     "id": "zaQk4Qx8fsdxsOSW",
@@ -21033,7 +21534,23 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.zl9Eo1R5aLckDvaj"
   },
   "zlOXohhDPfhgEstJ": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "int",
+        "type": "racial"
+      },
+      {
+        "formula": "-2",
+        "target": "wis",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [],
     "description": "<p><strong>Race</strong>: Tiefling<br /><strong>Replaced Trait(s)</strong>: Base Statistics</p><hr /><p>Dreary and pessimistic, grimspawn are so enthralled by death, disease, and dilapidation that they often dedicate themselves to ending lives from behind the scenes as macabre saboteurs.</p><p><b>Ancestry </b>Daemon<br /> <b>Typical Alignment </b>NE<br /> <b>Ability Modifiers </b>+2 Dex, +2 Int, -2 Wis<br /> <b>Alternate Skill Modifiers </b>Disable Device, Sleight of Hand<br /> <b>Alternate Spell-Like Ability </b>Grimspawn gain <i>death knell </i>as a spell-like ability.</p>",
     "id": "zlOXohhDPfhgEstJ",

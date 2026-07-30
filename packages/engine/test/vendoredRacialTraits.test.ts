@@ -435,6 +435,7 @@ describe("featured-race vendored suppression (issue #74 Phase 6)", () => {
       "Ghoran",
       "Goblin",
       "Hobgoblin",
+      "Human",
       "Ifrit",
       "Kitsune",
       "Kobold",
@@ -599,5 +600,56 @@ describe("uncommon-race vendored suppression (issue #74)", () => {
     expect(withTrait.skills["kre"]!.total).toBe(base.skills["kre"]!.total - 2);
     expect(withTrait.skills["han"]!.total).toBe(base.skills["han"]!.total + 2);
     expect(withTrait.skills["dip"]!.total).toBe(base.skills["dip"]!.total + 2);
+  });
+});
+
+describe("heritage ability-array swaps (supplemented arrays + Base Statistics suppression)", () => {
+  // Each heritage's replacement array is hand-authored in
+  // `SUPPLEMENTAL_RACIAL_TRAIT_CHANGES` (data-pipeline) from the entry's own
+  // prose; the map's "Base Statistics" key retires the base race's array.
+  // Expected values are the published net effect: base array out,
+  // heritage array in.
+
+  it("Tiefling Devil-Spawn (Hellspawn): +2 Con/+2 Wis/-2 Cha replaces +2 Dex/+2 Int/-2 Cha", () => {
+    const base = compute(makeDoc("Tiefling"), ref);
+    const withTrait = compute(makeDoc("Tiefling", [traitId("Devil-Spawn (Hellspawn)")]), ref);
+    expect(withTrait.abilities.con.total).toBe(base.abilities.con.total + 2);
+    expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total + 2);
+    expect(withTrait.abilities.dex.total).toBe(base.abilities.dex.total - 2);
+    expect(withTrait.abilities.int.total).toBe(base.abilities.int.total - 2);
+    expect(withTrait.abilities.cha.total).toBe(base.abilities.cha.total);
+  });
+
+  it("Aasimar Angel-Blooded (Angelkin): +2 Str/+2 Cha replaces +2 Cha/+2 Wis", () => {
+    const base = compute(makeDoc("Aasimar"), ref);
+    const withTrait = compute(makeDoc("Aasimar", [traitId("Angel-Blooded (Angelkin)")]), ref);
+    expect(withTrait.abilities.str.total).toBe(base.abilities.str.total + 2);
+    expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total - 2);
+    expect(withTrait.abilities.cha.total).toBe(base.abilities.cha.total);
+  });
+
+  it("Ifrit Sunsoul (Solar Ifrit): +2 Str/+2 Cha/-2 Wis replaces +2 Dex/+2 Cha/-2 Wis", () => {
+    const base = compute(makeDoc("Ifrit"), ref);
+    const withTrait = compute(makeDoc("Ifrit", [traitId("Sunsoul (Solar Ifrit)")]), ref);
+    expect(withTrait.abilities.str.total).toBe(base.abilities.str.total + 2);
+    expect(withTrait.abilities.dex.total).toBe(base.abilities.dex.total - 2);
+    expect(withTrait.abilities.cha.total).toBe(base.abilities.cha.total);
+    expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total);
+  });
+
+  it("Skinwalker Wereboar-Kin (Ragebred): +2 Wis/-2 Cha replaces +2 Wis/-2 Int (shapechanged rider stays prose)", () => {
+    const base = compute(makeDoc("Skinwalker"), ref);
+    const withTrait = compute(makeDoc("Skinwalker", [traitId("Wereboar-Kin (Ragebred)")]), ref);
+    expect(withTrait.abilities.int.total).toBe(base.abilities.int.total + 2);
+    expect(withTrait.abilities.cha.total).toBe(base.abilities.cha.total - 2);
+    expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total);
+  });
+
+  it("heritage swaps leave the race's non-ability standard traits alone (Hellspawn keeps fiendish resistance)", () => {
+    const withTrait = compute(makeDoc("Tiefling", [traitId("Devil-Spawn (Hellspawn)")]), ref);
+    expect(
+      withTrait.defenses?.resistances.some((r) => r.qualifier === "fire" && r.total === 5),
+    ).toBe(true);
+    expect(withTrait.senses.some((s) => s.label === "Darkvision")).toBe(true);
   });
 });

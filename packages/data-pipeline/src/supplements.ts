@@ -30,6 +30,7 @@ import type {
   ClassFeatureGrant,
   ContextNote,
   Race,
+  RacialTrait,
   SourceRef,
   Spell,
   SpellList,
@@ -2627,5 +2628,386 @@ export function applyPrestigeClassSupplements(
       );
     }
     classFeatures.push(feature);
+  }
+}
+
+/**
+ * Heritage-variant racial traits whose published replacement ability array
+ * exists only as description prose upstream (the pack ships them with empty
+ * `changes[]`). Each entry hand-authors that array so the engine's
+ * `VENDORED_STANDARD_TRAIT_TARGETS` "Base Statistics" suppression can safely
+ * retire the base race's array: without a landing replacement, suppression
+ * would zero the character's racial modifiers, which is why these stayed
+ * unmapped until now.
+ *
+ * Keyed by trait **id** (heritage names repeat across race packs). `name` is
+ * verified on apply, and `keyword` is the entry's own vendored
+ * "Ability Modifiers" prose line, verbatim — the drift guard that fails the
+ * build if a data bump ever changes the published array out from under the
+ * hand-authored one. Changes are typed `racial` to match the base race's
+ * array, so even if suppression were somehow bypassed the same-type overlap
+ * takes-highest instead of summing.
+ *
+ * The Skinwalker "-Kin" entries transcribe only the always-on pair; the
+ * "+2 X while shapechanged" tail of their prose line stays prose (no
+ * structured representation for shapechange-conditional modifiers), the same
+ * partial-halves posture as Ratfolk Tinker in the engine's map doc.
+ */
+export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
+  string,
+  { name: string; keyword: string; changes: Change[] }
+> = {
+  "0iFqZXfHNt2vAJ8h": {
+    name: "Div-Spawn (Spitespawn)",
+    keyword: "+2 Dex, +2 Cha, -2 Int",
+    changes: [
+      { formula: "2", target: "dex", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+      { formula: "-2", target: "int", type: "racial" },
+    ],
+  },
+  BgNdXPtHRUJOuPwF: {
+    name: "Oni-Spawn (Hungerseed)",
+    keyword: "+2 Str, +2 Wis, -2 Cha",
+    changes: [
+      { formula: "2", target: "str", type: "racial" },
+      { formula: "2", target: "wis", type: "racial" },
+      { formula: "-2", target: "cha", type: "racial" },
+    ],
+  },
+  JLGJMVewolF9XNVW: {
+    name: "Rakshasa-Spawn (Beastbrood)",
+    keyword: "+2 Dex, +2 Cha, -2 Wis",
+    changes: [
+      { formula: "2", target: "dex", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+      { formula: "-2", target: "wis", type: "racial" },
+    ],
+  },
+  NBmeuhkyRCjD3kV4: {
+    name: "Asura-Spawn (Faultspawn)",
+    keyword: "+2 Dex, +2 Wis, -2 Int",
+    changes: [
+      { formula: "2", target: "dex", type: "racial" },
+      { formula: "2", target: "wis", type: "racial" },
+      { formula: "-2", target: "int", type: "racial" },
+    ],
+  },
+  UMT2CcRjz9uXlsvb: {
+    name: "Kyton-Spawn (Shackleborn)",
+    keyword: "+2 Con, +2 Cha, -2 Wis",
+    changes: [
+      { formula: "2", target: "con", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+      { formula: "-2", target: "wis", type: "racial" },
+    ],
+  },
+  emgcgmgSjpuv1GHa: {
+    name: "Demon-Spawn (Pitborn)",
+    keyword: "+2 Str, +2 Cha, -2 Int",
+    changes: [
+      { formula: "2", target: "str", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+      { formula: "-2", target: "int", type: "racial" },
+    ],
+  },
+  iWZjiKTQnGS5XnB0: {
+    name: "Qlippoth-Spawn (the Motherless)",
+    keyword: "+2 Str, +2 Wis, -2 Int",
+    changes: [
+      { formula: "2", target: "str", type: "racial" },
+      { formula: "2", target: "wis", type: "racial" },
+      { formula: "-2", target: "int", type: "racial" },
+    ],
+  },
+  izCRmMUEyikdfpiq: {
+    name: "Devil-Spawn (Hellspawn)",
+    keyword: "+2 Con, +2 Wis, -2 Cha",
+    changes: [
+      { formula: "2", target: "con", type: "racial" },
+      { formula: "2", target: "wis", type: "racial" },
+      { formula: "-2", target: "cha", type: "racial" },
+    ],
+  },
+  zaQk4Qx8fsdxsOSW: {
+    name: "Demodand-Spawn (Foulspawn)",
+    keyword: "+2 Con, +2 Wis, -2 Int",
+    changes: [
+      { formula: "2", target: "con", type: "racial" },
+      { formula: "2", target: "wis", type: "racial" },
+      { formula: "-2", target: "int", type: "racial" },
+    ],
+  },
+  zlOXohhDPfhgEstJ: {
+    name: "Daemon-Spawn (Grimspawn)",
+    keyword: "+2 Dex, +2 Int, -2 Wis",
+    changes: [
+      { formula: "2", target: "dex", type: "racial" },
+      { formula: "2", target: "int", type: "racial" },
+      { formula: "-2", target: "wis", type: "racial" },
+    ],
+  },
+  "3haIOIRYDeFc1YZH": {
+    name: "Archon-Blooded (Lawbringers)",
+    keyword: "+2 Con, +2 Wis",
+    changes: [
+      { formula: "2", target: "con", type: "racial" },
+      { formula: "2", target: "wis", type: "racial" },
+    ],
+  },
+  KEXruHT9nIp41wT1: {
+    name: "Peri-Blooded (Emberkin)",
+    keyword: "+2 Int, +2 Cha",
+    changes: [
+      { formula: "2", target: "int", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+    ],
+  },
+  R7UDXRs0E5klyzCY: {
+    name: "Garuda-Blooded (Plumekith)",
+    keyword: "+2 Dex, +2 Wis",
+    changes: [
+      { formula: "2", target: "dex", type: "racial" },
+      { formula: "2", target: "wis", type: "racial" },
+    ],
+  },
+  TbnWNAk91q2wgqCP: {
+    name: "Angel-Blooded (Angelkin)",
+    keyword: "+2 Str, +2 Cha",
+    changes: [
+      { formula: "2", target: "str", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+    ],
+  },
+  U8dkiXDmSDOETLxv: {
+    name: "Azata-Blooded (Musetouched)",
+    keyword: "+2 Dex, +2 Cha",
+    changes: [
+      { formula: "2", target: "dex", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+    ],
+  },
+  nPKsivL973H9L7y7: {
+    name: "Agathion-Blooded (Idyllkin)",
+    keyword: "+2 Con, +2 Cha",
+    changes: [
+      { formula: "2", target: "con", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+    ],
+  },
+  Ni5twdUyps9MQyOX: {
+    name: "Jiang-Shi Born (Ru-Shi)",
+    keyword: "+2 Str, +2 Int, -2 Dex",
+    changes: [
+      { formula: "2", target: "str", type: "racial" },
+      { formula: "2", target: "int", type: "racial" },
+      { formula: "-2", target: "dex", type: "racial" },
+    ],
+  },
+  SFD4dGofogr1c1S9: {
+    name: "Nosferatu-Born (Ancient-Born)",
+    keyword: "+2 Strength, +2 Wisdom, -2 Constitution",
+    changes: [
+      { formula: "2", target: "str", type: "racial" },
+      { formula: "2", target: "wis", type: "racial" },
+      { formula: "-2", target: "con", type: "racial" },
+    ],
+  },
+  f91ILsrKfkpL9uUG: {
+    name: "Moroi-Born (Svetocher)",
+    keyword: "+2 Strength, +2 Charisma, -2 Constitution",
+    changes: [
+      { formula: "2", target: "str", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+      { formula: "-2", target: "con", type: "racial" },
+    ],
+  },
+  yodj1nKWZ1hzQVVv: {
+    name: "Vetala-Born (Ajibachana)",
+    keyword: "+2 Dex, +2 Int, -2 Wis",
+    changes: [
+      { formula: "2", target: "dex", type: "racial" },
+      { formula: "2", target: "int", type: "racial" },
+      { formula: "-2", target: "wis", type: "racial" },
+    ],
+  },
+  WE57FyExdDq2mjnV: {
+    name: "Sunsoul (Solar Ifrit)",
+    keyword: "+2 Str, +2 Cha, -2 Wis",
+    changes: [
+      { formula: "2", target: "str", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+      { formula: "-2", target: "wis", type: "racial" },
+    ],
+  },
+  jAQXQDgwCX0eKxZ2: {
+    name: "Lavasoul (Magma Ifrit)",
+    keyword: "+2 Con, +2 Int, -2 Dex",
+    changes: [
+      { formula: "2", target: "con", type: "racial" },
+      { formula: "2", target: "int", type: "racial" },
+      { formula: "-2", target: "dex", type: "racial" },
+    ],
+  },
+  Hp26XuRpA7QNUOZO: {
+    name: "Ironsoul (Metal Oread)",
+    keyword: "+2 Con, +2 Wis, -2 Dex",
+    changes: [
+      { formula: "2", target: "con", type: "racial" },
+      { formula: "2", target: "wis", type: "racial" },
+      { formula: "-2", target: "dex", type: "racial" },
+    ],
+  },
+  a1otKF9eFw6gSfvB: {
+    name: "Gemsoul (Crystal Oread)",
+    keyword: "+2 Str, +2 Cha, -2 Wis",
+    changes: [
+      { formula: "2", target: "str", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+      { formula: "-2", target: "wis", type: "racial" },
+    ],
+  },
+  DFWkrIYLx6L7Vs6W: {
+    name: "Smokesoul (Fume Sylph)",
+    keyword: "+2 Dex, +2 Cha, -2 Con",
+    changes: [
+      { formula: "2", target: "dex", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+      { formula: "-2", target: "con", type: "racial" },
+    ],
+  },
+  kLPypNzy62fMbj3d: {
+    name: "Stormsoul (Lightning Sylph)",
+    keyword: "+2 Dex, +2 Cha, -2 Wis",
+    changes: [
+      { formula: "2", target: "dex", type: "racial" },
+      { formula: "2", target: "cha", type: "racial" },
+      { formula: "-2", target: "wis", type: "racial" },
+    ],
+  },
+  "0CISUAPF2V91vvoo": {
+    name: "Rimesoul (Frost Undine)",
+    keyword: "+2 Dex, +2 Int, -2 Cha",
+    changes: [
+      { formula: "2", target: "dex", type: "racial" },
+      { formula: "2", target: "int", type: "racial" },
+      { formula: "-2", target: "cha", type: "racial" },
+    ],
+  },
+  yRISJZyDwhGV0jFO: {
+    name: "Mistsoul (Vapor Undine)",
+    keyword: "+2 Con, +2 Wis, -2 Int",
+    changes: [
+      { formula: "2", target: "con", type: "racial" },
+      { formula: "2", target: "wis", type: "racial" },
+      { formula: "-2", target: "int", type: "racial" },
+    ],
+  },
+  Mb0hz0BAj51wOmUr: {
+    name: "Wereboar-Kin (Ragebred)",
+    keyword: "+2 Wis, -2 Cha (+2 Con while shapechanged)",
+    changes: [
+      { formula: "2", target: "wis", type: "racial" },
+      { formula: "-2", target: "cha", type: "racial" },
+    ],
+  },
+  S2fAbQom6ogn4gh9: {
+    name: "Wereraptor-Kin (Aerieborn)",
+    keyword: "+2 Wis, -2 Cha (+2 Dex while shapechanged)",
+    changes: [
+      { formula: "2", target: "wis", type: "racial" },
+      { formula: "-2", target: "cha", type: "racial" },
+    ],
+  },
+  ZLFxIufcHBwiIZrl: {
+    name: "Werebear-Kin (Coldborn)",
+    keyword: "+2 Con, -2 Cha (+2 Wis while shapechanged)",
+    changes: [
+      { formula: "2", target: "con", type: "racial" },
+      { formula: "-2", target: "cha", type: "racial" },
+    ],
+  },
+  calSa82WwxgUFwXr: {
+    name: "Werewolf-Kin (Witchwolf)",
+    keyword: "+2 Con, -2 Int (+2 Wis while shapechanged)",
+    changes: [
+      { formula: "2", target: "con", type: "racial" },
+      { formula: "-2", target: "int", type: "racial" },
+    ],
+  },
+  mBfn8hCLwEsAxlnl: {
+    name: "Werebat-Kin (Bloodmarked)",
+    keyword: "+2 Int, -2 Wis (+2 Dex while shapechanged)",
+    changes: [
+      { formula: "2", target: "int", type: "racial" },
+      { formula: "-2", target: "wis", type: "racial" },
+    ],
+  },
+  mNPzfPRAdgvumhww: {
+    name: "Wererat-Kin (Nightskulk)",
+    keyword: "+2 Int, -2 Str (+2 Dex while shapechanged)",
+    changes: [
+      { formula: "2", target: "int", type: "racial" },
+      { formula: "-2", target: "str", type: "racial" },
+    ],
+  },
+  nopyUgzhxcD4G8uD: {
+    name: "Weretiger-Kin (Fanglord)",
+    keyword: "+2 Dex, -2 Wis (+2 Cha while shapechanged)",
+    changes: [
+      { formula: "2", target: "dex", type: "racial" },
+      { formula: "-2", target: "wis", type: "racial" },
+    ],
+  },
+  uj0JvFUtrmpOSNVa: {
+    name: "Werecrocodile-Kin (Scaleheart)",
+    keyword: "+2 Int, -2 Wis (+2 Str while shapechanged)",
+    changes: [
+      { formula: "2", target: "int", type: "racial" },
+      { formula: "-2", target: "wis", type: "racial" },
+    ],
+  },
+  wrqUJsULTxngAMQb: {
+    name: "Wereshark-Kin (Seascarred)",
+    keyword: "+2 Wis, -2 Int (+2 Con while shapechanged)",
+    changes: [
+      { formula: "2", target: "wis", type: "racial" },
+      { formula: "-2", target: "int", type: "racial" },
+    ],
+  },
+};
+
+/**
+ * Apply `SUPPLEMENTAL_RACIAL_TRAIT_CHANGES` in place. Guards, all of which
+ * fail the build loudly on a data bump that drifts: the id must exist, the
+ * name must match, the entry's own description must still contain the exact
+ * prose line the array was transcribed from, and the vendored `changes` must
+ * still be empty (if upstream ever ships real arrays, the supplement must be
+ * retired rather than fought).
+ */
+export function applyRacialTraitChangesSupplements(traits: RacialTrait[]): void {
+  const byId = new Map(traits.map((t) => [t.id, t]));
+  for (const [id, s] of Object.entries(SUPPLEMENTAL_RACIAL_TRAIT_CHANGES)) {
+    const trait = byId.get(id);
+    if (trait === undefined) {
+      throw new Error(`[supplements] racial trait "${s.name}" (${id}) not found in vendored set`);
+    }
+    if (trait.name !== s.name) {
+      throw new Error(
+        `[supplements] racial trait ${id} is now named "${trait.name}", expected "${s.name}"`,
+      );
+    }
+    const prose = (trait.description ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
+    if (!prose.includes(s.keyword)) {
+      throw new Error(
+        `[supplements] racial trait "${s.name}" (${id}) description no longer contains "${s.keyword}" — re-verify the published array before re-authoring`,
+      );
+    }
+    if (trait.changes.length > 0) {
+      throw new Error(
+        `[supplements] racial trait "${s.name}" (${id}) now carries vendored changes — retire its supplement entry`,
+      );
+    }
+    trait.changes = s.changes;
   }
 }

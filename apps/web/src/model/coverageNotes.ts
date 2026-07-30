@@ -106,9 +106,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
     category: "Alternate racial traits",
     group: "not-modeled",
-    note: "Every race's published alternates are browsable, and picking one applies the bonuses it spells out as numbers while retiring the replaced standard trait's numbers. Two trades stay yours to make by hand: a heritage's different ability-score spread, and a swap whose replaced trait is a situational reminder line rather than a number (the reminder stays on your sheet).",
+    note: "Every race's published alternates are browsable, and picking one applies the bonuses it spells out as numbers while retiring the replaced standard trait's numbers, heritage ability-score swaps included. What stays yours to apply: a swap whose replaced trait is a situational reminder line rather than a number (the reminder stays on your sheet), and a heritage rider that only works while shapechanged.",
     issueDetail:
-      "860 vendored across all 80 races, 252 carrying structured changes applied live. The name-to-target map reaches every race whose replaced standard traits have structured targets; deliberate non-mappings are documented at the map. Unreachable: heritage ability-score swaps (no structured replacement arrays) and replaced traits modeled only as context notes.",
+      "860 vendored across all 80 races, 289 carrying structured changes applied live (37 heritage ability arrays hand-authored as data-pipeline supplements with drift guards). The name-to-target map reaches every race whose replaced standard traits have structured targets. Unreachable: replaced traits modeled only as context notes, shapechange-conditional riders, and the human/half-elf/half-orc flexible +2 (applied outside Race.changes, so a swap that trades it away cannot retire it).",
   },
   {
     category: "Character traits",

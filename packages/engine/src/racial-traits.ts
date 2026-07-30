@@ -629,17 +629,40 @@ export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boo
  *
  * Deliberately unmapped names, recorded here so the next audit doesn't
  * re-litigate them:
- *   - "Base Statistics" (every heritage's ability-score swap, e.g. Ifrit's
- *     Sunsoul/Lavasoul, Oread's Ironsoul/Gemsoul, Undine's Rimesoul/Mistsoul):
- *     the heritage entries carry NO structured replacement stats of their
- *     own, so suppressing the standard ability changes would zero the
- *     character's racial modifiers instead of swapping them — worse than the
- *     double-count it prevents. Heritage ability swaps stay prose. Goblin's
- *     "Base Statistics" (Oversized Goblins) is the same story for a
- *     different reason: its own `changes` (`size` +1, `str` +4, `dex` -2)
- *     don't even match its own prose ("+2 Str, +2 Dex, -2 Cha") — a vendored
- *     data inconsistency, not a clean swap, so it's left alone rather than
- *     risk compounding it.
+ *   - "Base Statistics" is safe to map ONLY for a race where every entry
+ *     naming it carries a real replacement ability array — suppressing the
+ *     standard ability changes with nothing landing would zero the
+ *     character's racial modifiers instead of swapping them, worse than the
+ *     double-count it prevents. The mapped races (Tiefling/Aasimar/Dhampir
+ *     heritages, the four geniekin soul lines, Skinwalker's nine "-Kin")
+ *     get their arrays from `SUPPLEMENTAL_RACIAL_TRAIT_CHANGES` in
+ *     `@pf1/data-pipeline`, hand-transcribed from each entry's own prose
+ *     with a verbatim drift guard; the "-Kin" entries transcribe only the
+ *     always-on pair, their "+2 X while shapechanged" tail staying prose.
+ *     Everywhere else "Base Statistics" is the pack's generic tag for a
+ *     regional/cultural BUNDLE with no ability content at all — Elf and
+ *     Dwarf's twenty ARG/Heroes-from-the-Fringe regional variants, Gnome's
+ *     seven, Halfling's five, Half-Orc's five, Half-Elf's bundles, and the
+ *     two Outsear entries are recommendation lists ("these elves often have
+ *     the X and Y alternate traits") or pure lore, verified against the
+ *     published text: nothing replaces the array, so those races must NOT
+ *     map the key. Goblin's "Base Statistics" (Oversized Goblins) stays
+ *     unmapped for a third reason: its own `changes` (`size` +1, `str` +4,
+ *     `dex` -2) don't even match its own prose ("+2 Str, +2 Dex, -2 Cha") —
+ *     a vendored data inconsistency, not a clean swap, so it's left alone
+ *     rather than risk compounding it. One Changeling wrinkle of the same
+ *     kind, recorded for the next audit: the Winter-Born (Snow May) BUNDLE's
+ *     prose says "+2 Int, +2 Cha, -2 Con" while its "Ability Modifiers
+ *     (Changeling - Snow May)" sibling (the entry that actually applies)
+ *     ships +2 Int/+2 Wis/-2 Con — unresolved against the printed book, and
+ *     the bundles are inert either way (their "Base Statistics" key is
+ *     deliberately unmapped for Changeling; the siblings suppress via the
+ *     "Ability Modifiers (" prefix inference).
+ *   - Human's picker-visible swaps name "Bonus Feat" and "Skilled", both
+ *     mapped (the race's only structured changes). Its "+2 to One Ability
+ *     Score" standard trait has no `Race.changes` entry to suppress (the
+ *     builder's point-buy owns it), and its "Base Statistics" entries are
+ *     bundle tags like everyone else's.
  *   - Prose-only standard traits (Spell-Like Ability, Fiendish Sorcery,
  *     Swordtrained, Natural Weapon, Kitsune Magic, Swarming, Rodent Empathy,
  *     Light Sensitivity, Languages, Subtype/Type, Fire/Earth/Water/Air
@@ -769,16 +792,19 @@ export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
     Skilled: ["skill.dip", "skill.per"],
     "Celestial Resistance": ["eres.acid", "eres.cold", "eres.electricity"],
     Darkvision: ["sensedv"],
+    "Base Statistics": ["cha", "wis"],
   },
   Tiefling: {
     Skilled: ["skill.blf", "skill.ste"],
     "Fiendish Resistance": ["eres.cold", "eres.electricity", "eres.fire"],
     Darkvision: ["sensedv"],
+    "Base Statistics": ["cha", "dex", "int"],
   },
   Dhampir: {
     Manipulative: ["skill.blf", "skill.per"],
     Darkvision: ["sensedv"],
     "Low-Light Vision": ["sensell"],
+    "Base Statistics": ["cha", "con", "dex"],
   },
   Kitsune: {
     Agile: ["skill.acr"],
@@ -796,13 +822,16 @@ export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
   },
   Ifrit: {
     "Energy Resistance": ["eres.fire"],
+    "Base Statistics": ["cha", "dex", "wis"],
   },
   Oread: {
     "Energy Resistance": ["eres.acid"],
+    "Base Statistics": ["cha", "str", "wis"],
   },
   Undine: {
     "Energy Resistance": ["eres.cold"],
     Darkvision: ["sensedv"],
+    "Base Statistics": ["dex", "str", "wis"],
   },
   Drow: {
     "Drow Immunities": ["immEffect.magicSleep"],
@@ -842,6 +871,11 @@ export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
   },
   Skinwalker: {
     "Animal-Minded": ["skill.han"],
+    "Base Statistics": ["int", "wis"],
+  },
+  Human: {
+    "Bonus Feat": ["bonusFeats"],
+    Skilled: ["bonusSkillRanks"],
   },
   Changeling: {
     "Ability Score Modifiers": ["cha", "con", "wis"],
@@ -855,6 +889,7 @@ export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
   },
   Sylph: {
     "Energy Resistance": ["eres.electricity"],
+    "Base Statistics": ["con", "dex", "int"],
   },
   Ghoran: {
     "Natural Armor": ["nac"],

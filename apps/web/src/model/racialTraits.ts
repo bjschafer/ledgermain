@@ -13,7 +13,11 @@
 
 import type { CharacterDoc, RacialTrait, RefData } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
-import { alternateRacialTraitsForRace, RACIAL_TRAITS } from "@pf1/engine";
+import {
+  alternateRacialTraitsForRace,
+  RACIAL_TRAITS,
+  vendoredTraitSuppressTargets,
+} from "@pf1/engine";
 
 import { ABILITY_NAMES, skillName, SKILL_NAMES } from "./names.js";
 
@@ -43,7 +47,9 @@ export function availableRacialTraits(doc: CharacterDoc, refData: RefData) {
  * directly — outside `compute()` — so they consult this helper to keep the
  * displayed budget in sync when a swap removes the standard trait (e.g. Human
  * Focused Study drops the bonus feat; Eye for Talent drops the extra skill
- * rank). Only traits belonging to the current race are considered.
+ * rank). Only traits belonging to the current race are considered. Vendored
+ * picks suppress through the engine's `VENDORED_STANDARD_TRAIT_TARGETS` map
+ * exactly as `collect.ts` does (e.g. Human Dual Talent retires both budgets).
  */
 export function suppressedRaceTargets(doc: CharacterDoc, refData: RefData): Set<string> {
   const raceName = refData.races[doc.identity.race]?.name;
@@ -52,6 +58,13 @@ export function suppressedRaceTargets(doc: CharacterDoc, refData: RefData): Set<
     const t = RACIAL_TRAITS[id];
     if (!t || t.race !== raceName) continue;
     for (const target of t.suppressTargets ?? []) suppressed.add(target);
+  }
+  if (raceName) {
+    for (const id of doc.build.vendoredRacialTraits ?? []) {
+      const t = refData.racialTraits[id];
+      if (!t || !t.race.includes(raceName)) continue;
+      for (const target of vendoredTraitSuppressTargets(t, raceName)) suppressed.add(target);
+    }
   }
   return suppressed;
 }
