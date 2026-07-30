@@ -1,6 +1,10 @@
 import { useMemo } from "react";
 
-import { featNameSlug, mergedBloodragerBloodlineCatalog } from "@pf1/engine";
+import {
+  bloodragerBloodlineMovesNumbers,
+  featNameSlug,
+  mergedBloodragerBloodlineCatalog,
+} from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { setBloodragerBloodline, setBloodragerBloodlineVariant } from "../../model/doc.js";
@@ -26,15 +30,13 @@ interface BloodragerBloodlinePickerProps {
  * can't reuse `refData.bloodlineSpellLists` the way sorcerer's picker does).
  *
  * Browses the FULL published bloodline catalog
- * (`mergedBloodragerBloodlineCatalog`, issue #74) — the 10 ACG
- * bloodlines (Abyssal, Arcane, Celestial, Destined, Draconic, Elemental,
- * Fey, Infernal, Undead, Martyred) keep their hand-verified mechanics
- * (marked `badge-modeled` "M"); the ~14 other vendored-only bloodlines
- * (including "Aberrant" — vendored for bloodrager too, but never
- * hand-authored the way it is for sorcerer) show their full vendored prose
- * instead.
+ * (`mergedBloodragerBloodlineCatalog`, issue #74) — every published
+ * bloodline is hand-authored in the engine table, so the preview always
+ * shows power summaries. The `badge-modeled` "M" marks the ones that carry
+ * live mechanics (`bloodragerBloodlineMovesNumbers`: a Change or resource
+ * pool somewhere), not merely rules text.
  *
- * The chosen (hand-verified) bloodline:
+ * The chosen bloodline:
  *  - grants bloodline POWERS at 1st/4th/8th/12th/16th/20th level — shown in
  *    `ClassFeaturesList` elsewhere in the builder (tagged "— <Name>
  *    Bloodline"), previewed here;
@@ -96,7 +98,7 @@ export function BloodragerBloodlinePicker({
             <span className="hint">
               {" "}
               · {chosen}
-              {bloodlineDef && !bloodlineDef.displayOnly && (
+              {bloodlineDef && bloodragerBloodlineMovesNumbers(bloodlineDef) && (
                 <span className="badge-modeled"> M</span>
               )}
             </span>
@@ -107,12 +109,13 @@ export function BloodragerBloodlinePicker({
       {!collapsed && (
         <>
           <p className="hint bloodline-picker-hint">
-            Pick one bloodline (PF1 grants one at level 1, never changed thereafter). Browses the
-            full published catalog; entries marked <span className="badge-modeled">M</span> grant
-            bloodline powers at 1st/4th/8th/12th/16th/20th level, restrict your Bloodline Feat picks
-            (6th level and every 3 thereafter), and grant one bonus spell known at
-            7th/10th/13th/16th level — the rest show their full published prose instead. Free-choice
-            — no heritage validation.
+            Pick one bloodline (PF1 grants one at level 1, never changed thereafter). Every
+            bloodline grants its powers at 1st/4th/8th/12th/16th/20th level, restricts your
+            Bloodline Feat picks (6th level and every 3 thereafter), and grants one bonus spell
+            known at 7th/10th/13th/16th level. Entries marked{" "}
+            <span className="badge-modeled">M</span> move real numbers or tracked uses on your
+            sheet; the rest show their rules text to apply at the table. Free choice, no heritage
+            validation.
           </p>
           <select
             className="bloodline-select"
@@ -123,7 +126,7 @@ export function BloodragerBloodlinePicker({
             {catalog.map((b) => (
               <option key={b.tag} value={b.tag}>
                 {b.tag}
-                {b.displayOnly ? "" : " (M)"}
+                {bloodragerBloodlineMovesNumbers(b) ? " (M)" : ""}
               </option>
             ))}
           </select>

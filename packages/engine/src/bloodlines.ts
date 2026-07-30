@@ -4949,6 +4949,25 @@ export const BLOODLINES: Record<string, BloodlineDef> = Object.fromEntries(
 
 export const BLOODLINE_TAGS: readonly string[] = BLOODLINE_LIST.map((b) => b.tag);
 
+/**
+ * True when the bloodline carries any live mechanics — a `changes`/
+ * `variantChanges` array or a resource pool — as opposed to being fully
+ * rules-text. The picker's "M" badge convention (a hand-authored entry whose
+ * every power is prose still doesn't move numbers, so it gets no badge).
+ */
+export function bloodlineMovesNumbers(def: {
+  arcana?: { changes: Change[] };
+  powers: BloodlinePower[];
+}): boolean {
+  if (def.arcana?.changes.length) return true;
+  return def.powers.some(
+    (p) =>
+      (p.changes?.length ?? 0) > 0 ||
+      Object.keys(p.variantChanges ?? {}).length > 0 ||
+      p.resourcePool !== undefined,
+  );
+}
+
 /** Human-readable label for a bloodline's chosen variant id, or `undefined` if unset/unknown. */
 export function bloodlineVariantLabel(
   tag: string,

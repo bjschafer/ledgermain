@@ -1,6 +1,10 @@
 import { useMemo } from "react";
 
-import { mergedSorcererBloodlineCatalog, type MergedSorcererBloodlineEntry } from "@pf1/engine";
+import {
+  bloodlineMovesNumbers,
+  mergedSorcererBloodlineCatalog,
+  type MergedSorcererBloodlineEntry,
+} from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { setSorcererBloodline, setSorcererBloodlineVariant } from "../../model/doc.js";
@@ -29,26 +33,26 @@ function normalizeBloodlineTag(name: string): string {
  * validation is "soft warning only" per the project's hybrid-prereqs
  * philosophy.
  *
- * The pickable tag list is the UNION of `refData.bloodlineSpellLists` (40
- * tags — the bonus-SPELLS-known source, unrelated to this wave; "Aberrant"
- * has no upstream spell tags, so its bonus-spell list is hand-authored as a
- * data-pipeline supplement, see `src/supplements.ts`) and the full published
+ * The pickable tag list is the UNION of `refData.bloodlineSpellLists` (the
+ * bonus-SPELLS-known source; bloodlines no upstream spell tags via
+ * `learnedAt.bloodline` get hand-authored lists as a data-pipeline
+ * supplement, see `src/supplements.ts`) and the full published
  * ARCANA/POWERS catalog (`mergedSorcererBloodlineCatalog`, issue #74) — a tag present
  * in both keeps the `bloodlineSpellLists` spelling (so
  * bonus-spell derivation, keyed on that exact tag, keeps working) with the
- * catalog's prose/mechanics attached for preview. "Kobold" is the one
- * `bloodlineSpellLists` tag the vendored catalog has no matching prose for
- * (it's vendored there as "Kobold Sorcerer" instead) — it still shows in the
- * list for bonus spells, just with no arcana/powers preview.
+ * catalog's prose/mechanics attached for preview. ("Kobold" is that
+ * spelling; the vendored prose catalog's "Kobold Sorcerer" is bridged to it
+ * by the engine's alias map.)
  *
  * The chosen bloodline grants one bonus spell known per odd sorcerer level
  * starting at 3; the known-list panel merges those in with a "bloodline"
  * badge, and the tracker's Spells panel makes them castable. This picker also
- * sets the choice for bloodline ARCANA + POWERS: the 10 Core Rulebook
- * bloodlines keep their hand-verified mechanics (marked `badge-modeled`
- * "M"); the ~41 other vendored-only bloodlines show their full vendored
- * prose instead. `ClassFeaturesList` (elsewhere in the builder) shows the
- * hand-verified bloodlines' granted powers themselves, tagged "— <Name>
+ * sets the choice for bloodline ARCANA + POWERS — every published bloodline
+ * is hand-authored in the engine table, so the preview always shows the
+ * arcana + power summaries. The `badge-modeled` "M" marks the ones that
+ * carry live mechanics (`bloodlineMovesNumbers`: a Change or resource pool
+ * somewhere), not merely rules text. `ClassFeaturesList` (elsewhere in the
+ * builder) shows the granted powers themselves, tagged "— <Name>
  * Bloodline"; this panel just previews them.
  */
 export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) {
@@ -98,7 +102,7 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
             <span className="hint">
               {" "}
               · {chosen}
-              {bloodlineDef && !bloodlineDef.displayOnly && (
+              {bloodlineDef && bloodlineMovesNumbers(bloodlineDef) && (
                 <span className="badge-modeled"> M</span>
               )}
             </span>
@@ -112,8 +116,8 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
             Pick one bloodline (PF1 grants one at level 1). It grants one bonus spell known per odd
             sorcerer level (3, 5, 7, …), drawn from that bloodline's spell list. Browses the full
             published arcana/powers catalog; entries marked <span className="badge-modeled">M</span>{" "}
-            carry hand-verified mechanics — the rest show their full published prose instead.
-            Free-choice — no heritage validation.
+            move real numbers or tracked uses on your sheet, and the rest show their rules text to
+            apply at the table. Free choice, no heritage validation.
           </p>
           <select
             className="bloodline-select"
@@ -124,7 +128,7 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
             {options.map((o) => (
               <option key={o.tag} value={o.tag}>
                 {o.tag}
-                {o.merged && !o.merged.displayOnly ? " (M)" : ""}
+                {o.merged && bloodlineMovesNumbers(o.merged) ? " (M)" : ""}
               </option>
             ))}
           </select>

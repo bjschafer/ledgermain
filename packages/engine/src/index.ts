@@ -148,6 +148,7 @@ export {
 export {
   BLOODLINES,
   BLOODLINE_TAGS,
+  bloodlineMovesNumbers,
   bloodlineVariantLabel,
   mergedSorcererBloodlineCatalog,
   resolveSorcererBloodline,
@@ -161,6 +162,7 @@ export {
 export {
   BLOODRAGER_BLOODLINES,
   BLOODRAGER_BLOODLINE_TAGS,
+  bloodragerBloodlineMovesNumbers,
   bloodragerBloodlineVariantLabel,
   mergedBloodragerBloodlineCatalog,
   resolveBloodragerBloodline,

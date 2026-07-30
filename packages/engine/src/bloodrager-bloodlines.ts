@@ -2430,6 +2430,23 @@ export const BLOODRAGER_BLOODLINE_TAGS: readonly string[] = BLOODRAGER_BLOODLINE
   (b) => b.tag,
 );
 
+/**
+ * True when the bloodline carries any live mechanics — a `changes`/
+ * `variantChanges` array or a resource pool — as opposed to being fully
+ * rules-text. Mirrors `bloodlines.ts`'s `bloodlineMovesNumbers` for the
+ * picker's "M" badge.
+ */
+export function bloodragerBloodlineMovesNumbers(def: {
+  powers: BloodragerBloodlinePower[];
+}): boolean {
+  return def.powers.some(
+    (p) =>
+      (p.changes?.length ?? 0) > 0 ||
+      Object.keys(p.variantChanges ?? {}).length > 0 ||
+      p.resourcePool !== undefined,
+  );
+}
+
 /** Human-readable label for a bloodrager bloodline's chosen variant id, or `undefined` if unset/unknown. */
 export function bloodragerBloodlineVariantLabel(
   tag: string,
