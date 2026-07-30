@@ -7,8 +7,9 @@
  * RAW numbers verified against aonprd.com's live Inquisitor class page
  * (2026-07-08): Destruction +1/+1 per 3 levels (weapon damage), Justice/
  * Protection/Purity +1/+1 per 5 levels (attack/AC/saves), Resiliency DR
- * 1/magic +1 per 5 levels, Resistance/Smiting have no single unambiguous
- * numeric target (see judgments.ts doc comment) and are context-note only.
+ * 1/magic +1 per 5 levels, Healing fast healing 1/+1 per 3 levels,
+ * Resistance/Smiting/Healing have no single unambiguous numeric target (see
+ * judgments.ts doc comment) and are context-note only.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -80,17 +81,20 @@ function judgmentBuff(tag: string): ActiveBuff {
 }
 
 describe("INQUISITOR_JUDGMENTS table", () => {
-  it("has all seven core judgments, each with a unique tag", () => {
-    expect(INQUISITOR_JUDGMENTS).toHaveLength(7);
+  it("has all eight core judgments, each with a unique tag", () => {
+    expect(INQUISITOR_JUDGMENTS).toHaveLength(8);
     const tags = INQUISITOR_JUDGMENTS.map((j) => j.tag);
-    expect(new Set(tags).size).toBe(7);
+    expect(new Set(tags).size).toBe(8);
   });
 
-  it("Resistance and Smiting carry no numeric changes (energy type / DR bypass type not chosen here)", () => {
+  it("Healing, Resistance, and Smiting carry no numeric changes (no matching Change target / choice not made here)", () => {
+    const healing = INQUISITOR_JUDGMENTS.find((j) => j.tag === "healing")!;
     const resistance = INQUISITOR_JUDGMENTS.find((j) => j.tag === "resistance")!;
     const smiting = INQUISITOR_JUDGMENTS.find((j) => j.tag === "smiting")!;
+    expect(healing.changes).toEqual([]);
     expect(resistance.changes).toEqual([]);
     expect(smiting.changes).toEqual([]);
+    expect(healing.contextNotes?.length).toBeGreaterThan(0);
     expect(resistance.contextNotes?.length).toBeGreaterThan(0);
     expect(smiting.contextNotes?.length).toBeGreaterThan(0);
   });
@@ -99,8 +103,9 @@ describe("INQUISITOR_JUDGMENTS table", () => {
 describe("judgmentToggleOptions", () => {
   it("maps every judgment to a `judgment:<tag>`-prefixed ToggleBuffOption", () => {
     const options = judgmentToggleOptions();
-    expect(options).toHaveLength(7);
+    expect(options).toHaveLength(8);
     expect(options.map((o) => o.id)).toContain("judgment:destruction");
+    expect(options.map((o) => o.id)).toContain("judgment:healing");
     expect(options.map((o) => o.id)).toContain("judgment:resistance");
   });
 });
@@ -121,7 +126,7 @@ describe("maxSimultaneousJudgments", () => {
 });
 
 describe("deriveResourcePools: Judgment pool (inquisitor)", () => {
-  it("inquisitor L1: 1 use/day (vendored uses.maxFormula), 7 tableOptions, 1-active-at-a-time detail", () => {
+  it("inquisitor L1: 1 use/day (vendored uses.maxFormula), 8 tableOptions, 1-active-at-a-time detail", () => {
     const doc = makeDoc({ level: 1 });
     const sheet = compute(doc, ref);
     const pools = deriveResourcePools(doc, ref, sheet.abilities);
@@ -129,7 +134,7 @@ describe("deriveResourcePools: Judgment pool (inquisitor)", () => {
     expect(judgment).toBeDefined();
     expect(judgment!.max).toBe(1);
     expect(judgment!.per).toBe("day");
-    expect(judgment!.tableOptions).toHaveLength(7);
+    expect(judgment!.tableOptions).toHaveLength(8);
     expect(judgment!.detail).toContain("1 judgment active at a time");
   });
 

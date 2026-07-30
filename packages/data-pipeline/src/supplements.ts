@@ -520,6 +520,32 @@ export function applyClassFeatureEffectImmunitySupplements(features: ClassFeatur
  * - Aid (CRB p. 239): "1d8 + caster level" temp HP — dice-based, so it can't
  *   be a static `Change`; a context note is the honest option (same posture
  *   as judgments.ts's energy-resistance-of-choice note).
+ * - Delay Poison (CRB p. 267): "temporarily immune to poison" — vendored
+ *   `changes[]` was empty; now an `immEffect.poison` grant.
+ * - Armor of the Tireless Warrior (Occult Adventures): suppresses the
+ *   fatigued/exhausted penalties for 10 minutes. The RAW comedown when it
+ *   ends (1d6 nonlethal, the condition returns) isn't a `Change` this engine
+ *   has a target for, so it's a context note instead (below).
+ * - Resiliency / Chaos Totem, Greater / Healing / Smiting are inquisitor-
+ *   judgment and barbarian-rage-power placeholder buffs whose own vendored
+ *   description already quotes an `@item.level`-driven formula
+ *   (`[[1 + floor(@item.level / 5)]]` etc.) that never made it into
+ *   `changes[]`. `@item.level` resolves to whatever caster level the tracker
+ *   assigned the buff at activation time — BuffsPanel's search-and-add flow
+ *   always uses the character's total level, same simplification Divine
+ *   Power/Heroism, Greater above already rely on; a context note flags the
+ *   multiclass mismatch below.
+ * - Veemod (Gray) / Veemod (Orange) (Iron Gods technological visors,
+ *   Technology Guide): grant low-light vision / see in darkness respectively
+ *   while worn; vendored `changes[]` was empty.
+ * - Force Field (Technology Guide): grants immunity to critical hits (not
+ *   precision damage) regardless of the field's color tier. The temp HP and
+ *   fast healing that DO vary by tier aren't dice-based but ARE
+ *   tier-dependent, so they're a context note (below) rather than a guessed
+ *   Change.
+ * - Danger Ward (Fortitude/Will/Reflex) (cavalier Order of the Paw,
+ *   Advanced Race Guide p. 64): each ward's own save reroll is a triggered ability with
+ *   no bonus-value target this engine tracks, so it's context-note only.
  */
 /**
  * Resist energy's caster-level progression, clean-room from the published
@@ -575,6 +601,37 @@ export const SUPPLEMENTAL_BUFF_CHANGES: Record<string, BuffSupplement<Change>> =
   },
   OEPLhd4m46A6QA31: { name: "Resist Energy (Fire)", entries: resistEnergy("fire") },
   tV3x332iNS0WpFf3: { name: "Resist Energy (Sonic)", entries: resistEnergy("sonic") },
+  FxGQVAP3ep7xiAC4: {
+    name: "Delay Poison",
+    entries: [{ formula: "1", target: "immEffect.poison", type: "untyped" }],
+  },
+  XYly5prMmLVsLT1l: {
+    name: "Armor of the Tireless Warrior",
+    entries: [
+      { formula: "1", target: "immEffect.fatigue", type: "untyped" },
+      { formula: "1", target: "immEffect.exhaustion", type: "untyped" },
+    ],
+  },
+  cA2R9j90XCY3mRvl: {
+    name: "Resiliency",
+    entries: [{ formula: "1 + floor(@item.level / 5)", target: "dr.magic", type: "untyped" }],
+  },
+  ebyFqTewZ1K54aBX: {
+    name: "Chaos Totem, Greater",
+    entries: [{ formula: "floor(@item.level / 2)", target: "dr.lawful", type: "untyped" }],
+  },
+  l9l2uKTWEAuTqXVq: {
+    name: "Veemod (Gray)",
+    entries: [{ formula: "1", target: "sensell", type: "untyped" }],
+  },
+  YUrObSwqLffrici4: {
+    name: "Veemod (Orange)",
+    entries: [{ formula: "1", target: "sensesid", type: "untyped" }],
+  },
+  EDreDkg4ESQIwmEd: {
+    name: "Force Field",
+    entries: [{ formula: "1", target: "immEffect.criticalHits", type: "untyped" }],
+  },
 };
 
 export const SUPPLEMENTAL_BUFF_CONTEXT_NOTES: Record<string, BuffSupplement<ContextNote>> = {
@@ -584,6 +641,95 @@ export const SUPPLEMENTAL_BUFF_CONTEXT_NOTES: Record<string, BuffSupplement<Cont
       {
         target: "tempHp",
         text: "Also grants 1d8+CL temporary hit points — dice-based, not modeled as a static bonus; track manually.",
+      },
+    ],
+  },
+  XYly5prMmLVsLT1l: {
+    name: "Armor of the Tireless Warrior",
+    entries: [
+      {
+        target: "immEffect.fatigue",
+        text: "This suppresses the fatigued and exhausted penalties rather than curing the condition. When it ends, the wearer takes 1d6 nonlethal damage and the condition returns: apply both by hand.",
+      },
+    ],
+  },
+  cA2R9j90XCY3mRvl: {
+    name: "Resiliency",
+    entries: [
+      {
+        target: "dr.magic",
+        text: "At 10th level this DR's bypass type changes from magic to your alignment (chaotic, evil, good, or lawful). Shown here as DR/magic at every level: the alignment switch is not modeled.",
+      },
+      {
+        target: "dr.magic",
+        text: "This DR scales off your total character level, the level the tracker assigns when you add the buff. For a multiclass inquisitor that overstates the DR: use your inquisitor level instead when checking the number.",
+      },
+    ],
+  },
+  ebyFqTewZ1K54aBX: {
+    name: "Chaos Totem, Greater",
+    entries: [
+      {
+        target: "dr.lawful",
+        text: "Requires Chaos Totem and barbarian level 10. Your weapons, including natural weapons, also count as chaotic for bypassing damage reduction: that part is not modeled.",
+      },
+      {
+        target: "dr.lawful",
+        text: "This DR scales off your total character level, the level the tracker assigns when you add the buff. For a multiclass barbarian that overstates the DR: use your barbarian level instead when checking the number.",
+      },
+    ],
+  },
+  hzu5SyhALN2TBoAe: {
+    name: "Healing",
+    entries: [
+      {
+        target: "fastHealing",
+        text: "Fast healing 1 while this judgment is active, plus 1 per three inquisitor levels. Not tracked automatically: apply it by hand.",
+      },
+    ],
+  },
+  kFYQF6YT5GIO5EdP: {
+    name: "Smiting",
+    entries: [
+      {
+        target: "damage",
+        text: "Your weapons count as magic for overcoming DR. At 6th level they also count as your alignment (chaotic, evil, good, or lawful) for that purpose; at 10th level they count as adamantine for overcoming DR and hardness. Not modeled numerically.",
+      },
+    ],
+  },
+  EDreDkg4ESQIwmEd: {
+    name: "Force Field",
+    entries: [
+      {
+        target: "tempHp",
+        text: "Temporary hit points and fast healing both scale with the field's color: brown 5 HP and fast healing 1, black 10 and 2, white 15 and 3, gray 20 and 4, green 25 and 5, red 30 and 6, blue 35 and 7, orange 40 and 8, prismatic 60 and 10. Add your tier's pair by hand.",
+      },
+    ],
+  },
+  J197dkOWtvbSpgjF: {
+    name: "Danger Ward (Fortitude)",
+    entries: [
+      {
+        target: "fort",
+        text: "May reroll a failed Fortitude save within 1 minute as an immediate action, with a +4 competence bonus on the reroll: the reroll's result stands even if it is worse. Order of the Paw grants three uses per day total, one for each save type, shared across the three Danger Wards.",
+      },
+    ],
+  },
+  QkPDtDGeFcWZe6i9: {
+    name: "Danger Ward (Will)",
+    entries: [
+      {
+        target: "will",
+        text: "May reroll a failed Will save within 1 minute as an immediate action, with a +4 competence bonus on the reroll: the reroll's result stands even if it is worse. Order of the Paw grants three uses per day total, one for each save type, shared across the three Danger Wards.",
+      },
+    ],
+  },
+  zbwheXCZgoOYOYNm: {
+    name: "Danger Ward (Reflex)",
+    entries: [
+      {
+        target: "ref",
+        text: "May reroll a failed Reflex save within 1 minute as an immediate action, with a +4 competence bonus on the reroll: the reroll's result stands even if it is worse. Order of the Paw grants three uses per day total, one for each save type, shared across the three Danger Wards.",
       },
     ],
   },

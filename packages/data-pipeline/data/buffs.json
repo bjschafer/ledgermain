@@ -1301,8 +1301,19 @@
     "uuid": "Compendium.pf1.buffs.Item.DvcRWaWndZ1s2tB4"
   },
   "EDreDkg4ESQIwmEd": {
-    "changes": [],
-    "contextNotes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.criticalHits",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "tempHp",
+        "text": "Temporary hit points and fast healing both scale with the field's color: brown 5 HP and fast healing 1, black 10 and 2, white 15 and 3, gray 20 and 4, green 25 and 5, red 30 and 6, blue 35 and 7, orange 40 and 8, prismatic 60 and 10. Add your tier's pair by hand."
+      }
+    ],
     "description": "<p>Grants Temporary HP as per Force Field.</p>",
     "duration": {
       "end": "initiative",
@@ -1516,7 +1527,13 @@
     "uuid": "Compendium.pf1.buffs.Item.FA4nPvdBteR2pzqK"
   },
   "FxGQVAP3ep7xiAC4": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.poison",
+        "type": "untyped"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>Grants immunity to poison as per Delay Poison.</p>",
     "duration": {
@@ -1867,7 +1884,12 @@
   },
   "J197dkOWtvbSpgjF": {
     "changes": [],
-    "contextNotes": [],
+    "contextNotes": [
+      {
+        "target": "fort",
+        "text": "May reroll a failed Fortitude save within 1 minute as an immediate action, with a +4 competence bonus on the reroll: the reroll's result stands even if it is worse. Order of the Paw grants three uses per day total, one for each save type, shared across the three Danger Wards."
+      }
+    ],
     "description": "<p>Allows rerolling a fortitude save with a +4 competence bonus as per Danger Ward.</p>",
     "duration": {
       "end": "initiative",
@@ -2455,7 +2477,12 @@
   },
   "QkPDtDGeFcWZe6i9": {
     "changes": [],
-    "contextNotes": [],
+    "contextNotes": [
+      {
+        "target": "will",
+        "text": "May reroll a failed Will save within 1 minute as an immediate action, with a +4 competence bonus on the reroll: the reroll's result stands even if it is worse. Order of the Paw grants three uses per day total, one for each save type, shared across the three Danger Wards."
+      }
+    ],
     "description": "<p>Allows rerolling a will save with a +4 competence bonus as per Danger Ward.</p>",
     "duration": {
       "end": "initiative",
@@ -3019,8 +3046,24 @@
     "uuid": "Compendium.pf1.buffs.Item.XBjEZImaTvGXh6Gq"
   },
   "XYly5prMmLVsLT1l": {
-    "changes": [],
-    "contextNotes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "immEffect.fatigue",
+        "type": "untyped"
+      },
+      {
+        "formula": "1",
+        "target": "immEffect.exhaustion",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "immEffect.fatigue",
+        "text": "This suppresses the fatigued and exhausted penalties rather than curing the condition. When it ends, the wearer takes 1d6 nonlethal damage and the condition returns: apply both by hand."
+      }
+    ],
     "description": "<p>Grants immunity to fatigued and exhausted for 10 minutes as per Armor of the Tireless Warrior</p>",
     "duration": {
       "end": "initiative",
@@ -3078,7 +3121,13 @@
     "uuid": "Compendium.pf1.buffs.Item.YIXC5DZ4SvDaH9pR"
   },
   "YUrObSwqLffrici4": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "sensesid",
+        "type": "untyped"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>Grants see in darkness while active as per Veemod goggles with Veemod (orange).</p>",
     "duration": {
@@ -3558,8 +3607,23 @@
     "uuid": "Compendium.pf1.buffs.Item.bleCnwZmMAOu4nE4"
   },
   "cA2R9j90XCY3mRvl": {
-    "changes": [],
-    "contextNotes": [],
+    "changes": [
+      {
+        "formula": "1 + floor(@item.level / 5)",
+        "target": "dr.magic",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "dr.magic",
+        "text": "At 10th level this DR's bypass type changes from magic to your alignment (chaotic, evil, good, or lawful). Shown here as DR/magic at every level: the alignment switch is not modeled."
+      },
+      {
+        "target": "dr.magic",
+        "text": "This DR scales off your total character level, the level the tracker assigns when you add the buff. For a multiclass inquisitor that overstates the DR: use your inquisitor level instead when checking the number."
+      }
+    ],
     "description": "<p>Grants DR [[1 + floor(@item.level / 5)]]/magic (or alignment at level 10) as per Resiliency.</p>",
     "duration": {
       "units": "combat"
@@ -3796,8 +3860,23 @@
     "uuid": "Compendium.pf1.buffs.Item.eKiKTrSBNLubVI6g"
   },
   "ebyFqTewZ1K54aBX": {
-    "changes": [],
-    "contextNotes": [],
+    "changes": [
+      {
+        "formula": "floor(@item.level / 2)",
+        "target": "dr.lawful",
+        "type": "untyped"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "dr.lawful",
+        "text": "Requires Chaos Totem and barbarian level 10. Your weapons, including natural weapons, also count as chaotic for bypassing damage reduction: that part is not modeled."
+      },
+      {
+        "target": "dr.lawful",
+        "text": "This DR scales off your total character level, the level the tracker assigns when you add the buff. For a multiclass barbarian that overstates the DR: use your barbarian level instead when checking the number."
+      }
+    ],
     "description": "<p>Grants DR [[floor(@item.level / 2)]]/lawful as per Chaos Totem, Greater.</p>",
     "id": "ebyFqTewZ1K54aBX",
     "level": 10,
@@ -3941,7 +4020,12 @@
   },
   "hzu5SyhALN2TBoAe": {
     "changes": [],
-    "contextNotes": [],
+    "contextNotes": [
+      {
+        "target": "fastHealing",
+        "text": "Fast healing 1 while this judgment is active, plus 1 per three inquisitor levels. Not tracked automatically: apply it by hand."
+      }
+    ],
     "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>Tracks Healing Judgement state.</p>",
     "duration": {
       "units": "combat"
@@ -4075,7 +4159,12 @@
   },
   "kFYQF6YT5GIO5EdP": {
     "changes": [],
-    "contextNotes": [],
+    "contextNotes": [
+      {
+        "target": "damage",
+        "text": "Your weapons count as magic for overcoming DR. At 6th level they also count as your alignment (chaotic, evil, good, or lawful) for that purpose; at 10th level they count as adamantine for overcoming DR and hardness. Not modeled numerically."
+      }
+    ],
     "description": "<p><span class=\"notImp\">This buff acts as a placeholder to track buff state but currently does not modify any values on the actor.</span></p><p>Tracks Smiting Judgement state.</p>",
     "duration": {
       "units": "combat"
@@ -4295,7 +4384,13 @@
     "uuid": "Compendium.pf1.buffs.Item.l6s6haw5PHdNi9YD"
   },
   "l9l2uKTWEAuTqXVq": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "sensell",
+        "type": "untyped"
+      }
+    ],
     "contextNotes": [],
     "description": "<p>Grants Low-Light Vision while active as per Veemod goggles with Veemod (gray).</p>",
     "duration": {
@@ -5627,7 +5722,12 @@
   },
   "zbwheXCZgoOYOYNm": {
     "changes": [],
-    "contextNotes": [],
+    "contextNotes": [
+      {
+        "target": "ref",
+        "text": "May reroll a failed Reflex save within 1 minute as an immediate action, with a +4 competence bonus on the reroll: the reroll's result stands even if it is worse. Order of the Paw grants three uses per day total, one for each save type, shared across the three Danger Wards."
+      }
+    ],
     "description": "<p>Allows rerolling a reflex save with a +4 competence bonus as per Danger Ward.</p>",
     "duration": {
       "end": "initiative",

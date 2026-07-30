@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-29-reminder-buffs-wake-up",
+    date: "2026-07-29",
+    title: "A dozen reminder-only buffs start pulling their weight",
+    note: "Twelve buffs that were bare duration trackers now carry their real effects. Delay Poison grants poison immunity while it runs, Armor of the Tireless Warrior suppresses fatigue and exhaustion penalties, and a force field makes you immune to critical hits whatever its color, with the per-color temp HP and fast healing table right on the buff. The Resiliency judgment and Greater Chaos Totem buffs apply their scaling damage reduction, and the gray and orange veemods grant low-light vision and see in darkness. The three Danger Wards, the Smiting judgment, and the Healing judgment explain their reroll, DR bypass, and fast healing on the exact rolls they touch. Inquisitors also get a straight fix: the Healing judgment had been missing from the judgment list, and now all eight core judgments are there.",
+  },
+  {
     id: "2026-07-29-nonlethal-immunity-and-telepathy",
     date: "2026-07-29",
     title: "Nonlethal immunity means it, and telepathy joins your senses",

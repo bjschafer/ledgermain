@@ -304,7 +304,7 @@ export function deriveResourcePools(
         : null;
       detail = saveLabel ? `${damage.damageLabel} (${saveLabel})` : damage.damageLabel;
     } else if (feature.tag === "judgment" && classTag === "inquisitor") {
-      // Issue #65: the seven judgment types have no vendored buff to resolve
+      // Issue #65: the eight judgment types have no vendored buff to resolve
       // (see judgments.ts) — surfaced via `tableOptions` below instead of
       // `linkedBuffIds`; this just annotates the simultaneous-count cap.
       detail = judgmentPoolDetail(classLevel);

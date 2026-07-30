@@ -119,9 +119,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Buffs marked “reminder only”",
-    note: "Most buffs move real numbers on your sheet. Twenty-eight don't, and they say so on the buff itself: either the effect isn't a number (invisibility, see invisibility, endure elements) or it's a reroll rather than a bonus. Toggle them as trackers for the duration; apply what they do by hand.",
+    note: "Most buffs move real numbers on your sheet. Sixteen don't, and they say so on the buff itself: either the effect isn't a number (invisibility, see invisibility, endure elements) or it's a reroll rather than a bonus. Toggle them as trackers for the duration; apply what they do by hand.",
     issueDetail:
-      "190 buffs vendored, 28 empty by hasNoModeledEffect (no changes[], no contextNotes[], no instance state). Some are genuinely unmodelable, some are reroll- or narrative-shaped, and some would need mechanics that don't exist yet.",
+      "190 buffs vendored, 16 empty by hasNoModeledEffect (no changes[], no contextNotes[], no instance state). Each is genuinely unmodelable, reroll- or narrative-shaped, or blocked on a mechanic that doesn't exist yet.",
   },
   {
     category: "Community-pack feats",

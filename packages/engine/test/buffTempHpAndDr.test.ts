@@ -10,8 +10,9 @@ import { compute, resolveDamage } from "../src/index.js";
  * `packages/data-pipeline/src/supplements.ts`: Divine Power / Heroism,
  * Greater grant temp HP scaling with caster level (vendored `changes[]`
  * omitted it, even though each buff's own description already quotes the
- * number), and Stoneskin grants DR 10/adamantine (vendored `changes` was
- * empty).
+ * number), Stoneskin grants DR 10/adamantine (vendored `changes` was
+ * empty), and the later batch below (Delay Poison, Armor of the Tireless
+ * Warrior, Resiliency/Chaos Totem Greater/Veemod/Force Field placeholders).
  */
 const ref = loadRefData();
 
@@ -202,5 +203,95 @@ describe("imm.<type> derivation (this engine's own change target)", () => {
     const sheet = compute(makeDoc([immunityBuff("imm.fire")]), ref);
     expect(resolveDamage([{ amount: 40, type: "fire" }], sheet.defenses).final).toBe(0);
     expect(resolveDamage([{ amount: 40, type: "cold" }], sheet.defenses).final).toBe(40);
+  });
+});
+
+describe("Delay Poison grants immEffect.poison (vendored changes[] was empty)", () => {
+  it("compute() reports poison effect immunity while active", () => {
+    const sheet = compute(makeDoc([activeAt("Delay Poison", 5)]), ref);
+    expect(sheet.defenses?.effectImmunities?.map((e) => e.qualifier)).toEqual(["poison"]);
+  });
+
+  it("no Delay Poison active → no effect immunities at all", () => {
+    const sheet = compute(makeDoc([]), ref);
+    expect(sheet.defenses?.effectImmunities).toBeUndefined();
+  });
+});
+
+describe("Armor of the Tireless Warrior grants immEffect.fatigue/exhaustion (vendored changes[] was empty)", () => {
+  it("compute() reports both effect immunities while active", () => {
+    const sheet = compute(makeDoc([activeAt("Armor of the Tireless Warrior", 1)]), ref);
+    expect(sheet.defenses?.effectImmunities?.map((e) => e.qualifier).sort()).toEqual([
+      "exhaustion",
+      "fatigue",
+    ]);
+  });
+});
+
+describe("Veemod goggles grant senses (vendored changes[] was empty)", () => {
+  it("Veemod (Gray) grants low-light vision", () => {
+    const sheet = compute(makeDoc([activeAt("Veemod (Gray)", 1)]), ref);
+    expect(sheet.senses.some((s) => s.kind === "lowLight")).toBe(true);
+  });
+
+  it("Veemod (Orange) grants see in darkness", () => {
+    const sheet = compute(makeDoc([activeAt("Veemod (Orange)", 1)]), ref);
+    expect(sheet.senses.some((s) => s.kind === "seeInDarkness")).toBe(true);
+  });
+
+  it("neither sense shows up with no buff active", () => {
+    const sheet = compute(makeDoc([]), ref);
+    expect(sheet.senses.some((s) => s.kind === "lowLight" || s.kind === "seeInDarkness")).toBe(
+      false,
+    );
+  });
+});
+
+describe("Force Field grants immEffect.criticalHits (vendored changes[] was empty)", () => {
+  it("compute() reports critical-hit immunity while active", () => {
+    const sheet = compute(makeDoc([activeAt("Force Field", 1)]), ref);
+    expect(sheet.defenses?.effectImmunities?.map((e) => e.qualifier)).toEqual(["criticalHits"]);
+  });
+});
+
+describe("Resiliency (standalone buff) grants DR/magic scaling with @item.level (vendored changes[] was empty)", () => {
+  it("buff level 15 → DR 4/magic (1 + floor(15/5)), matching the judgments.ts Resiliency table", () => {
+    const sheet = compute(makeDoc([activeAt("Resiliency", 15)]), ref);
+    expect(sheet.defenses?.dr).toEqual([
+      {
+        total: 4,
+        qualifier: "magic",
+        components: [
+          {
+            source: "Resiliency",
+            sourceId: "inst-" + buffByName("Resiliency").id,
+            type: "untyped",
+            value: 4,
+            applied: true,
+          },
+        ],
+      },
+    ]);
+  });
+});
+
+describe("Chaos Totem, Greater (standalone buff) grants DR/lawful scaling with @item.level (vendored changes[] was empty)", () => {
+  it("buff level 12 → DR 6/lawful (floor(12/2))", () => {
+    const sheet = compute(makeDoc([activeAt("Chaos Totem, Greater", 12)]), ref);
+    expect(sheet.defenses?.dr).toEqual([
+      {
+        total: 6,
+        qualifier: "lawful",
+        components: [
+          {
+            source: "Chaos Totem, Greater",
+            sourceId: "inst-" + buffByName("Chaos Totem, Greater").id,
+            type: "untyped",
+            value: 6,
+            applied: true,
+          },
+        ],
+      },
+    ]);
   });
 });

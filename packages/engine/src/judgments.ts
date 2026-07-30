@@ -20,10 +20,11 @@
  * activation UX as a linked buff, but sourced from this table instead of
  * `RefData.buffs`.
  *
- * Scope: the seven Core Rulebook / APG judgments (Destruction, Justice,
- * Protection, Purity, Resiliency, Resistance, Smiting). Piercing (Ultimate
- * Combat) and any other splatbook judgments are out of scope, matching this
- * project's usual "core+APG first" posture (oracle-mysteries.ts, etc.).
+ * Scope: the eight Core Rulebook / APG judgments (Destruction, Healing,
+ * Justice, Protection, Purity, Resiliency, Resistance, Smiting). Piercing
+ * (Ultimate Combat) and any other splatbook judgments are out of scope,
+ * matching this project's usual "core+APG first" posture
+ * (oracle-mysteries.ts, etc.).
  *
  * Modelling posture per judgment:
  *   - Destruction/Justice/Protection/Purity are flat "+1, +1 per N levels"
@@ -34,6 +35,11 @@
  *     context note for the 10th-level magic→alignment bypass-type switch
  *     (this table doesn't know the character's alignment; shown as DR/magic
  *     at every level rather than guessing).
+ *   - Healing is fast healing 1, +1 per three levels — no `fastHealing`
+ *     Change target exists anywhere in this engine (see bloodrager-
+ *     bloodlines.ts's Verdant bloodline for the same gap), so it's
+ *     `changes: []` with a context note carrying the real numbers, the same
+ *     posture as Smiting below.
  *   - Resistance grants energy resistance against ONE energy type the player
  *     chooses at activation (acid/cold/electricity/fire/sonic) — this table
  *     has no picker for that choice, so (mirroring `arcanist-exploits.ts`'s
@@ -89,6 +95,22 @@ export const INQUISITOR_JUDGMENTS: JudgmentDef[] = [
       },
     ],
     contextNotes: [SACRED_PROFANE_NOTE],
+  },
+  {
+    tag: "healing",
+    name: "Healing",
+    summary: "Fast healing 1, +1 per three inquisitor levels, while the judgment is active.",
+    // No numeric target: no `fastHealing` Change target exists anywhere in
+    // this engine (see the file doc comment above) — context note only, same
+    // posture as Smiting below.
+    changes: [],
+    contextNotes: [
+      SACRED_PROFANE_NOTE,
+      {
+        target: "fastHealing",
+        text: "Fast healing 1 while this judgment is active, plus 1 per three inquisitor levels. Not modeled as a Change; track manually.",
+      },
+    ],
   },
   {
     tag: "justice",
