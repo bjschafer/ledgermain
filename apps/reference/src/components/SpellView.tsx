@@ -34,6 +34,11 @@ function defaultCasterLevel(spell: Spell): number {
   return Math.max(1, spell.level * 2 - 1);
 }
 
+/** `"yes (harmless)"` -> `"Yes (harmless)"` — matches the printed stat block's capitalization. */
+function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 export function SpellView({ spell }: { spell: Spell }) {
   const [cl, setCl] = useState(() => defaultCasterLevel(spell));
 
@@ -81,9 +86,7 @@ export function SpellView({ spell }: { spell: Spell }) {
         <Row label="Components">{formatSpellComponents(spell)}</Row>
         <Row label="Duration">{formatSpellDuration(spell, cl)}</Row>
         <Row label="Area / Target">{formatSpellArea(spell)}</Row>
-        {/* No spell-resistance row on purpose: `Spell.sr` is `false` or absent for
-            every spell in the pinned data (never `true`), so showing it would
-            claim Fireball ignores SR. Better silent than wrong. */}
+        <Row label="Spell Resistance">{spell.sr ? capitalize(spell.sr) : null}</Row>
         <Row label="Class levels">
           {classLevels.length > 0
             ? classLevels.map(([tag, level]) => `${tag} ${level}`).join(", ")

@@ -212,7 +212,9 @@ function SpellDetailBody({
       {spell.sr !== undefined && (
         <div className="spell-detail-row">
           <span className="spell-detail-label">SR</span>
-          <span className="spell-detail-value">{spell.sr ? "Yes" : "No"}</span>
+          <span className="spell-detail-value">
+            {spell.sr.charAt(0).toUpperCase() + spell.sr.slice(1)}
+          </span>
         </div>
       )}
       <div className="spell-detail-row">

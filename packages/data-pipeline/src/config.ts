@@ -104,9 +104,14 @@ export const SYSTEM_VERSION = "11.11";
  * pinned source (`json/class_ability_unchained_eidolons.json`, 26 entries
  * after dropping `not_found`), prose-only browsing data alongside (not
  * merged with) `@pf1/engine` `eidolon-unchained.ts`'s hand-authored
- * `EIDOLON_SUBTYPES` table.
+ * `EIDOLON_SUBTYPES` table. v18 widens `Spell.sr` from a boolean passthrough
+ * of Foundry's `system.sr` (which the pinned pack never actually sets `true`,
+ * making the field dead noise) to a display string sourced by name-match from
+ * the "Pf Data 1e" `json/spells*.json` files instead — "yes", "no", "yes
+ * (object)", "yes (harmless)", or a free-text override, matching the printed
+ * SR line verbatim.
  */
-export const SCHEMA_VERSION = 17;
+export const SCHEMA_VERSION = 18;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

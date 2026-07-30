@@ -640,8 +640,14 @@ export interface Spell extends RefEntity {
   /** School abbreviation, e.g. "evo". */
   school?: string;
   descriptors: string[];
-  /** Whether spell resistance applies to this spell. */
-  sr?: boolean;
+  /**
+   * The spell's printed Spell Resistance line ("yes", "no", "yes (object)",
+   * "yes (harmless)", or a free-text override like "yes (harmless); see
+   * text"), verbatim from the "Pf Data 1e" fourth pinned source — the
+   * Foundry pack this schema otherwise draws from never sets its own
+   * `system.sr`. Unset when neither source states one; never fabricated.
+   */
+  sr?: string;
   components: {
     verbal?: boolean;
     somatic?: boolean;

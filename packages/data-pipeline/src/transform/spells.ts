@@ -98,7 +98,10 @@ export function transformSpell(doc: RawDoc, resolveUuid: UuidResolver): Spell {
     level: asNumber(sys.level) ?? 0,
     school: typeof sys.school === "string" ? sys.school : undefined,
     descriptors: asStringArray(sys.descriptors),
-    sr: sys.sr === false ? false : sys.sr === true ? true : undefined,
+    // `sys.sr` (Foundry's `system.sr`) is intentionally never read: the pinned
+    // pack never sets it `true` (verified across the full pack), so it's dead
+    // noise, not real data. `Spell.sr` is filled in later, from a different
+    // source — see `applySpellSrSupplements`.
     components: {
       verbal: components.verbal === true ? true : undefined,
       somatic: components.somatic === true ? true : undefined,

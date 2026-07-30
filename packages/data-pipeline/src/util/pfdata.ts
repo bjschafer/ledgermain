@@ -242,9 +242,12 @@ function renderTable(lines: string[]): string {
 /**
  * Loosely parses a directive's `{key="quoted value" key2=bareValue flag}`
  * property list (single-quote-free — the source never uses them) into a
- * plain object; boolean flags map to `true`.
+ * plain object; boolean flags map to `true`. Exported for `transform/
+ * spellSr.ts`, which parses the `::spell{...}` directive's own prop list
+ * (source citation, casting-time/range/SR tokens, ...) the same way every
+ * other directive here does.
  */
-function parseDirectiveProps(raw: string): Record<string, string | true> {
+export function parseDirectiveProps(raw: string): Record<string, string | true> {
   const props: Record<string, string | true> = {};
   const re = /([a-zA-Z][a-zA-Z0-9]*)(=(?:"([^"]*)"|(\S+)))?/g;
   let m: RegExpExecArray | null;

@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-30-spell-resistance-lines",
+    date: "2026-07-30",
+    title: "Spell cards now print their Spell Resistance line",
+    note: "Every spell detail now shows whether spell resistance applies, exactly as the book prints it: yes, no, yes (harmless), yes (object), or the odd special case like Cure Light Wounds' yes (harmless); see text. Around 2,200 spells carry the line; the handful the sources leave silent simply show nothing rather than a guess. Before this, no spell showed one at all.",
+  },
+  {
     id: "2026-07-29-trait-uses-tracked",
     date: "2026-07-29",
     title: "Traits with daily uses get real counters",

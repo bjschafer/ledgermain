@@ -101,7 +101,7 @@
     "slayer-talents.json": "a617561d04238b85a3f3b6390bdde4f0037406583b1338efc60663d7f67395c3",
     "sorcerer-bloodlines.json": "bd2b771a46d9c4c9cccc8b15ff943959613c6a2cdb8ff35c73ff000ed34cd484",
     "spell-lists.json": "b955e35ee16a2e4d391b3a32648d83c854e8b7477b472b95cdef50ed6cf0806c",
-    "spells.json": "06b796ad9380d9a81a8b0a8fa680a4238a862de026e4919de7a19c940cba5c15",
+    "spells.json": "3e8cc7a2d1900289798eb4f73ab73a37ca67ea74b1c72f5da89d2829e7eb282d",
     "subdomain-spell-lists.json": "1286d1f7411978225172dd272c2fc1a220133bf6e7031bf5936acf70d139dd2e",
     "subdomains.json": "5bef121546ace2db27a24c7ca54a9be3194b6193520cb7e456c514af76e331cf",
     "traits.json": "01605bd35270ca38192929f0eb13faba450b7cd0a99180ddba39736d054cdec2",
@@ -111,7 +111,7 @@
     "witch-patrons.json": "abe0bc21ba74cd13a5bd2230a6819764ff173dbe6d74a1b7074211f7428ec22c",
     "wizard-schools.json": "46662970340b24ee1a2dab6369de212dbd6c93e494fbb5a3a381cb2dd3a1e521"
   },
-  "schemaVersion": 17,
+  "schemaVersion": 18,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

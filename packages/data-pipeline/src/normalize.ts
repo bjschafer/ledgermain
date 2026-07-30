@@ -74,6 +74,7 @@ import { transformPrestigeClassPack } from "./transform/prestigeClasses.js";
 import { transformRace } from "./transform/races.js";
 import { transformRacialTrait } from "./transform/racialTraits.js";
 import { transformSpell } from "./transform/spells.js";
+import { applySpellSrSupplements } from "./transform/spellSr.js";
 import { transformTrait } from "./transform/traits.js";
 import {
   isFullDomainSpellList,
@@ -537,6 +538,11 @@ export function normalize(opts: NormalizeOptions): {
   // count scales in prose, not their damage formula (Magic Missile, Scorching
   // Ray). Throws if a named spell is absent — a data-drift guard.
   applySpellProjectileSupplements(spells);
+
+  // Attach spell-resistance display text from the fourth-party "Pf Data 1e"
+  // dataset (issue #74) — the pinned Foundry pack's own `system.sr` is
+  // upstream-dead (see SCHEMA_VERSION's v18 note), so this is the only source.
+  applySpellSrSupplements(spells, opts.pfDataJsonDir);
 
   // --- per-class spell lists (invert learnedAt.class) ------------------------
   const spellLists: Record<string, SpellList> = {};

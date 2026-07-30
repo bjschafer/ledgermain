@@ -19,7 +19,7 @@ describe("spellFacet", () => {
     level: 3,
     school: "evo",
     descriptors: ["fire"],
-    sr: true,
+    sr: "yes",
     components: { verbal: true, somatic: true, material: true },
     learnedAt: { class: { wizard: 3, sorcerer: 3 } },
     actions: [],

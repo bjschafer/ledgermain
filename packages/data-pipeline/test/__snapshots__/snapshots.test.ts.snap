@@ -240,6 +240,7 @@ exports[`normalized-output snapshots spell: Fireball 1`] = `
       "pages": "283",
     },
   ],
+  "sr": "yes",
   "uuid": "Compendium.pf1.spells.Item.6oq1wcryviik9ice",
 }
 `;
@@ -314,6 +315,38 @@ exports[`normalized-output snapshots race: Human 1`] = `
     "land": 30,
   },
   "uuid": "Compendium.pf1.races.Item.e6IaBxKgMxy1yKlr",
+}
+`;
+
+exports[`normalized-output snapshots trait: Reactionary (issue #74 — vendored trait catalog) 1`] = `
+{
+  "changes": [
+    {
+      "formula": "2",
+      "target": "init",
+      "type": "trait",
+    },
+  ],
+  "contextNotes": [],
+  "id": "qxxGzzh6bRTc8KFo",
+  "name": "Reactionary",
+  "sources": [
+    {
+      "id": "PZO1125",
+      "pages": "53",
+    },
+    {
+      "id": "PZO9401",
+      "pages": "11",
+    },
+    {
+      "id": "PZO1115",
+      "pages": "328",
+    },
+  ],
+  "tags": [],
+  "traitType": "combat",
+  "uuid": "Compendium.pf1.traits.Item.qxxGzzh6bRTc8KFo",
 }
 `;
 
@@ -469,37 +502,5 @@ exports[`normalized-output snapshots archetype feature: Two-Handed Fighter's Sha
     },
   ],
   "uuid": "archetype-feature:fighter:two-handed-fighter:shattering-strike:2",
-}
-`;
-
-exports[`normalized-output snapshots trait: Reactionary (issue #74 — vendored trait catalog) 1`] = `
-{
-  "changes": [
-    {
-      "formula": "2",
-      "target": "init",
-      "type": "trait",
-    },
-  ],
-  "contextNotes": [],
-  "id": "qxxGzzh6bRTc8KFo",
-  "name": "Reactionary",
-  "sources": [
-    {
-      "id": "PZO1125",
-      "pages": "53",
-    },
-    {
-      "id": "PZO9401",
-      "pages": "11",
-    },
-    {
-      "id": "PZO1115",
-      "pages": "328",
-    },
-  ],
-  "tags": [],
-  "traitType": "combat",
-  "uuid": "Compendium.pf1.traits.Item.qxxGzzh6bRTc8KFo",
 }
 `;

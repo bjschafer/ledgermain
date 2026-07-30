@@ -183,9 +183,4 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
     detail:
       "`live.conditionRounds` gives a condition a countdown the round clock ticks, but nothing in the catalog except the rage/bloodrage fatigue aftermath states its duration in rounds structurally, so every other condition is applied untimed and cleared by hand.",
   },
-  {
-    category: "Per-spell SR flag never set",
-    detail:
-      "Vendored spells.json never carries `sr: true` (1,331 spells say false, 1,695 omit it), so whether a spell allows spell resistance is undisplayable; the transform is a faithful passthrough of `system.sr`, so the loss is upstream in the source packs.",
-  },
 ];
