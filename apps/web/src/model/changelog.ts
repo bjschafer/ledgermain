@@ -43,7 +43,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   {
     id: "2026-07-29-astral-eidolon-and-subtype-prose",
     date: "2026-07-29",
-    title: "Astral eidolons grow at the right rate, and subtypes show their book text",
+    title: "Astral eidolons grow right, and subtypes show their book text",
     note: "Two eidolon improvements. An astral eidolon's Strength and Dexterity now climb at the halved rate the book gives it: the summoner's class level is halved when reading the Str/Dex column of the base statistics table, while hit dice, saves, armor, and the evolution pool keep the real level. And every subtype in the picker now shows its full published description alongside the hand-authored mechanics, the same expandable rules text bloodlines and rage powers already show.",
   },
   {
