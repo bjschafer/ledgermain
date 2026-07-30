@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { totalLevel } from "../../model/doc.js";
 import { signed, skillName } from "../../model/names.js";
+import { skillRankShortfall } from "../../model/skillRankFeasibility.js";
 import { permanentIntMod, skillBudget } from "../../model/skills.js";
 import { InfoTip } from "../InfoTip.js";
 import { BookIcon } from "../icons.js";
@@ -12,10 +13,9 @@ import type { BuilderProps } from "./types.js";
 export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
   const [managerOpen, setManagerOpen] = useState(false);
 
-  const budget = useMemo(
-    () => skillBudget(doc, refData, permanentIntMod(doc, refData)),
-    [doc, refData],
-  );
+  const intMod = useMemo(() => permanentIntMod(doc, refData), [doc, refData]);
+  const budget = useMemo(() => skillBudget(doc, refData, intMod), [doc, refData, intMod]);
+  const shortfall = useMemo(() => skillRankShortfall(doc, refData, intMod), [doc, refData, intMod]);
   const maxRank = totalLevel(doc);
 
   // The panel summarizes only skills the character has actually invested ranks
@@ -58,6 +58,16 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
                   : "all ranks assigned"}
             </span>
           </div>
+
+          {shortfall && (
+            <p className="hint affliction-warn">
+              ⚠ These ranks don&apos;t fit any legal purchase order: {shortfall.required}{" "}
+              {shortfall.required === 1 ? "rank" : "ranks"} would have to be bought at character
+              level {shortfall.level} or later, but only {shortfall.available} skill{" "}
+              {shortfall.available === 1 ? "point is" : "points are"} available from that level on.
+              This can happen after a class level gets lowered without trimming ranks back down.
+            </p>
+          )}
 
           {managerOpen && (
             <SkillManager

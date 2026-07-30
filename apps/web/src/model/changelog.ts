@@ -47,6 +47,12 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     note: "Picking an alternate racial trait already applied its own bonuses; for most of the rarer races, the standard trait it replaced also kept applying. Fifteen more races now retire the replaced trait's numbers properly, Sylph and Merfolk through Svirfneblin, Wayang, and Vishkanya, closing real double-counts like an Acrobatic vanara keeping Nimble's Stealth bonus or a Healthy svirfneblin keeping Fortunate's +2 on every save. Every race whose standard traits carry sheet numbers is covered; a swap that only trades away a situational reminder line still leaves the reminder showing.",
   },
   {
+    id: "2026-07-30-skill-rank-history-check",
+    date: "2026-07-30",
+    title: "The sheet flags skill ranks no level order could pay for",
+    note: "If your skill ranks could not have been bought in any legal level-by-level order, the Skills panel now says so, telling you how many ranks would have to land past a level where the points run out. In practice this catches ranks left behind when a class level is lowered or removed: they used to linger silently, still boosting the skill. It is a soft warning, never a block, since retraining and honest rebuilds can leave odd histories on purpose.",
+  },
+  {
     id: "2026-07-30-every-shaman-spirit-fully-in",
     date: "2026-07-30",
     title: "Every shaman spirit is fully in, top to bottom",

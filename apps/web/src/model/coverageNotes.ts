@@ -146,13 +146,6 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     group: "not-modeled",
     note: "The bulk of the feat catalog is in, but a feat sourced from the wider community content pack may show its prerequisites as text only rather than enforcing them, and may not apply its effect to your sheet automatically.",
   },
-  {
-    category: "Skill rank history",
-    group: "not-adjudicated",
-    note: "Skill ranks are checked against your lifetime budget and per-skill level cap, but the sheet doesn't record which level each rank was bought at, so a rank that was spent before it was legally available (say, after re-ordering multiclass levels) isn't caught.",
-    issueDetail:
-      "CharacterDoc stores running rank totals with no per-level purchase ledger and no level-up ordering, so per-level spent-vs-earned auditing would need a schema addition and a level-gated allocator UX.",
-  },
 ];
 
 /**
