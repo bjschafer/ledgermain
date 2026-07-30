@@ -2973,7 +2973,9 @@ export interface DefenseEntry {
  * displayed. Mirrors Foundry's `traits.senses.*` model fields (`dv`, `ll`,
  * `sc`, `bse`, `bs`, `ts`, `ls`, `tr`, `ths`, `sid`), which the vendored
  * `sense*` change targets write into — see `@pf1/engine`'s `senses.ts` for
- * the target→kind map.
+ * the target→kind map. `telepathy` is this engine's own addition: Foundry's
+ * actor model has no telepathy field at all, so `sensetele` is a synthetic
+ * target rather than a mirrored one.
  */
 export type SenseKind =
   | "darkvision"
@@ -2985,7 +2987,8 @@ export type SenseKind =
   | "scent"
   | "lifesense"
   | "trueSeeing"
-  | "thoughtsense";
+  | "thoughtsense"
+  | "telepathy";
 
 /**
  * One special-sense line. Senses of the same kind don't stack in PF1 — a

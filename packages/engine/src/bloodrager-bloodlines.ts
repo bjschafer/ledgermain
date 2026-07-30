@@ -1024,20 +1024,13 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
         // today — see coverage notes; "increases to 8" is this bloodline's
         // final number regardless, so a flat `dr` grant is exact for a 20th-
         // level Undead bloodrager specifically, same posture as the sorcerer
-        // sibling's flat DR 5. Nonlethal damage isn't a damage TYPE — no
-        // `imm.<x>` target can hold it, same gap `rage-powers.ts`'s Undead
-        // Blood note documents.)
+        // sibling's flat DR 5.)
         changes: [
           c("8", "dr", "untyped"),
           c("1", "imm.cold", "untyped"),
           c("1", "immEffect.paralysis", "untyped"),
           c("1", "immEffect.sleep", "untyped"),
-        ],
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Also immune to nonlethal damage — no damage-type target holds that, so it stays manual.",
-          },
+          c("1", "immEffect.nonlethalDamage", "untyped"),
         ],
       },
     ],
@@ -1369,12 +1362,7 @@ const BLOODRAGER_BLOODLINE_LIST: BloodragerBloodlineDef[] = [
           c("1", "imm.cold", "untyped"),
           c("1", "immEffect.criticalHits", "untyped"),
           c("1", "immEffect.precisionDamage", "untyped"),
-        ],
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Also immune to nonlethal damage. No damage type target holds that, so it stays manual.",
-          },
+          c("1", "immEffect.nonlethalDamage", "untyped"),
         ],
       },
     ],

@@ -201,6 +201,14 @@ describe("splatbook bloodline fixtures (hand-computed)", () => {
     expect(mods.find((m) => m.target === "eres.cold")!.value).toBe(10);
   });
 
+  // Ghoul (Ultimate Magic): Ghoulish Aspect at 20th grants immunity to cold,
+  // nonlethal damage, paralysis, and sleep, plus DR 5/—.
+  it("a Ghoul sorcerer L20 is immune to nonlethal damage (Ghoulish Aspect)", () => {
+    const doc = makeSorcerer(20, "Ghoul");
+    const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+    expect(mods.find((m) => m.target === "immEffect.nonlethalDamage")!.value).toBe(1);
+  });
+
   // Orc (Orcs of Golarion): the arcana's orc subtype carries darkvision 60;
   // Strength of the Beast at 9th is a +2 inherent bonus to Strength.
   it("an Orc sorcerer L9 gets darkvision 60 and +2 inherent Str", () => {

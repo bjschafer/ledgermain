@@ -140,6 +140,7 @@ export const EFFECT_IMMUNITY_LABELS: Readonly<Record<string, string>> = {
   dazed: "being dazed",
   staggered: "being staggered",
   deathEffects: "death effects",
+  nonlethalDamage: "nonlethal damage",
 };
 
 const IMM_EFFECT_PREFIX = "immEffect.";

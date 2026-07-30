@@ -177,13 +177,14 @@ describe("alchemist discoveries (collectModifiers)", () => {
     expect(ALCHEMIST_DISCOVERIES.awakenedIntellect!.minLevel).toBe(20);
   });
 
-  it("Mummification (Ultimate Magic): cold immunity + paralysis/sleep effect immunities on the sheet", () => {
+  it("Mummification (Ultimate Magic): cold immunity + paralysis/sleep/nonlethal effect immunities on the sheet", () => {
     const doc = makeAlchemist(10, ["mummification"]);
     const sheet = compute(doc, ref);
     expect(sheet.defenses?.immunities?.some((i) => i.qualifier === "cold")).toBe(true);
     const slugs = sheet.defenses?.effectImmunities?.map((e) => e.qualifier) ?? [];
     expect(slugs).toContain("paralysis");
     expect(slugs).toContain("sleep");
+    expect(slugs).toContain("nonlethalDamage");
   });
 
   it("a non-alchemist with a stale alchemistDiscoveries field gets nothing (gated on class level)", () => {

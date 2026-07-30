@@ -10,18 +10,24 @@
  * entries carry their senses as description prose only, mechanized by the
  * data-pipeline's `SUPPLEMENTAL_RACE_SENSES` table.
  *
- * Two targets here are this engine's own convention rather than Foundry's,
- * because the fields they write are booleans in Foundry's actor model and so
- * have no `change` target upstream at all (`pf1.config.buffTargets` has no
- * entry for either):
+ * Three targets here are this engine's own convention rather than Foundry's:
+ * `sensell`/`sensesid` because the fields they write are booleans in
+ * Foundry's actor model and so have no `change` target upstream at all
+ * (`pf1.config.buffTargets` has no entry for either); `sensetele` because
+ * Foundry's actor model has no telepathy field at all (not even a boolean) —
+ * PF1 doesn't track it as a derived actor stat, only as free-text on the
+ * sheet:
  *
  *   - `sensell` — low-light vision (`traits.senses.ll.enabled`)
  *   - `sensesid` — see in darkness (`traits.senses.sid`)
+ *   - `sensetele` — telepathy, this engine's synthetic target; ranged like
+ *     darkvision/blindsight/etc., not a flag (RAW telepathy always carries a
+ *     stated range)
  *
- * Both are treated as flags: any source evaluating > 0 turns them on. Same
- * posture as the `dr.<bypass>` / `eres.<energy>` prefixes in `defenses.ts`,
- * which are likewise this engine's vocabulary so a user-authored buff can
- * grant something Foundry only models as actor state.
+ * `sensell`/`sensesid` are treated as flags: any source evaluating > 0 turns
+ * them on. Same posture as the `dr.<bypass>` / `eres.<energy>` prefixes in
+ * `defenses.ts`, which are likewise this engine's vocabulary so a
+ * user-authored buff can grant something Foundry only models as actor state.
  *
  * PF1 rule reused for resolution: senses of the same kind DON'T stack — a
  * dwarf (darkvision 60 ft.) under a *darkvision, greater* spell (120 ft.)
@@ -66,8 +72,8 @@ interface SenseDef {
 
 /**
  * Change target → sense, in display order. Keys are Foundry's
- * `pf1.config.buffTargets` sense ids, except `sensell`/`sensesid` (see the
- * module doc comment).
+ * `pf1.config.buffTargets` sense ids, except `sensell`/`sensesid`/`sensetele`
+ * (see the module doc comment).
  */
 const SENSE_TARGETS: Record<string, SenseDef> = {
   sensedv: { kind: "darkvision", label: "Darkvision" },
@@ -80,6 +86,7 @@ const SENSE_TARGETS: Record<string, SenseDef> = {
   sensels: { kind: "lifesense", label: "Lifesense" },
   sensetr: { kind: "trueSeeing", label: "True seeing" },
   senseths: { kind: "thoughtsense", label: "Thoughtsense" },
+  sensetele: { kind: "telepathy", label: "Telepathy" },
 };
 
 /** Every change target this module consumes (used by `targets.ts`). */

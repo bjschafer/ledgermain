@@ -162,11 +162,13 @@ describe("sorcerer bloodline capstone immunities/senses (20th level)", () => {
     expect(compute(doc, ref).defenses?.dr.find((d) => d.qualifier === "—")?.total).toBe(5);
   });
 
-  it("Demonic Might: immune to electricity and poison", () => {
-    // RAW: "You gain immunity to electricity and poison."
+  it("Demonic Might: immune to electricity and poison, telepathy 60", () => {
+    // RAW: "You gain immunity to electricity and poison. ... and gain
+    // telepathy with a range of 60 feet."
     const doc = makeDoc([{ tag: "sorcerer", level: 20 }], "Abyssal");
     expect(immune(doc, "electricity")).toBe(true);
     expect(effectImmune(doc, "poison")).toBe(true);
+    expect(senseRange(doc, "telepathy")).toBe(60);
   });
 
   it("Ascension: immune to acid, cold, and petrification", () => {
@@ -220,13 +222,14 @@ describe("sorcerer bloodline capstone immunities/senses (20th level)", () => {
     expect(senseRange(doc, "darkvision")).toBe(60);
   });
 
-  it("One of Us: immune to cold, paralysis, sleep; DR 5/—", () => {
+  it("One of Us: immune to cold, nonlethal damage, paralysis, sleep; DR 5/—", () => {
     // RAW: "You gain immunity to cold, nonlethal damage, paralysis, and
     // sleep. You also gain DR 5/—."
     const doc = makeDoc([{ tag: "sorcerer", level: 20 }], "Undead");
     expect(immune(doc, "cold")).toBe(true);
     expect(effectImmune(doc, "paralysis")).toBe(true);
     expect(effectImmune(doc, "sleep")).toBe(true);
+    expect(effectImmune(doc, "nonlethalDamage")).toBe(true);
     expect(compute(doc, ref).defenses?.dr.find((d) => d.qualifier === "—")?.total).toBe(5);
   });
 });

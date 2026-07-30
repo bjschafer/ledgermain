@@ -107,6 +107,7 @@ const PROMOTED_REVELATION_IDS = [
   "streets:faceInTheCrowd",
   "dark_tapestry:pierceTheVeil",
   "shadow:pierceTheShadows",
+  "outer_rifts:telepathy",
 ];
 
 /**
@@ -499,6 +500,31 @@ describe("promoted revelation: shadow:pierceTheShadows", () => {
 
   it("contributes nothing when picked under the wrong mystery", () => {
     const doc = makeOracle(11, "life", ["shadow:pierceTheShadows"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.senses.length).toBe(0);
+  });
+});
+
+describe("promoted revelation: outer_rifts:telepathy", () => {
+  // AoN (MysteryDisplay.aspx?ItemName=Outer+Rifts): "At 11th level, you can
+  // communicate telepathically with any creature within 100 feet that has a
+  // language, as per the telepathy ability of demons and angels." Self-gated
+  // on the RAW 11th-level minimum (minLevel is soft-filtered only), same
+  // posture as spellscar:spellResistance.
+  it("grants telepathy 100 ft. at 11th level", () => {
+    const doc = makeOracle(11, "outer_rifts", ["outer_rifts:telepathy"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.senses.find((s) => s.kind === "telepathy")?.range).toBe(100);
+  });
+
+  it("grants nothing on an off-spec pick below 11th level", () => {
+    const doc = makeOracle(7, "outer_rifts", ["outer_rifts:telepathy"]);
+    const sheet = compute(doc, ref);
+    expect(sheet.senses.length).toBe(0);
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const doc = makeOracle(11, "life", ["outer_rifts:telepathy"]);
     const sheet = compute(doc, ref);
     expect(sheet.senses.length).toBe(0);
   });

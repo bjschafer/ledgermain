@@ -113,9 +113,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Immunities",
-    note: "Immunity to nonlethal damage has no slot on the sheet; apply it from the ability's own text. Immunity to things that aren't damage shows on your sheet and flags the matching condition, but it's a reminder for you and your GM. Nothing rolls against it.",
+    note: "Immunity to things that aren't damage shows on your sheet and flags the matching condition, but it's a reminder for you and your GM. Nothing rolls against it.",
     issueDetail:
-      "Nonlethal damage is a category, not a damage type, so no imm.* target can hold it; telepathy has no sense target. Non-damage immunity is a separate axis (Defenses.effectImmunities) that resolveDamage deliberately never sees: display-only, plus a soft flag on the conditions it maps onto.",
+      "Non-damage immunity is a separate axis (Defenses.effectImmunities) that resolveDamage deliberately never sees: a soft flag on the conditions it maps onto, and a gate on the tracker's nonlethal entry, but nothing adjudicates an incoming effect against it.",
   },
   {
     category: "Buffs marked “reminder only”",

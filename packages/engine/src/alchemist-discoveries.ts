@@ -1153,13 +1153,11 @@ const DISCOVERY_LIST: AlchemistDiscoveryDef[] = build([
       { formula: "1", target: "imm.cold", type: "untyped" },
       { formula: "1", target: "immEffect.paralysis", type: "untyped" },
       { formula: "1", target: "immEffect.sleep", type: "untyped" },
+      { formula: "1", target: "immEffect.nonlethalDamage", type: "untyped" },
     ],
     contextNotes: [
       note(
         "Requires the Preserve Organs discovery and a 30-day preparation ritual before the immunities take effect.",
-      ),
-      note(
-        "Nonlethal-damage immunity isn't tracked by damage resolution — apply that part by hand.",
       ),
     ],
   },

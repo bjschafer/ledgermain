@@ -12,6 +12,7 @@ import {
   applyHealing,
   healNonlethal,
   hpState,
+  isImmuneToNonlethal,
   restHp,
   setStable,
   setTempHp,
@@ -84,6 +85,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   // by DR/resistance and use the raw total.
   const dmgAmt = preview.amount;
   const amt = preview.raw;
+  const nonlethalImmune = isImmuneToNonlethal(sheet);
 
   return (
     <Panel title="Hit Points" step="hp" icon={<HeartIcon />} storageKey="panel:PlayHP">
@@ -314,7 +316,8 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           <button
             type="button"
             className="btn-ghost"
-            disabled={amt === 0}
+            disabled={amt === 0 || nonlethalImmune}
+            title={nonlethalImmune ? "Immune to nonlethal damage" : undefined}
             onClick={() => update((d) => addNonlethal(d, amt))}
           >
             +{amt}
@@ -327,6 +330,14 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           >
             −{amt}
           </button>
+          {nonlethalImmune ? (
+            <InfoTip
+              className="chip-info"
+              content="Immune to nonlethal damage. Accumulated nonlethal can still be healed or cleared by rest."
+            >
+              ⓘ
+            </InfoTip>
+          ) : null}
         </div>
         <span className="chip-wrap">
           <button

@@ -353,14 +353,25 @@ describe("bloodrager bloodline capstone immunities/senses (20th level)", () => {
     expect(compute(doc, ref).senses.some((s) => s.kind === "seeInDarkness")).toBe(true);
   });
 
-  it("One Foot in the Grave (Undead): immune to cold, paralysis, sleep; DR increases to 8", () => {
+  it("One Foot in the Grave (Undead): immune to cold, nonlethal damage, paralysis, sleep; DR increases to 8", () => {
     // RAW: "you gain immunity to cold, nonlethal damage, paralysis, and
     // sleep. The DR from your damage reduction ability increases to 8."
     const doc = makeBloodrager(20, "Undead");
     expect(immune(doc, "cold")).toBe(true);
     expect(effectImmune(doc, "paralysis")).toBe(true);
     expect(effectImmune(doc, "sleep")).toBe(true);
+    expect(effectImmune(doc, "nonlethalDamage")).toBe(true);
     expect(compute(doc, ref).defenses?.dr.find((d) => d.qualifier === "—")?.total).toBe(8);
+  });
+
+  it("Black Blood Immunity (Black Blood): immune to cold, nonlethal damage, critical hits, sneak attacks", () => {
+    // RAW: "you become immune to cold, nonlethal damage, critical hits, and
+    // sneak attacks."
+    const doc = makeBloodrager(20, "Black Blood");
+    expect(immune(doc, "cold")).toBe(true);
+    expect(effectImmune(doc, "criticalHits")).toBe(true);
+    expect(effectImmune(doc, "precisionDamage")).toBe(true);
+    expect(effectImmune(doc, "nonlethalDamage")).toBe(true);
   });
 
   it("Eternal Martyr (Martyred): immune to death effects, can't be raised as undead", () => {

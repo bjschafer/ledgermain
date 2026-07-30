@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-29-nonlethal-immunity-and-telepathy",
+    date: "2026-07-29",
+    title: "Nonlethal immunity means it, and telepathy joins your senses",
+    note: "Two abilities that only existed as rules text now land on the sheet. Immunity to nonlethal damage, granted by the Undead and Ghoul sorcerer capstones, the Undead and Black Blood bloodrager capstones, and an alchemist's Mummification, now lists with your other immunities, and the HP tracker disables the nonlethal damage button while you have it (anything already accumulated can still be healed or cleared). And telepathy shows in the senses row with its range: 60 feet from the Abyssal sorcerer capstone, and 100 feet from the Outer Rifts oracle's Telepathy revelation once you hit 11th level, just as written.",
+  },
+  {
     id: "2026-07-29-every-bloodline-hand-authored",
     date: "2026-07-29",
     title: "Every sorcerer and bloodrager bloodline, fully powered",

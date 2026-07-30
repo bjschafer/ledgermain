@@ -123,6 +123,18 @@ export function applyGrantedTempHp(
   return after;
 }
 
+/**
+ * True when the sheet carries the engine's `nonlethalDamage` effect immunity
+ * (`Defenses.effectImmunities`, e.g. the Undead/Ghoul sorcerer bloodline
+ * capstones, the matching bloodrager capstones, and alchemist Mummification —
+ * see `@pf1/engine` `defenses.ts`'s `EFFECT_IMMUNITY_LABELS`). A character
+ * already carrying accumulated nonlethal damage when they gain the immunity
+ * can still have it healed/cleared normally — this only gates ADDING more.
+ */
+export function isImmuneToNonlethal(sheet: DerivedSheet): boolean {
+  return sheet.defenses?.effectImmunities?.some((e) => e.qualifier === "nonlethalDamage") ?? false;
+}
+
 /** Add nonlethal damage. */
 export function addNonlethal(doc: CharacterDoc, amount: number): CharacterDoc {
   const add = nonNeg(amount);

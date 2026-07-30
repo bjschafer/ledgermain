@@ -367,12 +367,7 @@ const BLOODLINE_LIST: BloodlineDef[] = [
           c("10", "eres.fire", "untyped"),
           c("1", "imm.electricity", "untyped"),
           c("1", "immEffect.poison", "untyped"),
-        ],
-        contextNotes: [
-          {
-            target: "allChecks",
-            text: "Also grants 60-ft. telepathy — no telepathy sense target on the sheet, display only.",
-          },
+          c("60", "sensetele", "untyped"),
         ],
       },
     ],
@@ -1082,23 +1077,18 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         // sleep. You also gain DR 5/—. Unintelligent undead do not notice you
         // unless you attack them. You receive a +4 morale bonus on saving
         // throws made against spells and spell-like abilities cast by
-        // undead." Nonlethal damage isn't a damage TYPE (it's a category of
-        // hit, not a `DamageTypeId`) — no `imm.<x>` target can hold it, same
-        // gap `rage-powers.ts`'s Undead Blood note documents.
+        // undead."
         changes: [
           c("5", "dr", "untyped"),
           c("1", "imm.cold", "untyped"),
           c("1", "immEffect.paralysis", "untyped"),
           c("1", "immEffect.sleep", "untyped"),
+          c("1", "immEffect.nonlethalDamage", "untyped"),
         ],
         contextNotes: [
           {
             target: "allSavingThrows",
             text: "+4 morale vs. undead spells/abilities only — not a general save bonus.",
-          },
-          {
-            target: "allChecks",
-            text: "Also immune to nonlethal damage — no damage-type target holds that, so it stays manual.",
           },
         ],
       },
@@ -2162,20 +2152,19 @@ const BLOODLINE_LIST: BloodlineDef[] = [
           "Immune to cold, nonlethal damage, paralysis, and sleep; no longer need to eat; DR 5/-; stench (10-ft. radius, Fort save or sickened 1d6+4 minutes, DC uses half sorcerer level).",
         // RAW (aonprd.com, BloodlineDisplay.aspx?ItemName=Ghoul): "You gain
         // immunity to cold, nonlethal damage, paralysis, and sleep... you
-        // gain DR 5/—." Nonlethal damage isn't a DamageTypeId (same gap
-        // rage-powers.ts's Undead Blood and this file's Undead One of Us
-        // document); hunger immunity and the stench aura have no matching
+        // gain DR 5/—." Hunger immunity and the stench aura have no matching
         // Change target and stay display only.
         changes: [
           c("5", "dr", "untyped"),
           c("1", "imm.cold", "untyped"),
           c("1", "immEffect.paralysis", "untyped"),
           c("1", "immEffect.sleep", "untyped"),
+          c("1", "immEffect.nonlethalDamage", "untyped"),
         ],
         contextNotes: [
           {
             target: "allChecks",
-            text: "Also immune to nonlethal damage and no longer needs to eat, and grants a stench aura: none of those have a matching sheet target, so they stay manual.",
+            text: "Also no longer needs to eat, and grants a stench aura: neither has a matching sheet target, so they stay manual.",
           },
         ],
       },

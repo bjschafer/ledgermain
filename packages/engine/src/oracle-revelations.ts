@@ -77,6 +77,9 @@
  *     darkvision by 60 feet instead" is exactly `existing + 60`, so the
  *     dwarf/tiefling case that once blocked this entry now computes right.
  *     Perfect darkness sight at 11th (`sensesid`), like pierceTheVeil.
+ *   - `outer_rifts:telepathy` — telepathy 100 ft. (`sensetele`, this
+ *     engine's synthetic sense target — see `senses.ts`), self-gated on the
+ *     RAW 11th-level minimum like spellscar:spellResistance.
  *   - The chosen-element trio, promoted via the choose-one mechanism
  *     (`choice`/`choiceChanges`, mirroring `rage-powers.ts`; the pick is
  *     stored in `doc.build.pickChoices`): `apocalypse:defyElements` (chosen
@@ -2017,6 +2020,16 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       minLevel: 11,
       summary:
         "Mentally communicate with any other creature within 100 feet that has a language, as the telepathy ability of demons and angels.",
+      // RAW (aonprd.com, MysteryDisplay.aspx?ItemName=Outer+Rifts): "At 11th
+      // level, you can communicate telepathically with any creature within
+      // 100 feet that has a language, as per the telepathy ability of
+      // demons and angels." `minLevel` is soft-filtered only (never blocks
+      // selection — see file doc comment), so the formula self-gates on the
+      // same 11th-level minimum, same posture as spellscar:spellResistance:
+      // an off-spec early pick must not grant telepathy the character isn't
+      // RAW-entitled to yet. Uses this engine's synthetic `sensetele` target
+      // (see `senses.ts`).
+      changes: [c("if(gte(@classes.oracle.level, 11), 100, 0)", "sensetele", "untyped", "set")],
     },
     {
       id: "unearthlyTerrain",

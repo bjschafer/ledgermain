@@ -6,10 +6,11 @@ import type { CharacterDoc } from "@pf1/schema";
 
 import { setAbilityAffliction } from "../src/model/afflictions.js";
 import { addBuff, makeActiveBuff } from "../src/model/buffs.js";
-import { addClass, createEmptyDoc, setClassLevel } from "../src/model/doc.js";
+import { addClass, createEmptyDoc, setClassLevel, setSorcererBloodline } from "../src/model/doc.js";
 import {
   applyGrantedTempHp,
   hpState,
+  isImmuneToNonlethal,
   reconcileCurrentHp,
   setStable,
   setTempHp,
@@ -289,5 +290,30 @@ describe("reconcileCurrentHp()", () => {
 
   it("leaves a negative (dying) current alone", () => {
     expect(reconcileCurrentHp(-4, 20, 20)).toBeNull();
+  });
+});
+
+describe("isImmuneToNonlethal()", () => {
+  it("is false for a character with no effect immunities at all", () => {
+    const sheet = compute(fighterWithCon(10), ref);
+    expect(isImmuneToNonlethal(sheet)).toBe(false);
+  });
+
+  it("is true for a 20th-level Undead sorcerer (One of Us capstone)", () => {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "sorcerer");
+    d = setClassLevel(d, "sorcerer", 20);
+    d = setSorcererBloodline(d, "Undead");
+    const sheet = compute(d, ref);
+    expect(isImmuneToNonlethal(sheet)).toBe(true);
+  });
+
+  it("is false below the capstone level, where the immunity hasn't been granted yet", () => {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "sorcerer");
+    d = setClassLevel(d, "sorcerer", 19);
+    d = setSorcererBloodline(d, "Undead");
+    const sheet = compute(d, ref);
+    expect(isImmuneToNonlethal(sheet)).toBe(false);
   });
 });

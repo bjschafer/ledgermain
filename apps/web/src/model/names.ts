@@ -233,8 +233,9 @@ const CHANGE_TARGET_LABELS: Record<string, string> = {
   // carrying capacity
   carryStr: "carrying capacity",
   carryMult: "carrying capacity",
-  // senses (computeSenses) — `sensell`/`sensesid` are this engine's own
-  // targets for Foundry's two boolean sense flags; see engine `senses.ts`.
+  // senses (computeSenses) — `sensell`/`sensesid`/`sensetele` are this
+  // engine's own targets (two boolean sense flags plus telepathy, which
+  // Foundry's actor model doesn't track at all); see engine `senses.ts`.
   sensedv: "darkvision",
   sensell: "low-light vision",
   sensesid: "see in darkness",
@@ -245,6 +246,7 @@ const CHANGE_TARGET_LABELS: Record<string, string> = {
   sensels: "lifesense",
   sensetr: "true seeing",
   senseths: "thoughtsense",
+  sensetele: "telepathy",
 };
 
 /** "fire" -> "Fire". Leaves an already-capitalized or empty string alone. */
