@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-29-weapon-dice-at-every-size",
+    date: "2026-07-29",
+    title: "Weapon dice scale right at every size",
+    note: "Weapon damage dice now follow the official size-change chart exactly, one size category at a time, instead of a simplified one-step shift. The difference shows at the extremes: polymorph into a Tiny, Diminutive, or Fine form and your longsword reads 1d4, 1d3, 1d2 the way the book's chart says, rather than a die too high. Growing past Large is right too, including the printed exceptions: a dagger enlarges to 1d6, not 1d8, because small dice climb slower. This also fixes a stuck die: a 1d10 weapon shrunk below Medium used to stay 1d10 forever, and now correctly reads 1d8.",
+  },
+  {
     id: "2026-07-29-astral-eidolon-and-subtype-prose",
     date: "2026-07-29",
     title: "Astral eidolons grow right, and subtypes show their book text",

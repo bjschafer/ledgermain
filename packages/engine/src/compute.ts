@@ -188,30 +188,94 @@ function normalizeToChain(dice: string): string {
 }
 
 /**
- * Shifts a weapon damage-dice display string (e.g. `"1d8"`) by `steps` size
- * categories along its {@link SIZE_DIE_INDEX} chain, clamped at either end of
- * that chain (mirrors {@link shiftSize}'s own clamp-don't-throw posture) —
- * used when the wielder's effective size differs from the size the weapon's
+ * `SIZE_DIE_CHAIN_MAIN` and `SIZE_DIE_CHAIN_D8` interleave into ONE
+ * underlying die-size progression once dice reach 1d8/1d10: `1d6`(4) and
+ * `1d10`(6) both sit one row past `1d8`(5), and each chain then advances two
+ * rows at a time (`1d8`->`2d6` skips over `1d10`; `1d10`->`2d8` skips over
+ * `2d6`). This is exactly the FAQ's own "two steps" vs "one step" language
+ * below: a plain {@link SIZE_DIE_CHAIN_MAIN}/`_D8` index step already equals
+ * two FAQ steps once past 1d8, and one FAQ step below it. `combinedChartIndex`
+ * and {@link dieAtCombinedChartIndex} convert to/from that single merged
+ * numbering so {@link scaleWeaponDamageDice} can walk it in FAQ-step units.
+ */
+function combinedChartIndex(entry: { chain: readonly string[]; idx: number }): number {
+  if (entry.chain === SIZE_DIE_CHAIN_D8) return entry.idx * 2 + 6;
+  return entry.idx <= 5 ? entry.idx : entry.idx * 2 - 5;
+}
+
+/** Inverse of {@link combinedChartIndex}, clamped at either end of whichever chain the index resolves onto. */
+function dieAtCombinedChartIndex(ci: number): string {
+  if (ci <= 5) return SIZE_DIE_CHAIN_MAIN[Math.max(0, ci)]!;
+  if (ci % 2 === 0) {
+    return SIZE_DIE_CHAIN_D8[Math.min((ci - 6) / 2, SIZE_DIE_CHAIN_D8.length - 1)]!;
+  }
+  return SIZE_DIE_CHAIN_MAIN[Math.min((ci + 5) / 2, SIZE_DIE_CHAIN_MAIN.length - 1)]!;
+}
+
+/**
+ * Shifts a weapon damage-dice display string (e.g. `"1d8"`) from `fromSize`
+ * to `toSize` along the {@link SIZE_LADDER}, per the Paizo designer FAQ
+ * "Size Changes, Effective Size Changes, and Damage Dice Progression"
+ * (paizo.com/paizo/faq/v5748nruor1fm#v5748eaic9t3f, mirrored on aonprd.com):
+ *
+ * "When the damage dealt by a creature's weapons or natural attacks changes
+ * due to a change in its size (or the size of its weapon), use the following
+ * rules to determine the new damage. If the size increases by one step, look
+ * up the original damage on the chart and increase the damage by two steps.
+ * If the initial size is Small or lower (or is treated as Small or lower) or
+ * the initial damage is 1d6 or less, instead increase the damage by one
+ * step. If the size decreases by one step, look up the original damage on
+ * the chart and decrease the damage by two steps. If the initial size is
+ * Medium or lower (or is treated as Medium or lower) or the initial damage
+ * is 1d8 or less, instead decrease the damage by one step."
+ *
+ * Each condition is re-checked at every single-category step against the
+ * size/dice CURRENT at that step (not the original `fromSize`/`dice`), so a
+ * multi-category shift (polymorph into a Fine form, say) walks the ladder one
+ * category at a time rather than applying the FAQ's per-step rule once for
+ * the whole distance — this is what makes a Medium longsword's well-known
+ * printed progression (1d8 Medium, 1d6 Small, 1d4 Tiny, 1d3 Diminutive, 1d2
+ * Fine; 2d6 Large, 3d6 Huge, 4d6 Gargantuan, 6d6 Colossal) fall out correctly:
+ * every step below Large is size <= Small or is 1d6-and-below territory, so
+ * it's a one-FAQ-step move each time, and Large-and-up normally isn't, so
+ * it's two.
+ *
+ * Used when the wielder's effective size differs from the size the weapon's
  * `damageDice` was written for (issue #19/#70: Enlarge Person, Reduce
  * Person, and active polymorph forms all change effective size but not the
- * stored per-weapon dice string). Returns `dice` UNCHANGED when `steps` is 0
- * or when it doesn't resolve onto a chain even after {@link normalizeToChain}.
+ * stored per-weapon dice string). Returns `dice` UNCHANGED when `fromSize
+ * === toSize` or when it doesn't resolve onto a chain even after
+ * {@link normalizeToChain}.
  *
  * The conversion is one-way by design — a Medium greataxe counts as 2d6, so it
  * reads 3d6 at Large and 1d8 at Small, never 1d12 at either. That's not lossy
  * in practice because scaling always recomputes from the weapon's stored die,
  * so returning to base size prints 1d12 again.
- *
- * Does not attempt the FAQ's separate "two steps per category for Fine/
- * Diminutive/Tiny wielders" nuance — same honesty-bar posture as every other
- * documented gap in this file.
  */
-export function scaleWeaponDamageDice(dice: string, steps: number): string {
-  if (steps === 0) return dice;
+export function scaleWeaponDamageDice(dice: string, fromSize: SizeId, toSize: SizeId): string {
+  if (fromSize === toSize) return dice;
   const entry = SIZE_DIE_INDEX.get(normalizeToChain(dice));
   if (!entry) return dice;
-  const clamped = Math.min(entry.chain.length - 1, Math.max(0, entry.idx + steps));
-  return entry.chain[clamped]!;
+  const fromIdx = SIZE_LADDER.indexOf(fromSize);
+  const toIdx = SIZE_LADDER.indexOf(toSize);
+  const growing = toIdx > fromIdx;
+  const smallOrLowerIdx = SIZE_LADDER.indexOf("sm");
+  const mediumOrLowerIdx = SIZE_LADDER.indexOf("med");
+  let ci = combinedChartIndex(entry);
+  for (let cur = fromIdx; cur !== toIdx; cur += growing ? 1 : -1) {
+    if (growing) {
+      const exception = cur <= smallOrLowerIdx || ci <= 4; // "initial damage is 1d6 or less"
+      ci += exception ? 1 : 2;
+    } else {
+      const exception = cur <= mediumOrLowerIdx || ci <= 5; // "initial damage is 1d8 or less"
+      ci -= exception ? 1 : 2;
+    }
+    // Re-resolve against a real printed die before the next iteration so a
+    // die already clamped at the top/bottom of its chain doesn't drift into
+    // an unclamped index that would flip a later step's own exception check.
+    ci = combinedChartIndex(SIZE_DIE_INDEX.get(dieAtCombinedChartIndex(ci))!);
+  }
+  return dieAtCombinedChartIndex(ci);
 }
 
 /**
@@ -1190,8 +1254,9 @@ function towerShieldAttackComponents(doc: CharacterDoc): ModifierComponent[] {
  * player doesn't have to flip the per-weapon field by hand for the class
  * feature that's supposed to grant it for free.
  *
- * `weaponSizeShift` (size categories the wielder's effective size differs
- * from base) rewrites the DISPLAYED `damageDice` string when nonzero — see
+ * `baseSize`/`effectiveSize` (the race size the weapon's `damageDice` was
+ * written for, and the wielder's current effective size) rewrite the
+ * DISPLAYED `damageDice` string when they differ — see
  * {@link scaleWeaponDamageDice} — since the numeric damage bonus above never
  * carries a dice term to begin with.
  */
@@ -1204,7 +1269,8 @@ function computeWeaponAttacks(
   flatAttackPenaltyComponents: ModifierComponent[],
   abilityMods: Readonly<Record<AbilityId, number>>,
   substitutions: readonly ActiveAbilitySubstitution[],
-  weaponSizeShift: number,
+  baseSize: SizeId,
+  effectiveSize: SizeId,
 ): ResolvedWeaponAttack[] {
   const flatAttackPenalty = flatAttackPenaltyComponents.reduce((s, c) => s + c.value, 0);
   const weapons = doc.build.weapons ?? [];
@@ -1345,7 +1411,7 @@ function computeWeaponAttacks(
     // includes a dice term (formula.ts can't evaluate one — see the engine
     // cookbook §2.2), so this scaling is purely a display correction.
     if (w.damageDice !== undefined) {
-      result.damageDice = scaleWeaponDamageDice(w.damageDice, weaponSizeShift);
+      result.damageDice = scaleWeaponDamageDice(w.damageDice, baseSize, effectiveSize);
     }
     return result;
   });
@@ -1448,13 +1514,6 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // player's chosen size is still meaningful on its own).
   if (doc.live.activeForm) size = doc.live.activeForm.size;
   const sizeAttackMod = SIZE_AC_MOD[size];
-  // How many size categories the wielder's EFFECTIVE size differs from their
-  // base (race) size — the size the vendored/hand-entered `damageDice` on
-  // `build.weapons` was written for (issue #19/#70, see
-  // `scaleWeaponDamageDice`). Covers both a relative "size" Change (Enlarge/
-  // Reduce Person) and an active polymorph form's absolute override, since
-  // both are already folded into `size` above by this point.
-  const weaponSizeShift = SIZE_LADDER.indexOf(size) - SIZE_LADDER.indexOf(baseSize);
 
   const strMod = abilities.str.mod;
   const dexMod = abilities.dex.mod;
@@ -1669,7 +1728,11 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // Skills
   const skills = computeSkills(doc, refData, abilities, collected, encumbrance);
 
-  // Per-weapon attack lines
+  // Per-weapon attack lines. `baseSize`/`size` (base race size vs. the
+  // wielder's current EFFECTIVE size — issue #19/#70, covers both a relative
+  // "size" Change from Enlarge/Reduce Person and an active polymorph form's
+  // absolute override, since both are already folded into `size` above by
+  // this point) feed `scaleWeaponDamageDice`'s displayed-dice rewrite.
   const attacks = computeWeaponAttacks(
     doc,
     bab,
@@ -1679,7 +1742,8 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     flatAttackPenaltyComponents,
     abilityMods,
     substitutions,
-    weaponSizeShift,
+    baseSize,
+    size,
   );
 
   // DR / energy resistance / spell resistance — display-only (issue #21).

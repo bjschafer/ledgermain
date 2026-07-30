@@ -1,17 +1,27 @@
 /**
- * Hand-computed fixture tests for size-scaled weapon damage dice (CRB p.145
- * weapon-size damage table / Paizo's size-change designer FAQ: "1d4 -> 1d6
- * -> 1d8 -> 2d6 -> 3d6 -> ..."). Enlarge Person, Reduce Person, and an active
- * polymorph form all change effective size but previously left
- * `ResolvedWeaponAttack.damageDice` untouched — this only rewrites the
- * DISPLAYED dice string; the numeric `damageBonus.total` never contained a
- * dice term to begin with (formula.ts can't evaluate one — see the engine
- * cookbook §2.2).
+ * Hand-computed fixture tests for size-scaled weapon damage dice, per the
+ * Paizo designer FAQ "Size Changes, Effective Size Changes, and Damage Dice
+ * Progression" (paizo.com/paizo/faq/v5748nruor1fm#v5748eaic9t3f, mirrored on
+ * aonprd.com): "If the size increases by one step, look up the original
+ * damage on the chart and increase the damage by two steps. If the initial
+ * size is Small or lower (or is treated as Small or lower) or the initial
+ * damage is 1d6 or less, instead increase the damage by one step. If the
+ * size decreases by one step, look up the original damage on the chart and
+ * decrease the damage by two steps. If the initial size is Medium or lower
+ * (or is treated as Medium or lower) or the initial damage is 1d8 or less,
+ * instead decrease the damage by one step." See `scaleWeaponDamageDice`'s own
+ * doc comment in `compute.ts` for how that's applied per size category.
+ *
+ * Enlarge Person, Reduce Person, and an active polymorph form all change
+ * effective size but previously left `ResolvedWeaponAttack.damageDice`
+ * untouched — this only rewrites the DISPLAYED dice string; the numeric
+ * `damageBonus.total` never contained a dice term to begin with (formula.ts
+ * can't evaluate one — see the engine cookbook §2.2).
  */
 
 import { describe, expect, it } from "bun:test";
 
-import type { ActiveBuff, CharacterDoc, WeaponInstance } from "@pf1/schema";
+import type { ActiveBuff, ActiveForm, CharacterDoc, WeaponInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import { compute, scaleWeaponDamageDice } from "../src/compute.js";
@@ -24,7 +34,11 @@ function raceId(name: string): string {
   return entry[0];
 }
 
-function makeDoc(weapons: WeaponInstance[], activeBuffs: ActiveBuff[] = []): CharacterDoc {
+function makeDoc(
+  weapons: WeaponInstance[],
+  activeBuffs: ActiveBuff[] = [],
+  activeForm?: ActiveForm,
+): CharacterDoc {
   return {
     schemaVersion: 1,
     id: "weapon-size-dice-test",
@@ -50,42 +64,76 @@ function makeDoc(weapons: WeaponInstance[], activeBuffs: ActiveBuff[] = []): Cha
       conditions: [],
       activeBuffs,
       resources: {},
+      ...(activeForm ? { activeForm } : {}),
     },
   };
 }
 
 describe("scaleWeaponDamageDice(): the pure die-chain helper", () => {
-  it("steps up the main chain: 1d8 by 1 step -> 2d6 (CRB p.145)", () => {
-    expect(scaleWeaponDamageDice("1d8", 1)).toBe("2d6");
+  it("Medium 1d8 to Large: normal case (Medium isn't Small-or-lower, 1d8 isn't 1d6-or-less) -> two-step 2d6", () => {
+    expect(scaleWeaponDamageDice("1d8", "med", "lg")).toBe("2d6");
   });
 
-  it("steps up the main chain by 2: 1d6 -> 2d6", () => {
-    expect(scaleWeaponDamageDice("1d6", 2)).toBe("2d6");
+  it("Small 1d6 up through Large: Small->Medium is the exception (Small-or-lower), Medium->Large is normal -> 2d6", () => {
+    expect(scaleWeaponDamageDice("1d6", "sm", "lg")).toBe("2d6");
   });
 
-  it("steps down the main chain: 1d8 by -1 step -> 1d6", () => {
-    expect(scaleWeaponDamageDice("1d8", -1)).toBe("1d6");
+  it("Medium 1d8 down to Small: exception (Medium-or-lower) -> one-step 1d6", () => {
+    expect(scaleWeaponDamageDice("1d8", "med", "sm")).toBe("1d6");
   });
 
-  it("steps up the 1d10 family: 1d10 -> 2d8", () => {
-    expect(scaleWeaponDamageDice("1d10", 1)).toBe("2d8");
+  it("Medium 1d10 up to Large: normal case on the d10 family -> 2d8", () => {
+    expect(scaleWeaponDamageDice("1d10", "med", "lg")).toBe("2d8");
   });
 
-  it("0 steps returns the input unchanged, even for an unrecognized die", () => {
-    expect(scaleWeaponDamageDice("2d12", 0)).toBe("2d12");
+  it("same size is a no-op, even for an unrecognized die", () => {
+    expect(scaleWeaponDamageDice("2d12", "med", "med")).toBe("2d12");
   });
 
   it("clamps at the top of the chain instead of guessing further", () => {
-    expect(scaleWeaponDamageDice("16d6", 5)).toBe("16d6");
+    expect(scaleWeaponDamageDice("16d6", "med", "col")).toBe("16d6");
   });
 
   it("clamps at the bottom of the chain", () => {
-    expect(scaleWeaponDamageDice("1", -5)).toBe("1");
+    expect(scaleWeaponDamageDice("1", "col", "fine")).toBe("1");
   });
 
   it("leaves a die that isn't on a chain and has no charted equivalent unscaled", () => {
-    expect(scaleWeaponDamageDice("1d7", 1)).toBe("1d7");
-    expect(scaleWeaponDamageDice("", 1)).toBe("");
+    expect(scaleWeaponDamageDice("1d7", "med", "lg")).toBe("1d7");
+    expect(scaleWeaponDamageDice("", "med", "lg")).toBe("");
+  });
+});
+
+/**
+ * The FAQ's small-size/small-damage exception, hand-traced one size category
+ * at a time (the FAQ's rule is stated per single size step; a multi-category
+ * change re-checks the condition at each step against the size/dice CURRENT
+ * at that step — see `scaleWeaponDamageDice`'s doc comment in compute.ts).
+ */
+describe("scaleWeaponDamageDice(): the small-size/small-damage FAQ exception", () => {
+  it("Medium 1d8 to Tiny: every step from Medium down is Medium-or-lower, so it's one-for-one -> 1d4", () => {
+    // med->sm (Medium is Medium-or-lower: 1d8->1d6), sm->tiny (Small is Medium-or-lower: 1d6->1d4).
+    expect(scaleWeaponDamageDice("1d8", "med", "tiny")).toBe("1d4");
+  });
+
+  it("Medium 1d8 to Diminutive: one more one-for-one step past Tiny -> 1d3", () => {
+    expect(scaleWeaponDamageDice("1d8", "med", "dim")).toBe("1d3");
+  });
+
+  it("Medium 1d8 to Fine: one more one-for-one step past Diminutive -> 1d2", () => {
+    expect(scaleWeaponDamageDice("1d8", "med", "fine")).toBe("1d2");
+  });
+
+  it("Tiny 1d4 up to Medium (the reverse of the Medium->Tiny case above): tiny->sm and sm->med are both Small-or-lower, one-for-one -> 1d8", () => {
+    expect(scaleWeaponDamageDice("1d4", "tiny", "med")).toBe("1d8");
+  });
+
+  it("Medium 1d4 (e.g. a dagger) growing to Large: Medium is NOT Small-or-lower, but 1d4 IS 1d6-or-less — the DAMAGE condition alone triggers the one-step exception -> 1d6, not the normal two-step 1d8", () => {
+    expect(scaleWeaponDamageDice("1d4", "med", "lg")).toBe("1d6");
+  });
+
+  it("Medium 1d10 down to Small crosses from the d10 family onto the main chain's 1d8: Medium-or-lower exception -> 1d8, not clamped at 1d10", () => {
+    expect(scaleWeaponDamageDice("1d10", "med", "sm")).toBe("1d8");
   });
 });
 
@@ -97,35 +145,35 @@ describe("scaleWeaponDamageDice(): the pure die-chain helper", () => {
  */
 describe("scaleWeaponDamageDice(): dice the chart doesn't print convert first", () => {
   it("2d4 counts as 1d8, so a scythe steps up to 2d6", () => {
-    expect(scaleWeaponDamageDice("2d4", 1)).toBe("2d6");
+    expect(scaleWeaponDamageDice("2d4", "med", "lg")).toBe("2d6");
   });
 
-  it("2d4 counts as 1d8 stepping down too: 1d6", () => {
-    expect(scaleWeaponDamageDice("2d4", -1)).toBe("1d6");
+  it("2d4 counts as 1d8 stepping down too: 1d6 (Medium-or-lower exception)", () => {
+    expect(scaleWeaponDamageDice("2d4", "med", "sm")).toBe("1d6");
   });
 
   it("3d4 counts as 2d6, so it steps up to 3d6", () => {
-    expect(scaleWeaponDamageDice("3d4", 1)).toBe("3d6");
+    expect(scaleWeaponDamageDice("3d4", "med", "lg")).toBe("3d6");
   });
 
   it("1d12 counts as 2d6, so a greataxe steps up to 3d6", () => {
-    expect(scaleWeaponDamageDice("1d12", 1)).toBe("3d6");
+    expect(scaleWeaponDamageDice("1d12", "med", "lg")).toBe("3d6");
   });
 
-  it("1d12 counts as 2d6 stepping down: 1d8, not the printed 1d12's own row", () => {
-    expect(scaleWeaponDamageDice("1d12", -1)).toBe("1d8");
+  it("1d12 counts as 2d6 stepping down: the exception (Medium-or-lower) crosses onto the d10 family's 1d10, not the printed 1d12's own row", () => {
+    expect(scaleWeaponDamageDice("1d12", "med", "sm")).toBe("1d10");
   });
 
   it("2d12 continues the d12 run one step past 1d12: counts as 3d6, steps to 4d6", () => {
-    expect(scaleWeaponDamageDice("2d12", 1)).toBe("4d6");
+    expect(scaleWeaponDamageDice("2d12", "med", "lg")).toBe("4d6");
   });
 
   it("1d4 is printed on the chart already and is not redirected", () => {
-    expect(scaleWeaponDamageDice("1d4", 1)).toBe("1d6");
+    expect(scaleWeaponDamageDice("1d4", "sm", "med")).toBe("1d6");
   });
 
   it("a converted die still clamps at the top of its chain", () => {
-    expect(scaleWeaponDamageDice("2d4", 99)).toBe("16d6");
+    expect(scaleWeaponDamageDice("2d4", "fine", "col")).toBe("12d6");
   });
 });
 
@@ -210,5 +258,27 @@ describe("compute(): a weapon with no damageDice is unaffected", () => {
     };
     const sheet = compute(makeDoc([bareWeapon], [enlarge]), ref);
     expect(sheet.attacks[0]!.damageDice).toBeUndefined();
+  });
+});
+
+describe("compute(): an active polymorph form can reach sizes below Small", () => {
+  const sword: WeaponInstance = {
+    name: "Longsword",
+    attackAbility: "str",
+    damageDice: "1d8",
+  };
+  // `tier`/`creatureType`/`formName` don't need to resolve to a known
+  // `PolymorphFormOption` — `live.activeForm.size` overrides the size ladder
+  // outright regardless (see `ActiveForm`'s doc comment in schema/character.ts).
+  const tinyForm = (): ActiveForm => ({
+    tier: "test-tier",
+    creatureType: "animal",
+    formName: "Test Tiny Form",
+    size: "tiny",
+  });
+
+  it("a Medium human polymorphed into a Tiny form reads the weapon at 1d4, same as a direct size-ladder shift", () => {
+    const sheet = compute(makeDoc([sword], [], tinyForm()), ref);
+    expect(sheet.attacks[0]!.damageDice).toBe("1d4");
   });
 });

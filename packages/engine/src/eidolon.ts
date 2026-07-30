@@ -1772,14 +1772,17 @@ export function deriveEidolon(
   const classifiedAttacks = classifyNaturalAttacks(allAttacks);
   // Small steps every attack's damage die down one (e.g. 1d6 -> 1d4) via the
   // same weapon-size-scaling chain the CRB's own size chart uses for
-  // manufactured weapons (`compute.ts`'s `scaleWeaponDamageDice`) — a no-op
-  // (`steps === 0`) for a non-Small eidolon.
-  const attackDieSteps = small ? -1 : 0;
+  // manufactured weapons (`compute.ts`'s `scaleWeaponDamageDice`), scaled
+  // from the eidolon's own Medium baseline — a no-op for a non-Small eidolon.
+  // (The Large evolution's own attack lines are the base template's numbers
+  // as printed and aren't rescaled here — a separate, pre-existing gap.)
+  const attackDieFromSize: SizeId = "med";
+  const attackDieToSize: SizeId = small ? "sm" : "med";
   const attacks: DerivedEidolonAttack[] = classifiedAttacks.map((a) => ({
     name: a.name,
     count: a.count,
     attack: naturalAttackBonus(baseAttackBonus, a.attackType, hasMultiattack),
-    damageDice: scaleWeaponDamageDice(a.damageDice, attackDieSteps),
+    damageDice: scaleWeaponDamageDice(a.damageDice, attackDieFromSize, attackDieToSize),
     damageBonus:
       naturalAttackDamageBonus(strMod, a.attackType, a.strMultiplier) + sharedDamageBonus,
     attackType: a.attackType,

@@ -164,11 +164,6 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
       "`live.conditionRounds` gives a condition a countdown the round clock ticks, but nothing in the catalog except the rage/bloodrage fatigue aftermath states its duration in rounds structurally, so every other condition is applied untimed and cleared by hand.",
   },
   {
-    category: "Size-die scaling below Small",
-    detail:
-      "Weapon damage-die size scaling steps one category at a time in both directions. The size-change FAQ's separate two-step rule for Fine/Diminutive/Tiny wielders is not implemented, so a weapon sized for a wielder below Small reads too high.",
-  },
-  {
     category: "Per-spell SR flag never set",
     detail:
       "Vendored spells.json never carries `sr: true` (1,331 spells say false, 1,695 omit it), so whether a spell allows spell resistance is undisplayable; the transform is a faithful passthrough of `system.sr`, so the loss is upstream in the source packs.",
