@@ -429,6 +429,9 @@ export {
 export {
   SHAMAN_SPIRITS,
   SHAMAN_SPIRIT_TAGS,
+  SHAMAN_GREATER_SPIRIT_LEVEL,
+  SHAMAN_TRUE_SPIRIT_LEVEL,
+  SHAMAN_MANIFESTATION_LEVEL,
   hexesForSpirit,
   findShamanHex,
   mergedShamanSpiritCatalog,

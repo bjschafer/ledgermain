@@ -20,8 +20,11 @@ import { collectGrantedFeatures, compute, resolveClassFeatures } from "../src/in
 import {
   findShamanHex,
   hexesForSpirit,
+  SHAMAN_GREATER_SPIRIT_LEVEL,
+  SHAMAN_MANIFESTATION_LEVEL,
   SHAMAN_SPIRIT_TAGS,
   SHAMAN_SPIRITS,
+  SHAMAN_TRUE_SPIRIT_LEVEL,
 } from "../src/shaman-spirits.js";
 
 const ref = loadRefData();
@@ -104,6 +107,22 @@ describe("SHAMAN_SPIRITS table", () => {
       expect(spirit.ability.name.length).toBeGreaterThan(0);
       expect(spirit.ability.summary.length).toBeGreaterThan(0);
     }
+  });
+
+  it("every spirit has a named greater/true/manifestation ability, each with a summary (aonprd.com Shaman class + per-spirit pages)", () => {
+    for (const tag of SHAMAN_SPIRIT_TAGS) {
+      const spirit = SHAMAN_SPIRITS[tag]!;
+      for (const tier of [spirit.greaterAbility, spirit.trueAbility, spirit.manifestation]) {
+        expect(tier.name.length).toBeGreaterThan(0);
+        expect(tier.summary.length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("gates the three higher tiers at the verified class-level thresholds (aonprd.com ClassDisplay.aspx?ItemName=Shaman)", () => {
+    expect(SHAMAN_GREATER_SPIRIT_LEVEL).toBe(8);
+    expect(SHAMAN_TRUE_SPIRIT_LEVEL).toBe(16);
+    expect(SHAMAN_MANIFESTATION_LEVEL).toBe(20);
   });
 
   it("hexesForSpirit returns the same 5 hexes as the table entry", () => {
@@ -193,5 +212,136 @@ describe("Cinder Dance (flame:cinderDance) — the one promoted spirit hex", () 
       ref,
     );
     expect(withHex.speeds.land).toBe(withoutHex.speeds.land);
+  });
+});
+
+/** `sheet.defenses` only materializes when at least one dr/resistance/immunity entry exists (see `defenses.ts`'s doc comment) — these helpers keep the fixture tests below from repeating the optional-chaining dance. */
+function drTotal(sheet: ReturnType<typeof compute>, qualifier: string): number | undefined {
+  return sheet.defenses?.dr.find((d) => d.qualifier === qualifier)?.total;
+}
+function resistanceTotal(sheet: ReturnType<typeof compute>, qualifier: string): number | undefined {
+  return sheet.defenses?.resistances.find((r) => r.qualifier === qualifier)?.total;
+}
+function hasEffectImmunity(sheet: ReturnType<typeof compute>, qualifier: string): boolean {
+  return sheet.defenses?.effectImmunities?.some((e) => e.qualifier === qualifier) ?? false;
+}
+
+describe('Heavens\' Void Adaptation (greater, 8th) — RAW aonprd.com ShamanSpiritDisplay.aspx?ItemName=Heavens: "gains darkvision 60 feet"', () => {
+  it("grants darkvision 60 ft. at 8th level", () => {
+    const sheet = compute(makeShaman(8, "heavens"), ref);
+    const dv = sheet.senses.find((s) => s.kind === "darkvision");
+    expect(dv?.range).toBe(60);
+  });
+
+  it("does NOT grant darkvision below 8th level (gated on Greater Spirit Ability, not just having Heavens)", () => {
+    const sheet = compute(makeShaman(7, "heavens"), ref);
+    expect(sheet.senses.find((s) => s.kind === "darkvision")).toBeUndefined();
+  });
+
+  it("does NOT apply while a different spirit is currently chosen", () => {
+    const sheet = compute(makeShaman(8, "battle"), ref);
+    expect(sheet.senses.find((s) => s.kind === "darkvision")).toBeUndefined();
+  });
+});
+
+describe('Heavens\' Manifestation (20th) — RAW: "bonus on all saving throws equal to her Wisdom modifier" + "immune to fear effects"', () => {
+  it("adds Wisdom modifier (+3 for Wis 16) to all three saves at 20th level", () => {
+    const base = compute(makeShaman(20, "battle"), ref); // same level, no Heavens Manifestation
+    const withHeavens = compute(makeShaman(20, "heavens"), ref);
+    expect(withHeavens.saves.fort.total).toBe(base.saves.fort.total + 3);
+    expect(withHeavens.saves.ref.total).toBe(base.saves.ref.total + 3);
+    expect(withHeavens.saves.will.total).toBe(base.saves.will.total + 3);
+  });
+
+  it("grants fear immunity at 20th level", () => {
+    const sheet = compute(makeShaman(20, "heavens"), ref);
+    expect(hasEffectImmunity(sheet, "fear")).toBe(true);
+  });
+
+  it("does NOT apply the save bonus or fear immunity below 20th level", () => {
+    const sheet = compute(makeShaman(19, "heavens"), ref);
+    const base = compute(makeShaman(19, "battle"), ref);
+    expect(sheet.saves.will.total).toBe(base.saves.will.total);
+    expect(hasEffectImmunity(sheet, "fear")).toBe(false);
+  });
+});
+
+describe('Bones\' Shard Soul (greater, 8th) — RAW: "DR 3/magic. This DR increases by 1 for every 4 shaman levels she possesses beyond 8th"', () => {
+  it("grants DR 3/magic at 8th level", () => {
+    expect(drTotal(compute(makeShaman(8, "bones"), ref), "magic")).toBe(3);
+  });
+
+  it("scales to DR 4/magic at 12th, DR 5/magic at 16th, DR 6/magic at 20th", () => {
+    expect(drTotal(compute(makeShaman(12, "bones"), ref), "magic")).toBe(4);
+    expect(drTotal(compute(makeShaman(16, "bones"), ref), "magic")).toBe(5);
+    expect(drTotal(compute(makeShaman(20, "bones"), ref), "magic")).toBe(6);
+  });
+
+  it("does NOT grant DR/magic below 8th level", () => {
+    expect(drTotal(compute(makeShaman(7, "bones"), ref), "magic")).toBeUndefined();
+  });
+});
+
+describe('Stone\'s Body of Earth (greater, 8th) — RAW: "DR 2/adamantine. This DR increases by 1 for every 4 levels beyond 8th"', () => {
+  it("grants DR 2/adamantine at 8th level, scaling to DR 5/adamantine at 20th", () => {
+    expect(drTotal(compute(makeShaman(8, "stone"), ref), "adamantine")).toBe(2);
+    expect(drTotal(compute(makeShaman(20, "stone"), ref), "adamantine")).toBe(5);
+  });
+
+  it("does NOT grant DR/adamantine below 8th level", () => {
+    expect(drTotal(compute(makeShaman(7, "stone"), ref), "adamantine")).toBeUndefined();
+  });
+});
+
+describe('Flame\'s Fiery Soul (greater, 8th) and Manifestation (20th) — RAW: fire resistance 10, then "gains fire resistance 30"', () => {
+  it("grants fire resistance 10 at 8th level", () => {
+    expect(resistanceTotal(compute(makeShaman(8, "flame"), ref), "fire")).toBe(10);
+  });
+
+  it("resolves to fire resistance 30 (not 40) at 20th level — same qualifier, highest wins", () => {
+    expect(resistanceTotal(compute(makeShaman(20, "flame"), ref), "fire")).toBe(30);
+  });
+
+  it("does NOT grant fire resistance below 8th level", () => {
+    expect(resistanceTotal(compute(makeShaman(7, "flame"), ref), "fire")).toBeUndefined();
+  });
+});
+
+describe('Stone\'s Manifestation (20th) — RAW: "gains acid resistance 30"', () => {
+  it("grants acid resistance 30 at 20th level, not before", () => {
+    expect(resistanceTotal(compute(makeShaman(20, "stone"), ref), "acid")).toBe(30);
+    expect(resistanceTotal(compute(makeShaman(19, "stone"), ref), "acid")).toBeUndefined();
+  });
+});
+
+describe('Waves\' Manifestation (20th) — RAW: "gains cold resistance 30"', () => {
+  it("grants cold resistance 30 at 20th level, not before", () => {
+    expect(resistanceTotal(compute(makeShaman(20, "waves"), ref), "cold")).toBe(30);
+    expect(resistanceTotal(compute(makeShaman(19, "waves"), ref), "cold")).toBeUndefined();
+  });
+});
+
+describe("Life's Healer's Touch (greater, 8th) — RAW: \"gains a +4 bonus on Heal checks\"", () => {
+  it("adds +4 to the Heal skill at 8th level", () => {
+    const base = compute(makeShaman(8, "battle"), ref);
+    const withLife = compute(makeShaman(8, "life"), ref);
+    expect(withLife.skills.hea!.total).toBe(base.skills.hea!.total + 4);
+  });
+
+  it("does NOT apply below 8th level", () => {
+    const base = compute(makeShaman(7, "battle"), ref);
+    const withLife = compute(makeShaman(7, "life"), ref);
+    expect(withLife.skills.hea!.total).toBe(base.skills.hea!.total);
+  });
+});
+
+describe('Life\'s Manifestation (20th) — RAW: "gains immunity to bleed, death attacks, and negative energy, as well as to the exhausted, fatigued, nauseated, and sickened conditions" (the slices with immEffect slugs, see shaman-spirits.ts doc comment)', () => {
+  it("grants death-effects, fatigue, and exhaustion immunity at 20th level, not before", () => {
+    const at20 = compute(makeShaman(20, "life"), ref);
+    const at19 = compute(makeShaman(19, "life"), ref);
+    for (const slug of ["deathEffects", "fatigue", "exhaustion"]) {
+      expect(hasEffectImmunity(at20, slug)).toBe(true);
+      expect(hasEffectImmunity(at19, slug)).toBe(false);
+    }
   });
 });

@@ -80,13 +80,41 @@
  *     (display-only — the shaman's "spirit animal" is a familiar-like
  *     conduit for preparing spells, not a trackable creature this app models
  *     as a stat block, unlike `@pf1/engine` `companion.ts`'s animal
- *     companion). This project also doesn't model each spirit's Greater/True
- *     Spirit Ability or 20th-level Manifestation at all (no fields for them
- *     exist on `ShamanSpiritDef`) — out of scope for this pass; several are
- *     themselves promotion candidates for a future one (e.g. Heavens' Void
- *     Adaptation grants unconditional darkvision 60 ft., the same shape as
- *     `oracle-revelations.ts`'s `dark_tapestry:pierceTheVeil`), but adding
- *     them means extending the table's shape, not auditing what's here.
+ *     companion).
+ *   - `greaterAbility` / `trueAbility` / `manifestation` — the spirit's
+ *     higher-tier abilities, gained at class-level thresholds verified
+ *     against aonprd.com's Shaman class page
+ *     (`ClassDisplay.aspx?ItemName=Shaman`): "At 8th level, the shaman gains
+ *     the abilities listed in the greater version of her selected spirit,"
+ *     "At 16th level, the shaman gains the abilities listed for the true
+ *     version," "Upon reaching 20th level, a shaman undergoes a
+ *     transformation as she manifests as a pinnacle of her main spirit" —
+ *     `SHAMAN_GREATER_SPIRIT_LEVEL`/`SHAMAN_TRUE_SPIRIT_LEVEL`/
+ *     `SHAMAN_MANIFESTATION_LEVEL` below. Each spirit's own page
+ *     (`ShamanSpiritDisplay.aspx?ItemName=<Spirit>`) was fetched and
+ *     cross-checked against the vendored prose to verify these three
+ *     sections; per-spirit citations sit on the entries below. Same
+ *     promotion bar as `ability`/`hexes` above: only a piece that's
+ *     unconditional, always-on, and a flat number on the shaman's own sheet
+ *     earns a `Change` (see `collect.ts`'s shaman-spirit block for where
+ *     these apply, level-gated at the thresholds above). Most of these 24 entries
+ *     are activated (swift/standard action, per-day limited) or conditional
+ *     on a trigger state (reduced below 0 hp, standing on the ground) and
+ *     stay prose-only, same as the bulk of `hexes`; the handful that do
+ *     promote are noted per entry: Heavens' Void Adaptation (darkvision 60
+ *     ft., the same shape as `oracle-revelations.ts`'s
+ *     `dark_tapestry:pierceTheVeil`) and Manifestation (a flat bonus to all
+ *     saves equal to Wisdom modifier, plus fear immunity); Bones' Shard Soul
+ *     and Stone's Body of Earth (both a scaling DR, the ability's own attack
+ *     piece stays prose-only); Flame's Fiery Soul/Manifestation and Stone's
+ *     and Waves' Manifestation (flat energy resistance, same "same qualifier
+ *     doesn't stack, highest wins" resolution `defenses.ts` already gives
+ *     `eres.*`, so a tier-1 resistance and a later tier-3 one coexist for
+ *     free); and Life's Healer's Touch (a flat Heal-check bonus) and
+ *     Manifestation (death-effect immunity only — RAW also grants bleed and
+ *     negative-energy immunity, but neither has an `immEffect.*` slug in
+ *     `defenses.ts`'s closed vocabulary, so those two stay prose-only rather
+ *     than inventing one).
  */
 
 import type { Change, RefData, ShamanSpirit, SourceRef } from "@pf1/schema";
@@ -104,7 +132,16 @@ export interface ShamanSpiritAbility {
   name: string;
   /** Short rules summary shown in the UI (paraphrased, not verbatim SRD text). */
   summary: string;
+  /** Typed modifiers granted by the ability. Absent (the common case) means display-only, prose-only. */
+  changes?: Change[];
 }
+
+/** Class level at which a shaman gains her chosen spirit's Greater Spirit Ability (aonprd.com, Shaman class, "Spirit" feature). */
+export const SHAMAN_GREATER_SPIRIT_LEVEL = 8;
+/** Class level at which a shaman gains her chosen spirit's True Spirit Ability. */
+export const SHAMAN_TRUE_SPIRIT_LEVEL = 16;
+/** Class level at which a shaman gains her chosen spirit's Manifestation. */
+export const SHAMAN_MANIFESTATION_LEVEL = 20;
 
 export interface ShamanSpiritHex {
   /** `<spiritTag>:<camelCaseName>` — unique across every spirit. */
@@ -125,6 +162,12 @@ export interface ShamanSpiritDef {
   spiritMagicSpells: ShamanSpiritMagicSpell[];
   /** 1st-level Spirit Ability — note-tier, see file doc comment. */
   ability: ShamanSpiritAbility;
+  /** Gained at `SHAMAN_GREATER_SPIRIT_LEVEL` (8th) — see file doc comment. */
+  greaterAbility: ShamanSpiritAbility;
+  /** Gained at `SHAMAN_TRUE_SPIRIT_LEVEL` (16th) — see file doc comment. */
+  trueAbility: ShamanSpiritAbility;
+  /** Gained at `SHAMAN_MANIFESTATION_LEVEL` (20th) — see file doc comment. */
+  manifestation: ShamanSpiritAbility;
   /** The 5 hexes this spirit grants access to (see `model/shamanHexes.ts`). */
   hexes: ShamanSpiritHex[];
   /** "Spirit Animal" flavor bonus — display-only prose (see file doc comment). */
@@ -141,11 +184,17 @@ function hex(
   return { id: `${spiritTag}:${id}`, name, summary, changes, displayOnly: changes.length === 0 };
 }
 
-/** `c()` mirrors `oracle-revelations.ts`'s helper — a terse Change literal for Cinder Dance's promotion below. */
-const c = (formula: string, target: string, type = "untyped"): Change => ({
+/** `c()` mirrors `oracle-revelations.ts`'s helper — a terse Change literal for the handful of promotions below. */
+const c = (
+  formula: string,
+  target: string,
+  type = "untyped",
+  operator?: "add" | "set",
+): Change => ({
   formula,
   target,
   type,
+  ...(operator ? { operator } : {}),
 });
 
 const SPIRIT_LIST: ShamanSpiritDef[] = [
@@ -167,6 +216,31 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
       name: "Battle Spirit",
       summary:
         "Allies within 30 ft. (including the shaman) gain a +1 morale bonus on attack rolls and weapon damage rolls (+2 at 8th level, +3 at 16th). Usable 3 + Cha modifier rounds/day, not necessarily consecutive.",
+    },
+    // RAW (aonprd.com, ShamanSpiritDisplay.aspx?ItemName=Battle): Greater
+    // ("Enemies' Bane") is a swift-action, per-day weapon buff; True
+    // ("Paragon of Battle") a per-day activated battle form; Manifestation a
+    // full-round-action attack routine plus a critical-hit DR bypass and a
+    // below-0-hp death threshold. All four are either activated/per-day or
+    // conditional on a trigger state (a hit being a crit, being below 0 hp),
+    // and Manifestation's "+4 insight bonus to AC for the purposes of
+    // confirming critical hits against her" has no matching engine target
+    // (this app models one whole-sheet AC, not a crit-confirmation-only
+    // variant, so a flat AC Change would overstate normal AC) - none promote.
+    greaterAbility: {
+      name: "Enemies' Bane",
+      summary:
+        "Swift action: imbue a weapon you wield with the bane weapon quality against a creature type of your choice for 1 minute (4d6 bonus damage instead of 2d6 if it already has bane against that type). Usable 3 + Cha modifier times/day.",
+    },
+    trueAbility: {
+      name: "Paragon of Battle",
+      summary:
+        "Standard action: assume a battle form combining the effects of enlarge person and deadly juggernaut for 1 minute or until dismissed. Usable 3 + Cha modifier times/day.",
+    },
+    manifestation: {
+      name: "Manifestation",
+      summary:
+        "At 20th level, as a full-round action, make a full attack and move up to your speed before or after it. Critical hits ignore damage reduction, and you gain a +4 insight bonus to AC against critical hit confirmation rolls. If reduced below 0 hit points, you don't die until your negative hit point total exceeds double your Constitution score.",
     },
     hexes: [
       hex(
@@ -254,6 +328,32 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
       summary:
         "Standard action melee touch attack infused with negative energy: 1d4 damage + 1 per 2 shaman levels.",
     },
+    // RAW (aonprd.com, ShamanSpiritDisplay.aspx?ItemName=Bones): Shard
+    // Soul's DR is unconditional (Su, no action, no per-day limit) - the
+    // same shape as Cinder Dance's landSpeed promotion, so it promotes; its
+    // bone-explosion burst is a separate standard-action, 3/day, 1d4-round-
+    // cooldown attack, so that half stays prose-only. True ("Shedding Form")
+    // is a per-day activated incorporeal-form power. Manifestation's free-
+    // action bleed/stabilize is once/round (a recurring but still activated
+    // action, not passive); its own auto-stabilize is conditional on being
+    // below 0 hp; at-will animate dead and 1/day power word kill are both
+    // spell-like activations. None of the latter three promote.
+    greaterAbility: {
+      name: "Shard Soul",
+      summary:
+        "Gain DR 3/magic, increasing by 1 for every 4 shaman levels beyond 8th. As a standard action, explode shards of bone in a 10-foot burst dealing 1d6 piercing damage per 2 shaman levels (Reflex halves); usable 3 times/day, waiting 1d4 rounds between uses.",
+      changes: [c("3 + floor((@classes.shaman.level - 8) / 4)", "dr.magic")],
+    },
+    trueAbility: {
+      name: "Shedding Form",
+      summary:
+        "Standard action: shed your body and become incorporeal, your weapon attacks treated as ghost touch, for a number of rounds per day equal to your shaman level (not necessarily consecutive).",
+    },
+    manifestation: {
+      name: "Manifestation",
+      summary:
+        "At 20th level, once per round, cast bleed or stabilize as a free action, automatically stabilizing if reduced below 0 hit points. Cast animate dead at will with no material cost (still subject to the usual Hit Dice limit), and once per day cast power word kill against a creature with 150 hit points or fewer.",
+    },
     hexes: [
       hex(
         "bones",
@@ -317,6 +417,34 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
     ability: {
       name: "Touch of Flame",
       summary: "Standard action melee touch attack: 1d6 fire damage + 1 per 2 shaman levels.",
+    },
+    // RAW (aonprd.com, ShamanSpiritDisplay.aspx?ItemName=Flame): Fiery
+    // Soul's fire resistance is unconditional, so it promotes; its cone-of-
+    // flame breath is a separate standard-action, 3/day, 1d4-round-cooldown
+    // attack, so that half stays prose-only. True ("Elemental Form") is a
+    // once/day activated polymorph. Manifestation's fire resistance 30 is
+    // likewise unconditional and promotes - `defenses.ts`'s `eres.*`
+    // resolution takes the single highest same-qualifier source, so this and
+    // Fiery Soul's resistance 10 coexist for free (30 wins once both apply).
+    // Manifestation's free metamagic-on-a-fire-spell clause has no matching
+    // engine target (it changes how a spell is cast, not a flat sheet
+    // number), so it stays prose-only.
+    greaterAbility: {
+      name: "Fiery Soul",
+      summary:
+        "Gain fire resistance 10. As a standard action, unleash a 15-foot cone dealing 1d4 fire damage per shaman level (Reflex halves); usable 3 times/day, waiting 1d4 rounds between uses.",
+      changes: [c("10", "eres.fire")],
+    },
+    trueAbility: {
+      name: "Elemental Form",
+      summary:
+        "Standard action: assume the form of a Huge or smaller fire elemental (as elemental body IV) for 1 hour per level. Usable once/day.",
+    },
+    manifestation: {
+      name: "Manifestation",
+      summary:
+        "At 20th level, gain fire resistance 30. You may apply Enlarge Spell, Extend Spell, Silent Spell, or Still Spell to any fire spell you cast without increasing its level or casting time, without needing the feat.",
+      changes: [c("30", "eres.fire")],
     },
     hexes: [
       hex(
@@ -385,6 +513,43 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
       summary:
         "Standard action: stardust materializes around a creature within 30 ft., making it shed light like a candle and denying it the benefit of concealment or invisibility, plus a scaling penalty to attack rolls and sight-based Perception checks for several rounds. Usable a number of times/day tied to Charisma modifier.",
     },
+    // RAW (aonprd.com, ShamanSpiritDisplay.aspx?ItemName=Heavens): Void
+    // Adaptation is unconditional (darkvision, supernatural-darkness sight,
+    // constant endure elements, no need to breathe, Su, no action, no
+    // per-day limit); its darkvision grant/rider differ (gain 60 ft., or +30
+    // ft. if darkvision is already possessed) - `senses.ts`'s doc comment
+    // flags this exact "grant and rider differ" shape (its own Bat/Shadow's
+    // Sight examples) as not expressible via the additive `operator: "add"`
+    // convention, so this promotes as the flat highest-wins grant that doc
+    // comment recommends for that case (same shape as `oracle-
+    // revelations.ts`'s `dark_tapestry:pierceTheVeil`, which has no rider at
+    // all) - a shaman who already has 60+ ft. darkvision from another source
+    // won't see the +30 ft. rider reflected on the sheet. The supernatural-
+    // darkness sight/endure elements/no-breathing riders have no matching
+    // engine target, so stay prose-only. True ("Phantasmagoric Display") is
+    // a per-day activated pair of spell-like abilities. Manifestation's
+    // saving-throw bonus and fear immunity are both unconditional and
+    // promote; its auto-stabilize is conditional on being below 0 hp, its
+    // auto-confirmed critical hits have no matching engine target, and its
+    // death/reincarnation clause isn't a sheet number - none of those three
+    // promote.
+    greaterAbility: {
+      name: "Void Adaptation",
+      summary:
+        "Gain darkvision 60 ft. (or +30 ft. if you already have darkvision). You can see in supernatural darkness, are constantly under the effect of endure elements, and don't need to breathe.",
+      changes: [c("60", "sensedv", "untyped", "set")],
+    },
+    trueAbility: {
+      name: "Phantasmagoric Display",
+      summary:
+        "Cast prismatic wall and prismatic spray, each once/day, at a caster level equal to your shaman level.",
+    },
+    manifestation: {
+      name: "Manifestation",
+      summary:
+        "At 20th level, gain a bonus on all saving throws equal to your Wisdom modifier and immunity to fear effects. You automatically stabilize if reduced below 0 hit points, automatically confirm every critical hit you threaten, and if you die, you're reborn 3 days later as a reincarnated form of yourself.",
+      changes: [c("@abilities.wis.mod", "allSavingThrows"), c("1", "immEffect.fear")],
+    },
     hexes: [
       hex(
         "heavens",
@@ -449,6 +614,41 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
       summary:
         "Channel positive energy like a cleric, using the shaman's level as her effective cleric level for the amount healed/dealt and the save DC. Usable 1 + Cha modifier times/day.",
     },
+    // RAW (aonprd.com, ShamanSpiritDisplay.aspx?ItemName=Life): Healer's
+    // Touch's +4 Heal check bonus is unconditional and promotes (same
+    // `skill.hea` target `archetype-effects.ts`'s Heal-bonus discovery
+    // already uses); its standard-action mass-stabilize is a separate
+    // activated ability, so that half stays prose-only. True ("Quick
+    // Healing") is a per-day activated swift-action upgrade to channeling/
+    // curing. Manifestation grants several immunities and protections:
+    // death-effects, fatigue, and exhaustion immunity are unconditional and
+    // have `EFFECT_IMMUNITY_LABELS` slugs, so all three promote; bleed,
+    // negative-energy, nauseated, and sickened immunity have no matching
+    // slug in `defenses.ts`'s closed vocabulary (adding one is out of this
+    // table's scope); the ability-damage floor, automatic massive-damage
+    // saves, and the raised death threshold aren't expressible as a flat
+    // Change on any existing target - none of those promote.
+    greaterAbility: {
+      name: "Healer's Touch",
+      summary:
+        "Gain a +4 bonus on Heal checks. As a standard action, move up to half your speed and touch up to six dying creatures, automatically stabilizing each one.",
+      changes: [c("4", "skill.hea")],
+    },
+    trueAbility: {
+      name: "Quick Healing",
+      summary:
+        "Channel positive energy or cast a cure spell as a swift action instead of a standard action. Usable a number of times/day equal to your Charisma modifier.",
+    },
+    manifestation: {
+      name: "Manifestation",
+      summary:
+        "At 20th level, gain immunity to bleed, death attacks, and negative energy, as well as to the exhausted, fatigued, nauseated, and sickened conditions. Ability damage and drain cannot reduce any ability score below 1. You automatically succeed at saving throws against massive damage, and you don't die from negative hit points until they exceed double your Constitution score.",
+      changes: [
+        c("1", "immEffect.deathEffects"),
+        c("1", "immEffect.fatigue"),
+        c("1", "immEffect.exhaustion"),
+      ],
+    },
     hexes: [
       hex(
         "life",
@@ -507,6 +707,33 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
       summary:
         "Standard action: a small storm of swirling wind and rain forms around a creature within 30 ft., granting a 20% miss chance against it for 1 round + 1 round per 4 shaman levels.",
     },
+    // RAW (aonprd.com, ShamanSpiritDisplay.aspx?ItemName=Nature): Spirit of
+    // Nature's auto-stabilize and fast healing only trigger "whenever the
+    // shaman is reduced to below 0 hit points" - a trigger-state condition,
+    // the same bar `stoneStability`'s ground-only CMD bonus is rejected
+    // under in this file's hex list, so it stays prose-only rather than
+    // overstating an always-on fast healing. True ("Companion Animal")
+    // upgrades the spirit animal into a full animal companion - a
+    // structural creature grant, not a flat number, and this project
+    // doesn't model spirit animals as trackable stat blocks at all (see
+    // `spiritAnimalNote`'s own doc comment above). Manifestation's cocoon
+    // transformation is a once/day, full-round-action activated ability
+    // with no flat sheet number. None of the three promote.
+    greaterAbility: {
+      name: "Spirit of Nature",
+      summary:
+        "Whenever you're reduced below 0 hit points, automatically stabilize and gain fast healing 1 for 1d4 rounds (fast healing 3 at 15th level).",
+    },
+    trueAbility: {
+      name: "Companion Animal",
+      summary:
+        "Your spirit animal becomes a full animal companion of your choice, using your shaman level as your effective druid level, while keeping the spirit animal's own special abilities and Intelligence score.",
+    },
+    manifestation: {
+      name: "Manifestation",
+      summary:
+        "At 20th level, once per day, as a full-round action, cocoon yourself (helpless while enclosed). Eight hours later you emerge with your creature type changed to plant, animal, or humanoid, cleansed of poisons and diseases, restored to full hit points, and healed of all ability damage. The change lasts until you cocoon again.",
+    },
     hexes: [
       hex(
         "nature",
@@ -561,6 +788,33 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
       summary:
         "Standard action melee touch attack: 1d6 acid damage + 1 per 2 shaman levels. Usable 3 + Cha modifier times/day; at 11th level the shaman's weapons are treated as corrosive.",
     },
+    // RAW (aonprd.com, ShamanSpiritDisplay.aspx?ItemName=Stone): Body of
+    // Earth's DR is unconditional, same shape and same promotion as Bones'
+    // Shard Soul above; its stone-explosion burst is a separate standard-
+    // action, 3/day, 1d4-round-cooldown attack, so that half stays
+    // prose-only. True ("Elemental Form") is a once/day activated
+    // polymorph. Manifestation's acid resistance 30 is likewise
+    // unconditional and promotes (same `eres.*` highest-wins coexistence
+    // with Body of Earth's DR as Flame's fire resistance tiers); its free
+    // metamagic-on-a-spell clause has no matching engine target, so stays
+    // prose-only.
+    greaterAbility: {
+      name: "Body of Earth",
+      summary:
+        "Gain DR 2/adamantine, increasing by 1 for every 4 shaman levels beyond 8th. As a standard action, explode jagged stone in a 10-foot burst dealing 1d6 piercing damage per 2 shaman levels (Reflex halves); usable 3 times/day, waiting 1d4 rounds between uses.",
+      changes: [c("2 + floor((@classes.shaman.level - 8) / 4)", "dr.adamantine")],
+    },
+    trueAbility: {
+      name: "Elemental Form",
+      summary:
+        "Standard action: assume the form of a Huge or smaller earth elemental (as elemental body IV) for 1 hour per level. Usable once/day.",
+    },
+    manifestation: {
+      name: "Manifestation",
+      summary:
+        "At 20th level, gain acid resistance 30. You may apply Enlarge Spell, Extend Spell, Silent Spell, or Still Spell to any acid or earth spell you cast without increasing its level or casting time, without needing the feat.",
+      changes: [c("30", "eres.acid")],
+    },
     hexes: [
       hex(
         "stone",
@@ -614,6 +868,35 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
       name: "Wave Strike",
       summary:
         "Standard action melee touch attack that drenches and shoves a creature: 1d6 nonlethal damage + 1 per 2 shaman levels, pushed 5 ft. directly away from the shaman.",
+    },
+    // RAW (aonprd.com, ShamanSpiritDisplay.aspx?ItemName=Waves): Fluid
+    // Mastery's swim speed equal to base land speed is unconditional in
+    // isolation, but `rage-powers.ts`'s Bestial Swimmer entry already
+    // rejects this identical shape ("a swimSpeed formula can't see the final
+    // post-bonus land speed" - the roll-data land speed a Change formula can
+    // read is the PRE-bonus base, per `compute.ts`, so a swimSpeed Change
+    // here would miss any other landSpeed bonus the shaman also has), so it
+    // stays prose-only for the same reason; its breathe-underwater rider has
+    // no matching engine target either, and its ice/water cone is a
+    // separate standard-action attack. True ("Elemental Form") is a once/day
+    // activated polymorph. Manifestation's cold resistance 30 is
+    // unconditional and promotes; its free metamagic-on-a-spell clause has
+    // no matching engine target, so stays prose-only.
+    greaterAbility: {
+      name: "Fluid Mastery",
+      summary:
+        "Gain a swim speed equal to your base land speed and the ability to breathe underwater. As a standard action, unleash a 15-foot cone dealing 1d4 cold damage per 2 shaman levels and pushing creatures 5 ft. away (Reflex halves damage and negates the push); usable 3 times/day, waiting 1d4 rounds between uses.",
+    },
+    trueAbility: {
+      name: "Elemental Form",
+      summary:
+        "Standard action: assume the form of a Huge or smaller water elemental (as elemental body IV) for 1 hour per level. Usable once/day.",
+    },
+    manifestation: {
+      name: "Manifestation",
+      summary:
+        "At 20th level, gain cold resistance 30. You may apply Enlarge Spell, Extend Spell, Silent Spell, or Still Spell to any cold or water spell you cast without increasing its level or casting time, without needing the feat.",
+      changes: [c("30", "eres.cold")],
     },
     hexes: [
       hex(
@@ -708,6 +991,9 @@ function vendoredSpiritToDef(entry: ShamanSpirit): MergedShamanSpiritEntry {
     name: entry.name,
     spiritMagicSpells: [],
     ability: { name: "", summary: "" },
+    greaterAbility: { name: "", summary: "" },
+    trueAbility: { name: "", summary: "" },
+    manifestation: { name: "", summary: "" },
     hexes: [],
     spiritAnimalNote: "",
     description: entry.description,

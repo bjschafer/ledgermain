@@ -1,6 +1,12 @@
 import { useMemo } from "react";
 
-import { mergedShamanSpiritCatalog } from "@pf1/engine";
+import {
+  mergedShamanSpiritCatalog,
+  SHAMAN_GREATER_SPIRIT_LEVEL,
+  SHAMAN_MANIFESTATION_LEVEL,
+  SHAMAN_TRUE_SPIRIT_LEVEL,
+  type ShamanSpiritAbility,
+} from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { setShamanSpirit } from "../../model/doc.js";
@@ -9,6 +15,19 @@ import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
+
+/** One higher-tier ability row (Greater/True/Manifestation), skipped entirely for a vendored-only spirit whose placeholder ability has no name. */
+function AbilityTier({ label, ability }: { label: string; ability: ShamanSpiritAbility }) {
+  if (!ability.name) return null;
+  return (
+    <div className="mystery-class-skills">
+      <span className="hint">
+        {label} · {ability.name}
+      </span>
+      <p>{ability.summary}</p>
+    </div>
+  );
+}
 
 interface SpiritPickerProps {
   doc: CharacterDoc;
@@ -108,6 +127,18 @@ export function SpiritPicker({ doc, refData, update }: SpiritPickerProps) {
                   <span className="hint">Spirit Animal</span>
                   <p>{spiritDef.spiritAnimalNote}</p>
                 </div>
+                <AbilityTier
+                  label={`Greater Spirit Ability (${SHAMAN_GREATER_SPIRIT_LEVEL}th)`}
+                  ability={spiritDef.greaterAbility}
+                />
+                <AbilityTier
+                  label={`True Spirit Ability (${SHAMAN_TRUE_SPIRIT_LEVEL}th)`}
+                  ability={spiritDef.trueAbility}
+                />
+                <AbilityTier
+                  label={`Manifestation (${SHAMAN_MANIFESTATION_LEVEL}th)`}
+                  ability={spiritDef.manifestation}
+                />
                 <ul className="mystery-bonus-spells">
                   {spiritDef.spiritMagicSpells.map((sp) => (
                     <li key={sp.id}>

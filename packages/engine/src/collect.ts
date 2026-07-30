@@ -37,7 +37,14 @@ import { resolveRagePower } from "./rage-powers.js";
 import { resolveRogueTalent } from "./rogue-talents.js";
 import { resolveVigilanteSocialTalent, resolveVigilanteTalent } from "./vigilante-talents.js";
 import { resolveGeneralShamanHex } from "./shaman-hexes.js";
-import { findShamanHex } from "./shaman-spirits.js";
+import {
+  findShamanHex,
+  SHAMAN_GREATER_SPIRIT_LEVEL,
+  SHAMAN_MANIFESTATION_LEVEL,
+  SHAMAN_SPIRITS,
+  SHAMAN_TRUE_SPIRIT_LEVEL,
+  type ShamanSpiritAbility,
+} from "./shaman-spirits.js";
 import { resolveSlayerTalent } from "./slayer-talents.js";
 import { resolveTraitDef } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
@@ -742,6 +749,40 @@ export function collectModifiers(
       for (const ch of hex.changes) {
         if (!gateOpen(ch)) continue;
         evalChange(ch.formula, rollData, ch.target, ch.type, hex.name, hex.id, out, ch.operator);
+      }
+    }
+
+    // Greater/True Spirit Ability + Manifestation (issue #65 follow-through)
+    // — gained at fixed shaman class-level thresholds (`SHAMAN_GREATER_
+    // SPIRIT_LEVEL`/`SHAMAN_TRUE_SPIRIT_LEVEL`/`SHAMAN_MANIFESTATION_LEVEL`,
+    // verified against aonprd.com's Shaman class page), not a budgeted pick,
+    // so there's no id list to iterate — just the current spirit's own
+    // three tiers, each independently gated on the shaman having actually
+    // reached that level. Most tiers are `changes: []` (see `shaman-
+    // spirits.ts`'s doc comment); wired the same way for a future promotion
+    // to work for free.
+    const currentSpirit = currentSpiritTag ? SHAMAN_SPIRITS[currentSpiritTag] : undefined;
+    if (currentSpirit) {
+      const tiers: [ShamanSpiritAbility, number, string][] = [
+        [currentSpirit.greaterAbility, SHAMAN_GREATER_SPIRIT_LEVEL, "greater"],
+        [currentSpirit.trueAbility, SHAMAN_TRUE_SPIRIT_LEVEL, "true"],
+        [currentSpirit.manifestation, SHAMAN_MANIFESTATION_LEVEL, "manifestation"],
+      ];
+      for (const [ability, minLevel, tierId] of tiers) {
+        if (shamanLevel < minLevel) continue;
+        for (const ch of ability.changes ?? []) {
+          if (!gateOpen(ch)) continue;
+          evalChange(
+            ch.formula,
+            rollData,
+            ch.target,
+            ch.type,
+            ability.name,
+            `spirit:${currentSpirit.tag}:${tierId}`,
+            out,
+            ch.operator,
+          );
+        }
       }
     }
   }
