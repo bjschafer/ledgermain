@@ -197,6 +197,19 @@ describe("non-vision senses and conditional formulas", () => {
     expect(senseList(makeDoc("Caligni"))).toEqual([["seeInDarkness", undefined]]);
   });
 
+  it("see invisibility is a flag, not a range", () => {
+    const buff: ActiveBuff = {
+      instanceId: "inst-si",
+      buffId: "custom-si",
+      name: "See Invisibility",
+      changes: [{ formula: "1", target: "sensesi", type: "untyped" }],
+      casterLevel: 5,
+    };
+    expect(senseList(makeDoc("Human", { buffs: [buff] }))).toEqual([
+      ["seeInvisibility", undefined],
+    ]);
+  });
+
   it("a sahuagin's blindsense 30 ft. shows below its darkvision", () => {
     expect(senseList(makeDoc("Sahuagin"))).toEqual([
       ["darkvision", 60],

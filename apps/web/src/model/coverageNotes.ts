@@ -114,13 +114,6 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "Non-damage immunity is a separate axis (Defenses.effectImmunities) that resolveDamage deliberately never sees: a soft flag on the conditions it maps onto, and a gate on the tracker's nonlethal entry, but nothing adjudicates an incoming effect against it.",
   },
   {
-    category: "Buffs marked “reminder only”",
-    group: "not-modeled",
-    note: "Most buffs move real numbers on your sheet. Sixteen don't, and they say so on the buff itself: either the effect isn't a number (invisibility, see invisibility, endure elements) or it's a reroll rather than a bonus. Toggle them as trackers for the duration; apply what they do by hand.",
-    issueDetail:
-      "190 buffs vendored, 16 empty by hasNoModeledEffect (no changes[], no contextNotes[], no instance state). Each is genuinely unmodelable, reroll- or narrative-shaped, or blocked on a mechanic that doesn't exist yet.",
-  },
-  {
     category: "Community-pack feats",
     group: "not-modeled",
     note: "The bulk of the feat catalog is in, but a feat sourced from the wider community content pack may show its prerequisites as text only rather than enforcing them, and may not apply its effect to your sheet automatically.",

@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-30-no-more-silent-buffs",
+    date: "2026-07-30",
+    title: "Every buff in the catalog now does something",
+    note: "The last sixteen reminder-only buffs got real effects. Invisibility and its greater form add their +20 Stealth and see invisibility shows up as a real sense on your sheet. The rest, from the unchained barbarian stances to Way of the Samurai's triple roll, spell out exactly what to apply and when as a reminder on the buff itself. Those reminders also finally render in the tracker, on active buffs and in the add list, so notes on buffs like Danger Ward are no longer hidden.",
+  },
+  {
     id: "2026-07-30-oracle-charisma-swaps",
     date: "2026-07-30",
     title: "Charisma-swap revelations move your real numbers",

@@ -10,16 +10,17 @@
  * entries carry their senses as description prose only, mechanized by the
  * data-pipeline's `SUPPLEMENTAL_RACE_SENSES` table.
  *
- * Three targets here are this engine's own convention rather than Foundry's:
- * `sensell`/`sensesid` because the fields they write are booleans in
- * Foundry's actor model and so have no `change` target upstream at all
- * (`pf1.config.buffTargets` has no entry for either); `sensetele` because
- * Foundry's actor model has no telepathy field at all (not even a boolean) —
- * PF1 doesn't track it as a derived actor stat, only as free-text on the
- * sheet:
+ * Four targets here are this engine's own convention rather than Foundry's:
+ * `sensell`/`sensesid`/`sensesi` because the fields they write are booleans
+ * in Foundry's actor model and so have no `change` target upstream at all
+ * (`pf1.config.buffTargets` has no entry for any of them); `sensetele`
+ * because Foundry's actor model has no telepathy field at all (not even a
+ * boolean) — PF1 doesn't track it as a derived actor stat, only as free-text
+ * on the sheet:
  *
  *   - `sensell` — low-light vision (`traits.senses.ll.enabled`)
  *   - `sensesid` — see in darkness (`traits.senses.sid`)
+ *   - `sensesi` — see invisibility (`traits.senses.si`)
  *   - `sensetele` — telepathy, this engine's synthetic target; ranged like
  *     darkvision/blindsight/etc., not a flag (RAW telepathy always carries a
  *     stated range)
@@ -72,8 +73,8 @@ interface SenseDef {
 
 /**
  * Change target → sense, in display order. Keys are Foundry's
- * `pf1.config.buffTargets` sense ids, except `sensell`/`sensesid`/`sensetele`
- * (see the module doc comment).
+ * `pf1.config.buffTargets` sense ids, except
+ * `sensell`/`sensesid`/`sensesi`/`sensetele` (see the module doc comment).
  */
 const SENSE_TARGETS: Record<string, SenseDef> = {
   sensedv: { kind: "darkvision", label: "Darkvision" },
@@ -84,6 +85,7 @@ const SENSE_TARGETS: Record<string, SenseDef> = {
   sensets: { kind: "tremorsense", label: "Tremorsense" },
   sensesc: { kind: "scent", label: "Scent" },
   sensels: { kind: "lifesense", label: "Lifesense" },
+  sensesi: { kind: "seeInvisibility", label: "See invisibility", flag: true },
   sensetr: { kind: "trueSeeing", label: "True seeing" },
   senseths: { kind: "thoughtsense", label: "Thoughtsense" },
   sensetele: { kind: "telepathy", label: "Telepathy" },

@@ -185,14 +185,18 @@ describe("hasNoModeledEffect", () => {
     ).toBe(false);
   });
 
-  it("real vendored data: Invisibility is flagged, Stoneskin (DR supplement) is not", () => {
+  it("real vendored data: no vendored buff is a silent no-op anymore", () => {
+    // Every vendored buff carries changes, context notes, or instance state
+    // (the supplement tables closed the last reminder-only holdouts). A new
+    // upstream buff arriving empty should fail here and get a supplement
+    // entry, not quietly ship as a toggle that does nothing.
     const ref = loadRefData();
-    const stoneskin = Object.values(ref.buffs).find((b) => b.name === "Stoneskin");
-    const invisibility = Object.values(ref.buffs).find((b) => b.name === "Invisibility");
-    expect(stoneskin).toBeDefined();
-    expect(invisibility).toBeDefined();
-    expect(hasNoModeledEffect(stoneskin!)).toBe(false);
-    expect(hasNoModeledEffect(invisibility!)).toBe(true);
+    const flagged = Object.values(ref.buffs)
+      .filter((b) =>
+        hasNoModeledEffect({ buffId: b.id, changes: b.changes, contextNotes: b.contextNotes }),
+      )
+      .map((b) => b.name);
+    expect(flagged).toEqual([]);
   });
 
   it("real vendored data: Freedom of Movement has contextNotes only and is NOT flagged", () => {

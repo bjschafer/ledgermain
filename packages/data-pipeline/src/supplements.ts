@@ -548,6 +548,50 @@ export function applyClassFeatureEffectImmunitySupplements(features: ClassFeatur
  * - Danger Ward (Fortitude/Will/Reflex) (cavalier Order of the Paw,
  *   Advanced Race Guide p. 64): each ward's own save reroll is a triggered ability with
  *   no bonus-value target this engine tracks, so it's context-note only.
+ * - Invisibility / Invisibility, Greater (CRB p. 301): the +20 Stealth bonus
+ *   while moving is a real self-applying number; the immobile +40, total
+ *   concealment, the unseen-attacker riders, and the ends-on-attack rule are
+ *   situational, so they're context notes.
+ * - See Invisibility (CRB p. 339): grants the `sensesi` flag sense (this
+ *   engine's own target, see `@pf1/engine` senses.ts), plus a note on what
+ *   the spell does not reveal.
+ * - Endure Elements (CRB p. 277): a binary "no Fortitude saves in the -50 to
+ *   140 degrees Fahrenheit band" comfort effect with no sheet number at all —
+ *   context note.
+ * - Poetic Inspiration (Order of the Songbird's 8th-level ability, Heroes
+ *   from the Fringe p. 14): the competence bonus equals the INSPIRING
+ *   samurai/cavalier's Cha modifier, which the recipient's sheet can't know —
+ *   context notes.
+ * - Divine Transfer (APG p. 216): DR/evil equal to the CASTER's Cha bonus,
+ *   normally cast on an ally — context note, same caster-side-number reason
+ *   as Poetic Inspiration.
+ * - Spirit Steed (APG p. 77, barbarian rage power): the DR/magic belongs to
+ *   the barbarian's MOUNT, never this sheet — context notes, with the
+ *   standard multiclass @item.level caveat.
+ * - Animal Focus (Mouse) (ACG p. 28): evasion is a save-outcome rule, not a
+ *   number, and this engine has no evasion model — context note.
+ * - Taunting / Regenerative / Elemental Stance (Pathfinder Unchained
+ *   pp. 10-12, unchained-barbarian stance rage powers; the vendored
+ *   descriptions' "(UC)" suffix means Unchained, and PZO1131 is Pathfinder
+ *   Unchained, not Ultimate Combat): enemy-facing bonuses, a per-round
+ *   temp-HP trickle capped by unchained rage's temp HP, and a
+ *   chosen-element dice rider — all context notes.
+ * - Way of the Samurai (Ultimate Combat p. 21, Order of the Warrior): a
+ *   roll-three-take-best window costing resolve — reroll-shaped, context
+ *   note like Danger Ward.
+ * - Spell Deflection (kineticist aether utility talent, Occult Adventures
+ *   p. 27 — the vendored PZO9286 p. 8 citation matches no ability of this
+ *   name; the 1d10-1 spell-turning mechanic matches the vendored blurb's
+ *   "consumed spell levels via charges"): dice-based with no spell-turning
+ *   model — context note.
+ * - Seishinru, Spirit Elixir (AP #54 p. 61): roll-twice-take-better plus a
+ *   conditional dice-based revival — context note.
+ * - Veemod (Prismatic) (Technology Guide p. 53): x-ray vision has no
+ *   counterpart in the sense list, unlike the Gray/Orange veemods — context
+ *   note.
+ * - Knowledgeable Strike (Cryptid Scholar) (Magic Tactics Toolbox p. 18):
+ *   dice-based single-use precision damage scaling off the granting
+ *   investigator's level — context note.
  */
 /**
  * Resist energy's caster-level progression, clean-room from the published
@@ -633,6 +677,18 @@ export const SUPPLEMENTAL_BUFF_CHANGES: Record<string, BuffSupplement<Change>> =
   EDreDkg4ESQIwmEd: {
     name: "Force Field",
     entries: [{ formula: "1", target: "immEffect.criticalHits", type: "untyped" }],
+  },
+  sIogsaNU2T2Qe3l9: {
+    name: "Invisibility",
+    entries: [{ formula: "20", target: "skill.ste", type: "untyped" }],
+  },
+  a7hnzLkLPrqRti14: {
+    name: "Invisibility, Greater",
+    entries: [{ formula: "20", target: "skill.ste", type: "untyped" }],
+  },
+  U7fqIfaTpWEcpamb: {
+    name: "See Invisibility",
+    entries: [{ formula: "1", target: "sensesi", type: "untyped" }],
   },
 };
 
@@ -732,6 +788,174 @@ export const SUPPLEMENTAL_BUFF_CONTEXT_NOTES: Record<string, BuffSupplement<Cont
       {
         target: "ref",
         text: "May reroll a failed Reflex save within 1 minute as an immediate action, with a +4 competence bonus on the reroll: the reroll's result stands even if it is worse. Order of the Paw grants three uses per day total, one for each save type, shared across the three Danger Wards.",
+      },
+    ],
+  },
+  sIogsaNU2T2Qe3l9: {
+    name: "Invisibility",
+    entries: [
+      {
+        target: "skill.ste",
+        text: "This rises to +40 if you hold perfectly still instead of moving.",
+      },
+      {
+        target: "ac",
+        text: "You also have total concealment: attacks against you have a 50 percent miss chance regardless of the attack roll, and no one can make an attack of opportunity against you.",
+      },
+      {
+        target: "attack",
+        text: "As an unseen attacker you gain a +2 bonus on the attack roll and your target is denied its Dexterity bonus to AC. The spell ends the instant you attack a creature directly: indirect harm, such as commanding a summoned creature or triggering a trap from hiding, does not end it.",
+      },
+    ],
+  },
+  a7hnzLkLPrqRti14: {
+    name: "Invisibility, Greater",
+    entries: [
+      {
+        target: "skill.ste",
+        text: "This rises to +40 if you hold perfectly still instead of moving.",
+      },
+      {
+        target: "ac",
+        text: "You also have total concealment: attacks against you have a 50 percent miss chance regardless of the attack roll, and no one can make an attack of opportunity against you.",
+      },
+      {
+        target: "attack",
+        text: "As an unseen attacker you gain a +2 bonus on the attack roll and your target is denied its Dexterity bonus to AC. Unlike regular invisibility, this spell does not end when you attack.",
+      },
+    ],
+  },
+  U7fqIfaTpWEcpamb: {
+    name: "See Invisibility",
+    entries: [
+      {
+        target: "sensesi",
+        text: "You see invisible and ethereal creatures and objects within your normal sight as translucent shapes. This does not reveal illusions, let you see through opaque objects, or help you find creatures that are merely hiding or concealed.",
+      },
+    ],
+  },
+  N9I7rqVRxAi96UBn: {
+    name: "Endure Elements",
+    entries: [
+      {
+        target: "fort",
+        text: "You suffer no harm from a hot or cold environment and need not attempt Fortitude saves in conditions between -50 and 140 degrees Fahrenheit. This grants no protection from fire or cold damage, nor from other environmental hazards such as smoke or lack of air.",
+      },
+    ],
+  },
+  Ql31DWosn4CcGKew: {
+    name: "Poetic Inspiration",
+    entries: [
+      {
+        target: "attack",
+        text: "The songbird order's 8th-level ability, usable once per combat as a swift action. Allies within 30 feet who can hear the samurai or cavalier gain a competence bonus equal to that character's Charisma modifier on attack rolls for 1 round: enter the inspiring character's modifier by hand, not your own.",
+      },
+      {
+        target: "wdamage",
+        text: "The same 1-round competence bonus applies to weapon damage rolls: enter the inspiring character's Charisma modifier by hand, not your own.",
+      },
+    ],
+  },
+  l6s6haw5PHdNi9YD: {
+    name: "Divine Transfer",
+    entries: [
+      {
+        target: "dr.evil",
+        text: "Divine Transfer is normally cast on an ally, so its numbers come from the caster's ability scores, not the recipient's. The target gains DR/evil equal to the caster's Charisma bonus for the spell's duration, and is healed by up to the caster's Constitution score in transferred hit points, never above its normal maximum. Enter the caster's numbers by hand.",
+      },
+    ],
+  },
+  qmrE4n5BsnLVQV10: {
+    name: "Spirit Steed",
+    entries: [
+      {
+        target: "dr.magic",
+        text: "Requires the ferocious mount rage power and barbarian level 6. This rage power's damage reduction belongs to your mount, not to you: while you rage and are mounted, your mount gains DR/magic equal to half your barbarian level, and its natural weapons count as magic for overcoming damage reduction. Apply it to the mount, not your own sheet.",
+      },
+      {
+        target: "dr.magic",
+        text: "This scales off your total character level, the level the tracker assigns when you add the buff. For a multiclass barbarian that overstates the number: use your barbarian level instead when checking it.",
+      },
+    ],
+  },
+  qAb9TshwWpr5JDB2: {
+    name: "Animal Focus (Mouse)",
+    entries: [
+      {
+        target: "ref",
+        text: "Grants evasion, as the rogue class feature: on a successful Reflex save against an effect that allows a save for half damage, you take no damage instead. It works only in light or no armor, and not while helpless. At 12th level this becomes improved evasion: you also take only half damage on a failed save. Apply it by hand when you make a Reflex save.",
+      },
+    ],
+  },
+  "43eVSSa6rSTl7ieD": {
+    name: "Taunting Stance",
+    entries: [
+      {
+        target: "ac",
+        text: "An unchained barbarian stance rage power, active only while raging. Enemies gain a +4 bonus on attack and damage rolls against you while this stance is active, but every attack against you provokes an attack of opportunity from you, resolved before the provoking attack lands. Neither the enemy bonus nor the free attack of opportunity is modeled here: apply both by hand.",
+      },
+    ],
+  },
+  HdNb6j7U9qA2tnr1: {
+    name: "Regenerative Stance",
+    entries: [
+      {
+        target: "tempHp",
+        text: "An unchained barbarian stance rage power, active only while raging. At the start of each of your turns you regain 1 temporary hit point for every 4 barbarian levels you have, up to 5 per round, capped at your maximum temporary hit points from rage. This recurring per-round grant is not modeled: apply it by hand each round.",
+      },
+    ],
+  },
+  v9JaHLaVkP9O36TS: {
+    name: "Elemental Stance",
+    entries: [
+      {
+        target: "wdamage",
+        text: "An unchained barbarian stance rage power, active only while raging. Choose an energy type (acid, cold, electricity, or fire) when you adopt this stance. Your melee attacks deal 1 additional point of damage of that type, rising to 1d6 at 8th level, plus 1d10 more on a critical hit at 12th level, or 2d10 or 3d10 with a weapon that scores a triple or quadruple critical. The energy type is a choice and the higher tiers are dice based, so none of this is modeled: apply it by hand.",
+      },
+    ],
+  },
+  d9bDSB4JceMd6Uq9: {
+    name: "Way of the Samurai",
+    entries: [
+      {
+        target: "attack",
+        text: "Once during this ability's one minute window, you may roll an attack roll, skill check, or saving throw three times and take the best result, declared before you roll. Costs one daily use of your resolve. There is no reroll model here: track the result and the daily use by hand.",
+      },
+    ],
+  },
+  "8AEPlLbeiTbQBJbV": {
+    name: "Spell Deflection",
+    entries: [
+      {
+        target: "will",
+        text: "Until the start of your next turn, each time a spell that spell turning could affect targets you, roll 1d10 minus 1 and treat it as spell turning with that many spell levels remaining. Accepting 1 point of burn extends this to 10 minutes per kineticist level but caps the total at 10 spell levels deflected. This is not a saving throw: it is dice based with no spell turning model here, so track the roll and any burn spent by hand.",
+      },
+    ],
+  },
+  FzUOIQgvjpzeNnnt: {
+    name: "Seishinru, Spirit Elixir",
+    entries: [
+      {
+        target: "attack",
+        text: "For 10 rounds after drinking this, roll two d20s and take the better result on every attack roll, ability check, or skill check, ending early if any roll is a natural 20. A scion of one of Minkai's five imperial families who drops below 0 hit points during that window is instead healed 5d8 plus 10 damage, which ends the elixir's other effects and can restore a recently slain character to life. Both effects are dice based with no advantage roll model here: apply them by hand.",
+      },
+    ],
+  },
+  pbyW9fpqSA3qAwmI: {
+    name: "Veemod (Prismatic)",
+    entries: [
+      {
+        target: "senses",
+        text: "Grants a 20 foot band of vision through solid objects, seeing as if in normal light even without illumination. It penetrates 20 feet of cloth, wood, or similar material, 10 feet of stone, and 10 inches of iron, steel, copper, or brass, but not lead, gold, platinum, plutonium, or skymetals. It can also scan up to 100 square feet in 1 round and locates secret compartments 90 percent of the time. Costs 1 charge per round from the goggles; no special sense here models seeing through solid objects, so track both by hand.",
+      },
+    ],
+  },
+  xpyNffVwG9jHIJNO: {
+    name: "Knowledgeable Strike (Cryptid Scholar)",
+    entries: [
+      {
+        target: "wdamage",
+        text: "While this buff is active, your next successful unarmed, natural, or weapon attack against the monster kind the cryptid scholar identified deals extra precision damage: 1d6 per 4 investigator levels of the cryptid scholar who granted it, to a maximum of 5d6. It is not multiplied on a critical hit and does not apply against a creature with concealment or one immune to sneak attack, and a ranged attack only benefits within 30 feet of the target. This is dice based, so it is not modeled as a Change: apply it by hand on your next hit.",
       },
     ],
   },

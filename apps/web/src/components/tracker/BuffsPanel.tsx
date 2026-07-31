@@ -13,6 +13,7 @@ import type { RollData } from "@pf1/engine";
 import { Panel } from "../builder/Panel.js";
 import { NumberField } from "../builder/NumberField.js";
 import { SearchMiss } from "../builder/SearchMiss.js";
+import { RulesNote } from "../RulesNote.js";
 import {
   addBuff,
   advanceRound,
@@ -157,6 +158,9 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
                     </InfoTip>
                   ))}
                 </div>
+                {buff.contextNotes?.map((n, i) => (
+                  <RulesNote key={i} text={n.text} />
+                ))}
               </div>
               {isActive ? (
                 <InfoTip
@@ -251,13 +255,12 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
 
 /**
  * "This buff does nothing on this sheet" flag — for buffs with an empty
- * `changes[]` AND an empty `contextNotes[]` (e.g. Invisibility, Endure
- * Elements): toggling them is a silent trap with no visible effect at all.
- * Buffs whose effect IS expressible as a `Change` but which ship empty
- * upstream are fixed at the data layer instead, via `data-pipeline`'s
- * `SUPPLEMENTAL_BUFF_CHANGES` (Stoneskin, the per-element Resist Energy
- * variants, …) — so anything still carrying this badge is genuinely
- * unmodeled rather than merely unwired. Distinct from
+ * `changes[]` AND an empty `contextNotes[]`: toggling them is a silent trap
+ * with no visible effect at all. Every vendored buff now carries changes,
+ * notes, or instance state (empty ones are fixed at the data layer via
+ * `data-pipeline`'s supplement tables — Stoneskin, the per-element Resist
+ * Energy variants, …), so this badge only ever fires for a user-authored
+ * empty buff or a future data bump's regression. Distinct from
  * {@link PartialBadge}, which flags buffs that DO have changes but some of
  * them land on an unconsumed target. See `model/buffs.ts`'s
  * `hasNoModeledEffect` and issue #21.
@@ -359,6 +362,9 @@ function BuffRow({
             </InfoTip>
           ))}
         </div>
+        {buff.contextNotes?.map((n, i) => (
+          <RulesNote key={i} text={n.text} />
+        ))}
       </div>
       <label className="buff-rounds">
         <NumberField

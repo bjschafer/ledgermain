@@ -2995,7 +2995,9 @@ export interface DefenseEntry {
  * `sense*` change targets write into — see `@pf1/engine`'s `senses.ts` for
  * the target→kind map. `telepathy` is this engine's own addition: Foundry's
  * actor model has no telepathy field at all, so `sensetele` is a synthetic
- * target rather than a mirrored one.
+ * target rather than a mirrored one. `seeInvisibility` mirrors Foundry's
+ * boolean `si` field, which like `ll`/`sid` has no upstream change target, so
+ * `sensesi` is likewise this engine's own target id.
  */
 export type SenseKind =
   | "darkvision"
@@ -3006,6 +3008,7 @@ export type SenseKind =
   | "tremorsense"
   | "scent"
   | "lifesense"
+  | "seeInvisibility"
   | "trueSeeing"
   | "thoughtsense"
   | "telepathy";
@@ -3017,14 +3020,14 @@ export type SenseKind =
  * in `components` with `applied: false`, the same strike-through convention
  * as `DefenseEntry` and typed-bonus stacking.
  *
- * `range` is absent for the two rangeless senses (low-light vision, see in
- * darkness), which are on/off flags rather than distances.
+ * `range` is absent for the rangeless senses (low-light vision, see in
+ * darkness, see invisibility), which are on/off flags rather than distances.
  */
 export interface DerivedSense {
   kind: SenseKind;
   /** Display label, e.g. "Darkvision", "Low-light vision". */
   label: string;
-  /** Range in feet; absent for `lowLight`/`seeInDarkness`. */
+  /** Range in feet; absent for `lowLight`/`seeInDarkness`/`seeInvisibility`. */
   range?: number;
   components: ModifierComponent[];
 }
