@@ -41,6 +41,24 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-30-oracle-charisma-swaps",
+    date: "2026-07-30",
+    title: "Charisma-swap revelations move your real numbers",
+    note: "An oracle with Sidestep Secret or Prophetic Armor now sees Charisma feed AC and all Reflex saves whenever it beats Dexterity, and Nature's Whispers does the same for AC and CMD. Armor's maximum Dex cap and the flat-footed rules follow the swapped ability, and the picker badges all three as modeled. Lore Keeper and Whispered Glimpses stay rules text: their swaps are per skill, which the sheet doesn't model.",
+  },
+  {
+    id: "2026-07-30-skinwalker-change-shape",
+    date: "2026-07-30",
+    title: "Skinwalkers can toggle their bestial form",
+    note: "A new Change Shape panel in the tracker flips your bestial form on and off, and a were-kin heritage's extra +2 while shapechanged applies only while it's on. Natural attacks, speeds, and senses from the form stay yours to apply, and the panel says so. Ragebred and Scaleheart also get their printed ability arrays now, +2 Strength and +2 Constitution, where the catalog text had mistyped them.",
+  },
+  {
+    id: "2026-07-30-race-trait-reminders",
+    date: "2026-07-30",
+    title: "Your race's situational bonuses show as reminders",
+    note: "Standard racial traits that are reminders rather than flat numbers, like a dwarf's stonecunning or a svirfneblin's hatred bonus, now show under your race in the builder. Swap one away with an alternate racial trait and its line strikes through, naming the trait that retired it. Catalog alternates whose replaced traits are all verified to retire on their own now say so in the picker instead of asking you to verify by hand.",
+  },
+  {
     id: "2026-07-30-eidolon-defenses-live",
     date: "2026-07-30",
     title: "Eidolon subtype defenses are live numbers now",

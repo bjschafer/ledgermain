@@ -76,18 +76,11 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category:
-      "Class picker lists (rage powers, hexes, arcana, talents, exploits, tricks, discoveries, ki powers, style strikes, bold stares, phrenic amplifications, spirits, disciplines, implements, orders, patrons, aspects)",
+      "Class picker lists (rage powers, hexes, arcana, talents, exploits, tricks, discoveries, ki powers, style strikes, bold stares, phrenic amplifications, revelations, spirits, disciplines, implements, orders, patrons, aspects)",
     group: "not-modeled",
     note: 'Every published entry in these lists is browsable, searchable, and written up with its level requirement flagged. Entries that move numbers on your sheet automatically are marked with an "M". Most entries are not: they show their rules text for you to apply at the table.',
     issueDetail:
       "Every list, the class-subsystem tables included, sits at full vendored parity (rage powers 243, rogue talents 234, alchemist discoveries 168, witch hexes 104, down to monk style strikes 15), so the gap is promotion rather than coverage: only 31 rage powers and a scattering of talents and discoveries carry live changes[]. Candidates blocked on a missing mechanism are recorded inline in their table files.",
-  },
-  {
-    category: "Oracle revelations",
-    group: "not-modeled",
-    note: 'Every published mystery\'s full revelation list is pickable, with level requirements flagged softly and each pick showing on your sheet with its write-up. Fifteen of them carry an "M" and move real numbers. The rest are yours to apply at the table.',
-    issueDetail:
-      "336 revelations, 15 promoted to live changes[]. Rejected with reasons recorded inline: save-category-scoped bonuses, ability substitutions, and repeat picks the one-key choose-one mechanism can't store.",
   },
   {
     category: "Kineticist wild talents",
@@ -95,13 +88,6 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     note: "Every published infusion and utility talent is written up across all seven elements, plus every composite blast. Level gates and burn costs are tracked and the infusion and utility budgets counted. What a talent does is rules text you apply at the table: blasts aren't rolled by the sheet, and defense talents scale with burn you accept in play.",
     issueDetail:
       "236 hand-authored wild talents, 22 composite blasts, 7 elements, display-only per the honesty bar (activated abilities with action, save, and burn state). Blast attack and damage rolls aren't computed, since there's no blast weapon model. Burn is a real resource pool, but its nonlethal damage stays player-applied.",
-  },
-  {
-    category: "Alternate racial traits",
-    group: "not-modeled",
-    note: "Every race's published alternates are browsable, and picking one applies the bonuses it spells out as numbers while retiring the replaced standard trait's numbers. What stays yours to apply: a swap whose replaced trait is a situational reminder line rather than a number (the reminder stays on your sheet), and a heritage rider that only works while shapechanged.",
-    issueDetail:
-      "860 vendored across all 80 races, 289 carrying structured changes applied live. The map reaches every race whose replaced standard traits have structured targets. Unreachable: context-note-only replaced traits and shapechange riders.",
   },
   {
     category: "Character traits",
