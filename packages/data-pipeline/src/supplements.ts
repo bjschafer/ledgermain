@@ -24,6 +24,7 @@
 import type {
   ArchetypeFeature,
   Buff,
+  BuffGate,
   Change,
   Class,
   ClassFeature,
@@ -2648,11 +2649,19 @@ export function applyPrestigeClassSupplements(
  * array, so even if suppression were somehow bypassed the same-type overlap
  * takes-highest instead of summing.
  *
- * The Skinwalker "-Kin" entries transcribe only the always-on pair; the
- * "+2 X while shapechanged" tail of their prose line stays prose (no
- * structured representation for shapechange-conditional modifiers), the same
- * partial-halves posture as Ratfolk Tinker in the engine's map doc.
+ * The Skinwalker "-Kin" entries carry a third, gated `Change` for their
+ * "+2 X while shapechanged" clause on top of the always-on pair: `Change.
+ * activeWhenBuff` (issue #75, `@pf1/engine` collect.ts's `buffGateSatisfied`)
+ * scopes it to `SKINWALKER_CHANGE_SHAPE_GATE`, an `effectTag` the web app's
+ * `model/skinwalker.ts` toggles on a player-controlled marker buff (there is
+ * no vendored "Change Shape" buff to key a real `buffId` off, the same "no
+ * vendored buff to link" shape as `@pf1/engine` `toggle-buffs.ts`). Each
+ * heritage's fixed ability target (Str/Dex/Con/Wis/Cha, per its own prose,
+ * not restricted to the base race's physical-ability-only rule) is typed
+ * `racial` like its sibling half of the same line.
  */
+const SKINWALKER_CHANGE_SHAPE_GATE: BuffGate = { effectTags: ["skinwalker:changeShape"] };
+
 export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
   string,
   { name: string; keyword: string; changes: Change[] }
@@ -2903,12 +2912,23 @@ export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
       { formula: "-2", target: "int", type: "racial" },
     ],
   },
+  // The vendored description's own "Ability Modifiers" line reads "+2 Wis,
+  // -2 Cha" (matched verbatim by `keyword` below, so the drift guard still
+  // checks against what the pack actually says) — but the published
+  // Ragebred heritage (Inner Sea Races p. 249 / Blood of the Moon p. 8-24,
+  // verified against aonprd.com) is "+2 Strength, -2 Charisma (+2
+  // Constitution while shapechanged)": the Cha penalty and the shapechanged
+  // Con bonus both match, only the primary +2 stat is mistyped upstream
+  // (Wis instead of Str). Authored as the real RAW value, same posture as
+  // this file's other wrong-vendored-formula corrections (Smite Evil, AC
+  // Bonus (BRA)).
   Mb0hz0BAj51wOmUr: {
     name: "Wereboar-Kin (Ragebred)",
     keyword: "+2 Wis, -2 Cha (+2 Con while shapechanged)",
     changes: [
-      { formula: "2", target: "wis", type: "racial" },
+      { formula: "2", target: "str", type: "racial" },
       { formula: "-2", target: "cha", type: "racial" },
+      { formula: "2", target: "con", type: "racial", activeWhenBuff: SKINWALKER_CHANGE_SHAPE_GATE },
     ],
   },
   S2fAbQom6ogn4gh9: {
@@ -2917,6 +2937,7 @@ export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
     changes: [
       { formula: "2", target: "wis", type: "racial" },
       { formula: "-2", target: "cha", type: "racial" },
+      { formula: "2", target: "dex", type: "racial", activeWhenBuff: SKINWALKER_CHANGE_SHAPE_GATE },
     ],
   },
   ZLFxIufcHBwiIZrl: {
@@ -2925,6 +2946,7 @@ export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
     changes: [
       { formula: "2", target: "con", type: "racial" },
       { formula: "-2", target: "cha", type: "racial" },
+      { formula: "2", target: "wis", type: "racial", activeWhenBuff: SKINWALKER_CHANGE_SHAPE_GATE },
     ],
   },
   calSa82WwxgUFwXr: {
@@ -2933,6 +2955,7 @@ export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
     changes: [
       { formula: "2", target: "con", type: "racial" },
       { formula: "-2", target: "int", type: "racial" },
+      { formula: "2", target: "wis", type: "racial", activeWhenBuff: SKINWALKER_CHANGE_SHAPE_GATE },
     ],
   },
   mBfn8hCLwEsAxlnl: {
@@ -2941,6 +2964,7 @@ export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
     changes: [
       { formula: "2", target: "int", type: "racial" },
       { formula: "-2", target: "wis", type: "racial" },
+      { formula: "2", target: "dex", type: "racial", activeWhenBuff: SKINWALKER_CHANGE_SHAPE_GATE },
     ],
   },
   mNPzfPRAdgvumhww: {
@@ -2949,6 +2973,7 @@ export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
     changes: [
       { formula: "2", target: "int", type: "racial" },
       { formula: "-2", target: "str", type: "racial" },
+      { formula: "2", target: "dex", type: "racial", activeWhenBuff: SKINWALKER_CHANGE_SHAPE_GATE },
     ],
   },
   nopyUgzhxcD4G8uD: {
@@ -2957,14 +2982,21 @@ export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
     changes: [
       { formula: "2", target: "dex", type: "racial" },
       { formula: "-2", target: "wis", type: "racial" },
+      { formula: "2", target: "cha", type: "racial", activeWhenBuff: SKINWALKER_CHANGE_SHAPE_GATE },
     ],
   },
+  // Same shape as Ragebred above: the vendored description's own "Ability
+  // Modifiers" line reads "+2 Int, -2 Wis" (matched verbatim by `keyword`),
+  // but the published Scaleheart heritage (verified against aonprd.com) is
+  // "+2 Constitution, -2 Wisdom (+2 Strength while shapechanged)" — only the
+  // primary +2 stat is mistyped upstream (Int instead of Con).
   uj0JvFUtrmpOSNVa: {
     name: "Werecrocodile-Kin (Scaleheart)",
     keyword: "+2 Int, -2 Wis (+2 Str while shapechanged)",
     changes: [
-      { formula: "2", target: "int", type: "racial" },
+      { formula: "2", target: "con", type: "racial" },
       { formula: "-2", target: "wis", type: "racial" },
+      { formula: "2", target: "str", type: "racial", activeWhenBuff: SKINWALKER_CHANGE_SHAPE_GATE },
     ],
   },
   wrqUJsULTxngAMQb: {
@@ -2973,6 +3005,7 @@ export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
     changes: [
       { formula: "2", target: "wis", type: "racial" },
       { formula: "-2", target: "int", type: "racial" },
+      { formula: "2", target: "con", type: "racial", activeWhenBuff: SKINWALKER_CHANGE_SHAPE_GATE },
     ],
   },
 };

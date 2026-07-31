@@ -742,12 +742,21 @@ describe("heritage ability-array swaps (supplemented arrays + Base Statistics su
     expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total);
   });
 
-  it("Skinwalker Wereboar-Kin (Ragebred): +2 Wis/-2 Cha replaces +2 Wis/-2 Int (shapechanged rider stays prose)", () => {
+  it("Skinwalker Wereboar-Kin (Ragebred): +2 Str/-2 Cha replaces +2 Wis/-2 Int; +2 Con only while shapechanged", () => {
+    // Published (aonprd.com): "+2 Strength, -2 Charisma (+2 Constitution
+    // while shapechanged)" — the vendored description's own "Ability
+    // Modifiers" line is mistyped ("+2 Wis" instead of "+2 Str"; matched
+    // verbatim by the supplement's drift-guard `keyword`), corrected in
+    // `SUPPLEMENTAL_RACIAL_TRAIT_CHANGES` (data-pipeline). See
+    // `skinwalkerChangeShape.test.ts` for the shapechanged-gate fixtures.
     const base = compute(makeDoc("Skinwalker"), ref);
     const withTrait = compute(makeDoc("Skinwalker", [traitId("Wereboar-Kin (Ragebred)")]), ref);
     expect(withTrait.abilities.int.total).toBe(base.abilities.int.total + 2);
     expect(withTrait.abilities.cha.total).toBe(base.abilities.cha.total - 2);
-    expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total);
+    expect(withTrait.abilities.wis.total).toBe(base.abilities.wis.total - 2);
+    expect(withTrait.abilities.str.total).toBe(base.abilities.str.total + 2);
+    // Not shapechanged: no Con bonus.
+    expect(withTrait.abilities.con.total).toBe(base.abilities.con.total);
   });
 
   it("heritage swaps leave the race's non-ability standard traits alone (Hellspawn keeps fiendish resistance)", () => {

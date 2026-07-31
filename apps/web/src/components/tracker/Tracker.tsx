@@ -18,6 +18,7 @@ import { PreparedSpellsPanel } from "./PreparedSpellsPanel.js";
 import { ResourcesPanel } from "./ResourcesPanel.js";
 import { SavedRollsPanel } from "./SavedRollsPanel.js";
 import { ShifterAspectPanel } from "./ShifterAspectPanel.js";
+import { SkinwalkerChangeShapePanel } from "./SkinwalkerChangeShapePanel.js";
 import { VigilanteIdentityPanel } from "./VigilanteIdentityPanel.js";
 import { XpPanel } from "./XpPanel.js";
 import { heroPointsEnabled } from "../../model/heroPoints.js";
@@ -72,6 +73,11 @@ export function Tracker(props: BuilderProps) {
           : []),
         { id: "play-form", label: "Polymorph", node: <ActiveFormPanel {...props} /> },
         { id: "play-aspects", label: "Aspects", node: <ShifterAspectPanel {...props} /> },
+        {
+          id: "play-changeshape",
+          label: "Change Shape",
+          node: <SkinwalkerChangeShapePanel {...props} />,
+        },
         { id: "play-identity", label: "Identity", node: <VigilanteIdentityPanel {...props} /> },
         { id: "play-spirit", label: "Séance", node: <MediumSpiritPanel {...props} /> },
         { id: "play-afflictions", label: "Afflictions", node: <AfflictionsPanel {...props} /> },

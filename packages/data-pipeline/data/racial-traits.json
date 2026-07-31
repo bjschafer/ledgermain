@@ -7163,12 +7163,20 @@
     "changes": [
       {
         "formula": "2",
-        "target": "wis",
+        "target": "str",
         "type": "racial"
       },
       {
         "formula": "-2",
         "target": "cha",
+        "type": "racial"
+      },
+      {
+        "activeWhenBuff": {
+          "effectTags": ["skinwalker:changeShape"]
+        },
+        "formula": "2",
+        "target": "con",
         "type": "racial"
       }
     ],
@@ -9209,6 +9217,14 @@
       {
         "formula": "-2",
         "target": "cha",
+        "type": "racial"
+      },
+      {
+        "activeWhenBuff": {
+          "effectTags": ["skinwalker:changeShape"]
+        },
+        "formula": "2",
+        "target": "dex",
         "type": "racial"
       }
     ],
@@ -11638,6 +11654,14 @@
         "formula": "-2",
         "target": "cha",
         "type": "racial"
+      },
+      {
+        "activeWhenBuff": {
+          "effectTags": ["skinwalker:changeShape"]
+        },
+        "formula": "2",
+        "target": "wis",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -12912,6 +12936,14 @@
       {
         "formula": "-2",
         "target": "int",
+        "type": "racial"
+      },
+      {
+        "activeWhenBuff": {
+          "effectTags": ["skinwalker:changeShape"]
+        },
+        "formula": "2",
+        "target": "wis",
         "type": "racial"
       }
     ],
@@ -16342,6 +16374,14 @@
         "formula": "-2",
         "target": "wis",
         "type": "racial"
+      },
+      {
+        "activeWhenBuff": {
+          "effectTags": ["skinwalker:changeShape"]
+        },
+        "formula": "2",
+        "target": "dex",
+        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -16454,6 +16494,14 @@
       {
         "formula": "-2",
         "target": "str",
+        "type": "racial"
+      },
+      {
+        "activeWhenBuff": {
+          "effectTags": ["skinwalker:changeShape"]
+        },
+        "formula": "2",
+        "target": "dex",
         "type": "racial"
       }
     ],
@@ -17054,6 +17102,14 @@
       {
         "formula": "-2",
         "target": "wis",
+        "type": "racial"
+      },
+      {
+        "activeWhenBuff": {
+          "effectTags": ["skinwalker:changeShape"]
+        },
+        "formula": "2",
+        "target": "cha",
         "type": "racial"
       }
     ],
@@ -19387,12 +19443,20 @@
     "changes": [
       {
         "formula": "2",
-        "target": "int",
+        "target": "con",
         "type": "racial"
       },
       {
         "formula": "-2",
         "target": "wis",
+        "type": "racial"
+      },
+      {
+        "activeWhenBuff": {
+          "effectTags": ["skinwalker:changeShape"]
+        },
+        "formula": "2",
+        "target": "str",
         "type": "racial"
       }
     ],
@@ -20196,6 +20260,14 @@
       {
         "formula": "-2",
         "target": "int",
+        "type": "racial"
+      },
+      {
+        "activeWhenBuff": {
+          "effectTags": ["skinwalker:changeShape"]
+        },
+        "formula": "2",
+        "target": "con",
         "type": "racial"
       }
     ],

@@ -158,12 +158,15 @@ export function collectModifiers(
 
   // Buff-gate check (issue #75) — see `buffGateSatisfied`. Consulted in
   // every hand-authored build-choice loop below (traits, bloodline powers,
-  // exploits, arcana, revelations, hexes, rage powers, discoveries, curse)
-  // so a table entry carrying `activeWhenBuff` gates correctly no matter
-  // which table it lands in — not just the rage-power table that motivated
-  // the mechanism. Vendored-data loops (race, items, class features, buffs,
-  // conditions) deliberately skip the check: the data pipeline never emits
-  // the field, so it cannot occur there.
+  // exploits, arcana, revelations, hexes, rage powers, discoveries, curse),
+  // both racial-trait loops (hand-authored `RACIAL_TRAITS` and the vendored
+  // `RefData.racialTraits` catalog — the latter's own hand-authored
+  // `SUPPLEMENTAL_RACIAL_TRAIT_CHANGES` supplement is the first data-pipeline
+  // source to actually emit `activeWhenBuff`, e.g. a skinwalker heritage's
+  // "while shapechanged" rider), so a table entry carrying `activeWhenBuff`
+  // gates correctly no matter which table it lands in. Items, class
+  // features, buffs, and conditions deliberately skip the check: nothing
+  // authors the field on those sources.
   // Buffs the master actually carries: a buff flagged `excludeMaster` (a
   // Share Spells personal spell cast on a companion *instead of* the caster)
   // applies only to its shared creatures, so the master neither collects its
@@ -222,9 +225,14 @@ export function collectModifiers(
         sourceId: race.id,
       });
     }
-    // The chosen alternates' own granted modifiers.
+    // The chosen alternates' own granted modifiers. Gated by `gateOpen`
+    // (issue #75) like every other hand-authored build-choice loop below —
+    // this loop predates the mechanism and had never actually checked it, so
+    // a hand-authored alternate trait's rider couldn't be scoped to a
+    // toggled buff until now.
     for (const t of activeRacialTraits) {
       for (const ch of t.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(ch.formula, rollData, ch.target, ch.type, t.name, t.id, out, ch.operator);
       }
     }
@@ -241,7 +249,13 @@ export function collectModifiers(
     // the character's race, so this never double-grants the SAME trait's
     // bonus twice.
     for (const t of activeVendoredTraits) {
+      // Gated by `gateOpen` (issue #75) same as the hand-authored loop above
+      // — lets a vendored trait's own supplemented rider (e.g. a skinwalker
+      // heritage's "while shapechanged" bonus, hand-authored in data-pipeline
+      // `SUPPLEMENTAL_RACIAL_TRAIT_CHANGES`) apply only while the matching
+      // buff/effectTag is active, instead of unconditionally.
       for (const ch of t.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(ch.formula, rollData, ch.target, ch.type, t.name, t.id, out, ch.operator);
       }
       // "Choose one" changes the source ships untargeted (`openChanges`): each
@@ -250,6 +264,7 @@ export function collectModifiers(
       // rather than guessing a target — the picker flags it instead.
       const chosenTargets = doc.build.vendoredRacialTraitTargets?.[t.id] ?? [];
       for (const [i, ch] of (t.openChanges ?? []).entries()) {
+        if (!gateOpen(ch)) continue;
         const target = chosenTargets[i];
         if (!target) continue;
         evalChange(ch.formula, rollData, target, ch.type, t.name, t.id, out, ch.operator);
