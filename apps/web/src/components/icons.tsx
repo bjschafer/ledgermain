@@ -147,6 +147,14 @@ export function SparkleIcon() {
   );
 }
 
+export function BoltIcon() {
+  return (
+    <Icon>
+      <path d="M13 2L4 14H11L10 22L20 9H13Z" />
+    </Icon>
+  );
+}
+
 export function FlaskIcon() {
   return (
     <Icon>

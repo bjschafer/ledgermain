@@ -88,7 +88,7 @@ describe("simple blast lines", () => {
     expect(fire.attack.total).toBe(5); // 3 BAB + 2 Dex
     expect(fire.touch).toBe(true);
     expect(fire.blastType).toBe("energy");
-    expect(fire.burn).toBe(0);
+    expect(fire.burnCost.blast).toBe(0);
     expect(fire.range).toBe(30);
   });
 
@@ -143,7 +143,7 @@ describe("composite blast lines", () => {
     expect(magma.kind).toBe("composite");
     expect(magma.damageDice).toBe("8d6");
     expect(magma.damageBonus.total).toBe(11); // 8 rider + 3 Con
-    expect(magma.burn).toBe(2);
+    expect(magma.burnCost.blast).toBe(2);
     expect(magma.touch).toBe(false);
   });
 
@@ -156,7 +156,7 @@ describe("composite blast lines", () => {
     );
     expect(force.damageDice).toBe("4d6"); // simple progression, not 8d6
     expect(force.damageBonus.total).toBe(1); // floor(3/2), energy
-    expect(force.burn).toBe(2);
+    expect(force.burnCost.blast).toBe(2);
     expect(force.touch).toBe(true);
   });
 

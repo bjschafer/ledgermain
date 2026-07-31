@@ -58,15 +58,15 @@
  *     Lightning Reflexes while the graft stays wound (daily upkeep, kept as
  *     a contextNotes reminder rather than a live gate).
  *
- * Two flagged near-misses stay display-only, so a future pass doesn't
- * re-litigate them: `earth:earthWalk` (its overflow bonus lands on
+ * Talents whose effect is scoped to a blast (`fire:firesFury`) are applied by
+ * `kinetic-blast.ts` off the picked-talent list rather than through a
+ * `Change`, since no target expresses "only blasts that include fire".
+ *
+ * One flagged near-miss stays display-only, so a future pass doesn't
+ * re-litigate it: `earth:earthWalk`, whose overflow bonus lands on
  * CMD-vs-two-maneuvers and balance-scoped Acrobatics — maneuver- and
- * task-scoped targets this engine doesn't have, the same class of gap as
- * the save-category near-misses in `oracle-revelations.ts`) and
- * `fire:firesFury` (adds to blast damage, and blasts aren't rolled by the
- * sheet at all — no blast weapon model). Both would ALSO need
- * elemental-overflow state (the bonus scales with burn accepted today),
- * which nothing models yet; even with it, the scoped-target blockers stand.
+ * task-scoped targets this engine doesn't have, the same class of gap as the
+ * save-category near-misses in `oracle-revelations.ts`.
  *
  * The vendored catalog overlay at the bottom of this file (issue #74) — see
  * `mergedKineticistWildTalentCatalog` — still exists for completeness (a
@@ -1647,10 +1647,9 @@ const FIRE_TALENTS: KineticistWildTalentDef[] = [
     element: "fire",
     level: 1,
     burn: 0,
-    // Deliberately display-only: adds to BLAST damage, and blasts aren't
-    // rolled by the sheet at all (no blast weapon model) — plus the bonus is
-    // elemental overflow, which nothing models. See the file doc comment's
-    // near-miss paragraph.
+    // Applied by `kinetic-blast.ts` rather than as a `Change`: the bonus is
+    // scoped to blasts whose elements include fire, which no `Change` target
+    // can express.
     summary:
       "Add your elemental overflow bonus to fire (and fire-inclusive composite) blast damage; stacks with blasts that already double that bonus.",
   },
@@ -1890,7 +1889,7 @@ const WATER_TALENTS: KineticistWildTalentDef[] = [
     slug: "maelstrom",
     name: "Maelstrom",
     category: "infusion",
-    kind: "substance",
+    kind: "form",
     element: "water",
     level: 8,
     burn: 4,

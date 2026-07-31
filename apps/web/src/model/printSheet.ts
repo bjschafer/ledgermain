@@ -11,6 +11,7 @@ import type { AbilityId, CharacterDoc, DerivedSheet, RefData } from "@pf1/schema
 import { casterLevelForClass, effectiveCasterClassLevel } from "./casterLevel.js";
 import { ABILITY_IDS } from "./doc.js";
 import { featInstanceDisplayName, featInstances, grantedFeats } from "./feats.js";
+import { blastBurnLabel } from "./kineticistBlastDisplay.js";
 import { combinedLanguages } from "./languages.js";
 import {
   ABILITY_ABBR,
@@ -380,7 +381,11 @@ export function buildPrintSheet(
         const bonusStr = blast.damageBonus.total !== 0 ? signed(blast.damageBonus.total) : null;
         const qualifiers = [
           blast.touch ? "touch" : null,
-          blast.burn > 0 ? `${blast.burn} burn` : null,
+          blast.area ?? null,
+          blastBurnLabel(blast.burnCost),
+          ...blast.infusions.map((inf) =>
+            inf.save ? `${inf.name} ${inf.save.type.toUpperCase()} DC ${inf.save.dc}` : inf.name,
+          ),
         ]
           .filter(Boolean)
           .join(", ");

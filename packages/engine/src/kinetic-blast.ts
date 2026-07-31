@@ -29,16 +29,21 @@
  * size-scaled damage dice (the dice come from class level, not a weapon's
  * size).
  *
- * NOT modeled here, and left to the table: form and substance infusions
- * (which rewrite range, area, and save behavior per activation), Gather Power
- * and Infusion Specialization burn discounts, and Metakinesis. Each is a
- * per-activation choice with no build field to read.
+ * The per-activation layer on top of these lines (form and substance
+ * infusions, Gather Power, Metakinesis) lives in `kineticist-infusions.ts`,
+ * which owns the shared burn and save-DC arithmetic; this file just applies
+ * what it resolves. What stays at the table either way: the open-ended burn
+ * dials individual infusions offer, and every rider the sheet has no slot for
+ * (see that module's doc comment).
  */
 
 import type {
   AbilityId,
   CharacterDoc,
   DerivedKineticBlast,
+  DerivedKineticBlastInfusion,
+  KineticBlastDelivery,
+  KineticistBlastLoadout,
   ModifierComponent,
   RefData,
 } from "@pf1/schema";
@@ -51,8 +56,19 @@ import {
   knownSimpleBlasts,
   mergedCompositeBlastCatalog,
 } from "./kineticist-elements.js";
+import {
+  INFUSION_BLAST_EFFECTS,
+  infusionSaveAbility,
+  type KineticistInfusionBlastEffect,
+  kineticBlastEffectiveSpellLevel,
+  metakinesisBurn,
+  resolveBlastBurn,
+  resolveLoadoutInfusions,
+  wildTalentSaveDc,
+} from "./kineticist-infusions.js";
+import type { KineticistWildTalentDef } from "./kineticist-wild-talents.js";
 import { resolveStack, synthetic, toComponents } from "./stacking.js";
-import { kineticOverflowBonus } from "./tables.js";
+import { burnPerRoundLimit, kineticOverflowBonus } from "./tables.js";
 
 /**
  * The weapon-group key blast lines match `attack.weapon.<group>` /
@@ -162,11 +178,12 @@ export function computeKineticBlasts(
 
   const expandedElements = doc.build.kineticistExpandedElements ?? [];
   const choices = doc.build.kineticistSimpleBlasts ?? {};
+  const activation = resolveActivation(doc, refData, ctx, kineticistLevel);
 
   const lines: DerivedKineticBlast[] = [];
   for (const blast of knownSimpleBlasts(primaryElement, expandedElements, choices)) {
     lines.push(
-      blastLine(doc, ctx, kineticistLevel, {
+      blastLine(doc, ctx, kineticistLevel, activation, {
         id: blast.id,
         name: blast.name,
         kind: "simple",
@@ -193,7 +210,7 @@ export function computeKineticBlasts(
     // honest to show without it.
     if (!cb.damageType) continue;
     lines.push(
-      blastLine(doc, ctx, kineticistLevel, {
+      blastLine(doc, ctx, kineticistLevel, activation, {
         id: cb.id,
         name: cb.name,
         kind: "composite",
@@ -220,23 +237,160 @@ interface BlastSpec {
   elements: string[];
 }
 
+/**
+ * The loadout resolved once per compute, since every blast line applies the
+ * same one: the infusions she is shaping this activation with, their save DCs
+ * (which depend on the blast's effective spell level, identical across every
+ * line), and the burn arithmetic's shared operands.
+ */
+interface ResolvedActivation {
+  effectiveSpellLevel: number;
+  infusions: DerivedKineticBlastInfusion[];
+  /** Union of the applied infusions' structured effects, form applied over substance. */
+  effects: KineticistInfusionBlastEffect[];
+  /** Combined infusion burn, before Infusion Specialization. */
+  infusionBurn: number;
+  metakinesisBurn: number;
+  loadout: KineticistBlastLoadout | undefined;
+  perRoundLimit: number;
+  maxHeld: number;
+  /** Fire's Fury: "when using fire blasts or composite blasts that include fire, add your elemental overflow bonus to the damage dealt". */
+  firesFury: boolean;
+}
+
+const FIRES_FURY_ID = "fire:firesFury";
+
+/**
+ * Wild talents whose effect is scoped to a subset of blast lines, which is why
+ * they are applied here off the picked-talent list rather than as a `Change`
+ * (no target can say "only blasts that include fire"). Exported so the picker
+ * can badge them as moving real numbers.
+ */
+export const BLAST_SCOPED_WILD_TALENT_IDS: ReadonlySet<string> = new Set([FIRES_FURY_ID]);
+
+function resolveActivation(
+  doc: CharacterDoc,
+  refData: RefData,
+  ctx: KineticBlastContext,
+  kineticistLevel: number,
+): ResolvedActivation {
+  const loadout = doc.live.kineticistBlastLoadout;
+  const effectiveSpellLevel = kineticBlastEffectiveSpellLevel(kineticistLevel);
+  const picked = resolveLoadoutInfusions(loadout, doc.build.kineticistWildTalents ?? [], refData);
+
+  const infusions: DerivedKineticBlastInfusion[] = [];
+  const effects: KineticistInfusionBlastEffect[] = [];
+  // Substance first so a form infusion's structured fields win any overlap —
+  // RAW resolves the form infusion's save first, and it is the form infusion
+  // that decides how the blast is delivered at all.
+  for (const [id, def] of [
+    [loadout?.substance, picked.substance],
+    [loadout?.form, picked.form],
+  ] as const) {
+    if (!id || !def) continue;
+    const effect = INFUSION_BLAST_EFFECTS[id];
+    if (effect) effects.push(effect);
+    infusions.push(derivedInfusion(id, def, effect, effectiveSpellLevel, ctx.abilityMods));
+  }
+
+  return {
+    effectiveSpellLevel,
+    infusions,
+    effects,
+    infusionBurn: infusions.reduce((sum, i) => sum + i.burn, 0),
+    metakinesisBurn: metakinesisBurn(loadout?.metakinesis ?? []),
+    loadout,
+    perRoundLimit: burnPerRoundLimit(kineticistLevel),
+    maxHeld: 3 + ctx.abilityMods.con,
+    firesFury: (doc.build.kineticistWildTalents ?? []).includes(FIRES_FURY_ID),
+  };
+}
+
+function derivedInfusion(
+  id: string,
+  def: KineticistWildTalentDef,
+  effect: KineticistInfusionBlastEffect | undefined,
+  effectiveSpellLevel: number,
+  abilityMods: Readonly<Record<AbilityId, number>>,
+): DerivedKineticBlastInfusion {
+  const kind = def.kind === "form" ? "form" : "substance";
+  const line: DerivedKineticBlastInfusion = {
+    id,
+    name: def.name,
+    kind,
+    burn: def.burn,
+    summary: def.summary,
+    ...(effect?.note !== undefined ? { note: effect.note } : {}),
+  };
+  if (effect?.save) {
+    const ability = infusionSaveAbility(kind);
+    const abilityMod = abilityMods[ability];
+    line.save = {
+      type: effect.save.type,
+      effect: effect.save.effect,
+      dc: wildTalentSaveDc(effectiveSpellLevel, abilityMod),
+      ability,
+      components: [
+        synthetic("Base", "base", 10),
+        synthetic("Blast's effective spell level", "untyped", effectiveSpellLevel),
+        synthetic(ability === "dex" ? "Dexterity" : "Constitution", "ability", abilityMod),
+      ],
+    };
+  }
+  return line;
+}
+
 function blastLine(
   doc: CharacterDoc,
   ctx: KineticBlastContext,
   kineticistLevel: number,
+  activation: ResolvedActivation,
   spec: BlastSpec,
 ): DerivedKineticBlast {
   const { bab, sizeAttackMod, collected, abilityMods, substitutions, currentBurn } = ctx;
   const overflow = kineticOverflowBonus(kineticistLevel, currentBurn);
+  const { effects } = activation;
+  const last = <T>(pick: (e: KineticistInfusionBlastEffect) => T | undefined): T | undefined => {
+    for (let i = effects.length - 1; i >= 0; i--) {
+      const value = pick(effects[i]!);
+      if (value !== undefined) return value;
+    }
+    return undefined;
+  };
+  // Kinetic blade and Draining Infusion both strike Elemental Overflow's
+  // damage bonus by name; the attack bonus is untouched either way. Fire's
+  // Fury adds that same bonus a second time, so it is suppressed alongside.
+  const noOverflowDamage = effects.some((e) => e.suppressOverflowDamage);
+  const overflowDamage = noOverflowDamage ? 0 : overflow.damageBonus;
+  const firesFury =
+    !noOverflowDamage && activation.firesFury && spec.elements.includes("fire")
+      ? overflow.attackBonus
+      : 0;
 
   // Blasts are ranged attacks, so Dexterity — resolved through the same
   // substitution pass a ranged weapon uses, so a Dex-replacing feature
   // (Zen Archery and friends) reaches blast lines too.
   const attackAbility = resolveSubstitution("attack.ranged", "dex", abilityMods, substitutions);
+  // An infusion's attack bonus goes through the same stacking pass as every
+  // other modifier, so Focused Blast's enhancement bonus can be overridden by
+  // a larger enhancement bonus from elsewhere rather than silently summing.
+  const infusionAttack = effects.flatMap((e) =>
+    e.attackBonus
+      ? [
+          {
+            source: "Infusion",
+            target: "attack",
+            type: e.attackBonus.type,
+            value: e.attackBonus.value,
+          },
+        ]
+      : [],
+  );
   const attackStack = resolveStack([
     ...forTarget(collected, "attack"),
     ...forTarget(collected, "rattack"),
     ...forTarget(collected, `attack.weapon.${KINETIC_BLAST_WEAPON_GROUP}`),
+    ...infusionAttack,
   ]);
   const attackTotal =
     bab + attackAbility.mod + sizeAttackMod + attackStack.total + overflow.attackBonus;
@@ -264,7 +418,7 @@ function blastLine(
     ...forTarget(collected, "rwdamage"),
     ...forTarget(collected, `damage.weapon.${KINETIC_BLAST_WEAPON_GROUP}`),
   ]);
-  const damageTotal = diceRider + conDamage + damageStack.total + overflow.damageBonus;
+  const damageTotal = diceRider + conDamage + damageStack.total + overflowDamage + firesFury;
   const damageComponents: ModifierComponent[] = [
     ...(diceRider !== 0 ? [synthetic("Physical blast (+1/die)", "untyped", diceRider)] : []),
     ...(conDamage !== 0
@@ -277,10 +431,27 @@ function blastLine(
         ]
       : []),
     ...toComponents(damageStack.modifiers),
-    ...(overflow.damageBonus !== 0
-      ? [synthetic("Elemental Overflow", "untyped", overflow.damageBonus)]
-      : []),
+    ...(overflowDamage !== 0 ? [synthetic("Elemental Overflow", "untyped", overflowDamage)] : []),
+    ...(firesFury !== 0 ? [synthetic("Fire's Fury", "untyped", firesFury)] : []),
   ];
+
+  const burnBreakdown = resolveBlastBurn({
+    blastBurn: spec.burn,
+    infusionBurn: activation.infusionBurn,
+    metakinesisBurn: activation.metakinesisBurn,
+    kineticistLevel,
+    gatherPower: activation.loadout?.gatherPower,
+  });
+  const delivery: KineticBlastDelivery = last((e) => e.delivery) ?? "ranged";
+  const area = last((e) => e.area);
+  // Both infusions can scale damage ("if a kineticist's form and substance
+  // infusions both alter the kinetic blast's damage, apply the substance
+  // infusion's alteration first"), so the qualifiers are joined in that
+  // order rather than one winning.
+  const damageQualifier = effects
+    .map((e) => e.damageQualifier)
+    .filter((q): q is string => q !== undefined)
+    .join("; ");
 
   return {
     id: spec.id,
@@ -288,14 +459,26 @@ function blastLine(
     kind: spec.kind,
     blastType: spec.blastType,
     descriptor: spec.descriptor,
+    // A melee blade or an area still interacts with AC "as normal for a blast
+    // of its type", so the touch-AC split follows the blast, not the delivery.
     touch: spec.blastType === "energy",
     attack: { total: attackTotal, components: attackComponents },
     damageBonus: { total: damageTotal, components: damageComponents },
     damageDice: `${dice}d6`,
     crit: "×2",
-    range: BLAST_RANGE_FT,
-    burn: spec.burn,
+    range: last((e) => e.rangeFt) ?? BLAST_RANGE_FT,
     elements: spec.elements,
+    effectiveSpellLevel: activation.effectiveSpellLevel,
+    burnCost: {
+      ...burnBreakdown,
+      perRoundLimit: activation.perRoundLimit,
+      maxHeld: activation.maxHeld,
+      held: currentBurn,
+    },
+    infusions: activation.infusions,
+    delivery,
+    ...(area !== undefined ? { area } : {}),
+    ...(damageQualifier.length > 0 ? { damageQualifier } : {}),
   };
 }
 

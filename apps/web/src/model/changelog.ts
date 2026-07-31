@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-31-blast-loadout",
+    date: "2026-07-31",
+    title: "Infusions reshape your blast lines",
+    note: "A Blast Loadout panel in the tracker holds what you are throwing right now: one form infusion, one substance infusion, how long you gathered power, and any metakinesis. Your blast lines rewrite to match. Torrent turns a blast into a 30 ft. line, Extended Range moves it to 120 ft., Kinetic Blade takes it to melee and drops the elemental overflow damage, and every infusion that allows a save prints its DC, Dexterity based for form infusions and Constitution based for substance ones. The burn cost adds itself up for you, with Infusion Specialization coming off the infusions and Gather Power off the whole total, and the line warns you when what you have built costs more burn than you can accept. One press of Bare blast clears the lot.",
+  },
+  {
     id: "2026-07-30-elemental-defense-live",
     date: "2026-07-30",
     title: "Your elemental defense is a real number",

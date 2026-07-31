@@ -20,8 +20,20 @@
  * project's hybrid posture on feat/trait/skill budgets.
  */
 
-import { minKineticistLevelForTalent, resolveKineticistWildTalent } from "@pf1/engine";
-import type { CharacterDoc, RefData } from "@pf1/schema";
+import {
+  BLAST_SCOPED_WILD_TALENT_IDS,
+  INFUSION_BLAST_EFFECTS,
+  KINETICIST_WILD_TALENTS,
+  minKineticistLevelForTalent,
+  resolveKineticistWildTalent,
+} from "@pf1/engine";
+import type {
+  CharacterDoc,
+  KineticistBlastLoadout,
+  KineticistGatherPowerMode,
+  KineticistMetakinesisOption,
+  RefData,
+} from "@pf1/schema";
 
 /** The kineticist's class level (0 for a non-kineticist, or a stale/multiclassed doc). */
 export function kineticistLevel(doc: CharacterDoc): number {
@@ -123,6 +135,112 @@ export function setKineticistShroudMode(doc: CharacterDoc, mode: "armor" | "shie
 export function clearKineticistDefenseBurn(doc: CharacterDoc): CharacterDoc {
   if (doc.live.kineticistDefenseBurn === undefined) return doc;
   return { ...doc, live: { ...doc.live, kineticistDefenseBurn: undefined } };
+}
+
+/* --------------------------------------------------------- blast loadout */
+
+/**
+ * The loadout is per-ACTIVATION state, so every setter here normalizes an
+ * empty result back to `undefined`: clearing the last pick has to leave the
+ * document indistinguishable from one that never had a loadout, or a stale
+ * empty object would keep the tracker's panel looking armed.
+ */
+function withLoadout(doc: CharacterDoc, next: KineticistBlastLoadout): CharacterDoc {
+  const empty =
+    !next.form && !next.substance && !next.gatherPower && (next.metakinesis ?? []).length === 0;
+  return { ...doc, live: { ...doc.live, kineticistBlastLoadout: empty ? undefined : next } };
+}
+
+/** Pick (or clear, passing `null`) the form or substance infusion shaping the blast. */
+export function setKineticistBlastInfusion(
+  doc: CharacterDoc,
+  slot: "form" | "substance",
+  talentId: string | null,
+): CharacterDoc {
+  const trimmed = typeof talentId === "string" ? talentId.trim() : "";
+  return withLoadout(doc, {
+    ...doc.live.kineticistBlastLoadout,
+    [slot]: trimmed.length > 0 ? trimmed : undefined,
+  });
+}
+
+/** Set (or clear, passing `null`) how long she spent gathering power. */
+export function setKineticistGatherPower(
+  doc: CharacterDoc,
+  mode: KineticistGatherPowerMode | null,
+): CharacterDoc {
+  return withLoadout(doc, {
+    ...doc.live.kineticistBlastLoadout,
+    gatherPower: mode ?? undefined,
+  });
+}
+
+/** Add or remove one Metakinesis option. */
+export function toggleKineticistMetakinesis(
+  doc: CharacterDoc,
+  option: KineticistMetakinesisOption,
+): CharacterDoc {
+  const current = doc.live.kineticistBlastLoadout?.metakinesis ?? [];
+  const next = current.includes(option)
+    ? current.filter((o) => o !== option)
+    : [...current, option];
+  return withLoadout(doc, {
+    ...doc.live.kineticistBlastLoadout,
+    metakinesis: next.length > 0 ? next : undefined,
+  });
+}
+
+/**
+ * Drop the whole loadout. Every part of it is a choice made fresh for each
+ * blast, so getting back to a bare blast has to be one action rather than
+ * four.
+ */
+export function clearKineticistBlastLoadout(doc: CharacterDoc): CharacterDoc {
+  if (doc.live.kineticistBlastLoadout === undefined) return doc;
+  return { ...doc, live: { ...doc.live, kineticistBlastLoadout: undefined } };
+}
+
+/**
+ * Whether a wild talent moves a real number, which is what the picker's "M"
+ * badge means everywhere in this app. Three ways it can: an unconditional
+ * `changes[]`, a structured effect that rewrites a blast line when the talent
+ * is loaded as an infusion, or a blast-scoped effect the engine applies from
+ * the picked-talent list directly.
+ */
+export function talentMovesNumbers(talentId: string): boolean {
+  return (
+    (KINETICIST_WILD_TALENTS[talentId]?.changes?.length ?? 0) > 0 ||
+    INFUSION_BLAST_EFFECTS[talentId] !== undefined ||
+    BLAST_SCOPED_WILD_TALENT_IDS.has(talentId)
+  );
+}
+
+export interface KineticistInfusionOption {
+  id: string;
+  name: string;
+  burn: number;
+}
+
+/**
+ * The infusions the character knows, split by slot, for the loadout menus.
+ * A vendored-only infusion carries no form/substance split (the published
+ * prose labels only a handful), so it is offered in BOTH menus rather than
+ * being hidden from the one it belongs in.
+ */
+export function knownKineticistInfusions(
+  doc: CharacterDoc,
+  refData: RefData,
+  slot: "form" | "substance",
+): KineticistInfusionOption[] {
+  return (doc.build.kineticistWildTalents ?? [])
+    .flatMap((id) => {
+      const talent = resolveKineticistWildTalent(id, refData);
+      if (!talent || talent.category !== "infusion") return [];
+      const handAuthored = KINETICIST_WILD_TALENTS[id];
+      if (handAuthored && handAuthored.kind !== slot) return [];
+      return [{ id, name: talent.name, burn: talent.burn }];
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 /* ---------------------------------------------------------- wild talents */

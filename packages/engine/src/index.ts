@@ -385,10 +385,27 @@ export {
 export {
   KINETIC_BLAST_WEAPON_GROUP,
   computeKineticBlasts,
+  BLAST_SCOPED_WILD_TALENT_IDS,
   kineticBlastConDamage,
   kineticBlastDiceCount,
   type KineticBlastContext,
 } from "./kinetic-blast.js";
+export {
+  INFUSION_BLAST_EFFECTS,
+  KINETICIST_METAKINESIS,
+  gatherPowerModeLabel,
+  gatherPowerReduction,
+  infusionSaveAbility,
+  kineticBlastEffectiveSpellLevel,
+  metakinesisBurn,
+  resolveBlastBurn,
+  resolveLoadoutInfusions,
+  wildTalentSaveDc,
+  type BlastBurnBreakdown,
+  type BlastBurnInput,
+  type KineticistInfusionBlastEffect,
+  type KineticistMetakinesisDef,
+} from "./kineticist-infusions.js";
 export {
   KINETICIST_WILD_TALENTS,
   KINETICIST_UNIVERSAL_TALENT_IDS,

@@ -6,7 +6,6 @@ import {
   elementSimpleBlasts,
   KINETICIST_ELEMENTS,
   KINETICIST_ELEMENT_TAGS,
-  KINETICIST_WILD_TALENTS,
   mergedCompositeBlastCatalog,
   mergedKineticistWildTalentCatalog,
 } from "@pf1/engine";
@@ -23,6 +22,7 @@ import {
   knownKineticistElements,
   setKineticistElement,
   setKineticistExpandedElement,
+  talentMovesNumbers,
   setKineticistSimpleBlast,
   toggleKineticistWildTalent,
 } from "../../model/kineticistBuild.js";
@@ -330,10 +330,11 @@ function WildTalentSection({
       }
       rows.push({
         id: talent.id,
-        // "M" = moves real numbers (a live changes[]), matching every other
-        // picker's badge semantics — not merely "hand-authored" (level/burn
-        // are tracked for every row regardless).
-        isModeled: (KINETICIST_WILD_TALENTS[talent.id]?.changes?.length ?? 0) > 0,
+        // "M" = moves real numbers, matching every other picker's badge
+        // semantics — not merely "hand-authored" (level/burn are tracked for
+        // every row regardless). An infusion earns it by rewriting the blast
+        // line rather than by carrying a changes[] a blast could never read.
+        isModeled: talentMovesNumbers(talent.id),
         elementName,
         name: talent.name,
         nameSuffix: talent.nameSuffix,

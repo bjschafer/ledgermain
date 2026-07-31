@@ -5063,10 +5063,61 @@ input[type="text"].saved-roll-name:focus {
   margin-top: 1px;
 }
 
+/* The infusions currently shaping the blast, listed under the stat line so a
+   long infusion name can't squeeze the seals. */
+.blast-line-infusions {
+  color: var(--accent-ink, inherit);
+}
+
 /* Shroud of Water's armor/shield switch is a two-option select; left to grow
    it fills the panel and pushes its own label onto a second line. */
 .elemental-defense select {
   max-width: 180px;
+}
+
+/* ------------------------------------------------------------ blast loadout --
+   One label + control per row. The label column is fixed so the four controls
+   line up as a stack rather than stepping in and out with label length. */
+.loadout-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+.loadout-label {
+  flex: 0 0 5.5rem;
+  font-size: 0.85em;
+  color: var(--faint);
+}
+
+.loadout-row select {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.loadout-metakinesis {
+  align-items: flex-start;
+}
+
+.loadout-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.loadout-infusion-list {
+  margin: 8px 0;
+  padding-left: 1.1rem;
+  font-size: 0.9em;
+}
+
+.loadout-infusion-list li {
+  margin-bottom: 4px;
+}
+
+.loadout-save {
+  font-family: var(--mono);
 }
 
 /* ---------------------------------------------------------- preview notice -- */

@@ -12,6 +12,7 @@ import {
   effectiveCasterClassLevel,
   isCasterTag,
 } from "../model/casterLevel.js";
+import { blastBurnWarning, blastSubLine } from "../model/kineticistBlastDisplay.js";
 import { combinedLanguages } from "../model/languages.js";
 import {
   ABILITY_ABBR,
@@ -469,11 +470,29 @@ export function Sheet({
                 <div key={blast.id} className="weapon-attack-row">
                   <span className="weapon-attack-name">
                     {blast.name}
-                    <span className="hint blast-line-sub">
-                      {blast.touch ? "ranged touch" : "ranged"} · {blast.range} ft ·{" "}
-                      {blast.descriptor}
-                      {blast.burn > 0 ? ` · ${blast.burn} burn` : ""}
-                    </span>
+                    <span className="hint blast-line-sub">{blastSubLine(blast)}</span>
+                    {blast.infusions.length > 0 && (
+                      <span className="hint blast-line-sub blast-line-infusions">
+                        {blast.infusions
+                          .map(
+                            (inf) =>
+                              `${inf.name}${
+                                inf.save
+                                  ? ` (${SAVE_ABBR[inf.save.type]} DC ${inf.save.dc} ${inf.save.effect})`
+                                  : ""
+                              }`,
+                          )
+                          .join(" · ")}
+                      </span>
+                    )}
+                    {blast.damageQualifier ? (
+                      <span className="hint blast-line-sub">{blast.damageQualifier}</span>
+                    ) : null}
+                    {blastBurnWarning(blast.burnCost) ? (
+                      <span className="hint blast-line-sub warn-over">
+                        {blastBurnWarning(blast.burnCost)}
+                      </span>
+                    ) : null}
                   </span>
                   <div className="weapon-attack-stats">
                     <StatSeal

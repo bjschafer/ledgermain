@@ -76,18 +76,11 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category:
-      "Class picker lists (rage powers, hexes, arcana, talents, exploits, tricks, discoveries, ki powers, style strikes, bold stares, phrenic amplifications, revelations, spirits, disciplines, implements, orders, patrons, aspects)",
+      "Class picker lists (rage powers, hexes, arcana, talents, exploits, tricks, discoveries, ki powers, style strikes, bold stares, phrenic amplifications, revelations, spirits, disciplines, implements, orders, patrons, aspects, wild talents)",
     group: "not-modeled",
     note: 'Every published entry in these lists is browsable, searchable, and written up with its level requirement flagged. Entries that move numbers on your sheet automatically are marked with an "M". Most entries are not: they show their rules text for you to apply at the table.',
     issueDetail:
       "Every list, the class-subsystem tables included, sits at full vendored parity (rage powers 243, rogue talents 234, alchemist discoveries 168, witch hexes 104, down to monk style strikes 15), so the gap is promotion rather than coverage: only 31 rage powers and a scattering of talents and discoveries carry live changes[]. Candidates blocked on a missing mechanism are recorded inline in their table files.",
-  },
-  {
-    category: "Kineticist wild talents",
-    group: "not-modeled",
-    note: "Every published infusion and utility talent is written up across all seven elements. Level gates and burn costs are tracked and the infusion and utility budgets counted. What a talent does is rules text you apply at the table, and an infusion doesn't rewrite the blast line on your sheet.",
-    issueDetail:
-      "236 hand-authored wild talents, 7 elements, display-only per the honesty bar (activated abilities with action, save, and burn state). Infusions, Gather Power, and Metakinesis leave the computed blast lines alone: each is a per-activation choice with no build field to read.",
   },
   {
     category: "Character traits",

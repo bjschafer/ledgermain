@@ -1545,6 +1545,18 @@ export interface CharacterDoc {
      */
     kineticistShroudMode?: "armor" | "shield";
     /**
+     * What the kineticist is currently shaping her blast with: up to one form
+     * infusion, up to one substance infusion, a Gather Power stance, and any
+     * Metakinesis options. RAW makes every one of these a per-ACTIVATION
+     * choice ("each time the kineticist uses one of her kinetic blast wild
+     * talents, she can apply up to one associated form infusion and up to one
+     * associated substance infusion"), so this is the "one active choice, not
+     * a history" shape `martialFlexibilityFeatId` and `kineticistShroudMode`
+     * use: it records what she is throwing right now, and clearing it is a
+     * single action. Undefined/empty = a bare blast.
+     */
+    kineticistBlastLoadout?: KineticistBlastLoadout;
+    /**
      * Vigilante's current identity (issue #65) — "social" (public persona) or
      * "vigilante" (masked persona). Display-forward table state (an identity
      * chip + a context-note reminder about renown/alignment scope on the
@@ -1643,6 +1655,39 @@ export interface CharacterDoc {
  * (`@pf1/engine` `compute.ts`), independent of whether the
  * tier/creatureType/element combination itself resolves.
  */
+/**
+ * How long the kineticist spent gathering power before letting the blast go,
+ * which is the only thing that distinguishes the three published reductions:
+ * a move action takes 1 point off the blast's total burn cost, a full round
+ * takes 2 off a blast thrown on the following turn, and a full round followed
+ * by a move action on that following turn takes 3 off. Absent = she didn't
+ * gather.
+ */
+export type KineticistGatherPowerMode = "move" | "fullRound" | "fullRoundThenMove";
+
+/** The four Metakinesis options, gained at 5th, 9th, 13th, and 17th level. */
+export type KineticistMetakinesisOption = "empower" | "maximize" | "quicken" | "twice";
+
+/**
+ * The per-activation shape of a kinetic blast — see
+ * `CharacterDoc.live.kineticistBlastLoadout`. Every field is optional and an
+ * unset field means "not applied", so an empty object and an absent one are
+ * the same blast.
+ */
+export interface KineticistBlastLoadout {
+  /** Form infusion id (`"<elementTag>:<slug>"`, key into `@pf1/engine` `KINETICIST_WILD_TALENTS`). */
+  form?: string;
+  /** Substance infusion id, same key space as {@link KineticistBlastLoadout.form}. */
+  substance?: string;
+  gatherPower?: KineticistGatherPowerMode;
+  /**
+   * Metakinesis options applied this activation. RAW prices each separately
+   * and never says they're exclusive, so they sum: the engine adds every
+   * listed option's cost. Order is irrelevant; duplicates are ignored.
+   */
+  metakinesis?: KineticistMetakinesisOption[];
+}
+
 export interface ActiveForm {
   /** Polymorph tier key — e.g. "beastShapeIII" (key into `@pf1/engine` `POLYMORPH_TIERS`). */
   tier: string;
@@ -3281,12 +3326,97 @@ export interface DerivedKineticBlast {
   damageDice: string;
   /** Always "×2" — no published blast has a widened threat range. */
   crit: string;
-  /** Range in feet (30 before Extended Range, which is a player-applied infusion). */
+  /** Range in feet — 30 for a bare blast, 120 under Extended Range, 480 under Extreme Range. */
   range: number;
-  /** Burn cost to use: 0 for a simple blast, 2 for a composite. */
-  burn: number;
   /** Element tags this blast comes from, for grouping in the UI. */
   elements: string[];
+  /**
+   * Effective spell level: "kinetic blast and defense wild talents are always
+   * considered to have an effective spell level equal to 1/2 the kineticist's
+   * class level (to a maximum effective spell level of 9th)". Every infusion
+   * save DC on this line is 10 + this + an ability modifier.
+   */
+  effectiveSpellLevel: number;
+  /** What throwing this blast costs right now, itemized. */
+  burnCost: DerivedKineticBlastBurn;
+  /** The form and substance infusions currently shaping this blast, if any. */
+  infusions: DerivedKineticBlastInfusion[];
+  /** How the blast is delivered once a form infusion has had its say. */
+  delivery: KineticBlastDelivery;
+  /** Area the blast covers instead of striking one target, e.g. "30-ft. line". */
+  area?: string;
+  /** Damage qualifier a form infusion imposes, e.g. "half damage" — the dice and bonus are unscaled. */
+  damageQualifier?: string;
+}
+
+/**
+ * How a blast reaches its target. A bare blast is `"ranged"`; a form infusion
+ * can turn it into a melee attack (kinetic blade), a rider on attacks the
+ * character already makes (kinetic fist, energize weapon), or an area that
+ * offers a save instead of rolling to hit.
+ */
+export type KineticBlastDelivery = "ranged" | "melee" | "area" | "rider";
+
+/**
+ * What one activation costs in burn, itemized so the tracker can show where
+ * each point went. RAW applies the two reductions at different scopes:
+ * Infusion Specialization comes off the infusions' combined cost only ("she
+ * reduces the combined burn cost of the infusions by 1 ... can't reduce the
+ * total cost of the infusions used below 0"), while Gather Power comes off
+ * the whole total ("reduce the total burn cost of a blast wild talent she
+ * uses in the same round").
+ */
+export interface DerivedKineticBlastBurn {
+  /** The blast's own cost: 0 for a simple blast, 2 for a composite. */
+  blast: number;
+  /** Combined cost of the applied infusions, before Infusion Specialization. */
+  infusions: number;
+  /** Infusion Specialization's reduction, already clamped to `infusions`. */
+  infusionSpecialization: number;
+  /** Cost of the applied Metakinesis options. */
+  metakinesis: number;
+  /** Gather Power's reduction, already clamped to what's left to reduce. */
+  gatherPower: number;
+  /** What she actually accepts, never below 0. */
+  total: number;
+  /** Most burn she can accept in one round (1, rising at 6th and every 3 levels after). */
+  perRoundLimit: number;
+  /** Ceiling on burn held at once: 3 + Constitution modifier. */
+  maxHeld: number;
+  /** Burn already accepted and still held, from the Burn pool. */
+  held: number;
+}
+
+/** One infusion applied to a blast line, with its save DC already resolved. */
+export interface DerivedKineticBlastInfusion {
+  /** Wild talent id — `"<elementTag>:<slug>"`. */
+  id: string;
+  name: string;
+  kind: "form" | "substance";
+  /** The infusion's own burn cost, before Infusion Specialization. */
+  burn: number;
+  summary: string;
+  /** The save its target attempts, if the published Saving Throw entry names one. */
+  save?: DerivedKineticBlastSave;
+  /** What the blast line itself can't show about this infusion, in one line. */
+  note?: string;
+}
+
+/**
+ * An infusion's saving throw. The DC is the shared wild-talent formula, with
+ * the one published exception: "the DCs for form infusions are calculated
+ * using the kineticist's Dexterity modifier instead of her Constitution
+ * modifier", and every DC is based on the BLAST's effective spell level, not
+ * the infusion's own level.
+ */
+export interface DerivedKineticBlastSave {
+  type: "fort" | "ref" | "will";
+  /** Published Saving Throw entry's outcome, e.g. "half", "negates", "partial". */
+  effect: string;
+  dc: number;
+  /** Which modifier the DC uses: `"dex"` for a form infusion, `"con"` for a substance one. */
+  ability: "con" | "dex";
+  components: ModifierComponent[];
 }
 
 export interface ArmorClass {
