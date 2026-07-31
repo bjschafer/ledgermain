@@ -793,8 +793,10 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
  * `deriveResourcePools` (`resources.ts`) off a class feature's `uses.maxFormula`.
  * `featureTag` matches `RefData.classFeatures[id].tag`; `maxDelta` is added to
  * that pool's derived max once per instance of the feat in `doc.build.feats`
- * (all six of these are RAW "you can take this feat multiple times, effects
- * stack" — `deriveResourcePools` multiplies by the count it finds).
+ * (`deriveResourcePools` multiplies by the count it finds — right for the
+ * many entries whose text says "take multiple times, effects stack", and a
+ * soft-prereq-policy non-issue for the few without a Special clause, since an
+ * illegal second instance is the player's call like any other unmet prereq).
  * Clean-room from d20pfsrd/Archives of Nethys, not transcribed from Foundry.
  *
  * `featureTag` accepts either a single tag or an array of tags (issue #65's
@@ -851,6 +853,52 @@ export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
   // derives generically via `deriveResourcePools` exactly like the five
   // entries above; no resources.ts change was needed.
   "extra-arcane-pool": { featureTag: "arcanePool", maxDelta: 2 },
+
+  // ── The eight below were "subsystem" in feat-classification.ts's frozen
+  // audit despite their pools existing: each class feature already carries a
+  // vendored `uses.maxFormula` with the tag named here (verified against
+  // class-features.json), so they derive generically exactly like Extra Rage.
+  // Deltas are the vendored benefit text's own numbers, quoted per entry.
+
+  // Extra Bane (Ultimate Magic): "You can use your bane ability for 3
+  // additional rounds per day."
+  "extra-bane": { featureTag: "bane", maxDelta: 3 },
+
+  // Extra Bombs (Advanced Player's Guide): "You can throw two additional
+  // bombs per day." Repeatable per its Special clause; stacks per instance.
+  "extra-bombs": { featureTag: "bomb", maxDelta: 2 },
+
+  // Extra Grit (Ultimate Combat): "You gain 2 extra grit points at the start
+  // of each day, and your maximum grit increases by 2." The pool model tracks
+  // the max; the daily-start bump rides along since pools refill to max.
+  // With only Amateur Gunslinger (whose 1-point pool isn't modeled) there's
+  // no `grit`-tagged pool to raise, so the feat honestly does nothing here.
+  "extra-grit": { featureTag: "grit", maxDelta: 2 },
+
+  // Extra Inspiration (Advanced Class Guide): "You gain three extra use per
+  // day of inspiration in your inspiration pool" (vendored text verbatim,
+  // typo included). Repeatable with investigator levels per its Special
+  // clause; the Amateur Investigator-only case has no modeled pool, as with
+  // Extra Grit above.
+  "extra-inspiration": { featureTag: "inspiration", maxDelta: 3 },
+
+  // Extra Martial Flexibility (Advanced Class Guide): "You can use your
+  // martial flexibility ability three additional times per day."
+  "extra-martial-flexibility": { featureTag: "martialFlexibility", maxDelta: 3 },
+
+  // Extra Mental Focus (Occult Adventures): "You gain 2 additional points of
+  // mental focus."
+  "extra-mental-focus": { featureTag: "mentalFocus", maxDelta: 2 },
+
+  // Extra Mesmerist Tricks (Occult Adventures): "You can implant two
+  // additional mesmerist tricks per day." Repeatable per its Special clause.
+  "extra-mesmerist-tricks": { featureTag: "mesmeristTricks", maxDelta: 2 },
+
+  // Extra Panache (Advanced Class Guide): "You gain two more panache points
+  // at the start of each day, and your maximum panache increases by two."
+  // Same max-tracking posture as Extra Grit; Amateur Swashbuckler-only case
+  // likewise has no modeled pool to raise.
+  "extra-panache": { featureTag: "panache", maxDelta: 2 },
 
   // Extra Summons (community pf1-content pack; Advanced Class Guide): "You
   // gain 1 additional use of your summon monster spell-like ability per

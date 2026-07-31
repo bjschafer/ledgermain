@@ -751,14 +751,14 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "extra-bane": {
     slug: "extra-bane",
     name: "Extra Bane",
-    bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    bucket: "pool",
+    note: "+3 rounds/day of bane — the bane class feature carries a vendored uses.maxFormula tagged `bane`, so it derives generically via deriveResourcePools like Extra Rage; extracted",
   },
   "extra-bombs": {
     slug: "extra-bombs",
     name: "Extra Bombs",
-    bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    bucket: "pool",
+    note: "+2 bombs/day — the bomb class feature carries a vendored uses.maxFormula tagged `bomb`; derives generically via deriveResourcePools; extracted",
   },
   "extra-cantrips-or-orisons": {
     slug: "extra-cantrips-or-orisons",
@@ -805,8 +805,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "extra-grit": {
     slug: "extra-grit",
     name: "Extra Grit",
-    bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    bucket: "pool",
+    note: "+2 max grit — the grit deed pool carries a vendored uses.maxFormula tagged `grit`; derives generically via deriveResourcePools (the Amateur Gunslinger-only case has no modeled pool and honestly gets nothing); extracted",
   },
   "extra-hex": {
     slug: "extra-hex",
@@ -817,8 +817,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "extra-inspiration": {
     slug: "extra-inspiration",
     name: "Extra Inspiration",
-    bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    bucket: "pool",
+    note: "+3 uses/day of inspiration — the inspiration class feature carries a vendored uses.maxFormula tagged `inspiration`; derives generically via deriveResourcePools; extracted",
   },
   "extra-investigator-talent": {
     slug: "extra-investigator-talent",
@@ -847,14 +847,14 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "extra-martial-flexibility": {
     slug: "extra-martial-flexibility",
     name: "Extra Martial Flexibility",
-    bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    bucket: "pool",
+    note: "+3 uses/day of martial flexibility — vendored uses.maxFormula tagged `martialFlexibility`; derives generically via deriveResourcePools; extracted",
   },
   "extra-mental-focus": {
     slug: "extra-mental-focus",
     name: "Extra Mental Focus",
-    bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    bucket: "pool",
+    note: "+2 points of mental focus — vendored uses.maxFormula tagged `mentalFocus`; derives generically via deriveResourcePools; extracted",
   },
   "extra-mercy": {
     slug: "extra-mercy",
@@ -865,8 +865,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "extra-mesmerist-tricks": {
     slug: "extra-mesmerist-tricks",
     name: "Extra Mesmerist Tricks",
-    bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    bucket: "pool",
+    note: "+2 mesmerist tricks/day — vendored uses.maxFormula tagged `mesmeristTricks`; derives generically via deriveResourcePools; extracted",
   },
   "extra-ninja-trick": {
     slug: "extra-ninja-trick",
@@ -877,8 +877,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "extra-panache": {
     slug: "extra-panache",
     name: "Extra Panache",
-    bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    bucket: "pool",
+    note: "+2 max panache — vendored uses.maxFormula tagged `panache`; derives generically via deriveResourcePools (the Amateur Swashbuckler-only case has no modeled pool and honestly gets nothing); extracted",
   },
   "extra-performance": {
     slug: "extra-performance",

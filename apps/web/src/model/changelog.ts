@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-31-extra-pool-feats",
+    date: "2026-07-31",
+    title: "Eight more Extra feats top up their pools",
+    note: "Extra Bane, Extra Bombs, Extra Grit, Extra Inspiration, Extra Martial Flexibility, Extra Mental Focus, Extra Mesmerist Tricks, and Extra Panache now raise the matching pool in the tracker instead of sitting quietly on your feat list, joining Extra Rage and its kin. Take one twice where the book allows it and both count.",
+  },
+  {
     id: "2026-07-31-sr-check",
     date: "2026-07-31",
     title: "Your spell resistance answers back",

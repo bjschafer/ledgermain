@@ -375,6 +375,36 @@ describe("feats that raise a derived resource pool's max (feat-effects.ts FEAT_P
     expect(rage?.max).toBe(26);
   });
 
+  it("Extra Grit: gunslinger 5 w/ Wis 14's Grit (max(1, Wis mod) = 2) gains +2 -> 4 (Ultimate Combat)", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      abilities: { str: 12, dex: 16, con: 12, int: 10, wis: 14, cha: 10 },
+      identity: { name: "Six", race: raceId("Human"), classes: [{ tag: "gunslinger", level: 5 }] },
+      build: { ...makeDoc().build, feats: [featId("Extra Grit")] },
+    };
+    const sheet = compute(doc, ref);
+    const grit = deriveResourcePools(doc, ref, sheet.abilities).find((p) => p.name === "Grit");
+    expect(grit?.max).toBe(4);
+  });
+
+  it("Extra Panache: swashbuckler 3 w/ Cha 16's Panache (max(1, Cha mod) = 3) gains +2 -> 5 (Advanced Class Guide)", () => {
+    const doc: CharacterDoc = {
+      ...makeDoc(),
+      abilities: { str: 10, dex: 16, con: 12, int: 10, wis: 10, cha: 16 },
+      identity: {
+        name: "Inigo",
+        race: raceId("Human"),
+        classes: [{ tag: "swashbuckler", level: 3 }],
+      },
+      build: { ...makeDoc().build, feats: [featId("Extra Panache")] },
+    };
+    const sheet = compute(doc, ref);
+    const panache = deriveResourcePools(doc, ref, sheet.abilities).find(
+      (p) => p.name === "Panache",
+    );
+    expect(panache?.max).toBe(5);
+  });
+
   it("a feat's pool bonus doesn't leak onto an unrelated pool of the same character", () => {
     // A cleric with Extra Rage (no rage class feature present) should show no
     // Rage pool at all, and Channel Energy should be unaffected.
