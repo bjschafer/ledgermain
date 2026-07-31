@@ -49,14 +49,14 @@ import type { AbilityId, CharacterDoc, RefData } from "@pf1/schema";
 import { activeArchetypeSwaps } from "./archetypes.js";
 import { featNameSlug } from "./feat-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
+import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 
 /**
  * A derived term whose ability modifier can be substituted.
  *
  * `ac` covers the single Dexterity line in `computeAc`, and only that — CMD's
- * own Dex term (`cmd`, not `cmb`) is deliberately left alone, because Mind
- * Over Metal reads "for determining her Armor Class" and CMD is a separate
- * defense. `init` is initiative's Dex term. The attack/damage slots are
+ * own Dex term is a separate slot, `cmd` (see below), not automatically
+ * covered by an `ac` substitution. `init` is initiative's Dex term. The attack/damage slots are
  * per-weapon and apply to every weapon the character carries. `cmb` is CMB's
  * ability term specifically — Agile Maneuvers (APG p.150: "you can use your
  * Dexterity modifier instead of your Strength modifier when calculating your
@@ -65,11 +65,30 @@ import { tryEvaluateFormula, type RollData } from "./formula.js";
  * granted feature/feat this registry's name-slug lookup can key on), Agile
  * Maneuvers applies at any size, so it fits this module's shape exactly.
  *
+ * `cmd` is CMD's own Dex term — deliberately a *different* slot from `ac`,
+ * because RAW splits on this exactly: Mind Over Metal reads "for determining
+ * her Armor Class" and stops there (AC only, CMD untouched), while the
+ * oracle's Nature's Whispers reads "to your Armor Class and CMD" and names
+ * both. A substitution registered only on `ac` still leaves `cmd` alone; one
+ * written for Nature's Whispers is registered on both slots. `save.ref` is
+ * the Reflex save's ability term, for the oracle's Cha-for-Dex pair
+ * (Sidestep Secret, Prophetic Armor: "to your Armor Class and all Reflex
+ * saving throws") — scoped to Reflex only, per the quote's own words; it
+ * never reaches Fortitude, Will, or CMD (CMD is a defense value, not a saving
+ * throw, regardless of sharing Dex as its usual ability).
+ *
  * Known boundary: weapon-restricted substitutions (Zen Archer's Wis-to-hit
  * with bows only, the Guided property on one specific weapon) would need a
  * per-weapon predicate on the registry entry. Nothing vendored or
  * hand-authored needs one today, so it is deliberately not built — an
- * untested restriction path would be worse than an honest gap.
+ * untested restriction path would be worse than an honest gap. The same
+ * reasoning keeps every skill-scoped substitution (the oracle's Lore Keeper,
+ * Cha-for-Int on Knowledge checks; Whispered Glimpses, Cha-for-Wis on
+ * Perception/Sense Motive; the medium's Perform-for-Bluff/Intimidate swap)
+ * out of this registry entirely: skills are computed generically per skill id
+ * in `computeSkills`, with no per-skill or per-skill-group substitution slot,
+ * and building one for three revelations would be exactly the kind of
+ * untested, narrowly-used mechanism this module already declines to add.
  */
 export type SubstitutionSlot =
   | "ac"
@@ -77,7 +96,9 @@ export type SubstitutionSlot =
   | "attack.melee"
   | "attack.ranged"
   | "damage.melee"
-  | "cmb";
+  | "cmb"
+  | "cmd"
+  | "save.ref";
 
 /** A registry entry: one ability-for-ability swap on one slot. */
 export interface AbilitySubstitutionDef {
@@ -108,65 +129,119 @@ export interface ActiveAbilitySubstitution extends AbilitySubstitutionDef {
 }
 
 /**
- * Substitutions keyed by feature/feat name slug (see {@link featNameSlug}).
- * Clean-room from the published rules.
+ * Substitutions keyed by feature/feat/oracle-revelation name slug (see
+ * {@link featNameSlug}). Clean-room from the published rules. A key maps to
+ * an ARRAY of defs, not a single one, because a granting name can substitute
+ * on more than one slot at once (Sidestep Secret hits both `ac` and
+ * `save.ref`; Nature's Whispers hits both `ac` and `cmd`) — see
+ * {@link SubstitutionSlot}'s doc comment for why those are separate slots
+ * rather than one.
  *
- * Only Mind Over Metal and Agile Maneuvers are registered today. That is not
- * a placeholder: the other real PF1 substitutions are either already handled
- * elsewhere (the per-weapon `attackAbility`/`damageAbility` fields on
- * `WeaponInstance` cover Weapon Finesse and Slashing Grace, driven by an
- * explicit player choice) or weapon-restricted in a way this registry
- * deliberately does not yet express (see {@link SubstitutionSlot}). The
- * non-`ac` slots are exercised by the engine's fixture tests against
- * synthetic registry entries (and, for `cmb`, by Agile Maneuvers itself), so
- * they are live code paths rather than speculative ones.
+ * Mind Over Metal and Agile Maneuvers come from granted class
+ * features/feats; the oracle revelations below come from
+ * `doc.build.oracleRevelations` picks instead (see
+ * {@link collectAbilitySubstitutions}'s revelation loop). Other real PF1
+ * substitutions are either already handled elsewhere (the per-weapon
+ * `attackAbility`/`damageAbility` fields on `WeaponInstance` cover Weapon
+ * Finesse and Slashing Grace, driven by an explicit player choice) or
+ * weapon-/skill-restricted in a way this registry deliberately does not yet
+ * express (see {@link SubstitutionSlot}). The non-`ac` slots are exercised by
+ * the engine's fixture tests against synthetic registry entries (and, for
+ * `cmb`, by Agile Maneuvers itself), so they are live code paths rather than
+ * speculative ones.
  */
-export const ABILITY_SUBSTITUTIONS: Readonly<Record<string, AbilitySubstitutionDef>> = {
+export const ABILITY_SUBSTITUTIONS: Readonly<Record<string, readonly AbilitySubstitutionDef[]>> = {
   // "At 2nd level, when a student of war is using armor or a shield, she can
   // use her Intelligence modifier in place of her Dexterity modifier for
   // determining her Armor Class." The gate is armor OR shield, matching the
   // published text — `@armor.type`/`@shield.type` are 0 when nothing of that
   // kind is equipped (see `rolldata.ts`).
-  "mind-over-metal": {
-    slot: "ac",
-    from: "dex",
-    to: "int",
-    condition: "if(or(gte(@armor.type, 1), gte(@shield.type, 1)), 1, 0)",
-  },
+  "mind-over-metal": [
+    {
+      slot: "ac",
+      from: "dex",
+      to: "int",
+      condition: "if(or(gte(@armor.type, 1), gte(@shield.type, 1)), 1, 0)",
+    },
+  ],
   // Agile Maneuvers (APG p.150): "you can use your Dexterity modifier
   // instead of your Strength modifier when calculating your Combat Maneuver
   // Bonus." Unconditional (no size/armor gate) — unlike the Tiny-or-smaller
   // CMB substitution (CRB p.199), which stays a direct size check in
   // `compute.ts` since it isn't granted by a named feature this registry
   // can key on.
-  "agile-maneuvers": {
-    slot: "cmb",
-    from: "str",
-    to: "dex",
-  },
+  "agile-maneuvers": [{ slot: "cmb", from: "str", to: "dex" }],
+  // Oracle, Lore mystery, Sidestep Secret (aonprd.com): "Add your Charisma
+  // modifier (instead of your Dexterity modifier) to your Armor Class and
+  // all Reflex saving throws. Your armor's maximum Dexterity bonus applies
+  // to your Charisma instead of your Dexterity." Unconditional once picked
+  // (no armor/level gate in the text) — the max-Dex cap clause needs no
+  // special casing here: `computeAc` already applies the worn armor's cap
+  // to whichever ability feeds the AC line, substituted or not (see
+  // `computeAc`'s doc comment), so Mind Over Metal already exercises the
+  // same behavior this text calls out explicitly.
+  "sidestep-secret": [
+    { slot: "ac", from: "dex", to: "cha" },
+    { slot: "save.ref", from: "dex", to: "cha" },
+  ],
+  // Oracle, Lunar mystery, Prophetic Armor (aonprd.com): "You may use your
+  // Charisma modifier (instead of your Dexterity modifier) as part of your
+  // Armor Class and all Reflex saving throws. Your armor's maximum
+  // Dexterity bonus applies to your Charisma, instead." Same shape as
+  // Sidestep Secret above, word for word on the mechanic.
+  "prophetic-armor": [
+    { slot: "ac", from: "dex", to: "cha" },
+    { slot: "save.ref", from: "dex", to: "cha" },
+  ],
+  // Oracle, Nature mystery, Nature's Whispers (aonprd.com): "You may add
+  // your Charisma modifier, instead of your Dexterity modifier, to your
+  // Armor Class and CMD. Any condition that would cause you to lose your
+  // Dexterity modifier to your Armor Class instead causes you to lose your
+  // Charisma modifier to your Armor Class." No Reflex-save clause here,
+  // unlike Sidestep Secret/Prophetic Armor — registered on `ac` and `cmd`
+  // only. The flat-footed clause needs no special casing either: AC's
+  // flat-footed derivation already drops whichever ability is in the "dex"
+  // category (substituted or not), so it already behaves as the second
+  // sentence describes.
+  "nature-s-whispers": [
+    { slot: "ac", from: "dex", to: "cha" },
+    { slot: "cmd", from: "dex", to: "cha" },
+  ],
 };
 
 /**
  * Every substitution the character currently qualifies for, from granted class
- * features and feats.
+ * features, feats, and picked oracle revelations.
  *
  * Class-feature grants respect archetype swaps for the same reason
  * `collect.ts` does — a feature an archetype traded away must not keep
  * applying — and are gated on the character having reached the granting level.
+ *
+ * The revelation loop mirrors `collect.ts`'s own oracle-revelation loop
+ * exactly: gated on the character actually having oracle levels and a chosen
+ * mystery, scoped to `doc.build.oracleRevelations` entries whose
+ * `mysteryTag` matches that mystery (a stale pick from a since-changed
+ * mystery emits nothing). Like that loop, it applies no archetype-swap
+ * filtering — `collect.ts`'s revelation loop has none either, since this
+ * table doesn't model any archetype trading a revelation away.
  */
 export function collectAbilitySubstitutions(
   doc: CharacterDoc,
   refData: RefData,
   rollData: RollData,
-  registry: Readonly<Record<string, AbilitySubstitutionDef>> = ABILITY_SUBSTITUTIONS,
+  registry: Readonly<Record<string, readonly AbilitySubstitutionDef[]>> = ABILITY_SUBSTITUTIONS,
 ): ActiveAbilitySubstitution[] {
   const found: ActiveAbilitySubstitution[] = [];
 
   const consider = (name: string) => {
-    const def = registry[featNameSlug(name)];
-    if (!def) return;
-    if (def.condition !== undefined && !(tryEvaluateFormula(def.condition, rollData) ?? 0)) return;
-    found.push({ ...def, source: name });
+    const defs = registry[featNameSlug(name)];
+    if (!defs) return;
+    for (const def of defs) {
+      if (def.condition !== undefined && !(tryEvaluateFormula(def.condition, rollData) ?? 0)) {
+        continue;
+      }
+      found.push({ ...def, source: name });
+    }
   };
 
   const archetypeSwaps = activeArchetypeSwaps(doc, refData);
@@ -184,6 +259,15 @@ export function collectAbilitySubstitutions(
   for (const featId of doc.build.feats ?? []) {
     const feat = refData.feats[featId];
     if (feat) consider(feat.name);
+  }
+
+  const oracleLevel = doc.identity.classes.find((c) => c.tag === "oracle")?.level ?? 0;
+  if (oracleLevel > 0 && doc.build.oracleMystery) {
+    for (const revelationId of doc.build.oracleRevelations ?? []) {
+      const revelation = ORACLE_REVELATIONS[revelationId];
+      if (!revelation || revelation.mysteryTag !== doc.build.oracleMystery) continue;
+      consider(revelation.name);
+    }
   }
 
   return found;

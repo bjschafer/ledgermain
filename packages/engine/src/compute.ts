@@ -81,7 +81,6 @@ import {
   isTrainedOnly,
   PARAMETERIZED_SKILL_PREFIXES,
   ROGUE_FINESSE_TRAINING_LEVELS,
-  SAVE_ABILITY,
   saveForLevels,
   SIZE_AC_MOD,
   SKILL_ABILITY,
@@ -396,11 +395,19 @@ function computeAbilities(
 
 /* -------------------------------------------------------------------- saves */
 
+/**
+ * `ability` is the save's ability term — normally the save's fixed ability
+ * (Con/Dex/Wis for fort/ref/will), but Reflex's can be substituted (oracle
+ * Sidestep Secret/Prophetic Armor: Cha instead of Dex — see
+ * `ability-substitution.ts`). Fortitude/Will callers pass a `ResolvedAbility`
+ * with no `substitution`, so the label falls back to the plain ability id
+ * exactly as before.
+ */
 function computeSave(
   which: "fort" | "ref" | "will",
   classes: CharacterDoc["identity"]["classes"],
   refData: RefData,
-  abilityModifier: number,
+  ability: ResolvedAbility,
   collected: CollectedModifier[],
 ): ResolvedStat {
   let base = 0;
@@ -413,12 +420,15 @@ function computeSave(
     ...forTarget(collected, "allSavingThrows"),
   ];
   const stack = resolveStack(mods);
+  const label = ability.substitution
+    ? `Ability (${ability.ability}, ${ability.substitution.source})`
+    : `Ability (${ability.ability})`;
   const components: ModifierComponent[] = [
     synthetic("Base", "base", base),
-    synthetic(`Ability (${SAVE_ABILITY[which]})`, "ability", abilityModifier),
+    synthetic(label, "ability", ability.mod),
     ...toComponents(stack.modifiers),
   ];
-  return { total: base + abilityModifier + stack.total, components };
+  return { total: base + ability.mod + stack.total, components };
 }
 
 /* ----------------------------------------------------------------------- AC */
@@ -1516,7 +1526,6 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const sizeAttackMod = SIZE_AC_MOD[size];
 
   const strMod = abilities.str.mod;
-  const dexMod = abilities.dex.mod;
 
   // Ability substitutions ("use Int in place of Dex for AC") — see
   // `ability-substitution.ts`. Resolved once here and threaded into each term
@@ -1535,12 +1544,28 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     substitutions,
   );
   const initAbility = resolveSubstitution("init", "dex", abilityMods, substitutions);
+  // Reflex's ability term is substitutable (oracle Sidestep Secret/Prophetic
+  // Armor: Cha instead of Dex) — Fortitude and Will have no registered
+  // substitution today, so they stay plain ability modifiers.
+  const refAbility = resolveSubstitution("save.ref", "dex", abilityMods, substitutions);
 
   // Saves
   const saves = {
-    fort: computeSave("fort", doc.identity.classes, refData, abilities.con.mod, collected),
-    ref: computeSave("ref", doc.identity.classes, refData, abilities.dex.mod, collected),
-    will: computeSave("will", doc.identity.classes, refData, abilities.wis.mod, collected),
+    fort: computeSave(
+      "fort",
+      doc.identity.classes,
+      refData,
+      { ability: "con", mod: abilities.con.mod },
+      collected,
+    ),
+    ref: computeSave("ref", doc.identity.classes, refData, refAbility, collected),
+    will: computeSave(
+      "will",
+      doc.identity.classes,
+      refData,
+      { ability: "wis", mod: abilities.wis.mod },
+      collected,
+    ),
   };
 
   // Proficiency (issue #81) — class/feat/race grants, and the non-proficient
@@ -1600,10 +1625,14 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     },
   };
 
-  // AC. The Dexterity line is substitutable; CMD's Dex term below deliberately
-  // is not — Mind Over Metal reads "for determining her Armor Class", and CMD
-  // is a separate defense. (CMB's own ability term, below, has its own
-  // registered substitution — Agile Maneuvers — which is unrelated to this one.)
+  // AC. The Dexterity line is substitutable via the "ac" slot; CMD's own Dex
+  // term (below, the separate "cmd" slot) does NOT automatically follow it —
+  // Mind Over Metal reads "for determining her Armor Class" only, so an
+  // "ac"-only substitution leaves CMD alone. A substitution written for both
+  // (the oracle's Nature's Whispers: "to your Armor Class and CMD") is
+  // registered on both slots instead, and resolves independently below. (CMB's
+  // own ability term has its own registered substitution — Agile Maneuvers —
+  // unrelated to either of these.)
   const acAbility = resolveSubstitution("ac", "dex", abilityMods, substitutions);
   const ac = computeAc(doc, size, acAbility, collected, encumbrance);
 
@@ -1620,8 +1649,8 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // `resolveSubstitution`'s highest-wins convention (see `ability-
   // substitution.ts`'s doc comment). For a Tiny-or-smaller character (already
   // on Dex) Agile Maneuvers is simply a no-op, matching RAW — there's nothing
-  // left to substitute. CMD keeps using Str below regardless — neither
-  // substitution touches CMD, only CMB.
+  // left to substitute. CMD's own Str term is unaffected by either — neither
+  // Agile Maneuvers nor the size rule targets the "cmd" slot, only "cmb".
   const cmbBaseAbility = SIZE_LADDER.indexOf(size) <= SIZE_LADDER.indexOf("tiny") ? "dex" : "str";
   const cmbAbility = resolveSubstitution("cmb", cmbBaseAbility, abilityMods, substitutions);
   const cmbAbilityMod = cmbAbility.mod;
@@ -1657,7 +1686,11 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
       !explicitCmdSourceIds.has(m.sourceId ?? m.source),
   );
   const cmdStack = resolveStack([...autoCmdFromAc, ...explicitCmdMods]);
-  const cmd = 10 + bab + strMod + dexMod + sizeSpecial + cmdStack.total;
+  // CMD's Dex term is substitutable via the "cmd" slot (see the "AC" comment
+  // above) — unlike "ac", nothing sets a non-Dex base here, since CMD has no
+  // size-based substitution equivalent to CMB's Tiny-or-smaller rule.
+  const cmdDexAbility = resolveSubstitution("cmd", "dex", abilityMods, substitutions);
+  const cmd = 10 + bab + strMod + cmdDexAbility.mod + sizeSpecial + cmdStack.total;
 
   // Flat-footed CMD (CRB p.199, same "Flat-Footed" sidebar that defines
   // flat-footed AC): loses the Dexterity bonus and any dodge bonus feeding
@@ -1665,8 +1698,13 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // apply) — mirrors `computeAc`'s `flatFooted` derivation exactly. CMD has
   // no `components` array to filter post hoc (see the note above), so the
   // dodge exclusion happens on the input modifier list instead of on stacked
-  // output.
-  const flatFootedDexMod = Math.min(dexMod, 0);
+  // output. Uses `cmdDexAbility.mod` rather than raw Dex for the same reason
+  // `computeAc`'s flat-footed line does — a substituted ability's penalty
+  // still applies even when its bonus doesn't (the oracle's Nature's
+  // Whispers spells this out for AC: "any condition that would cause you to
+  // lose your Dexterity modifier... instead causes you to lose your Charisma
+  // modifier"; CMD follows the same logic since it shares the same Dex term).
+  const flatFootedDexMod = Math.min(cmdDexAbility.mod, 0);
   const flatFootedCmdMods = [...autoCmdFromAc, ...explicitCmdMods].filter(
     (m) => m.type.toLowerCase() !== "dodge" || m.value < 0,
   );

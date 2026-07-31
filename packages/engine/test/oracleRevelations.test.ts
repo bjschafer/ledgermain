@@ -24,7 +24,13 @@ import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import { collectModifiers } from "../src/collect.js";
-import { collectGrantedFeatures, compute, resolveClassFeatures } from "../src/index.js";
+import {
+  ABILITY_SUBSTITUTIONS,
+  collectGrantedFeatures,
+  compute,
+  featNameSlug,
+  resolveClassFeatures,
+} from "../src/index.js";
 import { ORACLE_MYSTERIES, ORACLE_MYSTERY_TAGS } from "../src/oracle-mysteries.js";
 import {
   ORACLE_MYSTERY_FINAL_REVELATIONS,
@@ -123,9 +129,26 @@ const CHOICE_PROMOTED_REVELATION_IDS = [
   "elemental:elementalAegis",
 ];
 
+/**
+ * Promoted via `ability-substitution.ts` instead of `changes[]`
+ * (`hasAbilitySubstitution: true` — see `oracle-revelations.ts`'s doc
+ * comment): a substitution swaps which ability feeds a term rather than
+ * adding to one, so `changes` stays empty even though the revelation is
+ * fully modeled. Each has its own `compute()` fixture describe block below.
+ */
+const SUBSTITUTION_PROMOTED_REVELATION_IDS = [
+  "lore:sidestepSecret",
+  "lunar:propheticArmor",
+  "nature:naturesWhispers",
+];
+
 describe("ORACLE_REVELATIONS table", () => {
   it("every non-promoted revelation is displayOnly with no changes (no unconditional flat number)", () => {
-    const promoted = new Set([...PROMOTED_REVELATION_IDS, ...CHOICE_PROMOTED_REVELATION_IDS]);
+    const promoted = new Set([
+      ...PROMOTED_REVELATION_IDS,
+      ...CHOICE_PROMOTED_REVELATION_IDS,
+      ...SUBSTITUTION_PROMOTED_REVELATION_IDS,
+    ]);
     for (const id of ORACLE_REVELATION_IDS) {
       if (promoted.has(id)) continue;
       const revelation = ORACLE_REVELATIONS[id]!;
@@ -141,6 +164,17 @@ describe("ORACLE_REVELATIONS table", () => {
       expect(revelation, id).toBeDefined();
       expect(revelation!.displayOnly, id).toBe(false);
       expect(revelation!.changes.length, id).toBeGreaterThan(0);
+    }
+  });
+
+  it("every ability-substitution-promoted revelation is displayOnly: false with empty changes[] and a registered substitution", () => {
+    for (const id of SUBSTITUTION_PROMOTED_REVELATION_IDS) {
+      const revelation = ORACLE_REVELATIONS[id];
+      expect(revelation, id).toBeDefined();
+      expect(revelation!.displayOnly, id).toBe(false);
+      expect(revelation!.changes, id).toEqual([]);
+      expect(revelation!.hasAbilitySubstitution, id).toBe(true);
+      expect(ABILITY_SUBSTITUTIONS[featNameSlug(revelation!.name)], id).toBeDefined();
     }
   });
 
@@ -527,6 +561,214 @@ describe("promoted revelation: outer_rifts:telepathy", () => {
     const doc = makeOracle(11, "life", ["outer_rifts:telepathy"]);
     const sheet = compute(doc, ref);
     expect(sheet.senses.length).toBe(0);
+  });
+});
+
+/**
+ * Ability-substitution-promoted revelations (`hasAbilitySubstitution: true`
+ * — see `oracle-revelations.ts`'s doc comment and `ability-substitution.ts`'s
+ * registry). `substitutionDoc` builds a bare oracle with custom abilities and
+ * gear, mirroring `abilitySubstitution.test.ts`'s `makeDoc` helper.
+ */
+function substitutionDoc(over: {
+  mystery: string;
+  revelations: string[];
+  abilities: CharacterDoc["abilities"];
+  gear?: CharacterDoc["build"]["gear"];
+}): CharacterDoc {
+  const base = makeOracle(1, over.mystery, over.revelations);
+  return {
+    ...base,
+    abilities: over.abilities,
+    build: { ...base.build, gear: over.gear ?? [] },
+  };
+}
+
+describe("promoted revelation (ability substitution): lore:sidestepSecret", () => {
+  // AoN (Lore mystery): "Add your Charisma modifier (instead of your
+  // Dexterity modifier) to your Armor Class and all Reflex saving throws.
+  // Your armor's maximum Dexterity bonus applies to your Charisma instead of
+  // your Dexterity." Dex 12 (+1), Cha 16 (+3) — Cha is the improvement.
+  const abilities = { str: 10, dex: 12, con: 12, int: 10, wis: 10, cha: 16 };
+
+  it("uses Cha instead of Dex for AC", () => {
+    const withRev = compute(
+      substitutionDoc({ mystery: "lore", revelations: ["lore:sidestepSecret"], abilities }),
+      ref,
+    );
+    const without = compute(substitutionDoc({ mystery: "lore", revelations: [], abilities }), ref);
+    expect(withRev.ac.normal - without.ac.normal).toBe(2); // Cha(+3) - Dex(+1)
+  });
+
+  it("uses Cha instead of Dex for the Reflex save", () => {
+    const withRev = compute(
+      substitutionDoc({ mystery: "lore", revelations: ["lore:sidestepSecret"], abilities }),
+      ref,
+    );
+    const without = compute(substitutionDoc({ mystery: "lore", revelations: [], abilities }), ref);
+    expect(withRev.saves.ref.total - without.saves.ref.total).toBe(2);
+  });
+
+  it("leaves CMD on Dexterity — the RAW text names AC and Reflex only, not CMD", () => {
+    const withRev = compute(
+      substitutionDoc({ mystery: "lore", revelations: ["lore:sidestepSecret"], abilities }),
+      ref,
+    );
+    const without = compute(substitutionDoc({ mystery: "lore", revelations: [], abilities }), ref);
+    expect(withRev.cmd).toBe(without.cmd);
+  });
+
+  it('never makes AC or Reflex worse — a lower Cha than Dex keeps Dexterity ("you can add" reads as optional, so the engine\'s highest-wins convention applies)', () => {
+    const lowCha = { str: 10, dex: 16, con: 12, int: 10, wis: 10, cha: 8 };
+    const withRev = compute(
+      substitutionDoc({ mystery: "lore", revelations: ["lore:sidestepSecret"], abilities: lowCha }),
+      ref,
+    );
+    const without = compute(
+      substitutionDoc({ mystery: "lore", revelations: [], abilities: lowCha }),
+      ref,
+    );
+    expect(withRev.ac.normal).toBe(without.ac.normal);
+    expect(withRev.saves.ref.total).toBe(without.saves.ref.total);
+  });
+
+  it("respects the armor's max-Dex cap on the substituted Charisma bonus, per the revelation's own text", () => {
+    const breastplate = {
+      equipped: true,
+      name: "Breastplate",
+      armor: { slot: "armor" as const, ac: 6, maxDex: 2, acp: -4, type: 2 },
+    };
+    const sheet = compute(
+      substitutionDoc({
+        mystery: "lore",
+        revelations: ["lore:sidestepSecret"],
+        abilities, // Cha +3, capped to the breastplate's maxDex 2
+        gear: [breastplate],
+      }),
+      ref,
+    );
+    // 10 base + 6 armor + 2 (capped Cha) = 18.
+    expect(sheet.ac.normal).toBe(18);
+  });
+
+  it("an unpicked revelation changes nothing, even with a much better Charisma", () => {
+    const sheet = compute(substitutionDoc({ mystery: "lore", revelations: [], abilities }), ref);
+    const plainDex = compute(
+      substitutionDoc({
+        mystery: "lore",
+        revelations: [],
+        abilities: { ...abilities, cha: 10 },
+      }),
+      ref,
+    );
+    expect(sheet.ac.normal).toBe(plainDex.ac.normal);
+    expect(sheet.saves.ref.total).toBe(plainDex.saves.ref.total);
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const sheet = compute(
+      substitutionDoc({ mystery: "life", revelations: ["lore:sidestepSecret"], abilities }),
+      ref,
+    );
+    const without = compute(substitutionDoc({ mystery: "life", revelations: [], abilities }), ref);
+    expect(sheet.ac.normal).toBe(without.ac.normal);
+    expect(sheet.saves.ref.total).toBe(without.saves.ref.total);
+  });
+});
+
+describe("promoted revelation (ability substitution): lunar:propheticArmor", () => {
+  // AoN (Lunar mystery): "You may use your Charisma modifier (instead of
+  // your Dexterity modifier) as part of your Armor Class and all Reflex
+  // saving throws. Your armor's maximum Dexterity bonus applies to your
+  // Charisma, instead." Same mechanical shape as Sidestep Secret.
+  const abilities = { str: 10, dex: 12, con: 12, int: 10, wis: 10, cha: 16 };
+
+  it("uses Cha instead of Dex for AC and the Reflex save", () => {
+    const withRev = compute(
+      substitutionDoc({ mystery: "lunar", revelations: ["lunar:propheticArmor"], abilities }),
+      ref,
+    );
+    const without = compute(substitutionDoc({ mystery: "lunar", revelations: [], abilities }), ref);
+    expect(withRev.ac.normal - without.ac.normal).toBe(2);
+    expect(withRev.saves.ref.total - without.saves.ref.total).toBe(2);
+  });
+
+  it("leaves CMD alone", () => {
+    const withRev = compute(
+      substitutionDoc({ mystery: "lunar", revelations: ["lunar:propheticArmor"], abilities }),
+      ref,
+    );
+    const without = compute(substitutionDoc({ mystery: "lunar", revelations: [], abilities }), ref);
+    expect(withRev.cmd).toBe(without.cmd);
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const sheet = compute(
+      substitutionDoc({ mystery: "life", revelations: ["lunar:propheticArmor"], abilities }),
+      ref,
+    );
+    const without = compute(substitutionDoc({ mystery: "life", revelations: [], abilities }), ref);
+    expect(sheet.ac.normal).toBe(without.ac.normal);
+  });
+});
+
+describe("promoted revelation (ability substitution): nature:naturesWhispers", () => {
+  // AoN (Nature mystery): "You may add your Charisma modifier, instead of
+  // your Dexterity modifier, to your Armor Class and CMD." No Reflex-save
+  // clause, unlike Sidestep Secret/Prophetic Armor above.
+  const abilities = { str: 10, dex: 12, con: 12, int: 10, wis: 10, cha: 16 };
+
+  it("uses Cha instead of Dex for AC and CMD", () => {
+    const withRev = compute(
+      substitutionDoc({ mystery: "nature", revelations: ["nature:naturesWhispers"], abilities }),
+      ref,
+    );
+    const without = compute(
+      substitutionDoc({ mystery: "nature", revelations: [], abilities }),
+      ref,
+    );
+    expect(withRev.ac.normal - without.ac.normal).toBe(2);
+    expect(withRev.cmd - without.cmd).toBe(2);
+  });
+
+  it("does NOT use Cha for the Reflex save — the RAW text names AC and CMD only", () => {
+    const withRev = compute(
+      substitutionDoc({ mystery: "nature", revelations: ["nature:naturesWhispers"], abilities }),
+      ref,
+    );
+    const without = compute(
+      substitutionDoc({ mystery: "nature", revelations: [], abilities }),
+      ref,
+    );
+    expect(withRev.saves.ref.total).toBe(without.saves.ref.total);
+  });
+
+  it("never makes AC or CMD worse when Cha is lower than Dex", () => {
+    const lowCha = { str: 10, dex: 16, con: 12, int: 10, wis: 10, cha: 8 };
+    const withRev = compute(
+      substitutionDoc({
+        mystery: "nature",
+        revelations: ["nature:naturesWhispers"],
+        abilities: lowCha,
+      }),
+      ref,
+    );
+    const without = compute(
+      substitutionDoc({ mystery: "nature", revelations: [], abilities: lowCha }),
+      ref,
+    );
+    expect(withRev.ac.normal).toBe(without.ac.normal);
+    expect(withRev.cmd).toBe(without.cmd);
+  });
+
+  it("contributes nothing when picked under the wrong mystery", () => {
+    const sheet = compute(
+      substitutionDoc({ mystery: "life", revelations: ["nature:naturesWhispers"], abilities }),
+      ref,
+    );
+    const without = compute(substitutionDoc({ mystery: "life", revelations: [], abilities }), ref);
+    expect(sheet.ac.normal).toBe(without.ac.normal);
+    expect(sheet.cmd).toBe(without.cmd);
   });
 });
 

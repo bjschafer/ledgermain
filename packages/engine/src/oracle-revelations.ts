@@ -33,16 +33,26 @@
  * Modelling posture (mirrors arcanist-exploits.ts/magus-arcana.ts): the vast
  * majority of revelations are situational, activated, scaling-but-choice-
  * gated, or mechanic-substitution abilities with no flat always-on number the
- * engine tracks (a few — Sidestep Secret's Cha-for-Dex AC/Reflex swap, Lore
- * Keeper's Cha-for-Int Knowledge swap, Mental Acuity's inherent Int bonus
- * that scales by WHEN it was taken — come close, but each requires either a
- * structural ability-substitution the compute pipeline doesn't support
- * outside its one hardcoded Cleric Wisdom house rule, or per-character "which
- * level did you take this" state this table doesn't carry; see `traits.ts`'s
- * honesty bar). Those stay `displayOnly: true` with `changes: []`; a handful
- * carry a `contextNotes` reminder when the ability requires a nested pick
- * this table doesn't model (which weapon, which combat maneuver, ...) or
- * points at an existing tracked feature (a companion, a bonus feat).
+ * engine tracks (Mental Acuity's inherent Int bonus that scales by WHEN it
+ * was taken comes close, but needs per-character "which level did you take
+ * this" state this table doesn't carry; see `traits.ts`'s honesty bar).
+ * Those stay `displayOnly: true` with `changes: []`; a handful carry a
+ * `contextNotes` reminder when the ability requires a nested pick this table
+ * doesn't model (which weapon, which combat maneuver, ...) or points at an
+ * existing tracked feature (a companion, a bonus feat).
+ *
+ * A separate small set is promoted via `ability-substitution.ts` instead of
+ * `changes[]` (`hasAbilitySubstitution: true` — a substitution swaps which
+ * ability feeds a term rather than adding to one, so it was never going to
+ * be a `Change`): `lore:sidestepSecret` and `lunar:propheticArmor` (Cha
+ * instead of Dex to AC and Reflex saves) and `nature:naturesWhispers` (Cha
+ * instead of Dex to AC and CMD). Lore Keeper and Intrigue's Whispered
+ * Glimpses read the same way in prose (Cha instead of Int/Wis on named
+ * skills) but stay `displayOnly` regardless — the substitution registry has
+ * no per-skill(-group) slot, only whole-term ones (`ac`, `cmd`, `save.ref`,
+ * ...), so a skill-scoped swap has no honest slot to register on; see
+ * their own `contextNotes` and `ability-substitution.ts`'s doc comment for
+ * why that gap is deliberate rather than an oversight.
  *
  * A small, deliberately narrow set of revelations DO carry a real `changes[]`
  * (issue #75-style promotion, same bar as `rage-powers.ts`'s WHILE_RAGING
@@ -103,14 +113,15 @@
  *     `rage-powers.ts`'s Superstition near-miss — see that file's doc
  *     comment.
  *
- * Issue #75 audit: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
- * built for the rage powers' "while raging" shape — see `rage-powers.ts`)
- * does NOT unlock anything here — nothing in this table is conditioned on a
- * separate buff being active. The remaining near-misses above are ability
- * SUBSTITUTIONS (a structural compute change, not a typed modifier),
- * take-level-dependent scaling with no numeric hook, a save-category the
- * engine can't target, or a set-semantics mismatch — none unlockable by
- * that mechanism, so they stay deliberately deferred.
+ * The buff-gated-changes mechanism (`Change.activeWhenBuff`, built for the
+ * rage powers' "while raging" shape — see `rage-powers.ts`) does NOT unlock
+ * anything here — nothing in this table is conditioned on a separate buff
+ * being active. The near-misses above stay deferred for reasons that
+ * mechanism can't address either way: take-level-dependent scaling with no
+ * numeric hook (Mental Acuity), a save-category the engine can't target
+ * (nearDeath/mysticNull), or a skill-scoped ability substitution with no
+ * per-skill(-group) slot (Lore Keeper, Whispered Glimpses — see the
+ * ability-substitution paragraph above).
  *
  * The Final Revelation (20th level, automatic — NOT one of the six budgeted
  * picks) is tracked separately in `ORACLE_MYSTERY_FINAL_REVELATIONS`,
@@ -159,6 +170,16 @@ export interface OracleRevelationDef {
   choiceFromMystery?: boolean;
   /** Per-option Changes, keyed by option id — applied only when the resolved choice matches a key. */
   choiceChanges?: Readonly<Record<string, readonly Change[]>>;
+  /**
+   * True for a revelation whose entire mechanical content is an ability
+   * SUBSTITUTION (`ability-substitution.ts`'s `ABILITY_SUBSTITUTIONS`,
+   * matched by this revelation's own name) rather than a `Change` — a
+   * substitution isn't a `Change` (it swaps which ability feeds a term
+   * instead of adding to one), so `changes` stays `[]` for these, but the
+   * revelation still moves a real number once picked and must not read as
+   * prose-only.
+   */
+  hasAbilitySubstitution?: boolean;
 }
 
 export interface OracleMysteryFinalRevelation {
@@ -181,6 +202,7 @@ interface RawRevelation {
   choice?: PickChoice;
   choiceFromMystery?: boolean;
   choiceChanges?: Readonly<Record<string, readonly Change[]>>;
+  hasAbilitySubstitution?: boolean;
 }
 
 /** `c()` mirrors `oracle-curses.ts`/`bloodlines.ts`'s helper — a terse Change literal for the handful of promoted revelations below. */
@@ -218,9 +240,12 @@ function forMystery(mysteryTag: string, entries: RawRevelation[]): OracleRevelat
       contextNotes: e.contextNotes,
       // A choice-gated revelation still counts as modeled: it moves real
       // numbers once its selection is stored (same convention as rage powers).
-      displayOnly: changes.length === 0 && !e.choiceChanges,
+      // An ability-substitution revelation counts too, for the same reason —
+      // see `hasAbilitySubstitution`'s doc comment.
+      displayOnly: changes.length === 0 && !e.choiceChanges && !e.hasAbilitySubstitution,
       choice: e.choice,
       choiceFromMystery: e.choiceFromMystery,
+      hasAbilitySubstitution: e.hasAbilitySubstitution,
       choiceChanges: e.choiceChanges,
     };
   });
@@ -599,7 +624,7 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       summary: "Use your Charisma modifier instead of Intelligence on all Knowledge checks.",
       contextNotes: [
         note(
-          "Mechanic substitution only — apply manually; no Cha-for-Int Change target exists.",
+          "Ability substitution scoped to every Knowledge skill, not a single term. The engine's substitution registry has no per-skill(-group) slot (skills are computed generically, one at a time), so this stays manual: apply the swap yourself on each Knowledge check.",
           "kno",
         ),
       ],
@@ -621,12 +646,13 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       id: "sidestepSecret",
       name: "Sidestep Secret",
       summary: "Add your Charisma modifier to AC and Reflex saves instead of Dexterity.",
-      contextNotes: [
-        note(
-          "Mechanic substitution only — apply manually; no Cha-for-Dex Change target exists.",
-          "ac",
-        ),
-      ],
+      // aonprd.com: "Add your Charisma modifier (instead of your Dexterity
+      // modifier) to your Armor Class and all Reflex saving throws. Your
+      // armor's maximum Dexterity bonus applies to your Charisma instead of
+      // your Dexterity." Modeled as an ability SUBSTITUTION, not a `Change`
+      // — see `ability-substitution.ts`'s "sidestep-secret" entry (the "ac"
+      // and "save.ref" slots) — so `changes` stays empty here.
+      hasAbilitySubstitution: true,
     },
     {
       id: "spontaneousSymbology",
@@ -688,12 +714,14 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       id: "naturesWhispers",
       name: "Nature's Whispers",
       summary: "Add your Charisma modifier instead of Dexterity to AC and CMD.",
-      contextNotes: [
-        note(
-          "Mechanic substitution only — apply manually; no Cha-for-Dex Change target exists.",
-          "ac",
-        ),
-      ],
+      // aonprd.com: "You may add your Charisma modifier, instead of your
+      // Dexterity modifier, to your Armor Class and CMD. Any condition that
+      // would cause you to lose your Dexterity modifier to your Armor Class
+      // instead causes you to lose your Charisma modifier to your Armor
+      // Class." No Reflex-save clause (unlike Sidestep Secret/Prophetic
+      // Armor) — modeled as an ability SUBSTITUTION on the "ac" and "cmd"
+      // slots; see `ability-substitution.ts`'s "nature-s-whispers" entry.
+      hasAbilitySubstitution: true,
     },
     {
       id: "speakWithAnimals",
@@ -1678,11 +1706,11 @@ const REVELATION_LIST: OracleRevelationDef[] = [
         "Use your Charisma modifier instead of Wisdom on Perception and Sense Motive checks.",
       contextNotes: [
         note(
-          "Mechanic substitution only — apply manually; no Cha-for-Wis Change target exists.",
+          "Ability substitution scoped to two named skills. The engine's substitution registry has no per-skill(-group) slot (skills are computed generically, one at a time), so this stays manual: apply the swap yourself on Perception checks.",
           "skill.per",
         ),
         note(
-          "Mechanic substitution only — apply manually; no Cha-for-Wis Change target exists.",
+          "Same Cha-for-Wis substitution as the Perception note above, applied here to Sense Motive checks instead.",
           "skill.sen",
         ),
       ],
@@ -1808,12 +1836,13 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Prophetic Armor",
       summary:
         "Add your Charisma modifier instead of Dexterity to AC and Reflex saves; your armor's maximum Dexterity bonus applies to Charisma instead.",
-      contextNotes: [
-        note(
-          "Mechanic substitution only — apply manually; no Cha-for-Dex Change target exists.",
-          "ac",
-        ),
-      ],
+      // aonprd.com: "You may use your Charisma modifier (instead of your
+      // Dexterity modifier) as part of your Armor Class and all Reflex
+      // saving throws. Your armor's maximum Dexterity bonus applies to your
+      // Charisma, instead." Same shape as Sidestep Secret — modeled as an
+      // ability SUBSTITUTION on the "ac" and "save.ref" slots; see
+      // `ability-substitution.ts`'s "prophetic-armor" entry.
+      hasAbilitySubstitution: true,
     },
     {
       id: "touchOfTheMoon",
