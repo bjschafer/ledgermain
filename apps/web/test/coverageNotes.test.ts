@@ -8,9 +8,9 @@ import { expectNoDashes, expectWithinBudget } from "./houseStyle.js";
  * so they ratchet. Raising one is a decision to make the panel longer, and
  * should be argued for rather than done reflexively to land a sentence.
  */
-const NOTE_BUDGET = 75;
+const NOTE_BUDGET = 65;
 const ISSUE_DETAIL_BUDGET = 65;
-const INTERNAL_DETAIL_BUDGET = 60;
+const INTERNAL_DETAIL_BUDGET = 35;
 
 /**
  * Constructions that only appear when an entry is narrating work that landed
@@ -36,6 +36,32 @@ function expectDescribesTheGap(label: string, text: string): void {
       throw new Error(
         `${label}: "${hit[0]}" ${why}. This table lists what's missing; shipped work ` +
           `belongs in changelog.ts. Closing a gap means deleting or shrinking its entry.\n  ${text}`,
+      );
+    }
+  }
+}
+
+/**
+ * Tells on an entry that's describing where the app hands the ruling to the
+ * table. That isn't a gap: Ledgermain never models the attacker's side, so no
+ * future version closes it, and listing it implies one will. Such an entry is
+ * affordance documentation, and belongs where the player uses the affordance.
+ */
+const NOT_A_GAP: readonly RegExp[] = [
+  /\byour GM\b/i,
+  /\byours to say\b/i,
+  /\bleaves the ruling\b/i,
+  /\ba reminder for you\b/i,
+];
+
+function expectCloseable(label: string, text: string): void {
+  for (const pattern of NOT_A_GAP) {
+    const hit = text.match(pattern);
+    if (hit) {
+      throw new Error(
+        `${label}: "${hit[0]}" reads as a table ruling rather than unbuilt work. An entry ` +
+          `belongs here only if some future version could close it; document the boundary ` +
+          `next to the affordance instead.\n  ${text}`,
       );
     }
   }
@@ -81,6 +107,13 @@ describe("COVERAGE_NOTES", () => {
     }
   });
 
+  it("lists only gaps a future version could close, not table rulings", () => {
+    for (const n of COVERAGE_NOTES) {
+      expectCloseable(`${n.category} (note)`, n.note);
+      expectCloseable(`${n.category} (issueDetail)`, n.issueDetail ?? "");
+    }
+  });
+
   it("uses no em or en dashes in copy the Settings panel renders", () => {
     for (const n of COVERAGE_NOTES) {
       expectNoDashes(`${n.category} (category)`, n.category);
@@ -111,6 +144,7 @@ describe("INTERNAL_GAPS", () => {
     for (const g of INTERNAL_GAPS) {
       expectWithinBudget(`${g.category} (detail)`, g.detail, INTERNAL_DETAIL_BUDGET);
       expectDescribesTheGap(`${g.category} (detail)`, g.detail);
+      expectCloseable(`${g.category} (detail)`, g.detail);
       expect(g.detail).not.toMatch(/#\d+/);
     }
   });

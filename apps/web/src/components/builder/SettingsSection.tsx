@@ -919,7 +919,7 @@ function CoverageNotesPanel() {
     <Panel title="What's Not Covered" step="⚙" icon={<GearIcon />}>
       <Explainer title="A few things aren't built in yet">
         <p className="hint" style={{ marginBottom: 10 }}>
-          Ledgermain covers the core rulebooks well, with a lot of later material besides — but some
+          Ledgermain covers the core rulebooks well, with a lot of later material besides, but some
           corners are still deliberately thin. If you hit one of these at the table, it's a known
           gap, not a bug.
         </p>

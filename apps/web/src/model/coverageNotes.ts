@@ -37,27 +37,21 @@
  * budgets and the banned constructions, so a growing entry fails the build
  * rather than shipping.
  *
- * Most gaps take one of two shapes, and the copy should say which:
- * browsable-but-not-modeled (the entry is in the picker with its full rules
- * text, but no live number moves — pickers mark modeled entries with an
- * "M" badge), versus genuinely absent. `group` states which, so the issue
- * mirror can bucket by shape.
+ * ## An entry has to be closeable
+ *
+ * A gap belongs here only if some future version of Ledgermain could close
+ * it. Where the sheet stops because it would have to know something only the
+ * GM knows, that's the product's boundary and not a gap: the app never models
+ * the attacker's side, so it can't rule on whether a hit bypassed your DR or
+ * whether an incoming effect lands. Listing those implies a future that isn't
+ * coming. Document them as affordances where the player uses them instead.
  *
  * House style applies to every string here: no em or en dashes in copy that
  * renders in the app. Restructure the sentence instead.
  */
 
-/**
- * Which shape a gap takes. Only the generated issue mirror reads this, to
- * bucket entries instead of listing fifteen unrelated headings flat:
- * `not-modeled` is in the picker with its rules text but moves no numbers,
- * `not-adjudicated` is a number the sheet shows but never rules on.
- */
-export type CoverageGroup = "not-modeled" | "not-adjudicated";
-
 export interface CoverageNote {
   category: string;
-  group: CoverageGroup;
   note: string;
   /**
    * Extra technical detail (counts, vendored-entry names) for the generated
@@ -69,7 +63,6 @@ export interface CoverageNote {
 export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
     category: "Prestige classes",
-    group: "not-modeled",
     note: "All of them are in the class picker. Only the ten core-rulebook ones, plus Student of War and Soul Warden, have their spellcasting progression and entry requirements tracked. The rest show their full rules text, and their requirements read as advice rather than something the sheet enforces. If one you're playing advances your spellcasting, say so and it can be added.",
     issueDetail:
       "108 vendored splatbook prestige classes: no structured castingAdvancement (the schedules are prose) and no structured prereqs (requirements stay soft advisories).",
@@ -77,29 +70,15 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
     category:
       "Class picker lists (rage powers, hexes, arcana, talents, exploits, tricks, discoveries, ki powers, style strikes, bold stares, phrenic amplifications, revelations, spirits, disciplines, implements, orders, patrons, aspects, wild talents)",
-    group: "not-modeled",
     note: 'Every published entry in these lists is browsable, searchable, and written up with its level requirement flagged. Entries that move numbers on your sheet automatically are marked with an "M". Most entries are not: they show their rules text for you to apply at the table.',
     issueDetail:
       "Every list, the class-subsystem tables included, sits at full vendored parity (rage powers 243, rogue talents 234, alchemist discoveries 168, witch hexes 104, down to monk style strikes 15), so the gap is promotion rather than coverage: only 31 rage powers and a scattering of talents and discoveries carry live changes[]. Candidates blocked on a missing mechanism are recorded inline in their table files.",
   },
   {
     category: "Character traits",
-    group: "not-modeled",
     note: "The full published trait catalog is searchable in the picker, and a trait whose benefit comes with structured numbers applies them to your sheet automatically. The rest show their benefit as text to apply at the table. Anything still missing can be added as a homebrew trait.",
     issueDetail:
       "1,981 vendored and searchable; 434 carry structured changes the sheet applies live, plus the 28 hand-authored core entries. The other ~1,500 are prose-only upstream.",
-  },
-  {
-    category: "Damage reduction and energy resistance",
-    group: "not-adjudicated",
-    note: "Your DR and resistances come off incoming damage automatically, and ablative pools like stoneskin track what they have left. Whether an attack bypassed your DR is yours to say, since only your GM knows what the attacker was swinging: name the material in the hit, or flip the switch by hand.",
-  },
-  {
-    category: "Immunities",
-    group: "not-adjudicated",
-    note: "Immunity to things that aren't damage shows on your sheet and flags the matching condition, but it's a reminder for you and your GM. Nothing rolls against it.",
-    issueDetail:
-      "Non-damage immunity is a separate axis (Defenses.effectImmunities) that resolveDamage deliberately never sees: a soft flag on the conditions it maps onto, and a gate on the tracker's nonlethal entry, but nothing adjudicates an incoming effect against it.",
   },
 ];
 
@@ -116,11 +95,6 @@ export interface InternalGap {
 }
 
 export const INTERNAL_GAPS: readonly InternalGap[] = [
-  {
-    category: "Beyond data",
-    detail:
-      "Situational/activated effects, prestige-class prereq structuring, and Paths of Prestige-tier mechanics tables have no machine-readable source and must be hand-authored against the published rules.",
-  },
   {
     category: "Timed conditions",
     detail:
