@@ -12,8 +12,10 @@ import {
   setTempHp,
 } from "../src/model/hp.js";
 import {
+  conditionRoundsLeft,
   hasCondition,
   isImpliedCondition,
+  setConditionRounds,
   supersedingCondition,
   toggleCondition,
 } from "../src/model/conditions.js";
@@ -118,6 +120,68 @@ describe("conditions", () => {
     expect(hasCondition(d, "prone")).toBe(true);
     d = toggleCondition(d, "prone");
     expect(hasCondition(d, "prone")).toBe(false);
+  });
+});
+
+describe("setConditionRounds", () => {
+  it("is a no-op when the condition isn't active", () => {
+    const d = doc();
+    expect(setConditionRounds(d, "shaken", 5)).toBe(d);
+    expect(conditionRoundsLeft(d, "shaken")).toBeUndefined();
+  });
+
+  it("sets a timer on an active, previously-untimed condition", () => {
+    let d = doc();
+    d = toggleCondition(d, "shaken");
+    expect(conditionRoundsLeft(d, "shaken")).toBeUndefined();
+    d = setConditionRounds(d, "shaken", 4);
+    expect(conditionRoundsLeft(d, "shaken")).toBe(4);
+    expect(hasCondition(d, "shaken")).toBe(true);
+  });
+
+  it("replaces an existing timer rather than adding to it", () => {
+    let d = doc();
+    d = toggleCondition(d, "shaken");
+    d = setConditionRounds(d, "shaken", 4);
+    d = setConditionRounds(d, "shaken", 9);
+    expect(conditionRoundsLeft(d, "shaken")).toBe(9);
+  });
+
+  it("truncates a fractional round count", () => {
+    let d = doc();
+    d = toggleCondition(d, "shaken");
+    d = setConditionRounds(d, "shaken", 3.9);
+    expect(conditionRoundsLeft(d, "shaken")).toBe(3);
+  });
+
+  it("undefined or non-positive rounds clears the timer but leaves the condition active", () => {
+    let d = doc();
+    d = toggleCondition(d, "shaken");
+    d = setConditionRounds(d, "shaken", 4);
+    d = setConditionRounds(d, "shaken", undefined);
+    expect(conditionRoundsLeft(d, "shaken")).toBeUndefined();
+    expect(hasCondition(d, "shaken")).toBe(true);
+
+    d = setConditionRounds(d, "shaken", 4);
+    d = setConditionRounds(d, "shaken", 0);
+    expect(conditionRoundsLeft(d, "shaken")).toBeUndefined();
+    expect(hasCondition(d, "shaken")).toBe(true);
+
+    d = setConditionRounds(d, "shaken", 4);
+    d = setConditionRounds(d, "shaken", -3);
+    expect(conditionRoundsLeft(d, "shaken")).toBeUndefined();
+    expect(hasCondition(d, "shaken")).toBe(true);
+  });
+
+  it("timers on other conditions are untouched", () => {
+    let d = doc();
+    d = toggleCondition(d, "shaken");
+    d = toggleCondition(d, "sickened");
+    d = setConditionRounds(d, "shaken", 4);
+    d = setConditionRounds(d, "sickened", 6);
+    d = setConditionRounds(d, "shaken", undefined);
+    expect(conditionRoundsLeft(d, "shaken")).toBeUndefined();
+    expect(conditionRoundsLeft(d, "sickened")).toBe(6);
   });
 });
 

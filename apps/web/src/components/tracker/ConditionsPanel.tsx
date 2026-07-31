@@ -1,9 +1,11 @@
 import { CONDITIONS, CONDITION_IDS, EFFECT_IMMUNITY_LABELS } from "@pf1/engine";
 
+import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import {
   conditionImmunityFor,
   conditionRoundsLeft,
+  setConditionRounds,
   supersedingCondition,
   toggleCondition,
 } from "../../model/conditions.js";
@@ -85,8 +87,10 @@ export function ConditionsPanel({ doc, sheet, update }: BuilderProps) {
           Dashed + ° = reference only (doesn't change numbers yet). ▲ = implied by a stricter
           condition on the same ladder (e.g. frightened implies shaken); turn the stricter one off
           to toggle this directly. ⊘ = something you're immune to; you can still toggle it, since
-          only your table knows why. A round count (e.g. "10r") means something applied it with a
-          known duration, and advancing the round clock counts it down and clears it.
+          only your table knows why. A round count (e.g. "10r") means the condition has a known
+          duration, and advancing the round clock counts it down and clears it. Set the "Rounds
+          left" field below to give an active condition a duration, or clear it to leave the
+          condition on indefinitely.
         </p>
       </Explainer>
       {active.size > 0 ? (
@@ -96,10 +100,22 @@ export function ConditionsPanel({ doc, sheet, update }: BuilderProps) {
             if (!cond) return null;
             return (
               <li key={id}>
-                <b>{cond.name}.</b> {cond.summary}
-                {conditionRoundsLeft(doc, id) !== undefined ? (
-                  <span className="hint"> Ends in {conditionRoundsLeft(doc, id)} rounds.</span>
-                ) : null}
+                <div className="cond-note-text">
+                  <b>{cond.name}.</b> {cond.summary}
+                </div>
+                <label className="cond-rounds-edit">
+                  <span className="hint">Rounds left</span>
+                  <NumberField
+                    className="num"
+                    size={3}
+                    stepper={false}
+                    allowEmpty
+                    placeholder="∞"
+                    value={conditionRoundsLeft(doc, id)}
+                    onCommit={(n) => update((d) => setConditionRounds(d, id, n))}
+                    aria-label={`${cond.name} rounds left`}
+                  />
+                </label>
               </li>
             );
           })}

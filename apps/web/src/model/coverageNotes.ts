@@ -90,11 +90,6 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "1,981 vendored and searchable; 434 carry structured changes the sheet applies live, plus the 28 hand-authored core entries. The other ~1,500 are prose-only upstream.",
   },
   {
-    category: "Spell resistance",
-    group: "not-adjudicated",
-    note: "Your SR shows on the sheet, but nothing rolls against it. Whether an effect needs to beat it, and whether it does, is still on you and your GM to resolve.",
-  },
-  {
     category: "Damage reduction and energy resistance",
     group: "not-adjudicated",
     note: "Your DR and resistances come off incoming damage automatically, and ablative pools like stoneskin track what they have left. Whether an attack bypassed your DR is yours to say, since only your GM knows what the attacker was swinging: name the material in the hit, or flip the switch by hand.",
@@ -134,6 +129,6 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
   {
     category: "Timed conditions",
     detail:
-      "`live.conditionRounds` gives a condition a countdown the round clock ticks, but nothing in the catalog except the rage/bloodrage fatigue aftermath states its duration in rounds structurally, so every other condition is applied untimed and cleared by hand.",
+      "No condition in the catalog except the rage/bloodrage fatigue aftermath states its duration in rounds structurally, so every other countdown starts from a number typed at the table rather than from data.",
   },
 ];

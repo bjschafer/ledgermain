@@ -3029,8 +3029,37 @@ button:focus-visible,
 }
 
 .cond-notes li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 4px 0;
   border-top: 1px solid var(--line-soft);
+}
+
+.cond-note-text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Rounds-left entry for an active condition, next to its summary text.
+   Same compact metrics as `.buff-rounds`'s NumberField (BuffsPanel) so the
+   two rounds-editing affordances read as one idiom across panels; conditions
+   are rounds-native (no unit selector like a buff's min/hr), so this is just
+   the label + field, no `.dur-unit` select. */
+.cond-rounds-edit {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.cond-rounds-edit input {
+  flex: 0 0 40px;
+  text-align: center;
+  padding: 4px 6px;
+  font-size: 0.6875rem;
 }
 
 .cond-notes b {

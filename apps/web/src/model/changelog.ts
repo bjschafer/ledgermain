@@ -41,6 +41,18 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-31-sr-check",
+    date: "2026-07-31",
+    title: "Your spell resistance answers back",
+    note: "A Spell Resistance panel joins the tracker whenever anything gives you SR. Type in the attacker's caster level to see what they need on the die, or their check total for the verdict: the effect gets through, or your SR turns it aside. The dice stay at your table, the GM rolls and the sheet compares. The spell's own Spell Resistance line still says whether a check is required at all.",
+  },
+  {
+    id: "2026-07-31-condition-timers",
+    date: "2026-07-31",
+    title: "Conditions can carry a countdown",
+    note: "Every active condition in the tracker gains a Rounds left field. Type the duration your table rolled and advancing the round clock counts it down and clears the condition when it runs out, the same way timed buffs already expire. Leave it blank and the condition stays on until you turn it off yourself.",
+  },
+  {
     id: "2026-07-31-blast-loadout",
     date: "2026-07-31",
     title: "Infusions reshape your blast lines",

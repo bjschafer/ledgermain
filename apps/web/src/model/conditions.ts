@@ -157,6 +157,42 @@ export function conditionRoundsLeft(doc: CharacterDoc, id: string): number | und
 }
 
 /**
+ * Set, extend, shorten, or clear the rounds countdown on an ALREADY-ACTIVE
+ * condition, without touching whether it's on or off — that's still
+ * {@link toggleCondition}'s job. `rounds` undefined or `<= 0` clears the
+ * timer back to untimed (the condition just stays active indefinitely, the
+ * same state a condition toggled on by hand starts in) rather than being
+ * read as "turn it off". A no-op when `id` isn't currently active: there's
+ * nothing here to time.
+ *
+ * Unlike {@link activateCondition}'s `withConditions` (which layers a timer
+ * on top of the existing map and so can only ever overlay a value, never
+ * remove one), clearing has to delete the key outright — a left-behind
+ * zero would otherwise look like "expires next round advance" instead of
+ * "untimed".
+ */
+export function setConditionRounds(
+  doc: CharacterDoc,
+  id: string,
+  rounds: number | undefined,
+): CharacterDoc {
+  if (!hasCondition(doc, id)) return doc;
+  const conditionRounds = { ...doc.live.conditionRounds };
+  if (rounds === undefined || rounds <= 0) {
+    delete conditionRounds[id];
+  } else {
+    conditionRounds[id] = Math.trunc(rounds);
+  }
+  return {
+    ...doc,
+    live: {
+      ...doc.live,
+      conditionRounds: Object.keys(conditionRounds).length > 0 ? conditionRounds : undefined,
+    },
+  };
+}
+
+/**
  * Condition id → the `Defenses.effectImmunities` slug that would keep the
  * character from ever getting it. Only the unambiguous ones: fear immunity
  * covers the whole shaken/frightened/panicked ladder, and paralysis/fatigue/
