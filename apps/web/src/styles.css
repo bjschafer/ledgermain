@@ -5055,6 +5055,14 @@ input[type="text"].saved-roll-name:focus {
   gap: 8px;
 }
 
+/* Kinetic blast rows carry a second line (touch/range/descriptor/burn cost)
+   under the blast name, since a blast has no gear entry to look those up in. */
+.blast-line-sub {
+  display: block;
+  font-weight: 400;
+  margin-top: 1px;
+}
+
 /* ---------------------------------------------------------- preview notice -- */
 
 .preview-notice-backdrop {

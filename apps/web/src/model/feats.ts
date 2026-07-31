@@ -35,6 +35,7 @@ import {
   activeArchetypeSwaps,
   buildRollData,
   featNameSlug,
+  KINETIC_BLAST_WEAPON_GROUP,
   resolveArchetypeFeatureEffect,
   resolveFeatEffect,
   ROGUE_TALENTS,
@@ -740,7 +741,10 @@ export function featContextNotes(featName: string): ContextNote[] {
  * - "skill": the full skill list sorted alphabetically by display name.
  *   `refData` and `doc` are unused; the list is static.
  * - "weapon": the distinct non-empty `group` labels present on `doc.build.weapons`,
- *   sorted alphabetically. Returns empty when `doc` is not provided or the character
+ *   sorted alphabetically, plus "kinetic blast" for a kineticist who has chosen
+ *   an element ("Kinetic blasts count as a type of weapon for the purpose of
+ *   feats such as Weapon Focus" — the one weapon a character can target without
+ *   owning one). Returns empty when `doc` is not provided or the character
  *   has no weapons with a group set — the UI renders a soft hint in that case.
  * - "school": the 8 schools of magic, in a fixed traditional order (not
  *   alphabetical — matches how they're conventionally listed in the rules).
@@ -761,6 +765,10 @@ export function featChoiceOptions(
     for (const w of doc.build.weapons ?? []) {
       if (w.group) seen.add(w.group);
     }
+    // The engine's blast lines match this exact group key, so a Weapon Focus
+    // pick here lands on every kinetic blast the character can throw.
+    const kineticist = doc.identity.classes.some((c) => c.tag === "kineticist");
+    if (kineticist && doc.build.kineticistElement) seen.add(KINETIC_BLAST_WEAPON_GROUP);
     return [...seen].sort().map((g) => ({ id: g, name: g }));
   }
   if (choiceType === "school") {

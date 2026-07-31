@@ -449,6 +449,75 @@ export function Sheet({
         </div>
       )}
 
+      {/* Kinetic blasts ---------------------------------------------- */}
+      {sheet.kineticBlasts.length > 0 && (
+        <div className="stat-group">
+          <div className="stat-group-header">
+            <span className="stat-group-legend">Kinetic Blasts</span>
+            <div className="stat-group-rule" />
+          </div>
+          <div className="weapon-attack-list">
+            {sheet.kineticBlasts.map((blast) => {
+              const bonusStr =
+                blast.damageBonus.total !== 0 ? signed(blast.damageBonus.total) : null;
+              const dmgStr = [blast.damageDice, bonusStr].filter(Boolean).join("");
+              // The blast lines are recomputed from live burn (Elemental
+              // Overflow), so the baseline is looked up by id rather than by
+              // index — a composite can appear or vanish between the two.
+              const baseBlast = baseline.kineticBlasts.find((b) => b.id === blast.id);
+              return (
+                <div key={blast.id} className="weapon-attack-row">
+                  <span className="weapon-attack-name">
+                    {blast.name}
+                    <span className="hint blast-line-sub">
+                      {blast.touch ? "ranged touch" : "ranged"} · {blast.range} ft ·{" "}
+                      {blast.descriptor}
+                      {blast.burn > 0 ? ` · ${blast.burn} burn` : ""}
+                    </span>
+                  </span>
+                  <div className="weapon-attack-stats">
+                    <StatSeal
+                      label={blast.touch ? "Touch Atk" : "Attack"}
+                      value={signed(blast.attack.total)}
+                      components={blast.attack.components}
+                      provTitle={`${blast.name} attack`}
+                      className="seal--compact"
+                      resetKey={doc.id}
+                      baseline={baseBlast?.attack.total}
+                      numericValue={blast.attack.total}
+                      copy={{
+                        formula: d20Formula([blast.attack.total]),
+                        label: `${blast.name} attack`,
+                      }}
+                    />
+                    <StatSeal
+                      label="Dmg"
+                      value={dmgStr}
+                      components={blast.damageBonus.components}
+                      provTitle={`${blast.name} damage`}
+                      className="seal--compact"
+                      resetKey={doc.id}
+                      baseline={baseBlast?.damageBonus.total}
+                      numericValue={blast.damageBonus.total}
+                      copy={{
+                        formula: damageFormula(blast.damageDice, blast.damageBonus.total),
+                        label: `${blast.name} damage`,
+                      }}
+                    />
+                    <StatSeal
+                      label="Crit"
+                      value={blast.crit}
+                      className="seal--compact"
+                      resetKey={doc.id}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Senses (darkvision, low-light, scent, ...) — display-only, same
           chip-strip treatment as Proficiencies. */}
       {sheet.senses.length > 0 && (

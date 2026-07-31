@@ -377,6 +377,13 @@ export {
   type MergedCompositeBlastEntry,
 } from "./kineticist-elements.js";
 export {
+  KINETIC_BLAST_WEAPON_GROUP,
+  computeKineticBlasts,
+  kineticBlastConDamage,
+  kineticBlastDiceCount,
+  type KineticBlastContext,
+} from "./kinetic-blast.js";
+export {
   KINETICIST_WILD_TALENTS,
   KINETICIST_UNIVERSAL_TALENT_IDS,
   findKineticistWildTalent,

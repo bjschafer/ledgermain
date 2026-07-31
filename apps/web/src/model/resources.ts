@@ -13,6 +13,8 @@
 import type { DerivedResourcePool } from "@pf1/engine";
 import type { CharacterDoc } from "@pf1/schema";
 
+import { addNonlethal, healNonlethal } from "./hp.js";
+
 type Pools = CharacterDoc["live"]["resources"];
 
 function withPools(doc: CharacterDoc, resources: Pools): CharacterDoc {
@@ -98,4 +100,70 @@ export function restAllResources(
 /** Remaining uses of a pool. */
 export function remaining(pool: { used: number; max: number }): number {
   return Math.max(0, pool.max - pool.used);
+}
+
+/* ------------------------------------------------- self-damaging pools -- */
+
+/** The `deriveResourcePools` fields these helpers need — see `DerivedResourcePool`. */
+type SelfDamagingPool = Pick<DerivedResourcePool, "id" | "nonlethalPerUse">;
+
+/**
+ * Spend `n` uses and take the nonlethal damage that spending them costs.
+ *
+ * The kineticist's Burn is the only pool that carries `nonlethalPerUse`
+ * ("For each point of burn she accepts, a kineticist takes 1 point of
+ * nonlethal damage per character level"), and the amount comes from the
+ * engine rather than being re-derived here.
+ *
+ * `immuneToNonlethal` (from `isImmuneToNonlethal`) suppresses the damage.
+ * RAW a kineticist who can't take nonlethal damage can't accept burn at all;
+ * this app warns rather than blocks everywhere else, so the counter still
+ * moves and only the hit points are left alone.
+ *
+ * What this CANNOT know: which of a character's accumulated nonlethal damage
+ * came from burn. Releasing burn heals the same amount it cost, so a level
+ * change between accepting and releasing leaves the two out of step — the
+ * same limitation `applyGrantedTempHp` documents for temp HP.
+ */
+export function spendPool(
+  doc: CharacterDoc,
+  pool: SelfDamagingPool,
+  n = 1,
+  opts?: { immuneToNonlethal?: boolean },
+): CharacterDoc {
+  const before = doc.live.resources[pool.id];
+  const spent = drainResource(doc, pool.id, n);
+  const actual = (spent.live.resources[pool.id]?.used ?? 0) - (before?.used ?? 0);
+  if (actual <= 0 || !pool.nonlethalPerUse || opts?.immuneToNonlethal) return spent;
+  return addNonlethal(spent, actual * pool.nonlethalPerUse);
+}
+
+/** Restore `n` uses, healing the nonlethal damage those uses inflicted. Inverse of {@link spendPool}. */
+export function restorePool(doc: CharacterDoc, pool: SelfDamagingPool, n = 1): CharacterDoc {
+  const before = doc.live.resources[pool.id];
+  const restored = restoreResource(doc, pool.id, n);
+  const actual = (before?.used ?? 0) - (restored.live.resources[pool.id]?.used ?? 0);
+  if (actual <= 0 || !pool.nonlethalPerUse) return restored;
+  return healNonlethal(restored, actual * pool.nonlethalPerUse);
+}
+
+/**
+ * Rest every pool, healing the nonlethal damage the self-damaging ones were
+ * holding — "a full night's rest ... removes all burn and associated
+ * nonlethal damage". Nonlethal from other sources is left alone, since this
+ * is the Resources panel's rest button and not a night's sleep; the Play
+ * tab's New Day action clears nonlethal outright (see `model/rest.ts`).
+ */
+export function restAllResourcesWithRecovery(
+  doc: CharacterDoc,
+  derived: readonly DerivedResourcePool[],
+): CharacterDoc {
+  let healed = doc;
+  for (const pool of derived) {
+    if (!pool.nonlethalPerUse) continue;
+    const used = doc.live.resources[pool.id]?.used ?? 0;
+    const released = Math.max(0, used - Math.max(0, pool.max - pool.restValue));
+    if (released > 0) healed = healNonlethal(healed, released * pool.nonlethalPerUse);
+  }
+  return restAllResources(healed, derived);
 }

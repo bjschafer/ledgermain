@@ -2718,6 +2718,12 @@ export interface DerivedSheet {
   attack: { melee: ResolvedStat; ranged: ResolvedStat };
   /** Per-weapon attack + damage lines derived from build.weapons. */
   attacks: ResolvedWeaponAttack[];
+  /**
+   * Kinetic blast lines — every simple blast the kineticist knows plus every
+   * composite blast she qualifies for. Empty for a character with no
+   * kineticist levels or no chosen element.
+   */
+  kineticBlasts: DerivedKineticBlast[];
   hp: HitPoints;
   /** Movement speeds in feet, keyed by mode ("land", "fly", ...). */
   speeds: Record<string, number>;
@@ -3219,6 +3225,44 @@ export interface ResolvedWeaponAttack {
   damageDice?: string;
   /** Critical hit string, e.g. "19–20/×2" or "×2". */
   crit: string;
+}
+
+/**
+ * One kinetic blast the character can unleash, resolved to real numbers
+ * (Occult Adventures) — see `@pf1/engine` `computeKineticBlasts`. A blast is
+ * not a `WeaponInstance`: nothing is carried, nothing is wielded, and the
+ * character never chose to "own" it, so blasts live in their own array rather
+ * than being synthesized into `attacks` (which mirrors `build.weapons`
+ * index-for-index and grants BAB iteratives a blast never gets).
+ */
+export interface DerivedKineticBlast {
+  /** Stable id — a `KineticistSimpleBlast.id` or `KineticistCompositeBlastDef.id`. */
+  id: string;
+  name: string;
+  kind: "simple" | "composite";
+  /**
+   * Physical blasts are ordinary ranged attacks; energy blasts are ranged
+   * TOUCH attacks (and are the only ones spell resistance applies to).
+   */
+  blastType: "physical" | "energy";
+  /** Damage descriptor for display, e.g. "fire", "bludgeoning", "half piercing, half cold". */
+  descriptor: string;
+  /** True for energy blasts — the attack roll targets touch AC. */
+  touch: boolean;
+  /** Attack bonus with full provenance. Never carries `iteratives`: a blast is one standard action. */
+  attack: ResolvedStat;
+  /** Numeric damage bonus (no dice) with provenance. */
+  damageBonus: ResolvedStat;
+  /** Damage dice for display, e.g. "5d6". The engine never rolls. */
+  damageDice: string;
+  /** Always "×2" — no published blast has a widened threat range. */
+  crit: string;
+  /** Range in feet (30 before Extended Range, which is a player-applied infusion). */
+  range: number;
+  /** Burn cost to use: 0 for a simple blast, 2 for a composite. */
+  burn: number;
+  /** Element tags this blast comes from, for grouping in the UI. */
+  elements: string[];
 }
 
 export interface ArmorClass {

@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-30-kinetic-blasts-roll",
+    date: "2026-07-30",
+    title: "Kinetic blasts are real attack lines, and burn hurts",
+    note: "Your sheet gains a Kinetic Blasts block: every simple blast you know and every composite you qualify for, each with its attack bonus, damage, range, and whether it targets touch AC. Elemental Overflow rides your live burn, so accepting a point raises the attack and damage on every blast line as you watch. Accepting burn in the tracker also applies its nonlethal damage for you, one point per character level, and giving the burn back heals it. A psychokineticist takes the Wisdom penalty instead, so no damage is applied. Weapon Focus can target kinetic blast once you pick an element.",
+  },
+  {
     id: "2026-07-30-no-more-silent-buffs",
     date: "2026-07-30",
     title: "Every buff in the catalog now does something",

@@ -361,17 +361,37 @@ export function buildPrintSheet(
     cmb: signed(sheet.cmb),
     melee: signedSequence(sheet.attack.melee.total, sheet.attack.melee.iteratives),
     ranged: signedSequence(sheet.attack.ranged.total, sheet.attack.ranged.iteratives),
-    attacks: sheet.attacks.map((atk) => {
-      const bonusStr = atk.damageBonus.total !== 0 ? signed(atk.damageBonus.total) : null;
-      const dmgStr =
-        [atk.damageDice, bonusStr].filter(Boolean).join("") || signed(atk.damageBonus.total);
-      return {
-        name: atk.name,
-        attack: signedSequence(atk.attack.total, atk.attack.iteratives),
-        damage: dmgStr,
-        crit: atk.crit,
-      };
-    }),
+    attacks: [
+      ...sheet.attacks.map((atk) => {
+        const bonusStr = atk.damageBonus.total !== 0 ? signed(atk.damageBonus.total) : null;
+        const dmgStr =
+          [atk.damageDice, bonusStr].filter(Boolean).join("") || signed(atk.damageBonus.total);
+        return {
+          name: atk.name,
+          attack: signedSequence(atk.attack.total, atk.attack.iteratives),
+          damage: dmgStr,
+          crit: atk.crit,
+        };
+      }),
+      // Blasts share the weapon table rather than getting a section of their
+      // own — the printed sheet has one combat block, and a blast's own
+      // qualifiers (touch, burn cost) fit in the name column.
+      ...sheet.kineticBlasts.map((blast) => {
+        const bonusStr = blast.damageBonus.total !== 0 ? signed(blast.damageBonus.total) : null;
+        const qualifiers = [
+          blast.touch ? "touch" : null,
+          blast.burn > 0 ? `${blast.burn} burn` : null,
+        ]
+          .filter(Boolean)
+          .join(", ");
+        return {
+          name: qualifiers ? `${blast.name} (${qualifiers})` : blast.name,
+          attack: signed(blast.attack.total),
+          damage: [blast.damageDice, bonusStr].filter(Boolean).join(""),
+          crit: blast.crit,
+        };
+      }),
+    ],
     skills: rollableSkills.map((s) => ({
       name: skillName(s.id),
       total: signed(s.total),

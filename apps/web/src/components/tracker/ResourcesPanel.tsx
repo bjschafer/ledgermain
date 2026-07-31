@@ -18,7 +18,7 @@ import { Panel } from "../builder/Panel.js";
 import { FlaskIcon } from "../icons.js";
 import { toggleLinkedBuff, toggleTableBuff } from "../../model/buffs.js";
 import { setMartialFlexibilityFeat } from "../../model/doc.js";
-import { applyGrantedTempHp } from "../../model/hp.js";
+import { applyGrantedTempHp, isImmuneToNonlethal } from "../../model/hp.js";
 import {
   knownOccultistSchoolTags,
   setOccultistFocusInvested,
@@ -30,8 +30,10 @@ import {
   drainResource,
   remaining,
   removePool,
-  restAllResources,
+  restAllResourcesWithRecovery,
+  restorePool,
   restoreResource,
+  spendPool,
   syncDerivedPools,
 } from "../../model/resources.js";
 import type { BuilderProps } from "../builder/types.js";
@@ -58,8 +60,16 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
   const [label, setLabel] = useState("");
   const [poolMax, setPoolMax] = useState(4);
 
-  const drain = (id: string) => update((d) => drainResource(syncDerivedPools(d, derived), id, 1));
-  const restore = (id: string) =>
+  // A pool that damages its owner to use (the kineticist's Burn) moves hit
+  // points as well as its counter — see `spendPool`. Manual pools never do.
+  const immuneToNonlethal = isImmuneToNonlethal(sheet);
+  const drain = (pool: DerivedResourcePool) =>
+    update((d) => spendPool(syncDerivedPools(d, derived), pool, 1, { immuneToNonlethal }));
+  const restore = (pool: DerivedResourcePool) =>
+    update((d) => restorePool(syncDerivedPools(d, derived), pool, 1));
+  const drainManual = (id: string) =>
+    update((d) => drainResource(syncDerivedPools(d, derived), id, 1));
+  const restoreManual = (id: string) =>
     update((d) => restoreResource(syncDerivedPools(d, derived), id, 1));
 
   const hasAny = derived.length > 0 || manualEntries.length > 0;
@@ -74,7 +84,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
         <button
           type="button"
           className="btn-ghost rest"
-          onClick={() => update((d) => restAllResources(d))}
+          onClick={() => update((d) => restAllResourcesWithRecovery(d, derived))}
         >
           Rest (full)
         </button>
@@ -95,8 +105,8 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
                   description={refData.classFeatures[pool.id]?.description}
                   left={pool.max - used}
                   max={pool.max}
-                  onDrain={() => drain(pool.id)}
-                  onRestore={() => restore(pool.id)}
+                  onDrain={() => drain(pool)}
+                  onRestore={() => restore(pool)}
                   linkedBuffIds={pool.linkedBuffIds}
                   tableOptions={pool.tableOptions}
                   refData={refData}
@@ -120,8 +130,8 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
               sub="manual"
               left={remaining(pool)}
               max={pool.max}
-              onDrain={() => drain(id)}
-              onRestore={() => restore(id)}
+              onDrain={() => drainManual(id)}
+              onRestore={() => restoreManual(id)}
               onRemove={() => update((d) => removePool(d, id))}
             />
           ))}

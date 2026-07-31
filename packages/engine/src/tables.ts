@@ -1535,18 +1535,19 @@ export function burnPerRoundLimit(kineticistLevel: number): number {
  * clean-room from the published rules: "For each point of burn she accepts, a
  * kineticist takes 1 point of nonlethal damage per character level. This
  * damage can't be healed by any means other than getting a full night's
- * rest, which removes all burn and associated nonlethal damage." The
- * nonlethal damage is deliberately NOT auto-applied to `live.hp.nonlethal`
- * (accepting burn is a table-time choice with riders — gather power
- * reductions, forced burn — this engine doesn't model); the label tells the
- * player what to apply by hand. `characterLevel` is TOTAL character level
- * (multiclass included), per the rules text — not kineticist class level.
+ * rest, which removes all burn and associated nonlethal damage."
+ *
+ * The tracker applies that nonlethal damage for real when burn is accepted or
+ * released, off `DerivedResourcePool.nonlethalPerUse` — the engine states the
+ * amount, `apps/web/src/model/resources.ts` moves the hit points.
+ * `characterLevel` is TOTAL character level (multiclass included), per the
+ * rules text — not kineticist class level.
  */
 export function burnDetailLabel(characterLevel: number, kineticistLevel: number): string {
   const perRound = burnPerRoundLimit(kineticistLevel);
   return (
     `each point held deals ${Math.max(1, characterLevel)} nonlethal ` +
-    `(1/character level; unhealable until a full night's rest — apply manually) · ` +
+    `(1/character level; heals only on a full night's rest) · ` +
     `max ${perRound} accepted/round`
   );
 }

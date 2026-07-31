@@ -92,6 +92,22 @@ describe("Burn resource pool (vendored uses.maxFormula, not hand-authored)", () 
     expect(burn!.detail).toBe(burnDetailLabel(7, 4));
     expect(burn!.detail).toContain("7 nonlethal");
     expect(burn!.detail).toContain("max 1 accepted/round");
+    // The tracker applies that damage off this field — TOTAL character level.
+    expect(burn!.nonlethalPerUse).toBe(7);
+  });
+
+  it("is the only pool that costs its owner hit points to spend", () => {
+    const doc = makeDoc(
+      [
+        { tag: "kineticist", level: 4 },
+        { tag: "barbarian", level: 3 },
+      ],
+      16,
+    );
+    const pools = deriveResourcePools(doc, ref, compute(doc, ref).abilities);
+    for (const pool of pools) {
+      expect(pool.nonlethalPerUse).toBe(pool.name === "Burn" ? 7 : undefined);
+    }
   });
 });
 
@@ -182,6 +198,12 @@ describe("Psychokinetcist (Occult Adventures p.56) — mind-channeled burn", () 
     expect(burnPool(doc)?.detail).toContain("no nonlethal damage");
     expect(burnPool(doc)?.detail).not.toContain("currently");
     expect(burnPool(held)?.detail).toContain("currently -6");
+  });
+
+  it("accepts burn without taking any nonlethal damage for it", () => {
+    // Mind Burn replaces the damage outright, so there is nothing for the
+    // tracker to apply — unlike an ordinary kineticist's pool.
+    expect(burnPool(makeCai())?.nonlethalPerUse).toBeUndefined();
   });
 
   it("still swaps Elemental Overflow out for Mental Overflow", () => {

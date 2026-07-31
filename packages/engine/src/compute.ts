@@ -50,6 +50,7 @@ import { computeRanger } from "./ranger.js";
 import { orderByTag } from "./cavalier-orders.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
 import { computeDefenses } from "./defenses.js";
+import { computeKineticBlasts } from "./kinetic-blast.js";
 import { KINETICIST_ELEMENTS } from "./kineticist-elements.js";
 import { ORACLE_MYSTERIES } from "./oracle-mysteries.js";
 import { computeSenses } from "./senses.js";
@@ -74,7 +75,7 @@ import {
 } from "./proficiency.js";
 import { hasSlowAndSteady } from "./racial-traits.js";
 import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolldata.js";
-import { resolveStack, type ResolvedModifier, type TypedModifier } from "./stacking.js";
+import { resolveStack, synthetic, toComponents, type TypedModifier } from "./stacking.js";
 import { normalizeWeaponGroup } from "./weapon-groups.js";
 import {
   babForLevels,
@@ -302,20 +303,6 @@ function applySpeedTarget(
   }
   const addTotal = mods.reduce((s, m) => s + m.value, 0);
   if (addTotal) speeds[mode] = (speeds[mode] ?? 0) + addTotal;
-}
-
-function toComponents(mods: ResolvedModifier[]): ModifierComponent[] {
-  return mods.map((m) => ({
-    source: m.source,
-    sourceId: m.sourceId,
-    type: m.type,
-    value: m.value,
-    applied: m.applied,
-  }));
-}
-
-function synthetic(source: string, type: string, value: number): ModifierComponent {
-  return { source, type, value, applied: true };
 }
 
 /**
@@ -1784,6 +1771,19 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     size,
   );
 
+  // Kinetic blast lines (Occult Adventures) — every simple blast known plus
+  // every composite qualified for, resolved with the live Elemental Overflow
+  // bonus that scales with burn currently held. Empty for non-kineticists.
+  const burnFeature = Object.values(refData.classFeatures).find((f) => f.tag === "burn");
+  const kineticBlasts = computeKineticBlasts(doc, refData, {
+    bab,
+    sizeAttackMod,
+    collected,
+    abilityMods,
+    substitutions,
+    currentBurn: burnFeature ? (doc.live.resources[burnFeature.id]?.used ?? 0) : 0,
+  });
+
   // DR / energy resistance / spell resistance — display-only (issue #21).
   const defenses = computeDefenses(doc, refData, collected);
 
@@ -1837,6 +1837,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     initiative,
     attack,
     attacks,
+    kineticBlasts,
     hp,
     speeds,
     skills,

@@ -124,6 +124,19 @@ export interface DerivedResourcePool {
    */
   linkedBuffIds: string[];
   /**
+   * Nonlethal damage each point spent from this pool inflicts on its owner —
+   * the kineticist's Burn and nothing else ("For each point of burn she
+   * accepts, a kineticist takes 1 point of nonlethal damage per character
+   * level"), so it equals TOTAL character level. The tracker applies and
+   * reverses it as the pool is drained and restored; see
+   * `apps/web/src/model/resources.ts`.
+   *
+   * Undefined for every other pool, and for a Psychokinetcist — Mind Burn
+   * replaces the nonlethal damage outright with a Wisdom-based penalty (see
+   * `mindBurnDetailLabel`), so there is nothing to apply.
+   */
+  nonlethalPerUse?: number;
+  /**
    * Hand-authored, non-vendored toggleable effects this pool's power can
    * activate (issue #65: inquisitor Judgments, skald Inspired Rage) — the
    * `linkedBuffIds` counterpart for classes whose activated abilities carry
@@ -287,6 +300,7 @@ export function deriveResourcePools(
     // vendored action data" shape as Smite Evil — mirrored here rather than
     // falling through to `actionBasedDetail` (which would return undefined).
     let detail: string | undefined;
+    let nonlethalPerUse: number | undefined;
     if (feature.tag === "smiteEvil" && classTag === "paladin") {
       const featureAbilities = (featureRollData as RollData).abilities as
         | { cha?: { mod?: number } }
@@ -302,15 +316,16 @@ export function deriveResourcePools(
     } else if (feature.tag === "burn" && classTag === "kineticist") {
       // Burn's nonlethal-per-point rule has no vendored action data (only the
       // `3 + Con` `uses.maxFormula` that made this pool) — hand-authored,
-      // same posture as Smite Evil above. Deliberately does NOT auto-apply
-      // the nonlethal damage — see `burnDetailLabel`'s doc comment.
+      // same posture as Smite Evil above.
       if (isPsychokinetcist(doc)) {
         // Mind Burn swaps the nonlethal damage for a stacking Wis-based
-        // penalty, so the whole sub-line is different (not just scaled).
+        // penalty, so the whole sub-line is different (not just scaled), and
+        // `nonlethalPerUse` stays unset.
         detail = mindBurnDetailLabel(classLevel, doc.live.resources[feature.id]?.used ?? 0);
       } else {
         const characterLevel = doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
         detail = burnDetailLabel(characterLevel, classLevel);
+        nonlethalPerUse = Math.max(1, characterLevel);
       }
     } else if (feature.tag === "bomb" && classTag === "alchemist") {
       // Bomb's vendored action damage formula is a flat, non-scaling "1d6"
@@ -401,6 +416,7 @@ export function deriveResourcePools(
       per: feature.uses?.per,
       classTag,
       detail,
+      nonlethalPerUse,
       linkedBuffIds,
       tableOptions,
     });

@@ -12,6 +12,8 @@
  * used only as a behavioural oracle in tests (DESIGN §6).
  */
 
+import type { ModifierComponent } from "@pf1/schema";
+
 /** A typed modifier ready for stacking (its formula already evaluated). */
 export interface TypedModifier {
   /** Stacking category, e.g. "enh", "morale", "dodge", "untyped", "racial". */
@@ -33,6 +35,22 @@ export interface StackResult {
   total: number;
   /** Every input modifier, with its `applied` flag set. */
   modifiers: ResolvedModifier[];
+}
+
+/** Strip a resolved stack down to the display-facing provenance the sheet carries. */
+export function toComponents(mods: ResolvedModifier[]): ModifierComponent[] {
+  return mods.map((m) => ({
+    source: m.source,
+    sourceId: m.sourceId,
+    type: m.type,
+    value: m.value,
+    applied: m.applied,
+  }));
+}
+
+/** A provenance line the engine computed itself rather than resolving from a `Change` (BAB, ability mod, size). */
+export function synthetic(source: string, type: string, value: number): ModifierComponent {
+  return { source, type, value, applied: true };
 }
 
 /**
