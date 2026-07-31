@@ -102,6 +102,19 @@ export function remaining(pool: { used: number; max: number }): number {
   return Math.max(0, pool.max - pool.used);
 }
 
+/**
+ * The chip beside a pool's name, or null when there's nothing worth saying.
+ *
+ * `DerivedResourcePool.per` is Foundry's recharge period, and only "day" and
+ * "round" actually are one: the three features carrying "charges" are naming a
+ * use-TYPE, so "per charges" is not a sentence and gets no chip. A pool with
+ * no period gets none either, rather than a chip reading "derived" that tells
+ * a player nothing they can act on.
+ */
+export function poolCadenceLabel(per: string | undefined): string | null {
+  return per === "day" || per === "round" ? `per ${per}` : null;
+}
+
 /* ------------------------------------------------- self-damaging pools -- */
 
 /** The `deriveResourcePools` fields these helpers need — see `DerivedResourcePool`. */

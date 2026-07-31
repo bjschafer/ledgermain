@@ -34,6 +34,7 @@ import {
 import {
   addManualPool,
   drainResource,
+  poolCadenceLabel,
   remaining,
   removePool,
   restAllResourcesWithRecovery,
@@ -109,7 +110,8 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
               <div key={pool.id}>
                 <ResourceRow
                   name={pool.name}
-                  sub={pool.detail ?? (pool.per ? `per ${pool.per}` : "derived")}
+                  sub={poolCadenceLabel(pool.per)}
+                  detail={pool.detail}
                   description={refData.classFeatures[pool.id]?.description}
                   left={pool.max - used}
                   max={pool.max}
@@ -189,6 +191,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
 function ResourceRow({
   name,
   sub,
+  detail,
   description,
   left,
   max,
@@ -203,7 +206,14 @@ function ResourceRow({
   update,
 }: {
   name: string;
-  sub: string;
+  /** Short cadence label ("per day", "manual"), rendered as a chip beside the name. Null for none. */
+  sub: string | null;
+  /**
+   * The pool's own prose summary (`DerivedResourcePool.detail`) — a sentence,
+   * not a label, so it gets its own readable line rather than sharing the
+   * chip's uppercase micro-type.
+   */
+  detail?: string;
   /** Class feature's vendored HTML prose, when this row is a derived pool with one (issue: bare counters). */
   description?: string;
   left: number;
@@ -223,8 +233,11 @@ function ResourceRow({
   return (
     <div className="res-row">
       <div className="res-main">
-        <div className="res-name">{name}</div>
-        <div className="res-sub">{sub}</div>
+        <div className="res-head">
+          <span className="res-name">{name}</span>
+          {sub ? <span className="res-sub">{sub}</span> : null}
+        </div>
+        {detail ? <div className="res-detail">{detail}</div> : null}
         {description ? <FeatureDescription html={description} /> : null}
         {linkedBuffIds && linkedBuffIds.length > 0 && refData && activeBuffs && update ? (
           <div className="res-linked-buffs">
@@ -509,9 +522,9 @@ function ElementalDefensePanel({
   return (
     <div className="res-sub-row elemental-defense">
       <div className="res-name">{defense.name}</div>
-      <div className="res-sub">{defense.detail}</div>
-      <div className="mental-focus-row" style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <span className="hint">Burn spent here</span>
+      <div className="res-detail">{defense.detail}</div>
+      <div className="res-field-row">
+        <span className="res-field-label">Burn spent here</span>
         <NumberField
           value={invested}
           min={0}
@@ -528,8 +541,8 @@ function ElementalDefensePanel({
         </span>
       </div>
       {defense.elementTag === "water" && (
-        <div className="mental-focus-row" style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span className="hint">Shroud shaped as</span>
+        <div className="res-field-row">
+          <span className="res-field-label">Shroud shaped as</span>
           <select
             value={doc.live.kineticistShroudMode ?? "armor"}
             onChange={(e) =>
@@ -595,14 +608,8 @@ function MentalFocusInvestmentPanel({
         if (!school) return null;
         const invested = doc.live.occultistFocusInvested?.[tag] ?? 0;
         return (
-          <div
-            key={tag}
-            className="mental-focus-row"
-            style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 2 }}
-          >
-            <span className="hint" style={{ minWidth: 90 }}>
-              {school.name}
-            </span>
+          <div key={tag} className="res-field-row">
+            <span className="res-field-label">{school.name}</span>
             <NumberField
               value={invested}
               min={0}
@@ -612,11 +619,8 @@ function MentalFocusInvestmentPanel({
         );
       })}
       {knownTags.includes("transmutation") && transmutationInvested >= 3 && (
-        <div
-          className="mental-focus-row"
-          style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}
-        >
-          <span className="hint">Physical Enhancement targets</span>
+        <div className="res-field-row">
+          <span className="res-field-label">Physical Enhancement targets</span>
           <select
             value={physicalAbility}
             onChange={(e) =>

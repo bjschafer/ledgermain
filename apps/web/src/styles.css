@@ -3085,7 +3085,10 @@ button:focus-visible,
   color: var(--danger, var(--oxblood-ink));
 }
 
+/* Two labelled number fields and nothing else — no name column for the
+   controls to line up with, so this one keeps `.res-row`'s old centering. */
 .affliction-neglevels {
+  align-items: center;
   gap: 16px;
   flex-wrap: wrap;
 }
@@ -3352,9 +3355,13 @@ button:focus-visible,
   border-radius: var(--radius);
 }
 
+/* Top-aligned, not centered: a pool's detail sentence and its description
+   disclosure make `.res-main` several lines tall, and centering floated the
+   counter and its buttons into the middle of that block, away from the name
+   they belong to. */
 .res-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   padding: 8px 12px;
   border-bottom: 1px solid var(--line-soft);
@@ -3655,17 +3662,38 @@ button:focus-visible,
   min-width: 0;
 }
 
+/* Name and cadence chip share a line, so a two-word label like "PER DAY"
+   doesn't cost a whole row of its own. */
+.res-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .res-name {
   font-weight: 600;
   font-size: 0.875rem;
 }
 
+/* Deliberately a CHIP, not a text style: uppercase mono at 0.625rem is
+   legible for "per day" and unreadable for a sentence. Anything longer than a
+   label belongs in `.res-detail`. */
 .res-sub {
   font-size: 0.625rem;
   color: var(--faint);
   font-family: var(--mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+/* A pool's prose summary (`DerivedResourcePool.detail`): normal case, normal
+   face, wrapping like the sentence it is. */
+.res-detail {
+  font-size: 0.75rem;
+  color: var(--faint);
+  line-height: 1.45;
+  margin-top: 2px;
 }
 
 /* Saved-rolls' rename field: reads as plain text until focused. Selector
@@ -3734,6 +3762,50 @@ input[type="text"].saved-roll-name:focus {
 .res-linked-buff.active {
   border-color: var(--sage);
   color: var(--sage);
+}
+
+/* ----------------------------------------------------------- res sub-rows --
+   Elemental Defense, Mental Focus investment, and Martial Flexibility all
+   hang off the pool row above them, dividing or spending that one pool. They
+   had no rule at all, so they sat flush against the list's border with no
+   padding and read as unrelated blocks. The left rule and inset say "this
+   belongs to the row above". */
+.res-sub-row {
+  padding: 8px 12px 10px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  border-left: 2px solid var(--line);
+  margin-left: 12px;
+  background: color-mix(in srgb, var(--surface-2) 45%, transparent);
+}
+
+.res-sub-row:last-child {
+  border-bottom: 0;
+}
+
+.res-sub-row > .res-name {
+  margin-bottom: 1px;
+}
+
+/* Label + control lines inside a sub-row. The label column is fixed so a
+   stack of them (one per implement school) columns up instead of stepping in
+   and out with label length. */
+.res-field-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.res-field-label {
+  flex: 0 0 auto;
+  min-width: 7.5rem;
+  font-size: 0.75rem;
+  color: var(--faint);
+}
+
+.res-sub-row > .hint {
+  margin-top: 6px;
 }
 
 .res-btns {
