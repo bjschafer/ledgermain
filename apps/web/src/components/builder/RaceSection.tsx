@@ -15,6 +15,7 @@ import {
   availableRacialTraits,
   conflictingRacialTraitIds,
   hasRacialTrait,
+  raceStandardTraitNotes,
   suppressedRaceTargets,
   toggleRacialTrait,
 } from "../../model/racialTraits.js";
@@ -97,6 +98,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   );
   const racialTraits = availableRacialTraits(doc, refData);
   const racialTraitConflicts = conflictingRacialTraitIds(doc, refData);
+  const standardTraitNotes = raceStandardTraitNotes(doc, refData);
   const pendingRace = pendingRaceId != null ? refData.races[pendingRaceId] : undefined;
   const racial = racialLanguages(doc, refData);
   const bonusLanguages = doc.build.bonusLanguages ?? [];
@@ -196,6 +198,9 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
           Choose a race to apply its racial modifiers.
         </p>
       )}
+      {standardTraitNotes.map((note, i) => (
+        <RulesNote key={i} text={note.text} retiredBy={note.retiredBy} />
+      ))}
       {flexible && (
         <div style={{ marginTop: 12 }}>
           <p className="hint">

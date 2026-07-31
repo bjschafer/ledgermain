@@ -16,6 +16,7 @@ import { ABILITY_IDS } from "@pf1/schema";
 import {
   alternateRacialTraitsForRace,
   RACIAL_TRAITS,
+  vendoredTraitSuppressNoteFragments,
   vendoredTraitSuppressTargets,
 } from "@pf1/engine";
 
@@ -67,6 +68,55 @@ export function suppressedRaceTargets(doc: CharacterDoc, refData: RefData): Set<
     }
   }
   return suppressed;
+}
+
+/** One of the race's standard-trait reminders, with retirement status for display (issue #41). */
+export interface RaceStandardTraitNote {
+  text: string;
+  /** Name of the active alternate racial trait that retired this note, when one has. */
+  retiredBy?: string;
+}
+
+/**
+ * The race's standard-trait reminders (`Race.contextNotes`) for display,
+ * annotated with which active alternate racial trait retired each one — a
+ * standard trait modeled only as prose (Dwarf's Stonecunning, Svirfneblin's
+ * Hatred, etc.) with no computed number of its own. Unites both suppression
+ * axes the engine tracks: a hand-authored alternate's `suppressNotes` and a
+ * vendored pick's {@link vendoredTraitSuppressNoteFragments}. Every note is
+ * kept in the returned list (never dropped) so a retirement can be shown as a
+ * struck-through "retired by X" cue instead of the note silently
+ * disappearing mid-session — the same posture `Provenance`/`ClassFeaturesList`
+ * use for an overridden bonus or a swapped-out class feature, rather than the
+ * engine's own `raceContextNotesFor`, which just drops the note outright for
+ * numeric-pipeline consumers that have no such display.
+ */
+export function raceStandardTraitNotes(
+  doc: CharacterDoc,
+  refData: RefData,
+): RaceStandardTraitNote[] {
+  const race = refData.races[doc.identity.race];
+  if (!race) return [];
+  const raceName = race.name;
+  const activeHandAuthored = (doc.build.racialTraits ?? [])
+    .map((id) => RACIAL_TRAITS[id])
+    .filter((t): t is NonNullable<typeof t> => t != null && t.race === raceName);
+  const activeVendored = (doc.build.vendoredRacialTraits ?? [])
+    .map((id) => refData.racialTraits[id])
+    .filter((t): t is RacialTrait => t != null && t.race.includes(raceName));
+
+  return race.contextNotes.map((note) => {
+    const handAuthoredMatch = activeHandAuthored.find((t) =>
+      (t.suppressNotes ?? []).some((fragment) => note.text.includes(fragment)),
+    );
+    const vendoredMatch = activeVendored.find((t) =>
+      vendoredTraitSuppressNoteFragments(t, raceName).some((fragment) =>
+        note.text.includes(fragment),
+      ),
+    );
+    const retiredBy = handAuthoredMatch?.name ?? vendoredMatch?.name;
+    return retiredBy ? { text: note.text, retiredBy } : { text: note.text };
+  });
 }
 
 /**

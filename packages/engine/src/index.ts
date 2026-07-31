@@ -143,6 +143,9 @@ export {
   FLEXIBLE_ABILITY_SUPPRESS_TARGET,
   VENDORED_STANDARD_TRAIT_TARGETS,
   vendoredTraitSuppressTargets,
+  VENDORED_STANDARD_TRAIT_NOTES,
+  vendoredTraitSuppressNoteFragments,
+  vendoredTraitFullyHandled,
   type AlternateRacialTrait,
   type RacialTraitResourcePool,
 } from "./racial-traits.js";

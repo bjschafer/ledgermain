@@ -12,7 +12,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute, raceContextNotesFor } from "../src/index.js";
+import { compute, raceContextNotesFor, VENDORED_STANDARD_TRAIT_NOTES } from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -22,8 +22,21 @@ function raceId(name: string): string {
   return entry[0];
 }
 
+/** Look up a vendored `RacialTrait`'s id by its (race-scoped) name. */
+function vendoredTraitId(name: string, raceName: string): string {
+  const entry = Object.entries(ref.racialTraits).find(
+    ([, t]) => t.name === name && t.race.includes(raceName),
+  );
+  if (!entry) throw new Error(`vendored racial trait not found: ${name} (${raceName})`);
+  return entry[0];
+}
+
 /** Fighter L1, all abilities 10 (mod 0) before racial changes, no gear. */
-function makeDoc(raceName: string, racialTraits: string[] = []): CharacterDoc {
+function makeDoc(
+  raceName: string,
+  racialTraits: string[] = [],
+  vendoredRacialTraits: string[] = [],
+): CharacterDoc {
   return {
     schemaVersion: 1,
     id: `art-test-${raceName}`,
@@ -43,6 +56,7 @@ function makeDoc(raceName: string, racialTraits: string[] = []): CharacterDoc {
       spells: { known: [] },
       gear: [],
       racialTraits,
+      vendoredRacialTraits,
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -263,5 +277,103 @@ describe("race contextNote suppression (issue #41)", () => {
     const base = compute(makeDoc("Elf"), ref);
     const withTrait = compute(makeDoc("Elf", ["elf-fleet-footed"]), ref);
     expect(withTrait.skills.per!.total).toBe(base.skills.per!.total - 2);
+  });
+});
+
+describe("vendored alternate-trait note suppression (issue #41)", () => {
+  const svirfneblinId = raceId("Svirfneblin");
+  const strixId = raceId("Strix");
+  const aquaticElfId = raceId("Aquatic Elf");
+
+  it("a race with no vendored picks keeps all its contextNotes", () => {
+    const notes = raceContextNotesFor(makeDoc("Svirfneblin"), ref.races[svirfneblinId], ref);
+    expect(notes.some((n) => n.text.includes("Reptilian and Dwarf"))).toBe(true);
+  });
+
+  it("Svirfneblin picking Stalwart Watcher (replaces Hatred + Skilled) loses the Hatred reminder", () => {
+    const stalwartWatcher = vendoredTraitId("Stalwart Watcher", "Svirfneblin");
+    const notes = raceContextNotesFor(
+      makeDoc("Svirfneblin", [], [stalwartWatcher]),
+      ref.races[svirfneblinId],
+      ref,
+    );
+    expect(notes.some((n) => n.text.includes("Reptilian and Dwarf"))).toBe(false);
+  });
+
+  it("without refData, a vendored pick is not resolved (hand-authored-only call sites keep working)", () => {
+    const stalwartWatcher = vendoredTraitId("Stalwart Watcher", "Svirfneblin");
+    const notes = raceContextNotesFor(
+      makeDoc("Svirfneblin", [], [stalwartWatcher]),
+      ref.races[svirfneblinId],
+    );
+    expect(notes.some((n) => n.text.includes("Reptilian and Dwarf"))).toBe(true);
+  });
+
+  it("Strix with no picks: Nocturnal's two notes and Suspicious's note are all present", () => {
+    const notes = raceContextNotesFor(makeDoc("Strix"), ref.races[strixId], ref);
+    expect(notes.length).toBe(3);
+  });
+
+  it("Strix Frightening (replaces Nocturnal only) drops both Nocturnal notes, keeps Suspicious", () => {
+    const frightening = vendoredTraitId("Frightening", "Strix");
+    const notes = raceContextNotesFor(makeDoc("Strix", [], [frightening]), ref.races[strixId], ref);
+    expect(notes.some((n) => n.text.includes("Dim Light or Darkness"))).toBe(false);
+    expect(notes.some((n) => n.text.includes("vs. Illusions"))).toBe(true);
+  });
+
+  it("Strix Tough (replaces Suspicious only) drops Suspicious, keeps both Nocturnal notes", () => {
+    const tough = vendoredTraitId("Tough", "Strix");
+    const notes = raceContextNotesFor(makeDoc("Strix", [], [tough]), ref.races[strixId], ref);
+    expect(notes.some((n) => n.text.includes("vs. Illusions"))).toBe(false);
+    expect(notes.filter((n) => n.text.includes("Dim Light or Darkness")).length).toBe(2);
+  });
+
+  it("Aquatic Elf Surfacer Antagonist (replaces Elven Magic) drops both of its notes", () => {
+    const surfacerAntagonist = vendoredTraitId("Surfacer Antagonist", "Aquatic Elf");
+    const base = raceContextNotesFor(makeDoc("Aquatic Elf"), ref.races[aquaticElfId], ref);
+    expect(base.length).toBe(2);
+    const notes = raceContextNotesFor(
+      makeDoc("Aquatic Elf", [], [surfacerAntagonist]),
+      ref.races[aquaticElfId],
+      ref,
+    );
+    expect(notes.length).toBe(0);
+  });
+
+  it("a vendored pick belonging to a different race suppresses nothing (stale/mismatched id)", () => {
+    const surfacerAntagonist = vendoredTraitId("Surfacer Antagonist", "Aquatic Elf");
+    const notes = raceContextNotesFor(
+      makeDoc("Svirfneblin", [], [surfacerAntagonist]),
+      ref.races[svirfneblinId],
+      ref,
+    );
+    expect(notes.some((n) => n.text.includes("Reptilian and Dwarf"))).toBe(true);
+  });
+
+  it("an unknown vendored trait id is ignored without throwing", () => {
+    expect(() =>
+      raceContextNotesFor(
+        makeDoc("Svirfneblin", [], ["not-a-real-id"]),
+        ref.races[svirfneblinId],
+        ref,
+      ),
+    ).not.toThrow();
+  });
+
+  it("pins the full set of mapped races", () => {
+    expect(Object.keys(VENDORED_STANDARD_TRAIT_NOTES).sort()).toEqual([
+      "Aphorite",
+      "Aquatic Elf",
+      "Duergar",
+      "Duskwalker",
+      "Gillman",
+      "Grippli",
+      "Nagaji",
+      "Strix",
+      "Svirfneblin",
+      "Syrinx",
+      "Vine Leshy",
+      "Wayang",
+    ]);
   });
 });

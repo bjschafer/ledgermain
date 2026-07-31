@@ -13,6 +13,7 @@ import {
   hasRacialTrait,
   hasVendoredRacialTrait,
   openChangeTargetOptions,
+  raceStandardTraitNotes,
   setVendoredRacialTraitTarget,
   suppressedRaceTargets,
   toggleRacialTrait,
@@ -325,5 +326,52 @@ describe("race points (issue #102)", () => {
     const tagged = vendoredIdByName("Alternate Skill Modifiers (Dhampir - Svetocher)");
     const doc = makeDoc("Human", undefined, [tagged]);
     expect(vendoredRacialTraitPoints(doc, ref)).toEqual({ total: 0, tagged: 0, chosen: 0 });
+  });
+});
+
+describe("raceStandardTraitNotes (issue #41)", () => {
+  function vendoredIdByName(name: string, raceName: string): string {
+    const found = Object.values(ref.racialTraits).find(
+      (t) => t.name === name && t.race.includes(raceName),
+    );
+    if (!found) throw new Error(`vendored racial trait not found: ${name} (${raceName})`);
+    return found.id;
+  }
+
+  it("no race selected returns an empty list", () => {
+    const doc = makeDoc("Human");
+    expect(
+      raceStandardTraitNotes({ ...doc, identity: { ...doc.identity, race: "" } }, ref),
+    ).toEqual([]);
+  });
+
+  it("with no active alternates, every note is present and unretired", () => {
+    const notes = raceStandardTraitNotes(makeDoc("Svirfneblin"), ref);
+    expect(notes).toEqual([{ text: expect.stringContaining("Reptilian and Dwarf") }]);
+  });
+
+  it("a hand-authored alternate retires its matching note by name", () => {
+    // Dwarf Lorekeeper replaces Greed; its Appraise-Items note should show
+    // struck with the alternate's own display name attached.
+    const notes = raceStandardTraitNotes(makeDoc("Dwarf", ["dwarf-lorekeeper"]), ref);
+    const greed = notes.find((n) => n.text.includes("Appraise Items with Gems"));
+    expect(greed?.retiredBy).toBe("Lorekeeper");
+    // Hardy is untouched by Lorekeeper.
+    const hardy = notes.find((n) => n.text.includes("Poisons, Spells and Spell-likes"));
+    expect(hardy?.retiredBy).toBeUndefined();
+  });
+
+  it("a vendored pick retires its matching note by the vendored trait's name", () => {
+    const stalwartWatcher = vendoredIdByName("Stalwart Watcher", "Svirfneblin");
+    const notes = raceStandardTraitNotes(makeDoc("Svirfneblin", undefined, [stalwartWatcher]), ref);
+    expect(notes).toEqual([
+      { text: expect.stringContaining("Reptilian and Dwarf"), retiredBy: "Stalwart Watcher" },
+    ]);
+  });
+
+  it("a vendored pick for a different race retires nothing (stale/mismatched id)", () => {
+    const stalwartWatcher = vendoredIdByName("Stalwart Watcher", "Svirfneblin");
+    const notes = raceStandardTraitNotes(makeDoc("Dwarf", undefined, [stalwartWatcher]), ref);
+    expect(notes.every((n) => n.retiredBy === undefined)).toBe(true);
   });
 });

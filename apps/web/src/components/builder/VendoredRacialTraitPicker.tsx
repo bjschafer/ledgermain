@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
+import { vendoredTraitFullyHandled } from "@pf1/engine";
 
 import {
   availableVendoredRacialTraits,
@@ -27,13 +28,17 @@ const TARGET_GROUPS = ["Ability score", "Skill"] as const;
  * plan), scoped to the character's current race. Mirrors `RagePowerPicker`'s
  * collapsible-search-list shape, but the honesty posture is different: unlike
  * the hand-authored picker inline in `RaceSection` (which enforces a real
- * standard-trait swap), a vendored pick's `replacedTraitNames` is shown as a
- * reminder ONLY — nothing here suppresses the race's own standard `Change`s,
- * so every row carries a soft "verify manually" note (see `RacialTrait`'s
- * doc comment in `@pf1/schema` for why). Entries that duplicate a
- * hand-authored trait by name are excluded (`availableVendoredRacialTraits`)
- * so the two pickers never offer the same trait under two different
- * guarantees.
+ * standard-trait swap), a vendored pick's `replacedTraitNames` is a verified
+ * swap only for the races/names in `@pf1/engine`'s
+ * `VENDORED_STANDARD_TRAIT_TARGETS`/`VENDORED_STANDARD_TRAIT_NOTES` maps
+ * (issue #41) — the "replaces" tag says so ("applied automatically") when
+ * `vendoredTraitFullyHandled` confirms every named standard trait is covered,
+ * and keeps the soft "verify manually" wording everywhere else, where the
+ * catalog only names WHAT the trait replaces without a verified mapping to
+ * suppress it (see `RacialTrait`'s doc comment in `@pf1/schema` for why).
+ * Entries that duplicate a hand-authored trait by name are excluded
+ * (`availableVendoredRacialTraits`) so the two pickers never offer the same
+ * trait under two different guarantees.
  *
  * Three of the catalog's fields need a surface here and nowhere else (issue
  * #102): a heritage variant carries its heritage as a chip (only correct for
@@ -54,6 +59,7 @@ export function VendoredRacialTraitPicker({
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:VendoredRacialTraits", true);
 
+  const raceName = refData.races[doc.identity.race]?.name;
   const all = useMemo(() => availableVendoredRacialTraits(doc, refData), [doc, refData]);
   const points = vendoredRacialTraitPoints(doc, refData);
   const unfilled = unfilledVendoredRacialTraitTargets(doc, refData);
@@ -105,15 +111,16 @@ export function VendoredRacialTraitPicker({
         <>
           <p className="hint magus-arcana-picker-hint">
             Sourced from the wider published catalog, not hand-verified like the traits above.
-            `Changes` apply automatically when structured, but the "replaces" note is a reminder
-            only — retire the named standard trait(s) yourself; nothing here suppresses them.
-            Heritage-tagged entries are only yours if that's your heritage — nothing checks it.
+            `Changes` apply automatically when structured. A "replaces" tag says "applied
+            automatically" when every named standard trait is verified to retire on its own;
+            otherwise it's a reminder only, so retire the named standard trait(s) yourself.
+            Heritage-tagged entries are only yours if that's your heritage: nothing checks it.
             {points.tagged > 0 ? (
               <>
                 {" "}
                 The RP total sums the Race Builder cost of the {points.tagged} tagged pick
-                {points.tagged === 1 ? "" : "s"} — a reference figure for GM approval, not a budget:
-                a swap is meant to be roughly cost-neutral against the standard trait it replaces,
+                {points.tagged === 1 ? "" : "s"}, a reference figure for GM approval, not a budget.
+                A swap is meant to be roughly cost-neutral against the standard trait it replaces,
                 which the catalog doesn't price.
               </>
             ) : null}
@@ -129,6 +136,7 @@ export function VendoredRacialTraitPicker({
             {traits.map((t) => {
               const isSel = hasVendoredRacialTrait(doc, t.id);
               const openChanges = t.openChanges ?? [];
+              const fullyHandled = raceName != null && vendoredTraitFullyHandled(t, raceName);
               return (
                 <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
@@ -138,9 +146,14 @@ export function VendoredRacialTraitPicker({
                       {t.replacedTraitNames.length > 0 ? (
                         <span
                           className="tag-bloodline"
-                          title={`Replaces ${t.replacedTraitNames.join(", ")} — verify manually`}
+                          title={
+                            fullyHandled
+                              ? `Replaces ${t.replacedTraitNames.join(", ")}. Applied automatically.`
+                              : `Replaces ${t.replacedTraitNames.join(", ")}. Verify manually.`
+                          }
                         >
                           replaces {t.replacedTraitNames.join(", ")}
+                          {fullyHandled ? " (auto)" : null}
                         </span>
                       ) : null}
                       {t.racePoints !== undefined ? (

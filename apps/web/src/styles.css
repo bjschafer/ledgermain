@@ -545,6 +545,14 @@ a {
   font-size: 0.8125rem;
 }
 
+/* A rules reminder an active alternate racial trait has retired: struck
+   through + dimmed rather than dropped (same visual language as
+   ModifierComponent.applied: false in Provenance / .cf-name.struck). */
+.hint.struck {
+  text-decoration: line-through;
+  color: var(--faint);
+}
+
 /* -------------------------------------------------------- warn-over / warn-under --
    Modifier classes appended to count badges (e.g. `.hint.warn-over`) when a
    picked count is over/under its expected value — used by FeatsSection and

@@ -32,13 +32,12 @@
  *     Training/Hatred) carry no computed number, so there is nothing for
  *     `suppressTargets` to drop — those alternates are surfaced as options
  *     with their own `contextNotes`, and `replaces` records the swap for the
- *     UI. Race contextNotes aren't rendered on the sheet today (issue #41),
- *     so no stale reminder actually shows yet, but the alternates that
- *     replace a note-only standard trait still carry `suppressNotes` (see
+ *     UI. The race's standard-trait reminders (`Race.contextNotes`) render on
+ *     the sheet via `raceContextNotesFor` (issue #41), so the alternates that
+ *     replace a note-only standard trait carry `suppressNotes` (see
  *     {@link AlternateRacialTrait.suppressNotes} and
- *     {@link effectiveRaceContextNotes} below) so a future consumer that
- *     surfaces `Race.contextNotes` gets the correct filtered list for free
- *     instead of re-discovering this gap.
+ *     {@link effectiveRaceContextNotes} below) to drop the retired note
+ *     rather than leave it showing alongside the replacement.
  *   - Benefits that are a feat grant (Focused Study's Skill Focus chain,
  *     Ancestral Arms' weapon proficiency, Shaman's Apprentice's Endurance) or
  *     conditional on a situation the static sheet can't detect (Eternal Hope's
@@ -67,7 +66,7 @@
  * the `build.racialTraits` entry and `RACIAL_TRAITS[id]` lookup.
  */
 
-import type { CharacterDoc, Change, ContextNote, Race } from "@pf1/schema";
+import type { CharacterDoc, Change, ContextNote, Race, RefData } from "@pf1/schema";
 
 export interface AlternateRacialTrait {
   /** Stable slug, e.g. "human-focused-study". */
@@ -524,21 +523,27 @@ export function alternateRacialTraitsForRace(raceName: string): AlternateRacialT
 
 /**
  * `race.contextNotes`, minus any dropped by an active alternate racial
- * trait's `suppressNotes` — the contextNotes analogue of how `collectModifiers`
- * drops a `Race.changes` entry whose target is in an active alternate's
- * `suppressTargets`. Not wired into `collectModifiers`/`compute.ts` itself:
- * race contextNotes aren't surfaced on the sheet anywhere today (see the
- * module doc comment above), so there is no consumer to call this from yet —
- * it exists so that whenever one is added, it reads through this function
- * instead of `race.contextNotes` directly and gets the correct filtered list
- * for free, rather than re-discovering the suppression gap issue #41 flagged.
+ * trait's `suppressNotes`, and minus any dropped by an active VENDORED
+ * alternate whose replaced standard trait has a verified entry in
+ * {@link VENDORED_STANDARD_TRAIT_NOTES} — the contextNotes analogue of how
+ * `collectModifiers` drops a `Race.changes` entry whose target is in an
+ * active alternate's `suppressTargets`/`vendoredTraitSuppressTargets`.
+ * `activeVendoredTraits` takes the minimal shape `vendoredTraitSuppressTargets`
+ * already accepts (name + `replacedTraitNames`) rather than the full
+ * `RacialTrait`, so a caller with only that much on hand doesn't need to look
+ * anything else up. Defaults to `[]` so the hand-authored-only call sites
+ * (and the existing tests) don't need to pass it.
  */
 export function effectiveRaceContextNotes(
   race: Race | undefined,
   activeTraits: readonly AlternateRacialTrait[],
+  activeVendoredTraits: readonly { name: string; replacedTraitNames: string[] }[] = [],
 ): ContextNote[] {
   if (!race) return [];
-  const suppressedFragments = activeTraits.flatMap((t) => t.suppressNotes ?? []);
+  const suppressedFragments = [
+    ...activeTraits.flatMap((t) => t.suppressNotes ?? []),
+    ...activeVendoredTraits.flatMap((t) => vendoredTraitSuppressNoteFragments(t, race.name)),
+  ];
   if (suppressedFragments.length === 0) return race.contextNotes;
   return race.contextNotes.filter(
     (cn) => !suppressedFragments.some((fragment) => cn.text.includes(fragment)),
@@ -547,18 +552,30 @@ export function effectiveRaceContextNotes(
 
 /**
  * Convenience wrapper around {@link effectiveRaceContextNotes} that resolves
- * "the character's currently-active alternate racial traits for their race"
- * itself — same `doc.build.racialTraits` -> `RACIAL_TRAITS` -> filter-by-
+ * both "the character's currently-active alternate racial traits for their
+ * race" (same `doc.build.racialTraits` -> `RACIAL_TRAITS` -> filter-by-
  * current-race lookup `collectModifiers` and {@link hasSlowAndSteady} each do
- * inline, factored out here so a future UI consumer doesn't have to
- * reimplement it a third time.
+ * inline) AND, when `refData` is given, their active VENDORED picks the same
+ * way `collectModifiers` resolves `activeVendoredTraits` — factored out here
+ * so a UI consumer doesn't have to reimplement either lookup. `refData` is
+ * optional (and the vendored half is skipped without it) so existing
+ * hand-authored-only callers keep compiling unchanged.
  */
-export function raceContextNotesFor(doc: CharacterDoc, race: Race | undefined): ContextNote[] {
+export function raceContextNotesFor(
+  doc: CharacterDoc,
+  race: Race | undefined,
+  refData?: RefData,
+): ContextNote[] {
   if (!race) return [];
   const activeTraits = (doc.build.racialTraits ?? [])
     .map((id) => RACIAL_TRAITS[id])
     .filter((t): t is AlternateRacialTrait => t != null && t.race === race.name);
-  return effectiveRaceContextNotes(race, activeTraits);
+  const activeVendoredTraits = refData
+    ? (doc.build.vendoredRacialTraits ?? [])
+        .map((id) => refData.racialTraits[id])
+        .filter((t): t is NonNullable<typeof t> => t != null && t.race.includes(race.name))
+    : [];
+  return effectiveRaceContextNotes(race, activeTraits, activeVendoredTraits);
 }
 
 /* ---------------------------------------------------- slow and steady (#52) */
@@ -1001,9 +1018,10 @@ export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
 };
 
 /**
- * The `Race.changes` targets a picked vendored alternate suppresses for
- * `raceName`, per the verified mapping above — empty for an unmapped race or
- * an alternate that only replaces prose traits.
+ * The standard trait name(s) `trait` replaces, resolved the same way for both
+ * {@link vendoredTraitSuppressTargets} and
+ * {@link vendoredTraitSuppressNoteFragments} — shared so the two heritage
+ * inferences below aren't kept in sync by hand across both functions.
  *
  * Two inferences beyond `replacedTraitNames`, both for heritage-variant
  * entries that ship with an EMPTY `replacedTraitNames` (the pack models a
@@ -1016,9 +1034,24 @@ export const VENDORED_STANDARD_TRAIT_TARGETS: Readonly<
  *     skill pairs.
  *   - A name starting with `"Ability Modifiers ("` (the Changeling hag-May
  *     heritages, this slice's only use of that prefix) is that heritage's
- *     complete replacement ability array — see the map doc comment for why
- *     these must suppress (their `untyped` changes would SUM with the base
- *     `racial` ones).
+ *     complete replacement ability array — see the map doc comment above for
+ *     why these must suppress (their `untyped` changes would SUM with the
+ *     base `racial` ones).
+ */
+function resolveReplacedTraitNames(trait: {
+  name: string;
+  replacedTraitNames: string[];
+}): string[] {
+  if (trait.replacedTraitNames.length > 0) return trait.replacedTraitNames;
+  if (trait.name.startsWith("Skilled (")) return ["Skilled"];
+  if (trait.name.startsWith("Ability Modifiers (")) return ["Ability Score Modifiers"];
+  return [];
+}
+
+/**
+ * The `Race.changes` targets a picked vendored alternate suppresses for
+ * `raceName`, per the verified mapping above — empty for an unmapped race or
+ * an alternate that only replaces prose traits.
  */
 export function vendoredTraitSuppressTargets(
   trait: { name: string; replacedTraitNames: string[] },
@@ -1026,13 +1059,177 @@ export function vendoredTraitSuppressTargets(
 ): string[] {
   const raceMap = VENDORED_STANDARD_TRAIT_TARGETS[raceName];
   if (!raceMap) return [];
-  const replaced =
-    trait.replacedTraitNames.length > 0
-      ? trait.replacedTraitNames
-      : trait.name.startsWith("Skilled (")
-        ? ["Skilled"]
-        : trait.name.startsWith("Ability Modifiers (")
-          ? ["Ability Score Modifiers"]
-          : [];
-  return replaced.flatMap((name) => [...(raceMap[name] ?? [])]);
+  return resolveReplacedTraitNames(trait).flatMap((name) => [...(raceMap[name] ?? [])]);
+}
+
+/* ------------------- vendored alternate-trait note suppression (#41) ------ */
+
+/**
+ * Verified mapping from a race's STANDARD trait name (as it appears in the
+ * vendored catalog's `RacialTrait.replacedTraitNames`) to substrings matched
+ * against `Race.contextNotes[].text` for that trait — the contextNotes
+ * analogue of {@link VENDORED_STANDARD_TRAIT_TARGETS} above, covering the
+ * standard traits that carry no `Race.changes` entry at all (a situational
+ * reminder rather than a flat number), so a vendored alternate that replaces
+ * one has something to retire. Audited by hand against `races.json`'s
+ * `contextNotes` arrays the same way as the structured map: every entry below
+ * cites the exact vendored text and the alternate(s) whose own
+ * `replacedTraitNames` (verified against `racial-traits.json`) name it.
+ *
+ *   - Duergar "Stability": `{cmd, "+4 Racial vs Bull Rush and Trip while on
+ *     ground"}` — Duergar's only contextNote. Replaced (alongside the
+ *     already-structured "Duergar Immunities") by "Dwarf Traits".
+ *   - Vine Leshy "Unassuming Foliage": `{skill.ste, "+4 Racial in Forests"}` —
+ *     Vine Leshy's only contextNote. Replaced by "Swamp Leshy" and "Seasoned
+ *     Spirit" (both also name "Climber", already structured-suppressed).
+ *   - Gillman "Enchantment Resistance": `{allSavingThrows, "+2 Racial vs
+ *     Enchantment Effects (non-aboleths)\n-2 Racial vs Enchantment Effects
+ *     (aboleths)"}` — Gillman's only contextNote. Replaced by "Taskmaster",
+ *     "Slimehunter", "Deep Gillman", "Venomkissed", "Truthseer".
+ *   - Grippli "Camouflage": `{skill.ste, "+4 Racial in Marshes and Forested
+ *     Areas"}` — Grippli's only contextNote. Replaced by "Toxic Skin" and
+ *     "Jumper".
+ *   - Strix "Nocturnal": the pair `{skill.ste, "+2 Racial to Stealth in Dim
+ *     Light or Darkness"}` / `{skill.per, "+2 Racial to Perception in Dim
+ *     Light or Darkness"}`, both matched by the "Dim Light or Darkness"
+ *     fragment they share. Replaced by "Frightening" and "Dayguard". Strix
+ *     "Suspicious": `{allSavingThrows, "+2 Racial vs. Illusions"}`. Replaced
+ *     by "Tough", "Nimble (Strix)", and "Cautious Brawler" (whose own
+ *     `replacedTraitNames` also names "Hatred" — the published Strix Hatred
+ *     trait is real, +1 vs. humans, per d20pfsrd, but this vendored slice
+ *     carries no contextNote or change for it at all, same gap as Fetchling's
+ *     Shadowy Resistance below, so there is nothing that key could suppress).
+ *   - Wayang "Shadow Resistance": `{allSavingThrows, "+2 Racial vs. Shadow
+ *     Subschool"}` — Wayang's only contextNote. Replaced by "Poison Minion
+ *     (wayang)" and "Scion of Shadows" (both also name "Light and Dark", the
+ *     prose-only trait already noted unmapped above, and the former also
+ *     names "Lurker", already structured-suppressed).
+ *   - Nagaji "Resistant": `{allSavingThrows, "+2 Racial vs. Mind-Affecting
+ *     Effects and Poison"}`. Replaced by "Serpent Affinity". Nagaji "Serpent's
+ *     Sense" (the Handle Animal half only, per the partial-halves note above
+ *     — the Perception half is structured and already suppressed):
+ *     `{skill.han, "+2 Racial vs. Reptiles"}`. Replaced by "Hypnotic Gaze".
+ *   - Syrinx "Nocturnal": the pair `{skill.per, "+2 Racial at Night"}` /
+ *     `{skill.ste, "+2 Racial at Night"}`, both matched by "at Night". Syrinx
+ *     "Pride": `{allSavingThrows, "+2 Racial vs. Mind-Affecting Effects"}`.
+ *     Both replaced by "Oppressive" (the slice's one alternate naming either).
+ *   - Svirfneblin "Hatred": `{attack, "+1 vs. Reptilian and Dwarf"}` —
+ *     Svirfneblin's only contextNote. Replaced by "Stalwart Watcher"
+ *     (alongside "Skilled", already structured-suppressed).
+ *   - Aquatic Elf "Elven Magic": both of Aquatic Elf's contextNotes —
+ *     `{skill.spl, "+2 to Identify Magic Items"}` and `{allSavingThrows, "+2
+ *     Racial vs Enchantment Effects\nImmune to Magic Sleep"}` — belong to
+ *     Elven Magic, a real trait distinct from the already-structured "Elven
+ *     Immunities" (whose `immEffect.magicSleep` change is a separate `Change`
+ *     that happens to restate the same sleep immunity as prose here; dropping
+ *     this note doesn't touch that change). Replaced by "Surfacer
+ *     Antagonist".
+ *   - Aphorite "Aphorite Resistances": `{allSavingThrows, "+2 vs Poison and
+ *     Mind-affecting effects"}` — Aphorite's only contextNote (its
+ *     electricity resistance, mentioned in the module doc comment above, has
+ *     no `eres` change to suppress, but the save note itself is droppable).
+ *     Replaced by "Share Knowledge".
+ *   - Duskwalker "Ward against Corruption" (the +2 save half only, per the
+ *     partial-halves note above — the undeath-transform-immunity half is
+ *     structured and already suppressed): `{allSavingThrows, "+2 Racial vs.
+ *     Negative Energy and Death effects"}`. Replaced by "Yamaraj's Baliff" and
+ *     "Olethros's Agent".
+ *
+ * A full sweep of every other `replacedTraitNames` entry across the vendored
+ * catalog turned up nothing else contextNotes-only and unmapped: the bulk are
+ * either prose traits already recorded unmapped in the module doc comment
+ * above, or one of the seven core races' (Elf/Dwarf/Gnome/Halfling) dozens of
+ * regional-variant/heritage bundles — those four races are handled entirely
+ * by the hand-authored `RACIAL_TRAITS` table's own `suppressNotes`, not this
+ * vendored map, so they're deliberately absent here the same way they're
+ * absent from {@link VENDORED_STANDARD_TRAIT_TARGETS}.
+ */
+export const VENDORED_STANDARD_TRAIT_NOTES: Readonly<
+  Record<string, Readonly<Record<string, readonly string[]>>>
+> = {
+  Duergar: {
+    Stability: ["Bull Rush and Trip"],
+  },
+  "Vine Leshy": {
+    "Unassuming Foliage": ["Racial in Forests"],
+  },
+  Gillman: {
+    "Enchantment Resistance": ["vs Enchantment Effects"],
+  },
+  Grippli: {
+    Camouflage: ["Marshes and Forested Areas"],
+  },
+  Strix: {
+    Nocturnal: ["Dim Light or Darkness"],
+    Suspicious: ["vs. Illusions"],
+  },
+  Wayang: {
+    "Shadow Resistance": ["Shadow Subschool"],
+  },
+  Nagaji: {
+    Resistant: ["Mind-Affecting Effects and Poison"],
+    "Serpent's Sense": ["vs. Reptiles"],
+  },
+  Syrinx: {
+    Nocturnal: ["at Night"],
+    Pride: ["Mind-Affecting Effects"],
+  },
+  Svirfneblin: {
+    Hatred: ["vs. Reptilian and Dwarf"],
+  },
+  "Aquatic Elf": {
+    "Elven Magic": ["Identify Magic Items", "Enchantment Effects"],
+  },
+  Aphorite: {
+    "Aphorite Resistances": ["Poison and Mind-affecting effects"],
+  },
+  Duskwalker: {
+    "Ward against Corruption": ["Negative Energy and Death effects"],
+  },
+};
+
+/**
+ * The `Race.contextNotes` text fragments a picked vendored alternate
+ * suppresses for `raceName`, per {@link VENDORED_STANDARD_TRAIT_NOTES} —
+ * empty for an unmapped race or an alternate that only replaces a structured
+ * or prose-only standard trait. Mirrors {@link vendoredTraitSuppressTargets}
+ * exactly, against the notes map instead of the targets map.
+ */
+export function vendoredTraitSuppressNoteFragments(
+  trait: { name: string; replacedTraitNames: string[] },
+  raceName: string,
+): string[] {
+  const raceMap = VENDORED_STANDARD_TRAIT_NOTES[raceName];
+  if (!raceMap) return [];
+  return resolveReplacedTraitNames(trait).flatMap((name) => [...(raceMap[name] ?? [])]);
+}
+
+/**
+ * True when every name in `trait.replacedTraitNames` (the literal list the
+ * picker displays on its "replaces" tag) has a verified entry in EITHER
+ * {@link VENDORED_STANDARD_TRAIT_TARGETS} or
+ * {@link VENDORED_STANDARD_TRAIT_NOTES} for `raceName` — i.e. the swap is
+ * fully automatic (every named standard trait actually gets suppressed, be it
+ * a computed number or a contextNotes reminder) and there is nothing left for
+ * the player to retire by hand. `false` for an empty `replacedTraitNames`
+ * (nothing named to check — the picker doesn't show a "replaces" tag at all
+ * in that case) or for any name missing from both maps, which is the
+ * ordinary case for most of the ~80-race catalog (see both maps' doc
+ * comments for what's deliberately left unmapped and why).
+ *
+ * Checked against the RAW `replacedTraitNames`, not
+ * {@link resolveReplacedTraitNames}'s heritage-bundle inference: a bundle
+ * with an empty `replacedTraitNames` shows no "replaces" tag to begin with,
+ * so there is nothing here to mark either way.
+ */
+export function vendoredTraitFullyHandled(
+  trait: { replacedTraitNames: string[] },
+  raceName: string,
+): boolean {
+  if (trait.replacedTraitNames.length === 0) return false;
+  const targetMap = VENDORED_STANDARD_TRAIT_TARGETS[raceName];
+  const noteMap = VENDORED_STANDARD_TRAIT_NOTES[raceName];
+  return trait.replacedTraitNames.every(
+    (name) => targetMap?.[name] !== undefined || noteMap?.[name] !== undefined,
+  );
 }
