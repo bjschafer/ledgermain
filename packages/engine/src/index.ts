@@ -377,6 +377,12 @@ export {
   type MergedCompositeBlastEntry,
 } from "./kineticist-elements.js";
 export {
+  ELEMENTAL_DEFENSE_LEVEL,
+  resolveKineticistDefense,
+  type KineticistDefenseState,
+  type ResolvedKineticistDefense,
+} from "./kineticist-defense.js";
+export {
   KINETIC_BLAST_WEAPON_GROUP,
   computeKineticBlasts,
   kineticBlastConDamage,

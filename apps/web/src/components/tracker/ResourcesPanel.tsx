@@ -7,6 +7,7 @@ import {
   deriveResourcePools,
   OCCULTIST_PHYSICAL_ABILITIES,
   OCCULTIST_SCHOOLS,
+  resolveKineticistDefense,
   type DerivedResourcePool,
   type ToggleBuffOption,
 } from "@pf1/engine";
@@ -18,6 +19,11 @@ import { Panel } from "../builder/Panel.js";
 import { FlaskIcon } from "../icons.js";
 import { toggleLinkedBuff, toggleTableBuff } from "../../model/buffs.js";
 import { setMartialFlexibilityFeat } from "../../model/doc.js";
+import {
+  clearKineticistDefenseBurn,
+  setKineticistDefenseBurn,
+  setKineticistShroudMode,
+} from "../../model/kineticistBuild.js";
 import { applyGrantedTempHp, isImmuneToNonlethal } from "../../model/hp.js";
 import {
   knownOccultistSchoolTags,
@@ -84,7 +90,9 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
         <button
           type="button"
           className="btn-ghost rest"
-          onClick={() => update((d) => restAllResourcesWithRecovery(d, derived))}
+          onClick={() =>
+            update((d) => clearKineticistDefenseBurn(restAllResourcesWithRecovery(d, derived)))
+          }
         >
           Rest (full)
         </button>
@@ -119,6 +127,14 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
                 )}
                 {pool.name === "Mental Focus" && (
                   <MentalFocusInvestmentPanel doc={doc} pool={pool} update={update} />
+                )}
+                {pool.name === "Burn" && pool.classTag === "kineticist" && (
+                  <ElementalDefensePanel
+                    doc={doc}
+                    refData={refData}
+                    burnHeld={used}
+                    update={update}
+                  />
                 )}
               </div>
             );
@@ -453,6 +469,83 @@ function MartialFlexibilityPicker({
         ))}
       </select>
       {borrowed?.description && <FeatureDescription html={borrowed.description} />}
+    </div>
+  );
+}
+
+/**
+ * Kineticist Elemental Defense: how much of the burn currently held went into
+ * the defense rather than a blast. Sits right below the Burn row, the same
+ * shape as {@link MentalFocusInvestmentPanel} — both divide one pool by hand.
+ *
+ * The number field is capped at the burn actually held and at the talent's
+ * own RAW ceiling, whichever is lower, because burn spent past either does
+ * nothing at all (the engine clamps it too, so this is a courtesy rather than
+ * the enforcement). Force Ward's temporary hit points sync into the tracker's
+ * pool on change, the same way activating a temp-HP buff does.
+ */
+function ElementalDefensePanel({
+  doc,
+  refData,
+  burnHeld,
+  update,
+}: {
+  doc: CharacterDoc;
+  refData: RefData;
+  /** The Burn pool's current `used` count — burn accepted and still held. */
+  burnHeld: number;
+  update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
+}) {
+  const level = doc.identity.classes.find((c) => c.tag === "kineticist")?.level ?? 0;
+  const invested = Math.min(doc.live.kineticistDefenseBurn ?? 0, burnHeld);
+  const defense = resolveKineticistDefense(doc.build.kineticistElement, level, {
+    burnInvested: invested,
+    shroudMode: doc.live.kineticistShroudMode,
+  });
+  if (!defense) return null;
+
+  const ceiling = Math.min(burnHeld, defense.maxBurnInvested ?? burnHeld);
+
+  return (
+    <div className="res-sub-row elemental-defense">
+      <div className="res-name">{defense.name}</div>
+      <div className="res-sub">{defense.detail}</div>
+      <div className="mental-focus-row" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <span className="hint">Burn spent here</span>
+        <NumberField
+          value={invested}
+          min={0}
+          max={ceiling}
+          onCommit={(v) =>
+            update((d) =>
+              applyGrantedTempHp(d, setKineticistDefenseBurn(d, Math.min(v, ceiling)), refData),
+            )
+          }
+        />
+        <span className="hint">
+          of {burnHeld} held
+          {defense.maxBurnInvested !== undefined ? ` · max ${defense.maxBurnInvested}` : ""}
+        </span>
+      </div>
+      {defense.elementTag === "water" && (
+        <div className="mental-focus-row" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span className="hint">Shroud shaped as</span>
+          <select
+            value={doc.live.kineticistShroudMode ?? "armor"}
+            onChange={(e) =>
+              update((d) => setKineticistShroudMode(d, e.target.value as "armor" | "shield"))
+            }
+          >
+            <option value="armor">Armor bonus</option>
+            <option value="shield">Shield bonus</option>
+          </select>
+        </div>
+      )}
+      {defense.notes.map((note) => (
+        <p key={note} className="hint">
+          {note}
+        </p>
+      ))}
     </div>
   );
 }

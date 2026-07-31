@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-30-elemental-defense-live",
+    date: "2026-07-30",
+    title: "Your elemental defense is a real number",
+    note: "A panel under the Burn row divides the burn you're holding between your blasts and your defense, and five of the seven defenses move your sheet when you do. Force Ward stocks temporary hit points, Flesh of Stone gives DR/adamantine, Shroud of Water grants an armor or shield bonus you can reshape, Flesh of Wood enhances natural armor, and Emptiness resists negative energy. Enveloping Winds and Searing Flesh state their current miss chance and damage instead, since neither is a stat a sheet carries. Resting removes the burn and the boost together.",
+  },
+  {
     id: "2026-07-30-kinetic-blasts-roll",
     date: "2026-07-30",
     title: "Kinetic blasts are real attack lines, and burn hurts",

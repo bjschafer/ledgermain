@@ -89,6 +89,42 @@ export function setKineticistSimpleBlast(
   };
 }
 
+/* ------------------------------------------------------ elemental defense */
+
+/**
+ * Record how much of the burn currently held went into the Elemental Defense
+ * rather than a blast (`live.kineticistDefenseBurn` — a division of burn
+ * already accepted, not new burn). Never validated against the burn held or
+ * the talent's cap here: the engine clamps both, so an overstated value is
+ * inert rather than wrong, matching every other soft budget in this app.
+ */
+export function setKineticistDefenseBurn(doc: CharacterDoc, points: number): CharacterDoc {
+  const n = Math.max(0, Math.trunc(points));
+  return {
+    ...doc,
+    live: { ...doc.live, kineticistDefenseBurn: n > 0 ? n : undefined },
+  };
+}
+
+/** Shape Shroud of Water into an armor bonus or a shield bonus (a standard action at the table). */
+export function setKineticistShroudMode(doc: CharacterDoc, mode: "armor" | "shield"): CharacterDoc {
+  return {
+    ...doc,
+    live: { ...doc.live, kineticistShroudMode: mode === "shield" ? "shield" : undefined },
+  };
+}
+
+/**
+ * Drop the defense's burn investment, for a rest. Every defense's boost lasts
+ * "until the next time your burn is removed", so the counter can't survive
+ * the rest that empties the pool and silently re-apply the next time burn is
+ * accepted.
+ */
+export function clearKineticistDefenseBurn(doc: CharacterDoc): CharacterDoc {
+  if (doc.live.kineticistDefenseBurn === undefined) return doc;
+  return { ...doc, live: { ...doc.live, kineticistDefenseBurn: undefined } };
+}
+
 /* ---------------------------------------------------------- wild talents */
 
 export function hasKineticistWildTalent(doc: CharacterDoc, id: string): boolean {

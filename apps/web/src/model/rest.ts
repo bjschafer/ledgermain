@@ -45,6 +45,7 @@ import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { getNegativeLevels, restAbilityDamage } from "./afflictions.js";
 import { restHp } from "./hp.js";
+import { clearKineticistDefenseBurn } from "./kineticistBuild.js";
 import { resetSpiritMagicSlots, restPreparedSpells } from "./preparedSpells.js";
 import { remaining, restAllResources } from "./resources.js";
 import { casterClassesOf, storedClassTag } from "./spellcasting.js";
@@ -229,6 +230,9 @@ export function restNewDay(
   next = restAbilityDamage(next);
   const pools = refData ? deriveResourcePools(next, refData, derived?.abilities) : undefined;
   next = restAllResources(next, pools);
+  // A kineticist's Elemental Defense boost lasts "until the next time your
+  // burn is removed" — which is this.
+  next = clearKineticistDefenseBurn(next);
 
   let casterClasses: { classTag: string | undefined; name: string }[] | undefined;
   if (refData) {

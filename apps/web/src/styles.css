@@ -5063,6 +5063,12 @@ input[type="text"].saved-roll-name:focus {
   margin-top: 1px;
 }
 
+/* Shroud of Water's armor/shield switch is a two-option select; left to grow
+   it fills the panel and pushes its own label onto a second line. */
+.elemental-defense select {
+  max-width: 180px;
+}
+
 /* ---------------------------------------------------------- preview notice -- */
 
 .preview-notice-backdrop {

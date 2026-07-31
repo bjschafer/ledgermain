@@ -47,12 +47,12 @@
  * in `computeSkills`.
  *
  * DEFENSE WILD TALENTS: every one of the 7 scales with burn ACCEPTED
- * (variable, "you can accept an additional point of burn to increase...")
- * — a live, per-activation player choice this engine's static `Change`
- * system can't safely target as an always-on bonus (same "situational,
- * scales with burn accepted" honesty-bar call the task brief calls out).
- * `KineticistDefenseDef` is therefore `displayOnly` prose only, surfaced via
- * the Elemental Defense class-feature row's `detail` (see `archetypes.ts`).
+ * (variable, "you can accept an additional point of burn to increase..."),
+ * which `live.kineticistDefenseBurn` records as a division of the burn the
+ * character is already holding. The resolved numbers, and the Changes five of
+ * the seven land on, live in `kineticist-defense.ts`; the `summary` below
+ * stays the element picker's rules text, and is no longer what the Elemental
+ * Defense class-feature row shows.
  *
  * COMPOSITE BLASTS are NOT a budgeted player pick — RAW ("Expanded
  * Element"): "she also gains all composite blast wild talents whose

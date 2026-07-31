@@ -43,6 +43,7 @@ import {
   KINETICIST_ELEMENTS,
   mergedCompositeBlastCatalog,
 } from "./kineticist-elements.js";
+import { resolveKineticistDefense } from "./kineticist-defense.js";
 import { resolveKineticistWildTalent } from "./kineticist-wild-talents.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { resolvePhrenicAmplification } from "./phrenic-amplifications.js";
@@ -1655,13 +1656,17 @@ export function resolveClassFeatures(
       classTag === "kineticist" &&
       grant.name === "Elemental Defense"
     ) {
-      // Issue #65: Elemental Defense always scales with burn ACCEPTED (a
-      // live, per-activation choice) — display-only, see
-      // `KineticistDefenseDef`'s doc comment.
-      const element = doc.build.kineticistElement
-        ? KINETICIST_ELEMENTS[doc.build.kineticistElement]
-        : undefined;
-      if (element) detail = `${element.defense.name}: ${element.defense.summary}`;
+      // Elemental Defense scales with how much of the burn currently held was
+      // spent on it — resolved live, so this row states the value the sheet
+      // is actually carrying rather than the rule that produces it. Clamped
+      // to the burn held, same as `collect.ts`'s own resolution.
+      const burnFeature = Object.values(refData.classFeatures).find((f) => f.tag === "burn");
+      const burnHeld = burnFeature ? (doc.live.resources[burnFeature.id]?.used ?? 0) : 0;
+      const defense = resolveKineticistDefense(doc.build.kineticistElement, classLevel, {
+        burnInvested: Math.min(doc.live.kineticistDefenseBurn ?? 0, burnHeld),
+        shroudMode: doc.live.kineticistShroudMode,
+      });
+      if (defense) detail = `${defense.name}: ${defense.detail}`;
     } else if (
       detail === undefined &&
       classTag === "kineticist" &&

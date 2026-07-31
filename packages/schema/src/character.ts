@@ -1521,6 +1521,30 @@ export interface CharacterDoc {
      */
     occultistPhysicalEnhancementAbility?: AbilityId;
     /**
+     * How many points of the burn the kineticist is currently holding were
+     * spent boosting her Elemental Defense rather than a blast. Every defense
+     * wild talent scales this way ("by accepting 1 point of burn, you can
+     * increase ... until the next time your burn is removed"), so this is a
+     * DIVISION of burn already accepted, not additional burn: accepting it
+     * goes through the Burn pool as normal (and costs the nonlethal damage),
+     * and this records where it went — the same "one pool, divided by hand"
+     * shape `occultistFocusInvested` uses.
+     *
+     * `@pf1/engine`'s `resolveKineticistDefense` clamps it to the burn
+     * actually held and to the talent's own cap, so a stale or overstated
+     * value can never inflate the sheet. Cleared by a night's rest, which is
+     * what removes burn. Undefined = none spent on the defense.
+     */
+    kineticistDefenseBurn?: number;
+    /**
+     * Shroud of Water (the water kineticist's Elemental Defense) grants
+     * "either a +4 armor bonus to AC or a +2 shield bonus to AC, and you can
+     * change the type of bonus as a standard action" — which shape it is
+     * currently in. Ignored for every other element. Undefined defaults to
+     * "armor", the larger of the two.
+     */
+    kineticistShroudMode?: "armor" | "shield";
+    /**
      * Vigilante's current identity (issue #65) — "social" (public persona) or
      * "vigilante" (masked persona). Display-forward table state (an identity
      * chip + a context-note reminder about renown/alignment scope on the

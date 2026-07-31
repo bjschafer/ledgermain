@@ -54,6 +54,8 @@ const APPLIED_TARGETS = new Set<string>([
   "init",
   // hit points
   "hp",
+  // temporary hit points a source GRANTS (computeGrantedTempHp)
+  "tempHp",
   // whole-skills bonus (computeSkills globalSkillMods)
   "skills",
   // general/melee/ranged attack + damage

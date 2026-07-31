@@ -85,7 +85,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
     category: "Kineticist wild talents",
     group: "not-modeled",
-    note: "Every published infusion and utility talent is written up across all seven elements. Level gates and burn costs are tracked and the infusion and utility budgets counted. What a talent does is rules text you apply at the table: an infusion doesn't rewrite the blast line on your sheet, and defense talents scale with burn you accept in play.",
+    note: "Every published infusion and utility talent is written up across all seven elements. Level gates and burn costs are tracked and the infusion and utility budgets counted. What a talent does is rules text you apply at the table, and an infusion doesn't rewrite the blast line on your sheet.",
     issueDetail:
       "236 hand-authored wild talents, 7 elements, display-only per the honesty bar (activated abilities with action, save, and burn state). Infusions, Gather Power, and Metakinesis leave the computed blast lines alone: each is a per-activation choice with no build field to read.",
   },

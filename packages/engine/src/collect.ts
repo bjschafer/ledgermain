@@ -22,6 +22,7 @@ import { featNameSlug } from "./feat-effects.js";
 import { resolveFeatEffect } from "./feat-effects-resolve.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { ITEM_CHANGE_PATCHES } from "./item-effects.js";
+import { resolveKineticistDefense } from "./kineticist-defense.js";
 import { resolveKineticistWildTalent } from "./kineticist-wild-talents.js";
 import { resolveMagusArcanum } from "./magus-arcana.js";
 import { mediumSpiritBonus, MEDIUM_SPIRITS } from "./medium-spirits.js";
@@ -1033,6 +1034,34 @@ export function collectModifiers(
           ch.operator,
         );
       }
+    }
+  }
+
+  // --- kineticist Elemental Defense (primary element, 2nd level) ----------
+  // Always on, and always scaled by however much of the burn currently held
+  // the player spent on it (`live.kineticistDefenseBurn`) — clamped to the
+  // burn actually held, so a stale counter can never inflate the sheet. Five
+  // of the seven defenses land on a real target; the other two carry
+  // `changes: []` and stay reminders. See `kineticist-defense.ts`.
+  if (kineticistLevel > 0) {
+    const burnFeature = Object.values(refData.classFeatures).find((f) => f.tag === "burn");
+    const burnHeld = burnFeature ? (doc.live.resources[burnFeature.id]?.used ?? 0) : 0;
+    const defense = resolveKineticistDefense(doc.build.kineticistElement, kineticistLevel, {
+      burnInvested: Math.min(doc.live.kineticistDefenseBurn ?? 0, burnHeld),
+      shroudMode: doc.live.kineticistShroudMode,
+    });
+    for (const ch of defense?.changes ?? []) {
+      if (!gateOpen(ch)) continue;
+      evalChange(
+        ch.formula,
+        rollData,
+        ch.target,
+        ch.type,
+        defense!.name,
+        `kineticistDefense:${defense!.elementTag}`,
+        out,
+        ch.operator,
+      );
     }
   }
 
