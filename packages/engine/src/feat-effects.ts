@@ -21,7 +21,7 @@
  *                      The UI renders a picker for these feats (FeatsSection.tsx).
  */
 
-import type { ContextNote } from "@pf1/schema";
+import type { AbilityId, ContextNote } from "@pf1/schema";
 
 export interface FeatChange {
   target: string;
@@ -50,6 +50,14 @@ export interface StaticFeatEntry {
    * entries (a real Change is preferred whenever one honestly applies).
    */
   contextNotes?: ContextNote[];
+  /**
+   * Fixed class-skill grants — for a feat whose text says a named skill "is
+   * always a class skill for you" (Noble Scion's Knowledge [nobility], Street
+   * Smarts' Knowledge [local], ...). Unioned into `compute()`'s classSkillSet
+   * so the +3 trained bonus lands; distinct from `bonus-class-skills.ts`,
+   * which handles PLAYER-CHOSEN class-skill picks with level-driven counts.
+   */
+  classSkills?: readonly string[];
 }
 
 /**
@@ -813,8 +821,14 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
 export interface FeatPoolEffect {
   /** `RefData.classFeatures[...].tag`(s) of the pool(s) this feat's bonus targets. */
   featureTag: string | readonly string[];
-  /** Amount added to the pool's max, per instance of the feat taken. */
-  maxDelta: number;
+  /**
+   * Amount added to the pool's max, per instance of the feat taken. Either a
+   * flat number (the overwhelmingly common case) or an ability-modifier delta
+   * for the "add your Wisdom bonus" family (Extended Bane, Extended Animal
+   * Focus): the named ability's modifier, floored at `min`, evaluated against
+   * the character's DERIVED abilities at pool-derivation time.
+   */
+  maxDelta: number | { abilityMod: AbilityId; min: number };
 }
 
 export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
@@ -899,6 +913,48 @@ export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
   // Same max-tracking posture as Extra Grit; Amateur Swashbuckler-only case
   // likewise has no modeled pool to raise.
   "extra-panache": { featureTag: "panache", maxDelta: 2 },
+
+  // ── Community-sweep pool promotions (see feat-classification-community.ts
+  // for the sweep's methodology). Deltas quote the vendored benefit text.
+
+  // Believer's Hands (Advanced Class Guide): "you instead gain one extra use of
+  // lay on hands each day" — the "instead" branch applies exactly when the
+  // character already has lay on hands, which is also the only case where a
+  // layOnHands pool exists for this delta to land on; the other branch (a
+  // standalone 1/day imitation at half level) has no pool and stays prose.
+  "believer-s-hands": { featureTag: "layOnHands", maxDelta: 1 },
+
+  // Expanded Phrenic Pool (Occult Adventures): "Your phrenic pool total
+  // increases by 2 points."
+  "expanded-phrenic-pool": { featureTag: "phrenicPool", maxDelta: 2 },
+
+  // Extended Animal Focus (Advanced Class Guide): "Add your Wisdom bonus
+  // (minimum 1) to the number of minutes per day that you can use your animal
+  // focus ability."
+  "extended-animal-focus": { featureTag: "animalFocus", maxDelta: { abilityMod: "wis", min: 1 } },
+
+  // Extended Bane (Ultimate Magic): "Add your Wisdom bonus to the number of
+  // rounds per day that you can use your bane ability." No minimum clause, so
+  // floored at 0 rather than 1: a negative modifier shouldn't shrink the pool.
+  "extended-bane": { featureTag: "bane", maxDelta: { abilityMod: "wis", min: 0 } },
+
+  // Extra Touch Treatment (Occult Adventures): "You can use touch treatment
+  // two additional times per day."
+  "extra-touch-treatment": { featureTag: "touchTreatment", maxDelta: 2 },
+
+  // Maddening Style / Mantis Style / Mantis Torment each carry an
+  // unconditional "one additional use/attempt of Stunning Fist per day"
+  // sentence BEFORE any "While using this style" clause — per the style-feat
+  // rules only the prefixed clauses are stance-gated, so the extra daily use
+  // applies regardless of stance (the in-stance DC riders stay prose).
+  "maddening-style": { featureTag: "stunningFist", maxDelta: 1 },
+  "mantis-style": { featureTag: "stunningFist", maxDelta: 1 },
+  "mantis-torment": { featureTag: "stunningFist", maxDelta: 1 },
+
+  // Practiced Tactician (Advanced Class Guide): "You can use your tactician
+  // ability to grant allies a teamwork feat one additional time per day."
+  // Repeatable per its Special clause; stacks per instance.
+  "practiced-tactician": { featureTag: "tactician", maxDelta: 1 },
 
   // Extra Summons (community pf1-content pack; Advanced Class Guide): "You
   // gain 1 additional use of your summon monster spell-like ability per

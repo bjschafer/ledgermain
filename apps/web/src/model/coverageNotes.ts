@@ -101,11 +101,6 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     issueDetail:
       "Non-damage immunity is a separate axis (Defenses.effectImmunities) that resolveDamage deliberately never sees: a soft flag on the conditions it maps onto, and a gate on the tracker's nonlethal entry, but nothing adjudicates an incoming effect against it.",
   },
-  {
-    category: "Community-pack feats",
-    group: "not-modeled",
-    note: "The bulk of the feat catalog is in, but a feat sourced from the wider community content pack may show its prerequisites as text only rather than enforcing them, and may not apply its effect to your sheet automatically.",
-  },
 ];
 
 /**

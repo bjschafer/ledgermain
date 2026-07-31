@@ -45,6 +45,7 @@ import {
 } from "./ability-substitution.js";
 import { acBonusType } from "./ac-bonus-types.js";
 import { chosenBonusClassSkills } from "./bonus-class-skills.js";
+import { featGrantedClassSkills } from "./feat-effects-resolve.js";
 import { resolveClassFeatures } from "./archetypes.js";
 import { computeRanger } from "./ranger.js";
 import { orderByTag } from "./cavalier-orders.js";
@@ -960,6 +961,9 @@ function computeSkills(
   // Player-chosen bonus class skills (e.g. Student of War's Additional
   // Skill), already truncated to the character's current entitlement.
   for (const s of chosenBonusClassSkills(doc, refData)) classSkillSet.add(s);
+  // Fixed class skills granted by a feat's own text ("Knowledge (nobility) is
+  // always a class skill for you" — Noble Scion, Street Smarts, ...).
+  for (const s of featGrantedClassSkills(doc, refData.feats)) classSkillSet.add(s);
 
   // Element/order/mystery-granted bonus class skills: fixed by the choice
   // itself (which mystery/order/element), not a separate player pick, so

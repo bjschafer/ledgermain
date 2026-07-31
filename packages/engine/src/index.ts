@@ -539,8 +539,10 @@ export {
   type ExtractedStaticFeatEntry,
   type ExtractedChoiceFeatEntry,
 } from "./feat-effects-extracted.js";
+export { FEAT_EFFECTS_EXTRACTED_COMMUNITY } from "./feat-effects-extracted-community.js";
 export {
   resolveFeatEffect,
+  featGrantedClassSkills,
   type FeatEffectSource,
   type ResolvedFeatEffect,
 } from "./feat-effects-resolve.js";
@@ -549,6 +551,10 @@ export {
   type FeatClassificationBucket,
   type FeatClassificationEntry,
 } from "./feat-classification.js";
+export {
+  FEAT_CLASSIFICATION_COMMUNITY,
+  FEAT_CLASSIFICATION_COMMUNITY_NOTES,
+} from "./feat-classification-community.js";
 export {
   METAMAGIC_FEATS,
   metamagicDef,

@@ -158,7 +158,7 @@ export function deriveResourcePools(
 ): DerivedResourcePool[] {
   const rollData = buildRollData(doc, refData, abilities as Parameters<typeof buildRollData>[2]);
   const pools: DerivedResourcePool[] = [];
-  const poolMaxBonusByFeatureTag = collectFeatPoolBonuses(doc, refData);
+  const poolMaxBonusByFeatureTag = collectFeatPoolBonuses(doc, refData, abilities);
   const poolIdByTag = new Map<string, string>();
   // Features with no independent daily cap of their own (`uses.source` instead
   // of `uses.maxFormula`, e.g. Channel Positive Energy drawing on Lay on
@@ -692,7 +692,11 @@ function arcaneReservoirRestValue(classLevel: number, featBonus: number, poolMax
  * at most one of the mutually-exclusive class features) and only double
  * counts in the unmodeled edge case of a character somehow having both.
  */
-function collectFeatPoolBonuses(doc: CharacterDoc, refData: RefData): Map<string, number> {
+function collectFeatPoolBonuses(
+  doc: CharacterDoc,
+  refData: RefData,
+  abilities?: Record<string, AbilityView>,
+): Map<string, number> {
   const bonuses = new Map<string, number>();
   const featIds = [
     ...(doc.build.feats ?? []),
@@ -703,9 +707,13 @@ function collectFeatPoolBonuses(doc: CharacterDoc, refData: RefData): Map<string
     if (!feat) continue;
     const effect = FEAT_POOL_EFFECTS[featNameSlug(feat.name)];
     if (!effect) continue;
+    const delta =
+      typeof effect.maxDelta === "number"
+        ? effect.maxDelta
+        : Math.max(effect.maxDelta.min, abilities?.[effect.maxDelta.abilityMod]?.mod ?? 0);
     const tags = Array.isArray(effect.featureTag) ? effect.featureTag : [effect.featureTag];
     for (const tag of tags) {
-      bonuses.set(tag, (bonuses.get(tag) ?? 0) + effect.maxDelta);
+      bonuses.set(tag, (bonuses.get(tag) ?? 0) + delta);
     }
   }
   return bonuses;

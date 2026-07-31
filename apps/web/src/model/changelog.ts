@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-31-community-feat-sweep",
+    date: "2026-07-31",
+    title: "Every community feat has now been read",
+    note: "All 3,170 or so feats from the wider community pack got the same treatment the core rulebook feats had: each one read and sorted, with every honest always-on number wired into your sheet. Around a hundred now apply themselves, from the whole Skill Focus family and racial skill feats to fire and cold resistance, immunity to electricity, swim and climb speeds, carrying capacity, CMD, and initiative. Feats that say a skill is always a class skill for you now make it one, and nine more feats that extend a daily pool, like Extended Bane and Practiced Tactician, top up the tracker. The rest stay honestly quiet: bonuses that depend on the situation are yours to judge at the table.",
+  },
+  {
     id: "2026-07-31-extra-pool-feats",
     date: "2026-07-31",
     title: "Eight more Extra feats top up their pools",
