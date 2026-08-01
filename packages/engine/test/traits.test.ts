@@ -107,6 +107,23 @@ describe("traits (hand-computed)", () => {
     expect(sheet.skills.umd!.total).toBe(baseline.skills.umd!.total + 1);
   });
 
+  it("trait-granted class skills land the +3 trained bonus (Suspicious on a fighter)", () => {
+    // Sense Motive is not on the fighter class-skill list. With 1 rank:
+    // baseline fighter = 1 rank + 0 Wis = 1; with Suspicious = 1 rank
+    // + 3 class skill + 1 trait = 5 (APG p.331 text: "Sense Motive is
+    // always a class skill for you" + "+1 trait bonus").
+    const doc = makeDoc(["suspicious"]);
+    doc.build.skillRanks = { sen: 1 };
+    const withTrait = compute(doc, ref);
+    const bare = makeDoc([]);
+    bare.build.skillRanks = { sen: 1 };
+    const without = compute(bare, ref);
+    expect(without.skills.sen!.classSkill).toBe(false);
+    expect(without.skills.sen!.total).toBe(1);
+    expect(withTrait.skills.sen!.classSkill).toBe(true);
+    expect(withTrait.skills.sen!.total).toBe(5);
+  });
+
   it("Honest grants +1 Diplomacy (the friendly/helpful +2 is not auto-applied)", () => {
     const sheet = compute(makeDoc(["honest"]), ref);
     expect(sheet.skills.dip!.total).toBe(baseline.skills.dip!.total + 1);
@@ -139,6 +156,28 @@ describe("traits: vendored catalog (issue #74, RefData.traits)", () => {
     expect(comp!.type).toBe("trait");
     expect(comp!.value).toBe(1);
     expect(comp!.applied).toBe(true);
+  });
+
+  it("a supplemented vendored trait applies its extracted changes and class skill (Merchant's Child)", () => {
+    // Merchant's Child (Katapesh, PZO9410): "+1 trait bonus on Appraise
+    // checks, and Appraise is always a class skill for you" — prose-only
+    // upstream, promoted via TRAIT_EFFECTS_EXTRACTED. With 1 rank on a
+    // fighter (no Appraise class skill): 1 rank + 0 Int + 3 class + 1 trait.
+    const id = traitIdByName("Merchant's Child (Katapesh)");
+    const doc = makeDoc([id]);
+    doc.build.skillRanks = { apr: 1 };
+    const sheet = compute(doc, ref);
+    expect(sheet.skills.apr!.classSkill).toBe(true);
+    expect(sheet.skills.apr!.total).toBe(5);
+  });
+
+  it("a supplemented vendored trait's energy resistance reaches the defenses block (Infernal Influence)", () => {
+    // Infernal Influence (Human, PZO9280): "You gain fire resistance 1".
+    const id = traitIdByName("Infernal Influence (Human)");
+    const sheet = compute(makeDoc([id]), ref);
+    const fire = sheet.defenses?.resistances?.find((r) => r.qualifier === "fire");
+    expect(fire).toBeDefined();
+    expect(fire!.total).toBe(1);
   });
 
   it("a vendored trait's own duplicate of a hand-authored trait's id namespace never collides — the hand-authored entry still wins for the legacy id", () => {

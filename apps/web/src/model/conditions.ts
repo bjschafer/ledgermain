@@ -211,6 +211,7 @@ const CONDITION_IMMUNITY_SLUG: Readonly<Record<string, string>> = {
   panicked: "fear",
   stunned: "stunned",
   dazed: "dazed",
+  dazzled: "dazzled",
   staggered: "staggered",
 };
 

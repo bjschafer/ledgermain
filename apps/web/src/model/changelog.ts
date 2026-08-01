@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-31-trait-sweep",
+    date: "2026-07-31",
+    title: "Every character trait has now been read",
+    note: "The roughly 1,550 published traits that used to be text-only got the community feat treatment: each one read and sorted, with every honest always-on effect wired into your sheet. The big win is class skills: traits that say a skill is always a class skill for you now make it one, so the trained bonus lands the moment you put a rank in. A handful more bring flat skill bonuses, fire resistance, damage reduction, or immunity to being dazzled. The five original traits that grant class skills, like Suspicious and Classically Schooled, now grant them for real too. Everything situational stays text for you to judge at the table.",
+  },
+  {
     id: "2026-07-31-community-feat-sweep",
     date: "2026-07-31",
     title: "Every community feat has now been read",

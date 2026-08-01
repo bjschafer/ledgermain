@@ -45,6 +45,7 @@ import {
 } from "./ability-substitution.js";
 import { acBonusType } from "./ac-bonus-types.js";
 import { chosenBonusClassSkills } from "./bonus-class-skills.js";
+import { traitGrantedClassSkills } from "./traits.js";
 import { featGrantedClassSkills } from "./feat-effects-resolve.js";
 import { resolveClassFeatures } from "./archetypes.js";
 import { computeRanger } from "./ranger.js";
@@ -964,6 +965,10 @@ function computeSkills(
   // Fixed class skills granted by a feat's own text ("Knowledge (nobility) is
   // always a class skill for you" — Noble Scion, Street Smarts, ...).
   for (const s of featGrantedClassSkills(doc, refData.feats)) classSkillSet.add(s);
+  // Fixed class skills granted by a picked trait's own text ("Sense Motive
+  // is always a class skill for you" — Suspicious, and the vendored-catalog
+  // entries promoted in trait-effects-extracted.ts).
+  for (const s of traitGrantedClassSkills(doc, refData)) classSkillSet.add(s);
 
   // Element/order/mystery-granted bonus class skills: fixed by the choice
   // itself (which mystery/order/element), not a separate player pick, so

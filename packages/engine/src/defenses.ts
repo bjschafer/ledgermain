@@ -138,6 +138,7 @@ export const EFFECT_IMMUNITY_LABELS: Readonly<Record<string, string>> = {
   petrification: "petrification",
   stunned: "being stunned",
   dazed: "being dazed",
+  dazzled: "being dazzled",
   staggered: "being staggered",
   deathEffects: "death effects",
   nonlethalDamage: "nonlethal damage",

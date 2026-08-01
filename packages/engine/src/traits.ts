@@ -29,13 +29,13 @@
  *     change against an unapplied target, e.g. `critConfirm`) plus a
  *     `contextNotes` reminder, never a flat always-on number that would
  *     over-apply. This mirrors `conditions.ts`'s prone/blinded treatment.
- *   - "Make skill X a class skill" is not expressible as a `Change` — the
- *     engine's class-skill set is derived solely from `RefData.classes[].
- *     classSkills` (see `compute.ts`'s `classSkillSet`), and there is no
- *     per-trait hook into it. Traits that grant class-skill status (Child of
- *     the Temple, Classically Schooled, Dangerously Curious, Suspicious,
- *     Vagabond Child) apply their flat skill Change and note the class-skill
- *     grant in `contextNotes` instead of inventing new engine machinery.
+ *   - "Make skill X a class skill" rides the `TraitDef.classSkills` axis
+ *     (unioned into `compute.ts`'s classSkillSet, same as the feat
+ *     `classSkills` axis) — but only for grants naming a fixed base skill.
+ *     A grant naming one specific Craft/Profession/Perform instance (Child
+ *     of the Temple's temple-related Profession) stays a `contextNotes`
+ *     reminder: instance slugs are player-chosen, so the engine can't name
+ *     the instance the grant would attach to.
  *   - `cl` (caster level) and `concentration` are real `Change` targets used
  *     elsewhere in the vendored data (see `targets.ts`) but are not folded
  *     into any discrete number on today's static sheet — Magical Knack and
@@ -44,6 +44,8 @@
  */
 
 import type { Change, RefData, Trait, TraitCategory, TraitDef } from "@pf1/schema";
+
+import { TRAIT_EFFECTS_EXTRACTED } from "./trait-effects-extracted.js";
 
 // TraitCategory/TraitDef live in @pf1/schema (not here) so a homebrew trait
 // stored in `CharacterDoc.build.homebrew.traits` can share the exact same
@@ -192,10 +194,11 @@ const TRAIT_LIST: TraitDef[] = [
     summary:
       "Knowledge (religion) and a temple-related Profession are class skills for you; +1 trait bonus on Knowledge (religion) checks.",
     changes: [t("1", "skill.kre")],
+    classSkills: ["kre"],
     contextNotes: [
       {
         target: "skill.kre",
-        text: "Also makes a temple-related Profession skill a class skill (your choice) — the sheet's class-skill list doesn't reflect this.",
+        text: "Also makes a temple-related Profession skill a class skill (your choice) — the sheet's class-skill list doesn't reflect that one.",
       },
     ],
   },
@@ -270,12 +273,7 @@ const TRAIT_LIST: TraitDef[] = [
     category: "Magic",
     summary: "Spellcraft is always a class skill for you; +1 trait bonus on Spellcraft checks.",
     changes: [t("1", "skill.spl")],
-    contextNotes: [
-      {
-        target: "skill.spl",
-        text: "Also makes Spellcraft a class skill even if your class doesn't include it — the sheet's class-skill list doesn't reflect this.",
-      },
-    ],
+    classSkills: ["spl"],
   },
   {
     id: "magicalLineage",
@@ -299,12 +297,7 @@ const TRAIT_LIST: TraitDef[] = [
     summary:
       "Use Magic Device is always a class skill for you; +1 trait bonus on Use Magic Device checks.",
     changes: [t("1", "skill.umd")],
-    contextNotes: [
-      {
-        target: "skill.umd",
-        text: "Also makes Use Magic Device a class skill — the sheet's class-skill list doesn't reflect this.",
-      },
-    ],
+    classSkills: ["umd"],
   },
   // ---- social ---------------------------------------------------------------
   {
@@ -313,12 +306,7 @@ const TRAIT_LIST: TraitDef[] = [
     category: "Social",
     summary: "Sense Motive is always a class skill for you; +1 trait bonus on Sense Motive checks.",
     changes: [t("1", "skill.sen")],
-    contextNotes: [
-      {
-        target: "skill.sen",
-        text: "Also makes Sense Motive a class skill — the sheet's class-skill list doesn't reflect this.",
-      },
-    ],
+    classSkills: ["sen"],
   },
   {
     id: "convincingLiar",
@@ -341,10 +329,11 @@ const TRAIT_LIST: TraitDef[] = [
     summary:
       "Sleight of Hand is always a class skill for you; +1 trait bonus on Sleight of Hand checks.",
     changes: [t("1", "skill.slt")],
+    classSkills: ["slt"],
     contextNotes: [
       {
         target: "skill.slt",
-        text: "Also makes Sleight of Hand a class skill. The rural variant instead grants Handle Animal — pick whichever fits your background.",
+        text: "The rural variant instead grants Handle Animal as the class skill and bonus — pick whichever fits your background.",
       },
     ],
   },
@@ -445,13 +434,16 @@ function traitCategoryFromType(traitType: string): TraitCategory {
  * UI falls back to `description` instead.
  */
 function vendoredTraitToDef(tr: Trait): TraitDef {
+  const extracted = TRAIT_EFFECTS_EXTRACTED[tr.id];
+  const changes = extracted?.changes ? [...tr.changes, ...extracted.changes] : tr.changes;
   return {
     id: tr.id,
     name: tr.name,
     category: traitCategoryFromType(tr.traitType),
-    changes: tr.changes,
+    changes,
     contextNotes: tr.contextNotes.length > 0 ? tr.contextNotes : undefined,
-    displayOnly: tr.changes.length === 0,
+    classSkills: extracted?.classSkills,
+    displayOnly: changes.length === 0 && !extracted?.classSkills,
     description: tr.description,
     sources: tr.sources,
     tags: tr.tags,
@@ -471,6 +463,30 @@ export function resolveTraitDef(id: string, refData: RefData): TraitDef | undefi
   if (handAuthored) return handAuthored;
   const vendored = refData.traits[id];
   return vendored ? vendoredTraitToDef(vendored) : undefined;
+}
+
+/**
+ * Class skills granted by the character's picked traits ("Perception is
+ * always a class skill for you") — unioned into `compute()`'s classSkillSet,
+ * the exact shape of `featGrantedClassSkills`. Checks the same resolution
+ * chain as `collect.ts`'s trait loop: hand-authored/vendored first, homebrew
+ * as the fallback, unknown ids skipped.
+ */
+export function traitGrantedClassSkills(
+  doc: {
+    build: {
+      traits?: readonly string[];
+      homebrew?: { traits?: Record<string, TraitDef> };
+    };
+  },
+  refData: RefData,
+): string[] {
+  const skills: string[] = [];
+  for (const traitId of doc.build.traits ?? []) {
+    const def = resolveTraitDef(traitId, refData) ?? doc.build.homebrew?.traits?.[traitId];
+    for (const s of def?.classSkills ?? []) skills.push(s);
+  }
+  return skills;
 }
 
 /**

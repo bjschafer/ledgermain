@@ -175,6 +175,13 @@ export interface TraitDef {
   changes: Change[];
   /** Non-mechanical reminders (situational scope, class-skill grants, etc.). */
   contextNotes?: ContextNote[];
+  /**
+   * Fixed class-skill grants ("Perception is always a class skill for you"),
+   * unioned into `compute()`'s classSkillSet — same semantics as the feat
+   * `classSkills` axis. Base skill ids only; a grant naming one specific
+   * Craft/Profession/Perform instance is not expressible and stays prose.
+   */
+  classSkills?: readonly string[];
   /** True when the trait has no flat modifier the static sheet applies. */
   displayOnly?: boolean;
   /** Full HTML description — vendored catalog entries only. */

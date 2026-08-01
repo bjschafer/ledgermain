@@ -128,9 +128,11 @@ export {
   TRAIT_IDS,
   mergedTraits,
   resolveTraitDef,
+  traitGrantedClassSkills,
   type TraitDef,
   type TraitCategory,
 } from "./traits.js";
+export { TRAIT_EFFECTS_EXTRACTED, type ExtractedTraitEntry } from "./trait-effects-extracted.js";
 export {
   RACIAL_TRAITS,
   alternateRacialTraitsForRace,
