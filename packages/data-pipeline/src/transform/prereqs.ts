@@ -10,6 +10,11 @@ import type { UuidResolver } from "./common.js";
  * minimums, BAB, caster level, character level, embedded feat UUID refs,
  * "N ranks in ..." skills) and retains the full prose as `prereqText` for
  * everything else. It deliberately does NOT chase 100% coverage.
+ *
+ * A `@UUID`-linked feat ref joined to another by "or" (e.g. "Catch Off-Guard
+ * or Throw Anything") is an alternative, not a second AND-ed requirement —
+ * `groupOrFeatRefs` below splits the raw ref list into `feats` (unconditional
+ * AND) and `featsAnyOf` (any one member of the group suffices) accordingly.
  */
 
 const ABILITY_NAMES: Record<string, AbilityId> = {
@@ -143,6 +148,128 @@ function excludedFragments(text: string): ReadonlySet<string> {
   return excluded;
 }
 
+/**
+ * Fragment groups that read as an "or" alternative, for `groupOrFeatRefs`
+ * below — narrower in scope than `excludedFragments` above (which every OTHER
+ * extractor in this file uses): the Oxford-comma case there only fires when
+ * the LAST comma fragment starts with "or" ("A, B, or C"), but a feat-ref
+ * alternative can also be phrased "A, B, and C, or D, E, and F" — the "or"
+ * marker sits mid-list, not last. Kept local rather than folded into
+ * `excludedFragments` itself so this broader trigger can't change what an
+ * unrelated ability/BAB/caster-level fragment elsewhere in the same clause
+ * gets excluded for.
+ */
+function orAlternativeGroups(text: string): string[][] {
+  const groups: string[][] = [];
+  for (const clause of splitClauses(text)) {
+    const fragments = splitFragments(clause);
+    if (fragments.length === 0) continue;
+    if (fragments.length === 1) {
+      if (fragmentIsAlternation(fragments[0]!)) groups.push(fragments);
+      continue;
+    }
+    const hasOrFragment = fragments.some((f) => OR_PREFIX_RE.test(stripBenignOr(f)));
+    if (hasOrFragment) {
+      groups.push(fragments);
+      continue;
+    }
+    for (const frag of fragments) {
+      if (fragmentIsAlternation(frag)) groups.push([frag]);
+    }
+  }
+  return groups;
+}
+
+/** Splits `text` on the word "or" at paren-depth 0 only (see `splitTopLevel`). */
+function splitTopLevelOnOr(text: string): string[] {
+  const depths: number[] = Array.from({ length: text.length });
+  let depth = 0;
+  for (let i = 0; i < text.length; i++) {
+    depths[i] = depth;
+    if (text[i] === "(") depth++;
+    else if (text[i] === ")") depth = Math.max(0, depth - 1);
+  }
+  const re = /\bor\b/gi;
+  const parts: string[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) !== null) {
+    if (depths[m.index] === 0) {
+      parts.push(text.slice(last, m.index));
+      last = m.index + m[0].length;
+    }
+  }
+  parts.push(text.slice(last));
+  return parts;
+}
+
+/**
+ * Splits an "or" group's reconstructed text into a flat list of feat refs
+ * ONLY when the group is a clean, flat "A or B" / "A, B, or C" list of
+ * exactly those feat names and nothing else — a bijection between the
+ * "or"-separated segments and `candidates`. Returns `null` for anything
+ * messier (a branch that mixes a feat with a skill/ability/rank condition,
+ * as in "Foo, Bar, and N ranks, or Baz, Qux"), since that can't be
+ * represented as a flat any-of list without misstating it.
+ */
+function cleanOrGroup(groupText: string, candidates: readonly FeatRef[]): FeatRef[] | null {
+  const segments = splitTopLevelOnOr(groupText)
+    .map((s) =>
+      s
+        .trim()
+        .replace(/^[,;]+/, "")
+        .replace(/[,;]+$/, "")
+        .replace(/\.+$/, "")
+        .trim(),
+    )
+    .filter((s) => s.length > 0);
+  if (segments.length < 2 || segments.length !== candidates.length) return null;
+  const used = new Set<string>();
+  const matched: FeatRef[] = [];
+  for (const seg of segments) {
+    const lower = seg.toLowerCase();
+    const ref = candidates.find((r) => !used.has(r.id) && r.name.trim().toLowerCase() === lower);
+    if (!ref) return null;
+    used.add(ref.id);
+    matched.push(ref);
+  }
+  return matched;
+}
+
+/**
+ * Splits `refs` (every `@UUID` feat ref found in the prereq section) into an
+ * unconditional AND list and zero or more "any one of these" OR groups, using
+ * `orAlternativeGroups` to find each "or" alternative's span in `text` and
+ * `cleanOrGroup` to decide whether that span is simple enough to structure. A
+ * ref that's the lone recognized feat inside an alternative whose OTHER
+ * branch is a non-feat condition (e.g. "Improved Unarmed Strike or base
+ * attack bonus +6") is dropped from both lists entirely — one specific feat
+ * is never the true requirement there, only one of several ways to qualify.
+ */
+function groupOrFeatRefs(
+  refs: readonly FeatRef[],
+  text: string,
+): { feats: FeatRef[]; featsAnyOf: FeatRef[][] } {
+  const remaining = new Map(refs.map((r) => [r.id, r]));
+  const featsAnyOf: FeatRef[][] = [];
+
+  for (const group of orAlternativeGroups(text)) {
+    const groupText = group.join(", ");
+    const lowerGroupText = groupText.toLowerCase();
+    const candidates = [...remaining.values()].filter((r) =>
+      lowerGroupText.includes(r.name.trim().toLowerCase()),
+    );
+    if (candidates.length === 0) continue;
+    if (candidates.length >= 2) {
+      const clean = cleanOrGroup(groupText, candidates);
+      if (clean) featsAnyOf.push(clean);
+    }
+    for (const r of candidates) remaining.delete(r.id);
+  }
+
+  return { feats: refs.filter((r) => remaining.has(r.id)), featsAnyOf };
+}
+
 /** Runs `pattern` (first-capture-group numeric) against every non-excluded
  * fragment of `text`, returning the first hit. */
 function firstFragmentMatch(text: string, pattern: RegExp): number | undefined {
@@ -224,12 +351,14 @@ export function parsePrerequisites(
   if (!section) return empty;
 
   const text = stripHtml(resolveFoundryMarkup(section, resolveUuid));
+  const { feats, featsAnyOf } = groupOrFeatRefs(extractFeatRefs(section, resolveUuid), text);
   const result: FeatPrerequisites = {
     abilities: parseAbilities(text),
-    feats: extractFeatRefs(section, resolveUuid),
+    feats,
     skills: parseSkills(text),
     prereqText: text || undefined,
   };
+  if (featsAnyOf.length > 0) result.featsAnyOf = featsAnyOf;
   const bab = parseBab(text);
   if (bab !== undefined) result.bab = bab;
   const cl = parseCasterLevel(text);
@@ -265,7 +394,10 @@ export function resolveNamedFeatPrereqs(feats: Feat[]): void {
   for (const feat of feats) {
     const text = feat.prerequisites.prereqText;
     if (!text) continue;
-    const linkedIds = new Set(feat.prerequisites.feats.map((r) => r.id));
+    const linkedIds = new Set([
+      ...feat.prerequisites.feats.map((r) => r.id),
+      ...(feat.prerequisites.featsAnyOf ?? []).flat().map((r) => r.id),
+    ]);
     const excluded = excludedFragments(text);
     const newRefs: FeatRef[] = [];
     for (const clause of splitClauses(text)) {

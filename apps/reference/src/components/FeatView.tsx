@@ -36,6 +36,16 @@ export function FeatView({ feat }: { feat: Feat }) {
               ))
             : null}
         </Row>
+        {(p.featsAnyOf ?? []).map((group, gi) => (
+          <Row key={gi} label="Feats (any one)">
+            {group.map((ref, i) => (
+              <span key={ref.id}>
+                {i > 0 && " or "}
+                <a href={detailHref("feats", ref.id)}>{ref.name}</a>
+              </span>
+            ))}
+          </Row>
+        ))}
       </div>
 
       {p.prereqText && (

@@ -629,6 +629,16 @@ export interface FeatPrerequisites {
    * is a specific, unambiguous feat.
    */
   feats: FeatRef[];
+  /**
+   * "Any one of these" feat groups, e.g. Catch Off-Guard OR Throw Anything —
+   * every member of one inner array is a distinct alternative, any single one
+   * of which satisfies the group. Extracted from `@UUID` refs joined by "or"
+   * in the prose (see `transform/prereqs.ts`'s `groupOrFeatRefs`); an
+   * alternative whose branches mix feats with other conditions can't be
+   * expressed this way and is left out of both `feats` and `featsAnyOf`
+   * entirely, falling back to the prose warning. Optional/omitted when empty.
+   */
+  featsAnyOf?: FeatRef[][];
   /** Skill-rank requirements parsed from prose (best-effort). */
   skills: { skill: SkillId | null; ranks: number; raw: string }[];
   /** The full prerequisite text, verbatim (HTML stripped). */

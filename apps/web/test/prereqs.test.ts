@@ -184,6 +184,61 @@ describe("issue #108: character level + plain-text feat-name prereqs", () => {
   });
 });
 
+describe("issue #108: 'or'-joined @UUID feat refs (featsAnyOf)", () => {
+  it("Improvised Weapon Mastery: ALLOWS with only Catch Off-Guard selected (not Throw Anything)", () => {
+    const catchOffGuard = featByName("Catch Off-Guard");
+    const mastery = featByName("Improvised Weapon Mastery");
+    const res = evaluatePrereqs(
+      mastery,
+      ctx({ bab: 8, selectedFeats: new Set([catchOffGuard.id]) }),
+    );
+    expect(res.blocked).toBe(false);
+    expect(res.checks.every((c) => c.met)).toBe(true);
+  });
+
+  it("Improvised Weapon Mastery: ALLOWS with only Throw Anything selected (the other branch)", () => {
+    const throwAnything = featByName("Throw Anything");
+    const mastery = featByName("Improvised Weapon Mastery");
+    const res = evaluatePrereqs(
+      mastery,
+      ctx({ bab: 8, selectedFeats: new Set([throwAnything.id]) }),
+    );
+    expect(res.blocked).toBe(false);
+  });
+
+  it("Improvised Weapon Mastery: BLOCKS with neither Catch Off-Guard nor Throw Anything selected", () => {
+    const mastery = featByName("Improvised Weapon Mastery");
+    const res = evaluatePrereqs(mastery, ctx({ bab: 8 }));
+    expect(res.blocked).toBe(true);
+    const group = res.checks.find((c) => c.label.includes("Catch Off-Guard"));
+    expect(group?.met).toBe(false);
+  });
+
+  it("Aligned Crafting: ALLOWS with only Craft Wondrous Item selected (not Craft Magic Arms and Armor)", () => {
+    const craftWondrousItem = featByName("Craft Wondrous Item");
+    const alignedCrafting = featByName("Aligned Crafting");
+    const res = evaluatePrereqs(
+      alignedCrafting,
+      ctx({ selectedFeats: new Set([craftWondrousItem.id]) }),
+    );
+    expect(res.blocked).toBe(false);
+  });
+
+  it("Aligned Crafting: BLOCKS with neither crafting feat selected", () => {
+    const alignedCrafting = featByName("Aligned Crafting");
+    const res = evaluatePrereqs(alignedCrafting, ctx());
+    expect(res.blocked).toBe(true);
+  });
+
+  it("negative: an 'and'-joined @UUID feat pair stays all-required (Cleave still needs Power Attack)", () => {
+    // Cleave's structured prereq is a flat AND (Power Attack + Str 13 + BAB
+    // 1), not an alternative — confirms the fix didn't loosen a genuine AND.
+    const cleave = featByName("Cleave");
+    const res = evaluatePrereqs(cleave, ctx()); // Power Attack not selected
+    expect(res.blocked).toBe(true);
+  });
+});
+
 describe("unqualifiedSelectedFeats() — issue #9 (retained feat whose prereq was removed)", () => {
   it("flags a selected feat once its required feat is no longer selected", () => {
     const powerAttack = featByName("Power Attack");

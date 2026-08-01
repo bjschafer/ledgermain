@@ -5455,13 +5455,7 @@
     "name": "Extra Inspiration",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "SS99IHuvIvzQ1v92",
-          "name": "Amateur Investigator",
-          "uuid": "Compendium.pf1.feats.Item.SS99IHuvIvzQ1v92"
-        }
-      ],
+      "feats": [],
       "prereqText": "Amateur Investigator or inspiration class feature.",
       "skills": []
     },
@@ -37964,17 +37958,20 @@
     "name": "Aligned Crafting",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "4hNO4OAWYF5vXphH",
-          "name": "Craft Magic Arms and Armor",
-          "uuid": "Compendium.pf1.feats.Item.4hNO4OAWYF5vXphH"
-        },
-        {
-          "id": "tD76K8QGco9scT0r",
-          "name": "Craft Wondrous Item",
-          "uuid": "Compendium.pf1.feats.Item.tD76K8QGco9scT0r"
-        }
+      "feats": [],
+      "featsAnyOf": [
+        [
+          {
+            "id": "4hNO4OAWYF5vXphH",
+            "name": "Craft Magic Arms and Armor",
+            "uuid": "Compendium.pf1.feats.Item.4hNO4OAWYF5vXphH"
+          },
+          {
+            "id": "tD76K8QGco9scT0r",
+            "name": "Craft Wondrous Item",
+            "uuid": "Compendium.pf1.feats.Item.tD76K8QGco9scT0r"
+          }
+        ]
       ],
       "prereqText": "Craft Magic Arms and Armor or Craft Wondrous Item.",
       "skills": []
@@ -47989,13 +47986,7 @@
     "name": "Extra Grit",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "nxfb1Cxl628nYR3L",
-          "name": "Amateur Gunslinger",
-          "uuid": "Compendium.pf1.feats.Item.nxfb1Cxl628nYR3L"
-        }
-      ],
+      "feats": [],
       "prereqText": "Grit class feature or the Amateur Gunslinger feat.",
       "skills": []
     },
@@ -69083,13 +69074,7 @@
     "name": "Extra Panache",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "Vov43JkBzhtPn2T9",
-          "name": "Amateur Swashbuckler",
-          "uuid": "Compendium.pf1.feats.Item.Vov43JkBzhtPn2T9"
-        }
-      ],
+      "feats": [],
       "prereqText": "Amateur Swashbuckler or panache class feature.",
       "skills": []
     },
@@ -72010,17 +71995,20 @@
     "prerequisites": {
       "abilities": [],
       "bab": 8,
-      "feats": [
-        {
-          "id": "bZ1YdzkT8NtRIEJ4",
-          "name": "Catch Off-Guard",
-          "uuid": "Compendium.pf1.feats.Item.bZ1YdzkT8NtRIEJ4"
-        },
-        {
-          "id": "gGfXQq0IZrxdcZDx",
-          "name": "Throw Anything",
-          "uuid": "Compendium.pf1.feats.Item.gGfXQq0IZrxdcZDx"
-        }
+      "feats": [],
+      "featsAnyOf": [
+        [
+          {
+            "id": "bZ1YdzkT8NtRIEJ4",
+            "name": "Catch Off-Guard",
+            "uuid": "Compendium.pf1.feats.Item.bZ1YdzkT8NtRIEJ4"
+          },
+          {
+            "id": "gGfXQq0IZrxdcZDx",
+            "name": "Throw Anything",
+            "uuid": "Compendium.pf1.feats.Item.gGfXQq0IZrxdcZDx"
+          }
+        ]
       ],
       "prereqText": "Catch Off-Guard or Throw Anything, base attack bonus +8.",
       "skills": []

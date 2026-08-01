@@ -110,6 +110,82 @@ describe("parsePrerequisites — 'or' alternatives stay prose (precision over re
   });
 });
 
+describe("parsePrerequisites — 'or'-joined @UUID feat refs (issue #108)", () => {
+  function uuidRef(id: string, name: string): string {
+    return `@UUID[Compendium.pf1.feats.Item.${id}]{${name}}`;
+  }
+
+  it("groups two @UUID feat refs joined by 'or' into featsAnyOf, not a flat AND (Aligned Crafting)", () => {
+    const p = parse(
+      `${uuidRef("cmaa", "Craft Magic Arms and Armor")} or ${uuidRef("cwi", "Craft Wondrous Item")}.`,
+    );
+    expect(p.feats).toEqual([]);
+    expect(p.featsAnyOf).toEqual([
+      [
+        { id: "cmaa", name: "Craft Magic Arms and Armor", uuid: "Compendium.pf1.feats.Item.cmaa" },
+        { id: "cwi", name: "Craft Wondrous Item", uuid: "Compendium.pf1.feats.Item.cwi" },
+      ],
+    ]);
+  });
+
+  it("groups an 'or' pair that sits alongside an unrelated AND-ed fragment (Improvised Weapon Mastery)", () => {
+    const p = parse(
+      `${uuidRef("cog", "Catch Off-Guard")} or ${uuidRef("ta", "Throw Anything")}, base attack bonus +8.`,
+    );
+    expect(p.feats).toEqual([]);
+    expect(p.bab).toBe(8);
+    expect(p.featsAnyOf).toEqual([
+      [
+        { id: "cog", name: "Catch Off-Guard", uuid: "Compendium.pf1.feats.Item.cog" },
+        { id: "ta", name: "Throw Anything", uuid: "Compendium.pf1.feats.Item.ta" },
+      ],
+    ]);
+  });
+
+  it("does NOT hard-require two @UUID feat refs joined by 'and' (negative case)", () => {
+    const p = parse(`${uuidRef("pa", "Power Attack")} and ${uuidRef("cl", "Cleave")}.`);
+    expect(p.feats).toEqual([
+      { id: "pa", name: "Power Attack", uuid: "Compendium.pf1.feats.Item.pa" },
+      { id: "cl", name: "Cleave", uuid: "Compendium.pf1.feats.Item.cl" },
+    ]);
+    expect(p.featsAnyOf).toBeUndefined();
+  });
+
+  it("does not hard-require a lone @UUID feat ref whose only 'or' alternative is a non-feat condition", () => {
+    // Real-world shape (Extra Grit): "Grit class feature or the Amateur
+    // Gunslinger feat" — only one side is a feat; the other (a class
+    // feature) never becomes a @UUID feat ref at all, so there's nothing to
+    // pair it with into an any-of group. Hard-requiring the lone feat would
+    // wrongly block a character who qualifies via the class feature instead.
+    const p = parse(`Grit class feature or the ${uuidRef("ag", "Amateur Gunslinger")} feat.`);
+    expect(p.feats).toEqual([]);
+    expect(p.featsAnyOf ?? []).toEqual([]);
+  });
+
+  it("leaves an unrelated AND-ed @UUID feat ref alone when a different fragment in the same clause has its own 'or'", () => {
+    const p = parse(
+      `${uuidRef("dg", "Dodge")}, Shot on the Run or Spring Attack, ${uuidRef("mb", "Mobility")}.`,
+    );
+    expect(p.feats).toEqual([
+      { id: "dg", name: "Dodge", uuid: "Compendium.pf1.feats.Item.dg" },
+      { id: "mb", name: "Mobility", uuid: "Compendium.pf1.feats.Item.mb" },
+    ]);
+    expect(p.featsAnyOf ?? []).toEqual([]);
+  });
+
+  it("demotes an Oxford-style alternative whose branches mix a feat with other conditions, rather than misrepresenting it", () => {
+    // Real-world shape (Modification Master): each branch is a feat AND a
+    // skill-rank requirement, not a bare feat name — too messy to fit a flat
+    // "any one of these feats" list without changing its meaning, so both
+    // refs are dropped to the prose warning instead of guessed at.
+    const p = parse(
+      `${uuidRef("ca", "Creative Armorsmith")}, ${uuidRef("aa", "Armor Adept")}, and Craft (armor) 7 ranks, or Creative Weaponsmith, ${uuidRef("wa", "Weapon Adept")}, and Craft (weapons) 7 ranks.`,
+    );
+    expect(p.feats).toEqual([]);
+    expect(p.featsAnyOf ?? []).toEqual([]);
+  });
+});
+
 describe("resolveNamedFeatPrereqs", () => {
   function feat(id: string, name: string, prereqText?: string): Feat {
     return {

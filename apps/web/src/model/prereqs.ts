@@ -4,7 +4,8 @@
  *
  * Policy (DESIGN.md §4 hybrid validation):
  *  - HARD-BLOCK only on STRUCTURED prerequisites we reliably parsed (ability
- *    minimums, BAB, caster level, character level, required feats).
+ *    minimums, BAB, caster level, character level, required feats, and
+ *    "any one of these feats" groups).
  *  - NEVER hard-block on free-text prose. When a feat's prereqs are only prose
  *    (`prereqText` with no structured signals), surface a SOFT WARNING instead.
  *
@@ -176,6 +177,31 @@ export function evaluatePrereqs(feat: Feat, ctx: PrereqContext): PrereqResult {
     signals.push({
       met,
       test: (frag) => frag.toLowerCase() === name.trim().toLowerCase(),
+    });
+  }
+
+  // "Any one of these" feat groups (e.g. Catch Off-Guard OR Throw Anything,
+  // issue #108) — a single check for the whole group, met if any member is
+  // selected. The prose fragment can read either as one "A or B" segment or,
+  // for an Oxford-comma group, as separate "A", "B", "or C" segments —
+  // `test` matches both shapes.
+  for (const group of p.featsAnyOf ?? []) {
+    const names = group.map((ref) => ctx.refData.feats[ref.id]?.name ?? ref.name);
+    const label = names.join(" or ");
+    const met = group.some((ref) => ctx.selectedFeats.has(ref.id));
+    checks.push({ label, met });
+    signals.push({
+      met,
+      test: (frag) => {
+        const stripped = frag
+          .replace(/^or\s+/i, "")
+          .trim()
+          .toLowerCase();
+        return (
+          frag.trim().toLowerCase() === label.toLowerCase() ||
+          names.some((n) => stripped === n.trim().toLowerCase())
+        );
+      },
     });
   }
 
