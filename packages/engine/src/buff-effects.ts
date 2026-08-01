@@ -59,6 +59,72 @@ const RAGE_UNCHAINED_TEMP_HP: Change = {
   type: "untyped",
 };
 
+/**
+ * The other shape of vendored gap this table fills: a buff whose save bonus
+ * applies only against a CATEGORY of effects. The pack has no way to say
+ * "against fear", so bless arrives with its +1 morale to attack rolls as a
+ * real `Change` and the save half as the contextNote "+1 Morale vs Fear
+ * effects" — text, and nothing that moves a number. `Change.saveCategories`
+ * closes that: each entry below is transcribed from the note beside it, keeps
+ * out of the save's headline total, and shows as a situational total instead
+ * (see `save-categories.ts`).
+ *
+ * Only promoted where the whole bonus fits the vocabulary. Left as prose:
+ * Angelic Aspect (scoped to evil creatures, a property of the attacker rather
+ * than the effect), Lion's Call (the vendored formula evaluates to +0, so
+ * there is no number to carry), Sunblock Kohl and Veemod (light-based
+ * dazzling), Opportune Advice (gated on having identified the creature), and
+ * Temporary Alliance. Inspire Courage covers "charm and fear"; charm is
+ * narrower than the `enchantment` category, so only the fear half is
+ * promoted and the note continues to carry the rest.
+ */
+const SAVE_CATEGORY_PATCHES: Readonly<Record<string, readonly Change[]>> = {
+  // "+1 Morale vs Fear effects" — the save half of bless/aid, whose attack
+  // half the pack already ships.
+  Aid: [{ formula: "1", target: "allSavingThrows", type: "morale", saveCategories: ["fear"] }],
+  Bless: [{ formula: "1", target: "allSavingThrows", type: "morale", saveCategories: ["fear"] }],
+  // "-1 vs Fear effects" — untyped, matching the pack's own untyped attack
+  // penalty; penalties stack regardless.
+  Bane: [{ formula: "-1", target: "allSavingThrows", type: "untyped", saveCategories: ["fear"] }],
+  // "+4 Morale vs death spells and magical death effects" (the buff ships no
+  // changes at all). The "even if a save is not normally allowed" clause and
+  // the energy-drain immunity stay in the note.
+  "Death Ward": [
+    { formula: "4", target: "allSavingThrows", type: "morale", saveCategories: ["death"] },
+  ],
+  // The save bonus is morale where the same buff's attack/damage bonus is
+  // competence, and scales on the same schedule.
+  "Inspire Courage": [
+    {
+      formula: "1 + max(0, floor((@item.level + 1) / 6))",
+      target: "allSavingThrows",
+      type: "morale",
+      saveCategories: ["fear"],
+    },
+  ],
+  "Karyukai Tea Set": [
+    { formula: "4", target: "allSavingThrows", type: "morale", saveCategories: ["fear"] },
+    { formula: "4", target: "allSavingThrows", type: "morale", saveCategories: ["poison"] },
+  ],
+  "Daikyu of Commanding Presence": [
+    { formula: "2", target: "allSavingThrows", type: "morale", saveCategories: ["fear"] },
+  ],
+  // Purity is the one entry that DOUBLES a bonus rather than adding one: the
+  // buff already ships an unconditional `1 + floor(@item.level / 5)` sacred
+  // bonus, doubled against curses, diseases, and poisons at caster level 10.
+  // Two sacred bonuses don't stack, so this carries the whole doubled value
+  // and wins on highest-within-type rather than summing on top.
+  Purity: [
+    {
+      formula: "if(gte(@item.level, 10), 2 * (1 + floor(@item.level / 5)), 0)",
+      target: "allSavingThrows",
+      type: "sacred",
+      saveCategories: ["curse", "disease", "poison"],
+    },
+  ],
+};
+
 export const BUFF_CHANGE_PATCHES: Readonly<Record<string, readonly Change[]>> = {
   "Rage (Unchained)": [RAGE_UNCHAINED_TEMP_HP],
+  ...SAVE_CATEGORY_PATCHES,
 };

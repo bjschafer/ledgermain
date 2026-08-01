@@ -19,6 +19,7 @@ import type { AbilityId, ActiveBuff } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
 import { acBonusType } from "./ac-bonus-types.js";
+import { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import type { ScopedSaveModifier } from "./save-categories.js";
 import { resolveStack, type TypedModifier } from "./stacking.js";
@@ -139,7 +140,10 @@ export function routeSharedBuffs(
 
   for (const buff of buffs) {
     const buffRollData = withBuffCasterLevel(buff, rollData);
-    for (const ch of buff.changes) {
+    // Same hand-authored patches `collect.ts` applies to the master's own
+    // buffs (`buff-effects.ts`), so a shared bless reaches the creature with
+    // its "vs. fear" half intact rather than only its attack half.
+    for (const ch of [...buff.changes, ...(BUFF_CHANGE_PATCHES[buff.name] ?? [])]) {
       const value = evalShared(ch.formula, buffRollData);
       if (!value) continue;
       const mod: TypedModifier = {

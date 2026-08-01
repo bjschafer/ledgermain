@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-01-buff-save-categories",
+    date: "2026-08-01",
+    title: "Bless finally counts on your saves",
+    note: "Several buffs promised a save bonus in their text and only ever delivered the attack half. Bless and aid now show their fear number, bane its penalty, death ward its bonus against death effects, and inspire courage a fear number that climbs with the bard. Purity doubles itself against curses, diseases, and poisons once the caster hits 10th level. Share one of these with your companion or eidolon and it arrives scoped the same way, instead of quietly lifting every save.",
+  },
+  {
     id: "2026-08-01-racial-and-devotion-saves",
     date: "2026-08-01",
     title: "Your race's save bonus is a number now",
