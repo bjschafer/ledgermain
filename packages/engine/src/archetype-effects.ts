@@ -335,9 +335,11 @@ export const ARCHETYPE_FEATURE_EFFECTS: Readonly<Record<string, ArchetypeFeature
   // ── Monk ─────────────────────────────────────────────────────────────────
 
   // Nornkith's (Blood of the Beast's "Nimble Guardian") "Nimble Reflexes"
-  // replaces Still Mind (which carries no vendored `changes` upstream —
-  // nothing to suppress) with a flat, always-on +2 Reflex save bonus at 3rd
-  // level. No further scaling in the published text.
+  // replaces Still Mind with a flat, always-on +2 Reflex save bonus at 3rd
+  // level. No further scaling in the published text. Still Mind's own +2 vs.
+  // enchantment (hand-authored in `class-feature-effects.ts`, since the
+  // vendored feature carries no `changes`) goes with the replaced grant: the
+  // swap drops the grant by uuid before `collect.ts` reads it.
   "monk:nornkith:nimble-reflexes:3": {
     changes: [c("2", "ref")],
     detail: () => "+2 Reflex saves",
