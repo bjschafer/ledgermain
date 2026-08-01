@@ -412,15 +412,11 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     summary:
       "Retain the +2 vs poison but gain +4 racial bonus on saves against spells and spell-like abilities (in place of the hardy trait).",
     replaces: ["Hardy"],
-    changes: [],
-    displayOnly: true,
-    suppressNotes: ["Poisons, Spells and Spell-likes"], // Hardy
-    contextNotes: [
-      {
-        target: "allSavingThrows",
-        text: "+2 racial vs poison; +4 racial vs spells and spell-like abilities (vs-spells only — not auto-applied).",
-      },
+    changes: [
+      { target: "allSavingThrows", type: "racial", formula: "2", saveCategories: ["poison"] },
+      { target: "allSavingThrows", type: "racial", formula: "4", saveCategories: ["spell", "sla"] },
     ],
+    suppressNotes: ["Poisons, Spells and Spell-likes"], // Hardy
   },
   {
     id: "dwarf-rock-stepper",

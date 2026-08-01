@@ -3259,6 +3259,29 @@ export interface ResolvedStat {
    * this undefined.
    */
   iteratives?: number[];
+  /**
+   * Situational totals for this stat, one per distinct value — a save that is
+   * higher against a category of effects than it is in general (Superstition's
+   * bonus vs. spells, a dwarf's vs. poison). Only ever set on
+   * `DerivedSheet.saves.*`; every other `ResolvedStat` consumer leaves it
+   * undefined. Omitted rather than empty when nothing applies.
+   */
+  conditionals?: ConditionalTotal[];
+}
+
+/**
+ * One situational total on a {@link ResolvedStat}. Categories that resolve to
+ * the *same* total are merged into a single entry rather than repeated, since
+ * one source commonly covers several categories at one bonus (an oracle
+ * revelation covering disease, poison, and death at +4 is one line, not three).
+ */
+export interface ConditionalTotal {
+  /** The stat's total in this situation, already stacked. */
+  total: number;
+  /** `SAVE_CATEGORIES` keys sharing this total, in canonical display order. */
+  categories: string[];
+  /** Display labels for `categories`, in the same order. */
+  labels: string[];
 }
 
 /**

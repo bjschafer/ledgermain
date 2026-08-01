@@ -110,6 +110,26 @@ export interface Change {
    * reading only `doc.live.activeBuffs` — `compute()` stays pure.
    */
   activeWhenBuff?: BuffGate;
+  /**
+   * Save-category scope: when present, this Change does NOT contribute to the
+   * save's headline total, and instead contributes only to the conditional
+   * totals for the categories named here (`SAVE_CATEGORIES` keys in
+   * `@pf1/engine`). The motivating shape is a bonus scoped to a *source
+   * category* rather than to a save, e.g. Superstition's morale bonus on
+   * saves "against spells, spell-like abilities, and supernatural abilities":
+   * applying it to `will` unconditionally would inflate every Will save,
+   * which is why these entries were prose rather than Changes.
+   *
+   * Listing several keys means the bonus applies to each of them
+   * independently (an OR, not an intersection) — a bonus that needs *two*
+   * conditions at once has no representation here and stays prose.
+   *
+   * Only meaningful on save targets (`fort`/`ref`/`will`/`allSavingThrows`);
+   * ignored elsewhere. Absent (the default, and what every other `Change` in
+   * this codebase uses) means the Change applies unconditionally, so this is
+   * fully backward compatible with no doc migration.
+   */
+  saveCategories?: readonly string[];
 }
 
 /**

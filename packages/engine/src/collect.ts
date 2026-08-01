@@ -68,6 +68,12 @@ export interface CollectedModifier extends TypedModifier {
    * "set" today (see compute.ts); other targets ignore it.
    */
   operator?: "add" | "set";
+  /**
+   * Save-category scope carried through from {@link Change}. When set, this
+   * modifier is excluded from the save's headline total and contributes only
+   * to those categories' conditional totals (see `compute.ts`'s `computeSave`).
+   */
+  saveCategories?: readonly string[];
 }
 
 /** `@item.level` / `@cl` in a buff formula = the buff's caster/effect level. */
@@ -105,6 +111,7 @@ function evalChange(
   sourceId: string,
   out: CollectedModifier[],
   operator?: "add" | "set",
+  saveCategories?: readonly string[],
 ): void {
   let value: number | null;
   try {
@@ -114,7 +121,11 @@ function evalChange(
     return;
   }
   if (value === null || Number.isNaN(value)) return;
-  out.push({ target, type: type || "untyped", value, source, sourceId, operator });
+  // A category-scoped change contributing 0 (a level-tiered category that
+  // hasn't unlocked yet) must not become a conditional line identical to the
+  // headline total, so drop it here rather than filtering downstream.
+  if (value === 0 && saveCategories !== undefined && saveCategories.length > 0) return;
+  out.push({ target, type: type || "untyped", value, source, sourceId, operator, saveCategories });
 }
 
 /**
@@ -205,7 +216,17 @@ export function collectModifiers(
 
     for (const ch of race.changes) {
       if (suppressed.has(ch.target)) continue;
-      evalChange(ch.formula, rollData, ch.target, ch.type, race.name, race.id, out, ch.operator);
+      evalChange(
+        ch.formula,
+        rollData,
+        ch.target,
+        ch.type,
+        race.name,
+        race.id,
+        out,
+        ch.operator,
+        ch.saveCategories,
+      );
     }
     // Flexible +2 (Human / Half-Elf / Half-Orc): no fixed ability changes,
     // player picks one ability score at character creation. An alternate
@@ -234,7 +255,17 @@ export function collectModifiers(
     for (const t of activeRacialTraits) {
       for (const ch of t.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, t.name, t.id, out, ch.operator);
+        evalChange(
+          ch.formula,
+          rollData,
+          ch.target,
+          ch.type,
+          t.name,
+          t.id,
+          out,
+          ch.operator,
+          ch.saveCategories,
+        );
       }
     }
 
@@ -257,7 +288,17 @@ export function collectModifiers(
       // buff/effectTag is active, instead of unconditionally.
       for (const ch of t.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, t.name, t.id, out, ch.operator);
+        evalChange(
+          ch.formula,
+          rollData,
+          ch.target,
+          ch.type,
+          t.name,
+          t.id,
+          out,
+          ch.operator,
+          ch.saveCategories,
+        );
       }
       // "Choose one" changes the source ships untargeted (`openChanges`): each
       // applies only once the player has named a target, positionally, in
@@ -268,7 +309,17 @@ export function collectModifiers(
         if (!gateOpen(ch)) continue;
         const target = chosenTargets[i];
         if (!target) continue;
-        evalChange(ch.formula, rollData, target, ch.type, t.name, t.id, out, ch.operator);
+        evalChange(
+          ch.formula,
+          rollData,
+          target,
+          ch.type,
+          t.name,
+          t.id,
+          out,
+          ch.operator,
+          ch.saveCategories,
+        );
       }
     }
   }
@@ -280,7 +331,17 @@ export function collectModifiers(
     if (!item) continue;
     const changes = [...item.changes, ...(ITEM_CHANGE_PATCHES[item.name] ?? [])];
     for (const ch of changes) {
-      evalChange(ch.formula, rollData, ch.target, ch.type, item.name, item.id, out, ch.operator);
+      evalChange(
+        ch.formula,
+        rollData,
+        ch.target,
+        ch.type,
+        item.name,
+        item.id,
+        out,
+        ch.operator,
+        ch.saveCategories,
+      );
     }
   }
 
@@ -316,6 +377,7 @@ export function collectModifiers(
           feature.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -392,6 +454,7 @@ export function collectModifiers(
           domain.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -428,6 +491,7 @@ export function collectModifiers(
           f.uuid,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -446,6 +510,7 @@ export function collectModifiers(
         buff.instanceId,
         out,
         ch.operator,
+        ch.saveCategories,
       );
     }
     // Hand-authored patches for a vendored buff whose own `changes[]` are
@@ -463,6 +528,7 @@ export function collectModifiers(
         buff.instanceId,
         out,
         ch.operator,
+        ch.saveCategories,
       );
     }
   }
@@ -472,7 +538,17 @@ export function collectModifiers(
     const cond = CONDITIONS[condId];
     if (!cond) continue;
     for (const ch of cond.changes) {
-      evalChange(ch.formula, rollData, ch.target, ch.type, cond.name, cond.id, out, ch.operator);
+      evalChange(
+        ch.formula,
+        rollData,
+        ch.target,
+        ch.type,
+        cond.name,
+        cond.id,
+        out,
+        ch.operator,
+        ch.saveCategories,
+      );
     }
   }
 
@@ -488,7 +564,17 @@ export function collectModifiers(
     if (!trait) continue;
     for (const ch of trait.changes) {
       if (!gateOpen(ch)) continue;
-      evalChange(ch.formula, rollData, ch.target, ch.type, trait.name, trait.id, out, ch.operator);
+      evalChange(
+        ch.formula,
+        rollData,
+        ch.target,
+        ch.type,
+        trait.name,
+        trait.id,
+        out,
+        ch.operator,
+        ch.saveCategories,
+      );
     }
   }
 
@@ -518,6 +604,7 @@ export function collectModifiers(
           `bloodline:${bloodline.tag}:arcana`,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
       for (const power of bloodline.powers) {
@@ -539,6 +626,7 @@ export function collectModifiers(
             `bloodline:${bloodline.tag}:${power.id}`,
             out,
             ch.operator,
+            ch.saveCategories,
           );
         }
       }
@@ -575,6 +663,7 @@ export function collectModifiers(
             `bloodragerBloodline:${bloodline.tag}:${power.id}`,
             out,
             ch.operator,
+            ch.saveCategories,
           );
         }
       }
@@ -606,6 +695,7 @@ export function collectModifiers(
             `discipline:${discipline.tag}:${power.name}`,
             out,
             ch.operator,
+            ch.saveCategories,
           );
         }
       }
@@ -637,6 +727,7 @@ export function collectModifiers(
           exploit.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -667,6 +758,7 @@ export function collectModifiers(
           arcana.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -707,6 +799,7 @@ export function collectModifiers(
           revelation.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -729,7 +822,17 @@ export function collectModifiers(
       if (!hex) continue;
       for (const ch of hex.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, hex.name, hex.id, out, ch.operator);
+        evalChange(
+          ch.formula,
+          rollData,
+          ch.target,
+          ch.type,
+          hex.name,
+          hex.id,
+          out,
+          ch.operator,
+          ch.saveCategories,
+        );
       }
     }
   }
@@ -768,6 +871,7 @@ export function collectModifiers(
             spiritHex.id,
             out,
             ch.operator,
+            ch.saveCategories,
           );
         }
         continue;
@@ -776,7 +880,17 @@ export function collectModifiers(
       if (!hex) continue;
       for (const ch of hex.changes) {
         if (!gateOpen(ch)) continue;
-        evalChange(ch.formula, rollData, ch.target, ch.type, hex.name, hex.id, out, ch.operator);
+        evalChange(
+          ch.formula,
+          rollData,
+          ch.target,
+          ch.type,
+          hex.name,
+          hex.id,
+          out,
+          ch.operator,
+          ch.saveCategories,
+        );
       }
     }
 
@@ -809,6 +923,7 @@ export function collectModifiers(
             `spirit:${currentSpirit.tag}:${tierId}`,
             out,
             ch.operator,
+            ch.saveCategories,
           );
         }
       }
@@ -842,6 +957,7 @@ export function collectModifiers(
           talent.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -862,6 +978,7 @@ export function collectModifiers(
           trick.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -883,6 +1000,7 @@ export function collectModifiers(
           talent.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -903,6 +1021,7 @@ export function collectModifiers(
           talent.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -920,6 +1039,7 @@ export function collectModifiers(
           talent.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -954,6 +1074,7 @@ export function collectModifiers(
           power.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
       // Choose-one powers (Energy Resistance's energy type, the Elemental
@@ -973,6 +1094,7 @@ export function collectModifiers(
             power.id,
             out,
             ch.operator,
+            ch.saveCategories,
           );
         }
       }
@@ -1003,6 +1125,7 @@ export function collectModifiers(
           discovery.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -1032,6 +1155,7 @@ export function collectModifiers(
           talent.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -1061,6 +1185,7 @@ export function collectModifiers(
         `kineticistDefense:${defense!.elementTag}`,
         out,
         ch.operator,
+        ch.saveCategories,
       );
     }
   }
@@ -1091,6 +1216,7 @@ export function collectModifiers(
           talent.id,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -1119,6 +1245,7 @@ export function collectModifiers(
           `curse:${curse.tag}`,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -1144,14 +1271,34 @@ export function collectModifiers(
 
     if (entry?.type === "static") {
       for (const ch of entry.changes) {
-        evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out, ch.operator);
+        evalChange(
+          ch.formula,
+          rollData,
+          ch.target,
+          ch.type,
+          feat.name,
+          featId,
+          out,
+          ch.operator,
+          ch.saveCategories,
+        );
       }
     } else if (entry?.type === "choice") {
       // Choice-based feat: only emit changes when a choice has been stored.
       const choiceId = doc.build.featChoices?.[featId];
       if (choiceId) {
         for (const ch of entry.build(choiceId)) {
-          evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out, ch.operator);
+          evalChange(
+            ch.formula,
+            rollData,
+            ch.target,
+            ch.type,
+            feat.name,
+            featId,
+            out,
+            ch.operator,
+            ch.saveCategories,
+          );
         }
       }
     }
@@ -1162,7 +1309,17 @@ export function collectModifiers(
     // comment): applied unconditionally, alongside any table-resolved effect
     // above, never in place of it.
     for (const ch of feat.changes ?? []) {
-      evalChange(ch.formula, rollData, ch.target, ch.type, feat.name, featId, out, ch.operator);
+      evalChange(
+        ch.formula,
+        rollData,
+        ch.target,
+        ch.type,
+        feat.name,
+        featId,
+        out,
+        ch.operator,
+        ch.saveCategories,
+      );
     }
   }
 
@@ -1193,6 +1350,7 @@ export function collectModifiers(
           instance.instanceId,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     } else if (entry?.type === "choice" && instance.choiceId) {
@@ -1206,6 +1364,7 @@ export function collectModifiers(
           instance.instanceId,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -1222,6 +1381,7 @@ export function collectModifiers(
         instance.instanceId,
         out,
         ch.operator,
+        ch.saveCategories,
       );
     }
   }
@@ -1285,6 +1445,7 @@ export function collectModifiers(
           `familiar:${bond.familiarKind}`,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }
@@ -1317,6 +1478,7 @@ export function collectModifiers(
           `familiar:tracked:${trackedFamiliar.speciesId}`,
           out,
           ch.operator,
+          ch.saveCategories,
         );
       }
     }

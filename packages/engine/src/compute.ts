@@ -21,6 +21,7 @@ import type {
   AcComponent,
   ArmorClass,
   CharacterDoc,
+  ConditionalTotal,
   DerivedActiveForm,
   DerivedEncumbrance,
   DerivedProficiencies,
@@ -55,6 +56,11 @@ import { computeDefenses } from "./defenses.js";
 import { computeKineticBlasts } from "./kinetic-blast.js";
 import { KINETICIST_ELEMENTS } from "./kineticist-elements.js";
 import { ORACLE_MYSTERIES } from "./oracle-mysteries.js";
+import {
+  SAVE_CATEGORY_ORDER,
+  categoryAppliesToSave,
+  saveCategoryLabel,
+} from "./save-categories.js";
 import { computeSenses } from "./senses.js";
 import {
   carryAdjustments,
@@ -404,11 +410,12 @@ function computeSave(
     const def = Object.values(refData.classes).find((x) => x.tag === c.tag);
     if (def) base += saveForLevels(def.saves[which], c.level);
   }
-  const mods: TypedModifier[] = [
-    ...forTarget(collected, which),
-    ...forTarget(collected, "allSavingThrows"),
-  ];
-  const stack = resolveStack(mods);
+  const all = [...forTarget(collected, which), ...forTarget(collected, "allSavingThrows")];
+
+  // Category-scoped modifiers are held out of the headline total — applying a
+  // "+4 vs. spells" to the whole save would inflate every unrelated roll.
+  const unconditional = all.filter((m) => (m.saveCategories?.length ?? 0) === 0);
+  const stack = resolveStack(unconditional as TypedModifier[]);
   const label = ability.substitution
     ? `Ability (${ability.ability}, ${ability.substitution.source})`
     : `Ability (${ability.ability})`;
@@ -417,7 +424,56 @@ function computeSave(
     synthetic(label, "ability", ability.mod),
     ...toComponents(stack.modifiers),
   ];
-  return { total: base + ability.mod + stack.total, components };
+  const total = base + ability.mod + stack.total;
+  const conditionals = computeSaveConditionals(
+    which,
+    all,
+    unconditional,
+    base + ability.mod,
+    total,
+  );
+  return conditionals.length > 0 ? { total, components, conditionals } : { total, components };
+}
+
+/**
+ * Situational save totals, one per distinct value.
+ *
+ * Each category is re-stacked from scratch against the unconditional
+ * modifiers rather than added on top of the headline total: two `+2 racial`
+ * bonuses on the same save must still collide (highest wins) even when one of
+ * them is category-scoped, which a plain sum would get wrong.
+ */
+function computeSaveConditionals(
+  which: "fort" | "ref" | "will",
+  all: CollectedModifier[],
+  unconditional: CollectedModifier[],
+  floor: number,
+  total: number,
+): ConditionalTotal[] {
+  const scoped = all.filter((m) => (m.saveCategories?.length ?? 0) > 0);
+  if (scoped.length === 0) return [];
+
+  const byTotal = new Map<number, string[]>();
+  for (const key of SAVE_CATEGORY_ORDER) {
+    if (!categoryAppliesToSave(key, which)) continue;
+    const forCategory = scoped.filter((m) => m.saveCategories?.includes(key));
+    if (forCategory.length === 0) continue;
+    const stacked = resolveStack([...unconditional, ...forCategory] as TypedModifier[]);
+    const conditionalTotal = floor + stacked.total;
+    // A category that resolves to the headline total says nothing.
+    if (conditionalTotal === total) continue;
+    const bucket = byTotal.get(conditionalTotal);
+    if (bucket) bucket.push(key);
+    else byTotal.set(conditionalTotal, [key]);
+  }
+
+  return [...byTotal.entries()]
+    .sort((a, b) => b[0] - a[0])
+    .map(([conditionalTotal, categories]) => ({
+      total: conditionalTotal,
+      categories,
+      labels: categories.map(saveCategoryLabel),
+    }));
 }
 
 /* ----------------------------------------------------------------------- AC */

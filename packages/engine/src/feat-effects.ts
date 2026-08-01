@@ -29,6 +29,8 @@ export interface FeatChange {
   formula: string;
   /** Same semantics as {@link Change.operator} — collect.ts passes it through. */
   operator?: "add" | "set";
+  /** Same semantics as {@link Change.saveCategories} — collect.ts passes it through. */
+  saveCategories?: readonly string[];
 }
 
 /** A feat that unconditionally applies a fixed set of typed modifiers. */
