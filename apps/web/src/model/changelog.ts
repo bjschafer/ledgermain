@@ -41,28 +41,10 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
-    id: "2026-08-01-bravery-and-trait-saves",
+    id: "2026-08-01-situational-saves",
     date: "2026-08-01",
-    title: "Bravery, Still Mind, and 34 racial traits now count",
-    note: "Every fighter has Bravery from 2nd level and the sheet used to say nothing about it. It now reads under your Will save and climbs as you level, and it correctly vanishes if your archetype traded it away. Monk Still Mind joins it, along with a run of prestige class defenses and 34 alternate racial traits whose bonus against poison, fear, illusions, curses, or mind-affecting effects was previously just a line of text. Saves also understand that some effects are kinds of others: a bonus against mind-affecting effects now counts when something tries to charm you, and against enchantment when something tries to compel you.",
-  },
-  {
-    id: "2026-08-01-buff-save-categories",
-    date: "2026-08-01",
-    title: "Bless finally counts on your saves",
-    note: "Several buffs promised a save bonus in their text and only ever delivered the attack half. Bless and aid now show their fear number, bane its penalty, death ward its bonus against death effects, and inspire courage a fear number that climbs with the bard. Purity doubles itself against curses, diseases, and poisons once the caster hits 10th level. Share one of these with your companion or eidolon and it arrives scoped the same way, instead of quietly lifting every save.",
-  },
-  {
-    id: "2026-08-01-racial-and-devotion-saves",
-    date: "2026-08-01",
-    title: "Your race's save bonus is a number now",
-    note: "The classic racial defenses were written on your sheet as a reminder and nothing else. Now they count: a dwarf reads its poison and spell numbers straight off the Fortitude seal, an elf or half-elf its enchantment number, a halfling its fear number, a gnome its illusion number. Nineteen races in all, including ones whose bonus grows with level. If you swapped the trait away for an alternate, the number goes with it, so nothing is counted twice. Animal companions, eidolons, and phantoms with Devotion now show their Will bonus against enchantment the same way, and a buff you share with one keeps its situational scope instead of raising every save.",
-  },
-  {
-    id: "2026-07-31-saves-vs-category",
-    date: "2026-07-31",
     title: "Saves know when you are tougher than usual",
-    note: "A bonus that only applies against a certain kind of effect used to be text you had to remember. Now it shows as a second number under the save: a raging barbarian with Superstition reads its spell save right there, a dwarf with Steel Soul sees both its poison and its spell numbers, and an oracle with Near Death gets one line covering everything it protects against. The big number stays the one you roll by default, so nothing is quietly inflated. Poison lines only appear on Fortitude and fear lines only on Will, because that is the save those effects actually call for.",
+    note: "A bonus that only applies against a certain kind of effect used to be text you had to remember. Now it reads as a second number under the save, and the big number stays the one you roll by default so nothing is quietly inflated. Your race counts: a dwarf reads its poison and spell numbers off the Fortitude seal, a halfling its fear number, a gnome its illusion number. So does every fighter's Bravery, monk Still Mind, 34 alternate racial traits, 21 feats, and buffs like bless, aid, and death ward that used to deliver only their attack half. Companions, eidolons, and phantoms with Devotion show their enchantment number too. Swap a trait away and its number goes with it. Poison lines appear only on Fortitude and fear lines only on Will, because that is the save those effects call for, and a bonus against mind-affecting effects now counts when something tries to charm you. It all prints on the paper sheet.",
   },
   {
     id: "2026-07-31-trait-sweep",
