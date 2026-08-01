@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-07-31-saves-vs-category",
+    date: "2026-07-31",
+    title: "Saves know when you are tougher than usual",
+    note: "A bonus that only applies against a certain kind of effect used to be text you had to remember. Now it shows as a second number under the save: a raging barbarian with Superstition reads its spell save right there, a dwarf with Steel Soul sees both its poison and its spell numbers, and an oracle with Near Death gets one line covering everything it protects against. The big number stays the one you roll by default, so nothing is quietly inflated. Poison lines only appear on Fortitude and fear lines only on Will, because that is the save those effects actually call for.",
+  },
+  {
     id: "2026-07-31-trait-sweep",
     date: "2026-07-31",
     title: "Every character trait has now been read",

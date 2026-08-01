@@ -72,7 +72,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "Class picker lists (rage powers, hexes, arcana, talents, exploits, tricks, discoveries, ki powers, style strikes, bold stares, phrenic amplifications, revelations, spirits, disciplines, implements, orders, patrons, aspects, wild talents)",
     note: 'Every published entry in these lists is browsable, searchable, and written up with its level requirement flagged. Entries that move numbers on your sheet automatically are marked with an "M". Most entries are not: they show their rules text for you to apply at the table.',
     issueDetail:
-      "Every list, the class-subsystem tables included, sits at full vendored parity (rage powers 243, rogue talents 234, alchemist discoveries 168, witch hexes 104, down to monk style strikes 15), so the gap is promotion rather than coverage: only 31 rage powers and a scattering of talents and discoveries carry live changes[]. Candidates blocked on a missing mechanism are recorded inline in their table files.",
+      "Every list, the class-subsystem tables included, sits at full vendored parity (rage powers 243, rogue talents 234, alchemist discoveries 168, witch hexes 104, down to monk style strikes 15), so the gap is promotion rather than coverage: only 32 rage powers and a scattering of talents and discoveries carry live changes[]. Candidates blocked on a missing mechanism are recorded inline in their table files.",
   },
   {
     category: "Character traits",
