@@ -41,6 +41,36 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-01-applied-save-notes",
+    date: "2026-08-01",
+    title: "Save reminders that apply themselves say so",
+    note: "A buff, trait, or racial trait whose save bonus the sheet already counts used to keep its warning triangle anyway, inviting you to add the same bonus twice. Those reminders now show a checkmark and say they are applied. The triangle only stays where part of the text still needs your judgment, like the saves Death Ward grants against effects that normally allow none. Burst of Glory and Remove Fear also joined the buffs that add their fear bonus for real.",
+  },
+  {
+    id: "2026-08-01-feat-prereqs-locked",
+    date: "2026-08-01",
+    title: "More feat prerequisites lock for real",
+    note: "Around 650 more feats now enforce at least part of their requirements instead of only showing a soft warning: character level minimums and prerequisites that name another feat in plain text are recognized and checked. Just as important, requirements that offer a choice, like Str 13 or Dex 13, or Catch Off-Guard or Throw Anything, no longer demand both halves, which unlocks well over a hundred feats that were wrongly barred. Anything the sheet cannot check for sure still gets the soft warning for you to judge.",
+  },
+  {
+    id: "2026-08-01-feat-catalog-browsing",
+    date: "2026-08-01",
+    title: "Browse the whole feat catalog",
+    note: "The feat and trait pickers used to stop at the first 200 results and ask you to search instead. Now the list keeps loading as you scroll, all 3,500 or so feats deep. Hover help is readable again too: the explanations that pop up inside a picker draw on top of the window instead of hiding behind it.",
+  },
+  {
+    id: "2026-08-01-spell-chips-direct-hit",
+    date: "2026-08-01",
+    title: "Spell chips read the right line",
+    note: "A spell with more than one effect, like Molten Orb, used to pull its splash or follow-up numbers into the damage chip and could claim the wrong casting time. The chip now reads the spell's primary action: Molten Orb shows its 2d6 direct hit and a standard-action cast, Slay Living shows its full failed-save damage, and casting times came right on more than a dozen other multi-action spells.",
+  },
+  {
+    id: "2026-08-01-disabled-condition",
+    date: "2026-08-01",
+    title: "Disabled joins the condition list",
+    note: "The Disabled condition, at exactly 0 hit points or stable and conscious in the negatives, can now be toggled on the sheet like any other condition and looked up on the reference site: a single move or standard action each round, half speed, and a strenuous action costs 1 hit point. The HP bar already called it out when your hit points hit 0; now the condition stands on its own too.",
+  },
+  {
     id: "2026-08-01-situational-saves",
     date: "2026-08-01",
     title: "Saves know when you are tougher than usual",
