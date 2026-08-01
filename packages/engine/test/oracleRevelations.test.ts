@@ -117,6 +117,19 @@ const PROMOTED_REVELATION_IDS = [
 ];
 
 /**
+ * Promoted via `saveCategories` rather than a flat save bonus: the number is
+ * real but applies only against a category of effects, so it stays out of the
+ * headline save and surfaces as a conditional total. Both Near Death entries
+ * and Mystic Null also tier their categories by level, so their second change
+ * evaluates to 0 (and is dropped) until the tier unlocks.
+ */
+const CATEGORY_PROMOTED_REVELATION_IDS = [
+  "bones:nearDeath",
+  "apocalypse:nearDeath",
+  "spellscar:mysticNull",
+];
+
+/**
  * The chosen-element trio promoted via the choose-one mechanism
  * (`choice`/`choiceChanges` — see `oracle-revelations.ts`'s doc comment):
  * their numbers key off a stored `pickChoices` selection rather than (or, for
@@ -148,6 +161,7 @@ describe("ORACLE_REVELATIONS table", () => {
       ...PROMOTED_REVELATION_IDS,
       ...CHOICE_PROMOTED_REVELATION_IDS,
       ...SUBSTITUTION_PROMOTED_REVELATION_IDS,
+      ...CATEGORY_PROMOTED_REVELATION_IDS,
     ]);
     for (const id of ORACLE_REVELATION_IDS) {
       if (promoted.has(id)) continue;

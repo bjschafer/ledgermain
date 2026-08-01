@@ -79,6 +79,9 @@ const PROMOTED_IDS = new Set([
   "ragingClimber",
   "ragingSwimmer",
   "swiftFoot",
+  // Scoped to saves against spells/SLAs/Su via `saveCategories`, so its
+  // number never reaches the headline save — see `rageBuffGate.test.ts`.
+  "superstition",
   "beastTotem",
   "celestialBlood",
   "chaosTotem",

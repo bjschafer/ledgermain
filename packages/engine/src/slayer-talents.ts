@@ -56,9 +56,11 @@
  *     target on this sheet.
  *   - **Sub-skill-scoped bonuses** (Sure Footing's Acrobatics-on-narrow-
  *     surfaces-only, Toxin Training's saves-vs-poison-targeting-one-ability-
- *     score-only): same near-miss shape as `rage-powers.ts`'s Raging Leaper/
- *     Superstition — an unconditional Change on the whole skill/save would
- *     overstate a bonus the rules scope to one specific use.
+ *     score-only): same near-miss shape as `rage-powers.ts`'s Raging Leaper —
+ *     an unconditional Change on the whole skill/save would overstate a bonus
+ *     the rules scope to one specific use. Toxin Training stays here rather
+ *     than moving to `saveCategories`: the category mechanism scopes to a
+ *     kind of effect, not to a per-character choose-one pick.
  *
  * Two entries clear the bar for a real, unconditional (formula-conditional,
  * not buff-gated) `Change` — no `activeWhenBuff` needed anywhere in this
@@ -66,8 +68,8 @@
  * not a toggled buff:
  *
  *   - **Foil Scrutiny**: a flat +2 on two NAMED (non-parameterized) skills,
- *     Bluff and Disguise — the accompanying Will-save-vs-mind-reading half is
- *     left as a note (save-vs-category-only, no target for that).
+ *     Bluff and Disguise, plus the accompanying Will-save half carried as a
+ *     `saveCategories` change scoped to mind-reading effects.
  *   - **Armored Marauder** / **Armored Swiftness**: both read `@armor.type`
  *     (0 none/1 light/2 med/3 heavy — `rolldata.ts`) to conditionally apply
  *     an `acpA`/`mDexA` reduction ONLY while heavy armor is actually worn,
@@ -284,12 +286,15 @@ const TALENT_LIST: SlayerTalentDef[] = build([
     changes: [
       { formula: "2", target: "skill.blf", type: "untyped" },
       { formula: "2", target: "skill.dis", type: "untyped" },
+      {
+        formula: "2",
+        target: "will",
+        type: "untyped",
+        saveCategories: ["mindReading"],
+      },
     ],
     contextNotes: [
-      note(
-        "The Will-save bonus is scoped to mind-reading effects only, not every Will save — no target for a saves-vs-a-category-only bonus, so apply it manually.",
-        "will",
-      ),
+      note("Mind-reading effects are ones like detect thoughts and discern lies.", "will"),
     ],
   },
   {
@@ -538,7 +543,7 @@ const TALENT_LIST: SlayerTalentDef[] = build([
       "Pick an ability score: gain a +4 bonus on saves against poisons that deal damage to it. Can be taken multiple times, each time for a different ability score. Requires slayer level 4+ and Poison Use.",
     contextNotes: [
       note(
-        "Scoped to saves against poisons targeting one specific ability score, not saves in general — no target for a saves-vs-a-category-only bonus, same as Superstition/Witch Hunter in this app's rage-power table.",
+        "Scoped to saves against poisons that damage one CHOSEN ability score, not poison in general — the save-category mechanism has no per-choice axis, so this stays manual.",
         "fort",
       ),
     ],

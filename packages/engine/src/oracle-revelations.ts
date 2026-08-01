@@ -347,11 +347,19 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Near Death",
       summary:
         "Gain an insight bonus on saves against disease, mind-affecting effects, and poison, extending to death and sleep effects at higher levels.",
-      contextNotes: [
-        note(
-          "Insight bonus is scoped to saves against disease/mind-affecting/poison (and, at higher levels, death/sleep/stunning), not every save — the engine has no save-category target, only whole fort/ref/will, so this isn't modeled as a Change (would overstate onto every save). Apply manually.",
-          "allSavingThrows",
-        ),
+      changes: [
+        {
+          formula: "if(gte(@classes.oracle.level, 11), 4, 2)",
+          target: "allSavingThrows",
+          type: "insight",
+          saveCategories: ["disease", "mind", "poison"],
+        },
+        {
+          formula: "if(gte(@classes.oracle.level, 7), if(gte(@classes.oracle.level, 11), 4, 2), 0)",
+          target: "allSavingThrows",
+          type: "insight",
+          saveCategories: ["death", "sleep", "stun"],
+        },
       ],
     },
     {
@@ -1176,11 +1184,19 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Near Death",
       summary:
         "+2 insight bonus on saves against disease, mind-affecting effects, and poison; extends to death effects, sleep, and stunning at 7th level; the bonus increases to +4 at 11th.",
-      contextNotes: [
-        note(
-          "Insight bonus is scoped to saves against disease/mind-affecting/poison (and, from 7th, death/sleep/stunning), not every save — the engine has no save-category target, only whole fort/ref/will, so this isn't modeled as a Change (would overstate onto every save). Apply manually.",
-          "allSavingThrows",
-        ),
+      changes: [
+        {
+          formula: "if(gte(@classes.oracle.level, 11), 4, 2)",
+          target: "allSavingThrows",
+          type: "insight",
+          saveCategories: ["disease", "mind", "poison"],
+        },
+        {
+          formula: "if(gte(@classes.oracle.level, 7), if(gte(@classes.oracle.level, 11), 4, 2), 0)",
+          target: "allSavingThrows",
+          type: "insight",
+          saveCategories: ["death", "sleep", "stun"],
+        },
       ],
     },
     {
@@ -2298,11 +2314,19 @@ const REVELATION_LIST: OracleRevelationDef[] = [
       name: "Mystic Null",
       summary:
         "+2 insight bonus on saves against spells and spell-like abilities, extending to supernatural abilities at 7th level; the bonus increases to +4 at 11th level.",
-      contextNotes: [
-        note(
-          "Insight bonus is scoped to saves against spells/spell-like abilities (and, from 7th, supernatural abilities), not every save — the engine has no save-category target, only whole fort/ref/will, so this isn't modeled as a Change (would overstate onto every save). Apply manually.",
-          "allSavingThrows",
-        ),
+      changes: [
+        {
+          formula: "if(gte(@classes.oracle.level, 11), 4, 2)",
+          target: "allSavingThrows",
+          type: "insight",
+          saveCategories: ["spell", "sla"],
+        },
+        {
+          formula: "if(gte(@classes.oracle.level, 7), if(gte(@classes.oracle.level, 11), 4, 2), 0)",
+          target: "allSavingThrows",
+          type: "insight",
+          saveCategories: ["su"],
+        },
       ],
     },
     {

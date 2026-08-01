@@ -45,6 +45,7 @@ export const SAVE_CATEGORIES: Readonly<Record<string, SaveCategory>> = {
   enchantment: { label: "enchantment", saves: ["will"] },
   illusion: { label: "illusions", saves: ["will"] },
   emotion: { label: "emotion", saves: ["will"] },
+  despair: { label: "despair", saves: ["will"] },
   possession: { label: "possession", saves: ["will"] },
   mindReading: { label: "mind-reading", saves: ["will"] },
 

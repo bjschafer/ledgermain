@@ -39,11 +39,13 @@
  *     {@link effectiveRaceContextNotes} below) to drop the retired note
  *     rather than leave it showing alongside the replacement.
  *   - Benefits that are a feat grant (Focused Study's Skill Focus chain,
- *     Ancestral Arms' weapon proficiency, Shaman's Apprentice's Endurance) or
- *     conditional on a situation the static sheet can't detect (Eternal Hope's
- *     "+2 vs fear and despair", Steel Soul's "+4 vs spells") carry
- *     `displayOnly: true` with a `contextNotes` reminder rather than a flat
- *     always-on number that would over-apply — the same bar `traits.ts` uses.
+ *     Ancestral Arms' weapon proficiency, Shaman's Apprentice's Endurance)
+ *     carry `displayOnly: true` with a `contextNotes` reminder rather than a
+ *     flat always-on number that would over-apply — the same bar `traits.ts`
+ *     uses. A bonus scoped to a category of effects (Eternal Hope's "+2 vs
+ *     fear and despair", Steel Soul's "+4 vs spells") is instead a real
+ *     `Change` carrying `saveCategories`, which keeps it off the headline
+ *     save while still computing the situational total.
  *   - Speed-changing alternates that ADD to base speed (Sylph Like the Wind:
  *     +5 ft) go through the normal pipeline via the engine's `landSpeed`
  *     change target — `compute.ts`'s `applySpeedTarget` folds any additive
@@ -337,14 +339,20 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     summary:
       "+2 racial bonus on saves vs fear and despair; 1/day reroll a natural 1 before the result is revealed (in place of defensive training and hatred).",
     replaces: ["Defensive Training", "Hatred"],
-    changes: [],
-    displayOnly: true,
+    changes: [
+      {
+        target: "allSavingThrows",
+        type: "racial",
+        formula: "2",
+        saveCategories: ["fear", "despair"],
+      },
+    ],
     // See gnome-gift-of-tongues above.
     suppressNotes: ["Dodge vs Giants", "Humanoids (Reptillian, Goblinoid)"],
     contextNotes: [
       {
         target: "allSavingThrows",
-        text: "+2 racial vs fear and despair effects; 1/day reroll a natural 1 (take the new roll).",
+        text: "1/day reroll a natural 1 (take the new roll).",
       },
     ],
   },
@@ -368,13 +376,16 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     // ARG: "This racial trait replaces fearless and sure-footed." Fearless is
     // the race's "+2 Racial vs Fear" contextNote, hence the suppressNotes.
     replaces: ["Fearless", "Sure-Footed"],
-    changes: [c("2", "skill.sen")],
+    changes: [
+      c("2", "skill.sen"),
+      { target: "allSavingThrows", type: "racial", formula: "2", saveCategories: ["illusion"] },
+    ],
     suppressTargets: ["skill.acr", "skill.clm"],
     suppressNotes: ["vs Fear"],
     contextNotes: [
       {
         target: "allSavingThrows",
-        text: "+2 racial vs illusions; +2 racial on one chosen Craft or Profession skill.",
+        text: "+2 racial on one chosen Craft or Profession skill.",
       },
     ],
   },

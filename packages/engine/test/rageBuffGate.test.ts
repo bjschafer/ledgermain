@@ -10,21 +10,14 @@ import { compute, RAGE_POWERS } from "../src/index.js";
  * `Change.activeWhenBuff`, gated at collect-time by `@pf1/engine`
  * `collect.ts`'s `buffGateSatisfied`, applied to the small set of rage
  * powers promoted off `displayOnly` (see `rage-powers.ts`'s file doc
- * comment for the full promotion rationale and the two deliberately-still-
- * display-only near misses, Superstition and Raging Leaper).
+ * comment for the full promotion rationale and the one deliberately-still-
+ * display-only near miss, Raging Leaper).
  *
- * Note on scope: the original issue sketch asked for a Superstition fixture
- * ("typed as morale so it correctly does NOT stack with Rage's own morale
- * Will bonus") — Superstition was NOT promoted (its bonus is scoped to
- * saves against spells/SLAs/Su only, and the engine has no
- * "saves-vs-a-source-category" Change target — see `rage-powers.ts`'s doc
- * comment for the full honest-call writeup), so there is no live
- * Superstition Change to fixture-test here. Instead, this file covers the
- * three entries that WERE promoted (Raging Climber, Raging Swimmer, Swift
- * Foot) raging vs. not, plus a dedicated typed-stacking check (highest-wins
- * within a type, same rule Rage's own morale bonuses rely on) to prove a
- * gated Change flows through the exact same `resolveStack` pipeline as
- * every unconditional source.
+ * Superstition is the case where both gating mechanisms meet: it is gated on
+ * raging AND scoped to saves against spells/SLAs/Su, so it exercises
+ * `activeWhenBuff` (collect-time) and `saveCategories` (compute-time) at
+ * once. Its morale typing is what makes it worth a fixture — Rage's own
+ * morale bonus on Will has to collide with it rather than sum.
  */
 const ref = loadRefData();
 
@@ -92,11 +85,18 @@ describe("rage-power while-raging buff gate (issue #75)", () => {
     }
   });
 
-  it("Superstition and Raging Leaper are deliberately left displayOnly (conditional-target near misses)", () => {
-    expect(RAGE_POWERS.superstition!.displayOnly).toBe(true);
-    expect(RAGE_POWERS.superstition!.changes).toEqual([]);
+  it("Raging Leaper is deliberately left displayOnly (its bonus is scoped to one use of Acrobatics)", () => {
     expect(RAGE_POWERS.ragingLeaper!.displayOnly).toBe(true);
     expect(RAGE_POWERS.ragingLeaper!.changes).toEqual([]);
+  });
+
+  it("Superstition carries both gates: raging, and scoped to spells/SLAs/Su", () => {
+    const power = RAGE_POWERS.superstition!;
+    expect(power.displayOnly).toBe(false);
+    const change = power.changes[0]!;
+    expect(change.activeWhenBuff?.buffIds).toContain(buffByName("Rage").id);
+    expect(change.type).toBe("morale");
+    expect(change.saveCategories).toEqual(["spell", "sla", "su"]);
   });
 
   it("Raging Climber/Raging Swimmer/Swift Foot are promoted: displayOnly false, real gated Change", () => {

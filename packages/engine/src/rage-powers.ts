@@ -64,17 +64,17 @@
  *     additional effect until a rage-power duplicate-instance mechanism
  *     exists (same class of documented limitation, not a new one).
  *
- * Two while-raging entries are deliberately LEFT display-only despite the
- * new mechanism existing — the honest call, not an oversight:
+ * **Superstition** composes both gates at once: its morale bonus is scoped to
+ * saves "against spells, supernatural abilities, and spell-like abilities"
+ * (verified: d20pfsrd.com/multiple SRD mirrors) AND applies only while
+ * raging, so it carries `activeWhenBuff` and `saveCategories` together. The
+ * gates are evaluated at different stages — the buff gate drops the change at
+ * collect time, the categories hold it out of the headline save at compute
+ * time — so they compose without either needing to know about the other.
  *
- *   - **Superstition**: the morale bonus is scoped to saves "against spells,
- *     supernatural abilities, and spell-like abilities" only (verified:
- *     d20pfsrd.com/multiple SRD mirrors) — the engine has no "saves vs a
- *     source-category" conditional target (only whole-save-type targets
- *     like `will`/`allSavingThrows`), so an unconditional gated Change here
- *     would apply the bonus to EVERY save (including ones with no spell/Su/
- *     SLA origin), overstating it. `contextNotes` still carries the exact
- *     numbers/scaling (already correct pre-#75: +2 at 1st, +1/4 levels).
+ * One while-raging entry is deliberately LEFT display-only despite the
+ * mechanisms existing — the honest call, not an oversight:
+ *
  *   - **Raging Leaper**: RAW is the identical enhancement-bonus-equal-to-
  *     level shape as Climber/Swimmer above, but scoped to Acrobatics checks
  *     "made to jump" only (verified: d20pfsrd.com) — Acrobatics also covers
@@ -602,9 +602,18 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     minLevel: 1,
     summary:
       "+2 morale bonus (scaling +1/4 levels) on saves against spells, spell-like abilities, and supernatural abilities while raging; but must save against all such effects, even beneficial ones from allies.",
+    changes: [
+      {
+        formula: `2 + floor((${BARBARIAN_LEVEL_SUM}) / 4)`,
+        target: "allSavingThrows",
+        type: "morale",
+        activeWhenBuff: WHILE_RAGING,
+        saveCategories: ["spell", "sla", "su"],
+      },
+    ],
     contextNotes: [
       note(
-        "+2 vs. spells/SLAs/Su only, scaling +1 at 4th/8th/12th/16th/20th, only while raging — no target for a saves-vs-a-category-only bonus, so this is manual.",
+        "You must save against ALL such effects while raging, including beneficial ones from allies.",
         "allSavingThrows",
       ),
     ],

@@ -163,10 +163,13 @@ export const TRAIT_EFFECTS_EXTRACTED: Readonly<Record<string, ExtractedTraitEntr
     provenance:
       "You gain a +1 trait bonus on Sense Motive checks, and Sense Motive is always a class skill for you.",
   },
-  // Infernal Influence (Human): Promoted the unconditional fire resistance 1; the +1 Fortitude bonus is scoped to saves against poison, so it stays prose.
+  // Infernal Influence (Human): the fire resistance is unconditional; the Fortitude bonus is scoped to poison.
   Z1JWoQqFHyR515rZ: {
-    changes: [{ target: "eres.fire", type: "untyped", formula: "1" }],
-    provenance: "You gain fire resistance 1",
+    changes: [
+      { target: "eres.fire", type: "untyped", formula: "1" },
+      { target: "fort", type: "trait", formula: "1", saveCategories: ["poison"] },
+    ],
+    provenance: "You gain fire resistance 1 and a +1 trait bonus on Fortitude saves against poison",
   },
   // Jungle Native (Mwangi Expanse; Grippli): Promoted the unconditional Survival class-skill grant; the disease/poison save and jungle-terrain initiative bonuses stay prose since both are scoped.
   vZKFL8BM3kID6Qtd: {

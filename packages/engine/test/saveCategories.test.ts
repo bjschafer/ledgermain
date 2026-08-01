@@ -113,6 +113,48 @@ describe("Steel Soul (category-scoped racial save bonuses)", () => {
   });
 });
 
+describe("Near Death (level-tiered categories)", () => {
+  function oracle(level: number): CharacterDoc {
+    const doc = makeDoc();
+    doc.identity.race = raceId("Human");
+    doc.identity.classes = [{ tag: "oracle", level }];
+    doc.build.oracleMystery = "bones";
+    doc.build.oracleRevelations = ["bones:nearDeath"];
+    return doc;
+  }
+
+  it("covers only the first tier below 7th level", () => {
+    const sheet = compute(oracle(6), ref);
+    const fort = sheet.saves.fort.conditionals ?? [];
+    const will = sheet.saves.will.conditionals ?? [];
+    // disease + poison are Fortitude; mind-affecting is Will. Death, sleep
+    // and stunning have not unlocked, so they produce no line at all.
+    expect(fort.flatMap((c) => c.categories).sort()).toEqual(["disease", "poison"]);
+    expect(will.flatMap((c) => c.categories)).toEqual(["mind"]);
+  });
+
+  it("adds the second tier at 7th, still at the first bonus", () => {
+    const sheet = compute(oracle(7), ref);
+    const fort = sheet.saves.fort.conditionals ?? [];
+    expect(fort.flatMap((c) => c.categories).sort()).toEqual([
+      "death",
+      "disease",
+      "poison",
+      "stun",
+    ]);
+    // Both tiers are +2 at 7th, so every Fortitude category shares one entry.
+    expect(fort).toHaveLength(1);
+  });
+
+  it("raises both tiers to +4 at 11th", () => {
+    const six = compute(oracle(6), ref);
+    const eleven = compute(oracle(11), ref);
+    const gap = (s: typeof six) => (s.saves.fort.conditionals![0]!.total ?? 0) - s.saves.fort.total;
+    expect(gap(six)).toBe(2);
+    expect(gap(eleven)).toBe(4);
+  });
+});
+
 describe("save-category vocabulary", () => {
   it("gives every category at least one save it can be rolled against", () => {
     for (const [key, cat] of Object.entries(SAVE_CATEGORIES)) {
