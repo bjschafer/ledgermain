@@ -49,6 +49,24 @@
      table play (chips, ghost/act buttons, stepper pills, mode tabs) —
      desktop keeps its tighter mouse-oriented density. */
   --tap-min: 44px;
+
+  /* Z-index scale for elements that must stack correctly against each other
+     regardless of DOM position (portalled overlays, fixed chrome). Small
+     in-context dropdowns and sticky table/nav headers stay off this scale —
+     they're clipped to their own scroll container and never compete with an
+     overlay, so a low literal z-index (1-5) is fine and self-contained.
+     `--z-tooltip` sits above every backdrop tier, including `--z-dialog`,
+     because `InfoTip`'s bubble is portalled to `document.body` and must
+     stay readable no matter which modal it was opened from (issue #107).
+     `--z-toast` stays topmost since a toast can fire while a dialog or
+     tooltip is open and should never be hidden by either. */
+  --z-floating-controls: 90;
+  --z-dropdown: 40;
+  --z-preview-notice: 100;
+  --z-feedback: 110;
+  --z-dialog: 120;
+  --z-tooltip: 150;
+  --z-toast: 200;
 }
 
 /* --------------------------------------------------------------------------
@@ -365,7 +383,7 @@ a {
     position: fixed;
     right: 16px;
     bottom: calc(16px + env(safe-area-inset-bottom));
-    z-index: 90;
+    z-index: var(--z-floating-controls);
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -5246,7 +5264,7 @@ input[type="text"].saved-roll-name:focus {
 .preview-notice-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: var(--z-preview-notice);
   display: grid;
   place-items: center;
   background: rgba(10, 11, 14, 0.72);
@@ -5978,7 +5996,7 @@ input[type="text"].saved-roll-name:focus {
   left: 50%;
   bottom: var(--space-5);
   transform: translateX(-50%);
-  z-index: 200;
+  z-index: var(--z-toast);
   /* The host spans the full toast width but isn't itself clickable — only
      the toast inside it should intercept clicks. */
   pointer-events: none;
@@ -6163,7 +6181,7 @@ input[type="text"].saved-roll-name:focus {
   position: absolute;
   top: calc(100% + 4px);
   right: 0;
-  z-index: 40;
+  z-index: var(--z-dropdown);
   min-width: 220px;
   max-height: 320px;
   overflow-y: auto;
@@ -6318,7 +6336,7 @@ input[type="text"].saved-roll-name:focus {
      trigger's getBoundingClientRect) once it measures after layout — this is
      just the pre-layout-effect default so nothing flashes unpositioned. */
   position: fixed;
-  z-index: 60;
+  z-index: var(--z-tooltip);
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
@@ -6604,7 +6622,7 @@ input[type="text"].saved-roll-name:focus {
 .feedback-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 110;
+  z-index: var(--z-feedback);
   display: grid;
   place-items: center;
   background: rgba(10, 11, 14, 0.72);
@@ -6619,7 +6637,7 @@ input[type="text"].saved-roll-name:focus {
 .dialog-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 120;
+  z-index: var(--z-dialog);
   display: grid;
   place-items: center;
   background: rgba(10, 11, 14, 0.72);
