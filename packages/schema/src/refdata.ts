@@ -618,7 +618,16 @@ export interface FeatPrerequisites {
   bab?: number;
   /** Minimum caster level, e.g. 7 for "caster level 7th". */
   casterLevel?: number;
-  /** Required feats, extracted from embedded `@UUID[...]{Name}` references. */
+  /** Minimum total character level, e.g. 7 for "character level 7th". */
+  characterLevel?: number;
+  /**
+   * Required feats. Mostly extracted from embedded `@UUID[...]{Name}`
+   * references; a minority are resolved post-pass from a plain-text prose
+   * segment that exactly (and uniquely) matches another vendored feat's name
+   * (see `resolveNamedFeatPrereqs` in data-pipeline `transform/prereqs.ts`) —
+   * both kinds are indistinguishable here, since either way the requirement
+   * is a specific, unambiguous feat.
+   */
   feats: FeatRef[];
   /** Skill-rank requirements parsed from prose (best-effort). */
   skills: { skill: SkillId | null; ranks: number; raw: string }[];

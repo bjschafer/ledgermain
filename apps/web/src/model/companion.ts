@@ -156,8 +156,10 @@ export function setCompanionSkillRank(
  * `model/prereqs.ts`'s `evaluatePrereqs`/`PrereqContext`, but built from the
  * COMPANION's own derived ability scores/BAB (not the master's), the
  * companion's own chosen feats (`doc.build.animalCompanion.feats`, not the
- * master's `build.feats`), and `casterLevel: 0` (no companion in
- * `BASE_COMPANIONS` casts). Mirrors `FeatsSection`'s own `PrereqContext`
+ * master's `build.feats`), and `casterLevel: 0`/`characterLevel: 0` (no
+ * companion in `BASE_COMPANIONS` casts, and a "character level" prereq means
+ * the master's level, which the companion has no independent stand-in for).
+ * Mirrors `FeatsSection`'s own `PrereqContext`
  * construction for the master.
  */
 export function companionFeatPrereqContext(
@@ -171,6 +173,7 @@ export function companionFeatPrereqContext(
     abilityTotals,
     bab: companion.bab,
     casterLevel: 0,
+    characterLevel: 0,
     selectedFeats: new Set(doc.build.animalCompanion?.feats ?? []),
     refData,
   };

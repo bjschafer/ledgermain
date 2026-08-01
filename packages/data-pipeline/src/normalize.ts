@@ -70,6 +70,7 @@ import {
 } from "./transform/classes.js";
 import { transformFeat } from "./transform/feats.js";
 import { transformItem } from "./transform/items.js";
+import { resolveNamedFeatPrereqs } from "./transform/prereqs.js";
 import { transformPrestigeClassPack } from "./transform/prestigeClasses.js";
 import { transformRace } from "./transform/races.js";
 import { transformRacialTrait } from "./transform/racialTraits.js";
@@ -470,6 +471,11 @@ export function normalize(opts: NormalizeOptions): {
   }
 
   const feats: Feat[] = [...systemFeats, ...pfContentFeats];
+
+  // Second prereq pass (issue #108): needs the full feat name list, so it
+  // only runs once `feats` above is complete — see the doc comment on
+  // `resolveNamedFeatPrereqs`.
+  resolveNamedFeatPrereqs(feats);
 
   // --- traits: pf1-content community pack (Foundry's own system pack ships
   // none — traits aren't part of the base game data, see `@pf1/engine`

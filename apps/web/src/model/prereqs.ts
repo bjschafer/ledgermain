@@ -4,7 +4,7 @@
  *
  * Policy (DESIGN.md §4 hybrid validation):
  *  - HARD-BLOCK only on STRUCTURED prerequisites we reliably parsed (ability
- *    minimums, BAB, caster level, required feats).
+ *    minimums, BAB, caster level, character level, required feats).
  *  - NEVER hard-block on free-text prose. When a feat's prereqs are only prose
  *    (`prereqText` with no structured signals), surface a SOFT WARNING instead.
  *
@@ -58,6 +58,8 @@ export interface PrereqContext {
   abilityTotals: Record<AbilityId, number>;
   bab: number;
   casterLevel: number;
+  /** Total character level (sum of class levels), for `prerequisites.characterLevel`. */
+  characterLevel: number;
   /** Feat ids already selected on the document. */
   selectedFeats: ReadonlySet<string>;
   refData: RefData;
@@ -77,8 +79,9 @@ interface StructuredSignal {
 }
 
 const ABILITY_FRAGMENT_RE = /^(str|dex|con|int|wis|cha)\s+(\d+)$/i;
-const BAB_FRAGMENT_RE = /^base attack bonus\s*\+?\s*(\d+)$/i;
+const BAB_FRAGMENT_RE = /^(?:base attack bonus|bab)\s*\+?\s*(\d+)$/i;
 const CASTER_LEVEL_FRAGMENT_RE = /^caster level\s*\+?\s*(\d+)(?:st|nd|rd|th)?$/i;
+const CHARACTER_LEVEL_FRAGMENT_RE = /^character level\s*\+?\s*(\d+)(?:st|nd|rd|th)?$/i;
 
 /** Splits verbatim prereq prose into comma/semicolon-separated fragments. */
 function splitProseFragments(text: string): string[] {
@@ -149,6 +152,19 @@ export function evaluatePrereqs(feat: Feat, ctx: PrereqContext): PrereqResult {
       test: (frag) => {
         const m = CASTER_LEVEL_FRAGMENT_RE.exec(frag);
         return !!m && Number(m[1]) === casterLevel;
+      },
+    });
+  }
+
+  if (p.characterLevel != null) {
+    const characterLevel = p.characterLevel;
+    const met = ctx.characterLevel >= characterLevel;
+    checks.push({ label: `Character level ${characterLevel}`, met });
+    signals.push({
+      met,
+      test: (frag) => {
+        const m = CHARACTER_LEVEL_FRAGMENT_RE.exec(frag);
+        return !!m && Number(m[1]) === characterLevel;
       },
     });
   }

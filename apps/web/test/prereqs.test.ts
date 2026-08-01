@@ -22,6 +22,7 @@ function ctx(over: Partial<PrereqContext> = {}): PrereqContext {
     abilityTotals: { str: 16, dex: 16, con: 14, int: 16, wis: 12, cha: 10 },
     bab: 1,
     casterLevel: 0,
+    characterLevel: 1,
     selectedFeats: new Set<string>(),
     refData: ref,
     ...over,
@@ -122,6 +123,64 @@ describe("feat prereq gating", () => {
     expect(res.warn).toBe(true);
     expect(res.checks).toHaveLength(0);
     expect(res.softText).toBeTruthy();
+  });
+});
+
+describe("issue #108: character level + plain-text feat-name prereqs", () => {
+  it("BLOCKS a feat on an unmet character-level minimum", () => {
+    // Inner Breath: "Character level 11th, sylph." -- character level is the
+    // feat's only structured signal (sylph is a race, stays prose).
+    const innerBreath = featByName("Inner Breath");
+    const res = evaluatePrereqs(innerBreath, ctx({ characterLevel: 5 }));
+    expect(res.blocked).toBe(true);
+    expect(res.checks).toEqual([{ label: "Character level 11", met: false }]);
+  });
+
+  it("ALLOWS a feat once character level is met, and drops the now-redundant prose warning", () => {
+    const innerBreath = featByName("Inner Breath");
+    const res = evaluatePrereqs(innerBreath, ctx({ characterLevel: 11 }));
+    expect(res.blocked).toBe(false);
+    expect(res.checks).toEqual([{ label: "Character level 11", met: true }]);
+    // "sylph" has no structured equivalent, so the soft warning survives.
+    expect(res.softText).toBe("sylph.");
+    expect(res.warn).toBe(true);
+  });
+
+  it("Restorative Vigor: ability + plain-text feat name + character level all structure together", () => {
+    // prereqText is "Con 15, Combat Vigor, character level 8th." -- "Combat
+    // Vigor" is matched by NAME (not a `@UUID` link) via the data-pipeline's
+    // resolveNamedFeatPrereqs post-pass.
+    const combatVigor = featByName("Combat Vigor");
+    const restorativeVigor = featByName("Restorative Vigor");
+    const res = evaluatePrereqs(
+      restorativeVigor,
+      ctx({
+        abilityTotals: { str: 10, dex: 10, con: 15, int: 10, wis: 10, cha: 10 },
+        characterLevel: 8,
+        selectedFeats: new Set([combatVigor.id]),
+      }),
+    );
+    expect(res.blocked).toBe(false);
+    expect(res.checks.every((c) => c.met)).toBe(true);
+    expect(res.checks).toHaveLength(3);
+    // Every prereqText fragment maps to a met structured check -- no residual
+    // soft warning.
+    expect(res.softText).toBeUndefined();
+    expect(res.warn).toBe(false);
+  });
+
+  it("Restorative Vigor BLOCKS when the by-name-matched feat (Combat Vigor) isn't selected", () => {
+    const restorativeVigor = featByName("Restorative Vigor");
+    const res = evaluatePrereqs(
+      restorativeVigor,
+      ctx({
+        abilityTotals: { str: 10, dex: 10, con: 15, int: 10, wis: 10, cha: 10 },
+        characterLevel: 8,
+      }),
+    );
+    expect(res.blocked).toBe(true);
+    const combatVigorCheck = res.checks.find((c) => c.label === "Combat Vigor");
+    expect(combatVigorCheck?.met).toBe(false);
   });
 });
 

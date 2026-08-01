@@ -6,7 +6,7 @@ import { featNameSlug, resolveFeatEffect } from "@pf1/engine";
 
 import { effectiveCasterLevel } from "../../model/casterLevel.js";
 import { combatStyleFeatSlugs } from "../../model/ranger.js";
-import { ABILITY_IDS, addFeatInstance, removeFeatInstance } from "../../model/doc.js";
+import { ABILITY_IDS, addFeatInstance, removeFeatInstance, totalLevel } from "../../model/doc.js";
 import { assignFeatsToSlots, featEligibleForSlot, slotTypeBadge } from "../../model/featSlots.js";
 import {
   chosenFeatCountExcludingGranted,
@@ -97,6 +97,7 @@ export function useFeatRenderContext(
       abilityTotals,
       bab: sheet.bab,
       casterLevel: effectiveCasterLevel(doc, refData),
+      characterLevel: totalLevel(doc),
       selectedFeats: new Set([...selected, ...grantedIds]),
       refData,
       bypassBlockedSlugs: styleSlugs,
