@@ -12,10 +12,15 @@ import type { Spell, SpellAction } from "@pf1/schema";
  * `range`/`duration`/`area`/`damage`, plus `Spell.components`), which the
  * tracker's `SpellDetail` had until now left unshown.
  *
- * Caller convention (mirrors `spellSave` in `SpellDetail`): range, area, and
- * duration come from the FIRST action that carries the field — a spell's
- * `actions` are cast variants (heal-living vs. harm-undead, ranged vs. melee),
- * and the primary variant leads.
+ * Caller convention (mirrors `spellSave` in `SpellDetail`): range, area,
+ * duration, casting time, and damage come from the FIRST action that carries
+ * the field, preferring an action with a real casting-time activation over a
+ * `nonaction` one — a spell's `actions` mix cast variants (heal-living vs.
+ * harm-undead, ranged vs. melee) with `nonaction` riders that piggyback on
+ * another action instead of having their own casting time (Molten Orb's 1d6
+ * splash follows its 2d6 direct hit; Slay Living's save-reduced 3d6 follows
+ * its primary 12d6), and the vendored action order doesn't reliably put the
+ * primary effect first. See {@link firstActionWith}.
  */
 
 /**
@@ -43,11 +48,32 @@ function safeDice(src: string, cl: number): string | null {
   }
 }
 
-/** The first action for which `pick` returns a value, else undefined. */
+/**
+ * `nonaction` marks an action that costs nothing beyond the action already
+ * being spent elsewhere — a splash/follow-up rider, or a reduced-effect
+ * fallback on a successful save — rather than the spell's own casting time.
+ */
+function isPrimaryAction(action: SpellAction): boolean {
+  return action.activation?.type !== "nonaction";
+}
+
+/**
+ * The first action for which `pick` returns a value. Actions with a real
+ * (non-`nonaction`) activation are tried first, in order, so a splash/rider
+ * action never shadows the primary effect that follows it in the vendored
+ * array; only if no such action yields a value do `nonaction` actions get a
+ * turn, in original order, since some spells (e.g. Produce Flame) hang their
+ * only damage off a `nonaction` touch-attack action.
+ */
 function firstActionWith<T>(
   spell: Spell,
   pick: (a: SpellAction) => T | undefined | null,
 ): T | undefined {
+  for (const action of spell.actions) {
+    if (!isPrimaryAction(action)) continue;
+    const v = pick(action);
+    if (v !== undefined && v !== null) return v;
+  }
   for (const action of spell.actions) {
     const v = pick(action);
     if (v !== undefined && v !== null) return v;

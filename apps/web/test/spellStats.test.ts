@@ -86,6 +86,14 @@ describe("formatCastingTime", () => {
       expect(() => formatCastingTime(spell)).not.toThrow();
     }
   });
+
+  it("prefers the direct-hit action's casting time over a nonaction splash rider (Molten Orb)", () => {
+    // Molten Orb (PZO1129 pg. 188): "Casting Time 1 standard action." The
+    // vendored actions array lists the splash rider ("nonaction", since it
+    // rides along on the direct hit) before the direct attack ("standard"),
+    // so the primary action isn't simply first in the array.
+    expect(formatCastingTime(spellByName("Molten Orb"))).toBe("Standard action");
+  });
 });
 
 describe("formatSpellComponents", () => {
@@ -136,6 +144,53 @@ describe("spellDamageParts", () => {
 
   it("returns no parts for a spell that deals no rolled damage", () => {
     expect(spellDamageParts(spellByName("Shield"), 5)).toEqual([]);
+  });
+
+  it("picks the direct-hit action, not the nonaction splash rider (Molten Orb)", () => {
+    // Molten Orb (PZO1129 pg. 188): "A direct hit deals 2d6 points of fire
+    // damage." The 1d6 splash is a separate, lesser effect on nearby
+    // creatures — the vendored actions array lists the splash rider first,
+    // but it's a "nonaction" (it rides along on the direct hit) while the
+    // direct attack is the spell's real "standard" action.
+    expect(spellDamageParts(spellByName("Molten Orb"), 5)).toEqual([
+      { text: "2d6", types: ["fire"] },
+    ]);
+  });
+
+  it("picks the primary failed-save damage over the nonaction reduced-save rider (Slay Living)", () => {
+    // Slay Living: "The target takes 12d6 points of damage + 1 point per
+    // caster level. If the target's Fortitude saving throw succeeds, it
+    // instead takes 3d6 points of damage + 1 point per caster level." The
+    // reduced-save number is a "nonaction" fallback in the vendored data and
+    // sits before the primary "standard" action in the array.
+    expect(spellDamageParts(spellByName("Slay Living"), 10)).toEqual([
+      { text: "12d6+10", types: ["untyped"] },
+    ]);
+  });
+
+  it("picks the initial burst over the nonaction subsequent-round rider (Caustic Eruption)", () => {
+    // Caustic Eruption: "Acid erupts from your space in all directions,
+    // causing 1d6 points of damage per caster level (maximum 20d6)" as the
+    // initial ("standard") effect; "creatures ... that failed their saves
+    // ... take an additional 1d6 ... per 2 caster levels (maximum 10d6)" the
+    // following round is a "nonaction" rider.
+    expect(spellDamageParts(spellByName("Caustic Eruption"), 8)).toEqual([
+      { text: "8d6", types: ["untyped"] },
+    ]);
+  });
+
+  it("still falls back to a nonaction action when no primary action carries damage (Produce Flame)", () => {
+    // Produce Flame's "standard" action ("Use") only conjures the flame; the
+    // 1d6 + CL (max +5) fire damage lives entirely on the "nonaction" attack
+    // actions ("Hurl", "Melee") that spend the touch attack instead of a
+    // separate action. With no primary action carrying damage, the fallback
+    // pass must still find it.
+    expect(spellDamageParts(spellByName("Produce Flame"), 3)).toEqual([
+      { text: "1d6+3", types: ["fire"] },
+    ]);
+    expect(spellDamageParts(spellByName("Produce Flame"), 11)).toEqual([
+      { text: "1d6+5", types: ["fire"] },
+    ]);
   });
 
   it("falls back to the raw formula for a value the DSL can't parse", () => {
