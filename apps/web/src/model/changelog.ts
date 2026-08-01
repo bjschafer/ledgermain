@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-01-bravery-and-trait-saves",
+    date: "2026-08-01",
+    title: "Bravery, Still Mind, and 34 racial traits now count",
+    note: "Every fighter has Bravery from 2nd level and the sheet used to say nothing about it. It now reads under your Will save and climbs as you level, and it correctly vanishes if your archetype traded it away. Monk Still Mind joins it, along with a run of prestige class defenses and 34 alternate racial traits whose bonus against poison, fear, illusions, curses, or mind-affecting effects was previously just a line of text. Saves also understand that some effects are kinds of others: a bonus against mind-affecting effects now counts when something tries to charm you, and against enchantment when something tries to compel you.",
+  },
+  {
     id: "2026-08-01-buff-save-categories",
     date: "2026-08-01",
     title: "Bless finally counts on your saves",
