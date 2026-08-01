@@ -197,6 +197,14 @@ const CONDITION_LIST: ConditionDef[] = [
     displayOnly: true,
   },
   {
+    id: "disabled",
+    name: "Disabled",
+    summary:
+      "At exactly 0 hit points, or negative and stable: a single move or standard action each round (never both, no full-round actions), at half speed. A strenuous standard action deals 1 more point of damage after it's done.",
+    changes: [],
+    displayOnly: true,
+  },
+  {
     id: "paralyzed",
     name: "Paralyzed",
     summary: "Helpless; Dexterity and Strength effectively 0; cannot move or act.",

@@ -51,3 +51,19 @@ describe("panicked condition table entry (issue #10)", () => {
     expect(targets).not.toContain("attack");
   });
 });
+
+describe("disabled condition table entry (issue #106)", () => {
+  it("exists, is display-only, and carries no numeric modifiers", () => {
+    const disabled = CONDITIONS.disabled;
+    expect(disabled).toBeDefined();
+    expect(disabled!.displayOnly).toBe(true);
+    expect(disabled!.changes).toEqual([]);
+  });
+
+  it("is included in CONDITION_IDS and is not part of any severity ladder", () => {
+    expect(CONDITION_IDS).toContain("disabled");
+    for (const ladder of CONDITION_LADDERS) {
+      expect(ladder).not.toContain("disabled");
+    }
+  });
+});
