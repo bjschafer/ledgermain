@@ -789,6 +789,7 @@ export {
   SAVE_CATEGORY_ORDER,
   categoryAppliesToSave,
   creatureSaveConditionals,
+  saveCategoryWithAncestors,
   resolveSave,
   saveCategoryLabel,
   type CreatureSaveConditionals,
@@ -864,6 +865,13 @@ export {
   isShieldTierProficient,
 } from "./proficiency.js";
 export { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
+export { CLASS_FEATURE_CHANGE_PATCHES } from "./class-feature-effects.js";
+export {
+  saveChangesFromNotes,
+  scopedSave,
+  VENDORED_CHARACTER_TRAIT_SAVE_NOTES,
+  VENDORED_RACIAL_TRAIT_SAVE_NOTES,
+} from "./vendored-trait-save-notes.js";
 export { ITEM_CHANGE_PATCHES } from "./item-effects.js";
 export {
   RAGE_POWERS,

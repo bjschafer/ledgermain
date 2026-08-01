@@ -19,6 +19,7 @@ import {
   SAVE_CATEGORIES,
   categoryAppliesToSave,
   saveCategoryLabel,
+  saveCategoryWithAncestors,
 } from "../src/save-categories.js";
 
 const ref = loadRefData();
@@ -202,5 +203,90 @@ describe("save-category vocabulary", () => {
   it("falls back to the raw key for an unknown category", () => {
     expect(saveCategoryLabel("nonsense")).toBe("nonsense");
     expect(categoryAppliesToSave("nonsense", "will")).toBe(false);
+  });
+});
+
+describe("category inheritance (a bonus against the parent covers the child)", () => {
+  /** HUMAN fighter 1, all 10s (no racial save notes of its own), plus `changes`. */
+  function withScoped(changes: { formula: string; type: string; saveCategories: string[] }[]) {
+    const doc = makeDoc();
+    doc.identity.race = raceId("Human");
+    return compute(
+      {
+        ...doc,
+        live: {
+          ...doc.live,
+          activeBuffs: [
+            {
+              instanceId: "b1",
+              name: "Test",
+              changes: changes.map((c) => ({ ...c, target: "allSavingThrows" })),
+            },
+          ],
+        },
+      } as typeof doc,
+      ref,
+    );
+  }
+
+  it("names only what a modifier names", () => {
+    // A mind-affecting bonus must not print a line for every descendant.
+    const sheet = withScoped([{ formula: "2", type: "racial", saveCategories: ["mind"] }]);
+    const lines = sheet.saves.will.conditionals ?? [];
+    expect(lines.flatMap((l) => l.categories)).toEqual(["mind"]);
+  });
+
+  it("folds an ancestor's bonus into the child's total", () => {
+    // Will 0. +2 racial vs. mind-affecting and +1 morale vs. charm both apply
+    // to a charm effect: 0 + 2 + 1 = 3. Different types, so they sum.
+    const sheet = withScoped([
+      { formula: "2", type: "racial", saveCategories: ["mind"] },
+      { formula: "1", type: "morale", saveCategories: ["charm"] },
+    ]);
+    expect(sheet.saves.will.conditionals).toEqual([
+      { total: 3, categories: ["charm"], labels: ["charm"] },
+      { total: 2, categories: ["mind"], labels: ["mind-affecting"] },
+    ]);
+  });
+
+  it("does not leak sideways between siblings", () => {
+    // Charm and compulsion are both enchantment subschools, but a charm bonus
+    // says nothing about a compulsion.
+    const sheet = withScoped([
+      { formula: "4", type: "racial", saveCategories: ["charm"] },
+      { formula: "1", type: "morale", saveCategories: ["compulsion"] },
+    ]);
+    const compulsion = sheet.saves.will.conditionals?.find((c) =>
+      c.categories.includes("compulsion"),
+    );
+    expect(compulsion?.total).toBe(1); // 0 + 1, not 0 + 4
+  });
+
+  it("inherits transitively, despair through emotion to mind-affecting", () => {
+    const sheet = withScoped([
+      { formula: "2", type: "racial", saveCategories: ["mind"] },
+      { formula: "1", type: "morale", saveCategories: ["despair"] },
+    ]);
+    const despair = sheet.saves.will.conditionals?.find((c) => c.categories.includes("despair"));
+    expect(despair?.total).toBe(3); // 0 + 2 + 1
+  });
+
+  it("keeps the source axis separate from the effect axis", () => {
+    // A "+2 vs. spells" is not a mind-affecting bonus, so a fear line does not
+    // absorb it even though many fear effects are spells.
+    const sheet = withScoped([
+      { formula: "2", type: "racial", saveCategories: ["spell"] },
+      { formula: "1", type: "morale", saveCategories: ["fear"] },
+    ]);
+    const fear = sheet.saves.will.conditionals?.find((c) => c.categories.includes("fear"));
+    expect(fear?.total).toBe(1); // 0 + 1
+  });
+
+  it("every parent names a real category and the graph is acyclic", () => {
+    for (const key of Object.keys(SAVE_CATEGORIES)) {
+      const chain = saveCategoryWithAncestors(key);
+      expect(new Set(chain).size).toBe(chain.length);
+      for (const link of chain) expect(SAVE_CATEGORIES[link]).toBeDefined();
+    }
   });
 });

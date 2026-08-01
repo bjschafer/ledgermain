@@ -10,6 +10,21 @@
  * stunning effects are inconsistent enough in PF1 that narrowing them would be
  * a guess.
  *
+ * `parent` records that one category is a special case of another: a bonus
+ * against the parent also applies to the child, so a "+2 vs. mind-affecting"
+ * counts on a charm effect. Only the categories a modifier NAMES get a line on
+ * the sheet, but each line's total is stacked from that category plus every
+ * ancestor, which is what keeps an inherited bonus from being invisible
+ * without printing a line for every descendant of anything.
+ *
+ * The graph is deliberately shallow and only carries edges that hold for EVERY
+ * effect in the child. Illusions are not modelled as mind-affecting (only the
+ * phantasm and pattern subschools are, and the category covers the whole
+ * school); possession likewise gets no parent, since the subschool is not
+ * uniformly mind-affecting. The source axis (spells, SLAs, Su) never crosses
+ * with the effect axis: a fear spell reads its fear line and its spell line
+ * separately, because crossing them would multiply the lines under the seal.
+ *
  * `label` is player-facing copy shown on the sheet, so it stays terse: these
  * render at 10px inside a stat seal roughly 110px wide at the narrowest
  * supported layout. `Su` is Paizo's own abbreviation. `SLAs` is the community
@@ -27,6 +42,12 @@ export interface SaveCategory {
   label: string;
   /** Which saves this category can actually be rolled against. */
   saves: ReadonlyArray<"fort" | "ref" | "will">;
+  /**
+   * The broader category this one is a special case of, if any. A bonus
+   * against the parent also applies here. Must name another
+   * {@link SAVE_CATEGORIES} key, and the graph must stay acyclic.
+   */
+  parent?: string;
 }
 
 const ALL_SAVES = ["fort", "ref", "will"] as const;
@@ -42,16 +63,23 @@ export const SAVE_CATEGORIES: Readonly<Record<string, SaveCategory>> = {
   disease: { label: "disease", saves: ["fort"] },
   death: { label: "death", saves: ["fort"] },
 
-  // Will categories.
+  // Will categories. `mind` is the root of this family: fear, emotion, sleep,
+  // and the enchantment school all carry the mind-affecting descriptor in PF1,
+  // so a bonus against mind-affecting effects covers every one of them.
   mind: { label: "mind-affecting", saves: ["will"] },
-  fear: { label: "fear", saves: ["will"] },
-  sleep: { label: "sleep", saves: ["will"] },
-  enchantment: { label: "enchantment", saves: ["will"] },
+  fear: { label: "fear", saves: ["will"], parent: "mind" },
+  sleep: { label: "sleep", saves: ["will"], parent: "mind" },
+  enchantment: { label: "enchantment", saves: ["will"], parent: "mind" },
+  // Charm and compulsion are the two enchantment subschools, so a bonus
+  // against enchantment covers both, while one against charm alone does not
+  // reach a compulsion.
+  charm: { label: "charm", saves: ["will"], parent: "enchantment" },
+  compulsion: { label: "compulsion", saves: ["will"], parent: "enchantment" },
   illusion: { label: "illusions", saves: ["will"] },
-  emotion: { label: "emotion", saves: ["will"] },
-  despair: { label: "despair", saves: ["will"] },
+  emotion: { label: "emotion", saves: ["will"], parent: "mind" },
+  despair: { label: "despair", saves: ["will"], parent: "emotion" },
   possession: { label: "possession", saves: ["will"] },
-  mindReading: { label: "mind-reading", saves: ["will"] },
+  mindReading: { label: "mind-reading", saves: ["will"], parent: "mind" },
 
   // Inconsistent in PF1 — a curse or a stunning effect can key off more than
   // one save depending on the effect, so these deliberately stay unnarrowed.
@@ -73,6 +101,23 @@ export function saveCategoryLabel(key: string): string {
 export function categoryAppliesToSave(key: string, save: "fort" | "ref" | "will"): boolean {
   const cat = SAVE_CATEGORIES[key];
   return cat !== undefined && cat.saves.includes(save);
+}
+
+/**
+ * `key` plus every category it is a special case of, nearest first — the set
+ * of categories whose bonuses apply when rolling against `key`. An unknown key
+ * yields just itself, matching the rest of this module's tolerance for one.
+ */
+export function saveCategoryWithAncestors(key: string): string[] {
+  const chain = [key];
+  const seen = new Set([key]);
+  let cursor = SAVE_CATEGORIES[key]?.parent;
+  while (cursor !== undefined && !seen.has(cursor)) {
+    chain.push(cursor);
+    seen.add(cursor);
+    cursor = SAVE_CATEGORIES[cursor]?.parent;
+  }
+  return chain;
 }
 
 /* ------------------------------------------------------ resolving a save */
@@ -162,10 +207,19 @@ function conditionalTotals(
   const scoped = all.filter((m) => (m.saveCategories?.length ?? 0) > 0);
   if (scoped.length === 0) return [];
 
+  // Only a category some modifier actually NAMES earns a line. Inheritance
+  // decides each line's TOTAL, not which lines exist: "+2 vs. mind-affecting"
+  // alone must not print a line for fear, sleep, charm, and every other
+  // descendant, but a character who also has "+1 vs. charm" reads its charm
+  // line with the mind-affecting bonus folded in.
+  const named = new Set(scoped.flatMap((m) => m.saveCategories ?? []));
+
   const byTotal = new Map<number, string[]>();
   for (const key of SAVE_CATEGORY_ORDER) {
+    if (!named.has(key)) continue;
     if (!categoryAppliesToSave(key, which)) continue;
-    const forCategory = scoped.filter((m) => m.saveCategories?.includes(key));
+    const applicable = new Set(saveCategoryWithAncestors(key));
+    const forCategory = scoped.filter((m) => m.saveCategories?.some((c) => applicable.has(c)));
     if (forCategory.length === 0) continue;
     const stacked = resolveStack([...unconditional, ...forCategory] as TypedModifier[]);
     const conditionalTotal = floor + stacked.total;

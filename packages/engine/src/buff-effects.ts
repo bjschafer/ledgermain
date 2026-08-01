@@ -74,9 +74,8 @@ const RAGE_UNCHAINED_TEMP_HP: Change = {
  * than the effect), Lion's Call (the vendored formula evaluates to +0, so
  * there is no number to carry), Sunblock Kohl and Veemod (light-based
  * dazzling), Opportune Advice (gated on having identified the creature), and
- * Temporary Alliance. Inspire Courage covers "charm and fear"; charm is
- * narrower than the `enchantment` category, so only the fear half is
- * promoted and the note continues to carry the rest.
+ * Temporary Alliance. Inspire Courage covers "charm and fear", both of
+ * which the vocabulary carries.
  */
 const SAVE_CATEGORY_PATCHES: Readonly<Record<string, readonly Change[]>> = {
   // "+1 Morale vs Fear effects" — the save half of bless/aid, whose attack
@@ -99,7 +98,7 @@ const SAVE_CATEGORY_PATCHES: Readonly<Record<string, readonly Change[]>> = {
       formula: "1 + max(0, floor((@item.level + 1) / 6))",
       target: "allSavingThrows",
       type: "morale",
-      saveCategories: ["fear"],
+      saveCategories: ["charm", "fear"],
     },
   ],
   "Karyukai Tea Set": [

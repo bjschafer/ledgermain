@@ -101,15 +101,16 @@ describe("Death Ward (+4 morale vs. death effects)", () => {
 });
 
 describe("Inspire Courage (scales with the bard's level)", () => {
-  it("is +1 at 1st and +2 at 5th", () => {
-    // 1 + max(0, floor((level + 1) / 6)): +1 through 4th, +2 from 5th.
+  it("is +1 at 1st and +2 at 5th, against charm and fear alike", () => {
+    // 1 + max(0, floor((level + 1) / 6)): +1 through 4th, +2 from 5th. Both
+    // categories share the total, so they merge into one line.
     const low = compute(makeDoc([activate("Inspire Courage", 1)]), ref);
     const high = compute(makeDoc([activate("Inspire Courage", 5)]), ref);
     expect(low.saves.will.conditionals).toEqual([
-      { total: 1, categories: ["fear"], labels: ["fear"] },
+      { total: 1, categories: ["fear", "charm"], labels: ["fear", "charm"] },
     ]);
     expect(high.saves.will.conditionals).toEqual([
-      { total: 2, categories: ["fear"], labels: ["fear"] },
+      { total: 2, categories: ["fear", "charm"], labels: ["fear", "charm"] },
     ]);
   });
 });

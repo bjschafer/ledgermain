@@ -16,6 +16,7 @@ import { activeArchetypeSwaps, domainCasterLevel, weaponTrainingReplaced } from 
 import { BLOODLINES } from "./bloodlines.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
+import { CLASS_FEATURE_CHANGE_PATCHES } from "./class-feature-effects.js";
 import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
 import { featNameSlug } from "./feat-effects.js";
@@ -32,6 +33,11 @@ import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { polymorphFormOption } from "./polymorph.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { standardRaceSaveChanges } from "./race-save-notes.js";
+import {
+  saveChangesFromNotes,
+  VENDORED_CHARACTER_TRAIT_SAVE_NOTES,
+  VENDORED_RACIAL_TRAIT_SAVE_NOTES,
+} from "./vendored-trait-save-notes.js";
 import {
   effectiveRaceContextNotes,
   FLEXIBLE_ABILITY_SUPPRESS_TARGET,
@@ -311,7 +317,10 @@ export function collectModifiers(
       // heritage's "while shapechanged" bonus, hand-authored in data-pipeline
       // `SUPPLEMENTAL_RACIAL_TRAIT_CHANGES`) apply only while the matching
       // buff/effectTag is active, instead of unconditionally.
-      for (const ch of t.changes) {
+      for (const ch of [
+        ...t.changes,
+        ...saveChangesFromNotes(t.contextNotes, VENDORED_RACIAL_TRAIT_SAVE_NOTES),
+      ]) {
         if (!gateOpen(ch)) continue;
         evalChange(
           ch.formula,
@@ -392,7 +401,10 @@ export function collectModifiers(
       if (archetypeSwaps.has(grant.uuid)) continue;
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;
-      for (const ch of feature.changes ?? []) {
+      for (const ch of [
+        ...(feature.changes ?? []),
+        ...(CLASS_FEATURE_CHANGE_PATCHES[feature.name] ?? []),
+      ]) {
         evalChange(
           ch.formula,
           featureRollData,
@@ -587,7 +599,10 @@ export function collectModifiers(
   for (const traitId of doc.build.traits ?? []) {
     const trait = resolveTraitDef(traitId, refData) ?? doc.build.homebrew?.traits?.[traitId];
     if (!trait) continue;
-    for (const ch of trait.changes) {
+    for (const ch of [
+      ...trait.changes,
+      ...saveChangesFromNotes(trait.contextNotes, VENDORED_CHARACTER_TRAIT_SAVE_NOTES),
+    ]) {
       if (!gateOpen(ch)) continue;
       evalChange(
         ch.formula,
