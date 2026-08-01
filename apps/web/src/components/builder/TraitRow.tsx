@@ -1,4 +1,4 @@
-import { unappliedChanges } from "@pf1/engine";
+import { saveNoteCoverage, unappliedChanges } from "@pf1/engine";
 import type { CharacterDoc } from "@pf1/schema";
 import type { TraitDef } from "@pf1/engine";
 
@@ -50,7 +50,11 @@ export function TraitRow({
           </div>
         ) : null}
         {trait.contextNotes?.map((note, i) => (
-          <RulesNote key={i} text={note.text} />
+          <RulesNote
+            key={i}
+            text={note.text}
+            appliedAutomatically={saveNoteCoverage({ catalog: "characterTrait" }, note) === "full"}
+          />
         ))}
         {trait.description ? <FeatureDescription html={trait.description} /> : null}
       </div>

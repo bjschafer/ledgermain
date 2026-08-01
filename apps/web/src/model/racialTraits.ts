@@ -72,6 +72,7 @@ export function suppressedRaceTargets(doc: CharacterDoc, refData: RefData): Set<
 
 /** One of the race's standard-trait reminders, with retirement status for display (issue #41). */
 export interface RaceStandardTraitNote {
+  target: string;
   text: string;
   /** Name of the active alternate racial trait that retired this note, when one has. */
   retiredBy?: string;
@@ -115,7 +116,9 @@ export function raceStandardTraitNotes(
       ),
     );
     const retiredBy = handAuthoredMatch?.name ?? vendoredMatch?.name;
-    return retiredBy ? { text: note.text, retiredBy } : { text: note.text };
+    return retiredBy
+      ? { target: note.target, text: note.text, retiredBy }
+      : { target: note.target, text: note.text };
   });
 }
 

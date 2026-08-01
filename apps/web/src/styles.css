@@ -571,6 +571,14 @@ a {
   color: var(--faint);
 }
 
+/* A rules reminder whose whole bonus is already a structured Change (issue:
+   situational saves double-counting) — sage-tinted like `.buff-already-active`
+   rather than the default muted hint color, so "already applied" reads as a
+   distinct affordance from the `⚠` manual-apply reminder. */
+.hint.applied {
+  color: var(--sage);
+}
+
 /* -------------------------------------------------------- warn-over / warn-under --
    Modifier classes appended to count badges (e.g. `.hint.warn-over`) when a
    picked count is over/under its expected value — used by FeatsSection and

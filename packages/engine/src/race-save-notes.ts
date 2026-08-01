@@ -61,6 +61,13 @@ export interface StandardRaceSaveBonus {
    */
   trait?: string;
   changes: Change[];
+  /**
+   * False when `changes` leaves part of the note's benefit unmodeled — see
+   * the entry's own inline comment for what stays prose (Android's
+   * paralysis, Astomoi's inhaled poisons, Duskwalker's negative energy).
+   * Defaults to true (the note is fully expressed) when omitted.
+   */
+  full?: boolean;
 }
 
 /** `+N racial` on every save, scoped to `categories`. */
@@ -78,6 +85,7 @@ export const STANDARD_RACE_SAVE_BONUSES: Readonly<
       match: "Mind Affecting, Paralysis, Poison, Stun",
       trait: "Constructed",
       changes: [racial("4", "poison", "mind", "stun")],
+      full: false,
     },
   ],
   Aphorite: [
@@ -100,6 +108,7 @@ export const STANDARD_RACE_SAVE_BONUSES: Readonly<
       match: "Disease and Inhaled Poisons",
       trait: "Mouthless",
       changes: [racial("-2", "disease")],
+      full: false,
     },
   ],
   Drow: [
@@ -122,6 +131,7 @@ export const STANDARD_RACE_SAVE_BONUSES: Readonly<
       match: "Negative Energy and Death",
       trait: "Deathtouched",
       changes: [racial("2", "death")],
+      full: false,
     },
   ],
   Dwarf: [

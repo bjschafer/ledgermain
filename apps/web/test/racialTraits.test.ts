@@ -347,7 +347,9 @@ describe("raceStandardTraitNotes (issue #41)", () => {
 
   it("with no active alternates, every note is present and unretired", () => {
     const notes = raceStandardTraitNotes(makeDoc("Svirfneblin"), ref);
-    expect(notes).toEqual([{ text: expect.stringContaining("Reptilian and Dwarf") }]);
+    expect(notes).toEqual([
+      { target: expect.any(String), text: expect.stringContaining("Reptilian and Dwarf") },
+    ]);
   });
 
   it("a hand-authored alternate retires its matching note by name", () => {
@@ -365,7 +367,11 @@ describe("raceStandardTraitNotes (issue #41)", () => {
     const stalwartWatcher = vendoredIdByName("Stalwart Watcher", "Svirfneblin");
     const notes = raceStandardTraitNotes(makeDoc("Svirfneblin", undefined, [stalwartWatcher]), ref);
     expect(notes).toEqual([
-      { text: expect.stringContaining("Reptilian and Dwarf"), retiredBy: "Stalwart Watcher" },
+      {
+        target: expect.any(String),
+        text: expect.stringContaining("Reptilian and Dwarf"),
+        retiredBy: "Stalwart Watcher",
+      },
     ]);
   });
 

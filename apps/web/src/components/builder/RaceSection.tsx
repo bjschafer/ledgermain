@@ -1,7 +1,11 @@
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
-import { FLEXIBLE_ABILITY_SUPPRESS_TARGET, raceGrantsFlexibleAbility } from "@pf1/engine";
+import {
+  FLEXIBLE_ABILITY_SUPPRESS_TARGET,
+  raceGrantsFlexibleAbility,
+  saveNoteCoverage,
+} from "@pf1/engine";
 import { ABILITY_IDS } from "@pf1/schema";
 
 import { setBonusLanguages, setFlexibleAbility, setRace } from "../../model/doc.js";
@@ -199,7 +203,15 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
         </p>
       )}
       {standardTraitNotes.map((note, i) => (
-        <RulesNote key={i} text={note.text} retiredBy={note.retiredBy} />
+        <RulesNote
+          key={i}
+          text={note.text}
+          retiredBy={note.retiredBy}
+          appliedAutomatically={
+            selected != null &&
+            saveNoteCoverage({ catalog: "race", raceName: selected.name }, note) === "full"
+          }
+        />
       ))}
       {flexible && (
         <div style={{ marginTop: 12 }}>

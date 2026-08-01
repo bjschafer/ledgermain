@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
-import { vendoredTraitFullyHandled } from "@pf1/engine";
+import { saveNoteCoverage, vendoredTraitFullyHandled } from "@pf1/engine";
 
 import {
   availableVendoredRacialTraits,
@@ -163,7 +163,15 @@ export function VendoredRacialTraitPicker({
                       ) : null}
                     </div>
                     {isSel
-                      ? t.contextNotes.map((note, i) => <RulesNote key={i} text={note.text} />)
+                      ? t.contextNotes.map((note, i) => (
+                          <RulesNote
+                            key={i}
+                            text={note.text}
+                            appliedAutomatically={
+                              saveNoteCoverage({ catalog: "racialTrait" }, note) === "full"
+                            }
+                          />
+                        ))
                       : null}
                     {isSel && openChanges.length > 0 ? (
                       <div style={{ marginTop: 4 }}>

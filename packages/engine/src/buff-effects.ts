@@ -107,7 +107,7 @@ const RAGE_UNCHAINED_TEMP_HP: Change = {
  * spell pages (Burst of Glory: "+1 sacred bonus on attack rolls and saves
  * against fear effects"; Remove Fear: "+4 morale bonus against fear effects").
  */
-const SAVE_CATEGORY_PATCHES: Readonly<Record<string, readonly Change[]>> = {
+export const SAVE_CATEGORY_PATCHES: Readonly<Record<string, readonly Change[]>> = {
   // "+1 Morale vs Fear effects" — the save half of bless/aid, whose attack
   // half the pack already ships.
   Aid: [{ formula: "1", target: "allSavingThrows", type: "morale", saveCategories: ["fear"] }],
@@ -166,4 +166,25 @@ const SAVE_CATEGORY_PATCHES: Readonly<Record<string, readonly Change[]>> = {
 export const BUFF_CHANGE_PATCHES: Readonly<Record<string, readonly Change[]>> = {
   "Rage (Unchained)": [RAGE_UNCHAINED_TEMP_HP],
   ...SAVE_CATEGORY_PATCHES,
+};
+
+/**
+ * Buff names in {@link SAVE_CATEGORY_PATCHES} whose patch captures the WHOLE
+ * benefit of the `allSavingThrows` note it was transcribed from, versus one
+ * that leaves a remainder in prose. Every entry is "full" except Death Ward:
+ * its note's "even if a save is not normally allowed" clause grants a save
+ * where none would otherwise exist, which has no expressible `Change` form
+ * and stays in the note (see the doc comment above). Consulted by the UI so
+ * a note still carrying an unmodeled remainder keeps its manual-apply
+ * reminder instead of reading as fully handled.
+ */
+export const BUFF_SAVE_NOTE_COVERAGE: Readonly<Record<string, "full" | "partial">> = {
+  Aid: "full",
+  Bless: "full",
+  Bane: "full",
+  "Death Ward": "partial",
+  "Inspire Courage": "full",
+  "Karyukai Tea Set": "full",
+  "Daikyu of Commanding Presence": "full",
+  Purity: "full",
 };

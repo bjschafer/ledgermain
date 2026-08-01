@@ -864,15 +864,26 @@ export {
   isArmorTypeProficient,
   isShieldTierProficient,
 } from "./proficiency.js";
-export { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
+export {
+  BUFF_CHANGE_PATCHES,
+  BUFF_SAVE_NOTE_COVERAGE,
+  SAVE_CATEGORY_PATCHES,
+} from "./buff-effects.js";
 export { CLASS_FEATURE_CHANGE_PATCHES } from "./class-feature-effects.js";
 export { FEAT_SAVE_CATEGORY_CHANGES } from "./feat-save-categories.js";
 export {
   saveChangesFromNotes,
   scopedSave,
+  PARTIALLY_PROMOTED_CHARACTER_TRAIT_SAVE_NOTES,
+  PARTIALLY_PROMOTED_RACIAL_TRAIT_SAVE_NOTES,
   VENDORED_CHARACTER_TRAIT_SAVE_NOTES,
   VENDORED_RACIAL_TRAIT_SAVE_NOTES,
 } from "./vendored-trait-save-notes.js";
+export {
+  saveNoteCoverage,
+  type SaveNoteCatalog,
+  type SaveNoteCoverage,
+} from "./save-note-coverage.js";
 export { ITEM_CHANGE_PATCHES } from "./item-effects.js";
 export {
   RAGE_POWERS,

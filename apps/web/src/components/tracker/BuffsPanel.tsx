@@ -6,6 +6,7 @@ import {
   buildRollData,
   evaluateBuffChange,
   needsElementChoice,
+  saveNoteCoverage,
   unappliedChanges,
 } from "@pf1/engine";
 import type { RollData } from "@pf1/engine";
@@ -159,7 +160,13 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
                   ))}
                 </div>
                 {buff.contextNotes?.map((n, i) => (
-                  <RulesNote key={i} text={n.text} />
+                  <RulesNote
+                    key={i}
+                    text={n.text}
+                    appliedAutomatically={
+                      saveNoteCoverage({ catalog: "buff", buffName: buff.name }, n) === "full"
+                    }
+                  />
                 ))}
               </div>
               {isActive ? (
@@ -363,7 +370,13 @@ function BuffRow({
           ))}
         </div>
         {buff.contextNotes?.map((n, i) => (
-          <RulesNote key={i} text={n.text} />
+          <RulesNote
+            key={i}
+            text={n.text}
+            appliedAutomatically={
+              saveNoteCoverage({ catalog: "buff", buffName: buff.name }, n) === "full"
+            }
+          />
         ))}
       </div>
       <label className="buff-rounds">

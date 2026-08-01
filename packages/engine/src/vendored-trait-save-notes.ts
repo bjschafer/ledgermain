@@ -351,6 +351,58 @@ export const VENDORED_CHARACTER_TRAIT_SAVE_NOTES: Readonly<Record<string, readon
 };
 
 /**
+ * Exact keys from {@link VENDORED_RACIAL_TRAIT_SAVE_NOTES} whose promoted
+ * `Change`s leave part of the note's benefit unmodeled — the caveats and
+ * narrower-than-vocabulary clauses the table's own doc comment calls out
+ * entry by entry (paralysis, hexes, an electricity-resistance rider, and so
+ * on). A note in this set still needs its "apply this by hand" reminder even
+ * though the modelled part is now a real number; every other key in the
+ * table is fully expressed by its `Change`s.
+ */
+export const PARTIALLY_PROMOTED_RACIAL_TRAIT_SAVE_NOTES: ReadonlySet<string> = new Set([
+  "+1 Racial bonus vs poison, alchemical weapons, and harmful effects from drinking potions or elixirs.",
+  "+2 Racial bonus against curse effects and hexes. This bonus stacks with the bonus granted by halfling luck.",
+  "+2 Racial bonus against death effects, energy drain, negative energy, and spells or spell-like abilities of the necromancy school.",
+  "+2 Racial bonus against disease, ingested poisons, and becoming nauseated or sickened.",
+  "+2 Racial bonus against dominate and possession effects. This bonus stacks with the bonus granted by halfling luck.",
+  "+2 Racial bonus against fear, sleep and paralysis effects.",
+  "+2 Racial bonus to resist becoming nauseated, sickened or diseased",
+  "+2 Racial bonus vs. diseases and poisons; Requires 1 less save to heal diseases and poisons (min. 1 save)",
+  "+2 Racial bonus vs. spells and spell-like abilities of necromancy school or with curse descriptor.",
+  "+2 bonus versus poison. You have Electricity resistance 5",
+  "+2 bonus vs diseases.  If you exceed the DC by 5 or more count as two consecutive saves",
+  "+2 racial vs. divination and enchantment spells and effects",
+  "-2 penalty on saves against fear effects and gain no benefit from morale bonuses on such saves. When affected by a fear effect, their base speed increases by 10 feet and they gain a +1 dodge bonus to Armor Class.",
+  "You don't usually gain morale bonuses, but instead gain a +2 Racial bonus against emotion and fear effects. You can choose suppress both of these effects but the suppression must be done for a full 24 hour period.",
+]);
+
+/**
+ * Same idea as {@link PARTIALLY_PROMOTED_RACIAL_TRAIT_SAVE_NOTES}, for
+ * {@link VENDORED_CHARACTER_TRAIT_SAVE_NOTES}.
+ */
+export const PARTIALLY_PROMOTED_CHARACTER_TRAIT_SAVE_NOTES: ReadonlySet<string> = new Set([
+  "-1 penalty against fear effects. If you would normally be immune to fear, you do not take this penalty, but instead lose your immunity to fear (regardless of its source).",
+  "+1 trait bonus vs divinations, domination effects, effects that compel to speak the truth",
+  "+1 Trait bonus against fear and against any effect created by a creature of the dragon type.",
+  "+1 Trait bonus vs. charm and compulsion spells and you may make a new save (with a total of +2 Trait bonus) if directed to act against the law.",
+  "+2 Trait bonus against poison.  In addition, you are immune to <chosen poison>.",
+  "+2 Trait bonus against spells with the emotion, fear, or pain descriptor. Once per day, you can increase this bonus to +4 for a single save, but you must make this decision before you attempt the saving throw.",
+  "+2 Trait bonus against emotion and pain spells and effects.",
+  "+1 Trait bonus against scrying and mind-reading effects that allow saving throws.",
+  "+2 Trait bonus \n against divinations or enchantments that would compel you to reveal a secret or allow anyone to read your mind.",
+  "+2 bonus against death effects; allies within 10 feet (3 meters) take a -1 Penalty against death effects.",
+  "+1 Trait bonus against charms and compulsions, and the DC of any attempts to use the Intimidate skill on you increases by +1.",
+  "+1 Trait bonus to resist diseases. Additionally, you are immune to the diseases Vorel’s phage and blood veil",
+  "+1 Trait bonus against death effects and effects that use negative energy, such as energy drain and inflict spells.",
+  "+1 Trait bonus against fear effects; this increases to +3 if an evil outsider caused the effect.",
+  "+2 Trait bonus against emotion and fear effects or a +4 trait bonus against emotion effects if you are immune to fear effects.",
+  "+1 Trait bonus against mind-affecting effects.  As a swift action, [[max(1, @abilities.cha.mod)]] times per day, you can grant this bonus to an ally within 10 feet. This bonus lasts for 1 minute. ([[@resources.theOptimistTyrantsGrasp.value]] remaining uses)",
+  "+2 Trait bonus against confusion, insanity, and fear effects.",
+  "As long as you are conscious, +1 Trait bonus against mind-affecting effects you are not already suffering from.   All allies within 10 feet gain a +1 Morale bonus against these same effects.",
+  "+1 Trait bonus against fear; this bonus increases to +2 whenever you are 30 feet or farther from your nearest ally.",
+]);
+
+/**
  * The scoped `Change`s an entry's own save notes imply.
  *
  * Only `allSavingThrows` notes are considered, so a table key can never pull a
