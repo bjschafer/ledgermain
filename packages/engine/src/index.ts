@@ -866,6 +866,7 @@ export {
 } from "./proficiency.js";
 export { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
 export { CLASS_FEATURE_CHANGE_PATCHES } from "./class-feature-effects.js";
+export { FEAT_SAVE_CATEGORY_CHANGES } from "./feat-save-categories.js";
 export {
   saveChangesFromNotes,
   scopedSave,

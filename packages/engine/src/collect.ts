@@ -17,6 +17,7 @@ import { BLOODLINES } from "./bloodlines.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
 import { CLASS_FEATURE_CHANGE_PATCHES } from "./class-feature-effects.js";
+import { FEAT_SAVE_CATEGORY_CHANGES } from "./feat-save-categories.js";
 import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
 import { featNameSlug } from "./feat-effects.js";
@@ -1342,6 +1343,23 @@ export function collectModifiers(
         }
       }
     }
+    // Category-scoped save bonuses ride ALONGSIDE the resolved entry rather
+    // than inside the precedence chain, which only ever yields one entry per
+    // feat — see `feat-save-categories.ts`.
+    for (const ch of FEAT_SAVE_CATEGORY_CHANGES[slug] ?? []) {
+      evalChange(
+        ch.formula,
+        rollData,
+        ch.target,
+        ch.type,
+        feat.name,
+        featId,
+        out,
+        ch.operator,
+        ch.saveCategories,
+      );
+    }
+
     // "situational" entries never live in FEAT_EFFECTS/FEAT_EFFECTS_EXTRACTED
     // (see SITUATIONAL_FEAT_EFFECTS in feat-effects.ts) — nothing to emit here.
 
