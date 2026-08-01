@@ -2012,6 +2012,26 @@ button:focus-visible,
   margin-top: 2px;
 }
 
+/* Situational save totals ("+13 poison"). Sage, matching the baseline-tint
+   convention for "higher than normal" elsewhere on the sheet. The seal grid
+   sizes rows to the tallest cell, so a two-line entry here pulls its
+   neighbours up; they stay centered, which reads as breathing room. */
+.seal .seal-conditionals {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 5px;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  line-height: 1.4;
+  color: var(--faint);
+}
+
+.seal .seal-conditionals b {
+  color: var(--sage);
+  font-weight: 600;
+}
+
 .seal .caret {
   position: absolute;
   top: 6px;

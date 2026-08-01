@@ -1,7 +1,8 @@
 import { useId, useState } from "react";
 
-import type { ModifierComponent } from "@pf1/schema";
+import type { ConditionalTotal, ModifierComponent } from "@pf1/schema";
 
+import { signed } from "../model/names.js";
 import { useFlashKey } from "../hooks/useFlashKey.js";
 import { Provenance, type ProvenanceCopy } from "./Provenance.js";
 
@@ -32,6 +33,7 @@ export function StatSeal({
   label,
   value,
   foot,
+  conditionals,
   components,
   provTitle,
   className,
@@ -43,6 +45,12 @@ export function StatSeal({
   label: string;
   value: string | number;
   foot?: string;
+  /**
+   * Situational totals shown under the value — a save that is higher against
+   * a category of effects than it is in general. Rendered rather than folded
+   * into `value`, since the headline number stays the one you roll by default.
+   */
+  conditionals?: ConditionalTotal[];
   components?: ModifierComponent[];
   provTitle?: string;
   className?: string;
@@ -79,6 +87,15 @@ export function StatSeal({
         {value}
       </div>
       {foot ? <div className="seal-foot">{foot}</div> : null}
+      {conditionals && conditionals.length > 0 ? (
+        <div className="seal-conditionals">
+          {conditionals.map((c) => (
+            <span key={c.categories.join("/")}>
+              <b className="num">{signed(c.total)}</b> {c.labels.join("/")}
+            </span>
+          ))}
+        </div>
+      ) : null}
       {flashKey > 0 ? <span key={flashKey} className="seal-flash" aria-hidden="true" /> : null}
     </>
   );

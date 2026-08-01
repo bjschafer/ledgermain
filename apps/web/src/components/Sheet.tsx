@@ -568,6 +568,7 @@ export function Sheet({
               label={SAVE_ABBR[save]}
               value={signed(sheet.saves[save].total)}
               components={sheet.saves[save].components}
+              conditionals={sheet.saves[save].conditionals}
               provTitle={`${SAVE_NAMES[save]} save`}
               resetKey={doc.id}
               baseline={baseline.saves[save].total}
