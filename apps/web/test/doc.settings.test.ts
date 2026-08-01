@@ -19,6 +19,7 @@ import {
   setFavoredClass2,
   setFavoredClassBonus,
   setFcbHouserule,
+  setFractionalBonuses,
   setGender,
   setGmGrantFeatSlots,
   setGmGrantSkillRanks,
@@ -237,6 +238,30 @@ describe("setEncumbranceEnabled()", () => {
     const d = doc();
     setEncumbranceEnabled(d, true);
     expect(d.build.settings?.encumbranceEnabled).toBeUndefined();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setFractionalBonuses (Pathfinder Unchained optional rule)
+// ---------------------------------------------------------------------------
+describe("setFractionalBonuses()", () => {
+  it("is absent on a fresh doc (default off = RAW)", () => {
+    expect(doc().build.settings?.fractionalBonuses).toBeUndefined();
+  });
+
+  it("stores true when enabled", () => {
+    expect(setFractionalBonuses(doc(), true).build.settings?.fractionalBonuses).toBe(true);
+  });
+
+  it("stores false when disabled", () => {
+    expect(setFractionalBonuses(doc(), false).build.settings?.fractionalBonuses).toBe(false);
+  });
+
+  it("does not mutate the original doc, and leaves sibling settings alone", () => {
+    const d = setEncumbranceEnabled(doc(), true);
+    const next = setFractionalBonuses(d, true);
+    expect(d.build.settings?.fractionalBonuses).toBeUndefined();
+    expect(next.build.settings?.encumbranceEnabled).toBe(true);
   });
 });
 

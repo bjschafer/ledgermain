@@ -557,6 +557,22 @@ export interface CharacterDoc {
        * `encumbranceEnabled`'s sibling toggles.
        */
       ignoreClassAlignmentRestrictions?: boolean;
+      /**
+       * Whether this character uses the Pathfinder Unchained "Fractional Base
+       * Bonuses" optional rule. Each class level contributes a FRACTION of a
+       * point of BAB (1, 3/4, or 1/2) and of each base save (1/2 good, 1/3
+       * poor); the fractions are summed across every class and the total is
+       * rounded down once, instead of each class's own contribution being
+       * rounded down separately. The good-save `+2` is granted once, by the
+       * class taken at 1st level, rather than once per good-save class.
+       *
+       * A single-class character computes IDENTICALLY under either rule at
+       * every level 1-20 (that's the variant's stated design goal), so this
+       * only ever moves numbers on a multiclass build: it typically raises BAB
+       * and lowers doubled-up good saves. Default false (absent) = RAW, same
+       * posture as `encumbranceEnabled`'s sibling toggles.
+       */
+      fractionalBonuses?: boolean;
     };
     /**
      * Player-curated bookmarks into already-computed sheet numbers (issue #2,

@@ -1514,6 +1514,22 @@ export function setEncumbranceEnabled(doc: CharacterDoc, enabled: boolean): Char
 }
 
 /**
+ * Toggle the Pathfinder Unchained "Fractional Base Bonuses" optional rule.
+ * Off by default (absent = false) = RAW, same posture as
+ * `setEncumbranceEnabled`. Only ever changes a multiclass character's numbers:
+ * a single-class build computes the same BAB and saves either way.
+ */
+export function setFractionalBonuses(doc: CharacterDoc, enabled: boolean): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, fractionalBonuses: enabled },
+    },
+  };
+}
+
+/**
  * Force the Polymorph / Wild Shape panel on (`true`) or off (`false`), or pass
  * `null` to restore auto-detection from the character's own polymorph sources
  * (see `model/polymorph.ts`'s `polymorphPanelVisible`).

@@ -20,6 +20,7 @@ import {
   setClericWisdomHouserule,
   setEncumbranceEnabled,
   setFcbHouserule,
+  setFractionalBonuses,
   setGmGrantFeatSlots,
   setGmGrantSkillRanks,
   setHeroPointsCap,
@@ -111,6 +112,7 @@ export function SettingsSection({
   const xpEnabled = settings.xpEnabled ?? false;
   const xpTrack = settings.xpTrack ?? DEFAULT_XP_TRACK;
   const encumbranceEnabled = settings.encumbranceEnabled ?? false;
+  const fractionalBonuses = settings.fractionalBonuses ?? false;
   const polymorphEnabled = settings.polymorphEnabled;
   const ignoreAlignmentRestrictions = settings.ignoreClassAlignmentRestrictions ?? false;
   const overrides = settings.statOverrides ?? {};
@@ -470,6 +472,44 @@ export function SettingsSection({
                   current weight, thresholds, and tier.
                 </p>
               )}
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-fractional",
+          label: "Fractional Bonuses",
+          node: (
+            <Panel title="Fractional Base Bonuses" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                A Pathfinder Unchained optional rule for multiclass characters. Instead of rounding
+                each class's base attack bonus and base saves down separately, it adds up the exact
+                fractions (1, 3/4, or 1/2 BAB per level; 1/2 or 1/3 per save) and rounds down once
+                at the end. A good save's +2 is granted only by the class you took at 1st level, not
+                by every good-save class.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={fractionalBonuses}
+                  onClick={() => update((d) => setFractionalBonuses(d, true))}
+                >
+                  Enabled
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={!fractionalBonuses}
+                  onClick={() => update((d) => setFractionalBonuses(d, false))}
+                >
+                  Disabled (default)
+                </button>
+              </div>
+              <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
+                {doc.identity.classes.length > 1
+                  ? "Usually raises your attack bonus and lowers a save two of your classes are both good at."
+                  : "This character has one class, so the rule changes nothing until you multiclass."}
+              </p>
             </Panel>
           ),
         },

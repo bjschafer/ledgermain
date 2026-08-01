@@ -51,6 +51,8 @@ export { buildRollData, abilityMod, totalLevel, type AbilityView } from "./rolld
 export {
   babForLevels,
   saveForLevels,
+  fractionalBab,
+  fractionalSave,
   specialSizeMod,
   SIZE_AC_MOD,
   SAVE_ABILITY,

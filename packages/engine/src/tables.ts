@@ -4,6 +4,9 @@
  * standard rules tables live here. All are computed per class level and summed
  * across a multiclass character (the +2 base good-save bonus applies once per
  * class, which is the correct PF1 multiclass behaviour).
+ *
+ * {@link fractionalBab}/{@link fractionalSave} are the same tables restated as
+ * fractions for the Pathfinder Unchained optional rule; see their doc comments.
  */
 
 import type { AbilityId, BabTier, Race, SaveTier, SizeId } from "@pf1/schema";
@@ -40,6 +43,70 @@ export function saveForLevels(tier: SaveTier, level: number): number {
     case "lowPrestige":
       return Math.floor((level + 1) / 3); // prestige poor save
   }
+}
+
+/* ---------------------------------------------- fractional base bonuses -- */
+
+/*
+ * Pathfinder Unchained's "Fractional Base Bonuses" optional rule. RAW rounds
+ * each class's contribution down on its own and sums the results; fractional
+ * sums the exact per-level fractions and rounds down once at the very end.
+ *
+ * Both are expressed in integer numerators over a common denominator rather
+ * than as floats, so a 20-level multiclass total can't drift on repeated
+ * addition of 3/4 or 1/3.
+ *
+ * A single-class character gets the SAME total under either rule at every
+ * level 1-20 — that equivalence is the variant's design goal, and
+ * `test/fractionalBonuses.test.ts` asserts it exhaustively rather than
+ * trusting it.
+ */
+
+/** BAB per class level in quarters: 1, 3/4, 1/2. */
+const BAB_QUARTERS: Record<BabTier, number> = { high: 4, med: 3, low: 2 };
+
+/**
+ * Total base attack bonus under fractional base bonuses. `tier` is the tier
+ * the CALLER resolved for that class entry, not necessarily the class's listed
+ * one, so a Vigilante Avenger's full-BAB override still applies (see
+ * `compute.ts`).
+ */
+export function fractionalBab(entries: readonly { tier: BabTier; level: number }[]): number {
+  let quarters = 0;
+  for (const e of entries) {
+    if (e.level > 0) quarters += BAB_QUARTERS[e.tier] * e.level;
+  }
+  return Math.floor(quarters / 4);
+}
+
+/**
+ * Base save per class level in sixths: good 1/2, poor 1/3. The two prestige
+ * tiers collapse onto the base ones here — their distinct RAW formulas
+ * (`primitives.ts` `SaveTier`) exist only to keep a prestige class from
+ * re-granting a good save's +2, which fractional handles directly by granting
+ * that +2 exactly once.
+ */
+const SAVE_SIXTHS: Record<SaveTier, number> = {
+  high: 3,
+  highPrestige: 3,
+  low: 2,
+  lowPrestige: 2,
+};
+
+/**
+ * Total base save for one save category under fractional base bonuses.
+ * `entries` must be in the order the classes were taken: the good save's +2 is
+ * granted once, by the class taken at 1st level, and only when that class's
+ * save in this category is good. `high` and not `highPrestige` — a prestige
+ * class is never a character's 1st level and never grants the +2 regardless.
+ */
+export function fractionalSave(entries: readonly { tier: SaveTier; level: number }[]): number {
+  let sixths = 0;
+  for (const e of entries) {
+    if (e.level > 0) sixths += SAVE_SIXTHS[e.tier] * e.level;
+  }
+  const first = entries.find((e) => e.level > 0);
+  return Math.floor(sixths / 6) + (first?.tier === "high" ? 2 : 0);
 }
 
 /** Size modifier to AC and attack rolls (Foundry size id → modifier). */

@@ -20,6 +20,7 @@ import type {
   AbilityId,
   AcComponent,
   ArmorClass,
+  BabTier,
   CharacterDoc,
   DerivedActiveForm,
   DerivedEncumbrance,
@@ -31,6 +32,7 @@ import type {
   RefData,
   ResolvedStat,
   ResolvedWeaponAttack,
+  SaveTier,
   SizeId,
   WeaponInstance,
 } from "@pf1/schema";
@@ -82,6 +84,8 @@ import { resolveStack, synthetic, toComponents, type TypedModifier } from "./sta
 import { normalizeWeaponGroup } from "./weapon-groups.js";
 import {
   babForLevels,
+  fractionalBab,
+  fractionalSave,
   isTrainedOnly,
   PARAMETERIZED_SKILL_PREFIXES,
   ROGUE_FINESSE_TRAINING_LEVELS,
@@ -399,12 +403,20 @@ function computeSave(
   refData: RefData,
   ability: ResolvedAbility,
   collected: CollectedModifier[],
+  fractional: boolean,
 ): ResolvedStat {
-  let base = 0;
+  const tiers: { tier: SaveTier; level: number }[] = [];
   for (const c of classes) {
     const def = Object.values(refData.classes).find((x) => x.tag === c.tag);
-    if (def) base += saveForLevels(def.saves[which], c.level);
+    if (def) tiers.push({ tier: def.saves[which], level: c.level });
   }
+  // Fractional base bonuses (Pathfinder Unchained, opt-in per character):
+  // sum the exact fractions and round down once, granting the good save's +2
+  // only for the class taken at 1st level. RAW rounds down per class and
+  // grants the +2 once per good-save class.
+  const base = fractional
+    ? fractionalSave(tiers)
+    : tiers.reduce((sum, t) => sum + saveForLevels(t.tier, t.level), 0);
   const all = [...forTarget(collected, which), ...forTarget(collected, "allSavingThrows")];
 
   const { total, stack, conditionals } = resolveSave(which, base + ability.mod, all);
@@ -1436,7 +1448,8 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // BAB — computed from class levels alone (no feat/buff in this slice
   // modifies it), so it's available before roll data is built. Vendored
   // formulas (e.g. Monk's Maneuver Training) reference `@attributes.bab.total`.
-  let bab = 0;
+  const fractionalBonuses = doc.build.settings?.fractionalBonuses ?? false;
+  const babTiers: { tier: BabTier; level: number }[] = [];
   for (const cls of doc.identity.classes) {
     const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
     if (!def) continue;
@@ -1450,8 +1463,14 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     // IS vigilante levels AND the build chose Avenger.
     const tier =
       cls.tag === "vigilante" && doc.build.vigilanteSpecialization === "avenger" ? "high" : def.bab;
-    bab += babForLevels(tier, cls.level);
+    babTiers.push({ tier, level: cls.level });
   }
+  // Under fractional base bonuses (Pathfinder Unchained, opt-in per character)
+  // the per-class fractions are summed and rounded down once instead of each
+  // class rounding down on its own.
+  const bab = fractionalBonuses
+    ? fractionalBab(babTiers)
+    : babTiers.reduce((sum, t) => sum + babForLevels(t.tier, t.level), 0);
 
   const baseSize: SizeId = race?.size ?? "med";
 
@@ -1552,14 +1571,23 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
       refData,
       { ability: "con", mod: abilities.con.mod },
       collected,
+      fractionalBonuses,
     ),
-    ref: computeSave("ref", doc.identity.classes, refData, refAbility, collected),
+    ref: computeSave(
+      "ref",
+      doc.identity.classes,
+      refData,
+      refAbility,
+      collected,
+      fractionalBonuses,
+    ),
     will: computeSave(
       "will",
       doc.identity.classes,
       refData,
       { ability: "wis", mod: abilities.wis.mod },
       collected,
+      fractionalBonuses,
     ),
   };
 
