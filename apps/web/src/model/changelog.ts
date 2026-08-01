@@ -44,7 +44,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-08-01-fractional-bonuses",
     date: "2026-08-01",
     title: "Fractional base bonuses for multiclass builds",
-    note: "Settings has a new optional rule from Pathfinder Unchained. Turn it on and your base attack bonus and saves add up their exact per level fractions and round down once at the end, rather than every class rounding down on its own, and a good save's +2 comes only from the class you took at 1st level. Multiclass characters usually gain attack bonus and lose a doubled up save. Single class characters see no change at all, which is how the rule is meant to work.",
+    note: "Settings has a new optional rule from Pathfinder Unchained. Turn it on and your base attack bonus and saves add up their exact per level fractions and round down once at the end, rather than every class rounding down on its own, and a good save's +2 counts once for each save the way a class skill's +3 does. Multiclass characters usually gain attack bonus and lose a doubled up save. Single class characters see no change at all, which is how the rule is meant to work.",
   },
   {
     id: "2026-08-01-applied-save-notes",

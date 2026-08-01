@@ -95,18 +95,22 @@ const SAVE_SIXTHS: Record<SaveTier, number> = {
 
 /**
  * Total base save for one save category under fractional base bonuses.
- * `entries` must be in the order the classes were taken: the good save's +2 is
- * granted once, by the class taken at 1st level, and only when that class's
- * save in this category is good. `high` and not `highPrestige` — a prestige
- * class is never a character's 1st level and never grants the +2 regardless.
+ *
+ * The good save's +2 behaves like a class skill's +3: a character earns it
+ * once for a given save if ANY of their classes is good at it, no matter how
+ * many are or which one came first. Order of `entries` is therefore
+ * irrelevant. `high` and not `highPrestige` — a prestige class never grants
+ * the +2 under RAW either.
  */
 export function fractionalSave(entries: readonly { tier: SaveTier; level: number }[]): number {
   let sixths = 0;
+  let good = false;
   for (const e of entries) {
-    if (e.level > 0) sixths += SAVE_SIXTHS[e.tier] * e.level;
+    if (e.level <= 0) continue;
+    sixths += SAVE_SIXTHS[e.tier] * e.level;
+    if (e.tier === "high") good = true;
   }
-  const first = entries.find((e) => e.level > 0);
-  return Math.floor(sixths / 6) + (first?.tier === "high" ? 2 : 0);
+  return Math.floor(sixths / 6) + (good ? 2 : 0);
 }
 
 /** Size modifier to AC and attack rolls (Foundry size id → modifier). */

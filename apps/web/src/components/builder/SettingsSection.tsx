@@ -484,8 +484,8 @@ export function SettingsSection({
                 A Pathfinder Unchained optional rule for multiclass characters. Instead of rounding
                 each class's base attack bonus and base saves down separately, it adds up the exact
                 fractions (1, 3/4, or 1/2 BAB per level; 1/2 or 1/3 per save) and rounds down once
-                at the end. A good save's +2 is granted only by the class you took at 1st level, not
-                by every good-save class.
+                at the end. A good save's +2 works like a class skill's +3: you get it once for each
+                save, however many of your classes are good at it.
               </p>
               <div className="chips">
                 <button

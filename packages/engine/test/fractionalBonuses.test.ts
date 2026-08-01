@@ -7,7 +7,7 @@
  * Expected values are hand-computed from the published rule: BAB accrues at
  * 1 / (3/4) / (1/2) per class level, base saves at 1/2 (good) and 1/3 (poor),
  * summed across every class and rounded down once at the end, with a good
- * save's +2 granted only by the class taken at 1st level.
+ * save's +2 granted once per save rather than once per good-save class.
  */
 import { describe, expect, it } from "bun:test";
 
@@ -127,21 +127,31 @@ describe("fractionalSave", () => {
     expect(entries.reduce((s, e) => s + saveForLevels(e.tier, e.level), 0)).toBe(14);
   });
 
-  it("grants no +2 when the class taken at 1st level has a poor save there", () => {
-    // Wizard 1 (poor Fort) / Cleric 1 (good Fort): 1/3 + 1/2 = 0.833 -> 0.
+  it("grants the +2 from any good-save class, whatever order the classes came in", () => {
+    // Wizard 1 (poor Fort) / Cleric 1 (good Fort): 1/3 + 1/2 = 0.833 -> 0, +2.
+    // The +2 is like a class skill's +3: earned once, by having any class good
+    // at that save, not by which class was taken at 1st level.
     expect(
       fractionalSave([
         { tier: "low", level: 1 },
         { tier: "high", level: 1 },
       ]),
-    ).toBe(0);
-    // Order matters: the same two classes taken the other way round earn it.
+    ).toBe(2);
     expect(
       fractionalSave([
         { tier: "high", level: 1 },
         { tier: "low", level: 1 },
       ]),
     ).toBe(2);
+  });
+
+  it("grants no +2 when no class is good at the save", () => {
+    expect(
+      fractionalSave([
+        { tier: "low", level: 1 },
+        { tier: "low", level: 1 },
+      ]),
+    ).toBe(0);
   });
 
   it("sums poor saves before rounding: Fighter 2 / Rogue 2 Will is +1, RAW is +0", () => {
@@ -154,19 +164,26 @@ describe("fractionalSave", () => {
   });
 
   it("treats a prestige good save as a plain 1/2 per level and never grants the +2 from it", () => {
-    // A prestige class can't legally be a character's 1st level; even listed
-    // first it contributes only its fraction.
+    // A prestige class doesn't grant the +2 under RAW either, so a good save
+    // held only by a prestige class contributes just its fraction.
     expect(fractionalSave([{ tier: "highPrestige", level: 10 }])).toBe(5);
     expect(fractionalSave([{ tier: "lowPrestige", level: 10 }])).toBe(3);
-  });
-
-  it("skips level-0 entries when deciding which class granted the +2", () => {
+    // Wizard 10 (poor Fort) / prestige 10 (good Fort): 3.33 + 5 = 8.33 -> 8.
     expect(
       fractionalSave([
-        { tier: "low", level: 0 },
-        { tier: "high", level: 4 },
+        { tier: "low", level: 10 },
+        { tier: "highPrestige", level: 10 },
       ]),
-    ).toBe(4);
+    ).toBe(8);
+  });
+
+  it("ignores level-0 entries", () => {
+    expect(
+      fractionalSave([
+        { tier: "high", level: 0 },
+        { tier: "low", level: 3 },
+      ]),
+    ).toBe(1);
   });
 
   it("matches RAW exactly for a single base class at every level 1-20, both tiers", () => {
@@ -254,6 +271,35 @@ describe("compute: fractionalBonuses enabled", () => {
     expect(saveBase(compute(makeDoc(classes, true), ref), "fort")).toBe(12);
     // Both classes are full BAB, so the attack bonus is unchanged at +20.
     expect(compute(makeDoc(classes, true), ref).bab).toBe(20);
+  });
+
+  it("still grants Fortitude's +2 when the Fort-good class came after 1st level", () => {
+    // Wizard 1 (poor Fort) then Fighter 1 (good Fort): 1/3 + 1/2 = 0.83 -> 0,
+    // plus the +2 the fighter level earns for Fort. Multiclassing into a good
+    // save must not be worth less than starting in it.
+    const late = compute(
+      makeDoc(
+        [
+          { tag: "wizard", level: 1 },
+          { tag: "fighter", level: 1 },
+        ],
+        true,
+      ),
+      ref,
+    );
+    const early = compute(
+      makeDoc(
+        [
+          { tag: "fighter", level: 1 },
+          { tag: "wizard", level: 1 },
+        ],
+        true,
+      ),
+      ref,
+    );
+    expect(saveBase(late, "fort")).toBe(2);
+    expect(saveBase(late, "fort")).toBe(saveBase(early, "fort"));
+    expect(saveBase(late, "will")).toBe(2); // wizard's good Will, also once
   });
 
   it("changes nothing for a single-class character at any level", () => {

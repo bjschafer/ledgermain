@@ -412,8 +412,8 @@ function computeSave(
   }
   // Fractional base bonuses (Pathfinder Unchained, opt-in per character):
   // sum the exact fractions and round down once, granting the good save's +2
-  // only for the class taken at 1st level. RAW rounds down per class and
-  // grants the +2 once per good-save class.
+  // once for the save rather than once per good-save class, the way a class
+  // skill's +3 works. RAW rounds down per class and grants the +2 each time.
   const base = fractional
     ? fractionalSave(tiers)
     : tiers.reduce((sum, t) => sum + saveForLevels(t.tier, t.level), 0);
