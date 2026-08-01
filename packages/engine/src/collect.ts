@@ -31,7 +31,9 @@ import { ORACLE_CURSES } from "./oracle-curses.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { polymorphFormOption } from "./polymorph.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
+import { standardRaceSaveChanges } from "./race-save-notes.js";
 import {
+  effectiveRaceContextNotes,
   FLEXIBLE_ABILITY_SUPPRESS_TARGET,
   RACIAL_TRAITS,
   vendoredTraitSuppressTargets,
@@ -228,6 +230,29 @@ export function collectModifiers(
         ch.saveCategories,
       );
     }
+    // Standard racial traits the compendium ships only as prose: a save
+    // bonus scoped to a category of effects has no vendored `Race.change` to
+    // carry it, so it's recovered from the note that describes it. Fed the
+    // POST-suppression notes, which is what keeps an alternate that replaces
+    // the trait (Steel Soul for Hardy) from doubling up with it — see
+    // `race-save-notes.ts`.
+    for (const ch of standardRaceSaveChanges(
+      race.name,
+      effectiveRaceContextNotes(race, activeRacialTraits, activeVendoredTraits),
+    )) {
+      evalChange(
+        ch.formula,
+        rollData,
+        ch.target,
+        ch.type,
+        race.name,
+        race.id,
+        out,
+        ch.operator,
+        ch.saveCategories,
+      );
+    }
+
     // Flexible +2 (Human / Half-Elf / Half-Orc): no fixed ability changes,
     // player picks one ability score at character creation. An alternate
     // racial trait that RAW-replaces this bonus with a fixed one (Half-Orc

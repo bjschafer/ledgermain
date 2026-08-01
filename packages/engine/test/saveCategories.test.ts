@@ -77,10 +77,19 @@ describe("Steel Soul (category-scoped racial save bonuses)", () => {
     expect(steel.saves.will.total).toBe(1);
   });
 
-  it("has no conditionals at all without the trait", () => {
-    expect(base.saves.fort.conditionals).toBeUndefined();
-    expect(base.saves.ref.conditionals).toBeUndefined();
-    expect(base.saves.will.conditionals).toBeUndefined();
+  it("shows the standard trait it replaces without the trait", () => {
+    // Hardy is +2 vs. poison, spells, and spell-like abilities, recovered
+    // from the race's contextNote (see `race-save-notes.ts`); Steel Soul
+    // suppresses that note and supersedes it below.
+    expect(base.saves.fort.conditionals).toEqual([
+      { total: 5, categories: ["spell", "sla", "poison"], labels: ["spells", "SLAs", "poison"] },
+    ]);
+    expect(base.saves.ref.conditionals).toEqual([
+      { total: 2, categories: ["spell", "sla"], labels: ["spells", "SLAs"] },
+    ]);
+    expect(base.saves.will.conditionals).toEqual([
+      { total: 3, categories: ["spell", "sla"], labels: ["spells", "SLAs"] },
+    ]);
   });
 
   it("adds both categories to Fortitude, highest first", () => {

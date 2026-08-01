@@ -788,9 +788,17 @@ export {
   SAVE_CATEGORIES,
   SAVE_CATEGORY_ORDER,
   categoryAppliesToSave,
+  resolveSave,
   saveCategoryLabel,
+  type ResolvedSave,
   type SaveCategory,
+  type ScopedSaveModifier,
 } from "./save-categories.js";
+export {
+  STANDARD_RACE_SAVE_BONUSES,
+  standardRaceSaveChanges,
+  type StandardRaceSaveBonus,
+} from "./race-save-notes.js";
 export { computeSenses, isSenseTarget, SENSE_TARGET_IDS } from "./senses.js";
 export {
   BUFF_INSTANCE_STATE,

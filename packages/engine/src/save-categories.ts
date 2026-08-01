@@ -18,6 +18,10 @@
  * prose already uses throughout.
  */
 
+import type { ConditionalTotal } from "@pf1/schema";
+
+import { resolveStack, type StackResult, type TypedModifier } from "./stacking.js";
+
 export interface SaveCategory {
   /** Player-facing label. Terse — it renders under a stat seal. */
   label: string;
@@ -69,4 +73,93 @@ export function saveCategoryLabel(key: string): string {
 export function categoryAppliesToSave(key: string, save: "fort" | "ref" | "will"): boolean {
   const cat = SAVE_CATEGORIES[key];
   return cat !== undefined && cat.saves.includes(save);
+}
+
+/* ------------------------------------------------------ resolving a save */
+
+/** A save modifier that may be scoped to {@link SAVE_CATEGORIES} keys. */
+export interface ScopedSaveModifier extends TypedModifier {
+  /**
+   * When set, this modifier is excluded from the save's headline total and
+   * contributes only to those categories' conditional totals.
+   */
+  saveCategories?: readonly string[];
+}
+
+/** A save's headline total, its unconditional stack, and its situational totals. */
+export interface ResolvedSave {
+  total: number;
+  /** The unconditional modifiers only, for provenance display. */
+  stack: StackResult;
+  /** Empty when nothing situational applies. */
+  conditionals: ConditionalTotal[];
+}
+
+/**
+ * Resolve one save from `floor` (its base + ability term, already summed) plus
+ * every modifier that reaches it, honoring category scope.
+ *
+ * This is the whole of the category mechanism, deliberately taking a bare
+ * number and a flat modifier list rather than anything from `collect.ts`'s
+ * pipeline: the tracked creatures (companion, eidolon, phantom, familiar)
+ * build their saves from their own progression tables and a routed shared-buff
+ * list, never as a `ResolvedStat`, so this is the one place both paths can
+ * meet.
+ */
+export function resolveSave(
+  which: "fort" | "ref" | "will",
+  floor: number,
+  mods: readonly ScopedSaveModifier[],
+): ResolvedSave {
+  // A category-scoped modifier is held out of the headline total — applying a
+  // "+4 vs. spells" to the whole save would inflate every unrelated roll.
+  const unconditional = mods.filter((m) => (m.saveCategories?.length ?? 0) === 0);
+  const stack = resolveStack(unconditional as TypedModifier[]);
+  const total = floor + stack.total;
+  return {
+    total,
+    stack,
+    conditionals: conditionalTotals(which, mods, unconditional, floor, total),
+  };
+}
+
+/**
+ * Situational save totals, one per distinct value.
+ *
+ * Each category is re-stacked from scratch against the unconditional
+ * modifiers rather than added on top of the headline total: two `+2 racial`
+ * bonuses on the same save must still collide (highest wins) even when one of
+ * them is category-scoped, which a plain sum would get wrong.
+ */
+function conditionalTotals(
+  which: "fort" | "ref" | "will",
+  all: readonly ScopedSaveModifier[],
+  unconditional: readonly ScopedSaveModifier[],
+  floor: number,
+  total: number,
+): ConditionalTotal[] {
+  const scoped = all.filter((m) => (m.saveCategories?.length ?? 0) > 0);
+  if (scoped.length === 0) return [];
+
+  const byTotal = new Map<number, string[]>();
+  for (const key of SAVE_CATEGORY_ORDER) {
+    if (!categoryAppliesToSave(key, which)) continue;
+    const forCategory = scoped.filter((m) => m.saveCategories?.includes(key));
+    if (forCategory.length === 0) continue;
+    const stacked = resolveStack([...unconditional, ...forCategory] as TypedModifier[]);
+    const conditionalTotal = floor + stacked.total;
+    // A category that resolves to the headline total says nothing.
+    if (conditionalTotal === total) continue;
+    const bucket = byTotal.get(conditionalTotal);
+    if (bucket) bucket.push(key);
+    else byTotal.set(conditionalTotal, [key]);
+  }
+
+  return [...byTotal.entries()]
+    .sort((a, b) => b[0] - a[0])
+    .map(([conditionalTotal, categories]) => ({
+      total: conditionalTotal,
+      categories,
+      labels: categories.map(saveCategoryLabel),
+    }));
 }
