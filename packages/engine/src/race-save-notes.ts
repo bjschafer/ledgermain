@@ -153,7 +153,19 @@ export const STANDARD_RACE_SAVE_BONUSES: Readonly<
       changes: [racial("2", "enchantment")],
     },
   ],
-  Halfling: [{ match: "vs Fear", trait: "Fearless", changes: [racial("2", "fear")] }],
+  // Untyped rather than racial, deliberately: halfling luck is itself a +1
+  // racial bonus on every save, and the published Fearless says its +2
+  // "stacks with the bonus granted by halfling luck", which a second racial
+  // bonus cannot do. The type encodes the intent rather than the label.
+  Halfling: [
+    {
+      match: "vs Fear",
+      trait: "Fearless",
+      changes: [
+        { target: "allSavingThrows", type: "untyped", formula: "2", saveCategories: ["fear"] },
+      ],
+    },
+  ],
   "Monkey Goblin": [{ match: "vs. Fear Effects", changes: [racial("2", "fear")] }],
   Nagaji: [
     {

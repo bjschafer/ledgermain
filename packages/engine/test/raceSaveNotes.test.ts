@@ -148,9 +148,12 @@ describe("Halfling Practicality (replaces Fearless with an illusion bonus)", () 
   const base = compute(makeDoc("Halfling"), ref);
   const sheet = compute(makeDoc("Halfling", ["halfling-practicality"]), ref);
 
-  it("a plain halfling is +2 vs. fear", () => {
-    // Fighter 1 Will base +0, Wis 10 → +0; fear at +2.
-    expect(conditional(base, "will", "fear")).toBe(2);
+  it("a plain halfling is +2 vs. fear, on top of halfling luck", () => {
+    // Fighter 1 Will base +0, Wis 10 → +0, plus halfling luck +1 racial = +1
+    // headline. Fearless "stacks with the bonus granted by halfling luck"
+    // (Core Rulebook), so the fear total is 0 + 1 + 2 = 3, not 2.
+    expect(base.saves.will.total).toBe(1);
+    expect(conditional(base, "will", "fear")).toBe(3);
   });
 
   it("the replacement drops fear entirely and grants illusions", () => {
