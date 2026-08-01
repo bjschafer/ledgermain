@@ -20,6 +20,7 @@ import { ABILITY_IDS } from "@pf1/schema";
 
 import { acBonusType } from "./ac-bonus-types.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
+import type { ScopedSaveModifier } from "./save-categories.js";
 import { resolveStack, type TypedModifier } from "./stacking.js";
 
 /** An AC-bucketed shared modifier, tagged with which AC bucket it belongs to. */
@@ -55,12 +56,32 @@ function evalShared(formula: string, rollData: RollData): number {
   }
 }
 
+/**
+ * Devotion (+4 morale bonus on Will saves against enchantment spells and
+ * effects) as a save modifier. The animal companion, eidolon, and phantom all
+ * unlock the identical ability from their own progression tables, and all
+ * three resolve their saves here rather than through `compute.ts`, so the one
+ * copy lives beside the routing they share.
+ */
+export const DEVOTION_WILL_MODIFIER: ScopedSaveModifier = {
+  type: "morale",
+  value: 4,
+  source: "Devotion",
+  saveCategories: ["enchantment"],
+};
+
 /** Every shared buff's `changes[]`, evaluated and bucketed by target — see module doc comment. */
 export interface RoutedSharedBuffs {
   ac: AcCandidate[];
-  fort: TypedModifier[];
-  ref: TypedModifier[];
-  will: TypedModifier[];
+  /**
+   * Save buckets keep each modifier's `saveCategories` scope: a shared
+   * "+4 vs. spells" must not inflate the creature's headline saves any more
+   * than it does the master's. Resolve these with `resolveSave`, never a bare
+   * `resolveStack`.
+   */
+  fort: ScopedSaveModifier[];
+  ref: ScopedSaveModifier[];
+  will: ScopedSaveModifier[];
   skill: Map<string, TypedModifier[]>;
   /**
    * Global skill-check modifiers (`target: "skills"` — e.g. shaken/sickened's
@@ -145,15 +166,16 @@ export function routeSharedBuffs(
                     : "generic";
         routed.ac.push({ ...mod, category });
       } else if (ch.target === "fort") {
-        routed.fort.push(mod);
+        routed.fort.push({ ...mod, saveCategories: ch.saveCategories });
       } else if (ch.target === "ref") {
-        routed.ref.push(mod);
+        routed.ref.push({ ...mod, saveCategories: ch.saveCategories });
       } else if (ch.target === "will") {
-        routed.will.push(mod);
+        routed.will.push({ ...mod, saveCategories: ch.saveCategories });
       } else if (ch.target === "allSavingThrows") {
-        routed.fort.push(mod);
-        routed.ref.push(mod);
-        routed.will.push(mod);
+        const scoped: ScopedSaveModifier = { ...mod, saveCategories: ch.saveCategories };
+        routed.fort.push(scoped);
+        routed.ref.push(scoped);
+        routed.will.push(scoped);
       } else if (ch.target === "skills") {
         routed.skillsGlobal.push(mod);
       } else if (ch.target.startsWith("skill.")) {

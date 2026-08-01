@@ -191,8 +191,14 @@ import {
 } from "./natural-attacks.js";
 import { abilityMod } from "./rolldata.js";
 import {
+  creatureSaveConditionals,
+  resolveSave,
+  type CreatureSaveConditionals,
+} from "./save-categories.js";
+import {
   applySharedAbilityBonuses,
   applySharedSpeeds,
+  DEVOTION_WILL_MODIFIER,
   routeSharedBuffs,
   type AcCandidate,
 } from "./shared-creature-buffs.js";
@@ -1359,6 +1365,11 @@ export interface DerivedEidolon {
   speeds: Record<string, number>;
   ac: DerivedEidolonAc;
   saves: { fort: number; ref: number; will: number };
+  /**
+   * Situational save totals (Devotion, plus any category-scoped shared buff),
+   * omitted when nothing applies. See `save-categories.ts`.
+   */
+  saveConditionals?: CreatureSaveConditionals;
   bab: number;
   cmb: number;
   cmd: number;
@@ -1903,28 +1914,6 @@ export function deriveEidolon(
     }
   }
 
-  // --- saves: two good (by base form), one poor -------------------------------
-  const goodSaves = new Set(form.goodSaves);
-  const saves = {
-    fort:
-      saveForLevels(goodSaves.has("fort") ? "high" : "low", hd) +
-      conMod +
-      resolveStack(routed.fort).total,
-    ref:
-      saveForLevels(goodSaves.has("ref") ? "high" : "low", hd) +
-      dexMod +
-      resolveStack(routed.ref).total,
-    will:
-      saveForLevels(goodSaves.has("will") ? "high" : "low", hd) +
-      abilities.wis.mod +
-      resolveStack(routed.will).total,
-  };
-
-  // --- CMB/CMD ------------------------------------------------------------------
-  const sizeSpecial = specialSizeMod(size);
-  const cmb = bab + strMod + sizeSpecial;
-  const cmd = 10 + bab + strMod + dexMod + sizeSpecial;
-
   // --- special abilities: variant-aware cumulative list (see
   // `eidolon-unchained.ts`'s doc comment for why the unchained one, unlike
   // chained/companion/phantom, deliberately KEEPS "Ability Score Increase") --
@@ -1932,6 +1921,36 @@ export function deriveEidolon(
     variant === "unchained"
       ? eidolonUnchainedSpecialAbilityNames(level)
       : eidolonSpecialAbilityNames(level);
+
+  // --- saves: two good (by base form), one poor -------------------------------
+  // Devotion (unlocked from the progression table, both variants) is a
+  // category-scoped Will bonus, so it never touches the headline number.
+  const goodSaves = new Set(form.goodSaves);
+  const willMods = specialAbilityNames.includes("Devotion")
+    ? [...routed.will, DEVOTION_WILL_MODIFIER]
+    : routed.will;
+  const fortSave = resolveSave(
+    "fort",
+    saveForLevels(goodSaves.has("fort") ? "high" : "low", hd) + conMod,
+    routed.fort,
+  );
+  const refSave = resolveSave(
+    "ref",
+    saveForLevels(goodSaves.has("ref") ? "high" : "low", hd) + dexMod,
+    routed.ref,
+  );
+  const willSave = resolveSave(
+    "will",
+    saveForLevels(goodSaves.has("will") ? "high" : "low", hd) + abilities.wis.mod,
+    willMods,
+  );
+  const saves = { fort: fortSave.total, ref: refSave.total, will: willSave.total };
+  const saveConditionals = creatureSaveConditionals(fortSave, refSave, willSave);
+
+  // --- CMB/CMD ------------------------------------------------------------------
+  const sizeSpecial = specialSizeMod(size);
+  const cmb = bab + strMod + sizeSpecial;
+  const cmd = 10 + bab + strMod + dexMod + sizeSpecial;
 
   // --- attacks: the SUBTYPE's own attack list when one is set and models
   // the chosen base form (unchained only); otherwise the chained form's
@@ -2024,6 +2043,7 @@ export function deriveEidolon(
     speeds: applySharedSpeeds(speeds, routed.speed),
     ac: { normal: acNormal, touch: acTouch, flatFooted: acFlatFooted, components: acComponents },
     saves,
+    saveConditionals,
     bab,
     cmb,
     cmd,

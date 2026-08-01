@@ -57,10 +57,10 @@
  *     module has no `RefData`) and only ever changes the ATTACK roll —
  *     damage stays Str-based (`naturalAttackDamageBonus`) either way, since
  *     Weapon Finesse never touches damage.
- *   - Devotion (+4 morale bonus on Will saves against enchantment) is
- *     situational (only vs. one school of magic), so — matching this
- *     project's posture for Ranger Favored Enemy/Terrain — it is surfaced as
- *     a special-ability chip only, never baked into `saves.will`.
+ *   - Devotion (+4 morale bonus on Will saves against enchantment) applies
+ *     only against one school, so it stays out of `saves.will` and becomes a
+ *     situational total in `saveConditionals` instead (see
+ *     `save-categories.ts`), alongside its special-ability chip.
  *   - Skills/feats (issue #68): the companion's six trackable skills
  *     (`acr`/`clm`/`fly`/`per`/`ste`/`swm`) now take rank investment
  *     (`build.animalCompanion.skillRanks`), hard-capped per skill at the
@@ -101,8 +101,14 @@ import {
 } from "./natural-attacks.js";
 import { abilityMod, totalLevel } from "./rolldata.js";
 import {
+  creatureSaveConditionals,
+  resolveSave,
+  type CreatureSaveConditionals,
+} from "./save-categories.js";
+import {
   applySharedAbilityBonuses,
   applySharedSpeeds,
+  DEVOTION_WILL_MODIFIER,
   routeSharedBuffs,
   type AcCandidate,
 } from "./shared-creature-buffs.js";
@@ -765,6 +771,11 @@ export interface DerivedCompanion {
   senses: string[];
   ac: DerivedCompanionAc;
   saves: { fort: number; ref: number; will: number };
+  /**
+   * Situational save totals (Devotion, plus any category-scoped shared buff),
+   * omitted when nothing applies. See `save-categories.ts`.
+   */
+  saveConditionals?: CreatureSaveConditionals;
   bab: number;
   cmb: number;
   cmd: number;
@@ -826,6 +837,7 @@ export function deriveCompanion(
   const row = companionProgressionRow(level);
   const hd = row.hd;
   const companionBab = babForLevels("med", hd);
+  const specialAbilityNames = companionSpecialAbilityNames(level);
 
   // --- ability scores: species base + table Str/Dex Adj + player-assigned ASIs
   const abilityIncreaseSlots = companionAbilityIncreaseSlots(level);
@@ -928,11 +940,16 @@ export function deriveCompanion(
   }
 
   // --- saves: the companion's OWN good/good/poor progression from its HD ----
-  const saves = {
-    fort: saveForLevels("high", hd) + conMod + resolveStack(routed.fort).total,
-    ref: saveForLevels("high", hd) + dexMod + resolveStack(routed.ref).total,
-    will: saveForLevels("low", hd) + wisMod + resolveStack(routed.will).total,
-  };
+  // Devotion (unlocked at the level in the progression table) is a category-
+  // scoped Will bonus, so it never touches the headline number.
+  const willMods = specialAbilityNames.includes("Devotion")
+    ? [...routed.will, DEVOTION_WILL_MODIFIER]
+    : routed.will;
+  const fortSave = resolveSave("fort", saveForLevels("high", hd) + conMod, routed.fort);
+  const refSave = resolveSave("ref", saveForLevels("high", hd) + dexMod, routed.ref);
+  const willSave = resolveSave("will", saveForLevels("low", hd) + wisMod, willMods);
+  const saves = { fort: fortSave.total, ref: refSave.total, will: willSave.total };
+  const saveConditionals = creatureSaveConditionals(fortSave, refSave, willSave);
 
   // --- CMB/CMD ----------------------------------------------------------------
   const sizeSpecial = specialSizeMod(size);
@@ -944,7 +961,7 @@ export function deriveCompanion(
   // (issue #68) — see `natural-attacks.ts`. Multiattack (unlocked at the HD
   // milestone, see module doc comment) softens the secondary penalty from
   // −5 to −2.
-  const hasMultiattack = companionSpecialAbilityNames(level).includes("Multiattack");
+  const hasMultiattack = specialAbilityNames.includes("Multiattack");
   const sharedAttackBonus = resolveStack(routed.attack).total;
   const sharedDamageBonus = resolveStack(routed.damage).total;
   const attackAbilityMod = hasWeaponFinesse ? dexMod : strMod;
@@ -1063,13 +1080,14 @@ export function deriveCompanion(
     senses: species.senses,
     ac: { normal: acNormal, touch: acTouch, flatFooted: acFlatFooted, components: acComponents },
     saves,
+    saveConditionals,
     bab: companionBab,
     cmb,
     cmd,
     attacks,
     skills,
     naturalArmor,
-    specialAbilities: companionSpecialAbilityNames(level).map((name) => ({
+    specialAbilities: specialAbilityNames.map((name) => ({
       name,
       detail: COMPANION_SPECIAL_ABILITY_DETAIL[name] ?? "",
     })),

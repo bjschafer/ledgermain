@@ -261,9 +261,24 @@ export function PhantomPanel({ doc, refData, update }: BuilderProps) {
           <div className="stat-group-rule" />
         </div>
         <div className="stat-group-grid stat-group-grid--3">
-          <StatSeal label="Fort" value={signed(phantom.saves.fort)} className="seal--compact" />
-          <StatSeal label="Ref" value={signed(phantom.saves.ref)} className="seal--compact" />
-          <StatSeal label="Will" value={signed(phantom.saves.will)} className="seal--compact" />
+          <StatSeal
+            label="Fort"
+            value={signed(phantom.saves.fort)}
+            conditionals={phantom.saveConditionals?.fort}
+            className="seal--compact"
+          />
+          <StatSeal
+            label="Ref"
+            value={signed(phantom.saves.ref)}
+            conditionals={phantom.saveConditionals?.ref}
+            className="seal--compact"
+          />
+          <StatSeal
+            label="Will"
+            value={signed(phantom.saves.will)}
+            conditionals={phantom.saveConditionals?.will}
+            className="seal--compact"
+          />
         </div>
       </div>
 

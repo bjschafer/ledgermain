@@ -123,6 +123,27 @@ export function resolveSave(
   };
 }
 
+/** A tracked creature's situational save totals, by save. Only non-empty saves appear. */
+export type CreatureSaveConditionals = Partial<Record<"fort" | "ref" | "will", ConditionalTotal[]>>;
+
+/**
+ * Assemble the three resolved saves into a creature's `saveConditionals`,
+ * or `undefined` when nothing situational applies — the tracked creatures
+ * (companion, eidolon, phantom, familiar) all carry the same optional field,
+ * omitted rather than empty so a panel can test it directly.
+ */
+export function creatureSaveConditionals(
+  fort: ResolvedSave,
+  ref: ResolvedSave,
+  will: ResolvedSave,
+): CreatureSaveConditionals | undefined {
+  const out: CreatureSaveConditionals = {};
+  if (fort.conditionals.length > 0) out.fort = fort.conditionals;
+  if (ref.conditionals.length > 0) out.ref = ref.conditionals;
+  if (will.conditionals.length > 0) out.will = will.conditionals;
+  return Object.keys(out).length > 0 ? out : undefined;
+}
+
 /**
  * Situational save totals, one per distinct value.
  *

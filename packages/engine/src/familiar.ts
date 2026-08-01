@@ -55,6 +55,11 @@ import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent, SizeId } f
 import { CONDITIONS } from "./conditions.js";
 import { abilityMod, totalLevel } from "./rolldata.js";
 import {
+  creatureSaveConditionals,
+  resolveSave,
+  type CreatureSaveConditionals,
+} from "./save-categories.js";
+import {
   applySharedAbilityBonuses,
   applySharedSpeeds,
   routeSharedBuffs,
@@ -462,6 +467,11 @@ export interface DerivedFamiliar {
   senses: string[];
   ac: DerivedFamiliarAc;
   saves: { fort: number; ref: number; will: number };
+  /**
+   * Situational save totals from a category-scoped shared buff, omitted when
+   * nothing applies. See `save-categories.ts`.
+   */
+  saveConditionals?: CreatureSaveConditionals;
   bab: number;
   cmb: number;
   cmd: number;
@@ -636,20 +646,26 @@ export function deriveFamiliar(
   }
 
   // --- saves ------------------------------------------------------------------
-  const saves = {
-    fort:
-      Math.max(species.baseSaves.fort, master.baseSaves.fort) +
-      conMod +
-      resolveStack(sharedFort).total,
-    ref:
-      Math.max(species.baseSaves.ref, master.baseSaves.ref) +
-      dexMod +
-      resolveStack(sharedRef).total,
-    will:
-      Math.max(species.baseSaves.will, master.baseSaves.will) +
-      wisMod +
-      resolveStack(sharedWill).total,
-  };
+  // A shared buff scoped to a category of effects stays out of the headline
+  // total here exactly as it does on the master's sheet (see
+  // `save-categories.ts`); a familiar has no Devotion of its own.
+  const fortSave = resolveSave(
+    "fort",
+    Math.max(species.baseSaves.fort, master.baseSaves.fort) + conMod,
+    sharedFort,
+  );
+  const refSave = resolveSave(
+    "ref",
+    Math.max(species.baseSaves.ref, master.baseSaves.ref) + dexMod,
+    sharedRef,
+  );
+  const willSave = resolveSave(
+    "will",
+    Math.max(species.baseSaves.will, master.baseSaves.will) + wisMod,
+    sharedWill,
+  );
+  const saves = { fort: fortSave.total, ref: refSave.total, will: willSave.total };
+  const saveConditionals = creatureSaveConditionals(fortSave, refSave, willSave);
 
   // --- CMB/CMD ----------------------------------------------------------------
   const sizeSpecial = specialSizeMod(size);
@@ -754,6 +770,7 @@ export function deriveFamiliar(
     senses: species.senses,
     ac: { normal: acNormal, touch: acTouch, flatFooted: acFlatFooted, components: acComponents },
     saves,
+    saveConditionals,
     bab: master.bab,
     cmb,
     cmd,

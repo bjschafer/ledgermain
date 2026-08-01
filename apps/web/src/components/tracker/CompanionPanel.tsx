@@ -271,9 +271,24 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
           <div className="stat-group-rule" />
         </div>
         <div className="stat-group-grid stat-group-grid--3">
-          <StatSeal label="Fort" value={signed(companion.saves.fort)} className="seal--compact" />
-          <StatSeal label="Ref" value={signed(companion.saves.ref)} className="seal--compact" />
-          <StatSeal label="Will" value={signed(companion.saves.will)} className="seal--compact" />
+          <StatSeal
+            label="Fort"
+            value={signed(companion.saves.fort)}
+            conditionals={companion.saveConditionals?.fort}
+            className="seal--compact"
+          />
+          <StatSeal
+            label="Ref"
+            value={signed(companion.saves.ref)}
+            conditionals={companion.saveConditionals?.ref}
+            className="seal--compact"
+          />
+          <StatSeal
+            label="Will"
+            value={signed(companion.saves.will)}
+            conditionals={companion.saveConditionals?.will}
+            className="seal--compact"
+          />
         </div>
       </div>
 

@@ -282,9 +282,24 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
           <div className="stat-group-rule" />
         </div>
         <div className="stat-group-grid stat-group-grid--3">
-          <StatSeal label="Fort" value={signed(eidolon.saves.fort)} className="seal--compact" />
-          <StatSeal label="Ref" value={signed(eidolon.saves.ref)} className="seal--compact" />
-          <StatSeal label="Will" value={signed(eidolon.saves.will)} className="seal--compact" />
+          <StatSeal
+            label="Fort"
+            value={signed(eidolon.saves.fort)}
+            conditionals={eidolon.saveConditionals?.fort}
+            className="seal--compact"
+          />
+          <StatSeal
+            label="Ref"
+            value={signed(eidolon.saves.ref)}
+            conditionals={eidolon.saveConditionals?.ref}
+            className="seal--compact"
+          />
+          <StatSeal
+            label="Will"
+            value={signed(eidolon.saves.will)}
+            conditionals={eidolon.saveConditionals?.will}
+            className="seal--compact"
+          />
         </div>
       </div>
 

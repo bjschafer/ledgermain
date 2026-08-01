@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-01-racial-and-devotion-saves",
+    date: "2026-08-01",
+    title: "Your race's save bonus is a number now",
+    note: "The classic racial defenses were written on your sheet as a reminder and nothing else. Now they count: a dwarf reads its poison and spell numbers straight off the Fortitude seal, an elf or half-elf its enchantment number, a halfling its fear number, a gnome its illusion number. Nineteen races in all, including ones whose bonus grows with level. If you swapped the trait away for an alternate, the number goes with it, so nothing is counted twice. Animal companions, eidolons, and phantoms with Devotion now show their Will bonus against enchantment the same way, and a buff you share with one keeps its situational scope instead of raising every save.",
+  },
+  {
     id: "2026-07-31-saves-vs-category",
     date: "2026-07-31",
     title: "Saves know when you are tougher than usual",

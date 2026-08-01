@@ -252,9 +252,24 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
           <div className="stat-group-rule" />
         </div>
         <div className="stat-group-grid stat-group-grid--3">
-          <StatSeal label="Fort" value={signed(familiar.saves.fort)} className="seal--compact" />
-          <StatSeal label="Ref" value={signed(familiar.saves.ref)} className="seal--compact" />
-          <StatSeal label="Will" value={signed(familiar.saves.will)} className="seal--compact" />
+          <StatSeal
+            label="Fort"
+            value={signed(familiar.saves.fort)}
+            conditionals={familiar.saveConditionals?.fort}
+            className="seal--compact"
+          />
+          <StatSeal
+            label="Ref"
+            value={signed(familiar.saves.ref)}
+            conditionals={familiar.saveConditionals?.ref}
+            className="seal--compact"
+          />
+          <StatSeal
+            label="Will"
+            value={signed(familiar.saves.will)}
+            conditionals={familiar.saveConditionals?.will}
+            className="seal--compact"
+          />
         </div>
       </div>
 

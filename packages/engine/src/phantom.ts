@@ -86,7 +86,13 @@ import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent } from "@pf
 import { CONDITIONS } from "./conditions.js";
 import { abilityMod, totalLevel } from "./rolldata.js";
 import {
+  creatureSaveConditionals,
+  resolveSave,
+  type CreatureSaveConditionals,
+} from "./save-categories.js";
+import {
   applySharedAbilityBonuses,
+  DEVOTION_WILL_MODIFIER,
   routeSharedBuffs,
   type AcCandidate,
 } from "./shared-creature-buffs.js";
@@ -136,9 +142,8 @@ export interface EmotionalFocus {
  * All fifteen PF1 Occult Adventures Emotional Foci, keyed by a stable slug.
  * Skills/good-saves are structured (clean numeric shape); each focus's
  * special ability is paraphrased into `detail` only — none of the fifteen
- * abilities reduces to an unconditional numeric `Change` the way e.g. a
- * companion's Devotion (+4 Will vs. enchantment) does, so none is wired
- * further (see module doc comment).
+ * abilities reduces to a numeric `Change` the way e.g. Devotion (+4 Will vs.
+ * enchantment) does, so none is wired further (see module doc comment).
  */
 export const EMOTIONAL_FOCI: Readonly<Record<string, EmotionalFocus>> = {
   anger: {
@@ -417,6 +422,11 @@ export interface DerivedPhantom {
   init: number;
   ac: DerivedPhantomAc;
   saves: { fort: number; ref: number; will: number };
+  /**
+   * Situational save totals (Devotion, plus any category-scoped shared buff),
+   * omitted when nothing applies. See `save-categories.ts`.
+   */
+  saveConditionals?: CreatureSaveConditionals;
   bab: number;
   cmb: number;
   cmd: number;
@@ -557,21 +567,30 @@ export function derivePhantom(doc: CharacterDoc, rollData: RollData): DerivedPha
   }
 
   // --- saves: two good (by Emotional Focus), one poor -----------------------
+  // Devotion (unlocked at 6th) is a category-scoped Will bonus, so it never
+  // touches the headline number.
   const goodSaves = new Set(focus.goodSaves);
-  const saves = {
-    fort:
-      saveForLevels(goodSaves.has("fort") ? "high" : "low", hd) +
-      conMod +
-      resolveStack(routed.fort).total,
-    ref:
-      saveForLevels(goodSaves.has("ref") ? "high" : "low", hd) +
-      dexMod +
-      resolveStack(routed.ref).total,
-    will:
-      saveForLevels(goodSaves.has("will") ? "high" : "low", hd) +
-      abilities.wis.mod +
-      resolveStack(routed.will).total,
-  };
+  const specialAbilityNames = phantomSpecialAbilityNames(level);
+  const willMods = specialAbilityNames.includes("Devotion")
+    ? [...routed.will, DEVOTION_WILL_MODIFIER]
+    : routed.will;
+  const fortSave = resolveSave(
+    "fort",
+    saveForLevels(goodSaves.has("fort") ? "high" : "low", hd) + conMod,
+    routed.fort,
+  );
+  const refSave = resolveSave(
+    "ref",
+    saveForLevels(goodSaves.has("ref") ? "high" : "low", hd) + dexMod,
+    routed.ref,
+  );
+  const willSave = resolveSave(
+    "will",
+    saveForLevels(goodSaves.has("will") ? "high" : "low", hd) + abilities.wis.mod,
+    willMods,
+  );
+  const saves = { fort: fortSave.total, ref: refSave.total, will: willSave.total };
+  const saveConditionals = creatureSaveConditionals(fortSave, refSave, willSave);
 
   // --- CMB/CMD ----------------------------------------------------------------
   const sizeSpecial = specialSizeMod(size);
@@ -622,7 +641,7 @@ export function derivePhantom(doc: CharacterDoc, rollData: RollData): DerivedPha
 
   const specialAbilities = [
     { name: focus.name, detail: focus.detail },
-    ...phantomSpecialAbilityNames(level).map((name) => ({
+    ...specialAbilityNames.map((name) => ({
       name,
       detail: PHANTOM_SPECIAL_ABILITY_DETAIL[name] ?? "",
     })),
@@ -644,6 +663,7 @@ export function derivePhantom(doc: CharacterDoc, rollData: RollData): DerivedPha
     init: dexMod + resolveStack(routed.init).total,
     ac: { normal: acNormal, touch: acTouch, flatFooted: acFlatFooted, components: acComponents },
     saves,
+    saveConditionals,
     bab: phantomBab,
     cmb,
     cmd,
