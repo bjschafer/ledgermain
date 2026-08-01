@@ -4,21 +4,19 @@ import type { CharacterDoc, RefData, TraitCategory, TraitDef } from "@pf1/schema
 
 import { mergedTraits } from "@pf1/engine";
 
+import { useIncrementalReveal } from "../../hooks/useIncrementalReveal.js";
 import { catalogCategories, chosenTraitCount, expectedTraitCount } from "../../model/traits.js";
 import { Dialog } from "../Dialog.js";
 import { SearchMiss } from "./SearchMiss.js";
 import { TraitRow } from "./TraitRow.js";
 
-/** Catalog entries shown per search before asking the player to narrow — mirrors `FeatManager`'s cap. */
-const MAX_RESULTS = 200;
-
 /**
  * The full-screen trait picker (issue #89, scaled to the ~2,000-entry
  * vendored catalog by issue #74) — the same two-pane shell as
  * `FeatManager`, so browsing the trait catalog behaves identically to
- * browsing feats: filters across the top, catalog on the left (capped at
- * {@link MAX_RESULTS} like `FeatManager`), chosen traits on the right so an
- * add lands somewhere visible.
+ * browsing feats: filters across the top, catalog on the left (revealed
+ * incrementally on scroll like `FeatManager`, see `useIncrementalReveal`),
+ * chosen traits on the right so an add lands somewhere visible.
  */
 export function TraitManager({
   doc,
@@ -61,6 +59,8 @@ export function TraitManager({
       return true;
     });
   }, [all, query, category]);
+
+  const { visibleCount, rootRef, sentinelRef } = useIncrementalReveal(matches.length);
 
   const taken = useMemo(() => all.filter((tr) => selected.has(tr.id)), [all, selected]);
 
@@ -111,7 +111,7 @@ export function TraitManager({
               <span className="spell-pane-title">Catalog</span>
               <span className="spell-pane-count">{matches.length}</span>
             </div>
-            <div className="spell-pane-body">
+            <div className="spell-pane-body" ref={rootRef}>
               {matches.length === 0 ? (
                 query.trim() ? (
                   <SearchMiss query={query.trim()} picker="traits" />
@@ -120,7 +120,7 @@ export function TraitManager({
                 )
               ) : (
                 matches
-                  .slice(0, MAX_RESULTS)
+                  .slice(0, visibleCount)
                   .map((tr) => (
                     <TraitRow
                       key={tr.id}
@@ -130,8 +130,8 @@ export function TraitManager({
                     />
                   ))
               )}
-              {matches.length > MAX_RESULTS ? (
-                <div className="empty">Showing first {MAX_RESULTS} — refine your search.</div>
+              {visibleCount < matches.length ? (
+                <div ref={sentinelRef} className="picker-load-more-sentinel" aria-hidden="true" />
               ) : null}
             </div>
           </section>

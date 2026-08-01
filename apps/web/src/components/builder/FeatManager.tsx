@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
+import { useIncrementalReveal } from "../../hooks/useIncrementalReveal.js";
 import { Dialog } from "../Dialog.js";
 import { FeatEntry, type FeatRenderContext } from "./FeatEntry.js";
 import { SearchMiss } from "./SearchMiss.js";
@@ -52,6 +53,8 @@ export function FeatManager({
       })
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [refData.feats, query, category, hideIneligible, fx]);
+
+  const { visibleCount, rootRef, sentinelRef } = useIncrementalReveal(matches.length);
 
   const taken = useMemo(
     () =>
@@ -116,7 +119,7 @@ export function FeatManager({
               <span className="spell-pane-title">Catalog</span>
               <span className="spell-pane-count">{matches.length}</span>
             </div>
-            <div className="spell-pane-body">
+            <div className="spell-pane-body" ref={rootRef}>
               {matches.length === 0 ? (
                 query.trim() ? (
                   <SearchMiss query={query.trim()} picker="feats" />
@@ -125,7 +128,7 @@ export function FeatManager({
                 )
               ) : (
                 matches
-                  .slice(0, 200)
+                  .slice(0, visibleCount)
                   .map((feat) => (
                     <FeatEntry
                       key={feat.id}
@@ -137,8 +140,8 @@ export function FeatManager({
                     />
                   ))
               )}
-              {matches.length > 200 ? (
-                <div className="empty">Showing first 200 — refine your search.</div>
+              {visibleCount < matches.length ? (
+                <div ref={sentinelRef} className="picker-load-more-sentinel" aria-hidden="true" />
               ) : null}
             </div>
           </section>
