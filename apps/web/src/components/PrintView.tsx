@@ -97,7 +97,15 @@ export function PrintView({
                 </tr>
                 {data.saves.map((s) => (
                   <tr key={s.label}>
-                    <td colSpan={3}>{s.label} Save</td>
+                    <td colSpan={3}>
+                      {s.label} Save
+                      {s.conditionals.length > 0 ? (
+                        <span className="print-save-conditionals">
+                          {" "}
+                          ({s.conditionals.join("; ")})
+                        </span>
+                      ) : null}
+                    </td>
                     <td className="num">{s.total}</td>
                   </tr>
                 ))}

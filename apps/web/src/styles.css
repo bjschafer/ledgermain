@@ -6422,6 +6422,11 @@ input[type="text"].saved-roll-name:focus {
   color: #4a3f1e;
 }
 
+.print-save-conditionals {
+  font-size: 0.625rem;
+  color: #5c5540;
+}
+
 .print-identity {
   font-size: 0.6875rem;
   color: #5c5540;

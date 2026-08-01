@@ -58,6 +58,12 @@ export interface PrintAbility {
 export interface PrintSave {
   label: string;
   total: string;
+  /**
+   * Situational totals ("+7 vs. spells/SLAs"), already formatted. These are
+   * exactly the numbers a printed sheet is worst at carrying in a player's
+   * head, so they print under the save rather than being dropped.
+   */
+  conditionals: string[];
 }
 
 export interface PrintAttack {
@@ -340,6 +346,9 @@ export function buildPrintSheet(
     saves: (["fort", "ref", "will"] as const).map((k) => ({
       label: SAVE_NAMES[k],
       total: signed(sheet.saves[k].total),
+      conditionals: (sheet.saves[k].conditionals ?? []).map(
+        (c) => `${signed(c.total)} vs. ${c.labels.join("/")}`,
+      ),
     })),
     ac: {
       normal: sheet.ac.normal,

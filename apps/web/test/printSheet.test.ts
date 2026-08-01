@@ -52,6 +52,32 @@ describe("buildPrintSheet — header", () => {
   });
 });
 
+describe("buildPrintSheet — situational save totals", () => {
+  it("prints a dwarf's Hardy line under Fortitude", () => {
+    // Hardy is +2 racial vs. poison, spells, and spell-like abilities, which
+    // is precisely what a printed sheet can't ask you to remember.
+    let doc = createEmptyDoc("t");
+    doc = setRace(doc, raceId("Dwarf"));
+    doc = addClass(doc, "fighter");
+    const sheet = compute(doc, ref);
+    const data = buildPrintSheet(doc, sheet, ref);
+
+    expect(data.saves.find((s) => s.label === "Fortitude")?.conditionals).toEqual([
+      "+5 vs. spells/SLAs/poison",
+    ]);
+  });
+
+  it("is empty for a character with nothing situational", () => {
+    let doc = createEmptyDoc("t");
+    doc = setRace(doc, raceId("Human"));
+    doc = addClass(doc, "fighter");
+    const sheet = compute(doc, ref);
+    const data = buildPrintSheet(doc, sheet, ref);
+
+    for (const save of data.saves) expect(save.conditionals).toEqual([]);
+  });
+});
+
 describe("buildPrintSheet — abilities/saves/AC", () => {
   it("matches the computed sheet's numbers", () => {
     let doc = createEmptyDoc("t");
