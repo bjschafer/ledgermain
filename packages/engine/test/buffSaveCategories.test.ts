@@ -4,8 +4,10 @@
  * Expected values are the published spells and items: bless and aid (+1 morale
  * on saves against fear, CRB), bane (-1, CRB), death ward (+4 morale vs. death
  * effects, CRB), inspire courage (+1 morale vs. charm and fear, rising every
- * six bard levels, CRB), and purity (a sacred bonus doubled against curses,
- * diseases, and poisons at caster level 10).
+ * six bard levels, CRB), purity (a sacred bonus doubled against curses,
+ * diseases, and poisons at caster level 10), burst of glory (+1 sacred vs.
+ * fear, confirmed against aonprd.com), and remove fear (+4 morale vs. fear,
+ * CRB).
  */
 
 import { describe, expect, it } from "bun:test";
@@ -115,6 +117,26 @@ describe("Inspire Courage (scales with the bard's level)", () => {
   });
 });
 
+describe("Burst of Glory (+1 sacred vs. fear)", () => {
+  it("shows on Will only, alongside the attack bonus the buff already ships", () => {
+    const sheet = compute(makeDoc([activate("Burst of Glory")]), ref);
+    expect(sheet.saves.will.conditionals).toEqual([
+      { total: 1, categories: ["fear"], labels: ["fear"] },
+    ]);
+    expect(sheet.saves.fort.conditionals).toBeUndefined();
+  });
+});
+
+describe("Remove Fear (+4 morale vs. fear)", () => {
+  it("shows on Will only", () => {
+    const sheet = compute(makeDoc([activate("Remove Fear")]), ref);
+    expect(sheet.saves.will.conditionals).toEqual([
+      { total: 4, categories: ["fear"], labels: ["fear"] },
+    ]);
+    expect(sheet.saves.fort.conditionals).toBeUndefined();
+  });
+});
+
 describe("Purity (a sacred bonus doubled against three categories at CL 10)", () => {
   it("below caster level 10 the bonus is flat, so there is no situational line", () => {
     // CL 5: +2 sacred on every save, nothing extra.
@@ -176,7 +198,13 @@ describe("the note-matching contract", () => {
       const patched = BUFF_CHANGE_PATCHES[name]!;
       const scoped = patched.filter((c) => (c.saveCategories?.length ?? 0) > 0);
       if (scoped.length === 0) continue; // the tempHp patch, checked elsewhere
-      const notes = entry.contextNotes.filter((n) => n.target === "allSavingThrows");
+      // A vendored note may target "allSavingThrows" broadly or a single save
+      // (Burst of Glory and Remove Fear both ship theirs on "will" alone,
+      // since fear only ever calls for Will) - either shape is a real note to
+      // transcribe from.
+      const notes = entry.contextNotes.filter((n) =>
+        ["allSavingThrows", "fort", "ref", "will"].includes(n.target),
+      );
       if (notes.length < scoped.length) {
         problems.push(`${name}: ${scoped.length} scoped patches but ${notes.length} save notes`);
       }
