@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-02-early-bonus-spells",
+    date: "2026-08-02",
+    title: "Early bonus spells option",
+    note: "Settings has a new optional rule under Variants & House Rules: early access to bonus spells from a high casting ability, either capped at 2nd level spells or opened up for every spell level. Settings is also reorganized, with these optional and house rules split out from the everyday gameplay modes.",
+  },
+  {
     id: "2026-08-02-subdomain-power-uses",
     date: "2026-08-02",
     title: "Subdomain powers track their uses per day",

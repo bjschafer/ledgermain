@@ -18,6 +18,7 @@ import { COVERAGE_NOTES } from "../../model/coverageNotes.js";
 import { characterExportFilename, characterExportJson } from "../../model/exportCharacter.js";
 import {
   setClericWisdomHouserule,
+  setEarlyBonusSpells,
   setEncumbranceEnabled,
   setFcbHouserule,
   setFractionalBonuses,
@@ -107,6 +108,7 @@ export function SettingsSection({
   const restMode = settings.restMode ?? "full";
   const fcbHouserule = settings.fcbHouserule ?? false;
   const clericWisdomHouserule = settings.clericWisdomHouserule ?? false;
+  const earlyBonusSpells = settings.earlyBonusSpells;
   const heroEnabled = settings.heroPointsEnabled ?? true;
   const heroCap = settings.heroPointsCap ?? HERO_POINT_CAP;
   const xpEnabled = settings.xpEnabled ?? false;
@@ -440,6 +442,53 @@ export function SettingsSection({
                   House-rule (Wis)
                 </button>
               </div>
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-early-bonus",
+          label: "Bonus Spells",
+          node: (
+            <Panel title="Early Bonus Spells" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Homebrew rule (issue #112): normally, bonus spells from a high casting ability only
+                apply at spell levels your class can already cast. This house rule grants those
+                bonus slots early, before the class table itself unlocks that spell level.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={earlyBonusSpells === undefined}
+                  onClick={() => update((d) => setEarlyBonusSpells(d, undefined))}
+                >
+                  Standard PF1
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={earlyBonusSpells === "toSecond"}
+                  onClick={() => update((d) => setEarlyBonusSpells(d, "toSecond"))}
+                >
+                  Up to 2nd level
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={earlyBonusSpells === "all"}
+                  onClick={() => update((d) => setEarlyBonusSpells(d, "all"))}
+                >
+                  All levels
+                </button>
+              </div>
+              <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
+                {earlyBonusSpells === undefined &&
+                  "Bonus slots only appear once your class table reaches that spell level."}
+                {earlyBonusSpells === "toSecond" &&
+                  "Bonus 1st and 2nd level slots appear as soon as your ability score qualifies, even before your class table reaches them. Spontaneous casters still learn spells at the normal rate, so an early slot may sit unused until the spell is known."}
+                {earlyBonusSpells === "all" &&
+                  "Bonus slots at every spell level appear as soon as your ability score qualifies, even before your class table reaches them. Spontaneous casters still learn spells at the normal rate, so an early slot may sit unused until the spell is known."}
+              </p>
             </Panel>
           ),
         },
