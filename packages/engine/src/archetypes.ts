@@ -99,7 +99,7 @@ export interface GrantedFeature {
    * ki power/style strike/rogue talent/investigator talent/vigilante talent/
    * shifter aspect/rage power/occultist implement/focus power/kineticist
    * composite blast/wild talent/medium spirit power/slayer talent/chosen
-   * inquisition rather than the class itself.
+   * inquisition/warpriest blessing rather than the class itself.
    */
   origin?: {
     kind:
@@ -131,7 +131,8 @@ export interface GrantedFeature {
       | "wildTalent"
       | "spiritPower"
       | "slayerTalent"
-      | "inquisition";
+      | "inquisition"
+      | "blessing";
     label: string;
   };
   /**
@@ -1139,6 +1140,50 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
             label: `${spirit.name} Spirit — ${power.tier[0]?.toUpperCase()}${power.tier.slice(1)} Power`,
           },
           detail: power.summary,
+        });
+      }
+    }
+  }
+
+  // Warpriest blessings (vendored prose catalog, no hand-authored mechanics
+  // table — the ACG "Blessings" class feature's own vendored text already
+  // states the uses/day formula and save DC, so nothing here duplicates
+  // either). Each chosen blessing grants its minor power at 1st warpriest
+  // level and its major power at 10th — real level gates, unlike the flat
+  // display level most other hand-authored pick-lists above use, since a
+  // blessing's whole point is that split. `refData.classFeatures` carries a
+  // registered stub for each power (see `blessingClassFeatures` in the
+  // data-pipeline transform), so `resolveClassFeatures` picks up its full
+  // prose via `grant.featureId` the same way a domain's granted powers do.
+  const warpriestLevel = doc.identity.classes.find((c) => c.tag === "warpriest")?.level ?? 0;
+  if (warpriestLevel > 0) {
+    for (const blessingId of doc.build.blessings ?? []) {
+      const blessing = refData.blessings[blessingId];
+      if (!blessing) continue;
+      out.push({
+        classTag: "warpriest",
+        level: 1,
+        grant: {
+          level: 1,
+          uuid: `${blessing.uuid}:minor`,
+          featureId: blessing.minorPower.featureId,
+          name: blessing.minorPower.name,
+          resolved: true,
+        },
+        origin: { kind: "blessing", label: `${blessing.name} Blessing` },
+      });
+      if (warpriestLevel >= 10) {
+        out.push({
+          classTag: "warpriest",
+          level: 10,
+          grant: {
+            level: 10,
+            uuid: `${blessing.uuid}:major`,
+            featureId: blessing.majorPower.featureId,
+            name: blessing.majorPower.name,
+            resolved: true,
+          },
+          origin: { kind: "blessing", label: `${blessing.name} Blessing` },
         });
       }
     }

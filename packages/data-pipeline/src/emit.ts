@@ -83,6 +83,7 @@ const FILES: { key: keyof RefData; file: string }[] = [
   { key: "shifterAspects", file: "shifter-aspects.json" },
   { key: "eidolonSubtypes", file: "eidolon-subtypes.json" },
   { key: "inquisitions", file: "inquisitions.json" },
+  { key: "blessings", file: "blessings.json" },
 ];
 
 /**

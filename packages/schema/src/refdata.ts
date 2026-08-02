@@ -202,6 +202,8 @@ export interface RefData {
   eidolonSubtypes: Record<string, EidolonSubtype>;
   /** The full published inquisitor inquisition catalog (fourth-source dataset; see `Inquisition` doc comment). */
   inquisitions: Record<string, Inquisition>;
+  /** The full published warpriest blessing catalog (fourth-source dataset; see `Blessing` doc comment). */
+  blessings: Record<string, Blessing>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -1859,6 +1861,54 @@ export interface Inquisition extends RefEntity {
   /** Stable slug matching `build.inquisition` (the source's own dictionary key, e.g. "conversion"). */
   tag: string;
   features: ClassFeatureGrant[];
+}
+
+/* -------------------------------------------------- warpriest blessings -- */
+
+/** One tier of a warpriest blessing's granted power — minor (1st level) or major (10th). */
+export interface BlessingPower {
+  name: string;
+  /** HTML prose, same shape as `RefEntity.description`. */
+  description: string;
+  /** Key into `RefData.classFeatures`, where this power's full prose is registered as its own stub entry (see `transform/warpriestBlessings.ts`). */
+  featureId: string;
+}
+
+/**
+ * A published warpriest blessing, the class's domain analogue: a warpriest
+ * picks two at 1st level, each granting a minor power immediately and a major
+ * power at 10th level (PF1 ACG "Blessings" class feature). Sourced from the
+ * "Pf Data 1e" dataset's `json/class_ability_blessings.json` — the Warpriest
+ * class def only links the generic "Blessings" stub `ClassFeature`, whose
+ * prose already states the uses/day formula (3 + 1/2 warpriest level) and
+ * save DC, so nothing here duplicates that.
+ *
+ * `description` carries the entry's full published prose (deity list, both
+ * powers, and any splatbook replacement-blessing variant); `minorPower`/
+ * `majorPower` are that same prose split into its two named powers so a
+ * consumer can gate them separately by level without re-parsing HTML — see
+ * data-pipeline `transform/warpriestBlessings.ts` for how the split is made.
+ *
+ * The full published catalog (42 entries after dropping the source's
+ * `not_found` sentinel and its five redirect entries — Cooperation,
+ * Resurrection, Restoration, Freedom, and Martyr all point back to their
+ * parent blessing, whose `description` already includes their replacement
+ * text) with prose only — no hand-authored mechanics table, matching this
+ * project's chassis-subsystem posture for an unmodeled pick-list.
+ */
+export interface Blessing extends RefEntity {
+  /**
+   * Deity display names the source's own "Deities:" line names as granting
+   * this blessing (a warpriest's blessings must come from her deity's
+   * domains — ACG p.65). Absent when the source states a conditional rule
+   * instead of named deities (Earthquake/Flood/Tornado/Wildfire: "evil
+   * deities that offer the __ blessing, or nonevil deities with disasters in
+   * their portfolios") — there are no structured names to match against
+   * `identity.deity` in that case.
+   */
+  deities?: string[];
+  minorPower: BlessingPower;
+  majorPower: BlessingPower;
 }
 
 export type { SourceRef };

@@ -82,6 +82,7 @@ async function fetchAll(): Promise<RefData> {
     shifterAspects,
     eidolonSubtypes,
     inquisitions,
+    blessings,
   ] = await Promise.all([
     getJson<RefDataMeta>("meta.json"),
     getJson<RefData["races"]>("races.json"),
@@ -140,6 +141,7 @@ async function fetchAll(): Promise<RefData> {
     getJson<RefData["shifterAspects"]>("shifter-aspects.json"),
     getJson<RefData["eidolonSubtypes"]>("eidolon-subtypes.json"),
     getJson<RefData["inquisitions"]>("inquisitions.json"),
+    getJson<RefData["blessings"]>("blessings.json"),
   ]);
   return {
     meta,
@@ -199,5 +201,6 @@ async function fetchAll(): Promise<RefData> {
     shifterAspects,
     eidolonSubtypes,
     inquisitions,
+    blessings,
   };
 }

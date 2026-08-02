@@ -5,6 +5,7 @@ import type {
   AlchemistDiscovery,
   ArcanistExploit,
   ArmorRef,
+  Blessing,
   BloodragerBloodline,
   Buff,
   CavalierOrder,
@@ -148,6 +149,7 @@ import {
 import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { transformWitchHexes } from "./transform/witchHexes.js";
 import { transformWitchPatrons } from "./transform/witchPatrons.js";
+import { blessingClassFeatures, transformBlessings } from "./transform/warpriestBlessings.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
 import { readPfDataDictionary } from "./util/pfdata.js";
 import { makeUuid, parseUuid } from "./util/uuid.js";
@@ -1006,6 +1008,16 @@ export function normalize(opts: NormalizeOptions): {
     join(opts.pfDataJsonDir, "class_ability_inquisitions.json"),
   );
   const inquisitions: Inquisition[] = transformInquisitions(inquisitionDict, classFeatures);
+  // --- warpriest blessings (fourth-party dataset) — same posture as rage
+  // powers above. Registers each blessing's minor/major power as its own
+  // `classFeatures` stub (see `blessingClassFeatures`'s doc comment) so the
+  // tracker can show its full prose the same way a domain's granted powers
+  // do, rather than a bare name.
+  const blessingDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_blessings.json"),
+  );
+  const blessings: Blessing[] = transformBlessings(blessingDict);
+  classFeatures.push(...blessingClassFeatures(blessings));
 
   const counts = {
     races: races.length,
@@ -1065,6 +1077,7 @@ export function normalize(opts: NormalizeOptions): {
     shifterAspects: shifterAspects.length,
     eidolonSubtypes: eidolonSubtypes.length,
     inquisitions: inquisitions.length,
+    blessings: blessings.length,
   };
 
   const meta: RefDataMeta = {
@@ -1142,6 +1155,7 @@ export function normalize(opts: NormalizeOptions): {
     shifterAspects: byId(shifterAspects),
     eidolonSubtypes: byId(eidolonSubtypes),
     inquisitions: byId(inquisitions),
+    blessings: byId(blessings),
   };
 
   return { refData, contentVersion };
