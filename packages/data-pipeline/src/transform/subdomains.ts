@@ -106,6 +106,12 @@ export function parseDomainSpellEntries(html: string): { level: number; spellId:
  * Transform a `class-abilities/domains/subdomains/*.yaml` entry.
  * `parentDomainTags` is resolved by the caller (`normalize.ts`) from every
  * top-level domain's own "Subdomains:" listing — see `parseSubdomainRefs`.
+ *
+ * `features` drops an unresolved `links.supplements` link the same way
+ * `transformDomain` does (see its doc comment) — the four Darkness
+ * subdomains and Rune's Wards/Language each carry the same bonus-feat stub
+ * their parent domain does, structurally resolved here rather than through
+ * `applySubdomainPowerSupplements`'s inherited-`kept`-list merge.
  */
 export function transformSubdomain(
   doc: RawDoc,
@@ -125,7 +131,9 @@ export function transformSubdomain(
     // Liberation's versions), distinguished by "(Strength)"/"(Liberation)".
     tag: doc.name.replace(/\s+Subdomain\b/, ""),
     parentDomainTags,
-    features: resolveFeatureGrants(supplementsOf(sys), resolveFeatureName),
+    features: resolveFeatureGrants(supplementsOf(sys), resolveFeatureName).filter(
+      (f) => f.resolved,
+    ),
     changes: normalizeChanges(sys.changes),
   };
 }

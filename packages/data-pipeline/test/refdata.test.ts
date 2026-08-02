@@ -26,7 +26,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(19);
+    expect(ref.meta.schemaVersion).toBe(20);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -500,23 +500,76 @@ describe("cleric domain powers (top-level domains/*.yaml)", () => {
     expect(byName(ref.domains, "Fire Domain").changes).toEqual([]);
   });
 
-  it("resolved granted powers all map into classFeatures", () => {
+  it("every domain granted-power grant maps into classFeatures", () => {
     // A handful of domains (Darkness, Rune) grant a bonus FEAT rather than a
     // class-abilities entry (e.g. Blind-Fight) — `links.supplements` points at
     // the `feats` pack, which `resolveFeatureGrants`'s resolver doesn't search,
-    // so those come back `resolved: false` (kept, not dropped — same posture
-    // as `Class.features`' pre-existing unresolved-link handling).
-    let unresolvedCount = 0;
+    // so those come back `resolved: false` upstream. Unlike `Class.features`
+    // (which keeps an unresolved link so nothing vendored is silently
+    // dropped), `transformDomain` filters them out entirely: the grant's
+    // `name` is a raw compendium uuid, never player-facing, and the actual
+    // bonus is already surfaced through the domain's own `changes`.
     for (const domain of Object.values(ref.domains)) {
       for (const grant of domain.features) {
-        if (!grant.resolved) {
-          unresolvedCount++;
-          continue;
-        }
+        expect(grant.resolved, `${domain.name}: ${grant.name}`).toBe(true);
         expect(ref.classFeatures[grant.featureId], `${domain.name}: ${grant.name}`).toBeDefined();
       }
     }
-    expect(unresolvedCount).toBeGreaterThan(0);
+  });
+
+  it("Darkness/Rune's unresolved bonus-feat link never appears in a domain or subdomain's granted-power list", () => {
+    for (const domain of Object.values(ref.domains)) {
+      expect(domain.features.some((f) => f.name.startsWith("Compendium."))).toBe(false);
+    }
+    for (const sub of Object.values(ref.subdomains)) {
+      expect(sub.features.some((f) => f.name.startsWith("Compendium."))).toBe(false);
+    }
+  });
+
+  it("Destruction domain grants both Destructive Smite (1st) and the hand-authored Destructive Aura (8th)", () => {
+    const destruction = byName(ref.domains, "Destruction Domain");
+    const byLevel = Object.fromEntries(destruction.features.map((f) => [f.name, f.level]));
+    expect(byLevel["Destructive Smite"]).toBe(0);
+    expect(byLevel["Destructive Aura"]).toBe(8);
+  });
+
+  it("Catastrophe/Hatred/Rage subdomains displace Destructive Aura, not Destructive Smite", () => {
+    for (const name of ["Catastrophe Subdomain", "Hatred Subdomain", "Rage Subdomain"]) {
+      const sub = byName(ref.subdomains, name);
+      const powerNames = sub.features.map((f) => f.name);
+      expect(powerNames, name).toContain("Destructive Smite");
+      expect(powerNames, name).not.toContain("Destructive Aura");
+    }
+    // Torture replaces Destructive Smite instead, so it keeps Destructive Aura.
+    const torture = byName(ref.subdomains, "Torture Subdomain");
+    const tortureNames = torture.features.map((f) => f.name);
+    expect(tortureNames).toContain("Destructive Aura");
+    expect(tortureNames).not.toContain("Destructive Smite");
+  });
+
+  it("Glory domain grants the hand-authored Channel Boost preamble alongside Touch of Glory and Divine Presence", () => {
+    const glory = byName(ref.domains, "Glory Domain");
+    const byLevel = Object.fromEntries(glory.features.map((f) => [f.name, f.level]));
+    expect(byLevel["Channel Boost"]).toBe(0);
+    expect(byLevel["Touch of Glory"]).toBe(0);
+    expect(byLevel["Divine Presence"]).toBe(8);
+  });
+
+  it("Hubris/Legend subdomains displace Channel Boost; Chivalry/Heroism/Honor keep it", () => {
+    for (const name of ["Hubris Subdomain", "Legend Subdomain"]) {
+      const sub = byName(ref.subdomains, name);
+      expect(
+        sub.features.map((f) => f.name),
+        name,
+      ).not.toContain("Channel Boost");
+    }
+    for (const name of ["Chivalry Subdomain", "Heroism Subdomain", "Honor Subdomain"]) {
+      const sub = byName(ref.subdomains, name);
+      expect(
+        sub.features.map((f) => f.name),
+        name,
+      ).toContain("Channel Boost");
+    }
   });
 });
 

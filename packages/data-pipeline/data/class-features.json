@@ -19954,6 +19954,26 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.dlrAyDyBF8ldtpH8"
   },
+  "domain:destruction:destructive-aura": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot aura of destruction for a number of rounds per day equal to your cleric level; these rounds need not be consecutive. Every attack made against a creature within the aura, including your own, gains a morale bonus on damage rolls equal to half your cleric level, and every critical threat rolled within the aura is automatically confirmed as a critical hit.</p>",
+    "grantsBuffs": [],
+    "id": "domain:destruction:destructive-aura",
+    "name": "Destructive Aura",
+    "subType": "classFeat",
+    "uuid": "domain-feature:destruction:destructive-aura"
+  },
+  "domain:glory:channel-boost": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When you channel positive energy to harm undead creatures, the save DC to halve the damage is increased by 2. Channel Energy's save DC shown elsewhere on the sheet has no per-source modifier to add this to automatically: apply the +2 by hand when channeling against undead.</p>",
+    "grantsBuffs": [],
+    "id": "domain:glory:channel-boost",
+    "name": "Channel Boost",
+    "subType": "classFeat",
+    "uuid": "domain-feature:glory:channel-boost"
+  },
   "dopWa3n4mgTGpTYi": {
     "changes": [],
     "description": "<p>Upon reaching 4th level, and at every even-numbered class level after that (6th, 8th, and so on), the character can choose to learn a new spell in place of one she already knows. In effect, the character loses the old spell in exchange for the new one. The new spell's level must be the same as that of the spell being exchanged. A character may swap only a single spell at any given level, and must choose whether or not to swap the spell at the same time that she gains new spells known for the level.</p><h3>Class Specific Restrictions</h3><ul><li>Psychics exchanged spell must be at least 1 level lower than the highest-level spell from the psychic’s class list that the psychic can cast.</li><li>Sorcerers cannot swap any bloodline spells.</li><li>Oracles cannot swap any cure or inflict spells, nor can she swap any spells gained from her mystery.</li></ul>",

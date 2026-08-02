@@ -176,4 +176,13 @@ describe("pfDataDescriptionToHtml", () => {
       "<p><strong>Bonus Spells by Bloodrager Level:</strong> Level 7: Bless; Level 10: Resist energy</p>",
     );
   });
+
+  it("renders a '::ab[...]' directive with only level-keyed lNN stat lines as an 'At Nth level' list (Aquatic bloodrager bloodline's Watersense)", () => {
+    const html = pfDataDescriptionToHtml([
+      '::ab[Watersense (Ex)]{icon=power l6="Gain resist electricity 10" l12="Resistance increases to 20"}',
+    ]);
+    expect(html).toBe(
+      "<p><strong>Watersense (Ex):</strong> At 6th level: Gain resist electricity 10 At 12th level: Resistance increases to 20</p>",
+    );
+  });
 });

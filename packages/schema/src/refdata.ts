@@ -391,7 +391,14 @@ export interface ClassFeatureGrant {
 export interface Domain extends RefEntity {
   /** Matches `Spell.learnedAt.domain` / `RefData.domainSpellLists` keys (e.g. "Fire"). */
   tag: string;
-  /** Granted powers by level, resolved from `links.supplements` (same shape as `Class.features`). */
+  /**
+   * Granted powers by level, resolved from `links.supplements` (same shape as
+   * `Class.features`) — except an unresolved link is dropped rather than
+   * kept as a `resolved: false` placeholder (see `transformDomain`'s doc
+   * comment): the only two in the vendored slice, Darkness's and Rune's
+   * bonus-feat links, are pure noise here and already surfaced through
+   * `changes`.
+   */
   features: ClassFeatureGrant[];
   /**
    * A numeric bonus carried directly on the domain doc itself, rather than

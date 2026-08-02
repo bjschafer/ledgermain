@@ -187,7 +187,19 @@ export function transformClass(
   };
 }
 
-/** Transform a top-level `class-abilities/domains/*.yaml` entry (e.g. Fire Domain). */
+/**
+ * Transform a top-level `class-abilities/domains/*.yaml` entry (e.g. Fire
+ * Domain). Unlike `transformClass`'s `Class.features` (where an unresolved
+ * `links.supplements` link is kept, `resolved: false`, so nothing vendored is
+ * silently dropped), a domain's `features` list drops them: the only two
+ * that occur in the vendored slice (Darkness/Rune's bonus-feat link into the
+ * `feats` pack, which `resolveFeatureGrants`'s resolver never searches) are
+ * pure noise here — their `name` is a raw compendium uuid string, never
+ * player-facing, and the actual grant is already surfaced through the
+ * domain's own `changes: bonusFeats` entry (see `apps/web/src/model/
+ * feats.ts`). Keeping them would mean a domain's "granted powers" list shows
+ * a bare uuid alongside its real powers.
+ */
 export function transformDomain(
   doc: RawDoc,
   resolveFeatureName: (id: string) => string | null,
@@ -201,7 +213,9 @@ export function transformDomain(
     description: descriptionValue(sys, resolveUuid),
     sources: normalizeSources(sys.sources),
     tag: doc.name.replace(/ Domain$/, ""),
-    features: resolveFeatureGrants(supplementsOf(sys), resolveFeatureName),
+    features: resolveFeatureGrants(supplementsOf(sys), resolveFeatureName).filter(
+      (f) => f.resolved,
+    ),
     changes: normalizeChanges(sys.changes),
   };
 }

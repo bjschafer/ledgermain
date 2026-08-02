@@ -31,6 +31,7 @@ import type {
   ClassFeature,
   ClassFeatureGrant,
   ContextNote,
+  Domain,
   Item,
   Race,
   RacialTrait,
@@ -38,6 +39,8 @@ import type {
   Spell,
   SpellList,
 } from "@pf1/schema";
+
+import { slug } from "./transform/common.js";
 
 /**
  * Supplemental bonus-spell lists keyed by bloodline tag, then by spell level
@@ -1107,6 +1110,117 @@ export function applyRaceEffectImmunitySupplements(races: Race[]): void {
         type: "untyped",
       })),
     ];
+  }
+}
+
+/**
+ * Hand-authored additions for a domain's granted power the pinned Foundry
+ * pack has no document for at all — unlike every other gap this module
+ * fills, there's no vendored entity to correct or extend, so the whole
+ * `ClassFeature` is authored here from scratch.
+ *
+ * - Destruction domain (Core Rulebook p. 43) grants two powers, Destructive
+ *   Smite (1st) and Destructive Aura (8th); only Destructive Smite exists as
+ *   a `class-abilities` document in the pinned pack, so `Domain.features`
+ *   resolves to a single entry and the 8th-level power never appears.
+ *   Written clean-room from the published rule (not copied from Foundry's
+ *   own system scripts): a 30-foot aura, active for a number of rounds per
+ *   day equal to cleric level (rounds need not be consecutive), granting a
+ *   morale bonus on damage equal to half cleric level to every attack made
+ *   against a target within it (including the cleric's own) and
+ *   auto-confirming every critical threat rolled there. Three subdomains
+ *   (Catastrophe, Hatred, Rage) name Destructive Aura as the power they
+ *   displace (`transform/subdomainPowers.ts`'s `replaces` field, parsed from
+ *   the Pf Data 1e source's own `replace="..."` property) — until this power
+ *   exists in `Domain.features`, that displacement is a no-op, and each of
+ *   those three subdomains comes out right only because there was nothing
+ *   there yet to remove.
+ * - Glory domain's granted-powers preamble (Core Rulebook p. 44) reads "when
+ *   you channel positive energy to harm undead creatures, the save DC to
+ *   halve the damage is increased by 2" — a real bonus with no
+ *   `class-abilities` document either (Foundry links only Touch of Glory and
+ *   Divine Presence), so it's authored here the same way. `changes: []`:
+ *   Channel Energy's save DC is a single feature-wide `dcFormula` this engine
+ *   evaluates directly off vendored data, with no per-source-modifier target
+ *   to wire a +2 onto, so this stays prose-only rather than inventing a
+ *   mechanism. The Hubris and Legend subdomains each name "the channel boost
+ *   ability of the Glory domain" as what they displace — same displacement
+ *   mechanics as Destructive Aura above, and the same reason this entry has
+ *   to exist before that displacement can do anything.
+ *
+ * Synthetic id/uuid follow the same non-Foundry-shaped posture as the
+ * prestige-class supplement below: a `domain:` id prefix and `domain-feature:`
+ * uuid scheme that can never collide with a real Foundry id or
+ * `Compendium....` uuid.
+ */
+export const SUPPLEMENTAL_DOMAIN_FEATURES: Record<
+  string,
+  { slug: string; name: string; abilityType?: string; level: number; description: string }[]
+> = {
+  Destruction: [
+    {
+      slug: "destructive-aura",
+      name: "Destructive Aura",
+      abilityType: "su",
+      level: 8,
+      description:
+        "<p>You can emit a 30-foot aura of destruction for a number of rounds per day equal to your cleric level; these rounds need not be consecutive. Every attack made against a creature within the aura, including your own, gains a morale bonus on damage rolls equal to half your cleric level, and every critical threat rolled within the aura is automatically confirmed as a critical hit.</p>",
+    },
+  ],
+  Glory: [
+    {
+      slug: "channel-boost",
+      name: "Channel Boost",
+      abilityType: "su",
+      level: 0,
+      description:
+        "<p>When you channel positive energy to harm undead creatures, the save DC to halve the damage is increased by 2. Channel Energy's save DC shown elsewhere on the sheet has no per-source modifier to add this to automatically: apply the +2 by hand when channeling against undead.</p>",
+    },
+  ],
+};
+
+/**
+ * Apply `SUPPLEMENTAL_DOMAIN_FEATURES` in place: pushes one `ClassFeature`
+ * per listed power and appends a resolved `ClassFeatureGrant` for it to the
+ * matching domain's `features`. Must run before subdomain granted-power
+ * resolution (`applySubdomainPowerSupplements`), which reads a parent
+ * domain's `features` to compute what a subdomain displaces. Throws on an
+ * unknown domain tag or an id collision — the same drift/collision guards
+ * every other supplement in this module uses.
+ */
+export function applyDomainFeatureSupplements(
+  domains: Domain[],
+  classFeatures: ClassFeature[],
+): void {
+  const byTag = new Map(domains.map((d) => [d.tag, d]));
+  const featureIds = new Set(classFeatures.map((f) => f.id));
+  for (const [tag, powers] of Object.entries(SUPPLEMENTAL_DOMAIN_FEATURES)) {
+    const domain = byTag.get(tag);
+    if (domain === undefined) {
+      throw new Error(`[supplements] domain "${tag}" not found in vendored domains`);
+    }
+    for (const power of powers) {
+      const id = `domain:${slug(tag)}:${power.slug}`;
+      if (featureIds.has(id)) {
+        throw new Error(`[supplements] duplicate domain power feature id: ${id}`);
+      }
+      featureIds.add(id);
+      const uuid = `domain-feature:${slug(tag)}:${power.slug}`;
+      classFeatures.push({
+        id,
+        name: power.name,
+        uuid,
+        description: power.description,
+        ...(power.abilityType ? { abilityType: power.abilityType } : {}),
+        subType: "classFeat",
+        changes: [],
+        grantsBuffs: [],
+      });
+      domain.features = [
+        ...domain.features,
+        { level: power.level, uuid, featureId: id, name: power.name, resolved: true },
+      ].sort((a, b) => a.level - b.level);
+    }
   }
 }
 

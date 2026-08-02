@@ -135,6 +135,13 @@
         "name": "Destructive Smite",
         "resolved": true,
         "uuid": "Compendium.pf1.class-abilities.Item.T4q7Ib0ED01PNDyT"
+      },
+      {
+        "featureId": "domain:destruction:destructive-aura",
+        "level": 8,
+        "name": "Destructive Aura",
+        "resolved": true,
+        "uuid": "domain-feature:destruction:destructive-aura"
       }
     ],
     "id": "CmsDojp7mFWiTB4n",
@@ -279,13 +286,6 @@
     "description": "<p><strong>Granted Powers:</strong> You manipulate shadows and darkness. In addition, you receive Blind-Fight as a bonus feat.</p><p><strong>Subdomains:</strong> Loss, Moon, Night, Shadow</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Obscuring Mist</li><li>2nd—Blindness/Deafness (only to cause blindness)</li><li>3rd—Deeper Darkness</li><li>4th—Shadow Conjuration</li><li>5th—Summon Monster V (summons 1d3 shadows)</li><li>6th—Shadow Walk</li><li>7th—Power Word Blind</li><li>8th—Shadow Evocation, Greater</li><li>9th—Shades</li></ul>",
     "features": [
       {
-        "featureId": "pmAO1Sni8xx71pLF",
-        "level": 0,
-        "name": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF",
-        "resolved": false,
-        "uuid": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF"
-      },
-      {
         "featureId": "Le6qmKF8wkhVCPCz",
         "level": 0,
         "name": "Touch of Darkness",
@@ -405,6 +405,13 @@
         "name": "Touch of Glory",
         "resolved": true,
         "uuid": "Compendium.pf1.class-abilities.Item.0BFuaPpChxXneJwF"
+      },
+      {
+        "featureId": "domain:glory:channel-boost",
+        "level": 0,
+        "name": "Channel Boost",
+        "resolved": true,
+        "uuid": "domain-feature:glory:channel-boost"
       },
       {
         "featureId": "KXN1Y4DDcWd8ZraE",
@@ -561,13 +568,6 @@
         "name": "Blast Rune (Domain Power)",
         "resolved": true,
         "uuid": "Compendium.pf1.class-abilities.Item.Wj2W2g5Ive3PlIlg"
-      },
-      {
-        "featureId": "tlRu8SYjzA7WCHN7",
-        "level": 0,
-        "name": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7",
-        "resolved": false,
-        "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7"
       },
       {
         "featureId": "ZJORj88OzUMjc1dB",

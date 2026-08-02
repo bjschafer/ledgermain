@@ -292,13 +292,6 @@
         "uuid": "Compendium.pf1.class-abilities.Item.Wj2W2g5Ive3PlIlg"
       },
       {
-        "featureId": "tlRu8SYjzA7WCHN7",
-        "level": 0,
-        "name": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7",
-        "resolved": false,
-        "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7"
-      },
-      {
         "featureId": "subdomain-power:wards:warding-rune",
         "level": 6,
         "name": "Warding Rune",
@@ -716,6 +709,13 @@
         "name": "Painful Smite",
         "resolved": true,
         "uuid": "pfdata:subdomain-power:torture:painful-smite"
+      },
+      {
+        "featureId": "domain:destruction:destructive-aura",
+        "level": 8,
+        "name": "Destructive Aura",
+        "resolved": true,
+        "uuid": "domain-feature:destruction:destructive-aura"
       }
     ],
     "id": "AW8RWHDiMKhwglcQ",
@@ -753,6 +753,13 @@
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Zone of Truth</li>\n<li>6th—Geas/Quest</li>\n</ul>",
     "features": [
+      {
+        "featureId": "domain:glory:channel-boost",
+        "level": 0,
+        "name": "Channel Boost",
+        "resolved": true,
+        "uuid": "domain-feature:glory:channel-boost"
+      },
       {
         "featureId": "subdomain-power:honor:honor-bound",
         "level": 0,
@@ -961,6 +968,13 @@
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Remove Fear</li>\n<li>3rd—Heroism</li>\n<li>6th—Heroism, Greater</li>\n</ul>",
     "features": [
       {
+        "featureId": "domain:glory:channel-boost",
+        "level": 0,
+        "name": "Channel Boost",
+        "resolved": true,
+        "uuid": "domain-feature:glory:channel-boost"
+      },
+      {
         "featureId": "subdomain-power:chivalry:bolstering-touch",
         "level": 0,
         "name": "Bolstering Touch",
@@ -1016,13 +1030,6 @@
     ],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Ray Of Enfeeblement</li>\n<li>4th—Phantasmal Killer</li>\n<li>8th—Orb Of The Void</li>\n</ul>",
     "features": [
-      {
-        "featureId": "pmAO1Sni8xx71pLF",
-        "level": 0,
-        "name": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF",
-        "resolved": false,
-        "uuid": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF"
-      },
       {
         "featureId": "subdomain-power:shadow:whispering-shadows",
         "level": 0,
@@ -1204,13 +1211,6 @@
     ],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>5th—Enervation</li>\n<li>6th—Modify Memory</li>\n<li>9th—Energy Drain</li>\n</ul>",
     "features": [
-      {
-        "featureId": "pmAO1Sni8xx71pLF",
-        "level": 0,
-        "name": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF",
-        "resolved": false,
-        "uuid": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF"
-      },
       {
         "featureId": "Le6qmKF8wkhVCPCz",
         "level": 0,
@@ -1405,13 +1405,6 @@
         "name": "Blast Rune (Domain Power)",
         "resolved": true,
         "uuid": "Compendium.pf1.class-abilities.Item.Wj2W2g5Ive3PlIlg"
-      },
-      {
-        "featureId": "tlRu8SYjzA7WCHN7",
-        "level": 0,
-        "name": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7",
-        "resolved": false,
-        "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7"
       },
       {
         "featureId": "subdomain-power:language:rune-shift",
@@ -1637,6 +1630,13 @@
         "name": "Touch of Glory",
         "resolved": true,
         "uuid": "Compendium.pf1.class-abilities.Item.0BFuaPpChxXneJwF"
+      },
+      {
+        "featureId": "domain:glory:channel-boost",
+        "level": 0,
+        "name": "Channel Boost",
+        "resolved": true,
+        "uuid": "domain-feature:glory:channel-boost"
       },
       {
         "featureId": "subdomain-power:heroism:aura-of-heroism",
@@ -2213,13 +2213,6 @@
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Sleep</li>\n<li>6th—Nightmare</li>\n</ul>",
     "features": [
       {
-        "featureId": "pmAO1Sni8xx71pLF",
-        "level": 0,
-        "name": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF",
-        "resolved": false,
-        "uuid": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF"
-      },
-      {
         "featureId": "subdomain-power:night:night-hunter",
         "level": 0,
         "name": "Night Hunter",
@@ -2275,13 +2268,6 @@
     ],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Faerie Fire</li>\n<li>4th—Moonstruck</li>\n<li>6th—Dream</li>\n</ul>",
     "features": [
-      {
-        "featureId": "pmAO1Sni8xx71pLF",
-        "level": 0,
-        "name": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF",
-        "resolved": false,
-        "uuid": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF"
-      },
       {
         "featureId": "Le6qmKF8wkhVCPCz",
         "level": 0,

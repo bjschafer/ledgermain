@@ -147,6 +147,89 @@ describe("cleric subdomain selection (in place of a parent domain)", () => {
   });
 });
 
+describe("Destruction domain's hand-authored 8th-level power", () => {
+  // CRB p. 43: Destruction grants Destructive Smite (1st) and Destructive
+  // Aura (8th). The Foundry pack has no document for Destructive Aura at
+  // all, so it's hand-authored in data-pipeline `supplements.ts` — before
+  // that fix, a Destruction cleric never saw their 8th-level power.
+  it("a level-1 Destruction cleric gets Destructive Smite only", () => {
+    expect(domainFeatureNames(makeCleric(1, ["Destruction"]))).toEqual(["Destructive Smite"]);
+  });
+
+  it("a level-8 Destruction cleric gets both Destructive Smite and Destructive Aura", () => {
+    expect(domainFeatureNames(makeCleric(8, ["Destruction"]))).toEqual([
+      "Destructive Aura",
+      "Destructive Smite",
+    ]);
+  });
+
+  it("Catastrophe/Hatred/Rage subdomains displace Destructive Aura, not Destructive Smite", () => {
+    // APG p. 87 (Catastrophe), Champions of Corruption p. 19 (Hatred), APG
+    // p. 95 (Rage) each name Destructive Aura as the power their own 8th-level
+    // ability replaces; Destructive Smite is untouched.
+    expect(domainFeatureNames(makeCleric(8, ["Catastrophe"]))).toEqual([
+      "Deadly Weather",
+      "Destructive Smite",
+    ]);
+    expect(domainFeatureNames(makeCleric(8, ["Hatred"]))).toEqual([
+      "Destructive Smite",
+      "Hateful Aura",
+    ]);
+    expect(domainFeatureNames(makeCleric(8, ["Rage"]))).toEqual(["Destructive Smite", "Rage"]);
+  });
+
+  it("Torture subdomain replaces Destructive Smite instead, keeping Destructive Aura", () => {
+    // Book of the Damned p. 182: Painful Smite replaces "the destructive
+    // smite power of the Destruction domain" — the opposite of the other
+    // three Destruction subdomains.
+    expect(domainFeatureNames(makeCleric(8, ["Torture"]))).toEqual([
+      "Destructive Aura",
+      "Painful Smite",
+    ]);
+  });
+});
+
+describe("Glory domain's hand-authored granted-powers preamble", () => {
+  // CRB p. 44: Glory's preamble grants +2 to the DC of channeled positive
+  // energy used to harm undead, in addition to its two named powers (Touch
+  // of Glory, Divine Presence). The Foundry pack has no document for this
+  // bonus either (unlike Travel's speed or Darkness/Rune's bonus feat, it
+  // carries no `Domain.changes` entry), so it's hand-authored prose-only:
+  // Channel Energy's save DC is a single vendored `dcFormula` this engine
+  // evaluates directly with no per-source-modifier target, so there is no
+  // real number to wire it onto.
+  it("a level-1 Glory cleric gets Touch of Glory and the Channel Boost preamble", () => {
+    expect(domainFeatureNames(makeCleric(1, ["Glory"]))).toEqual([
+      "Channel Boost",
+      "Touch of Glory",
+    ]);
+  });
+
+  it("a level-8 Glory cleric also gets Divine Presence", () => {
+    expect(domainFeatureNames(makeCleric(8, ["Glory"]))).toEqual([
+      "Channel Boost",
+      "Divine Presence",
+      "Touch of Glory",
+    ]);
+  });
+
+  it("Hubris/Legend subdomains displace Channel Boost; Chivalry keeps it", () => {
+    // Divine Anthology p. 23: Hubris's Class Skill and Legend's Bonus Feat
+    // each name "the channel boost ability of the Glory domain" as what they
+    // replace. Heroes of the High Court p. 21: Chivalry replaces Touch of
+    // Glory instead, so it keeps Channel Boost.
+    expect(domainFeatureNames(makeCleric(1, ["Hubris"]))).toEqual([
+      "Class Skill",
+      "Touch of Glory",
+    ]);
+    expect(domainFeatureNames(makeCleric(1, ["Legend"]))).toEqual(["Bonus Feat", "Touch of Glory"]);
+    expect(domainFeatureNames(makeCleric(1, ["Chivalry"]))).toEqual([
+      "Bolstering Touch",
+      "Channel Boost",
+    ]);
+  });
+});
+
 describe("cleric domain / subdomain direct changes (issue #99)", () => {
   const saveTotals = (doc: CharacterDoc) => {
     const sheet = compute(doc, ref);

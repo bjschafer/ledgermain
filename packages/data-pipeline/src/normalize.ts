@@ -102,6 +102,7 @@ import {
   applyRaceEnergyResistanceSupplements,
   applyRaceSenseSupplements,
   applyRaceSpellResistanceSupplements,
+  applyDomainFeatureSupplements,
   applyRacialTraitAliasSupplements,
   applyRacialTraitChangesSupplements,
   applySpellProjectileSupplements,
@@ -356,6 +357,14 @@ export function normalize(opts: NormalizeOptions): {
   const domains: Domain[] = domainDocs.map((d) =>
     transformDomain(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
   );
+
+  // --- domain granted powers the pinned Foundry pack has no document for at
+  // all (Destruction's 8th-level Destructive Aura, Glory's Channel Boost
+  // preamble) — hand-authored, see `supplements.ts`. Mutates
+  // `domains`/`classFeatures` in place; must run before the subdomain
+  // granted-power pass below, which reads a parent domain's `features` to
+  // compute what a subdomain displaces.
+  applyDomainFeatureSupplements(domains, classFeatures);
 
   // --- subdomains: resolve each one's parent domain(s) from every top-level
   // domain's own "Subdomains:" description prose (not a structured link in

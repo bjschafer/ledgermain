@@ -439,13 +439,34 @@ function renderAbDirective(name: string, propsRaw: string): string {
   const text = abBodyText(props);
 
   if (text === undefined) {
-    const levelEntries = Object.entries(props)
+    const spellLevelEntries = Object.entries(props)
       .filter((e): e is [string, string] => /^s\d+$/.test(e[0]) && typeof e[1] === "string")
       .map(([k, v]) => ({ level: Number(k.slice(1)), text: v }))
       .sort((a, b) => a.level - b.level);
-    if (levelEntries.length === 0) return `<p><strong>${nameHtml}</strong></p>`;
-    const items = levelEntries.map((e) => `Level ${e.level}: ${inlineToHtml(e.text)}`).join("; ");
-    return `<p><strong>${nameHtml}:</strong> ${items}</p>`;
+    if (spellLevelEntries.length > 0) {
+      const items = spellLevelEntries
+        .map((e) => `Level ${e.level}: ${inlineToHtml(e.text)}`)
+        .join("; ");
+      return `<p><strong>${nameHtml}:</strong> ${items}</p>`;
+    }
+
+    // A level-scaling stat line with no action-type key at all — e.g. a
+    // bloodrager bloodline's Watersense: `l8="You gain tremorsense..."
+    // l12="...range of 60 feet..."`. Each `lNN` key is the CLASS level a
+    // stage comes online at, distinct from the single `l=N` "minimum level
+    // to use this ability" gate `abBodyText`'s caller reads off `props.l`.
+    const classLevelEntries = Object.entries(props)
+      .filter((e): e is [string, string] => /^l\d+$/.test(e[0]) && typeof e[1] === "string")
+      .map(([k, v]) => ({ level: Number(k.slice(1)), text: v }))
+      .sort((a, b) => a.level - b.level);
+    if (classLevelEntries.length > 0) {
+      const items = classLevelEntries
+        .map((e) => `At ${e.level}${ordinalSuffix(e.level)} level: ${inlineToHtml(e.text)}`)
+        .join(" ");
+      return `<p><strong>${nameHtml}:</strong> ${items}</p>`;
+    }
+
+    return `<p><strong>${nameHtml}</strong></p>`;
   }
 
   const level = typeof props.l === "string" ? props.l : undefined;
