@@ -52,6 +52,36 @@ function domainFeatureNames(doc: CharacterDoc): string[] {
     .sort();
 }
 
+function makeDruid(level: number, druidNatureBondDomain?: string): CharacterDoc {
+  return {
+    schemaVersion: 1,
+    id: "test",
+    ownerId: "owner",
+    version: 1,
+    updatedAt: "2026-01-01T00:00:00.000Z",
+    identity: {
+      name: "Test",
+      race: raceId("Human"),
+      classes: [{ tag: "druid", level }],
+    },
+    abilities: { str: 10, dex: 10, con: 12, int: 10, wis: 16, cha: 10 },
+    build: {
+      feats: [],
+      skillRanks: {},
+      classFeatureChoices: [],
+      spells: { known: [] },
+      gear: [],
+      druidNatureBondDomain,
+    },
+    live: {
+      hp: { current: 0, temp: 0, nonlethal: 0 },
+      conditions: [],
+      activeBuffs: [],
+      resources: {},
+    },
+  } as CharacterDoc;
+}
+
 describe("cleric domain powers", () => {
   it("a level-1 cleric with Fire domain gets Fire Bolt, not Fire Resistance (level 6)", () => {
     const doc = makeCleric(1, ["Fire"]);
@@ -337,6 +367,56 @@ describe("inquisitor domains (granted powers only, no bonus spell slots)", () =>
     const fighter = {
       ...doc,
       identity: { ...doc.identity, classes: [{ tag: "fighter", level: 7 }] },
+    };
+    expect(domainFeatureNames(fighter)).toEqual([]);
+  });
+});
+
+describe("druid nature-bond domain powers (issue #117)", () => {
+  it("a level-1 Wolf druid has no domain-origin class feature yet (Pack Tactics is 8th-level)", () => {
+    expect(domainFeatureNames(makeDruid(1, "Wolf"))).toEqual([]);
+  });
+
+  it("an 8th-level Wolf druid gets Pack Tactics, and never Improved Trip as a class feature", () => {
+    // Ultimate Magic p.36 (PZO1117, per the domain's own vendored `sources`):
+    // Wolf's 1st-level power grants Improved Trip as a
+    // bonus feat (a fixed feat grant, not prose) and its 8th-level power is
+    // Pack Tactics. The bonus feat surfaces via the web layer's
+    // `grantedFeats()` (apps/web/src/model/feats.ts's `DruidDomain.changes`
+    // path) — it must never also appear here as a classFeatures entry, or a
+    // Wolf druid would show it twice.
+    const doc = makeDruid(8, "Wolf");
+    expect(domainFeatureNames(doc)).toEqual(["Pack Tactics"]);
+
+    const { classFeatures } = resolveClassFeatures(doc, ref);
+    const packTactics = classFeatures.find((f) => f.name === "Pack Tactics")!;
+    expect(packTactics.origin).toEqual({ kind: "domain", label: "Wolf Domain" });
+    expect(packTactics.classTag).toBe("druid");
+    expect(classFeatures.some((f) => f.name === "Improved Trip")).toBe(false);
+  });
+
+  it("a level-1 Jungle druid gets Brachiation; Trap Sense is gated to 3rd level", () => {
+    // Ultimate Magic p.34 (PZO1117, per the domain's own vendored `sources`):
+    // Jungle's 1st-level power is Brachiation, its
+    // 3rd-level power Trap Sense.
+    expect(domainFeatureNames(makeDruid(1, "Jungle"))).toEqual(["Brachiation"]);
+    expect(domainFeatureNames(makeDruid(2, "Jungle"))).toEqual(["Brachiation"]);
+    expect(domainFeatureNames(makeDruid(3, "Jungle"))).toEqual(["Brachiation", "Trap Sense"]);
+  });
+
+  it("no chosen domain grants no domain-origin features", () => {
+    expect(domainFeatureNames(makeDruid(8, undefined))).toEqual([]);
+  });
+
+  it("an unresolvable domain tag grants nothing, not an error", () => {
+    expect(domainFeatureNames(makeDruid(8, "NotARealDruidDomain"))).toEqual([]);
+  });
+
+  it("a stale domain tag on a non-druid grants nothing", () => {
+    const doc = makeDruid(8, "Wolf");
+    const fighter = {
+      ...doc,
+      identity: { ...doc.identity, classes: [{ tag: "fighter", level: 8 }] },
     };
     expect(domainFeatureNames(fighter)).toEqual([]);
   });

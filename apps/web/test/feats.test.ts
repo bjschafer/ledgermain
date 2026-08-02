@@ -37,6 +37,7 @@ function makeDoc(over: {
   archetypes?: string[];
   rogueTalents?: string[];
   clericDomains?: string[];
+  druidNatureBondDomain?: string;
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -57,6 +58,7 @@ function makeDoc(over: {
       archetypes: over.archetypes,
       rogueTalents: over.rogueTalents,
       clericDomains: over.clericDomains,
+      druidNatureBondDomain: over.druidNatureBondDomain,
       skillRanks: {},
       classFeatureChoices: [],
       spells: { known: [] },
@@ -355,6 +357,54 @@ describe("cleric domain fixed bonus feats (issue #99)", () => {
       race: "Elf",
       clericDomains: ["Deception"],
     });
+    expect(grantedFeats(doc, ref)).toEqual([]);
+  });
+});
+
+describe("druid nature-bond domain fixed bonus feat (issue #117)", () => {
+  it("Wolf grants Improved Trip outright", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 1 }],
+      race: "Elf",
+      druidNatureBondDomain: "Wolf",
+    });
+    const granted = grantedFeats(doc, ref);
+    expect(granted.map((g) => g.featName)).toContain("Improved Trip");
+    const improvedTrip = granted.find((g) => g.featName === "Improved Trip");
+    expect(improvedTrip!.classTag).toBe("druid");
+    expect(improvedTrip!.featureName).toBe("Wolf Domain");
+  });
+
+  it("the fixed feat is not counted as a free bonus-feat slot", () => {
+    const withWolf = makeDoc({
+      classes: [{ tag: "druid", level: 1 }],
+      race: "Elf",
+      druidNatureBondDomain: "Wolf",
+    });
+    const withoutDomain = makeDoc({ classes: [{ tag: "druid", level: 1 }], race: "Elf" });
+    expect(expectedFeatCount(withWolf, ref)).toBe(expectedFeatCount(withoutDomain, ref));
+  });
+
+  it("a domain with no fixed-feat grant (Jungle) grants no feat", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "druid", level: 1 }],
+      race: "Elf",
+      druidNatureBondDomain: "Jungle",
+    });
+    expect(grantedFeats(doc, ref).map((g) => g.featName)).not.toContain("Improved Trip");
+  });
+
+  it("a stale domain tag on a non-druid grants nothing", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      race: "Elf",
+      druidNatureBondDomain: "Wolf",
+    });
+    expect(grantedFeats(doc, ref).map((g) => g.featName)).not.toContain("Improved Trip");
+  });
+
+  it("no chosen domain grants nothing", () => {
+    const doc = makeDoc({ classes: [{ tag: "druid", level: 1 }], race: "Elf" });
     expect(grantedFeats(doc, ref)).toEqual([]);
   });
 });

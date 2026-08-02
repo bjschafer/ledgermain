@@ -105,6 +105,19 @@ const DOMAIN_GRANTED_FEATS: Record<string, string> = {
   Rune: "scribe scroll",
 };
 
+/**
+ * Druid nature-bond domain tag (`DruidDomain.tag`) -> the specific feat that
+ * domain hands the character as a bonus feat, same shape as
+ * `DOMAIN_GRANTED_FEATS` above. Wolf is the only one of the 25 nature-bond
+ * domains whose granted power is a fixed feat rather than prose ("Improved
+ * Trip: You gain Improved Trip as a bonus feat"), hand-authored into
+ * `DruidDomain.changes` by `data-pipeline`'s `SUPPLEMENTAL_DRUID_DOMAIN_FEATURES`
+ * (issue #117).
+ */
+const DRUID_DOMAIN_GRANTED_FEATS: Record<string, string> = {
+  Wolf: "improved trip",
+};
+
 /** A specific feat handed to the character by a class feature (no slot used). */
 export interface GrantedFeat {
   /** Id into RefData.feats. */
@@ -169,6 +182,30 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
         classTag: "cleric",
         featureName: tag === parentTag ? `${tag} Domain` : `${tag} Subdomain`,
       });
+    }
+  }
+
+  // Druid nature-bond domain fixed bonus feat (Wolf grants Improved Trip).
+  // Gated on the character actually having druid levels; a stale domain tag
+  // on a non-druid grants nothing. Unlike `clericDomains`, a single tag with
+  // no subdomain layer — see `DruidDomain.changes`'s doc comment.
+  if (doc.identity.classes.some((c) => c.tag === "druid") && doc.build.druidNatureBondDomain) {
+    const tag = doc.build.druidNatureBondDomain;
+    const featName = DRUID_DOMAIN_GRANTED_FEATS[tag];
+    if (featName) {
+      const domain = Object.values(refData.druidDomains).find((d) => d.tag === tag);
+      if (domain?.changes.some((ch) => ch.target === "bonusFeats")) {
+        const featId = byName.get(featName);
+        if (featId && !seen.has(featId)) {
+          seen.add(featId);
+          out.push({
+            featId,
+            featName: refData.feats[featId]?.name ?? featName,
+            classTag: "druid",
+            featureName: `${tag} Domain`,
+          });
+        }
+      }
     }
   }
 

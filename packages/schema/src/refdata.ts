@@ -483,17 +483,33 @@ export interface Subdomain extends RefEntity {
  * an alternate to an animal companion; PF1 grants powers scaling off druid
  * level instead of a cleric's channel-energy-adjacent kit. `kind` mirrors the
  * source's own split: `"animal"` domains (Wolf, Eagle, ...) key off an animal
- * totem, `"terrain"` domains (Desert, Jungle, ...) off a landscape. `features`
- * is always `[]` — the source models every druid domain power as free-text
- * prose under its own description, never a `links.supplements`-linked
- * `class-abilities` entry, so there is nothing structured to resolve for the
- * granted *powers*. Its domain *spells*, by contrast, ARE `@UUID`-linked in
- * that prose and parsed into `RefData.druidDomainSpellLists` (see there).
+ * totem, `"terrain"` domains (Desert, Jungle, ...) off a landscape.
+ *
+ * The source models every druid domain power as free-text prose under its
+ * own description, never a `links.supplements`-linked `class-abilities`
+ * entry, so there is nothing structured upstream to resolve for the granted
+ * *powers* the way `Domain.features` resolves for a cleric. `features` is
+ * instead entirely hand-authored (`data-pipeline` `supplements.ts`'s
+ * `SUPPLEMENTAL_DRUID_DOMAIN_FEATURES`, same clean-room posture as the
+ * cleric-domain gap-fills there) from the published rule, one `ClassFeature`
+ * per named power with its own level gate. Its domain *spells*, by contrast,
+ * ARE `@UUID`-linked in that prose and parsed into `RefData.druidDomainSpellLists`
+ * (see there).
  */
 export interface DruidDomain extends RefEntity {
   tag: string;
   kind: "animal" | "terrain";
   features: ClassFeatureGrant[];
+  /**
+   * A numeric bonus carried directly on the domain doc, same shape as
+   * `Domain.changes` — empty for every domain except Wolf, whose 1st-level
+   * granted power ("Improved Trip: You gain Improved Trip as a bonus feat")
+   * is a fixed feat grant rather than prose, so it's hand-authored here as a
+   * `bonusFeats` change instead of a `features` entry (mirroring how
+   * Darkness/Rune's cleric-domain bonus feats work). Granted via the web
+   * layer, see `apps/web/src/model/feats.ts`.
+   */
+  changes: Change[];
 }
 
 /**

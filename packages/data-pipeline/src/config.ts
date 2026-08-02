@@ -123,9 +123,18 @@ export const SYSTEM_VERSION = "11.11";
  * niche". Unlike subdomains, the Foundry pack states each one's full
  * mechanics directly (an `@UUID`-linked parent school, `@UUID`-linked
  * replaced powers, and its own `links.supplements` grants), so no
- * fourth-party source was needed; see `transform/focusedSchools.ts`.
+ * fourth-party source was needed; see `transform/focusedSchools.ts`. v22
+ * fills `DruidDomain.features`/`.changes` — the Foundry pack states every druid
+ * nature-bond domain power (all 25 animal/terrain domains) as free-text prose
+ * with no `class-abilities` document at all, so, unlike every other gap this
+ * pipeline fills, there's no vendored granted-power link to correct or
+ * resolve; `supplements.ts`'s `SUPPLEMENTAL_DRUID_DOMAIN_FEATURES` hand-
+ * authors one `ClassFeature` per named power straight from the published
+ * rule. `DruidDomain.features` was always `[]` before this version; a
+ * consumer built against v20 or earlier that assumed that and skipped
+ * reading it now silently misses the granted powers.
  */
-export const SCHEMA_VERSION = 21;
+export const SCHEMA_VERSION = 22;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).
