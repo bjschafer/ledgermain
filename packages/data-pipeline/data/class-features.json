@@ -33174,6 +33174,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:aeon:void-form"
   },
   "subdomain-power:agathion:protective-aura": {
@@ -33190,6 +33194,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:agathion:protective-aura"
   },
   "subdomain-power:alchemy:divine-alchemy": {
@@ -33206,6 +33214,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:alchemy:divine-alchemy"
   },
   "subdomain-power:ambush:chameleon-aspect": {
@@ -33222,6 +33234,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:ambush:chameleon-aspect"
   },
   "subdomain-power:ancestors:speak-with-dead": {
@@ -33238,6 +33254,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:ancestors:speak-with-dead"
   },
   "subdomain-power:arcane:arcane-beacon": {
@@ -33254,6 +33274,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:arcane:arcane-beacon"
   },
   "subdomain-power:archon:aura-of-menace": {
@@ -33270,6 +33294,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:archon:aura-of-menace"
   },
   "subdomain-power:aristocracy:noble-visage": {
@@ -33286,6 +33314,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:aristocracy:noble-visage"
   },
   "subdomain-power:arson:call-fire": {
@@ -33296,6 +33328,10 @@
     "id": "subdomain-power:arson:call-fire",
     "name": "Call Fire",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:arson:call-fire"
   },
   "subdomain-power:ash:wall-of-ashes": {
@@ -33312,6 +33348,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:ash:wall-of-ashes"
   },
   "subdomain-power:azata:elysium-s-call": {
@@ -33328,6 +33368,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:azata:elysium-s-call"
   },
   "subdomain-power:blood:wounding-blade": {
@@ -33344,6 +33388,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:blood:wounding-blade"
   },
   "subdomain-power:cannibalism:consume-the-enemy": {
@@ -33360,6 +33408,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:cannibalism:consume-the-enemy"
   },
   "subdomain-power:captivation:entrancing-aura": {
@@ -33376,6 +33428,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:captivation:entrancing-aura"
   },
   "subdomain-power:catastrophe:deadly-weather": {
@@ -33392,6 +33448,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:catastrophe:deadly-weather"
   },
   "subdomain-power:caves:tunnel-runner": {
@@ -33408,6 +33468,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:caves:tunnel-runner"
   },
   "subdomain-power:chivalry:bolstering-touch": {
@@ -33424,6 +33488,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:chivalry:bolstering-touch"
   },
   "subdomain-power:competition:athletic-exploit": {
@@ -33456,6 +33524,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:construct:animate-servant"
   },
   "subdomain-power:cooperation:synergistic-touch": {
@@ -33466,6 +33538,10 @@
     "id": "subdomain-power:cooperation:synergistic-touch",
     "name": "Synergistic Touch",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:cooperation:synergistic-touch"
   },
   "subdomain-power:corruption:spark-malfeasance": {
@@ -33482,6 +33558,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:corruption:spark-malfeasance"
   },
   "subdomain-power:curse:malign-eye": {
@@ -33498,6 +33578,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:curse:malign-eye"
   },
   "subdomain-power:daemon:whispering-evil": {
@@ -33514,6 +33598,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:daemon:whispering-evil"
   },
   "subdomain-power:dark-tapestry:it-came-from-beyond": {
@@ -33540,6 +33628,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 4 + floor((@class.unlevel - 8) / 2))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:day:day-s-resurgence"
   },
   "subdomain-power:decay:aura-of-decay": {
@@ -33556,6 +33648,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:decay:aura-of-decay"
   },
   "subdomain-power:deception:sudden-shift": {
@@ -33572,6 +33668,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:deception:sudden-shift"
   },
   "subdomain-power:demodand:faith-stealing-strike": {
@@ -33588,6 +33688,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:demodand:faith-stealing-strike"
   },
   "subdomain-power:demon:fury-of-the-abyss": {
@@ -33604,6 +33708,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:demon:fury-of-the-abyss"
   },
   "subdomain-power:devil:hell-s-corruption": {
@@ -33620,6 +33728,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:devil:hell-s-corruption"
   },
   "subdomain-power:divine:divine-vessel": {
@@ -33636,6 +33748,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:divine:divine-vessel"
   },
   "subdomain-power:dragon:dragonbreath": {
@@ -33662,6 +33778,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:duels:divine-challenge"
   },
   "subdomain-power:education:teaching-moment": {
@@ -33678,6 +33798,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:education:teaching-moment"
   },
   "subdomain-power:entropy:hasten-the-end": {
@@ -33688,6 +33812,10 @@
     "id": "subdomain-power:entropy:hasten-the-end",
     "name": "Hasten the End",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:entropy:hasten-the-end"
   },
   "subdomain-power:espionage:deep-cover": {
@@ -33720,6 +33848,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:exploration:door-sight"
   },
   "subdomain-power:family:binding-ties": {
@@ -33736,6 +33868,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:family:binding-ties"
   },
   "subdomain-power:fate:tugging-strands": {
@@ -33752,6 +33888,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 6))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:fate:tugging-strands"
   },
   "subdomain-power:fear:feed-on-fear": {
@@ -33762,6 +33902,10 @@
     "id": "subdomain-power:fear:feed-on-fear",
     "name": "Feed on Fear",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:fear:feed-on-fear"
   },
   "subdomain-power:feather:eyes-of-the-hawk": {
@@ -33794,6 +33938,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:ferocity:ferocious-strike"
   },
   "subdomain-power:fist:wooden-fist": {
@@ -33810,6 +33958,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:fist:wooden-fist"
   },
   "subdomain-power:flotsam:sift": {
@@ -33846,6 +33998,10 @@
     "id": "subdomain-power:friendship:powerful-bond",
     "name": "Powerful Bond",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:friendship:powerful-bond"
   },
   "subdomain-power:fur:predator-s-grace": {
@@ -33862,6 +34018,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:fur:predator-s-grace"
   },
   "subdomain-power:greed:more-for-me": {
@@ -33878,6 +34038,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:greed:more-for-me"
   },
   "subdomain-power:growth:enlarge": {
@@ -33894,6 +34058,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:growth:enlarge"
   },
   "subdomain-power:hatred:hateful-aura": {
@@ -33910,6 +34078,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:hatred:hateful-aura"
   },
   "subdomain-power:heroism:aura-of-heroism": {
@@ -33926,6 +34098,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:heroism:aura-of-heroism"
   },
   "subdomain-power:home:guarded-hearth": {
@@ -33958,6 +34134,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:honor:honor-bound"
   },
   "subdomain-power:hubris:class-skill": {
@@ -33989,6 +34169,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 6) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:hubris:divine-demand"
   },
   "subdomain-power:ice:body-of-ice": {
@@ -34005,6 +34189,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:ice:body-of-ice"
   },
   "subdomain-power:imagination:haze-of-daydreams": {
@@ -34021,6 +34209,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:imagination:haze-of-daydreams"
   },
   "subdomain-power:industry:aura-of-efficiency": {
@@ -34037,6 +34229,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:industry:aura-of-efficiency"
   },
   "subdomain-power:inevitable:command": {
@@ -34053,6 +34249,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:inevitable:command"
   },
   "subdomain-power:innuendo:fool-s-privilege": {
@@ -34069,6 +34269,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 1) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:innuendo:fool-s-privilege"
   },
   "subdomain-power:insanity:insane-focus": {
@@ -34085,6 +34289,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:insanity:insane-focus"
   },
   "subdomain-power:insect:exoskeleton": {
@@ -34101,6 +34309,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:insect:exoskeleton"
   },
   "subdomain-power:isolation:aura-of-isolation": {
@@ -34111,6 +34323,10 @@
     "id": "subdomain-power:isolation:aura-of-isolation",
     "name": "Aura of Isolation",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:isolation:aura-of-isolation"
   },
   "subdomain-power:judgment:chastisement": {
@@ -34121,6 +34337,10 @@
     "id": "subdomain-power:judgment:chastisement",
     "name": "Chastisement",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:judgment:chastisement"
   },
   "subdomain-power:kyton:pain-is-power": {
@@ -34137,6 +34357,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:kyton:pain-is-power"
   },
   "subdomain-power:language:rune-shift": {
@@ -34200,6 +34424,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:legend:witness-the-legend"
   },
   "subdomain-power:legislation:prohibition": {
@@ -34216,6 +34444,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:legislation:prohibition"
   },
   "subdomain-power:leshy:leshy-caller": {
@@ -34232,6 +34464,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:leshy:leshy-caller"
   },
   "subdomain-power:light:blinding-flash": {
@@ -34248,6 +34484,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:light:blinding-flash"
   },
   "subdomain-power:loss:aura-of-forgetfulness": {
@@ -34264,6 +34504,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:loss:aura-of-forgetfulness"
   },
   "subdomain-power:love:adoration": {
@@ -34280,6 +34524,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:love:adoration"
   },
   "subdomain-power:loyalty:touch-of-loyalty": {
@@ -34290,6 +34538,10 @@
     "id": "subdomain-power:loyalty:touch-of-loyalty",
     "name": "Touch of Loyalty",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:loyalty:touch-of-loyalty"
   },
   "subdomain-power:lust:anything-to-please": {
@@ -34306,6 +34558,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:lust:anything-to-please"
   },
   "subdomain-power:martyr:sacrificial-bond": {
@@ -34322,6 +34578,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 6))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:martyr:sacrificial-bond"
   },
   "subdomain-power:medicine:blessed-surgery": {
@@ -34338,6 +34598,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:medicine:blessed-surgery"
   },
   "subdomain-power:memory:recall": {
@@ -34354,6 +34618,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:memory:recall"
   },
   "subdomain-power:metal:metal-fist": {
@@ -34370,6 +34638,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:metal:metal-fist"
   },
   "subdomain-power:monsoon:refreshing-rain": {
@@ -34386,6 +34658,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:monsoon:refreshing-rain"
   },
   "subdomain-power:moon:moonfire": {
@@ -34396,6 +34672,10 @@
     "id": "subdomain-power:moon:moonfire",
     "name": "Moonfire",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:moon:moonfire"
   },
   "subdomain-power:murder:killing-blow": {
@@ -34412,6 +34692,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:murder:killing-blow"
   },
   "subdomain-power:night:night-hunter": {
@@ -34428,6 +34712,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:night:night-hunter"
   },
   "subdomain-power:nightmare:fearful-touch": {
@@ -34444,6 +34732,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:nightmare:fearful-touch"
   },
   "subdomain-power:oceans:surge": {
@@ -34460,6 +34752,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:oceans:surge"
   },
   "subdomain-power:petrification:fossil-form": {
@@ -34476,6 +34772,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:petrification:fossil-form"
   },
   "subdomain-power:plague:touch-of-virulence": {
@@ -34492,6 +34792,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 6))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:plague:touch-of-virulence"
   },
   "subdomain-power:portal:sacred-threshold": {
@@ -34508,6 +34812,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:portal:sacred-threshold"
   },
   "subdomain-power:portal:travel-as-one": {
@@ -34556,6 +34864,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:psychopomp:spirit-touch"
   },
   "subdomain-power:radiation:radiating-touch": {
@@ -34572,6 +34884,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:radiation:radiating-touch"
   },
   "subdomain-power:rage:rage": {
@@ -34588,6 +34904,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:rage:rage"
   },
   "subdomain-power:redemption:aura-of-sanctification": {
@@ -34604,6 +34924,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:redemption:aura-of-sanctification"
   },
   "subdomain-power:resolve:bestow-resolve": {
@@ -34620,6 +34944,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:resolve:bestow-resolve"
   },
   "subdomain-power:restoration:restorative-touch": {
@@ -34636,6 +34964,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:restoration:restorative-touch"
   },
   "subdomain-power:resurrection:gift-of-life": {
@@ -34652,6 +34984,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:resurrection:gift-of-life"
   },
   "subdomain-power:revelation:guided-eyes": {
@@ -34694,6 +35030,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:riot:aura-of-bedlam"
   },
   "subdomain-power:rites:enduring-ritual": {
@@ -34710,6 +35050,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:rites:enduring-ritual"
   },
   "subdomain-power:rivers:current-flow": {
@@ -34720,6 +35064,10 @@
     "id": "subdomain-power:rivers:current-flow",
     "name": "Current Flow",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:rivers:current-flow"
   },
   "subdomain-power:sahkil:touch-of-paranoia": {
@@ -34736,6 +35084,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:sahkil:touch-of-paranoia"
   },
   "subdomain-power:saurian:dinosaur-companion": {
@@ -34762,6 +35114,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:seasons:untouched-by-the-seasons"
   },
   "subdomain-power:shadow:whispering-shadows": {
@@ -34778,6 +35134,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:shadow:whispering-shadows"
   },
   "subdomain-power:slavery:master-s-yoke": {
@@ -34788,6 +35148,10 @@
     "id": "subdomain-power:slavery:master-s-yoke",
     "name": "Master's Yoke",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:slavery:master-s-yoke"
   },
   "subdomain-power:smoke:cloud-of-smoke": {
@@ -34804,6 +35168,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:smoke:cloud-of-smoke"
   },
   "subdomain-power:souls:touch-the-spirit-world": {
@@ -34820,6 +35188,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:souls:touch-the-spirit-world"
   },
   "subdomain-power:sovereignty:demand-subjugation": {
@@ -34836,6 +35208,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:sovereignty:demand-subjugation"
   },
   "subdomain-power:stars:the-stars-are-right": {
@@ -34862,6 +35238,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:storms:gale-aura"
   },
   "subdomain-power:tactics:seize-the-initiative": {
@@ -34878,6 +35258,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:tactics:seize-the-initiative"
   },
   "subdomain-power:thievery:thief-of-the-gods": {
@@ -34894,6 +35278,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 4 + floor((@class.unlevel - 8) / 2))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:thievery:thief-of-the-gods"
   },
   "subdomain-power:thirst:wilting-glare": {
@@ -34910,6 +35298,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:thirst:wilting-glare"
   },
   "subdomain-power:thirst:withering-nimbus": {
@@ -34926,6 +35318,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:thirst:withering-nimbus"
   },
   "subdomain-power:thorns:cruel-thicket": {
@@ -34942,6 +35338,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:thorns:cruel-thicket"
   },
   "subdomain-power:thought:read-minds": {
@@ -34958,6 +35358,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:thought:read-minds"
   },
   "subdomain-power:toil:aura-of-repetition": {
@@ -34974,6 +35378,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:toil:aura-of-repetition"
   },
   "subdomain-power:torture:painful-smite": {
@@ -34984,6 +35392,10 @@
     "id": "subdomain-power:torture:painful-smite",
     "name": "Painful Smite",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:torture:painful-smite"
   },
   "subdomain-power:trade:silver-tongued-haggler": {
@@ -35000,6 +35412,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:trade:silver-tongued-haggler"
   },
   "subdomain-power:trap:supernatural-trap": {
@@ -35016,6 +35432,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "@abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:trap:supernatural-trap"
   },
   "subdomain-power:truth:dawning-realization": {
@@ -35032,6 +35452,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 4 + floor((@class.unlevel - 8) / 2))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:truth:dawning-realization"
   },
   "subdomain-power:tyranny:tyrannical-strike": {
@@ -35042,6 +35466,10 @@
     "id": "subdomain-power:tyranny:tyrannical-strike",
     "name": "Tyrannical Strike",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:tyranny:tyrannical-strike"
   },
   "subdomain-power:undead:death-s-kiss": {
@@ -35058,6 +35486,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:undead:death-s-kiss"
   },
   "subdomain-power:venom:venomous-saliva": {
@@ -35068,6 +35500,10 @@
     "id": "subdomain-power:venom:venomous-saliva",
     "name": "Venomous Saliva",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:venom:venomous-saliva"
   },
   "subdomain-power:wards:warding-rune": {
@@ -35084,6 +35520,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 6))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:wards:warding-rune"
   },
   "subdomain-power:whimsy:unexpected-whimsy": {
@@ -35094,6 +35534,10 @@
     "id": "subdomain-power:whimsy:unexpected-whimsy",
     "name": "Unexpected Whimsy",
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:whimsy:unexpected-whimsy"
   },
   "svfvNQL4u1FbRuUp": {

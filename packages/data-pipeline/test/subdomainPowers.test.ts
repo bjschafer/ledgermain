@@ -7,7 +7,7 @@ import {
   normalizePowerName,
   parseSubdomainPowerSets,
 } from "../src/transform/subdomainPowers.js";
-import type { PfDataDictionary } from "../src/util/pfdata.js";
+import { pfDataAbilityUses, type PfDataDictionary } from "../src/util/pfdata.js";
 
 /**
  * Unit coverage for the subdomain granted-power import, on hand-built input
@@ -61,6 +61,8 @@ describe("parseSubdomainPowerSets", () => {
         level: 0,
         description: "<p>You can teleport up to 10 feet.</p>",
         replaces: "copycat",
+        // The daily cap is directive metadata, absent from the prose above.
+        uses: { maxFormula: "3 + @abilities.wis.mod", per: "day" },
       },
     ]);
   });
@@ -83,6 +85,58 @@ describe("parseSubdomainPowerSets", () => {
     const [set] = parseSubdomainPowerSets([dict], TRICKERY_TAGS);
     expect(set!.powers[0]!.level).toBe(8);
     expect(set!.powers[0]!.replaces).toBe("master's illusion");
+  });
+});
+
+describe("pfDataAbilityUses", () => {
+  // Expected values cite APG p. 86-107 (subdomains) unless noted; the source
+  // states each cap only as directive metadata, never in the ability prose.
+  it("reads the '3 + your Wisdom modifier times per day' domain-power cadence", () => {
+    // Deception's Sudden Shift, APG p. 89.
+    expect(pfDataAbilityUses({ useMod: "Wis3" })).toEqual({
+      maxFormula: "3 + @abilities.wis.mod",
+      per: "day",
+    });
+    // The ability is spelled either way, and the count is optional: Trap's
+    // Supernatural Trap is a bare "equal to your Wisdom bonus" (APG p. 90).
+    expect(pfDataAbilityUses({ useMod: "Charisma3" })).toEqual({
+      maxFormula: "3 + @abilities.cha.mod",
+      per: "day",
+    });
+    expect(pfDataAbilityUses({ useMod: "Wis" })).toEqual({
+      maxFormula: "@abilities.wis.mod",
+      per: "day",
+    });
+  });
+
+  it("reads a per-class-level cap", () => {
+    // Catastrophe's Deadly Weather: rounds per day equal to cleric level.
+    // Counted rounds are modeled as a day pool holding a round count, the
+    // same way Rage and Master's Illusion already are, so useUnit changes
+    // nothing about the number.
+    expect(pfDataAbilityUses({ useL: "cleric", useUnit: "round", useNC: true })).toEqual({
+      maxFormula: "@class.unlevel",
+      per: "day",
+    });
+  });
+
+  it("reads the 'once at 8th, plus one per four levels beyond' step form", () => {
+    // Lightning's Lightning Rod, which the vendored pack independently
+    // encodes as floor((@class.unlevel - 4) / 4) — the same numbers.
+    const uses = pfDataAbilityUses({ useF: "8~1~4", useInc: "cleric~4~8" });
+    expect(uses).toEqual({
+      maxFormula: "max(0, 1 + floor((@class.unlevel - 8) / 4))",
+      per: "day",
+    });
+    // Home's Eyes of Darkness starts at 4 and steps every 2 — i.e. half level.
+    expect(pfDataAbilityUses({ useF: "8~4~2" })!.maxFormula).toBe(
+      "max(0, 4 + floor((@class.unlevel - 8) / 2))",
+    );
+  });
+
+  it("returns nothing for a passive ability and an unrecognized ability score", () => {
+    expect(pfDataAbilityUses({ passive: "You gain a +2 sacred bonus." })).toBeUndefined();
+    expect(pfDataAbilityUses({ useMod: "Luck3" })).toBeUndefined();
   });
 });
 

@@ -2,6 +2,7 @@ import type { ClassFeature, ClassFeatureGrant, Domain, SourceRef, Subdomain } fr
 
 import {
   parsePfDataAbility,
+  pfDataAbilityUses,
   pfDataSourceRefFromLine,
   type PfDataDictionary,
 } from "../util/pfdata.js";
@@ -54,6 +55,12 @@ export interface SubdomainPower {
    * target, i.e. the subdomain adds this power outright.
    */
   replaces?: string;
+  /**
+   * Daily-use cap, when the source states one (`pfDataAbilityUses`). The
+   * source states it as directive metadata rather than in the prose, so a
+   * power imported without this reads as unlimited and gets no tracker pool.
+   */
+  uses?: { maxFormula: string; per: string };
 }
 
 /** Every power a subdomain's section grants, plus the parent domain it was listed under. */
@@ -140,11 +147,13 @@ function parseDomainEntry(domainTag: string, lines: string[]): SubdomainPowerSet
     if (!ability) continue;
     const suffix = ABILITY_TYPE_SUFFIX_RE.exec(ability.name);
     const replaceRaw = ability.props.replace;
+    const uses = pfDataAbilityUses(ability.props);
     current.powers.push({
       name: ability.name.replace(ABILITY_TYPE_SUFFIX_RE, "").trim(),
       ...(suffix ? { abilityType: suffix[1]!.toLowerCase() } : {}),
       level: ability.level !== undefined && ability.level > 1 ? ability.level : 0,
       description: ability.bodyHtml,
+      ...(uses ? { uses } : {}),
       ...(typeof replaceRaw === "string"
         ? (() => {
             const target = parseReplaceTarget(replaceRaw);
@@ -271,6 +280,7 @@ export function applySubdomainPowerSupplements(
         description: power.description,
         ...(set.sources ? { sources: set.sources } : {}),
         ...(power.abilityType ? { abilityType: power.abilityType } : {}),
+        ...(power.uses ? { uses: power.uses } : {}),
         subType: "classFeat",
         changes: [],
         grantsBuffs: [],

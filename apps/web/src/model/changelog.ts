@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-02-subdomain-power-uses",
+    date: "2026-08-02",
+    title: "Subdomain powers track their uses per day",
+    note: "A subdomain's granted powers arrived on the sheet with their rules text but no daily count, so a Deception cleric's Sudden Shift showed up under class features and never under Resources. 111 subdomain powers now come with their printed cap and a tracker you can spend down: Sudden Shift at 3 plus your Wisdom modifier, Catastrophe's Deadly Weather for rounds equal to your cleric level, and the ones that start at 8th level and grow, like Blood's Wounding Blade. Powers that are always on, Self-Realization's Perfected Form among them, correctly get no counter.",
+  },
+  {
     id: "2026-08-02-focused-schools",
     date: "2026-08-02",
     title: "Focused arcane schools",

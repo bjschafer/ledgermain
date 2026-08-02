@@ -151,6 +151,43 @@ describe("cleric subdomain selection (in place of a parent domain)", () => {
     expect(suddenShift.classTag).toBe("cleric");
   });
 
+  it("an imported subdomain power meters its daily uses like a vendored one", () => {
+    // The imported powers carry their cap as source metadata that never
+    // reaches the prose, so each of these reads as unlimited if it isn't
+    // folded back in, and shows up nowhere in the tracker's resource list.
+    const abilities: Record<string, AbilityView> = { wis: { base: 16, total: 16, mod: 3 } };
+    const pools = deriveResourcePools(makeCleric(8, ["Deception", "Catastrophe"]), ref, abilities);
+    const pool = (name: string) => pools.find((p) => p.name === name);
+
+    // Sudden Shift: 3 + Wis modifier per day (APG p. 89).
+    expect(pool("Sudden Shift")!.max).toBe(6);
+    expect(pool("Sudden Shift")!.per).toBe("day");
+    // Deadly Weather: rounds per day equal to cleric level (APG p. 105).
+    expect(pool("Deadly Weather")!.max).toBe(8);
+  });
+
+  it("a subdomain power that scales past its gate level steps with cleric level", () => {
+    // Blood's Wounding Blade: once per day at 8th, plus one more for every
+    // four cleric levels beyond 8th (APG p. 87).
+    const abilities: Record<string, AbilityView> = { wis: { base: 10, total: 10, mod: 0 } };
+    const maxAt = (level: number) =>
+      deriveResourcePools(makeCleric(level, ["Blood"]), ref, abilities).find(
+        (p) => p.name === "Wounding Blade",
+      )?.max;
+    expect(maxAt(8)).toBe(1);
+    expect(maxAt(11)).toBe(1);
+    expect(maxAt(12)).toBe(2);
+    expect(maxAt(20)).toBe(4);
+  });
+
+  it("a passive subdomain power gets no pool", () => {
+    // Self-Realization's Perfected Form is an always-on bonus (APG p. 92),
+    // not a metered power — nothing for the tracker to count down.
+    const abilities: Record<string, AbilityView> = { wis: { base: 10, total: 10, mod: 0 } };
+    const pools = deriveResourcePools(makeCleric(8, ["Self-Realization"]), ref, abilities);
+    expect(pools.find((p) => p.name === "Perfected Form")).toBeUndefined();
+  });
+
   it("a subdomain replacement power is level-gated like any other grant", () => {
     // Thievery's Thief of the Gods replaces Master's Illusion, so it inherits
     // that power's 8th-level gate; Copycat is the one Thievery keeps.

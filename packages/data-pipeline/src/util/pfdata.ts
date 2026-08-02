@@ -328,8 +328,9 @@ function renderListDirective(label: string, propsRaw: string): string {
 
 /**
  * `::ab[Name]{l=N icon=... <kind>="text" impNN="text" usage="..."}` — a
- * bloodrager bloodline power/ability stat block (`icon`/`useF`/`useInc`/
- * `useMod` are non-textual metadata this reader ignores). `<kind>` is
+ * bloodrager bloodline power/ability stat block (`icon` is non-textual
+ * metadata this reader ignores; the `use*` family encodes a daily-use cap
+ * and is read separately by `pfDataAbilityUses`). `<kind>` is
  * whichever action-type key the source used (`passive`/`immediate`/
  * `standard`/`swift`/`free`/`ability`) holding the actual ability text;
  * `impNN` keys are level-gated improvements, folded in as "At Nth level: ..."
@@ -415,6 +416,82 @@ export interface PfDataAbility {
   /** The ability's prose as a single `<p>` paragraph. */
   bodyHtml: string;
   props: Record<string, string | true>;
+}
+
+const USE_MOD_ABILITIES: Record<string, string> = {
+  str: "str",
+  strength: "str",
+  dex: "dex",
+  dexterity: "dex",
+  con: "con",
+  constitution: "con",
+  int: "int",
+  intelligence: "int",
+  wis: "wis",
+  wisdom: "wis",
+  cha: "cha",
+  charisma: "cha",
+};
+
+/**
+ * The daily-use cap an `::ab[]` directive encodes, as a `uses` block in the
+ * same shape `ClassFeature`/`Feat` already carry. `undefined` for an ability
+ * with no cap at all (a passive one), which is the majority.
+ *
+ * The source spells the cap out in three mutually exclusive forms, none of
+ * which appears in the rendered prose — an ability capped this way reads as
+ * unlimited unless this is folded back in:
+ *
+ * - `useMod=Wis3` — "3 + your Wisdom modifier times per day", the standard
+ *   domain-power cadence. The trailing number is optional (`useMod=Wis` is a
+ *   bare "equal to your Wisdom bonus"), and the ability is spelled either
+ *   abbreviated or in full (`Cha`/`Charisma`).
+ * - `useL=cleric` — "equal to your cleric level".
+ * - `useF="8~1~4"` — "once per day at 8th level, plus one additional time per
+ *   day for every four levels beyond 8th": `start~base~step`. The companion
+ *   `useInc` restates the class and step and adds nothing this needs.
+ *
+ * `useUnit` names what is being counted (uses, rounds, minutes) and `useNC`
+ * flags that they need not be consecutive. Neither changes the number, and a
+ * rounds-per-day pool is already modeled as `per: "day"` holding a round
+ * count (Rage, Master's Illusion), so both are ignored here.
+ *
+ * Formulas are emitted against `@class.unlevel` — the granting class's level
+ * in the contextual roll data — matching how the vendored pack writes the
+ * same caps (Lightning Rod's `floor((@class.unlevel - 4) / 4)` is the
+ * `useF="8~1~4"` shape).
+ */
+export function pfDataAbilityUses(
+  props: Record<string, string | true>,
+): { maxFormula: string; per: string } | undefined {
+  const per = "day";
+
+  const mod = typeof props.useMod === "string" ? /^([A-Za-z]+)(\d*)$/.exec(props.useMod) : null;
+  if (mod) {
+    const ability = USE_MOD_ABILITIES[mod[1]!.toLowerCase()];
+    if (ability) {
+      const base = mod[2] ? Number(mod[2]) : 0;
+      const modTerm = `@abilities.${ability}.mod`;
+      return { maxFormula: base > 0 ? `${base} + ${modTerm}` : modTerm, per };
+    }
+  }
+
+  if (typeof props.useF === "string") {
+    const [start, base, step] = props.useF.split("~").map((n) => Number(n.trim()));
+    if (Number.isFinite(base)) {
+      if (!Number.isFinite(start) || !Number.isFinite(step) || step! <= 0) {
+        return { maxFormula: String(base), per };
+      }
+      // Clamped because the two Plague listings of Touch of Virulence
+      // disagree on the gate level: the one stating none is granted at 1st,
+      // where the unclamped formula would go negative.
+      return { maxFormula: `max(0, ${base} + floor((@class.unlevel - ${start}) / ${step}))`, per };
+    }
+  }
+
+  if (typeof props.useL === "string") return { maxFormula: "@class.unlevel", per };
+
+  return undefined;
 }
 
 /** Parse a lone `::ab[Name]{...}` line; `null` when the line isn't one, or carries no prose. */
