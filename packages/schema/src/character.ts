@@ -639,6 +639,18 @@ export interface CharacterDoc {
        * posture as `encumbranceEnabled`'s sibling toggles.
        */
       fractionalBonuses?: boolean;
+      /**
+       * Homebrew: the "bonus spells per day from a high casting ability"
+       * table grants its slots even at spell levels the class progression
+       * table hasn't unlocked yet (e.g. a level 1 wizard with Int 14+ gets
+       * their bonus 2nd-level slot immediately, instead of waiting until the
+       * class table itself reaches 2nd-level spells). `"toSecond"` caps this
+       * early access at 2nd-level spells; `"all"` grants it at every spell
+       * level the ability modifier qualifies for. Absent (default) = RAW:
+       * bonus slots only apply at levels the class table already grants,
+       * same posture as `fractionalBonuses`'s sibling toggles.
+       */
+      earlyBonusSpells?: "toSecond" | "all";
     };
     /**
      * Player-curated bookmarks into already-computed sheet numbers ("saved

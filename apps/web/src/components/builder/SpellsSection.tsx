@@ -5,7 +5,6 @@ import type { RefData } from "@pf1/schema";
 import { casterLevelForClass, effectiveCasterClassLevel } from "../../model/casterLevel.js";
 import { parentBloodlineTagOf, toggleKnownSpell } from "../../model/doc.js";
 import {
-  accessibleSpellLevels,
   bloodlineSpellsKnown,
   casterClassesOf,
   casterModelFor,
@@ -19,6 +18,7 @@ import {
   shamanSpiritSpellsKnown,
   spellsKnownLimitsByLevel,
   spellsPanelVisible,
+  unlockedSpellLevels,
 } from "../../model/spellcasting.js";
 import {
   classSpellsByLevel,
@@ -69,7 +69,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   );
 
   // Advancement-aware effective class level (2) — feeds the
-  // spells-per-day/known TABLE lookups below (accessibleLevels, knownLimits),
+  // spells-per-day/known TABLE lookups below (unlockedLevels, knownLimits),
   // which a prestige class's casting-advancement slot legitimately bumps.
   const effectiveClassLevel = useMemo(
     () => (casterTag ? effectiveCasterClassLevel(doc, refData, casterTag) : classLevel),
@@ -84,13 +84,30 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
 
   const grantsCantrips = !!model?.grantsAllCantrips;
 
-  // Spell levels actually reachable at the current class level — used to hide
-  // the not-yet-accessible tail of the reference lists below (levels 0/1 are
-  // always shown once any caster level is reached; e.g. a level-3 cleric has
-  // no business browsing level 5+ spells yet).
-  const accessibleLevels = useMemo(
-    () => (model ? new Set(accessibleSpellLevels(model, effectiveClassLevel)) : null),
-    [model, effectiveClassLevel],
+  // Ability modifier for this caster's governing score — needed up here
+  // (rather than down near `knownLabel` below) because it feeds
+  // `unlockedLevels`'s early-bonus-spells homebrew check.
+  const abilityMod = model ? sheet.abilities[model.ability].mod : 0;
+
+  // Spell levels actually reachable at the current class level, PLUS whatever
+  // the early-bonus-spells homebrew (`build.settings.earlyBonusSpells`)
+  // unlocks early — used to hide the not-yet-accessible tail of the reference
+  // lists below (levels 0/1 are always shown once any caster level is
+  // reached; e.g. a level-3 cleric has no business browsing level 5+ spells
+  // yet).
+  const unlockedLevels = useMemo(
+    () =>
+      model
+        ? new Set(
+            unlockedSpellLevels(
+              model,
+              effectiveClassLevel,
+              abilityMod,
+              doc.build.settings?.earlyBonusSpells,
+            ),
+          )
+        : null,
+    [model, effectiveClassLevel, abilityMod, doc.build.settings?.earlyBonusSpells],
   );
 
   // Granted cantrips: derived from the class list, never stored in `known`.
@@ -119,7 +136,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
       for (const [lvl, ids] of Object.entries(list)) {
         const n = Number(lvl);
         if (grantsCantrips && n === 0) continue;
-        if (accessibleLevels && !accessibleLevels.has(n)) continue;
+        if (unlockedLevels && !unlockedLevels.has(n)) continue;
         for (const id of ids) {
           const sp = refData.spells[id];
           if (sp) out.push({ id, name: sp.name, level: n });
@@ -127,7 +144,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
       }
     }
     return out.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
-  }, [clericDomains, refData, grantsCantrips, accessibleLevels, casterTag]);
+  }, [clericDomains, refData, grantsCantrips, unlockedLevels, casterTag]);
 
   // Bloodline bonus spells known (sorcerer only): auto-granted, read-only, and
   // exempt from the spells-known cap — listed here for reference alongside the
@@ -215,8 +232,8 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   // its spell selection; the known-list branch uses `entries` unfiltered, since
   // planning ahead (spellbook scribing, future levels) is intentional there.
   const accessibleEntries = useMemo(
-    () => entries.filter((e) => !accessibleLevels || accessibleLevels.has(e.level)),
-    [entries, accessibleLevels],
+    () => entries.filter((e) => !unlockedLevels || unlockedLevels.has(e.level)),
+    [entries, unlockedLevels],
   );
 
   const known = useMemo(
@@ -235,10 +252,15 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     if (!model) return new Map<number, number>();
     const limits =
       casterTag === "occultist"
-        ? occultistKnownSpellLimitsByLevel(doc, effectiveClassLevel)
+        ? occultistKnownSpellLimitsByLevel(
+            doc,
+            effectiveClassLevel,
+            abilityMod,
+            doc.build.settings?.earlyBonusSpells,
+          )
         : spellsKnownLimitsByLevel(model, effectiveClassLevel);
     return new Map(limits.map((l) => [l.level, l.limit]));
-  }, [model, effectiveClassLevel, casterTag, doc]);
+  }, [model, effectiveClassLevel, casterTag, doc, abilityMod]);
 
   // Count known spells per level (for the advisory).
   const levelMap = useMemo(
@@ -266,7 +288,6 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   }
 
   const abilityLabel = model ? model.ability.toUpperCase() : "";
-  const abilityMod = model ? sheet.abilities[model.ability].mod : 0;
 
   const knownLabel = model?.knownLabel ?? "Spells Known";
   const knownCount = known.size;
@@ -281,13 +302,11 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   }
   // Always show a heading for every accessible level — even at 0 known — so you
   // can see at a glance how many spells you still need to add at each level.
-  // Cantrips (level 0) live in knownLimits, not accessibleLevels, since they're
+  // Cantrips (level 0) live in knownLimits, not unlockedLevels, since they're
   // at-will and never consume a per-day slot; when the class grants them all,
   // level 0 is dropped entirely — `known` can never hold a cantrip, so the
   // heading would be a permanently-empty row next to the granted block.
-  const levels = [
-    ...new Set([...(accessibleLevels ?? []), ...knownLimits.keys(), ...byLevel.keys()]),
-  ]
+  const levels = [...new Set([...(unlockedLevels ?? []), ...knownLimits.keys(), ...byLevel.keys()])]
     .filter((lvl) => !(grantsCantrips && lvl === 0))
     .sort((a, b) => a - b);
 

@@ -102,8 +102,9 @@ export function spontaneousSlotStatus(
   classLevel: number,
   abilityMod: number,
   classTag?: string,
+  earlyBonusSpells?: "toSecond" | "all",
 ): SpontaneousLevelStatus[] {
-  const slots = spellSlotsByLevel(model, classLevel, abilityMod);
+  const slots = spellSlotsByLevel(model, classLevel, abilityMod, earlyBonusSpells);
   const used = slotsUsed(doc, classTag);
   return slots.map(({ level, total }) => {
     const usedCount = used[level] ?? 0;
@@ -132,8 +133,9 @@ export function castSpontaneousSlot(
   abilityMod: number,
   spellLevel: number,
   classTag?: string,
+  earlyBonusSpells?: "toSecond" | "all",
 ): CharacterDoc {
-  const slots = spellSlotsByLevel(model, classLevel, abilityMod);
+  const slots = spellSlotsByLevel(model, classLevel, abilityMod, earlyBonusSpells);
   const entry = slots.find((s) => s.level === spellLevel);
   if (!entry || entry.total <= 0) return doc;
   const current = slotsUsed(doc, classTag);

@@ -78,6 +78,11 @@ function meetsCastingRequirement(
     if (!model) continue;
     const level = effectiveCasterClassLevel(doc, refData, c.tag);
     if (level <= 0) continue;
+    // Deliberately `accessibleSpellLevels`, not `unlockedSpellLevels`: a
+    // prerequisite must stay RAW even when the early-bonus-spells homebrew is
+    // on — a slot that only exists because of a high ability score (and
+    // could vanish with an Int headband) must never satisfy a prestige
+    // class's "able to cast Nth-level spells" requirement.
     if (accessibleSpellLevels(model, level).includes(req.spellLevel)) return true;
   }
   return false;

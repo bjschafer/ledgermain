@@ -1693,6 +1693,29 @@ export function setPolymorphEnabled(doc: CharacterDoc, enabled: boolean | null):
 }
 
 /**
+ * Set the early-bonus-spells homebrew mode, or pass `undefined` to clear it
+ * back to RAW (bonus slots from a high casting ability only at spell levels
+ * the class table has already unlocked).
+ */
+export function setEarlyBonusSpells(
+  doc: CharacterDoc,
+  value: "toSecond" | "all" | undefined,
+): CharacterDoc {
+  if (value === undefined) {
+    const settings = { ...doc.build.settings };
+    delete settings.earlyBonusSpells;
+    return { ...doc, build: { ...doc.build, settings } };
+  }
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, earlyBonusSpells: value },
+    },
+  };
+}
+
+/**
  * Toggle the homebrew "unrestricted alignments" house rule. When true,
  * `model/alignment.ts`'s `classAlignmentWarnings` returns no warnings
  * regardless of the character's alignment/class combination. Off by default

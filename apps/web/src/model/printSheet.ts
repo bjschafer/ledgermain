@@ -198,7 +198,12 @@ function buildCasters(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData):
     const abilityMod = sheet.abilities[model.ability].mod;
     const classTag = storedClassTag(doc, refData, tag);
     const levelMap = spellLevelMap(refData, tag);
-    const slots = spellSlotsByLevel(model, classLevel, abilityMod);
+    const slots = spellSlotsByLevel(
+      model,
+      classLevel,
+      abilityMod,
+      doc.build.settings?.earlyBonusSpells,
+    );
 
     // Prepared/hybrid casters: what's actually loaded for the day. Spells
     // prepared into a domain/school bonus slot that don't resolve against the

@@ -683,22 +683,76 @@ export interface SpellSlotLevel {
 }
 
 /**
+ * Highest spell level `progression` ever grants at any class level (read off
+ * class level 20, the top of every progression table) — the ceiling a
+ * quarter/half-caster's or 6-level caster's early-bonus-spells homebrew must
+ * never exceed, even under `"all"` (see {@link spellSlotsByLevel}'s
+ * `earlyBonusSpells` parameter).
+ */
+function maxEverSpellLevel(progression: SpellProgression): number {
+  for (let level = 9; level >= 1; level--) {
+    if (baseSpellsPerDay(progression, 20, level) !== null) return level;
+  }
+  return 0;
+}
+
+/**
+ * Spell levels the early-bonus-spells homebrew (`earlyBonusSpells`) unlocks
+ * on top of the RAW-accessible levels at `classLevel` — i.e. levels the class
+ * progression table hasn't reached yet, but which are unlocked anyway by
+ * {@link bonusSpellsForLevel}. Shared by {@link spellSlotsByLevel} (to emit
+ * the bonus-only slot rows) and {@link unlockedSpellLevels} (to report the
+ * unlocked level set), so the three guards stay in one place:
+ *
+ * 1. The caster must already have SOME RAW-accessible level at `classLevel`
+ *    (a delayed caster like paladin/ranger gets nothing from this rule until
+ *    their class table itself grants a level, e.g. paladin/ranger level 4).
+ * 2. The level must be within the setting's cap (`"toSecond"` → 2nd,
+ *    `"all"` → 9th) AND within {@link maxEverSpellLevel} — a bard never gets
+ *    an early 7th-level slot just because Charisma is high enough to qualify.
+ * 3. {@link bonusSpellsForLevel} must actually grant a bonus slot at that
+ *    level for `abilityMod`.
+ */
+function earlyBonusLevels(
+  model: CasterModel,
+  classLevel: number,
+  abilityMod: number,
+  earlyBonusSpells: "toSecond" | "all" | undefined,
+): number[] {
+  if (!earlyBonusSpells) return [];
+  if (accessibleSpellLevels(model, classLevel).length === 0) return [];
+  const settingCap = earlyBonusSpells === "toSecond" ? 2 : 9;
+  const cap = Math.min(settingCap, maxEverSpellLevel(model.progression));
+  const out: number[] = [];
+  for (let level = 1; level <= cap; level++) {
+    if (baseSpellsPerDay(model.progression, classLevel, level) !== null) continue;
+    if (bonusSpellsForLevel(abilityMod, level) > 0) out.push(level);
+  }
+  return out;
+}
+
+/**
  * Slots-per-day for every spell level the caster can access at `classLevel`,
  * combining the engine's base table with ability bonus spells. Levels with no
- * access (base `null`) are omitted. `abilityMod` is the final casting-ability
- * modifier from the computed sheet.
+ * access (base `null`) are omitted, UNLESS `earlyBonusSpells` is set and the
+ * level qualifies for early access (see {@link earlyBonusLevels}) — such a
+ * level is emitted with `base: 0` (the class table still hasn't reached it,
+ * only the bonus-spells homebrew has). `abilityMod` is the final
+ * casting-ability modifier from the computed sheet.
  */
 export function spellSlotsByLevel(
   model: CasterModel,
   classLevel: number,
   abilityMod: number,
+  earlyBonusSpells?: "toSecond" | "all",
 ): SpellSlotLevel[] {
   const out: SpellSlotLevel[] = [];
+  const early = new Set(earlyBonusLevels(model, classLevel, abilityMod, earlyBonusSpells));
   for (let level = 0; level <= 9; level++) {
     const base = baseSpellsPerDay(model.progression, classLevel, level);
-    if (base === null) continue;
+    if (base === null && !early.has(level)) continue;
     const bonus = bonusSpellsForLevel(abilityMod, level);
-    out.push({ level, base, bonus, total: base + bonus });
+    out.push({ level, base: base ?? 0, bonus, total: (base ?? 0) + bonus });
   }
   return out;
 }
@@ -709,6 +763,12 @@ export function spellSlotsByLevel(
  * (unlike {@link spellSlotsByLevel}) this needs no ability modifier — it's
  * cheap to call from the builder, before a computed sheet exists, to filter
  * a spell-list reference down to what's actually reachable yet.
+ *
+ * Deliberately UNCHANGED by the early-bonus-spells homebrew — callers that
+ * need a prerequisite-style "can this caster cast spells of level N at all"
+ * check (e.g. `classPrereqs.ts`) must keep using this, not
+ * {@link unlockedSpellLevels}: a homebrew slot that comes and goes with an
+ * Int headband shouldn't satisfy a prestige-class prerequisite.
  */
 export function accessibleSpellLevels(model: CasterModel, classLevel: number): number[] {
   const out: number[] = [];
@@ -716,6 +776,24 @@ export function accessibleSpellLevels(model: CasterModel, classLevel: number): n
     if (baseSpellsPerDay(model.progression, classLevel, level) !== null) out.push(level);
   }
   return out;
+}
+
+/**
+ * {@link accessibleSpellLevels}, plus whatever extra levels the
+ * early-bonus-spells homebrew unlocks (see {@link earlyBonusLevels} for the
+ * three guards). A superset used everywhere the UI decides which spell
+ * levels are usable for slot display, preparation, and spell pickers — NOT
+ * for prestige-class casting prerequisites (see {@link accessibleSpellLevels}).
+ */
+export function unlockedSpellLevels(
+  model: CasterModel,
+  classLevel: number,
+  abilityMod: number,
+  earlyBonusSpells?: "toSecond" | "all",
+): number[] {
+  const raw = accessibleSpellLevels(model, classLevel);
+  const early = earlyBonusLevels(model, classLevel, abilityMod, earlyBonusSpells);
+  return [...new Set([...raw, ...early])].sort((a, b) => a - b);
 }
 
 // ---------------------------------------------------------------------------
@@ -749,13 +827,23 @@ export function spellsKnownLimitsByLevel(
  * Maximum number of distinct spells a `"hybrid"` caster (e.g. arcanist) may
  * have PREPARED (readied from her spellbook) at each spell level, including
  * cantrips (level 0) — unlike {@link spellSlotsByLevel}'s per-day slot pool,
- * this is never adjusted by ability-score bonus spells (no vendored/SRD bonus
- * column for "spells prepared"). Levels with no access (null) are omitted.
- * Returns empty array when the model has no `preparedProgression`.
+ * this is RAW never adjusted by ability-score bonus spells (no vendored/SRD
+ * bonus column for "spells prepared"). Levels with no access (null) are
+ * omitted. Returns empty array when the model has no `preparedProgression`.
+ *
+ * The early-bonus-spells homebrew is the one exception: when `earlyBonusSpells`
+ * and `abilityMod` are both passed, a level the prepared-progression table
+ * hasn't reached yet but that {@link spellSlotsByLevel} unlocks early gets a
+ * capacity equal to that level's bonus slot count — otherwise the early cast
+ * slot(s) `spellSlotsByLevel` grants would have nothing preparable to fill
+ * them. Omit both parameters (or pass no `earlyBonusSpells`) to keep the
+ * RAW-only, table-driven result.
  */
 export function preparedCapacityByLevel(
   model: CasterModel,
   classLevel: number,
+  abilityMod?: number,
+  earlyBonusSpells?: "toSecond" | "all",
 ): { level: number; limit: number }[] {
   if (!model.preparedProgression) return [];
   const out: { level: number; limit: number }[] = [];
@@ -763,6 +851,14 @@ export function preparedCapacityByLevel(
     const limit = baseSpellsPrepared(model.preparedProgression, classLevel, level);
     if (limit === null) continue;
     out.push({ level, limit });
+  }
+  if (earlyBonusSpells !== undefined && abilityMod !== undefined) {
+    const covered = new Set(out.map((o) => o.level));
+    for (const level of earlyBonusLevels(model, classLevel, abilityMod, earlyBonusSpells)) {
+      if (covered.has(level)) continue;
+      out.push({ level, limit: bonusSpellsForLevel(abilityMod, level) });
+    }
+    out.sort((a, b) => a.level - b.level);
   }
   return out;
 }

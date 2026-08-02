@@ -18,7 +18,6 @@ import type { AppliedMetamagic, CharacterDoc, PreparedSpell, RefData, Spell } fr
 import { normalizeAlignmentCode } from "./names.js";
 import { chosenOccultistImplementCount } from "./occultistImplements.js";
 import {
-  accessibleSpellLevels,
   casterClassesOf,
   casterModelFor,
   channelSpellLine,
@@ -27,6 +26,7 @@ import {
   knownSpellsFor,
   setKnownSpellsFor,
   storedClassTag,
+  unlockedSpellLevels,
 } from "./spellcasting.js";
 
 function withPrepared(doc: CharacterDoc, prepared: PreparedSpell[]): CharacterDoc {
@@ -521,15 +521,28 @@ export function resetSpiritMagicSlots(doc: CharacterDoc): CharacterDoc {
  * Same soft-warning posture as every other spells-known cap in this app
  * (sorcerer, bard, ...): advisory only — the caller is responsible for never
  * hard-blocking a pick past it.
+ *
+ * Unlike a table-driven `spellsKnownLimitsByLevel` cap, this one is derived
+ * directly from which spell levels are castable at all — so it's threaded
+ * through {@link unlockedSpellLevels} (rather than the RAW-only
+ * `accessibleSpellLevels`) so the early-bonus-spells homebrew's early levels
+ * get an implement-school known-spell slot too, same as every other level.
+ * `abilityMod`/`earlyBonusSpells` are optional so existing RAW-only callers
+ * are unaffected.
  */
 export function occultistKnownSpellLimitsByLevel(
   doc: CharacterDoc,
   classLevel: number,
+  abilityMod?: number,
+  earlyBonusSpells?: "toSecond" | "all",
 ): { level: number; limit: number }[] {
   const model = casterModelFor("occultist");
   if (!model) return [];
   const cap = chosenOccultistImplementCount(doc);
-  return accessibleSpellLevels(model, classLevel).map((level) => ({ level, limit: cap }));
+  return unlockedSpellLevels(model, classLevel, abilityMod ?? 0, earlyBonusSpells).map((level) => ({
+    level,
+    limit: cap,
+  }));
 }
 
 /**
