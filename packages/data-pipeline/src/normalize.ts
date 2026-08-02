@@ -91,6 +91,7 @@ import {
   applyClassFeatureChangesSupplements,
   applyClassFeatureEffectImmunitySupplements,
   applyClassFeatureUsesSupplements,
+  applyItemSupplements,
   applyPrestigeClassSupplements,
   applyRaceEffectImmunitySupplements,
   applyRaceEnergyResistanceSupplements,
@@ -700,6 +701,9 @@ export function normalize(opts: NormalizeOptions): {
   const items: Item[] = readPack(join(packsDir, "items"))
     .filter((pf) => !isFolderDoc(pf.doc))
     .map((pf) => transformItem(pf.doc, resolveUuid));
+  // Published gear the pack doesn't carry at all, hand-authored — appended
+  // after the pack read so the collision guard sees the full vendored set.
+  applyItemSupplements(items);
 
   // --- armors & shields (mundane base gear; magic named suits excluded) ------
   const armors: ArmorRef[] = readPack(join(packsDir, "armors-and-shields"))

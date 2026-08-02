@@ -13716,6 +13716,28 @@
     "uuid": "Compendium.pf1.items.Item.isaceldvwsdzpofk",
     "weight": 20
   },
+  "item:boots-of-the-cat": {
+    "aura": {
+      "school": "trs"
+    },
+    "changes": [],
+    "cl": 1,
+    "contextNotes": [],
+    "description": "<p>These high-soled boots provide a great deal of comfort and arch support while also making the wearer appear a little bit taller than normal. The wearer always takes the minimum possible damage from a fall (as if the GM had rolled a 1 on each die of damage incurred by the fall), and at the end of a fall always lands on her feet.</p>",
+    "id": "item:boots-of-the-cat",
+    "name": "Boots of the Cat",
+    "price": 1000,
+    "slot": "feet",
+    "sources": [
+      {
+        "id": "PZO1123",
+        "pages": "229"
+      }
+    ],
+    "subType": "wondrous",
+    "uuid": "supplement-item:boots-of-the-cat",
+    "weight": 1
+  },
   "itpjtzjuzpzuvmlu": {
     "changes": [],
     "contextNotes": [],

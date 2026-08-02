@@ -30,6 +30,7 @@ import type {
   ClassFeature,
   ClassFeatureGrant,
   ContextNote,
+  Item,
   Race,
   RacialTrait,
   SourceRef,
@@ -3320,5 +3321,61 @@ export function applyRacialTraitAliasSupplements(traits: RacialTrait[]): void {
     }
     trait.openChanges = s.openChanges;
     trait.replacedTraitNames = s.replacedTraitNames;
+  }
+}
+
+/**
+ * Whole hand-authored gear entries for published items the Foundry `items` pack
+ * simply doesn't carry — the item counterpart to
+ * {@link SUPPLEMENTAL_PRESTIGE_CLASSES} (a new entity, not a patch onto a
+ * vendored one; for the latter see `@pf1/engine`'s `ITEM_CHANGE_PATCHES`).
+ *
+ * Synthetic `item:`/`supplement-item:` ids never collide with Foundry's
+ * generated ones and, unlike them, survive a data bump — a character's saved
+ * `build.gear[].itemId` keeps resolving.
+ *
+ * An entry whose published effect the engine has no model for carries an empty
+ * `changes[]` rather than an invented approximation (the standing no-fake-
+ * mechanics rule); it's still selectable, priced, weighed, and readable on the
+ * reference site, which is what the request is for.
+ */
+export const SUPPLEMENTAL_ITEMS: Item[] = [
+  {
+    // Boots of the Cat (Ultimate Equipment p. 229, issue #111). Falling damage
+    // isn't modeled anywhere in the engine, so there is nothing to encode: the
+    // whole effect is a floor on damage dice the tracker never rolls.
+    id: "item:boots-of-the-cat",
+    name: "Boots of the Cat",
+    uuid: "supplement-item:boots-of-the-cat",
+    description:
+      "<p>These high-soled boots provide a great deal of comfort and arch support while also making the wearer appear a little bit taller than normal. The wearer always takes the minimum possible damage from a fall (as if the GM had rolled a 1 on each die of damage incurred by the fall), and at the end of a fall always lands on her feet.</p>",
+    sources: [{ id: "PZO1123", pages: "229" }],
+    subType: "wondrous",
+    slot: "feet",
+    price: 1000,
+    weight: 1,
+    cl: 1,
+    aura: { school: "trs" },
+    changes: [],
+    contextNotes: [],
+  },
+];
+
+/**
+ * Push {@link SUPPLEMENTAL_ITEMS} onto the vendored item list, failing the
+ * build if upstream has since started shipping one of them (at which point the
+ * entry should be retired rather than shadowing the real thing).
+ */
+export function applyItemSupplements(items: Item[]): void {
+  for (const item of SUPPLEMENTAL_ITEMS) {
+    const collision = items.find(
+      (it) => it.id === item.id || it.uuid === item.uuid || it.name === item.name,
+    );
+    if (collision) {
+      throw new Error(
+        `[supplements] item "${item.name}" collides with vendored item "${collision.name}" (id=${collision.id}) — retire the supplement`,
+      );
+    }
+    items.push(item);
   }
 }

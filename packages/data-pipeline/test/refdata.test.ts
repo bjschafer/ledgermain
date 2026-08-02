@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 
 import { FOUNDRY_SHA, loadRefData } from "../src/index.js";
-import { SUPPLEMENTAL_BLOODLINE_TAGS } from "../src/supplements.js";
+import { SUPPLEMENTAL_BLOODLINE_TAGS, SUPPLEMENTAL_ITEMS } from "../src/supplements.js";
 
 /**
  * These tests assert known PF1 facts against the vendored normalized data. They
@@ -977,8 +977,34 @@ describe("items (issue #15 — full usable breadth of the `items` pack)", () => 
     // excluded via `isFolderDoc`) — 1124 - 35 = 1089. No item *type* is
     // excluded: loot, equipment, container, weapon (splash/thrown one-shots),
     // and consumable (staves/rods/poisons) all vend. Bumping the SHA may
-    // shift this; changes here should be deliberate + reviewed.
-    expect(Object.keys(ref.items).length).toBe(1089);
+    // shift this; changes here should be deliberate + reviewed. Counted
+    // without the hand-authored supplements so this stays a statement about
+    // the pack alone.
+    const vendored = Object.values(ref.items).filter((it) => !it.id.startsWith("item:"));
+    expect(vendored.length).toBe(1089);
+  });
+
+  it("hand-authored supplements land alongside the pack", () => {
+    expect(Object.keys(ref.items).length).toBe(1089 + SUPPLEMENTAL_ITEMS.length);
+    for (const s of SUPPLEMENTAL_ITEMS) {
+      expect(ref.items[s.id]).toEqual(s);
+    }
+  });
+
+  it("Boots of the Cat is selectable with no invented mechanics (issue #111)", () => {
+    // Absent from the vendored pack entirely; falling damage isn't modeled, so
+    // the entry is deliberately effect-free rather than approximated.
+    const boots = byName(ref.items, "Boots of the Cat");
+    expect(boots).toMatchObject({
+      id: "item:boots-of-the-cat",
+      subType: "wondrous",
+      slot: "feet",
+      price: 1000,
+      weight: 1,
+      cl: 1,
+    });
+    expect(boots.changes).toEqual([]);
+    expect(boots.sources).toEqual([{ id: "PZO1123", pages: "229" }]);
   });
 
   it("no Folder document leaked in as a fake item", () => {

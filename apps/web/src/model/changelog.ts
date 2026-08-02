@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-01-boots-of-the-cat",
+    date: "2026-08-01",
+    title: "Boots of the Cat in the gear picker",
+    note: "Search gear for Boots of the Cat and you can add them like any other wondrous item, priced and weighed. Their effect stays a table ruling: the sheet does not track falling damage, so nothing on it changes when you equip them.",
+  },
+  {
     id: "2026-08-01-fractional-bonuses",
     date: "2026-08-01",
     title: "Fractional base bonuses for multiclass builds",
