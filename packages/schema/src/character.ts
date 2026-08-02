@@ -2632,6 +2632,16 @@ export interface WornArmor {
   /** Magical armor/shield ability ids (e.g. "light-fortification", "ghost-touch") — display only. */
   abilities?: string[];
   /**
+   * Pick-time snapshot of catalog metadata for any id in `abilities` that
+   * isn't in the hand-authored table in `apps/web/src/model/abilities.ts`
+   * (i.e. `RefData.itemAbilities` picks, keyed by the same id): `name` for
+   * display, `cost` in enhancement-bonus equivalents for the +10 cap. `cost`
+   * absent means gp-priced, which consumes no bonus budget. Snapshotted like
+   * the physical armor stats so the doc stays self-contained — the `model/doc.ts`
+   * transitions enforce the cap without RefData in hand.
+   */
+  abilityInfo?: Record<string, { name: string; cost?: number }>;
+  /**
    * Weight in pounds, snapshotted from `ArmorRef.weight` at pick-time (issue
    * #16 encumbrance), or entered directly for a hand-authored custom armor
    * entry. Feeds `@pf1/engine`'s `totalCarriedWeight`; ignored entirely when
@@ -2742,6 +2752,16 @@ export interface WeaponInstance {
    * `model/doc.ts` weapon transitions, not by the schema itself.
    */
   abilities?: string[];
+  /**
+   * Pick-time snapshot of catalog metadata for any id in `abilities` that
+   * isn't in the hand-authored table in `apps/web/src/model/abilities.ts`
+   * (i.e. `RefData.itemAbilities` picks, keyed by the same id): `name` for
+   * display, `cost` in enhancement-bonus equivalents for the +10 cap. `cost`
+   * absent means gp-priced, which consumes no bonus budget. Snapshotted like
+   * the other pick-time weapon stats so the doc stays self-contained — the
+   * `model/doc.ts` transitions enforce the cap without RefData in hand.
+   */
+  abilityInfo?: Record<string, { name: string; cost?: number }>;
   /**
    * Weight in pounds, snapshotted from `WeaponRef.weight` at pick-time (issue
    * #16 encumbrance), or entered directly for a hand-authored custom weapon.

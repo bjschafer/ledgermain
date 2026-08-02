@@ -21,6 +21,7 @@
     "feats": 3563,
     "hexes": 104,
     "investigatorTalents": 67,
+    "itemAbilities": 181,
     "items": 4922,
     "kineticWildTalents": 278,
     "magusArcana": 64,
@@ -77,6 +78,7 @@
     "feats.json": "e3172ba3c88fabb07b93d84215e6c170c59e519111e1990c1db612c557bd2cd8",
     "hexes.json": "58166ae4367bc31370336cc82ccc7ff550e223d230a6a0edfc31faac6b8ec51d",
     "investigator-talents.json": "1fa9047b2b0e294e566d7e16b4928276b1653ddaa563563642004420019cd621",
+    "item-abilities.json": "ff831b81271df2fde97440e56513209289d1284ebdd666f3f7888673a8d66d76",
     "items.json": "24a7171d45e84932803a8e35acbe77f1c3963a208b5777d72efb30d6ce24a957",
     "kinetic-wild-talents.json": "f45495c7ccab4008507d279e5b3c8504512f1a626fd07822bbe781bf9c5dbb6a",
     "magus-arcana.json": "ee5a863d4746e73380d62a5660ff80211c7cc0a891a834d3083a617e14b70b40",
@@ -111,7 +113,7 @@
     "witch-patrons.json": "abe0bc21ba74cd13a5bd2230a6819764ff173dbe6d74a1b7074211f7428ec22c",
     "wizard-schools.json": "46662970340b24ee1a2dab6369de212dbd6c93e494fbb5a3a381cb2dd3a1e521"
   },
-  "schemaVersion": 18,
+  "schemaVersion": 19,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

@@ -16,6 +16,7 @@ import type {
   Feat,
   InvestigatorTalent,
   Item,
+  ItemAbilityRef,
   KineticWildTalent,
   MagusArcana,
   MediumSpirit,
@@ -718,6 +719,7 @@ export function normalize(opts: NormalizeOptions): {
     itemNames.add(normalizeEntityName(imported.name));
     items.push(imported);
   }
+  const itemAbilities: ItemAbilityRef[] = magicItems.abilities;
 
   // --- armors & shields (mundane base gear; magic named suits excluded) ------
   const armors: ArmorRef[] = readPack(join(packsDir, "armors-and-shields"))
@@ -936,6 +938,7 @@ export function normalize(opts: NormalizeOptions): {
     spells: spells.length,
     buffs: buffs.length,
     items: items.length,
+    itemAbilities: itemAbilities.length,
     armors: armors.length,
     weapons: weapons.length,
     archetypes: archetypes.length,
@@ -1009,6 +1012,7 @@ export function normalize(opts: NormalizeOptions): {
     spells: byId(spells),
     buffs: byId(buffs),
     items: byId(items),
+    itemAbilities: byId(itemAbilities),
     spellLists,
     domainSpellLists,
     bloodlineSpellLists,

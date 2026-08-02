@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import type { ArmorRef, Change, Item, ItemInstance, WornArmor } from "@pf1/schema";
+import type { ArmorRef, Change, Item, ItemInstance, RefData, WornArmor } from "@pf1/schema";
 import { gearUnitWeight, tryEvaluateFormula, unappliedChanges } from "@pf1/engine";
 
 import {
@@ -20,11 +20,9 @@ import {
 } from "../../model/doc.js";
 import {
   abilityNotes,
-  abilitySelectable,
-  type AbilityDef,
-  ARMOR_ABILITIES,
-  toggleAbilitySelection,
-  totalBonusEquivalent,
+  type AbilityCatalogOption,
+  type AbilityInfo,
+  buildAbilityCatalog,
 } from "../../model/abilities.js";
 import { addKit, type Kit, listKits } from "../../model/kits.js";
 import {
@@ -35,8 +33,9 @@ import {
 } from "../../model/consumables.js";
 import { ARMOR_MATERIALS } from "../../model/materials.js";
 import { changeTargetLabel } from "../../model/names.js";
-import { InfoTip, TipButton } from "../InfoTip.js";
+import { InfoTip } from "../InfoTip.js";
 import { BagIcon } from "../icons.js";
+import { AbilityPicker, pruneAbilityInfo, toggleAbilityPick } from "./AbilityPicker.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import { SearchMiss } from "./SearchMiss.js";
@@ -48,20 +47,6 @@ function changeLabel(change: { formula: string; target: string; type: string }):
   const type = change.type && change.type !== "untyped" ? ` ${change.type}` : "";
   const target = change.target ? ` to ${changeTargetLabel(change.target)}` : "";
   return `${val}${type}${target}`;
-}
-
-/** Tooltip for an armor ability chip, explaining why it's disabled when relevant (issue #8). */
-function armorAbilityChipTitle(a: AbilityDef, current: string[], enhancement: number): string {
-  const base = a.note
-    ? `${a.name} (+${a.bonusEquivalent}) — ${a.note}`
-    : `${a.name} (+${a.bonusEquivalent})`;
-  if (current.includes(a.id)) return base;
-  if (enhancement < 1) return `${base} — requires a +1 enhancement bonus`;
-  if (a.requires && !current.includes(a.requires)) {
-    const reqName = ARMOR_ABILITIES.find((w) => w.id === a.requires)?.name ?? a.requires;
-    return `${base} — requires ${reqName}`;
-  }
-  return base;
 }
 
 const ARMOR_SLOTS = ["armor", "shield"] as const;
@@ -89,11 +74,13 @@ const BLANK_ARMOR: { armor: WornArmor; name: string } = {
 /** Inline form for adding or editing worn armor/shield. Mirrors WeaponForm. */
 function ArmorForm({
   initial,
+  refData,
   onSave,
   onCancel,
   saveLabel,
 }: {
   initial: { armor: WornArmor; name: string };
+  refData: RefData;
   onSave: (armor: WornArmor, name: string) => void;
   onCancel: () => void;
   saveLabel: string;
@@ -101,17 +88,51 @@ function ArmorForm({
   const [form, setForm] = useState<WornArmor>({ ...initial.armor });
   const [name, setName] = useState(initial.name);
   const [abilities, setAbilities] = useState<string[]>(initial.armor.abilities ?? []);
+  const [abilityInfo, setAbilityInfo] = useState<AbilityInfo>(initial.armor.abilityInfo ?? {});
 
   function field<K extends keyof WornArmor>(key: K, val: WornArmor[K]) {
     setForm((f) => ({ ...f, [key]: val }));
   }
 
   const enhForAbilities = form.enhancement ?? 0;
-  const abilitiesLocked = enhForAbilities < 1;
-  const usedBonus = totalBonusEquivalent(abilities);
 
-  function toggleAbility(id: string) {
-    setAbilities((prev) => toggleAbilitySelection(prev, id, enhForAbilities));
+  const catalog = useMemo(() => buildAbilityCatalog(refData.itemAbilities), [refData]);
+  // The slot toggle below recomputes this on every flip, and — since the
+  // model layer's `sanitizeAbilities` only enforces the +10 budget, not
+  // which slot an ability applies to — {@link handleSlotChange} also drops
+  // any already-picked ability the new slot can't carry (e.g. Bashing,
+  // shield-only, surviving a flip to body armor).
+  const armorAbilityOptions = useMemo(
+    () =>
+      catalog.options.filter((o) =>
+        o.appliesTo.includes(form.slot === "shield" ? "shield" : "armor"),
+      ),
+    [catalog, form.slot],
+  );
+
+  function toggleAbility(option: AbilityCatalogOption) {
+    const result = toggleAbilityPick(abilities, abilityInfo, option, enhForAbilities, catalog.info);
+    setAbilities(result.abilities);
+    setAbilityInfo(result.abilityInfo);
+  }
+
+  function handleSlotChange(slot: "armor" | "shield") {
+    const applicable = slot === "shield" ? "shield" : "armor";
+    const kept = abilities.filter((id) => {
+      const opt = catalog.options.find((o) => o.id === id);
+      return !opt || opt.appliesTo.includes(applicable);
+    });
+    setAbilities(kept);
+    setAbilityInfo(pruneAbilityInfo(abilityInfo, kept));
+    setForm((f) => ({
+      ...f,
+      slot,
+      // Default a fresh switch into the shield slot to "light" so a
+      // shield saved without ever touching the shield-type dropdown
+      // still carries a real proficiency tier (issue #81) instead
+      // of silently staying "unknown."
+      ...(slot === "shield" && !f.shieldTier ? { shieldTier: "light" as const } : {}),
+    }));
   }
 
   function handleSave() {
@@ -130,6 +151,9 @@ function ArmorForm({
     if (armor.type) clean.type = armor.type;
     if (armor.asf) clean.asf = armor.asf;
     if (armor.abilities?.length) clean.abilities = armor.abilities;
+    if (armor.abilities?.length && Object.keys(abilityInfo).length > 0) {
+      clean.abilityInfo = abilityInfo;
+    }
     // Masterwork is only meaningful at +0 — a magic enhancement bonus
     // already implies it (mirrors the weapon masterwork invariant).
     if (armor.masterwork && !armor.enhancement) clean.masterwork = true;
@@ -208,18 +232,7 @@ function ArmorForm({
           <span>Slot</span>
           <select
             value={form.slot}
-            onChange={(e) => {
-              const slot = e.target.value as "armor" | "shield";
-              setForm((f) => ({
-                ...f,
-                slot,
-                // Default a fresh switch into the shield slot to "light" so a
-                // shield saved without ever touching the shield-type dropdown
-                // still carries a real proficiency tier (issue #81) instead
-                // of silently staying "unknown."
-                ...(slot === "shield" && !f.shieldTier ? { shieldTier: "light" as const } : {}),
-              }));
-            }}
+            onChange={(e) => handleSlotChange(e.target.value as "armor" | "shield")}
           >
             {ARMOR_SLOTS.map((s) => (
               <option key={s} value={s}>
@@ -299,31 +312,13 @@ function ArmorForm({
           </label>
         )}
       </div>
-      {ARMOR_ABILITIES.length > 0 && (
-        <div className="ability-chips-section">
-          <span className="section-label">Special abilities</span>
-          <p className="hint">
-            {abilitiesLocked
-              ? "Requires at least a +1 enhancement bonus"
-              : `Enhancement + abilities: ${enhForAbilities + usedBonus}/10`}
-          </p>
-          <div className="ability-chips">
-            {ARMOR_ABILITIES.map((a) => (
-              <TipButton
-                key={a.id}
-                className="chip"
-                aria-pressed={abilities.includes(a.id)}
-                disabled={!abilitySelectable(abilities, a.id, enhForAbilities)}
-                disabledReason={armorAbilityChipTitle(a, abilities, enhForAbilities)}
-                title={armorAbilityChipTitle(a, abilities, enhForAbilities)}
-                onClick={() => toggleAbility(a.id)}
-              >
-                {a.name}
-              </TipButton>
-            ))}
-          </div>
-        </div>
-      )}
+      <AbilityPicker
+        options={armorAbilityOptions}
+        selected={abilities}
+        enhancement={enhForAbilities}
+        info={catalog.info}
+        onToggle={toggleAbility}
+      />
       <button
         type="button"
         className="pick-btn add"
@@ -581,6 +576,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   const [armorEnhancement, setArmorEnhancement] = useState<number>(0);
   const [armorMaterial, setArmorMaterial] = useState<string>("steel");
   const [armorAbilities, setArmorAbilities] = useState<string[]>([]);
+  const [armorAbilityInfo, setArmorAbilityInfo] = useState<AbilityInfo>({});
   const [armorMasterwork, setArmorMasterwork] = useState<boolean>(false);
   const [editingGearIndex, setEditingGearIndex] = useState<number | null>(null);
 
@@ -619,6 +615,21 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
       .sort((a, b) => a.name.localeCompare(b.name))
       .slice(0, 80);
   }, [refData.armors, armorQuery]);
+
+  // Ability catalog for the "select" armor/shield add flow, ahead of a
+  // specific armor/shield being chosen from `filteredArmors` — so it isn't
+  // narrowed to one slot yet (unlike ArmorForm's slot-aware filter).
+  const armorRefAbilityCatalog = useMemo(
+    () => buildAbilityCatalog(refData.itemAbilities),
+    [refData],
+  );
+  const armorRefAbilityOptions = useMemo(
+    () =>
+      armorRefAbilityCatalog.options.filter(
+        (o) => o.appliesTo.includes("armor") || o.appliesTo.includes("shield"),
+      ),
+    [armorRefAbilityCatalog],
+  );
 
   // Generated consumables for the chosen kind (issue #36), filtered by the
   // spell-name search. Regenerated only when the kind changes; the query is
@@ -673,6 +684,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
     setArmorEnhancement(0);
     setArmorMaterial("steel");
     setArmorAbilities([]);
+    setArmorAbilityInfo({});
     setArmorMasterwork(false);
   }
 
@@ -685,13 +697,22 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
         armorMaterial,
         armorAbilities,
         armorMasterwork,
+        armorAbilityInfo,
       ),
     );
     closeArmorPicker();
   }
 
-  function toggleArmorAbility(id: string) {
-    setArmorAbilities((prev) => toggleAbilitySelection(prev, id, armorEnhancement));
+  function toggleArmorAbility(option: AbilityCatalogOption) {
+    const result = toggleAbilityPick(
+      armorAbilities,
+      armorAbilityInfo,
+      option,
+      armorEnhancement,
+      armorRefAbilityCatalog.info,
+    );
+    setArmorAbilities(result.abilities);
+    setArmorAbilityInfo(result.abilityInfo);
   }
 
   function handleAddCustomArmor(armor: WornArmor, name: string) {
@@ -800,6 +821,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                   {inst.armor ? (
                     <ArmorForm
                       initial={{ armor: inst.armor, name: inst.name ?? "" }}
+                      refData={refData}
                       onSave={(armor, name) => handleEditArmor(i, armor, name)}
                       onCancel={() => setEditingGearIndex(null)}
                       saveLabel="Save changes"
@@ -849,7 +871,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                       {inst.armor.acp ? ` · ACP ${inst.armor.acp}` : ""}
                       {inst.armor.asf ? ` · ASF ${inst.armor.asf}%` : ""}
                       {inst.armor.material ? ` · ${inst.armor.material}` : ""}
-                      {abilityNotes(inst.armor.abilities)
+                      {abilityNotes(inst.armor.abilities, inst.armor.abilityInfo)
                         .map((n) => ` · ${n.note ? `${n.name} (${n.note})` : n.name}`)
                         .join("")}
                     </div>
@@ -1239,35 +1261,13 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                     )}
                   </label>
                 </div>
-                {ARMOR_ABILITIES.length > 0 && (
-                  <div className="ability-chips-section">
-                    <span className="section-label">Special abilities</span>
-                    <p className="hint">
-                      {armorEnhancement < 1
-                        ? "Requires at least a +1 enhancement bonus"
-                        : `Enhancement + abilities: ${armorEnhancement + totalBonusEquivalent(armorAbilities)}/10`}
-                    </p>
-                    <div className="ability-chips">
-                      {ARMOR_ABILITIES.map((a) => (
-                        <TipButton
-                          key={a.id}
-                          className="chip"
-                          aria-pressed={armorAbilities.includes(a.id)}
-                          disabled={!abilitySelectable(armorAbilities, a.id, armorEnhancement)}
-                          disabledReason={armorAbilityChipTitle(
-                            a,
-                            armorAbilities,
-                            armorEnhancement,
-                          )}
-                          title={armorAbilityChipTitle(a, armorAbilities, armorEnhancement)}
-                          onClick={() => toggleArmorAbility(a.id)}
-                        >
-                          {a.name}
-                        </TipButton>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <AbilityPicker
+                  options={armorRefAbilityOptions}
+                  selected={armorAbilities}
+                  enhancement={armorEnhancement}
+                  info={armorRefAbilityCatalog.info}
+                  onToggle={toggleArmorAbility}
+                />
                 <div className="scroll">
                   {filteredArmors.length === 0 ? (
                     <div className="empty">No armor matches.</div>
@@ -1310,6 +1310,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
             ) : (
               <ArmorForm
                 initial={BLANK_ARMOR}
+                refData={refData}
                 onSave={handleAddCustomArmor}
                 onCancel={closeArmorPicker}
                 saveLabel="Add to gear"

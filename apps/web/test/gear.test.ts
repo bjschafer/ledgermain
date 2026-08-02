@@ -515,6 +515,90 @@ describe("armor special abilities are capped at +10 combined bonus-equivalent (i
     });
     expect(loweredToZero.build.gear[0]!.armor!.abilities).toBeUndefined();
   });
+
+  // -------------------------------------------------------------------------
+  // abilityInfo: pick-time snapshot for RefData.itemAbilities picks
+  // -------------------------------------------------------------------------
+  it("addWornArmorFromRef() stores abilityInfo for an imported ability pick", () => {
+    const d = addWornArmorFromRef(
+      doc(),
+      FULL_PLATE,
+      3,
+      undefined,
+      ["light-fortification", "ability:dancing-shield"],
+      undefined,
+      {
+        "ability:dancing-shield": { name: "Dancing", cost: 4 },
+      },
+    );
+    const armor = d.build.gear[0]!.armor!;
+    expect(armor.abilities).toEqual(["light-fortification", "ability:dancing-shield"]);
+    expect(armor.abilityInfo).toEqual({ "ability:dancing-shield": { name: "Dancing", cost: 4 } });
+  });
+
+  it("prunes abilityInfo to only ids surviving the +10 cap truncation", () => {
+    // light-fortification(1) + ability:dancing-shield(4) = 5; budget at +9 is only 1.
+    const d = addWornArmorFromRef(
+      doc(),
+      FULL_PLATE,
+      9,
+      undefined,
+      ["light-fortification", "ability:dancing-shield"],
+      undefined,
+      {
+        "ability:dancing-shield": { name: "Dancing", cost: 4 },
+      },
+    );
+    const armor = d.build.gear[0]!.armor!;
+    expect(armor.abilities).toEqual(["light-fortification"]);
+    expect(armor.abilityInfo).toBeUndefined();
+  });
+
+  it("updateGearItem() drops an over-cap imported ability and its abilityInfo when enhancement is raised", () => {
+    let d = addWornArmorFromRef(
+      doc(),
+      FULL_PLATE,
+      1,
+      undefined,
+      ["ability:dancing-shield"],
+      undefined,
+      {
+        "ability:dancing-shield": { name: "Dancing", cost: 4 },
+      },
+    );
+    expect(d.build.gear[0]!.armor!.abilities).toEqual(["ability:dancing-shield"]);
+    // Budget = 10 - enhancement; raising to +9 leaves only 1 point, below Dancing's cost of 4.
+    d = updateGearItem(d, 0, { armor: { ...d.build.gear[0]!.armor!, enhancement: 9 } });
+    expect(d.build.gear[0]!.armor!.abilities).toBeUndefined();
+    expect(d.build.gear[0]!.armor!.abilityInfo).toBeUndefined();
+  });
+
+  it("addWornArmor() (hand-entered) preserves abilityInfo for a surviving imported ability", () => {
+    const overCap: WornArmor = {
+      slot: "armor",
+      ac: 9,
+      enhancement: 5,
+      abilities: ["ability:dancing-shield"],
+      abilityInfo: { "ability:dancing-shield": { name: "Dancing", cost: 4 } },
+    };
+    const d = addWornArmor(doc(), overCap, "Custom Full Plate");
+    expect(d.build.gear[0]!.armor!.abilities).toEqual(["ability:dancing-shield"]);
+    expect(d.build.gear[0]!.armor!.abilityInfo).toEqual({
+      "ability:dancing-shield": { name: "Dancing", cost: 4 },
+    });
+  });
+
+  it("legacy docs with no abilityInfo and an unknown ability id keep the id (cost 0)", () => {
+    const legacy: WornArmor = {
+      slot: "armor",
+      ac: 9,
+      enhancement: 1,
+      abilities: ["some-removed-ability-id"],
+    };
+    const d = addWornArmor(doc(), legacy, "Legacy Armor");
+    expect(d.build.gear[0]!.armor!.abilities).toEqual(["some-removed-ability-id"]);
+    expect(d.build.gear[0]!.armor!.abilityInfo).toBeUndefined();
+  });
 });
 
 // ---------------------------------------------------------------------------

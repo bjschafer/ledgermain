@@ -1023,6 +1023,23 @@ export function addGearItem(doc: CharacterDoc, itemId: string): CharacterDoc {
 }
 
 /**
+ * Prunes a pick-time `abilityInfo` snapshot down to the ids still present in
+ * `keep` (after `sanitizeAbilities` truncation), so a dropped imported
+ * ability doesn't leave its snapshot metadata behind as dead weight.
+ */
+function pruneAbilityInfo(
+  info: Record<string, { name: string; cost?: number }>,
+  keep: string[],
+): Record<string, { name: string; cost?: number }> {
+  const pruned: Record<string, { name: string; cost?: number }> = {};
+  for (const id of keep) {
+    const entry = info[id];
+    if (entry) pruned[id] = entry;
+  }
+  return pruned;
+}
+
+/**
  * Enforces PF1's magic armor/shield invariants on a `WornArmor` (issue #8;
  * mirrors `normalizeWeaponInstance`, applied to the armor half of the same
  * "+10 total bonus" rule):
@@ -1035,6 +1052,8 @@ export function addGearItem(doc: CharacterDoc, itemId: string): CharacterDoc {
  *  - `abilities` truncated (keeping earliest-selected first) so `enhancement`
  *    plus their combined bonus-equivalent never exceeds +10 — PF1 RAW caps
  *    armor/shield special abilities by the same total-bonus rule as weapons.
+ *    Cost for an imported ability (not in the hand-curated table) is read
+ *    from `abilityInfo`, which is pruned to the surviving ids afterward.
  *  - `shieldTier` (issue #81) only meaningful on `slot === "shield"` —
  *    dropped on body armor (e.g. after a slot switch in the edit form).
  */
@@ -1048,9 +1067,16 @@ function normalizeWornArmor(armor: WornArmor): WornArmor {
   if (enh < 1) {
     delete next.abilities;
   } else if (next.abilities && next.abilities.length > 0) {
-    const kept = sanitizeAbilities(next.abilities, enh);
+    const kept = sanitizeAbilities(next.abilities, enh, next.abilityInfo);
     if (kept.length > 0) next.abilities = kept;
     else delete next.abilities;
+  }
+  if (!next.abilities || !next.abilityInfo) {
+    delete next.abilityInfo;
+  } else {
+    const pruned = pruneAbilityInfo(next.abilityInfo, next.abilities);
+    if (Object.keys(pruned).length > 0) next.abilityInfo = pruned;
+    else delete next.abilityInfo;
   }
   if (next.slot !== "shield") delete next.shieldTier;
   return next;
@@ -1081,7 +1107,10 @@ export function addWornArmor(doc: CharacterDoc, armor: WornArmor, name: string):
  * already implies masterwork quality, mirroring `normalizeWeaponInstance`)
  * reduces the snapshotted ACP magnitude by 1 (floored at 0); the "Masterwork"
  * name prefix is shown only when explicitly set at +0, since it's implied
- * (and not called out) once enhancement is positive. No deduplication.
+ * (and not called out) once enhancement is positive. Optional `abilityInfo`
+ * is the pick-time snapshot for any `abilities` id from `RefData.itemAbilities`
+ * (see `WornArmor.abilityInfo`'s doc comment) and is stored only alongside a
+ * surviving `abilities` list. No deduplication.
  */
 /**
  * Maps `ArmorRef.proficiency` (Foundry's raw shield tag — see refdata.ts's
@@ -1113,6 +1142,7 @@ export function addWornArmorFromRef(
   material?: string,
   abilities?: string[],
   masterwork?: boolean,
+  abilityInfo?: Record<string, { name: string; cost?: number }>,
 ): CharacterDoc {
   const ref = applyMaterialToArmor(armor, material);
   const enh = clampInt(enhancement, 0, 10);
@@ -1139,6 +1169,7 @@ export function addWornArmorFromRef(
     ...(acpMagnitude ? { acp: -acpMagnitude } : {}),
     ...(ref.weightClass ? { type: ref.weightClass } : {}),
     ...(abilities && abilities.length > 0 ? { abilities } : {}),
+    ...(abilities && abilities.length > 0 && abilityInfo ? { abilityInfo } : {}),
     // ASF (issue #8) is read from `ref`, not the base `armor`, so mithral's
     // -10% (applied by `applyMaterialToArmor`) is captured in the snapshot.
     ...(ref.asf ? { asf: ref.asf } : {}),
@@ -1772,7 +1803,9 @@ export function setAbilityIncreaseCount(
  *  - `abilities` require `enhancement >= 1` (a mundane weapon can't carry a
  *    special ability) — cleared entirely otherwise.
  *  - `abilities` truncated (keeping earliest-selected first) so `enhancement`
- *    plus their combined bonus-equivalent never exceeds +10.
+ *    plus their combined bonus-equivalent never exceeds +10. Cost for an
+ *    imported ability (not in the hand-curated table) is read from
+ *    `abilityInfo`, which is pruned to the surviving ids afterward.
  */
 function normalizeWeaponInstance(weapon: WeaponInstance): WeaponInstance {
   const next = { ...weapon };
@@ -1784,9 +1817,16 @@ function normalizeWeaponInstance(weapon: WeaponInstance): WeaponInstance {
   if (enh < 1) {
     delete next.abilities;
   } else if (next.abilities && next.abilities.length > 0) {
-    const kept = sanitizeAbilities(next.abilities, enh);
+    const kept = sanitizeAbilities(next.abilities, enh, next.abilityInfo);
     if (kept.length > 0) next.abilities = kept;
     else delete next.abilities;
+  }
+  if (!next.abilities || !next.abilityInfo) {
+    delete next.abilityInfo;
+  } else {
+    const pruned = pruneAbilityInfo(next.abilityInfo, next.abilities);
+    if (Object.keys(pruned).length > 0) next.abilityInfo = pruned;
+    else delete next.abilityInfo;
   }
   return next;
 }
@@ -1817,7 +1857,10 @@ export function addWeapon(doc: CharacterDoc, weapon: WeaponInstance): CharacterD
  * snapshotted normalized via `@pf1/engine`'s `normalizeWeaponGroup` (issue
  * #45) so `attack.weapon.<group>`/`damage.weapon.<group>` Changes authored
  * against the canonical `WEAPON_GROUPS` vocabulary match this weapon in
- * addition to its free-text `group` tag.
+ * addition to its free-text `group` tag. Optional `abilityInfo` is the
+ * pick-time snapshot for any `abilities` id from `RefData.itemAbilities` (see
+ * `WeaponInstance.abilityInfo`'s doc comment) and is stored only alongside a
+ * surviving `abilities` list.
  */
 export function addWeaponFromRef(
   doc: CharacterDoc,
@@ -1826,6 +1869,7 @@ export function addWeaponFromRef(
   material?: string,
   abilities?: string[],
   masterwork?: boolean,
+  abilityInfo?: Record<string, { name: string; cost?: number }>,
 ): CharacterDoc {
   const enh = clampInt(enhancement, 0, 10);
   // Special abilities (including keen's crit-range doubling) require the
@@ -1848,6 +1892,7 @@ export function addWeaponFromRef(
     ...(effectiveAbilities && effectiveAbilities.length > 0
       ? { abilities: effectiveAbilities }
       : {}),
+    ...(effectiveAbilities && effectiveAbilities.length > 0 && abilityInfo ? { abilityInfo } : {}),
     ...(ref.damageDice ? { damageDice: ref.damageDice } : {}),
     ...(ref.critRange && ref.critRange !== 20 ? { critRange: ref.critRange } : {}),
     ...(ref.critMult && ref.critMult !== 2 ? { critMult: ref.critMult } : {}),

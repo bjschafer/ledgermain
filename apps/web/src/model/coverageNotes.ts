@@ -78,7 +78,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     category: "Magic items",
     note: 'The full published catalog is in the gear picker: wondrous items, rings, rods, staves, artifacts, and named magic weapons and armor. Entries whose effect the sheet applies while equipped are marked with an "M". Most are not: they carry their rules text for you to apply at the table, and equipping one moves no numbers.',
     issueDetail:
-      "1,090 entries carry structured changes[]; the imported catalog adds 3,832 whose effects exist only as prose. The gap is promotion rather than coverage. Weapon and armor special abilities (181 published) are a separate axis: the builder offers 18 hand-authored ones, and the rest have no selectable entry at all.",
+      "1,090 entries carry structured changes[]; the imported catalog adds 3,832 whose effects exist only as prose. The gap is promotion rather than coverage, and the weapon and armor special ability catalog sits on the same axis: keen is the only entry that moves numbers.",
   },
   {
     category: "Character traits",

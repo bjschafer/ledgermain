@@ -26,7 +26,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(18);
+    expect(ref.meta.schemaVersion).toBe(19);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -1123,6 +1123,65 @@ describe("magic-item catalog (Pf Data 1e import)", () => {
     for (const name of ["Flaming", "Keen", "Fortification (light)", "Advancing (armor)"]) {
       expect(Object.values(ref.items).find((it) => it.name === name)).toBeUndefined();
     }
+  });
+});
+
+describe("weapon/armor special abilities (Pf Data 1e import)", () => {
+  const abilities = Object.values(ref.itemAbilities);
+
+  it("imports exactly the 181 special abilities the catalog carries", () => {
+    expect(abilities.length).toBe(181);
+    const ids = abilities.map((a) => a.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ids.every((id) => id.startsWith("ability:"))).toBe(true);
+  });
+
+  it("splits weapon/armor/shield the way the published catalog does", () => {
+    expect(abilities.filter((a) => a.appliesTo.includes("weapon")).length).toBe(98);
+    expect(abilities.filter((a) => a.appliesTo.includes("armor")).length).toBe(65);
+    expect(abilities.filter((a) => a.appliesTo.includes("shield")).length).toBe(35);
+    expect(abilities.every((a) => a.appliesTo.length > 0)).toBe(true);
+  });
+
+  it("parses Flaming's stat block into structured fields", () => {
+    const flaming = byName(ref.itemAbilities, "Flaming");
+    expect(flaming).toMatchObject({
+      appliesTo: ["weapon"],
+      bonusEquivalent: 1,
+      aura: "evo",
+      cl: 10,
+    });
+    expect(flaming.description).toContain("1d6");
+  });
+
+  it("keeps the 42 gp-priced abilities priced, not enhancement-equivalent", () => {
+    // Most abilities are priced in bonus-equivalent terms ("+1 bonus"); a
+    // minority (e.g. a bane weapon's flat surcharge) are priced in gp instead.
+    const gpPriced = abilities.filter((a) => a.bonusEquivalent === undefined);
+    expect(gpPriced.length).toBe(42);
+    expect(gpPriced.every((a) => typeof a.price === "number")).toBe(true);
+    expect(abilities.every((a) => a.bonusEquivalent !== undefined || a.price !== undefined)).toBe(
+      true,
+    );
+  });
+
+  it("keeps bonusEquivalent within PF1's +1 to +5 special-ability range", () => {
+    const bonused = abilities.filter((a) => a.bonusEquivalent !== undefined);
+    expect(bonused.every((a) => a.bonusEquivalent! >= 1 && a.bonusEquivalent! <= 5)).toBe(true);
+  });
+
+  it("carries the tiered-price abilities as a single entry", () => {
+    // Fortification (light/moderate/heavy) and Spell Resistance (13/15/17/19)
+    // each price across several tiers in the source prose; the parser takes
+    // the first tier rather than splitting them. The web layer supersedes
+    // both with hand-authored per-tier entries — this just asserts the
+    // upstream single entry survives the import.
+    expect(byName(ref.itemAbilities, "Fortification")).toBeDefined();
+    expect(byName(ref.itemAbilities, "Spell Resistance")).toBeDefined();
+  });
+
+  it("every entry carries rules prose", () => {
+    expect(abilities.every((a) => a.description.length > 0)).toBe(true);
   });
 });
 

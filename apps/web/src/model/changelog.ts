@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-01-weapon-armor-special-abilities",
+    date: "2026-08-01",
+    title: "The full list of weapon and armor special abilities",
+    note: "The special ability picker on weapons, armor, and shields used to offer 18 common entries. It is now the full published list, nearly 200 strong and searchable from the weapon and armor forms: Bane, Dueling, Vorpal, Spell Resistance by tier, and the rest, each with its rules text and its cost against the +10 total bonus cap. Abilities priced in flat gold count nothing against that cap, matching the rules. Keen still shortens your threat range on its own; the others carry their text for you to apply at the table.",
+  },
+  {
     id: "2026-08-01-magic-item-catalog",
     date: "2026-08-01",
     title: "The whole magic item catalog is in the gear picker",

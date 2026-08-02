@@ -144,6 +144,36 @@ describe("updateWeapon()", () => {
     d = updateWeapon(d, 0, { abilities: ["keen", "flaming"] });
     expect(d.build.weapons![0]!.abilities).toEqual(["keen"]);
   });
+
+  it("drops an over-cap imported ability, and its abilityInfo, when enhancement is raised", () => {
+    let d = addWeapon(doc(), {
+      ...LONGSWORD,
+      enhancement: 1,
+      abilities: ["ability:dancing"],
+      abilityInfo: { "ability:dancing": { name: "Dancing", cost: 4 } },
+    });
+    expect(d.build.weapons![0]!.abilities).toEqual(["ability:dancing"]);
+    // Budget = 10 - enhancement, so raising enhancement to 9 leaves only 1 point
+    // of room; Dancing's cost of 4 no longer fits and both fields are dropped.
+    d = updateWeapon(d, 0, { enhancement: 9 });
+    expect(d.build.weapons![0]!.abilities).toBeUndefined();
+    expect(d.build.weapons![0]!.abilityInfo).toBeUndefined();
+  });
+
+  it("prunes abilityInfo to only the surviving ids when one of several imported abilities is dropped", () => {
+    let d = addWeapon(doc(), {
+      ...LONGSWORD,
+      enhancement: 5,
+      abilities: ["keen", "ability:dancing"],
+      abilityInfo: { "ability:dancing": { name: "Dancing", cost: 4 } },
+    });
+    // Budget at enh=5 is 5: keen(1) + dancing(4) = 5, exact fit — both kept.
+    expect(d.build.weapons![0]!.abilities).toEqual(["keen", "ability:dancing"]);
+    // Raise to enh=8: budget 2, keen(1) fits but dancing(4) does not.
+    d = updateWeapon(d, 0, { enhancement: 8 });
+    expect(d.build.weapons![0]!.abilities).toEqual(["keen"]);
+    expect(d.build.weapons![0]!.abilityInfo).toBeUndefined();
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -470,5 +500,45 @@ describe("addWeaponFromRef()", () => {
     const w = d.build.weapons![0]!;
     expect(w.enhancement).toBe(9);
     expect(w.abilities).toEqual(["keen"]);
+  });
+
+  it("stores abilityInfo for an imported (RefData.itemAbilities) ability pick", () => {
+    const d = addWeaponFromRef(
+      doc(),
+      longswordRef,
+      2,
+      "steel",
+      ["keen", "ability:dancing"],
+      undefined,
+      {
+        "ability:dancing": { name: "Dancing", cost: 4 },
+      },
+    );
+    const w = d.build.weapons![0]!;
+    expect(w.abilities).toEqual(["keen", "ability:dancing"]);
+    expect(w.abilityInfo).toEqual({ "ability:dancing": { name: "Dancing", cost: 4 } });
+  });
+
+  it("prunes abilityInfo to only ids surviving the +10 cap truncation", () => {
+    // keen(1) + ability:dancing(4) = 5; budget at +9 is only 1, so dancing is dropped.
+    const d = addWeaponFromRef(
+      doc(),
+      longswordRef,
+      9,
+      "steel",
+      ["keen", "ability:dancing"],
+      undefined,
+      {
+        "ability:dancing": { name: "Dancing", cost: 4 },
+      },
+    );
+    const w = d.build.weapons![0]!;
+    expect(w.abilities).toEqual(["keen"]);
+    expect(w.abilityInfo).toBeUndefined();
+  });
+
+  it("omits abilityInfo when no abilityInfo is passed (back-compat)", () => {
+    const d = addWeaponFromRef(doc(), longswordRef, 1, "steel", ["keen"]);
+    expect(d.build.weapons![0]!.abilityInfo).toBeUndefined();
   });
 });

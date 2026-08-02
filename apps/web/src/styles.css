@@ -979,6 +979,23 @@ button:focus-visible,
   padding: 0;
 }
 
+/* Enhancement-equivalent ("+2") or flat-gp ("1,000 gp") cost pill on an
+   ability picker row's name — same pill shape as `.homebrew-badge`, neutral
+   color since it's informational, not a status. */
+.ability-cost-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  color: var(--muted);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
 .enh-field {
   display: inline-flex;
   align-items: center;

@@ -109,9 +109,12 @@ export const SYSTEM_VERSION = "11.11";
  * making the field dead noise) to a display string sourced by name-match from
  * the "Pf Data 1e" `json/spells*.json` files instead — "yes", "no", "yes
  * (object)", "yes (harmless)", or a free-text override, matching the printed
- * SR line verbatim.
+ * SR line verbatim. v19 adds `itemAbilities`/`item-abilities.json` — the 181
+ * weapon/armor/shield special abilities (flaming, keen, fortification) that
+ * `transformMagicItems` already parsed out of the Pf Data 1e magic-item files
+ * but `normalize` previously discarded; see `ItemAbilityRef`'s doc comment.
  */
-export const SCHEMA_VERSION = 18;
+export const SCHEMA_VERSION = 19;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

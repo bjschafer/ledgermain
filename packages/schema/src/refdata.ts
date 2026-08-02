@@ -34,6 +34,15 @@ export interface RefData {
   spells: Record<string, Spell>;
   buffs: Record<string, Buff>;
   items: Record<string, Item>;
+  /**
+   * Magical weapon/armor/shield special abilities (flaming, keen,
+   * fortification — the `**Slot** … quality` entries of the Pf Data 1e
+   * magic-item files). Properties bought onto a weapon or suit rather than
+   * things carried, so they live here instead of `items`. Display-only
+   * catalog: mechanics stay hand-authored in `apps/web/src/model/abilities.ts`,
+   * which merges this catalog into its picker options.
+   */
+  itemAbilities: Record<string, ItemAbilityRef>;
   /** Per-class spell lists, keyed by class tag → spell level → spell ids. */
   spellLists: Record<string, SpellList>;
   /**
@@ -762,6 +771,35 @@ export interface Item extends RefEntity {
    * they're carrying.
    */
   contents?: ItemContent[];
+}
+
+/**
+ * A magical weapon/armor/shield special ability (flaming, keen, fortification)
+ * from the Pf Data 1e magic-item files — a property bought onto a weapon or
+ * suit, priced in enhancement-bonus equivalents (or flat gp for the handful
+ * priced that way), never a thing carried. Kept out of `RefData.items` so it
+ * can't reach the gear picker. Catalog + prose only: the few abilities with a
+ * tracked mechanical effect (keen) stay hand-authored in
+ * `apps/web/src/model/abilities.ts`.
+ */
+export interface ItemAbilityRef {
+  id: string;
+  name: string;
+  /** Which of weapon / armor / shield the ability can be applied to. */
+  appliesTo: ("weapon" | "armor" | "shield")[];
+  /**
+   * Enhancement-equivalent cost ("+1 bonus" → 1); counts against PF1's +10
+   * combined enhancement-plus-abilities cap. Absent when priced in flat gp,
+   * which per PF1 RAW does not consume bonus budget.
+   */
+  bonusEquivalent?: number;
+  /** Flat gp surcharge, for the abilities priced that way instead. */
+  price?: number;
+  cl?: number;
+  /** Aura school code (e.g. "evo"), or prose for a compound aura. */
+  aura?: string;
+  description: string;
+  sources?: SourceRef[];
 }
 
 /**

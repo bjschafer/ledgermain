@@ -1,20 +1,17 @@
 import { useMemo, useState } from "react";
 
-import type { WeaponInstance, WeaponRef } from "@pf1/schema";
+import type { RefData, WeaponInstance, WeaponRef } from "@pf1/schema";
 
 import { addWeapon, addWeaponFromRef, removeWeapon, replaceWeapon } from "../../model/doc.js";
 import {
   abilityNotes,
-  abilitySelectable,
-  type AbilityDef,
+  type AbilityInfo,
+  buildAbilityCatalog,
   sanitizeAbilities,
-  toggleAbilitySelection,
-  totalBonusEquivalent,
-  WEAPON_ABILITIES,
 } from "../../model/abilities.js";
 import { WEAPON_MATERIALS } from "../../model/materials.js";
-import { TipButton } from "../InfoTip.js";
 import { SwordIcon } from "../icons.js";
+import { AbilityPicker, pruneAbilityInfo, toggleAbilityPick } from "./AbilityPicker.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -56,37 +53,30 @@ const BLANK_WEAPON: WeaponInstance = {
   proficiency: "martial",
 };
 
-/** Tooltip for an ability chip, explaining why it's disabled when relevant. */
-function abilityChipTitle(a: AbilityDef, current: string[], enhancement: number): string {
-  const base = a.note
-    ? `${a.name} (+${a.bonusEquivalent}) — ${a.note}`
-    : `${a.name} (+${a.bonusEquivalent})`;
-  if (current.includes(a.id)) return base;
-  if (enhancement < 1) return `${base} — requires a +1 enhancement bonus`;
-  if (a.requires && !current.includes(a.requires)) {
-    const reqName = WEAPON_ABILITIES.find((w) => w.id === a.requires)?.name ?? a.requires;
-    return `${base} — requires ${reqName}`;
-  }
-  return base;
-}
-
 /** Inline form for adding or editing a WeaponInstance. */
 function WeaponForm({
   initial,
+  refData,
   onSave,
   onCancel,
   saveLabel,
 }: {
   initial: WeaponInstance;
+  refData: RefData;
   onSave: (w: WeaponInstance) => void;
   onCancel: () => void;
   saveLabel: string;
 }) {
   const [form, setForm] = useState<WeaponInstance>({ ...initial });
   const [abilities, setAbilities] = useState<string[]>(initial.abilities ?? []);
+  const [abilityInfo, setAbilityInfo] = useState<AbilityInfo>(initial.abilityInfo ?? {});
   const enh = form.enhancement ?? 0;
-  const abilitiesLocked = enh < 1;
-  const usedBonus = totalBonusEquivalent(abilities);
+
+  const catalog = useMemo(() => buildAbilityCatalog(refData.itemAbilities), [refData]);
+  const weaponAbilityOptions = useMemo(
+    () => catalog.options.filter((o) => o.appliesTo.includes("weapon")),
+    [catalog],
+  );
 
   function field<K extends keyof WeaponInstance>(key: K, val: WeaponInstance[K]) {
     setForm((f) => ({ ...f, [key]: val }));
@@ -95,11 +85,15 @@ function WeaponForm({
   function setEnhancement(n: number) {
     field("enhancement", n);
     // Abilities require enhancement >= 1, and the combined bonus is capped at +10.
-    setAbilities((prev) => (n < 1 ? [] : sanitizeAbilities(prev, n)));
+    const next = n < 1 ? [] : sanitizeAbilities(abilities, n, abilityInfo);
+    setAbilities(next);
+    setAbilityInfo(pruneAbilityInfo(abilityInfo, next));
   }
 
-  function toggleAbility(id: string) {
-    setAbilities((prev) => toggleAbilitySelection(prev, id, enh));
+  function toggleAbility(option: (typeof weaponAbilityOptions)[number]) {
+    const result = toggleAbilityPick(abilities, abilityInfo, option, enh, catalog.info);
+    setAbilities(result.abilities);
+    setAbilityInfo(result.abilityInfo);
   }
 
   function handleSave() {
@@ -109,6 +103,8 @@ function WeaponForm({
       damageDice: form.damageDice?.trim() || undefined,
       group: form.group?.trim() || undefined,
       abilities: abilities.length > 0 ? abilities : undefined,
+      abilityInfo:
+        abilities.length > 0 && Object.keys(abilityInfo).length > 0 ? abilityInfo : undefined,
     };
     if (weapon.enhancement === 0) delete weapon.enhancement;
     if (weapon.critRange === 20) delete weapon.critRange;
@@ -116,6 +112,7 @@ function WeaponForm({
     if (weapon.damageMultiplier === 1) delete weapon.damageMultiplier;
     if (!weapon.material || weapon.material === "steel") delete weapon.material;
     if (!weapon.abilities) delete weapon.abilities;
+    if (!weapon.abilityInfo) delete weapon.abilityInfo;
     if (!weapon.masterwork || (weapon.enhancement ?? 0) > 0) delete weapon.masterwork;
     if (!weapon.weight) delete weapon.weight;
     onSave(weapon);
@@ -301,31 +298,13 @@ function WeaponForm({
           />
         </label>
       </div>
-      {WEAPON_ABILITIES.length > 0 && (
-        <div className="ability-chips-section">
-          <span className="section-label">Special abilities</span>
-          <p className="hint">
-            {abilitiesLocked
-              ? "Requires at least a +1 enhancement bonus"
-              : `Enhancement + abilities: ${enh + usedBonus}/10`}
-          </p>
-          <div className="ability-chips">
-            {WEAPON_ABILITIES.map((a) => (
-              <TipButton
-                key={a.id}
-                className="chip"
-                aria-pressed={abilities.includes(a.id)}
-                disabled={!abilitySelectable(abilities, a.id, enh)}
-                disabledReason={abilityChipTitle(a, abilities, enh)}
-                title={abilityChipTitle(a, abilities, enh)}
-                onClick={() => toggleAbility(a.id)}
-              >
-                {a.name}
-              </TipButton>
-            ))}
-          </div>
-        </div>
-      )}
+      <AbilityPicker
+        options={weaponAbilityOptions}
+        selected={abilities}
+        enhancement={enh}
+        info={catalog.info}
+        onToggle={toggleAbility}
+      />
       <button
         type="button"
         className="pick-btn add"
@@ -355,7 +334,7 @@ function weaponMeta(w: WeaponInstance): string {
   const critMult = w.critMult ?? 2;
   parts.push(`crit ${critRange < 20 ? `${critRange}–20/×${critMult}` : `×${critMult}`}`);
   if (w.group) parts.push(`type: ${w.group}`);
-  for (const note of abilityNotes(w.abilities)) {
+  for (const note of abilityNotes(w.abilities, w.abilityInfo)) {
     parts.push(note.note ? `${note.name} (${note.note})` : note.name);
   }
   return parts.join(" · ");
@@ -381,11 +360,16 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
   const [enhancement, setEnhancement] = useState<number>(0);
   const [material, setMaterial] = useState<string>("steel");
   const [abilities, setAbilities] = useState<string[]>([]);
+  const [abilityInfo, setAbilityInfo] = useState<AbilityInfo>({});
   const [masterwork, setMasterwork] = useState<boolean>(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const weapons = doc.build.weapons ?? [];
-  const abilitiesLocked = enhancement < 1;
-  const usedBonus = totalBonusEquivalent(abilities);
+
+  const catalog = useMemo(() => buildAbilityCatalog(refData.itemAbilities), [refData]);
+  const weaponAbilityOptions = useMemo(
+    () => catalog.options.filter((o) => o.appliesTo.includes("weapon")),
+    [catalog],
+  );
 
   const filteredWeapons = useMemo(() => {
     const q = weaponQuery.trim().toLowerCase();
@@ -398,17 +382,22 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
   function handleEnhancementChange(n: number) {
     setEnhancement(n);
     // Abilities require enhancement >= 1, and the combined bonus is capped at +10.
-    setAbilities((prev) => (n < 1 ? [] : sanitizeAbilities(prev, n)));
+    const next = n < 1 ? [] : sanitizeAbilities(abilities, n, abilityInfo);
+    setAbilities(next);
+    setAbilityInfo(pruneAbilityInfo(abilityInfo, next));
   }
 
-  function toggleAbility(id: string) {
-    setAbilities((prev) => toggleAbilitySelection(prev, id, enhancement));
+  function toggleAbility(option: (typeof weaponAbilityOptions)[number]) {
+    const result = toggleAbilityPick(abilities, abilityInfo, option, enhancement, catalog.info);
+    setAbilities(result.abilities);
+    setAbilityInfo(result.abilityInfo);
   }
 
   function resetPickerState() {
     setEnhancement(0);
     setMaterial("steel");
     setAbilities([]);
+    setAbilityInfo({});
     setMasterwork(false);
   }
 
@@ -420,7 +409,9 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
   }
 
   function handleAddFromRef(w: WeaponRef) {
-    update((d) => addWeaponFromRef(d, w, enhancement, material, abilities, masterwork));
+    update((d) =>
+      addWeaponFromRef(d, w, enhancement, material, abilities, masterwork, abilityInfo),
+    );
     setShowAddCard(false);
     setAddMode("select");
     setWeaponQuery("");
@@ -469,6 +460,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
               <div key={i} className="gear-row">
                 <WeaponForm
                   initial={w}
+                  refData={refData}
                   onSave={(updated) => handleEdit(i, updated)}
                   onCancel={() => setEditingIndex(null)}
                   saveLabel="Save changes"
@@ -574,31 +566,13 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
                     )}
                   </label>
                 </div>
-                {WEAPON_ABILITIES.length > 0 && (
-                  <div className="ability-chips-section">
-                    <span className="section-label">Special abilities</span>
-                    <p className="hint">
-                      {abilitiesLocked
-                        ? "Requires at least a +1 enhancement bonus"
-                        : `Enhancement + abilities: ${enhancement + usedBonus}/10`}
-                    </p>
-                    <div className="ability-chips">
-                      {WEAPON_ABILITIES.map((a) => (
-                        <TipButton
-                          key={a.id}
-                          className="chip"
-                          aria-pressed={abilities.includes(a.id)}
-                          disabled={!abilitySelectable(abilities, a.id, enhancement)}
-                          disabledReason={abilityChipTitle(a, abilities, enhancement)}
-                          title={abilityChipTitle(a, abilities, enhancement)}
-                          onClick={() => toggleAbility(a.id)}
-                        >
-                          {a.name}
-                        </TipButton>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <AbilityPicker
+                  options={weaponAbilityOptions}
+                  selected={abilities}
+                  enhancement={enhancement}
+                  info={catalog.info}
+                  onToggle={toggleAbility}
+                />
                 <div className="scroll">
                   {filteredWeapons.length === 0 ? (
                     <div className="empty">No weapons match.</div>
@@ -640,6 +614,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
             ) : (
               <WeaponForm
                 initial={BLANK_WEAPON}
+                refData={refData}
                 onSave={handleAdd}
                 onCancel={closeAddCard}
                 saveLabel="Add to weapons"
