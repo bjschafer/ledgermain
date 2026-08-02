@@ -275,69 +275,6 @@ export function SettingsSection({
           ),
         },
         {
-          id: "settings-fcb",
-          label: "Favored Class",
-          node: (
-            <Panel title="Favored Class Bonus Rule" step="⚙" icon={<GearIcon />}>
-              <p className="hint" style={{ marginBottom: 12 }}>
-                Standard PF1: each favored-class level grants <em>one</em> of +1 HP, +1 skill rank,
-                or alternate. House-rule: a "Both" option adds +1 HP AND +1 skill rank
-                simultaneously.
-              </p>
-              <div className="chips">
-                <button
-                  type="button"
-                  className="chip"
-                  aria-pressed={!fcbHouserule}
-                  onClick={() => update((d) => setFcbHouserule(d, false))}
-                >
-                  Standard PF1
-                </button>
-                <button
-                  type="button"
-                  className="chip"
-                  aria-pressed={fcbHouserule}
-                  onClick={() => update((d) => setFcbHouserule(d, true))}
-                >
-                  House-rule (Both)
-                </button>
-              </div>
-            </Panel>
-          ),
-        },
-        {
-          id: "settings-cleric-wis",
-          label: "Cleric Wisdom",
-          node: (
-            <Panel title="Cleric Wisdom Rule" step="⚙" icon={<GearIcon />}>
-              <p className="hint" style={{ marginBottom: 12 }}>
-                Homebrew rule (issue #56): cleric class features — Channel Energy's uses/day and
-                save DC — key off <em>Wisdom</em> instead of Charisma. The cleric's actual Charisma
-                score, skills, and saves are unaffected; other Cha-driven classes (paladin,
-                sorcerer, oracle, bard) are untouched either way.
-              </p>
-              <div className="chips">
-                <button
-                  type="button"
-                  className="chip"
-                  aria-pressed={!clericWisdomHouserule}
-                  onClick={() => update((d) => setClericWisdomHouserule(d, false))}
-                >
-                  Standard PF1 (Cha)
-                </button>
-                <button
-                  type="button"
-                  className="chip"
-                  aria-pressed={clericWisdomHouserule}
-                  onClick={() => update((d) => setClericWisdomHouserule(d, true))}
-                >
-                  House-rule (Wis)
-                </button>
-              </div>
-            </Panel>
-          ),
-        },
-        {
           id: "settings-hero",
           label: "Hero Points",
           node: (
@@ -435,6 +372,74 @@ export function SettingsSection({
                   </select>
                 </div>
               )}
+            </Panel>
+          ),
+        },
+      ],
+    },
+    {
+      name: "Variants & House Rules",
+      sections: [
+        {
+          id: "settings-fcb",
+          label: "Favored Class",
+          node: (
+            <Panel title="Favored Class Bonus Rule" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Standard PF1: each favored-class level grants <em>one</em> of +1 HP, +1 skill rank,
+                or alternate. House-rule: a "Both" option adds +1 HP AND +1 skill rank
+                simultaneously.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={!fcbHouserule}
+                  onClick={() => update((d) => setFcbHouserule(d, false))}
+                >
+                  Standard PF1
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={fcbHouserule}
+                  onClick={() => update((d) => setFcbHouserule(d, true))}
+                >
+                  House-rule (Both)
+                </button>
+              </div>
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-cleric-wis",
+          label: "Cleric Wisdom",
+          node: (
+            <Panel title="Cleric Wisdom Rule" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Homebrew rule (issue #56): cleric class features — Channel Energy's uses/day and
+                save DC — key off <em>Wisdom</em> instead of Charisma. The cleric's actual Charisma
+                score, skills, and saves are unaffected; other Cha-driven classes (paladin,
+                sorcerer, oracle, bard) are untouched either way.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={!clericWisdomHouserule}
+                  onClick={() => update((d) => setClericWisdomHouserule(d, false))}
+                >
+                  Standard PF1 (Cha)
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={clericWisdomHouserule}
+                  onClick={() => update((d) => setClericWisdomHouserule(d, true))}
+                >
+                  House-rule (Wis)
+                </button>
+              </div>
             </Panel>
           ),
         },
