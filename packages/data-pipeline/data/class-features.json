@@ -758,6 +758,21 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:1aCmkiPPk6Thn2Cb"
   },
+  "1aP0lmJYDqM5pMHY": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot aura that bedevils your enemies with phantasmal assailants. Enemies within this aura move at half <em>speed</em>, are unable to take <em>attacks of opportunity</em>, and are considered to be flanked. This is a mind-affecting effect. You can use this ability for a number of rounds per day equal to your wizard level. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "1aP0lmJYDqM5pMHY",
+    "name": "Bedeviling Aura",
+    "subType": "classFeat",
+    "tag": "bedevilingAura",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.1aP0lmJYDqM5pMHY"
+  },
   "1dp5fSPJuAdH8Rlw": {
     "abilityType": "su",
     "changes": [],
@@ -1169,6 +1184,21 @@
     ],
     "subType": "classFeat",
     "uuid": "prestige-feature:2Ou3EDSd9g0CHqwO"
+  },
+  "2PdDTBiOuBlZ1YgE": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a <em>standard action</em>, you can make a melee <em>touch attack</em> that causes a creature to be assailed by nightmares only it can see. The creature provokes an <em>attack of opportunity</em> from you or an ally of your choice. Creatures with more <em>Hit Dice</em> than your wizard level are unaffected. This is a mind-affecting fear effect. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "2PdDTBiOuBlZ1YgE",
+    "name": "Terror",
+    "subType": "classFeat",
+    "tag": "terror",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.2PdDTBiOuBlZ1YgE"
   },
   "2PyGmB1R6ciYAaBb": {
     "changes": [],
@@ -3659,6 +3689,21 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:7QDKjXOc1lUYaCrT"
   },
+  "7QulGFMelZdF9pPl": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 1st level, your touch can disrupt the bonds that hold a summoned or called creature on this plane. As a melee <em>touch attack</em>, you can cause a summoned or called creature to become <em>shaken</em> and <em>staggered</em> for a number of rounds equal to 1/2 your wizard level (minimum 1). You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "7QulGFMelZdF9pPl",
+    "name": "Unstable Bonds",
+    "subType": "classFeat",
+    "tag": "unstableBonds",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.7QulGFMelZdF9pPl"
+  },
   "7WaQxnVaaoL4AGr8": {
     "abilityType": "ex",
     "changes": [],
@@ -4844,6 +4889,28 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.9l1EOZ2l3wLudvJN"
+  },
+  "9t3vdUAOnJICe83K": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "min(floor(@class.unlevel / 3), 1)",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>As an Arcanamirium crafter, you gain a bonus feat at 3rd level, which must be an item creation feat or metamagic feat. You must still meet all prerequisites for a bonus feat, including caster level minimums. When using metamagic feats to create magic items, your skill and understanding of the principles involved in the item’s creation give you a +2 bonus on the skill check made to create the item.</p>",
+    "grantsBuffs": [],
+    "id": "9t3vdUAOnJICe83K",
+    "name": "Metacharge",
+    "sources": [
+      {
+        "id": "PZO9414",
+        "pages": "28"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.9t3vdUAOnJICe83K"
   },
   "9uW6yTDHEqxFeuiS": {
     "abilityType": "ex",
@@ -7507,6 +7574,31 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.EvrFDqZDbbFS4Avb"
   },
+  "ExWRko4dFi2DV7ZP": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Whenever you cast a spell that creates an <em>extradimensional</em> space or demiplane, increase the duration by a number of units (rounds, minutes, hours, etc.) equal to 1/2 your <em>wizard</em> level (minimum 1).</p>\n<p>At 20th level, you can make one spell that creates an <em>extradimensional</em> space or demiplane permanent. You can have no more than one such spell made permanent in this way at a time. If you designate another spell as permanent, the previous permanent spell ends.</p>",
+    "grantsBuffs": [],
+    "id": "ExWRko4dFi2DV7ZP",
+    "name": "Reshape Space",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.ExWRko4dFi2DV7ZP"
+  },
+  "EzZ8XZHjMCBwaL5o": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 1st level, you can attempt to gain control over a summoned creature by disrupting the bond between it and the caster who summoned it. You must make a caster level check (1d20 + caster level) equal to 10 + the summoning caster’s level. If you know the summoned creature’s name, you receive a +2 <em>circumstance bonus</em> on the check. If the check is successful, you can control the summoned creature as if you had summoned it for a number of rounds equal to 1/2 your <em>wizard</em> level (minimum 1 round). This does not increase the duration of the original summoning. The original summoning caster can attempt to regain control of the summoned creature as a <em>standard action</em> by making a caster level check against your caster level + 10. When your control ends, the creature reverts to the control of its <em>summoner</em>.</p>\n<p>At 9th level, you can use this ability to bargain with called creatures as if you were the caster who conjured them. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "EzZ8XZHjMCBwaL5o",
+    "name": "Assume Control",
+    "subType": "classFeat",
+    "tag": "assumeControl",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.EzZ8XZHjMCBwaL5o"
+  },
   "F0gVj5U4LMvNfXwX": {
     "abilityType": "ex",
     "changes": [],
@@ -8784,6 +8876,21 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:HLqfQQl8XVsNskJy"
   },
+  "HMmsaPUiNgB5Xa8u": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can cast Minor Creation as a <em>spell-like ability</em>. You can have no more than one Minor Creationactive at a time. If you cast the spell again, the previous casting immediately ends. At 12th level, this ability improves to Major Creation. You can use this ability a number of times per day equal to 1/2 your wizard level.</p>",
+    "grantsBuffs": [],
+    "id": "HMmsaPUiNgB5Xa8u",
+    "name": "Creator's Will",
+    "subType": "classFeat",
+    "tag": "creatorsWill",
+    "uses": {
+      "maxFormula": "floor(@class.unlevel / 2)",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.HMmsaPUiNgB5Xa8u"
+  },
   "HNxy6gYbDzaJEAUW": {
     "abilityType": "ex",
     "changes": [],
@@ -9409,6 +9516,21 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:Ibt2eADxMs9JxATH"
   },
+  "IeX7of9cT8M7c0xy": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a <em>standard action</em>, you cast a weave of shadows at any foe within 30 feet as a ranged <em>touch attack</em>. The shadows <em>entangle</em> your foe for 1 round plus 1 additional round for every five wizard levels you possess. In conditions of bright light, this duration is halved (minimum 1 round). A creature <em>entangled</em> by your shadows has <em>concealment</em> from those without <em>darkvision</em> or the ability to see in darkness, and other creatures likewise have <em>concealment</em> relative to it. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "IeX7of9cT8M7c0xy",
+    "name": "Binding Darkness",
+    "subType": "classFeat",
+    "tag": "bindingDarkness",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.IeX7of9cT8M7c0xy"
+  },
   "IfVkQ5hceGTfLEwh": {
     "changes": [],
     "description": "<p>At 1st level, a crimson templar gains Deific ObedienceISG as a bonus feat. If the crimson templar already has this feat or Celestial Obedience (Pathfinder Campaign Setting: Chronicle of the Righteous 5), he instead gains a bonus combat feat.</p>",
@@ -9423,6 +9545,21 @@
     ],
     "subType": "classFeat",
     "uuid": "prestige-feature:IfVkQ5hceGTfLEwh"
+  },
+  "Ih0QO6eZ3XmrDkQS": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 1st level, you can create any object that weighs no more than 1 pound per wizard level you possess. Creating an object in this way is a <em>standard action</em>. The Item remains for 1 minute before fading away, although it disappears after one round if it leaves your possession. Creating an Item to an exact specification might require a <em>Craft</em> skill check, subject to GM discretion. The object must be made of simple materials, such as wood, stone, glass, or metal, and cannot contain any moving parts. You could use this ability to create a dagger, but not a vial of alchemist’s fire. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "Ih0QO6eZ3XmrDkQS",
+    "name": "Create Gear",
+    "subType": "classFeat",
+    "tag": "createGear",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Ih0QO6eZ3XmrDkQS"
   },
   "IljqvchiBMrVFxKG": {
     "abilityType": "su",
@@ -11335,6 +11472,21 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:LxW1dP6YO5oGQNcs"
   },
+  "Lz9i4zNAH50umw3s": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot aura to either ward off or welcome emotional influence for a number of rounds per day equal to your wizard level. If you choose to ward, you and your allies within this aura receive a +4 <em>morale bonus</em> on saves against mind-affecting spells and effects, and any fear effects targeting you or your allies are reduced by one step (<em>shaken</em> has no effect, <em>frightened</em> becomes <em>shaken</em>, and <em>panicked</em> becomes <em>frightened</em>). If you chose to enhance emotional influence, enemies within the aura receive a –2 penalty on saves against mind-affecting spells and effects. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "Lz9i4zNAH50umw3s",
+    "name": "Shape Emotions",
+    "subType": "classFeat",
+    "tag": "shapeEmotions",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Lz9i4zNAH50umw3s"
+  },
   "LzY5SyQjQkK0GyIL": {
     "abilityType": "ex",
     "changes": [],
@@ -11958,6 +12110,21 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:NIF50MUarh0BC6mf"
   },
+  "NKPkvMia6t5ERnmY": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can create an <em>illusion</em> that hides the appearance of yourself and any number of allies within 30 feet for 1 round per <em>wizard</em> level. This ability otherwise functions like the spell Veil. The rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "NKPkvMia6t5ERnmY",
+    "name": "Master of the Veil",
+    "subType": "classFeat",
+    "tag": "masterOfTheVeil",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.NKPkvMia6t5ERnmY"
+  },
   "NKTj2J2kMxUwPKkQ": {
     "changes": [],
     "description": "<p>When using the aid another action, the runeguard can draw upon the rune of generosity and expend a prepared spell or spell slot as an immediate action to grant an ally an insight bonus on attack rolls, on skill checks, or to Armor Class equal to the level of spell expended. The bonus persists for a number of rounds equal to the runeguard's class level.</p>",
@@ -12389,6 +12556,21 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:OKLoUwr4M48ZxMZh"
   },
+  "OLh9DNRqDf7yjSwM": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a <em>standard action</em>, you place a <em>scrying</em> sensor at a point within medium range (100 feet + 10 feet/wizard level) that you can see and have line of effect to. You can see or hear (not both) through this sensor for number of rounds equal to 1/2 your wizard level (minimum 1). The sensor otherwise functions as a Clairaudience/Clairvoyance spell with a <em>caster level</em> equal to your wizard level.</p>\n<p>You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "OLh9DNRqDf7yjSwM",
+    "name": "Send Senses",
+    "subType": "classFeat",
+    "tag": "sendSenses",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.OLh9DNRqDf7yjSwM"
+  },
   "OOLBobcnnYO3U1LC": {
     "abilityType": "ex",
     "changes": [],
@@ -12435,6 +12617,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.OTUUgbHZBUU5jBLf"
+  },
+  "OWWDDPpcBLyZAXAr": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a <em>standard action</em>, you can <em>touch</em> a creature or an object that weighs no more than 25 pounds per <em>caster level</em> to impart an illusory ward that lasts for 1 minute. Attacks against a warded creature suffer a 20% miss chance, and the ward ends once it negates an attack. The DC of any <em>caster level</em> check, skill check, or saving throw to detect or determine the properties of a warded item increases by 1, plus 1 for every 5 <em>wizard</em> levels you have. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "OWWDDPpcBLyZAXAr",
+    "name": "Subtle Misdirection",
+    "subType": "classFeat",
+    "tag": "subtleMisdirection",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.OWWDDPpcBLyZAXAr"
   },
   "OWtsIw4q78X0iJzu": {
     "abilityType": "su",
@@ -12752,6 +12949,21 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.OsRZD888rDOpHqoZ"
+  },
+  "Ox5Sq8qp4gBjQpyu": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 1st level, you can <em>teleport</em> to a nearby space as a <em>swift action</em> as if using <em>dimension door</em>. This movement does not provoke an <em>attack of opportunity</em>. You must be able to see the space that you are moving into. You cannot take other creatures with you when you use this ability (except for familiars). You can move 5 feet for every two wizard levels you possess (minimum 5 feet). You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "Ox5Sq8qp4gBjQpyu",
+    "name": "Shift",
+    "subType": "classFeat",
+    "tag": "shift",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Ox5Sq8qp4gBjQpyu"
   },
   "Ozz41Xbq0eIH1Na6": {
     "abilityType": "ex",
@@ -13374,6 +13586,16 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:QOgv8IpxnWix0Vbv"
   },
+  "QR23m2NMKvwnLKh4": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Whenever you cast a spell that has targets, affects creatures in an area, or requires an <em>attack roll</em>, you may heal creatures affected by the spell a total of 1 point of damage per level of the spell. This healing may be spread out between the targets of the spell in any way you choose. If you assign any of the healing to an <em>undead</em> creature, it instead takes 1 point of damage for each point assigned. At 11th level, the amount of damage cured increases to 2 points of damage per level of the spell. This healing occurs when the spell is cast and has no effect on creatures that enter its area after the spell is in place. At 20th level, the amount of damage cured increases to 3 points of damage per level of the spell.</p>",
+    "grantsBuffs": [],
+    "id": "QR23m2NMKvwnLKh4",
+    "name": "Healing Grace",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.QR23m2NMKvwnLKh4"
+  },
   "QTEANZz5ALZQcSIR": {
     "abilityType": "ex",
     "changes": [],
@@ -13593,6 +13815,21 @@
     "name": "Appraising Eye",
     "subType": "classFeat",
     "uuid": "prestige-feature:QqJRCv71Efzu25Jg"
+  },
+  "QqMg8O5rYRKoGtHW": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When you cast an <em>evocation</em> spell that does acid, cold, electricity, or fire damage, you may change the damage dealt to one of the other four energy types. This changes the descriptor of the spell to match the new energy type. Any non-damaging effects remain unchanged unless the new energy type invalidates them (an Ice Storm that deals fire damage might still provide a penalty on <em>Perception</em> checks due to smoke, but it would not create difficult terrain). Such effects are subject to GM discretion. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "QqMg8O5rYRKoGtHW",
+    "name": "Versatile Evocation",
+    "subType": "classFeat",
+    "tag": "versatileEvocation",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.QqMg8O5rYRKoGtHW"
   },
   "QqknuJGO7y1FALsT": {
     "abilityType": "ex",
@@ -14843,6 +15080,27 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:TDZikq85eV9G64Ss"
   },
+  "TF9JLx9PwVnN5QPx": {
+    "abilityType": "su",
+    "changes": [
+      {
+        "formula": "2 + (floor(@class.unlevel / 5))",
+        "target": "skill.dis",
+        "type": "enh"
+      },
+      {
+        "formula": "2 + (floor(@class.unlevel / 5))",
+        "target": "skill.blf",
+        "type": "enh"
+      }
+    ],
+    "description": "<p>You gain a +2 <em>enhancement bonus</em> on <em>Bluff</em> and <em>Disguise</em> skill checks. This bonus increases by 1 for every 5 <em>wizard</em> levels you have, up to a maximum of +6 at 20th level. At 20th level, you gain the benefits of Misdirection (<em>Will</em> DC = 20 + your <em>Intelligence</em> modifier) or Nondetection permanently. At will as a <em>standard action</em>, you can change which of the two spells is active, and each time you <em>activate</em> Misdirection, you can choose a new creature or object as the secondary object.</p>",
+    "grantsBuffs": [],
+    "id": "TF9JLx9PwVnN5QPx",
+    "name": "Deceptive Flourish",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.TF9JLx9PwVnN5QPx"
+  },
   "TGVoED2T0lNS486U": {
     "abilityType": "ex",
     "changes": [],
@@ -15795,6 +16053,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Uo3yrfkyguM5wkI2"
   },
+  "Uo6HdLirmPk8haqz": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot aura that transforms magical energy. Choose an energy type from acid, cold, electricity, and fire, and a second type to transform it into. Any magical source of energy of this type with a <em>caster level</em> equal to or less than your wizard level is altered to the chosen energy type. This includes <em>supernatural</em> effects from creatures with <em>Hit Dice</em> no greater than your <em>caster level</em>. For example, you could transform a <em>white dragon’s</em> frigid breath weapon (a <em>supernatural</em> ability), but not a <em>fire elemental’s</em> fiery touch (an extraordinary ability). If an effect lies only partially within your aura, only the portions within the aura are transformed. You can use this ability for a number of rounds per day equal to your wizard level. The rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "Uo6HdLirmPk8haqz",
+    "name": "Elemental Manipulation",
+    "subType": "classFeat",
+    "tag": "elementalManipulation",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.Uo6HdLirmPk8haqz"
+  },
   "Uqxp2wwsUpW42Ipj": {
     "changes": [],
     "description": "<p>The character learns a number of knacks, or 0-level spells. These spells are cast like any other spell, but they don’t consume any slots and can be used again. Knacks cast using other spell slots (due to metamagic feats, for example) consume spell slots as normal.</p>",
@@ -16253,6 +16526,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.W1KWAZxUNxfCv8rG"
   },
+  "W1gEXsOJYt7oDOr7": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>A number of times per day equal to 3 + your <em>Intelligence</em> modifier, you can predict an ally’s success, bolstering others’ resolve. As a <em>swift action</em>, you can shout an inspiring prediction, granting each ally within 50 feet who can hear you a +4 <em>luck bonus</em> on her next <em>attack roll</em>, saving throw, or skill check.</p>",
+    "grantsBuffs": [],
+    "id": "W1gEXsOJYt7oDOr7",
+    "name": "Inspiring Prediction",
+    "subType": "classFeat",
+    "tag": "inspiringPrediction",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.W1gEXsOJYt7oDOr7"
+  },
   "W1jsLQMzncHcahim": {
     "abilityType": "ex",
     "changes": [],
@@ -16665,6 +16953,16 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV"
+  },
+  "WTa2ReRBiF6meIzM": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can send thoughts and instructions telepathically to any creature within 60 feet that you have charmed or dominated as though you shared a common language. At 11th level, affected creatures can communicate back to you via the telepathic link as well. At 20th level, any creature that succeeds at a <em>saving throw</em> against an <em>enchantment</em> spell you have just cast is still affected for 1 round if the spell has a duration greater than 1 round.</p>",
+    "grantsBuffs": [],
+    "id": "WTa2ReRBiF6meIzM",
+    "name": "Force of Will",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.WTa2ReRBiF6meIzM"
   },
   "WTgnrZJsPLZcTGDv": {
     "abilityType": "ex",
@@ -17311,6 +17609,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.XmALhWqXdN9yOmtd"
   },
+  "XuRBVEMC7oaHPR9V": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 6th level, you gain Improved Counterspell as a bonus feat. You may attempt to <em>counterspell</em> an opponent’s spell once per day as an <em>immediate action</em> (instead of a <em>readied</em> action). You must use a spell at least one level higher than the spell being countered to use this ability. You can use this ability once per day at 6th level, plus one additional time per day for every 4 levels beyond 6th.</p>",
+    "grantsBuffs": [],
+    "id": "XuRBVEMC7oaHPR9V",
+    "name": "Counterspell Mastery",
+    "subType": "classFeat",
+    "tag": "counterspellMastery",
+    "uses": {
+      "maxFormula": "1 + (floor((@class.unlevel - 6) / 4))",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.XuRBVEMC7oaHPR9V"
+  },
   "XwM9u3NIYkxVdjrj": {
     "abilityType": "ex",
     "changes": [],
@@ -17859,6 +18172,21 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:YyqOcI4IO627Qmbj"
   },
+  "YzrlG02loZdwCJwV": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a <em>standard action</em>, you can share your vital energy with a living creature that you touch. You take 1d6 points of <em>nonlethal damage</em> + 1 for every two wizard levels you possess. You cannot take an amount of <em>nonlethal damage</em> equal to or greater than your current hit point total; any excess is prevented. The recipient gains a number of <em>temporary hit points</em> equal to the amount of damage you received (prevented damage is not counted). These <em>temporary hit points</em> disappear 1 hour later. You may not use this ability to grant yourself <em>temporary hit points</em>. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier. This ability has no effect if you are immune to <em>nonlethal damage</em>.</p>",
+    "grantsBuffs": [],
+    "id": "YzrlG02loZdwCJwV",
+    "name": "Share Essence",
+    "subType": "classFeat",
+    "tag": "shareEssence",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.YzrlG02loZdwCJwV"
+  },
   "Z1FdvYXcK9UKHLc4": {
     "changes": [],
     "description": "<p>At 6th level, a battle herald receives a teamwork feat as a bonus feat. She must meet the prerequisites for this feat. She can use her cavalier tactician ability as a move action to grant this feat to allies (if she has the cavalier greater tactician ability, this is a swift action).</p>",
@@ -18142,6 +18470,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P"
+  },
+  "ZgzF1CxwvRBQX8xN": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 1st level, you gain the ability to disrupt spellcasting with a touch. As a melee <em>touch attack</em>, you can place a disruptive field around the target. While the field is in place, the target must make a <em>concentration</em> check to cast any spell or to use a <em>spell-like ability</em> in addition to any other required <em>concentration</em> checks. The DC of this check is equal to 15 + twice the spell’s level. If the check is failed, the target’s spell is wasted. This field lasts for a number of rounds equal to 1/2 your wizard level (minimum 1). You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "ZgzF1CxwvRBQX8xN",
+    "name": "Disruption",
+    "subType": "classFeat",
+    "tag": "disruption",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.ZgzF1CxwvRBQX8xN"
   },
   "ZhQM4K4dqStS6qRn": {
     "changes": [],
@@ -18562,6 +18905,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.aNTZXUUBQlh5VDTv"
+  },
+  "aVMtWqERshuxhmr6": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can force others to do your bidding. As a <em>standard action</em>, you attempt to dominate a creature as though using the Dominate Monster spell, except that the creature must have a number of <em>Hit Dice</em> equal to or less than your wizard level. The targeted creature receives a <em>Will saving throw</em> each round to negate the effect. The DC is equal to 10 + 1/2 your wizard level + your <em>Intelligence</em> modifier. You can dominate creatures for a number of rounds per day equal to your wizard level. These rounds do not need to be consecutive. You must concentrate as a <em>standard action</em> to maintain control over a dominated creature.</p>",
+    "grantsBuffs": [],
+    "id": "aVMtWqERshuxhmr6",
+    "name": "Irresistible Demand",
+    "subType": "classFeat",
+    "tag": "irresistibleDemand",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.aVMtWqERshuxhmr6"
   },
   "aXYkot3m88yt8xUQ": {
     "abilityType": "ex",
@@ -19847,6 +20205,21 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.dakApiblq3ad7AZI"
   },
+  "dcCZW51UewXFLLGo": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a <em>standard action</em>, you can touch an <em>undead</em> creature and infuse it with negative energy. It gains a +1 <em>profane bonus</em> on all attack rolls and <em>saving throws</em>, as well as 1 <em>temporary hit point</em> per Hit Die and a +2 bonus to its turn resistance. The bonus on attack rolls and <em>saving throws</em> increases by +1 for every 5 wizard levels you possess. These bonuses last for a number of rounds equal to 1/2 your wizard level (minimum 1 round). The bonuses and <em>temporary hit points</em> are immediately dispelled if the creature is within the area of a <em>consecrate</em> spell. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "dcCZW51UewXFLLGo",
+    "name": "Bolster",
+    "subType": "classFeat",
+    "tag": "bolster",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.dcCZW51UewXFLLGo"
+  },
   "dfTaltqK6RlSaLVt": {
     "abilityType": "ex",
     "changes": [
@@ -20486,6 +20859,16 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ecaBwckdxXf22eSg"
   },
+  "ei3z5reJYduGyrrC": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Any <em>evocation</em> spell you cast with a duration greater than instantaneous lasts an additional number of rounds equal to 1/2 your wizard level (minimum +1). At 20th level, any dispel checks made against your <em>evocation</em> spells must be rolled twice, and your opponent must use the less favorable result.</p>",
+    "grantsBuffs": [],
+    "id": "ei3z5reJYduGyrrC",
+    "name": "Lingering Evocations",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.ei3z5reJYduGyrrC"
+  },
   "elAcoLowBH97mKiP": {
     "abilityType": "ex",
     "changes": [],
@@ -20783,6 +21166,21 @@
     },
     "uuid": "Compendium.pf1.class-abilities.Item.fJuxnPlNDncuHuT5"
   },
+  "fOGTp6cD9Oy33dcu": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>A number of times per day equal to your <em>Intelligence</em> modifier, you can publicly declare that your next spell is guided by prophecy. When you do, the next spell you cast has a 20% chance of fizzling (1–20 on a d%). If the spell does not fail, treat the spell as if it had been modified by the Empower Spell feat, even if you do not have that feat. At 12th level, the chance that the spell fizzles is reduced to 15% (1–15 on a d%). At 16th level, the chance is reduced to 10% (1–10 on a d%).</p>",
+    "grantsBuffs": [],
+    "id": "fOGTp6cD9Oy33dcu",
+    "name": "In Accordance with Prophecy",
+    "subType": "classFeat",
+    "tag": "inAccordanceWithProphecy",
+    "uses": {
+      "maxFormula": "@abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.fOGTp6cD9Oy33dcu"
+  },
   "fOyqwhx4vvA2PEG4": {
     "abilityType": "ex",
     "changes": [],
@@ -20792,6 +21190,21 @@
     "name": "Bogstep",
     "subType": "classFeat",
     "uuid": "prestige-feature:fOyqwhx4vvA2PEG4"
+  },
+  "fP8eQtvrzz3zTseu": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a <em>standard action</em>, you can generate a blast of air that hurls an unattended object (or objects) or an object in your possession up to 30 feet in a straight line. If you have a free hand, you can catch an object hurled toward yourself. You can move objects weighing up to 1 pound per wizard level. Objects are not thrown with enough force to cause damage, although fragile objects like alchemical weapons shatter on contact with a creature or hard surface. To hit a creature with an object, you must succeed at a ranged <em>touch attack</em>. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "fP8eQtvrzz3zTseu",
+    "name": "Wind Servant",
+    "subType": "classFeat",
+    "tag": "windServant",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.fP8eQtvrzz3zTseu"
   },
   "fVnL2yhENozMMZ8j": {
     "abilityType": "su",
@@ -21868,6 +22281,16 @@
     ],
     "subType": "classFeat",
     "uuid": "prestige-feature:hYO9c3hriB1TZvzM"
+  },
+  "hbttw8IQ2kKnpOnB": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 8th level, you can use this ability to walk through the Shadow Plane and reappear as a <em>standard action</em>. You can travel up to 30 feet per wizard level per day in this fashion, either in a single round or broken up across multiple shadow steps. This movement must be used in 5-foot increments and does not provoke an <em>attack of opportunity</em>. Travel through the Shadow Plane is imprecise; when you arrive, you re-enter 1 square off target, as per the rules for thrown splash weapons (see page 202 of the Pathfinder RPG Core Rulebook). If this would place you in an occupied square, you instead arrive in the nearest safe location. When you arrive, you are cloaked in shadow and gain <em>concealment</em> as the <em>blur</em> spell for 1 round. You may bring other willing creatures with you, but you must expend an equal amount of distance for each additional creature brought with you. They likewise re-enter off target (roll location for each creature) and are cloaked in shadow for 1 round.</p>",
+    "grantsBuffs": [],
+    "id": "hbttw8IQ2kKnpOnB",
+    "name": "Shadow Step",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.hbttw8IQ2kKnpOnB"
   },
   "hd6MiVc69RyEuDpU": {
     "abilityType": "ex",
@@ -23594,6 +24017,21 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:kXysARGzQKiAYmhR"
   },
+  "kYewJH9317exDQ6q": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At the beginning of your turn, you may, as a <em>free action</em>, roll a single d20. At any point before your next turn, you may use the result of this roll as the result of any d20 roll you are required to make. If you do not use the d20 result before your next turn, it is lost. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "kYewJH9317exDQ6q",
+    "name": "Prescience",
+    "subType": "classFeat",
+    "tag": "prescience",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.kYewJH9317exDQ6q"
+  },
   "kfjvecT5RkqB3pOK": {
     "abilityType": "su",
     "changes": [],
@@ -24849,6 +25287,21 @@
     ],
     "subType": "classFeat",
     "uuid": "prestige-feature:nB3FkWMDt8b75D3p"
+  },
+  "nBCKHaM5edwuFFnk": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can emit a 30-foot aura of banishment for a number of rounds per day equal to your wizard level. Any summoned or called creature in the area must make a <em>Will</em> save each round. Once the creature fails a <em>Will saving throw</em>, it is <em>staggered</em> as long as it remains inside the aura. If it fails a second <em>Will saving throw</em>, it is immediately sent back to its home plane and the spell that summoned it immediately ends. If that spell summoned more than one creature, only the creature that failed its <em>saving throws</em> is affected. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "nBCKHaM5edwuFFnk",
+    "name": "Aura of Banishment",
+    "subType": "classFeat",
+    "tag": "auraOfBanishment",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.nBCKHaM5edwuFFnk"
   },
   "nBpz562qzAntafUI": {
     "abilityType": "ex",
@@ -28442,6 +28895,21 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:qz3sBtaFF0ykzxFG"
   },
+  "qzCj0dGiKmIMw4wf": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, as a <em>swift action</em> you can grant yourself an <em>enhancement bonus</em> to a single ability score equal to 1/2 your wizard level (maximum +10) for one round. You may use this ability for a number of times per day equal to your wizard level.</p>",
+    "grantsBuffs": [],
+    "id": "qzCj0dGiKmIMw4wf",
+    "name": "Perfection of Self",
+    "subType": "classFeat",
+    "tag": "perfectionOfSelf",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.qzCj0dGiKmIMw4wf"
+  },
   "qzrYai2tj5Ehg6Um": {
     "changes": [
       {
@@ -31591,6 +32059,20 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:tIoU1UHn6WV4pmg9"
   },
+  "tJCegZfiuMpDkVEd": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a swift action, you grow a single natural weapon. The natural weapon lasts for 1 round and has a +1 enhancement bonus on attack and damage rolls for every four wizard levels you possess. You can grow a claw, a bite, or a gore attack. These attacks deal the normal damage for a creature of your size. At 11th level, you can shape two natural weapons. You may not grow additional limbs or a tail with this ability. You can use this ability a number of times per day equal to 3 + your Intelligence modifier.</p>",
+    "grantsBuffs": [],
+    "id": "tJCegZfiuMpDkVEd",
+    "name": "Battleshaping",
+    "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.tJCegZfiuMpDkVEd"
+  },
   "tJGZCuIbEhs1oht6": {
     "abilityType": "su",
     "changes": [],
@@ -32030,6 +32512,21 @@
     "name": "Energy Kinetic Blast",
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.u6q3Zk8XL1AMPxY4"
+  },
+  "u7r3RkiMNAhv9I2d": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>As a <em>standard action</em>, you can touch a creature and grant it either a +2 <em>enhancement bonus</em> to a single ability score of your choice or a +1 bonus to <em>natural armor</em> that stacks with any <em>natural armor</em> the creature might possess. At 10th level, the <em>enhancement bonus</em> to one ability score increases to +4. The <em>natural armor bonus</em> increases by +1 for every five wizard levels you possess, to a maximum of +5 at 20th level. This augmentation lasts a number of rounds equal to 1/2 your wizard level (minimum 1 round). You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "u7r3RkiMNAhv9I2d",
+    "name": "Augment",
+    "subType": "classFeat",
+    "tag": "augment",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.u7r3RkiMNAhv9I2d"
   },
   "uBDwUbHyKlGMTAWj": {
     "abilityType": "sp",
@@ -32611,6 +33108,21 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:vLBLeepb4eyERA8G"
   },
+  "vQ6i4zS5T7z1UNOM": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At 8th level, you can utter a prediction of the immediate future. While your foretelling is in effect, you emit a 30-foot aura of fortune that aids your allies or hinders your enemies, as chosen by you at the time of prediction. If you choose to aid, you and your allies gain a +2 <em>luck bonus</em> on ability checks, attack rolls, <em>caster level</em> checks, <em>saving throws</em>, and skill checks. If you choose to hinder, your enemies take a –2 penalty on those rolls instead. You can use this ability for a number of rounds per day equal to your wizard level. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "vQ6i4zS5T7z1UNOM",
+    "name": "Foretell",
+    "subType": "classFeat",
+    "tag": "foretell",
+    "uses": {
+      "maxFormula": "@abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.vQ6i4zS5T7z1UNOM"
+  },
   "vQywfaEaNCaRw4xy": {
     "abilityType": "su",
     "changes": [],
@@ -32892,6 +33404,22 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:w4aCw7DblqVuSfkq"
   },
+  "w6blUIDEc7Yfr5g4": {
+    "abilityType": "ex",
+    "changes": [
+      {
+        "formula": "3",
+        "target": "skill.kpl",
+        "type": "untyped"
+      }
+    ],
+    "description": "<p>As an infernal binder, you gain a +3 bonus on <em>Knowledge</em> (planes) checks.</p>",
+    "grantsBuffs": [],
+    "id": "w6blUIDEc7Yfr5g4",
+    "name": "Planar Knowledge",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.w6blUIDEc7Yfr5g4"
+  },
   "w7TIla7F0RcPW0ga": {
     "abilityType": "su",
     "changes": [],
@@ -33081,6 +33609,21 @@
     ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.wZ40bxNVn95BbLBV"
+  },
+  "wa9VINqzFWWOnS6g": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can charm a living creature by touching it. Creatures with more <em>Hit Dice</em> than your wizard level are unaffected, as are creatures in combat and those with an attitude of hostile toward you. Creatures receive a <em>Will saving throw</em> to negate the effect. The DC of this save is equal to 10 + 1/2 your wizard level + your <em>Intelligence</em> modifier. Creatures that fail their save are affected by Charm Monster for a number of rounds equal to 1/2 your wizard level (minimum 1). This is a mind-affecting effect. You can use this ability a number of times per day equal to 3 + your <em>Intelligence</em> modifier.</p>",
+    "grantsBuffs": [],
+    "id": "wa9VINqzFWWOnS6g",
+    "name": "Beguiling Touch",
+    "subType": "classFeat",
+    "tag": "beguilingTouch",
+    "uses": {
+      "maxFormula": "3 + @abilities.int.mod",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.wa9VINqzFWWOnS6g"
   },
   "wbpZGlafOCpaLS3m": {
     "abilityType": "ex",
@@ -33372,6 +33915,21 @@
     ],
     "subType": "classFeat",
     "uuid": "prestige-feature:x6B1UjQy8TO4FVhf"
+  },
+  "x8cEHXOa8OXWG86M": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>At 1st level as a <em>standard action</em>, you can cause yourself to appear so normal, mundane, and unexceptional that you blend in to your surroundings. All creatures within 30 feet treat you as if you belonged there, effectively ignoring you. Creatures outside of this area may notice that you appear out of place, but as soon as they approach within 30 feet they are affected by the magic and no longer think something is amiss. If you interact with an affected creature in any way, it gains a <em>Will</em> save (DC 10 + 1/2 your <em>wizard</em> level + your <em>Intelligence</em> modifier) to disbelieve the <em>illusion</em> and notice you. The effect lasts for a number of minutes equal to your <em>wizard</em> level, or until the <em>illusion</em> is dispelled. The minutes do not need to be consecutive, but must be used in 1-minute increments. This is a mind-affecting phantasm effect.</p>\n<p>This ability does not turn you invisible and opponents are not considered <em>flat-footed</em>. It does not allow you to disguise yourself as a specific individual, type of person, or member of another race, so you cannot blend into a group of uniformed guards or appear as a member of an individual’s family, and a <em>human</em> cannot blend into a group of gnolls. You can blend in with any group made up of different types of people, such as a crowd of courtiers in a king’s throne room, and you can disguise yourself (either through magic or more mundane means) to appear as a specific type of person or another race (such as a uniformed guard or a gnoll) before using this ability.</p>",
+    "grantsBuffs": [],
+    "id": "x8cEHXOa8OXWG86M",
+    "name": "Face in the Crowd (WIZ)",
+    "subType": "classFeat",
+    "tag": "faceInTheCrowdWiz",
+    "uses": {
+      "maxFormula": "@class.unlevel",
+      "per": "day"
+    },
+    "uuid": "Compendium.pf1.class-abilities.Item.x8cEHXOa8OXWG86M"
   },
   "x98eJtpZOKK4A4Wj": {
     "abilityType": "ex",
@@ -33849,6 +34407,16 @@
     ],
     "subType": "classFeat",
     "uuid": "prestige-feature:yHknTbRNsKAscE1q"
+  },
+  "yIVUP0keOg2PctKq": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 7th level, you gain Improved Familiar as a bonus feat, and must take an imp as a familiar. The imp replaces your current familiar.</p>",
+    "grantsBuffs": [],
+    "id": "yIVUP0keOg2PctKq",
+    "name": "Imp Familiar",
+    "subType": "classFeat",
+    "uuid": "Compendium.pf1.class-abilities.Item.yIVUP0keOg2PctKq"
   },
   "yPqtbKiMrKO0LvmM": {
     "abilityType": "sp",

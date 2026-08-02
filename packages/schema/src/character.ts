@@ -256,6 +256,19 @@ export interface CharacterDoc {
      */
     wizardSchool?: WizardSchoolTag | ElementalSchoolTag;
     /**
+     * A focused arcane school (`refData.focusedSchools[x].tag`) layered on top
+     * of `wizardSchool`, which stays the real parent school tag — a focused
+     * wizard's spell list, opposition schools, and bonus-slot eligibility all
+     * still key off `wizardSchool` unchanged; only the granted powers differ
+     * (see `FocusedSchool` doc comment in `@pf1/schema`). Free-choice, no
+     * validation that it names a real focus of the current `wizardSchool` —
+     * soft-warning posture, matching the rest of this build section; the
+     * picker only offers focuses of the chosen school. Absent for a
+     * Universalist, an elemental specialist, or a standard specialist taking
+     * no focus.
+     */
+    wizardFocusedSchool?: string;
+    /**
      * Two opposition school tags for a specialist wizard; empty/omitted for
      * Universalist. Opposition-school spells cost two normal slots to prepare
      * (PF1 RAW). Free-choice (no school-vs-opposition validation — soft-warning

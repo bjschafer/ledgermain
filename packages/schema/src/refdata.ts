@@ -125,6 +125,12 @@ export interface RefData {
    */
   wizardSchools: Record<string, WizardSchool>;
   /**
+   * Focused arcane schools — see `FocusedSchool` doc comment. Keyed by
+   * Foundry id like every other collection; look up by `tag`/`parentTag` via
+   * `Object.values`, same as `wizardSchools`.
+   */
+  focusedSchools: Record<string, FocusedSchool>;
+  /**
    * Alternate racial traits from the pinned `pf1-content` module's
    * `pf-racial-traits` pack, covering all 80 vendored races. Distinct from the
    * 7-core-races-plus-Sylph hand-authored `RACIAL_TRAITS` table in
@@ -486,14 +492,16 @@ export interface DruidDomain extends RefEntity {
 /**
  * A wizard arcane school — the nine standard/Universalist schools
  * (`class-abilities/wizard-schools/*.yaml`) or one of the eight elemental
- * schools (`wizard-schools/elemental-schools/*.yaml`; the elemental/focused
- * variant-rule subfolder within THAT folder is excluded — too niche a
- * combination to vendor). Elemental entries carry `features` resolved from
- * `links.supplements` exactly like the standard schools, but their two other
- * mechanics come from prose rather than structure: the bonus-slot spell list
- * is free-text names (parsed into `RefData.elementalSchoolSpellLists`, since
- * `spell.school` never matches an elemental tag) and the opposition is a
- * single element rather than two standard schools (see `oppositionOptions`).
+ * schools (`wizard-schools/elemental-schools/*.yaml`; the elemental-schools/
+ * focused-schools/ variant-rule subfolder within THAT folder is excluded —
+ * too niche a combination to vendor; see `FocusedSchool` for the standard-
+ * school focused variants, which ARE vendored). Elemental entries carry
+ * `features` resolved from `links.supplements` exactly like the standard
+ * schools, but their two other mechanics come from prose rather than
+ * structure: the bonus-slot spell list is free-text names (parsed into
+ * `RefData.elementalSchoolSpellLists`, since `spell.school` never matches an
+ * elemental tag) and the opposition is a single element rather than two
+ * standard schools (see `oppositionOptions`).
  */
 export interface WizardSchool extends RefEntity {
   tag: WizardSchoolTag | ElementalSchoolTag;
@@ -509,6 +517,31 @@ export interface WizardSchool extends RefEntity {
    * `build.wizardOppositionSchools` instead.
    */
   oppositionOptions?: ElementalSchoolTag[];
+}
+
+/**
+ * A focused arcane school (APG "Focused Schools" variant rule,
+ * `class-abilities/wizard-schools/focused-schools/*.yaml`, ~22 entries): a
+ * narrower specialization within one of the eight standard wizard schools —
+ * Admixture within Evocation, Teleportation within Conjuration, and so on —
+ * selected via `build.wizardFocusedSchool` layered on top of `build.wizardSchool`,
+ * which stays the real parent school tag. A focused wizard keeps every other
+ * mechanic of the parent school (spell list, opposition schools, bonus-slot
+ * eligibility); only the granted powers change.
+ */
+export interface FocusedSchool extends RefEntity {
+  /** Own tag (e.g. "Admixture"), matching `build.wizardFocusedSchool`. */
+  tag: string;
+  /** `WizardSchool.tag` of the school this specializes — always a standard school in the vendored slice, never elemental. */
+  parentTag: WizardSchoolTag | ElementalSchoolTag;
+  /**
+   * The COMPLETE granted-power list for a wizard who took this focus: the
+   * parent school's powers it keeps, plus its own replacement power(s),
+   * already merged — same "whole truth" posture as `Subdomain.features`.
+   * Never merge this with the parent school's `features` yourself, or a
+   * replaced power comes back.
+   */
+  features: ClassFeatureGrant[];
 }
 
 /** An entry from the `class-abilities` pack (e.g. Rage, Bravery). */
