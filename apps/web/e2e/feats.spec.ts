@@ -58,17 +58,23 @@ test("a feat added in the manager lands in the panel's chosen list", async ({ pa
   const taken = dialog.locator(".spell-pane--known");
   await expect(taken).toContainText("Nothing here yet");
 
-  await dialog.getByLabel("Search feats").fill("Dodge");
-  await featRow(catalog, page, "Dodge").getByRole("button", { name: "Add", exact: true }).click();
+  // Must be a feat with no structured prereqs: those hard-block the Add
+  // button, and a fresh fighter (all 10s) fails Dodge's Dex 13. `.first()`
+  // skips past "Toughness (Mythic)", which sorts after the base feat.
+  await dialog.getByLabel("Search feats").fill("Toughness");
+  await featRow(catalog, page, "Toughness")
+    .first()
+    .getByRole("button", { name: "Add", exact: true })
+    .click();
 
   // It appears in the taken pane immediately, without clearing the search.
-  await expect(featRow(taken, page, "Dodge")).toBeVisible();
-  await expect(dialog.getByLabel("Search feats")).toHaveValue("Dodge");
+  await expect(featRow(taken, page, "Toughness")).toBeVisible();
+  await expect(dialog.getByLabel("Search feats")).toHaveValue("Toughness");
 
   // Escape closes, and the panel behind reflects the new feat.
   await page.keyboard.press("Escape");
   await expect(dialog).toHaveCount(0);
-  await expect(featRow(panel, page, "Dodge")).toBeVisible();
+  await expect(featRow(panel, page, "Toughness")).toBeVisible();
 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
