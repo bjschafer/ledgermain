@@ -81,6 +81,12 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "1,090 entries carry structured changes[]; the imported catalog adds 3,832 whose effects exist only as prose. The gap is promotion rather than coverage, and the weapon and armor special ability catalog sits on the same axis: keen is the only entry that moves numbers.",
   },
   {
+    category: "Class options with no picker yet",
+    note: "A few published ways to vary a class have nowhere to be recorded: a wizard's focused school, an inquisitor's inquisition in place of a domain, a wildblooded sorcerer bloodline, a warpriest's blessings. A druid's nature-bond domain can be picked and gives its spell slots, but its granted powers stay as text. Say which you need and it can be added.",
+    issueDetail:
+      "22 focused arcane schools, 40 inquisitions, 25 wildblooded mutations, 43 warpriest blessings: none vendored. 25 druid domains are vendored and spell lists resolve, but features[] is empty for every one (the source states their powers as prose, with no linked ability doc to resolve).",
+  },
+  {
     category: "Character traits",
     note: "The full published trait catalog is searchable in the picker, and a trait whose benefit comes with structured numbers or a fixed class-skill grant applies them to your sheet automatically. The rest show their benefit as text to apply at the table. Anything still missing can be added as a homebrew trait.",
     issueDetail:
