@@ -1,10 +1,9 @@
 /**
- * Pure mesmerist Bold Stare transitions (issue #65 follow-through). Bold
- * stare ids are just entries in `build.mesmeristBoldStares`, mirroring
- * `toggleMesmeristTrick` in `model/mesmeristTricks.ts` — the engine's
- * `MESMERIST_BOLD_STARES` table enriches the Hypnotic Stare class-feature
- * `detail` line (see `@pf1/engine` `boldStareRiderSummary`) rather than
- * adding its own standing `Change`.
+ * Pure mesmerist Bold Stare transitions. Bold stare ids are just entries in
+ * `build.mesmeristBoldStares`, mirroring `toggleMesmeristTrick` in
+ * `model/mesmeristTricks.ts` — the engine's `MESMERIST_BOLD_STARES` table
+ * enriches the Hypnotic Stare class-feature `detail` line (see `@pf1/engine`
+ * `boldStareRiderSummary`) rather than adding its own standing `Change`.
  *
  * Budget (PF1 Occult Adventures, verified against aonprd.com's live
  * Mesmerist class page — "At 3rd level, and every 4 levels thereafter, the

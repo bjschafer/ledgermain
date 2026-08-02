@@ -9,21 +9,21 @@ import {
 } from "../src/archetype-extracted/magus.js";
 
 /**
- * Issue #45 (magus slice of the prose->Change extraction pipeline, 2026-07-06).
+ * The magus slice of the prose->Change extraction pipeline.
  *
- * TEST APPROACH: magus's aggregator wiring (`archetype-extracted/index.ts`)
- * is a later integration step this pass doesn't touch, so
- * `resolveArchetypeFeatureEffect`/`compute()` do NOT pick up this file's
- * tables yet through the normal production path. These fixtures therefore
- * (1) assert directly against `MAGUS_ARCHETYPE_EFFECTS_EXTRACTED`'s exported
- * `changes` shape, (2) hand-compute each formula via the real `formula.ts`
- * evaluator (`evaluateFormula`) at several class levels against the exact
+ * TEST APPROACH: magus's aggregator wiring (`archetype-extracted/index.ts`) is
+ * a later integration step this pass doesn't touch, so
+ * `resolveArchetypeFeatureEffect`/`compute` do NOT pick up this file's tables
+ * yet through the normal production path. These fixtures therefore (1) assert
+ * directly against `MAGUS_ARCHETYPE_EFFECTS_EXTRACTED`'s exported `changes`
+ * shape, (2) hand-compute each formula via the real `formula.ts` evaluator
+ * (`evaluateFormula`) at several class levels against the exact
  * published-rules numbers cited in each entry's `provenance`, and (3) verify
  * `resolveArchetypeFeatureEffect` resolves correctly when explicitly given
  * this file's tables as its override arguments (the mechanism it's designed
- * for — see its doc comment). `loadRefData()` is used to sanity-check that
- * every archetypeId/name this file references actually exists in the real
- * vendored data slice, same posture as `archetypeEffectsExtracted.test.ts`.
+ * for — see its doc comment). `loadRefData` is used to sanity-check that every
+ * archetypeId/name this file references actually exists in the real vendored
+ * data slice, same posture as `archetypeEffectsExtracted.test.ts`.
  *
  * Magus has NO suppression-composition case analogous to fighter's Armor
  * Training reflavors: every magus archetype feature this pass extracted a

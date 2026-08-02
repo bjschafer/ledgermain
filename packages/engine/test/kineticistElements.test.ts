@@ -20,10 +20,10 @@ import {
 
 /**
  * Fixture coverage for the kineticist Elemental Focus / Expanded Element /
- * Wild Talent / Elemental Overflow subsystem (issue #65) — hand-authored
- * clean-room from aonprd.com (the vendored Foundry pack carries only the
- * generic "Elemental Focus"/"Wild Talents"/"Elemental Overflow" prose class
- * features, no per-element/per-talent data at all — see
+ * Wild Talent / Elemental Overflow subsystem — hand-authored clean-room from
+ * aonprd.com (the vendored Foundry pack carries only the generic "Elemental
+ * Focus"/"Wild Talents"/"Elemental Overflow" prose class features, no
+ * per-element/per-talent data at all — see
  * `kineticist-elements.ts`/`kineticist-wild-talents.ts`'s doc comments).
  */
 const ref = loadRefData();

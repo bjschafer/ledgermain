@@ -6,12 +6,12 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute, RAGE_POWERS } from "../src/index.js";
 
 /**
- * Fixture coverage for the buff-gated-changes mechanism (issue #75):
+ * Fixture coverage for the buff-gated-changes mechanism:
  * `Change.activeWhenBuff`, gated at collect-time by `@pf1/engine`
- * `collect.ts`'s `buffGateSatisfied`, applied to the small set of rage
- * powers promoted off `displayOnly` (see `rage-powers.ts`'s file doc
- * comment for the full promotion rationale and the one deliberately-still-
- * display-only near miss, Raging Leaper).
+ * `collect.ts`'s `buffGateSatisfied`, applied to the small set of rage powers
+ * promoted off `displayOnly` (see `rage-powers.ts`'s file doc comment for the
+ * full promotion rationale and the one deliberately-still- display-only near
+ * miss, Raging Leaper).
  *
  * Superstition is the case where both gating mechanisms meet: it is gated on
  * raging AND scoped to saves against spells/SLAs/Su, so it exercises
@@ -297,14 +297,14 @@ describe("rage-power while-raging buff gate (issue #75)", () => {
 });
 
 /**
- * Fixture coverage for the #74 parity-sweep batch-1 (A-F) promotions added
- * alongside the original issue #75 three (see `rage-powers.ts`'s doc
- * comment for the full per-power promotion rationale). Beast Totem,
- * Celestial Blood, Chaos Totem, Draconic Blood, and Earth Totem use the same
- * while-raging `activeWhenBuff` gate as Raging Climber/Swimmer/Swift Foot;
- * the three Linnorm Death Curses are a NEW shape — a flat damage bonus
- * verified as unconditional (not scoped to "while raging" at all), so they
- * carry a plain ungated `Change`.
+ * Fixture coverage for the parity sweep's batch 1 (A-F) promotions added
+ * alongside the original three (see `rage-powers.ts`'s doc comment for the
+ * full per-power promotion rationale). Beast Totem, Celestial Blood, Chaos
+ * Totem, Draconic Blood, and Earth Totem use the same while-raging
+ * `activeWhenBuff` gate as Raging Climber/Swimmer/Swift Foot; the three
+ * Linnorm Death Curses are a NEW shape — a flat damage bonus verified as
+ * unconditional (not scoped to "while raging" at all), so they carry a plain
+ * ungated `Change`.
  */
 describe("#74 parity sweep batch 1 (A-F): newly promoted rage powers", () => {
   function raceId(name: string): string {
@@ -451,7 +451,7 @@ describe("#74 parity sweep batch 1 (A-F): newly promoted rage powers", () => {
 });
 
 /**
- * Fixture coverage for the #74 parity-sweep batch-2 (G-R) promotions (see
+ * Fixture coverage for the parity sweep's batch 2 (G-R) promotions (see
  * `rage-powers.ts`'s doc comment for the full per-power promotion
  * rationale). Greater Chaos Totem uses the `dr.<qualifier>` shape (new for
  * this table — DR is inherently bypass-qualified, unlike a plain `dr`
@@ -664,7 +664,7 @@ describe("#74 parity sweep batch 2 (G-R): newly promoted rage powers", () => {
 });
 
 /**
- * Fixture coverage for the #74 parity-sweep batch-3 (S-Z) promotions,
+ * Fixture coverage for the parity sweep's batch 3 (S-Z) promotions,
  * closing out full vendored parity — see `rage-powers.ts`'s doc comment for
  * the full per-power promotion rationale. Sun Totem is the same
  * `eres.fire`-while-raging shape as Lesser/Greater Sun Totem; Unrestrained

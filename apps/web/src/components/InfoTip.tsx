@@ -40,8 +40,8 @@ function tipReducer(state: TipState, action: TipAction): TipState {
 
 /**
  * Shared open/dismiss state for the tap-friendly tooltip primitives below
- * (issue #60: `title=` is invisible on touch — no hover). Opens on tap/click
- * or Enter/Space (toggles independently of hover — see {@link TipState}), and
+ * (`title=` is invisible on touch — no hover). Opens on tap/click or
+ * Enter/Space (toggles independently of hover — see {@link TipState}), and
  * shows on hover/focus for desktop convenience. Dismisses on tap-outside,
  * Escape, or blur/mouseleave for those respective sources. One tip open at a
  * time is enough — no global registry.

@@ -27,14 +27,14 @@ import { signed } from "../../model/names.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
- * Tracker panel for a polymorph-family transformation (issue #70) — Wild
- * Shape, or a Beast Shape/Elemental Body/Plant Shape spell. Picking a tier +
- * size/creature-type/element and naming the form is all this panel does;
- * the resulting ability-score/AC/attack/CMB/CMD numbers flow through
- * `compute()` automatically (see `sheet.abilities`/`sheet.ac`/etc. — no
- * duplicate math here). Mirrors `ShifterAspectPanel`'s "live toggle, no
- * standing build.* half" shape — including hiding itself entirely for a
- * character with no polymorph source (see `polymorphPanelVisible`).
+ * Tracker panel for a polymorph-family transformation — Wild Shape, or a Beast
+ * Shape/Elemental Body/Plant Shape spell. Picking a tier +
+ * size/creature-type/element and naming the form is all this panel does; the
+ * resulting ability-score/AC/attack/CMB/CMD numbers flow through `compute`
+ * automatically (see `sheet.abilities`/`sheet.ac`/etc. — no duplicate math
+ * here). Mirrors `ShifterAspectPanel`'s "live toggle, no standing build.*
+ * half" shape — including hiding itself entirely for a character with no
+ * polymorph source (see `polymorphPanelVisible`).
  */
 export function ActiveFormPanel({ doc, sheet, refData, update }: BuilderProps) {
   const active = currentActiveForm(doc);

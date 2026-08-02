@@ -4,8 +4,8 @@
  * doc comments on those fields, and `@pf1/engine` `companion.ts` for the
  * derivation rules). Mirrors `model/familiar.ts`'s shape closely; the
  * differences are the companion's `source` toggles (Nature Bond / Hunter's
- * Bond / Mount), its player-assigned Ability Score Increases, and (issue #68)
- * its own feat/skill-rank investment, none of which a familiar has.
+ * Bond / Mount), its player-assigned Ability Score Increases, and its own
+ * feat/skill-rank investment, none of which a familiar has.
  */
 
 import {
@@ -113,10 +113,9 @@ export function setCompanionAbilityIncrease(
 }
 
 /**
- * Toggle a feat pick for the companion itself (issue #68 —
- * `build.animalCompanion.feats`). Free-choice, soft-capped against
- * `DerivedCompanion.bonusFeats` by the UI (never blocked here). No-ops if
- * there's no companion yet.
+ * Toggle a feat pick for the companion itself (`build.animalCompanion.feats`).
+ * Free-choice, soft-capped against `DerivedCompanion.bonusFeats` by the UI
+ * (never blocked here). No-ops if there's no companion yet.
  */
 export function toggleCompanionFeat(doc: CharacterDoc, featId: string): CharacterDoc {
   const current = doc.build.animalCompanion;
@@ -130,12 +129,11 @@ export function toggleCompanionFeat(doc: CharacterDoc, featId: string): Characte
 
 /**
  * Set the companion's invested ranks in one of its six trackable skills
- * (issue #68 — `build.animalCompanion.skillRanks`). Only clamps to a
- * non-negative integer here; the per-skill hard cap at the companion's own
- * Hit Dice, and the soft total-budget warning, are both enforced/surfaced
- * downstream (`@pf1/engine` `deriveCompanion`'s clamp; the UI's own budget
- * display) rather than duplicated in this transition. No-ops if there's no
- * companion yet.
+ * (`build.animalCompanion.skillRanks`). Only clamps to a non-negative integer
+ * here; the per-skill hard cap at the companion's own Hit Dice, and the soft
+ * total-budget warning, are both enforced/surfaced downstream (`@pf1/engine`
+ * `deriveCompanion`'s clamp; the UI's own budget display) rather than
+ * duplicated in this transition. No-ops if there's no companion yet.
  */
 export function setCompanionSkillRank(
   doc: CharacterDoc,
@@ -152,15 +150,14 @@ export function setCompanionSkillRank(
 }
 
 /**
- * The companion's own feat-prerequisite context (issue #68) — reuses
- * `model/prereqs.ts`'s `evaluatePrereqs`/`PrereqContext`, but built from the
- * COMPANION's own derived ability scores/BAB (not the master's), the
- * companion's own chosen feats (`doc.build.animalCompanion.feats`, not the
- * master's `build.feats`), and `casterLevel: 0`/`characterLevel: 0` (no
- * companion in `BASE_COMPANIONS` casts, and a "character level" prereq means
- * the master's level, which the companion has no independent stand-in for).
- * Mirrors `FeatsSection`'s own `PrereqContext`
- * construction for the master.
+ * The companion's own feat-prerequisite context — reuses `model/prereqs.ts`'s
+ * `evaluatePrereqs`/`PrereqContext`, but built from the COMPANION's own
+ * derived ability scores/BAB (not the master's), the companion's own chosen
+ * feats (`doc.build.animalCompanion.feats`, not the master's `build.feats`),
+ * and `casterLevel: 0`/`characterLevel: 0` (no companion in `BASE_COMPANIONS`
+ * casts, and a "character level" prereq means the master's level, which the
+ * companion has no independent stand-in for). Mirrors `FeatsSection`'s own
+ * `PrereqContext` construction for the master.
  */
 export function companionFeatPrereqContext(
   doc: CharacterDoc,
@@ -231,7 +228,7 @@ export function restCompanion(doc: CharacterDoc): CharacterDoc {
   return withCompanionLive(doc, { damage: 0, nonlethal: 0 });
 }
 
-/** Whether the companion's OWN condition `id` is currently active (issue #68 — independent of the master's `live.conditions`). */
+/** Whether the companion's OWN condition `id` is currently active (independent of the master's `live.conditions`). */
 export function hasCompanionCondition(doc: CharacterDoc, id: string): boolean {
   return (doc.live.animalCompanion?.conditions ?? []).includes(id);
 }
@@ -251,8 +248,8 @@ export function isCompanionConditionImplied(doc: CharacterDoc, id: string): bool
 }
 
 /**
- * Toggle one of the companion's OWN active conditions (issue #68 —
- * `live.animalCompanion.conditions`) — reuses `model/conditions.ts`'s
+ * Toggle one of the companion's OWN active conditions
+ * (`live.animalCompanion.conditions`) — reuses `model/conditions.ts`'s
  * `toggleConditionIn` for the same ladder-aware auto-upgrade/implied-
  * condition behavior the master's own `live.conditions` gets, just scoped to
  * the companion's separate array. No-ops if there's no companion yet.
@@ -279,8 +276,8 @@ export function toggleSharedBuffCompanion(doc: CharacterDoc, instanceId: string)
 
 /**
  * Set (or clear, with `undefined`) which Animal Focus buff (a `RefData.buffs`
- * id, e.g. one of the 12 vendored "Animal Focus (<Animal>)" buffs — issue
- * #65) is applied to the companion. Display-only bookkeeping — see
+ * id, e.g. one of the 12 vendored "Animal Focus (<Animal>)" buffs) is applied
+ * to the companion. Display-only bookkeeping — see
  * `AnimalCompanionLiveState.focusBuffId`'s doc comment for why this isn't
  * wired into `deriveCompanion`'s numeric stat block. No-ops if there's no
  * companion yet.
@@ -302,24 +299,24 @@ export function hunterLevel(doc: CharacterDoc): number {
   return doc.identity.classes.find((c) => c.tag === "hunter")?.level ?? 0;
 }
 
-/** Cavalier class level, for gating the "Mount" companion-source chip (granted at 1st level, issue #68). */
+/** Cavalier class level, for gating the "Mount" companion-source chip (granted at 1st level). */
 export function cavalierLevel(doc: CharacterDoc): number {
   return doc.identity.classes.find((c) => c.tag === "cavalier")?.level ?? 0;
 }
 
-/** Samurai class level, for gating the "Mount" companion-source chip (granted at 1st level, issue #68). */
+/** Samurai class level, for gating the "Mount" companion-source chip (granted at 1st level). */
 export function samuraiLevel(doc: CharacterDoc): number {
   return doc.identity.classes.find((c) => c.tag === "samurai")?.level ?? 0;
 }
 
 /**
- * The RAW-eligible mount species list for the character's OWN size (issue
- * #68) — `refData.races[doc.identity.race].size`, falling back to `"med"`
- * for an unresolved race id (the overwhelmingly common case, and the same
- * default {@link MOUNT_SPECIES_BY_RIDER_SIZE} keys off). Soft-note only, see
- * `@pf1/engine` `MOUNT_SPECIES_BY_RIDER_SIZE`'s doc comment — the picker
- * still allows any `BASE_COMPANIONS` species as a mount; this is surfaced as
- * a hint, never a restriction on the `<select>`.
+ * The RAW-eligible mount species list for the character's OWN size —
+ * `refData.races[doc.identity.race].size`, falling back to `"med"` for an
+ * unresolved race id (the overwhelmingly common case, and the same default
+ * {@link MOUNT_SPECIES_BY_RIDER_SIZE} keys off). Soft-note only, see
+ * `@pf1/engine` `MOUNT_SPECIES_BY_RIDER_SIZE`'s doc comment — the picker still
+ * allows any `BASE_COMPANIONS` species as a mount; this is surfaced as a hint,
+ * never a restriction on the `<select>`.
  */
 export function mountSpeciesHint(doc: CharacterDoc, refData: RefData): readonly string[] {
   const size = refData.races[doc.identity.race]?.size;
@@ -327,13 +324,12 @@ export function mountSpeciesHint(doc: CharacterDoc, refData: RefData): readonly 
 }
 
 /**
- * The 12 vendored "Animal Focus (<Animal>)" buffs (issue #65), sorted by
- * name — every Hunter Animal Focus aspect, read directly off
- * `refData.buffs` by name pattern rather than a hand-authored table (the
- * numbers are already fully vendored with correct per-level scaling
- * formulas). Used by both the self-focus
- * resource-pool toggle (`ResourcesPanel`'s generic `linkedBuffIds` handling)
- * and the companion-focus picker below.
+ * The 12 vendored "Animal Focus (<Animal>)" buffs, sorted by name — every
+ * Hunter Animal Focus aspect, read directly off `refData.buffs` by name
+ * pattern rather than a hand-authored table (the numbers are already fully
+ * vendored with correct per-level scaling formulas). Used by both the
+ * self-focus resource-pool toggle (`ResourcesPanel`'s generic `linkedBuffIds`
+ * handling) and the companion-focus picker below.
  */
 export function animalFocusBuffs(refData: RefData): { id: string; name: string }[] {
   return Object.values(refData.buffs)

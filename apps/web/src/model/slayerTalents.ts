@@ -1,9 +1,9 @@
 /**
- * Pure slayer-talent transitions (issue #74), mirroring
- * `model/rogueTalents.ts`'s shape closely — `build.slayerTalents` is a flat
- * id array into `RefData.slayerTalents` (see `@pf1/engine`
- * `slayer-talents.ts`; UNLIKE rogue talents there is no hand-authored
- * mechanics table backing these ids yet, every entry is display-only).
+ * Pure slayer-talent transitions, mirroring `model/rogueTalents.ts`'s shape
+ * closely — `build.slayerTalents` is a flat id array into
+ * `RefData.slayerTalents` (see `@pf1/engine` `slayer-talents.ts`; UNLIKE rogue
+ * talents there is no hand-authored mechanics table backing these ids yet,
+ * every entry is display-only).
  *
  * Budget (PF1 Advanced Class Guide, verified against the vendored Foundry
  * "Slayer Talents" `ClassFeature` description): "Starting at 2nd level and

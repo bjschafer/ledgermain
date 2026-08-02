@@ -1,9 +1,9 @@
 /**
- * `restNewDay` (issue #30) composes HP/ability-damage/resource/spell rest
- * transitions into a single "new day" action. This suite builds a multiclass
- * (cleric/sorcerer) document with damage, drain, expended pools/spells across
- * both classes, and confirms one call resets everything RAW says a night's
- * rest should, while leaving negative levels, drain, and buffs untouched.
+ * `restNewDay` composes HP/ability-damage/resource/spell rest transitions into
+ * a single "new day" action. This suite builds a multiclass (cleric/sorcerer)
+ * document with damage, drain, expended pools/spells across both classes, and
+ * confirms one call resets everything RAW says a night's rest should, while
+ * leaving negative levels, drain, and buffs untouched.
  */
 import { describe, expect, it } from "bun:test";
 
@@ -284,11 +284,11 @@ describe("newDaySummary()", () => {
     expect(newDaySummary(before, after)).toBe("rage 5/5");
   });
 
-  // Issue #63: the app-wide New Day action's toast previously reported a
-  // single opaque "N spell slots refreshed" combining every caster class —
-  // extended below to break that segment out per class, mirroring however
-  // `restNewDay` actually reset that class's spell state (prepared reset vs.
-  // spontaneous slots restored).
+  // the app-wide New Day action's toast previously reported a single opaque "N
+  // spell slots refreshed" combining every caster class — extended below to
+  // break that segment out per class, mirroring however `restNewDay` actually
+  // reset that class's spell state (prepared reset vs. spontaneous slots
+  // restored).
   it("reports a single caster class's spell reset by name when refData is given (issue #63)", () => {
     let doc = addClass(createEmptyDoc("t"), "wizard");
     doc = setClassLevel(doc, "wizard", 1);

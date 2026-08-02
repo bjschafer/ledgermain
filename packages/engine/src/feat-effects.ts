@@ -101,12 +101,12 @@ export interface SituationalFeatEffect {
   /** Extra attack entries at the (adjusted) highest bonus. */
   extraAttacks?: number;
   /**
-   * Dodge-type AC delta (issue #62) — e.g. Combat Expertise's attack-for-AC
-   * trade. Display-only: unlike `attack`/`damage`, this never folds into a
-   * saved roll's number (AC isn't itself a saved-roll source), so
+   * Dodge-type AC delta — e.g. Combat Expertise's attack-for-AC trade.
+   * Display-only: unlike `attack`/`damage`, this never folds into a saved
+   * roll's number (AC isn't itself a saved-roll source), so
    * `apps/web/src/model/savedRolls.ts` only ever surfaces it as a formatted
-   * note (`foldAttachments`), the same "player judges applicability, chip is
-   * a reminder" posture as `note` below.
+   * note (`foldAttachments`), the same "player judges applicability, chip is a
+   * reminder" posture as `note` below.
    */
   acDelta?: number;
   /** At-table reminder, e.g. "within 30 ft". */
@@ -809,16 +809,16 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
  * illegal second instance is the player's call like any other unmet prereq).
  * Clean-room from d20pfsrd/Archives of Nethys, not transcribed from Foundry.
  *
- * `featureTag` accepts either a single tag or an array of tags (issue #65's
- * multi-target follow-up — see `resources.ts`'s `collectFeatPoolBonuses`
- * doc comment). A multi-tag entry is for a feat whose RAW bonus applies to
- * WHICHEVER of several class features the character actually has (a
- * mutually-exclusive substitution across classes, e.g. antipaladin's Touch
- * of Corruption explicitly substituting for paladin's Lay on Hands — see
+ * `featureTag` accepts either a single tag or an array of tags (multi-target
+ * follow-up — see `resources.ts`'s `collectFeatPoolBonuses` doc comment). A
+ * multi-tag entry is for a feat whose RAW bonus applies to WHICHEVER of
+ * several class features the character actually has (a mutually-exclusive
+ * substitution across classes, e.g. antipaladin's Touch of Corruption
+ * explicitly substituting for paladin's Lay on Hands — see
  * `extra-lay-on-hands` below), never "both at once": a character with both
  * tags' pools present (an implausible paladin/antipaladin multiclass) would
- * get the bonus applied to both, which is an accepted edge case, not a
- * modeled RAW scenario.
+ * get the bonus applied to both, which is an accepted edge case, not a modeled
+ * RAW scenario.
  */
 export interface FeatPoolEffect {
   /** `RefData.classFeatures[...].tag`(s) of the pool(s) this feat's bonus targets. */
@@ -852,7 +852,7 @@ export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
   // feat, spell, or effect that specifically works with the lay on hands
   // paladin class feature. For example, the Extra Lay On Hands feat grants
   // an antipaladin 2 additional uses of the touch of corruption class
-  // feature." Issue #65's multi-target follow-up (previously a known gap —
+  // feature." The multi-target follow-up (previously a known gap —
   // `FeatPoolEffect` only supported one `featureTag`): unambiguous RAW
   // support confirmed directly in the vendored text above, not just an
   // inference, so both tags are wired here rather than left as a note.
@@ -863,11 +863,11 @@ export const FEAT_POOL_EFFECTS: Readonly<Record<string, FeatPoolEffect>> = {
   "extra-reservoir": { featureTag: "arcaneReservoir", maxDelta: 3 },
 
   // Extra Arcane Pool: +2 points to the magus's arcane pool maximum (PF1
-  // Ultimate Magic p. 10). Added by issue #45's feat batch-extraction pass
-  // (see feat-classification.ts) — the magus's Arcane Pool class feature
-  // already carries a vendored `uses.maxFormula` tagged `arcanePool`, so it
-  // derives generically via `deriveResourcePools` exactly like the five
-  // entries above; no resources.ts change was needed.
+  // Ultimate Magic p. 10). Added by the feat batch-extraction pass (see
+  // feat-classification.ts) — the magus's Arcane Pool class feature already
+  // carries a vendored `uses.maxFormula` tagged `arcanePool`, so it derives
+  // generically via `deriveResourcePools` exactly like the five entries above;
+  // no resources.ts change was needed.
   "extra-arcane-pool": { featureTag: "arcanePool", maxDelta: 2 },
 
   // ── The eight below were "subsystem" in feat-classification.ts's frozen
@@ -1047,11 +1047,11 @@ export const SITUATIONAL_FEAT_EFFECTS: Readonly<Record<string, SituationalFeatEn
 
   // Combat Expertise: trade melee attack bonus for a dodge AC bonus, scaling
   // with BAB (PF1 CRB p. 122) — same p = 1 + floor(BAB / 4) shape as Power
-  // Attack/Deadly Aim (RAW technically caps p at 5, reached at BAB 16;
-  // left uncapped here to match this file's existing Power Attack/Deadly Aim
+  // Attack/Deadly Aim (RAW technically caps p at 5, reached at BAB 16; left
+  // uncapped here to match this file's existing Power Attack/Deadly Aim
   // precedent, which also don't hard-cap at their BAB-16 max). `acDelta` is
-  // display-only (issue #62) — it never applies to the sheet's AC, only
-  // surfaces as a note when this feat is attached to a saved roll.
+  // display-only — it never applies to the sheet's AC, only surfaces as a note
+  // when this feat is attached to a saved roll.
   "combat-expertise": {
     type: "situational",
     appliesTo: "melee",

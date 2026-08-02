@@ -24,19 +24,19 @@ interface RogueTalentPickerProps {
 }
 
 /**
- * Rogue talent selection (issue #65), SHARED between the chained rogue and
- * Rogue (Unchained) — mirrors `HexPicker`'s flat-list shape. Most talents
- * are `displayOnly`; "Combat Trick" (bonus-feat slot) and the dozen
- * `grantsFeat` talents (Finesse Rogue's Weapon Finesse, Strong Impression's
- * Intimidating Prowess, ... — see `@pf1/engine` `rogue-talents.ts`'s doc
- * comment) are auto-applied through `apps/web/src/model/feats.ts`, so those
- * rows are annotated instead of showing a "no automatic effect" note; Stony
- * Skin carries real `changes[]` (DR). Advanced talents (`minLevel` 10+) and
- * the `chainedOnly`/`unchainedOnly` list flags are soft-noted, never hidden.
+ * Rogue talent selection, SHARED between the chained rogue and Rogue
+ * (Unchained) — mirrors `HexPicker`'s flat-list shape. Most talents are
+ * `displayOnly`; "Combat Trick" (bonus-feat slot) and the dozen `grantsFeat`
+ * talents (Finesse Rogue's Weapon Finesse, Strong Impression's Intimidating
+ * Prowess,... — see `@pf1/engine` `rogue-talents.ts`'s doc comment) are
+ * auto-applied through `apps/web/src/model/feats.ts`, so those rows are
+ * annotated instead of showing a "no automatic effect" note; Stony Skin
+ * carries real `changes[]` (DR). Advanced talents (`minLevel` 10+) and the
+ * `chainedOnly`/`unchainedOnly` list flags are soft-noted, never hidden.
  * Free-choice, never blocks past the expected count.
  *
- * Browses the full hand-authored catalog (`mergedRogueTalentCatalog` —
- * issue #74, at full vendored parity since the Phase 5 extension).
+ * Browses the full hand-authored catalog (`mergedRogueTalentCatalog`, at full
+ * vendored parity since the Phase 5 extension).
  */
 export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerProps) {
   const isRogue = doc.identity.classes.some((c) => c.tag === "rogue" || c.tag === "rogueUnchained");

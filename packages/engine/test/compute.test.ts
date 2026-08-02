@@ -731,9 +731,9 @@ describe("compute: monk AC Bonus (Wis-to-AC), armored vs. unarmored", () => {
     // "cmd" change with the identical untyped formula. Untyped AC bonuses are
     // not one of RAW's eight CMD-eligible types (deflection/dodge/
     // circumstance/insight/luck/morale/profane/sacred), so the "ac" copy is
-    // never auto-derived into CMD regardless of dedup; only the explicit
-    // "cmd" copy counts, applied exactly once (issue #33 fix).
-    // cmd = 10 + bab3 + str2 + dex3 + size0 + wisToAc4(explicit cmd only) = 22
+    // never auto-derived into CMD regardless of dedup; only the explicit "cmd"
+    // copy counts, applied exactly once (fix). cmd = 10 + bab3 + str2 + dex3 +
+    // size0 + wisToAc4(explicit cmd only) = 22
     expect(sheet.cmd).toBe(22);
   });
 
@@ -808,7 +808,7 @@ describe("compute: monk AC Bonus (Wis-to-AC), armored vs. unarmored", () => {
     expect(sheet.encumbrance?.tier).toBe("heavy");
     // @attributes.encumbrance.level is now correctly wired to 2 (heavy), so
     // lt(@attributes.encumbrance.level, 1) is false — the monk AC/CMD bonus
-    // gate correctly zeroes out, closing the documented pre-#16 gap. Heavy
+    // gate correctly zeroes out, closing the documented long-documented gap. Heavy
     // load ALSO caps max Dex to +1 (Dex mod here is +3), so the "Dexterity"
     // AC component is capped down to 1 as well.
     expect(sheet.ac.normal).toBe(11); // 10 base + dex(capped 1) + wisToAc0
@@ -1306,7 +1306,7 @@ function buffByName(name: string) {
   return { id, buff };
 }
 
-// --- issue #15 (item/equipment breadth) -------------------------------------
+// --- item/equipment breadth -------------------------------------
 //
 // The `items` pack widened from 111 to 1089 vendored entries (every non-folder
 // doc, not just those carrying typed `changes`). All 111 typed-change items —
@@ -1345,7 +1345,7 @@ describe("compute: item breadth (issue #15)", () => {
   it("a charged consumable (Staff of Healing) vends with a maxFormula/per charges shape", () => {
     // Confirms the newly-captured `uses` shape on RefData.items — reference
     // data only (no live `value`; current charges are session state, not
-    // modeled by this issue).
+    // modeled here).
     const staff = ref.items[itemByName("Staff of Healing")]!;
     expect(staff.uses).toEqual({ maxFormula: "10", per: "charges" });
     expect(staff.changes).toEqual([]);

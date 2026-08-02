@@ -1,23 +1,22 @@
 /**
- * Clean-room PF1 Monk (Unchained) Ki Powers table (Pathfinder Unchained,
- * issue #65): hand-authored from the published rules (verified against
- * aonprd.com's "Ki Powers - Monk (Unchained)" listing, cross-checked against
- * d20pfsrd's Unchained Monk page). Ki powers are NOT part of the vendored
- * Foundry data pack (the Monk (Unchained) class def only links a single
- * generic "Ki powers (UC)" stub `ClassFeature`, no per-power breakdown —
- * confirmed, mirroring the witch's generic "Hex" stub), so there is no
- * upstream JSON to normalize for MECHANICS; `RefData.monkKiPowers` (see the
- * "vendored catalog overlay" section below) supplies PROSE only.
+ * Clean-room PF1 Monk (Unchained) Ki Powers table (Pathfinder Unchained):
+ * hand-authored from the published rules (verified against aonprd.com's "Ki
+ * Powers - Monk (Unchained)" listing, cross-checked against d20pfsrd's
+ * Unchained Monk page). Ki powers are NOT part of the vendored Foundry data
+ * pack (the Monk (Unchained) class def only links a single generic "Ki powers
+ * (UC)" stub `ClassFeature`, no per-power breakdown — confirmed, mirroring the
+ * witch's generic "Hex" stub), so there is no upstream JSON to normalize for
+ * MECHANICS; `RefData.monkKiPowers` (see the "vendored catalog overlay"
+ * section below) supplies PROSE only.
  *
- * Scope: FULL vendored parity as of issue #74's extension — all 44 vendored
- * ki powers, the Pathfinder Unchained core book's own 39 plus every
- * splatbook addition the pinned data carries (Martial Arts Handbook,
- * Wilderness Origins, Blood of the Beast). The original issue #65 cut
- * scoped to Pathfinder Unchained core only, excluding "Qinggong
- * Power"/"Improvised Weapon Proficiency" as cross-splatbook additions; #74
- * folds those back in (plus Branch Runner/Freedom of Movement/Ki
- * Meditation) for full-catalog parity, same posture as `witch-hexes.ts`'s
- * #74 extension.
+ * Scope: FULL vendored parity as of the extension — all 44 vendored ki powers,
+ * the Pathfinder Unchained core book's own 39 plus every splatbook addition
+ * the pinned data carries (Martial Arts Handbook, Wilderness Origins, Blood of
+ * the Beast). The original cut scoped to Pathfinder Unchained core only,
+ * excluding "Qinggong Power"/"Improvised Weapon Proficiency" as
+ * cross-splatbook additions; a later pass folds those back in (plus Branch
+ * Runner/Freedom of Movement/Ki Meditation) for full-catalog parity, same
+ * posture as `witch-hexes.ts`'s own extension.
  *
  * PF1 RAW: "At 4th level, and every two levels thereafter, a monk gains a ki
  * power" — 9 total picks by 20th level (see `model/monkKiPowers.ts` for the
@@ -39,16 +38,16 @@
  *   - Furious Defense/Formless Mastery grant a flat AC bonus, but only for
  *     limited duration once activated (immediate action, spends ki), same
  *     "activated, not always-on" gap as the witch's Ward hex;
- *   - Branch Runner (#74 addition) is passive, but it adds HALF the fast
- *     movement bonus (itself a value that scales by monk level) to a racial
- *     climb speed the monk may not even have — not a flat number, and
- *     conditional on already having a climb speed;
- *   - Improvised Weapon Proficiency (#74 addition)'s passive half ("no
- *     penalty on attack rolls for using an improvised weapon") IS
- *     unconditional and always-on, but this engine doesn't model the
- *     improvised-weapon attack penalty at all, so there is no Change target
- *     to cancel it against — a real promotion candidate blocked purely on a
- *     missing mechanism, not on conditionality.
+ *   - Branch Runner (addition) is passive, but it adds HALF the fast movement
+ *     bonus (itself a value that scales by monk level) to a racial climb speed
+ *     the monk may not even have — not a flat number, and conditional on
+ *     already having a climb speed;
+ *   - Improvised Weapon Proficiency (addition)'s passive half ("no penalty on
+ *     attack rolls for using an improvised weapon") IS unconditional and
+ *     always-on, but this engine doesn't model the improvised-weapon attack
+ *     penalty at all, so there is no Change target to cancel it against — a
+ *     real promotion candidate blocked purely on a missing mechanism, not on
+ *     conditionality.
  * None of these clear the bar for an unconditional Change on the monk's own
  * sheet, so — same discipline as `witch-hexes.ts` — EVERY entry here is
  * `displayOnly: true` with `changes: []`; a `contextNotes` reminder carries
@@ -438,13 +437,13 @@ export const MONK_KI_POWER_IDS: readonly string[] = KI_POWER_LIST.map((p) => p.i
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.monkKiPowers` (see that type's doc comment) is
- * the FULL published ki-power catalog (44 entries) — prose only. This file's
- * hand-verified table now matches it 1:1 (full parity, see the file's top
- * doc comment), but the merge still exists for BROWSING (the picker) and for
- * resolving a picked id, same "hand-authored wins on a name collision,
- * vendored catalog supplies prose" pattern `rage-powers.ts`'s
- * `mergedRagePowerCatalog` documents in full.
+ * `RefData.monkKiPowers` (see that type's doc comment) is the FULL published
+ * ki-power catalog (44 entries) — prose only. This file's hand-verified table
+ * now matches it 1:1 (full parity, see the file's top doc comment), but the
+ * merge still exists for BROWSING (the picker) and for resolving a picked id,
+ * same "hand-authored wins on a name collision, vendored catalog supplies
+ * prose" pattern `rage-powers.ts`'s `mergedRagePowerCatalog` documents in
+ * full.
  *
  * Collision audit (all 44 hand-authored entries, run against the pinned Pf
  * Data 1e slice): every one matched a vendored entry by normalized name — no

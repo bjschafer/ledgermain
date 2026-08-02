@@ -1,10 +1,10 @@
 /**
- * Pure Rogue's Edge (UC) skill unlock transitions (issue #65), mirroring
- * `rogueFinesseWeapons.ts`'s fixed-index-array shape — one slot per tier
- * (5th, 10th, 15th, 20th level — `ROGUE_SKILL_UNLOCK_LEVELS`), storing the
- * `SkillId` chosen at each. The unlock's own tiered prose effects are NOT
- * modeled (see `CharacterDoc.build.rogueSkillUnlocks`'s doc comment) — this
- * module only tracks WHICH skill was picked at each tier, surfaced by
+ * Pure Rogue's Edge (UC) skill unlock transitions, mirroring
+ * `rogueFinesseWeapons.ts`'s fixed-index-array shape — one slot per tier (5th,
+ * 10th, 15th, 20th level — `ROGUE_SKILL_UNLOCK_LEVELS`), storing the `SkillId`
+ * chosen at each. The unlock's own tiered prose effects are NOT modeled (see
+ * `CharacterDoc.build.rogueSkillUnlocks`'s doc comment) — this module only
+ * tracks WHICH skill was picked at each tier, surfaced by
  * `RogueSkillUnlocksPicker` itself (no separate classFeatures-list wiring).
  */
 

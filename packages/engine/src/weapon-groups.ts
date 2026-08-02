@@ -1,26 +1,26 @@
 /**
- * Canonical semantic weapon-group vocabulary (issue #45 finding 1 — the
+ * Canonical semantic weapon-group vocabulary (finding 1 — the
  * weapon-group-tagging gap).
  *
- * Before this module existed, `attack.weapon.<group>` / `damage.weapon.<group>`
- * (consumed by `computeWeaponAttacks` in compute.ts) only ever matched a
- * weapon's free-text, player-set `WeaponInstance.group` tag (e.g.
- * "longsword", "battle-axe" — one tag per specific weapon, the mechanism
- * Weapon Focus/Specialization use). There was no way to target a whole
- * *category* of weapons (bows, hammers, spears, ...), which is what Fighter's
- * own Weapon Training class feature — and the ~46 archetype features that
- * reflavor it — actually need.
+ * Before this module existed, `attack.weapon.<group>` /
+ * `damage.weapon.<group>` (consumed by `computeWeaponAttacks` in compute.ts)
+ * only ever matched a weapon's free-text, player-set `WeaponInstance.group`
+ * tag (e.g. "longsword", "battle-axe" — one tag per specific weapon, the
+ * mechanism Weapon Focus/Specialization use). There was no way to target a
+ * whole *category* of weapons (bows, hammers, spears,...), which is what
+ * Fighter's own Weapon Training class feature — and the ~46 archetype features
+ * that reflavor it — actually need.
  *
  * The vendored weapon data already carries this vocabulary
  * (`WeaponRef.weaponGroups`, sourced from Foundry's `system.weaponGroups`);
  * this constant enumerates every value that actually occurs in
- * `packages/data-pipeline/data/weapons.json` today (verified via
- * `jq -r '.[] | .weaponGroups[]?' packages/data-pipeline/data/weapons.json | sort -u`),
- * normalized to this engine's kebab-case slug convention with
- * {@link normalizeWeaponGroup}. Extraction waves authoring a semantic
- * weapon-group `Change` target should validate the group name they emit
- * against {@link isKnownWeaponGroup} — an unrecognized slug silently never
- * matches any weapon.
+ * `packages/data-pipeline/data/weapons.json` today (verified via `jq -r '.[]
+ * |.weaponGroups[]?' packages/data-pipeline/data/weapons.json | sort -u`),
+ * normalized to this engine's kebab-case slug convention with {@link
+ * normalizeWeaponGroup}. Extraction waves authoring a semantic weapon-group
+ * `Change` target should validate the group name they emit against {@link
+ * isKnownWeaponGroup} — an unrecognized slug silently never matches any
+ * weapon.
  *
  * This vocabulary is deliberately separate from `WeaponInstance.group` (the
  * older free-text per-weapon tag) — see `computeWeaponAttacks` in compute.ts

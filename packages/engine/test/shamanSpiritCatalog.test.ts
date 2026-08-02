@@ -11,9 +11,9 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74) — see
- * `shaman-spirits.ts`'s "vendored catalog overlay" section doc comment for
- * the collision-audit narrative this asserts against.
+ * Coverage for the vendored-catalog overlay — see `shaman-spirits.ts`'s
+ * "vendored catalog overlay" section doc comment for the collision-audit
+ * narrative this asserts against.
  *
  * All 18 real vendored spirits now have a hand-authored counterpart (the
  * splatbook-10 batch closed the gap the core-8 batch left), so there is no

@@ -1,9 +1,9 @@
 /**
- * Fixture tests for issue #45's feat batch-extraction pass: a representative
- * sample of `FEAT_EFFECTS_EXTRACTED` entries (feat-effects-extracted.ts),
- * hand-computed against the real vendored data slice (loadRefData()), plus
- * the hand-vs-extracted precedence rule (feat-effects-resolve.ts). Mirrors
- * the existing pattern in feats.test.ts / weapon_feats.test.ts.
+ * Fixture tests for the feat batch-extraction pass: a representative sample of
+ * `FEAT_EFFECTS_EXTRACTED` entries (feat-effects-extracted.ts), hand-computed
+ * against the real vendored data slice (loadRefData), plus the
+ * hand-vs-extracted precedence rule (feat-effects-resolve.ts). Mirrors the
+ * existing pattern in feats.test.ts / weapon_feats.test.ts.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -296,7 +296,7 @@ describe("Extra Arcane Pool feat (new pool entry)", () => {
   });
 });
 
-// ─── Precedence (issue #45) ──────────────────────────────────────────────────
+// ─── Precedence ──────────────────────────────────────────────────
 
 describe("resolveFeatEffect precedence (issue #45)", () => {
   it("hand-verified wins over extracted when the same slug is present in both tables", () => {

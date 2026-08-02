@@ -6,11 +6,11 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute } from "../src/index.js";
 
 /**
- * Fixture coverage for temporary HP (issue #67):
- *   1. Unchained Rage's hand-authored `tempHp` patch (`buff-effects.ts`) —
- *      the vendored "Rage (Unchained)" buff itself carries no `tempHp`
- *      Change (confirmed absent in `barbarian-unchained.test.ts`), so this
- *      exercises the patch end to end via `compute()`.
+ * Fixture coverage for temporary HP:
+ *   1. Unchained Rage's hand-authored `tempHp` patch (`buff-effects.ts`) — the
+ *      vendored "Rage (Unchained)" buff itself carries no `tempHp` Change
+ *      (confirmed absent in `barbarian-unchained.test.ts`), so this exercises
+ *      the patch end to end via `compute`.
  *   2. The PF1 RAW temp-HP stacking rule (Paizo FAQ / CRB p. 208 "Combining
  *      Magical Effects"): same source doesn't stack (highest wins); different
  *      sources DO stack (sum) — via two synthetic buffs targeting `tempHp`

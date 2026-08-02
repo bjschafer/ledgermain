@@ -1,5 +1,5 @@
 /**
- * Completeness + sanity tests for issue #45's feat classification audit
+ * Completeness + sanity tests for the feat classification audit
  * (feat-classification.ts), keyed by name slug (feat ids are opaque Foundry
  * UUIDs — see feat-effects.ts's featNameSlug doc comment for why slugs, not
  * ids, are the stable key here).

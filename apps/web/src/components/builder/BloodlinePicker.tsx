@@ -35,14 +35,13 @@ function normalizeBloodlineTag(name: string): string {
  *
  * The pickable tag list is the UNION of `refData.bloodlineSpellLists` (the
  * bonus-SPELLS-known source; bloodlines no upstream spell tags via
- * `learnedAt.bloodline` get hand-authored lists as a data-pipeline
- * supplement, see `src/supplements.ts`) and the full published
- * ARCANA/POWERS catalog (`mergedSorcererBloodlineCatalog`, issue #74) — a tag present
- * in both keeps the `bloodlineSpellLists` spelling (so
- * bonus-spell derivation, keyed on that exact tag, keeps working) with the
- * catalog's prose/mechanics attached for preview. ("Kobold" is that
- * spelling; the vendored prose catalog's "Kobold Sorcerer" is bridged to it
- * by the engine's alias map.)
+ * `learnedAt.bloodline` get hand-authored lists as a data-pipeline supplement,
+ * see `src/supplements.ts`) and the full published ARCANA/POWERS catalog
+ * (`mergedSorcererBloodlineCatalog`) — a tag present in both keeps the
+ * `bloodlineSpellLists` spelling (so bonus-spell derivation, keyed on that
+ * exact tag, keeps working) with the catalog's prose/mechanics attached for
+ * preview. ("Kobold" is that spelling; the vendored prose catalog's "Kobold
+ * Sorcerer" is bridged to it by the engine's alias map.)
  *
  * The chosen bloodline grants one bonus spell known per odd sorcerer level
  * starting at 3; the known-list panel merges those in with a "bloodline"

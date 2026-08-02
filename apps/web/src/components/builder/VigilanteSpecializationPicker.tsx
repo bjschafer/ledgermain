@@ -13,13 +13,13 @@ interface VigilanteSpecializationPickerProps {
 }
 
 /**
- * Vigilante specialization selection (issue #65) — one choice at 1st level,
- * never changed thereafter (PF1 RAW). Unlike the menu pickers (hexes,
- * discoveries, talents), this is a genuine chassis-level fork: Avenger
- * swaps the vigilante's own BAB tier for full BAB (see `compute.ts`'s BAB
- * loop, which reads `doc.build.vigilanteSpecialization` directly), while
- * Stalker grants Hidden Strike precision damage (shown as a class-feature
- * detail line via `@pf1/engine` `hiddenStrikeDice`, previewed here too).
+ * Vigilante specialization selection — one choice at 1st level, never changed
+ * thereafter (PF1 RAW). Unlike the menu pickers (hexes, discoveries, talents),
+ * this is a genuine chassis-level fork: Avenger swaps the vigilante's own BAB
+ * tier for full BAB (see `compute.ts`'s BAB loop, which reads
+ * `doc.build.vigilanteSpecialization` directly), while Stalker grants Hidden
+ * Strike precision damage (shown as a class-feature detail line via
+ * `@pf1/engine` `hiddenStrikeDice`, previewed here too).
  */
 export function VigilanteSpecializationPicker({ doc, update }: VigilanteSpecializationPickerProps) {
   const isVigilante = doc.identity.classes.some((c) => c.tag === "vigilante");

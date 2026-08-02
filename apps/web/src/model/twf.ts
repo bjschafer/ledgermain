@@ -1,5 +1,5 @@
 /**
- * Two-weapon fighting for saved rolls (issue #97).
+ * Two-weapon fighting for saved rolls.
  *
  * Fighting with two weapons is a MODE, not a feat: any character may do it,
  * and the feat chain only softens the penalties and adds off-hand attacks. So
@@ -25,7 +25,7 @@ export interface TwfFold {
 }
 
 /**
- * The roll's two-weapon config, upgrading pre-#97 rolls that expressed
+ * The roll's two-weapon config, upgrading older rolls that expressed
  * two-weapon fighting by attaching the Two-Weapon Fighting feat (whose
  * `option` was exactly this grip choice). Reading the legacy shape here rather
  * than migrating the stored doc keeps the upgrade lossless and idempotent —

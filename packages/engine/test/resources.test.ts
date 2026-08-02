@@ -153,14 +153,14 @@ describe("action-derived resource-pool detail", () => {
 });
 
 /**
- * Fixture tests for the Cleric Wisdom house-rule (issue #56, default OFF —
- * RAW). When `settings.clericWisdomHouserule` is true, cleric-tagged grants
- * evaluate `@abilities.cha` as an alias for Wisdom — scoped to Channel
- * Energy's `uses.maxFormula` (3 + Cha mod) and its actions' `dcFormula`
- * (10 + 1/2 cleric level + Cha mod), the only Cha-keyed formula among the
- * vendored cleric-tagged class/domain features. Paladin (Lay on Hands /
- * Channel Positive Energy) must be completely unaffected either way — its
- * grants carry classTag "paladin", never "cleric".
+ * Fixture tests for the Cleric Wisdom house-rule (default OFF — RAW). When
+ * `settings.clericWisdomHouserule` is true, cleric-tagged grants evaluate
+ * `@abilities.cha` as an alias for Wisdom — scoped to Channel Energy's
+ * `uses.maxFormula` (3 + Cha mod) and its actions' `dcFormula` (10 + 1/2
+ * cleric level + Cha mod), the only Cha-keyed formula among the vendored
+ * cleric-tagged class/domain features. Paladin (Lay on Hands / Channel
+ * Positive Energy) must be completely unaffected either way — its grants carry
+ * classTag "paladin", never "cleric".
  */
 describe("Cleric Wisdom house-rule (issue #56)", () => {
   function clericDoc(clericWisdomHouserule: boolean): CharacterDoc {
@@ -261,7 +261,7 @@ describe("Cleric Wisdom house-rule (issue #56)", () => {
  * features carrying `grantsBuffs`, only 3 resolve against the vendored buff
  * slice — Rage, Inspire Courage, and Aura of Protection (Domain Power) — the
  * other 9 occurrences must resolve to an empty `linkedBuffIds`, never throw.
- * Issue #62 audited those 9: none are actually buffs (see `resolveGrantsBuffs`'s
+ * An audit of those 9 found: none are actually buffs (see `resolveGrantsBuffs`'s
  * doc comment in resources.ts) — they resolve to feats or an item instead, so
  * dropping them (this file's existing behavior) is correct as-is, not a gap.
  */
@@ -364,13 +364,12 @@ describe("grantsBuffs -> linkedBuffIds", () => {
 });
 
 /**
- * Fixture tests for the hand-authored Bomb damage detail override (issue
- * #65) — the vendored Bomb `action.damage` formula is a flat, non-scaling
- * "1d6" (confirmed against the pinned data slice), so `resources.ts`
- * overrides it with `tables.ts`'s `bombDamageDetail`, clean-room from APG:
- * "1d6 fire damage + additional damage equal to the alchemist's Intelligence
- * modifier... increases by 1d6 points at every odd-numbered alchemist
- * level."
+ * Fixture tests for the hand-authored Bomb damage detail override — the
+ * vendored Bomb `action.damage` formula is a flat, non-scaling "1d6"
+ * (confirmed against the pinned data slice), so `resources.ts` overrides it
+ * with `tables.ts`'s `bombDamageDetail`, clean-room from APG: "1d6 fire damage
+ * + additional damage equal to the alchemist's Intelligence modifier...
+ * increases by 1d6 points at every odd-numbered alchemist level."
  */
 describe("Bomb damage detail override (issue #65)", () => {
   it("alchemist 1, Int 16 (+3) — 1d6+3 fire", () => {

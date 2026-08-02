@@ -1,11 +1,11 @@
 /**
- * Homebrew trait definitions (issue #87): unlike homebrew races/feats, a
- * homebrew trait isn't overlaid onto `RefData` (traits aren't vendored data
- * — see `src/traits.ts`'s doc comment) — its definition instead rides in
+ * Homebrew trait definitions: unlike homebrew races/feats, a homebrew trait
+ * isn't overlaid onto `RefData` (traits aren't vendored data — see
+ * `src/traits.ts`'s doc comment) — its definition instead rides in
  * `doc.build.homebrew.traits` and is looked up as a fallback wherever the
- * engine's hand-authored `TRAITS` table is consulted (`collect.ts`).
- * Verifies `collectModifiers` applies a homebrew trait's `changes[]`, that it
- * uses the real "trait" stacking type (so it correctly does NOT stack with a
+ * engine's hand-authored `TRAITS` table is consulted (`collect.ts`). Verifies
+ * `collectModifiers` applies a homebrew trait's `changes[]`, that it uses the
+ * real "trait" stacking type (so it correctly does NOT stack with a
  * same-target vendored trait bonus), and that an unrelated homebrew trait
  * selection doesn't disturb the vendored-trait path.
  */

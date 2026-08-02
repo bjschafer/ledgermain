@@ -1,8 +1,8 @@
 /**
- * Hand-computed fixture tests for the inquisitor Judgment table (issue #65),
- * both the derived-pool wiring (`deriveResourcePools`'s `tableOptions`, see
+ * Hand-computed fixture tests for the inquisitor Judgment table, both the
+ * derived-pool wiring (`deriveResourcePools`'s `tableOptions`, see
  * `judgments.ts`) and the individual judgments' `changes` flowing through
- * `compute()` exactly like any other active buff.
+ * `compute` exactly like any other active buff.
  *
  * RAW numbers verified against aonprd.com's live Inquisitor class page
  * (2026-07-08): Destruction +1/+1 per 3 levels (weapon damage), Justice/

@@ -1,25 +1,25 @@
 /**
- * Pure rage-power transitions (issue #65/#67). Power ids are just entries in
+ * Pure rage-power transitions. Power ids are just entries in
  * `build.ragePowers`, mirroring `toggleWitchHex` in `model/witchHexes.ts` —
  * the engine's `RAGE_POWERS` table maps each to its `changes[]`/
  * `contextNotes` (mostly display-only; a few carry a real buff-gated Change
- * that applies only while Rage is active — issue #75, see that table's doc
- * comment), applied through the same change-collection path as
- * hexes/discoveries/arcana (see `@pf1/engine` `collect.ts`).
+ * that applies only while Rage is active, see that table's doc comment),
+ * applied through the same change-collection path as hexes/discoveries/arcana
+ * (see `@pf1/engine` `collect.ts`).
  *
  * Shared by BOTH `barbarian` (chained) and `barbarianUnchained` — see
  * `RAGE_POWERS`'s doc comment for why the catalog is one shared table rather
- * than split per edition. `barbarianLevel` therefore SUMS both classes'
- * levels (mirroring `@pf1/engine` `defenses.ts`'s own `barbarianLevel()` —
- * a character would only ever have one of the two, but summing is correct
- * regardless of which).
+ * than split per edition. `barbarianLevel` therefore SUMS both classes' levels
+ * (mirroring `@pf1/engine` `defenses.ts`'s own `barbarianLevel` — a character
+ * would only ever have one of the two, but summing is correct regardless of
+ * which).
  *
  * Budget (PF1 CRB, verified against aonprd.com's class table, and confirmed
- * identical for the Unchained rewrite): a barbarian gains a rage power at
- * 2nd level and every two levels thereafter (2nd, 4th, ..., 20th — 10 total
- * by 20th) — `floor((level - 2) / 2) + 1` for level >= 2. Each copy of the
- * "Extra Rage Power" feat (a stackable general feat — APG: "You can gain
- * Extra Rage Power multiple times") adds one more, counted by OCCURRENCE in
+ * identical for the Unchained rewrite): a barbarian gains a rage power at 2nd
+ * level and every two levels thereafter (2nd, 4th,..., 20th — 10 total by
+ * 20th) — `floor((level - 2) / 2) + 1` for level >= 2. Each copy of the "Extra
+ * Rage Power" feat (a stackable general feat — APG: "You can gain Extra Rage
+ * Power multiple times") adds one more, counted by OCCURRENCE in
  * `doc.build.feats` (not just presence) — same "manually-added duplicates"
  * convention `expectedWitchHexCount`/`expectedMagusArcanaCount` use for their
  * own "Extra X" feats.

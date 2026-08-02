@@ -328,7 +328,7 @@ export function normalize(opts: NormalizeOptions): {
   // `supplements.ts`'s doc comment for sourcing/verification notes.
   applyPrestigeClassSupplements(classes, classFeatures);
 
-  // --- vendored prestige classes (issue #74) — the remaining
+  // --- vendored prestige classes — the remaining
   // splatbook prestige classes the hand-authored CRB set above doesn't cover,
   // from the same third-party archetype module's prestige-class packs.
   // Mutates `classes`/`classFeatures` in place; skips any class whose name
@@ -475,8 +475,8 @@ export function normalize(opts: NormalizeOptions): {
 
   const feats: Feat[] = [...systemFeats, ...pfContentFeats];
 
-  // Second prereq pass (issue #108): needs the full feat name list, so it
-  // only runs once `feats` above is complete — see the doc comment on
+  // Second prereq pass: needs the full feat name list, so it only runs once
+  // `feats` above is complete — see the doc comment on
   // `resolveNamedFeatPrereqs`.
   resolveNamedFeatPrereqs(feats);
 
@@ -553,8 +553,8 @@ export function normalize(opts: NormalizeOptions): {
   applySpellProjectileSupplements(spells);
 
   // Attach spell-resistance display text from the fourth-party "Pf Data 1e"
-  // dataset (issue #74) — the pinned Foundry pack's own `system.sr` is
-  // upstream-dead (see SCHEMA_VERSION's v18 note), so this is the only source.
+  // dataset — the pinned Foundry pack's own `system.sr` is upstream-dead (see
+  // SCHEMA_VERSION's v18 note), so this is the only source.
   applySpellSrSupplements(spells, opts.pfDataJsonDir);
 
   // --- per-class spell lists (invert learnedAt.class) ------------------------
@@ -759,7 +759,7 @@ export function normalize(opts: NormalizeOptions): {
   const ragePowers: RagePower[] = transformRagePowers(ragePowerDict);
 
   // --- witch hexes / general shaman hexes / magus arcana (fourth-party
-  // dataset, issue #74 — same posture as rage powers above) --------
+  // dataset — same posture as rage powers above) --------
   const witchHexDict = readPfDataDictionary(join(opts.pfDataJsonDir, "class_ability_hexes.json"));
   const hexes: WitchHex[] = transformWitchHexes(witchHexDict);
 
@@ -773,7 +773,7 @@ export function normalize(opts: NormalizeOptions): {
   );
   const magusArcana: MagusArcana[] = transformMagusArcana(magusArcanaDict);
 
-  // --- rogue-family talent catalogs (fourth-party dataset, issue #74) -
+  // --- rogue-family talent catalogs (fourth-party dataset) -
   const rogueTalentDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_rogue_talents.json"),
   );
@@ -820,7 +820,7 @@ export function normalize(opts: NormalizeOptions): {
 
   // --- mesmerist tricks/bold stares, phrenic amplifications, psychic
   // disciplines, occultist implements, Medium legendary spirits (fourth-party
-  // dataset, issue #74) — same posture as rage powers above.
+  // dataset) — same posture as rage powers above.
   const mesmeristTrickDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_tricks.json"),
   );
@@ -858,7 +858,7 @@ export function normalize(opts: NormalizeOptions): {
   const mediumSpirits: MediumSpirit[] = transformMediumSpirits(mediumSpiritDict);
 
   // --- oracle mysteries/curses, witch patrons, shaman spirits, sorcerer/
-  // bloodrager bloodlines (fourth-party dataset, issue #74) — same
+  // bloodrager bloodlines (fourth-party dataset) — same
   // posture as rage powers above.
   const oracleMysteryDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_mysteries.json"),
@@ -893,7 +893,7 @@ export function normalize(opts: NormalizeOptions): {
     transformBloodragerBloodlines(bloodragerBloodlineDict);
 
   // --- alchemist discoveries / monk (unchained) ki powers + style strikes /
-  // cavalier orders / shifter aspects (fourth-party dataset, issue #74) — same
+  // cavalier orders / shifter aspects (fourth-party dataset) — same
   // posture as rage powers above.
   const alchemistDiscoveryDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_discoveries.json"),
@@ -921,7 +921,7 @@ export function normalize(opts: NormalizeOptions): {
   );
   const shifterAspects: ShifterAspect[] = transformShifterAspects(shifterAspectDict);
 
-  // --- unchained-summoner eidolon subtypes (fourth-party dataset, issue #74)
+  // --- unchained-summoner eidolon subtypes (fourth-party dataset)
   // — same posture as rage powers above.
   const eidolonSubtypeDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_unchained_eidolons.json"),

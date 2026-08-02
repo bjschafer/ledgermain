@@ -13,15 +13,14 @@ import {
 } from "../src/index.js";
 
 /**
- * Fixture coverage for mesmerist Tricks + Bold Stares (issue #65
- * follow-through) — the "trick MENU + bold stares" slice the task brief
- * calls for on top of the already-vendored Mesmerist Tricks resource pool
- * (`uses.maxFormula`, unaffected by this table). Both tables are clean-room,
- * hand-authored (see `mesmerist-tricks.ts`/`mesmerist-bold-stares.ts`),
- * `displayOnly` in their entirety, mirroring
- * `monkKiPowersStyleStrikes.test.ts`'s pattern: prove the tables are
- * internally consistent, chosen picks surface in `classFeatures`, and bold
- * stares additionally enrich the Hypnotic Stare `detail` line.
+ * Fixture coverage for mesmerist Tricks + Bold Stares — the "trick MENU + bold
+ * stares" slice the task brief calls for on top of the already-vendored
+ * Mesmerist Tricks resource pool (`uses.maxFormula`, unaffected by this
+ * table). Both tables are clean-room, hand-authored (see
+ * `mesmerist-tricks.ts`/`mesmerist-bold-stares.ts`), `displayOnly` in their
+ * entirety, mirroring `monkKiPowersStyleStrikes.test.ts`'s pattern: prove the
+ * tables are internally consistent, chosen picks surface in `classFeatures`,
+ * and bold stares additionally enrich the Hypnotic Stare `detail` line.
  */
 const ref = loadRefData();
 

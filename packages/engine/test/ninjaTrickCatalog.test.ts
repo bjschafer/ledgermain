@@ -10,11 +10,11 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74) — mirrors
- * `witchHexCatalog.test.ts` exactly. The table reached full vendored parity
- * in the #74 follow-up (44 -> 65 entries); all 65 matched a vendored entry
- * by name, `advancedTalents` ("Advanced Talents") via the alias to the
- * vendored "Advanced Talent" (singular).
+ * Coverage for the vendored-catalog overlay — mirrors
+ * `witchHexCatalog.test.ts` exactly. The table reached full vendored parity in
+ * a later follow-up (44 -> 65 entries); all 65 matched a vendored entry by
+ * name, `advancedTalents` ("Advanced Talents") via the alias to the vendored
+ * "Advanced Talent" (singular).
  */
 const ref = loadRefData();
 
@@ -48,7 +48,7 @@ describe("mergedNinjaTrickCatalog", () => {
   });
 
   it("no vendored-only tricks remain — the fallback path only exists for a future data bump", () => {
-    // Full hand-table parity as of the #74 follow-up.
+    // Full hand-table parity as of a later follow-up.
     for (const entry of merged) {
       expect(NINJA_TRICKS[entry.id], entry.id).toBeDefined();
     }

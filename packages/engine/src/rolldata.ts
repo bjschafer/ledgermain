@@ -141,7 +141,7 @@ export function buildRollData(
     // applies the paladin/ranger/antipaladin `-3` offset (via
     // `casterLevelForRollData` above) so e.g. Divine Favor's
     // `min(3, floor(@cl/3))` reads a paladin 9's CL as 6, not her raw class
-    // level 9. Issue #66 chunk 2 (prestige casting advancement):
+    // level 9. For prestige casting advancement:
     // `buildRollData` takes no `refData` parameter and can't cheaply gain one
     // just for this, so `@cl` does NOT account for a prestige class's
     // `castingAdvancement` bonus the way
@@ -159,9 +159,9 @@ export function buildRollData(
     attributes: {
       hd: { total: level },
       bab: { total: bab ?? 0 },
-      // Only wired to a real tier when `settings.encumbranceEnabled` is on
-      // (issue #16) — see `compute.ts`; absent/off characters keep the
-      // historical hardcoded 0 (no load ever gates a formula for them).
+      // Only wired to a real tier when `settings.encumbranceEnabled` is on —
+      // see `compute.ts`; absent/off characters keep the historical hardcoded
+      // 0 (no load ever gates a formula for them).
       encumbrance: { level: encumbranceLevel ?? 0 },
       speed: speedAttr,
     },

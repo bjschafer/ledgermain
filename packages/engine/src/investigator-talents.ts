@@ -1,20 +1,19 @@
 /**
- * Clean-room PF1 investigator talent table (Advanced Class Guide, issue #65
- * / #13's investigator-audit follow-up; full vendored-catalog parity added
- * per issue #74): hand-authored from the published rules (verified against
- * aonprd.com's Investigator Talents listing, cross-checked against
- * d20pfsrd.com's mirror of the Paizo text where a name needed disambiguating
- * — see the "Iconoclastic Strike" alias note below), mirroring
- * `alchemist-discoveries.ts`'s posture — investigator talents are NOT part
- * of the vendored Foundry data pack (the Investigator class def only links
- * the generic "Investigator Talent" stub `ClassFeature`, no per-talent
- * breakdown — confirmed: `class-features.json` carries no per-talent
- * entries), so there is no upstream JSON to normalize for MECHANICS;
- * `investigator-talents.json` (a separate pipeline slice,
+ * Clean-room PF1 investigator talent table (Advanced Class Guide, the
+ * investigator-audit follow-up; full vendored-catalog parity added per):
+ * hand-authored from the published rules (verified against aonprd.com's
+ * Investigator Talents listing, cross-checked against d20pfsrd.com's mirror of
+ * the Paizo text where a name needed disambiguating — see the "Iconoclastic
+ * Strike" alias note below), mirroring `alchemist-discoveries.ts`'s posture —
+ * investigator talents are NOT part of the vendored Foundry data pack (the
+ * Investigator class def only links the generic "Investigator Talent" stub
+ * `ClassFeature`, no per-talent breakdown — confirmed: `class-features.json`
+ * carries no per-talent entries), so there is no upstream JSON to normalize
+ * for MECHANICS; `investigator-talents.json` (a separate pipeline slice,
  * `RefData.investigatorTalents`) carries prose only and backs the vendored
  * catalog overlay at the bottom of this file.
  *
- * Scope: FULL vendored parity as of issue #74 — all 67 published
+ * Scope: FULL vendored parity as of the last catalog sweep — all 67 published
  * investigator talents (Advanced Class Guide's original 28 plus every
  * later-splatbook addition the pinned data carries: Advanced Class Origins,
  * Inner Sea Intrigue, Magic Tactics Toolbox, Disciple's Doctrine, Potions &
@@ -27,9 +26,9 @@
  * section.
  *
  * Budget (PF1 Advanced Class Guide, verified against the class table): an
- * investigator gains a talent at 3rd level and every 2 levels thereafter
- * (3rd, 5th, 7th, ..., 19th — 9 total by 20th; see `model/investigatorTalents.ts`
- * for the budget math). `minLevel` below is the talent's OWN stated minimum
+ * investigator gains a talent at 3rd level and every 2 levels thereafter (3rd,
+ * 5th, 7th,..., 19th — 9 total by 20th; see `model/investigatorTalents.ts` for
+ * the budget math). `minLevel` below is the talent's OWN stated minimum
  * (several — the Studied Strike-tagged talents especially — require a higher
  * investigator level than the 3rd-level talent floor); soft-filtered only
  * (never blocks selection), same convention as `magus-arcana.ts`.
@@ -145,7 +144,7 @@ const TALENT_LIST: InvestigatorTalentDef[] = build([
       "A studied strike forces a Will save or the target is confused for 1d4+1 rounds (1 round on a success). No effect on mindless/construct/ooze/plant/undead/incorporeal targets.",
     contextNotes: [note("Will negates (reduces duration); DC per the talent's text.")],
   },
-  // ---- splatbook additions (issue #74; full vendored parity) ----
+  // ---- splatbook additions (full vendored parity) ----
   {
     id: "timedStrike",
     name: "Timed Strike",
@@ -379,7 +378,7 @@ const TALENT_LIST: InvestigatorTalentDef[] = build([
     summary:
       "Add the inspiration die to Bluff, Disable Device, Disguise, Intimidate, or Sleight of Hand checks without expending inspiration (when trained).",
   },
-  // ---- splatbook additions (issue #74; full vendored parity) ----
+  // ---- splatbook additions (full vendored parity) ----
   {
     id: "anathema",
     name: "Anathema",
@@ -592,11 +591,11 @@ export const INVESTIGATOR_TALENT_IDS: readonly string[] = TALENT_LIST.map((t) =>
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.investigatorTalents` (see that type's doc
- * comment) is the FULL published catalog — all 67 talents above now have a
- * hand-authored, mechanics-authoritative counterpart — prose only. Same
- * pattern as `rage-powers.ts`'s `mergedRagePowerCatalog` (see that file's
- * doc comment for the general shape).
+ * `RefData.investigatorTalents` (see that type's doc comment) is the FULL
+ * published catalog — all 67 talents above now have a hand-authored,
+ * mechanics-authoritative counterpart — prose only. Same pattern as
+ * `rage-powers.ts`'s `mergedRagePowerCatalog` (see that file's doc comment for
+ * the general shape).
  *
  * Collision audit (all 67 hand-authored entries, run against the pinned Pf
  * Data 1e slice): every one matched a vendored entry by normalized name,

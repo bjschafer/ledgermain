@@ -1,10 +1,10 @@
 /**
  * Shared types + a tiny `Change`-building helper for the per-class
- * extracted-effects / classification-audit files in this directory (issue
- * #45's batch-extraction pipeline). Kept separate from any single class's
- * file so a wave agent adding a new class never has to touch this file —
- * only `index.ts` (the aggregator) needs a line per new class. See
- * `index.ts`'s doc comment for the full per-class file convention.
+ * extracted-effects / classification-audit files in this directory (pipeline).
+ * Kept separate from any single class's file so a wave agent adding a new
+ * class never has to touch this file — only `index.ts` (the aggregator) needs
+ * a line per new class. See `index.ts`'s doc comment for the full per-class
+ * file convention.
  */
 
 import type { Change } from "@pf1/schema";

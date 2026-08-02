@@ -1,9 +1,9 @@
 /**
  * Clean-room PF1 GENERAL shaman hex table (Advanced Class Guide's own
- * spirit-agnostic "Shaman Hexes" table, issue #65/#74): hand-authored from
- * the published rules (verified against aonprd.com's live "Shaman Hexes"
- * index page, which aggregates every source book's additions to this single
- * catalog), mirroring `witch-hexes.ts`'s posture and file shape closely.
+ * spirit-agnostic "Shaman Hexes" table): hand-authored from the published
+ * rules (verified against aonprd.com's live "Shaman Hexes" index page, which
+ * aggregates every source book's additions to this single catalog), mirroring
+ * `witch-hexes.ts`'s posture and file shape closely.
  *
  * Scope: all 16 entries in the vendored `RefData.shamanHexes` catalog
  * (`packages/data-pipeline/data/shaman-hexes.json`) — the Advanced Class
@@ -317,11 +317,11 @@ function plainTextPreview(html: string, max = 200): string {
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.shamanHexes` is the FULL published GENERAL shaman-hex
- * catalog (16 entries after junk/`witch_hex`-meta-rule filtering — see that
- * type's doc comment in `@pf1/schema`). The hand-authored table above stays
- * authoritative for MECHANICS/context; this section merges the two for
- * BROWSING (the picker) and for resolving a picked id back to a definition
+ * `RefData.shamanHexes` is the FULL published GENERAL shaman-hex catalog (16
+ * entries after junk/`witch_hex`-meta-rule filtering — see that type's doc
+ * comment in `@pf1/schema`). The hand-authored table above stays authoritative
+ * for MECHANICS/context; this section merges the two for BROWSING (the picker)
+ * and for resolving a picked id back to a definition
  * (`collect.ts`/`archetypes.ts`), mirroring `witch-hexes.ts`'s
  * `mergedWitchHexCatalog` exactly.
  *

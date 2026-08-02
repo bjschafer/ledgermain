@@ -5,15 +5,15 @@
  *
  * The tiers are the published PF1 race-rarity categories (Core Rulebook + the
  * Advanced Race Guide's Featured/Uncommon lists); everything the ARG doesn't
- * name — the Bestiary/planar/AP-specific races vendored later (issue #26) —
- * falls through to `"exotic"`. This is a clean-room categorization of published
- * facts, the same posture as `model/race.ts` keying off race NAME: the vendored
- * Foundry entries carry no rarity field, so we map by name here. If a data-
- * pipeline bump ever renames a vendored race, it silently drops to `"exotic"`
- * (the `rarity.test.ts` "every core/featured/uncommon race resolves" guard
- * catches that regression).
+ * name — the Bestiary/planar/AP-specific races vendored later — falls through
+ * to `"exotic"`. This is a clean-room categorization of published facts, the
+ * same posture as `model/race.ts` keying off race NAME: the vendored Foundry
+ * entries carry no rarity field, so we map by name here. If a data- pipeline
+ * bump ever renames a vendored race, it silently drops to `"exotic"` (the
+ * `rarity.test.ts` "every core/featured/uncommon race resolves" guard catches
+ * that regression).
  *
- * Rarity is purely presentational — it never touches `compute()` or any game
+ * Rarity is purely presentational — it never touches `compute` or any game
  * number. See `model/grouping.ts` for the reusable grouping mechanism.
  */
 

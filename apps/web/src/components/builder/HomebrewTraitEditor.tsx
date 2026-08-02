@@ -16,13 +16,13 @@ import { ChangeListEditor } from "./ChangeListEditor.js";
 import type { BuilderProps } from "./types.js";
 
 /**
- * Create/edit/delete UI for homebrew traits (issue #87), rendered inline in
+ * Create/edit/delete UI for homebrew traits, rendered inline in
  * `TraitsSection`. Like `HomebrewFeatEditor`, a homebrew trait appears in the
- * normal trait picker the moment it's upserted (`TraitsSection` resolves
- * ids through `model/traits.ts`'s `resolveTrait`/`allTraitIds`) — this
- * section only owns authoring + management, not a second pick/remove
- * control (`toggleTrait` on "select on create" reuses the exact transition
- * the main picker uses).
+ * normal trait picker the moment it's upserted (`TraitsSection` resolves ids
+ * through `model/traits.ts`'s `resolveTrait`/`allTraitIds`) — this section
+ * only owns authoring + management, not a second pick/remove control
+ * (`toggleTrait` on "select on create" reuses the exact transition the main
+ * picker uses).
  */
 export function HomebrewTraitEditor({ doc, update }: BuilderProps) {
   const [detailsOpen, setDetailsOpen] = useState(false);

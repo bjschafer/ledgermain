@@ -22,10 +22,10 @@ interface BonusClassSkillsPickerProps {
 const SKILL_OPTIONS = Object.entries(SKILL_NAMES).sort((a, b) => a[1].localeCompare(b[1]));
 
 /**
- * Player-chosen bonus class skills (issue #93) — generic across every feature
- * that hands out a class-skill pick (`BONUS_CLASS_SKILL_GRANTS`), rendered
- * once per active grant. Renders nothing when the character has no such
- * feature, so it can sit unconditionally in ClassesSection.
+ * Player-chosen bonus class skills — generic across every feature that hands
+ * out a class-skill pick (`BONUS_CLASS_SKILL_GRANTS`), rendered once per
+ * active grant. Renders nothing when the character has no such feature, so it
+ * can sit unconditionally in ClassesSection.
  *
  * Skills that are already class skills from another source are disabled
  * rather than hidden: seeing why a skill isn't pickable beats it silently

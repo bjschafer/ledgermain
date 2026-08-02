@@ -1,8 +1,8 @@
 /**
- * Clean-room PF1 cavalier/samurai order reference table (DESIGN §6, issue
- * #65): hand-authored from the published rules (Advanced Player's Guide for
- * the six core cavalier orders, Ultimate Combat for the samurai's own
- * Warrior/Ronin orders; verified against public SRD text/AoN), mirroring
+ * Clean-room PF1 cavalier/samurai order reference table (DESIGN §6):
+ * hand-authored from the published rules (Advanced Player's Guide for the six
+ * core cavalier orders, Ultimate Combat for the samurai's own Warrior/Ronin
+ * orders; verified against public SRD text/AoN), mirroring
  * `oracle-revelations.ts`'s posture. Like revelations, orders are NOT
  * structured data anywhere in the vendored Foundry pack — the Cavalier and
  * Samurai class defs only link the generic "Order"/"Order (SAM)" stub
@@ -22,21 +22,21 @@
  *    levels), the same pathway `oracle-mysteries.ts`'s `classSkills` and
  *    `kineticist-elements.ts`'s `classSkills` use.
  * 2. **Challenge rider** — the specific numeric bonus/rider the order grants
- *    to the base Challenge ability (base Challenge itself is order-
- *    agnostic: it just lets the cavalier/samurai designate a target and
- *    draws from the `uses.maxFormula`-derived pool already wired in
- *    `resources.ts` — see that pool's `detail`). Every one of the eight
- *    riders scales `+1 per 4 cavalier/samurai levels` starting at +1 (same
- *    "Table: Cavalier's Order" progression, `1 + floor((level - 1) / 4)`),
- *    but the bonus TYPE and WHAT it applies to differs per order (melee
- *    damage vs. AC vs. saves vs. an ally's attack rolls vs. damage
- *    reduction, ...) and several are additionally scoped to "while
- *    threatening the target" / "while mounted" / benefiting allies rather
- *    than the cavalier — squarely the same "target-scoped, can't check
- *    automatically" territory as Smite Evil's target-vs-alignment gate or a
- *    Favored Enemy bonus. `challengeRiderAt(order, level)` computes the
- *    live number; `DeedsPanel`/`OrderPicker`-adjacent UI surfaces it as text,
- *    never as an automatic Change.
+ *    to the base Challenge ability (base Challenge itself is order- agnostic:
+ *    it just lets the cavalier/samurai designate a target and draws from the
+ *    `uses.maxFormula`-derived pool already wired in `resources.ts` — see that
+ *    pool's `detail`). Every one of the eight riders scales `+1 per 4
+ *    cavalier/samurai levels` starting at +1 (same "Table: Cavalier's Order"
+ *    progression, `1 + floor((level - 1) / 4)`), but the bonus TYPE and WHAT
+ *    it applies to differs per order (melee damage vs. AC vs. saves vs. an
+ *    ally's attack rolls vs. damage reduction,...) and several are
+ *    additionally scoped to "while threatening the target" / "while mounted" /
+ *    benefiting allies rather than the cavalier — squarely the same
+ *    "target-scoped, can't check automatically" territory as Smite Evil's
+ *    target-vs-alignment gate or a Favored Enemy bonus.
+ *    `challengeRiderAt(order, level)` computes the live number;
+ *    `DeedsPanel`/`OrderPicker`-adjacent UI surfaces it as text, never as an
+ *    automatic Change.
  * 3. **Order abilities at 2nd/8th/15th level** — every one of the 24 (8
  *    orders x 3 tiers) is either purely narrative (a bonus feat grant with
  *    conditions, an aid-another/attack-of-opportunity trigger, a reroll) or
@@ -403,20 +403,19 @@ export function challengeRiderText(
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.cavalierOrders` (see that type's doc comment)
- * is the full published order catalog — 38 entries, far beyond this file's
- * 8 hand-authored orders (the 6 Advanced Player's Guide cavalier orders plus
- * the Ultimate Combat samurai-specific Warrior/Ronin orders). Unlike every
- * other catalog imported so far, this ISN'T a flat "prose ability" list —
- * each hand-authored order is a small CHASSIS (two bonus skills, a
- * Challenge rider template, three leveled abilities), and the vendored
- * source carries none of that structure: an order's 2nd/8th/15th-level
- * abilities live entirely inside its free-text `description` (headed
- * "### Order Abilities"), not as a parseable `OrderAbility[]`. So a
- * vendored-only order (30 of the 38) resolves to PROSE display only — the
- * picker shows its raw description instead of the structured
- * skills/Challenge/abilities breakdown `OrderPicker` renders for a chassis
- * match.
+ * `RefData.cavalierOrders` (see that type's doc comment) is the full published
+ * order catalog — 38 entries, far beyond this file's 8 hand-authored orders
+ * (the 6 Advanced Player's Guide cavalier orders plus the Ultimate Combat
+ * samurai-specific Warrior/Ronin orders). Unlike every other catalog imported
+ * so far, this ISN'T a flat "prose ability" list — each hand-authored order is
+ * a small CHASSIS (two bonus skills, a Challenge rider template, three leveled
+ * abilities), and the vendored source carries none of that structure: an
+ * order's 2nd/8th/15th-level abilities live entirely inside its free-text
+ * `description` (headed "### Order Abilities"), not as a parseable
+ * `OrderAbility[]`. So a vendored-only order (30 of the 38) resolves to PROSE
+ * display only — the picker shows its raw description instead of the
+ * structured skills/Challenge/abilities breakdown `OrderPicker` renders for a
+ * chassis match.
  *
  * Collision audit (all 8 hand-authored entries, run against the pinned Pf
  * Data 1e slice): 7 of 8 matched a vendored entry by normalized name

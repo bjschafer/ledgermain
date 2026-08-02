@@ -10,10 +10,10 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74) — see
- * `mesmerist-tricks.ts`'s "vendored catalog overlay" section doc comment for
- * the collision-audit narrative this asserts against, and
- * `witchHexCatalog.test.ts` for the full-parity pattern this mirrors.
+ * Coverage for the vendored-catalog overlay — see `mesmerist-tricks.ts`'s
+ * "vendored catalog overlay" section doc comment for the collision-audit
+ * narrative this asserts against, and `witchHexCatalog.test.ts` for the
+ * full-parity pattern this mirrors.
  */
 const ref = loadRefData();
 

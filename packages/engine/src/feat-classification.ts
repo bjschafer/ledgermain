@@ -1,8 +1,8 @@
 /**
- * Full classification audit for issue #45's feat batch-extraction pass: every
- * one of the 390 feats the Foundry PF1 *system* pack shipped at the time of
- * the audit, bucketed and reasoned, mirroring the archetype-extracted/
- * pipeline's convention (see `archetype-extracted/index.ts`).
+ * Full classification audit for the feat batch-extraction pass: every one of
+ * the 390 feats the Foundry PF1 *system* pack shipped at the time of the
+ * audit, bucketed and reasoned, mirroring the archetype-extracted/ pipeline's
+ * convention (see `archetype-extracted/index.ts`).
  *
  * `packages/data-pipeline/data/feats.json` now also carries ~3,150 feats
  * merged in from the community `pf1-content` module (see config.ts's
@@ -21,26 +21,26 @@
  * versions, but a name-derived slug is stable and human-authorable.
  *
  * Bucket definitions (adapted from the archetype rubric to feats):
- *  - "numeric"         — unconditional, always-on number. Extracted into
+ *  - "numeric" — unconditional, always-on number. Extracted into
  *                        FEAT_EFFECTS (hand) or FEAT_EFFECTS_EXTRACTED (machine).
- *  - "choice-numeric"  — numeric but parameterized by a player choice (a
+ *  - "choice-numeric" — numeric but parameterized by a player choice (a
  *                        weapon type, a skill). Extracted ONLY when the
  *                        existing featChoices "skill"/"weapon" choice-UI shape
  *                        already covers it; otherwise classified and deferred.
- *  - "situational"     — a REAL number, but scoped to a specific maneuver,
+ *  - "situational" — a REAL number, but scoped to a specific maneuver,
  *                        weapon, enemy/ally state, or action the static sheet
  *                        can't detect without over-applying — the same honesty
  *                        bar traits.ts/feat-effects.ts's SITUATIONAL_FEAT_EFFECTS
  *                        already established. Never given an unconditional
  *                        Change.
- *  - "pool"            — raises an existing class-feature resource pool's max
+ *  - "pool" — raises an existing class-feature resource pool's max
  *                        (Extra Rage/Ki/... and friends). Wired through
  *                        FEAT_POOL_EFFECTS, consumed generically by
  *                        resources.ts's deriveResourcePools.
- *  - "subsystem"        — enables a mechanic, ability, proficiency, or
+ *  - "subsystem" — enables a mechanic, ability, proficiency, or
  *                        choice-list with no Change-shaped number to extract
  *                        at all.
- *  - "blocked"         — anything ambiguous, stacking-suspect (e.g. a
+ *  - "blocked" — anything ambiguous, stacking-suspect (e.g. a
  *                        non-stacking AC type where RAW expects summing across
  *                        multiple takes), or requiring state/targets the
  *                        engine doesn't model (e.g. a per-school spell save DC

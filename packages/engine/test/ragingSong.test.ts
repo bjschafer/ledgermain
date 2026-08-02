@@ -1,11 +1,11 @@
 /**
  * Hand-computed fixture tests for the skald's Raging Song pool and its
- * flagship Inspired Rage toggle (issue #65). RAW numbers verified against
- * aonprd.com's live Skald class page (2026-07-08): Raging Song rounds/day =
- * 3 + Cha mod at 1st, +2/level thereafter (matches the vendored
- * `uses.maxFormula` exactly — no hand-authoring needed for the pool itself).
- * Inspired Rage: +2 morale Str/Con, +1 morale Will, -1 AC at 1st; Will
- * increases by 1 every 4 levels; Str/Con increases by 2 at 8th and 16th.
+ * flagship Inspired Rage toggle. RAW numbers verified against aonprd.com's
+ * live Skald class page (2026-07-08): Raging Song rounds/day = 3 + Cha mod at
+ * 1st, +2/level thereafter (matches the vendored `uses.maxFormula` exactly —
+ * no hand-authoring needed for the pool itself). Inspired Rage: +2 morale
+ * Str/Con, +1 morale Will, -1 AC at 1st; Will increases by 1 every 4 levels;
+ * Str/Con increases by 2 at 8th and 16th.
  */
 
 import { describe, expect, it } from "bun:test";

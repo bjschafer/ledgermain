@@ -22,19 +22,19 @@ interface BloodragerBloodlinePickerProps {
 }
 
 /**
- * Bloodrager bloodline selection (issue #65; PF1 grants exactly one, chosen
- * at L1, never changed thereafter). Free-choice: "soft warning only" per the
- * project's hybrid-prereqs philosophy — mirrors `DisciplinePicker` exactly
- * (fully hand-authored table, not derived from a vendored refData list, same
- * as `@pf1/engine` `BLOODRAGER_BLOODLINES`'s doc comment explains for why it
+ * Bloodrager bloodline selection (PF1 grants exactly one, chosen at L1, never
+ * changed thereafter). Free-choice: "soft warning only" per the project's
+ * hybrid-prereqs philosophy — mirrors `DisciplinePicker` exactly (fully
+ * hand-authored table, not derived from a vendored refData list, same as
+ * `@pf1/engine` `BLOODRAGER_BLOODLINES`'s doc comment explains for why it
  * can't reuse `refData.bloodlineSpellLists` the way sorcerer's picker does).
  *
  * Browses the FULL published bloodline catalog
- * (`mergedBloodragerBloodlineCatalog`, issue #74) — every published
- * bloodline is hand-authored in the engine table, so the preview always
- * shows power summaries. The `badge-modeled` "M" marks the ones that carry
- * live mechanics (`bloodragerBloodlineMovesNumbers`: a Change or resource
- * pool somewhere), not merely rules text.
+ * (`mergedBloodragerBloodlineCatalog`) — every published bloodline is
+ * hand-authored in the engine table, so the preview always shows power
+ * summaries. The `badge-modeled` "M" marks the ones that carry live mechanics
+ * (`bloodragerBloodlineMovesNumbers`: a Change or resource pool somewhere),
+ * not merely rules text.
  *
  * The chosen bloodline:
  *  - grants bloodline POWERS at 1st/4th/8th/12th/16th/20th level — shown in

@@ -1,6 +1,6 @@
 /**
- * Unit tests for Stage 1 (sorcerer bloodline spells) additions to model/doc.ts:
- * `setSorcererBloodline`, plus issue #34's `setSorcererBloodlineVariant`
+ * Unit tests for Stage 1 (sorcerer bloodline spells) additions to
+ * model/doc.ts: `setSorcererBloodline`, plus the `setSorcererBloodlineVariant`
  * (Draconic dragon type / Elemental element pick).
  */
 import { describe, expect, it } from "bun:test";

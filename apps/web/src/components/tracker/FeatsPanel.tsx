@@ -53,14 +53,14 @@ interface FeatRow {
 }
 
 /**
- * Feats-on-the-play-tab (issue #12): a read-only reference list of every feat
- * instance the character has — manually chosen (`build.feats` + `build.extraFeats`,
- * issue #58: a repeatable feat taken more than once lists each instance with
- * its own choice, e.g. "Weapon Focus: Falchion", "Weapon Focus: Longbow") plus
- * class-granted (Scribe Scroll, Eschew Materials, ...) — for "do you have
+ * Feats-on-the-play-tab: a read-only reference list of every feat instance the
+ * character has — manually chosen (`build.feats` + `build.extraFeats`: a
+ * repeatable feat taken more than once lists each instance with its own
+ * choice, e.g. "Weapon Focus: Falchion", "Weapon Focus: Longbow") plus
+ * class-granted (Scribe Scroll, Eschew Materials,...) — for "do you have
  * Combat Casting" lookups at the table. No add/remove/prereq-checking here;
  * that's the builder's `FeatsSection` job. Collapsed by default and placed at
- * the bottom of the Play tab per the issue's request.
+ * the bottom of the Play tab.
  */
 export function FeatsPanel({ doc, refData }: BuilderProps) {
   const [query, setQuery] = useState("");

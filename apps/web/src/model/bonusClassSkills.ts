@@ -1,5 +1,5 @@
 /**
- * Pure player-chosen bonus class skill transitions (issue #93).
+ * Pure player-chosen bonus class skill transitions.
  *
  * The engine owns which features grant picks and how many
  * (`BONUS_CLASS_SKILL_GRANTS` / `collectBonusClassSkillGrants`) plus the

@@ -1,9 +1,9 @@
 /**
  * Unit tests for `model/externalImport.ts` — the shared name-matching +
  * `ExternalCharacterData` -> `CharacterDoc` mapping used by both the
- * Pathbuilder and Hero Lab importers (issue #3). Runs against the real
- * vendored RefData slice (same pattern as `test/languages.test.ts`) so
- * matches are against actual race/feat/item names, not hand-rolled fixtures.
+ * Pathbuilder and Hero Lab importers. Runs against the real vendored RefData
+ * slice (same pattern as `test/languages.test.ts`) so matches are against
+ * actual race/feat/item names, not hand-rolled fixtures.
  */
 import { compute } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";

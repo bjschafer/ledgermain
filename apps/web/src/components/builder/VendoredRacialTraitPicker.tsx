@@ -24,14 +24,14 @@ type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 const TARGET_GROUPS = ["Ability score", "Skill"] as const;
 
 /**
- * The ~80-race vendored alternate-racial-trait catalog (issue #74 fill
- * plan), scoped to the character's current race. Mirrors `RagePowerPicker`'s
+ * The ~80-race vendored alternate-racial-trait catalog (fill plan), scoped to
+ * the character's current race. Mirrors `RagePowerPicker`'s
  * collapsible-search-list shape, but the honesty posture is different: unlike
  * the hand-authored picker inline in `RaceSection` (which enforces a real
  * standard-trait swap), a vendored pick's `replacedTraitNames` is a verified
  * swap only for the races/names in `@pf1/engine`'s
- * `VENDORED_STANDARD_TRAIT_TARGETS`/`VENDORED_STANDARD_TRAIT_NOTES` maps
- * (issue #41) — the "replaces" tag says so ("applied automatically") when
+ * `VENDORED_STANDARD_TRAIT_TARGETS`/`VENDORED_STANDARD_TRAIT_NOTES` maps — the
+ * "replaces" tag says so ("applied automatically") when
  * `vendoredTraitFullyHandled` confirms every named standard trait is covered,
  * and keeps the soft "verify manually" wording everywhere else, where the
  * catalog only names WHAT the trait replaces without a verified mapping to
@@ -40,9 +40,9 @@ const TARGET_GROUPS = ["Ability score", "Skill"] as const;
  * (`availableVendoredRacialTraits`) so the two pickers never offer the same
  * trait under two different guarantees.
  *
- * Three of the catalog's fields need a surface here and nowhere else (issue
- * #102): a heritage variant carries its heritage as a chip (only correct for
- * a character of that heritage — unmodeled, so it's a label, not a gate); an
+ * Three of the catalog's fields need a surface here and nowhere else: a
+ * heritage variant carries its heritage as a chip (only correct for a
+ * character of that heritage — unmodeled, so it's a label, not a gate); an
  * entry with `openChanges` gets one target select per "choose one" blank, and
  * grants nothing for a blank left unchosen; and `racePoints` shows per-entry
  * and as a header total, a GM-facing reference figure rather than a budget.

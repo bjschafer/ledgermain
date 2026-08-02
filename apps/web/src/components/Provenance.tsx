@@ -3,7 +3,7 @@ import type { ModifierComponent } from "@pf1/schema";
 import { signed } from "../model/names.js";
 import { CopyButton } from "./CopyButton.js";
 
-/** A roll formula offered for copying from a breakdown's header (issue #96). */
+/** A roll formula offered for copying from a breakdown's header. */
 export interface ProvenanceCopy {
   /** The pasteable text, e.g. `"1d20 + 10"`. */
   formula: string;

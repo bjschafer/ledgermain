@@ -1,7 +1,7 @@
 /**
  * Unit tests for gear-related doc transitions: addGearItem, addWornArmor,
- * setGearEquipped, removeGear, plus issue #16 additions (quantity, charges,
- * custom gear, money).
+ * setGearEquipped, removeGear, plus additions (quantity, charges, custom gear,
+ * money).
  */
 import { describe, expect, it } from "bun:test";
 
@@ -413,7 +413,7 @@ describe("updateGearItem()", () => {
   });
 
   // -------------------------------------------------------------------------
-  // arcane spell failure (ASF) snapshot + mithral -10% (issue #8)
+  // arcane spell failure (ASF) snapshot + mithral -10%
   // -------------------------------------------------------------------------
   const FULL_PLATE_ASF: ArmorRef = { ...FULL_PLATE, asf: 35 };
 
@@ -445,7 +445,7 @@ describe("updateGearItem()", () => {
 });
 
 // ---------------------------------------------------------------------------
-// armor special-ability +10 cap (issue #8) — mirrors the weapon invariant
+// armor special-ability +10 cap — mirrors the weapon invariant
 // ---------------------------------------------------------------------------
 describe("armor special abilities are capped at +10 combined bonus-equivalent (issue #8)", () => {
   it("keeps abilities whose combined cost + enhancement is within budget", () => {
@@ -602,7 +602,7 @@ describe("armor special abilities are capped at +10 combined bonus-equivalent (i
 });
 
 // ---------------------------------------------------------------------------
-// addCustomGearItem (issue #16)
+// addCustomGearItem
 // ---------------------------------------------------------------------------
 describe("addCustomGearItem()", () => {
   it("appends a free-text gear entry with weight/price/quantity", () => {
@@ -653,7 +653,7 @@ describe("addCustomGearItem()", () => {
 });
 
 // ---------------------------------------------------------------------------
-// setGearQuantity (issue #16)
+// setGearQuantity
 // ---------------------------------------------------------------------------
 describe("setGearQuantity()", () => {
   it("sets a quantity on a gear entry", () => {
@@ -688,7 +688,7 @@ describe("setGearQuantity()", () => {
 });
 
 // ---------------------------------------------------------------------------
-// setGearCharges (issue #16)
+// setGearCharges
 // ---------------------------------------------------------------------------
 describe("setGearCharges()", () => {
   it("sets charges used on a gear entry", () => {
@@ -788,7 +788,7 @@ describe("setGearDetails()", () => {
 });
 
 // ---------------------------------------------------------------------------
-// setMoney (issue #16)
+// setMoney
 // ---------------------------------------------------------------------------
 describe("setMoney()", () => {
   it("sets one denomination", () => {

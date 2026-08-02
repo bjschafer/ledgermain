@@ -1,6 +1,6 @@
 /**
- * Unit tests for the bonus-languages transition (`model/doc.ts:setBonusLanguages`,
- * issue #25).
+ * Unit tests for the bonus-languages transition
+ * (`model/doc.ts:setBonusLanguages`).
  */
 import { describe, expect, it } from "bun:test";
 

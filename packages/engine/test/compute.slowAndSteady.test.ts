@@ -1,12 +1,11 @@
 /**
- * Engine integration fixtures for issue #52 (Slow and Steady): d20pfsrd core
- * Dwarf/Duergar trait, clean-room — "Dwarves have a base speed of 20 feet,
- * but their speed is never modified by armor or encumbrance." Both of the
- * existing land-speed reductions (worn medium/heavy ARMOR, issue #8 — and
- * the optional carrying-capacity encumbrance rule, issue #16) must be
- * skipped for a race with this trait, while every OTHER encumbrance effect
- * (AC max-Dex cap, skill ACP) still applies normally — the trait only
- * exempts speed.
+ * Engine integration fixtures for Slow and Steady: d20pfsrd core
+ * Dwarf/Duergar trait, clean-room — "Dwarves have a base speed of 20 feet, but
+ * their speed is never modified by armor or encumbrance." Both of the existing
+ * land-speed reductions (worn medium/heavy ARMOR — and the optional
+ * carrying-capacity encumbrance rule) must be skipped for a race with this
+ * trait, while every OTHER encumbrance effect (AC max-Dex cap, skill ACP)
+ * still applies normally — the trait only exempts speed.
  */
 import { describe, expect, it } from "bun:test";
 

@@ -1,15 +1,15 @@
 /**
  * Summoner (Unchained)'s eidolon subtype system (Pathfinder Unchained
- * "Eidolons (Unchained)") — the unchained variant's OWN evolution-pool
- * table plus 13 core outsider SUBTYPES (Aberrant/Agathion/Angel/Archon/
- * Azata/Daemon/Demon/Devil/Div/Elemental/Inevitable/Protean/Psychopomp),
- * each granting a themed set of free evolutions/resistances/immunities as
- * the eidolon's HD increase, in place of the chained (APG) eidolon's flat,
+ * "Eidolons (Unchained)") — the unchained variant's OWN evolution-pool table
+ * plus 13 core outsider SUBTYPES (Aberrant/Agathion/Angel/Archon/
+ * Azata/Daemon/Demon/Devil/Div/Elemental/Inevitable/Protean/Psychopomp), each
+ * granting a themed set of free evolutions/resistances/immunities as the
+ * eidolon's HD increase, in place of the chained (APG) eidolon's flat,
  * subtype-less pool. Clean-room, paraphrased from d20pfsrd.com's "Eidolons
- * (Unchained)" page during authoring (issue #74) — no Foundry source was
- * consulted (see DESIGN §6). Aberrant (Pathfinder Campaign Setting: Horror
- * Realms) was added later, cross-checked against aonprd.com's "Subtypes -
- * Eidolon (Unchained)" page and the raw OGL dataset's `aberrant` entry.
+ * (Unchained)" page during authoring — no Foundry source was consulted (see
+ * DESIGN §6). Aberrant (Pathfinder Campaign Setting: Horror Realms) was added
+ * later, cross-checked against aonprd.com's "Subtypes - Eidolon (Unchained)"
+ * page and the raw OGL dataset's `aberrant` entry.
  *
  * `deriveEidolon` (`eidolon.ts`) owns the actual derivation branch; this
  * module is pure data plus small lookup helpers, mirroring how `eidolon.ts`
@@ -998,7 +998,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
       },
     ],
   },
-  // ---- splatbook subtypes (issue #74 content pass; see each entry's
+  // ---- splatbook subtypes (content pass; see each entry's
   // source comment). Tapestry-Warped is deliberately absent: it is
   // third-party (non-Paizo) content with no vendored or AoN counterpart
   // to verify against, so it fails the provenance bar. --------------
@@ -1605,7 +1605,7 @@ const CORE_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
   },
 };
 
-/** All 28 modeled Pathfinder Unchained eidolon subtypes: 12 Unchained core + Aberrant + the 12 splatbook subtypes from the #74 content pass, with Elemental split into 4 element ids (see module doc comment). Tapestry-Warped is deliberately absent — third-party, no verifiable source. */
+/** All 28 modeled Pathfinder Unchained eidolon subtypes: 12 Unchained core + Aberrant + the 12 splatbook subtypes from the catalog content pass, with Elemental split into 4 element ids (see module doc comment). Tapestry-Warped is deliberately absent — third-party, no verifiable source. */
 export const EIDOLON_SUBTYPES: Readonly<Record<string, EidolonSubtypeDef>> = {
   ...CORE_SUBTYPES,
   ...Object.fromEntries(ELEMENTAL_VARIANTS.map((v) => [v.id, elementalSubtype(v)])),

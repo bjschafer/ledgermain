@@ -50,7 +50,7 @@ describe("metadata + provenance", () => {
 
   it("contains the expected slice", () => {
     // 7 core races (packs/races/core) + 73 non-core races (packs/races/other,
-    // vendored per issue #26: aasimar, tiefling, goblin, kobold, drow, ...).
+    // vendored: aasimar, tiefling, goblin, kobold, drow,...).
     expect(Object.keys(ref.races)).toHaveLength(80);
     // 11 core + 10 base + 10 hybrid + 3 alternate (antipaladin/ninja/samurai)
     // + 4 unchained + 6 Occult Adventures + 11 hand-authored prestige classes
@@ -58,8 +58,8 @@ describe("metadata + provenance", () => {
     // Disciple, Duelist, Eldritch Knight, Loremaster, Mystic Theurge,
     // Pathfinder Chronicler, Shadowdancer — plus Student of War from the
     // Adventurer's Guide. Foundry ships no prestige classes at all) + 108
-    // vendored prestige classes (issue #74 — the remaining splatbook
-    // prestige classes from the same third-party archetype module, see
+    // vendored prestige classes (the remaining splatbook prestige classes from
+    // the same third-party archetype module, see
     // `vendoredPrestigeClasses.test.ts`).
     expect(Object.keys(ref.classes)).toHaveLength(163);
     // 390 system-pack feats + ~3,150 merged in from the community pf1-content
@@ -67,7 +67,7 @@ describe("metadata + provenance", () => {
     // config.ts's PF_CONTENT_REPO and normalize.ts's feats merge).
     expect(Object.keys(ref.feats)).toHaveLength(3563);
     // 1,998 pf-traits YAML files, deduped by normalized name within the pack
-    // itself (issue #74; no system-pack traits exist to prefer).
+    // itself (no system-pack traits exist to prefer).
     expect(Object.keys(ref.traits)).toHaveLength(1981);
     expect(Object.keys(ref.spells).length).toBeGreaterThan(0);
   });
@@ -227,11 +227,11 @@ describe("class feature actions (schema v8 — issue: bare resource-pool counter
   });
 
   it("Channel Energy carries all four heal/harm actions in source order", () => {
-    // Resolved via Cleric's own grant, not `byName` — issue #74
-    // vendors several splatbook prestige classes with their own same-named
-    // "Channel Energy" feature (name collisions across classes are expected
-    // and not deduped, see `prestigeClasses.ts`), so a bare name lookup is
-    // no longer guaranteed to land on the Cleric's class-abilities one.
+    // Resolved via Cleric's own grant, not `byName` — vendors several
+    // splatbook prestige classes with their own same-named "Channel Energy"
+    // feature (name collisions across classes are expected and not deduped,
+    // see `prestigeClasses.ts`), so a bare name lookup is no longer guaranteed
+    // to land on the Cleric's class-abilities one.
     const cleric = Object.values(ref.classes).find((c) => c.tag === "cleric")!;
     const grant = cleric.features.find((f) => f.name === "Channel Energy")!;
     const channelEnergy = ref.classFeatures[grant.featureId]!;
@@ -794,9 +794,9 @@ describe("sorcerer bloodline spell lists (inverted learnedAt.bloodline)", () => 
   });
 
   it("Aberrant is present from the hand-authored supplement (absent upstream)", () => {
-    // Issue #38: Aberrant is fully authored in @pf1/engine BLOODLINES but no
-    // vendored spell tags it, so the derived inversion yields nothing. The
-    // supplement (see src/supplements.ts) backfills its CRB bonus-spell list.
+    // Aberrant is fully authored in @pf1/engine BLOODLINES but no vendored
+    // spell tags it, so the derived inversion yields nothing. The supplement
+    // (see src/supplements.ts) backfills its CRB bonus-spell list.
     expect(SUPPLEMENTAL_BLOODLINE_TAGS.has("Aberrant")).toBe(true);
     const aberrant = ref.bloodlineSpellLists["Aberrant"];
     expect(aberrant).toBeDefined();

@@ -11,10 +11,10 @@
  *
  * Scope: the 12 core Occult Adventures disciplines (Abomination, Dream,
  * Enlightenment, Faith, Ferocity, Haunted, Lore, Pageantry, Pain, Rebirth,
- * Self-Perfection, Tranquility). The vendored Foundry pack ships a dozen
- * more `packs/class-abilities/*-discipline.*.yaml` entries from later
- * splatbooks (Mindtech, Bleaching, Hag-Called, Rivethun, Psychedelia, ...)
- * — those are out of scope, matching `oracle-mysteries.ts`'s own scope note.
+ * Self-Perfection, Tranquility). The vendored Foundry pack ships a dozen more
+ * `packs/class-abilities/*-discipline.*.yaml` entries from later splatbooks
+ * (Mindtech, Bleaching, Hag-Called, Rivethun, Psychedelia,...) — those are out
+ * of scope, matching `oracle-mysteries.ts`'s own scope note.
  *
  * Data provenance — the same unusual case as oracle mysteries: the vendored
  * pack DOES carry real structured content for this, just not linked from the
@@ -34,9 +34,9 @@
  *     Wisdom-based discipline (same aliasing mechanism as the cleric Wisdom
  *     house-rule).
  *   - `bonusSpells` ids are copied VERBATIM from the `@UUID[Compendium.pf1.
- *     spells.<id>]` references embedded in each discipline's vendored prose
- *     — real vendored spell ids, verified present in `RefData.spells` for
- *     all 108 entries below (names below are the vendored `Spell.name`, e.g.
+ *     spells.<id>]` references embedded in each discipline's vendored prose —
+ *     real vendored spell ids, verified present in `RefData.spells` for all
+ *     108 entries below (names below are the vendored `Spell.name`, e.g.
  *     "Arcane Sight, Greater", not the prose's own "Greater Arcane Sight"
  *     ordering — resolving by id sidesteps that drift, same as mysteries).
  *     `level` is the PSYCHIC level at which the spell is gained as a bonus
@@ -44,46 +44,44 @@
  *     learns an additional spell determined by her discipline. She learns
  *     another additional spell at 4th level and every 2 levels thereafter,
  *     until learning the final one at 18th level" — i.e. levels 1, 4, 6, 8,
- *     10, 12, 14, 16, 18; matches the "(1st)", "(4th)", ... markers in the
+ *     10, 12, 14, 16, 18; matches the "(1st)", "(4th)",... markers in the
  *     vendored prose), NOT the spell's own level — a different unlock cadence
  *     from oracle mysteries' flat every-2-levels-from-2nd, so disciplines get
  *     their own helper (`disciplineSpellsKnown` in `apps/web/src/model/
  *     spellcasting.ts`) rather than reusing `mysterySpellsKnown`'s. Unlike
  *     mysteries, disciplines grant no class skills.
  *
- * `powers` (issue #65 follow-through — previously deferred): each
- * discipline's
- * "Discipline Powers" sub-feature, hand-authored from aonprd.com's individual
- * discipline pages (`PsychicDisciplinesDisplay.aspx?ItemName=<Name>`,
- * verified 2026-07-08) — NOT vendored anywhere (the cached
- * `*-discipline.*.yaml` carries only the Phrenic Pool Ability/Bonus Spells
- * prose already mined above, confirmed by direct inspection: no Discipline
- * Powers text at all). PF1 RAW grants these automatically at 1st, 5th, and
- * 13th psychic level to whichever discipline is chosen (not a budgeted pick —
- * same "automatic once you qualify" shape as a sorcerer bloodline power);
- * some disciplines name two powers at 1st level (both un-numbered on the same
- * page, e.g. Dream's Dream Leech + Oneiromancy). Modelling posture mirrors
- * `ORACLE_REVELATIONS`'/`WITCH_HEXES`' honesty bar: almost every power here is
- * a swift-action/limited-use/passive-substitution ability with no flat
- * always-on number this engine's `Change` pipeline could safely apply
- * unconditionally — those stay note-tier `GrantedFeature`s (`archetypes.ts`'s
- * `collectGrantedFeatures`, `origin.kind: "discipline"`) with a summary only,
- * same posture as a shaman's spirit ability. A handful (promotion audit,
- * verified 2026-07-29) genuinely are unconditional and always-on once
- * gained, so they additionally carry a real `changes` array collected the
- * same way `bloodline.powers`/`bloodragerBloodline.powers` are (see
- * `collect.ts`'s psychic discipline power loop): Faith's Resilience of the
- * Faithful (resistance bonus on all saves), Rebirth's Past-Life Memories
+ * `powers` (previously deferred): each discipline's "Discipline Powers"
+ * sub-feature, hand-authored from aonprd.com's individual discipline pages
+ * (`PsychicDisciplinesDisplay.aspx?ItemName=<Name>`, verified 2026-07-08) —
+ * NOT vendored anywhere (the cached `*-discipline.*.yaml` carries only the
+ * Phrenic Pool Ability/Bonus Spells prose already mined above, confirmed by
+ * direct inspection: no Discipline Powers text at all). PF1 RAW grants these
+ * automatically at 1st, 5th, and 13th psychic level to whichever discipline is
+ * chosen (not a budgeted pick — same "automatic once you qualify" shape as a
+ * sorcerer bloodline power); some disciplines name two powers at 1st level
+ * (both un-numbered on the same page, e.g. Dream's Dream Leech + Oneiromancy).
+ * Modelling posture mirrors `ORACLE_REVELATIONS`'/`WITCH_HEXES`' honesty bar:
+ * almost every power here is a swift-action/limited-use/passive-substitution
+ * ability with no flat always-on number this engine's `Change` pipeline could
+ * safely apply unconditionally — those stay note-tier `GrantedFeature`s
+ * (`archetypes.ts`'s `collectGrantedFeatures`, `origin.kind: "discipline"`)
+ * with a summary only, same posture as a shaman's spirit ability. A handful
+ * (promotion audit, verified 2026-07-29) genuinely are unconditional and
+ * always-on once gained, so they additionally carry a real `changes` array
+ * collected the same way `bloodline.powers`/`bloodragerBloodline.powers` are
+ * (see `collect.ts`'s psychic discipline power loop): Faith's Resilience of
+ * the Faithful (resistance bonus on all saves), Rebirth's Past-Life Memories
  * (flat Knowledge bonus), Ferocity's Enhanced Senses (scent — its
  * phrenic-pool-activated blindsense upgrade is NOT modeled), Abomination's
  * Psychic Safeguard (the constant base SR only — its dark-half-manifested
  * increase is conditional and NOT modeled), and Self-Perfection's AC Bonus
- * (Wis-to-AC/CMD, gated on armor/shield/encumbrance the same way the
- * vendored Monk "AC Bonus (MNK)" class feature's own `changes[]` does — its
- * "loses this while immobilized or helpless" clause is likewise not modeled
- * there, so leaving it unmodeled here matches existing engine precedent
- * rather than a new gap) and Pure Body (immunity to disease and poison, the
- * same `immEffect.disease`/`immEffect.poison` shape the data-pipeline's
+ * (Wis-to-AC/CMD, gated on armor/shield/encumbrance the same way the vendored
+ * Monk "AC Bonus (MNK)" class feature's own `changes[]` does — its "loses this
+ * while immobilized or helpless" clause is likewise not modeled there, so
+ * leaving it unmodeled here matches existing engine precedent rather than a
+ * new gap) and Pure Body (immunity to disease and poison, the same
+ * `immEffect.disease`/`immEffect.poison` shape the data-pipeline's
  * `SUPPLEMENTAL_CLASS_FEATURE_EFFECT_IMMUNITY` already uses for the Monk's
  * Purity of Body / Diamond Body).
  */
@@ -683,13 +681,13 @@ export const PSYCHIC_DISCIPLINE_TAGS: readonly string[] = DISCIPLINE_LIST.map((d
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.psychicDisciplines` (see that type's doc
- * comment) is the FULL published catalog (23 entries after junk filtering),
- * prose only. UNLIKE `RagePower`/`MesmeristTrick`/etc., a discipline is a
- * CHASSIS — the hand-authored table above is the ONLY source of bonus
- * spells/Discipline Powers/phrenic pool ability, and a vendored-only entry
- * can never derive those (this catalog has no structured data for them at
- * all). So the merge here produces two shapes instead of one:
+ * `RefData.psychicDisciplines` (see that type's doc comment) is the FULL
+ * published catalog (23 entries after junk filtering), prose only. UNLIKE
+ * `RagePower`/`MesmeristTrick`/etc., a discipline is a CHASSIS — the
+ * hand-authored table above is the ONLY source of bonus spells/Discipline
+ * Powers/phrenic pool ability, and a vendored-only entry can never derive
+ * those (this catalog has no structured data for them at all). So the merge
+ * here produces two shapes instead of one:
  *
  *   - a hand-authored discipline, with the vendored prose/sources attached
  *     for extra flavor text (`vendoredOnly: false`) — bonus spells/powers/

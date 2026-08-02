@@ -7,7 +7,7 @@ import { addKit, isKit, kitContents, listKits } from "../src/model/kits.js";
 
 const ref = loadRefData();
 
-/** "Kit, Wizard's" — the worked example from issue #80. */
+/** "Kit, Wizard's" — the worked example in the kit rules. */
 const WIZARD_KIT = "CDQCyfYfW9aneX9e";
 /** "Kit, Vampire Slayer's" — the only kit packing a non-`items`-pack entry. */
 const VAMPIRE_SLAYER_KIT = "PI7uxv6NWE1RX7B8";

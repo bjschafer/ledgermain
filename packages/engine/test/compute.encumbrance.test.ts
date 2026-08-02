@@ -1,8 +1,8 @@
 /**
- * Engine integration fixtures for issue #16 encumbrance: AC max-Dex cap,
- * skill ACP, and land-speed penalties flowing through `compute()` with
- * provenance, gated entirely behind `build.settings.encumbranceEnabled`
- * (default off = zero behavior change).
+ * Engine integration fixtures for encumbrance: AC max-Dex cap, skill ACP, and
+ * land-speed penalties flowing through `compute` with provenance, gated
+ * entirely behind `build.settings.encumbranceEnabled` (default off = zero
+ * behavior change).
  */
 import { describe, expect, it } from "bun:test";
 

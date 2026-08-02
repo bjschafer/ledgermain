@@ -6,12 +6,12 @@ import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 import { buildPrintSheet } from "../model/printSheet.js";
 
 /**
- * Read-only printable character sheet (issue #69): a single pass over the
- * already-computed `DerivedSheet` (plus the feat/spell/resource model helpers
- * the live tracker uses) laid out for `@media print` / Chromium's
- * print-to-PDF. Takes over the whole viewport in place of the app shell (see
- * `App.tsx`) rather than living alongside it, so nothing else in the DOM
- * needs `@media print` overrides to hide it.
+ * Read-only printable character sheet: a single pass over the already-computed
+ * `DerivedSheet` (plus the feat/spell/resource model helpers the live tracker
+ * uses) laid out for `@media print` / Chromium's print-to-PDF. Takes over the
+ * whole viewport in place of the app shell (see `App.tsx`) rather than living
+ * alongside it, so nothing else in the DOM needs `@media print` overrides to
+ * hide it.
  */
 export function PrintView({
   doc,

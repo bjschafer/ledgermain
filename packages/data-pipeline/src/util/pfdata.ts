@@ -3,14 +3,14 @@ import { readFileSync } from "node:fs";
 import type { SourceRef } from "@pf1/schema";
 
 /**
- * Reader for the "Pf Data 1e" dataset's `json/*.json` files (issue #74): each file is a
- * flat dictionary, keyed by a snake_case slug, of entries
- * sharing one loose shape (documented in the dataset's own `schema.json` /
- * `JSON.md`). The SAME shape backs every subsystem file in `json/` — rage
- * powers, hexes, arcana, talents, exploits, wild talents, … — so everything
- * in this module is generic across all of them; only the per-subsystem
- * mapping from a `PfDataEntry` to a RefData type (e.g. `transform/
- * ragePowers.ts`'s `transformRagePowers`) is specific to one file.
+ * Reader for the "Pf Data 1e" dataset's `json/*.json` files: each file is a
+ * flat dictionary, keyed by a snake_case slug, of entries sharing one loose
+ * shape (documented in the dataset's own `schema.json` / `JSON.md`). The SAME
+ * shape backs every subsystem file in `json/` — rage powers, hexes, arcana,
+ * talents, exploits, wild talents, … — so everything in this module is generic
+ * across all of them; only the per-subsystem mapping from a `PfDataEntry` to a
+ * RefData type (e.g. `transform/ ragePowers.ts`'s `transformRagePowers`) is
+ * specific to one file.
  *
  * Deliberately covers only what the format spec (`JSON.md`) documents and
  * the rage-power file actually exercises — not a full reimplementation of
@@ -150,15 +150,15 @@ function resolveLinkDirectives(text: string): string {
 
 /**
  * Named HTML character entities observed across the dataset's `json/*.json`
- * source prose (accented Latin letters, typographic punctuation, `&times;`
- * for a "x2"-style multiplier, ...) — the source embeds these LITERALLY
- * rather than as raw Unicode, so decoding them back to a real character
- * BEFORE `escapeHtml` runs is required; otherwise `escapeHtml`'s blind `&` ->
- * `&amp;` re-escapes an already-valid entity into a broken one (e.g.
- * `&mdash;` -> `&amp;mdash;`, which browsers render as the literal text
- * "&mdash;" instead of an em dash). Covers every entity seen in the pinned
- * clone as of the magus-arcana import (issue #74); extend this map
- * if a future subsystem's slice surfaces one not listed here.
+ * source prose (accented Latin letters, typographic punctuation, `&times;` for
+ * a "x2"-style multiplier,...) — the source embeds these LITERALLY rather than
+ * as raw Unicode, so decoding them back to a real character BEFORE
+ * `escapeHtml` runs is required; otherwise `escapeHtml`'s blind `&` -> `&amp;`
+ * re-escapes an already-valid entity into a broken one (e.g. `&mdash;` ->
+ * `&amp;mdash;`, which browsers render as the literal text "&mdash;" instead
+ * of an em dash). Covers every entity seen in the pinned clone as of the
+ * magus-arcana import; extend this map if a future subsystem's slice surfaces
+ * one not listed here.
  */
 const NAMED_ENTITIES: Record<string, string> = {
   amp: "&",
@@ -259,19 +259,19 @@ export function parseDirectiveProps(raw: string): Record<string, string | true> 
 }
 
 /**
- * `::aff[Name]{prop="value" ...}` — a Foundry-style affliction/curse/poison
+ * `::aff[Name]{prop="value"...}` — a Foundry-style affliction/curse/poison
  * stat block (used by a handful of rage powers' curse chains), OR the
- * name-less `::aff{prop="value" ...}` variant (no `[Name]` at all — a
+ * name-less `::aff{prop="value"...}` variant (no `[Name]` at all — a
  * natural-attack-embedded poison/disease/curse stat block, e.g. a witch hex
- * granting a claw attack with a poison rider; ~600 occurrences across the
- * full pinned dataset, first exercised by the witch-hex import, issue #74). We aren't
- * trying to fully re-render the block's game-mechanical
- * structure (onset, frequency, cure DC, ...) — just surface its
- * `eff`/`effStr` prose (the human-readable effect description, which is what
- * a player actually reads), labeled with the block's own name when one is
- * given. The name-less variant has nothing to label it with (`type=` is a
- * delivery-vector tag like "Claw-injury", not a display name), so it renders
- * its prose unlabeled rather than fabricating one.
+ * granting a claw attack with a poison rider; ~600 occurrences across the full
+ * pinned dataset, first exercised by the witch-hex import). We aren't trying
+ * to fully re-render the block's game-mechanical structure (onset, frequency,
+ * cure DC,...) — just surface its `eff`/`effStr` prose (the human-readable
+ * effect description, which is what a player actually reads), labeled with the
+ * block's own name when one is given. The name-less variant has nothing to
+ * label it with (`type=` is a delivery-vector tag like "Claw-injury", not a
+ * display name), so it renders its prose unlabeled rather than fabricating
+ * one.
  */
 function renderAfflictionBlock(name: string | undefined, propsRaw: string): string {
   const props = parseDirectiveProps(propsRaw);
@@ -392,10 +392,10 @@ function renderAbDirective(name: string, propsRaw: string): string {
  * Strip the dataset's blockquote (`>`) and fenced-note (`:::label` / `:::`)
  * markup, which this reader doesn't render as a distinct visual block —
  * converting each to plain prose (or a paragraph break, for a bare `>`
- * continuation/fence line) so the surrounding text still reads cleanly
- * instead of leaking raw markup. First exercised by the sorcerer/bloodrager
- * bloodline and shaman-spirit imports (issue #74), whose "menu of
- * named powers" sections are blockquoted rather than plain paragraphs.
+ * continuation/fence line) so the surrounding text still reads cleanly instead
+ * of leaking raw markup. First exercised by the sorcerer/bloodrager bloodline
+ * and shaman-spirit imports, whose "menu of named powers" sections are
+ * blockquoted rather than plain paragraphs.
  */
 function stripBlockLevelMarkers(lines: string[]): string[] {
   return lines.map((line) => {
@@ -431,8 +431,8 @@ function splitIntoBlocks(lines: string[]): string[][] {
  * An inline (non-leading, see `pfDataBodyLines` for the leading case) markdown
  * header — a section divider like "### Revelations"/"### Bloodline Powers"
  * appearing partway through an entry's prose, first seen in the oracle-
- * mystery/bloodline imports (issue #74). Rendered as a bold
- * paragraph rather than left as literal "###" text.
+ * mystery/bloodline imports. Rendered as a bold paragraph rather than left as
+ * literal "###" text.
  */
 const INLINE_HEADER_RE = /^#{2,4}\s+(.+)$/;
 

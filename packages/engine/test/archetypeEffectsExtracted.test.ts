@@ -11,13 +11,13 @@ import {
 } from "../src/index.js";
 
 /**
- * Issue #45 (fighter pilot of the prose→Change extraction pipeline): fixture
+ * fixture
  * tests for `archetype-effects-extracted.ts`, hand-computed against the real
- * vendored data slice via `loadRefData()`, same posture as
+ * vendored data slice via `loadRefData`, same posture as
  * `archetypeEffects.test.ts`. Each expectation is derived straight from the
- * published PF1 rules cited (as `provenance`) in the extracted table's
- * entries — these hand computations ARE this pilot's spot-verification pass
- * for the entries they cover.
+ * published PF1 rules cited (as `provenance`) in the extracted table's entries
+ * — these hand computations ARE this pilot's spot-verification pass for the
+ * entries they cover.
  */
 const ref = loadRefData();
 

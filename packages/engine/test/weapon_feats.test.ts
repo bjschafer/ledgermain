@@ -255,7 +255,7 @@ describe("Weapon Focus + Weapon Specialization together", () => {
   });
 });
 
-// ─── Two Weapon Focus instances, two different weapons (issue #58) ──────────
+// ─── Two Weapon Focus instances, two different weapons ──────────
 
 describe("Weapon Focus taken twice for two different weapons (issue #58)", () => {
   it("the primary instance (longsword) and an extraFeats instance (dagger) each buff only their own weapon", () => {

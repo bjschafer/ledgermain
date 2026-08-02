@@ -9,15 +9,15 @@
  * Stripped from `live.*`:
  *  - `conditions` — Prone, Shaken, etc.
  *  - `activeBuffs` — spells/effects currently running.
- *  - `abilityDamage` / `abilityPenalty` — temporary ability score hits (issue
- *    #18); both heal or clear on their own and are exactly the kind of
- *    right-now state this cue is for.
- *  - `negativeLevels` — energy-drain penalties (issue #19), including the
- *    `permanent` half: PF1 RAW lets these be removed by Restoration-type
- *    magic, but at the table they read as "something is happening to me
- *    right now," same as a condition.
- *  - `activeForm` — a polymorph-family transformation (issue #70, Wild Shape
- *    or a Beast Shape/Elemental Body/Plant Shape spell): exactly the kind of
+ *  - `abilityDamage` / `abilityPenalty` — temporary ability score hits; both
+ *    heal or clear on their own and are exactly the kind of right-now state
+ *    this cue is for.
+ *  - `negativeLevels` — energy-drain penalties, including the `permanent`
+ *    half: PF1 RAW lets these be removed by Restoration-type magic, but at the
+ *    table they read as "something is happening to me right now," same as a
+ *    condition.
+ *  - `activeForm` — a polymorph-family transformation (Wild Shape or a Beast
+ *    Shape/Elemental Body/Plant Shape spell): exactly the kind of
  *    moment-to-moment session state this cue exists for, same posture as
  *    `activeBuffs`.
  *
@@ -33,7 +33,7 @@
  *    going on," not "this character naked."
  *
  * Pure: never mutates `doc`. Cheap to call on every render, same posture as
- * `compute()` itself (see CLAUDE.md: "the web app recomputes on every change
+ * `compute` itself (see CLAUDE.md: "the web app recomputes on every change
  * rather than memoizing cleverly").
  */
 import { compute } from "@pf1/engine";

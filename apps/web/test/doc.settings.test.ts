@@ -115,7 +115,7 @@ describe("setHpMode()", () => {
 });
 
 // ---------------------------------------------------------------------------
-// setRestMode (issue #32)
+// setRestMode
 // ---------------------------------------------------------------------------
 describe("setRestMode()", () => {
   it("stores the chosen mode", () => {
@@ -219,7 +219,7 @@ describe("setHeroPointsEnabled()", () => {
 });
 
 // ---------------------------------------------------------------------------
-// setEncumbranceEnabled (issue #16)
+// setEncumbranceEnabled
 // ---------------------------------------------------------------------------
 describe("setEncumbranceEnabled()", () => {
   it("is absent on a fresh doc (default off)", () => {

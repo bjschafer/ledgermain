@@ -1,7 +1,7 @@
 /**
- * Clean-room PF1 skald Inspired Rage (issue #65), hand-authored from the
- * published Ultimate Combat rules (verified against aonprd.com's live Skald
- * class page, "Inspired Rage" ability, 2026-07-08).
+ * Clean-room PF1 skald Inspired Rage, hand-authored from the published
+ * Ultimate Combat rules (verified against aonprd.com's live Skald class page,
+ * "Inspired Rage" ability, 2026-07-08).
  *
  * Raging Song (the rounds/day pool everything below draws from) is ALREADY
  * fully vendored — `RefData.classFeatures`'s "Raging Song" entry (tag
@@ -28,7 +28,7 @@
  *   - Unlike barbarian rage, no fatigue after the song ends (nothing here
  *     applies fatigue in the first place, so this is automatically honored).
  *
- * Scope/deferrals (issue #65 task brief), all note-tier rather than modeled:
+ * Scope/deferrals (task brief), all note-tier rather than modeled:
  *   - Inspired Rage is written as "allies gain..." — this app tracks ONE
  *     character, so the toggle applies the buff to the skald's OWN sheet
  *     (exactly like Rage applies to a barbarian's own sheet), not to a party

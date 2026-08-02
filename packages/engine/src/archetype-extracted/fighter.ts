@@ -1,21 +1,20 @@
 /**
- * Fighter's slice of the issue #45 batch-extraction pipeline (the pilot,
- * 2026-07-06, extended 2026-07-06 once the weapon-group-targeting gap was
- * fixed — see the "reclassified after the weapon-group fix" section below).
- * Per the per-class file convention (documented in `index.ts`), this file
- * owns BOTH of fighter's
- * pipeline artifacts — `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` (the
- * machine-extracted `Change`-shaped effects table) and
- * `FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) —
- * so a future wave working on a different class never has a reason to touch
- * this file; only `index.ts` (the aggregator) needs one new import + one new
- * spread per class.
+ * Fighter's slice of the pipeline (the pilot, 2026-07-06, extended 2026-07-06
+ * once the weapon-group-targeting gap was fixed — see the "reclassified after
+ * the weapon-group fix" section below). Per the per-class file convention
+ * (documented in `index.ts`), this file owns BOTH of fighter's pipeline
+ * artifacts — `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` (the machine-extracted
+ * `Change`-shaped effects table) and
+ * `FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so
+ * a future wave working on a different class never has a reason to touch this
+ * file; only `index.ts` (the aggregator) needs one new import + one new spread
+ * per class.
  *
  * ── FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION ──────────────────────────────
  *
- * Classification audit for issue #45's pilot slice: EVERY feature of EVERY
- * vendored fighter archetype (67 archetypes, 383 features), read and bucketed
- * as `numeric` / `situational` / `subsystem` / `blocked` — the reviewable
+ * Classification audit for the pilot slice: EVERY feature of EVERY vendored
+ * fighter archetype (67 archetypes, 383 features), read and bucketed as
+ * `numeric` / `situational` / `subsystem` / `blocked` — the reviewable
  * artifact the pipeline produces alongside the extracted-effects table, and
  * the input a future wave (other classes) mechanically repeats.
  *
@@ -60,23 +59,22 @@
  *
  * **Weapon-group reclassification (2026-07-06):** finding 1 (the
  * weapon-group-tagging gap) is fixed — `attack.weapon.<group>`/
- * `damage.weapon.<group>` now also match a weapon's vendored,
- * semantic `.weaponGroups` (`weapon-groups.ts`), not just its free-text
- * `.group` tag. Every one of the ~41 fighter features this pilot had
- * bucketed `situational`/`subsystem` "weapon-group-scoped ... — see
- * weapon-group-tagging process note" was re-read against the vendored
- * archetype-features prose; those whose prose names one concrete, real
- * weapon group (not a player free-choice, not a maneuver/enemy-state
- * restriction on top) were promoted to `numeric` and extracted into
- * `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` below, using the same
- * `1 + floor((@class.unlevel - G) / 4)` Weapon-Training cadence (RAW: +1 at
- * the feature's own grant level `G`, +1 every 4 fighter levels thereafter)
- * that fighter's base Weapon Training itself uses — now that a semantic
- * `attack.weapon.<group>`/`damage.weapon.<group>` target exists for it too.
- * Features that remained ambiguous (the prose names a *player-chosen* group,
- * grants something unrelated, or additionally restricts by maneuver/enemy
- * state) stayed in their original bucket with an updated note explaining why
- * the weapon-group fix specifically did not unlock them.
+ * `damage.weapon.<group>` now also match a weapon's vendored, semantic
+ * `.weaponGroups` (`weapon-groups.ts`), not just its free-text `.group` tag.
+ * Every one of the ~41 fighter features this pilot had bucketed
+ * `situational`/`subsystem` "weapon-group-scoped... — see weapon-group-tagging
+ * process note" was re-read against the vendored archetype-features prose;
+ * those whose prose names one concrete, real weapon group (not a player
+ * free-choice, not a maneuver/enemy-state restriction on top) were promoted to
+ * `numeric` and extracted into `FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED` below,
+ * using the same `1 + floor((@class.unlevel - G) / 4)` Weapon-Training cadence
+ * (RAW: +1 at the feature's own grant level `G`, +1 every 4 fighter levels
+ * thereafter) that fighter's base Weapon Training itself uses — now that a
+ * semantic `attack.weapon.<group>`/`damage.weapon.<group>` target exists for
+ * it too. Features that remained ambiguous (the prose names a *player-chosen*
+ * group, grants something unrelated, or additionally restricts by
+ * maneuver/enemy state) stayed in their original bucket with an updated note
+ * explaining why the weapon-group fix specifically did not unlock them.
  */
 
 import {
@@ -2971,11 +2969,11 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * ── FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED ───────────────────────────────────
  *
  * Machine-extracted mechanical effects for fighter archetype class features
- * (issue #45 — the prose→Change extraction pipeline, pilot slice, extended
- * 2026-07-06 by the weapon-group reclassification described above). Clean-room
- * from the published PF1 rules — the vendored prose this was extracted from
- * (`archetype-features.json`) is OGL, so reading it is fine; no Foundry
- * source was consulted (DESIGN.md §6).
+ * (the prose→Change extraction pipeline, pilot slice, extended 2026-07-06 by
+ * the weapon-group reclassification described above). Clean-room from the
+ * published PF1 rules — the vendored prose this was extracted from
+ * (`archetype-features.json`) is OGL, so reading it is fine; no Foundry source
+ * was consulted (DESIGN.md §6).
  *
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here

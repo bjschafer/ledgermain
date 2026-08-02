@@ -10,9 +10,8 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the investigator-talent vendored-catalog overlay (issue #74,
- * full vendored-catalog parity) — mirrors `witchHexCatalog.test.ts`'s
- * pattern.
+ * Coverage for the investigator-talent vendored-catalog overlay (full
+ * vendored-catalog parity) — mirrors `witchHexCatalog.test.ts`'s pattern.
  */
 const ref = loadRefData();
 
@@ -38,7 +37,7 @@ describe("mergedInvestigatorTalentCatalog", () => {
   });
 
   it("no vendored-only entries remain — the fallback path only exists for a future data bump", () => {
-    // Full hand-table parity as of issue #74.
+    // Full hand-table parity as of the last catalog sweep.
     for (const entry of merged) {
       expect(INVESTIGATOR_TALENTS[entry.id], entry.id).toBeDefined();
     }

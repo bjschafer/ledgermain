@@ -41,12 +41,11 @@ export function formatCompanionAttackName(attack: DerivedCompanionAttack): strin
 }
 
 /**
- * "(secondary)" suffix for a secondary natural attack (issue #68 — see
- * `@pf1/engine` `natural-attacks.ts`), so the tracker panel can flag which
- * attack(s) in a multi-attack-form companion take the −5/−2 penalty and half
- * Strength on damage. Empty string for a primary attack (the common case,
- * including every single-attack-form companion) — no clutter for the
- * majority of rows.
+ * "(secondary)" suffix for a secondary natural attack (see `@pf1/engine`
+ * `natural-attacks.ts`), so the tracker panel can flag which attack(s) in a
+ * multi-attack-form companion take the −5/−2 penalty and half Strength on
+ * damage. Empty string for a primary attack (the common case, including every
+ * single-attack-form companion) — no clutter for the majority of rows.
  */
 export function formatCompanionAttackTypeSuffix(attack: DerivedCompanionAttack): string {
   return attack.attackType === "secondary" ? "(secondary)" : "";

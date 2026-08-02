@@ -11,7 +11,7 @@ import {
 } from "../src/index.js";
 
 /**
- * Issue #45 sorcerer wave: fixture tests for `archetype-extracted/sorcerer.ts`.
+ * fixture tests for `archetype-extracted/sorcerer.ts`.
  * Unlike the bard/fighter waves, this class's extracted-effects table is
  * EMPTY (see that file's doc comment) — every sorcerer archetype feature
  * that clears the `numeric` bar is already covered by the pre-existing

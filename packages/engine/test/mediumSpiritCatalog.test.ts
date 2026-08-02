@@ -10,11 +10,10 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74) — see
- * `medium-spirits.ts`'s "vendored catalog overlay" section doc comment.
- * Same chassis two-shape merge as psychic disciplines/occultist implements:
- * a vendored-only spirit carries no Spirit Bonus targets/Séance Boon/
- * influence penalty/Spirit Powers.
+ * Coverage for the vendored-catalog overlay — see `medium-spirits.ts`'s
+ * "vendored catalog overlay" section doc comment. Same chassis two-shape merge
+ * as psychic disciplines/occultist implements: a vendored-only spirit carries
+ * no Spirit Bonus targets/Séance Boon/ influence penalty/Spirit Powers.
  */
 const ref = loadRefData();
 

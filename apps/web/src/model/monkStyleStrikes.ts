@@ -1,15 +1,15 @@
 /**
- * Pure Monk (Unchained) style strike transitions (issue #65). Style strike
- * ids are just entries in `build.monkStyleStrikes`, mirroring
- * `model/monkKiPowers.ts`'s shape (which in turn mirrors `witchHexes.ts`).
+ * Pure Monk (Unchained) style strike transitions. Style strike ids are just
+ * entries in `build.monkStyleStrikes`, mirroring `model/monkKiPowers.ts`'s
+ * shape (which in turn mirrors `witchHexes.ts`).
  *
  * Budget (PF1 Pathfinder Unchained, verified against aonprd.com/d20pfsrd.com):
- * "at 5th level, a monk learns one style strike ... at 9th level, and every
+ * "at 5th level, a monk learns one style strike... at 9th level, and every
  * four levels thereafter [13th, 17th], a monk learns an additional style
  * strike" — 4 total by 17th level. The 15th-level "designate up to two style
  * strikes per round" bump is a USAGE upgrade to the SAME `uses.maxFormula`
- * resource pool (already fully generic — see `monk-unchained.test.ts`), not
- * an extra pick, so it doesn't affect this budget. Never blocks — same soft
+ * resource pool (already fully generic — see `monk-unchained.test.ts`), not an
+ * extra pick, so it doesn't affect this budget. Never blocks — same soft
  * posture as `monkKiPowersNeedWarning`.
  */
 

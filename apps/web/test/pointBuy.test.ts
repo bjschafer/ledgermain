@@ -1,6 +1,6 @@
 /**
- * Unit tests for the PF1 point-buy calculator (issue #86): hand-computed
- * fixtures against the CRB purchase-cost table (score 7-18 -> cost).
+ * Unit tests for the PF1 point-buy calculator: hand-computed fixtures against
+ * the CRB purchase-cost table (score 7-18 -> cost).
  */
 import { describe, expect, it } from "bun:test";
 

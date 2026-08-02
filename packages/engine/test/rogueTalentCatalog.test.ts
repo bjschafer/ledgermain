@@ -5,8 +5,8 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { mergedRogueTalentCatalog, resolveRogueTalent, ROGUE_TALENTS } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74) — mirrors
- * `ragePowerCatalog.test.ts`. Full hand-table parity as of the #74 Phase 5
+ * Coverage for the vendored-catalog overlay — mirrors
+ * `ragePowerCatalog.test.ts`. Full hand-table parity as of the later catalog pass Phase 5
  * extension: all 234 vendored talents have a hand-authored def; see
  * `rogue-talents.ts`'s "vendored catalog overlay" doc comment for the
  * collision-audit narrative (three same-name pairs matched by vendored id).
@@ -37,7 +37,7 @@ describe("mergedRogueTalentCatalog", () => {
   });
 
   it("no vendored-only talents remain — the fallback path only exists for a future data bump", () => {
-    // Full hand-table parity as of the #74 Phase 5 extension.
+    // Full hand-table parity as of the last catalog extension.
     for (const entry of merged) {
       expect(ROGUE_TALENTS[entry.id], entry.id).toBeDefined();
     }

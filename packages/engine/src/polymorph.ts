@@ -1,14 +1,13 @@
 /**
- * Clean-room PF1 polymorph-subschool tables (issue #70): Wild Shape's actual
- * transformation, previously unmodeled ("the use-count
- * is trackable, the transformation itself is not modeled" — Wild Shape's
- * `uses.maxFormula` resource pool is untouched by this file, see
- * `resources.ts`). Covers Beast Shape I-IV (animal, plus the magical-beast
- * rows III/IV add), Elemental Body I-IV, and Plant Shape I-III — together
- * these fully cover a core druid's Wild Shape class feature (see
- * {@link wildShapeTiersForLevel}), and double as the effect table for the
- * identically-named spells (any class that gets one of these spells can pick
- * a tier directly, no druid level required).
+ * Clean-room PF1 polymorph-subschool tables: Wild Shape's actual
+ * transformation, previously unmodeled ("the use-count is trackable, the
+ * transformation itself is not modeled" — Wild Shape's `uses.maxFormula`
+ * resource pool is untouched by this file, see `resources.ts`). Covers Beast
+ * Shape I-IV (animal, plus the magical-beast rows III/IV add), Elemental Body
+ * I-IV, and Plant Shape I-III — together these fully cover a core druid's Wild
+ * Shape class feature (see {@link wildShapeTiersForLevel}), and double as the
+ * effect table for the identically-named spells (any class that gets one of
+ * these spells can pick a tier directly, no druid level required).
  *
  * Hand-authored from the published rules — verified against aonprd.com (spell
  * pages for each tier) and cross-checked against d20pfsrd.com for Wild
@@ -609,7 +608,7 @@ export interface ResolvedPolymorphAttack {
  * (no iteratives, no Weapon Finesse/Dex-to-hit substitution) — the player
  * transcribes the form's attack lines off its stat block; this only supplies
  * the BAB/Str/size math common to every natural attack (design brief for
- * issue #70: "keep it simple").
+ * "keep it simple").
  */
 export function computePolymorphAttacks(
   bab: number,

@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
 /**
- * Printable character sheet (issue #69): the Settings-tab entry point takes
- * over the whole viewport with a read-only sheet, and Back returns to the
- * normal app. Reuses the smoke spec's console/pageerror guards.
+ * Printable character sheet: the Settings-tab entry point takes over the whole
+ * viewport with a read-only sheet, and Back returns to the normal app. Reuses
+ * the smoke spec's console/pageerror guards.
  */
 
 const benign = (t: string) =>

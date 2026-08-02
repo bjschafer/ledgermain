@@ -1,34 +1,34 @@
 /**
- * Clean-room PF1 Monk (Unchained) Style Strikes table (Pathfinder Unchained,
- * issue #65): hand-authored from the published rules (verified against
- * aonprd.com's "Style Strikes - Monk (Unchained)" listing, cross-checked
- * against d20pfsrd's Unchained Monk page for the core book's own list — same
- * scoping discipline as `monk-ki-powers.ts`). Style strikes are NOT part of
- * the vendored Foundry data pack (the class def only links a single generic
- * "Style Strikes" stub `ClassFeature`, no per-strike breakdown), so there is
- * no upstream JSON to normalize.
+ * Clean-room PF1 Monk (Unchained) Style Strikes table (Pathfinder Unchained):
+ * hand-authored from the published rules (verified against aonprd.com's "Style
+ * Strikes - Monk (Unchained)" listing, cross-checked against d20pfsrd's
+ * Unchained Monk page for the core book's own list — same scoping discipline
+ * as `monk-ki-powers.ts`). Style strikes are NOT part of the vendored Foundry
+ * data pack (the class def only links a single generic "Style Strikes" stub
+ * `ClassFeature`, no per-strike breakdown), so there is no upstream JSON to
+ * normalize.
  *
  * PF1 RAW: "At 5th level, a monk learns to focus his flurry of blows on a
- * particular style ... At 9th level, and every four levels thereafter (13th
- * and 17th), a monk learns an additional style strike" — 4 total picks by
- * 17th level (see `model/monkStyleStrikes.ts` for the budget math). "At 15th
- * level, he can designate up to two of his unarmed strikes each round as a
- * style strike" is a USAGE upgrade to the same pool (see the class's
- * already-generic `uses.maxFormula: ceil(@class.level / 14)` per-round
- * resource, verified working in `resources.ts`/`monk-unchained.test.ts`) —
- * not a 5th pick, so it has no entry here.
+ * particular style... At 9th level, and every four levels thereafter (13th and
+ * 17th), a monk learns an additional style strike" — 4 total picks by 17th
+ * level (see `model/monkStyleStrikes.ts` for the budget math). "At 15th level,
+ * he can designate up to two of his unarmed strikes each round as a style
+ * strike" is a USAGE upgrade to the same pool (see the class's already-generic
+ * `uses.maxFormula: ceil(@class.level / 14)` per-round resource, verified
+ * working in `resources.ts`/`monk-unchained.test.ts`) — not a 5th pick, so it
+ * has no entry here.
  *
  * There is no `minLevel` tiering (unlike ki powers/hexes) — every style
  * strike in the core list is available starting at the 5th-level baseline;
  * only the COUNT a monk knows grows with level.
  *
  * Modelling posture: every style strike is a rider resolved "whenever a monk
- * makes a flurry of blows, he can designate one of his unarmed strikes ... as
- * a style strike" — a per-attack, per-round choice with no unconditional
- * numeric effect on the monk's own sheet (the effect only applies to ONE
- * designated strike in a specific round, not persistently). Same discipline
- * as `monk-ki-powers.ts`/`witch-hexes.ts`: every entry here is
- * `displayOnly: true` with `changes: []`, task brief confirmed.
+ * makes a flurry of blows, he can designate one of his unarmed strikes... as a
+ * style strike" — a per-attack, per-round choice with no unconditional numeric
+ * effect on the monk's own sheet (the effect only applies to ONE designated
+ * strike in a specific round, not persistently). Same discipline as
+ * `monk-ki-powers.ts`/`witch-hexes.ts`: every entry here is `displayOnly:
+ * true` with `changes: []`, task brief confirmed.
  */
 
 import type { Change, ContextNote, MonkStyleStrike, RefData, SourceRef } from "@pf1/schema";
@@ -188,15 +188,14 @@ export const MONK_STYLE_STRIKE_IDS: readonly string[] = STYLE_STRIKE_LIST.map((s
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.monkStyleStrikes` (see that type's doc
- * comment) is the full published style-strike catalog — 15 entries, an
- * EXACT 1:1 match with this file's 15 hand-authored entries (verified by
- * normalized name; no drift, no alias, no orphan on either side — unlike
- * every other catalog imported so far, there is no vendored-only "extra"
- * entry here at all). Kept for the same "picker browses the merged catalog,
- * hand-authored wins on a name collision" shape `rage-powers.ts` documents,
- * even though today it only ever attaches vendored prose to an existing
- * hand-authored row.
+ * `RefData.monkStyleStrikes` (see that type's doc comment) is the full
+ * published style-strike catalog — 15 entries, an EXACT 1:1 match with this
+ * file's 15 hand-authored entries (verified by normalized name; no drift, no
+ * alias, no orphan on either side — unlike every other catalog imported so
+ * far, there is no vendored-only "extra" entry here at all). Kept for the same
+ * "picker browses the merged catalog, hand-authored wins on a name collision"
+ * shape `rage-powers.ts` documents, even though today it only ever attaches
+ * vendored prose to an existing hand-authored row.
  */
 
 function normalizeStyleStrikeName(name: string): string {

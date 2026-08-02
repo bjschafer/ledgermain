@@ -3,9 +3,8 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "../src/index.js";
 
 /**
- * End-to-end coverage for the vendored ninja-trick catalog (issue #74) against the real
- * pinned Pf Data 1e slice, mirroring
- * `ragePowers.test.ts` exactly.
+ * End-to-end coverage for the vendored ninja-trick catalog against the real
+ * pinned Pf Data 1e slice, mirroring `ragePowers.test.ts` exactly.
  */
 const ref = loadRefData();
 

@@ -1,9 +1,9 @@
 /**
- * Vendored (non-hand-authored) prestige classes — issue #74.
- * `prestigeClasses.test.ts` covers the eleven hand-authored CRB/AG classes;
- * this file covers the ~108 remaining splatbook classes read from the same
- * third-party archetype module's `pf-prestige-classes`/`pf-prestige-features`
- * packs (see `src/transform/prestigeClasses.ts`).
+ * Vendored (non-hand-authored) prestige classes. `prestigeClasses.test.ts`
+ * covers the eleven hand-authored CRB/AG classes; this file covers the ~108
+ * remaining splatbook classes read from the same third-party archetype
+ * module's `pf-prestige-classes`/`pf-prestige-features` packs (see
+ * `src/transform/prestigeClasses.ts`).
  */
 import { describe, expect, it } from "bun:test";
 

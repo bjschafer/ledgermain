@@ -10,10 +10,10 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the alchemist-discovery vendored-catalog overlay (issue #74) — mirrors
- * `ragePowerCatalog.test.ts`'s pattern. See
- * `alchemist-discoveries.ts`'s "vendored catalog overlay" doc comment for
- * the collision-audit narrative this asserts against.
+ * Coverage for the alchemist-discovery vendored-catalog overlay — mirrors
+ * `ragePowerCatalog.test.ts`'s pattern. See `alchemist-discoveries.ts`'s
+ * "vendored catalog overlay" doc comment for the collision-audit narrative
+ * this asserts against.
  */
 const ref = loadRefData();
 
@@ -41,7 +41,7 @@ describe("mergedAlchemistDiscoveryCatalog", () => {
   });
 
   it("no vendored-only discoveries remain — the fallback path only exists for a future data bump", () => {
-    // Full hand-table parity as of the #74 Phase 5 extension.
+    // Full hand-table parity as of the last catalog extension.
     for (const entry of merged) {
       expect(ALCHEMIST_DISCOVERIES[entry.id], entry.id).toBeDefined();
     }

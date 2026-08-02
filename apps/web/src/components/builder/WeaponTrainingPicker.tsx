@@ -26,13 +26,13 @@ function groupLabel(slug: string): string {
 }
 
 /**
- * Fighter's Weapon Training group picks (issue #45 — previously deferred;
- * built once the engine could express a semantic weapon-group target at all).
- * PF1 RAW: at 5th level and every 4 levels thereafter (9th/13th/17th), a
- * fighter picks one more weapon group; each pick's own bonus grows every
- * time a later tier unlocks (`@pf1/engine` `weaponTrainingBonus`). Free-
- * choice — no hard validation that groups are distinct or "sensible" for the
- * character's actual weapons, same soft posture as every other picker here.
+ * Fighter's Weapon Training group picks (previously deferred; built once the
+ * engine could express a semantic weapon-group target at all). PF1 RAW: at 5th
+ * level and every 4 levels thereafter (9th/13th/17th), a fighter picks one
+ * more weapon group; each pick's own bonus grows every time a later tier
+ * unlocks (`@pf1/engine` `weaponTrainingBonus`). Free- choice — no hard
+ * validation that groups are distinct or "sensible" for the character's actual
+ * weapons, same soft posture as every other picker here.
  *
  * Hidden entirely when an active archetype has replaced Weapon Training
  * (`weaponTrainingReplaced`) — that archetype's own weapon-group bonus (if

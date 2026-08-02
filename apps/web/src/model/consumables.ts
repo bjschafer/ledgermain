@@ -1,5 +1,5 @@
 /**
- * Consumable magic items (issue #36): potions, scrolls, and wands.
+ * Consumable magic items: potions, scrolls, and wands.
  *
  * Foundry's pf1 system ships **no** static potion/scroll/wand item documents —
  * it generates them at runtime from the spell compendium (the vendored
@@ -12,7 +12,7 @@
  * the player picks one, it's added as a self-contained custom gear item
  * (name/price on the `ItemInstance`, plus `charges` for wands), so nothing
  * needs to be vendored into `items.json` (which would bloat by thousands of
- * rows) and `compute()` is untouched. A consumable never toggles a buff or
+ * rows) and `compute` is untouched. A consumable never toggles a buff or
  * changes a derived number; drinking a potion is the player applying the
  * corresponding buff by hand, exactly as before.
  *
@@ -20,11 +20,10 @@
  *
  * The market price of the cheapest ("minimum caster level") version:
  *
- * | kind   | formula                    | 0-level factor |
- * |--------|----------------------------|----------------|
- * | potion | spell level × CL × 50 gp   | ½              |
- * | scroll | spell level × CL × 25 gp   | ½              |
- * | wand   | spell level × CL × 750 gp  | ½              |
+ * | kind | formula | 0-level factor |
+ * |--------|----------------------------|----------------| | potion | spell
+ * level × CL × 50 gp | ½ | | scroll | spell level × CL × 25 gp | ½ | | wand |
+ * spell level × CL × 750 gp | ½ |
  *
  * where CL is the minimum caster level able to cast the spell at that level:
  * `max(1, 2·level − 1)` (and 1 for a 0-level cantrip). A 0-level spell is

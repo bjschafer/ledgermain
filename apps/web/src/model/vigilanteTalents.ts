@@ -1,11 +1,11 @@
 /**
- * Pure vigilante-talent transitions (issue #65). PF1 RAW grants TWO
- * independent talent pools from two different class features — Social
- * Talent (1st level, every 2 thereafter) and Vigilante Talent (2nd level,
- * every 2 thereafter) — mirroring `@pf1/engine` `vigilante-talents.ts`'s
- * split into `VIGILANTE_SOCIAL_TALENTS`/`VIGILANTE_TALENTS`. Ids are just
- * entries in `build.vigilanteSocialTalents`/`build.vigilanteTalents`, same
- * shape as `toggleAlchemistDiscovery`.
+ * Pure vigilante-talent transitions. PF1 RAW grants TWO independent talent
+ * pools from two different class features — Social Talent (1st level, every 2
+ * thereafter) and Vigilante Talent (2nd level, every 2 thereafter) — mirroring
+ * `@pf1/engine` `vigilante-talents.ts`'s split into
+ * `VIGILANTE_SOCIAL_TALENTS`/`VIGILANTE_TALENTS`. Ids are just entries in
+ * `build.vigilanteSocialTalents`/`build.vigilanteTalents`, same shape as
+ * `toggleAlchemistDiscovery`.
  *
  * No "Extra Social/Vigilante Talent" feat exists in the vendored data (only
  * "Extra Investigator/Rogue/Slayer Talent" do), so neither budget has a

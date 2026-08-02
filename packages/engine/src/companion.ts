@@ -36,17 +36,17 @@
  *     exclusively from the generic table above. Mixing both sources would
  *     double-count the same physical growth twice; splitting them this way
  *     is a deliberate, documented v1 simplification.
- *   - Multiattack (unlocked at HD milestone, {@link ANIMAL_COMPANION_PROGRESSION}):
- *     still surfaced as a special-ability chip (its narrative/skill-check
- *     benefits beyond the attack math aren't modeled), but as of issue #68
- *     it DOES soften the secondary-natural-attack penalty from −5 to −2 in
- *     `deriveCompanion`'s attack math below — see `natural-attacks.ts`.
- *     Primary/secondary natural-attack math (full BAB+Str vs. −5/−2 and half
- *     Str) is modeled here via the shared `natural-attacks.ts` module
- *     (issue #68); `eidolon.ts` now shares the same module too. `familiar.ts`
- *     (borrows the master's own attack routine, out of scope) and
- *     `phantom.ts` (two slams of the same attack form, so the math is moot —
- *     see its own doc comment) still don't model it.
+ *   - Multiattack (unlocked at HD milestone, {@link
+ *     ANIMAL_COMPANION_PROGRESSION}): still surfaced as a special-ability chip
+ *     (its narrative/skill-check benefits beyond the attack math aren't
+ *     modeled), but as of it DOES soften the secondary-natural-attack penalty
+ *     from −5 to −2 in `deriveCompanion`'s attack math below — see
+ *     `natural-attacks.ts`. Primary/secondary natural-attack math (full
+ *     BAB+Str vs. −5/−2 and half Str) is modeled here via the shared
+ *     `natural-attacks.ts` module; `eidolon.ts` now shares the same module
+ *     too. `familiar.ts` (borrows the master's own attack routine, out of
+ *     scope) and `phantom.ts` (two slams of the same attack form, so the math
+ *     is moot — see its own doc comment) still don't model it.
  *   - Attack rolls use Strength, per PF1's natural-attack rules — NOT the
  *     "better of Str/Dex" rule that governs a familiar (CRB Familiar Basics
  *     is an explicit, narrow exception; see `familiar.ts`). A companion can
@@ -61,22 +61,22 @@
  *     only against one school, so it stays out of `saves.will` and becomes a
  *     situational total in `saveConditionals` instead (see
  *     `save-categories.ts`), alongside its special-ability chip.
- *   - Skills/feats (issue #68): the companion's six trackable skills
+ *   - Skills/feats: the companion's six trackable skills
  *     (`acr`/`clm`/`fly`/`per`/`ste`/`swm`) now take rank investment
  *     (`build.animalCompanion.skillRanks`), hard-capped per skill at the
  *     companion's own HD and totaled against {@link companionSkillPoints}
  *     (Monster Creation's "2 + Int mod per HD" skill-point formula, verified
- *     against aonprd.com), with the standard +3 class-skill bonus once a
- *     skill has 1+ rank (every one of the six is always a class skill for an
+ *     against aonprd.com), with the standard +3 class-skill bonus once a skill
+ *     has 1+ rank (every one of the six is always a class skill for an
  *     Animal-type creature). Feat picks (`build.animalCompanion.feats`) are a
  *     free choice from the full feat list (no "animal-eligible" filter — a
  *     documented v1 scope call), soft-capped against `bonusFeats` and
- *     prereq-checked against the COMPANION's OWN derived stats — both
- *     resolved in `apps/web/src/model/companion.ts` (this pure module has no
- *     `RefData` to look feats up by id, mirroring the split established for
- *     Boon Companion above).
- *   - Conditions (issue #68): the companion has its OWN active-conditions
- *     list (`live.animalCompanion.conditions`), independent of the master's
+ *     prereq-checked against the COMPANION's OWN derived stats — both resolved
+ *     in `apps/web/src/model/companion.ts` (this pure module has no `RefData`
+ *     to look feats up by id, mirroring the split established for Boon
+ *     Companion above).
+ *   - Conditions: the companion has its OWN active-conditions list
+ *     (`live.animalCompanion.conditions`), independent of the master's
  *     `live.conditions` — it can be shaken while the master isn't, or vice
  *     versa. Each active condition's `Change[]` (from `conditions.ts`'s
  *     `CONDITIONS` table — the SAME clean-room table the master's own sheet
@@ -483,18 +483,18 @@ export const BASE_COMPANION_IDS = Object.keys(BASE_COMPANIONS);
 
 /**
  * RAW Cavalier/Samurai "Mount" species lists (Ultimate Combat, verified
- * against aonprd.com during authoring, issue #68), intersected with this
- * module's own {@link BASE_COMPANION_IDS} — the full published lists include
- * several exotic animals (Camel, Elk, Giraffe, Zebra, Axe Beak, Seahorse
- * (Giant), Tortoise (Giant) for Medium riders; Antelope, Capybara, Kangaroo,
- * Lizard (Giant Gecko), Ram, Reindeer, Weasel (Giant), Wolfdog for Small
- * riders) that this module doesn't model as a {@link BaseCompanion} — only
- * the overlap is surfaced. Soft-note only: `AnimalCompanionPicker` shows this
- * as a hint text, never a hard block on the species `<select>` (matches this
- * project's hybrid prereq/soft-warning posture) — the source text itself
- * says "The GM might approve other animals as suitable mounts." Keyed by the
- * rider's size (a Small cavalier/samurai gets the alternate list; every
- * other size uses the Medium list, the overwhelmingly common case).
+ * against aonprd.com during authoring), intersected with this module's own
+ * {@link BASE_COMPANION_IDS} — the full published lists include several exotic
+ * animals (Camel, Elk, Giraffe, Zebra, Axe Beak, Seahorse (Giant), Tortoise
+ * (Giant) for Medium riders; Antelope, Capybara, Kangaroo, Lizard (Giant
+ * Gecko), Ram, Reindeer, Weasel (Giant), Wolfdog for Small riders) that this
+ * module doesn't model as a {@link BaseCompanion} — only the overlap is
+ * surfaced. Soft-note only: `AnimalCompanionPicker` shows this as a hint text,
+ * never a hard block on the species `<select>` (matches this project's hybrid
+ * prereq/soft-warning posture) — the source text itself says "The GM might
+ * approve other animals as suitable mounts." Keyed by the rider's size (a
+ * Small cavalier/samurai gets the alternate list; every other size uses the
+ * Medium list, the overwhelmingly common case).
  */
 export const MOUNT_SPECIES_BY_RIDER_SIZE: Readonly<Record<"med" | "sm", readonly string[]>> = {
   med: ["horse"],
@@ -656,21 +656,20 @@ export function companionAbilityIncreaseSlots(effectiveLevel: number): number {
  * Companion feature, `"hunter-companion"` (hunter level 1:1, NO −3 offset —
  * "The hunter's effective druid level is equal to her hunter level," per the
  * vendored `animal-companion-hun.V7cGG7vKN0BY2Bhb.yaml` — verified against
- * aonprd.com's Hunter class page, issue #65). A multiclass character who has
- * chosen the companion option from more than one of these sums them — a
- * deliberate v1 simplification (PF1 RAW doesn't clearly anticipate a
- * character stacking multiple bonds on one companion, though the Hunter's
- * own vendored text explicitly endorses stacking with another source: "If a
- * character receives an animal companion from more than one source, her
- * effective druid levels stack for the purposes of determining the
- * companion's statistics"); treating them as additive contributions to one
- * companion's power is the simplest coherent behavior and is documented here
- * rather than silently guessed at.
+ * aonprd.com's Hunter class page). A multiclass character who has chosen the
+ * companion option from more than one of these sums them — a deliberate v1
+ * simplification (PF1 RAW doesn't clearly anticipate a character stacking
+ * multiple bonds on one companion, though the Hunter's own vendored text
+ * explicitly endorses stacking with another source: "If a character receives
+ * an animal companion from more than one source, her effective druid levels
+ * stack for the purposes of determining the companion's statistics"); treating
+ * them as additive contributions to one companion's power is the simplest
+ * coherent behavior and is documented here rather than silently guessed at.
  *
- * `"cavalier-mount"`/`"samurai-mount"` (issue #68) are the Cavalier's/
- * Samurai's own "Mount" class feature — 1:1, no −3 offset, same shape as
- * `"hunter-companion"` (verified against aonprd.com: "This mount functions
- * as a druid's animal companion, using the cavalier's/samurai's level as his
+ * `"cavalier-mount"`/`"samurai-mount"` are the Cavalier's/ Samurai's own
+ * "Mount" class feature — 1:1, no −3 offset, same shape as
+ * `"hunter-companion"` (verified against aonprd.com: "This mount functions as
+ * a druid's animal companion, using the cavalier's/samurai's level as his
  * effective druid level," identical wording for both classes).
  */
 function baseCompanionEffectiveLevel(doc: CharacterDoc): number {
@@ -721,13 +720,13 @@ export interface DerivedCompanionSkill {
   ability: AbilityId;
   total: number;
   components: ModifierComponent[];
-  /** Ranks invested (issue #68), already clamped to [0, hd] — see module doc comment. */
+  /** Ranks invested, already clamped to [0, hd] — see module doc comment. */
   ranks: number;
 }
 
 /**
  * A creature's total skill-point budget (Monster Creation's own formula,
- * verified against aonprd.com during authoring for issue #68: "2 + Int mod
+ * verified against aonprd.com during authoring: "2 + Int mod
  * per HD," minimum 1 per HD) — every one of {@link BASE_COMPANIONS}'
  * Intelligence scores is low enough (2, occasionally 1) that this almost
  * always resolves to exactly 1 per HD, but the formula is applied generically
@@ -744,7 +743,7 @@ export interface DerivedCompanionAttack {
   damageDice: string;
   damageBonus: number;
   note?: string;
-  /** Primary (full BAB+Str) or secondary (−5/−2 with Multiattack, half Str) — see `natural-attacks.ts`, issue #68. */
+  /** Primary (full BAB+Str) or secondary (−5/−2 with Multiattack, half Str) — see `natural-attacks.ts`. */
   attackType: NaturalAttackType;
 }
 
@@ -791,13 +790,13 @@ export interface DerivedCompanion {
   bonusTricks: number;
   /**
    * Bonus feats earned so far (CRB progression table) — also doubles as the
-   * companion's own feat-pick BUDGET as of issue #68 (`build.animalCompanion
-   * .feats`'s soft cap, resolved with feat names/prereqs in
-   * `apps/web/src/model/companion.ts` since this pure module has no
-   * `RefData`).
+   * companion's own feat-pick BUDGET today
+   * (`build.animalCompanion.feats`'s soft cap, resolved with feat
+   * names/prereqs in `apps/web/src/model/companion.ts` since this pure module
+   * has no `RefData`).
    */
   bonusFeats: number;
-  /** Total skill-point budget (issue #68) — see {@link companionSkillPoints}. */
+  /** Total skill-point budget — see {@link companionSkillPoints}. */
   skillPointsAvailable: number;
   /** Ranks actually invested so far (sum of `skills[*].ranks`, already clamped). */
   skillPointsSpent: number;
@@ -876,11 +875,11 @@ export function deriveCompanion(
   const speciesAttacks = grown?.attacks ?? species.attacks;
   const sizeAcMod = SIZE_AC_MOD[size];
 
-  // --- shared buffs: evaluate + bucket by target (mirrors familiar.ts, issue #44) --
+  // --- shared buffs: evaluate + bucket by target (mirrors familiar.ts) --
   const sharedIds = new Set(doc.live.animalCompanion?.sharedBuffIds ?? []);
   const sharedBuffs = (doc.live.activeBuffs ?? []).filter((b) => sharedIds.has(b.instanceId));
 
-  // --- the companion's OWN active conditions (issue #68): reshaped as
+  // --- the companion's OWN active conditions: reshaped as
   // synthetic ActiveBuffs so `routeSharedBuffs` applies their Change[] through
   // the exact same typed-stacking pipeline as a shared buff — see
   // `shared-creature-buffs.ts`'s doc comment.
@@ -958,7 +957,7 @@ export function deriveCompanion(
 
   // --- attacks: companion's own BAB + Str (or Dex with Weapon Finesse) +
   // size + shared bonus, with primary/secondary natural-attack math
-  // (issue #68) — see `natural-attacks.ts`. Multiattack (unlocked at the HD
+  //  — see `natural-attacks.ts`. Multiattack (unlocked at the HD
   // milestone, see module doc comment) softens the secondary penalty from
   // −5 to −2.
   const hasMultiattack = specialAbilityNames.includes("Multiattack");
@@ -978,7 +977,7 @@ export function deriveCompanion(
     attackType: a.attackType,
   }));
 
-  // --- skills: physical/perceptual six, with rank investment (issue #68) --
+  // --- skills: physical/perceptual six, with rank investment --
   const hasClimbSpeed = species.speeds.climb !== undefined;
   const hasSwimSpeed = species.speeds.swim !== undefined;
   const skillPointsAvailable = companionSkillPoints(hd, abilities.int.mod);
@@ -1016,8 +1015,8 @@ export function deriveCompanion(
     const classSkillBonus = ranks >= 1 ? 3 : 0;
 
     // Per-skill modifiers plus any global "skills" penalty (e.g. shaken/
-    // sickened's -2 on skill checks — issue #68), same combined-stack
-    // handling as `compute.ts`'s own `globalSkillMods`.
+    // sickened's -2 on skill checks), same combined-stack handling as
+    // `compute.ts`'s own `globalSkillMods`.
     const miscStack = resolveStack([...(routed.skill.get(id) ?? []), ...routed.skillsGlobal]);
     const components: ModifierComponent[] = [];
     if (ranks !== 0)

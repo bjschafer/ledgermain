@@ -1,6 +1,6 @@
 /**
- * Unit tests for `model/monkStyleStrikes.ts` (issue #65 — previously
- * deferred Monk (Unchained) Style Strikes).
+ * Unit tests for `model/monkStyleStrikes.ts` (previously deferred Monk
+ * (Unchained) Style Strikes).
  */
 import { describe, expect, it } from "bun:test";
 

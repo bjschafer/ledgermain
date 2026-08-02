@@ -1,8 +1,8 @@
 /**
- * Clean-room PF1 bloodrager bloodline table (Advanced Class Guide, issue #65)
- * — the bloodrager-specific sibling of `bloodlines.ts` (sorcerer). Hand-
- * authored from published rules text (AoN/d20pfsrd — CLAUDE.md licensing:
- * Foundry source was never consulted) since bloodline powers/bonus-feat
+ * Clean-room PF1 bloodrager bloodline table (Advanced Class Guide) — the
+ * bloodrager-specific sibling of `bloodlines.ts` (sorcerer). Hand- authored
+ * from published rules text (AoN/d20pfsrd — CLAUDE.md licensing: Foundry
+ * source was never consulted) since bloodline powers/bonus-feat
  * lists/bonus-spell lists are prose-only in the vendored Foundry pack (only
  * the base "Bloodrage"/"Bloodrager Bloodline"/"Bloodline Feat (BLO)"/
  * "Bloodline Spells (BLO)" class features are vendored — see `class-
@@ -27,10 +27,9 @@
  *     `RefData.bloodlineSpellLists` (which assumes the sorcerer cadence), so
  *     `bonusSpells` here is a small hand-authored NAME-ONLY list (no vendored
  *     spell-id resolution attempted — same "acceptable degradation" posture
- *     the task brief green-lit for patron/mystery-style content still
- *     lacking a full vendored mapping) resolved by name against
- *     `refData.spells` at read time — see `model/spellcasting
- *     .bloodragerBonusSpellsKnown`.
+ *     the task brief green-lit for patron/mystery-style content still lacking
+ *     a full vendored mapping) resolved by name against `refData.spells` at
+ *     read time — see `model/spellcasting.bloodragerBonusSpellsKnown`.
  *
  * Modelling posture (mirrors `bloodlines.ts` exactly): `changes`/
  * `contextNotes` hold ONLY genuinely unconditional, always-on numeric
@@ -2447,13 +2446,12 @@ export function bloodragerBloodlineVariantLabel(
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.bloodragerBloodlines` is the FULL published
- * catalog (24 entries after junk filtering), prose only — same "catalog
- * from data, mechanics as overlay" pattern as `rage-powers.ts`'s
- * `mergedRagePowerCatalog`. The hand-verified table above (now the whole
- * published catalog) stays authoritative for powers/bonus feats/bonus
- * spells; this section attaches each vendored entry's prose description
- * and sources for browsing.
+ * `RefData.bloodragerBloodlines` is the FULL published catalog (24 entries
+ * after junk filtering), prose only — same "catalog from data, mechanics as
+ * overlay" pattern as `rage-powers.ts`'s `mergedRagePowerCatalog`. The
+ * hand-verified table above (now the whole published catalog) stays
+ * authoritative for powers/bonus feats/bonus spells; this section attaches
+ * each vendored entry's prose description and sources for browsing.
  *
  * Matching is by NORMALIZED NAME (this table's `tag` doubles as its display
  * `name`). Collision audit: every hand-authored bloodline matches a

@@ -15,24 +15,24 @@ import {
 } from "../src/archetype-extracted/wizard.js";
 
 /**
- * Issue #45 (wizard slice of the prose→Change extraction pipeline): fixture
+ * fixture
  * tests for `archetype-extracted/wizard.ts`, hand-computed against the real
- * vendored data slice via `loadRefData()`, same posture as
+ * vendored data slice via `loadRefData`, same posture as
  * `archetypeEffectsExtracted.test.ts` (fighter's pilot).
  *
  * IMPORTANT scope note: `wizard.ts` is a standalone per-class file that has
  * NOT been wired into `archetype-extracted/index.ts`'s aggregator yet (that
- * wiring is an explicit hard boundary for this wave — the aggregator is
- * owned by the integration step). That means `compute()`'s real pipeline
- * (which resolves archetype effects through `resolveArchetypeFeatureEffect`
- * using ITS default, production-merged tables) does not yet see
+ * wiring is an explicit hard boundary for this wave — the aggregator is owned
+ * by the integration step). That means `compute`'s real pipeline (which
+ * resolves archetype effects through `resolveArchetypeFeatureEffect` using ITS
+ * default, production-merged tables) does not yet see
  * `WIZARD_ARCHETYPE_EFFECTS_EXTRACTED` at all. Tests below that need to
  * exercise resolution/precedence for the new wizard table pass it in
  * explicitly as `resolveArchetypeFeatureEffect`'s override parameter — the
  * exact same pattern the fighter test file already uses for its synthetic
  * precedence fixture, just with the real wizard table instead of a made-up
  * one. Tests that only need to observe BASE wizard class-feature behavior
- * (unaffected by whether wizard.ts is wired in) exercise the real `compute()`
+ * (unaffected by whether wizard.ts is wired in) exercise the real `compute`
  * pipeline directly.
  */
 const ref = loadRefData();

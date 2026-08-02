@@ -10,9 +10,9 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74) — see
- * `oracle-mysteries.ts`'s "vendored catalog overlay" section doc comment for
- * the collision-audit narrative this asserts against.
+ * Coverage for the vendored-catalog overlay — see `oracle-mysteries.ts`'s
+ * "vendored catalog overlay" section doc comment for the collision-audit
+ * narrative this asserts against.
  */
 const ref = loadRefData();
 
@@ -37,7 +37,7 @@ describe("mergedOracleMysteryCatalog", () => {
   });
 
   it("no vendored-only mysteries remain — every vendored tag has a hand-authored entry", () => {
-    // Issue #74's Phase 2 authored the remaining 23, so the merged catalog's
+    // A later pass authored the remaining 23, so the merged catalog's
     // display-only fallback now only exists for a future data bump that
     // vendors a mystery this table hasn't caught up with.
     for (const entry of merged) {

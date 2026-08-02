@@ -6,8 +6,7 @@ import { advanceRound, removeBuff, toggleLinkedBuff, toggleTableBuff } from "../
 import { conditionRoundsLeft, hasCondition, toggleCondition } from "../src/model/conditions.js";
 
 /**
- * Rage/bloodrage fatigue aftermath (issue #67): PF1 RAW differs by rage
- * flavor —
+ * Rage/bloodrage fatigue aftermath: PF1 RAW differs by rage flavor —
  *   - Chained Rage (barbarian, CRB): fatigued for 2x rounds raged, UNLESS
  *     Tireless Rage (17th level) — aonprd.com, 2026-07-25.
  *   - Bloodrage (bloodrager, ACG): identical, gated by Tireless Bloodrage

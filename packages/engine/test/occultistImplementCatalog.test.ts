@@ -10,10 +10,10 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74) — see
- * `occultist-implements.ts`'s "vendored catalog overlay" section doc
- * comment. Same chassis two-shape merge as psychic disciplines: a
- * vendored-only school carries no base/resonant/focus powers.
+ * Coverage for the vendored-catalog overlay — see `occultist-implements.ts`'s
+ * "vendored catalog overlay" section doc comment. Same chassis two-shape merge
+ * as psychic disciplines: a vendored-only school carries no
+ * base/resonant/focus powers.
  */
 const ref = loadRefData();
 

@@ -1,7 +1,7 @@
 /**
- * Unit tests for `model/rogueTalents.ts` (issue #65 — previously deferred
- * Rogue Talents, shared between the chained rogue and Rogue (Unchained)).
- * Mirrors `magusArcana.test.ts`'s budget-math test pattern.
+ * Unit tests for `model/rogueTalents.ts` (previously deferred Rogue Talents,
+ * shared between the chained rogue and Rogue (Unchained)). Mirrors
+ * `magusArcana.test.ts`'s budget-math test pattern.
  */
 import { describe, expect, it } from "bun:test";
 

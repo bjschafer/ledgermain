@@ -1,10 +1,10 @@
 /**
- * Prestige-class entry-requirement gating (issue #66 chunk 3) — the class-level
- * counterpart to `prereqs.ts`'s feat gating, same hybrid policy (DESIGN.md §4):
- * HARD-BLOCK only on structured signals (`Class.prereqs`, issue #66 chunk 4),
- * NEVER on free-text prose (`prereqText`, always shown as a soft advisory
- * line). See `packages/schema/src/refdata.ts`'s `Class.prereqs` doc comment
- * for the structured shape and what's deliberately left prose-only per class
+ * Prestige-class entry-requirement gating (3) — the class-level counterpart to
+ * `prereqs.ts`'s feat gating, same hybrid policy (DESIGN.md §4): HARD-BLOCK
+ * only on structured signals (`Class.prereqs`), NEVER on free-text prose
+ * (`prereqText`, always shown as a soft advisory line). See
+ * `packages/schema/src/refdata.ts`'s `Class.prereqs` doc comment for the
+ * structured shape and what's deliberately left prose-only per class
  * (alignment, race, parametrized skills like "Perform (oratory)", OR/count
  * requirements like "any three metamagic feats", etc).
  *
@@ -56,14 +56,14 @@ function ordinal(n: number): string {
 
 /**
  * Whether some caster class already in the build can, at its current
- * *effective* class level (issue #66 chunk 2 — advancement-aware, so an
- * existing prestige class's casting-advancement slot counts), access spells
- * of `req.spellLevel` and matches `req.kind` (an `"any"` requirement accepts
- * arcane, divine, OR psychic — same posture as `slotAcceptsKind` in
- * `casterLevel.ts`). A caster class with no `CASTER_MODELS` entry (none in
- * the current registry, but defensive against future gaps) can't be verified
- * structurally and is skipped here — honest per this module's doc comment;
- * the class's `prereqText` carries it as a soft advisory instead.
+ * *effective* class level (advancement-aware, so an existing prestige class's
+ * casting-advancement slot counts), access spells of `req.spellLevel` and
+ * matches `req.kind` (an `"any"` requirement accepts arcane, divine, OR
+ * psychic — same posture as `slotAcceptsKind` in `casterLevel.ts`). A caster
+ * class with no `CASTER_MODELS` entry (none in the current registry, but
+ * defensive against future gaps) can't be verified structurally and is skipped
+ * here — honest per this module's doc comment; the class's `prereqText`
+ * carries it as a soft advisory instead.
  */
 function meetsCastingRequirement(
   doc: CharacterDoc,
@@ -109,9 +109,9 @@ function meetsCastingRequirement(
  * a structured item with an unstructured one in the SAME sentence (that
  * example: two structured feats plus one parametrized "Weapon Focus (longbow
  * or shortbow)" in one "Feats:" sentence), so a clean per-fragment drop isn't
- * reliably possible the way it is for feats. The redundancy this leaves (a
- * met ✓ check next to prose repeating it) is acceptable per issue #66 chunk
- * 3's scope — issue #49's fragment-filtering fix is feat-specific.
+ * reliably possible the way it is for feats. The redundancy this leaves (a met
+ * ✓ check next to prose repeating it) is acceptable per chunk 3's scope — the
+ * fragment-filtering fix is feat-specific.
  */
 export function evaluateClassPrereqs(
   cls: Class,

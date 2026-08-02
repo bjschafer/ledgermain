@@ -1,12 +1,13 @@
 /**
- * Pure condition transitions. Conditions are just ids in `doc.live.conditions`;
- * the engine's conditions table maps each to its mechanical `Change[]`, which
- * `compute()` applies. Toggling one re-derives the sheet automatically.
+ * Pure condition transitions. Conditions are just ids in
+ * `doc.live.conditions`; the engine's conditions table maps each to its
+ * mechanical `Change[]`, which `compute` applies. Toggling one re-derives the
+ * sheet automatically.
  *
- * Mutual exclusivity (issue #10): the engine's `CONDITION_LADDERS` groups RAW
- * conditions that supersede each other (fear, fatigue, sickness, dazzled/
- * blinded, grappled/pinned) but deliberately doesn't enforce it — that's a
- * toggle-time policy, applied here:
+ * Mutual exclusivity: the engine's `CONDITION_LADDERS` groups RAW conditions
+ * that supersede each other (fear, fatigue, sickness, dazzled/ blinded,
+ * grappled/pinned) but deliberately doesn't enforce it — that's a toggle-time
+ * policy, applied here:
  *   - Activating a *stricter* ladder member auto-upgrades: any milder active
  *     sibling is removed and the stricter one takes its place.
  *   - Activating a *milder* member while a stricter sibling is already active
@@ -78,7 +79,7 @@ function activateInLadder(conditions: readonly string[], id: string): string[] {
 
 /**
  * The ladder-aware toggle transition on a plain conditions array — extracted
- * (issue #68) so a second tracked creature (the animal companion's own
+ * so a second tracked creature (the animal companion's own
  * `live.animalCompanion.conditions`, independent of the master's
  * `live.conditions`) can reuse the exact same auto-upgrade/implied-condition
  * behavior rather than a hand-copied duplicate. `toggleCondition` below is

@@ -1,9 +1,9 @@
 /**
- * Hand-computed fixture tests for polymorph forms (issue #70): the
- * `POLYMORPH_TIERS` table's ability/natural-armor numbers (verified against
+ * Hand-computed fixture tests for polymorph forms: the `POLYMORPH_TIERS`
+ * table's ability/natural-armor numbers (verified against
  * aonprd.com/d20pfsrd.com — see `polymorph.ts`'s doc comment), the Wild Shape
- * level-gated tier mapping, natural-attack math, and — the load-bearing
- * part — `compute()` end-to-end for a druid with an active form: Str/Dex/
+ * level-gated tier mapping, natural-attack math, and — the load-bearing part —
+ * `compute` end-to-end for a druid with an active form: Str/Dex/
  * AC/attack/CMB/CMD all flowing through the normal typed-bonus stacker.
  */
 

@@ -82,12 +82,12 @@ describe("buffsForSpell (synthetic edge cases)", () => {
 });
 
 /**
- * False Life (CRB p. 239, issue #67): unlike Divine Power/Greater Heroism/
- * Aid, all of which correctly resolve to a vendored buff, False Life has NO
+ * False Life (CRB p. 239): unlike Divine Power/Greater Heroism/ Aid, all of
+ * which correctly resolve to a vendored buff, False Life has NO
  * `RefData.buffs` entry at all — confirmed against the real vendored slice.
  * `@pf1/engine`'s `FALSE_LIFE_BUFF` (see that module's doc comment) fills the
- * gap as a hand-authored fallback, checked only once the vendored index
- * comes up empty.
+ * gap as a hand-authored fallback, checked only once the vendored index comes
+ * up empty.
  */
 describe("buffsForSpell (False Life hand-authored fallback)", () => {
   it("resolves False Life to the hand-authored buff (no vendored buff exists)", () => {

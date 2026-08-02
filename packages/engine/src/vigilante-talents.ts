@@ -1,12 +1,12 @@
 /**
- * Clean-room PF1 vigilante talent tables (Ultimate Intrigue, issue #65):
- * hand-authored from the published rules (verified against aonprd.com's
- * Vigilante Talents listings, "Social" and "Vigilante" categories),
- * mirroring `alchemist-discoveries.ts`'s posture — vigilante talents are NOT
- * part of the vendored Foundry data pack (the Vigilante class def only links
- * the generic "Social Talent"/"Vigilante Talent" stub `ClassFeature`s, no
- * per-talent breakdown — confirmed: `class-features.json` carries no
- * per-talent entries), so there is no upstream JSON to normalize.
+ * Clean-room PF1 vigilante talent tables (Ultimate Intrigue): hand-authored
+ * from the published rules (verified against aonprd.com's Vigilante Talents
+ * listings, "Social" and "Vigilante" categories), mirroring
+ * `alchemist-discoveries.ts`'s posture — vigilante talents are NOT part of the
+ * vendored Foundry data pack (the Vigilante class def only links the generic
+ * "Social Talent"/"Vigilante Talent" stub `ClassFeature`s, no per-talent
+ * breakdown — confirmed: `class-features.json` carries no per-talent entries),
+ * so there is no upstream JSON to normalize.
  *
  * PF1 RAW grants TWO independent talent pools from two different class
  * features: a Social Talent at 1st level and every 2 levels thereafter
@@ -17,58 +17,56 @@
  * their content and specialization-gating shape are different enough that a
  * shared row type would need mostly-unused fields either way.
  *
- * Scope (issue #74 follow-up — full vendored-catalog parity): the tables
- * below hand-author all 81 vigilante-pool entries and all 46 social-pool
- * entries in `RefData.vigilanteTalents`/`vigilanteSocialTalents` (pulled from
- * Ultimate Intrigue plus later sourcebooks — Antihero's Handbook, Blood of
- * the Beast, Chronicle of Legends, Disciple's Doctrine, Inner Sea Intrigue,
- * People of the Wastes, Spymaster's Handbook), not just Ultimate Intrigue's
- * original lists. The overwhelming majority are prose/prerequisite-gated
- * abilities with no flat number, exactly like `alchemist-discoveries.ts`'s
- * bomb-rider majority — those stay `displayOnly` (empty `changes[]`) with a
- * `contextNotes` reminder carrying the exact number or gating prerequisite.
- * A handful are cross-table "pick from elsewhere" stubs (Rogue Talent, Minor
- * Magic, Major Magic, Magical Familiarity, Racial Paragon) that point at the
- * relevant table via `contextNotes`, mirroring `investigator-talents.ts`'s
+ * Scope (full vendored-catalog parity): the tables below hand-author all 81
+ * vigilante-pool entries and all 46 social-pool entries in
+ * `RefData.vigilanteTalents`/`vigilanteSocialTalents` (pulled from Ultimate
+ * Intrigue plus later sourcebooks — Antihero's Handbook, Blood of the Beast,
+ * Chronicle of Legends, Disciple's Doctrine, Inner Sea Intrigue, People of the
+ * Wastes, Spymaster's Handbook), not just Ultimate Intrigue's original lists.
+ * The overwhelming majority are prose/prerequisite-gated abilities with no
+ * flat number, exactly like `alchemist-discoveries.ts`'s bomb-rider majority —
+ * those stay `displayOnly` (empty `changes[]`) with a `contextNotes` reminder
+ * carrying the exact number or gating prerequisite. A handful are cross-table
+ * "pick from elsewhere" stubs (Rogue Talent, Minor Magic, Major Magic, Magical
+ * Familiarity, Racial Paragon) that point at the relevant table via
+ * `contextNotes`, mirroring `investigator-talents.ts`'s
  * `alchemistDiscovery`/`rogueTalent` stubs. A few require a subtype this
  * engine doesn't model (the `shapechanger` subtype for Morphic Weaponry and
- * Seamless Shapechanger; specific prerequisite talents for others, e.g.
- * Swamp Concoctions requiring Environmental Weapon) — those get a
- * `contextNotes` reminder instead of enforcement, same soft-filter posture
- * as `minLevel`.
+ * Seamless Shapechanger; specific prerequisite talents for others, e.g. Swamp
+ * Concoctions requiring Environmental Weapon) — those get a `contextNotes`
+ * reminder instead of enforcement, same soft-filter posture as `minLevel`.
  *
  * Modelling posture (mirrors alchemist-discoveries.ts's honesty bar): a
  * handful of talents here DO carry a flat, unconditional, self-targeting
  * numeric bonus once selected (Shadow's Speed's landSpeed bump, Monkey's
  * Paws's Escape Artist bonus, Rooftop Infiltrator's half-base-speed climb
- * speed grant — issue #74 sweep) — these get real `changes[]`. Rooftop
- * Infiltrator's grant targets `climbSpeed` (additive, base 0 for a vigilante
- * with no other climb speed source — same shape as `ninja-tricks.ts`'s Wall
- * Climber); Monkey's Paws' OWN "climb speed equal to base speed" clause is
- * deliberately NOT promoted alongside its Escape Artist bonus, even though
- * `climbSpeed` is a live target, because Monkey's Paws requires Rooftop
- * Infiltrator as a prerequisite (a vigilante who has it always has Rooftop
- * Infiltrator's grant active too), and this engine's `climbSpeed` target is
- * purely additive with no "highest wins" resolution (`compute.ts`'s
- * `applySpeedTarget`) — stacking both would silently overstate the climb
- * speed to 1.5x base rather than the RAW-intended flat base speed, so it
- * stays a `contextNotes` reminder instead. Every other
- * "flagged" talent turns out on close reading to be conditional on
- * something this engine doesn't track when the bonus applies (identity
- * state — Renown/Social Grace/Great Renown/Incredible Renown/Owl's Sight/
- * Loyal Aid/Well-Known Expert/Skill Familiarity are all scoped to "while in
- * vigilante identity" or "in your area of renown", neither of which is
- * modeled — see `build.vigilanteIdentity`'s doc comment), a specific
- * maneuver/attack type rather than a general skill/save (Gator Wrangle,
- * Favored Maneuver, Chase Master's chase subsystem), or a feat/ability grant
- * with no Change target (Combat Expertise, Fist of the Avenger's unarmed
- * damage rider) — these stay `displayOnly: true` with a `contextNotes`
- * reminder carrying the exact number, same discipline as every prior table
- * in this project. The #74 full-parity sweep (the ~65 entries added below
- * the original curated slice) surfaced no additional promotion candidates —
- * every remaining talent's bonus is either a bonus-feat grant (no numeric
- * Change target), a cross-table pick, or conditional on a prerequisite
- * talent/subtype/ability score this engine doesn't enforce.
+ * speed grant — sweep) — these get real `changes[]`. Rooftop Infiltrator's
+ * grant targets `climbSpeed` (additive, base 0 for a vigilante with no other
+ * climb speed source — same shape as `ninja-tricks.ts`'s Wall Climber);
+ * Monkey's Paws' OWN "climb speed equal to base speed" clause is deliberately
+ * NOT promoted alongside its Escape Artist bonus, even though `climbSpeed` is
+ * a live target, because Monkey's Paws requires Rooftop Infiltrator as a
+ * prerequisite (a vigilante who has it always has Rooftop Infiltrator's grant
+ * active too), and this engine's `climbSpeed` target is purely additive with
+ * no "highest wins" resolution (`compute.ts`'s `applySpeedTarget`) — stacking
+ * both would silently overstate the climb speed to 1.5x base rather than the
+ * RAW-intended flat base speed, so it stays a `contextNotes` reminder instead.
+ * Every other "flagged" talent turns out on close reading to be conditional on
+ * something this engine doesn't track when the bonus applies (identity state —
+ * Renown/Social Grace/Great Renown/Incredible Renown/Owl's Sight/ Loyal
+ * Aid/Well-Known Expert/Skill Familiarity are all scoped to "while in
+ * vigilante identity" or "in your area of renown", neither of which is modeled
+ * — see `build.vigilanteIdentity`'s doc comment), a specific maneuver/attack
+ * type rather than a general skill/save (Gator Wrangle, Favored Maneuver,
+ * Chase Master's chase subsystem), or a feat/ability grant with no Change
+ * target (Combat Expertise, Fist of the Avenger's unarmed damage rider) —
+ * these stay `displayOnly: true` with a `contextNotes` reminder carrying the
+ * exact number, same discipline as every prior table in this project. A later catalog pass
+ * full-parity sweep (the ~65 entries added below the original curated slice)
+ * surfaced no additional promotion candidates — every remaining talent's bonus
+ * is either a bonus-feat grant (no numeric Change target), a cross-table pick,
+ * or conditional on a prerequisite talent/subtype/ability score this engine
+ * doesn't enforce.
  */
 
 import type {
@@ -340,7 +338,7 @@ const SOCIAL_TALENT_LIST: VigilanteTalentDef[] = buildSocial([
       identityGatedNote,
     ],
   },
-  // --- #74 full-parity sweep ---------------------------------------------
+  // --- full-parity sweep ---------------------------------------------
   {
     id: "ancestralEnlightenment",
     name: "Ancestral Enlightenment",
@@ -765,7 +763,7 @@ const TALENT_LIST: VigilanteTalentEntry[] = buildTalent([
       "Gain Combat Reflexes as a bonus feat (or swap); gain an additional attack of opportunity per round at 8th and 16th level.",
     contextNotes: [note("Grants a bonus feat — add it to Feats separately.", "bonusFeats")],
   },
-  // --- #74 full-parity sweep ----------------------------------------------
+  // --- full-parity sweep ----------------------------------------------
   {
     id: "animalPatron",
     name: "Animal Patron",
@@ -1166,23 +1164,22 @@ export function vigilanteTalentsForSpecialization(
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.vigilanteSocialTalents`/`vigilanteTalents` (see
- * those types' doc comments) are the FULL published catalogs (46 social + 81
- * vigilante entries after junk filtering), prose only. The hand-authored
- * tables above stay authoritative for MECHANICS — this section only merges
- * for BROWSING/resolving, mirroring `rage-powers.ts`'s "vendored catalog
- * overlay" section exactly, for BOTH pools.
+ * `RefData.vigilanteSocialTalents`/`vigilanteTalents` (see those types' doc
+ * comments) are the FULL published catalogs (46 social + 81 vigilante entries
+ * after junk filtering), prose only. The hand-authored tables above stay
+ * authoritative for MECHANICS — this section only merges for
+ * BROWSING/resolving, mirroring `rage-powers.ts`'s "vendored catalog overlay"
+ * section exactly, for BOTH pools.
  *
- * Collision audit (issue #74 full-parity sweep): all 46 hand-authored social
- * talents match a vendored entry by normalized name, except `seamlessShapechanger`
- * ("Seamless Shapechanger", the published AoN spelling) — the vendored
- * catalog carries a source typo, key `seemless_shapechanger`/"Seemless
- * Shapechanger", recorded in `VIGILANTE_SOCIAL_TALENT_NAME_ALIASES` below.
- * All 81 hand-authored vigilante talents match a vendored entry by normalized
- * name, except `evasion` ("Evasion") — the vendored catalog spells the same
- * talent "Evasive" (key `evasive`, confirmed by matching description text:
- * "gains the evasion ability..."), recorded in `VIGILANTE_TALENT_NAME_ALIASES`
- * below.
+ * Collision audit (full-parity sweep): all 46 hand-authored social talents
+ * match a vendored entry by normalized name, except `seamlessShapechanger`
+ * ("Seamless Shapechanger", the published AoN spelling) — the vendored catalog
+ * carries a source typo, key `seemless_shapechanger`/"Seemless Shapechanger",
+ * recorded in `VIGILANTE_SOCIAL_TALENT_NAME_ALIASES` below. All 81
+ * hand-authored vigilante talents match a vendored entry by normalized name,
+ * except `evasion` ("Evasion") — the vendored catalog spells the same talent
+ * "Evasive" (key `evasive`, confirmed by matching description text: "gains the
+ * evasion ability..."), recorded in `VIGILANTE_TALENT_NAME_ALIASES` below.
  *
  * A vendored-only vigilante-talent entry's `gate` is NOT derived from its
  * `category` (e.g. "Avenger Talents"/"Stalker Talents") — see

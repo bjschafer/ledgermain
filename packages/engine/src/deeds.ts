@@ -1,9 +1,9 @@
 /**
- * Clean-room PF1 gunslinger/swashbuckler deed reference table (DESIGN §6,
- * issue #65): hand-authored from the published rules (Ultimate Combat for
- * gunslinger, Pathfinder Unchained for swashbuckler; verified against public
- * SRD text/AoN), mirroring `oracle-revelations.ts`'s posture — with one
- * asymmetry worth flagging up front:
+ * Clean-room PF1 gunslinger/swashbuckler deed reference table (DESIGN §6):
+ * hand-authored from the published rules (Ultimate Combat for gunslinger,
+ * Pathfinder Unchained for swashbuckler; verified against public SRD
+ * text/AoN), mirroring `oracle-revelations.ts`'s posture — with one asymmetry
+ * worth flagging up front:
  *
  * - **Gunslinger** deeds ARE individually vendored as real `ClassFeature`
  *   entries (`class-features.json`, granted at the correct levels via

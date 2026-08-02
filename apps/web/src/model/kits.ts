@@ -1,8 +1,8 @@
 /**
- * Class kits and pre-packed bundles (issue #80).
+ * Class kits and pre-packed bundles.
  *
  * PF1 sells starting gear as kits ("Kit, Wizard's" — backpack, bedroll, ink,
- * 10 torches, ...). Adding those a dozen rows at a time is the most tedious
+ * 10 torches,...). Adding those a dozen rows at a time is the most tedious
  * part of a first-level build, so a kit expands to its constituent gear in one
  * action.
  *

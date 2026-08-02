@@ -7,13 +7,13 @@ import { compute } from "../src/index.js";
 
 /**
  * Fixture coverage for Rogue (Unchained) Finesse Training's Dex-to-damage
- * substitution (issue #65 — previously deferred). PF1 RAW: "at 3rd level ... she can
- * select any one type of weapon that can be used with Weapon Finesse ...
- * whenever she makes a successful melee attack with the selected weapon, she
- * adds her Dexterity modifier instead of her Strength modifier to the damage
- * roll" (verified against aonprd.com/d20pfsrd.com's Rogue (Unchained) class
- * page). `build.rogueFinesseWeapons` stores the free-text weapon TYPE picked
- * at each of the three tiers (3rd/11th/19th — `ROGUE_FINESSE_TRAINING_LEVELS`);
+ * substitution (previously deferred). PF1 RAW: "at 3rd level... she can select
+ * any one type of weapon that can be used with Weapon Finesse... whenever she
+ * makes a successful melee attack with the selected weapon, she adds her
+ * Dexterity modifier instead of her Strength modifier to the damage roll"
+ * (verified against aonprd.com/d20pfsrd.com's Rogue (Unchained) class page).
+ * `build.rogueFinesseWeapons` stores the free-text weapon TYPE picked at each
+ * of the three tiers (3rd/11th/19th — `ROGUE_FINESSE_TRAINING_LEVELS`);
  * `computeWeaponAttacks` in `compute.ts` matches a pick against an equipped
  * `WeaponInstance`'s `name`/`group` (case-insensitive) and swaps the damage
  * ability to Dex automatically, unless the player has explicitly set

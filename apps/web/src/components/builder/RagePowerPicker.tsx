@@ -25,26 +25,25 @@ interface RagePowerPickerProps {
 }
 
 /**
- * Barbarian rage power selection (issue #65/#67, full-catalog issue #74), mirroring
- * `DiscoveryPicker`'s layout and `ArchetypePicker`'s
- * "M" badge convention. A barbarian (chained OR Unchained — both share this
- * one picker, see `@pf1/engine` `rage-powers.ts`'s doc comment) gains a new
- * rage power at 2nd level and every even level thereafter, plus one more per
- * "Extra Rage Power" feat taken (see `model/ragePowers.ts`'s budget math).
- * Free-choice, never blocks past the expected count — same hybrid-prereqs
- * posture as `DiscoveryPicker`.
+ * Barbarian rage power selection (full-catalog), mirroring `DiscoveryPicker`'s
+ * layout and `ArchetypePicker`'s "M" badge convention. A barbarian (chained OR
+ * Unchained — both share this one picker, see `@pf1/engine` `rage-powers.ts`'s
+ * doc comment) gains a new rage power at 2nd level and every even level
+ * thereafter, plus one more per "Extra Rage Power" feat taken (see
+ * `model/ragePowers.ts`'s budget math). Free-choice, never blocks past the
+ * expected count — same hybrid-prereqs posture as `DiscoveryPicker`.
  *
  * Browses the FULL published rage-power catalog (`mergedRagePowerCatalog` —
  * every vendored entry, overlaid with the 30-entry hand-verified table on a
  * name match), not just the hand-verified slice. A `badge-modeled` "M" marks
  * which entries carry real, live mechanics (a `changes`/`contextNotes` a few
- * of which are buff-gated to "while raging" — issue #75's
- * `Change.activeWhenBuff`); everything else is prose-only, shown via the
- * same collapsible `FeatureDescription` the Class Features list uses.
- * Picked powers also show up in the sheet's Class Features list (tagged "—
- * Rage Power"), via `collectGrantedFeatures`/`resolveClassFeatures` in
- * `@pf1/engine` `archetypes.ts` (through `resolveRagePower`, which resolves
- * BOTH a hand-authored and a vendored-only pick).
+ * of which are buff-gated to "while raging" — the `Change.activeWhenBuff`);
+ * everything else is prose-only, shown via the same collapsible
+ * `FeatureDescription` the Class Features list uses. Picked powers also show
+ * up in the sheet's Class Features list (tagged "— Rage Power"), via
+ * `collectGrantedFeatures`/`resolveClassFeatures` in `@pf1/engine`
+ * `archetypes.ts` (through `resolveRagePower`, which resolves BOTH a
+ * hand-authored and a vendored-only pick).
  */
 export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) {
   const [query, setQuery] = useState("");

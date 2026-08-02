@@ -1,15 +1,14 @@
 /**
- * Clean-room PF1 shaman spirit table (Advanced Class Guide, DESIGN §6,
- * issue #65): hand-authored, mirroring `oracle-mysteries.ts`'s posture
- * closely — a shaman's Spirit class feature is structurally the oracle's
- * Mystery under a different name (per the vendored `spirit.yaml` class
- * feature: "If the shaman takes levels in another class that grants a
- * mystery (such as the oracle), the spirit and mystery must match"), but its
- * SPIRIT MAGIC spell list is NOT byte-identical to the matching oracle
- * mystery's bonus-spell list (verified during authoring — e.g. Waves' 1st
- * spirit-magic spell is Hydraulic Push, not the Waves mystery's Touch of the
- * Sea), so it is hand-copied from the shaman-specific vendored YAML rather
- * than reused from `ORACLE_MYSTERIES`.
+ * Clean-room PF1 shaman spirit table (Advanced Class Guide, DESIGN §6):
+ * hand-authored, mirroring `oracle-mysteries.ts`'s posture closely — a
+ * shaman's Spirit class feature is structurally the oracle's Mystery under a
+ * different name (per the vendored `spirit.yaml` class feature: "If the shaman
+ * takes levels in another class that grants a mystery (such as the oracle),
+ * the spirit and mystery must match"), but its SPIRIT MAGIC spell list is NOT
+ * byte-identical to the matching oracle mystery's bonus-spell list (verified
+ * during authoring — e.g. Waves' 1st spirit-magic spell is Hydraulic Push, not
+ * the Waves mystery's Touch of the Sea), so it is hand-copied from the
+ * shaman-specific vendored YAML rather than reused from `ORACLE_MYSTERIES`.
  *
  * Scope: all 18 published shaman spirits — the 8 Advanced Class Guide "core"
  * spirits (Battle, Bones, Flame, Heavens, Life, Nature, Stone, Waves) plus 10
@@ -28,15 +27,15 @@
  *     individually vendored, like oracle mysteries, but NOT linked from the
  *     Shaman class def, which only links the generic "Spirit" stub — same
  *     "hand-author from the cached-but-unlinked YAML" shape `oracle-
- *     mysteries.ts`/`psychic-disciplines.ts` already use). `level` here is
- *     the SPELL's own level (1st-9th), NOT a shaman class-level threshold —
- *     unlike `OracleMysteryBonusSpell.level`, because the vendored prose
- *     itself labels each entry "1st -", "2nd -", ... "9th -" by spell level
- *     directly (RAW: "she has one spell slot per day of each shaman spell
- *     level she can cast" — availability is gated by
- *     `accessibleSpellLevels(CASTER_MODELS.shaman, shamanLevel)`, evaluated
- *     in `apps/web/src/model/spellcasting.ts`'s `shamanSpiritSpellsKnown`,
- *     not a fixed per-spell unlock level baked into this table).
+ *     mysteries.ts`/`psychic-disciplines.ts` already use). `level` here is the
+ *     SPELL's own level (1st-9th), NOT a shaman class-level threshold — unlike
+ *     `OracleMysteryBonusSpell.level`, because the vendored prose itself
+ *     labels each entry "1st -", "2nd -",... "9th -" by spell level directly
+ *     (RAW: "she has one spell slot per day of each shaman spell level she can
+ *     cast" — availability is gated by
+ *     `accessibleSpellLevels(CASTER_MODELS.shaman, shamanLevel)`, evaluated in
+ *     `apps/web/src/model/spellcasting.ts`'s `shamanSpiritSpellsKnown`, not a
+ *     fixed per-spell unlock level baked into this table).
  *   - `ability` (the spirit's 1st-level Spirit Ability, e.g. Battle's "Battle
  *     Spirit") is note-tier/prose ONLY (`summary`, no `Change[]`) — same
  *     posture as `oracle-revelations.ts`'s entries and for the same reason:
@@ -63,7 +62,7 @@
  *     every hex is a foe/ally-targeted, activated, or limited-duration
  *     ability with no flat always-on number on the shaman's OWN sheet, so
  *     stays `displayOnly: true` (`changes: []`) — same bar `shaman-hexes.ts`
- *     (the general catalog) applies. Two promotions (issue #75-style, same
+ *     (the general catalog) applies. Two promotions (same
  *     bar as `oracle-revelations.ts`'s promoted set): `flame:cinderDance`
  *     grants a genuine unconditional +10 ft. to base land speed (Ex, no
  *     action, no per-day limit — see its entry's citation); its two
@@ -1863,13 +1862,13 @@ export function findShamanHex(hexId: string): ShamanSpiritHex | undefined {
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.shamanSpirits` is the FULL published catalog
- * (18 entries after junk filtering), prose only — same "catalog from data,
- * mechanics as overlay" pattern as `rage-powers.ts`'s
- * `mergedRagePowerCatalog`. The hand-verified 18-spirit table above stays
- * authoritative for spirit magic spells/ability/hexes; this section merges
- * the two for browsing (kept in place for any future spirit a later
- * splatbook pack adds that this table hasn't caught up to yet).
+ * `RefData.shamanSpirits` is the FULL published catalog (18 entries after junk
+ * filtering), prose only — same "catalog from data, mechanics as overlay"
+ * pattern as `rage-powers.ts`'s `mergedRagePowerCatalog`. The hand-verified
+ * 18-spirit table above stays authoritative for spirit magic
+ * spells/ability/hexes; this section merges the two for browsing (kept in
+ * place for any future spirit a later splatbook pack adds that this table
+ * hasn't caught up to yet).
  *
  * Matching is by NORMALIZED NAME. Collision audit (all 18 hand-authored
  * spirits): all 18 matched a vendored entry by normalized name (the vendored

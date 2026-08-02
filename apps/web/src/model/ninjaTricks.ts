@@ -1,24 +1,22 @@
 /**
- * Pure ninja-trick transitions (issue #65 wave B). Trick ids are just
- * entries in `build.ninjaTricks`, mirroring `toggleWitchHex` in
- * `model/witchHexes.ts` — the engine's `NINJA_TRICKS` table maps each to its
- * (display-only) `changes[]`/`contextNotes`, applied through the same
- * change-collection path as hexes/revelations/discoveries (see `@pf1/engine`
- * `collect.ts`).
+ * Pure ninja-trick transitions (B). Trick ids are just entries in
+ * `build.ninjaTricks`, mirroring `toggleWitchHex` in `model/witchHexes.ts` —
+ * the engine's `NINJA_TRICKS` table maps each to its (display-only)
+ * `changes[]`/`contextNotes`, applied through the same change-collection path
+ * as hexes/revelations/discoveries (see `@pf1/engine` `collect.ts`).
  *
- * Budget (PF1 Ultimate Combat, verified against Archives of Nethys/
- * d20pfsrd — no per-trick vendored data to cross-check against, see
- * `ninja-tricks.ts`'s doc comment): "Starting at 2nd level, a ninja gains
- * one ninja trick. She gains one additional ninja trick for every 2 levels
- * attained after 2nd" — 2nd, 4th, ..., 20th (10 total by 20th). Master
- * tricks (10th level, minLevel-gated in `NINJA_TRICKS`) are NOT an extra
- * pick — chosen "in place of" a normal trick, same budget, same posture as
- * `WITCH_HEXES`' major/grand tiers (see that file's doc comment). Each copy
- * of the "Extra Ninja Trick" feat (RAW repeatable — vendored `feats.json`:
- * "Special: You can gain this feat multiple times") adds one more, counted
- * by OCCURRENCE in `doc.build.feats` (not just presence) — same
- * "manually-added duplicates" convention `expectedWitchHexCount` uses for
- * "Extra Hex".
+ * Budget (PF1 Ultimate Combat, verified against Archives of Nethys/ d20pfsrd —
+ * no per-trick vendored data to cross-check against, see `ninja-tricks.ts`'s
+ * doc comment): "Starting at 2nd level, a ninja gains one ninja trick. She
+ * gains one additional ninja trick for every 2 levels attained after 2nd" —
+ * 2nd, 4th,..., 20th (10 total by 20th). Master tricks (10th level,
+ * minLevel-gated in `NINJA_TRICKS`) are NOT an extra pick — chosen "in place
+ * of" a normal trick, same budget, same posture as `WITCH_HEXES`' major/grand
+ * tiers (see that file's doc comment). Each copy of the "Extra Ninja Trick"
+ * feat (RAW repeatable — vendored `feats.json`: "Special: You can gain this
+ * feat multiple times") adds one more, counted by OCCURRENCE in
+ * `doc.build.feats` (not just presence) — same "manually-added duplicates"
+ * convention `expectedWitchHexCount` uses for "Extra Hex".
  *
  * This module never blocks: taking more than the expected count is a soft
  * warning only, matching the project's hybrid posture on feat/trait/skill

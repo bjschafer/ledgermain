@@ -12,10 +12,10 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the magus-arcana vendored-catalog overlay (issue #74) — mirrors
- * `ragePowerCatalog.test.ts` exactly. See `magus-arcana.ts`'s
- * "vendored catalog overlay" section doc comment for the collision-audit
- * narrative this asserts against.
+ * Coverage for the magus-arcana vendored-catalog overlay — mirrors
+ * `ragePowerCatalog.test.ts` exactly. See `magus-arcana.ts`'s "vendored
+ * catalog overlay" section doc comment for the collision-audit narrative this
+ * asserts against.
  */
 const ref = loadRefData();
 
@@ -43,7 +43,7 @@ describe("mergedMagusArcanaCatalog", () => {
   });
 
   it("no vendored-only arcana remain — the fallback path only exists for a future data bump", () => {
-    // Full hand-table parity as of the #74 Phase 5 extension.
+    // Full hand-table parity as of the last catalog extension.
     for (const entry of merged) {
       expect(MAGUS_ARCANA[entry.id], entry.id).toBeDefined();
     }

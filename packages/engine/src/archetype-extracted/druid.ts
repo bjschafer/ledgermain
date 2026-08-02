@@ -1,12 +1,11 @@
 /**
- * Druid's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (documented in
- * `index.ts`), this file owns BOTH of
- * druid's pipeline artifacts — `DRUID_ARCHETYPE_FEATURE_CLASSIFICATION` (the
- * full per-feature audit) and `DRUID_ARCHETYPE_EFFECTS_EXTRACTED` (the
+ * Druid's slice of the pipeline (wave 2, 2026-07-06). Per the per-class file
+ * convention (documented in `index.ts`), this file owns BOTH of druid's
+ * pipeline artifacts — `DRUID_ARCHETYPE_FEATURE_CLASSIFICATION` (the full
+ * per-feature audit) and `DRUID_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) — so a future wave working
- * on a different class never has a reason to touch this file; only
- * `index.ts` (the aggregator) needs one new import + one new spread per class.
+ * on a different class never has a reason to touch this file; only `index.ts`
+ * (the aggregator) needs one new import + one new spread per class.
  *
  * ── DRUID_ARCHETYPE_FEATURE_CLASSIFICATION ────────────────────────────────
  *
@@ -99,7 +98,7 @@
  *    a DIFFERENT archetype's (Swamp Druid's) Wild Shape text, including a
  *    mismatched "6th level" clause on a feature keyed to level 4.
  *  - `druid:urban-druid:a-thousand-faces:6` — description says "At 13th
- *    level" but the feature's own `level` field is 6. Issue #47 fixed the
+ *    level" but the feature's own `level` field is 6. A later fix corrected the
  *    gating level to 13 via `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL`
  *    (`packages/data-pipeline/src/supplements.ts`).
  *  - `druid:jungle-druid:wild-shape:6` — description duplicates its own
@@ -113,21 +112,21 @@
  * ── DRUID_ARCHETYPE_EFFECTS_EXTRACTED ──────────────────────────────────────
  *
  * Machine-extracted mechanical effects for druid archetype class features
- * (issue #45, wave 2). Clean-room from the published PF1 rules — the
- * vendored prose this was extracted from (`archetype-features.json`) is OGL,
- * so reading it is fine; no Foundry source was consulted (DESIGN.md §6).
+ * (wave 2). Clean-room from the published PF1 rules — the vendored prose this
+ * was extracted from (`archetype-features.json`) is OGL, so reading it is
+ * fine; no Foundry source was consulted (DESIGN.md §6).
  *
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
- * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
- * can never confuse "a human read the rulebook and checked this" with "an
+ * additionally carries `confidence`/`provenance` so a reviewer (or the UI) can
+ * never confuse "a human read the rulebook and checked this" with "an
  * extraction pass inferred this from prose." `collect.ts` and `archetypes.ts`
  * both resolve through `resolveArchetypeFeatureEffect`
  * (`archetype-effects-resolve.ts`), which always checks the hand-verified
  * table FIRST — Menhir Savant's `spirit-sense:1` is present in the
- * hand-verified table (issue #7) and is deliberately NOT duplicated here;
- * it is still recorded as `numeric` in the classification table above with
- * a "hand-verified, ground truth" note, matching the fighter file's own
+ * hand-verified table and is deliberately NOT duplicated here; it is still
+ * recorded as `numeric` in the classification table above with a
+ * "hand-verified, ground truth" note, matching the fighter file's own
  * `weapon-master:weapon-training:3` precedent for the same situation.
  *
  * Confidence rubric (identical to the fighter file's):

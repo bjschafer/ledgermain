@@ -24,29 +24,28 @@ interface OrderPickerProps {
  * `MysteryPicker`/`DisciplinePicker`.
  *
  * Browses the FULL published order catalog (`mergedOrdersForClass` — every
- * vendored entry, overlaid with the 8 hand-authored chassis on a name
- * match, issue #74) rather than just the 8 hand-authored orders. A
- * `badge-modeled` "M" marks the entries with a real, structured chassis
- * (two bonus skills, a Challenge rider, 2nd/8th/15th abilities) — the
- * remaining ~30 published orders have no such structure in the vendored
- * source (their level-tiered abilities live only as prose, see
- * `@pf1/engine` `cavalier-orders.ts`'s `mergedOrderCatalog` doc comment) and
- * show their full description text instead of the structured breakdown.
+ * vendored entry, overlaid with the 8 hand-authored chassis on a name match)
+ * rather than just the 8 hand-authored orders. A `badge-modeled` "M" marks the
+ * entries with a real, structured chassis (two bonus skills, a Challenge
+ * rider, 2nd/8th/15th abilities) — the remaining ~30 published orders have no
+ * such structure in the vendored source (their level-tiered abilities live
+ * only as prose, see `@pf1/engine` `cavalier-orders.ts`'s `mergedOrderCatalog`
+ * doc comment) and show their full description text instead of the structured
+ * breakdown.
  *
  * `build.cavalierOrder` is a single shared field for both classes (RAW lets
  * a samurai freely pick a cavalier order in place of Warrior/Ronin) — the
  * option list is class-scoped via `mergedOrdersForClass`, so a pure
  * cavalier never sees Warrior/Ronin, while a samurai sees all orders.
  *
- * Order skills ARE wired into the derived sheet's class-skill set (`@pf1/engine`
- * `compute.ts`, see `cavalier-orders.ts`'s doc comment) — this picker doesn't
- * need to do anything extra for that. The 2nd/8th/15th-level order abilities
- * stay display-only prose. The Challenge rider IS a real
- * number, shown live via `challengeRiderText` against the character's
- * current cavalier/samurai level (modeled orders only) — but it's
- * target-scoped ("against the challenge target", "while mounted", ...) so
- * it's shown as reference text only, never folded into AC/attack/damage
- * automatically.
+ * Order skills ARE wired into the derived sheet's class-skill set
+ * (`@pf1/engine` `compute.ts`, see `cavalier-orders.ts`'s doc comment) — this
+ * picker doesn't need to do anything extra for that. The 2nd/8th/15th-level
+ * order abilities stay display-only prose. The Challenge rider IS a real
+ * number, shown live via `challengeRiderText` against the character's current
+ * cavalier/samurai level (modeled orders only) — but it's target-scoped
+ * ("against the challenge target", "while mounted",...) so it's shown as
+ * reference text only, never folded into AC/attack/damage automatically.
  */
 export function OrderPicker({ doc, refData, update }: OrderPickerProps) {
   const cavalierLevel = doc.identity.classes.find((c) => c.tag === "cavalier")?.level ?? 0;

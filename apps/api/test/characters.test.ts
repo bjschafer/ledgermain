@@ -64,7 +64,7 @@ describe("character CRUD", () => {
     });
     await authedRequest(ownerId, "/api/characters/tomb-1", { method: "DELETE" });
 
-    // The list surfaces a tombstone so open-sync can drop a resurfaced copy (#39).
+    // The list surfaces a tombstone so open-sync can drop a resurfaced copy.
     const listRes = await authedRequest(ownerId, "/api/characters");
     const listing = (await listRes.json()) as {
       characters: { id: string }[];

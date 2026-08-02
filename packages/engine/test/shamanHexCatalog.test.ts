@@ -12,10 +12,10 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the GENERAL shaman-hex catalog (issue #74) plus its
- * hand-authored overlay (`shaman-hexes.ts`'s `SHAMAN_GENERAL_HEXES`),
- * mirroring `witchHexCatalog.test.ts` closely — see that file's doc comment
- * for the collision-audit narrative this asserts against.
+ * Coverage for the GENERAL shaman-hex catalog plus its hand-authored overlay
+ * (`shaman-hexes.ts`'s `SHAMAN_GENERAL_HEXES`), mirroring
+ * `witchHexCatalog.test.ts` closely — see that file's doc comment for the
+ * collision-audit narrative this asserts against.
  */
 const ref = loadRefData();
 

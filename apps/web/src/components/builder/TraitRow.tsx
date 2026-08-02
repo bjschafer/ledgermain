@@ -10,12 +10,11 @@ import { RulesNote } from "../RulesNote.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 
 /**
- * One trait row — shared by the panel's chosen list and the picker's
- * catalog. Hand-authored/homebrew entries carry a `summary` one-liner; a
- * vendored catalog entry (issue #74) instead surfaces its full HTML
- * `description` in the same collapsible `<details>` `FeatEntry` uses for
- * feats, so prose-only traits (the majority of the ~2,000-entry catalog)
- * aren't left with a blank row.
+ * One trait row — shared by the panel's chosen list and the picker's catalog.
+ * Hand-authored/homebrew entries carry a `summary` one-liner; a vendored
+ * catalog entry instead surfaces its full HTML `description` in the same
+ * collapsible `<details>` `FeatEntry` uses for feats, so prose-only traits
+ * (the majority of the ~2,000-entry catalog) aren't left with a blank row.
  */
 export function TraitRow({
   trait,

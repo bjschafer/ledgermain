@@ -10,11 +10,11 @@ import {
 } from "../src/index.js";
 
 /**
- * Fixture coverage for issue #65's cavalier/samurai order reference table
+ * Fixture coverage for the cavalier/samurai order reference table
  * (`cavalier-orders.ts`). Orders are a free-choice pick (`build.
- * cavalierOrder`, soft-warning posture, no hard validation) — this file
- * covers the pure data/lookup functions the picker UI and any future
- * challenge-rider display consume.
+ * cavalierOrder`, soft-warning posture, no hard validation) — this file covers
+ * the pure data/lookup functions the picker UI and any future challenge-rider
+ * display consume.
  */
 describe("CAVALIER_ORDERS — the six APG orders", () => {
   it("has exactly the six core orders", () => {

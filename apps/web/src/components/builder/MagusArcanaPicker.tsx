@@ -23,12 +23,12 @@ interface MagusArcanaPickerProps {
 }
 
 /**
- * Magus arcana selection (issue #61, full-catalog issue #74),
- * mirroring `ArcanistExploitPicker`/`RagePowerPicker`. A magus learns a new
- * arcana at 3rd level and every 3 levels thereafter, plus one more per
- * "Extra Arcana" feat (see `model/magusArcana.ts`'s budget math).
- * Free-choice, never blocks past the expected count — same hybrid-prereqs
- * posture as `ArcanistExploitPicker`.
+ * Magus arcana selection (full-catalog), mirroring
+ * `ArcanistExploitPicker`/`RagePowerPicker`. A magus learns a new arcana at
+ * 3rd level and every 3 levels thereafter, plus one more per "Extra Arcana"
+ * feat (see `model/magusArcana.ts`'s budget math). Free-choice, never blocks
+ * past the expected count — same hybrid-prereqs posture as
+ * `ArcanistExploitPicker`.
  *
  * An arcana's own `minLevel` (some require magus 6th/9th/12th/15th) is SOFT
  * availability filtering, matching the file's honesty bar — below-level

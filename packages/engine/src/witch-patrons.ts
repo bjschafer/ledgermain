@@ -1,12 +1,12 @@
 /**
  * Clean-room PF1 witch patron table (Advanced Player's Guide + Ultimate
- * Magic, issue #65): hand-authored from the published rules (verified
- * against aonprd.com's Witch Patrons index — each entry below cites its
- * source book), mirroring `oracle-mysteries.ts`'s posture for oracle
- * mysteries — a patron's ONLY structured mechanical content is its bonus
- * spell list (one spell added to the familiar's known spells at witch level
- * 2, 4, 6, ..., 18, per APG's Patron Spells class feature); everything else
- * about a patron (its narrative theme) is flavor text, not modeled.
+ * Magic): hand-authored from the published rules (verified against
+ * aonprd.com's Witch Patrons index — each entry below cites its source book),
+ * mirroring `oracle-mysteries.ts`'s posture for oracle mysteries — a patron's
+ * ONLY structured mechanical content is its bonus spell list (one spell added
+ * to the familiar's known spells at witch level 2, 4, 6,..., 18, per APG's
+ * Patron Spells class feature); everything else about a patron (its narrative
+ * theme) is flavor text, not modeled.
  *
  * Data provenance — UNLIKE `oracle-mysteries.ts`'s `bonusSpells`, which
  * copies real vendored Foundry spell `_id`s straight out of the mystery's
@@ -330,12 +330,11 @@ export const WITCH_PATRON_TAGS: readonly string[] = PATRON_LIST.map((p) => p.tag
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.witchPatrons` is the FULL published catalog
- * (61 entries after junk filtering), prose only — same "catalog from data,
- * mechanics as overlay" pattern as `rage-powers.ts`'s
- * `mergedRagePowerCatalog`. The hand-verified 17-core-patron table above
- * stays authoritative for the bonus-spell progression; this section merges
- * the two for browsing.
+ * `RefData.witchPatrons` is the FULL published catalog (61 entries after junk
+ * filtering), prose only — same "catalog from data, mechanics as overlay"
+ * pattern as `rage-powers.ts`'s `mergedRagePowerCatalog`. The hand-verified
+ * 17-core-patron table above stays authoritative for the bonus-spell
+ * progression; this section merges the two for browsing.
  *
  * Matching is by NORMALIZED NAME. Collision audit (all 17 hand-authored
  * patrons): all 17 matched a vendored entry by normalized name (the

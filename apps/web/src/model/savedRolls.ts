@@ -1,15 +1,15 @@
 /**
- * Saved rolls (issue #2): a static, no-dice-roller lookup surface. A `SavedRoll`
- * is a bookmark — `{ label, source }` — into a number the engine already
- * computes, optionally nudged by a flat `attackModifier`/`damageModifier` for
+ * Saved rolls: a static, no-dice-roller lookup surface. A `SavedRoll` is a
+ * bookmark — `{ label, source }` — into a number the engine already computes,
+ * optionally nudged by a flat `attackModifier`/`damageModifier` for
  * situational feats the engine doesn't model as a toggle (Rapid Shot, Deadly
- * Aim, ...) or by attaching feats from the `SITUATIONAL_FEAT_EFFECTS` registry
+ * Aim,...) or by attaching feats from the `SITUATIONAL_FEAT_EFFECTS` registry
  * (see feat-attachments below). Nothing is snapshotted; `resolveSavedRoll`
  * re-reads the current `DerivedSheet` every time, so a saved roll stays
  * correct as buffs/feats/gear change (same "recompute, don't memoize" posture
- * as the rest of the tracker). `source.kind === "custom"` has no engine
- * source at all — a fully freeform bookmark for the cases the other kinds
- * don't cover.
+ * as the rest of the tracker). `source.kind === "custom"` has no engine source
+ * at all — a fully freeform bookmark for the cases the other kinds don't
+ * cover.
  *
  * Feat attachments: a `SavedRoll` can carry `feats: SavedRollFeatRef[]` —
  * feats folded into the roll's numbers at resolve time. Each ref is keyed by
@@ -103,7 +103,7 @@ export interface SavedRollRangerChip {
 export interface ResolvedSavedRollDamage {
   /** e.g. "1d8+6" (dice + signed bonus), or a freeform note for a custom roll. */
   display: string;
-  /** The same damage as a VTT-pasteable formula, e.g. "1d8 + 6" (issue #96). */
+  /** The same damage as a VTT-pasteable formula, e.g. "1d8 + 6". */
   formula: string;
   components: ModifierComponent[];
   crit?: string;
@@ -137,9 +137,9 @@ export interface ResolvedSavedRoll {
   /** e.g. "+11/+6" for an iterative attack, "+8" for a flat stat. */
   display: string;
   /**
-   * The same roll as VTT-pasteable formulas, one line per attack (issue #96).
-   * Absent for a CMD bookmark (a static defense, never rolled) and for a roll
-   * whose source no longer resolves.
+   * The same roll as VTT-pasteable formulas, one line per attack. Absent for a
+   * CMD bookmark (a static defense, never rolled) and for a roll whose source
+   * no longer resolves.
    */
   formula?: string;
   /**
@@ -462,11 +462,10 @@ function foldAttachments(
         });
       }
       if (effect.extraAttacks) fold.extraAttacks += effect.extraAttacks;
-      // Display-only (issue #62): acDelta never folds into the roll's own
-      // number (AC isn't a saved-roll source at all) — just a formatted
-      // reminder alongside any note text, generic enough to cover future
-      // attack-for-AC feats (Combat Expertise today) without bespoke prose
-      // baked into each entry's `note`.
+      // Display-only: acDelta never folds into the roll's own number (AC isn't
+      // a saved-roll source at all) — just a formatted reminder alongside any
+      // note text, generic enough to cover future attack-for-AC feats (Combat
+      // Expertise today) without bespoke prose baked into each entry's `note`.
       if (effect.acDelta) notes.push(`+${effect.acDelta} dodge AC`);
       if (effect.note) notes.push(effect.note);
     }
@@ -796,7 +795,7 @@ export function addSavedRollRanger(
 /**
  * Turn a saved roll's two-weapon mode on (with a grip + optional off-hand
  * weapon) or off (`undefined`). Also drops any two-weapon chain feats a
- * pre-#97 roll had attached: the mode applies them from the character's feat
+ * older roll had attached: the mode applies them from the character's feat
  * list now, so leaving the refs behind would only be dead weight.
  */
 export function setSavedRollTwf(

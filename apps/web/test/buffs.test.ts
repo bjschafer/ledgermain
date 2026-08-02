@@ -228,16 +228,15 @@ function makeDoc(activeBuffs: CharacterDoc["live"]["activeBuffs"] = []): Charact
   };
 }
 
-// Issue #45 follow-up: the "activated performance/song buff" mechanism the
-// pipeline waves found missing (see `packages/engine/src/archetype-extracted/
-// bard.ts`'s wave-2 doc comment) turned out to already exist generically —
-// `deriveResourcePools`'s `linkedBuffIds` (Rage, Inspire Courage, Aura of
-// Protection) plus `ResourcesPanel`'s toggle button, built the same day in a
-// later commit than that wave's classification pass. `toggleLinkedBuff` is
-// the pure decision logic behind that toggle button, pulled out of the
-// component (per CLAUDE.md's "logic in model/, thin component wiring")
-// instead of living only in JSX where a DOM test would be the only way to
-// exercise it.
+// the "activated performance/song buff" mechanism the pipeline waves found
+// missing (see `packages/engine/src/archetype-extracted/ bard.ts`'s wave-2 doc
+// comment) turned out to already exist generically — `deriveResourcePools`'s
+// `linkedBuffIds` (Rage, Inspire Courage, Aura of Protection) plus
+// `ResourcesPanel`'s toggle button, built the same day in a later commit than
+// that wave's classification pass. `toggleLinkedBuff` is the pure decision
+// logic behind that toggle button, pulled out of the component (per
+// CLAUDE.md's "logic in model/, thin component wiring") instead of living only
+// in JSX where a DOM test would be the only way to exercise it.
 describe("toggleLinkedBuff", () => {
   const ref = loadRefData();
   const inspireCourage = Object.values(ref.buffs).find((b) => b.name === "Inspire Courage")!;
@@ -285,9 +284,9 @@ describe("toggleLinkedBuff", () => {
   });
 });
 
-// Issue #65: the "no vendored buff at all" counterpart to `toggleLinkedBuff`
-// above — inquisitor Judgments and skald Inspired Rage carry no
-// `RefData.buffs` entry to resolve, so `DerivedResourcePool.tableOptions`
+// the "no vendored buff at all" counterpart to `toggleLinkedBuff` above —
+// inquisitor Judgments and skald Inspired Rage carry no `RefData.buffs` entry
+// to resolve, so `DerivedResourcePool.tableOptions`
 // (packages/engine/src/resources.ts) surfaces a hand-authored
 // `ToggleBuffOption` instead, and this is its toggle logic.
 describe("toggleTableBuff", () => {

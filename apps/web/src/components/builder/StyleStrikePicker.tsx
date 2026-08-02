@@ -22,16 +22,15 @@ interface StyleStrikePickerProps {
 }
 
 /**
- * Monk (Unchained) style strike selection (issue #65, full-catalog issue
- * #74), mirroring `KiPowerPicker` — every style strike is a
- * per-attack flurry rider, entirely `displayOnly` in the hand-authored
- * table (see `@pf1/engine` `monk-style-strikes.ts`'s doc comment). Flat
- * list, no level tiering per entry (unlike ki powers) — only the COUNT
- * known grows with level (5th, then 9th/13th/17th). Free-choice, never
- * blocks past the expected count. The Style Strikes per-round resource POOL
- * (how many strikes can be designated per round) already derives
- * generically from vendored data — see `monk-unchained.test.ts` — this
- * picker only records WHICH strikes are known.
+ * Monk (Unchained) style strike selection (full-catalog), mirroring
+ * `KiPowerPicker` — every style strike is a per-attack flurry rider, entirely
+ * `displayOnly` in the hand-authored table (see `@pf1/engine`
+ * `monk-style-strikes.ts`'s doc comment). Flat list, no level tiering per
+ * entry (unlike ki powers) — only the COUNT known grows with level (5th, then
+ * 9th/13th/17th). Free-choice, never blocks past the expected count. The Style
+ * Strikes per-round resource POOL (how many strikes can be designated per
+ * round) already derives generically from vendored data — see
+ * `monk-unchained.test.ts` — this picker only records WHICH strikes are known.
  *
  * Browses the full vendored catalog (`mergedMonkStyleStrikeCatalog`) — an
  * exact 1:1 match with the 15 hand-authored entries (see that function's

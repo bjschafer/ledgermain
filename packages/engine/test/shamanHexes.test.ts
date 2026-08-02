@@ -1,16 +1,15 @@
 /**
- * Hand-computed fixture tests for the GENERAL shaman-hex table (issue #65,
- * #74) — mirrors `witchHexes.test.ts` exactly. Every hex in
- * `SHAMAN_GENERAL_HEXES` is `displayOnly` with `changes: []` (see that
- * file's doc comment — no ACG general shaman hex grants an unconditional
- * flat number this engine safely targets: every entry is either
- * foe/ally-targeted, an activated limited-daily-use ability, or a
- * feat/skill grant this engine has no honest Change target for), so
- * `collectModifiers` should never emit a numeric modifier for one. What IS
- * exercised: gating on actual shaman levels, unknown-id tolerance, spirit-
- * scoped ids being skipped by this loop (they resolve through
- * `shaman-spirits.ts` instead, never through `resolveGeneralShamanHex`),
- * and surfacing a picked general hex through
+ * Hand-computed fixture tests for the GENERAL shaman-hex table — mirrors
+ * `witchHexes.test.ts` exactly. Every hex in `SHAMAN_GENERAL_HEXES` is
+ * `displayOnly` with `changes: []` (see that file's doc comment — no ACG
+ * general shaman hex grants an unconditional flat number this engine safely
+ * targets: every entry is either foe/ally-targeted, an activated
+ * limited-daily-use ability, or a feat/skill grant this engine has no honest
+ * Change target for), so `collectModifiers` should never emit a numeric
+ * modifier for one. What IS exercised: gating on actual shaman levels,
+ * unknown-id tolerance, spirit- scoped ids being skipped by this loop (they
+ * resolve through `shaman-spirits.ts` instead, never through
+ * `resolveGeneralShamanHex`), and surfacing a picked general hex through
  * `collectGrantedFeatures`/`resolveClassFeatures` — same pattern as
  * `witchHexes.test.ts`/`magusArcana.test.ts`.
  *

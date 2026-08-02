@@ -1,13 +1,13 @@
 /**
- * Pure Rogue (Unchained) Finesse Training weapon-type transitions (issue
- * #65), mirroring `setWeaponTrainingGroup` in `model/doc.ts`'s shape — a
- * fixed-index array (`build.rogueFinesseWeapons`), one slot per tier (3rd,
- * 11th, 19th level — `ROGUE_FINESSE_TRAINING_LEVELS`), except the stored
- * value is a free-text weapon TYPE name (e.g. "rapier"), not a
- * `WEAPON_GROUPS` slug — PF1 RAW scopes this to one weapon type, not a whole
- * semantic group. See `computeWeaponAttacks` in `@pf1/engine` `compute.ts`
- * for how a pick is matched against an equipped `WeaponInstance` and applied
- * (Dex-to-damage substitution, not a bonus stack).
+ * Pure Rogue (Unchained) Finesse Training weapon-type transitions, mirroring
+ * `setWeaponTrainingGroup` in `model/doc.ts`'s shape — a fixed-index array
+ * (`build.rogueFinesseWeapons`), one slot per tier (3rd, 11th, 19th level —
+ * `ROGUE_FINESSE_TRAINING_LEVELS`), except the stored value is a free-text
+ * weapon TYPE name (e.g. "rapier"), not a `WEAPON_GROUPS` slug — PF1 RAW
+ * scopes this to one weapon type, not a whole semantic group. See
+ * `computeWeaponAttacks` in `@pf1/engine` `compute.ts` for how a pick is
+ * matched against an equipped `WeaponInstance` and applied (Dex-to-damage
+ * substitution, not a bonus stack).
  */
 
 import { ROGUE_FINESSE_TRAINING_LEVELS } from "@pf1/engine";

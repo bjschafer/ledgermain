@@ -1,19 +1,19 @@
 /**
- * RAW-repeatable feats (issue #58): the PF1 CRB/APG/UM/UC/ACG/OA "Special:
- * You can gain/take/select this feat multiple times" (and close phrasing
- * variants — "more than once", "up to N times") feats. `apps/web/src/model/doc.ts`'s
+ * RAW-repeatable feats: the PF1 CRB/APG/UM/UC/ACG/OA "Special: You can
+ * gain/take/select this feat multiple times" (and close phrasing variants —
+ * "more than once", "up to N times") feats. `apps/web/src/model/doc.ts`'s
  * `addFeatInstance`/`removeFeatInstance` will happily create/remove an extra
  * instance of ANY feat id (free-choice, hybrid soft-warning posture per
  * CLAUDE.md) — this set only drives the UI's "take again" affordance
- * (`FeatsSection`) and, indirectly, which feats look normal with more than
- * one instance on the Play tab.
+ * (`FeatsSection`) and, indirectly, which feats look normal with more than one
+ * instance on the Play tab.
  *
  * Curated by hand from a full-text scan of every `description` field in the
  * vendored `packages/data-pipeline/data/feats.json` (390 feats): every
- * "multiple times" / "more than once" / "up to ... times" hit was read and
+ * "multiple times" / "more than once" / "up to... times" hit was read and
  * cross-checked against the published PF1 rules (clean-room — no Foundry
- * system code consulted, matching CLAUDE.md's licensing discipline). A
- * curated set rather than a live description-regex scan, for two reasons:
+ * system code consulted, matching CLAUDE.md's licensing discipline). A curated
+ * set rather than a live description-regex scan, for two reasons:
  *
  *   1. The phrasing sits inside free-text HTML prose with enough near-miss
  *      variation that a blind runtime regex would misclassify entries —
@@ -32,16 +32,16 @@
  *
  * Keyed by `featNameSlug` (stable across data re-vendors, same posture as
  * `@pf1/engine`'s `FEAT_EFFECTS`/`FEAT_EFFECTS_EXTRACTED`/`FEAT_POOL_EFFECTS`
- * tables). See the issue #58 implementation notes for the full per-feat
- * source-text audit this list was drawn from.
+ * tables). See the implementation notes for the full per-feat source-text
+ * audit this list was drawn from.
  */
 
 import { featNameSlug } from "@pf1/engine";
 
 export const REPEATABLE_FEAT_SLUGS: ReadonlySet<string> = new Set([
-  // Choice feats with a real engine effect (FEAT_EFFECTS / FEAT_EFFECTS_EXTRACTED) —
-  // each instance applies independently per issue #58's design (Weapon Focus
-  // taken twice, once per weapon, buffs both).
+  // Choice feats with a real engine effect (FEAT_EFFECTS /
+  // FEAT_EFFECTS_EXTRACTED) — each instance applies independently per the
+  // design (Weapon Focus taken twice, once per weapon, buffs both).
   "greater-spell-focus",
   "greater-weapon-focus",
   "greater-weapon-specialization",

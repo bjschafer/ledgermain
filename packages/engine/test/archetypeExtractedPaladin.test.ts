@@ -6,11 +6,11 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute, resolveArchetypeFeatureEffect } from "../src/index.js";
 
 /**
- * Issue #45 wave 2 (paladin): fixture tests for `archetype-extracted/
+ * fixture tests for `archetype-extracted/
  * paladin.ts`, hand-computed against the real vendored data slice via
- * `loadRefData()`, same posture as `archetypeEffectsExtracted.test.ts`
- * (fighter pilot). Each expectation is derived straight from the published
- * PF1 rules cited (as `provenance`) in the extracted table's entries.
+ * `loadRefData`, same posture as `archetypeEffectsExtracted.test.ts` (fighter
+ * pilot). Each expectation is derived straight from the published PF1 rules
+ * cited (as `provenance`) in the extracted table's entries.
  */
 const ref = loadRefData();
 

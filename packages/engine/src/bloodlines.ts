@@ -7,13 +7,13 @@
  * data to normalize for them. Same posture as `traits.ts`/`conditions.ts` for
  * content the compendium doesn't carry.
  *
- * Scope: every published Paizo sorcerer bloodline — the 10 Core Rulebook
- * ones (issue #34) plus the full later-splatbook catalog, hand-authored from
- * aonprd.com. `packages/data-pipeline` vendors bloodline spell tags for
- * bonus-spell lists; bloodlines the upstream pack never tags ("Aberrant" and
- * a dozen splatbook ones) get hand-authored lists as a data-pipeline
- * supplement (issue #38 — see `data-pipeline/src/supplements.ts`); this
- * table's arcana/powers are independent of the spell-list dataset.
+ * Scope: every published Paizo sorcerer bloodline — the 10 Core Rulebook ones
+ * plus the full later-splatbook catalog, hand-authored from aonprd.com.
+ * `packages/data-pipeline` vendors bloodline spell tags for bonus-spell lists;
+ * bloodlines the upstream pack never tags ("Aberrant" and a dozen splatbook
+ * ones) get hand-authored lists as a data-pipeline supplement (see
+ * `data-pipeline/src/supplements.ts`); this table's arcana/powers are
+ * independent of the spell-list dataset.
  *
  * Modelling posture (mirrors traits.ts):
  *   - `arcana.changes` / `power.changes` hold ONLY genuinely unconditional,
@@ -36,12 +36,12 @@
  *     No stored variant, or a stale id, emits nothing — the same safe
  *     default as `pickChoices` (`variantLabel` likewise returns `undefined`,
  *     never a crash).
- *   - `bonusFeatSlugs` (issue #57) is the bloodline's "Bonus Feats" list (CRB:
- *     a sorcerer picks one of these — no prerequisites waived, unlike a
- *     ranger's combat style — at 7th level and every six levels thereafter).
- *     Hand-authored clean-room from published SRD text (d20pfsrd.com bloodline
- *     pages), `featNameSlug`-normalized to match the vendored feat dataset by
- *     name. Several list entries name a specific Skill Focus sub-choice (e.g.
+ *   - `bonusFeatSlugs` is the bloodline's "Bonus Feats" list (CRB: a sorcerer
+ *     picks one of these — no prerequisites waived, unlike a ranger's combat
+ *     style — at 7th level and every six levels thereafter). Hand-authored
+ *     clean-room from published SRD text (d20pfsrd.com bloodline pages),
+ *     `featNameSlug`-normalized to match the vendored feat dataset by name.
+ *     Several list entries name a specific Skill Focus sub-choice (e.g.
  *     Aberrant's "Skill Focus (Knowledge [dungeoneering])") — only the base
  *     feat ("skill-focus") is tracked here; the sub-skill restriction isn't
  *     modeled, matching the project's existing choice-feat granularity (Skill
@@ -106,8 +106,8 @@ export interface BloodlineDef {
   variantOptions?: BloodlineVariantOption[];
   /**
    * `featNameSlug`s of this bloodline's "Bonus Feats" list (see file doc
-   * comment) — the feat picker restricts a sorcerer's bloodline-feat slots
-   * (issue #57) to this list.
+   * comment) — the feat picker restricts a sorcerer's bloodline-feat slots to
+   * this list.
    */
   bonusFeatSlugs: readonly string[];
 }
@@ -4969,13 +4969,12 @@ export function bloodlineVariantLabel(
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.sorcererBloodlines` is the FULL published
- * catalog (51 entries after junk filtering), prose only — same "catalog
- * from data, mechanics as overlay" pattern as `rage-powers.ts`'s
- * `mergedRagePowerCatalog`. The hand-verified table above (now the whole
- * published catalog) stays authoritative for arcana/powers/bonus feats;
- * this section attaches each vendored entry's prose description and
- * sources for browsing.
+ * `RefData.sorcererBloodlines` is the FULL published catalog (51 entries after
+ * junk filtering), prose only — same "catalog from data, mechanics as overlay"
+ * pattern as `rage-powers.ts`'s `mergedRagePowerCatalog`. The hand-verified
+ * table above (now the whole published catalog) stays authoritative for
+ * arcana/powers/bonus feats; this section attaches each vendored entry's prose
+ * description and sources for browsing.
  *
  * Matching is by NORMALIZED NAME (this table's `tag` doubles as its display
  * `name`, e.g. `"Aberrant"`). Collision audit: every hand-authored

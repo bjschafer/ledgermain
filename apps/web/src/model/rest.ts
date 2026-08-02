@@ -1,31 +1,30 @@
 /**
- * The single "new day" rest action (issue #30) — composes the independent
- * per-module rest transitions that used to live behind separate panel
- * buttons (HP's "Rest ⤿", Resources' "Rest (full)", Prepared Spells'/
- * spontaneous casting's per-class "New day") into one call, and wires in
- * ability damage's natural healing (issue #18), which had no daily event to
- * hook until now.
+ * The single "new day" rest action — composes the independent per-module rest
+ * transitions that used to live behind separate panel buttons (HP's "Rest ⤿",
+ * Resources' "Rest (full)", Prepared Spells'/ spontaneous casting's per-class
+ * "New day") into one call, and wires in ability damage's natural healing,
+ * which had no daily event to hook until now.
  *
  * This module does not reimplement any of the underlying rules — it only
  * imports and chains the existing pure transitions from `model/hp.ts`,
  * `model/afflictions.ts`, `model/resources.ts`, `model/preparedSpells.ts`,
  * and `model/spontaneousSpells.ts`, in this order:
  *
- *   1. HP — `restHp`, respecting `doc.build.settings.restMode` (issue #32):
- *      `"full"` (default, absent = full) heals straight to max; `"natural"`
- *      heals 1 HP × character level (PF1 RAW night's-rest rate, capped at
- *      max — full 2×level bed rest is out of scope for v1). Nonlethal and
- *      temp HP are cleared either way — see `restHp`'s doc comment.
+ *   1. HP — `restHp`, respecting `doc.build.settings.restMode`: `"full"`
+ *      (default, absent = full) heals straight to max; `"natural"` heals 1 HP
+ *      × character level (PF1 RAW night's-rest rate, capped at max — full
+ *      2×level bed rest is out of scope for v1). Nonlethal and temp HP are
+ *      cleared either way — see `restHp`'s doc comment.
  *   2. Ability damage — `restAbilityDamage`: -1 per damaged ability. Drain
  *      and penalties are untouched (see that function's doc comment).
  *   3. Resources — `restAllResources`: every stored pool's `used` resets so
  *      remaining uses match its refill value (`max` for almost every pool;
- *      Arcane Reservoir's is lower per RAW — issue #43). Requires `refData`
- *      to derive pools; without it, falls back to the old always-full reset.
+ *      Arcane Reservoir's is lower per RAW). Requires `refData` to derive
+ *      pools; without it, falls back to the old always-full reset.
  *   4. Spells — `restPreparedSpells` + `resetSpontaneousSlots`, once per
- *      caster class (issue #22 multiclass support) when `refData` is given,
- *      so a multiclass character's prepared loadout AND spontaneous slots
- *      reset for every caster class, not just the primary one.
+ *      caster class (multiclass support) when `refData` is given, so a
+ *      multiclass character's prepared loadout AND spontaneous slots reset for
+ *      every caster class, not just the primary one.
  *
  * Deliberately left untouched:
  *   - Temporary negative levels: PF1 RAW removes one only after a successful
@@ -152,16 +151,16 @@ function classSpellSegment(
  * display names for resource pools; omit it and changed pools still show,
  * keyed by their raw id.
  *
- * `casterClasses` (issue #63) breaks the spell segment out per caster class
- * instead of a single combined count — e.g. `"Cleric: 1 prepared spell
- * reset"` and `"Sorcerer: 1 slot restored"` as separate segments for a
- * cleric/sorcerer multiclass, rather than one opaque "2 spell slots
- * refreshed". Pass the document's caster classes (see
- * `model/spellcasting.ts`'s `casterClassesOf`/`storedClassTag`) with a
- * display `name` each; omit it (as the narrower per-class "New day" ghost
- * buttons do — their before/after diff is already scoped to one class, so
- * the combined count and a per-class breakdown would say the same thing) to
- * fall back to the original single combined segment.
+ * `casterClasses` breaks the spell segment out per caster class instead of a
+ * single combined count — e.g. `"Cleric: 1 prepared spell reset"` and
+ * `"Sorcerer: 1 slot restored"` as separate segments for a cleric/sorcerer
+ * multiclass, rather than one opaque "2 spell slots refreshed". Pass the
+ * document's caster classes (see `model/spellcasting.ts`'s
+ * `casterClassesOf`/`storedClassTag`) with a display `name` each; omit it (as
+ * the narrower per-class "New day" ghost buttons do — their before/after diff
+ * is already scoped to one class, so the combined count and a per-class
+ * breakdown would say the same thing) to fall back to the original single
+ * combined segment.
  */
 export function newDaySummary(
   before: CharacterDoc,

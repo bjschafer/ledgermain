@@ -30,11 +30,11 @@ const MAX_DOC_BYTES = 2_000_000;
  * Retention window for delete tombstones (90 days). A tombstone lets another
  * device (or this one, on its next open-sync) distinguish "this character was
  * deleted" from "this character was never synced here yet" — without one, a
- * deleted doc resurfaces as a pull (issue #39). Implemented as a KV
- * `expirationTtl` so old tombstones self-evict: a device offline longer than
- * this window would re-push a deleted character, an acceptable bound for a
- * single-user tool (nothing here is load-bearing for correctness, only for
- * suppressing a stale resurrection).
+ * deleted doc resurfaces as a pull. Implemented as a KV `expirationTtl` so old
+ * tombstones self-evict: a device offline longer than this window would
+ * re-push a deleted character, an acceptable bound for a single-user tool
+ * (nothing here is load-bearing for correctness, only for suppressing a stale
+ * resurrection).
  */
 const TOMBSTONE_TTL_SECONDS = 90 * 24 * 60 * 60;
 
@@ -61,7 +61,7 @@ function tombKeyFor(ownerId: string, id: string): string {
  * `GET /api/characters` — list this owner's docs (envelope only:
  * id/version/updatedAt) plus any live delete `tombstones` ({ id, deletedAt }),
  * so an open-sync pass can drop locally-resurfaced deletions in the same round
- * trip it already makes (issue #39).
+ * trip it already makes.
  */
 export async function listCharacters(ownerId: string, env: Env): Promise<Response> {
   const prefix = keyFor(ownerId, "");
@@ -168,7 +168,7 @@ export async function putCharacter(
 /**
  * `DELETE /api/characters/:id` — idempotent; succeeds even if already absent.
  * Leaves a tombstone (see `TOMBSTONE_TTL_SECONDS`) so the deletion propagates
- * to other devices via open-sync instead of the character resurfacing (#39).
+ * to other devices via open-sync instead of the character resurfacing.
  */
 export async function deleteCharacter(ownerId: string, id: string, env: Env): Promise<Response> {
   await env.CHARACTERS.delete(keyFor(ownerId, id));

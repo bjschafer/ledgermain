@@ -36,10 +36,10 @@ async function writeClipboard(text: string): Promise<boolean> {
 }
 
 /**
- * Copy one roll formula to the clipboard (issue #96) — the bridge between this
- * app's deliberate no-dice-roller stance and the VTT the table actually rolls
- * in. Sits in the top-right of an expanded stat's breakdown (and inline on
- * rows that don't expand), so the number you just checked is one click from
+ * Copy one roll formula to the clipboard — the bridge between this app's
+ * deliberate no-dice-roller stance and the VTT the table actually rolls in.
+ * Sits in the top-right of an expanded stat's breakdown (and inline on rows
+ * that don't expand), so the number you just checked is one click from
  * pasteable.
  */
 export function CopyButton({

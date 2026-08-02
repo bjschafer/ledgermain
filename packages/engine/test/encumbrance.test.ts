@@ -1,8 +1,9 @@
 /**
- * Hand-computed fixture tests for the encumbrance module (issue #16) — the
+ * Hand-computed fixture tests for the encumbrance module — the
  * carrying-capacity table, size multipliers, load-tier boundaries, and the
  * reduced-speed table. Values cross-checked against the published PF1 CRB
- * "Table: Carrying Capacity" / "Table: Speed" (see encumbrance.ts doc comment).
+ * "Table: Carrying Capacity" / "Table: Speed" (see encumbrance.ts doc
+ * comment).
  */
 import { describe, expect, it } from "bun:test";
 

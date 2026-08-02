@@ -6,13 +6,13 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute } from "../src/index.js";
 
 /**
- * Issue #23 (character traits): the 28 entries this file originally covered
+ * Character traits: the 28 entries this file originally covered
  * are hand-authored clean-room content (not in the vendored Foundry pack —
  * see `src/traits.ts`), so those expectations are hand-computed straight
  * from the published PF1 rules, not derived from any oracle data. All deltas
  * are compared against the same doc with no traits chosen.
  *
- * Issue #74 added the full vendored trait catalog (`RefData.traits`)
+ * A later pass added the full vendored trait catalog (`RefData.traits`)
  * as a second source `collect.ts` resolves against — the "vendored trait"
  * block at the bottom exercises THAT path with a real catalog entry.
  */

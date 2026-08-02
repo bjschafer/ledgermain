@@ -1,20 +1,20 @@
 /**
- * Clean-room PF1 alchemist discovery table (Advanced Player's Guide +
- * selected Ultimate Magic/Ultimate Combat entries, issue #65): hand-authored
- * from the published rules (verified against the book-scoped legacy AoN
- * mirror pages, which let discoveries be split by exact source book),
- * mirroring `magus-arcana.ts`'s posture — discoveries are NOT part of the
- * vendored Foundry data pack (the Alchemist class def only links the generic
- * "Discovery"/"Grand Discovery" stub `ClassFeature`s, no per-discovery
- * breakdown — confirmed: `class-features.json` carries no per-discovery
- * entries), so there is no upstream JSON to normalize.
+ * Clean-room PF1 alchemist discovery table (Advanced Player's Guide + selected
+ * Ultimate Magic/Ultimate Combat entries): hand-authored from the published
+ * rules (verified against the book-scoped legacy AoN mirror pages, which let
+ * discoveries be split by exact source book), mirroring `magus-arcana.ts`'s
+ * posture — discoveries are NOT part of the vendored Foundry data pack (the
+ * Alchemist class def only links the generic "Discovery"/"Grand Discovery"
+ * stub `ClassFeature`s, no per-discovery breakdown — confirmed:
+ * `class-features.json` carries no per-discovery entries), so there is no
+ * upstream JSON to normalize.
  *
- * Scope: FULL vendored parity as of issue #74's Phase 5 extension — all 168
- * entries of the vendored prose catalog (`RefData.alchemistDiscoveries`, the
- * pfdata slice the overlay section below merges against): the Advanced
- * Player's Guide core list, the Ultimate Magic/Ultimate Combat additions,
- * every splatbook bomb rider and mutagen variant, and the grand discoveries
- * (soft-gated `minLevel: 20`).
+ * Scope: FULL vendored parity as of the Phase 5 extension — all 168 entries of
+ * the vendored prose catalog (`RefData.alchemistDiscoveries`, the pfdata slice
+ * the overlay section below merges against): the Advanced Player's Guide core
+ * list, the Ultimate Magic/Ultimate Combat additions, every splatbook bomb
+ * rider and mutagen variant, and the grand discoveries (soft-gated `minLevel:
+ * 20`).
  *
  * Base Mutagen class feature (NOT a discovery — the Alchemist's own 1st-level
  * class feature): +4 alchemical bonus to one chosen physical ability score
@@ -455,7 +455,7 @@ const DISCOVERY_LIST: AlchemistDiscoveryDef[] = build([
       "Spend 1 minute at an alchemy lab to convert a dose of poison between contact, ingested, inhaled, and injury delivery methods.",
     contextNotes: [note("Target delivery method is chosen per use — not tracked here.")],
   },
-  // ---- full-catalog extension (issue #74 Phase 5; vendored parity) ----
+  // ---- full-catalog extension (vendored parity) ----
   {
     id: "airLung",
     name: "Air Lung",
@@ -1573,11 +1573,11 @@ export const ALCHEMIST_DISCOVERY_IDS: readonly string[] = DISCOVERY_LIST.map((d)
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.alchemistDiscoveries` (see that type's doc
- * comment) is the FULL published discovery catalog (168 entries) — prose
- * only. Same "hand-authored wins on a name collision, vendored catalog is
- * the browsable/fallback source of definitions" pattern `rage-powers.ts`'s
- * `mergedRagePowerCatalog` documents in full.
+ * `RefData.alchemistDiscoveries` (see that type's doc comment) is the FULL
+ * published discovery catalog (168 entries) — prose only. Same "hand-authored
+ * wins on a name collision, vendored catalog is the browsable/fallback source
+ * of definitions" pattern `rage-powers.ts`'s `mergedRagePowerCatalog`
+ * documents in full.
  *
  * Collision audit (all 168 hand-authored entries, run against the pinned Pf
  * Data 1e slice): every one matched a vendored entry by normalized name — no

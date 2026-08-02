@@ -3,9 +3,9 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "../src/index.js";
 
 /**
- * End-to-end coverage for the vendored magus-arcana catalog (issue #74) against the
- * real pinned Pf Data 1e slice — mirrors `ragePowers.test.ts`
- * exactly. `pfdata.test.ts` covers the generic reader in isolation.
+ * End-to-end coverage for the vendored magus-arcana catalog against the real
+ * pinned Pf Data 1e slice — mirrors `ragePowers.test.ts` exactly.
+ * `pfdata.test.ts` covers the generic reader in isolation.
  */
 const ref = loadRefData();
 

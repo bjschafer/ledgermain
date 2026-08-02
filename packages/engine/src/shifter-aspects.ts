@@ -1,14 +1,13 @@
 /**
  * Clean-room PF1 shifter aspect table (Pathfinder Player Companion: Blood of
- * the Beast, issue #65): hand-authored from the published rules (verified
- * against aonprd.com's Shifter Aspects listing, cross-checked against
- * d20pfsrd.com's mirror — both agree verbatim on every number below),
- * mirroring `witch-hexes.ts`'s posture — aspects are NOT part of the
- * vendored Foundry data pack (the Shifter class def only links the generic
- * "Shifter Aspect"/"Chimeric Aspect"/"Greater Chimeric Aspect"/"Final
- * Aspect" stub `ClassFeature`s, no per-aspect breakdown — confirmed:
- * `class-features.json` carries no per-aspect entries), so there is no
- * upstream JSON to normalize.
+ * the Beast): hand-authored from the published rules (verified against
+ * aonprd.com's Shifter Aspects listing, cross-checked against d20pfsrd.com's
+ * mirror — both agree verbatim on every number below), mirroring
+ * `witch-hexes.ts`'s posture — aspects are NOT part of the vendored Foundry
+ * data pack (the Shifter class def only links the generic "Shifter
+ * Aspect"/"Chimeric Aspect"/"Greater Chimeric Aspect"/"Final Aspect" stub
+ * `ClassFeature`s, no per-aspect breakdown — confirmed: `class-features.json`
+ * carries no per-aspect entries), so there is no upstream JSON to normalize.
  *
  * IMPORTANT — do not confuse with hunter's Animal Focus (a different,
  * concurrently-built subsystem): both rhyme (animal-themed, minor
@@ -38,7 +37,7 @@
  *
  * Major form (turning into the aspect's full battle form via the Wild Shape
  * class feature, 4th level) is a polymorph-family effect and is explicitly
- * DEFERRED to issue #70 (the project's dedicated polymorph/wild-shape
+ * DEFERRED to the project's dedicated polymorph/wild-shape
  * effort) — this table only covers each aspect's MINOR form (the passive,
  * always-available swift-action toggle).
  *
@@ -70,7 +69,7 @@ export interface ShifterAspectDef {
   name: string;
   /** Short rules summary of the minor form's benefit (paraphrased, not verbatim SRD text). */
   summary: string;
-  /** One-line pointer to the major form (Wild Shape) — always a deferred-to-#70 note. */
+  /** One-line pointer to the major form (Wild Shape) — always a deferred-to-polymorph note. */
   majorFormNote: string;
   /**
    * Typed modifiers the minor form applies while toggled on (empty when no
@@ -426,16 +425,15 @@ export const SHIFTER_ASPECT_IDS: readonly string[] = ASPECT_LIST.map((a) => a.id
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.shifterAspects` (see that type's doc comment)
- * is the full published aspect catalog — 30 entries, an EXACT 1:1 match
- * with this file's 30 hand-authored entries (verified by normalized name;
- * no drift, no alias, no orphan on either side, same "nothing left over"
- * outcome as `monk-style-strikes.ts`). Kept for the same "picker browses the
- * merged catalog, hand-authored wins on a name collision" shape
- * `rage-powers.ts` documents, even though today it only ever attaches
- * vendored prose (including the Major Form paragraph this table doesn't
- * carry at all — see the file doc comment's issue #70 deferral) to an
- * existing hand-authored row.
+ * `RefData.shifterAspects` (see that type's doc comment) is the full published
+ * aspect catalog — 30 entries, an EXACT 1:1 match with this file's 30
+ * hand-authored entries (verified by normalized name; no drift, no alias, no
+ * orphan on either side, same "nothing left over" outcome as
+ * `monk-style-strikes.ts`). Kept for the same "picker browses the merged
+ * catalog, hand-authored wins on a name collision" shape `rage-powers.ts`
+ * documents, even though today it only ever attaches vendored prose (including
+ * the Major Form paragraph this table doesn't carry at all — see the file doc
+ * comment's deferral) to an existing hand-authored row.
  */
 
 function normalizeAspectName(name: string): string {

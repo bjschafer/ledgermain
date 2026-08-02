@@ -11,20 +11,20 @@
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 /**
- * The alternate racial trait that swaps out Half-Elf's Multitalented (issue
- * #35). Taking it disables the second-favored-class benefit.
+ * The alternate racial trait that swaps out Half-Elf's Multitalented. Taking
+ * it disables the second-favored-class benefit.
  */
 const DUAL_MINDED_TRAIT_ID = "half-elf-dual-minded";
 
 /**
- * True when the character's race is Half-Elf, which grants Multitalented:
- * two favored classes instead of one (issue #4). See `CharacterDoc.identity.
- * favoredClass2` doc comment for the chosen-doc shape.
+ * True when the character's race is Half-Elf, which grants Multitalented: two
+ * favored classes instead of one. See `CharacterDoc.identity. favoredClass2`
+ * doc comment for the chosen-doc shape.
  *
  * Returns false when the Half-Elf has taken the Dual Minded alternate racial
- * trait (issue #35), which replaces Multitalented — so a chosen `favoredClass2`
- * stops earning FCB the moment the swap is made (the trait picker doesn't force
- * the stale value to be cleared).
+ * trait, which replaces Multitalented — so a chosen `favoredClass2` stops
+ * earning FCB the moment the swap is made (the trait picker doesn't force the
+ * stale value to be cleared).
  */
 export function isMultitalented(doc: CharacterDoc, refData: RefData): boolean {
   if (refData.races[doc.identity.race]?.name !== "Half-Elf") return false;

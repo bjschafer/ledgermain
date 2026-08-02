@@ -82,7 +82,7 @@ const APPLIED_TARGETS = new Set<string>([
   // consumed outside compute() by apps/web/src/model/feats.ts + skills.ts
   "bonusFeats",
   "bonusSkillRanks",
-  // spell resistance / damage reduction (computeDefenses, issue #21)
+  // spell resistance / damage reduction (computeDefenses)
   "spellResist",
   "dr",
   // special senses (computeSenses) — the whole `sense*` family
@@ -101,16 +101,15 @@ const APPLIED_TARGETS = new Set<string>([
  * - `skill.<id>` — per-skill bonuses, grouped by base skill id in computeSkills.
  * - `attack.weapon.<group>` / `damage.weapon.<group>` — per-weapon-group feat
  *   bonuses (e.g. Weapon Focus / Weapon Specialization, keyed by a weapon's
- *   free-text `.group` tag) AND semantic weapon-group bonuses (Weapon
- *   Training and its archetype reflavors, keyed by the weapon's vendored,
- *   normalized `.weaponGroups` — see `weapon-groups.ts`'s
- *   `normalizeWeaponGroup`/`WEAPON_GROUPS`, issue #45) in computeWeaponAttacks.
+ *   free-text `.group` tag) AND semantic weapon-group bonuses (Weapon Training
+ *   and its archetype reflavors, keyed by the weapon's vendored, normalized
+ *   `.weaponGroups` — see `weapon-groups.ts`'s
+ *   `normalizeWeaponGroup`/`WEAPON_GROUPS`) in computeWeaponAttacks.
  * - `dr.<bypass>` / `eres.<energy>` / `imm.<damageType>` /
  *   `immEffect.<effect>` — qualified DR, energy resistance, damage-type
- *   immunity, and immunity to something that isn't damage (computeDefenses,
- *   issue #21). Not a vendored Foundry vocabulary (no such target occurs
- *   upstream today) — this engine's own convention so a user-authored buff
- *   can grant them.
+ *   immunity, and immunity to something that isn't damage (computeDefenses).
+ *   Not a vendored Foundry vocabulary (no such target occurs upstream today) —
+ *   this engine's own convention so a user-authored buff can grant them.
  */
 const APPLIED_TARGET_PREFIXES = [
   "skill.",

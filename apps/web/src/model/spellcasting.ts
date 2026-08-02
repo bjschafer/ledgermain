@@ -945,7 +945,7 @@ export function bloodlineSpellsKnown(
 }
 
 // ---------------------------------------------------------------------------
-// Bloodline bonus spells (bloodrager, issue #65)
+// Bloodline bonus spells (bloodrager)
 // ---------------------------------------------------------------------------
 
 /**
@@ -1258,15 +1258,15 @@ export function disciplineSpellsKnown(
 
 /**
  * Shaman Spirit Magic bonus spells accessible at `shamanLevel` for the given
- * `spiritTag` (issue #65). Unlike {@link mysterySpellsKnown}'s
+ * `spiritTag`. Unlike {@link mysterySpellsKnown}'s
  * `OracleMysteryBonusSpell.level` (an ORACLE level threshold), a
  * `ShamanSpiritMagicSpell.level` is the SPELL's own level (1st-9th, per the
  * vendored per-spirit prose — see `@pf1/engine` `shaman-spirits.ts`'s doc
- * comment) — a spirit's level-N spell becomes accessible the moment the
- * shaman can cast spells of that level at all (PF1 RAW: "she has one spell
- * slot per day of each shaman spell level she can cast"), so this filters
- * against {@link accessibleSpellLevels} (the shaman caster model) rather than
- * a fixed per-spell unlock level.
+ * comment) — a spirit's level-N spell becomes accessible the moment the shaman
+ * can cast spells of that level at all (PF1 RAW: "she has one spell slot per
+ * day of each shaman spell level she can cast"), so this filters against
+ * {@link accessibleSpellLevels} (the shaman caster model) rather than a fixed
+ * per-spell unlock level.
  *
  * These are *bonus* spells known — the tracker/builder add them to the
  * displayed known list automatically (see `CASTER_MODELS.shaman`'s
@@ -1274,8 +1274,9 @@ export function disciplineSpellsKnown(
  * does NOT track as a separate resource pool).
  *
  * @example
- *   shamanSpiritSpellsKnown(ref, "life", 5)  // → [Detect Undead, Lesser Restoration, Neutralize Poison]
- *   shamanSpiritSpellsKnown(ref, "life", 0)  // → []  (no shaman levels)
+ *   shamanSpiritSpellsKnown(ref, "life", 5) // → [Detect Undead, Lesser
+ *   Restoration, Neutralize Poison] shamanSpiritSpellsKnown(ref, "life", 0) //
+ *   → [] (no shaman levels)
  */
 export function shamanSpiritSpellsKnown(
   refData: RefData,
@@ -1375,7 +1376,7 @@ export function schoolLabel(tag: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// Multiclass caster-class helpers (issue #22)
+// Multiclass caster-class helpers
 // ---------------------------------------------------------------------------
 
 /**

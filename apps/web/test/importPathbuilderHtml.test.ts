@@ -1,9 +1,9 @@
 /**
  * Unit + fixture tests for `model/importPathbuilderHtml.ts` — the Pathbuilder
- * 1e HTML stat-block importer (issue #3), run against the owner's real
- * export sample (`test/fixtures/pathbuilder-statblock-c1-orcAlchemist.html`,
- * an Orc Fighter 4 / Alchemist 8) and against the real vendored RefData
- * slice, same pattern as `externalImport.test.ts`.
+ * 1e HTML stat-block importer, run against the owner's real export sample
+ * (`test/fixtures/pathbuilder-statblock-c1-orcAlchemist.html`, an Orc Fighter
+ * 4 / Alchemist 8) and against the real vendored RefData slice, same pattern
+ * as `externalImport.test.ts`.
  */
 import { readFileSync } from "node:fs";
 

@@ -1,7 +1,7 @@
 /**
- * Fixture tests for fighter's base Weapon Training group picks (issue #45 —
- * the deferred "Fighter weapon training group choices" item, built now that
- * the engine can express a semantic weapon-group target at all). See
+ * Fixture tests for fighter's base Weapon Training group picks (the deferred
+ * "Fighter weapon training group choices" item, built now that the engine can
+ * express a semantic weapon-group target at all). See
  * `packages/engine/src/tables.ts`'s `weaponTrainingBonus` for the formula and
  * `collect.ts`'s "Weapon Training group picks" section for the wiring.
  */

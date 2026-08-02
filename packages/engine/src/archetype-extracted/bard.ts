@@ -1,13 +1,12 @@
 /**
- * Bard's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (documented in
- * `index.ts`), this file owns BOTH of
- * bard's pipeline artifacts — `BARD_ARCHETYPE_EFFECTS_EXTRACTED` (the
+ * Bard's slice of the pipeline (wave 2, 2026-07-06). Per the per-class file
+ * convention (documented in `index.ts`), this file owns BOTH of bard's
+ * pipeline artifacts — `BARD_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
  * `BARD_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so a
  * future wave working on a different class never has a reason to touch this
- * file; only `index.ts` (the aggregator) needs one new import + one new
- * spread per class.
+ * file; only `index.ts` (the aggregator) needs one new import + one new spread
+ * per class.
  *
  * Scope: all 70 vendored bard archetypes, 347 features. Bucket rubric is
  * identical to `fighter.ts`'s (numeric / situational / subsystem / blocked —
@@ -19,40 +18,39 @@
  *    this wave was written, the engine modeled bardic performance only as a
  *    rounds/day resource pool (`resources.ts`), with no generic "activated
  *    performance buff" mechanism — base bard's own Inspire Courage,
- *    Countersong, Fascinate, Versatile Performance, Well-Versed, Lore
- *    Master, and Jack of All Trades class features all carry EMPTY vendored
- *    `changes` in `class-features.json` (still true — that part never
- *    changes). **Update (issue #45 follow-up triage):** a later same-day
- *    commit (`d8dec4b`, after this wave) wired `ClassFeature.grantsBuffs` up
- *    generically — `deriveResourcePools`'s `linkedBuffIds` + the tracker's
- *    `LinkedBuffToggle` (`apps/web`) now DOES let a player toggle base bard's
- *    Inspire Courage on/off (merged onto the Bardic Performance pool,
- *    exactly like Rage; see `packages/engine/test/resources.test.ts` and
+ *    Countersong, Fascinate, Versatile Performance, Well-Versed, Lore Master,
+ *    and Jack of All Trades class features all carry EMPTY vendored `changes`
+ *    in `class-features.json` (still true — that part never changes). **Update
+ *    (triage):** a later same-day commit (`d8dec4b`, after this wave) wired
+ *    `ClassFeature.grantsBuffs` up generically — `deriveResourcePools`'s
+ *    `linkedBuffIds` + the tracker's `LinkedBuffToggle` (`apps/web`) now DOES
+ *    let a player toggle base bard's Inspire Courage on/off (merged onto the
+ *    Bardic Performance pool, exactly like Rage; see
+ *    `packages/engine/test/resources.test.ts` and
  *    `apps/web/test/buffs.test.ts`'s `toggleLinkedBuff` coverage), applying
  *    its real, level-scaled vendored buff. This does NOT change any bucket
  *    below: the toggle only activates an EXISTING vendored `Buff` reached via
  *    `grantsBuffs`, and none of these archetype features grant, reflavor, or
- *    modify a performance via a vendored buff of their own — there is still
- *    no mechanism to hang a NEW or MODIFIED performance on without hand-
- *    authoring a bespoke buff per archetype (the "don't invent one" line).
- *    Any archetype feature that grants a NEW performance, reflavors
- *    an existing one, or changes performance action economy/rounds-cost —
- *    whether or not it's structurally paired via `pairedBaseFeatureUuid` to
- *    one of the ten performance-type base features (Inspire Competence,
- *    Suggestion, Mass Suggestion, Dirge of Doom, Frightening Tune, Inspire
- *    Greatness, Inspire Heroics, Jack of All Trades, Soothing Performance,
- *    Deadly Performance) — is bucketed `subsystem`, full stop, even when its
- *    own prose describes a clean, precisely-scaling number (e.g. Filidh's
- *    Echoes of Nature's Song, Busker's Quick Hands — both real numbers,
- *    both explicitly activated via "bardic performance"/"stunt" mechanics
- *    with no vendored buff of their own to hang the generic toggle on). A
- *    handful of features
- *    happen to be PAIRED to one of those ten uuids purely for suppression
- *    bookkeeping while their own content is NOT a performance at all
- *    (Archaeologist's/Sandman's Trap Sense, Archaeologist's Evasion/Advanced
- *    Talent, Archivist's mis-described Probable Path, Wasteland Chronicler's
- *    Wasteland Specialist) — these are classified by their own content, not
- *    by the blanket performance note; each says so explicitly.
+ *    modify a performance via a vendored buff of their own — there is still no
+ *    mechanism to hang a NEW or MODIFIED performance on without hand-
+ *    authoring a bespoke buff per archetype (the "don't invent one" line). Any
+ *    archetype feature that grants a NEW performance, reflavors an existing
+ *    one, or changes performance action economy/rounds-cost — whether or not
+ *    it's structurally paired via `pairedBaseFeatureUuid` to one of the ten
+ *    performance-type base features (Inspire Competence, Suggestion, Mass
+ *    Suggestion, Dirge of Doom, Frightening Tune, Inspire Greatness, Inspire
+ *    Heroics, Jack of All Trades, Soothing Performance, Deadly Performance) —
+ *    is bucketed `subsystem`, full stop, even when its own prose describes a
+ *    clean, precisely-scaling number (e.g. Filidh's Echoes of Nature's Song,
+ *    Busker's Quick Hands — both real numbers, both explicitly activated via
+ *    "bardic performance"/"stunt" mechanics with no vendored buff of their own
+ *    to hang the generic toggle on). A handful of features happen to be PAIRED
+ *    to one of those ten uuids purely for suppression bookkeeping while their
+ *    own content is NOT a performance at all (Archaeologist's/Sandman's Trap
+ *    Sense, Archaeologist's Evasion/Advanced Talent, Archivist's mis-described
+ *    Probable Path, Wasteland Chronicler's Wasteland Specialist) — these are
+ *    classified by their own content, not by the blanket performance note;
+ *    each says so explicitly.
  *
  * 2. **Bardic Knowledge is the one base bard feature with real vendored
  *    numbers** (`max(1, floor(@class.unlevel/2))` on `skill.knowledge`,
@@ -2569,10 +2567,10 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
 /**
  * ── BARD_ARCHETYPE_EFFECTS_EXTRACTED ──────────────────────────────────────
  *
- * Machine-extracted mechanical effects for bard archetype class features
- * (issue #45, wave 2). Clean-room from the published PF1 rules — the
- * vendored prose this was extracted from (`archetype-features.json`) is OGL,
- * so reading it is fine; no Foundry source was consulted (DESIGN.md §6).
+ * Machine-extracted mechanical effects for bard archetype class features (wave
+ * 2). Clean-room from the published PF1 rules — the vendored prose this was
+ * extracted from (`archetype-features.json`) is OGL, so reading it is fine; no
+ * Foundry source was consulted (DESIGN.md §6).
  *
  * Only `numeric` features (per `BARD_ARCHETYPE_FEATURE_CLASSIFICATION`
  * above) get an entry here. `bard:archaeologist:archaeologist-s-luck:1` is

@@ -1,15 +1,14 @@
 /**
  * Tracked phantoms (`CharacterDoc.build.phantom`) — the Occult Adventures
- * Spiritualist's eidolon-like companion, modeled as its OWN trackable
- * creature (HD/BAB/saves/AC/attacks/skills), mirroring `companion.ts`'s
- * shape and posture closely (own HD/BAB/saves, unlike `familiar.ts`'s
+ * Spiritualist's eidolon-like companion, modeled as its OWN trackable creature
+ * (HD/BAB/saves/AC/attacks/skills), mirroring `companion.ts`'s shape and
+ * posture closely (own HD/BAB/saves, unlike `familiar.ts`'s
  * borrow-the-master's-numbers approach). Clean-room from the published PF1
- * rules (Occult Adventures "Spiritualist" class, the "Phantom" class
- * feature, and the "Emotional Focus" subsystem) — paraphrased from
- * aonprd.com/d20pfsrd.com during authoring (issue #65); no Foundry source was
- * consulted (see DESIGN §6). Foundry's GPL system code is never used as
- * anything but a behavioral oracle in tests, per the repo's clean-room
- * discipline.
+ * rules (Occult Adventures "Spiritualist" class, the "Phantom" class feature,
+ * and the "Emotional Focus" subsystem) — paraphrased from
+ * aonprd.com/d20pfsrd.com during authoring; no Foundry source was consulted
+ * (see DESIGN §6). Foundry's GPL system code is never used as anything but a
+ * behavioral oracle in tests, per the repo's clean-room discipline.
  *
  * Phantom Basics (PF1 Occult Adventures "Phantom"):
  *   - The phantom has its OWN Hit Dice, BAB, and saves — like an animal
@@ -60,9 +59,9 @@
  *     which reproduces the published 1st-level values (Small 1d4, Large 1d8)
  *     exactly). No primary/secondary natural-attack halving is modeled here
  *     (matches `familiar.ts`'s existing posture) — moot in practice, since
- *     both of a phantom's slams are the SAME attack form and would resolve
- *     to both-primary under `natural-attacks.ts`'s own rule anyway (issue
- *     #68, see `companion.ts`, which now uses that shared module).
+ *     both of a phantom's slams are the SAME attack form and would resolve to
+ *     both-primary under `natural-attacks.ts`'s own rule anyway (see
+ *     `companion.ts`, which now uses that shared module).
  *   - Skills: the phantom's Emotional Focus grants exactly two class skills,
  *     with bonus ranks always equal to its Hit Dice (PF1 RAW) — modeled as
  *     the phantom's only two numerically-tracked skills (unlike
@@ -70,11 +69,12 @@
  *     skills" choice to key off of).
  *   - Damage reduction, Devotion, Deliver Touch Spells, Incorporeal Flight,
  *     Magic Attacks, Darkvision, Link, and Share Spells are all surfaced as
- *     display-only special-ability chips (see {@link PHANTOM_SPECIAL_ABILITY_DETAIL}) —
- *     same posture as `companion.ts`'s Devotion/Multiattack chips; this
- *     module has no DR/resistance block, fly-speed movement mode wiring, or
- *     touch-spell-delivery mechanic of its own (matches `familiar.ts`'s
- *     explicit "no DR/resistance block ... at all yet" scope note).
+ *     display-only special-ability chips (see {@link
+ *     PHANTOM_SPECIAL_ABILITY_DETAIL}) — same posture as `companion.ts`'s
+ *     Devotion/Multiattack chips; this module has no DR/resistance block,
+ *     fly-speed movement mode wiring, or touch-spell-delivery mechanic of its
+ *     own (matches `familiar.ts`'s explicit "no DR/resistance block... at all
+ *     yet" scope note).
  *   - Conditions: the phantom has its OWN active-conditions list
  *     (`live.phantom.conditions`), independent of the spiritualist's
  *     `live.conditions` — routed through the exact same `routeSharedBuffs`

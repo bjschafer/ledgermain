@@ -223,7 +223,7 @@ function ResourceRow({
   onRemove?: () => void;
   /** Buff ids this pool's power can activate (see `DerivedResourcePool.linkedBuffIds`) — omitted for manual pools. */
   linkedBuffIds?: string[];
-  /** Hand-authored toggleable effects with no `RefData.buffs` entry (see `DerivedResourcePool.tableOptions`, issue #65). */
+  /** Hand-authored toggleable effects with no `RefData.buffs` entry (see `DerivedResourcePool.tableOptions`). */
   tableOptions?: ToggleBuffOption[];
   refData?: RefData;
   activeBuffs?: CharacterDoc["live"]["activeBuffs"];
@@ -349,10 +349,10 @@ function LinkedBuffToggle({
   const buff = refData.buffs[buffId] ?? SYNTHETIC_LINKED_BUFFS[buffId];
   if (!buff) return null;
   const active = activeBuffs.find((b) => b.buffId === buffId);
-  // `applyGrantedTempHp` (issue #67) syncs `live.hp.temp` to whatever this
-  // toggle just changed about `DerivedSheet.hp.grantedTemp` (e.g. entering/
-  // leaving Unchained Rage) — a no-op for every linked buff that doesn't
-  // grant temp HP, since its before/after granted totals are both 0.
+  // `applyGrantedTempHp` syncs `live.hp.temp` to whatever this toggle just
+  // changed about `DerivedSheet.hp.grantedTemp` (e.g. entering/ leaving
+  // Unchained Rage) — a no-op for every linked buff that doesn't grant temp
+  // HP, since its before/after granted totals are both 0.
   const toggle = () =>
     update((d) => applyGrantedTempHp(d, toggleLinkedBuff(d, buff, casterLevel), refData));
 
@@ -382,16 +382,15 @@ function LinkedBuffToggle({
 
 /**
  * Activate/deactivate a hand-authored `ToggleBuffOption` with no
- * `RefData.buffs` entry (issue #65: inquisitor Judgments, skald Inspired
- * Rage — see `DerivedResourcePool.tableOptions`). Same shape/styling as
- * {@link LinkedBuffToggle}, but keyed by `ActiveBuff.effectTag` via
- * `toggleTableBuff` instead of `buffId` via `toggleLinkedBuff` — these
- * options carry their own `changes`/`contextNotes` directly rather than
- * pointing at a vendored buff, so there's no `RefData.buffs` LOOKUP needed
- * here; `refData` is still threaded through to `applyGrantedTempHp` (issue
- * #67), a no-op today (none of the current table-buff options grant tempHp)
- * but wired the same way as `LinkedBuffToggle` for a future one to work for
- * free.
+ * `RefData.buffs` entry (inquisitor Judgments, skald Inspired Rage — see
+ * `DerivedResourcePool.tableOptions`). Same shape/styling as {@link
+ * LinkedBuffToggle}, but keyed by `ActiveBuff.effectTag` via `toggleTableBuff`
+ * instead of `buffId` via `toggleLinkedBuff` — these options carry their own
+ * `changes`/`contextNotes` directly rather than pointing at a vendored buff,
+ * so there's no `RefData.buffs` LOOKUP needed here; `refData` is still
+ * threaded through to `applyGrantedTempHp`, a no-op today (none of the current
+ * table-buff options grant tempHp) but wired the same way as
+ * `LinkedBuffToggle` for a future one to work for free.
  */
 function TableBuffToggle({
   option,
@@ -432,18 +431,18 @@ function TableBuffToggle({
 }
 
 /**
- * Brawler's Martial Flexibility (issue #65): lets the player record which
- * combat feat is currently "borrowed" (PF1 RAW: move/swift/free/immediate
- * action depending on brawler level, lasts 1 minute — the action-type
- * distinction isn't tracked separately, see `live.martialFlexibilityFeatId`'s
- * doc comment). Sits right below the Martial Flexibility resource row.
- * Restricted to feats tagged "Combat" (same tag `model/featSlots.ts`'s
- * `combat` slot type checks) — RAW also requires meeting the feat's
- * prerequisites, which this picker does NOT validate (soft posture, matching
- * the rest of the app's feat pickers). A borrowed feat with a modeled STATIC
- * effect in `@pf1/engine` `feat-effects.ts` applies for real (see
- * `collect.ts`'s Martial Flexibility block); this chip is the always-honest
- * display layer regardless of whether the numeric effect wired through.
+ * Brawler's Martial Flexibility: lets the player record which combat feat is
+ * currently "borrowed" (PF1 RAW: move/swift/free/immediate action depending on
+ * brawler level, lasts 1 minute — the action-type distinction isn't tracked
+ * separately, see `live.martialFlexibilityFeatId`'s doc comment). Sits right
+ * below the Martial Flexibility resource row. Restricted to feats tagged
+ * "Combat" (same tag `model/featSlots.ts`'s `combat` slot type checks) — RAW
+ * also requires meeting the feat's prerequisites, which this picker does NOT
+ * validate (soft posture, matching the rest of the app's feat pickers). A
+ * borrowed feat with a modeled STATIC effect in `@pf1/engine`
+ * `feat-effects.ts` applies for real (see `collect.ts`'s Martial Flexibility
+ * block); this chip is the always-honest display layer regardless of whether
+ * the numeric effect wired through.
  */
 function MartialFlexibilityPicker({
   doc,
@@ -564,19 +563,18 @@ function ElementalDefensePanel({
 }
 
 /**
- * Occultist Mental Focus investment (issue #65): once-per-day division of
- * the Mental Focus pool among known implements (`live.occultistFocusInvested`
- * — see that field's schema doc comment for why this is `live.*`, not a
- * `build.*` pick, and why `model/rest.ts`'s `restNewDay` deliberately leaves
- * it untouched). Sits right below the Mental Focus resource row; only
- * schools currently known (`build.occultistImplements`) get a number input.
- * Transmutation's Physical Enhancement resonant power additionally exposes
- * an ability-score radio group (`live.occultistPhysicalEnhancementAbility`),
- * shown once 3+ focus is invested there (below that, the power grants no
- * bonus at all — see `@pf1/engine` `occultist-implements.ts`'s
- * `cappedFocusBonus`). The total-invested-vs-pool-max comparison is a soft
- * hint only, never blocking (same posture as every other budget in this
- * app).
+ * Occultist Mental Focus investment: once-per-day division of the Mental Focus
+ * pool among known implements (`live.occultistFocusInvested` — see that
+ * field's schema doc comment for why this is `live.*`, not a `build.*` pick,
+ * and why `model/rest.ts`'s `restNewDay` deliberately leaves it untouched).
+ * Sits right below the Mental Focus resource row; only schools currently known
+ * (`build.occultistImplements`) get a number input. Transmutation's Physical
+ * Enhancement resonant power additionally exposes an ability-score radio group
+ * (`live.occultistPhysicalEnhancementAbility`), shown once 3+ focus is
+ * invested there (below that, the power grants no bonus at all — see
+ * `@pf1/engine` `occultist-implements.ts`'s `cappedFocusBonus`). The
+ * total-invested-vs-pool-max comparison is a soft hint only, never blocking
+ * (same posture as every other budget in this app).
  */
 function MentalFocusInvestmentPanel({
   doc,

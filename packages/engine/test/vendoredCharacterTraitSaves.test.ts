@@ -1,8 +1,8 @@
 /**
- * Hand-computed fixtures for `VENDORED_CHARACTER_TRAIT_SAVE_NOTES` (issue
- * #74). Mirrors `vendoredRacialTraitSaves.test.ts`, but resolves character
- * traits through `doc.build.traits` (see `traits.test.ts`'s vendored-trait
- * block) rather than `doc.build.vendoredRacialTraits`.
+ * Hand-computed fixtures for `VENDORED_CHARACTER_TRAIT_SAVE_NOTES`. Mirrors
+ * `vendoredRacialTraitSaves.test.ts`, but resolves character traits through
+ * `doc.build.traits` (see `traits.test.ts`'s vendored-trait block) rather than
+ * `doc.build.vendoredRacialTraits`.
  */
 
 import { describe, expect, it } from "bun:test";

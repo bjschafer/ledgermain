@@ -91,12 +91,12 @@ function resolvedFeatureName(featureName: string): string {
 
 /**
  * Cleric domain tag (`Domain.tag`) -> the specific feat that domain hands the
- * character as a bonus feat (issue #99). Two domains carry a `bonusFeats`
- * change on the domain doc, but — unlike a class feature named after the feat
- * it grants — the granted feat is named only in the domain's description prose
- * ("...gains @UUID[...]{Blind-Fight} as a bonus feat"), so the feat identity
- * can't be recovered from the change alone. Hand-authored from that prose,
- * same clean-room posture as `FEATURE_NAME_OVERRIDES`. Values are feat names
+ * character as a bonus feat. Two domains carry a `bonusFeats` change on the
+ * domain doc, but — unlike a class feature named after the feat it grants —
+ * the granted feat is named only in the domain's description prose ("...gains
+ * @UUID[...]{Blind-Fight} as a bonus feat"), so the feat identity can't be
+ * recovered from the change alone. Hand-authored from that prose, same
+ * clean-room posture as `FEATURE_NAME_OVERRIDES`. Values are feat names
  * (lowercased, trimmed) resolved through `featIdByName`.
  */
 const DOMAIN_GRANTED_FEATS: Record<string, string> = {
@@ -143,11 +143,11 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
       out.push({ featId, featName, classTag: cls.tag, featureName: feature.name });
     }
   }
-  // Cleric domain fixed bonus feats (issue #99 — Darkness grants Blind-Fight,
-  // Rune grants Scribe Scroll). Gated on the character actually having cleric
-  // levels; a stale domain tag on a non-cleric grants nothing. `clericDomains`
-  // holds domain AND subdomain tags, but only these two top-level domains carry
-  // a fixed-feat grant, so an unmatched tag (any subdomain, any other domain)
+  // Cleric domain fixed bonus feats (Darkness grants Blind-Fight, Rune grants
+  // Scribe Scroll). Gated on the character actually having cleric levels; a
+  // stale domain tag on a non-cleric grants nothing. `clericDomains` holds
+  // domain AND subdomain tags, but only these two top-level domains carry a
+  // fixed-feat grant, so an unmatched tag (any subdomain, any other domain)
   // simply falls through.
   if (doc.identity.classes.some((c) => c.tag === "cleric")) {
     for (const tag of doc.build.clericDomains ?? []) {
@@ -165,8 +165,8 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
     }
   }
 
-  // Rogue talents that grant a fixed feat outright (issue #65 — "Finesse
-  // Rogue" grants Weapon Finesse, no player-chosen target needed; see
+  // Rogue talents that grant a fixed feat outright ("Finesse Rogue" grants
+  // Weapon Finesse, no player-chosen target needed; see
   // `ROGUE_TALENTS[id].grantsFeat` in `@pf1/engine` `rogue-talents.ts`), same
   // "talent grants a feat" shape as Rogue (Unchained)'s vendored "Finesse
   // Training (UC)" -> `FEATURE_NAME_OVERRIDES` entry above, but sourced from
@@ -195,12 +195,12 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
 }
 
 /**
- * A typed restriction on which feats may fill a class-granted bonus-feat
- * slot (issue #54: Fighter combat feats, Wizard metamagic/item creation/Spell
- * Mastery, etc; issue #57: Ranger combat style / Sorcerer bloodline / Monk
- * limited lists). `"generic"` means unrestricted — the pre-#54 behavior, and
- * the fallback for any `bonusFeats`-granting feature this module doesn't yet
- * recognize (never regresses an unrecognized feature to *zero* slots).
+ * A typed restriction on which feats may fill a class-granted bonus-feat slot
+ * (Fighter combat feats, Wizard metamagic/item creation/Spell Mastery, etc;
+ * Ranger combat style / Sorcerer bloodline / Monk limited lists). `"generic"`
+ * means unrestricted — the earlier behavior, and the fallback for any
+ * `bonusFeats`-granting feature this module doesn't yet recognize (never
+ * regresses an unrecognized feature to *zero* slots).
  */
 export type FeatSlotType =
   | { kind: "generic" }
@@ -224,11 +224,11 @@ export interface ClassFeatSlot {
 
 /**
  * Base-class `bonusFeats`-granting feature name (trimmed/lowercased) -> the
- * slot type its free slots restrict to (issue #54), plus a display source
- * label. Ranger's combat style and Sorcerer's bloodline resolve against the
- * character's own choice (`doc.build.combatStyle` / `sorcererBloodline`);
- * absent either choice, the slots stay generic (unrestricted) rather than
- * inventing a restriction the player hasn't picked yet.
+ * slot type its free slots restrict to, plus a display source label. Ranger's
+ * combat style and Sorcerer's bloodline resolve against the character's own
+ * choice (`doc.build.combatStyle` / `sorcererBloodline`); absent either
+ * choice, the slots stay generic (unrestricted) rather than inventing a
+ * restriction the player hasn't picked yet.
  */
 function baseFeatureSlotType(
   featureName: string,
@@ -250,12 +250,11 @@ function baseFeatureSlotType(
         : { type: GENERIC_SLOT, source: "Sorcerer bloodline (choose a bloodline to restrict)" };
     }
     case "bloodline feat (blo)": {
-      // Bloodrager's own "Bloodline Feat (BLO)" class feature (issue #65) —
-      // same shape as sorcerer's above, but resolved against
-      // `doc.build.bloodragerBloodline` / `BLOODRAGER_BLOODLINES` (a
-      // distinct table — bloodrager bonus-feat lists differ from the
-      // same-named sorcerer bloodline's list; see `bloodrager-
-      // bloodlines.ts`'s doc comment).
+      // Bloodrager's own "Bloodline Feat (BLO)" class feature — same shape as
+      // sorcerer's above, but resolved against `doc.build.bloodragerBloodline`
+      // / `BLOODRAGER_BLOODLINES` (a distinct table — bloodrager bonus-feat
+      // lists differ from the same-named sorcerer bloodline's list; see
+      // `bloodrager- bloodlines.ts`'s doc comment).
       const bloodline = doc.build.bloodragerBloodline;
       return bloodline
         ? { type: { kind: "bloodragerBloodline", bloodline }, source: "Bloodrager bloodline" }
@@ -264,13 +263,12 @@ function baseFeatureSlotType(
     case "combat style feat": {
       // `effectiveCombatStyleId` (not the raw `doc.build.combatStyle` field)
       // so an archetype-locked style is honored even if the stored field is
-      // stale — see `rangerStyleRestriction` (issue #59). In practice this
-      // base-feature case is only reached for a ranger with NO style-locking
-      // archetype: every archetype in `RANGER_ARCHETYPE_STYLE_RULES` that
-      // locks or suppresses the style also reflavors this exact class
-      // feature, which suppresses its base grant via the normal
-      // paired-swap mechanism (`activeArchetypeSwaps`) before this function
-      // ever runs.
+      // stale — see `rangerStyleRestriction`. In practice this base-feature
+      // case is only reached for a ranger with NO style-locking archetype:
+      // every archetype in `RANGER_ARCHETYPE_STYLE_RULES` that locks or
+      // suppresses the style also reflavors this exact class feature, which
+      // suppresses its base grant via the normal paired-swap mechanism
+      // (`activeArchetypeSwaps`) before this function ever runs.
       const style = effectiveCombatStyleId(doc);
       return style
         ? { type: { kind: "combatStyle", style }, source: "Ranger combat style" }
@@ -286,12 +284,12 @@ function baseFeatureSlotType(
  * the archetype-granted `bonusFeats` reflavors in `ARCHETYPE_FEATURE_EFFECTS`
  * (`archetype-effects.ts`) that this module can type more precisely than
  * "generic". Each ranger combat-style archetype here is locked to one exact
- * style (issue #59 — see `RANGER_ARCHETYPE_STYLE_RULES` in `model/ranger.ts`
- * for the authoritative rule each of these mirrors, and `@pf1/engine`
- * `ranger.ts`'s `COMBAT_STYLES` for the "elemental"/"aquatic-prowess"
- * archetype-exclusive style trees authored for Elemental Envoy/Wave Warden).
- * Crusader's restricted armor/shield/weapon list is approximated with the
- * broad `combat` type (unrelated to ranger styles).
+ * style (see `RANGER_ARCHETYPE_STYLE_RULES` in `model/ranger.ts` for the
+ * authoritative rule each of these mirrors, and `@pf1/engine` `ranger.ts`'s
+ * `COMBAT_STYLES` for the "elemental"/"aquatic-prowess" archetype-exclusive
+ * style trees authored for Elemental Envoy/Wave Warden). Crusader's restricted
+ * armor/shield/weapon list is approximated with the broad `combat` type
+ * (unrelated to ranger styles).
  *
  * NOT listed here (by design, not oversight):
  *  - `ranger:toxophilite:combat-style-feat:2` — Toxophilite offers a real
@@ -351,11 +349,11 @@ const ARCHETYPE_SLOT_TYPES: Readonly<Record<string, { type: FeatSlotType; source
 
 /**
  * Toxophilite's slot type follows the player's own `doc.build.combatStyle`
- * pick (narrowed to `archery`/`crossbow` by `RangerPicker` — issue #59)
- * rather than a static constant, since the archetype offers a real choice
- * between the two rather than locking to one. Returns `undefined` (falling
- * back to `GENERIC_SLOT` in the walk below) for any other feature id, or
- * when the stored style isn't one of the two allowed ids yet.
+ * pick (narrowed to `archery`/`crossbow` by `RangerPicker`) rather than a
+ * static constant, since the archetype offers a real choice between the two
+ * rather than locking to one. Returns `undefined` (falling back to
+ * `GENERIC_SLOT` in the walk below) for any other feature id, or when the
+ * stored style isn't one of the two allowed ids yet.
  */
 function toxophiliteSlotType(
   featureId: string,
@@ -369,14 +367,14 @@ function toxophiliteSlotType(
 
 /**
  * Typed decomposition of every "bonusFeats"-targeting change from the
- * character's granted, resolved class features (and archetype reflavors) —
- * the free SLOTS a class hands out (issue #54/#57). Fixed feat grants (name
- * matches a feat; see `grantedFeats`) are skipped, since the specific feat is
- * auto-applied rather than budgeted. Mirrors the granted-feature walk in
- * `collect.ts`: each class feature's formula is evaluated with
- * `@class.unlevel`/`@class.level` bound to *that* class's level.
+ * character's granted, resolved class features (and archetype reflavors) — the
+ * free SLOTS a class hands out. Fixed feat grants (name matches a feat; see
+ * `grantedFeats`) are skipped, since the specific feat is auto-applied rather
+ * than budgeted. Mirrors the granted-feature walk in `collect.ts`: each class
+ * feature's formula is evaluated with `@class.unlevel`/`@class.level` bound to
+ * *that* class's level.
  *
- * Archetype-aware (issue #40), matching `collect.ts`'s two adjustments:
+ * Archetype-aware, matching `collect.ts`'s two adjustments:
  *   1. A base-class feature swapped out by an active archetype (e.g. a ranger
  *      archetype that trades Combat Style Feat for a companion) no longer
  *      contributes its `bonusFeats` slots — the swap is gated on the
@@ -437,10 +435,10 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
     }
   }
 
-  // Archetype-granted bonus-feat slots (issue #40, extended by issue #45's
-  // machine-extracted table via `resolveArchetypeFeatureEffect`) — gated the
-  // same way as the base features above: the granting class's level must
-  // reach the archetype feature's `level`.
+  // Archetype-granted bonus-feat slots (extended by the machine-extracted
+  // table via `resolveArchetypeFeatureEffect`) — gated the same way as the
+  // base features above: the granting class's level must reach the archetype
+  // feature's `level`.
   for (const archetypeId of doc.build.archetypes ?? []) {
     const archetype = refData.archetypes[archetypeId];
     if (!archetype) continue;
@@ -467,12 +465,12 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
     }
   }
 
-  // Rogue talents that grant a generic bonus-feat SLOT (issue #65 — "Combat
-  // Trick"; see `ROGUE_TALENTS[id].bonusFeatSlot` in `@pf1/engine`
-  // `rogue-talents.ts`), one slot per instance taken. `build.rogueTalents` is
-  // a de-duped id list (same as `witchHexes`/`monkKiPowers`), so Combat Trick
-  // can only be taken once here — matches the RAW rule that a rogue talent
-  // may not be selected twice unless it specifically says otherwise.
+  // Rogue talents that grant a generic bonus-feat SLOT ("Combat Trick"; see
+  // `ROGUE_TALENTS[id].bonusFeatSlot` in `@pf1/engine` `rogue-talents.ts`),
+  // one slot per instance taken. `build.rogueTalents` is a de-duped id list
+  // (same as `witchHexes`/`monkKiPowers`), so Combat Trick can only be taken
+  // once here — matches the RAW rule that a rogue talent may not be selected
+  // twice unless it specifically says otherwise.
   for (const talentId of doc.build.rogueTalents ?? []) {
     const talent = ROGUE_TALENTS[talentId];
     if (!talent?.bonusFeatSlot) continue;
@@ -497,9 +495,9 @@ export function expectedFeatCount(doc: CharacterDoc, refData: RefData): number {
 
 /**
  * The unrestricted ("generic") portion of the feat budget: the base level
- * progression, the Human racial bonus feat, and the GM/homebrew addend.
- * Split out from `expectedFeatCount` for `model/featSlots.ts` (issue #54/#57),
- * which needs this figure separately from the typed class-bonus slots.
+ * progression, the Human racial bonus feat, and the GM/homebrew addend. Split
+ * out from `expectedFeatCount` for `model/featSlots.ts`, which needs this
+ * figure separately from the typed class-bonus slots.
  */
 export function baseFeatSlotCount(doc: CharacterDoc, refData: RefData): number {
   const charLevel = totalLevel(doc);
@@ -509,9 +507,9 @@ export function baseFeatSlotCount(doc: CharacterDoc, refData: RefData): number {
   // Equivalently: ceil(charLevel / 2).
   const baseFeatCount = Math.ceil(charLevel / 2);
 
-  // +1 bonus feat for Human race — unless an alternate racial trait swapped out
-  // the Human bonus feat (e.g. Focused Study, which suppresses `bonusFeats`;
-  // issue #35).
+  // +1 bonus feat for Human race — unless an alternate racial trait swapped
+  // out the Human bonus feat (e.g. Focused Study, which suppresses
+  // `bonusFeats`).
   const race = refData.races[doc.identity.race];
   const humanBonus =
     race?.name === "Human" && !suppressedRaceTargets(doc, refData).has("bonusFeats") ? 1 : 0;
@@ -524,9 +522,9 @@ export function baseFeatSlotCount(doc: CharacterDoc, refData: RefData): number {
 
 /**
  * One taken instance of a feat — the primary (`build.feats`) or a
- * `build.extraFeats` entry (issue #58: RAW-repeatable feats). `instanceId`
- * is the feat id itself for the primary instance (stable, one primary per
- * `featId`) or the `extraFeats` entry's own id for an extra one.
+ * `build.extraFeats` entry (RAW-repeatable feats). `instanceId` is the feat id
+ * itself for the primary instance (stable, one primary per `featId`) or the
+ * `extraFeats` entry's own id for an extra one.
  */
 export interface FeatInstance {
   instanceId: string;
@@ -537,11 +535,11 @@ export interface FeatInstance {
 }
 
 /**
- * Every feat instance the character has chosen — the primary instance of
- * each `build.feats` entry, followed by every `build.extraFeats` entry
- * (issue #58) — in stable order. Used wherever budget/slot logic or the UI
- * needs to walk instances rather than distinct feat ids (a repeatable feat
- * taken twice counts, and is assignable, as two separate instances).
+ * Every feat instance the character has chosen — the primary instance of each
+ * `build.feats` entry, followed by every `build.extraFeats` entry — in stable
+ * order. Used wherever budget/slot logic or the UI needs to walk instances
+ * rather than distinct feat ids (a repeatable feat taken twice counts, and is
+ * assignable, as two separate instances).
  */
 export function featInstances(doc: CharacterDoc): FeatInstance[] {
   const primary: FeatInstance[] = doc.build.feats.map((featId) => ({
@@ -559,14 +557,14 @@ export function featInstances(doc: CharacterDoc): FeatInstance[] {
   return [...primary, ...extra];
 }
 
-/** The number of feat instances the character has currently chosen (primary + extra, issue #58). */
+/** The number of feat instances the character has currently chosen (primary + extra). */
 export function chosenFeatCount(doc: CharacterDoc): number {
   return doc.build.feats.length + (doc.build.extraFeats?.length ?? 0);
 }
 
 /**
- * Chosen feat INSTANCES that count against the slot budget (issue #58: every
- * extra instance of a repeatable feat consumes a slot too): manually-added
+ * Chosen feat INSTANCES that count against the slot budget (every extra
+ * instance of a repeatable feat consumes a slot too): manually-added
  * duplicates of class-granted feats (e.g. a wizard who added Scribe Scroll by
  * hand before auto-granting existed) are excluded, so they never eat a slot.
  * Compare this — not `chosenFeatCount` — against `expectedFeatCount`.
@@ -578,9 +576,9 @@ export function chosenFeatCountExcludingGranted(doc: CharacterDoc, refData: RefD
 
 /**
  * Set or clear the player's choice for a choice-based feat's PRIMARY instance.
- * Pass `null` to clear the choice (e.g. resetting after a mistake).
- * Does not validate that `featId` is present in `doc.build.feats`. For a 2nd+
- * instance (issue #58), use `setExtraFeatChoice` instead.
+ * Pass `null` to clear the choice (e.g. resetting after a mistake). Does not
+ * validate that `featId` is present in `doc.build.feats`. For a 2nd+ instance,
+ * use `setExtraFeatChoice` instead.
  */
 export function setFeatChoice(
   doc: CharacterDoc,
@@ -599,10 +597,10 @@ export function setFeatChoice(
 }
 
 /**
- * Set or clear the player's choice for one `build.extraFeats` instance
- * (issue #58 — a 2nd+ instance of a repeatable feat, e.g. the second Weapon
- * Focus taken for a different weapon). Pass `null` to clear. A no-op if
- * `instanceId` doesn't match any extra instance.
+ * Set or clear the player's choice for one `build.extraFeats` instance (a 2nd+
+ * instance of a repeatable feat, e.g. the second Weapon Focus taken for a
+ * different weapon). Pass `null` to clear. A no-op if `instanceId` doesn't
+ * match any extra instance.
  */
 export function setExtraFeatChoice(
   doc: CharacterDoc,
@@ -649,11 +647,11 @@ const SCHOOLS_OF_MAGIC: readonly { id: string; name: string }[] = [
 ];
 
 /**
- * Feats that need a player-chosen target for DISPLAY purposes only — no
- * entry exists (or should ever be added) for these slugs in the engine's
+ * Feats that need a player-chosen target for DISPLAY purposes only — no entry
+ * exists (or should ever be added) for these slugs in the engine's
  * FEAT_EFFECTS/FEAT_EFFECTS_EXTRACTED tables, so `resolveFeatEffect` never
- * resolves them and no Change is emitted (issue #55, following the "don't
- * invent a target" guidance from feat-classification.ts):
+ * resolves them and no Change is emitted (following the "don't invent a
+ * target" guidance from feat-classification.ts):
  *
  *  - Spell Focus / Greater Spell Focus: a per-school spell save DC bonus has
  *    no engine target anywhere in targets.ts (see feat-classification.ts's
@@ -680,16 +678,16 @@ const DISPLAY_ONLY_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> 
 };
 
 /**
- * Martial/Exotic Weapon Proficiency's weapon pick (issue #81) — unlike
+ * Martial/Exotic Weapon Proficiency's weapon pick — unlike
  * `DISPLAY_ONLY_FEAT_CHOICES` above, this choice IS mechanically consumed:
  * `@pf1/engine`'s `deriveProficiencies` (`proficiency.ts`) reads it straight
  * off `doc.build.featChoices`/`extraFeats[].choiceId` to grant proficiency
  * with the chosen weapon, which feeds the real -4 non-proficient attack
  * penalty. It's just never routed through `resolveFeatEffect`'s Change
- * pipeline — "am I proficient with this weapon" is a set-membership fact,
- * not a stacking bonus, so there's no `Change` for it to `build()`. Kept in
- * its own map (rather than folded into `DISPLAY_ONLY_FEAT_CHOICES`) so that
- * map's own "no engine effect at all" claim stays true.
+ * pipeline — "am I proficient with this weapon" is a set-membership fact, not
+ * a stacking bonus, so there's no `Change` for it to `build`. Kept in its own
+ * map (rather than folded into `DISPLAY_ONLY_FEAT_CHOICES`) so that map's own
+ * "no engine effect at all" claim stays true.
  */
 const MECHANICAL_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> = {
   "martial-weapon-proficiency": { type: "weapon", label: "Weapon" },
@@ -780,24 +778,23 @@ export function featChoiceOptions(
 /**
  * The feat's display name, with its chosen target appended when one is set
  * (e.g. "Weapon Focus: Longsword", "Improved Critical: Falchion", "Spell
- * Focus: Evocation") — issue #55's rendering requirement, shared by the
- * builder's FeatsSection and the Play-tab FeatsPanel so the two never drift.
- * Falls back to the bare feat name when the feat has no choice descriptor or
- * no choice has been stored yet.
+ * Focus: Evocation") — the rendering requirement, shared by the builder's
+ * FeatsSection and the Play-tab FeatsPanel so the two never drift. Falls back
+ * to the bare feat name when the feat has no choice descriptor or no choice
+ * has been stored yet.
  */
 export function featDisplayName(feat: Feat, doc: CharacterDoc, refData: RefData): string {
   return featInstanceDisplayName(feat, doc.build.featChoices?.[feat.id], doc, refData);
 }
 
 /**
- * Display name for ONE feat instance (issue #58), given that instance's own
- * `choiceId` (the primary instance's `featChoices[featId]`, or a
- * `build.extraFeats` entry's `choiceId`) — the same "<name>: <choice>"
- * rendering as `featDisplayName`, generalized to per-instance choices so
- * `FeatsSection`/`FeatsPanel` can render each of a repeatable feat's
- * instances (e.g. "Weapon Focus: Falchion", "Weapon Focus: Longbow")
- * distinctly. `featDisplayName` is a thin wrapper over this for the primary
- * instance.
+ * Display name for ONE feat instance, given that instance's own `choiceId`
+ * (the primary instance's `featChoices[featId]`, or a `build.extraFeats`
+ * entry's `choiceId`) — the same "<name>: <choice>" rendering as
+ * `featDisplayName`, generalized to per-instance choices so
+ * `FeatsSection`/`FeatsPanel` can render each of a repeatable feat's instances
+ * (e.g. "Weapon Focus: Falchion", "Weapon Focus: Longbow") distinctly.
+ * `featDisplayName` is a thin wrapper over this for the primary instance.
  */
 export function featInstanceDisplayName(
   feat: Feat,

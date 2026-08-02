@@ -131,14 +131,14 @@ export function setCombatStyle(doc: CharacterDoc, id: string | null): CharacterD
 }
 
 /**
- * How a ranger archetype constrains the normal free-choice combat style pick
- * (issue #59): some archetypes lock the ranger into one specific style
- * (Bow Nomad → Archery, Elemental Envoy → the archetype-exclusive Elemental
- * style, ...), one narrows the choice to a short list (Toxophilite: Archery
- * or Crossbow), and two replace the whole bonus-feat-tree mechanism with an
- * unrelated subsystem (Trophy Hunter's gunslinger grit/deeds, Poison
- * Darter's rogue talents/alchemist discoveries) that this project doesn't
- * model as a `CombatStyle` feat list at all.
+ * How a ranger archetype constrains the normal free-choice combat style pick:
+ * some archetypes lock the ranger into one specific style (Bow Nomad →
+ * Archery, Elemental Envoy → the archetype-exclusive Elemental style,...), one
+ * narrows the choice to a short list (Toxophilite: Archery or Crossbow), and
+ * two replace the whole bonus-feat-tree mechanism with an unrelated subsystem
+ * (Trophy Hunter's gunslinger grit/deeds, Poison Darter's rogue
+ * talents/alchemist discoveries) that this project doesn't model as a
+ * `CombatStyle` feat list at all.
  */
 export type RangerStyleRestriction =
   | { kind: "free" }
@@ -160,16 +160,16 @@ interface ArchetypeStyleRule {
  * combat style pick. Hand-verified against each archetype's own vendored
  * `description` prose (see `archetype-features.json`) and, for Elemental
  * Envoy/Wave Warden, the two new archetype-exclusive `COMBAT_STYLES` entries
- * authored for issue #59 (`@pf1/engine` `ranger.ts`). Only archetypes
- * present in the vendored slice are listed — see the issue #59 audit for the
- * full inventory of ranger archetypes that were checked but don't restrict
- * the style pick (most archetypes leave Combat Style Feat untouched).
+ * authored for the ranger-style work (`@pf1/engine` `ranger.ts`). Only archetypes present
+ * in the vendored slice are listed — see the audit for the full inventory of
+ * ranger archetypes that were checked but don't restrict the style pick (most
+ * archetypes leave Combat Style Feat untouched).
  *
  * Not covered here: Sword-Devil's "Second Combat Style" (11th level) adds a
- * SECOND free style pick on top of the first rather than restricting the
- * first — `CharacterDoc.build.combatStyle` is a single field, so modeling a
- * second concurrent style is out of scope for this map (reported as a known
- * limitation, issue #59).
+ * SECOND free style pick on top of the first rather than restricting the first
+ * — `CharacterDoc.build.combatStyle` is a single field, so modeling a second
+ * concurrent style is out of scope for this map (reported as a known
+ * limitation).
  */
 const RANGER_ARCHETYPE_STYLE_RULES: Readonly<Record<string, ArchetypeStyleRule>> = {
   // Locked to a single CRB/UC style — the archetype's own prose names it outright.
@@ -227,11 +227,10 @@ export function effectiveCombatStyleId(doc: CharacterDoc): string | undefined {
 }
 
 /**
- * Style ids only reachable by locking into a granting archetype (issue #59's
- * "elemental"/"aquatic-prowess" additions to `@pf1/engine`'s
- * `COMBAT_STYLES`) — excluded from the free-choice picker so a plain ranger
- * (or one with an unrelated archetype) can't select a style their character
- * has no access to.
+ * Style ids only reachable by locking into a granting archetype
+ * ("elemental"/"aquatic-prowess" additions to `@pf1/engine`'s `COMBAT_STYLES`)
+ * — excluded from the free-choice picker so a plain ranger (or one with an
+ * unrelated archetype) can't select a style their character has no access to.
  */
 const ARCHETYPE_EXCLUSIVE_STYLE_IDS: ReadonlySet<string> = new Set([
   "elemental",

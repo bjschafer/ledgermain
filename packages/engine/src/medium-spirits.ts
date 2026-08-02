@@ -1,8 +1,8 @@
 /**
- * Clean-room PF1 Medium legendary-spirit table (Occult Adventures, issue
- * #65): hand-authored from published rules (aonprd.com's "Medium" class page
- * and "Spirits - Medium" index, cross-checked against d20pfsrd.com's per-
- * spirit pages), NOT from the vendored data pack.
+ * Clean-room PF1 Medium legendary-spirit table (Occult Adventures):
+ * hand-authored from published rules (aonprd.com's "Medium" class page and
+ * "Spirits - Medium" index, cross-checked against d20pfsrd.com's per- spirit
+ * pages), NOT from the vendored data pack.
  *
  * Data provenance — audited before authoring, per this project's "audit
  * vendored data first" discipline (`shaman-spirits.ts`/`psychic-
@@ -10,23 +10,23 @@
  * (individually vendored as standalone `class-abilities` entries, just not
  * linked from their class def), the Medium's 6 legendary spirits (Archmage,
  * Champion, Guardian, Hierophant, Marshal, Trickster) carry NO vendored
- * entries at all in `packages/data-pipeline/data/` — confirmed by direct
- * grep across every `data/*.json` file for each spirit's name; the vendored
- * Medium class links only generic stub features ("Spirit Bonus", "Spirit
- * Surge", "Taboo", "Location Channel", ...) with empty `changes: []` and no
+ * entries at all in `packages/data-pipeline/data/` — confirmed by direct grep
+ * across every `data/*.json` file for each spirit's name; the vendored Medium
+ * class links only generic stub features ("Spirit Bonus", "Spirit Surge",
+ * "Taboo", "Location Channel",...) with empty `changes: []` and no
  * spirit-specific breakdown (only the Medium's own ARCHETYPES — Kami Medium,
- * Medium of the Master, Nexian Channeler, ... — appear in
+ * Medium of the Master, Nexian Channeler,... — appear in
  * `archetype-features.json`, none of which substitute for the base spirit
  * list). So this table is entirely hand-authored, same "no upstream JSON to
  * normalize" shape as `monk-ki-powers.ts`/`rogue-talents.ts`.
  *
- * THE LIVE-CHOICE SHAPE (this is the point of the issue): a medium's spirit
- * is chosen fresh each day via the séance ritual (PF1 RAW, "Séance": "each
- * morning ... a medium can perform a special ritual ... to determine which
- * spirit ... the medium channels for that day") — genuinely daily live
- * state, NOT a permanent build choice like a shaman's Spirit or an oracle's
- * Mystery. Modeled as `live.mediumSpirit` (see that field's schema doc
- * comment for why it's intentionally NOT reset by `restNewDay`, mirroring
+ * THE LIVE-CHOICE SHAPE (the whole point of this module): a medium's spirit is
+ * chosen fresh each day via the séance ritual (PF1 RAW, "Séance": "each
+ * morning... a medium can perform a special ritual... to determine which
+ * spirit... the medium channels for that day") — genuinely daily live state,
+ * NOT a permanent build choice like a shaman's Spirit or an oracle's Mystery.
+ * Modeled as `live.mediumSpirit` (see that field's schema doc comment for why
+ * it's intentionally NOT reset by `restNewDay`, mirroring
  * `live.occultistFocusInvested`'s precedent) plus `live.mediumInfluence`, a
  * genuinely numeric 0-5 counter (see that field's doc comment).
  *
@@ -42,8 +42,8 @@
  *
  * Which spirits' Spirit Bonus targets are real, unconditional `Change`s vs.
  * situational/unmodeled prose (audited against `targets.ts`'s
- * `APPLIED_TARGETS` — the single source of truth for what `compute()`
- * actually consumes):
+ * `APPLIED_TARGETS` — the single source of truth for what `compute` actually
+ * consumes):
  *   - "Concentration checks" (Archmage, Hierophant's "Wisdom checks" via
  *     Ask the Spirits-adjacent prose) and any bare "<ability> checks" (Str/
  *     Int/Wis/Cha) are NOT modeled — `targets.ts` explicitly lists
@@ -490,29 +490,27 @@ export const MEDIUM_SPIRIT_TAGS: readonly string[] = SPIRIT_LIST.map((s) => s.ta
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.mediumSpirits` (see that type's doc comment)
- * is the FULL published catalog (40 entries after junk filtering), prose
- * only. Same chassis caveat as `psychic-disciplines.ts`/
- * `occultist-implements.ts`'s overlays: the hand-authored `MEDIUM_SPIRITS`
- * table above is the ONLY source of Spirit Bonus targets/Séance Boon/
- * influence penalty/Spirit Powers — a vendored-only spirit (an outsider-type
- * spirit or a named historical/NPC legendary spirit) has no structured data
- * for those, so the merge produces a hand-authored branch (`vendoredOnly:
- * false`, vendored prose attached) and a vendored-only stub branch
- * (`vendoredOnly: true`, name + prose only).
+ * `RefData.mediumSpirits` (see that type's doc comment) is the FULL published
+ * catalog (40 entries after junk filtering), prose only. Same chassis caveat
+ * as `psychic-disciplines.ts`/ `occultist-implements.ts`'s overlays: the
+ * hand-authored `MEDIUM_SPIRITS` table above is the ONLY source of Spirit
+ * Bonus targets/Séance Boon/ influence penalty/Spirit Powers — a vendored-only
+ * spirit (an outsider-type spirit or a named historical/NPC legendary spirit)
+ * has no structured data for those, so the merge produces a hand-authored
+ * branch (`vendoredOnly: false`, vendored prose attached) and a vendored-only
+ * stub branch (`vendoredOnly: true`, name + prose only).
  *
- * Collision audit: all 6 hand-authored spirits (Archmage, Champion,
- * Guardian, Hierophant, Marshal, Trickster) matched a vendored entry by
- * normalized name — zero misses, zero aliases needed. The 34 vendored-only
- * entries are a mix of 12 outsider-type spirits (Psychic Anthology: Aeon,
- * Agathion, Angel, Archon, Azata, Daemon, Demon, Devil, Psychopomp, ...) and
- * 22 named historical/NPC legendary spirits from later splatbooks (e.g.
- * Abrogail Thrune I, Occult Realms) — several of the latter are flavored
- * variants of one of the 6 core archetypes per their own prose, but this
- * table does NOT attempt to infer or copy that archetype's mechanics onto
- * them (that would be a fabricated, unverified claim) — they stay
- * `vendoredOnly: true`, selectable for a séance but granting no Spirit Bonus
- * targets/Séance Boon/Spirit Powers.
+ * Collision audit: all 6 hand-authored spirits (Archmage, Champion, Guardian,
+ * Hierophant, Marshal, Trickster) matched a vendored entry by normalized name
+ * — zero misses, zero aliases needed. The 34 vendored-only entries are a mix
+ * of 12 outsider-type spirits (Psychic Anthology: Aeon, Agathion, Angel,
+ * Archon, Azata, Daemon, Demon, Devil, Psychopomp,...) and 22 named
+ * historical/NPC legendary spirits from later splatbooks (e.g. Abrogail Thrune
+ * I, Occult Realms) — several of the latter are flavored variants of one of
+ * the 6 core archetypes per their own prose, but this table does NOT attempt
+ * to infer or copy that archetype's mechanics onto them (that would be a
+ * fabricated, unverified claim) — they stay `vendoredOnly: true`, selectable
+ * for a séance but granting no Spirit Bonus targets/Séance Boon/Spirit Powers.
  */
 
 const MEDIUM_SPIRIT_NAME_ALIASES: Record<string, string> = {};

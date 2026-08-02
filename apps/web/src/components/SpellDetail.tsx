@@ -55,11 +55,11 @@ function damageLabel(part: { text: string; types: string[]; count?: number }): s
  * (`(min(10,@cl))d6` → `"4d6"`) — to a real number for this character.
  *
  * `spellLevel` is the spell's EFFECTIVE level, which the save DC and
- * concentration DC are computed from — callers applying Heighten Spell pass the
- * heightened level here (issue #71). `slotLevel`, when it differs from
- * `spellLevel`, is the higher slot the spell occupies after metamagic and is
- * surfaced as its own line WITHOUT touching the DC (RAW: only Heighten changes
- * the DC). `metamagic` lists the applied feats as display-only context notes.
+ * concentration DC are computed from — callers applying Heighten Spell pass
+ * the heightened level here. `slotLevel`, when it differs from `spellLevel`,
+ * is the higher slot the spell occupies after metamagic and is surfaced as its
+ * own line WITHOUT touching the DC (RAW: only Heighten changes the DC).
+ * `metamagic` lists the applied feats as display-only context notes.
  */
 export function SpellDetail({
   spell,

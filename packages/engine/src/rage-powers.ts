@@ -1,24 +1,24 @@
 /**
  * Clean-room PF1 rage power table (Core Rulebook + Advanced Player's Guide
- * "core" set, issue #65/#67): hand-authored from the published rules
- * (verified against aonprd.com/d20pfsrd.com), mirroring `witch-hexes.ts`'s /
+ * "core" set): hand-authored from the published rules (verified against
+ * aonprd.com/d20pfsrd.com), mirroring `witch-hexes.ts`'s /
  * `alchemist-discoveries.ts`'s posture — rage powers are NOT part of the
  * vendored Foundry data pack (the Barbarian/Barbarian Unchained class defs
  * only link the generic "Rage Powers" stub `ClassFeature`, no per-power
  * breakdown — confirmed: `class-features.json` carries no per-rage-power
  * entries), so there is no upstream JSON to normalize.
  *
- * Scope: FULL vendored parity (issue #74) — 243 hand-authored entries,
- * matching every one of the 243 uniquely-named rage powers in the pinned
- * Pf Data 1e catalog (`packages/data-pipeline/data/rage-powers.json`, 244
- * raw rows — see the "vendored catalog overlay" section below for why 244
- * raw rows collapse to 243 unique names). Started from a 29-entry seed (the
- * 23 Core Rulebook rage powers plus 6 commonly-taken Advanced Player's Guide
- * additions: Superstition, Witch Hunter, Good For What Ails You, Internal
- * Fortitude, Spell Sunder, Swift Foot) and closed the remaining ~215-entry
- * gap (Totem chains, Bloodrager-shared powers, Ultimate-line additions, the
- * Linnorm Death Curses, ...) across three batches (same posture as
- * `witch-hexes.ts`'s/`alchemist-discoveries.ts`'s own #74 sweeps): batch 1
+ * Scope: FULL vendored parity — 243 hand-authored entries, matching every one
+ * of the 243 uniquely-named rage powers in the pinned Pf Data 1e catalog
+ * (`packages/data-pipeline/data/rage-powers.json`, 244 raw rows — see the
+ * "vendored catalog overlay" section below for why 244 raw rows collapse to
+ * 243 unique names). Started from a 29-entry seed (the 23 Core Rulebook rage
+ * powers plus 6 commonly-taken Advanced Player's Guide additions:
+ * Superstition, Witch Hunter, Good For What Ails You, Internal Fortitude,
+ * Spell Sunder, Swift Foot) and closed the remaining ~215-entry gap (Totem
+ * chains, Bloodrager-shared powers, Ultimate-line additions, the Linnorm Death
+ * Curses,...) across three batches (same posture as
+ * `witch-hexes.ts`'s/`alchemist-discoveries.ts`'s own sweeps): batch 1
  * (A-F, +70), batch 2 (G-R, +106), batch 3 (S-Z, +38). A former 30th seed
  * entry, "Sixth Sense", was removed (see the note below) rather than counted.
  *
@@ -33,16 +33,16 @@
  * Modelling posture (mirrors witch-hexes.ts's honesty bar): every rage power
  * here is either a per-rage/per-round ACTIVATED ability (Powerful Blow,
  * Renewed Vigor, Strength Surge, Surprise Accuracy, Guarded Stance, Rolling
- * Dodge, ...) or a bonus that only applies WHILE RAGING specifically
+ * Dodge,...) or a bonus that only applies WHILE RAGING specifically
  * (Superstition's save bonus vs. spells, the Raging Climber/Leaper/Swimmer
- * skill bonuses, Low-Light Vision, Scent, ...). The WHILE-RAGING shape used
- * to need a "gate this build choice's Change by whether a specific buff is
+ * skill bonuses, Low-Light Vision, Scent,...). The WHILE-RAGING shape used to
+ * need a "gate this build choice's Change by whether a specific buff is
  * currently active" mechanism the engine didn't have (unlike a genuinely
  * always-on class feature or feat, or a buff's OWN `changes[]`, which
- * naturally only apply while that buff instance is active) — issue #75 adds
- * exactly that mechanism (`Change.activeWhenBuff`, gated at collect-time by
- * `@pf1/engine` `collect.ts`'s `buffGateSatisfied`), so a clean subset of
- * the while-raging entries below is now promoted off `displayOnly`:
+ * naturally only apply while that buff instance is active) — adds exactly that
+ * mechanism (`Change.activeWhenBuff`, gated at collect-time by `@pf1/engine`
+ * `collect.ts`'s `buffGateSatisfied`), so a clean subset of the while-raging
+ * entries below is now promoted off `displayOnly`:
  *
  *   - **Raging Climber** / **Raging Swimmer**: RAW is an ENHANCEMENT bonus
  *     equal to barbarian level on Climb / Swim checks respectively — NOT the
@@ -54,15 +54,15 @@
  *     the way Acrobatics does), typed `enhancement` (so it correctly does
  *     NOT stack with another enhancement source on the same skill, per RAW).
  *   - **Swift Foot**: RAW is a flat +5 ft. ENHANCEMENT bonus to land speed
- *     while raging (confirmed unscaled — d20pfsrd.com), takeable up to 3
- *     times with stacking effect. The rage-power picker (`build.ragePowers`,
- *     a plain string-id array via `toggleRagePower` in
+ *     while raging (confirmed unscaled — d20pfsrd.com), takeable up to 3 times
+ *     with stacking effect. The rage-power picker (`build.ragePowers`, a plain
+ *     string-id array via `toggleRagePower` in
  *     `apps/web/src/model/ragePowers.ts`) has no duplicate-instance support
  *     today (unlike the "Extra Rage Power"-style repeatable-FEAT mechanism
- *     from issue #58's `build.extraFeats`) — this ships the single-instance
- *     +5 ft. version only; taking Swift Foot a 2nd/3rd time has no
- *     additional effect until a rage-power duplicate-instance mechanism
- *     exists (same class of documented limitation, not a new one).
+ *     from the `build.extraFeats`) — this ships the single-instance +5 ft.
+ *     version only; taking Swift Foot a 2nd/3rd time has no additional effect
+ *     until a rage-power duplicate-instance mechanism exists (same class of
+ *     documented limitation, not a new one).
  *
  * **Superstition** composes both gates at once: its morale bonus is scoped to
  * saves "against spells, supernatural abilities, and spell-like abilities"
@@ -167,7 +167,7 @@
  * note calls out by name) suggests a fuller correctness audit of the CRB
  * portion is worth doing as a follow-up, separate from this promotion sweep.
  *
- * Batch 2 (G-R) of the #74 catalog sweep added 106 entries and, along the
+ * Batch 2 (G-R) of the catalog sweep added 106 entries and, along the
  * way, corrected a claim from the batch-1 promotion-bar writeup above: senses
  * (`sensedv`/`sensell`/...) do NOT share the beneficial-"set"-grant hazard
  * `landSpeed`/`flySpeed`/... have (`compute.ts`'s `applySpeedTarget` really
@@ -198,7 +198,7 @@
  * alignment-scoped deflection AC, which stays displayOnly). Ice Linnorm Death
  * Curse's +1 cold damage is ungated, matching its Cairn/Crag/Fjord siblings.
  *
- * Batch 3 (S-Z) of the #74 catalog sweep added the final 38 entries, closing
+ * Batch 3 (S-Z) of the catalog sweep added the final 38 entries, closing
  * the table out to full vendored parity, plus a two-entry LEGACY revisit:
  *
  *   - **Sun Totem** (fire resistance 10 while raging) is the middle tier of
@@ -254,9 +254,9 @@ export interface RagePowerDef {
   editions: readonly RagePowerEdition[];
   /**
    * Typed modifiers this power grants — empty for most entries (see file doc
-   * comment). The handful promoted by issue #75 carry a real `Change` gated
-   * by `activeWhenBuff` (see `WHILE_RAGING`), applied only while the
-   * character has the (chained or Unchained) Rage buff active.
+   * comment). The handful promoted by carry a real `Change` gated by
+   * `activeWhenBuff` (see `WHILE_RAGING`), applied only while the character
+   * has the (chained or Unchained) Rage buff active.
    */
   changes: Change[];
   /** Non-mechanical reminders (exact numbers, scaling, activation cost, prerequisites). */
@@ -302,14 +302,14 @@ const note = (text: string, target = "allChecks"): ContextNote => ({ target, tex
 const BOTH: readonly RagePowerEdition[] = ["barbarian", "barbarianUnchained"];
 
 /**
- * The "while raging" buff gate (issue #75): matches EITHER vendored Rage
- * buff — chained "Rage" (`RefData.buffs` id `UgjpRD8vtiSWRxuL`) or
- * Unchained "Rage (Unchained)" (`ciAO4KwMonUzAGY0`) — since this table is
- * shared by both barbarian editions (see file doc comment) and a rage power
- * doesn't care which edition granted it, only whether the character is
- * CURRENTLY raging. Both ids pinned against real vendored refdata by a
- * fixture test in `ragePowers.test.ts` rather than hardcoded from memory —
- * see that test for the `loadRefData()` lookup that confirms them.
+ * The "while raging" buff gate: matches EITHER vendored Rage buff — chained
+ * "Rage" (`RefData.buffs` id `UgjpRD8vtiSWRxuL`) or Unchained "Rage
+ * (Unchained)" (`ciAO4KwMonUzAGY0`) — since this table is shared by both
+ * barbarian editions (see file doc comment) and a rage power doesn't care
+ * which edition granted it, only whether the character is CURRENTLY raging.
+ * Both ids pinned against real vendored refdata by a fixture test in
+ * `ragePowers.test.ts` rather than hardcoded from memory — see that test for
+ * the `loadRefData` lookup that confirms them.
  *
  * Deliberately does NOT include skald Inspired Rage's hand-authored
  * `effectTag: "ragingSong:inspiredRage"` (`raging-song.ts`): RAW, an ally
@@ -677,7 +677,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     ],
   },
 
-  /* ---------------------------------------------------------- #74 sweep, batch 1 (A-F) -- */
+  /* ---------------------------------------------------------- catalog sweep, batch 1 (A-F) -- */
 
   {
     id: "abyssalBlood",
@@ -1433,7 +1433,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     ],
   },
 
-  /* ---------------------------------------------------------- #74 sweep, batch 2 (G-R) -- */
+  /* ---------------------------------------------------------- catalog sweep, batch 2 (G-R) -- */
 
   {
     id: "ghostRager",
@@ -2729,7 +2729,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     ],
   },
 
-  /* ---------------------------------------------------------- #74 sweep, batch 3 (S-Z) -- */
+  /* ---------------------------------------------------------- catalog sweep, batch 3 (S-Z) -- */
 
   {
     id: "savageDirtyTrick",
@@ -3208,14 +3208,14 @@ export function ragePowersForEdition(edition: RagePowerEdition): RagePowerDef[] 
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.ragePowers` (see that type's doc comment) is
- * the FULL published catalog (~244 entries after junk filtering), prose
- * only. The hand-verified table above stays authoritative for MECHANICS —
- * this section only merges the two for BROWSING (the picker) and for
- * resolving a picked id back to a definition (`collect.ts`/`archetypes.ts`),
- * mirroring `traits.ts`'s `resolveTrait` fallback-to-`doc.build.homebrew`
- * pattern: hand-authored first, vendored catalog as the fallback source of
- * definitions rather than a second table to keep in sync by hand.
+ * `RefData.ragePowers` (see that type's doc comment) is the FULL published
+ * catalog (~244 entries after junk filtering), prose only. The hand-verified
+ * table above stays authoritative for MECHANICS — this section only merges the
+ * two for BROWSING (the picker) and for resolving a picked id back to a
+ * definition (`collect.ts`/`archetypes.ts`), mirroring `traits.ts`'s
+ * `resolveTrait` fallback-to-`doc.build.homebrew` pattern: hand-authored
+ * first, vendored catalog as the fallback source of definitions rather than a
+ * second table to keep in sync by hand.
  *
  * Matching is by NORMALIZED NAME, never id — the two tables use disjoint id
  * spaces by construction (this file's camelCase vs. the vendored dataset's
@@ -3227,14 +3227,14 @@ export function ragePowersForEdition(edition: RagePowerEdition): RagePowerDef[] 
  * Collision audit (all 29 original hand-authored entries, run against the
  * pinned Pf Data 1e slice): every one matched a vendored entry by normalized
  * name, so no `NAME_ALIASES` entry is needed — the source's own
- * spelling/wording matched ours exactly (case-insensitively). (The former
- * 30th entry, Sixth Sense, matched nothing under any key — one of the tells
- * it wasn't real; see the file doc comment.) The batch-1 (A-F) sweep re-ran
- * this same audit for its 70 additions, batch 2 (G-R) for its 106, and batch
- * 3 (S-Z) for its final 38 — all three batches: zero collisions, zero
- * aliases needed. FINAL STATE (issue #74, full parity): all 243
- * hand-authored entries matched a vendored entry by normalized name; `RAGE_POWER_NAME_ALIASES`
- * stays empty across the entire table.
+ * spelling/wording matched ours exactly (case-insensitively). (The former 30th
+ * entry, Sixth Sense, matched nothing under any key — one of the tells it
+ * wasn't real; see the file doc comment.) The batch-1 (A-F) sweep re-ran this
+ * same audit for its 70 additions, batch 2 (G-R) for its 106, and batch 3
+ * (S-Z) for its final 38 — all three batches: zero collisions, zero aliases
+ * needed. FINAL STATE (full parity): all 243 hand-authored entries matched a
+ * vendored entry by normalized name; `RAGE_POWER_NAME_ALIASES` stays empty
+ * across the entire table.
  *
  * One name COLLIDES within the vendored catalog itself: "Guarded Stance"
  * appears twice — the Core Rulebook original (`guarded_stance`, no

@@ -40,9 +40,8 @@ interface KineticistPickerProps {
 }
 
 /**
- * Kineticist Elemental Focus / Expanded Element / Wild Talents (issue #65).
- * Three sections mirroring `ImplementPicker`'s "multiple budgeted pools in
- * one picker" shape:
+ * Kineticist Elemental Focus / Expanded Element / Wild Talents. Three sections
+ * mirroring `ImplementPicker`'s "multiple budgeted pools in one picker" shape:
  *
  * - **Elemental Focus** — single-choice dropdowns (like `OrderPicker`) for
  *   the primary element (`build.kineticistElement`) and the two Expanded

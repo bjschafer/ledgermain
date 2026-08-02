@@ -24,15 +24,15 @@ interface SlayerTalentPickerProps {
 }
 
 /**
- * Slayer talent selection (issue #74, hand-table follow-up) — slayer only.
- * Browses the full published catalog (`mergedSlayerTalentCatalog` — every
- * vendored entry, overlaid with the hand-verified table on a name match),
- * same convention as `RagePowerPicker`. A `badge-modeled` "M" marks which
- * entries carry a real, live mechanical effect (`changes`); everything else
- * is prose-only, shown via the same collapsible `FeatureDescription` the
- * Class Features list uses. "Advanced" tagged entries (10th level+) are
- * chosen in place of a normal pick, same as ninja master tricks — not an
- * extra budget slot. Free-choice, never blocks past the expected count.
+ * Slayer talent selection (hand-table follow-up) — slayer only. Browses the
+ * full published catalog (`mergedSlayerTalentCatalog` — every vendored entry,
+ * overlaid with the hand-verified table on a name match), same convention as
+ * `RagePowerPicker`. A `badge-modeled` "M" marks which entries carry a real,
+ * live mechanical effect (`changes`); everything else is prose-only, shown via
+ * the same collapsible `FeatureDescription` the Class Features list uses.
+ * "Advanced" tagged entries (10th level+) are chosen in place of a normal
+ * pick, same as ninja master tricks — not an extra budget slot. Free-choice,
+ * never blocks past the expected count.
  */
 export function SlayerTalentPicker({ doc, refData, update }: SlayerTalentPickerProps) {
   const isSlayer = doc.identity.classes.some((c) => c.tag === "slayer");

@@ -848,9 +848,9 @@ const SOURCE_LABEL: Record<ImportReport["source"], string> = {
 
 /**
  * Renders the mapped/unmapped tally + full lists from a Pathbuilder/Hero Lab
- * import (issue #3) — a native Ledgermain export never produces a report
- * (see `handleImportChange` above), so this only ever appears after a
- * best-effort external import.
+ * import — a native Ledgermain export never produces a report (see
+ * `handleImportChange` above), so this only ever appears after a best-effort
+ * external import.
  */
 function ImportReportPanel({ report }: { report: ImportReport }) {
   return (
@@ -947,12 +947,12 @@ function WhatsNewPanel() {
 }
 
 /**
- * A short, honest, player-language rundown of content that's deliberately
- * not covered yet (issue #88) — the Settings-tab counterpart to `SearchMiss`
- * (which flags a gap right where a player hits one, mid-search). Collapsed
- * by default via `Explainer`, matching the house convention that reference
- * prose stays out of the way until asked for. Content lives in
- * `model/coverageNotes.ts`, maintained by hand.
+ * A short, honest, player-language rundown of content that's deliberately not
+ * covered yet — the Settings-tab counterpart to `SearchMiss` (which flags a
+ * gap right where a player hits one, mid-search). Collapsed by default via
+ * `Explainer`, matching the house convention that reference prose stays out of
+ * the way until asked for. Content lives in `model/coverageNotes.ts`,
+ * maintained by hand.
  */
 function CoverageNotesPanel() {
   return (

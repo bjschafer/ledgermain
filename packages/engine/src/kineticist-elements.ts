@@ -1,5 +1,5 @@
 /**
- * Clean-room PF1 kineticist ELEMENT table (Occult Adventures, issue #65 —
+ * Clean-room PF1 kineticist ELEMENT table (Occult Adventures —
  * "the largest single subsystem" in the occult-classes backlog): hand-
  * authored from the published rules (verified against
  * legacy.aonprd.com/d20pfsrd.com's Kineticist class page and Elements
@@ -20,15 +20,15 @@
  * blasts are hand-authored below (13 core-element-only + 9 requiring Void
  * and/or Wood).
  *
- * SIMPLE BLASTS: four of the seven elements (air, water, void, wood) RAW
- * offer a CHOICE of two simple blasts each — air blast OR electric blast,
- * water blast OR cold blast, gravity blast OR negative blast, wood blast OR
- * positive blast — picked when the element is gained ({@link
+ * SIMPLE BLASTS: four of the seven elements (air, water, void, wood) RAW offer
+ * a CHOICE of two simple blasts each — air blast OR electric blast, water
+ * blast OR cold blast, gravity blast OR negative blast, wood blast OR positive
+ * blast — picked when the element is gained ({@link
  * KineticistElementDef.alternateSimpleBlast}, recorded in
  * `build.kineticistSimpleBlasts`). Expanding into an element you already have
- * grants the OTHER blast rather than a second choice, which is why
- * {@link knownSimpleBlasts} counts occurrences of a tag across
- * {primary, ...expanded} rather than deduping them.
+ * grants the OTHER blast rather than a second choice, which is why {@link
+ * knownSimpleBlasts} counts occurrences of a tag across {primary,...expanded}
+ * rather than deduping them.
  *
  * That distinction is load-bearing for exactly two composite blasts whose RAW
  * prerequisites name specific ALTERNATE blasts rather than elements (Blizzard
@@ -39,9 +39,9 @@
  * Every other composite is element-gated as before.
  *
  * CLASS SKILLS: each element grants 2 bonus class skills (Elemental Focus:
- * "grants her access to specific wild talents ... and additional class
- * skills" — Occult Adventures, per-element Elemental Focus entries, verified
- * against aonprd.com). Wired into `compute.ts`'s `classSkillSet` alongside
+ * "grants her access to specific wild talents... and additional class skills"
+ * — Occult Adventures, per-element Elemental Focus entries, verified against
+ * aonprd.com). Wired into `compute.ts`'s `classSkillSet` alongside
  * `cavalierOrder`/`oracleMystery`'s own bonus class skills, gated on the
  * character having kineticist levels — see the primary/expanded-element loop
  * in `computeSkills`.
@@ -585,7 +585,7 @@ export const KINETICIST_COMPOSITE_BLASTS: readonly KineticistCompositeBlastDef[]
  * composite (`requiredElements.length === 1`) needs that element as BOTH the
  * primary AND a separately-chosen expanded pick (RAW's "expand her
  * understanding of an element she already has"); a cross-element composite
- * needs both required tags anywhere in {primary, ...expanded}.
+ * needs both required tags anywhere in {primary,...expanded}.
  *
  * An entry carrying `requiredBlasts` is gated on the SIMPLE BLASTS known
  * ({@link knownSimpleBlasts}) instead — the air/water blast choice decides
@@ -593,9 +593,9 @@ export const KINETICIST_COMPOSITE_BLASTS: readonly KineticistCompositeBlastDef[]
  * and both remain out of reach if she picked air blast + water blast.
  *
  * `catalog` defaults to the 22 hand-authored entries but accepts
- * `mergedCompositeBlastCatalog`'s vendored-overlay list (issue #74, full
- * parity with the 22 hand-authored entries) for a caller that wants
- * vendored prose/sources attached.
+ * `mergedCompositeBlastCatalog`'s vendored-overlay list (full parity with the
+ * 22 hand-authored entries) for a caller that wants vendored prose/sources
+ * attached.
  */
 export function eligibleCompositeBlasts(
   primaryElement: string | undefined,
@@ -620,16 +620,16 @@ export function eligibleCompositeBlasts(
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.kineticWildTalents` also carries every
- * published COMPOSITE BLAST (`kind: "compositeBlast"`, see that type's doc
- * comment) — 22 entries, full parity with this file's 22 hand-authored ones
- * — with a reliable `elements`/`burn` (always 2) parse, same stat-line
- * source `kineticist-wild-talents.ts` documents in full. No `damageType`
- * (physical/energy) is recoverable from the source without parsing free
- * prose ("half bludgeoning/half fire damage" etc. — inconsistent phrasing,
- * not worth the guesswork), so a vendored-only composite blast's
- * `damageType` is left undefined rather than fabricated — safe because nothing
- * downstream (the picker's preview, `eligibleCompositeBlasts`) reads it.
+ * `RefData.kineticWildTalents` also carries every published COMPOSITE BLAST
+ * (`kind: "compositeBlast"`, see that type's doc comment) — 22 entries, full
+ * parity with this file's 22 hand-authored ones — with a reliable
+ * `elements`/`burn` (always 2) parse, same stat-line source
+ * `kineticist-wild-talents.ts` documents in full. No `damageType`
+ * (physical/energy) is recoverable from the source without parsing free prose
+ * ("half bludgeoning/half fire damage" etc. — inconsistent phrasing, not worth
+ * the guesswork), so a vendored-only composite blast's `damageType` is left
+ * undefined rather than fabricated — safe because nothing downstream (the
+ * picker's preview, `eligibleCompositeBlasts`) reads it.
  *
  * Collision audit (all 22 hand-authored entries): every one matched a
  * vendored entry by normalized name — no drift, no alias needed. No name

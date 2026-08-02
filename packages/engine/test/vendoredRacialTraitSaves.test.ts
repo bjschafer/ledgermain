@@ -1,6 +1,6 @@
 /**
- * Hand-computed fixtures for `VENDORED_RACIAL_TRAIT_SAVE_NOTES` (issue #74).
- * Mirrors the doc-building helpers in `racial-traits.test.ts`.
+ * Hand-computed fixtures for `VENDORED_RACIAL_TRAIT_SAVE_NOTES`. Mirrors the
+ * doc-building helpers in `racial-traits.test.ts`.
  *
  * None of the promoted notes embed a `[[...]]` roll formula: the vendored
  * slice's only bracketed `allSavingThrows` expressions are spell resistance

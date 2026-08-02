@@ -1,13 +1,12 @@
 /**
- * Oracle's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (documented in
- * `index.ts`), this file owns BOTH of
- * oracle's pipeline artifacts — `ORACLE_ARCHETYPE_EFFECTS_EXTRACTED` (the
+ * Oracle's slice of the pipeline (wave 2, 2026-07-06). Per the per-class file
+ * convention (documented in `index.ts`), this file owns BOTH of oracle's
+ * pipeline artifacts — `ORACLE_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
- * `ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) —
- * so a future wave working on a different class never has a reason to touch
- * this file; only `index.ts` (the aggregator) needs one new import + one new
- * spread per class.
+ * `ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so
+ * a future wave working on a different class never has a reason to touch this
+ * file; only `index.ts` (the aggregator) needs one new import + one new spread
+ * per class.
  *
  * ── ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION ───────────────────────────────
  *
@@ -59,9 +58,9 @@
  *
  * Also checked and ruled out: `chaSkills`/`dexSkills` (the ability-based
  * skill-GROUP targets) are listed in `targets.ts`'s `UNAPPLIED_TARGET_LABELS`,
- * not `APPLIED_TARGETS` — `compute()` never folds them into a displayed skill
- * total (see `oracle-curses.ts`'s own Wasting-curse doc comment, which
- * authors one anyway purely for vendored-data fidelity, disclosed as inert).
+ * not `APPLIED_TARGETS` — `compute` never folds them into a displayed skill
+ * total (see `oracle-curses.ts`'s own Wasting-curse doc comment, which authors
+ * one anyway purely for vendored-data fidelity, disclosed as inert).
  * Black-Blooded Oracle's Curse of Black Blood has a real "-4 Dex-based skill
  * checks" number that would have used this target had it not already been
  * `blocked` on the mystery/curse-gap grounds above.
@@ -636,9 +635,9 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * ── ORACLE_ARCHETYPE_EFFECTS_EXTRACTED ────────────────────────────────────
  *
  * Machine-extracted mechanical effects for oracle archetype class features
- * (issue #45 wave 2). Clean-room from the published PF1 rules — the vendored
- * prose this was extracted from (`archetype-features.json`) is OGL, so
- * reading it is fine; no Foundry source was consulted (DESIGN.md §6).
+ * (2). Clean-room from the published PF1 rules — the vendored prose this was
+ * extracted from (`archetype-features.json`) is OGL, so reading it is fine; no
+ * Foundry source was consulted (DESIGN.md §6).
  *
  * `archetype-effects.ts`'s hand-verified table has no oracle entries, so
  * there's no precedence collision to worry about for this class — but note

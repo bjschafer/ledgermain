@@ -1,10 +1,10 @@
 /**
- * Pure polymorph-form transitions (issue #70): entering/ending a Wild Shape
- * (or Beast Shape/Elemental Body/Plant Shape spell) transformation, editing
- * the form's free-text label/notes, and the player-entered natural-attack
- * lines — see `@pf1/engine` `polymorph.ts` for the tier/size/element table
- * and the attack-bonus math, and `CharacterDoc.live.activeForm`'s doc
- * comment for the schema shape.
+ * Pure polymorph-form transitions: entering/ending a Wild Shape (or Beast
+ * Shape/Elemental Body/Plant Shape spell) transformation, editing the form's
+ * free-text label/notes, and the player-entered natural-attack lines — see
+ * `@pf1/engine` `polymorph.ts` for the tier/size/element table and the
+ * attack-bonus math, and `CharacterDoc.live.activeForm`'s doc comment for the
+ * schema shape.
  *
  * No separate `build.*` half (unlike `model/companion.ts`/`model/familiar.ts`):
  * a form has no standing configuration to persist between activations, so —

@@ -1,33 +1,31 @@
 /**
- * Clean-room PF1 ninja trick table (Ultimate Combat, issue #65 wave B):
- * hand-authored from the published rules (verified against Archives of
- * Nethys / d20pfsrd — legacy.aonprd.com's Ultimate Combat ninja page and
- * aonprd.com's Ninja Tricks index; no Foundry system source consulted,
- * matching CLAUDE.md's licensing discipline), mirroring
- * `witch-hexes.ts`'/`oracle-revelations.ts`'s posture — ninja tricks are NOT
- * part of the vendored Foundry data pack (the Ninja class def only links the
- * generic "Ninja Tricks"/"Master Tricks" stub `ClassFeature`s, no per-trick
- * breakdown — confirmed: `class-features.json` carries no per-trick entries),
- * so there is no upstream JSON to normalize.
+ * Clean-room PF1 ninja trick table (Ultimate Combat): hand-authored from the
+ * published rules (verified against Archives of Nethys / d20pfsrd —
+ * legacy.aonprd.com's Ultimate Combat ninja page and aonprd.com's Ninja Tricks
+ * index; no Foundry system source consulted, matching CLAUDE.md's licensing
+ * discipline), mirroring `witch-hexes.ts`'/`oracle-revelations.ts`'s posture —
+ * ninja tricks are NOT part of the vendored Foundry data pack (the Ninja class
+ * def only links the generic "Ninja Tricks"/"Master Tricks" stub
+ * `ClassFeature`s, no per-trick breakdown — confirmed: `class-features.json`
+ * carries no per-trick entries), so there is no upstream JSON to normalize.
  *
- * Scope: FULL vendored parity as of issue #74's follow-up sweep — all 65
- * vendored tricks (41 regular from 2nd level, 24 master from 10th), the
- * Ultimate Combat core set (31 tricks + 13 master tricks) plus every
- * splatbook addition the pinned data carries (Legacy of Dragons, Martial
- * Arts Handbook, Champions of Balance, Heroes from the Fringe, Chronicle of
- * Legends, ...), same posture as `witch-hexes.ts`'s issue #74 extension to
- * full-catalog scope.
+ * Scope: FULL vendored parity as of the follow-up sweep — all 65 vendored
+ * tricks (41 regular from 2nd level, 24 master from 10th), the Ultimate Combat
+ * core set (31 tricks + 13 master tricks) plus every splatbook addition the
+ * pinned data carries (Legacy of Dragons, Martial Arts Handbook, Champions of
+ * Balance, Heroes from the Fringe, Chronicle of Legends,...), same posture as
+ * `witch-hexes.ts`'s full-catalog scope.
  *
- * Budget (PF1 Ultimate Combat RAW): "Starting at 2nd level, a ninja gains
- * one ninja trick. She gains one additional ninja trick for every 2 levels
- * attained after 2nd" (2nd, 4th, ..., 20th — 10 total by 20th); "At 10th
- * level, and every two levels thereafter, a ninja can select one of the
- * following master tricks in place of a ninja trick" — master tricks are
- * NOT an extra pick on top of the regular trick budget, just additional
- * options unlocked within the same budget once the ninja reaches 10th (see
- * `model/ninjaTricks.ts` for the budget math, and `WitchHexDef.minLevel`'s
- * doc comment for the identical "in place of" convention witch major/grand
- * hexes use). Soft availability filtering only — never blocks selection.
+ * Budget (PF1 Ultimate Combat RAW): "Starting at 2nd level, a ninja gains one
+ * ninja trick. She gains one additional ninja trick for every 2 levels
+ * attained after 2nd" (2nd, 4th,..., 20th — 10 total by 20th); "At 10th level,
+ * and every two levels thereafter, a ninja can select one of the following
+ * master tricks in place of a ninja trick" — master tricks are NOT an extra
+ * pick on top of the regular trick budget, just additional options unlocked
+ * within the same budget once the ninja reaches 10th (see
+ * `model/ninjaTricks.ts` for the budget math, and `WitchHexDef.minLevel`'s doc
+ * comment for the identical "in place of" convention witch major/grand hexes
+ * use). Soft availability filtering only — never blocks selection.
  *
  * Rogue-talent overlap (RAW, both directions — d20pfsrd, confirmed): a
  * ninja can spend a regular trick pick on "a rogue talent" instead (can't
@@ -45,8 +43,8 @@
  * Modelling posture (mirrors witch-hexes.ts/oracle-revelations.ts's honesty
  * bar): the overwhelming majority of tricks are limited-use ki-activated
  * abilities, bonus feats, or narrow situational/opposed-check bonuses — no
- * flat always-on number on the ninja's own sheet. One trick clears the bar
- * for a real, unconditional `Change` (issue #74 sweep):
+ * flat always-on number on the ninja's own sheet. One trick clears the bar for
+ * a real, unconditional `Change` (sweep):
  *   - Wall Climber (Su) grants a flat, unconditional 20-ft. climb speed on
  *     vertical surfaces (not perfectly smooth ones, nor the underside of a
  *     horizontal surface — an applicability caveat every climb speed shares,
@@ -78,15 +76,15 @@
  * require another specific trick already known — soft-noted only, PF1
  * prereqs are hybrid per CLAUDE.md) or a ki-cost/DC reminder where relevant.
  *
- * The 21 tricks added by the #74 follow-up (bringing the table from 44 to
- * 65 — full vendored parity) were reviewed against the same honesty bar and
- * none cleared it: every one is either ki-activated/limited-use (Kamikaze,
- * Occulted Soul, Kawarimi, ...), a bonus-feat grant (Blood Debt, Kami
- * Warden), a nested modifier to another trick requiring it as a prerequisite
- * (Fractured Mirror needs Shadow Clone, Greater Ki Venom needs Ki Venom,
- * Many Guises needs Deep Cover), or a non-numeric ability (Deep Cover's
- * vigilante identities, Spiritual Companion's familiar, All the Stars in the
- * Sky's shuriken economy) — all stay `displayOnly`.
+ * The 21 tricks added by a later follow-up (bringing the table from 44 to 65 —
+ * full vendored parity) were reviewed against the same honesty bar and none
+ * cleared it: every one is either ki-activated/limited-use (Kamikaze, Occulted
+ * Soul, Kawarimi,...), a bonus-feat grant (Blood Debt, Kami Warden), a nested
+ * modifier to another trick requiring it as a prerequisite (Fractured Mirror
+ * needs Shadow Clone, Greater Ki Venom needs Ki Venom, Many Guises needs Deep
+ * Cover), or a non-numeric ability (Deep Cover's vigilante identities,
+ * Spiritual Companion's familiar, All the Stars in the Sky's shuriken economy)
+ * — all stay `displayOnly`.
  */
 
 import type { Change, ContextNote, NinjaTrick, RefData, SourceRef } from "@pf1/schema";
@@ -585,13 +583,13 @@ export function tricksForTier(tier: NinjaTrickTier): NinjaTrickDef[] {
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.ninjaTricks` (see that type's doc comment) is
- * the FULL published catalog (65 entries after junk filtering), prose only.
- * The hand-authored table above stays authoritative for MECHANICS — this
- * section only merges the two for BROWSING/resolving, mirroring
- * `rage-powers.ts`'s "vendored catalog overlay" section exactly.
+ * `RefData.ninjaTricks` (see that type's doc comment) is the FULL published
+ * catalog (65 entries after junk filtering), prose only. The hand-authored
+ * table above stays authoritative for MECHANICS — this section only merges the
+ * two for BROWSING/resolving, mirroring `rage-powers.ts`'s "vendored catalog
+ * overlay" section exactly.
  *
- * Collision audit (all 65 hand-authored entries, after the #74 follow-up
+ * Collision audit (all 65 hand-authored entries, after a later follow-up
  * brought the table to full parity): 64 matched a vendored entry by
  * normalized name; the lone exception is `advancedTalents` ("Advanced
  * Talents") — the vendored catalog spells the same trick "Advanced Talent"

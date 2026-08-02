@@ -1,21 +1,20 @@
 /**
- * Clean-room PF1 oracle revelation table (DESIGN §6, issue #61): hand-authored
- * from the published Advanced Player's Guide rules (verified against public
- * SRD text/AoN), mirroring `arcanist-exploits.ts`'s posture. As
+ * Clean-room PF1 oracle revelation table (DESIGN §6): hand-authored from the
+ * published Advanced Player's Guide rules (verified against public SRD
+ * text/AoN), mirroring `arcanist-exploits.ts`'s posture. As
  * `oracle-mysteries.ts`'s doc comment already notes, revelations (unlike a
- * mystery's class skills/bonus spells) are NOT structured data anywhere in
- * the vendored Foundry pack — the Oracle class def only links a single
- * generic "Revelation"/"Final Revelation" stub `ClassFeature` (confirmed:
- * `class-features.json` carries no per-revelation entries at all, only the
- * two stubs), so there is no upstream JSON to normalize.
+ * mystery's class skills/bonus spells) are NOT structured data anywhere in the
+ * vendored Foundry pack — the Oracle class def only links a single generic
+ * "Revelation"/"Final Revelation" stub `ClassFeature` (confirmed:
+ * `class-features.json` carries no per-revelation entries at all, only the two
+ * stubs), so there is no upstream JSON to normalize.
  *
- * Scope: revelations for ALL 34 modeled mysteries — the 10 Advanced
- * Player's Guide "core" ones, Solar (Inner Sea Gods), and the 23 splatbook
- * mysteries authored in issue #74's content pass — each with its full
- * published revelation list plus its 20th-level Final Revelation. Most
- * publish exactly 10 revelations; Ascetic (8), Juju (9), and Streets (9)
- * genuinely have fewer RAW. Every mystery here has a matching entry in
- * `ORACLE_MYSTERY_TAGS`.
+ * Scope: revelations for ALL 34 modeled mysteries — the 10 Advanced Player's
+ * Guide "core" ones, Solar (Inner Sea Gods), and the 23 splatbook mysteries
+ * authored in the content pass — each with its full published revelation list
+ * plus its 20th-level Final Revelation. Most publish exactly 10 revelations;
+ * Ascetic (8), Juju (9), and Streets (9) genuinely have fewer RAW. Every
+ * mystery here has a matching entry in `ORACLE_MYSTERY_TAGS`.
  *
  * IDs are mystery-scoped (`<mysteryTag>:<camelCaseName>`) because a handful
  * of revelations share a name across mysteries with identical text (e.g.
@@ -33,29 +32,29 @@
  * Modelling posture (mirrors arcanist-exploits.ts/magus-arcana.ts): the vast
  * majority of revelations are situational, activated, scaling-but-choice-
  * gated, or mechanic-substitution abilities with no flat always-on number the
- * engine tracks (Mental Acuity's inherent Int bonus that scales by WHEN it
- * was taken comes close, but needs per-character "which level did you take
- * this" state this table doesn't carry; see `traits.ts`'s honesty bar).
- * Those stay `displayOnly: true` with `changes: []`; a handful carry a
- * `contextNotes` reminder when the ability requires a nested pick this table
- * doesn't model (which weapon, which combat maneuver, ...) or points at an
- * existing tracked feature (a companion, a bonus feat).
+ * engine tracks (Mental Acuity's inherent Int bonus that scales by WHEN it was
+ * taken comes close, but needs per-character "which level did you take this"
+ * state this table doesn't carry; see `traits.ts`'s honesty bar). Those stay
+ * `displayOnly: true` with `changes: []`; a handful carry a `contextNotes`
+ * reminder when the ability requires a nested pick this table doesn't model
+ * (which weapon, which combat maneuver,...) or points at an existing tracked
+ * feature (a companion, a bonus feat).
  *
  * A separate small set is promoted via `ability-substitution.ts` instead of
  * `changes[]` (`hasAbilitySubstitution: true` — a substitution swaps which
- * ability feeds a term rather than adding to one, so it was never going to
- * be a `Change`): `lore:sidestepSecret` and `lunar:propheticArmor` (Cha
- * instead of Dex to AC and Reflex saves) and `nature:naturesWhispers` (Cha
- * instead of Dex to AC and CMD). Lore Keeper and Intrigue's Whispered
- * Glimpses read the same way in prose (Cha instead of Int/Wis on named
- * skills) but stay `displayOnly` regardless — the substitution registry has
- * no per-skill(-group) slot, only whole-term ones (`ac`, `cmd`, `save.ref`,
- * ...), so a skill-scoped swap has no honest slot to register on; see
- * their own `contextNotes` and `ability-substitution.ts`'s doc comment for
- * why that gap is deliberate rather than an oversight.
+ * ability feeds a term rather than adding to one, so it was never going to be
+ * a `Change`): `lore:sidestepSecret` and `lunar:propheticArmor` (Cha instead
+ * of Dex to AC and Reflex saves) and `nature:naturesWhispers` (Cha instead of
+ * Dex to AC and CMD). Lore Keeper and Intrigue's Whispered Glimpses read the
+ * same way in prose (Cha instead of Int/Wis on named skills) but stay
+ * `displayOnly` regardless — the substitution registry has no
+ * per-skill(-group) slot, only whole-term ones (`ac`, `cmd`, `save.ref`,...),
+ * so a skill-scoped swap has no honest slot to register on; see their own
+ * `contextNotes` and `ability-substitution.ts`'s doc comment for why that gap
+ * is deliberate rather than an oversight.
  *
  * A small, deliberately narrow set of revelations DO carry a real `changes[]`
- * (issue #75-style promotion, same bar as `rage-powers.ts`'s WHILE_RAGING
+ * (the same promotion, same bar as `rage-powers.ts`'s WHILE_RAGING
  * promotions): a genuinely unconditional, always-on flat number with a named
  * (or explicitly untyped) bonus, scaling only on the character's own oracle
  * level via `@classes.oracle.level` — never on a player pick this table

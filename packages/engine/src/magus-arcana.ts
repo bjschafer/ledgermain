@@ -1,19 +1,18 @@
 /**
- * Clean-room PF1 magus arcana table (DESIGN §6, issue #61): hand-authored
- * from the published Ultimate Magic rules (verified against public SRD
- * text/AoN), same posture as `arcanist-exploits.ts` — magus arcana are NOT
- * part of the vendored Foundry data pack (only the class's own
- * spellcasting/BAB/Arcane Pool `uses.maxFormula` class feature is vendored,
- * plus a single generic "Magus Arcana" stub `ClassFeature` with no per-arcana
- * breakdown), so there is no upstream JSON to normalize.
+ * Clean-room PF1 magus arcana table (DESIGN §6): hand-authored from the
+ * published Ultimate Magic rules (verified against public SRD text/AoN), same
+ * posture as `arcanist-exploits.ts` — magus arcana are NOT part of the
+ * vendored Foundry data pack (only the class's own spellcasting/BAB/Arcane
+ * Pool `uses.maxFormula` class feature is vendored, plus a single generic
+ * "Magus Arcana" stub `ClassFeature` with no per-arcana breakdown), so there
+ * is no upstream JSON to normalize.
  *
- * Scope: FULL vendored parity as of issue #74's Phase 5 extension — all 64
- * vendored arcana: the 20 base Ultimate Magic ones plus every later-book
- * addition the pinned data carries (Ultimate Combat's Enduring Blade and
- * Arcane Redoubt/Bane Blade — vendored `sources` attribute those two to UC
- * p. 54, correcting this comment's former Weapon Master's Handbook claim —
- * plus Magic Tactics Toolbox, Heroes of Golarion, race-restricted arcana,
- * and the rest).
+ * Scope: FULL vendored parity as of the Phase 5 extension — all 64 vendored
+ * arcana: the 20 base Ultimate Magic ones plus every later-book addition the
+ * pinned data carries (Ultimate Combat's Enduring Blade and Arcane
+ * Redoubt/Bane Blade — vendored `sources` attribute those two to UC p. 54,
+ * correcting this comment's former Weapon Master's Handbook claim — plus Magic
+ * Tactics Toolbox, Heroes of Golarion, race-restricted arcana, and the rest).
  *
  * Level gating (PF1 RAW: "starting at 3rd level, a magus gains an arcana...
  * at 3rd level and every 3 levels thereafter"): `minLevel` is the earliest
@@ -291,7 +290,7 @@ const ARCANA_LIST: MagusArcanaDef[] = [
     contextNotes: [note("Action-economy option only — no numeric effect to model.")],
     displayOnly: true,
   },
-  // ---- splatbook additions (issue #74 Phase 5; full vendored parity) ----
+  // ---- splatbook additions (full vendored parity) ----
   {
     id: "accurateStrike",
     name: "Accurate Strike",
@@ -871,13 +870,12 @@ export const MAGUS_ARCANA_IDS: readonly string[] = ARCANA_LIST.map((a) => a.id);
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.magusArcana` (see that type's doc comment) is
- * the FULL published magus-arcana catalog (~64 entries after junk
- * filtering), prose only. The hand-verified table above stays authoritative
- * for MECHANICS — this section only merges the two for BROWSING (the picker)
- * and for resolving a picked id back to a definition (`collect.ts`/
- * `archetypes.ts`), mirroring `rage-powers.ts`'s `mergedRagePowerCatalog`
- * exactly.
+ * `RefData.magusArcana` (see that type's doc comment) is the FULL published
+ * magus-arcana catalog (~64 entries after junk filtering), prose only. The
+ * hand-verified table above stays authoritative for MECHANICS — this section
+ * only merges the two for BROWSING (the picker) and for resolving a picked id
+ * back to a definition (`collect.ts`/ `archetypes.ts`), mirroring
+ * `rage-powers.ts`'s `mergedRagePowerCatalog` exactly.
  *
  * Matching is by NORMALIZED NAME, never id — same rationale as rage
  * powers/hexes.

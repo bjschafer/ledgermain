@@ -1,5 +1,5 @@
 /**
- * Pure occultist Implements/Focus Powers transitions (issue #65), mirroring
+ * Pure occultist Implements/Focus Powers transitions, mirroring
  * `model/oracleRevelations.ts`'s shape for the budget math and
  * `model/vigilanteTalents.ts`'s shape for having TWO independent budgeted
  * pools in one module — plus the live Mental Focus investment/Physical
@@ -25,10 +25,10 @@
  * feat-boosted.
  *
  * Focus-power budget (verified verbatim against aonprd.com's "Focus Powers"
- * class feature): 1 at 1st level (beyond the two automatic base powers), +1
- * at 3rd and every 2 levels thereafter (3rd, 5th, ..., 19th — ten picks
- * total by 19th), plus one per "Extra Focus Power" feat taken (confirmed
- * present in the vendored slice) — counted by OCCURRENCE, same convention
+ * class feature): 1 at 1st level (beyond the two automatic base powers), +1 at
+ * 3rd and every 2 levels thereafter (3rd, 5th,..., 19th — ten picks total by
+ * 19th), plus one per "Extra Focus Power" feat taken (confirmed present in the
+ * vendored slice) — counted by OCCURRENCE, same convention
  * `expectedOracleRevelationCount` uses for "Extra Revelation".
  *
  * This module never blocks: taking more than the expected count on either

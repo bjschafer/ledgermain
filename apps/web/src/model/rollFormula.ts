@@ -1,9 +1,9 @@
 /**
- * VTT-pasteable roll formulas (issue #96). The tracker has no dice roller by
- * design (see `savedRolls.ts`) — the at-the-table loop is "read the number,
- * roll it somewhere else", and for most tables "somewhere else" is a VTT chat
- * box. These turn a total the engine already computed into the plain text
- * that box expects.
+ * VTT-pasteable roll formulas. The tracker has no dice roller by design (see
+ * `savedRolls.ts`) — the at-the-table loop is "read the number, roll it
+ * somewhere else", and for most tables "somewhere else" is a VTT chat box.
+ * These turn a total the engine already computed into the plain text that box
+ * expects.
  *
  * Output is ASCII with spaces around the operator (`1d20 + 10`) — the dialect
  * Foundry (`/r 1d20 + 10`) and Roll20 (`/roll 1d20+10`) both parse. Nothing

@@ -12,15 +12,14 @@ import {
 } from "../src/index.js";
 
 /**
- * Fixture coverage for Monk (Unchained) ki powers + style strikes (issue
- * #65) — the deferred choice-bearing subsystems. Both tables
- * are clean-room, hand-authored (see `monk-ki-powers.ts`/`monk-style-strikes.ts`),
- * `displayOnly` in their entirety (no unconditional numeric effect cleared
- * the honesty bar), so this file proves: (1) the data tables are internally
+ * Fixture coverage for Monk (Unchained) ki powers + style strikes — the
+ * deferred choice-bearing subsystems. Both tables are clean-room,
+ * hand-authored (see `monk-ki-powers.ts`/`monk-style-strikes.ts`),
+ * `displayOnly` in their entirety (no unconditional numeric effect cleared the
+ * honesty bar), so this file proves: (1) the data tables are internally
  * consistent and reasonably scoped, and (2) chosen picks surface in the
- * sheet's classFeatures list via `archetypes.ts`'s new granted-feature
- * blocks, mirroring `HexPicker`'s "picked hexes show up in Class Features"
- * behavior.
+ * sheet's classFeatures list via `archetypes.ts`'s new granted-feature blocks,
+ * mirroring `HexPicker`'s "picked hexes show up in Class Features" behavior.
  */
 const ref = loadRefData();
 

@@ -9,8 +9,8 @@
  *
  * Scope: ALL 34 vendored mysteries — the 10 Advanced Player's Guide "core"
  * ones (Battle, Bones, Flame, Heavens, Life, Lore, Nature, Stone, Waves,
- * Wind), Solar, and the 23 splatbook mysteries authored in issue #74's
- * content pass (Ancestor through Wood; see the banner in `MYSTERY_LIST`).
+ * Wind), Solar, and the 23 splatbook mysteries authored in the content pass
+ * (Ancestor through Wood; see the banner in `MYSTERY_LIST`).
  *
  * Data provenance — an unusual case where the vendored Foundry pack DOES carry
  * real structured content for this, just not linked from the Oracle class def
@@ -264,7 +264,7 @@ const MYSTERY_LIST: OracleMysteryDef[] = [
     ],
   },
   // ------------------------------------------------------------------
-  // Splatbook mysteries (issue #74): same clean-room posture and data
+  // Splatbook mysteries: same clean-room posture and data
   // provenance as the APG ten, except these are pfdata-sourced like
   // solar — no @UUID spell links in the vendored prose, so bonus-spell
   // ids are resolved by NAME against the vendored spell set (several
@@ -665,22 +665,20 @@ export const ORACLE_MYSTERY_TAGS: readonly string[] = MYSTERY_LIST.map((m) => m.
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.oracleMysteries` (see that type's doc
- * comment) is the FULL published catalog (34 entries after junk filtering),
- * prose only. The hand-verified table above stays authoritative for
- * MECHANICS (class skills + bonus spells) — this section only merges the two
- * for BROWSING (the picker: the vendored side contributes each mystery's
- * DISPLAY prose) and for resolving a picked tag back to a definition,
- * mirroring `rage-powers.ts`'s `mergedRagePowerCatalog`/`resolveRagePower`.
- * Since the #74 content pass authored all 34, the vendored-only fallback
- * path only fires for a future data bump that vendors a mystery this table
- * hasn't caught up with.
+ * `RefData.oracleMysteries` (see that type's doc comment) is the FULL
+ * published catalog (34 entries after junk filtering), prose only. The
+ * hand-verified table above stays authoritative for MECHANICS (class skills +
+ * bonus spells) — this section only merges the two for BROWSING (the picker:
+ * the vendored side contributes each mystery's DISPLAY prose) and for
+ * resolving a picked tag back to a definition, mirroring `rage-powers.ts`'s
+ * `mergedRagePowerCatalog`/`resolveRagePower`. Since the catalog content pass
+ * authored all 34, the vendored-only fallback path only fires for a future
+ * data bump that vendors a mystery this table hasn't caught up with.
  *
- * Matching is by NORMALIZED NAME. Collision audit (all hand-authored
- * mysteries against the pinned Pf Data 1e slice): every one matched a
- * vendored entry by normalized name (the vendored dictionary keys ARE this
- * table's own `tag`s, verified — e.g. `battle`, `dark_tapestry`, ...) — no
- * aliasing needed.
+ * Matching is by NORMALIZED NAME. Collision audit (all hand-authored mysteries
+ * against the pinned Pf Data 1e slice): every one matched a vendored entry by
+ * normalized name (the vendored dictionary keys ARE this table's own `tag`s,
+ * verified — e.g. `battle`, `dark_tapestry`,...) — no aliasing needed.
  */
 
 const ORACLE_MYSTERY_NAME_ALIASES: Record<string, string> = {};

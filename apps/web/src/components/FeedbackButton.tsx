@@ -32,9 +32,9 @@ type SubmitState =
 export function FeedbackButton({ mode, doc }: { mode: string; doc?: CharacterDoc }) {
   const [open, setOpen] = useState(false);
   const [initialDraft, setInitialDraft] = useState<FeedbackDraft>();
-  // A picker's "Report this gap" (SearchMiss, issue #88) asks this instance
-  // to open pre-filled — there's no other line from deep inside a picker
-  // dialog to the one FeedbackButton in the masthead. See state/feedbackPrefill.ts.
+  // A picker's "Report this gap" (SearchMiss) asks this instance to open
+  // pre-filled — there's no other line from deep inside a picker dialog to the
+  // one FeedbackButton in the masthead. See state/feedbackPrefill.ts.
   const pendingPrefill = useFeedbackPrefillSubscription();
 
   useEffect(() => {

@@ -1,9 +1,9 @@
 /**
- * Multiclass spellcasting (issue #22): a cleric/wizard (or sorcerer/bard)
- * character must track known spells, prepared loadouts, spontaneous slot
- * usage, and casting ability independently PER caster class, while a
- * single-caster document keeps behaving exactly as it did before this
- * feature (zero migration, identical shape).
+ * Multiclass spellcasting: a cleric/wizard (or sorcerer/bard) character must
+ * track known spells, prepared loadouts, spontaneous slot usage, and casting
+ * ability independently PER caster class, while a single-caster document keeps
+ * behaving exactly as it did before this feature (zero migration, identical
+ * shape).
  */
 import { describe, expect, it } from "bun:test";
 

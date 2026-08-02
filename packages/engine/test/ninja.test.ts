@@ -23,22 +23,21 @@ import { NINJA_TRICKS } from "../src/ninja-tricks.js";
  *   `floor(@class.unlevel / 2) + @abilities.cha.mod`. This rides the fully
  *   generic `uses.maxFormula` pipeline with zero hand-authoring.
  *
- * Ninja Tricks / Master Tricks (issue #65 wave B, issue #74 sweep for Wall
- * Climber): hand-authored clean-room menu table (`@pf1/engine`
- * `ninja-tricks.ts`), mostly `displayOnly` — see that file's doc comment for
- * the honesty-bar audit — except Wall Climber's flat `climbSpeed` grant.
- * Wired into `collectGrantedFeatures`/`resolveClassFeatures` (`archetypes.ts`)
- * exactly like witch hexes are for the classFeatures DISPLAY list; covered
- * below. NOTE: unlike rage powers/slayer talents, `doc.build.ninjaTricks`
- * has no `collect.ts` loop applying a picked trick's `changes[]` to the
- * derived sheet yet — same pre-existing gap across this whole "talents/
- * tricks" file family (rogue talents, ninja tricks, investigator talents,
- * vigilante talents all lack one; see `vigilante-talents.ts`'s Shadow's
- * Speed for the identical gap). Wall Climber's fixture below therefore
- * validates its `Change` formula through the already-wired active-buffs
- * pipeline (as if a future toggle injected it, mirroring the shifter-aspect
- * shape) rather than through `doc.build.ninjaTricks`, which doesn't reach
- * `compute()` at all today.
+ * Ninja Tricks / Master Tricks (sweep for Wall Climber): hand-authored
+ * clean-room menu table (`@pf1/engine` `ninja-tricks.ts`), mostly
+ * `displayOnly` — see that file's doc comment for the honesty-bar audit —
+ * except Wall Climber's flat `climbSpeed` grant. Wired into
+ * `collectGrantedFeatures`/`resolveClassFeatures` (`archetypes.ts`) exactly
+ * like witch hexes are for the classFeatures DISPLAY list; covered below.
+ * NOTE: unlike rage powers/slayer talents, `doc.build.ninjaTricks` has no
+ * `collect.ts` loop applying a picked trick's `changes[]` to the derived sheet
+ * yet — same pre-existing gap across this whole "talents/ tricks" file family
+ * (rogue talents, ninja tricks, investigator talents, vigilante talents all
+ * lack one; see `vigilante-talents.ts`'s Shadow's Speed for the identical
+ * gap). Wall Climber's fixture below therefore validates its `Change` formula
+ * through the already-wired active-buffs pipeline (as if a future toggle
+ * injected it, mirroring the shifter-aspect shape) rather than through
+ * `doc.build.ninjaTricks`, which doesn't reach `compute` at all today.
  */
 const ref = loadRefData();
 

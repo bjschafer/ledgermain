@@ -1,10 +1,9 @@
 /**
- * Pure Monk (Unchained) ki power transitions (issue #65). Ki power ids are
- * just entries in `build.monkKiPowers`, mirroring `toggleWitchHex` in
- * `model/witchHexes.ts` — the engine's `MONK_KI_POWERS` table maps each to
- * its (entirely display-only) `changes[]`/`contextNotes`, applied through
- * the same change-collection path as hexes/discoveries/arcana (see
- * `@pf1/engine` `archetypes.ts`).
+ * Pure Monk (Unchained) ki power transitions. Ki power ids are just entries in
+ * `build.monkKiPowers`, mirroring `toggleWitchHex` in `model/witchHexes.ts` —
+ * the engine's `MONK_KI_POWERS` table maps each to its (entirely display-only)
+ * `changes[]`/`contextNotes`, applied through the same change-collection path
+ * as hexes/discoveries/arcana (see `@pf1/engine` `archetypes.ts`).
  *
  * Budget (PF1 Pathfinder Unchained, verified against aonprd.com/d20pfsrd.com):
  * "at 4th level, and every two levels thereafter, a monk gains a ki power" —

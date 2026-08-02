@@ -23,15 +23,14 @@ interface MysteryPickerProps {
  * mapping, so validation is "soft warning only" per the project's
  * hybrid-prereqs philosophy — mirrors `BloodlinePicker`.
  *
- * Browses the FULL published mystery catalog (`mergedOracleMysteryCatalog`,
- * issue #74). All 34 published mysteries carry hand-verified
- * class-skill/bonus-spell mechanics (marked `badge-modeled` "M") and their
- * own revelation pick lists in the Revelations panel below; a vendored-only
- * mystery (one a future data bump adds before the hand table catches up)
- * would show its full vendored prose instead. A mystery that RAW gives a
- * choose-one made at selection time (Dragon's associated element) shows
- * that dropdown here — the pick is stored in
- * `pickChoices["oracleMystery:<tag>"]` and read by the revelations keyed
+ * Browses the FULL published mystery catalog (`mergedOracleMysteryCatalog`).
+ * All 34 published mysteries carry hand-verified class-skill/bonus-spell
+ * mechanics (marked `badge-modeled` "M") and their own revelation pick lists
+ * in the Revelations panel below; a vendored-only mystery (one a future data
+ * bump adds before the hand table catches up) would show its full vendored
+ * prose instead. A mystery that RAW gives a choose-one made at selection time
+ * (Dragon's associated element) shows that dropdown here — the pick is stored
+ * in `pickChoices["oracleMystery:<tag>"]` and read by the revelations keyed
  * off it.
  */
 export function MysteryPicker({ doc, refData, update }: MysteryPickerProps) {

@@ -55,11 +55,11 @@ test("Student of War gates on entry, grants a chosen class skill, and substitute
   await page.goto("/");
   await expect(sealValue(page, "Armor Class")).toBeVisible({ timeout: 15_000 });
 
-  // The Prestige tier defaults collapsed (issue #74 grew it to 119
-  // entries, the same "big tier starts closed" call the race picker's
-  // "exotic" rarity tier already makes) — expand it once, up front; the rest
-  // of this test also needs Fighter's chip in its own (already-open) tier
-  // visible at the same time, so it doesn't use the search-forces-open path.
+  // The Prestige tier defaults collapsed (grew it to 119 entries, the same
+  // "big tier starts closed" call the race picker's "exotic" rarity tier
+  // already makes) — expand it once, up front; the rest of this test also
+  // needs Fighter's chip in its own (already-open) tier visible at the same
+  // time, so it doesn't use the search-forces-open path.
   await page.locator(".race-group-header", { hasText: "Prestige" }).click();
   const row = page.locator(".prestige-class-list .pick-row", { hasText: "Student of War" });
   await row.scrollIntoViewIfNeeded();
@@ -118,9 +118,9 @@ test("Student of War gates on entry, grants a chosen class skill, and substitute
   await pick.click();
   await levelUp(page, classes, "Student of War", 1); // 2nd level grants Mind Over Metal
 
-  // Additional Skill (issue #93): SoW 2 entitles her to one player-chosen
-  // class skill. Stealth is on neither the fighter nor the Student of War
-  // list, so the "class" tag on the sheet can only come from the pick.
+  // Additional Skill: SoW 2 entitles her to one player-chosen class skill.
+  // Stealth is on neither the fighter nor the Student of War list, so the
+  // "class" tag on the sheet can only come from the pick.
   const stealthRow = page.locator(".sheet-skill", { hasText: "Stealth" });
   await expect(stealthRow.locator(".tag-cls")).toHaveCount(0);
   const bonusSkills = classes.locator(".bonus-class-skills-picker");

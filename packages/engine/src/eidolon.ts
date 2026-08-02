@@ -7,18 +7,17 @@
  * (`EIDOLON_BASE_FORMS`, in place of a species) and an EVOLUTION POOL spend
  * (`EIDOLON_EVOLUTIONS`, in place of ability-score-increase slots). Models
  * BOTH the chained (Advanced Player's Guide) and unchained (Pathfinder
- * Unchained) eidolon: `eidolonVariant` picks the branch, and the unchained
- * one additionally layers on a subtype (Angel/Demon/Devil/...) — see
+ * Unchained) eidolon: `eidolonVariant` picks the branch, and the unchained one
+ * additionally layers on a subtype (Angel/Demon/Devil/...) — see
  * `eidolon-unchained.ts` for that half of the system, and this module's
- * "Scope/deferrals" section below for exactly how the two branches share
- * this file's data tables. Clean-room from the published PF1 rules (Advanced
+ * "Scope/deferrals" section below for exactly how the two branches share this
+ * file's data tables. Clean-room from the published PF1 rules (Advanced
  * Player's Guide "Summoner"/"Eidolon"/"Evolutions", Pathfinder Unchained
  * "Eidolons (Unchained)") — paraphrased from aonprd.com/d20pfsrd.com during
- * authoring (issue #65, groundwork for issue #68's future full-stat-block
- * companion work; unchained subtype system added issue #74); no Foundry
- * source was consulted (see DESIGN §6). Foundry's GPL system code is never
- * used as anything but a behavioral oracle in tests, per the repo's
- * clean-room discipline.
+ * authoring (groundwork for the future full-stat-block companion work;
+ * unchained subtype system added); no Foundry source was consulted (see DESIGN
+ * §6). Foundry's GPL system code is never used as anything but a behavioral
+ * oracle in tests, per the repo's clean-room discipline.
  *
  * Eidolon Basics (PF1 APG "Eidolon"):
  *   - The eidolon has its OWN Hit Dice, BAB, and saves. Its BAB is FULL
@@ -70,17 +69,16 @@
  *     for this v1 pass; the "Skilled" evolution (+8 racial to one skill) is
  *     therefore left `displayOnly` rather than wired to a skill this module
  *     doesn't track.
- *   - Attacks: the base form's own free natural attacks (`baseAttacks`,
- *     e.g. Biped's 2 claws) plus any attack-granting evolutions chosen
+ *   - Attacks: the base form's own free natural attacks (`baseAttacks`, e.g.
+ *     Biped's 2 claws) plus any attack-granting evolutions chosen
  *     (bite/claws/gore/hooves/pincers/slam/sting/tail slap/tentacle/wing
  *     buffet). Primary/secondary natural-attack math (full BAB+Str vs. −5/−2
  *     and half Str) is shared with `companion.ts` via `natural-attacks.ts`
- *     (issue #68's classification: bite/claws/gore/slam/sting are
- *     primary-type; hooves/pincers/tail slap/tentacle/wing buffet are
- *     secondary-type — the same names this module's own evolution flavor
- *     text above already uses). "Multiattack" (unlocked at 9th,
- *     {@link EIDOLON_PROGRESSION}) softens the secondary penalty from −5 to
- *     −2, same as a companion's.
+ *     (classification: bite/claws/gore/slam/sting are primary-type;
+ *     hooves/pincers/tail slap/tentacle/wing buffet are secondary-type — the
+ *     same names this module's own evolution flavor text above already uses).
+ *     "Multiattack" (unlocked at 9th, {@link EIDOLON_PROGRESSION}) softens the
+ *     secondary penalty from −5 to −2, same as a companion's.
  *   - Attack rolls use Strength, per PF1's natural-attack rules — NOT the
  *     "better of Str/Dex" rule that governs a familiar (CRB Familiar Basics
  *     is an explicit, narrow exception; see `familiar.ts`). An eidolon can

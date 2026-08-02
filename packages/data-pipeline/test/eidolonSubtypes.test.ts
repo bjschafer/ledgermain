@@ -4,7 +4,7 @@ import { loadRefData } from "../src/index.js";
 
 /**
  * End-to-end coverage for the vendored unchained-summoner eidolon-subtype
- * catalog (issue #74) against the real pinned Pf Data 1e slice — mirrors
+ * catalog against the real pinned Pf Data 1e slice — mirrors
  * `witchHexes.test.ts`. `pfdata.test.ts` covers the generic reader in
  * isolation.
  */

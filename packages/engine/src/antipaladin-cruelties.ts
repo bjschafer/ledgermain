@@ -1,25 +1,25 @@
 /**
- * Clean-room PF1 antipaladin cruelty table (Advanced Player's Guide, issue
- * #65 wave B): hand-authored from the published rules — but UNLIKE
+ * Clean-room PF1 antipaladin cruelty table (Advanced Player's Guide):
+ * hand-authored from the published rules — but UNLIKE
  * `witch-hexes.ts`/`oracle-revelations.ts`, this one has a real source: the
  * vendored `class-features.json` "Cruelty" entry carries full prose (the
  * antipaladin class def only links the single generic "Cruelty" stub
- * `ClassFeature`, no per-cruelty breakdown — confirmed: no per-cruelty
- * entries exist), so the tier lists below are transcribed (paraphrased, not
- * verbatim) straight from that vendored description text, not an external
- * site. `changes: []` upstream on the stub, same as every other
- * hand-authored menu table here.
+ * `ClassFeature`, no per-cruelty breakdown — confirmed: no per-cruelty entries
+ * exist), so the tier lists below are transcribed (paraphrased, not verbatim)
+ * straight from that vendored description text, not an external site.
+ * `changes: []` upstream on the stub, same as every other hand-authored menu
+ * table here.
  *
  * PF1 APG RAW (vendored description, paraphrased): "At 3rd level, and every
- * three levels thereafter, an antipaladin can select one cruelty. Each
- * cruelty adds an effect to the antipaladin's touch of corruption ability.
- * Whenever the antipaladin uses touch of corruption to deal damage to one
- * target, the target also receives the additional effect from ONE of the
- * cruelties possessed by the antipaladin. This choice is made when the touch
- * is used [i.e. known cruelties are a menu the player picks from per-use, not
- * a single fixed rider] ... The DC of this save is equal to 10 + 1/2 the
- * antipaladin's level + the antipaladin's Charisma modifier" (see
- * `tables.ts` `antipaladinCrueltyDC`).
+ * three levels thereafter, an antipaladin can select one cruelty. Each cruelty
+ * adds an effect to the antipaladin's touch of corruption ability. Whenever
+ * the antipaladin uses touch of corruption to deal damage to one target, the
+ * target also receives the additional effect from ONE of the cruelties
+ * possessed by the antipaladin. This choice is made when the touch is used
+ * [i.e. known cruelties are a menu the player picks from per-use, not a single
+ * fixed rider]... The DC of this save is equal to 10 + 1/2 the antipaladin's
+ * level + the antipaladin's Charisma modifier" (see `tables.ts`
+ * `antipaladinCrueltyDC`).
  *
  * Level gating: the MENU of selectable cruelties expands at 3rd/6th/9th/12th
  * (`tier`/`minLevel` below) — soft availability filtering only, same
@@ -28,10 +28,10 @@
  * levels thereafter) is separate — see `model/antipaladinCruelties.ts`.
  *
  * A handful of higher-tier cruelties have an in-fiction PREREQUISITE cruelty
- * ("Exhausted... must have the fatigue cruelty before selecting"; "Frightened
- * ... must have the shaken cruelty"; "Nauseated... must have the sickened
- * cruelty") — noted via `contextNotes`, never hard-blocked (this project's
- * hybrid soft-prereq posture; see CLAUDE.md).
+ * ("Exhausted... must have the fatigue cruelty before selecting";
+ * "Frightened... must have the shaken cruelty"; "Nauseated... must have the
+ * sickened cruelty") — noted via `contextNotes`, never hard-blocked (this
+ * project's hybrid soft-prereq posture; see CLAUDE.md).
  *
  * Modelling posture (mirrors witch-hexes.ts/oracle-revelations.ts's honesty
  * bar): every cruelty here inflicts a condition on a TARGET the antipaladin

@@ -1,16 +1,16 @@
 /**
- * Hand-computed fixture tests for shaman spirits + hexes (issue #65). Almost
- * every hex in `SHAMAN_SPIRITS[tag].hexes` is note-tier prose with `changes:
- * []` — two promotions exist (Flame's Cinder Dance, a flat landSpeed bump,
- * and Dark Tapestry's Pierce the Veil, additive darkvision plus a
- * level-8-gated see-in-darkness flag — see `shaman-spirits.ts`'s doc comment
- * for RAW citations and the near-misses left blocked). What IS exercised: the
- * table's shape (18 spirits × 9 spirit-magic spells × 5 hexes, except Slums'
- * 4), the spirit ability + hexes surfacing through
+ * Hand-computed fixture tests for shaman spirits + hexes. Almost every hex in
+ * `SHAMAN_SPIRITS[tag].hexes` is note-tier prose with `changes: []` — two
+ * promotions exist (Flame's Cinder Dance, a flat landSpeed bump, and Dark
+ * Tapestry's Pierce the Veil, additive darkvision plus a level-8-gated
+ * see-in-darkness flag — see `shaman-spirits.ts`'s doc comment for RAW
+ * citations and the near-misses left blocked). What IS exercised: the table's
+ * shape (18 spirits × 9 spirit-magic spells × 5 hexes, except Slums' 4), the
+ * spirit ability + hexes surfacing through
  * `collectGrantedFeatures`/`resolveClassFeatures` gated on actual shaman
  * levels AND a chosen spirit, per-spirit hex scoping (display AND numeric),
- * unknown-id tolerance, and the promoted hexes'/tiers' real `compute()`
- * effects — same pattern as `oracleRevelations.test.ts`.
+ * unknown-id tolerance, and the promoted hexes'/tiers' real `compute` effects
+ * — same pattern as `oracleRevelations.test.ts`.
  */
 
 import { describe, expect, it } from "bun:test";

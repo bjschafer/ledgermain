@@ -38,14 +38,14 @@ interface AdvancementEntry {
 }
 
 /**
- * One target picker per prestige class's casting-advancement slot (issue #66
- * chunk 3) — e.g. Eldritch Knight's single arcane slot, or Mystic Theurge's
- * arcane + divine pair. Self-filtering, same posture as `AnimalCompanionPicker`
+ * One target picker per prestige class's casting-advancement slot (3) — e.g.
+ * Eldritch Knight's single arcane slot, or Mystic Theurge's arcane + divine
+ * pair. Self-filtering, same posture as `AnimalCompanionPicker`
  * /`FamiliarPicker`: renders nothing when no class on the build has any
  * `castingAdvancement` slots at all. All the validation logic (eligible
  * targets, storage, cleanup on class removal) already lives in
- * `model/casterLevel.ts` / `model/doc.ts` (issue #66 chunk 2) — this is a thin
- * view over `eligibleAdvancementTargets` + `setCastingAdvancementTarget`.
+ * `model/casterLevel.ts` / `model/doc.ts` (2) — this is a thin view over
+ * `eligibleAdvancementTargets` + `setCastingAdvancementTarget`.
  */
 export function CastingAdvancementPicker({ doc, refData, update }: CastingAdvancementPickerProps) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:CastingAdvancement", false);

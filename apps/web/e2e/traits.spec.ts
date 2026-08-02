@@ -1,10 +1,10 @@
 import { expect, type Page, test } from "@playwright/test";
 
 /**
- * The trait picking flow in a real browser (issue #89). Traits browse through
- * the same full-screen manager as feats — this drives the round trip: open the
- * manager, search, add, and confirm the pick lands in the panel's chosen list
- * after the dialog closes.
+ * The trait picking flow in a real browser. Traits browse through the same
+ * full-screen manager as feats — this drives the round trip: open the manager,
+ * search, add, and confirm the pick lands in the panel's chosen list after the
+ * dialog closes.
  */
 
 const benign = (t: string) =>

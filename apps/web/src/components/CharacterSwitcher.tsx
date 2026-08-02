@@ -3,11 +3,11 @@
  * starting a new one. "Active" is whichever character was explicitly switched
  * to (see db/characters.ts) — this is just a thin view over that list.
  *
- * A styled custom dropdown (issue #63) replacing the original bare native
- * `<select>` — same two actions (switch to a saved character, or "+ New
- * character…"), just dressed to match the app instead of the browser's
- * default select chrome. Import/reset/delete live in the Settings tab and
- * were never part of this control, so there's nothing else to preserve.
+ * A styled custom dropdown replacing the original bare native `<select>` —
+ * same two actions (switch to a saved character, or "+ New character…"), just
+ * dressed to match the app instead of the browser's default select chrome.
+ * Import/reset/delete live in the Settings tab and were never part of this
+ * control, so there's nothing else to preserve.
  *
  * Follows the ARIA APG "collapsible dropdown listbox" pattern: a
  * `button[aria-haspopup="listbox"]` trigger, and — while open — a

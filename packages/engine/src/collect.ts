@@ -138,12 +138,12 @@ function evalChange(
 }
 
 /**
- * Buff-gated changes (issue #75): true when `ch` carries no
- * `activeWhenBuff` (unconditional — every change source that predates this
- * mechanism resolves here, unchanged) or when at least one currently active
- * buff matches the gate by `buffId` and/or `effectTag` — never by display
- * name (see `Change.activeWhenBuff`'s doc comment). A gate is satisfied by
- * ANY match across either list.
+ * Buff-gated changes: true when `ch` carries no `activeWhenBuff`
+ * (unconditional — every change source that predates this mechanism resolves
+ * here, unchanged) or when at least one currently active buff matches the gate
+ * by `buffId` and/or `effectTag` — never by display name (see
+ * `Change.activeWhenBuff`'s doc comment). A gate is satisfied by ANY match
+ * across either list.
  *
  * Gated-but-currently-inactive changes are simply OMITTED from the
  * collected list rather than pushed through with a forced
@@ -154,8 +154,7 @@ function evalChange(
  * highest-wins logic, where it could wrongly suppress a genuinely-applied
  * same-type bonus) for a struck-through-in-the-UI distinction the tracker
  * doesn't currently render any differently from "this source contributed
- * nothing" — the cheaper, correct-by-construction choice per this issue's
- * design constraints.
+ * nothing" — the cheaper, correct-by-construction choice.
  */
 function buffGateSatisfied(
   ch: Pick<Change, "activeWhenBuff">,
@@ -177,29 +176,28 @@ export function collectModifiers(
 ): CollectedModifier[] {
   const out: CollectedModifier[] = [];
 
-  // Buff-gate check (issue #75) — see `buffGateSatisfied`. Consulted in
-  // every hand-authored build-choice loop below (traits, bloodline powers,
-  // exploits, arcana, revelations, hexes, rage powers, discoveries, curse),
-  // both racial-trait loops (hand-authored `RACIAL_TRAITS` and the vendored
+  // Buff-gate check — see `buffGateSatisfied`. Consulted in every
+  // hand-authored build-choice loop below (traits, bloodline powers, exploits,
+  // arcana, revelations, hexes, rage powers, discoveries, curse), both
+  // racial-trait loops (hand-authored `RACIAL_TRAITS` and the vendored
   // `RefData.racialTraits` catalog — the latter's own hand-authored
   // `SUPPLEMENTAL_RACIAL_TRAIT_CHANGES` supplement is the first data-pipeline
   // source to actually emit `activeWhenBuff`, e.g. a skinwalker heritage's
   // "while shapechanged" rider), so a table entry carrying `activeWhenBuff`
-  // gates correctly no matter which table it lands in. Items, class
-  // features, buffs, and conditions deliberately skip the check: nothing
-  // authors the field on those sources.
-  // Buffs the master actually carries: a buff flagged `excludeMaster` (a
-  // Share Spells personal spell cast on a companion *instead of* the caster)
-  // applies only to its shared creatures, so the master neither collects its
-  // modifiers nor gates its own changes on it.
+  // gates correctly no matter which table it lands in. Items, class features,
+  // buffs, and conditions deliberately skip the check: nothing authors the
+  // field on those sources. Buffs the master actually carries: a buff flagged
+  // `excludeMaster` (a Share Spells personal spell cast on a companion
+  // *instead of* the caster) applies only to its shared creatures, so the
+  // master neither collects its modifiers nor gates its own changes on it.
   const masterBuffs = (doc.live.activeBuffs ?? []).filter((b) => !b.excludeMaster);
   const gateOpen = (ch: Change): boolean => buffGateSatisfied(ch, masterBuffs);
 
   // --- race ---------------------------------------------------------------
   const race = refData.races[doc.identity.race];
   if (race) {
-    // Alternate racial traits (issue #35) that apply to THIS race — a stale id
-    // from a race change (or an unknown id) is ignored, matching the
+    // Alternate racial traits that apply to THIS race — a stale id from a race
+    // change (or an unknown id) is ignored, matching the
     // traits/conditions/feats posture. Each swaps a standard trait for an
     // alternate: `suppressTargets` drops the replaced standard trait's
     // structured `Race.change` (so e.g. a Human taking Focused Study loses the
@@ -279,11 +277,10 @@ export function collectModifiers(
         sourceId: race.id,
       });
     }
-    // The chosen alternates' own granted modifiers. Gated by `gateOpen`
-    // (issue #75) like every other hand-authored build-choice loop below —
-    // this loop predates the mechanism and had never actually checked it, so
-    // a hand-authored alternate trait's rider couldn't be scoped to a
-    // toggled buff until now.
+    // The chosen alternates' own granted modifiers. Gated by `gateOpen` like
+    // every other hand-authored build-choice loop below — this loop predates
+    // the mechanism and had never actually checked it, so a hand-authored
+    // alternate trait's rider couldn't be scoped to a toggled buff until now.
     for (const t of activeRacialTraits) {
       for (const ch of t.changes) {
         if (!gateOpen(ch)) continue;
@@ -301,21 +298,20 @@ export function collectModifiers(
       }
     }
 
-    // Vendored alternate racial traits (issue #74) — the ~80-race
-    // `RefData.racialTraits` catalog. For the featured races with a verified
-    // `VENDORED_STANDARD_TRAIT_TARGETS` mapping, the replaced standard
-    // trait's structured bonus was already suppressed above; everywhere else
-    // the source only names WHAT it replaces, not a verified mapping to
-    // specific `Race.changes`/`contextNotes` entries, so these apply on top
-    // rather than risk dropping the wrong thing on an unaudited entry (see
-    // `RacialTrait`'s doc comment in `@pf1/schema`). The model layer excludes
-    // any vendored entry whose name already matches a hand-authored one for
-    // the character's race, so this never double-grants the SAME trait's
-    // bonus twice.
+    // Vendored alternate racial traits — the ~80-race `RefData.racialTraits`
+    // catalog. For the featured races with a verified
+    // `VENDORED_STANDARD_TRAIT_TARGETS` mapping, the replaced standard trait's
+    // structured bonus was already suppressed above; everywhere else the
+    // source only names WHAT it replaces, not a verified mapping to specific
+    // `Race.changes`/`contextNotes` entries, so these apply on top rather than
+    // risk dropping the wrong thing on an unaudited entry (see `RacialTrait`'s
+    // doc comment in `@pf1/schema`). The model layer excludes any vendored
+    // entry whose name already matches a hand-authored one for the character's
+    // race, so this never double-grants the SAME trait's bonus twice.
     for (const t of activeVendoredTraits) {
-      // Gated by `gateOpen` (issue #75) same as the hand-authored loop above
-      // — lets a vendored trait's own supplemented rider (e.g. a skinwalker
-      // heritage's "while shapechanged" bonus, hand-authored in data-pipeline
+      // Gated by `gateOpen` same as the hand-authored loop above — lets a
+      // vendored trait's own supplemented rider (e.g. a skinwalker heritage's
+      // "while shapechanged" bonus, hand-authored in data-pipeline
       // `SUPPLEMENTAL_RACIAL_TRAIT_CHANGES`) apply only while the matching
       // buff/effectTag is active, instead of unconditionally.
       for (const ch of [
@@ -381,7 +377,7 @@ export function collectModifiers(
   }
 
   // --- granted class features ---------------------------------------------
-  // Issue #7 audit: an active archetype's swapped-out base feature (e.g.
+  // Audit finding: an active archetype's swapped-out base feature (e.g.
   // Two-Handed Fighter replacing Armor Training) previously kept contributing
   // its `changes[]` here regardless — this loop had no awareness of
   // `doc.build.archetypes` at all. `archetypeSwaps` (uuid -> replacing
@@ -420,7 +416,7 @@ export function collectModifiers(
       }
     }
 
-    // --- Weapon Training group picks (issue #45) ---------------------------
+    // --- Weapon Training group picks ---------------------------
     // The vendored "Weapon Training" class feature carries `changes: []`
     // upstream (see tables.ts `weaponTrainingBonus`'s doc comment), so its
     // per-group attack/damage bonus is hand-authored here rather than driven
@@ -459,7 +455,7 @@ export function collectModifiers(
     }
   }
 
-  // --- cleric domain / subdomain direct changes (issue #99) ---------------
+  // --- cleric domain / subdomain direct changes ---------------
   // A handful of domains carry a `system.changes` bonus directly on the domain
   // doc rather than on a `links.supplements`-linked class feature (Protection's
   // +1-per-5-levels save resistance, Travel's +10 land speed, Darkness/Rune's
@@ -498,11 +494,11 @@ export function collectModifiers(
     }
   }
 
-  // --- archetype feature effects (issue #7, extended by issue #45) --------
+  // --- archetype feature effects (extended by) --------
   // Hand-authored numeric effects for the small slice of archetype features
   // that grant an unconditional bonus (see `archetype-effects.ts`'s doc
   // comment for the audit/scope rationale), extended by the machine-extracted
-  // table (`archetype-effects-extracted.ts`, issue #45's fighter pilot) —
+  // table (`archetype-effects-extracted.ts`, the fighter pilot) —
   // `resolveArchetypeFeatureEffect` checks the hand-verified table first, so
   // an id present in both is never double-applied. Gated the same way base
   // class features are: the granting class's level must reach the feature's
@@ -552,10 +548,10 @@ export function collectModifiers(
       );
     }
     // Hand-authored patches for a vendored buff whose own `changes[]` are
-    // missing a real numeric effect its description text promises (issue
-    // #67) — see `buff-effects.ts`'s doc comment (e.g. Unchained Rage's
-    // temp-HP grant). Keyed by name so it applies regardless of activation
-    // path (linked-pool toggle, table-buff toggle, or a manual add).
+    // missing a real numeric effect its description text promises — see
+    // `buff-effects.ts`'s doc comment (e.g. Unchained Rage's temp-HP grant).
+    // Keyed by name so it applies regardless of activation path (linked-pool
+    // toggle, table-buff toggle, or a manual add).
     for (const ch of BUFF_CHANGE_PATCHES[buff.name] ?? []) {
       evalChange(
         ch.formula,
@@ -592,8 +588,8 @@ export function collectModifiers(
 
   // --- traits (build choices) ----------------------------------------------
   // doc.build.traits holds trait ids: keys into the engine's 28-entry
-  // hand-authored TRAITS table (issue #23) OR the vendored RefData.traits
-  // catalog (issue #74) — resolveTraitDef checks both, hand-authored
+  // hand-authored TRAITS table OR the vendored RefData.traits
+  // catalog — resolveTraitDef checks both, hand-authored
   // first. A homebrew trait's own definition rides in doc.build.homebrew.traits
   // and is checked as a final fallback here. Unknown ids are skipped, matching
   // the conditions/feats posture: never crash on an unrecognized id.
@@ -619,7 +615,7 @@ export function collectModifiers(
     }
   }
 
-  // --- sorcerer bloodline arcana + powers (build choice, issue #34) ----------
+  // --- sorcerer bloodline arcana + powers (build choice) ----------
   // Bloodline arcana/powers are hand-authored clean-room content (not in the
   // vendored Foundry data pack — see `@pf1/engine` `bloodlines.ts`), same
   // posture as `traits.ts` above. Gated on the character actually having
@@ -674,7 +670,7 @@ export function collectModifiers(
     }
   }
 
-  // --- bloodrager bloodline powers (build choice, issue #65) ---------------
+  // --- bloodrager bloodline powers (build choice) ---------------
   // Hand-authored clean-room content (not in the vendored Foundry data pack —
   // see `@pf1/engine` `bloodrager-bloodlines.ts`), gated on the character
   // actually having bloodrager levels — same posture as the sorcerer
@@ -743,7 +739,7 @@ export function collectModifiers(
     }
   }
 
-  // --- arcanist exploits (build choice, issue #42) -------------------------
+  // --- arcanist exploits (build choice) -------------------------
   // Exploit ids are hand-authored clean-room content (not in the vendored
   // Foundry data pack — see `@pf1/engine` `arcanist-exploits.ts`), same
   // posture as `traits.ts` above. Gated on the character actually having
@@ -774,7 +770,7 @@ export function collectModifiers(
     }
   }
 
-  // --- magus arcana (build choice, issue #61, vendored catalog #74 3b) -----
+  // --- magus arcana (build choice, vendored catalog) -----
   // Arcana ids resolve through the hand-authored table first, falling back
   // to the vendored catalog (`RefData.magusArcana`) for a vendored-only pick
   // — see `@pf1/engine` `magus-arcana.ts`'s `resolveMagusArcanum`. Gated on
@@ -805,7 +801,7 @@ export function collectModifiers(
     }
   }
 
-  // --- oracle revelations (build choice, issue #61) -------------------------
+  // --- oracle revelations (build choice) -------------------------
   // Most revelations are `displayOnly` with `changes: []`, but a promoted
   // handful carry real changes and three carry choose-one `choiceChanges`
   // (see `oracle-revelations.ts`'s doc comment) — scoped to the character's
@@ -846,7 +842,7 @@ export function collectModifiers(
     }
   }
 
-  // --- witch hexes (build choice, issue #65, vendored catalog #74 3b) ------
+  // --- witch hexes (build choice, vendored catalog) ------
   // Hex ids resolve through the hand-authored table first, falling back to
   // the vendored catalog (`RefData.hexes`) for a vendored-only pick — see
   // `@pf1/engine` `witch-hexes.ts`'s `resolveWitchHex`. Gated on the
@@ -878,7 +874,7 @@ export function collectModifiers(
     }
   }
 
-  // --- shaman hexes (build choice, issue #65, general catalog #74) --------
+  // --- shaman hexes (build choice, general catalog) --------
   // Hex ids may be spirit-scoped (`<spiritTag>:<name>` — `findShamanHex`,
   // hand-authored in `shaman-spirits.ts`) or drawn from the vendored,
   // spirit-agnostic GENERAL catalog (`resolveGeneralShamanHex`,
@@ -935,15 +931,14 @@ export function collectModifiers(
       }
     }
 
-    // Greater/True Spirit Ability + Manifestation (issue #65 follow-through)
-    // — gained at fixed shaman class-level thresholds (`SHAMAN_GREATER_
+    // Greater/True Spirit Ability + Manifestation — gained at fixed shaman
+    // class-level thresholds (`SHAMAN_GREATER_
     // SPIRIT_LEVEL`/`SHAMAN_TRUE_SPIRIT_LEVEL`/`SHAMAN_MANIFESTATION_LEVEL`,
     // verified against aonprd.com's Shaman class page), not a budgeted pick,
-    // so there's no id list to iterate — just the current spirit's own
-    // three tiers, each independently gated on the shaman having actually
-    // reached that level. Most tiers are `changes: []` (see `shaman-
-    // spirits.ts`'s doc comment); wired the same way for a future promotion
-    // to work for free.
+    // so there's no id list to iterate — just the current spirit's own three
+    // tiers, each independently gated on the shaman having actually reached
+    // that level. Most tiers are `changes: []` (see `shaman- spirits.ts`'s doc
+    // comment); wired the same way for a future promotion to work for free.
     const currentSpirit = currentSpiritTag ? SHAMAN_SPIRITS[currentSpiritTag] : undefined;
     if (currentSpirit) {
       const tiers: [ShamanSpiritAbility, number, string][] = [
@@ -1086,7 +1081,7 @@ export function collectModifiers(
     }
   }
 
-  // --- barbarian rage powers (build choice, issue #65/#67, gated #75) ------
+  // --- barbarian rage powers (build choice, gated) ------
   // Power ids are hand-authored clean-room content (not in the vendored
   // Foundry data pack — see `@pf1/engine` `rage-powers.ts`), same posture as
   // magus arcana above. Gated on the character actually having barbarian
@@ -1094,7 +1089,7 @@ export function collectModifiers(
   // `changes: []` (activated/per-round abilities or conditional-target near
   // misses — see that file's doc comment), but a handful (Raging Climber,
   // Raging Swimmer, Swift Foot) now carry a real `Change` gated by
-  // `activeWhenBuff` (issue #75's "while raging" mechanism) —
+  // `activeWhenBuff` ("while raging" mechanism) —
   // `buffGateSatisfied` skips those entirely unless the character currently
   // has the (chained or Unchained) Rage buff active in `live.activeBuffs`.
   const barbarianAnyLevel = doc.identity.classes
@@ -1142,7 +1137,7 @@ export function collectModifiers(
     }
   }
 
-  // --- alchemist discoveries (build choice, issue #65) ----------------------
+  // --- alchemist discoveries (build choice) ----------------------
   // Discovery ids are hand-authored clean-room content (not in the vendored
   // Foundry data pack — see `@pf1/engine` `alchemist-discoveries.ts`), same
   // posture as magus arcana above. Gated on the character actually having
@@ -1231,7 +1226,7 @@ export function collectModifiers(
     }
   }
 
-  // --- slayer talents (build choice, issue #74 hand-table follow-up) ------
+  // --- slayer talents (build choice, hand-table follow-up) ------
   // Talent ids are hand-authored clean-room content overlaid onto the
   // vendored catalog (`@pf1/engine` `slayer-talents.ts`'s
   // `resolveSlayerTalent`, hand-authored table first, vendored fallback for
@@ -1296,7 +1291,7 @@ export function collectModifiers(
   // doc.build.feats holds feat ids (keys into RefData.feats). We resolve each id
   // to a name slug and look it up via resolveFeatEffect, which checks the
   // hand-verified FEAT_EFFECTS table first and falls back to the
-  // machine-extracted FEAT_EFFECTS_EXTRACTED table (issue #45's feat
+  // machine-extracted FEAT_EFFECTS_EXTRACTED table (feat
   // batch-extraction pass — see feat-effects-resolve.ts for the precedence
   // rule and feat-classification.ts for the full per-feat audit).
   //   Static entries: emit their changes unconditionally.
@@ -1381,9 +1376,9 @@ export function collectModifiers(
     }
   }
 
-  // --- extra feat instances (issue #58: RAW-repeatable feats) ---------------
+  // --- extra feat instances (RAW-repeatable feats) ---------------
   // Second-and-later copies of a feat already in `doc.build.feats` (Weapon
-  // Focus taken again for a different weapon, Extra Rage taken again, ...) —
+  // Focus taken again for a different weapon, Extra Rage taken again,...) —
   // see `apps/web/src/model/doc.ts` `addFeatInstance` and
   // `apps/web/src/model/repeatableFeats.ts`'s curated repeatable set. Applies
   // the identical static/choice resolution as the primary loop above, but
@@ -1444,7 +1439,7 @@ export function collectModifiers(
     }
   }
 
-  // --- brawler Martial Flexibility (live state, issue #65) ------------------
+  // --- brawler Martial Flexibility (live state) ------------------
   // `doc.live.martialFlexibilityFeatId` (set by `model/martialFlexibility.ts`)
   // records which combat feat the player is currently "borrowing" (PF1 RAW:
   // move/swift/free/immediate action depending on brawler level, lasts 1
@@ -1452,7 +1447,7 @@ export function collectModifiers(
   // uses/day cap, not tracked here). Reuses the SAME `resolveFeatEffect`
   // machinery as a normally-owned feat — cheap because the lookup is already
   // keyed by feat id, not by "is this in doc.build.feats" — so any borrowed
-  // feat with a modeled STATIC effect (Weapon Focus, Dodge, Toughness, ...)
+  // feat with a modeled STATIC effect (Weapon Focus, Dodge, Toughness,...)
   // applies for real. Choice-type feats (e.g. Weapon Focus's weapon pick)
   // are deliberately skipped here: there is no separate "which weapon did
   // you pick for the borrowed copy" field, and reusing `featChoices[featId]`
@@ -1560,7 +1555,7 @@ export function collectModifiers(
     }
   }
 
-  // --- occultist implement resonant powers (live state, issue #65) --------
+  // --- occultist implement resonant powers (live state) --------
   // `live.occultistFocusInvested[tag]` (set by `model/occultistImplements.ts`)
   // records how many of the day's Mental Focus points are currently divided
   // into each known implement (PF1 RAW "Mental Focus" — see that field's
@@ -1605,7 +1600,7 @@ export function collectModifiers(
     }
   }
 
-  // --- medium spirit bonus + séance boon (live state, issue #65) ----------
+  // --- medium spirit bonus + séance boon (live state) ----------
   // `live.mediumSpirit` (set by `model/mediumSpirits.ts`'s séance picker)
   // names which of the 6 legendary spirits (`MEDIUM_SPIRITS`) is currently
   // channeled; while one is, the flat Spirit Bonus (scaling by medium level,
@@ -1658,7 +1653,7 @@ export function collectModifiers(
     }
   }
 
-  // --- active polymorph form (live state, issue #70) ----------------------
+  // --- active polymorph form (live state) ----------------------
   // `live.activeForm` (set by `model/polymorph.ts` — Wild Shape or a Beast
   // Shape/Elemental Body/Plant Shape spell) records the player's chosen
   // tier + creature type/size/element; the ability-score and natural-armor
@@ -1717,7 +1712,7 @@ export function collectModifiers(
     });
   }
 
-  // --- ability damage / drain / penalty (live state, issue #18) -----------
+  // --- ability damage / drain / penalty (live state) -----------
   // Drain actually lowers the ability's effective score: a plain penalty on
   // the ability's own target, same as any other ability-targeting change.
   for (const [ability, points] of Object.entries(doc.live.abilityDrain ?? {})) {
@@ -1764,7 +1759,7 @@ export function collectModifiers(
     });
   }
 
-  // --- negative levels (live state, issue #19) -----------------------------
+  // --- negative levels (live state) -----------------------------
   // Each negative level (temporary + permanent combined): -1 attack, -1 all
   // saves, -1 skill checks, -5 max HP. Injected as synthetic untyped penalties
   // through the same `attack`/`allSavingThrows`/`skills`/`hp` targets that

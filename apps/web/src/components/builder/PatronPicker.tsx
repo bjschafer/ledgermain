@@ -18,21 +18,20 @@ interface PatronPickerProps {
 }
 
 /**
- * Witch patron selection (issue #65), mirroring `MysteryPicker` almost
- * exactly. PF1 grants exactly one patron, chosen at L1, never changed
- * thereafter. Free-choice: no vendored patron-to-witch mapping exists, so
- * validation is "soft warning only" per the project's hybrid-prereqs
- * philosophy — same posture as `MysteryPicker`/`BloodlinePicker`.
+ * Witch patron selection, mirroring `MysteryPicker` almost exactly. PF1 grants
+ * exactly one patron, chosen at L1, never changed thereafter. Free-choice: no
+ * vendored patron-to-witch mapping exists, so validation is "soft warning
+ * only" per the project's hybrid-prereqs philosophy — same posture as
+ * `MysteryPicker`/`BloodlinePicker`.
  *
- * Browses the FULL published patron catalog (`mergedWitchPatronCatalog`,
- * issue #74) — the 17 Advanced Player's Guide/Ultimate Magic "core"
- * patrons keep their hand-verified bonus-spell progression (marked
- * `badge-modeled` "M", surfaced via `model/spellcasting.patronSpellsKnown` at
- * witch level 2 and every two levels thereafter); the ~44 other vendored-only
- * patrons (including the "unique" themed patrons) show their full vendored
- * prose instead — no bonus spells known for those (this app has no vendored
- * spell-id mapping for them, see `@pf1/engine` `witch-patrons.ts`'s doc
- * comment).
+ * Browses the FULL published patron catalog (`mergedWitchPatronCatalog`) — the
+ * 17 Advanced Player's Guide/Ultimate Magic "core" patrons keep their
+ * hand-verified bonus-spell progression (marked `badge-modeled` "M", surfaced
+ * via `model/spellcasting.patronSpellsKnown` at witch level 2 and every two
+ * levels thereafter); the ~44 other vendored-only patrons (including the
+ * "unique" themed patrons) show their full vendored prose instead — no bonus
+ * spells known for those (this app has no vendored spell-id mapping for them,
+ * see `@pf1/engine` `witch-patrons.ts`'s doc comment).
  */
 export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
   const isWitch = doc.identity.classes.some((c) => c.tag === "witch");

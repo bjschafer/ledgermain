@@ -127,10 +127,9 @@ function ArmorForm({
     setForm((f) => ({
       ...f,
       slot,
-      // Default a fresh switch into the shield slot to "light" so a
-      // shield saved without ever touching the shield-type dropdown
-      // still carries a real proficiency tier (issue #81) instead
-      // of silently staying "unknown."
+      // Default a fresh switch into the shield slot to "light" so a shield
+      // saved without ever touching the shield-type dropdown still carries a
+      // real proficiency tier instead of silently staying "unknown."
       ...(slot === "shield" && !f.shieldTier ? { shieldTier: "light" as const } : {}),
     }));
   }
@@ -488,10 +487,10 @@ function ModeledBadge({ changes }: { changes: readonly Change[] }) {
 }
 
 /**
- * Maximum charges for a linked item's `uses.maxFormula` (issue #16), e.g. a
- * Staff of Healing's 10. Every `maxFormula` in the current vendored slice is
- * a plain numeric constant (no `@item.level`/`@cl` reference — verified
- * against the full items pack), so this never needs item-instance context;
+ * Maximum charges for a linked item's `uses.maxFormula`, e.g. a Staff of
+ * Healing's 10. Every `maxFormula` in the current vendored slice is a plain
+ * numeric constant (no `@item.level`/`@cl` reference — verified against the
+ * full items pack), so this never needs item-instance context;
  * `tryEvaluateFormula` still guards against a future non-numeric value by
  * returning `null` rather than crashing the gear list. Only "charges"-style
  * pools are surfaced (potions/scrolls with `per: "single"` are one-shot and
@@ -510,9 +509,9 @@ function itemMaxCharges(item: { uses?: { maxFormula?: string; per?: string } } |
 
 /**
  * One-line metadata summary for an {@link Item} in the picker (slot · weight ·
- * price). Weight and price are now vendored for most mundane gear (issue #37),
- * so this is no longer gated on `slot` the way the old preview was — a plain
- * torch or bedroll still gets its weight/price shown.
+ * price). Weight and price are now vendored for most mundane gear, so this is
+ * no longer gated on `slot` the way the old preview was — a plain torch or
+ * bedroll still gets its weight/price shown.
  */
 function itemMeta(item: Item): string {
   const parts: string[] = [];
@@ -584,13 +583,13 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   const [showCustomGear, setShowCustomGear] = useState(false);
   const [customGear, setCustomGear] = useState(BLANK_CUSTOM_GEAR);
 
-  // Consumables picker (issue #36) — potions/scrolls/wands generated from
-  // the vendored spell list rather than any static item pack.
+  // Consumables picker — potions/scrolls/wands generated from the vendored
+  // spell list rather than any static item pack.
   const [showConsumablePicker, setShowConsumablePicker] = useState(false);
   const [consumableKind, setConsumableKind] = useState<ConsumableKind>("potion");
   const [consumableQuery, setConsumableQuery] = useState("");
 
-  // Kit picker (issue #80) — class kits expand to their packed gear.
+  // Kit picker — class kits expand to their packed gear.
   const [showKitPicker, setShowKitPicker] = useState(false);
   const [kitQuery, setKitQuery] = useState("");
 
@@ -631,9 +630,9 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
     [armorRefAbilityCatalog],
   );
 
-  // Generated consumables for the chosen kind (issue #36), filtered by the
-  // spell-name search. Regenerated only when the kind changes; the query is
-  // applied cheaply on top.
+  // Generated consumables for the chosen kind, filtered by the spell-name
+  // search. Regenerated only when the kind changes; the query is applied
+  // cheaply on top.
   const filteredConsumables = useMemo(() => {
     const all = generateConsumables(refData.spells, consumableKind);
     const q = consumableQuery.trim().toLowerCase();
@@ -740,7 +739,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
       storageKey="panel:Gear"
       defaultCollapsed={false}
     >
-      {/* Wealth (issue #16) — always tracked, unlike encumbrance. */}
+      {/* Wealth — always tracked, unlike encumbrance. */}
       <div className="wealth-row">
         <span className="eyebrow">Wealth</span>
         <div className="wealth-fields">
@@ -762,7 +761,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
         </div>
       </div>
 
-      {/* Load readout (issue #16) — only meaningful when the optional
+      {/* Load readout — only meaningful when the optional
           encumbrance rule is enabled in Settings; otherwise no UI at all. */}
       {encumbrance && (
         <div className={`load-row load-${encumbrance.tier}`}>
@@ -809,8 +808,8 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
             const unitPrice = inst.price ?? itemDef?.price;
             const qty = inst.quantity ?? 1;
             // The instance's own cap wins (a hand-corrected wand, or a
-            // self-contained generated consumable, issue #36); otherwise a
-            // vendored item reads its cap from `uses.maxFormula`.
+            // self-contained generated consumable); otherwise a vendored item
+            // reads its cap from `uses.maxFormula`.
             const refMaxCharges = itemMaxCharges(itemDef);
             const maxCharges = inst.charges ?? refMaxCharges;
             const chargesUsed = Math.min(inst.chargesUsed ?? 0, maxCharges ?? Infinity);
@@ -1042,7 +1041,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
         )}
       </div>
 
-      {/* Add kit (issue #80) — a class kit expands into the gear it packs;
+      {/* Add kit — a class kit expands into the gear it packs;
           the kit row itself is never added, since a container's weight and
           price already account for its contents. */}
       <div className="gear-add-row">
@@ -1099,7 +1098,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
         )}
       </div>
 
-      {/* Add consumable (issue #36) — potions/scrolls/wands derived from the
+      {/* Add consumable — potions/scrolls/wands derived from the
           vendored spell list, since Foundry ships no static consumable items.
           Picked entries become self-contained custom gear (name/price/charges
           on the instance), so nothing hits the engine. */}
@@ -1320,7 +1319,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
         )}
       </div>
 
-      {/* Custom mundane gear (issue #16) — ammo, rations, rope, and anything
+      {/* Custom mundane gear — ammo, rations, rope, and anything
           else not in the vendored items pack. Weight/price are entered by
           hand since there's no RefData entry to look them up from. */}
       <div className="gear-add-row">

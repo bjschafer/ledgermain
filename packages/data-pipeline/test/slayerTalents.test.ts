@@ -3,11 +3,10 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "../src/index.js";
 
 /**
- * End-to-end coverage for the vendored slayer-talent catalog (issue #74) against the
- * real pinned Pf Data 1e slice, mirroring
- * `ragePowers.test.ts` exactly. UNLIKE the sibling rogue-family subsystems,
- * there is no hand-authored mechanics table to merge against here — see
- * `@pf1/engine` `slayer-talents.ts`'s doc comment.
+ * End-to-end coverage for the vendored slayer-talent catalog against the real
+ * pinned Pf Data 1e slice, mirroring `ragePowers.test.ts` exactly. UNLIKE the
+ * sibling rogue-family subsystems, there is no hand-authored mechanics table
+ * to merge against here — see `@pf1/engine` `slayer-talents.ts`'s doc comment.
  */
 const ref = loadRefData();
 

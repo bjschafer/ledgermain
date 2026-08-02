@@ -1,6 +1,6 @@
 /**
- * Unit tests for `model/kineticistBuild.ts` (issue #65 — kineticist
- * Elemental Focus / Expanded Element / Wild Talent budget math). Mirrors
+ * Unit tests for `model/kineticistBuild.ts` (kineticist Elemental Focus /
+ * Expanded Element / Wild Talent budget math). Mirrors
  * `occultistImplements.test.ts`'s pattern.
  */
 import { describe, expect, it } from "bun:test";

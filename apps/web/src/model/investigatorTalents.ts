@@ -1,18 +1,17 @@
 /**
- * Pure investigator-talent transitions (issue #65). Talent ids are just
- * entries in `build.investigatorTalents`, mirroring
- * `toggleAlchemistDiscovery` in `model/alchemistDiscoveries.ts` — the
- * engine's `INVESTIGATOR_TALENTS` table maps each to its (mostly
- * display-only) `changes[]`/`contextNotes`.
+ * Pure investigator-talent transitions. Talent ids are just entries in
+ * `build.investigatorTalents`, mirroring `toggleAlchemistDiscovery` in
+ * `model/alchemistDiscoveries.ts` — the engine's `INVESTIGATOR_TALENTS` table
+ * maps each to its (mostly display-only) `changes[]`/`contextNotes`.
  *
- * Budget (PF1 Advanced Class Guide, verified against the SRD class table):
- * an investigator gains a talent at 3rd level and every 2 levels thereafter
- * (3rd, 5th, ..., 19th — 9 total by 20th) — `floor((level - 3) / 2) + 1` for
- * `level >= 3`. Each copy of the "Extra Investigator Talent" feat (a
- * stackable general feat, confirmed present in the vendored `feats.json`)
- * adds one more, counted by OCCURRENCE in `doc.build.feats` — same
- * "manually-added duplicates" convention `expectedAlchemistDiscoveryCount`
- * uses for "Extra Discovery".
+ * Budget (PF1 Advanced Class Guide, verified against the SRD class table): an
+ * investigator gains a talent at 3rd level and every 2 levels thereafter (3rd,
+ * 5th,..., 19th — 9 total by 20th) — `floor((level - 3) / 2) + 1` for `level
+ * >= 3`. Each copy of the "Extra Investigator Talent" feat (a stackable
+ * general feat, confirmed present in the vendored `feats.json`) adds one more,
+ * counted by OCCURRENCE in `doc.build.feats` — same "manually-added
+ * duplicates" convention `expectedAlchemistDiscoveryCount` uses for "Extra
+ * Discovery".
  *
  * This module never blocks: taking more than the expected count is a soft
  * warning only, matching the project's hybrid posture on feat/trait/skill

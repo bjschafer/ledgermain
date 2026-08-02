@@ -6,24 +6,24 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { collectGrantedFeatures, compute, RAGE_POWER_IDS, RAGE_POWERS } from "../src/index.js";
 
 /**
- * Fixture coverage for the rage-power table + picker plumbing (issue #65/#67).
- * Most entries are `displayOnly` (see `rage-powers.ts`'s doc comment); a
- * small set (Raging Climber, Raging Swimmer, Swift Foot) was promoted to a
- * real buff-gated `Change` by issue #75, and a further set by the #74
- * parity-sweep batch-1 (A-F) pass (Beast Totem, Celestial Blood, Chaos
- * Totem, Draconic Blood, Earth Totem, plus the three Linnorm Death Curses'
- * UNCONDITIONAL — not rage-gated — damage Changes), batch-2 (G-R) pass
- * (Greater Abyssal Blood, Greater Chaos Totem, Greater Sun Totem, Greater
- * Undead Blood, Infernal Blood, Lesser Sun Totem, Lesser Moon Totem, Night
- * Vision, Raging Flyer, plus Ice Linnorm Death Curse's UNCONDITIONAL damage
- * Change), and batch-3 (S-Z) pass, which closed out full vendored parity
- * (Sun Totem, Unrestrained Rage, plus a legacy revisit that promoted the two
- * original-29-entry rows Low-Light Vision and Scent) — see
- * `rageBuffGate.test.ts` for that mechanism's dedicated fixture coverage
- * (raging vs. not, typed stacking). These tests cover: table shape/count,
- * shared-editions availability, gating on barbarian levels (either edition)
- * in `collectGrantedFeatures`, and that picked powers surface on
- * `DerivedSheet.classFeatures` with a "Rage Power" origin label.
+ * Fixture coverage for the rage-power table + picker plumbing. Most entries
+ * are `displayOnly` (see `rage-powers.ts`'s doc comment); a small set (Raging
+ * Climber, Raging Swimmer, Swift Foot) was promoted to a real buff-gated
+ * `Change` by the buff-gate pass, and a further set by the parity sweep's
+ * batch 1
+ * (A-F) pass (Beast Totem, Celestial Blood, Chaos Totem, Draconic Blood, Earth
+ * Totem, plus the three Linnorm Death Curses' UNCONDITIONAL — not rage-gated —
+ * damage Changes), batch-2 (G-R) pass (Greater Abyssal Blood, Greater Chaos
+ * Totem, Greater Sun Totem, Greater Undead Blood, Infernal Blood, Lesser Sun
+ * Totem, Lesser Moon Totem, Night Vision, Raging Flyer, plus Ice Linnorm Death
+ * Curse's UNCONDITIONAL damage Change), and batch-3 (S-Z) pass, which closed
+ * out full vendored parity (Sun Totem, Unrestrained Rage, plus a legacy
+ * revisit that promoted the two original-29-entry rows Low-Light Vision and
+ * Scent) — see `rageBuffGate.test.ts` for that mechanism's dedicated fixture
+ * coverage (raging vs. not, typed stacking). These tests cover: table
+ * shape/count, shared-editions availability, gating on barbarian levels
+ * (either edition) in `collectGrantedFeatures`, and that picked powers surface
+ * on `DerivedSheet.classFeatures` with a "Rage Power" origin label.
  */
 const ref = loadRefData();
 
@@ -63,7 +63,7 @@ function makeDoc(over: { classTag: string; level: number; ragePowers?: string[] 
   };
 }
 
-// Promoted by issue #75 (while-raging buff gate) or the #74 parity-sweep
+// Promoted by the while-raging buff gate or the parity-sweep
 // batch-1 (A-F) / batch-2 (G-R) / batch-3 (S-Z) passes — see
 // rageBuffGate.test.ts.
 //

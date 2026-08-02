@@ -1,20 +1,20 @@
 /**
- * Clean-room PF1 Rogue Talents table (issue #65): hand-authored from the
- * published rules (verified against aonprd.com's "Talents - Rogue" and
- * "Talents - Rogue (Unchained)" listings), mirroring `witch-hexes.ts`'s
- * posture — rogue talents are NOT part of the vendored Foundry data pack
- * (both the base Rogue and Rogue (Unchained) class defs only link a single
- * generic "Rogue Talents" stub `ClassFeature`, no per-talent breakdown), so
- * there is no upstream JSON to normalize.
+ * Clean-room PF1 Rogue Talents table: hand-authored from the published rules
+ * (verified against aonprd.com's "Talents - Rogue" and "Talents - Rogue
+ * (Unchained)" listings), mirroring `witch-hexes.ts`'s posture — rogue talents
+ * are NOT part of the vendored Foundry data pack (both the base Rogue and
+ * Rogue (Unchained) class defs only link a single generic "Rogue Talents" stub
+ * `ClassFeature`, no per-talent breakdown), so there is no upstream JSON to
+ * normalize.
  *
- * Scope: FULL vendored parity as of issue #74's Phase 5 extension — all 234
- * vendored talents (regular + advanced, chained + Unchained lists, the
- * catfolk-only group, and the "(Unchained Rogue)" revised variants). SHARED
- * between the chained rogue and Rogue (Unchained) (`build.rogueTalents` —
- * both classes draw talents from the same picker); `chainedOnly`/
- * `unchainedOnly` flag which list an entry belongs to (from the vendored
- * `R_`/`UR_` category prefixes), soft-noted (never hidden), same
- * soft-filtering posture as `minLevel` (2 regular / 10 advanced).
+ * Scope: FULL vendored parity as of the Phase 5 extension — all 234 vendored
+ * talents (regular + advanced, chained + Unchained lists, the catfolk-only
+ * group, and the "(Unchained Rogue)" revised variants). SHARED between the
+ * chained rogue and Rogue (Unchained) (`build.rogueTalents` — both classes
+ * draw talents from the same picker); `chainedOnly`/ `unchainedOnly` flag
+ * which list an entry belongs to (from the vendored `R_`/`UR_` category
+ * prefixes), soft-noted (never hidden), same soft-filtering posture as
+ * `minLevel` (2 regular / 10 advanced).
  *
  * Modelling posture (mirrors `witch-hexes.ts`'s honesty bar): almost every
  * talent here is a situational/activated/forgo-sneak-damage/prose-tier
@@ -24,7 +24,7 @@
  *     bridged into `classBonusFeatSlots` in `apps/web/src/model/feats.ts`.
  *   - A dozen talents grant a SPECIFIC feat outright, no player choice needed
  *     (Finesse Rogue's Weapon Finesse, Strong Impression's Intimidating
- *     Prowess, Unbalancing Trick's Improved Trip, ...) — `grantsFeat`, each
+ *     Prowess, Unbalancing Trick's Improved Trip,...) — `grantsFeat`, each
  *     name verified against the vendored `RefData.feats`, bridged into
  *     `grantedFeats` in `feats.ts`.
  *   - Stony Skin's always-on DR 2/adamantine is the one entry with real
@@ -312,7 +312,7 @@ const TALENT_LIST: RogueTalentDef[] = [
     summary: "Gain Exotic Weapon Proficiency (Firearms) as a bonus feat.",
     contextNotes: [note("Not auto-applied — add Exotic Weapon Proficiency (Firearms) by hand.")],
   }),
-  // ---- full-catalog extension (issue #74 Phase 5; vendored parity) ----
+  // ---- full-catalog extension (vendored parity) ----
   toDef({
     id: "accuratePoisoner",
     name: "Accurate Poisoner",
@@ -1901,13 +1901,13 @@ export const ROGUE_TALENT_IDS: readonly string[] = TALENT_LIST.map((t) => t.id);
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.rogueTalents` (see that type's doc comment) is
- * the FULL published catalog (234 entries after junk filtering), prose only.
- * The hand-authored table above stays authoritative for MECHANICS — this
- * section only merges the two for BROWSING (the picker) and for resolving a
- * picked id back to a definition, mirroring `rage-powers.ts`'s identical
- * "vendored catalog overlay" section (matching by NORMALIZED NAME,
- * hand-authored wins the collision).
+ * `RefData.rogueTalents` (see that type's doc comment) is the FULL published
+ * catalog (234 entries after junk filtering), prose only. The hand-authored
+ * table above stays authoritative for MECHANICS — this section only merges the
+ * two for BROWSING (the picker) and for resolving a picked id back to a
+ * definition, mirroring `rage-powers.ts`'s identical "vendored catalog
+ * overlay" section (matching by NORMALIZED NAME, hand-authored wins the
+ * collision).
  *
  * Collision audit (all 234 hand-authored entries, run against the pinned Pf
  * Data 1e slice): every entry matches a vendored row — no `NAME_ALIASES`

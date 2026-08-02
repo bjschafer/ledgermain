@@ -6,16 +6,16 @@ import { isAspectMinorFormActive, toggleAspectMinorForm } from "../../model/shif
 import type { BuilderProps } from "../builder/types.js";
 
 /**
- * Shifter minor-form toggle (issue #65) — the in-play counterpart to
- * `ShifterAspectPicker` (builder), which is where aspects are KNOWN. This
- * panel lets a shifter turn a known aspect's minor form on/off during play,
- * mirroring `ResourcesPanel`'s `LinkedBuffToggle` shape (Rage/Mutagen), but
- * built directly from the hand-authored `SHIFTER_ASPECTS` table rather than
- * a resource pool's `linkedBuffIds` — see `model/shifterAspects.ts`'s doc
- * comment for why (no vendored buff to link).
+ * Shifter minor-form toggle — the in-play counterpart to `ShifterAspectPicker`
+ * (builder), which is where aspects are KNOWN. This panel lets a shifter turn
+ * a known aspect's minor form on/off during play, mirroring `ResourcesPanel`'s
+ * `LinkedBuffToggle` shape (Rage/Mutagen), but built directly from the
+ * hand-authored `SHIFTER_ASPECTS` table rather than a resource pool's
+ * `linkedBuffIds` — see `model/shifterAspects.ts`'s doc comment for why (no
+ * vendored buff to link).
  *
  * Major form (Wild Shape into the aspect's battle form) is NOT here —
- * deferred to issue #70 (polymorph); each aspect's card says so.
+ * deferred to the polymorph work; each aspect's card says so.
  */
 export function ShifterAspectPanel({ doc, update }: BuilderProps) {
   const isShifter = doc.identity.classes.some((c) => c.tag === "shifter");

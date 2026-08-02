@@ -1,11 +1,10 @@
 /**
- * Rogue's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06; see `index.ts` for the per-class file convention this
- * follows). Covers all
- * 77 vendored rogue archetypes, 241 features, read individually (rogue's
- * archetype count is small enough to afford the exhaustive per-feature pass
- * the fighter pilot's own recommendation flagged as optional for smaller
- * classes — no heuristic-assisted situational/subsystem split here).
+ * Rogue's slice of the pipeline (wave 2, 2026-07-06; see `index.ts` for the
+ * per-class file convention this follows). Covers all 77 vendored rogue
+ * archetypes, 241 features, read individually (rogue's archetype count is
+ * small enough to afford the exhaustive per-feature pass the fighter pilot's
+ * own recommendation flagged as optional for smaller classes — no
+ * heuristic-assisted situational/subsystem split here).
  *
  * ── Key finding that shapes this file's `blocked` bucket ──────────────────
  *
@@ -48,13 +47,13 @@
  *    (no stated change, no "this ability replaces/alters..." language) —
  *    a suspected vendored-data artifact, not a real mechanical change. Left
  *    unmodeled rather than risk anything touching the hardcoded formula.
- *  - Features that upsize/downsize sneak attack's die **type** (d8 vs d6,
- *    e.g. Knife Master's Sneak Stab, Skulking Slayer's Bold Strike,
- *    Waylayer's Ambuscading Sneak Attack, Gun Smuggler's Selective
- *    Targeting) are `subsystem`, not `blocked` — they don't touch the
- *    count/progression `sneakAttackDice()` computes, they'd need a
- *    dedicated "sneak attack die type" Change target that doesn't exist in
- *    `targets.ts` at all. No composition risk, just nothing to extract.
+ *  - Features that upsize/downsize sneak attack's die **type** (d8 vs d6, e.g.
+ *    Knife Master's Sneak Stab, Skulking Slayer's Bold Strike, Waylayer's
+ *    Ambuscading Sneak Attack, Gun Smuggler's Selective Targeting) are
+ *    `subsystem`, not `blocked` — they don't touch the count/progression
+ *    `sneakAttackDice` computes, they'd need a dedicated "sneak attack die
+ *    type" Change target that doesn't exist in `targets.ts` at all. No
+ *    composition risk, just nothing to extract.
  *
  * ── Rubric (same as the fighter pilot) ─────────────────────────────────────
  *  - "numeric": an unconditional bonus, or one gated on a condition this
@@ -75,10 +74,9 @@
  *    technically-real but permanently-UNAPPLIED target exists (`sensedv`),
  *    since emitting a Change that moves no number on the sheet would badge
  *    the archetype as "modeled" dishonestly.
- *  - "blocked": entangled with the hardcoded, atomic `sneakAttackDice()`
+ *  - "blocked": entangled with the hardcoded, atomic `sneakAttackDice`
  *    progression this file cannot safely touch (see above) — narrower here
- *    than fighter's atomic-partial-tier trap, for the reasons explained
- *    above.
+ *    than fighter's atomic-partial-tier trap, for the reasons explained above.
  *
  * Confidence: "high" = literal/near-literal unconditional bonus, clearly
  * worded. "medium" = a real ability with a second component this table
@@ -87,7 +85,7 @@
  * scaling language). "low" unused, same as fighter's pass.
  *
  * Knife Master and Scout already have entries in the hand-verified table
- * (`archetype-effects.ts`, issue #7 — Hidden Blade and Scout's Charge
+ * (`archetype-effects.ts` — Hidden Blade and Scout's Charge
  * respectively) and the REST of both archetypes' features are covered
  * as notes-only. Per the
  * pipeline's precedence rule (hand-verified always wins, never duplicated),
@@ -1962,17 +1960,17 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
 };
 
 /**
- * Rogue's machine-extracted `Change`-shaped effects (issue #45). 23 entries —
- * every one is either a clean unconditional bonus, an `@armor.type`-gated
- * bonus (same precedent as Savage Barbarian/River Rat's own Swamper here),
- * or a partial extraction of a compound ability where only one component
- * clears the honesty bar (the rest noted in `detail`, per this pipeline's
- * established posture). None of these ride a paired-swap suppression that
- * matters numerically — see this file's header note: every rogue base
- * feature these replace (Trapfinding/Trap Sense/Uncanny Dodge/Evasion)
- * carries an empty vendored `changes[]` and no hand-authored number, so
- * there is nothing to double-count regardless of whether the swap is
- * cleanly paired (levels 3/4/8/10/20) or left ambiguous (levels 1/2).
+ * Rogue's machine-extracted `Change`-shaped effects. 23 entries — every one is
+ * either a clean unconditional bonus, an `@armor.type`-gated bonus (same
+ * precedent as Savage Barbarian/River Rat's own Swamper here), or a partial
+ * extraction of a compound ability where only one component clears the honesty
+ * bar (the rest noted in `detail`, per this pipeline's established posture).
+ * None of these ride a paired-swap suppression that matters numerically — see
+ * this file's header note: every rogue base feature these replace
+ * (Trapfinding/Trap Sense/Uncanny Dodge/Evasion) carries an empty vendored
+ * `changes[]` and no hand-authored number, so there is nothing to double-count
+ * regardless of whether the swap is cleanly paired (levels 3/4/8/10/20) or
+ * left ambiguous (levels 1/2).
  */
 export const ROGUE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>

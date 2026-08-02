@@ -1,23 +1,23 @@
 /**
- * Clean-room PF1 Metamagic feat table (issue #71): hand-authored from the
- * published rules (cross-checked against aonprd.com's metamagic-feat pages —
- * no Foundry system code consulted, per CLAUDE.md). The vendored Foundry data
- * pack tags these 10 feats `"Metamagic"` but carries no structured slot-level
- * adjustment (it lives only in each feat's prose), so this registry supplies
- * the one number the tracker actually needs to model: how many spell-slot
- * levels applying the feat raises the prepared/cast slot.
+ * Clean-room PF1 Metamagic feat table: hand-authored from the published rules
+ * (cross-checked against aonprd.com's metamagic-feat pages — no Foundry system
+ * code consulted, per CLAUDE.md). The vendored Foundry data pack tags these 10
+ * feats `"Metamagic"` but carries no structured slot-level adjustment (it
+ * lives only in each feat's prose), so this registry supplies the one number
+ * the tracker actually needs to model: how many spell-slot levels applying the
+ * feat raises the prepared/cast slot.
  *
  * Keyed by name slug (see `featNameSlug`), for the same reason `feat-effects.ts`
  * is: Foundry feat ids are opaque UUIDs that may change between data versions,
  * so a slug from the canonical name is the stable, human-authorable key.
  * Lookup path: `doc.build.feats` → `refData.feats[id].name` → slug.
  *
- * Honesty bar (issue #71): the SLOT-LEVEL accounting is the modeled part. The
- * feat's numeric effect on the spell itself (Empower's +50%, Maximize's
- * maximized dice, Widen's doubled area, …) is a display-only `note`, never a
- * sheet number — the engine does not, and deliberately will not, recompute a
- * spell's damage/area/duration. The one exception is that a metamagic feat's
- * slot increase does NOT change the spell's EFFECTIVE level for save-DC /
+ * Honesty bar: the SLOT-LEVEL accounting is the modeled part. The feat's
+ * numeric effect on the spell itself (Empower's +50%, Maximize's maximized
+ * dice, Widen's doubled area, …) is a display-only `note`, never a sheet
+ * number — the engine does not, and deliberately will not, recompute a spell's
+ * damage/area/duration. The one exception is that a metamagic feat's slot
+ * increase does NOT change the spell's EFFECTIVE level for save-DC /
  * concentration purposes — RAW, those still use the spell's actual level —
  * EXCEPT Heighten Spell, which genuinely raises the spell's effective level
  * ("all effects dependent on spell level are calculated according to the

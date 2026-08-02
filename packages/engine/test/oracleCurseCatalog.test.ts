@@ -10,9 +10,9 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74) — see
- * `oracle-curses.ts`'s "vendored catalog overlay" section doc comment for
- * the collision-audit narrative this asserts against.
+ * Coverage for the vendored-catalog overlay — see `oracle-curses.ts`'s
+ * "vendored catalog overlay" section doc comment for the collision-audit
+ * narrative this asserts against.
  */
 const ref = loadRefData();
 

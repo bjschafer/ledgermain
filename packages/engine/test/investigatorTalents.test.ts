@@ -1,15 +1,15 @@
 /**
  * Hand-computed fixture tests for investigator talents + Studied Combat /
- * Studied Strike / Inspiration (issue #65). Every talent in
- * `INVESTIGATOR_TALENTS` is `displayOnly` with `changes: []` (see that
- * file's doc comment), so `collectModifiers` should never emit a numeric
- * modifier for one. What IS exercised: the talent table's own gating/
- * surfacing (same pattern as `alchemistDiscoveries.test.ts`), Studied
- * Combat's insight bonus, Studied Strike's precision dice, and confirming
- * the vendored Inspiration pool + skill dice already work end-to-end
- * (issue #13's audit flagged inspiration as unwired display-only prose —
- * this test proves the vendored `uses.maxFormula`/`changes[]` already ride
- * the generic pipeline with no extra code needed).
+ * Studied Strike / Inspiration. Every talent in `INVESTIGATOR_TALENTS` is
+ * `displayOnly` with `changes: []` (see that file's doc comment), so
+ * `collectModifiers` should never emit a numeric modifier for one. What IS
+ * exercised: the talent table's own gating/ surfacing (same pattern as
+ * `alchemistDiscoveries.test.ts`), Studied Combat's insight bonus, Studied
+ * Strike's precision dice, and confirming the vendored Inspiration pool +
+ * skill dice already work end-to-end (audit flagged inspiration as unwired
+ * display-only prose — this test proves the vendored
+ * `uses.maxFormula`/`changes[]` already ride the generic pipeline with no
+ * extra code needed).
  */
 
 import { describe, expect, it } from "bun:test";

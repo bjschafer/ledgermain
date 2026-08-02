@@ -12,14 +12,13 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the cavalier/samurai order vendored-catalog overlay (issue
- * #74). Unlike every other subsystem imported so far, this is a
- * CHASSIS overlay (a hand-authored order carries bonus skills/Challenge
- * rider/leveled abilities, not just prose) — see `cavalier-orders.ts`'s
- * "vendored catalog overlay" doc comment for the collision-audit narrative
- * (7 of 8 hand-authored entries matched directly; the samurai's Ronin order
- * needed a wording-drift alias to the vendored "Ronin", not "Order of the
- * Ronin").
+ * Coverage for the cavalier/samurai order vendored-catalog overlay. Unlike
+ * every other subsystem imported so far, this is a CHASSIS overlay (a
+ * hand-authored order carries bonus skills/Challenge rider/leveled abilities,
+ * not just prose) — see `cavalier-orders.ts`'s "vendored catalog overlay" doc
+ * comment for the collision-audit narrative (7 of 8 hand-authored entries
+ * matched directly; the samurai's Ronin order needed a wording-drift alias to
+ * the vendored "Ronin", not "Order of the Ronin").
  */
 const ref = loadRefData();
 

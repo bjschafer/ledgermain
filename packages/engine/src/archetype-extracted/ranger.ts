@@ -1,13 +1,12 @@
 /**
- * Ranger's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (documented in
- * `index.ts`), this file owns BOTH of
- * ranger's pipeline artifacts — `RANGER_ARCHETYPE_EFFECTS_EXTRACTED` (the
+ * Ranger's slice of the pipeline (wave 2, 2026-07-06). Per the per-class file
+ * convention (documented in `index.ts`), this file owns BOTH of ranger's
+ * pipeline artifacts — `RANGER_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
  * `RANGER_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so
  * a future wave working on a different class never has a reason to touch this
- * file; only `index.ts` (the aggregator) needs one new import + one new
- * spread per class.
+ * file; only `index.ts` (the aggregator) needs one new import + one new spread
+ * per class.
  *
  * ── RANGER_ARCHETYPE_FEATURE_CLASSIFICATION ───────────────────────────────
  *
@@ -1981,9 +1980,9 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * ── RANGER_ARCHETYPE_EFFECTS_EXTRACTED ────────────────────────────────────
  *
  * Machine-extracted mechanical effects for ranger archetype class features
- * (issue #45, wave 2). Clean-room from the published PF1 rules — the
- * vendored prose this was extracted from (`archetype-features.json`) is OGL,
- * so reading it is fine; no Foundry source was consulted (DESIGN.md §6).
+ * (wave 2). Clean-room from the published PF1 rules — the vendored prose this
+ * was extracted from (`archetype-features.json`) is OGL, so reading it is
+ * fine; no Foundry source was consulted (DESIGN.md §6).
  *
  * Only `numeric`-bucketed features get an entry here (10 total: 3 Combat
  * Style Feat restricted-list reflavors beyond the 6 already hand-verified in

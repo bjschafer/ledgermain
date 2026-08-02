@@ -88,26 +88,25 @@ export interface Change {
    */
   operator?: "add" | "set";
   /**
-   * Buff gate (issue #75): when present, this Change applies ONLY while at
-   * least one buff in `CharacterDoc.live.activeBuffs` matches — for a
-   * hand-authored build choice whose bonus rides *someone else's* buff
-   * rather than being unconditionally granted (the motivating case: a
-   * barbarian rage power like Raging Climber only works "while raging",
-   * where "raging" is the separately-toggled Rage buff, not the rage power
-   * itself — see `@pf1/engine` `rage-powers.ts`). Absent (the default, and
-   * the only value every other `Change` source in this codebase uses today)
-   * means always-on and unconditional — fully backward compatible, no doc
-   * migration needed.
+   * Buff gate: when present, this Change applies ONLY while at least one buff
+   * in `CharacterDoc.live.activeBuffs` matches — for a hand-authored build
+   * choice whose bonus rides *someone else's* buff rather than being
+   * unconditionally granted (the motivating case: a barbarian rage power like
+   * Raging Climber only works "while raging", where "raging" is the
+   * separately-toggled Rage buff, not the rage power itself — see
+   * `@pf1/engine` `rage-powers.ts`). Absent (the default, and the only value
+   * every other `Change` source in this codebase uses today) means always-on
+   * and unconditional — fully backward compatible, no doc migration needed.
    *
    * Matched by `ActiveBuff.buffId` (a `RefData.buffs` id) and/or
-   * `ActiveBuff.effectTag` (a hand-authored toggle id) — **never** by
-   * display name; name-based reference-data lookups have caused real
-   * cross-branch bugs in this project (the Seeker/summoner-archetype
-   * lesson), and a buff can be renamed/reworded upstream without this gate
-   * silently breaking. A change is active if it matches ANY id in either
-   * list (an OR across both lists and within each). Evaluated at
-   * collect-time by `@pf1/engine` `collect.ts`'s `buffGateSatisfied`,
-   * reading only `doc.live.activeBuffs` — `compute()` stays pure.
+   * `ActiveBuff.effectTag` (a hand-authored toggle id) — **never** by display
+   * name; name-based reference-data lookups have caused real cross-branch bugs
+   * in this project (the Seeker/summoner-archetype lesson), and a buff can be
+   * renamed/reworded upstream without this gate silently breaking. A change is
+   * active if it matches ANY id in either list (an OR across both lists and
+   * within each). Evaluated at collect-time by `@pf1/engine` `collect.ts`'s
+   * `buffGateSatisfied`, reading only `doc.live.activeBuffs` — `compute` stays
+   * pure.
    */
   activeWhenBuff?: BuffGate;
   /**
@@ -156,18 +155,17 @@ export interface ContextNote {
 }
 
 /**
- * A PF1 character-trait category. The engine's 28 hand-authored entries
- * (issue #23) use one of the traditional four ("Combat" | "Faith" | "Magic" |
- * "Social"); the vendored catalog (issue #74, `RefData.traits`) adds
- * many more — Foundry's `traitType` values Title-Cased ("Region", "Race",
- * "Campaign", "Religion", "Drawback", "Faction", "Equipment", "Mount",
- * "Cosmic", "Family", "Exemplar"). Kept as `string` (not a closed union) so
- * neither side needs to enumerate the other's values; the "two different
- * categories" reminder (`model/traits.ts` `traitsNeedWarning`) is a soft
- * warning that works over any string. Lives here (rather than beside the
- * engine's hand-authored `TRAITS` table) so `CharacterDoc.build.homebrew.traits`
- * — a schema-level field — can reference the same shape a homebrew trait must
- * conform to.
+ * A PF1 character-trait category. The engine's 28 hand-authored entries use
+ * one of the traditional four ("Combat" | "Faith" | "Magic" | "Social"); the
+ * vendored catalog (`RefData.traits`) adds many more — Foundry's `traitType`
+ * values Title-Cased ("Region", "Race", "Campaign", "Religion", "Drawback",
+ * "Faction", "Equipment", "Mount", "Cosmic", "Family", "Exemplar"). Kept as
+ * `string` (not a closed union) so neither side needs to enumerate the other's
+ * values; the "two different categories" reminder (`model/traits.ts`
+ * `traitsNeedWarning`) is a soft warning that works over any string. Lives
+ * here (rather than beside the engine's hand-authored `TRAITS` table) so
+ * `CharacterDoc.build.homebrew.traits` — a schema-level field — can reference
+ * the same shape a homebrew trait must conform to.
  */
 export type TraitCategory = string;
 

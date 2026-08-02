@@ -1,7 +1,6 @@
 /**
- * Unit tests for `model/languages.ts` (issue #25): racial languages, the
- * combined display list, the suggested bonus-language count, and label
- * formatting.
+ * Unit tests for `model/languages.ts`: racial languages, the combined display
+ * list, the suggested bonus-language count, and label formatting.
  */
 import { describe, expect, it } from "bun:test";
 

@@ -14,14 +14,13 @@ import {
 
 /**
  * Vendors the ~108 splatbook prestige classes NOT already hand-authored in
- * `supplements.ts` (issue #74) from the same third-party archetype
- * module already pinned for `pf-archetypes`/`pf-arch-features` (see
- * `transformArchetypePack`'s doc comment) — `pf-prestige-classes/` (one doc
- * per class, real chassis fields: `hd`, `bab`, `savingThrows`,
- * `skillsPerLevel`, `classSkills`, `tag`) and `pf-prestige-features/` (one doc
- * per granted ability, tagged with its owning class by NAME via
- * `system.associations.classes` — the same association shape the archetype
- * orphan-feature recovery pass already reads, see `classesOf` in
+ * `supplements.ts` from the same third-party archetype module already pinned
+ * for `pf-archetypes`/`pf-arch-features` (see `transformArchetypePack`'s doc
+ * comment) — `pf-prestige-classes/` (one doc per class, real chassis fields:
+ * `hd`, `bab`, `savingThrows`, `skillsPerLevel`, `classSkills`, `tag`) and
+ * `pf-prestige-features/` (one doc per granted ability, tagged with its owning
+ * class by NAME via `system.associations.classes` — the same association shape
+ * the archetype orphan-feature recovery pass already reads, see `classesOf` in
  * `archetypes.ts` — rather than a structured level-linked list).
  *
  * `excludeNames` skips any class whose name matches a hand-authored entry

@@ -195,15 +195,15 @@ export function useCharacter(): CharacterStore {
   // renders, matching every other ref-based piece of bookkeeping in this hook.
   const undoStateRef = useRef(createUndoSnapshotState());
 
-  // Level-up celebratory toast bookkeeping (issue #63): the last total level
-  // (+ the max HP it came with) the level-up effect below has actually seen,
-  // so it can tell a genuine level-up (an increase) apart from every other
-  // reason `sheet` recomputes. `undefined` means "don't compare on the next
-  // run" — true on first mount, and forced back to that state by
-  // `invalidateCrossTransitionTracking` below whenever the active character
-  // is swapped out from under it, so switching to (or importing, or
-  // sync-pulling in) a character that merely happens to be higher-level than
-  // the one just left never misfires as a "level up".
+  // Level-up celebratory toast bookkeeping: the last total level (+ the max HP
+  // it came with) the level-up effect below has actually seen, so it can tell
+  // a genuine level-up (an increase) apart from every other reason `sheet`
+  // recomputes. `undefined` means "don't compare on the next run" — true on
+  // first mount, and forced back to that state by
+  // `invalidateCrossTransitionTracking` below whenever the active character is
+  // swapped out from under it, so switching to (or importing, or sync-pulling
+  // in) a character that merely happens to be higher-level than the one just
+  // left never misfires as a "level up".
   const lastSeenLevelRef = useRef<{ level: number; maxHp: number } | undefined>(undefined);
 
   // Shared invalidation for anything that swaps the active character's doc
@@ -259,7 +259,7 @@ export function useCharacter(): CharacterStore {
         if (activeId && result.deleted.includes(activeId) && rawRefData) {
           // The character on screen was deleted on another device; adopt
           // whatever remains (or a fresh blank doc) rather than keep showing a
-          // doc that no longer exists in the store (#39).
+          // doc that no longer exists in the store.
           invalidateCrossTransitionTracking();
           const fresh = await loadOrCreateActive();
           setDoc(reconcileLoadedDoc(fresh, resolveRefData(fresh, rawRefData)));
@@ -502,9 +502,9 @@ export function useCharacter(): CharacterStore {
         if (doc?.id === id) cancelPendingSave();
         await adopt(await deleteCharacterDb(id));
         // Best-effort remote delete so the deletion leaves a server tombstone
-        // and propagates to other devices instead of resurfacing (#39). Never
-        // fails the local delete — the character is gone from this device
-        // regardless of whether the server round-trip succeeds.
+        // and propagates to other devices instead of resurfacing. Never fails
+        // the local delete — the character is gone from this device regardless
+        // of whether the server round-trip succeeds.
         const apiBase = apiBaseUrl();
         const token = getStoredToken();
         if (apiBase && token) {
@@ -559,22 +559,21 @@ export function useCharacter(): CharacterStore {
     }
   }, [sheet, doc]);
 
-  // Level-up celebratory toast (issue #63): a "ding" beat to go with the
-  // attention badges, which only ever flag *outstanding* build work and
-  // never fire when something actually got better. `lastSeenLevelRef` is
-  // `undefined` on first mount and whenever `invalidateCrossTransitionTracking`
-  // resets it (character switch/create/import/reset/delete, a remote pull/
-  // delete landing on the active doc, or conflict resolution — the exact
-  // same trigger set the undo snapshot uses), so this only ever compares a
-  // character's own total level against its own immediately-prior total
-  // level: it can't misfire from switching to (or importing, or syncing in)
-  // a character that merely happens to be higher-level than the one just
-  // left. Only fires on an actual increase — leveling down (removing a
-  // class level) or a no-op edit are both silent. Also skips the very first
-  // 0 -> N transition (`last.level === 0`): picking a brand-new character's
-  // first class is character CREATION, not a level-up worth a "Level 1!"
-  // toast — the celebratory beat is for going up a level, which needs an
-  // existing level to go up from.
+  // Level-up celebratory toast: a "ding" beat to go with the attention badges,
+  // which only ever flag *outstanding* build work and never fire when
+  // something actually got better. `lastSeenLevelRef` is `undefined` on first
+  // mount and whenever `invalidateCrossTransitionTracking` resets it
+  // (character switch/create/import/reset/delete, a remote pull/ delete
+  // landing on the active doc, or conflict resolution — the exact same trigger
+  // set the undo snapshot uses), so this only ever compares a character's own
+  // total level against its own immediately-prior total level: it can't
+  // misfire from switching to (or importing, or syncing in) a character that
+  // merely happens to be higher-level than the one just left. Only fires on an
+  // actual increase — leveling down (removing a class level) or a no-op edit
+  // are both silent. Also skips the very first 0 -> N transition (`last.level
+  // === 0`): picking a brand-new character's first class is character
+  // CREATION, not a level-up worth a "Level 1!" toast — the celebratory beat
+  // is for going up a level, which needs an existing level to go up from.
   useEffect(() => {
     if (!sheet || !doc) return;
     const level = sheet.level;

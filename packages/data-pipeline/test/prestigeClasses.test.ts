@@ -1,13 +1,13 @@
 /**
- * Hand-authored prestige-class chassis (issue #66 chunks 1 + 4 — all ten CRB
- * prestige classes: Arcane Archer, Arcane Trickster, Assassin, Dragon
- * Disciple, Duelist, Eldritch Knight, Loremaster, Mystic Theurge, Pathfinder
- * Chronicler, Shadowdancer). Foundry's pf1 pack ships no prestige classes at
- * all, so unlike the rest of `refdata.test.ts` this isn't guarding a
- * transform of upstream data — it's a spot-check of the hand-authored
- * chassis in `src/supplements.ts` against the values verified there (Core
- * Rulebook, cross-checked against legacy.aonprd.com raw HTML, d20pfsrd.com,
- * and aonprd.com).
+ * Hand-authored prestige-class chassis (1 + 4 — all ten CRB prestige classes:
+ * Arcane Archer, Arcane Trickster, Assassin, Dragon Disciple, Duelist,
+ * Eldritch Knight, Loremaster, Mystic Theurge, Pathfinder Chronicler,
+ * Shadowdancer). Foundry's pf1 pack ships no prestige classes at all, so
+ * unlike the rest of `refdata.test.ts` this isn't guarding a transform of
+ * upstream data — it's a spot-check of the hand-authored chassis in
+ * `src/supplements.ts` against the values verified there (Core Rulebook,
+ * cross-checked against legacy.aonprd.com raw HTML, d20pfsrd.com, and
+ * aonprd.com).
  */
 import { describe, expect, it } from "bun:test";
 

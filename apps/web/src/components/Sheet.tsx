@@ -97,13 +97,13 @@ export function Sheet({
     })
     .join(" / ");
   // Per-class caster level. PF1 CL is per casting class, never summed; the
-  // engine's `@cl` and model/casterLevel.ts both treat CL as max over full-caster
-  // tags, but the sheet lists each so a multiclass caster can read them off.
-  // `casterLevelForClass` is the seam where paladin/ranger-style divergences
-  // (CL != class level) get wired in — don't read c.level directly here.
-  // `effectiveCasterClassLevel` (issue #66 chunk 2) folds in any prestige-
-  // class casting advancement before that seam runs, so e.g. a Wizard 5 /
-  // Eldritch Knight 1 reads CL 6, not CL 5.
+  // engine's `@cl` and model/casterLevel.ts both treat CL as max over
+  // full-caster tags, but the sheet lists each so a multiclass caster can read
+  // them off. `casterLevelForClass` is the seam where paladin/ranger-style
+  // divergences (CL != class level) get wired in — don't read c.level directly
+  // here. `effectiveCasterClassLevel` (2) folds in any prestige- class casting
+  // advancement before that seam runs, so e.g. a Wizard 5 / Eldritch Knight 1
+  // reads CL 6, not CL 5.
   const casterLine = doc.identity.classes
     .filter((c) => isCasterTag(c.tag))
     .map((c) => {
@@ -232,7 +232,7 @@ export function Sheet({
         </div>
       </div>
 
-      {/* DR / energy resistance / SR — issue #21, display-only. Kept out of the
+      {/* DR / energy resistance / SR, display-only. Kept out of the
           Defense group above: everyone has an AC and a CMD, but most characters
           have none of these, so an always-present heading would read as a gap. */}
       {sheet.defenses ? (
@@ -360,7 +360,7 @@ export function Sheet({
         </div>
       </div>
 
-      {/* Casting — arcane spell failure (issue #8, issue #64) —
+      {/* Casting — arcane spell failure —
           display-only, shown only for arcane casters (wizard/sorcerer/
           arcanist/magus/bard/summoner/skald/witch/bloodrager). Not a
           defense stat, so it gets its own group rather than living under
@@ -661,7 +661,7 @@ export function Sheet({
         </div>
       )}
 
-      {/* Proficiencies (issue #81) — read-only, provenance on hover/tap. Last
+      {/* Proficiencies — read-only, provenance on hover/tap. Last
           on the sheet on purpose: what you're proficient with is settled at
           build time and almost never consulted mid-combat, so it shouldn't
           push the numbers that are down the page. */}

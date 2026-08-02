@@ -9,13 +9,13 @@
  * source of truth for which spells the character knows; see `doc.ts` for
  * `toggleKnownSpell`. This module is only about spending and restoring slots.
  *
- * Every function takes an optional `classTag` (issue #22 multiclass support):
- * it is the *stored* class tag (see `model/spellcasting.ts` `storedClassTag`)
- * — `undefined` for the primary caster class (or the only one, on a
+ * Every function takes an optional `classTag` (multiclass support): it is the
+ * *stored* class tag (see `model/spellcasting.ts` `storedClassTag`) —
+ * `undefined` for the primary caster class (or the only one, on a
  * single-caster document), tracked in the legacy flat `slotsUsed`; any other
  * caster class (e.g. the sorcerer half of a bard/sorcerer multiclass) tracks
- * its usage independently in `slotsUsedByClass[classTag]`. Omitting
- * `classTag` reproduces pre-multiclass behavior exactly.
+ * its usage independently in `slotsUsedByClass[classTag]`. Omitting `classTag`
+ * reproduces pre-multiclass behavior exactly.
  */
 
 import type { CharacterDoc } from "@pf1/schema";

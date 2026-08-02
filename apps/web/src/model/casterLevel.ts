@@ -20,7 +20,7 @@
  * `*_SPELLS_KNOWN` return `null`/zero below the gate, so no formula is ever
  * evaluated pre-gate in practice.
  *
- * Issue #66 chunk 2 (prestige casting advancement — Eldritch Knight, Mystic
+ * Prestige casting advancement (Eldritch Knight, Mystic
  * Theurge, and any future "+1 level of existing spellcasting class" prestige
  * class) extends this module with `effectiveCasterClassLevel` /
  * `effectiveCasterLevel` / `castingAdvancementBonus` / `CASTER_KIND` /
@@ -158,7 +158,7 @@ export function isCasterTag(tag: string): boolean {
 }
 
 // ---------------------------------------------------------------------------
-// Prestige casting advancement (issue #66 chunk 2)
+// Prestige casting advancement (2)
 // ---------------------------------------------------------------------------
 
 /**
@@ -307,13 +307,12 @@ export function effectiveCasterClassLevel(
 }
 
 /**
- * Highest single-class caster level across the document, advancement-aware
- * (issue #66 chunk 2) — the `refData`-aware counterpart to `casterLevel`
- * above, for callers (e.g. `PrereqContext.casterLevel`) that need feat
- * caster-level prerequisites to see a prestige class's advancement. A Wizard
- * 5 / Eldritch Knight 1 (EK slot 0 → wizard) reads CL 6 here even though the
- * plain `casterLevel(doc)` (still used anywhere `refData` isn't in scope)
- * reads CL 5.
+ * Highest single-class caster level across the document, advancement-aware (2)
+ * — the `refData`-aware counterpart to `casterLevel` above, for callers (e.g.
+ * `PrereqContext.casterLevel`) that need feat caster-level prerequisites to
+ * see a prestige class's advancement. A Wizard 5 / Eldritch Knight 1 (EK slot
+ * 0 → wizard) reads CL 6 here even though the plain `casterLevel(doc)` (still
+ * used anywhere `refData` isn't in scope) reads CL 5.
  */
 export function effectiveCasterLevel(doc: CharacterDoc, refData: RefData): number {
   let cl = 0;

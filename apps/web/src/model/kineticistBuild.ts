@@ -1,11 +1,11 @@
 /**
  * Pure kineticist Elemental Focus / Expanded Element / Wild Talent
- * transitions (issue #65), mirroring `model/occultistImplements.ts`'s shape:
- * a single-choice setter for the primary element (like `setCavalierOrder`),
- * two single-choice setters for the 7th/15th Expanded Element picks, and a
+ * transitions, mirroring `model/occultistImplements.ts`'s shape: a
+ * single-choice setter for the primary element (like `setCavalierOrder`), two
+ * single-choice setters for the 7th/15th Expanded Element picks, and a
  * toggle-list for `build.kineticistWildTalents` with TWO independently
- * budgeted cadences (infusions vs. utility talents) living in one field —
- * the same "one field, a helper disambiguates" shape
+ * budgeted cadences (infusions vs. utility talents) living in one field — the
+ * same "one field, a helper disambiguates" shape
  * `chosenOccultistFocusPowerCount` uses for `occultistFocusPowers`.
  *
  * Infusion budget (verified verbatim against aonprd.com's Kineticist class
@@ -262,8 +262,8 @@ export function toggleKineticistWildTalent(doc: CharacterDoc, talentId: string):
 /**
  * How many CHOSEN talent ids resolve to the given category (unresolvable/
  * stale ids don't count) — resolves against BOTH the hand-authored table AND
- * the vendored catalog's infusion/utility subset (issue #74), so a
- * vendored-only pick counts towards its own budget too.
+ * the vendored catalog's infusion/utility subset, so a vendored-only pick
+ * counts towards its own budget too.
  */
 export function chosenKineticistTalentCount(
   doc: CharacterDoc,
@@ -300,13 +300,12 @@ export function kineticistTalentsNeedWarning(
 }
 
 /**
- * True when `talentId` is above the effective-level gate for the
- * character's current kineticist level (soft warning only — see file doc
- * comment). False (never "below level") for an unresolvable id. Resolves
- * against both the hand-authored table and the vendored catalog (issue #74) — the
- * vendored `level` field IS a real level gate for this
- * subsystem, unlike rage powers' (see `KineticWildTalent.level`'s doc
- * comment).
+ * True when `talentId` is above the effective-level gate for the character's
+ * current kineticist level (soft warning only — see file doc comment). False
+ * (never "below level") for an unresolvable id. Resolves against both the
+ * hand-authored table and the vendored catalog — the vendored `level` field IS
+ * a real level gate for this subsystem, unlike rage powers' (see
+ * `KineticWildTalent.level`'s doc comment).
  */
 export function kineticistTalentBelowLevel(
   doc: CharacterDoc,

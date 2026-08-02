@@ -1,7 +1,6 @@
 /**
- * Arcanist's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (documented in
- * `index.ts`), this file owns
+ * Arcanist's slice of the pipeline (wave 2, 2026-07-06). Per the per-class
+ * file convention (documented in `index.ts`), this file owns
  * `ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit —
  * every feature of every vendored arcanist archetype, individually read
  * against `packages/data-pipeline/data/archetype-features.json`) plus an
@@ -11,15 +10,15 @@
  *
  * **Result: all 11 vendored arcanist archetypes (34 features) classify
  * `subsystem` — zero `numeric` extractions.** This confirms, at the
- * individual-feature level, what the hand-verified table's issue #7 audit
- * already concluded at the archetype level (`archetype-effects.ts`'s
- * "Audited all 11 vendored arcanist archetypes..." comment, School Savant
- * recorded there as the representative no-Change entry): every arcanist
- * archetype reworks the arcane reservoir, arcanist exploits, or
- * spells-known/spell-list subsystems — none of which this engine models via
- * `Change` — rather than granting a flat, unconditional number. An honest
- * all-subsystem classification is a valid result per this wave's brief; no
- * entry was force-fit into `numeric` to avoid an empty extracted table.
+ * individual-feature level, what the hand-verified table's audit already
+ * concluded at the archetype level (`archetype-effects.ts`'s "Audited all 11
+ * vendored arcanist archetypes..." comment, School Savant recorded there as
+ * the representative no-Change entry): every arcanist archetype reworks the
+ * arcane reservoir, arcanist exploits, or spells-known/spell-list subsystems —
+ * none of which this engine models via `Change` — rather than granting a flat,
+ * unconditional number. An honest all-subsystem classification is a valid
+ * result per this wave's brief; no entry was force-fit into `numeric` to avoid
+ * an empty extracted table.
  *
  * The most common shapes seen: (1) an activated ability that spends 1+
  * points from the arcane reservoir for a scripted effect (debuff, spell

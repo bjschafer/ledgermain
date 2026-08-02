@@ -2,12 +2,12 @@
  * Shared "buff sharing" routing logic for creatures that ride along with a
  * master character and can receive a subset of the master's active buffs
  * applied onto their OWN derived sheet — currently the tracked familiar
- * (`familiar.ts`, issue #44) and the tracked animal companion
- * (`companion.ts`). Both follow the identical PF1 "Share Spells"-style rule:
- * a shared buff's `changes[]` are evaluated against the master's roll data
- * and bucketed by target into AC / saves / skills / attack / damage / ability
- * / speed / initiative buckets, each resolved through the same typed-
- * stacking (`resolveStack`) path used everywhere else in the engine.
+ * (`familiar.ts`) and the tracked animal companion (`companion.ts`). Both
+ * follow the identical PF1 "Share Spells"-style rule: a shared buff's
+ * `changes[]` are evaluated against the master's roll data and bucketed by
+ * target into AC / saves / skills / attack / damage / ability / speed /
+ * initiative buckets, each resolved through the same typed- stacking
+ * (`resolveStack`) path used everywhere else in the engine.
  *
  * Extracted out of `familiar.ts` (where this logic originated) so the
  * familiar and companion derivations can't silently diverge — see each
@@ -88,7 +88,7 @@ export interface RoutedSharedBuffs {
    * Global skill-check modifiers (`target: "skills"` — e.g. shaken/sickened's
    * "-2 on skill checks") — applies to EVERY skill in addition to any
    * per-skill `skill.*` modifiers above, mirroring `compute.ts`'s own
-   * `globalSkillMods` handling for the master (issue #68).
+   * `globalSkillMods` handling for the master.
    */
   skillsGlobal: TypedModifier[];
   ability: Record<AbilityId, TypedModifier[]>;
@@ -102,19 +102,19 @@ export interface RoutedSharedBuffs {
  * Evaluate + bucket every shared buff's `changes[]` by target:
  *   - AC (`ac`/`aac`/`sac`/`nac` targets)
  *   - saves (`fort`/`ref`/`will`/`allSavingThrows`)
- *   - skills (`skill.*`, plus a global `skills` bucket — issue #68)
+ *   - skills (`skill.*`, plus a global `skills` bucket)
  *   - attack rolls (`attack`/`mattack` targets — applied to every attack line
  *     alike, matching the no-provenance-split posture of both callers)
- *   - damage rolls (`damage`/`wdamage` targets — issue #68 folds `wdamage`
- *     ["weapon damage"] into the same bucket as `damage`, since every one of
- *     these creatures attacks exclusively with natural weapons, which count
- *     as "weapon damage" for effects like sickened's penalty)
+ *   - damage rolls (`damage`/`wdamage` targets — folds `wdamage` ["weapon
+ *     damage"] into the same bucket as `damage`, since every one of these
+ *     creatures attacks exclusively with natural weapons, which count as
+ *     "weapon damage" for effects like sickened's penalty)
  *   - ability scores (`str`/`dex`/`con`/`int`/`wis`/`cha` targets)
  *   - movement speed (`landSpeed`/`flySpeed`/`swimSpeed`/`climbSpeed`/`burrowSpeed`)
  *   - initiative (`init` target)
  * `operator: "set"` changes are NOT honored for speed — shared buffs are
  * player buffs, not conditions, so nothing shareable in the vendored data
- * ever sets an absolute speed. (Issue #68 also feeds this function each
+ * ever sets an absolute speed. (That work also feeds this function each
  * creature's OWN active `CONDITIONS` entries, reshaped as synthetic
  * `ActiveBuff`s — see `companion.ts`'s `conditionChangeSources` — so a
  * condition's `Change[]` go through the exact same routing as a shared buff.)

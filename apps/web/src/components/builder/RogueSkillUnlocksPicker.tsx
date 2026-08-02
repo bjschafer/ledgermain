@@ -20,14 +20,14 @@ interface RogueSkillUnlocksPickerProps {
 const SKILL_OPTIONS = Object.entries(SKILL_NAMES).sort((a, b) => a[1].localeCompare(b[1]));
 
 /**
- * Rogue's Edge (UC) skill unlock picks (issue #65 — previously deferred).
- * PF1 Unchained RAW: at 5th level, and every 5 levels thereafter (10th,
- * 15th, 20th), choose a skill (with at least 5 ranks) to gain a skill unlock
- * power for. The unlock's own tiered prose effects are NOT modeled — this
- * picker only records WHICH skill was chosen at each tier, displayed here
- * (deliberately NOT also duplicated onto the skill row or the Class Features
- * list — see `CharacterDoc.build.rogueSkillUnlocks`'s doc comment for why).
- * Free-choice — no validation of the "5 ranks" prerequisite.
+ * Rogue's Edge (UC) skill unlock picks (previously deferred). PF1 Unchained
+ * RAW: at 5th level, and every 5 levels thereafter (10th, 15th, 20th), choose
+ * a skill (with at least 5 ranks) to gain a skill unlock power for. The
+ * unlock's own tiered prose effects are NOT modeled — this picker only records
+ * WHICH skill was chosen at each tier, displayed here (deliberately NOT also
+ * duplicated onto the skill row or the Class Features list — see
+ * `CharacterDoc.build.rogueSkillUnlocks`'s doc comment for why). Free-choice —
+ * no validation of the "5 ranks" prerequisite.
  */
 export function RogueSkillUnlocksPicker({ doc, update }: RogueSkillUnlocksPickerProps) {
   const level = rogueUnchainedLevel(doc);

@@ -1,10 +1,10 @@
 /**
  * Requests the masthead's single `FeedbackButton` instance open pre-filled —
- * used by `SearchMiss` (issue #88), which renders deep inside picker dialogs
- * with no direct line to that one instance. Mirrors `state/toast.ts`'s
- * "module-scoped pub/sub, subscribed via useSyncExternalStore" shape so any
- * component can request a prefilled open without threading a
- * context/provider through every panel.
+ * used by `SearchMiss`, which renders deep inside picker dialogs with no
+ * direct line to that one instance. Mirrors `state/toast.ts`'s "module-scoped
+ * pub/sub, subscribed via useSyncExternalStore" shape so any component can
+ * request a prefilled open without threading a context/provider through every
+ * panel.
  *
  * Not a queue: a second request before the first is consumed replaces it
  * (matches toast's last-wins policy) — a player firing off several searches

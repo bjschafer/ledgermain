@@ -4,9 +4,9 @@ import { loadRefData } from "../src/index.js";
 import { extractSpellSr } from "../src/transform/spellSr.js";
 
 /**
- * Unit coverage for the `::spell{...}` SR-token grammar (issue #74's spell-SR
- * import), plus end-to-end assertions against the real vendored data so a
- * future "Pf Data 1e" bump can't silently zero the field out.
+ * Unit coverage for the `::spell{...}` SR-token grammar (spell-SR import),
+ * plus end-to-end assertions against the real vendored data so a future "Pf
+ * Data 1e" bump can't silently zero the field out.
  */
 describe("extractSpellSr", () => {
   it("srY -> yes", () => {

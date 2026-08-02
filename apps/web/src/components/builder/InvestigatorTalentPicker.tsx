@@ -23,21 +23,21 @@ interface InvestigatorTalentPickerProps {
 }
 
 /**
- * Investigator talent selection (issue #65), mirroring `DiscoveryPicker`. An
- * investigator gains a talent at 3rd level and every 2 levels thereafter,
- * plus one per "Extra Investigator Talent" feat (see
- * `model/investigatorTalents.ts`'s budget math). Free-choice, never blocks
- * past the expected count — same hybrid-prereqs posture as `DiscoveryPicker`.
- * Studied Combat/Studied Strike's own numbers (insight bonus, precision
- * dice) show up as a class-feature detail line, not here — see
- * `@pf1/engine` `studiedCombatLabel`/`studiedStrikeDice`.
+ * Investigator talent selection, mirroring `DiscoveryPicker`. An investigator
+ * gains a talent at 3rd level and every 2 levels thereafter, plus one per
+ * "Extra Investigator Talent" feat (see `model/investigatorTalents.ts`'s
+ * budget math). Free-choice, never blocks past the expected count — same
+ * hybrid-prereqs posture as `DiscoveryPicker`. Studied Combat/Studied Strike's
+ * own numbers (insight bonus, precision dice) show up as a class-feature
+ * detail line, not here — see `@pf1/engine`
+ * `studiedCombatLabel`/`studiedStrikeDice`.
  *
  * Browses the FULL published talent catalog (`mergedInvestigatorTalentCatalog`
  * — every vendored entry overlaid with the 28-entry hand-verified table on a
- * name match — issue #74), not just the hand-verified core slice. A
- * `badge-modeled` "M" marks which entries carry real, live mechanics;
- * everything else is prose-only, shown via the same collapsible
- * `FeatureDescription` the Class Features list uses.
+ * name match), not just the hand-verified core slice. A `badge-modeled` "M"
+ * marks which entries carry real, live mechanics; everything else is
+ * prose-only, shown via the same collapsible `FeatureDescription` the Class
+ * Features list uses.
  */
 export function InvestigatorTalentPicker({ doc, refData, update }: InvestigatorTalentPickerProps) {
   const isInvestigator = doc.identity.classes.some((c) => c.tag === "investigator");

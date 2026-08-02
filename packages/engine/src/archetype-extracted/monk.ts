@@ -1,13 +1,12 @@
 /**
- * Monk's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (documented in
- * `index.ts`), this file owns BOTH of
- * monk's pipeline artifacts — `MONK_ARCHETYPE_FEATURE_CLASSIFICATION` (the
- * full per-feature audit) and `MONK_ARCHETYPE_EFFECTS_EXTRACTED` (the
+ * Monk's slice of the pipeline (wave 2, 2026-07-06). Per the per-class file
+ * convention (documented in `index.ts`), this file owns BOTH of monk's
+ * pipeline artifacts — `MONK_ARCHETYPE_FEATURE_CLASSIFICATION` (the full
+ * per-feature audit) and `MONK_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table, empty this wave — see
- * below) — so a future wave working on a different class never has a reason
- * to touch this file; only `index.ts` (the aggregator) needs one new import +
- * one new spread per class.
+ * below) — so a future wave working on a different class never has a reason to
+ * touch this file; only `index.ts` (the aggregator) needs one new import + one
+ * new spread per class.
  *
  * ── MONK_ARCHETYPE_FEATURE_CLASSIFICATION ─────────────────────────────────
  *
@@ -18,10 +17,10 @@
  * for the full bucket definitions).
  *
  * **Result: zero NEW numeric extractions.** The only `numeric` entry is
- * Nornkith's pre-existing hand-verified `nimble-reflexes:3` (issue #7). This
- * is a real, disclosed finding, not an incomplete pass — monk's archetype
- * kit here skews heavily toward ki-spend activated abilities, immunities,
- * and bonus-feat LIST changes (not counts), none of which are Change-shaped:
+ * Nornkith's pre-existing hand-verified `nimble-reflexes:3`. This is a real,
+ * disclosed finding, not an incomplete pass — monk's archetype kit here skews
+ * heavily toward ki-spend activated abilities, immunities, and bonus-feat LIST
+ * changes (not counts), none of which are Change-shaped:
  *  - Every "Ki Pool" restatement (Maneuver Master's `ki-pool-magic`/
  *    `-cold-iron-silver`/`-lawful`/`-adamantine`, Invested Regent's
  *    `hellcat-ki`) either reproduces the base pool's own formula unchanged
@@ -90,10 +89,10 @@
  *    Likely an artifact of the CSV compilation splitting one archetype's
  *    single evolving ability into one row per named tier, rather than a
  *    real distinct feature per tier.
- *  - No `pairedBaseFeatureUuid` mispairs (the issue #46 shape of bug) were
- *    noticed in this class's slice, but this wave did not specifically
- *    cross-check every monk feature's pairing against the base monk
- *    Compendium the way issue #46 did for fighter.
+ *  - No `pairedBaseFeatureUuid` mispairs (the shape of bug) were noticed in
+ *    this class's slice, but this wave did not specifically cross-check every
+ *    monk feature's pairing against the base monk Compendium the way did for
+ *    fighter.
  *
  * ── MONK_ARCHETYPE_EFFECTS_EXTRACTED ───────────────────────────────────────
  *

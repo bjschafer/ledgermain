@@ -6,11 +6,11 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute, resolveArchetypeFeatureEffect } from "../src/index.js";
 
 /**
- * Issue #45 bard wave: fixture tests for `archetype-extracted/bard.ts`,
- * hand-computed against the real vendored data slice via `loadRefData()`,
- * same posture as `archetypeEffectsExtracted.test.ts` (the fighter pilot).
- * Each expectation is derived straight from the published PF1 rules cited
- * (as `provenance`) in the extracted table's entries.
+ * fixture tests for `archetype-extracted/bard.ts`,
+ * hand-computed against the real vendored data slice via `loadRefData`, same
+ * posture as `archetypeEffectsExtracted.test.ts` (the fighter pilot). Each
+ * expectation is derived straight from the published PF1 rules cited (as
+ * `provenance`) in the extracted table's entries.
  */
 const ref = loadRefData();
 

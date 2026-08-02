@@ -1,11 +1,11 @@
 /**
- * Content-based dispatcher for the Settings "Import character…" file picker
- * (issue #3): auto-detects a native Ledgermain export, a Pathbuilder 1e HTML
- * stat-block export, a Pathbuilder 1e JSON export, or a Hero Lab classic
- * export from the raw file text and routes to the matching parser, so the UI
- * needs only one file input. See `importCharacter.ts`,
- * `importPathbuilderHtml.ts`, `importPathbuilder.ts`, and `importHeroLab.ts`
- * for what each format assumes and how confident we are in that shape.
+ * Content-based dispatcher for the Settings "Import character…" file picker:
+ * auto-detects a native Ledgermain export, a Pathbuilder 1e HTML stat-block
+ * export, a Pathbuilder 1e JSON export, or a Hero Lab classic export from the
+ * raw file text and routes to the matching parser, so the UI needs only one
+ * file input. See `importCharacter.ts`, `importPathbuilderHtml.ts`,
+ * `importPathbuilder.ts`, and `importHeroLab.ts` for what each format assumes
+ * and how confident we are in that shape.
  */
 import type { CharacterDoc, RefData } from "@pf1/schema";
 

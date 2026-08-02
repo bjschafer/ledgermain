@@ -188,7 +188,7 @@ describe("setStable()", () => {
   });
 });
 
-/** A level-5 Con-14 barbarianUnchained, for granted-temp-HP fixtures (issue #67). */
+/** A level-5 Con-14 barbarianUnchained, for granted-temp-HP fixtures. */
 function ragingBarbarianDoc(): CharacterDoc {
   let d = createEmptyDoc("t");
   d = addClass(d, "barbarianUnchained");

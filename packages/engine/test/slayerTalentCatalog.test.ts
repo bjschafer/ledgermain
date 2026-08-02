@@ -11,14 +11,14 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74's hand-table
- * follow-up) — see `slayer-talents.ts`'s "vendored catalog overlay" section
- * doc comment. UNLIKE `ragePowerCatalog.test.ts`/`witchHexCatalog.test.ts`,
- * this table's ids were deliberately authored to REUSE the vendored slugs
- * (for backward compatibility with the pre-existing vendored-only picker —
- * see the file's top doc comment), so every one of the 43 hand-authored
- * entries matches a vendored entry by BOTH id and normalized name — there is
- * no vendored-only or hand-authored-only row today.
+ * Coverage for the vendored-catalog overlay (hand-table follow-up) — see
+ * `slayer-talents.ts`'s "vendored catalog overlay" section doc comment. UNLIKE
+ * `ragePowerCatalog.test.ts`/`witchHexCatalog.test.ts`, this table's ids were
+ * deliberately authored to REUSE the vendored slugs (for backward
+ * compatibility with the pre-existing vendored-only picker — see the file's
+ * top doc comment), so every one of the 43 hand-authored entries matches a
+ * vendored entry by BOTH id and normalized name — there is no vendored-only or
+ * hand-authored-only row today.
  */
 const ref = loadRefData();
 

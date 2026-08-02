@@ -1,7 +1,7 @@
 /**
- * Clean-room PF1 inquisitor Judgment table (issue #65), hand-authored from
- * the published Advanced Player's Guide rules (verified against aonprd.com's
- * live Inquisitor class page, "Judgment" ability, 2026-07-08).
+ * Clean-room PF1 inquisitor Judgment table, hand-authored from the published
+ * Advanced Player's Guide rules (verified against aonprd.com's live Inquisitor
+ * class page, "Judgment" ability, 2026-07-08).
  *
  * Judgment itself (the swift-action stance + its 1/day-at-1st,
  * +1-at-4th-and-every-3-levels-thereafter uses/day pool) is ALREADY fully
@@ -51,16 +51,15 @@
  *     bypasses, not a bonus value) — `changes: []`, context note only, per
  *     the task brief.
  *
- * Sacred-vs-profane (issue #65 task brief): "If the inquisitor is evil, she
- * receives profane bonuses instead of sacred. Neutral inquisitors must select
- * profane or sacred." This table always uses `type: "sacred"` and surfaces
- * the profane-swap as a context note rather than branching on `doc`'s
- * alignment field — same "note-tier, don't model alignment switching" bar
- * the task brief sets (and the same posture as Resiliency's bypass-type
- * note above). A sacred and a profane bonus of the same VALUE never stack
- * with each other anyway (both are "highest applies" against unrelated
- * sources 99% of the time in practice), so this is a display-only gap, not a
- * numeric one.
+ * Sacred-vs-profane (task brief): "If the inquisitor is evil, she receives
+ * profane bonuses instead of sacred. Neutral inquisitors must select profane
+ * or sacred." This table always uses `type: "sacred"` and surfaces the
+ * profane-swap as a context note rather than branching on `doc`'s alignment
+ * field — same "note-tier, don't model alignment switching" bar the task brief
+ * sets (and the same posture as Resiliency's bypass-type note above). A sacred
+ * and a profane bonus of the same VALUE never stack with each other anyway
+ * (both are "highest applies" against unrelated sources 99% of the time in
+ * practice), so this is a display-only gap, not a numeric one.
  */
 
 import type { Change, ContextNote } from "@pf1/schema";

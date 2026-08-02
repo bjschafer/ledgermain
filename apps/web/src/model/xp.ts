@@ -1,13 +1,13 @@
 /**
- * Pure XP transitions + advancement-track thresholds for the live tracker.
- * XP is a PF1 optional rule (issue #27) — off by default because the owner's
- * table plays milestone leveling. When enabled, this is purely a tracker-level
- * display: "you have earned N XP, the next level starts at M." Nothing here
- * (or anywhere in the engine) ever auto-levels the character — `level`
+ * Pure XP transitions + advancement-track thresholds for the live tracker. XP
+ * is a PF1 optional rule — off by default because the owner's table plays
+ * milestone leveling. When enabled, this is purely a tracker-level display:
+ * "you have earned N XP, the next level starts at M." Nothing here (or
+ * anywhere in the engine) ever auto-levels the character — `level`
  * (`identity.classes[].level`, see `totalLevel` in `model/doc.ts`) stays a
  * build choice the player makes at the table. That's also why the threshold
  * table lives here in the web model rather than in `packages/engine`: the
- * engine's `compute()` never reads or needs XP, so pulling it into the
+ * engine's `compute` never reads or needs XP, so pulling it into the
  * pure-rules crown jewel would be unjustified surface area for a value the
  * engine has no use for.
  *

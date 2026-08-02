@@ -686,14 +686,14 @@ export const OCCULTIST_PHYSICAL_ABILITIES: readonly AbilityId[] = ["str", "dex",
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.occultistImplements` (see that type's doc
- * comment) is the FULL published catalog (12 entries after junk filtering),
- * prose only. Same chassis caveat as `psychic-disciplines.ts`'s overlay: the
- * hand-authored `OCCULTIST_SCHOOLS` table above is the ONLY source of
- * base/resonant/focus powers — a vendored-only school has no structured data
- * for those at all, so the merge produces a hand-authored branch
- * (`vendoredOnly: false`, vendored prose attached) and a vendored-only stub
- * branch (`vendoredOnly: true`, name + prose only).
+ * `RefData.occultistImplements` (see that type's doc comment) is the FULL
+ * published catalog (12 entries after junk filtering), prose only. Same
+ * chassis caveat as `psychic-disciplines.ts`'s overlay: the hand-authored
+ * `OCCULTIST_SCHOOLS` table above is the ONLY source of base/resonant/focus
+ * powers — a vendored-only school has no structured data for those at all, so
+ * the merge produces a hand-authored branch (`vendoredOnly: false`, vendored
+ * prose attached) and a vendored-only stub branch (`vendoredOnly: true`, name
+ * + prose only).
  *
  * Collision audit: all 8 hand-authored core schools matched a vendored entry
  * by normalized name — zero misses, zero aliases needed. The 4 vendored-only

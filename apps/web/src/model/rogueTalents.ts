@@ -1,7 +1,7 @@
 /**
- * Pure rogue talent transitions (issue #65), SHARED between the chained
- * rogue and Rogue (Unchained) — `build.rogueTalents` mirrors `witchHexes.ts`'s
- * flat shape (talents are not scoped to anything, unlike oracle revelations'
+ * Pure rogue talent transitions, SHARED between the chained rogue and Rogue
+ * (Unchained) — `build.rogueTalents` mirrors `witchHexes.ts`'s flat shape
+ * (talents are not scoped to anything, unlike oracle revelations'
  * mystery-scoping).
  *
  * Budget (PF1 CRB, unchanged by Pathfinder Unchained — verified against

@@ -1,11 +1,10 @@
 /**
  * Clean-room PF1 kineticist WILD TALENT table (infusions + utility talents,
- * Occult Adventures, issue #65) — hand-authored from the published rules
- * (verified against legacy.aonprd.com/d20pfsrd.com's Kineticist Wild
- * Talents lists), same "vendored but not linked" provenance
- * `kineticist-elements.ts` documents: the vendored Foundry class def only
- * links the generic "Infusion"/"Wild Talents" `ClassFeature` stubs, no
- * per-talent breakdown.
+ * Occult Adventures) — hand-authored from the published rules (verified
+ * against legacy.aonprd.com/d20pfsrd.com's Kineticist Wild Talents lists),
+ * same "vendored but not linked" provenance `kineticist-elements.ts`
+ * documents: the vendored Foundry class def only links the generic
+ * "Infusion"/"Wild Talents" `ClassFeature` stubs, no per-talent breakdown.
  *
  * SCOPE: full parity with the vendored infusion/utility catalog across all 7
  * elements (aether, air, earth, fire, water, void, wood) plus the universal
@@ -68,7 +67,7 @@
  * task-scoped targets this engine doesn't have, the same class of gap as the
  * save-category near-misses in `oracle-revelations.ts`.
  *
- * The vendored catalog overlay at the bottom of this file (issue #74) — see
+ * The vendored catalog overlay at the bottom of this file — see
  * `mergedKineticistWildTalentCatalog` — still exists for completeness (a
  * vendored entry whose name doesn't normalize-match a hand-authored one falls
  * back to vendored-only display), but every infusion/utility talent this
@@ -2581,22 +2580,22 @@ export const KINETICIST_UNIVERSAL_TALENT_IDS: readonly string[] = [
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.kineticWildTalents` (see that type's doc
- * comment) is the FULL published catalog, every kind — infusions, utility
- * talents, simple/composite blasts, defense talents — prose only, plus
- * (unlike rage powers/investigator talents/arcanist exploits) real
- * structured `level`/`burn`/`elements` fields for infusions and utility
- * talents specifically, EMPIRICALLY VALIDATED against this table: Extended
- * Range (universal, level 1/burn 1), Extreme Range (universal, level
- * 3/burn 2), Air Cushion (air, level 1/burn 0), and Aerial Evasion (air,
- * level 3/burn 1) all match their vendored counterpart's parsed `level`/
- * `burn` exactly — so, unlike `RagePower.level`, `KineticWildTalent.level`
- * IS the real `minKineticistLevelForTalent` gate, not a within-chain tier
- * marker. This overlay merges only the `kind: "infusion" | "utility"`
- * subset (the two BUDGETED picks, `build.kineticistWildTalents`) — simple
- * blasts/defense talents stay display-only data with no merge machinery
- * (see `KineticWildTalent`'s doc comment for why); composite blasts merge
- * separately, through `kineticist-elements.ts`'s `mergedCompositeBlastCatalog`.
+ * `RefData.kineticWildTalents` (see that type's doc comment) is the FULL
+ * published catalog, every kind — infusions, utility talents, simple/composite
+ * blasts, defense talents — prose only, plus (unlike rage powers/investigator
+ * talents/arcanist exploits) real structured `level`/`burn`/`elements` fields
+ * for infusions and utility talents specifically, EMPIRICALLY VALIDATED
+ * against this table: Extended Range (universal, level 1/burn 1), Extreme
+ * Range (universal, level 3/burn 2), Air Cushion (air, level 1/burn 0), and
+ * Aerial Evasion (air, level 3/burn 1) all match their vendored counterpart's
+ * parsed `level`/ `burn` exactly — so, unlike `RagePower.level`,
+ * `KineticWildTalent.level` IS the real `minKineticistLevelForTalent` gate,
+ * not a within-chain tier marker. This overlay merges only the `kind:
+ * "infusion" | "utility"` subset (the two BUDGETED picks,
+ * `build.kineticistWildTalents`) — simple blasts/defense talents stay
+ * display-only data with no merge machinery (see `KineticWildTalent`'s doc
+ * comment for why); composite blasts merge separately, through
+ * `kineticist-elements.ts`'s `mergedCompositeBlastCatalog`.
  *
  * Collision audit (all 236 hand-authored entries, run against the pinned Pf
  * Data 1e slice): 216 matched a vendored entry by normalized name directly;

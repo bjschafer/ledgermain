@@ -22,7 +22,7 @@ export interface SyncStore {
 export interface OpenSyncResult {
   pulled: string[];
   pushed: string[];
-  /** Locally-dropped ids because the server holds a delete tombstone (#39). */
+  /** Locally-dropped ids because the server holds a delete tombstone. */
   deleted: string[];
   errors: { id: string; message: string }[];
 }
@@ -54,7 +54,7 @@ export async function runOpenSync(
         }
       } else if (action.kind === "delete-local") {
         // The server holds a delete tombstone for a character we still have
-        // locally — drop it here rather than pushing it back up (issue #39).
+        // locally — drop it here rather than pushing it back up.
         await store.delete(action.id);
         result.deleted.push(action.id);
       } else if (action.kind === "push") {

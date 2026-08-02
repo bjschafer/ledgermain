@@ -1,9 +1,8 @@
 /**
- * Pure trait transitions (issue #23). Traits are just ids in
- * `build.traits`, mirroring `toggleFeat` in `doc.ts` — the engine's
- * `resolveTraitDef`/`mergedTraits` map each to its mechanical
- * `Change[]`/`contextNotes`, applied through the same change-collection path
- * as conditions/feats (see `@pf1/engine` `collect.ts`).
+ * Pure trait transitions. Traits are just ids in `build.traits`, mirroring
+ * `toggleFeat` in `doc.ts` — the engine's `resolveTraitDef`/`mergedTraits` map
+ * each to its mechanical `Change[]`/`contextNotes`, applied through the same
+ * change-collection path as conditions/feats (see `@pf1/engine` `collect.ts`).
  *
  * PF1 characters take exactly two traits at creation, normally from two
  * different categories. This module never blocks: taking more than two (or
@@ -11,24 +10,22 @@
  * hybrid posture on feat/skill budgets (`model/feats.ts` `expectedFeatCount`
  * vs. `chosenFeatCount` — over/under is surfaced, never enforced).
  *
- * Homebrew traits (issue #87) are id-compatible with vendored ones: a
- * `hb-`-prefixed id in `build.traits` resolves through {@link resolveTrait}
- * to `doc.build.homebrew.traits` instead of the engine's tables, but every
- * function below (selection, counting, category-warning) is otherwise
- * unaware of the distinction — same posture as homebrew feats/races.
+ * Homebrew traits are id-compatible with vendored ones: a `hb-`-prefixed id in
+ * `build.traits` resolves through {@link resolveTrait} to
+ * `doc.build.homebrew.traits` instead of the engine's tables, but every
+ * function below (selection, counting, category-warning) is otherwise unaware
+ * of the distinction — same posture as homebrew feats/races.
  *
- * The pickable catalog itself (issue #74) is two tables merged by
- * the engine: 28 hand-authored entries plus the ~2,000-entry vendored
- * catalog (`RefData.traits`) — see `mergedTraits`'s doc comment for the
- * merge rule.
+ * The pickable catalog itself is two tables merged by the engine: 28
+ * hand-authored entries plus the ~2,000-entry vendored catalog
+ * (`RefData.traits`) — see `mergedTraits`'s doc comment for the merge rule.
  *
- * Drawbacks (issue #101): a `Drawback`-category trait implements PF1's "take
- * a drawback, gain a third trait" allowance. Taking any drawback raises the
- * budget by exactly one bonus slot ({@link expectedTraitCount}), regardless
- * of how many drawbacks are taken — the CRB only grants one extra trait this
- * way. The drawback itself is a separate allowance, not one of the two
- * normal traits, so it's excluded from the "two different categories"
- * reminder.
+ * Drawbacks: a `Drawback`-category trait implements PF1's "take a drawback,
+ * gain a third trait" allowance. Taking any drawback raises the budget by
+ * exactly one bonus slot ({@link expectedTraitCount}), regardless of how many
+ * drawbacks are taken — the CRB only grants one extra trait this way. The
+ * drawback itself is a separate allowance, not one of the two normal traits,
+ * so it's excluded from the "two different categories" reminder.
  */
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
@@ -75,10 +72,10 @@ export function expectedTraitCount(doc: CharacterDoc, refData: RefData): number 
 export const TRAIT_CATEGORIES: readonly TraitCategory[] = ["Combat", "Faith", "Magic", "Social"];
 
 /**
- * Every distinct category present in a trait catalog, sorted alphabetically
- * — used by `TraitManager`'s filter chips, so the picker's category list
- * reflects the actual vendored `traitType` values (issue #74) rather
- * than a hardcoded guess.
+ * Every distinct category present in a trait catalog, sorted alphabetically —
+ * used by `TraitManager`'s filter chips, so the picker's category list
+ * reflects the actual vendored `traitType` values rather than a hardcoded
+ * guess.
  */
 export function catalogCategories(catalog: Record<string, TraitDef>): TraitCategory[] {
   return [...new Set(Object.values(catalog).map((tr) => tr.category))].sort();
@@ -102,11 +99,10 @@ export function chosenTraitCount(doc: CharacterDoc): number {
 }
 
 /**
- * Resolve a trait id to its definition: the engine's hand-authored table,
- * then the vendored catalog (`refData.traits`, issue #74), then
- * `doc.build.homebrew.traits` — mirrors
- * `resolveTraitDef(id, refData) ?? doc.build.homebrew?.traits?.[id]` in
- * `@pf1/engine` `collect.ts`, the same fallback chain the static sheet
+ * Resolve a trait id to its definition: the engine's hand-authored table, then
+ * the vendored catalog (`refData.traits`), then `doc.build.homebrew.traits` —
+ * mirrors `resolveTraitDef(id, refData) ?? doc.build.homebrew?.traits?.[id]`
+ * in `@pf1/engine` `collect.ts`, the same fallback chain the static sheet
  * applies.
  */
 export function resolveTrait(

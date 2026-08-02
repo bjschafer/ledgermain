@@ -6,13 +6,12 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute } from "../src/index.js";
 
 /**
- * Bracers of Armor (CRB p. 460, issue #67): "Bracers of armor surround the
- * wearer with an invisible but tangible field of force, granting an armor
- * bonus of +1 to +8, just as though he were wearing armor" — confirmed
- * against aonprd.com, 2026-07-25. All eight vendored entries carry an empty
- * `changes[]` upstream, so equipping one granted nothing before
- * `ITEM_CHANGE_PATCHES` (`item-effects.ts`) patched it in via `collect.ts`'s
- * equipped-items loop.
+ * Bracers of Armor (CRB p. 460): "Bracers of armor surround the wearer with an
+ * invisible but tangible field of force, granting an armor bonus of +1 to +8,
+ * just as though he were wearing armor" — confirmed against aonprd.com,
+ * 2026-07-25. All eight vendored entries carry an empty `changes[]` upstream,
+ * so equipping one granted nothing before `ITEM_CHANGE_PATCHES`
+ * (`item-effects.ts`) patched it in via `collect.ts`'s equipped-items loop.
  */
 const ref = loadRefData();
 

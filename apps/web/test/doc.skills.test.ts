@@ -1,6 +1,6 @@
 /**
  * Model tests for the Craft/Profession/Perform parameterized-subskill
- * transitions added for issue #24: `addSkillInstance` / `renameSkillInstance`
+ * transitions added: `addSkillInstance` / `renameSkillInstance`
  * in `model/doc.ts`, and the slug<->label helpers in `model/names.ts`.
  */
 import { describe, expect, it } from "bun:test";

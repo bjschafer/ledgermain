@@ -12,9 +12,9 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74) — see
- * `rage-powers.ts`'s "vendored catalog overlay" section doc comment for the
- * collision-audit narrative this asserts against.
+ * Coverage for the vendored-catalog overlay — see `rage-powers.ts`'s "vendored
+ * catalog overlay" section doc comment for the collision-audit narrative this
+ * asserts against.
  */
 const ref = loadRefData();
 
@@ -45,7 +45,7 @@ describe("mergedRagePowerCatalog", () => {
   });
 
   it("no vendored-only entries remain except the pre-existing Guarded Stance (Unchained Stance) duplicate — the fallback path only exists for a future data bump", () => {
-    // Full hand-table parity as of the #74 batch-3 (S-Z) close-out: every
+    // Full hand-table parity as of the parity sweep's final batch (S-Z): every
     // one of the 243 UNIQUE vendored names has a hand-authored row. The one
     // exception is a documented, deliberate non-match rather than a gap —
     // see the file doc comment's collision-audit section: the vendored
@@ -84,7 +84,7 @@ describe("resolveRagePower", () => {
   it("falls back to the vendored catalog for a vendored-only id", () => {
     // "guarded_stance_stance" (the Pathfinder Unchained restatement of
     // Guarded Stance — see the file doc comment's collision-audit section)
-    // is the sole remaining vendored-only entry after full #74 parity.
+    // is the sole remaining vendored-only entry after full parity.
     const power = resolveRagePower("guarded_stance_stance", ref);
     expect(power?.displayOnly).toBe(true);
     expect(power?.name).toBe("Guarded Stance");

@@ -36,8 +36,8 @@ describe("psychic caster level (FULL_CASTER_TAGS regression)", () => {
 
   it("medium is level-gated (issue #65), NOT in the flat full-caster set; kineticist never casts at all", () => {
     // Medium casts nothing before 4th level — a flat classLevel would wrongly
-    // report CL 1-3 pre-#65 (the bloodrager posture, see casterLevel.ts).
-    // Since #65, medium is a `LEVEL_GATED_CASTER_TAGS` entry: CL 0 below the
+    // reported CL 1-3 before that (the bloodrager posture, see casterLevel.ts).
+    // Medium is a `LEVEL_GATED_CASTER_TAGS` entry: CL 0 below the
     // gate, CL = classLevel from the gate on (still never a plain
     // `FULL_CASTER_TAGS` member — the binary switch would still be wrong
     // below 4th level). Kineticist never casts at all, at any level.

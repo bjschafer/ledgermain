@@ -1,7 +1,7 @@
 /**
- * PF1 Core Rulebook point-buy purchase calculator (issue #86) — pure math
- * only; the UI in `AbilitiesSection` layers an optional, never-blocking
- * readout on top. Point buy prices the six *pre-racial* base ability scores
+ * PF1 Core Rulebook point-buy purchase calculator — pure math only; the UI in
+ * `AbilitiesSection` layers an optional, never-blocking readout on top. Point
+ * buy prices the six *pre-racial* base ability scores
  * (`CharacterDoc.abilities`, before racial mods/level increases/items are
  * applied downstream) against the published purchase-cost table.
  */

@@ -1,13 +1,13 @@
 /**
  * Hand-computed fixture tests for the tower shield's separate −2 penalty on
- * attack rolls (CRB p.153, Tower Shield: "While using a tower shield, you
- * take a –2 penalty on attack rolls because it is so unwieldy"). This is
+ * attack rolls (CRB p.153, Tower Shield: "While using a tower shield, you take
+ * a –2 penalty on attack rolls because it is so unwieldy"). This is
  * independent of the shield's own max-Dex-to-AC cap (already modeled — see
  * `compute.test.ts`'s "a shield's own max-Dex cap applies" fixture) and
  * independent of the armor-check-penalty-on-attack non-proficiency rule
- * (issue #81, `proficiency.test.ts`) — a proficient tower shield wielder
- * still eats the flat -2, and a non-proficient one eats both penalties at
- * once (see the "stacks with" fixture below).
+ * (`proficiency.test.ts`) — a proficient tower shield wielder still eats the
+ * flat -2, and a non-proficient one eats both penalties at once (see the
+ * "stacks with" fixture below).
  */
 
 import { describe, expect, it } from "bun:test";
@@ -118,9 +118,9 @@ describe("compute(): tower shield's flat -2 attack penalty (CRB p.153)", () => {
       armor: { slot: "shield", ac: 4, acp: -10, shieldTier: "tower" },
     };
     // Barbarian is proficient with shields generally ("shl") but NOT tower
-    // shields specifically ("twr" is its own grant — proficiency.ts) — so
-    // this wielder eats the -10 ACP-on-attack penalty (issue #81),
-    // independent of and in addition to the flat -2 tower shield penalty.
+    // shields specifically ("twr" is its own grant — proficiency.ts) — so this
+    // wielder eats the -10 ACP-on-attack penalty, independent of and in
+    // addition to the flat -2 tower shield penalty.
     const doc = makeDoc({
       gear: [nonProficientTower],
       classes: [{ tag: "barbarian", level: 1 }],

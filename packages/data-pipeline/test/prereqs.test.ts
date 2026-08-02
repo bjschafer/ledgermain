@@ -6,7 +6,7 @@ import { parsePrerequisites, resolveNamedFeatPrereqs } from "../src/transform/pr
 import type { UuidResolver } from "../src/transform/common.js";
 
 /**
- * Issue #108: growing the structured-prereq set beyond what `feats.ts`'s
+ * growing the structured-prereq set beyond what `feats.ts`'s
  * `parsePrerequisites` already covered (abilities, BAB, caster level, `@UUID`
  * feat refs). These tests pin the new signals (character level, a "BAB"
  * abbreviation, plain-text feat-name matching) and, just as importantly, the

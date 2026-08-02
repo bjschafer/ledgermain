@@ -48,9 +48,9 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
   if (!companion) return null;
   const companionFeatIds = doc.build.animalCompanion?.feats ?? [];
 
-  // Hunter's Animal Focus applied to the companion (issue #65) — display-only
-  // (see AnimalCompanionLiveState.focusBuffId's doc comment); only relevant
-  // once the character has hunter levels at all.
+  // Hunter's Animal Focus applied to the companion — display-only (see
+  // AnimalCompanionLiveState.focusBuffId's doc comment); only relevant once
+  // the character has hunter levels at all.
   const isHunter = hunterLevel(doc) > 0;
   const foci = isHunter ? animalFocusBuffs(refData) : [];
   const focusBuffId = doc.live.animalCompanion?.focusBuffId ?? "";

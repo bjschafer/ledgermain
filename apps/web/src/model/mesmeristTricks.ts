@@ -1,25 +1,25 @@
 /**
- * Pure mesmerist-trick transitions (issue #65 follow-through). Trick ids are
- * just entries in `build.mesmeristTricks`, mirroring `toggleNinjaTrick` in
+ * Pure mesmerist-trick transitions. Trick ids are just entries in
+ * `build.mesmeristTricks`, mirroring `toggleNinjaTrick` in
  * `model/ninjaTricks.ts` — the engine's `MESMERIST_TRICKS` table maps each to
  * its (display-only) `changes[]`, surfaced through the same
  * `collectGrantedFeatures` path as ninja tricks/witch hexes (see `@pf1/engine`
  * `archetypes.ts`). This is the trick MENU only — the separate Mesmerist
- * Tricks resource pool (how many times/day a trick can be implanted) rides
- * the generic `uses.maxFormula` resource-pool pipeline already (see
- * `@pf1/engine` `resources.ts`), unaffected by this module.
+ * Tricks resource pool (how many times/day a trick can be implanted) rides the
+ * generic `uses.maxFormula` resource-pool pipeline already (see `@pf1/engine`
+ * `resources.ts`), unaffected by this module.
  *
- * Budget (PF1 Occult Adventures, verified against aonprd.com's live
- * Mesmerist class page — "At 1st level, and every 2 levels thereafter, a
- * mesmerist learns a new trick"): 1st, 3rd, ..., 19th (10 total by 19th).
- * Masterful tricks (12th level, minLevel-gated in `MESMERIST_TRICKS`) are NOT
- * an extra pick — chosen "in place of" a normal trick, same budget, same
- * posture as `WITCH_HEXES`'/`NINJA_TRICKS`' major/master tiers (see that
- * file's doc comment). Each copy of the "Extra Mesmerist Tricks" feat
- * (vendored `feats.json` id `54QWaanZra9hi7LV` — stackable per its own text)
- * adds one more, counted by OCCURRENCE in `doc.build.feats` (not just
- * presence) — same "manually-added duplicates" convention
- * `expectedNinjaTrickCount` uses for "Extra Ninja Trick".
+ * Budget (PF1 Occult Adventures, verified against aonprd.com's live Mesmerist
+ * class page — "At 1st level, and every 2 levels thereafter, a mesmerist
+ * learns a new trick"): 1st, 3rd,..., 19th (10 total by 19th). Masterful
+ * tricks (12th level, minLevel-gated in `MESMERIST_TRICKS`) are NOT an extra
+ * pick — chosen "in place of" a normal trick, same budget, same posture as
+ * `WITCH_HEXES`'/`NINJA_TRICKS`' major/master tiers (see that file's doc
+ * comment). Each copy of the "Extra Mesmerist Tricks" feat (vendored
+ * `feats.json` id `54QWaanZra9hi7LV` — stackable per its own text) adds one
+ * more, counted by OCCURRENCE in `doc.build.feats` (not just presence) — same
+ * "manually-added duplicates" convention `expectedNinjaTrickCount` uses for
+ * "Extra Ninja Trick".
  *
  * This module never blocks: taking more than the expected count is a soft
  * warning only, matching the project's hybrid posture on feat/trait/skill

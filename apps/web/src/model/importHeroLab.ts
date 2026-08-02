@@ -1,8 +1,8 @@
 /**
- * Hero Lab classic importer — reads the XML export produced by
- * File -> "Save Custom Output" -> "Generate XML File" (Hero Lab classic,
- * the desktop app; NOT Hero Lab Online, and NOT a `.por` portfolio, which is
- * a zip archive and out of scope here — see issue #3).
+ * Hero Lab classic importer — reads the XML export produced by File -> "Save
+ * Custom Output" -> "Generate XML File" (Hero Lab classic, the desktop app;
+ * NOT Hero Lab Online, and NOT a `.por` portfolio, which is a zip archive and
+ * out of scope here).
  *
  * PROVENANCE / BEST-EFFORT WARNING: we could not find a public sample of
  * Hero Lab classic's actual Pathfinder-1e XML export, only secondhand

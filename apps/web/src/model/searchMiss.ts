@@ -1,9 +1,8 @@
 /**
- * Shared metadata for the empty-search affordance (issue #88) across the
- * app's major search pickers — one place mapping a picker to its
- * player-facing noun and, where one exists, its homebrew/custom-entry escape
- * hatch. Kept DOM-free so both `SearchMiss` (the view) and its tests share a
- * single source of truth.
+ * Shared metadata for the empty-search affordance across the app's major
+ * search pickers — one place mapping a picker to its player-facing noun and,
+ * where one exists, its homebrew/custom-entry escape hatch. Kept DOM-free so
+ * both `SearchMiss` (the view) and its tests share a single source of truth.
  */
 
 export type SearchMissPicker =

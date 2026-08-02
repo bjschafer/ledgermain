@@ -263,12 +263,12 @@ export function setSorcererBloodline(doc: CharacterDoc, tag: string | null): Cha
 
 /**
  * Set the energy-type/subtype variant (e.g. Draconic dragon type, Elemental
- * element) for bloodlines that need one (issue #34; see
- * `@pf1/engine` `BLOODLINES[tag].variantOptions`). Pass `null` (or a blank
- * string) to clear. Free-choice, no validation that the id exists in the
- * bloodline's `variantOptions` — soft-warning posture, matching
- * `setSorcererBloodline`. Display-only: the engine derives no numeric Change
- * from this field (see `bloodlines.ts`'s doc comment).
+ * element) for bloodlines that need one (see `@pf1/engine`
+ * `BLOODLINES[tag].variantOptions`). Pass `null` (or a blank string) to clear.
+ * Free-choice, no validation that the id exists in the bloodline's
+ * `variantOptions` — soft-warning posture, matching `setSorcererBloodline`.
+ * Display-only: the engine derives no numeric Change from this field (see
+ * `bloodlines.ts`'s doc comment).
  */
 export function setSorcererBloodlineVariant(
   doc: CharacterDoc,
@@ -285,11 +285,10 @@ export function setSorcererBloodlineVariant(
 }
 
 /**
- * Set the bloodrager's chosen bloodline tag (issue #65). Mirrors
- * `setSorcererBloodline` exactly (single tag, `null`/blank clears, no
- * validation against `@pf1/engine` `BLOODRAGER_BLOODLINES` — soft-warning
- * posture). Clears any stored variant on change, same as
- * `setSorcererBloodline`.
+ * Set the bloodrager's chosen bloodline tag. Mirrors `setSorcererBloodline`
+ * exactly (single tag, `null`/blank clears, no validation against
+ * `@pf1/engine` `BLOODRAGER_BLOODLINES` — soft-warning posture). Clears any
+ * stored variant on change, same as `setSorcererBloodline`.
  */
 export function setBloodragerBloodline(doc: CharacterDoc, tag: string | null): CharacterDoc {
   const trimmed = typeof tag === "string" ? tag.trim() : "";
@@ -324,11 +323,11 @@ export function setBloodragerBloodlineVariant(
 
 /**
  * Set (or clear, with `null`) the brawler's currently-borrowed Martial
- * Flexibility feat (issue #65) — `live.martialFlexibilityFeatId`. Pure
- * record-keeping: does NOT validate the feat is a combat feat, doesn't check
- * prerequisites, and doesn't drain the `martialFlexibility` resource pool
- * (matching `toggleLinkedBuff`'s posture of never coupling a pool's uses/day
- * count to a live toggle — see `@pf1/engine` `resources.ts`'s doc comment).
+ * Flexibility feat — `live.martialFlexibilityFeatId`. Pure record-keeping:
+ * does NOT validate the feat is a combat feat, doesn't check prerequisites,
+ * and doesn't drain the `martialFlexibility` resource pool (matching
+ * `toggleLinkedBuff`'s posture of never coupling a pool's uses/day count to a
+ * live toggle — see `@pf1/engine` `resources.ts`'s doc comment).
  */
 export function setMartialFlexibilityFeat(doc: CharacterDoc, featId: string | null): CharacterDoc {
   const trimmed = typeof featId === "string" ? featId.trim() : "";
@@ -696,10 +695,10 @@ export function setAbility(doc: CharacterDoc, ability: AbilityId, value: number)
 }
 
 /**
- * Set (or clear) the builder's point-buy budget (issue #86). Pass `null` to
- * turn point buy off, hiding the readout entirely (back-compat default). No
- * validation against the standard 10/15/20/25 budgets — a table can house-rule
- * a custom number, same free-choice posture as the rest of the builder.
+ * Set (or clear) the builder's point-buy budget. Pass `null` to turn point buy
+ * off, hiding the readout entirely (back-compat default). No validation
+ * against the standard 10/15/20/25 budgets — a table can house-rule a custom
+ * number, same free-choice posture as the rest of the builder.
  */
 export function setAbilityPointBuyBudget(doc: CharacterDoc, budget: number | null): CharacterDoc {
   return {
@@ -714,15 +713,15 @@ export function setAbilityPointBuyBudget(doc: CharacterDoc, budget: number | nul
 export function setRace(doc: CharacterDoc, raceId: string): CharacterDoc {
   const identity = { ...doc.identity, race: raceId };
   delete identity.flexibleAbility;
-  // Multitalented's 2nd favored class (issue #4) is Half-Elf-specific; drop
-  // it on any race change so it can't linger and inflate the FCB budget for
-  // a race that never grants it (model/race.ts:favoredClassBonusLevels also
-  // guards against this independently, but clearing here keeps the doc tidy).
+  // Multitalented's 2nd favored class is Half-Elf-specific; drop it on any
+  // race change so it can't linger and inflate the FCB budget for a race that
+  // never grants it (model/race.ts:favoredClassBonusLevels also guards against
+  // this independently, but clearing here keeps the doc tidy).
   delete identity.favoredClass2;
-  // Alternate racial traits (issue #35) belong to a specific race; drop them on
-  // any race change so a stale swap can't apply (the engine also ignores ids
-  // whose race doesn't match, but clearing here keeps the doc tidy and the
-  // picker in sync). Same for the vendored catalog (issue #74).
+  // Alternate racial traits belong to a specific race; drop them on any race
+  // change so a stale swap can't apply (the engine also ignores ids whose race
+  // doesn't match, but clearing here keeps the doc tidy and the picker in
+  // sync). Same for the vendored catalog.
   const build = { ...doc.build };
   delete build.racialTraits;
   delete build.vendoredRacialTraits;
@@ -756,13 +755,13 @@ export function removeClass(doc: CharacterDoc, tag: string): CharacterDoc {
   const classes = doc.identity.classes.filter((c) => c.tag !== tag);
   const identity = { ...doc.identity, classes };
 
-  // Casting-advancement cleanup (issue #66 chunk 2): the removed class can be
-  // on either side of `build.castingAdvancement` — (a) it WAS a prestige
-  // class with its own slots (drop its key outright), or (b) it was some
-  // OTHER prestige class's chosen TARGET (null out just that slot entry,
-  // leaving the prestige class's other slots/choices intact). Same "a stale
-  // reference never lingers" posture `setRace`'s racialTraits cleanup and
-  // `setFavoredClass`'s favoredClass2 cleanup use elsewhere in this file.
+  // Casting-advancement cleanup (2): the removed class can be on either side
+  // of `build.castingAdvancement` — (a) it WAS a prestige class with its own
+  // slots (drop its key outright), or (b) it was some OTHER prestige class's
+  // chosen TARGET (null out just that slot entry, leaving the prestige class's
+  // other slots/choices intact). Same "a stale reference never lingers"
+  // posture `setRace`'s racialTraits cleanup and `setFavoredClass`'s
+  // favoredClass2 cleanup use elsewhere in this file.
   const advancement = doc.build.castingAdvancement;
   if (!advancement) return { ...doc, identity };
 
@@ -780,9 +779,9 @@ export function removeClass(doc: CharacterDoc, tag: string): CharacterDoc {
 
 /**
  * Set (or clear, with `targetTag: null`) the chosen target class for a
- * prestige class's casting-advancement slot (issue #66 chunk 2) — see
- * `CharacterDoc.build.castingAdvancement`'s doc comment for the storage
- * shape. Validated via `eligibleAdvancementTargets` — the same check
+ * prestige class's casting-advancement slot (2) — see
+ * `CharacterDoc.build.castingAdvancement`'s doc comment for the storage shape.
+ * Validated via `eligibleAdvancementTargets` — the same check
  * `model/casterLevel.ts`'s `castingAdvancementBonus` enforces defensively at
  * read time — so an ineligible target (not on `identity.classes`, not a real
  * caster, or the wrong kind for this slot) is silently ignored rather than
@@ -836,10 +835,10 @@ export function setFavoredClass(doc: CharacterDoc, tag: string): CharacterDoc {
 }
 
 /**
- * Set/clear the Half-Elf Multitalented 2nd favored class (issue #4). Pass
- * `null` to clear it (toggling the same tag off again in the UI). A no-op
- * when `tag` matches the primary favored class — see `favoredClass2` doc
- * comment on `CharacterDoc.identity`.
+ * Set/clear the Half-Elf Multitalented 2nd favored class. Pass `null` to clear
+ * it (toggling the same tag off again in the UI). A no-op when `tag` matches
+ * the primary favored class — see `favoredClass2` doc comment on
+ * `CharacterDoc.identity`.
  */
 export function setFavoredClass2(doc: CharacterDoc, tag: string | null): CharacterDoc {
   const identity = { ...doc.identity };
@@ -860,14 +859,14 @@ export function setSkillRank(doc: CharacterDoc, skill: SkillId, ranks: number): 
 }
 
 /**
- * Add a new Craft/Profession/Perform subskill instance (issue #24), keyed
+ * Add a new Craft/Profession/Perform subskill instance, keyed
  * `"<base>.<slug>"` where `<slug>` is derived from the player's free-text
- * label (see `model/names.ts:slugifySkillLabel` — the slug IS the label,
- * there is no separate stored display string). Starts at 1 rank so the row
- * doesn't immediately vanish (0-rank skill entries are pruned by
- * `setSkillRank`, same as every other skill). A blank label, or one that
- * slugifies to nothing, is a no-op. Slug collisions (two instances with the
- * same label) are disambiguated with a numeric suffix.
+ * label (see `model/names.ts:slugifySkillLabel` — the slug IS the label, there
+ * is no separate stored display string). Starts at 1 rank so the row doesn't
+ * immediately vanish (0-rank skill entries are pruned by `setSkillRank`, same
+ * as every other skill). A blank label, or one that slugifies to nothing, is a
+ * no-op. Slug collisions (two instances with the same label) are disambiguated
+ * with a numeric suffix.
  */
 export function addSkillInstance(doc: CharacterDoc, base: string, label: string): CharacterDoc {
   const slug = slugifySkillLabel(label);
@@ -911,11 +910,11 @@ export function renameSkillInstance(
  * Add or remove the PRIMARY instance of `featId`. Adding always succeeds
  * (no-op safety against duplicates via `.includes`); removing delegates to
  * {@link removeFeatInstance} (no `instanceId`), which — for a RAW-repeatable
- * feat (issue #58) with extra instances already taken — promotes the first
- * extra instance into the primary slot instead of leaving `build.feats`
- * without the feat while `build.extraFeats` still references it. For a
- * non-repeatable feat (never has extra instances), this is unchanged from
- * before issue #58: remove from `feats[]` and clear its `featChoices` entry.
+ * feat with extra instances already taken — promotes the first extra instance
+ * into the primary slot instead of leaving `build.feats` without the feat
+ * while `build.extraFeats` still references it. For a non-repeatable feat
+ * (never has extra instances), this is unchanged: remove
+ * from `feats[]` and clear its `featChoices` entry.
  */
 export function toggleFeat(doc: CharacterDoc, featId: string): CharacterDoc {
   const has = doc.build.feats.includes(featId);
@@ -924,12 +923,12 @@ export function toggleFeat(doc: CharacterDoc, featId: string): CharacterDoc {
 }
 
 /**
- * Add another instance of `featId` (issue #58: RAW-repeatable feats — Weapon
- * Focus, Skill Focus, Improved Critical, the "Extra X" pool feats, ... see
+ * Add another instance of `featId` (RAW-repeatable feats — Weapon Focus, Skill
+ * Focus, Improved Critical, the "Extra X" pool feats,... see
  * `apps/web/src/model/repeatableFeats.ts` for the curated set). If the
  * character doesn't have `featId` at all yet, this is identical to
- * `toggleFeat`'s add branch (adds the PRIMARY instance to `build.feats`).
- * Once a primary instance exists, every subsequent call appends a fresh
+ * `toggleFeat`'s add branch (adds the PRIMARY instance to `build.feats`). Once
+ * a primary instance exists, every subsequent call appends a fresh
  * `build.extraFeats` entry (its own instance id, no choice yet) — the UI's
  * choice picker then targets that instance id via `setExtraFeatChoice`
  * (`model/feats.ts`). Does NOT check whether `featId` is actually in the
@@ -947,10 +946,10 @@ export function addFeatInstance(doc: CharacterDoc, featId: string): CharacterDoc
 }
 
 /**
- * Remove one instance of `featId` (issue #58). `instanceId` selects WHICH:
+ * Remove one instance of `featId`. `instanceId` selects WHICH:
  *  - omitted (or `undefined`): the PRIMARY instance (`build.feats` +
  *    `featChoices[featId]`). If no `build.extraFeats` entries for this feat
- *    exist, this is `toggleFeat`'s pre-#58 remove behavior exactly — drop it
+ * exist, this is `toggleFeat`'s original remove behavior exactly — drop it
  *    from `feats[]` and delete its `featChoices` entry. If extra instances
  *    DO exist, the FIRST one is instead PROMOTED into the primary slot (its
  *    choice, if any, moves into `featChoices[featId]`) rather than leaving
@@ -1079,9 +1078,9 @@ function pruneAbilityInfo(
 }
 
 /**
- * Enforces PF1's magic armor/shield invariants on a `WornArmor` (issue #8;
- * mirrors `normalizeWeaponInstance`, applied to the armor half of the same
- * "+10 total bonus" rule):
+ * Enforces PF1's magic armor/shield invariants on a `WornArmor` (mirrors
+ * `normalizeWeaponInstance`, applied to the armor half of the same "+10 total
+ * bonus" rule):
  *  - `enhancement` clamped to [0, 10].
  *  - `masterwork` dropped once `enhancement` is positive (a magic enhancement
  *    bonus already implies masterwork quality; the flag is only meaningful
@@ -1093,8 +1092,8 @@ function pruneAbilityInfo(
  *    armor/shield special abilities by the same total-bonus rule as weapons.
  *    Cost for an imported ability (not in the hand-curated table) is read
  *    from `abilityInfo`, which is pruned to the surviving ids afterward.
- *  - `shieldTier` (issue #81) only meaningful on `slot === "shield"` —
- *    dropped on body armor (e.g. after a slot switch in the edit form).
+ *  - `shieldTier` only meaningful on `slot === "shield"` — dropped on body
+ *    armor (e.g. after a slot switch in the edit form).
  */
 function normalizeWornArmor(armor: WornArmor): WornArmor {
   const next = { ...armor };
@@ -1139,26 +1138,26 @@ export function addWornArmor(doc: CharacterDoc, armor: WornArmor, name: string):
  * the `armorId` for display + future re-sync. Optional `enhancement` and
  * `material` apply modifiers at pick-time (mithral: weight class shift, maxDex
  * +2, ACP −3, ASF −10%). Optional `abilities` are stored for display (all
- * armor abilities are display-only) and run through {@link normalizeWornArmor},
- * which drops them below `enhancement` 1 and truncates the combined
- * bonus-equivalent to the same +10 cap as magic weapons (issue #8). Optional
+ * armor abilities are display-only) and run through {@link
+ * normalizeWornArmor}, which drops them below `enhancement` 1 and truncates
+ * the combined bonus-equivalent to the same +10 cap as magic weapons. Optional
  * `masterwork` (only meaningful at `enhancement` 0 — a magic enhancement bonus
  * already implies masterwork quality, mirroring `normalizeWeaponInstance`)
  * reduces the snapshotted ACP magnitude by 1 (floored at 0); the "Masterwork"
- * name prefix is shown only when explicitly set at +0, since it's implied
- * (and not called out) once enhancement is positive. Optional `abilityInfo`
- * is the pick-time snapshot for any `abilities` id from `RefData.itemAbilities`
- * (see `WornArmor.abilityInfo`'s doc comment) and is stored only alongside a
+ * name prefix is shown only when explicitly set at +0, since it's implied (and
+ * not called out) once enhancement is positive. Optional `abilityInfo` is the
+ * pick-time snapshot for any `abilities` id from `RefData.itemAbilities` (see
+ * `WornArmor.abilityInfo`'s doc comment) and is stored only alongside a
  * surviving `abilities` list. No deduplication.
  */
 /**
- * Maps `ArmorRef.proficiency` (Foundry's raw shield tag — see refdata.ts's
- * doc comment for the full vocabulary) to `WornArmor.shieldTier` (issue #81).
- * "other" covers the Buckler and Dwarven War-Shield, both of which need the
- * standard Shield Proficiency feat, not Tower Shield Proficiency — same
- * bucket as light/heavy shields. `undefined` for anything else (body armor
- * tags, or a missing/unrecognized proficiency), read downstream as "unknown,
- * don't penalize."
+ * Maps `ArmorRef.proficiency` (Foundry's raw shield tag — see refdata.ts's doc
+ * comment for the full vocabulary) to `WornArmor.shieldTier`. "other" covers
+ * the Buckler and Dwarven War-Shield, both of which need the standard Shield
+ * Proficiency feat, not Tower Shield Proficiency — same bucket as light/heavy
+ * shields. `undefined` for anything else (body armor tags, or a
+ * missing/unrecognized proficiency), read downstream as "unknown, don't
+ * penalize."
  */
 function shieldTierFromProficiencyTag(tag: string | undefined): WornArmor["shieldTier"] {
   switch (tag) {
@@ -1209,10 +1208,10 @@ export function addWornArmorFromRef(
     ...(ref.weightClass ? { type: ref.weightClass } : {}),
     ...(abilities && abilities.length > 0 ? { abilities } : {}),
     ...(abilities && abilities.length > 0 && abilityInfo ? { abilityInfo } : {}),
-    // ASF (issue #8) is read from `ref`, not the base `armor`, so mithral's
-    // -10% (applied by `applyMaterialToArmor`) is captured in the snapshot.
+    // ASF is read from `ref`, not the base `armor`, so mithral's -10% (applied
+    // by `applyMaterialToArmor`) is captured in the snapshot.
     ...(ref.asf ? { asf: ref.asf } : {}),
-    // Weight (issue #16 encumbrance) is read from the base ref, not
+    // Weight (encumbrance) is read from the base ref, not
     // `applyMaterialToArmor`'s output — mithral's real-world weight halving
     // isn't modeled by that helper yet (documented gap in materials.ts).
     ...(armor.weight ? { weight: armor.weight } : {}),
@@ -1250,12 +1249,12 @@ export function removeGear(doc: CharacterDoc, index: number): CharacterDoc {
 /**
  * Partially update the gear item at `index`. Merges a `Partial<ItemInstance>`
  * patch — can update `armor`, `name`, `equipped`, etc. Out-of-range indices
- * are silently ignored. A present `armor` is run through
- * {@link normalizeWornArmor}: enhancement clamped to [0, 10]; `masterwork`
- * dropped once enhancement becomes positive (mirrors
- * `normalizeWeaponInstance`'s invariant — a magic enhancement bonus already
- * implies masterwork quality); `abilities` dropped below enhancement 1 and
- * truncated to the +10 combined-bonus cap (issue #8).
+ * are silently ignored. A present `armor` is run through {@link
+ * normalizeWornArmor}: enhancement clamped to [0, 10]; `masterwork` dropped
+ * once enhancement becomes positive (mirrors `normalizeWeaponInstance`'s
+ * invariant — a magic enhancement bonus already implies masterwork quality);
+ * `abilities` dropped below enhancement 1 and truncated to the +10
+ * combined-bonus cap.
  */
 export function updateGearItem(
   doc: CharacterDoc,
@@ -1273,14 +1272,14 @@ export function updateGearItem(
 }
 
 /**
- * Append a free-text mundane gear item (issue #16) — the picker fallback for
- * anything not in `RefData.items` (ammo, rations, rope, potions bought at
- * market, ...). Unlike `addGearItem`, there is no `itemId`: weight/price are
- * entered directly since there's no ref to look them up from. Equipped by
- * default (a custom item like ammo isn't really "worn," but `equipped` also
- * doubles as "carried, not left behind" for the encumbrance total, and every
- * other gear-add path defaults it true).  A blank `name` is a no-op (returns
- * `doc` unchanged) so the UI can call this unconditionally from a form submit.
+ * Append a free-text mundane gear item — the picker fallback for anything not
+ * in `RefData.items` (ammo, rations, rope, potions bought at market,...).
+ * Unlike `addGearItem`, there is no `itemId`: weight/price are entered
+ * directly since there's no ref to look them up from. Equipped by default (a
+ * custom item like ammo isn't really "worn," but `equipped` also doubles as
+ * "carried, not left behind" for the encumbrance total, and every other
+ * gear-add path defaults it true). A blank `name` is a no-op (returns `doc`
+ * unchanged) so the UI can call this unconditionally from a form submit.
  */
 export function addCustomGearItem(
   doc: CharacterDoc,
@@ -1302,11 +1301,10 @@ export function addCustomGearItem(
 }
 
 /**
- * Set how many of the gear item at `index` the character carries (issue #16).
- * Clamped to [0, 99999]; a value of exactly 1 (the implicit default) deletes
- * the key entirely so the doc stays minimal, matching the rest of this
- * module's "omit the default" convention. Out-of-range indices are silently
- * ignored.
+ * Set how many of the gear item at `index` the character carries. Clamped to
+ * [0, 99999]; a value of exactly 1 (the implicit default) deletes the key
+ * entirely so the doc stays minimal, matching the rest of this module's "omit
+ * the default" convention. Out-of-range indices are silently ignored.
  */
 export function setGearQuantity(doc: CharacterDoc, index: number, quantity: number): CharacterDoc {
   if (index < 0 || index >= doc.build.gear.length) return doc;
@@ -1322,9 +1320,9 @@ export function setGearQuantity(doc: CharacterDoc, index: number, quantity: numb
 }
 
 /**
- * Set charges spent so far on the gear item at `index` (issue #16 — e.g. 3 of
- * a Staff of Healing's 10). Clamped to >= 0 only; the UI is responsible for
- * clamping against the item's actual max (looked up from
+ * Set charges spent so far on the gear item at `index` (e.g. 3 of a Staff of
+ * Healing's 10). Clamped to >= 0 only; the UI is responsible for clamping
+ * against the item's actual max (looked up from
  * `RefData.items[itemId].uses.maxFormula`), since this module has no RefData
  * access. A value of exactly 0 deletes the key (full charges, the implicit
  * default). Out-of-range indices are silently ignored.
@@ -1408,14 +1406,14 @@ export function setGearDetails(
   return { ...doc, build: { ...doc.build, gear } };
 }
 
-/** Denomination keys for `live.money` (issue #16). */
+/** Denomination keys for `live.money`. */
 export type MoneyField = "pp" | "gp" | "sp" | "cp";
 
 /**
- * Set one coin denomination in the character's purse (issue #16). Negative or
- * NaN input clamps to 0; a 0 value deletes that denomination's key entirely
- * (and the whole `money` object once every denomination is 0), matching the
- * rest of this module's "omit the default" convention.
+ * Set one coin denomination in the character's purse. Negative or NaN input
+ * clamps to 0; a 0 value deletes that denomination's key entirely (and the
+ * whole `money` object once every denomination is 0), matching the rest of
+ * this module's "omit the default" convention.
  */
 export function setMoney(doc: CharacterDoc, field: MoneyField, value: number): CharacterDoc {
   const v = Math.max(0, Math.trunc(Number.isNaN(value) ? 0 : value));
@@ -1457,11 +1455,10 @@ export function setHpMode(doc: CharacterDoc, mode: "average" | "max" | "rolled")
 }
 
 /**
- * Set the overnight rest-healing mode (issue #32). `"full"` (default, absent
- * = full) heals to max on Rest/New Day; `"natural"` uses the PF1 RAW rate of
- * 1 HP × character level per night, capped at max — see `model/hp.ts`'s
- * `restHp` doc comment for the full rule (and why full bed rest is out of
- * scope for v1).
+ * Set the overnight rest-healing mode. `"full"` (default, absent = full) heals
+ * to max on Rest/New Day; `"natural"` uses the PF1 RAW rate of 1 HP ×
+ * character level per night, capped at max — see `model/hp.ts`'s `restHp` doc
+ * comment for the full rule (and why full bed rest is out of scope for v1).
  */
 export function setRestMode(doc: CharacterDoc, mode: "full" | "natural"): CharacterDoc {
   return {
@@ -1502,9 +1499,9 @@ export function setFcbHouserule(doc: CharacterDoc, enabled: boolean): CharacterD
 }
 
 /**
- * Toggle the Cleric Wisdom house-rule (issue #56). When true, cleric-tagged
- * class features (Channel Energy's uses/day and save DC) key off Wisdom
- * instead of Charisma. Default false = Standard PF1 (RAW).
+ * Toggle the Cleric Wisdom house-rule. When true, cleric-tagged class features
+ * (Channel Energy's uses/day and save DC) key off Wisdom instead of Charisma.
+ * Default false = Standard PF1 (RAW).
  */
 export function setClericWisdomHouserule(doc: CharacterDoc, enabled: boolean): CharacterDoc {
   return {
@@ -1552,9 +1549,9 @@ export function setHeroPointsCap(doc: CharacterDoc, cap: number | null): Charact
 }
 
 /**
- * Toggle whether the character tracks XP at all (issue #27). Off by default —
- * unlike hero points, the app's default posture is milestone leveling. The
- * live `xp` total is left untouched so re-enabling restores the prior count.
+ * Toggle whether the character tracks XP at all. Off by default — unlike hero
+ * points, the app's default posture is milestone leveling. The live `xp` total
+ * is left untouched so re-enabling restores the prior count.
  */
 export function setXpEnabled(doc: CharacterDoc, enabled: boolean): CharacterDoc {
   return {
@@ -1567,11 +1564,11 @@ export function setXpEnabled(doc: CharacterDoc, enabled: boolean): CharacterDoc 
 }
 
 /**
- * Toggle the OPTIONAL PF1 carrying-capacity / encumbrance rule (issue #16).
- * Off by default (absent = false) — the owner's table doesn't use it, same
- * posture as `setXpEnabled`. When off, `compute()` applies zero load-based
- * penalties and produces no `DerivedSheet.encumbrance`, so existing documents
- * are completely unaffected by this feature's mere existence.
+ * Toggle the OPTIONAL PF1 carrying-capacity / encumbrance rule. Off by default
+ * (absent = false) — the owner's table doesn't use it, same posture as
+ * `setXpEnabled`. When off, `compute` applies zero load-based penalties and
+ * produces no `DerivedSheet.encumbrance`, so existing documents are completely
+ * unaffected by this feature's mere existence.
  */
 export function setEncumbranceEnabled(doc: CharacterDoc, enabled: boolean): CharacterDoc {
   return {
@@ -1620,8 +1617,8 @@ export function setPolymorphEnabled(doc: CharacterDoc, enabled: boolean | null):
 }
 
 /**
- * Toggle the homebrew "unrestricted alignments" house rule (issue #53). When
- * true, `model/alignment.ts`'s `classAlignmentWarnings` returns no warnings
+ * Toggle the homebrew "unrestricted alignments" house rule. When true,
+ * `model/alignment.ts`'s `classAlignmentWarnings` returns no warnings
  * regardless of the character's alignment/class combination. Off by default
  * (absent = false) — PF1 RAW's class alignment restrictions are warned by
  * default, same posture as `setFcbHouserule`.
@@ -1884,20 +1881,20 @@ export function addWeapon(doc: CharacterDoc, weapon: WeaponInstance): CharacterD
  * enhancement bonus, optional masterwork flag, optional special material, and
  * optional magical abilities. Snapshots the ref's physical stats onto a
  * `WeaponInstance` (the engine reads those fields directly; `weaponId` is a
- * display + re-sync pointer only). The display name gets a "Masterwork"
- * prefix (only when non-magical — see {@link normalizeWeaponInstance}), a
- * material prefix ("Silver Longsword"), and a " +N" suffix when enhancement
- * is positive. Zero-value optionals (matching engine defaults) are omitted so
- * the doc stays minimal. Material is display-only for weapons. Keen (if
- * selected) doubles the crit range at pick-time; other abilities are
- * display-only. Abilities without `enhancement >= 1`, or beyond the +10
- * combined-bonus cap, are dropped by `normalizeWeaponInstance`. `ref.weaponGroups`
- * (Foundry's semantic weapon-category tags, e.g. `["bladesHeavy"]`) is
- * snapshotted normalized via `@pf1/engine`'s `normalizeWeaponGroup` (issue
- * #45) so `attack.weapon.<group>`/`damage.weapon.<group>` Changes authored
- * against the canonical `WEAPON_GROUPS` vocabulary match this weapon in
- * addition to its free-text `group` tag. Optional `abilityInfo` is the
- * pick-time snapshot for any `abilities` id from `RefData.itemAbilities` (see
+ * display + re-sync pointer only). The display name gets a "Masterwork" prefix
+ * (only when non-magical — see {@link normalizeWeaponInstance}), a material
+ * prefix ("Silver Longsword"), and a " +N" suffix when enhancement is
+ * positive. Zero-value optionals (matching engine defaults) are omitted so the
+ * doc stays minimal. Material is display-only for weapons. Keen (if selected)
+ * doubles the crit range at pick-time; other abilities are display-only.
+ * Abilities without `enhancement >= 1`, or beyond the +10 combined-bonus cap,
+ * are dropped by `normalizeWeaponInstance`. `ref.weaponGroups` (Foundry's
+ * semantic weapon-category tags, e.g. `["bladesHeavy"]`) is snapshotted
+ * normalized via `@pf1/engine`'s `normalizeWeaponGroup` so
+ * `attack.weapon.<group>`/`damage.weapon.<group>` Changes authored against the
+ * canonical `WEAPON_GROUPS` vocabulary match this weapon in addition to its
+ * free-text `group` tag. Optional `abilityInfo` is the pick-time snapshot for
+ * any `abilities` id from `RefData.itemAbilities` (see
  * `WeaponInstance.abilityInfo`'s doc comment) and is stored only alongside a
  * surviving `abilities` list.
  */

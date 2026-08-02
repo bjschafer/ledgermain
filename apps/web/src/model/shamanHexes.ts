@@ -1,5 +1,5 @@
 /**
- * Pure shaman-hex transitions (issue #65). Hex ids are just entries in
+ * Pure shaman-hex transitions. Hex ids are just entries in
  * `build.shamanHexes`, mirroring `toggleOracleRevelation` in
  * `model/oracleRevelations.ts` — the engine's `SHAMAN_SPIRITS[tag].hexes`
  * table maps each to its (display-only) `summary`, applied through the same
@@ -34,7 +34,7 @@
 import { findShamanHex } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
-/** True when `id` is a GENERAL shaman hex (the vendored, spirit-agnostic ACG "Shaman Hexes" table — issue #74), not one of the current spirit's own 5 hexes. */
+/** True when `id` is a GENERAL shaman hex (the vendored, spirit-agnostic ACG "Shaman Hexes" table), not one of the current spirit's own 5 hexes. */
 function isGeneralShamanHex(id: string, refData: RefData): boolean {
   return !findShamanHex(id) && refData.shamanHexes?.[id] !== undefined;
 }
@@ -71,11 +71,10 @@ export function chosenShamanHexCount(doc: CharacterDoc): number {
 
 /**
  * The number of chosen hexes that resolve against the vendored GENERAL
- * shaman-hex catalog (issue #74) instead of the current spirit's
- * own list — counted separately from `chosenShamanHexCount` (which only
- * covers spirit-scoped ids) so the two can be summed for a total budget
- * count without double-counting or needing to change that function's
- * existing signature.
+ * shaman-hex catalog instead of the current spirit's own list — counted
+ * separately from `chosenShamanHexCount` (which only covers spirit-scoped ids)
+ * so the two can be summed for a total budget count without double-counting or
+ * needing to change that function's existing signature.
  */
 export function chosenGeneralShamanHexCount(doc: CharacterDoc, refData: RefData): number {
   return (doc.build.shamanHexes ?? []).filter((id) => isGeneralShamanHex(id, refData)).length;

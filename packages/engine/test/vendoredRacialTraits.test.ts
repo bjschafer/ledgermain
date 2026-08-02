@@ -1,13 +1,12 @@
 /**
  * Hand-computed fixture tests for the vendored alternate-racial-trait catalog
- * (issue #74, `RefData.racialTraits`) — distinct from the
- * hand-authored 8-race `RACIAL_TRAITS` table covered by `racial-traits.test.ts`.
- * A vendored pick's `changes[]` apply; whether the race's standard `Change`s
- * are suppressed alongside depends on the race: races in
- * `VENDORED_STANDARD_TRAIT_TARGETS` drop the replaced standard trait's
- * verified targets (fixtures below), every other race keeps the
- * historical apply-on-top posture (see `RacialTrait`'s doc comment in
- * `@pf1/schema`), which the Granite Skin fixtures prove.
+ * (`RefData.racialTraits`) — distinct from the hand-authored 8-race
+ * `RACIAL_TRAITS` table covered by `racial-traits.test.ts`. A vendored pick's
+ * `changes[]` apply; whether the race's standard `Change`s are suppressed
+ * alongside depends on the race: races in `VENDORED_STANDARD_TRAIT_TARGETS`
+ * drop the replaced standard trait's verified targets (fixtures below), every
+ * other race keeps the historical apply-on-top posture (see `RacialTrait`'s
+ * doc comment in `@pf1/schema`), which the Granite Skin fixtures prove.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -292,11 +291,11 @@ describe("guards", () => {
 });
 
 /**
- * Featured-race suppression (issue #74 Phase 6): for the six races in
+ * Featured-race suppression (6): for the six races in
  * `VENDORED_STANDARD_TRAIT_TARGETS`, a vendored alternate that names a
  * structured standard trait in `replacedTraitNames` now DROPS that trait's
- * `Race.changes` while active — expected values verified against the ARG
- * race write-ups and the vendored `races.json` change lists.
+ * `Race.changes` while active — expected values verified against the ARG race
+ * write-ups and the vendored `races.json` change lists.
  */
 describe("featured-race vendored suppression (issue #74 Phase 6)", () => {
   it("Aasimar Deathless Spirit (Blood of Angels): Celestial Resistance's acid/cold/electricity 5 disappears", () => {

@@ -1,7 +1,7 @@
 /**
- * Unit tests for `model/rogueFinesseWeapons.ts` (issue #65 — previously
- * deferred Rogue (Unchained) Finesse Training). Mirrors
- * `doc.weaponTrainingGroup.test.ts`'s pattern for the free-text tier setter.
+ * Unit tests for `model/rogueFinesseWeapons.ts` (previously deferred Rogue
+ * (Unchained) Finesse Training). Mirrors `doc.weaponTrainingGroup.test.ts`'s
+ * pattern for the free-text tier setter.
  */
 import { describe, expect, it } from "bun:test";
 

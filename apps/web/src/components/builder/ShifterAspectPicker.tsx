@@ -22,18 +22,17 @@ interface ShifterAspectPickerProps {
 }
 
 /**
- * Shifter aspect selection (issue #65, full-catalog issue #74),
- * mirroring `HexPicker` — this is the build-time "which aspects do I know"
- * pick; the live minor-form on/off toggle lives in the tracker's
- * `ShifterAspectPanel` instead (see that component's doc comment). A
- * shifter knows 1 aspect at 1st level, 2 at 5th, 3 at 10th, 4 at 15th, and 5
- * at 20th (Final Aspect) — see `model/shifterAspects.ts`'s budget math.
- * Free-choice, never blocks past the expected count.
+ * Shifter aspect selection (full-catalog), mirroring `HexPicker` — this is the
+ * build-time "which aspects do I know" pick; the live minor-form on/off toggle
+ * lives in the tracker's `ShifterAspectPanel` instead (see that component's
+ * doc comment). A shifter knows 1 aspect at 1st level, 2 at 5th, 3 at 10th, 4
+ * at 15th, and 5 at 20th (Final Aspect) — see `model/shifterAspects.ts`'s
+ * budget math. Free-choice, never blocks past the expected count.
  *
  * Each row previews whether its minor form clears the honesty bar for a
  * real toggleable buff (see `@pf1/engine` `shifter-aspects.ts`'s doc
  * comment) via its `contextNotes`. Major form (Wild Shape) is out of scope
- * here — deferred to issue #70. Browses the full vendored catalog
+ * here — deferred to the polymorph work. Browses the full vendored catalog
  * (`mergedShifterAspectCatalog`) — an exact 1:1 match with the 30
  * hand-authored entries (see that function's doc comment), so this only
  * ever attaches vendored prose (including the Major Form paragraph) today.

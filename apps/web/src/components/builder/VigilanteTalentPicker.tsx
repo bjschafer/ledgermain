@@ -43,13 +43,12 @@ function matchesSpecialization(
 }
 
 /**
- * Vigilante talent selection (issue #65, full-catalog issue #74) —
- * renders BOTH independent talent pools PF1 RAW grants (Social Talent at 1st
- * + every 2, Vigilante Talent at 2nd + every 2; see
- * `model/vigilanteTalents.ts`'s budget math for each), mirroring
- * `HexPicker`'s tier-grouped shape but with two separately-budgeted
- * subsections instead of one soft-gated list. The shared Vigilante Talent
- * pool is further filtered by the chosen `vigilanteSpecialization` (Avenger/
+ * Vigilante talent selection (full-catalog) — renders BOTH independent talent
+ * pools PF1 RAW grants (Social Talent at 1st + every 2, Vigilante Talent at
+ * 2nd + every 2; see `model/vigilanteTalents.ts`'s budget math for each),
+ * mirroring `HexPicker`'s tier-grouped shape but with two separately-budgeted
+ * subsections instead of one soft-gated list. The shared Vigilante Talent pool
+ * is further filtered by the chosen `vigilanteSpecialization` (Avenger/
  * Stalker/either) — soft-filtered only, same non-blocking posture as every
  * other menu table in this project. Browses the FULL published catalogs
  * (`mergedVigilanteSocialTalentCatalog`/`mergedVigilanteTalentCatalog`), not

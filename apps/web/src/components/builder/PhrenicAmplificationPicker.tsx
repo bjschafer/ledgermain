@@ -25,14 +25,13 @@ interface PhrenicAmplificationPickerProps {
 const TIER_LABEL: Record<string, string> = { basic: "Amplification", major: "Major Amplification" };
 
 /**
- * Psychic Phrenic Amplification selection (issue #65 follow-through),
- * mirroring `MesmeristTrickPicker` — a flat picker over the full
- * `PHRENIC_AMPLIFICATIONS` union (OA core + a handful of Player Companion
- * entries, see that table's doc comment for why it isn't OA-core-only).
- * Gained at 1st level and every threshold thereafter (1st, 3rd, 7th, 11th,
- * 15th, 19th — the same cadence `oracleRevelations` uses); see
- * `model/psychicAmplifications.ts`'s budget math. Free-choice, never blocks
- * past the expected count.
+ * Psychic Phrenic Amplification selection, mirroring `MesmeristTrickPicker` —
+ * a flat picker over the full `PHRENIC_AMPLIFICATIONS` union (OA core + a
+ * handful of Player Companion entries, see that table's doc comment for why it
+ * isn't OA-core-only). Gained at 1st level and every threshold thereafter
+ * (1st, 3rd, 7th, 11th, 15th, 19th — the same cadence `oracleRevelations`
+ * uses); see `model/psychicAmplifications.ts`'s budget math. Free-choice,
+ * never blocks past the expected count.
  *
  * Major amplifications (11th level) are soft-filtered by `minLevel` exactly
  * like a witch major/grand hex's own higher minimum — below-level major

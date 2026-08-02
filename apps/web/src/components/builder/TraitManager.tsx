@@ -11,12 +11,12 @@ import { SearchMiss } from "./SearchMiss.js";
 import { TraitRow } from "./TraitRow.js";
 
 /**
- * The full-screen trait picker (issue #89, scaled to the ~2,000-entry
- * vendored catalog by issue #74) — the same two-pane shell as
- * `FeatManager`, so browsing the trait catalog behaves identically to
- * browsing feats: filters across the top, catalog on the left (revealed
- * incrementally on scroll like `FeatManager`, see `useIncrementalReveal`),
- * chosen traits on the right so an add lands somewhere visible.
+ * The full-screen trait picker (scaled to the ~2,000-entry vendored catalog
+ * by) — the same two-pane shell as `FeatManager`, so browsing the trait
+ * catalog behaves identically to browsing feats: filters across the top,
+ * catalog on the left (revealed incrementally on scroll like `FeatManager`,
+ * see `useIncrementalReveal`), chosen traits on the right so an add lands
+ * somewhere visible.
  */
 export function TraitManager({
   doc,
@@ -33,10 +33,10 @@ export function TraitManager({
   const [category, setCategory] = useState<TraitCategory | "All">("All");
   const selected = useMemo(() => new Set(doc.build.traits ?? []), [doc.build.traits]);
 
-  // The merged vendored + hand-authored catalog (issue #74) plus this
-  // doc's own homebrew traits — recomputed only when refData or the
-  // homebrew set changes, not on every doc edit (see `mergedTraits`'s doc
-  // comment on why it isn't cheap enough to call per keystroke).
+  // The merged vendored + hand-authored catalog plus this doc's own homebrew
+  // traits — recomputed only when refData or the homebrew set changes, not on
+  // every doc edit (see `mergedTraits`'s doc comment on why it isn't cheap
+  // enough to call per keystroke).
   const catalog = useMemo(() => {
     const merged = mergedTraits(refData);
     const homebrew = doc.build.homebrew?.traits;

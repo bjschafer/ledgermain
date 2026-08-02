@@ -1,15 +1,15 @@
 /**
- * Aggregator for issue #45's batch-extraction pipeline: composes every
- * per-class file in this directory into the single flat tables
- * `archetype-effects-resolve.ts` (effects) and the engine barrel
- * (classification, an audit artifact — nothing in `compute()`/`collect.ts`
- * reads it) already expect. This is the ONLY file a new wave agent's diff
- * should need to touch outside its own new per-class file.
+ * Aggregator for the batch-extraction pipeline: composes every per-class file
+ * in this directory into the single flat tables `archetype-effects-resolve.ts`
+ * (effects) and the engine barrel (classification, an audit artifact — nothing
+ * in `compute`/`collect.ts` reads it) already expect. This is the ONLY file a
+ * new wave agent's diff should need to touch outside its own new per-class
+ * file.
  *
- * Per-class file convention (read this before adding a class): each class
- * gets its own `./<class-tag>.ts` file exporting
- * two `Readonly<Record<string, ...>>` consts, both keyed by the archetype
- * feature's own `RefEntity.id` (`"<classTag>:<archetypeSlug>:<featureSlug>:<level>"`):
+ * Per-class file convention (read this before adding a class): each class gets
+ * its own `./<class-tag>.ts` file exporting two `Readonly<Record<string,...>>`
+ * consts, both keyed by the archetype feature's own `RefEntity.id`
+ * (`"<classTag>:<archetypeSlug>:<featureSlug>:<level>"`):
  *
  *   - `<CLASS>_ARCHETYPE_EFFECTS_EXTRACTED` — machine-extracted `Change`-shaped
  *     effects (`ExtractedArchetypeFeatureEffect`, from `./types.js`).
@@ -19,7 +19,7 @@
  *     ones that got an entry in the effects table.
  *
  * A class file never imports another class's file, and never needs to touch
- * `./types.js` (shared types + the `c()` Change-builder helper already live
+ * `./types.js` (shared types + the `c` Change-builder helper already live
  * there). Adding a class means: one new `./<class-tag>.ts` file, plus one new
  * import + one new object-spread line in EACH of the two merges below — no
  * other file in the pipeline changes. Key collisions across classes can't

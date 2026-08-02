@@ -1,9 +1,9 @@
 /**
- * Hand-computed fixture tests for shifter aspects (issue #65): the
- * `SHIFTER_ASPECTS` table's shape, `shifterClawsDamageDie`'s progression,
- * and the genuine minor-form `Change` formulas (applied as an active buff,
- * mirroring `model/shifterAspects.ts`'s `toggleAspectMinorForm` shape)
- * scaling correctly at 1st/8th/15th shifter level.
+ * Hand-computed fixture tests for shifter aspects: the `SHIFTER_ASPECTS`
+ * table's shape, `shifterClawsDamageDie`'s progression, and the genuine
+ * minor-form `Change` formulas (applied as an active buff, mirroring
+ * `model/shifterAspects.ts`'s `toggleAspectMinorForm` shape) scaling correctly
+ * at 1st/8th/15th shifter level.
  */
 
 import { describe, expect, it } from "bun:test";

@@ -3,10 +3,9 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "../src/index.js";
 
 /**
- * End-to-end coverage for the vendored oracle-mystery catalog (issue #74) against the
- * real pinned Pf Data 1e slice — mirrors
- * `ragePowers.test.ts`. `pfdata.test.ts` covers the generic reader in
- * isolation.
+ * End-to-end coverage for the vendored oracle-mystery catalog against the real
+ * pinned Pf Data 1e slice — mirrors `ragePowers.test.ts`. `pfdata.test.ts`
+ * covers the generic reader in isolation.
  */
 const ref = loadRefData();
 

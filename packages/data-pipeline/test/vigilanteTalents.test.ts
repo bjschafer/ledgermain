@@ -4,10 +4,9 @@ import { loadRefData } from "../src/index.js";
 
 /**
  * End-to-end coverage for the vendored vigilante-talent + vigilante-social-
- * talent catalogs (issue #74) against the real pinned Pf Data 1e
- * slice, mirroring `ragePowers.test.ts` exactly — two separate RefData
- * collections, same as the two independent hand-authored pools in
- * `@pf1/engine` `vigilante-talents.ts`.
+ * talent catalogs against the real pinned Pf Data 1e slice, mirroring
+ * `ragePowers.test.ts` exactly — two separate RefData collections, same as the
+ * two independent hand-authored pools in `@pf1/engine` `vigilante-talents.ts`.
  */
 const ref = loadRefData();
 

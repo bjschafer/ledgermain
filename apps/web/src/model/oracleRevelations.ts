@@ -1,6 +1,6 @@
 /**
- * Pure oracle-revelation transitions (issue #61). Revelation ids are just
- * entries in `build.oracleRevelations`, mirroring `toggleArcanistExploit` in
+ * Pure oracle-revelation transitions. Revelation ids are just entries in
+ * `build.oracleRevelations`, mirroring `toggleArcanistExploit` in
  * `model/arcanistExploits.ts` — the engine's `ORACLE_REVELATIONS` table maps
  * each to its (display-only) `changes[]`/`contextNotes`, applied through the
  * same change-collection path as exploits/arcana (see `@pf1/engine`

@@ -1,12 +1,12 @@
 /**
- * Skill-point budget (pure). PF1: each class level grants
- * `max(1, class.skillsPerLevel + Int mod)` ranks; humans add a racial bonus
- * (encoded as a `bonusSkillRanks` change); an active archetype feature that
- * authors its own `bonusSkillRanks` change (e.g. paladin's Faithful Wanderer/
- * Tortured Crusader, which double 2+Int to 4+Int — issue #62) adds its
- * evaluated delta too; favored-class "skill" picks add one each. A character
- * may put at most `total character level` ranks in one skill (enforced in
- * doc.setSkillRank). This is the running total the builder shows.
+ * Skill-point budget (pure). PF1: each class level grants `max(1,
+ * class.skillsPerLevel + Int mod)` ranks; humans add a racial bonus (encoded
+ * as a `bonusSkillRanks` change); an active archetype feature that authors its
+ * own `bonusSkillRanks` change (e.g. paladin's Faithful Wanderer/ Tortured
+ * Crusader, which double 2+Int to 4+Int) adds its evaluated delta too;
+ * favored-class "skill" picks add one each. A character may put at most `total
+ * character level` ranks in one skill (enforced in doc.setSkillRank). This is
+ * the running total the builder shows.
  */
 import type { CharacterDoc, RefData } from "@pf1/schema";
 import {
@@ -55,10 +55,11 @@ export function skillBudget(doc: CharacterDoc, refData: RefData, intMod: number)
 
   const rollData = buildRollData(doc, refData);
 
-  // Racial bonus skill ranks (e.g. Human's +1/level via `@attributes.hd.total`).
-  // An alternate racial trait that swaps out the granting standard trait (e.g.
-  // Human's Skilled, replaced by Eye for Talent) suppresses its bonusSkillRanks
-  // change — mirror the engine's `collect.ts` suppression here (issue #35).
+  // Racial bonus skill ranks (e.g. Human's +1/level via
+  // `@attributes.hd.total`). An alternate racial trait that swaps out the
+  // granting standard trait (e.g. Human's Skilled, replaced by Eye for Talent)
+  // suppresses its bonusSkillRanks change — mirror the engine's `collect.ts`
+  // suppression here.
   const race = refData.races[doc.identity.race];
   if (race) {
     const suppressed = suppressedRaceTargets(doc, refData);
@@ -69,10 +70,10 @@ export function skillBudget(doc: CharacterDoc, refData: RefData, intMod: number)
     }
   }
 
-  // Archetype-authored bonus skill ranks (issue #62), mirroring
-  // `model/feats.ts`'s `classBonusFeatSlots` archetype loop for `bonusFeats`:
-  // only an active archetype (`doc.build.archetypes`) whose feature has
-  // reached its granting class's current level contributes, resolved through
+  // Archetype-authored bonus skill ranks, mirroring `model/feats.ts`'s
+  // `classBonusFeatSlots` archetype loop for `bonusFeats`: only an active
+  // archetype (`doc.build.archetypes`) whose feature has reached its granting
+  // class's current level contributes, resolved through
   // `resolveArchetypeFeatureEffect` (hand-verified table first, falling back
   // to the machine-extracted one) so this stays in sync with whichever table
   // actually governs a given feature id.

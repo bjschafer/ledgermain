@@ -1,5 +1,5 @@
 /**
- * Fixture tests for issue #53: class alignment restrictions. Cross-checked
+ * Fixture tests for class alignment restrictions. Cross-checked
  * against PF1 CRB class alignment entries (see model/alignment.ts's doc
  * comment for sourcing/licensing notes).
  */

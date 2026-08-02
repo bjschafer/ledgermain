@@ -10,12 +10,12 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the vendored-catalog overlay (issue #74) — see
- * `psychic-disciplines.ts`'s "vendored catalog overlay" section doc comment.
- * A discipline is a CHASSIS (bonus spells/Discipline Powers/pool ability),
- * so unlike the flat-menu subsystems this asserts the two-shape merge:
- * hand-authored rows keep full mechanics, vendored-only rows are honestly
- * `vendoredOnly: true` with no bonus spells/powers/pool ability at all.
+ * Coverage for the vendored-catalog overlay — see `psychic-disciplines.ts`'s
+ * "vendored catalog overlay" section doc comment. A discipline is a CHASSIS
+ * (bonus spells/Discipline Powers/pool ability), so unlike the flat-menu
+ * subsystems this asserts the two-shape merge: hand-authored rows keep full
+ * mechanics, vendored-only rows are honestly `vendoredOnly: true` with no
+ * bonus spells/powers/pool ability at all.
  */
 const ref = loadRefData();
 

@@ -48,8 +48,8 @@ const BLANK_WEAPON: WeaponInstance = {
   category: "melee",
   weight: 0,
   // Most custom entries end up being martial weapons — an editable default,
-  // not a guess the engine trusts blindly (issue #81: this drives the -4
-  // non-proficient attack penalty, so it's always set, never left blank).
+  // not a guess the engine trusts blindly (this drives the -4 non-proficient
+  // attack penalty, so it's always set, never left blank).
   proficiency: "martial",
 };
 

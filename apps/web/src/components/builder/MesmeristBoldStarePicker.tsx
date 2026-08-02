@@ -22,11 +22,10 @@ interface MesmeristBoldStarePickerProps {
 }
 
 /**
- * Mesmerist Bold Stare selection (issue #65 follow-through), mirroring
- * `MesmeristTrickPicker` — a flat picker over the OA-core Bold Stare options.
- * Gained at 3rd level and every 4 levels thereafter; see
- * `model/mesmeristBoldStares.ts`'s budget math. Free-choice, never blocks
- * past the expected count.
+ * Mesmerist Bold Stare selection, mirroring `MesmeristTrickPicker` — a flat
+ * picker over the OA-core Bold Stare options. Gained at 3rd level and every 4
+ * levels thereafter; see `model/mesmeristBoldStares.ts`'s budget math.
+ * Free-choice, never blocks past the expected count.
  *
  * Each pick's `riderText` is appended onto the sheet's Hypnotic Stare
  * class-feature `detail` line (see `@pf1/engine` `boldStareRiderSummary`,

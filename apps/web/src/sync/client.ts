@@ -22,7 +22,7 @@ export interface RemoteCharacterSummary {
   updatedAt: string;
 }
 
-/** A server-side delete record: this id was deleted at `deletedAt` (issue #39). */
+/** A server-side delete record: this id was deleted at `deletedAt`. */
 export interface RemoteTombstone {
   id: string;
   deletedAt: string;
@@ -46,8 +46,8 @@ async function authedFetch(
 
 /**
  * `GET /api/characters` — envelope-only summaries for every doc this account
- * owns, plus any delete `tombstones` (issue #39). `tombstones` defaults to `[]`
- * for tolerance of an older API deployment that predates the field.
+ * owns, plus any delete `tombstones`. `tombstones` defaults to `[]` for
+ * tolerance of an older API deployment that predates the field.
  */
 export async function listRemoteCharacters(apiBase: string, token: string): Promise<RemoteListing> {
   const res = await authedFetch(apiBase, "/api/characters", token);

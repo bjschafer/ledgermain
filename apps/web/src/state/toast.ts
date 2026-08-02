@@ -22,8 +22,8 @@ export interface ToastOptions {
   message: string;
   action?: ToastAction;
   /**
-   * Visual variant (issue #63): `"level-up"` gets a gold-accented treatment
-   * (`ToastHost`'s `toast--level-up` class, `styles.css`) for the celebratory
+   * Visual variant: `"level-up"` gets a gold-accented treatment (`ToastHost`'s
+   * `toast--level-up` class, `styles.css`) for the celebratory
    * total-level-increase toast — a step up from an ordinary receipt without
    * leaving the toast system (no confetti library, no separate component).
    * Omit for the default look.

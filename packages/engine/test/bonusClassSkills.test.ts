@@ -1,11 +1,11 @@
 /**
- * Player-chosen bonus class skills — `bonus-class-skills.ts` (issue #93).
+ * Player-chosen bonus class skills — `bonus-class-skills.ts`.
  *
  * Two layers, mirroring `abilitySubstitution.test.ts`:
  *   1. `collectBonusClassSkillGrants` / `chosenBonusClassSkills` directly,
  *      including the level-down truncation that makes stored picks safe to
  *      keep.
- *   2. Student of War's Additional Skill end-to-end through `compute()`, with
+ *   2. Student of War's Additional Skill end-to-end through `compute`, with
  *      the +3 hand-computed off the real vendored data.
  */
 import { describe, expect, it } from "bun:test";

@@ -1,10 +1,10 @@
 /**
- * Unit tests for issue #66 chunk 2 (prestige casting advancement) additions
- * to `model/casterLevel.ts`: `CASTER_KIND`, `castingAdvancementBonus`,
+ * Unit tests for chunk 2 (prestige casting advancement) additions to
+ * `model/casterLevel.ts`: `CASTER_KIND`, `castingAdvancementBonus`,
  * `effectiveCasterClassLevel`, `effectiveCasterLevel`, and
  * `eligibleAdvancementTargets`. Uses the real vendored refdata (loadRefData)
- * since the Eldritch Knight / Mystic Theurge chassis (issue #66 chunk 1) only
- * exists there, not in a hand-rolled fixture.
+ * since the Eldritch Knight / Mystic Theurge chassis (1) only exists there,
+ * not in a hand-rolled fixture.
  */
 import { describe, expect, it } from "bun:test";
 

@@ -62,13 +62,13 @@ function extractFeatRefs(sectionHtml: string, resolveUuid: UuidResolver): FeatRe
 /*
  * ----------------------------------------------------------------------
  * Fragment/clause splitting shared by every structured extractor below
- * (abilities, BAB, caster level, character level, and the plain-text feat
- * name resolver in `resolveNamedFeatPrereqs`). Prereq prose is a semicolon-
+ * (abilities, BAB, caster level, character level, and the plain-text feat name
+ * resolver in `resolveNamedFeatPrereqs`). Prereq prose is a semicolon-
  * and-comma-separated list, e.g. "Str 13; Dodge, Mobility; base attack bonus
  * +4" — each fragment is tested independently against one pattern, which is
- * what lets an unrecognized fragment ("proficient with weapon") sit right
- * next to a recognized one ("base attack bonus +8") without either affecting
- * the other (see issue #49 in `apps/web/src/model/prereqs.ts`).
+ * what lets an unrecognized fragment ("proficient with weapon") sit right next
+ * to a recognized one ("base attack bonus +8") without either affecting the
+ * other (in `apps/web/src/model/prereqs.ts`).
  *
  * Crucially, this is also where "or" alternatives ("Cha 15, Int 15, or Wis
  * 15" — any ONE suffices, not all three) get excluded from extraction
@@ -369,12 +369,12 @@ export function parsePrerequisites(
 }
 
 /**
- * Second pass, run once every feat has been transformed (issue #108): matches
- * each feat's still-unstructured `prereqText` fragments against the full
- * vendored feat name list, converting an exact (case-insensitive, trimmed),
- * UNIQUE name match into an additional structured `FeatRef` — the same
- * "hard-block signal" a `@UUID` reference already produces, just spelled out
- * in prose instead of linked.
+ * Second pass, run once every feat has been transformed: matches each feat's
+ * still-unstructured `prereqText` fragments against the full vendored feat
+ * name list, converting an exact (case-insensitive, trimmed), UNIQUE name
+ * match into an additional structured `FeatRef` — the same "hard-block signal"
+ * a `@UUID` reference already produces, just spelled out in prose instead of
+ * linked.
  *
  * Deliberately exact-match only: a fragment that's merely similar to a feat
  * name ("Improved Two" vs. "Improved Two-Weapon Fighting") never matches, and

@@ -1,5 +1,5 @@
 /**
- * Engine integration fixtures for issue #8 / issue #64:
+ * Engine integration fixtures for arcane spell failure:
  * `DerivedSheet.arcaneSpellFailure` sums ASF across equipped armor/shields,
  * shown only for characters with an arcane-casting class (wizard, sorcerer,
  * arcanist, magus, bard, summoner, skald, witch, bloodrager), with each

@@ -1,9 +1,9 @@
 /**
- * Engine integration fixtures for issue #8 (armor limitations/corner cases):
+ * Engine integration fixtures for armor limitations and corner cases:
  * medium/heavy ARMOR (by weight class, independent of encumbrance) reduces
  * land speed per the RAW "Table: Speed" — a core rule, unlike the optional
- * carrying-capacity encumbrance rule (issue #16), which uses the same table
- * for the same reason and must not double-reduce when both apply.
+ * carrying-capacity encumbrance rule, which uses the same table for the same
+ * reason and must not double-reduce when both apply.
  */
 import { describe, expect, it } from "bun:test";
 

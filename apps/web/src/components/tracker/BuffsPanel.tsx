@@ -270,7 +270,7 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
  * empty buff or a future data bump's regression. Distinct from
  * {@link PartialBadge}, which flags buffs that DO have changes but some of
  * them land on an unconsumed target. See `model/buffs.ts`'s
- * `hasNoModeledEffect` and issue #21.
+ * `hasNoModeledEffect`.
  */
 function NoEffectHint({
   buffId,

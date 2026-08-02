@@ -1,18 +1,18 @@
 /**
- * Clean-room PF1 witch hex table (Advanced Player's Guide, issue #65):
- * hand-authored from the published rules (verified against aonprd.com's
- * book-scoped legacy Witch class page, which lets hexes be split by exact
- * source book), mirroring `magus-arcana.ts`'s/`oracle-revelations.ts`'s
- * posture — hexes are NOT part of the vendored Foundry data pack (the Witch
- * class def only links the generic "Hex"/"Major Hex"/"Grand Hex" stub
- * `ClassFeature`s, no per-hex breakdown — confirmed: `class-features.json`
- * carries no per-hex entries), so there is no upstream JSON to normalize.
+ * Clean-room PF1 witch hex table (Advanced Player's Guide): hand-authored from
+ * the published rules (verified against aonprd.com's book-scoped legacy Witch
+ * class page, which lets hexes be split by exact source book), mirroring
+ * `magus-arcana.ts`'s/`oracle-revelations.ts`'s posture — hexes are NOT part
+ * of the vendored Foundry data pack (the Witch class def only links the
+ * generic "Hex"/"Major Hex"/"Grand Hex" stub `ClassFeature`s, no per-hex
+ * breakdown — confirmed: `class-features.json` carries no per-hex entries), so
+ * there is no upstream JSON to normalize.
  *
- * Scope: FULL vendored parity as of issue #74's Phase 5 extension — all 104
- * vendored hexes (60 regular from 1st level, 31 major from 10th, 13 grand
- * from 18th), the APG core set plus every splatbook addition the pinned
- * data carries (Ultimate Magic, Heroes of Golarion, Healer's Handbook,
- * Champions of Purity, Legacy of the First World, ...).
+ * Scope: FULL vendored parity as of the Phase 5 extension — all 104 vendored
+ * hexes (60 regular from 1st level, 31 major from 10th, 13 grand from 18th),
+ * the APG core set plus every splatbook addition the pinned data carries
+ * (Ultimate Magic, Heroes of Golarion, Healer's Handbook, Champions of Purity,
+ * Legacy of the First World,...).
  *
  * Save DC (PF1 APG RAW, stated once as a blanket rule on the witch's Hex
  * class feature, not repeated per-hex): "10 + 1/2 the witch's level + the
@@ -52,7 +52,7 @@
  * rest, and flags Cauldron/Flight/Ward specifically as the ones worth a
  * closer look by hand.
  *
- * Issue #75 audit: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
+ * Audit finding: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
  * built for the rage powers' "while raging" shape — see `rage-powers.ts`)
  * does NOT unlock anything here. None of the three near-misses above is
  * "unconditional while a specific, id-identifiable buff is active": Cauldron
@@ -219,7 +219,7 @@ const HEX_LIST: WitchHexDef[] = [
       ],
     },
 
-    // ---- splatbook additions (issue #74 Phase 5; full vendored parity) ----
+    // ---- splatbook additions (full vendored parity) ----
     {
       id: "ameliorating",
       name: "Ameliorating",
@@ -721,7 +721,7 @@ const HEX_LIST: WitchHexDef[] = [
       summary: "Use as control weather, once per day, requiring a 1-hour casting time.",
     },
 
-    // ---- splatbook additions (issue #74 Phase 5; full vendored parity) ----
+    // ---- splatbook additions (full vendored parity) ----
     {
       id: "animalSkin",
       name: "Animal Skin",
@@ -956,7 +956,7 @@ const HEX_LIST: WitchHexDef[] = [
         "Once per day, unleash a combined storm of vengeance and earthquake effect, requiring concentration to maintain.",
     },
 
-    // ---- splatbook additions (issue #74 Phase 5; full vendored parity) ----
+    // ---- splatbook additions (full vendored parity) ----
     {
       id: "abominate",
       name: "Abominate",
@@ -1063,13 +1063,12 @@ export { witchHexDC } from "./tables.js";
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.hexes` (see that type's doc comment) is the
- * FULL published witch-hex catalog (~104 entries after junk filtering),
- * prose only. The hand-verified table above stays authoritative for
- * MECHANICS — this section only merges the two for BROWSING (the picker) and
- * for resolving a picked id back to a definition (`collect.ts`/
- * `archetypes.ts`), mirroring `rage-powers.ts`'s `mergedRagePowerCatalog`
- * exactly.
+ * `RefData.hexes` (see that type's doc comment) is the FULL published
+ * witch-hex catalog (~104 entries after junk filtering), prose only. The
+ * hand-verified table above stays authoritative for MECHANICS — this section
+ * only merges the two for BROWSING (the picker) and for resolving a picked id
+ * back to a definition (`collect.ts`/ `archetypes.ts`), mirroring
+ * `rage-powers.ts`'s `mergedRagePowerCatalog` exactly.
  *
  * Matching is by NORMALIZED NAME, never id — same rationale as rage powers:
  * this file's camelCase ids vs. the vendored dataset's snake_case slugs are

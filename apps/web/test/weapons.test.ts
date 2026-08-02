@@ -341,7 +341,7 @@ describe("addWeaponFromRef()", () => {
       damageDice: "1d8",
       critRange: 19, // 19 ≠ default 20 → stored
       group: "longsword",
-      weaponGroups: ["blades-heavy"], // normalized from vendored "bladesHeavy" (issue #45)
+      weaponGroups: ["blades-heavy"], // normalized from vendored "bladesHeavy"
       weaponId: longswordRef.id,
       weight: longswordRef.weight,
       proficiency: "martial",

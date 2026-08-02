@@ -1,10 +1,10 @@
 /**
- * Hand-computed fixture tests for alternate racial traits (issue #35). These
- * exercise the two operations `collect.ts` performs for an active trait: apply
- * the alternate's own `changes[]`, and suppress the replaced standard trait's
- * structured `Race.change` (`suppressTargets`). All assertions are made against
- * observable `DerivedSheet` numbers (skills, saves, initiative), and the
- * suppression is proven by comparing against the same race with no trait.
+ * Hand-computed fixture tests for alternate racial traits. These exercise the
+ * two operations `collect.ts` performs for an active trait: apply the
+ * alternate's own `changes[]`, and suppress the replaced standard trait's
+ * structured `Race.change` (`suppressTargets`). All assertions are made
+ * against observable `DerivedSheet` numbers (skills, saves, initiative), and
+ * the suppression is proven by comparing against the same race with no trait.
  */
 
 import { describe, expect, it } from "bun:test";

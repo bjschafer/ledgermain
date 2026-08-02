@@ -2,14 +2,14 @@
  * Pathbuilder 1e HTML stat-block importer — reads the rendered HTML "stat
  * block" produced by Pathbuilder 1e's (the community Pathfinder 1e character
  * builder app) only export option. Unlike Pathbuilder *2e*, which exports
- * structured JSON, Pathbuilder 1e's export is a small standalone HTML
- * document styled to look like a Bestiary stat block (`<p class="stat-block-
- * title">`, `<p class="stat-block-1">`, `<div class="divIndent">`, ...) —
- * see the committed sample at
- * `apps/web/test/fixtures/pathbuilder-statblock-c1-orcAlchemist.html` (issue
- * #3; the owner's own export, first confirmed real sample of this tool's
- * output). `importPathbuilder.ts` (the earlier, speculative JSON importer)
- * predates this sample and stays speculative — see its module doc comment.
+ * structured JSON, Pathbuilder 1e's export is a small standalone HTML document
+ * styled to look like a Bestiary stat block (`<p class="stat-block- title">`,
+ * `<p class="stat-block-1">`, `<div class="divIndent">`,...) — see the
+ * committed sample at
+ * `apps/web/test/fixtures/pathbuilder-statblock-c1-orcAlchemist.html` (the
+ * owner's own export, first confirmed real sample of this tool's output).
+ * `importPathbuilder.ts` (the earlier, speculative JSON importer) predates
+ * this sample and stays speculative — see its module doc comment.
  *
  * PROVENANCE: written and tested against exactly one real sample. The
  * overall paragraph/label structure looks like a fixed template (Foundry-

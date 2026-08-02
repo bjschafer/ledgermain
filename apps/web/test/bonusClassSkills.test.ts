@@ -1,6 +1,6 @@
 /**
- * Unit tests for `model/bonusClassSkills.ts` (issue #93 — player-chosen bonus
- * class skills). The entitlement/truncation half lives in the engine
+ * Unit tests for `model/bonusClassSkills.ts` (player-chosen bonus class
+ * skills). The entitlement/truncation half lives in the engine
  * (`bonusClassSkills.test.ts` there); this covers the builder's side: the
  * slot-indexed setter and the "already a class skill" / stale-pick advice.
  */

@@ -1,14 +1,14 @@
 /**
- * Pure alternate-racial-trait transitions (issue #35). Traits are just ids in
+ * Pure alternate-racial-trait transitions. Traits are just ids in
  * `build.racialTraits`, mirroring `toggleTrait` in `model/traits.ts` — the
  * engine's `RACIAL_TRAITS` table maps each to its mechanical `changes`,
  * `suppressTargets`, and `contextNotes`, applied through the same
  * change-collection path as character traits (see `@pf1/engine` `collect.ts`).
  *
- * This module never blocks. Two alternates that replace the same standard trait
- * conflict (you only have one Sure-Footed to trade away), but — matching the
- * project's hybrid soft-warning posture (`model/traits.ts`, archetype conflict
- * warnings for issue #5) — that is surfaced as a warning, never enforced.
+ * This module never blocks. Two alternates that replace the same standard
+ * trait conflict (you only have one Sure-Footed to trade away), but — matching
+ * the project's hybrid soft-warning posture (`model/traits.ts`, archetype
+ * conflict warnings for) — that is surfaced as a warning, never enforced.
  */
 
 import type { CharacterDoc, RacialTrait, RefData } from "@pf1/schema";
@@ -42,10 +42,10 @@ export function availableRacialTraits(doc: CharacterDoc, refData: RefData) {
 
 /**
  * The set of `Race.change` targets suppressed by the character's active
- * alternate racial traits (issue #35). The engine's `collect.ts` applies this
- * to the computed sheet, but the feat/skill BUDGETS in `model/feats.ts` and
+ * alternate racial traits. The engine's `collect.ts` applies this to the
+ * computed sheet, but the feat/skill BUDGETS in `model/feats.ts` and
  * `model/skills.ts` read `race.changes` (`bonusFeats`/`bonusSkillRanks`)
- * directly — outside `compute()` — so they consult this helper to keep the
+ * directly — outside `compute` — so they consult this helper to keep the
  * displayed budget in sync when a swap removes the standard trait (e.g. Human
  * Focused Study drops the bonus feat; Eye for Talent drops the extra skill
  * rank). Only traits belonging to the current race are considered. Vendored
@@ -70,7 +70,7 @@ export function suppressedRaceTargets(doc: CharacterDoc, refData: RefData): Set<
   return suppressed;
 }
 
-/** One of the race's standard-trait reminders, with retirement status for display (issue #41). */
+/** One of the race's standard-trait reminders, with retirement status for display. */
 export interface RaceStandardTraitNote {
   target: string;
   text: string;
@@ -152,7 +152,7 @@ export function conflictingRacialTraitIds(doc: CharacterDoc, refData: RefData): 
   return conflicts;
 }
 
-/* ------------------------------------------ vendored racial traits (#74) -- */
+/* ------------------------------------------ vendored racial traits -- */
 
 /**
  * Everything below scopes `RefData.racialTraits` — the ~80-race vendored

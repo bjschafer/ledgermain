@@ -9,21 +9,21 @@
  *  - NEVER hard-block on free-text prose. When a feat's prereqs are only prose
  *    (`prereqText` with no structured signals), surface a SOFT WARNING instead.
  *
- * Issue #49: a feat like Dodge (structured `Dex 13` ability minimum, ALSO
- * present verbatim in `prereqText`: "Dex 13.") showed a satisfied ✓ check
- * AND a redundant "⚠ Dex 13" warning — confusing, since the two signals
- * agree but look contradictory at a glance. `filterProseFragments` strips
- * prose fragments (prose is comma/semicolon-separated, e.g. "Dex 13, Dodge,
- * base attack bonus +4") that a MET structured check already covers, leaving
- * only fragments the structured layer never verified (or that ARE unmet —
- * unmet fragments are left alone since their ✗ check and the prose already
- * agree there's no ambiguity to resolve). Conservative by construction: a
- * fragment is only ever dropped when it can be matched to a specific,
- * satisfied structured signal (ability/BAB/caster level/feat) via a narrow
- * per-kind regex/name match; anything that doesn't match — a skill rank,
- * "proficient with weapon", a class feature, race, alignment, etc. — always
- * stays, so the soft warning never silently hides prose the structured layer
- * didn't actually check.
+ * a feat like Dodge (structured `Dex 13` ability minimum, ALSO present
+ * verbatim in `prereqText`: "Dex 13.") showed a satisfied ✓ check AND a
+ * redundant "⚠ Dex 13" warning — confusing, since the two signals agree but
+ * look contradictory at a glance. `filterProseFragments` strips prose
+ * fragments (prose is comma/semicolon-separated, e.g. "Dex 13, Dodge, base
+ * attack bonus +4") that a MET structured check already covers, leaving only
+ * fragments the structured layer never verified (or that ARE unmet — unmet
+ * fragments are left alone since their ✗ check and the prose already agree
+ * there's no ambiguity to resolve). Conservative by construction: a fragment
+ * is only ever dropped when it can be matched to a specific, satisfied
+ * structured signal (ability/BAB/caster level/feat) via a narrow per-kind
+ * regex/name match; anything that doesn't match — a skill rank, "proficient
+ * with weapon", a class feature, race, alignment, etc. — always stays, so the
+ * soft warning never silently hides prose the structured layer didn't actually
+ * check.
  */
 import type { AbilityId, Feat, RefData } from "@pf1/schema";
 import { featNameSlug } from "@pf1/engine";
@@ -72,7 +72,7 @@ export interface PrereqContext {
   bypassBlockedSlugs?: ReadonlySet<string>;
 }
 
-/** A structured prerequisite signal, paired with a prose-fragment matcher (issue #49). */
+/** A structured prerequisite signal, paired with a prose-fragment matcher. */
 interface StructuredSignal {
   met: boolean;
   /** True if `fragment` (already trimmed) describes this exact signal. */
@@ -96,10 +96,10 @@ function splitProseFragments(text: string): string[] {
  * Drops fragments of `text` that match a MET structured signal (see
  * `StructuredSignal`), returning `undefined` if nothing remains. A fragment
  * tied to an UNMET signal is always kept — its ✗ check and the prose already
- * agree, so there's no confusing contradiction to resolve (issue #49 is
- * specifically about a ✓ check next to a warning that looks like a ✗).
- * Fragments this function can't tie to any structured signal are always
- * kept too, met or not — never invented, never hidden.
+ * agree, so there's no confusing contradiction to resolve (is specifically
+ * about a ✓ check next to a warning that looks like a ✗). Fragments this
+ * function can't tie to any structured signal are always kept too, met or not
+ * — never invented, never hidden.
  */
 function filterProseFragments(
   text: string | undefined,
@@ -180,11 +180,11 @@ export function evaluatePrereqs(feat: Feat, ctx: PrereqContext): PrereqResult {
     });
   }
 
-  // "Any one of these" feat groups (e.g. Catch Off-Guard OR Throw Anything,
-  // issue #108) — a single check for the whole group, met if any member is
-  // selected. The prose fragment can read either as one "A or B" segment or,
-  // for an Oxford-comma group, as separate "A", "B", "or C" segments —
-  // `test` matches both shapes.
+  // "Any one of these" feat groups (e.g. Catch Off-Guard OR Throw Anything) —
+  // a single check for the whole group, met if any member is selected. The
+  // prose fragment can read either as one "A or B" segment or, for an
+  // Oxford-comma group, as separate "A", "B", "or C" segments — `test` matches
+  // both shapes.
   for (const group of p.featsAnyOf ?? []) {
     const names = group.map((ref) => ctx.refData.feats[ref.id]?.name ?? ref.name);
     const label = names.join(" or ");
@@ -223,8 +223,8 @@ export function evaluatePrereqs(feat: Feat, ctx: PrereqContext): PrereqResult {
 /**
  * Feats the character already has selected whose structured prerequisites are
  * no longer met — typically because a prerequisite feat they used to qualify
- * on was since removed (issue #9: "add the requirements, add the feat, then
- * remove the requirements while retaining the feat and all of its effects").
+ * on was since removed ("add the requirements, add the feat, then remove the
+ * requirements while retaining the feat and all of its effects").
  *
  * Per the hybrid policy this never auto-removes anything: `evaluatePrereqs`'s
  * `blocked` only gates the "Add" button for feats not yet taken (`FeatsSection`

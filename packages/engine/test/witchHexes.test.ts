@@ -1,10 +1,10 @@
 /**
- * Hand-computed fixture tests for witch hexes (issue #65). Every hex in
- * `WITCH_HEXES` is `displayOnly` with `changes: []` (see that file's doc
- * comment — no APG hex grants an unconditional flat number this engine
- * safely targets), so `collectModifiers` should never emit a numeric
- * modifier for one. What IS exercised: gating on actual witch levels,
- * unknown-id tolerance, and surfacing picked hexes through
+ * Hand-computed fixture tests for witch hexes. Every hex in `WITCH_HEXES` is
+ * `displayOnly` with `changes: []` (see that file's doc comment — no APG hex
+ * grants an unconditional flat number this engine safely targets), so
+ * `collectModifiers` should never emit a numeric modifier for one. What IS
+ * exercised: gating on actual witch levels, unknown-id tolerance, and
+ * surfacing picked hexes through
  * `collectGrantedFeatures`/`resolveClassFeatures` — same pattern as
  * `magusArcana.test.ts`.
  */
@@ -69,7 +69,7 @@ describe("WITCH_HEXES table", () => {
   it("every hex is displayOnly with no changes EXCEPT Iceplant's unconditional natural armor", () => {
     // Iceplant (Ultimate Wilderness / vendored text): "+2 natural armor
     // bonus" — always-on and self-only, the lone promotable hex found by
-    // the #74 Phase 5 sweep.
+    // the last catalog sweep.
     for (const id of WITCH_HEX_IDS) {
       const hex = WITCH_HEXES[id]!;
       if (id === "iceplant") {

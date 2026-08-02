@@ -23,17 +23,17 @@ import { compute, deriveResourcePools } from "../src/index.js";
  *   "floor(@class.unlevel / 6)", target: "bonusFeats"}]` as cavalier's own
  *   Bonus Feat (CAV) — generic, no hand-authoring.
  *
- * **Vendored-data gap found (worth an issue #47 entry): Challenge (SAM) has
- * NO `uses` block at all**, unlike cavalier's byte-identical Challenge (CAV)
- * (`uses.maxFormula: "1 + floor((@class.unlevel - 1) / 3)"`, same SRD
- * wording verbatim: "once per day... plus one additional time per day for
- * every three levels beyond 1st, to a maximum of seven times per day at
- * 19th level"). Per this project's established posture for a vendored gap on
- * an otherwise-plain numeric feature (see Shifter Aspect's precedent in
- * `nonCasterClasses.test.ts`), this is left AS-IS (no synthetic pool
- * override) rather than hand-authored — the test below documents the
- * current (missing) behavior explicitly so a future data-pipeline fix is
- * caught, not silently masked.
+ * **Vendored-data gap found (worth an entry): Challenge (SAM) has NO `uses`
+ * block at all**, unlike cavalier's byte-identical Challenge (CAV)
+ * (`uses.maxFormula: "1 + floor((@class.unlevel - 1) / 3)"`, same SRD wording
+ * verbatim: "once per day... plus one additional time per day for every three
+ * levels beyond 1st, to a maximum of seven times per day at 19th level"). Per
+ * this project's established posture for a vendored gap on an otherwise-plain
+ * numeric feature (see Shifter Aspect's precedent in
+ * `nonCasterClasses.test.ts`), this is left AS-IS (no synthetic pool override)
+ * rather than hand-authored — the test below documents the current (missing)
+ * behavior explicitly so a future data-pipeline fix is caught, not silently
+ * masked.
  *
  * Mount (SAM) / Order (SAM) (companion + order-of-choice subsystems) are
  * deferred, mirroring cavalier's own Mount/Order (neither is modeled at all

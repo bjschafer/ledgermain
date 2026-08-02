@@ -1,23 +1,22 @@
 /**
- * Wizard's slice of the issue #45 batch-extraction pipeline (prose→Change
- * extraction wave, 2026-07-06), mechanically repeating the Fighter pilot
- * (`fighter.ts`) for wizard's 31 vendored archetypes / 108 archetype
- * features. Per the per-class file convention (documented in
- * `index.ts`), this file owns BOTH of
- * wizard's pipeline artifacts — `WIZARD_ARCHETYPE_EFFECTS_EXTRACTED` (the
+ * Wizard's slice of the pipeline (prose→Change extraction wave, 2026-07-06),
+ * mechanically repeating the Fighter pilot (`fighter.ts`) for wizard's 31
+ * vendored archetypes / 108 archetype features. Per the per-class file
+ * convention (documented in `index.ts`), this file owns BOTH of wizard's
+ * pipeline artifacts — `WIZARD_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
- * `WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) —
- * so a future wave working on a different class never has a reason to touch
- * this file; only `index.ts` (the aggregator) needs one new import + one new
- * spread per class.
+ * `WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so
+ * a future wave working on a different class never has a reason to touch this
+ * file; only `index.ts` (the aggregator) needs one new import + one new spread
+ * per class.
  *
  * ── WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION ───────────────────────────────
  *
- * Classification audit for issue #45's wizard slice: EVERY feature of EVERY
- * vendored wizard archetype (31 archetypes, 108 features), read in full (not
- * heuristic-sampled — small enough class to read exhaustively) and bucketed
- * as `numeric` / `situational` / `subsystem` / `blocked`, applying the exact
- * same rubric fighter's pilot used:
+ * Classification audit for the wizard slice: EVERY feature of EVERY vendored
+ * wizard archetype (31 archetypes, 108 features), read in full (not
+ * heuristic-sampled — small enough class to read exhaustively) and bucketed as
+ * `numeric` / `situational` / `subsystem` / `blocked`, applying the exact same
+ * rubric fighter's pilot used:
  *
  *  - "numeric": an unconditional bonus, or one gated on a condition the
  *    engine can actually check, expressible via a real
@@ -40,19 +39,19 @@
  *
  * 1. **Arcane School is unsuppressible.** The actual school POWERS (Hand of
  *    the Apprentice, elemental blasts, etc.) are granted through
- *    `collectGrantedFeatures()` (`archetypes.ts`), gated purely on
+ *    `collectGrantedFeatures` (`archetypes.ts`), gated purely on
  *    `doc.build.wizardSchool` and wizard level — there is no per-archetype
- *    override hook into that grant path. Any archetype that modifies,
- *    reworks, or replaces arcane-school mechanics is `subsystem`: the base
- *    school power keeps applying in full regardless of what the archetype's
- *    prose claims to swap it for (the same "unsuppressible magic subsystem"
- *    shape `archetype-effects.ts`'s Sorcerer of Sleep entry already
- *    documents for bloodline arcana). None of the 31 wizard archetypes here
- *    needed the stronger `blocked` treatment for this reason — every one
- *    that touches arcane school either grants something wholly unrelated to
- *    the school power's own target (safe, ordinary `subsystem`) or grants a
- *    number that survives fine alongside an un-suppressed school power with
- *    no vendored `changes` of its own (Diligent Student, see below).
+ *    override hook into that grant path. Any archetype that modifies, reworks,
+ *    or replaces arcane-school mechanics is `subsystem`: the base school power
+ *    keeps applying in full regardless of what the archetype's prose claims to
+ *    swap it for (the same "unsuppressible magic subsystem" shape
+ *    `archetype-effects.ts`'s Sorcerer of Sleep entry already documents for
+ *    bloodline arcana). None of the 31 wizard archetypes here needed the
+ *    stronger `blocked` treatment for this reason — every one that touches
+ *    arcane school either grants something wholly unrelated to the school
+ *    power's own target (safe, ordinary `subsystem`) or grants a number that
+ *    survives fine alongside an un-suppressed school power with no vendored
+ *    `changes` of its own (Diligent Student, see below).
  *
  * 2. **Every one of the 108 vendored wizard archetype features is UNPAIRED**
  *    (`pairedBaseFeatureUuid` absent on all 108 — verified directly against
@@ -894,9 +893,9 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * ── WIZARD_ARCHETYPE_EFFECTS_EXTRACTED ────────────────────────────────────
  *
  * Machine-extracted mechanical effects for wizard archetype class features
- * (issue #45's wizard slice). Clean-room from the published PF1 rules — the
- * vendored prose this was extracted from (`archetype-features.json`) is OGL,
- * so reading it is fine; no Foundry source was consulted (DESIGN.md §6).
+ * (wizard slice). Clean-room from the published PF1 rules — the vendored prose
+ * this was extracted from (`archetype-features.json`) is OGL, so reading it is
+ * fine; no Foundry source was consulted (DESIGN.md §6).
  *
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here

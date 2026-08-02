@@ -10,7 +10,7 @@ import {
 import { ARCHETYPE_FEATURE_EFFECTS, compute, resolveArchetypeFeatureEffect } from "../src/index.js";
 
 /**
- * Issue #45 (monk wave, 2026-07-06): fixture tests for
+ * fixture tests for
  * `archetype-extracted/monk.ts`. Unlike every other class file in this
  * pipeline, monk's own extraction pass found ZERO new numeric entries (see
  * that file's doc comment for why) — so these tests exercise the two things

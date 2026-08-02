@@ -4,7 +4,7 @@ import { loadRefData } from "../src/index.js";
 
 /**
  * End-to-end coverage for the vendored Monk (Unchained) style-strike catalog
- * (issue #74) against the real pinned Pf Data 1e slice.
+ * against the real pinned Pf Data 1e slice.
  */
 const ref = loadRefData();
 

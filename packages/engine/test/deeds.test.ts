@@ -13,7 +13,7 @@ import {
 } from "../src/index.js";
 
 /**
- * Fixture coverage for issue #65's gunslinger/swashbuckler deed subsystem.
+ * Fixture coverage for the gunslinger/swashbuckler deed subsystem.
  *
  * First confirms the premise the task brief asked to verify rather than
  * assume: grit (gunslinger) and panache (swashbuckler) pools already derive

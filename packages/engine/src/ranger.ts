@@ -92,9 +92,9 @@ export interface CombatStyle {
  * Ranger combat styles: the two Core Rulebook styles (Archery, Two-Weapon
  * Combat — CRB p. 64) plus the five from Ultimate Combat (Crossbow, Mounted
  * Combat, Natural Weapon, Two-Handed Weapon, Weapon and Shield), plus two
- * archetype-exclusive styles (Elemental, Aquatic Prowess — issue #59, see the
- * "Archetype-granted styles" block below) that only a ranger with the
- * granting archetype can select.
+ * archetype-exclusive styles (Elemental, Aquatic Prowess, see the
+ * "Archetype-granted styles" block below) that only a ranger with the granting
+ * archetype can select.
  *
  * `featSlugs` lists a style's bonus feats at every style level so the feat
  * picker can waive their prerequisites (and badge the tree). The trees are
@@ -196,11 +196,11 @@ export const COMBAT_STYLES: readonly CombatStyle[] = [
       "greater-shield-focus",
     ],
   },
-  // ── Archetype-granted styles (issue #59) ──────────────────────────────
-  // Not selectable by a plain CRB/UC ranger — only reachable via
+  // ── Archetype-granted styles ────────────────────────────── Not selectable
+  // by a plain CRB/UC ranger — only reachable via
   // `RANGER_ARCHETYPE_STYLE_RULES` (apps/web/src/model/ranger.ts) locking a
-  // ranger with the granting archetype into it. See that file for how the
-  // lock is enforced; this table only carries each style's own feat tree.
+  // ranger with the granting archetype into it. See that file for how the lock
+  // is enforced; this table only carries each style's own feat tree.
   {
     // Ultimate Wilderness p. 126 / Ranger (Elemental Envoy) archetype
     // (Pathfinder Player Companion: Disciple's Doctrine). Clean-room from

@@ -1,21 +1,21 @@
 /**
- * Class alignment restrictions (issue #53) — soft-warning only, same hybrid
- * posture as `archetypeConflictWarnings`/`prereqs.ts`: PF1 restricts a
- * handful of base classes to a subset of the nine alignments, but nothing in
- * this app ever hard-blocks a build choice, so a mismatch surfaces as a
- * warning in the Classes section, never a block. A homebrew table can toggle
+ * Class alignment restrictions — soft-warning only, same hybrid posture as
+ * `archetypeConflictWarnings`/`prereqs.ts`: PF1 restricts a handful of base
+ * classes to a subset of the nine alignments, but nothing in this app ever
+ * hard-blocks a build choice, so a mismatch surfaces as a warning in the
+ * Classes section, never a block. A homebrew table can toggle
  * `settings.ignoreClassAlignmentRestrictions` to suppress the warnings
  * entirely (unrestricted-alignment house rule).
  *
  * The vendored Foundry class data (`packages/data-pipeline/data/classes.json`)
  * carries alignment restrictions only as prose inside `description` — no
- * structured field — so this is a small hand-authored, clean-room table
- * (PF1 CRB rules, cross-checked against d20pfsrd.com / Archives of Nethys;
- * never transcribed from Foundry's GPL system code — see CLAUDE.md's
- * licensing section). Only classes with an actual restriction get an entry;
- * every class tag absent from this table (fighter, rogue, wizard, sorcerer,
- * arcanist, magus, ranger, bard, oracle, ...) is alignment-unrestricted in
- * PF1 — notably Bard, whose 3.5e "any nonlawful" restriction PF1 dropped.
+ * structured field — so this is a small hand-authored, clean-room table (PF1
+ * CRB rules, cross-checked against d20pfsrd.com / Archives of Nethys; never
+ * transcribed from Foundry's GPL system code — see CLAUDE.md's licensing
+ * section). Only classes with an actual restriction get an entry; every class
+ * tag absent from this table (fighter, rogue, wizard, sorcerer, arcanist,
+ * magus, ranger, bard, oracle,...) is alignment-unrestricted in PF1 — notably
+ * Bard, whose 3.5e "any nonlawful" restriction PF1 dropped.
  *
  * Cleric is deliberately excluded: PF1 RAW restricts a cleric to within one
  * step of their deity's alignment, but `RefData` carries no deity->alignment
@@ -95,10 +95,9 @@ export interface ClassAlignmentWarning {
 }
 
 /**
- * Per-class alignment warnings for `doc`'s current build (issue #53). Warns
- * once per offending class (multiclass-aware — e.g. a Barbarian/Monk with a
- * chaotic alignment gets one warning for the Monk side only). Returns `[]`
- * when:
+ * Per-class alignment warnings for `doc`'s current build. Warns once per
+ * offending class (multiclass-aware — e.g. a Barbarian/Monk with a chaotic
+ * alignment gets one warning for the Monk side only). Returns `[]` when:
  * - no alignment is set (legacy docs, or a player who hasn't picked one yet)
  * - the alignment text doesn't normalize to a recognized code (nothing to
  *   check against)

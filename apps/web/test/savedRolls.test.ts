@@ -660,10 +660,10 @@ describe("resolveSavedRoll() with attached feats", () => {
 });
 
 /**
- * Two-weapon fighting (issue #97). Fixture: fighter 8 (BAB 8, melee +8/+3),
- * Str 18 (+4), a longsword in the main hand and a shortsword off-hand entered
- * as a normal one-handed weapon (×1 Str damage, +4) — so the off-hand line has
- * to restate the ability damage itself.
+ * Two-weapon fighting. Fixture: fighter 8 (BAB 8, melee +8/+3), Str 18 (+4), a
+ * longsword in the main hand and a shortsword off-hand entered as a normal
+ * one-handed weapon (×1 Str damage, +4) — so the off-hand line has to restate
+ * the ability damage itself.
  */
 describe("resolveSavedRoll — two-weapon fighting", () => {
   function twoWeaponDoc(): CharacterDoc {

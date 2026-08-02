@@ -1,12 +1,12 @@
 /**
- * Fixture tests for the witch patron table (issue #65). Unlike
- * `oracle-mysteries.ts`'s bonus spells (real vendored Foundry ids copied from
- * the mystery's own prose), a patron's bonus spells carry only a NAME (see
- * `witch-patrons.ts`'s doc comment for why) — resolved at runtime by
+ * Fixture tests for the witch patron table. Unlike `oracle-mysteries.ts`'s
+ * bonus spells (real vendored Foundry ids copied from the mystery's own
+ * prose), a patron's bonus spells carry only a NAME (see `witch-patrons.ts`'s
+ * doc comment for why) — resolved at runtime by
  * `apps/web/src/model/spellcasting.patronSpellsKnown`, not tested here (this
  * package has no dependency on the web app's model layer). What IS exercised
  * at the engine layer: table shape, the 9-spell-per-patron shape, and the
- * level progression (2, 4, 6, ..., 18).
+ * level progression (2, 4, 6,..., 18).
  */
 
 import { describe, expect, it } from "bun:test";

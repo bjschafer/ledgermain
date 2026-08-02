@@ -1,6 +1,6 @@
 /**
- * Unit tests for the druid nature-bond domain choice (issue #98) added to
- * model/doc.ts: `setDruidNatureBondDomain`.
+ * Unit tests for the druid nature-bond domain choice added to model/doc.ts:
+ * `setDruidNatureBondDomain`.
  */
 import { describe, expect, it } from "bun:test";
 

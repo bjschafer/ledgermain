@@ -17,13 +17,13 @@
  * downstream needs to change. This is personal-use tooling, not a
  * compatibility promise.
  *
- * UPDATE (issue #3): a real Pathbuilder 1e export sample finally turned up —
- * and it's not JSON at all. Pathbuilder 1e's only export option renders a
- * Bestiary-style HTML "stat block"; see `importPathbuilderHtml.ts` for the
- * importer written against that confirmed real sample. This module's JSON
- * path remains entirely speculative (no evidence Pathbuilder 1e ever emits
- * JSON) — kept around in case some other export mode surfaces later, but the
- * HTML importer is the one to reach for in practice.
+ * UPDATE: a real Pathbuilder 1e export sample finally turned up — and it's not
+ * JSON at all. Pathbuilder 1e's only export option renders a Bestiary-style
+ * HTML "stat block"; see `importPathbuilderHtml.ts` for the importer written
+ * against that confirmed real sample. This module's JSON path remains entirely
+ * speculative (no evidence Pathbuilder 1e ever emits JSON) — kept around in
+ * case some other export mode surfaces later, but the HTML importer is the one
+ * to reach for in practice.
  */
 import type { RefData } from "@pf1/schema";
 

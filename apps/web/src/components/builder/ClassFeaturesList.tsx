@@ -29,23 +29,23 @@ export function FeatureDescription({ html }: { html: string }) {
  * Displays every granted base-class feature (struck through when an active
  * archetype swaps it out, same visual language as `Provenance`'s `applied`
  * flag), followed by each active archetype's own feature list with its prose
- * description. Archetype features with no unambiguous base-feature match get
- * a soft warning ("may replace an existing ability — see description") rather
+ * description. Archetype features with no unambiguous base-feature match get a
+ * soft warning ("may replace an existing ability — see description") rather
  * than a swap, per the project's hybrid-prereqs posture; the description is
  * the "see" part of that warning, not just a decoration. The dataset has at
  * least one verified copy-paste error in this prose (Two-Handed Fighter's
  * Shattering Strike row carries Bravery's text) — display-only, never a
- * mechanics source. Entries granted by a chosen cleric domain or wizard
- * arcane school (rather than the class itself) carry an `origin` label
- * (e.g. "— Fire Domain") — see `collectGrantedFeatures` in `@pf1/engine`.
- * A slice of archetype features carry a real numeric effect — hand-verified
- * (issue #7, `@pf1/engine` `archetype-effects.ts`) or machine-extracted
- * (issue #45, `archetype-effects-extracted.ts`) — those show a `detail`
- * summary next to the name (e.g. "DR 5/—"), same visual language as a base
- * class feature's `detail`. An extracted entry additionally gets a visible
- * "(extracted)" text note — not a hover-only tooltip, since hover-only
- * affordances are discouraged here — so a lower-confidence number is never
- * mistaken for a hand-verified one just from a glance at the sheet.
+ * mechanics source. Entries granted by a chosen cleric domain or wizard arcane
+ * school (rather than the class itself) carry an `origin` label (e.g. "— Fire
+ * Domain") — see `collectGrantedFeatures` in `@pf1/engine`. A slice of
+ * archetype features carry a real numeric effect — hand-verified
+ * (`@pf1/engine` `archetype-effects.ts`) or machine-extracted
+ * (`archetype-effects-extracted.ts`) — those show a `detail` summary next to
+ * the name (e.g. "DR 5/—"), same visual language as a base class feature's
+ * `detail`. An extracted entry additionally gets a visible "(extracted)" text
+ * note — not a hover-only tooltip, since hover-only affordances are
+ * discouraged here — so a lower-confidence number is never mistaken for a
+ * hand-verified one just from a glance at the sheet.
  */
 export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; refData: RefData }) {
   if (sheet.classFeatures.length === 0) return null;

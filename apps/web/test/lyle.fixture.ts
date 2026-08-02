@@ -232,9 +232,9 @@ export function buildLyleDoc(ref: RefData): CharacterDoc {
   // --- gear --------------------------------------------------------------------
   doc = addGearItem(doc, idByName(ref.items, "Cloak of Resistance +1"));
   doc = addGearItem(doc, idByName(ref.items, "Headband of Alluring Charisma +2"));
-  // Wand of Mage Armor: no wand items are vendored (issue #36) — custom item;
-  // its 47 charges are tracked as a manual resource pool below, and "using" it
-  // means toggling the vendored Mage Armor buff (CL 1, +4 armor) in the tracker.
+  // Wand of Mage Armor: no wand items are vendored — custom item; its 47
+  // charges are tracked as a manual resource pool below, and "using" it means
+  // toggling the vendored Mage Armor buff (CL 1, +4 armor) in the tracker.
   doc = addCustomGearItem(doc, "Wand of mage armor (47 charges)");
   doc = addCustomGearItem(doc, "Potion of cure light wounds", { quantity: 4 });
   // Bloodstone collar: display-only custom item (worn by Mortlach) — its RAW

@@ -1,19 +1,18 @@
 /**
- * Magus's slice of the issue #45 batch-extraction pipeline (2026-07-06).
- * Magus is a BRAND NEW class in this repo as of this same date — there is no
- * prior hand-authored or extracted content for it anywhere, and no existing
- * ids to avoid duplicating. This file establishes magus's slice from
- * scratch, repeating the exact methodology the fighter pilot
- * (`fighter.ts`) already validated: every vendored archetype feature for the
- * class (31 magus archetypes, 150 features) is read in full and bucketed as
- * `numeric` / `situational` / `subsystem` / `blocked`, and the `numeric`
- * ones get a real `Change`-shaped extraction. Per the per-class file
- * convention (`index.ts`'s doc comment), this file owns BOTH of magus's
- * pipeline artifacts — `MAGUS_ARCHETYPE_EFFECTS_EXTRACTED` and
+ * Magus's slice of the pipeline (2026-07-06). Magus is a BRAND NEW class in
+ * this repo as of this same date — there is no prior hand-authored or
+ * extracted content for it anywhere, and no existing ids to avoid duplicating.
+ * This file establishes magus's slice from scratch, repeating the exact
+ * methodology the fighter pilot (`fighter.ts`) already validated: every
+ * vendored archetype feature for the class (31 magus archetypes, 150 features)
+ * is read in full and bucketed as `numeric` / `situational` / `subsystem` /
+ * `blocked`, and the `numeric` ones get a real `Change`-shaped extraction. Per
+ * the per-class file convention (`index.ts`'s doc comment), this file owns
+ * BOTH of magus's pipeline artifacts — `MAGUS_ARCHETYPE_EFFECTS_EXTRACTED` and
  * `MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on a
- * different class never has a reason to touch this file; only `index.ts`
- * (the aggregator, a later integration step not done here) needs a new
- * import + spread line.
+ * different class never has a reason to touch this file; only `index.ts` (the
+ * aggregator, a later integration step not done here) needs a new import +
+ * spread line.
  *
  * ── Magus-specific mechanical facts this pass relies on ───────────────────
  *
@@ -1172,11 +1171,11 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
 /**
  * ── MAGUS_ARCHETYPE_EFFECTS_EXTRACTED ─────────────────────────────────────
  *
- * Machine-extracted mechanical effects for magus archetype class features
- * (issue #45 — the prose→Change extraction pipeline, magus slice). Clean-room
- * from the published PF1 rules — the vendored prose this was extracted from
- * (`archetype-features.json`) is OGL, so reading it is fine; no Foundry
- * source was consulted (DESIGN.md §6).
+ * Machine-extracted mechanical effects for magus archetype class features (the
+ * prose→Change extraction pipeline, magus slice). Clean-room from the
+ * published PF1 rules — the vendored prose this was extracted from
+ * (`archetype-features.json`) is OGL, so reading it is fine; no Foundry source
+ * was consulted (DESIGN.md §6).
  *
  * This table is deliberately SEPARATE from `archetype-effects.ts`'s
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here

@@ -178,11 +178,11 @@ export const ORACLE_CURSE_TAGS: readonly string[] = CURSE_LIST.map((cu) => cu.ta
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.oracleCurses` is the FULL published catalog
- * (41 entries after junk filtering), prose only — same "catalog from data,
- * mechanics as overlay" pattern as `rage-powers.ts`'s
- * `mergedRagePowerCatalog`. The hand-verified 6-base-curse table above stays
- * authoritative for mechanics; this section merges the two for browsing.
+ * `RefData.oracleCurses` is the FULL published catalog (41 entries after junk
+ * filtering), prose only — same "catalog from data, mechanics as overlay"
+ * pattern as `rage-powers.ts`'s `mergedRagePowerCatalog`. The hand-verified
+ * 6-base-curse table above stays authoritative for mechanics; this section
+ * merges the two for browsing.
  *
  * Matching is by NORMALIZED NAME. Collision audit (all 6 hand-authored
  * curses): all 6 matched a vendored entry by normalized name (`Clouded

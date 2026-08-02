@@ -1,13 +1,12 @@
 /**
- * Paladin's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (documented in
- * `index.ts`), this file owns BOTH of
- * paladin's pipeline artifacts — `PALADIN_ARCHETYPE_EFFECTS_EXTRACTED` (the
+ * Paladin's slice of the pipeline (wave 2, 2026-07-06). Per the per-class file
+ * convention (documented in `index.ts`), this file owns BOTH of paladin's
+ * pipeline artifacts — `PALADIN_ARCHETYPE_EFFECTS_EXTRACTED` (the
  * machine-extracted `Change`-shaped effects table) and
- * `PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) —
- * so a future wave working on a different class never has a reason to touch
- * this file; only `index.ts` (the aggregator) needs one new import + one new
- * spread per class.
+ * `PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) — so
+ * a future wave working on a different class never has a reason to touch this
+ * file; only `index.ts` (the aggregator) needs one new import + one new spread
+ * per class.
  *
  * ── PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION ──────────────────────────────
  *
@@ -58,12 +57,12 @@
  * recording since they suppressed several otherwise-clean numbers:
  *
  * - `chaSkills`/`dexSkills`/etc. (the ability-based skill-GROUP targets) are
- *   listed in `targets.ts`'s `UNAPPLIED_TARGET_LABELS`, not
- *   `APPLIED_TARGETS` — `compute()` never actually folds them into a skill
- *   total (see `oracle-curses.ts`'s Wasting curse, which authors one anyway
- *   for vendored-data fidelity but is honest that it's inert). No paladin
- *   feature needed this target, but it was checked and ruled out for one
- *   candidate — see Black Blood Revelation's cousin note in `oracle.ts`.
+ *   listed in `targets.ts`'s `UNAPPLIED_TARGET_LABELS`, not `APPLIED_TARGETS`
+ *   — `compute` never actually folds them into a skill total (see
+ *   `oracle-curses.ts`'s Wasting curse, which authors one anyway for
+ *   vendored-data fidelity but is honest that it's inert). No paladin feature
+ *   needed this target, but it was checked and ruled out for one candidate —
+ *   see Black Blood Revelation's cousin note in `oracle.ts`.
  * - `bonusSkillRanks` is listed in `targets.ts`'s `APPLIED_TARGETS`, but
  *   `apps/web/src/model/skills.ts`'s `skillBudget` only ever reads it from
  *   `refData.races[...].changes` — an archetype-authored `bonusSkillRanks`
@@ -1830,9 +1829,9 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * ── PALADIN_ARCHETYPE_EFFECTS_EXTRACTED ───────────────────────────────────
  *
  * Machine-extracted mechanical effects for paladin archetype class features
- * (issue #45 wave 2). Clean-room from the published PF1 rules — the vendored
- * prose this was extracted from (`archetype-features.json`) is OGL, so
- * reading it is fine; no Foundry source was consulted (DESIGN.md §6).
+ * (2). Clean-room from the published PF1 rules — the vendored prose this was
+ * extracted from (`archetype-features.json`) is OGL, so reading it is fine; no
+ * Foundry source was consulted (DESIGN.md §6).
  *
  * Separate from `archetype-effects.ts`'s `ARCHETYPE_FEATURE_EFFECTS`
  * (hand-verified table, which already covers Oath of Vengeance and Divine
@@ -1982,17 +1981,16 @@ export const PALADIN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance: "a tranquil guardian's DR increases to 10/evil.",
   },
 
-  // ── Skill-ranks-per-level doubling (issue #62) ────────────────────────────
-  // Both replace the base paladin's 2 + Int skill ranks/level with 4 + Int —
-  // a flat +2/level delta from 1st level onward, expressed the same way
+  // ── Skill-ranks-per-level doubling ──────────────────────────── Both
+  // replace the base paladin's 2 + Int skill ranks/level with 4 + Int — a flat
+  // +2/level delta from 1st level onward, expressed the same way
   // `apps/web/src/model/feats.ts`'s `classBonusFeatSlots` expresses a
   // per-level `bonusFeats` count: `2 * @class.unlevel` (the archetype's own
-  // class level, bound by `model/skills.ts`'s archetype-aware
-  // `skillBudget` loop — see that file's doc comment). `bonusSkillRanks` is
-  // never read by `compute()` itself (targets.ts's `APPLIED_TARGETS`
-  // comment) — this Change only takes effect through that budget, exactly
-  // like `bonusFeats` entries elsewhere in this table only take effect
-  // through `classBonusFeatSlots`.
+  // class level, bound by `model/skills.ts`'s archetype-aware `skillBudget`
+  // loop — see that file's doc comment). `bonusSkillRanks` is never read by
+  // `compute` itself (targets.ts's `APPLIED_TARGETS` comment) — this Change
+  // only takes effect through that budget, exactly like `bonusFeats` entries
+  // elsewhere in this table only take effect through `classBonusFeatSlots`.
 
   "paladin:faithful-wanderer:wanderer-s-lore:1": {
     changes: [c("2 * @class.unlevel", "bonusSkillRanks")],

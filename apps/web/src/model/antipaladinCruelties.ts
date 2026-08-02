@@ -1,9 +1,9 @@
 /**
- * Pure antipaladin-cruelty transitions (issue #65 wave B). Cruelty ids are
- * just entries in `build.antipaladinCruelties`, mirroring `toggleWitchHex`
- * in `model/witchHexes.ts` — the engine's `ANTIPALADIN_CRUELTIES` table maps
- * each to its (display-only) `changes[]`/`contextNotes`, applied through the
- * same change-collection path as hexes/revelations (see `@pf1/engine`
+ * Pure antipaladin-cruelty transitions (B). Cruelty ids are just entries in
+ * `build.antipaladinCruelties`, mirroring `toggleWitchHex` in
+ * `model/witchHexes.ts` — the engine's `ANTIPALADIN_CRUELTIES` table maps each
+ * to its (display-only) `changes[]`/`contextNotes`, applied through the same
+ * change-collection path as hexes/revelations (see `@pf1/engine`
  * `collect.ts`).
  *
  * Budget (PF1 Advanced Player's Guide, vendored `class-features.json`

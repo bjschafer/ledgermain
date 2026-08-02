@@ -1,7 +1,7 @@
 /**
- * Bloodrager's Bloodrage class feature (ACG, issue #65) — hand-authored
- * clean-room from the published RAW (AoN/d20pfsrd), analogous to how
- * `bloodlines.ts` hand-authors content the vendored Foundry pack omits.
+ * Bloodrager's Bloodrage class feature (ACG) — hand-authored clean-room from
+ * the published RAW (AoN/d20pfsrd), analogous to how `bloodlines.ts`
+ * hand-authors content the vendored Foundry pack omits.
  *
  * The vendored "Bloodrage" class feature (`class-features.json`, tag
  * `bloodrage`) already carries a correct `uses.maxFormula`
@@ -37,10 +37,10 @@
  * buff's own formula produces for a barbarian at those levels.
  *
  * Deliberately NOT injected into `RefData.buffs` (would require patching two
- * separate loaders — the Node `loadRefData()` in `@pf1/data-pipeline` engine
+ * separate loaders — the Node `loadRefData` in `@pf1/data-pipeline` engine
  * tests read from, and the browser `refdata/loader.ts` fetch — or a full
- * `data:build` supplement, all disproportionate for one buff). Instead this
- * is a plain, self-contained `Buff`-shaped object: `toggleLinkedBuff` (`model
+ * `data:build` supplement, all disproportionate for one buff). Instead this is
+ * a plain, self-contained `Buff`-shaped object: `toggleLinkedBuff` (`model
  * /buffs.ts`) accepts any `Buff`, not specifically one sourced from
  * `refData.buffs`, so the web UI can pass this constant directly. See
  * `ResourcesPanel.tsx`'s Bloodrage special-case and `resources.ts`'s

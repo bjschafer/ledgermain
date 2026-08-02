@@ -1,13 +1,12 @@
 /**
  * Hand-computed fixture tests for the non-core races vendored from
- * `packs/races/other/` (issue #26). These exercise the same transform path
- * as the 7 core races but with content the core slice never touched: a
- * skill-tagged ability spread (Tiefling), a small-size race with a
- * `nac`/"base"-typed natural-armor change (Kobold), a non-30ft base land
- * speed (Oread), a race whose signature trait is a level-scaling `set`
- * change (Drow Noble's spell resistance), and races that carry a `classSkills` grant
- * (issue #28) that the engine must union into the character's class-skill
- * set alongside the class-granted ones.
+ * `packs/races/other/`. These exercise the same transform path as the 7 core
+ * races but with content the core slice never touched: a skill-tagged ability
+ * spread (Tiefling), a small-size race with a `nac`/"base"-typed natural-armor
+ * change (Kobold), a non-30ft base land speed (Oread), a race whose signature
+ * trait is a level-scaling `set` change (Drow Noble's spell resistance), and
+ * races that carry a `classSkills` grant that the engine must union into the
+ * character's class-skill set alongside the class-granted ones.
  */
 
 import { describe, expect, it } from "bun:test";

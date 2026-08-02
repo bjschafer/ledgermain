@@ -3,12 +3,11 @@ import { describe, expect, it } from "bun:test";
 import { bombDamageDetail } from "../src/index.js";
 
 /**
- * Alchemist bomb damage scaling (issue #65). Clean-room from the published
- * PF1 APG SRD: "1d6 fire damage + additional damage equal to the
- * alchemist's Intelligence modifier... increases by 1d6 points at every
- * odd-numbered alchemist level." The vendored Bomb `action.damage` formula
- * is a flat, non-scaling "1d6" — this number doesn't come from vendored
- * data.
+ * Alchemist bomb damage scaling. Clean-room from the published PF1 APG SRD:
+ * "1d6 fire damage + additional damage equal to the alchemist's Intelligence
+ * modifier... increases by 1d6 points at every odd-numbered alchemist level."
+ * The vendored Bomb `action.damage` formula is a flat, non-scaling "1d6" —
+ * this number doesn't come from vendored data.
  */
 describe("bombDamageDetail", () => {
   it("level 1 alchemist, Int 0 — 1d6 fire", () => {

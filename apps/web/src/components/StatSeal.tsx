@@ -54,7 +54,7 @@ export function StatSeal({
   components?: ModifierComponent[];
   provTitle?: string;
   className?: string;
-  /** Roll formula offered from the expanded breakdown's header (issue #96); omit for stats that aren't rolled. */
+  /** Roll formula offered from the expanded breakdown's header; omit for stats that aren't rolled. */
   copy?: ProvenanceCopy;
   /** Identity key (e.g. `doc.id`) — changing it resyncs the shimmer tracker without flashing. */
   resetKey?: string | number;

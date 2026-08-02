@@ -33,15 +33,15 @@ import type { BuilderProps } from "../builder/types.js";
 import { Caret } from "../Caret.js";
 
 /**
- * Saved rolls (issue #2) — the owner-decided "no dice roller" answer: pin a
- * name to a number the sheet already computes (a full attack, a save, a
- * skill) so it's one glance away during play instead of scrolling the whole
- * character sheet. Every row re-resolves against the live `DerivedSheet` on
- * every render, so a saved roll never goes stale as buffs/feats/gear change.
- * A saved roll can carry attached feats (folded in from the engine's
- * situational-feat registry — Rapid Shot, Deadly Aim, Power Attack, ... — or
- * as reminder-only chips), a flat attack/damage adjustment, or point at
- * nothing at all (`source.kind === "custom"`) for one-off bookmarks.
+ * Saved rolls — the owner-decided "no dice roller" answer: pin a name to a
+ * number the sheet already computes (a full attack, a save, a skill) so it's
+ * one glance away during play instead of scrolling the whole character sheet.
+ * Every row re-resolves against the live `DerivedSheet` on every render, so a
+ * saved roll never goes stale as buffs/feats/gear change. A saved roll can
+ * carry attached feats (folded in from the engine's situational-feat registry
+ * — Rapid Shot, Deadly Aim, Power Attack,... — or as reminder-only chips), a
+ * flat attack/damage adjustment, or point at nothing at all (`source.kind ===
+ * "custom"`) for one-off bookmarks.
  */
 export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");

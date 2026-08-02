@@ -24,14 +24,14 @@ export type SyncAction =
  * wins" is unambiguous in either direction — there is no merge, only a
  * choice of which side is already caught up:
  *
- * - `tombstoned` (the server holds a delete record for this id, issue #39) →
- *   the deletion wins: drop any local copy, and never pull it back. This is a
- *   deliberate delete-wins policy — a character deleted on one device
- *   propagates to the others rather than resurfacing, even if another device
- *   had unsynced edits to it (acceptable for a single-user tool). A device
- *   that legitimately revives a character re-pushes it, which clears the
- *   server tombstone (`apps/api` putCharacter), so this only ever fires for a
- *   genuinely-deleted id.
+ * - `tombstoned` (the server holds a delete record for this id) → the deletion
+ *   wins: drop any local copy, and never pull it back. This is a deliberate
+ *   delete-wins policy — a character deleted on one device propagates to the
+ *   others rather than resurfacing, even if another device had unsynced edits
+ *   to it (acceptable for a single-user tool). A device that legitimately
+ *   revives a character re-pushes it, which clears the server tombstone
+ *   (`apps/api` putCharacter), so this only ever fires for a genuinely-deleted
+ *   id.
  * - No remote copy at all → this device has the only copy; push it up.
  * - No local copy → another device created/owns it; pull it down.
  * - Local ahead → push. Remote ahead → pull. Equal → nothing to do.

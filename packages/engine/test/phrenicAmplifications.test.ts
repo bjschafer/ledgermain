@@ -6,13 +6,13 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute, PHRENIC_AMPLIFICATION_IDS, PHRENIC_AMPLIFICATIONS } from "../src/index.js";
 
 /**
- * Fixture coverage for psychic Phrenic Amplifications (issue #65
- * follow-through — `psychic-disciplines.ts` shipped bonus spells/phrenic
- * pool ability and explicitly deferred amplifications). Clean-room,
- * hand-authored (see `phrenic-amplifications.ts`), `displayOnly` in its
- * entirety (every amplification is a cast-time rider on a linked spell, no
- * standing Change this engine's stacking pipeline could safely apply),
- * mirroring `mesmeristTricksBoldStares.test.ts`'s pattern.
+ * Fixture coverage for psychic Phrenic Amplifications
+ * (`psychic-disciplines.ts` shipped bonus spells/phrenic pool ability and
+ * explicitly deferred amplifications). Clean-room, hand-authored (see
+ * `phrenic-amplifications.ts`), `displayOnly` in its entirety (every
+ * amplification is a cast-time rider on a linked spell, no standing Change
+ * this engine's stacking pipeline could safely apply), mirroring
+ * `mesmeristTricksBoldStares.test.ts`'s pattern.
  */
 const ref = loadRefData();
 

@@ -23,9 +23,9 @@ interface DiscoveryPickerProps {
 }
 
 /**
- * Alchemist discovery selection (issue #65), mirroring `MagusArcanaPicker`
- * exactly. An alchemist learns a new discovery at 2nd level and every even
- * level thereafter, plus one more per "Extra Discovery" feat (see
+ * Alchemist discovery selection, mirroring `MagusArcanaPicker` exactly. An
+ * alchemist learns a new discovery at 2nd level and every even level
+ * thereafter, plus one more per "Extra Discovery" feat (see
  * `model/alchemistDiscoveries.ts`'s budget math). Free-choice, never blocks
  * past the expected count — same hybrid-prereqs posture as
  * `MagusArcanaPicker`. Advanced Player's Guide discoveries plus a handful of

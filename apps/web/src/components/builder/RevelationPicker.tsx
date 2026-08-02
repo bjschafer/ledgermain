@@ -28,12 +28,11 @@ interface RevelationPickerProps {
 }
 
 /**
- * Oracle revelation selection (issue #61), mirroring `ArcanistExploitPicker`
- * exactly. An oracle learns a new revelation at 1st, 3rd, 7th, 11th, 15th,
- * and 19th level, plus one more per "Extra Revelation" feat (see
- * `model/oracleRevelations.ts`'s budget math). Free-choice, never blocks
- * past the expected count — same hybrid-prereqs posture as
- * `ArcanistExploitPicker`.
+ * Oracle revelation selection, mirroring `ArcanistExploitPicker` exactly. An
+ * oracle learns a new revelation at 1st, 3rd, 7th, 11th, 15th, and 19th level,
+ * plus one more per "Extra Revelation" feat (see
+ * `model/oracleRevelations.ts`'s budget math). Free-choice, never blocks past
+ * the expected count — same hybrid-prereqs posture as `ArcanistExploitPicker`.
  *
  * Revelations are PER-MYSTERY (see `@pf1/engine` `oracle-revelations.ts`):
  * this panel only lists the currently-chosen `build.oracleMystery`'s own

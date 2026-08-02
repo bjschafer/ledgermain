@@ -6,14 +6,14 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute, ROGUE_TALENT_IDS, ROGUE_TALENTS } from "../src/index.js";
 
 /**
- * Fixture coverage for Rogue Talents (issue #65) — the deferred choice-
- * bearing subsystem, SHARED between the chained rogue and Rogue (Unchained).
- * Clean-room, hand-authored at full vendored parity (234 entries — see
- * `rogue-talents.ts`), mostly `displayOnly`; the feat-bridging entries
- * (Combat Trick's slot, the dozen `grantsFeat` grants) are covered by
+ * Fixture coverage for Rogue Talents — the deferred choice- bearing subsystem,
+ * SHARED between the chained rogue and Rogue (Unchained). Clean-room,
+ * hand-authored at full vendored parity (234 entries — see
+ * `rogue-talents.ts`), mostly `displayOnly`; the feat-bridging entries (Combat
+ * Trick's slot, the dozen `grantsFeat` grants) are covered by
  * `apps/web/test/feats.test.ts` since the bridge lives in
- * `apps/web/src/model/feats.ts`, not the engine. Stony Skin is the one
- * entry with real `changes[]` (always-on DR — fixture below).
+ * `apps/web/src/model/feats.ts`, not the engine. Stony Skin is the one entry
+ * with real `changes[]` (always-on DR — fixture below).
  */
 const ref = loadRefData();
 

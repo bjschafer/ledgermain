@@ -9,10 +9,10 @@ import {
 } from "../src/util/pfdata.js";
 
 /**
- * Unit coverage for the generic Pf Data 1e reader (issue #74) — the
- * parts every future subsystem import (hexes, arcana, talents, exploits,
- * wild talents) reuses as-is. `ragePowers.test.ts` covers the rage-power
- * -specific mapping + the real vendored slice end-to-end.
+ * Unit coverage for the generic Pf Data 1e reader — the parts every future
+ * subsystem import (hexes, arcana, talents, exploits, wild talents) reuses
+ * as-is. `ragePowers.test.ts` covers the rage-power -specific mapping + the
+ * real vendored slice end-to-end.
  */
 
 describe("isPfDataCatalogEntry / pfDataCatalogEntries", () => {

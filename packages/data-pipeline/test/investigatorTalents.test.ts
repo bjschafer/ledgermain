@@ -3,10 +3,9 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "../src/index.js";
 
 /**
- * End-to-end coverage for the vendored investigator-talent catalog (issue
- * #74) against the real pinned Pf Data 1e slice — mirrors
- * `ragePowers.test.ts`'s pattern (this subsystem file's dictionary shape is
- * identical to rage powers').
+ * End-to-end coverage for the vendored investigator-talent catalog against the
+ * real pinned Pf Data 1e slice — mirrors `ragePowers.test.ts`'s pattern (this
+ * subsystem file's dictionary shape is identical to rage powers').
  */
 const ref = loadRefData();
 

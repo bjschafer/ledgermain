@@ -24,12 +24,11 @@ interface ShamanHexPickerProps {
 }
 
 /**
- * Shaman hex selection (issue #65, general-catalog issue #74),
- * mirroring `RevelationPicker` exactly. A shaman learns her first hex at 2nd
- * level, then a new one at 4th, 8th, 10th, 12th, 16th, 18th, and 20th level,
- * plus one more per "Extra Hex" feat (see `model/shamanHexes.ts`'s budget
- * math). Free-choice, never blocks past the expected count — same
- * hybrid-prereqs posture as `RevelationPicker`.
+ * Shaman hex selection (general-catalog), mirroring `RevelationPicker`
+ * exactly. A shaman learns her first hex at 2nd level, then a new one at 4th,
+ * 8th, 10th, 12th, 16th, 18th, and 20th level, plus one more per "Extra Hex"
+ * feat (see `model/shamanHexes.ts`'s budget math). Free-choice, never blocks
+ * past the expected count — same hybrid-prereqs posture as `RevelationPicker`.
  *
  * Hexes come from TWO sources, both drawing on the same pick budget: the
  * currently-chosen `build.shamanSpirit`'s own 5 hexes (hand-authored, see

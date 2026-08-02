@@ -25,12 +25,11 @@ interface MesmeristTrickPickerProps {
 const TIER_LABEL: Record<string, string> = { trick: "Trick", masterful: "Masterful Trick" };
 
 /**
- * Mesmerist trick selection (issue #65 follow-through), mirroring
- * `NinjaTrickPicker` — tricks are a flat picker over every trick the
- * mesmerist's current level makes at least soft-available. Gained at 1st
- * level and every 2 levels thereafter; see `model/mesmeristTricks.ts`'s
- * budget math. Free-choice, never blocks past the expected count — same
- * hybrid-prereqs posture as `NinjaTrickPicker`.
+ * Mesmerist trick selection, mirroring `NinjaTrickPicker` — tricks are a flat
+ * picker over every trick the mesmerist's current level makes at least
+ * soft-available. Gained at 1st level and every 2 levels thereafter; see
+ * `model/mesmeristTricks.ts`'s budget math. Free-choice, never blocks past the
+ * expected count — same hybrid-prereqs posture as `NinjaTrickPicker`.
  *
  * Masterful tricks (12th level) are soft-filtered by `minLevel` exactly like
  * a ninja master trick's own higher minimum — below-level masterful tricks

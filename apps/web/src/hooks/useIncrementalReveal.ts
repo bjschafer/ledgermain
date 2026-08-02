@@ -3,13 +3,13 @@ import { useEffect, useRef, useState } from "react";
 /**
  * Grows a `visibleCount` in chunks as a sentinel element scrolls into view,
  * instead of hard-capping a long catalog and telling the player to search
- * instead (issue #109: the feat/trait catalogs run into the thousands, and
- * players want to browse the whole list, not just narrow a search until it
- * fits under a cap). Mounting only `visibleCount` rows up front — growing
- * that number as the sentinel (placed after the last rendered row) comes
- * into view — keeps the initial render cheap without pulling in a
- * virtualization dependency: rows already scrolled past stay mounted (no
- * windowing), but nothing beyond the current chunk is ever mounted at all.
+ * instead (the feat/trait catalogs run into the thousands, and players want to
+ * browse the whole list, not just narrow a search until it fits under a cap).
+ * Mounting only `visibleCount` rows up front — growing that number as the
+ * sentinel (placed after the last rendered row) comes into view — keeps the
+ * initial render cheap without pulling in a virtualization dependency: rows
+ * already scrolled past stay mounted (no windowing), but nothing beyond the
+ * current chunk is ever mounted at all.
  *
  * `root` should be the scrollable ancestor the sentinel scrolls within
  * (e.g. the picker's own scroll pane) — without it, `IntersectionObserver`

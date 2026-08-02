@@ -7,8 +7,8 @@
  * picker can apply them to any base armor/weapon at selection time.
  *
  * Only mithral has mechanical effects the engine tracks (weight class shift,
- * maxDex +2, ACP −3, ASF −10%, issue #8). Other materials are display-only
- * for now (DR / hardness bypass not modelled by the engine).
+ * maxDex +2, ACP −3, ASF −10%). Other materials are display-only for now (DR /
+ * hardness bypass not modelled by the engine).
  */
 import type { ArmorRef } from "@pf1/schema";
 

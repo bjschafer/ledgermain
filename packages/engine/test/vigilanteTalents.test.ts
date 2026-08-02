@@ -1,9 +1,9 @@
 /**
- * Hand-computed fixture tests for the vigilante subsystem (issue #65):
- * specialization's BAB seam (Avenger full-BAB override in `compute.ts`),
- * Hidden Strike's dice (`hiddenStrikeDice`), and the social/vigilante
- * talent tables (both `displayOnly`-shaped except the handful of genuine
- * numeric entries called out in `vigilante-talents.ts`'s doc comment).
+ * Hand-computed fixture tests for the vigilante subsystem: specialization's
+ * BAB seam (Avenger full-BAB override in `compute.ts`), Hidden Strike's dice
+ * (`hiddenStrikeDice`), and the social/vigilante talent tables (both
+ * `displayOnly`-shaped except the handful of genuine numeric entries called
+ * out in `vigilante-talents.ts`'s doc comment).
  */
 
 import { describe, expect, it } from "bun:test";

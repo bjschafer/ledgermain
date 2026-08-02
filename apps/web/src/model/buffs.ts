@@ -84,10 +84,9 @@ export function makeCustomBuff(
  * True when a buff has no `changes[]` AND no `contextNotes[]` — toggling it
  * does literally nothing visible on the sheet. No vendored buff trips this
  * anymore (the data-pipeline's supplement tables closed the last holdouts,
- * enforced by `test/buffs.test.ts`); it now guards user-authored buffs and
- * any empty buff a future data bump introduces. A buff with only
- * `contextNotes` (e.g. Freedom of Movement) still reads as a reminder, so it
- * is NOT flagged — see issue #21.
+ * enforced by `test/buffs.test.ts`); it now guards user-authored buffs and any
+ * empty buff a future data bump introduces. A buff with only `contextNotes`
+ * (e.g. Freedom of Movement) still reads as a reminder, so it is NOT flagged.
  */
 export function hasNoModeledEffect(buff: {
   buffId?: string;
@@ -168,15 +167,14 @@ export function toggleLinkedBuff(doc: CharacterDoc, buff: Buff, casterLevel: num
 /**
  * Toggle a hand-authored, non-vendored `ToggleBuffOption` on/off — the
  * `toggleLinkedBuff` counterpart for pools whose activated abilities have no
- * `RefData.buffs` entry to link (issue #65: inquisitor Judgments, skald
- * Inspired Rage — see `@pf1/engine`'s `resources.ts` `DerivedResourcePool.
- * tableOptions` and `toggle-buffs.ts`). "Active" is keyed by
- * `ActiveBuff.effectTag === option.id` rather than `buffId`, since these
- * options carry no `RefData.buffs` id to point at. Formulas in
- * `option.changes` reference `@classes.<tag>.level` directly (not
- * `@item.level`), so no `casterLevel` is set here — the buff scales purely
- * from the character's own class levels at compute time, same as it would
- * un-toggled-and-retoggled at every level-up.
+ * `RefData.buffs` entry to link (inquisitor Judgments, skald Inspired Rage —
+ * see `@pf1/engine`'s `resources.ts` `DerivedResourcePool. tableOptions` and
+ * `toggle-buffs.ts`). "Active" is keyed by `ActiveBuff.effectTag ===
+ * option.id` rather than `buffId`, since these options carry no
+ * `RefData.buffs` id to point at. Formulas in `option.changes` reference
+ * `@classes.<tag>.level` directly (not `@item.level`), so no `casterLevel` is
+ * set here — the buff scales purely from the character's own class levels at
+ * compute time, same as it would un-toggled-and-retoggled at every level-up.
  */
 export function toggleTableBuff(doc: CharacterDoc, option: ToggleBuffOption): CharacterDoc {
   const active = doc.live.activeBuffs.find((b) => b.effectTag === option.id);

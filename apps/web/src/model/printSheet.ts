@@ -1,5 +1,5 @@
 /**
- * Pure data massaging for the printable character sheet (issue #69). Flattens
+ * Pure data massaging for the printable character sheet. Flattens
  * `DerivedSheet` + the pieces of `CharacterDoc` the live tracker already knows
  * how to read (feats, class features, spell slots/known, resource pools) into
  * a single plain-data shape the print view renders. No React here — kept
@@ -190,9 +190,9 @@ function buildCasters(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData):
   for (const { tag } of casterClassesOf(doc, refData)) {
     const model = casterModelFor(tag);
     if (!model) continue;
-    // Advancement-aware (issue #66 chunk 2): a prestige class's casting-
-    // advancement slot bumps this class's effective level for slots/known-
-    // limits/CL display, same as everywhere else this seam is threaded.
+    // Advancement-aware (2): a prestige class's casting- advancement slot
+    // bumps this class's effective level for slots/known- limits/CL display,
+    // same as everywhere else this seam is threaded.
     const classLevel = effectiveCasterClassLevel(doc, refData, tag);
     const classDef = Object.values(refData.classes).find((cl) => cl.tag === tag);
     const abilityMod = sheet.abilities[model.ability].mod;
@@ -203,7 +203,7 @@ function buildCasters(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData):
     // Prepared/hybrid casters: what's actually loaded for the day. Spells
     // prepared into a domain/school bonus slot that don't resolve against the
     // class's own spell list (a domain-only spell) have no `levelMap` entry
-    // and are skipped here — an accepted gap for this first cut (see issue #69).
+    // and are skipped here — an accepted gap for this first cut.
     const spellsByLevel = new Map<number, { name: string; ready: boolean }[]>();
     if (model.preparation === "prepared" || model.preparation === "hybrid") {
       for (const p of preparedSpells(doc)) {

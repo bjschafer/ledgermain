@@ -1,6 +1,6 @@
 /**
- * Unit tests for issue #66 chunk 2 (prestige casting advancement) additions
- * to `model/doc.ts`: `setCastingAdvancementTarget`, and `removeClass`'s
+ * Unit tests for chunk 2 (prestige casting advancement) additions to
+ * `model/doc.ts`: `setCastingAdvancementTarget`, and `removeClass`'s
  * dependent-choice cleanup of `build.castingAdvancement`.
  */
 import { describe, expect, it } from "bun:test";

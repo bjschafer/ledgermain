@@ -10,10 +10,10 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the Monk (Unchained) style-strike vendored-catalog overlay
- * (issue #74) — mirrors `ragePowerCatalog.test.ts`'s pattern. This
- * catalog is the rare EXACT 1:1 match (15 hand-authored, 15 vendored, zero
- * orphan on either side) — see `monk-style-strikes.ts`'s doc comment.
+ * Coverage for the Monk (Unchained) style-strike vendored-catalog overlay —
+ * mirrors `ragePowerCatalog.test.ts`'s pattern. This catalog is the rare EXACT
+ * 1:1 match (15 hand-authored, 15 vendored, zero orphan on either side) — see
+ * `monk-style-strikes.ts`'s doc comment.
  */
 const ref = loadRefData();
 

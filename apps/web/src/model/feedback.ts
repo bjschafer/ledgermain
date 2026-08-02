@@ -78,10 +78,10 @@ export function emptyDraft(): FeedbackDraft {
 }
 
 /**
- * Seed a feedback draft from a picker's empty search (issue #88, `SearchMiss`)
- * — pre-filed under "missing content" with the query and which picker it came
- * from folded into the message, so the report is actionable without the
- * player re-typing what they already searched.
+ * Seed a feedback draft from a picker's empty search (`SearchMiss`) —
+ * pre-filed under "missing content" with the query and which picker it came
+ * from folded into the message, so the report is actionable without the player
+ * re-typing what they already searched.
  */
 export function buildSearchMissDraft(query: string, pickerLabel: string): FeedbackDraft {
   return {

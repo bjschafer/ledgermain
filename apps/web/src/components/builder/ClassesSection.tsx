@@ -78,12 +78,12 @@ import { Caret } from "../Caret.js";
  * tier regardless of its own collapsed state, so a match is never hidden
  * inside a tier the player happened to leave closed. Every tier but Prestige
  * defaults open (31 chips across six sections is small enough not to
- * declutter); Prestige defaults COLLAPSED — issue #74 grew it from
- * 11 hand-authored entries to 119 (the CRB ten + Student of War + ~108
- * vendored splatbook classes), the same "big tier starts closed" call the
- * race picker already makes for its 40+-entry "exotic" rarity tier.
+ * declutter); Prestige defaults COLLAPSED — grew it from 11 hand-authored
+ * entries to 119 (the CRB ten + Student of War + ~108 vendored splatbook
+ * classes), the same "big tier starts closed" call the race picker already
+ * makes for its 40+-entry "exotic" rarity tier.
  *
- * `plain` (issue #66 chunk 3): the Prestige tier needs a richer per-class row
+ * `plain` (3): the Prestige tier needs a richer per-class row
  * (entry-requirement checks, not just a name) that doesn't fit the compact
  * flex-wrap `.chips` pill layout every other tier uses — `plain` renders
  * `children` directly instead of wrapping them in `.chips`, so the caller can
@@ -133,16 +133,16 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
 
   // "base" = every ordinary (non-prestige, non-NPC) playable class; "prestige"
-  // = the hand-authored CRB prestige classes plus Student of War (issue #66
-  // chunks 1 + 4) AND the ~108 vendored splatbook prestige classes (issue #74
-  // phase 2c) — both flow through the same `subType === "prestige"` filter,
-  // no separate wiring needed. Both render in the picker below
-  // (`groupClassesByCategory` already sorts prestige into its own "Prestige"
-  // tier by name, see model/classCategory.ts); npc/other Foundry subTypes
-  // stay excluded, same as before. Also doubles as the class-def lookup for
-  // the "already added" rows below, so a prestige class's name/HD/etc.
-  // resolve there too — kept UNFILTERED by search so an already-added class
-  // still resolves its name/HD while the picker above is mid-search.
+  // = the hand-authored CRB prestige classes plus Student of War (1 + 4) AND
+  // the ~108 vendored splatbook prestige classes (2c) — both flow through the
+  // same `subType === "prestige"` filter, no separate wiring needed. Both
+  // render in the picker below (`groupClassesByCategory` already sorts
+  // prestige into its own "Prestige" tier by name, see
+  // model/classCategory.ts); npc/other Foundry subTypes stay excluded, same as
+  // before. Also doubles as the class-def lookup for the "already added" rows
+  // below, so a prestige class's name/HD/etc. resolve there too — kept
+  // UNFILTERED by search so an already-added class still resolves its name/HD
+  // while the picker above is mid-search.
   const pickerClasses = useMemo(
     () =>
       Object.values(refData.classes)
@@ -173,8 +173,8 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
   const fcbHouserule = doc.build.settings?.fcbHouserule ?? false;
   const fcbChoices = doc.build.favoredClassBonus ?? [];
-  // Half-Elf's Multitalented (issue #4): two favored classes instead of one —
-  // see model/race.ts. Keyed off race name; no structured RefData flag exists.
+  // Half-Elf's Multitalented: two favored classes instead of one — see
+  // model/race.ts. Keyed off race name; no structured RefData flag exists.
   const multitalented = isMultitalented(doc, refData);
   // FCB slots = level of the favored class(es) (0 when none chosen; both
   // classes' levels for a Multitalented half-elf with a 2nd pick).
@@ -192,9 +192,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
   ];
   const fcbOptions = fcbHouserule ? houseruleOptions : standardOptions;
 
-  // Alignment restriction warnings (issue #53) — soft-warning only, never
-  // blocks; suppressed entirely when the "unrestricted alignments" house
-  // rule is on (see model/alignment.ts).
+  // Alignment restriction warnings — soft-warning only, never blocks;
+  // suppressed entirely when the "unrestricted alignments" house rule is on
+  // (see model/alignment.ts).
   const alignmentWarnings = classAlignmentWarnings(doc, refData);
 
   return (
@@ -216,14 +216,14 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       <div style={{ marginBottom: 14 }}>
         {classGroups.map((group) =>
           group.category === "prestige" ? (
-            // Prestige classes carry structured entry requirements (issue #66
-            // chunk 4) — unlike the plain name-only chips every other tier
-            // uses, each not-yet-added entry here shows its own live
-            // ✓/✗ check list (same visual language as FeatsSection's
-            // `.pick-row`/`.preq`) and disables Add while a structured
-            // prerequisite is unmet. An already-added prestige class is never
-            // retroactively re-checked (evaluateClassPrereqs only gates
-            // adding) — it just renders as a plain selected row.
+            // Prestige classes carry structured entry requirements (4) —
+            // unlike the plain name-only chips every other tier uses, each
+            // not-yet-added entry here shows its own live ✓/✗ check list (same
+            // visual language as FeatsSection's `.pick-row`/`.preq`) and
+            // disables Add while a structured prerequisite is unmet. An
+            // already-added prestige class is never retroactively re-checked
+            // (evaluateClassPrereqs only gates adding) — it just renders as a
+            // plain selected row.
             <ClassGroupSection
               key={group.category}
               category={group.category}
@@ -399,7 +399,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       ))}
 
       {/* Casting-advancement target pickers — only classes with a
-          castingAdvancement slot show anything (issue #66 chunk 3). */}
+          castingAdvancement slot show anything (3). */}
       <CastingAdvancementPicker doc={doc} refData={refData} update={update} />
 
       {/* Favored-class bonus picker — only when a favored class is chosen */}
@@ -497,7 +497,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         <BloodlinePicker doc={doc} refData={refData} update={update} />
       )}
 
-      {/* Bloodline picker — bloodrager only (issue #65; free-choice, soft warning only). */}
+      {/* Bloodline picker — bloodrager only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "bloodrager") && (
         <BloodragerBloodlinePicker doc={doc} refData={refData} update={update} />
       )}
@@ -565,7 +565,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         <OrderPicker doc={doc} refData={refData} update={update} />
       )}
 
-      {/* Cruelty + Fiendish Boon pickers — antipaladin only (issue #65 wave B). */}
+      {/* Cruelty + Fiendish Boon pickers — antipaladin only (B). */}
       {doc.identity.classes.some((c) => c.tag === "antipaladin") && (
         <>
           <CrueltyPicker doc={doc} update={update} />
@@ -573,10 +573,10 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         </>
       )}
 
-      {/* Player-chosen bonus class skills — renders only when some feature grants them (issue #93). */}
+      {/* Player-chosen bonus class skills — renders only when some feature grants them. */}
       <BonusClassSkillsPicker doc={doc} refData={refData} update={update} />
 
-      {/* Ninja trick picker — ninja only (issue #65 wave B, free-choice, soft warning only). */}
+      {/* Ninja trick picker — ninja only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "ninja") && (
         <NinjaTrickPicker doc={doc} refData={refData} update={update} />
       )}
@@ -584,7 +584,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {doc.identity.classes.some(
         (c) => c.tag === "barbarian" || c.tag === "barbarianUnchained",
       ) && <RagePowerPicker doc={doc} refData={refData} update={update} />}
-      {/* Ki power + style strike pickers — Monk (Unchained) only (issue #65, free-choice, soft warning only). */}
+      {/* Ki power + style strike pickers — Monk (Unchained) only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "monkUnchained") && (
         <>
           <KiPowerPicker doc={doc} refData={refData} update={update} />
@@ -592,12 +592,12 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         </>
       )}
 
-      {/* Rogue talent picker — chained rogue AND Rogue (Unchained), shared field (issue #65, free-choice, soft warning only). */}
+      {/* Rogue talent picker — chained rogue AND Rogue (Unchained), shared field (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "rogue" || c.tag === "rogueUnchained") && (
         <RogueTalentPicker doc={doc} refData={refData} update={update} />
       )}
 
-      {/* Finesse Training weapon-type picks + Rogue's Edge (UC) skill unlock picks — Rogue (Unchained) only (issue #65). */}
+      {/* Finesse Training weapon-type picks + Rogue's Edge (UC) skill unlock picks — Rogue (Unchained) only. */}
       {doc.identity.classes.some((c) => c.tag === "rogueUnchained") && (
         <>
           <RogueFinesseWeaponsPicker doc={doc} update={update} />
@@ -618,7 +618,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         </>
       )}
 
-      {/* Slayer talent picker — slayer only (issue #74, free-choice, soft warning only). */}
+      {/* Slayer talent picker — slayer only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "slayer") && (
         <SlayerTalentPicker doc={doc} refData={refData} update={update} />
       )}
@@ -628,7 +628,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         <ShifterAspectPicker doc={doc} refData={refData} update={update} />
       )}
 
-      {/* Trick + Bold Stare pickers — mesmerist only (issue #65 follow-through, free-choice, soft warning only). */}
+      {/* Trick + Bold Stare pickers — mesmerist only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "mesmerist") && (
         <>
           <MesmeristTrickPicker doc={doc} refData={refData} update={update} />
@@ -636,18 +636,18 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         </>
       )}
 
-      {/* Implement school + focus power pickers — occultist only (issue #65, free-choice, soft warning only). */}
+      {/* Implement school + focus power pickers — occultist only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "occultist") && (
         <ImplementPicker doc={doc} refData={refData} update={update} />
       )}
 
-      {/* Elemental Focus + wild talent pickers — kineticist only (issue #65, free-choice, soft warning only). */}
+      {/* Elemental Focus + wild talent pickers — kineticist only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "kineticist") && (
         <KineticistPicker doc={doc} refData={refData} update={update} />
       )}
 
       {/*
-        Medium (issue #65): no builder picker — which legendary spirit is
+        Medium: no builder picker — which legendary spirit is
         channeled is a LIVE daily séance choice, not a build-time pick (PF1
         RAW: chosen fresh "each morning"), so it's modeled entirely by the
         Séance tracker panel (live.mediumSpirit/live.mediumInfluence). This
@@ -677,10 +677,10 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Tracked animal companion — druid Nature Bond / ranger Hunter's Bond / ACG Hunter's own Animal Companion / cavalier & samurai Mount. */}
       <AnimalCompanionPicker doc={doc} refData={refData} update={update} />
 
-      {/* Tracked phantom — spiritualist's own Phantom class feature (issue #65). */}
+      {/* Tracked phantom — spiritualist's own Phantom class feature. */}
       <PhantomPicker doc={doc} update={update} />
 
-      {/* Tracked eidolon — summoner's own Eidolon class feature (issue #65). */}
+      {/* Tracked eidolon — summoner's own Eidolon class feature. */}
       <EidolonPicker doc={doc} refData={refData} update={update} />
 
       {/* Ranger selections — favored enemy/terrain + combat style (ranger only). */}

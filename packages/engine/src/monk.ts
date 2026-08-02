@@ -1,11 +1,11 @@
 /**
- * Monk bonus feat list (issue #57): hand-authored clean-room from the
- * published PF1 Core Rulebook rules (verified against d20pfsrd.com's Monk
- * class page) — no Foundry source was consulted. The vendored "Bonus Feat
- * (MNK)" class feature carries the correct `bonusFeats` slot-count formula
- * (`1 + floor((@class.unlevel + 2) / 4)`, granting slots at 1st, 2nd, 6th,
- * 10th, 14th, and 18th level) but, like every other class's bonus-feat
- * feature, no structured restriction on which feats fill those slots.
+ * Monk bonus feat list: hand-authored clean-room from the published PF1 Core
+ * Rulebook rules (verified against d20pfsrd.com's Monk class page) — no
+ * Foundry source was consulted. The vendored "Bonus Feat (MNK)" class feature
+ * carries the correct `bonusFeats` slot-count formula (`1 +
+ * floor((@class.unlevel + 2) / 4)`, granting slots at 1st, 2nd, 6th, 10th,
+ * 14th, and 18th level) but, like every other class's bonus-feat feature, no
+ * structured restriction on which feats fill those slots.
  *
  * CRB text (paraphrased): at 1st level a monk may select a bonus feat from a
  * seven-feat list; at 6th level six more feats become available; at 10th

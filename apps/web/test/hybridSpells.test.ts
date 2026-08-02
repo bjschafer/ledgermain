@@ -1,12 +1,11 @@
 /**
- * The arcanist's hybrid casting loop (issue #13 follow-through): a limited
- * number of spells are PREPARED from the spellbook each day (wizard-shaped,
- * `preparedSpells.ts`), then any of them may be CAST spontaneously by
- * spending a per-level slot (sorcerer-shaped, `spontaneousSpells.ts`) —
- * casting never expends the specific prepared instance, only a slot. These
- * two modules already provide everything a hybrid caster needs; this file
- * exercises them together the way `HybridView` (PreparedSpellsPanel.tsx)
- * does, without needing a DOM.
+ * The arcanist's hybrid casting loop: a limited number of spells are PREPARED
+ * from the spellbook each day (wizard-shaped, `preparedSpells.ts`), then any
+ * of them may be CAST spontaneously by spending a per-level slot
+ * (sorcerer-shaped, `spontaneousSpells.ts`) — casting never expends the
+ * specific prepared instance, only a slot. These two modules already provide
+ * everything a hybrid caster needs; this file exercises them together the way
+ * `HybridView` (PreparedSpellsPanel.tsx) does, without needing a DOM.
  */
 import { describe, expect, it } from "bun:test";
 

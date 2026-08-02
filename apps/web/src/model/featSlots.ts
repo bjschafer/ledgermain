@@ -1,11 +1,11 @@
 /**
- * Feat "slots" (issue #54 / #57): the character's feat budget decomposed into
- * typed buckets — "generic" (any feat), "combat" (Fighter), "wizardBonus"
- * (metamagic / item creation / Spell Mastery), "combatStyle" (Ranger's chosen
- * style tree), "bloodline" (Sorcerer's chosen bloodline list), "monkList"
- * (Monk's limited list) — and a greedy assignment of the character's chosen
- * feats into those slots, so the UI can show which typed slots are unfilled
- * and flag feats that don't fit any remaining slot.
+ * Feat "slots": the character's feat budget decomposed into typed buckets —
+ * "generic" (any feat), "combat" (Fighter), "wizardBonus" (metamagic / item
+ * creation / Spell Mastery), "combatStyle" (Ranger's chosen style tree),
+ * "bloodline" (Sorcerer's chosen bloodline list), "monkList" (Monk's limited
+ * list) — and a greedy assignment of the character's chosen feats into those
+ * slots, so the UI can show which typed slots are unfilled and flag feats that
+ * don't fit any remaining slot.
  *
  * Pure, framework-agnostic, no DOM — same split as the rest of `model/`.
  * Nothing here hard-blocks a feat pick (hybrid soft-warning posture, per
@@ -59,12 +59,12 @@ export interface FeatSlotGroup {
   /** Class features / archetypes contributing to this group (display only). */
   sources: string[];
   /**
-   * Feat ids assigned to this group, one entry per assigned INSTANCE (issue
-   * #58) — a repeatable feat taken twice and assigned to two slots of this
-   * group appears here twice. Only `.length` is used for slot-count
-   * comparisons; per-instance identity (which specific instance filled
-   * which slot) isn't tracked, matching this module's existing
-   * best-effort/soft-warning posture (see file doc comment).
+   * Feat ids assigned to this group, one entry per assigned INSTANCE — a
+   * repeatable feat taken twice and assigned to two slots of this group
+   * appears here twice. Only `.length` is used for slot-count comparisons;
+   * per-instance identity (which specific instance filled which slot) isn't
+   * tracked, matching this module's existing best-effort/soft-warning posture
+   * (see file doc comment).
    */
   filledFeatIds: string[];
 }
@@ -272,13 +272,12 @@ export function buildFeatSlotGroups(doc: CharacterDoc, refData: RefData): FeatSl
 }
 
 /**
- * Greedily assigns the character's chosen, non-granted feat INSTANCES (issue
- * #58: `featInstances` — the primary instance of each `build.feats` entry
- * plus every `build.extraFeats` entry, so two instances of the same
- * repeatable feat are assigned independently and can fill two different
- * open slots) to slot groups (most-restrictive group first — see file doc
- * comment), then reports which groups have unfilled slots and which
- * instances didn't fit anywhere.
+ * Greedily assigns the character's chosen, non-granted feat INSTANCES
+ * (`featInstances` — the primary instance of each `build.feats` entry plus
+ * every `build.extraFeats` entry, so two instances of the same repeatable feat
+ * are assigned independently and can fill two different open slots) to slot
+ * groups (most-restrictive group first — see file doc comment), then reports
+ * which groups have unfilled slots and which instances didn't fit anywhere.
  */
 export function assignFeatsToSlots(doc: CharacterDoc, refData: RefData): FeatSlotAssignment {
   const groups = buildFeatSlotGroups(doc, refData);

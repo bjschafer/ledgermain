@@ -6,13 +6,12 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { collectGrantedFeatures, compute } from "../src/index.js";
 
 /**
- * Fixture coverage for the slayer-talent hand-table overlay (issue #74
- * follow-up) — see `slayer-talents.ts`'s doc comment for the sourcing and
- * honesty-bar rationale. `slayerTalentCatalog.test.ts` covers the table
- * shape/merge behavior; this file covers the three live-Change entries
- * actually landing on `compute()`'s output, plus the standard
- * unknown-id/wrong-class gating shape every `collect.ts` build-choice loop
- * gets (cookbook §3.1).
+ * Fixture coverage for the slayer-talent hand-table overlay — see
+ * `slayer-talents.ts`'s doc comment for the sourcing and honesty-bar
+ * rationale. `slayerTalentCatalog.test.ts` covers the table shape/merge
+ * behavior; this file covers the three live-Change entries actually landing on
+ * `compute`'s output, plus the standard unknown-id/wrong-class gating shape
+ * every `collect.ts` build-choice loop gets (cookbook §3.1).
  *
  * Sources: `legacy.aonprd.com/advancedClassGuide/classes/slayer.html` (core
  * ACG "Slayer Talents"/"Advanced Talents") and `aonprd.com/SlayerTalents.aspx`

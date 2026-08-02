@@ -1,5 +1,5 @@
 /**
- * DR / energy resistance / spell resistance derivation (issue #21).
+ * DR / energy resistance / spell resistance derivation.
  *
  * This module only *derives* the numbers; applying them to an incoming hit
  * lives in `damage-resolution.ts`, which consumes the {@link Defenses} built
@@ -23,12 +23,12 @@
  *     the SRD (the vendored class feature's `changes[]` is empty; see
  *     `tables.ts` `barbarianDamageReduction`).
  *   - Antipaladin Damage Reduction (Aura of Depravity 17th / Unholy Champion
- *     20th, issue #65 wave B) — same hand-authored posture, clean-room from
- *     the SRD (both features' `changes[]` are empty upstream; see
- *     `tables.ts` `antipaladinDamageReduction`). Unlike the rest of the
- *     antipaladin's aura family (Cowardice/Despair/Vengeance/Sin — all
- *     enemies-within-10-ft debuffs with no self-facing number), this one IS
- *     a genuine static bonus to the antipaladin's own sheet.
+ *     20th) — same hand-authored posture, clean-room from the SRD (both
+ *     features' `changes[]` are empty upstream; see `tables.ts`
+ *     `antipaladinDamageReduction`). Unlike the rest of the antipaladin's aura
+ *     family (Cowardice/Despair/Vengeance/Sin — all enemies-within-10-ft
+ *     debuffs with no self-facing number), this one IS a genuine static bonus
+ *     to the antipaladin's own sheet.
  *
  * PF1 rule reused for grouping: DR/energy-resistance from multiple sources of
  * the *same* qualifier does not stack — only the single highest value applies.
@@ -37,20 +37,19 @@
  * "untyped always sums" behavior is correct for ability/skill bonuses but
  * wrong for DR/resistance qualifiers).
  *
- * Zero-value entries (issue #45 finding 2, "the dr-at-0 wart"): unlike
- * `ac`/`skill.*`, which are always-rendered running totals a zero-value
- * component quietly disappears into, this module only materializes
- * `DerivedSheet.defenses` (and the UI's whole "Defenses" stat-group) when at
- * least one dr/resistance/sr entry exists AT ALL. A conditional `dr`-/`eres`-
- * target `Change` (e.g. `if(eq(@armor.type,0),5,0)`) still produces a
- * `CollectedModifier` even when its formula evaluates to 0 — so without this
- * filtering, an armored character with no other DR source would show a
- * spurious "DR/— 0" seal. `groupByQualifier` drops any qualifier whose
- * winning (highest) value is not positive, and `computeSr` does the same for
- * spell resistance — see each function for the exact rule. Found via
- * Warlord's (fighter archetype) Sun-Bronzed Skin, `dr` gated on
- * `@armor.type == 0`; see `archetype-classification.ts`'s entry for that
- * feature.
+ * Zero-value entries (finding 2, "the dr-at-0 wart"): unlike `ac`/`skill.*`,
+ * which are always-rendered running totals a zero-value component quietly
+ * disappears into, this module only materializes `DerivedSheet.defenses` (and
+ * the UI's whole "Defenses" stat-group) when at least one dr/resistance/sr
+ * entry exists AT ALL. A conditional `dr`-/`eres`- target `Change` (e.g.
+ * `if(eq(@armor.type,0),5,0)`) still produces a `CollectedModifier` even when
+ * its formula evaluates to 0 — so without this filtering, an armored character
+ * with no other DR source would show a spurious "DR/— 0" seal.
+ * `groupByQualifier` drops any qualifier whose winning (highest) value is not
+ * positive, and `computeSr` does the same for spell resistance — see each
+ * function for the exact rule. Found via Warlord's (fighter archetype)
+ * Sun-Bronzed Skin, `dr` gated on `@armor.type == 0`; see
+ * `archetype-classification.ts`'s entry for that feature.
  */
 
 import type {
@@ -210,12 +209,12 @@ interface QualifiedMod {
  * stack). Losing entries stay in `components` with `applied: false`, the same
  * strike-through convention as typed-bonus stacking.
  *
- * A qualifier whose winning value is not positive is dropped entirely (issue
- * #45 finding 2, "the dr-at-0 wart") — since it's the highest value in the
- * group, every source for that qualifier evaluated to zero (or, in principle,
- * negative), so there is nothing real to show; a conditional `dr`/`eres`
- * `Change` that evaluates to 0 when its condition is unmet must not
- * materialize a spurious "0" entry just because it was collected at all.
+ * A qualifier whose winning value is not positive is dropped entirely (finding
+ * 2, "the dr-at-0 wart") — since it's the highest value in the group, every
+ * source for that qualifier evaluated to zero (or, in principle, negative), so
+ * there is nothing real to show; a conditional `dr`/`eres` `Change` that
+ * evaluates to 0 when its condition is unmet must not materialize a spurious
+ * "0" entry just because it was collected at all.
  */
 function groupByQualifier(mods: QualifiedMod[]): DefenseEntry[] {
   const byQualifier = new Map<string, QualifiedMod[]>();
@@ -339,12 +338,12 @@ export function computeDefenses(
     }));
 
   const barbLevel = barbarianLevel(doc);
-  // Issue #7: an archetype that replaces the barbarian's Damage Reduction
-  // (Savage Barbarian, Wildborn, Invulnerable Rager, ...) must stop this
-  // hardcoded progression from contributing — it isn't a vendored `Change`
-  // (the class feature's `changes[]` is empty upstream), so the general
-  // swap-suppression in `collect.ts` never touches it; this needs its own
-  // check. See `barbarianDamageReductionReplaced`'s doc comment.
+  // an archetype that replaces the barbarian's Damage Reduction (Savage
+  // Barbarian, Wildborn, Invulnerable Rager,...) must stop this hardcoded
+  // progression from contributing — it isn't a vendored `Change` (the class
+  // feature's `changes[]` is empty upstream), so the general swap-suppression
+  // in `collect.ts` never touches it; this needs its own check. See
+  // `barbarianDamageReductionReplaced`'s doc comment.
   if (barbLevel >= 7 && !barbarianDamageReductionReplaced(doc, refData)) {
     const { amount } = barbarianDamageReduction(barbLevel);
     if (amount > 0) {
@@ -359,10 +358,10 @@ export function computeDefenses(
   }
 
   const antipaladinLevel = doc.identity.classes.find((c) => c.tag === "antipaladin")?.level ?? 0;
-  // Issue #65 wave B: Aura of Depravity (17th)/Unholy Champion (20th) grant
-  // DR/good — see `antipaladinDamageReduction`'s doc comment. Insinuator's
-  // Aura of Indomitability replaces Aura of Depravity at 17th (a vendored
-  // 1:1 swap) — same suppression shape as the barbarian check above; see
+  // Aura of Depravity (17th)/Unholy Champion (20th) grant DR/good — see
+  // `antipaladinDamageReduction`'s doc comment. Insinuator's Aura of
+  // Indomitability replaces Aura of Depravity at 17th (a vendored 1:1 swap) —
+  // same suppression shape as the barbarian check above; see
   // `antipaladinDamageReductionReplaced`'s doc comment for why this also
   // withholds the 20th-level bump for that archetype combo rather than
   // guessing whether Unholy Champion's "increases to 10/good" still applies

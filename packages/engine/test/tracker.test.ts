@@ -420,7 +420,7 @@ describe("feats that raise a derived resource pool's max (feat-effects.ts FEAT_P
     expect(pools.find((p) => p.name === "Channel Energy")?.max).toBe(5);
   });
 
-  // Issue #65's multi-target follow-up: `FeatPoolEffect.featureTag` can now
+  // The multi-target follow-up: `FeatPoolEffect.featureTag` can now
   // be an array, so one feat can raise whichever of several class features
   // the character actually has. Extra Lay On Hands is the first (and, per
   // the vendored data audit, only unambiguous) case — see

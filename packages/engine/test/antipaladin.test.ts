@@ -186,7 +186,7 @@ describe("antipaladin spells-per-day — reuses the paladin quarter-caster table
 });
 
 /**
- * Issue #65 wave B additions: cruelties (Touch of Corruption riders),
+ * Later additions: cruelties (Touch of Corruption riders),
  * Fiendish Boon (weapon/servant choice), and Aura of Depravity/Unholy
  * Champion's DR/good — see `antipaladin-cruelties.ts`/`tables.ts`'s doc
  * comments for the clean-room sourcing (all three read straight from the

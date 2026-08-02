@@ -46,10 +46,10 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   // hundred class spells.
   const [managerOpen, setManagerOpen] = useState(false);
 
-  // Every caster class on the document (issue #22 multiclass support). With
-  // exactly one, this section behaves exactly as before — no switcher chrome
-  // — and with 2+, a class switcher below picks which class's spells the rest
-  // of this panel shows.
+  // Every caster class on the document (multiclass support). With exactly one,
+  // this section behaves exactly as before — no switcher chrome — and with 2+,
+  // a class switcher below picks which class's spells the rest of this panel
+  // shows.
   const casters = useMemo(() => casterClassesOf(doc, refData), [doc, refData]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const casterTag =
@@ -60,15 +60,15 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
 
   // RAW class level — feeds the class-FEATURE bonus-spell-known helpers below
   // (bloodline/mystery/discipline/patron/shaman), which stay pinned to the
-  // character's actual class level (issue #66 chunk 2: prestige casting
-  // advancement grants table numbers only, never accelerates a class
-  // feature — see model/casterLevel.ts's header comment).
+  // character's actual class level (prestige casting advancement grants table
+  // numbers only, never accelerates a class feature — see
+  // model/casterLevel.ts's header comment).
   const classLevel = useMemo(
     () => doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 1,
     [doc.identity.classes, casterTag],
   );
 
-  // Advancement-aware effective class level (issue #66 chunk 2) — feeds the
+  // Advancement-aware effective class level (2) — feeds the
   // spells-per-day/known TABLE lookups below (accessibleLevels, knownLimits),
   // which a prestige class's casting-advancement slot legitimately bumps.
   const effectiveClassLevel = useMemo(

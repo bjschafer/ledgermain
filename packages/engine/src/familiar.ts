@@ -509,11 +509,10 @@ const FLAT_FOOTED_CATEGORIES: ReadonlySet<string> = new Set([
  * {@link BASE_FAMILIARS} (unknown species — soft-warning posture, never a
  * crash; the UI simply shows nothing).
  *
- * Buff sharing (`live.familiar.sharedBuffIds`, issue #44): each shared buff's
- * `changes[]` is evaluated against `rollData` (the MASTER's roll data — a
- * shared buff's formula, e.g. Mage Armor's flat "4", doesn't need the
- * familiar's own ability scores) exactly like the master's own buffs, and
- * routed into the familiar's:
+ * Buff sharing (`live.familiar.sharedBuffIds`): each shared buff's `changes[]`
+ * is evaluated against `rollData` (the MASTER's roll data — a shared buff's
+ * formula, e.g. Mage Armor's flat "4", doesn't need the familiar's own ability
+ * scores) exactly like the master's own buffs, and routed into the familiar's:
  *   - AC (`ac`/`aac`/`sac`/`nac` targets)
  *   - saves (`fort`/`ref`/`will`/`allSavingThrows`)
  *   - skills (`skill.*`)
@@ -575,7 +574,7 @@ export function deriveFamiliar(
   const size = species.size;
   const sizeAcMod = SIZE_AC_MOD[size];
 
-  // --- shared buffs: evaluate + bucket by target (issue #44) ----------------
+  // --- shared buffs: evaluate + bucket by target ----------------
   const sharedIds = new Set(doc.live.familiar?.sharedBuffIds ?? []);
   const sharedBuffs = (doc.live.activeBuffs ?? []).filter((b) => sharedIds.has(b.instanceId));
 
@@ -598,9 +597,9 @@ export function deriveFamiliar(
     init: sharedInit,
   } = routed;
 
-  // Apply shared ability-score buffs to the familiar's own base scores
-  // BEFORE deriving anything that depends on them — see
-  // `applySharedAbilityBonuses`'s doc comment (issue #44).
+  // Apply shared ability-score buffs to the familiar's own base scores BEFORE
+  // deriving anything that depends on them — see `applySharedAbilityBonuses`'s
+  // doc comment.
   abilities = applySharedAbilityBonuses(abilities, routed.ability, abilityMod);
   const strMod = abilities.str.mod;
   const dexMod = abilities.dex.mod;
@@ -675,7 +674,7 @@ export function deriveFamiliar(
   // --- attacks ------------------------------------------------------------------
   // Familiar Basics: BAB + the BETTER of Dex/Str + size, for every natural
   // attack alike (no primary/secondary halving modeled — see module doc),
-  // plus any shared "attack"/"mattack" bonus (issue #44). Shared "damage" is
+  // plus any shared "attack"/"mattack" bonus. Shared "damage" is
   // likewise added to every attack's damage bonus alike.
   const sharedAttackBonus = resolveStack(sharedAttack).total;
   const sharedDamageBonus = resolveStack(sharedDamage).total;

@@ -11,10 +11,10 @@ import {
 } from "../src/index.js";
 
 /**
- * Issue #45 (druid wave, 2026-07-06): fixture tests for
- * `archetype-extracted/druid.ts`, hand-computed against the real vendored
- * data slice via `loadRefData()`, same posture as
- * `archetypeEffectsExtracted.test.ts` (the fighter pilot's fixture file).
+ * fixture tests for
+ * `archetype-extracted/druid.ts`, hand-computed against the real vendored data
+ * slice via `loadRefData`, same posture as `archetypeEffectsExtracted.test.ts`
+ * (the fighter pilot's fixture file).
  */
 const ref = loadRefData();
 

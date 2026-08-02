@@ -1,8 +1,8 @@
 /**
  * Unit tests for `model/importExternalFile.ts` — the content-based dispatcher
- * behind the Settings "Import character…" file picker (issue #3): a native
- * Ledgermain export, a Pathbuilder 1e export, and a Hero Lab classic export
- * all go through one file input, disambiguated by content.
+ * behind the Settings "Import character…" file picker: a native Ledgermain
+ * export, a Pathbuilder 1e export, and a Hero Lab classic export all go
+ * through one file input, disambiguated by content.
  */
 import { loadRefData } from "@pf1/data-pipeline";
 import { describe, expect, it } from "bun:test";

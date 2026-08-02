@@ -7,7 +7,7 @@ import { TrendingUpIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
- * Live XP tracker — optional rule (issue #27), only rendered when
+ * Live XP tracker — optional rule, only rendered when
  * `build.settings.xpEnabled` is set (see `Tracker.tsx`). Display-only: it
  * never auto-levels the character, it just surfaces "how far to the next
  * level" per the chosen advancement track (`model/xp.ts`).

@@ -1,8 +1,8 @@
 /**
- * Hand-computed fixture tests for magus arcana (issue #61). Every base arcana
- * in `MAGUS_ARCANA` is `displayOnly` with `changes: []` (see that file's doc
- * comment — none of the base UM arcana grant an unconditional flat number),
- * so `collectModifiers` should never emit a numeric modifier for one. What IS
+ * Hand-computed fixture tests for magus arcana. Every base arcana in
+ * `MAGUS_ARCANA` is `displayOnly` with `changes: []` (see that file's doc
+ * comment — none of the base UM arcana grant an unconditional flat number), so
+ * `collectModifiers` should never emit a numeric modifier for one. What IS
  * exercised: gating on actual magus levels, unknown-id tolerance, and
  * surfacing picked arcana through `collectGrantedFeatures`/
  * `resolveClassFeatures` — same pattern as `arcanistExploits.test.ts`.

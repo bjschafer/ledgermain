@@ -22,14 +22,14 @@ import type { BuilderProps } from "../builder/types.js";
 import { FeatureDescription } from "../builder/ClassFeaturesList.js";
 
 /**
- * Medium séance panel (issue #65) — the in-play counterpart to a shaman's
- * spirit or an occultist's implements, except the spirit itself is chosen
- * fresh each day (`live.mediumSpirit`), so it lives entirely in the tracker,
- * not the builder (see `model/mediumSpirits.ts`'s doc comment). Clicking a
- * spirit performs a fresh séance: channels that spirit AND resets Influence
- * to 0, matching PF1 RAW's "each morning" ritual — re-clicking the currently
- * channeled spirit is a deliberate way to "renew" the séance and zero out
- * Influence without switching spirits.
+ * Medium séance panel — the in-play counterpart to a shaman's spirit or an
+ * occultist's implements, except the spirit itself is chosen fresh each day
+ * (`live.mediumSpirit`), so it lives entirely in the tracker, not the builder
+ * (see `model/mediumSpirits.ts`'s doc comment). Clicking a spirit performs a
+ * fresh séance: channels that spirit AND resets Influence to 0, matching PF1
+ * RAW's "each morning" ritual — re-clicking the currently channeled spirit is
+ * a deliberate way to "renew" the séance and zero out Influence without
+ * switching spirits.
  *
  * Spirit Powers granted by medium level + the chosen spirit show up in the
  * Classes tab's Class Features list (`origin.kind: "spiritPower"`) — this

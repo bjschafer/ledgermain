@@ -1,10 +1,10 @@
 /**
  * Clean-room PF1 psychic Phrenic Amplification table (Occult Adventures,
- * issue #65 follow-through — `psychic-disciplines.ts` shipped bonus
- * spells/phrenic pool ability and explicitly deferred amplifications as
- * "prose-heavy, genuinely choice-bearing content"), hand-authored from the
- * published rules (verified against aonprd.com's Phrenic Amplifications
- * index and each entry's own page, 2026-07-08).
+ * follow-through — `psychic-disciplines.ts` shipped bonus spells/phrenic pool
+ * ability and explicitly deferred amplifications as "prose-heavy, genuinely
+ * choice-bearing content"), hand-authored from the published rules (verified
+ * against aonprd.com's Phrenic Amplifications index and each entry's own page,
+ * 2026-07-08).
  *
  * Cadence (PF1 OA RAW, "Phrenic Amplification": gained at 1st level, then
  * "at 3rd level, and every 4 levels thereafter" — verified against
@@ -20,27 +20,26 @@
  * extra budget slot, the same soft-gated-within-the-same-budget shape
  * `WITCH_HEXES`' major/grand tiers use (`WitchHexDef.tier`/`minLevel`).
  *
- * Scope: every amplification on aonprd.com's Phrenic Amplifications index —
- * 22 basic + 9 major, 31 total. Unlike `WITCH_HEXES`/`ORACLE_REVELATIONS`
- * (which scope tightly to a single core rulebook and explicitly exclude
- * later splatbooks), this list mixes Occult Adventures core (pg. 60-64) with
- * a handful of Pathfinder Player Companion entries (Heroes of Golarion,
- * Occult Origins) — there is no OA-core-only subset large enough to usefully
- * separate (only 12 of the 22 basic amplifications are OA-core proper), and
- * the issue #65 task brief's own worked example explicitly names a
- * Player-Companion-sourced entry (Biokinetic Healing, Occult Origins pg. 16)
- * alongside OA-core ones — so this table takes the full union rather than
- * fragmenting by source book.
+ * Scope: every amplification on aonprd.com's Phrenic Amplifications index — 22
+ * basic + 9 major, 31 total. Unlike `WITCH_HEXES`/`ORACLE_REVELATIONS` (which
+ * scope tightly to a single core rulebook and explicitly exclude later
+ * splatbooks), this list mixes Occult Adventures core (pg. 60-64) with a
+ * handful of Pathfinder Player Companion entries (Heroes of Golarion, Occult
+ * Origins) — there is no OA-core-only subset large enough to usefully separate
+ * (only 12 of the 22 basic amplifications are OA-core proper), and the task
+ * brief's own worked example explicitly names a Player-Companion-sourced entry
+ * (Biokinetic Healing, Occult Origins pg. 16) alongside OA-core ones — so this
+ * table takes the full union rather than fragmenting by source book.
  *
  * Modelling posture (mirrors witch-hexes.ts/oracle-revelations.ts's honesty
  * bar): every amplification is a spend-points, CAST-TIME RIDER applied to a
- * spell being cast that same action ("linked spell") — not a standing buff
- * on the psychic's own sheet, and several don't even affect the psychic
- * (they modify the linked spell's targets or the spell itself). There is no
+ * spell being cast that same action ("linked spell") — not a standing buff on
+ * the psychic's own sheet, and several don't even affect the psychic (they
+ * modify the linked spell's targets or the spell itself). There is no
  * persistent Change the stacking engine could safely apply. So EVERY entry
  * here is `displayOnly: true` with `changes: []`; the pool-point cost is
  * carried inline in `costLabel` and repeated in the summary, same "pool-cost
- * honesty line" posture the issue #65 task brief calls for.
+ * honesty line" posture the task brief calls for.
  */
 
 import type { Change, PhrenicAmplification, RefData, SourceRef } from "@pf1/schema";
@@ -316,12 +315,12 @@ export function amplificationsForTier(tier: PhrenicAmplificationTier): PhrenicAm
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.phrenicAmplifications` (see that type's doc
- * comment) is the FULL published catalog (31 entries after junk filtering),
- * prose only. The hand-verified table above stays authoritative for
- * MECHANICS — this section only merges the two for BROWSING (the picker)
- * and for resolving a picked id, mirroring `rage-powers.ts`'s
- * `mergedRagePowerCatalog`/`resolveRagePower` exactly.
+ * `RefData.phrenicAmplifications` (see that type's doc comment) is the FULL
+ * published catalog (31 entries after junk filtering), prose only. The
+ * hand-verified table above stays authoritative for MECHANICS — this section
+ * only merges the two for BROWSING (the picker) and for resolving a picked id,
+ * mirroring `rage-powers.ts`'s `mergedRagePowerCatalog`/`resolveRagePower`
+ * exactly.
  *
  * Collision audit: ALL 31 hand-authored entries matched a vendored entry by
  * normalized name — a clean 1:1 match (including "Space-Rending Spell" vs.

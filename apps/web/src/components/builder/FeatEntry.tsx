@@ -113,17 +113,17 @@ export function useFeatRenderContext(
   }, [refData.feats, ctx]);
 
   // Already-taken feats whose structured prereqs no longer hold — typically a
-  // required feat was later removed (issue #9). Never auto-removed; flagged so
-  // the player notices instead of silently keeping the feat's effects.
+  // required feat was later removed. Never auto-removed; flagged so the player
+  // notices instead of silently keeping the feat's effects.
   const unqualified = useMemo(
     () => new Set(unqualifiedSelectedFeats(doc.build.feats, ctx)),
     [doc.build.feats, ctx],
   );
 
-  // Typed feat-slot budget (issue #54/#57): decomposes the feat count into
-  // restricted buckets and greedily assigns chosen feats to them, so the UI can
-  // flag unfilled restricted slots and feats that fit no remaining slot. Soft
-  // warning only — never blocks a pick.
+  // Typed feat-slot budget: decomposes the feat count into restricted buckets
+  // and greedily assigns chosen feats to them, so the UI can flag unfilled
+  // restricted slots and feats that fit no remaining slot. Soft warning only —
+  // never blocks a pick.
   const slotAssignment = useMemo(() => assignFeatsToSlots(doc, refData), [doc, refData]);
   const restrictedSlotGroups = useMemo(
     () => slotAssignment.groups.filter((g) => g.type.kind !== "generic"),
@@ -193,12 +193,12 @@ export function FeatEntry({
   const res = fx.prereqMap.get(feat.id)!;
   const blocked = res.blocked && !isSel;
   // Already taken, but a structured prereq (usually a required feat) no longer
-  // holds — issue #9. Distinct from `blocked`, which only ever applies to
-  // not-yet-taken feats.
+  // holds. Distinct from `blocked`, which only ever applies to not-yet-taken
+  // feats.
   const isUnqualified = isSel && fx.unqualified.has(feat.id);
   const inStyle = fx.styleSlugs.has(featNameSlug(feat.name));
-  // Issue #62: machine-extracted feats get the same hollow "M" badge that
-  // extracted-tier archetype effects use.
+  // machine-extracted feats get the same hollow "M" badge that extracted-tier
+  // archetype effects use.
   const extractedEffect = resolveFeatEffect(featNameSlug(feat.name))?.source === "extracted";
   // Other open restricted slots (combat, wizard bonus, bloodline, monk list…)
   // this feat could fill — combat style gets its own dedicated badge below.
@@ -237,9 +237,9 @@ export function FeatEntry({
   const repeatable = isRepeatableFeat(feat.name);
   const instances = isSel ? (fx.instancesByFeatId.get(feat.id) ?? []) : [];
 
-  // Issue #58: a RAW-repeatable feat that's already taken renders one row PER
-  // instance (its own choice picker + its own remove), plus a trailing "take
-  // again" row.
+  // a RAW-repeatable feat that's already taken renders one row PER instance
+  // (its own choice picker + its own remove), plus a trailing "take again"
+  // row.
   if (isSel && repeatable) {
     // Same non-empty choice picked on two instances is legal to store but has
     // no additional RAW effect — flag it as a soft warning rather than blocking.

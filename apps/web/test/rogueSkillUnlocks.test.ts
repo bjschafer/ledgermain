@@ -1,7 +1,7 @@
 /**
- * Unit tests for `model/rogueSkillUnlocks.ts` (issue #65 — previously
- * deferred Rogue's Edge (UC) skill unlocks). Mirrors
- * `doc.weaponTrainingGroup.test.ts`'s pattern for the tier setter.
+ * Unit tests for `model/rogueSkillUnlocks.ts` (previously deferred Rogue's
+ * Edge (UC) skill unlocks). Mirrors `doc.weaponTrainingGroup.test.ts`'s
+ * pattern for the tier setter.
  */
 import { describe, expect, it } from "bun:test";
 

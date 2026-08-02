@@ -1,7 +1,7 @@
 /**
- * Unit tests for `model/classPrereqs.ts` (issue #66 chunk 3) — prestige-class
- * entry-requirement gating. Uses the real vendored refdata (loadRefData)
- * since the prestige classes (issue #66 chunks 1 + 4) only exist there.
+ * Unit tests for `model/classPrereqs.ts` (3) — prestige-class
+ * entry-requirement gating. Uses the real vendored refdata (loadRefData) since
+ * the prestige classes (1 + 4) only exist there.
  */
 import { describe, expect, it } from "bun:test";
 

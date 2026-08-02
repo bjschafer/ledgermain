@@ -1,12 +1,12 @@
 /**
- * Clean-room PF1 alternate racial traits table (issue #35, DESIGN §6):
- * hand-authored from the published rules (Advanced Race Guide / core races,
- * Inner Sea Races for the Sylph "Mostly Human" alternate, public SRD/OGL
- * content) — alternate racial traits are NOT part of the vendored Foundry
- * data pack (only each race's *standard* traits are, as
- * `Race.changes`/`Race.contextNotes`), so there is no upstream JSON to
- * normalize. Same posture as `traits.ts`/`bloodlines.ts`/`tables.ts` for
- * content the compendium doesn't carry.
+ * Clean-room PF1 alternate racial traits table (DESIGN §6): hand-authored from
+ * the published rules (Advanced Race Guide / core races, Inner Sea Races for
+ * the Sylph "Mostly Human" alternate, public SRD/OGL content) — alternate
+ * racial traits are NOT part of the vendored Foundry data pack (only each
+ * race's *standard* traits are, as `Race.changes`/`Race.contextNotes`), so
+ * there is no upstream JSON to normalize. Same posture as
+ * `traits.ts`/`bloodlines.ts`/`tables.ts` for content the compendium doesn't
+ * carry.
  *
  * What an alternate racial trait does: it swaps one or more of a race's
  * STANDARD traits for an alternate. In this engine that is two operations,
@@ -26,18 +26,18 @@
  *      number correct.
  *
  * Modelling notes / deliberate limitations (mirror `traits.ts`):
- *   - Standard traits that are `Race.contextNotes` rather than `changes`
- *     (all of Dwarf's swappable traits: Stonecunning, Hardy, Greed, Hatred,
+ *   - Standard traits that are `Race.contextNotes` rather than `changes` (all
+ *     of Dwarf's swappable traits: Stonecunning, Hardy, Greed, Hatred,
  *     Defensive Training, Stability; Elf's Elven Magic; Gnome's Defensive
  *     Training/Hatred) carry no computed number, so there is nothing for
  *     `suppressTargets` to drop — those alternates are surfaced as options
  *     with their own `contextNotes`, and `replaces` records the swap for the
  *     UI. The race's standard-trait reminders (`Race.contextNotes`) render on
- *     the sheet via `raceContextNotesFor` (issue #41), so the alternates that
- *     replace a note-only standard trait carry `suppressNotes` (see
- *     {@link AlternateRacialTrait.suppressNotes} and
- *     {@link effectiveRaceContextNotes} below) to drop the retired note
- *     rather than leave it showing alongside the replacement.
+ *     the sheet via `raceContextNotesFor`, so the alternates that replace a
+ *     note-only standard trait carry `suppressNotes` (see {@link
+ *     AlternateRacialTrait.suppressNotes} and {@link
+ *     effectiveRaceContextNotes} below) to drop the retired note rather than
+ *     leave it showing alongside the replacement.
  *   - Benefits that are a feat grant (Focused Study's Skill Focus chain,
  *     Ancestral Arms' weapon proficiency, Shaman's Apprentice's Endurance)
  *     carry `displayOnly: true` with a `contextNotes` reminder rather than a
@@ -100,16 +100,15 @@ export interface AlternateRacialTrait {
   /**
    * Substrings to match against `Race.contextNotes[].text` for the replaced
    * standard trait(s) — dropped from {@link effectiveRaceContextNotes} while
-   * this alternate is active (issue #41). Race contextNotes carry no stable
-   * id in the vendored data, just `target` + free-text `text` (see
+   * this alternate is active. Race contextNotes carry no stable id in the
+   * vendored data, just `target` + free-text `text` (see
    * `packages/schema/src/primitives.ts` `ContextNote`), and `target` alone
    * isn't reliably 1:1 with a standard trait within a race (e.g. Gnome's
    * Illusion Resistance and Defensive Training notes could plausibly collide
    * on a shared target in a future data update) — a substring unique to the
-   * replaced trait's actual vendored wording is the more robust match.
-   * Omitted when the replaced standard trait is a structured `Change`
-   * (nothing in `Race.contextNotes` to suppress) or has no vendored
-   * contextNote at all.
+   * replaced trait's actual vendored wording is the more robust match. Omitted
+   * when the replaced standard trait is a structured `Change` (nothing in
+   * `Race.contextNotes` to suppress) or has no vendored contextNote at all.
    */
   suppressNotes?: string[];
   /** Non-mechanical reminders (situational scope, feat grants, class-skill grants). */
@@ -271,10 +270,10 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     replaces: ["Keen Senses", "Elven Magic"],
     changes: [c("2", "init")],
     suppressTargets: ["skill.per"],
-    // Elven Magic is the vendored Elf's only contextNote-only standard trait
-    // — all three of its Race.contextNotes entries (save vs enchantment/sleep
-    // immunity, Spellcraft to identify items, caster level vs SR) go away
-    // with it (issue #41).
+    // Elven Magic is the vendored Elf's only contextNote-only standard trait —
+    // all three of its Race.contextNotes entries (save vs enchantment/sleep
+    // immunity, Spellcraft to identify items, caster level vs SR) go away with
+    // it.
     suppressNotes: ["Enchantment Effects", "Identify Magic Items", "overcome Spell Resistance"],
     contextNotes: [{ target: "init", text: "Gain Run as a bonus feat." }],
   },
@@ -305,7 +304,7 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     changes: [],
     displayOnly: true,
     // See elf-fleet-footed above: Elven Magic's three vendored contextNotes,
-    // all dropped (issue #41).
+    // all dropped.
     suppressNotes: ["Enchantment Effects", "Identify Magic Items", "overcome Spell Resistance"],
     contextNotes: [
       {
@@ -326,10 +325,10 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     changes: [c("1", "skill.blf"), c("1", "skill.dip")],
     // Defensive Training ("Dodge vs Giants") and Hatred ("vs Humanoids
     // (Reptillian, Goblinoid)") are the two vendored Gnome contextNotes this
-    // replaces (issue #41). Gnome's third contextNote (Illusion Resistance,
-    // "vs Illusion Effects") is a DIFFERENT standard trait this alternate
-    // doesn't touch — matched by substring, not by the shared
-    // `allSavingThrows`/`ac` targets, so it's never accidentally dropped.
+    // replaces. Gnome's third contextNote (Illusion Resistance, "vs Illusion
+    // Effects") is a DIFFERENT standard trait this alternate doesn't touch —
+    // matched by substring, not by the shared `allSavingThrows`/`ac` targets,
+    // so it's never accidentally dropped.
     suppressNotes: ["Dodge vs Giants", "Humanoids (Reptillian, Goblinoid)"],
   },
   {
@@ -390,15 +389,16 @@ const TRAIT_LIST: AlternateRacialTrait[] = [
     ],
   },
 
-  // ── Dwarf ──────────────────────────────────────────────────────────────────
-  // Dwarf's swappable standard traits are all Race.contextNotes (no computed
-  // number), so these alternates carry no `suppressTargets` — they surface the
-  // choice and their own reminders; `replaces` records the swap. Each DOES
-  // carry `suppressNotes` (issue #41): Dwarf's six vendored contextNotes are
-  // each a distinct standard trait with a unique target (Stability/cmd,
+  // ── Dwarf
+  // ────────────────────────────────────────────────────────────────── Dwarf's
+  // swappable standard traits are all Race.contextNotes (no computed number),
+  // so these alternates carry no `suppressTargets` — they surface the choice
+  // and their own reminders; `replaces` records the swap. Each DOES carry
+  // `suppressNotes`: Dwarf's six vendored contextNotes are each a distinct
+  // standard trait with a unique target (Stability/cmd,
   // Stonecunning/skill.per, Defensive Training/ac, Hardy/allSavingThrows,
-  // Greed/skill.apr, Hatred/attack), so a substring drawn from each note's
-  // own wording is enough to identify the one being replaced.
+  // Greed/skill.apr, Hatred/attack), so a substring drawn from each note's own
+  // wording is enough to identify the one being replaced.
   {
     id: "dwarf-lorekeeper",
     race: "Dwarf",
@@ -526,7 +526,7 @@ export function alternateRacialTraitsForRace(raceName: string): AlternateRacialT
   return TRAIT_LIST.filter((t) => t.race === raceName);
 }
 
-/* --------------------------------------------- race contextNotes (issue #41) */
+/* --------------------------------------------- race contextNotes */
 
 /**
  * `race.contextNotes`, minus any dropped by an active alternate racial
@@ -585,7 +585,7 @@ export function raceContextNotesFor(
   return effectiveRaceContextNotes(race, activeTraits, activeVendoredTraits);
 }
 
-/* ---------------------------------------------------- slow and steady (#52) */
+/* ---------------------------------------------------- slow and steady */
 
 /**
  * Creature subtypes whose standard racial traits include "Slow and Steady"
@@ -659,7 +659,7 @@ export function hasSlowAndSteady(doc: CharacterDoc, race: Race | undefined): boo
  */
 export const FLEXIBLE_ABILITY_SUPPRESS_TARGET = "flexibleAbility";
 
-/* ------------------- vendored alternate-trait suppression (issue #74) ------ */
+/* ------------------- vendored alternate-trait suppression ------ */
 
 /**
  * Verified mapping from a race's STANDARD trait name (as it appears in the
@@ -1069,7 +1069,7 @@ export function vendoredTraitSuppressTargets(
   return resolveReplacedTraitNames(trait).flatMap((name) => [...(raceMap[name] ?? [])]);
 }
 
-/* ------------------- vendored alternate-trait note suppression (#41) ------ */
+/* ------------------- vendored alternate-trait note suppression ------ */
 
 /**
  * Verified mapping from a race's STANDARD trait name (as it appears in the

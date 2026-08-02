@@ -10,29 +10,30 @@ import {
 } from "../src/archetype-extracted/barbarian.js";
 
 /**
- * Issue #45 (barbarian slice of the prose→Change extraction pipeline, mirroring
- * the fighter pilot's `archetypeEffectsExtracted.test.ts` methodology). Hand-
- * computed fixture tests for `archetype-extracted/barbarian.ts`, verified
- * against the real vendored data slice via `loadRefData()`.
+ * The barbarian slice of the prose→Change extraction pipeline,
+ * mirroring the fighter pilot's `archetypeEffectsExtracted.test.ts`
+ * methodology). Hand- computed fixture tests for
+ * `archetype-extracted/barbarian.ts`, verified against the real vendored data
+ * slice via `loadRefData`.
  *
  * IMPORTANT difference from the fighter test file: per this wave's task
  * boundary, `archetype-extracted/index.ts` (the aggregator) is NOT touched by
  * this wave — `BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED` is not yet merged into
  * the production `ARCHETYPE_FEATURE_EFFECTS_EXTRACTED` table `collect.ts`
- * actually reads via `resolveArchetypeFeatureEffect`. That means `compute()`
+ * actually reads via `resolveArchetypeFeatureEffect`. That means `compute`
  * does NOT yet apply this file's `changes` end-to-end (a later integration
  * pass wires it in, the same one-import-one-spread way fighter's is wired in
- * today). So instead of diffing `compute()` output with/without the
- * archetype (the fighter pattern), the formula-correctness tests below build
- * the same `RollData` context `collect.ts` would (via `buildRollData`, the
- * exact function it uses internally) and evaluate each extracted `Change`'s
- * formula directly with `evaluateFormula` — an equally "hand-computed against
- * the real vendored data slice" fixture, just one level below the full
- * `collect.ts` pipeline. The one exception is the suppression-composition
- * case below, which exercises an archetype (Wildborn) whose numeric effect
- * IS already wired into production today via the separate, always-wired
- * `archetype-effects.ts` hand-verified table — that one runs through the
- * real `compute()` pipeline end-to-end.
+ * today). So instead of diffing `compute` output with/without the archetype
+ * (the fighter pattern), the formula-correctness tests below build the same
+ * `RollData` context `collect.ts` would (via `buildRollData`, the exact
+ * function it uses internally) and evaluate each extracted `Change`'s formula
+ * directly with `evaluateFormula` — an equally "hand-computed against the real
+ * vendored data slice" fixture, just one level below the full `collect.ts`
+ * pipeline. The one exception is the suppression-composition case below, which
+ * exercises an archetype (Wildborn) whose numeric effect IS already wired into
+ * production today via the separate, always-wired `archetype-effects.ts`
+ * hand-verified table — that one runs through the real `compute` pipeline
+ * end-to-end.
  */
 const ref = loadRefData();
 

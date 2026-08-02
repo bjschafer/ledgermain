@@ -36,9 +36,9 @@ interface ImplementPickerProps {
 }
 
 /**
- * Occultist Implements + Focus Powers (issue #65). Two independently
- * rendered sections, mirroring `VigilanteTalentPicker`'s "two budgeted pools
- * in one picker" shape:
+ * Occultist Implements + Focus Powers. Two independently rendered sections,
+ * mirroring `VigilanteTalentPicker`'s "two budgeted pools in one picker"
+ * shape:
  *
  * - **Implement Schools** (`build.occultistImplements`) is a MULTISET, not a
  *   set — PF1 RAW lets a school be picked more than once (see

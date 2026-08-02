@@ -1,10 +1,9 @@
 /**
- * Unit tests for `model/occultistImplements.ts` (issue #65 — occultist
- * Implements/Focus Powers/Mental Focus investment). Mirrors
- * `rogueTalents.test.ts`'s budget-math test pattern, plus coverage for the
- * MULTISET implement-school picks (unique among this app's budgeted pickers
- * — see that module's doc comment) and the live Mental Focus investment
- * setters.
+ * Unit tests for `model/occultistImplements.ts` (occultist Implements/Focus
+ * Powers/Mental Focus investment). Mirrors `rogueTalents.test.ts`'s
+ * budget-math test pattern, plus coverage for the MULTISET implement-school
+ * picks (unique among this app's budgeted pickers — see that module's doc
+ * comment) and the live Mental Focus investment setters.
  */
 import { describe, expect, it } from "bun:test";
 

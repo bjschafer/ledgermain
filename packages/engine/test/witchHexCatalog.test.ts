@@ -12,10 +12,10 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the witch-hex vendored-catalog overlay (issue #74) —
- * mirrors `ragePowerCatalog.test.ts` exactly. See `witch-hexes.ts`'s
- * "vendored catalog overlay" section doc comment for the collision-audit
- * narrative this asserts against.
+ * Coverage for the witch-hex vendored-catalog overlay — mirrors
+ * `ragePowerCatalog.test.ts` exactly. See `witch-hexes.ts`'s "vendored catalog
+ * overlay" section doc comment for the collision-audit narrative this asserts
+ * against.
  */
 const ref = loadRefData();
 
@@ -44,7 +44,7 @@ describe("mergedWitchHexCatalog", () => {
   });
 
   it("no vendored-only hexes remain — the fallback path only exists for a future data bump", () => {
-    // Full hand-table parity as of the #74 Phase 5 extension.
+    // Full hand-table parity as of the last catalog extension.
     for (const entry of merged) {
       expect(WITCH_HEXES[entry.id], entry.id).toBeDefined();
     }

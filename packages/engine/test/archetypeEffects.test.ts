@@ -6,13 +6,13 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { archetypeHasModeledEffects, compute } from "../src/index.js";
 
 /**
- * Issue #7 (archetype numeric effects): hand-computed against the real
- * vendored data slice via `loadRefData()`, same posture as
+ * Archetype numeric effects: hand-computed against the real
+ * vendored data slice via `loadRefData`, same posture as
  * `traits.test.ts`/`sorcererBloodline.test.ts` for other hand-authored
- * clean-room content. Each expectation is derived straight from the
- * published PF1 rules cited in `archetype-effects.ts`'s comments, not from
- * any Foundry oracle (the vendored archetype dataset carries no mechanics at
- * all to compare against).
+ * clean-room content. Each expectation is derived straight from the published
+ * PF1 rules cited in `archetype-effects.ts`'s comments, not from any Foundry
+ * oracle (the vendored archetype dataset carries no mechanics at all to
+ * compare against).
  */
 const ref = loadRefData();
 
@@ -347,8 +347,8 @@ describe("Notes-only archetypes carry a detail summary but no numeric effect", (
     ["Knife Master", "rogue"],
     ["Oath of Vengeance", "paladin"],
     ["Divine Hunter", "paladin"],
-    // Archaeologist is no longer notes-only: issue #45's bard wave extracted
-    // its Clever Explorer feature (+1/2 level Disable Device/Perception,
+    // Archaeologist is no longer notes-only: the bard wave extracted its
+    // Clever Explorer feature (+1/2 level Disable Device/Perception,
     // archetype-extracted/bard.ts) as a real numeric effect, so it now
     // correctly earns the "extracted" modeled-effect badge. Archaeologist's
     // Luck itself remains notes-only (hand-verified table, still no Change).
@@ -366,8 +366,8 @@ describe("Notes-only archetypes carry a detail summary but no numeric effect", (
 describe("Ranger Combat Style reflavors (Bow Nomad, Horse Lord, ...): same bonusFeats schedule", () => {
   // `bonusFeats` has no dedicated DerivedSheet field — the player-facing
   // budget lives in `apps/web/src/model/feats.ts`, which (pre-existing gap,
-  // not fixed by this change — see the issue #7 report) reads
-  // `refData.classFeatures` directly and doesn't consult archetype swaps or
+  // not fixed by this change — see the report) reads `refData.classFeatures`
+  // directly and doesn't consult archetype swaps or
   // `ARCHETYPE_FEATURE_EFFECTS` at all. What IS asserted here, at the engine
   // level: the base Combat Style Feat grant is correctly suppressed (no
   // double-counting), and the archetype's own feature carries the right

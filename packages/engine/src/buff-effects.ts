@@ -1,9 +1,9 @@
 /**
  * Hand-authored extra `Change[]` appended to a small, named set of vendored
  * buffs whose own `changes[]` are missing a numeric effect their published
- * description text promises (issue #67) — same "vendored gap, patched
- * clean-room" posture as `archetype-effects.ts`/`feat-effects.ts` patch a gap
- * in a class feature/feat rather than a buff.
+ * description text promises — same "vendored gap, patched clean-room" posture
+ * as `archetype-effects.ts`/`feat-effects.ts` patch a gap in a class
+ * feature/feat rather than a buff.
  *
  * Keyed by the buff's NAME, not its `RefData.buffs` id (a content hash that
  * could shift across a future data-pipeline rebuild) — `ActiveBuff.name` is a

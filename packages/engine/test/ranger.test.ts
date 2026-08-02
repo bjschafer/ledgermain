@@ -89,7 +89,7 @@ describe("COMBAT_STYLES", () => {
   it("has the CRB + Ultimate Combat styles, then the two archetype-exclusive styles, each with a non-empty feat tree", () => {
     const ids = COMBAT_STYLES.map((s) => s.id);
     // Two CRB styles, then the five from Ultimate Combat, then the two
-    // archetype-exclusive styles authored for issue #59 (Elemental Envoy,
+    // archetype-exclusive styles authored for the ranger-style work (Elemental Envoy,
     // Wave Warden) — only selectable by locking into the granting archetype
     // (see apps/web/src/model/ranger.ts `RANGER_ARCHETYPE_STYLE_RULES`).
     expect(ids).toEqual([

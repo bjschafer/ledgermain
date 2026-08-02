@@ -1,14 +1,14 @@
 /**
- * Pure shifter-aspect transitions (issue #65): the build-time pick
- * (`build.shifterAspects`, mirroring `toggleAlchemistDiscovery`) plus a
- * live minor-form buff toggle (mirroring `toggleLinkedBuff` in
- * `model/buffs.ts` — same "activate/deactivate a well-known buff" shape),
- * built directly from `@pf1/engine` `SHIFTER_ASPECTS` rather than routed
- * through a resource pool's `linkedBuffIds`, since there is no vendored
- * `RefData.buffs` entry to link (see that table's doc comment — aspects
- * aren't part of the Foundry data pack at all). Synthetic buff id
- * `shifter-aspect:<aspectId>` keeps this toggle's "active" instance
- * findable without colliding with any real `RefData.buffs` key.
+ * Pure shifter-aspect transitions: the build-time pick
+ * (`build.shifterAspects`, mirroring `toggleAlchemistDiscovery`) plus a live
+ * minor-form buff toggle (mirroring `toggleLinkedBuff` in `model/buffs.ts` —
+ * same "activate/deactivate a well-known buff" shape), built directly from
+ * `@pf1/engine` `SHIFTER_ASPECTS` rather than routed through a resource pool's
+ * `linkedBuffIds`, since there is no vendored `RefData.buffs` entry to link
+ * (see that table's doc comment — aspects aren't part of the Foundry data pack
+ * at all). Synthetic buff id `shifter-aspect:<aspectId>` keeps this toggle's
+ * "active" instance findable without colliding with any real `RefData.buffs`
+ * key.
  *
  * Budget (PF1 Blood of the Beast, verified against the class table): a
  * shifter knows her first aspect at 1st level, a 2nd at 5th, a 3rd at 10th,

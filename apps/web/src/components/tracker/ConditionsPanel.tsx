@@ -34,8 +34,8 @@ export function ConditionsPanel({ doc, sheet, update }: BuilderProps) {
           const implied = supersededBy !== undefined;
           const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
           // Full explanation of the chip's state — the only place this text
-          // lives, so it needs a tap-reachable form too (issue #60), not just
-          // the button's `title=` (invisible on touch).
+          // lives, so it needs a tap-reachable form too, not just the button's
+          // `title=` (invisible on touch).
           const roundsLeft = conditionRoundsLeft(doc, id);
           const immuneTo = conditionImmunityFor(sheet, id);
           const tipContent = immuneTo

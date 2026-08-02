@@ -1,5 +1,5 @@
 /**
- * Fixture tests for issue #81 (weapon/armor/shield proficiency): class
+ * Fixture tests for weapon/armor/shield proficiency: class
  * grants, proficiency feats (including the Martial/Exotic Weapon
  * Proficiency weapon pick), the five racial grants, the standalone
  * `isWeaponProficient`/`isArmorTypeProficient`/`isShieldTierProficient`

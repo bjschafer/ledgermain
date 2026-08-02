@@ -13,8 +13,8 @@
  *   - Healing restores current HP up to max; it never restores temporary HP.
  *     Curing hit point damage also removes an equal amount of nonlethal damage
  *     (PF1 CRB, Nonlethal Damage), floored at 0.
- *   - Nonlethal damage accumulates separately; when it meets/exceeds current HP
- *     the creature is staggered/unconscious — see `hpState` (issue #20).
+ *   - Nonlethal damage accumulates separately; when it meets/exceeds current
+ *     HP the creature is staggered/unconscious — see `hpState`.
  *
  * This module deliberately does not touch ability-damage-driven unconsciousness
  * (Str/Dex/Con damage reaching the current score) or the negative-level death
@@ -73,23 +73,23 @@ export function setTempHp(doc: CharacterDoc, value: number): CharacterDoc {
 }
 
 /**
- * Sync `live.hp.temp` to a buff/feature's granted temp-HP contribution (issue
- * #67) after a doc transition that may have activated/deactivated a
- * `tempHp`-granting buff (e.g. toggling Unchained Rage — see
- * `@pf1/engine` `buff-effects.ts`). `before`/`after` are the doc states
- * immediately before and after that transition; both get run through
- * `compute()` here to read `DerivedSheet.hp.grantedTemp.total`.
+ * Sync `live.hp.temp` to a buff/feature's granted temp-HP contribution after a
+ * doc transition that may have activated/deactivated a `tempHp`-granting buff
+ * (e.g. toggling Unchained Rage — see `@pf1/engine` `buff-effects.ts`).
+ * `before`/`after` are the doc states immediately before and after that
+ * transition; both get run through `compute` here to read
+ * `DerivedSheet.hp.grantedTemp.total`.
  *
  * PF1 RAW backs the two rules this applies:
  *   - Activation/level-up raises the ceiling: if the granted total is now
  *     HIGHER than the current temp-HP pool, raise the pool to match (Unchained
  *     Rage's own d20pfsrd wording: entering rage grants "2 temporary hit
  *     points per Hit Die," i.e. the pool becomes (at least) that amount).
- *   - Full deactivation clears it: if the granted total drops to exactly 0
- *     and there WAS a nonzero granted total before (a real "the last
+ *   - Full deactivation clears it: if the granted total drops to exactly 0 and
+ *     there WAS a nonzero granted total before (a real "the last
  *     tempHp-granting buff just turned off" transition, not merely "nothing
  *     was granting anyway"), clear the pool to 0 — matches Unchained Rage's
- *     own RAW ("these temporary hit points ... disappear when rage ends").
+ *     own RAW ("these temporary hit points... disappear when rage ends").
  *
  * Deliberately punted edge cases (this tracker keeps ONE unified `live.hp.temp`
  * pool, not a per-source ledger, so these can't be resolved more precisely
@@ -156,14 +156,14 @@ export function healNonlethal(doc: CharacterDoc, amount: number): CharacterDoc {
  * action represents, that's far more than any accumulated nonlethal total, so
  * a full clear is the exact result under both modes below, not a shortcut.
  *
- * `opts.mode` controls current-HP healing (issue #32):
- * - `"full"` (default): heal straight to `max` — the pre-#32 behavior, and
+ * `opts.mode` controls current-HP healing:
+ * - `"full"` (default): heal straight to `max` — the earlier behavior, and
  *   still the default for any document without a `restMode` setting.
  * - `"natural"`: PF1 RAW night's-rest rate — current HP heals by `opts.level`
  *   × 1, capped at `max`. Full bed rest (2×level, a full day of doing nothing
  *   else) is deliberately out of scope for v1 — this only models one night.
  *
- * `opts` is optional (and `mode`/`level` within it) so pre-#32 two-arg call
+ * `opts` is optional (and `mode`/`level` within it) so older two-arg call
  * sites keep compiling and keep their heal-to-max behavior unchanged.
  */
 export function restHp(
@@ -207,12 +207,12 @@ export function reconcileCurrentHp(
   return null;
 }
 
-/** Manually set the "stabilized" flag (issue #20) — see the schema doc comment on `live.stable`. */
+/** Manually set the "stabilized" flag — see the schema doc comment on `live.stable`. */
 export function setStable(doc: CharacterDoc, stable: boolean): CharacterDoc {
   return { ...doc, live: { ...doc.live, stable } };
 }
 
-/** Discriminated HP-total status (issue #20). See `hpState`'s doc comment for the state machine. */
+/** Discriminated HP-total status. See `hpState`'s doc comment for the state machine. */
 export type HpStatus =
   | "ok"
   | "no-hp"

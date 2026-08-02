@@ -25,12 +25,11 @@ interface NinjaTrickPickerProps {
 const TIER_LABEL: Record<string, string> = { trick: "Trick", master: "Master Trick" };
 
 /**
- * Ninja trick selection (issue #65 wave B), mirroring `HexPicker` — tricks
- * are a flat picker over every trick the ninja's current level makes at
- * least soft-available. Gained at 2nd level and every two levels
- * thereafter; see `model/ninjaTricks.ts`'s budget math. Free-choice, never
- * blocks past the expected count — same hybrid-prereqs posture as
- * `HexPicker`.
+ * Ninja trick selection (B), mirroring `HexPicker` — tricks are a flat picker
+ * over every trick the ninja's current level makes at least soft-available.
+ * Gained at 2nd level and every two levels thereafter; see
+ * `model/ninjaTricks.ts`'s budget math. Free-choice, never blocks past the
+ * expected count — same hybrid-prereqs posture as `HexPicker`.
  *
  * Master tricks (10th level) are soft-filtered by `minLevel` exactly like a
  * witch major/grand hex's own higher minimum — below-level master tricks
@@ -42,11 +41,11 @@ const TIER_LABEL: Record<string, string> = { trick: "Trick", master: "Master Tri
  * "— Ninja Trick"), via `collectGrantedFeatures`/`resolveClassFeatures` in
  * `@pf1/engine` `archetypes.ts`.
  *
- * Browses the FULL published catalog (`mergedNinjaTrickCatalog` — issue #74), not
- * just the 44-entry hand-verified slice — every ninja trick
- * (hand-authored or vendored-only) is `displayOnly` (no flat always-on
- * number, see `ninja-tricks.ts`'s doc comment), so unlike `RagePowerPicker`
- * there is no "M" (modeled) badge to show here.
+ * Browses the FULL published catalog (`mergedNinjaTrickCatalog`), not just the
+ * 44-entry hand-verified slice — every ninja trick (hand-authored or
+ * vendored-only) is `displayOnly` (no flat always-on number, see
+ * `ninja-tricks.ts`'s doc comment), so unlike `RagePowerPicker` there is no
+ * "M" (modeled) badge to show here.
  */
 export function NinjaTrickPicker({ doc, refData, update }: NinjaTrickPickerProps) {
   const isNinja = doc.identity.classes.some((c) => c.tag === "ninja");

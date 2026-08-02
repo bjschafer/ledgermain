@@ -3,7 +3,7 @@
  * published rules (Advanced Player's Guide / Ultimate Campaign, public SRD
  * content). Written when traits were NOT part of any vendored data (same
  * posture as `tables.ts`/`familiars.ts` for content the compendium doesn't
- * carry) — issue #74 later added the full ~2,000-entry published
+ * carry) — later added the full ~2,000-entry published
  * catalog as `RefData.traits` (the pf1-content community module's
  * `pf-traits` pack), but this hand-verified 28-entry table is kept as-is
  * rather than replaced: `mergedTraits`/`resolveTraitDef` below fold the two
@@ -23,24 +23,24 @@
  * trait bonuses resolve to the highest, exactly like `"racial"` or `"morale"`).
  *
  * Modelling notes / deliberate limitations:
- *   - Several traits' benefits are conditional on a situation the static sheet
- *     can't detect (flanking, surprise rounds, a specific attacker's gender,
- *     "when confirming a critical hit") — those carry `changes: []` (or a
- *     change against an unapplied target, e.g. `critConfirm`) plus a
- *     `contextNotes` reminder, never a flat always-on number that would
- *     over-apply. This mirrors `conditions.ts`'s prone/blinded treatment.
- *   - "Make skill X a class skill" rides the `TraitDef.classSkills` axis
- *     (unioned into `compute.ts`'s classSkillSet, same as the feat
- *     `classSkills` axis) — but only for grants naming a fixed base skill.
- *     A grant naming one specific Craft/Profession/Perform instance (Child
- *     of the Temple's temple-related Profession) stays a `contextNotes`
- *     reminder: instance slugs are player-chosen, so the engine can't name
- *     the instance the grant would attach to.
- *   - `cl` (caster level) and `concentration` are real `Change` targets used
- *     elsewhere in the vendored data (see `targets.ts`) but are not folded
- *     into any discrete number on today's static sheet — Magical Knack and
- *     Focused Mind still carry a real `Change` (for provenance / the existing
- *     "not auto-applied" badge machinery) plus a clarifying `contextNotes`.
+ * - Several traits' benefits are conditional on a situation the static sheet
+ * can't detect (flanking, surprise rounds, a specific attacker's gender,
+ * "when confirming a critical hit") — those carry `changes: []` (or a
+ * change against an unapplied target, e.g. `critConfirm`) plus a
+ * `contextNotes` reminder, never a flat always-on number that would
+ * over-apply. This mirrors `conditions.ts`'s prone/blinded treatment.
+ * - "Make skill X a class skill" rides the `TraitDef.classSkills` axis
+ * (unioned into `compute.ts`'s classSkillSet, same as the feat
+ * `classSkills` axis) — but only for grants naming a fixed base skill.
+ * A grant naming one specific Craft/Profession/Perform instance (Child
+ * of the Temple's temple-related Profession) stays a `contextNotes`
+ * reminder: instance slugs are player-chosen, so the engine can't name
+ * the instance the grant would attach to.
+ * - `cl` (caster level) and `concentration` are real `Change` targets used
+ * elsewhere in the vendored data (see `targets.ts`) but are not folded
+ * into any discrete number on today's static sheet — Magical Knack and
+ * Focused Mind still carry a real `Change` (for provenance / the existing
+ * "not auto-applied" badge machinery) plus a clarifying `contextNotes`.
  */
 
 import type { Change, RefData, Trait, TraitCategory, TraitDef } from "@pf1/schema";
@@ -415,10 +415,9 @@ function normalizeTraitName(name: string): string {
 }
 
 /**
- * Names already covered by the hand-authored table (issue #23) — used to
- * drop the vendored catalog's duplicate of each one (issue #74). See
- * {@link mergedTraits}'s doc comment for why the hand-authored side always
- * wins rather than a field-by-field overlay.
+ * Names already covered by the hand-authored table — used to drop the vendored
+ * catalog's duplicate of each one. See {@link mergedTraits}'s doc comment for
+ * why the hand-authored side always wins rather than a field-by-field overlay.
  */
 const HAND_AUTHORED_TRAIT_NAMES = new Set(TRAIT_LIST.map((tr) => normalizeTraitName(tr.name)));
 
@@ -491,15 +490,15 @@ export function traitGrantedClassSkills(
 
 /**
  * The full pickable trait catalog for browsing: the 28 hand-authored entries
- * (issue #23) plus every vendored trait (issue #74) whose normalized
- * name doesn't collide with one of them. On a name collision the
- * hand-authored entry wins outright — same "richer record wins" precedent as
- * `data-pipeline`'s feats merge (system pack over the community pack) —
- * rather than splicing fields from both, since every hand-authored trait's
- * mechanics are already hand-verified against the published rules and a
- * partial overlay risks quietly regressing that verification. Recomputes
- * from `refData.traits` on every call; callers should memoize on `refData`
- * (a stable reference for the app's lifetime), not call this per keystroke.
+ * plus every vendored trait whose normalized name doesn't collide with one of
+ * them. On a name collision the hand-authored entry wins outright — same
+ * "richer record wins" precedent as `data-pipeline`'s feats merge (system pack
+ * over the community pack) — rather than splicing fields from both, since
+ * every hand-authored trait's mechanics are already hand-verified against the
+ * published rules and a partial overlay risks quietly regressing that
+ * verification. Recomputes from `refData.traits` on every call; callers should
+ * memoize on `refData` (a stable reference for the app's lifetime), not call
+ * this per keystroke.
  */
 export function mergedTraits(refData: RefData): Record<string, TraitDef> {
   const out: Record<string, TraitDef> = { ...TRAITS };

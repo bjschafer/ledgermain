@@ -44,19 +44,18 @@ const ABILITY_OPTIONS: { id: AbilityId; label: string }[] = [
 ];
 
 /**
- * Tracked animal companion (PF1 druid Nature Bond / ranger Hunter's Bond /
- * ACG Hunter's own Animal Companion feature / cavalier & samurai Mount,
- * issue #68) — species + name + which class feature(s) grant it, mirroring
- * `FamiliarPicker` closely. Unlike a familiar (class-agnostic — any feature
- * can grant one), a companion is ALWAYS sourced from a specific bond choice,
- * so this only renders for characters with druid levels (Nature Bond),
- * ranger levels ≥ 4 (Hunter's Bond), hunter levels (the ACG Hunter class's
- * own Animal Companion feature, issue #65 — distinct from the ranger's
- * similarly-named "Hunter's Bond", see `@pf1/engine`
- * `companionEffectiveLevel`'s doc comment), or cavalier/samurai levels (the
- * "Mount" class feature, granted at 1st level unlike the ranger's 4th-level
- * gate) — a druid choosing the domain option instead, and a ranger below
- * 4th level, simply see no picker yet.
+ * Tracked animal companion (PF1 druid Nature Bond / ranger Hunter's Bond / ACG
+ * Hunter's own Animal Companion feature / cavalier & samurai Mount) — species
+ * + name + which class feature(s) grant it, mirroring `FamiliarPicker`
+ * closely. Unlike a familiar (class-agnostic — any feature can grant one), a
+ * companion is ALWAYS sourced from a specific bond choice, so this only
+ * renders for characters with druid levels (Nature Bond), ranger levels ≥ 4
+ * (Hunter's Bond), hunter levels (the ACG Hunter class's own Animal Companion
+ * feature — distinct from the ranger's similarly-named "Hunter's
+ * Bond", see `@pf1/engine` `companionEffectiveLevel`'s doc comment), or
+ * cavalier/samurai levels (the "Mount" class feature, granted at 1st level
+ * unlike the ranger's 4th-level gate) — a druid choosing the domain option
+ * instead, and a ranger below 4th level, simply see no picker yet.
  */
 export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionPickerProps) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:AnimalCompanion", false);
@@ -87,7 +86,7 @@ export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionP
   const abilityIncreases = companion?.abilityIncreases ?? [];
   const sizeIsSmall = refData.races[doc.identity.race]?.size === "sm";
   const mountHint = mountSpeciesHint(doc, refData).map((id) => BASE_COMPANIONS[id]?.name ?? id);
-  // Full derived stat block (issue #68) — needed for the companion's OWN
+  // Full derived stat block — needed for the companion's OWN
   // hd/bab/abilities/skill totals/feat budget, none of which the raw
   // `AnimalCompanionBuild` alone carries.
   const derivedCompanion = deriveCompanionSheet(doc, refData);

@@ -1,10 +1,10 @@
 /**
- * Machine-extracted feat effects — issue #45's feat batch-extraction pass,
- * sibling to `feat-effects.ts`'s hand-verified `FEAT_EFFECTS`/`FEAT_POOL_EFFECTS`
- * and mirroring `archetype-extracted/`'s `ExtractedArchetypeFeatureEffect`
- * shape (`confidence` + `provenance`). See `feat-classification.ts` for the
- * full per-feat audit this table was drawn from, and `feat-effects-resolve.ts`
- * for the precedence rule between this table and the hand-verified one.
+ * Machine-extracted feat effects — the feat batch-extraction pass, sibling to
+ * `feat-effects.ts`'s hand-verified `FEAT_EFFECTS`/`FEAT_POOL_EFFECTS` and
+ * mirroring `archetype-extracted/`'s `ExtractedArchetypeFeatureEffect` shape
+ * (`confidence` + `provenance`). See `feat-classification.ts` for the full
+ * per-feat audit this table was drawn from, and `feat-effects-resolve.ts` for
+ * the precedence rule between this table and the hand-verified one.
  *
  * Every entry here was individually read against the vendored feat
  * `description` (this repo's own OGL data slice) and cross-checked against

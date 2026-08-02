@@ -103,15 +103,15 @@ export function extractSpellSr(description: string[] | undefined): string | unde
 }
 
 /**
- * Attaches `Spell.sr` display text to the vendored spell catalog by NAME
- * match against the "Pf Data 1e" `spells*.json` dictionaries (issue #74) —
- * the pinned Foundry pack's own `system.sr` is upstream-dead (never `true` in
- * any vendored spell, see `SCHEMA_VERSION`'s v18 note), so this is the only
- * source of the field. Mutates `spells` in place; unmatched vendored spells
- * simply keep `sr` unset rather than guessing. Logs a matched/unmatched
- * summary to the build console (not thrown — PFDATA legitimately omits a
- * handful of spells Foundry has, and vice versa, so drift here isn't a hard
- * error the way a missing hand-authored supplement name would be).
+ * Attaches `Spell.sr` display text to the vendored spell catalog by NAME match
+ * against the "Pf Data 1e" `spells*.json` dictionaries — the pinned Foundry
+ * pack's own `system.sr` is upstream-dead (never `true` in any vendored spell,
+ * see `SCHEMA_VERSION`'s v18 note), so this is the only source of the field.
+ * Mutates `spells` in place; unmatched vendored spells simply keep `sr` unset
+ * rather than guessing. Logs a matched/unmatched summary to the build console
+ * (not thrown — PFDATA legitimately omits a handful of spells Foundry has, and
+ * vice versa, so drift here isn't a hard error the way a missing hand-authored
+ * supplement name would be).
  */
 export function applySpellSrSupplements(spells: Spell[], pfDataJsonDir: string): void {
   const addTo = (index: Map<string, Spell[]>, key: string, spell: Spell) => {

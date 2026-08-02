@@ -1,12 +1,12 @@
 /**
- * Metamagic registry sanity + completeness tests (issue #71): the modeled
- * slot increases must match the published PF1 rules, and every registered
- * entry must resolve to a real, still-tagged feat. Feat ids are opaque
- * Foundry UUIDs — see feat-effects.ts's featNameSlug doc comment for why
- * slugs, not ids, are the stable key.
+ * Metamagic registry sanity + completeness tests: the modeled slot increases
+ * must match the published PF1 rules, and every registered entry must resolve
+ * to a real, still-tagged feat. Feat ids are opaque Foundry UUIDs — see
+ * feat-effects.ts's featNameSlug doc comment for why slugs, not ids, are the
+ * stable key.
  *
  * The registry's coverage is frozen at the 10 Core metamagic feats audited
- * for issue #71 — it predates the `pf1-content` community-pack merge, which
+ * It predates the `pf1-content` community-pack merge, which
  * tags dozens more feats `"Metamagic"` that this file makes no claim about.
  * An unregistered metamagic feat still displays; `metamagicDef` simply
  * returns `undefined` for it and callers treat that as "no slot-cost

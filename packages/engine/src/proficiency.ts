@@ -1,6 +1,6 @@
 /**
- * Weapon/armor/shield proficiency (issue #81) — clean-room from PF1 RAW, not
- * Foundry source. Four grant sources are combined into one set:
+ * Weapon/armor/shield proficiency — clean-room from PF1 RAW, not Foundry
+ * source. Four grant sources are combined into one set:
  *
  *  1. Class grants — every class's vendored `weaponProf`/`armorProf` arrays
  *     (`packages/data-pipeline/data/classes.json`, typed on `RefData.Class`)
@@ -13,10 +13,10 @@
  *     token vocabulary and what's deliberately dropped.
  *  2. Proficiency feats — Simple/Martial/Exotic Weapon Proficiency, Light/
  *     Medium/Heavy Armor Proficiency, Shield Proficiency, Tower Shield
- *     Proficiency. Martial/Exotic are per-weapon picks (issue #58 repeatable,
- *     see `repeatableFeats.ts`); the chosen weapon is read straight off
- *     `doc.build.featChoices`/`extraFeats[].choiceId` — same storage as
- *     Weapon Focus, but consumed here directly rather than through
+ *     Proficiency. Martial/Exotic are per-weapon picks (repeatable, see
+ *     `repeatableFeats.ts`); the chosen weapon is read straight off
+ *     `doc.build.featChoices`/`extraFeats[].choiceId` — same storage as Weapon
+ *     Focus, but consumed here directly rather than through
  *     `resolveFeatEffect`'s Change pipeline, since "am I proficient" is a
  *     set-membership fact, not a stacking bonus (see `apps/web/src/model/
  *     feats.ts`'s `MECHANICAL_FEAT_CHOICES` for the picker-UI side of this).
@@ -31,8 +31,7 @@
  *     text, see `model/alignment.ts`'s identical gap). Unpicked, the token
  *     grants nothing rather than guessing a weapon.
  *
- * Deliberately NOT modeled (see the issue and CLAUDE.md's warn-don't-block
- * posture):
+ * Deliberately NOT modeled (CLAUDE.md's warn-don't-block posture):
  *  - Archetype proficiency swaps (many archetypes trade an armor/weapon
  *    proficiency) — class grants here are always the BASE class's.
  *  - Monk's/druid's "restricted weapon list" flavor rule — that's an oath/
@@ -128,7 +127,7 @@ const ARMOR_PROF_HEAVY_SLUG = "armor-proficiency-heavy";
 const SHIELD_PROF_SLUG = "shield-proficiency";
 const TOWER_SHIELD_PROF_SLUG = "tower-shield-proficiency";
 
-/** Every resolved feat instance — the primary `build.feats` entries, plus any `extraFeats` (issue #58) instances. */
+/** Every resolved feat instance — the primary `build.feats` entries, plus any `extraFeats` instances. */
 function collectFeatInstances(
   doc: CharacterDoc,
   refData: RefData,
@@ -192,15 +191,15 @@ interface RacialWeaponGrant {
 }
 
 /**
- * Racial weapon-proficiency grants (issue #81), hand-authored from each
- * race's SRD entry — matched by race NAME (`RefData.races[id].name`), same
- * precedent as `racial-traits.ts`'s `AlternateRacialTrait.race`. Composite
- * bow variants (elf) share their base bow's `group` slug in the vendored data
- * (`Composite Longbow` groups as "longbow", same as `Longbow`), so a single
+ * Racial weapon-proficiency grants, hand-authored from each race's SRD entry —
+ * matched by race NAME (`RefData.races[id].name`), same precedent as
+ * `racial-traits.ts`'s `AlternateRacialTrait.race`. Composite bow variants
+ * (elf) share their base bow's `group` slug in the vendored data (`Composite
+ * Longbow` groups as "longbow", same as `Longbow`), so a single
  * "longbow"/"shortbow" grant already covers both. Dwarf's waraxe/urgrosh and
  * gnome's hooked hammer are RAW EXOTIC weapons the race simply treats as
- * proficient — a named grant has the identical effect as "treated as
- * martial" for this engine's binary proficient/not-proficient purposes.
+ * proficient — a named grant has the identical effect as "treated as martial"
+ * for this engine's binary proficient/not-proficient purposes.
  */
 const RACIAL_WEAPON_PROFICIENCY: Readonly<Record<string, RacialWeaponGrant[]>> = {
   Elf: [

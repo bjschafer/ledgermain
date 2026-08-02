@@ -191,9 +191,9 @@ describe("expectedFeatCount: Ranger Combat Style bonus feats", () => {
   // Ranger's "Combat Style Feat" (granted at rL 2) carries a vendored
   // `changes[]` entry targeting `bonusFeats` with formula
   // "floor((@class.unlevel + 2) / 4)" — this flows through the same generic
-  // classBonusFeats() pipeline as Fighter/Wizard/Sorcerer with no
-  // hand-authoring needed (issue #13 step 2 audit). No feat is literally
-  // named "Combat Style Feat", so it's a free slot, not a fixed grant.
+  // classBonusFeats pipeline as Fighter/Wizard/Sorcerer with no hand-authoring
+  // needed (step 2 audit). No feat is literally named "Combat Style Feat", so
+  // it's a free slot, not a fixed grant.
 
   it("Ranger 6 Elf → 3 base + 2 combat style = 5", () => {
     const doc = makeDoc({ classes: [{ tag: "ranger", level: 6 }], race: "Elf" });
@@ -249,17 +249,17 @@ describe("expectedFeatCount: archetype swaps of bonus-feat features (issue #40)"
 describe("expectedFeatCount: Monk Bonus Feat (Unarmed Strike quirk fixed)", () => {
   // Monk's "Bonus Feat (MNK)" (granted at rL 1) carries a vendored `changes[]`
   // entry targeting `bonusFeats` with formula "1 + floor((@class.unlevel + 2)
-  // / 4)" — flows through the same generic classBonusFeats() pipeline with no
-  // hand-authoring needed (issue #13 step 1 audit).
+  // / 4)" — flows through the same generic classBonusFeats pipeline with no
+  // hand-authoring needed (step 1 audit).
   //
   // Also discovered while auditing (step 1): Monk's "Unarmed Strike" class
   // feature ALSO carries a vendored `changes[]` entry targeting `bonusFeats`
   // with a flat formula of "1" — Foundry's way of representing the automatic
   // Improved Unarmed Strike grant every monk gets at L1. Its feature name
   // ("Unarmed Strike") doesn't match the feat it grants ("Improved Unarmed
-  // Strike"), so `classBonusFeats()`'s by-name fixed-grant filter used to
-  // miss it and inflate the free bonus-feat-slot budget by +1 at every monk
-  // level. Fixed in step 2 via `FEATURE_NAME_OVERRIDES` in `feats.ts` — the
+  // Strike"), so `classBonusFeats`'s by-name fixed-grant filter used to miss
+  // it and inflate the free bonus-feat-slot budget by +1 at every monk level.
+  // Fixed in step 2 via `FEATURE_NAME_OVERRIDES` in `feats.ts` — the
   // expectations below assert the SRD-correct (un-inflated) behavior.
 
   it("Monk 1 Elf → 1 base + Bonus Feat(1), Unarmed Strike no longer inflates the budget = 2", () => {
@@ -696,7 +696,7 @@ describe("featChoiceOptions", () => {
   });
 });
 
-// ─── issue #55: choice-requiring feats without a picker ─────────────────────
+// ─── choice-requiring feats without a picker ─────────────────────
 
 describe("featChoiceDescriptor: issue #55 additions", () => {
   it('Spell Focus gets a "school" descriptor (display-only, no engine effect)', () => {
@@ -717,7 +717,7 @@ describe("featChoiceDescriptor: issue #55 additions", () => {
   it("engine-wired choice feats (Weapon Focus, Skill Focus) still resolve through resolveFeatEffect first", () => {
     expect(featChoiceDescriptor("Weapon Focus")).toEqual({ type: "weapon", label: "Weapon Type" });
     expect(featChoiceDescriptor("Skill Focus")?.type).toBe("skill");
-    // Greater Weapon Focus/Specialization (machine-extracted, issue #45) keep working.
+    // Greater Weapon Focus/Specialization (machine-extracted) keep working.
     expect(featChoiceDescriptor("Greater Weapon Focus")?.type).toBe("weapon");
     expect(featChoiceDescriptor("Greater Weapon Specialization")?.type).toBe("weapon");
   });
@@ -795,7 +795,7 @@ describe("featDisplayName", () => {
   });
 });
 
-// ─── issue #58: repeatable feats — instance model ────────────────────────────
+// ─── repeatable feats — instance model ────────────────────────────
 
 function featIdNamedTop(name: string): string {
   const feat = Object.values(ref.feats).find((f) => f.name === name);

@@ -10,8 +10,8 @@ import {
 } from "../src/index.js";
 
 /**
- * Coverage for the Monk (Unchained) ki-power vendored-catalog overlay (issue
- * #74) — mirrors `witchHexCatalog.test.ts`'s full-parity pattern.
+ * Coverage for the Monk (Unchained) ki-power vendored-catalog overlay —
+ * mirrors `witchHexCatalog.test.ts`'s full-parity pattern.
  */
 const ref = loadRefData();
 

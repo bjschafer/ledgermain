@@ -1,7 +1,7 @@
 /**
- * Pure witch-hex transitions (issue #65). Hex ids are just entries in
- * `build.witchHexes`, mirroring `toggleMagusArcana` in `model/magusArcana.ts`
- * — the engine's `WITCH_HEXES` table maps each to its (mostly display-only)
+ * Pure witch-hex transitions. Hex ids are just entries in `build.witchHexes`,
+ * mirroring `toggleMagusArcana` in `model/magusArcana.ts` — the engine's
+ * `WITCH_HEXES` table maps each to its (mostly display-only)
  * `changes[]`/`contextNotes`, applied through the same change-collection path
  * as arcana/exploits/revelations (see `@pf1/engine` `collect.ts`).
  *
@@ -12,18 +12,18 @@
  * `magusArcana.ts`'s flat shape, not `oracleRevelations.ts`'s mystery-scoped
  * one.
  *
- * Budget (PF1 Advanced Player's Guide, verified against the SRD class
- * table): a witch learns a new hex at 1st level and every even level
- * thereafter (1st, 2nd, 4th, 6th, ..., 20th — 11 total by 20th). Major hexes
- * (APG: "at 10th level, and every two levels thereafter, a witch can choose
- * one of the following hexes in place of one of her regular hex choices")
- * and Grand hexes (18th level) are NOT extra picks — they're just additional
- * options available within the same budget once the witch reaches that
- * level (see `WitchHexDef.tier`/`minLevel` — soft-filtered, same posture as
- * `MAGUS_ARCANA`'s `minLevel`). Each copy of the "Extra Hex" feat (a
- * stackable general feat) adds one more, counted by OCCURRENCE in
- * `doc.build.feats` (not just presence) — same "manually-added duplicates"
- * convention `expectedMagusArcanaCount` uses for "Extra Arcana".
+ * Budget (PF1 Advanced Player's Guide, verified against the SRD class table):
+ * a witch learns a new hex at 1st level and every even level thereafter (1st,
+ * 2nd, 4th, 6th,..., 20th — 11 total by 20th). Major hexes (APG: "at 10th
+ * level, and every two levels thereafter, a witch can choose one of the
+ * following hexes in place of one of her regular hex choices") and Grand hexes
+ * (18th level) are NOT extra picks — they're just additional options available
+ * within the same budget once the witch reaches that level (see
+ * `WitchHexDef.tier`/`minLevel` — soft-filtered, same posture as
+ * `MAGUS_ARCANA`'s `minLevel`). Each copy of the "Extra Hex" feat (a stackable
+ * general feat) adds one more, counted by OCCURRENCE in `doc.build.feats` (not
+ * just presence) — same "manually-added duplicates" convention
+ * `expectedMagusArcanaCount` uses for "Extra Arcana".
  *
  * This module never blocks: taking more than the expected count is a soft
  * warning only, matching the project's hybrid posture on feat/trait/skill

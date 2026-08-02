@@ -1,7 +1,7 @@
 /**
- * Unit tests for `model/monkKiPowers.ts` (issue #65 — previously deferred
- * Monk (Unchained) Ki Powers). Mirrors the `witchHexes`/`magusArcana` budget-
- * math test pattern.
+ * Unit tests for `model/monkKiPowers.ts` (previously deferred Monk (Unchained)
+ * Ki Powers). Mirrors the `witchHexes`/`magusArcana` budget- math test
+ * pattern.
  */
 import { describe, expect, it } from "bun:test";
 

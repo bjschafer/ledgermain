@@ -6,9 +6,9 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute } from "../src/index.js";
 
 /**
- * Issue #34 (bloodline arcana + powers) gave `build.sorcererBloodline` real
+ * Bloodline arcana and powers gave `build.sorcererBloodline` real
  * numeric weight: a KNOWN bloodline tag (one of the 10 CRB bloodlines
- * hand-authored in `@pf1/engine` `bloodlines.ts`) now changes `compute()`'s
+ * hand-authored in `@pf1/engine` `bloodlines.ts`) now changes `compute`'s
  * output (e.g. Draconic's +1 HP/level arcana). An UNKNOWN tag, or the field
  * set on a non-sorcerer, still changes nothing — same posture as an
  * unresolvable cleric domain/wizard school tag.

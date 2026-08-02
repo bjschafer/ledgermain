@@ -6,10 +6,11 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { compute, resolveArchetypeFeatureEffect } from "../src/index.js";
 
 /**
- * Issue #45 (ranger wave 2 of the prose→Change extraction pipeline): fixture
- * tests for `archetype-extracted/ranger.ts`'s `RANGER_ARCHETYPE_EFFECTS_EXTRACTED`,
- * hand-computed against the real vendored data slice via `loadRefData()`,
- * same posture as `archetypeEffectsExtracted.test.ts` (fighter's pilot).
+ * fixture
+ * tests for `archetype-extracted/ranger.ts`'s
+ * `RANGER_ARCHETYPE_EFFECTS_EXTRACTED`, hand-computed against the real
+ * vendored data slice via `loadRefData`, same posture as
+ * `archetypeEffectsExtracted.test.ts` (fighter's pilot).
  */
 const ref = loadRefData();
 

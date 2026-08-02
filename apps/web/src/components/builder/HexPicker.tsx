@@ -25,14 +25,14 @@ interface HexPickerProps {
 const TIER_LABEL: Record<string, string> = { hex: "Hex", major: "Major Hex", grand: "Grand Hex" };
 
 /**
- * Witch hex selection (issue #65, full-catalog issue #74), mirroring
+ * Witch hex selection (full-catalog), mirroring
  * `MagusArcanaPicker`/`RagePowerPicker` — hexes are NOT patron-scoped (unlike
  * oracle revelations, which are mystery-scoped; see `@pf1/engine`
- * `witch-hexes.ts`'s doc comment), so this is a flat picker over every hex
- * the witch's current level makes at least soft-available. A witch learns a
- * new hex at 1st level and every even level thereafter, plus one more per
- * "Extra Hex" feat (see `model/witchHexes.ts`'s budget math). Free-choice,
- * never blocks past the expected count — same hybrid-prereqs posture as
+ * `witch-hexes.ts`'s doc comment), so this is a flat picker over every hex the
+ * witch's current level makes at least soft-available. A witch learns a new
+ * hex at 1st level and every even level thereafter, plus one more per "Extra
+ * Hex" feat (see `model/witchHexes.ts`'s budget math). Free-choice, never
+ * blocks past the expected count — same hybrid-prereqs posture as
  * `MagusArcanaPicker`.
  *
  * Major hexes (10th level) and Grand hexes (18th level) are soft-filtered by
@@ -45,7 +45,7 @@ const TIER_LABEL: Record<string, string> = { hex: "Hex", major: "Major Hex", gra
  * Every entry today is display-only (see `@pf1/engine` `witch-hexes.ts`'s
  * doc comment for why), so the "M" badge convention (`RagePowerPicker`'s)
  * never actually lights up yet — kept for when a future hex is promoted to a
- * real Change, same posture as rage powers before issue #75.
+ * real Change, same posture as rage powers before the buff-gate pass.
  *
  * Picked hexes also show up in the sheet's Class Features list (tagged
  * "— Hex"), via `collectGrantedFeatures`/`resolveClassFeatures` in

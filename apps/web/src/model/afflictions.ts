@@ -1,21 +1,21 @@
 /**
- * Pure transitions + derived helpers for ability damage/drain/penalty (issue
- * #18) and negative levels (issue #19) — collectively "afflictions". The
- * mechanical effect (the -1-per-2-points modifier math, the drain-lowers-the-
- * score math, the negative-level penalties) all lives in the engine
- * (`@pf1/engine` `collectModifiers`); this module only edits `doc.live.*` and
- * answers the couple of display-only questions (unconscious? dying?) that the
- * engine deliberately does NOT model (PF1 RAW says "surface a warning," not
- * "compute a knockout").
+ * Pure transitions + derived helpers for ability damage/drain/penalty and
+ * negative levels — collectively "afflictions". The mechanical effect (the
+ * -1-per-2-points modifier math, the drain-lowers-the- score math, the
+ * negative-level penalties) all lives in the engine (`@pf1/engine`
+ * `collectModifiers`); this module only edits `doc.live.*` and answers the
+ * couple of display-only questions (unconscious? dying?) that the engine
+ * deliberately does NOT model (PF1 RAW says "surface a warning," not "compute
+ * a knockout").
  *
  * Natural healing: PF1 RAW heals 1 point of ability damage per ability per day
  * of rest. This is now wired into the single "new day" action (`model/rest.ts`
- * `restNewDay`, issue #30) via {@link restAbilityDamage} below — previously
- * this module deliberately left it unwired (issue #18) because "rest" was
- * fragmented across independent panel buttons with no single new-day event to
- * hook. Players can still adjust ability damage by hand via the per-ability
- * stepper for anything `restNewDay` doesn't cover (e.g. multiple recoveries at
- * once, or correcting a value).
+ * `restNewDay`) via {@link restAbilityDamage} below — previously this module
+ * deliberately left it unwired because "rest" was fragmented across
+ * independent panel buttons with no single new-day event to hook. Players can
+ * still adjust ability damage by hand via the per-ability stepper for anything
+ * `restNewDay` doesn't cover (e.g. multiple recoveries at once, or correcting
+ * a value).
  */
 import { ABILITY_IDS } from "@pf1/schema";
 import type { AbilityId, CharacterDoc, DerivedSheet } from "@pf1/schema";
@@ -178,11 +178,11 @@ export function negLevelDeathWarning(doc: CharacterDoc, derived: DerivedSheet): 
  *
  * Distinct from {@link isDisabledByDamage} above: that warns when ability
  * DAMAGE alone reaches the *current* score (RAW's separate "damage equals
- * current score" unconsciousness rule, issue #18). This one fires when the
- * derived total has actually been driven to 0 or below by any combination of
- * afflictions. The two can both be true for the same ability at once (heavy
- * damage alone can push the derived total to 0) — callers should word them so
- * they read as complementary facts, not a duplicated warning.
+ * current score" unconsciousness rule). This one fires when the derived total
+ * has actually been driven to 0 or below by any combination of afflictions.
+ * The two can both be true for the same ability at once (heavy damage alone
+ * can push the derived total to 0) — callers should word them so they read as
+ * complementary facts, not a duplicated warning.
  */
 export function abilityZeroWarnings(
   derived: DerivedSheet,

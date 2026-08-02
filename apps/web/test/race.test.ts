@@ -1,9 +1,9 @@
 /**
- * Half-Elf Multitalented (issue #4): half-elves pick TWO favored classes,
- * earning the FCB choice for a level in EITHER one. There's no structured
- * RefData flag for this — see model/race.ts doc comment — so these tests
- * exercise the race-name-keyed detection plus the combined-level budget math
- * against the real vendored dataset.
+ * Half-Elf Multitalented: half-elves pick TWO favored classes, earning the FCB
+ * choice for a level in EITHER one. There's no structured RefData flag for
+ * this — see model/race.ts doc comment — so these tests exercise the
+ * race-name-keyed detection plus the combined-level budget math against the
+ * real vendored dataset.
  */
 import { describe, expect, it } from "bun:test";
 

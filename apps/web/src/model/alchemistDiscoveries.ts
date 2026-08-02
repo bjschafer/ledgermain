@@ -1,21 +1,20 @@
 /**
- * Pure alchemist-discovery transitions (issue #65). Discovery ids are just
- * entries in `build.alchemistDiscoveries`, mirroring `toggleMagusArcana` in
+ * Pure alchemist-discovery transitions. Discovery ids are just entries in
+ * `build.alchemistDiscoveries`, mirroring `toggleMagusArcana` in
  * `model/magusArcana.ts` — the engine's `ALCHEMIST_DISCOVERIES` table maps
  * each to its (mostly display-only) `changes[]`/`contextNotes`, applied
  * through the same change-collection path as arcana/exploits/hexes (see
  * `@pf1/engine` `collect.ts`).
  *
- * Budget (PF1 Advanced Player's Guide, verified against the SRD class
- * table): an alchemist learns a new discovery at 2nd level and every even
- * level thereafter (2nd, 4th, ..., 20th — 10 total by 20th) —
- * `floor(alchemistLevel / 2)`. The 20th-level "Grand Discovery" is automatic
- * (informational only, not one of these picks — same treatment as oracle's
- * Final Revelation, see `ORACLE_MYSTERY_FINAL_REVELATIONS`). Each copy of
- * the "Extra Discovery" feat (a stackable general feat) adds one more,
- * counted by OCCURRENCE in `doc.build.feats` (not just presence) — same
- * "manually-added duplicates" convention `expectedMagusArcanaCount` uses for
- * "Extra Arcana".
+ * Budget (PF1 Advanced Player's Guide, verified against the SRD class table):
+ * an alchemist learns a new discovery at 2nd level and every even level
+ * thereafter (2nd, 4th,..., 20th — 10 total by 20th) — `floor(alchemistLevel /
+ * 2)`. The 20th-level "Grand Discovery" is automatic (informational only, not
+ * one of these picks — same treatment as oracle's Final Revelation, see
+ * `ORACLE_MYSTERY_FINAL_REVELATIONS`). Each copy of the "Extra Discovery" feat
+ * (a stackable general feat) adds one more, counted by OCCURRENCE in
+ * `doc.build.feats` (not just presence) — same "manually-added duplicates"
+ * convention `expectedMagusArcanaCount` uses for "Extra Arcana".
  *
  * This module never blocks: taking more than the expected count is a soft
  * warning only, matching the project's hybrid posture on feat/trait/skill

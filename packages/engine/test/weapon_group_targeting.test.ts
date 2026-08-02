@@ -1,12 +1,12 @@
 /**
- * Fixture tests for the semantic weapon-group targeting fix (issue #45,
- * finding 1 — "the weapon-group-tagging gap"). Before this fix,
- * `attack.weapon.<group>` / `damage.weapon.<group>` only ever matched a
- * weapon's free-text `.group` tag (Weapon Focus/Specialization's mechanism —
- * see `weapon_feats.test.ts`). `computeWeaponAttacks` now ALSO matches a
- * weapon's vendored, normalized `.weaponGroups` (Weapon Training's semantic
- * vocabulary — `weapon-groups.ts`), in addition to `.group`, without
- * double-applying when both paths reach the same target.
+ * Fixture tests for the semantic weapon-group targeting fix (finding 1 — "the
+ * weapon-group-tagging gap"). Before this fix, `attack.weapon.<group>` /
+ * `damage.weapon.<group>` only ever matched a weapon's free-text `.group` tag
+ * (Weapon Focus/Specialization's mechanism — see `weapon_feats.test.ts`).
+ * `computeWeaponAttacks` now ALSO matches a weapon's vendored, normalized
+ * `.weaponGroups` (Weapon Training's semantic vocabulary —
+ * `weapon-groups.ts`), in addition to `.group`, without double-applying when
+ * both paths reach the same target.
  *
  * These fixtures use a hand-authored `live.activeBuffs` entry as the generic
  * "grant an arbitrary Change" mechanism (any `attack.weapon.<group>` source —

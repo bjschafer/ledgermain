@@ -14,13 +14,12 @@ import {
 
 /**
  * Fixture coverage for the occultist's Implements/Mental Focus/Focus Powers/
- * Resonant Powers subsystem (issue #65) — previously deferred, now built
- * out. `OCCULTIST_SCHOOLS` is clean-room,
- * hand-authored from aonprd.com's "Occultist" class page and its 8
- * implement-school subpages (the vendored Foundry pack carries only the
- * generic "Implements"/"Focus Powers" prose class features + the Mental
- * Focus resource pool — no per-school data at all, confirmed by a dedicated
- * audit before authoring this table).
+ * Resonant Powers subsystem — previously deferred, now built out.
+ * `OCCULTIST_SCHOOLS` is clean-room, hand-authored from aonprd.com's
+ * "Occultist" class page and its 8 implement-school subpages (the vendored
+ * Foundry pack carries only the generic "Implements"/"Focus Powers" prose
+ * class features + the Mental Focus resource pool — no per-school data at all,
+ * confirmed by a dedicated audit before authoring this table).
  */
 const ref = loadRefData();
 

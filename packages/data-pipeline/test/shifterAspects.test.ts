@@ -3,8 +3,8 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "../src/index.js";
 
 /**
- * End-to-end coverage for the vendored shifter-aspect catalog (issue #74) against the
- * real pinned Pf Data 1e slice.
+ * End-to-end coverage for the vendored shifter-aspect catalog against the real
+ * pinned Pf Data 1e slice.
  */
 const ref = loadRefData();
 

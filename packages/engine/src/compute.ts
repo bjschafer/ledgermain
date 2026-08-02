@@ -248,11 +248,10 @@ function dieAtCombinedChartIndex(ci: number): string {
  * it's two.
  *
  * Used when the wielder's effective size differs from the size the weapon's
- * `damageDice` was written for (issue #19/#70: Enlarge Person, Reduce
- * Person, and active polymorph forms all change effective size but not the
- * stored per-weapon dice string). Returns `dice` UNCHANGED when `fromSize
- * === toSize` or when it doesn't resolve onto a chain even after
- * {@link normalizeToChain}.
+ * `damageDice` was written for (Enlarge Person, Reduce Person, and active
+ * polymorph forms all change effective size but not the stored per-weapon dice
+ * string). Returns `dice` UNCHANGED when `fromSize === toSize` or when it
+ * doesn't resolve onto a chain even after {@link normalizeToChain}.
  *
  * The conversion is one-way by design — a Medium greataxe counts as 2d6, so it
  * reads 3d6 at Large and 1d8 at Small, never 1d12 at either. That's not lossy
@@ -325,16 +324,16 @@ function abilityLabelFor(resolved: ResolvedAbility): string {
 /* ------------------------------------------------------------- temp HP */
 
 /**
- * Aggregates every `tempHp`-targeting `Change` into `HitPoints.grantedTemp`
- * (issue #67). NOT `resolveStack` (typed-bonus stacking is per bonus TYPE —
+ * Aggregates every `tempHp`-targeting `Change` into `HitPoints.grantedTemp`.
+ * NOT `resolveStack` (typed-bonus stacking is per bonus TYPE —
  * dodge/untyped/circumstance sum, others take the highest-within-type) —
  * temporary HP stacking is per SOURCE (Paizo FAQ / CRB p. 208 "Combining
  * Magical Effects": temp HP from the same source doesn't stack, temp HP from
- * different sources does), so this groups by each modifier's `source`
- * (display name — two active instances of the identical buff share the same
- * `source` string even though their `sourceId`s/instanceIds differ, which is
- * exactly "same source" in the FAQ's sense), takes the highest value within
- * each group, then SUMS across groups.
+ * different sources does), so this groups by each modifier's `source` (display
+ * name — two active instances of the identical buff share the same `source`
+ * string even though their `sourceId`s/instanceIds differ, which is exactly
+ * "same source" in the FAQ's sense), takes the highest value within each
+ * group, then SUMS across groups.
  */
 function computeGrantedTempHp(collected: CollectedModifier[]): {
   total: number;
@@ -578,9 +577,9 @@ function computeAc(
   const mDexBonus = forTarget(collected, "mDexA").reduce((s, m) => s + m.value, 0);
   if (maxDexCap !== undefined) maxDexCap += mDexBonus;
 
-  // Encumbrance (issue #16, optional rule): a medium/heavy load imposes its
-  // own max-Dex-to-AC cap, combining with any worn-armor cap as "whichever is
-  // more restrictive wins" (PF1 RAW — the two never stack additively).
+  // Encumbrance (optional rule): a medium/heavy load imposes its own
+  // max-Dex-to-AC cap, combining with any worn-armor cap as "whichever is more
+  // restrictive wins" (PF1 RAW — the two never stack additively).
   const loadCap = encumbrance?.maxDexCap;
   const combinedDexCap =
     loadCap === undefined
@@ -688,10 +687,10 @@ function computeAc(
 
 /**
  * Highest armor `type` (weight class: 0 none/1 light/2 med/3 heavy) among
- * equipped BODY armor — shields don't impose the "Table: Speed" reduction
- * (issue #8). `WornArmor.type` already reflects any material-driven shift
- * (mithral lightens by one step, see `model/materials.ts`), so this
- * automatically picks up e.g. mithral full plate reading as medium.
+ * equipped BODY armor — shields don't impose the "Table: Speed" reduction.
+ * `WornArmor.type` already reflects any material-driven shift (mithral
+ * lightens by one step, see `model/materials.ts`), so this automatically picks
+ * up e.g. mithral full plate reading as medium.
  */
 function heaviestWornArmorType(doc: CharacterDoc): number {
   let max = 0;
@@ -705,19 +704,19 @@ function heaviestWornArmorType(doc: CharacterDoc): number {
 
 /**
  * Class tags recognised as arcane spellcasters for arcane-spell-failure (ASF)
- * display (issue #8, issue #64) — clean-room from PF1 RAW, not derived from
- * Foundry data (the vendored `ClassRef` carries no arcane/divine flag). This
- * is the arcane subset of `tables.ts`'s `SpellProgression` tags: wizard,
- * sorcerer, arcanist (ACG), and magus (UM) are int/cha-based arcane casters
- * (arcanist has no armor proficiency at all — "not proficient with any type
- * of armor or shield" per its own Weapon and Armor Proficiency feature —
- * while magus gets a level-gated exemption, see `ARMOR_EXEMPTIONS`); bard is
- * a spontaneous arcane caster, witch (APG) is a full prepared-arcane caster,
- * and bloodrager (ACG) is a spontaneous arcane caster too (own spell list,
- * cha-based); cleric/druid/paladin/ranger/shaman/warpriest/hunter are divine
- * and never incur ASF at all. Summoner and skald (both Cha-based spontaneous
- * casters) are also arcane — inquisitor (Wis-based) is divine and stays out
- * of this set.
+ * display — clean-room from PF1 RAW, not derived from Foundry data (the
+ * vendored `ClassRef` carries no arcane/divine flag). This is the arcane
+ * subset of `tables.ts`'s `SpellProgression` tags: wizard, sorcerer, arcanist
+ * (ACG), and magus (UM) are int/cha-based arcane casters (arcanist has no
+ * armor proficiency at all — "not proficient with any type of armor or shield"
+ * per its own Weapon and Armor Proficiency feature — while magus gets a
+ * level-gated exemption, see `ARMOR_EXEMPTIONS`); bard is a spontaneous arcane
+ * caster, witch (APG) is a full prepared-arcane caster, and bloodrager (ACG)
+ * is a spontaneous arcane caster too (own spell list, cha-based);
+ * cleric/druid/paladin/ranger/shaman/warpriest/hunter are divine and never
+ * incur ASF at all. Summoner and skald (both Cha-based spontaneous casters)
+ * are also arcane — inquisitor (Wis-based) is divine and stays out of this
+ * set.
  */
 const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set([
   "wizard",
@@ -736,8 +735,8 @@ const ARCANE_CASTER_TAGS: ReadonlySet<string> = new Set([
 
 /**
  * One class's PF1-RAW "Weapon and Armor Proficiency" arcane-spell-failure
- * exemption (issue #64) — clean-room from each class's own Archives of
- * Nethys page (legacy.aonprd.com), not Foundry source:
+ * exemption — clean-room from each class's own Archives of Nethys page
+ * (legacy.aonprd.com), not Foundry source:
  *
  * - Bard (CRB): "...cast bard spells while wearing light armor and using a
  *   shield without incurring the normal arcane spell failure chance." —
@@ -801,22 +800,22 @@ function armorTierLabel(maxArmorType: number): string {
 }
 
 /**
- * Total arcane spell failure chance (%) from equipped armor + shields (issue
- * #8), only for characters with at least one arcane-casting class — divine-
- * only characters get `undefined` back (ASF doesn't apply to them at all).
+ * Total arcane spell failure chance (%) from equipped armor + shields, only
+ * for characters with at least one arcane-casting class — divine- only
+ * characters get `undefined` back (ASF doesn't apply to them at all).
  *
- * Armor-proficiency exemption (PF1 RAW, issue #64, see `ARMOR_EXEMPTIONS`):
- * several arcane classes ignore ASF while wearing armor within their own
- * proficiency (and, for bard/skald, even with a shield). This is applied
- * here only when the exempt class is the character's ONLY arcane class — a
- * multiclass wizard/bard still incurs ASF for her wizard spells regardless
- * of what she's wearing, so `total` stays the plain (conservative) sum in
- * that case. This app models ASF as a single sheet-level number rather than
- * per-spell/per-class, so the exemption is necessarily all-or-nothing: where
- * a multiclass character's arcane classes disagree on armor proficiency
- * (e.g. wizard + skald), the exemption is withheld entirely and the sheet
- * shows the conservative (higher) total rather than guessing which spell
- * the player is about to cast.
+ * Armor-proficiency exemption (PF1 RAW, see `ARMOR_EXEMPTIONS`): several
+ * arcane classes ignore ASF while wearing armor within their own proficiency
+ * (and, for bard/skald, even with a shield). This is applied here only when
+ * the exempt class is the character's ONLY arcane class — a multiclass
+ * wizard/bard still incurs ASF for her wizard spells regardless of what she's
+ * wearing, so `total` stays the plain (conservative) sum in that case. This
+ * app models ASF as a single sheet-level number rather than
+ * per-spell/per-class, so the exemption is necessarily all-or-nothing: where a
+ * multiclass character's arcane classes disagree on armor proficiency (e.g.
+ * wizard + skald), the exemption is withheld entirely and the sheet shows the
+ * conservative (higher) total rather than guessing which spell the player is
+ * about to cast.
  */
 function computeArcaneSpellFailure(
   doc: CharacterDoc,
@@ -1018,10 +1017,10 @@ function computeSkills(
     0,
   );
   const acpReduction = forTarget(collected, "acpA").reduce((s, m) => s + Math.abs(m.value), 0);
-  // Encumbrance (issue #16, optional rule): a medium/heavy load imposes its
-  // own flat armor check penalty. RAW (CRB p.171, Carrying Capacity): when
-  // wearing armor, use the WORSE of armor ACP or load ACP for each category —
-  // the two never stack additively. Mirrors the max-Dex worse-of just below.
+  // Encumbrance (optional rule): a medium/heavy load imposes its own flat
+  // armor check penalty. RAW (CRB p.171, Carrying Capacity): when wearing
+  // armor, use the WORSE of armor ACP or load ACP for each category — the two
+  // never stack additively. Mirrors the max-Dex worse-of just below.
   const loadAcp = encumbrance?.acp ?? 0;
   const effectiveAcp = Math.min(0, wornAcp + acpReduction, loadAcp);
 
@@ -1090,8 +1089,8 @@ function computeSkills(
     const trainedOnly = isTrainedOnly(id);
     const usable = ranks > 0 || !trainedOnly;
     // Load-tier ACP is already folded into `acp` above; this is a display-only
-    // provenance chip (issue #16) alongside the misc-modifier breakdown, not a
-    // second addend into `total`.
+    // provenance chip alongside the misc-modifier breakdown, not a second
+    // addend into `total`.
     const loadAcpComponent: ModifierComponent[] =
       usesAcp && loadAcp !== 0 && encumbrance
         ? [synthetic(loadTierLabel(encumbrance.tier), "penalty", loadAcp)]
@@ -1136,20 +1135,20 @@ export function iterativeSequence(bab: number, attackTotal: number): number[] | 
 /* --------------------------------------------------------------- weapons */
 
 /**
- * Every `<group>` key a weapon's `attack.weapon.<group>` / `damage.weapon.<group>`
- * bonuses should be gathered from (issue #45): the weapon's free-text,
- * player-set `.group` tag (Weapon Focus/Specialization's exact-match
- * mechanism, unchanged — kept unnormalized for backward compatibility with
- * every `Change` already authored against it) UNIONED with its vendored
- * `.weaponGroups` semantic tags (Weapon Training and its archetype
- * reflavors), each normalized via `normalizeWeaponGroup` so an authored
- * target like `attack.weapon.blades-heavy` matches the vendored
- * `"bladesHeavy"` tag. Deduplicated so a weapon whose free-text tag happens
- * to coincide with one of its own semantic groups doesn't query the same
- * target twice (which would still resolve to the same single set of
- * matching changes either way — `forTarget` is not additive per call — but
- * dedup keeps the intent obvious). Hand-entered custom weapons have no
- * `.weaponGroups` and keep matching via `.group` alone.
+ * Every `<group>` key a weapon's `attack.weapon.<group>` /
+ * `damage.weapon.<group>` bonuses should be gathered from: the weapon's
+ * free-text, player-set `.group` tag (Weapon Focus/Specialization's
+ * exact-match mechanism, unchanged — kept unnormalized for backward
+ * compatibility with every `Change` already authored against it) UNIONED with
+ * its vendored `.weaponGroups` semantic tags (Weapon Training and its
+ * archetype reflavors), each normalized via `normalizeWeaponGroup` so an
+ * authored target like `attack.weapon.blades-heavy` matches the vendored
+ * `"bladesHeavy"` tag. Deduplicated so a weapon whose free-text tag happens to
+ * coincide with one of its own semantic groups doesn't query the same target
+ * twice (which would still resolve to the same single set of matching changes
+ * either way — `forTarget` is not additive per call — but dedup keeps the
+ * intent obvious). Hand-entered custom weapons have no `.weaponGroups` and
+ * keep matching via `.group` alone.
  */
 function weaponGroupKeys(w: Pick<WeaponInstance, "group" | "weaponGroups">): string[] {
   const keys = new Set<string>();
@@ -1159,18 +1158,19 @@ function weaponGroupKeys(w: Pick<WeaponInstance, "group" | "weaponGroups">): str
 }
 
 /**
- * Rogue (Unchained) Finesse Training (issue #65): true when `w` is eligible
- * for the character's Dex-to-damage substitution — one of `build.
+ * Rogue (Unchained) Finesse Training: true when `w` is eligible for the
+ * character's Dex-to-damage substitution — one of `build.
  * rogueFinesseWeapons`' picks that have actually been UNLOCKED by the
- * character's current `rogueUnchained` class level (`ROGUE_FINESSE_TRAINING_LEVELS`
- * — 3rd/11th/19th) matches this weapon. Matching is a free-text,
- * case-insensitive substring check against the weapon's display `name` (so a
- * "rapier" pick matches a `WeaponInstance` named "Rapier +1") OR an exact
- * match against its free-text `group` tag — the same convention Weapon
- * Focus/Specialization already use via `WeaponInstance.group` (not the
- * semantic `WEAPON_GROUPS` vocabulary — RAW scopes this ability to one
- * weapon TYPE, not a whole group). Never blocks selection; a character with
- * no `rogueUnchained` levels or no picks simply never matches.
+ * character's current `rogueUnchained` class level
+ * (`ROGUE_FINESSE_TRAINING_LEVELS` — 3rd/11th/19th) matches this weapon.
+ * Matching is a free-text, case-insensitive substring check against the
+ * weapon's display `name` (so a "rapier" pick matches a `WeaponInstance` named
+ * "Rapier +1") OR an exact match against its free-text `group` tag — the same
+ * convention Weapon Focus/Specialization already use via
+ * `WeaponInstance.group` (not the semantic `WEAPON_GROUPS` vocabulary — RAW
+ * scopes this ability to one weapon TYPE, not a whole group). Never blocks
+ * selection; a character with no `rogueUnchained` levels or no picks simply
+ * never matches.
  */
 function rogueFinesseTrainingMatches(doc: CharacterDoc, w: WeaponInstance): boolean {
   const rogueLevel = doc.identity.classes.find((c) => c.tag === "rogueUnchained")?.level ?? 0;
@@ -1188,10 +1188,10 @@ function rogueFinesseTrainingMatches(doc: CharacterDoc, w: WeaponInstance): bool
 }
 
 /**
- * Non-proficient-ARMOR attack penalty (issue #81, PF1 CRB "Armor Proficiency"):
- * a character wearing armor or wielding a shield outside their proficiency
- * suffers that piece's armor check penalty on ATTACK rolls too, in addition
- * to the Str/Dex skill checks it already always applies to (unconditionally,
+ * Non-proficient-ARMOR attack penalty (PF1 CRB "Armor Proficiency"): a
+ * character wearing armor or wielding a shield outside their proficiency
+ * suffers that piece's armor check penalty on ATTACK rolls too, in addition to
+ * the Str/Dex skill checks it already always applies to (unconditionally,
  * proficient or not — see `computeSkills`'s `wornAcp`; this is deliberately
  * NOT threaded through there, to avoid double-applying). One component per
  * non-proficient equipped piece, so multiple non-proficient items (a
@@ -1247,8 +1247,9 @@ function towerShieldAttackComponents(doc: CharacterDoc): ModifierComponent[] {
  *            + per-group changes (e.g. `attack.weapon.longsword` from Weapon Focus,
  *              or `attack.weapon.bows` from a semantic weapon-group bonus)
  *            + -4 if non-proficient with the weapon, + non-proficient worn
- *              armor/shield's ACP (issue #81, see {@link nonProficientArmorAttackComponents})
- *              + tower shield's flat -2 (CRB p.153, see {@link towerShieldAttackComponents})
+ *              armor/shield's ACP (see {@link
+ *              nonProficientArmorAttackComponents}) + tower shield's flat -2
+ *              (CRB p.153, see {@link towerShieldAttackComponents})
  *
  * Damage bonus (numeric; dice displayed separately):
  *   damage = floor(ability mod × damageMultiplier) [melee, damageAbility="str"/"dex" only]
@@ -1258,18 +1259,19 @@ function towerShieldAttackComponents(doc: CharacterDoc): ModifierComponent[] {
  *              or `damage.weapon.bows` from a semantic weapon-group bonus)
  *
  * Per-weapon feat bonuses (Weapon Focus, Weapon Specialization) and semantic
- * weapon-group bonuses (Weapon Training, issue #45) are both routed via
- * group-specific targets (`attack.weapon.<group>` / `damage.weapon.<group>`) so the
- * regular collect → stack pipeline handles them without special-casing here —
- * see {@link weaponGroupKeys} for how a weapon's matching `<group>` keys are gathered.
+ * weapon-group bonuses (Weapon Training) are both routed via group-specific
+ * targets (`attack.weapon.<group>` / `damage.weapon.<group>`) so the regular
+ * collect → stack pipeline handles them without special-casing here — see
+ * {@link weaponGroupKeys} for how a weapon's matching `<group>` keys are
+ * gathered.
  *
  * `damageAbility` is normally "str" (or the player's own explicit "dex"/"none"
- * override — issue #65 extended the union to allow a hand-set Dex-to-damage
- * source like Slashing Grace). When the stored value is unset or the default
- * "str", Rogue (Unchained)'s Finesse Training substitutes Dex automatically
- * for a matching weapon — see {@link rogueFinesseTrainingMatches} — so the
- * player doesn't have to flip the per-weapon field by hand for the class
- * feature that's supposed to grant it for free.
+ * override — extended the union to allow a hand-set Dex-to-damage source like
+ * Slashing Grace). When the stored value is unset or the default "str", Rogue
+ * (Unchained)'s Finesse Training substitutes Dex automatically for a matching
+ * weapon — see {@link rogueFinesseTrainingMatches} — so the player doesn't
+ * have to flip the per-weapon field by hand for the class feature that's
+ * supposed to grant it for free.
  *
  * `baseSize`/`effectiveSize` (the race size the weapon's `damageDice` was
  * written for, and the wielder's current effective size) rewrite the
@@ -1347,8 +1349,8 @@ function computeWeaponAttacks(
 
     // Ability-to-damage: STR or DEX, only melee, scaled by damageMultiplier.
     // An unset/default "str" value is auto-promoted to "dex" for a weapon
-    // matching Rogue (Unchained)'s Finesse Training (issue #65); an explicit
-    // player-set "dex"/"none" always wins over the auto-match.
+    // matching Rogue (Unchained)'s Finesse Training; an explicit player-set
+    // "dex"/"none" always wins over the auto-match.
     const autoFinesseDex =
       (w.damageAbility === undefined || w.damageAbility === "str") &&
       category === "melee" &&
@@ -1421,12 +1423,12 @@ function computeWeaponAttacks(
       result.damageAbilityMod = damageAbilityMod;
       result.damageMultiplier = mult;
     }
-    // Display-only dice string, size-scaled when the wielder's effective
-    // size (issue #19/#70: Enlarge/Reduce Person, an active polymorph form)
-    // differs from the size `w.damageDice` was written for — see
-    // `scaleWeaponDamageDice`. The numeric `damageBonus.total` above never
-    // includes a dice term (formula.ts can't evaluate one — see the engine
-    // cookbook §2.2), so this scaling is purely a display correction.
+    // Display-only dice string, size-scaled when the wielder's effective size
+    // (Enlarge/Reduce Person, an active polymorph form) differs from the size
+    // `w.damageDice` was written for — see `scaleWeaponDamageDice`. The
+    // numeric `damageBonus.total` above never includes a dice term (formula.ts
+    // can't evaluate one — see the engine cookbook §2.2), so this scaling is
+    // purely a display correction.
     if (w.damageDice !== undefined) {
       result.damageDice = scaleWeaponDamageDice(w.damageDice, baseSize, effectiveSize);
     }
@@ -1453,14 +1455,14 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   for (const cls of doc.identity.classes) {
     const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
     if (!def) continue;
-    // Issue #65: Vigilante's Avenger specialization (Ultimate Intrigue, the
-    // "Vigilante Specialization" class feature) reads "gains a base attack
-    // bonus equal to his vigilante level instead of using those listed on
-    // Table 1-1" — a full-BAB override for vigilante levels specifically,
-    // not a global tier change (a multiclassed avenger's OTHER classes still
-    // use their own listed tier). `def.bab` is vigilante's normal "med" tier
-    // from the vendored data; swapped for "high" only when this class entry
-    // IS vigilante levels AND the build chose Avenger.
+    // Vigilante's Avenger specialization (Ultimate Intrigue, the "Vigilante
+    // Specialization" class feature) reads "gains a base attack bonus equal to
+    // his vigilante level instead of using those listed on Table 1-1" — a
+    // full-BAB override for vigilante levels specifically, not a global tier
+    // change (a multiclassed avenger's OTHER classes still use their own
+    // listed tier). `def.bab` is vigilante's normal "med" tier from the
+    // vendored data; swapped for "high" only when this class entry IS
+    // vigilante levels AND the build chose Avenger.
     const tier =
       cls.tag === "vigilante" && doc.build.vigilanteSpecialization === "avenger" ? "high" : def.bab;
     babTiers.push({ tier, level: cls.level });
@@ -1495,9 +1497,9 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     ? doc.live.activeForm.size
     : shiftSize(baseSize, bootSizeShift);
 
-  // Encumbrance (issue #16, optional rule — default off). Computed from the
-  // BOOT-pass Strength (already reflects racial/item/buff ability changes, via
-  // the same collected-modifier pass as everything else) so the resulting
+  // Encumbrance (optional rule — default off). Computed from the BOOT-pass
+  // Strength (already reflects racial/item/buff ability changes, via the same
+  // collected-modifier pass as everything else) so the resulting
   // `@attributes.encumbrance.level` can feed the FINAL roll data below, which
   // is what vendored formulas (e.g. monk's Wis-to-AC gate) actually evaluate
   // against. Uses `bootSize` (see above) rather than `baseSize` so a Large
@@ -1526,16 +1528,16 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // formulas produce, but be defensive) and clamp at the ladder's ends.
   const sizeShift = Math.trunc(forTarget(collected, "size").reduce((s, m) => s + m.value, 0));
   let size: SizeId = shiftSize(baseSize, sizeShift);
-  // A polymorph-family transformation (issue #70 — `live.activeForm`)
-  // replaces the size ladder's result outright: the form's size is an
-  // unconditional, absolute replacement per PF1 RAW, not a relative shift
-  // like Enlarge Person's own "size" change above. Simultaneously combining
-  // a size-shifting spell with a polymorph effect is a rare table edge case
-  // this app doesn't try to adjudicate — the form's size simply wins while
-  // active. Applied even when the form's tier/creatureType/size/element
-  // combination itself doesn't resolve to a known `PolymorphFormOption`
-  // (`collect.ts` contributes no ability/NA changes in that case, but the
-  // player's chosen size is still meaningful on its own).
+  // A polymorph-family transformation (`live.activeForm`) replaces the size
+  // ladder's result outright: the form's size is an unconditional, absolute
+  // replacement per PF1 RAW, not a relative shift like Enlarge Person's own
+  // "size" change above. Simultaneously combining a size-shifting spell with a
+  // polymorph effect is a rare table edge case this app doesn't try to
+  // adjudicate — the form's size simply wins while active. Applied even when
+  // the form's tier/creatureType/size/element combination itself doesn't
+  // resolve to a known `PolymorphFormOption` (`collect.ts` contributes no
+  // ability/NA changes in that case, but the player's chosen size is still
+  // meaningful on its own).
   if (doc.live.activeForm) size = doc.live.activeForm.size;
   const sizeAttackMod = SIZE_AC_MOD[size];
 
@@ -1591,9 +1593,9 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     ),
   };
 
-  // Proficiency (issue #81) — class/feat/race grants, and the non-proficient
-  // worn armor/shield attack penalty derived from them. Weapon non-proficiency
-  // (-4) is necessarily per-weapon (see computeWeaponAttacks below); the
+  // Proficiency — class/feat/race grants, and the non-proficient worn
+  // armor/shield attack penalty derived from them. Weapon non-proficiency (-4)
+  // is necessarily per-weapon (see computeWeaponAttacks below); the
   // armor/shield ACP-on-attack penalty isn't weapon-specific, so it applies
   // here too, on the base melee/ranged lines — same for the tower shield's
   // flat -2 (CRB p.153, see {@link towerShieldAttackComponents}), which also
@@ -1757,22 +1759,20 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   applySpeedTarget(speeds, collected, "swim", "swimSpeed");
   applySpeedTarget(speeds, collected, "climb", "climbSpeed");
   applySpeedTarget(speeds, collected, "burrow", "burrowSpeed");
-  // Encumbrance (issue #16, optional rule) and worn medium/heavy ARMOR (issue
-  // #8, always-on core rule — unlike encumbrance, not settings-gated) both
-  // reduce land speed per the RAW "Table: Speed" mapping. The two don't
-  // stack: PF1 RAW reduces speed to the SAME tabled value regardless of
-  // which condition triggers it, so this is a single reduction gated by
-  // "either applies," not two sequential ones (chaining the table twice
-  // would over-reduce, e.g. 30 -> 20 -> 15). Takes the lower of the tabled
-  // value and whatever the above targets already produced (e.g. a "set"
-  // effect like Slow) — RAW load/armor speed penalties apply only to land
-  // speed, not fly/swim/etc.
+  // Encumbrance (optional rule) and worn medium/heavy ARMOR (always-on core
+  // rule — unlike encumbrance, not settings-gated) both reduce land speed per
+  // the RAW "Table: Speed" mapping. The two don't stack: PF1 RAW reduces speed
+  // to the SAME tabled value regardless of which condition triggers it, so
+  // this is a single reduction gated by "either applies," not two sequential
+  // ones (chaining the table twice would over-reduce, e.g. 30 -> 20 -> 15).
+  // Takes the lower of the tabled value and whatever the above targets already
+  // produced (e.g. a "set" effect like Slow) — RAW load/armor speed penalties
+  // apply only to land speed, not fly/swim/etc.
   //
-  // Slow and Steady (issue #52, d20pfsrd core Dwarf/Duergar trait): "base
-  // speed is never modified by armor or encumbrance" — both reductions above
-  // are skipped entirely when the race has the trait (and hasn't swapped it
-  // away via an alternate racial trait), so a dwarf in full plate keeps her
-  // full 20 ft.
+  // Slow and Steady (d20pfsrd core Dwarf/Duergar trait): "base speed is never
+  // modified by armor or encumbrance" — both reductions above are skipped
+  // entirely when the race has the trait (and hasn't swapped it away via an
+  // alternate racial trait), so a dwarf in full plate keeps her full 20 ft.
   const armorSpeedPenalty = heaviestWornArmorType(doc) >= 2;
   const slowAndSteady = hasSlowAndSteady(doc, race);
   if (
@@ -1783,17 +1783,17 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     speeds.land = Math.min(speeds.land, encumberedSpeed(speeds.land));
   }
 
-  // Arcane spell failure (issue #8) — display-only, only for arcane casters.
+  // Arcane spell failure — display-only, only for arcane casters.
   const arcaneSpellFailure = computeArcaneSpellFailure(doc);
 
   // Skills
   const skills = computeSkills(doc, refData, abilities, collected, encumbrance);
 
   // Per-weapon attack lines. `baseSize`/`size` (base race size vs. the
-  // wielder's current EFFECTIVE size — issue #19/#70, covers both a relative
-  // "size" Change from Enlarge/Reduce Person and an active polymorph form's
-  // absolute override, since both are already folded into `size` above by
-  // this point) feed `scaleWeaponDamageDice`'s displayed-dice rewrite.
+  // wielder's current EFFECTIVE size, covers both a relative "size" Change
+  // from Enlarge/Reduce Person and an active polymorph form's absolute
+  // override, since both are already folded into `size` above by this point)
+  // feed `scaleWeaponDamageDice`'s displayed-dice rewrite.
   const attacks = computeWeaponAttacks(
     doc,
     bab,
@@ -1820,18 +1820,18 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     currentBurn: burnFeature ? (doc.live.resources[burnFeature.id]?.used ?? 0) : 0,
   });
 
-  // DR / energy resistance / spell resistance — display-only (issue #21).
+  // DR / energy resistance / spell resistance — display-only.
   const defenses = computeDefenses(doc, refData, collected);
 
   // Special senses (darkvision, low-light vision, scent, ...) — display-only.
   const senses = computeSenses(collected);
 
-  // Active polymorph-family transformation (issue #70) — resolved sheet for
-  // display: natural-attack lines (BAB/Str/size math done here, since `bab`/
+  // Active polymorph-family transformation — resolved sheet for display:
+  // natural-attack lines (BAB/Str/size math done here, since `bab`/
   // `strMod`/`sizeAttackMod` are only available at this point in `compute`)
   // plus the tier/option's honesty-bar context notes and the gear-melding
-  // disclaimer. The ability-score/natural-armor adjustments themselves are
-  // NOT duplicated here — they already flow through `abilities.*.components`/
+  // disclaimer. The ability-score/natural-armor adjustments themselves are NOT
+  // duplicated here — they already flow through `abilities.*.components`/
   // `ac.components` via `collect.ts`.
   let activeForm: DerivedActiveForm | undefined;
   if (doc.live.activeForm) {

@@ -16,13 +16,13 @@ import { TraitRow } from "./TraitRow.js";
 import type { BuilderProps } from "./types.js";
 
 /**
- * Character traits (issue #23): two picked at creation, from (conventionally)
- * two different categories. Pattern-matches `FeatsSection` — the panel lists
+ * Character traits: two picked at creation, from (conventionally) two
+ * different categories. Pattern-matches `FeatsSection` — the panel lists
  * what's chosen, and browsing the catalog happens in the full-screen
- * `TraitManager` (issue #89). Never blocks past two; the count badge just
- * turns to a soft warning color (see `traitsNeedWarning`).
+ * `TraitManager`. Never blocks past two; the count badge just turns to a soft
+ * warning color (see `traitsNeedWarning`).
  *
- * Homebrew traits (issue #87) resolve through `allTraitIds`/`resolveTrait`
+ * Homebrew traits resolve through `allTraitIds`/`resolveTrait`
  * (`model/traits.ts`) so they appear in the same picker as vendored ones,
  * badged with `HomebrewBadge`, and count against the same slot budget —
  * `chosenTraitCount`/`traitsNeedWarning` are id-source-agnostic already.

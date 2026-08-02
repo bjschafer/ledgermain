@@ -1,16 +1,16 @@
 /**
- * Carrying capacity / encumbrance (issue #16) — an OPTIONAL PF1 rule (gated by
+ * Carrying capacity / encumbrance — an OPTIONAL PF1 rule (gated by
  * `build.settings.encumbranceEnabled`, absent = off, same posture as
  * `settings.xpEnabled`). The carrying-capacity table, size multipliers, and
- * load-tier thresholds are hand-authored clean-room from the published PF1
- * CRB "Table: Carrying Capacity" and "Table: Speed" (Open Game Content /
- * Paizo Community Use — see DESIGN.md §6); the load-tier gating
+ * load-tier thresholds are hand-authored clean-room from the published PF1 CRB
+ * "Table: Carrying Capacity" and "Table: Speed" (Open Game Content / Paizo
+ * Community Use — see DESIGN.md §6); the load-tier gating
  * (`@attributes.encumbrance.level`) is likewise not something Foundry's own
  * system computes numerically. `carryAdjustments`'s `carryStr`/`carryMult`
  * combination rule is the one piece here cross-checked against Foundry's GPL
  * `apply-changes.mjs`/`base-character-model.mjs` as a behavioral oracle only
- * (output comparison, not ported code or structure — see NOTICE.md §1) to
- * pin down semantics the published CRB text doesn't spell out for temporary
+ * (output comparison, not ported code or structure — see NOTICE.md §1) to pin
+ * down semantics the published CRB text doesn't spell out for temporary
  * size-change spells.
  */
 

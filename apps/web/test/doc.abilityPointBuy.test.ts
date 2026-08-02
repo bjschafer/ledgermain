@@ -1,5 +1,5 @@
 /**
- * Unit tests for issue #86's `setAbilityPointBuyBudget` (model/doc.ts).
+ * Unit tests for the `setAbilityPointBuyBudget` (model/doc.ts).
  */
 import { describe, expect, it } from "bun:test";
 

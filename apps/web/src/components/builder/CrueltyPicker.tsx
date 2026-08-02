@@ -28,12 +28,11 @@ const TIER_LABEL: Record<string, string> = {
 };
 
 /**
- * Antipaladin cruelty selection (issue #65 wave B), mirroring `HexPicker` —
- * cruelties are a flat picker over every cruelty the antipaladin's current
- * level makes at least soft-available. Gained at 3rd level and every three
- * levels thereafter; see `model/antipaladinCruelties.ts`'s budget math.
- * Free-choice, never blocks past the expected count — same hybrid-prereqs
- * posture as `HexPicker`.
+ * Antipaladin cruelty selection (B), mirroring `HexPicker` — cruelties are a
+ * flat picker over every cruelty the antipaladin's current level makes at
+ * least soft-available. Gained at 3rd level and every three levels thereafter;
+ * see `model/antipaladinCruelties.ts`'s budget math. Free-choice, never blocks
+ * past the expected count — same hybrid-prereqs posture as `HexPicker`.
  *
  * Higher tiers (6th/9th/12th) are soft-filtered by `minLevel` exactly like a
  * witch major/grand hex's own higher minimum — below-level cruelties stay

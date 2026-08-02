@@ -62,16 +62,17 @@ export interface CharacterDoc {
      */
     favoredClass?: string;
     /**
-     * Second favored-class tag, for Half-Elf's Multitalented racial trait
-     * (issue #4): half-elves pick TWO favored classes, earning the FCB choice
-     * for a level in EITHER one. `undefined` for every other race (and for a
-     * half-elf who hasn't picked a second yet). There's no structured RefData
-     * flag for Multitalented — the vendored Half-Elf entry only carries it as
-     * prose in `description` — so callers key off race NAME ("Half-Elf"; see
+     * Second favored-class tag, for Half-Elf's Multitalented racial trait:
+     * half-elves pick TWO favored classes, earning the FCB choice for a level
+     * in EITHER one. `undefined` for every other race (and for a half-elf who
+     * hasn't picked a second yet). There's no structured RefData flag for
+     * Multitalented — the vendored Half-Elf entry only carries it as prose in
+     * `description` — so callers key off race NAME ("Half-Elf"; see
      * `model/race.ts:isMultitalented`), same posture as `model/feats.ts`'s
-     * Human-bonus-feat check. Never set to the same tag as `favoredClass`
-     * (see `model/doc.ts:setFavoredClass2`) — `model/race.ts:favoredClassBonusLevels`
-     * sums both classes' levels, so a duplicate would double-count.
+     * Human-bonus-feat check. Never set to the same tag as `favoredClass` (see
+     * `model/doc.ts:setFavoredClass2`) —
+     * `model/race.ts:favoredClassBonusLevels` sums both classes' levels, so a
+     * duplicate would double-count.
      */
     favoredClass2?: string;
     /**
@@ -98,32 +99,32 @@ export interface CharacterDoc {
     traits?: string[];
     /**
      * Alternate racial trait ids chosen (keys into `@pf1/engine`
-     * `RACIAL_TRAITS`, issue #35). Each swaps one or more of the race's
-     * standard traits for an alternate — the engine applies the alternate's
-     * `changes[]` and suppresses the replaced standard trait's structured race
-     * change (e.g. a Human taking Focused Study drops the `bonusFeats` grant).
+     * `RACIAL_TRAITS`). Each swaps one or more of the race's standard traits
+     * for an alternate — the engine applies the alternate's `changes[]` and
+     * suppresses the replaced standard trait's structured race change (e.g. a
+     * Human taking Focused Study drops the `bonusFeats` grant).
      * Free-choice/soft-warned only: two alternates that replace the same
      * standard trait conflict (see `model/racialTraits.ts`), never blocked.
      * Alternate racial traits are hand-authored clean-room content (not in the
-     * vendored Foundry pack — see `@pf1/engine` `racial-traits.ts`). Cleared on
-     * any race change (`model/doc.ts:setRace`); ids whose race doesn't match the
-     * current race are ignored by the engine. Optional/back-compat: absent =
-     * none chosen.
+     * vendored Foundry pack — see `@pf1/engine` `racial-traits.ts`). Cleared
+     * on any race change (`model/doc.ts:setRace`); ids whose race doesn't
+     * match the current race are ignored by the engine. Optional/back-compat:
+     * absent = none chosen.
      */
     racialTraits?: string[];
     /**
      * Vendored alternate racial trait ids chosen (keys into
-     * `RefData.racialTraits`, issue #74). Distinct from
-     * `racialTraits` above: these come from the `pf1-content` catalog
-     * covering all 80 vendored races, not the hand-authored 8-race table, and
-     * carry a strictly weaker guarantee — the engine applies each entry's
-     * `changes[]` but does NOT suppress the standard trait(s) it claims to
-     * replace (see `RacialTrait.replacedTraitNames`'s doc comment in
-     * `@pf1/schema`; the UI surfaces the replaced name(s) as a reminder to
-     * retire the standard trait by hand). Free-choice/never blocked, same
-     * posture as `racialTraits`. Cleared on any race change
-     * (`model/doc.ts:setRace`); ids whose race doesn't match the current race
-     * are ignored by the engine. Optional/back-compat: absent = none chosen.
+     * `RefData.racialTraits`). Distinct from `racialTraits` above: these come
+     * from the `pf1-content` catalog covering all 80 vendored races, not the
+     * hand-authored 8-race table, and carry a strictly weaker guarantee — the
+     * engine applies each entry's `changes[]` but does NOT suppress the
+     * standard trait(s) it claims to replace (see
+     * `RacialTrait.replacedTraitNames`'s doc comment in `@pf1/schema`; the UI
+     * surfaces the replaced name(s) as a reminder to retire the standard trait
+     * by hand). Free-choice/never blocked, same posture as `racialTraits`.
+     * Cleared on any race change (`model/doc.ts:setRace`); ids whose race
+     * doesn't match the current race are ignored by the engine.
+     * Optional/back-compat: absent = none chosen.
      */
     vendoredRacialTraits?: string[];
     /**
@@ -220,14 +221,14 @@ export interface CharacterDoc {
     sorcererBloodline?: string;
     /**
      * Energy-type / subtype variant for bloodlines whose powers name a
-     * player-chosen energy type (Draconic's dragon type, Elemental's
-     * element) — issue #34. Free-form id into `@pf1/engine`
+     * player-chosen energy type (Draconic's dragon type, Elemental's element).
+     * Free-form id into `@pf1/engine`
      * `BLOODLINES[sorcererBloodline].variantOptions` (e.g. "red" for a
-     * Draconic sorcerer, "fire" for Elemental). Display-only: it selects
-     * which flavor text a power's summary/context notes show, not any
-     * numeric `Change` (see `bloodlines.ts`'s doc comment for why). Ignored
-     * for bloodlines that don't declare `variantOptions`. Unknown/absent
-     * values resolve to generic, non-crashing display text — never a crash.
+     * Draconic sorcerer, "fire" for Elemental). Display-only: it selects which
+     * flavor text a power's summary/context notes show, not any numeric
+     * `Change` (see `bloodlines.ts`'s doc comment for why). Ignored for
+     * bloodlines that don't declare `variantOptions`. Unknown/absent values
+     * resolve to generic, non-crashing display text — never a crash.
      * Back-compat: documents without this field are unaffected.
      */
     sorcererBloodlineVariant?: string;
@@ -356,15 +357,15 @@ export interface CharacterDoc {
      * and cast-tracking live in `live.spells`, NOT here, because preparation is
      * session state that resets on rest (DESIGN: build.* vs live.*).
      *
-     * Multiclass casters (issue #22): `known` always holds the *primary*
-     * caster class's list — the first class in `identity.classes` (in array
-     * order) that has a spell list (see `model/spellcasting.ts`
+     * Multiclass casters: `known` always holds the *primary* caster class's
+     * list — the first class in `identity.classes` (in array order) that has a
+     * spell list (see `model/spellcasting.ts`
      * `casterClassesOf`/`primaryCasterClassTag`). A second-or-later caster
      * class's known list lives in `byClass`, keyed by class tag. This keeps
      * every single-caster document — which is every document predating this
      * feature, and every document with only one caster class going forward —
-     * byte-identical: `byClass` is never populated unless the character has
-     * 2+ caster classes, and even then the primary class's spells stay in the
+     * byte-identical: `byClass` is never populated unless the character has 2+
+     * caster classes, and even then the primary class's spells stay in the
      * flat `known` array rather than being duplicated into `byClass`.
      * `model/spellcasting.ts`'s `knownSpellsFor`/`setKnownSpellsFor` are the
      * only code that should read or write either field.
@@ -402,8 +403,8 @@ export interface CharacterDoc {
      * Player choices for feats that require a selection (e.g. "Skill Focus" →
      * a skill id; "Weapon Focus" → a weapon type string). Keyed by feat id
      * (the same id stored in `feats[]`) — the FIRST instance of that feat
-     * only; a 2nd+ instance (issue #58) stores its own choice on its
-     * `extraFeats` entry instead.
+     * only; a 2nd+ instance stores its own choice on its `extraFeats` entry
+     * instead.
      *
      * Optional for back-compat: existing documents without this field behave as if
      * no choices have been made (choice-feats emit no changes until a choice is set).
@@ -427,21 +428,20 @@ export interface CharacterDoc {
      */
     pickChoices?: Record<string, string>;
     /**
-     * Additional instances of a RAW-repeatable feat (issue #58) beyond the
-     * first — Weapon Focus, Skill Focus, Improved Critical, the "Extra X"
-     * pool feats, and the rest of `apps/web/src/model/repeatableFeats.ts`'s
-     * curated set. The FIRST instance of any feat always lives in `feats[]`
-     * (with its choice, if any, in `featChoices[featId]`) exactly as before
-     * this field existed; `extraFeats` only ever holds the 2nd, 3rd, ...
-     * copies, each with its own stable `instanceId` (since the same `featId`
-     * can appear more than once here) and its own optional `choiceId`. A
-     * feat's primary instance is removed from `feats[]` only once every
-     * `extraFeats` entry for it is gone too — see `model/doc.ts`
-     * `removeFeatInstance`'s promotion behavior, which keeps that invariant
-     * so every other module's `feats.includes(featId)` "do they have this
-     * feat" check stays correct without needing to know about this field.
-     * Optional/back-compat: absent = no extra instances, matching every
-     * document that predates this feature.
+     * Additional instances of a RAW-repeatable feat beyond the first — Weapon
+     * Focus, Skill Focus, Improved Critical, the "Extra X" pool feats, and the
+     * rest of `apps/web/src/model/repeatableFeats.ts`'s curated set. The FIRST
+     * instance of any feat always lives in `feats[]` (with its choice, if any,
+     * in `featChoices[featId]`) exactly as before this field existed;
+     * `extraFeats` only ever holds the 2nd, 3rd,... copies, each with its own
+     * stable `instanceId` (since the same `featId` can appear more than once
+     * here) and its own optional `choiceId`. A feat's primary instance is
+     * removed from `feats[]` only once every `extraFeats` entry for it is gone
+     * too — see `model/doc.ts` `removeFeatInstance`'s promotion behavior,
+     * which keeps that invariant so every other module's
+     * `feats.includes(featId)` "do they have this feat" check stays correct
+     * without needing to know about this field. Optional/back-compat: absent =
+     * no extra instances, matching every document that predates this feature.
      */
     extraFeats?: { instanceId: string; featId: string; choiceId?: string }[];
     /**
@@ -479,9 +479,9 @@ export interface CharacterDoc {
        */
       hpMode?: "average" | "max" | "rolled";
       /**
-       * How the tracker's "Rest"/"New Day" actions heal HP overnight (issue #32).
+       * How the tracker's "Rest"/"New Day" actions heal HP overnight.
        * - `"full"` (default): heal straight to max — a common table house-rule
-       *   simplification, and the tracker's pre-#32 behavior, preserved for
+       * simplification, and the tracker's earlier behavior, preserved for
        *   every existing document that predates this setting.
        * - `"natural"`: PF1 RAW natural healing rate — 1 HP × character level
        *   per night of rest, capped at max. Full bed rest (2×level, requiring
@@ -498,9 +498,9 @@ export interface CharacterDoc {
        */
       fcbHouserule?: boolean;
       /**
-       * House-rule (issue #56): cleric class features key off Wisdom instead of
-       * Charisma — e.g. Channel Energy's uses/day and save DC. Scoped strictly
-       * to cleric-tagged class-feature formulas; the character's actual Cha
+       * House-rule: cleric class features key off Wisdom instead of Charisma —
+       * e.g. Channel Energy's uses/day and save DC. Scoped strictly to
+       * cleric-tagged class-feature formulas; the character's actual Cha
        * score/mod, skills, and saves are unchanged, and other Cha-driven
        * classes (paladin, sorcerer, oracle, bard) are unaffected either way.
        * Default false = Standard PF1 (RAW).
@@ -536,17 +536,16 @@ export interface CharacterDoc {
       statOverrides?: Record<string, number>;
       /**
        * Whether this character uses the PF1 OPTIONAL carrying-capacity /
-       * encumbrance rule (issue #16) — the owner's table doesn't use it, so
-       * this defaults OFF (same posture as `xpEnabled`, unlike
-       * `heroPointsEnabled` which defaults on). When false (or absent), the
-       * engine applies zero load-based penalties and computes no
-       * `DerivedSheet.encumbrance` — existing documents are completely
-       * unaffected. When true, total carried weight (gear weight × quantity,
-       * plus equipped armor/weapon weight) is compared against the
-       * Strength-based carrying-capacity table (`@pf1/engine`
-       * `carryingCapacity`) to derive a light/medium/heavy load tier, which
-       * then feeds RAW max-Dex-to-AC caps, armor-check-penalty, and land
-       * speed reduction (see `DerivedSheet.encumbrance` and
+       * encumbrance rule — the owner's table doesn't use it, so this defaults
+       * OFF (same posture as `xpEnabled`, unlike `heroPointsEnabled` which
+       * defaults on). When false (or absent), the engine applies zero
+       * load-based penalties and computes no `DerivedSheet.encumbrance` —
+       * existing documents are completely unaffected. When true, total carried
+       * weight (gear weight × quantity, plus equipped armor/weapon weight) is
+       * compared against the Strength-based carrying-capacity table
+       * (`@pf1/engine` `carryingCapacity`) to derive a light/medium/heavy load
+       * tier, which then feeds RAW max-Dex-to-AC caps, armor-check-penalty,
+       * and land speed reduction (see `DerivedSheet.encumbrance` and
        * `@pf1/engine/encumbrance.ts`).
        */
       encumbranceEnabled?: boolean;
@@ -561,15 +560,15 @@ export interface CharacterDoc {
        */
       polymorphEnabled?: boolean;
       /**
-       * Homebrew "unrestricted alignments" house rule (issue #53). PF1 CRB
-       * restricts a handful of base classes to a subset of alignments
-       * (Barbarian: any nonlawful; Monk: any lawful; Paladin: lawful good;
-       * Druid: any neutral) — see `apps/web/src/model/alignment.ts` for the
-       * full table. Ledgermain only ever soft-warns on a mismatch, never
-       * blocks; this flag, when true, suppresses that warning entirely for
-       * tables that don't use alignment restrictions. Default false
-       * (absent) = warnings shown, matching the RAW-default posture of
-       * `encumbranceEnabled`'s sibling toggles.
+       * Homebrew "unrestricted alignments" house rule. PF1 CRB restricts a
+       * handful of base classes to a subset of alignments (Barbarian: any
+       * nonlawful; Monk: any lawful; Paladin: lawful good; Druid: any neutral)
+       * — see `apps/web/src/model/alignment.ts` for the full table. Ledgermain
+       * only ever soft-warns on a mismatch, never blocks; this flag, when
+       * true, suppresses that warning entirely for tables that don't use
+       * alignment restrictions. Default false (absent) = warnings shown,
+       * matching the RAW-default posture of `encumbranceEnabled`'s sibling
+       * toggles.
        */
       ignoreClassAlignmentRestrictions?: boolean;
       /**
@@ -590,11 +589,11 @@ export interface CharacterDoc {
       fractionalBonuses?: boolean;
     };
     /**
-     * Player-curated bookmarks into already-computed sheet numbers (issue #2,
-     * "saved rolls"). Per the owner decision on that issue, there is no dice
-     * roller — this is a static lookup: pin a stat (e.g. "Full attack —
-     * Composite Longbow") so its current total is one glance away on the Play
-     * tab instead of hunting through the full sheet. A saved roll is always
+     * Player-curated bookmarks into already-computed sheet numbers ("saved
+     * rolls"). Per the owner's decision, there is no dice roller —
+     * this is a static lookup: pin a stat (e.g. "Full attack — Composite
+     * Longbow") so its current total is one glance away on the Play tab
+     * instead of hunting through the full sheet. A saved roll is always
      * resolved live against the current `DerivedSheet` (see
      * `model/savedRolls.ts`); nothing here is a frozen snapshot, so it stays
      * correct as buffs/feats/gear change.
@@ -617,19 +616,19 @@ export interface CharacterDoc {
      */
     familiar?: FamiliarBuild;
     /**
-     * Arcanist exploit ids chosen (keys into `@pf1/engine` `ARCANIST_EXPLOITS`
-     * — issue #42). Gained at 1st level and every 2 levels thereafter (1st,
-     * 3rd, 5th, ...), plus one per "Extra Arcanist Exploit" feat taken; see
-     * `model/arcanistExploits.ts` for the budget math. Free-choice, soft
+     * Arcanist exploit ids chosen (keys into `@pf1/engine`
+     * `ARCANIST_EXPLOITS`). Gained at 1st level and every 2 levels thereafter
+     * (1st, 3rd, 5th,...), plus one per "Extra Arcanist Exploit" feat taken;
+     * see `model/arcanistExploits.ts` for the budget math. Free-choice, soft
      * warning only on overspend — same posture as `traits`/`racialTraits`.
      */
     arcanistExploits?: string[];
     /**
-     * Magus arcana ids chosen (keys into `@pf1/engine` `MAGUS_ARCANA` —
-     * issue #61). Gained at 3rd level and every 3 levels thereafter (3rd,
-     * 6th, 9th, ...), plus one per "Extra Arcana" feat taken; see
-     * `model/magusArcana.ts` for the budget math. Free-choice, soft warning
-     * only on overspend — same posture as `arcanistExploits` above.
+     * Magus arcana ids chosen (keys into `@pf1/engine` `MAGUS_ARCANA`). Gained
+     * at 3rd level and every 3 levels thereafter (3rd, 6th, 9th,...), plus one
+     * per "Extra Arcana" feat taken; see `model/magusArcana.ts` for the budget
+     * math. Free-choice, soft warning only on overspend — same posture as
+     * `arcanistExploits` above.
      */
     magusArcana?: string[];
     /**
@@ -663,13 +662,13 @@ export interface CharacterDoc {
     oracleCurse?: string;
     /**
      * Oracle revelation ids chosen (keys into `@pf1/engine`
-     * `ORACLE_REVELATIONS` — issue #61), scoped to the character's chosen
-     * `oracleMystery`. Gained at 1st, 3rd, 7th, 11th, 15th, and 19th level,
-     * plus one per "Extra Revelation" feat taken; see
-     * `model/oracleRevelations.ts` for the budget math. Free-choice, soft
-     * warning only on overspend — same posture as `arcanistExploits`. Does
-     * NOT include the mystery's automatic 20th-level Final Revelation (see
-     * `ORACLE_MYSTERY_FINAL_REVELATIONS`, informational only).
+     * `ORACLE_REVELATIONS`), scoped to the character's chosen `oracleMystery`.
+     * Gained at 1st, 3rd, 7th, 11th, 15th, and 19th level, plus one per "Extra
+     * Revelation" feat taken; see `model/oracleRevelations.ts` for the budget
+     * math. Free-choice, soft warning only on overspend — same posture as
+     * `arcanistExploits`. Does NOT include the mystery's automatic 20th-level
+     * Final Revelation (see `ORACLE_MYSTERY_FINAL_REVELATIONS`, informational
+     * only).
      */
     oracleRevelations?: string[];
     /**
@@ -688,22 +687,22 @@ export interface CharacterDoc {
     oracleChannelAlignment?: "cure" | "inflict";
     /**
      * Fighter's Weapon Training group picks, in grant order — index 0 = the
-     * group chosen at 5th level, index 1 = 9th, index 2 = 13th, index 3 =
-     * 17th (PF1 RAW: `["bows"]` alone means only the 5th-level pick has been
-     * made yet). Each entry should be one of `@pf1/engine`'s `WEAPON_GROUPS`
-     * slugs (free-choice — not hard-validated, same soft posture as
+     * group chosen at 5th level, index 1 = 9th, index 2 = 13th, index 3 = 17th
+     * (PF1 RAW: `["bows"]` alone means only the 5th-level pick has been made
+     * yet). Each entry should be one of `@pf1/engine`'s `WEAPON_GROUPS` slugs
+     * (free-choice — not hard-validated, same soft posture as
      * `oracleMystery`/`oracleCurse`). Previously deferred (no schema field
      * existed at all) because the engine had no semantic weapon-group
-     * targeting; issue #45 built `attack.weapon.<group>`/`damage.weapon.<group>`
+     * targeting; built `attack.weapon.<group>`/`damage.weapon.<group>`
      * matching against a weapon's vendored `weaponGroups`, so this field plus
      * `collect.ts`'s per-group bonus derivation (mirroring the RAW "+1 at the
      * grant level, +1 more per 4 levels thereafter, including to earlier
      * picks" progression) is the only remaining piece. Suppressed entirely —
      * see `@pf1/engine` `weaponTrainingReplaced` — when an active archetype
-     * replaces the base Weapon Training feature (e.g. Archer's Expert
-     * Archer), so its own extracted per-archetype bonus is never doubled by
-     * also filling in this field. Empty/undefined for non-fighters or a
-     * fighter who hasn't made any picks yet.
+     * replaces the base Weapon Training feature (e.g. Archer's Expert Archer),
+     * so its own extracted per-archetype bonus is never doubled by also
+     * filling in this field. Empty/undefined for non-fighters or a fighter who
+     * hasn't made any picks yet.
      */
     weaponTrainingGroups?: string[];
     /**
@@ -723,8 +722,7 @@ export interface CharacterDoc {
      */
     psychicDiscipline?: string;
     /**
-    /**
-     * Witch patron tag (key into `@pf1/engine` `WITCH_PATRONS` — issue #65),
+     * Witch patron tag (key into `@pf1/engine` `WITCH_PATRONS`),
      * chosen at L1 and never changed thereafter (PF1 RAW). Free-choice, same
      * soft posture as `oracleMystery`/`sorcererBloodline`. Grants one bonus
      * spell known (added to the familiar's spells) at witch level 2 and every
@@ -735,11 +733,11 @@ export interface CharacterDoc {
      */
     witchPatron?: string;
     /**
-     * Witch hex ids chosen (keys into `@pf1/engine` `WITCH_HEXES` — issue
-     * #65). Gained at 1st level and every even level thereafter (1st, 2nd,
-     * 4th, 6th, ..., 20th — 11 total by 20th), plus one per "Extra Hex" feat
-     * taken; see `model/witchHexes.ts` for the budget math. Major hexes
-     * (minLevel 10) and Grand hexes (minLevel 18) are soft-gated the same way
+     * Witch hex ids chosen (keys into `@pf1/engine` `WITCH_HEXES`). Gained at
+     * 1st level and every even level thereafter (1st, 2nd, 4th, 6th,..., 20th
+     * — 11 total by 20th), plus one per "Extra Hex" feat taken; see
+     * `model/witchHexes.ts` for the budget math. Major hexes (minLevel 10) and
+     * Grand hexes (minLevel 18) are soft-gated the same way
      * `ORACLE_REVELATIONS`/`MAGUS_ARCANA` gate their own higher-minimum
      * entries — never blocks selection. Free-choice, soft warning only on
      * overspend — same posture as `oracleRevelations`. Empty/undefined for
@@ -748,27 +746,26 @@ export interface CharacterDoc {
     witchHexes?: string[];
     /**
      * Alchemist discovery ids chosen (keys into `@pf1/engine`
-     * `ALCHEMIST_DISCOVERIES` — issue #65). Gained at 2nd level and every
-     * even level thereafter (2nd, 4th, ..., 20th — 10 total by 20th), plus
-     * one per "Extra Discovery" feat taken; see
-     * `model/alchemistDiscoveries.ts` for the budget math. Does NOT include
-     * the automatic 20th-level Grand Discovery (informational only, not one
-     * of these picks — mirrors `oracleRevelations`' Final Revelation
-     * treatment). Free-choice, soft warning only on overspend. Empty/undefined
-     * for non-alchemists. Back-compat: documents without this field are
-     * unaffected.
+     * `ALCHEMIST_DISCOVERIES`). Gained at 2nd level and every even level
+     * thereafter (2nd, 4th,..., 20th — 10 total by 20th), plus one per "Extra
+     * Discovery" feat taken; see `model/alchemistDiscoveries.ts` for the
+     * budget math. Does NOT include the automatic 20th-level Grand Discovery
+     * (informational only, not one of these picks — mirrors
+     * `oracleRevelations`' Final Revelation treatment). Free-choice, soft
+     * warning only on overspend. Empty/undefined for non-alchemists.
+     * Back-compat: documents without this field are unaffected.
      */
     alchemistDiscoveries?: string[];
     /**
-     * Shaman spirit tag (key into `@pf1/engine` `SHAMAN_SPIRITS` — issue #65),
-     * chosen at L1 and never changed thereafter (PF1 RAW). Free-choice, same
-     * soft posture as `oracleMystery`/`psychicDiscipline`. Grants the spirit's
-     * Spirit Magic bonus-spell list (see `model/spellcasting.shamanSpiritSpellsKnown`),
-     * a note-tier 1st-level Spirit Ability (surfaced via the class-features
-     * list, no numeric effect modeled — see `SHAMAN_SPIRITS` doc comment),
-     * and access to the spirit's 5 exclusive hexes (`shamanHexes` below).
-     * Empty/undefined for non-shamans. Back-compat: documents without this
-     * field are unaffected.
+     * Shaman spirit tag (key into `@pf1/engine` `SHAMAN_SPIRITS`), chosen at
+     * L1 and never changed thereafter (PF1 RAW). Free-choice, same soft
+     * posture as `oracleMystery`/`psychicDiscipline`. Grants the spirit's
+     * Spirit Magic bonus-spell list (see
+     * `model/spellcasting.shamanSpiritSpellsKnown`), a note-tier 1st-level
+     * Spirit Ability (surfaced via the class-features list, no numeric effect
+     * modeled — see `SHAMAN_SPIRITS` doc comment), and access to the spirit's
+     * 5 exclusive hexes (`shamanHexes` below). Empty/undefined for
+     * non-shamans. Back-compat: documents without this field are unaffected.
      */
     shamanSpirit?: string;
     /**
@@ -789,24 +786,24 @@ export interface CharacterDoc {
     shamanHexes?: string[];
     /**
      * Cavalier/samurai order tag (key into `@pf1/engine` `CAVALIER_ORDERS` /
-     * `SAMURAI_ORDERS` — issue #65), chosen at L1 and never changed
-     * thereafter (PF1 RAW). Free-choice, same soft posture as
-     * `oracleMystery`/`psychicDiscipline` — no hard validation that the tag
-     * is one the character's class(es) can actually take (a samurai may pick
-     * any of the six APG cavalier orders in addition to Warrior/Ronin; a
-     * cavalier may not pick Warrior/Ronin — the picker UI enforces that, this
-     * field doesn't). Shared by both classes rather than split into
-     * `cavalierOrder`/`samuraiOrder`: PF1 RAW lets a samurai freely choose a
-     * cavalier order instead of Warrior/Ronin, so a single tag space avoids a
-     * cross-field migration the day a samurai picks "sword" — a character
-     * with both classes (unusual but not illegal) is expected to have one
-     * order in play, matching the single swift-action Challenge each grants.
-     * Order skills are wired via `compute.ts`'s `classSkillSet` (see
-     * `CAVALIER_ORDERS`' doc comment); the order's 2nd/8th/15th-level
-     * abilities stay display-only, and the challenge damage/AC/save rider
-     * is context-note tier (target-scoped — see `resources.ts`'s Challenge
-     * pool `detail`). Empty/undefined for non-cavalier/samurai. Back-compat:
-     * documents without this field are unaffected.
+     * `SAMURAI_ORDERS`), chosen at L1 and never changed thereafter (PF1 RAW).
+     * Free-choice, same soft posture as `oracleMystery`/`psychicDiscipline` —
+     * no hard validation that the tag is one the character's class(es) can
+     * actually take (a samurai may pick any of the six APG cavalier orders in
+     * addition to Warrior/Ronin; a cavalier may not pick Warrior/Ronin — the
+     * picker UI enforces that, this field doesn't). Shared by both classes
+     * rather than split into `cavalierOrder`/`samuraiOrder`: PF1 RAW lets a
+     * samurai freely choose a cavalier order instead of Warrior/Ronin, so a
+     * single tag space avoids a cross-field migration the day a samurai picks
+     * "sword" — a character with both classes (unusual but not illegal) is
+     * expected to have one order in play, matching the single swift-action
+     * Challenge each grants. Order skills are wired via `compute.ts`'s
+     * `classSkillSet` (see `CAVALIER_ORDERS`' doc comment); the order's
+     * 2nd/8th/15th-level abilities stay display-only, and the challenge
+     * damage/AC/save rider is context-note tier (target-scoped — see
+     * `resources.ts`'s Challenge pool `detail`). Empty/undefined for
+     * non-cavalier/samurai. Back-compat: documents without this field are
+     * unaffected.
      */
     cavalierOrder?: string;
     /**
@@ -834,88 +831,85 @@ export interface CharacterDoc {
     bloodragerBloodlineVariant?: string;
     /**
      * Occultist implement school tags chosen (keys into `@pf1/engine`
-     * `OCCULTIST_SCHOOLS` — issue #65, Occult Adventures). PF1 RAW
-     * ("Implements"): an occultist learns TWO implement schools at 1st level,
-     * then one more at 2nd level and every 4 occultist levels thereafter
-     * (2nd, 6th, 10th, 14th, 18th — six picks total, up to a maximum of
-     * SEVEN distinct schools at 18th; verified against aonprd.com's exact
-     * "Implements" class-feature text). "An occultist can select an implement
-     * school more than once in order to learn additional spells from the
-     * associated school" (verbatim) — so, unlike every other budgeted-picker
-     * field in this schema (`oracleRevelations`, `witchHexes`, ...), this
-     * array is a MULTISET: the same tag may legitimately appear more than
-     * once, and each occurrence counts toward the budget and grants its own
-     * additional spell-per-level (see
-     * `model/spellcasting.occultistImplementSpellsKnown` — surfaces the
+     * `OCCULTIST_SCHOOLS`, Occult Adventures). PF1 RAW ("Implements"): an
+     * occultist learns TWO implement schools at 1st level, then one more at
+     * 2nd level and every 4 occultist levels thereafter (2nd, 6th, 10th, 14th,
+     * 18th — six picks total, up to a maximum of SEVEN distinct schools at
+     * 18th; verified against aonprd.com's exact "Implements" class-feature
+     * text). "An occultist can select an implement school more than once in
+     * order to learn additional spells from the associated school" (verbatim)
+     * — so, unlike every other budgeted-picker field in this schema
+     * (`oracleRevelations`, `witchHexes`,...), this array is a MULTISET: the
+     * same tag may legitimately appear more than once, and each occurrence
+     * counts toward the budget and grants its own additional spell-per-level
+     * (see `model/spellcasting.occultistImplementSpellsKnown` — surfaces the
      * budget only, doesn't pick specific spells). Each DISTINCT tag chosen
      * also grants that school's base Focus Power and Resonant Power
      * automatically (not a budgeted pick — see
      * `OCCULTIST_SCHOOLS[tag].basePower`/`.resonantPower`); a repeated pick of
-     * an already-known school grants no *additional* base/resonant power
-     * (RAW: those are per-school, not per-pick). `live.occultistFocusInvested`
-     * is nonetheless keyed by tag alone, not by pick-instance — RAW tracks
-     * focus per IMPLEMENT ITEM, and this v1 doesn't model owning multiple
-     * physical implements of the same school; a documented simplification.
-     * Free-choice, soft warning only on overspend — same posture as
-     * `oracleRevelations`; see `model/occultistImplements.ts` for the budget
-     * math. Empty/undefined for non-occultists. Back-compat: documents
-     * without this field are unaffected.
+     * an already-known school grants no *additional* base/resonant power (RAW:
+     * those are per-school, not per-pick). `live.occultistFocusInvested` is
+     * nonetheless keyed by tag alone, not by pick-instance — RAW tracks focus
+     * per IMPLEMENT ITEM, and this v1 doesn't model owning multiple physical
+     * implements of the same school; a documented simplification. Free-choice,
+     * soft warning only on overspend — same posture as `oracleRevelations`;
+     * see `model/occultistImplements.ts` for the budget math. Empty/undefined
+     * for non-occultists. Back-compat: documents without this field are
+     * unaffected.
      */
     occultistImplements?: string[];
     /**
      * Occultist focus power ids chosen from the menu (keys into `@pf1/engine`
-     * `OCCULTIST_SCHOOLS[tag].focusPowers`, formatted `"<schoolTag>:<slug>"`
-     * — issue #65). PF1 RAW ("Focus Powers"): at 1st level an occultist
-     * selects ONE focus power (beyond the two automatic base powers from her
-     * starting schools), then one more at 3rd level and every 2 levels
-     * thereafter (3rd, 5th, 7th, ..., 19th — ten picks total by 19th,
-     * verified against aonprd.com's exact "Focus Powers" text). Scoped to
-     * powers offered by a currently-KNOWN school (`build.occultistImplements`)
-     * — a leftover pick from a since-abandoned school is tolerated the same
-     * "unresolvable id" way `oracleRevelations` tolerates a stale mystery.
-     * Every entry here is note-tier/display-only (name + one-line summary, no
-     * `Change[]`) — these are activated (mental-focus-spending) abilities,
-     * not passive bonuses; see `OCCULTIST_SCHOOLS`' doc comment for why only
-     * the SCHOOL-LEVEL resonant powers (automatic, not one of these picks)
-     * carry any numeric modeling. Free-choice, soft warning only on
-     * overspend — see `model/occultistImplements.ts` for the budget math.
-     * Empty/undefined for non-occultists. Back-compat: documents without this
-     * field are unaffected.
+     * `OCCULTIST_SCHOOLS[tag].focusPowers`, formatted `"<schoolTag>:<slug>"`).
+     * PF1 RAW ("Focus Powers"): at 1st level an occultist selects ONE focus
+     * power (beyond the two automatic base powers from her starting schools),
+     * then one more at 3rd level and every 2 levels thereafter (3rd, 5th,
+     * 7th,..., 19th — ten picks total by 19th, verified against aonprd.com's
+     * exact "Focus Powers" text). Scoped to powers offered by a
+     * currently-KNOWN school (`build.occultistImplements`) — a leftover pick
+     * from a since-abandoned school is tolerated the same "unresolvable id"
+     * way `oracleRevelations` tolerates a stale mystery. Every entry here is
+     * note-tier/display-only (name + one-line summary, no `Change[]`) — these
+     * are activated (mental-focus-spending) abilities, not passive bonuses;
+     * see `OCCULTIST_SCHOOLS`' doc comment for why only the SCHOOL-LEVEL
+     * resonant powers (automatic, not one of these picks) carry any numeric
+     * modeling. Free-choice, soft warning only on overspend — see
+     * `model/occultistImplements.ts` for the budget math. Empty/undefined for
+     * non-occultists. Back-compat: documents without this field are
+     * unaffected.
      */
     occultistFocusPowers?: string[];
     /**
      * Kineticist primary element tag chosen at 1st level (keys into
-     * `@pf1/engine` `KINETICIST_ELEMENTS` — issue #65, Occult Adventures
-     * "Elemental Focus"). One of "aether"|"air"|"earth"|"fire"|"water"|
-     * "void"|"wood" (all 7 elements this app models — see
-     * `kineticist-elements.ts`'s doc comment). PF1 RAW: chosen once at
-     * 1st level and never changes; determines the kineticist's simple
-     * blast, 2 bonus class skills (wired via `compute.ts`'s `classSkillSet`
-     * — see `KINETICIST_ELEMENTS`' doc comment), the Elemental
-     * Defense wild talent auto-granted at 2nd level, and an automatic bonus
-     * basic utility wild talent. Free-choice, soft posture — no validation
-     * that it's one of the 5 modeled tags. Empty/undefined for
-     * non-kineticists or a kineticist who hasn't picked yet. Back-compat:
-     * documents without this field are unaffected.
+     * `@pf1/engine` `KINETICIST_ELEMENTS`, Occult Adventures "Elemental
+     * Focus"). One of "aether"|"air"|"earth"|"fire"|"water"| "void"|"wood"
+     * (all 7 elements this app models — see `kineticist-elements.ts`'s doc
+     * comment). PF1 RAW: chosen once at 1st level and never changes;
+     * determines the kineticist's simple blast, 2 bonus class skills (wired
+     * via `compute.ts`'s `classSkillSet` — see `KINETICIST_ELEMENTS`' doc
+     * comment), the Elemental Defense wild talent auto-granted at 2nd level,
+     * and an automatic bonus basic utility wild talent. Free-choice, soft
+     * posture — no validation that it's one of the 5 modeled tags.
+     * Empty/undefined for non-kineticists or a kineticist who hasn't picked
+     * yet. Back-compat: documents without this field are unaffected.
      */
     kineticistElement?: string;
     /**
      * Kineticist "Expanded Element" picks, in pick order (element tags into
-     * `@pf1/engine` `KINETICIST_ELEMENTS`) — issue #65. PF1 RAW: at 7th
-     * level, and again at 15th, a kineticist chooses ANY element (including
-     * her own primary, to "expand her understanding" of it further) and
-     * gains one of that element's simple blasts plus its basic utility wild
-     * talent (NOT its defense wild talent — RAW: "she doesn't gain the
-     * defense wild talent of the expanded element"). Index 0 = the
-     * 7th-level pick, index 1 = the 15th-level pick; either may equal
-     * `kineticistElement` (RAW's "expand an element you already have"
-     * case). RAW also says the 15th-level pick can't repeat the exact
-     * element chosen at 7th unless it's her primary — not hard-enforced,
-     * same soft posture as every other budgeted picker here. Composite
-     * blasts become available once BOTH their required elements are known
-     * (primary + this array) — see `eligibleCompositeBlasts`. Free-choice,
-     * soft posture. Empty/undefined for non-kineticists. Back-compat:
-     * documents without this field are unaffected.
+     * `@pf1/engine` `KINETICIST_ELEMENTS`). PF1 RAW: at 7th level, and again
+     * at 15th, a kineticist chooses ANY element (including her own primary, to
+     * "expand her understanding" of it further) and gains one of that
+     * element's simple blasts plus its basic utility wild talent (NOT its
+     * defense wild talent — RAW: "she doesn't gain the defense wild talent of
+     * the expanded element"). Index 0 = the 7th-level pick, index 1 = the
+     * 15th-level pick; either may equal `kineticistElement` (RAW's "expand an
+     * element you already have" case). RAW also says the 15th-level pick can't
+     * repeat the exact element chosen at 7th unless it's her primary — not
+     * hard-enforced, same soft posture as every other budgeted picker here.
+     * Composite blasts become available once BOTH their required elements are
+     * known (primary + this array) — see `eligibleCompositeBlasts`.
+     * Free-choice, soft posture. Empty/undefined for non-kineticists.
+     * Back-compat: documents without this field are unaffected.
      */
     kineticistExpandedElements?: string[];
     /**
@@ -937,34 +931,33 @@ export interface CharacterDoc {
      * Kineticist wild talent ids chosen from the infusion/utility menus
      * (`"<elementTag>:<slug>"` for element-specific entries, or
      * `"universal:<slug>"` for talents any element can take — keys into
-     * `@pf1/engine` `KINETICIST_WILD_TALENTS`) — issue #65. Covers BOTH
-     * infusions (gained 1st/3rd/5th/9th/11th/13th/17th/19th) and utility
-     * wild talents (gained 2nd/4th/6th/8th/10th/12th/14th/16th/18th/20th)
-     * in one array — the two cadences are budgeted independently by
-     * `model/kineticistWildTalents.ts` (which filters this array by each
-     * def's `category` before counting), the same "one field, a helper
-     * disambiguates" shape `occultistFocusPowers` uses rather than a
-     * two-field split. Menu is soft-scoped to the character's known
-     * elements (`kineticistElement` + `kineticistExpandedElements`) plus
-     * the always-available `universal:` entries; a stale pick from a
-     * since-unpicked element is tolerated, not deleted (same posture
-     * `chosenOccultistFocusPowerCount` documents). Free-choice, soft
-     * warning only on overspend/under-level. Empty/undefined for
-     * non-kineticists. Back-compat: documents without this field are
+     * `@pf1/engine` `KINETICIST_WILD_TALENTS`). Covers BOTH infusions (gained
+     * 1st/3rd/5th/9th/11th/13th/17th/19th) and utility wild talents (gained
+     * 2nd/4th/6th/8th/10th/12th/14th/16th/18th/20th) in one array — the two
+     * cadences are budgeted independently by `model/kineticistWildTalents.ts`
+     * (which filters this array by each def's `category` before counting), the
+     * same "one field, a helper disambiguates" shape `occultistFocusPowers`
+     * uses rather than a two-field split. Menu is soft-scoped to the
+     * character's known elements (`kineticistElement` +
+     * `kineticistExpandedElements`) plus the always-available `universal:`
+     * entries; a stale pick from a since-unpicked element is tolerated, not
+     * deleted (same posture `chosenOccultistFocusPowerCount` documents).
+     * Free-choice, soft warning only on overspend/under-level. Empty/undefined
+     * for non-kineticists. Back-compat: documents without this field are
      * unaffected.
      */
     kineticistWildTalents?: string[];
     /**
      * Antipaladin cruelty ids chosen (keys into `@pf1/engine`
-     * `ANTIPALADIN_CRUELTIES` — issue #65 wave B). Gained at 3rd level and
-     * every three levels thereafter (3rd, 6th, 9th, 12th, 15th, 18th — 6
-     * total by 18th); the MENU of selectable cruelties itself also expands
-     * at 3rd/6th/9th/12th — see `model/antipaladinCruelties.ts` for the
-     * budget math and `ANTIPALADIN_CRUELTIES`' doc comment for the tier
-     * gating. Unlike `witchHexes`/`oracleRevelations`, no "Extra Cruelty"
-     * feat exists in the vendored slice (confirmed) — this budget is never
-     * feat-boosted. Free-choice, soft warning only on overspend.
-     * Empty/undefined for non-antipaladins.
+     * `ANTIPALADIN_CRUELTIES`). Gained at 3rd level and every three levels
+     * thereafter (3rd, 6th, 9th, 12th, 15th, 18th — 6 total by 18th); the MENU
+     * of selectable cruelties itself also expands at 3rd/6th/9th/12th — see
+     * `model/antipaladinCruelties.ts` for the budget math and
+     * `ANTIPALADIN_CRUELTIES`' doc comment for the tier gating. Unlike
+     * `witchHexes`/`oracleRevelations`, no "Extra Cruelty" feat exists in the
+     * vendored slice (confirmed) — this budget is never feat-boosted.
+     * Free-choice, soft warning only on overspend. Empty/undefined for
+     * non-antipaladins.
      */
     antipaladinCruelties?: string[];
     /**
@@ -976,32 +969,31 @@ export interface CharacterDoc {
      * manual, the same restraint paladin's own Divine Bond gets today (which
      * has no `build.*` field at all to record its choice, let alone modeled
      * numbers). "servant" grants a permanent fiendish companion creature —
-     * deferred to issue #68 (companion stat blocks); surfaced as a note
+     * deferred to the companion-creature work (companion stat blocks); surfaced as a note
      * only. Empty/undefined for non-antipaladins or a boon not yet chosen.
      */
     antipaladinBoon?: "weapon" | "servant";
     /**
-     * Ninja trick ids chosen (keys into `@pf1/engine` `NINJA_TRICKS` — issue
-     * #65 wave B, Ultimate Combat). Gained at 2nd level and every two levels
-     * thereafter (2nd, 4th, ..., 20th — 10 total by 20th), plus one per
-     * "Extra Ninja Trick" feat taken; see `model/ninjaTricks.ts` for the
-     * budget math. Master tricks (minLevel 10) are chosen IN PLACE OF a
-     * normal trick pick, not an extra budget slot — the same soft-gated,
-     * non-extra-budget posture `WITCH_HEXES`' major/grand tiers use. A ninja
-     * trick can ALSO be spent on "a rogue talent" per RAW (and, symmetrically,
-     * a rogue's advanced talent can be spent on a master trick) — see
-     * `NINJA_TRICKS`' doc comment for why that overlap is left note-tier
-     * rather than cross-wired: this project has no `build.rogueTalents`
-     * picker/budget field at all yet (a pre-existing gap, not a new one).
-     * Free-choice, soft warning only on overspend. Empty/undefined for
-     * non-ninjas.
+     * Ninja trick ids chosen (keys into `@pf1/engine` `NINJA_TRICKS`, Ultimate
+     * Combat). Gained at 2nd level and every two levels thereafter (2nd,
+     * 4th,..., 20th — 10 total by 20th), plus one per "Extra Ninja Trick" feat
+     * taken; see `model/ninjaTricks.ts` for the budget math. Master tricks
+     * (minLevel 10) are chosen IN PLACE OF a normal trick pick, not an extra
+     * budget slot — the same soft-gated, non-extra-budget posture
+     * `WITCH_HEXES`' major/grand tiers use. A ninja trick can ALSO be spent on
+     * "a rogue talent" per RAW (and, symmetrically, a rogue's advanced talent
+     * can be spent on a master trick) — see `NINJA_TRICKS`' doc comment for
+     * why that overlap is left note-tier rather than cross-wired: this project
+     * has no `build.rogueTalents` picker/budget field at all yet (a
+     * pre-existing gap, not a new one). Free-choice, soft warning only on
+     * overspend. Empty/undefined for non-ninjas.
      */
     ninjaTricks?: string[];
     /**
      * A tracked phantom (PF1 Occult Adventures Spiritualist's eidolon-like
      * companion) — mirrors `animalCompanion`/`familiar` above closely; see
-     * `@pf1/engine` `derivePhantom` (issue #65). Optional/back-compat:
-     * documents without this field have no tracked phantom.
+     * `@pf1/engine` `derivePhantom`. Optional/back-compat: documents without
+     * this field have no tracked phantom.
      */
     phantom?: PhantomBuild;
     /**
@@ -1009,93 +1001,92 @@ export interface CharacterDoc {
      * class feature) — models the eidolon itself as a trackable creature with
      * its own derived HD/BAB/saves/AC/attacks/skills, mirroring
      * `animalCompanion`/`phantom` above; see `@pf1/engine` `deriveEidolon`
-     * (issue #65, groundwork for issue #68's future full-stat-block companion
-     * work). Optional/back-compat: documents without this field have no
-     * tracked eidolon.
+     * (groundwork for the future full-stat-block companion work).
+     * Optional/back-compat: documents without this field have no tracked
+     * eidolon.
      */
     eidolon?: EidolonBuild;
     /**
-     * Barbarian rage power ids chosen (keys into `@pf1/engine` `RAGE_POWERS` —
-     * issue #65/#67), shared by both `barbarian` (chained) and
-     * `barbarianUnchained` — PF1 RAW grants a rage power at 2nd level and
-     * every two levels thereafter for both editions (verified against
-     * aonprd.com's class tables: the Unchained rewrite's own "Rage Powers"
-     * class feature restates the identical 2nd/4th/6th/... cadence rather
-     * than changing it), plus one per "Extra Rage Power" feat taken; see
-     * `apps/web/src/model/ragePowers.ts` for the budget math (sums both
-     * classes' levels, mirroring `@pf1/engine` `defenses.ts`'s
-     * `barbarianLevel()` — a character would only ever have one of the two,
-     * but summing is correct regardless). Level-gated entries (e.g. Renewed
-     * Vigor's "barbarian 4th") are soft-warned only, same posture as
-     * `oracleRevelations`/`witchHexes` — never blocks selection. Free-choice,
-     * soft warning only on overspend. Empty/undefined for non-barbarians.
-     * Back-compat: documents without this field are unaffected.
+     * Barbarian rage power ids chosen (keys into `@pf1/engine` `RAGE_POWERS`),
+     * shared by both `barbarian` (chained) and `barbarianUnchained` — PF1 RAW
+     * grants a rage power at 2nd level and every two levels thereafter for
+     * both editions (verified against aonprd.com's class tables: the Unchained
+     * rewrite's own "Rage Powers" class feature restates the identical
+     * 2nd/4th/6th/... cadence rather than changing it), plus one per "Extra
+     * Rage Power" feat taken; see `apps/web/src/model/ragePowers.ts` for the
+     * budget math (sums both classes' levels, mirroring `@pf1/engine`
+     * `defenses.ts`'s `barbarianLevel` — a character would only ever have one
+     * of the two, but summing is correct regardless). Level-gated entries
+     * (e.g. Renewed Vigor's "barbarian 4th") are soft-warned only, same
+     * posture as `oracleRevelations`/`witchHexes` — never blocks selection.
+     * Free-choice, soft warning only on overspend. Empty/undefined for
+     * non-barbarians. Back-compat: documents without this field are
+     * unaffected.
      */
     ragePowers?: string[];
     /**
      * Monk (Unchained) ki power ids chosen (keys into `@pf1/engine`
-     * `MONK_KI_POWERS` — issue #65). Gained at 4th level and every 2 levels
-     * thereafter (4th, 6th, ..., 20th — 9 total by 20th); see
-     * `model/monkKiPowers.ts` for the budget math. Every ki power here is
-     * `displayOnly` (a limited-use/activated ability with no unconditional
-     * numeric effect — see `MONK_KI_POWERS`' doc comment for why none of the
-     * 39 core Pathfinder Unchained ki powers cleared the bar for a real
-     * `Change`), same posture as `witchHexes`. Free-choice, soft warning only
-     * on overspend. Empty/undefined for non-monkUnchained characters.
-     * Back-compat: documents without this field are unaffected.
+     * `MONK_KI_POWERS`). Gained at 4th level and every 2 levels thereafter
+     * (4th, 6th,..., 20th — 9 total by 20th); see `model/monkKiPowers.ts` for
+     * the budget math. Every ki power here is `displayOnly` (a
+     * limited-use/activated ability with no unconditional numeric effect — see
+     * `MONK_KI_POWERS`' doc comment for why none of the 39 core Pathfinder
+     * Unchained ki powers cleared the bar for a real `Change`), same posture
+     * as `witchHexes`. Free-choice, soft warning only on overspend.
+     * Empty/undefined for non-monkUnchained characters. Back-compat: documents
+     * without this field are unaffected.
      */
     monkKiPowers?: string[];
     /**
      * Monk (Unchained) style strike ids chosen (keys into `@pf1/engine`
-     * `MONK_STYLE_STRIKES` — issue #65). Gained at 5th level and every 4
-     * levels thereafter (5th, 9th, 13th, 17th — 4 total by 17th; the 15th-
-     * level "designate two per round" bump is a usage upgrade to the SAME
-     * pool, not an extra pick — see `model/monkStyleStrikes.ts`). Every style
-     * strike here is `displayOnly` (a per-attack flurry rider, same posture
-     * as ki powers). Free-choice, soft warning only on overspend.
-     * Empty/undefined for non-monkUnchained characters. Back-compat:
-     * documents without this field are unaffected.
+     * `MONK_STYLE_STRIKES`). Gained at 5th level and every 4 levels thereafter
+     * (5th, 9th, 13th, 17th — 4 total by 17th; the 15th- level "designate two
+     * per round" bump is a usage upgrade to the SAME pool, not an extra pick —
+     * see `model/monkStyleStrikes.ts`). Every style strike here is
+     * `displayOnly` (a per-attack flurry rider, same posture as ki powers).
+     * Free-choice, soft warning only on overspend. Empty/undefined for
+     * non-monkUnchained characters. Back-compat: documents without this field
+     * are unaffected.
      */
     monkStyleStrikes?: string[];
     /**
-     * Rogue talent ids chosen (keys into `@pf1/engine` `ROGUE_TALENTS` —
-     * issue #65), SHARED between the chained rogue and Rogue (Unchained) —
-     * both classes draw from the same curated ~28-entry core menu; entries
-     * flagged `unchainedOnly` in `ROGUE_TALENTS` (e.g. ones that reference
+     * Rogue talent ids chosen (keys into `@pf1/engine` `ROGUE_TALENTS`),
+     * SHARED between the chained rogue and Rogue (Unchained) — both classes
+     * draw from the same curated ~28-entry core menu; entries flagged
+     * `unchainedOnly` in `ROGUE_TALENTS` (e.g. ones that reference
      * Debilitating Injury) are soft-noted rather than hidden for a chained
      * rogue. Gained at 2nd level and every 2 levels thereafter, plus one per
      * "Extra Rogue Talent" feat taken; see `model/rogueTalents.ts` for the
      * budget math. Most entries are `displayOnly`; "Combat Trick" contributes
-     * a real generic bonus-feat SLOT and "Finesse Rogue" grants Weapon
-     * Finesse as a fixed feat outright — both bridged into
+     * a real generic bonus-feat SLOT and "Finesse Rogue" grants Weapon Finesse
+     * as a fixed feat outright — both bridged into
      * `apps/web/src/model/feats.ts` (`ROGUE_TALENTS[id].bonusFeatSlot` /
-     * `.grantsFeat`), same "talent grants a feat" shape as Rogue's Edge
-     * (UC)'s sibling `finesse training (uc)` override. Free-choice, soft
-     * warning only on overspend. Empty/undefined for non-rogues. Back-compat:
-     * documents without this field are unaffected.
+     * `.grantsFeat`), same "talent grants a feat" shape as Rogue's Edge (UC)'s
+     * sibling `finesse training (uc)` override. Free-choice, soft warning only
+     * on overspend. Empty/undefined for non-rogues. Back-compat: documents
+     * without this field are unaffected.
      */
     rogueTalents?: string[];
     /**
      * Slayer talent ids chosen (keys into `RefData.slayerTalents` via
-     * `@pf1/engine` `resolveSlayerTalent` — issue #74, hand-authored overlay
-     * added in a follow-up). Most entries are still `displayOnly` (see
-     * `@pf1/engine` `slayer-talents.ts`'s doc comment for the small set that
-     * carry a real `Change`). Gained at 2nd level and every 2 levels
-     * thereafter (10 total by 20th,
-     * same cadence as rogue talents — verified against the vendored Foundry
-     * "Slayer Talents" `ClassFeature` description), plus one per "Extra
-     * Slayer Talent" feat taken. "Advanced Slayer Talents" (10th level and
-     * every 2 levels thereafter, verified against the vendored "Advanced
+     * `@pf1/engine` `resolveSlayerTalent`, hand-authored overlay added in a
+     * follow-up). Most entries are still `displayOnly` (see `@pf1/engine`
+     * `slayer-talents.ts`'s doc comment for the small set that carry a real
+     * `Change`). Gained at 2nd level and every 2 levels thereafter (10 total
+     * by 20th, same cadence as rogue talents — verified against the vendored
+     * Foundry "Slayer Talents" `ClassFeature` description), plus one per
+     * "Extra Slayer Talent" feat taken. "Advanced Slayer Talents" (10th level
+     * and every 2 levels thereafter, verified against the vendored "Advanced
      * Talents (SLA)" `ClassFeature` description) are chosen IN PLACE OF a
      * normal talent pick, not an extra budget slot — same shape as ninja
      * master tricks. PF1 RAW also lets a slayer spend a pick on "a rogue
      * talent" instead (and, at the advanced tier, on a rogue/ninja advanced
      * talent) — represented as its own vendored catalog entries
      * (`rogue_talent`/`rogue_and_ninja_advanced_talents`) rather than a
-     * cross-wired budget transfer with `rogueTalents`, matching this
-     * project's existing `ninjaTricks`/rogue-talent overlap posture. Empty/
-     * undefined for non-slayers. Back-compat: documents without this field
-     * are unaffected.
+     * cross-wired budget transfer with `rogueTalents`, matching this project's
+     * existing `ninjaTricks`/rogue-talent overlap posture. Empty/ undefined
+     * for non-slayers. Back-compat: documents without this field are
+     * unaffected.
      */
     slayerTalents?: string[];
     /**
@@ -1152,8 +1143,8 @@ export interface CharacterDoc {
     bonusClassSkills?: Record<string, string[]>;
     /**
      * Investigator talent ids chosen (keys into `@pf1/engine`
-     * `INVESTIGATOR_TALENTS` — issue #65). Gained at 3rd level and every 2
-     * levels thereafter (3rd, 5th, ..., 19th — 9 total by 20th); see
+     * `INVESTIGATOR_TALENTS`). Gained at 3rd level and every 2 levels
+     * thereafter (3rd, 5th,..., 19th — 9 total by 20th); see
      * `model/investigatorTalents.ts` for the budget math. Free-choice, soft
      * warning only on overspend — same posture as `alchemistDiscoveries`.
      * Empty/undefined for non-investigators. Back-compat: documents without
@@ -1174,8 +1165,8 @@ export interface CharacterDoc {
     vigilanteSpecialization?: "avenger" | "stalker";
     /**
      * Vigilante Social Talent ids chosen (keys into `@pf1/engine`
-     * `VIGILANTE_SOCIAL_TALENTS` — issue #65). Gained at 1st level and every
-     * 2 levels thereafter (1st, 3rd, ..., 19th — 10 total by 20th); see
+     * `VIGILANTE_SOCIAL_TALENTS`). Gained at 1st level and every 2 levels
+     * thereafter (1st, 3rd,..., 19th — 10 total by 20th); see
      * `model/vigilanteTalents.ts` for the budget math. A DIFFERENT pool from
      * `vigilanteTalents` below — PF1 RAW grants these from two independent
      * class features. Free-choice, soft warning only on overspend.
@@ -1185,34 +1176,34 @@ export interface CharacterDoc {
     vigilanteSocialTalents?: string[];
     /**
      * Vigilante Talent ids chosen (keys into `@pf1/engine`
-     * `VIGILANTE_TALENTS` — issue #65). Gained at 2nd level and every 2
-     * levels thereafter (2nd, 4th, ..., 20th — 10 total by 20th); see
-     * `model/vigilanteTalents.ts` for the budget math. Some entries are
-     * gated to `vigilanteSpecialization` (see `VigilanteTalentEntry.gate`) —
-     * soft-filtered only, same posture as `witchHexes`' tier gating; never
-     * blocks selection. Empty/undefined for non-vigilantes. Back-compat:
-     * documents without this field are unaffected.
+     * `VIGILANTE_TALENTS`). Gained at 2nd level and every 2 levels thereafter
+     * (2nd, 4th,..., 20th — 10 total by 20th); see `model/vigilanteTalents.ts`
+     * for the budget math. Some entries are gated to `vigilanteSpecialization`
+     * (see `VigilanteTalentEntry.gate`) — soft-filtered only, same posture as
+     * `witchHexes`' tier gating; never blocks selection. Empty/undefined for
+     * non-vigilantes. Back-compat: documents without this field are
+     * unaffected.
      */
     vigilanteTalents?: string[];
     /**
-     * Shifter aspect ids chosen (keys into `@pf1/engine` `SHIFTER_ASPECTS` —
-     * issue #65). Gained at 1st, 5th, 10th, and 15th level, plus a 5th aspect
-     * at 20th via the Final Aspect class feature; see
-     * `model/shifterAspects.ts` for the budget math. Free-choice, soft
-     * warning only on overspend. Each aspect's MINOR form is a real
-     * toggleable buff (see `live.activeBuffs`/`model/shifterAspects.ts`
-     * `toggleShifterAspectBuff`) built directly from `SHIFTER_ASPECTS`
-     * (there is no vendored buff to link — see that table's doc comment).
-     * The major form (Wild Shape transformation) is NOT modeled — deferred
-     * to issue #70 (polymorph). Empty/undefined for non-shifters.
-     * Back-compat: documents without this field are unaffected.
+     * Shifter aspect ids chosen (keys into `@pf1/engine` `SHIFTER_ASPECTS`).
+     * Gained at 1st, 5th, 10th, and 15th level, plus a 5th aspect at 20th via
+     * the Final Aspect class feature; see `model/shifterAspects.ts` for the
+     * budget math. Free-choice, soft warning only on overspend. Each aspect's
+     * MINOR form is a real toggleable buff (see
+     * `live.activeBuffs`/`model/shifterAspects.ts` `toggleShifterAspectBuff`)
+     * built directly from `SHIFTER_ASPECTS` (there is no vendored buff to link
+     * — see that table's doc comment). The major form (Wild Shape
+     * transformation) is NOT modeled — deferred to the polymorph work.
+     * Empty/undefined for non-shifters. Back-compat: documents without this
+     * field are unaffected.
      */
     shifterAspects?: string[];
     /**
-     * Mesmerist trick ids chosen (keys into `@pf1/engine` `MESMERIST_TRICKS`
-     * — issue #65). Gained at 1st level and every 2 levels thereafter (1st,
-     * 3rd, ..., 19th — 10 total by 19th), plus one per "Extra Trick" feat
-     * taken (mirrors `witchHexes`'/`ninjaTricks`' budget shape); see
+     * Mesmerist trick ids chosen (keys into `@pf1/engine` `MESMERIST_TRICKS`).
+     * Gained at 1st level and every 2 levels thereafter (1st, 3rd,..., 19th —
+     * 10 total by 19th), plus one per "Extra Trick" feat taken (mirrors
+     * `witchHexes`'/`ninjaTricks`' budget shape); see
      * `apps/web/src/model/mesmeristTricks.ts` for the budget math. Masterful
      * tricks (`tier: "masterful"`, minLevel 12) are chosen IN PLACE OF a
      * normal trick pick, not an extra budget slot — same soft-gated,
@@ -1227,34 +1218,33 @@ export interface CharacterDoc {
     mesmeristTricks?: string[];
     /**
      * Mesmerist Bold Stare ids chosen (keys into `@pf1/engine`
-     * `MESMERIST_BOLD_STARES` — issue #65). Gained at 3rd level and every 4
-     * levels thereafter (3rd, 7th, 11th, 15th, 19th — 5 total by 19th); see
+     * `MESMERIST_BOLD_STARES`). Gained at 3rd level and every 4 levels
+     * thereafter (3rd, 7th, 11th, 15th, 19th — 5 total by 19th); see
      * `apps/web/src/model/mesmeristBoldStares.ts` for the budget math. Each
      * pick enriches the mesmerist's existing Hypnotic Stare class-feature
      * `detail` line (see `@pf1/engine` `boldStareRiderSummary`, wired in
      * `resolveClassFeatures`'s "Hypnotic Stare" dispatch) rather than adding
-     * its own standing `Change` — see `MESMERIST_BOLD_STARES`' doc comment
-     * for the target-scoped honesty-bar rationale. Free-choice, soft warning
-     * only on overspend. Empty/undefined for non-mesmerists. Back-compat:
-     * documents without this field are unaffected.
+     * its own standing `Change` — see `MESMERIST_BOLD_STARES`' doc comment for
+     * the target-scoped honesty-bar rationale. Free-choice, soft warning only
+     * on overspend. Empty/undefined for non-mesmerists. Back-compat: documents
+     * without this field are unaffected.
      */
     mesmeristBoldStares?: string[];
     /**
      * Phrenic Amplification ids chosen (keys into `@pf1/engine`
-     * `PHRENIC_AMPLIFICATIONS` — issue #65 follow-through). Gained at 1st,
-     * 3rd, 7th, 11th, 15th, 19th level (six total by 19th, the same
-     * six-threshold cadence `oracleRevelations` uses); see
-     * `apps/web/src/model/psychicAmplifications.ts` for the budget math.
-     * Major amplifications (`tier: "major"`, minLevel 11) are chosen IN
-     * PLACE OF a basic amplification, not an extra budget slot — same
-     * soft-gated, non-extra-budget posture `WITCH_HEXES`'/`NINJA_TRICKS`'
-     * higher tiers use. Every amplification is a cast-time rider on a linked
-     * spell (see `PHRENIC_AMPLIFICATIONS`' doc comment) — display-only, no
-     * standing `Change`; the Phrenic Pool itself (points spent) rides the
-     * vendored `uses.maxFormula` resource-pool pipeline already, unaffected
-     * by this field. Free-choice, soft warning only on overspend. Empty/
-     * undefined for non-psychics. Back-compat: documents without this field
-     * are unaffected.
+     * `PHRENIC_AMPLIFICATIONS`). Gained at 1st, 3rd, 7th, 11th, 15th, 19th
+     * level (six total by 19th, the same six-threshold cadence
+     * `oracleRevelations` uses); see
+     * `apps/web/src/model/psychicAmplifications.ts` for the budget math. Major
+     * amplifications (`tier: "major"`, minLevel 11) are chosen IN PLACE OF a
+     * basic amplification, not an extra budget slot — same soft-gated,
+     * non-extra-budget posture `WITCH_HEXES`'/`NINJA_TRICKS`' higher tiers
+     * use. Every amplification is a cast-time rider on a linked spell (see
+     * `PHRENIC_AMPLIFICATIONS`' doc comment) — display-only, no standing
+     * `Change`; the Phrenic Pool itself (points spent) rides the vendored
+     * `uses.maxFormula` resource-pool pipeline already, unaffected by this
+     * field. Free-choice, soft warning only on overspend. Empty/ undefined for
+     * non-psychics. Back-compat: documents without this field are unaffected.
      */
     psychicAmplifications?: string[];
     /**
@@ -1291,12 +1281,12 @@ export interface CharacterDoc {
       traits?: Record<string, TraitDef>;
     };
     /**
-     * Point-buy budget for the builder's optional point-buy readout (issue
-     * #86) — one of the PF1 Core Rulebook standard budgets (10/15/20/25) or
-     * a table-custom number; `undefined` means point buy is off and the
-     * readout is hidden entirely (back-compat default). Display-only: the
-     * budget is never enforced, only compared against the point-buy cost of
-     * `abilities` (see `apps/web/src/model/pointBuy.ts`) for a soft warning.
+     * Point-buy budget for the builder's optional point-buy readout — one of
+     * the PF1 Core Rulebook standard budgets (10/15/20/25) or a table-custom
+     * number; `undefined` means point buy is off and the readout is hidden
+     * entirely (back-compat default). Display-only: the budget is never
+     * enforced, only compared against the point-buy cost of `abilities` (see
+     * `apps/web/src/model/pointBuy.ts`) for a soft warning.
      */
     abilityPointBuyBudget?: number;
   };
@@ -1332,20 +1322,20 @@ export interface CharacterDoc {
      * `expended` but keeps the loadout. Spell level is derived from RefData.
      *
      * `slotsUsed`: for spontaneous casters, maps spell level → number of slots
-     * consumed today. Total available = spellSlotsByLevel(model, ...).total.
+     * consumed today. Total available = spellSlotsByLevel(model,...).total.
      * Reset to {} on a new day. Omitted / absent = zero used at each level.
      *
      * Both fields are optional for backwards-compat with older documents.
      *
-     * Multiclass casters (issue #22): `slotsUsed` always holds the *primary*
-     * caster class's spontaneous slot usage (see `build.spells.known`'s doc
-     * comment for what "primary" means); a second spontaneous caster class
-     * (e.g. a bard/sorcerer multiclass) tracks its usage in
-     * `slotsUsedByClass`, keyed by class tag. Every `PreparedSpell` also
-     * carries an optional `classTag`, undefined for the primary class's
-     * instances (see `PreparedSpell.classTag`). Single-caster documents never
-     * populate `slotsUsedByClass` or any `PreparedSpell.classTag`, so their
-     * shape and behavior are unchanged by this feature.
+     * Multiclass casters: `slotsUsed` always holds the *primary* caster
+     * class's spontaneous slot usage (see `build.spells.known`'s doc comment
+     * for what "primary" means); a second spontaneous caster class (e.g. a
+     * bard/sorcerer multiclass) tracks its usage in `slotsUsedByClass`, keyed
+     * by class tag. Every `PreparedSpell` also carries an optional `classTag`,
+     * undefined for the primary class's instances (see
+     * `PreparedSpell.classTag`). Single-caster documents never populate
+     * `slotsUsedByClass` or any `PreparedSpell.classTag`, so their shape and
+     * behavior are unchanged by this feature.
      */
     spells?: {
       prepared: PreparedSpell[];
@@ -1358,57 +1348,58 @@ export interface CharacterDoc {
      */
     heroPoints?: number;
     /**
-     * Ability damage (issue #18): points of damage currently suffered per
-     * ability, keyed by {@link AbilityId}. PF1 RAW: damage does NOT lower the
-     * score itself — it imposes a −1 penalty on every modifier-derived stat
-     * (skills, saves, attack, AC, HP for Con, spell DCs, ...) for every 2 full
-     * points of damage. The engine (`collectModifiers`) applies this as a
+     * Ability damage: points of damage currently suffered per ability, keyed
+     * by {@link AbilityId}. PF1 RAW: damage does NOT lower the score itself —
+     * it imposes a −1 penalty on every modifier-derived stat (skills, saves,
+     * attack, AC, HP for Con, spell DCs,...) for every 2 full points of
+     * damage. The engine (`collectModifiers`) applies this as a
      * provenance-tagged penalty to the ability's total that nets to exactly
      * `floor(points/2)` off the modifier — see `compute.ts`'s ability-mod math
      * for why subtracting an even number always lands exactly. Heals naturally
-     * at 1 point/ability/day of rest (model/afflictions.ts `restAbilityDamage`,
-     * not auto-wired to any single "rest" action — see that module's comment).
-     * Damage ≥ the ability's current total score means unconscious (Str/Dex/
-     * Con) or unable to act coherently (Int/Wis/Cha) — the UI surfaces a
-     * warning; the engine does not model incapacitation. Omitted/0 = no damage.
-     * Back-compat: absent entirely for documents predating this feature.
+     * at 1 point/ability/day of rest (model/afflictions.ts
+     * `restAbilityDamage`, not auto-wired to any single "rest" action — see
+     * that module's comment). Damage ≥ the ability's current total score means
+     * unconscious (Str/Dex/ Con) or unable to act coherently (Int/Wis/Cha) —
+     * the UI surfaces a warning; the engine does not model incapacitation.
+     * Omitted/0 = no damage. Back-compat: absent entirely for documents
+     * predating this feature.
      */
     abilityDamage?: Partial<Record<AbilityId, number>>;
     /**
-     * Ability drain (issue #18): points permanently drained per ability, keyed
-     * by {@link AbilityId}. Unlike damage, drain actually lowers the ability's
-     * effective score (it flows into `AbilityScore.total`/`.mod`, never
-     * `.base`) until magically restored (e.g. Restoration) — there is no
-     * natural-healing path for drain. Omitted/0 = no drain. Back-compat:
-     * absent entirely for documents predating this feature.
+     * Ability drain: points permanently drained per ability, keyed by {@link
+     * AbilityId}. Unlike damage, drain actually lowers the ability's effective
+     * score (it flows into `AbilityScore.total`/`.mod`, never `.base`) until
+     * magically restored (e.g. Restoration) — there is no natural-healing path
+     * for drain. Omitted/0 = no drain. Back-compat: absent entirely for
+     * documents predating this feature.
      */
     abilityDrain?: Partial<Record<AbilityId, number>>;
     /**
-     * Ability penalty (issue #18): points of *temporary* penalty per ability
-     * (e.g. a spell or hazard effect that isn't modeled as a buff), keyed by
-     * {@link AbilityId}. Same −1-per-2-points modifier math as
-     * {@link abilityDamage}, but never lethal and never heals over time — it
-     * simply goes away when the player clears it (its cause ending). Kept
-     * distinct from `abilityDamage` so the UI/provenance can label the source
-     * correctly and so damage-specific rules (unconsciousness, 1/day healing)
-     * don't accidentally apply to it. Omitted/0 = no penalty. Back-compat:
-     * absent entirely for documents predating this feature.
+     * Ability penalty: points of *temporary* penalty per ability (e.g. a spell
+     * or hazard effect that isn't modeled as a buff), keyed by {@link
+     * AbilityId}. Same −1-per-2-points modifier math as {@link abilityDamage},
+     * but never lethal and never heals over time — it simply goes away when
+     * the player clears it (its cause ending). Kept distinct from
+     * `abilityDamage` so the UI/provenance can label the source correctly and
+     * so damage-specific rules (unconsciousness, 1/day healing) don't
+     * accidentally apply to it. Omitted/0 = no penalty. Back-compat: absent
+     * entirely for documents predating this feature.
      */
     abilityPenalty?: Partial<Record<AbilityId, number>>;
     /**
-     * Negative levels (issue #19), split into `temporary` (e.g. from energy
-     * drain effects — RAW allows a Fortitude save to remove each temporary
-     * level 24h after gaining it; this app displays the distinction only, no
-     * timer) and `permanent` (only removed by Restoration-type magic). Each
-     * negative level (temporary + permanent combined) imposes, per PF1 RAW: −1
-     * on attack rolls, saving throws, and skill checks (applied via synthetic
+     * Negative levels, split into `temporary` (e.g. from energy drain effects
+     * — RAW allows a Fortitude save to remove each temporary level 24h after
+     * gaining it; this app displays the distinction only, no timer) and
+     * `permanent` (only removed by Restoration-type magic). Each negative
+     * level (temporary + permanent combined) imposes, per PF1 RAW: −1 on
+     * attack rolls, saving throws, and skill checks (applied via synthetic
      * `attack`/`allSavingThrows`/`skills` changes — see `collectModifiers`),
      * and −5 max HP (synthetic `hp` change). It also imposes −1 effective
      * caster level per negative level, which has no home in the current engine
      * (no derived "caster level" stat outside build-time prereqs — see
-     * `model/casterLevel.ts`'s doc comment for why folding it in there would be
-     * wrong), and −1 on ability checks, which the engine also doesn't model as
-     * a distinct roll — both are documented gaps, not silently dropped. If
+     * `model/casterLevel.ts`'s doc comment for why folding it in there would
+     * be wrong), and −1 on ability checks, which the engine also doesn't model
+     * as a distinct roll — both are documented gaps, not silently dropped. If
      * total negative levels reach or exceed the character's Hit Dice, PF1 RAW
      * kills the character; the UI surfaces a warning only. Omitted/both-0 = no
      * negative levels. Back-compat: absent entirely for documents predating
@@ -1416,16 +1407,16 @@ export interface CharacterDoc {
      */
     negativeLevels?: { temporary?: number; permanent?: number };
     /**
-     * Manual "stabilized" flag for a dying character (issue #20). PF1 RAW
-     * stabilizes a dying character (current HP negative, above the death
-     * threshold) via a DC 10 + |current HP| Constitution check, any magical
-     * healing, or a DC 15 Heal check — all rolled/adjudicated at the table,
-     * not by this app (no dice roller, ever — owner decision), so this just
-     * records the outcome the player reports. Only meaningful while
-     * `model/hp.ts` `hpState` would otherwise report `"dying"`; ignored once
-     * HP returns to 0+ or falls to/below the death threshold. Omitted/false =
-     * not stabilized (still losing 1 hp/round while dying). Back-compat:
-     * absent entirely for documents predating this feature.
+     * Manual "stabilized" flag for a dying character. PF1 RAW stabilizes a
+     * dying character (current HP negative, above the death threshold) via a
+     * DC 10 + |current HP| Constitution check, any magical healing, or a DC 15
+     * Heal check — all rolled/adjudicated at the table, not by this app (no
+     * dice roller, ever — owner decision), so this just records the outcome
+     * the player reports. Only meaningful while `model/hp.ts` `hpState` would
+     * otherwise report `"dying"`; ignored once HP returns to 0+ or falls
+     * to/below the death threshold. Omitted/false = not stabilized (still
+     * losing 1 hp/round while dying). Back-compat: absent entirely for
+     * documents predating this feature.
      */
     stable?: boolean;
     /**
@@ -1436,12 +1427,12 @@ export interface CharacterDoc {
      */
     xp?: number;
     /**
-     * Coin purse (issue #16 inventory bookkeeping — always tracked, unlike
-     * the gated `encumbranceEnabled` rule). Each denomination is optional;
-     * an absent denomination means 0, matching the rest of the schema's
-     * "omit the default" convention. Display/bookkeeping only — no derived
-     * stat reads this, and the engine never auto-spends or auto-earns coin.
-     * Back-compat: absent entirely for documents predating this feature.
+     * Coin purse (inventory bookkeeping — always tracked, unlike the gated
+     * `encumbranceEnabled` rule). Each denomination is optional; an absent
+     * denomination means 0, matching the rest of the schema's "omit the
+     * default" convention. Display/bookkeeping only — no derived stat reads
+     * this, and the engine never auto-spends or auto-earns coin. Back-compat:
+     * absent entirely for documents predating this feature.
      */
     money?: { pp?: number; gp?: number; sp?: number; cp?: number };
     /**
@@ -1480,10 +1471,10 @@ export interface CharacterDoc {
      */
     animalCompanion?: AnimalCompanionLiveState;
     /**
-     * Brawler's Martial Flexibility (issue #65): the combat feat id currently
-     * "borrowed" via a move/swift/free/immediate action (the action-type
-     * shortens with brawler level per RAW but isn't tracked separately here —
-     * display-only distinction). PF1 RAW: lasts 1 minute, drawn from the
+     * Brawler's Martial Flexibility: the combat feat id currently "borrowed"
+     * via a move/swift/free/immediate action (the action-type shortens with
+     * brawler level per RAW but isn't tracked separately here — display-only
+     * distinction). PF1 RAW: lasts 1 minute, drawn from the
      * `martialFlexibility` resource pool (`uses.maxFormula` is vendored — see
      * `@pf1/engine` `resources.ts` — `3 + floor(brawlerLevel / 2)`/day); the
      * player must meet the borrowed feat's prerequisites, which this field
@@ -1511,38 +1502,37 @@ export interface CharacterDoc {
     eidolon?: EidolonLiveState;
     /**
      * Occultist Mental Focus points currently invested per implement school
-     * tag (keys into `@pf1/engine` `OCCULTIST_SCHOOLS`, issue #65). PF1 RAW
-     * ("Mental Focus"): once per day (after 1 hour spent preparing
-     * implements), an occultist divides her Mental Focus pool (the
-     * `mentalFocus` resource pool — `@class.unlevel + @abilities.int.mod`,
-     * already generic/vendored) among her known implements; each implement
-     * with 1+ point invested gains its school's Resonant Power, scaled by the
-     * amount invested (see `OCCULTIST_SCHOOLS[tag].resonantPower` and
-     * `collect.ts`'s occultist block for which resonant powers are
-     * unconditional enough to apply as real sheet `Change`s vs. shown as a
-     * situational computed preview only). This is genuinely a DAILY choice
-     * (RAW: "mental focus that is not used before the next time the occultist
-     * refreshes his focus is lost") but — unlike the medium's spirit — it's
-     * modeled as `live.*` rather than reset by `model/rest.ts`'s `restNewDay`:
-     * a player re-dividing focus after a rest is expected to explicitly
-     * re-invest (the UI doesn't assume a default split), so `restNewDay`
-     * deliberately leaves this untouched, matching its own documented
-     * "active buffs... left alone by design" posture for other genuinely
-     * player-directed daily setup steps. Not validated against the actual
-     * Mental Focus pool max (soft posture — the UI shows remaining/overspent
-     * as a hint, never blocks). Keys not in `build.occultistImplements`, or a
-     * non-occultist's stale field, are ignored by the engine. Empty/undefined
-     * = no focus invested anywhere. Back-compat: documents without this field
-     * are unaffected.
+     * tag (keys into `@pf1/engine` `OCCULTIST_SCHOOLS`). PF1 RAW ("Mental
+     * Focus"): once per day (after 1 hour spent preparing implements), an
+     * occultist divides her Mental Focus pool (the `mentalFocus` resource pool
+     * — `@class.unlevel + @abilities.int.mod`, already generic/vendored) among
+     * her known implements; each implement with 1+ point invested gains its
+     * school's Resonant Power, scaled by the amount invested (see
+     * `OCCULTIST_SCHOOLS[tag].resonantPower` and `collect.ts`'s occultist
+     * block for which resonant powers are unconditional enough to apply as
+     * real sheet `Change`s vs. shown as a situational computed preview only).
+     * This is genuinely a DAILY choice (RAW: "mental focus that is not used
+     * before the next time the occultist refreshes his focus is lost") but —
+     * unlike the medium's spirit — it's modeled as `live.*` rather than reset
+     * by `model/rest.ts`'s `restNewDay`: a player re-dividing focus after a
+     * rest is expected to explicitly re-invest (the UI doesn't assume a
+     * default split), so `restNewDay` deliberately leaves this untouched,
+     * matching its own documented "active buffs... left alone by design"
+     * posture for other genuinely player-directed daily setup steps. Not
+     * validated against the actual Mental Focus pool max (soft posture — the
+     * UI shows remaining/overspent as a hint, never blocks). Keys not in
+     * `build.occultistImplements`, or a non-occultist's stale field, are
+     * ignored by the engine. Empty/undefined = no focus invested anywhere.
+     * Back-compat: documents without this field are unaffected.
      */
     occultistFocusInvested?: Record<string, number>;
     /**
-     * Occultist Transmutation implement's Physical Enhancement resonant
-     * power (issue #65): which physical ability score (Strength, Dexterity,
-     * or Constitution) currently receives its scaling enhancement bonus. PF1
-     * RAW lets the occultist choose the target ability each time the power
-     * is invoked; modeled here as a single live choice (not per-invocation)
-     * for simplicity, matching this app's "one active choice, not a history"
+     * Occultist Transmutation implement's Physical Enhancement resonant power:
+     * which physical ability score (Strength, Dexterity, or Constitution)
+     * currently receives its scaling enhancement bonus. PF1 RAW lets the
+     * occultist choose the target ability each time the power is invoked;
+     * modeled here as a single live choice (not per-invocation) for
+     * simplicity, matching this app's "one active choice, not a history"
      * posture elsewhere (e.g. `martialFlexibilityFeatId`). Only meaningful
      * while Transmutation has 3+ Mental Focus invested (see
      * `occultistFocusInvested.transmutation`); ignored otherwise. Undefined
@@ -1588,85 +1578,83 @@ export interface CharacterDoc {
      */
     kineticistBlastLoadout?: KineticistBlastLoadout;
     /**
-     * Vigilante's current identity (issue #65) — "social" (public persona) or
-     * "vigilante" (masked persona). Display-forward table state (an identity
-     * chip + a context-note reminder about renown/alignment scope on the
-     * relevant class features), not a numeric input to `compute()`: no
-     * vendored `Change` gates on identity, and several vigilante talents'
-     * identity-scoped bonuses (Renown's Intimidate bonus, Social Grace, ...)
-     * are intentionally left as manual-apply `contextNotes` on
-     * `VIGILANTE_SOCIAL_TALENTS`/`VIGILANTE_TALENTS` rather than wired to
-     * this flag — see those tables' doc comments. Omitted/undefined defaults
-     * to "social" (a vigilante typically starts and rests in their public
+     * Vigilante's current identity — "social" (public persona) or "vigilante"
+     * (masked persona). Display-forward table state (an identity chip + a
+     * context-note reminder about renown/alignment scope on the relevant class
+     * features), not a numeric input to `compute`: no vendored `Change` gates
+     * on identity, and several vigilante talents' identity-scoped bonuses
+     * (Renown's Intimidate bonus, Social Grace,...) are intentionally left as
+     * manual-apply `contextNotes` on
+     * `VIGILANTE_SOCIAL_TALENTS`/`VIGILANTE_TALENTS` rather than wired to this
+     * flag — see those tables' doc comments. Omitted/undefined defaults to
+     * "social" (a vigilante typically starts and rests in their public
      * identity). Back-compat: documents without this field are unaffected.
      */
     vigilanteIdentity?: "social" | "vigilante";
     /**
-     * Medium's currently channeled legendary spirit (issue #65) — a
-     * `@pf1/engine` `MEDIUM_SPIRITS` tag ("archmage" | "champion" | "guardian"
-     * | "hierophant" | "marshal" | "trickster"). PF1 RAW ("Séance"): "each
-     * morning ... a medium can perform a special ritual ... to determine
-     * which spirit ... the medium channels for that day" — a genuinely DAILY
-     * choice, like `occultistFocusInvested` above, but UNLIKE it this is
-     * modeled as a single tag rather than a record (a medium channels
-     * exactly one spirit at a time; the "Legendary Medium" archetype that
-     * channels two simultaneously is out of scope). Deliberately NOT reset by
+     * Medium's currently channeled legendary spirit — a `@pf1/engine`
+     * `MEDIUM_SPIRITS` tag ("archmage" | "champion" | "guardian" |
+     * "hierophant" | "marshal" | "trickster"). PF1 RAW ("Séance"): "each
+     * morning... a medium can perform a special ritual... to determine which
+     * spirit... the medium channels for that day" — a genuinely DAILY choice,
+     * like `occultistFocusInvested` above, but UNLIKE it this is modeled as a
+     * single tag rather than a record (a medium channels exactly one spirit at
+     * a time; the "Legendary Medium" archetype that channels two
+     * simultaneously is out of scope). Deliberately NOT reset by
      * `model/rest.ts`'s `restNewDay` — same rationale as
-     * `occultistFocusInvested`'s doc comment: a player re-affirms their
-     * spirit by explicit action (the tracker panel's séance picker), not an
-     * implicit side effect of resting, and in practice a character channels
-     * the same spirit day after day far more often than not, so silently
-     * clearing it on every rest would be more friction than signal. Gates the
-     * Spirit Bonus `Change`s (`collect.ts`) and the spirit's own Spirit
-     * Powers (`archetypes.ts` `collectGrantedFeatures`, `origin.kind:
-     * "spiritPower"`) — see `@pf1/engine` `medium-spirits.ts` for the full
-     * table. Undefined = no séance performed yet today; a medium genuinely
-     * has none of a spirit's benefits until one is chosen (unlike
-     * `vigilanteIdentity`, there is no sensible non-undefined default). A tag
-     * not in `MEDIUM_SPIRITS` (e.g. a stale value after a house-rule table
-     * change) is tolerated the same way a stale `shamanSpirit`/
-     * `psychicDiscipline` is — treated as "none chosen". Back-compat:
-     * documents without this field are unaffected.
+     * `occultistFocusInvested`'s doc comment: a player re-affirms their spirit
+     * by explicit action (the tracker panel's séance picker), not an implicit
+     * side effect of resting, and in practice a character channels the same
+     * spirit day after day far more often than not, so silently clearing it on
+     * every rest would be more friction than signal. Gates the Spirit Bonus
+     * `Change`s (`collect.ts`) and the spirit's own Spirit Powers
+     * (`archetypes.ts` `collectGrantedFeatures`, `origin.kind: "spiritPower"`)
+     * — see `@pf1/engine` `medium-spirits.ts` for the full table. Undefined =
+     * no séance performed yet today; a medium genuinely has none of a spirit's
+     * benefits until one is chosen (unlike `vigilanteIdentity`, there is no
+     * sensible non-undefined default). A tag not in `MEDIUM_SPIRITS` (e.g. a
+     * stale value after a house-rule table change) is tolerated the same way a
+     * stale `shamanSpirit`/ `psychicDiscipline` is — treated as "none chosen".
+     * Back-compat: documents without this field are unaffected.
      */
     mediumSpirit?: string;
     /**
-     * Medium's current Influence total (issue #65) — PF1 RAW ("Legendary
-     * Spirit"): a 0-5 point counter that rises when the medium leans on their
-     * channeled spirit (performing the séance itself grants 1; Spirit Surge
-     * and several Spirit Powers cost 1 more each use; breaking a Taboo grants
-     * 1). Genuinely numeric bookkeeping (unlike `vigilanteIdentity`'s display-
-     * only chip) — see `@pf1/engine` `medium-spirits.ts`'s file doc comment
-     * for exactly which consequences are modeled: NONE are auto-applied as
-     * `Change`s (every spirit's 3+ penalty references either an unmodeled
-     * stat or a behavioral restriction this app can't adjudicate, and 5 —
-     * "the spirit takes over" — is a full loss-of-control the GM adjudicates,
-     * not a sheet state this app can represent), so 3+ and 5 are surfaced
-     * ONLY as soft warning banners in the tracker's séance panel
+     * Medium's current Influence total — PF1 RAW ("Legendary Spirit"): a 0-5
+     * point counter that rises when the medium leans on their channeled spirit
+     * (performing the séance itself grants 1; Spirit Surge and several Spirit
+     * Powers cost 1 more each use; breaking a Taboo grants 1). Genuinely
+     * numeric bookkeeping (unlike `vigilanteIdentity`'s display- only chip) —
+     * see `@pf1/engine` `medium-spirits.ts`'s file doc comment for exactly
+     * which consequences are modeled: NONE are auto-applied as `Change`s
+     * (every spirit's 3+ penalty references either an unmodeled stat or a
+     * behavioral restriction this app can't adjudicate, and 5 — "the spirit
+     * takes over" — is a full loss-of-control the GM adjudicates, not a sheet
+     * state this app can represent), so 3+ and 5 are surfaced ONLY as soft
+     * warning banners in the tracker's séance panel
      * (`model/mediumSpirits.ts`). Clamped to 0-5 by that module's setters (a
      * medium simply cannot accumulate influence beyond 5 — the spirit takes
-     * over first). Not reset by `restNewDay`, same rationale as
-     * `mediumSpirit` above — a fresh séance (and thus fresh influence
-     * bookkeeping) is a distinct, explicit player action in this app's model
-     * (the panel's own "New Séance" control), not an implicit side effect of
-     * the global rest button. Undefined/0 = no influence accrued. Back-compat:
-     * documents without this field are unaffected.
+     * over first). Not reset by `restNewDay`, same rationale as `mediumSpirit`
+     * above — a fresh séance (and thus fresh influence bookkeeping) is a
+     * distinct, explicit player action in this app's model (the panel's own
+     * "New Séance" control), not an implicit side effect of the global rest
+     * button. Undefined/0 = no influence accrued. Back-compat: documents
+     * without this field are unaffected.
      */
     mediumInfluence?: number;
     /**
      * A polymorph-family transformation currently affecting the character —
-     * Wild Shape, or a Beast Shape/Elemental Body/Plant Shape spell (issue
-     * #70; see `@pf1/engine` `SHIFTER_ASPECTS`'s `majorFormNote`, which
-     * pointed here). Purely a player CHOICE — which tier + creature
-     * type/size/element the form takes, plus the natural-attack lines the
-     * player copies off the assumed creature's stat block; the engine
-     * (`@pf1/engine` `polymorphFormOption`/`computePolymorphAttacks`)
-     * derives the resulting ability-score/natural-armor/attack numbers, this
-     * field never stores them directly. `undefined` = not currently
-     * transformed. No separate `build.*` half (unlike `animalCompanion`/
-     * `familiar`): a form has no standing configuration to persist between
-     * activations, so — like `activeBuffs`/`conditions` — this is pure
-     * `live.*` state, entered fresh each time. Back-compat: documents
-     * without this field are unaffected.
+     * Wild Shape, or a Beast Shape/Elemental Body/Plant Shape spell (see
+     * `@pf1/engine` `SHIFTER_ASPECTS`'s `majorFormNote`, which pointed here).
+     * Purely a player CHOICE — which tier + creature type/size/element the
+     * form takes, plus the natural-attack lines the player copies off the
+     * assumed creature's stat block; the engine (`@pf1/engine`
+     * `polymorphFormOption`/`computePolymorphAttacks`) derives the resulting
+     * ability-score/natural-armor/attack numbers, this field never stores them
+     * directly. `undefined` = not currently transformed. No separate `build.*`
+     * half (unlike `animalCompanion`/ `familiar`): a form has no standing
+     * configuration to persist between activations, so — like
+     * `activeBuffs`/`conditions` — this is pure `live.*` state, entered fresh
+     * each time. Back-compat: documents without this field are unaffected.
      */
     activeForm?: ActiveForm;
   };
@@ -1799,19 +1787,18 @@ export interface AnimalCompanionBuild {
    * simplification) rather than the game picking one. An empty array (or a
    * document with `animalCompanion` set but neither source chosen yet) means
    * effective level 0 — the companion doesn't show up on the sheet yet,
-   * matching the engine's soft-warning posture. `"hunter-companion"` (issue
-   * #65) is the ACG Hunter class's OWN Animal Companion class feature —
-   * distinct from the ranger's "Hunter's Bond" despite the similar name; a
-   * hunter's effective druid level equals her hunter level 1:1 (no −3 offset,
-   * unlike the ranger's `hunters-bond`) — see `@pf1/engine`
-   * `companionEffectiveLevel`'s doc comment. `"cavalier-mount"`/
-   * `"samurai-mount"` (issue #68) are the Cavalier's and Samurai's own
-   * "Mount" class feature (UC "This mount functions as a druid's animal
-   * companion, using the cavalier's/samurai's level as his effective druid
-   * level" — verified against aonprd.com during authoring; identical text
-   * for both classes) — 1:1, no −3 offset, granted at 1st level (unlike the
-   * ranger's 4th-level gate), and kept as two separate tags (rather than one
-   * shared "mount" tag) purely to match this field's existing one-tag-per-
+   * matching the engine's soft-warning posture. `"hunter-companion"` is the
+   * ACG Hunter class's OWN Animal Companion class feature — distinct from the
+   * ranger's "Hunter's Bond" despite the similar name; a hunter's effective
+   * druid level equals her hunter level 1:1 (no −3 offset, unlike the ranger's
+   * `hunters-bond`) — see `@pf1/engine` `companionEffectiveLevel`'s doc
+   * comment. `"cavalier-mount"`/ `"samurai-mount"` are the Cavalier's and
+   * Samurai's own "Mount" class feature (UC "This mount functions as a druid's
+   * animal companion, using the cavalier's/samurai's level as his effective
+   * druid level" — verified against aonprd.com during authoring; identical
+   * text for both classes) — 1:1, no −3 offset, granted at 1st level (unlike
+   * the ranger's 4th-level gate), and kept as two separate tags (rather than
+   * one shared "mount" tag) purely to match this field's existing one-tag-per-
    * class-feature convention, even where the math is identical.
    */
   source: (
@@ -1832,34 +1819,33 @@ export interface AnimalCompanionBuild {
    */
   abilityIncreases?: AbilityId[];
   /**
-   * Feat ids chosen for the companion itself (issue #68) — keys into
-   * `RefData.feats`. Free pick from the full feat list (no "animal-eligible"
-   * filter — a documented v1 "first cut" scope, matching this project's
-   * hybrid-prereq honesty bar rather than promising perfect eligibility
-   * curation), soft-capped (never blocked) against the companion's own
-   * `DerivedCompanion.bonusFeats` budget by `apps/web/src/model/companion.ts`.
-   * Structured prereqs (ability score, BAB) are checked against the
-   * COMPANION's own derived stats, not the master's — see
-   * `model/companion.ts`'s `companionFeatPrereqContext`. Omitted/empty = no
-   * feats picked yet.
+   * Feat ids chosen for the companion itself — keys into `RefData.feats`. Free
+   * pick from the full feat list (no "animal-eligible" filter — a documented
+   * v1 "first cut" scope, matching this project's hybrid-prereq honesty bar
+   * rather than promising perfect eligibility curation), soft-capped (never
+   * blocked) against the companion's own `DerivedCompanion.bonusFeats` budget
+   * by `apps/web/src/model/companion.ts`. Structured prereqs (ability score,
+   * BAB) are checked against the COMPANION's own derived stats, not the
+   * master's — see `model/companion.ts`'s `companionFeatPrereqContext`.
+   * Omitted/empty = no feats picked yet.
    */
   feats?: string[];
   /**
    * Per-skill rank allocation for the companion's six trackable skills
-   * (issue #68 — `acr`/`clm`/`fly`/`per`/`ste`/`swm`, the same set
-   * `@pf1/engine` `companion.ts`'s module doc comment names). `@pf1/engine`
+   * (`acr`/`clm`/`fly`/`per`/`ste`/`swm`, the same set `@pf1/engine`
+   * `companion.ts`'s module doc comment names). `@pf1/engine`
    * `deriveCompanion` hard-caps each skill's ranks at the companion's own Hit
    * Dice (a monster's structural rank cap — RAW, not a house rule) and adds
-   * the standard +3 class-skill bonus once a skill has 1+ rank invested
-   * (every one of the six is always a class skill for an Animal-type
-   * creature, per Universal Monster Rules — same convention `familiar.ts`'s
+   * the standard +3 class-skill bonus once a skill has 1+ rank invested (every
+   * one of the six is always a class skill for an Animal-type creature, per
+   * Universal Monster Rules — same convention `familiar.ts`'s
    * `ANIMAL_CLASS_SKILLS` already established). The TOTAL across all six is
-   * only soft-warned against `DerivedCompanion.skillPointsAvailable`
-   * (`hd * max(1, 2 + Int mod)`, Monster Creation's skill-point formula) —
-   * never blocked, same posture as every other budgeted picker in this
-   * codebase. Entries for a skill id outside that set of six are ignored.
-   * Omitted/empty = no ranks invested (the v1-through-#68 default: pure
-   * ability mod + racial/size, as before).
+   * only soft-warned against `DerivedCompanion.skillPointsAvailable` (`hd *
+   * max(1, 2 + Int mod)`, Monster Creation's skill-point formula) — never
+   * blocked, same posture as every other budgeted picker in this codebase.
+   * Entries for a skill id outside that set of six are ignored. Omitted/empty
+   * = no ranks invested (the original default: pure ability mod +
+   * racial/size, as before).
    */
   skillRanks?: Record<string, number>;
   /** Free-text notes (e.g. personality, tricks, house-rule tweaks). */
@@ -1921,33 +1907,32 @@ export interface AnimalCompanionLiveState {
    */
   sharedBuffIds?: string[];
   /**
-   * Hunter's Animal Focus (ACG) applied to the companion (issue #65) — a
-   * `RefData.buffs` id, e.g. one of the 12 vendored "Animal Focus (<Animal>)"
-   * buffs (`grantsBuffs` on the Hunter's own Animal Focus class feature,
-   * already resolved generically by `@pf1/engine` `deriveResourcePools`).
-   * PF1 RAW: the companion's aspect is independent of the hunter's own
-   * active focus (can differ, doesn't count against her daily minutes, and
-   * persists until changed) — so this is DISPLAY-ONLY bookkeeping (a chip
-   * naming which aspect is active), not wired into `deriveCompanion`'s
-   * numeric stat block, matching this field's existing display-only posture
-   * for anything beyond `sharedBuffIds`/damage. Toggled via
-   * `apps/web/src/model/companion.ts` `setCompanionFocus`. Omitted = no
-   * focus applied to the companion.
+   * Hunter's Animal Focus (ACG) applied to the companion — a `RefData.buffs`
+   * id, e.g. one of the 12 vendored "Animal Focus (<Animal>)" buffs
+   * (`grantsBuffs` on the Hunter's own Animal Focus class feature, already
+   * resolved generically by `@pf1/engine` `deriveResourcePools`). PF1 RAW: the
+   * companion's aspect is independent of the hunter's own active focus (can
+   * differ, doesn't count against her daily minutes, and persists until
+   * changed) — so this is DISPLAY-ONLY bookkeeping (a chip naming which aspect
+   * is active), not wired into `deriveCompanion`'s numeric stat block,
+   * matching this field's existing display-only posture for anything beyond
+   * `sharedBuffIds`/damage. Toggled via `apps/web/src/model/companion.ts`
+   * `setCompanionFocus`. Omitted = no focus applied to the companion.
    */
   focusBuffId?: string;
   /**
-   * The companion's OWN active conditions (issue #68) — condition ids, keys
-   * into `@pf1/engine` `CONDITIONS`, exactly like the master's own
+   * The companion's OWN active conditions — condition ids, keys into
+   * `@pf1/engine` `CONDITIONS`, exactly like the master's own
    * `live.conditions` but tracked independently: the companion can be
-   * shaken/entangled/etc. while the master isn't, and vice versa (e.g. an
-   * area fear effect that only catches one of them). Toggled via
-   * `apps/web/src/model/companion.ts` `toggleCompanionCondition`, which
-   * reuses `model/conditions.ts`'s `toggleConditionIn` for the same
-   * ladder-aware auto-upgrade/implied-condition behavior the master's own
-   * conditions get. Resolved by `@pf1/engine` `deriveCompanion`, which routes
-   * each active condition's `Change[]` through the exact same
-   * `routeSharedBuffs` pipeline as a shared buff (see that module's doc
-   * comment). Omitted/empty = no active conditions.
+   * shaken/entangled/etc. while the master isn't, and vice versa (e.g. an area
+   * fear effect that only catches one of them). Toggled via
+   * `apps/web/src/model/companion.ts` `toggleCompanionCondition`, which reuses
+   * `model/conditions.ts`'s `toggleConditionIn` for the same ladder-aware
+   * auto-upgrade/implied-condition behavior the master's own conditions get.
+   * Resolved by `@pf1/engine` `deriveCompanion`, which routes each active
+   * condition's `Change[]` through the exact same `routeSharedBuffs` pipeline
+   * as a shared buff (see that module's doc comment). Omitted/empty = no
+   * active conditions.
    */
   conditions?: string[];
 }
@@ -2283,21 +2268,21 @@ export interface PreparedSpell {
   kind?: "normal" | "domain" | "school";
   /**
    * Which caster class (key into `identity.classes[].tag`) this prepared
-   * instance belongs to — issue #22 multiclass support. Undefined means the
-   * document's *primary* caster class (see `build.spells.known`'s doc
-   * comment): every prepared instance on a single-caster document, and every
-   * instance predating this field, is implicitly the (only) caster class's,
-   * so this stays undefined for them — zero migration needed. Only a second
-   * (or further) caster class's instances set this explicitly.
+   * instance belongs to — multiclass support. Undefined means the document's
+   * *primary* caster class (see `build.spells.known`'s doc comment): every
+   * prepared instance on a single-caster document, and every instance
+   * predating this field, is implicitly the (only) caster class's, so this
+   * stays undefined for them — zero migration needed. Only a second (or
+   * further) caster class's instances set this explicitly.
    */
   classTag?: string;
   /**
-   * Metamagic feats applied to this prepared instance (issue #71). Each entry
-   * names a metamagic feat the character has (by `featNameSlug`, key into
+   * Metamagic feats applied to this prepared instance. Each entry names a
+   * metamagic feat the character has (by `featNameSlug`, key into
    * `@pf1/engine`'s `METAMAGIC_FEATS`); the sum of their slot-level increases
    * bumps the slot this instance occupies (e.g. an Empowered Fireball — base
    * 3rd — consumes a 5th-level slot). Absent/empty means an unmodified spell,
-   * so every pre-#71 prepared instance is unchanged. Only the SLOT accounting
+   * so every prepared instance authored before it is unchanged. Only the SLOT accounting
    * is modeled; the numeric effect on the spell is a display-only note (see
    * `METAMAGIC_FEATS`'s honesty-bar doc comment). Save DC is unaffected by
    * every metamagic EXCEPT Heighten (`raisesEffectiveLevel`).
@@ -2307,10 +2292,10 @@ export interface PreparedSpell {
 
 /**
  * One metamagic feat applied to a spell (a {@link PreparedSpell}, or a
- * spontaneous/hybrid cast — issue #71). The slot-level increase is read live
- * from `@pf1/engine`'s `METAMAGIC_FEATS[slug]` (following the same
- * "store the slug, look up the number" posture as `SavedRollFeatRef`), so a
- * data/registry bump never leaves a stale number baked into the doc.
+ * spontaneous/hybrid cast). The slot-level increase is read live from
+ * `@pf1/engine`'s `METAMAGIC_FEATS[slug]` (following the same "store the slug,
+ * look up the number" posture as `SavedRollFeatRef`), so a data/registry bump
+ * never leaves a stale number baked into the doc.
  */
 export interface AppliedMetamagic {
   /** `featNameSlug` of the metamagic feat (key into `@pf1/engine` `METAMAGIC_FEATS`). */
@@ -2564,30 +2549,30 @@ export interface ItemInstance {
   /** Display label fallback when `itemId` is absent. */
   name?: string;
   /**
-   * How many of this item the character carries (issue #16). Absent means 1 —
-   * every gear entry predating this field, and every entry added since where
-   * the player never touched the stepper, behaves exactly as before. Used to
-   * scale weight (unit weight × quantity) for both the gear-row display and
-   * `@pf1/engine`'s `totalCarriedWeight` (encumbrance). This is how ammo/bulk
-   * consumables are tracked (e.g. "Arrows" ×20) — there is no auto-decrement
-   * on attack (no dice roller; attacks aren't "resolved" by this app), so the
-   * player adjusts the stepper by hand as they use items up.
+   * How many of this item the character carries. Absent means 1 — every gear
+   * entry predating this field, and every entry added since where the player
+   * never touched the stepper, behaves exactly as before. Used to scale weight
+   * (unit weight × quantity) for both the gear-row display and `@pf1/engine`'s
+   * `totalCarriedWeight` (encumbrance). This is how ammo/bulk consumables are
+   * tracked (e.g. "Arrows" ×20) — there is no auto-decrement on attack (no
+   * dice roller; attacks aren't "resolved" by this app), so the player adjusts
+   * the stepper by hand as they use items up.
    */
   quantity?: number;
   /**
-   * Charges spent so far on a limited-use item (issue #16), e.g. 3 of a Staff
-   * of Healing's 10. Only meaningful when the instance has a charge cap — see
-   * `charges` below, which is the instance's own cap or, absent that, the
-   * linked `RefData.items[itemId].uses.maxFormula`. Absent means 0 (full
-   * charges). Deliberately NOT modeled as a
-   * generic `live.resources` pool keyed by a derived id: `ItemInstance`s live
-   * in an unordered array with no stable per-instance identity (the same item
-   * name can appear more than once, and removing an earlier entry shifts
-   * every later index), so a pool keyed by array position would silently
-   * misattribute charge state after any edit. Storing the count directly on
-   * the instance means it always travels with the correct array element.
-   * Ignored for gear with no `itemId` or whose ref carries no `uses`.
-   * Back-compat: absent entirely for documents predating this feature.
+   * Charges spent so far on a limited-use item, e.g. 3 of a Staff of Healing's
+   * 10. Only meaningful when the instance has a charge cap — see `charges`
+   * below, which is the instance's own cap or, absent that, the linked
+   * `RefData.items[itemId].uses.maxFormula`. Absent means 0 (full charges).
+   * Deliberately NOT modeled as a generic `live.resources` pool keyed by a
+   * derived id: `ItemInstance`s live in an unordered array with no stable
+   * per-instance identity (the same item name can appear more than once, and
+   * removing an earlier entry shifts every later index), so a pool keyed by
+   * array position would silently misattribute charge state after any edit.
+   * Storing the count directly on the instance means it always travels with
+   * the correct array element. Ignored for gear with no `itemId` or whose ref
+   * carries no `uses`. Back-compat: absent entirely for documents predating
+   * this feature.
    */
   chargesUsed?: number;
   /**
@@ -2657,24 +2642,24 @@ export interface WornArmor {
    */
   abilityInfo?: Record<string, { name: string; cost?: number }>;
   /**
-   * Weight in pounds, snapshotted from `ArmorRef.weight` at pick-time (issue
-   * #16 encumbrance), or entered directly for a hand-authored custom armor
-   * entry. Feeds `@pf1/engine`'s `totalCarriedWeight`; ignored entirely when
+   * Weight in pounds, snapshotted from `ArmorRef.weight` at pick-time
+   * (encumbrance), or entered directly for a hand-authored custom armor entry.
+   * Feeds `@pf1/engine`'s `totalCarriedWeight`; ignored entirely when
    * `settings.encumbranceEnabled` is off. Omitted = 0 lb (e.g. a manually
    * entered armor the player didn't bother to weigh).
    */
   weight?: number;
   /**
    * Arcane spell failure chance (%), snapshotted from `ArmorRef.asf` at
-   * pick-time, reduced by mithral's -10% (issue #8; see `model/materials.ts`).
+   * pick-time, reduced by mithral's -10% (see `model/materials.ts`).
    * Display-only — feeds `DerivedSheet.arcaneSpellFailure`, shown only when
    * the character has an arcane-casting class. Omitted = 0%.
    */
   asf?: number;
   /**
-   * Shield proficiency tier (issue #81) — meaningful only when `slot ===
-   * "shield"`; `undefined` for body armor. Snapshotted from `ArmorRef.proficiency`
-   * at pick-time ("lightShield"/"other" (bucklers) → "light", "heavyShield" →
+   * Shield proficiency tier — meaningful only when `slot === "shield"`;
+   * `undefined` for body armor. Snapshotted from `ArmorRef.proficiency` at
+   * pick-time ("lightShield"/"other" (bucklers) → "light", "heavyShield" →
    * "heavy", "towerShield" → "tower"), or chosen directly for a hand-entered
    * custom shield. Body armor doesn't need an equivalent field — `type` above
    * (already snapshotted, and already correctly one-stepped-lighter for
@@ -2706,11 +2691,10 @@ export interface WeaponInstance {
    * Which ability modifier adds to the damage bonus.
    * - `"str"` (default): STR × damageMultiplier, melee only.
    * - `"dex"`: DEX × damageMultiplier, melee only — a hand-set override for a
-   *   Dex-to-damage source the player wants to force on (e.g. Slashing
-   *   Grace). Rogue (Unchained)'s Finesse Training (`build.rogueFinesseWeapons`
-   *   — issue #65) applies this automatically for a matching weapon instead
-   *   of requiring it to be set by hand; see `computeWeaponAttacks` in
-   *   `compute.ts`.
+   *   Dex-to-damage source the player wants to force on (e.g. Slashing Grace).
+   *   Rogue (Unchained)'s Finesse Training (`build.rogueFinesseWeapons`)
+   *   applies this automatically for a matching weapon instead of requiring it
+   *   to be set by hand; see `computeWeaponAttacks` in `compute.ts`.
    * - `"none"`: no ability modifier to damage (ranged, finesse, thrown without STR).
    */
   damageAbility?: "str" | "dex" | "none";
@@ -2748,13 +2732,12 @@ export interface WeaponInstance {
    * Semantic weapon-group tags (e.g. `["bows"]`, `["blades-heavy"]`),
    * snapshotted from `WeaponRef.weaponGroups` at pick-time and normalized to
    * `@pf1/engine`'s kebab-case slug convention (`normalizeWeaponGroup` in
-   * `weapon-groups.ts`). Unlike `group` (a free-text, one-weapon tag), this
-   * is Foundry's canonical weapon-category vocabulary — what
+   * `weapon-groups.ts`). Unlike `group` (a free-text, one-weapon tag), this is
+   * Foundry's canonical weapon-category vocabulary — what
    * `attack.weapon.<group>` / `damage.weapon.<group>` Changes match against
-   * for category-scoped bonuses (Weapon Training and its archetype
-   * reflavors), in addition to `group`. Omitted for hand-entered custom
-   * weapons, which have no vendored group data and keep working via `group`
-   * alone (issue #45).
+   * for category-scoped bonuses (Weapon Training and its archetype reflavors),
+   * in addition to `group`. Omitted for hand-entered custom weapons, which
+   * have no vendored group data and keep working via `group` alone.
    */
   weaponGroups?: string[];
   /** Melee or ranged; determines which attack modifier targets apply. Default "melee". */
@@ -2778,15 +2761,15 @@ export interface WeaponInstance {
    */
   abilityInfo?: Record<string, { name: string; cost?: number }>;
   /**
-   * Weight in pounds, snapshotted from `WeaponRef.weight` at pick-time (issue
-   * #16 encumbrance), or entered directly for a hand-authored custom weapon.
+   * Weight in pounds, snapshotted from `WeaponRef.weight` at pick-time
+   * (encumbrance), or entered directly for a hand-authored custom weapon.
    * Feeds `@pf1/engine`'s `totalCarriedWeight`; ignored when
    * `settings.encumbranceEnabled` is off. Omitted = 0 lb.
    */
   weight?: number;
   /**
-   * Proficiency category (issue #81), snapshotted from `WeaponRef.proficiency`
-   * at pick-time, or chosen directly for a hand-authored custom weapon (the
+   * Proficiency category, snapshotted from `WeaponRef.proficiency` at
+   * pick-time, or chosen directly for a hand-authored custom weapon (the
    * builder defaults a new custom entry to "martial" — always present, never
    * left for the player to accidentally skip). Compared against the
    * character's derived proficiency set (`@pf1/engine`'s `isWeaponProficient`,
@@ -2824,13 +2807,12 @@ export interface DerivedSheet {
    */
   cmdFlatFooted: number;
   /**
-   * The character's current effective size category — race base size,
-   * shifted by any relative "size"-target Change (Enlarge/Reduce Person,
-   * ...), then replaced outright by an active polymorph form's size if one
-   * is active (issue #70, see `live.activeForm`). Feeds the size modifiers
-   * baked into `ac`/`attack`/`attacks`/`cmb`/`cmd` above; exposed directly
-   * here (previously computed only internally by `compute()`) so the UI can
-   * show it.
+   * The character's current effective size category — race base size, shifted
+   * by any relative "size"-target Change (Enlarge/Reduce Person,...), then
+   * replaced outright by an active polymorph form's size if one is active (see
+   * `live.activeForm`). Feeds the size modifiers baked into
+   * `ac`/`attack`/`attacks`/`cmb`/`cmd` above; exposed directly here
+   * (previously computed only internally by `compute`) so the UI can show it.
    */
   size: SizeId;
   initiative: ResolvedStat;
@@ -2862,9 +2844,9 @@ export interface DerivedSheet {
    */
   ranger?: DerivedRanger;
   /**
-   * Damage reduction / energy resistance / spell resistance, display-only
-   * (issue #21). Undefined when the character has none of the three — the UI
-   * renders nothing rather than an empty "Defenses" line.
+   * Damage reduction / energy resistance / spell resistance, display-only.
+   * Undefined when the character has none of the three — the UI renders
+   * nothing rather than an empty "Defenses" line.
    */
   defenses?: Defenses;
   /**
@@ -2877,19 +2859,19 @@ export interface DerivedSheet {
    */
   senses: DerivedSense[];
   /**
-   * Carrying capacity / encumbrance (issue #16) — an OPTIONAL PF1 rule, only
-   * computed when `build.settings.encumbranceEnabled` is true. Undefined
-   * whenever the setting is off/absent, which is the default for every
-   * existing document: this keeps `compute()` byte-identical for characters
-   * that predate the feature and for every table that doesn't use the rule.
+   * Carrying capacity / encumbrance — an OPTIONAL PF1 rule, only computed when
+   * `build.settings.encumbranceEnabled` is true. Undefined whenever the
+   * setting is off/absent, which is the default for every existing document:
+   * this keeps `compute` byte-identical for characters that predate the
+   * feature and for every table that doesn't use the rule.
    */
   encumbrance?: DerivedEncumbrance;
   /**
-   * Total arcane spell failure chance (%) from equipped armor/shields (issue
-   * #8), shown only when the character has an arcane-casting class (wizard,
-   * sorcerer, arcanist, magus, bard, summoner, skald, witch, or bloodrager in
-   * the current vendored class slice — divine casters never incur ASF and
-   * this stays undefined for them). No component breakdown, same posture as
+   * Total arcane spell failure chance (%) from equipped armor/shields, shown
+   * only when the character has an arcane-casting class (wizard, sorcerer,
+   * arcanist, magus, bard, summoner, skald, witch, or bloodrager in the
+   * current vendored class slice — divine casters never incur ASF and this
+   * stays undefined for them). No component breakdown, same posture as
    * `speeds` (see `DerivedEncumbrance` doc comment) — display-only, no
    * cast-failure mechanics.
    *
@@ -2897,41 +2879,41 @@ export interface DerivedSheet {
    * "Weapon and Armor Proficiency" ASF exemption (bard, summoner, skald,
    * bloodrager, or magus — see `computeArcaneSpellFailure`'s
    * `ARMOR_EXEMPTIONS` in the engine for the exact per-class armor tier /
-   * shield rules, issue #64) AND the worn armor/shield qualifies; `total`
-   * reads 0 in that case and `exemptNote` carries a human-readable
-   * explanation for the sheet footnote. A character with more than one
-   * arcane class (e.g. multiclass wizard/bard) never gets the exemption,
-   * even if every arcane class they have would individually qualify — this
-   * app tracks ASF as a single sheet-level number rather than per-spell, so
-   * the exemption is all-or-nothing and the conservative (non-exempt) total
-   * is shown whenever the classes could disagree.
+   * shield rules) AND the worn armor/shield qualifies; `total` reads 0 in that
+   * case and `exemptNote` carries a human-readable explanation for the sheet
+   * footnote. A character with more than one arcane class (e.g. multiclass
+   * wizard/bard) never gets the exemption, even if every arcane class they
+   * have would individually qualify — this app tracks ASF as a single
+   * sheet-level number rather than per-spell, so the exemption is
+   * all-or-nothing and the conservative (non-exempt) total is shown whenever
+   * the classes could disagree.
    */
   arcaneSpellFailure?: { total: number; exempt: boolean; exemptNote?: string };
   /**
-   * The active polymorph-family transformation's resolved sheet (issue #70),
-   * present only while `live.activeForm` is set. The ability-score and
-   * natural-armor adjustments themselves are NOT duplicated here — they
-   * already flow through `abilities.*.components`/`ac.components` like any
-   * other typed modifier (see `live.activeForm`'s doc comment); this carries
-   * what those don't: the resolved natural-attack lines, the tier/option's
-   * honesty-bar context notes, and the player's own free-text notes.
+   * The active polymorph-family transformation's resolved sheet, present only
+   * while `live.activeForm` is set. The ability-score and natural-armor
+   * adjustments themselves are NOT duplicated here — they already flow through
+   * `abilities.*.components`/`ac.components` like any other typed modifier
+   * (see `live.activeForm`'s doc comment); this carries what those don't: the
+   * resolved natural-attack lines, the tier/option's honesty-bar context
+   * notes, and the player's own free-text notes.
    */
   activeForm?: DerivedActiveForm;
   /**
-   * Weapon/armor/shield proficiency (issue #81) — the character's derived
-   * proficiency set with provenance, read-only display plus the source data
-   * `@pf1/engine`'s `computeWeaponAttacks`/attack lines check against to apply
-   * PF1's non-proficient penalties. See `@pf1/engine`'s `proficiency.ts` for
-   * how class grants, proficiency feats, and the five racial grants (elf,
-   * dwarf, gnome, half-orc, orc) are combined. Archetype proficiency swaps
-   * (many archetypes trade one armor proficiency for another) are NOT
-   * modeled yet — class-granted proficiency here is always the BASE class's,
-   * a known gap tracked for follow-up.
+   * Weapon/armor/shield proficiency — the character's derived proficiency set
+   * with provenance, read-only display plus the source data `@pf1/engine`'s
+   * `computeWeaponAttacks`/attack lines check against to apply PF1's
+   * non-proficient penalties. See `@pf1/engine`'s `proficiency.ts` for how
+   * class grants, proficiency feats, and the five racial grants (elf, dwarf,
+   * gnome, half-orc, orc) are combined. Archetype proficiency swaps (many
+   * archetypes trade one armor proficiency for another) are NOT modeled yet —
+   * class-granted proficiency here is always the BASE class's, a known gap
+   * tracked for follow-up.
    */
   proficiencies: DerivedProficiencies;
 }
 
-/** One granted proficiency's provenance (issue #81) — which class/feat/race granted it. */
+/** One granted proficiency's provenance — which class/feat/race granted it. */
 export interface ProficiencyGrant {
   /** Human-readable source, e.g. "Fighter", "Martial Weapon Proficiency", "Elf". */
   source: string;
@@ -2939,12 +2921,12 @@ export interface ProficiencyGrant {
 }
 
 /**
- * One weapon-proficiency line (issue #81) — either a whole category
- * ("Simple Weapons"/"Martial Weapons"; `category` set) or a single named
- * weapon ("Longsword"; `weaponSlug` set, matching `WeaponInstance.group`/
+ * One weapon-proficiency line — either a whole category ("Simple
+ * Weapons"/"Martial Weapons"; `category` set) or a single named weapon
+ * ("Longsword"; `weaponSlug` set, matching `WeaponInstance.group`/
  * `weaponGroups`, the same kebab-case vocabulary `normalizeWeaponGroup`
- * produces). Exotic weapons only ever appear as named lines — PF1 has no
- * "all exotic weapons" grant.
+ * produces). Exotic weapons only ever appear as named lines — PF1 has no "all
+ * exotic weapons" grant.
  */
 export interface WeaponProficiencyLine {
   label: string;
@@ -2954,9 +2936,9 @@ export interface WeaponProficiencyLine {
 }
 
 /**
- * One armor/shield-proficiency line (issue #81). `tier` drives the actual
- * proficiency check: "light"/"medium"/"heavy" against a worn suit's `type`,
- * "shield" against any equipped light/heavy/buckler shield's `shieldTier`,
+ * One armor/shield-proficiency line. `tier` drives the actual proficiency
+ * check: "light"/"medium"/"heavy" against a worn suit's `type`, "shield"
+ * against any equipped light/heavy/buckler shield's `shieldTier`,
  * "tower-shield" against a tower shield specifically (independent — RAW
  * doesn't imply one from the other).
  */
@@ -2966,7 +2948,7 @@ export interface ArmorProficiencyLine {
   grants: ProficiencyGrant[];
 }
 
-/** The character's full derived proficiency set (issue #81) — see `DerivedSheet.proficiencies`. */
+/** The character's full derived proficiency set — see `DerivedSheet.proficiencies`. */
 export interface DerivedProficiencies {
   weapons: WeaponProficiencyLine[];
   armor: ArmorProficiencyLine[];
@@ -3016,9 +2998,9 @@ export interface DerivedActiveForm {
 export type LoadTier = "light" | "medium" | "heavy";
 
 /**
- * Encumbrance (issue #16), computed only when `build.settings.encumbranceEnabled`
- * is true — see `@pf1/engine/encumbrance.ts` for the hand-authored carrying-
- * capacity table and load-tier penalties this is built from.
+ * Encumbrance, computed only when `build.settings.encumbranceEnabled` is true
+ * — see `@pf1/engine/encumbrance.ts` for the hand-authored carrying- capacity
+ * table and load-tier penalties this is built from.
  */
 export interface DerivedEncumbrance {
   /** Sum of gear weight × quantity, plus equipped armor/weapon weight, in pounds. */
@@ -3180,27 +3162,26 @@ export interface DerivedClassFeature {
   detail?: string;
   /**
    * Set when this feature came from a chosen cleric domain, wizard arcane
-   * school, sorcerer bloodline (issue #34), arcanist exploit (issue #42),
-   * magus arcana, oracle revelation (both issue #61), witch hex, alchemist
-   * discovery (both issue #65 wave 1), antipaladin cruelty, or ninja trick
-   * (both issue #65 wave B) rather than the class itself — all ten share
-   * `classTag: "cleric"`/`"wizard"`/`"sorcerer"`/`"arcanist"`/`"magus"`/
+   * school, sorcerer bloodline, arcanist exploit, magus arcana, oracle
+   * revelation (both), witch hex, alchemist discovery (both), antipaladin
+   * cruelty, or ninja trick (both) rather than the class itself — all ten
+   * share `classTag: "cleric"`/`"wizard"`/`"sorcerer"`/`"arcanist"`/`"magus"`/
    * `"oracle"`/`"witch"`/`"alchemist"`/`"antipaladin"`/`"ninja"` with the
    * class's own intrinsic features, so this disambiguates e.g. "Fire Bolt"
    * (Fire Domain) from Channel Energy (cleric itself), "Claws" (Draconic
-   * Bloodline) from a sorcerer's other features, "Quick Study" (an
-   * exploit) from an arcanist's own Arcane Reservoir, "Familiar" (a magus
-   * arcana) from a magus's own Spell Combat, "Ward" (a hex) from a witch's
-   * own Witch's Familiar, or "Cauldron" (a discovery) from an alchemist's
-   * own Bomb, "Fatigued" (a cruelty) from an antipaladin's own Touch of
-   * Corruption, or "Combat Trick" (a ninja trick) from a ninja's own
-   * Sneak Attack. Issue #65 adds more origin kinds (spirit, rage power,
-   * ki power, style strike, rogue talent, investigator talent, vigilante
-   * social/vigilante talent, shifter aspect, psychic discipline power,
-   * phrenic amplification, mesmerist trick, mesmerist bold stare, occultist
-   * implement school, occultist focus power, kineticist composite blast,
-   * kineticist wild talent, medium spirit power, slayer talent) — same
-   * disambiguation need against each class's own intrinsic features.
+   * Bloodline) from a sorcerer's other features, "Quick Study" (an exploit)
+   * from an arcanist's own Arcane Reservoir, "Familiar" (a magus arcana) from
+   * a magus's own Spell Combat, "Ward" (a hex) from a witch's own Witch's
+   * Familiar, or "Cauldron" (a discovery) from an alchemist's own Bomb,
+   * "Fatigued" (a cruelty) from an antipaladin's own Touch of Corruption, or
+   * "Combat Trick" (a ninja trick) from a ninja's own Sneak Attack. Later passes
+   * adds more origin kinds (spirit, rage power, ki power, style strike, rogue
+   * talent, investigator talent, vigilante social/vigilante talent, shifter
+   * aspect, psychic discipline power, phrenic amplification, mesmerist trick,
+   * mesmerist bold stare, occultist implement school, occultist focus power,
+   * kineticist composite blast, kineticist wild talent, medium spirit power,
+   * slayer talent) — same disambiguation need against each class's own
+   * intrinsic features.
    */
   origin?: {
     kind:
@@ -3244,21 +3225,21 @@ export interface DerivedArchetypeFeature {
   /** True when this feature has no `pairedBaseFeatureUuid` — prose-only soft warning, not a swap. */
   ambiguous: boolean;
   /**
-   * One-line mechanical summary for the slice of archetype features with
-   * real numeric effects — hand-verified (issue #7) or machine-extracted
-   * (issue #45) — e.g. "DR 5/—". Undefined for the vast majority of
-   * archetype features, which are structural/prose-only (see `@pf1/engine`
-   * `archetype-effects.ts` / `archetype-effects-extracted.ts`).
+   * One-line mechanical summary for the slice of archetype features with real
+   * numeric effects — hand-verified or machine-extracted — e.g. "DR 5/—".
+   * Undefined for the vast majority of archetype features, which are
+   * structural/prose-only (see `@pf1/engine` `archetype-effects.ts` /
+   * `archetype-effects-extracted.ts`).
    */
   detail?: string;
   /**
-   * Which table `detail`/the underlying `Change`s came from — "verified"
-   * (issue #7, a human read the rulebook) or "extracted" (issue #45, a
-   * prose→Change extraction pass; carries lower confidence, see
-   * `@pf1/engine` `archetype-effects-extracted.ts`). Undefined when neither
-   * table has an entry for this feature (no `detail` either, in that case).
-   * Kept as a distinct field (not folded into `detail`'s string) so the UI
-   * can render a visibly different badge without string-sniffing.
+   * Which table `detail`/the underlying `Change`s came from — "verified" (a
+   * human read the rulebook) or "extracted" (a prose→Change extraction pass;
+   * carries lower confidence, see `@pf1/engine`
+   * `archetype-effects-extracted.ts`). Undefined when neither table has an
+   * entry for this feature (no `detail` either, in that case). Kept as a
+   * distinct field (not folded into `detail`'s string) so the UI can render a
+   * visibly different badge without string-sniffing.
    */
   effectSource?: "verified" | "extracted";
 }
@@ -3526,11 +3507,11 @@ export interface HitPoints {
   /** Per-source breakdown of contributions to max HP (HD total, Con, FCB, etc.). */
   components: ModifierComponent[];
   /**
-   * Temporary HP a currently-active buff/feature GRANTS (issue #67) — e.g.
-   * Unchained Rage's "2 temporary hit points per Hit Die" (scaling to 3 at
-   * 11th via Greater Rage, 4 at 20th via Mighty Rage). Collected from every
-   * `Change` targeting `"tempHp"`, the same generic collect → target pipeline
-   * as every other stat — see `@pf1/engine` `collect.ts`/`compute.ts`.
+   * Temporary HP a currently-active buff/feature GRANTS — e.g. Unchained
+   * Rage's "2 temporary hit points per Hit Die" (scaling to 3 at 11th via
+   * Greater Rage, 4 at 20th via Mighty Rage). Collected from every `Change`
+   * targeting `"tempHp"`, the same generic collect → target pipeline as every
+   * other stat — see `@pf1/engine` `collect.ts`/`compute.ts`.
    *
    * This is DISTINCT from the manual `temp` field above, which is the tracker's
    * single source of truth for the character's actual current temp-HP buffer

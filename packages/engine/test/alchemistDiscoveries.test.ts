@@ -1,10 +1,10 @@
 /**
- * Hand-computed fixture tests for alchemist discoveries (issue #65; full
- * vendored parity since the #74 Phase 5 extension). Nearly every discovery
- * in `ALCHEMIST_DISCOVERIES` is `displayOnly` with `changes: []` (see that
- * file's doc comment) — the five always-on promotions have cited fixtures
- * below. Also exercised: gating on actual alchemist levels, unknown-id
- * tolerance, and surfacing picked discoveries through
+ * Hand-computed fixture tests for alchemist discoveries (full vendored parity
+ * since the last catalog extension). Nearly every discovery in
+ * `ALCHEMIST_DISCOVERIES` is `displayOnly` with `changes: []` (see that file's
+ * doc comment) — the five always-on promotions have cited fixtures below. Also
+ * exercised: gating on actual alchemist levels, unknown-id tolerance, and
+ * surfacing picked discoveries through
  * `collectGrantedFeatures`/`resolveClassFeatures` — same pattern as
  * `magusArcana.test.ts`.
  */

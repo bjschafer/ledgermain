@@ -1,7 +1,7 @@
 /**
  * Single point of precedence between the hand-verified feat-effects table
  * (`feat-effects.ts`'s `FEAT_EFFECTS`) and the machine-extracted one
- * (`feat-effects-extracted.ts`'s `FEAT_EFFECTS_EXTRACTED`, issue #45's feat
+ * (`feat-effects-extracted.ts`'s `FEAT_EFFECTS_EXTRACTED`, the feat
  * batch-extraction pass). Mirrors `archetype-effects-resolve.ts`'s precedence
  * module exactly: both `collect.ts` (applying changes) and
  * `apps/web/src/model/feats.ts` (driving the featChoices choice-UI) resolve

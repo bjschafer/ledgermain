@@ -1,7 +1,8 @@
 /**
- * Unit tests for issue #65's model/doc.ts additions: `setBloodragerBloodline`,
+ * Unit tests for the model/doc.ts additions: `setBloodragerBloodline`,
  * `setBloodragerBloodlineVariant`, and `setMartialFlexibilityFeat`. Mirrors
- * `doc.bloodline.test.ts`'s coverage exactly (same shape, sorcerer -> bloodrager).
+ * `doc.bloodline.test.ts`'s coverage exactly (same shape, sorcerer ->
+ * bloodrager).
  */
 import { describe, expect, it } from "bun:test";
 

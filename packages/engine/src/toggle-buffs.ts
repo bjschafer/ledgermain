@@ -1,7 +1,7 @@
 /**
- * Shared shape for a hand-authored, non-vendored toggleable effect surfaced
- * on a `DerivedResourcePool` row (issue #65: inquisitor Judgments, skald
- * Inspired Rage — see `judgments.ts` / `raging-song.ts`).
+ * Shared shape for a hand-authored, non-vendored toggleable effect surfaced on
+ * a `DerivedResourcePool` row (inquisitor Judgments, skald Inspired Rage — see
+ * `judgments.ts` / `raging-song.ts`).
  *
  * This is the "no vendored buff exists" counterpart to `linkedBuffIds`
  * (`resources.ts`'s `DerivedResourcePool.linkedBuffIds`, resolved from a real

@@ -1,6 +1,6 @@
 /**
- * Metamagic model tests (issue #71): owned-feat detection, slot/effective
- * level math, and the per-prepared-instance attach transitions.
+ * Metamagic model tests: owned-feat detection, slot/effective level math, and
+ * the per-prepared-instance attach transitions.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -83,7 +83,7 @@ describe("prepared-instance metamagic transitions", () => {
     expect(preparedSpells(doc)[0]!.metamagic).toEqual([{ slug: "empower-spell" }]);
 
     doc = togglePreparedMetamagic(doc, 0, "empower-spell");
-    // Removing the last one drops the field entirely (pre-#71 shape).
+    // Removing the last one drops the field entirely (the earlier shape).
     expect(preparedSpells(doc)[0]).toEqual({ spellId: "fireball", expended: false });
   });
 

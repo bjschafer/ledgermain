@@ -13,16 +13,15 @@ interface FiendishBoonPickerProps {
 }
 
 /**
- * Antipaladin Fiendish Boon (PF1 APG L5 choice, issue #65 wave B): a
- * scaling weapon-enhancement bond or a permanent fiendish servant. Mirrors
- * `ArcaneBondPicker`'s two-chip shape. Unlike the wizard's Arcane Bond
- * (whose familiar option DOES apply a real master-bonus `Change`), the
- * weapon-boon numbers here stay a display-only summary line — see
- * `fiendishBoonLabel`'s doc comment for why (same restraint paladin's own
- * Divine Bond gets, which has no modeled numbers or `build.*` field at all).
- * The servant option is recorded but not built out (companion stat block —
- * deferred to issue #68), same "recorded, not tracked" posture the
- * ArcaneBondPicker's bonded-object name field has.
+ * Antipaladin Fiendish Boon (PF1 APG L5 choice): a scaling weapon-enhancement
+ * bond or a permanent fiendish servant. Mirrors `ArcaneBondPicker`'s two-chip
+ * shape. Unlike the wizard's Arcane Bond (whose familiar option DOES apply a
+ * real master-bonus `Change`), the weapon-boon numbers here stay a
+ * display-only summary line — see `fiendishBoonLabel`'s doc comment for why
+ * (same restraint paladin's own Divine Bond gets, which has no modeled numbers
+ * or `build.*` field at all). The servant option is recorded but not built out
+ * (companion stat block — deferred to), same "recorded, not tracked" posture
+ * the ArcaneBondPicker's bonded-object name field has.
  */
 export function FiendishBoonPicker({ doc, update }: FiendishBoonPickerProps) {
   const isAntipaladin = doc.identity.classes.some((c) => c.tag === "antipaladin");

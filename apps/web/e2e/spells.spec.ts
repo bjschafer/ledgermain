@@ -192,9 +192,9 @@ test("an arcanist's prepared cantrips show as at-will in the Cast tab", async ({
 });
 
 /**
- * An elemental specialist (issue #100) exercises the two mechanics that don't
- * work like a standard school's: the bonus school slot draws from the school's
- * own cross-school spell list rather than a `Spell.school` match, and the
+ * An elemental specialist exercises the two mechanics that don't work like a
+ * standard school's: the bonus school slot draws from the school's own
+ * cross-school spell list rather than a `Spell.school` match, and the
  * opposition is a single element (Air's is fixed to Earth) instead of two
  * schools. Shocking Grasp is evocation, but it's on Air's 1st-level list.
  */

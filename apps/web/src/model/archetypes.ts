@@ -41,15 +41,15 @@ export function checkArchetypeConflict(
 
 /**
  * True when NO archetype feature for `classTag`, across the entire vendored
- * dataset, carries a `pairedBaseFeatureUuid` (issue #5). For those classes
+ * dataset, carries a `pairedBaseFeatureUuid`. For those classes
  * `archetypeSwappedUuids` is always an empty set for every archetype, so
  * `checkArchetypeConflict`'s hard-block can never fire — even when two picks
  * plainly replace the same base feature in the source text (e.g. two cleric
  * archetypes that both swap Channel Energy). As of the pinned Foundry pack
  * this is true for cleric and wizard (0 of ~130/~110 archetype features
  * paired, vs. every other archetyped class having some fraction paired) —
- * computed from the data rather than hardcoded so it self-corrects if a
- * future data bump adds pairings.
+ * computed from the data rather than hardcoded so it self-corrects if a future
+ * data bump adds pairings.
  */
 function isClassStructurallyUnpaired(refData: RefData, classTag: string): boolean {
   let sawAny = false;
@@ -66,7 +66,7 @@ function isClassStructurallyUnpaired(refData: RefData, classTag: string): boolea
  * (cleric/wizard, currently): when 2+ archetypes are chosen for such a class,
  * warn that Ledgermain can't verify they don't swap the same base feature —
  * never blocks, just names the picks so the player can check the source text
- * themselves (issue #5). Classes with any pairing data at all rely solely on
+ * themselves. Classes with any pairing data at all rely solely on
  * `checkArchetypeConflict`'s hard block instead, since it can actually detect
  * overlaps there.
  *

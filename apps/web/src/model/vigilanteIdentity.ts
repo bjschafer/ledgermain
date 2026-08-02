@@ -1,12 +1,12 @@
 /**
- * Vigilante dual-identity toggle (issue #65) — `live.vigilanteIdentity`, a
- * display-forward table-state flag ("social" | "vigilante"), NOT a numeric
- * input to `compute()` (see that field's doc comment in `character.ts` for
- * why: no vendored `Change` gates on identity, and the identity-scoped
- * talent bonuses this project catalogued — Renown's Intimidate bonus,
- * Social Grace, Loyal Aid, ... — are deliberately left as manual-apply
- * `contextNotes` rather than wired here). This module is the pure
- * live-state transition; the tracker renders it as a two-state chip.
+ * Vigilante dual-identity toggle — `live.vigilanteIdentity`, a display-forward
+ * table-state flag ("social" | "vigilante"), NOT a numeric input to `compute`
+ * (see that field's doc comment in `character.ts` for why: no vendored
+ * `Change` gates on identity, and the identity-scoped talent bonuses this
+ * project catalogued — Renown's Intimidate bonus, Social Grace, Loyal Aid,...
+ * — are deliberately left as manual-apply `contextNotes` rather than wired
+ * here). This module is the pure live-state transition; the tracker renders it
+ * as a two-state chip.
  */
 
 import type { CharacterDoc } from "@pf1/schema";

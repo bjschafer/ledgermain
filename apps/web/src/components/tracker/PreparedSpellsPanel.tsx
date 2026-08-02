@@ -96,12 +96,12 @@ interface PreparedRow {
   cost: number;
   /** The spell's own (base) level, before any metamagic slot bump. */
   baseLevel: number;
-  /** Metamagic applied to this instance (issue #71); empty for an unmodified spell. */
+  /** Metamagic applied to this instance; empty for an unmodified spell. */
   metamagic: AppliedMetamagic[];
 }
 
 // ---------------------------------------------------------------------------
-// Metamagic attach control (issue #71).
+// Metamagic attach control.
 // ---------------------------------------------------------------------------
 
 /**
@@ -942,9 +942,8 @@ function PreparedView({
 
   const levelMap = useMemo(() => spellLevelMap(refData, casterTag), [refData, casterTag]);
   // RAW class level — feeds the class-FEATURE shaman spirit-magic merge below
-  // (issue #66 chunk 2: prestige casting advancement grants table numbers
-  // only, never accelerates a class feature — see model/casterLevel.ts's
-  // header comment).
+  // (prestige casting advancement grants table numbers only, never accelerates
+  // a class feature — see model/casterLevel.ts's header comment).
   const classLevel = doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 0;
   // Advancement-aware effective class level — feeds the slot-table lookup
   // (spellSlotsByLevel) below.
@@ -953,8 +952,8 @@ function PreparedView({
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
   const slots = spellSlotsByLevel(model, effectiveClassLevel, abilityMod);
-  // Metamagic (issue #71): owned feats + the highest slot the caster can fill
-  // (metamagic can't push a spell past it).
+  // Metamagic: owned feats + the highest slot the caster can fill (metamagic
+  // can't push a spell past it).
   const owned = useMemo(() => ownedMetamagic(doc, refData), [doc, refData]);
   const maxSlotLevel = slots.length > 0 ? slots[slots.length - 1]!.level : 0;
 
@@ -972,11 +971,10 @@ function PreparedView({
       const base = classSpellsByLevel(refData, casterTag, {
         excludeCantrips: model.grantsAllCantrips,
       });
-      // Shaman spirit magic bonus spells (issue #65): merge in any that
-      // aren't already on the base shaman list, so the chosen spirit's
-      // spell list is preparable/castable here too, not just displayed in
-      // the builder's Spells section — see model/spellcasting.
-      // shamanSpiritSpellsKnown.
+      // Shaman spirit magic bonus spells: merge in any that aren't already on
+      // the base shaman list, so the chosen spirit's spell list is
+      // preparable/castable here too, not just displayed in the builder's
+      // Spells section — see model/spellcasting. shamanSpiritSpellsKnown.
       if (casterTag !== "shaman") return base;
       const merged = new Map<number, { id: string; name: string }[]>();
       for (const [lvl, arr] of base) merged.set(lvl, [...arr]);
@@ -1023,9 +1021,9 @@ function PreparedView({
     if (baseLevel === undefined) return;
     preparedCountBySpell.set(p.spellId, (preparedCountBySpell.get(p.spellId) ?? 0) + 1);
     const spellData = refData.spells[p.spellId];
-    // Metamagic (issue #71): a modified spell occupies — and is bucketed under
-    // — a higher slot (base + Σ slot increases), e.g. an Empowered Fireball
-    // (base 3rd) lands in the level-5 bucket and counts against its capacity.
+    // Metamagic: a modified spell occupies — and is bucketed under — a higher
+    // slot (base + Σ slot increases), e.g. an Empowered Fireball (base 3rd)
+    // lands in the level-5 bucket and counts against its capacity.
     const slotLevel = baseLevel + metamagicSlotIncrease(p.metamagic);
     const row: PreparedRow = {
       index,
@@ -1435,8 +1433,8 @@ function SpontaneousView({
 
   const levelMap = useMemo(() => spellLevelMap(refData, casterTag), [refData, casterTag]);
   // RAW class level — feeds the bloodline/mystery/discipline/patron bonus-
-  // spell-known merges below (issue #66 chunk 2: prestige casting advancement
-  // grants table numbers only, never accelerates a class feature — see
+  // spell-known merges below (prestige casting advancement grants table
+  // numbers only, never accelerates a class feature — see
   // model/casterLevel.ts's header comment).
   const classLevel = doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 0;
   // Advancement-aware effective class level — feeds the slot-table lookups
@@ -1456,9 +1454,9 @@ function SpontaneousView({
   const status = spontaneousSlotStatus(doc, model, effectiveClassLevel, abilityMod, classTag);
   const anyUsed = status.some((s) => s.used > 0);
 
-  // Metamagic (issue #71): a spontaneous caster applies metamagic AT CAST time
-  // — the choice is transient (nothing is stored on the doc; casting just
-  // spends a higher slot), so it lives in component state keyed by spell id.
+  // Metamagic: a spontaneous caster applies metamagic AT CAST time — the
+  // choice is transient (nothing is stored on the doc; casting just spends a
+  // higher slot), so it lives in component state keyed by spell id.
   const owned = useMemo(() => ownedMetamagic(doc, refData), [doc, refData]);
   const [castMetamagic, setCastMetamagic] = useState<Record<string, AppliedMetamagic[]>>({});
   const maxSlotLevel = status.length > 0 ? status[status.length - 1]!.level : 0;
@@ -1676,8 +1674,8 @@ function SpontaneousView({
                 <div className="prep-rows">
                   {knownHere.map((sp) => {
                     const spellData = refData.spells[sp.id];
-                    // Cast-time metamagic (issue #71): the chosen feats bump the
-                    // slot the Cast button spends; only Heighten also raises the
+                    // Cast-time metamagic: the chosen feats bump the slot the
+                    // Cast button spends; only Heighten also raises the
                     // effective level (and thus DC).
                     const applied = castMetamagic[sp.id] ?? [];
                     const castLevel = level + metamagicSlotIncrease(applied);
@@ -1805,10 +1803,10 @@ function HybridView({
 
   const classTag = storedClassTag(doc, refData, casterTag);
   const levelMap = useMemo(() => spellLevelMap(refData, casterTag), [refData, casterTag]);
-  // Advancement-aware effective class level (issue #66 chunk 2) — arcanist
-  // (the only hybrid caster modeled) has no class-feature bonus-spell-known
-  // mechanic keyed off raw class level, so unlike PreparedView/SpontaneousView
-  // above, every classLevel use in this view can safely be the effective one.
+  // Advancement-aware effective class level (2) — arcanist (the only hybrid
+  // caster modeled) has no class-feature bonus-spell-known mechanic keyed off
+  // raw class level, so unlike PreparedView/SpontaneousView above, every
+  // classLevel use in this view can safely be the effective one.
   const effectiveClassLevel = effectiveCasterClassLevel(doc, refData, casterTag);
   const casterLevel = casterLevelForClass(casterTag, effectiveClassLevel);
   const abilityMod = sheet.abilities[model.ability].mod;
@@ -1829,9 +1827,9 @@ function HybridView({
   const castBonusByLevel = new Map(castSlots.map((s) => [s.level, s.bonus]));
   const anyCastUsed = castStatus.some((s) => s.used > 0);
 
-  // Cast-time metamagic (issue #71): like a spontaneous caster, an arcanist
-  // applies metamagic when casting, spending a higher slot — a transient,
-  // un-persisted choice kept in component state keyed by spell id.
+  // Cast-time metamagic: like a spontaneous caster, an arcanist applies
+  // metamagic when casting, spending a higher slot — a transient, un-persisted
+  // choice kept in component state keyed by spell id.
   const owned = useMemo(() => ownedMetamagic(doc, refData), [doc, refData]);
   const [castMetamagic, setCastMetamagic] = useState<Record<string, AppliedMetamagic[]>>({});
   const maxSlotLevel = castStatus.length > 0 ? castStatus[castStatus.length - 1]!.level : 0;
@@ -2313,12 +2311,12 @@ function HybridView({
  * The daily spell tracking panel. For prepared casters (wizard) this is the
  * loadout loop; for spontaneous casters (sorcerer) it is the slot-pool view.
  *
- * Multiclass support (issue #22): with 2+ caster classes on the document, a
- * class switcher lets the player pick which class's spells this panel shows
- * — including which preparation MODE applies, since a cleric/sorcerer
- * multiclass needs the prepared loop for one class's tab and the spontaneous
- * slot-pool view for the other. A single-caster document never renders the
- * switcher, so its behavior is unchanged from before multiclass support.
+ * Multiclass support: with 2+ caster classes on the document, a class switcher
+ * lets the player pick which class's spells this panel shows — including which
+ * preparation MODE applies, since a cleric/sorcerer multiclass needs the
+ * prepared loop for one class's tab and the spontaneous slot-pool view for the
+ * other. A single-caster document never renders the switcher, so its behavior
+ * is unchanged from before multiclass support.
  */
 export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProps) {
   const casters = useMemo(() => casterClassesOf(doc, refData), [doc, refData]);

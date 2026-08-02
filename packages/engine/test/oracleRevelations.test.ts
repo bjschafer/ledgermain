@@ -1,21 +1,19 @@
 /**
- * Hand-computed fixture tests for oracle revelations (issue #61). Almost
- * every revelation in `ORACLE_REVELATIONS` is `displayOnly` with
- * `changes: []` (see that file's doc comment), so `collectModifiers` should
- * never emit a numeric modifier for one. What IS exercised: gating on actual
- * oracle levels AND a chosen mystery, per-mystery scoping (a revelation from
- * a DIFFERENT mystery than the one selected is silently skipped), unknown-id
- * tolerance, and surfacing picked revelations through
- * `collectGrantedFeatures`/`resolveClassFeatures` — same pattern as
- * `arcanistExploits.test.ts`.
+ * Hand-computed fixture tests for oracle revelations. Almost every revelation
+ * in `ORACLE_REVELATIONS` is `displayOnly` with `changes: []` (see that file's
+ * doc comment), so `collectModifiers` should never emit a numeric modifier for
+ * one. What IS exercised: gating on actual oracle levels AND a chosen mystery,
+ * per-mystery scoping (a revelation from a DIFFERENT mystery than the one
+ * selected is silently skipped), unknown-id tolerance, and surfacing picked
+ * revelations through `collectGrantedFeatures`/`resolveClassFeatures` — same
+ * pattern as `arcanistExploits.test.ts`.
  *
  * A small, deliberately narrow set of revelations WAS promoted off
  * `displayOnly` (see `oracle-revelations.ts`'s doc comment for the RAW
  * citations) — `PROMOTED_REVELATION_IDS` below is the explicit exceptions
- * list, and each has its own `compute()` fixture describe block further
- * down: right level/mystery moves the cited number, below the scaling
- * breakpoint gives the smaller number, and the wrong mystery contributes
- * nothing.
+ * list, and each has its own `compute` fixture describe block further down:
+ * right level/mystery moves the cited number, below the scaling breakpoint
+ * gives the smaller number, and the wrong mystery contributes nothing.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -94,7 +92,7 @@ function revelationFeatureNames(doc: CharacterDoc): string[] {
 }
 
 /**
- * Every revelation promoted off `displayOnly` (issue #75-style pass — see
+ * Every revelation promoted off `displayOnly` (the same promotion pass — see
  * `oracle-revelations.ts`'s doc comment for each one's RAW citation). This
  * is the explicit exceptions list the invariant test below checks against —
  * any revelation NOT in this set must still be `displayOnly` with
@@ -218,11 +216,11 @@ describe("ORACLE_REVELATIONS table", () => {
   });
 
   it("covers every modeled mystery with its full published revelation list", () => {
-    // All 34 vendored mysteries are modeled (issue #74). Most publish
-    // exactly 10 revelations; the exceptions genuinely have fewer RAW —
-    // Ascetic 8 (Ultimate Magic), Juju 9 (Faiths & Philosophies), Streets 9
-    // (Ultimate Magic) — each confirmed against aonprd.com by its authoring
-    // pass, not a data gap.
+    // All 34 vendored mysteries are modeled. Most publish exactly 10
+    // revelations; the exceptions genuinely have fewer RAW — Ascetic 8
+    // (Ultimate Magic), Juju 9 (Faiths & Philosophies), Streets 9 (Ultimate
+    // Magic) — each confirmed against aonprd.com by its authoring pass, not a
+    // data gap.
     expect(ORACLE_MYSTERY_TAGS.length).toBe(34);
     const published: Record<string, number> = { ascetic: 8, juju: 9, streets: 9 };
     let total = 0;

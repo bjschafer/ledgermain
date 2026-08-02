@@ -36,20 +36,19 @@ interface SpiritPickerProps {
 }
 
 /**
- * Shaman spirit selection (issue #65; PF1 grants exactly one, chosen at L1,
- * never changed thereafter — mirrors `MysteryPicker` closely, the oracle's
- * structural analogue). Free-choice: soft warning only, same hybrid-prereqs
- * posture as `MysteryPicker`/`DisciplinePicker`.
+ * Shaman spirit selection (PF1 grants exactly one, chosen at L1, never changed
+ * thereafter — mirrors `MysteryPicker` closely, the oracle's structural
+ * analogue). Free-choice: soft warning only, same hybrid-prereqs posture as
+ * `MysteryPicker`/`DisciplinePicker`.
  *
- * Browses the FULL published spirit catalog (`mergedShamanSpiritCatalog`,
- * issue #74) — the 8 Advanced Class Guide "core" spirits (Battle,
- * Bones, Flame, Heavens, Life, Nature, Stone, Waves) keep their hand-verified
- * spirit-magic spell list/spirit ability/hexes (marked `badge-modeled` "M");
- * the ~10 other vendored-only spirits (Ancestors, Dark Tapestry, Frost,
- * Lore, Mammoth, Restoration, Slums, Tribe, Wind, Wood) show their full
- * vendored prose instead — no spirit-magic spells/hexes surfaced for those
- * (this table's `hexesForSpirit`/spellcasting helpers only know the 8 core
- * spirits).
+ * Browses the FULL published spirit catalog (`mergedShamanSpiritCatalog`) —
+ * the 8 Advanced Class Guide "core" spirits (Battle, Bones, Flame, Heavens,
+ * Life, Nature, Stone, Waves) keep their hand-verified spirit-magic spell
+ * list/spirit ability/hexes (marked `badge-modeled` "M"); the ~10 other
+ * vendored-only spirits (Ancestors, Dark Tapestry, Frost, Lore, Mammoth,
+ * Restoration, Slums, Tribe, Wind, Wood) show their full vendored prose
+ * instead — no spirit-magic spells/hexes surfaced for those (this table's
+ * `hexesForSpirit`/spellcasting helpers only know the 8 core spirits).
  */
 export function SpiritPicker({ doc, refData, update }: SpiritPickerProps) {
   const isShaman = doc.identity.classes.some((c) => c.tag === "shaman");

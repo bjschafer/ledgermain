@@ -21,12 +21,12 @@ interface CursePickerProps {
  * changed thereafter). Free-choice, soft-warning posture, mirrors
  * `MysteryPicker`.
  *
- * Browses the FULL published curse catalog (`mergedOracleCurseCatalog`,
- * issue #74) — the 6 base Advanced Player's Guide curses (Clouded
- * Vision, Deaf, Haunted, Lame, Tongues, Wasting) keep their hand-verified
- * mechanics (marked `badge-modeled` "M"; Wasting/Lame apply a real numeric
- * `Change` via `collectModifiers`, the rest are tiered display-only prose);
- * the ~35 other vendored-only curses show their full vendored prose instead.
+ * Browses the FULL published curse catalog (`mergedOracleCurseCatalog`) — the
+ * 6 base Advanced Player's Guide curses (Clouded Vision, Deaf, Haunted, Lame,
+ * Tongues, Wasting) keep their hand-verified mechanics (marked `badge-modeled`
+ * "M"; Wasting/Lame apply a real numeric `Change` via `collectModifiers`, the
+ * rest are tiered display-only prose); the ~35 other vendored-only curses show
+ * their full vendored prose instead.
  */
 export function CursePicker({ doc, refData, update }: CursePickerProps) {
   const isOracle = doc.identity.classes.some((c) => c.tag === "oracle");

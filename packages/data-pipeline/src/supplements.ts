@@ -3,10 +3,11 @@
  *
  * `bloodlineSpellLists` is normally derived purely by inverting each spell's
  * `learnedAt.bloodline` (see `normalize.ts`). A handful of Core Rulebook
- * bloodlines are fully authored in `@pf1/engine` `BLOODLINES` (arcana + powers)
- * but have NO bonus-spell list upstream — no vendored spell ever references the
- * tag, so the inversion produces nothing and the bloodline is unselectable in
- * the builder's picker (issue #38). The Aberrant bloodline is the concrete case.
+ * bloodlines are fully authored in `@pf1/engine` `BLOODLINES` (arcana +
+ * powers) but have NO bonus-spell list upstream — no vendored spell ever
+ * references the tag, so the inversion produces nothing and the bloodline is
+ * unselectable in the builder's picker. The Aberrant bloodline is the concrete
+ * case.
  *
  * This fills the gap clean-room from the published CRB (Aberrant, p. 73), the
  * same posture as `traits.ts`/`bloodlines.ts` for content the compendium
@@ -3341,9 +3342,9 @@ export function applyRacialTraitAliasSupplements(traits: RacialTrait[]): void {
  */
 export const SUPPLEMENTAL_ITEMS: Item[] = [
   {
-    // Boots of the Cat (Ultimate Equipment p. 229, issue #111). Falling damage
-    // isn't modeled anywhere in the engine, so there is nothing to encode: the
-    // whole effect is a floor on damage dice the tracker never rolls.
+    // Boots of the Cat (Ultimate Equipment p. 229). Falling damage isn't
+    // modeled anywhere in the engine, so there is nothing to encode: the whole
+    // effect is a floor on damage dice the tracker never rolls.
     id: "item:boots-of-the-cat",
     name: "Boots of the Cat",
     uuid: "supplement-item:boots-of-the-cat",

@@ -215,14 +215,14 @@ describe("Psychokinetcist (Occult Adventures p.56) — mind-channeled burn", () 
 });
 
 /**
- * Elemental Overflow attack/damage cap (issue #67), aonprd.com's live
- * Kineticist page (2026-07-25): "a maximum bonus of +1 for every 3
- * kineticist levels she possesses" — floor(level / 3): +1 at 3rd, +2 at
- * 6th, ..., +6 at 18th-20th. A previous version of `kineticOverflowBonus`
- * read `1 + floor(level / 3)`, one point too high at every level (e.g. +2 at
- * 3rd instead of +1) — cross-checked against the Psychokinetcist's
- * identically-scaled Mental Overflow (`archetype-effects.ts`), which was
- * already using the correct bare `floor(level / 3)`.
+ * Elemental Overflow attack/damage cap, aonprd.com's live Kineticist page
+ * (2026-07-25): "a maximum bonus of +1 for every 3 kineticist levels she
+ * possesses" — floor(level / 3): +1 at 3rd, +2 at 6th,..., +6 at 18th-20th. A
+ * previous version of `kineticOverflowBonus` read `1 + floor(level / 3)`, one
+ * point too high at every level (e.g. +2 at 3rd instead of +1) — cross-checked
+ * against the Psychokinetcist's identically-scaled Mental Overflow
+ * (`archetype-effects.ts`), which was already using the correct bare
+ * `floor(level / 3)`.
  */
 describe("kineticOverflowBonus (Elemental Overflow attack/damage cap fix)", () => {
   it("cap = floor(level/3): +1 at L3-5, +2 at L6-8, +3 at L9-11, +6 at L18-20", () => {
@@ -255,12 +255,12 @@ describe("kineticOverflowBonus (Elemental Overflow attack/damage cap fix)", () =
 
 /**
  * Elemental Overflow's 6th/11th/16th-level physical-ability-score and
- * crit/sneak-negation upgrades (issue #67), aonprd.com (2026-07-25): +2 size
- * bonus to two physical ability scores at 6th/3+ burn, upgrading to +4/+2/+2
- * at 11th/5+ burn and +6/+4/+2 at 16th/7+ burn, plus a 5%-per-burn chance to
- * ignore a critical hit or sneak attack. Which ability score(s) get which
- * tier is the player's own choice (not a build field), so this stays
- * display-only — see `tables.ts`'s doc comment for why it isn't a `Change`.
+ * crit/sneak-negation upgrades, aonprd.com (2026-07-25): +2 size bonus to two
+ * physical ability scores at 6th/3+ burn, upgrading to +4/+2/+2 at 11th/5+
+ * burn and +6/+4/+2 at 16th/7+ burn, plus a 5%-per-burn chance to ignore a
+ * critical hit or sneak attack. Which ability score(s) get which tier is the
+ * player's own choice (not a build field), so this stays display-only — see
+ * `tables.ts`'s doc comment for why it isn't a `Change`.
  */
 describe("kineticOverflowUpgradeLabel (6th/11th/16th-level upgrades)", () => {
   it("nothing below 6th level, even with 3+ burn", () => {

@@ -4,8 +4,7 @@ import { loadRefData } from "../src/index.js";
 
 /**
  * End-to-end coverage for the vendored Monk (Unchained) ki-power catalog
- * (issue #74) against the real pinned Pf Data 1e slice — mirrors
- * `ragePowers.test.ts`.
+ * against the real pinned Pf Data 1e slice — mirrors `ragePowers.test.ts`.
  */
 const ref = loadRefData();
 

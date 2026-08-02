@@ -74,10 +74,10 @@ export interface DerivedResourcePool {
   /** Maximum uses, from `uses.maxFormula`. */
   max: number;
   /**
-   * What a night's rest sets this pool's remaining uses to (issue #43).
-   * Defaults to `max` — byte-identical to pre-#43 behavior, since RAW for
-   * almost every pool here (Rage, Ki, Bardic Performance, Channel Energy,
-   * Lay on Hands, …) a rest simply tops the pool back up to its cap.
+   * What a night's rest sets this pool's remaining uses to. Defaults to `max`
+   * — byte-identical to the earlier behavior, since RAW for almost every pool here
+   * (Rage, Ki, Bardic Performance, Channel Energy, Lay on Hands, …) a rest
+   * simply tops the pool back up to its cap.
    *
    * Arcane Reservoir is the one modeled exception: Advanced Class Guide p.
    * 12 reads "the arcanist's arcane reservoir can hold a maximum amount of
@@ -138,10 +138,10 @@ export interface DerivedResourcePool {
   nonlethalPerUse?: number;
   /**
    * Hand-authored, non-vendored toggleable effects this pool's power can
-   * activate (issue #65: inquisitor Judgments, skald Inspired Rage) — the
-   * `linkedBuffIds` counterpart for classes whose activated abilities carry
-   * no vendored `RefData.buffs` entry to resolve. See `toggle-buffs.ts`'s
-   * doc comment. Undefined for every other pool.
+   * activate (inquisitor Judgments, skald Inspired Rage) — the `linkedBuffIds`
+   * counterpart for classes whose activated abilities carry no vendored
+   * `RefData.buffs` entry to resolve. See `toggle-buffs.ts`'s doc comment.
+   * Undefined for every other pool.
    */
   tableOptions?: ToggleBuffOption[];
 }
@@ -197,19 +197,20 @@ export function deriveResourcePools(
     // `@class.unlevel` inside a feature formula refers to THIS (granting) class's
     // level — for a domain/school grant that's the cleric/wizard level.
     let featureRollData = { ...rollData, class: { level: classLevel, unlevel: classLevel } };
-    // Cleric Wisdom house-rule (issue #56, default off): cleric-tagged grants
-    // (base-class features AND domain powers, both carry classTag "cleric" —
-    // see `collectGrantedFeatures`) evaluate their formulas with `@abilities.cha`
-    // aliased to Wisdom's values. Scoped to a per-grant COPY of `featureRollData`
-    // — the character's real ability scores/mods (used everywhere else: skills,
-    // saves, other classes' formulas) are untouched, and non-cleric classTags
-    // (paladin's Lay on Hands/Channel Positive Energy, bard's Bardic
-    // Performance, sorcerer/oracle Cha-based casting, ...) never see this.
+    // Cleric Wisdom house-rule (default off): cleric-tagged grants (base-class
+    // features AND domain powers, both carry classTag "cleric" — see
+    // `collectGrantedFeatures`) evaluate their formulas with `@abilities.cha`
+    // aliased to Wisdom's values. Scoped to a per-grant COPY of
+    // `featureRollData` — the character's real ability scores/mods (used
+    // everywhere else: skills, saves, other classes' formulas) are untouched,
+    // and non-cleric classTags (paladin's Lay on Hands/Channel Positive
+    // Energy, bard's Bardic Performance, sorcerer/oracle Cha-based
+    // casting,...) never see this.
     if (clericWisdomHouserule && classTag === "cleric") {
       featureRollData = withClericWisdomHouserule(featureRollData);
     }
 
-    // Bloodline powers (issue #34) carry a pre-computed formula (no vendored
+    // Bloodline powers carry a pre-computed formula (no vendored
     // `RefData.classFeatures` entry exists for them — see `bloodlines.ts`).
     // Evaluated against the plain `rollData` (its formulas reference
     // `@classes.sorcerer.level` directly, not the granting-class-contextual
@@ -347,13 +348,13 @@ export function deriveResourcePools(
         : null;
       detail = saveLabel ? `${damage.damageLabel} (${saveLabel})` : damage.damageLabel;
     } else if (feature.tag === "judgment" && classTag === "inquisitor") {
-      // Issue #65: the eight judgment types have no vendored buff to resolve
-      // (see judgments.ts) — surfaced via `tableOptions` below instead of
+      // the eight judgment types have no vendored buff to resolve (see
+      // judgments.ts) — surfaced via `tableOptions` below instead of
       // `linkedBuffIds`; this just annotates the simultaneous-count cap.
       detail = judgmentPoolDetail(classLevel);
     } else if (feature.tag === "ragingSong" && classTag === "skald") {
-      // Issue #65: same shape as Judgment above — Inspired Rage has no
-      // vendored buff (unlike bard's Inspire Courage), see raging-song.ts.
+      // same shape as Judgment above — Inspired Rage has no vendored buff
+      // (unlike bard's Inspire Courage), see raging-song.ts.
       detail = RAGING_SONG_DETAIL;
     } else {
       detail = actionBasedDetail(feature, featureRollData as RollData);
@@ -379,15 +380,15 @@ export function deriveResourcePools(
 
     if (feature.tag) poolIdByTag.set(feature.tag, feature.id);
 
-    // Bloodrager's "Bloodrage" (issue #65): the vendored feature's
-    // `grantsBuffs` is empty (unlike barbarian's Rage, which points at the
-    // vendored "Rage" buff) — see `bloodrage.ts`'s doc comment for why
-    // reusing that buff directly would also be numerically wrong (its
-    // formulas hardcode `@classes.barbarian.level`). `BLOODRAGE_BUFF_ID`
-    // isn't a `refData.buffs` key; `ResourcesPanel.tsx`'s linked-buff toggle
-    // resolves it against the hand-authored `BLOODRAGE_BUFF` constant
-    // instead (`toggleLinkedBuff` accepts any `Buff`-shaped object, not
-    // specifically one sourced from `refData.buffs`).
+    // Bloodrager's "Bloodrage": the vendored feature's `grantsBuffs` is empty
+    // (unlike barbarian's Rage, which points at the vendored "Rage" buff) —
+    // see `bloodrage.ts`'s doc comment for why reusing that buff directly
+    // would also be numerically wrong (its formulas hardcode
+    // `@classes.barbarian.level`). `BLOODRAGE_BUFF_ID` isn't a `refData.buffs`
+    // key; `ResourcesPanel.tsx`'s linked-buff toggle resolves it against the
+    // hand-authored `BLOODRAGE_BUFF` constant instead (`toggleLinkedBuff`
+    // accepts any `Buff`-shaped object, not specifically one sourced from
+    // `refData.buffs`).
     const linkedBuffIds =
       feature.tag === "bloodrage" && classTag === "bloodrager"
         ? [BLOODRAGE_BUFF_ID]
@@ -468,17 +469,17 @@ export function deriveResourcePools(
 }
 
 /**
- * Cleric Wisdom house-rule (issue #56): returns a COPY of `data` with
- * `abilities.cha` aliased to `abilities.wis`'s values, for evaluating a single
- * cleric-tagged grant's formulas (Channel Energy's `uses.maxFormula` and its
- * actions' `dcFormula`, both written against `@abilities.cha.mod` in the
- * vendored data — see `class-features.json`'s `channelEnergy` entry). Does
- * NOT touch `data.abilities.wis` itself or any other roll-data field, so
- * anything ELSE evaluated against the (non-copied) base `rollData` — the
- * character's actual ability scores, skills, saves, other classes' formulas —
- * is unaffected. `data.abilities` is untyped (`RollData` is `Record<string,
- * unknown>`), so this reads defensively and no-ops if the shape it expects
- * (`buildRollData`'s `{ base, total, mod, baseMod }` per ability) isn't there.
+ * Cleric Wisdom house-rule: returns a COPY of `data` with `abilities.cha`
+ * aliased to `abilities.wis`'s values, for evaluating a single cleric-tagged
+ * grant's formulas (Channel Energy's `uses.maxFormula` and its actions'
+ * `dcFormula`, both written against `@abilities.cha.mod` in the vendored data
+ * — see `class-features.json`'s `channelEnergy` entry). Does NOT touch
+ * `data.abilities.wis` itself or any other roll-data field, so anything ELSE
+ * evaluated against the (non-copied) base `rollData` — the character's actual
+ * ability scores, skills, saves, other classes' formulas — is unaffected.
+ * `data.abilities` is untyped (`RollData` is `Record<string, unknown>`), so
+ * this reads defensively and no-ops if the shape it expects (`buildRollData`'s
+ * `{ base, total, mod, baseMod }` per ability) isn't there.
  */
 function withClericWisdomHouserule<T extends RollData>(data: T): T {
   const abilities = data.abilities;
@@ -502,21 +503,21 @@ const COMPENDIUM_UUID_RE = /^Compendium\.pf1\.[^.]+\.Item\.([^.]+)$/;
  * vendored features carrying `grantsBuffs`, only 3 resolve (Rage, Inspire
  * Courage, Aura of Protection).
  *
- * Issue #62 audit of the other 9 occurrences (7 unique UUIDs, `Spellbooks
+ * An audit of the other 9 occurrences (7 unique UUIDs, `Spellbooks
  * (ARC/MAG/WIZ)` sharing one): the data pipeline's `grantsBuffs` field
  * (`transform/classes.ts`) is populated from Foundry's generic
- * `links.supplements` — NOT a buffs-only relation — so it also picks up
- * linked feats and items. Checked each of the 7 against the raw pinned
- * clone: Endurance, Eschew Materials, Leadership, Scribe Scroll, Stunning
- * Fist, and Improved Unarmed Strike all resolve to entries in the `feats`
- * pack (`Compendium.pf1.feats.Item.*`); Spellbooks resolves to an item
- * (`Compendium.pf1.items.Item.*`, a spellbook, not a buff). None of the 9
- * are buffs at all, so there is nothing to vendor — dropping the link (this
+ * `links.supplements` — NOT a buffs-only relation — so it also picks up linked
+ * feats and items. Checked each of the 7 against the raw pinned clone:
+ * Endurance, Eschew Materials, Leadership, Scribe Scroll, Stunning Fist, and
+ * Improved Unarmed Strike all resolve to entries in the `feats` pack
+ * (`Compendium.pf1.feats.Item.*`); Spellbooks resolves to an item
+ * (`Compendium.pf1.items.Item.*`, a spellbook, not a buff). None of the 9 are
+ * buffs at all, so there is nothing to vendor — dropping the link (this
  * function's existing behavior) is the correct, already-implemented
  * disposition for every one of them. The feats among them are separately,
- * correctly granted via `ClassFeatureGrant` / `apps/web/src/model/
- * feats.ts`'s `grantedFeats()`, which is why this silent drop never loses
- * any player-facing information.
+ * correctly granted via `ClassFeatureGrant` / `apps/web/src/model/ feats.ts`'s
+ * `grantedFeats`, which is why this silent drop never loses any player-facing
+ * information.
  */
 function resolveGrantsBuffs(uuids: readonly string[], refData: RefData): string[] {
   const ids: string[] = [];
@@ -649,12 +650,12 @@ function actionBasedDetail(feature: ClassFeature, data: RollData): string | unde
 }
 
 /**
- * Arcane Reservoir's daily refill (issue #43), clean-room from Advanced Class
- * Guide p. 12: "the arcanist's arcane reservoir can hold a maximum amount of
- * magical energy equal to 3 + the arcanist's level. Each day, when preparing
- * spells, the arcanist's arcane reservoir fills with raw magical energy,
- * gaining a number of points equal to 3 + 1/2 her arcanist level. Any points
- * she had from the previous day are lost."
+ * Arcane Reservoir's daily refill, clean-room from Advanced Class Guide p. 12:
+ * "the arcanist's arcane reservoir can hold a maximum amount of magical energy
+ * equal to 3 + the arcanist's level. Each day, when preparing spells, the
+ * arcanist's arcane reservoir fills with raw magical energy, gaining a number
+ * of points equal to 3 + 1/2 her arcanist level. Any points she had from the
+ * previous day are lost."
  *
  * Base refill = 3 + floor(level / 2), strictly below the 3 + level cap.
  *
@@ -674,23 +675,23 @@ function arcaneReservoirRestValue(classLevel: number, featBonus: number, poolMax
 /**
  * Sum, per class-feature tag, how much `doc.build.feats` PLUS
  * `doc.build.extraFeats` raises that feature's derived pool max (see
- * `FEAT_POOL_EFFECTS`). A feat taken multiple times (e.g. two copies of
- * Extra Reservoir — the primary in `doc.build.feats`, a 2nd+ instance in
- * `doc.build.extraFeats`; see issue #58's `apps/web/src/model/doc.ts`
+ * `FEAT_POOL_EFFECTS`). A feat taken multiple times (e.g. two copies of Extra
+ * Reservoir — the primary in `doc.build.feats`, a 2nd+ instance in
+ * `doc.build.extraFeats`; see the `apps/web/src/model/doc.ts`
  * `addFeatInstance` and `model/repeatableFeats.ts`'s curated repeatable set)
  * contributes its `maxDelta` once per occurrence, matching the feats' own
  * "stacks" wording.
  *
  * `FeatPoolEffect.featureTag` may be a single tag or an array of tags
- * (issue #65's multi-target follow-up — e.g. Extra Lay On Hands' bonus
- * targets BOTH `layOnHands` and `touchOfCorruption`, since RAW it boosts
- * whichever of the two class features the character actually has — a
- * paladin's Lay on Hands, or an antipaladin's Touch of Corruption). The
- * bonus is recorded under every listed tag; the caller below only ever
- * looks up the ONE tag matching a real granted feature, so recording it
- * under all candidate tags is harmless for the common case (a character has
- * at most one of the mutually-exclusive class features) and only double
- * counts in the unmodeled edge case of a character somehow having both.
+ * (multi-target follow-up — e.g. Extra Lay On Hands' bonus targets BOTH
+ * `layOnHands` and `touchOfCorruption`, since RAW it boosts whichever of the
+ * two class features the character actually has — a paladin's Lay on Hands, or
+ * an antipaladin's Touch of Corruption). The bonus is recorded under every
+ * listed tag; the caller below only ever looks up the ONE tag matching a real
+ * granted feature, so recording it under all candidate tags is harmless for
+ * the common case (a character has at most one of the mutually-exclusive class
+ * features) and only double counts in the unmodeled edge case of a character
+ * somehow having both.
  */
 function collectFeatPoolBonuses(
   doc: CharacterDoc,
@@ -841,15 +842,15 @@ function deriveRacialTraitResourcePools(
 }
 
 /**
- * The vendored catalog's counterpart to the hand-authored scan above (issue
- * #102): a `RefData.racialTraits` entry whose `uses.maxFormula` makes IT a
- * pool — mostly heritage spell-like abilities (Plumekith's *see invisibility*
- * 1/day, Angelkin's *alter self*), plus metered defenses like the tiefling
- * heritages' resistances. Same character-level `rollData`, same race gate, and
- * the same synthetic `"racial"` `classTag` as the hand-authored pools; the two
- * scans can't collide on a pool id because `availableVendoredRacialTraits`
- * keeps a vendored entry out of the picker when a hand-authored one covers the
- * same trait.
+ * The vendored catalog's counterpart to the hand-authored scan above: a
+ * `RefData.racialTraits` entry whose `uses.maxFormula` makes IT a pool —
+ * mostly heritage spell-like abilities (Plumekith's *see invisibility* 1/day,
+ * Angelkin's *alter self*), plus metered defenses like the tiefling heritages'
+ * resistances. Same character-level `rollData`, same race gate, and the same
+ * synthetic `"racial"` `classTag` as the hand-authored pools; the two scans
+ * can't collide on a pool id because `availableVendoredRacialTraits` keeps a
+ * vendored entry out of the picker when a hand-authored one covers the same
+ * trait.
  */
 function deriveVendoredRacialTraitResourcePools(
   doc: CharacterDoc,

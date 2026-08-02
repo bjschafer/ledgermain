@@ -1,14 +1,14 @@
 /**
- * Clean-room PF1 slayer talent table (Advanced Class Guide + splatbooks,
- * issue #74's hand-table follow-up): hand-authored from the published rules
- * (verified against `legacy.aonprd.com`'s book-scoped ACG Slayer class page
- * for the core "Slayer Talents"/"Advanced Talents"/"Studied Target" class
- * features, and `aonprd.com`'s compiled "Talents - Slayer" index for the
- * splatbook-sourced entries), overlaid onto the full 43-entry vendored
- * catalog (`RefData.slayerTalents`) the same way `rage-powers.ts` grew its
- * overlay onto `RefData.ragePowers` — this file's previous state (a pure
- * "catalog from data, no mechanics" table, see git history) was deliberately
- * shaped to make this promotion a drop-in rather than a restructuring.
+ * Clean-room PF1 slayer talent table (Advanced Class Guide + splatbooks, the
+ * hand-table follow-up): hand-authored from the published rules (verified
+ * against `legacy.aonprd.com`'s book-scoped ACG Slayer class page for the core
+ * "Slayer Talents"/"Advanced Talents"/"Studied Target" class features, and
+ * `aonprd.com`'s compiled "Talents - Slayer" index for the splatbook-sourced
+ * entries), overlaid onto the full 43-entry vendored catalog
+ * (`RefData.slayerTalents`) the same way `rage-powers.ts` grew its overlay
+ * onto `RefData.ragePowers` — this file's previous state (a pure "catalog from
+ * data, no mechanics" table, see git history) was deliberately shaped to make
+ * this promotion a drop-in rather than a restructuring.
  *
  * Scope: ALL 43 vendored entries get a hand-authored `SlayerTalentDef` below
  * (unlike `rage-powers.ts`/`witch-hexes.ts`, which scope down to a curated
@@ -17,7 +17,7 @@
  * completely in one pass).
  *
  * IDs deliberately reuse the vendored snake_case slug (`aligned_sneak_attack`,
- * `poison_use`, ...) rather than inventing new camelCase ids the way
+ * `poison_use`,...) rather than inventing new camelCase ids the way
  * `rage-powers.ts`/`witch-hexes.ts` do — UNLIKE those two files, this one
  * already shipped a live, vendored-only picker (`SlayerTalentPicker`) that
  * stores picks in `doc.build.slayerTalents` keyed by the vendored id. Reusing
@@ -42,14 +42,14 @@
  * per-entry:
  *
  *   - **Studied Target riders** (Eternal Opposition, Marksman's Shot, Studied
- *     Ally, Swallow Reversal, ...): the slayer's own "Studied Target" class
+ *     Ally, Swallow Reversal,...): the slayer's own "Studied Target" class
  *     feature (a scaling bonus vs. a chosen foe, ACG p. 51) is not itself
  *     modeled as a toggle/buff anywhere in this engine — confirmed via the
  *     Nature Fang druid archetype's own extraction audit
  *     (`archetype-extracted/druid.ts`'s `druid:nature-fang:studied-target:1`
- *     entry, bucketed `subsystem`, "no Change-shaped number to extract").
- *     A rider on an unmodeled base mechanic has nothing to ride on, so it
- *     stays a note.
+ *     entry, bucketed `subsystem`, "no Change-shaped number to extract"). A
+ *     rider on an unmodeled base mechanic has nothing to ride on, so it stays
+ *     a note.
  *   - **Ally-targeted effects** (Studied Ally): the bonus lands on a
  *     creature OTHER than the slayer, same carve-out as `witch-hexes.ts`'s
  *     Ward entry — there's no reliable "apply to a chosen ally" Change
@@ -587,12 +587,12 @@ export const SLAYER_TALENT_IDS: readonly string[] = TALENT_LIST.map((t) => t.id)
 
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
- * Issue #74: `RefData.slayerTalents` (see that type's doc comment) is the
- * FULL published catalog (43 entries after junk filtering), prose only. The
- * hand-verified table above stays authoritative for MECHANICS — this section
- * only merges the two for BROWSING (the picker) and for resolving a picked id
- * back to a definition (`collect.ts`/`archetypes.ts`), mirroring
- * `witch-hexes.ts`'s `mergedWitchHexCatalog`/`resolveWitchHex` exactly.
+ * `RefData.slayerTalents` (see that type's doc comment) is the FULL published
+ * catalog (43 entries after junk filtering), prose only. The hand-verified
+ * table above stays authoritative for MECHANICS — this section only merges the
+ * two for BROWSING (the picker) and for resolving a picked id back to a
+ * definition (`collect.ts`/`archetypes.ts`), mirroring `witch-hexes.ts`'s
+ * `mergedWitchHexCatalog`/`resolveWitchHex` exactly.
  *
  * Matching is by NORMALIZED NAME (same convention as every sibling overlay),
  * though in practice every hand-authored id here IS the vendored id already

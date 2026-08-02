@@ -1,8 +1,8 @@
 /**
  * Which active buffs trigger PF1's "fatigued after rage ends" aftermath, for
- * how long, and which don't — the rule is NOT uniform across the rage family
- * (issue #67), verified against aonprd.com's live Barbarian / Barbarian
- * (Unchained) / Bloodrager / Rage-spell pages (2026-07-25):
+ * how long, and which don't — the rule is NOT uniform across the rage family,
+ * verified against aonprd.com's live Barbarian / Barbarian (Unchained) /
+ * Bloodrager / Rage-spell pages (2026-07-25):
  *
  *   - Chained Rage (CRB barbarian, buff name "Rage"): "A barbarian can end
  *     her rage as a free action and is fatigued after rage for a number of

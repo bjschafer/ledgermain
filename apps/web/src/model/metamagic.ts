@@ -1,14 +1,14 @@
 /**
- * Pure metamagic helpers for the tracker (issue #71): which metamagic feats a
- * character owns, and the slot-level / effective-level math for applying them
- * to a spell. The clean-room feat table itself lives in `@pf1/engine`
+ * Pure metamagic helpers for the tracker: which metamagic feats a character
+ * owns, and the slot-level / effective-level math for applying them to a
+ * spell. The clean-room feat table itself lives in `@pf1/engine`
  * (`METAMAGIC_FEATS`); this module is the thin web-side bridge that intersects
  * it with the character's owned feats and does the per-spell arithmetic the
  * spell panels display.
  *
  * Two levels are computed, and the distinction is the whole point of the
  * honesty bar (see `METAMAGIC_FEATS`'s doc comment):
- *   - SLOT level  = base spell level + Σ every applied feat's increase. This is
+ *   - SLOT level = base spell level + Σ every applied feat's increase. This is
  *     the slot the prepared/cast instance actually consumes.
  *   - EFFECTIVE level = base spell level + Σ only `raisesEffectiveLevel` feats'
  *     increase (i.e. Heighten). This drives the save DC / concentration DC;

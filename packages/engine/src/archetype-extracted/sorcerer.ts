@@ -1,11 +1,10 @@
 /**
- * Sorcerer's slice of the issue #45 batch-extraction pipeline (wave 2,
- * 2026-07-06). Per the per-class file convention (documented in
- * `index.ts`), this file owns BOTH of
+ * Sorcerer's slice of the pipeline (wave 2, 2026-07-06). Per the per-class
+ * file convention (documented in `index.ts`), this file owns BOTH of
  * sorcerer's pipeline artifacts — `SORCERER_ARCHETYPE_EFFECTS_EXTRACTED` and
- * `SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on
- * a different class never has a reason to touch this file; only `index.ts`
- * (the aggregator) needs one new import + one new spread per class.
+ * `SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION` — so a future wave working on a
+ * different class never has a reason to touch this file; only `index.ts` (the
+ * aggregator) needs one new import + one new spread per class.
  *
  * Scope: all 11 vendored sorcerer archetypes, 36 features.
  * `SORCERER_ARCHETYPE_EFFECTS_EXTRACTED` is EMPTY this wave — every feature
@@ -63,25 +62,24 @@
  * doesn't force any OTHER classification decision this wave (nothing else
  * had a clean number that suppression would have made unsafe to extract).
  *
- * **Findings that should change how a future wave reads (or doesn't need
- * to re-derive) this file:** sorcerer's archetype surface is small (11
+ * **Findings that should change how a future wave reads (or doesn't need to
+ * re-derive) this file:** sorcerer's archetype surface is small (11
  * archetypes) and thematically narrow — most either (a) trade a bloodline
  * power/feat for an ACTIVATED, resource-gated ability (Dragon Drinker's
  * dragon's-blood mechanics, Umbral Scion's darkness manipulation, Tattooed
  * Sorcerer's tattoo abilities, Wishcrafter's wish-granting, Stone Warder's
  * rune-of-warding) with no baseline passive number, or (b) grant a real but
  * narrowly-scoped bonus this engine's honesty bar excludes (Dragon Drinker's
- * Bleeding Spells is scoped to creatures of the dragon type; Razmiran
- * Priest's False Piety is scoped to divine spell-trigger/completion items).
- * A handful of features would apply a bonus to caster level or concentration
- * checks specifically (Stone Warder's Power of Stone, Umbral Scion's Potent
- * Shadows, Wishcrafter's Wishbound Arcana, Seeker's Seeker Lore) — `cl` and
+ * Bleeding Spells is scoped to creatures of the dragon type; Razmiran Priest's
+ * False Piety is scoped to divine spell-trigger/completion items). A handful
+ * of features would apply a bonus to caster level or concentration checks
+ * specifically (Stone Warder's Power of Stone, Umbral Scion's Potent Shadows,
+ * Wishcrafter's Wishbound Arcana, Seeker's Seeker Lore) — `cl` and
  * `concentration` are both `UNAPPLIED_TARGET_LABELS` targets `targets.ts`
- * documents as collected-and-ignored by `compute()`, so even an otherwise
- * clean, unconditional bonus to either one would silently do nothing on the
- * sheet; these are classified `subsystem` rather than `numeric` for that
- * reason (in addition to most of them ALSO being terrain/school/spell-
- * type-conditional).
+ * documents as collected-and-ignored by `compute`, so even an otherwise clean,
+ * unconditional bonus to either one would silently do nothing on the sheet;
+ * these are classified `subsystem` rather than `numeric` for that reason (in
+ * addition to most of them ALSO being terrain/school/spell- type-conditional).
  */
 
 import type {

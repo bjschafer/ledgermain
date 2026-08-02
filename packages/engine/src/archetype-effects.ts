@@ -1,7 +1,7 @@
 /**
- * Hand-authored mechanical effects for archetype class features (issue #7).
- * Clean-room from the published PF1 rules — no Foundry source was consulted
- * (DESIGN.md §6).
+ * Hand-authored mechanical effects for archetype class features. Clean-room
+ * from the published PF1 rules — no Foundry source was consulted (DESIGN.md
+ * §6).
  *
  * Context: the vendored archetype dataset (`packages/data-pipeline/src/
  * transform/archetypes.ts`, ultimately from the third-party `pf1e-archetypes`
@@ -35,8 +35,8 @@
  * source (see `collect.ts`'s "archetype feature effects" section): only when
  * the granting archetype is active (`doc.build.archetypes`) AND the
  * character's level in that archetype's class has reached the feature's
- * `level` gate. `detail()` produces the short summary `ClassFeaturesList`
- * shows next to the feature name — the same mechanism `tables.ts`'s
+ * `level` gate. `detail` produces the short summary `ClassFeaturesList` shows
+ * next to the feature name — the same mechanism `tables.ts`'s
  * `sneakAttackDice`/`barbarianDamageReduction` already feed into
  * `DerivedClassFeature.detail`.
  */
@@ -117,12 +117,12 @@ export const ARCHETYPE_FEATURE_EFFECTS: Readonly<Record<string, ArchetypeFeature
   // Two-Handed Fighter's own replacement for Armor Training, "Overhand Chop"
   // (Advanced Player's Guide p. 20-ish era reprint, Ultimate Combat), is a
   // per-attack situational rule (double Str bonus on damage for a single
-  // attack/charge with a two-handed weapon) — a real number, but one that
-  // only applies to a specific attack the player chooses each round, not an
+  // attack/charge with a two-handed weapon) — a real number, but one that only
+  // applies to a specific attack the player chooses each round, not an
   // always-on Change (same bar as Power Attack/Deadly Aim's situational
   // treatment in `feat-effects.ts`). Left as a display-only note; the swap
   // itself (Armor Training's `mDexA`/`acpA` no longer applying) is already
-  // exercised by the "issue #7 bug fix" describe block above.
+  // exercised by the "bug fix" describe block above.
   "fighter:two-handed-fighter:overhand-chop:3": {
     changes: [],
     detail: () => "double Str bonus on a single 2H attack/charge — situational, not modeled",

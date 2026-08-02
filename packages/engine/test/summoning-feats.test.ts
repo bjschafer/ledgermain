@@ -90,8 +90,8 @@ describe("Extra Summons (FEAT_POOL_EFFECTS)", () => {
 
   // The feat is explicitly repeatable ("once for every five summoner levels
   // you possess") — two instances (primary + a build.extraFeats copy, same
-  // shape issue #58 established for Extra Rage) stack to +2, taking the pool
-  // from 3+Cha (5) to 5+Cha (7).
+  // shape established for Extra Rage) stack to +2, taking the pool from 3+Cha
+  // (5) to 5+Cha (7).
   it("two instances of Extra Summons (primary + extraFeats) stack to +2 -> 5+Cha", () => {
     const extraSummonsId = featId("Extra Summons");
     const doc = makeDoc({

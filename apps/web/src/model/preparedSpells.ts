@@ -37,8 +37,8 @@ function withPrepared(doc: CharacterDoc, prepared: PreparedSpell[]): CharacterDo
       spells: {
         prepared,
         // Preserve spontaneous slot-usage fields: a multiclass character (e.g.
-        // cleric/sorcerer, issue #22) can have BOTH a prepared loadout AND
-        // spontaneous slots meaningful at once, one per caster class.
+        // cleric/sorcerer) can have BOTH a prepared loadout AND spontaneous
+        // slots meaningful at once, one per caster class.
         ...(doc.live.spells?.slotsUsed !== undefined
           ? { slotsUsed: doc.live.spells.slotsUsed }
           : {}),
@@ -169,7 +169,7 @@ export function setExpendedAt(doc: CharacterDoc, index: number, expended: boolea
 }
 
 // ---------------------------------------------------------------------------
-// Metamagic (issue #71) — applied per prepared instance.
+// Metamagic — applied per prepared instance.
 // ---------------------------------------------------------------------------
 
 /** Replace the prepared instance at `index` with `next`, dropping an empty `metamagic` array. */
@@ -185,7 +185,7 @@ function replacePreparedAt(
     list.map((p, i) => {
       if (i !== index) return p;
       const updated = next(p);
-      // Normalize: never persist an empty metamagic array (keeps pre-#71 shape).
+      // Normalize: never persist an empty metamagic array (keeps the earlier shape).
       if (updated.metamagic && updated.metamagic.length === 0) {
         const { metamagic: _drop, ...rest } = updated;
         return rest;
@@ -687,9 +687,9 @@ export function classSpellsByLevel(
 /**
  * Strip granted cantrips from a caster class's known list and dedupe them in
  * `live.spells.prepared` for casters whose model grants all cantrips for free.
- * Runs once per caster class on the document (issue #22 multiclass support —
- * e.g. a cleric/wizard multiclass reconciles both independently), so one
- * class's cantrips are never pruned by another's.
+ * Runs once per caster class on the document (multiclass support — e.g. a
+ * cleric/wizard multiclass reconciles both independently), so one class's
+ * cantrips are never pruned by another's.
  *
  * Cantrips are derived from the class spell list instead of stored in the
  * spellbook, so any previously-stored cantrip ids in `known` are orphans.

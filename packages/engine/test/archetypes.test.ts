@@ -149,8 +149,8 @@ describe("resolveClassFeatures: ambiguous archetype features never strike throug
 });
 
 describe("resolveClassFeatures: Acrobat (rogue archetype) swaps Trap Sense for Second Chance", () => {
-  // Closes out issue #13's "check archetype slice picks up the new class"
-  // item — Rogue UC.csv archetypes are vendored alongside the base class.
+  // Closes out the "check archetype slice picks up the new class" item — Rogue
+  // UC.csv archetypes are vendored alongside the base class.
   const acrobat = byName(ref.archetypes, "Acrobat");
   const doc = makeDoc({
     classes: [{ tag: "rogue", level: 5 }],
@@ -211,8 +211,8 @@ describe("resolveClassFeatures: Paladin.csv / Ranger.csv are picked up (issue #1
 });
 
 describe("resolveClassFeatures: Animal Speaker (bard archetype) swaps Inspire Competence for Soothing Performance", () => {
-  // Closes out issue #13's "check archetype slice picks up the new class"
-  // item for Bard — Bard.csv archetypes are vendored alongside the base class.
+  // Closes out the "check archetype slice picks up the new class" item for
+  // Bard — Bard.csv archetypes are vendored alongside the base class.
   const animalSpeaker = byName(ref.archetypes, "Animal Speaker");
   const doc = makeDoc({
     classes: [{ tag: "bard", level: 6 }],
@@ -251,12 +251,12 @@ describe("resolveClassFeatures: Animal Speaker (bard archetype) swaps Inspire Co
 });
 
 describe("resolveClassFeatures: Maneuver Master (monk archetype) swaps Evasion for Resilience", () => {
-  // Closes out issue #13's "check archetype slice picks up the new class"
-  // item for Monk — Monk.csv archetypes are vendored alongside the base
-  // class. (Note: the vendored CSV's row prose for this archetype describes
-  // itself as "ironskin monk" throughout, though the `Archetype` column name
-  // is "Maneuver Master" — a quirk of the source dataset, not something this
-  // pass fixes; asserting on the mechanical swap only, not the prose.)
+  // Closes out the "check archetype slice picks up the new class" item for
+  // Monk — Monk.csv archetypes are vendored alongside the base class. (Note:
+  // the vendored CSV's row prose for this archetype describes itself as
+  // "ironskin monk" throughout, though the `Archetype` column name is
+  // "Maneuver Master" — a quirk of the source dataset, not something this pass
+  // fixes; asserting on the mechanical swap only, not the prose.)
   const maneuverMaster = byName(ref.archetypes, "Maneuver Master");
   const doc = makeDoc({
     classes: [{ tag: "monk", level: 5 }],

@@ -1,14 +1,14 @@
 /**
- * Barbarian's slice of the issue #45 batch-extraction pipeline (2026-07-06),
- * repeating the fighter pilot's exact methodology (`./fighter.ts`) for the 40
- * vendored barbarian archetypes / 149 archetype features. Per the per-class
- * file convention (`./index.ts`'s doc comment), this file owns BOTH of
- * barbarian's pipeline artifacts — `BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED`
- * (the machine-extracted `Change`-shaped effects table) and
+ * Barbarian's slice of the pipeline (2026-07-06), repeating the fighter
+ * pilot's exact methodology (`./fighter.ts`) for the 40 vendored barbarian
+ * archetypes / 149 archetype features. Per the per-class file convention
+ * (`./index.ts`'s doc comment), this file owns BOTH of barbarian's pipeline
+ * artifacts — `BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED` (the machine-extracted
+ * `Change`-shaped effects table) and
  * `BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit) —
  * so a future wave working on a different class never has a reason to touch
- * this file; only `index.ts` (the aggregator, out of scope for this wave —
- * see below) needs one new import + one new spread per class.
+ * this file; only `index.ts` (the aggregator, out of scope for this wave — see
+ * below) needs one new import + one new spread per class.
  *
  * The archetype data source repoint (`ARCHETYPE_REPO`/`ARCHETYPE_SHA`,
  * `packages/data-pipeline/src/config.ts`) mechanically renamed most of this
@@ -116,7 +116,7 @@
  * aggregator) is NOT touched by this file — a later integration pass wires
  * `BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED`/`BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION`
  * into the merged production tables the same one-import-one-spread way
- * fighter's are wired in today. Until that happens, `compute()` does not yet
+ * fighter's are wired in today. Until that happens, `compute` does not yet
  * apply this file's `changes` (see this class's fixture test file for how it
  * verifies the extracted formulas directly instead of via the full
  * `collect.ts` pipeline).

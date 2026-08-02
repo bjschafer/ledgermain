@@ -1,9 +1,9 @@
 /**
- * Fixture tests for the hardcoded BAB/save progression tables in `tables.ts`
- * — `saveForLevels`'s two prestige tiers in particular (issue #66 chunk 1).
- * See `SaveTier`'s doc comment in `@pf1/schema` `primitives.ts` for how these
- * two sequences were verified against the published Core Rulebook tables
- * (not merely derived from the base `high`/`low` formulas by renaming).
+ * Fixture tests for the hardcoded BAB/save progression tables in `tables.ts` —
+ * `saveForLevels`'s two prestige tiers in particular (1). See `SaveTier`'s doc
+ * comment in `@pf1/schema` `primitives.ts` for how these two sequences were
+ * verified against the published Core Rulebook tables (not merely derived from
+ * the base `high`/`low` formulas by renaming).
  */
 import { describe, expect, it } from "bun:test";
 

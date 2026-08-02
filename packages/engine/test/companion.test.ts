@@ -18,7 +18,7 @@ function makeDoc(overrides: {
   animalCompanion?: CharacterDoc["build"]["animalCompanion"];
   activeBuffs?: CharacterDoc["live"]["activeBuffs"];
   sharedBuffIds?: string[];
-  /** The companion's OWN active conditions (issue #68), independent of the master's `live.conditions`. */
+  /** The companion's OWN active conditions, independent of the master's `live.conditions`. */
   companionConditions?: string[];
 }): CharacterDoc {
   return {

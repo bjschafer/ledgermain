@@ -22,9 +22,9 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
   // Ability-score-increases subsection: default collapsed (only relevant every 4 levels)
   const [incCollapsed, toggleIncCollapsed] = useCollapsed("subsection:AbilityIncreases", true);
 
-  // Point buy (issue #86): off/absent = no readout at all. Reads doc.abilities
-  // directly — the pre-racial base scores the six NumberFields below edit —
-  // never the racial-adjusted `sheet.abilities`.
+  // Point buy: off/absent = no readout at all. Reads doc.abilities directly —
+  // the pre-racial base scores the six NumberFields below edit — never the
+  // racial-adjusted `sheet.abilities`.
   const budget = doc.build.abilityPointBuyBudget;
   const isStandardBudget = budget != null && POINT_BUY_BUDGETS.some((b) => b.points === budget);
   const budgetSelectValue = budget == null ? "off" : isStandardBudget ? String(budget) : "custom";

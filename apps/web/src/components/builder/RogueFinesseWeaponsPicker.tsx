@@ -17,17 +17,17 @@ interface RogueFinesseWeaponsPickerProps {
 }
 
 /**
- * Rogue (Unchained) Finesse Training weapon-type picks (issue #65 —
- * previously deferred). PF1 RAW: at 3rd level, and every 8 levels thereafter
- * (11th, 19th), pick one weapon TYPE usable with Weapon Finesse (e.g.
- * "rapier") — melee attacks with a matching equipped weapon add Dexterity
- * instead of Strength to the damage roll. Free-text (not a `WEAPON_GROUPS`
- * dropdown, unlike `WeaponTrainingPicker` — RAW scopes this to one weapon
- * TYPE, not a whole semantic group), matched case-insensitively against an
- * equipped `WeaponInstance`'s name/group by `computeWeaponAttacks` in
- * `@pf1/engine` `compute.ts`. Free-choice — no validation that the entered
- * text matches an actual weapon on the sheet or is finesse-eligible, same
- * soft posture as every other picker here.
+ * Rogue (Unchained) Finesse Training weapon-type picks (previously deferred).
+ * PF1 RAW: at 3rd level, and every 8 levels thereafter (11th, 19th), pick one
+ * weapon TYPE usable with Weapon Finesse (e.g. "rapier") — melee attacks with
+ * a matching equipped weapon add Dexterity instead of Strength to the damage
+ * roll. Free-text (not a `WEAPON_GROUPS` dropdown, unlike
+ * `WeaponTrainingPicker` — RAW scopes this to one weapon TYPE, not a whole
+ * semantic group), matched case-insensitively against an equipped
+ * `WeaponInstance`'s name/group by `computeWeaponAttacks` in `@pf1/engine`
+ * `compute.ts`. Free-choice — no validation that the entered text matches an
+ * actual weapon on the sheet or is finesse-eligible, same soft posture as
+ * every other picker here.
  */
 export function RogueFinesseWeaponsPicker({ doc, update }: RogueFinesseWeaponsPickerProps) {
   const level = rogueUnchainedLevel(doc);

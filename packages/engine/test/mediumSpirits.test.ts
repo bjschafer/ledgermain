@@ -12,7 +12,7 @@ import {
 } from "../src/index.js";
 
 /**
- * Fixture coverage for the Medium's legendary-spirit subsystem (issue #65):
+ * Fixture coverage for the Medium's legendary-spirit subsystem:
  * `live.mediumSpirit` (the daily séance pick) drives both the flat Spirit
  * Bonus + Séance Boon `Change`s (`collect.ts`) and the spirit's 4 Spirit
  * Powers (`archetypes.ts`'s `collectGrantedFeatures`). See `medium-

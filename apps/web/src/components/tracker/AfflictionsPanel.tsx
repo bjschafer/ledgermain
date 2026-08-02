@@ -30,14 +30,13 @@ const KIND_LABELS: Record<AbilityAfflictionKind, string> = {
 };
 
 /**
- * Ability damage/drain/penalty (issue #18) + negative levels (issue #19).
- * Numbers themselves are computed by the engine (`@pf1/engine` collect.ts);
- * this panel only edits `doc.live.*` and surfaces the RAW thresholds the
- * engine deliberately doesn't model as warnings: ability damage reaching the
- * current score (unconsciousness), negative levels reaching Hit Dice (death),
- * and — issue #31 — any derived ability total dropping to 0 or below (its own
- * per-ability RAW effect; Con's is death, enforced separately by `hpState` in
- * `model/hp.ts`).
+ * Ability damage/drain/penalty + negative levels. Numbers themselves are
+ * computed by the engine (`@pf1/engine` collect.ts); this panel only edits
+ * `doc.live.*` and surfaces the RAW thresholds the engine deliberately doesn't
+ * model as warnings: ability damage reaching the current score
+ * (unconsciousness), negative levels reaching Hit Dice (death), and — any
+ * derived ability total dropping to 0 or below (its own per-ability RAW
+ * effect; Con's is death, enforced separately by `hpState` in `model/hp.ts`).
  *
  * No auto-decrement on rest: the app's "rest" action is fragmented across
  * three independent panel buttons (HP/Resources/Prepared Spells) with no

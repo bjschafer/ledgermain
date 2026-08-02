@@ -1,13 +1,13 @@
 /**
- * Pure Medium séance transitions (issue #65) — the live daily spirit pick
+ * Pure Medium séance transitions — the live daily spirit pick
  * (`live.mediumSpirit`, mirroring `model/vigilanteIdentity.ts`'s "live
  * display-forward chip" shape) plus the Influence counter (`live.
  * mediumInfluence`, mirroring `model/heroPoints.ts`'s clamped-counter shape).
- * See both fields' schema doc comments in `@pf1/schema` `character.ts` for
- * why neither is touched by `model/rest.ts`'s `restNewDay` — a medium
- * re-affirms their spirit and influence bookkeeping by explicitly performing
- * a séance (this module's `performSeance`), not as an implicit side effect
- * of the global "New day" rest button.
+ * See both fields' schema doc comments in `@pf1/schema` `character.ts` for why
+ * neither is touched by `model/rest.ts`'s `restNewDay` — a medium re-affirms
+ * their spirit and influence bookkeeping by explicitly performing a séance
+ * (this module's `performSeance`), not as an implicit side effect of the
+ * global "New day" rest button.
  *
  * Influence is clamped to 0-5 (PF1 RAW: at 5 "the spirit takes over" — the
  * medium becomes an NPC under GM control until the next day, a full loss of
