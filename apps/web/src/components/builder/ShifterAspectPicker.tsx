@@ -99,8 +99,8 @@ export function ShifterAspectPicker({ doc, refData, update }: ShifterAspectPicke
         <>
           <p className="hint revelation-picker-hint">
             Pick aspects as you level (1st, 5th, 10th, 15th, 20th). Once known, toggle each aspect's
-            minor form on/off in the tracker's Shifter Aspects panel. Major form (Wild Shape) isn't
-            modeled yet — see issue #70. Free-choice — never blocks past the expected count.
+            minor form on/off in the tracker's Shifter Aspects panel; major form (Wild Shape) lives
+            in the Polymorph panel. Free choice: never blocks past the expected count.
           </p>
           <input
             className="search"

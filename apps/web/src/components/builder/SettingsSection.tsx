@@ -187,7 +187,7 @@ export function SettingsSection({
             /* Device preference — not part of the character */
             <Panel title="Text Size" step="⚙" icon={<GearIcon />}>
               <p className="hint" style={{ marginBottom: 12 }}>
-                Text size for this browser/device. Not saved with the character — every character on
+                Text size for this browser/device. Not saved with the character: every character on
                 this device uses the same setting.
               </p>
               <div className="chips">
@@ -269,8 +269,8 @@ export function SettingsSection({
               </div>
               <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
                 {restMode === "full"
-                  ? "Heals current HP straight to max — a common table simplification."
-                  : "Heals 1 HP per character level per night, capped at max (PF1 RAW). Full bed rest (2×level/day) isn't modelled yet."}{" "}
+                  ? "Heals current HP straight to max, a common table simplification."
+                  : "Heals 1 HP per character level per night, capped at max (PF1 RAW). Full bed rest (2×level/day) isn't modeled yet."}{" "}
                 Nonlethal damage always clears fully on rest.
               </p>
             </Panel>
@@ -282,7 +282,7 @@ export function SettingsSection({
           node: (
             <Panel title="Hero Points" step="⚙" icon={<GearIcon />}>
               <p className="hint" style={{ marginBottom: 12 }}>
-                Hero points are a PF1 optional rule — a small pool spent at the table for mechanical
+                Hero points are a PF1 optional rule: a small pool spent at the table for mechanical
                 benefits. Disable if your table doesn't use them.
               </p>
               <div className="chips">
@@ -419,10 +419,10 @@ export function SettingsSection({
           node: (
             <Panel title="Cleric Wisdom Rule" step="⚙" icon={<GearIcon />}>
               <p className="hint" style={{ marginBottom: 12 }}>
-                Homebrew rule (issue #56): cleric class features — Channel Energy's uses/day and
-                save DC — key off <em>Wisdom</em> instead of Charisma. The cleric's actual Charisma
-                score, skills, and saves are unaffected; other Cha-driven classes (paladin,
-                sorcerer, oracle, bard) are untouched either way.
+                Homebrew rule: cleric class features, Channel Energy's uses/day and save DC, key off{" "}
+                <em>Wisdom</em> instead of Charisma. The cleric's actual Charisma score, skills, and
+                saves are unaffected; other Cha-driven classes (paladin, sorcerer, oracle, bard) are
+                untouched either way.
               </p>
               <div className="chips">
                 <button
@@ -451,9 +451,9 @@ export function SettingsSection({
           node: (
             <Panel title="Early Bonus Spells" step="⚙" icon={<GearIcon />}>
               <p className="hint" style={{ marginBottom: 12 }}>
-                Homebrew rule (issue #112): normally, bonus spells from a high casting ability only
-                apply at spell levels your class can already cast. This house rule grants those
-                bonus slots early, before the class table itself unlocks that spell level.
+                Homebrew rule: normally, bonus spells from a high casting ability only apply at
+                spell levels your class can already cast. This house rule grants those bonus slots
+                early, before the class table itself unlocks that spell level.
               </p>
               <div className="chips">
                 <button
@@ -498,9 +498,9 @@ export function SettingsSection({
           node: (
             <Panel title="Encumbrance" step="⚙" icon={<GearIcon />}>
               <p className="hint" style={{ marginBottom: 12 }}>
-                Carrying capacity is a PF1 OPTIONAL rule — many tables skip it. Enable to compute a
-                Strength-based load tier (light/medium/heavy) from your total gear weight and apply
-                its RAW penalties (max Dex to AC, armor check penalty, reduced land speed).
+                Carrying capacity is a PF1 OPTIONAL rule, and many tables skip it. Enable to compute
+                a Strength-based load tier (light/medium/heavy) from your total gear weight and
+                apply its RAW penalties (max Dex to AC, armor check penalty, reduced land speed).
               </p>
               <div className="chips">
                 <button
@@ -574,7 +574,7 @@ export function SettingsSection({
             <Panel title="Polymorph / Wild Shape" step="⚙" icon={<GearIcon />}>
               <p className="hint" style={{ marginBottom: 12 }}>
                 By default the tracker only offers the Polymorph / Wild Shape panel when this
-                character has a source for it — druid Wild Shape levels, the shifter class, or a
+                character has a source for it: druid Wild Shape levels, the shifter class, or a
                 known Beast Shape / Elemental Body / Plant Shape spell. Force it on if your access
                 is off-sheet (a scroll, a potion, a GM handout).
               </p>
@@ -621,7 +621,7 @@ export function SettingsSection({
               <p className="hint" style={{ marginBottom: 12 }}>
                 PF1 RAW restricts a few classes (Barbarian, Monk, Paladin, Druid) to certain
                 alignments. Ledgermain only ever warns on a mismatch in the Classes panel, never
-                blocks — enable this for tables that don't use alignment restrictions at all.
+                blocks. Enable this for tables that don't use alignment restrictions at all.
               </p>
               <div className="chips">
                 <button
@@ -656,7 +656,7 @@ export function SettingsSection({
             <Panel title="GM Grants" step="⚙" icon={<GearIcon />}>
               <p className="hint" style={{ marginBottom: 12 }}>
                 Homebrew adjustments to how many skill ranks and feats this character may spend.
-                Additive to the rules-derived budget — negative values claw back. Leave blank to use
+                Additive to the rules-derived budget; negative values claw back. Leave blank to use
                 the rules amount.
               </p>
               <div className="settings-row" style={{ marginBottom: 10 }}>
@@ -784,7 +784,7 @@ export function SettingsSection({
                 importer auto-detects the file: a Ledgermain export (.json) makes the character
                 active in place (re-importing the same export updates it; a different file adds a
                 new one); a Pathbuilder 1e export (.json) or Hero Lab classic export (.xml) is added
-                as a new character, best-effort — anything that couldn't be matched to this app's
+                as a new character, best-effort: anything that couldn't be matched to this app's
                 reference data is listed below so you can add it by hand.
               </p>
               <div className="settings-row">
@@ -825,9 +825,9 @@ export function SettingsSection({
           node: (
             <Panel title="Print" step="⚙" icon={<GearIcon />}>
               <p className="hint" style={{ marginBottom: 12 }}>
-                A dense, read-only reference layout of this character's current stats — abilities,
-                saves, AC, attacks, skills, feats, class features, spell slots/known, and resources
-                — sized for printing or saving to PDF from the browser's print dialog.
+                A dense, read-only reference layout of this character's current stats (abilities,
+                saves, AC, attacks, skills, feats, class features, spell slots/known, and
+                resources), sized for printing or saving to PDF from the browser's print dialog.
               </p>
               <div className="settings-row">
                 <button type="button" className="btn-ghost" onClick={onOpenPrint}>
@@ -1097,7 +1097,7 @@ function SupportPanel() {
   return (
     <Panel title="Support" step="♥" icon={<HeartIcon />}>
       <p className="hint" style={{ marginBottom: 10 }}>
-        Ledgermain is free, open source, and always will be — nothing here is behind a paywall or a
+        Ledgermain is free, open source, and always will be. Nothing here is behind a paywall or a
         sign-up. If it's saved you time at the table and you'd like to chip in toward the coffee, it
         is very much appreciated and entirely optional.
       </p>

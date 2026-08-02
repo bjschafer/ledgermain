@@ -26,8 +26,8 @@ export function ShifterAspectPanel({ doc, update }: BuilderProps) {
   return (
     <Panel title="Shifter Aspects" icon={<ClawIcon />} storageKey="panel:Shifter Aspects">
       <p className="hint">
-        Toggle a known aspect's minor form on/off. Major form (Wild Shape) isn't modeled yet — see
-        issue #70.
+        Toggle a known aspect's minor form on/off. For major form (Wild Shape), use the Polymorph
+        panel.
       </p>
       <div className="chips">
         {known.map((id) => {
