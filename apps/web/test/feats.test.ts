@@ -335,6 +335,28 @@ describe("cleric domain fixed bonus feats (issue #99)", () => {
     });
     expect(grantedFeats(doc, ref).map((g) => g.featName)).not.toContain("Blind-Fight");
   });
+
+  it("a subdomain keeps its parent's fixed feat (Night, of Darkness)", () => {
+    // Night replaces touch of darkness, not the bonus feat, so Blind-Fight
+    // carries over and is labeled with the subdomain the player actually took.
+    const doc = makeDoc({
+      classes: [{ tag: "cleric", level: 1 }],
+      race: "Elf",
+      clericDomains: ["Night"],
+    });
+    const blindFight = grantedFeats(doc, ref).find((g) => g.featName === "Blind-Fight");
+    expect(blindFight).toBeDefined();
+    expect(blindFight!.featureName).toBe("Night Subdomain");
+  });
+
+  it("a subdomain of a domain with no fixed-feat grant grants none (Deception, of Trickery)", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "cleric", level: 1 }],
+      race: "Elf",
+      clericDomains: ["Deception"],
+    });
+    expect(grantedFeats(doc, ref)).toEqual([]);
+  });
 });
 
 describe("expectedFeatCount: Rogue (Unchained) Finesse Training grant + Rogue's Edge (UC) bonusFeats bug excluded", () => {

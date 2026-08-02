@@ -223,10 +223,12 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         }
         continue;
       }
-      // Not a top-level domain tag — try a subdomain (`Subdomain` doc
-      // comment): grant its own `features` when the source models a
-      // structured override, else fall back to its parent domain's
-      // (identical granted powers as far as this data can tell).
+      // Not a top-level domain tag — try a subdomain, whose `features` is
+      // already the complete merged list (kept parent powers + replacements;
+      // see its doc comment). The parent-domain fallback is dead weight
+      // against the current slice, kept only so a future data bump that drops
+      // a subdomain's power list degrades to the parent's rather than to
+      // nothing.
       const subdomain = Object.values(refData.subdomains).find((s) => s.tag === tag);
       if (!subdomain) continue;
       const parentDomain = Object.values(refData.domains).find(

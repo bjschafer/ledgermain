@@ -666,10 +666,40 @@ describe("cleric subdomains (domains/subdomains/*.yaml)", () => {
     expect(byLevel["Lightning Arc"]).toBeLessThanOrEqual(1);
   });
 
-  it("Aeon Subdomain (Knowledge) has no structured granted-power override (source models spells only)", () => {
+  it("Aeon Subdomain (Knowledge) takes its replacement power from the imported set, keeping Lore Keeper", () => {
     const aeon = byName(ref.subdomains, "Aeon Subdomain");
     expect(aeon.parentDomainTags).toEqual(["Knowledge"]);
-    expect(aeon.features).toEqual([]);
+    const byLevel = Object.fromEntries(aeon.features.map((f) => [f.name, f.level]));
+    // Void Form displaces Knowledge's 6th-level Remote Viewing; Lore Keeper stays.
+    expect(byLevel["Void Form"]).toBe(6);
+    expect(byLevel["Lore Keeper (Domain Power)"]).toBeLessThanOrEqual(1);
+    expect(byLevel["Remote Viewing (Domain Power)"]).toBeUndefined();
+  });
+
+  it("every subdomain resolves granted powers of its own (125 imported, 11 from the Foundry pack)", () => {
+    expect(ref.meta.counts.subdomainsWithImportedPowers).toBe(125);
+    for (const sub of Object.values(ref.subdomains)) {
+      expect(sub.features.length, sub.name).toBeGreaterThan(0);
+    }
+  });
+
+  it("Deception Subdomain (Trickery) swaps copycat for Sudden Shift, keeps Master's Illusion", () => {
+    const deception = byName(ref.subdomains, "Deception Subdomain");
+    expect(deception.parentDomainTags).toEqual(["Trickery"]);
+    expect(deception.features.map((f) => f.name)).toEqual(["Sudden Shift", "Master's Illusion"]);
+    const suddenShift = ref.classFeatures[deception.features[0]!.featureId]!;
+    expect(suddenShift.abilityType).toBe("sp");
+    expect(suddenShift.description).toContain("teleport up to 10 feet");
+    // APG p. 89 — the subdomain's own citation, not the parent domain's.
+    expect(suddenShift.sources).toEqual([{ id: "advanced-player-s-guide", pages: "89" }]);
+  });
+
+  it("a subdomain keeps its parent's non-power domain bonus unless it replaces it (Travel)", () => {
+    const speed = [{ formula: "10", target: "landSpeed", type: "base" }];
+    // Exploration trades away agile feet only, so Travel's +10 ft carries over.
+    expect(byName(ref.subdomains, "Exploration Subdomain").changes).toEqual(speed);
+    // Portal's Sacred Threshold replaces the speed increase itself.
+    expect(byName(ref.subdomains, "Portal Subdomain").changes).toEqual([]);
   });
 
   it("Purity Subdomain (Protection) carries its own direct resistance-save bonus in `changes`", () => {

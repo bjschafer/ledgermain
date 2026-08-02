@@ -93,16 +93,42 @@ describe("cleric domain powers", () => {
 });
 
 describe("cleric subdomain selection (in place of a parent domain)", () => {
-  it("Ash (Fire's subdomain, no structured override) grants exactly what Fire itself grants", () => {
-    const withAsh = makeCleric(6, ["Ash"]);
-    const withFire = makeCleric(6, ["Fire"]);
-    expect(domainFeatureNames(withAsh)).toEqual(domainFeatureNames(withFire));
-    expect(domainFeatureNames(withAsh)).toEqual(["Fire Bolt", "Fire Resistance"]);
+  it("Ash (Fire's subdomain) swaps Fire Resistance for Wall of Ashes and keeps Fire Bolt", () => {
+    // APG p. 88: Wall of Ashes replaces the fire resistance power; the
+    // domain's 1st-level Fire Bolt is untouched. The replacement comes online
+    // at 8th where the power it displaces sat at 6th, so a 6th-level Ash
+    // cleric has neither.
+    const withAsh = makeCleric(8, ["Ash"]);
+    expect(domainFeatureNames(withAsh)).toEqual(["Fire Bolt", "Wall of Ashes"]);
+    expect(domainFeatureNames(makeCleric(6, ["Ash"]))).toEqual(["Fire Bolt"]);
+    expect(domainFeatureNames(makeCleric(6, ["Fire"]))).toEqual(["Fire Bolt", "Fire Resistance"]);
 
     const { classFeatures } = resolveClassFeatures(withAsh, ref);
     const fireBolt = classFeatures.find((f) => f.name === "Fire Bolt")!;
     // Label names the subdomain actually chosen, not its parent.
     expect(fireBolt.origin).toEqual({ kind: "domain", label: "Ash Subdomain" });
+  });
+
+  it("Deception (Trickery's subdomain) grants Sudden Shift in place of Copycat", () => {
+    // APG p. 89. The reported symptom was the reverse: Copycat showing up on
+    // a Deception cleric's sheet, and Sudden Shift nowhere at all.
+    const doc = makeCleric(8, ["Deception"]);
+    expect(domainFeatureNames(doc)).toEqual(["Master's Illusion", "Sudden Shift"]);
+
+    const { classFeatures } = resolveClassFeatures(doc, ref);
+    const suddenShift = classFeatures.find((f) => f.name === "Sudden Shift")!;
+    expect(suddenShift.origin).toEqual({ kind: "domain", label: "Deception Subdomain" });
+    expect(suddenShift.classTag).toBe("cleric");
+  });
+
+  it("a subdomain replacement power is level-gated like any other grant", () => {
+    // Thievery's Thief of the Gods replaces Master's Illusion, so it inherits
+    // that power's 8th-level gate; Copycat is the one Thievery keeps.
+    expect(domainFeatureNames(makeCleric(7, ["Thievery"]))).toEqual(["Copycat"]);
+    expect(domainFeatureNames(makeCleric(8, ["Thievery"]))).toEqual([
+      "Copycat",
+      "Thief of the Gods",
+    ]);
   });
 
   it("Cloud (Air's subdomain, structured override) replaces Air's 2nd power with Thundercloud at level 8, keeps Lightning Arc", () => {
@@ -161,6 +187,16 @@ describe("cleric domain / subdomain direct changes (issue #99)", () => {
     const withTravel = compute(makeCleric(1, ["Travel"]), ref);
     const withoutDomain = compute(makeCleric(1, []), ref);
     expect((withTravel.speeds.land ?? 0) - (withoutDomain.speeds.land ?? 0)).toBe(10);
+  });
+
+  it("a subdomain inherits its parent's speed bonus unless it replaces it", () => {
+    const land = (doc: CharacterDoc) => compute(doc, ref).speeds.land ?? 0;
+    const base = land(makeCleric(1, []));
+    // Exploration swaps agile feet only; the +10 ft is part of Travel's
+    // granted-powers preamble and stays. Portal's Sacred Threshold replaces
+    // the speed increase itself.
+    expect(land(makeCleric(1, ["Exploration"])) - base).toBe(10);
+    expect(land(makeCleric(1, ["Portal"])) - base).toBe(0);
   });
 
   it("a domain change is inert without cleric levels (stale tag on a non-cleric)", () => {

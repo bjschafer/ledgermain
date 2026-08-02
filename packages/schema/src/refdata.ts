@@ -427,23 +427,38 @@ export interface Subdomain extends RefEntity {
    */
   parentDomainTags: string[];
   /**
-   * Structured granted-power override, resolved from `links.supplements`
-   * exactly like `Domain.features` — present for only ~11 of 137 subdomains
-   * whose source doc models a full override (e.g. Cloud replaces Air's
-   * 8th-level power with Thundercloud alongside Air's unchanged 1st power).
-   * Empty for the rest: the source only documents a spell-list replacement
-   * for those, so treat this subdomain's granted powers as identical to its
-   * parent's — use `RefData.domains[parentDomainTags[0]].features` when this
-   * array is empty, not an empty grant list.
+   * The subdomain's COMPLETE granted-power list: the parent domain's powers
+   * it keeps, plus the replacement powers it swaps in, already merged. Read
+   * it as the whole truth for a cleric who took this subdomain — never merge
+   * it with the parent's `features` yourself, or a replaced power comes back.
+   *
+   * Two sources feed it. 11 subdomains resolve a structured
+   * `links.supplements` override from the Foundry pack, exactly like
+   * `Domain.features` (e.g. Cloud, replacing Air's 8th-level power with
+   * Thundercloud). The pack documents no power at all for the other 125 —
+   * only a replacement spell list — so those are rebuilt at build time from
+   * the Pf Data 1e catalog, which states both the replacement power and the
+   * parent power it displaces (see data-pipeline
+   * `transform/subdomainPowers.ts`). Their `ClassFeature` entries are
+   * synthesized rather than vendored, and carry a `subdomain-power:` id.
+   *
+   * Empty only if both sources come up dry, which nothing in the current
+   * slice does; a consumer that wants to be safe against a future data bump
+   * can still fall back to `RefData.domains[parentDomainTags[0]].features`.
    */
   features: ClassFeatureGrant[];
   /**
    * A numeric bonus carried directly on the subdomain doc itself (e.g.
    * Purity's +1-per-5-levels resistance bonus to all saves), rather than
    * proxied through a `links.supplements`-linked `ClassFeature.changes` the
-   * way `features` above works. Vendored for the ~4 subdomains that have one
+   * way `features` above works. Vendored for the 4 subdomains that have one
    * (Purity, Defense, Fortification, Solitude — the source's richest
-   * `system.changes` slice in the ecosystem). Applied by `collectModifiers`
+   * `system.changes` slice in the ecosystem), and otherwise inherited from
+   * the parent domain at build time, since a subdomain replaces named powers
+   * and leaves the granted-powers preamble a `Domain.changes` entry
+   * represents alone. The exception is a subdomain that replaces the preamble
+   * ability outright (Portal, trading away Travel's speed increase), which
+   * inherits nothing. Applied by `collectModifiers`
    * for a cleric's chosen subdomains, gated on cleric level, exactly like the
    * same-shaped top-level `Domain.changes`. Empty for the rest.
    */

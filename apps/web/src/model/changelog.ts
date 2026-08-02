@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-01-subdomain-powers",
+    date: "2026-08-01",
+    title: "Subdomains grant their own powers",
+    note: "Picking a subdomain used to leave you with the parent domain's granted powers: a Deception cleric got Copycat, which Deception replaces, and Sudden Shift appeared nowhere. Every subdomain now grants what it actually grants, with the power it replaces gone and the ones it leaves alone kept. That is 125 subdomains, each with its rules text and its level. Bonuses that come from the domain's opening line rather than a named power, Travel's extra 10 feet of speed and the free feat from Darkness and Rune, now carry over to a subdomain too, unless the subdomain is one that trades them away.",
+  },
+  {
     id: "2026-08-01-deity-favored-weapon",
     date: "2026-08-01",
     title: "Name your deity's favored weapon",

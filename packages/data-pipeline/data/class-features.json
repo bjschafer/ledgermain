@@ -29434,6 +29434,1942 @@
     "subType": "classFeat",
     "uuid": "prestige-feature:su8CRv3Khas8Mhm2"
   },
+  "subdomain-power:aeon:void-form": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can become semi-tangible. While in this form, you are immune to critical hits and gain a deflection bonus to AC equal to one-fourth of your cleric level.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:aeon:void-form",
+    "name": "Void Form",
+    "sources": [
+      {
+        "id": "champions-of-balance",
+        "pages": "16"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:aeon:void-form"
+  },
+  "subdomain-power:agathion:protective-aura": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot protective aura. Allies in this aura receive a +2 deflection bonus to AC and a +2 resistance bonus on all saving throws. In addition, allies in the area gain the benefits of protection from evil (although the AC bonus and saving throw bonus do not stack with those granted by this effect).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:agathion:protective-aura",
+    "name": "Protective Aura",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "86"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:agathion:protective-aura"
+  },
+  "subdomain-power:alchemy:divine-alchemy": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can perform a 1-minute ritual that infuses a flask of water with one of your prepared spells, creating an improvised potion that lasts until consumed or the next time you prepare spells. You can use this ability only with spells that target one or more creatures, and the maximum spell level you can infuse in this way is equal to 1 + 1 for every 4 cleric levels you have. These potions are treated as alchemist extracts for the purpose of your domain spells.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:alchemy:divine-alchemy",
+    "name": "Divine Alchemy",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "22"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:alchemy:divine-alchemy"
+  },
+  "subdomain-power:ambush:chameleon-aspect": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can subtly alter the color of your scales, blending them with the surrounding environment. While under the effect of this power, you gain concealment from creatures more than 10 feet away (attacks have a 20% miss chance), and total concealment from creatures more than 40 feet away (attacks have a 50% miss chance).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:ambush:chameleon-aspect",
+    "name": "Chameleon Aspect",
+    "sources": [
+      {
+        "id": "kobolds-of-golarion",
+        "pages": "13"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:ambush:chameleon-aspect"
+  },
+  "subdomain-power:ancestors:speak-with-dead": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can ask one question of a dead creature as if using speak with dead. The dead creature you are questioning does not gain a Will saving throw if your alignments are different.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:ancestors:speak-with-dead",
+    "name": "Speak With Dead",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "86"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:ancestors:speak-with-dead"
+  },
+  "subdomain-power:arcane:arcane-beacon": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can become a beacon of arcane energy until the end of your next turn. The aura emanates 15 feet from you. All arcane spells cast within the aura either gain a +1 bonus to their caster level or increase their saving throw DC by +1. The caster chooses the benefit when she casts the spell.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:arcane:arcane-beacon",
+    "name": "Arcane Beacon",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "86"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:arcane:arcane-beacon"
+  },
+  "subdomain-power:archon:aura-of-menace": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot aura of menace. Enemies in this aura take a -2 penalty to AC and on attacks and saves as long as they remain inside the aura.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:archon:aura-of-menace",
+    "name": "Aura of Menace",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "86"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:archon:aura-of-menace"
+  },
+  "subdomain-power:aristocracy:noble-visage": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You gain a bonus on Charisma checks and Charisma-based skill checks against creatures that share your creature type (and subtype, if you are a humanoid). This bonus is equal to 1 + one-fifth of your cleric level.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:aristocracy:noble-visage",
+    "name": "Noble Visage",
+    "sources": [
+      {
+        "id": "champions-of-balance",
+        "pages": "16"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:aristocracy:noble-visage"
+  },
+  "subdomain-power:arson:call-fire": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can stretch out your hand toward any visible fire source within 60 feet and beckon it toward you. This causes a ribbon-thin streak of fire to approach you in a straight line through the air. Any creature directly in the fire ribbon's path takes 1d4 points of fire damage; a successful Reflex save (DC = 10 + half your class level + your Wisdom modifier) negates this damage. When the ribbon of fire reaches your hand, it either extinguishes or lights a flammable object of your choice that you're holding.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:arson:call-fire",
+    "name": "Call Fire",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:arson:call-fire"
+  },
+  "subdomain-power:ash:wall-of-ashes": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can create a wall of swirling ashes anywhere within 100 feet. This wall is up to 20 feet high and up to 10 feet long per cleric level you possess. The wall of ash blocks line of sight, and any creature passing through it must make a Fortitude save or be blinded for 1d4 rounds. The wall of ash reveals invisible creatures that are inside it or adjacent to it, although they become invisible again if they move away from the wall.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:ash:wall-of-ashes",
+    "name": "Wall of Ashes",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "86"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:ash:wall-of-ashes"
+  },
+  "subdomain-power:azata:elysium-s-call": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>With a touch, you can imbue creatures with the spirit of Elysium, lifting their spirits and freeing them from bonds. The creatures touched can immediately reroll any failed saving throws against spells and spell-like abilities of the enchantment (charm) and enchantment (compulsion) subschools. In addition, targets receive a +2 sacred bonus on such saving throws and a +2 sacred bonus on CMB checks to escape a grapple. Finally, targets can ignore up to 5 feet of difficult terrain each round, as if they had the Nimble Moves feat. These bonuses last for a number of rounds equal to 1/2 your cleric level (minimum 1), although the saving throw reroll only applies when the creature is touched.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:azata:elysium-s-call",
+    "name": "Elysium's Call",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "87"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:azata:elysium-s-call"
+  },
+  "subdomain-power:blood:wounding-blade": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can give a weapon that you touch the wounding special weapon quality for a number of rounds equal to 1/2 your cleric level.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:blood:wounding-blade",
+    "name": "Wounding Blade",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "87"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:blood:wounding-blade"
+  },
+  "subdomain-power:cannibalism:consume-the-enemy": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As an evil act, you can bite a helpless living or freshly killed creature, dealing 1d3 points of damage. By consuming the creature's flesh, you gain a profane bonus on saving throw DCs for all spells, spell-like abilities, and supernatural abilities you use against creatures of the same type (and subtype, if humanoid or outsider) as the cannibalized creature. The profane bonus is equal to 1 + one-fifth of your cleric level. This effect lasts for a number of minutes equal to 1/2 your cleric level or until you use this ability against a different creature.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:cannibalism:consume-the-enemy",
+    "name": "Consume the Enemy",
+    "sources": [
+      {
+        "id": "champions-of-corruption",
+        "pages": "18"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:cannibalism:consume-the-enemy"
+  },
+  "subdomain-power:captivation:entrancing-aura": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit an imperceptible 30-foot aura of distraction. Enemies within this aura take a -5 penalty on Perception checks and are treated as though they had 2 fewer Hit Dice (minimum 1 Hit Die) for the purpose of your effects that would give them the fascinated condition. At 16th level: Enemies are instead treated as if they had 3 fewer Hit Dice for such effects.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:captivation:entrancing-aura",
+    "name": "Entrancing Aura",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "22"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:captivation:entrancing-aura"
+  },
+  "subdomain-power:catastrophe:deadly-weather": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can unleash a furious call to the heavens, summoning forth an ever-changing storm of destruction. This storm has a radius of 5 feet per cleric level. Each round, the storm has one of the following effects: driving rain (-4 on all Perception checks and ranged attack rolls), howling winds (-8 on Fly skill checks and ranged attack rolls), heavy snow (all terrain is considered difficult), or lightning bolt (as <em>call lightning</em>). Other effects depending on the weather might also apply (at the GM's discretion). You choose which effect takes place each round, but no effect may be repeated on the following round.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:catastrophe:deadly-weather",
+    "name": "Deadly Weather",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "87"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:catastrophe:deadly-weather"
+  },
+  "subdomain-power:caves:tunnel-runner": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can choose to move through tunnels and caves with ease. While this ability is active, you can move across any stone surface as if under the effects of spider climb. You can also see very well in darkness, gaining darkvision out to a range of 60 feet. If you already possess darkvision, extend the range by 60 feet. While underground, you also gain an insight bonus equal to your cleric level on Stealth skill checks and an insight bonus equal to your Wisdom modifier on initiative checks.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:caves:tunnel-runner",
+    "name": "Tunnel Runner",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "87"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:caves:tunnel-runner"
+  },
+  "subdomain-power:chivalry:bolstering-touch": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can touch a willing creature, bracing it against frightening situations and allowing it to remain calm. The first fear effect that would affect the subject within the next hour is suppressed for the first 1d4 rounds of its effect. If you touch a creature currently suffering from an ongoing fear effect, this ability instead suppresses the ongoing fear effect for 1 round. The rounds during which the subject ignores the triggering fear effect still count against the effect's duration. If the fear effect is suppressed for longer than it lasts, the subject isn't affected by the fear effect at all.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:chivalry:bolstering-touch",
+    "name": "Bolstering Touch",
+    "sources": [
+      {
+        "id": "heroes-of-the-high-court",
+        "pages": "21"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:chivalry:bolstering-touch"
+  },
+  "subdomain-power:competition:athletic-exploit": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You gain the ability to overcome physical obstacles with ease. Until the beginning of your next turn, you halve your armor check penalty when attempting Acrobatics, Climb, Escape Artist, and Swim skill checks, and you gain a bonus equal to 1/2 your cleric level (minimum +1) on such skill checks.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:competition:athletic-exploit",
+    "name": "Athletic Exploit",
+    "sources": [
+      {
+        "id": "heroes-of-the-streets",
+        "pages": "18"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:competition:athletic-exploit"
+  },
+  "subdomain-power:construct:animate-servant": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can give life to inanimate objects. This ability functions as animate objects using your cleric level as the caster level.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:construct:animate-servant",
+    "name": "Animate Servant",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "88"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:construct:animate-servant"
+  },
+  "subdomain-power:cooperation:synergistic-touch": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can touch a creature to confer upon it the benefits of any one teamwork feat that you possess. This effect persists for a number of rounds equal to 1/2 your cleric level (minimum 1).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:cooperation:synergistic-touch",
+    "name": "Synergistic Touch",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:cooperation:synergistic-touch"
+  },
+  "subdomain-power:corruption:spark-malfeasance": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can awaken the sinful desires of a target within 30 feet with a ranged touch attack. The target suffers extreme guilt and is sickened for a number of rounds equal to 1/2 your cleric level. To end the effect earlier, the target can willingly commit an evil act (if it is of good alignment) or attempt a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier) at the beginning of its turn each round. Creatures that succeed at their saving throws are immune to this ability for 24 hours.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:corruption:spark-malfeasance",
+    "name": "Spark Malfeasance",
+    "sources": [
+      {
+        "id": "champions-of-corruption",
+        "pages": "18"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:corruption:spark-malfeasance"
+  },
+  "subdomain-power:curse:malign-eye": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can afflict one target within 30 feet with your malign eye, causing it to take a -2 penalty on all saving throws against your spells. The effect lasts for 1 minute or until the target hits you with an attack.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:curse:malign-eye",
+    "name": "Malign Eye",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "88"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:curse:malign-eye"
+  },
+  "subdomain-power:daemon:whispering-evil": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can whisper a hypnotizing litany of empty promises. Each enemy within a 30-foot emanation that can hear you must succeed on a Will saving throw or become fascinated for as long as you continue the litany.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:daemon:whispering-evil",
+    "name": "Whispering Evil",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "88"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:daemon:whispering-evil"
+  },
+  "subdomain-power:dark-tapestry:it-came-from-beyond": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Once per day when you cast a summoning spell, any one creature you summon is more powerful than normal. The creature gains the advanced creature simple template. If you summon more than one creature with a spell, only one of the summoned creatures gains the advanced creature simple template. A summoned creature that gains the advanced creature simple template in this manner looks unusually deformed or hideous. This ability only works on spells you cast as a cleric - it does not work on spellcasting abilities gained from any other spellcasting classes you might have.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:dark-tapestry:it-came-from-beyond",
+    "name": "It Came from Beyond",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:dark-tapestry:it-came-from-beyond"
+  },
+  "subdomain-power:day:day-s-resurgence": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can restore a single creature as if it had just completed 8 hours of rest. It takes 10 minutes to use this power. If the use of this power is disrupted, it must be restarted, but it is not lost. At the end of the 10 minutes, a single willing creature that you have touched regains hit points as if it had rested for the night and may make new saving throws against effects that require a save once per day. The target does not suffer any negative effects if such saving throws are failed, but success counts toward removing the affliction (if possible). This ability does not allow a target to prepare spells an additional time per day.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:day:day-s-resurgence",
+    "name": "Day's Resurgence",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "88"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:day:day-s-resurgence"
+  },
+  "subdomain-power:decay:aura-of-decay": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot aura of decay. Living creatures in this aura (except you) take 1d6 points of damage per round as their flesh rots. They also take a cumulative -1 penalty to Strength each round they remain in the aura. Once outside the aura, the penalty fades at the rate of -1 per round, but it begins building again if they reenter the aura. Plant creatures take 2d6 points of damage per round.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:decay:aura-of-decay",
+    "name": "Aura of Decay",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "88"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:decay:aura-of-decay"
+  },
+  "subdomain-power:deception:sudden-shift": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>In the blink of an eye, you can appear somewhere else. After you are missed by a melee attack, you can teleport up to 10 feet to a space that you can see. This space must be inside the reach of the creature that attacked you.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:deception:sudden-shift",
+    "name": "Sudden Shift",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "89"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:deception:sudden-shift"
+  },
+  "subdomain-power:demodand:faith-stealing-strike": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can make a single melee attack using your highest base attack bonus against a creature capable of casting divine spells. If you damage the creature, it must succeed at a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier) or be unable to cast any divine spells for 1 round. If you do not damage your target with the attack, this ability is expended with no effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:demodand:faith-stealing-strike",
+    "name": "Faith-Stealing Strike",
+    "sources": [
+      {
+        "id": "champions-of-corruption",
+        "pages": "19"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:demodand:faith-stealing-strike"
+  },
+  "subdomain-power:demon:fury-of-the-abyss": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a swift action, you can give yourself an enhancement bonus equal to 1/2 your cleric level (minimum +1) on melee attacks, melee damage rolls, and combat maneuver checks. This bonus lasts for 1 round. During this round, you take a -2 penalty to AC.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:demon:fury-of-the-abyss",
+    "name": "Fury of the Abyss",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "89"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:demon:fury-of-the-abyss"
+  },
+  "subdomain-power:devil:hell-s-corruption": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can cause a creature to become more susceptible to corruption as a melee touch attack. Creatures touched take a -2 penalty on all saving throws and must roll all opposed skill checks twice, taking the worse result. This effect lasts for a number of rounds equal to 1/2 your cleric level (minimum 1).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:devil:hell-s-corruption",
+    "name": "Hell's Corruption",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "90"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:devil:hell-s-corruption"
+  },
+  "subdomain-power:divine:divine-vessel": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Whenever you are the target of a divine spell, you can grant each ally within 15 feet of you a divine boon. This boon grants a +2 bonus on the next attack roll, skill check, or ability check made before the end of their next turn.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:divine:divine-vessel",
+    "name": "Divine Vessel",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "90"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:divine:divine-vessel"
+  },
+  "subdomain-power:dragon:dragonbreath": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can use a breath weapon once per day. When you gain this ability, choose what kind of damage your breath weapon deals: acid, cold, electricity, or fire. Once you make this choice, you can't change it later. Your breath weapon fills a 15-foot cone and deals <strong>X</strong>d6 points of damage, where <strong>X</strong> is equal to 1 + one-half your cleric level. A creature hit by your dragonbreath attack can attempt a Reflex save (DC = 10 + half your class level + your Wisdom modifier) to take half damage.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:dragon:dragonbreath",
+    "name": "Dragonbreath",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:dragon:dragonbreath"
+  },
+  "subdomain-power:duels:divine-challenge": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can challenge a visible foe within 30 feet, gaining a +1 sacred bonus to your AC against that creature's attacks and a bonus equal to 1/2 your cleric level on Bluff skill checks to feint against it. These bonuses last for a number of rounds equal to 1/2 your cleric level.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:duels:divine-challenge",
+    "name": "Divine Challenge",
+    "sources": [
+      {
+        "id": "heroes-of-the-streets",
+        "pages": "18"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:duels:divine-challenge"
+  },
+  "subdomain-power:education:teaching-moment": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When you or an ally within 30 feet rolls a natural 1 or a natural 20 on an attack roll, an ability check, a skill check, or a saving throw, you can grant all allies within 30 feet special insights that help them overcome similar challenges. Once during the next minute, each affected creature can choose to roll twice and take the better result before attempting an attack roll, ability check, skill check, or saving throw.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:education:teaching-moment",
+    "name": "Teaching Moment",
+    "sources": [
+      {
+        "id": "heroes-of-the-streets",
+        "pages": "18"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:education:teaching-moment"
+  },
+  "subdomain-power:entropy:hasten-the-end": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Upon successfully hitting an opponent with a melee attack, you may reduce the remaining duration of all beneficial magical effects currently affecting the target by 1 round, minute, hour, or day - whichever measurement is used to determine the duration of each particular magical effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:entropy:hasten-the-end",
+    "name": "Hasten the End",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:entropy:hasten-the-end"
+  },
+  "subdomain-power:espionage:deep-cover": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When you prepare your spells, you can also choose one cover identity - whether that of a real person or a fictitious one. You can assume the disguise of your cover identity in half the normal amount of time. When targeted by a spell or effect that would compromise your chosen disguise (such as detect evil, detect thoughts, or zone of truth), as an immediate action you can force the creature using the ability to attempt a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier). If the creature fails, it gains false information in keeping with your cover identity. You can use this false information ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:espionage:deep-cover",
+    "name": "Deep Cover",
+    "sources": [
+      {
+        "id": "heroes-of-the-streets",
+        "pages": "18"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:espionage:deep-cover"
+  },
+  "subdomain-power:exploration:door-sight": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can lay your hand upon any surface and see what is on the other side, as if using clairvoyance. Using this power takes 1 minute, during which time you must be touching the surface you want to see through. You can keep looking for as long as 10 minutes with each use of this power, but must touch the surface and take no other action the entire time. The surface cannot be thicker than 6 inches plus 1 inch per cleric level you possess.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:exploration:door-sight",
+    "name": "Door Sight",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "90"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:exploration:door-sight"
+  },
+  "subdomain-power:family:binding-ties": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can touch an ally and remove one condition affecting the ally by transferring it to yourself. This transfer lasts a number of rounds equal to your cleric level, but you can end it as a @HLfree_action on your turn. At the end of this effect, the condition reverts to the original creature, unless it has ended or is removed by another effect. While this power is in use, the target is immune to the transferred condition.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:family:binding-ties",
+    "name": "Binding Ties",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "90"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:family:binding-ties"
+  },
+  "subdomain-power:fate:tugging-strands": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can force a creature within line of sight to reroll any one roll that it has just made before the result of the roll is revealed. The result of the reroll must be taken, even if it is worse than the original roll.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:fate:tugging-strands",
+    "name": "Tugging Strands",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "90"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:fate:tugging-strands"
+  },
+  "subdomain-power:fear:feed-on-fear": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Upon successfully landing a melee attack on a creature that is already suffering from a fear effect, you can deal 2d6 extra points of damage and gain an equal amount of temporary hit points. These temporary hit points last for 24 hours or until lost.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:fear:feed-on-fear",
+    "name": "Feed on Fear",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:fear:feed-on-fear"
+  },
+  "subdomain-power:feather:eyes-of-the-hawk": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>You gain a racial bonus on Perception checks equal to 1/2 your cleric level (minimum +1). In addition, if you can act during a surprise round, you receive a +2 racial bonus on your Initiative check.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:feather:eyes-of-the-hawk",
+    "name": "Eyes of the Hawk",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "90"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:feather:eyes-of-the-hawk"
+  },
+  "subdomain-power:ferocity:ferocious-strike": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Whenever you make a melee attack, you can designate that attack as a ferocious strike. If the attack hits, it deals additional damage equal to 1/2 your cleric level (minimum +1).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:ferocity:ferocious-strike",
+    "name": "Ferocious Strike",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "90"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:ferocity:ferocious-strike"
+  },
+  "subdomain-power:fist:wooden-fist": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Your hands can become as hard as wood, covered in tiny thorns. While you have wooden fists, your unarmed strikes do not provoke attacks of opportunity, deal lethal damage, and gain a bonus on damage rolls equal to 1/2 your cleric level (minimum +1).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:fist:wooden-fist",
+    "name": "Wooden Fist",
+    "sources": [
+      {
+        "id": "champions-of-balance",
+        "pages": "17"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:fist:wooden-fist"
+  },
+  "subdomain-power:flotsam:sift": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Once per day you can reach into water and pull out an object with a maximum gp value of up to 50 gp &amp;times&amp; your class level. This object always has the broken condition upon being withdrawn from the water. The water you reach into must be at least deep enough to fully immerse yourself in. If you're retrieving an object that would not normally float, assume it rests on top of or is entwined with debris that does float. Objects retrieved in this manner disappear after 24 hours if they're not already used up or otherwise destroyed before then. At 12th level: The objects that you retrieve are not broken. At 20th level: You can retrieve objects worth up to 5,000 gp.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:flotsam:sift",
+    "name": "Sift",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:flotsam:sift"
+  },
+  "subdomain-power:flowing:go-with-the-flow": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can touch a creature to suppress its strong emotions. The target is affected as the calm emotions spell, except it can still take violent actions and violent actions against the target do not end the effect. This effect lasts a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this ability a number times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:flowing:go-with-the-flow",
+    "name": "Go with the Flow",
+    "sources": [
+      {
+        "id": "champions-of-balance",
+        "pages": "17"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:flowing:go-with-the-flow"
+  },
+  "subdomain-power:friendship:powerful-bond": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can open a link to communicate telepathically with a single ally within 60 feet. The telepathic link is two-way and lasts for 1 minute. Unlike normal telepathy, this ability requires a shared language.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:friendship:powerful-bond",
+    "name": "Powerful Bond",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:friendship:powerful-bond"
+  },
+  "subdomain-power:fur:predator-s-grace": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Grant yourself a +10-foot bonus to your base speed for 1 round. This bonus increases by 5 feet for every 5 cleric levels you possess. In addition, you gain low-light vision for 1 round. If you already possess low-light vision, the range of your sight becomes three times that of a human in dim light for 1 round.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:fur:predator-s-grace",
+    "name": "Predator's Grace",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "91"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:fur:predator-s-grace"
+  },
+  "subdomain-power:greed:more-for-me": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When another character within 30 feet casts a spell with a range greater than touch, you can attempt a caster level check (DC = 15 + the spell's level). If you succeed at the check, you receive the spell's benefit instead of one of the spell's intended targets (chosen by you). If you are already a target of the spell, you are affected as though you were targeted by the same spell twice (which may or may not benefit you; remember that bonuses from the same source do not stack). This ability does not grant you knowledge of the spell being cast.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:greed:more-for-me",
+    "name": "More for Me",
+    "sources": [
+      {
+        "id": "champions-of-corruption",
+        "pages": "19"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:greed:more-for-me"
+  },
+  "subdomain-power:growth:enlarge": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can enlarge yourself for 1 round, as if you were the target of the <em>enlarge person</em> spell.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:growth:enlarge",
+    "name": "Enlarge",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "91"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:growth:enlarge"
+  },
+  "subdomain-power:hatred:hateful-aura": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot aura of hatred. Enemies within this aura must attempt a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier). Characters who fail their save are filled with hatred, and cannot consider other characters allies for the purpose of any actions or use any teamwork feats. The effect ends immediately if the creature leaves the aura, you end the aura as a free action, or you expend all rounds of this ability.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:hatred:hateful-aura",
+    "name": "Hateful Aura",
+    "sources": [
+      {
+        "id": "champions-of-corruption",
+        "pages": "19"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:hatred:hateful-aura"
+  },
+  "subdomain-power:heroism:aura-of-heroism": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot aura of heroism. Allies in the area are treated as if they were under the effects of heroism.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:heroism:aura-of-heroism",
+    "name": "Aura of Heroism",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "91"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:heroism:aura-of-heroism"
+  },
+  "subdomain-power:home:guarded-hearth": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can create a ward that protects a specified area. Creating this ward takes 10 minutes of uninterrupted work. This ward has a maximum radius of 5 feet per 2 cleric levels you possess. When the ward is completed, you designate any number of creatures inside its area. Should any other creature enter the warded area, all of the selected creatures are immediately alerted (and awoken if they were asleep). The designated creatures also receive a sacred bonus equal to your Wisdom modifier on all saving throws and attack rolls while inside the warded area. This ward immediately ends if you leave the area. The ward lasts for 1 hour per cleric level. (Once a day)</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:home:guarded-hearth",
+    "name": "Guarded Hearth",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "92"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:home:guarded-hearth"
+  },
+  "subdomain-power:honor:honor-bound": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>With a touch, you can remind a creature of its duties and responsibilities, granting it a new saving throw against each enchantment (charm) or enchantment (compulsion) effect that currently affects it. If the saving throw is successful, the enchantment effect is ended. This power only affects effects that allow a save. If you fail a save against such an effect, you can use this ability as an @HLimmediate_action to grant yourself an additional save. Once the target (either you or a touched creature) has made one additional save per effect, this ability has no further effect on that particular enchantment effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:honor:honor-bound",
+    "name": "Honor Bound",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "92"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:honor:honor-bound"
+  },
+  "subdomain-power:hubris:class-skill": {
+    "changes": [],
+    "description": "<p>You gain Intimidate (CHA) as a class skill.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:hubris:class-skill",
+    "name": "Class Skill",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "23"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:hubris:class-skill"
+  },
+  "subdomain-power:hubris:divine-demand": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can petition your divine patron for far greater power than you deserve. This ability can be used only as you cast a spell that has a reduced (but not negated) effect on a successful save. The saving throw DC of the spell increases by 2, and you gain a +2 bonus on caster level checks to overcome spell resistance with the spell. Any creature that succeeds at the saving throw instead avoids the effect entirely. If half or more of the targets are unaffected, you become shaken for a number of rounds equal to the spell's level. If all of the targets are unaffected, you instead lose the ability to cast divine spells, channel energy, and use domain powers for 1d4+1 rounds; you can end this loss by loudly apologizing to your patron deity as a @HLfull-round_action that provokes attacks of opportunity.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:hubris:divine-demand",
+    "name": "Divine Demand",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "23"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:hubris:divine-demand"
+  },
+  "subdomain-power:ice:body-of-ice": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can transmute your body and equipment to ice for a period of time. You can end the transmutation with a free action on your turn. When you take on the form of ice, you are immune to cold and have DR 5/-, but you take twice the normal amount of damage from fire.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:ice:body-of-ice",
+    "name": "Body of Ice",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "92"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:ice:body-of-ice"
+  },
+  "subdomain-power:imagination:haze-of-daydreams": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 15-foot-radius haze of daydreams. Creatures within the haze gain the fascinated condition unless they succeed at a Will save (DC equal to 10 + 1/2 your cleric level + your Wisdom modifier). You may designate a number of creatures equal to your cleric level that are not affected by the haze. The fascinated condition ends immediately when the creatures leave the area or the aura expires.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:imagination:haze-of-daydreams",
+    "name": "Haze of Daydreams",
+    "sources": [
+      {
+        "id": "champions-of-purity",
+        "pages": "21"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:imagination:haze-of-daydreams"
+  },
+  "subdomain-power:industry:aura-of-efficiency": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot-radius aura that grants your allies a +4 bonus on all saving throws against effects that inflict the fatigued or exhausted condition. Any equipment wielded by your allies within this area gets a bonus to hardness equal to 1/2 your cleric level, and your allies' attacks against targets within this area ignore an equal amount of hardness.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:industry:aura-of-efficiency",
+    "name": "Aura of Efficiency",
+    "sources": [
+      {
+        "id": "heroes-of-the-streets",
+        "pages": "19"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:industry:aura-of-efficiency"
+  },
+  "subdomain-power:inevitable:command": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can give a creature an emotionless yet undeniable order, as per the spell command. A Will save negates this effect. You cannot target a creature more than once per day with this ability.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:inevitable:command",
+    "name": "Command",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "92"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:inevitable:command"
+  },
+  "subdomain-power:innuendo:fool-s-privilege": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can use this power when you fail a Bluff, Diplomacy, or Intimidate check outside of combat. You suffer no negative effects due to the failed check, and the next round you can attempt the check again without the usual penalty for a failed attempt.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:innuendo:fool-s-privilege",
+    "name": "Fool's Privilege",
+    "sources": [
+      {
+        "id": "champions-of-balance",
+        "pages": "17"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:innuendo:fool-s-privilege"
+  },
+  "subdomain-power:insanity:insane-focus": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can touch a willing creature, granting it a +4 bonus on all saving throws made against mind-affecting effects and immunity to confusion. This bonus lasts for 1 minute. If the creature fails a saving throw against a mind-affecting effect during this period, it loses its immunity to confusion and is immediately confused for one round.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:insanity:insane-focus",
+    "name": "Insane Focus",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "92"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:insanity:insane-focus"
+  },
+  "subdomain-power:insect:exoskeleton": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Grow an exoskeleton that grants you a +1 enhancement bonus to your natural armor and 1d4 temporary hit points + 1 for every 2 cleric levels you have. The natural armor bonus increases by 1 for every 5 cleric levels you have. The exoskeleton retracts after 1 round, ending its benefits.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:insect:exoskeleton",
+    "name": "Exoskeleton",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "23"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:insect:exoskeleton"
+  },
+  "subdomain-power:isolation:aura-of-isolation": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can create a 20-foot aura that causes enemies within to be overcome with feelings of isolation and loss. Your enemies treat the aura as difficult terrain, as they become sluggish within its area of effect. Furthermore, while within the aura, your enemies can't flank with one another, nor can they use or benefit from the aid another action. This is a mind-affecting emotion effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:isolation:aura-of-isolation",
+    "name": "Aura of Isolation",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:isolation:aura-of-isolation"
+  },
+  "subdomain-power:judgment:chastisement": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can cast a strengthened spell against a creature that damaged you since your last turn. This spell must target the creature that damaged you, and is cast at +1 caster level. Area of effect spells cannot be used in conjunction with this ability, but other spells that target multiple creatures may be.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:judgment:chastisement",
+    "name": "Chastisement",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:judgment:chastisement"
+  },
+  "subdomain-power:kyton:pain-is-power": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>After taking damage from any source, you may attempt a DC 25 concentration check. If you succeed, you gain the benefits of a blessing of fervor spell for a number of rounds equal to 1/2 your cleric level. If you fail, this ability is expended with no effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:kyton:pain-is-power",
+    "name": "Pain Is Power",
+    "sources": [
+      {
+        "id": "champions-of-corruption",
+        "pages": "19"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:kyton:pain-is-power"
+  },
+  "subdomain-power:language:rune-shift": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can change the location of one of your blast runes. The rune must be within 30 feet. You can place the blast rune in any square adjacent to you, including one occupied by another creature.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:language:rune-shift",
+    "name": "Rune Shift",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "92"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:language:rune-shift"
+  },
+  "subdomain-power:leadership:inspiring-command": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can issue an inspiring command to your allies. The inspiring command affects one ally plus one additional ally for every three cleric levels you possess, who must all be within 30 feet of you. Affected allies gain a +2 insight bonus on attack rolls, AC, combat maneuver defense, and skill checks for 1 round. This is a language-dependant mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:leadership:inspiring-command",
+    "name": "Inspiring Command",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "92"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:leadership:inspiring-command"
+  },
+  "subdomain-power:legend:bonus-feat": {
+    "changes": [],
+    "description": "<p>In campaigns that use the optional hero point system, you gain Hero's Fortune as a bonus feat. Otherwise, you gain Marked for Glory as a bonus feat, even if you do not meet its prerequisites.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:legend:bonus-feat",
+    "name": "Bonus Feat",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "23"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:legend:bonus-feat"
+  },
+  "subdomain-power:legend:witness-the-legend": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can extol the virtues of yourself or an ally within 60 feet that you can see. This causes the target to shed light like a torch for 1 minute, and while the effect lasts, you can expend a daily use of your <em>touch of glory</em> domain ability as an immediate action to add 1d6 to an attack, saving throw, skill check, or ability check attempted by the target; for a roll to confirm a critical hit or save against a fear effect, you instead add 1d12.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:legend:witness-the-legend",
+    "name": "Witness the Legend",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "23"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:legend:witness-the-legend"
+  },
+  "subdomain-power:legislation:prohibition": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can command a creature within 30 feet to refrain from committing a particular action (including any referenced in the spell <em>forbid action</em>). If the creature performs the named action before the beginning of your next turn, it takes 1d6 points of damage + 1 point for every 2 cleric levels you possess and the effect ends. This is a language-dependent effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:legislation:prohibition",
+    "name": "Prohibition",
+    "sources": [
+      {
+        "id": "heroes-of-the-streets",
+        "pages": "19"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:legislation:prohibition"
+  },
+  "subdomain-power:leshy:leshy-caller": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can spontaneously swap out any of your domain spells for a <em>summon nature's ally</em> spell of the same level or lower, to a maximum of summon nature's ally VII. If you do, you must use the spell to summon one or more leshys. Add leaf leshy, gourd leshy, fungus leshy, seaweed leshy, and lotus leshy to your <em>summon nature's ally I, II, III, IV,</em> and <em>V</em> lists, respectively.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:leshy:leshy-caller",
+    "name": "Leshy Caller",
+    "sources": [
+      {
+        "id": "ultimate-wilderness",
+        "pages": "23"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:leshy:leshy-caller"
+  },
+  "subdomain-power:light:blinding-flash": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a flash of light from your holy symbol or divine focus. The most powerful light emanates out 20 feet from you. Creatures with fewer Hit Dice than your cleric level within this area are blinded for 1d4 rounds unless they succeed at a Fortitude save. All creatures in this area are dazzled for a number of rounds equal to 1/2 your cleric level (minimum 1).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:light:blinding-flash",
+    "name": "Blinding Flash",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "93"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:light:blinding-flash"
+  },
+  "subdomain-power:loss:aura-of-forgetfulness": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot aura of forgetfulness. Creatures you target in this area must make a Will save or have no memory of any time spent inside the area. In addition, spellcasters in the area lose one prepared spell or available spell slot per round spent in the area, starting with 1st-level spells and going up through higher-level spells. Spellcasters are allowed a save each round to negate this loss (this save is separate from the memory loss save).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:loss:aura-of-forgetfulness",
+    "name": "Aura of Forgetfulness",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "93"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:loss:aura-of-forgetfulness"
+  },
+  "subdomain-power:love:adoration": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can attempt to thwart a melee or ranged attack that targets you. This ability functions as sanctuary, but only against one individual attack. You must use the ability after the attack is declared but before the roll is made. The creature attacking you receives a Will save to negate this effect. If a creature has more than one attack, this ability only affects one of the attacks. This is a mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:love:adoration",
+    "name": "Adoration",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "93"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:love:adoration"
+  },
+  "subdomain-power:loyalty:touch-of-loyalty": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a standard action, you can touch a willing creature, granting it a +4 sacred bonus on saving throws to resist charm, compulsion, and fear effects for 1 hour.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:loyalty:touch-of-loyalty",
+    "name": "Touch of Loyalty",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:loyalty:touch-of-loyalty"
+  },
+  "subdomain-power:lust:anything-to-please": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can compel a creature within 30 feet to attempt to please you. The creature receives a Will save to negate this affect. If the save fails, the creature attacks your enemies for 1 round, gives you its most valuable item, or drops prone at your feet and grovels for 1d4 rounds (GM's choice). This is a mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:lust:anything-to-please",
+    "name": "Anything to Please",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "93"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:lust:anything-to-please"
+  },
+  "subdomain-power:martyr:sacrificial-bond": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When an ally within 30 feet takes damage from an attack, you can transfer this damage to yourself. This power also transfers any effects that accompany the damage. The damage done to you cannot be reduced in any way.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:martyr:sacrificial-bond",
+    "name": "Sacrificial Bond",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "93"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:martyr:sacrificial-bond"
+  },
+  "subdomain-power:medicine:blessed-surgery": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can use this ability when using the Heal skill in order to roll the check twice and take the higher result. When you're using this ability, any use of the Heal skill requiring 1 hour instead takes at most 1 minute.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:medicine:blessed-surgery",
+    "name": "Blessed Surgery",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "24"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:medicine:blessed-surgery"
+  },
+  "subdomain-power:memory:recall": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>With a touch, you can cause a creature to recall some bit of forgotten lore or information. The creature can retry any Knowledge skill check it has made within the past minute, gaining an insight bonus on the check equal to your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:memory:recall",
+    "name": "Recall",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "93"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:memory:recall"
+  },
+  "subdomain-power:metal:metal-fist": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can turn your fists into metal for 1 round, allowing you to make unarmed strikes that deal 1d6 points of bludgeoning damage plus your Strength modifier. These unarmed strikes do not provoke attacks of opportunity, but attacking with both uses the two-weapon fighting rules as normal. In addition, these unarmed strikes ignore the hardness of items with a hardness of 10 or less.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:metal:metal-fist",
+    "name": "Metal Fist",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "94"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:metal:metal-fist"
+  },
+  "subdomain-power:monsoon:refreshing-rain": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can call a brief shower of rain in a 30-foot radius. Creatures in the area are healed of an amount of nonlethal damage equal to double your cleric level and are no longer exhausted, fatigued, nauseated, or sickened.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:monsoon:refreshing-rain",
+    "name": "Refreshing Rain",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "25"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:monsoon:refreshing-rain"
+  },
+  "subdomain-power:moon:moonfire": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can shoot a blast of divine moonlight from your eyes as a ranged touch attack against a single target within 30 feet. Moonfire deals 1d8 points of damage per 2 class levels you have, and the target is dazzled for 1 round per class level you have. Moonfire deals 1d10 points of damage per class level you have against lycanthropes.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:moon:moonfire",
+    "name": "Moonfire",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:moon:moonfire"
+  },
+  "subdomain-power:murder:killing-blow": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Weapons you use become infused with the power of death. Whenever you confirm a critical hit with a melee or ranged weapon, your attack deals an additional amount of bleed damage equal to half your cleric level.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:murder:killing-blow",
+    "name": "Killing Blow",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "94"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:murder:killing-blow"
+  },
+  "subdomain-power:night:night-hunter": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can blend into the shadows of the night, becoming nearly invisible. As long as you are in an area of dim light or darkness, you are invisible (as per invisibility) to creatures without darkvision. This ability lasts for a number of rounds equal to 1/2 your cleric level (minimum 1).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:night:night-hunter",
+    "name": "Night Hunter",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "94"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:night:night-hunter"
+  },
+  "subdomain-power:nightmare:fearful-touch": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can make a melee touch attack against a creature, causing it to experience terrible hallucinations for 1 round. During this time, the creature loses any immunity to fear effects it might possess and takes a -2 penalty on attack rolls made against you. In addition, the creature takes a penalty on Will saves made against fear effects equal to 1/2 your cleric level (minimum -1). This power is a mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:nightmare:fearful-touch",
+    "name": "Fearful Touch",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "94"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:nightmare:fearful-touch"
+  },
+  "subdomain-power:oceans:surge": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can cause a mighty wave to appear that pushes or pulls a single creature. Make a combat maneuver check against the target, using your cleric level + your Wisdom modifier as your CMB. If successful, you may pull or push the creature as if using the bull rush or drag combat maneuver.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:oceans:surge",
+    "name": "Surge",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "94"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:oceans:surge"
+  },
+  "subdomain-power:petrification:fossil-form": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>At the beginning of your turn, you can infuse your flesh with minerals, granting you cumbersome security. Until the beginning of your next turn, you are staggered, gain hardness 2, and gain a +2 bonus on saving throws against petrification. This hardness increases by 2 and your saving throw bonus increases by 1 for every 4 cleric levels you have.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:petrification:fossil-form",
+    "name": "Fossil Form",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "25"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:petrification:fossil-form"
+  },
+  "subdomain-power:plague:touch-of-virulence": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can touch a diseased creature and exacerbate its condition. If it fails a Fortitude save (DC = 10 + 1/2 your cleric level + your Wisdom modifier), the creature takes damage as though it had failed its Fortitude save against the disease and any remaining onset time for the disease ends.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:plague:touch-of-virulence",
+    "name": "Touch of Virulence",
+    "sources": [
+      {
+        "id": "heroes-of-the-streets",
+        "pages": "19"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:plague:touch-of-virulence"
+  },
+  "subdomain-power:portal:sacred-threshold": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a standard action, you can bless a door, a window, or another portal with a touch. For 1 minute, you can increase or decrease the DC of any check to unlock or force open the portal by an amount equal to half your cleric level. In addition, your first ally to pass through the portal during this time gains an amount of temporary hit points equal to 1d4 + 1 for every 2 cleric levels you have. These temporary hit points last for 1 minute.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:portal:sacred-threshold",
+    "name": "Sacred Threshold",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "25"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:portal:sacred-threshold"
+  },
+  "subdomain-power:portal:travel-as-one": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When you cast a spell with the teleportation descriptor, treat your caster level as 3 higher for the purpose of determining how many additional creatures you can bring with you. In addition, you and any creatures you teleport gain a number of temporary hit points equal to your level that disappear after you reach your destination; these offset any damage you might take from teleportation mishaps or attempting to teleport into a solid body.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:portal:travel-as-one",
+    "name": "Travel as One",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "25"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:portal:travel-as-one"
+  },
+  "subdomain-power:protean:aura-of-chaos": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can surround yourself with a field of wild energies. Thee energies manifest as a 30-foot aura of chaos for a number of rounds per day equal to your cleric level. All enemies within this aura must declare one type of action at the start of their turn (attack, cast a spell, move, use an item, or activate a special ability) and make a Will save. Creatures that fail the Will save must take an action other than their declared action. If they succeed, they must take the declared action. Creatures cannot select actions that they cannot perform.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:protean:aura-of-chaos",
+    "name": "Aura of Chaos",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "94"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:protean:aura-of-chaos"
+  },
+  "subdomain-power:psychopomp:spirit-touch": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can give your natural weapons or any weapons you wield the ghost touch weapon special ability.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:psychopomp:spirit-touch",
+    "name": "Spirit Touch",
+    "sources": [
+      {
+        "id": "champions-of-balance",
+        "pages": "17"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:psychopomp:spirit-touch"
+  },
+  "subdomain-power:radiation:radiating-touch": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can irradiate any unattended object for a number of rounds equal to your cleric level. While an object is irradiated, it emits a faint aura of transmutation. Any creature that passes within 5 feet of the aura must succeed at a Will save (DC equal to 10 + 1/2 your cleric level + your Wisdom modifier) or become sickened. You're immune to this object's effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:radiation:radiating-touch",
+    "name": "Radiating Touch",
+    "sources": [
+      {
+        "id": "kobolds-of-golarion",
+        "pages": "13"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:radiation:radiating-touch"
+  },
+  "subdomain-power:rage:rage": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can enter a fearsome rage, like a barbarian. At 12th and 16th level, you can select one rage power. You cannot select any rage power that possesses a level requirement, but otherwise your barbarian level is equal to 1/2 your cleric level. These rounds of rage stack with any rounds of rage you might have from levels of barbarian.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:rage:rage",
+    "name": "Rage",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "95"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:rage:rage"
+  },
+  "subdomain-power:redemption:aura-of-sanctification": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot-radius aura of sanctification. Within this aura, effects that are specifically harmful to good-aligned creatures are inverted so that they no longer harm good creatures and instead harm evil creatures. Similarly, effects that are specifically beneficial to evil creatures instead become beneficial only to good creatures.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:redemption:aura-of-sanctification",
+    "name": "Aura of Sanctification",
+    "sources": [
+      {
+        "id": "champions-of-purity",
+        "pages": "21"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:redemption:aura-of-sanctification"
+  },
+  "subdomain-power:resolve:bestow-resolve": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can bless creatures with the boldness of your deity. You can bestow a number of temporary hit points equal to your level + your Wisdom modifier to all allies within 20 feet. The temporary hit points remain for 1 minute.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:resolve:bestow-resolve",
+    "name": "Bestow Resolve",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "95"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:resolve:bestow-resolve"
+  },
+  "subdomain-power:restoration:restorative-touch": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Your touch can remove the dazed, fatigued, shaken, sickened, or staggered condition. You choose which condition is removed.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:restoration:restorative-touch",
+    "name": "Restorative Touch",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "95"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:restoration:restorative-touch"
+  },
+  "subdomain-power:resurrection:gift-of-life": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can touch a creature that has died within the past minute to grant it a few moments of life. The dead creature returns to life for a number of rounds equal to your cleric level. Creatures returned to life in this way have a number of hit points equal to half your cleric level, and continue to be affected by any still-active spells, conditions, or afflictions present at the time of their death. At the end of this time, the creature dies again. The creature is free to act as it sees fit during this time. You are granted no control over it.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:resurrection:gift-of-life",
+    "name": "Gift of Life",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "96"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:resurrection:gift-of-life"
+  },
+  "subdomain-power:revelation:guided-eyes": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Perception (WIS) is always a class skill for you. In addition, whenever you make a skill check to see through a disguise or find something that is hidden or concealed, you gain a +4 sacred bonus on the check.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:revelation:guided-eyes",
+    "name": "Guided Eyes",
+    "sources": [
+      {
+        "id": "champions-of-purity",
+        "pages": "21"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:revelation:guided-eyes"
+  },
+  "subdomain-power:revelry:intense-celebration": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Spells you cast that confer a morale effect upon you or your allies are automatically affected as if by the Extend Spell metamagic feat, but with no increase in spell level.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:revelry:intense-celebration",
+    "name": "Intense Celebration",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:revelry:intense-celebration"
+  },
+  "subdomain-power:riot:aura-of-bedlam": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot-radius aura of chaos and strife. Enemies in the aura take a penalty on concentration checks and are treated as experiencing vigorous motion (concentration DC = 10 + spell level) when attempting to cast spells. The penalty is equal to one-half of your cleric level. This is a mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:riot:aura-of-bedlam",
+    "name": "Aura of Bedlam",
+    "sources": [
+      {
+        "id": "heroes-of-the-streets",
+        "pages": "19"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:riot:aura-of-bedlam"
+  },
+  "subdomain-power:rites:enduring-ritual": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When you cast a spell with a duration of at least 1 minute per caster level, you can increase the spell's effective caster level by 1 for the purpose of determining its duration and preventing attempts to dispel it. At 10th level: The effective caster level increases by 2. At 20th level: The effective caster level increases by 3.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:rites:enduring-ritual",
+    "name": "Enduring Ritual",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "26"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:rites:enduring-ritual"
+  },
+  "subdomain-power:rivers:current-flow": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can increase either your base speed or your swim speed by 10 feet. While swimming, you gain a bonus on Swim checks equal to half your class level (minimum 1). These effects last for a number of rounds equal to your Wisdom modifier (minimum 1).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:rivers:current-flow",
+    "name": "Current Flow",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:rivers:current-flow"
+  },
+  "subdomain-power:sahkil:touch-of-paranoia": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can imbue a target with great suspicion and doubt as a melee touch attack. A creature affected by your touch does not have allies and is not considered to be an ally to any other creature, including other creatures affected by this effect. The affected creature cannot move freely through its allies' spaces, flank creatures with them, cooperate with them using teamwork feats, or give or receive benefits from the aid another action or any spells or effect that affects only allies. This ability lasts for a number of rounds equal to 1/2 your cleric level (minimum 1).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:sahkil:touch-of-paranoia",
+    "name": "Touch of Paranoia",
+    "sources": [
+      {
+        "id": "pathfinder-143-borne-by-the-sun-s-grace",
+        "pages": "61"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:sahkil:touch-of-paranoia"
+  },
+  "subdomain-power:saurian:dinosaur-companion": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p>At 4th level, you gain the service of a loyal animal companion. Your effective druid level for the purpose of this animal companion is equal to your class level - 2. You must choose a dinosaur as druid&gt;your companion.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:saurian:dinosaur-companion",
+    "name": "Dinosaur Companion",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:saurian:dinosaur-companion"
+  },
+  "subdomain-power:seasons:untouched-by-the-seasons": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>By touching a creature, you can grant it the benefits of endure elements, which last for 1 hour per cleric level.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:seasons:untouched-by-the-seasons",
+    "name": "Untouched by the Seasons",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "96"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:seasons:untouched-by-the-seasons"
+  },
+  "subdomain-power:shadow:whispering-shadows": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can darken the shadows around you and cause them to hiss, confounding and distracting your enemies. You force a target within 30 feet to reroll a miss chance due to concealment or a saving throw against an illusion or necromancy spell. The target of this ability must keep the result of the second roll, even if it is worse than the original roll.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:shadow:whispering-shadows",
+    "name": "Whispering Shadows",
+    "sources": [
+      {
+        "id": "blood-of-shadows",
+        "pages": "17"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:shadow:whispering-shadows"
+  },
+  "subdomain-power:slavery:master-s-yoke": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can attempt to assert your dominance over any visible creature within 30 feet by declaring the target your property. The target can resist this effect with a successful Will save (DC = 10 + half your class level + your Wisdom modifier). If the target fails the save, it is affected as if by dominate monster for a number of rounds equal to half your class level. The target can choose to ignore any order you give and instead take 2 points of Constitution damage and become staggered for 1 round. This is a language-based, mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:slavery:master-s-yoke",
+    "name": "Master's Yoke",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:slavery:master-s-yoke"
+  },
+  "subdomain-power:smoke:cloud-of-smoke": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>As a standard action, you can create a 5-foot-radius cloud of smoke. This power has a range of 30 feet. Creatures inside the cloud take a -2 penalty on attack rolls and Perception skill checks for as long as they remain inside and for 1 round after exiting the cloud. Creatures inside the cloud gain concealment from attacks made by opponents that are not adjacent to them.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:smoke:cloud-of-smoke",
+    "name": "Cloud of Smoke",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "96"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:smoke:cloud-of-smoke"
+  },
+  "subdomain-power:souls:touch-the-spirit-world": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>With a touch, you can empower a weapon to affect incorporeal creatures. The weapon touched deals half damage to incorporeal creatures, or full damage if it is a magic weapon. This benefit lasts for a number of rounds equal to your cleric level.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:souls:touch-the-spirit-world",
+    "name": "Touch the Spirit World",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "96"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:souls:touch-the-spirit-world"
+  },
+  "subdomain-power:sovereignty:demand-subjugation": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p>You can force a defeated creature to accept a binding pact as a condition of its surrender, as if you are using lesser geas, except the creature must have a number of Hit Dice equal to or less than your cleric level. At 16th level: The ability functions as per geas/quest.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:sovereignty:demand-subjugation",
+    "name": "Demand Subjugation",
+    "sources": [
+      {
+        "id": "heroes-of-the-high-court",
+        "pages": "21"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:sovereignty:demand-subjugation"
+  },
+  "subdomain-power:stars:the-stars-are-right": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>If you prepare your cleric spells while the stars are visible to you, you may spontaneously cast any of your Stars subdomain domain spells by swapping out a spell of an equal spell level. Any Stars subdomain spells that you cast while the stars are visible to you heal you of damage equal to the spell's level as you cast the spell.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:stars:the-stars-are-right",
+    "name": "The Stars Are Right",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:stars:the-stars-are-right"
+  },
+  "subdomain-power:storms:gale-aura": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can create a 30-foot aura of gale-like winds that slows the progress of enemies. Creatures in the aura cannot take a 5-foot step. Enemies in the aura treat each square that brings them closer to you as difficult terrain. They can move normally in any other direction.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:storms:gale-aura",
+    "name": "Gale Aura",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "96"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:storms:gale-aura"
+  },
+  "subdomain-power:tactics:seize-the-initiative": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Whenever you and your allies roll for initiative, you can grant one ally within 30 feet the ability to roll twice and take either result. This decision is made before results are revealed.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:tactics:seize-the-initiative",
+    "name": "Seize the Initiative",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "96"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:tactics:seize-the-initiative"
+  },
+  "subdomain-power:thievery:thief-of-the-gods": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When you make a Disable Device or Sleight of Hand check, you can roll twice and take the higher result.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:thievery:thief-of-the-gods",
+    "name": "Thief of the Gods",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "96"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:thievery:thief-of-the-gods"
+  },
+  "subdomain-power:thirst:wilting-glare": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can leach moisture and vitality from a living, corporeal creature you can see within 30 feet. The target takes an amount of nonlethal damage equal to 1d6 + 1 for every 2 cleric levels you have and becomes fatigued until the beginning of your next turn (Fortitude negates). Plant creatures and those with the aquatic or water subtype take lethal damage from this ability, and they are fatigued for a number of rounds equal to your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:thirst:wilting-glare",
+    "name": "Wilting Glare",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "26"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:thirst:wilting-glare"
+  },
+  "subdomain-power:thirst:withering-nimbus": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot nimbus of light. This acts as a daylight spell. In addition, <strong>creatures with the aquatic or water subtype</strong> within this radius take an amount of damage equal to your cleric level each round that they remain inside the nimbus. Spells and spell-like abilities with the darkness descriptor are automatically dispelled if brought inside this nimbus.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:thirst:withering-nimbus",
+    "name": "Withering Nimbus",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "26"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:thirst:withering-nimbus"
+  },
+  "subdomain-power:thorns:cruel-thicket": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can cause the ground in a 5-foot-radius burst centered on you to sprout twisting, thorny vines. Any creature moving through it must travel at half speed or take bleed damage equal to half your cleric level; if you activate this ability in an area with numerous plants (grass, weeds, trees, etc.), the area also becomes difficult terrain. These effects last for 1 minute, after which the vines crumble to dust. Creatures able to move through natural undergrowth unhindered ignore the effects of this ability.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:thorns:cruel-thicket",
+    "name": "Cruel Thicket",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "26"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:thorns:cruel-thicket"
+  },
+  "subdomain-power:thought:read-minds": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can broaden your mental spectrum to encompass those around you. Doing so allows you to read the mind of every creature within 30 feet as if you had cast detect thoughts. This ability allows you to read the surface thoughts of any creature that you are aware of after only 1 round of concentration. Creatures in this area are allowed a Will save to negate the effect. The DC of this Will save is 10 + 1/2 your cleric level + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:thought:read-minds",
+    "name": "Read Minds",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "97"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:thought:read-minds"
+  },
+  "subdomain-power:toil:aura-of-repetition": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can emit a 30-foot aura of repetition. All enemies within this aura must make a Will save each round or repeat their action from the previous round (if possible). Creatures that attacked on the previous round attack again on the following round, although they may change their target. Creatures that moved the previous round must take the same move action again, although they may change their route. Creatures that drank a potion must do so again, even they can only drink from an empty bottle. Actions that cannot be repeated are wasted.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:toil:aura-of-repetition",
+    "name": "Aura of Repetition",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "97"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:toil:aura-of-repetition"
+  },
+  "subdomain-power:torture:painful-smite": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Prior to making a melee attack roll, you can choose to convert all damage from that strike into nonlethal damage, adding your Wisdom modifier to the damage. If your attack hits, as a free action you can attempt an Intimidate check to demoralize the target. You gain a bonus on this Intimidate check equal to the amount of nonlethal damage dealt by the painful smite.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:torture:painful-smite",
+    "name": "Painful Smite",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:torture:painful-smite"
+  },
+  "subdomain-power:trade:silver-tongued-haggler": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Whenever you make a Bluff, Diplomacy, or Sense Motive check, you can grant yourself a bonus on the roll equal to 1/2 your cleric level (minimum +1).</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:trade:silver-tongued-haggler",
+    "name": "Silver-Tongued Haggler",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "97"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:trade:silver-tongued-haggler"
+  },
+  "subdomain-power:trap:supernatural-trap": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When you gain this ability, select a supernatural ranger trap. You are now able make this trap. The DCs for Perception checks, Disable Device checks, and saving throws against the trap are equal to 10 + 1/2 your character level + your Wisdom bonus. The trap lasts for 1 hour or until triggered.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:trap:supernatural-trap",
+    "name": "Supernatural Trap",
+    "sources": [
+      {
+        "id": "kobolds-of-golarion",
+        "pages": "13"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:trap:supernatural-trap"
+  },
+  "subdomain-power:truth:dawning-realization": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can impart a shared vision of unfathomable ineffability to a living creature you touch, after which your turn immediately ends. You are dazed and the target confused for 1 round by what you both learn. On the following round, you are both staggered for 1 round by the ramifications of your discovery. On the third round, you are confused and the target dazed for 1 round as you attempt to regain your bearings. Each round, the target can attempt a Will save with a DC equal to 10 + 1/2 your cleric level + your Wisdom modifier to negate that round's effects for both of you, though the effect does not end until the end of the third round. This is a mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:truth:dawning-realization",
+    "name": "Dawning Realization",
+    "sources": [
+      {
+        "id": "divine-anthology",
+        "pages": "27"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:truth:dawning-realization"
+  },
+  "subdomain-power:tyranny:tyrannical-strike": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Upon successfully landing a melee attack on an opponent, you can choose to forgo the damage (but not any other effects of the attack) to instead affect the creature you hit as per a greater command spell, with a caster level equal to your class level.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:tyranny:tyrannical-strike",
+    "name": "Tyrannical Strike",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:tyranny:tyrannical-strike"
+  },
+  "subdomain-power:undead:death-s-kiss": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You can cause a creature to take on some of the traits of the undead with a melee touch attack. Touched creatures are treated as undead for the purposes of effects that heal or cause damage based on positive and negative energy. This effect lasts for a number of rounds equal to 1/2 your cleric level (minimum 1). It does not apply to the Turn Undead or Command Undead feats.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:undead:death-s-kiss",
+    "name": "Death's Kiss",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "97"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:undead:death-s-kiss"
+  },
+  "subdomain-power:venom:venomous-saliva": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>Just as certain serpents can spray poison from their fangs, as a swift action, you can spit a gout of life-stealing venom onto a weapon you are wielding. The poison (see below) lasts for 1 minute or until you make an attack with that weapon that injures a foe.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:venom:venomous-saliva",
+    "name": "Venomous Saliva",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:venom:venomous-saliva"
+  },
+  "subdomain-power:wards:warding-rune": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>When a creature is damaged by your blast rune, you can cause it to be unable attack you for a number of rounds equal to 1/2 your cleric level unless it succeeds at a Will save, as per the spell sanctuary. The ability does not prevent you from being attacked or affected by area of effect spells or abilities.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:wards:warding-rune",
+    "name": "Warding Rune",
+    "sources": [
+      {
+        "id": "advanced-player-s-guide",
+        "pages": "97"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:wards:warding-rune"
+  },
+  "subdomain-power:whimsy:unexpected-whimsy": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p>You dance, act like a buffoon, or commit some other act of whimsy. When you do, enemies within 30 feet of you that can see and hear you must succeed a Will saving throw (DC = 10 + 1/2 your cleric level + half your Wisdom modifier) or they collapse into gales of manic laughter, falling prone. Those who fail their saving throws can take no actions other than laughing for 1 round, but are not considered helpless.</p>",
+    "grantsBuffs": [],
+    "id": "subdomain-power:whimsy:unexpected-whimsy",
+    "name": "Unexpected Whimsy",
+    "subType": "classFeat",
+    "uuid": "pfdata:subdomain-power:whimsy:unexpected-whimsy"
+  },
   "svfvNQL4u1FbRuUp": {
     "abilityType": "ex",
     "changes": [],

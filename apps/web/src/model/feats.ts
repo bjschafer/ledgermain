@@ -43,6 +43,7 @@ import {
   type RollData,
 } from "@pf1/engine";
 
+import { parentDomainTagOf } from "./doc.js";
 import { SKILL_NAMES } from "./names.js";
 import { effectiveCombatStyleId } from "./ranger.js";
 import { suppressedRaceTargets } from "./racialTraits.js";
@@ -146,13 +147,19 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
   // Cleric domain fixed bonus feats (Darkness grants Blind-Fight, Rune grants
   // Scribe Scroll). Gated on the character actually having cleric levels; a
   // stale domain tag on a non-cleric grants nothing. `clericDomains` holds
-  // domain AND subdomain tags, but only these two top-level domains carry a
-  // fixed-feat grant, so an unmatched tag (any subdomain, any other domain)
-  // simply falls through.
+  // domain AND subdomain tags: a subdomain keeps the feat only when it kept
+  // the parent's `bonusFeats` change (the data-pipeline import drops it for a
+  // subdomain that replaces the granting ability), so the change is what's
+  // checked rather than the tag naming a top-level domain.
   if (doc.identity.classes.some((c) => c.tag === "cleric")) {
     for (const tag of doc.build.clericDomains ?? []) {
-      const featName = DOMAIN_GRANTED_FEATS[tag];
+      const parentTag = parentDomainTagOf(refData, tag);
+      const featName = DOMAIN_GRANTED_FEATS[parentTag];
       if (!featName) continue;
+      const entity =
+        Object.values(refData.domains).find((d) => d.tag === tag) ??
+        Object.values(refData.subdomains).find((s) => s.tag === tag);
+      if (!entity?.changes.some((ch) => ch.target === "bonusFeats")) continue;
       const featId = byName.get(featName);
       if (!featId || seen.has(featId)) continue;
       seen.add(featId);
@@ -160,7 +167,7 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
         featId,
         featName: refData.feats[featId]?.name ?? featName,
         classTag: "cleric",
-        featureName: `${tag} Domain`,
+        featureName: tag === parentTag ? `${tag} Domain` : `${tag} Subdomain`,
       });
     }
   }

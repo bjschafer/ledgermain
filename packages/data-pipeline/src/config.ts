@@ -112,8 +112,14 @@ export const SYSTEM_VERSION = "11.11";
  * weapon/armor/shield special abilities (flaming, keen, fortification) that
  * `transformMagicItems` already parsed out of the Pf Data 1e magic-item files
  * but `normalize` previously discarded; see `ItemAbilityRef`'s doc comment.
+ * v20 changes what `Subdomain.features`/`Subdomain.changes` mean: both are
+ * now the subdomain's complete, already-merged truth rather than an override
+ * that's empty when the Foundry pack documents none. The 125 subdomains the
+ * pack carries no power for take theirs from the Pf Data 1e catalog, so a
+ * consumer must no longer read the parent domain's powers when a subdomain's
+ * list looks empty; see `transform/subdomainPowers.ts`.
  */
-export const SCHEMA_VERSION = 19;
+export const SCHEMA_VERSION = 20;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

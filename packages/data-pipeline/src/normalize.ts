@@ -87,6 +87,10 @@ import {
   transformSubdomain,
 } from "./transform/subdomains.js";
 import {
+  applySubdomainPowerSupplements,
+  parseSubdomainPowerSets,
+} from "./transform/subdomainPowers.js";
+import {
   applyArchetypeFeatureLevelSupplements,
   applyBuffSupplements,
   applyClassFeatureChangesSupplements,
@@ -386,6 +390,26 @@ export function normalize(opts: NormalizeOptions): {
       (id) => classFeaturesById[id]?.name ?? null,
       resolveUuid,
     ),
+  );
+
+  // --- subdomain granted powers (fourth-party dataset) — the Foundry pack
+  // documents a replacement POWER for only 11 of the 136 subdomains, so
+  // without this every other one silently resolves to its parent domain's
+  // powers instead of its own. See `transform/subdomainPowers.ts`. Mutates
+  // `subdomains`/`classFeatures` in place.
+  const subdomainPowerSets = parseSubdomainPowerSets(
+    [
+      "class_ability_domains.json",
+      "class_ability_domains2.json",
+      "class_ability_domains3.json",
+    ].map((f) => readPfDataDictionary(join(opts.pfDataJsonDir, f))),
+    new Set(domains.map((d) => d.tag)),
+  );
+  const subdomainPowerResult = applySubdomainPowerSupplements(
+    subdomains,
+    domains,
+    subdomainPowerSets,
+    classFeatures,
   );
 
   const druidDomains: DruidDomain[] = [
@@ -947,6 +971,8 @@ export function normalize(opts: NormalizeOptions): {
     bloodlineSpellLists: Object.keys(bloodlineSpellLists).length,
     domains: domains.length,
     subdomains: subdomains.length,
+    /** Subdomains whose granted powers came from the Pf Data 1e import rather than a Foundry `links.supplements` override. */
+    subdomainsWithImportedPowers: subdomainPowerResult.supplemented,
     subdomainSpellLists: Object.keys(subdomainSpellLists).length,
     druidDomains: druidDomains.length,
     druidDomainSpellLists: Object.keys(druidDomainSpellLists).length,

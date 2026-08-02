@@ -33,7 +33,22 @@
   "0iu50uQrFKQrR0pj": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Suggestion</li>\n<li>6th—Bestow Curse, Greater</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "90Z23Z4U7ujOcvco",
+        "level": 0,
+        "name": "Touch of Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.90Z23Z4U7ujOcvco"
+      },
+      {
+        "featureId": "subdomain-power:corruption:spark-malfeasance",
+        "level": 8,
+        "name": "Spark Malfeasance",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:corruption:spark-malfeasance"
+      }
+    ],
     "id": "0iu50uQrFKQrR0pj",
     "name": "Corruption Subdomain",
     "parentDomainTags": ["Evil"],
@@ -43,7 +58,22 @@
   "0mXAs4PZgXIKUbl4": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd— Haunting Mists</li>\n<li>4th—They Know</li>\n<li>6th— Phobia</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:sahkil:touch-of-paranoia",
+        "level": 0,
+        "name": "Touch of Paranoia",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:sahkil:touch-of-paranoia"
+      },
+      {
+        "featureId": "wK9bxQqe49GfT9xh",
+        "level": 8,
+        "name": "Scythe of Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wK9bxQqe49GfT9xh"
+      }
+    ],
     "id": "0mXAs4PZgXIKUbl4",
     "name": "Sahkil Subdomain",
     "parentDomainTags": ["Evil"],
@@ -90,7 +120,22 @@
   "3CgcWBGI6vtz7vZx": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Command</li>\n<li>3rd—Suggestion</li>\n<li>6th—Planar Binding (devils only)</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:devil:hell-s-corruption",
+        "level": 0,
+        "name": "Hell's Corruption",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:devil:hell-s-corruption"
+      },
+      {
+        "featureId": "wK9bxQqe49GfT9xh",
+        "level": 8,
+        "name": "Scythe of Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wK9bxQqe49GfT9xh"
+      }
+    ],
     "id": "3CgcWBGI6vtz7vZx",
     "name": "Devil Subdomain",
     "parentDomainTags": ["Evil", "Law"],
@@ -100,7 +145,22 @@
   "3FkaGJVcOYKsA7Lg": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Keen Edge</li>\n<li>5th—Suffocation</li>\n<li>9th—Suffocation, Mass</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "u5LefrXZxQgLqmyJ",
+        "level": 0,
+        "name": "Bleeding Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.u5LefrXZxQgLqmyJ"
+      },
+      {
+        "featureId": "subdomain-power:murder:killing-blow",
+        "level": 8,
+        "name": "Killing Blow",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:murder:killing-blow"
+      }
+    ],
     "id": "3FkaGJVcOYKsA7Lg",
     "name": "Murder Subdomain",
     "parentDomainTags": ["Death"],
@@ -110,7 +170,22 @@
   "4eIRlzM1ODGr9aDq": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Seek Thoughts</li>\n<li>5th—Telepathic Bond</li>\n<li>8th—Mind Blank</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "iv3eNHISB84mHLox",
+        "level": 0,
+        "name": "Lore Keeper (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.iv3eNHISB84mHLox"
+      },
+      {
+        "featureId": "subdomain-power:thought:read-minds",
+        "level": 8,
+        "name": "Read Minds",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:thought:read-minds"
+      }
+    ],
     "id": "4eIRlzM1ODGr9aDq",
     "name": "Thought Subdomain",
     "parentDomainTags": ["Knowledge"],
@@ -120,7 +195,22 @@
   "4r1t3LvBKkw2RCq6": {
     "changes": [],
     "description": "<p>Replacement Domain Spells:</p>\n<ul>\n<li>1st—Expeditious Retreat</li>\n<li>3rd—Fly</li>\n<li>6th—Planar Ally (azata only)</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:azata:elysium-s-call",
+        "level": 0,
+        "name": "Elysium's Call",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:azata:elysium-s-call"
+      },
+      {
+        "featureId": "Vf0LVJue8NkXSupp",
+        "level": 8,
+        "name": "Chaos Blade",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Vf0LVJue8NkXSupp"
+      }
+    ],
     "id": "4r1t3LvBKkw2RCq6",
     "name": "Azata Subdomain",
     "parentDomainTags": ["Chaos", "Good"],
@@ -130,7 +220,29 @@
   "51FDels17DGl7Yq9": {
     "changes": [],
     "description": "<p><b>Replacement Power:</b> In campaigns that use the optional hero point system (Pathfinder RPG Advanced Player’s Guide 322), you gain Hero’s Fortune (Advanced Player’s Guide 324) as a bonus feat. Otherwise, you gain Marked for Glory (Pathfinder RPG Mythic Adventures 69) as a bonus feat, even if you do not meet its prerequisites.</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Aid, 3rd—Contagious Zeal</li>\n<li>4th— Righteous Vigor</li>\n<li>6th— Unshakable Zeal</li>\n<li>If you are evil, replace the domain spells Holy Smite, Holy Sword, and Holy Aura with Unholy Blight, Unholy Sword, and Unholy Aura respectively.</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "0BFuaPpChxXneJwF",
+        "level": 0,
+        "name": "Touch of Glory",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0BFuaPpChxXneJwF"
+      },
+      {
+        "featureId": "subdomain-power:legend:bonus-feat",
+        "level": 0,
+        "name": "Bonus Feat",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:legend:bonus-feat"
+      },
+      {
+        "featureId": "subdomain-power:legend:witness-the-legend",
+        "level": 8,
+        "name": "Witness the Legend",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:legend:witness-the-legend"
+      }
+    ],
     "id": "51FDels17DGl7Yq9",
     "name": "Legend Subdomain",
     "parentDomainTags": ["Glory"],
@@ -140,7 +252,22 @@
   "52sdtdkBoRICEFaU": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd — Memory Lapse</li>\n<li>6th — Modify Memory</li>\n<li>8th — Moment of Prescience</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:memory:recall",
+        "level": 0,
+        "name": "Recall",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:memory:recall"
+      },
+      {
+        "featureId": "yUdt1JIkSsQabXTF",
+        "level": 6,
+        "name": "Remote Viewing",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yUdt1JIkSsQabXTF"
+      }
+    ],
     "id": "52sdtdkBoRICEFaU",
     "name": "Memory Subdomain",
     "parentDomainTags": ["Knowledge"],
@@ -148,9 +275,37 @@
     "uuid": "Compendium.pf1.class-abilities.Item.52sdtdkBoRICEFaU"
   },
   "63vMiCfBi4PWsZQo": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Arcane Lock</li>\n<li>4th—Dimensional Anchor</li>\n<li>6th—Guards and Wards</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "Wj2W2g5Ive3PlIlg",
+        "level": 0,
+        "name": "Blast Rune (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Wj2W2g5Ive3PlIlg"
+      },
+      {
+        "featureId": "tlRu8SYjzA7WCHN7",
+        "level": 0,
+        "name": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7",
+        "resolved": false,
+        "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7"
+      },
+      {
+        "featureId": "subdomain-power:wards:warding-rune",
+        "level": 6,
+        "name": "Warding Rune",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:wards:warding-rune"
+      }
+    ],
     "id": "63vMiCfBi4PWsZQo",
     "name": "Wards Subdomain",
     "parentDomainTags": ["Rune"],
@@ -158,9 +313,30 @@
     "uuid": "Compendium.pf1.class-abilities.Item.63vMiCfBi4PWsZQo"
   },
   "6aiPH3iI5bqykMOC": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10",
+        "target": "landSpeed",
+        "type": "base"
+      }
+    ],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Expeditious Retreat</li>\n<li>4th—Locate Creature</li>\n<li>9th—World Wave</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:exploration:door-sight",
+        "level": 0,
+        "name": "Door Sight",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:exploration:door-sight"
+      },
+      {
+        "featureId": "fkjS3pJidUdLWsFF",
+        "level": 8,
+        "name": "Dimensional Hop (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fkjS3pJidUdLWsFF"
+      }
+    ],
     "id": "6aiPH3iI5bqykMOC",
     "name": "Exploration Subdomain",
     "parentDomainTags": ["Travel"],
@@ -170,7 +346,22 @@
   "6n8L6nbXyfRXoTCF": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>5th—Call Lightning Storm</li>\n<li>6th—Sirocco</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "Kgcm3ye8CYGipsg3",
+        "level": 0,
+        "name": "Storm Burst",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Kgcm3ye8CYGipsg3"
+      },
+      {
+        "featureId": "subdomain-power:storms:gale-aura",
+        "level": 6,
+        "name": "Gale Aura",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:storms:gale-aura"
+      }
+    ],
     "id": "6n8L6nbXyfRXoTCF",
     "name": "Storms Subdomain",
     "parentDomainTags": ["Weather"],
@@ -180,7 +371,29 @@
   "6rqIMKpnCiimDyLo": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Command</li>\n<li>5th—Waves of Fatigue</li>\n<li>7th—Waves of Exhaustion</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "zeLaBkwTp9wlzZJv",
+        "level": 0,
+        "name": "Artificer's Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.zeLaBkwTp9wlzZJv"
+      },
+      {
+        "featureId": "9ezUAbso44HrKLyr",
+        "level": 8,
+        "name": "Dancing Weapons",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9ezUAbso44HrKLyr"
+      },
+      {
+        "featureId": "subdomain-power:toil:aura-of-repetition",
+        "level": 8,
+        "name": "Aura of Repetition",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:toil:aura-of-repetition"
+      }
+    ],
     "id": "6rqIMKpnCiimDyLo",
     "name": "Toil Subdomain",
     "parentDomainTags": ["Artifice"],
@@ -190,7 +403,22 @@
   "7HBmv5FWqBF1bJ4D": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Continual Flame</li>\n<li>3rd—Daylight</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "Dre4YCOxboyBbIjg",
+        "level": 0,
+        "name": "Sun's Blessing",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Dre4YCOxboyBbIjg"
+      },
+      {
+        "featureId": "subdomain-power:day:day-s-resurgence",
+        "level": 8,
+        "name": "Day's Resurgence",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:day:day-s-resurgence"
+      }
+    ],
     "id": "7HBmv5FWqBF1bJ4D",
     "name": "Day Subdomain",
     "parentDomainTags": ["Sun"],
@@ -200,7 +428,22 @@
   "7RxmCyoga9W3WADT": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Confusion</li>\n<li>7th—Song of Discord</li>\n<li>9th—Symbol of Strife</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "eZ569ZcO7BeZAqB6",
+        "level": 0,
+        "name": "Touch of Chaos",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eZ569ZcO7BeZAqB6"
+      },
+      {
+        "featureId": "subdomain-power:riot:aura-of-bedlam",
+        "level": 8,
+        "name": "Aura of Bedlam",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:riot:aura-of-bedlam"
+      }
+    ],
     "id": "7RxmCyoga9W3WADT",
     "name": "Riot Subdomain",
     "parentDomainTags": ["Chaos"],
@@ -210,7 +453,22 @@
   "8GVwxb8WviIeUq0L": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Entropic Shield</li>\n<li>3rd— Dispel Magic</li>\n<li>5th—Confusion</li>\n<li>7th—Destruction</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "eZ569ZcO7BeZAqB6",
+        "level": 0,
+        "name": "Touch of Chaos",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eZ569ZcO7BeZAqB6"
+      },
+      {
+        "featureId": "subdomain-power:entropy:hasten-the-end",
+        "level": 8,
+        "name": "Hasten the End",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:entropy:hasten-the-end"
+      }
+    ],
     "id": "8GVwxb8WviIeUq0L",
     "name": "Entropy Subdomain",
     "parentDomainTags": ["Chaos"],
@@ -220,7 +478,22 @@
   "8aFTPx0YF8gKMOYN": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Bull's Strength</li>\n<li>6th—Moonstruck</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "T4q7Ib0ED01PNDyT",
+        "level": 0,
+        "name": "Destructive Smite",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.T4q7Ib0ED01PNDyT"
+      },
+      {
+        "featureId": "subdomain-power:rage:rage",
+        "level": 8,
+        "name": "Rage",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:rage:rage"
+      }
+    ],
     "id": "8aFTPx0YF8gKMOYN",
     "name": "Rage Subdomain",
     "parentDomainTags": ["Destruction"],
@@ -230,7 +503,22 @@
   "95GjZ4XzJdKJJTWY": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Rest Eternal</li>\n<li>6th—Geas/Quest</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "mS7LSsQQkjVvKx9z",
+        "level": 0,
+        "name": "Gentle Rest (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.mS7LSsQQkjVvKx9z"
+      },
+      {
+        "featureId": "subdomain-power:ancestors:speak-with-dead",
+        "level": 8,
+        "name": "Speak With Dead",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:ancestors:speak-with-dead"
+      }
+    ],
     "id": "95GjZ4XzJdKJJTWY",
     "name": "Ancestors Subdomain",
     "parentDomainTags": ["Repose"],
@@ -240,7 +528,22 @@
   "9CCh20rnR8xpYiEn": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>2nd—Augury</li>\n<li>3rd—Borrow Fortune</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "FcJawJG5igJPDHnQ",
+        "level": 0,
+        "name": "Bit of Luck",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FcJawJG5igJPDHnQ"
+      },
+      {
+        "featureId": "subdomain-power:fate:tugging-strands",
+        "level": 8,
+        "name": "Tugging Strands",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:fate:tugging-strands"
+      }
+    ],
     "id": "9CCh20rnR8xpYiEn",
     "name": "Fate Subdomain",
     "parentDomainTags": ["Luck"],
@@ -250,7 +553,22 @@
   "9EGisgvR26lfHRbq": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Tree Shape</li>\n<li>5th—Commune with Nature</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:leshy:leshy-caller",
+        "level": 0,
+        "name": "Leshy Caller",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:leshy:leshy-caller"
+      },
+      {
+        "featureId": "GidNLmDQBdokwgUn",
+        "level": 6,
+        "name": "Bramble Armor",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.GidNLmDQBdokwgUn"
+      }
+    ],
     "id": "9EGisgvR26lfHRbq",
     "name": "Leshy Subdomain",
     "parentDomainTags": ["Plant"],
@@ -260,7 +578,22 @@
   "9L6D7WcLuGX58Wc6": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Hydraulic Push</li>\n<li>2nd—Slipstream</li>\n<li>5th—Elemental Body II</li>\n<li>6th—Fluid Form</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:rivers:current-flow",
+        "level": 0,
+        "name": "Current Flow",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:rivers:current-flow"
+      },
+      {
+        "featureId": "K7R4SXNKvzq5xmQK",
+        "level": 6,
+        "name": "Cold Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.K7R4SXNKvzq5xmQK"
+      }
+    ],
     "id": "9L6D7WcLuGX58Wc6",
     "name": "Rivers Subdomain",
     "parentDomainTags": ["Water"],
@@ -270,7 +603,22 @@
   "9lMpmvKhps8DBPG5": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd— Touch Injection</li>\n<li>4th— Amplify Elixir</li>\n<li>6th—Delayed Consumption</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:alchemy:divine-alchemy",
+        "level": 0,
+        "name": "Divine Alchemy",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:alchemy:divine-alchemy"
+      },
+      {
+        "featureId": "9ezUAbso44HrKLyr",
+        "level": 8,
+        "name": "Dancing Weapons",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9ezUAbso44HrKLyr"
+      }
+    ],
     "id": "9lMpmvKhps8DBPG5",
     "name": "Alchemy Subdomain",
     "parentDomainTags": ["Artifice", "Magic"],
@@ -280,7 +628,22 @@
   "9lg0RmVr8Qw2kkI9": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Hideous Laughter</li>\n<li>4th—Confusion</li>\n<li>6th—Cloak of Dreams</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "eZ569ZcO7BeZAqB6",
+        "level": 0,
+        "name": "Touch of Chaos",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eZ569ZcO7BeZAqB6"
+      },
+      {
+        "featureId": "subdomain-power:whimsy:unexpected-whimsy",
+        "level": 8,
+        "name": "Unexpected Whimsy",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:whimsy:unexpected-whimsy"
+      }
+    ],
     "id": "9lg0RmVr8Qw2kkI9",
     "name": "Whimsy Subdomain",
     "parentDomainTags": ["Chaos"],
@@ -290,7 +653,22 @@
   "AF8sKDTWPV3HVNGu": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Goodberry</li>\n<li>4th—Blight</li>\n<li>8th—Sunburst</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:seasons:untouched-by-the-seasons",
+        "level": 0,
+        "name": "Untouched by the Seasons",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:seasons:untouched-by-the-seasons"
+      },
+      {
+        "featureId": "FZdWscHJvJpGPoDz",
+        "level": 8,
+        "name": "Lightning Lord",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FZdWscHJvJpGPoDz"
+      }
+    ],
     "id": "AF8sKDTWPV3HVNGu",
     "name": "Seasons Subdomain",
     "parentDomainTags": ["Weather"],
@@ -331,7 +709,15 @@
   "AW8RWHDiMKhwglcQ": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Pain Strike</li>\n<li>5th— Symbol of Pain</li>\n<li>8th—Demand</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:torture:painful-smite",
+        "level": 0,
+        "name": "Painful Smite",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:torture:painful-smite"
+      }
+    ],
     "id": "AW8RWHDiMKhwglcQ",
     "name": "Torture Subdomain",
     "parentDomainTags": ["Destruction"],
@@ -341,7 +727,22 @@
   "BnDWyEkl77V3FjCw": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Hypnotism</li>\n<li>2nd—Hypnotic Pattern</li>\n<li>4th—Rainbow Pattern</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "Jle1tYl0Fr251J97",
+        "level": 0,
+        "name": "Dazing Touch (CLE)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Jle1tYl0Fr251J97"
+      },
+      {
+        "featureId": "subdomain-power:captivation:entrancing-aura",
+        "level": 0,
+        "name": "Entrancing Aura",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:captivation:entrancing-aura"
+      }
+    ],
     "id": "BnDWyEkl77V3FjCw",
     "name": "Captivation Subdomain",
     "parentDomainTags": ["Charm"],
@@ -351,7 +752,22 @@
   "BwDN5DEhxdzLrPLZ": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Zone of Truth</li>\n<li>6th—Geas/Quest</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:honor:honor-bound",
+        "level": 0,
+        "name": "Honor Bound",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:honor:honor-bound"
+      },
+      {
+        "featureId": "KXN1Y4DDcWd8ZraE",
+        "level": 8,
+        "name": "Divine Presence",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KXN1Y4DDcWd8ZraE"
+      }
+    ],
     "id": "BwDN5DEhxdzLrPLZ",
     "name": "Honor Subdomain",
     "parentDomainTags": ["Glory"],
@@ -361,7 +777,22 @@
   "C2DvBVzMotvjAP3S": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Doom</li>\n<li>3rd—Rage</li>\n<li>6th—Planar Binding (demons only).</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:demon:fury-of-the-abyss",
+        "level": 0,
+        "name": "Fury of the Abyss",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:demon:fury-of-the-abyss"
+      },
+      {
+        "featureId": "Vf0LVJue8NkXSupp",
+        "level": 8,
+        "name": "Chaos Blade",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Vf0LVJue8NkXSupp"
+      }
+    ],
     "id": "C2DvBVzMotvjAP3S",
     "name": "Demon Subdomain",
     "parentDomainTags": ["Chaos", "Evil"],
@@ -371,7 +802,22 @@
   "CgDxKisDe3MCRPg5": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Align Weapon (chaos or evil only)</li>\n<li>6th—Corrosive Consumption</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:demodand:faith-stealing-strike",
+        "level": 0,
+        "name": "Faith-Stealing Strike",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:demodand:faith-stealing-strike"
+      },
+      {
+        "featureId": "Vf0LVJue8NkXSupp",
+        "level": 8,
+        "name": "Chaos Blade",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Vf0LVJue8NkXSupp"
+      }
+    ],
     "id": "CgDxKisDe3MCRPg5",
     "name": "Demodand Subdomain",
     "parentDomainTags": ["Chaos", "Evil"],
@@ -381,7 +827,22 @@
   "DJu9WtuvbR1UkcvZ": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Ray of Sickening</li>\n<li>3rd—Contagion</li>\n<li>6th—Plague Storm</li>\n<li>8th—Horrid Wilting</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "u5LefrXZxQgLqmyJ",
+        "level": 0,
+        "name": "Bleeding Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.u5LefrXZxQgLqmyJ"
+      },
+      {
+        "featureId": "subdomain-power:plague:touch-of-virulence",
+        "level": 8,
+        "name": "Touch of Virulence",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:plague:touch-of-virulence"
+      }
+    ],
     "id": "DJu9WtuvbR1UkcvZ",
     "name": "Plague Subdomain",
     "parentDomainTags": ["Death", "Evil"],
@@ -391,7 +852,22 @@
   "DPaGRvfkKANynD7M": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>2nd—Shield Other</li>\n<li>5th—Telepathic Bond</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:friendship:powerful-bond",
+        "level": 0,
+        "name": "Powerful Bond",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:friendship:powerful-bond"
+      },
+      {
+        "featureId": "t3eiENbbesGZBnc2",
+        "level": 8,
+        "name": "Holy Lance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.t3eiENbbesGZBnc2"
+      }
+    ],
     "id": "DPaGRvfkKANynD7M",
     "name": "Friendship Subdomain",
     "parentDomainTags": ["Good"],
@@ -401,7 +877,29 @@
   "ER2tTsoeC0AWtRYn": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Open And Shut</li>\n<li>2nd—Knock</li>\n<li>3rd—Urban Step</li>\n<li>9th—Teleportation Circle</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:portal:sacred-threshold",
+        "level": 0,
+        "name": "Sacred Threshold",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:portal:sacred-threshold"
+      },
+      {
+        "featureId": "subdomain-power:portal:travel-as-one",
+        "level": 0,
+        "name": "Travel as One",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:portal:travel-as-one"
+      },
+      {
+        "featureId": "fkjS3pJidUdLWsFF",
+        "level": 8,
+        "name": "Dimensional Hop (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fkjS3pJidUdLWsFF"
+      }
+    ],
     "id": "ER2tTsoeC0AWtRYn",
     "name": "Portal Subdomain",
     "parentDomainTags": ["Travel"],
@@ -411,7 +909,22 @@
   "EZXEjeRFfHbfCvub": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells</b>:</p>\n<ul>\n<li>1st—Magic Fang</li>\n<li>3rd—Beast Shape I (animals only)</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:fur:predator-s-grace",
+        "level": 0,
+        "name": "Predator's Grace",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:fur:predator-s-grace"
+      },
+      {
+        "featureId": "1jMb1iCiNjS5yfwe",
+        "level": 4,
+        "name": "Animal Companion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1jMb1iCiNjS5yfwe"
+      }
+    ],
     "id": "EZXEjeRFfHbfCvub",
     "name": "Fur Subdomain",
     "parentDomainTags": ["Animal"],
@@ -421,7 +934,22 @@
   "FX18F44BI61SEuP9": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Command Undead</li>\n<li>5th—Command, Greater</li>\n<li>6th—Planar Binding (inevitables only)</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:inevitable:command",
+        "level": 0,
+        "name": "Command",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:inevitable:command"
+      },
+      {
+        "featureId": "J4QibEdTUK559sGO",
+        "level": 8,
+        "name": "Staff of Order",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.J4QibEdTUK559sGO"
+      }
+    ],
     "id": "FX18F44BI61SEuP9",
     "name": "Inevitable Subdomain",
     "parentDomainTags": ["Law"],
@@ -431,7 +959,22 @@
   "GoOZGKSbOmodZHqF": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Remove Fear</li>\n<li>3rd—Heroism</li>\n<li>6th—Heroism, Greater</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:chivalry:bolstering-touch",
+        "level": 0,
+        "name": "Bolstering Touch",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:chivalry:bolstering-touch"
+      },
+      {
+        "featureId": "KXN1Y4DDcWd8ZraE",
+        "level": 8,
+        "name": "Divine Presence",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KXN1Y4DDcWd8ZraE"
+      }
+    ],
     "id": "GoOZGKSbOmodZHqF",
     "name": "Chivalry Subdomain",
     "parentDomainTags": ["Glory"],
@@ -441,7 +984,22 @@
   "GsblgyzYht907slf": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Animate Dead</li>\n<li>6th—Antilife Shell</li>\n<li>9th—Trap the Soul</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:souls:touch-the-spirit-world",
+        "level": 0,
+        "name": "Touch the Spirit World",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:souls:touch-the-spirit-world"
+      },
+      {
+        "featureId": "KF3SgIKeBACJhSZ1",
+        "level": 8,
+        "name": "Ward Against Death",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.KF3SgIKeBACJhSZ1"
+      }
+    ],
     "id": "GsblgyzYht907slf",
     "name": "Souls Subdomain",
     "parentDomainTags": ["Repose"],
@@ -449,9 +1007,37 @@
     "uuid": "Compendium.pf1.class-abilities.Item.GsblgyzYht907slf"
   },
   "H5BScdULGUCOEt5L": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Ray Of Enfeeblement</li>\n<li>4th—Phantasmal Killer</li>\n<li>8th—Orb Of The Void</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "pmAO1Sni8xx71pLF",
+        "level": 0,
+        "name": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF",
+        "resolved": false,
+        "uuid": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF"
+      },
+      {
+        "featureId": "subdomain-power:shadow:whispering-shadows",
+        "level": 0,
+        "name": "Whispering Shadows",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:shadow:whispering-shadows"
+      },
+      {
+        "featureId": "M8IQnVMYyqh1Mrl7",
+        "level": 8,
+        "name": "Eyes of Darkness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.M8IQnVMYyqh1Mrl7"
+      }
+    ],
     "id": "H5BScdULGUCOEt5L",
     "name": "Shadow Subdomain",
     "parentDomainTags": ["Darkness", "Death"],
@@ -461,7 +1047,22 @@
   "HeeQpOyLQXsOtIJG": {
     "changes": [],
     "description": "<p><b>Replacement Power:</b> The domain spells provided by the Insect domain affect vermin rather than animals, treating them as if they were not immune to spells with the mindaffecting descriptor. Any such spell that allows a Will save can instead be negated by the target vermin with a successful Fortitude save at the same DC.</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Giant Vermin</li>\n<li>5th—Vermin Shape II</li>\n<li>8th—Summon Nature's Ally VIII (1d3 goliath stag beetles; Pathfinder RPG Bestiary 2 44)</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:insect:exoskeleton",
+        "level": 0,
+        "name": "Exoskeleton",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:insect:exoskeleton"
+      },
+      {
+        "featureId": "1jMb1iCiNjS5yfwe",
+        "level": 4,
+        "name": "Animal Companion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1jMb1iCiNjS5yfwe"
+      }
+    ],
     "id": "HeeQpOyLQXsOtIJG",
     "name": "Insect Subdomain",
     "parentDomainTags": ["Animal"],
@@ -508,7 +1109,22 @@
   "IlHsGNP2P7U035Hk": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Locate Object</li>\n<li>7th—Ethereal Jaunt</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "hVrmBvlqeeLbwVxn",
+        "level": 0,
+        "name": "Copycat",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hVrmBvlqeeLbwVxn"
+      },
+      {
+        "featureId": "subdomain-power:thievery:thief-of-the-gods",
+        "level": 8,
+        "name": "Thief of the Gods",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:thievery:thief-of-the-gods"
+      }
+    ],
     "id": "IlHsGNP2P7U035Hk",
     "name": "Thievery Subdomain",
     "parentDomainTags": ["Trickery"],
@@ -518,7 +1134,29 @@
   "J1v8s4Ao05VehDTq": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Crafter's Fortune</li>\n<li>7th—Mage's Magnificent Mansion</li>\n<li>9th—Wooden Phalanx</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "zeLaBkwTp9wlzZJv",
+        "level": 0,
+        "name": "Artificer's Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.zeLaBkwTp9wlzZJv"
+      },
+      {
+        "featureId": "9ezUAbso44HrKLyr",
+        "level": 8,
+        "name": "Dancing Weapons",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9ezUAbso44HrKLyr"
+      },
+      {
+        "featureId": "subdomain-power:industry:aura-of-efficiency",
+        "level": 8,
+        "name": "Aura of Efficiency",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:industry:aura-of-efficiency"
+      }
+    ],
     "id": "J1v8s4Ao05VehDTq",
     "name": "Industry Subdomain",
     "parentDomainTags": ["Artifice"],
@@ -557,9 +1195,37 @@
     "uuid": "Compendium.pf1.class-abilities.Item.Jjo1BND4tvEJnO1I"
   },
   "JtHGFUJPUL1lJUOA": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>5th—Enervation</li>\n<li>6th—Modify Memory</li>\n<li>9th—Energy Drain</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "pmAO1Sni8xx71pLF",
+        "level": 0,
+        "name": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF",
+        "resolved": false,
+        "uuid": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF"
+      },
+      {
+        "featureId": "Le6qmKF8wkhVCPCz",
+        "level": 0,
+        "name": "Touch of Darkness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Le6qmKF8wkhVCPCz"
+      },
+      {
+        "featureId": "subdomain-power:loss:aura-of-forgetfulness",
+        "level": 8,
+        "name": "Aura of Forgetfulness",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:loss:aura-of-forgetfulness"
+      }
+    ],
     "id": "JtHGFUJPUL1lJUOA",
     "name": "Loss Subdomain",
     "parentDomainTags": ["Darkness"],
@@ -569,7 +1235,22 @@
   "KWGUqoIm1WTcohBG": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Sanctuary</li>\n<li>5th—Telepathic Bond</li>\n<li>6th—Planar Binding (aeons only)</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "iv3eNHISB84mHLox",
+        "level": 0,
+        "name": "Lore Keeper (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.iv3eNHISB84mHLox"
+      },
+      {
+        "featureId": "subdomain-power:aeon:void-form",
+        "level": 6,
+        "name": "Void Form",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:aeon:void-form"
+      }
+    ],
     "id": "KWGUqoIm1WTcohBG",
     "name": "Aeon Subdomain",
     "parentDomainTags": ["Knowledge"],
@@ -579,7 +1260,22 @@
   "KXnHUgJXQvUAwJSP": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Make Whole</li>\n<li>5th— Major Creation</li>\n<li>6th—Animate Objects</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "ructcpEg6rejcpYQ",
+        "level": 0,
+        "name": "Icicle",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ructcpEg6rejcpYQ"
+      },
+      {
+        "featureId": "subdomain-power:flotsam:sift",
+        "level": 6,
+        "name": "Sift",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:flotsam:sift"
+      }
+    ],
     "id": "KXnHUgJXQvUAwJSP",
     "name": "Flotsam Subdomain",
     "parentDomainTags": ["Water"],
@@ -589,7 +1285,22 @@
   "KZ4dIav1Qcto78xO": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li><b></b> 2nd - Hypnotic Pattern</li>\n<li>7th - Sunbeam</li>\n<li>9th - Meteor Swarm</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "QkHDkpopJ7P8g14c",
+        "level": 0,
+        "name": "Guarded Mind",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QkHDkpopJ7P8g14c"
+      },
+      {
+        "featureId": "subdomain-power:stars:the-stars-are-right",
+        "level": 0,
+        "name": "The Stars Are Right",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:stars:the-stars-are-right"
+      }
+    ],
     "id": "KZ4dIav1Qcto78xO",
     "name": "Stars Subdomain",
     "parentDomainTags": ["Void"],
@@ -599,7 +1310,22 @@
   "KcRbd3s76GwqyJi1": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Qualm</li>\n<li>4th—Forced Repentance</li>\n<li>5th—Atonement</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "7td8qAPvj9YEasha",
+        "level": 0,
+        "name": "Touch of Good",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7td8qAPvj9YEasha"
+      },
+      {
+        "featureId": "subdomain-power:redemption:aura-of-sanctification",
+        "level": 8,
+        "name": "Aura of Sanctification",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:redemption:aura-of-sanctification"
+      }
+    ],
     "id": "KcRbd3s76GwqyJi1",
     "name": "Redemption Subdomain",
     "parentDomainTags": ["Good"],
@@ -609,7 +1335,22 @@
   "LDI7nsgF5UL75dLv": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Cat's Grace</li>\n<li>4th—Freedom of Movement</li>\n<li>6th—Fluid Form</li>\n<li>8th—Mind Blank</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:flowing:go-with-the-flow",
+        "level": 0,
+        "name": "Go with the Flow",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:flowing:go-with-the-flow"
+      },
+      {
+        "featureId": "K7R4SXNKvzq5xmQK",
+        "level": 6,
+        "name": "Cold Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.K7R4SXNKvzq5xmQK"
+      }
+    ],
     "id": "LDI7nsgF5UL75dLv",
     "name": "Flowing Subdomain",
     "parentDomainTags": ["Water"],
@@ -619,7 +1360,29 @@
   "LIb8sgvAtUL7r11Q": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Cup Of Dust</li>\n<li>9th—Horrid Wilting</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:thirst:wilting-glare",
+        "level": 0,
+        "name": "Wilting Glare",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:thirst:wilting-glare"
+      },
+      {
+        "featureId": "QZJtfwamnWW0mHjJ",
+        "level": 8,
+        "name": "Nimbus of Light",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QZJtfwamnWW0mHjJ"
+      },
+      {
+        "featureId": "subdomain-power:thirst:withering-nimbus",
+        "level": 8,
+        "name": "Withering Nimbus",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:thirst:withering-nimbus"
+      }
+    ],
     "id": "LIb8sgvAtUL7r11Q",
     "name": "Thirst Subdomain",
     "parentDomainTags": ["Sun"],
@@ -627,9 +1390,37 @@
     "uuid": "Compendium.pf1.class-abilities.Item.LIb8sgvAtUL7r11Q"
   },
   "Lb3YISPq7wexIalZ": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Comprehend Languages</li>\n<li>2nd—Share Language</li>\n<li>3rd—Tongues</li>\n<li>5th—Telepathic Bond</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "Wj2W2g5Ive3PlIlg",
+        "level": 0,
+        "name": "Blast Rune (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Wj2W2g5Ive3PlIlg"
+      },
+      {
+        "featureId": "tlRu8SYjzA7WCHN7",
+        "level": 0,
+        "name": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7",
+        "resolved": false,
+        "uuid": "Compendium.pf1.feats.Item.tlRu8SYjzA7WCHN7"
+      },
+      {
+        "featureId": "subdomain-power:language:rune-shift",
+        "level": 6,
+        "name": "Rune Shift",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:language:rune-shift"
+      }
+    ],
     "id": "Lb3YISPq7wexIalZ",
     "name": "Language Subdomain",
     "parentDomainTags": ["Rune"],
@@ -639,7 +1430,22 @@
   "LdTgQd53LA9JUQaj": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Hideous Laughter</li>\n<li>3rd—Good Hope</li>\n<li>6th—Heroes' Feast</li>\n<li>8th—Irresistible Dance</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "eZ569ZcO7BeZAqB6",
+        "level": 0,
+        "name": "Touch of Chaos",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eZ569ZcO7BeZAqB6"
+      },
+      {
+        "featureId": "subdomain-power:revelry:intense-celebration",
+        "level": 8,
+        "name": "Intense Celebration",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:revelry:intense-celebration"
+      }
+    ],
     "id": "LdTgQd53LA9JUQaj",
     "name": "Revelry Subdomain",
     "parentDomainTags": ["Chaos"],
@@ -649,7 +1455,22 @@
   "LwwjHf6ORZKi0tTa": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>2nd—Defoliate</li>\n<li>4th—Blight</li>\n<li>8th—Horrid Wilting</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:radiation:radiating-touch",
+        "level": 0,
+        "name": "Radiating Touch",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:radiation:radiating-touch"
+      },
+      {
+        "featureId": "An77ZbKHexO7P0UC",
+        "level": 6,
+        "name": "Acid Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.An77ZbKHexO7P0UC"
+      }
+    ],
     "id": "LwwjHf6ORZKi0tTa",
     "name": "Radiation Subdomain",
     "parentDomainTags": ["Earth"],
@@ -659,7 +1480,22 @@
   "M18QnM8Xd0mUvSuR": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Touch of Idiocy</li>\n<li>4th—Confusion</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "Jle1tYl0Fr251J97",
+        "level": 0,
+        "name": "Dazing Touch (CLE)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Jle1tYl0Fr251J97"
+      },
+      {
+        "featureId": "subdomain-power:lust:anything-to-please",
+        "level": 8,
+        "name": "Anything to Please",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:lust:anything-to-please"
+      }
+    ],
     "id": "M18QnM8Xd0mUvSuR",
     "name": "Lust Subdomain",
     "parentDomainTags": ["Charm"],
@@ -669,7 +1505,22 @@
   "MMzblKaO4G5vayvK": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Murderous Command</li>\n<li>2nd—Wrathful Mantle</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "T4q7Ib0ED01PNDyT",
+        "level": 0,
+        "name": "Destructive Smite",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.T4q7Ib0ED01PNDyT"
+      },
+      {
+        "featureId": "subdomain-power:hatred:hateful-aura",
+        "level": 8,
+        "name": "Hateful Aura",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:hatred:hateful-aura"
+      }
+    ],
     "id": "MMzblKaO4G5vayvK",
     "name": "Hatred Subdomain",
     "parentDomainTags": ["Destruction"],
@@ -679,7 +1530,22 @@
   "MOfNOb76twm8Rhse": {
     "changes": [],
     "description": "<p><strong>Replacement Power: Note:</strong> Only creatures with the <em>Kobold Faith</em> trait can take this subdomain.</p><p><strong>Replacement Domain Spells:</strong></p><ul><li>2nd—Snare</li><li>3rd—Improve Trap</li><li>7th—Teleport Trap</li></ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "zeLaBkwTp9wlzZJv",
+        "level": 0,
+        "name": "Artificer's Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.zeLaBkwTp9wlzZJv"
+      },
+      {
+        "featureId": "subdomain-power:trap:supernatural-trap",
+        "level": 8,
+        "name": "Supernatural Trap",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:trap:supernatural-trap"
+      }
+    ],
     "id": "MOfNOb76twm8Rhse",
     "name": "Trap Subdomain",
     "parentDomainTags": ["Artifice"],
@@ -689,7 +1555,22 @@
   "N1TVJ8y9XF9PzEht": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Wall Of Nausea</li>\n<li>5th—Contact Other Plane</li>\n<li>6th—Litany Of Madness</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "v4wH3dsMLl1Bm542",
+        "level": 0,
+        "name": "Vision of Madness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.v4wH3dsMLl1Bm542"
+      },
+      {
+        "featureId": "subdomain-power:truth:dawning-realization",
+        "level": 8,
+        "name": "Dawning Realization",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:truth:dawning-realization"
+      }
+    ],
     "id": "N1TVJ8y9XF9PzEht",
     "name": "Truth Subdomain",
     "parentDomainTags": ["Madness"],
@@ -699,7 +1580,22 @@
   "Nc629yyeBE0UeG2n": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Bless</li>\n<li>3rd—Prayer</li>\n<li>6th—Brilliant Inspiration</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:leadership:inspiring-command",
+        "level": 0,
+        "name": "Inspiring Command",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:leadership:inspiring-command"
+      },
+      {
+        "featureId": "hd6MiVc69RyEuDpU",
+        "level": 8,
+        "name": "Leadership",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hd6MiVc69RyEuDpU"
+      }
+    ],
     "id": "Nc629yyeBE0UeG2n",
     "name": "Leadership Subdomain",
     "parentDomainTags": ["Nobility"],
@@ -709,7 +1605,22 @@
   "O2TI9qvCdf45jvBX": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells</b>: </p>\n<ul>\n<li>1st—Thorn Javelin</li>\n<li>3rd— Thorny Entanglement</li>\n<li>4th—Thorn Body</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:thorns:cruel-thicket",
+        "level": 0,
+        "name": "Cruel Thicket",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:thorns:cruel-thicket"
+      },
+      {
+        "featureId": "GidNLmDQBdokwgUn",
+        "level": 6,
+        "name": "Bramble Armor",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.GidNLmDQBdokwgUn"
+      }
+    ],
     "id": "O2TI9qvCdf45jvBX",
     "name": "Thorns Subdomain",
     "parentDomainTags": ["Plant"],
@@ -719,7 +1630,22 @@
   "OIC39qE2PPdjPuNk": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>3rd—Heroism</li>\n<li>6th—Heroism, Greater</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "0BFuaPpChxXneJwF",
+        "level": 0,
+        "name": "Touch of Glory",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0BFuaPpChxXneJwF"
+      },
+      {
+        "featureId": "subdomain-power:heroism:aura-of-heroism",
+        "level": 8,
+        "name": "Aura of Heroism",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:heroism:aura-of-heroism"
+      }
+    ],
     "id": "OIC39qE2PPdjPuNk",
     "name": "Heroism Subdomain",
     "parentDomainTags": ["Glory"],
@@ -729,7 +1655,22 @@
   "OdjyOoQ39ZHogGUH": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Enthrall</li>\n<li>8th—Euphoric Tranquility</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:love:adoration",
+        "level": 0,
+        "name": "Adoration",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:love:adoration"
+      },
+      {
+        "featureId": "1qz9sHHlXkyJDCxo",
+        "level": 8,
+        "name": "Charming Smile",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1qz9sHHlXkyJDCxo"
+      }
+    ],
     "id": "OdjyOoQ39ZHogGUH",
     "name": "Love Subdomain",
     "parentDomainTags": ["Charm"],
@@ -739,7 +1680,22 @@
   "OxLSX3yUpgcf1J5O": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Calm Emotions</li>\n<li>3rd—Create Food and Water</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:family:binding-ties",
+        "level": 0,
+        "name": "Binding Ties",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:family:binding-ties"
+      },
+      {
+        "featureId": "eEuj2X72Q5jP6xAj",
+        "level": 8,
+        "name": "Unity",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eEuj2X72Q5jP6xAj"
+      }
+    ],
     "id": "OxLSX3yUpgcf1J5O",
     "name": "Family Subdomain",
     "parentDomainTags": ["Community"],
@@ -749,7 +1705,22 @@
   "Q29rN7LtWcTWgtuZ": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Summon Nature's Ally IV (deinonychus or pteranodon only),</li>\n<li>5th—Beast Shape III</li>\n<li>7th—Summon Nature's Ally VII (brachiosaurus or tyrannosaurus only).</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "vDsgDSlIerRm7ISE",
+        "level": 0,
+        "name": "Venomous Stare",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.vDsgDSlIerRm7ISE"
+      },
+      {
+        "featureId": "subdomain-power:saurian:dinosaur-companion",
+        "level": 0,
+        "name": "Dinosaur Companion",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:saurian:dinosaur-companion"
+      }
+    ],
     "id": "Q29rN7LtWcTWgtuZ",
     "name": "Saurian Subdomain",
     "parentDomainTags": ["Scalykind"],
@@ -759,7 +1730,22 @@
   "QJi75fvhCPwa2e5U": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd -Summon Monster II</li>\n<li>5th - Summon Monster V</li>\n<li>7th - Insanity</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:dark-tapestry:it-came-from-beyond",
+        "level": 0,
+        "name": "It Came from Beyond",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:dark-tapestry:it-came-from-beyond"
+      },
+      {
+        "featureId": "XhpyFMIbhL5ogMVe",
+        "level": 8,
+        "name": "Part the Veil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.XhpyFMIbhL5ogMVe"
+      }
+    ],
     "id": "QJi75fvhCPwa2e5U",
     "name": "Dark Tapestry Subdomain",
     "parentDomainTags": ["Void"],
@@ -769,7 +1755,22 @@
   "QKE50owA3SkjjESt": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Flaming Sphere</li>\n<li>5th—Flame Strike</li>\n<li>7th—Delayed Blast Fireball</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:arson:call-fire",
+        "level": 0,
+        "name": "Call Fire",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:arson:call-fire"
+      },
+      {
+        "featureId": "VFejQ7mOCxSp26xk",
+        "level": 6,
+        "name": "Fire Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.VFejQ7mOCxSp26xk"
+      }
+    ],
     "id": "QKE50owA3SkjjESt",
     "name": "Arson Subdomain",
     "parentDomainTags": ["Fire"],
@@ -779,7 +1780,22 @@
   "QO6oW3l5Oio6fyDP": {
     "changes": [],
     "description": "<p>Replacement Domain Spells:</p>\n<ul>\n<li>1st—Cause Fear</li>\n<li>3rd— Scare</li>\n<li>4th—Fear.</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "90Z23Z4U7ujOcvco",
+        "level": 0,
+        "name": "Touch of Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.90Z23Z4U7ujOcvco"
+      },
+      {
+        "featureId": "subdomain-power:fear:feed-on-fear",
+        "level": 8,
+        "name": "Feed on Fear",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:fear:feed-on-fear"
+      }
+    ],
     "id": "QO6oW3l5Oio6fyDP",
     "name": "Fear Subdomain",
     "parentDomainTags": ["Evil"],
@@ -789,7 +1805,22 @@
   "QzNDIUZajHu8pdxg": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Pyrotechnics</li>\n<li>3rd—Stinking Cloud</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:smoke:cloud-of-smoke",
+        "level": 0,
+        "name": "Cloud of Smoke",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:smoke:cloud-of-smoke"
+      },
+      {
+        "featureId": "VFejQ7mOCxSp26xk",
+        "level": 6,
+        "name": "Fire Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.VFejQ7mOCxSp26xk"
+      }
+    ],
     "id": "QzNDIUZajHu8pdxg",
     "name": "Smoke Subdomain",
     "parentDomainTags": ["Fire"],
@@ -799,7 +1830,22 @@
   "Rfib6GcSF86xCZZu": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Shield Other</li>\n<li>6th—Sacrificial Oath</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "8hVa9HwekAWpgHid",
+        "level": 0,
+        "name": "Inspiring Word (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.8hVa9HwekAWpgHid"
+      },
+      {
+        "featureId": "subdomain-power:martyr:sacrificial-bond",
+        "level": 8,
+        "name": "Sacrificial Bond",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:martyr:sacrificial-bond"
+      }
+    ],
     "id": "Rfib6GcSF86xCZZu",
     "name": "Martyr Subdomain",
     "parentDomainTags": ["Nobility"],
@@ -809,7 +1855,29 @@
   "S3e7NaopczIYCfO8": {
     "changes": [],
     "description": "<p><b>Replacement Power:</b> You gain Intimidate as a class skill; this replaces the Glory domain’s increased save DC to resist channel positive energy.</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Hollow Heroism</li>\n<li>7th—Hollow Heroism, Greater</li>\n<li>9th—Overwhelming Presence.</li>\n<li>If you are evil, replace the domain spells Bless Weapon and Holy Aura with Aid and Unholy Aura respectively.</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "0BFuaPpChxXneJwF",
+        "level": 0,
+        "name": "Touch of Glory",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.0BFuaPpChxXneJwF"
+      },
+      {
+        "featureId": "subdomain-power:hubris:class-skill",
+        "level": 0,
+        "name": "Class Skill",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:hubris:class-skill"
+      },
+      {
+        "featureId": "subdomain-power:hubris:divine-demand",
+        "level": 6,
+        "name": "Divine Demand",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:hubris:divine-demand"
+      }
+    ],
     "id": "S3e7NaopczIYCfO8",
     "name": "Hubris Subdomain",
     "parentDomainTags": ["Glory", "Nobility"],
@@ -856,7 +1924,22 @@
   "TsVqYiOKJyrLT9pF": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Vampiric Touch</li>\n<li>5th—Wall Of Thorns</li>\n<li>7th—Inflict Serious Wounds, Mass</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "PXdTxpse6nHDdQyR",
+        "level": 0,
+        "name": "Battle Rage",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.PXdTxpse6nHDdQyR"
+      },
+      {
+        "featureId": "subdomain-power:blood:wounding-blade",
+        "level": 8,
+        "name": "Wounding Blade",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:blood:wounding-blade"
+      }
+    ],
     "id": "TsVqYiOKJyrLT9pF",
     "name": "Blood Subdomain",
     "parentDomainTags": ["War"],
@@ -866,7 +1949,22 @@
   "U0EqUtAbofuADisW": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Faerie Fire</li>\n<li>3rd—Daylight</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:light:blinding-flash",
+        "level": 0,
+        "name": "Blinding Flash",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:light:blinding-flash"
+      },
+      {
+        "featureId": "QZJtfwamnWW0mHjJ",
+        "level": 8,
+        "name": "Nimbus of Light",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QZJtfwamnWW0mHjJ"
+      }
+    ],
     "id": "U0EqUtAbofuADisW",
     "name": "Light Subdomain",
     "parentDomainTags": ["Sun"],
@@ -876,7 +1974,22 @@
   "U14SmZ4MKr2UksTu": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Enlarge Person</li>\n<li>5th—Righteous Might</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:growth:enlarge",
+        "level": 0,
+        "name": "Enlarge",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:growth:enlarge"
+      },
+      {
+        "featureId": "GidNLmDQBdokwgUn",
+        "level": 6,
+        "name": "Bramble Armor",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.GidNLmDQBdokwgUn"
+      }
+    ],
     "id": "U14SmZ4MKr2UksTu",
     "name": "Growth Subdomain",
     "parentDomainTags": ["Plant"],
@@ -886,7 +1999,22 @@
   "VQmmgl4iZJosmmIk": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>5th—Raise Dead</li>\n<li>7th—Resurrection</li>\n<li>9th—True Resurrection</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "8iWGEKKdoKTHsDy5",
+        "level": 0,
+        "name": "Rebuke Death",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.8iWGEKKdoKTHsDy5"
+      },
+      {
+        "featureId": "subdomain-power:resurrection:gift-of-life",
+        "level": 8,
+        "name": "Gift of Life",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:resurrection:gift-of-life"
+      }
+    ],
     "id": "VQmmgl4iZJosmmIk",
     "name": "Resurrection Subdomain",
     "parentDomainTags": ["Healing"],
@@ -896,7 +2024,22 @@
   "VciWXEALxtJwwIYk": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Bless</li>\n<li>6th—Heroes' Feast</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "Iu8gyBT93dRpGtgH",
+        "level": 0,
+        "name": "Strength Surge (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Iu8gyBT93dRpGtgH"
+      },
+      {
+        "featureId": "subdomain-power:resolve:bestow-resolve",
+        "level": 8,
+        "name": "Bestow Resolve",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:resolve:bestow-resolve"
+      }
+    ],
     "id": "VciWXEALxtJwwIYk",
     "name": "Resolve Subdomain",
     "parentDomainTags": ["Strength"],
@@ -937,7 +2080,22 @@
   "WsTeyXwNCOSvvcoU": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>3rd—Hydraulic Torrent</li>\n<li>4th—Control Water</li>\n<li>5th—Fickle Winds</li>\n<li>9th—Tsunami</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "Kgcm3ye8CYGipsg3",
+        "level": 0,
+        "name": "Storm Burst",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Kgcm3ye8CYGipsg3"
+      },
+      {
+        "featureId": "subdomain-power:monsoon:refreshing-rain",
+        "level": 8,
+        "name": "Refreshing Rain",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:monsoon:refreshing-rain"
+      }
+    ],
     "id": "WsTeyXwNCOSvvcoU",
     "name": "Monsoon Subdomain",
     "parentDomainTags": ["Weather"],
@@ -947,7 +2105,22 @@
   "X8hwy7iMWx9yjJeM": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Chain of Perdition</li>\n<li>6th—Planar Ally (psychopomps only)</li>\n<li>8th—Trap the Soul</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "u5LefrXZxQgLqmyJ",
+        "level": 0,
+        "name": "Bleeding Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.u5LefrXZxQgLqmyJ"
+      },
+      {
+        "featureId": "subdomain-power:psychopomp:spirit-touch",
+        "level": 6,
+        "name": "Spirit Touch",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:psychopomp:spirit-touch"
+      }
+    ],
     "id": "X8hwy7iMWx9yjJeM",
     "name": "Psychopomp Subdomain",
     "parentDomainTags": ["Death", "Repose"],
@@ -957,7 +2130,22 @@
   "YvkymTmb5YLbqsjK": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—True Strike</li>\n<li>3rd—Magic Fang, Greater</li>\n<li>4th—Force Punch</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:fist:wooden-fist",
+        "level": 0,
+        "name": "Wooden Fist",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:fist:wooden-fist"
+      },
+      {
+        "featureId": "WMtJbAlvzaLnzYVy",
+        "level": 8,
+        "name": "Might of the Gods",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WMtJbAlvzaLnzYVy"
+      }
+    ],
     "id": "YvkymTmb5YLbqsjK",
     "name": "Fist Subdomain",
     "parentDomainTags": ["Strength"],
@@ -967,7 +2155,22 @@
   "auclZiO7Vh7F2vbx": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Moonstruck</li>\n<li>6th—Phantasmal Web</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:insanity:insane-focus",
+        "level": 0,
+        "name": "Insane Focus",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:insanity:insane-focus"
+      },
+      {
+        "featureId": "Aw4xfA8YSYHGiUXV",
+        "level": 8,
+        "name": "Aura of Madness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Aw4xfA8YSYHGiUXV"
+      }
+    ],
     "id": "auclZiO7Vh7F2vbx",
     "name": "Insanity Subdomain",
     "parentDomainTags": ["Madness"],
@@ -977,7 +2180,22 @@
   "bCyOJTqkHjOCgPzx": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Bane</li>\n<li>3rd—Bestow Curse</li>\n<li>6th—Eyebite</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:curse:malign-eye",
+        "level": 0,
+        "name": "Malign Eye",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:curse:malign-eye"
+      },
+      {
+        "featureId": "APcvztd1jGZJ4xm7",
+        "level": 6,
+        "name": "Good Fortune",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.APcvztd1jGZJ4xm7"
+      }
+    ],
     "id": "bCyOJTqkHjOCgPzx",
     "name": "Curse Subdomain",
     "parentDomainTags": ["Luck"],
@@ -985,9 +2203,37 @@
     "uuid": "Compendium.pf1.class-abilities.Item.bCyOJTqkHjOCgPzx"
   },
   "bFQflm8KUQZ8qPMv": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Sleep</li>\n<li>6th—Nightmare</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "pmAO1Sni8xx71pLF",
+        "level": 0,
+        "name": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF",
+        "resolved": false,
+        "uuid": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF"
+      },
+      {
+        "featureId": "subdomain-power:night:night-hunter",
+        "level": 0,
+        "name": "Night Hunter",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:night:night-hunter"
+      },
+      {
+        "featureId": "M8IQnVMYyqh1Mrl7",
+        "level": 8,
+        "name": "Eyes of Darkness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.M8IQnVMYyqh1Mrl7"
+      }
+    ],
     "id": "bFQflm8KUQZ8qPMv",
     "name": "Night Subdomain",
     "parentDomainTags": ["Darkness"],
@@ -997,7 +2243,22 @@
   "bqJOJF5OXJlOxjf3": {
     "changes": [],
     "description": "<p><b>Replacement Power:</b> <em>Note:</em> Only creatures with the <a href=\"https://aonprd.com/TraitDisplay.aspx?ItemName=Kobold%20Faith\">Kobold Faith</a> trait can take this subdomain.</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Alarm</li>\n<li>5th—Illusory Wall</li>\n<li>6th—Veil</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:ambush:chameleon-aspect",
+        "level": 0,
+        "name": "Chameleon Aspect",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:ambush:chameleon-aspect"
+      },
+      {
+        "featureId": "Jsa2hTi4YCwLzFdf",
+        "level": 8,
+        "name": "Master's Illusion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Jsa2hTi4YCwLzFdf"
+      }
+    ],
     "id": "bqJOJF5OXJlOxjf3",
     "name": "Ambush Subdomain",
     "parentDomainTags": ["Trickery"],
@@ -1005,9 +2266,37 @@
     "uuid": "Compendium.pf1.class-abilities.Item.bqJOJF5OXJlOxjf3"
   },
   "btjzccR1YDUNW1td": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1",
+        "target": "bonusFeats",
+        "type": "untyped"
+      }
+    ],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Faerie Fire</li>\n<li>4th—Moonstruck</li>\n<li>6th—Dream</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "pmAO1Sni8xx71pLF",
+        "level": 0,
+        "name": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF",
+        "resolved": false,
+        "uuid": "Compendium.pf1.feats.Item.pmAO1Sni8xx71pLF"
+      },
+      {
+        "featureId": "Le6qmKF8wkhVCPCz",
+        "level": 0,
+        "name": "Touch of Darkness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Le6qmKF8wkhVCPCz"
+      },
+      {
+        "featureId": "subdomain-power:moon:moonfire",
+        "level": 8,
+        "name": "Moonfire",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:moon:moonfire"
+      }
+    ],
     "id": "btjzccR1YDUNW1td",
     "name": "Moon Subdomain",
     "parentDomainTags": ["Darkness"],
@@ -1017,7 +2306,22 @@
   "cILuW33UDhe2DYsk": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Know The Enemy</li>\n<li>2nd—Fox's Cunning</li>\n<li>6th—Battlemind Link</li>\n<li>8th—Circle Of Clarity</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "4diLPqggIUsWxR0N",
+        "level": 0,
+        "name": "Calming Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4diLPqggIUsWxR0N"
+      },
+      {
+        "featureId": "subdomain-power:education:teaching-moment",
+        "level": 8,
+        "name": "Teaching Moment",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:education:teaching-moment"
+      }
+    ],
     "id": "cILuW33UDhe2DYsk",
     "name": "Education Subdomain",
     "parentDomainTags": ["Community", "Knowledge"],
@@ -1027,7 +2331,22 @@
   "cJ0PUlm41aroXQa8": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Create Pit</li>\n<li>3rd—Spiked Pit</li>\n<li>6th—Hungry Pit</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "L5jrgNDA43dMH1wm",
+        "level": 0,
+        "name": "Acid Dart",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.L5jrgNDA43dMH1wm"
+      },
+      {
+        "featureId": "subdomain-power:caves:tunnel-runner",
+        "level": 8,
+        "name": "Tunnel Runner",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:caves:tunnel-runner"
+      }
+    ],
     "id": "cJ0PUlm41aroXQa8",
     "name": "Caves Subdomain",
     "parentDomainTags": ["Earth"],
@@ -1037,7 +2356,29 @@
   "cN8MjvuVuNGfBDJL": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>7th—Limited Wish</li>\n<li>8th—Polymorph Any Object</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "zeLaBkwTp9wlzZJv",
+        "level": 0,
+        "name": "Artificer's Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.zeLaBkwTp9wlzZJv"
+      },
+      {
+        "featureId": "9ezUAbso44HrKLyr",
+        "level": 8,
+        "name": "Dancing Weapons",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9ezUAbso44HrKLyr"
+      },
+      {
+        "featureId": "subdomain-power:construct:animate-servant",
+        "level": 8,
+        "name": "Animate Servant",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:construct:animate-servant"
+      }
+    ],
     "id": "cN8MjvuVuNGfBDJL",
     "name": "Construct Subdomain",
     "parentDomainTags": ["Artifice"],
@@ -1047,7 +2388,22 @@
   "cwenReAVnI9Dtp4R": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Magic Aura</li>\n<li>4th—Arcane Eye</li>\n<li>6th—Analyze Dweomer</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:arcane:arcane-beacon",
+        "level": 0,
+        "name": "Arcane Beacon",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:arcane:arcane-beacon"
+      },
+      {
+        "featureId": "hslkjPA3AVl3hDWu",
+        "level": 8,
+        "name": "Dispelling Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hslkjPA3AVl3hDWu"
+      }
+    ],
     "id": "cwenReAVnI9Dtp4R",
     "name": "Arcane Subdomain",
     "parentDomainTags": ["Magic"],
@@ -1057,7 +2413,22 @@
   "dSieXFuoMusIuMN8": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>7th—Disintegrate</li>\n<li>9th—Fiery Body</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "V57hEfKt1MroRI91",
+        "level": 0,
+        "name": "Fire Bolt",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.V57hEfKt1MroRI91"
+      },
+      {
+        "featureId": "subdomain-power:ash:wall-of-ashes",
+        "level": 8,
+        "name": "Wall of Ashes",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:ash:wall-of-ashes"
+      }
+    ],
     "id": "dSieXFuoMusIuMN8",
     "name": "Ash Subdomain",
     "parentDomainTags": ["Fire"],
@@ -1067,7 +2438,22 @@
   "dkcWJ80XYWvnM1h7": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Pernicious Poison</li>\n<li>6th—Cloudkill</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:venom:venomous-saliva",
+        "level": 0,
+        "name": "Venomous Saliva",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:venom:venomous-saliva"
+      },
+      {
+        "featureId": "szRzBgTW01Vov922",
+        "level": 4,
+        "name": "Serpent Companion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.szRzBgTW01Vov922"
+      }
+    ],
     "id": "dkcWJ80XYWvnM1h7",
     "name": "Venom Subdomain",
     "parentDomainTags": ["Scalykind"],
@@ -1077,7 +2463,22 @@
   "eUqLGyU8jR5vIhgE": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Alarm</li>\n<li>3rd—Glyph Of Warding</li>\n<li>7th—Guards and Wards</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "4diLPqggIUsWxR0N",
+        "level": 0,
+        "name": "Calming Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.4diLPqggIUsWxR0N"
+      },
+      {
+        "featureId": "subdomain-power:home:guarded-hearth",
+        "level": 8,
+        "name": "Guarded Hearth",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:home:guarded-hearth"
+      }
+    ],
     "id": "eUqLGyU8jR5vIhgE",
     "name": "Home Subdomain",
     "parentDomainTags": ["Community"],
@@ -1087,7 +2488,22 @@
   "f6Cu0YDPK0oYJ7jw": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>4th—Phantasmal Killer</li>\n<li>6th—Cloak of Dreams</li>\n<li>9th—Weird</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:nightmare:fearful-touch",
+        "level": 0,
+        "name": "Fearful Touch",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:nightmare:fearful-touch"
+      },
+      {
+        "featureId": "Aw4xfA8YSYHGiUXV",
+        "level": 8,
+        "name": "Aura of Madness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Aw4xfA8YSYHGiUXV"
+      }
+    ],
     "id": "f6Cu0YDPK0oYJ7jw",
     "name": "Nightmare Subdomain",
     "parentDomainTags": ["Madness"],
@@ -1097,7 +2513,22 @@
   "fOrSCrSzq2R79Xne": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Warding Weapon</li>\n<li>5th—Dance of a Hundred Cuts</li>\n<li>8th—Dance of a Thousand Cuts</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:duels:divine-challenge",
+        "level": 0,
+        "name": "Divine Challenge",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:duels:divine-challenge"
+      },
+      {
+        "featureId": "NDysrxC1AH0gLcqd",
+        "level": 8,
+        "name": "Weapon Master",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NDysrxC1AH0gLcqd"
+      }
+    ],
     "id": "fOrSCrSzq2R79Xne",
     "name": "Duels Subdomain",
     "parentDomainTags": ["War"],
@@ -1138,7 +2569,22 @@
   "gOMQuX8vUnNclNXT": {
     "changes": [],
     "description": "<p><b>Replacement Power:</b> When casting a Rites domain spell with a costly material component—or casting permanency on any domain spell—reduce the cost of the necessary components by 20%.</p>\n<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Sanctify Corpse</li>\n<li>5th—Permanency</li>\n<li>8th—Binding</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:rites:enduring-ritual",
+        "level": 0,
+        "name": "Enduring Ritual",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:rites:enduring-ritual"
+      },
+      {
+        "featureId": "hslkjPA3AVl3hDWu",
+        "level": 8,
+        "name": "Dispelling Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hslkjPA3AVl3hDWu"
+      }
+    ],
     "id": "gOMQuX8vUnNclNXT",
     "name": "Rites Subdomain",
     "parentDomainTags": ["Magic"],
@@ -1148,7 +2594,22 @@
   "gcbkOtnZ09HTsFzb": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Contagion</li>\n<li>4th—Poison</li>\n<li>6th—Harm</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "LY6y8GWhXzK8wDDZ",
+        "level": 0,
+        "name": "Wooden Fist",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.LY6y8GWhXzK8wDDZ"
+      },
+      {
+        "featureId": "subdomain-power:decay:aura-of-decay",
+        "level": 8,
+        "name": "Aura of Decay",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:decay:aura-of-decay"
+      }
+    ],
     "id": "gcbkOtnZ09HTsFzb",
     "name": "Decay Subdomain",
     "parentDomainTags": ["Plant"],
@@ -1158,7 +2619,22 @@
   "hFHJ4B9hwrGll8o4": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Heat Metal</li>\n<li>6th—Wall of Iron</li>\n<li>8th—Iron Body</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:metal:metal-fist",
+        "level": 0,
+        "name": "Metal Fist",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:metal:metal-fist"
+      },
+      {
+        "featureId": "An77ZbKHexO7P0UC",
+        "level": 6,
+        "name": "Acid Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.An77ZbKHexO7P0UC"
+      }
+    ],
     "id": "hFHJ4B9hwrGll8o4",
     "name": "Metal Subdomain",
     "parentDomainTags": ["Earth"],
@@ -1168,7 +2644,22 @@
   "hJV8YVdSn0NnTxww": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Castigate</li>\n<li>4th—Rebuke</li>\n<li>5th—Mark of Justice</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:judgment:chastisement",
+        "level": 0,
+        "name": "Chastisement",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:judgment:chastisement"
+      },
+      {
+        "featureId": "J4QibEdTUK559sGO",
+        "level": 8,
+        "name": "Staff of Order",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.J4QibEdTUK559sGO"
+      }
+    ],
     "id": "hJV8YVdSn0NnTxww",
     "name": "Judgment Subdomain",
     "parentDomainTags": ["Law"],
@@ -1178,7 +2669,22 @@
   "hLrCEEh06Nsfrhe9": {
     "changes": [],
     "description": "<p><b>Replacement Power:</b> Add Fly to your list of class skills. In addition, whenever you cast a spell that grants you a fly speed, your maneuverability increases by one step (up to perfect).</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Feather Fall</li>\n<li>3rd—Fly</li>\n<li>6th—Fly, Mass</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:feather:eyes-of-the-hawk",
+        "level": 0,
+        "name": "Eyes of the Hawk",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:feather:eyes-of-the-hawk"
+      },
+      {
+        "featureId": "1jMb1iCiNjS5yfwe",
+        "level": 4,
+        "name": "Animal Companion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1jMb1iCiNjS5yfwe"
+      }
+    ],
     "id": "hLrCEEh06Nsfrhe9",
     "name": "Feather Subdomain",
     "parentDomainTags": ["Animal"],
@@ -1188,7 +2694,22 @@
   "hZlhs7dfhWOfR2P6": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Cause Fear</li>\n<li>3rd—Vampiric Touch</li>\n<li>6th—Planar Binding (daemons only)</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "90Z23Z4U7ujOcvco",
+        "level": 0,
+        "name": "Touch of Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.90Z23Z4U7ujOcvco"
+      },
+      {
+        "featureId": "subdomain-power:daemon:whispering-evil",
+        "level": 8,
+        "name": "Whispering Evil",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:daemon:whispering-evil"
+      }
+    ],
     "id": "hZlhs7dfhWOfR2P6",
     "name": "Daemon Subdomain",
     "parentDomainTags": ["Evil"],
@@ -1229,7 +2750,22 @@
   "j4uzXCLo91dJszhU": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Enter Image</li>\n<li>9th—Overwhelming Presence</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:aristocracy:noble-visage",
+        "level": 0,
+        "name": "Noble Visage",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:aristocracy:noble-visage"
+      },
+      {
+        "featureId": "hd6MiVc69RyEuDpU",
+        "level": 8,
+        "name": "Leadership",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hd6MiVc69RyEuDpU"
+      }
+    ],
     "id": "j4uzXCLo91dJszhU",
     "name": "Aristocracy Subdomain",
     "parentDomainTags": ["Nobility"],
@@ -1239,7 +2775,22 @@
   "jYOMxBxMHT6MXajA": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Draconic Reservoir</li>\n<li>4th—Dragon's Breath</li>\n<li>6th—Form of the Dragon I</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "vDsgDSlIerRm7ISE",
+        "level": 0,
+        "name": "Venomous Stare",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.vDsgDSlIerRm7ISE"
+      },
+      {
+        "featureId": "subdomain-power:dragon:dragonbreath",
+        "level": 4,
+        "name": "Dragonbreath",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:dragon:dragonbreath"
+      }
+    ],
     "id": "jYOMxBxMHT6MXajA",
     "name": "Dragon Subdomain",
     "parentDomainTags": ["Scalykind"],
@@ -1249,7 +2800,22 @@
   "kCDtKTsnJekhb4lL": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Sow Thought</li>\n<li>3rd—Suggestion</li>\n<li>6th—Suggestion, Mass</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:innuendo:fool-s-privilege",
+        "level": 0,
+        "name": "Fool's Privilege",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:innuendo:fool-s-privilege"
+      },
+      {
+        "featureId": "Jsa2hTi4YCwLzFdf",
+        "level": 8,
+        "name": "Master's Illusion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Jsa2hTi4YCwLzFdf"
+      }
+    ],
     "id": "kCDtKTsnJekhb4lL",
     "name": "Innuendo Subdomain",
     "parentDomainTags": ["Trickery"],
@@ -1259,7 +2825,22 @@
   "kgFOpFrVPIw9vfWf": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Masterwork Transformation</li>\n<li>6th—Guards and Wards</li>\n<li>8th—Create Demiplane</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:greed:more-for-me",
+        "level": 0,
+        "name": "More for Me",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:greed:more-for-me"
+      },
+      {
+        "featureId": "Jsa2hTi4YCwLzFdf",
+        "level": 8,
+        "name": "Master's Illusion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Jsa2hTi4YCwLzFdf"
+      }
+    ],
     "id": "kgFOpFrVPIw9vfWf",
     "name": "Greed Subdomain",
     "parentDomainTags": ["Trickery"],
@@ -1269,7 +2850,22 @@
   "khH8Lg8cYd7GW6ZI": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Castigate</li>\n<li>5th—Castigate, Mass</li>\n<li>9th—Overwhelming Presence</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "AwMFhb8HETerKlVk",
+        "level": 0,
+        "name": "Touch of Law",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.AwMFhb8HETerKlVk"
+      },
+      {
+        "featureId": "subdomain-power:sovereignty:demand-subjugation",
+        "level": 8,
+        "name": "Demand Subjugation",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:sovereignty:demand-subjugation"
+      }
+    ],
     "id": "khH8Lg8cYd7GW6ZI",
     "name": "Sovereignty Subdomain",
     "parentDomainTags": ["Law"],
@@ -1279,7 +2875,22 @@
   "kmA5EX7k3Ol2rfPu": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Borrow Skill</li>\n<li>2nd—Share Language</li>\n<li>3rd—Coordinated Effort</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:cooperation:synergistic-touch",
+        "level": 0,
+        "name": "Synergistic Touch",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:cooperation:synergistic-touch"
+      },
+      {
+        "featureId": "eEuj2X72Q5jP6xAj",
+        "level": 8,
+        "name": "Unity",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eEuj2X72Q5jP6xAj"
+      }
+    ],
     "id": "kmA5EX7k3Ol2rfPu",
     "name": "Cooperation Subdomain",
     "parentDomainTags": ["Community"],
@@ -1289,7 +2900,22 @@
   "lSQOZL8w9pzbDMj0": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Crushing Despair</li>\n<li>6th—Wall Of Force</li>\n<li>8th—Prismatic Wall</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "QkHDkpopJ7P8g14c",
+        "level": 0,
+        "name": "Guarded Mind",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QkHDkpopJ7P8g14c"
+      },
+      {
+        "featureId": "subdomain-power:isolation:aura-of-isolation",
+        "level": 0,
+        "name": "Aura of Isolation",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:isolation:aura-of-isolation"
+      }
+    ],
     "id": "lSQOZL8w9pzbDMj0",
     "name": "Isolation Subdomain",
     "parentDomainTags": ["Void"],
@@ -1299,7 +2925,22 @@
   "ldjn3XcCkF7CqmNH": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Bless Water</li>\n<li>5th—Cleanse</li>\n<li>7th—Resurrection</li>\n<li>9th—Miracle</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:divine:divine-vessel",
+        "level": 0,
+        "name": "Divine Vessel",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:divine:divine-vessel"
+      },
+      {
+        "featureId": "hslkjPA3AVl3hDWu",
+        "level": 8,
+        "name": "Dispelling Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hslkjPA3AVl3hDWu"
+      }
+    ],
     "id": "ldjn3XcCkF7CqmNH",
     "name": "Divine Subdomain",
     "parentDomainTags": ["Magic"],
@@ -1309,7 +2950,22 @@
   "mHGqr3eA8cupQ2BW": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Jump</li>\n<li>3rd—Animal Aspect, Greater</li>\n<li>6th—Heroism, Greater</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:competition:athletic-exploit",
+        "level": 0,
+        "name": "Athletic Exploit",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:competition:athletic-exploit"
+      },
+      {
+        "featureId": "WMtJbAlvzaLnzYVy",
+        "level": 8,
+        "name": "Might of the Gods",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WMtJbAlvzaLnzYVy"
+      }
+    ],
     "id": "mHGqr3eA8cupQ2BW",
     "name": "Competition Subdomain",
     "parentDomainTags": ["Strength"],
@@ -1319,7 +2975,22 @@
   "mKu7cXOlntB043QS": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Silent Image</li>\n<li>2nd—Minor Image</li>\n<li>3rd—Major Image</li>\n<li>5th—Dream</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "FcJawJG5igJPDHnQ",
+        "level": 0,
+        "name": "Bit of Luck",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.FcJawJG5igJPDHnQ"
+      },
+      {
+        "featureId": "subdomain-power:imagination:haze-of-daydreams",
+        "level": 6,
+        "name": "Haze of Daydreams",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:imagination:haze-of-daydreams"
+      }
+    ],
     "id": "mKu7cXOlntB043QS",
     "name": "Imagination Subdomain",
     "parentDomainTags": ["Luck"],
@@ -1329,7 +3000,22 @@
   "mO0pMgYsKx98oiHg": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Forbid Action</li>\n<li>5th—Forbid Action, Greater</li>\n<li>9th—Hold Monster, Mass</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:legislation:prohibition",
+        "level": 0,
+        "name": "Prohibition",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:legislation:prohibition"
+      },
+      {
+        "featureId": "J4QibEdTUK559sGO",
+        "level": 8,
+        "name": "Staff of Order",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.J4QibEdTUK559sGO"
+      }
+    ],
     "id": "mO0pMgYsKx98oiHg",
     "name": "Legislation Subdomain",
     "parentDomainTags": ["Law", "Rune"],
@@ -1339,7 +3025,22 @@
   "nKiYWIhQdZuRzkU7": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Remove Disease</li>\n<li>4th—Neutralize Poison</li>\n<li>5th—Break Enchantment</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:restoration:restorative-touch",
+        "level": 0,
+        "name": "Restorative Touch",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:restoration:restorative-touch"
+      },
+      {
+        "featureId": "a7yviTyteK4X7A0c",
+        "level": 6,
+        "name": "Healer's Blessing",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.a7yviTyteK4X7A0c"
+      }
+    ],
     "id": "nKiYWIhQdZuRzkU7",
     "name": "Restoration Subdomain",
     "parentDomainTags": ["Healing"],
@@ -1349,7 +3050,22 @@
   "og1N9lhODpNDQqEu": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Ghoul Touch</li>\n<li>4th—Enervation</li>\n<li>9th—Energy Drain</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:undead:death-s-kiss",
+        "level": 0,
+        "name": "Death's Kiss",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:undead:death-s-kiss"
+      },
+      {
+        "featureId": "IJo18Mq51RssxEqr",
+        "level": 8,
+        "name": "Death's Embrace (CLE)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IJo18Mq51RssxEqr"
+      }
+    ],
     "id": "og1N9lhODpNDQqEu",
     "name": "Undead Subdomain",
     "parentDomainTags": ["Death"],
@@ -1359,7 +3075,22 @@
   "p9yDKj9mQz1bBiJp": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Calcific Touch</li>\n<li>5th—Stoneskin</li>\n<li>6th—Flesh to Stone</li>\n<li>8th—Statue</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:petrification:fossil-form",
+        "level": 0,
+        "name": "Fossil Form",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:petrification:fossil-form"
+      },
+      {
+        "featureId": "An77ZbKHexO7P0UC",
+        "level": 6,
+        "name": "Acid Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.An77ZbKHexO7P0UC"
+      }
+    ],
     "id": "p9yDKj9mQz1bBiJp",
     "name": "Petrification Subdomain",
     "parentDomainTags": ["Earth"],
@@ -1367,9 +3098,30 @@
     "uuid": "Compendium.pf1.class-abilities.Item.p9yDKj9mQz1bBiJp"
   },
   "q059IbvYqYLncBTM": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "10",
+        "target": "landSpeed",
+        "type": "base"
+      }
+    ],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Floating Disk</li>\n<li>5th—Overland Flight</li>\n<li>9th—Gate</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:trade:silver-tongued-haggler",
+        "level": 0,
+        "name": "Silver-Tongued Haggler",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:trade:silver-tongued-haggler"
+      },
+      {
+        "featureId": "fkjS3pJidUdLWsFF",
+        "level": 8,
+        "name": "Dimensional Hop (Domain Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fkjS3pJidUdLWsFF"
+      }
+    ],
     "id": "q059IbvYqYLncBTM",
     "name": "Trade Subdomain",
     "parentDomainTags": ["Travel"],
@@ -1379,7 +3131,22 @@
   "qztav66jccDyasWd": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Confusion (lesser)</li>\n<li>3rd—Displacement</li>\n<li>6th—Planar Binding (proteans only)</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "eZ569ZcO7BeZAqB6",
+        "level": 0,
+        "name": "Touch of Chaos",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eZ569ZcO7BeZAqB6"
+      },
+      {
+        "featureId": "subdomain-power:protean:aura-of-chaos",
+        "level": 8,
+        "name": "Aura of Chaos",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:protean:aura-of-chaos"
+      }
+    ],
     "id": "qztav66jccDyasWd",
     "name": "Protean Subdomain",
     "parentDomainTags": ["Chaos"],
@@ -1389,7 +3156,22 @@
   "rBKNzyyJDrM6rhVq": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Rage</li>\n<li>6th—Bull's Strength, Mass</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:ferocity:ferocious-strike",
+        "level": 0,
+        "name": "Ferocious Strike",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:ferocity:ferocious-strike"
+      },
+      {
+        "featureId": "WMtJbAlvzaLnzYVy",
+        "level": 8,
+        "name": "Might of the Gods",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WMtJbAlvzaLnzYVy"
+      }
+    ],
     "id": "rBKNzyyJDrM6rhVq",
     "name": "Ferocity Subdomain",
     "parentDomainTags": ["Strength"],
@@ -1399,7 +3181,22 @@
   "rOSQZD57Jz4eNLt3": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Anonymous Interaction</li>\n<li>4th—Zone of Silence</li>\n<li>8th—Mind Blank</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:espionage:deep-cover",
+        "level": 0,
+        "name": "Deep Cover",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:espionage:deep-cover"
+      },
+      {
+        "featureId": "yUdt1JIkSsQabXTF",
+        "level": 6,
+        "name": "Remote Viewing",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yUdt1JIkSsQabXTF"
+      }
+    ],
     "id": "rOSQZD57Jz4eNLt3",
     "name": "Espionage Subdomain",
     "parentDomainTags": ["Knowledge", "Trickery"],
@@ -1409,7 +3206,22 @@
   "rPSf6FDCJOS2pkql": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Mirror Image</li>\n<li>7th—Project Image</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:deception:sudden-shift",
+        "level": 0,
+        "name": "Sudden Shift",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:deception:sudden-shift"
+      },
+      {
+        "featureId": "Jsa2hTi4YCwLzFdf",
+        "level": 8,
+        "name": "Master's Illusion",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Jsa2hTi4YCwLzFdf"
+      }
+    ],
     "id": "rPSf6FDCJOS2pkql",
     "name": "Deception Subdomain",
     "parentDomainTags": ["Trickery"],
@@ -1456,7 +3268,22 @@
   "s8IfMD55rv71JTur": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Magic Fang</li>\n<li>2nd— Enemy's Heart</li>\n<li>3rd—Magic Fang, Greater</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:cannibalism:consume-the-enemy",
+        "level": 0,
+        "name": "Consume the Enemy",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:cannibalism:consume-the-enemy"
+      },
+      {
+        "featureId": "wK9bxQqe49GfT9xh",
+        "level": 8,
+        "name": "Scythe of Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wK9bxQqe49GfT9xh"
+      }
+    ],
     "id": "s8IfMD55rv71JTur",
     "name": "Cannibalism Subdomain",
     "parentDomainTags": ["Evil"],
@@ -1466,7 +3293,22 @@
   "s9LwNl1ZzPJvRjIs": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Diagnose Disease</li>\n<li>2nd—Placebo Effect</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:medicine:blessed-surgery",
+        "level": 0,
+        "name": "Blessed Surgery",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:medicine:blessed-surgery"
+      },
+      {
+        "featureId": "a7yviTyteK4X7A0c",
+        "level": 6,
+        "name": "Healer's Blessing",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.a7yviTyteK4X7A0c"
+      }
+    ],
     "id": "s9LwNl1ZzPJvRjIs",
     "name": "Medicine Subdomain",
     "parentDomainTags": ["Healing"],
@@ -1507,7 +3349,22 @@
   "tPYmbs5ChEojyPSe": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>7th—Freezing Sphere</li>\n<li>9th—Polar Ray</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "ructcpEg6rejcpYQ",
+        "level": 0,
+        "name": "Icicle",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ructcpEg6rejcpYQ"
+      },
+      {
+        "featureId": "subdomain-power:ice:body-of-ice",
+        "level": 8,
+        "name": "Body of Ice",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:ice:body-of-ice"
+      }
+    ],
     "id": "tPYmbs5ChEojyPSe",
     "name": "Ice Subdomain",
     "parentDomainTags": ["Water"],
@@ -1517,7 +3374,22 @@
   "tifxrlrlPH6xIb17": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Divine Favor</li>\n<li>3rd—Prayer</li>\n<li>6th—Planar Ally (archon only)</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "7td8qAPvj9YEasha",
+        "level": 0,
+        "name": "Touch of Good",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7td8qAPvj9YEasha"
+      },
+      {
+        "featureId": "subdomain-power:archon:aura-of-menace",
+        "level": 8,
+        "name": "Aura of Menace",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:archon:aura-of-menace"
+      }
+    ],
     "id": "tifxrlrlPH6xIb17",
     "name": "Archon Subdomain",
     "parentDomainTags": ["Good", "Law"],
@@ -1527,7 +3399,22 @@
   "uFSLnLZkYJycxB6b": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Slipstream</li>\n<li>3rd—Water Walk</li>\n<li>9th—Tsunami</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:oceans:surge",
+        "level": 0,
+        "name": "Surge",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:oceans:surge"
+      },
+      {
+        "featureId": "K7R4SXNKvzq5xmQK",
+        "level": 6,
+        "name": "Cold Resistance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.K7R4SXNKvzq5xmQK"
+      }
+    ],
     "id": "uFSLnLZkYJycxB6b",
     "name": "Oceans Subdomain",
     "parentDomainTags": ["Water"],
@@ -1537,7 +3424,22 @@
   "vrBRbL0zpUVLqBjF": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Remove Fear</li>\n<li>5th—Command, Greater</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:loyalty:touch-of-loyalty",
+        "level": 0,
+        "name": "Touch of Loyalty",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:loyalty:touch-of-loyalty"
+      },
+      {
+        "featureId": "J4QibEdTUK559sGO",
+        "level": 8,
+        "name": "Staff of Order",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.J4QibEdTUK559sGO"
+      }
+    ],
     "id": "vrBRbL0zpUVLqBjF",
     "name": "Loyalty Subdomain",
     "parentDomainTags": ["Law"],
@@ -1547,7 +3449,22 @@
   "xDLxqe463zMv22QC": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Delay Pain</li>\n<li>2nd—Instrument of Agony</li>\n<li>3rd—Agonize</li>\n<li>5th—Symbol of Pain</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "90Z23Z4U7ujOcvco",
+        "level": 0,
+        "name": "Touch of Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.90Z23Z4U7ujOcvco"
+      },
+      {
+        "featureId": "subdomain-power:kyton:pain-is-power",
+        "level": 8,
+        "name": "Pain Is Power",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:kyton:pain-is-power"
+      }
+    ],
     "id": "xDLxqe463zMv22QC",
     "name": "Kyton Subdomain",
     "parentDomainTags": ["Evil", "Law"],
@@ -1557,7 +3474,22 @@
   "xSNDqJG0Bt9J6ZOY": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Charm Person</li>\n<li>5th— Dominate Person</li>\n<li>8th—Binding</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "AwMFhb8HETerKlVk",
+        "level": 0,
+        "name": "Touch of Law",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.AwMFhb8HETerKlVk"
+      },
+      {
+        "featureId": "subdomain-power:slavery:master-s-yoke",
+        "level": 8,
+        "name": "Master's Yoke",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:slavery:master-s-yoke"
+      }
+    ],
     "id": "xSNDqJG0Bt9J6ZOY",
     "name": "Slavery Subdomain",
     "parentDomainTags": ["Law"],
@@ -1567,7 +3499,22 @@
   "yAz6IHIN1xd9vZjR": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Command</li>\n<li>3rd— Bestow Curse</li>\n<li>7th—Symbol of Persuasion</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "AwMFhb8HETerKlVk",
+        "level": 0,
+        "name": "Touch of Law",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.AwMFhb8HETerKlVk"
+      },
+      {
+        "featureId": "subdomain-power:tyranny:tyrannical-strike",
+        "level": 8,
+        "name": "Tyrannical Strike",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:tyranny:tyrannical-strike"
+      }
+    ],
     "id": "yAz6IHIN1xd9vZjR",
     "name": "Tyranny Subdomain",
     "parentDomainTags": ["Law"],
@@ -1577,7 +3524,22 @@
   "yJr2uciQYegfwwcv": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>2nd—Aid</li>\n<li>5th—Command, Greater</li>\n<li>8th—Planar Ally, Greater</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:tactics:seize-the-initiative",
+        "level": 0,
+        "name": "Seize the Initiative",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:tactics:seize-the-initiative"
+      },
+      {
+        "featureId": "NDysrxC1AH0gLcqd",
+        "level": 8,
+        "name": "Weapon Master",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NDysrxC1AH0gLcqd"
+      }
+    ],
     "id": "yJr2uciQYegfwwcv",
     "name": "Tactics Subdomain",
     "parentDomainTags": ["War"],
@@ -1587,7 +3549,22 @@
   "yPoebbIxW5vyKOZN": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Detect Secret Doors</li>\n<li>2nd—See Invisibility</li>\n<li>3rd—Banish Seeming</li>\n<li>5th—True Seeing</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "subdomain-power:revelation:guided-eyes",
+        "level": 0,
+        "name": "Guided Eyes",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:revelation:guided-eyes"
+      },
+      {
+        "featureId": "QZJtfwamnWW0mHjJ",
+        "level": 8,
+        "name": "Nimbus of Light",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QZJtfwamnWW0mHjJ"
+      }
+    ],
     "id": "yPoebbIxW5vyKOZN",
     "name": "Revelation Subdomain",
     "parentDomainTags": ["Sun"],
@@ -1597,7 +3574,22 @@
   "yeH8WXsYDMJw23K6": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Gust Of Wind</li>\n<li>3rd—Call Lightning</li>\n<li>7th—Control Weather</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "T4q7Ib0ED01PNDyT",
+        "level": 0,
+        "name": "Destructive Smite",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.T4q7Ib0ED01PNDyT"
+      },
+      {
+        "featureId": "subdomain-power:catastrophe:deadly-weather",
+        "level": 8,
+        "name": "Deadly Weather",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:catastrophe:deadly-weather"
+      }
+    ],
     "id": "yeH8WXsYDMJw23K6",
     "name": "Catastrophe Subdomain",
     "parentDomainTags": ["Destruction"],
@@ -1607,7 +3599,22 @@
   "zinh3m68xSNlhHZ8": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Shield Of Faith</li>\n<li>3rd—Tongues</li>\n<li>6th—Planar Ally (agathions only)</li>\n</ul>",
-    "features": [],
+    "features": [
+      {
+        "featureId": "7td8qAPvj9YEasha",
+        "level": 0,
+        "name": "Touch of Good",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7td8qAPvj9YEasha"
+      },
+      {
+        "featureId": "subdomain-power:agathion:protective-aura",
+        "level": 8,
+        "name": "Protective Aura",
+        "resolved": true,
+        "uuid": "pfdata:subdomain-power:agathion:protective-aura"
+      }
+    ],
     "id": "zinh3m68xSNlhHZ8",
     "name": "Agathion Subdomain",
     "parentDomainTags": ["Good"],

@@ -117,6 +117,20 @@ export function pfDataSourceRefs(entry: PfDataEntry): SourceRef[] | undefined {
   return refs.length > 0 ? refs : undefined;
 }
 
+/**
+ * A `‹SOURCE Book Title/page›` citation line as its own `SourceRef` — for a
+ * caller reading a citation that belongs to a SUB-section of an entry rather
+ * than to the entry as a whole (a subdomain's own book/page, cited under its
+ * `::h3[...]` heading inside the parent domain's entry), which
+ * `pfDataSourceRefs` can't see because it only reads entry-level fields.
+ * `undefined` when the line isn't a citation.
+ */
+export function pfDataSourceRefFromLine(line: string): SourceRef | undefined {
+  const m = /^‹SOURCE\s+([^/›]+?)\s*(?:\/\s*(\d+))?›$/.exec(line.trim());
+  if (!m) return undefined;
+  return { id: slugifyBookTitle(m[1]!), ...(m[2] ? { pages: m[2] } : {}) };
+}
+
 /* ---------------------------------------------------- markdown -> HTML -- */
 
 /**
@@ -333,6 +347,11 @@ const AB_KIND_KEYS = [
   "ability",
   "full",
   "reaction",
+  // The source uses both `full` and `fullround` for a full-round action.
+  // Listed last so a directive carrying one of the keys above keeps picking
+  // that one; these only ever supply the text when nothing else does.
+  "fullround",
+  "move",
 ] as const;
 
 function ordinalSuffix(n: number): string {
@@ -349,10 +368,14 @@ function ordinalSuffix(n: number): string {
   }
 }
 
-function renderAbDirective(name: string, propsRaw: string): string {
-  const props = parseDirectiveProps(propsRaw);
-  const nameHtml = inlineToHtml(name);
-
+/**
+ * The ability's prose, inline-converted: its action-type text plus any
+ * level-gated `impNN` improvements and a trailing `usage` note. `undefined`
+ * when the directive carries no action-type key at all (the level-keyed
+ * "Bonus Spells by Bloodrager Level" shape, handled separately by
+ * `renderAbDirective`).
+ */
+function abBodyText(props: Record<string, string | true>): string | undefined {
   let mainText: string | undefined;
   for (const key of AB_KIND_KEYS) {
     const v = props[key];
@@ -361,8 +384,61 @@ function renderAbDirective(name: string, propsRaw: string): string {
       break;
     }
   }
+  if (mainText === undefined) return undefined;
 
-  if (mainText === undefined) {
+  let text = inlineToHtml(mainText);
+  const improvements = Object.entries(props)
+    .filter((e): e is [string, string] => /^imp\d+$/.test(e[0]) && typeof e[1] === "string")
+    .map(([k, v]) => ({ level: Number(k.slice(3)), text: v }))
+    .sort((a, b) => a.level - b.level);
+  for (const imp of improvements) {
+    text += ` At ${imp.level}${ordinalSuffix(imp.level)} level: ${inlineToHtml(imp.text)}`;
+  }
+  if (typeof props.usage === "string") text += ` (${inlineToHtml(props.usage)})`;
+  return text;
+}
+
+/**
+ * One `::ab[...]` directive parsed as structured data rather than rendered
+ * inline into surrounding prose — for a caller that needs to promote the
+ * ability into a RefData entry of its own (`transform/subdomainPowers.ts`
+ * turns each subdomain's replacement power into a `ClassFeature`). `props`
+ * is the raw directive property list, so a caller can read the keys this
+ * module treats as non-textual metadata (e.g. `replace`, naming the parent
+ * power a subdomain power displaces).
+ */
+export interface PfDataAbility {
+  /** Directive label verbatim, ability-type suffix included (e.g. "Sudden Shift (Sp)"). */
+  name: string;
+  /** The `l=` gate, when the source states one. */
+  level?: number;
+  /** The ability's prose as a single `<p>` paragraph. */
+  bodyHtml: string;
+  props: Record<string, string | true>;
+}
+
+/** Parse a lone `::ab[Name]{...}` line; `null` when the line isn't one, or carries no prose. */
+export function parsePfDataAbility(line: string): PfDataAbility | null {
+  const m = AB_DIRECTIVE_RE.exec(line.trim());
+  if (!m) return null;
+  const props = parseDirectiveProps(m[2]!);
+  const body = abBodyText(props);
+  if (body === undefined) return null;
+  const level = typeof props.l === "string" ? Number(props.l) : NaN;
+  return {
+    name: m[1]!,
+    ...(Number.isFinite(level) ? { level } : {}),
+    bodyHtml: `<p>${body}</p>`,
+    props,
+  };
+}
+
+function renderAbDirective(name: string, propsRaw: string): string {
+  const props = parseDirectiveProps(propsRaw);
+  const nameHtml = inlineToHtml(name);
+  const text = abBodyText(props);
+
+  if (text === undefined) {
     const levelEntries = Object.entries(props)
       .filter((e): e is [string, string] => /^s\d+$/.test(e[0]) && typeof e[1] === "string")
       .map(([k, v]) => ({ level: Number(k.slice(1)), text: v }))
@@ -373,17 +449,6 @@ function renderAbDirective(name: string, propsRaw: string): string {
   }
 
   const level = typeof props.l === "string" ? props.l : undefined;
-  let text = inlineToHtml(mainText);
-
-  const improvements = Object.entries(props)
-    .filter((e): e is [string, string] => /^imp\d+$/.test(e[0]) && typeof e[1] === "string")
-    .map(([k, v]) => ({ level: Number(k.slice(3)), text: v }))
-    .sort((a, b) => a.level - b.level);
-  for (const imp of improvements) {
-    text += ` At ${imp.level}${ordinalSuffix(imp.level)} level: ${inlineToHtml(imp.text)}`;
-  }
-  if (typeof props.usage === "string") text += ` (${inlineToHtml(props.usage)})`;
-
   const label = level ? `${nameHtml} (Level ${level})` : nameHtml;
   return `<p><strong>${label}:</strong> ${text}</p>`;
 }
