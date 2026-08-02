@@ -117,9 +117,14 @@ export const SYSTEM_VERSION = "11.11";
  * that's empty when the Foundry pack documents none. The 125 subdomains the
  * pack carries no power for take theirs from the Pf Data 1e catalog, so a
  * consumer must no longer read the parent domain's powers when a subdomain's
- * list looks empty; see `transform/subdomainPowers.ts`.
+ * list looks empty; see `transform/subdomainPowers.ts`. v21 adds
+ * `inquisitions`/`inquisitions.json` — the full published inquisitor
+ * inquisition catalog (fourth-source dataset; an inquisitor's alternative to
+ * a domain), with each entry's granted powers parsed into `Inquisition.
+ * features`, same `ClassFeatureGrant` shape as `Domain.features`; see
+ * `Inquisition`'s doc comment and `transform/inquisitions.ts`.
  */
-export const SCHEMA_VERSION = 20;
+export const SCHEMA_VERSION = 21;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

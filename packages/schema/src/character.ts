@@ -157,6 +157,19 @@ export interface CharacterDoc {
      */
     clericDomains?: string[];
     /**
+     * An inquisitor's inquisition tag (key into `refData.inquisitions` by
+     * `Inquisition.tag`), chosen at L1 as the alternative to a domain —
+     * mutually exclusive with `clericDomains` for that slot, never both. An
+     * inquisition grants its own named powers (`Inquisition.features`,
+     * resolved by `@pf1/engine`'s `collectGrantedFeatures` the same way a
+     * domain's are) but no domain spell slots at all, so unlike
+     * `clericDomains` it never touches `refData.domainSpellLists`. Free-choice
+     * — no deity validation, same soft-warning posture as `clericDomains`.
+     * Undefined for a non-inquisitor, or an inquisitor who took a domain
+     * instead. Back-compat: documents without this field are unaffected.
+     */
+    inquisition?: string;
+    /**
      * Cleric's cure-vs-inflict spontaneous-casting choice, for a TRUE NEUTRAL
      * cleric only (PF1 CRB "Spontaneous Casting" class feature, verbatim: "A
      * cleric who is neither good nor evil and whose deity is neither good nor
@@ -3180,8 +3193,8 @@ export interface DerivedClassFeature {
    * aspect, psychic discipline power, phrenic amplification, mesmerist trick,
    * mesmerist bold stare, occultist implement school, occultist focus power,
    * kineticist composite blast, kineticist wild talent, medium spirit power,
-   * slayer talent) — same disambiguation need against each class's own
-   * intrinsic features.
+   * slayer talent, inquisitor inquisition power) — same disambiguation need
+   * against each class's own intrinsic features.
    */
   origin?: {
     kind:
@@ -3212,7 +3225,8 @@ export interface DerivedClassFeature {
       | "compositeBlast"
       | "wildTalent"
       | "spiritPower"
-      | "slayerTalent";
+      | "slayerTalent"
+      | "inquisition";
     label: string;
   };
 }

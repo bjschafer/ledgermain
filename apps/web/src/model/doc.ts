@@ -163,12 +163,34 @@ export function domainSlotCount(doc: CharacterDoc): number {
  * key) — no validation here, and deliberately no per-class narrowing either
  * (pure model layer — `domainSlotCount` + the builder picker gate the choices).
  * Replaces the whole list (not add-remove) to keep domain swapping simple.
+ * Also clears `build.inquisition` — mutually exclusive with a domain choice,
+ * see `setInquisition`.
  */
 export function setClericDomains(doc: CharacterDoc, domains: string[]): CharacterDoc {
   const trimmed = domains.filter((d) => typeof d === "string" && d.length > 0);
   return {
     ...doc,
-    build: { ...doc.build, clericDomains: trimmed.slice(0, 2) },
+    build: { ...doc.build, clericDomains: trimmed.slice(0, 2), inquisition: undefined },
+  };
+}
+
+/**
+ * Set the inquisitor's chosen inquisition tag (key into `refData.inquisitions`
+ * by `Inquisition.tag`), or `null`/blank to clear. Mutually exclusive with a
+ * domain choice — picking an inquisition clears `clericDomains` (an
+ * inquisitor has only the one slot; see `domainSlotCount`), the way a
+ * cleric-domain-to-subdomain swap replaces rather than adds. No validation
+ * that the tag exists — soft-warning posture, same as `setClericDomains`.
+ */
+export function setInquisition(doc: CharacterDoc, tag: string | null): CharacterDoc {
+  const trimmed = typeof tag === "string" ? tag.trim() : "";
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      inquisition: trimmed.length > 0 ? trimmed : undefined,
+      clericDomains: [],
+    },
   };
 }
 

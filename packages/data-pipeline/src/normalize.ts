@@ -14,6 +14,7 @@ import type {
   DruidDomain,
   EidolonSubtype,
   Feat,
+  Inquisition,
   InvestigatorTalent,
   Item,
   ItemAbilityRef,
@@ -113,6 +114,7 @@ import { transformArcanistExploits } from "./transform/arcanistExploits.js";
 import { transformBloodragerBloodlines } from "./transform/bloodragerBloodlines.js";
 import { transformCavalierOrders } from "./transform/cavalierOrders.js";
 import { transformEidolonSubtypes } from "./transform/eidolonSubtypes.js";
+import { transformInquisitions } from "./transform/inquisitions.js";
 import { transformInvestigatorTalents } from "./transform/investigatorTalents.js";
 import { transformKineticWildTalents } from "./transform/kineticWildTalents.js";
 import { transformMagicItems } from "./transform/magicItems.js";
@@ -952,6 +954,16 @@ export function normalize(opts: NormalizeOptions): {
   );
   const eidolonSubtypes: EidolonSubtype[] = transformEidolonSubtypes(eidolonSubtypeDict);
 
+  // --- inquisitor inquisitions (fourth-party dataset) — a domain
+  // alternative, NOT a variant of one, so this is a standalone catalog
+  // rather than a merge (contrast `subdomainPowers.ts` above). Pushes a
+  // synthesized `ClassFeature` per granted power onto `classFeatures`, same
+  // convention as the subdomain-power import.
+  const inquisitionDict = readPfDataDictionary(
+    join(opts.pfDataJsonDir, "class_ability_inquisitions.json"),
+  );
+  const inquisitions: Inquisition[] = transformInquisitions(inquisitionDict, classFeatures);
+
   const counts = {
     races: races.length,
     racialTraits: racialTraits.length,
@@ -1008,6 +1020,7 @@ export function normalize(opts: NormalizeOptions): {
     cavalierOrders: cavalierOrders.length,
     shifterAspects: shifterAspects.length,
     eidolonSubtypes: eidolonSubtypes.length,
+    inquisitions: inquisitions.length,
   };
 
   const meta: RefDataMeta = {
@@ -1083,6 +1096,7 @@ export function normalize(opts: NormalizeOptions): {
     cavalierOrders: byId(cavalierOrders),
     shifterAspects: byId(shifterAspects),
     eidolonSubtypes: byId(eidolonSubtypes),
+    inquisitions: byId(inquisitions),
   };
 
   return { refData, contentVersion };
