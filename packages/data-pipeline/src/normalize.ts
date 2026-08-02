@@ -14,6 +14,7 @@ import type {
   DruidDomain,
   EidolonSubtype,
   Feat,
+  FocusedSchool,
   InvestigatorTalent,
   Item,
   ItemAbilityRef,
@@ -70,6 +71,7 @@ import {
   transformWizardSchool,
 } from "./transform/classes.js";
 import { transformFeat } from "./transform/feats.js";
+import { transformFocusedSchool } from "./transform/focusedSchools.js";
 import { transformItem } from "./transform/items.js";
 import { resolveNamedFeatPrereqs } from "./transform/prereqs.js";
 import { transformPrestigeClassPack } from "./transform/prestigeClasses.js";
@@ -237,16 +239,18 @@ export function normalize(opts: NormalizeOptions): {
   // Read the full class-abilities pack once (keyed by id) for resolution.
   const classAbilitiesById = readPackById(join(packsDir, "class-abilities"));
 
-  // --- domains + wizard schools (+ their subdomain/druid/elemental variants) -
-  // Foundry stores these as `type: feat` docs under class-abilities/domains/ and
-  // class-abilities/wizard-schools/; each folder also contains a `type: Item`
-  // folder-marker doc ("Druid Domains", "Subdomains", "Elemental Schools",
-  // "Focused Schools") with no `system` at all, excluded by the `type === "feat"`
-  // check. Nested subfolders are matched by their own relPath depth below; the
-  // "focused-schools" variant-rule subfolder (nested inside both wizard-schools/
-  // and wizard-schools/elemental-schools/) is never matched by any of them and
-  // stays excluded — too niche a combination (a focused elemental sub-school) to
-  // vendor.
+  // --- domains + wizard schools (+ their subdomain/druid/elemental/focused
+  // variants) -- Foundry stores these as `type: feat` docs under
+  // class-abilities/domains/ and class-abilities/wizard-schools/; each folder
+  // also contains a `type: Item` folder-marker doc ("Druid Domains",
+  // "Subdomains", "Elemental Schools", "Focused Schools") with no `system` at
+  // all, excluded by the `type === "feat"` check. Nested subfolders are
+  // matched by their own relPath depth below; the "focused-schools" subfolder
+  // NESTED INSIDE wizard-schools/elemental-schools/ (a focused elemental
+  // sub-school) is never matched by any of them and stays excluded — too
+  // niche a combination to vendor. The sibling wizard-schools/focused-schools/
+  // (the ordinary 22 focused schools, e.g. Admixture, Teleportation) IS
+  // matched, below.
   const classAbilitiesDocs = [...classAbilitiesById.values()];
   const domainDocs = classAbilitiesDocs
     .filter(
@@ -296,10 +300,19 @@ export function normalize(opts: NormalizeOptions): {
         pf.relPath.split("/").length === 3,
     )
     .map((pf) => pf.doc);
+  const focusedSchoolDocs = classAbilitiesDocs
+    .filter(
+      (pf) =>
+        pf.doc.type === "feat" &&
+        pf.relPath.startsWith("wizard-schools/focused-schools/") &&
+        pf.relPath.split("/").length === 3,
+    )
+    .map((pf) => pf.doc);
 
   // Collect the feature ids referenced by selected classes + domains + schools
-  // (+ subdomains + elemental schools — druid domains carry no `links.supplements`
-  // at all, see `DruidDomain` doc comment, so they contribute nothing here).
+  // (+ subdomains + elemental/focused schools — druid domains carry no
+  // `links.supplements` at all, see `DruidDomain` doc comment, so they
+  // contribute nothing here).
   const referencedFeatureIds = new Set<string>();
   for (const cls of [
     ...selectedClassDocs,
@@ -307,6 +320,7 @@ export function normalize(opts: NormalizeOptions): {
     ...schoolDocs,
     ...subdomainDocs,
     ...elementalSchoolDocs,
+    ...focusedSchoolDocs,
   ]) {
     for (const uuid of supplementUuids(cls)) {
       const parsed = parseUuid(uuid);
@@ -455,6 +469,19 @@ export function normalize(opts: NormalizeOptions): {
       )
       .filter((s): s is WizardSchool => s !== null),
   ];
+
+  // --- focused schools (APG "Focused Schools" variant, e.g. Admixture within
+  // Evocation) — see `transform/focusedSchools.ts` doc comment for why this
+  // resolves entirely from the Foundry pack, unlike subdomains' fourth-party
+  // import just above.
+  const focusedSchools: FocusedSchool[] = focusedSchoolDocs.map((d) =>
+    transformFocusedSchool(
+      d,
+      wizardSchools,
+      (id) => classFeaturesById[id]?.name ?? null,
+      resolveUuid,
+    ),
+  );
 
   // --- races (filtered to slice folders) -------------------------------------
   const races: Race[] = readPack(join(packsDir, "races"))
@@ -987,6 +1014,7 @@ export function normalize(opts: NormalizeOptions): {
     druidDomainSpellLists: Object.keys(druidDomainSpellLists).length,
     elementalSchoolSpellLists: Object.keys(elementalSchoolSpellLists).length,
     wizardSchools: wizardSchools.length,
+    focusedSchools: focusedSchools.length,
     ragePowers: ragePowers.length,
     hexes: hexes.length,
     shamanHexes: shamanHexes.length,
@@ -1062,6 +1090,7 @@ export function normalize(opts: NormalizeOptions): {
     druidDomainSpellLists,
     elementalSchoolSpellLists,
     wizardSchools: byId(wizardSchools),
+    focusedSchools: byId(focusedSchools),
     ragePowers: byId(ragePowers),
     hexes: byId(hexes),
     shamanHexes: byId(shamanHexes),

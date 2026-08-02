@@ -255,14 +255,27 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     // Hand of the Apprentice / Metamagic Mastery, just no bonus spell slot.
     const schoolTag = doc.build.wizardSchool ?? "uni";
     const school = Object.values(refData.wizardSchools).find((s) => s.tag === schoolTag);
+    // A focused school (`build.wizardFocusedSchool`, e.g. Admixture) only
+    // changes WHICH powers are granted — the spell list/opposition mechanics
+    // still key off `schoolTag` unchanged, see `FocusedSchool` doc comment.
+    // `FocusedSchool.features` is already the complete merged list (parent's
+    // kept powers + its own), so it's used in place of, never alongside,
+    // `school.features`. A stale focus that no longer matches the current
+    // school (e.g. after `wizardSchool` changed without going through
+    // `setWizardSchool`) falls back to the plain school's powers.
+    const focused = doc.build.wizardFocusedSchool
+      ? Object.values(refData.focusedSchools).find(
+          (f) => f.tag === doc.build.wizardFocusedSchool && f.parentTag === schoolTag,
+        )
+      : undefined;
     if (school) {
-      for (const grant of school.features) {
+      for (const grant of focused?.features ?? school.features) {
         if (grant.level > wizardLevel || !grant.resolved) continue;
         out.push({
           classTag: "wizard",
           level: grant.level,
           grant,
-          origin: { kind: "school", label: school.name },
+          origin: { kind: "school", label: focused?.name ?? school.name },
         });
       }
     }

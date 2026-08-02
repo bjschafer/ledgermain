@@ -1,0 +1,816 @@
+{
+  "029BrJWpmO7rMlPC": {
+    "description": "<p><strong>Associated School:</strong> Conjuration.</p><p><strong>Replacement Powers:</strong> This subschool replaces the acid dart power of the conjuration school.</p><p></p>",
+    "features": [
+      {
+        "featureId": "yTfzAVpEYSJaPQVZ",
+        "level": 0,
+        "name": "Summoner's Charm",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yTfzAVpEYSJaPQVZ"
+      },
+      {
+        "featureId": "Ox5Sq8qp4gBjQpyu",
+        "level": 1,
+        "name": "Shift",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Ox5Sq8qp4gBjQpyu"
+      },
+      {
+        "featureId": "cdre9IojG8R7LJLC",
+        "level": 8,
+        "name": "Dimensional Steps",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.cdre9IojG8R7LJLC"
+      }
+    ],
+    "id": "029BrJWpmO7rMlPC",
+    "name": "Teleportation Subschool",
+    "parentTag": "con",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "147"
+      }
+    ],
+    "tag": "Teleportation",
+    "uuid": "Compendium.pf1.class-abilities.Item.029BrJWpmO7rMlPC"
+  },
+  "ADKGNUfqMwhXhMKR": {
+    "description": "<p><strong>Associated School:</strong> Transmutation School</p><p><strong>Replacement Powers:</strong> The following school power replaces the telekinetic fist power of the transmutation school.</p><p></p>",
+    "features": [
+      {
+        "featureId": "K5qGe9bp4lDynT3K",
+        "level": 0,
+        "name": "Physical Enhancement",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.K5qGe9bp4lDynT3K"
+      },
+      {
+        "featureId": "tJCegZfiuMpDkVEd",
+        "level": 0,
+        "name": "Battleshaping",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.tJCegZfiuMpDkVEd"
+      },
+      {
+        "featureId": "A3KJJHMNlAjUzcx6",
+        "level": 8,
+        "name": "Change Shape",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.A3KJJHMNlAjUzcx6"
+      }
+    ],
+    "id": "ADKGNUfqMwhXhMKR",
+    "name": "Shapechange Subschool",
+    "parentTag": "trs",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "147"
+      }
+    ],
+    "tag": "Shapechange",
+    "uuid": "Compendium.pf1.class-abilities.Item.ADKGNUfqMwhXhMKR"
+  },
+  "ASjl9MkE7k5aYnaz": {
+    "description": "<p><em>The city of Katheer is home to a great number of arcane colleges in the Qadiran tradition. Magic has a proud history in this land; its many schools compete with one another to find the best route to understanding the secrets of power.</em></p><p><em>Among these is the focused school of veil magic. Rather than controlling the elements or transforming the environment, mages of the veil focus on much more subtle magic—blending into their surroundings to watch, observe, and gather secrets, or fading from view completely for the sake of solitude. Most graduates of this college enter the service of the satrap as spies, scouts, or infiltrators.</em></p><p><strong>Requirements:</strong> A mage of the veil must select disguise self as one of his spells known at 1st level.</p><p><strong>Class Skills:</strong> A mage of the veil gains Bluff, Disguise, and Stealth as class skills.</p><p><strong>Associated School:</strong> Illusion School</p><p><strong>Replacement Powers:</strong> The following school powers replace the blinding ray and invisibility field powers of the illusion school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "pDaXowPKX4scZL0E",
+        "level": 0,
+        "name": "Extended Illusions",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pDaXowPKX4scZL0E"
+      },
+      {
+        "featureId": "x8cEHXOa8OXWG86M",
+        "level": 1,
+        "name": "Face in the Crowd (WIZ)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.x8cEHXOa8OXWG86M"
+      },
+      {
+        "featureId": "NKPkvMia6t5ERnmY",
+        "level": 8,
+        "name": "Master of the Veil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.NKPkvMia6t5ERnmY"
+      }
+    ],
+    "id": "ASjl9MkE7k5aYnaz",
+    "name": "Mage of the Veil Subschool",
+    "parentTag": "ill",
+    "sources": [
+      {
+        "id": "PZO9414",
+        "pages": "29"
+      }
+    ],
+    "tag": "Mage of the Veil",
+    "uuid": "Compendium.pf1.class-abilities.Item.ASjl9MkE7k5aYnaz"
+  },
+  "E3PKfnnsWjJBwUAd": {
+    "description": "<p><strong>Associated School:</strong> Transmutation School</p><p><strong>Replacement Powers:</strong> The following school powers replace the telekinetic fist and change shape powers of the transmutation school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "K5qGe9bp4lDynT3K",
+        "level": 0,
+        "name": "Physical Enhancement",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.K5qGe9bp4lDynT3K"
+      },
+      {
+        "featureId": "u7r3RkiMNAhv9I2d",
+        "level": 0,
+        "name": "Augment",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.u7r3RkiMNAhv9I2d"
+      },
+      {
+        "featureId": "qzCj0dGiKmIMw4wf",
+        "level": 8,
+        "name": "Perfection of Self",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.qzCj0dGiKmIMw4wf"
+      }
+    ],
+    "id": "E3PKfnnsWjJBwUAd",
+    "name": "Enhancement Subschool",
+    "parentTag": "trs",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "145"
+      }
+    ],
+    "tag": "Enhancement",
+    "uuid": "Compendium.pf1.class-abilities.Item.E3PKfnnsWjJBwUAd"
+  },
+  "EclIoodZh17RhZul": {
+    "description": "<p><strong>Associated School:</strong> Divination School</p><p><strong>Replacement Powers:</strong> The following school powers replace the diviner's fortune and scrying adept powers of the divination school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "S0CoHzJwn5NlgQU9",
+        "level": 0,
+        "name": "Forewarned",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.S0CoHzJwn5NlgQU9"
+      },
+      {
+        "featureId": "kYewJH9317exDQ6q",
+        "level": 0,
+        "name": "Prescience",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.kYewJH9317exDQ6q"
+      },
+      {
+        "featureId": "vQ6i4zS5T7z1UNOM",
+        "level": 8,
+        "name": "Foretell",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.vQ6i4zS5T7z1UNOM"
+      }
+    ],
+    "id": "EclIoodZh17RhZul",
+    "name": "Foresight Subschool",
+    "parentTag": "div",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "145"
+      }
+    ],
+    "tag": "Foresight",
+    "uuid": "Compendium.pf1.class-abilities.Item.EclIoodZh17RhZul"
+  },
+  "Owu0KhwUC4v9JUwB": {
+    "description": "<p><strong>Associated School:</strong> Divination School</p><p><strong>Replacement Powers:</strong> The following school power replaces the diviner's fortune power of the divination school.</p><p></p>",
+    "features": [
+      {
+        "featureId": "S0CoHzJwn5NlgQU9",
+        "level": 0,
+        "name": "Forewarned",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.S0CoHzJwn5NlgQU9"
+      },
+      {
+        "featureId": "OLh9DNRqDf7yjSwM",
+        "level": 0,
+        "name": "Send Senses",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.OLh9DNRqDf7yjSwM"
+      },
+      {
+        "featureId": "ID7tKA56K3gOoWBM",
+        "level": 8,
+        "name": "Scrying Adept",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ID7tKA56K3gOoWBM"
+      }
+    ],
+    "id": "Owu0KhwUC4v9JUwB",
+    "name": "Scryer Subschool",
+    "parentTag": "div",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "147"
+      }
+    ],
+    "tag": "Scryer",
+    "uuid": "Compendium.pf1.class-abilities.Item.Owu0KhwUC4v9JUwB"
+  },
+  "V3Cp48XNxBVzWP8K": {
+    "description": "<p><strong>Associated School:</strong> Illusion School</p><p><strong>Replacement Powers:</strong> The following school powers replace the blinding ray and extended illusions powers of the illusion school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "TF9JLx9PwVnN5QPx",
+        "level": 0,
+        "name": "Deceptive Flourish",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.TF9JLx9PwVnN5QPx"
+      },
+      {
+        "featureId": "OWWDDPpcBLyZAXAr",
+        "level": 0,
+        "name": "Subtle Misdirection",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.OWWDDPpcBLyZAXAr"
+      },
+      {
+        "featureId": "W7nMOLi2kXGEKe72",
+        "level": 8,
+        "name": "Invisibility Field",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.W7nMOLi2kXGEKe72"
+      }
+    ],
+    "id": "V3Cp48XNxBVzWP8K",
+    "name": "Deception Subschool",
+    "parentTag": "ill",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "53"
+      }
+    ],
+    "tag": "Deception",
+    "uuid": "Compendium.pf1.class-abilities.Item.V3Cp48XNxBVzWP8K"
+  },
+  "V8cq1HxfIYrCWWf8": {
+    "description": "<p><em>The prestigious Egorian Academy of the Magical Arts in Cheliax’s capital city teaches a full spectrum of magic, both specialized and universalist, but the college is best known for its Infernal Binding program in the school of conjuration. An infernal binder learns the Names of Hell, and can use those powers to summon and bind devils to do her bidding. If she makes a single mistake in the binding, she opens herself to an eternity of torment. Egorian Academy wizards are recognized across Avistan as premier practitioners of the arcane arts. Many hold high positions in magical colleges across Golarion, but most seek to return one day to teach at their alma mater in Egorian.</em></p><p><b>Suggested Opposition Schools:</b> <em>Divination</em>, <em>illusion</em>, or <em>transmutation</em>.</p><p><b>Alignment:</b> Lawful Evil, Lawful Neutral, Neutral Evil, or Neutral.</p><p><b>Requirements:</b> An infernal binder must choose a familiar as her arcane bond at 1st level.</p><p><b>Associated School</b>: <em>Conjuration</em>.</p><p><b>Replacement Powers:</b> This subschool replaces the acid dart and dimensional steps powers of the <em>conjuration</em> school.</p><p></p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "yTfzAVpEYSJaPQVZ",
+        "level": 0,
+        "name": "Summoner's Charm",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yTfzAVpEYSJaPQVZ"
+      },
+      {
+        "featureId": "w6blUIDEc7Yfr5g4",
+        "level": 0,
+        "name": "Planar Knowledge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.w6blUIDEc7Yfr5g4"
+      },
+      {
+        "featureId": "EzZ8XZHjMCBwaL5o",
+        "level": 1,
+        "name": "Assume Control",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.EzZ8XZHjMCBwaL5o"
+      },
+      {
+        "featureId": "yIVUP0keOg2PctKq",
+        "level": 7,
+        "name": "Imp Familiar",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yIVUP0keOg2PctKq"
+      }
+    ],
+    "id": "V8cq1HxfIYrCWWf8",
+    "name": "Infernal Binder Subschool",
+    "parentTag": "con",
+    "sources": [
+      {
+        "id": "PZO9414",
+        "pages": "29"
+      }
+    ],
+    "tag": "Infernal Binder",
+    "uuid": "Compendium.pf1.class-abilities.Item.V8cq1HxfIYrCWWf8"
+  },
+  "abjlF9XM3j72rzua": {
+    "description": "<p><strong>Associated School:</strong> Necromancy School</p><p><strong>Replacement Powers:</strong> The following school power replaces the grave touch powers of the necromancy school.</p><p></p>",
+    "features": [
+      {
+        "featureId": "jI66IOBVloeSyeGz",
+        "level": 0,
+        "name": "Power over Undead",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.jI66IOBVloeSyeGz"
+      },
+      {
+        "featureId": "dcCZW51UewXFLLGo",
+        "level": 0,
+        "name": "Bolster",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.dcCZW51UewXFLLGo"
+      },
+      {
+        "featureId": "5JrtpLs5AJZ5NI40",
+        "level": 8,
+        "name": "Life Sight",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5JrtpLs5AJZ5NI40"
+      }
+    ],
+    "id": "abjlF9XM3j72rzua",
+    "name": "Undead Subschool",
+    "parentTag": "nec",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146"
+      }
+    ],
+    "tag": "Undead",
+    "uuid": "Compendium.pf1.class-abilities.Item.abjlF9XM3j72rzua"
+  },
+  "asccfGp4pwEh7ZmG": {
+    "description": "<p><strong>Associated School:</strong> Abjuration.</p><p><strong>Replacement Powers:</strong> This subschool replaces the energy absorption power and the protective ward power of the abjuration school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "UeYdiNoaF0gG08Y5",
+        "level": 0,
+        "name": "Resistance (Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.UeYdiNoaF0gG08Y5"
+      },
+      {
+        "featureId": "7QulGFMelZdF9pPl",
+        "level": 1,
+        "name": "Unstable Bonds",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.7QulGFMelZdF9pPl"
+      },
+      {
+        "featureId": "nBCKHaM5edwuFFnk",
+        "level": 8,
+        "name": "Aura of Banishment",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.nBCKHaM5edwuFFnk"
+      }
+    ],
+    "id": "asccfGp4pwEh7ZmG",
+    "name": "Banishment Subschool",
+    "parentTag": "abj",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144"
+      }
+    ],
+    "tag": "Banishment",
+    "uuid": "Compendium.pf1.class-abilities.Item.asccfGp4pwEh7ZmG"
+  },
+  "cfCOUnt8xNHYt9kh": {
+    "description": "<p><strong>Associated School:</strong> Evocation School</p><p><strong>Replacement Powers:</strong> The following school powers replace the intense spells and force missile powers of the evocation school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "ei3z5reJYduGyrrC",
+        "level": 0,
+        "name": "Lingering Evocations",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ei3z5reJYduGyrrC"
+      },
+      {
+        "featureId": "fP8eQtvrzz3zTseu",
+        "level": 0,
+        "name": "Wind Servant",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fP8eQtvrzz3zTseu"
+      },
+      {
+        "featureId": "52vhE9asxPlXIr39",
+        "level": 8,
+        "name": "Elemental Wall",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.52vhE9asxPlXIr39"
+      }
+    ],
+    "id": "cfCOUnt8xNHYt9kh",
+    "name": "Generation Subschool",
+    "parentTag": "evo",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146"
+      }
+    ],
+    "tag": "Generation",
+    "uuid": "Compendium.pf1.class-abilities.Item.cfCOUnt8xNHYt9kh"
+  },
+  "cvbnMdCNBxwd19Di": {
+    "description": "<p><strong>Associated School:</strong> Conjuration.</p><p><strong>Replacement Powers:</strong> This subschool replaces the summoner’s charm power of the conjuration school.</p><p></p>",
+    "features": [
+      {
+        "featureId": "biOw5dSbJGsGVFwN",
+        "level": 0,
+        "name": "Acid Dart (WIZ)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.biOw5dSbJGsGVFwN"
+      },
+      {
+        "featureId": "ExWRko4dFi2DV7ZP",
+        "level": 0,
+        "name": "Reshape Space",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ExWRko4dFi2DV7ZP"
+      },
+      {
+        "featureId": "cdre9IojG8R7LJLC",
+        "level": 8,
+        "name": "Dimensional Steps",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.cdre9IojG8R7LJLC"
+      }
+    ],
+    "id": "cvbnMdCNBxwd19Di",
+    "name": "Extradimension Subschool",
+    "parentTag": "con",
+    "sources": [
+      {
+        "id": "PZO9462",
+        "pages": "26"
+      }
+    ],
+    "tag": "Extradimension",
+    "uuid": "Compendium.pf1.class-abilities.Item.cvbnMdCNBxwd19Di"
+  },
+  "dzAbx3olXdrHIcOE": {
+    "description": "<p><em>Prophets who specialize in arcane magic often claim specialty in manipulating the powers of luck to their advantage.</em></p><p><strong>Associated School:</strong> Divination School</p><p><strong>Replacement Powers:</strong> The following school powers replace the forewarned and scrying adept powers of the divination school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "mITkHIcXI1Sfax21",
+        "level": 0,
+        "name": "Diviner's Fortune",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.mITkHIcXI1Sfax21"
+      },
+      {
+        "featureId": "fOGTp6cD9Oy33dcu",
+        "level": 0,
+        "name": "In Accordance with Prophecy",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.fOGTp6cD9Oy33dcu"
+      },
+      {
+        "featureId": "W1gEXsOJYt7oDOr7",
+        "level": 0,
+        "name": "Inspiring Prediction",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.W1gEXsOJYt7oDOr7"
+      }
+    ],
+    "id": "dzAbx3olXdrHIcOE",
+    "name": "Prophecy Subschool",
+    "parentTag": "div",
+    "sources": [
+      {
+        "id": "PZO9488",
+        "pages": "10"
+      }
+    ],
+    "tag": "Prophecy",
+    "uuid": "Compendium.pf1.class-abilities.Item.dzAbx3olXdrHIcOE"
+  },
+  "eRg5JkgViBryAa0T": {
+    "description": "<p><strong>Associated School:</strong> Enchantment School</p><p><strong>Replacement Powers:</strong> The following school powers replace the enchanting smile and aura of despair powers of the enchantment school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "rO2rMMlGeDdyIxJv",
+        "level": 0,
+        "name": "Dazing Touch (WIZ)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.rO2rMMlGeDdyIxJv"
+      },
+      {
+        "featureId": "WTa2ReRBiF6meIzM",
+        "level": 0,
+        "name": "Force of Will",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.WTa2ReRBiF6meIzM"
+      },
+      {
+        "featureId": "aVMtWqERshuxhmr6",
+        "level": 8,
+        "name": "Irresistible Demand",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.aVMtWqERshuxhmr6"
+      }
+    ],
+    "id": "eRg5JkgViBryAa0T",
+    "name": "Controller Subschool",
+    "parentTag": "enc",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144"
+      }
+    ],
+    "tag": "Controller",
+    "uuid": "Compendium.pf1.class-abilities.Item.eRg5JkgViBryAa0T"
+  },
+  "hN7nfIgDvGMd2MZf": {
+    "description": "<p><strong>Associated School:</strong> Necromancy School</p><p><strong>Replacement Powers:</strong> The following school powers replace the power over undead and grave touch powers of the necromancy school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "QR23m2NMKvwnLKh4",
+        "level": 0,
+        "name": "Healing Grace",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QR23m2NMKvwnLKh4"
+      },
+      {
+        "featureId": "YzrlG02loZdwCJwV",
+        "level": 0,
+        "name": "Share Essence",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.YzrlG02loZdwCJwV"
+      },
+      {
+        "featureId": "5JrtpLs5AJZ5NI40",
+        "level": 8,
+        "name": "Life Sight",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.5JrtpLs5AJZ5NI40"
+      }
+    ],
+    "id": "hN7nfIgDvGMd2MZf",
+    "name": "Life Subschool",
+    "parentTag": "nec",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146"
+      }
+    ],
+    "tag": "Life",
+    "uuid": "Compendium.pf1.class-abilities.Item.hN7nfIgDvGMd2MZf"
+  },
+  "j4QEAgodP37MOFd6": {
+    "description": "<p><strong>Associated School:</strong> Enchantment School</p><p><strong>Replacement Powers:</strong> The following school powers replace the dazing touch and aura of despair powers of the enchantment school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "wnb7IxOCmhk4SXzR",
+        "level": 0,
+        "name": "Enchanting Smile",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wnb7IxOCmhk4SXzR"
+      },
+      {
+        "featureId": "wa9VINqzFWWOnS6g",
+        "level": 0,
+        "name": "Beguiling Touch",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wa9VINqzFWWOnS6g"
+      },
+      {
+        "featureId": "Lz9i4zNAH50umw3s",
+        "level": 8,
+        "name": "Shape Emotions",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Lz9i4zNAH50umw3s"
+      }
+    ],
+    "id": "j4QEAgodP37MOFd6",
+    "name": "Manipulator Subschool",
+    "parentTag": "enc",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146"
+      }
+    ],
+    "tag": "Manipulator",
+    "uuid": "Compendium.pf1.class-abilities.Item.j4QEAgodP37MOFd6"
+  },
+  "nsWeJ5PtP8GgRaw2": {
+    "description": "<p><strong>Associated School:</strong> Evocation School</p><p><strong>Replacement Powers:</strong> The following school powers replace the force missile and elemental wall powers of the evocation school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "mv9UJny1ud4EYKTj",
+        "level": 0,
+        "name": "Intense Spells",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.mv9UJny1ud4EYKTj"
+      },
+      {
+        "featureId": "QqMg8O5rYRKoGtHW",
+        "level": 0,
+        "name": "Versatile Evocation",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QqMg8O5rYRKoGtHW"
+      },
+      {
+        "featureId": "Uo6HdLirmPk8haqz",
+        "level": 8,
+        "name": "Elemental Manipulation",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Uo6HdLirmPk8haqz"
+      }
+    ],
+    "id": "nsWeJ5PtP8GgRaw2",
+    "name": "Admixture Subschool",
+    "parentTag": "evo",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "143"
+      }
+    ],
+    "tag": "Admixture",
+    "uuid": "Compendium.pf1.class-abilities.Item.nsWeJ5PtP8GgRaw2"
+  },
+  "okBdYuHA2VdKyo8L": {
+    "description": "<p><strong>Associated School:</strong> Illusion School</p><p><strong>Replacement Powers:</strong> The following school powers replace the blinding ray and invisibility field powers of the illusion school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "pDaXowPKX4scZL0E",
+        "level": 0,
+        "name": "Extended Illusions",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pDaXowPKX4scZL0E"
+      },
+      {
+        "featureId": "2PdDTBiOuBlZ1YgE",
+        "level": 0,
+        "name": "Terror",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.2PdDTBiOuBlZ1YgE"
+      },
+      {
+        "featureId": "1aP0lmJYDqM5pMHY",
+        "level": 8,
+        "name": "Bedeviling Aura",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.1aP0lmJYDqM5pMHY"
+      }
+    ],
+    "id": "okBdYuHA2VdKyo8L",
+    "name": "Phantasm Subschool",
+    "parentTag": "ill",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "53"
+      }
+    ],
+    "tag": "Phantasm",
+    "uuid": "Compendium.pf1.class-abilities.Item.okBdYuHA2VdKyo8L"
+  },
+  "p9NfZDfgIe8APGCf": {
+    "description": "<p><strong>Associated School:</strong> Illusion School</p><p><strong>Replacement Powers:</strong> The following school powers replace the blinding ray and invisibility field powers of the illusion school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "pDaXowPKX4scZL0E",
+        "level": 0,
+        "name": "Extended Illusions",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.pDaXowPKX4scZL0E"
+      },
+      {
+        "featureId": "IeX7of9cT8M7c0xy",
+        "level": 0,
+        "name": "Binding Darkness",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.IeX7of9cT8M7c0xy"
+      },
+      {
+        "featureId": "hbttw8IQ2kKnpOnB",
+        "level": 8,
+        "name": "Shadow Step",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.hbttw8IQ2kKnpOnB"
+      }
+    ],
+    "id": "p9NfZDfgIe8APGCf",
+    "name": "Shadow Subschool",
+    "parentTag": "ill",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "147"
+      }
+    ],
+    "tag": "Shadow",
+    "uuid": "Compendium.pf1.class-abilities.Item.p9NfZDfgIe8APGCf"
+  },
+  "qD0Em4GH0Orh0Klx": {
+    "description": "<p><em>The most famous magical college of the Inner Sea region, the Arcanamirium of Absalom teaches a broad array of specialties, but its most intensive specialty is no specialization at all. It is one of the primary training academies of universalist magic on Golarion, and the wizards who graduate from the school become well respected, well paid, and highly soughtafter in their homelands. An Arcanamirium crafter is one of the builders of the arcane world, assembling magic items with facility, skill, and power. He is intimately familiar with the craft and practice of imbuing items with arcane power, and works with precision even early in his career to help create some of the most powerful magic items of Golarion.</em></p><p><strong>Associated School</strong>: Universalist.</p><p><strong>Replacement Powers</strong>: The following school power replaces the hand of the apprentice power of the universalist school.</p><p></p>",
+    "features": [
+      {
+        "featureId": "9t3vdUAOnJICe83K",
+        "level": 0,
+        "name": "Metacharge",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.9t3vdUAOnJICe83K"
+      },
+      {
+        "featureId": "L4sgpJ5DxgYddhem",
+        "level": 8,
+        "name": "Metamagic Mastery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.L4sgpJ5DxgYddhem"
+      }
+    ],
+    "id": "qD0Em4GH0Orh0Klx",
+    "name": "Arcanamirium Crafter Subschool",
+    "parentTag": "uni",
+    "sources": [
+      {
+        "id": "PZO9414",
+        "pages": "28"
+      }
+    ],
+    "tag": "Arcanamirium Crafter",
+    "uuid": "Compendium.pf1.class-abilities.Item.qD0Em4GH0Orh0Klx"
+  },
+  "sRRF96591fbNAab7": {
+    "description": "<p><strong>Associated School:</strong> Conjuration.</p><p><b>Replacement Powers:</b> This subschool replaces the acid dart power and the dimensional steps power of the conjuration school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "yTfzAVpEYSJaPQVZ",
+        "level": 0,
+        "name": "Summoner's Charm",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.yTfzAVpEYSJaPQVZ"
+      },
+      {
+        "featureId": "Ih0QO6eZ3XmrDkQS",
+        "level": 1,
+        "name": "Create Gear",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.Ih0QO6eZ3XmrDkQS"
+      },
+      {
+        "featureId": "HMmsaPUiNgB5Xa8u",
+        "level": 8,
+        "name": "Creator's Will",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.HMmsaPUiNgB5Xa8u"
+      }
+    ],
+    "id": "sRRF96591fbNAab7",
+    "name": "Creation Subschool",
+    "parentTag": "con",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144"
+      }
+    ],
+    "tag": "Creation",
+    "uuid": "Compendium.pf1.class-abilities.Item.sRRF96591fbNAab7"
+  },
+  "ys1lPKXDsg8Yuca2": {
+    "description": "<p><strong>Associated School:</strong> Abjuration.</p><p><b>Replacement Powers:</b> This subschool replaces the energy absorption power and the protective ward power of the abjuration school.</p><p></p><p></p>",
+    "features": [
+      {
+        "featureId": "UeYdiNoaF0gG08Y5",
+        "level": 0,
+        "name": "Resistance (Power)",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.UeYdiNoaF0gG08Y5"
+      },
+      {
+        "featureId": "ZgzF1CxwvRBQX8xN",
+        "level": 1,
+        "name": "Disruption",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ZgzF1CxwvRBQX8xN"
+      },
+      {
+        "featureId": "XuRBVEMC7oaHPR9V",
+        "level": 6,
+        "name": "Counterspell Mastery",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.XuRBVEMC7oaHPR9V"
+      }
+    ],
+    "id": "ys1lPKXDsg8Yuca2",
+    "name": "Counterspell Subschool",
+    "parentTag": "abj",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144"
+      }
+    ],
+    "tag": "Counterspell",
+    "uuid": "Compendium.pf1.class-abilities.Item.ys1lPKXDsg8Yuca2"
+  }
+}

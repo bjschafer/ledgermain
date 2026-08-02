@@ -557,7 +557,10 @@ export function setWizardSchool(
   tag: WizardSchoolTag | ElementalSchoolTag | null,
   refData?: RefData,
 ): CharacterDoc {
-  const build = { ...doc.build, wizardSchool: tag ?? undefined };
+  // A focused school only makes sense under the parent it was picked for —
+  // changing the base school always clears it, same posture as the
+  // opposition-schools/-element clearing below.
+  const build = { ...doc.build, wizardSchool: tag ?? undefined, wizardFocusedSchool: undefined };
   if (tag === "uni") {
     build.wizardOppositionSchools = [];
   }
@@ -571,6 +574,23 @@ export function setWizardSchool(
     build.wizardOppositionElement = undefined;
   }
   return { ...doc, build };
+}
+
+/**
+ * Set (or clear, with `null`) the specialist wizard's focused school
+ * (`refData.focusedSchools[x].tag`, e.g. "Admixture") layered on top of
+ * `build.wizardSchool`. Free-choice, no validation that it names a real focus
+ * of the current school — soft-warning posture, matching
+ * `setSorcererBloodline`; the picker only offers focuses of the chosen
+ * school. Does NOT touch `wizardSchool` itself — swapping the base school
+ * clears this field instead, see `setWizardSchool`.
+ */
+export function setWizardFocusedSchool(doc: CharacterDoc, tag: string | null): CharacterDoc {
+  const trimmed = typeof tag === "string" ? tag.trim() : "";
+  return {
+    ...doc,
+    build: { ...doc.build, wizardFocusedSchool: trimmed.length > 0 ? trimmed : undefined },
+  };
 }
 
 /**

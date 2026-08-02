@@ -51,6 +51,7 @@ const FILES: { key: keyof RefData; file: string }[] = [
   { key: "druidDomainSpellLists", file: "druid-domain-spell-lists.json" },
   { key: "elementalSchoolSpellLists", file: "elemental-school-spell-lists.json" },
   { key: "wizardSchools", file: "wizard-schools.json" },
+  { key: "focusedSchools", file: "focused-schools.json" },
   { key: "ragePowers", file: "rage-powers.json" },
   { key: "hexes", file: "hexes.json" },
   { key: "shamanHexes", file: "shaman-hexes.json" },

@@ -117,9 +117,15 @@ export const SYSTEM_VERSION = "11.11";
  * that's empty when the Foundry pack documents none. The 125 subdomains the
  * pack carries no power for take theirs from the Pf Data 1e catalog, so a
  * consumer must no longer read the parent domain's powers when a subdomain's
- * list looks empty; see `transform/subdomainPowers.ts`.
+ * list looks empty; see `transform/subdomainPowers.ts`. v21 adds
+ * `focusedSchools`/`focused-schools.json` (22 entries) — the APG "Focused
+ * Schools" variant rule, previously excluded at the pipeline level as "too
+ * niche". Unlike subdomains, the Foundry pack states each one's full
+ * mechanics directly (an `@UUID`-linked parent school, `@UUID`-linked
+ * replaced powers, and its own `links.supplements` grants), so no
+ * fourth-party source was needed; see `transform/focusedSchools.ts`.
  */
-export const SCHEMA_VERSION = 20;
+export const SCHEMA_VERSION = 21;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

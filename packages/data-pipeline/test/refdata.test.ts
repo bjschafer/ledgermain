@@ -26,7 +26,7 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(20);
+    expect(ref.meta.schemaVersion).toBe(21);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -695,6 +695,51 @@ describe("elemental school bonus-slot spell lists (elemental-school-spell-lists.
     expect(names("aether-elemental", 2)).toContain("Spiritual Weapon"); // "spiritual weaponlife pact"
     expect(names("aether-elemental", 2)).toContain("Life Pact");
     expect(names("void-elemental", 2)).toContain("Share Memory"); // "share memorypact"
+  });
+});
+
+describe("focused arcane schools (wizard-schools/focused-schools/*.yaml)", () => {
+  it("emits exactly 22 focused schools, each resolving to a real parent school", () => {
+    expect(Object.keys(ref.focusedSchools).length).toBe(22);
+    expect(ref.meta.counts.focusedSchools).toBe(22);
+    const schoolTags = new Set(Object.values(ref.wizardSchools).map((s) => s.tag));
+    for (const focused of Object.values(ref.focusedSchools)) {
+      expect(schoolTags.has(focused.parentTag), focused.name).toBe(true);
+    }
+  });
+
+  it("every granted power resolves into classFeatures", () => {
+    for (const focused of Object.values(ref.focusedSchools)) {
+      for (const grant of focused.features) {
+        expect(grant.resolved, `${focused.name}: ${grant.name}`).toBe(true);
+        expect(ref.classFeatures[grant.featureId], `${focused.name}: ${grant.name}`).toBeDefined();
+      }
+    }
+  });
+
+  it("Admixture replaces Evocation's Force Missile + Elemental Wall with Versatile Evocation + Elemental Manipulation, keeping Intense Spells", () => {
+    const admixture = byName(ref.focusedSchools, "Admixture Subschool");
+    expect(admixture.tag).toBe("Admixture");
+    expect(admixture.parentTag).toBe("evo");
+    const names = admixture.features.map((f) => f.name).sort();
+    expect(names).toEqual(["Elemental Manipulation", "Intense Spells", "Versatile Evocation"]);
+  });
+
+  it("Infernal Binder (the one entry with no @UUID-linked replacement target) still resolves its two displaced Conjuration powers by name", () => {
+    const infernalBinder = byName(ref.focusedSchools, "Infernal Binder Subschool");
+    expect(infernalBinder.parentTag).toBe("con");
+    const names = infernalBinder.features.map((f) => f.name);
+    // Conjuration's own three powers are Summoner's Charm, Acid Dart (WIZ),
+    // and Dimensional Steps; the prose names "acid dart and dimensional
+    // steps" as displaced, so only Summoner's Charm survives from the parent.
+    expect(names).toContain("Summoner's Charm");
+    expect(names).not.toContain("Acid Dart (WIZ)");
+    expect(names).not.toContain("Dimensional Steps");
+  });
+
+  it("Arcanamirium Crafter is a focus of Universalist, not one of the 8 standard schools", () => {
+    const crafter = byName(ref.focusedSchools, "Arcanamirium Crafter Subschool");
+    expect(crafter.parentTag).toBe("uni");
   });
 });
 

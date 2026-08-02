@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import type { CharacterDoc, ElementalSchoolTag, RefData, WizardSchoolTag } from "@pf1/schema";
 
-import { setWizardSchool } from "../../model/doc.js";
+import { setWizardFocusedSchool, setWizardSchool } from "../../model/doc.js";
 import {
   ELEMENTAL_SCHOOL_LABELS,
   ELEMENTAL_SCHOOL_TAGS,
@@ -41,6 +41,20 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
     () => new Map(Object.values(refData.wizardSchools).map((s) => [s.tag, s])),
     [refData],
   );
+  const focusedSchoolsByParent = useMemo(() => {
+    const map = new Map<string, { tag: string; name: string }[]>();
+    for (const f of Object.values(refData.focusedSchools)) {
+      const list = map.get(f.parentTag) ?? [];
+      list.push({ tag: f.tag, name: f.name });
+      map.set(f.parentTag, list);
+    }
+    for (const list of map.values()) list.sort((a, b) => a.tag.localeCompare(b.tag));
+    return map;
+  }, [refData]);
+  const focusedSchoolByTag = useMemo(
+    () => new Map(Object.values(refData.focusedSchools).map((f) => [f.tag, f])),
+    [refData],
+  );
   if (!isWizard) return null;
 
   const chosen = doc.build.wizardSchool ?? "";
@@ -51,6 +65,10 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
     : chosen
       ? SCHOOL_LABELS[chosen as WizardSchoolTag]
       : null;
+  const focusOptions = chosen ? (focusedSchoolsByParent.get(chosen) ?? []) : [];
+  const chosenFocus = doc.build.wizardFocusedSchool
+    ? focusedSchoolByTag.get(doc.build.wizardFocusedSchool)
+    : undefined;
 
   return (
     <div className="subsection school-picker">
@@ -66,7 +84,13 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
       >
         <h3>
           Arcane School
-          {chosenLabel ? <span className="hint"> · {chosenLabel}</span> : null}
+          {chosenLabel ? (
+            <span className="hint">
+              {" "}
+              · {chosenLabel}
+              {chosenFocus ? ` (${chosenFocus.name})` : ""}
+            </span>
+          ) : null}
         </h3>
         <Caret open={!collapsed} />
       </div>
@@ -112,15 +136,40 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
             </optgroup>
           </select>
 
+          {focusOptions.length > 0 && (
+            <>
+              <p className="hint school-picker-hint">
+                {chosenLabel} offers a focused school: an optional narrower specialization that
+                trades one or two of its granted powers for its own. Everything else about the
+                school (spell list, opposition schools, bonus slot) stays the same.
+              </p>
+              <select
+                className="school-select focused-school-select"
+                value={doc.build.wizardFocusedSchool ?? ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  update((d) => setWizardFocusedSchool(d, value || null));
+                }}
+              >
+                <option value="">— standard school —</option>
+                {focusOptions.map((f) => (
+                  <option key={f.tag} value={f.tag}>
+                    {f.name}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
+
           {chosen && chosen !== "uni" && !isElemental && (
             <OppositionPicker doc={doc} update={update} />
           )}
           {isElemental && <ElementalOppositionPicker doc={doc} school={school} update={update} />}
 
-          {school?.description && (
+          {(chosenFocus?.description ?? school?.description) && (
             <div className="domain-description">
-              <span className="hint">{school.name}</span>
-              <FeatureDescription html={school.description} />
+              <span className="hint">{chosenFocus?.name ?? school?.name}</span>
+              <FeatureDescription html={(chosenFocus?.description ?? school?.description)!} />
             </div>
           )}
         </>
