@@ -75,6 +75,7 @@ const FILES: { key: keyof RefData; file: string }[] = [
   { key: "witchPatrons", file: "witch-patrons.json" },
   { key: "shamanSpirits", file: "shaman-spirits.json" },
   { key: "sorcererBloodlines", file: "sorcerer-bloodlines.json" },
+  { key: "sorcererBloodlineMutations", file: "sorcerer-bloodline-mutations.json" },
   { key: "bloodragerBloodlines", file: "bloodrager-bloodlines.json" },
   { key: "alchemistDiscoveries", file: "alchemist-discoveries.json" },
   { key: "monkKiPowers", file: "monk-ki-powers.json" },

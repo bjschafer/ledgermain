@@ -287,6 +287,23 @@ describe("buildFeatSlotGroups: Sorcerer bloodline feats (issue #57)", () => {
     expect(featEligibleForSlot(toughness, bloodline.type)).toBe(true);
     expect(featEligibleForSlot(cleave, bloodline.type)).toBe(false);
   });
+
+  it("with a wildblooded mutation chosen (arcane-sage), the slot still restricts to the BASE bloodline's list", () => {
+    // RAW: bonus feats stay the base bloodline's even under a mutation — see
+    // `SorcererBloodlineMutation` doc comment. Arcane's own bonus feats
+    // include Spell Focus; Cleave is on neither list.
+    let doc = withRace("Elf");
+    doc = addClass(doc, "sorcerer");
+    doc = setClassLevel(doc, "sorcerer", 7);
+    doc = { ...doc, build: { ...doc.build, sorcererBloodline: "arcane-sage" } };
+    const groups = buildFeatSlotGroups(doc, ref);
+    const bloodline = groups.find((g) => g.type.kind === "bloodline")!;
+    expect(bloodline.type).toEqual({ kind: "bloodline", bloodline: "Arcane" });
+    const spellFocus = ref.feats[featId("Spell Focus")]!;
+    const cleave = ref.feats[featId("Cleave")]!;
+    expect(featEligibleForSlot(spellFocus, bloodline.type)).toBe(true);
+    expect(featEligibleForSlot(cleave, bloodline.type)).toBe(false);
+  });
 });
 
 describe("buildFeatSlotGroups: Monk bonus feats (issue #57)", () => {

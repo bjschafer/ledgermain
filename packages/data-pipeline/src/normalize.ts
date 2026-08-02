@@ -44,6 +44,7 @@ import type {
   ShifterAspect,
   SlayerTalent,
   SorcererBloodline,
+  SorcererBloodlineMutation,
   Spell,
   SpellList,
   Subdomain,
@@ -954,8 +955,10 @@ export function normalize(opts: NormalizeOptions): {
   const sorcererBloodlineDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_sorcerer_bloodlines.json"),
   );
-  const sorcererBloodlines: SorcererBloodline[] =
-    transformSorcererBloodlines(sorcererBloodlineDict);
+  const sorcererBloodlineTransform = transformSorcererBloodlines(sorcererBloodlineDict);
+  const sorcererBloodlines: SorcererBloodline[] = sorcererBloodlineTransform.bloodlines;
+  const sorcererBloodlineMutations: SorcererBloodlineMutation[] =
+    sorcererBloodlineTransform.mutations;
 
   const bloodragerBloodlineDict = readPfDataDictionary(
     join(opts.pfDataJsonDir, "class_ability_bloodrager_bloodlines.json"),
@@ -1069,6 +1072,7 @@ export function normalize(opts: NormalizeOptions): {
     witchPatrons: witchPatrons.length,
     shamanSpirits: shamanSpirits.length,
     sorcererBloodlines: sorcererBloodlines.length,
+    sorcererBloodlineMutations: sorcererBloodlineMutations.length,
     bloodragerBloodlines: bloodragerBloodlines.length,
     alchemistDiscoveries: alchemistDiscoveries.length,
     monkKiPowers: monkKiPowers.length,
@@ -1147,6 +1151,7 @@ export function normalize(opts: NormalizeOptions): {
     witchPatrons: byId(witchPatrons),
     shamanSpirits: byId(shamanSpirits),
     sorcererBloodlines: byId(sorcererBloodlines),
+    sorcererBloodlineMutations: byId(sorcererBloodlineMutations),
     bloodragerBloodlines: byId(bloodragerBloodlines),
     alchemistDiscoveries: byId(alchemistDiscoveries),
     monkKiPowers: byId(monkKiPowers),

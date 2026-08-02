@@ -142,9 +142,16 @@ export const SYSTEM_VERSION = "11.11";
  * blessing catalog from the "Pf Data 1e" fourth pinned source (42 entries
  * after dropping `not_found` and its five redirects), prose-only, split into
  * `minorPower`/`majorPower` per entry so a consumer can gate them by
- * warpriest level; see `transform/warpriestBlessings.ts`.
+ * warpriest level; see `transform/warpriestBlessings.ts`. v25 adds
+ * `sorcererBloodlineMutations`/`sorcerer-bloodline-mutations.json` — the 24
+ * published "Wildblooded Mutation" variants, previously rendered as inert bold
+ * text inside their parent bloodline's own description
+ * (`SorcererBloodline.description`) rather than promoted to entries of their
+ * own; see `SorcererBloodlineMutation` doc comment and
+ * `transform/sorcererBloodlines.ts`. A parent bloodline's description no
+ * longer inlines its mutations' prose.
  */
-export const SCHEMA_VERSION = 24;
+export const SCHEMA_VERSION = 25;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

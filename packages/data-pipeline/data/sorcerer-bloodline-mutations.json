@@ -1,0 +1,314 @@
+{
+  "aberrant-warped": {
+    "description": "<p>The alien taint in your blood causes malformations and mutations in others.   <strong>Associated Bloodline:</strong> Aberrant.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast a spell of the polymorph subschool, one target of your choice may receive one random effect from the Warped Polymorph Benefits table (see below). This bonus lasts as long as the polymorph effect on the target.</p>\n<p><strong>Bloodline Powers:</strong> Your strange blood brings out the worst in people.</p>\n<p><em>Warp Touch (Sp):</em> Starting at 1st level, you create brief, disorienting changes in a creature's physical form. This ability affects one creature within 30 feet, which is dazed for 1 round (Fortitude negates; DC 10 + 1/2 your sorcerer level + your Charisma modifier). You can use this ability a number of times per day equal to 3 + your Charisma modifier. This bloodline power replaces <em>acidic ray.</em></p>\n<table><thead><tr><th>d12</th><th>Effect</th></tr></thead><tbody><tr><td>1</td><td>Double-Jointed: +2 on Escape Artist checks</td></tr><tr><td>2</td><td>Webbed Digits: +2 on Swim checks</td></tr><tr><td>3</td><td>Iron Grip: +2 on Climb checks and to CMD against disarm maneuvers</td></tr><tr><td>4</td><td>Bug Eyes: +2 on Perception checks</td></tr><tr><td>5</td><td>Camouflage: +2 on Stealth checks</td></tr><tr><td>6</td><td>Tough Hide: +1 natural armor bonus</td></tr><tr><td>7</td><td>Hardy: +1 on Fortitude saving throws</td></tr><tr><td>8</td><td>Lively: +1 on Reflex saving throws</td></tr><tr><td>9</td><td>Astute: +1 on Will saves</td></tr><tr><td>10</td><td>Quick: +5 ft. movement rate</td></tr><tr><td>11</td><td>Vicious: +1 on melee attack rolls</td></tr><tr><td>12</td><td>Eagle Eyes: +1 on ranged attack rolls</td></tr></tbody></table>",
+    "id": "aberrant-warped",
+    "name": "Warped",
+    "parentBloodlineId": "aberrant",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "73"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:aberrant-warped"
+  },
+  "abyssal-brutal": {
+    "description": "<p>The powers of the Abyss can vary radically, even for similar fiends.   <strong>Associated Bloodline:</strong> Abyssal.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast a spell that deals hit point damage, one target of your choice affected by the spell takes 2 additional hit points of damage. This ability has no effect on spells that do not deal hit point damage (such as ability score damage).</p>\n<p><strong>Bloodline Powers:</strong> Flight is often the key to survival.</p>\n<p><em>Wings of the Abyss (Su):</em> At 9th level, you can sprout leathery wings and fly for a number of minutes per day equal to your sorcerer level, with a speed of 60 feet and good maneuverability. This duration does not need to be consecutive, but it must be used in 1-minute increments. This bloodline power replaces <em>strength of the abyss.</em></p>",
+    "id": "abyssal-brutal",
+    "name": "Brutal",
+    "parentBloodlineId": "abyssal",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:abyssal-brutal"
+  },
+  "aquatic-seaborn": {
+    "description": "<p>Your powers rise like the tides.   <strong>Associated Bloodline:</strong> Aquatic.</p>\n<p><strong>Bloodline Arcana:</strong> When you are in a body of water large enough to float in, your effective caster level is increased by 1.</p>\n<p><strong>Bloodline Powers:</strong> You prefer to attack with water rather than to leech it away.</p>\n<p><em>Water Blast (Sp):</em> As a standard action, you can fire a bolt of water at a foe within 30 feet as a ranged touch attack. The foe is knocked prone, and at your option may be pushed 5 feet directly away from you. A reflex save (DC 10 +1/2 your sorcerer level + your Charisma modifier) negates this effect. You can use this ability a number of times per day equal to 3 + your Charisma modifier. This bloodline power replaces <em>dehydrating touch.</em></p>",
+    "id": "aquatic-seaborn",
+    "name": "Seaborn",
+    "parentBloodlineId": "aquatic",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:aquatic-seaborn"
+  },
+  "arcane-sage": {
+    "description": "<p>Scholars of the arcane are always creating new means to use magic.   <strong>Associated Bloodline:</strong> Arcane.</p>\n<p><strong>Bloodline Arcana:</strong> Unlike most sorcerers, whose innate magic is powered by force of personality, you use your intellect to understand and master your mystic powers. You use your Intelligence, rather than your Charisma, to determine all class features and effects relating to your sorcerer class, such as bonus spells per day, the maximum spell level you can cast, the save DCs of your spells, and the number of daily uses of your bloodline powers. You gain a +2 bonus on all Knowledge (arcana) and Spellcraft checks.</p>\n<p><strong>Bloodline Powers:</strong> Your preferred focus is a bolt of mind-spun magic.</p>\n<p><em>Arcane Bolt (Sp):</em> Starting at 1st level, you can unleash a ray of magic force as a standard action, targeting any foe within 30 feet as a ranged touch attack. This ray deals 1d4 points of damage + 1 for every two sorcerer levels you possess. This damage is treated as a spell of a level equal to half your sorcerer level, and is a force effect. You can use this ability a number of times per day equal to 3 + your Charisma modifier. This bloodline power replaces <em>arcane bond.</em></p>",
+    "id": "arcane-sage",
+    "name": "Sage",
+    "parentBloodlineId": "arcane",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:arcane-sage"
+  },
+  "boreal-rime-blooded": {
+    "description": "<p>The wintry origin of your magic flows like ice water in your veins.   <strong>Associated Bloodline:</strong> Boreal.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast a spell with the cold descriptor, you may select one target of the spell to be slowed (as the spell) for 1 round. A Fortitude save (DC 10 + the level of cold spell + your Charisma modifier) negates the effect.</p>\n<p><strong>Bloodline Powers:</strong> Sometimes you must bring the cold to your enemies.</p>\n<p><em>Freezing Bolt (Sp):</em> At 9th level, you can cause the air to erupt in freezing sleet. This 10-foot-radius burst does 1d6 points of cold damage per sorcerer level (Reflex half). The DC of this save is equal to 10 + 1/2 your sorcerer level + your Charisma modifier. At 9th level, you can use this ability once per day. At 17th level, you can use this ability twice per day. At 20th level, you can use this ability three times per day. This power has a range of 60 feet. This bloodline power replaces <em>snow shroud.</em></p>",
+    "id": "boreal-rime-blooded",
+    "name": "Rime-Blooded",
+    "parentBloodlineId": "boreal",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:boreal-rime-blooded"
+  },
+  "celestial-empyreal": {
+    "description": "<p>Your heavenly power derives from insight rather than force of personality.   <strong>Associated Bloodline:</strong> Celestial.</p>\n<p><strong>Bloodline Arcana:</strong> Unlike most sorcerers whose innate magic is powered by force of personality, you use pure willpower to master and fuel your magic. You use your Wisdom, rather than your Charisma, to determine all class features and effects relating to your sorcerer class, such as bonus spells per day, maximum spell level you can cast, and the save DCs of your spells. You gain a +2 bonus on all Heal and Knowledge (religion) checks.</p>\n<p><strong>Bloodline Powers:</strong> Your quasi-divine nature gives you strange powers.</p>\n<p><em>Sacred Cistern (Su):</em> At 9th level, your bloodline makes you a natural receptacle of divine energy. You can channel energy once per day as a cleric of your sorcerer level - 4. This bloodline power replaces <em>wings of heaven.</em></p>",
+    "id": "celestial-empyreal",
+    "name": "Empyreal",
+    "parentBloodlineId": "celestial",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "71"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:celestial-empyreal"
+  },
+  "deep-earth-bedrock": {
+    "description": "<p>Your earth magic is more defensive than offensive.   <strong>Associated Bloodline:</strong> Deep Earth.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast a spell of the summoning subschool, the creatures summoned gain DR/adamantine equal to 1/2 your sorcerer level (minimum 1). This does not stack with any DR the creature might have.</p>\n<p><strong>Bloodline Powers:</strong> Rock is timeless; it endures.</p>\n<p><em>Iron Hide (Sp):</em> At 9th level, as a swift action, you can grant yourself DR 10/adamantine for a number of rounds per day equal to your sorcerer level. The rounds do not need to be used consecutively. This bloodline power replaces <em>crystal shard.</em></p>",
+    "id": "deep-earth-bedrock",
+    "name": "Bedrock",
+    "parentBloodlineId": "deep_earth",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:deep-earth-bedrock"
+  },
+  "destined-karmic": {
+    "description": "<p>The universe punishes those who interfere with destiny.   <strong>Associated Bloodline:</strong> Destined.</p>\n<p><strong>Bloodline Arcana:</strong> If you are casting defensively because a creature is threatening you and you fail your concentration check, one of the creatures that is threatening you provokes an attack of opportunity from you or from one ally who is adjacent to the enemy. You decide which creature provokes this attack and which of its adjacent opponents may make the attack.</p>\n<p><strong>Bloodline Powers:</strong> Your blood responds angrily when you are attacked.</p>\n<p><em>Fate's Retribution (Su):</em> Starting at 1st level, when you are hit by a melee attack, as an immediate action, you can curse the creature that struck you. The target takes a -2 penalty on all attack and damage rolls for 1d4 rounds. A Will save (DC 10 + 1/2 your sorcerer level + your Charisma modifier) negates this effect. You can use this ability a number of times per day equal to 3 + your Charisma modifier. This bloodline power replaces <em>touch of destiny.</em></p>",
+    "id": "destined-karmic",
+    "name": "Karmic",
+    "parentBloodlineId": "destined",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "71"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:destined-karmic"
+  },
+  "draconic-linnorm": {
+    "description": "<p>Your draconic heritage stems from a mighty, primordial linnorm rather than from the more common, somewhat civilized dragons.   <strong>Associated Bloodline:</strong> Draconic.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast a spell with an energy descriptor that matches your linnorm bloodline's energy type, you gain a natural armor bonus equal to the spell's level for 1d4 rounds.</p>\n<p><strong>Bloodline Powers:</strong> True dragons blast their foes with rays of energy.</p>\n<p><em>Elemental Spit (Su):</em> Starting at 1st level, you can fire an elemental ray that matches your linnorm bloodline's energy type as a standard action, targeting any foe within 30 feet as a ranged touch attack. The ray deals 1d6 points of damage + 1 for every two sorcerer levels you possess. You can use this ability a number of times per day equal to 3 + your Charisma modifier. This bloodline power replaces <em>claws.</em></p>\n<p>There are no official description of which linnorm types grant which types of breath weapon. The following is a summary of the basic form of each linnorm's breath weapon, with extra notes in parentheses. Consult your GM.</p>\n<table><thead><tr><th>Linnorm</th><th>Energy Type</th><th>Shape</th></tr></thead><tbody><tr><td>Cairn Linnorm</td><td>Acid (energy-draining bile)</td><td>Cone</td></tr><tr><td>Crag Linnorm</td><td>Fire (solidifying magma)</td><td>Line</td></tr><tr><td>Fjord Linnorm</td><td>Cold (freezing liquid)</td><td>Line</td></tr><tr><td>Gare Linnorm</td><td>Fire (lingering steam)</td><td>Cone</td></tr><tr><td>Ice Linnorm</td><td>Cold (sticky, freezing ooze)</td><td>Cone</td></tr><tr><td>Sea Linnorm</td><td>Electricity (arcing)</td><td>Line</td></tr><tr><td>Taiga Linnorm</td><td>Electricity (persistent mist)</td><td>Cone</td></tr><tr><td>Tarn Linnorm</td><td>Acid (liquid with strong fumes)</td><td>Line or Cone</td></tr><tr><td>Tor Linnorm</td><td>Fire (ash and smoke)</td><td>Cone</td></tr></tbody></table>",
+    "id": "draconic-linnorm",
+    "name": "Linnorm",
+    "parentBloodlineId": "draconic",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "71"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:draconic-linnorm"
+  },
+  "dreamspun-visionary": {
+    "description": "<p>Your dream-magic strongly influences the waking world.   <strong>Associated Bloodline:</strong> Dreamspun.</p>\n<p><strong>Bloodline Arcana:</strong> Though you can still only regain spells once per day, you need only a single hour of sleep prior to doing so. (You still risk fatigue as normal if you don't receive enough rest.)</p>\n<p><strong>Bloodline Powers:</strong> Your dreams hint at the future.</p>\n<p><em>Visions (Sp):</em> At 9th level, when you sleep, you can gain information through prophetic visions. Once per day when sleeping, you may gain information about actions taken in the next week as if you had cast a <em>divination</em> spell. You can gain information about a single question at 9th level. At 17th level, you can have two questions answered while you sleep, and at 20th level, three questions. This bloodline power replaces <em>dreamshaper.</em></p>",
+    "id": "dreamspun-visionary",
+    "name": "Visionary",
+    "parentBloodlineId": "dreamspun",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "73"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:dreamspun-visionary"
+  },
+  "elemental-lifewater": {
+    "description": "<p>Your soul is infused with the restorative and life-giving powers of elemental water.   <strong>Associated Bloodline:</strong> Elemental (water).</p>\n<p><strong>Bloodline Arcana:</strong> Anytime you cast a spell with the cold or water descriptor, you gain a number of temporary hit points equal to the level of the spell cast. You can grant up to half of these temporary hit points to an adjacent ally, in which case you gain the remaining temporary hit points. These temporary hit points last 1 minute.</p>\n<p><strong>Bloodline Powers:</strong> Your powers are revitalizing rather than destructive.</p>\n<p><em>Lifewater Stream (Su):</em> At 9th level, once per day, you can unleash a surge of restorative elemental water that aids your allies. This ability affects creatures in a 30-foot line extending from your palm, and you can select one of the following conditions to remove from the affected creatures: fatigued, shaken, or sickened. Creatures affected by a more extreme version of the chosen condition (such as exhausted for fatigued, frightened for shaken, and nauseated for sickened) have their condition reduced to the less extreme version. At 17th level, you can use this ability twice per day, and you can choose from the following additional conditions: blinded, deafened, dazed, and staggered. At 20th level, you can use this ability three times per day. This bloodline power replaces <em>elemental blast.</em></p>",
+    "id": "elemental-lifewater",
+    "name": "Lifewater",
+    "parentBloodlineId": "elemental",
+    "sources": [
+      {
+        "id": "blood-of-the-elements",
+        "pages": "15"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:elemental-lifewater"
+  },
+  "elemental-primal": {
+    "description": "<p>Your powers are attuned to the concentrated core of the elemental plane.   <strong>Associated Bloodline:</strong> Elemental.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast a spell with an energy descriptor that matches your elemental bloodline's energy type, that spell deals +1 point of damage per die rolled.</p>\n<p><strong>Bloodline Powers:</strong> You can infuse raw energy into your summoned minions.</p>\n<p><em>Elementalist Summoning (Su):</em> At 9th level, whenever you summon a creature, it gains energy resistance 10 against the energy type that matches your elemental bloodline (if it already has such resistance, its resistance increases by +5), and its natural attacks deal an additional 1d6 points of damage of the same energy type. This bloodline power replaces <em>elemental blast.</em></p>",
+    "id": "elemental-primal",
+    "name": "Primal",
+    "parentBloodlineId": "elemental",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:elemental-primal"
+  },
+  "fey-dark-fey": {
+    "description": "<p>Your powers were born of malevolent trickery and shadowy First World magic.   <strong>Associated Bloodline:</strong> Fey.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast a spell with the curse subtype, increase the spell's DC by 2.</p>\n<p><strong>Bloodline Powers:</strong> In your presence, senses are deceived.</p>\n<p><em>Fey Fascination (Su):</em> At 1st level, as a standard action, you can force one target within 30 feet to make a Will save (DC = 10 + 1/2 your sorcerer level + your Charisma modifier) or be fascinated for 1 round for every 2 sorcerer levels you possess (minimum 1). This is a mind-affecting, illusion (pattern) effect. You can use this ability a number of times per day equal to 3 + your Charisma modifier. This bloodline power replaces <em>laughing touch.</em></p>",
+    "id": "fey-dark-fey",
+    "name": "Dark Fey",
+    "parentBloodlineId": "fey",
+    "sources": [
+      {
+        "id": "people-of-the-river",
+        "pages": "11"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:fey-dark-fey"
+  },
+  "fey-sylvan": {
+    "description": "<p>Your ties to nature have more to do with creatures than with capriciousness.   <strong>Associated Bloodline:</strong> Fey.</p>\n<p><strong>Bloodline Arcana:</strong> See bloodline powers.</p>\n<p><strong>Bloodline Powers:</strong> Your magic shows a kinship to that of the beast-talkers and shapechanger fey.</p>\n<p><em>Animal Companion (Ex):</em> You gain an animal companion. Your effective druid level for this ability is equal to your sorcerer level - 3 (minimum 1st). This bloodline power counts as your bloodline arcana and also replaces <em>laughing touch.</em></p>\n<p><em>Fey Wings (Su):</em> At 15th level, you can grow insect-like wings from your back and become one size category smaller (as if you had used reduce person), gaining a fly speed of 60 feet with average maneuverability. You can maintain this form for 1 minute per level. This duration does not need to be consecutive, but it must be used in 1-minute increments. This bloodline power replaces <em>fey magic.</em></p>",
+    "id": "fey-sylvan",
+    "name": "Sylvan",
+    "parentBloodlineId": "fey",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:fey-sylvan"
+  },
+  "infernal-pit-touched": {
+    "description": "<p>Your diabolic corruption is from a source in the deepest parts of Hell.   <strong>Associated Bloodline:</strong> Infernal.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast a spell, you gain a bonus on Intimidate checks equal to the spell's level for 1 round.</p>\n<p><strong>Bloodline Powers:</strong> The crushing weight of evil has given you the strength to endure.</p>\n<p><em>Tough as Hell (Ex):</em> At 9th level, you gain a +2 inherent bonus to your Constitution. This bonus increases to +4 at 13th level, and to +6 at 17th level. This bloodline power replaces <em>hellfire.</em></p>",
+    "id": "infernal-pit-touched",
+    "name": "Pit-Touched",
+    "parentBloodlineId": "infernal",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "71"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:infernal-pit-touched"
+  },
+  "marid-shahzada": {
+    "description": "<p>You are descended from the ranks of noble marids, making your blood royal as well as magical.   <strong>Associated Bloodline:</strong> Marid.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast a spell with the water descriptor, you gain a swim speed of 30 feet for a number of rounds equal to double the level of the spell cast.</p>\n<p><strong>Bloodline Powers:</strong> Your mastery over water is coupled with the power to alter it.</p>\n<p><em>Sweeping Waves (Su):</em> At 15th level, you can summon a wave of water from within, which pours from your mouth and violently sweeps creatures away from you on all sides. Creatures within 5 feet of you must succeed at a Reflex save (the DC is equal to 10 + 1/2 your sorcerer level + your Charisma modifier) or take a number of points of damage equal to 1d6 + 1 per 2 sorcerer levels you possess. Additionally, the waves of water bull rush each affected creature, using your caster level as your base attack bonus and your Charisma modifier as your Strength modifier to determine the CMB of the bull rush. A successful save halves the damage and negates the bull rush. This bloodline power replaces <em>elemental movement.</em></p>",
+    "id": "marid-shahzada",
+    "name": "Shahzada",
+    "parentBloodlineId": "marid",
+    "sources": [
+      {
+        "id": "blood-of-the-elements",
+        "pages": "15"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:marid-shahzada"
+  },
+  "martyred-retribution": {
+    "description": "<p>One of your ancestors was unjustly executed, and your soul is infused with this forebear's vengeful spirit.   <strong>Associated Bloodline:</strong> Martyred.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever a creature damages you, until the end of your next turn if you apply a metamagic feat to a spell that targets that creature, reduce the spell level increase of that metamagic feat by 1 (minimum 0).</p>\n<p><strong>Bloodline Powers:</strong> You never forgive those who wrong you.</p>\n<p><em>Vengeful Strike (Su):</em> At 9th level, once per day after a foe has damaged you in melee, as an immediate action you can deal the same amount and type of damage to your foe (maximum amount of damage equal to double your character level). At 17th level, you can use this ability twice per day. This bloodline power replaces <em>gift of blood.</em></p>",
+    "id": "martyred-retribution",
+    "name": "Retribution",
+    "parentBloodlineId": "martyred",
+    "sources": [
+      {
+        "id": "people-of-the-river",
+        "pages": "11"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:martyred-retribution"
+  },
+  "protean-anarchic": {
+    "description": "<p>Your magical power taps into pure anarchy.   <strong>Associated Bloodline:</strong> Protean.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you fail a concentration check to cast a spell, a cantrip effect is created. Randomly determine one of your cantrips known (for example, if you know 6 cantrips, roll 1d6). There is a 50% chance this cantrip affects a target of your choice within 60 feet; otherwise it affects you.</p>\n<p><strong>Bloodline Powers:</strong> Raw magical energy lashes out when you destroy or negate hostile spells.</p>\n<p><em>Wild Feedback (Su):</em> At 3rd level, when you successfully dispel or counterspell an opponent's spell, the caster (if it is within 100 feet) takes 1d6 points of damage +1 per level of the spell affected. This bloodline power replaces <em>protean resistances.</em></p>",
+    "id": "protean-anarchic",
+    "name": "Anarchic",
+    "parentBloodlineId": "protean",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:protean-anarchic"
+  },
+  "serpentine-envenomed": {
+    "description": "<p>The ophidian source of your bloodline has more to do with stealth and assassination than it does with leadership and alliances.   <strong>Associated Bloodline:</strong> Serpentine.</p>\n<p><strong>Bloodline Arcana:</strong> You gain a +2 bonus on Acrobatics, Climb, and Stealth checks.</p>\n<p><strong>Bloodline Powers:</strong> The stink of poison taints your magic.</p>\n<p><em>Envenom (Su):</em> At 3rd level, as a swift action, you can lick or bite a melee weapon to imbue it with 1 dose of black adder venom. The poison's DC is equal to 10 + 1/2 your sorcerer level + your Charisma modifier. You may use this ability once per day at 3rd level, and one additional time per day for every three additional levels. The poison cannot be removed or stored, and the weapon loses the benefit of the poison after the first successful attack or 1 hour has passed. The bloodline power replaces <em>serpentfriend.</em></p>",
+    "id": "serpentine-envenomed",
+    "name": "Envenomed",
+    "parentBloodlineId": "serpentine",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "71"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:serpentine-envenomed"
+  },
+  "shadow-umbral": {
+    "description": "<p>Your nature is to gather the darkness into yourself.   <strong>Associated Bloodline:</strong> Shadow.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast a spell in an area of dim light or darkness, your effective caster level is increased by 1.</p>\n<p><strong>Bloodline Powers:</strong> Your shadow magic is more defensive than offensive.</p>\n<p><em>Cloak of Shadows (Sp):</em> At 1st level, as a standard action, you can grant one target a cloak of shadows. This cloak gives the target a bonus on Stealth checks made in areas of dim or no light equal to 1/2 your sorcerer level for 1 round per 2 sorcerer levels you possess (minimum +1 bonus for 1 round). You may use this ability a number of times per day equal to 3 + your Charisma modifier. This bloodline power replaces <em>shadowstrike.</em></p>",
+    "id": "shadow-umbral",
+    "name": "Umbral",
+    "parentBloodlineId": "shadow",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "73"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:shadow-umbral"
+  },
+  "starsoul-void-touched": {
+    "description": "<p>The darkness between the stars calls to you.   <strong>Associated Bloodline:</strong> Starsoul.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast an evocation spell, you may select one affected target that fails its save to suffer the choking airlessness of the void, silencing it (as silence, but affecting only the target) for 1 round. This is a supernatural ability.</p>\n<p><strong>Bloodline Powers:</strong> Your magic is blacker than any night.</p>\n<p><em>Black Motes (Sp):</em> This ability works exactly like (and replaces) <em>minute meteors,</em> except it deals cold damage.</p>\n<p><em>Voidfield (Sp):</em> At 9th level, you can create an area influenced by the black void. This ability acts as an ice storm, except the area is also subject to deeper darkness for 1 round per four sorcerer levels. You may use this ability once per day at 3rd level, and one additional time per day for every three additional levels. The bloodline power replaces <em>aurora borealis.</em></p>",
+    "id": "starsoul-void-touched",
+    "name": "Void-Touched",
+    "parentBloodlineId": "starsoul",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "73"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:starsoul-void-touched"
+  },
+  "stormborn-arial": {
+    "description": "<p>Your magic is more focused on the power of air and rain than on lightning and thunder.   <strong>Associated Bloodline:</strong> Stormborn.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever outdoors during any form of precipitation, your effective caster level is increased by 2.</p>\n<p><strong>Bloodline Powers:</strong> The greatest storms bring ruin through wind, not electricity.</p>\n<p><em>Windcaller (Sp):</em> At 9th level, you can call the winds to obey your commands for 1 minute per level. This functions like control winds, except that you may choose to be immune to any increased wind effects you create. The ability's duration does not need to be consecutive, but it must be used in 1-minute increments. This bloodline power replaces <em>thunderbolt.</em></p>",
+    "id": "stormborn-arial",
+    "name": "Arial",
+    "parentBloodlineId": "stormborn",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "70"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:stormborn-arial"
+  },
+  "undead-sanguine": {
+    "description": "<p>The power of undeath can derive from cold blood as well as hard bone.   <strong>Associated Bloodline:</strong> Undead.</p>\n<p><strong>Bloodline Arcana:</strong> Whenever you cast a spell of the necromancy school, your effective caster level is increased by 1.</p>\n<p><strong>Bloodline Powers:</strong> Your magic emulates that of the hungry dead.</p>\n<p><em>The Blood Is the Life (Su):</em> At 1st level, you can gain sustenance from the blood of the recently dead. As a standard action, you can drink the blood of a creature that died within the past minute. The creature must be corporeal, must be at least the same size as you, and must have blood. This ability heals you 1d6 hit points and nourishes you as if you'd had a full meal. You may use this ability a number of times per day equal to 3 + your Charisma modifier. This bloodline power replaces <em>grave touch.</em></p>",
+    "id": "undead-sanguine",
+    "name": "Sanguine",
+    "parentBloodlineId": "undead",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "72"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:undead-sanguine"
+  },
+  "verdant-groveborn": {
+    "description": "<p>Some plant magic is more green, while some is more brown, like hardwood.   <strong>Associated Bloodline:</strong> Verdant.</p>\n<p><strong>Bloodline Arcana:</strong> Your powers of compulsion can affect even plant creatures. Whenever you cast a mind-affecting or language-dependent spell, it affects creatures of the plant type as if they were humanoids that understood your language.</p>\n<p><strong>Bloodline Powers:</strong> Your nature powers create tough, resilient minions.</p>\n<p><em>Lush Summoning (Su):</em> At 3rd level, whenever you summon creatures with a conjuration (summoning) spell, you can decide that they appear green and leafy. The natural armor bonus of such creatures is increased by +2, and they gain a +4 bonus on saves against paralysis, poison, polymorph, sleep, and stunning. This bloodline power replaces <em>photosynthesis.</em></p>",
+    "id": "verdant-groveborn",
+    "name": "Groveborn",
+    "parentBloodlineId": "verdant",
+    "sources": [
+      {
+        "id": "ultimate-magic",
+        "pages": "71"
+      }
+    ],
+    "uuid": "pfdata:sorcerer-bloodline-mutation:verdant-groveborn"
+  }
+}

@@ -12,6 +12,7 @@ import type {
 
 import { addBuff, makeActiveBuff, removeBuff, suggestRounds } from "../../model/buffs.js";
 import { casterLevelForClass, effectiveCasterClassLevel } from "../../model/casterLevel.js";
+import { parentBloodlineTagOf } from "../../model/doc.js";
 import {
   castPreparedAsConversion,
   castSpiritMagicSlot,
@@ -1492,7 +1493,13 @@ function SpontaneousView({
   // ids already present (e.g. also separately added to `known`) to avoid dupes.
   if (casterTag === "sorcerer") {
     const known = new Set(knownList);
-    for (const sp of bloodlineSpellsKnown(refData, doc.build.sorcererBloodline, classLevel)) {
+    // Bonus spells come from the BASE bloodline's spell list even when
+    // `sorcererBloodline` names a wildblooded mutation instead (RAW — see
+    // `SorcererBloodlineMutation` doc comment).
+    const bloodlineTag = doc.build.sorcererBloodline
+      ? parentBloodlineTagOf(refData, doc.build.sorcererBloodline)
+      : undefined;
+    for (const sp of bloodlineSpellsKnown(refData, bloodlineTag, classLevel)) {
       if (known.has(sp.id)) continue;
       (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
         id: sp.id,
