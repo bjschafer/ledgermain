@@ -41,6 +41,42 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-02-focused-schools",
+    date: "2026-08-02",
+    title: "Focused arcane schools",
+    note: "A wizard who narrows their school to a focused school (Admixture instead of plain Evocation, Teleportation instead of plain Conjuration, and the rest) can now record it. Pick the base school as usual and the focused option appears under it: the sheet swaps in the focused school's powers for the one or two they replace and keeps everything else, spell slots, opposition schools, and unswapped powers included. All 22 published focused schools are in.",
+  },
+  {
+    id: "2026-08-02-wildblooded-bloodlines",
+    date: "2026-08-02",
+    title: "Wildblooded sorcerer bloodlines",
+    note: "A wildblooded sorcerer can now pick their mutated bloodline: Sage under Arcane, Empyreal under Celestial, and the other 22. The sheet follows the printed rule: the mutation's arcana, its swapped powers at the levels they arrive, and the normal bloodline's bonus spells, bonus feats, and class skill for everything it leaves alone. Picking one without the wildblooded archetype gets a soft warning, never a block.",
+  },
+  {
+    id: "2026-08-02-inquisitions",
+    date: "2026-08-02",
+    title: "Inquisitions for inquisitors",
+    note: "An inquisitor may take an inquisition instead of a domain, and the domain picker now offers that choice: all 39 published inquisitions, searchable, each with its granted powers arriving at the printed levels on your class features list. As the rules say, an inquisition grants powers and no domain spell slots. Picking one clears the domain and the other way round, since you get one or the other.",
+  },
+  {
+    id: "2026-08-02-warpriest-blessings",
+    date: "2026-08-02",
+    title: "Warpriest blessings",
+    note: "A warpriest now picks their two blessings on the Classes tab: the full published list of 42, each granting its minor power at 1st level and its major power at 10th. Both show their rules text on your class features list at the right level. The picker nudges you toward blessings your deity's own entry names, but that is a hint, not a block, so a homebrew deity works fine.",
+  },
+  {
+    id: "2026-08-02-druid-domain-powers",
+    date: "2026-08-02",
+    title: "Druid domains grant their powers",
+    note: "A druid with a nature bond domain already got its spell slots, but the granted powers never reached the sheet. All 25 animal and terrain domains now grant their powers at the printed levels: a Wolf druid sees Improved Trip land as a real bonus feat and Pack Tactics arrive at 8th, a Jungle druid gets Brachiation and Trap Sense, and so on across roughly 50 powers.",
+  },
+  {
+    id: "2026-08-02-domain-power-fixes",
+    date: "2026-08-02",
+    title: "Missing domain powers restored",
+    note: "Three small domain gaps are filled. The Destruction domain now grants Destructive Aura at 8th level, which the data had always dropped. The Glory domain's boost to channeled energy against undead now shows as a granted power. And a handful of abilities that scale by level, like the Aquatic bloodrager bloodline's Watersense, show their full text instead of a bare name.",
+  },
+  {
     id: "2026-08-01-subdomain-powers",
     date: "2026-08-01",
     title: "Subdomains grant their own powers",
