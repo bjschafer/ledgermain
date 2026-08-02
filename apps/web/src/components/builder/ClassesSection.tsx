@@ -18,6 +18,7 @@ import { AnimalCompanionPicker } from "./AnimalCompanionPicker.js";
 import { ArcaneBondPicker } from "./ArcaneBondPicker.js";
 import { ArcanistExploitPicker } from "./ArcanistExploitPicker.js";
 import { ArchetypePicker } from "./ArchetypePicker.js";
+import { BlessingPicker } from "./BlessingPicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
 import { BonusClassSkillsPicker } from "./BonusClassSkillsPicker.js";
 import { BloodragerBloodlinePicker } from "./BloodragerBloodlinePicker.js";
@@ -486,6 +487,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Deity's favored weapon — cleric/inquisitor/warpriest; the picker
           gates itself off the class's vendored proficiency token. */}
       <FavoredWeaponPicker doc={doc} refData={refData} update={update} />
+
+      {/* Blessing picker — warpriest only (free-choice, soft warning only). */}
+      {doc.identity.classes.some((c) => c.tag === "warpriest") && (
+        <BlessingPicker doc={doc} refData={refData} update={update} />
+      )}
 
       {/* Nature-bond domain picker — druid only (free-choice, soft warning only). */}
       {doc.identity.classes.some((c) => c.tag === "druid") && (

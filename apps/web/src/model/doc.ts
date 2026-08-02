@@ -212,6 +212,22 @@ export function setDeityFavoredWeapon(doc: CharacterDoc, slug: string | null): C
 }
 
 /**
+ * Set the chosen warpriest blessing ids (key into `refData.blessings`; PF1's
+ * allowance is exactly two — UI caps at two here, same as
+ * `setClericDomains`). Pass `[]` to clear. No validation that an id names a
+ * real blessing, or that it matches the warpriest's deity's domains — soft-
+ * warning posture, same as `setClericDomains` (the picker surfaces the deity
+ * mismatch as a non-blocking hint instead). Replaces the whole list.
+ */
+export function setBlessings(doc: CharacterDoc, blessings: string[]): CharacterDoc {
+  const trimmed = blessings.filter((b) => typeof b === "string" && b.length > 0);
+  return {
+    ...doc,
+    build: { ...doc.build, blessings: trimmed.slice(0, 2) },
+  };
+}
+
+/**
  * Set the druid's chosen nature-bond domain tag (a single tag, key into
  * `refData.druidDomains` by `DruidDomain.tag`), or `null`/blank to clear (a
  * druid who bonds with an animal companion instead). No validation that the

@@ -190,6 +190,25 @@ export interface CharacterDoc {
      */
     deityFavoredWeapon?: string;
     /**
+     * Warpriest blessing ids (key into `refData.blessings`), chosen at L1.
+     * PF1 grants exactly two ("A warpriest's deity influences his alignment,
+     * what magic he can perform... Each warpriest can select two blessings
+     * from among those granted by his deity" — ACG p.65); UI caps at two.
+     * Free-choice: `identity.deity` is free text with no deity->domain
+     * mapping in the data (same gap `deityFavoredWeapon` documents), so the
+     * "must match your deity's domains" rule is a soft, non-blocking hint in
+     * the picker (matched against `Blessing.deities` when both are set) —
+     * same hybrid soft-warning posture as `clericDomains`. A deity-less
+     * warpriest (RAW: "he still selects two blessings ... subject to GM
+     * approval") stays fully recordable. Each chosen blessing grants its
+     * minor power at 1st level and its major power at 10th (`@pf1/engine`'s
+     * `collectGrantedFeatures`); uses/day and the save DC are already stated
+     * in the vendored "Blessings" class feature's own prose, not tracked
+     * separately here. Back-compat: documents without this field are
+     * unaffected.
+     */
+    blessings?: string[];
+    /**
      * Druid nature-bond domain tag (key into `refData.druidDomains` by
      * `DruidDomain.tag`), chosen at L1 as the alternative to an animal
      * companion. A single tag (unlike the cleric's two), or undefined for a
@@ -3212,7 +3231,8 @@ export interface DerivedClassFeature {
       | "compositeBlast"
       | "wildTalent"
       | "spiritPower"
-      | "slayerTalent";
+      | "slayerTalent"
+      | "blessing";
     label: string;
   };
 }
