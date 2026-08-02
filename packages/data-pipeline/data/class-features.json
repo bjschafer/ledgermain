@@ -23827,6 +23827,1205 @@
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ikVwT8b9zfj701k1"
   },
+  "inquisition-power:anger:divine-anger": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Divine Anger (Ex):</strong> At 6th level, you gain the ability to rage like a barbarian. Your effective barbarian level for this ability is your inquisitor level - 3. If you have levels in barbarian, these levels stack when determining the effect of your rage. You do not gain any rage powers from this granted power, though if you have rage powers from another class, you may use them with these rages. You can rage a number of rounds per day equal to your Wisdom bonus, plus 1 round for every inquisitor level above 4th.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:anger:divine-anger",
+    "name": "Divine Anger",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:anger:divine-anger"
+  },
+  "inquisition-power:anger:hateful-resort": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Hateful Resort (Ex):</strong> Once per day, as an immediate action after you have been hit with a melee attack, you can make a melee attack against the creature that hit you. This melee attack is at your highest attack bonus, even if you've already attacked in the round.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:anger:hateful-resort",
+    "name": "Hateful Resort",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:anger:hateful-resort"
+  },
+  "inquisition-power:banishment:dismissive-touch": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Dismissive Touch (Sp):</strong> At 8th level, you can cast dismissal once per day as a spell-like ability (caster level equal to your inquisitor level) upon making a successful unarmed touch attack against an evil outsider. The DC to save against this ability increases by 2.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:banishment:dismissive-touch",
+    "name": "Dismissive Touch",
+    "sources": [
+      {
+        "id": "blood-of-angels"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:banishment:dismissive-touch"
+  },
+  "inquisition-power:banishment:righteous-awe": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Righteous Awe (Su):</strong> Whenever you make an unarmed touch attack against an evil creature, it must succeed at a Will save (DC 10 + 1/2 your inquisitor level + your Wisdom modifier) or become shaken for 1d4 rounds. If the creature touched is an evil outsider, it becomes frightened instead of shaken. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:banishment:righteous-awe",
+    "name": "Righteous Awe",
+    "sources": [
+      {
+        "id": "blood-of-angels"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:banishment:righteous-awe"
+  },
+  "inquisition-power:chivalry:faithful-steed": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Faithful Steed (Su):</strong> At 8th level, when you use your judgment ability, your mount gains the benefit of one of your selected judgments. At 16th level, your mount gains the benefits of two of your selected judgments.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:chivalry:faithful-steed",
+    "name": "Faithful Steed",
+    "sources": [
+      {
+        "id": "magical-marketplace"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:chivalry:faithful-steed"
+  },
+  "inquisition-power:chivalry:mount": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Mount (Ex):</strong> This ability acts as the cavalier ability of the same name.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:chivalry:mount",
+    "name": "Mount",
+    "sources": [
+      {
+        "id": "magical-marketplace"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:chivalry:mount"
+  },
+  "inquisition-power:clandestine:blessed-secrecy": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Blessed Secrecy (Su):</strong> At 4th level, when you attempt a Bluff, Disguise, Sleight of Hand, or Stealth skill check, you can roll twice and take the more favorable result. You can use this ability a number of times per day equal to your Wisdom bonus.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:clandestine:blessed-secrecy",
+    "name": "Blessed Secrecy",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:clandestine:blessed-secrecy"
+  },
+  "inquisition-power:clandestine:delayed-spells": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Delayed Spells (Su):</strong> At 8th level, you can delay the effects of a spell you cast by up to 1 round per inquisitor level. You choose the duration of the delay when you cast the spell and can cause the spell to take effect immediately during the period of delay by concentrating as a standard action. You can use this ability once per day plus an additional time per day for every 4 inquisitor levels you have beyond 8th.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:clandestine:delayed-spells",
+    "name": "Delayed Spells",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:clandestine:delayed-spells"
+  },
+  "inquisition-power:clandestine:disappear": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Disappear (Sp):</strong> You can become invisible as per [the spell](spell/invisibility) as a standard action. The invisibility lasts for 1 round per inquisitor level or until you attack. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:clandestine:disappear",
+    "name": "Disappear",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:clandestine:disappear"
+  },
+  "inquisition-power:conversion:charm-of-wisdom": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Charm of Wisdom (Ex):</strong> You use your Wisdom modifier instead of your Charisma modifier when making Bluff, Diplomacy, and Intimidate checks.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:conversion:charm-of-wisdom",
+    "name": "Charm of Wisdom",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:conversion:charm-of-wisdom"
+  },
+  "inquisition-power:conversion:swaying-word": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Swaying Word (Sp):</strong> At 8th level, once per day you may speak a word of divinely inspired wisdom that causes a single creature to switch its alliance to you. The target must be within line of sight and able to hear you. If he fails his Will save, he is affected by dominate person, except the duration is only 1 minute.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:conversion:swaying-word",
+    "name": "Swaying Word",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:conversion:swaying-word"
+  },
+  "inquisition-power:crime:criminal-minds": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Criminal Minds (Sp):</strong> You can touch a creature and fill its mind with criminal impulses. This otherwise functions as per crime of opportunity, though a target that fails its saving throw and acts on an impulse gets those desires out of its system and becomes immune to the effects of your criminal minds ability for 24 hours. You can use this ability a number of times per day equal to 3 + your Wisdom modifier (minimum 1).</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:crime:criminal-minds",
+    "name": "Criminal Minds",
+    "sources": [
+      {
+        "id": "ultimate-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:crime:criminal-minds"
+  },
+  "inquisition-power:crime:thief-s-soul": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Thief's Soul (Ex):</strong> At 8th level, you gain Improved Steal, Greater Steal, and Quick Steal as bonus feats, even if you don't meet the prerequisites.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:crime:thief-s-soul",
+    "name": "Thief's Soul",
+    "sources": [
+      {
+        "id": "ultimate-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:crime:thief-s-soul"
+  },
+  "inquisition-power:damnation:collector-of-souls": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Collector of Souls (Sp):</strong> At 8th level, once per day as a standard action, you call forth an illusory fiend and order it to temporarily drag a living and sentient creature into an afterlife of pain and misery. This otherwise acts identically to phantasmal killer, except targets that fail their Fortitude saving throws become paralyzed for a number of rounds equal to 1d4 + your inquisitor level instead of dying.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:damnation:collector-of-souls",
+    "name": "Collector of Souls",
+    "sources": [
+      {
+        "id": "blood-of-fiends"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:damnation:collector-of-souls"
+  },
+  "inquisition-power:damnation:fear-the-flames": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Fear the Flames (Su):</strong> You can give a creature you can see within 60 feet one chance to avoid an eternity of suffering by ordering it to carry out any one simple action that would take no more than 1 round to complete. Good and neutral creatures that refuse become shaken for 1 round (Will negates), while evil creatures that obey gain a +2 morale bonus on all rolls and checks made for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier. This is a language-dependent, mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:damnation:fear-the-flames",
+    "name": "Fear the Flames",
+    "sources": [
+      {
+        "id": "blood-of-fiends"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:damnation:fear-the-flames"
+  },
+  "inquisition-power:excommunication:excommunicate": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Excommunicate (Su):</strong> At 8th level, once per day, you can silence a creature within 30 feet as a standard action. A Will save against DC = 10 + 1/2 your inquisitor level + your Wisdom modifier negates the effect. A creature that fails its save gets a second save 1 round later. If it fails the second save, the target cannot speak, provide verbal components for spells, make use of language-dependent effects, write, pantomime, or take any other action meant to communicate anything more complex than a simple affirmative or negative for 1 day.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:excommunication:excommunicate",
+    "name": "Excommunicate",
+    "sources": [
+      {
+        "id": "faiths-and-philosophies"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:excommunication:excommunicate"
+  },
+  "inquisition-power:excommunication:touch-of-silence": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Touch of Silence (Su):</strong> With a melee touch attack, you render a target silent (as the spell silence, but only affecting the target) for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:excommunication:touch-of-silence",
+    "name": "Touch of Silence",
+    "sources": [
+      {
+        "id": "faiths-and-philosophies"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:excommunication:touch-of-silence"
+  },
+  "inquisition-power:execution:chosen-victim": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Chosen Victim (Sp):</strong> Once per day, you can designate a creature as your chosen victim. You gain a +2 bonus on Diplomacy checks to gather information about your target, on Bluff and Intimidate checks against your target, and on Survival checks to track your target. The benefits of your destruction, piercing, purity, and smiting judgments against your chosen victim increase as if your inquisitor level were 3 higher.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:execution:chosen-victim",
+    "name": "Chosen Victim",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:execution:chosen-victim"
+  },
+  "inquisition-power:execution:executioner-s-strike": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Executioner's Strike (Su):</strong> At 8th level, your precision in combat has become incredible, and you can strike a lethal blow if your target cannot defend itself properly. Once per day, you can make an attack as a standard action against your chosen victim. If the attack hits and the victim is denied its Dexterity bonus to AC against you, any critical threats are automatically confirmed.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:execution:executioner-s-strike",
+    "name": "Executioner's Strike",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:execution:executioner-s-strike"
+  },
+  "inquisition-power:fate:agent-of-fate": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Agent of Fate (Su):</strong> At 8th level, when you use your <em>augury</em> spell-like ability, you gain a benefit that lasts until the end of your next combat. If the result was \"weal,\" all curing effects used on you cure an additional +1d10 hit points. If the result was \"woe,\" your melee attacks deal an additional +1d6 points of damage. If the result is \"weal and woe\" or \"nothing,\" you gain a +2 insight bonus to your Armor Class.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:fate:agent-of-fate",
+    "name": "Agent of Fate",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:fate:agent-of-fate"
+  },
+  "inquisition-power:fate:augury": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Augury (Sp):</strong> Once per day, you can use augury as a spell-like ability.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:fate:augury",
+    "name": "Augury",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:fate:augury"
+  },
+  "inquisition-power:fervor:fervent-action": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Fervent Action (Ex):</strong> At 8th level, once per day as a swift action, you can make a single melee attack at your highest attack bonus, move up to your speed, or cast a prepared inquisitor spell (of a spell level up to one lower than the highest level spell you can cast) as per Quicken Spell.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:fervor:fervent-action",
+    "name": "Fervent Action",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:fervor:fervent-action"
+  },
+  "inquisition-power:fervor:fire-of-belief": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Fire of Belief (Sp):</strong> You can unleash a gout of holy or unholy flame that sears one target within 30 feet as a ranged touch attack. The target takes 1d6 points of fire damage plus half your inquisitor level (minimum +1). If you are good, the flames only harm nongood targets. If you are evil, the flames only harm nonevil targets. If you are neither good nor evil, when you gain this ability you must decide whether the flames harm only nongood or nonevil targets; once you make this decision, it cannot be changed (though if your alignment changes, the effect of the flames changes appropriately). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:fervor:fire-of-belief",
+    "name": "Fire of Belief",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:fervor:fire-of-belief"
+  },
+  "inquisition-power:final_rest:disrupt-animation": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Disrupt Animation (Sp):</strong> You can use disrupt undead as a spell-like ability, adding your wisdom modifier to the damage. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:final_rest:disrupt-animation",
+    "name": "Disrupt Animation",
+    "sources": [
+      {
+        "id": "champions-of-purity"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:final_rest:disrupt-animation"
+  },
+  "inquisition-power:final_rest:unravel-animation": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Unravel Animation (Su):</strong> At 8th level, when you activate your bane ability with undead as the creature type, you can choose for your weapon to instead gain the disruption weapon special ability. The DC to resist this effect is equal to 10 + 1/2 your inquisitor level + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:final_rest:unravel-animation",
+    "name": "Unravel Animation",
+    "sources": [
+      {
+        "id": "champions-of-purity"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:final_rest:unravel-animation"
+  },
+  "inquisition-power:heresy:blessed-infiltration": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Blessed Infiltration (Ex):</strong> At 4th level, when you make a Bluff, Diplomacy, or Stealth check, you may roll twice and take the more favorable result. You can use this ability a number of times per day equal to your Wisdom bonus.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:heresy:blessed-infiltration",
+    "name": "Blessed Infiltration",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:heresy:blessed-infiltration"
+  },
+  "inquisition-power:heresy:righteous-infiltration": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Righteous Infiltration (Ex):</strong> You use your Wisdom modifier instead of your Charisma modifier when making Bluff and Intimidate checks.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:heresy:righteous-infiltration",
+    "name": "Righteous Infiltration",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:heresy:righteous-infiltration"
+  },
+  "inquisition-power:heresy:word-of-anathema": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Word of Anathema (Sp):</strong> At 8th level, once per day, you can speak a word of anathema against a single creature within 60 feet (Will negates). This acts as bestow curse and lasts for 1 minute, giving the target a -4 penalty on attack rolls, saves, ability checks, and skill checks.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:heresy:word-of-anathema",
+    "name": "Word of Anathema",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:heresy:word-of-anathema"
+  },
+  "inquisition-power:illumination:aura-of-enlightenment": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Aura of Enlightenment (Su):</strong> At 4th level, you can create a 30-foot-radius aura of normal light. Allies in this aura gain a +2 insight bonus on skill checks. This counts as a 2nd-level light effect for the purpose of countering or dispelling darkness effects. You can use this aura for a number of rounds per day equal to your inquisitor level. These rounds do not need to be consecutive.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:illumination:aura-of-enlightenment",
+    "name": "Aura of Enlightenment",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:illumination:aura-of-enlightenment"
+  },
+  "inquisition-power:illumination:illuminating-touch": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Illuminating Touch (Sp):</strong> You cause your hand to shimmer with divine radiance, allowing you to touch a creature as a standard action and give it a bonus equal to 1/2 your inquisitor level on a single Will saving throw, Knowledge check, Perception check, or Sense Motive check. This ability lasts for 1 hour or until the creature chooses to apply the bonus to a roll. You can use this ability to grant the bonus a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:illumination:illuminating-touch",
+    "name": "Illuminating Touch",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:illumination:illuminating-touch"
+  },
+  "inquisition-power:imprisonment:caging-strike": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Caging Strike (Su):</strong> With a devastating weapon strike, spectral chains wrap around your target for a short period of time. Whenever you confirm a critical hit with a melee or ranged weapon attack (including spells that require attack rolls), you can choose to also entangle that target for 1d4 rounds (Fortitude negates). You may use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:imprisonment:caging-strike",
+    "name": "Caging Strike",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:imprisonment:caging-strike"
+  },
+  "inquisition-power:imprisonment:divine-prison": {
+    "changes": [],
+    "description": "<p><strong>Divine Prison</strong> At 8th level, once per day upon making a successful melee attack, you can affect your target with hold monster (Will negates).</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:imprisonment:divine-prison",
+    "name": "Divine Prison",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:imprisonment:divine-prison"
+  },
+  "inquisition-power:justice:chains-of-justice": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Chains of Justice (Su):</strong> At 6th level, once per day, you can bind an opponent within 60 feet to you with spectral chains (Will negates). When you take damage from an enemy, the bound target takes this damage as well. Whenever the bound target takes damage from you or one of your allies, you take this damage as well. You and the target are not physically bound to each other, and either can end the connection by breaking the line of effect or exceeding the ability's range. You may dismiss the chains as a standard action.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:justice:chains-of-justice",
+    "name": "Chains of Justice",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:justice:chains-of-justice"
+  },
+  "inquisition-power:justice:judicious-force": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Judicious Force (Su):</strong> If you or an ally within 10 feet makes a critical threat with a melee or ranged attack, as an immediate action you may add +4 to the confirmation roll. This does not stack with the Critical Focus feat. You may use this ability a number of times per day equal to your Wisdom bonus.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:justice:judicious-force",
+    "name": "Judicious Force",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:justice:judicious-force"
+  },
+  "inquisition-power:oblivion:life-anchor": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Life Anchor (Su):</strong> You gain a 10-foot-radius aura that helps dying creatures cling to life. Within this aura, a dying creature (including yourself) adds your Wisdom bonus to its stabilization checks (in addition to any other modifiers to stabilization checks).</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:oblivion:life-anchor",
+    "name": "Life Anchor",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:oblivion:life-anchor"
+  },
+  "inquisition-power:oblivion:stare-of-oblivion": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Stare of Oblivion (Sp):</strong> At 8th level, you can use feeblemind as a gaze attack against one creature (Will negates). This effect lasts 1d4 rounds. You can use this ability once per day at 8th level, and one additional time per day for every four levels beyond 8th.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:oblivion:stare-of-oblivion",
+    "name": "Stare of Oblivion",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:oblivion:stare-of-oblivion"
+  },
+  "inquisition-power:order:commanding-order": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Commanding Order (Sp):</strong> At 8th level, you can use greater command, except it only affects a single target. You can use this ability a number of times per day equal to 3 + your Wisdom bonus.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:order:commanding-order",
+    "name": "Commanding Order",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:order:commanding-order"
+  },
+  "inquisition-power:order:mantle-against-chaos": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Mantle against Chaos (Sp):</strong> You can use protection from chaos on yourself or another creature as a spell-like ability. You can use this ability for a number of minutes per day equal to your inquisitor level (minimum 1). This duration does not need to be consecutive, but it must be used in 1 minute increments.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:order:mantle-against-chaos",
+    "name": "Mantle against Chaos",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:order:mantle-against-chaos"
+  },
+  "inquisition-power:persistence:inner-strength": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Inner Strength (Su):</strong> At 6th level, once per day, you may heal yourself as a swift action, healing 1d6 hit points for every two inquisitor levels you possess. When you use this ability, you can also remove one of the following conditions from yourself: blinded, confused, dazzled, deafened, frightened, nauseated, shaken, sickened, or staggered.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:persistence:inner-strength",
+    "name": "Inner Strength",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:persistence:inner-strength"
+  },
+  "inquisition-power:persistence:relentless-footing": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Relentless Footing (Ex):</strong> As a swift action, you can add 10 feet to your land speed. This increase counts as an enhancement bonus, and it affects your jumping distance as normal for increased speed. You can use this ability a number of times per day equal to 3 + your Wisdom bonus (minimum 1).</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:persistence:relentless-footing",
+    "name": "Relentless Footing",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:persistence:relentless-footing"
+  },
+  "inquisition-power:politics:heart-s-desire": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Heart's Desire (Sp):</strong> At 8th level, you receive divine guidance on the goals of your political allies and rivals. Once per day, you can use commune as a spell-like ability using your inquisitor level as your caster level, but only to ask questions about others' goals.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:politics:heart-s-desire",
+    "name": "Heart's Desire",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:politics:heart-s-desire"
+  },
+  "inquisition-power:politics:labyrinthine-words": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Labyrinthine Words (Ex):</strong> You add your Wisdom modifier in addition to your Charisma modifier on Bluff checks to lie and Diplomacy checks to influence other creatures.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:politics:labyrinthine-words",
+    "name": "Labyrinthine Words",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:politics:labyrinthine-words"
+  },
+  "inquisition-power:possession:beast-ride": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Beast Ride (Su):</strong> At 4th level, once per day as a standard action, you can vacate your body and inhabit that of any creature belonging to the animal type within 30 feet for a number of rounds up to your inquisitor level. While you are possessing an animal in this way, your own body becomes helpless and unaware. You can travel any distance from your body so long as you remain on the same plane, and can return to your own body as a free action at any time. If the animal or your body takes damage, or you attempt to make the animal attack or do anything out of character, the effect immediately ends and you return to your own body.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:possession:beast-ride",
+    "name": "Beast Ride",
+    "sources": [
+      {
+        "id": "blood-of-fiends"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:possession:beast-ride"
+  },
+  "inquisition-power:possession:body-snatch": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Body Snatch (Sp):</strong> At 10th level, once per day as an immediate action upon falling unconscious because of dropping below 0 hit points, you can cast your soul from your body and attempt to occupy the body of another creature within 30 feet. This ability otherwise functions identically to magic jar except that your actual body serves as the receptacle and you suppress the consciousness of your target rather than casting it out. Your body continues to [bleed as normal](misc/dying) unless it is somehow stabilized, and if its hit points drop to a negative number equal to your Constitution score, the <em>magic jar</em> effect prematurely ends and you die as normal.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:possession:body-snatch",
+    "name": "Body Snatch",
+    "sources": [
+      {
+        "id": "blood-of-fiends"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:possession:body-snatch"
+  },
+  "inquisition-power:possession:self-control": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Self-Control (Ex):</strong> You possess remarkable control over your own body, and gain a +2 competence bonus on saving throws made against enchantment spells of the charm or compulsion subschool.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:possession:self-control",
+    "name": "Self-Control",
+    "sources": [
+      {
+        "id": "blood-of-fiends"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:possession:self-control"
+  },
+  "inquisition-power:recovery:focused-search": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Focused Search (Ex):</strong> Once per day, you may designate a person or object as your focus. This takes 1 minute of concentration, during which time you must either picture this item or person if familiar to you, or meditate on the item's or person's description if not. Until you choose a new focus, you gain a bonus equal to half your inquisitor level on Perception checks to see or hear your focus, or when using Survival to track your focus or a creature with your focus in its possession. This bonus stacks with that gained from the track special ability.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:recovery:focused-search",
+    "name": "Focused Search",
+    "sources": [
+      {
+        "id": "champions-of-purity"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:recovery:focused-search"
+  },
+  "inquisition-power:recovery:locate-focus": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Locate Focus (Sp):</strong> At 8th level, once per day you may use either locate creature or locate object as a spell-like ability using your current focus as the target. The range of this effect is 1 mile per level.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:recovery:locate-focus",
+    "name": "Locate Focus",
+    "sources": [
+      {
+        "id": "champions-of-purity"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:recovery:locate-focus"
+  },
+  "inquisition-power:redemption:patient-sensibility": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Patient Sensibility (Su):</strong> You gain a +2 bonus on Diplomacy, Perception, and Sense Motive checks.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:redemption:patient-sensibility",
+    "name": "Patient Sensibility",
+    "sources": [
+      {
+        "id": "faiths-and-philosophies"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:redemption:patient-sensibility"
+  },
+  "inquisition-power:redemption:redeemer-s-mercy": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Redeemer's Mercy (Su):</strong> At 4th level, any weapon you wield gains the merciful magic weapon special ability. The weapon immediately reverts to its original abilities when you cease to wield it.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:redemption:redeemer-s-mercy",
+    "name": "Redeemer's Mercy",
+    "sources": [
+      {
+        "id": "faiths-and-philosophies"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:redemption:redeemer-s-mercy"
+  },
+  "inquisition-power:redemption:second-chance": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Second Chance (Sp):</strong> At 8th level, you can give an enemy a second chance to correct the error of its ways. Once per day as a standard action, you can cast atonement as a spell-like ability, targeting a creature that has violated the tenets of a religion you both share or that freely desires to convert to your alignment. If costly material components are required for the <em>atonement,</em> you may choose to accept a permanent negative level as a sacrifice in place of those components. The target of this effect also receives the benefits of a cure serious wounds spell as part of the effects of the <em>atonement.</em></p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:redemption:second-chance",
+    "name": "Second Chance",
+    "sources": [
+      {
+        "id": "faiths-and-philosophies"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:redemption:second-chance"
+  },
+  "inquisition-power:reformation:awaken-discontent": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Awaken Discontent (Su):</strong> At 8th level, you can deliver a stirring speech condemning the mistakes of those in power and calling for reform, causing the target of your rhetoric to be affected by charm person with a caster level equal to your inquisitor level and a save DC of 10 + 1/2 your inquisitor level + your Wisdom modifier. You may use this ability a number of times per day equal to your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:reformation:awaken-discontent",
+    "name": "Awaken Discontent",
+    "sources": [
+      {
+        "id": "faiths-and-philosophies"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:reformation:awaken-discontent"
+  },
+  "inquisition-power:reformation:blessed-correction": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Blessed Correction (Ex):</strong> At 4th level, when you make a Diplomacy, Intimidate, or Perform (oratory) check, you may roll twice and take the more favorable result. You can use this ability a number of times per day equal to your Wisdom bonus.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:reformation:blessed-correction",
+    "name": "Blessed Correction",
+    "sources": [
+      {
+        "id": "faiths-and-philosophies"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:reformation:blessed-correction"
+  },
+  "inquisition-power:reformation:inspired-rhetoric": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Inspired Rhetoric (Ex):</strong> You use your Wisdom modifier in place of your Charisma modifier when making Diplomacy, Intimidate, and Perform (oratory) checks. Perform (oratory) is an inquisitor class skill for you.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:reformation:inspired-rhetoric",
+    "name": "Inspired Rhetoric",
+    "sources": [
+      {
+        "id": "faiths-and-philosophies"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:reformation:inspired-rhetoric"
+  },
+  "inquisition-power:restoration:cleanse-impunity": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Cleanse Impunity (Su):</strong> At 8th level, choose an alignment (chaotic, evil, good, or lawful) that is opposite to one axis of your own. Once chosen, this cannot be changed. Add your Wisdom bonus on caster level checks to overcome the spell resistance of creatures with the chosen alignment subtype; dispel effects with the chosen alignment descriptor; and remove curses, diseases, and poisons. A neutral inquisitor gains only the bonus on caster level checks to remove curses, diseases, and poisons.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:restoration:cleanse-impunity",
+    "name": "Cleanse Impunity",
+    "sources": [
+      {
+        "id": "magical-marketplace"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:restoration:cleanse-impunity"
+  },
+  "inquisition-power:restoration:mend-the-broken": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Mend the Broken (Su):</strong> You can touch an object or creature as a standard action, healing it of 1d4 points of damage + 1 for every 2 inquisitor levels you possess. You can use this ability only on a broken object or a creature with fewer than half its maximum hit points. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:restoration:mend-the-broken",
+    "name": "Mend the Broken",
+    "sources": [
+      {
+        "id": "magical-marketplace"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:restoration:mend-the-broken"
+  },
+  "inquisition-power:revelation:burn-shroud": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Burn Shroud (Su):</strong> As a standard action, you can make an unarmed touch attack against a creature. The target takes 1d4 points of fire damage + 1/2 your inquisitor level (minimum 1). If the target is currently the subject of a polymorph effect that changes its appearance (such as by alter self, shapechange, or an innate shapechanging ability such as that possessed by doppelgangers), it instead takes 1d6 points of fire damage + 1/2 your inquisitor level (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:revelation:burn-shroud",
+    "name": "Burn Shroud",
+    "sources": [
+      {
+        "id": "blood-of-angels"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:revelation:burn-shroud"
+  },
+  "inquisition-power:revelation:reveal-form": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Reveal Form (Su):</strong> At 8th level, once per day as a standard action, you can invoke the name of your deity and order one shapechanged target within 30 feet to reveal its true form. The target must succeed at a Will save (DC 10 + 1/2 your inquisitor level + your Wisdom modifier) or be forced on its next turn to dispel any ongoing polymorph effects or innate shapechanging abilities to assume its natural form. If a creature affected by this ability fails its save and is for some reason unable to dispel any ongoing polymorph effects or innate shapechanging abilities, it is instead staggered for 1 round. This is a mind-affecting compulsion effect.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:revelation:reveal-form",
+    "name": "Reveal Form",
+    "sources": [
+      {
+        "id": "blood-of-angels"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:revelation:reveal-form"
+  },
+  "inquisition-power:secrets:closed-book": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Closed Book (Sp):</strong> At 8th level, it becomes difficult for your foes to unveil your secrets. You are constantly under the effect of nondetection, as if you cast the spell on yourself.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:secrets:closed-book",
+    "name": "Closed Book",
+    "sources": [
+      {
+        "id": "ultimate-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:secrets:closed-book"
+  },
+  "inquisition-power:secrets:detect-secrets": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Detect Secrets (Su):</strong> You have learned how to detect any of a creature's secrets, not just its thoughts. Whenever you cast detect anxieties, detect desires, or detect thoughts or use any of those spells as a spell-like ability, you can choose to gain the effects of one of the other two spells instead. You are never overwhelmed by a target of these spells that has a high ability score.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:secrets:detect-secrets",
+    "name": "Detect Secrets",
+    "sources": [
+      {
+        "id": "ultimate-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:secrets:detect-secrets"
+  },
+  "inquisition-power:sedition:rebel-leader": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Rebel Leader (Ex):</strong> At 8th level, you gain Leadership as a bonus feat.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:sedition:rebel-leader",
+    "name": "Rebel Leader",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:sedition:rebel-leader"
+  },
+  "inquisition-power:sedition:undermine-authority": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Undermine Authority (Sp):</strong> A number of times per day equal to your Wisdom bonus, you can worsen the attitude of a character toward any governmental officer or leader acting against your religion. This likewise reduces that officer's or leader's influence with that character. The persuasion requires enough conversation to attempt a Diplomacy check (usually 1 minute) and you attempt a Diplomacy check as normal to influence the target's attitude. However, if you fail the check, the target is subject to a mind-affecting compulsion that alters its attitude for a number of days equal to your inquisitor level. The target can resist the compulsion with a successful Will saving throw (DC = 10 + 1/2 your inquisitor level + your Wisdom modifier). If the target is under a mind-affecting effect from that officer or leader, the effect is automatically suppressed for 1 minute.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:sedition:undermine-authority",
+    "name": "Undermine Authority",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:sedition:undermine-authority"
+  },
+  "inquisition-power:seduction:disarming-flirtation": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Disarming Flirtation (Sp):</strong> You can attempt a Charisma check to entice a target that could be sexually attracted to you into letting you speak for up to 1 minute when it would otherwise be unwilling to consider your words. The DC of this Charisma check is equal to 10 + the target's Wisdom modifier. If successfully used in combat, this ability instead functions as a successful feint and the target cannot take any actions that would attack you as long as it is denied its Dexterity bonus against you.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:seduction:disarming-flirtation",
+    "name": "Disarming Flirtation",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:seduction:disarming-flirtation"
+  },
+  "inquisition-power:seduction:inspire-devotion": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Inspire Devotion (Ex):</strong> By spending at least 1 hour engaged in acts of physical pleasure with a willing partner, you can attempt a Diplomacy check to improve that partner's attitude or increase your influence with that partner (or reduce a rival's influence with that partner) with no maximum on the number of steps by which you can change that partner's attitude or disposition.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:seduction:inspire-devotion",
+    "name": "Inspire Devotion",
+    "sources": [
+      {
+        "id": "inner-sea-intrigue"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:seduction:inspire-devotion"
+  },
+  "inquisition-power:sin:indulge": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Indulge (Su):</strong> At 8th level, once per day as a standard action, you can awaken a creature's vice and overwhelm its senses with urgency. You must decide to use this ability before using your sin sense ability on a creature, and the target receives a Will save to negate the effect. If the creature fails its saving throw, for the next 24 hours, whenever the affected creature is given an opportunity to indulge in its favored sin, that creature must yield to the impulse or make a second Will saving throw to avoid becoming sickened for 1 minute. This is a mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:sin:indulge",
+    "name": "Indulge",
+    "sources": [
+      {
+        "id": "blood-of-fiends"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:sin:indulge"
+  },
+  "inquisition-power:sin:sin-sense": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Sin Sense (Su):</strong> As a full-round action, you can determine which sin most strongly influences a target by quickly reading its mind. Once you learn this fact, you gain a +4 bonus on your next Charisma-based skill check made against the target as long as it somehow incorporates a temptation that relates to that sin. You can use this ability a number of times per day equal to 3 + your Wisdom modifier. This is a mind-affecting effect.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:sin:sin-sense",
+    "name": "Sin Sense",
+    "sources": [
+      {
+        "id": "blood-of-fiends"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:sin:sin-sense"
+  },
+  "inquisition-power:tactics:grant-the-initiative": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Grant the Initiative (Ex):</strong> At 8th level, you and all allies within 30 feet may add your Wisdom bonus to your initiative checks.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:tactics:grant-the-initiative",
+    "name": "Grant the Initiative",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:tactics:grant-the-initiative"
+  },
+  "inquisition-power:tactics:inquisitor-s-direction": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Inquisitor's Direction (Su):</strong> At the start of your turn, you can choose to enter a tranquil, reflective state and forgo all actions (standard, move, swift, immediate, and free actions, including attacks of opportunity) for that round; one ally of your choice within 30 feet gains the benefit of haste for 1 round. You can use this ability a number of times per day equal to your 3 + Wisdom bonus (minimum 1).</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:tactics:inquisitor-s-direction",
+    "name": "Inquisitor's Direction",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:tactics:inquisitor-s-direction"
+  },
+  "inquisition-power:torture:critical-precision": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Critical Precision (Ex):</strong> At 8th level, when you roll a critical threat, you may expend one use of your torturer's touch ability to add +4 on your critical confirmation roll. This does not stack with Critical Focus.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:torture:critical-precision",
+    "name": "Critical Precision",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:torture:critical-precision"
+  },
+  "inquisition-power:torture:torturer-s-presence": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Torturer's Presence (Ex):</strong> You gain a +2 bonus when using the Intimidate skill. This is in addition to your bonus for Stern Gaze.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:torture:torturer-s-presence",
+    "name": "Torturer's Presence",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:torture:torturer-s-presence"
+  },
+  "inquisition-power:torture:torturer-s-touch": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Torturer's Touch (Sp):</strong> You may use touch of fatigue as a spell-like ability. Creatures that are immune to pain effects are immune to this touch. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:torture:torturer-s-touch",
+    "name": "Torturer's Touch",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:torture:torturer-s-touch"
+  },
+  "inquisition-power:true_death:back-to-the-graves": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Back to the Graves (Su):</strong> When you cast cure spells (any spells with [\"cure\"](main/spell_groupings) in their name) to deal damage to undead creatures, you add +2 points of damage per caster level instead of +1 point of damage per caster level. The maximum damage for each spell remains unchanged.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:true_death:back-to-the-graves",
+    "name": "Back to the Graves",
+    "sources": [
+      {
+        "id": "blood-of-angels"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:true_death:back-to-the-graves"
+  },
+  "inquisition-power:true_death:hallowed-rite": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Hallowed Rite (Su):</strong> At 8th level, you gain the ability to conduct a sacred funeral rite. This rite takes 1 day, during which you perform the necessary chants and prayers and burn incense. At the end of the rite you must oversee the burial of the corpse. The burial must take place within 24 hours of the preparation or the ritual fails. Once the body is interred, it cannot be turned into an undead creature, as if it were under the effect of a hallow spell (caster level equal to your inquisitor level).</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:true_death:hallowed-rite",
+    "name": "Hallowed Rite",
+    "sources": [
+      {
+        "id": "blood-of-angels"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:true_death:hallowed-rite"
+  },
+  "inquisition-power:truth:grasp-of-honesty": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Grasp of Honesty (Su):</strong> At 8th level, any creature you are grappling or pinning is affected by zone of truth (Will negates). Outside of combat, you may use this ability by touching a target with both hands. You can use this ability a number of rounds per day equal to your inquisitor level. These rounds do not need to be consecutive. The effect ends if you stop grappling, pinning, or touching the target.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:truth:grasp-of-honesty",
+    "name": "Grasp of Honesty",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:truth:grasp-of-honesty"
+  },
+  "inquisition-power:truth:justice-s-true-path": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Justice's True Path (Sp):</strong> As a standard action, you can touch a creature, granting an insight bonus on one attack roll, skill check, ability check, or saving throw before your next turn; this bonus is equal to half your inquisitor level (minimum 1) and lasts for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:truth:justice-s-true-path",
+    "name": "Justice's True Path",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:truth:justice-s-true-path"
+  },
+  "inquisition-power:valor:fearless": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Fearless (Su):</strong> At 8th level, you become immune to fear.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:valor:fearless",
+    "name": "Fearless",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:valor:fearless"
+  },
+  "inquisition-power:valor:touch-of-resolve": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Touch of Resolve (Sp):</strong> You may use remove fear on a single creature a number of times per day equal to your 3 + your Wisdom bonus.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:valor:touch-of-resolve",
+    "name": "Touch of Resolve",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:valor:touch-of-resolve"
+  },
+  "inquisition-power:vengeance:divine-retribution": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Divine Retribution (Sp):</strong> As a standard action, you can point at one creature within 30 feet to indicate that it is the target of divine wrath. A mishap or an accident appropriate to the environment occurs, such as a branch falling on the creature, rocks falling from the ceiling, or some other nonmagical misfortune; regardless of the cause, the mishap deals 1d6 points of damage + 1 point for every two inquisitor levels you possess (Reflex half). The GM decides whether this damage is bludgeoning, piercing, or slashing damage. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:vengeance:divine-retribution",
+    "name": "Divine Retribution",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:vengeance:divine-retribution"
+  },
+  "inquisition-power:vengeance:final-vengeance": {
+    "abilityType": "su",
+    "changes": [],
+    "description": "<p><strong>Final Vengeance (Su):</strong> At 8th level, once per day, you can make one melee attack against an opponent within reach in response to an attack that would reduce you to negative hit points. Once your attack is resolved, you suffer the normal effect of the attack that provoked this ability. Effects that kill you or do not reduce you to negative hit points (such as ability damage or drain, negative levels, and disintegrate) do not trigger this ability.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:vengeance:final-vengeance",
+    "name": "Final Vengeance",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:vengeance:final-vengeance"
+  },
+  "inquisition-power:zeal:scourge-of-the-enemy": {
+    "abilityType": "ex",
+    "changes": [],
+    "description": "<p><strong>Scourge of the Enemy (Ex):</strong> At 8th level, select one religion that is a rival or opponent of your religion. You treat members of this religion as if they were your favored enemy (as the ranger class ability), gaining a +2 bonus on the appropriate rolls. At 13th level, these bonuses increase to +4, and at 18th level, the bonuses increase to +6. These bonuses do not stack with other favored enemy bonuses (use the highest bonus that applies).</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:zeal:scourge-of-the-enemy",
+    "name": "Scourge of the Enemy",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:zeal:scourge-of-the-enemy"
+  },
+  "inquisition-power:zeal:zealous-surge": {
+    "abilityType": "sp",
+    "changes": [],
+    "description": "<p><strong>Zealous Surge (Sp):</strong> Once per day, when you are reduced to 0 or fewer hit points, you heal a number of hit points equal to your inquisitor level + your Wisdom modifier.</p>",
+    "grantsBuffs": [],
+    "id": "inquisition-power:zeal:zealous-surge",
+    "name": "Zealous Surge",
+    "sources": [
+      {
+        "id": "ultimate-magic"
+      }
+    ],
+    "subType": "classFeat",
+    "uuid": "pfdata:inquisition-power:zeal:zealous-surge"
+  },
   "ipNepAJ42lQD7U1z": {
     "changes": [],
     "description": "<p>Evangelists possess a range of skills across multiple disciplines. At 1st level, an evangelist selects two skills to add to her class skill list. Once selected, these class skills can't be changed.</p>",

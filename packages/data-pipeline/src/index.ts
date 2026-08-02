@@ -76,5 +76,6 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
     cavalierOrders: readJson(dir, "cavalier-orders.json"),
     shifterAspects: readJson(dir, "shifter-aspects.json"),
     eidolonSubtypes: readJson(dir, "eidolon-subtypes.json"),
+    inquisitions: readJson(dir, "inquisitions.json"),
   };
 }

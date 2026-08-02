@@ -200,6 +200,8 @@ export interface RefData {
   shifterAspects: Record<string, ShifterAspect>;
   /** The full published unchained-summoner eidolon-subtype catalog (fourth-source dataset; see `EidolonSubtype` doc comment). */
   eidolonSubtypes: Record<string, EidolonSubtype>;
+  /** The full published inquisitor inquisition catalog (fourth-source dataset; see `Inquisition` doc comment). */
+  inquisitions: Record<string, Inquisition>;
 }
 
 /** Provenance + integrity metadata for a generated dataset. */
@@ -1820,5 +1822,43 @@ export type ShifterAspect = RefEntity;
  * Kyton, Plant, Radiant, Shadow, Storykin, Twinned, Void).
  */
 export type EidolonSubtype = RefEntity;
+
+/* ---------------------------------------------------------- inquisitions -- */
+
+/**
+ * An inquisitor's inquisition — a themed alternative to a domain (`build.
+ * inquisition`, distinct from `build.clericDomains`): granting powers of its
+ * own but no domain spell slots. Sourced from the "Pf Data 1e" dataset's
+ * `json/class_ability_inquisitions.json` (40 raw entries, 39 after dropping
+ * the source's `not_found` sentinel) — unlike a subdomain, an inquisition
+ * isn't a variant of anything else, so this is a standalone catalog rather
+ * than a merge against a parent (see `transform/inquisitions.ts`).
+ *
+ * Unlike most fourth-source catalogs, `features` is NOT prose-only: every
+ * entry's "Granted Powers" section is a fixed, unchosen list of named
+ * `**Name (Ex/Su/Sp):**`-led powers (never a player pick the way a mystery's
+ * revelations are), so the same `Domain.features`/`ClassFeatureGrant` shape
+ * applies here — parsed at build time into synthesized `ClassFeature`
+ * entries (`inquisition-power:<id>:<slug>`), gated by the class level named
+ * in each power's OWN prose ("At 8th level, ..."; unstated means 1st,
+ * emitted as level 0 to match the `Domain.features` convention) — NOT the
+ * source entry's own `level` field, which is an unrelated within-chain tier
+ * marker this catalog never sets. `@pf1/engine`'s `collectGrantedFeatures`
+ * grants these off the inquisitor's own class level exactly like a domain's
+ * powers do off `domainCasterLevel`.
+ *
+ * Two entries (Black Powder, Spellkiller) fold their whole granted-powers
+ * text into one flat paragraph with no named power to extract — `features`
+ * is empty for those two, and their full prose still shows via
+ * `description`. Every power is prose-only (`changes: []` on the
+ * synthesized feature) — no numeric mechanics are inferred from the source's
+ * unlabeled bonus text, matching the project's "prose is a legitimate first
+ * cut" posture for the fourth-source catalogs generally.
+ */
+export interface Inquisition extends RefEntity {
+  /** Stable slug matching `build.inquisition` (the source's own dictionary key, e.g. "conversion"). */
+  tag: string;
+  features: ClassFeatureGrant[];
+}
 
 export type { SourceRef };

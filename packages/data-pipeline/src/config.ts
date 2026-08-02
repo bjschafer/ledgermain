@@ -118,6 +118,7 @@ export const SYSTEM_VERSION = "11.11";
  * pack carries no power for take theirs from the Pf Data 1e catalog, so a
  * consumer must no longer read the parent domain's powers when a subdomain's
  * list looks empty; see `transform/subdomainPowers.ts`. v21 adds
+<<<<<<< HEAD
  * `focusedSchools`/`focused-schools.json` (22 entries) — the APG "Focused
  * Schools" variant rule, previously excluded at the pipeline level as "too
  * niche". Unlike subdomains, the Foundry pack states each one's full
@@ -132,9 +133,14 @@ export const SYSTEM_VERSION = "11.11";
  * authors one `ClassFeature` per named power straight from the published
  * rule. `DruidDomain.features` was always `[]` before this version; a
  * consumer built against v20 or earlier that assumed that and skipped
- * reading it now silently misses the granted powers.
+ * reading it now silently misses the granted powers. v23 adds
+ * `inquisitions`/`inquisitions.json` — the full published inquisitor
+ * inquisition catalog (fourth-source dataset; an inquisitor's alternative to
+ * a domain), with each entry's granted powers parsed into `Inquisition.
+ * features`, same `ClassFeatureGrant` shape as `Domain.features`; see
+ * `Inquisition`'s doc comment and `transform/inquisitions.ts`.
  */
-export const SCHEMA_VERSION = 22;
+export const SCHEMA_VERSION = 23;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

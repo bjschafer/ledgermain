@@ -98,8 +98,8 @@ export interface GrantedFeature {
    * amplification/mesmerist trick/mesmerist bold stare/cruelty/ninja trick/
    * ki power/style strike/rogue talent/investigator talent/vigilante talent/
    * shifter aspect/rage power/occultist implement/focus power/kineticist
-   * composite blast/wild talent/medium spirit power/slayer talent rather than
-   * the class itself.
+   * composite blast/wild talent/medium spirit power/slayer talent/chosen
+   * inquisition rather than the class itself.
    */
   origin?: {
     kind:
@@ -130,7 +130,8 @@ export interface GrantedFeature {
       | "compositeBlast"
       | "wildTalent"
       | "spiritPower"
-      | "slayerTalent";
+      | "slayerTalent"
+      | "inquisition";
     label: string;
   };
   /**
@@ -243,6 +244,29 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
           level: grant.level,
           grant,
           origin: { kind: "domain", label: subdomain.name },
+        });
+      }
+    }
+  }
+
+  // Inquisitor's inquisition — the alternative to a domain (`build.
+  // inquisition`, mutually exclusive with `clericDomains`; the builder
+  // picker enforces that). Unlike a domain, an inquisition is never
+  // available to a cleric, so this gates on the inquisitor's own class
+  // level directly rather than `domainCasterLevel`.
+  const inquisitorLevel = doc.identity.classes.find((c) => c.tag === "inquisitor")?.level ?? 0;
+  if (inquisitorLevel > 0 && doc.build.inquisition) {
+    const inquisition = Object.values(refData.inquisitions).find(
+      (i) => i.tag === doc.build.inquisition,
+    );
+    if (inquisition) {
+      for (const grant of inquisition.features) {
+        if (grant.level > inquisitorLevel || !grant.resolved) continue;
+        out.push({
+          classTag: "inquisitor",
+          level: grant.level,
+          grant,
+          origin: { kind: "inquisition", label: inquisition.name },
         });
       }
     }
