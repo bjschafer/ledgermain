@@ -146,7 +146,10 @@ export function transformDruidDomain(
     tag: doc.name.replace(/\s+Domain\b/, ""),
     kind,
     // The source models every druid domain power as free-text prose, never a
-    // `links.supplements`-linked class-abilities entry — nothing to resolve.
+    // `links.supplements`-linked class-abilities entry — nothing to resolve
+    // here. Both are filled in afterward by `applyDruidDomainFeatureSupplements`
+    // (`supplements.ts`), hand-authored from the published rule.
     features: [],
+    changes: [],
   };
 }

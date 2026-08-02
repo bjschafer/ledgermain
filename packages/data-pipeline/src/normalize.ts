@@ -96,6 +96,7 @@ import {
   applyClassFeatureChangesSupplements,
   applyClassFeatureEffectImmunitySupplements,
   applyClassFeatureUsesSupplements,
+  applyDruidDomainFeatureSupplements,
   applyItemSupplements,
   applyPrestigeClassSupplements,
   applyRaceEffectImmunitySupplements,
@@ -416,6 +417,12 @@ export function normalize(opts: NormalizeOptions): {
     ...druidAnimalDomainDocs.map((d) => transformDruidDomain(d, "animal", resolveUuid)),
     ...druidTerrainDomainDocs.map((d) => transformDruidDomain(d, "terrain", resolveUuid)),
   ];
+
+  // Hand-authored druid nature-bond domain powers (issue #117) — the source
+  // carries none of these as structured `class-abilities` links at all, so
+  // unlike every other supplement pass this fills every domain's `features`
+  // (and Wolf's `changes`) from scratch. See `supplements.ts`'s doc comment.
+  applyDruidDomainFeatureSupplements(druidDomains, classFeatures);
 
   // Druid nature-bond domain spell lists — like subdomains, parsed from each
   // domain's own description prose (the source `@UUID`-links every domain

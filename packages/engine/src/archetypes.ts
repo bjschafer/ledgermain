@@ -268,6 +268,32 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
     }
   }
 
+  // Druid nature-bond domain powers — hand-authored (issue #117; see
+  // `supplements.ts`'s `SUPPLEMENTAL_DRUID_DOMAIN_FEATURES`), gated on druid
+  // level the same way a cleric domain gates on cleric/inquisitor level
+  // above. A non-druid with a stale `druidNatureBondDomain` field (or an
+  // unresolvable tag) gets nothing. Wolf's fixed bonus feat (Improved Trip)
+  // is NOT here — it comes through `DruidDomain.changes` and the web layer's
+  // `apps/web/src/model/feats.ts`, the same path Darkness/Rune's cleric-
+  // domain bonus feats use, so it never appears as a classFeatures entry.
+  const druidLevel = doc.identity.classes.find((c) => c.tag === "druid")?.level ?? 0;
+  if (druidLevel > 0 && doc.build.druidNatureBondDomain) {
+    const druidDomain = Object.values(refData.druidDomains).find(
+      (d) => d.tag === doc.build.druidNatureBondDomain,
+    );
+    if (druidDomain) {
+      for (const grant of druidDomain.features) {
+        if (grant.level > druidLevel || !grant.resolved) continue;
+        out.push({
+          classTag: "druid",
+          level: grant.level,
+          grant,
+          origin: { kind: "domain", label: druidDomain.name },
+        });
+      }
+    }
+  }
+
   // Sorcerer bloodline powers — hand-authored (see bloodlines.ts), gated on
   // actual sorcerer levels the same way domain/school grants are gated on
   // cleric/wizard levels above. A non-sorcerer with a stale

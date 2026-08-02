@@ -117,9 +117,18 @@ export const SYSTEM_VERSION = "11.11";
  * that's empty when the Foundry pack documents none. The 125 subdomains the
  * pack carries no power for take theirs from the Pf Data 1e catalog, so a
  * consumer must no longer read the parent domain's powers when a subdomain's
- * list looks empty; see `transform/subdomainPowers.ts`.
+ * list looks empty; see `transform/subdomainPowers.ts`. v21 fills
+ * `DruidDomain.features`/`.changes` — the Foundry pack states every druid
+ * nature-bond domain power (all 25 animal/terrain domains) as free-text prose
+ * with no `class-abilities` document at all, so, unlike every other gap this
+ * pipeline fills, there's no vendored granted-power link to correct or
+ * resolve; `supplements.ts`'s `SUPPLEMENTAL_DRUID_DOMAIN_FEATURES` hand-
+ * authors one `ClassFeature` per named power straight from the published
+ * rule. `DruidDomain.features` was always `[]` before this version; a
+ * consumer built against v20 or earlier that assumed that and skipped
+ * reading it now silently misses the granted powers.
  */
-export const SCHEMA_VERSION = 20;
+export const SCHEMA_VERSION = 21;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

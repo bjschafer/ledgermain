@@ -31,6 +31,7 @@ import type {
   ClassFeature,
   ClassFeatureGrant,
   ContextNote,
+  DruidDomain,
   Item,
   Race,
   RacialTrait,
@@ -38,6 +39,8 @@ import type {
   Spell,
   SpellList,
 } from "@pf1/schema";
+
+import { slug } from "./transform/common.js";
 
 /**
  * Supplemental bonus-spell lists keyed by bloodline tag, then by spell level
@@ -1107,6 +1110,535 @@ export function applyRaceEffectImmunitySupplements(races: Race[]): void {
         type: "untyped",
       })),
     ];
+  }
+}
+
+/**
+ * Hand-authored granted powers for the 25 druid nature-bond domains
+ * (`class-abilities/domains/druid-domains/{animal,terrain}-domains/*.yaml`)
+ * — issue #117. Unlike every cleric domain gap this module fills, the
+ * Foundry pack carries NO structured `class-abilities` document for a druid
+ * domain power at all: every one is free-text prose under the domain's own
+ * description (see `DruidDomain` doc comment in `@pf1/schema`), so there is
+ * nothing to resolve, correct, or extend — the whole `ClassFeature` catalog
+ * below is authored from scratch, clean-room from the published rule
+ * (Ultimate Magic for the bulk of the animal/terrain domains; a handful of
+ * splatbook domains cite their own sourcebook, matched to each `DruidDomain`'s
+ * own vendored `sources` at apply time). Reuses the vendored description
+ * prose already sitting on each domain doc and shown as-is in the builder's
+ * picker (`DruidDomainPicker`) as its basis, split at each named power's own
+ * paragraph and re-keyed by level — not a transcription from any GPL'd
+ * Foundry system script.
+ *
+ * Every domain grants exactly two named powers (a 1st-level one and a
+ * higher-level one) EXCEPT three: Badlands (Subsistence 1st, Wasteland
+ * Stride 2nd, Badlands Spirit 8th), Ruins (Ruin Touch 1st, Remembrance 4th,
+ * Surefooted 8th), and Crocodile (Familiar and Death Roll both 1st, Ambush
+ * 6th) — all three genuinely grant a third named power at their own stated
+ * level, not a parsing artifact. The four Plane of Air/Earth/Fire/Water
+ * domains each end their higher-level power with an "Alternatively, you can
+ * choose to gain a Small <element> elemental as a familiar..." paragraph —
+ * folded into that SAME power's description (not a third power) since it's
+ * an either-or option on the one granted ability, not an independent grant.
+ *
+ * Wolf is the one exception to "every power is prose": its 1st-level power
+ * ("Improved Trip: You gain Improved Trip as a bonus feat") is a fixed feat
+ * grant, so it's carried via `DRUID_DOMAIN_BONUS_FEAT_CHANGES` below (a
+ * `bonusFeats` `Domain.changes`-shaped entry) and the web layer's
+ * `apps/web/src/model/feats.ts`, the same path Darkness/Rune's cleric-domain
+ * bonus feats use — NOT a `features` entry here. Wolf's OTHER power (Pack
+ * Tactics, 8th) is ordinary prose and goes through the table below like any
+ * other domain's.
+ *
+ * Badlands' Wasteland Stride explicitly says "This replaces woodland
+ * stride" (the druid's own 2nd-level class feature) — that swap isn't
+ * modeled (no mechanism here removes/replaces a base class feature the way
+ * an archetype swap does), so a Badlands druid's sheet shows both Woodland
+ * Stride and Wasteland Stride rather than one replacing the other. Prose is
+ * accurate either way; only the redundant display is a known simplification.
+ */
+export const SUPPLEMENTAL_DRUID_DOMAIN_FEATURES: Record<
+  string,
+  { name: string; abilityType?: string; level: number; description: string }[]
+> = {
+  Aquatic: [
+    {
+      name: "Sealord",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>You can channel energy (as a cleric of your druid level) a number of times per day equal to 3 + your Charisma modifier, but only to heal creatures with the aquatic or water subtype or to command them (similar to using the Command Undead feat against undead). You can take other feats to add to this ability, such as Extra Channel and Improved Channel, but not feats that alter this ability, such as Elemental Channel and Alignment Channel. The DC to save against this ability is equal to 10 + 1/2 your druid level + your Charisma modifier.</p>",
+    },
+    {
+      name: "Seastrike",
+      abilityType: "su",
+      level: 6,
+      description:
+        "<p>At 6th level, as a free action, you may use natural and manufactured weapons in water as if you had continuous freedom of movement. As a standard action, you can throw a weapon underwater without the normal penalties for throwing weapons; if your target is in or under the water, the weapon also acts as a returning weapon for that attack.</p>",
+    },
+  ],
+  Arctic: [
+    {
+      name: "Call Cold",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>You can channel energy (as a cleric of your druid level) a number of times per day equal to 3 + your Charisma modifier, but only to heal creatures with the cold subtype or to command them (similar to using the Command Undead feat against undead). You can take other feats that add to this ability, such as Extra Channel and Improved Channel, but not feats that alter this ability, such as Elemental Channel and Alignment Channel. The DC to save against this ability is equal to 10 + 1/2 your druid level + your Charisma modifier.</p>",
+    },
+    {
+      name: "Banish Flame",
+      abilityType: "su",
+      level: 6,
+      description:
+        "<p>At 6th level, you may use your call cold ability to damage creatures with the fire subtype (as a cleric channeling negative energy) or to cause them to flee from you (as the Turn Undead feat). Alternatively, you may use this ability to negate magical fire effects as if using a targeted dispel magic; at 12th level, this functions as targeted or area greater dispel magic instead of dispel magic.</p>",
+    },
+  ],
+  Badlands: [
+    {
+      name: "Subsistence",
+      abilityType: "ex",
+      level: 1,
+      description:
+        "<p>You can survive on very little food or water while helping others survive in harsh climates. When determining how long you can withstand starvation and thirst, including checks to avoid nonlethal damage, treat your Constitution score as though it were 10 points higher. Additionally, you gain a bonus equal to one half your druid level (minimum 1) on Survival checks in dry hills or desert terrain.</p>",
+    },
+    {
+      name: "Wasteland Stride",
+      abilityType: "ex",
+      level: 2,
+      description:
+        "<p>At 2nd level, you may move through light or dense rubble, as well as up or down steep slopes, at your normal speed without suffering any impairment. Areas that have been magically manipulated to impede motion still affect you, however. This replaces woodland stride.</p>",
+    },
+    {
+      name: "Badlands Spirit",
+      abilityType: "su",
+      level: 8,
+      description:
+        "<p>At 8th level, whenever you use wild shape to take on the form of an earth elemental, you also gain the following spell-like abilities, depending on your druid class level: geyser (8th); sirocco (12th), scouring winds (15th). Each spell-like ability is usable once per day.</p>",
+    },
+  ],
+  Cave: [
+    {
+      name: "Cavesight",
+      abilityType: "sp",
+      level: 1,
+      description:
+        "<p>You can grant darkvision 60 feet to a willing creature you touch. This effect lasts 1 minute, or 1 hour if used on yourself. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Tremorsense",
+      abilityType: "ex",
+      level: 6,
+      description:
+        "<p>At 6th level, you gain tremorsense 30 feet. At 12th level, you gain tremorsense 60 feet.</p>",
+    },
+  ],
+  Crocodile: [
+    {
+      name: "Familiar",
+      level: 1,
+      description:
+        "<p>You gain a dwarf caiman familiar (Pathfinder Player Companion: Animal Archive, Pathfinder Adventure Path #55). Your effective wizard level for this ability is equal to your druid level. Your druid level stacks with levels from other classes that grant familiars when determining the powers of your familiar.</p>",
+    },
+    {
+      name: "Death Roll",
+      abilityType: "ex",
+      level: 1,
+      description:
+        "<p>While grappling an enemy up to one size category larger than you, you may make a grapple check to roll wildly, knocking your enemy prone and dealing 1d8 points of damage. When using this ability, you gain a bonus to your CMB equal to one half your druid level (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Ambush",
+      abilityType: "ex",
+      level: 6,
+      description:
+        "<p>At 6th level, you gain sneak attack +1d6. This increase to sneak attack damage stacks with sneak attack damage you may have from other sources. This sneak attack damage increases by +1d6 for every 5 druid levels you possess beyond 6th, to a maximum of +3d6 at 16th level.</p>",
+    },
+  ],
+  Desert: [
+    {
+      name: "Heat Shimmer",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>As a free action, you can surround yourself with heat distortion that acts as the blur spell. Creatures that strike you in melee while you're using this ability are dazzled for 1 round (Fortitude negates). You may use this ability for a number of rounds per day equal to 3 + your Wisdom modifier. These rounds need not be consecutive.</p>",
+    },
+    {
+      name: "Servant of the Sands",
+      abilityType: "sp",
+      level: 8,
+      description:
+        "<p>At 8th level, once per day, you may call upon the aid of a janni as if using lesser planar ally. At 12th level, you may call upon the aid of any type of common (non-noble) genie as if using planar ally. At 16th level, you may call upon the aid of a noble genie as if using greater planar ally. If you use this power while in desert terrain, you need not make an offering to call the creature(s), and the cost of any service is halved.</p>",
+    },
+  ],
+  Eagle: [
+    {
+      name: "Hawkeye",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>As a swift action, you may add a bonus equal to half your druid level (minimum +1) on one ranged attack or on one Perception check. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Aerial evasion",
+      abilityType: "ex",
+      level: 6,
+      description:
+        "<p>At 6th level, you gain the evasion ability (as a rogue) when you are flying. At 12th level, you gain improved evasion while flying.</p>",
+    },
+  ],
+  Erosion: [
+    {
+      name: "Rusting Touch",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>You can cause an opponent’s metal armor or weapon to become dry and brittle as it magically corrodes and rusts. You make a melee touch attack against a creature wearing metal armor or wielding a metal weapon. If you hit, choose a metal weapon, suit of metal armor, or metal shield carried or worn by that creature. The object takes an amount of hit point damage equal to 1d6 + half your druid level. If the item is not magical, or if your caster level is greater than the item’s caster level, this damage bypasses the item’s hardness. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Erosion Aura",
+      abilityType: "su",
+      level: 8,
+      description:
+        "<p>At 8th level, you can project an aura of magically enhanced erosion as a standard action. Objects made primarily of metal or stone within this aura lose 10 points of hardness. Magic items retain a minimum hardness equal to twice their enhancement bonus and can attempt a Fortitude saving throw (DC = 10 + half your druid level + your Wisdom modifier) to negate this effect. A construct made primarily of metal or stone must succeed at a Fortitude save or lose all damage reduction and hardness for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+  ],
+  Frog: [
+    {
+      name: "Sticky Strike",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>As a standard action, you can attempt a ranged touch attack with a sticky tendril against a target up to 15 feet away, then use the pull universal monster ability to pull the target 5 feet toward you. You gain a bonus on the pull's combat maneuver check equal to 1/2 your druid level. If the target is larger than you, you may pull yourself 5 feet toward the target without making a check. The target can remove the tendril by making an opposed Strength check as a standard action, or by dealing enough slashing damage to the tendril (hit points equal to your druid level, Armor Class equal to your touch Armor Class). You can dissolve the tendril as a free action. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Webfoot",
+      abilityType: "ex",
+      level: 6,
+      description:
+        "<p>At 6th level, you gain the amphibious special quality and a swim speed equal to your land speed. At 12th level, you gain a climb speed equal to your land speed.</p>",
+    },
+  ],
+  Jungle: [
+    {
+      name: "Brachiation",
+      abilityType: "ex",
+      level: 1,
+      description:
+        "<p>As a free action for a number of rounds per day equal to your druid level, you may climb with a climb speed equal to your land speed, and gain a bonus on Acrobatics checks equal to your druid level. These rounds do not have to be consecutive.</p>",
+    },
+    {
+      name: "Trap Sense",
+      abilityType: "ex",
+      level: 3,
+      description:
+        "<p>At 3rd level, you gain the trap sense ability. This is identical to the rogue class ability. Your effective rogue level is equal to your druid level for the purpose of determining your trap sense bonus. Trap sense bonuses gained from multiple classes stack.</p>",
+    },
+  ],
+  Monkey: [
+    {
+      name: "Monkey Athletics",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>As a free action, you may add a competence bonus equal to half your druid level (minimum of +1) on one Acrobatics, Climb, Disable Device, or Sleight of Hand check. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Ranged Legerdemain",
+      abilityType: "su",
+      level: 6,
+      description:
+        "<p>At 6th level, you can use the Disable Device and Sleight of Hand skills at a range of 30 feet. Working at a distance increases the normal skill check DC by 5, and you cannot take 10 on this check. Any object to be manipulated must weigh 5 pounds or less. You can only use this ability if you have at least 1 rank in the skill being used.</p>",
+    },
+  ],
+  Mountain: [
+    {
+      name: "Foothold",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>As a standard action, you can cause an adjacent stone surface up to 10 feet square to mold itself into ridges and creases. A foothold that is created on a horizontal surface is treated as difficult terrain, and a Medium or smaller creature standing in the area or moving through it takes a –2 penalty on Acrobatics checks and to CMD due to poor footing. A foothold that is created on a vertical surface grants a +10 bonus on Climb checks to climb it. The stone remains altered for 1 hour. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Thin Air",
+      abilityType: "su",
+      level: 8,
+      description:
+        "<p>At 8th level, as a free action, you can surround yourself with a 5-foot aura of supernaturally thin air that draws the breath from creatures adjacent to you. Creatures beginning their turn in the aura are fatigued (Fortitude negates). A fatigued creature that begins its turn in the aura must save or suffer from altitude sickness, taking 1 point of ability damage to all ability scores. At 16th level, the aura increases to 10 feet. Creatures that do not breathe are immune to this aura. You can use this ability for a number of rounds per day equal to your druid level; the rounds need not be consecutive.</p>",
+    },
+  ],
+  Panther: [
+    {
+      name: "Hunter's Senses",
+      abilityType: "ex",
+      level: 1,
+      description:
+        "<p>You gain the ability to augment your senses on command. As a standard action, you grant yourself the scent special ability and improved vision. If you have normal vision, you gain low-light vision. If you have low-light vision, you gain darkvision out to a range of 30 feet. If you have darkvision, the range of your darkvision increases by 30 feet. You may use this ability a number of minutes per day equal to your druid level, in 1 minute increments. Dismissing these augmented senses is a free action.</p>",
+    },
+    {
+      name: "Move in Darkness",
+      abilityType: "ex",
+      level: 8,
+      description:
+        "<p>At 8th level, in areas of normal or magical darkness, you gain a +2 bonus on Stealth skill checks and initiative checks for every 4 druid levels you possess, to a maximum bonus of +10 at 20th level.</p>",
+    },
+  ],
+  Plains: [
+    {
+      name: "Migrating Herd",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>When you summon an aurochs, bison, elephant, horse, mastodon, pony, or similar quadruped herbivore with a summoning spell, the duration of the spell is increased by 100% (this does not stack with Extend Spell). The creature's land speed is increased by 10 feet.</p>",
+    },
+    {
+      name: "Pounce",
+      abilityType: "ex",
+      level: 6,
+      description:
+        "<p>At 6th level, you may use the pounce special attack once per day. You may pounce one additional time per day for every 3 levels after 6th.</p>",
+    },
+  ],
+  "Plane of Air": [
+    {
+      name: "Aerial Agility",
+      abilityType: "ex",
+      level: 1,
+      description:
+        "<p>You can navigate the air unhindered. As a free action, you automatically succeed at your Wisdom check to change your direction in an area of subjective gravity, and you can increase or decrease your falling speed by 10 feet per druid level during the first round after you change the direction of gravity. When you are in areas of light, normal, or heavy gravity, activating this ability instead grants you a bonus equal to your druid level on Fly checks and Acrobatics checks to jump for a number of rounds equal to your Wisdom modifier. You can use this ability a number of times equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Wind Savant",
+      abilityType: "su",
+      level: 8,
+      description:
+        "<p>At 8th level, you treat the penalties from natural or magical wind effects as two steps less severe. In addition, you are surrounded by a cushion of air that grants you a bonus equal to 1/2 your druid level on saving throws against gases, gaseous breath weapons, inhaled poisons, and similar effects.</p><p>Alternatively, you can choose to gain a Small air elemental as a familiar, as if you possessed the Improved Familiar feat. Your effective wizard level for this ability is equal to your druid level and stacks with other classes that grant a familiar.</p>",
+    },
+  ],
+  "Plane of Earth": [
+    {
+      name: "Spelunker",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>You ably clamber through underground areas. As a free action, you can ignore difficult terrain from stony surfaces, you take no penalties for squeezing through rocky areas, and you gain damage reduction 5/— against rocky hazards such as spike growth. This effect lasts for 1 round, and you can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "One with the Stone",
+      abilityType: "su",
+      level: 8,
+      description:
+        "<p>At 8th level as a swift action, you gain the earth glide universal monster ability (Bestiary 2 296) with a speed equal to your base speed. You can breathe normally while using this ability. You can use this ability for a number of rounds per day equal to your druid level, and these rounds don’t need to be consecutive.</p><p>Alternatively, you can choose to gain a Small earth elemental as a familiar, as if you possessed the Improved Familiar feat. Your effective wizard level for this ability is equal to your druid level and stacks with other classes that grant a familiar.</p>",
+    },
+  ],
+  "Plane of Fire": [
+    {
+      name: "Fire Hardened",
+      abilityType: "ex",
+      level: 1,
+      description:
+        "<p>You ignore fire damage from the fire-dominant planar trait, and you gain fire resistance 5. If you have natural fire resistance, it increases by 5 instead, and if you are naturally immune to fire, you heal hit points and ability damage at twice the normal rate when resting on a fire-dominant plane. You can touch a willing creature to grant these benefits for 1 hour. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "All-Consuming Flames",
+      abilityType: "su",
+      level: 8,
+      description:
+        "<p>At 8th level, you can channel the extraplanar heat into your allies’ weapons within 30 feet as a standard action. For 1 minute, the affected weapons gain the cold-outsider-bane, fire-outsider-bane, or flaming weapon special abilities. You must grant each weapon the same ability, and this ability affects no more than two of any ally’s weapons. You can use this ability once per day, plus an additional time per day for every four levels beyond 8th.</p><p>Alternatively, you can choose to gain a Small fire elemental as a familiar, as if you possessed the Improved Familiar feat. Your effective wizard level for this ability is equal to your druid level and stacks with other classes that grant a familiar.</p>",
+    },
+  ],
+  "Plane of Water": [
+    {
+      name: "Aquatic Veil",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>As a standard action, you can sheathe your body in a thin layer of water for a number of rounds equal to your Wisdom modifier. This grants you a bonus on Swim checks equal to 1/2 your druid level and allows you to breathe normally underwater. You can end the effect when delivering a touch spell to create a pseudopod of water that extends your effective reach by 5 feet for that attack. When used underwater, the pseudopod instead increases your reach by 10 feet. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Hydraulic Crush",
+      abilityType: "sp",
+      level: 8,
+      description:
+        "<p>At 8th level, you can strike an area with a pressurized blast of water in a 5-foot-radius column 30 feet tall with a range of 60 feet. Creatures in the area take 1d6 bludgeoning damage per druid level and are knocked prone. When used underwater, the radius and height double, and the effect instead creates a powerful eddy that causes affected creatures to lose their Dexterity bonus to Armor Class for 1 round instead of knocking them prone. A successful Reflex save halves the damage and prevents the secondary effect. You can use this ability once per day, plus an additional time for every 6 levels beyond 8th.</p><p>Alternatively, you can choose to gain a Small water elemental as a familiar, as if you possessed the Improved Familiar feat. Your effective wizard level for this ability is equal to your druid level and stacks with other classes that grant a familiar.</p>",
+    },
+  ],
+  Ruins: [
+    {
+      name: "Ruin Touch",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>You can strengthen or weaken objects with your touch. With a melee touch attack, you can increase or decrease the hardness of an object (up to a 10-foot cube) or construct by an amount equal to half your druid level (minimum 1) for 1 minute. You cannot reduce an object’s hardness below 0, and the same target cannot be affected by this ability more than once. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Remembrance",
+      abilityType: "sp",
+      level: 4,
+      description:
+        "<p>At 4th level, when within a ruin or other structure that is no longer claimed by civilization, you can call upon the wisdom of the land and its long-dead residents. Once per day for every 4 druid levels you possess, you can cast divination as a spell-like ability. Additionally, if you are within ruins when you cast commune with nature, you gain information about the crumbling structures around you as though they were part of nature.</p>",
+    },
+    {
+      name: "Surefooted",
+      abilityType: "ex",
+      level: 8,
+      description:
+        "<p>At 8th level, your speed is not reduced by difficult terrain unless the terrain has been magically manipulated to impede motion.</p>",
+    },
+  ],
+  Serpent: [
+    {
+      name: "Slither",
+      abilityType: "ex",
+      level: 1,
+      description:
+        "<p>As a free action, you can distend and stretch your body to fit easily through narrow spaces for 1 round. You can move freely through a tight space that would normally require a creature of your size to squeeze through. While slithering, you gain a +2 dodge bonus to Armor Class against attacks of opportunity provoked by your movement and a +2 bonus on CMB and on Escape Artist checks made to escape from a grapple. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Venom Immunity",
+      abilityType: "ex",
+      level: 6,
+      description:
+        "<p>At 6th level, you gain immunity to poisons from snakes, reptiles, and creatures with the reptilian subtype. At 12th level, you gain immunity to all poisons. This replaces venom immunity.</p>",
+    },
+  ],
+  Swamp: [
+    {
+      name: "Natural Healing",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>You can channel energy (as a cleric of your druid level) a number of times per day equal to 3 + your Charisma modifier, but only to heal animals, plants, and vermin. You may reduce the number of dice healed to cure ability damage (your choice) to all affected creatures, curing 1 point of ability damage for each d6 that the channel energy is reduced. You can take other feats to add to this ability, such as Extra Channel, but not feats that alter this ability, such as Elemental Channel and Alignment Channel.</p>",
+    },
+    {
+      name: "Reed Hunter",
+      abilityType: "ex",
+      level: 6,
+      description:
+        "<p>At 6th level, you gain blindsense 30 feet with respect to concealment and cover from fog, vegetation, or water. At 12th level, this improves to blindsight 30 feet with respect to these conditions.</p>",
+    },
+  ],
+  "The Uskbond": [
+    {
+      name: "Absorb Pain",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>Whenever you take lethal damage, you can choose as an immediate action to convert a number of points of this damage equal to 1d6 + your Wisdom modifier into nonlethal damage. When you use this ability, you gain a +4 profane bonus on all saving throws versus pain effects during the following round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Gruesome Display",
+      abilityType: "ex",
+      level: 8,
+      description:
+        "<p>At 8th level, as a standard action you can alter your appearance in such intense, horrific ways that onlookers become nauseated. One creature you select within 30 feet who can see you must succeed at a Will save (DC = 10 + 1/2 your druid level + your Wisdom modifier) or be nauseated for a number of rounds equal to 1/2 your druid level. Every 2 levels beyond 8th, you can affect one additional creature, to a maximum of seven targets within 30 feet at 20th level. Each time you activate your gruesome display, you must affect at least one target, but you can choose to affect fewer targets than your maximum. Once you’ve targeted the maximum number of creatures granted by level (regardless of whether they successfully save to resist the effect or not), you cannot use gruesome display again for the remainder of the day. This is a mind-affecting fear effect.</p>",
+    },
+  ],
+  Vermin: [
+    {
+      name: "Vermin Whisperer",
+      abilityType: "su",
+      level: 1,
+      description:
+        "<p>You can use your wild empathy ability on vermin. When you do so, you impart a modicum of implanted intelligence on the vermin, allowing you to interact with vermin as if they were animals. Vermin whisperer functions only on vermin that are mindless or have an Intelligence score of 2 or lower.</p>",
+    },
+    {
+      name: "Sudden Sting",
+      abilityType: "su",
+      level: 8,
+      description:
+        "<p>At 8th level, you can inflict a lingering, painful sting as a swift action that requires a successful melee touch attack. This sting deals 1d4 points of piercing damage plus 1 point for every 2 druid levels you have, and the target must succeed at a Fortitude save (DC = 10 + half your druid level + your Constitution modifier) or become staggered for 1 round. This is a pain effect. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+  ],
+  Vulture: [
+    {
+      name: "Death's Companion",
+      abilityType: "ex",
+      level: 1,
+      description:
+        "<p>Your totem grants you protection from the harbingers of death. As an immediate action, you gain a +2 bonus on saving throws against disease, death spells, and death effects that lasts a number of rounds equal to your druid level. This bonus increases by 2 at 6th level and every 5 levels thereafter, to a maximum of +8 at 16th level. You may use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+    {
+      name: "Agent of Rebirth",
+      abilityType: "sp",
+      level: 8,
+      description:
+        "<p>At 8th level, you may expend a quantity of special oils worth 1,000 gp to cast reincarnate as a spell-like ability usable once per day. Additionally, when using this ability or casting reincarnate as a prepared spell, you have some influence over the physical form that the reincarnated spirit will take. When rolling against the spell’s incarnation table, you may roll twice and choose between the two results.</p>",
+    },
+  ],
+  Wolf: [
+    {
+      name: "Pack Tactics",
+      abilityType: "ex",
+      level: 8,
+      description:
+        "<p>At 8th level, as a free action on your turn, you can designate an adjacent square; your attacks are treated as coming from that square for the purposes of determining whether or not you are flanking (this applies even if that square is occupied by an object or creature). This ends at the start of your next turn or if you move. If you are flanking a creature without using this ability, you may add your Wisdom bonus to your attack roll rather than the normal +2 flanking bonus. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    },
+  ],
+};
+
+/**
+ * Hand-authored fixed bonus-feat grants for druid nature-bond domains, same
+ * shape as `Domain.changes`' `bonusFeats` entries (Darkness/Rune) — Wolf is
+ * the only domain whose 1st-level granted power names a specific feat
+ * ("Improved Trip: You gain Improved Trip as a bonus feat") rather than
+ * describing a power in prose. Applied directly to `DruidDomain.changes`;
+ * the actual feat grant is resolved by name in the web layer, see
+ * `DRUID_DOMAIN_GRANTED_FEATS` in `apps/web/src/model/feats.ts`.
+ */
+export const DRUID_DOMAIN_BONUS_FEAT_CHANGES: Record<string, Change[]> = {
+  Wolf: [{ formula: "1", target: "bonusFeats", type: "untyped" }],
+};
+
+/**
+ * Apply `SUPPLEMENTAL_DRUID_DOMAIN_FEATURES`/`DRUID_DOMAIN_BONUS_FEAT_CHANGES`
+ * in place: pushes one `ClassFeature` per listed power and appends a resolved
+ * `ClassFeatureGrant` for it to the matching druid domain's `features`
+ * (sorted by level), and sets `changes` for any domain with a fixed bonus
+ * feat. Throws on an unknown domain tag or an id collision — the same
+ * drift/collision guards every other supplement in this module uses.
+ */
+export function applyDruidDomainFeatureSupplements(
+  druidDomains: DruidDomain[],
+  classFeatures: ClassFeature[],
+): void {
+  const byTag = new Map(druidDomains.map((d) => [d.tag, d]));
+  const featureIds = new Set(classFeatures.map((f) => f.id));
+  for (const [tag, powers] of Object.entries(SUPPLEMENTAL_DRUID_DOMAIN_FEATURES)) {
+    const domain = byTag.get(tag);
+    if (domain === undefined) {
+      throw new Error(`[supplements] druid domain "${tag}" not found in vendored druid domains`);
+    }
+    for (const power of powers) {
+      const powerSlug = slug(power.name);
+      const id = `druid-domain:${slug(tag)}:${powerSlug}`;
+      if (featureIds.has(id)) {
+        throw new Error(`[supplements] duplicate druid domain power feature id: ${id}`);
+      }
+      featureIds.add(id);
+      const uuid = `druid-domain-feature:${slug(tag)}:${powerSlug}`;
+      classFeatures.push({
+        id,
+        name: power.name,
+        uuid,
+        description: power.description,
+        ...(power.abilityType ? { abilityType: power.abilityType } : {}),
+        sources: domain.sources,
+        subType: "classFeat",
+        changes: [],
+        grantsBuffs: [],
+      });
+      domain.features = [
+        ...domain.features,
+        { level: power.level, uuid, featureId: id, name: power.name, resolved: true },
+      ].sort((a, b) => a.level - b.level);
+    }
+  }
+  for (const [tag, changes] of Object.entries(DRUID_DOMAIN_BONUS_FEAT_CHANGES)) {
+    const domain = byTag.get(tag);
+    if (domain === undefined) {
+      throw new Error(`[supplements] druid domain "${tag}" not found in vendored druid domains`);
+    }
+    domain.changes = [...domain.changes, ...changes];
   }
 }
 

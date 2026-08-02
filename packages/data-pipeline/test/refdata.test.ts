@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { FOUNDRY_SHA, loadRefData } from "../src/index.js";
+import { FOUNDRY_SHA, loadRefData, SCHEMA_VERSION } from "../src/index.js";
 import { SUPPLEMENTAL_BLOODLINE_TAGS, SUPPLEMENTAL_ITEMS } from "../src/supplements.js";
 
 /**
@@ -26,7 +26,11 @@ describe("metadata + provenance", () => {
   it("is generated from the pinned source SHA", () => {
     expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
     expect(ref.meta.systemVersion).toBe("11.11");
-    expect(ref.meta.schemaVersion).toBe(19);
+    // Compared against the live constant (not hardcoded) so this assertion
+    // can't silently drift out of sync with a future SCHEMA_VERSION bump the
+    // way it did here: this line still read 19 after two prior bumps left
+    // `data:build` unrun against the committed fixture.
+    expect(ref.meta.schemaVersion).toBe(SCHEMA_VERSION);
   });
 
   it("records a content hash for every emitted file", () => {
@@ -770,10 +774,34 @@ describe("druid nature-bond domains (domains/druid-domains/**)", () => {
     expect(all.filter((d) => d.kind === "terrain").length).toBe(16);
   });
 
-  it("carries no structured granted-power links (source models them as prose only)", () => {
+  it("every domain carries at least one hand-authored granted power with a sane level gate", () => {
+    // The source models these as free-text prose with no `class-abilities`
+    // link at all (issue #117) — `features` is entirely hand-authored
+    // (`supplements.ts`'s `SUPPLEMENTAL_DRUID_DOMAIN_FEATURES`), not derived.
     for (const domain of Object.values(ref.druidDomains)) {
-      expect(domain.features, domain.name).toEqual([]);
+      expect(domain.features.length, domain.name).toBeGreaterThan(0);
+      for (const grant of domain.features) {
+        const label = `${domain.name}: ${grant.name}`;
+        expect(grant.resolved, label).toBe(true);
+        expect(ref.classFeatures[grant.featureId], label).toBeDefined();
+        expect(grant.level, label).toBeGreaterThanOrEqual(1);
+        expect(grant.level, label).toBeLessThanOrEqual(20);
+      }
     }
+  });
+
+  it("Badlands, Ruins, and Crocodile each grant a third power beyond the usual 1st/Nth pair", () => {
+    const levelsOf = (name: string) => byName(ref.druidDomains, name).features.map((f) => f.level);
+    expect(levelsOf("Badlands Domain")).toEqual([1, 2, 8]);
+    expect(levelsOf("Ruins Domain")).toEqual([1, 4, 8]);
+    expect(levelsOf("Crocodile Domain")).toEqual([1, 1, 6]);
+  });
+
+  it("Wolf grants Improved Trip as a fixed bonus feat (via changes, not a features entry) and Pack Tactics as its 8th-level prose power", () => {
+    const wolf = byName(ref.druidDomains, "Wolf Domain");
+    expect(wolf.features.map((f) => f.name)).toEqual(["Pack Tactics"]);
+    expect(wolf.features[0]!.level).toBe(8);
+    expect(wolf.changes).toEqual([{ formula: "1", target: "bonusFeats", type: "untyped" }]);
   });
 
   it("Wolf Domain (animal) and Desert Domain (terrain) are present with a description", () => {
