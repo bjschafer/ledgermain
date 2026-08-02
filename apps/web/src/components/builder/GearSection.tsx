@@ -476,6 +476,23 @@ function PartialBadge({ changes }: { changes: readonly Change[] }) {
 }
 
 /**
+ * The `badge-modeled` "M" every other picker uses, here marking an item whose
+ * `changes[]` the sheet actually applies. It earns its place now that the
+ * picker browses the full published catalog: most of that catalog is imported
+ * display-only, so without the badge there's nothing to distinguish a Cloak of
+ * Resistance the sheet adds up from a Deck of Many Things it merely lists.
+ */
+function ModeledBadge({ changes }: { changes: readonly Change[] }) {
+  if (changes.length === 0) return null;
+  return (
+    <span className="badge-modeled" title="The sheet applies this item's effect while equipped">
+      {" "}
+      M
+    </span>
+  );
+}
+
+/**
  * Maximum charges for a linked item's `uses.maxFormula` (issue #16), e.g. a
  * Staff of Healing's 10. Every `maxFormula` in the current vendored slice is
  * a plain numeric constant (no `@item.level`/`@cl` reference — verified
@@ -922,6 +939,11 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
           </button>
         ) : (
           <div className="gear-picker">
+            <p className="hint">
+              Browses the full published catalog. Entries marked{" "}
+              <span className="badge-modeled">M</span> have an effect the sheet applies while
+              equipped; the rest are listed for reference, so their effect stays a table ruling.
+            </p>
             <div className="gear-picker-head">
               <input
                 className="search"
@@ -956,7 +978,9 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                     <div key={item.id} className="pick-row">
                       <div className="pmain">
                         <div className="pname">
-                          {item.name} <PartialBadge changes={item.changes} />
+                          {item.name}
+                          <ModeledBadge changes={item.changes} />{" "}
+                          <PartialBadge changes={item.changes} />
                         </div>
                         {(meta || item.changes.length > 0) && (
                           <div className="preq">

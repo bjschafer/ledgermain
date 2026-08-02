@@ -978,14 +978,14 @@ describe("items (issue #15 — full usable breadth of the `items` pack)", () => 
     // excluded: loot, equipment, container, weapon (splash/thrown one-shots),
     // and consumable (staves/rods/poisons) all vend. Bumping the SHA may
     // shift this; changes here should be deliberate + reviewed. Counted
-    // without the hand-authored supplements so this stays a statement about
-    // the pack alone.
-    const vendored = Object.values(ref.items).filter((it) => !it.id.startsWith("item:"));
+    // without the hand-authored and imported entries (Foundry ids are bare
+    // alphanumerics; every non-pack id is namespaced with a colon) so this
+    // stays a statement about the pack alone.
+    const vendored = Object.values(ref.items).filter((it) => !it.id.includes(":"));
     expect(vendored.length).toBe(1089);
   });
 
   it("hand-authored supplements land alongside the pack", () => {
-    expect(Object.keys(ref.items).length).toBe(1089 + SUPPLEMENTAL_ITEMS.length);
     for (const s of SUPPLEMENTAL_ITEMS) {
       expect(ref.items[s.id]).toEqual(s);
     }
@@ -1052,6 +1052,77 @@ describe("items (issue #15 — full usable breadth of the `items` pack)", () => 
     const bladder = byName(ref.items, "Air Bladder");
     expect(bladder).toMatchObject({ subType: "adventuring", price: 0.1, weight: 0.5 });
     expect(bladder.changes).toEqual([]);
+  });
+});
+
+describe("magic-item catalog (Pf Data 1e import)", () => {
+  const imported = Object.values(ref.items).filter((it) => it.id.startsWith("mi:"));
+
+  it("imports the published catalog the pack omits", () => {
+    // The pack carries ~5% of published magic items. Bumping PFDATA_SHA may
+    // shift this; a change here should be deliberate + reviewed.
+    expect(imported.length).toBe(3832);
+  });
+
+  it("every import is display-only", () => {
+    // The whole catalog is prose. Encoding mechanics for it would mean
+    // inventing them, so `changes[]` stays empty and the picker's "M" badge
+    // marks the vendored entries that do carry real effects.
+    expect(imported.every((it) => it.changes.length === 0)).toBe(true);
+  });
+
+  it("never shadows a vendored or hand-authored entry", () => {
+    // A name collision must resolve to the pack's entry (which has real
+    // changes[]) or the supplement's (which has a stable id), never the import.
+    const byNormalizedName = new Map<string, string[]>();
+    for (const it of Object.values(ref.items)) {
+      const key = it.name.trim().toLowerCase();
+      byNormalizedName.set(key, [...(byNormalizedName.get(key) ?? []), it.id]);
+    }
+    const duplicated = [...byNormalizedName.entries()].filter(([, ids]) => ids.length > 1);
+    expect(duplicated).toEqual([]);
+
+    const cloak = byName(ref.items, "Cloak of Resistance +1");
+    expect(cloak.id).not.toStartWith("mi:");
+    expect(cloak.changes.length).toBeGreaterThan(0);
+    expect(byName(ref.items, "Boots of the Cat").id).toBe("item:boots-of-the-cat");
+  });
+
+  it("parses the stat block into structured fields", () => {
+    const ring = byName(ref.items, "Ring of Invisibility");
+    expect(ring).toMatchObject({ subType: "wondrous", slot: "ring", price: 20000, cl: 3 });
+    expect(ring.aura).toEqual({ school: "ill" });
+    expect(ring.sources).toContainEqual({ id: "ultimate-equipment", pages: "171" });
+    // Prose only: the stat block and the Construction appendix are parsed out.
+    expect(ring.description).not.toContain("**Slot**");
+    expect(ring.description).not.toContain("Construction");
+  });
+
+  it("leaves slot blank on kinds where a body slot is meaningless", () => {
+    // pfdata writes "**Slot** none" for a sword the same way it does for a
+    // slotless wondrous item; only the latter is a real PF1 category.
+    const avenger = byName(ref.items, "Holy Avenger");
+    expect(avenger.subType).toBe("weapon");
+    expect(avenger.slot).toBeUndefined();
+    expect(byName(ref.items, "Aligned Horn of Valhalla").slot).toBe("slotless");
+  });
+
+  it("keeps a non-numeric price absent rather than guessing", () => {
+    // Artifacts are routinely priced "-" or "varies"; 0 would read as free.
+    expect(byName(ref.items, "Deck of Many Things").price).toBeUndefined();
+  });
+
+  it("every entry carries rules prose", () => {
+    expect(imported.filter((it) => !it.description || it.description.length < 20)).toEqual([]);
+  });
+
+  it("weapon/armor special abilities never reach the gear picker", () => {
+    // "**Slot** weapon quality" entries (flaming, keen, fortification) are
+    // properties bought onto a weapon, not things you carry, so the transform
+    // returns them separately — see transform/magicItems.ts.
+    for (const name of ["Flaming", "Keen", "Fortification (light)", "Advancing (armor)"]) {
+      expect(Object.values(ref.items).find((it) => it.name === name)).toBeUndefined();
+    }
   });
 });
 

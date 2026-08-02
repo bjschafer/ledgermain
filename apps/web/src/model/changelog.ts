@@ -41,10 +41,10 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
-    id: "2026-08-01-boots-of-the-cat",
+    id: "2026-08-01-magic-item-catalog",
     date: "2026-08-01",
-    title: "Boots of the Cat in the gear picker",
-    note: "Search gear for Boots of the Cat and you can add them like any other wondrous item, priced and weighed. Their effect stays a table ruling: the sheet does not track falling damage, so nothing on it changes when you equip them.",
+    title: "The whole magic item catalog is in the gear picker",
+    note: 'The picker used to offer about 190 magic items. It now browses the full published catalog: roughly 3,800 more wondrous items, rings, rods, staves, artifacts, and named magic weapons and armor, each with its rules text, price, weight, slot, and caster level. Boots of the Cat, which someone asked for, is among them. Items the sheet actually adds up are marked with an "M". The rest are there to find and record, with their effect applied at the table.',
   },
   {
     id: "2026-08-01-fractional-bonuses",

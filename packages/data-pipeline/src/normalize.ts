@@ -110,6 +110,7 @@ import { transformCavalierOrders } from "./transform/cavalierOrders.js";
 import { transformEidolonSubtypes } from "./transform/eidolonSubtypes.js";
 import { transformInvestigatorTalents } from "./transform/investigatorTalents.js";
 import { transformKineticWildTalents } from "./transform/kineticWildTalents.js";
+import { transformMagicItems } from "./transform/magicItems.js";
 import { transformMagusArcana } from "./transform/magusArcana.js";
 import { transformMediumSpirits } from "./transform/mediumSpirits.js";
 import { transformMesmeristBoldStares } from "./transform/mesmeristBoldStares.js";
@@ -704,6 +705,19 @@ export function normalize(opts: NormalizeOptions): {
   // Published gear the pack doesn't carry at all, hand-authored — appended
   // after the pack read so the collision guard sees the full vendored set.
   applyItemSupplements(items);
+
+  // --- magic-item catalog (Pf Data 1e) ---------------------------------------
+  // The pack covers ~5% of published magic items. This fills in the rest as
+  // display-only entries; anything already present by name is skipped so the
+  // vendored entry keeps its real `changes[]` and a hand-authored supplement
+  // keeps its id — the standing "hand-authored wins mechanics" rule.
+  const magicItems = transformMagicItems(opts.pfDataJsonDir, SLICE.magicItemFiles);
+  const itemNames = new Set(items.map((it) => normalizeEntityName(it.name)));
+  for (const imported of magicItems.items) {
+    if (itemNames.has(normalizeEntityName(imported.name))) continue;
+    itemNames.add(normalizeEntityName(imported.name));
+    items.push(imported);
+  }
 
   // --- armors & shields (mundane base gear; magic named suits excluded) ------
   const armors: ArmorRef[] = readPack(join(packsDir, "armors-and-shields"))

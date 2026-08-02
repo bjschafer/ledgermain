@@ -75,6 +75,12 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "Every list, the class-subsystem tables included, sits at full vendored parity (rage powers 243, rogue talents 234, alchemist discoveries 168, witch hexes 104, down to monk style strikes 15), so the gap is promotion rather than coverage: only 32 rage powers and a scattering of talents and discoveries carry live changes[]. Candidates blocked on a missing mechanism are recorded inline in their table files.",
   },
   {
+    category: "Magic items",
+    note: 'The full published catalog is in the gear picker: wondrous items, rings, rods, staves, artifacts, and named magic weapons and armor. Entries whose effect the sheet applies while equipped are marked with an "M". Most are not: they carry their rules text for you to apply at the table, and equipping one moves no numbers.',
+    issueDetail:
+      "1,090 entries carry structured changes[]; the imported catalog adds 3,832 whose effects exist only as prose. The gap is promotion rather than coverage. Weapon and armor special abilities (181 published) are a separate axis: the builder offers 18 hand-authored ones, and the rest have no selectable entry at all.",
+  },
+  {
     category: "Character traits",
     note: "The full published trait catalog is searchable in the picker, and a trait whose benefit comes with structured numbers or a fixed class-skill grant applies them to your sheet automatically. The rest show their benefit as text to apply at the table. Anything still missing can be added as a homebrew trait.",
     issueDetail:

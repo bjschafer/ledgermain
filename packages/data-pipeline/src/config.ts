@@ -268,4 +268,53 @@ export const SLICE = {
    * in packs/races/core/.
    */
   raceFolders: ["core", "other"],
+  /**
+   * Pf Data 1e `magic_*.json` files to import as the magic-item catalog (see
+   * `transform/magicItems.ts`). Listed explicitly rather than globbed so a data
+   * bump that adds or renames an upstream file is a reviewed change, not a
+   * silent swing in what the gear picker offers.
+   */
+  magicItemFiles: [
+    "magic_altar",
+    "magic_armor",
+    "magic_artifact",
+    "magic_artifact2",
+    "magic_artifact3",
+    "magic_demonic_implants",
+    "magic_devil_talismans",
+    "magic_elemental_augmentations",
+    "magic_enhancements",
+    "magic_enhancements2",
+    "magic_favor",
+    "magic_fleshcrafting",
+    "magic_fungal_grafts",
+    "magic_infused_poisons",
+    "magic_ioun_stones",
+    "magic_juju_fetishes",
+    "magic_legacy_items",
+    "magic_necrografts",
+    "magic_necrotoxins",
+    "magic_plant",
+    "magic_relics",
+    "magic_ring",
+    "magic_rod",
+    "magic_set",
+    "magic_shadow_piercings",
+    "magic_staff",
+    "magic_tattoo",
+    "magic_throne",
+    "magic_weapon",
+    "magic_weapon2",
+    "magic_wondrous_belt_body_chest",
+    "magic_wondrous_eyes_feet_hands",
+    "magic_wondrous_head_headband",
+    "magic_wondrous_neck",
+    "magic_wondrous_shoulders_wrists",
+    "magic_wondrous_slotless01",
+    "magic_wondrous_slotless02",
+    "magic_wondrous_slotless03",
+    "magic_wondrous_slotless04",
+    "magic_wondrous_slotless05",
+    "magic_wondrous_slotless06",
+  ],
 } as const;
