@@ -173,6 +173,45 @@ export function setClericDomains(doc: CharacterDoc, domains: string[]): Characte
 }
 
 /**
+ * The weapons a deity's favored weapon may be picked from: every vendored
+ * weapon collapsed to one entry per `WeaponRef.group` slug — the granularity
+ * proficiency is checked at, so "Longbow" covers the composite and horse-bow
+ * variants that share its slug. Labeled by canonical base type.
+ */
+export function favoredWeaponOptions(
+  refData: RefData,
+): { slug: string; label: string; proficiency: string }[] {
+  const bySlug = new Map<string, { slug: string; label: string; proficiency: string }>();
+  for (const weapon of Object.values(refData.weapons)) {
+    if (!weapon.group || bySlug.has(weapon.group)) continue;
+    bySlug.set(weapon.group, {
+      slug: weapon.group,
+      label: weapon.baseTypes?.[0] ?? weapon.name,
+      proficiency: weapon.proficiency,
+    });
+  }
+  return [...bySlug.values()].sort((a, b) => a.label.localeCompare(b.label));
+}
+
+/**
+ * Set the deity's favored weapon (a `WeaponRef.group` slug), or `null`/blank
+ * to clear. No validation that the slug names a real weapon, or that the
+ * character's class grants a favored weapon at all — soft-warning posture,
+ * same as `setClericDomains`; the engine ignores the pick for a build with no
+ * favored-weapon token.
+ */
+export function setDeityFavoredWeapon(doc: CharacterDoc, slug: string | null): CharacterDoc {
+  const trimmed = typeof slug === "string" ? slug.trim() : "";
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      deityFavoredWeapon: trimmed.length > 0 ? trimmed : undefined,
+    },
+  };
+}
+
+/**
  * Set the druid's chosen nature-bond domain tag (a single tag, key into
  * `refData.druidDomains` by `DruidDomain.tag`), or `null`/blank to clear (a
  * druid who bonds with an animal companion instead). No validation that the

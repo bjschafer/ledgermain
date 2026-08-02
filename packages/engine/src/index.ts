@@ -862,6 +862,7 @@ export {
 } from "./weapon-groups.js";
 export {
   deriveProficiencies,
+  grantsDeityFavoredWeapon,
   isWeaponProficient,
   isArmorTypeProficient,
   isShieldTierProficient,

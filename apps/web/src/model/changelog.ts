@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-01-deity-favored-weapon",
+    date: "2026-08-01",
+    title: "Name your deity's favored weapon",
+    note: "Clerics, inquisitors, and warpriests are proficient with their deity's favored weapon whatever else their class covers, but nothing in the data says which weapon that is. The Classes tab now has a Favored Weapon picker next to your domains: name the weapon and the sheet stops charging you the non-proficient penalty for it. It shows up in your proficiency list crediting the class that granted it. Free choice, so a homebrew deity works as well as a published one.",
+  },
+  {
     id: "2026-08-01-weapon-armor-special-abilities",
     date: "2026-08-01",
     title: "The full list of weapon and armor special abilities",

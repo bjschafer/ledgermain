@@ -174,6 +174,21 @@ export interface CharacterDoc {
      */
     clericChannelAlignment?: "cure" | "inflict";
     /**
+     * The deity's favored weapon, stored as a `WeaponRef.group` slug
+     * ("longsword"). A cleric, inquisitor, or warpriest is proficient
+     * with their deity's favored weapon whatever the class's normal weapon
+     * proficiency covers; the vendored classes carry that grant as a bare
+     * "Favored Weapon" token with nothing to resolve it against (there is no
+     * deity→weapon mapping in the data, and `identity.deity` is free text),
+     * so the player names the weapon here and `@pf1/engine`'s
+     * `deriveProficiencies` turns the token into a named grant. Free-choice:
+     * no check that the weapon really is that deity's favored weapon, same
+     * soft-warning posture as `clericDomains`. Ignored by a build whose
+     * classes carry no favored-weapon token. Back-compat: absent = not
+     * chosen, and the token resolves to nothing, as before.
+     */
+    deityFavoredWeapon?: string;
+    /**
      * Druid nature-bond domain tag (key into `refData.druidDomains` by
      * `DruidDomain.tag`), chosen at L1 as the alternative to an animal
      * companion. A single tag (unlike the cleric's two), or undefined for a

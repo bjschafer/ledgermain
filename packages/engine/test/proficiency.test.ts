@@ -14,6 +14,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 import {
   compute,
   deriveProficiencies,
+  grantsDeityFavoredWeapon,
   isArmorTypeProficient,
   isShieldTierProficient,
   isWeaponProficient,
@@ -41,6 +42,7 @@ function makeDoc(over: {
   extraFeats?: { instanceId: string; featId: string; choiceId?: string }[];
   weapons?: WeaponInstance[];
   gear?: ItemInstance[];
+  deityFavoredWeapon?: string;
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -58,6 +60,7 @@ function makeDoc(over: {
       feats: over.feats ?? [],
       featChoices: over.featChoices,
       extraFeats: over.extraFeats,
+      deityFavoredWeapon: over.deityFavoredWeapon,
       skillRanks: {},
       classFeatureChoices: [],
       spells: { known: [] },
@@ -114,6 +117,82 @@ describe("deriveProficiencies: class grants", () => {
     const prof = deriveProficiencies(doc, ref);
     expect(prof.weapons).toEqual([]);
     expect(prof.armor).toEqual([]);
+  });
+});
+
+describe("deriveProficiencies: deity's favored weapon", () => {
+  it("a Cleric's pick becomes a named grant, labeled from the vendored catalog", () => {
+    // CRB p.39: "Clerics are proficient with ... the favored weapon of their
+    // deity." A greatsword is martial, outside the cleric's simple-only list.
+    const doc = makeDoc({
+      classes: [{ tag: "cleric", level: 1 }],
+      deityFavoredWeapon: "greatsword",
+    });
+    const line = deriveProficiencies(doc, ref).weapons.find((w) => w.weaponSlug === "greatsword");
+    expect(line).toEqual({
+      label: "Greatsword",
+      weaponSlug: "greatsword",
+      grants: [{ source: "Cleric (favored weapon)", sourceType: "class" }],
+    });
+  });
+
+  it("the token grants nothing until the player names a weapon", () => {
+    const doc = makeDoc({ classes: [{ tag: "cleric", level: 1 }] });
+    const prof = deriveProficiencies(doc, ref);
+    // Simple weapons (the class's own category grant) and nothing named.
+    expect(prof.weapons.map((w) => w.label)).toEqual(["Simple Weapons"]);
+  });
+
+  it("a class with no favored-weapon token ignores the pick entirely", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      deityFavoredWeapon: "greatsword",
+    });
+    expect(deriveProficiencies(doc, ref).weapons.some((w) => w.weaponSlug === "greatsword")).toBe(
+      false,
+    );
+  });
+
+  it("grantsDeityFavoredWeapon gates on the class's vendored token", () => {
+    for (const tag of ["cleric", "inquisitor", "warpriest"]) {
+      expect(grantsDeityFavoredWeapon(makeDoc({ classes: [{ tag, level: 1 }] }), ref)).toBe(true);
+    }
+    expect(
+      grantsDeityFavoredWeapon(makeDoc({ classes: [{ tag: "fighter", level: 1 }] }), ref),
+    ).toBe(false);
+    // A scratch multiclass row at level 0 grants nothing, same as every other
+    // class grant.
+    expect(grantsDeityFavoredWeapon(makeDoc({ classes: [{ tag: "cleric", level: 0 }] }), ref)).toBe(
+      false,
+    );
+  });
+
+  it("removes the non-proficient penalty on the favored weapon only", () => {
+    const greatsword: WeaponInstance = {
+      name: "Greatsword",
+      attackAbility: "str",
+      group: "greatsword",
+      category: "melee",
+      proficiency: "martial",
+    };
+    const bare = compute(
+      makeDoc({ classes: [{ tag: "cleric", level: 1 }], weapons: [greatsword] }),
+      ref,
+    );
+    expect(bare.attacks[0]!.attack.total).toBe(-4); // BAB(0) + Str(0) - 4
+
+    const favored = compute(
+      makeDoc({
+        classes: [{ tag: "cleric", level: 1 }],
+        weapons: [greatsword],
+        deityFavoredWeapon: "greatsword",
+      }),
+      ref,
+    );
+    expect(
+      favored.attacks[0]!.attack.components.some((c) => c.source.includes("non-proficient")),
+    ).toBe(false);
+    expect(favored.attacks[0]!.attack.total).toBe(0);
   });
 });
 

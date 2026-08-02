@@ -1,6 +1,6 @@
 /**
  * Weapon/armor/shield proficiency (issue #81) — clean-room from PF1 RAW, not
- * Foundry source. Three grant sources are combined into one set:
+ * Foundry source. Four grant sources are combined into one set:
  *
  *  1. Class grants — every class's vendored `weaponProf`/`armorProf` arrays
  *     (`packages/data-pipeline/data/classes.json`, typed on `RefData.Class`)
@@ -24,6 +24,12 @@
  *     each race's SRD entry (not vendored; `RefData.Race` carries no
  *     structured weapon-proficiency field), matched by race NAME, same
  *     precedent as `racial-traits.ts`'s alternate-trait table.
+ *  4. The deity's favored weapon — the "Favored Weapon" token a cleric,
+ *     inquisitor, or warpriest carries resolves against the player's own
+ *     `build.deityFavoredWeapon` pick, since no deity→weapon mapping exists
+ *     in the data to resolve it automatically (`identity.deity` is free
+ *     text, see `model/alignment.ts`'s identical gap). Unpicked, the token
+ *     grants nothing rather than guessing a weapon.
  *
  * Deliberately NOT modeled (see the issue and CLAUDE.md's warn-don't-block
  * posture):
@@ -32,9 +38,7 @@
  *  - Monk's/druid's "restricted weapon list" flavor rule — that's an oath/
  *    class-feature restriction (losing flurry, wild shape, etc. for using an
  *    off-list weapon), not a proficiency gate; out of scope.
- *  - A cleric's "Favored Weapon" (no vendored deity→weapon mapping exists —
- *    `identity.deity` is free text, see `model/alignment.ts`'s identical gap)
- *    and Foundry-internal placeholder tags ("Monk Quality", "Close Weapon
+ *  - Foundry-internal placeholder tags ("Monk Quality", "Close Weapon
  *    Group") are skipped rather than turned into a named grant that can never
  *    resolve to a real weapon.
  *  - A firearms-specific proficiency ("Firearms" on gunslinger/gunsmith) is
@@ -63,12 +67,17 @@ type WeaponTokenResult =
   | { kind: "named"; slug: string; label: string };
 
 /**
- * Non-resolvable `weaponProf` tokens (see file header): a deity's favored
- * weapon (no structured deity data to resolve it against) and two Foundry-
- * internal placeholder tags with no corresponding weapon at all.
+ * The `weaponProf` token a cleric/inquisitor/warpriest carries for their
+ * deity's favored weapon. Resolved from `build.deityFavoredWeapon`, never
+ * from the data — see the file header.
+ */
+const FAVORED_WEAPON_TOKEN = "Favored Weapon";
+
+/**
+ * Non-resolvable `weaponProf` tokens (see file header): two Foundry-internal
+ * placeholder tags with no corresponding weapon at all.
  */
 const UNRESOLVABLE_WEAPON_TOKENS: ReadonlySet<string> = new Set([
-  "Favored Weapon",
   "Monk Quality",
   "Close Weapon Group",
 ]);
@@ -139,22 +148,40 @@ function collectFeatInstances(
 }
 
 /**
- * Display label for a Martial/Exotic Weapon Proficiency choice. The stored
- * `choiceId` is already a `WeaponInstance.group` slug (the "weapon" choice
- * picker lists the character's own weapons' `group` values verbatim — see
- * `apps/web/src/model/feats.ts`'s `featChoiceOptions`), so this just looks up
- * a matching weapon's display name for a nicer label, falling back to a
- * titleized slug when no weapon on the sheet matches (e.g. the weapon that
- * prompted the choice was since removed).
+ * Display label for a weapon named by `group` slug — a Martial/Exotic Weapon
+ * Proficiency choice, or the deity's favored weapon. Both store a
+ * `WeaponInstance.group` slug (the "weapon" choice picker lists the
+ * character's own weapons' `group` values verbatim — see
+ * `apps/web/src/model/feats.ts`'s `featChoiceOptions`), so this looks up a
+ * display name: the character's own weapon first, then the vendored catalog
+ * (by its canonical base type, so "Composite Longbow" reads as "Longbow" —
+ * the slug covers both), then a titleized slug when neither matches (e.g. the
+ * weapon that prompted the choice was since removed).
  */
-function weaponLabelForSlug(slug: string, doc: CharacterDoc): string {
-  const match = (doc.build.weapons ?? []).find((w) => w.group === slug);
-  if (match) return match.name;
+function weaponLabelForSlug(slug: string, doc: CharacterDoc, refData: RefData): string {
+  const owned = (doc.build.weapons ?? []).find((w) => w.group === slug);
+  if (owned) return owned.name;
+  const vendored = Object.values(refData.weapons).find((w) => w.group === slug);
+  if (vendored) return vendored.baseTypes?.[0] ?? vendored.name;
   return slug
     .split("-")
     .filter(Boolean)
     .map((w) => w[0]!.toUpperCase() + w.slice(1))
     .join(" ");
+}
+
+/**
+ * True if any class the build has levels in grants proficiency with the
+ * deity's favored weapon (cleric, inquisitor, and warpriest all carry the
+ * vendored token) — what gates the builder's `build.deityFavoredWeapon`
+ * picker, so the engine and the UI can't disagree about who gets the pick.
+ */
+export function grantsDeityFavoredWeapon(doc: CharacterDoc, refData: RefData): boolean {
+  return doc.identity.classes.some((cls) => {
+    if (cls.level <= 0) return false;
+    const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    return (def?.weaponProf ?? []).includes(FAVORED_WEAPON_TOKEN);
+  });
 }
 
 /* ------------------------------------------------------------- races -- */
@@ -267,6 +294,16 @@ export function deriveProficiencies(doc: CharacterDoc, refData: RefData): Derive
     if (!def) continue;
     const grant: ProficiencyGrant = { source: def.name, sourceType: "class" };
     for (const token of def.weaponProf ?? []) {
+      if (token === FAVORED_WEAPON_TOKEN) {
+        const slug = doc.build.deityFavoredWeapon?.trim();
+        if (slug) {
+          out.addWeaponNamed(slug, weaponLabelForSlug(slug, doc, refData), {
+            source: `${def.name} (favored weapon)`,
+            sourceType: "class",
+          });
+        }
+        continue;
+      }
       const classified = classifyWeaponProfToken(token);
       if (!classified) continue;
       if (classified.kind === "category") out.addWeaponCategory(classified.value, grant);
@@ -289,7 +326,8 @@ export function deriveProficiencies(doc: CharacterDoc, refData: RefData): Derive
         break;
       case MARTIAL_WEAPON_PROF_SLUG:
       case EXOTIC_WEAPON_PROF_SLUG:
-        if (choiceId) out.addWeaponNamed(choiceId, weaponLabelForSlug(choiceId, doc), grant);
+        if (choiceId)
+          out.addWeaponNamed(choiceId, weaponLabelForSlug(choiceId, doc, refData), grant);
         break;
       case ARMOR_PROF_LIGHT_SLUG:
         out.addArmor("light", "Light Armor", grant);
