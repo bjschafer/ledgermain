@@ -13,7 +13,7 @@ import { resolveAlchemistDiscovery } from "./alchemist-discoveries.js";
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { activeArchetypeSwaps, domainCasterLevel, weaponTrainingReplaced } from "./archetypes.js";
-import { BLOODLINES } from "./bloodlines.js";
+import { resolveSorcererBloodlineOrMutation } from "./bloodline-mutations.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
 import { CLASS_FEATURE_CHANGE_PATCHES } from "./class-feature-effects.js";
@@ -625,11 +625,14 @@ export function collectModifiers(
   // carries the right value for the `@classes.sorcerer.level` formulas these
   // entries use, so no per-grant RollData override is needed (unlike the
   // domain/school `@class.unlevel` convention above, which is granting-class
-  // contextual).
+  // contextual). `doc.build.sorcererBloodline` may name a wildblooded mutation
+  // id instead of a base bloodline — `resolveSorcererBloodlineOrMutation`
+  // resolves either to the same merged shape (mutation's arcana, parent's
+  // powers with any swap applied; see `bloodline-mutations.ts`).
   const sorcererLevel = doc.identity.classes.find((c) => c.tag === "sorcerer")?.level ?? 0;
   if (sorcererLevel > 0 && doc.build.sorcererBloodline) {
-    const bloodline = BLOODLINES[doc.build.sorcererBloodline];
-    if (bloodline) {
+    const bloodline = resolveSorcererBloodlineOrMutation(doc.build.sorcererBloodline, refData);
+    if (bloodline && !bloodline.displayOnly) {
       for (const ch of bloodline.arcana.changes) {
         if (!gateOpen(ch)) continue;
         evalChange(

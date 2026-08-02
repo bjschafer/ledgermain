@@ -43,7 +43,7 @@ import {
   type RollData,
 } from "@pf1/engine";
 
-import { parentDomainTagOf } from "./doc.js";
+import { parentBloodlineTagOf, parentDomainTagOf } from "./doc.js";
 import { SKILL_NAMES } from "./names.js";
 import { effectiveCombatStyleId } from "./ranger.js";
 import { suppressedRaceTargets } from "./racialTraits.js";
@@ -240,6 +240,7 @@ export interface ClassFeatSlot {
 function baseFeatureSlotType(
   featureName: string,
   doc: CharacterDoc,
+  refData: RefData,
 ): { type: FeatSlotType; source: string } {
   switch (featureName) {
     case "bonus feats (fgt)":
@@ -251,7 +252,14 @@ function baseFeatureSlotType(
     case "bonus feat (mnk)":
       return { type: { kind: "monkList" }, source: "Monk" };
     case "bloodline feat (sor)": {
-      const bloodline = doc.build.sorcererBloodline;
+      // The bloodline feat LIST is always the base bloodline's (RAW, see
+      // `SorcererBloodlineMutation` doc comment) — a wildblooded mutation id
+      // resolves back to its parent tag before restricting the slot, so
+      // `BLOODLINES[type.bloodline]` (consumed by `featEligibleForSlot`)
+      // still finds the hand-authored `bonusFeatSlugs` list.
+      const bloodline = doc.build.sorcererBloodline
+        ? parentBloodlineTagOf(refData, doc.build.sorcererBloodline)
+        : undefined;
       return bloodline
         ? { type: { kind: "bloodline", bloodline }, source: "Sorcerer bloodline" }
         : { type: GENERIC_SLOT, source: "Sorcerer bloodline (choose a bloodline to restrict)" };
@@ -436,7 +444,11 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
         if (value === null || Number.isNaN(value)) continue;
         const count = Math.trunc(value);
         if (count === 0) continue;
-        const { type, source } = baseFeatureSlotType(feature.name.trim().toLowerCase(), doc);
+        const { type, source } = baseFeatureSlotType(
+          feature.name.trim().toLowerCase(),
+          doc,
+          refData,
+        );
         out.push({ type, count, source });
       }
     }

@@ -5,11 +5,16 @@
  */
 import { describe, expect, it } from "bun:test";
 
+import { loadRefData } from "@pf1/data-pipeline";
+
 import {
   createEmptyDoc,
+  parentBloodlineTagOf,
   setSorcererBloodline,
   setSorcererBloodlineVariant,
 } from "../src/model/doc.js";
+
+const ref = loadRefData();
 
 function doc() {
   return createEmptyDoc("t");
@@ -83,5 +88,25 @@ describe("setSorcererBloodlineVariant()", () => {
 
   it("does not require a bloodline to already be set (soft-warning posture)", () => {
     expect(setSorcererBloodlineVariant(doc(), "red").build.sorcererBloodlineVariant).toBe("red");
+  });
+});
+
+describe("parentBloodlineTagOf() (wildblooded mutation)", () => {
+  it("returns a base bloodline tag unchanged", () => {
+    expect(parentBloodlineTagOf(ref, "Arcane")).toBe("Arcane");
+  });
+
+  it("resolves a mutation id to its parent's tag", () => {
+    expect(parentBloodlineTagOf(ref, "arcane-sage")).toBe("Arcane");
+  });
+
+  it("returns the tag unchanged for one that resolves to neither (soft-warning posture)", () => {
+    expect(parentBloodlineTagOf(ref, "not-a-real-bloodline")).toBe("not-a-real-bloodline");
+  });
+
+  it("setSorcererBloodline stores a mutation id directly, same field as a base tag", () => {
+    const withMutation = setSorcererBloodline(doc(), "arcane-sage");
+    expect(withMutation.build.sorcererBloodline).toBe("arcane-sage");
+    expect(parentBloodlineTagOf(ref, withMutation.build.sorcererBloodline!)).toBe("Arcane");
   });
 });

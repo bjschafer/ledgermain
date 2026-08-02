@@ -180,6 +180,8 @@ export interface RefData {
   shamanSpirits: Record<string, ShamanSpirit>;
   /** The full published sorcerer bloodline catalog (fourth-source dataset; see `SorcererBloodline` doc comment). */
   sorcererBloodlines: Record<string, SorcererBloodline>;
+  /** Wildblooded mutations of a sorcerer bloodline (fourth-source dataset; see `SorcererBloodlineMutation` doc comment). */
+  sorcererBloodlineMutations: Record<string, SorcererBloodlineMutation>;
   /** The full published bloodrager bloodline catalog (fourth-source dataset; see `BloodragerBloodline` doc comment). */
   bloodragerBloodlines: Record<string, BloodragerBloodline>;
   /** The full published alchemist discovery catalog (fourth-source dataset; see `AlchemistDiscovery` doc comment). */
@@ -1607,6 +1609,33 @@ export interface ShamanSpirit extends RefEntity {}
  * Rakshasa,...) are display-only.
  */
 export interface SorcererBloodline extends RefEntity {}
+
+/**
+ * A published "Wildblooded Mutation" (Ultimate Magic p.70+ and later
+ * splatbooks): an alternate form of one `SorcererBloodline` a wildblooded
+ * sorcerer (or an Eldritch Heritage feat chain) may take instead of the
+ * standard version. PF1 RAW: the character keeps the base bloodline's class
+ * skill, bonus spells, and bonus feats, takes the MUTATION's bloodline
+ * arcana, and keeps the base bloodline's powers except where the mutation
+ * replaces one — this catalog carries prose only (same "catalog from data,
+ * mechanics as overlay" pattern as `SorcererBloodline` itself); the swap
+ * mapping (which parent power each mutation displaces, and the mutation's own
+ * arcana as live mechanics) is hand-authored in `@pf1/engine`
+ * `bloodline-mutations.ts`, matched by `id`.
+ *
+ * Sourced from the same `json/class_ability_sorcerer_bloodlines.json`
+ * dictionary as `SorcererBloodline` — each mutation is published as an
+ * `::h3[Name (Wildblooded Mutation)]` sub-section nested under its parent
+ * bloodline's entry rather than as a dictionary entry of its own, so
+ * `transform/sorcererBloodlines.ts` promotes it out of the parent's rendered
+ * prose into a standalone entry here (see that file's doc comment). 24
+ * mutations in the pinned slice — every "(Wildblooded Mutation)" heading in
+ * the source; a couple of parent bloodlines (Elemental, Fey) publish two.
+ */
+export interface SorcererBloodlineMutation extends RefEntity {
+  /** `SorcererBloodline.id` of the bloodline this mutates (e.g. "arcane" for Sage). */
+  parentBloodlineId: string;
+}
 
 /* ------------------------------------------------ bloodrager bloodlines -- */
 

@@ -168,6 +168,16 @@ export {
   type MergedSorcererBloodlineEntry,
 } from "./bloodlines.js";
 export {
+  BLOODLINE_MUTATIONS,
+  mutatedBloodlineDef,
+  mutationsForBloodlineTag,
+  parentBloodlineTagFor,
+  resolveBloodlineMutation,
+  resolveSorcererBloodlineOrMutation,
+  type BloodlineMutationDef,
+  type BloodlineMutationSwap,
+} from "./bloodline-mutations.js";
+export {
   BLOODRAGER_BLOODLINES,
   BLOODRAGER_BLOODLINE_TAGS,
   bloodragerBloodlineMovesNumbers,

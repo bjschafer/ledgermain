@@ -217,6 +217,16 @@ export interface CharacterDoc {
      * Empty/undefined for non-sorcerers. The chosen bloodline grants bonus spells
      * known at odd sorcerer levels ≥3 (see model/spellcasting.bloodlineSpellsKnown).
      * Back-compat: documents without this field are unaffected.
+     *
+     * May instead name a `SorcererBloodlineMutation.id` (e.g. "arcane-sage") —
+     * a wildblooded mutation entirely replacing the base bloodline choice, same
+     * shape as a `clericDomains` entry naming a `Subdomain` in place of its
+     * parent `Domain`. A mutation tag still resolves to its PARENT bloodline for
+     * class skill, bonus spells, and bonus feats (`model/doc.ts`'s
+     * `parentBloodlineTagOf`); only the arcana and any swapped powers come from
+     * the mutation itself (`@pf1/engine` `bloodline-mutations.ts`). Picking a
+     * mutation doesn't require the wildblooded archetype — soft-warning
+     * posture, same as everything else here.
      */
     sorcererBloodline?: string;
     /**

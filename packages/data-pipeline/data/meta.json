@@ -44,6 +44,7 @@
     "shamanSpirits": 18,
     "shifterAspects": 30,
     "slayerTalents": 43,
+    "sorcererBloodlineMutations": 24,
     "sorcererBloodlines": 51,
     "spells": 3026,
     "subdomainSpellLists": 136,
@@ -102,7 +103,8 @@
     "shaman-spirits.json": "8b6a8df9de74621ac57860841ebf98d83fd341ce0b65fb4732a649d6c9cc665d",
     "shifter-aspects.json": "27c5ed324536a48340804002523f9883a67736c3c9aa33c9a39ec99fdf642158",
     "slayer-talents.json": "a617561d04238b85a3f3b6390bdde4f0037406583b1338efc60663d7f67395c3",
-    "sorcerer-bloodlines.json": "bd2b771a46d9c4c9cccc8b15ff943959613c6a2cdb8ff35c73ff000ed34cd484",
+    "sorcerer-bloodline-mutations.json": "84f649a2171d018e065002e9eac11bb4179eb50d7aa52a2e35fe7f9b1b8fbb81",
+    "sorcerer-bloodlines.json": "9a10e263a3422192453836f8f37272b0452137a90e22511eebd8e780a673270e",
     "spell-lists.json": "b955e35ee16a2e4d391b3a32648d83c854e8b7477b472b95cdef50ed6cf0806c",
     "spells.json": "3e8cc7a2d1900289798eb4f73ab73a37ca67ea74b1c72f5da89d2829e7eb282d",
     "subdomain-spell-lists.json": "1286d1f7411978225172dd272c2fc1a220133bf6e7031bf5936acf70d139dd2e",
@@ -114,7 +116,7 @@
     "witch-patrons.json": "abe0bc21ba74cd13a5bd2230a6819764ff173dbe6d74a1b7074211f7428ec22c",
     "wizard-schools.json": "46662970340b24ee1a2dab6369de212dbd6c93e494fbb5a3a381cb2dd3a1e521"
   },
-  "schemaVersion": 19,
+  "schemaVersion": 21,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

@@ -112,7 +112,13 @@ export interface BloodlineDef {
   bonusFeatSlugs: readonly string[];
 }
 
-const c = (formula: string, target: string, type: string, operator?: "add" | "set"): Change => ({
+/** Exported for `bloodline-mutations.ts`, which builds swapped-power `changes` the same way this table does. */
+export const c = (
+  formula: string,
+  target: string,
+  type: string,
+  operator?: "add" | "set",
+): Change => ({
   formula,
   target,
   type,
@@ -175,13 +181,18 @@ export function energyImmunityVariantChanges(
   );
 }
 
-const POOL_3_CHA: BloodlineResourcePool = {
+/** Exported for `bloodline-mutations.ts` — several mutations state this exact "3 + Cha mod" cadence too. */
+export const POOL_3_CHA: BloodlineResourcePool = {
   usesFormula: "3 + @abilities.cha.mod",
   per: "day",
 };
 
-/** 1/day at the gate level, 2/day 8 levels later, 3/day 11 levels later (the CRB's common burst-power cadence). */
-function burstPool(baseLevel: number, detail?: string): BloodlineResourcePool {
+/**
+ * 1/day at the gate level, 2/day 8 levels later, 3/day 11 levels later (the
+ * CRB's common burst-power cadence). Exported for `bloodline-mutations.ts`,
+ * which has the same cadence stated for several mutation powers.
+ */
+export function burstPool(baseLevel: number, detail?: string): BloodlineResourcePool {
   return {
     usesFormula: `if(gte(@classes.sorcerer.level, ${baseLevel + 11}), 3, if(gte(@classes.sorcerer.level, ${baseLevel + 8}), 2, 1))`,
     per: "day",
@@ -4990,7 +5001,8 @@ const SORCERER_BLOODLINE_NAME_ALIASES: Record<string, string> = {
   Kobold: "Kobold Sorcerer",
 };
 
-function normalizeBloodlineName(name: string): string {
+/** Exported for `bloodline-mutations.ts`, which matches a mutation's vendored `parentBloodlineId` name against this same table's tags. */
+export function normalizeBloodlineName(name: string): string {
   return name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, " ")

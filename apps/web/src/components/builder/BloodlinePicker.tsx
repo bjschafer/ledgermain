@@ -3,11 +3,17 @@ import { useMemo } from "react";
 import {
   bloodlineMovesNumbers,
   mergedSorcererBloodlineCatalog,
+  mutationsForBloodlineTag,
+  resolveSorcererBloodlineOrMutation,
   type MergedSorcererBloodlineEntry,
 } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
-import { setSorcererBloodline, setSorcererBloodlineVariant } from "../../model/doc.js";
+import {
+  parentBloodlineTagOf,
+  setSorcererBloodline,
+  setSorcererBloodlineVariant,
+} from "../../model/doc.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
@@ -53,6 +59,18 @@ function normalizeBloodlineTag(name: string): string {
  * somewhere), not merely rules text. `ClassFeaturesList` (elsewhere in the
  * builder) shows the granted powers themselves, tagged "— <Name>
  * Bloodline"; this panel just previews them.
+ *
+ * A bloodline with a published "Wildblooded Mutation" (`mutationsForBloodlineTag`)
+ * offers a second select once picked, same "swap a variant in under its
+ * parent" shape as `DomainPicker`'s subdomain select: choosing a mutation
+ * stores ITS id in the same `doc.build.sorcererBloodline` field, entirely
+ * replacing the base bloodline choice there (`SorcererBloodlineMutation` doc
+ * comment). The top select always shows/sets the base bloodline (via
+ * `parentBloodlineTagOf`); bonus spells/feats/class skill stay the base
+ * bloodline's regardless of which mutation (if any) is picked. Wildblooded is
+ * itself an archetype — picking a mutation without it is a soft warning, not
+ * a hard block, matching the project's hybrid-prereqs posture (there's no
+ * enforcement here at all, same as the base bloodline pick itself).
  */
 export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) {
   const isSorcerer = doc.identity.classes.some((c) => c.tag === "sorcerer");
@@ -78,7 +96,13 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
   }, [refData]);
 
   const chosen = doc.build.sorcererBloodline ?? "";
-  const bloodlineDef = options.find((o) => o.tag === chosen)?.merged;
+  const parentTag = chosen ? parentBloodlineTagOf(refData, chosen) : "";
+  const bloodlineDef = chosen ? resolveSorcererBloodlineOrMutation(chosen, refData) : undefined;
+  const mutations = useMemo(
+    () => (parentTag ? mutationsForBloodlineTag(parentTag, refData) : []),
+    [parentTag, refData],
+  );
+  const mutationChosen = chosen !== parentTag ? chosen : "";
   const variant = doc.build.sorcererBloodlineVariant ?? "";
 
   if (!isSorcerer) return null;
@@ -100,7 +124,7 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
           {chosen ? (
             <span className="hint">
               {" "}
-              · {chosen}
+              · {bloodlineDef?.name ?? chosen}
               {bloodlineDef && bloodlineMovesNumbers(bloodlineDef) && (
                 <span className="badge-modeled"> M</span>
               )}
@@ -120,7 +144,7 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
           </p>
           <select
             className="bloodline-select"
-            value={chosen}
+            value={parentTag}
             onChange={(e) => update((d) => setSorcererBloodline(d, e.target.value || null))}
           >
             <option value="">— none chosen —</option>
@@ -131,6 +155,35 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
               </option>
             ))}
           </select>
+
+          {mutations.length > 0 && (
+            <div className="bloodline-mutation-picker">
+              <label htmlFor="bloodline-mutation-select" className="hint">
+                Wildblooded Mutation
+              </label>
+              <select
+                id="bloodline-mutation-select"
+                className="bloodline-mutation-select"
+                value={mutationChosen}
+                onChange={(e) =>
+                  update((d) => setSorcererBloodline(d, e.target.value || parentTag))
+                }
+              >
+                <option value="">— standard {parentTag} —</option>
+                {mutations.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name}
+                  </option>
+                ))}
+              </select>
+              <p className="hint bloodline-mutation-hint">
+                Takes the mutation's bloodline arcana and swaps in its powers over the standard
+                bloodline's; class skill, bonus spells, and bonus feats stay {parentTag}'s.
+                Wildblooded is itself an archetype (also picked separately) — this doesn't require
+                it.
+              </p>
+            </div>
+          )}
 
           {bloodlineDef?.variantOptions && (
             <div className="bloodline-variant-picker">

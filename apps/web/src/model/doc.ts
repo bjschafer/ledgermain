@@ -19,7 +19,7 @@ import type {
   WornArmor,
 } from "@pf1/schema";
 
-import { normalizeWeaponGroup } from "@pf1/engine";
+import { normalizeWeaponGroup, parentBloodlineTagFor } from "@pf1/engine";
 
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
 import { eligibleAdvancementTargets } from "./casterLevel.js";
@@ -241,10 +241,28 @@ export function parentDomainTagOf(refData: RefData, tag: string): string {
 }
 
 /**
+ * The base bloodline tag a `sorcererBloodline` value displays under: itself
+ * for a base bloodline tag, its resolved parent's tag for a wildblooded
+ * mutation id (used by `BloodlinePicker` to keep the top-level select
+ * highlighted on the parent, and by anything keying bonus spells/feats/class
+ * skill off the base bloodline rather than the mutation — see
+ * `SorcererBloodlineMutation` doc comment for why those three stay the
+ * parent's). Thin wrapper over `@pf1/engine`'s `parentBloodlineTagFor` — same
+ * "resolve a variant tag back to its parent" shape as `parentDomainTagOf`
+ * above.
+ */
+export function parentBloodlineTagOf(refData: RefData, tag: string): string {
+  return parentBloodlineTagFor(tag, refData);
+}
+
+/**
  * Set the sorcerer's chosen bloodline tag (single tag, unlike the two-domain
- * cleric shape). Pass `null` (or a blank/whitespace string) to clear. No
- * validation that the tag exists in `refData.bloodlineSpellLists` (soft-warning
- * posture, same as `setClericDomains`).
+ * cleric shape). Pass `null` (or a blank/whitespace string) to clear. May also
+ * be a `SorcererBloodlineMutation.id` (a wildblooded mutation), entirely
+ * replacing the base bloodline choice — same shape as `setClericDomains`
+ * storing a subdomain tag in place of its parent domain. No validation that
+ * the tag exists in `refData.bloodlineSpellLists` (soft-warning posture, same
+ * as `setClericDomains`).
  */
 export function setSorcererBloodline(doc: CharacterDoc, tag: string | null): CharacterDoc {
   const trimmed = typeof tag === "string" ? tag.trim() : "";

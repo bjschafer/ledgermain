@@ -117,9 +117,16 @@ export const SYSTEM_VERSION = "11.11";
  * that's empty when the Foundry pack documents none. The 125 subdomains the
  * pack carries no power for take theirs from the Pf Data 1e catalog, so a
  * consumer must no longer read the parent domain's powers when a subdomain's
- * list looks empty; see `transform/subdomainPowers.ts`.
+ * list looks empty; see `transform/subdomainPowers.ts`. v21 adds
+ * `sorcererBloodlineMutations`/`sorcerer-bloodline-mutations.json` — the 24
+ * published "Wildblooded Mutation" variants, previously rendered as inert bold
+ * text inside their parent bloodline's own description
+ * (`SorcererBloodline.description`) rather than promoted to entries of their
+ * own; see `SorcererBloodlineMutation` doc comment and
+ * `transform/sorcererBloodlines.ts`. A parent bloodline's description no
+ * longer inlines its mutations' prose.
  */
-export const SCHEMA_VERSION = 20;
+export const SCHEMA_VERSION = 21;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

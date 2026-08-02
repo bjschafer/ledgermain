@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import type { RefData } from "@pf1/schema";
 
 import { casterLevelForClass, effectiveCasterClassLevel } from "../../model/casterLevel.js";
-import { toggleKnownSpell } from "../../model/doc.js";
+import { parentBloodlineTagOf, toggleKnownSpell } from "../../model/doc.js";
 import {
   accessibleSpellLevels,
   bloodlineSpellsKnown,
@@ -132,10 +132,20 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   // Bloodline bonus spells known (sorcerer only): auto-granted, read-only, and
   // exempt from the spells-known cap — listed here for reference alongside the
   // domain spells block above. See model/spellcasting.bloodlineSpellsKnown.
+  // Bonus spells come from the BASE bloodline even when `sorcererBloodline`
+  // names a wildblooded mutation instead (RAW — see `SorcererBloodlineMutation`
+  // doc comment).
+  const bloodlineTag = useMemo(
+    () =>
+      doc.build.sorcererBloodline
+        ? parentBloodlineTagOf(refData, doc.build.sorcererBloodline)
+        : undefined,
+    [refData, doc.build.sorcererBloodline],
+  );
   const bloodlineEntries = useMemo<SpellEntry[]>(() => {
     if (casterTag !== "sorcerer") return [];
-    return bloodlineSpellsKnown(refData, doc.build.sorcererBloodline, classLevel);
-  }, [casterTag, refData, doc.build.sorcererBloodline, classLevel]);
+    return bloodlineSpellsKnown(refData, bloodlineTag, classLevel);
+  }, [casterTag, refData, bloodlineTag, classLevel]);
 
   // Oracle mystery + curse bonus spells known: same "auto-granted, read-only,
   // exempt from the cap" treatment as bloodlineEntries above. See
@@ -427,7 +437,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
         {/* Bloodline spells: read-only, auto-granted, exempt from the known cap. */}
         {bloodlineEntries.length > 0 && (
           <BloodlineSpellsBlock
-            bloodline={doc.build.sorcererBloodline ?? ""}
+            bloodline={bloodlineTag ?? ""}
             entries={bloodlineEntries}
             refData={refData}
             abilityMod={abilityMod}

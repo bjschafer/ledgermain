@@ -25,7 +25,8 @@ import { resolveAlchemistDiscovery } from "./alchemist-discoveries.js";
 import { ANTIPALADIN_CRUELTIES } from "./antipaladin-cruelties.js";
 import { resolveArcanistExploit } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
-import { BLOODLINES, type BloodlineResourcePool } from "./bloodlines.js";
+import { resolveSorcererBloodlineOrMutation } from "./bloodline-mutations.js";
+import { type BloodlineResourcePool } from "./bloodlines.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { boldStareRiderSummary, resolveMesmeristBoldStare } from "./mesmerist-bold-stares.js";
 import { resolveMesmeristTrick } from "./mesmerist-tricks.js";
@@ -272,10 +273,14 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
   // actual sorcerer levels the same way domain/school grants are gated on
   // cleric/wizard levels above. A non-sorcerer with a stale
   // `sorcererBloodline` field (or an unresolvable bloodline tag) gets nothing.
+  // `doc.build.sorcererBloodline` may name a base bloodline OR a wildblooded
+  // mutation id (`resolveSorcererBloodlineOrMutation` resolves either) — the
+  // merged entry already carries the parent's kept powers plus the
+  // mutation's swapped-in ones (see `bloodline-mutations.ts`).
   const sorcererLevel = doc.identity.classes.find((c) => c.tag === "sorcerer")?.level ?? 0;
   if (sorcererLevel > 0 && doc.build.sorcererBloodline) {
-    const bloodline = BLOODLINES[doc.build.sorcererBloodline];
-    if (bloodline) {
+    const bloodline = resolveSorcererBloodlineOrMutation(doc.build.sorcererBloodline, refData);
+    if (bloodline && !bloodline.displayOnly) {
       for (const power of bloodline.powers) {
         if (power.level > sorcererLevel) continue;
         out.push({
