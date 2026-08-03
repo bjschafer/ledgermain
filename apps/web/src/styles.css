@@ -3238,10 +3238,19 @@ button:focus-visible,
   font-style: normal;
 }
 
+/* `min-width` states the width the two controls actually occupy (44px field +
+   4px gap + the `.dur-unit` select's 4.5em) because Firefox and WebKit measure
+   an `appearance: none` <select>'s contribution to its parent's content-based
+   size from the option text alone, dropping the select's horizontal padding —
+   and its declared width with it. The select then painted ~25px past the edge
+   this label was sized to, putting the Remove button beside it on top of the
+   chevron. Chromium measures the same markup correctly, which is why the seam
+   showed in only half the browsers. */
 .buff-rounds {
   display: flex;
   align-items: center;
   gap: 4px;
+  min-width: calc(48px + 4.5em);
   font-size: 0.6875rem;
   color: var(--muted);
 }
@@ -3297,9 +3306,14 @@ button:focus-visible,
    Overrides the global `select { width: 100% }` so it shrinks to content, and
    replaces the native dropdown arrow (which renders inconsistently across
    browsers and crowds the text at this size) with a custom chevron that has
-   dedicated right padding so it never overlaps "rds/min/hr". */
+   dedicated right padding so it never overlaps "rds/min/hr".
+
+   The width is definite rather than `auto` so that the parents that have to
+   reserve room for this select (see `.buff-rounds`) can name the same number.
+   4.5em holds three mono characters ("rds"/"min") plus the padding, and scales
+   with the font-size below rather than pinning a magic pixel count. */
 .dur-unit {
-  width: auto;
+  width: 4.5em;
   appearance: none;
   -webkit-appearance: none;
   padding: 4px 18px 4px 8px;
