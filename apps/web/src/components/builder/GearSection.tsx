@@ -33,7 +33,9 @@ import {
 } from "../../model/consumables.js";
 import { ARMOR_MATERIALS } from "../../model/materials.js";
 import { changeTargetLabel } from "../../model/names.js";
+import { noteLines } from "../../model/rulesNotes.js";
 import { InfoTip } from "../InfoTip.js";
+import { RulesNote } from "../RulesNote.js";
 import { BagIcon } from "../icons.js";
 import { AbilityPicker, pruneAbilityInfo, toggleAbilityPick } from "./AbilityPicker.js";
 import { NumberField } from "./NumberField.js";
@@ -804,6 +806,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                 ? `${inst.armor.slot === "shield" ? "Shield" : "Armor"} (${inst.armor.ac} AC)`
                 : "Unknown item");
             const changes = itemDef?.changes ?? [];
+            const notes = noteLines(itemDef?.contextNotes);
             const unitWeight = gearUnitWeight(inst, refData);
             const unitPrice = inst.price ?? itemDef?.price;
             const qty = inst.quantity ?? 1;
@@ -884,6 +887,10 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                       ))}
                     </div>
                   )}
+                  {/* Conditional reminders ("+2 when concealing a small
+                      object"), never a number the sheet adds up — so they
+                      follow the equipped gate the item's `changes` do. */}
+                  {inst.equipped && notes.map((text, ni) => <RulesNote key={ni} text={text} />)}
                   {(unitWeight > 0 || unitPrice) && (
                     <div className="gear-meta">
                       {unitWeight > 0 &&
@@ -1021,6 +1028,9 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                             )}
                           </div>
                         )}
+                        {noteLines(item.contextNotes).map((text, i) => (
+                          <RulesNote key={i} text={text} />
+                        ))}
                       </div>
                       <button
                         type="button"

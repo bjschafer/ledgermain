@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-02-gear-rules-reminders",
+    date: "2026-08-02",
+    title: "Gear shows its situational reminders",
+    note: "Some gear carries a rules note instead of a flat bonus, and those notes were not shown anywhere. Equipped items now display them on the gear row and in the item picker: the cold-weather outfit's bonus against cold, a pickpocket's outfit for concealing a small object, the Robe of the Archmagi for getting through spell resistance. They stay reminders you apply yourself, since each one depends on the situation. An item that repeats the same note across several stats now shows it once.",
+  },
+  {
     id: "2026-08-02-early-bonus-spells",
     date: "2026-08-02",
     title: "Early bonus spells option",
