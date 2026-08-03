@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-02-ability-type-tags",
+    date: "2026-08-02",
+    title: "Class features show Ex, Su, and Sp",
+    note: "Granted class features now carry their printed tag: extraordinary, supernatural, or spell-like. It sits next to the feature name in the builder, next to the pool name under Resources so a monk's Ki Pool is marked where you actually spend it, and on the printed sheet. Tap a tag for what it means at the table: an extraordinary ability keeps working in an antimagic field, a supernatural one stops, and a spell-like one provokes and can be counterspelled or dispelled. Features the source never tagged show nothing rather than a guess.",
+  },
+  {
     id: "2026-08-02-racial-trait-categories",
     date: "2026-08-02",
     title: "Alternate racial traits are grouped",

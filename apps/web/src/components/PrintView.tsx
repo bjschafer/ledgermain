@@ -239,7 +239,9 @@ export function PrintView({
             <ul className="print-list">
               {data.classFeatures.map((f, i) => (
                 <li key={`${f.level}-${f.name}-${i}`}>
-                  <strong>{f.name}</strong> (L{f.level}){f.detail ? `: ${f.detail}` : ""}
+                  <strong>{f.name}</strong>
+                  {f.abilityType ? ` ${f.abilityType}` : ""} (L{f.level})
+                  {f.detail ? `: ${f.detail}` : ""}
                 </li>
               ))}
             </ul>

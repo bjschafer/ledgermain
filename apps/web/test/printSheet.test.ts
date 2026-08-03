@@ -119,6 +119,37 @@ describe("buildPrintSheet — class features", () => {
 
     expect(data.classFeatures.some((f) => f.name === "Rage" && f.level === 1)).toBe(true);
   });
+
+  it("prints the statblock ability-type tag a printed sheet would carry", () => {
+    let doc = createEmptyDoc("t");
+    doc = addClass(doc, "monk");
+    doc = setClassLevel(doc, "monk", 4);
+    const sheet = compute(doc, ref);
+    const data = buildPrintSheet(doc, sheet, ref);
+
+    // Ki Pool is (Su): it stops working in an antimagic field, which is
+    // exactly the kind of thing a paper sheet has to state.
+    const ki = data.classFeatures.find((f) => f.name === "Ki Pool");
+    expect(ki?.abilityType).toBe("(Su)");
+    // Flurry of Blows is (Ex), and it keeps its numeric detail alongside the tag.
+    const flurry = data.classFeatures.find((f) => f.name === "Flurry of Blows");
+    expect(flurry?.abilityType).toBe("(Ex)");
+    expect(flurry?.detail).toBeTruthy();
+  });
+
+  it("leaves the tag off features the dataset never typed", () => {
+    let doc = createEmptyDoc("t");
+    doc = addClass(doc, "bard");
+    doc = setClassLevel(doc, "bard", 1);
+    const sheet = compute(doc, ref);
+    const data = buildPrintSheet(doc, sheet, ref);
+
+    expect(data.classFeatures.find((f) => f.name === "Countersong")?.abilityType).toBe("(Su)");
+    // Bardic Performance itself carries no type upstream: print nothing there.
+    expect(
+      data.classFeatures.find((f) => f.name === "Bardic Performance")?.abilityType,
+    ).toBeUndefined();
+  });
 });
 
 describe("buildPrintSheet — resources", () => {

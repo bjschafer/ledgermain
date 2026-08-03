@@ -1,7 +1,24 @@
 import type { DerivedSheet, RefData } from "@pf1/schema";
 
+import { abilityTypeTag } from "../../model/abilityTypes.js";
 import { useInlineRolls } from "../../state/rollData.js";
 import { InfoTip } from "../InfoTip.js";
+
+/**
+ * The statblock (Ex)/(Su)/(Sp) suffix on a feature's name, tipped with what
+ * the tag costs you at the table (see `model/abilityTypes.ts`). Renders
+ * nothing for a feature the dataset leaves untagged, which is a real share of
+ * them: silence is correct there, a guessed tag is not.
+ */
+export function AbilityTypeTag({ abilityType }: { abilityType?: string }) {
+  const tag = abilityTypeTag(abilityType);
+  if (!tag) return null;
+  return (
+    <InfoTip className="cf-ability-type" content={tag.tip}>
+      ({tag.label})
+    </InfoTip>
+  );
+}
 
 /**
  * Collapsible HTML description, same pattern as `SpellDetail` (reuses its CSS
@@ -45,7 +62,11 @@ export function FeatureDescription({ html }: { html: string }) {
  * `detail`. An extracted entry additionally gets a visible "(extracted)" text
  * note — not a hover-only tooltip, since hover-only affordances are
  * discouraged here — so a lower-confidence number is never mistaken for a
- * hand-verified one just from a glance at the sheet.
+ * hand-verified one just from a glance at the sheet. Base features carry the
+ * statblock (Ex)/(Su)/(Sp) tag via {@link AbilityTypeTag}; archetype features
+ * never show one, since the vendored archetype-feature pack has no
+ * `abilityType` field at all (an absent tag there is missing data, not an
+ * untyped ability).
  */
 export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; refData: RefData }) {
   if (sheet.classFeatures.length === 0) return null;
@@ -67,7 +88,8 @@ export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; ref
             <span className="cf-level">Lv {level}</span>
             <div className="cf-archetype-features">
               {byLevel.get(level)!.map((f, i) => {
-                const description = refData.classFeatures[f.featureId]?.description;
+                const vendored = refData.classFeatures[f.featureId];
+                const description = vendored?.description;
                 return (
                   <div className="cf-archetype-feature" key={`${f.featureId}-${i}`}>
                     <span
@@ -75,6 +97,7 @@ export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; ref
                       title={f.replacedBy ? `Replaced by ${f.replacedBy}` : undefined}
                     >
                       {f.name}
+                      <AbilityTypeTag abilityType={vendored?.abilityType} />
                       {f.detail ? <span className="cf-detail"> ({f.detail})</span> : null}
                       {f.origin ? <span className="cf-origin"> ({f.origin.label})</span> : null}
                       {f.replacedBy ? <span className="cf-replaced"> → {f.replacedBy}</span> : null}

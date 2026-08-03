@@ -8,6 +8,7 @@
 import { deriveResourcePools, EFFECT_IMMUNITY_LABELS } from "@pf1/engine";
 import type { AbilityId, CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
+import { abilityTypeSuffix } from "./abilityTypes.js";
 import { casterLevelForClass, effectiveCasterClassLevel } from "./casterLevel.js";
 import { ABILITY_IDS } from "./doc.js";
 import { featInstanceDisplayName, featInstances, grantedFeats } from "./feats.js";
@@ -89,6 +90,11 @@ export interface PrintClassFeature {
   level: number;
   name: string;
   detail?: string;
+  /**
+   * Statblock suffix ("(Ex)", "(Su)", "(Sp)") already formatted for printing;
+   * absent when the vendored entry carries no `abilityType` (never guessed).
+   */
+  abilityType?: string;
 }
 
 export interface PrintSpellLevel {
@@ -295,11 +301,17 @@ function buildFeats(doc: CharacterDoc, refData: RefData): PrintFeat[] {
   return out.sort((a, b) => a.name.localeCompare(b.name) || a.key.localeCompare(b.key));
 }
 
-function buildClassFeatures(sheet: DerivedSheet): PrintClassFeature[] {
+function buildClassFeatures(sheet: DerivedSheet, refData: RefData): PrintClassFeature[] {
   const out: PrintClassFeature[] = [];
   for (const f of sheet.classFeatures) {
     if (!f.applied) continue;
-    out.push({ level: f.level, name: f.name, detail: f.detail });
+    const abilityType = abilityTypeSuffix(refData.classFeatures[f.featureId]?.abilityType);
+    out.push({
+      level: f.level,
+      name: f.name,
+      detail: f.detail,
+      ...(abilityType ? { abilityType } : {}),
+    });
   }
   for (const arch of sheet.activeArchetypes) {
     for (const f of arch.features) {
@@ -417,7 +429,7 @@ export function buildPrintSheet(
       classSkill: s.classSkill,
     })),
     feats: buildFeats(doc, refData),
-    classFeatures: buildClassFeatures(sheet),
+    classFeatures: buildClassFeatures(sheet, refData),
     casters: buildCasters(doc, sheet, refData),
     resources: buildResources(doc, sheet, refData),
     dr: sheet.defenses?.dr.map((d) => ({ qualifier: d.qualifier, total: d.total })) ?? [],

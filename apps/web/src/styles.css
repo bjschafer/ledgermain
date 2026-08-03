@@ -7171,3 +7171,14 @@ input[type="text"].saved-roll-name:focus {
   margin-top: 6px;
   font-style: normal;
 }
+
+/* Statblock (Ex)/(Su)/(Sp) tag on a class feature's name (ClassFeaturesList,
+   ResourcesPanel). Muted and slightly smaller so it reads as a classification
+   rather than part of the name, and explicitly non-bold since `.res-name`
+   would otherwise pass its weight down to the tag. */
+.cf-ability-type {
+  margin-left: 0.35em;
+  font-size: 0.85em;
+  font-weight: 400;
+  color: var(--muted);
+}

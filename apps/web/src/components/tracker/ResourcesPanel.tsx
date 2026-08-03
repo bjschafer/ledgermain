@@ -13,7 +13,7 @@ import {
 } from "@pf1/engine";
 import type { AbilityId, Buff, CharacterDoc, RefData } from "@pf1/schema";
 
-import { FeatureDescription } from "../builder/ClassFeaturesList.js";
+import { AbilityTypeTag, FeatureDescription } from "../builder/ClassFeaturesList.js";
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import { FlaskIcon } from "../icons.js";
@@ -113,6 +113,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
                   sub={poolCadenceLabel(pool.per)}
                   detail={pool.detail}
                   description={refData.classFeatures[pool.id]?.description}
+                  abilityType={refData.classFeatures[pool.id]?.abilityType}
                   left={pool.max - used}
                   max={pool.max}
                   onDrain={() => drain(pool)}
@@ -193,6 +194,7 @@ function ResourceRow({
   sub,
   detail,
   description,
+  abilityType,
   left,
   max,
   onDrain,
@@ -216,6 +218,8 @@ function ResourceRow({
   detail?: string;
   /** Class feature's vendored HTML prose, when this row is a derived pool with one (issue: bare counters). */
   description?: string;
+  /** Raw `ClassFeature.abilityType` of the feature this pool belongs to; manual pools have none. */
+  abilityType?: string;
   left: number;
   max: number;
   onDrain: () => void;
@@ -234,7 +238,10 @@ function ResourceRow({
     <div className="res-row">
       <div className="res-main">
         <div className="res-head">
-          <span className="res-name">{name}</span>
+          <span className="res-name">
+            {name}
+            <AbilityTypeTag abilityType={abilityType} />
+          </span>
           {sub ? <span className="res-sub">{sub}</span> : null}
         </div>
         {detail ? <div className="res-detail">{detail}</div> : null}
