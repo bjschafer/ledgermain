@@ -1,8 +1,13 @@
+import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
-import type { CharacterDoc, RefData } from "@pf1/schema";
+import type { CharacterDoc, RacialTrait, RefData } from "@pf1/schema";
 import { saveNoteCoverage, vendoredTraitFullyHandled } from "@pf1/engine";
 
+import {
+  groupRacialTraitsByCategory,
+  type RacialTraitCategory,
+} from "../../model/racialTraitCategory.js";
 import {
   availableVendoredRacialTraits,
   hasVendoredRacialTrait,
@@ -24,6 +29,49 @@ type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 const TARGET_GROUPS = ["Ability score", "Skill"] as const;
 
 /**
+ * One collapsible category section inside the picker, the same shape (and
+ * classes) as the race picker's `RaceGroupSection`, including its
+ * search-forces-open behavior so a match is never hidden inside a section the
+ * player left closed. Rows are full-width, so `children` render directly
+ * rather than in the `.chips` pill grid that picker uses.
+ */
+function TraitGroupSection({
+  category,
+  label,
+  count,
+  forceOpen,
+  children,
+}: {
+  category: RacialTraitCategory;
+  label: string;
+  count: number;
+  forceOpen: boolean;
+  children: ReactNode;
+}) {
+  const [collapsed, toggle] = useCollapsed(`racial-trait-category:${category}`);
+  const open = forceOpen || !collapsed;
+  return (
+    <div className="race-group">
+      <div
+        className="race-group-header"
+        onClick={forceOpen ? undefined : toggle}
+        role="button"
+        tabIndex={forceOpen ? -1 : 0}
+        aria-expanded={open}
+        onKeyDown={(e) => {
+          if (!forceOpen && (e.key === "Enter" || e.key === " ")) toggle();
+        }}
+      >
+        <span className="section-label">{label}</span>
+        <span className="race-group-count">{count}</span>
+        {forceOpen ? null : <Caret open={open} />}
+      </div>
+      {open ? children : null}
+    </div>
+  );
+}
+
+/**
  * The ~80-race vendored alternate-racial-trait catalog (fill plan), scoped to
  * the character's current race. Mirrors `RagePowerPicker`'s
  * collapsible-search-list shape, but the honesty posture is different: unlike
@@ -40,8 +88,10 @@ const TARGET_GROUPS = ["Ability score", "Skill"] as const;
  * (`availableVendoredRacialTraits`) so the two pickers never offer the same
  * trait under two different guarantees.
  *
- * Three of the catalog's fields need a surface here and nowhere else: a
- * heritage variant carries its heritage as a chip (only correct for a
+ * Four of the catalog's fields need a surface here and nowhere else:
+ * `traitCategory` splits the list into collapsible sections
+ * (`model/racialTraitCategory.ts`), since a big race vendors dozens of
+ * entries; a heritage variant carries its heritage as a chip (only correct for a
  * character of that heritage — unmodeled, so it's a label, not a gate); an
  * entry with `openChanges` gets one target select per "choose one" blank, and
  * grants nothing for a blank left unchosen; and `racePoints` shows per-entry
@@ -82,7 +132,101 @@ export function VendoredRacialTraitPicker({
       });
   }, [all, query, doc]);
 
+  // Grouped after filtering and sorting, so a search narrows the sections
+  // themselves (empty ones drop out) and chosen picks still lead their own
+  // section.
+  const groups = useMemo(() => groupRacialTraitsByCategory(traits), [traits]);
+  const searchActive = query.trim().length > 0;
+
   if (all.length === 0) return null;
+
+  function renderTrait(t: RacialTrait) {
+    const isSel = hasVendoredRacialTrait(doc, t.id);
+    const openChanges = t.openChanges ?? [];
+    const fullyHandled = raceName != null && vendoredTraitFullyHandled(t, raceName);
+    return (
+      <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+        <div className="pmain">
+          <div className="pname">
+            {t.name}
+            {t.heritage ? <span className="tag-bloodline">{t.heritage}</span> : null}
+            {t.replacedTraitNames.length > 0 ? (
+              <span
+                className="tag-bloodline"
+                title={
+                  fullyHandled
+                    ? `Replaces ${t.replacedTraitNames.join(", ")}. Applied automatically.`
+                    : `Replaces ${t.replacedTraitNames.join(", ")}. Verify manually.`
+                }
+              >
+                replaces {t.replacedTraitNames.join(", ")}
+                {fullyHandled ? " (auto)" : null}
+              </span>
+            ) : null}
+            {t.racePoints !== undefined ? (
+              <span className="tag-bloodline" title="Race Builder point cost">
+                {t.racePoints} RP
+              </span>
+            ) : null}
+          </div>
+          {isSel
+            ? t.contextNotes.map((note, i) => (
+                <RulesNote
+                  key={i}
+                  text={note.text}
+                  appliedAutomatically={
+                    saveNoteCoverage({ catalog: "racialTrait" }, note) === "full"
+                  }
+                />
+              ))
+            : null}
+          {isSel && openChanges.length > 0 ? (
+            <div style={{ marginTop: 4 }}>
+              {openChanges.map((ch, i) => {
+                const chosenTarget = vendoredRacialTraitTarget(doc, t.id, i);
+                return (
+                  <label key={i} className="hint" style={{ display: "block" }}>
+                    Apply {ch.formula.startsWith("-") ? "" : "+"}
+                    {ch.formula} ({ch.type}) to{" "}
+                    <select
+                      value={chosenTarget}
+                      onChange={(e) =>
+                        update((d) =>
+                          setVendoredRacialTraitTarget(d, t.id, i, e.target.value || null),
+                        )
+                      }
+                    >
+                      <option value="">(choose)</option>
+                      {TARGET_GROUPS.map((group) => (
+                        <optgroup key={group} label={group}>
+                          {targetOptions
+                            .filter((o) => o.group === group)
+                            .map((o) => (
+                              <option key={o.value} value={o.value}>
+                                {o.label}
+                              </option>
+                            ))}
+                        </optgroup>
+                      ))}
+                    </select>
+                    {chosenTarget ? null : " (nothing applies until you choose)"}
+                  </label>
+                );
+              })}
+            </div>
+          ) : null}
+          {t.description ? <FeatureDescription html={t.description} /> : null}
+        </div>
+        <button
+          type="button"
+          className={`pick-btn ${isSel ? "remove" : "add"}`}
+          onClick={() => update((d) => toggleVendoredRacialTrait(d, t.id))}
+        >
+          {isSel ? "Remove" : "Add"}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="subsection magus-arcana-picker">
@@ -115,6 +259,8 @@ export function VendoredRacialTraitPicker({
             automatically" when every named standard trait is verified to retire on its own;
             otherwise it's a reminder only, so retire the named standard trait(s) yourself.
             Heritage-tagged entries are only yours if that's your heritage: nothing checks it.
+            Sections follow the published trait categories; entries the catalog left untagged sit
+            under Uncategorized.
             {points.tagged > 0 ? (
               <>
                 {" "}
@@ -133,99 +279,18 @@ export function VendoredRacialTraitPicker({
             onChange={(e) => setQuery(e.target.value)}
           />
           <div className="scroll">
-            {traits.map((t) => {
-              const isSel = hasVendoredRacialTrait(doc, t.id);
-              const openChanges = t.openChanges ?? [];
-              const fullyHandled = raceName != null && vendoredTraitFullyHandled(t, raceName);
-              return (
-                <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {t.name}
-                      {t.heritage ? <span className="tag-bloodline">{t.heritage}</span> : null}
-                      {t.replacedTraitNames.length > 0 ? (
-                        <span
-                          className="tag-bloodline"
-                          title={
-                            fullyHandled
-                              ? `Replaces ${t.replacedTraitNames.join(", ")}. Applied automatically.`
-                              : `Replaces ${t.replacedTraitNames.join(", ")}. Verify manually.`
-                          }
-                        >
-                          replaces {t.replacedTraitNames.join(", ")}
-                          {fullyHandled ? " (auto)" : null}
-                        </span>
-                      ) : null}
-                      {t.racePoints !== undefined ? (
-                        <span className="tag-bloodline" title="Race Builder point cost">
-                          {t.racePoints} RP
-                        </span>
-                      ) : null}
-                    </div>
-                    {isSel
-                      ? t.contextNotes.map((note, i) => (
-                          <RulesNote
-                            key={i}
-                            text={note.text}
-                            appliedAutomatically={
-                              saveNoteCoverage({ catalog: "racialTrait" }, note) === "full"
-                            }
-                          />
-                        ))
-                      : null}
-                    {isSel && openChanges.length > 0 ? (
-                      <div style={{ marginTop: 4 }}>
-                        {openChanges.map((ch, i) => {
-                          const chosenTarget = vendoredRacialTraitTarget(doc, t.id, i);
-                          return (
-                            <label key={i} className="hint" style={{ display: "block" }}>
-                              Apply {ch.formula.startsWith("-") ? "" : "+"}
-                              {ch.formula} ({ch.type}) to{" "}
-                              <select
-                                value={chosenTarget}
-                                onChange={(e) =>
-                                  update((d) =>
-                                    setVendoredRacialTraitTarget(
-                                      d,
-                                      t.id,
-                                      i,
-                                      e.target.value || null,
-                                    ),
-                                  )
-                                }
-                              >
-                                <option value="">(choose)</option>
-                                {TARGET_GROUPS.map((group) => (
-                                  <optgroup key={group} label={group}>
-                                    {targetOptions
-                                      .filter((o) => o.group === group)
-                                      .map((o) => (
-                                        <option key={o.value} value={o.value}>
-                                          {o.label}
-                                        </option>
-                                      ))}
-                                  </optgroup>
-                                ))}
-                              </select>
-                              {chosenTarget ? null : " (nothing applies until you choose)"}
-                            </label>
-                          );
-                        })}
-                      </div>
-                    ) : null}
-                    {t.description ? <FeatureDescription html={t.description} /> : null}
-                  </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d) => toggleVendoredRacialTrait(d, t.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {traits.length === 0 ? (
+            {groups.map((group) => (
+              <TraitGroupSection
+                key={group.category}
+                category={group.category}
+                label={group.label}
+                count={group.items.length}
+                forceOpen={searchActive}
+              >
+                {group.items.map(renderTrait)}
+              </TraitGroupSection>
+            ))}
+            {groups.length === 0 ? (
               <div className="empty">No alternate racial traits match.</div>
             ) : null}
           </div>

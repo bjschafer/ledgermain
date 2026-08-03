@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-02-racial-trait-categories",
+    date: "2026-08-02",
+    title: "Alternate racial traits are grouped",
+    note: "The alternate racial trait list was one long run of entries. It now splits into the published categories: Defense, Feat and Skill, Magical, Movement, Offense, Senses, Weakness, and Other. Sections collapse, and searching still looks across all of them at once. Entries the source left untagged sit together under Uncategorized rather than being filed under a guess.",
+  },
+  {
     id: "2026-08-02-gear-rules-reminders",
     date: "2026-08-02",
     title: "Gear shows its situational reminders",
