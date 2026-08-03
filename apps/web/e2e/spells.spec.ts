@@ -1,5 +1,7 @@
 import { expect, type Locator, type Page, test } from "@playwright/test";
 
+import { typeSearch } from "./search.js";
+
 /**
  * The spellbook editing flow in a real browser. Adding a spell means picking
  * from several hundred class spells, which happens in the full-screen spell
@@ -56,7 +58,7 @@ test("a spell added in the manager lands in the panel's known list", async ({ pa
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
 
-  await dialog.getByLabel("Search spells").fill("mirror image");
+  await typeSearch(dialog.getByLabel("Search spells"), "mirror image");
 
   const browse = dialog.locator(".spell-pane").first();
   const knownPane = dialog.locator(".spell-pane--known");
@@ -100,7 +102,7 @@ test("spell levels collapse, and the state survives reopening", async ({ page })
   await expect(level1).toContainText("245");
 
   // Collapse is per pane: the known pane's own Level 2 is unaffected.
-  await dialog.getByLabel("Search spells").fill("mirror image");
+  await typeSearch(dialog.getByLabel("Search spells"), "mirror image");
   await spellRow(browse, page, "Mirror Image").getByRole("button", { name: "Add" }).click();
   const knownPane = dialog.locator(".spell-pane--known");
   await expect(knownPane.getByRole("button", { name: /^Level 2/ })).toHaveAttribute(
@@ -216,7 +218,7 @@ test("an air elementalist opposes Earth and fills the school slot from Air's lis
   // Learn Shocking Grasp — evocation, but on Air's list.
   await panel.getByRole("button", { name: "Edit spellbook" }).click();
   const dialog = page.getByRole("dialog");
-  await dialog.getByLabel("Search spells").fill("shocking grasp");
+  await typeSearch(dialog.getByLabel("Search spells"), "shocking grasp");
   await spellRow(dialog.locator(".spell-pane").first(), page, "Shocking Grasp")
     .getByRole("button", { name: "add" })
     .click();

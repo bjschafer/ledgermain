@@ -1,5 +1,7 @@
 import { expect, type Locator, type Page, test } from "@playwright/test";
 
+import { typeSearch } from "./search.js";
+
 /**
  * The weapon special-abilities picker: searching the full ~187-entry
  * published catalog (not just the 18 hand-curated abilities), respecting the
@@ -51,7 +53,7 @@ test("an ability imported from the catalog shows on the weapon it's attached to"
   // "Menacing" is imported from the published catalog, not one of the 18
   // hand-curated abilities — searching and adding it only works if the
   // picker actually reaches RefData.itemAbilities.
-  await panel.getByPlaceholder("Search special abilities…").fill("Menacing");
+  await typeSearch(panel.getByPlaceholder("Search special abilities…"), "Menacing");
   const menacingRow = pickRow(panel, page, "Menacing");
   await expect(menacingRow).toBeVisible();
   await expect(menacingRow).toContainText("+1");
@@ -63,7 +65,7 @@ test("an ability imported from the catalog shows on the weapon it's attached to"
 
   // Now pick a real weapon to attach it to. The search also matches "Punching
   // Dagger", "Dueling Dagger", etc., so pin the exact row by its full name.
-  await panel.getByPlaceholder("Search weapons…").fill("Dagger");
+  await typeSearch(panel.getByPlaceholder("Search weapons…"), "Dagger");
   const daggerRow = pickRow(panel, page, /^Dagger \+1$/);
   await daggerRow.getByRole("button", { name: "Add" }).click();
 
@@ -87,9 +89,9 @@ test("the combined +10 cap drops an ability once a later enhancement raise no lo
   // At +1 enhancement the budget is 9 — Vorpal (+5) and Dancing (+4)
   // together land exactly at the +10 combined cap (1 + 5 + 4 = 10).
   const search = panel.getByPlaceholder("Search special abilities…");
-  await search.fill("Vorpal");
+  await typeSearch(search, "Vorpal");
   await pickRow(panel, page, "Vorpal").getByRole("button", { name: "Add" }).click();
-  await search.fill("Dancing");
+  await typeSearch(search, "Dancing");
   await pickRow(panel, page, "Dancing").getByRole("button", { name: "Add" }).click();
 
   await expect(panel.locator(".ability-chips .chip", { hasText: "Vorpal" })).toBeVisible();
@@ -98,8 +100,8 @@ test("the combined +10 cap drops an ability once a later enhancement raise no lo
     "Enhancement + abilities: 10/10",
   );
 
-  await search.fill("");
-  await panel.getByPlaceholder("Search weapons…").fill("Dagger");
+  await typeSearch(search, "");
+  await typeSearch(panel.getByPlaceholder("Search weapons…"), "Dagger");
   await pickRow(panel, page, /^Dagger \+1$/)
     .getByRole("button", { name: "Add" })
     .click();
@@ -140,7 +142,7 @@ test("an ability's Add button reflects the live enhancement-and-abilities budget
   // budget comfortably covers Vorpal's +5.
   await panel.getByLabel("Enh.").selectOption({ label: "+1" });
   const search = panel.getByPlaceholder("Search special abilities…");
-  await search.fill("Vorpal");
+  await typeSearch(search, "Vorpal");
   const vorpalRow = pickRow(panel, page, "Vorpal");
   await expect(vorpalRow).toContainText("+5");
   await expect(vorpalRow.getByRole("button", { name: "Add" })).toBeEnabled();
@@ -148,10 +150,10 @@ test("an ability's Add button reflects the live enhancement-and-abilities budget
   // Picking a +1 ability first, then raising enhancement to the RAW max of
   // +5, leaves only 4 points of budget (10 - 5 - 1) — not enough for a +5
   // ability.
-  await search.fill("Menacing");
+  await typeSearch(search, "Menacing");
   await pickRow(panel, page, "Menacing").getByRole("button", { name: "Add" }).click();
   await panel.getByLabel("Enh.").selectOption({ label: "+5" });
-  await search.fill("Vorpal");
+  await typeSearch(search, "Vorpal");
   const vorpalAddButton = vorpalRow.getByRole("button", { name: "Add" });
   await expect(vorpalAddButton).toBeDisabled();
   // `aria-disabled` (not the native `disabled` attribute) is what makes this

@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { typeSearch } from "./search.js";
+
 /**
  * The per-activation blast loadout, end to end: an infusion picked in the
  * builder becomes selectable in the tracker's Blast Loadout panel, and loading
@@ -60,7 +62,7 @@ test("an infusion loaded in the tracker rewrites the blast line, and clearing it
   const infusions = page.locator(".subsection", {
     has: page.getByRole("heading", { name: "Infusions" }),
   });
-  await infusions.locator("input.search").fill("Extended Range");
+  await typeSearch(infusions.locator("input.search"), "Extended Range");
   await infusions
     .locator(".pick-row", { hasText: "Extended Range" })
     .getByRole("button", { name: "Add" })

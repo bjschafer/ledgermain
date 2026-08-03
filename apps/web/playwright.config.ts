@@ -19,7 +19,18 @@ export default defineConfig({
     baseURL: "http://localhost:5173",
     trace: "on-first-retry",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  // Chromium and Firefox both run the whole suite. WebKit runs only the layout
+  // sweep: engine differences show up in sizing far more than in behavior, and
+  // a third full pass costs more CI time than it has ever caught.
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+    {
+      name: "webkit-layout",
+      testMatch: /layout\.spec\.ts/,
+      use: { ...devices["Desktop Safari"] },
+    },
+  ],
   webServer: {
     command: "bun run dev",
     url: "http://localhost:5173",

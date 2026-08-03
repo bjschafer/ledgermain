@@ -1,5 +1,7 @@
 import { expect, type Locator, type Page, test } from "@playwright/test";
 
+import { typeSearch } from "./search.js";
+
 /**
  * The feat picking flow in a real browser. Browsing the ~1500-feat catalog
  * happens in the full-screen feat manager rather than in the builder panel —
@@ -61,7 +63,7 @@ test("a feat added in the manager lands in the panel's chosen list", async ({ pa
   // Must be a feat with no structured prereqs: those hard-block the Add
   // button, and a fresh fighter (all 10s) fails Dodge's Dex 13. `.first()`
   // skips past "Toughness (Mythic)", which sorts after the base feat.
-  await dialog.getByLabel("Search feats").fill("Toughness");
+  await typeSearch(dialog.getByLabel("Search feats"), "Toughness");
   await featRow(catalog, page, "Toughness")
     .first()
     .getByRole("button", { name: "Add", exact: true })
@@ -90,7 +92,7 @@ test("a gibberish search shows the empty-search affordance instead of nothing (#
   const dialog = page.getByRole("dialog");
   const catalog = dialog.locator(".spell-pane").first();
 
-  await dialog.getByLabel("Search feats").fill("Zzznotarealfeatxyz");
+  await typeSearch(dialog.getByLabel("Search feats"), "Zzznotarealfeatxyz");
   const miss = catalog.locator(".search-miss");
   await expect(miss).toBeVisible();
   await expect(miss).toContainText("No matches for");

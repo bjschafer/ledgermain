@@ -59,8 +59,12 @@ jobs:
       # playwright` resolves the latest registry package instead of the local
       # @playwright/test, and installs browser revisions the pinned version
       # can't find (chromium_headless_shell mismatch).
+      #
+      # Three engines, because layout is where they disagree: Chromium and
+      # Firefox run the whole suite, WebKit only the layout sweep (see the
+      # projects in playwright.config.ts).
       - name: Install Playwright browsers
-        run: apps/web/node_modules/.bin/playwright install --with-deps chromium
+        run: apps/web/node_modules/.bin/playwright install --with-deps chromium firefox webkit
 
       # playwright.config.ts keys retries/reporter/webServer reuse off CI,
       # which GitHub Actions sets automatically — no manual CI=1 needed here.

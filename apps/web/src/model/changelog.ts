@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-02-control-collisions",
+    date: "2026-08-02",
+    title: "Controls stop landing on each other",
+    note: "In Firefox and Safari, a buff's duration unit picker and the Remove button next to it were drawing on top of one another. On a phone, a prepared spell's buttons took the whole row and crushed the spell name and its reminder chips into a sliver that spilled out underneath them, and a cleric's subdomain picker hung off the edge of its row. Those rows now give the name and its chips the full width and let the buttons sit below.",
+  },
+  {
     id: "2026-08-02-ability-type-tags",
     date: "2026-08-02",
     title: "Class features show Ex, Su, and Sp",

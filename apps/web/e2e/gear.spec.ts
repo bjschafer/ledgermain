@@ -1,5 +1,7 @@
 import { expect, type Page, test } from "@playwright/test";
 
+import { typeSearch } from "./search.js";
+
 /**
  * Gear editing in a real browser: every gear row is editable after creation,
  * including the charge cap. The motivating case is an imported wand recorded as
@@ -36,7 +38,7 @@ test("adding a class kit expands it into the gear it packs", async ({ page }) =>
   const panel = await gotoGear(page);
 
   await panel.getByRole("button", { name: "+ Add kit" }).click();
-  await panel.getByPlaceholder("Search kits…").fill("wizard");
+  await typeSearch(panel.getByPlaceholder("Search kits…"), "wizard");
 
   const pick = panel.locator(".pick-row", { hasText: "Kit, Wizard's" });
   // The picker previews the contents before you commit to adding them.

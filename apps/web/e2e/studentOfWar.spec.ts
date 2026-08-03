@@ -1,5 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
+import { typeSearch } from "./search.js";
+
 /**
  * Student of War end-to-end: the prestige entry-requirement gate in the class
  * picker, Additional Skill's player-chosen class skill, and Mind Over Metal's
@@ -104,7 +106,7 @@ test("Student of War gates on entry, grants a chosen class skill, and substitute
   const featDialog = page.getByRole("dialog");
   const catalog = featDialog.locator(".spell-pane").first();
   for (const feat of ["Combat Expertise", "Dodge"]) {
-    await featDialog.getByLabel("Search feats").fill(feat);
+    await typeSearch(featDialog.getByLabel("Search feats"), feat);
     await pickRow(catalog, page, feat)
       .first()
       .getByRole("button", { name: "Add", exact: true })
@@ -136,7 +138,7 @@ test("Student of War gates on entry, grants a chosen class skill, and substitute
     has: page.getByRole("heading", { name: "Gear & Inventory" }),
   });
   await gear.getByRole("button", { name: "+ Add worn armor / shield" }).click();
-  await gear.getByPlaceholder("Search armor & shields…").fill("Breastplate");
+  await typeSearch(gear.getByPlaceholder("Search armor & shields…"), "Breastplate");
   await pickRow(gear, page, "Breastplate").first().getByRole("button", { name: "Add" }).click();
 
   // 10 base + 6 breastplate + 4 + 1 Dodge = 21. Int +5 is capped by the

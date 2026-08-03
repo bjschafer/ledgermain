@@ -4831,8 +4831,13 @@ input[type="text"].saved-roll-name:focus {
   margin-bottom: 0.25rem;
 }
 
+/* `min-width: 0` because a flex item's automatic minimum is its content, and a
+   <select>'s content is its longest option ("Competition (subdomain)"): without
+   this the picker refuses to shrink and hangs off the end of its header row on
+   a phone. */
 .subdomain-select {
   width: auto;
+  min-width: 0;
 }
 
 .subsection-header h3 {
@@ -5576,6 +5581,21 @@ input[type="text"].saved-roll-name:focus {
   }
 
   .buff-main {
+    flex-basis: 100%;
+  }
+
+  /* And for the prepared-spell rows, where the buttons (a buff toggle, Cast,
+     the unprepare ✕; Prepare on an add row) can take the whole line between
+     them: the name column has `min-width: 0` so it yields all of it, and the
+     nowrap meta chips inside it then paint out of the row and under the
+     buttons. */
+  .prep-row,
+  .prep-add-row {
+    flex-wrap: wrap;
+  }
+
+  .prep-row > .prep-row-main,
+  .prep-add-row > .prep-row-main {
     flex-basis: 100%;
   }
 

@@ -1,5 +1,7 @@
 import { expect, type Page, test } from "@playwright/test";
 
+import { typeSearch } from "./search.js";
+
 /**
  * The trait picking flow in a real browser. Traits browse through the same
  * full-screen manager as feats — this drives the round trip: open the manager,
@@ -50,7 +52,7 @@ test("add and remove a trait through the trait manager", async ({ page }) => {
   await expect(catalog.locator(".pick-row .tag-bloodline").first()).toHaveText("Magic");
   await dialog.getByRole("button", { name: "All", exact: true }).click();
 
-  await dialog.getByRole("textbox", { name: "Search traits" }).fill("Reactionary");
+  await typeSearch(dialog.getByRole("textbox", { name: "Search traits" }), "Reactionary");
   const row = catalog.locator(".pick-row").first();
   await expect(row).toContainText("Reactionary");
   await row.getByRole("button", { name: "Add" }).click();
@@ -88,7 +90,7 @@ test("a trait's reminder shows a real number, not the formula behind it", async 
   const dialog = page.getByRole("dialog");
   // Iron Lungs: "You can hold your breath for twice as long
   // ([[4*@abilities.con.total]] rounds)".
-  await dialog.getByRole("textbox", { name: "Search traits" }).fill("Iron Lungs");
+  await typeSearch(dialog.getByRole("textbox", { name: "Search traits" }), "Iron Lungs");
 
   const note = dialog.locator(".pick-row .hint").first();
   await expect(note).toContainText("hold your breath");

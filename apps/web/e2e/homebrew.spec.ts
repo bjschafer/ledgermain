@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { typeSearch } from "./search.js";
+
 /**
  * Homebrew race/feat authoring (phase 2): drives the real "Homebrew races" /
  * "Homebrew feats" authoring doors in the Build tab and asserts the created
@@ -77,7 +79,7 @@ test("creating a homebrew race with a fixed +2 Str updates the sheet's Strength"
   // A homebrew race with an unrecognized name defaults to the "Exotic"
   // rarity tier, which is collapsed by default — search forces every tier
   // open (`RaceSection`'s `forceOpen`) so the chip is actually in the DOM.
-  await racePanel.getByPlaceholder("Search races…").fill("Stoneborn");
+  await typeSearch(racePanel.getByPlaceholder("Search races…"), "Stoneborn");
   const stoneBornChip = racePanel.locator(".chip", { hasText: "Stoneborn" });
   await expect(stoneBornChip).toHaveAttribute("aria-pressed", "true");
   await expect(stoneBornChip.getByText("homebrew")).toBeVisible();

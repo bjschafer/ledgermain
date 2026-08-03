@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { typeSearch } from "./search.js";
+
 /**
  * Typed damage e2e: the free-text amount field parses what a GM says, and the
  * engine's DR/resistance resolver reduces it before it reaches HP.
@@ -117,7 +119,7 @@ test("stoneskin's pool depletes as it absorbs, and the spell ends when spent", a
   await gotoPlay(page);
 
   // Level-0 character → caster level floors at 1 → pool capacity 10.
-  await page.getByPlaceholder("Search the buff compendium…").fill("Stoneskin");
+  await typeSearch(page.getByPlaceholder("Search the buff compendium…"), "Stoneskin");
   await page
     .locator(".pick-row", { hasText: "Stoneskin" })
     .getByRole("button", { name: "Add" })
@@ -145,7 +147,7 @@ test("protection from energy asks for an element and soaks only that type", asyn
   const { consoleErrors, pageErrors } = guard(page);
   await gotoPlay(page);
 
-  await page.getByPlaceholder("Search the buff compendium…").fill("Protection From Energy");
+  await typeSearch(page.getByPlaceholder("Search the buff compendium…"), "Protection From Energy");
   const row = page.locator(".pick-row", { hasText: "Protection From Energy" });
   await row.getByLabel("Energy type").selectOption("cold");
   await row.getByRole("button", { name: "Add" }).click();
