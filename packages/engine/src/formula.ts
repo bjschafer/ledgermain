@@ -5,7 +5,9 @@
  *   - data paths (`@abilities.con.mod`, `@cl`, `@skills.acr.rank`, ...)
  *   - functions (`if`, `gte`, `min`, `max`, and the obvious siblings)
  *   - arithmetic with the usual precedence and parentheses
- *   - dice terms (`(min(10, @cl))d6`) — parsed and represented, but not rolled.
+ *   - dice terms (`(min(10, @cl))d6`, `sizeRoll(1, 6, @size)`) — parsed and
+ *     represented, but not rolled.
+ *   - per-term flavor annotations (`4[Enhancement]`, `1d6[fire]`) — skipped.
  *
  * Implemented as a small recursive-descent parser + tree-walking evaluator. No
  * `eval`, no `Function`. Reimplemented from the documented dialect behaviour; the
@@ -105,6 +107,15 @@ function tokenize(src: string): Token[] {
       while (j < n && (isAlpha(src[j]!) || isDigit(src[j]!) || src[j] === ".")) j++;
       tokens.push({ t: "path", v: src.slice(i + 1, j) });
       i = j;
+      continue;
+    }
+    if (c === "[") {
+      // Flavor annotation: upstream labels a term for its roll log
+      // (`floor(@cl / 2)[CL/2]`, `1d6[fire]`) without changing its value, so
+      // the whole bracket is skipped rather than tokenized.
+      const end = src.indexOf("]", i + 1);
+      if (end === -1) throw new FormulaSyntaxError(`unclosed '[' at index ${i}`);
+      i = end + 1;
       continue;
     }
     if (isAlpha(c)) {
@@ -225,6 +236,14 @@ class Parser {
       }
       const close = this.next();
       if (close.t !== "rparen") throw new FormulaSyntaxError("expected ')' to close arguments");
+      // `sizeRoll(count, faces, size)` is a dice term whose die steps up or down
+      // with the creature's size; its first two arguments are the Medium dice.
+      // This engine models Medium only (same posture as the hand-authored dice
+      // tables in `tables.ts`), so the size argument is dropped and what's left
+      // is an ordinary `count`d`faces` term.
+      if (tok.v === "sizeRoll" && args[0] && args[1]) {
+        return { kind: "dice", count: args[0], faces: args[1] };
+      }
       return { kind: "call", name: tok.v, args };
     }
     throw new FormulaSyntaxError(`unexpected token in formula`);
@@ -409,7 +428,8 @@ function flattenDiceChain(
  * / 2))d6"` at level 7 becomes `"4d6"`. Returns `null` when the formula has no
  * dice term at all (callers should fall back to `tryEvaluateFormula` for a
  * plain number) or when its dice appear in a shape this can't isolate (see
- * {@link flattenDiceChain}) — never throws.
+ * {@link flattenDiceChain}). Dice never make this throw; a formula that won't
+ * parse or names an unknown function still does, so display callers wrap it.
  */
 export function formatDiceFormula(src: string, data: RollData = {}): string | null {
   const node = parseFormula(src);

@@ -146,6 +146,21 @@ describe("spellDamageParts", () => {
     expect(spellDamageParts(spellByName("Shield"), 5)).toEqual([]);
   });
 
+  it("resolves a size-scaled die to its Medium dice (Ghost Whip)", () => {
+    // Vendored as sizeRoll(1, 3, @size) — a Medium creature's whip deals 1d3.
+    expect(spellDamageParts(spellByName("Ghost Whip"), 7)).toEqual([
+      { text: "1d3", types: ["slashing"] },
+    ]);
+  });
+
+  it("resolves a formula whose bonus carries a flavor label (Coin Shot at CL 9)", () => {
+    // 1d8 + min(floor(@cl / 2), 10)[CL/2] — the bracketed label names the
+    // bonus for upstream's roll log and doesn't change the number.
+    expect(spellDamageParts(spellByName("Coin Shot"), 9)).toEqual([
+      { text: "1d8+4", types: ["bludgeoning", "piercing"] },
+    ]);
+  });
+
   it("picks the direct-hit action, not the nonaction splash rider (Molten Orb)", () => {
     // Molten Orb (PZO1129 pg. 188): "A direct hit deals 2d6 points of fire
     // damage." The 1d6 splash is a separate, lesser effect on nearby

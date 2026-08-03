@@ -259,8 +259,8 @@ export interface SpellDamage {
  * stay symbolic while `@cl` and numeric parts are evaluated, so Fireball's
  * `(min(10,@cl))d6` shows `"4d6"` at CL 4 and Cure Light Wounds' `1d8 +
  * min(5,@cl)` shows `"1d8+4"`. A formula that carries no dice at all resolves
- * to its plain number; anything we can't resolve falls back to the raw
- * formula. `[]` when the spell deals no rolled damage.
+ * to its plain number; a part that resolves to neither is dropped rather than
+ * shown as raw DSL. `[]` when the spell deals no rolled damage.
  *
  * The damage FORMULA scales here; a spell whose effect COUNT scales instead
  * (Magic Missile's missiles, Scorching Ray's rays) carries a hand-authored
@@ -284,7 +284,11 @@ export function spellDamageParts(spell: Spell, cl: number): SpellDamage[] {
     let text = safeDice(formula, cl);
     if (text === null) {
       const n = safeEvaluate(formula, cl);
-      text = n !== null ? String(n) : formula;
+      // Nothing resolved: drop the part. Printing the raw formula would put
+      // DSL source in front of a player mid-turn, which reads as a bug even
+      // when the number behind it is fine.
+      if (n === null) continue;
+      text = String(n);
     }
     out.push({ text, types: part.types, count });
   }

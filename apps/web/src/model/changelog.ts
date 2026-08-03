@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-03-damage-formula-display",
+    date: "2026-08-03",
+    title: "Damage that showed its own formula now shows dice",
+    note: 'A handful of spells printed raw source in place of their damage: Ghost Whip read "sizeRoll(1, 3, @size)" where it should read 1d3, and Coin Shot and Clenched Fist had a stray label hanging off their bonus. They now read as ordinary dice, and anything still unresolvable is left out rather than shown as source. A wizard of the Wood elemental school can also open Resources again: Splintered Spear\'s damage broke the panel, and now reads as its 1d6 plus the enhancement bonus it gains every six levels.',
+  },
+  {
     id: "2026-08-02-control-collisions",
     date: "2026-08-02",
     title: "Controls stop landing on each other",

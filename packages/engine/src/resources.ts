@@ -569,13 +569,19 @@ const ATTACK_RANGE_PREFIX: Record<string, string> = {
  * or a bare dice/number for anything else (e.g. Channel Energy's
  * save-triggered burst, which has no attack roll at all). `null` when the
  * formula can't be evaluated even numerically (fully symbolic formula the
- * evaluator can't isolate dice from).
+ * evaluator can't isolate dice from, or one it can't parse at all — a feature
+ * whose damage won't resolve loses its damage line, never the whole panel).
  */
 function formatDamageLabel(action: FeatureAction, data: RollData): string | null {
   const damage = action.damage;
   if (!damage) return null;
 
-  let dice = formatDiceFormula(damage.formula, data);
+  let dice: string | null;
+  try {
+    dice = formatDiceFormula(damage.formula, data);
+  } catch {
+    dice = null;
+  }
   if (dice === null) {
     let plain: number | null;
     try {

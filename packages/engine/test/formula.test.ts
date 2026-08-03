@@ -108,6 +108,45 @@ describe("formula: dice terms", () => {
   });
 });
 
+describe("formula: size-scaled dice (sizeRoll)", () => {
+  // `sizeRoll(count, faces, size)` is a dice term whose die steps with the
+  // creature's size; the first two arguments are the Medium dice, which is the
+  // only size this engine models.
+  it("reads as an ordinary dice term (Ghost Whip's 1d3)", () => {
+    const node = parseFormula("sizeRoll(1, 3, @size)");
+    expect(containsDice(node)).toBe(true);
+    expect(formatDiceFormula("sizeRoll(1, 3, @size)", {})).toBe("1d3");
+    expect(tryEvaluateFormula("sizeRoll(1, 3, @size)", {})).toBeNull();
+  });
+
+  it("evaluates @-scaled count and faces sub-expressions (monk unarmed damage)", () => {
+    // SRD Table: Monk Unarmed Damage (Medium) — 1d6 at L1, 1d8 at L4, 2d6 at L12.
+    const f = "sizeRoll(ceil(@class.unlevel / 11), 6 + floor(@class.unlevel / 4) % 3 * 2, @size)";
+    expect(formatDiceFormula(f, { class: { unlevel: 1 } })).toBe("1d6");
+    expect(formatDiceFormula(f, { class: { unlevel: 4 } })).toBe("1d8");
+    expect(formatDiceFormula(f, { class: { unlevel: 12 } })).toBe("2d6");
+  });
+});
+
+describe("formula: flavor annotations", () => {
+  it("ignores a bracketed label on a term (Splintered Spear at wizard L6)", () => {
+    expect(
+      formatDiceFormula("sizeRoll(1, 6, @size) + floor(@class.unlevel / 6)[Enhancement]", {
+        class: { unlevel: 6 },
+      }),
+    ).toBe("1d6+1");
+  });
+
+  it("ignores one on a plain numeric formula (Coin Shot at CL 9)", () => {
+    expect(formatDiceFormula("1d8 + min(floor(@cl / 2), 10)[CL/2]", { cl: 9 })).toBe("1d8+4");
+    expect(evaluateFormula("4[Enhancement] + 2")).toBe(6);
+  });
+
+  it("throws on an unclosed bracket", () => {
+    expect(() => parseFormula("1d6 + 2[Enhancement")).toThrow(FormulaSyntaxError);
+  });
+});
+
 describe("formula: symbolic dice display (formatDiceFormula)", () => {
   it("evaluates the numeric part of a dice+modifier sum, keeping dice symbolic (Acid Dart at wizard L4)", () => {
     expect(formatDiceFormula("1d6 + floor(@class.unlevel / 2)", { class: { unlevel: 4 } })).toBe(

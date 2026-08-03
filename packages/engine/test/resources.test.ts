@@ -77,6 +77,29 @@ describe("action-derived resource-pool detail", () => {
     expect(acidDart?.detail).toBe("ranged touch · 1d6+2 acid");
   });
 
+  it("wizard 6 (Wood elemental school) — Splintered Spear: size-scaled dice plus a flavor-annotated bonus", () => {
+    const doc = baseDoc({
+      identity: { name: "Root", race: raceId("Human"), classes: [{ tag: "wizard", level: 6 }] },
+      abilities: { str: 10, dex: 10, con: 10, int: 18, wis: 10, cha: 10 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        wizardSchool: "wood-elemental",
+      },
+    });
+    const sheet = compute(doc, ref);
+    const pools = deriveResourcePools(doc, ref, sheet.abilities);
+    const spear = pools.find((p) => p.name === "Splintered Spear");
+    expect(spear).toBeDefined();
+    // 3 + Int mod(4) = 7 uses/day.
+    expect(spear?.max).toBe(7);
+    // A Medium shortspear's 1d6, + floor(6/6) = +1 enhancement at 6th level.
+    expect(spear?.detail).toBe("ranged · 1d6+1 piercing");
+  });
+
   it("cleric 7 — Channel Energy: heal/harm dice + Will DC (no cleric-only gate needed, it's generic now)", () => {
     const doc = baseDoc({
       identity: { name: "Hex", race: raceId("Human"), classes: [{ tag: "cleric", level: 7 }] },
