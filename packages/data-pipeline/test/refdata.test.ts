@@ -442,7 +442,7 @@ describe("cleric domain spell lists (inverted learnedAt.domain)", () => {
         for (const id of ids) {
           const sp = ref.spells[id];
           expect(sp, `${tag} L${lvl} ${id}`).toBeDefined();
-          const lvl2 = sp!.learnedAt.domain?.[tag] ?? sp!.learnedAt.subdomain?.[tag];
+          const lvl2 = sp!.learnedAt.domain?.[tag];
           expect(lvl2, `${tag} ${id}`).toBe(Number(lvl));
         }
       }
@@ -1002,9 +1002,7 @@ describe("sorcerer bloodline spell lists (inverted learnedAt.bloodline)", () => 
     for (const sp of Object.values(ref.spells)) {
       const classTags = Object.keys(sp.learnedAt.class);
       const onSliced = classTags.some((t) => sliced.has(t));
-      const hasDomain =
-        Object.keys(sp.learnedAt.domain ?? {}).length > 0 ||
-        Object.keys(sp.learnedAt.subdomain ?? {}).length > 0;
+      const hasDomain = Object.keys(sp.learnedAt.domain ?? {}).length > 0;
       const hasBloodline = Object.keys(sp.learnedAt.bloodline ?? {}).length > 0;
       if (!onSliced && !hasDomain && hasBloodline) {
         foundBloodlineOnly = true;

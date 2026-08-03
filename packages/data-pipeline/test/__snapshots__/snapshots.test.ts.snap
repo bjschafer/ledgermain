@@ -229,7 +229,6 @@ exports[`normalized-output snapshots spell: Fireball 1`] = `
     "domain": {
       "Fire": 3,
     },
-    "subdomain": {},
   },
   "level": 3,
   "name": "Fireball",
@@ -473,7 +472,6 @@ exports[`normalized-output snapshots weapon: Composite Longbow (ranged, STR-to-d
 exports[`normalized-output snapshots archetype: Two-Handed Fighter 1`] = `
 {
   "classTag": "fighter",
-  "contributorModule": "Tryss_Farron/pf1e-archetypes",
   "description": "<p>Some fighters focus their efforts on finding the biggest, heaviest, most imposing weapon they can find and training to manage and harness the weight of their massive weapons for maximum impact. These fighting school benefits only apply when using two-handed weapons.</p><p></p><p></p><p></p><p></p><p></p><p></p>",
   "id": "fighter:two-handed-fighter",
   "name": "Two-Handed Fighter",

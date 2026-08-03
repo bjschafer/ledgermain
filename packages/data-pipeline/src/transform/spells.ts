@@ -113,7 +113,6 @@ export function transformSpell(doc: RawDoc, resolveUuid: UuidResolver): Spell {
       class: numberMap(learnedAt.class),
       domain: numberMap(learnedAt.domain),
       bloodline: numberMap(learnedAt.bloodline),
-      subdomain: numberMap(learnedAt.subdomain),
     },
     actions: transformActions(sys.actions, resolveUuid),
   };

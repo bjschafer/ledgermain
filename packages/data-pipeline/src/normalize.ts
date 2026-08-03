@@ -609,9 +609,7 @@ export function normalize(opts: NormalizeOptions): {
   const spells: Spell[] = [];
   for (const spell of allSpells) {
     const hasClass = Object.keys(spell.learnedAt.class).some((t) => spellListTags.has(t));
-    const hasDomain =
-      Object.keys(spell.learnedAt.domain ?? {}).length > 0 ||
-      Object.keys(spell.learnedAt.subdomain ?? {}).length > 0;
+    const hasDomain = Object.keys(spell.learnedAt.domain ?? {}).length > 0;
     const hasBloodline = Object.keys(spell.learnedAt.bloodline ?? {}).length > 0;
     const hasDruidDomain = druidDomainSpellIds.has(spell.id);
     const hasElementalSchool = elementalSchoolSpellIds.has(spell.id);
@@ -644,20 +642,19 @@ export function normalize(opts: NormalizeOptions): {
     spellLists[tag] = list;
   }
 
-  // --- per-domain spell lists (invert learnedAt.domain + learnedAt.subdomain) -
-  // Domain tags appear across all spells whose `learnedAt.domain`/`.subdomain`
-  // is populated. A cleric's two chosen domains each grant a bonus prepared
-  // slot per spell level (1–9), drawable from the matching list here.
+  // --- per-domain spell lists (invert learnedAt.domain) ----------------------
+  // Domain tags appear across all spells whose `learnedAt.domain` is populated.
+  // A cleric's two chosen domains each grant a bonus prepared slot per spell
+  // level (1–9), drawable from the matching list here.
   const domainTags = new Set<string>();
   for (const spell of spells) {
     for (const tag of Object.keys(spell.learnedAt.domain ?? {})) domainTags.add(tag);
-    for (const tag of Object.keys(spell.learnedAt.subdomain ?? {})) domainTags.add(tag);
   }
   const domainSpellLists: Record<string, SpellList> = {};
   for (const tag of domainTags) {
     const list: SpellList = {};
     for (const spell of spells) {
-      const lvl = spell.learnedAt.domain?.[tag] ?? spell.learnedAt.subdomain?.[tag];
+      const lvl = spell.learnedAt.domain?.[tag];
       if (lvl === undefined) continue;
       (list[lvl] ??= []).push(spell.id);
     }

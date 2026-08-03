@@ -768,7 +768,6 @@ export interface Spell extends RefEntity {
     class: Record<string, number>;
     domain?: Record<string, number>;
     bloodline?: Record<string, number>;
-    subdomain?: Record<string, number>;
   };
   actions: SpellAction[];
   /**
@@ -1007,8 +1006,6 @@ export interface WeaponRef extends RefEntity {
 export interface Archetype extends RefEntity {
   /** The base class this archetype modifies, e.g. "fighter". */
   classTag: string;
-  /** Attribution for the source dataset (module name; content is OGL/Paizo CUP via AON). */
-  contributorModule: string;
 }
 
 /**

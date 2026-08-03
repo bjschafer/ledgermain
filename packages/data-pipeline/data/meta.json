@@ -66,7 +66,7 @@
     "alchemist-discoveries.json": "e97c283d12adc65f44ec5e452cf3045b33080320ed3d1b147b5688de6a13b0bf",
     "arcanist-exploits.json": "08b122c5d40463453ff40e08427344fac64eb5cfbc75b7161fa5d369b5b163ee",
     "archetype-features.json": "704632a24e616e2ecab082b6f0a74b2529333bf7e627c96fee98bc33c8049ddd",
-    "archetypes.json": "8534f3d0504d1c98e88d49710cf4a29472fb92f7a9aabdb3545827105727cda0",
+    "archetypes.json": "fd53903bb841e7a7194d585c41a83ff5b294c554ffe6764aeb71ec5b816b4914",
     "armors.json": "ed7612e0cefb17fdacc8b8ed3f462cd43d1b5e4ebd90a53fcd1f7d37f58aca29",
     "blessings.json": "c584300932c577ac5b123ab77416d453a8d5488e5838ce64409bd9cc0a772994",
     "bloodline-spell-lists.json": "3c0e5a2c4f90d3760fb8520ddca198172c47cff5ce77a1f6a00e97980c1afaea",
@@ -112,7 +112,7 @@
     "sorcerer-bloodline-mutations.json": "84f649a2171d018e065002e9eac11bb4179eb50d7aa52a2e35fe7f9b1b8fbb81",
     "sorcerer-bloodlines.json": "9a10e263a3422192453836f8f37272b0452137a90e22511eebd8e780a673270e",
     "spell-lists.json": "b955e35ee16a2e4d391b3a32648d83c854e8b7477b472b95cdef50ed6cf0806c",
-    "spells.json": "3e8cc7a2d1900289798eb4f73ab73a37ca67ea74b1c72f5da89d2829e7eb282d",
+    "spells.json": "77b41cc17f413fd560880e9259ec143af9781f6492c82b82975dbe1525d9c665",
     "subdomain-spell-lists.json": "1286d1f7411978225172dd272c2fc1a220133bf6e7031bf5936acf70d139dd2e",
     "subdomains.json": "fec0086bbae755e3c3d2485ec1c5e5fd3be5720eaedf350e799aef12e0a88832",
     "traits.json": "01605bd35270ca38192929f0eb13faba450b7cd0a99180ddba39736d054cdec2",
@@ -122,7 +122,7 @@
     "witch-patrons.json": "abe0bc21ba74cd13a5bd2230a6819764ff173dbe6d74a1b7074211f7428ec22c",
     "wizard-schools.json": "46662970340b24ee1a2dab6369de212dbd6c93e494fbb5a3a381cb2dd3a1e521"
   },
-  "schemaVersion": 25,
+  "schemaVersion": 26,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

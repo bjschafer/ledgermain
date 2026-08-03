@@ -149,9 +149,16 @@ export const SYSTEM_VERSION = "11.11";
  * (`SorcererBloodline.description`) rather than promoted to entries of their
  * own; see `SorcererBloodlineMutation` doc comment and
  * `transform/sorcererBloodlines.ts`. A parent bloodline's description no
- * longer inlines its mutations' prose.
+ * longer inlines its mutations' prose. v26 removes two fields that carried no
+ * information. `Spell.learnedAt.subdomain` was emitted as an empty object on
+ * all 3,026 spells: the pinned pack tags no spell by subdomain, which is
+ * precisely why `subdomainSpellLists` is parsed from description prose
+ * instead, so the key could never be populated and reading it as a spell
+ * source was a standing trap. `Archetype.contributorModule` held the same
+ * literal on all 1,429 archetypes; the attribution it duplicated lives in
+ * `ARCHETYPE_REPO` above, and the content licence in `NOTICE.md`.
  */
-export const SCHEMA_VERSION = 25;
+export const SCHEMA_VERSION = 26;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

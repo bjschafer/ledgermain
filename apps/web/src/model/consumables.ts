@@ -93,7 +93,7 @@ export interface ConsumableEntry {
   charges?: number;
 }
 
-const LEARN_CONTEXTS = ["class", "domain", "bloodline", "subdomain"] as const;
+const LEARN_CONTEXTS = ["class", "domain", "bloodline"] as const;
 
 /**
  * The spell level a consumable is priced from: the lowest level any class,

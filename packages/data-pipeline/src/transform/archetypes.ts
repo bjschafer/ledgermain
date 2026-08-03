@@ -12,12 +12,6 @@ import {
 } from "./common.js";
 
 /**
- * Attribution for the dataset's content (module + maintainer). See
- * `ARCHETYPE_REPO`/`ARCHETYPE_SHA` in config.ts for the pinned source.
- */
-const CONTRIBUTOR_MODULE = "Tryss_Farron/pf1e-archetypes";
-
-/**
  * Reads the previously-vendored `archetype-features.json` (if any — absent on
  * a from-scratch build) purely to recover `.level` for features the new
  * source doesn't itemize with a structured level (see
@@ -324,7 +318,6 @@ export function transformArchetypePack(
         uuid: `archetype:${archetypeId}`,
         name: bareName,
         classTag,
-        contributorModule: CONTRIBUTOR_MODULE,
         description,
         sources,
       });
@@ -397,7 +390,6 @@ export function transformArchetypePack(
         uuid: `archetype:${archetypeId}`,
         name: tag,
         classTag,
-        contributorModule: CONTRIBUTOR_MODULE,
       });
 
       const pairable = pairableBaseFeatureLevels(classesByTag.get(classTag)!);
