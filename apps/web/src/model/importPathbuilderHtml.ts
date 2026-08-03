@@ -442,12 +442,12 @@ export function importPathbuilderHtml(
       const totalLevel = data.classes.reduce((sum, c) => sum + (c.level || 0), 0);
       if (totalLevel >= 4) {
         raceCaveats.push(
-          "Ability scores don't account for level-based ability increases (4th/8th/12th/...) — a stat block doesn't show which ability received them, so verify against the source sheet's final totals and adjust by hand if needed.",
+          "Ability scores don't account for level-based ability increases (4th/8th/12th/...): a stat block doesn't show which ability received them, so verify against the source sheet's final totals and adjust by hand if needed.",
         );
       }
     } else {
       raceCaveats.push(
-        `Ability scores imported as literal source totals (race "${data.race}" wasn't recognized, so racial modifiers couldn't be backed out) — they may not match once a race is set and the sheet recomputes.`,
+        `Ability scores imported as literal source totals (race "${data.race}" wasn't recognized, so racial modifiers couldn't be backed out); they may not match once a race is set and the sheet recomputes.`,
       );
     }
   }
@@ -459,17 +459,17 @@ export function importPathbuilderHtml(
 
   for (const { feat, choice } of extras.featChoices) {
     report.unmapped.push(
-      `Feat choice "${choice}" for "${feat}" wasn't applied automatically (e.g. a weapon/skill specialization) — set it by hand on the Feats tab.`,
+      `Feat choice "${choice}" for "${feat}" wasn't applied automatically (e.g. a weapon/skill specialization); set it by hand on the Feats tab.`,
     );
   }
 
   if (extras.skillTotals.length > 0) {
     for (const skill of extras.skillTotals) {
       const abbreviated = /\(a\)$/i.test(skill.name)
-        ? ' (source sheet abbreviates the Craft/Profession subtype as "(a)" — the specific subtype isn\'t recoverable from a stat block)'
+        ? ' (source sheet abbreviates the Craft/Profession subtype as "(a)", so the specific subtype isn\'t recoverable from a stat block)'
         : "";
       report.unmapped.push(
-        `Skill "${skill.name}" showed a total of ${skill.total >= 0 ? "+" : ""}${skill.total} on the source sheet — Pathbuilder's stat block only prints totals, not ranks, so it wasn't imported${abbreviated}; add ranks by hand if needed.`,
+        `Skill "${skill.name}" showed a total of ${skill.total >= 0 ? "+" : ""}${skill.total} on the source sheet: Pathbuilder's stat block only prints totals, not ranks, so it wasn't imported${abbreviated}; add ranks by hand if needed.`,
       );
     }
   }
@@ -480,7 +480,7 @@ export function importPathbuilderHtml(
     );
   } else {
     report.unmapped.push(
-      "The source sheet's Equipment section was empty — Pathbuilder 1e's stat block doesn't reliably list carried gear, so nothing was imported; add equipment by hand.",
+      "The source sheet's Equipment section was empty: Pathbuilder 1e's stat block doesn't reliably list carried gear, so nothing was imported; add equipment by hand.",
     );
   }
 
@@ -492,7 +492,7 @@ export function importPathbuilderHtml(
       ? " (one entry had no visible label in the source and was dropped)"
       : "";
     report.unmapped.push(
-      `Source sheet also lists these special qualities${unlabeled}: ${parts.join("; ")} — not imported, since these come from class features the engine derives automatically (or from a class not in this app's reference data).`,
+      `Source sheet also lists these special qualities${unlabeled}: ${parts.join("; ")}. Not imported, since these come from class features the engine derives automatically (or from a class not in this app's reference data).`,
     );
   }
 
@@ -516,7 +516,7 @@ export function importPathbuilderHtml(
   if (s.perception != null) statParts.push(`Perception ${signed(s.perception)}`);
   if (statParts.length > 0) {
     report.unmapped.push(
-      `Source sheet reported (not imported — the engine recomputes all of these): ${statParts.join(", ")}.`,
+      `Source sheet reported (not imported; the engine recomputes all of these): ${statParts.join(", ")}.`,
     );
   }
 

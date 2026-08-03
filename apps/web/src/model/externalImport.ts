@@ -219,7 +219,7 @@ export function buildDocFromExternalData(
       doc = setRace(doc, id);
       report.mapped.push(`Race: "${data.race}" -> ${refData.races[id]!.name}`);
     } else {
-      report.unmapped.push(`Race "${data.race}" not found in reference data — left unset.`);
+      report.unmapped.push(`Race "${data.race}" not found in reference data; left unset.`);
     }
   }
 
@@ -228,7 +228,7 @@ export function buildDocFromExternalData(
     doc = setAlignment(doc, code ?? data.alignment.trim());
     if (!code) {
       report.unmapped.push(
-        `Alignment "${data.alignment}" not recognized — stored as text but won't show selected in the Alignment dropdown.`,
+        `Alignment "${data.alignment}" not recognized; stored as text but won't show selected in the Alignment dropdown.`,
       );
     }
   }
@@ -247,7 +247,7 @@ export function buildDocFromExternalData(
         doc = setClassLevel(doc, tag, Math.max(1, Math.round(cls.level) || 1));
         report.mapped.push(`Class: "${cls.name}" (level ${cls.level}) -> ${tag}`);
       } else {
-        report.unmapped.push(`Class "${cls.name}" (level ${cls.level}) not found — not added.`);
+        report.unmapped.push(`Class "${cls.name}" (level ${cls.level}) not found; not added.`);
       }
     }
   }
@@ -267,7 +267,7 @@ export function buildDocFromExternalData(
       report.mapped.push(`Skill: "${skill.name}" -> ${id} (${skill.ranks} ranks)`);
     } else {
       report.unmapped.push(
-        `Skill "${skill.name}" (${skill.ranks} ranks) not recognized — not added.`,
+        `Skill "${skill.name}" (${skill.ranks} ranks) not recognized; not added.`,
       );
     }
   }
@@ -281,7 +281,7 @@ export function buildDocFromExternalData(
         if (!doc.build.feats.includes(id)) doc = toggleFeat(doc, id);
         report.mapped.push(`Feat: "${featName}" -> ${refData.feats[id]!.name}`);
       } else {
-        report.unmapped.push(`Feat "${featName}" not found in reference data — not added.`);
+        report.unmapped.push(`Feat "${featName}" not found in reference data; not added.`);
       }
     }
   }
@@ -294,7 +294,7 @@ export function buildDocFromExternalData(
       const tag = classIdx.get(nameSlug(entry.className));
       if (tag == null || !doc.identity.classes.some((c) => c.tag === tag)) {
         report.unmapped.push(
-          `Spells listed under "${entry.className}" not imported — that class wasn't added to this character: ${entry.spellNames.join(", ")}.`,
+          `Spells listed under "${entry.className}" not imported because that class wasn't added to this character: ${entry.spellNames.join(", ")}.`,
         );
         continue;
       }
@@ -307,7 +307,7 @@ export function buildDocFromExternalData(
           );
         } else {
           report.unmapped.push(
-            `Spell "${spellName}" (${entry.className}) not found in reference data — not added.`,
+            `Spell "${spellName}" (${entry.className}) not found in reference data; not added.`,
           );
         }
       }
@@ -342,7 +342,7 @@ export function buildDocFromExternalData(
       if (itemIdx.has(nameSlug(item.name))) continue;
       doc = addCustomGearItem(doc, item.name, { quantity: item.quantity });
       report.unmapped.push(
-        `Gear "${item.name}" not found in reference data — added as a custom item.`,
+        `Gear "${item.name}" not found in reference data; added as a custom item.`,
       );
     }
   }

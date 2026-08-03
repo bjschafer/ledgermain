@@ -444,7 +444,7 @@ export function eidolonSubtypeFormWarning(doc: CharacterDoc): string | undefined
   const allowedForms = Object.keys(subtype.baseForms)
     .map((id) => EIDOLON_BASE_FORMS[id]?.name ?? id)
     .join(", ");
-  return `${subtype.name} doesn't model a ${formName} base form (only ${allowedForms}) — falling back to the base form's own attacks.`;
+  return `${subtype.name} doesn't model a ${formName} base form (only ${allowedForms}); falling back to the base form's own attacks.`;
 }
 
 /**

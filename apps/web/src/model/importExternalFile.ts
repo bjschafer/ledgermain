@@ -51,9 +51,7 @@ export function importCharacterFile(text: string, refData: RefData): ImportedCha
   try {
     parsed = JSON.parse(text);
   } catch {
-    throw new Error(
-      "That file isn't valid JSON or XML — couldn't read it as any supported format.",
-    );
+    throw new Error("That file isn't valid JSON or XML: couldn't read it as any supported format.");
   }
 
   try {

@@ -232,9 +232,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "cleric",
     knownLabel: "Cleric List",
     learnGuidance:
-      "Clerics have no spellbook and nothing to learn \u2014 the entire cleric spell list below is always available to prepare from. Your domain(s) also grant one bonus prepare-slot per accessible spell level (total, not per domain), drawable from any chosen domain's spell list (see Domain picker above).",
+      "Clerics have no spellbook and nothing to learn: the entire cleric spell list below is always available to prepare from. Your domain(s) also grant one bonus prepare-slot per accessible spell level (total, not per domain), drawable from any chosen domain's spell list (see Domain picker above).",
     blurb:
-      "Prepared divine caster: there's no \u201cknown\u201d list to curate \u2014 prepare any spell(s) from the full cleric list each day, plus one domain spell per accessible level (one slot total, even with two domains). A good (or good-worshiping) cleric can spontaneously lose a prepared spell to cast a cure spell instead, of the same level or lower; an evil one likewise for inflict spells \u2014 see \u201cCast as cure/inflict\u2026\u201d on each prepared spell in the tracker.",
+      "Prepared divine caster: there's no \u201cknown\u201d list to curate. Prepare any spell(s) from the full cleric list each day, plus one domain spell per accessible level (one slot total, even with two domains). A good (or good-worshiping) cleric can spontaneously lose a prepared spell to cast a cure spell instead, of the same level or lower; an evil one likewise for inflict spells: see \u201cCast as cure/inflict\u2026\u201d on each prepared spell in the tracker.",
     grantsAllCantrips: true,
     preparesFromClassList: true,
   },
@@ -244,9 +244,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "paladin",
     knownLabel: "Paladin List",
     learnGuidance:
-      "Paladins have no spellbook and nothing to learn — the entire paladin spell list below is always available to prepare from once you reach 4th level. Paladins never gain cantrips.",
+      "Paladins have no spellbook and nothing to learn: the entire paladin spell list below is always available to prepare from once you reach 4th level. Paladins never gain cantrips.",
     blurb:
-      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full paladin list each day, from spell level 1 up to a maximum of 4th, starting at 4th level.",
+      "Prepared divine caster: there's no “known” list to curate: prepare any spell(s) from the full paladin list each day, from spell level 1 up to a maximum of 4th, starting at 4th level.",
     grantsAllCantrips: false,
     preparesFromClassList: true,
   },
@@ -256,9 +256,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "ranger",
     knownLabel: "Ranger List",
     learnGuidance:
-      "Rangers have no spellbook and nothing to learn — the entire ranger spell list below is always available to prepare from once you reach 4th level. Rangers never gain cantrips.",
+      "Rangers have no spellbook and nothing to learn: the entire ranger spell list below is always available to prepare from once you reach 4th level. Rangers never gain cantrips.",
     blurb:
-      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full ranger list each day, from spell level 1 up to a maximum of 4th, starting at 4th level.",
+      "Prepared divine caster: there's no “known” list to curate: prepare any spell(s) from the full ranger list each day, from spell level 1 up to a maximum of 4th, starting at 4th level.",
     grantsAllCantrips: false,
     preparesFromClassList: true,
   },
@@ -281,9 +281,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "druid",
     knownLabel: "Druid List",
     learnGuidance:
-      "Druids have no spellbook and nothing to learn — the entire druid spell list below is always available to prepare from.",
+      "Druids have no spellbook and nothing to learn: the entire druid spell list below is always available to prepare from.",
     blurb:
-      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full druid list each day. A druid can also spontaneously lose a prepared spell to cast a summon nature's ally spell instead, of the same level or lower — see “Cast as Summon Nature's Ally…” on each prepared spell in the tracker.",
+      "Prepared divine caster: there's no “known” list to curate: prepare any spell(s) from the full druid list each day. A druid can also spontaneously lose a prepared spell to cast a summon nature's ally spell instead, of the same level or lower; see “Cast as Summon Nature's Ally…” on each prepared spell in the tracker.",
     grantsAllCantrips: true,
     preparesFromClassList: true,
   },
@@ -296,7 +296,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "Arcanists add 2 spells to their spellbook at each new level (more can be scribed from scrolls), same as a wizard.",
     blurb:
-      "Hybrid caster: each day, prepare a limited number of spells from your spellbook (wizard-style, capped by the Spells Prepared table) in the tracker's Spells panel, then cast any of them spontaneously by spending a slot of that level (sorcerer-style, capped by the Spells per Day table). Casting never expends the specific prepared spell — only a slot.",
+      "Hybrid caster: each day, prepare a limited number of spells from your spellbook (wizard-style, capped by the Spells Prepared table) in the tracker's Spells panel, then cast any of them spontaneously by spending a slot of that level (sorcerer-style, capped by the Spells per Day table). Casting never expends the specific prepared spell, only a slot.",
     grantsAllCantrips: true,
     preparesFromClassList: false,
   },
@@ -325,7 +325,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     knownProgression: "sorcerer",
     knownLabel: "Spells Known",
     learnGuidance:
-      "Oracles learn a fixed set of spells known at each level from the cleric spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. An oracle also adds every “cure” spell OR every “inflict” spell she can cast to her known list for free — a permanent choice made at 1st level (pick Cure or Inflict below); once chosen, the spells are added automatically as you reach the levels to cast them. Her mystery (see the Mystery picker) also grants one bonus spell known at 2nd level and every two levels thereafter.",
+      "Oracles learn a fixed set of spells known at each level from the cleric spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. An oracle also adds every “cure” spell OR every “inflict” spell she can cast to her known list for free: a permanent choice made at 1st level (pick Cure or Inflict below); once chosen, the spells are added automatically as you reach the levels to cast them. Her mystery (see the Mystery picker) also grants one bonus spell known at 2nd level and every two levels thereafter.",
     blurb:
       "Spontaneous divine caster: you know a limited set of spells drawn from the cleric list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; orisons (cantrips) are cast at will once known.",
     grantsAllCantrips: false,
@@ -339,7 +339,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "Alchemists begin play with 2 first-level formulae of their choice, plus a number of additional formulae equal to their Intelligence modifier. At each new alchemist level, they gain one new formula of any level they can create; formulae can also be added by studying a wizard's spellbook (same costs/time as a wizard learning a new spell). Alchemists have no 0-level extracts at all.",
     blurb:
-      "Prepared caster: your formula book holds every extract formula you know; prepare a subset each day like a wizard preparing spells. Modeled here as an ordinary prepared caster — extracts are physically brewed, self-targeting/shareable, and consumed as items rather than cast directly, none of which is modeled beyond the per-day preparation count.",
+      "Prepared caster: your formula book holds every extract formula you know; prepare a subset each day like a wizard preparing spells. Modeled here as an ordinary prepared caster: extracts are physically brewed, self-targeting/shareable, and consumed as items rather than cast directly, none of which is modeled beyond the per-day preparation count.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
@@ -357,7 +357,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "Investigators begin play with 2 first-level formulae of their choice, plus a number of additional formulae equal to their Intelligence modifier. At each new investigator level, they gain one new formula of any level they can create; formulae can also be added by studying a wizard's spellbook, or by studying another investigator's or an alchemist's formula book (and vice versa). Investigators have no 0-level extracts at all.",
     blurb:
-      "Prepared caster: your formula book holds every extract formula you know; prepare a subset each day like a wizard preparing spells. Modeled here as an ordinary prepared caster — extracts are physically brewed, self-targeting/shareable, and consumed as items rather than cast directly, none of which is modeled beyond the per-day preparation count.",
+      "Prepared caster: your formula book holds every extract formula you know; prepare a subset each day like a wizard preparing spells. Modeled here as an ordinary prepared caster: extracts are physically brewed, self-targeting/shareable, and consumed as items rather than cast directly, none of which is modeled beyond the per-day preparation count.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
@@ -413,7 +413,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "Skalds learn a fixed set of spells known at each level from the bard spell list (see spells-known table), starting with 4 cantrips and 2 1st-level spells at 1st level. You can cast any spell you know by spending a slot of that level; cantrips are cast at will once known. Skalds cap out at 6th-level spells.",
     blurb:
-      "Spontaneous arcane caster: you know a limited set of spells drawn from the bard list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. (Raging song — the skald's rage-powered bardic-performance-alike — is a separate subsystem and not part of this casting model.)",
+      "Spontaneous arcane caster: you know a limited set of spells drawn from the bard list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. (Raging song, the skald's rage-powered bardic-performance-alike, is a separate subsystem and not part of this casting model.)",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
@@ -430,7 +430,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "A witch's familiar stores her spells like a spellbook: it begins play storing all 0-level witch spells plus 3 1st-level spells of her choice, plus a number of additional 1st-level spells equal to her Intelligence modifier. At each new witch level, she adds 2 more spells of any level she can cast to her familiar.",
     blurb:
-      "Prepared caster: your familiar stores your spells like a spellbook (int-based, witch spell list), then you prepare a subset each day, exactly like a wizard. “Familiar's Spells” is your “known” list here — the familiar-link mechanics themselves (losing access if the familiar dies, etc.) aren't modeled.",
+      "Prepared caster: your familiar stores your spells like a spellbook (int-based, witch spell list), then you prepare a subset each day, exactly like a wizard. “Familiar's Spells” is your “known” list here. The familiar-link mechanics themselves (losing access if the familiar dies, etc.) aren't modeled.",
     grantsAllCantrips: true,
     preparesFromClassList: false,
   },
@@ -445,9 +445,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "shaman",
     knownLabel: "Shaman List",
     learnGuidance:
-      "Shamans have no spellbook and nothing to learn — the entire shaman spell list below is always available to prepare from. Her chosen spirit (see the Spirit picker) also grants a Spirit Magic spell list — one spell per spell level, 1st through 9th — shown as bonus known spells once she can cast that level (see model/spellcasting.shamanSpiritSpellsKnown). RAW she can additionally cast ONE of those spirit-magic spells per spell level per day SPONTANEOUSLY, without expending a normal prepared slot — tracked as its own bonus-slot pool in the tracker's Spells panel (Spirit Magic section, below your ordinary prepared loadout).",
+      "Shamans have no spellbook and nothing to learn: the entire shaman spell list below is always available to prepare from. Her chosen spirit (see the Spirit picker) also grants a Spirit Magic spell list, one spell per spell level, 1st through 9th, shown as bonus known spells once she can cast that level. RAW she can additionally cast ONE of those spirit-magic spells per spell level per day SPONTANEOUSLY, without expending a normal prepared slot, tracked as its own bonus-slot pool in the tracker's Spells panel (Spirit Magic section, below your ordinary prepared loadout).",
     blurb:
-      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full shaman list each day, plus your spirit's Spirit Magic bonus spells (shown once accessible) — one bonus spontaneous slot per spell level, tracked separately in the tracker's Spirit Magic section. Spirit-specific hexes (see the Hexes picker) are a separate class feature, not part of casting.",
+      "Prepared divine caster: there's no “known” list to curate: prepare any spell(s) from the full shaman list each day, plus your spirit's Spirit Magic bonus spells (shown once accessible), one bonus spontaneous slot per spell level, tracked separately in the tracker's Spirit Magic section. Spirit-specific hexes (see the Hexes picker) are a separate class feature, not part of casting.",
     grantsAllCantrips: true,
     preparesFromClassList: true,
   },
@@ -457,9 +457,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "warpriest",
     knownLabel: "Warpriest List",
     learnGuidance:
-      "Warpriests have no spellbook and nothing to learn — the entire warpriest list below is always available to prepare from, including orisons.",
+      "Warpriests have no spellbook and nothing to learn: the entire warpriest list below is always available to prepare from, including orisons.",
     blurb:
-      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full warpriest list each day, plus orisons at will. (Sacred weapon, blessings, and fervor are separate class features, not modeled as part of casting.)",
+      "Prepared divine caster: there's no “known” list to curate: prepare any spell(s) from the full warpriest list each day, plus orisons at will. (Sacred weapon, blessings, and fervor are separate class features, not modeled as part of casting.)",
     grantsAllCantrips: true,
     preparesFromClassList: true,
   },
@@ -507,9 +507,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "antipaladin",
     knownLabel: "Antipaladin List",
     learnGuidance:
-      "Antipaladins have no spellbook and nothing to learn — the entire antipaladin spell list below is always available to prepare from once you reach 4th level. Antipaladins never gain cantrips.",
+      "Antipaladins have no spellbook and nothing to learn: the entire antipaladin spell list below is always available to prepare from once you reach 4th level. Antipaladins never gain cantrips.",
     blurb:
-      "Prepared divine caster: there's no “known” list to curate — prepare any spell(s) from the full antipaladin list each day, from spell level 1 up to a maximum of 4th, starting at 4th level.",
+      "Prepared divine caster: there's no “known” list to curate: prepare any spell(s) from the full antipaladin list each day, from spell level 1 up to a maximum of 4th, starting at 4th level.",
     grantsAllCantrips: false,
     preparesFromClassList: true,
   },
@@ -530,7 +530,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     knownProgression: "summonerUnchained",
     knownLabel: "Spells Known",
     learnGuidance:
-      "Summoners learn a fixed set of spells known at each level from the (very short) summoner spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. You can cast any spell you know by spending a slot of that level; orisons (cantrips) are cast at will once known. Summoners cap out at 6th-level spells. (The eidolon, life link, and the summoner's other companion-focused class features are a separate subsystem, not modeled here — same posture as the base summoner.)",
+      "Summoners learn a fixed set of spells known at each level from the (very short) summoner spell list (see spells-known table), starting with 4 orisons and 2 1st-level spells at 1st level. You can cast any spell you know by spending a slot of that level; orisons (cantrips) are cast at will once known. Summoners cap out at 6th-level spells. (The eidolon, life link, and the summoner's other companion-focused class features are a separate subsystem, not modeled here, same posture as the base summoner.)",
     blurb:
       "Spontaneous arcane caster: you know a limited set of spells drawn from the Unchained summoner list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed.",
     grantsAllCantrips: false,
@@ -548,9 +548,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     knownProgression: "mesmerist",
     knownLabel: "Spells Known",
     learnGuidance:
-      "Mesmerists learn a fixed set of spells known at each level from the mesmerist spell list (see spells-known table), starting with 4 knacks (0-level spells) and 2 first-level spells at 1st level. You can cast any spell you know by spending a slot of that level; knacks are cast at will once known. Mesmerists cap out at 6th-level spells. (Mesmerist Tricks — a resource pool — and Consummate Liar and Painful Stare — display-only bonuses — are separate class features; which specific tricks are implanted is not modeled, same posture as other prose-only, choice-bearing subsystems in this engine.)",
+      "Mesmerists learn a fixed set of spells known at each level from the mesmerist spell list (see spells-known table), starting with 4 knacks (0-level spells) and 2 first-level spells at 1st level. You can cast any spell you know by spending a slot of that level; knacks are cast at will once known. Mesmerists cap out at 6th-level spells. (Mesmerist Tricks, a resource pool, and the display-only Consummate Liar and Painful Stare bonuses are separate class features; which specific tricks are implanted is not modeled, same posture as other prose-only, choice-bearing subsystems in this engine.)",
     blurb:
-      "Spontaneous psychic caster: you know a limited set of spells drawn from the mesmerist list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane — no arcane spell failure applies.",
+      "Spontaneous psychic caster: you know a limited set of spells drawn from the mesmerist list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane: no arcane spell failure applies.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
@@ -577,9 +577,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     progression: "occultist",
     knownLabel: "Spells Known",
     learnGuidance:
-      "An occultist's spells known are governed by her implement schools — add spells to your known list according to your implement selections (see the Implements picker). She gains two implement schools at 1st level, a further school at 2nd level and every 4 levels thereafter (to a maximum of seven; a school can be picked more than once to learn an extra spell from it), each granting one spell of every spell level she can cast, INCLUDING knacks (0-level). Your known-spell cap at every level equals your total implement picks — shown as an advisory limit, same soft posture as a sorcerer's spells-known cap. Mental Focus (a resource pool spent to activate focus powers) rides the generic per-day pool pipeline; resonant and focus powers themselves are picked in the Implements section, not part of casting.",
+      "An occultist's spells known are governed by her implement schools: add spells to your known list according to your implement selections (see the Implements picker). She gains two implement schools at 1st level, a further school at 2nd level and every 4 levels thereafter (to a maximum of seven; a school can be picked more than once to learn an extra spell from it), each granting one spell of every spell level she can cast, INCLUDING knacks (0-level). Your known-spell cap at every level equals your total implement picks, shown as an advisory limit, same soft posture as a sorcerer's spells-known cap. Mental Focus (a resource pool spent to activate focus powers) rides the generic per-day pool pipeline; resonant and focus powers themselves are picked in the Implements section, not part of casting.",
     blurb:
-      "Spontaneous psychic caster: casts spells known from her implement schools by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane — no arcane spell failure applies. (Implements, resonant powers, and focus powers are a separate subsystem, not modeled here.)",
+      "Spontaneous psychic caster: casts spells known from her implement schools by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane: no arcane spell failure applies. (Implements, resonant powers, and focus powers are a separate subsystem, not modeled here.)",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
@@ -596,9 +596,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     knownProgression: "spiritualist",
     knownLabel: "Spells Known",
     learnGuidance:
-      "Spiritualists learn a fixed set of spells known at each level from the spiritualist spell list (see spells-known table), starting with 4 knacks (0-level spells) and 2 first-level spells at 1st level. You can cast any spell you know by spending a slot of that level; knacks are cast at will once known. Spiritualists cap out at 6th-level spells. (The phantom — the spiritualist's eidolon-like companion — is a separate subsystem, not modeled here, same posture as the summoner's eidolon; the engine's familiar/animal-companion infrastructure — packages/engine/src/familiar.ts and companion.ts — is the likely future implementation path.)",
+      "Spiritualists learn a fixed set of spells known at each level from the spiritualist spell list (see spells-known table), starting with 4 knacks (0-level spells) and 2 first-level spells at 1st level. You can cast any spell you know by spending a slot of that level; knacks are cast at will once known. Spiritualists cap out at 6th-level spells. (The phantom, the spiritualist's eidolon-like companion, is a separate subsystem, not modeled here, same posture as the summoner's eidolon.)",
     blurb:
-      "Spontaneous psychic caster: you know a limited set of spells drawn from the spiritualist list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane — no arcane spell failure applies.",
+      "Spontaneous psychic caster: you know a limited set of spells drawn from the spiritualist list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane: no arcane spell failure applies.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
@@ -615,9 +615,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     knownProgression: "sorcerer",
     knownLabel: "Spells Known",
     learnGuidance:
-      "Psychics learn a fixed set of spells known at each level from the psychic spell list (see spells-known table), starting with 4 knacks (cantrips) and 2 1st-level spells at 1st level — the counts are fixed and not adjusted by Intelligence. Your discipline (see the Discipline picker) also grants one bonus spell known at 1st level, 4th level, and every 2 levels thereafter (final one at 18th).",
+      "Psychics learn a fixed set of spells known at each level from the psychic spell list (see spells-known table), starting with 4 knacks (cantrips) and 2 1st-level spells at 1st level; the counts are fixed and not adjusted by Intelligence. Your discipline (see the Discipline picker) also grants one bonus spell known at 1st level, 4th level, and every 2 levels thereafter (final one at 18th).",
     blurb:
-      "Spontaneous psychic caster (int-based): you know a limited set of spells and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; knacks (cantrips) are cast at will once known. Psychic magic is neither arcane nor divine — no arcane spell failure from armor. (Phrenic pool is tracked as a resource; phrenic amplifications and discipline powers are separate subsystems, not modeled here.)",
+      "Spontaneous psychic caster (int-based): you know a limited set of spells and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; knacks (cantrips) are cast at will once known. Psychic magic is neither arcane nor divine: no arcane spell failure from armor. (Phrenic pool is tracked as a resource; phrenic amplifications and discipline powers are separate subsystems, not modeled here.)",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
@@ -628,9 +628,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     knownProgression: "medium",
     knownLabel: "Spells Known",
     learnGuidance:
-      "Mediums gain no spellcasting at all until 4th level (2 knacks at 1st level aside — knacks are known from 1st but the first real spell slot arrives at 4th), learning a fixed set of spells known from the medium list from then on (see spells-known table); the counts are fixed and not adjusted by Charisma. Mediums cap out at 4th-level spells.",
+      "Mediums gain no spellcasting at all until 4th level (2 knacks at 1st level aside: knacks are known from 1st but the first real spell slot arrives at 4th), learning a fixed set of spells known from the medium list from then on (see spells-known table); the counts are fixed and not adjusted by Charisma. Mediums cap out at 4th-level spells.",
     blurb:
-      "Spontaneous psychic caster (cha-based, 4-level): you know a limited set of spells (up to 4th level, starting at class level 4) and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; knacks (cantrips) are cast at will once known. (Spirits — the medium's channeled-legend subsystem, chosen at each day's seance — plus spirit surge, shared seance, and taboos are separate subsystems, not modeled here.)",
+      "Spontaneous psychic caster (cha-based, 4-level): you know a limited set of spells (up to 4th level, starting at class level 4) and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; knacks (cantrips) are cast at will once known. (Spirits, the medium's channeled-legend subsystem chosen at each day's seance, plus spirit surge, shared seance, and taboos are separate subsystems, not modeled here.)",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },

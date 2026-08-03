@@ -631,7 +631,7 @@ export function useCharacter(): CharacterStore {
     }
 
     showToast({
-      message: `Level ${level}!${classSummary ? ` — ${classSummary}` : ""}${
+      message: `Level ${level}!${classSummary ? ` ${classSummary}` : ""}${
         grants.length > 0 ? ` · ${grants.join(", ")}` : ""
       }`,
       tone: "level-up",

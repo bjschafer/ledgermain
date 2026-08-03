@@ -156,7 +156,7 @@ export function importHeroLabXml(text: string, refData: RefData) {
     root = parseXml(text);
   } catch (err) {
     throw new Error(
-      `Couldn't parse that as XML (${err instanceof Error ? err.message : "unknown error"}). Only Hero Lab classic's XML export is supported (File → Save Custom Output → Generate XML File) — not a .por portfolio file.`,
+      `Couldn't parse that as XML (${err instanceof Error ? err.message : "unknown error"}). Only Hero Lab classic's XML export is supported (File → Save Custom Output → Generate XML File), not a .por portfolio file.`,
     );
   }
   const data = heroLabXmlToIntermediate(root);

@@ -92,8 +92,8 @@ export function archetypeConflictWarnings(doc: CharacterDoc, refData: RefData): 
     const classDef = Object.values(refData.classes).find((c) => c.tag === classTag);
     warnings.push(
       `${names.join(" + ")} (${classDef?.name ?? classTag}): this class's archetype data has ` +
-        `no structured feature pairing, so overlapping swaps can't be detected automatically — ` +
-        `double-check they don't replace the same base class feature.`,
+        `no structured feature pairing, so overlapping swaps can't be detected automatically. ` +
+        `Double-check they don't replace the same base class feature.`,
     );
   }
   return warnings;

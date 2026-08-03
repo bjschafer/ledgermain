@@ -303,15 +303,15 @@ export function parseDamageInput(raw: string, knownBypasses: readonly string[] =
         bypasses.add(multi.qualifier);
         continue;
       }
-      warnings.push(`Ignored "${token}" — not a damage type.`);
+      warnings.push(`Ignored "${token}": not a damage type.`);
       continue;
     }
     if (!target) {
-      warnings.push(`Ignored "${token}" — no amount before it.`);
+      warnings.push(`Ignored "${token}": no amount before it.`);
       continue;
     }
     if (!target.inferred) {
-      warnings.push(`Ignored "${token}" — ${target.amount} is already ${target.type}.`);
+      warnings.push(`Ignored "${token}": ${target.amount} is already ${target.type}.`);
       continue;
     }
     target.type = type;
@@ -340,7 +340,7 @@ export function parseDamageInput(raw: string, knownBypasses: readonly string[] =
 
   if (sawCarveMarker && rest.length > 0 && restTotal > lead.amount) {
     warnings.push(
-      `The ${restTotal} typed damage exceeds the stated total of ${lead.amount} — read as additive.`,
+      `The ${restTotal} typed damage exceeds the stated total of ${lead.amount}, so it was read as additive.`,
     );
   } else if (sawCarveMarker && rest.length > 0) {
     return carveOut(lead, rest, named, warnings);
