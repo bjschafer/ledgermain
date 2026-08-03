@@ -40,9 +40,9 @@ export function VigilanteIdentityPanel({ doc, update }: BuilderProps) {
         </button>
       </div>
       <p className="hint">
-        Reminder only — renown/Intimidate bonuses and other identity-scoped talent effects (see
-        their notes in Vigilante Talents) aren't auto-applied; add them by hand while in the
-        matching identity.
+        Reminder only: renown/Intimidate bonuses and other identity-scoped talent effects (see their
+        notes in Vigilante Talents) aren't auto-applied; add them by hand while in the matching
+        identity.
       </p>
     </Panel>
   );

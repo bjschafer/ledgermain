@@ -522,7 +522,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
             the manager rather than inlined into this column. */}
         {preparesFromClassList ? null : levels.length === 0 ? (
           <div className="empty">
-            No spells in your {knownLabel.toLowerCase()} yet — “Edit spellbook” to add some.
+            No spells in your {knownLabel.toLowerCase()} yet. “Edit spellbook” to add some.
           </div>
         ) : (
           levels.map((lvl) => (
@@ -576,24 +576,24 @@ function SpellHints({
       <p className="hint spell-hint-line">{model.learnGuidance}</p>
       {grantsCantrips && (
         <p className="hint spell-hint-line">
-          You know <strong>all {cantrips.length} cantrips</strong> on the {casterTag} list — they're
+          You know <strong>all {cantrips.length} cantrips</strong> on the {casterTag} list. They're
           listed below and cost no spellbook slot.
         </p>
       )}
       {isSpontaneous ? (
         <p className="hint spell-hint-line">
-          This is your <strong>{knownLabel}</strong> — the spells you can cast. Cast them on the fly
+          This is your <strong>{knownLabel}</strong>: the spells you can cast. Cast them on the fly
           from the tracker's <strong>Spells</strong> panel by spending a slot of the appropriate
           level.
         </p>
       ) : preparesFromClassList ? (
         <p className="hint spell-hint-line">
-          Nothing to add or remove here — browse the full list below, then prepare from it each day
+          Nothing to add or remove here. Browse the full list below, then prepare from it each day
           in the tracker's <strong>Spells</strong> panel.
         </p>
       ) : (
         <p className="hint spell-hint-line">
-          This is your {knownLabel.toLowerCase()} — the spells you <em>could</em> prepare. Prepare
+          This is your {knownLabel.toLowerCase()}: the spells you <em>could</em> prepare. Prepare
           and cast for the day from the tracker's <strong>Spells</strong> panel.
         </p>
       )}

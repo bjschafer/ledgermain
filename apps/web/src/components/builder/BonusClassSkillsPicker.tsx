@@ -66,7 +66,7 @@ export function BonusClassSkillsPicker({ doc, refData, update }: BonusClassSkill
         <>
           <p className="hint">
             Skills chosen here count as class skills, granting the usual +3 once you have at least
-            one rank in them. Skills that are already class skills are unavailable — the +3 doesn't
+            one rank in them. Skills that are already class skills are unavailable: the +3 doesn't
             stack with itself.
           </p>
           {grants.map((grant) => {
@@ -90,7 +90,7 @@ export function BonusClassSkillsPicker({ doc, refData, update }: BonusClassSkill
                             )
                           }
                         >
-                          <option value="">— none chosen —</option>
+                          <option value="">None chosen</option>
                           {SKILL_OPTIONS.map(([id, name]) => {
                             const taken =
                               isExistingClassSkill(existing, id) ||
@@ -107,8 +107,8 @@ export function BonusClassSkillsPicker({ doc, refData, update }: BonusClassSkill
                       {staleReason && (
                         <p className="hint warn-over">
                           {staleReason === "already"
-                            ? "Already a class skill from another source — this pick is doing nothing."
-                            : "Picked twice — the second one is doing nothing."}
+                            ? "Already a class skill from another source: this pick is doing nothing."
+                            : "Picked twice: the second one is doing nothing."}
                         </p>
                       )}
                     </div>

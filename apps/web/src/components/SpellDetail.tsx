@@ -227,7 +227,7 @@ function SpellDetailBody({
               {concentrationScenarios(spellLevel).map((s) => (
                 <li key={s.id}>
                   DC {s.dc}
-                  {s.externalTerm ? ` + ${s.externalTerm}` : ""} — {s.label}
+                  {s.externalTerm ? ` + ${s.externalTerm}` : ""}: {s.label}
                 </li>
               ))}
             </ul>

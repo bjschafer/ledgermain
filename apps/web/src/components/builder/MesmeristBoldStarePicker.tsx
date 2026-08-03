@@ -96,10 +96,10 @@ export function MesmeristBoldStarePicker({ doc, refData, update }: MesmeristBold
         <>
           <p className="hint revelation-picker-hint">
             Each pick extends the hypnotic stare penalty to a new roll category (or, for Psychic
-            Inception, extends who it can affect) — see the Hypnotic Stare class feature for the
+            Inception, extends who it can affect). See the Hypnotic Stare class feature for the
             combined effect (a vendored-only pick, marked prose-only below, doesn't enrich that
-            summary line — see Class Features for its own entry instead). Browses the full published
-            catalog. Free-choice — never blocks past the expected count.
+            summary line: see Class Features for its own entry instead). Browses the full published
+            catalog. Free-choice: never blocks past the expected count.
           </p>
           <input
             className="search"
@@ -117,7 +117,7 @@ export function MesmeristBoldStarePicker({ doc, refData, update }: MesmeristBold
                     <div className="pname">
                       {s.name}
                       {!s.riderText && (
-                        <span className="hint" title="No hand-verified rider text — prose-only">
+                        <span className="hint" title="No hand-verified rider text: prose-only">
                           {" "}
                           (prose-only)
                         </span>

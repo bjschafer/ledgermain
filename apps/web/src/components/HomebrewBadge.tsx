@@ -1,7 +1,7 @@
 import { isHomebrewId } from "../model/homebrew.js";
 import { InfoTip } from "./InfoTip.js";
 
-const TOOLTIP_TEXT = "Homebrew — authored on this character, not part of the vendored ruleset";
+const TOOLTIP_TEXT = "Homebrew: authored on this character, not part of the vendored ruleset";
 
 /**
  * Subtle "this is homebrew, not vendored content" marker — dropped next to a

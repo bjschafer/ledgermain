@@ -95,7 +95,7 @@ export function SkillManager({
                   {s.trainedOnly ? (
                     <InfoTip
                       className="tag-trained"
-                      content="Trained only — cannot be used without ranks"
+                      content="Trained only: cannot be used without ranks"
                     >
                       trained only
                     </InfoTip>
@@ -129,7 +129,7 @@ export function SkillManager({
               {s.usable ? (
                 <span className="stotal num">{signed(s.total)}</span>
               ) : (
-                <InfoTip className="stotal num unusable" content="Trained only — no ranks invested">
+                <InfoTip className="stotal num unusable" content="Trained only: no ranks invested">
                   {signed(s.total)}
                 </InfoTip>
               )}

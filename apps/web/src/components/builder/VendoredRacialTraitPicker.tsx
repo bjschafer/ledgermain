@@ -194,7 +194,7 @@ export function VendoredRacialTraitPicker({
                                   )
                                 }
                               >
-                                <option value="">— choose —</option>
+                                <option value="">(choose)</option>
                                 {TARGET_GROUPS.map((group) => (
                                   <optgroup key={group} label={group}>
                                     {targetOptions
@@ -207,7 +207,7 @@ export function VendoredRacialTraitPicker({
                                   </optgroup>
                                 ))}
                               </select>
-                              {chosenTarget ? null : " — nothing applies until you choose"}
+                              {chosenTarget ? null : " (nothing applies until you choose)"}
                             </label>
                           );
                         })}

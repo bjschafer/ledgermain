@@ -94,15 +94,15 @@ export function SpiritPicker({ doc, refData, update }: SpiritPickerProps) {
             Pick one spirit (PF1 grants one at level 1, never changed thereafter). Browses the full
             published catalog; entries marked <span className="badge-modeled">M</span> grant a
             Spirit Magic bonus-spell list, a 1st-level Spirit Ability, and access to 5 exclusive
-            hexes (see Hexes below) — the rest show their full published prose instead. Free-choice
-            — no calling validation.
+            hexes (see Hexes below); the rest show their full published prose instead. Free-choice:
+            no calling validation.
           </p>
           <select
             className="mystery-select"
             value={chosen}
             onChange={(e) => update((d) => setShamanSpirit(d, e.target.value || null))}
           >
-            <option value="">— none chosen —</option>
+            <option value="">(none chosen)</option>
             {catalog.map((s) => (
               <option key={s.tag} value={s.tag}>
                 {s.name}
@@ -119,7 +119,7 @@ export function SpiritPicker({ doc, refData, update }: SpiritPickerProps) {
             ) : (
               <div className="mystery-preview">
                 <div className="mystery-class-skills">
-                  <span className="hint">Spirit Ability — {spiritDef.ability.name}</span>
+                  <span className="hint">Spirit Ability: {spiritDef.ability.name}</span>
                   <p>{spiritDef.ability.summary}</p>
                 </div>
                 <div className="mystery-class-skills">

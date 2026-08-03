@@ -122,7 +122,7 @@ export function BloodragerBloodlinePicker({
             value={chosen}
             onChange={(e) => update((d) => setBloodragerBloodline(d, e.target.value || null))}
           >
-            <option value="">— none chosen —</option>
+            <option value="">None chosen</option>
             {catalog.map((b) => (
               <option key={b.tag} value={b.tag}>
                 {b.tag}
@@ -144,7 +144,7 @@ export function BloodragerBloodlinePicker({
                   update((d) => setBloodragerBloodlineVariant(d, e.target.value || null))
                 }
               >
-                <option value="">— none chosen —</option>
+                <option value="">None chosen</option>
                 {bloodlineDef.variantOptions.map((v) => (
                   <option key={v.id} value={v.id}>
                     {v.label}

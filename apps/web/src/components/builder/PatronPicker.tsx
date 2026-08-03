@@ -82,7 +82,7 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
             Pick one patron (PF1 grants one at level 1, never changed thereafter). Browses the full
             published catalog; entries marked <span className="badge-modeled">M</span> grant one
             bonus spell known (added to your familiar's spells) at witch level 2 and every two
-            levels thereafter — the rest show their full published prose instead. Free-choice — no
+            levels thereafter, the rest show their full published prose instead. Free-choice, no
             soft/hard validation.
           </p>
           <select
@@ -90,7 +90,7 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
             value={chosen}
             onChange={(e) => update((d) => setWitchPatron(d, e.target.value || null))}
           >
-            <option value="">— none chosen —</option>
+            <option value="">None chosen</option>
             {catalog.map((p) => (
               <option key={p.tag} value={p.tag}>
                 {p.name}

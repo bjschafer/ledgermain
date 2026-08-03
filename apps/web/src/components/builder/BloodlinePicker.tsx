@@ -147,7 +147,7 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
             value={parentTag}
             onChange={(e) => update((d) => setSorcererBloodline(d, e.target.value || null))}
           >
-            <option value="">— none chosen —</option>
+            <option value="">None chosen</option>
             {options.map((o) => (
               <option key={o.tag} value={o.tag}>
                 {o.tag}
@@ -169,7 +169,7 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
                   update((d) => setSorcererBloodline(d, e.target.value || parentTag))
                 }
               >
-                <option value="">— standard {parentTag} —</option>
+                <option value="">Standard {parentTag}</option>
                 {mutations.map((m) => (
                   <option key={m.id} value={m.id}>
                     {m.name}
@@ -179,7 +179,7 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
               <p className="hint bloodline-mutation-hint">
                 Takes the mutation's bloodline arcana and swaps in its powers over the standard
                 bloodline's; class skill, bonus spells, and bonus feats stay {parentTag}'s.
-                Wildblooded is itself an archetype (also picked separately) — this doesn't require
+                Wildblooded is itself an archetype (also picked separately). This doesn't require
                 it.
               </p>
             </div>
@@ -198,7 +198,7 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
                   update((d) => setSorcererBloodlineVariant(d, e.target.value || null))
                 }
               >
-                <option value="">— none chosen —</option>
+                <option value="">None chosen</option>
                 {bloodlineDef.variantOptions.map((v) => (
                   <option key={v.id} value={v.id}>
                     {v.label}

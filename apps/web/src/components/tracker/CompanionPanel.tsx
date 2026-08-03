@@ -64,7 +64,7 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
 
   return (
     <Panel
-      title={`Companion — ${companion.name}`}
+      title={`Companion: ${companion.name}`}
       step="comp"
       icon={<PawIcon />}
       storageKey="panel:Companion"
@@ -147,7 +147,7 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
             }
             aria-label="Companion animal focus"
           >
-            <option value="">— none —</option>
+            <option value="">(none)</option>
             {foci.map((f) => (
               <option key={f.id} value={f.id}>
                 {f.name}
@@ -167,9 +167,9 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
             const implied = supersededBy !== undefined;
             const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
             const tipContent = implied
-              ? `Implied by ${impliedName} — turn ${impliedName} off to control ${cond.name} directly.`
+              ? `Implied by ${impliedName}: turn ${impliedName} off to control ${cond.name} directly.`
               : cond.displayOnly
-                ? `${cond.summary} (reference only — no numeric modifier applied)`
+                ? `${cond.summary} (reference only, no numeric modifier applied)`
                 : cond.summary;
             return (
               <button

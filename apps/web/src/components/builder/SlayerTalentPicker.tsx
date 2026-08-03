@@ -96,8 +96,8 @@ export function SlayerTalentPicker({ doc, refData, update }: SlayerTalentPickerP
             Pick a talent at 2nd level and every 2 levels thereafter (+1 per Extra Slayer Talent
             feat). Advanced talents unlock at 10th, chosen in place of a normal talent. Browses the
             full published catalog; entries marked <span className="badge-modeled">M</span> carry a
-            real, live mechanical effect (see Class Features) — the rest are prose-only. Free-choice
-            — never blocks past the expected count.
+            real, live mechanical effect (see Class Features); the rest are prose-only. Free-choice:
+            never blocks past the expected count.
           </p>
           <input
             className="search"

@@ -96,8 +96,8 @@ export function KiPowerPicker({ doc, refData, update }: KiPowerPickerProps) {
         <>
           <p className="hint revelation-picker-hint">
             Pick a ki power at 4th level and every 2 levels thereafter. Every ki power is an
-            activated, limited-use ability (spends ki points) — no automatic sheet effect. Free-
-            choice — never blocks past the expected count.
+            activated, limited-use ability (spends ki points), no automatic sheet effect. Free-
+            choice: never blocks past the expected count.
           </p>
           <input
             className="search"

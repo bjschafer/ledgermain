@@ -123,10 +123,10 @@ function ImplementSchoolSection({
         <>
           <p className="hint revelation-picker-hint">
             2 schools at 1st level, +1 at 2nd and every 4 levels thereafter. A school can be picked
-            more than once to learn an extra spell from it — each copy counts toward the budget
+            more than once to learn an extra spell from it: each copy counts toward the budget
             above, but only the FIRST copy of a distinct HAND-VERIFIED school grants its base +
             resonant power (shown below); a vendored-only school (marked below) grants no
-            base/resonant/focus powers at all. Free-choice — never blocks past the expected count.
+            base/resonant/focus powers at all. Free-choice: never blocks past the expected count.
           </p>
           <div className="scroll">
             {catalog.map((entry) => {
@@ -154,10 +154,10 @@ function ImplementSchoolSection({
                     {known && !entry.vendoredOnly && (
                       <>
                         <div className="hint" style={{ marginTop: 2 }}>
-                          Base — {entry.basePower.name}: {entry.basePower.summary}
+                          Base, {entry.basePower.name}: {entry.basePower.summary}
                         </div>
                         <div className="hint" style={{ marginTop: 2 }}>
-                          Resonant — {entry.resonantPower.name}: {entry.resonantPower.summary}
+                          Resonant, {entry.resonantPower.name}: {entry.resonantPower.summary}
                         </div>
                       </>
                     )}
@@ -276,8 +276,8 @@ function FocusPowerSection({
         <>
           <p className="hint revelation-picker-hint">
             1 focus power at 1st level, +1 at 3rd and every 2 levels thereafter (plus one per Extra
-            Focus Power feat). Menu scoped to your known implement schools — activated abilities
-            spent from Mental Focus, no automatic sheet effect. Free-choice — never blocks.
+            Focus Power feat). Menu scoped to your known implement schools: activated abilities
+            spent from Mental Focus, no automatic sheet effect. Free-choice: never blocks.
           </p>
           {knownTags.size === 0 ? (
             <div className="empty">Pick an implement school above to see its focus powers.</div>

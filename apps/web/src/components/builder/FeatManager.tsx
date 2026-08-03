@@ -153,7 +153,7 @@ export function FeatManager({
             </div>
             <div className="spell-pane-body">
               {taken.length === 0 ? (
-                <div className="empty">Nothing here yet — search on the left and add a feat.</div>
+                <div className="empty">Nothing here yet. Search on the left and add a feat.</div>
               ) : (
                 taken.map((feat) => (
                   <FeatEntry

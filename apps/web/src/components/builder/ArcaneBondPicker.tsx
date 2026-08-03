@@ -109,8 +109,8 @@ export function ArcaneBondPicker({ doc, refData, sheet, update }: ArcaneBondPick
 
           {bond?.type === "familiar" && (
             <p className="hint arcane-bond-effect">
-              Pick its species and name in the Familiar section below — its master bonus applies
-              from there.
+              Pick its species and name in the Familiar section below. Its master bonus applies from
+              there.
             </p>
           )}
 

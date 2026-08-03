@@ -71,7 +71,7 @@ export function VigilanteSpecializationPicker({ doc, update }: VigilanteSpeciali
               )
             }
           >
-            <option value="">— none chosen —</option>
+            <option value="">None chosen</option>
             <option value="avenger">Avenger (full BAB)</option>
             <option value="stalker">Stalker (Hidden Strike)</option>
           </select>

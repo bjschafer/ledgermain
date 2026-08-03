@@ -76,15 +76,15 @@ export function MysteryPicker({ doc, refData, update }: MysteryPickerProps) {
           <p className="hint mystery-picker-hint">
             Pick one mystery (PF1 grants one at level 1, never changed thereafter). Browses the full
             published catalog; entries marked <span className="badge-modeled">M</span> carry
-            hand-verified class skills/bonus spells — the rest show their full published prose,
-            revelations included. Free-choice — no divine-calling validation.
+            hand-verified class skills/bonus spells, the rest show their full published prose,
+            revelations included. Free-choice, no divine-calling validation.
           </p>
           <select
             className="mystery-select"
             value={chosen}
             onChange={(e) => update((d) => setOracleMystery(d, e.target.value || null))}
           >
-            <option value="">— none chosen —</option>
+            <option value="">None chosen</option>
             {catalog.map((m) => (
               <option key={m.tag} value={m.tag}>
                 {m.name}
@@ -108,7 +108,7 @@ export function MysteryPicker({ doc, refData, update }: MysteryPickerProps) {
                   )
                 }
               >
-                <option value="">— choose —</option>
+                <option value="">Choose…</option>
                 {mysteryDef.choice.options.map((o) => (
                   <option key={o.id} value={o.id}>
                     {o.label}

@@ -58,7 +58,7 @@ export function RogueSkillUnlocksPicker({ doc, update }: RogueSkillUnlocksPicker
           <p className="hint weapon-training-picker-hint">
             Pick a skill (5+ ranks) at 5th level and every 5 levels thereafter (10th, 15th, 20th) to
             gain its skill unlock power. The unlock's own tiered effects are prose-only and not
-            tracked here — this is a record of which skill was chosen at each tier.
+            tracked here: this is a record of which skill was chosen at each tier.
           </p>
           {Array.from({ length: unlockedTiers }, (_, tierIndex) => {
             const grantLevel = ROGUE_SKILL_UNLOCK_LEVELS[tierIndex]!;
@@ -74,7 +74,7 @@ export function RogueSkillUnlocksPicker({ doc, update }: RogueSkillUnlocksPicker
                       update((d) => setRogueSkillUnlock(d, tierIndex, e.target.value || null))
                     }
                   >
-                    <option value="">— none chosen —</option>
+                    <option value="">None chosen</option>
                     {SKILL_OPTIONS.map(([id, name]) => (
                       <option key={id} value={id}>
                         {name}

@@ -77,7 +77,7 @@ export function FavoredWeaponPicker({ doc, refData, update }: FavoredWeaponPicke
             value={chosen}
             onChange={(e) => update((d) => setDeityFavoredWeapon(d, e.target.value || null))}
           >
-            <option value="">— none chosen —</option>
+            <option value="">None chosen</option>
             <optgroup label="Simple">
               {byCategory.simple.map((o) => (
                 <option key={o.slug} value={o.slug}>

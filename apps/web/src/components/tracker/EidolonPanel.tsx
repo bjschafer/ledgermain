@@ -65,7 +65,7 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
 
   return (
     <Panel
-      title={`Eidolon — ${eidolon.name}`}
+      title={`Eidolon: ${eidolon.name}`}
       step="edln"
       icon={<EyeIcon />}
       storageKey="panel:Eidolon"
@@ -79,7 +79,7 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
           type="button"
           className="chip"
           onClick={() => update((d) => toggleEidolonSummoned(d))}
-          title="PF1 RAW: the summoner can summon/dismiss the eidolon as a standard action. Display-only — the stat block below is unaffected either way."
+          title="PF1 RAW: the summoner can summon/dismiss the eidolon as a standard action. Display-only. The stat block below is unaffected either way."
         >
           {summoned ? "Summoned" : "Dismissed"}
         </button>
@@ -157,9 +157,9 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
             const implied = supersededBy !== undefined;
             const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
             const tipContent = implied
-              ? `Implied by ${impliedName} — turn ${impliedName} off to control ${cond.name} directly.`
+              ? `Implied by ${impliedName}: turn ${impliedName} off to control ${cond.name} directly.`
               : cond.displayOnly
-                ? `${cond.summary} (reference only — no numeric modifier applied)`
+                ? `${cond.summary} (reference only, no numeric modifier applied)`
                 : cond.summary;
             return (
               <button
@@ -180,7 +180,7 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
 
       <p
         className="hint"
-        title="If Life Link is available, damage can be manually transferred from the eidolon to the summoner (1 hp per point, immediate action) — not modeled numerically here."
+        title="If Life Link is available, damage can be manually transferred from the eidolon to the summoner (1 hp per point, immediate action). Not modeled numerically here."
       >
         Evolution points: {formatEidolonEvolutionBudget(eidolon)}
       </p>
@@ -188,7 +188,7 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
       <p className="hint eidolon-bookkeeping-hint">
         <span
           className={overAttackCap ? "warn-over" : undefined}
-          title="The base-form progression table caps total natural-attack instances at each level (display-only — not enforced on the evolutions you pick)."
+          title="The base-form progression table caps total natural-attack instances at each level (display-only, not enforced on the evolutions you pick)."
         >
           Natural attacks: {attackInstanceCount} / max {eidolon.maxAttacks}
         </span>
@@ -328,7 +328,7 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
 
       {eidolon.subtypeName && (
         <>
-          <h4 className="tracker-sub">Subtype — {eidolon.subtypeName}</h4>
+          <h4 className="tracker-sub">Subtype: {eidolon.subtypeName}</h4>
           <div className="familiar-abilities">
             {eidolon.grantedEvolutions
               .filter((g) => g.unlocked)

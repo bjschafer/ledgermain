@@ -38,19 +38,19 @@ function statusLabel(state: HpState): string {
     case "ok":
       return "";
     case "no-hp":
-      return "No HP yet — add a class in the Build tab.";
+      return "No HP yet: add a class in the Build tab.";
     case "disabled":
-      return "Disabled (0 HP) — staggered: one move or standard action per round; a strenuous act deals 1 more damage.";
+      return "Disabled (0 HP), staggered: one move or standard action per round; a strenuous act deals 1 more damage.";
     case "dying":
-      return `Dying — losing 1 HP/round while unconscious. Dies at ${state.diesAt} HP.`;
+      return `Dying: losing 1 HP/round while unconscious. Dies at ${state.diesAt} HP.`;
     case "stable":
-      return `Stable — unconscious, no longer losing HP. Dies at ${state.diesAt} HP if bleeding resumes.`;
+      return `Stable: unconscious, no longer losing HP. Dies at ${state.diesAt} HP if bleeding resumes.`;
     case "dead":
-      return `Dead — HP at or below ${state.diesAt}.`;
+      return `Dead: HP at or below ${state.diesAt}.`;
     case "staggered-nonlethal":
-      return "Staggered — nonlethal damage equals current HP.";
+      return "Staggered: nonlethal damage equals current HP.";
     case "unconscious-nonlethal":
-      return "Unconscious — nonlethal damage exceeds current HP (not dying).";
+      return "Unconscious: nonlethal damage exceeds current HP (not dying).";
   }
 }
 
@@ -141,15 +141,15 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
                 way your GM says them, and your DR and resistances come off automatically:
                 <br />
                 <br />
-                <code>12b 6c</code> — 12 bludgeoning and 6 cold
+                <code>12b 6c</code>: 12 bludgeoning and 6 cold
                 <br />
-                <code>18 fire</code> — one energy type
+                <code>18 fire</code>: one energy type
                 <br />
-                <code>9, 3 of which are cold</code> — a 9-point total, 3 of it cold
+                <code>9, 3 of which are cold</code>: a 9-point total, 3 of it cold
                 <br />
-                <code>12 untyped</code> — damage nothing should reduce
+                <code>12 untyped</code>: damage nothing should reduce
                 <br />
-                <code>12 ad</code> — names what the attacker was swinging (adamantine), so the DR it
+                <code>12 ad</code>: names what the attacker was swinging (adamantine), so the DR it
                 bypasses steps aside
                 <br />
                 <br />
@@ -216,8 +216,8 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           the moment one is used, so it teaches once rather than nagging. */}
       {!preview.ok || (preview.bare && !preview.reduced) ? (
         <div className="hp-damage-hint">
-          Tip: name the damage type — <code>12b 6c</code>, <code>18 fire</code>,{" "}
-          <code>9, 3 of which are cold</code>
+          Tip: name the damage type (<code>12b 6c</code>, <code>18 fire</code>,{" "}
+          <code>9, 3 of which are cold</code>)
         </div>
       ) : null}
 
@@ -305,7 +305,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           {sheet.hp.grantedTemp.total > 0 ? (
             <InfoTip
               className="chip-info"
-              content={`${sheet.hp.grantedTemp.total} granted by an active buff/feature (e.g. Rage) — set automatically on activation/deactivation; edit freely otherwise.`}
+              content={`${sheet.hp.grantedTemp.total} granted by an active buff/feature (e.g. Rage): set automatically on activation/deactivation; edit freely otherwise.`}
             >
               ⓘ
             </InfoTip>

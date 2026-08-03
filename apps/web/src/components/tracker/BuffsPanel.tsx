@@ -172,7 +172,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
               {isActive ? (
                 <InfoTip
                   className="buff-already-active"
-                  content="Already active — remove the active copy first to add another"
+                  content="Already active: remove the active copy first to add another"
                 >
                   Active ✓
                 </InfoTip>
@@ -285,9 +285,9 @@ function NoEffectHint({
   return (
     <InfoTip
       className="soft"
-      content="This buff has no changes or reminders — it's a reminder only, with nothing for the sheet to apply."
+      content="This buff has no changes or reminders: it's a reminder only, with nothing for the sheet to apply."
     >
-      reminder only — no modeled effect
+      reminder only, no modeled effect
     </InfoTip>
   );
 }

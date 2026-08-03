@@ -43,7 +43,7 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
       }
     >
       {maxRank === 0 ? (
-        <p className="empty">Add a class first — skill ranks come from class levels.</p>
+        <p className="empty">Add a class first: skill ranks come from class levels.</p>
       ) : (
         <>
           <div className="spell-manager-launch">
@@ -54,7 +54,7 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
               {budget.remaining > 0
                 ? `${budget.remaining} rank${budget.remaining === 1 ? "" : "s"} left to spend`
                 : over
-                  ? "over budget — trim some ranks"
+                  ? "over budget, trim some ranks"
                   : "all ranks assigned"}
             </span>
           </div>
@@ -81,7 +81,7 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
 
           <div className="scroll">
             {invested.length === 0 ? (
-              <div className="empty">No ranks assigned yet — “Assign skills” to spend them.</div>
+              <div className="empty">No ranks assigned yet. Use “Assign skills” to spend them.</div>
             ) : (
               invested.map((s) => (
                 <div className="skill-row skill-summary-row" key={s.id}>
@@ -109,7 +109,7 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
                   ) : (
                     <InfoTip
                       className="stotal num unusable"
-                      content="Trained only — no ranks invested"
+                      content="Trained only: no ranks invested"
                     >
                       {signed(s.total)}
                     </InfoTip>

@@ -74,7 +74,7 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
   return (
     <Panel title="Saved Rolls" step="sr" icon={<BookmarkIcon />} storageKey="panel:SavedRolls">
       {saved.length === 0 ? (
-        <div className="empty">No saved rolls yet — pin one below.</div>
+        <div className="empty">No saved rolls yet: pin one below.</div>
       ) : (
         <div className="res-list">
           {saved.map((roll, i) => (
@@ -122,7 +122,7 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
               <p className="hint">
                 Pick a source below, then expand the saved row to attach feats (Rapid Shot, Deadly
                 Aim, Power Attack fold in automatically), flag it as two-weapon fighting, or layer a
-                manual adjustment — for "Custom", enter a value and damage note by hand.
+                manual adjustment: for "Custom", enter a value and damage note by hand.
               </p>
             </Explainer>
             <input
@@ -305,8 +305,8 @@ function SavedRollRow({
               className={`chip feat-chip ranger-chip${!chip.applied ? " unowned" : ""}`}
               title={
                 chip.applied
-                  ? `${chip.name} — ${chip.kind === "favored-enemy" ? "favored enemy" : "favored terrain"} +${chip.bonus}`
-                  : `${chip.name} — no longer a favored pick; not applied`
+                  ? `${chip.name}: ${chip.kind === "favored-enemy" ? "favored enemy" : "favored terrain"} +${chip.bonus}`
+                  : `${chip.name}: no longer a favored pick; not applied`
               }
             >
               {chip.name}
@@ -329,12 +329,12 @@ function SavedRollRow({
               className={`chip feat-chip${!chip.owned ? " unowned" : ""}${chip.auto ? " auto" : ""}`}
               title={
                 !chip.owned
-                  ? `${chip.name} — not currently owned; not applied`
+                  ? `${chip.name}: not currently owned; not applied`
                   : chip.auto
-                    ? `${chip.name} — ${chip.note}${chip.applied ? "" : " (prerequisite missing)"}`
+                    ? `${chip.name}: ${chip.note}${chip.applied ? "" : " (prerequisite missing)"}`
                     : chip.modeled
                       ? undefined
-                      : `${chip.name} — reminder only (no automatic numbers)`
+                      : `${chip.name}: reminder only (no automatic numbers)`
               }
             >
               {chip.name}

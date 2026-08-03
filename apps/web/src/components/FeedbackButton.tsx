@@ -173,7 +173,7 @@ function FeedbackModal({
 
         {state.kind === "done" ? (
           <div className="feedback-done">
-            <p>Thanks — your feedback was sent. 🎲</p>
+            <p>Thanks, your feedback was sent. 🎲</p>
             {state.url && (
               <p className="hint">
                 You can follow it here:{" "}
@@ -192,7 +192,7 @@ function FeedbackModal({
         ) : (
           <>
             <p className="hint feedback-intro">
-              Missing a feat or spell? Numbers look wrong? Tell me here — it opens a report I can
+              Missing a feat or spell? Numbers look wrong? Tell me here: it opens a report I can
               track. No account needed.
             </p>
 
@@ -226,7 +226,7 @@ function FeedbackModal({
 
             <label className="feedback-field">
               <span>
-                Contact <span className="hint">(optional — if you'd like a reply)</span>
+                Contact <span className="hint">(optional, if you'd like a reply)</span>
               </span>
               <input
                 type="text"
@@ -254,7 +254,7 @@ function FeedbackModal({
             <div className="feedback-turnstile" ref={turnstile.containerRef} />
             {turnstile.status === "error" && (
               <p className="hint feedback-error">
-                Couldn't load the verification widget — check your connection and reopen this form.
+                Couldn't load the verification widget. Check your connection and reopen this form.
               </p>
             )}
 
@@ -268,7 +268,7 @@ function FeedbackModal({
               Your report is posted to a public issue tracker. Your browser and app version are
               included to help with bugs.{" "}
               {draft.includeBuild
-                ? "Your character sheet will be attached to it — including its name and anything you've typed into it."
+                ? "Your character sheet will be attached to it, including its name and anything you've typed into it."
                 : "Your character data is not sent."}
             </p>
 

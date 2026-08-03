@@ -108,7 +108,7 @@ export function MagusArcanaPicker({ doc, refData, update }: MagusArcanaPickerPro
           <p className="hint magus-arcana-picker-hint">
             Pick arcana as you level (3rd, 6th, 9th, …; +1 per Extra Arcana feat). Browses the full
             published catalog; entries marked <span className="badge-modeled">M</span> carry a real,
-            live mechanical effect — the rest are prose-only. Free-choice — never blocks past the
+            live mechanical effect, the rest are prose-only. Free-choice: never blocks past the
             expected count; a "Requires magus Nth" note is a soft reminder, not a hard gate.
           </p>
           <input

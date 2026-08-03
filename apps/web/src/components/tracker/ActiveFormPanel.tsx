@@ -90,7 +90,7 @@ function StartForm({ doc, update }: Pick<BuilderProps, "doc" | "update">) {
                 ? wildShapeTierIds.map(polymorphTierName).join(", ")
                 : "none yet"
             }.`
-          : "No druid Wild Shape levels — pick any tier directly (e.g. from a Beast Shape/Elemental Body/Plant Shape spell)."}
+          : "No druid Wild Shape levels: pick any tier directly (e.g. from a Beast Shape/Elemental Body/Plant Shape spell)."}
       </p>
       {dLevel > 0 && wildShapeTierIds.length > 0 ? (
         <label className="polymorph-any-tier">
@@ -175,13 +175,13 @@ function ActiveFormEditor({
         <div className="pname">
           {active.formName}{" "}
           <span className="hint">
-            — {derived.tierName}, {sizeLabel(derived.size)}
-            {derived.element ? ` ${derived.element}` : ""}
+            ({derived.tierName}, {sizeLabel(derived.size)}
+            {derived.element ? ` ${derived.element}` : ""})
           </span>
         </div>
         {derived.unresolved ? (
           <div className="soft">
-            This tier/size/type combination isn't in the polymorph table — the size override still
+            This tier/size/type combination isn't in the polymorph table: the size override still
             applies, but no ability-score or natural-armor adjustment was added.
           </div>
         ) : (

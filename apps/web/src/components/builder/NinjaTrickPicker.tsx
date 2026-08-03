@@ -106,8 +106,8 @@ export function NinjaTrickPicker({ doc, refData, update }: NinjaTrickPickerProps
         <>
           <p className="hint revelation-picker-hint">
             Pick tricks as you level (2nd, 4th, 6th, …; +1 per Extra Ninja Trick feat). Master
-            tricks unlock at 10th, chosen in place of a normal trick — Ultimate Combat tricks only.
-            Free-choice — never blocks past the expected count.
+            tricks unlock at 10th, chosen in place of a normal trick (Ultimate Combat tricks only).
+            Free-choice, never blocks past the expected count.
           </p>
           <input
             className="search"

@@ -95,19 +95,19 @@ export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
         <ul className="cond-notes affliction-warnings">
           {disabledAbilities.map((id) => (
             <li key={id} className="affliction-warn">
-              <b>{ABILITY_NAMES[id]} damage</b> has reached the current score —{" "}
+              <b>{ABILITY_NAMES[id]} damage</b> has reached the current score:{" "}
               {disabledByDamageLabel(id)}.
             </li>
           ))}
           {zeroAbilities.map(({ ability, effect }) => (
             <li key={`zero-${ability}`} className="affliction-warn">
-              <b>{ABILITY_NAMES[ability]}</b> has dropped to 0 or below — the character is {effect}{" "}
+              <b>{ABILITY_NAMES[ability]}</b> has dropped to 0 or below: the character is {effect}{" "}
               (PF1 RAW).
             </li>
           ))}
           {dying ? (
             <li className="affliction-warn">
-              <b>Negative levels</b> ({totalNeg}) have reached the character's Hit Dice — the
+              <b>Negative levels</b> ({totalNeg}) have reached the character's Hit Dice: the
               character dies (PF1 RAW).
             </li>
           ) : null}
@@ -147,7 +147,7 @@ export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
       <Explainer title="How temporary negative levels clear">
         <p className="hint">
           Temporary negative levels allow a Fortitude save to remove each one 24h after being gained
-          (no timer is tracked here — remove them yourself once saved off).
+          (no timer is tracked here, remove them yourself once saved off).
         </p>
       </Explainer>
 
@@ -187,7 +187,7 @@ export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
         <TipButton
           className="pick-btn add"
           disabled={alreadyAdded}
-          disabledReason="Already tracked — adjust it in the list above"
+          disabledReason="Already tracked: adjust it in the list above"
           onClick={() => {
             update((d) =>
               setAbilityAffliction(d, addKind, addAbility, Number.isNaN(addPoints) ? 1 : addPoints),

@@ -18,7 +18,7 @@ export function SearchMiss({ query, picker }: { query: string; picker: SearchMis
   const hatch = escapeHatchFor(picker);
   return (
     <div className="empty search-miss">
-      <p>No matches for &ldquo;{query}&rdquo; — it may not be in Ledgermain yet.</p>
+      <p>No matches for &ldquo;{query}&rdquo;. It may not be in Ledgermain yet.</p>
       <div className="search-miss-actions">
         {feedbackEnabled() && (
           <button

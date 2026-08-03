@@ -82,7 +82,7 @@ export function CastingAdvancementPicker({ doc, refData, update }: CastingAdvanc
         <>
           <p className="hint">
             Each slot advances an existing spellcasting class's spells per day / spells known and
-            caster level only — never that class's other features (bloodline powers, domains,
+            caster level only, never that class's other features (bloodline powers, domains,
             discoveries, etc).
           </p>
           {entries.map((entry) => (
@@ -115,7 +115,7 @@ export function CastingAdvancementPicker({ doc, refData, update }: CastingAdvanc
                             )
                           }
                         >
-                          <option value="">— none —</option>
+                          <option value="">(none)</option>
                           {options.map((tag) => (
                             <option key={tag} value={tag}>
                               {classNameByTag(refData, tag)}

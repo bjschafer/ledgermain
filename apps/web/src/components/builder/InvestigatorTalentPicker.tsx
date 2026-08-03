@@ -103,8 +103,8 @@ export function InvestigatorTalentPicker({ doc, refData, update }: InvestigatorT
           <p className="hint revelation-picker-hint">
             Pick talents as you level (3rd, 5th, 7th, …; +1 per Extra Investigator Talent feat).
             Browses the full published catalog; entries marked{" "}
-            <span className="badge-modeled">M</span> carry a real, live mechanical effect — the rest
-            are prose-only. Free-choice — never blocks past the expected count.
+            <span className="badge-modeled">M</span> carry a real, live mechanical effect. The rest
+            are prose-only. Free-choice: never blocks past the expected count.
           </p>
           <input
             className="search"

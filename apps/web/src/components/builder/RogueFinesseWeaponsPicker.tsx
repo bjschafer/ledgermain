@@ -58,8 +58,8 @@ export function RogueFinesseWeaponsPicker({ doc, update }: RogueFinesseWeaponsPi
           <p className="hint weapon-training-picker-hint">
             Pick a weapon TYPE (e.g. "rapier") at 3rd level and every 8 levels thereafter (11th,
             19th). Melee attacks with a matching equipped weapon add Dexterity instead of Strength
-            to the damage roll — matched by name/group, case-insensitive, against the weapons on
-            your Combat sheet. Free-choice — no validation that the weapon is finesse-eligible.
+            to the damage roll, matched by name/group, case-insensitive, against the weapons on your
+            Combat sheet. Free-choice: no validation that the weapon is finesse-eligible.
           </p>
           {Array.from({ length: unlockedTiers }, (_, tierIndex) => {
             const grantLevel = ROGUE_FINESSE_TRAINING_LEVELS[tierIndex]!;

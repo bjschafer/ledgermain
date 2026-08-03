@@ -473,7 +473,7 @@ function MartialFlexibilityPicker({
         value={borrowedId}
         onChange={(e) => update((d) => setMartialFlexibilityFeat(d, e.target.value || null))}
       >
-        <option value="">— none borrowed —</option>
+        <option value="">None borrowed</option>
         {combatFeats.map(([id, feat]) => (
           <option key={id} value={id}>
             {feat.name}

@@ -99,7 +99,7 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
           <p className="hint school-picker-hint">
             Pick one specialization (PF1 grants one at level 1), or remain a Universalist. A
             specialist gains one bonus prepared slot per accessible spell level, exclusive to that
-            school, and must pick two opposition schools. A Universalist gains no bonus slot — their
+            school, and must pick two opposition schools. A Universalist gains no bonus slot: their
             compensation is arcane-school powers (Hand of the Apprentice, Metamagic Mastery),
             granted below and in Class Features regardless of which school you pick. An elemental
             school (APG variant rule) works the same way, except its bonus slot draws from the
@@ -119,7 +119,7 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
               );
             }}
           >
-            <option value="">— none chosen —</option>
+            <option value="">None chosen</option>
             <optgroup label="Standard Schools">
               {SCHOOL_TAGS.map((tag) => (
                 <option key={tag} value={tag}>
@@ -151,7 +151,7 @@ export function SchoolPicker({ doc, refData, update }: SchoolPickerProps) {
                   update((d) => setWizardFocusedSchool(d, value || null));
                 }}
               >
-                <option value="">— standard school —</option>
+                <option value="">Standard school</option>
                 {focusOptions.map((f) => (
                   <option key={f.tag} value={f.tag}>
                     {f.name}

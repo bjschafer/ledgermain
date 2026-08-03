@@ -115,7 +115,7 @@ export function DiscoveryPicker({ doc, refData, update }: DiscoveryPickerProps) 
           <p className="hint magus-arcana-picker-hint">
             Pick discoveries as you level (2nd, 4th, 6th, …; +1 per Extra Discovery feat). Advanced
             Player's Guide discoveries plus a handful of Ultimate Magic/Ultimate Combat ones.
-            Free-choice — never blocks past the expected count; a "Requires alchemist Nth" note is a
+            Free-choice: never blocks past the expected count; a "Requires alchemist Nth" note is a
             soft reminder, not a hard gate.
           </p>
           <input

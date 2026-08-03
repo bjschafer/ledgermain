@@ -255,7 +255,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
                             {res.softText ? (
                               <InfoTip
                                 className="desc-text"
-                                content="Prerequisite text — verify manually (not auto-enforced)"
+                                content="Prerequisite text: verify manually (not auto-enforced)"
                               >
                                 ⚠ {res.softText}
                               </InfoTip>
@@ -662,7 +662,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       */}
       {doc.identity.classes.some((c) => c.tag === "medium") && (
         <p className="hint">
-          A medium's legendary spirit is chosen fresh each day, not here — see the Séance panel in
+          A medium's legendary spirit is chosen fresh each day, not here. See the Séance panel in
           the Tracker.
         </p>
       )}

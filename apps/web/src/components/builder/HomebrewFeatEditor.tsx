@@ -219,7 +219,7 @@ function FeatDraftForm({
           placeholder="e.g. GM approval, Str 13"
         />
         <span className="hb-field-label">
-          Shown as a soft warning only — like every prose prerequisite, it never blocks taking the
+          Shown as a soft warning only: like every prose prerequisite, it never blocks taking the
           feat.
         </span>
       </div>

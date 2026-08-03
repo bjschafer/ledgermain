@@ -113,8 +113,8 @@ export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) 
           <p className="hint magus-arcana-picker-hint">
             Pick rage powers as you level (2nd, 4th, 6th, …; +1 per Extra Rage Power feat). Browses
             the full published catalog; entries marked <span className="badge-modeled">M</span>{" "}
-            carry a real, live mechanical effect (see Class Features) — the rest are prose-only.
-            Free-choice — never blocks past the expected count; a "Requires barbarian Nth" note is a
+            carry a real, live mechanical effect (see Class Features). The rest are prose-only.
+            Free-choice: never blocks past the expected count; a "Requires barbarian Nth" note is a
             soft reminder, not a hard gate.
           </p>
           <input
@@ -172,7 +172,7 @@ export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) 
                             )
                           }
                         >
-                          <option value="">— choose —</option>
+                          <option value="">Choose</option>
                           {p.choice.options.map((o) => (
                             <option key={o.id} value={o.id}>
                               {o.label}

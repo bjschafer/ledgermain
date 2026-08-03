@@ -98,9 +98,9 @@ export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerPro
           <p className="hint revelation-picker-hint">
             Pick a talent at 2nd level and every 2 levels thereafter (+1 per Extra Rogue Talent
             feat). "Combat Trick" grants a bonus combat feat slot, talents marked "Grants a feat"
-            apply their feat automatically, and Stony Skin's DR lands on the sheet — everything else
+            apply their feat automatically, and Stony Skin's DR lands on the sheet: everything else
             is a reminder only. Advanced talents (10th+) and chained/Unchained-only talents are
-            flagged, never hidden. Free-choice — never blocks past the expected count.
+            flagged, never hidden. Free-choice: never blocks past the expected count.
           </p>
           <input
             className="search"

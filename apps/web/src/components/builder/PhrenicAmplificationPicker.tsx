@@ -109,8 +109,8 @@ export function PhrenicAmplificationPicker({
         <>
           <p className="hint revelation-picker-hint">
             Each amplification is a cast-time rider spent from your Phrenic Pool on a spell you're
-            casting that action ("linked spell") — pool points are tracked separately in Resources.
-            Major amplifications unlock at 11th, chosen in place of a basic one. Free-choice — never
+            casting that action ("linked spell"). Pool points are tracked separately in Resources.
+            Major amplifications unlock at 11th, chosen in place of a basic one. Free-choice: never
             blocks past the expected count.
           </p>
           <input
@@ -132,7 +132,7 @@ export function PhrenicAmplificationPicker({
                     </div>
                     <div className="preq">
                       <span className="desc-text">
-                        {a.costLabel} — {a.summary}
+                        {a.costLabel}: {a.summary}
                       </span>
                     </div>
                     {belowLevel && (

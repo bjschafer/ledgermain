@@ -115,9 +115,9 @@ export function HexPicker({ doc, refData, update }: HexPickerProps) {
           <p className="hint revelation-picker-hint">
             Pick hexes as you level (1st, 2nd, 4th, 6th, …; +1 per Extra Hex feat). Major hexes
             unlock at 10th, Grand hexes at 18th. Browses the full published catalog; entries marked{" "}
-            <span className="badge-modeled">M</span> carry a real, live mechanical effect — the rest
+            <span className="badge-modeled">M</span> carry a real, live mechanical effect. The rest
             are prose-only. Hex save DC (where applicable):{" "}
-            {dc > 0 ? dc : "10 + 1/2 level + Int mod"}. Free-choice — never blocks past the expected
+            {dc > 0 ? dc : "10 + 1/2 level + Int mod"}. Free-choice: never blocks past the expected
             count.
           </p>
           <input

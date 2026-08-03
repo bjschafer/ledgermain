@@ -142,7 +142,7 @@ function ElementalFocusSection({
             value={primary ?? ""}
             onChange={(e) => update((d) => setKineticistElement(d, e.target.value || null))}
           >
-            <option value="">— none chosen —</option>
+            <option value="">None chosen</option>
             {KINETICIST_ELEMENT_TAGS.map((tag) => (
               <option key={tag} value={tag}>
                 {KINETICIST_ELEMENTS[tag]!.name}
@@ -155,7 +155,7 @@ function ElementalFocusSection({
               {primaryDef.alternateSimpleBlast ? (
                 <div style={{ marginTop: 4 }}>
                   <div className="hint">
-                    Simple blast — {primaryDef.name} offers two; pick one when you gain the element.
+                    Simple blast: {primaryDef.name} offers two; pick one when you gain the element.
                   </div>
                   <select
                     className="order-select"
@@ -175,19 +175,19 @@ function ElementalFocusSection({
                 </div>
               ) : (
                 <div className="hint" style={{ marginTop: 4 }}>
-                  Simple blast — {primaryDef.simpleBlast.name} ({primaryDef.simpleBlast.damageType},{" "}
+                  Simple blast: {primaryDef.simpleBlast.name} ({primaryDef.simpleBlast.damageType},{" "}
                   {primaryDef.simpleBlast.descriptor})
                 </div>
               )}
               <div className="hint" style={{ marginTop: 2 }}>
-                Bonus class skills —{" "}
+                Bonus class skills:{" "}
                 {primaryDef.classSkills.map((id) => SKILL_NAMES[id] ?? id).join(", ")}
               </div>
               <div className="hint" style={{ marginTop: 2 }}>
-                Defense — {primaryDef.defense.name}: {primaryDef.defense.summary}
+                Defense. {primaryDef.defense.name}: {primaryDef.defense.summary}
               </div>
               <div className="hint" style={{ marginTop: 2 }}>
-                Basic utility — {primaryDef.basicUtility.name}: {primaryDef.basicUtility.summary}
+                Basic utility. {primaryDef.basicUtility.name}: {primaryDef.basicUtility.summary}
               </div>
             </div>
           )}
@@ -199,7 +199,7 @@ function ElementalFocusSection({
             return (
               <div key={threshold} style={{ marginTop: 10 }}>
                 <div className="hint">
-                  Expanded Element ({threshold}th level){!reached ? " — not yet reached" : ""}
+                  Expanded Element ({threshold}th level){!reached ? ", not yet reached" : ""}
                 </div>
                 <select
                   className="order-select"
@@ -211,7 +211,7 @@ function ElementalFocusSection({
                     )
                   }
                 >
-                  <option value="">— none chosen —</option>
+                  <option value="">None chosen</option>
                   {KINETICIST_ELEMENT_TAGS.map((tag) => (
                     <option key={tag} value={tag}>
                       {KINETICIST_ELEMENTS[tag]!.name}
@@ -382,7 +382,7 @@ function WildTalentSection({
               : "Gained at 2nd, 4th, 6th, 8th, 10th, 12th, 14th, 16th, 18th, and 20th level."}{" "}
             Browses the full published catalog, scoped to known elements + universal talents;
             entries marked <span className="badge-modeled">M</span> carry a real, live mechanical
-            effect — the rest are prose-only. Free-choice — never blocks.
+            effect. The rest are prose-only. Free-choice: never blocks.
           </p>
           {knownTags.size === 0 && (
             <div className="empty">

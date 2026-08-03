@@ -74,7 +74,7 @@ export function VigilanteTalentPicker({ doc, refData, update }: VigilanteTalentP
       <TalentSection
         title="Social Talents"
         storageKey="subsection:Social Talents"
-        hint="Pick talents as you level (1st, 3rd, 5th, …). Free-choice — never blocks past the expected count."
+        hint="Pick talents as you level (1st, 3rd, 5th, …). Free-choice: never blocks past the expected count."
         level={level}
         list={socialList}
         chosen={chosenVigilanteSocialTalentCount(doc)}
@@ -86,7 +86,7 @@ export function VigilanteTalentPicker({ doc, refData, update }: VigilanteTalentP
       <TalentSection
         title="Vigilante Talents"
         storageKey="subsection:Vigilante Talents"
-        hint="Pick talents as you level (2nd, 4th, 6th, …). Filtered to your specialization; free-choice — never blocks past the expected count."
+        hint="Pick talents as you level (2nd, 4th, 6th, …). Filtered to your specialization; free-choice; never blocks past the expected count."
         level={level}
         list={talentList}
         chosen={chosenVigilanteTalentCount(doc)}

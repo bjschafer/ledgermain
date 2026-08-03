@@ -79,8 +79,8 @@ export function RangerPicker({ doc, update }: RangerPickerProps) {
           <div className="ranger-block">
             {styleRestriction.kind === "suppressed" ? (
               <p className="hint">
-                This archetype replaces the ranger's combat-style bonus feats with its own ability —
-                no combat style applies.
+                This archetype replaces the ranger's combat-style bonus feats with its own ability.
+                No combat style applies.
               </p>
             ) : (
               <>
@@ -94,7 +94,7 @@ export function RangerPicker({ doc, update }: RangerPickerProps) {
                     disabled={styleRestriction.kind === "locked"}
                     onChange={(e) => update((d) => setCombatStyle(d, e.target.value || null))}
                   >
-                    <option value="">— none chosen —</option>
+                    <option value="">None chosen</option>
                     {selectableStyles.map((s) => (
                       <option key={s.id} value={s.id}>
                         {s.label}
@@ -190,7 +190,7 @@ function FavoredList({
                 aria-label={`${title} ${i + 1} type`}
                 onChange={(ev) => onType(i, ev.target.value)}
               >
-                <option value="">— choose —</option>
+                <option value="">Choose</option>
                 {choices.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.label}
@@ -220,7 +220,7 @@ function FavoredList({
       )}
       <p className={`hint ranger-budget${overChosen || overBudget ? " warn" : ""}`}>
         {budget.chosen}/{budget.slots} chosen · {budget.bonusAssigned}/{budget.bonusBudget} bonus
-        {overChosen || overBudget ? " — over your level's allotment" : ""}
+        {overChosen || overBudget ? ", over your level's allotment" : ""}
       </p>
       <p className="hint">{note}</p>
     </div>

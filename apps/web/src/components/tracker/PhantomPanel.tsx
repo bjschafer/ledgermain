@@ -59,7 +59,7 @@ export function PhantomPanel({ doc, refData, update }: BuilderProps) {
 
   return (
     <Panel
-      title={`Phantom — ${phantom.name}`}
+      title={`Phantom: ${phantom.name}`}
       step="phtm"
       icon={<GhostIcon />}
       storageKey="panel:Phantom"
@@ -162,9 +162,9 @@ export function PhantomPanel({ doc, refData, update }: BuilderProps) {
             const implied = supersededBy !== undefined;
             const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
             const tipContent = implied
-              ? `Implied by ${impliedName} — turn ${impliedName} off to control ${cond.name} directly.`
+              ? `Implied by ${impliedName}: turn ${impliedName} off to control ${cond.name} directly.`
               : cond.displayOnly
-                ? `${cond.summary} (reference only — no numeric modifier applied)`
+                ? `${cond.summary} (reference only, no numeric modifier applied)`
                 : cond.summary;
             return (
               <button

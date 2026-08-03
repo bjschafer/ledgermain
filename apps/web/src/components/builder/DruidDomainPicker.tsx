@@ -72,7 +72,7 @@ export function DruidDomainPicker({ doc, refData, update }: DruidDomainPickerPro
             Pick one nature-bond domain (the alternative to an animal companion). A druid gains the
             domain's granted powers (scaling off druid level) plus one bonus prepare-slot per
             accessible spell level, drawable from the domain's spell list in the Spells panel.
-            Free-choice — no terrain validation. Leave unset for a druid who bonds with an animal
+            Free-choice: no terrain validation. Leave unset for a druid who bonds with an animal
             companion instead.
           </p>
           <select
@@ -83,7 +83,7 @@ export function DruidDomainPicker({ doc, refData, update }: DruidDomainPickerPro
               update((d) => setDruidNatureBondDomain(d, value || null));
             }}
           >
-            <option value="">— animal companion (no domain) —</option>
+            <option value="">Animal companion (no domain)</option>
             <optgroup label="Animal Domains">
               {animal.map((d) => (
                 <option key={d.tag} value={d.tag}>

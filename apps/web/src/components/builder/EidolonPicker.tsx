@@ -117,7 +117,7 @@ export function EidolonPicker({ doc, refData, update }: EidolonPickerProps) {
       {!collapsed && (
         <>
           <p className="hint familiar-hint">
-            A tracked eidolon gets its own stat block on the Play tab — HD, BAB, saves, AC, attacks,
+            A tracked eidolon gets its own stat block on the Play tab: HD, BAB, saves, AC, attacks,
             and skills, derived from your summoner level, base form, and chosen evolutions.
           </p>
           {!eidolon ? (
@@ -213,7 +213,7 @@ export function EidolonPicker({ doc, refData, update }: EidolonPickerProps) {
                     }}
                     aria-label="Add an eidolon feat"
                   >
-                    <option value="">— add a feat —</option>
+                    <option value="">Add a feat…</option>
                     {Object.values(refData.feats)
                       .filter((f) => !chosenFeatIds.includes(f.id))
                       .sort((a, b) => a.name.localeCompare(b.name))
@@ -277,7 +277,7 @@ function BaseAbilitiesSection({
       </h4>
       <p className="hint revelation-picker-hint">
         Defaults to the base form's own scores. Evolutions, size, level bonuses, and buffs all still
-        apply on top — the number under each box is the eidolon's current total.
+        apply on top: the number under each box is the eidolon's current total.
       </p>
       <div className="abilities-grid">
         {ABILITY_OPTIONS.map((a) => (
@@ -510,7 +510,7 @@ function SubtypeSection({
           onChange={(e) => update((d) => setEidolonSubtype(d, e.target.value || undefined))}
           aria-label="Eidolon subtype"
         >
-          <option value="">— none —</option>
+          <option value="">None</option>
           {EIDOLON_SUBTYPE_IDS.map((id) => {
             const def = EIDOLON_SUBTYPES[id]!;
             return (

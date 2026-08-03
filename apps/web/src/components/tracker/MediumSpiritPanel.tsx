@@ -119,7 +119,7 @@ export function MediumSpiritPanel({ doc, refData, update }: BuilderProps) {
           End séance
         </button>
       ) : (
-        <p className="hint">No séance performed today — choose a spirit above.</p>
+        <p className="hint">No séance performed today. Choose a spirit above.</p>
       )}
 
       {spirit ? (
@@ -162,7 +162,7 @@ export function MediumSpiritPanel({ doc, refData, update }: BuilderProps) {
           {spiritHasTakenOver(doc) ? (
             <ul className="cond-notes affliction-warnings">
               <li className="affliction-warn">
-                <b>The spirit has taken over</b> — at 5 influence PF1 RAW has the medium become an
+                <b>The spirit has taken over</b>: at 5 influence PF1 RAW has the medium become an
                 NPC under GM control until the next day. Not something this app can enforce;
                 adjudicate at the table.
               </li>
@@ -178,7 +178,7 @@ export function MediumSpiritPanel({ doc, refData, update }: BuilderProps) {
           {spirit.vendoredOnly ? (
             <>
               <p className="hint">
-                Vendored-only spirit — no Spirit Bonus target, Séance Boon, influence penalty, or
+                Vendored-only spirit: no Spirit Bonus target, Séance Boon, influence penalty, or
                 Spirit Powers modeled (only the flat +{bonus} Spirit Bonus VALUE above, which is
                 level-based and applies regardless of spirit). See below for the published prose.
               </p>

@@ -113,7 +113,7 @@ export function MesmeristTrickPicker({ doc, refData, update }: MesmeristTrickPic
             Pick tricks as you level (1st, 3rd, 5th, …; +1 per Extra Mesmerist Tricks feat).
             Masterful tricks unlock at 12th, chosen in place of a normal trick. Browses the full
             published catalog; entries marked <span className="badge-modeled">M</span> carry a real,
-            live mechanical effect — the rest are prose-only. Free-choice — never blocks past the
+            live mechanical effect: the rest are prose-only. Free-choice: never blocks past the
             expected count.
           </p>
           <input
@@ -144,7 +144,7 @@ export function MesmeristTrickPicker({ doc, refData, update }: MesmeristTrickPic
                     </div>
                     <div className="preq">
                       <span className="desc-text">
-                        {t.actionNote ? `${t.actionNote} — ${t.summary}` : t.summary}
+                        {t.actionNote ? `${t.actionNote}: ${t.summary}` : t.summary}
                       </span>
                     </div>
                     {belowLevel && (

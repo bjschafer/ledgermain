@@ -33,7 +33,7 @@ export function NewDayBar({ doc, sheet, refData, update, undoLast }: BuilderProp
           const result = restNewDay(doc, sheet, refData);
           update(() => result.doc);
           showToast({
-            message: result.summary || "New day — nothing to refresh",
+            message: result.summary || "New day: nothing to refresh",
             action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,
           });
         }}
@@ -44,8 +44,8 @@ export function NewDayBar({ doc, sheet, refData, update, undoLast }: BuilderProp
         <div className="affliction-warn new-day-reminder">
           <b>
             {tempNegLevels} temporary negative level{tempNegLevels === 1 ? "" : "s"}
-          </b>{" "}
-          — save to remove (Fortitude save 24h after each was gained; not cleared by rest).
+          </b>
+          : save to remove (Fortitude save 24h after each was gained; not cleared by rest).
         </div>
       ) : null}
     </div>

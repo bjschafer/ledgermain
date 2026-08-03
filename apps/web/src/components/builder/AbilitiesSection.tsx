@@ -108,14 +108,14 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
             className={`hint point-buy-readout${overBudget || outOfRangeNames ? " warn-over" : ""}`}
             title={
               outOfRangeNames
-                ? `${outOfRangeNames} outside the 7–18 purchase range — not priced`
+                ? `${outOfRangeNames} outside the 7-18 purchase range: not priced`
                 : overBudget
-                  ? "Over budget — free-choice, GMs house-rule freely"
+                  ? "Over budget: free-choice, GMs house-rule freely"
                   : undefined
             }
           >
             {pointBuy.spent} of {budget} points
-            {outOfRangeNames ? " · some scores outside 7–18" : ""}
+            {outOfRangeNames ? " · some scores outside 7-18" : ""}
           </span>
         )}
       </div>
@@ -125,7 +125,7 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
           The Core Rulebook's purchase-cost system for the six base ability scores (before racial
           modifiers): each score from 7 to 18 costs a fixed number of points, and a table budget
           (Low 10 / Standard 15 / High 20 / Epic 25, or a custom house-ruled total) caps the sum.
-          This is a running total only — nothing here blocks input.
+          This is a running total only: nothing here blocks input.
         </p>
       </Explainer>
 

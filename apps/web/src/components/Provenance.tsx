@@ -39,7 +39,7 @@ export function Provenance({
     return (
       <div className="prov">
         {header}
-        <div className="empty">No modifiers — base value only.</div>
+        <div className="empty">No modifiers, base value only.</div>
       </div>
     );
   }

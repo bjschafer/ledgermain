@@ -239,7 +239,7 @@ export function PrintView({
             <ul className="print-list">
               {data.classFeatures.map((f, i) => (
                 <li key={`${f.level}-${f.name}-${i}`}>
-                  <strong>{f.name}</strong> (L{f.level}){f.detail ? ` — ${f.detail}` : ""}
+                  <strong>{f.name}</strong> (L{f.level}){f.detail ? `: ${f.detail}` : ""}
                 </li>
               ))}
             </ul>
@@ -278,7 +278,7 @@ export function PrintView({
                     {!lvl.isCantrip && lvl.slots > 0 ? ` (${lvl.slots}/day, DC ${lvl.dc})` : ""}
                   </div>
                   {lvl.spells.length === 0 ? (
-                    <div className="print-hint">— none —</div>
+                    <div className="print-hint">None</div>
                   ) : (
                     <ul className="print-list print-spell-list">
                       {lvl.spells.map((sp, i) => (

@@ -116,7 +116,7 @@ export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionP
       {!collapsed && (
         <>
           <p className="hint animal-companion-hint">
-            A tracked companion gets its own stat block on the Play tab — HD, BAB, saves, AC,
+            A tracked companion gets its own stat block on the Play tab: HD, BAB, saves, AC,
             attacks, and skills, derived from its effective druid level. Choose which class
             feature(s) grant it below.
           </p>
@@ -182,7 +182,7 @@ export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionP
 
           {sources.length === 0 ? (
             <p className="hint">
-              No companion source chosen yet — pick Nature Bond and/or Hunter's Bond above to add a
+              No companion source chosen yet. Pick Nature Bond and/or Hunter's Bond above to add a
               companion.
             </p>
           ) : !companion ? (
@@ -325,7 +325,7 @@ export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionP
                     }}
                     aria-label="Add a companion feat"
                   >
-                    <option value="">— add a feat —</option>
+                    <option value="">Add a feat…</option>
                     {Object.values(refData.feats)
                       .filter((f) => !chosenFeatIds.includes(f.id))
                       .sort((a, b) => a.name.localeCompare(b.name))

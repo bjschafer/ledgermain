@@ -148,19 +148,19 @@ export function BlessingPicker({ doc, refData, update }: BlessingPickerProps) {
                   {mismatch ? (
                     <InfoTip
                       className="soft"
-                      content={`${doc.identity.deity} isn't in this blessing's own deity list — verify against your domains`}
+                      content={`${doc.identity.deity} isn't in this blessing's own deity list: verify against your domains`}
                     >
                       ⚠ deity mismatch
                     </InfoTip>
                   ) : null}
                 </div>
                 <div className="blessing-power">
-                  <span className="cf-name">{blessing.minorPower.name} — minor, 1st level</span>
+                  <span className="cf-name">{blessing.minorPower.name} (minor, 1st level)</span>
                   <FeatureDescription html={blessing.minorPower.description} />
                 </div>
                 <div className="blessing-power">
                   <span className="cf-name">
-                    {blessing.majorPower.name} — major, 10th level
+                    {blessing.majorPower.name} (major, 10th level)
                     {majorLocked ? <span className="hint"> (not yet unlocked)</span> : null}
                   </span>
                   <FeatureDescription html={blessing.majorPower.description} />

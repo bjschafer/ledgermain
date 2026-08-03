@@ -181,8 +181,8 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
           {mode === "inquisition" ? (
             <>
               <p className="hint domain-picker-hint">
-                Pick one inquisition (an inquisitor's alternative to a domain — its own granted
-                powers, but no domain spell slots at all). Free-choice — no deity validation.
+                Pick one inquisition (an inquisitor's alternative to a domain: its own granted
+                powers, but no domain spell slots at all). Free-choice, no deity validation.
               </p>
               <input
                 className="search"
@@ -216,7 +216,7 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
                 {slots === 1
                   ? "Pick one domain (an inquisitor gets one at level 1). You gain its granted powers, but not its spells."
                   : "Pick two domains (PF1 grants two at level 1). Each grants one bonus prepare-slot per accessible spell level, drawable from that domain's spell list."}{" "}
-                Free-choice — no deity validation. A domain with subdomains may swap in one of them
+                Free-choice, no deity validation. A domain with subdomains may swap in one of them
                 below, entirely replacing that domain choice.
               </p>
               <input
@@ -255,7 +255,7 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
                           value={subdomain ? subdomain.tag : ""}
                           onChange={(e) => setSlot(index, e.target.value || domainTag)}
                         >
-                          <option value="">— standard domain —</option>
+                          <option value="">Standard domain</option>
                           {options.map((o) => (
                             <option key={o.tag} value={o.tag}>
                               {o.tag} (subdomain)

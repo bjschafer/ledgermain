@@ -71,7 +71,7 @@ export function CursePicker({ doc, refData, update }: CursePickerProps) {
           <p className="hint curse-picker-hint">
             Pick one curse (PF1 grants one at level 1, never changed thereafter). Browses the full
             published catalog; entries marked <span className="badge-modeled">M</span> carry
-            hand-verified mechanics — the rest show their full published prose. Free-choice — no
+            hand-verified mechanics; the rest show their full published prose. Free-choice: no
             validation.
           </p>
           <select
@@ -79,7 +79,7 @@ export function CursePicker({ doc, refData, update }: CursePickerProps) {
             value={chosen}
             onChange={(e) => update((d) => setOracleCurse(d, e.target.value || null))}
           >
-            <option value="">— none chosen —</option>
+            <option value="">(none chosen)</option>
             {catalog.map((c) => (
               <option key={c.tag} value={c.tag}>
                 {c.name}

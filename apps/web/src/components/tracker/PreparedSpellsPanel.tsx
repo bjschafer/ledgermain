@@ -161,7 +161,7 @@ function MetamagicControl({
                 disabled={wouldExceed}
                 title={
                   wouldExceed
-                    ? `Applying ${def.name} would need a level-${baseLevel + otherIncrease + def.slotIncrease} slot — beyond your highest (level ${maxSlotLevel}).`
+                    ? `Applying ${def.name} would need a level-${baseLevel + otherIncrease + def.slotIncrease} slot, beyond your highest (level ${maxSlotLevel}).`
                     : def.note
                 }
                 onClick={() => onToggle(def.slug)}
@@ -259,8 +259,8 @@ function ApplyBuffButton({
         disabledReason="No slot left to cast this."
         title={
           active
-            ? `${buff.name} is active — click to drop it (you still cast the spell)`
-            : `Cast ${buff.name} on yourself — spends a slot and applies the buff`
+            ? `${buff.name} is active: click to drop it (you still cast the spell)`
+            : `Cast ${buff.name} on yourself: spends a slot and applies the buff`
         }
         onClick={() => (active ? drop(active.instanceId) : apply(buff))}
       >
@@ -274,7 +274,7 @@ function ApplyBuffButton({
     <details className="buff-apply-menu">
       <summary
         className={`pick-btn buff-apply${activeCount > 0 ? " is-active" : ""}`}
-        title={`Cast ${spell.name} on yourself — choose a variant`}
+        title={`Cast ${spell.name} on yourself: choose a variant`}
       >
         {activeCount > 0 ? `✓ Buff (${activeCount})` : "+ Buff"}
       </summary>
@@ -549,7 +549,7 @@ function DomainSlotsSection({
                 })}
               </div>
             ) : (
-              <p className="prep-none">— domain slot empty —</p>
+              <p className="prep-none">Domain slot empty.</p>
             )}
 
             {pickable.length > 0 ? (
@@ -580,7 +580,7 @@ function DomainSlotsSection({
                           className="pick-btn add"
                           aria-label={`prepare ${sp.name} in the domain slot`}
                           disabled={full}
-                          disabledReason="Domain slot is filled — unprepare the current spell first."
+                          disabledReason="Domain slot is filled. Unprepare the current spell first."
                           onClick={() => update((d) => prepareDomainSpell(d, sp.id, classTag))}
                         >
                           Prepare
@@ -763,7 +763,7 @@ function SchoolSlotsSection({
                 })}
               </div>
             ) : (
-              <p className="prep-none">— school slot empty —</p>
+              <p className="prep-none">School slot empty.</p>
             )}
 
             {pickable.length > 0 ? (
@@ -794,7 +794,7 @@ function SchoolSlotsSection({
                           className="pick-btn add"
                           aria-label={`prepare ${sp.name} in the school slot`}
                           disabled={full}
-                          disabledReason="School slot is filled — unprepare the current spell first."
+                          disabledReason="School slot is filled. Unprepare the current spell first."
                           onClick={() => update((d) => prepareSchoolSpell(d, sp.id, classTag))}
                         >
                           Prepare
@@ -860,7 +860,7 @@ function SpiritMagicSlotsSection({
         <h4 className="domain-slots-title">Spirit Magic</h4>
         <p className="hint domain-slots-hint">
           One bonus spontaneous slot per spell level you can cast, filled from your spirit's Spirit
-          Magic list (see the Spirit picker in the builder) — doesn't touch your prepared loadout
+          Magic list (see the Spirit picker in the builder); doesn't touch your prepared loadout
           above.
         </p>
       </header>
@@ -1118,7 +1118,7 @@ function PreparedView({
 
       {totalPrepared === 0 && (
         <p className="hint spell-hint-line prep-empty">
-          Nothing prepared yet — open a level below and prepare from your{" "}
+          Nothing prepared yet. Open a level below and prepare from your{" "}
           {model.knownLabel.toLowerCase()}.
         </p>
       )}
@@ -1271,7 +1271,7 @@ function PreparedView({
                   })}
                 </div>
               ) : (
-                <p className="prep-none">— none prepared —</p>
+                <p className="prep-none">None prepared.</p>
               )}
 
               {knownHere.length > 0 ? (
@@ -1328,10 +1328,10 @@ function PreparedView({
                             disabled={wontFit || cantripPrepared}
                             disabledReason={
                               cantripPrepared
-                                ? "Cantrips cast at will — no need to prepare more than one."
+                                ? "Cantrips cast at will. No need to prepare more than one."
                                 : cost === 2
-                                  ? `${sp.name} is an opposition-school spell and costs 2 slots — only ${remaining} remaining.`
-                                  : `All ${total} level-${level} slot${total === 1 ? "" : "s"} are filled — unprepare one first.`
+                                  ? `${sp.name} is an opposition-school spell and costs 2 slots: only ${remaining} remaining.`
+                                  : `All ${total} level-${level} slot${total === 1 ? "" : "s"} are filled. Unprepare one first.`
                             }
                             onClick={() => update((d) => prepareSpell(d, sp.id, classTag))}
                           >
@@ -1968,7 +1968,7 @@ function HybridView({
         <p className="hint">
           Hybrid caster: in the <strong>Prepare</strong> tab, ready spells from your{" "}
           {model.knownLabel.toLowerCase()}; in the <strong>Cast</strong> tab, cast any of them by
-          spending a slot — casting never uses up the prepared spell itself, only a slot.{" "}
+          spending a slot; casting never uses up the prepared spell itself, only a slot.{" "}
           <strong>New day</strong> refreshes every slot without changing what's prepared.
         </p>
       </Explainer>
@@ -2001,7 +2001,7 @@ function HybridView({
         <div className="spell-mode-panel is-cast">
           {totalPrepared === 0 && (
             <p className="hint spell-hint-line prep-empty">
-              Nothing prepared yet — switch to <strong>Prepare</strong> to ready spells from your{" "}
+              Nothing prepared yet. Switch to <strong>Prepare</strong> to ready spells from your{" "}
               {model.knownLabel.toLowerCase()}.
             </p>
           )}
@@ -2159,7 +2159,7 @@ function HybridView({
                     </div>
                   ) : (
                     <p className="prep-none prep-nobook">
-                      Nothing prepared at level {level} yet — switch to <strong>Prepare</strong>.
+                      Nothing prepared at level {level} yet. Switch to <strong>Prepare</strong>.
                     </p>
                   )}
                 </section>
@@ -2256,7 +2256,7 @@ function HybridView({
                       ))}
                     </div>
                   ) : (
-                    <p className="prep-none">— none prepared —</p>
+                    <p className="prep-none">None prepared.</p>
                   )}
 
                   {knownHere.length > 0 ? (
@@ -2307,8 +2307,8 @@ function HybridView({
                                 disabled={wontFit || cantripPrepared}
                                 disabledReason={
                                   cantripPrepared
-                                    ? "Cantrips cast at will — no need to prepare more than one."
-                                    : `All ${limit} level-${level} prepare slot${limit === 1 ? "" : "s"} are filled — unprepare one first.`
+                                    ? "Cantrips cast at will. No need to prepare more than one."
+                                    : `All ${limit} level-${level} prepare slot${limit === 1 ? "" : "s"} are filled. Unprepare one first.`
                                 }
                                 onClick={() => update((d) => prepareSpell(d, sp.id, classTag))}
                               >

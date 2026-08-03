@@ -48,7 +48,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           {fx.unqualified.size > 0 && (
             <InfoTip
               className="hint warn-over"
-              content="These feats' prerequisites are no longer met (a required feat was likely removed) — they're kept per the hybrid prereq policy, but verify manually"
+              content="These feats' prerequisites are no longer met (a required feat was likely removed). They're kept per the hybrid prereq policy, but verify manually"
             >
               {" "}
               · ⚠ {fx.unqualified.size} no longer qualif{fx.unqualified.size === 1 ? "ies" : "y"}
@@ -65,7 +65,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
               className={`slot-chip${g.filledFeatIds.length < g.total ? " slot-chip-warn" : ""}`}
               content={
                 g.filledFeatIds.length < g.total
-                  ? `${g.label}: ${g.total - g.filledFeatIds.length} unfilled — take a feat from this restricted list to fill it`
+                  ? `${g.label}: ${g.total - g.filledFeatIds.length} unfilled. Take a feat from this restricted list to fill it`
                   : `${g.label}: fully filled`
               }
             >
@@ -76,7 +76,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
           {fx.unassignedFeatNames.length > 0 && (
             <InfoTip
               className="slot-chip slot-chip-warn"
-              content="These feats don't match any open feat slot for your class(es) — you may be over your feat budget, or they don't satisfy a class's feat-type restriction"
+              content="These feats don't match any open feat slot for your class(es): you may be over your feat budget, or they don't satisfy a class's feat-type restriction"
             >
               ⚠ doesn't fit an open slot: {fx.unassignedFeatNames.join(", ")}
             </InfoTip>
@@ -93,7 +93,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                 <div className="pmain">
                   <div className="pname">{g.featName}</div>
                   <div className="preq">
-                    <span className="soft">Granted by {g.classTag} — no feat slot used</span>
+                    <span className="soft">Granted by {g.classTag}, no feat slot used</span>
                   </div>
                   {description ? <FeatureDescription html={description} /> : null}
                 </div>
@@ -101,7 +101,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
                   type="button"
                   className="pick-btn"
                   disabled
-                  title="Class feature grant — always on"
+                  title="Class feature grant: always on"
                 >
                   Granted
                 </button>
@@ -130,7 +130,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
 
       <div className="scroll">
         {taken.length === 0 ? (
-          <div className="empty">No feats chosen yet — “Choose feats” to add some.</div>
+          <div className="empty">No feats chosen yet. Use “Choose feats” to add some.</div>
         ) : (
           taken.map((feat) => (
             <FeatEntry

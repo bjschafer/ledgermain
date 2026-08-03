@@ -196,9 +196,7 @@ export function SpellManager({
               </div>
               <div className="spell-pane-body">
                 {knownGroups.length === 0 ? (
-                  <div className="empty">
-                    Nothing here yet — search on the left and add a spell.
-                  </div>
+                  <div className="empty">Nothing here yet. Search on the left and add a spell.</div>
                 ) : (
                   knownGroups.map((g) => {
                     const limit = knownLimits.get(g.level);
@@ -292,7 +290,7 @@ function ManagerLevelGroup({
 
 function limitNote(level: number, count: number, limit: number | undefined): string | undefined {
   if (limit === undefined || count < limit) return undefined;
-  return `You already know ${count}/${limit} level-${level} spells — adding more exceeds your known limit.`;
+  return `You already know ${count}/${limit} level-${level} spells: adding more exceeds your known limit.`;
 }
 
 function SpellRow({

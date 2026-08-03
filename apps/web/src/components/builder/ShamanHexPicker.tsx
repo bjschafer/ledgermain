@@ -119,12 +119,12 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
       {!collapsed && (
         <>
           {!spiritDef ? (
-            <p className="hint">Pick a spirit above first — hexes are per-spirit.</p>
+            <p className="hint">Pick a spirit above first: hexes are per-spirit.</p>
           ) : (
             <>
               <p className="hint revelation-picker-hint">
                 Pick hexes as you level (2nd, 4th, 8th, 10th, 12th, 16th, 18th, 20th; +1 per Extra
-                Hex feat). Free-choice — never blocks past the expected count. Almost every hex here
+                Hex feat). Free-choice: never blocks past the expected count. Almost every hex here
                 is note-tier; entries marked <span className="badge-modeled">M</span> carry a real,
                 live mechanical effect (see Class Features).
               </p>
@@ -171,12 +171,12 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
               </div>
 
               <p className="hint revelation-picker-hint" style={{ marginTop: 10 }}>
-                General Hexes — the Advanced Class Guide's own spirit-agnostic hex table, available
+                General Hexes: the Advanced Class Guide's own spirit-agnostic hex table, available
                 to any shaman (draws from the same pick budget above). A shaman may also select from
                 the witch's own Hex list (excluding major/grand hexes), using shaman level as witch
-                level — see the Witch class's Hexes section to browse those. Entries marked{" "}
+                level. See the Witch class's Hexes section to browse those. Entries marked{" "}
                 <span className="badge-modeled">M</span> carry a real, live mechanical effect (see
-                Class Features) — the rest are prose-only.
+                Class Features). The rest are prose-only.
               </p>
               <input
                 className="search"

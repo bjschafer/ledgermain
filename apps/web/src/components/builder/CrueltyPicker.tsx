@@ -107,7 +107,7 @@ export function CrueltyPicker({ doc, update }: CrueltyPickerProps) {
             One cruelty is applied per touch of corruption use, chosen at the time of use. Pick
             known cruelties as you level (3rd, 6th, 9th, ...); the menu itself expands at
             3rd/6th/9th/12th. Cruelty save DC: {dc > 0 ? dc : "10 + 1/2 level + Cha mod"}.
-            Free-choice — never blocks past the expected count.
+            Free-choice: never blocks past the expected count.
           </p>
           <input
             className="search"

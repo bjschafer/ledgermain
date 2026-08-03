@@ -103,7 +103,7 @@ function DeedGroup({
                       <p className="deed-summary deed-live-number">
                         Currently: +{preciseStrikeBonus(preciseStrikeLevel)} damage (+
                         {preciseStrikeBonus(preciseStrikeLevel, true)} if you spend 1 panache to
-                        double it) — verify your weapon is light/one-handed piercing (or thrown
+                        double it). Verify your weapon is light/one-handed piercing (or thrown
                         within 30 ft.) and panache ≥ 1.
                       </p>
                     ) : null}

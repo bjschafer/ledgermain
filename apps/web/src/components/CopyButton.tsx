@@ -78,7 +78,7 @@ export function CopyButton({
           setCopied(ok);
           showToast({
             message: ok
-              ? `Copied ${label} — ${formulaPreview(text)}`
+              ? `Copied ${label}: ${formulaPreview(text)}`
               : "Couldn't reach the clipboard",
           });
         });

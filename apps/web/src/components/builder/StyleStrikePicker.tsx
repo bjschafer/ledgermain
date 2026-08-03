@@ -98,8 +98,8 @@ export function StyleStrikePicker({ doc, refData, update }: StyleStrikePickerPro
         <>
           <p className="hint revelation-picker-hint">
             Pick a style strike at 5th level, and one more at 9th/13th/17th. Each is a rider you can
-            apply to one unarmed strike during a flurry of blows (two per round at 15th) — no
-            automatic sheet effect. Free-choice — never blocks past the expected count.
+            apply to one unarmed strike during a flurry of blows (two per round at 15th), no
+            automatic sheet effect. Free-choice: never blocks past the expected count.
           </p>
           <input
             className="search"

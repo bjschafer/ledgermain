@@ -67,8 +67,8 @@ export function WeaponTrainingPicker({ doc, update }: WeaponTrainingPickerProps)
         <>
           <p className="hint weapon-training-picker-hint">
             Pick a weapon group at 5th level and every four levels thereafter. Each pick's own bonus
-            grows every time a later tier unlocks. Free-choice — no validation that a group matches
-            a weapon you actually carry.
+            grows every time a later tier unlocks. Free-choice: no validation that a group matches a
+            weapon you actually carry.
           </p>
           {Array.from({ length: unlockedTiers }, (_, tierIndex) => {
             const grantLevel = WEAPON_TRAINING_LEVELS[tierIndex]!;
@@ -87,7 +87,7 @@ export function WeaponTrainingPicker({ doc, update }: WeaponTrainingPickerProps)
                       update((d) => setWeaponTrainingGroup(d, tierIndex, e.target.value || null))
                     }
                   >
-                    <option value="">— none chosen —</option>
+                    <option value="">None chosen</option>
                     {WEAPON_GROUPS.map((g) => (
                       <option key={g} value={g}>
                         {groupLabel(g)}

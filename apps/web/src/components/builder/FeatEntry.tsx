@@ -225,7 +225,7 @@ export function FeatEntry({
       {res.softText ? (
         <InfoTip
           className="desc-text"
-          content="Prerequisite text — verify manually (not auto-enforced)"
+          content="Prerequisite text: verify manually (not auto-enforced)"
         >
           ⚠ {res.softText}
         </InfoTip>
@@ -270,7 +270,7 @@ export function FeatEntry({
                   {dupChoice ? (
                     <InfoTip
                       className="unqualified-badge"
-                      content="Another instance already has this exact choice — RAW this instance has no additional effect"
+                      content="Another instance already has this exact choice. RAW, this instance has no additional effect"
                     >
                       ⚠ duplicate choice
                     </InfoTip>
@@ -278,7 +278,7 @@ export function FeatEntry({
                   {idx === 0 && isUnqualified ? (
                     <InfoTip
                       className="unqualified-badge"
-                      content="A prerequisite (usually another feat) was removed — this feat is kept, but no longer qualifies. Verify manually or remove it."
+                      content="A prerequisite (usually another feat) was removed. This feat is kept, but no longer qualifies. Verify manually or remove it."
                     >
                       ⚠ no longer qualifies
                     </InfoTip>
@@ -288,7 +288,7 @@ export function FeatEntry({
                       className="style-badge"
                       content={
                         res.bypassed
-                          ? "Ranger combat style — you may take this feat even though its prerequisites are unmet"
+                          ? "Ranger combat style: you may take this feat even though its prerequisites are unmet"
                           : "In your ranger combat style's feat tree"
                       }
                     >
@@ -321,7 +321,7 @@ export function FeatEntry({
                           );
                         }}
                       >
-                        <option value="">— choose a {choiceDesc.type} —</option>
+                        <option value="">Choose a {choiceDesc.type}...</option>
                         {choiceOpts.map((opt) => (
                           <option key={opt.id} value={opt.id}>
                             {opt.name}
@@ -390,7 +390,7 @@ export function FeatEntry({
           {isUnqualified ? (
             <InfoTip
               className="unqualified-badge"
-              content="A prerequisite (usually another feat) was removed — this feat is kept, but no longer qualifies. Verify manually or remove it."
+              content="A prerequisite (usually another feat) was removed. This feat is kept, but no longer qualifies. Verify manually or remove it."
             >
               ⚠ no longer qualifies
             </InfoTip>
@@ -400,7 +400,7 @@ export function FeatEntry({
               className="style-badge"
               content={
                 res.bypassed
-                  ? "Ranger combat style — you may take this feat even though its prerequisites are unmet"
+                  ? "Ranger combat style: you may take this feat even though its prerequisites are unmet"
                   : "In your ranger combat style's feat tree"
               }
             >
@@ -437,7 +437,7 @@ export function FeatEntry({
                 value={doc.build.featChoices?.[feat.id] ?? ""}
                 onChange={(e) => update((d) => setFeatChoice(d, feat.id, e.target.value || null))}
               >
-                <option value="">— choose a {choiceDesc.type} —</option>
+                <option value="">Choose a {choiceDesc.type}...</option>
                 {choiceOpts.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.name}

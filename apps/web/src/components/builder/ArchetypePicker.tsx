@@ -80,10 +80,10 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
       {open && (
         <>
           <p className="hint">
-            Mostly structural swaps — a hand-verified slice (marked{" "}
+            Mostly structural swaps: a hand-verified slice (marked{" "}
             <span className="badge-modeled">M</span>) or a machine-extracted slice (marked{" "}
-            <span className="badge-modeled badge-modeled--extracted">M</span>, lower confidence —
-            see Class Features below for its provenance sentence) carries a real numeric effect; the
+            <span className="badge-modeled badge-modeled--extracted">M</span>, lower confidence, see
+            Class Features below for its provenance sentence) carries a real numeric effect; the
             rest show prose only. Picking one that would replace an already-swapped ability is
             blocked (it would silently do nothing).
           </p>
@@ -119,7 +119,7 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
                         className="chip"
                         aria-pressed={isChosen}
                         disabled={conflict.blocked}
-                        disabledReason={`Conflicts with ${conflict.conflictsWith} — both swap the same ability`}
+                        disabledReason={`Conflicts with ${conflict.conflictsWith}: both swap the same ability`}
                         onClick={() => toggle(a.id, conflict.blocked)}
                       >
                         {a.name}

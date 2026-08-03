@@ -50,7 +50,7 @@ export function HitPointsSection({ doc, sheet, refData, update }: BuilderProps) 
                     {isFirst ? (
                       <>
                         <span className="hp-roll-info">
-                          {die} (d{die} — L1 always maxed)
+                          {die} (d{die}, L1 always maxed)
                         </span>
                         <span className="num" style={{ textAlign: "right", color: "var(--muted)" }}>
                           {displayVal}

@@ -64,7 +64,7 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
 
   return (
     <Panel
-      title={`Familiar — ${familiar.name}`}
+      title={`Familiar: ${familiar.name}`}
       step="fam"
       icon={<BirdIcon />}
       storageKey="panel:Familiar"
@@ -153,9 +153,9 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
             const implied = supersededBy !== undefined;
             const impliedName = supersededBy ? CONDITIONS[supersededBy]?.name : undefined;
             const tipContent = implied
-              ? `Implied by ${impliedName} — turn ${impliedName} off to control ${cond.name} directly.`
+              ? `Implied by ${impliedName}. Turn ${impliedName} off to control ${cond.name} directly.`
               : cond.displayOnly
-                ? `${cond.summary} (reference only — no numeric modifier applied)`
+                ? `${cond.summary} (reference only, no numeric modifier applied)`
                 : cond.summary;
             return (
               <button

@@ -76,7 +76,7 @@ export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; ref
                     >
                       {f.name}
                       {f.detail ? <span className="cf-detail"> ({f.detail})</span> : null}
-                      {f.origin ? <span className="cf-origin"> — {f.origin.label}</span> : null}
+                      {f.origin ? <span className="cf-origin"> ({f.origin.label})</span> : null}
                       {f.replacedBy ? <span className="cf-replaced"> → {f.replacedBy}</span> : null}
                     </span>
                     {description ? <FeatureDescription html={description} /> : null}
@@ -109,7 +109,7 @@ export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; ref
                   {f.ambiguous ? (
                     <InfoTip
                       className="soft"
-                      content="No unambiguous base-feature match — verify manually"
+                      content="No unambiguous base-feature match: verify manually"
                     >
                       {" "}
                       ⚠ may replace an existing ability

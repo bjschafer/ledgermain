@@ -1034,7 +1034,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                 })
               )}
               {Object.keys(refData.items).length > 80 && filteredItems.length === 80 ? (
-                <div className="empty">Showing first 80 — refine your search.</div>
+                <div className="empty">Showing first 80. Refine your search.</div>
               ) : null}
             </div>
           </div>
@@ -1167,7 +1167,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                 ))
               )}
               {filteredConsumables.length === 80 ? (
-                <div className="empty">Showing first 80 — refine your search.</div>
+                <div className="empty">Showing first 80. Refine your search.</div>
               ) : null}
             </div>
           </div>
@@ -1295,7 +1295,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                     ))
                   )}
                   {Object.keys(refData.armors).length > 80 && filteredArmors.length === 80 ? (
-                    <div className="empty">Showing first 80 — refine your search.</div>
+                    <div className="empty">Showing first 80. Refine your search.</div>
                   ) : null}
                 </div>
                 <button

@@ -60,7 +60,7 @@ export function FamiliarPicker({ doc, update }: FamiliarPickerProps) {
       {!collapsed && (
         <>
           <p className="hint familiar-hint">
-            A tracked familiar gets its own stat block on the Play tab — HP, AC, saves, attacks, and
+            A tracked familiar gets its own stat block on the Play tab: HP, AC, saves, attacks, and
             skills, derived from your level and this species. Its published master bonus (e.g. a
             cat's +3 Stealth) and Alertness (while it's within arm's reach) apply automatically to
             your own sheet.

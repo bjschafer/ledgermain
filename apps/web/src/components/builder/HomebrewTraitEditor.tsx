@@ -220,7 +220,7 @@ function TraitDraftForm({
           newDraft={() => ({ ...emptyChangeDraft(), type: "trait" })}
         />
         <span className="hb-field-label">
-          Real PF1 traits grant "trait"-type bonuses, which don't stack with each other — the type
+          Real PF1 traits grant "trait"-type bonuses, which don't stack with each other. The type
           defaults to "trait" for new rows, but you can change it if this one is meant to behave
           differently.
         </span>

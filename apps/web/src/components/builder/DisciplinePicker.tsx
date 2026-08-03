@@ -68,18 +68,18 @@ export function DisciplinePicker({ doc, refData, update }: DisciplinePickerProps
         <>
           <p className="hint discipline-picker-hint">
             Pick one psychic discipline (PF1 grants one at level 1, never changed thereafter).
-            Browses the full published catalog — the 12 core Occult Adventures disciplines grant a
+            Browses the full published catalog: the 12 core Occult Adventures disciplines grant a
             bonus spell known at 1st level, 4th level, and every 2 levels thereafter, and set which
             ability (Wisdom or Charisma) feeds your phrenic pool; a vendored-only splatbook
             discipline (marked below) has no bonus spells/Discipline Powers/pool ability modeled.
-            Free-choice — no validation.
+            Free-choice: no validation.
           </p>
           <select
             className="discipline-select"
             value={chosenTag}
             onChange={(e) => update((d) => setPsychicDiscipline(d, e.target.value || null))}
           >
-            <option value="">— none chosen —</option>
+            <option value="">(none chosen)</option>
             {catalog.map((d) => (
               <option key={d.tag} value={d.tag}>
                 {d.name}
@@ -93,7 +93,7 @@ export function DisciplinePicker({ doc, refData, update }: DisciplinePickerProps
               {disciplineDef.vendoredOnly ? (
                 <>
                   <p className="hint">
-                    Vendored-only discipline — no bonus spells, Discipline Powers, or phrenic pool
+                    Vendored-only discipline: no bonus spells, Discipline Powers, or phrenic pool
                     ability resolution modeled. See below for the published prose.
                   </p>
                   {disciplineDef.description ? (

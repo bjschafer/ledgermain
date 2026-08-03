@@ -72,7 +72,7 @@ export function PhantomPicker({ doc, update }: PhantomPickerProps) {
       {!collapsed && (
         <>
           <p className="hint familiar-hint">
-            A tracked phantom gets its own stat block on the Play tab — HD, BAB, saves, AC, attacks,
+            A tracked phantom gets its own stat block on the Play tab: HD, BAB, saves, AC, attacks,
             and skills, derived from your spiritualist level and its Emotional Focus.
           </p>
           {!phantom ? (

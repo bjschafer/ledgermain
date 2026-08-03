@@ -25,9 +25,9 @@ const DAMAGE_ABILITIES = [
   { value: "none" as const, label: "None" },
 ];
 const DAMAGE_MULTIPLIERS = [
-  { value: 1, label: "×1 — one-handed (default)" },
-  { value: 1.5, label: "×1.5 — two-handed" },
-  { value: 0.5, label: "×0.5 — off-hand" },
+  { value: 1, label: "×1: one-handed (default)" },
+  { value: 1.5, label: "×1.5: two-handed" },
+  { value: 0.5, label: "×0.5: off-hand" },
 ];
 const PROFICIENCIES = [
   { value: "simple" as const, label: "Simple" },
@@ -332,7 +332,7 @@ function weaponMeta(w: WeaponInstance): string {
   }
   const critRange = w.critRange ?? 20;
   const critMult = w.critMult ?? 2;
-  parts.push(`crit ${critRange < 20 ? `${critRange}–20/×${critMult}` : `×${critMult}`}`);
+  parts.push(`crit ${critRange < 20 ? `${critRange}-20/×${critMult}` : `×${critMult}`}`);
   if (w.group) parts.push(`type: ${w.group}`);
   for (const note of abilityNotes(w.abilities, w.abilityInfo)) {
     parts.push(note.note ? `${note.name} (${note.note})` : note.name);
@@ -346,7 +346,7 @@ function weaponRefMeta(w: WeaponRef): string {
   if (w.damageDice) parts.push(w.damageDice);
   const critRange = w.critRange ?? 20;
   const critMult = w.critMult ?? 2;
-  parts.push(`crit ${critRange < 20 ? `${critRange}–20/×${critMult}` : `×${critMult}`}`);
+  parts.push(`crit ${critRange < 20 ? `${critRange}-20/×${critMult}` : `×${critMult}`}`);
   if (w.group) parts.push(`type: ${w.group}`);
   return parts.join(" · ");
 }
@@ -600,7 +600,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
                     ))
                   )}
                   {Object.keys(refData.weapons).length > 80 && filteredWeapons.length === 80 ? (
-                    <div className="empty">Showing first 80 — refine your search.</div>
+                    <div className="empty">Showing first 80. Refine your search.</div>
                   ) : null}
                 </div>
                 <button
