@@ -1433,10 +1433,21 @@ describe("archetypes (Stage 11, third-party dataset — no archetype data in Fou
     expect(byLevel.get(11)?.pairedBaseFeatureUuid).toBeUndefined();
   });
 
-  it("doesn't auto-pair ambiguous multi-feature levels (cleric's entire kit sits at level 1)", () => {
+  it("doesn't level-collision-pair ambiguous multi-feature levels (cleric's entire kit sits at level 1), but still pairs by name", () => {
     for (const f of Object.values(ref.archetypeFeatures)) {
-      if (f.classTag === "cleric") expect(f.pairedBaseFeatureUuid).toBeUndefined();
+      if (f.classTag !== "cleric") continue;
+      // The level-collision heuristic never fires here (nothing to fall back
+      // to at a level with six grants) — only a `replacesText` name match can
+      // pair a cleric feature at all, e.g. Appeaser's own "Aura" below.
+      if (f.replacesText === undefined) expect(f.pairedBaseFeatureUuid).toBeUndefined();
     }
+
+    const cleric = classByTag("cleric");
+    const aura = cleric.features.find((f) => f.name === "Aura")!;
+    expect(ref.archetypeFeatures["cleric:appeaser:aura:0"]).toMatchObject({
+      replacesText: "aura",
+      pairedBaseFeatureUuid: aura.uuid,
+    });
   });
 
   it("doesn't auto-pair Bonus Feat slots even when otherwise unambiguous", () => {
@@ -1445,5 +1456,102 @@ describe("archetypes (Stage 11, third-party dataset — no archetype data in Fou
     for (const f of Object.values(ref.archetypeFeatures)) {
       expect(f.pairedBaseFeatureUuid).not.toBe(bonusFeats.uuid);
     }
+  });
+
+  describe("replacesText/replacesSlot/abilityType (source flags the pipeline reads)", () => {
+    it("Mountain Witch's Mountain Beast Empathy: a leveled hex-slot replacement", () => {
+      const f = ref.archetypeFeatures["witch:mountain-witch:mountain-beast-empathy:2"];
+      expect(f).toMatchObject({
+        level: 2,
+        replacesText: "hex gained at 2nd level",
+        replacesSlot: { kind: "hex", level: 2 },
+        isReplacement: true,
+        abilityType: "ex",
+      });
+      // A subsystem slot never pairs to a single base-class grant.
+      expect(f?.pairedBaseFeatureUuid).toBeUndefined();
+    });
+
+    it("Mountain Witch's Stone Spirit Hex: an unleveled, bare hex-slot alteration", () => {
+      const f = ref.archetypeFeatures["witch:mountain-witch:stone-spirit-hex:0"];
+      expect(f).toMatchObject({
+        level: 0,
+        replacesText: "hex",
+        replacesSlot: { kind: "hex" },
+        isReplacement: true,
+      });
+      expect(f?.replacesSlot?.level).toBeUndefined();
+      expect(f?.pairedBaseFeatureUuid).toBeUndefined();
+    });
+
+    it("pairs a named single-ability replacement by name where the old level-collision heuristic couldn't (Slayer's Track sits at a level with a second grant)", () => {
+      const slayer = classByTag("slayer");
+      const track = slayer.features.find((f) => f.name === "Track")!;
+      // The old heuristic never pairs at slayer level 1 (Studied Target grants
+      // there too), so this could only ever pair by matching "track" itself.
+      expect(slayer.features.filter((f) => f.level === track.level)).toHaveLength(2);
+
+      const f = ref.archetypeFeatures["slayer:covenbane:hag-sense:0"];
+      expect(f).toMatchObject({
+        level: 0,
+        replacesText: "track",
+        isReplacement: true,
+        abilityType: "su",
+        pairedBaseFeatureUuid: track.uuid,
+      });
+      expect(f?.replacesSlot).toBeUndefined();
+    });
+  });
+
+  describe("witch Rhetorican/Rhetorician and Tatterdermalion/Tatterdemalion dedup", () => {
+    it("merges the misspelled structured doc and the correctly-spelled inline-prose doc into one archetype each", () => {
+      const witchArchetypes = Object.values(ref.archetypes).filter((a) => a.classTag === "witch");
+      expect(witchArchetypes.filter((a) => a.name === "Rhetorician")).toHaveLength(1);
+      expect(witchArchetypes.filter((a) => a.name === "Tatterdemalion")).toHaveLength(1);
+      expect(ref.archetypes["witch:rhetorician"]).toBeUndefined();
+      expect(ref.archetypes["witch:tatterdemalion"]).toBeUndefined();
+      expect(ref.archetypes["witch:rhetorican"]?.name).toBe("Rhetorician");
+      expect(ref.archetypes["witch:tatterdermalion"]?.name).toBe("Tatterdemalion");
+    });
+
+    it("carries over the dropped Tatterdemalion doc's features the structured doc didn't already have", () => {
+      const names = Object.values(ref.archetypeFeatures)
+        .filter((f) => f.archetypeId === "witch:tatterdermalion")
+        .map((f) => f.name)
+        .sort();
+      expect(names).toEqual([
+        "Cantrips",
+        "Dancing Strings",
+        "Lace Weaver",
+        "Sinister Stitching",
+        "Unravel",
+        "Weapon Proficiency",
+        "Witchweaver",
+      ]);
+      // Carried over from the dropped `witch:tatterdemalion` doc, keeping
+      // their own levels (parsed from their own "At Nth level" prose).
+      const byName = Object.fromEntries(
+        Object.values(ref.archetypeFeatures)
+          .filter((f) => f.archetypeId === "witch:tatterdermalion")
+          .map((f) => [f.name, f]),
+      );
+      expect(byName["Lace Weaver"]?.level).toBe(8);
+      expect(byName["Sinister Stitching"]?.level).toBe(12);
+      expect(byName["Unravel"]?.level).toBe(16);
+    });
+  });
+
+  it("id stability: a feature's id keeps its old level even when `.level` itself is corrected", () => {
+    // Same posture as `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL`: the id embeds
+    // whatever the structured/legacy source would produce on its own, not the
+    // better-informed `.level` field.
+    expect(ref.archetypeFeatures["witch:tatterdermalion:cantrips:0"]).toMatchObject({
+      level: 1,
+      id: "witch:tatterdermalion:cantrips:0",
+    });
+    expect(ref.archetypeFeatures["slayer:covenbane:hag-sense:0"]?.level).toBe(0);
+    // A plain sanity check that ordinary ids (explicit structured level, no
+    // replaces flags at all) still resolve.
+    expect(ref.archetypeFeatures["fighter:two-handed-fighter:overhand-chop:3"]).toBeDefined();
   });
 });

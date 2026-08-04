@@ -156,9 +156,21 @@ export const SYSTEM_VERSION = "11.11";
  * instead, so the key could never be populated and reading it as a spell
  * source was a standing trap. `Archetype.contributorModule` held the same
  * literal on all 1,429 archetypes; the attribution it duplicated lives in
- * `ARCHETYPE_REPO` above, and the content licence in `NOTICE.md`.
+ * `ARCHETYPE_REPO` above, and the content licence in `NOTICE.md`. v27 widens
+ * `ArchetypeFeature` with fields the archetype source carried all along under
+ * `flags["pf1-archetypes"]`/`system.abilityType` but the pipeline never read:
+ * `replacesText` (verbatim "hex gained at 2nd level"-style prose naming what
+ * a feature replaces), `isReplacement` (swap vs. addition/alteration),
+ * `replacesSlot` (that same text parsed into a subsystem grant slot when
+ * unambiguous), and `abilityType` (ex/su/sp). `.level` also now falls back to
+ * the flag's own `archetypeLevel`, a level parsed off `replacesText`, or a
+ * stricter opening-sentence prose scrape before giving up at 0 (previously
+ * the only fallback for features linked without a structured level), and
+ * `pairedBaseFeatureUuid` now prefers matching `replacesText` against the
+ * base class's own feature names over the previous level-collision-only
+ * heuristic.
  */
-export const SCHEMA_VERSION = 26;
+export const SCHEMA_VERSION = 27;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

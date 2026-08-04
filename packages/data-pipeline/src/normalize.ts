@@ -61,6 +61,7 @@ import { SCHEMA_VERSION, SLICE } from "./config.js";
 import { transformArmor, isMundaneArmor } from "./transform/armor.js";
 import {
   loadLegacyArchetypeFeatureLevels,
+  mergeDuplicateArchetypes,
   transformArchetypePack,
 } from "./transform/archetypes.js";
 import { transformBuff } from "./transform/buffs.js";
@@ -818,6 +819,7 @@ export function normalize(opts: NormalizeOptions): {
     legacyArchetypeFeatureLevels,
     resolveUuid,
   );
+  mergeDuplicateArchetypes(archetypes, archetypeFeatures);
   applyArchetypeFeatureLevelSupplements(archetypeFeatures);
 
   // --- rage powers (fourth-party dataset; Foundry ships only a stub — see

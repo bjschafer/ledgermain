@@ -188,7 +188,8 @@ function classTagsForArchetypeDoc(folderName: string, fileBase: string): string[
  * across the game, so a level-only cross-ref can't disambiguate which one an
  * archetype replaces). Everything else stays unpaired — the UI shows the
  * archetype feature's own prose as a soft warning instead of a struck-through
- * swap.
+ * swap. Used only as a fallback when a feature carries no `replacesText` at
+ * all — see `pairBaseFeature`.
  */
 export function pairableBaseFeatureLevels(classDef: Class): Map<number, string> {
   const byLevel = new Map<number, { uuid: string; name: string }[]>();
@@ -207,18 +208,331 @@ export function pairableBaseFeatureLevels(classDef: Class): Map<number, string> 
   return pairable;
 }
 
+/**
+ * The same base-class feature grants as {@link pairableBaseFeatureLevels},
+ * indexed by normalized name instead of level — the preferred pairing path
+ * (see `pairBaseFeature`): an archetype feature's own `replacesText` names
+ * the ability it swaps out directly, so this doesn't need the level to be
+ * unique, only the name. A name can recur at multiple levels (e.g. a
+ * multi-level talent/hex/deed line), so each key keeps every occurrence for
+ * `pairBaseFeature`'s level-qualifier disambiguation.
+ */
+function baseFeatureGrantsByName(classDef: Class): Map<string, { uuid: string; level: number }[]> {
+  const byName = new Map<string, { uuid: string; level: number }[]>();
+  for (const f of classDef.features) {
+    if (/bonus feat/i.test(f.name)) continue;
+    const key = singularizePhrase(f.name.toLowerCase().trim());
+    const grants = byName.get(key) ?? [];
+    grants.push({ uuid: f.uuid, level: f.level });
+    byName.set(key, grants);
+  }
+  return byName;
+}
+
+/** Both base-class pairing indexes for one class, built once per (archetype loop, classTag). */
+interface PairingContext {
+  byLevel: Map<number, string>;
+  byName: Map<string, { uuid: string; level: number }[]>;
+}
+
+function buildPairingContext(classDef: Class): PairingContext {
+  return {
+    byLevel: pairableBaseFeatureLevels(classDef),
+    byName: baseFeatureGrantsByName(classDef),
+  };
+}
+
+// --- replaces-text parsing -------------------------------------------------
+//
+// The archetype source flags a feature doc's `replaces`/`archetypeReplaces`/
+// `archetypeLevel` under `flags["pf1-archetypes"]` (free text, e.g. "hex
+// gained at 2nd level", "evasion", "slayer talent gained at 2nd level") on
+// about a seventh of feature docs. That text drives both a display field
+// (`replacesText`) and, when it parses cleanly, a base-feature pairing
+// (`pairBaseFeature`) and a level fallback (`resolveFeatureLevel`).
+
+/** Collapse runs of ASCII/NBSP whitespace (block-scalar YAML unwraps to some) into single spaces. */
+function collapseWhitespace(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+/** A single leading possessive word, e.g. "witch's " or "necrologist's " — noise for both kind and name parsing. */
+const POSSESSIVE_PREFIX_RE = /^[a-z]+['’]s\s+/i;
+/** A leading article — "the hex gained at..." / "an existing deed". */
+const ARTICLE_PREFIX_RE = /^(?:the|an?)\s+/i;
+/** "<phrase> [normally] gained at <N>(st|nd|rd|th) level" — the one structured shape `replaces` text takes. */
+const GAINED_AT_RE = /^(.+?)\s+(?:normally\s+)?gained at (\d+)(?:st|nd|rd|th) level$/i;
+
+function stripNoisePrefixes(phrase: string): string {
+  return phrase.replace(ARTICLE_PREFIX_RE, "").replace(POSSESSIVE_PREFIX_RE, "").trim();
+}
+
+/** Lowercase-singularize the last word of a phrase ("slayer talents" -> "slayer talent", "hexes" -> "hex"). */
+function singularizePhrase(phrase: string): string {
+  const words = phrase.split(" ");
+  const last = words.pop();
+  if (last === undefined) return phrase;
+  let singular = last;
+  if (/[a-z]ies$/i.test(last)) singular = last.slice(0, -3) + "y";
+  else if (/[a-z](x|ch|sh)es$/i.test(last)) singular = last.slice(0, -2);
+  else if (/[a-z]s$/i.test(last) && !/ss$/i.test(last)) singular = last.slice(0, -1);
+  words.push(singular);
+  return words.join(" ");
+}
+
+/**
+ * Whether a normalized kind phrase names a per-level "pick one" subsystem
+ * (hexes, talents, feats, ...) rather than a single fixed ability. Keyed off
+ * the phrase's last word, which is where every observed subsystem name in
+ * the source puts its category ("slayer talent", "rage power", "magus
+ * arcana", ...).
+ */
+const SUBSYSTEM_SLOT_LAST_WORDS = new Set([
+  "hex",
+  "hexes",
+  "talent",
+  "talents",
+  "feat",
+  "feats",
+  "exploit",
+  "exploits",
+  "trick",
+  "tricks",
+  "arcana",
+  "discovery",
+  "discoveries",
+  "power",
+  "powers",
+  "blessing",
+  "blessings",
+]);
+
+function isSubsystemSlotKind(kind: string): boolean {
+  const lastWord = kind.trim().split(/\s+/).pop() ?? "";
+  return SUBSYSTEM_SLOT_LAST_WORDS.has(lastWord.toLowerCase());
+}
+
+/**
+ * A clean, single-target "gained at Nth level" match, or `undefined` for
+ * anything with more than one target (a comma list, an " and " conjunction)
+ * or no such phrase at all. Shared by `parseReplacesSlot` (subsystem slots)
+ * and `pairBaseFeature`'s level-qualifier disambiguation.
+ */
+function matchGainedAt(replacesText: string): { kind: string; level: number } | undefined {
+  if (replacesText.includes(",") || /\band\b/i.test(replacesText)) return undefined;
+  const m = GAINED_AT_RE.exec(replacesText);
+  if (!m) return undefined;
+  return { kind: stripNoisePrefixes(m[1]!), level: Number(m[2]) };
+}
+
+/**
+ * Parses `replacesText` into a subsystem grant slot when it unambiguously
+ * names one — either "<subsystem> gained at Nth level" or a bare subsystem
+ * name with no level at all (e.g. a hex-altering feature that isn't tied to
+ * any one level's pick, like Mountain Witch's Stone Spirit Hex). Multi-target
+ * text (commas, "and") and single named abilities ("evasion", "track") never
+ * produce a slot — the latter are exactly what `pairBaseFeature` needs left
+ * alone so it can match them by name instead.
+ */
+function parseReplacesSlot(replacesText: string): { kind: string; level?: number } | undefined {
+  const gainedAt = matchGainedAt(replacesText);
+  if (gainedAt) {
+    if (!isSubsystemSlotKind(gainedAt.kind)) return undefined;
+    return { kind: singularizePhrase(gainedAt.kind.toLowerCase()), level: gainedAt.level };
+  }
+  if (replacesText.includes(",") || /\band\b/i.test(replacesText)) return undefined;
+  const bare = stripNoisePrefixes(replacesText);
+  if (!isSubsystemSlotKind(bare)) return undefined;
+  return { kind: singularizePhrase(bare.toLowerCase()) };
+}
+
+/**
+ * Matches `replacesText` (once it's been ruled out as a subsystem slot) by
+ * name against the base class's own feature grants, preferring an exact
+ * single match; when the same name recurs at several levels (a multi-level
+ * talent/deed line), the "gained at Nth level" qualifier picks the right one.
+ * Never called for slot text — a subsystem slot has no single `Class.features`
+ * grant to pair against.
+ */
+function pairByName(
+  replacesText: string,
+  byName: Map<string, { uuid: string; level: number }[]>,
+): string | undefined {
+  if (replacesText.includes(",") || /\band\b/i.test(replacesText)) return undefined;
+  const gainedAt = matchGainedAt(replacesText);
+  const namePhrase = gainedAt ? gainedAt.kind : stripNoisePrefixes(replacesText);
+  const key = singularizePhrase(namePhrase.toLowerCase());
+  const candidates = byName.get(key);
+  if (!candidates || candidates.length === 0) return undefined;
+  if (candidates.length === 1) return candidates[0]!.uuid;
+  if (gainedAt === undefined) return undefined;
+  const atLevel = candidates.filter((c) => c.level === gainedAt.level);
+  return atLevel.length === 1 ? atLevel[0]!.uuid : undefined;
+}
+
+/**
+ * Pairs an archetype feature to a base-class grant it replaces. A feature
+ * with `replacesText` is matched by name (`pairByName`) — preferred because
+ * it survives base-class levels where several features are granted at once,
+ * which defeats the level-only heuristic entirely (e.g. every base class
+ * level that also grants a talent/deed alongside its named feature). A
+ * feature with no `replacesText` at all falls back to the old level-collision
+ * heuristic. A feature whose text parsed as a subsystem slot never pairs —
+ * there's no single grant a "hex" or "bonus feat" slot could mean.
+ */
+function pairBaseFeature(
+  replacesText: string | undefined,
+  replacesSlot: { kind: string; level?: number } | undefined,
+  level: number,
+  pairing: PairingContext,
+): string | undefined {
+  if (replacesText === undefined) return pairing.byLevel.get(level);
+  if (replacesSlot) return undefined;
+  return pairByName(replacesText, pairing.byName);
+}
+
+interface ArchetypeReplacesFlags {
+  replacesText?: string;
+  isReplacement?: boolean;
+  archetypeLevel?: number;
+}
+
+function archetypeReplacesFlags(doc: RawDoc): ArchetypeReplacesFlags {
+  const flags = doc.flags as Record<string, unknown> | undefined;
+  const pf = flags?.["pf1-archetypes"] as Record<string, unknown> | undefined;
+  if (!pf) return {};
+  const replacesText =
+    typeof pf.replaces === "string" ? collapseWhitespace(pf.replaces) : undefined;
+  const isReplacement =
+    typeof pf.archetypeReplaces === "boolean" ? pf.archetypeReplaces : undefined;
+  const archetypeLevel = typeof pf.archetypeLevel === "number" ? pf.archetypeLevel : undefined;
+  return {
+    ...(replacesText !== undefined && replacesText !== "" ? { replacesText } : {}),
+    ...(isReplacement !== undefined ? { isReplacement } : {}),
+    ...(archetypeLevel !== undefined ? { archetypeLevel } : {}),
+  };
+}
+
+function abilityTypeOf(sys: Record<string, unknown>): "ex" | "su" | "sp" | undefined {
+  return sys.abilityType === "ex" || sys.abilityType === "su" || sys.abilityType === "sp"
+    ? sys.abilityType
+    : undefined;
+}
+
+/**
+ * Class-table chassis rows ("alters the class table" entries like Hexes,
+ * Bonus Feats, Class Skills) that genuinely have no single level — never
+ * worth prose-guessing a level for, since their description talks about
+ * several levels at once (a hex/spell/talent list spanning the whole class
+ * progression) and any "Nth level" phrase found there would be someone else's
+ * level, not this row's.
+ */
+const CHASSIS_FEATURE_NAMES = new Set([
+  "class skills",
+  "skills",
+  "weapon and armor proficiency",
+  "weapon and armor proficiencies",
+  "weapon proficiency",
+  "armor proficiency",
+  "alignment",
+  "hex",
+  "hexes",
+  "major hex",
+  "major hexes",
+  "grand hex",
+  "grand hexes",
+  "patron",
+  "patron spells",
+  "spells",
+  "spellcasting",
+  "bonus feat",
+  "bonus feats",
+  "slayer talents",
+  "advanced slayer talents",
+  "rogue talents",
+  "discoveries",
+  "skill ranks per level",
+]);
+
+/**
+ * A stricter "At Nth level" scrape than `guessLevelFromProse`: no default-to-1
+ * (an unleveled feature should stay unleveled, not silently become 1st), only
+ * an explicit match in the opening sentence or two counts (a level mentioned
+ * deep in the mechanics is someone else's, not the grant level), and chassis
+ * rows are skipped outright — see `CHASSIS_FEATURE_NAMES`.
+ */
+function guessLevelFromOpeningProse(
+  name: string,
+  description: string | undefined,
+): number | undefined {
+  if (CHASSIS_FEATURE_NAMES.has(name.toLowerCase())) return undefined;
+  if (!description) return undefined;
+  const opening = description.split(/<\/p>/i).slice(0, 2).join(" ");
+  const m = /\bat\s+(\d+)(?:st|nd|rd|th)\s+level\b/i.exec(opening);
+  return m ? Number(m[1]) : undefined;
+}
+
+/**
+ * Resolves the `.level` FIELD (never the id — see below) from, in order: an
+ * explicit signal that already won outright under the pre-existing rules
+ * (`s.level` on the supplements path, a previously-vendored level on the
+ * inline-prose/orphan paths — passed in as `explicitLevel`), the source's own
+ * `archetypeLevel` flag, a level qualifier parsed off `replacesText` ("hex
+ * gained at 2nd level" implies the replacement lands at 2nd level too), a
+ * strict opening-prose scrape, and finally `oldLevel` — exactly what the
+ * pre-existing rules would have produced with no further guessing (0 on the
+ * supplements path, a default-to-1st-level prose guess on the others).
+ * `oldLevel` as the last resort means this can only ever improve on the
+ * previous result, never regress it.
+ *
+ * Deliberately separate from the id: `id`/`uuid` embed `oldLevel` always (see
+ * `makeFeature`), matching the standing `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL`
+ * posture of correcting `.level` while leaving a feature's id/uuid — and
+ * anything keyed off them, like `@pf1/engine`'s `archetype-effects.ts` —
+ * exactly where they were.
+ */
+function resolveFeatureLevel(
+  explicitLevel: number | undefined,
+  oldLevel: number,
+  flags: ArchetypeReplacesFlags,
+  replacesSlot: { kind: string; level?: number } | undefined,
+  name: string,
+  description: string | undefined,
+): number {
+  if (explicitLevel !== undefined) return explicitLevel;
+  if (flags.archetypeLevel !== undefined) return flags.archetypeLevel;
+  if (replacesSlot?.level !== undefined) return replacesSlot.level;
+  return guessLevelFromOpeningProse(name, description) ?? oldLevel;
+}
+
 function makeFeature(
   archetypeId: string,
   archetypeBareName: string,
   classTag: string,
   featDoc: RawDoc,
-  level: number,
-  pairable: Map<number, string>,
+  oldLevel: number,
+  explicitLevel: number | undefined,
+  pairing: PairingContext,
   resolveUuid: UuidResolver,
 ): ArchetypeFeature {
   const name = bareFeatureName(featDoc.name, archetypeBareName);
-  const id = `${archetypeId}:${slug(name)}:${level}`;
+  // `id`/`uuid` always embed `oldLevel` — the exact value the pre-existing
+  // rules would have produced — never the (possibly better-informed) `level`
+  // field below. See `resolveFeatureLevel`'s doc comment.
+  const id = `${archetypeId}:${slug(name)}:${oldLevel}`;
   const sys = (featDoc.system ?? {}) as Record<string, unknown>;
+  const description = descriptionValue(sys, resolveUuid);
+  const flags = archetypeReplacesFlags(featDoc);
+  const replacesSlot =
+    flags.replacesText !== undefined ? parseReplacesSlot(flags.replacesText) : undefined;
+  const level = resolveFeatureLevel(
+    explicitLevel,
+    oldLevel,
+    flags,
+    replacesSlot,
+    name,
+    description,
+  );
   return {
     id,
     uuid: `archetype-feature:${id}`,
@@ -226,9 +540,13 @@ function makeFeature(
     archetypeId,
     classTag,
     level,
-    description: descriptionValue(sys, resolveUuid),
+    description,
     sources: normalizeSources(sys.sources),
-    pairedBaseFeatureUuid: pairable.get(level),
+    pairedBaseFeatureUuid: pairBaseFeature(flags.replacesText, replacesSlot, level, pairing),
+    ...(flags.replacesText !== undefined ? { replacesText: flags.replacesText } : {}),
+    ...(flags.isReplacement !== undefined ? { isReplacement: flags.isReplacement } : {}),
+    ...(replacesSlot ? { replacesSlot } : {}),
+    ...(abilityTypeOf(sys) !== undefined ? { abilityType: abilityTypeOf(sys) } : {}),
   };
 }
 
@@ -322,7 +640,7 @@ export function transformArchetypePack(
         sources,
       });
 
-      const pairable = pairableBaseFeatureLevels(classesByTag.get(classTag)!);
+      const pairing = buildPairingContext(classesByTag.get(classTag)!);
 
       if (supplements.length > 0) {
         for (const s of supplements) {
@@ -334,9 +652,19 @@ export function transformArchetypePack(
           const featDoc = featureId ? featById.get(featureId) : undefined;
           if (!featDoc || featureId === undefined) continue;
           consumedFeatureIds.add(featureId);
-          const level = typeof s.level === "number" ? s.level : 0;
+          const explicitLevel = typeof s.level === "number" ? s.level : undefined;
+          const oldLevel = explicitLevel ?? 0;
           archetypeFeatures.push(
-            makeFeature(archetypeId, bareName, classTag, featDoc, level, pairable, resolveUuid),
+            makeFeature(
+              archetypeId,
+              bareName,
+              classTag,
+              featDoc,
+              oldLevel,
+              explicitLevel,
+              pairing,
+              resolveUuid,
+            ),
           );
         }
       } else {
@@ -349,10 +677,19 @@ export function transformArchetypePack(
           consumedFeatureIds.add(fp.doc._id);
           const name = bareFeatureName(fp.doc.name, bareName);
           const legacyLevel = legacyFeatureLevels.get(`${archetypeId}:${slug(name)}`);
-          const level =
+          const oldLevel =
             legacyLevel ?? guessLevelFromProse(descriptionValue(fp.doc.system ?? {}, resolveUuid));
           archetypeFeatures.push(
-            makeFeature(archetypeId, bareName, classTag, fp.doc, level, pairable, resolveUuid),
+            makeFeature(
+              archetypeId,
+              bareName,
+              classTag,
+              fp.doc,
+              oldLevel,
+              legacyLevel,
+              pairing,
+              resolveUuid,
+            ),
           );
         }
       }
@@ -392,18 +729,92 @@ export function transformArchetypePack(
         classTag,
       });
 
-      const pairable = pairableBaseFeatureLevels(classesByTag.get(classTag)!);
+      const pairing = buildPairingContext(classesByTag.get(classTag)!);
       for (const featDoc of docs) {
         const name = bareFeatureName(featDoc.name, tag);
         const legacyLevel = legacyFeatureLevels.get(`${archetypeId}:${slug(name)}`);
-        const level =
+        const oldLevel =
           legacyLevel ?? guessLevelFromProse(descriptionValue(featDoc.system ?? {}, resolveUuid));
         archetypeFeatures.push(
-          makeFeature(archetypeId, tag, classTag, featDoc, level, pairable, resolveUuid),
+          makeFeature(
+            archetypeId,
+            tag,
+            classTag,
+            featDoc,
+            oldLevel,
+            legacyLevel,
+            pairing,
+            resolveUuid,
+          ),
         );
       }
     }
   }
 
   return { archetypes, archetypeFeatures };
+}
+
+/**
+ * The archetype source migrated two witch archetypes from an inline-prose doc
+ * to a mechanically-structured one at some point, and left both behind under
+ * slightly different spellings rather than replacing the original — confirmed
+ * by reading all four source docs: same source page each time, one member of
+ * each pair a `links.supplements`-driven doc under a misspelled name
+ * (`Rhetorican`, `Tatterdermalion`), the other the original correctly-spelled
+ * inline-prose doc it superseded (`Rhetorician`, `Tatterdemalion`, one with
+ * zero structured features, the other's features folded into the surviving
+ * doc's prose). A sweep for other same-class archetype names within edit
+ * distance 2 turned up mostly coincidental near-misses with their own
+ * distinct sources (druid's Bat/Bear/Boar Shaman, rogue's
+ * Sapper/Sniper/Sharper, ...) — left alone. Two more, though, are a
+ * DIFFERENT split-archetype defect this table doesn't cover: antipaladin's
+ * Rough Rampage/Rough Rampager and paladin's Virtuoso Bravo/Virtuous Bravo
+ * each have exactly one real wrapper doc (the archetype's actual name,
+ * description, and sources) whose own features are tagged under a
+ * *different* spelling than the wrapper's name, so the vanished-parent
+ * recovery pass below synthesizes a second, sourceless archetype under the
+ * features' tag spelling to hold them — not the doc-duplication pattern this
+ * table merges, so left for separate handling.
+ */
+const ARCHETYPE_DEDUP_MERGES: { keep: string; drop: string; displayName: string }[] = [
+  { keep: "witch:rhetorican", drop: "witch:rhetorician", displayName: "Rhetorician" },
+  { keep: "witch:tatterdermalion", drop: "witch:tatterdemalion", displayName: "Tatterdemalion" },
+];
+
+/**
+ * Applies `ARCHETYPE_DEDUP_MERGES` in place: renames the surviving archetype
+ * to its correctly-spelled display name, drops the duplicate archetype entry,
+ * and carries over any of the dropped doc's features the surviving doc
+ * doesn't already have under the same name (re-keyed to the surviving
+ * archetype's id) before dropping the rest. Unlike the level-resolution and
+ * pairing changes elsewhere in this module, this deliberately DOES change a
+ * handful of ids — the dropped archetype and its unique-by-name features
+ * never existed as far as any `CharacterDoc` should be concerned, since the
+ * two entries were always the same archetype under a data-entry typo.
+ */
+export function mergeDuplicateArchetypes(
+  archetypes: Archetype[],
+  archetypeFeatures: ArchetypeFeature[],
+): void {
+  for (const { keep, drop, displayName } of ARCHETYPE_DEDUP_MERGES) {
+    const keptIndex = archetypes.findIndex((a) => a.id === keep);
+    if (keptIndex === -1) continue;
+    archetypes[keptIndex] = { ...archetypes[keptIndex]!, name: displayName };
+
+    const droppedIndex = archetypes.findIndex((a) => a.id === drop);
+    if (droppedIndex !== -1) archetypes.splice(droppedIndex, 1);
+
+    const keptNames = new Set(
+      archetypeFeatures.filter((f) => f.archetypeId === keep).map((f) => f.name.toLowerCase()),
+    );
+    for (const f of archetypeFeatures) {
+      if (f.archetypeId !== drop || keptNames.has(f.name.toLowerCase())) continue;
+      f.archetypeId = keep;
+      f.id = `${keep}:${slug(f.name)}:${f.level}`;
+      f.uuid = `archetype-feature:${f.id}`;
+    }
+    for (let i = archetypeFeatures.length - 1; i >= 0; i--) {
+      if (archetypeFeatures[i]!.archetypeId === drop) archetypeFeatures.splice(i, 1);
+    }
+  }
 }

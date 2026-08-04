@@ -4,7 +4,7 @@
     "alchemistDiscoveries": 168,
     "arcanistExploits": 73,
     "archetypeFeatures": 6053,
-    "archetypes": 1429,
+    "archetypes": 1427,
     "armors": 62,
     "blessings": 42,
     "bloodlineSpellLists": 51,
@@ -65,8 +65,8 @@
   "hashes": {
     "alchemist-discoveries.json": "e97c283d12adc65f44ec5e452cf3045b33080320ed3d1b147b5688de6a13b0bf",
     "arcanist-exploits.json": "08b122c5d40463453ff40e08427344fac64eb5cfbc75b7161fa5d369b5b163ee",
-    "archetype-features.json": "704632a24e616e2ecab082b6f0a74b2529333bf7e627c96fee98bc33c8049ddd",
-    "archetypes.json": "fd53903bb841e7a7194d585c41a83ff5b294c554ffe6764aeb71ec5b816b4914",
+    "archetype-features.json": "d3729cbd7693cc497d02a0e98806fdc47f63bb128e268c3c88bfb566cc79aa3a",
+    "archetypes.json": "b4f9940ca1ba85a9ee083654eb70247d69f20b96d0977dd217e9310f2247f76a",
     "armors.json": "ed7612e0cefb17fdacc8b8ed3f462cd43d1b5e4ebd90a53fcd1f7d37f58aca29",
     "blessings.json": "c584300932c577ac5b123ab77416d453a8d5488e5838ce64409bd9cc0a772994",
     "bloodline-spell-lists.json": "3c0e5a2c4f90d3760fb8520ddca198172c47cff5ce77a1f6a00e97980c1afaea",
@@ -122,7 +122,7 @@
     "witch-patrons.json": "abe0bc21ba74cd13a5bd2230a6819764ff173dbe6d74a1b7074211f7428ec22c",
     "wizard-schools.json": "46662970340b24ee1a2dab6369de212dbd6c93e494fbb5a3a381cb2dd3a1e521"
   },
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

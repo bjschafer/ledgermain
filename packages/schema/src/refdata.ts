@@ -1033,6 +1033,32 @@ export interface ArchetypeFeature extends RefEntity {
    * warning instead of a paired swap.
    */
   pairedBaseFeatureUuid?: string;
+  /**
+   * Verbatim (whitespace-collapsed) player-facing text naming what this
+   * feature replaces or alters, e.g. "hex gained at 2nd level" or "evasion" —
+   * sourced from the upstream dataset's own `replaces` flag. Present on a
+   * minority of features; absent doesn't mean the feature replaces nothing,
+   * only that the source didn't say so structurally.
+   */
+  replacesText?: string;
+  /**
+   * True when the source's `archetypeReplaces` flag says this feature is a
+   * straight swap for a base-class ability; false means additive or an
+   * alteration to an existing ability rather than a replacement. Omitted
+   * when the source states neither.
+   */
+  isReplacement?: boolean;
+  /**
+   * `replacesText` parsed into a subsystem grant slot (a hex, talent, feat,
+   * or similar per-level pick) rather than a single named ability — e.g.
+   * "hex gained at 2nd level" -> `{ kind: "hex", level: 2 }`. Only set when
+   * the parse is unambiguous; these never carry `pairedBaseFeatureUuid`,
+   * since a subsystem slot isn't a single `Class.features` grant to pair
+   * against.
+   */
+  replacesSlot?: { kind: string; level?: number };
+  /** Extraordinary / supernatural / spell-like, from the source's `abilityType`, when stated. */
+  abilityType?: "ex" | "su" | "sp";
 }
 
 /* ---------------------------------------------------------- rage powers -- */
