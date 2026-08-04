@@ -1305,38 +1305,75 @@ export function layOnHandsDice(paladinLevel: number): LayOnHandsDetail {
 
 /**
  * Monk unarmed strike damage die, clean-room from the published PF1 SRD
- * "Table: Monk Unarmed Damage" — Medium column only (this engine doesn't
- * model non-Medium creature sizes for this table; same posture as other
- * hand-authored dice tables here). The Monk class feature's own vendored
- * `description` embeds the full Small/Medium/Large table upstream, and it
- * also carries a real dice-bearing action formula
+ * "Table: Monk Unarmed Damage" — all three printed columns (Small/Medium/
+ * Large). The Monk class feature's own vendored `description` embeds the same
+ * table upstream, and it also carries a real dice-bearing action formula
  * (`sizeRoll(ceil(@class.unlevel/11), 6 + floor(@class.unlevel/4) % 3 * 2, @size)`)
  * — but per this project's formula-DSL convention (`formula.ts`: dice terms
  * parse but throw on numeric eval), that's not evaluated here; the display
  * table below is hand-authored directly from the SRD text instead, same
  * posture as `sneakAttackDice` and `smiteEvilDetail`.
  *
- * Progression: 1d6 (L1-3), 1d8 (L4-7), 1d10 (L8-11), 2d6 (L12-15),
- * 2d8 (L16-19), 2d10 (L20).
+ * Medium: 1d6 (L1-3), 1d8 (L4-7), 1d10 (L8-11), 2d6 (L12-15), 2d8 (L16-19),
+ * 2d10 (L20). The Small and Large columns are their own printed progressions,
+ * NOT the Medium one run through `compute.ts`'s `scaleWeaponDamageDice` size
+ * chart: a 12th-level monk reads 1d10 at Small where the size chart would
+ * step 2d6 down to 1d8.
+ *
+ * The brawler's own "Table: Brawler Unarmed Damage" is this same table at
+ * every level and size, so `unarmedDamageDie` serves both classes.
  */
 export interface UnarmedDamageDetail {
   /** Display string, e.g. "1d8". */
   dieLabel: string;
 }
 
+/** One level band of {@link UNARMED_DAMAGE_TABLE}, top level of the band first. */
+interface UnarmedDamageTier {
+  maxLevel: number;
+  sm: string;
+  med: string;
+  lg: string;
+}
+
+const UNARMED_DAMAGE_TABLE: readonly UnarmedDamageTier[] = [
+  { maxLevel: 3, sm: "1d4", med: "1d6", lg: "1d8" },
+  { maxLevel: 7, sm: "1d6", med: "1d8", lg: "2d6" },
+  { maxLevel: 11, sm: "1d8", med: "1d10", lg: "2d8" },
+  { maxLevel: 15, sm: "1d10", med: "2d6", lg: "3d6" },
+  { maxLevel: 19, sm: "2d6", med: "2d8", lg: "3d8" },
+  { maxLevel: Infinity, sm: "2d8", med: "2d10", lg: "4d8" },
+];
+
 /**
- * Unarmed strike damage die for a monk of `monkLevel` (Medium size).
- * Out-of-range (<=0) level is clamped to the L1-3 tier, since a monk's
- * Unarmed Strike class feature is always granted at 1st level.
+ * Which printed column a creature of `size` reads. The table only prints
+ * Small/Medium/Large; anything smaller reads the Small column and anything
+ * larger reads the Large one, rather than extrapolating a column the rules
+ * never published.
  */
-export function unarmedDamageDie(monkLevel: number): UnarmedDamageDetail {
-  const level = Math.max(1, monkLevel);
-  if (level <= 3) return { dieLabel: "1d6" };
-  if (level <= 7) return { dieLabel: "1d8" };
-  if (level <= 11) return { dieLabel: "1d10" };
-  if (level <= 15) return { dieLabel: "2d6" };
-  if (level <= 19) return { dieLabel: "2d8" };
-  return { dieLabel: "2d10" }; // L20
+function unarmedDamageColumn(size: SizeId): "sm" | "med" | "lg" {
+  switch (size) {
+    case "fine":
+    case "dim":
+    case "tiny":
+    case "sm":
+      return "sm";
+    case "med":
+      return "med";
+    default:
+      return "lg";
+  }
+}
+
+/**
+ * Unarmed strike damage die for a monk or brawler of `classLevel` at `size`
+ * (default Medium). Out-of-range (<=0) level is clamped to the L1-3 tier,
+ * since both classes grant the feature at 1st level.
+ */
+export function unarmedDamageDie(classLevel: number, size: SizeId = "med"): UnarmedDamageDetail {
+  const level = Math.max(1, classLevel);
+  const tier = UNARMED_DAMAGE_TABLE.find((t) => level <= t.maxLevel)!;
+  return { dieLabel: tier[unarmedDamageColumn(size)] };
 }
 
 /* ------------------------------------------------------- flurry of blows -- */

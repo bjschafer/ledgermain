@@ -10,6 +10,12 @@ import {
   sanitizeAbilities,
 } from "../../model/abilities.js";
 import { WEAPON_MATERIALS } from "../../model/materials.js";
+import {
+  staleUnarmedDamage,
+  unarmedStrikeMeta,
+  unarmedStrikeSource,
+  unarmedStrikeWeapon,
+} from "../../model/unarmedStrike.js";
 import { SwordIcon } from "../icons.js";
 import { AbilityPicker, pruneAbilityInfo, toggleAbilityPick } from "./AbilityPicker.js";
 import { Panel } from "./Panel.js";
@@ -33,6 +39,10 @@ const PROFICIENCIES = [
   { value: "simple" as const, label: "Simple" },
   { value: "martial" as const, label: "Martial" },
   { value: "exotic" as const, label: "Exotic" },
+  // Unarmed strikes and natural attacks belong to no proficiency category and
+  // never take the -4. Stored as an absent `proficiency`, which the engine's
+  // `isWeaponProficient` reads as "nothing to be non-proficient with".
+  { value: "" as const, label: "Always proficient" },
 ];
 
 const BLANK_WEAPON: WeaponInstance = {
@@ -113,6 +123,7 @@ function WeaponForm({
     if (!weapon.material || weapon.material === "steel") delete weapon.material;
     if (!weapon.abilities) delete weapon.abilities;
     if (!weapon.abilityInfo) delete weapon.abilityInfo;
+    if (!weapon.proficiency) delete weapon.proficiency;
     if (!weapon.masterwork || (weapon.enhancement ?? 0) > 0) delete weapon.masterwork;
     if (!weapon.weight) delete weapon.weight;
     onSave(weapon);
@@ -198,9 +209,9 @@ function WeaponForm({
         <label className="field">
           <span>Proficiency</span>
           <select
-            value={form.proficiency ?? "martial"}
+            value={form.proficiency ?? ""}
             onChange={(e) =>
-              field("proficiency", e.target.value as "simple" | "martial" | "exotic")
+              field("proficiency", (e.target.value || undefined) as WeaponInstance["proficiency"])
             }
           >
             {PROFICIENCIES.map(({ value, label }) => (
@@ -353,6 +364,9 @@ function weaponRefMeta(w: WeaponRef): string {
 
 const ENHANCEMENT_OPTIONS = [0, 1, 2, 3, 4, 5] as const;
 
+/** Search terms that surface the synthesized unarmed strike row in the picker. */
+const UNARMED_SEARCH_TERMS = ["unarmed strike", "fist", "punch", "kick"];
+
 export function WeaponsSection({ doc, refData, update }: BuilderProps) {
   const [showAddCard, setShowAddCard] = useState(false);
   const [addMode, setAddMode] = useState<"select" | "custom">("select");
@@ -378,6 +392,14 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
       .sort((a, b) => a.name.localeCompare(b.name))
       .slice(0, 80);
   }, [refData.weapons, weaponQuery]);
+
+  // The unarmed strike has no compendium entry to pick, so it's synthesized
+  // from the character's own class levels and size — see `model/unarmedStrike.ts`.
+  const unarmed = useMemo(() => unarmedStrikeSource(doc, refData), [doc, refData]);
+  const showUnarmedRow = useMemo(() => {
+    const q = weaponQuery.trim().toLowerCase();
+    return !q || UNARMED_SEARCH_TERMS.some((term) => term.includes(q) || q.includes(term));
+  }, [weaponQuery]);
 
   function handleEnhancementChange(n: number) {
     setEnhancement(n);
@@ -472,6 +494,22 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
                   <div className="gear-name">{w.name}</div>
                   <div className="gear-meta">{weaponMeta(w)}</div>
                 </div>
+                {staleUnarmedDamage(w, doc, refData) ? (
+                  <button
+                    type="button"
+                    className="pick-btn add"
+                    onClick={() =>
+                      update((d) =>
+                        replaceWeapon(d, i, {
+                          ...w,
+                          damageDice: staleUnarmedDamage(w, doc, refData),
+                        }),
+                      )
+                    }
+                  >
+                    Set to {staleUnarmedDamage(w, doc, refData)}
+                  </button>
+                ) : null}
                 <button type="button" className="pick-btn add" onClick={() => startEdit(i)}>
                   Edit
                 </button>
@@ -574,7 +612,27 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
                   onToggle={toggleAbility}
                 />
                 <div className="scroll">
-                  {filteredWeapons.length === 0 ? (
+                  {showUnarmedRow ? (
+                    <div className="pick-row">
+                      <div className="pmain">
+                        <div className="pname">
+                          Unarmed Strike
+                          {enhancement > 0 ? ` +${enhancement}` : ""}
+                        </div>
+                        <div className="preq">
+                          <span>{unarmedStrikeMeta(unarmed)}</span>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        className="pick-btn add"
+                        onClick={() => handleAdd(unarmedStrikeWeapon(doc, refData, enhancement))}
+                      >
+                        Add
+                      </button>
+                    </div>
+                  ) : null}
+                  {filteredWeapons.length === 0 && !showUnarmedRow ? (
                     <div className="empty">No weapons match.</div>
                   ) : (
                     filteredWeapons.map((w) => (

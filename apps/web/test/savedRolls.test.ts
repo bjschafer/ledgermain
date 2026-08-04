@@ -24,6 +24,8 @@ import {
   setSavedRollTwf,
   updateSavedRoll,
 } from "../src/model/savedRolls.js";
+import { flurryTwfChain } from "../src/model/twf.js";
+import { unarmedStrikeWeapon } from "../src/model/unarmedStrike.js";
 
 const ref = loadRefData();
 
@@ -795,6 +797,74 @@ describe("resolveSavedRoll — two-weapon fighting", () => {
       expect(r.offHandDamage!.display).toBe("1d6+6"); // ½ Str 2 + enh 1 + ½ Power Attack 3
       expect(r.display).toBe("+7/+2");
       expect(r.offHand).toBe("+8");
+    });
+  });
+
+  /**
+   * Brawler's flurry: the feature lends the two-weapon chain (and full Str
+   * off-hand) rather than being its own attack sequence, so a brawler who owns
+   * no two-weapon feats still flurries at the feat-owner's numbers. Fixture:
+   * brawler 8 (BAB 8, so Improved has come online), Str 18 (+4), flurrying
+   * unarmed (1d10 at 8th level, a light off-hand).
+   */
+  describe("brawler's flurry", () => {
+    function brawlerFlurry() {
+      let doc = createEmptyDoc("t");
+      doc = addClass(doc, "brawler");
+      doc = setClassLevel(doc, "brawler", 8);
+      doc = setAbility(doc, "str", 18);
+      doc = addWeapon(doc, unarmedStrikeWeapon(doc, ref));
+      doc = addSavedRoll(doc, { kind: "weapon", weaponName: "Unarmed Strike" }, "Flurry");
+      doc = setSavedRollTwf(doc, doc.build.savedRolls![0]!.id, {
+        offHand: "light",
+        offHandWeapon: "Unarmed Strike",
+      });
+      return resolveSavedRoll(
+        doc.build.savedRolls![0]!,
+        compute(doc, ref),
+        ownedFeatSlugs(doc, ref),
+        flurryTwfChain(doc),
+      );
+    }
+
+    it("fights at -2/-2 with no two-weapon feats owned", () => {
+      // Unarmed +12 (BAB 8 + Str 4) -> +12/+7, less the softened -2.
+      expect(brawlerFlurry().display).toBe("+10/+5");
+    });
+
+    it("gets Improved's second off-hand attack at 8th level", () => {
+      expect(brawlerFlurry().offHand).toBe("+10/+5");
+    });
+
+    it("applies full Strength to off-hand damage, without Double Slice", () => {
+      expect(brawlerFlurry().offHandDamage!.display).toBe("1d10+4");
+    });
+
+    it("says where the lent feats came from, and what they're limited to", () => {
+      const r = brawlerFlurry();
+      const improved = r.featChips.find((f) => f.slug === "improved-two-weapon-fighting");
+      expect(improved).toMatchObject({ owned: true, applied: true });
+      expect(improved!.note).toContain("brawler's flurry");
+      expect(r.notes.some((n) => n.includes("unarmed strikes, close weapons"))).toBe(true);
+    });
+
+    it("a 1st-level brawler has no flurry yet: the bare -4/-8", () => {
+      let doc = createEmptyDoc("t");
+      doc = addClass(doc, "brawler");
+      doc = setClassLevel(doc, "brawler", 1);
+      doc = setAbility(doc, "str", 18);
+      doc = addWeapon(doc, unarmedStrikeWeapon(doc, ref));
+      doc = addSavedRoll(doc, { kind: "weapon", weaponName: "Unarmed Strike" }, "Flurry");
+      doc = setSavedRollTwf(doc, doc.build.savedRolls![0]!.id, { offHand: "light" });
+      const r = resolveSavedRoll(
+        doc.build.savedRolls![0]!,
+        compute(doc, ref),
+        ownedFeatSlugs(doc, ref),
+        flurryTwfChain(doc),
+      );
+      // BAB 1 + Str 4 = +5, less the unsoftened light-off-hand -4.
+      expect(r.display).toBe("+1");
+      expect(r.offHand).toBe("-3");
     });
   });
 

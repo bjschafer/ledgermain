@@ -12,8 +12,31 @@
  * against the live sheet and the character's owned feats.
  */
 
-import type { DerivedSheet, ResolvedWeaponAttack, SavedRoll, SavedRollTwf } from "@pf1/schema";
-import { TWF_CHAIN_SLUGS, twoWeaponProfile, type TwoWeaponProfile } from "@pf1/engine";
+import type {
+  CharacterDoc,
+  DerivedSheet,
+  ResolvedWeaponAttack,
+  SavedRoll,
+  SavedRollTwf,
+} from "@pf1/schema";
+import {
+  TWF_CHAIN_SLUGS,
+  brawlersFlurry,
+  twoWeaponProfile,
+  type GrantedTwfChain,
+  type TwoWeaponProfile,
+} from "@pf1/engine";
+
+/**
+ * Two-weapon chain feats the character's classes lend them for a flurry, if
+ * any. Brawler's Flurry is the one such feature: it hands out the chain rather
+ * than defining its own attack sequence the way a monk's Flurry of Blows does,
+ * so it belongs here and not in the class-features display alone.
+ */
+export function flurryTwfChain(doc: CharacterDoc): GrantedTwfChain | undefined {
+  const brawler = doc.identity.classes.find((c) => c.tag === "brawler")?.level ?? 0;
+  return brawlersFlurry(brawler);
+}
 
 /** Two-weapon state resolved for one saved roll. */
 export interface TwfFold {
@@ -22,6 +45,8 @@ export interface TwfFold {
   offHandAttack?: ResolvedWeaponAttack;
   /** True when an off-hand weapon was named but no longer resolves (removed/renamed). */
   offHandWeaponMissing: boolean;
+  /** The class-granted chain folded into `profile`, when one applied. */
+  granted?: GrantedTwfChain;
 }
 
 /**
@@ -45,13 +70,15 @@ export function twfConfig(roll: SavedRoll): SavedRollTwf | undefined {
  * `ownedFeatSlugs` follows `resolveSavedRoll`'s convention of being optional,
  * but "unknown" can't mean "owns everything" here (that would silently hand
  * out three off-hand attacks), so it falls back to the chain feats the roll
- * has attached — which is exactly what a legacy roll carries.
+ * has attached — which is exactly what a legacy roll carries. `granted` is
+ * the chain a class feature lends for this mode ({@link flurryTwfChain}).
  */
 export function resolveTwf(
   roll: SavedRoll,
   cfg: SavedRollTwf,
   sheet: DerivedSheet,
   ownedFeatSlugs: ReadonlySet<string> | undefined,
+  granted?: GrantedTwfChain,
 ): TwfFold {
   const owned =
     ownedFeatSlugs ??
@@ -60,7 +87,8 @@ export function resolveTwf(
     ? sheet.attacks.find((a) => a.name === cfg.offHandWeapon)
     : undefined;
   return {
-    profile: twoWeaponProfile(cfg.offHand, owned),
+    granted,
+    profile: twoWeaponProfile(cfg.offHand, owned, granted),
     offHandAttack,
     offHandWeaponMissing: cfg.offHandWeapon !== undefined && offHandAttack === undefined,
   };

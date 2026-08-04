@@ -20,7 +20,7 @@ import {
   type AttachableFeat,
   type ResolvedSavedRoll,
 } from "../../model/savedRolls.js";
-import { twfConfig } from "../../model/twf.js";
+import { flurryTwfChain, twfConfig } from "../../model/twf.js";
 import { attachableRangerBonuses } from "../../model/ranger.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "../builder/NumberField.js";
@@ -49,9 +49,10 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
 
   const saved = useMemo(() => doc.build.savedRolls ?? [], [doc]);
   const owned = useMemo(() => ownedFeatSlugs(doc, refData), [doc, refData]);
+  const grantedTwf = useMemo(() => flurryTwfChain(doc), [doc]);
   const resolved = useMemo(
-    () => saved.map((r) => resolveSavedRoll(r, sheet, owned)),
-    [saved, sheet, owned],
+    () => saved.map((r) => resolveSavedRoll(r, sheet, owned, grantedTwf)),
+    [saved, sheet, owned, grantedTwf],
   );
   const attachable = useMemo(
     () => saved.map((r) => attachableFeats(doc, refData, r.source)),

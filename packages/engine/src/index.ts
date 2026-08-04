@@ -552,7 +552,10 @@ export {
 export {
   TWF_CHAIN,
   TWF_CHAIN_SLUGS,
+  brawlersFlurry,
+  brawlersFlurryLabel,
   twoWeaponProfile,
+  type GrantedTwfChain,
   type OffHandGrip,
   type TwfChainFeat,
   type TwoWeaponProfile,

@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-03-unarmed-strikes",
+    date: "2026-08-03",
+    title: "Monks and brawlers can add their fists",
+    note: "There was no unarmed strike to pick, so punching meant hand building a weapon entry and guessing at it. The weapon list offers one now, already carrying your damage die for your class level and your size, and it never takes the not proficient penalty the way a hand built entry did. Add it and it behaves like any other weapon: saved rolls, damage, and the Weapon Focus and Weapon Specialization pickers all see it. When you level and the die grows, the entry offers to update itself. Brawlers also get their die and their flurry spelled out in Class Features, and a saved roll set to two weapon fighting now knows a brawler flurries with Two-Weapon Fighting, adds Improved at 8th and Greater at 15th, and keeps full Strength on the off hand.",
+  },
+  {
     id: "2026-08-03-class-feature-dcs",
     date: "2026-08-03",
     title: "Save DCs are the actual number, and the panel is readable",
