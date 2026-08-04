@@ -103,20 +103,41 @@ describe("checkArchetypeConflict()", () => {
     const thf = byName(ref.archetypes, "Two-Handed Fighter");
     expect(checkArchetypeConflict(ref, [thf.id], thf.id).blocked).toBe(false);
   });
+
+  it("blocks two archetypes that both replace the same subsystem slot (no pairedBaseFeatureUuid to catch it)", () => {
+    // Mountain Witch's Mountain Beast Empathy and Ashiftah's Ghostwalk both
+    // "replace the hex gained at 2nd level" (PZO1129 p.132 / PZO9299 p.14) —
+    // neither carries a `pairedBaseFeatureUuid` (a hex slot isn't a single
+    // `Class.features` grant), so only the `replacesSlot` check catches this.
+    const mountainWitch = byName(ref.archetypes, "Mountain Witch");
+    const ashiftah = byName(ref.archetypes, "Ashiftah");
+    const result = checkArchetypeConflict(ref, [mountainWitch.id], ashiftah.id);
+    expect(result.blocked).toBe(true);
+    expect(result.conflictsWith).toBe("Mountain Witch");
+    expect(result.reason).toContain("hex");
+  });
 });
 
 describe("archetypeConflictWarnings() — cleric/wizard soft-warning fallback (issue #5)", () => {
-  it("confirms the data gap this warning exists to cover: cleric/wizard archetype features carry no pairedBaseFeatureUuid at all", () => {
-    const clericFeatures = Object.values(ref.archetypeFeatures).filter(
-      (f) => f.classTag === "cleric",
-    );
-    const wizardFeatures = Object.values(ref.archetypeFeatures).filter(
-      (f) => f.classTag === "wizard",
-    );
-    expect(clericFeatures.length).toBeGreaterThan(0);
-    expect(wizardFeatures.length).toBeGreaterThan(0);
-    expect(clericFeatures.every((f) => f.pairedBaseFeatureUuid == null)).toBe(true);
-    expect(wizardFeatures.every((f) => f.pairedBaseFeatureUuid == null)).toBe(true);
+  it("confirms the data gap this warning exists to cover: Cloistered Cleric/Crusader/Spellslinger/Runesage carry no structured replacement data at all", () => {
+    // Not every cleric archetype feature is data-blind any more (e.g. Appeaser's
+    // Aura/Channel Utility now carry a real pairing) — the warning's premise is
+    // per-ARCHETYPE, not per-class, so this checks the specific four archetypes
+    // the tests below exercise rather than the whole class.
+    const hasStructuredData = (f: {
+      pairedBaseFeatureUuid?: string;
+      replacesSlot?: unknown;
+      replacesText?: string;
+    }): boolean =>
+      f.pairedBaseFeatureUuid != null || f.replacesSlot != null || f.replacesText != null;
+    for (const name of ["Cloistered Cleric", "Crusader", "Spellslinger", "Runesage"]) {
+      const archetype = byName(ref.archetypes, name);
+      const features = Object.values(ref.archetypeFeatures).filter(
+        (f) => f.archetypeId === archetype.id,
+      );
+      expect(features.length).toBeGreaterThan(0);
+      expect(features.some(hasStructuredData)).toBe(false);
+    }
     // ...and checkArchetypeConflict is consequently blind to any real overlap.
     const cloistered = byName(ref.archetypes, "Cloistered Cleric");
     const crusader = byName(ref.archetypes, "Crusader");

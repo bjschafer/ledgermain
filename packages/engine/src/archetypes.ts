@@ -1642,7 +1642,19 @@ export function resolveClassFeatures(
         level: f.level,
         name: f.name,
         description: f.description,
-        ambiguous: !f.pairedBaseFeatureUuid,
+        // A resolved pairing or a structured `replacesSlot` both give the UI
+        // something concrete to print; `replacesText` alone is still enough
+        // (prints "Replaces: <text>" verbatim). Only a feature that swaps out
+        // something with NONE of the three — and isn't flagged purely
+        // additive — is genuinely ambiguous.
+        ambiguous:
+          !f.pairedBaseFeatureUuid &&
+          !f.replacesText &&
+          !f.replacesSlot &&
+          f.isReplacement !== false,
+        replacesText: f.replacesText,
+        replacesSlot: f.replacesSlot,
+        abilityType: f.abilityType,
         detail: resolved?.effect.detail?.(clsLevel),
         effectSource: resolved?.effect.detail ? resolved.source : undefined,
       });
@@ -1992,4 +2004,69 @@ export function archetypeSwappedUuids(refData: RefData, archetypeId: string): Se
     }
   }
   return uuids;
+}
+
+/** Stable string key for a `replacesSlot`, so two slots compare equal only when both kind AND level match (an unleveled slot only collides with another unleveled slot of the same kind — see {@link archetypeReplacedSlotKeys}). */
+function slotKey(slot: { kind: string; level?: number }): string {
+  return `${slot.kind}:${slot.level ?? ""}`;
+}
+
+/**
+ * Every subsystem slot (`replacesSlot` — a hex, rogue talent, rage power,
+ * ...) this archetype replaces, across ALL its levels regardless of the
+ * character's current level — the `replacesSlot` counterpart to
+ * {@link archetypeSwappedUuids}, used the same way: to flag two archetypes
+ * that can't coexist before either is added to `build.archetypes`. Keyed by
+ * {@link slotKey} rather than the raw uuid set `archetypeSwappedUuids` uses,
+ * since a subsystem slot has no `Class.features` grant to point at.
+ */
+export function archetypeReplacedSlotKeys(
+  refData: RefData,
+  archetypeId: string,
+): Map<string, { kind: string; level?: number }> {
+  const slots = new Map<string, { kind: string; level?: number }>();
+  for (const f of Object.values(refData.archetypeFeatures)) {
+    if (f.archetypeId !== archetypeId || !f.replacesSlot) continue;
+    slots.set(slotKey(f.replacesSlot), f.replacesSlot);
+  }
+  return slots;
+}
+
+/**
+ * How many of the character's currently active archetype features replace a
+ * `kind`-tagged subsystem slot (`replacesSlot`) for `classTag`'s own
+ * progression, gated by that class's current level — the shared budget-math
+ * primitive behind both `model/witchHexes.ts`'s and `model/shamanHexes.ts`'s
+ * `expected*HexCount` (apps/web).
+ *
+ * Only a LEVELED slot (`replacesSlot.level` set) consumes one of the class's
+ * picks — matches `resolveFeatureLevel`'s own reasoning in the data pipeline:
+ * a bare, level-less slot (e.g. Mountain Witch's Stone Spirit Hex, "this
+ * ability alters hex") widens what the class can choose FROM rather than
+ * consuming one of the choices themselves, so it never reduces the count.
+ * Gates on the slot's own level, not the feature's grant level — Gravewalker's
+ * Bonethrall is USABLE at 1st level but its prose says it "replaces the
+ * witch's hex gained at 4th level", so the witch keeps her 1st- and 2nd-level
+ * hexes and only loses the 4th-level one.
+ */
+export function archetypeReplacedSlotCount(
+  doc: CharacterDoc,
+  refData: RefData,
+  classTag: string,
+  kind: string,
+): number {
+  const clsLevel = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
+  if (clsLevel <= 0) return 0;
+
+  let count = 0;
+  for (const archetypeId of doc.build.archetypes ?? []) {
+    const archetype = refData.archetypes[archetypeId];
+    if (!archetype || archetype.classTag !== classTag) continue;
+    for (const f of Object.values(refData.archetypeFeatures)) {
+      if (f.archetypeId !== archetypeId) continue;
+      const slot = f.replacesSlot;
+      if (slot?.kind === kind && slot.level !== undefined && slot.level <= clsLevel) count++;
+    }
+  }
+  return count;
 }

@@ -30,6 +30,7 @@
  * budgets.
  */
 
+import { archetypeReplacedSlotCount } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 /** The witch's class level (0 for a non-witch, or a stale/multiclassed doc). */
@@ -80,13 +81,20 @@ function extraHexFeatCount(doc: CharacterDoc, refData: RefData): number {
 
 /**
  * The number of hexes a witch is expected to know at their current level:
- * the base APG progression plus one per "Extra Hex" feat. Returns 0 for a
- * non-witch.
+ * the base APG progression plus one per "Extra Hex" feat, minus one per
+ * chosen archetype feature that has already spent a hex slot on something
+ * else (e.g. Mountain Witch's Mountain Beast Empathy, "replaces the hex
+ * gained at 2nd level" — see `archetypeReplacedSlotCount`'s doc comment for
+ * which archetype features count). Returns 0 for a non-witch.
  */
 export function expectedWitchHexCount(doc: CharacterDoc, refData: RefData): number {
   const level = witchLevel(doc);
   if (level <= 0) return 0;
-  return baseHexCount(level) + extraHexFeatCount(doc, refData);
+  return (
+    baseHexCount(level) +
+    extraHexFeatCount(doc, refData) -
+    archetypeReplacedSlotCount(doc, refData, "witch", "hex")
+  );
 }
 
 /**

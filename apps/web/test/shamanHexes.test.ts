@@ -21,9 +21,16 @@ function idByName(name: string): string {
   return entry[0];
 }
 
+function archetypeIdByName(name: string): string {
+  const entry = Object.values(ref.archetypes).find((a) => a.name === name);
+  if (!entry) throw new Error(`archetype not found: ${name}`);
+  return entry.id;
+}
+
 function makeDoc(over: {
   classes?: { tag: string; level: number }[];
   feats?: string[];
+  archetypes?: string[];
   shamanSpirit?: string;
   shamanHexes?: string[];
 }): CharacterDoc {
@@ -37,6 +44,7 @@ function makeDoc(over: {
     abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 16, cha: 10 },
     build: {
       feats: over.feats ?? [],
+      archetypes: over.archetypes ?? [],
       skillRanks: {},
       classFeatureChoices: [],
       spells: { known: [] },
@@ -162,6 +170,21 @@ describe("model/shamanHexes: expectedShamanHexCount (ACG progression)", () => {
     const featId = idByName("Extra Hex");
     const doc = makeDoc({ classes: [{ tag: "shaman", level: 4 }], feats: [featId, featId] });
     expect(expectedShamanHexCount(doc, ref)).toBe(4);
+  });
+
+  it("Witch Doctor's Counter Curse (replaces the hex gained at 8th level) reduces the budget by one at 8th", () => {
+    // Same `archetypeReplacedSlotCount` primitive `expectedWitchHexCount`
+    // uses (@pf1/engine `archetypes.ts`) — proving the mechanism drops out
+    // for shaman without any shaman-specific code.
+    const witchDoctor = archetypeIdByName("Witch doctor");
+    const doc = makeDoc({ classes: [{ tag: "shaman", level: 8 }], archetypes: [witchDoctor] });
+    expect(expectedShamanHexCount(doc, ref)).toBe(2); // 3 base (2nd/4th/8th) - 1
+  });
+
+  it("the same archetype below 8th level hasn't cost the pick yet", () => {
+    const witchDoctor = archetypeIdByName("Witch doctor");
+    const doc = makeDoc({ classes: [{ tag: "shaman", level: 4 }], archetypes: [witchDoctor] });
+    expect(expectedShamanHexCount(doc, ref)).toBe(2); // 2 base (2nd/4th), no reduction yet
   });
 });
 

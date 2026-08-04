@@ -31,7 +31,7 @@
  * budgets.
  */
 
-import { findShamanHex } from "@pf1/engine";
+import { archetypeReplacedSlotCount, findShamanHex } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 /** True when `id` is a GENERAL shaman hex (the vendored, spirit-agnostic ACG "Shaman Hexes" table), not one of the current spirit's own 5 hexes. */
@@ -110,13 +110,20 @@ function extraHexFeatCount(doc: CharacterDoc, refData: RefData): number {
 
 /**
  * The number of hexes a shaman is expected to know at their current level:
- * the base ACG progression plus one per "Extra Hex" feat. Returns 0 for a
- * non-shaman.
+ * the base ACG progression plus one per "Extra Hex" feat, minus one per
+ * chosen archetype feature that has already spent a hex slot on something
+ * else (e.g. Witch Doctor's Counter Curse — see
+ * `archetypeReplacedSlotCount`'s doc comment, shared with the witch's
+ * identical budget math). Returns 0 for a non-shaman.
  */
 export function expectedShamanHexCount(doc: CharacterDoc, refData: RefData): number {
   const level = shamanLevel(doc);
   if (level <= 0) return 0;
-  return baseHexCount(level) + extraHexFeatCount(doc, refData);
+  return (
+    baseHexCount(level) +
+    extraHexFeatCount(doc, refData) -
+    archetypeReplacedSlotCount(doc, refData, "shaman", "hex")
+  );
 }
 
 /**

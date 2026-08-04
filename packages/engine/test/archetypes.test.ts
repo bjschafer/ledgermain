@@ -3,7 +3,13 @@ import { describe, expect, it } from "bun:test";
 import type { AbilityId, CharacterDoc, ItemInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { archetypeSwappedUuids, compute, resolveClassFeatures } from "../src/index.js";
+import {
+  archetypeReplacedSlotCount,
+  archetypeReplacedSlotKeys,
+  archetypeSwappedUuids,
+  compute,
+  resolveClassFeatures,
+} from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -332,6 +338,83 @@ describe("resolveClassFeatures: Maneuver Master (monk archetype) swaps Evasion f
     const resilience = activeArchetypes[0]!.features.find((f) => f.name === "Resilience")!;
     expect(resilience).toBeDefined();
     expect(resilience.ambiguous).toBe(false);
+  });
+});
+
+describe("resolveClassFeatures: Mountain Witch (replacesText/replacesSlot/isReplacement — PZO1129 p.132)", () => {
+  // Mountain Beast Empathy (2nd): "This ability replaces the hex gained at
+  // 2nd level" — a genuine leveled slot replacement, one fewer hex pick.
+  // Stone Spirit Hex (no level tag in its own text, just "This ability alters
+  // hex"): widens which hexes the witch can choose from (shaman stone-spirit
+  // hexes), it doesn't consume a pick — see `archetypeReplacedSlotCount`'s doc
+  // comment for why a level-less `replacesSlot` never reduces the budget.
+  const mountainWitch = byName(ref.archetypes, "Mountain Witch");
+  const doc = makeDoc({
+    classes: [{ tag: "witch", level: 2 }],
+    archetypes: [mountainWitch.id],
+  });
+  const { activeArchetypes } = resolveClassFeatures(doc, ref);
+  const entry = activeArchetypes.find((a) => a.id === mountainWitch.id)!;
+
+  it("Mountain Beast Empathy carries replacesText/replacesSlot and is not ambiguous", () => {
+    const beastEmpathy = entry.features.find((f) => f.name === "Mountain Beast Empathy")!;
+    expect(beastEmpathy).toBeDefined();
+    expect(beastEmpathy.level).toBe(2);
+    expect(beastEmpathy.replacesText).toBe("hex gained at 2nd level");
+    expect(beastEmpathy.replacesSlot).toEqual({ kind: "hex", level: 2 });
+    expect(beastEmpathy.ambiguous).toBe(false);
+  });
+
+  it("Stone Spirit Hex is a real replacement (isReplacement) but not ambiguous, with a level-less slot", () => {
+    const stoneSpiritHex = entry.features.find((f) => f.name === "Stone Spirit Hex")!;
+    expect(stoneSpiritHex).toBeDefined();
+    expect(stoneSpiritHex.replacesText).toBe("hex");
+    expect(stoneSpiritHex.replacesSlot).toEqual({ kind: "hex" });
+    expect(stoneSpiritHex.ambiguous).toBe(false);
+  });
+
+  it("a chassis row like Grand Hexes stays level 0 and additive (not ambiguous) per its own isReplacement flag", () => {
+    const grandHexes = entry.features.find((f) => f.name === "Grand Hexes")!;
+    expect(grandHexes).toBeDefined();
+    expect(grandHexes.level).toBe(0);
+    expect(grandHexes.replacesText).toBeUndefined();
+    expect(grandHexes.replacesSlot).toBeUndefined();
+    expect(grandHexes.ambiguous).toBe(false);
+  });
+
+  it("archetypeReplacedSlotCount counts only Mountain Beast Empathy's leveled slot, not Stone Spirit Hex's bare one", () => {
+    expect(archetypeReplacedSlotCount(doc, ref, "witch", "hex")).toBe(1);
+  });
+
+  it("a witch 2 levels below the slot's level doesn't lose the pick yet", () => {
+    const level1Doc = makeDoc({
+      classes: [{ tag: "witch", level: 1 }],
+      archetypes: [mountainWitch.id],
+    });
+    expect(archetypeReplacedSlotCount(level1Doc, ref, "witch", "hex")).toBe(0);
+  });
+
+  it("an archetype-less witch 2 has no slot replacements at all", () => {
+    const plainDoc = makeDoc({ classes: [{ tag: "witch", level: 2 }] });
+    expect(archetypeReplacedSlotCount(plainDoc, ref, "witch", "hex")).toBe(0);
+  });
+});
+
+describe("archetypeReplacedSlotKeys: two archetypes replacing the same hex slot conflict", () => {
+  it("Mountain Witch and Ashiftah both replace the witch's level-2 hex slot", () => {
+    // Mountain Witch's Mountain Beast Empathy and Ashiftah's Ghostwalk both
+    // "replace the hex gained at 2nd level" — a witch can't take both without
+    // one silently clobbering the other's claim on the same pick.
+    const mountainWitch = byName(ref.archetypes, "Mountain Witch");
+    const ashiftah = byName(ref.archetypes, "Ashiftah");
+    const a = archetypeReplacedSlotKeys(ref, mountainWitch.id);
+    const b = archetypeReplacedSlotKeys(ref, ashiftah.id);
+    const overlap = [...a.keys()].filter((k) => b.has(k));
+    expect(overlap).toEqual(["hex:2"]);
+  });
+
+  it("unknown archetype id yields an empty map", () => {
+    expect(archetypeReplacedSlotKeys(ref, "not-a-real-id").size).toBe(0);
   });
 });
 

@@ -3296,8 +3296,31 @@ export interface DerivedArchetypeFeature {
   level: number;
   name: string;
   description?: string;
-  /** True when this feature has no `pairedBaseFeatureUuid` — prose-only soft warning, not a swap. */
+  /**
+   * True only when this feature swaps out something but the sheet has no way
+   * to say what: no `pairedBaseFeatureUuid`, no `replacesText`, no
+   * `replacesSlot`, and the source didn't flag it as purely additive
+   * (`isReplacement !== false`). A feature with `replacesText` prints that
+   * text verbatim instead ("Replaces: hex gained at 2nd level") rather than
+   * the generic warning, and an additive feature (`isReplacement === false`)
+   * needs no caveat at all — both are `false` here even with no resolved
+   * pairing.
+   */
   ambiguous: boolean;
+  /**
+   * Verbatim text naming what this feature replaces or alters, from the
+   * vendored dataset's own `replaces` flag — e.g. "hex gained at 2nd level".
+   * See `@pf1/schema` `ArchetypeFeature.replacesText`.
+   */
+  replacesText?: string;
+  /**
+   * `replacesText` parsed into a subsystem grant slot (a hex, talent, feat,
+   * ...) rather than a single named ability. See `@pf1/schema`
+   * `ArchetypeFeature.replacesSlot`.
+   */
+  replacesSlot?: { kind: string; level?: number };
+  /** Extraordinary / supernatural / spell-like, from the vendored dataset's `abilityType`, when stated. */
+  abilityType?: "ex" | "su" | "sp";
   /**
    * One-line mechanical summary for the slice of archetype features with real
    * numeric effects — hand-verified or machine-extracted — e.g. "DR 5/—".

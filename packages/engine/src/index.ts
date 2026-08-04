@@ -733,6 +733,8 @@ export type { RageFatigue } from "./rage-fatigue.js";
 export {
   resolveClassFeatures,
   archetypeSwappedUuids,
+  archetypeReplacedSlotKeys,
+  archetypeReplacedSlotCount,
   activeArchetypeSwaps,
   archetypeHasModeledEffects,
   archetypeModeledEffectTier,
