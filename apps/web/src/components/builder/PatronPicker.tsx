@@ -7,6 +7,7 @@ import { setWitchPatron } from "../../model/doc.js";
 import { patronSpellsKnown } from "../../model/spellcasting.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { Explainer } from "../Explainer.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
@@ -23,13 +24,19 @@ function patronSearchText(p: MergedWitchPatronEntry): string {
   return `${p.name} ${p.description ?? ""}`.toLowerCase();
 }
 
-/** One-line, unleveled summary for a row that isn't the current selection — the full level-ordered breakdown only renders once a row is chosen (see the component doc comment). */
+/**
+ * One-line, unleveled summary for a row that isn't the current selection — the
+ * full level-ordered breakdown only renders once a row is chosen (see the
+ * component doc comment). Spells are separated by `·` rather than commas
+ * because a compendium spell name carries its own comma ("Cat's Grace, Mass"),
+ * and a comma-joined list reads as twice as many spells as it holds.
+ */
 function patronRowSummary(p: MergedWitchPatronEntry): string {
   if (p.themeInfo) {
-    return `Grants the ${p.themeInfo.grantedHex} hex · Themes: ${p.themeInfo.availableThemes.join(", ")}`;
+    return `Grants the ${p.themeInfo.grantedHex} hex. Themes: ${p.themeInfo.availableThemes.join(", ")}`;
   }
   if (p.bonusSpells.length > 0) {
-    return `Bonus spells: ${p.bonusSpells.map((sp) => sp.name).join(", ")}`;
+    return p.bonusSpells.map((sp) => sp.name).join(" · ");
   }
   return "No structured bonus-spell data for this patron.";
 }
@@ -44,17 +51,18 @@ function patronRowSummary(p: MergedWitchPatronEntry): string {
  * mapping exists, so validation is "soft warning only" per the project's
  * hybrid-prereqs philosophy — same posture as `MysteryPicker`/`BloodlinePicker`.
  *
- * Browses the FULL published catalog (`mergedWitchPatronCatalog`), grouped
- * for search/sort by the vendored "basic"/"unique" `category` (shown as a
- * pill on each row) with the current pick sorted first:
+ * Browses the FULL published catalog (`mergedWitchPatronCatalog`), sorted by
+ * the vendored "basic"/"unique" `category` with the current pick first. Only
+ * "unique" gets a pill: nearly every basic patron is modeled, so a badge on
+ * 52 of 61 rows would carry no information — which is also why this picker
+ * skips the `badge-modeled` "M" its siblings use.
  *
  * - 52 "basic" patrons (17 hand-verified against the published rules, ~35
  *   more with a progression the engine's parser extracted from the vendored
  *   prose — see `@pf1/engine` `witch-patrons.ts`'s doc comment) all carry a
- *   real bonus-spell progression, marked `badge-modeled` "M": one spell added
- *   to the familiar's known list at witch level 2 and every two levels
- *   thereafter, shown level-ordered once the row is chosen (via
- *   `patronSpellsKnown`).
+ *   real bonus-spell progression: one spell added to the familiar's known
+ *   list at witch level 2 and every two levels thereafter, shown
+ *   level-ordered once the row is chosen (via `patronSpellsKnown`).
  * - 9 "unique" patrons are themed TEMPLATES, not a 9-spell list: each grants
  *   a named hex at 1st level, imposes a drawback, and restricts you to a
  *   small set of "Available Patron Themes" whose own progression it
@@ -104,28 +112,25 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
       >
         <h3>
           Patron
-          {chosenDef ? (
-            <span className="hint">
-              {" "}
-              · {chosenDef.name}
-              {!chosenDef.displayOnly && <span className="badge-modeled"> M</span>}
-            </span>
-          ) : null}
+          {chosenDef ? <span className="hint"> · {chosenDef.name}</span> : null}
         </h3>
         <Caret open={!collapsed} />
       </div>
       {!collapsed && (
         <>
-          <p className="hint patron-picker-hint">
-            Pick one patron (PF1 grants one at level 1, never changed thereafter); choosing another
-            replaces it, and choosing the current one clears it. Browses the full published catalog
-            (52 basic + 9 unique-template patrons, tagged below). Entries marked{" "}
-            <span className="badge-modeled">M</span> carry a real bonus-spell progression (2nd
-            through 18th, added to your familiar's known spells). The 9 unique-template patrons
-            instead grant a named hex, impose a drawback, and restrict you to a small set of
-            Available Patron Themes whose own progression they override at a few levels: shown as
-            structured info to apply by hand. Free-choice, no calling validation.
-          </p>
+          <p className="hint patron-picker-hint">Pick one patron. You get it at 1st level.</p>
+          <Explainer title="How patrons work" className="patron-picker-explainer">
+            <p>
+              A basic patron adds one spell to your familiar's known spells at witch level 2 and
+              every two levels after, up to 18th. Choosing another patron replaces your pick, and
+              choosing your current one clears it. Nothing here is enforced.
+            </p>
+            <p>
+              A patron tagged Unique is a template rather than a spell list: it grants a named hex
+              at 1st level, comes with a drawback, and limits you to a few themes whose own spells
+              it overrides at a level or two. Those are shown for you to apply by hand.
+            </p>
+          </Explainer>
           <input
             className="search"
             type="text"
@@ -141,17 +146,15 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
                 <div key={p.tag} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
                     <div className="pname">
-                      {p.name}{" "}
-                      <span className="tag-mystery">{CATEGORY_LABEL[p.category ?? ""] ?? "—"}</span>
-                      {!p.displayOnly && (
+                      {p.name}
+                      {p.category === "unique" ? (
                         <span
-                          className="badge-modeled"
-                          title="Carries a real, level-ordered bonus-spell progression"
+                          className="tag-mystery"
+                          title="A template over a theme rather than a spell list of its own"
                         >
-                          {" "}
-                          M
+                          {CATEGORY_LABEL.unique}
                         </span>
-                      )}
+                      ) : null}
                     </div>
                     {!isSel && (
                       <div className="preq">

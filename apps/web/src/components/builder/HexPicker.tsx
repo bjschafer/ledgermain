@@ -12,6 +12,7 @@ import {
 } from "../../model/witchHexes.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { Explainer } from "../Explainer.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
@@ -22,7 +23,8 @@ interface HexPickerProps {
   update: Updater;
 }
 
-const TIER_LABEL: Record<string, string> = { hex: "Hex", major: "Major Hex", grand: "Grand Hex" };
+/** Only the two raised tiers get a pill: "Hex" on every ordinary row is a label that never varies. */
+const TIER_LABEL: Record<string, string> = { major: "Major Hex", grand: "Grand Hex" };
 
 /** 1 -> "1st", 2 -> "2nd", 3 -> "3rd", 4 -> "4th", 11 -> "11th", ... */
 function ordinal(n: number): string {
@@ -135,13 +137,18 @@ export function HexPicker({ doc, refData, update }: HexPickerProps) {
                 Hex DC {dc > 0 ? dc : "10 + 1/2 level + Int mod"}
               </span>
             </div>
-            <p className="hint revelation-picker-hint">
-              New hex at 1st and every even level after (2nd, 4th, 6th, …), plus one more per Extra
-              Hex feat. Major hexes unlock at 10th level, Grand hexes at 18th. Picking more than the
-              expected count is never blocked. Browses the full published catalog: most hexes are
-              reference text you apply at the table, and the rare entry marked{" "}
-              <span className="badge-modeled">M</span> applies to your sheet automatically.
-            </p>
+            <Explainer title="How hexes work">
+              <p>
+                You learn a hex at 1st level and every even level after that, plus one more per
+                Extra Hex feat. Major hexes unlock at 10th level, Grand hexes at 18th, and both come
+                out of the same budget rather than adding to it. Taking more than that is never
+                blocked.
+              </p>
+              <p>
+                Most hexes here are reference text you apply at the table. The rare entry marked{" "}
+                <span className="badge-modeled">M</span> applies to your sheet automatically.
+              </p>
+            </Explainer>
           </div>
           <input
             className="search"
@@ -159,8 +166,10 @@ export function HexPicker({ doc, refData, update }: HexPickerProps) {
                   <div className="pmain">
                     <div className="pname">
                       {h.name}
-                      {h.nameSuffix ? ` ${h.nameSuffix}` : ""}{" "}
-                      <span className="tag-mystery">{TIER_LABEL[h.tier] ?? h.tier}</span>
+                      {h.nameSuffix ? ` ${h.nameSuffix}` : ""}
+                      {h.tier === "hex" ? null : (
+                        <span className="tag-mystery">{TIER_LABEL[h.tier] ?? h.tier}</span>
+                      )}
                       {!h.displayOnly && (
                         <span
                           className="badge-modeled"
