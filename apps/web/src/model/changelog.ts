@@ -41,6 +41,24 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-04-masterwork-acp",
+    date: "2026-08-04",
+    title: "Masterwork and magic armor now lighten the check penalty",
+    note: "If your armor is masterwork, or magical, which always means masterwork, its armor check penalty is now one point lighter, exactly as the rules say, and it never turns into a bonus. Enter the listed penalty from the book and the sheet handles the discount, whether you picked the armor from the catalog or typed it in by hand. Mithral already includes the masterwork break in its own reduction, so it is not counted twice. Skill checks and the penalty for wearing armor you are not proficient with both use the corrected number.",
+  },
+  {
+    id: "2026-08-04-martial-flexibility",
+    date: "2026-08-04",
+    title: "Martial flexibility is a real feat picker now",
+    note: "Borrowing a feat with martial flexibility used to mean one long dropdown of names. It opens a real picker now: search the combat feat list, read a one line summary of what each feat does, and see its requirements checked against your character as they stand right now, buffs included. A feat you do not qualify for shows as locked with the reason a tap away, and a requirement written only in prose warns instead of blocking, the same way the builder treats it.",
+  },
+  {
+    id: "2026-08-04-table-comforts",
+    date: "2026-08-04",
+    title: "Scroll to top, smoother scrolling, and home screen installs",
+    note: "A round of table comforts from a first session of play. Long pages grew a scroll to top button, and scrolling on a tablet should feel smoother. The armor form now has you pick the armor first and its magic special abilities after, so the enchantment list no longer reads like the armor list. Number fields let you clear them and type a new value instead of snapping back to zero. On an iPad you can add Ledgermain to your home screen and it opens in its own window, with a proper icon at last, in the browser tab too. The gear catalog also picked up the goblin fishing lure.",
+  },
+  {
     id: "2026-08-04-archetypes",
     date: "2026-08-04",
     title: "Archetypes: pick one and the sheet knows the trade",
