@@ -75,6 +75,18 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "Every list, the class-subsystem tables included, sits at full vendored parity (rage powers 243, rogue talents 234, alchemist discoveries 168, witch hexes 104, down to monk style strikes 15), so the gap is promotion rather than coverage: only 32 rage powers and a scattering of talents and discoveries carry live changes[]. Candidates blocked on a missing mechanism are recorded inline in their table files.",
   },
   {
+    category: "Familiars",
+    note: "The standard animal familiars are all here, each with its own tracked stat block. Improved familiars are not: an imp, quasit, pseudodragon or mephit is defined by its spell-like abilities, damage reduction and resistances, none of which the sheet tracks, and its hit points and skills follow different rules than an animal's.",
+    issueDetail:
+      "22 species modeled. Improved familiars are blocked on four things: hit points take the higher of half the master's and the creature's own, no SR/DR/resistance block exists, spell-like abilities are unmodeled, and the animal-type skill rule does not apply to an outsider. The picker also has no alignment or caster-level gate to enforce their prerequisites.",
+  },
+  {
+    category: "Witch patrons",
+    note: 'The published patrons are all in the picker with their bonus spells. The nine "unique" patrons are shown but not applied: the hex one grants, the theme you pick under it, and the spells it swaps in are all yours to apply by hand.',
+    issueDetail:
+      "52 of 61 patrons carry a parsed 9-spell progression. The 9 unique patrons are templates over a chosen theme, and the doc has no field for that sub-choice, so their granted hex, drawback, theme restriction and per-level spell overrides stay display-only.",
+  },
+  {
     category: "Magic items",
     note: 'The full published catalog is in the gear picker: wondrous items, rings, rods, staves, artifacts, and named magic weapons and armor. Entries whose effect the sheet applies while equipped are marked with an "M". Most are not: they carry their rules text for you to apply at the table, and equipping one moves no numbers.',
     issueDetail:

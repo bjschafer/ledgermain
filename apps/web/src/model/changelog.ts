@@ -41,6 +41,42 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-03-class-features-in-play",
+    date: "2026-08-03",
+    title: "Your class picks are on the Play tab now",
+    note: "Hexes, rage powers, revelations, arcana, exploits, discoveries, talents: everything you chose in the builder lived only in the builder, so a witch at the table could not look up what her own hexes did. Play has a Class Features panel now. It is searchable and grouped by kind, so your hexes sit together and a Major Hex reads as one, and each entry carries its save DC, its duration, and how it activates alongside its full rules text.",
+  },
+  {
+    id: "2026-08-03-witch-patrons",
+    date: "2026-08-03",
+    title: "Witch patrons are browsable, and most now list their spells",
+    note: "Picking a patron meant scrolling a dropdown of 61 names with nothing to compare. It is a searchable list now, split into the published basic and unique groups. Bonus spells read in the order you unlock them rather than alphabetically, and 52 patrons now show a real level by level spell list instead of prose, up from 17. The nine unique patrons are not spell lists at all: they grant a hex, come with a drawback, and limit which themes you can take, so the picker lays that out instead of inventing a progression. Wisdom's 12th level spell was also wrong, and is now Globe of Invulnerability.",
+  },
+  {
+    id: "2026-08-03-witch-hexes",
+    date: "2026-08-03",
+    title: "Witch hexes stop looking broken",
+    note: "Almost every hex carried a warning triangle, because its save DC and duration were being shown as though something were wrong. Those are plain reference notes now, and the triangle is left for the one thing that is actually a problem: a hex above your level. The hex save DC sits at the top of the panel where you can find it mid session, and Cauldron no longer explains our own limitations at you. Flight's Swim bonus also applies itself now, joining Iceplant as the only hexes that move numbers on their own.",
+  },
+  {
+    id: "2026-08-03-familiar-species",
+    date: "2026-08-03",
+    title: "Eleven more familiars, and a picker that shows them",
+    note: 'The familiar list stopped at the eleven Core Rulebook animals, chosen from a dropdown that told you nothing. Compsognathus, fox, king crab, octopus, osprey, pig, greensting scorpion, scarlet spider, house centipede, thrush and turtle join them, and the picker now shows each one\'s size, speeds, senses, natural attacks and the bonus it gives you, so you can compare before you commit. A new familiar is also named for its species instead of being called "Familiar".',
+  },
+  {
+    id: "2026-08-03-languages",
+    date: "2026-08-03",
+    title: "Languages know what your race can take",
+    note: "Bonus languages were an empty text box. There is a proper list behind it now: Common, the racial tongues, the planar and exotic languages, and the regional ones, with your own race's options offered as chips you can tap. A dwarf reads as speaking Common and Dwarven automatically, with Giant, Gnome, Goblin, Orc, Terran and Undercommon on offer. You can still type anything you like, including a language nobody published, and Druidic is left out because you cannot pick it.",
+  },
+  {
+    id: "2026-08-03-thrown-attacks",
+    date: "2026-08-03",
+    title: "Thrown weapon bonuses reach thrown weapons",
+    note: "A bonus to thrown weapon attacks, like the one Accurate Stance grants, was being dropped entirely, and the sheet described it as a touch attack bonus it was never meant to give. Those bonuses now apply to javelins and other thrown weapons, on both the attack and the damage, and no longer leak onto bows and crossbows that never earned them. A dagger you carry as a melee weapon is unaffected: add it a second time as a ranged weapon to model throwing it.",
+  },
+  {
     id: "2026-08-03-damage-formula-display",
     date: "2026-08-03",
     title: "Damage that showed its own formula now shows dice",
