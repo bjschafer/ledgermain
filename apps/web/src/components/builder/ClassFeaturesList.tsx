@@ -1,4 +1,4 @@
-import type { DerivedSheet, RefData } from "@pf1/schema";
+import type { DerivedClassFeature, DerivedSheet, RefData } from "@pf1/schema";
 
 import { abilityTypeTag } from "../../model/abilityTypes.js";
 import { useInlineRolls } from "../../state/rollData.js";
@@ -39,6 +39,53 @@ export function FeatureDescription({ html }: { html: string }) {
         dangerouslySetInnerHTML={{ __html: resolve(html) }}
       />
     </details>
+  );
+}
+
+/**
+ * One granted class feature's row: name (struck through + "replaced by" when
+ * an archetype swapped it out), its (Ex)/(Su)/(Sp) tag, mechanical `detail`,
+ * origin label (e.g. "Hex", "Fire Domain" — omit via `showOrigin={false}`
+ * when the caller already groups by origin and repeating it would be
+ * redundant), non-mechanical `contextNotes` (save DC/duration/activation
+ * shape, rendered as plain reference lines: they describe how the ability
+ * works rather than warning about anything), and the vendored prose
+ * description. Shared by {@link ClassFeaturesList} (the builder, grouped
+ * by level) and the Play tab's `ClassFeaturesPanel` (grouped by origin) so
+ * the row itself never diverges between the two.
+ */
+export function ClassFeatureRow({
+  feature,
+  refData,
+  showOrigin = true,
+}: {
+  feature: DerivedClassFeature;
+  refData: RefData;
+  showOrigin?: boolean;
+}) {
+  const vendored = refData.classFeatures[feature.featureId];
+  const description = vendored?.description;
+  return (
+    <div className="cf-archetype-feature">
+      <span
+        className={`cf-name${feature.applied ? "" : " struck"}`}
+        title={feature.replacedBy ? `Replaced by ${feature.replacedBy}` : undefined}
+      >
+        {feature.name}
+        <AbilityTypeTag abilityType={vendored?.abilityType} />
+        {feature.detail ? <span className="cf-detail"> ({feature.detail})</span> : null}
+        {showOrigin && feature.origin ? (
+          <span className="cf-origin"> ({feature.origin.label})</span>
+        ) : null}
+        {feature.replacedBy ? <span className="cf-replaced"> → {feature.replacedBy}</span> : null}
+      </span>
+      {feature.contextNotes?.map((n, i) => (
+        <div key={i} className="hint feature-note">
+          {n.text}
+        </div>
+      ))}
+      {description ? <FeatureDescription html={description} /> : null}
+    </div>
   );
 }
 
@@ -87,25 +134,9 @@ export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; ref
           <div className="cf-level-row" key={level}>
             <span className="cf-level">Lv {level}</span>
             <div className="cf-archetype-features">
-              {byLevel.get(level)!.map((f, i) => {
-                const vendored = refData.classFeatures[f.featureId];
-                const description = vendored?.description;
-                return (
-                  <div className="cf-archetype-feature" key={`${f.featureId}-${i}`}>
-                    <span
-                      className={`cf-name${f.applied ? "" : " struck"}`}
-                      title={f.replacedBy ? `Replaced by ${f.replacedBy}` : undefined}
-                    >
-                      {f.name}
-                      <AbilityTypeTag abilityType={vendored?.abilityType} />
-                      {f.detail ? <span className="cf-detail"> ({f.detail})</span> : null}
-                      {f.origin ? <span className="cf-origin"> ({f.origin.label})</span> : null}
-                      {f.replacedBy ? <span className="cf-replaced"> → {f.replacedBy}</span> : null}
-                    </span>
-                    {description ? <FeatureDescription html={description} /> : null}
-                  </div>
-                );
-              })}
+              {byLevel.get(level)!.map((f, i) => (
+                <ClassFeatureRow key={`${f.featureId}-${i}`} feature={f} refData={refData} />
+              ))}
             </div>
           </div>
         ))}

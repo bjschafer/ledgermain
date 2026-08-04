@@ -849,12 +849,10 @@ export function collectModifiers(
   // Hex ids resolve through the hand-authored table first, falling back to
   // the vendored catalog (`RefData.hexes`) for a vendored-only pick — see
   // `@pf1/engine` `witch-hexes.ts`'s `resolveWitchHex`. Gated on the
-  // character actually having witch levels. Every hex is `displayOnly` with
-  // `changes: []` today (see that file's doc comment — a few grant a passive
-  // fly speed or a toggleable ally buff, both out of this loop's scope, see
-  // `witch-hexes.ts`), so this loop currently contributes no numeric
-  // modifiers — wired the same way for a future hex with a real
-  // unconditional Change to work for free.
+  // character actually having witch levels. Nearly every hex is `displayOnly`
+  // with `changes: []` — only the handful whose benefit is unconditional and
+  // lands on the witch's own sheet carries a real Change (see that file's doc
+  // comment for the bar and the deferred near-misses).
   const witchLevel = doc.identity.classes.find((c) => c.tag === "witch")?.level ?? 0;
   if (witchLevel > 0) {
     for (const hexId of doc.build.witchHexes ?? []) {

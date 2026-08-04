@@ -7216,3 +7216,18 @@ input[type="text"].saved-roll-name:focus {
   font-weight: 400;
   color: var(--muted);
 }
+
+/* HexPicker's header block: a short lead sentence, a prominent DC chip (the
+   number a player actually looks up mid-session), then the subordinate
+   progression/free-choice caveats — not one dense run-on paragraph. */
+.hex-picker-header .spell-strip {
+  margin: 4px 0;
+}
+
+/* A class feature's contextNotes are informational rules reminders (DC,
+   duration, activation shape), not warnings — no `⚠`, just indented from the
+   summary line. A line that IS a warning (a hex below its level minimum)
+   keeps its own `⚠`. */
+.feature-note {
+  margin-top: 2px;
+}

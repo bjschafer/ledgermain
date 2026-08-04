@@ -29,37 +29,35 @@
  * Modelling posture (mirrors oracle-revelations.ts/magus-arcana.ts's honesty
  * bar): almost every hex here is a situational, activated, save-triggered,
  * or resource-scaling ability with no flat always-on number the engine
- * tracks. A few come close to a real static effect —
- *   - Cauldron grants a flat +4 insight bonus on Craft (Alchemy) checks, but
- *     Craft is a player-named parameterized skill (`crf.<material>` — see
- *     `tables.ts`'s `PARAMETERIZED_SKILL_PREFIXES` doc comment) with no
- *     guaranteed "Craft (Alchemy)" entry on the sheet to target reliably;
- *   - Flight's 1st-tier benefit (at-will feather fall + a Swim bonus) is
- *     passive, but its actual fly-speed components (levitate, then a true
- *     fly speed) are both limited daily-use activations, not a permanent
- *     fly speed — so "Flight grants passive flight" would overstate it;
+ * tracks. Two clear the bar for an unconditional Change on the WITCH's own
+ * sheet: Iceplant's always-on +2 natural armor, and Flight's 1st-level +4
+ * racial bonus on Swim checks (Flight's later components — levitate at 3rd,
+ * then a true fly speed at 5th — are both limited daily-use activations, not
+ * a permanent fly speed, so those stay display-only). A couple more come
+ * close but don't clear it —
+ *   - Cauldron and Dark Apothecary each grant a flat insight bonus on a
+ *     Craft check, but Craft is a player-named parameterized skill
+ *     (`crf.<material>` — see `tables.ts`'s `PARAMETERIZED_SKILL_PREFIXES`
+ *     doc comment) with no guaranteed matching entry on the sheet to target
+ *     reliably;
  *   - Ward grants a static +2 (scaling) deflection AC / resistance bonus to
  *     an ally once activated, persisting until triggered — the closest thing
  *     here to a genuine toggle, but it targets an ALLY the witch chooses at
  *     activation time, not the witch's own sheet, so there's no reliable
  *     "self" Change target either.
- * None of these clear the bar for an unconditional Change on the WITCH's own
- * sheet, so — same discipline as `oracle-revelations.ts`'s Sidestep
- * Secret/Mental Acuity near-misses — every entry here is `displayOnly` with
- * `changes: []`, with ONE exception: Iceplant's always-on +2 natural armor
- * (the lone unconditional self-effect in the whole catalog). A
- * `contextNotes` reminder carries the DC/duration/activation shape for the
- * rest, and flags Cauldron/Flight/Ward specifically as the ones worth a
- * closer look by hand.
+ * Every other entry here is `displayOnly` with `changes: []` — same
+ * discipline as `oracle-revelations.ts`'s Sidestep Secret/Mental Acuity
+ * near-misses. A `contextNotes` reminder carries the DC/duration/activation
+ * shape for the rest, and flags Cauldron/Dark Apothecary/Ward specifically as
+ * the ones worth a closer look by hand.
  *
  * Audit finding: the buff-gated-changes mechanism (`Change.activeWhenBuff`,
  * built for the rage powers' "while raging" shape — see `rage-powers.ts`)
- * does NOT unlock anything here. None of the three near-misses above is
- * "unconditional while a specific, id-identifiable buff is active": Cauldron
- * is always-on but blocked by the parameterized-skill targeting problem,
- * Flight's fly speed is a limited daily-use activation with no existing
- * buffId/effectTag to gate on, and Ward lands on an ALLY's sheet, not the
- * witch's. All three stay deliberately deferred.
+ * does NOT unlock anything here beyond Iceplant/Flight. Neither remaining
+ * near-miss above is "unconditional while a specific, id-identifiable buff is
+ * active": Cauldron/Dark Apothecary are always-on but blocked by the
+ * parameterized-skill targeting problem, and Ward lands on an ALLY's sheet,
+ * not the witch's. Both stay deliberately deferred.
  */
 
 import type { Change, ContextNote, RefData, SourceRef, WitchHex } from "@pf1/schema";
@@ -74,7 +72,7 @@ export interface WitchHexDef {
   summary: string;
   /** Earliest witch level this hex can be selected at — 1 (hex), 10 (major), or 18 (grand). Soft-filtered only. */
   minLevel: number;
-  /** Typed modifiers granted by the hex (empty for all but a lone unconditional-passive entry, Iceplant — see file doc comment). */
+  /** Typed modifiers granted by the hex (empty for all but two unconditional-passive entries, Iceplant and Flight — see file doc comment). */
   changes: Change[];
   /** Non-mechanical reminders (save DC, duration, nested per-use choice, ...). */
   contextNotes?: ContextNote[];
@@ -128,7 +126,7 @@ const HEX_LIST: WitchHexDef[] = [
       summary: "Gain Brew Potion as a bonus feat and a +4 insight bonus on Craft (Alchemy) checks.",
       contextNotes: [
         note(
-          "+4 insight bonus on Craft (Alchemy) checks — not auto-applied (Craft is a player-named parameterized skill with no guaranteed matching entry); add it by hand to your Craft (Alchemy) skill if you have one.",
+          "+4 insight bonus on Craft (Alchemy) checks. Add it by hand to your Craft (Alchemy) skill.",
           "skill.crf",
         ),
       ],
@@ -166,10 +164,11 @@ const HEX_LIST: WitchHexDef[] = [
       id: "flight",
       name: "Flight",
       summary:
-        "1st: at-will feather fall plus a swim speed bonus. 3rd: levitate 1/day. 5th: fly for minutes/day equal to witch level.",
+        "1st: at-will feather fall plus a +4 racial bonus on Swim checks. 3rd: levitate 1/day. 5th: fly for minutes/day equal to witch level.",
+      changes: [{ formula: "4", target: "skill.swm", type: "racial" }],
       contextNotes: [
         note(
-          "Only the feather fall + swim-speed benefit is passive; levitate/fly are limited daily-use activations, not a permanent fly speed — apply manually while active.",
+          "Feather fall is constant from 1st level. Levitate (3rd) and fly (5th) are limited daily-use activations, not a permanent fly speed; track their use during play.",
           "speed.fly",
         ),
       ],
@@ -212,10 +211,7 @@ const HEX_LIST: WitchHexDef[] = [
       summary:
         "Grant an ally a +2 deflection bonus to AC and +2 resistance bonus on saves (scaling +1 at 8th/16th), lasting until they're hit or fail a save. Only one Ward active at a time; cannot target yourself.",
       contextNotes: [
-        note(
-          "Static ally buff once activated (persists until triggered) — targets an ally you choose, not yourself, so there's no reliable self-Change target here; apply manually to the ally's sheet while active.",
-          "ac",
-        ),
+        note("Apply the AC and save bonuses by hand to the ally's sheet while active.", "ac"),
       ],
     },
 
@@ -251,7 +247,7 @@ const HEX_LIST: WitchHexDef[] = [
       summary: "Gain the scent ability, but only to track humanoid children and immature animals.",
       contextNotes: [
         note(
-          "Narrower than a full scent grant (children/immature animals only) — not modeled as a sense bonus; the engine's Scent sense target would overstate it.",
+          "Works only against humanoid children and immature animals, not a full scent ability.",
           "sensesc",
         ),
       ],
@@ -297,7 +293,7 @@ const HEX_LIST: WitchHexDef[] = [
       summary: "Gain a +4 insight bonus on checks to craft poison and on checks to apply poison.",
       contextNotes: [
         note(
-          "+4 insight bonus on Craft checks to craft poison — not auto-applied (Craft is a player-named parameterized skill with no guaranteed matching entry); add it by hand to your Craft (poison) skill if you have one.",
+          "+4 insight bonus on checks to craft poison and to apply poison. Add it by hand to your Craft (poison) skill.",
           "skill.crf",
         ),
       ],
@@ -307,11 +303,7 @@ const HEX_LIST: WitchHexDef[] = [
       name: "Deathcall",
       summary:
         "Wounded creatures within 120 ft. of you take a penalty on checks to stabilize while dying: -1 (-2 at 8th level, -3 at 16th).",
-      contextNotes: [
-        note(
-          "Passive aura affecting OTHER creatures' stabilize checks, not your own sheet — apply manually.",
-        ),
-      ],
+      contextNotes: [note("Apply this penalty by hand to affected creatures' stabilize checks.")],
     },
     {
       id: "discord",
@@ -413,7 +405,7 @@ const HEX_LIST: WitchHexDef[] = [
       changes: [{ formula: "2", target: "nac", type: "natural" }],
       contextNotes: [
         note(
-          "The +2 natural armor bonus above is yours; your familiar gets its own copy of this hex's bonuses, not modeled here. The constant endure elements effect isn't a number this sheet tracks.",
+          "The +2 natural armor bonus above is yours. Your familiar gets its own copy of these bonuses; add them by hand to the familiar's sheet. You also gain the constant effect of endure elements.",
           "nac",
         ),
       ],
@@ -436,9 +428,7 @@ const HEX_LIST: WitchHexDef[] = [
       summary:
         "See through plant matter, as the greensight universal monster ability, for minutes/day equal to your witch level.",
       contextNotes: [
-        note(
-          "Limited daily use, not a permanent sense (and greensight has no matching engine sense target) — minutes need not be consecutive but must be spent in 1-minute increments; apply manually while active.",
-        ),
+        note("Minutes need not be consecutive but must be spent in 1-minute increments."),
       ],
     },
     {
@@ -469,10 +459,7 @@ const HEX_LIST: WitchHexDef[] = [
       summary:
         "Your nails grow into natural weapons dealing 1d3 damage (1d2 if Small) as a secondary attack; trimmed nails regrow within 1d4 days.",
       contextNotes: [
-        note(
-          "Grants a natural claw attack — natural attacks aren't tracked on this sheet; add it by hand if you use it.",
-          "nattack",
-        ),
+        note("Grants a natural claw attack. Add it by hand if you use it.", "nattack"),
       ],
     },
     {
@@ -482,7 +469,7 @@ const HEX_LIST: WitchHexDef[] = [
         "Grant an ally within 30 ft. a +2 (+4 at 8th, +6 at 16th) dodge bonus to AC and on Reflex saves against traps, or impose the same penalty on an enemy, for 1 minute.",
       contextNotes: [
         note(
-          "Will negates; DC = 10 + 1/2 witch level + Int mod. Save-category-scoped (traps only) and targets an ally or enemy you choose, not reliably yourself — apply manually. Once per target per day.",
+          "Will negates; DC = 10 + 1/2 witch level + Int mod. Save-category-scoped (traps only). Apply the bonus or penalty by hand to whichever creature you target. Once per target per day.",
         ),
       ],
     },
@@ -509,7 +496,7 @@ const HEX_LIST: WitchHexDef[] = [
         "Grant yourself or an ally within 30 ft. a poisoned claw attack (1d3 damage, 1d2 if Small, as a secondary attack) for minutes equal to your witch level.",
       contextNotes: [
         note(
-          "Poison: Fort DC 10 + 1/2 witch level + Int mod negates; frequency 1/round for 6 rounds; 1d2 Str damage; cure 1 save. If the target already has a claw attack, that attack gains the poison instead, at DC +1. Natural attack — not tracked on this sheet; apply manually. Once per creature per 24 hours.",
+          "Poison: Fort DC 10 + 1/2 witch level + Int mod negates; frequency 1/round for 6 rounds; 1d2 Str damage; cure 1 save. If the target already has a claw attack, that attack gains the poison instead, at DC +1. Add the claw attack by hand. Once per creature per 24 hours.",
           "nattack",
         ),
       ],
@@ -543,7 +530,7 @@ const HEX_LIST: WitchHexDef[] = [
         "Extend your hair (or eyebrows) into a 10-ft.-reach limb with Strength equal to your Intelligence, usable as a secondary natural attack (1d3, 1d2 if Small) or to manipulate objects, for minutes/day equal to your witch level.",
       contextNotes: [
         note(
-          "Natural attack — not tracked on this sheet. Minutes need not be consecutive but must be spent in 1-minute increments.",
+          "Add this natural attack by hand if you use it. Minutes need not be consecutive but must be spent in 1-minute increments.",
           "nattack",
         ),
       ],
@@ -553,11 +540,7 @@ const HEX_LIST: WitchHexDef[] = [
       name: "Protective Luck",
       summary:
         "Force anyone targeting an ally within 30 ft. with an attack roll to roll twice and take the worse result, for 1 round (extended by hexes that extend Fortune, such as Cackle, and by 1 round at 8th/16th level).",
-      contextNotes: [
-        note(
-          "Cannot target yourself — targets an ally you choose, so there's no reliable self Change target here.",
-        ),
-      ],
+      contextNotes: [note("Can't target yourself.")],
     },
     {
       id: "scar",
@@ -744,11 +727,7 @@ const HEX_LIST: WitchHexDef[] = [
       name: "Beast's Gift",
       summary:
         "Grant a willing ally natural attacks for minutes equal to your witch level: either one bite (1d8) plus one secondary attack of your choice (1d6), or two claws (1d4 each).",
-      contextNotes: [
-        note(
-          "Targets a willing ally, not yourself — apply manually to the ally's sheet while active.",
-        ),
-      ],
+      contextNotes: [note("Apply these natural attacks by hand to the ally's sheet while active.")],
     },
     {
       id: "cookPeople",
@@ -917,7 +896,7 @@ const HEX_LIST: WitchHexDef[] = [
         "Age a target within 30 ft. one age category (Fort negates; can never be aged past venerable). You gain 1d10 + your witch level temporary hit points and a +2 enhancement bonus to Strength, Dexterity, or Constitution (your choice), lasting hours equal to your witch level.",
       contextNotes: [
         note(
-          "Fortitude negates; DC = 10 + 1/2 witch level + Int mod. A creature that saves against Withering can't be affected by it again. The self buff (temp HP + ability enhancement) only triggers once the hex lands on a target — apply manually while active.",
+          "Fortitude negates; DC = 10 + 1/2 witch level + Int mod. A creature that saves against Withering can't be affected by it again. Apply the temporary hit points and ability bonus by hand once the hex lands on a target.",
         ),
       ],
     },

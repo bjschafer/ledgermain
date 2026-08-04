@@ -24,6 +24,22 @@ interface HexPickerProps {
 
 const TIER_LABEL: Record<string, string> = { hex: "Hex", major: "Major Hex", grand: "Grand Hex" };
 
+/** 1 -> "1st", 2 -> "2nd", 3 -> "3rd", 4 -> "4th", 11 -> "11th", ... */
+function ordinal(n: number): string {
+  const v = n % 100;
+  if (v >= 11 && v <= 13) return `${n}th`;
+  switch (n % 10) {
+    case 1:
+      return `${n}st`;
+    case 2:
+      return `${n}nd`;
+    case 3:
+      return `${n}rd`;
+    default:
+      return `${n}th`;
+  }
+}
+
 /**
  * Witch hex selection (full-catalog), mirroring
  * `MagusArcanaPicker`/`RagePowerPicker` — hexes are NOT patron-scoped (unlike
@@ -42,10 +58,10 @@ const TIER_LABEL: Record<string, string> = { hex: "Hex", major: "Major Hex", gra
  * Browses the FULL published hex catalog (`mergedWitchHexCatalog` — every
  * vendored entry, overlaid with the 27-entry hand-verified table on a name
  * match), not just the hand-verified Advanced Player's Guide "core" slice.
- * Every entry today is display-only (see `@pf1/engine` `witch-hexes.ts`'s
- * doc comment for why), so the "M" badge convention (`RagePowerPicker`'s)
- * never actually lights up yet — kept for when a future hex is promoted to a
- * real Change, same posture as rage powers before the buff-gate pass.
+ * Almost every entry is display-only reference text (see `@pf1/engine`
+ * `witch-hexes.ts`'s doc comment for why); the "M" badge (`RagePowerPicker`'s
+ * convention) marks the rare entry (Iceplant, Flight) that carries a real,
+ * live Change instead.
  *
  * Picked hexes also show up in the sheet's Class Features list (tagged
  * "— Hex"), via `collectGrantedFeatures`/`resolveClassFeatures` in
@@ -112,14 +128,21 @@ export function HexPicker({ doc, refData, update }: HexPickerProps) {
       </div>
       {!collapsed && (
         <>
-          <p className="hint revelation-picker-hint">
-            Pick hexes as you level (1st, 2nd, 4th, 6th, …; +1 per Extra Hex feat). Major hexes
-            unlock at 10th, Grand hexes at 18th. Browses the full published catalog; entries marked{" "}
-            <span className="badge-modeled">M</span> carry a real, live mechanical effect. The rest
-            are prose-only. Hex save DC (where applicable):{" "}
-            {dc > 0 ? dc : "10 + 1/2 level + Int mod"}. Free-choice: never blocks past the expected
-            count.
-          </p>
+          <div className="hex-picker-header">
+            <p className="hint revelation-picker-hint">Pick hexes as you level.</p>
+            <div className="spell-strip">
+              <span className="spell-chip is-save">
+                Hex DC {dc > 0 ? dc : "10 + 1/2 level + Int mod"}
+              </span>
+            </div>
+            <p className="hint revelation-picker-hint">
+              New hex at 1st and every even level after (2nd, 4th, 6th, …), plus one more per Extra
+              Hex feat. Major hexes unlock at 10th level, Grand hexes at 18th. Picking more than the
+              expected count is never blocked. Browses the full published catalog: most hexes are
+              reference text you apply at the table, and the rare entry marked{" "}
+              <span className="badge-modeled">M</span> applies to your sheet automatically.
+            </p>
+          </div>
           <input
             className="search"
             type="text"
@@ -152,14 +175,13 @@ export function HexPicker({ doc, refData, update }: HexPickerProps) {
                       <span className="desc-text">{h.summary}</span>
                     </div>
                     {belowLevel && (
-                      <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Requires witch {h.minLevel}
-                        {h.minLevel === 1 ? "st" : "th"} (currently {level})
+                      <div className="hint feature-note">
+                        ⚠ Requires witch {ordinal(h.minLevel)} level (currently {level})
                       </div>
                     )}
                     {h.contextNotes?.map((n, i) => (
-                      <div key={i} className="hint" style={{ marginTop: 2 }}>
-                        ⚠ {n.text}
+                      <div key={i} className="hint feature-note">
+                        {n.text}
                       </div>
                     ))}
                     {h.description ? <FeatureDescription html={h.description} /> : null}
