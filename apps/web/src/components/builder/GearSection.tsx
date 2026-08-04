@@ -244,29 +244,29 @@ function ArmorForm({
         </label>
         <label className="field">
           <span>AC Bonus</span>
-          <input
-            type="number"
+          <NumberField
             value={form.ac}
             min={0}
-            onChange={(e) => field("ac", Number(e.target.value))}
+            onCommit={(n) => field("ac", n)}
+            aria-label="AC Bonus"
           />
         </label>
         <label className="field">
           <span>Arcane Spell Failure %</span>
-          <input
-            type="number"
+          <NumberField
             value={form.asf ?? 0}
             min={0}
             max={100}
-            onChange={(e) => field("asf", Number(e.target.value))}
+            onCommit={(n) => field("asf", n)}
+            aria-label="Arcane Spell Failure %"
           />
         </label>
         <label className="field">
           <span>Armor Check Penalty (negative)</span>
-          <input
-            type="number"
+          <NumberField
             value={form.acp ?? 0}
-            onChange={(e) => field("acp", Number(e.target.value))}
+            onCommit={(n) => field("acp", n)}
+            aria-label="Armor Check Penalty"
           />
         </label>
         {isArmorSlot ? (
@@ -319,6 +319,8 @@ function ArmorForm({
         enhancement={enhForAbilities}
         info={catalog.info}
         onToggle={toggleAbility}
+        label="Magic special abilities"
+        intro="Enchantments added on top of the base armor, like Shadow or Fortification."
       />
       <button
         type="button"
@@ -1269,13 +1271,6 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                     )}
                   </label>
                 </div>
-                <AbilityPicker
-                  options={armorRefAbilityOptions}
-                  selected={armorAbilities}
-                  enhancement={armorEnhancement}
-                  info={armorRefAbilityCatalog.info}
-                  onToggle={toggleArmorAbility}
-                />
                 <div className="scroll">
                   {filteredArmors.length === 0 ? (
                     <div className="empty">No armor matches.</div>
@@ -1307,6 +1302,19 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                     <div className="empty">Showing first 80. Refine your search.</div>
                   ) : null}
                 </div>
+                {/* Below the armor list, not above it: this configures
+                    enchantments layered onto whichever armor row above gets
+                    "Add" clicked, and reads as a distinct optional step only
+                    once the base armor itself is unambiguous. */}
+                <AbilityPicker
+                  options={armorRefAbilityOptions}
+                  selected={armorAbilities}
+                  enhancement={armorEnhancement}
+                  info={armorRefAbilityCatalog.info}
+                  onToggle={toggleArmorAbility}
+                  label="Magic special abilities"
+                  intro="Enchantments added on top of the base armor, like Shadow or Fortification."
+                />
                 <button
                   type="button"
                   className="btn-ghost armor-custom-link"

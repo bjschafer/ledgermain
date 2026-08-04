@@ -117,6 +117,11 @@ export function pruneAbilityInfo(info: AbilityInfo, keep: string[]): AbilityInfo
  * instance's already-selected-only `abilityInfo`) — every row, selected or
  * not, needs its cost resolved to render correctly, and an unselected
  * imported ability has no entry yet in the narrower instance snapshot.
+ *
+ * `label`/`intro` let a caller reframe the section for its context (e.g. the
+ * armor forms use "Magic special abilities" plus a one-line explainer, so the
+ * list of enchantments never reads as the base-item picker itself); both
+ * default to the plain weapon/armor-agnostic copy.
  */
 export function AbilityPicker({
   options,
@@ -124,12 +129,16 @@ export function AbilityPicker({
   enhancement,
   info,
   onToggle,
+  label = "Special abilities",
+  intro,
 }: {
   options: AbilityCatalogOption[];
   selected: string[];
   enhancement: number;
   info: AbilityInfo;
   onToggle: (option: AbilityCatalogOption) => void;
+  label?: string;
+  intro?: string;
 }) {
   const [query, setQuery] = useState("");
   const abilitiesLocked = enhancement < 1;
@@ -151,7 +160,8 @@ export function AbilityPicker({
 
   return (
     <div className="ability-chips-section">
-      <span className="section-label">Special abilities</span>
+      <span className="section-label">{label}</span>
+      {intro && <p className="hint ability-picker-intro">{intro}</p>}
       <p className="hint">
         {abilitiesLocked
           ? "Requires at least a +1 enhancement bonus"
