@@ -178,8 +178,11 @@ describe("addWornArmorFromRef()", () => {
     expect(inst.armor!.enhancement).toBe(3);
     expect(inst.armor!.material).toBe("mithral");
     expect(inst.armor!.maxDex).toBe(3); // 1 + 2 mithral
-    // -(6 - 3 mithral - 1 masterwork-implied-by-enhancement, B3)
-    expect(inst.armor!.acp).toBe(-2);
+    // -(6 - 3 mithral); the masterwork-implied-by-enhancement -1 is no longer
+    // baked in here — `@pf1/engine`'s armorPieceAcp applies it at compute
+    // time, and skips it for mithral since the material's -3 already assumes
+    // masterwork quality (see compute.armorAcp.test.ts).
+    expect(inst.armor!.acp).toBe(-3);
     expect(inst.armor!.type).toBe(2); // 3 - 1 mithral
   });
 
@@ -257,26 +260,26 @@ describe("addWornArmorFromRef()", () => {
     proficiency: "lightArmor",
   };
 
-  it("masterwork chain shirt: ACP -2 reduced to -1, name prefixed", () => {
+  it("masterwork chain shirt: listed ACP -2 stored as-is (masterwork's -1 is applied by the engine, not here)", () => {
     const d = addWornArmorFromRef(doc(), CHAIN_SHIRT, 0, undefined, undefined, true);
     const inst = d.build.gear[0]!;
     expect(inst.name).toBe("Masterwork Chain Shirt");
-    expect(inst.armor!.acp).toBe(-1);
+    expect(inst.armor!.acp).toBe(-2);
     expect(inst.armor!.masterwork).toBe(true);
   });
 
-  it("masterwork breastplate: ACP -4 reduced to -3", () => {
+  it("masterwork breastplate: listed ACP -4 stored as-is", () => {
     const d = addWornArmorFromRef(doc(), BREASTPLATE, 0, undefined, undefined, true);
     const inst = d.build.gear[0]!;
     expect(inst.name).toBe("Masterwork Breastplate");
-    expect(inst.armor!.acp).toBe(-3);
+    expect(inst.armor!.acp).toBe(-4);
   });
 
-  it("+1 breastplate (no explicit masterwork flag): ACP still reduced to -3, masterwork not stored", () => {
+  it("+1 breastplate (no explicit masterwork flag): listed ACP -4 stored as-is, masterwork not stored", () => {
     const d = addWornArmorFromRef(doc(), BREASTPLATE, 1);
     const inst = d.build.gear[0]!;
     expect(inst.name).toBe("Breastplate +1");
-    expect(inst.armor!.acp).toBe(-3);
+    expect(inst.armor!.acp).toBe(-4);
     expect(inst.armor!.masterwork).toBeUndefined();
   });
 
