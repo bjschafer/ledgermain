@@ -1,12 +1,11 @@
 import { useMemo } from "react";
 
-import type { AbilityId, CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
+import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { featNameSlug, resolveFeatEffect } from "@pf1/engine";
 
-import { effectiveCasterLevel } from "../../model/casterLevel.js";
 import { combatStyleFeatSlugs } from "../../model/ranger.js";
-import { ABILITY_IDS, addFeatInstance, removeFeatInstance, totalLevel } from "../../model/doc.js";
+import { addFeatInstance, removeFeatInstance } from "../../model/doc.js";
 import { assignFeatsToSlots, featEligibleForSlot, slotTypeBadge } from "../../model/featSlots.js";
 import {
   chosenFeatCountExcludingGranted,
@@ -21,9 +20,9 @@ import {
   setFeatChoice,
 } from "../../model/feats.js";
 import {
+  buildPrereqContext,
   evaluatePrereqs,
   unqualifiedSelectedFeats,
-  type PrereqContext,
   type PrereqResult,
 } from "../../model/prereqs.js";
 import { isRepeatableFeat } from "../../model/repeatableFeats.js";
@@ -90,19 +89,7 @@ export function useFeatRenderContext(
     return map;
   }, [doc]);
 
-  const ctx: PrereqContext = useMemo(() => {
-    const abilityTotals = {} as Record<AbilityId, number>;
-    for (const id of ABILITY_IDS) abilityTotals[id] = sheet.abilities[id].total;
-    return {
-      abilityTotals,
-      bab: sheet.bab,
-      casterLevel: effectiveCasterLevel(doc, refData),
-      characterLevel: totalLevel(doc),
-      selectedFeats: new Set([...selected, ...grantedIds]),
-      refData,
-      bypassBlockedSlugs: styleSlugs,
-    };
-  }, [sheet, doc, selected, grantedIds, refData, styleSlugs]);
+  const ctx = useMemo(() => buildPrereqContext(doc, sheet, refData), [doc, sheet, refData]);
 
   const prereqMap = useMemo(() => {
     const map = new Map<string, PrereqResult>();
@@ -172,6 +159,35 @@ export function useFeatRenderContext(
 }
 
 /**
+ * A feat's live prerequisite readout: ✓/✗ for every structured check, plus a
+ * soft ⚠ for unverified prose (see `model/prereqs.ts`'s hybrid policy).
+ * Renders nothing when `res` carries neither. Shared by `FeatEntry` and any
+ * other surface that evaluates prereqs against the SAME `PrereqContext`
+ * (the tracker's Martial Flexibility picker), so the checklist reads
+ * identically everywhere a feat is offered.
+ */
+export function PrereqChecklist({ res }: { res: PrereqResult }) {
+  if (res.checks.length === 0 && !res.softText) return null;
+  return (
+    <div className="preq">
+      {res.checks.map((c, i) => (
+        <span key={i} className={c.met ? "ck-met" : "ck-unmet"}>
+          {c.met ? "✓" : "✗"} {c.label}
+        </span>
+      ))}
+      {res.softText ? (
+        <InfoTip
+          className="desc-text"
+          content="Prerequisite text: verify manually (not auto-enforced)"
+        >
+          ⚠ {res.softText}
+        </InfoTip>
+      ) : null}
+    </div>
+  );
+}
+
+/**
  * One feat row (or, for a taken repeatable feat, its instance group). The whole
  * per-feat rendering lives here so the builder panel and the full-screen manager
  * share exactly one code path — see `FeatRenderContext`.
@@ -215,23 +231,7 @@ export function FeatEntry({
           ? fx.schoolOptions
           : [];
 
-  const prereqBlock = (res.checks.length > 0 || res.softText) && (
-    <div className="preq">
-      {res.checks.map((c, i) => (
-        <span key={i} className={c.met ? "ck-met" : "ck-unmet"}>
-          {c.met ? "✓" : "✗"} {c.label}
-        </span>
-      ))}
-      {res.softText ? (
-        <InfoTip
-          className="desc-text"
-          content="Prerequisite text: verify manually (not auto-enforced)"
-        >
-          ⚠ {res.softText}
-        </InfoTip>
-      ) : null}
-    </div>
-  );
+  const prereqBlock = <PrereqChecklist res={res} />;
 
   const description = feat.description;
   const repeatable = isRepeatableFeat(feat.name);

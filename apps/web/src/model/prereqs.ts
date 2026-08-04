@@ -25,10 +25,14 @@
  * soft warning never silently hides prose the structured layer didn't actually
  * check.
  */
-import type { AbilityId, Feat, RefData } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, DerivedSheet, Feat, RefData } from "@pf1/schema";
 import { featNameSlug } from "@pf1/engine";
 
+import { effectiveCasterLevel } from "./casterLevel.js";
+import { ABILITY_IDS, totalLevel } from "./doc.js";
+import { grantedFeats } from "./feats.js";
 import { ABILITY_ABBR } from "./names.js";
+import { combatStyleFeatSlugs } from "./ranger.js";
 
 export interface PrereqCheck {
   label: string;
@@ -70,6 +74,34 @@ export interface PrereqContext {
    * bypass. Never waives the soft/prose warning, only the hard block.
    */
   bypassBlockedSlugs?: ReadonlySet<string>;
+}
+
+/**
+ * Builds the live `PrereqContext` from a document + its derived sheet — the
+ * one place that assembles it, so every surface that evaluates feat prereqs
+ * against the character's current stats (the builder's `FeatEntry`/
+ * `FeatManager`, and the tracker's Martial Flexibility picker) reads off the
+ * same inputs instead of each re-deriving its own. Reads ability totals from
+ * `sheet.abilities` (post-`compute()`) rather than `doc.abilities`, so an
+ * active buff that shifts a score changes what's selectable immediately.
+ */
+export function buildPrereqContext(
+  doc: CharacterDoc,
+  sheet: DerivedSheet,
+  refData: RefData,
+): PrereqContext {
+  const abilityTotals = {} as Record<AbilityId, number>;
+  for (const id of ABILITY_IDS) abilityTotals[id] = sheet.abilities[id].total;
+  const grantedIds = grantedFeats(doc, refData).map((g) => g.featId);
+  return {
+    abilityTotals,
+    bab: sheet.bab,
+    casterLevel: effectiveCasterLevel(doc, refData),
+    characterLevel: totalLevel(doc),
+    selectedFeats: new Set([...doc.build.feats, ...grantedIds]),
+    refData,
+    bypassBlockedSlugs: combatStyleFeatSlugs(doc),
+  };
 }
 
 /** A structured prerequisite signal, paired with a prose-fragment matcher. */
