@@ -2680,17 +2680,24 @@ export interface WornArmor {
   material?: string;
   /** Maximum Dexterity bonus the armor permits (omit for no cap). */
   maxDex?: number;
-  /** Armor check penalty (a negative number, or 0). */
+  /**
+   * Listed/base armor check penalty (a negative number, or 0) — the raw
+   * table value for this armor, after any special-material adjustment (e.g.
+   * mithral's -3) but BEFORE the masterwork/magic-enhancement -1 reduction.
+   * `@pf1/engine`'s `armorPieceAcp` derives the effective, displayed ACP from
+   * this plus `masterwork`/`enhancement`/`material` at compute time, so
+   * entering this field's listed value works the same whether the armor came
+   * from `RefData` or was typed in by hand.
+   */
   acp?: number;
   /** Armor weight class for `@armor.type` formulas: 0 none,1 light,2 med,3 heavy. */
   type?: number;
   /**
-   * Masterwork quality (reduces armor check penalty by 1, floor 0 magnitude).
-   * Only meaningful at `enhancement` 0 — any magic enhancement bonus already
-   * implies masterwork quality, so this is dropped once `enhancement` is
-   * positive. The ACP reduction is baked into the snapshotted `acp` value
-   * at pick-time (see `model/doc.ts` `addWornArmorFromRef`), mirroring how
-   * weapon enhancement is snapshotted rather than recomputed by the engine.
+   * Masterwork quality. Only meaningful at `enhancement` 0 — any magic
+   * enhancement bonus already implies masterwork quality, so this is dropped
+   * once `enhancement` is positive. Reduces the effective armor check penalty
+   * by 1 (floor 0 magnitude); see `acp`'s doc comment for where that
+   * reduction is applied.
    */
   masterwork?: boolean;
   /** Magical armor/shield ability ids (e.g. "light-fortification", "ghost-touch") — display only. */

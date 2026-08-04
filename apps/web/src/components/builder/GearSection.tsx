@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import type { ArmorRef, Change, Item, ItemInstance, RefData, WornArmor } from "@pf1/schema";
-import { gearUnitWeight, tryEvaluateFormula, unappliedChanges } from "@pf1/engine";
+import { armorPieceAcp, gearUnitWeight, tryEvaluateFormula, unappliedChanges } from "@pf1/engine";
 
 import {
   addCustomGearItem,
@@ -262,12 +262,15 @@ function ArmorForm({
           />
         </label>
         <label className="field">
-          <span>Armor Check Penalty (negative)</span>
+          <span>Armor Check Penalty (listed, negative)</span>
           <input
             type="number"
             value={form.acp ?? 0}
             onChange={(e) => field("acp", Number(e.target.value))}
           />
+          <p className="field-implied" title="Masterwork/enhancement's -1 is applied automatically">
+            Before masterwork
+          </p>
         </label>
         {isArmorSlot ? (
           <>
@@ -869,7 +872,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                       {inst.armor.enhancement ? ` +${inst.armor.enhancement} enh` : ""}
                       {inst.armor.masterwork && !inst.armor.enhancement ? " · masterwork" : ""}
                       {inst.armor.maxDex != null ? ` · max Dex +${inst.armor.maxDex}` : ""}
-                      {inst.armor.acp ? ` · ACP ${inst.armor.acp}` : ""}
+                      {inst.armor.acp ? ` · ACP ${armorPieceAcp(inst.armor)}` : ""}
                       {inst.armor.asf ? ` · ASF ${inst.armor.asf}%` : ""}
                       {inst.armor.material ? ` · ${inst.armor.material}` : ""}
                       {abilityNotes(inst.armor.abilities, inst.armor.abilityInfo)

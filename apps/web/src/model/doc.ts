@@ -1218,11 +1218,15 @@ export function addWornArmor(doc: CharacterDoc, armor: WornArmor, name: string):
  * normalizeWornArmor}, which drops them below `enhancement` 1 and truncates
  * the combined bonus-equivalent to the same +10 cap as magic weapons. Optional
  * `masterwork` (only meaningful at `enhancement` 0 — a magic enhancement bonus
- * already implies masterwork quality, mirroring `normalizeWeaponInstance`)
- * reduces the snapshotted ACP magnitude by 1 (floored at 0); the "Masterwork"
- * name prefix is shown only when explicitly set at +0, since it's implied (and
- * not called out) once enhancement is positive. Optional `abilityInfo` is the
- * pick-time snapshot for any `abilities` id from `RefData.itemAbilities` (see
+ * already implies masterwork quality, mirroring `normalizeWeaponInstance`) is
+ * stored as-is; the "Masterwork" name prefix is shown only when explicitly set
+ * at +0, since it's implied (and not called out) once enhancement is positive.
+ * The masterwork/enhancement armor-check-penalty reduction itself is NOT
+ * baked in here — `@pf1/engine`'s `armorPieceAcp` derives it from
+ * `masterwork`/`enhancement`/`material` at compute time, so the same rule
+ * applies whether the armor came from this ref path or was entered by hand
+ * (see `WornArmor.acp`'s doc comment). Optional `abilityInfo` is the pick-time
+ * snapshot for any `abilities` id from `RefData.itemAbilities` (see
  * `WornArmor.abilityInfo`'s doc comment) and is stored only alongside a
  * surviving `abilities` list. No deduplication.
  */
@@ -1266,10 +1270,6 @@ export function addWornArmorFromRef(
     .filter(Boolean)
     .join(" ");
 
-  // Masterwork quality (explicit at +0, or implied by a magic enhancement
-  // bonus) reduces the armor check penalty by 1, floored at 0 magnitude so
-  // it can never flip into a positive (bonus) ACP.
-  const acpMagnitude = masterwork || enh >= 1 ? Math.max(0, (ref.acp ?? 0) - 1) : ref.acp;
   const shieldTier =
     ref.slot === "shield" ? shieldTierFromProficiencyTag(ref.proficiency) : undefined;
 
@@ -1280,7 +1280,10 @@ export function addWornArmorFromRef(
     ...(mw ? { masterwork: true } : {}),
     ...(material && material !== "steel" ? { material } : {}),
     ...(ref.maxDex != null ? { maxDex: ref.maxDex } : {}),
-    ...(acpMagnitude ? { acp: -acpMagnitude } : {}),
+    // Listed/base ACP after any material adjustment (e.g. mithral's -3) but
+    // before the masterwork/enhancement reduction, which `@pf1/engine`'s
+    // `armorPieceAcp` applies at compute time.
+    ...(ref.acp ? { acp: -ref.acp } : {}),
     ...(ref.weightClass ? { type: ref.weightClass } : {}),
     ...(abilities && abilities.length > 0 ? { abilities } : {}),
     ...(abilities && abilities.length > 0 && abilityInfo ? { abilityInfo } : {}),

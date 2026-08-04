@@ -35,6 +35,7 @@ import type {
   SaveTier,
   SizeId,
   WeaponInstance,
+  WornArmor,
 } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
@@ -703,6 +704,32 @@ function heaviestWornArmorType(doc: CharacterDoc): number {
 }
 
 /**
+ * Effective armor check penalty for a single worn armor/shield piece (CRB,
+ * Equipment: masterwork armor/shields have their check penalty lessened by
+ * 1, to a minimum of 0; magic armor with an enhancement bonus of +1 or
+ * higher is automatically masterwork and gets that same single -1, not an
+ * additional one). `WornArmor.acp` holds the listed/base penalty — the raw
+ * table value after any special-material adjustment baked in at pick time
+ * (`apps/web/src/model/doc.ts` `addWornArmorFromRef`), but before this
+ * masterwork/enhancement reduction, so it applies uniformly whether the
+ * armor came from `RefData` or was entered by hand.
+ *
+ * Mithral is excluded: per RAW, mithral armor "is also always considered
+ * masterwork," and this repo's -3 mithral ACP adjustment (see
+ * `apps/web/src/model/materials.ts`) already represents that combined
+ * reduction, not an additional stack on top of it.
+ */
+export function armorPieceAcp(
+  armor: Pick<WornArmor, "acp" | "masterwork" | "enhancement" | "material">,
+): number {
+  const raw = armor.acp ?? 0;
+  if (raw >= 0) return 0;
+  const masterworked = armor.masterwork === true || (armor.enhancement ?? 0) >= 1;
+  if (!masterworked || armor.material === "mithral") return raw;
+  return Math.min(0, raw + 1);
+}
+
+/**
  * Class tags recognised as arcane spellcasters for arcane-spell-failure (ASF)
  * display — clean-room from PF1 RAW, not derived from Foundry data (the
  * vendored `ClassRef` carries no arcane/divine flag). This is the arcane
@@ -1013,7 +1040,7 @@ function computeSkills(
 
   // Effective armor check penalty (negative), reduced by armor-training acpA.
   const wornAcp = (doc.build.gear ?? []).reduce(
-    (s, inst) => (inst.equipped && inst.armor?.acp ? s + inst.armor.acp : s),
+    (s, inst) => (inst.equipped && inst.armor ? s + armorPieceAcp(inst.armor) : s),
     0,
   );
   const acpReduction = forTarget(collected, "acpA").reduce((s, m) => s + Math.abs(m.value), 0);
@@ -1205,7 +1232,9 @@ function nonProficientArmorAttackComponents(
   const components: ModifierComponent[] = [];
   for (const inst of doc.build.gear ?? []) {
     const a = inst.armor;
-    if (!inst.equipped || !a || !a.acp) continue;
+    if (!inst.equipped || !a) continue;
+    const acp = armorPieceAcp(a);
+    if (!acp) continue;
     const proficient =
       a.slot === "armor"
         ? isArmorTypeProficient(proficiencies, a.type)
@@ -1214,7 +1243,7 @@ function nonProficientArmorAttackComponents(
           : true;
     if (proficient) continue;
     const label = inst.name ?? (a.slot === "armor" ? "Armor" : "Shield");
-    components.push(synthetic(`${label} (non-proficient)`, "penalty", a.acp));
+    components.push(synthetic(`${label} (non-proficient)`, "penalty", acp));
   }
   return components;
 }
