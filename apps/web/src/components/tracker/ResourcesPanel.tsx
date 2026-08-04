@@ -11,7 +11,7 @@ import {
   type DerivedResourcePool,
   type ToggleBuffOption,
 } from "@pf1/engine";
-import type { AbilityId, Buff, CharacterDoc, RefData } from "@pf1/schema";
+import type { AbilityId, Buff, CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { AbilityTypeTag, FeatureDescription } from "../builder/ClassFeaturesList.js";
 import { NumberField } from "../builder/NumberField.js";
@@ -25,6 +25,7 @@ import {
   setKineticistShroudMode,
 } from "../../model/kineticistBuild.js";
 import { applyGrantedTempHp, isImmuneToNonlethal } from "../../model/hp.js";
+import { MartialFlexibilityDialog } from "./MartialFlexibilityDialog.js";
 import {
   knownOccultistSchoolTags,
   setOccultistFocusInvested,
@@ -126,7 +127,12 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
                   update={update}
                 />
                 {pool.name === "Martial Flexibility" && (
-                  <MartialFlexibilityPicker doc={doc} refData={refData} update={update} />
+                  <MartialFlexibilityPicker
+                    doc={doc}
+                    sheet={sheet}
+                    refData={refData}
+                    update={update}
+                  />
                 )}
                 {pool.name === "Mental Focus" && (
                   <MentalFocusInvestmentPanel doc={doc} pool={pool} update={update} />
@@ -442,52 +448,65 @@ function TableBuffToggle({
  * currently "borrowed" (PF1 RAW: move/swift/free/immediate action depending on
  * brawler level, lasts 1 minute — the action-type distinction isn't tracked
  * separately, see `live.martialFlexibilityFeatId`'s doc comment). Sits right
- * below the Martial Flexibility resource row. Restricted to feats tagged
- * "Combat" (same tag `model/featSlots.ts`'s `combat` slot type checks) — RAW
- * also requires meeting the feat's prerequisites, which this picker does NOT
- * validate (soft posture, matching the rest of the app's feat pickers). A
- * borrowed feat with a modeled STATIC effect in `@pf1/engine`
- * `feat-effects.ts` applies for real (see `collect.ts`'s Martial Flexibility
- * block); this chip is the always-honest display layer regardless of whether
- * the numeric effect wired through.
+ * below the Martial Flexibility resource row. The trigger opens
+ * {@link MartialFlexibilityDialog}, a full-screen browsable picker (search +
+ * benefit summary + live prereq checklist) restricted to feats tagged Combat
+ * and hard-blocked/soft-warned on the SAME prereq logic the builder's feat
+ * picker uses (RAW: "the brawler must meet all the feat's prerequisites") —
+ * see that dialog's doc comment. A borrowed feat with a modeled STATIC effect
+ * in `@pf1/engine` `feat-effects.ts` applies for real (see `collect.ts`'s
+ * Martial Flexibility block); this row is the always-honest display layer
+ * regardless of whether the numeric effect wired through.
  */
 function MartialFlexibilityPicker({
   doc,
+  sheet,
   refData,
   update,
 }: {
   doc: CharacterDoc;
+  sheet: DerivedSheet;
   refData: RefData;
   update: (fn: (d: CharacterDoc) => CharacterDoc) => void;
 }) {
-  const combatFeats = useMemo(
-    () =>
-      Object.entries(refData.feats)
-        .filter(([, f]) => f.tags.includes("Combat"))
-        .sort((a, b) => a[1].name.localeCompare(b[1].name)),
-    [refData],
-  );
+  const [pickerOpen, setPickerOpen] = useState(false);
   const borrowedId = doc.live.martialFlexibilityFeatId ?? "";
   const borrowed = borrowedId ? refData.feats[borrowedId] : undefined;
 
   return (
     <div className="res-sub-row martial-flexibility">
-      <label className="hint" htmlFor="martial-flexibility-select">
-        Borrowed feat (1 min, meet its prereqs)
-      </label>
-      <select
-        id="martial-flexibility-select"
-        value={borrowedId}
-        onChange={(e) => update((d) => setMartialFlexibilityFeat(d, e.target.value || null))}
-      >
-        <option value="">None borrowed</option>
-        {combatFeats.map(([id, feat]) => (
-          <option key={id} value={id}>
-            {feat.name}
-          </option>
-        ))}
-      </select>
+      <div className="res-field-row">
+        <span className="res-field-label">Borrowed feat</span>
+        <div className="res-btns">
+          <button type="button" className="pick-btn" onClick={() => setPickerOpen(true)}>
+            {borrowed ? borrowed.name : "Borrow a feat…"}
+          </button>
+          {borrowed && (
+            <button
+              type="button"
+              className="pick-btn remove"
+              onClick={() => update((d) => setMartialFlexibilityFeat(d, null))}
+            >
+              Clear
+            </button>
+          )}
+        </div>
+      </div>
+      <span className="hint">1 minute, meet its prerequisites</span>
       {borrowed?.description && <FeatureDescription html={borrowed.description} />}
+      {pickerOpen && (
+        <MartialFlexibilityDialog
+          doc={doc}
+          sheet={sheet}
+          refData={refData}
+          borrowedId={borrowedId}
+          onSelect={(featId) => {
+            update((d) => setMartialFlexibilityFeat(d, featId));
+            setPickerOpen(false);
+          }}
+          onClose={() => setPickerOpen(false)}
+        />
+      )}
     </div>
   );
 }
