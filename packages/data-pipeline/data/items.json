@@ -13738,6 +13738,27 @@
     "uuid": "supplement-item:boots-of-the-cat",
     "weight": 1
   },
+  "item:goblin-fishing-lure": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "skill.pro",
+        "text": "+2 circumstance bonus on Profession (fisher) checks (masterwork tool); 25% chance per check to lose the lure, reduced 2% per rank in Profession (fisher)."
+      }
+    ],
+    "description": "<p>A gaudily painted lure carved and colored to resemble a leering, cartoonish goblin face, popular with anglers who work rivers and coastlines near goblin territory. It functions as a masterwork tool: a fisher using it gains a +2 circumstance bonus on Profession (fisher) checks. Each check risks losing the lure to a snag or an eager bite, a 25% chance that drops by 2% for every rank the user has in Profession (fisher).</p>",
+    "id": "item:goblin-fishing-lure",
+    "name": "Goblin fishing lure",
+    "price": 5,
+    "sources": [
+      {
+        "id": "PZO1140",
+        "pages": "243"
+      }
+    ],
+    "subType": "gear",
+    "uuid": "supplement-item:goblin-fishing-lure"
+  },
   "itpjtzjuzpzuvmlu": {
     "changes": [],
     "contextNotes": [],

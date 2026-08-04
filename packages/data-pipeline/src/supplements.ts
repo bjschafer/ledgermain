@@ -4004,6 +4004,29 @@ export const SUPPLEMENTAL_ITEMS: Item[] = [
     changes: [],
     contextNotes: [],
   },
+  {
+    // Goblin Fishing Lure (Ultimate Wilderness p. 243). Its bonus targets
+    // Profession (fisher) specifically — a parameterized subskill with no
+    // stable per-instance target (see `trait-effects-extracted.ts` for the
+    // same posture elsewhere in this codebase) — so it stays a contextNotes
+    // reminder rather than an unconditional `changes` entry, which would
+    // otherwise buff every Profession specialty on the sheet.
+    id: "item:goblin-fishing-lure",
+    name: "Goblin fishing lure",
+    uuid: "supplement-item:goblin-fishing-lure",
+    description:
+      "<p>A gaudily painted lure carved and colored to resemble a leering, cartoonish goblin face, popular with anglers who work rivers and coastlines near goblin territory. It functions as a masterwork tool: a fisher using it gains a +2 circumstance bonus on Profession (fisher) checks. Each check risks losing the lure to a snag or an eager bite, a 25% chance that drops by 2% for every rank the user has in Profession (fisher).</p>",
+    sources: [{ id: "PZO1140", pages: "243" }],
+    subType: "gear",
+    price: 5,
+    changes: [],
+    contextNotes: [
+      {
+        target: "skill.pro",
+        text: "+2 circumstance bonus on Profession (fisher) checks (masterwork tool); 25% chance per check to lose the lure, reduced 2% per rank in Profession (fisher).",
+      },
+    ],
+  },
 ];
 
 /**
