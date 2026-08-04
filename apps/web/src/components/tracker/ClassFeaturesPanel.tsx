@@ -44,21 +44,23 @@ export function ClassFeaturesPanel({ sheet, refData }: BuilderProps) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <div className="scroll">
+      <div className="scroll cf-panel-scroll">
         {groups.map((group) => (
-          <div className="subsection class-features" key={group.label}>
-            <h4 className="tracker-sub">{group.label}</h4>
-            <div className="cf-archetype-features">
-              {group.features.map((f, i) => (
-                <ClassFeatureRow
-                  key={`${f.featureId}-${i}`}
-                  feature={f}
-                  refData={refData}
-                  showOrigin={false}
-                />
-              ))}
-            </div>
-          </div>
+          <section className="cf-group" key={group.label}>
+            <h4 className="cf-group-head">
+              <span className="cf-group-name">{group.label}</span>
+              <span className="cf-group-count">{group.features.length}</span>
+            </h4>
+            {group.features.map((f, i) => (
+              <ClassFeatureRow
+                key={`${f.featureId}-${i}`}
+                feature={f}
+                refData={refData}
+                showOrigin={false}
+                layout="block"
+              />
+            ))}
+          </section>
         ))}
         {groups.length === 0 ? <div className="empty">No matches.</div> : null}
       </div>

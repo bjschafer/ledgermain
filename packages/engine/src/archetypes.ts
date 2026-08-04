@@ -83,6 +83,7 @@ import {
   shifterClawsLabel,
 } from "./tables.js";
 import type { AbilityView } from "./rolldata.js";
+import { resolveSaveDCText, saveDCContext } from "./feature-save-dc.js";
 
 export interface ResolvedClassFeatures {
   classFeatures: DerivedClassFeature[];
@@ -1660,13 +1661,20 @@ export function resolveClassFeatures(
   }
 
   const classFeatures: DerivedClassFeature[] = [];
+  const dcCtx = saveDCContext(doc, abilities);
   for (const {
     classTag,
     grant,
     origin,
     detail: providedDetail,
-    contextNotes,
+    contextNotes: authoredNotes,
   } of collectGrantedFeatures(doc, refData)) {
+    // "DC = 10 + 1/2 witch level + Int mod" -> "DC 19" for this character; an
+    // unrecognized phrasing passes through untouched (see `feature-save-dc.ts`).
+    const contextNotes = authoredNotes?.map((n) => ({
+      ...n,
+      text: resolveSaveDCText(n.text, dcCtx),
+    }));
     const classLevel = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
     const replacedBy = replacedByUuid.get(grant.uuid);
     // Sneak Attack's die count, Smite Evil's attack/damage/AC scaling, and

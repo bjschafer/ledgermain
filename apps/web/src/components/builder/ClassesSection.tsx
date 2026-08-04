@@ -549,7 +549,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {doc.identity.classes.some((c) => c.tag === "witch") && (
         <>
           <PatronPicker doc={doc} refData={refData} update={update} />
-          <HexPicker doc={doc} refData={refData} update={update} />
+          <HexPicker doc={doc} sheet={sheet} refData={refData} update={update} />
         </>
       )}
 

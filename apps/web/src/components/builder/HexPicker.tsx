@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
-import { mergedWitchHexCatalog, witchHexDC } from "@pf1/engine";
-import type { CharacterDoc, RefData } from "@pf1/schema";
+import { mergedWitchHexCatalog, resolveSaveDCText, saveDCContext, witchHexDC } from "@pf1/engine";
+import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import {
   chosenWitchHexCount,
@@ -19,6 +19,7 @@ type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface HexPickerProps {
   doc: CharacterDoc;
+  sheet: DerivedSheet;
   refData: RefData;
   update: Updater;
 }
@@ -70,15 +71,18 @@ function ordinal(n: number): string {
  * `@pf1/engine` `archetypes.ts` (through `resolveWitchHex`, which resolves
  * BOTH a hand-authored and a vendored-only pick).
  */
-export function HexPicker({ doc, refData, update }: HexPickerProps) {
+export function HexPicker({ doc, sheet, refData, update }: HexPickerProps) {
   const isWitch = doc.identity.classes.some((c) => c.tag === "witch");
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Hexes", false);
 
   const selected = useMemo(() => new Set(doc.build.witchHexes ?? []), [doc.build.witchHexes]);
   const level = getWitchLevel(doc);
-  const intMod = Math.floor((doc.abilities.int - 10) / 2);
-  const dc = witchHexDC(level, intMod);
+  // Final Int modifier, not the raw score's: a headband or a racial bonus
+  // moves the hex DC, and the sheet's Class Features panel already reports it
+  // that way.
+  const dc = witchHexDC(level, sheet.abilities.int.mod);
+  const dcCtx = useMemo(() => saveDCContext(doc, sheet.abilities), [doc, sheet.abilities]);
 
   const catalog = useMemo(() => mergedWitchHexCatalog(refData), [refData]);
 
@@ -190,7 +194,7 @@ export function HexPicker({ doc, refData, update }: HexPickerProps) {
                     )}
                     {h.contextNotes?.map((n, i) => (
                       <div key={i} className="hint feature-note">
-                        {n.text}
+                        {resolveSaveDCText(n.text, dcCtx)}
                       </div>
                     ))}
                     {h.description ? <FeatureDescription html={h.description} /> : null}

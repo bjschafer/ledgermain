@@ -5008,6 +5008,107 @@ input[type="text"].saved-roll-name:focus {
   color: var(--gold-dim-ink);
 }
 
+/* ------------------------------------- class features, block layout (play) -- */
+/* The play tab reads one feature at a time (what does this hex do, right
+   now) rather than scanning a level list, so the row stops being a row: name
+   on its own line, summary and rules reminders stacked under it. Undoes the
+   inline layout's flex row wholesale rather than tweaking it. */
+.cf-archetype-feature.cf-block {
+  display: block;
+  padding: 0;
+}
+
+.cf-block .cf-name {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.cf-block .cf-summary {
+  margin: 3px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Rules reminders (save DC, duration, "once per target per day") are a
+   different kind of text from the summary above them — a gold rule marks
+   them as the at-the-table lookup rather than more description. */
+.cf-block .feature-note {
+  margin-top: 5px;
+  padding-left: 8px;
+  border-left: 2px solid var(--gold-dim);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--faint);
+}
+
+.cf-block .spell-detail {
+  margin-top: 6px;
+}
+
+/* The inline layout hides this label and keeps only the chevron, which works
+   as a trailing marker on a name row. Stacked on its own line it's a bare
+   arrow pointing at nothing, so the block layout takes the word back. */
+.cf-block .spell-detail-summary {
+  font-size: 0.625rem;
+}
+
+.cf-block .spell-detail-summary::before {
+  font-size: 0.5625rem;
+  color: inherit;
+}
+
+/* --------------------------------------- Class Features panel (play tab) -- */
+/* Feature entries are multi-line blocks here, so they need a real separator:
+   the shared `.subsection` this used to lean on drew a stray hairline against
+   the scroll box's own border instead. */
+.cf-panel-scroll {
+  max-height: 460px;
+}
+
+.cf-panel-scroll .cf-archetype-feature {
+  padding: 9px 12px;
+}
+
+.cf-panel-scroll .cf-archetype-feature + .cf-archetype-feature {
+  border-top: 1px solid var(--line-soft);
+}
+
+/* Sticky so the group a feature belongs to stays named while scrolling a long
+   hex/talent list. Clipped to the scroll box, so a low literal z-index is
+   correct here (see the --z-* scale note at the top of this file). */
+.cf-group-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  padding: 7px 12px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line-soft);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--gold-2);
+}
+
+.cf-group + .cf-group .cf-group-head {
+  border-top: 1px solid var(--line-soft);
+}
+
+.cf-group-count {
+  color: var(--faint);
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
 /* --------------------------------------------------- Arcane Bond picker -- */
 /* Vertical rhythm between the hint paragraph, the Familiar/Bonded-object
    chip row, the bonded-object name input, and its description toggle —

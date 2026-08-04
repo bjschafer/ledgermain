@@ -53,32 +53,45 @@ export function FeatureDescription({ html }: { html: string }) {
  * description. Shared by {@link ClassFeaturesList} (the builder, grouped
  * by level) and the Play tab's `ClassFeaturesPanel` (grouped by origin) so
  * the row itself never diverges between the two.
+ *
+ * `layout` picks which of those two jobs the row is doing. `"inline"` (the
+ * builder) keeps the whole feature on one line, with `detail` as a trailing
+ * parenthetical — right for base-class grants, whose detail is a number like
+ * "3d6" and whose value is a scannable level-by-level list. `"block"` (the
+ * play tab) gives the name its own line and drops `detail` below it as a
+ * sentence, because the subsystem picks that panel is mostly made of (hexes,
+ * rage powers, talents) carry a full sentence there, and a sentence in
+ * parentheses after a name reads as one undifferentiated paragraph.
  */
 export function ClassFeatureRow({
   feature,
   refData,
   showOrigin = true,
+  layout = "inline",
 }: {
   feature: DerivedClassFeature;
   refData: RefData;
   showOrigin?: boolean;
+  layout?: "inline" | "block";
 }) {
   const vendored = refData.classFeatures[feature.featureId];
   const description = vendored?.description;
+  const block = layout === "block";
   return (
-    <div className="cf-archetype-feature">
+    <div className={`cf-archetype-feature${block ? " cf-block" : ""}`}>
       <span
         className={`cf-name${feature.applied ? "" : " struck"}`}
         title={feature.replacedBy ? `Replaced by ${feature.replacedBy}` : undefined}
       >
         {feature.name}
         <AbilityTypeTag abilityType={vendored?.abilityType} />
-        {feature.detail ? <span className="cf-detail"> ({feature.detail})</span> : null}
+        {feature.detail && !block ? <span className="cf-detail"> ({feature.detail})</span> : null}
         {showOrigin && feature.origin ? (
           <span className="cf-origin"> ({feature.origin.label})</span>
         ) : null}
         {feature.replacedBy ? <span className="cf-replaced"> → {feature.replacedBy}</span> : null}
       </span>
+      {feature.detail && block ? <p className="cf-summary">{feature.detail}</p> : null}
       {feature.contextNotes?.map((n, i) => (
         <div key={i} className="hint feature-note">
           {n.text}

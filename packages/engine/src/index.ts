@@ -261,6 +261,12 @@ export {
   type MergedWitchHexEntry,
 } from "./witch-hexes.js";
 export {
+  SAVE_DC_PHRASES,
+  resolveSaveDCText,
+  saveDCContext,
+  type SaveDCContext,
+} from "./feature-save-dc.js";
+export {
   SHAMAN_GENERAL_HEXES,
   SHAMAN_GENERAL_HEX_IDS,
   mergedShamanHexCatalog,

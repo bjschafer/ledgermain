@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-03-class-feature-dcs",
+    date: "2026-08-03",
+    title: "Save DCs are the actual number, and the panel is readable",
+    note: 'A hex that told you its DC was "10 + 1/2 witch level + Int mod" was making you do arithmetic at the table for a number the sheet already knows. Those read as a real DC now, wherever they appear: hexes, rage powers, cruelties, ninja tricks, rogue and slayer and investigator talents, revelations, bloodline powers. They follow your final Intelligence, so a headband moves them. The Play tab panel that lists all of this was also one wall of grey text: every feature is its own block now, with its name on top, its summary under it, and its save and duration reminders set apart, and the group you are reading stays labelled as you scroll.',
+  },
+  {
     id: "2026-08-03-class-features-in-play",
     date: "2026-08-03",
     title: "Your class picks are on the Play tab now",
