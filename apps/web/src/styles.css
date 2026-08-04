@@ -371,9 +371,11 @@ a {
 }
 
 /* ------------------------------------------------------- floating controls --
-   Mobile-only action cluster, bottom-right: scroll-to-top + the "Sheet"
-   opener that stands in for `.sheet-col` once it leaves the document flow
-   above. Hidden completely at desktop widths. */
+   Mobile-only action cluster, bottom-right: the "Sheet" opener that stands in
+   for `.sheet-col` once it leaves the document flow above. Hidden completely
+   at desktop widths. (Scroll-to-top lives in `.scroll-top-btn` below instead
+   — it applies at every width, so it gets its own bottom-left spot rather
+   than crowding into this mobile-only cluster.) */
 .floating-controls {
   display: none;
 }
@@ -389,6 +391,18 @@ a {
     align-items: flex-end;
     gap: 10px;
   }
+}
+
+/* Scroll-to-top: shown at every viewport width once the page has scrolled
+   past the fold (ScrollTopButton.tsx). Bottom-left so it never overlaps the
+   mobile-only cluster above (bottom-right), the toast host (bottom-center),
+   or the sticky `.sheet-col` that occupies the desktop/tablet layout's right
+   edge. */
+.scroll-top-btn {
+  position: fixed;
+  left: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: var(--z-floating-controls);
 }
 
 .floating-btn {
@@ -1415,13 +1429,22 @@ button:focus-visible,
   text-align: right;
 }
 
-/* feat / spell selectable rows */
+/* feat / spell selectable rows. The feat catalog alone runs to ~1500 of
+   these, revealed in growing chunks (useIncrementalReveal) rather than
+   windowed — so a long browsing session leaves hundreds mounted at once.
+   `content-visibility: auto` skips layout/paint for rows currently off
+   screen; `contain-intrinsic-size` gives the browser a placeholder height
+   for those so the scrollbar doesn't jump around before a row's first real
+   measurement. Harmless where lists are short (that's most callers of this
+   class), so it's applied unconditionally rather than per-picker. */
 .pick-row {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   padding: 9px 12px;
   border-bottom: 1px solid var(--line-soft);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 60px;
 }
 
 .pick-row:last-child {
