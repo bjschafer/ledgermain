@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-03-herolab-import",
+    date: "2026-08-03",
+    title: "Import a character straight from a Hero Lab portfolio",
+    note: "Settings will take a Hero Lab classic .por file now, the one Hero Lab actually saves, so there is no separate export step and nothing to retype. Race, class and level, scores, ranks, chosen feats, languages, coin, and gear all come across, and worn armor arrives as armor, so your AC is a real number. Live state comes too: the hit points you are on, and uses you have spent out of pools like a brawler's martial flexibility. Feats Hero Lab handed you for free are left out, since this sheet grants those itself and taking them again would spend feat slots twice. Anything it could not place is listed for you afterwards rather than dropped or guessed at.",
+  },
+  {
     id: "2026-08-03-class-feature-dcs",
     date: "2026-08-03",
     title: "Save DCs are the actual number, and the panel is readable",
