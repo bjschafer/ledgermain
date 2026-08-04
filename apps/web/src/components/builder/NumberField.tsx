@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Base props for {@link NumberField}. Every numeric control in the app renders
@@ -79,7 +79,13 @@ export type NumberFieldProps = RequiredProps | OptionalProps;
  * `undefined` instead (used for "infinite" buff durations).
  *
  * When `value` changes externally (e.g. maxRank drops due to a class removal)
- * the local display resyncs to the new value.
+ * the local display resyncs to the new value — but only while the field is
+ * unfocused. Without that guard, a `commitOnChange` field fights the user:
+ * clearing the input commits `0` immediately, the parent's `value` prop echoes
+ * back as `0`, and the resync effect would overwrite the just-cleared local
+ * text with `"0"` before the next keystroke lands, making it impossible to
+ * type a fresh value. Suppressing resync while focused lets local edits (an
+ * empty field mid-retype) stand until blur/Enter hands off deliberately.
  */
 export function NumberField(props: NumberFieldProps) {
   const {
@@ -107,9 +113,16 @@ export function NumberField(props: NumberFieldProps) {
   };
 
   const [local, setLocal] = useState(value == null ? "" : String(value));
+  // Tracks focus outside React state: flipping it must never itself trigger
+  // the resync effect below (a state-based flag would, since its own change
+  // re-runs effects whose dependency array it appeared in).
+  const focused = useRef(false);
 
-  // Resync display when the committed prop value changes externally.
+  // Resync display when the committed prop value changes externally. Skipped
+  // while focused so a `commitOnChange` field's own echo doesn't clobber the
+  // text the user is mid-typing (see doc comment above).
   useEffect(() => {
+    if (focused.current) return;
     setLocal(value == null ? "" : String(value));
   }, [value]);
 
@@ -154,7 +167,13 @@ export function NumberField(props: NumberFieldProps) {
         setLocal(e.target.value);
         if (commitOnChange) commit(e.target.value);
       }}
-      onBlur={(e) => commit(e.target.value)}
+      onFocus={() => {
+        focused.current = true;
+      }}
+      onBlur={(e) => {
+        focused.current = false;
+        commit(e.target.value);
+      }}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           commit((e.target as HTMLInputElement).value);
