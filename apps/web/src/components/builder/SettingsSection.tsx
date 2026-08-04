@@ -136,11 +136,12 @@ export function SettingsSection({
   }
 
   /**
-   * Reads the file's text and auto-detects its format: a native Ledgermain
-   * export (.json), a Pathbuilder 1e export (.json), or a Hero Lab classic
-   * export (.xml) — see `model/importExternalFile.ts`. A native export
-   * carries no `report` (nothing to map); the other two formats always
-   * produce one so the player can see what did/didn't come across.
+   * Reads the file's bytes and auto-detects its format: a native Ledgermain
+   * export (.json), a Pathbuilder 1e export (.json or HTML stat block), or a
+   * Hero Lab classic file (`.por` portfolio or bare statblock .xml) — see
+   * `model/importExternalFile.ts`. A native export carries no `report`
+   * (nothing to map); the external formats always produce one so the player
+   * can see what did/didn't come across.
    *
    * Feedback (UX audit: "feedback: toasts + undo") — importing used to
    * silently swap the active character with no confirmation of what just
@@ -786,9 +787,10 @@ export function SettingsSection({
                 Export this character to a JSON file you can back up or move to another device. The
                 importer auto-detects the file: a Ledgermain export (.json) makes the character
                 active in place (re-importing the same export updates it; a different file adds a
-                new one); a Pathbuilder 1e export (.json) or Hero Lab classic export (.xml) is added
-                as a new character, best-effort: anything that couldn't be matched to this app's
-                reference data is listed below so you can add it by hand.
+                new one); a Pathbuilder 1e export (.json or the saved HTML stat block) or a Hero Lab
+                classic file (a .por portfolio, or a statblock .xml on its own) is added as a new
+                character, best-effort: anything that couldn't be matched to this app's reference
+                data is listed below so you can add it by hand.
               </p>
               <div className="settings-row">
                 <button
