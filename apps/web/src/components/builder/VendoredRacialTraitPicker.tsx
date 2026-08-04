@@ -241,7 +241,7 @@ export function VendoredRacialTraitPicker({
         aria-expanded={!collapsed}
       >
         <h3>
-          More alternate racial traits (vendored)
+          More alternate racial traits
           <span className="hint">
             {" "}
             · {points.chosen} chosen
@@ -255,12 +255,12 @@ export function VendoredRacialTraitPicker({
         <>
           <p className="hint magus-arcana-picker-hint">
             Sourced from the wider published catalog, not hand-verified like the traits above.
-            `Changes` apply automatically when structured. A "replaces" tag says "applied
-            automatically" when every named standard trait is verified to retire on its own;
-            otherwise it's a reminder only, so retire the named standard trait(s) yourself.
-            Heritage-tagged entries are only yours if that's your heritage: nothing checks it.
-            Sections follow the published trait categories; entries the catalog left untagged sit
-            under Uncategorized.
+            Effects the catalog states as structured numbers apply to your sheet automatically. A
+            "replaces" tag says "applied automatically" when every named standard trait is verified
+            to retire on its own; otherwise it's a reminder only, so retire the named standard
+            trait(s) yourself. Heritage-tagged entries are only yours if that's your heritage:
+            nothing checks it. Sections follow the published trait categories; entries the catalog
+            left untagged sit under Uncategorized.
             {points.tagged > 0 ? (
               <>
                 {" "}
