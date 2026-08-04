@@ -1,4 +1,9 @@
-import type { DerivedClassFeature, DerivedSheet, RefData } from "@pf1/schema";
+import type {
+  DerivedArchetypeFeature,
+  DerivedClassFeature,
+  DerivedSheet,
+  RefData,
+} from "@pf1/schema";
 
 import { abilityTypeTag } from "../../model/abilityTypes.js";
 import { useInlineRolls } from "../../state/rollData.js";
@@ -103,92 +108,175 @@ export function ClassFeatureRow({
 }
 
 /**
+ * One active archetype's granted feature: the archetype counterpart to
+ * {@link ClassFeatureRow}, sharing its `.cf-name`/`.cf-detail`/`.cf-origin`
+ * visual language so an interleaved level group in {@link ClassFeaturesList}
+ * reads as one timeline rather than two parallel systems. `archetypeName`
+ * fills the slot `ClassFeatureRow` uses for a subsystem origin ("Hex", "Fire
+ * Domain"), since an archetype feature's "origin" IS the archetype; omit it
+ * via `showOrigin={false}` when the caller already groups by archetype and
+ * repeating the name would be redundant.
+ *
+ * A slice of archetype features carry a real numeric effect, hand-verified
+ * (`@pf1/engine` `archetype-effects.ts`) or machine-extracted
+ * (`archetype-effects-extracted.ts`); those show a `detail` summary next to
+ * the name, and an extracted one additionally gets a visible "extracted" text
+ * note (not a hover-only tooltip) so a lower-confidence number is never
+ * mistaken for a hand-verified one at a glance. `replacesText` prints the
+ * rules' own words for what this feature trades away ("replaces: hex gained
+ * at 2nd level"); when the feature instead resolved a base-feature pairing,
+ * that struck-through base row already tells the story, so nothing extra
+ * prints here. Only a genuinely `ambiguous` feature, one with no pairing, no
+ * `replacesText`, and no `replacesSlot`, gets the soft warning: the dataset
+ * simply doesn't say what it trades away, so the player has to check the
+ * book. `layout` mirrors `ClassFeatureRow`'s: `"inline"` (the builder) keeps
+ * `detail` as a trailing parenthetical; `"block"` (the Play tab panel) drops
+ * it below the name as its own line.
+ */
+export function ArchetypeFeatureRow({
+  feature,
+  archetypeName,
+  showOrigin = true,
+  layout = "inline",
+}: {
+  feature: DerivedArchetypeFeature;
+  archetypeName: string;
+  showOrigin?: boolean;
+  layout?: "inline" | "block";
+}) {
+  const block = layout === "block";
+  return (
+    <div className={`cf-archetype-feature${block ? " cf-block" : ""}`}>
+      <span className="cf-name">
+        {feature.name}
+        <AbilityTypeTag abilityType={feature.abilityType} />
+        {feature.detail && !block ? <span className="cf-detail"> ({feature.detail})</span> : null}
+        {showOrigin ? <span className="cf-origin"> ({archetypeName})</span> : null}
+        {feature.effectSource === "extracted" ? (
+          <InfoTip
+            className="badge-modeled badge-modeled--extracted badge-modeled--inline"
+            content="Machine-extracted from the vendored prose, not yet hand-verified"
+          >
+            {" "}
+            extracted
+          </InfoTip>
+        ) : null}
+        {feature.ambiguous ? (
+          <InfoTip
+            className="soft"
+            content="The rules text doesn't say clearly what this trades away: check the book"
+          >
+            {" "}
+            ⚠
+          </InfoTip>
+        ) : null}
+      </span>
+      {feature.detail && block ? <p className="cf-summary">{feature.detail}</p> : null}
+      {feature.replacesText ? (
+        <div className="hint feature-note">replaces: {feature.replacesText}</div>
+      ) : null}
+      {feature.description ? <FeatureDescription html={feature.description} /> : null}
+    </div>
+  );
+}
+
+/** One entry in the merged base-feature + archetype-feature timeline. */
+type TimelineEntry =
+  | { kind: "base"; feature: DerivedClassFeature }
+  | { kind: "archetype"; feature: DerivedArchetypeFeature; archetypeName: string };
+
+function timelineName(entry: TimelineEntry): string {
+  return entry.feature.name;
+}
+
+function timelineKey(entry: TimelineEntry, i: number): string {
+  return entry.kind === "base"
+    ? `${entry.feature.featureId}-${i}`
+    : `${entry.archetypeName}-${entry.feature.name}-${i}`;
+}
+
+function TimelineRow({ entry, refData }: { entry: TimelineEntry; refData: RefData }) {
+  return entry.kind === "base" ? (
+    <ClassFeatureRow feature={entry.feature} refData={refData} />
+  ) : (
+    <ArchetypeFeatureRow feature={entry.feature} archetypeName={entry.archetypeName} />
+  );
+}
+
+/**
  * Displays every granted base-class feature (struck through when an active
  * archetype swaps it out, same visual language as `Provenance`'s `applied`
- * flag), followed by each active archetype's own feature list with its prose
- * description. Archetype features with no unambiguous base-feature match get a
- * soft warning ("may replace an existing ability — see description") rather
- * than a swap, per the project's hybrid-prereqs posture; the description is
- * the "see" part of that warning, not just a decoration. The dataset has at
- * least one verified copy-paste error in this prose (Two-Handed Fighter's
- * Shattering Strike row carries Bravery's text) — display-only, never a
- * mechanics source. Entries granted by a chosen cleric domain or wizard arcane
- * school (rather than the class itself) carry an `origin` label (e.g. "— Fire
- * Domain") — see `collectGrantedFeatures` in `@pf1/engine`. A slice of
- * archetype features carry a real numeric effect — hand-verified
- * (`@pf1/engine` `archetype-effects.ts`) or machine-extracted
- * (`archetype-effects-extracted.ts`) — those show a `detail` summary next to
- * the name (e.g. "DR 5/—"), same visual language as a base class feature's
- * `detail`. An extracted entry additionally gets a visible "(extracted)" text
- * note — not a hover-only tooltip, since hover-only affordances are
- * discouraged here — so a lower-confidence number is never mistaken for a
- * hand-verified one just from a glance at the sheet. Base features carry the
+ * flag) interleaved with each active archetype's own features at the level
+ * each is gained, so the result reads as one class-feature timeline rather
+ * than a base list followed by a separate per-archetype list. A level-0
+ * archetype feature is not a level at all: it is a class-table alteration
+ * (a hex chassis row, a patron, a proficiency) rather than something gained
+ * at a specific level, so those group together under a plain "Baseline
+ * changes" heading ahead of the leveled groups instead of printing a
+ * meaningless "Lv 0". Within a level, entries sort by name so a base feature
+ * and an archetype feature gained at the same level interleave rather than
+ * clustering by kind. The dataset has at least one verified copy-paste error
+ * in archetype-feature prose (Two-Handed Fighter's Shattering Strike row
+ * carries Bravery's text) — display-only, never a mechanics source. Entries
+ * granted by a chosen cleric domain or wizard arcane school (rather than the
+ * class itself) carry an `origin` label (e.g. "— Fire Domain") — see
+ * `collectGrantedFeatures` in `@pf1/engine`. Base features carry the
  * statblock (Ex)/(Su)/(Sp) tag via {@link AbilityTypeTag}; archetype features
- * never show one, since the vendored archetype-feature pack has no
- * `abilityType` field at all (an absent tag there is missing data, not an
- * untyped ability).
+ * carry their own resolved `abilityType`, when the vendored entry states one.
  */
 export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; refData: RefData }) {
-  if (sheet.classFeatures.length === 0) return null;
+  if (sheet.classFeatures.length === 0 && sheet.activeArchetypes.length === 0) return null;
 
-  const byLevel = new Map<number, typeof sheet.classFeatures>();
+  const baseline: TimelineEntry[] = [];
+  const byLevel = new Map<number, TimelineEntry[]>();
+  const push = (level: number, entry: TimelineEntry) => {
+    const list = byLevel.get(level) ?? [];
+    list.push(entry);
+    byLevel.set(level, list);
+  };
+
   for (const f of sheet.classFeatures) {
-    const list = byLevel.get(f.level) ?? [];
-    list.push(f);
-    byLevel.set(f.level, list);
+    push(f.level, { kind: "base", feature: f });
   }
+  for (const a of sheet.activeArchetypes) {
+    for (const f of a.features) {
+      const entry: TimelineEntry = { kind: "archetype", feature: f, archetypeName: a.name };
+      if (f.level === 0) baseline.push(entry);
+      else push(f.level, entry);
+    }
+  }
+
+  baseline.sort((a, b) => timelineName(a).localeCompare(timelineName(b)));
   const levels = [...byLevel.keys()].sort((a, b) => a - b);
+  for (const list of byLevel.values()) {
+    list.sort((a, b) => timelineName(a).localeCompare(timelineName(b)));
+  }
 
   return (
     <div className="subsection class-features">
       <h4 className="tracker-sub">Class Features</h4>
       <div className="cf-levels">
+        {baseline.length > 0 && (
+          <div className="cf-level-row">
+            <span className="cf-level">Baseline changes</span>
+            <div className="cf-archetype-features">
+              {baseline.map((entry, i) => (
+                <TimelineRow key={timelineKey(entry, i)} entry={entry} refData={refData} />
+              ))}
+            </div>
+          </div>
+        )}
         {levels.map((level) => (
           <div className="cf-level-row" key={level}>
             <span className="cf-level">Lv {level}</span>
             <div className="cf-archetype-features">
-              {byLevel.get(level)!.map((f, i) => (
-                <ClassFeatureRow key={`${f.featureId}-${i}`} feature={f} refData={refData} />
+              {byLevel.get(level)!.map((entry, i) => (
+                <TimelineRow key={timelineKey(entry, i)} entry={entry} refData={refData} />
               ))}
             </div>
           </div>
         ))}
       </div>
-
-      {sheet.activeArchetypes.map((a) => (
-        <div className="cf-archetype" key={a.id}>
-          <span className="hint">{a.name}</span>
-          <div className="cf-archetype-features">
-            {a.features.map((f, i) => (
-              <div className="cf-archetype-feature" key={`${a.id}-${i}`}>
-                <span className="cf-name">
-                  Lv {f.level} · {f.name}
-                  {f.detail ? <span className="cf-detail"> ({f.detail})</span> : null}
-                  {f.effectSource === "extracted" ? (
-                    <InfoTip
-                      className="badge-modeled badge-modeled--extracted badge-modeled--inline"
-                      content="Machine-extracted from the vendored prose, not yet hand-verified"
-                    >
-                      {" "}
-                      extracted
-                    </InfoTip>
-                  ) : null}
-                  {f.ambiguous ? (
-                    <InfoTip
-                      className="soft"
-                      content="No unambiguous base-feature match: verify manually"
-                    >
-                      {" "}
-                      ⚠ may replace an existing ability
-                    </InfoTip>
-                  ) : null}
-                </span>
-                {f.description ? <FeatureDescription html={f.description} /> : null}
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
     </div>
   );
 }

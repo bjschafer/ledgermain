@@ -4975,6 +4975,13 @@ input[type="text"].saved-roll-name:focus {
   min-width: 0;
 }
 
+/* A replaces/context note is a sentence, not a row suffix — on its own
+   full-width line always, instead of a short one floating to the row's right
+   edge while a long one wraps below the name. */
+.cf-archetype-feature .feature-note {
+  flex-basis: 100%;
+}
+
 /* FeatureDescription's markup/behavior is untouched (see its docstring) —
    this only repositions the `<details>` as a flex item: collapsed, it's a
    small trailing item next to the name; open, `flex-basis: 100%` drops the

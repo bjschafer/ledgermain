@@ -75,6 +75,12 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "Every list, the class-subsystem tables included, sits at full vendored parity (rage powers 243, rogue talents 234, alchemist discoveries 168, witch hexes 104, down to monk style strikes 15), so the gap is promotion rather than coverage: only 32 rage powers and a scattering of talents and discoveries carry live changes[]. Candidates blocked on a missing mechanism are recorded inline in their table files.",
   },
   {
+    category: "Archetypes",
+    note: "Every published archetype is in the picker, and picking one swaps your class features and strikes through what it trades away. Only some archetype features move numbers on your sheet automatically: the rest show their rules text for you to apply at the table.",
+    issueDetail:
+      "1,427 vendored archetypes; 152 carry at least one structured feature effect (27 hand-verified, 139 machine-extracted across 16 classes). The remaining features are structural or prose-only, so the gap is promotion rather than coverage.",
+  },
+  {
     category: "Familiars",
     note: "The standard animal familiars are all here, each with its own tracked stat block. Improved familiars are not: an imp, quasit, pseudodragon or mephit is defined by its spell-like abilities, damage reduction and resistances, none of which the sheet tracks, and its hit points and skills follow different rules than an animal's.",
     issueDetail:

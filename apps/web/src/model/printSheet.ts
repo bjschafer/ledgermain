@@ -87,6 +87,12 @@ export interface PrintFeat {
 }
 
 export interface PrintClassFeature {
+  /**
+   * 0 for an unleveled class-table alteration an archetype grants (a hex
+   * chassis row, a patron, a proficiency swap) rather than something gained
+   * at a specific level; the print view omits the level suffix for those
+   * rather than printing a meaningless "(L0)".
+   */
   level: number;
   name: string;
   detail?: string;
@@ -315,7 +321,13 @@ function buildClassFeatures(sheet: DerivedSheet, refData: RefData): PrintClassFe
   }
   for (const arch of sheet.activeArchetypes) {
     for (const f of arch.features) {
-      out.push({ level: f.level, name: f.name, detail: f.detail });
+      const archAbilityType = abilityTypeSuffix(f.abilityType);
+      out.push({
+        level: f.level,
+        name: f.name,
+        detail: f.detail,
+        ...(archAbilityType ? { abilityType: archAbilityType } : {}),
+      });
     }
   }
   return out.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));

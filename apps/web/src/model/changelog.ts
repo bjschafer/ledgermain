@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-04-archetypes",
+    date: "2026-08-04",
+    title: "Archetypes: pick one and the sheet knows the trade",
+    note: "Every published archetype is now in the builder, right under the class it modifies. Pick one and the sheet understands the trade: the base features it removes are struck through with the replacement named beside them, and the archetype's own features slot into the same level by level Class Features list as everything else. Changes to the class chassis itself, a swapped patron or altered proficiencies, gather under Baseline changes instead of pretending to be a level. Two archetypes that trade away the same feature refuse to combine, and one that eats a hex or talent slot counts against that budget. Some archetype features move numbers on your sheet by themselves; a number that was read out of the rules text by machine wears an extracted tag so you can tell it from one checked by hand. The Play tab panel and the printed sheet carry the same features.",
+  },
+  {
     id: "2026-08-03-unarmed-strikes",
     date: "2026-08-03",
     title: "Monks and brawlers can add their fists",
