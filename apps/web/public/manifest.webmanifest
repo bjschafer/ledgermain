@@ -1,0 +1,23 @@
+{
+  "name": "Ledgermain",
+  "short_name": "Ledgermain",
+  "description": "Pathfinder 1e character sheet, tracker, and builder.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#15171c",
+  "theme_color": "#15171c",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
