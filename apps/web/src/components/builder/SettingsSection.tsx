@@ -160,7 +160,10 @@ export function SettingsSection({
     e.target.value = "";
     if (!file) return;
     try {
-      const { doc: parsed, report } = importCharacterFile(await file.text(), refData);
+      const { doc: parsed, report } = await importCharacterFile(
+        new Uint8Array(await file.arrayBuffer()),
+        refData,
+      );
       setImportError(undefined);
       setImportReport(report);
       onImportCharacter(parsed);
@@ -803,7 +806,7 @@ export function SettingsSection({
                   Import character…
                   <input
                     type="file"
-                    accept=".json,.xml,.html,application/json,text/xml,text/html"
+                    accept=".json,.xml,.html,.por,application/json,text/xml,text/html"
                     disabled={actionPending}
                     style={{ display: "none" }}
                     onChange={(e) => void handleImportChange(e)}

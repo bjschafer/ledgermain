@@ -15,13 +15,14 @@
  * feat/skill/gear name is always left out of the document and listed in
  * `report.unmapped` rather than guessed at.
  */
-import { featNameSlug } from "@pf1/engine";
+import { compute, deriveResourcePools, featNameSlug, raceGrantsFlexibleAbility } from "@pf1/engine";
 import type { AbilityId, CharacterDoc, RefData, SkillId } from "@pf1/schema";
 
 import {
   ABILITY_IDS,
   addClass,
   addCustomGearItem,
+  addWornArmorFromRef,
   createEmptyDoc,
   setAbility,
   setAge,
@@ -29,6 +30,8 @@ import {
   setBonusLanguages,
   setClassLevel,
   setDeity,
+  setFavoredClass,
+  setFlexibleAbility,
   setGear,
   setGender,
   setMoney,
@@ -88,6 +91,47 @@ export interface ExternalCharacterData {
    * than added to some arbitrary/first class.
    */
   spellsByClass?: { className: string; spellNames: string[] }[];
+  /**
+   * True when `abilities` above are the scores WITH racial modifiers already
+   * applied, as a stat block reports them. `CharacterDoc.abilities` holds the
+   * pre-racial scores (the engine adds the race's modifiers itself), so the
+   * racial delta is subtracted back out at build time — otherwise a Half-Orc's
+   * +2 Str would be counted twice. Only Hero Lab sets this; Pathbuilder's
+   * export is read as pre-racial, which is what it was before this field
+   * existed. See `racialAbilityModifiers`.
+   */
+  abilitiesIncludeRacial?: boolean;
+  /**
+   * Which ability got the flexible +2 of a Human/Half-Elf/Half-Orc. Needed
+   * both for the doc itself and to subtract the right racial modifier when
+   * `abilitiesIncludeRacial` is set. Left undefined when the source doesn't
+   * say — never guessed from which score happens to be highest.
+   */
+  flexibleAbility?: AbilityId;
+  /**
+   * Live session state: where the character's hit points actually stand, not
+   * their maximum (which the engine derives). `max` is carried only so the
+   * import report can flag a disagreement with our own computed maximum for
+   * the player to reconcile; it never overrides the derived value.
+   */
+  hp?: { max?: number; current?: number; nonlethal?: number };
+  /**
+   * Live per-use pools the source was tracking ("Martial Flexibility", 4 of 5
+   * spent). Matched by name against the pools the engine derives for this
+   * build; an entry with no match is reported rather than invented as a
+   * free-floating pool (see `buildDocFromExternalData`).
+   */
+  resources?: { name: string; used: number; max: number }[];
+  /**
+   * Worn armor and shields, separated from `gear` because they need real
+   * physical stats (AC, max Dex, check penalty) snapshotted from
+   * `RefData.armors` to affect AC at all — a plain gear entry with the right
+   * name contributes nothing. `name` is the BASE armor name with any "+N"
+   * enhancement split off into `enhancement`.
+   */
+  armor?: { name: string; enhancement?: number }[];
+  /** Favored class name, matched against `RefData.classes` like `classes` above. */
+  favoredClass?: string;
 }
 
 /** An `ExternalCharacterData` with every field empty — a safe starting point for parsers to fill in. */
@@ -196,6 +240,39 @@ export function matchAbilityId(rawName: string): AbilityId | undefined {
 }
 
 /**
+ * The net racial modifier to each ability for `raceId` — the race's own
+ * ability `changes` plus, for a race with the flexible +2 (Human/Half-Elf/
+ * Half-Orc), that +2 on `flexibleAbility` when one is known.
+ *
+ * Mirrors what `@pf1/engine`'s `collect.ts` applies for a *freshly imported*
+ * doc: no alternate racial traits are chosen yet, so nothing can suppress or
+ * replace these. An importer that later learns to bring alternate traits
+ * across has to revisit this.
+ */
+export function racialAbilityModifiers(
+  refData: RefData,
+  raceId: string,
+  flexibleAbility?: AbilityId,
+): Partial<Record<AbilityId, number>> {
+  const race = refData.races[raceId];
+  if (!race) return {};
+  const out: Partial<Record<AbilityId, number>> = {};
+  for (const change of race.changes ?? []) {
+    const ability = ABILITY_IDS.find((a) => a === change.target);
+    if (!ability) continue;
+    const value = Number(change.formula);
+    // A non-literal formula (none ship on a vendored race today) is skipped
+    // rather than guessed at — better to leave the score alone than shift it.
+    if (!Number.isFinite(value)) continue;
+    out[ability] = (out[ability] ?? 0) + value;
+  }
+  if (raceGrantsFlexibleAbility(race) && flexibleAbility) {
+    out[flexibleAbility] = (out[flexibleAbility] ?? 0) + 2;
+  }
+  return out;
+}
+
+/**
  * Turn tool-agnostic {@link ExternalCharacterData} into a `CharacterDoc` +
  * {@link ImportReport}. The one place shared by both external importers that
  * knows how to map names to `RefData` ids — see the module doc comment.
@@ -213,14 +290,20 @@ export function buildDocFromExternalData(
 
   if (data.name?.trim()) doc = setName(doc, data.name.trim());
 
+  let raceId: string | undefined;
   if (data.race?.trim()) {
-    const id = buildNameIndex(refData.races).get(nameSlug(data.race));
-    if (id) {
-      doc = setRace(doc, id);
-      report.mapped.push(`Race: "${data.race}" -> ${refData.races[id]!.name}`);
+    raceId = buildNameIndex(refData.races).get(nameSlug(data.race));
+    if (raceId) {
+      doc = setRace(doc, raceId);
+      report.mapped.push(`Race: "${data.race}" -> ${refData.races[raceId]!.name}`);
     } else {
       report.unmapped.push(`Race "${data.race}" not found in reference data; left unset.`);
     }
+  }
+
+  if (data.flexibleAbility && raceId && raceGrantsFlexibleAbility(refData.races[raceId]!)) {
+    doc = setFlexibleAbility(doc, data.flexibleAbility);
+    report.mapped.push(`Racial +2 ability choice: ${data.flexibleAbility.toUpperCase()}`);
   }
 
   if (data.alignment?.trim()) {
@@ -252,11 +335,41 @@ export function buildDocFromExternalData(
     }
   }
 
+  if (data.favoredClass?.trim()) {
+    const tag = buildClassTagIndex(refData).get(nameSlug(data.favoredClass));
+    if (tag && doc.identity.classes.some((c) => c.tag === tag)) {
+      doc = setFavoredClass(doc, tag);
+      report.mapped.push(`Favored class: ${data.favoredClass}`);
+    }
+  }
+
+  // A stat block quotes post-racial scores; the doc stores pre-racial ones and
+  // lets the engine re-add the race's modifiers. Without a matched race there
+  // is nothing to subtract, so the scores go in as-is and the report says so.
+  const racialMods =
+    data.abilitiesIncludeRacial && raceId
+      ? racialAbilityModifiers(refData, raceId, data.flexibleAbility)
+      : {};
+  if (data.abilitiesIncludeRacial && !raceId && Object.keys(data.abilities).length > 0) {
+    report.unmapped.push(
+      "Ability scores include racial modifiers, but the race wasn't recognized, so they couldn't be backed out; check them against the source.",
+    );
+  }
   for (const ability of ABILITY_IDS) {
     const score = data.abilities[ability];
     if (score != null && Number.isFinite(score)) {
-      doc = setAbility(doc, ability, score);
+      doc = setAbility(doc, ability, score - (racialMods[ability] ?? 0));
     }
+  }
+  if (
+    data.abilitiesIncludeRacial &&
+    raceId &&
+    raceGrantsFlexibleAbility(refData.races[raceId]!) &&
+    !data.flexibleAbility
+  ) {
+    report.unmapped.push(
+      `${refData.races[raceId]!.name} picks which ability gets its +2 and the source didn't record the choice; pick it on the Race step, then lower that score by 2.`,
+    );
   }
 
   for (const skill of data.skills) {
@@ -318,6 +431,27 @@ export function buildDocFromExternalData(
     doc = setBonusLanguages(doc, data.languages);
   }
 
+  // Worn armor before gear: it needs real physical stats snapshotted from
+  // `RefData.armors` (a same-named gear entry contributes nothing to AC).
+  if (data.armor && data.armor.length > 0) {
+    const armorIdx = buildNameIndex(refData.armors);
+    for (const worn of data.armor) {
+      if (!worn.name.trim()) continue;
+      const id = armorIdx.get(nameSlug(worn.name));
+      const ref = id ? refData.armors[id] : undefined;
+      if (ref) {
+        doc = addWornArmorFromRef(doc, ref, worn.enhancement ?? 0);
+        report.mapped.push(
+          `Armor: "${worn.name}"${worn.enhancement ? ` +${worn.enhancement}` : ""} -> ${ref.name}`,
+        );
+      } else {
+        report.unmapped.push(
+          `Armor "${worn.name}" not found in reference data; add it on the Armor step so it counts toward AC.`,
+        );
+      }
+    }
+  }
+
   if (data.gear.length > 0) {
     const itemIdx = buildNameIndex(refData.items);
     const gear = [...doc.build.gear];
@@ -352,5 +486,85 @@ export function buildDocFromExternalData(
     if (value != null) doc = setMoney(doc, field, value);
   }
 
+  doc = applyLiveState(doc, data, refData, report);
+
   return { doc, report };
+}
+
+/**
+ * Carry the source's live session state (current HP, spent uses) onto an
+ * otherwise-built doc. Split out because it has to run LAST: resource pools
+ * are matched against what the engine derives from the finished build, so the
+ * race/classes/feats all have to be in place first.
+ */
+function applyLiveState(
+  doc: CharacterDoc,
+  data: ExternalCharacterData,
+  refData: RefData,
+  report: ImportReport,
+): CharacterDoc {
+  let out = doc;
+
+  if (data.hp) {
+    const { current, nonlethal, max } = data.hp;
+    if (current != null && Number.isFinite(current)) {
+      out = {
+        ...out,
+        live: {
+          ...out.live,
+          hp: {
+            ...out.live.hp,
+            current: Math.trunc(current),
+            nonlethal: Math.max(0, Math.trunc(nonlethal ?? 0)),
+          },
+        },
+      };
+      report.mapped.push(
+        `Current HP: ${Math.trunc(current)}${max != null ? ` of ${max}` : ""}${
+          nonlethal ? ` (${nonlethal} nonlethal)` : ""
+        }`,
+      );
+    }
+    // The engine derives maximum HP from class/level/Con, so a maximum that
+    // disagrees with the source's is a real difference the player should see
+    // rather than something to silently override.
+    if (max != null && Number.isFinite(max)) {
+      const ourMax = deriveMaxHp(out, refData);
+      if (ourMax != null && ourMax !== max) {
+        report.unmapped.push(
+          `Maximum HP is ${max} in the import but ${ourMax} here (we compute it from class, level, and Con); set an HP mode on the Hit Points step if you want to match.`,
+        );
+      }
+    }
+  }
+
+  if (data.resources && data.resources.length > 0) {
+    const pools = deriveResourcePools(out, refData);
+    const byName = new Map(pools.map((p) => [nameSlug(p.name), p]));
+    const resources = { ...out.live.resources };
+    for (const entry of data.resources) {
+      const pool = byName.get(nameSlug(entry.name));
+      if (!pool) {
+        report.unmapped.push(
+          `Tracked "${entry.name}" (${entry.used} of ${entry.max} used) has no matching pool on this sheet; track it by hand.`,
+        );
+        continue;
+      }
+      const used = Math.min(Math.max(0, Math.trunc(entry.used)), pool.max);
+      resources[pool.id] = { used, max: pool.max };
+      report.mapped.push(`Tracked: "${entry.name}" -> ${pool.name} (${used} of ${pool.max} used)`);
+    }
+    out = { ...out, live: { ...out.live, resources } };
+  }
+
+  return out;
+}
+
+/** Our own computed maximum HP, or undefined if the sheet can't be computed. */
+function deriveMaxHp(doc: CharacterDoc, refData: RefData): number | undefined {
+  try {
+    return compute(doc, refData).hp.max;
+  } catch {
+    return undefined;
+  }
 }
