@@ -50,6 +50,11 @@ export interface TwfChainFeat {
    * effect is applied by the caller against the off-hand weapon.
    */
   numeric: boolean;
+  /**
+   * Set when the character doesn't own the feat but fights with it anyway,
+   * lent by a class feature (a {@link GrantedTwfChain}'s `source`).
+   */
+  grantedBy?: string;
 }
 
 /**
@@ -100,6 +105,75 @@ export const TWF_CHAIN: readonly { slug: string; name: string; note: string; num
 /** Every slug in {@link TWF_CHAIN} — the feats the two-weapon mode applies on its own. */
 export const TWF_CHAIN_SLUGS: ReadonlySet<string> = new Set(TWF_CHAIN.map((f) => f.slug));
 
+/**
+ * Chain feats a class feature lends the character while they fight in a
+ * particular mode, rather than feats they own outright. Passed to
+ * {@link twoWeaponProfile}, which folds `slugs` in alongside the owned set and
+ * labels the resulting chain entries with `source` so the UI can say where the
+ * feat came from.
+ */
+export interface GrantedTwfChain {
+  /** {@link TWF_CHAIN} slugs the mode supplies at the character's current level. */
+  slugs: readonly string[];
+  /** Where they come from, e.g. "brawler's flurry". */
+  source: string;
+  /** What the mode limits the character to, for an at-table reminder. */
+  restriction: string;
+  /** True when the same feature also gives full ability damage off-hand. */
+  fullAbilityOffHand: boolean;
+}
+
+/**
+ * Brawler's Flurry (PF1 Advanced Class Guide, brawler 2nd level), clean-room
+ * from the published rules: as a full-attack action a brawler "has the
+ * Two-Weapon Fighting feat when attacking with any combination of unarmed
+ * strikes, weapons from the close fighter weapon group, or weapons with the
+ * 'monk' special feature", gaining Improved Two-Weapon Fighting at 8th level
+ * and Greater Two-Weapon Fighting at 15th. Two details this reproduces that a
+ * quick reading loses:
+ *
+ *  - "She does not need to use two different weapons to use this ability" —
+ *    an unarmed flurry is the normal case, so the off-hand needs no second
+ *    weapon entry.
+ *  - "A brawler applies her full Strength modifier to her damage rolls for
+ *    all attacks made with brawler's flurry, whether the attacks are made
+ *    with an off-hand weapon or a weapon wielded in both hands" — full Str
+ *    off-hand, the same effect Double Slice has for everyone else.
+ *
+ * NOT the monk's Flurry of Blows (see `tables.ts`'s `flurryOfBlowsLabel`):
+ * that one swaps monk level in for base attack bonus and has its own attack
+ * sequence; this is ordinary two-weapon fighting off true BAB with the feat
+ * chain lent out. Returns `undefined` below 2nd level, where the feature
+ * hasn't been granted yet.
+ */
+export function brawlersFlurry(brawlerLevel: number): GrantedTwfChain | undefined {
+  if (brawlerLevel < 2) return undefined;
+  const slugs = ["two-weapon-fighting"];
+  if (brawlerLevel >= 8) slugs.push("improved-two-weapon-fighting");
+  if (brawlerLevel >= 15) slugs.push("greater-two-weapon-fighting");
+  return {
+    slugs,
+    source: "brawler's flurry",
+    restriction: "unarmed strikes, close weapons, or monk weapons only",
+    fullAbilityOffHand: true,
+  };
+}
+
+/**
+ * One-line summary of what {@link brawlersFlurry} is currently worth, for the
+ * Class Features panel. Empty below 2nd level.
+ */
+export function brawlersFlurryLabel(brawlerLevel: number): string {
+  const flurry = brawlersFlurry(brawlerLevel);
+  if (!flurry) return "";
+  const upgrades = [
+    flurry.slugs.includes("improved-two-weapon-fighting") ? "Improved" : null,
+    flurry.slugs.includes("greater-two-weapon-fighting") ? "Greater" : null,
+  ].filter((n): n is string => n !== null);
+  const chain = ["Two-Weapon Fighting", ...upgrades].join(" + ");
+  return `${chain}, full Str both hands`;
+}
+
 export interface TwoWeaponProfile {
   /** Penalty applied to every primary-hand attack (always ≤ 0). */
   primaryPenalty: number;
@@ -127,14 +201,21 @@ export interface TwoWeaponProfile {
  * Two-Weapon Fighting each require the feat below them in the chain, so an
  * (illegally) hand-added Greater with no base feat grants nothing extra.
  * Double Slice likewise requires the base feat.
+ *
+ * `granted` lends the character chain feats a class feature supplies for this
+ * fighting mode (brawler's flurry) — folded in exactly as if owned, but
+ * labelled with their source so a chip can say so.
  */
 export function twoWeaponProfile(
   offHand: OffHandGrip,
   owned: ReadonlySet<string>,
+  granted?: GrantedTwfChain,
 ): TwoWeaponProfile {
-  const hasTwf = owned.has("two-weapon-fighting");
-  const hasImproved = hasTwf && owned.has("improved-two-weapon-fighting");
-  const hasGreater = hasImproved && owned.has("greater-two-weapon-fighting");
+  const lent = new Set(granted?.slugs ?? []);
+  const has = (slug: string) => owned.has(slug) || lent.has(slug);
+  const hasTwf = has("two-weapon-fighting");
+  const hasImproved = hasTwf && has("improved-two-weapon-fighting");
+  const hasGreater = hasImproved && has("greater-two-weapon-fighting");
   const hasDoubleSlice = hasTwf && owned.has("double-slice");
   const lightRelief = offHand === "light" ? LIGHT_OFF_HAND_RELIEF : 0;
 
@@ -146,10 +227,11 @@ export function twoWeaponProfile(
     primaryPenalty: BASE_PRIMARY_PENALTY + lightRelief + (hasTwf ? TWF_FEAT_PRIMARY_RELIEF : 0),
     offHandPenalty: BASE_OFF_HAND_PENALTY + lightRelief + (hasTwf ? TWF_FEAT_OFF_HAND_RELIEF : 0),
     offHandOffsets,
-    offHandDamageMultiplier: hasDoubleSlice ? 1 : 0.5,
+    offHandDamageMultiplier: hasDoubleSlice || granted?.fullAbilityOffHand ? 1 : 0.5,
     chain: TWF_CHAIN.map((f) => ({
       ...f,
-      owned: owned.has(f.slug),
+      owned: owned.has(f.slug) || lent.has(f.slug),
+      ...(!owned.has(f.slug) && lent.has(f.slug) ? { grantedBy: granted!.source } : {}),
       // A feat whose prerequisite is missing is owned-but-inert: still listed,
       // but it isn't moving a number, so it reads as a reminder chip.
       numeric:

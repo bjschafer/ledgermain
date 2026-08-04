@@ -195,6 +195,27 @@ describe("brawler L3 (BAB high, Fort/Ref good, Will poor, d10)", () => {
     expect(flex?.max).toBe(4);
     expect(flex?.per).toBe("day");
   });
+
+  it("Unarmed Strike shows the L1-3 die (1d6, Medium)", () => {
+    const feature = sheet.classFeatures.find((f) => f.name === "Unarmed Strike (BRA)");
+    expect(feature?.detail).toBe("1d6");
+  });
+
+  it("Brawler's Flurry names the chain it lends at 3rd level", () => {
+    const feature = sheet.classFeatures.find((f) => f.name === "Brawler's Flurry");
+    expect(feature?.detail).toBe("Two-Weapon Fighting, full Str both hands");
+  });
+
+  it("a halfling brawler reads the Small column instead", () => {
+    const halfling = makeDoc("brawler", 3);
+    const smallDoc: CharacterDoc = {
+      ...halfling,
+      identity: { ...halfling.identity, race: raceId("Halfling") },
+    };
+    const smallSheet = compute(smallDoc, ref);
+    const feature = smallSheet.classFeatures.find((f) => f.name === "Unarmed Strike (BRA)");
+    expect(feature?.detail).toBe("1d4");
+  });
 });
 
 describe("slayer L3 (BAB high, Fort/Ref good, Will poor, d10)", () => {

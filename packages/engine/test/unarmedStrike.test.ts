@@ -61,6 +61,57 @@ describe("unarmedDamageDie", () => {
 });
 
 /**
+ * The Small and Large columns of the same published table, which are their own
+ * printed progressions rather than the Medium column stepped along the CRB
+ * weapon-size chart: at 12th level a Small monk reads 1d10 where stepping
+ * Medium's 2d6 down one would give 1d8. Every level band is pinned below in
+ * both columns, since that mismatch means no formula reproduces them.
+ *
+ * The brawler's own "Table: Brawler Unarmed Damage" (ACG) prints identical
+ * values at every band and column, so these fixtures cover both classes.
+ */
+describe("unarmedDamageDie by size", () => {
+  const small = (level: number) => unarmedDamageDie(level, "sm").dieLabel;
+  const large = (level: number) => unarmedDamageDie(level, "lg").dieLabel;
+
+  it("Small column: 1d4 / 1d6 / 1d8 / 1d10 / 2d6 / 2d8", () => {
+    expect([small(1), small(4), small(8), small(12), small(16), small(20)]).toEqual([
+      "1d4",
+      "1d6",
+      "1d8",
+      "1d10",
+      "2d6",
+      "2d8",
+    ]);
+  });
+
+  it("Large column: 1d8 / 2d6 / 2d8 / 3d6 / 3d8 / 4d8", () => {
+    expect([large(1), large(4), large(8), large(12), large(16), large(20)]).toEqual([
+      "1d8",
+      "2d6",
+      "2d8",
+      "3d6",
+      "3d8",
+      "4d8",
+    ]);
+  });
+
+  it("a 12th-level Small monk reads 1d10, not the size chart's 1d8", () => {
+    expect(small(12)).toBe("1d10");
+    expect(unarmedDamageDie(12).dieLabel).toBe("2d6");
+  });
+
+  it("sizes the table never printed read the nearest printed column", () => {
+    expect(unarmedDamageDie(8, "tiny").dieLabel).toBe(small(8));
+    expect(unarmedDamageDie(8, "huge").dieLabel).toBe(large(8));
+  });
+
+  it("defaults to the Medium column", () => {
+    expect(unarmedDamageDie(8)).toEqual(unarmedDamageDie(8, "med"));
+  });
+});
+
+/**
  * Monk Flurry of Blows display summary. Clean-room from the published PF1
  * SRD: a flat -2 on every attack at EVERY level (never stepped down, unlike
  * the D&D 3.5 monk), using monk level in place of true BAB — and monk level

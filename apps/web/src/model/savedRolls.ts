@@ -44,6 +44,7 @@ import {
   SITUATIONAL_FEAT_EFFECTS,
   TWF_CHAIN_SLUGS,
   featNameSlug,
+  type GrantedTwfChain,
   type SituationalFeatEntry,
 } from "@pf1/engine";
 
@@ -526,11 +527,14 @@ function foldAttachments(
  * `ownedFeatSlugs` — the character's currently-owned feats, by name slug — is
  * optional; when omitted, every attached feat is treated as owned (keeps
  * existing call sites/tests, which predate feat attachments, valid).
+ * `grantedTwf` is the two-weapon chain a class feature lends the character
+ * (`flurryTwfChain`); omitted, they fight with only the feats they own.
  */
 export function resolveSavedRoll(
   roll: SavedRoll,
   sheet: DerivedSheet,
   ownedFeatSlugs?: ReadonlySet<string>,
+  grantedTwf?: GrantedTwfChain,
 ): ResolvedSavedRoll {
   const attackModifier = roll.attackModifier ?? 0;
   const damageModifier = roll.damageModifier ?? 0;
@@ -547,10 +551,11 @@ export function resolveSavedRoll(
   );
 
   const cfg = isAttackLike ? twfConfig(roll) : undefined;
-  const twf = cfg ? resolveTwf(roll, cfg, sheet, ownedFeatSlugs) : undefined;
+  const twf = cfg ? resolveTwf(roll, cfg, sheet, ownedFeatSlugs, grantedTwf) : undefined;
   if (twf) {
     for (const feat of twf.profile.chain) {
       if (!feat.owned) continue;
+      const note = feat.grantedBy ? `${feat.note} (from ${feat.grantedBy})` : feat.note;
       featChips.push({
         slug: feat.slug,
         name: feat.name,
@@ -558,9 +563,14 @@ export function resolveSavedRoll(
         modeled: true,
         owned: true,
         auto: true,
-        note: feat.note,
+        note,
       });
-      if (!feat.numeric) notes.push(feat.note);
+      if (!feat.numeric) notes.push(note);
+    }
+    // A lent chain always comes with strings attached (which weapons qualify),
+    // so the restriction is a reminder even when every chain feat is numeric.
+    if (twf.granted && twf.profile.chain.some((f) => f.grantedBy)) {
+      notes.push(`${twf.granted.source}: ${twf.granted.restriction}`);
     }
     if (twf.offHandWeaponMissing) notes.push(`off-hand weapon "${cfg!.offHandWeapon}" not found`);
   }

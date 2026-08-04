@@ -84,6 +84,7 @@ import {
 } from "./tables.js";
 import type { AbilityView } from "./rolldata.js";
 import { resolveSaveDCText, saveDCContext } from "./feature-save-dc.js";
+import { brawlersFlurryLabel } from "./two-weapon-fighting.js";
 
 export interface ResolvedClassFeatures {
   classFeatures: DerivedClassFeature[];
@@ -1662,6 +1663,11 @@ export function resolveClassFeatures(
 
   const classFeatures: DerivedClassFeature[] = [];
   const dcCtx = saveDCContext(doc, abilities);
+  // Base race size, for the unarmed-damage table's Small/Large columns. Not
+  // the character's effective size: a level-scaling class feature prints the
+  // die the class table gives them, and Enlarge Person's own step is applied
+  // where the attack line is built (`compute.ts`'s `scaleWeaponDamageDice`).
+  const baseSize = refData.races[doc.identity.race]?.size ?? "med";
   for (const {
     classTag,
     grant,
@@ -1715,9 +1721,23 @@ export function resolveClassFeatures(
       // comment for why the weapon math itself still stays manual.
       detail = fiendishBoonLabel(classLevel, doc.build.antipaladinBoon);
     } else if (detail === undefined && classTag === "monk" && grant.name === "Unarmed Strike") {
-      detail = unarmedDamageDie(classLevel).dieLabel;
+      detail = unarmedDamageDie(classLevel, baseSize).dieLabel;
     } else if (detail === undefined && classTag === "monk" && grant.name === "Flurry of Blows") {
       detail = flurryOfBlowsLabel(classLevel);
+    } else if (
+      detail === undefined &&
+      classTag === "brawler" &&
+      grant.name === "Unarmed Strike (BRA)"
+    ) {
+      // Brawler's own unarmed damage table is the monk's, level for level and
+      // column for column — see `unarmedDamageDie`.
+      detail = unarmedDamageDie(classLevel, baseSize).dieLabel;
+    } else if (
+      detail === undefined &&
+      classTag === "brawler" &&
+      grant.name === "Brawler's Flurry"
+    ) {
+      detail = brawlersFlurryLabel(classLevel);
     } else if (
       detail === undefined &&
       classTag === "barbarian" &&
@@ -1739,7 +1759,7 @@ export function resolveClassFeatures(
     ) {
       // Shared vendored featureId with chained monk's own Unarmed Strike
       // (`a4SPdPuOFdmfJdHN`) — same "Table: Monk Unarmed Damage" progression.
-      detail = unarmedDamageDie(classLevel).dieLabel;
+      detail = unarmedDamageDie(classLevel, baseSize).dieLabel;
     } else if (
       detail === undefined &&
       classTag === "monkUnchained" &&
