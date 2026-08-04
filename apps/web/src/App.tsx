@@ -32,6 +32,7 @@ import { FloatingControls } from "./components/FloatingControls.js";
 import { PreviewNotice } from "./components/PreviewNotice.js";
 import { PrintView } from "./components/PrintView.js";
 import { ReferenceLink } from "./components/ReferenceLink.js";
+import { ScrollTopButton } from "./components/ScrollTopButton.js";
 import { Sheet } from "./components/Sheet.js";
 import { SyncStatus } from "./components/SyncStatus.js";
 import { ToastHost } from "./components/ToastHost.js";
@@ -362,6 +363,7 @@ function Workbench({
         </div>
       </div>
       <FloatingControls onOpenSheet={() => setSheetOpen(true)} />
+      <ScrollTopButton />
       {sheetOpen && (
         <Dialog
           title={props.doc.identity.name || "Character Sheet"}
