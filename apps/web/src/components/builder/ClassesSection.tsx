@@ -393,6 +393,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
           );
         })()}
 
+      {/* Archetype picker — only classes covered by the vendored dataset show options. */}
+      <ArchetypePicker doc={doc} refData={refData} update={update} />
+
       {alignmentWarnings.map((w) => (
         <p key={w.classTag} className="hint affliction-warn">
           ⚠ {w.message}
@@ -694,9 +697,6 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {/* Weapon Training group picks — fighter only, hidden once L5 or if an archetype replaced it. */}
       <WeaponTrainingPicker doc={doc} update={update} />
-
-      {/* Archetype picker — only classes covered by the vendored dataset show options. */}
-      <ArchetypePicker doc={doc} refData={refData} update={update} />
 
       <ClassFeaturesList sheet={sheet} refData={refData} />
     </Panel>

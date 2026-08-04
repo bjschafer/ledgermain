@@ -23,12 +23,12 @@ interface ArchetypePickerProps {
  * dataset covers. A candidate that would swap the same base-class feature slot
  * as an already-chosen archetype is hard-blocked (structured signal — see
  * `model/archetypes.ts`), since `resolveClassFeatures` applies swaps last-wins
- * and the earlier pick would silently do nothing. Collapsed by default: this is
- * the single largest picker in the builder by a wide margin, and most
- * characters won't use one.
+ * and the earlier pick would silently do nothing. Open by default: it's the
+ * second decision after picking a class, right after the per-class rows, so
+ * it stays collapsible for players who don't want one.
  */
 export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [query, setQuery] = useState("");
   const chosen = doc.build.archetypes ?? [];
 
@@ -82,15 +82,16 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
         <>
           <Explainer title="How archetypes work">
             <p>
-              An archetype trades away some of your class's standard abilities for different ones.
-              Most of what's here is reference text you read and apply at the table.
+              An archetype trades away or alters some of your class's standard abilities. Pick one
+              and the Class Features list below updates: replaced abilities get struck through, and
+              the archetype's abilities take their place.
             </p>
             <p>
               Entries marked <span className="badge-modeled">M</span> change real numbers on your
-              sheet, and you'll see what they changed under Class Features below. An outlined{" "}
-              <span className="badge-modeled badge-modeled--extracted">M</span> means the sheet read
-              that effect out of the rules text on its own, so check it against the book before you
-              lean on it.
+              sheet. An outlined <span className="badge-modeled badge-modeled--extracted">M</span>{" "}
+              means the number was read out of the rules text automatically, so it's worth checking
+              against the book. Not every archetype has sheet-changing numbers: the rest is
+              reference text you apply at the table.
             </p>
             <p>
               Two archetypes that trade away the same ability can't be combined. Once you pick one,
