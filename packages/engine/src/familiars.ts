@@ -44,7 +44,7 @@ function bonus(target: string, value: number): Change {
 }
 
 /**
- * The 22 PF1 familiar species this app models (see `familiar.ts`'s
+ * The 23 PF1 familiar species this app models (see `familiar.ts`'s
  * `BASE_FAMILIARS` doc comment for the full source breakdown), keyed by kind
  * slug (stored in `build.arcaneBond.familiarKind`). Unknown kinds simply
  * apply nothing.
@@ -95,6 +95,11 @@ export const FAMILIARS: Readonly<Record<string, FamiliarDef>> = {
     name: "Turtle",
     changes: [{ target: "nac", type: "natural", formula: "1" }],
   },
+  // Table: Familiars and Special Abilities lists this as "Hare"/"Arctic
+  // Hare" (Reign of Winter Player's Guide, reprinted in Ultimate
+  // Wilderness) — see `familiar.ts`'s `rabbit` entry for why that's this
+  // app's `rabbit` slug.
+  rabbit: { name: "Rabbit (arctic hare)", changes: [bonus("init", 4)] },
 };
 
 /** All familiar kind slugs, for the builder's picker. */

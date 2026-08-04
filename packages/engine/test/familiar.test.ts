@@ -405,6 +405,74 @@ describe("deriveFamiliar — Turtle (hand-computed fixture)", () => {
   });
 });
 
+/**
+ * Hand-computed fixture for the rabbit familiar — PF1 has no familiar
+ * literally named "Rabbit"; the closest published option is the "Arctic
+ * Hare" on the Familiars table (Ultimate Wilderness p.191, reprinted from
+ * the Reign of Winter Player's Guide p.10 — cross-checked against
+ * d20pfsrd.com's "Table: Familiars and Special Abilities" and Archives of
+ * Nethys's Arctic Hare stat block, which agree on both the stat block and
+ * the master's +4 Initiative bonus). Same arcanist-4 master stand-in as the
+ * fixtures above: BAB +2, base saves Fort 1/Ref 1/Will 4, max HP 25. Rabbit
+ * (Arctic Hare) base stats: Tiny, Str 3 (-4), Dex 16 (+3), Con 9 (-1),
+ * Wis 12 (+1), Cha 5 (-3); AC 15 (+3 Dex, +2 size, no natural armor); Fort
+ * +1/Ref +5/Will +1 (reverse-derives to the standard 2/2/0 ANIMAL
+ * progression); Speed 50 ft.; Bite -2 (1d3-4).
+ */
+describe("deriveFamiliar — Rabbit (hand-computed fixture)", () => {
+  const doc = makeMasterDoc({ familiar: { speciesId: "rabbit", name: "Clover" } });
+  const sheet = compute(doc, ref);
+  const master: FamiliarMasterInputs = {
+    maxHp: sheet.hp.max,
+    bab: sheet.bab,
+    baseSaves: { fort: 1, ref: 1, will: 4 },
+  };
+  const rollData = buildRollData(doc, ref, sheet.abilities, sheet.speeds, sheet.bab);
+  const familiar = deriveFamiliar(doc, master, rollData);
+
+  it("HP 12, Init +3, Speed 50 ft", () => {
+    expect(familiar!.hp.max).toBe(12);
+    expect(familiar!.init).toBe(3);
+    expect(familiar!.speeds.land).toBe(50);
+  });
+
+  it("AC 17 (10 +3 Dex +2 size +2 natural [ML1-4 table bonus]), touch 15, flat-footed 14", () => {
+    // naturalArmor: species' own 0 + the ML1-4 familiar-table +2 = 2.
+    expect(familiar!.naturalArmor).toBe(2);
+    expect(familiar!.ac).toMatchObject({ normal: 17, touch: 15, flatFooted: 14 });
+  });
+
+  it("Saves: Fort +1, Ref +5, Will +5 (better-of the two base saves + familiar's own ability mods)", () => {
+    // fort: max(species 2, master 1) + conMod(-1) = 1. ref: max(species 2,
+    // master 1) + dexMod(3) = 5. will: max(species 0, master 4) + wisMod(1) = 5.
+    expect(familiar!.saves).toEqual({ fort: 1, ref: 5, will: 5 });
+  });
+
+  it("Bite +7 (1d3-4), CMB +3, CMD 9", () => {
+    // attack: master bab 2 + max(strMod -4, dexMod 3) 3 + size 2 = 7.
+    // cmb: Tiny uses Dex for CMB: master bab 2 + dexMod 3 + sizeSpecial -2 = 3.
+    // cmd: 10 + master bab 2 + strMod -4 + dexMod 3 + sizeSpecial -2 = 9.
+    const bite = familiar!.attacks.find((a) => a.name === "Bite");
+    expect(bite).toMatchObject({ attack: 7, damageDice: "1d3", damageBonus: -4 });
+    expect(familiar!.cmb).toBe(3);
+    expect(familiar!.cmd).toBe(9);
+  });
+
+  it("Skills: Stealth +15, Acrobatics +7, Perception +7 (no racial mods; the printed +4 in-snow Stealth is situational and not modeled)", () => {
+    // Stealth: 1 rank + 3 Dex + 3 class-skill + 8 Tiny size = 15.
+    // Acrobatics: 1 rank + 3 Dex + 3 class-skill = 7.
+    // Perception: 3 ranks + 1 Wis + 3 class-skill = 7.
+    expect(familiar!.skills.ste!.total).toBe(15);
+    expect(familiar!.skills.acr!.total).toBe(7);
+    expect(familiar!.skills.per!.total).toBe(7);
+  });
+
+  it("rabbit familiar grants the master +4 Initiative", () => {
+    const baseline = compute(makeMasterDoc(), ref);
+    expect(sheet.initiative.total).toBe(baseline.initiative.total + 4);
+  });
+});
+
 describe("deriveFamiliar edge cases", () => {
   const doc = makeMasterDoc();
   const sheet = compute(doc, ref);

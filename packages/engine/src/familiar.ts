@@ -186,14 +186,15 @@ export interface BaseFamiliar {
 }
 
 /**
- * The 22 PF1 familiar species this app models: the eleven common CRB
+ * The 23 PF1 familiar species this app models: the eleven common CRB
  * "Familiars" (bat/cat/hawk/lizard/monkey/owl/rat/raven/toad/viper/weasel)
  * plus eleven from Ultimate Magic's "New Familiars" table and Bestiary 2
  * (compsognathus/fox/king crab/octopus/osprey/pig/scorpion/spider/centipede/
- * thrush/turtle), keyed by the same kind slugs `familiars.ts`/
- * `build.arcaneBond.familiarKind` use. Verified against d20pfsrd.com and
- * legacy.aonprd.com's Ultimate Magic "New Familiars" reference during
- * authoring (see the module doc comment).
+ * thrush/turtle), plus the rabbit (Ultimate Wilderness's "Arctic Hare" —
+ * see the `rabbit` entry below for why that's the closest published option),
+ * keyed by the same kind slugs `familiars.ts`/`build.arcaneBond.familiarKind`
+ * use. Verified against d20pfsrd.com and legacy.aonprd.com's Ultimate Magic
+ * "New Familiars" reference during authoring (see the module doc comment).
  *
  * The Ultimate Magic additions are printed as already-a-1st-level-familiar
  * stat blocks (Fort/Ref/Will already include the ability modifier); each
@@ -206,7 +207,9 @@ export interface BaseFamiliar {
  * Pig's printed Fort (+6) additionally includes the Great Fortitude feat
  * (+2) baked into the raw animal's own stat block; since this module has no
  * separate per-species feat-bonus field, that +2 is folded directly into
- * `baseSaves.fort` (4, not the standard 2) rather than dropped.
+ * `baseSaves.fort` (4, not the standard 2) rather than dropped. The rabbit
+ * (below) is reverse-derived the same way and reproduces the plain 2/2/0
+ * ANIMAL progression with no feat baked in.
  */
 export const BASE_FAMILIARS: Readonly<Record<string, BaseFamiliar>> = {
   bat: {
@@ -460,6 +463,27 @@ export const BASE_FAMILIARS: Readonly<Record<string, BaseFamiliar>> = {
     naturalArmor: 6,
     attacks: [{ name: "Bite", count: 1, damageDice: "1d3" }],
     speeds: { land: 5, swim: 20 },
+    senses: ["low-light vision"],
+  },
+  // PF1 has no familiar literally named "Rabbit": the plain "Rabbit" Bestiary
+  // entry (Ultimate Wilderness p.191) isn't on the Familiars table a master
+  // must choose from, but that table's "Arctic Hare" (also Ultimate
+  // Wilderness p.191, reprinted from the Reign of Winter Player's Guide
+  // p.10) is — and its own flavor text calls it "this white rabbit". Same
+  // reuse posture as `osprey` (hawk's stats): this entry is the Arctic
+  // Hare's stat block under the `rabbit` slug. Its one point of departure
+  // from the plain Rabbit entry, +4 Stealth "in snow", is a situational
+  // bonus (like hawk/owl's lighting-conditioned Perception in
+  // `familiars.ts`) and is deliberately NOT baked into `skillRacialMods`,
+  // which would over-apply it outside snow.
+  rabbit: {
+    name: "Rabbit (arctic hare)",
+    size: "tiny",
+    abilities: { str: 3, dex: 16, con: 9, wis: 12, cha: 5 },
+    baseSaves: { fort: 2, ref: 2, will: 0 },
+    naturalArmor: 0,
+    attacks: [{ name: "Bite", count: 1, damageDice: "1d3" }],
+    speeds: { land: 50 },
     senses: ["low-light vision"],
   },
 };
