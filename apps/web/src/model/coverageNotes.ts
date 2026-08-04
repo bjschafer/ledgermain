@@ -78,7 +78,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     category: "Familiars",
     note: "The standard animal familiars are all here, each with its own tracked stat block. Improved familiars are not: an imp, quasit, pseudodragon or mephit is defined by its spell-like abilities, damage reduction and resistances, none of which the sheet tracks, and its hit points and skills follow different rules than an animal's.",
     issueDetail:
-      "22 species modeled. Improved familiars are blocked on four things: hit points take the higher of half the master's and the creature's own, no SR/DR/resistance block exists, spell-like abilities are unmodeled, and the animal-type skill rule does not apply to an outsider. The picker also has no alignment or caster-level gate to enforce their prerequisites.",
+      "23 species modeled. Improved familiars are blocked on four things: hit points take the higher of half the master's and the creature's own, no SR/DR/resistance block exists, spell-like abilities are unmodeled, and the animal-type skill rule does not apply to an outsider. The picker also has no alignment or caster-level gate to enforce their prerequisites.",
   },
   {
     category: "Witch patrons",

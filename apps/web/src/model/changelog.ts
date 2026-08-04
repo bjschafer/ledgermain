@@ -61,8 +61,8 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   {
     id: "2026-08-03-familiar-species",
     date: "2026-08-03",
-    title: "Eleven more familiars, and a picker that shows them",
-    note: 'The familiar list stopped at the eleven Core Rulebook animals, chosen from a dropdown that told you nothing. Compsognathus, fox, king crab, octopus, osprey, pig, greensting scorpion, scarlet spider, house centipede, thrush and turtle join them, and the picker now shows each one\'s size, speeds, senses, natural attacks and the bonus it gives you, so you can compare before you commit. A new familiar is also named for its species instead of being called "Familiar".',
+    title: "Twelve more familiars, and a picker that shows them",
+    note: 'The familiar list stopped at the eleven Core Rulebook animals, chosen from a dropdown that told you nothing. Compsognathus, fox, king crab, octopus, osprey, pig, greensting scorpion, scarlet spider, house centipede, thrush, turtle and rabbit join them, and the picker now shows each one\'s size, speeds, senses, natural attacks and the bonus it gives you, so you can compare before you commit. A new familiar is also named for its species instead of being called "Familiar".',
   },
   {
     id: "2026-08-03-languages",
