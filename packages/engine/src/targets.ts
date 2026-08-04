@@ -62,6 +62,12 @@ const APPLIED_TARGETS = new Set<string>([
   "attack",
   "mattack",
   "rattack",
+  // thrown weapon attack rolls (NOT touch attacks — PF1 has no separate
+  // touch-attack change target; an ordinary melee/ranged attack roll
+  // compared against touch AC already uses "mattack"/"rattack"). Applied
+  // only to a weapon instance that's both category "ranged" and tagged
+  // "thrown" — see computeWeaponAttacks in compute.ts.
+  "tattack",
   "damage",
   "wdamage",
   "mwdamage",
@@ -141,7 +147,6 @@ export function unappliedChanges(changes: readonly Change[]): Change[] {
 export const UNAPPLIED_TARGET_LABELS: Record<string, string> = {
   nattack: "natural attack rolls",
   ndamage: "natural attack damage",
-  tattack: "touch attack rolls",
   concentration: "concentration checks",
   cl: "caster level",
   critConfirm: "crit confirmation rolls",

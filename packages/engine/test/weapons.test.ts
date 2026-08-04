@@ -389,9 +389,11 @@ describe("weapons: 'mwdamage' only applies to melee lines", () => {
   });
 });
 
-describe("weapons: 'rwdamage' and 'twdamage' both apply to ranged lines only", () => {
-  // We don't model thrown weapons as a distinct category from ranged, so
-  // "twdamage" (thrown weapon damage) is approximated onto ranged lines.
+describe("weapons: 'rwdamage' applies to any ranged line; 'twdamage' only joins a weapon actually tagged thrown", () => {
+  // "twdamage" (thrown weapon damage) only joins a ranged weapon's damage
+  // stack when its weaponGroups includes "thrown" — see compute.ts's
+  // isThrownAttack doc comment. A ranged weapon with no such tag (a longbow)
+  // does not pick it up.
   const rwdamageBuff: ActiveBuff = {
     instanceId: "buff-rwdamage",
     name: "Rally Allies",
@@ -415,9 +417,17 @@ describe("weapons: 'rwdamage' and 'twdamage' both apply to ranged lines only", (
     damageAbility: "none",
     damageDice: "1d8",
   };
+  const thrownWeapon: WeaponInstance = {
+    name: "Javelin",
+    category: "ranged",
+    attackAbility: "str",
+    damageAbility: "none",
+    damageDice: "1d6",
+    weaponGroups: ["thrown"],
+  };
   const doc = makeDoc(
     { str: 16, dex: 14, con: 14, int: 10, wis: 12, cha: 8 },
-    [meleeWeapon, rangedWeapon],
+    [meleeWeapon, rangedWeapon, thrownWeapon],
     [rwdamageBuff, twdamageBuff],
   );
   const sheet = compute(doc, ref);
@@ -426,8 +436,12 @@ describe("weapons: 'rwdamage' and 'twdamage' both apply to ranged lines only", (
     expect(sheet.attacks[0]!.damageBonus.total).toBe(3);
   });
 
-  it("ranged line: damage = rwdamage(1) + twdamage(1) = 2", () => {
-    expect(sheet.attacks[1]!.damageBonus.total).toBe(2);
+  it("non-thrown ranged line: damage = rwdamage(1) only = 1", () => {
+    expect(sheet.attacks[1]!.damageBonus.total).toBe(1);
+  });
+
+  it("thrown ranged line: damage = rwdamage(1) + twdamage(1) = 2", () => {
+    expect(sheet.attacks[2]!.damageBonus.total).toBe(2);
   });
 });
 

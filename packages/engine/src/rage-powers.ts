@@ -695,7 +695,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
       "Stance: while active, +1 competence bonus on melee and thrown weapon attack rolls, scaling +1 per 4 barbarian levels.",
     contextNotes: [
       note(
-        "Activated stance (own move action to enter/exit), not simply on-while-raging — not modeled as a Change.",
+        "Activated stance (own move action to enter/exit), not simply on-while-raging — this rage-power pick carries no Change of its own. The vendored 'Accurate Stance' buff (toggle it on from the buff list while the stance is active) already carries the real +1-scaling competence bonus on both targets, so gating a second copy here would only duplicate it.",
         "attack",
       ),
     ],

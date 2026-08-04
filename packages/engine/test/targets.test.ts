@@ -23,6 +23,11 @@ describe("isTargetApplied", () => {
     "sensedv",
     "sensell",
     "sensesc",
+    // Thrown weapon attack rolls (NOT touch attacks — see computeWeaponAttacks
+    // in compute.ts). Applied conditionally per-weapon (ranged + tagged
+    // "thrown"), but that condition lives in compute.ts, not here — this
+    // module only tracks whether the target is EVER consumed.
+    "tattack",
   ])("treats %s as applied", (target) => {
     expect(isTargetApplied(target)).toBe(true);
   });
@@ -71,6 +76,14 @@ describe("real refdata buffs", () => {
 
   it("Enlarge Person has no unapplied changes now that carryStr/carryMult are consumed", () => {
     const buff = buffByName("Enlarge Person");
+    expect(unappliedChanges(buff.changes)).toEqual([]);
+  });
+
+  it("Accurate Stance has no unapplied changes now that tattack feeds thrown weapon attacks", () => {
+    // This is the buff at the center of the bug report: its mattack/tattack
+    // pair used to show "tattack" as an unapplied touch-attack target, which
+    // was doubly wrong (mislabeled, and the target is consumed after all).
+    const buff = buffByName("Accurate Stance");
     expect(unappliedChanges(buff.changes)).toEqual([]);
   });
 });

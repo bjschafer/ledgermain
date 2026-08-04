@@ -181,7 +181,10 @@ const CHANGE_TARGET_LABELS: Record<string, string> = {
   attack: "attack rolls",
   mattack: "melee attack rolls",
   rattack: "ranged attack rolls",
-  tattack: "touch attack rolls",
+  // Thrown weapon attack rolls (PF1/Foundry vocabulary) — NOT touch attacks.
+  // PF1 has no separate touch-attack change target; an ordinary melee/ranged
+  // attack roll compared against touch AC already uses mattack/rattack.
+  tattack: "thrown weapon attack rolls",
   nattack: "natural attack rolls",
   damage: "damage",
   wdamage: "weapon damage",
@@ -265,7 +268,7 @@ function weaponGroupLabel(slug: string): string {
 
 /**
  * Human label for any raw `Change`/`ContextNote` target string, e.g.
- * "tattack" -> "touch attack rolls", "skill.per" -> "Perception",
+ * "tattack" -> "thrown weapon attack rolls", "skill.per" -> "Perception",
  * "eres.fire" -> "fire resistance", "dr.coldIron" -> "DR (bypassed by cold iron)".
  * Falls back to the raw target string for anything not recognized, so an
  * unmapped target still renders (just not humanized) rather than disappearing.

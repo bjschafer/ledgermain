@@ -1243,7 +1243,11 @@ function towerShieldAttackComponents(doc: CharacterDoc): ModifierComponent[] {
  * Attack formula (PF1 CRB):
  *   attack = BAB + ability mod (STR or DEX per attackAbility) + size modifier
  *            + enhancement (or +1 masterwork if enhancement is 0)
- *            + general "attack" / "mattack" / "rattack" changes
+ *            + general "attack" / "mattack" / "rattack" changes, plus
+ *              "tattack" (thrown weapon attack rolls — see targets.ts; NOT
+ *              touch attacks, which PF1 has no separate change target for)
+ *              when this instance is both category "ranged" and tagged
+ *              "thrown" in its weaponGroups (see isThrownAttack below)
  *            + per-group changes (e.g. `attack.weapon.longsword` from Weapon Focus,
  *              or `attack.weapon.bows` from a semantic weapon-group bonus)
  *            + -4 if non-proficient with the weapon, + non-proficient worn
@@ -1254,7 +1258,9 @@ function towerShieldAttackComponents(doc: CharacterDoc): ModifierComponent[] {
  * Damage bonus (numeric; dice displayed separately):
  *   damage = floor(ability mod × damageMultiplier) [melee, damageAbility="str"/"dex" only]
  *            + enhancement
- *            + any "damage" target changes from the collected modifier set
+ *            + any "damage" target changes from the collected modifier set,
+ *              plus "twdamage" (thrown weapon damage) under the same
+ *              ranged-and-thrown condition as "tattack" above
  *            + per-group changes (e.g. `damage.weapon.longsword` from Weapon Specialization,
  *              or `damage.weapon.bows` from a semantic weapon-group bonus)
  *
@@ -1312,6 +1318,15 @@ function computeWeaponAttacks(
     const attackAbilityMod = attackAbility.mod;
     const attackAbilityLabel = abilityLabelFor(attackAbility);
     const groupKeys = weaponGroupKeys(w);
+    // Whether THIS instance represents a thrown attack — the app models one
+    // weapon instance with a single fixed category, so "thrown" only applies
+    // when the player has this instance set up as a ranged attack AND the
+    // weapon's vendored group tags include "thrown" (Foundry's target for
+    // thrown weapon attack rolls, `tattack` — see targets.ts). A dagger left
+    // at its default "melee" category is being swung, not thrown, so it
+    // deliberately does NOT pick up a thrown-only bonus; a player who wants
+    // to model throwing it can add a second instance with category "ranged".
+    const isThrownAttack = category === "ranged" && groupKeys.includes("thrown");
     const weaponProficient = isWeaponProficient(proficiencies, w);
     const weaponProfPenalty = weaponProficient ? 0 : -4;
     const weaponProfComponents: ModifierComponent[] = weaponProficient
@@ -1320,9 +1335,16 @@ function computeWeaponAttacks(
 
     // General attack changes + per-group feat bonuses (e.g. Weapon Focus via
     // "attack.weapon.<group>", or a semantic weapon-group bonus via "attack.weapon.bows").
+    // "tattack" (thrown weapon attack rolls, e.g. Accurate Stance) only joins
+    // the ranged line for a weapon actually tagged "thrown" — see isThrownAttack.
     const weaponAttackStack = resolveStack([
       ...forTarget(collected, "attack"),
-      ...(category === "melee" ? forTarget(collected, "mattack") : forTarget(collected, "rattack")),
+      ...(category === "melee"
+        ? forTarget(collected, "mattack")
+        : [
+            ...forTarget(collected, "rattack"),
+            ...(isThrownAttack ? forTarget(collected, "tattack") : []),
+          ]),
       ...groupKeys.flatMap((g) => forTarget(collected, `attack.weapon.${g}`)),
     ]);
     const attackTotal =
@@ -1378,15 +1400,19 @@ function computeWeaponAttacks(
     // Specialization via "damage.weapon.<group>", or a semantic weapon-group
     // bonus via "damage.weapon.bows"). "wdamage" (all weapon damage),
     // "mwdamage" (melee), "rwdamage" (ranged) come from vendored buffs/
-    // conditions (Divine Favor, Rage, sickened, etc.). We don't model thrown
-    // weapons as a distinct category, so "twdamage" (thrown) is approximated
-    // onto ranged lines alongside "rwdamage".
+    // conditions (Divine Favor, Rage, sickened, etc.). "twdamage" (thrown)
+    // joins the ranged line only for a weapon actually tagged "thrown" (see
+    // isThrownAttack above) rather than being approximated onto every ranged
+    // line — a longbow no longer picks up a thrown-only damage bonus.
     const weaponDamageStack = resolveStack([
       ...forTarget(collected, "damage"),
       ...forTarget(collected, "wdamage"),
       ...(category === "melee"
         ? forTarget(collected, "mwdamage")
-        : [...forTarget(collected, "rwdamage"), ...forTarget(collected, "twdamage")]),
+        : [
+            ...forTarget(collected, "rwdamage"),
+            ...(isThrownAttack ? forTarget(collected, "twdamage") : []),
+          ]),
       ...groupKeys.flatMap((g) => forTarget(collected, `damage.weapon.${g}`)),
     ]);
     const damageTotal = abilityDamage + enh + weaponDamageStack.total;

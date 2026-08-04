@@ -30,7 +30,7 @@ describe("changeTargetLabel()", () => {
   });
 
   it("humanizes attack/damage variants", () => {
-    expect(changeTargetLabel("tattack")).toBe("touch attack rolls");
+    expect(changeTargetLabel("tattack")).toBe("thrown weapon attack rolls");
     expect(changeTargetLabel("mattack")).toBe("melee attack rolls");
     expect(changeTargetLabel("rattack")).toBe("ranged attack rolls");
     expect(changeTargetLabel("nattack")).toBe("natural attack rolls");
