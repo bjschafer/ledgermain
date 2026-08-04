@@ -11,8 +11,11 @@ import { ABILITY_IDS } from "@pf1/schema";
 import { setBonusLanguages, setFlexibleAbility, setRace } from "../../model/doc.js";
 import {
   languageLabel,
+  pickableLanguages,
   racialLanguages,
+  raceBonusLanguagePolicy,
   suggestedBonusLanguageCount,
+  suggestedRaceBonusLanguages,
 } from "../../model/languages.js";
 import { ABILITY_ABBR } from "../../model/names.js";
 import {
@@ -107,9 +110,15 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   const racial = racialLanguages(doc, refData);
   const bonusLanguages = doc.build.bonusLanguages ?? [];
   const suggestedCount = suggestedBonusLanguageCount(doc, sheet.abilities.int.mod);
+  const knownBonus = new Set(bonusLanguages.map((l) => l.trim().toLowerCase()));
+  const raceBonusOptions = suggestedRaceBonusLanguages(doc, refData).filter(
+    (entry) => !knownBonus.has(entry.name.toLowerCase()),
+  );
+  const bonusPolicy = raceBonusLanguagePolicy(doc, refData);
+  const catalogOptions = pickableLanguages(doc, refData);
 
-  function addLanguage() {
-    const trimmed = langInput.trim();
+  function addLanguage(text?: string) {
+    const trimmed = (text ?? langInput).trim();
     if (!trimmed) return;
     update((d) => setBonusLanguages(d, [...(d.build.bonusLanguages ?? []), trimmed]));
     setLangInput("");
@@ -302,11 +311,11 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
         <VendoredRacialTraitPicker doc={doc} refData={refData} update={update} />
       </div>
       <div style={{ marginTop: 12 }}>
-        <p className="hint">Racial languages</p>
+        <p className="hint">Racial languages (automatic)</p>
         <div className="chips" style={{ marginTop: 6 }}>
           {racial.length > 0 ? (
             racial.map((id) => (
-              <span key={id} className="chip display-only">
+              <span key={id} className="chip display-only" title={languageLabel(id)}>
                 {languageLabel(id)}
               </span>
             ))
@@ -336,9 +345,34 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
             </button>
           ))}
         </div>
+        {raceBonusOptions.length > 0 ? (
+          <>
+            <p className="hint lang-suggested-label">
+              {selected ? `${selected.name} can also pick` : "Bonus-language options"}
+            </p>
+            <div className="chips" style={{ marginTop: 6 }}>
+              {raceBonusOptions.map((entry) => (
+                <button
+                  key={entry.id}
+                  type="button"
+                  className="chip chip-suggested"
+                  title={entry.spokenBy}
+                  onClick={() => addLanguage(entry.name)}
+                >
+                  + {entry.name}
+                </button>
+              ))}
+            </div>
+          </>
+        ) : bonusPolicy === "any" && selected ? (
+          <p className="hint">
+            {selected.name} may pick any language, except secret ones such as Druidic.
+          </p>
+        ) : null}
         <div className="lang-add-row">
           <input
             type="text"
+            list="language-catalog-options"
             placeholder="Add a language…"
             value={langInput}
             onChange={(e) => setLangInput(e.target.value)}
@@ -349,11 +383,18 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
               }
             }}
           />
+          <datalist id="language-catalog-options">
+            {catalogOptions.map((entry) => (
+              <option key={entry.id} value={entry.name}>
+                {entry.name}
+              </option>
+            ))}
+          </datalist>
           <button
             type="button"
             className="btn-ghost"
             disabled={!langInput.trim()}
-            onClick={addLanguage}
+            onClick={() => addLanguage()}
           >
             + Add
           </button>

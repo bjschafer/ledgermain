@@ -5373,6 +5373,27 @@ input[type="text"].saved-roll-name:focus {
   gap: 8px;
 }
 
+/* Compact label above the race's bonus-language option chips, tighter than
+   the standard `.hint` spacing since it sits directly under a chip row. */
+.lang-suggested-label {
+  margin-top: 10px;
+}
+
+/* A bonus-language option drawn from the character's race's curated list —
+   same pill as `.chip`, but a gold-tinted fill (rather than `.chip`'s flat
+   `--surface-2`) marks it as a suggestion to add, distinct from both the
+   plain add-anything chip and the pressed/selected `.chip[aria-pressed]` look. */
+.chip-suggested {
+  background: linear-gradient(180deg, #241f11, #1c180d);
+  border-color: var(--gold-dim);
+  color: var(--gold-dim-ink);
+}
+
+.chip-suggested:hover {
+  border-color: var(--gold);
+  color: var(--gold-2);
+}
+
 /* --------------------------------------------------------- Familiar panel -- */
 /* `FamiliarPanel.tsx` reuses the sheet's stat-group/StatSeal/weapon-attack-list
    vocabulary at compact scale (`seal--compact`) so the familiar reads as a

@@ -11,8 +11,11 @@ import { createEmptyDoc } from "../src/model/doc.js";
 import {
   combinedLanguages,
   languageLabel,
+  pickableLanguages,
+  raceBonusLanguagePolicy,
   racialLanguages,
   suggestedBonusLanguageCount,
+  suggestedRaceBonusLanguages,
 } from "../src/model/languages.js";
 
 const ref = loadRefData();
@@ -39,6 +42,14 @@ describe("languageLabel()", () => {
 
   it("leaves an empty string as-is", () => {
     expect(languageLabel("")).toBe("");
+  });
+
+  it("resolves a multi-word catalog name rather than just capitalizing the id", () => {
+    expect(languageLabel("drowsign")).toBe("Drow Sign Language");
+  });
+
+  it("falls back to capitalizing an id the catalog doesn't cover", () => {
+    expect(languageLabel("lashunta")).toBe("Lashunta");
   });
 });
 
@@ -106,5 +117,54 @@ describe("suggestedBonusLanguageCount()", () => {
       build: { ...doc.build, skillRanks: { lin: 2 } },
     };
     expect(suggestedBonusLanguageCount(withRanks, -1)).toBe(2);
+  });
+});
+
+describe("suggestedRaceBonusLanguages()", () => {
+  it("returns the race's curated options as catalog entries", () => {
+    const names = suggestedRaceBonusLanguages(withRace("Dwarf"), ref).map((e) => e.name);
+    expect(names).toEqual(["Giant", "Gnome", "Goblin", "Orc", "Terran", "Undercommon"]);
+  });
+
+  it('returns [] for a race with an open "any" policy', () => {
+    expect(suggestedRaceBonusLanguages(withRace("Human"), ref)).toEqual([]);
+  });
+
+  it("returns [] when no race is chosen", () => {
+    expect(suggestedRaceBonusLanguages(createEmptyDoc("t"), ref)).toEqual([]);
+  });
+});
+
+describe("raceBonusLanguagePolicy()", () => {
+  it('is "fixed" for a race with a curated list', () => {
+    expect(raceBonusLanguagePolicy(withRace("Elf"), ref)).toBe("fixed");
+  });
+
+  it('is "any" for Human', () => {
+    expect(raceBonusLanguagePolicy(withRace("Human"), ref)).toBe("any");
+  });
+
+  it('is "any" when no race is chosen', () => {
+    expect(raceBonusLanguagePolicy(createEmptyDoc("t"), ref)).toBe("any");
+  });
+});
+
+describe("pickableLanguages()", () => {
+  it("excludes secret languages", () => {
+    const ids = pickableLanguages(createEmptyDoc("t"), ref).map((e) => e.id);
+    expect(ids).not.toContain("druidic");
+  });
+
+  it("excludes languages the character already knows racially", () => {
+    const ids = pickableLanguages(withRace("Elf"), ref).map((e) => e.id);
+    expect(ids).not.toContain("common");
+    expect(ids).not.toContain("elven");
+    expect(ids).toContain("draconic");
+  });
+
+  it("is sorted alphabetically by display name", () => {
+    const names = pickableLanguages(createEmptyDoc("t"), ref).map((e) => e.name);
+    const sorted = [...names].sort((a, b) => a.localeCompare(b));
+    expect(names).toEqual(sorted);
   });
 });
