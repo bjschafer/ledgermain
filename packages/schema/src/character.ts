@@ -3281,6 +3281,14 @@ export interface DerivedClassFeature {
       | "blessing";
     label: string;
   };
+  /**
+   * Non-mechanical reminders (save DC, duration, activation shape,...) carried
+   * by the hand-authored table this grant resolved against (hex, rage power,
+   * discovery, revelation, arcana, talent,...) — see that table's own
+   * `contextNotes` field. Undefined for base-class features and grants with no
+   * such table (domain/school powers, archetype swaps).
+   */
+  contextNotes?: ContextNote[];
 }
 
 /** One feature granted by an active archetype (in addition to/instead of the base grant). */

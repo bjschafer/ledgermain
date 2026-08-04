@@ -77,6 +77,57 @@ describe("resolveClassFeatures: no archetype chosen", () => {
   });
 });
 
+describe("resolveClassFeatures: a witch hex's contextNotes flow through onto its DerivedClassFeature", () => {
+  // Ward (APG p.71): "+2 deflection bonus to AC and a +2 resistance bonus on
+  // saves... this bonus lasts until the target is hit... or until the witch
+  // dies" — a table reminder the sheet can't apply automatically (targets an
+  // ally, not the witch), same rationale `witch-hexes.ts`'s file doc comment
+  // gives for keeping the whole hex catalog `displayOnly`.
+  const doc = {
+    ...makeDoc({ classes: [{ tag: "witch", level: 1 }] }),
+    build: {
+      ...makeDoc({ classes: [{ tag: "witch", level: 1 }] }).build,
+      witchHexes: ["ward"],
+    },
+  };
+  const { classFeatures } = resolveClassFeatures(doc, ref);
+  const ward = classFeatures.find((f) => f.name === "Ward");
+
+  it("carries the hex's origin label and tier-specific grouping", () => {
+    expect(ward?.origin).toEqual({ kind: "hex", label: "Hex" });
+  });
+
+  it("carries the hex's own summary as detail", () => {
+    expect(ward?.detail).toContain("deflection bonus");
+  });
+
+  it("carries the hex's contextNotes (the DC/duration/activation reminder)", () => {
+    expect(ward?.contextNotes).toBeDefined();
+    expect(ward?.contextNotes?.length).toBeGreaterThan(0);
+    expect(ward?.contextNotes?.[0]?.text).toContain("Apply the AC and save bonuses by hand");
+  });
+});
+
+describe("resolveClassFeatures: a major witch hex labels its origin distinctly from a regular hex", () => {
+  const doc = {
+    ...makeDoc({ classes: [{ tag: "witch", level: 10 }] }),
+    build: {
+      ...makeDoc({ classes: [{ tag: "witch", level: 10 }] }).build,
+      witchHexes: ["agony"],
+    },
+  };
+  const { classFeatures } = resolveClassFeatures(doc, ref);
+  const agony = classFeatures.find((f) => f.name === "Agony");
+
+  it("labels a major hex's origin as 'Major Hex', not 'Hex'", () => {
+    expect(agony?.origin?.label).toBe("Major Hex");
+  });
+
+  it("still carries the major hex's own contextNotes", () => {
+    expect(agony?.contextNotes?.[0]?.text).toContain("Fort negates");
+  });
+});
+
 describe("resolveClassFeatures: Two-Handed Fighter swaps Bravery for Shattering Strike", () => {
   const thf = byName(ref.archetypes, "Two-Handed Fighter");
   const doc = makeDoc({

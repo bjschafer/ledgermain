@@ -4,6 +4,7 @@ import { ActiveFormPanel } from "./ActiveFormPanel.js";
 import { AfflictionsPanel } from "./AfflictionsPanel.js";
 import { BlastLoadoutPanel } from "./BlastLoadoutPanel.js";
 import { BuffsPanel } from "./BuffsPanel.js";
+import { ClassFeaturesPanel } from "./ClassFeaturesPanel.js";
 import { CompanionPanel } from "./CompanionPanel.js";
 import { ConditionsPanel } from "./ConditionsPanel.js";
 import { DeedsPanel } from "./DeedsPanel.js";
@@ -100,6 +101,11 @@ export function Tracker(props: BuilderProps) {
       name: "Reference",
       sections: [
         ...(xpOn ? [{ id: "play-xp", label: "Experience", node: <XpPanel {...props} /> }] : []),
+        {
+          id: "play-classfeatures",
+          label: "Class Features",
+          node: <ClassFeaturesPanel {...props} />,
+        },
         { id: "play-feats", label: "Feats", node: <FeatsPanel {...props} /> },
       ],
     },

@@ -15,6 +15,7 @@ import type {
   AbilityId,
   CharacterDoc,
   ClassFeatureGrant,
+  ContextNote,
   DerivedArchetype,
   DerivedArchetypeFeature,
   DerivedClassFeature,
@@ -149,6 +150,14 @@ export interface GrantedFeature {
    * looking up `refData.classFeatures[grant.featureId]` when set.
    */
   resourcePool?: BloodlineResourcePool;
+  /**
+   * Non-mechanical reminders (save DC, duration, activation shape,...) copied
+   * straight from the hand-authored table this grant resolved against — see
+   * that table's own `contextNotes` field (e.g. `WitchHexDef.contextNotes`).
+   * `resolveClassFeatures` copies this onto the resulting `DerivedClassFeature`
+   * unchanged.
+   */
+  contextNotes?: ContextNote[];
 }
 
 /**
@@ -360,6 +369,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
           origin: { kind: "bloodline", label: `${bloodline.name} Bloodline` },
           detail: power.resourcePool?.detail,
           resourcePool: power.resourcePool,
+          contextNotes: power.contextNotes,
         });
       }
     }
@@ -390,6 +400,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
           origin: { kind: "bloodline", label: `${bloodline.name} Bloodline` },
           detail: power.resourcePool?.detail,
           resourcePool: power.resourcePool,
+          contextNotes: power.contextNotes,
         });
       }
     }
@@ -426,6 +437,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         // the exploit's own rules summary rather than a terse dice/DC string
         // — otherwise the row would show only a bare name.
         detail: exploit.summary,
+        contextNotes: exploit.contextNotes,
       });
     }
   }
@@ -460,6 +472,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         // the arcana's own rules summary — otherwise the row would show only
         // a bare name.
         detail: arcana.summary,
+        contextNotes: arcana.contextNotes,
       });
     }
   }
@@ -487,6 +500,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "revelation", label: "Revelation" },
         detail: revelation.summary,
+        contextNotes: revelation.contextNotes,
       });
     }
   }
@@ -513,8 +527,12 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
           name: hex.name,
           resolved: true,
         },
-        origin: { kind: "hex", label: "Hex" },
+        origin: {
+          kind: "hex",
+          label: hex.tier === "major" ? "Major Hex" : hex.tier === "grand" ? "Grand Hex" : "Hex",
+        },
         detail: hex.summary,
+        contextNotes: hex.contextNotes,
       });
     }
   }
@@ -540,6 +558,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "discovery", label: "Discovery" },
         detail: discovery.summary,
+        contextNotes: discovery.contextNotes,
       });
     }
   }
@@ -572,6 +591,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "ragePower", label: "Rage Power" },
         detail: power.summary,
+        contextNotes: power.contextNotes,
       });
     }
   }
@@ -600,6 +620,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "kiPower", label: "Ki Power" },
         detail: power.summary,
+        contextNotes: power.contextNotes,
       });
     }
     for (const strikeId of doc.build.monkStyleStrikes ?? []) {
@@ -617,6 +638,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "styleStrike", label: "Style Strike" },
         detail: strike.summary,
+        contextNotes: strike.contextNotes,
       });
     }
   }
@@ -647,6 +669,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "rogueTalent", label: "Rogue Talent" },
         detail: talent.summary,
+        contextNotes: talent.contextNotes,
       });
     }
   }
@@ -685,6 +708,9 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         if (!spiritHexDef && !generalHex) continue;
         const name = spiritHexDef?.name ?? generalHex!.name;
         const detail = spiritHexDef?.summary ?? generalHex!.summary;
+        // `ShamanSpiritHex` (a spirit's own hex list) carries no `contextNotes`
+        // field, unlike the general shaman-hex catalog — only the latter has one.
+        const contextNotes = generalHex?.contextNotes;
         out.push({
           classTag: "shaman",
           level: 1,
@@ -697,6 +723,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
           },
           origin: { kind: "hex", label: "Hex" },
           detail,
+          contextNotes,
         });
       }
     }
@@ -827,6 +854,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "cruelty", label: "Cruelty" },
         detail: cruelty.summary,
+        contextNotes: cruelty.contextNotes,
       });
     }
   }
@@ -852,6 +880,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "trick", label: "Ninja Trick" },
         detail: trick.summary,
+        contextNotes: trick.contextNotes,
       });
     }
   }
@@ -879,6 +908,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "investigatorTalent", label: "Investigator Talent" },
         detail: talent.summary,
+        contextNotes: talent.contextNotes,
       });
     }
   }
@@ -906,6 +936,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "vigilanteSocialTalent", label: "Social Talent" },
         detail: talent.summary,
+        contextNotes: talent.contextNotes,
       });
     }
     for (const talentId of doc.build.vigilanteTalents ?? []) {
@@ -923,6 +954,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "vigilanteTalent", label: "Vigilante Talent" },
         detail: talent.summary,
+        contextNotes: talent.contextNotes,
       });
     }
   }
@@ -949,6 +981,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "slayerTalent", label: "Slayer Talent" },
         detail: talent.summary,
+        contextNotes: talent.contextNotes,
       });
     }
   }
@@ -976,6 +1009,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         },
         origin: { kind: "shifterAspect", label: "Aspect" },
         detail: aspect.summary,
+        contextNotes: aspect.contextNotes,
       });
     }
   }
@@ -1106,6 +1140,7 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
           label: talent.category === "infusion" ? "Infusion" : "Utility Wild Talent",
         },
         detail: `${talent.summary} (${talent.burn} burn)`,
+        contextNotes: talent.contextNotes,
       });
     }
   }
@@ -1625,10 +1660,13 @@ export function resolveClassFeatures(
   }
 
   const classFeatures: DerivedClassFeature[] = [];
-  for (const { classTag, grant, origin, detail: providedDetail } of collectGrantedFeatures(
-    doc,
-    refData,
-  )) {
+  for (const {
+    classTag,
+    grant,
+    origin,
+    detail: providedDetail,
+    contextNotes,
+  } of collectGrantedFeatures(doc, refData)) {
     const classLevel = doc.identity.classes.find((c) => c.tag === classTag)?.level ?? 0;
     const replacedBy = replacedByUuid.get(grant.uuid);
     // Sneak Attack's die count, Smite Evil's attack/damage/AC scaling, and
@@ -1899,6 +1937,7 @@ export function resolveClassFeatures(
       replacedBy,
       detail,
       origin,
+      contextNotes,
     });
   }
   classFeatures.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
