@@ -8,6 +8,7 @@ import { setArchetypes } from "../../model/doc.js";
 import { TipButton } from "../InfoTip.js";
 import { SearchMiss } from "./SearchMiss.js";
 import { Caret } from "../Caret.js";
+import { Explainer } from "../Explainer.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -18,13 +19,13 @@ interface ArchetypePickerProps {
 }
 
 /**
- * Archetype selection, free-choice within the 5 classes the vendored dataset
- * covers. A candidate that would swap the same base-class feature slot as an
- * already-chosen archetype is hard-blocked (structured signal — see
+ * Archetype selection, free-choice across whatever classes the vendored
+ * dataset covers. A candidate that would swap the same base-class feature slot
+ * as an already-chosen archetype is hard-blocked (structured signal — see
  * `model/archetypes.ts`), since `resolveClassFeatures` applies swaps last-wins
- * and the earlier pick would silently do nothing. Collapsed by default: with
- * ~180 archetypes across 5 classes this list is the single largest picker in
- * the builder, and most characters won't use one.
+ * and the earlier pick would silently do nothing. Collapsed by default: this is
+ * the single largest picker in the builder by a wide margin, and most
+ * characters won't use one.
  */
 export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) {
   const [open, setOpen] = useState(false);
@@ -79,14 +80,23 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
       </div>
       {open && (
         <>
-          <p className="hint">
-            Mostly structural swaps: a hand-verified slice (marked{" "}
-            <span className="badge-modeled">M</span>) or a machine-extracted slice (marked{" "}
-            <span className="badge-modeled badge-modeled--extracted">M</span>, lower confidence, see
-            Class Features below for its provenance sentence) carries a real numeric effect; the
-            rest show prose only. Picking one that would replace an already-swapped ability is
-            blocked (it would silently do nothing).
-          </p>
+          <Explainer title="How archetypes work">
+            <p>
+              An archetype trades away some of your class's standard abilities for different ones.
+              Most of what's here is reference text you read and apply at the table.
+            </p>
+            <p>
+              Entries marked <span className="badge-modeled">M</span> change real numbers on your
+              sheet, and you'll see what they changed under Class Features below. An outlined{" "}
+              <span className="badge-modeled badge-modeled--extracted">M</span> means the sheet read
+              that effect out of the rules text on its own, so check it against the book before you
+              lean on it.
+            </p>
+            <p>
+              Two archetypes that trade away the same ability can't be combined. Once you pick one,
+              anything that collides with it greys out.
+            </p>
+          </Explainer>
           {archetypeConflictWarnings(doc, refData).map((w) => (
             <p key={w} className="hint affliction-warn">
               ⚠ {w}
@@ -126,7 +136,7 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
                         {a.tier === "verified" ? (
                           <span
                             className="badge-modeled"
-                            title="Carries a hand-verified numeric effect (see Class Features)"
+                            title="Changes real numbers on your sheet (see Class Features)"
                           >
                             {" "}
                             M
@@ -134,7 +144,7 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
                         ) : a.tier === "extracted" ? (
                           <span
                             className="badge-modeled badge-modeled--extracted"
-                            title="Carries a machine-extracted numeric effect, not yet hand-verified (see Class Features for its provenance sentence)"
+                            title="Changes numbers the sheet read out of the rules text on its own: check it against the book (see Class Features)"
                           >
                             {" "}
                             M
