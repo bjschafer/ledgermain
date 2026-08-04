@@ -65,7 +65,7 @@ export function MysteryPicker({ doc, refData, update }: MysteryPickerProps) {
             <span className="hint">
               {" "}
               · {mysteryDef.name}
-              {!mysteryDef.displayOnly && <span className="badge-modeled"> M</span>}
+              {!mysteryDef.displayOnly && <span className="badge-modeled">M</span>}
             </span>
           ) : null}
         </h3>

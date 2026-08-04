@@ -482,7 +482,6 @@ function ModeledBadge({ changes }: { changes: readonly Change[] }) {
   if (changes.length === 0) return null;
   return (
     <span className="badge-modeled" title="The sheet applies this item's effect while equipped">
-      {" "}
       M
     </span>
   );

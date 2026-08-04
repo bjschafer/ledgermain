@@ -140,7 +140,6 @@ export function DiscoveryPicker({ doc, refData, update }: DiscoveryPickerProps) 
                           className="badge-modeled"
                           title="Carries a real, live mechanical effect (see Class Features)"
                         >
-                          {" "}
                           M
                         </span>
                       )}

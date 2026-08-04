@@ -82,7 +82,7 @@ export function SpiritPicker({ doc, refData, update }: SpiritPickerProps) {
             <span className="hint">
               {" "}
               · {spiritDef.name}
-              {!spiritDef.displayOnly && <span className="badge-modeled"> M</span>}
+              {!spiritDef.displayOnly && <span className="badge-modeled">M</span>}
             </span>
           ) : null}
         </h3>

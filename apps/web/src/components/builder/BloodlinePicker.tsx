@@ -126,7 +126,7 @@ export function BloodlinePicker({ doc, refData, update }: BloodlinePickerProps) 
               {" "}
               · {bloodlineDef?.name ?? chosen}
               {bloodlineDef && bloodlineMovesNumbers(bloodlineDef) && (
-                <span className="badge-modeled"> M</span>
+                <span className="badge-modeled">M</span>
               )}
             </span>
           ) : null}

@@ -186,7 +186,6 @@ function TalentSection({
                           className="badge-modeled"
                           title="Carries a real, live mechanical effect"
                         >
-                          {" "}
                           M
                         </span>
                       )}

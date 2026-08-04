@@ -133,7 +133,6 @@ export function MagusArcanaPicker({ doc, refData, update }: MagusArcanaPickerPro
                           className="badge-modeled"
                           title="Carries a real, live mechanical effect"
                         >
-                          {" "}
                           M
                         </span>
                       )}

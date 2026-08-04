@@ -60,7 +60,7 @@ export function CursePicker({ doc, refData, update }: CursePickerProps) {
             <span className="hint">
               {" "}
               · {curseDef.name}
-              {!curseDef.displayOnly && <span className="badge-modeled"> M</span>}
+              {!curseDef.displayOnly && <span className="badge-modeled">M</span>}
             </span>
           ) : null}
         </h3>

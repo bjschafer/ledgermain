@@ -143,7 +143,6 @@ export function RevelationPicker({ doc, refData, update }: RevelationPickerProps
                               className="badge-modeled"
                               title="Carries a real, live mechanical effect (see Class Features)"
                             >
-                              {" "}
                               M
                             </span>
                           )}

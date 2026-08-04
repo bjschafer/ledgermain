@@ -179,7 +179,6 @@ export function HexPicker({ doc, sheet, refData, update }: HexPickerProps) {
                           className="badge-modeled"
                           title="Carries a real, live mechanical effect"
                         >
-                          {" "}
                           M
                         </span>
                       )}

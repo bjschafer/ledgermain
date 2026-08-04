@@ -122,7 +122,6 @@ export function SlayerTalentPicker({ doc, refData, update }: SlayerTalentPickerP
                           className="badge-modeled"
                           title="Carries a real, live mechanical effect (see Class Features)"
                         >
-                          {" "}
                           M
                         </span>
                       )}

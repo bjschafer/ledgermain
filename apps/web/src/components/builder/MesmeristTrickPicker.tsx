@@ -137,7 +137,6 @@ export function MesmeristTrickPicker({ doc, refData, update }: MesmeristTrickPic
                           className="badge-modeled"
                           title="Carries a real, live mechanical effect"
                         >
-                          {" "}
                           M
                         </span>
                       )}

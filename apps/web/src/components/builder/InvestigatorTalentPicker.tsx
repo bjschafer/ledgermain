@@ -131,7 +131,6 @@ export function InvestigatorTalentPicker({ doc, refData, update }: InvestigatorT
                           className="badge-modeled"
                           title="Carries a real, live mechanical effect"
                         >
-                          {" "}
                           M
                         </span>
                       )}

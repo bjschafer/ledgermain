@@ -148,7 +148,6 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
                               className="badge-modeled"
                               title="Carries a real, live mechanical effect (see Class Features)"
                             >
-                              {" "}
                               M
                             </span>
                           )}
@@ -199,7 +198,6 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
                               className="badge-modeled"
                               title="Carries a real, live mechanical effect (see Class Features)"
                             >
-                              {" "}
                               M
                             </span>
                           )}

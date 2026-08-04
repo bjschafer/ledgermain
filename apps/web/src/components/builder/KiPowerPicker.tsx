@@ -121,7 +121,6 @@ export function KiPowerPicker({ doc, refData, update }: KiPowerPickerProps) {
                           className="badge-modeled"
                           title="Carries a real, live mechanical effect (see Class Features)"
                         >
-                          {" "}
                           M
                         </span>
                       )}

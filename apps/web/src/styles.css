@@ -4917,6 +4917,9 @@ input[type="text"].saved-roll-name:focus {
   color: var(--bg);
   background: var(--gold-dim);
   vertical-align: middle;
+  /* The gap to the label lives here, not as a text space inside the padded
+     box, so the M stays centered and the badge clears the chip text. */
+  margin-left: 0.35em;
 }
 
 /* Machine-extracted (issue #45): hollow/outlined so it reads as visibly

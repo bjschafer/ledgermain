@@ -139,7 +139,6 @@ export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) 
                           className="badge-modeled"
                           title="Carries a real, live mechanical effect (see Class Features)"
                         >
-                          {" "}
                           M
                         </span>
                       )}

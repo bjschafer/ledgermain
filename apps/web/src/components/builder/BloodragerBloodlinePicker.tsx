@@ -99,7 +99,7 @@ export function BloodragerBloodlinePicker({
               {" "}
               · {chosen}
               {bloodlineDef && bloodragerBloodlineMovesNumbers(bloodlineDef) && (
-                <span className="badge-modeled"> M</span>
+                <span className="badge-modeled">M</span>
               )}
             </span>
           ) : null}

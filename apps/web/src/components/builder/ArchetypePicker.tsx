@@ -139,15 +139,13 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
                             className="badge-modeled"
                             title="Changes real numbers on your sheet (see Class Features)"
                           >
-                            {" "}
                             M
                           </span>
                         ) : a.tier === "extracted" ? (
                           <span
                             className="badge-modeled badge-modeled--extracted"
-                            title="Changes numbers the sheet read out of the rules text on its own: check it against the book (see Class Features)"
+                            title="Changes real numbers on your sheet. The values were read from the rules text automatically, so check them against the book. Details under Class Features."
                           >
-                            {" "}
                             M
                           </span>
                         ) : null}

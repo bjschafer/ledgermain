@@ -300,7 +300,6 @@ export function FeatEntry({
                       className="badge-modeled badge-modeled--extracted"
                       content="Carries a machine-extracted numeric effect, not yet hand-verified"
                     >
-                      {" "}
                       M
                     </InfoTip>
                   ) : null}
@@ -422,7 +421,6 @@ export function FeatEntry({
               className="badge-modeled badge-modeled--extracted"
               content="Carries a machine-extracted numeric effect, not yet hand-verified"
             >
-              {" "}
               M
             </InfoTip>
           ) : null}
