@@ -15,6 +15,7 @@ import {
  * narrative this asserts against.
  */
 const ref = loadRefData();
+const spellNames = new Set(Object.values(ref.spells).map((sp) => sp.name.toLowerCase()));
 
 describe("mergedWitchPatronCatalog", () => {
   const merged = mergedWitchPatronCatalog(ref);
@@ -29,7 +30,15 @@ describe("mergedWitchPatronCatalog", () => {
     for (const tag of WITCH_PATRON_TAGS) {
       const entry = byTag.get(tag);
       expect(entry).toBeDefined();
-      expect(entry!.bonusSpells).toEqual(WITCH_PATRONS[tag]!.bonusSpells);
+      // Names are resolved to the compendium's own spelling on the way out
+      // (see `withResolvedSpellNames`), so the progression is compared by
+      // unlock level and length rather than by raw hand-table string.
+      expect(entry!.bonusSpells.map((sp) => sp.level)).toEqual(
+        WITCH_PATRONS[tag]!.bonusSpells.map((sp) => sp.level),
+      );
+      for (const sp of entry!.bonusSpells) {
+        expect(spellNames.has(sp.name.toLowerCase())).toBe(true);
+      }
       expect(entry!.displayOnly).toBe(false);
       expect(entry!.description).toBeDefined();
       expect(entry!.category).toBe("basic");
@@ -55,7 +64,10 @@ describe("resolveWitchPatron", () => {
   it("prefers the hand-authored table for a matched tag", () => {
     const patron = resolveWitchPatron("agility", ref);
     expect(patron?.displayOnly).toBe(false);
-    expect(patron?.bonusSpells).toEqual(WITCH_PATRONS.agility!.bonusSpells);
+    expect(patron?.bonusSpells.map((sp) => sp.level)).toEqual(
+      WITCH_PATRONS.agility!.bonusSpells.map((sp) => sp.level),
+    );
+    expect(patron?.bonusSpells[0]!.name).toBe("Jump");
   });
 
   it("falls back to the vendored catalog for a vendored-only tag", () => {

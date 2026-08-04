@@ -11,31 +11,30 @@
  * Data provenance — UNLIKE `oracle-mysteries.ts`'s `bonusSpells`, which
  * copies real vendored Foundry spell `_id`s straight out of the mystery's
  * `@UUID[...]` prose references, a witch patron's bonus-spell list is NOT
- * embedded anywhere in the vendored Foundry data pack at all (the Witch
- * class def only links the generic "Patron Spells" stub `ClassFeature`, no
- * per-patron breakdown — confirmed: `class-features.json` carries no
- * per-patron entries). So `bonusSpells` here carries only a spell NAME (no
- * `id`) — `model/spellcasting.patronSpellsKnown` (apps/web) resolves each
- * name against `RefData.spells` at runtime by exact case-insensitive name
- * match, degrading gracefully to a name-only display entry when the
- * vendored spell slice doesn't carry that spell (a few of the higher-level
- * patron spells, e.g. "Giant Form II", are outside the pipeline's current
- * slice) — same "unresolvable id/name is tolerated, never thrown" posture
- * `oracle-mysteries.ts`'s own bonusSpells resolution and
- * `resolveGrantsBuffs` (resources.ts) already use.
+ * embedded anywhere in the vendored Foundry data pack as structured data
+ * (the Witch class def only links the generic "Patron Spells" stub
+ * `ClassFeature`) — but the vendored PROSE for most patrons spells its
+ * progression out in a parseable `<level> - <spell>` list (see "vendored
+ * catalog overlay" below), so `bonusSpells` here carries only a spell NAME
+ * (no `id`) — `model/spellcasting.patronSpellsKnown` (apps/web) resolves
+ * each name against `RefData.spells` at runtime by exact case-insensitive
+ * name match, degrading gracefully to a name-only display entry when the
+ * vendored spell slice doesn't carry that spell — same "unresolvable
+ * id/name is tolerated, never thrown" posture `oracle-mysteries.ts`'s own
+ * bonusSpells resolution and `resolveGrantsBuffs` (resources.ts) already
+ * use.
  *
- * Scope: the 15 Advanced Player's Guide / Ultimate Magic "core" patrons with
- * a verifiable, source-cited, complete 9-spell progression: Agility,
- * Animals, Deception, Elements, Endurance, Healing (UM), Light (UM), Moon
- * (UM), Plague, Strength, Transformation, Trickery, Water, Wisdom, Shadow
- * — plus Time and Ultimate Magic's Vengeance (17 total). Explicitly OUT OF
- * SCOPE: "Protection" (a real patron, but from Heroes of the High Court, a
- * later splatbook — not APG/UM); "Wards" and "Portals" (not real PF1 witch
- * patrons at all — checked against AoN's full 52-patron index, no such
- * entries exist in any PF1 sourcebook; likely a mix-up with another game's
- * patron themes). Later-splatbook patrons beyond these 17 are deferred,
- * same posture as `oracle-mysteries.ts`'s "10 APG core mysteries only" scope
- * note.
+ * Scope of THIS table: the 17 Advanced Player's Guide / Ultimate Magic
+ * "core" patrons with a verifiable, source-cited, complete 9-spell
+ * progression: Agility, Animals, Deception, Elements, Endurance, Healing
+ * (UM), Light (UM), Moon (UM), Plague, Strength, Transformation, Trickery,
+ * Water, Wisdom, Shadow, Time (UM), Vengeance (UM). These stay authoritative
+ * over the vendored-parsed progression below on a name collision (hand
+ * verification against the published book beats prose extraction). The
+ * remaining ~35 "basic" published patrons (a plain 9-spell progression, no
+ * hand-authored entry here) get their progression from the parser instead;
+ * see `mergedWitchPatronCatalog`'s doc comment for that and for the 9
+ * "unique" themed patrons, which are NOT a 9-spell progression at all.
  */
 
 import type { RefData, SourceRef, WitchPatron } from "@pf1/schema";
@@ -267,7 +266,7 @@ const PATRON_LIST: WitchPatronDef[] = [
       "Magic Vestment",
       "Lesser Globe of Invulnerability",
       "Dream",
-      "Greater Globe of Invulnerability",
+      "Globe of Invulnerability",
       "Spell Turning",
       "Protection from Spells",
       "Mage's Disjunction",
@@ -331,13 +330,36 @@ export const WITCH_PATRON_TAGS: readonly string[] = PATRON_LIST.map((p) => p.tag
 /* -------------------------------------------------- vendored catalog overlay -- */
 /*
  * `RefData.witchPatrons` is the FULL published catalog (61 entries after junk
- * filtering), prose only — same "catalog from data, mechanics as overlay"
- * pattern as `rage-powers.ts`'s `mergedRagePowerCatalog`. The hand-verified
- * 17-core-patron table above stays authoritative for the bonus-spell
- * progression; this section merges the two for browsing.
+ * filtering) — same "catalog from data, mechanics as overlay" pattern as
+ * `rage-powers.ts`'s `mergedRagePowerCatalog`, but unlike most of that
+ * pattern's siblings, the vendored PROSE itself carries the progression for
+ * most entries, so this overlay does real extraction rather than pure
+ * display passthrough:
+ *
+ * - The 52 `category: "basic"` entries each spell a 9-spell progression as a
+ *   `"2nd - jump, 4th - cat's grace, ..."` list in their first paragraph.
+ *   `parseVendoredPatronSpells` extracts it; a match against the 17
+ *   hand-verified patrons above (by normalized name) keeps the hand table's
+ *   entry instead (it can carry a judgment call the raw prose doesn't, e.g.
+ *   simplifying "elemental body III (water only)" to "Elemental Body III").
+ *   The other ~35 basic patrons get the parsed progression directly, which
+ *   is enough to stop being `displayOnly`.
+ * - The 9 `category: "unique"` entries are patron TEMPLATES, not a 9-spell
+ *   list: each grants a named hex at 1st level, imposes a drawback, and
+ *   restricts the witch to a small set of "Available Patron Themes" whose
+ *   own bonus-spell list applies with a few "Spell Changes" overrides layered
+ *   on top. `parseVendoredPatronThemeInfo` extracts that structure into
+ *   `MergedWitchPatronEntry.themeInfo` for display; it is deliberately NOT
+ *   turned into a `bonusSpells` progression (there isn't one without a theme
+ *   sub-choice this app doesn't yet collect), so these stay `displayOnly`.
+ *
+ * Both parsers degrade to an empty result on unrecognized prose shape
+ * (a future data bump reformatting the source) rather than throwing — the
+ * entry then just falls back to plain display-only prose, same tolerance
+ * posture the file doc comment above describes for spell-name resolution.
  *
  * Matching is by NORMALIZED NAME. Collision audit (all 17 hand-authored
- * patrons): all 17 matched a vendored entry by normalized name (the
+ * patrons): all 17 matched a vendored `"basic"` entry by normalized name (the
  * vendored dictionary keys ARE this table's own `tag`s, verified) — no
  * aliasing needed.
  */
@@ -351,37 +373,247 @@ function normalizePatronName(name: string): string {
     .trim();
 }
 
-/** A catalog entry the picker can browse — either the hand-authored def with vendored prose attached, or a vendored-only entry rendered display-only. */
+/** One `<strong>Spell Changes:</strong>` override row on a `"unique"` patron template — display text only, not resolved against `RefData.spells` (see `WitchPatronThemeInfo` doc comment). */
+export interface WitchPatronSpellChange {
+  level: number;
+  text: string;
+}
+
+/** Structured read of a `"unique"` patron's template prose (the hex it grants, its drawback, which themes it restricts you to, and the spell overrides it layers on the chosen theme). Informational only — applying it (picking a theme, swapping in the overridden spells) is left to the player; see `mergedWitchPatronCatalog`'s doc comment for why this app doesn't model it as a real progression. */
+export interface WitchPatronThemeInfo {
+  grantedHex: string;
+  drawback: string;
+  availableThemes: string[];
+  spellChanges: WitchPatronSpellChange[];
+}
+
+/** A catalog entry the picker can browse — either the hand-authored def with vendored prose attached, or a vendored-only entry (parsed or plain display-only). */
 export interface MergedWitchPatronEntry extends WitchPatronDef {
   /** Vendored "basic"/"unique" grouping, when present. */
   category?: "basic" | "unique";
   description?: string;
   sources?: SourceRef[];
-  /** True for a vendored-only patron with no hand-authored bonus-spell progression — the picker's "M" (modeled) badge convention. */
+  /** Set only for a `"unique"` themed patron template (see `WitchPatronThemeInfo`). */
+  themeInfo?: WitchPatronThemeInfo;
+  /** True when this entry has no bonus-spell progression at all (a `"unique"` template, or a `"basic"` entry whose prose didn't match the parser's expected shape) — the picker's "M" (modeled) badge convention. */
   displayOnly: boolean;
 }
 
-function vendoredPatronToDef(entry: WitchPatron): MergedWitchPatronEntry {
+/** `Foundry`/"Pf Data 1e" spell-naming convention for a modified base spell: `"<Base>, <Modifier>"` (e.g. "Confusion, Lesser", "Bull's Strength, Mass") rather than English word order. Tried as a fallback when the plain word-order name doesn't resolve. */
+const SPELL_MODIFIER_PREFIXES = ["Greater Communal", "Greater", "Lesser", "Mass", "Communal"];
+
+/** Patron prose that names a spell the compendium files under a different title. Keyed by the lowercased prose name. */
+const SPELL_NAME_ALIASES: Record<string, string> = { geas: "Geas/Quest" };
+
+const TITLE_CASE_SMALL_WORDS = new Set([
+  "of",
+  "the",
+  "a",
+  "an",
+  "and",
+  "or",
+  "in",
+  "on",
+  "at",
+  "to",
+]);
+
+/** Capitalizes each word (skipping leading punctuation, e.g. `"(good"` → `"(Good"`), lower-casing minor connector words (except as the first word) and upper-casing bare roman-numeral words (`iii` → `III`) — good enough for display; exact resolution against `RefData.spells` is case-insensitive regardless (see `resolveVendoredSpellName`). */
+function titleCase(text: string): string {
+  return text
+    .split(" ")
+    .map((word, i) => {
+      if (word.length === 0) return word;
+      const core = word.replace(/[^a-zA-Z]/g, "");
+      if (core.length > 0 && /^[ivx]+$/i.test(core)) return word.replace(core, core.toUpperCase());
+      if (i > 0 && TITLE_CASE_SMALL_WORDS.has(core.toLowerCase())) return word.toLowerCase();
+      const m = word.match(/^([^a-zA-Z]*)([a-zA-Z])(.*)$/);
+      return m ? `${m[1]}${m[2]!.toUpperCase()}${m[3]!.toLowerCase()}` : word;
+    })
+    .join(" ");
+}
+
+function capitalizeFirst(text: string): string {
+  return text.length > 0 ? text.charAt(0).toUpperCase() + text.slice(1) : text;
+}
+
+const spellIndexCache = new WeakMap<RefData, Map<string, string>>();
+function spellNameIndex(refData: RefData): Map<string, string> {
+  let index = spellIndexCache.get(refData);
+  if (!index) {
+    index = new Map();
+    for (const sp of Object.values(refData.spells)) index.set(sp.name.toLowerCase(), sp.name);
+    spellIndexCache.set(refData, index);
+  }
+  return index;
+}
+
+/**
+ * Resolve a raw parsed spell name to the exact vendored spell name it will
+ * round-trip through `apps/web`'s `patronSpellsKnown` (a dumb, exact,
+ * case-insensitive lookup) — or a best-effort Title Case fallback when it
+ * doesn't resolve at all (same graceful-degradation posture the file doc
+ * comment above documents).
+ *
+ * A trailing parenthetical qualifier (`"elemental body III (water only)"`)
+ * is always dropped: no vendored spell name carries one, so keeping it would
+ * only ever break the lookup, and the 17-patron hand table already sets this
+ * precedent (Water's own "Elemental Body III" entry drops the same
+ * qualifier). What's left is tried as-is, then in the vendored data's own
+ * `"<Base>, <Modifier>"` order (`SPELL_MODIFIER_PREFIXES`) for the common
+ * case where the prose says "greater X" but the spell is filed as "X,
+ * Greater".
+ */
+function resolveVendoredSpellName(refData: RefData, raw: string): string {
+  const index = spellNameIndex(refData);
+  const cleaned = raw.replace(/\.$/, "").trim();
+  const stripped = cleaned.replace(/\s*\([^)]*\)\s*$/, "").trim();
+
+  const direct = index.get(stripped.toLowerCase());
+  if (direct) return direct;
+
+  const alias = SPELL_NAME_ALIASES[stripped.toLowerCase()];
+  if (alias) {
+    const aliased = index.get(alias.toLowerCase());
+    if (aliased) return aliased;
+  }
+
+  for (const prefix of SPELL_MODIFIER_PREFIXES) {
+    if (stripped.toLowerCase().startsWith(`${prefix.toLowerCase()} `)) {
+      const rest = stripped.slice(prefix.length).trim();
+      const swapped = index.get(`${rest}, ${prefix}`.toLowerCase());
+      if (swapped) return swapped;
+    }
+  }
+
+  return titleCase(stripped);
+}
+
+/** One `<level>(st|nd|rd|th) - <name>` list entry, as extracted verbatim (not yet spell-name-resolved). */
+function extractLevelList(text: string): { level: number; raw: string }[] {
+  const body = text.replace(/\.\s*(\[\^\w+])?\s*$/, "").trim();
+  const re = /(\d+)(?:st|nd|rd|th)\s*-\s*(.+?)(?=,\s*\d+(?:st|nd|rd|th)\s*-|$)/g;
+  return [...body.matchAll(re)].map((m) => ({ level: Number(m[1]), raw: m[2]!.trim() }));
+}
+
+function firstParagraphText(html: string): string | undefined {
+  const m = html.match(/<p>([\s\S]*?)<\/p>/);
+  return m ? m[1]!.replace(/<[^>]+>/g, "").trim() : undefined;
+}
+
+/**
+ * Extract a `"basic"` patron's 9-spell bonus progression from its vendored
+ * description's first paragraph (`"2nd - jump, 4th - cat's grace, ..."`).
+ * Returns `[]` if the paragraph doesn't match that shape at all.
+ */
+export function parseVendoredPatronSpells(
+  refData: RefData,
+  description: string,
+): WitchPatronBonusSpell[] {
+  const text = firstParagraphText(description);
+  if (!text) return [];
+  return extractLevelList(text).map((entry) => ({
+    level: entry.level,
+    name: resolveVendoredSpellName(refData, entry.raw),
+  }));
+}
+
+/**
+ * Extract a `"unique"` patron template's structured fields: the hex it
+ * grants at 1st level, its drawback, its "Available Patron Themes" list, and
+ * its "Spell Changes" overrides. Returns `undefined` if the description
+ * doesn't match the expected three-paragraph shape.
+ */
+export function parseVendoredPatronThemeInfo(
+  description: string,
+): WitchPatronThemeInfo | undefined {
+  const paragraphs = [...description.matchAll(/<p>([\s\S]*?)<\/p>/g)].map((m) =>
+    m[1]!.replace(/<[^>]+>/g, "").trim(),
+  );
+  const first = paragraphs[0];
+  if (!first) return undefined;
+
+  const hexMatch = first.match(/You gain the (.+?) hex at 1st level,?\s*but\s+(.+)$/i);
+  if (!hexMatch) return undefined;
+
+  const themesP = paragraphs.find((p) => /Available Patron Themes:/i.test(p));
+  const availableThemes = themesP
+    ? themesP
+        .replace(/.*Available Patron Themes:\s*/i, "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0)
+    : [];
+
+  const changesP = paragraphs.find((p) => /Spell Changes:/i.test(p));
+  const spellChanges = changesP
+    ? extractLevelList(changesP.replace(/.*Spell Changes:\s*/i, "")).map((entry) => ({
+        level: entry.level,
+        text: titleCase(entry.raw),
+      }))
+    : [];
+
   return {
-    tag: entry.id,
-    name: entry.name,
-    bonusSpells: [],
-    category: entry.category,
-    description: entry.description,
-    sources: entry.sources,
-    displayOnly: true,
+    grantedHex: titleCase(hexMatch[1]!.trim()),
+    drawback: capitalizeFirst(hexMatch[2]!.trim()),
+    availableThemes,
+    spellChanges,
   };
 }
 
-/** Resolve a picked patron tag (`doc.build.witchPatron`) to its definition — hand-authored table first, falling back to the vendored catalog for a tag that only exists there. */
+/**
+ * The hand table writes a modified spell in English word order ("Mass Cat's
+ * Grace"), while the compendium files it as `"<Base>, <Modifier>"`. Both
+ * spellings go through the same resolver the vendored prose does, so a hand
+ * entry resolves to a real spell rather than degrading to a name-only display
+ * entry (see `resolveVendoredSpellName`).
+ */
+function withResolvedSpellNames(def: WitchPatronDef, refData: RefData): WitchPatronDef {
+  return {
+    ...def,
+    bonusSpells: def.bonusSpells.map((sp) => ({
+      level: sp.level,
+      name: resolveVendoredSpellName(refData, sp.name),
+    })),
+  };
+}
+
+function vendoredPatronToDef(entry: WitchPatron, refData: RefData): MergedWitchPatronEntry {
+  if (entry.category === "unique") {
+    return {
+      tag: entry.id,
+      name: entry.name,
+      bonusSpells: [],
+      category: entry.category,
+      description: entry.description,
+      sources: entry.sources,
+      themeInfo: entry.description ? parseVendoredPatronThemeInfo(entry.description) : undefined,
+      displayOnly: true,
+    };
+  }
+  const bonusSpells = entry.description
+    ? parseVendoredPatronSpells(refData, entry.description)
+    : [];
+  return {
+    tag: entry.id,
+    name: entry.name,
+    bonusSpells,
+    category: entry.category,
+    description: entry.description,
+    sources: entry.sources,
+    displayOnly: bonusSpells.length === 0,
+  };
+}
+
+/** Resolve a picked patron tag (`doc.build.witchPatron`) to its definition — hand-authored table first, falling back to the vendored catalog (parsed or plain display-only) for a tag that only exists there. */
 export function resolveWitchPatron(
   tag: string,
   refData: RefData,
 ): MergedWitchPatronEntry | undefined {
   const hand = WITCH_PATRONS[tag];
-  if (hand) return { ...hand, displayOnly: false };
+  if (hand) return { ...withResolvedSpellNames(hand, refData), displayOnly: false };
   const vendored = refData.witchPatrons?.[tag];
-  return vendored ? vendoredPatronToDef(vendored) : undefined;
+  return vendored ? vendoredPatronToDef(vendored, refData) : undefined;
 }
 
 /** The full picker-browsable catalog: every vendored patron, with any that collides (by normalized name) against a hand-authored entry replaced by that def, plus any hand-authored entry with no vendored counterpart appended. */
@@ -398,18 +630,19 @@ export function mergedWitchPatronCatalog(refData: RefData): MergedWitchPatronEnt
     if (handMatch) {
       usedHandTags.add(handMatch.tag);
       merged.push({
-        ...handMatch,
+        ...withResolvedSpellNames(handMatch, refData),
         category: v.category,
         description: v.description,
         sources: v.sources,
         displayOnly: false,
       });
     } else {
-      merged.push(vendoredPatronToDef(v));
+      merged.push(vendoredPatronToDef(v, refData));
     }
   }
   for (const p of PATRON_LIST) {
-    if (!usedHandTags.has(p.tag)) merged.push({ ...p, displayOnly: false });
+    if (!usedHandTags.has(p.tag))
+      merged.push({ ...withResolvedSpellNames(p, refData), displayOnly: false });
   }
   return merged;
 }

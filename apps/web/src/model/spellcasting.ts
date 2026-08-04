@@ -101,7 +101,7 @@ import {
   ORACLE_CURSES,
   ORACLE_MYSTERIES,
   PSYCHIC_DISCIPLINES,
-  WITCH_PATRONS,
+  resolveWitchPatron,
   SHAMAN_SPIRITS,
   type SpellKnownProgression,
   type SpellPreparedProgression,
@@ -1274,15 +1274,19 @@ function spellIdByName(refData: RefData, name: string): string | undefined {
  * rather than an oracle's spontaneous list, but the mechanic is otherwise
  * identical, so `WitchPatronDef.bonusSpells` is already keyed by the WITCH
  * level that unlocks it (see `@pf1/engine` `witch-patrons.ts`'s doc comment).
+ * Resolved via `resolveWitchPatron` rather than the hand-authored
+ * `WITCH_PATRONS` table directly, so a vendored-only patron whose prose the
+ * engine's parser could extract a progression from also gets one here.
  *
  * Unlike `mysterySpellsKnown`, this resolves each entry's spell by NAME (via
  * {@link spellIdByName}) rather than a vendored id, since patrons carry no
  * id to begin with — when a name doesn't resolve against the vendored spell
- * slice (a few of the highest-level patron spells are outside the pipeline's
- * current slice), a synthetic `patron:<slug>` id is used instead so the
- * entry still displays by name (degrading gracefully, same posture
- * `mysterySpellsKnown`'s own id-fallback documents — see that function's
- * doc comment).
+ * slice, a synthetic `patron:<slug>` id is used instead so the entry still
+ * displays by name (degrading gracefully, same posture `mysterySpellsKnown`'s
+ * own id-fallback documents — see that function's doc comment).
+ *
+ * Sorted by unlock LEVEL (ascending), not name — a player reading this list
+ * wants "what do I get next", not alphabetical order.
  *
  * @example
  *   patronSpellsKnown(ref, "healing", 5)  // → 2 spells (unlocked at L2, L4)
@@ -1294,7 +1298,7 @@ export function patronSpellsKnown(
   witchLevel: number,
 ): { id: string; name: string; level: number }[] {
   if (!patronTag) return [];
-  const patron = WITCH_PATRONS[patronTag];
+  const patron = resolveWitchPatron(patronTag, refData);
   if (!patron) return [];
   return patron.bonusSpells
     .filter((sp) => sp.level <= witchLevel)
@@ -1307,7 +1311,7 @@ export function patronSpellsKnown(
         level: sp.level,
       };
     })
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
 }
 
 // ---------------------------------------------------------------------------

@@ -241,9 +241,13 @@ export {
   WITCH_PATRON_TAGS,
   mergedWitchPatronCatalog,
   resolveWitchPatron,
+  parseVendoredPatronSpells,
+  parseVendoredPatronThemeInfo,
   type WitchPatronDef,
   type WitchPatronBonusSpell,
   type MergedWitchPatronEntry,
+  type WitchPatronThemeInfo,
+  type WitchPatronSpellChange,
 } from "./witch-patrons.js";
 export {
   WITCH_HEXES,

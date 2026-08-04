@@ -16,6 +16,7 @@ import {
   grantedCantrips,
   mysterySpellsKnown,
   oracleChannelSpellsKnown,
+  patronSpellsKnown,
   preparedCapacityByLevel,
   shamanSpiritSpellsKnown,
   spellSaveDC,
@@ -444,6 +445,57 @@ describe("mysterySpellsKnown()", () => {
 
   it("returns [] when no mystery is chosen (undefined tag)", () => {
     expect(mysterySpellsKnown(ref, undefined, 20)).toEqual([]);
+  });
+});
+
+describe("patronSpellsKnown()", () => {
+  it("returns [] below witch level 2 (a patron's first bonus spell unlocks at 2)", () => {
+    expect(patronSpellsKnown(ref, "agility", 1)).toEqual([]);
+  });
+
+  it("L5 witch unlocks bonus spells granted at levels 2 and 4", () => {
+    const spells = patronSpellsKnown(ref, "agility", 5);
+    expect(spells.map((s) => s.level)).toEqual([2, 4]);
+    expect(spells[0]!.name).toBe("Jump");
+    expect(spells[1]!.name).toBe("Cat's Grace");
+  });
+
+  it("sorts the full progression by unlock level, not alphabetically by name", () => {
+    // "Jump" (L2) would sort after "Cat's Grace" (L4) alphabetically —
+    // asserting on the full L18 list catches a regression back to
+    // name-sort.
+    const spells = patronSpellsKnown(ref, "agility", 18);
+    expect(spells.map((s) => s.level)).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18]);
+    expect(spells.map((s) => s.name)).toEqual([
+      "Jump",
+      "Cat's Grace",
+      "Haste",
+      "Freedom of Movement",
+      "Polymorph",
+      // Written "Mass Cat's Grace" in the hand table, filed under the
+      // compendium's own "<Base>, <Modifier>" order once resolved.
+      "Cat's Grace, Mass",
+      "Ethereal Jaunt",
+      "Animal Shapes",
+      "Shapechange",
+    ]);
+  });
+
+  it("resolves a vendored-only patron's parsed progression too, not just the 17 hand-authored ones", () => {
+    // "Ancestors" has no hand-authored entry — its progression comes from
+    // the engine's vendored-prose parser (see `@pf1/engine` witch-patrons.ts).
+    const spells = patronSpellsKnown(ref, "ancestors", 4);
+    expect(spells.map((s) => s.level)).toEqual([2, 4]);
+    expect(spells[0]!.name).toBe("Bless");
+    expect(spells[1]!.name).toBe("Aid");
+  });
+
+  it("returns [] for an unknown patron tag (soft fail, no throw)", () => {
+    expect(patronSpellsKnown(ref, "notARealPatron", 20)).toEqual([]);
+  });
+
+  it("returns [] when no patron is chosen (undefined tag)", () => {
+    expect(patronSpellsKnown(ref, undefined, 20)).toEqual([]);
   });
 });
 

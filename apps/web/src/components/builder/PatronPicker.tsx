@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
-import { mergedWitchPatronCatalog } from "@pf1/engine";
+import { mergedWitchPatronCatalog, type MergedWitchPatronEntry } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { setWitchPatron } from "../../model/doc.js";
@@ -17,43 +17,81 @@ interface PatronPickerProps {
   update: Updater;
 }
 
+const CATEGORY_LABEL: Record<string, string> = { basic: "Basic", unique: "Unique" };
+
+function patronSearchText(p: MergedWitchPatronEntry): string {
+  return `${p.name} ${p.description ?? ""}`.toLowerCase();
+}
+
+/** One-line, unleveled summary for a row that isn't the current selection — the full level-ordered breakdown only renders once a row is chosen (see the component doc comment). */
+function patronRowSummary(p: MergedWitchPatronEntry): string {
+  if (p.themeInfo) {
+    return `Grants the ${p.themeInfo.grantedHex} hex · Themes: ${p.themeInfo.availableThemes.join(", ")}`;
+  }
+  if (p.bonusSpells.length > 0) {
+    return `Bonus spells: ${p.bonusSpells.map((sp) => sp.name).join(", ")}`;
+  }
+  return "No structured bonus-spell data for this patron.";
+}
+
 /**
- * Witch patron selection, mirroring `MysteryPicker` almost exactly. PF1 grants
- * exactly one patron, chosen at L1, never changed thereafter. Free-choice: no
- * vendored patron-to-witch mapping exists, so validation is "soft warning
- * only" per the project's hybrid-prereqs philosophy — same posture as
- * `MysteryPicker`/`BloodlinePicker`.
+ * Witch patron selection: a searchable card list, one row per published
+ * patron, following `HexPicker`/`ImplementPicker`'s `.search` + `.scroll` +
+ * `.pick-row` shape rather than a bare `<select>` (61 entries is too many for
+ * a dropdown to browse). PF1 grants exactly one patron, chosen at L1, never
+ * changed thereafter — picking a row replaces the current choice; picking the
+ * already-chosen row clears it. Free-choice: no vendored patron-to-witch
+ * mapping exists, so validation is "soft warning only" per the project's
+ * hybrid-prereqs philosophy — same posture as `MysteryPicker`/`BloodlinePicker`.
  *
- * Browses the FULL published patron catalog (`mergedWitchPatronCatalog`) — the
- * 17 Advanced Player's Guide/Ultimate Magic "core" patrons keep their
- * hand-verified bonus-spell progression (marked `badge-modeled` "M", surfaced
- * via `model/spellcasting.patronSpellsKnown` at witch level 2 and every two
- * levels thereafter); the ~44 other vendored-only patrons (including the
- * "unique" themed patrons) show their full vendored prose instead — no bonus
- * spells known for those (this app has no vendored spell-id mapping for them,
- * see `@pf1/engine` `witch-patrons.ts`'s doc comment).
+ * Browses the FULL published catalog (`mergedWitchPatronCatalog`), grouped
+ * for search/sort by the vendored "basic"/"unique" `category` (shown as a
+ * pill on each row) with the current pick sorted first:
+ *
+ * - 52 "basic" patrons (17 hand-verified against the published rules, ~35
+ *   more with a progression the engine's parser extracted from the vendored
+ *   prose — see `@pf1/engine` `witch-patrons.ts`'s doc comment) all carry a
+ *   real bonus-spell progression, marked `badge-modeled` "M": one spell added
+ *   to the familiar's known list at witch level 2 and every two levels
+ *   thereafter, shown level-ordered once the row is chosen (via
+ *   `patronSpellsKnown`).
+ * - 9 "unique" patrons are themed TEMPLATES, not a 9-spell list: each grants
+ *   a named hex at 1st level, imposes a drawback, and restricts you to a
+ *   small set of "Available Patron Themes" whose own progression it
+ *   overrides at a few levels. That structure (`MergedWitchPatronEntry.themeInfo`)
+ *   is shown once chosen, but isn't turned into a real `bonusSpells`
+ *   progression — there isn't one without a theme sub-choice this app
+ *   doesn't yet collect, so applying it (picking a theme, swapping in the
+ *   overridden spells) is left to the player.
  */
 export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
   const isWitch = doc.identity.classes.some((c) => c.tag === "witch");
+  const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Patron", false);
 
-  const catalog = useMemo(
-    () => [...mergedWitchPatronCatalog(refData)].sort((a, b) => a.name.localeCompare(b.name)),
-    [refData],
-  );
-
+  const catalog = useMemo(() => mergedWitchPatronCatalog(refData), [refData]);
   const chosen = doc.build.witchPatron ?? "";
-  const patronDef = catalog.find((p) => p.tag === chosen);
+  const chosenDef = catalog.find((p) => p.tag === chosen);
   const witchLevel = doc.identity.classes.find((c) => c.tag === "witch")?.level ?? 0;
-  const bonusSpells = useMemo(
-    () => (patronDef ? patronSpellsKnown(refData, chosen, 18) : []),
-    [patronDef, refData, chosen],
-  );
+
+  const patrons = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return catalog
+      .filter((p) => !q || patronSearchText(p).includes(q))
+      .sort((a, b) => {
+        const sa = a.tag === chosen ? 0 : 1;
+        const sb = b.tag === chosen ? 0 : 1;
+        if (sa !== sb) return sa - sb;
+        const ca = a.category ?? "";
+        const cb = b.category ?? "";
+        return ca !== cb ? ca.localeCompare(cb) : a.name.localeCompare(b.name);
+      });
+  }, [catalog, query, chosen]);
 
   if (!isWitch) return null;
 
   return (
-    <div className="subsection mystery-picker">
+    <div className="subsection patron-picker">
       <div
         className="subsection-header"
         onClick={toggleCollapsed}
@@ -66,11 +104,11 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
       >
         <h3>
           Patron
-          {patronDef ? (
+          {chosenDef ? (
             <span className="hint">
               {" "}
-              · {patronDef.name}
-              {!patronDef.displayOnly && <span className="badge-modeled"> M</span>}
+              · {chosenDef.name}
+              {!chosenDef.displayOnly && <span className="badge-modeled"> M</span>}
             </span>
           ) : null}
         </h3>
@@ -78,47 +116,114 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
       </div>
       {!collapsed && (
         <>
-          <p className="hint mystery-picker-hint">
-            Pick one patron (PF1 grants one at level 1, never changed thereafter). Browses the full
-            published catalog; entries marked <span className="badge-modeled">M</span> grant one
-            bonus spell known (added to your familiar's spells) at witch level 2 and every two
-            levels thereafter, the rest show their full published prose instead. Free-choice, no
-            soft/hard validation.
+          <p className="hint patron-picker-hint">
+            Pick one patron (PF1 grants one at level 1, never changed thereafter); choosing another
+            replaces it, and choosing the current one clears it. Browses the full published catalog
+            (52 basic + 9 unique-template patrons, tagged below). Entries marked{" "}
+            <span className="badge-modeled">M</span> carry a real bonus-spell progression (2nd
+            through 18th, added to your familiar's known spells). The 9 unique-template patrons
+            instead grant a named hex, impose a drawback, and restrict you to a small set of
+            Available Patron Themes whose own progression they override at a few levels: shown as
+            structured info to apply by hand. Free-choice, no calling validation.
           </p>
-          <select
-            className="mystery-select"
-            value={chosen}
-            onChange={(e) => update((d) => setWitchPatron(d, e.target.value || null))}
-          >
-            <option value="">None chosen</option>
-            {catalog.map((p) => (
-              <option key={p.tag} value={p.tag}>
-                {p.name}
-                {p.displayOnly ? "" : " (M)"}
-              </option>
-            ))}
-          </select>
-
-          {patronDef &&
-            (patronDef.displayOnly ? (
-              patronDef.description ? (
-                <FeatureDescription html={patronDef.description} />
-              ) : null
-            ) : (
-              <div className="mystery-preview">
-                <ul className="mystery-bonus-spells">
-                  {bonusSpells.map((sp) => (
-                    <li key={`${sp.level}-${sp.id}`}>
-                      <span className="cf-level">Witch Lv {sp.level}</span>{" "}
-                      <span className="cf-name">
-                        {sp.name}
-                        {sp.level > witchLevel && witchLevel > 0 ? " (not yet unlocked)" : ""}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <input
+            className="search"
+            type="text"
+            placeholder="Search patrons…"
+            aria-label="Search patrons"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <div className="scroll">
+            {patrons.map((p) => {
+              const isSel = p.tag === chosen;
+              return (
+                <div key={p.tag} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                  <div className="pmain">
+                    <div className="pname">
+                      {p.name}{" "}
+                      <span className="tag-mystery">{CATEGORY_LABEL[p.category ?? ""] ?? "—"}</span>
+                      {!p.displayOnly && (
+                        <span
+                          className="badge-modeled"
+                          title="Carries a real, level-ordered bonus-spell progression"
+                        >
+                          {" "}
+                          M
+                        </span>
+                      )}
+                    </div>
+                    {!isSel && (
+                      <div className="preq">
+                        <span className="desc-text">{patronRowSummary(p)}</span>
+                      </div>
+                    )}
+                    {isSel && (
+                      <div className="mystery-preview">
+                        {!p.displayOnly ? (
+                          <ul className="mystery-bonus-spells">
+                            {patronSpellsKnown(refData, p.tag, 18).map((sp) => (
+                              <li key={`${sp.level}-${sp.id}`}>
+                                <span className="cf-level">Witch Lv {sp.level}</span>{" "}
+                                <span className="cf-name">
+                                  {sp.name}
+                                  {sp.level > witchLevel && witchLevel > 0
+                                    ? " (not yet unlocked)"
+                                    : ""}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : p.themeInfo ? (
+                          <>
+                            <div className="mystery-class-skills">
+                              <span className="hint">Grants Hex</span>
+                              <p>{p.themeInfo.grantedHex}</p>
+                            </div>
+                            <div className="mystery-class-skills">
+                              <span className="hint">Drawback</span>
+                              <p>{p.themeInfo.drawback}</p>
+                            </div>
+                            <div className="mystery-class-skills">
+                              <span className="hint">Available Patron Themes</span>
+                              <p>{p.themeInfo.availableThemes.join(", ")}</p>
+                            </div>
+                            {p.themeInfo.spellChanges.length > 0 && (
+                              <div className="mystery-class-skills">
+                                <span className="hint">
+                                  Spell Changes (override the chosen theme's own list)
+                                </span>
+                                <ul className="mystery-bonus-spells">
+                                  {p.themeInfo.spellChanges.map((c) => (
+                                    <li key={c.level}>
+                                      <span className="cf-level">Lv {c.level}</span>{" "}
+                                      <span className="cf-name">{c.text}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </>
+                        ) : p.description ? (
+                          <FeatureDescription html={p.description} />
+                        ) : null}
+                      </div>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    className={`pick-btn ${isSel ? "remove" : "add"}`}
+                    aria-pressed={isSel}
+                    aria-label={isSel ? `Clear ${p.name} as patron` : `Choose ${p.name} as patron`}
+                    onClick={() => update((d) => setWitchPatron(d, isSel ? null : p.tag))}
+                  >
+                    {isSel ? "Chosen" : "Choose"}
+                  </button>
+                </div>
+              );
+            })}
+            {patrons.length === 0 ? <div className="empty">No patrons match.</div> : null}
+          </div>
         </>
       )}
     </div>
