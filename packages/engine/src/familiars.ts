@@ -1,20 +1,27 @@
 /**
  * Hand-authored familiar master bonuses.
- * Clean-room from the published PF1 rules (CRB, Wizard → Arcane Bond →
- * Familiars table) — no Foundry source was consulted. Same posture as
- * `tables.ts` / `feat-effects.ts` (DESIGN §6).
+ * Clean-room from the published PF1 rules (CRB Wizard → Arcane Bond →
+ * Familiars table, plus Ultimate Magic's "New Familiars" table and Bestiary 2
+ * for the additions below it) — no Foundry source was consulted. Same
+ * posture as `tables.ts` / `feat-effects.ts` (DESIGN §6).
  *
- * Each entry is the bonus the *master* gains from having that familiar. The
- * PF1 rules give these bonuses no type, so they are `"untyped"` (always stack,
- * matching e.g. Alertness in feat-effects.ts). Target strings follow the
+ * Each entry is the bonus the *master* gains from having that familiar. Most
+ * of these PF1 rules give the bonus no type, so they're `"untyped"` (always
+ * stack, matching e.g. Alertness in feat-effects.ts) via the `bonus()`
+ * helper below. Turtle's is the one exception — its published bonus IS a
+ * typed natural armor bonus (`"nac"`/`"natural"`, built as a raw `Change`
+ * rather than through `bonus()`), so it won't stack with another natural
+ * armor source, matching the real rule. Target strings follow the
  * collect.ts / compute.ts conventions:
  *   - skills: "skill.<id>"  (e.g. "skill.fly")
  *   - saves:  "fort" | "ref"
  *   - HP:     "hp"
+ *   - init:   "init"
+ *   - natural armor: "nac" (typed "natural", see above)
  *
  * Conditional bonuses (hawk's and owl's sight-based Perception, the raven's
- * speech) can't be expressed as an always-on Change without over-applying;
- * those live in `note` for display only.
+ * speech, king crab's grapple-only CMB) can't be expressed as an always-on
+ * Change without over-applying; those live in `note` for display only.
  *
  * The Alertness-while-adjacent master benefit (familiar within arm's reach)
  * is situational table state and is deliberately NOT a Change; the UI notes it
@@ -37,8 +44,10 @@ function bonus(target: string, value: number): Change {
 }
 
 /**
- * The PF1 Core familiar list, keyed by kind slug (stored in
- * `build.arcaneBond.familiarKind`). Unknown kinds simply apply nothing.
+ * The 22 PF1 familiar species this app models (see `familiar.ts`'s
+ * `BASE_FAMILIARS` doc comment for the full source breakdown), keyed by kind
+ * slug (stored in `build.arcaneBond.familiarKind`). Unknown kinds simply
+ * apply nothing.
  */
 export const FAMILIARS: Readonly<Record<string, FamiliarDef>> = {
   bat: { name: "Bat", changes: [bonus("skill.fly", 3)] },
@@ -64,6 +73,28 @@ export const FAMILIARS: Readonly<Record<string, FamiliarDef>> = {
   toad: { name: "Toad", changes: [bonus("hp", 3)] },
   viper: { name: "Viper (snake)", changes: [bonus("skill.blf", 3)] },
   weasel: { name: "Weasel", changes: [bonus("ref", 2)] },
+  compsognathus: { name: "Compsognathus", changes: [bonus("init", 4)] },
+  fox: { name: "Fox", changes: [bonus("ref", 2)] },
+  "king-crab": {
+    name: "King Crab",
+    changes: [],
+    note: "+2 bonus on CMB checks to start or maintain a grapple",
+  },
+  octopus: { name: "Octopus (blue-ringed)", changes: [bonus("skill.swm", 3)] },
+  osprey: { name: "Osprey", changes: [bonus("skill.sur", 3)] },
+  pig: { name: "Pig", changes: [bonus("skill.dip", 3)] },
+  scorpion: { name: "Scorpion (greensting)", changes: [bonus("init", 4)] },
+  spider: { name: "Spider (scarlet)", changes: [bonus("skill.clm", 3)] },
+  centipede: { name: "Centipede (house)", changes: [bonus("skill.ste", 3)] },
+  thrush: {
+    name: "Thrush",
+    changes: [bonus("skill.dip", 3)],
+    note: "speaks one language of its master's choice",
+  },
+  turtle: {
+    name: "Turtle",
+    changes: [{ target: "nac", type: "natural", formula: "1" }],
+  },
 };
 
 /** All familiar kind slugs, for the builder's picker. */

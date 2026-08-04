@@ -315,6 +315,96 @@ describe("deriveFamiliar (Mortlach the cat, hand-computed fixture)", () => {
   });
 });
 
+/**
+ * Hand-computed fixtures for two of the Ultimate Magic "New Familiars" table
+ * additions (also mirrored on d20pfsrd.com's Familiars page), reusing the
+ * same arcanist-4 master stand-in (BAB +2, base saves Fort 1/Ref 1/Will 4,
+ * max HP 25) as the cat fixture above so the master-side numbers are already
+ * verified. Both are 1-HD Tiny creatures at master level 4: Int 7
+ * (5 + ceil(4/2)), +2 natural armor from the familiar table.
+ */
+describe("deriveFamiliar — Ultimate Magic species (hand-computed fixtures)", () => {
+  const doc = makeMasterDoc({ familiar: { speciesId: "spider", name: "Charlotte" } });
+  const sheet = compute(doc, ref);
+  const master: FamiliarMasterInputs = {
+    maxHp: sheet.hp.max,
+    bab: sheet.bab,
+    baseSaves: { fort: 1, ref: 1, will: 4 },
+  };
+  const rollData = buildRollData(doc, ref, sheet.abilities, sheet.speeds, sheet.bab);
+  const familiar = deriveFamiliar(doc, master, rollData);
+
+  it("Spider (scarlet): Str 3, Dex 21, Con 10, Wis 10, Cha 2 (vermin base saves 2/0/0)", () => {
+    expect(familiar!.abilities.str).toEqual({ score: 3, mod: -4 });
+    expect(familiar!.abilities.dex).toEqual({ score: 21, mod: 5 });
+  });
+
+  it("HP 12; AC 20 (10 +5 Dex +3 natural +2 size), touch 17, flat-footed 15", () => {
+    expect(familiar!.hp.max).toBe(12);
+    expect(familiar!.ac).toMatchObject({ normal: 20, touch: 17, flatFooted: 15 });
+  });
+
+  it("Saves: Fort +2, Ref +6, Will +4 (vermin's own base beats the master's for Fort, master's wins the rest)", () => {
+    // fort: max(species 2, master 1) + conMod 0 = 2. ref: max(species 0,
+    // master 1) + dexMod 5 = 6. will: max(species 0, master 4) + wisMod 0 = 4.
+    expect(familiar!.saves).toEqual({ fort: 2, ref: 6, will: 4 });
+  });
+
+  it("Bite +9 (1d3-4 plus poison), CMB +5, CMD 11", () => {
+    const bite = familiar!.attacks.find((a) => a.name === "Bite");
+    expect(bite).toMatchObject({ attack: 9, damageDice: "1d3", damageBonus: -4 });
+    expect(familiar!.cmb).toBe(5);
+    expect(familiar!.cmd).toBe(11);
+  });
+
+  it("Skills: Stealth +21, Climb +21, Acrobatics +17 (both the universal climb-speed +8 and the species' own printed +8 Climb racial mod apply)", () => {
+    expect(familiar!.skills.ste!.total).toBe(21);
+    expect(familiar!.skills.clm!.total).toBe(21);
+    expect(familiar!.skills.acr!.total).toBe(17);
+  });
+});
+
+describe("deriveFamiliar — Turtle (hand-computed fixture)", () => {
+  const doc = makeMasterDoc({ familiar: { speciesId: "turtle", name: "Shelldon" } });
+  const sheet = compute(doc, ref);
+  const master: FamiliarMasterInputs = {
+    maxHp: sheet.hp.max,
+    bab: sheet.bab,
+    baseSaves: { fort: 1, ref: 1, will: 4 },
+  };
+  const rollData = buildRollData(doc, ref, sheet.abilities, sheet.speeds, sheet.bab);
+  const familiar = deriveFamiliar(doc, master, rollData);
+
+  it("HP 12; AC 18 (10 -2 Dex +8 natural +2 size), touch 10, flat-footed 20", () => {
+    // naturalArmor: species' own +6 + the ML1-4 familiar-table +2 = 8.
+    expect(familiar!.hp.max).toBe(12);
+    expect(familiar!.naturalArmor).toBe(8);
+    expect(familiar!.ac).toMatchObject({ normal: 18, touch: 10, flatFooted: 20 });
+  });
+
+  it("Saves: Fort +1, Ref +0, Will +5", () => {
+    // fort: max(2,1) + conMod(-1) = 1. ref: max(2,1) + dexMod(-2) = 0.
+    // will: max(0,4) + wisMod(1) = 5.
+    expect(familiar!.saves).toEqual({ fort: 1, ref: 0, will: 5 });
+  });
+
+  it("Bite +2 (1d3-4), CMB -2, CMD 4", () => {
+    const bite = familiar!.attacks.find((a) => a.name === "Bite");
+    expect(bite).toMatchObject({ attack: 2, damageDice: "1d3", damageBonus: -4 });
+    expect(familiar!.cmb).toBe(-2);
+    expect(familiar!.cmd).toBe(4);
+  });
+
+  it("turtle's published master bonus is a typed natural armor bonus, not untyped", () => {
+    const withoutFamiliar = makeMasterDoc();
+    const baseline = compute(withoutFamiliar, ref);
+    const withTurtle = compute(doc, ref);
+    expect(withTurtle.ac.normal).toBe(baseline.ac.normal + 1);
+    const comp = withTurtle.ac.components.find((c) => c.source === "Turtle (familiar: Shelldon)");
+    expect(comp).toMatchObject({ type: "natural", value: 1, applied: true });
+  });
+});
+
 describe("deriveFamiliar edge cases", () => {
   const doc = makeMasterDoc();
   const sheet = compute(doc, ref);

@@ -83,9 +83,7 @@ export function ArcaneBondPicker({ doc, refData, sheet, update }: ArcaneBondPick
                   if (d.build.arcaneBond?.type === "familiar") return setArcaneBond(d, null);
                   const kind = d.build.familiar?.speciesId ?? "cat";
                   const withBond = setArcaneBond(d, { type: "familiar", familiarKind: kind });
-                  return withBond.build.familiar
-                    ? withBond
-                    : setFamiliar(withBond, kind, "Familiar");
+                  return withBond.build.familiar ? withBond : setFamiliar(withBond, kind, "");
                 })
               }
             >

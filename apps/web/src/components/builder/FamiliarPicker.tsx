@@ -1,7 +1,15 @@
-import { BASE_FAMILIARS, FAMILIARS } from "@pf1/engine";
+import { useMemo, useState } from "react";
+
+import { BASE_FAMILIARS } from "@pf1/engine";
 import type { CharacterDoc } from "@pf1/schema";
 
 import { clearFamiliar, setFamiliar, setFamiliarNotes } from "../../model/familiar.js";
+import {
+  familiarSpeciesOptions,
+  filterFamiliarSpecies,
+  formatFamiliarSpeciesAttacks,
+  formatFamiliarSpeciesSummary,
+} from "../../model/familiarDisplay.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 
@@ -12,19 +20,6 @@ interface FamiliarPickerProps {
   update: Updater;
 }
 
-/** Summarize a familiar's master bonus for display, e.g. "+3 Fly". */
-const FAMILIAR_BONUS_LABELS: Record<string, string> = {
-  bat: "+3 Fly",
-  cat: "+3 Stealth",
-  lizard: "+3 Climb",
-  monkey: "+3 Acrobatics",
-  rat: "+2 Fortitude saves",
-  raven: "+3 Appraise",
-  toad: "+3 hit points",
-  viper: "+3 Bluff",
-  weasel: "+2 Reflex saves",
-};
-
 /**
  * Tracked familiar (PF1 arcane familiar) — species + name. Class-agnostic:
  * unlike `ArcaneBondPicker` (Wizard's arcane-bond CHOICE between a familiar
@@ -33,11 +28,22 @@ const FAMILIAR_BONUS_LABELS: Record<string, string> = {
  * tracker's `FamiliarPanel`) — any class/feature that grants a familiar
  * (Wizard arcane bond, an Arcanist exploit, a feat, ...) uses this, so it's
  * not gated behind a class check.
+ *
+ * The species list is a single searchable `.pick-row` catalog (not a plain
+ * `<select>`) so a player can compare species side by side — each row shows
+ * its size, speed, senses, natural attacks, and published master bonus
+ * before committing. The same list both creates the familiar (no row
+ * selected yet) and re-species an existing one (the current species shows
+ * `is-selected`); `setFamiliar` keeps the name in sync (see its doc comment).
  */
 export function FamiliarPicker({ doc, update }: FamiliarPickerProps) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Familiar", false);
+  const [query, setQuery] = useState("");
   const familiar = doc.build.familiar;
   const species = familiar ? BASE_FAMILIARS[familiar.speciesId] : undefined;
+
+  const options = useMemo(() => familiarSpeciesOptions(), []);
+  const shown = filterFamiliarSpecies(options, query);
 
   return (
     <div className="subsection familiar-picker">
@@ -65,40 +71,17 @@ export function FamiliarPicker({ doc, update }: FamiliarPickerProps) {
             cat's +3 Stealth) and Alertness (while it's within arm's reach) apply automatically to
             your own sheet.
           </p>
-          {!familiar ? (
-            <button
-              type="button"
-              className="chip"
-              onClick={() => update((d) => setFamiliar(d, "cat", "Familiar"))}
-            >
-              Add a familiar
-            </button>
-          ) : (
+
+          {familiar && (
             <>
-              <div className="familiar-fields">
-                <select
-                  className="familiar-select"
-                  value={familiar.speciesId}
-                  onChange={(e) => update((d) => setFamiliar(d, e.target.value, familiar.name))}
-                  aria-label="Familiar species"
-                >
-                  {Object.entries(BASE_FAMILIARS).map(([id, def]) => (
-                    <option key={id} value={id}>
-                      {def.name}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  type="text"
-                  className="familiar-name"
-                  placeholder="Name"
-                  value={familiar.name}
-                  onChange={(e) =>
-                    update((d) => setFamiliar(d, familiar.speciesId, e.target.value))
-                  }
-                  aria-label="Familiar name"
-                />
-              </div>
+              <input
+                type="text"
+                className="familiar-name"
+                placeholder={species ? `Name (defaults to "${species.name}")` : "Name"}
+                value={familiar.name}
+                onChange={(e) => update((d) => setFamiliar(d, familiar.speciesId, e.target.value))}
+                aria-label="Familiar name"
+              />
               <textarea
                 className="familiar-notes"
                 placeholder="Notes (personality, tricks, house rules…)"
@@ -108,21 +91,18 @@ export function FamiliarPicker({ doc, update }: FamiliarPickerProps) {
               />
               {species && (
                 <p className="hint familiar-effect">
-                  {species.name}: {species.senses.join(", ")}. Speed{" "}
-                  {Object.entries(species.speeds)
-                    .map(([mode, ft]) => (mode === "land" ? `${ft} ft.` : `${mode} ${ft} ft.`))
-                    .join(", ")}
-                  .
+                  {species.name}: {formatFamiliarSpeciesSummary(species)}.
                 </p>
               )}
               {(() => {
-                const bonus = FAMILIARS[familiar.speciesId];
-                if (!bonus) return null;
-                const label = FAMILIAR_BONUS_LABELS[familiar.speciesId];
+                const opt = options.find((o) => o.id === familiar.speciesId);
+                if (!opt || (!opt.masterBonus && !opt.masterBonusNote)) return null;
                 return (
                   <p className="hint familiar-effect">
-                    {label ? `Master bonus: ${label} (applied to your sheet).` : null}
-                    {bonus.note ? ` ${bonus.name}: ${bonus.note}.` : null}
+                    {opt.masterBonus
+                      ? `Master bonus: ${opt.masterBonus} (applied to your sheet).`
+                      : null}
+                    {opt.masterBonusNote ? ` ${opt.species.name}: ${opt.masterBonusNote}.` : null}
                   </p>
                 );
               })()}
@@ -135,6 +115,51 @@ export function FamiliarPicker({ doc, update }: FamiliarPickerProps) {
               </button>
             </>
           )}
+
+          <input
+            className="search"
+            type="text"
+            placeholder={`Search ${options.length} familiar species…`}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            aria-label="Familiar species"
+          />
+          <div className="scroll">
+            {shown.length === 0 ? (
+              <div className="empty">No species match.</div>
+            ) : (
+              shown.map((o) => {
+                const isSelected = familiar?.speciesId === o.id;
+                const attacks = formatFamiliarSpeciesAttacks(o.species.attacks);
+                return (
+                  <div key={o.id} className={`pick-row${isSelected ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">{o.species.name}</div>
+                      <div className="preq">
+                        <span>{formatFamiliarSpeciesSummary(o.species)}</span>
+                        {attacks && <span>{attacks}</span>}
+                      </div>
+                      {(o.masterBonus || o.masterBonusNote) && (
+                        <div className="preq">
+                          <span className="desc-text">
+                            {o.masterBonus ? `Master bonus: ${o.masterBonus}.` : null}
+                            {o.masterBonusNote ? ` ${o.masterBonusNote}.` : null}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      className="pick-btn"
+                      onClick={() => update((d) => setFamiliar(d, o.id, familiar?.name ?? ""))}
+                    >
+                      {isSelected ? "Selected" : "Select"}
+                    </button>
+                  </div>
+                );
+              })
+            )}
+          </div>
         </>
       )}
     </div>

@@ -44,9 +44,27 @@ describe("model/familiar.ts transitions", () => {
     expect(d.build.familiar).toEqual({ speciesId: "cat", name: "Mortlach" });
   });
 
-  it("setFamiliar with a blank name falls back to 'Familiar'", () => {
+  it("setFamiliar with a blank name falls back to the species' own name", () => {
     const d = setFamiliar(createEmptyDoc("t"), "cat", "   ");
-    expect(d.build.familiar?.name).toBe("Familiar");
+    expect(d.build.familiar?.name).toBe("Cat");
+  });
+
+  it("setFamiliar with a blank name falls back to a different species' name", () => {
+    const d = setFamiliar(createEmptyDoc("t"), "owl", "");
+    expect(d.build.familiar?.name).toBe("Owl");
+  });
+
+  it("switching species preserves a name the player actually customized", () => {
+    let d = setFamiliar(createEmptyDoc("t"), "cat", "Whiskers");
+    d = setFamiliar(d, "owl", "Whiskers");
+    expect(d.build.familiar).toEqual({ speciesId: "owl", name: "Whiskers" });
+  });
+
+  it("switching species re-defaults a never-customized (auto-named) familiar to the new species' name", () => {
+    let d = setFamiliar(createEmptyDoc("t"), "cat", ""); // auto-defaults to "Cat"
+    expect(d.build.familiar?.name).toBe("Cat");
+    d = setFamiliar(d, "owl", "Cat"); // picker passes the current (still-auto) name through
+    expect(d.build.familiar?.name).toBe("Owl");
   });
 
   it("setFamiliar preserves existing notes when only changing species/name", () => {

@@ -7,8 +7,16 @@
  * about independently.
  */
 
-import type { DerivedFamiliar, DerivedFamiliarAttack } from "@pf1/engine";
-import type { SkillId } from "@pf1/schema";
+import {
+  BASE_FAMILIARS,
+  FAMILIARS,
+  type BaseFamiliar,
+  type DerivedFamiliar,
+  type DerivedFamiliarAttack,
+  type FamiliarDef,
+  type FamiliarNaturalAttack,
+} from "@pf1/engine";
+import type { Change, SkillId } from "@pf1/schema";
 
 import { signed, skillName } from "./names.js";
 
@@ -70,6 +78,13 @@ function capitalize(s: string): string {
   return s.length > 0 ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 }
 
+/** "30 ft.", "climb 30 ft.", "fly 60 ft." — one part per movement mode, land unlabeled. */
+function formatSpeeds(speeds: Record<string, number>): string[] {
+  return Object.entries(speeds).map(([mode, ft]) =>
+    mode === "land" ? `${ft} ft.` : `${mode} ${ft} ft.`,
+  );
+}
+
 /**
  * One clean summary line: species/size, speeds, senses — separated with the
  * app's own "·" convention (matches the masthead tagline) instead of the
@@ -77,9 +92,7 @@ function capitalize(s: string): string {
  * vision, scent." (a double period, and senses/size left lowercased).
  */
 export function formatFamiliarSummary(familiar: DerivedFamiliar): string {
-  const speedParts = Object.entries(familiar.speeds).map(([mode, ft]) =>
-    mode === "land" ? `${ft} ft.` : `${mode} ${ft} ft.`,
-  );
+  const speedParts = formatSpeeds(familiar.speeds);
 
   return [
     `${familiar.speciesName}, ${capitalize(familiar.size)}`,
@@ -88,6 +101,97 @@ export function formatFamiliarSummary(familiar: DerivedFamiliar): string {
   ]
     .filter((part): part is string => part != null)
     .join(" · ");
+}
+
+/** Size + speeds + senses for a base species (pre-derivation) — the species picker's compare line. */
+export function formatFamiliarSpeciesSummary(species: BaseFamiliar): string {
+  const speedParts = formatSpeeds(species.speeds);
+  return [
+    capitalize(species.size),
+    speedParts.length > 0 ? `Speed ${speedParts.join(", ")}` : null,
+    species.senses.length > 0 ? capitalize(species.senses.join(", ")) : null,
+  ]
+    .filter((part): part is string => part != null)
+    .join(" · ");
+}
+
+/** "2 claws, bite" — a species' natural attacks by name, comma-joined; "" if it has none (e.g. toad). */
+export function formatFamiliarSpeciesAttacks(attacks: readonly FamiliarNaturalAttack[]): string {
+  return attacks
+    .map((a) => (a.count > 1 ? `${a.count} ${a.name.toLowerCase()}s` : a.name.toLowerCase()))
+    .join(", ");
+}
+
+function formatChange(ch: Change): string {
+  const value = Number(ch.formula);
+  const amount = `${signed(value)}`;
+  if (ch.target.startsWith("skill.")) return `${amount} ${skillName(ch.target.slice(6))}`;
+  switch (ch.target) {
+    case "fort":
+      return `${amount} Fortitude saves`;
+    case "ref":
+      return `${amount} Reflex saves`;
+    case "will":
+      return `${amount} Will saves`;
+    case "init":
+      return `${amount} Initiative checks`;
+    case "hp":
+      return `${amount} hit points`;
+    case "nac":
+      return `${amount} natural armor bonus to AC`;
+    default:
+      return `${amount} ${ch.target}`;
+  }
+}
+
+/**
+ * The published master bonus a familiar grants, formatted generically from
+ * its `FamiliarDef.changes` (e.g. "+3 Stealth", "+1 natural armor bonus to
+ * AC") rather than a hand-maintained per-species label — every entry in
+ * `FAMILIARS` uses one of a handful of simple flat-number change shapes (see
+ * that module's doc comment), so this covers all of them without per-species
+ * upkeep as the list grows. `undefined` when the species grants no mechanical
+ * change at all (e.g. hawk's sight-based Perception bonus is conditional and
+ * lives only in `FamiliarDef.note`, display text with no `Change`).
+ */
+export function formatFamiliarMasterBonus(def: FamiliarDef): string | undefined {
+  if (def.changes.length === 0) return undefined;
+  return def.changes.map(formatChange).join(", ");
+}
+
+/** One browsable row in the familiar species picker — a species plus its published master bonus. */
+export interface FamiliarSpeciesOption {
+  id: string;
+  species: BaseFamiliar;
+  /** The mechanical bonus (e.g. "+3 Stealth"), if any — see {@link formatFamiliarMasterBonus}. */
+  masterBonus: string | undefined;
+  /** Conditional/prose bonus text (e.g. hawk's sight-based Perception note), if any. */
+  masterBonusNote: string | undefined;
+}
+
+/** Every playable familiar species, alphabetical by display name, for the builder's picker. */
+export function familiarSpeciesOptions(): FamiliarSpeciesOption[] {
+  return Object.entries(BASE_FAMILIARS)
+    .map(([id, species]) => {
+      const def = FAMILIARS[id];
+      return {
+        id,
+        species,
+        masterBonus: def ? formatFamiliarMasterBonus(def) : undefined,
+        masterBonusNote: def?.note,
+      };
+    })
+    .sort((a, b) => a.species.name.localeCompare(b.species.name));
+}
+
+/** Case-insensitive substring match against each option's display name; empty query returns everything. */
+export function filterFamiliarSpecies(
+  options: readonly FamiliarSpeciesOption[],
+  query: string,
+): FamiliarSpeciesOption[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return [...options];
+  return options.filter((o) => o.species.name.toLowerCase().includes(q));
 }
 
 /** "2 claws" / "Bite" — the attack name, pluralized when there's more than one. */

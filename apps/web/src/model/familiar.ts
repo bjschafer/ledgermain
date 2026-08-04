@@ -16,12 +16,34 @@ import type { CharacterDoc, DerivedSheet, RefData, ResolvedStat } from "@pf1/sch
 
 import { toggleConditionIn } from "./conditions.js";
 
-/** Set (or replace) the tracked familiar's species + name. Trims blank names to "Familiar". */
+/**
+ * Set (or replace) the tracked familiar's species + name. A blank (or
+ * whitespace-only) name falls back to the species' own display name (e.g.
+ * "Cat") — every consumer displays `build.familiar.name` directly with no
+ * fallback of its own, so this is the one place that guarantees it's never
+ * empty (a blank name would otherwise render as a blank heading in the
+ * tracker's Familiar panel and elsewhere).
+ *
+ * Switching species while the name still exactly matches the OLD species'
+ * own auto-defaulted name (i.e. the player never customized it) re-defaults
+ * to the NEW species' name instead of carrying the stale one forward —
+ * swapping Cat for Owl shouldn't leave an owl named "Cat". A name the player
+ * actually typed is preserved across a species swap, as before.
+ */
 export function setFamiliar(doc: CharacterDoc, speciesId: string, name: string): CharacterDoc {
-  const trimmedName = name.trim() || "Familiar";
+  const existing = doc.build.familiar;
+  const hadAutoName =
+    existing != null &&
+    existing.speciesId !== speciesId &&
+    existing.name === (BASE_FAMILIARS[existing.speciesId]?.name ?? existing.name);
+  const trimmed = hadAutoName ? "" : name.trim();
+  const fallbackName = BASE_FAMILIARS[speciesId]?.name ?? "Familiar";
   return {
     ...doc,
-    build: { ...doc.build, familiar: { ...doc.build.familiar, speciesId, name: trimmedName } },
+    build: {
+      ...doc.build,
+      familiar: { ...doc.build.familiar, speciesId, name: trimmed || fallbackName },
+    },
   };
 }
 

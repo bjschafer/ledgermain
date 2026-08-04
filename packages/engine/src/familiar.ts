@@ -142,13 +142,17 @@ export interface FamiliarNaturalAttack {
  * familiar needs. Ability scores are FIXED except Intelligence, which is
  * overridden entirely by the master-level progression table (see
  * {@link familiarIntScore}) — the animal's own listed Int is irrelevant once
- * it's a familiar. `baseSaves` is `{ fort: 2, ref: 2, will: 0 }` for every
- * entry here (every one of these is a 1 Hit Die animal, using the standard
- * good-Fort/good-Ref/poor-Will animal progression at 1 HD) — kept per-entry
- * rather than a shared constant for clarity and in case a future addition
- * isn't 1 HD. `naturalArmor` is the creature's OWN bonus (0 for all but
- * viper/weasel, confirmed by solving each stat block's printed AC), separate
- * from the level-scaling familiar-table bonus.
+ * it's a familiar. `baseSaves` is `{ fort: 2, ref: 2, will: 0 }` (the standard
+ * 1-HD ANIMAL progression) for most entries, but the four VERMIN entries
+ * (scorpion, centipede, king crab, spider) use `{ fort: 2, ref: 0, will: 0 }`
+ * instead (1-HD vermin's own good-Fort/poor-Ref/poor-Will progression) — kept
+ * per-entry rather than a shared constant since it already varies by type,
+ * and in case a future addition isn't 1 HD. `naturalArmor` is the creature's
+ * OWN bonus (0 for entries with no natural armor listed in their printed AC
+ * breakdown; nonzero where one is — viper/weasel/pig/scorpion/king
+ * crab/centipede/spider/turtle/compsognathus — confirmed by solving each
+ * stat block's printed AC), separate from the level-scaling familiar-table
+ * bonus.
  *
  * `skillRacialMods`/`skillAbilityOverrides` encode only the bonuses/overrides
  * EXPLICITLY called out in the source stat block (e.g. cat's "+4 racial
@@ -182,10 +186,27 @@ export interface BaseFamiliar {
 }
 
 /**
- * The eleven common PF1 familiar species (CRB "Familiars"), keyed by the same
- * kind slugs `familiars.ts`/`build.arcaneBond.familiarKind` use. Verified
- * against d20pfsrd.com Bestiary "Animals" entries during authoring (see the
- * module doc comment).
+ * The 22 PF1 familiar species this app models: the eleven common CRB
+ * "Familiars" (bat/cat/hawk/lizard/monkey/owl/rat/raven/toad/viper/weasel)
+ * plus eleven from Ultimate Magic's "New Familiars" table and Bestiary 2
+ * (compsognathus/fox/king crab/octopus/osprey/pig/scorpion/spider/centipede/
+ * thrush/turtle), keyed by the same kind slugs `familiars.ts`/
+ * `build.arcaneBond.familiarKind` use. Verified against d20pfsrd.com and
+ * legacy.aonprd.com's Ultimate Magic "New Familiars" reference during
+ * authoring (see the module doc comment).
+ *
+ * The Ultimate Magic additions are printed as already-a-1st-level-familiar
+ * stat blocks (Fort/Ref/Will already include the ability modifier); each
+ * entry's `baseSaves` here is reverse-derived by subtracting the printed
+ * ability modifier back out. Most reproduce the standard 1-HD ANIMAL
+ * progression (good Fort/Ref, poor Will: 2/2/0), same as the CRB eleven — but
+ * the four VERMIN entries (scorpion, centipede, king crab, spider) use
+ * vermin's own 1-HD progression instead (good Fort, poor Ref, poor Will:
+ * 2/0/0), confirmed by the same subtraction against their printed totals.
+ * Pig's printed Fort (+6) additionally includes the Great Fortitude feat
+ * (+2) baked into the raw animal's own stat block; since this module has no
+ * separate per-species feat-bonus field, that +2 is folded directly into
+ * `baseSaves.fort` (4, not the standard 2) rather than dropped.
  */
 export const BASE_FAMILIARS: Readonly<Record<string, BaseFamiliar>> = {
   bat: {
@@ -315,6 +336,131 @@ export const BASE_FAMILIARS: Readonly<Record<string, BaseFamiliar>> = {
     speeds: { land: 20, climb: 20 },
     senses: ["low-light vision", "scent"],
     skillRacialMods: { acr: 8, ste: 4 },
+  },
+  compsognathus: {
+    name: "Compsognathus",
+    size: "tiny",
+    abilities: { str: 8, dex: 15, con: 14, wis: 11, cha: 5 },
+    baseSaves: { fort: 2, ref: 2, will: 0 },
+    naturalArmor: 1,
+    attacks: [{ name: "Bite", count: 1, damageDice: "1d3", note: "plus poison" }],
+    speeds: { land: 40, swim: 20 },
+    senses: ["low-light vision", "scent"],
+  },
+  fox: {
+    name: "Fox",
+    size: "tiny",
+    abilities: { str: 9, dex: 15, con: 13, wis: 12, cha: 6 },
+    baseSaves: { fort: 2, ref: 2, will: 0 },
+    naturalArmor: 0,
+    attacks: [{ name: "Bite", count: 1, damageDice: "1d3" }],
+    speeds: { land: 40 },
+    senses: ["low-light vision", "scent"],
+  },
+  "king-crab": {
+    name: "King Crab",
+    size: "tiny",
+    abilities: { str: 7, dex: 15, con: 12, wis: 10, cha: 2 },
+    // Vermin progression (good Fort, poor Ref/Will) — see module doc comment.
+    baseSaves: { fort: 2, ref: 0, will: 0 },
+    naturalArmor: 4,
+    attacks: [{ name: "Claw", count: 2, damageDice: "1d2", note: "plus grab" }],
+    speeds: { land: 30, swim: 20 },
+    senses: ["darkvision 60 ft."],
+    skillRacialMods: { per: 4 },
+  },
+  octopus: {
+    name: "Octopus (blue-ringed)",
+    size: "tiny",
+    abilities: { str: 8, dex: 21, con: 10, wis: 13, cha: 3 },
+    baseSaves: { fort: 2, ref: 2, will: 0 },
+    naturalArmor: 0,
+    attacks: [{ name: "Bite", count: 1, damageDice: "1d2", note: "plus poison" }],
+    speeds: { land: 20, swim: 30, jet: 60 },
+    senses: ["low-light vision"],
+    skillRacialMods: { esc: 10, ste: 8 },
+  },
+  osprey: {
+    // Rules text: "Osprey (use hawk statistics)" — an identical stat block
+    // under its own species id/master bonus (d20pfsrd Familiars table).
+    name: "Osprey",
+    size: "tiny",
+    abilities: { str: 6, dex: 17, con: 11, wis: 14, cha: 7 },
+    baseSaves: { fort: 2, ref: 2, will: 0 },
+    naturalArmor: 0,
+    attacks: [{ name: "Talon", count: 2, damageDice: "1d4" }],
+    speeds: { land: 10, fly: 60 },
+    senses: ["low-light vision"],
+    flyManeuverability: "average",
+    skillRacialMods: { per: 8 },
+  },
+  pig: {
+    name: "Pig",
+    size: "sm",
+    // Includes the Great Fortitude feat baked into base Fort — see module doc comment.
+    baseSaves: { fort: 4, ref: 2, will: 0 },
+    abilities: { str: 11, dex: 12, con: 15, wis: 13, cha: 4 },
+    naturalArmor: 1,
+    attacks: [{ name: "Bite", count: 1, damageDice: "1d4" }],
+    speeds: { land: 30 },
+    senses: ["low-light vision", "scent"],
+  },
+  scorpion: {
+    name: "Scorpion (greensting)",
+    size: "tiny",
+    abilities: { str: 3, dex: 16, con: 10, wis: 10, cha: 2 },
+    baseSaves: { fort: 2, ref: 0, will: 0 },
+    naturalArmor: 3,
+    attacks: [{ name: "Sting", count: 1, damageDice: "1d2", note: "plus poison" }],
+    speeds: { land: 30 },
+    senses: ["darkvision 60 ft."],
+    skillRacialMods: { clm: 4, per: 4, ste: 4 },
+  },
+  spider: {
+    name: "Spider (scarlet)",
+    size: "tiny",
+    abilities: { str: 3, dex: 21, con: 10, wis: 10, cha: 2 },
+    baseSaves: { fort: 2, ref: 0, will: 0 },
+    naturalArmor: 1,
+    attacks: [{ name: "Bite", count: 1, damageDice: "1d3", note: "plus poison" }],
+    speeds: { land: 30, climb: 30 },
+    senses: ["darkvision 60 ft."],
+    // The published stat block's Climb total (+21) only reconciles if this
+    // +8 stacks on top of the universal climb-speed +8 below — i.e. this
+    // species really does carry both (verified by solving the printed total).
+    skillRacialMods: { acr: 8, clm: 8, per: 4, ste: 4 },
+  },
+  centipede: {
+    name: "Centipede (house)",
+    size: "tiny",
+    abilities: { str: 1, dex: 17, con: 10, wis: 10, cha: 2 },
+    baseSaves: { fort: 2, ref: 0, will: 0 },
+    naturalArmor: 2,
+    attacks: [{ name: "Bite", count: 1, damageDice: "1d3", note: "plus poison" }],
+    speeds: { land: 40, climb: 40 },
+    senses: ["darkvision 60 ft."],
+    skillRacialMods: { per: 4, ste: 8 },
+  },
+  thrush: {
+    name: "Thrush",
+    size: "dim",
+    abilities: { str: 1, dex: 15, con: 6, wis: 15, cha: 6 },
+    baseSaves: { fort: 2, ref: 2, will: 0 },
+    naturalArmor: 0,
+    attacks: [{ name: "Bite", count: 1, damageDice: "1d2" }],
+    speeds: { land: 10, fly: 40 },
+    senses: ["low-light vision"],
+    flyManeuverability: "average",
+  },
+  turtle: {
+    name: "Turtle",
+    size: "tiny",
+    abilities: { str: 3, dex: 6, con: 8, wis: 12, cha: 3 },
+    baseSaves: { fort: 2, ref: 2, will: 0 },
+    naturalArmor: 6,
+    attacks: [{ name: "Bite", count: 1, damageDice: "1d3" }],
+    speeds: { land: 5, swim: 20 },
+    senses: ["low-light vision"],
   },
 };
 
