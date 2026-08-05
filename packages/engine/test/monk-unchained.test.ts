@@ -3,7 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute, deriveResourcePools } from "../src/index.js";
+import { compute, deriveResourcePools, flurryOfBlowsUnchainedLabel } from "../src/index.js";
 
 /**
  * Fixture coverage for Monk (Unchained) (`monkUnchained`), the Pathfinder
@@ -139,5 +139,31 @@ describe("Monk (Unchained) L11 — second Flurry of Blows extra attack", () => {
     const sheet = compute(doc, ref);
     const flurry = sheet.classFeatures.find((f) => f.name === "Flurry of Blows (UC)");
     expect(flurry!.detail).toBe("2 extra attacks at full BAB (no penalty)");
+  });
+});
+
+/**
+ * flurryOfBlowsUnchainedLabel across the full 1-20 range, clean-room from
+ * Pathfinder Unchained's rewritten Flurry of Blows: one extra attack at the
+ * monk's own (true) highest base attack bonus from 1st level, with no
+ * penalty; a second extra attack, also at full BAB, from 11th level on.
+ * Unlike the chained version, the extra attacks never duplicate the top of
+ * an iterative sequence and there is no "BAB = monk level" swap-in.
+ */
+describe("flurryOfBlowsUnchainedLabel — full range levels 1-20", () => {
+  it("1 extra attack at full BAB for levels 1-10", () => {
+    for (let level = 1; level <= 10; level++) {
+      expect(flurryOfBlowsUnchainedLabel(level)).toBe("1 extra attack at full BAB (no penalty)");
+    }
+  });
+
+  it("2 extra attacks at full BAB for levels 11-20", () => {
+    for (let level = 11; level <= 20; level++) {
+      expect(flurryOfBlowsUnchainedLabel(level)).toBe("2 extra attacks at full BAB (no penalty)");
+    }
+  });
+
+  it("out-of-range level returns an empty string", () => {
+    expect(flurryOfBlowsUnchainedLabel(0)).toBe("");
   });
 });

@@ -1415,7 +1415,7 @@ export function flurryOfBlowsLabel(monkLevel: number): string {
   const extraCount = Math.min(baseCount, monkLevel >= 15 ? 3 : monkLevel >= 8 ? 2 : 1);
   const sequence = base.flatMap((bonus, i) => (i < extraCount ? [bonus, bonus] : [bonus]));
   const withPenalty = sequence.map((bonus) => bonus - 2).map((n) => (n >= 0 ? `+${n}` : `${n}`));
-  return `${withPenalty.join("/")} (BAB = monk level)`;
+  return `${withPenalty.join("/")} (replaces full attack, using monk level as BAB)`;
 }
 
 /* ------------------------------------------------------ barbarian DR ---- */
