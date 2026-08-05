@@ -699,7 +699,7 @@ describe("compute: monk L5 (human, no armor)", () => {
     const flurryOfBlows = sheet.classFeatures.find((f) => f.name === "Flurry of Blows");
     expect(flurryOfBlows).toBeDefined();
     expect(flurryOfBlows!.classTag).toBe("monk");
-    expect(flurryOfBlows!.detail).toBe("+3/+3 (BAB = monk level)");
+    expect(flurryOfBlows!.detail).toBe("+3/+3 (replaces full attack, using monk level as BAB)");
   });
 
   // Diamond Soul (L13, "10 + @class.unlevel" targeting "spellResist") is

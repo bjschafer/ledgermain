@@ -123,50 +123,100 @@ describe("unarmedDamageDie by size", () => {
  */
 describe("flurryOfBlowsLabel", () => {
   it("level 1 monk -> published anchor -1/-1", () => {
-    expect(flurryOfBlowsLabel(1)).toBe("-1/-1 (BAB = monk level)");
+    expect(flurryOfBlowsLabel(1)).toBe("-1/-1 (replaces full attack, using monk level as BAB)");
   });
 
   it("level 5 monk -> 2 attacks (top of the first tier)", () => {
-    expect(flurryOfBlowsLabel(5)).toBe("+3/+3 (BAB = monk level)");
+    expect(flurryOfBlowsLabel(5)).toBe("+3/+3 (replaces full attack, using monk level as BAB)");
   });
 
   it("level 6 monk -> published anchor +4/+4/-1", () => {
-    expect(flurryOfBlowsLabel(6)).toBe("+4/+4/-1 (BAB = monk level)");
+    expect(flurryOfBlowsLabel(6)).toBe("+4/+4/-1 (replaces full attack, using monk level as BAB)");
   });
 
   it("level 7 monk -> 3 attacks (top of the second tier)", () => {
-    expect(flurryOfBlowsLabel(7)).toBe("+5/+5/+0 (BAB = monk level)");
+    expect(flurryOfBlowsLabel(7)).toBe("+5/+5/+0 (replaces full attack, using monk level as BAB)");
   });
 
   it("level 8 monk -> published anchor +6/+6/+1/+1", () => {
-    expect(flurryOfBlowsLabel(8)).toBe("+6/+6/+1/+1 (BAB = monk level)");
+    expect(flurryOfBlowsLabel(8)).toBe(
+      "+6/+6/+1/+1 (replaces full attack, using monk level as BAB)",
+    );
   });
 
   it("level 10 monk -> 4 attacks (top of the third tier)", () => {
-    expect(flurryOfBlowsLabel(10)).toBe("+8/+8/+3/+3 (BAB = monk level)");
+    expect(flurryOfBlowsLabel(10)).toBe(
+      "+8/+8/+3/+3 (replaces full attack, using monk level as BAB)",
+    );
   });
 
   it("level 11 monk -> published anchor +9/+9/+4/+4/-1", () => {
-    expect(flurryOfBlowsLabel(11)).toBe("+9/+9/+4/+4/-1 (BAB = monk level)");
+    expect(flurryOfBlowsLabel(11)).toBe(
+      "+9/+9/+4/+4/-1 (replaces full attack, using monk level as BAB)",
+    );
   });
 
   it("level 14 monk -> 5 attacks (top of the fourth tier)", () => {
-    expect(flurryOfBlowsLabel(14)).toBe("+12/+12/+7/+7/+2 (BAB = monk level)");
+    expect(flurryOfBlowsLabel(14)).toBe(
+      "+12/+12/+7/+7/+2 (replaces full attack, using monk level as BAB)",
+    );
   });
 
   it("level 15 monk -> published anchor +13/+13/+8/+8/+3/+3", () => {
-    expect(flurryOfBlowsLabel(15)).toBe("+13/+13/+8/+8/+3/+3 (BAB = monk level)");
+    expect(flurryOfBlowsLabel(15)).toBe(
+      "+13/+13/+8/+8/+3/+3 (replaces full attack, using monk level as BAB)",
+    );
   });
 
   it("level 16 monk -> 7 attacks (top tier now capped at 3 extras)", () => {
-    expect(flurryOfBlowsLabel(16)).toBe("+14/+14/+9/+9/+4/+4/-1 (BAB = monk level)");
+    expect(flurryOfBlowsLabel(16)).toBe(
+      "+14/+14/+9/+9/+4/+4/-1 (replaces full attack, using monk level as BAB)",
+    );
   });
 
   it("level 20 monk -> published anchor +18/+18/+13/+13/+8/+8/+3", () => {
-    expect(flurryOfBlowsLabel(20)).toBe("+18/+18/+13/+13/+8/+8/+3 (BAB = monk level)");
+    expect(flurryOfBlowsLabel(20)).toBe(
+      "+18/+18/+13/+13/+8/+8/+3 (replaces full attack, using monk level as BAB)",
+    );
   });
 
   it("out-of-range level returns an empty string", () => {
     expect(flurryOfBlowsLabel(0)).toBe("");
+  });
+
+  // Full "Flurry of Blows Attack Bonus" column, Table: The Monk (Core
+  // Rulebook), levels 1-20, cross-checked against d20pfsrd and the legacy
+  // AoN mirror. Confirms the flat -2 (no step-down at 8th/15th, unlike the
+  // D&D 3.5 monk) holds at every level, not just the six anchors above.
+  const PUBLISHED_TABLE: readonly string[] = [
+    "-1/-1",
+    "+0/+0",
+    "+1/+1",
+    "+2/+2",
+    "+3/+3",
+    "+4/+4/-1",
+    "+5/+5/+0",
+    "+6/+6/+1/+1",
+    "+7/+7/+2/+2",
+    "+8/+8/+3/+3",
+    "+9/+9/+4/+4/-1",
+    "+10/+10/+5/+5/+0",
+    "+11/+11/+6/+6/+1",
+    "+12/+12/+7/+7/+2",
+    "+13/+13/+8/+8/+3/+3",
+    "+14/+14/+9/+9/+4/+4/-1",
+    "+15/+15/+10/+10/+5/+5/+0",
+    "+16/+16/+11/+11/+6/+6/+1",
+    "+17/+17/+12/+12/+7/+7/+2",
+    "+18/+18/+13/+13/+8/+8/+3",
+  ];
+
+  it("matches the published table at every level 1-20", () => {
+    PUBLISHED_TABLE.forEach((expected, i) => {
+      const level = i + 1;
+      expect(flurryOfBlowsLabel(level)).toBe(
+        `${expected} (replaces full attack, using monk level as BAB)`,
+      );
+    });
   });
 });
