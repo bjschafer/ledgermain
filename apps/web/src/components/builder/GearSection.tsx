@@ -31,6 +31,12 @@ import {
   type ConsumableKind,
   generateConsumables,
 } from "../../model/consumables.js";
+import {
+  gearItemSlot,
+  gearSlotConflicts,
+  groupGearByCategory,
+  SLOT_LABEL,
+} from "../../model/gearCategories.js";
 import { ARMOR_MATERIALS } from "../../model/materials.js";
 import { changeTargetLabel } from "../../model/names.js";
 import { noteLines } from "../../model/rulesNotes.js";
@@ -493,6 +499,24 @@ function ModeledBadge({ changes }: { changes: readonly Change[] }) {
 }
 
 /**
+ * Small badge naming the wear slot a resolved gear item claims (e.g. "Neck",
+ * "Ring"). `conflict` marks it when {@link gearSlotConflicts} found more
+ * equipped items claiming the slot than PF1 allows (2 for rings, 1
+ * otherwise) — a soft nudge only, since nothing here blocks equipping.
+ */
+function SlotBadge({ slot, conflict }: { slot: string; conflict: boolean }) {
+  const label = SLOT_LABEL[slot] ?? slot;
+  const title = conflict
+    ? `${label} slot: more than one equipped item claims this slot. A character wears one item per slot, except rings (two).`
+    : `${label} slot`;
+  return (
+    <span className={`badge-slot${conflict ? " badge-slot-conflict" : ""}`} title={title}>
+      {label}
+    </span>
+  );
+}
+
+/**
  * Maximum charges for a linked item's `uses.maxFormula`, e.g. a Staff of
  * Healing's 10. Every `maxFormula` in the current vendored slice is a plain
  * numeric constant (no `@item.level`/`@cl` reference — verified against the
@@ -602,6 +626,14 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   const gear = doc.build.gear;
   const money = doc.live.money ?? {};
   const encumbrance = sheet.encumbrance;
+
+  // Armor & Shields / Potions & Consumables / Magic Items / Adventuring Gear /
+  // Other, in that order — see model/gearCategories.ts for the bucket rules.
+  // Each entry keeps its original `build.gear` index so the row callbacks
+  // below (equip, edit, remove, quantity, charges) keep addressing gear by
+  // index after the flat list is split into sections.
+  const gearGroups = useMemo(() => groupGearByCategory(gear, refData), [gear, refData]);
+  const slotConflicts = useMemo(() => gearSlotConflicts(gear, refData), [gear, refData]);
 
   // Filtered items list for the magic-item picker
   const filteredItems = useMemo(() => {
@@ -737,6 +769,179 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
     setEditingGearIndex(null);
   }
 
+  /**
+   * One gear row, addressed by its stable `build.gear` index `i` (not its
+   * position within a category group) so equip/edit/remove/quantity/charges
+   * callbacks stay correct after {@link groupGearByCategory} splits the flat
+   * list into sections.
+   */
+  function renderGearRow(inst: ItemInstance, i: number) {
+    const itemDef = inst.itemId ? refData.items[inst.itemId] : undefined;
+    const armorRef = inst.armorId ? refData.armors[inst.armorId] : undefined;
+    // A player-typed `name` wins over the vendored one — renaming a
+    // RefData-linked item (e.g. "Wand of CLW (Sela's)") is part of the
+    // "edit anything after creation" contract.
+    const displayName =
+      inst.name ??
+      itemDef?.name ??
+      armorRef?.name ??
+      (inst.armor
+        ? `${inst.armor.slot === "shield" ? "Shield" : "Armor"} (${inst.armor.ac} AC)`
+        : "Unknown item");
+    const changes = itemDef?.changes ?? [];
+    const notes = noteLines(itemDef?.contextNotes);
+    const unitWeight = gearUnitWeight(inst, refData);
+    const unitPrice = inst.price ?? itemDef?.price;
+    const qty = inst.quantity ?? 1;
+    // The instance's own cap wins (a hand-corrected wand, or a
+    // self-contained generated consumable); otherwise a vendored item
+    // reads its cap from `uses.maxFormula`.
+    const refMaxCharges = itemMaxCharges(itemDef);
+    const maxCharges = inst.charges ?? refMaxCharges;
+    const chargesUsed = Math.min(inst.chargesUsed ?? 0, maxCharges ?? Infinity);
+    const slot = gearItemSlot(inst, refData);
+
+    if (editingGearIndex === i) {
+      return (
+        <div key={i} className="gear-row">
+          {inst.armor ? (
+            <ArmorForm
+              initial={{ armor: inst.armor, name: inst.name ?? "" }}
+              refData={refData}
+              onSave={(armor, name) => handleEditArmor(i, armor, name)}
+              onCancel={() => setEditingGearIndex(null)}
+              saveLabel="Save changes"
+            />
+          ) : (
+            <GearForm
+              initial={{
+                name: displayName,
+                quantity: qty,
+                weight: inst.weight ?? 0,
+                price: inst.price ?? 0,
+                charges: inst.charges ?? 0,
+                chargesUsed: inst.chargesUsed ?? 0,
+              }}
+              refMeta={{
+                weight: itemDef?.weight,
+                price: itemDef?.price,
+                charges: refMaxCharges ?? undefined,
+              }}
+              onSave={(details) => handleEditGear(i, details)}
+              onCancel={() => setEditingGearIndex(null)}
+            />
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <div key={i} className={`gear-row${inst.equipped ? "" : " is-unequipped"}`}>
+        <label className="gear-equip" title={inst.equipped ? "Unequip" : "Equip"}>
+          <input
+            type="checkbox"
+            checked={inst.equipped}
+            onChange={(e) => update((d) => setGearEquipped(d, i, e.target.checked))}
+          />
+        </label>
+        <div className="gear-main">
+          <div className="gear-name">
+            {displayName} {itemDef && <PartialBadge changes={changes} />}
+            {slot && <SlotBadge slot={slot} conflict={slotConflicts.has(i)} />}
+          </div>
+          {inst.armor && (
+            <div className="gear-meta">
+              AC +{inst.armor.ac}
+              {inst.armor.enhancement ? ` +${inst.armor.enhancement} enh` : ""}
+              {inst.armor.masterwork && !inst.armor.enhancement ? " · masterwork" : ""}
+              {inst.armor.maxDex != null ? ` · max Dex +${inst.armor.maxDex}` : ""}
+              {inst.armor.acp ? ` · ACP ${armorPieceAcp(inst.armor)}` : ""}
+              {inst.armor.asf ? ` · ASF ${inst.armor.asf}%` : ""}
+              {inst.armor.material ? ` · ${inst.armor.material}` : ""}
+              {abilityNotes(inst.armor.abilities, inst.armor.abilityInfo)
+                .map((n) => ` · ${n.note ? `${n.name} (${n.note})` : n.name}`)
+                .join("")}
+            </div>
+          )}
+          {inst.equipped && changes.length > 0 && (
+            <div className="gear-changes">
+              {changes.map((ch, ci) => (
+                <span key={ci} className="gear-change">
+                  {changeLabel(ch)}
+                </span>
+              ))}
+            </div>
+          )}
+          {/* Conditional reminders ("+2 when concealing a small
+              object"), never a number the sheet adds up — so they
+              follow the equipped gate the item's `changes` do. */}
+          {inst.equipped && notes.map((text, ni) => <RulesNote key={ni} text={text} />)}
+          {(unitWeight > 0 || unitPrice) && (
+            <div className="gear-meta">
+              {unitWeight > 0 &&
+                (qty > 1
+                  ? `${unitWeight * qty} lb (${unitWeight} lb × ${qty})`
+                  : `${unitWeight} lb`)}
+              {unitWeight > 0 && unitPrice ? " · " : ""}
+              {unitPrice ? `${unitPrice} gp` : ""}
+            </div>
+          )}
+          {maxCharges != null && (
+            <div className="gear-meta gear-charges">
+              <span>
+                charges: {maxCharges - chargesUsed}/{maxCharges}
+              </span>
+              <NumberField
+                className="num"
+                size={2}
+                value={chargesUsed}
+                min={0}
+                max={maxCharges}
+                commitOnChange
+                onCommit={(n) => update((d) => setGearCharges(d, i, n))}
+                aria-label={`${displayName} charges used`}
+              />
+            </div>
+          )}
+        </div>
+        <div className="gear-actions">
+          <label className="gear-qty" title="Quantity">
+            <span className="hint">qty</span>
+            <NumberField
+              className="num"
+              size={3}
+              value={qty}
+              min={0}
+              max={99999}
+              commitOnChange
+              onCommit={(n) => update((d) => setGearQuantity(d, i, n))}
+              aria-label={`${displayName} quantity`}
+            />
+          </label>
+          <button
+            type="button"
+            className="pick-btn add"
+            onClick={() => {
+              setShowArmorPicker(false);
+              setEditingGearIndex(i);
+            }}
+            title={`Edit ${displayName}`}
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            className="pick-btn remove"
+            onClick={() => update((d) => removeGear(d, i))}
+            title="Remove from gear"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Panel
       title="Gear & Inventory"
@@ -791,175 +996,22 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
         </div>
       )}
 
-      {/* Current gear list */}
+      {/* Current gear list, split into Armor & Shields / Potions &
+          Consumables / Magic Items / Adventuring Gear / Other so a backpack
+          doesn't sit next to a suit of armor in one flat add-order list. */}
       {gear.length === 0 ? (
         <p className="empty">No gear added yet.</p>
       ) : (
         <div className="gear-list">
-          {gear.map((inst, i) => {
-            const itemDef = inst.itemId ? refData.items[inst.itemId] : undefined;
-            const armorRef = inst.armorId ? refData.armors[inst.armorId] : undefined;
-            // A player-typed `name` wins over the vendored one — renaming a
-            // RefData-linked item (e.g. "Wand of CLW (Sela's)") is part of the
-            // "edit anything after creation" contract.
-            const displayName =
-              inst.name ??
-              itemDef?.name ??
-              armorRef?.name ??
-              (inst.armor
-                ? `${inst.armor.slot === "shield" ? "Shield" : "Armor"} (${inst.armor.ac} AC)`
-                : "Unknown item");
-            const changes = itemDef?.changes ?? [];
-            const notes = noteLines(itemDef?.contextNotes);
-            const unitWeight = gearUnitWeight(inst, refData);
-            const unitPrice = inst.price ?? itemDef?.price;
-            const qty = inst.quantity ?? 1;
-            // The instance's own cap wins (a hand-corrected wand, or a
-            // self-contained generated consumable); otherwise a vendored item
-            // reads its cap from `uses.maxFormula`.
-            const refMaxCharges = itemMaxCharges(itemDef);
-            const maxCharges = inst.charges ?? refMaxCharges;
-            const chargesUsed = Math.min(inst.chargesUsed ?? 0, maxCharges ?? Infinity);
-
-            if (editingGearIndex === i) {
-              return (
-                <div key={i} className="gear-row">
-                  {inst.armor ? (
-                    <ArmorForm
-                      initial={{ armor: inst.armor, name: inst.name ?? "" }}
-                      refData={refData}
-                      onSave={(armor, name) => handleEditArmor(i, armor, name)}
-                      onCancel={() => setEditingGearIndex(null)}
-                      saveLabel="Save changes"
-                    />
-                  ) : (
-                    <GearForm
-                      initial={{
-                        name: displayName,
-                        quantity: qty,
-                        weight: inst.weight ?? 0,
-                        price: inst.price ?? 0,
-                        charges: inst.charges ?? 0,
-                        chargesUsed: inst.chargesUsed ?? 0,
-                      }}
-                      refMeta={{
-                        weight: itemDef?.weight,
-                        price: itemDef?.price,
-                        charges: refMaxCharges ?? undefined,
-                      }}
-                      onSave={(details) => handleEditGear(i, details)}
-                      onCancel={() => setEditingGearIndex(null)}
-                    />
-                  )}
-                </div>
-              );
-            }
-
-            return (
-              <div key={i} className={`gear-row${inst.equipped ? "" : " is-unequipped"}`}>
-                <label className="gear-equip" title={inst.equipped ? "Unequip" : "Equip"}>
-                  <input
-                    type="checkbox"
-                    checked={inst.equipped}
-                    onChange={(e) => update((d) => setGearEquipped(d, i, e.target.checked))}
-                  />
-                </label>
-                <div className="gear-main">
-                  <div className="gear-name">
-                    {displayName} {itemDef && <PartialBadge changes={changes} />}
-                  </div>
-                  {inst.armor && (
-                    <div className="gear-meta">
-                      AC +{inst.armor.ac}
-                      {inst.armor.enhancement ? ` +${inst.armor.enhancement} enh` : ""}
-                      {inst.armor.masterwork && !inst.armor.enhancement ? " · masterwork" : ""}
-                      {inst.armor.maxDex != null ? ` · max Dex +${inst.armor.maxDex}` : ""}
-                      {inst.armor.acp ? ` · ACP ${armorPieceAcp(inst.armor)}` : ""}
-                      {inst.armor.asf ? ` · ASF ${inst.armor.asf}%` : ""}
-                      {inst.armor.material ? ` · ${inst.armor.material}` : ""}
-                      {abilityNotes(inst.armor.abilities, inst.armor.abilityInfo)
-                        .map((n) => ` · ${n.note ? `${n.name} (${n.note})` : n.name}`)
-                        .join("")}
-                    </div>
-                  )}
-                  {inst.equipped && changes.length > 0 && (
-                    <div className="gear-changes">
-                      {changes.map((ch, ci) => (
-                        <span key={ci} className="gear-change">
-                          {changeLabel(ch)}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  {/* Conditional reminders ("+2 when concealing a small
-                      object"), never a number the sheet adds up — so they
-                      follow the equipped gate the item's `changes` do. */}
-                  {inst.equipped && notes.map((text, ni) => <RulesNote key={ni} text={text} />)}
-                  {(unitWeight > 0 || unitPrice) && (
-                    <div className="gear-meta">
-                      {unitWeight > 0 &&
-                        (qty > 1
-                          ? `${unitWeight * qty} lb (${unitWeight} lb × ${qty})`
-                          : `${unitWeight} lb`)}
-                      {unitWeight > 0 && unitPrice ? " · " : ""}
-                      {unitPrice ? `${unitPrice} gp` : ""}
-                    </div>
-                  )}
-                  {maxCharges != null && (
-                    <div className="gear-meta gear-charges">
-                      <span>
-                        charges: {maxCharges - chargesUsed}/{maxCharges}
-                      </span>
-                      <NumberField
-                        className="num"
-                        size={2}
-                        value={chargesUsed}
-                        min={0}
-                        max={maxCharges}
-                        commitOnChange
-                        onCommit={(n) => update((d) => setGearCharges(d, i, n))}
-                        aria-label={`${displayName} charges used`}
-                      />
-                    </div>
-                  )}
-                </div>
-                <div className="gear-actions">
-                  <label className="gear-qty" title="Quantity">
-                    <span className="hint">qty</span>
-                    <NumberField
-                      className="num"
-                      size={3}
-                      value={qty}
-                      min={0}
-                      max={99999}
-                      commitOnChange
-                      onCommit={(n) => update((d) => setGearQuantity(d, i, n))}
-                      aria-label={`${displayName} quantity`}
-                    />
-                  </label>
-                  <button
-                    type="button"
-                    className="pick-btn add"
-                    onClick={() => {
-                      setShowArmorPicker(false);
-                      setEditingGearIndex(i);
-                    }}
-                    title={`Edit ${displayName}`}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className="pick-btn remove"
-                    onClick={() => update((d) => removeGear(d, i))}
-                    title="Remove from gear"
-                  >
-                    Remove
-                  </button>
-                </div>
+          {gearGroups.map((group) => (
+            <div key={group.category} className="gear-group">
+              <div className="gear-group-header">
+                <span className="section-label">{group.label}</span>
+                <span className="gear-group-count">{group.items.length}</span>
               </div>
-            );
-          })}
+              {group.items.map(({ inst, index }) => renderGearRow(inst, index))}
+            </div>
+          ))}
         </div>
       )}
 
