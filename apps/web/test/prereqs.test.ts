@@ -16,13 +16,14 @@ function featByName(name: string) {
   return entry[1];
 }
 
-/** A baseline context: strong abilities, BAB 1, no feats selected. */
+/** A baseline context: strong abilities, BAB 1, no feats selected, no caster kinds. */
 function ctx(over: Partial<PrereqContext> = {}): PrereqContext {
   return {
     abilityTotals: { str: 16, dex: 16, con: 14, int: 16, wis: 12, cha: 10 },
     bab: 1,
     casterLevel: 0,
     characterLevel: 1,
+    casterKinds: new Set(),
     selectedFeats: new Set<string>(),
     refData: ref,
     ...over,
@@ -236,6 +237,34 @@ describe("issue #108: 'or'-joined @UUID feat refs (featsAnyOf)", () => {
     const cleave = featByName("Cleave");
     const res = evaluatePrereqs(cleave, ctx()); // Power Attack not selected
     expect(res.blocked).toBe(true);
+  });
+});
+
+describe("casterType prerequisite (e.g. Arcane Strike's 'ability to cast arcane spells')", () => {
+  it("ALLOWS Arcane Strike for a character with an arcane caster kind", () => {
+    const arcaneStrike = featByName("Arcane Strike");
+    const res = evaluatePrereqs(arcaneStrike, ctx({ casterKinds: new Set(["arcane"]) }));
+    expect(res.blocked).toBe(false);
+    expect(res.checks).toEqual([{ label: "Ability to cast arcane spells", met: true }]);
+    // The whole prereqText ("Ability to cast arcane spells.") is covered by
+    // the met structured check, so no redundant prose warning survives.
+    expect(res.softText).toBeUndefined();
+    expect(res.warn).toBe(false);
+  });
+
+  it("BLOCKS Arcane Strike for a divine-only caster", () => {
+    const arcaneStrike = featByName("Arcane Strike");
+    const res = evaluatePrereqs(arcaneStrike, ctx({ casterKinds: new Set(["divine"]) }));
+    expect(res.blocked).toBe(true);
+    expect(res.checks).toEqual([{ label: "Ability to cast arcane spells", met: false }]);
+    expect(res.softText).toBe("Ability to cast arcane spells.");
+  });
+
+  it("BLOCKS Arcane Strike for a non-caster", () => {
+    const arcaneStrike = featByName("Arcane Strike");
+    const res = evaluatePrereqs(arcaneStrike, ctx());
+    expect(res.blocked).toBe(true);
+    expect(res.checks).toEqual([{ label: "Ability to cast arcane spells", met: false }]);
   });
 });
 

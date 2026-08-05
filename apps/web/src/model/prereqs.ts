@@ -28,11 +28,13 @@
 import type { AbilityId, CharacterDoc, DerivedSheet, Feat, RefData } from "@pf1/schema";
 import { featNameSlug } from "@pf1/engine";
 
-import { effectiveCasterLevel } from "./casterLevel.js";
+import { CASTER_KIND, casterLevelForClass, effectiveCasterLevel } from "./casterLevel.js";
 import { ABILITY_IDS, totalLevel } from "./doc.js";
 import { grantedFeats } from "./feats.js";
 import { ABILITY_ABBR } from "./names.js";
 import { combatStyleFeatSlugs } from "./ranger.js";
+
+type CasterKind = "arcane" | "divine" | "psychic";
 
 export interface PrereqCheck {
   label: string;
@@ -65,6 +67,16 @@ export interface PrereqContext {
   casterLevel: number;
   /** Total character level (sum of class levels), for `prerequisites.characterLevel`. */
   characterLevel: number;
+  /**
+   * Caster kinds (arcane/divine/psychic) the character actually has, for
+   * `prerequisites.casterType`. A class counts if it has a `CASTER_KIND`
+   * entry and its own `casterLevelForClass` is above 0 (so a paladin below
+   * 4th level, with no spellcasting yet, doesn't count as divine). Doesn't
+   * model spell-like abilities or bloodline/patron SLAs, which per FAQ also
+   * satisfy an "ability to cast X spells" prerequisite but aren't tracked
+   * anywhere on the document.
+   */
+  casterKinds: ReadonlySet<CasterKind>;
   /** Feat ids already selected on the document. */
   selectedFeats: ReadonlySet<string>;
   refData: RefData;
@@ -93,11 +105,17 @@ export function buildPrereqContext(
   const abilityTotals = {} as Record<AbilityId, number>;
   for (const id of ABILITY_IDS) abilityTotals[id] = sheet.abilities[id].total;
   const grantedIds = grantedFeats(doc, refData).map((g) => g.featId);
+  const casterKinds = new Set<CasterKind>();
+  for (const c of doc.identity.classes) {
+    const kind = CASTER_KIND[c.tag];
+    if (kind && casterLevelForClass(c.tag, c.level) > 0) casterKinds.add(kind);
+  }
   return {
     abilityTotals,
     bab: sheet.bab,
     casterLevel: effectiveCasterLevel(doc, refData),
     characterLevel: totalLevel(doc),
+    casterKinds,
     selectedFeats: new Set([...doc.build.feats, ...grantedIds]),
     refData,
     bypassBlockedSlugs: combatStyleFeatSlugs(doc),
@@ -115,6 +133,17 @@ const ABILITY_FRAGMENT_RE = /^(str|dex|con|int|wis|cha)\s+(\d+)$/i;
 const BAB_FRAGMENT_RE = /^(?:base attack bonus|bab)\s*\+?\s*(\d+)$/i;
 const CASTER_LEVEL_FRAGMENT_RE = /^caster level\s*\+?\s*(\d+)(?:st|nd|rd|th)?$/i;
 const CHARACTER_LEVEL_FRAGMENT_RE = /^character level\s*\+?\s*(\d+)(?:st|nd|rd|th)?$/i;
+/**
+ * Mirrors `CASTER_TYPE_FRAG_RE` in `packages/data-pipeline/src/transform/
+ * prereqs.ts` — same phrasing, unanchored since a fragment can carry extra
+ * words between "cast" and the kind (e.g. "cast 2nd-level arcane spells").
+ * Duplicated rather than imported: `apps/web` deliberately doesn't pull
+ * `@pf1/data-pipeline`'s Node-oriented modules into the browser bundle (see
+ * `apps/web/CLAUDE.md`'s RefData note). Keep both in sync when the phrasing
+ * changes.
+ */
+const CASTER_TYPE_FRAGMENT_RE =
+  /\b(?:ability|able)\s+to\s+(?:cast|prepare|spontaneously\s+cast)\b.*\b(arcane|divine|psychic)\s+spells?\b|\b(arcane|divine|psychic)\s+spellcaster\b/i;
 
 /** Splits verbatim prereq prose into comma/semicolon-separated fragments. */
 function splitProseFragments(text: string): string[] {
@@ -198,6 +227,20 @@ export function evaluatePrereqs(feat: Feat, ctx: PrereqContext): PrereqResult {
       test: (frag) => {
         const m = CHARACTER_LEVEL_FRAGMENT_RE.exec(frag);
         return !!m && Number(m[1]) === characterLevel;
+      },
+    });
+  }
+
+  if (p.casterType != null) {
+    const casterType = p.casterType;
+    const met = ctx.casterKinds.has(casterType);
+    checks.push({ label: `Ability to cast ${casterType} spells`, met });
+    signals.push({
+      met,
+      test: (frag) => {
+        const m = CASTER_TYPE_FRAGMENT_RE.exec(frag);
+        const kind = m?.[1] ?? m?.[2];
+        return kind?.toLowerCase() === casterType;
       },
     });
   }

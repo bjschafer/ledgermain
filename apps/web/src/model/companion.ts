@@ -157,7 +157,9 @@ export function setCompanionSkillRank(
  * and `casterLevel: 0`/`characterLevel: 0` (no companion in `BASE_COMPANIONS`
  * casts, and a "character level" prereq means the master's level, which the
  * companion has no independent stand-in for). Mirrors `FeatsSection`'s own
- * `PrereqContext` construction for the master.
+ * `PrereqContext` construction for the master. `casterKinds` is likewise
+ * empty: no companion casts, so an "ability to cast X spells" prereq (e.g.
+ * Arcane Strike) is never met via the companion's own casting.
  */
 export function companionFeatPrereqContext(
   doc: CharacterDoc,
@@ -171,6 +173,7 @@ export function companionFeatPrereqContext(
     bab: companion.bab,
     casterLevel: 0,
     characterLevel: 0,
+    casterKinds: new Set(),
     selectedFeats: new Set(doc.build.animalCompanion?.feats ?? []),
     refData,
   };
