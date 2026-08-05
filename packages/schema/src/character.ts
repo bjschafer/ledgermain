@@ -1038,6 +1038,17 @@ export interface CharacterDoc {
      */
     antipaladinBoon?: "weapon" | "servant";
     /**
+     * The alignment component a 12th-level brawler's unarmed strikes count as
+     * for overcoming damage reduction (ACG, Brawler's Strike: "she chooses one
+     * alignment component: chaotic, evil, good, or lawful"). RAW the pick
+     * can't be the opposite of the brawler's own alignment, which the picker
+     * warns about rather than enforcing, since a character's alignment is free
+     * text here. Undefined for non-brawlers, below 12th level, or a choice not
+     * yet made; `@pf1/engine`'s `weaponDrBypasses` simply omits the alignment
+     * bypass until it is set.
+     */
+    brawlerStrikeAlignment?: "chaotic" | "evil" | "good" | "lawful";
+    /**
      * Ninja trick ids chosen (keys into `@pf1/engine` `NINJA_TRICKS`, Ultimate
      * Combat). Gained at 2nd level and every two levels thereafter (2nd,
      * 4th,..., 20th — 10 total by 20th), plus one per "Extra Ninja Trick" feat
@@ -3453,6 +3464,37 @@ export interface ResolvedWeaponAttack {
   damageDice?: string;
   /** Critical hit string, e.g. "19–20/×2" or "×2". */
   crit: string;
+  /**
+   * DR qualifiers this weapon overcomes in this character's hands, from its
+   * material, enhancement bonus, alignment abilities and (for an unarmed
+   * strike) monk/brawler class features. Omitted when there are none.
+   * Derived by `@pf1/engine`'s `weaponDrBypasses`.
+   */
+  drBypass?: WeaponDrBypass[];
+}
+
+/**
+ * One DR qualifier a weapon overcomes, with every source that grants it.
+ * The qualifier vocabulary is the canonical one `normalizeQualifier` produces,
+ * so it lines up with the `dr.<qualifier>` targets on the defensive side.
+ */
+export interface WeaponDrBypass {
+  /** Canonical qualifier: "adamantine", "cold-iron", "silver", "magic", "lawful", ... */
+  qualifier: string;
+  /** What grants it, e.g. `["Cold iron"]`, `["+5 enhancement", "Holy"]`, `["Monk 7"]`. */
+  sources: string[];
+  /**
+   * True when a source also bypasses hardness, not merely DR. An adamantine
+   * weapon does; a +4 enhancement bonus standing in for adamantine explicitly
+   * does not.
+   */
+  hardness?: boolean;
+  /**
+   * Set when every source is conditional, e.g. a monk's ki strike requiring at
+   * least 1 ki point left in the pool. Absent as soon as one unconditional
+   * source grants the same qualifier.
+   */
+  condition?: string;
 }
 
 /**

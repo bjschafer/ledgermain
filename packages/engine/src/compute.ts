@@ -55,6 +55,7 @@ import { computeRanger } from "./ranger.js";
 import { orderByTag } from "./cavalier-orders.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
 import { computeDefenses } from "./defenses.js";
+import { weaponDrBypasses } from "./dr-bypass.js";
 import { computeKineticBlasts } from "./kinetic-blast.js";
 import { KINETICIST_ELEMENTS } from "./kineticist-elements.js";
 import { ORACLE_MYSTERIES } from "./oracle-mysteries.js";
@@ -1316,6 +1317,7 @@ function towerShieldAttackComponents(doc: CharacterDoc): ModifierComponent[] {
  */
 function computeWeaponAttacks(
   doc: CharacterDoc,
+  refData: RefData,
   bab: number,
   sizeAttackMod: number,
   collected: CollectedModifier[],
@@ -1474,6 +1476,11 @@ function computeWeaponAttacks(
       damageBonus: { total: damageTotal, components: damageComponents },
       crit,
     };
+    // What this weapon overcomes for DR purposes — material, plus, alignment
+    // abilities, and a monk's or brawler's unarmed-strike class feature. Left
+    // off entirely for the plain steel weapon that bypasses nothing.
+    const drBypass = weaponDrBypasses(doc, refData, w);
+    if (drBypass.length > 0) result.drBypass = drBypass;
     if (appliesAbilityDamage) {
       result.damageAbilityMod = damageAbilityMod;
       result.damageMultiplier = mult;
@@ -1851,6 +1858,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // feed `scaleWeaponDamageDice`'s displayed-dice rewrite.
   const attacks = computeWeaponAttacks(
     doc,
+    refData,
     bab,
     sizeAttackMod,
     collected,

@@ -22,6 +22,7 @@ import { BlessingPicker } from "./BlessingPicker.js";
 import { BloodlinePicker } from "./BloodlinePicker.js";
 import { BonusClassSkillsPicker } from "./BonusClassSkillsPicker.js";
 import { BloodragerBloodlinePicker } from "./BloodragerBloodlinePicker.js";
+import { BrawlerStrikePicker } from "./BrawlerStrikePicker.js";
 import { CastingAdvancementPicker } from "./CastingAdvancementPicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
 import { CrueltyPicker } from "./CrueltyPicker.js";
@@ -580,6 +581,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
           <CrueltyPicker doc={doc} update={update} />
           <FiendishBoonPicker doc={doc} update={update} />
         </>
+      )}
+
+      {/* Brawler's Strike alignment — brawler only, and only from 12th level. */}
+      {doc.identity.classes.some((c) => c.tag === "brawler") && (
+        <BrawlerStrikePicker doc={doc} update={update} />
       )}
 
       {/* Player-chosen bonus class skills — renders only when some feature grants them. */}

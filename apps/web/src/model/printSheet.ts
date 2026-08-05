@@ -11,6 +11,7 @@ import type { AbilityId, CharacterDoc, DerivedSheet, RefData } from "@pf1/schema
 import { abilityTypeSuffix } from "./abilityTypes.js";
 import { casterLevelForClass, effectiveCasterClassLevel } from "./casterLevel.js";
 import { ABILITY_IDS } from "./doc.js";
+import { bypassLine } from "./drBypassDisplay.js";
 import { featInstanceDisplayName, featInstances, grantedFeats } from "./feats.js";
 import { blastBurnLabel } from "./kineticistBlastDisplay.js";
 import { combinedLanguages } from "./languages.js";
@@ -72,6 +73,12 @@ export interface PrintAttack {
   attack: string;
   damage: string;
   crit: string;
+  /**
+   * DR qualifiers this weapon overcomes, comma-joined ("cold iron, silver,
+   * magic"). Absent when it overcomes none. Printed under the weapon name,
+   * where the screen sheet has hoverable chips and paper does not.
+   */
+  bypass?: string;
 }
 
 export interface PrintSkill {
@@ -410,6 +417,7 @@ export function buildPrintSheet(
           attack: signedSequence(atk.attack.total, atk.attack.iteratives),
           damage: dmgStr,
           crit: atk.crit,
+          ...(atk.drBypass?.length ? { bypass: bypassLine(atk.drBypass) } : {}),
         };
       }),
       // Blasts share the weapon table rather than getting a section of their

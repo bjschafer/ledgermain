@@ -6,9 +6,10 @@
  * tag. This table encodes the published rules for the common materials so the
  * picker can apply them to any base armor/weapon at selection time.
  *
- * Only mithral has mechanical effects the engine tracks (weight class shift,
- * maxDex +2, ACP −3, ASF −10%). Other materials are display-only for now (DR /
- * hardness bypass not modelled by the engine).
+ * Only mithral has mechanical effects the engine tracks on the wearer's stats
+ * (weight class shift, maxDex +2, ACP −3, ASF −10%). What a material lets a
+ * weapon get through is derived separately, from the `material` tag itself:
+ * see `@pf1/engine`'s `weaponDrBypasses`.
  */
 import type { ArmorRef } from "@pf1/schema";
 

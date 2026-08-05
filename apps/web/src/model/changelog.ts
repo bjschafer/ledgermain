@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-04-dr-bypass",
+    date: "2026-08-04",
+    title: "Your attacks now say what they punch through",
+    note: "Every weapon on the sheet lists the damage reduction it gets past, so nobody has to remember the table mid fight. A cold iron sword says cold iron, a +3 weapon says cold iron, silver and magic, and a holy one says good. Tap a tag to see where it comes from, and whether it beats hardness too. A monk's fists pick up magic, then cold iron and silver, then lawful, then adamantine as ki strike improves, and they say when it depends on having ki left. A brawler's strike does the same on its own schedule, with a new picker for the alignment you choose at 12th level. Axiomatic joined the weapon enchantment list to round out the four alignment brands.",
+  },
+  {
     id: "2026-08-04-masterwork-acp",
     date: "2026-08-04",
     title: "Masterwork and magic armor now lighten the check penalty",

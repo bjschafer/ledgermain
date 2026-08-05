@@ -19,7 +19,11 @@ import type {
   WornArmor,
 } from "@pf1/schema";
 
-import { normalizeWeaponGroup, parentBloodlineTagFor } from "@pf1/engine";
+import {
+  normalizeWeaponGroup,
+  parentBloodlineTagFor,
+  type BrawlerStrikeAlignment,
+} from "@pf1/engine";
 
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
 import { eligibleAdvancementTargets } from "./casterLevel.js";
@@ -537,6 +541,22 @@ export function setAntipaladinBoon(
   return {
     ...doc,
     build: { ...doc.build, antipaladinBoon: boon ?? undefined },
+  };
+}
+
+/**
+ * Set the alignment component a 12th-level brawler's unarmed strikes count as
+ * for overcoming damage reduction (ACG, Brawler's Strike). Pass `null` to
+ * clear. RAW forbids picking the opposite of the brawler's own alignment; the
+ * picker says so rather than enforcing it, since alignment is free text here.
+ */
+export function setBrawlerStrikeAlignment(
+  doc: CharacterDoc,
+  alignment: BrawlerStrikeAlignment | null,
+): CharacterDoc {
+  return {
+    ...doc,
+    build: { ...doc.build, brawlerStrikeAlignment: alignment ?? undefined },
   };
 }
 

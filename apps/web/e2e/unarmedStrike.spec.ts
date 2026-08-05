@@ -94,3 +94,20 @@ test("levelling past a die step offers to update the entry", async ({ page }) =>
   await expect(row).toContainText("1d10");
   await expect(row.getByRole("button", { name: /^Set to/ })).toHaveCount(0);
 });
+
+test("the attack line says what a brawler's fists get through", async ({ page }) => {
+  const weapons = await brawler(page, 9);
+  await weapons.scrollIntoViewIfNeeded();
+  await weapons.getByRole("button", { name: "+ Add weapon" }).click();
+  await weapons.getByPlaceholder("Search weapons…").fill("unarmed");
+  await weapons
+    .locator(".pick-row", { hasText: "Unarmed Strike" })
+    .getByRole("button", { name: "Add" })
+    .click();
+
+  // Brawler's Strike: magic at 5th, cold iron and silver at 9th.
+  const row = page.locator(".weapon-attack-row", { hasText: "Unarmed Strike" });
+  const bypass = row.locator(".weapon-attack-bypass");
+  await expect(bypass).toContainText("Bypasses DR");
+  await expect(bypass.locator(".bypass-chip")).toHaveText(["Cold iron", "Silver", "Magic"]);
+});

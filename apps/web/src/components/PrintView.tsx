@@ -196,7 +196,12 @@ export function PrintView({
               <tbody>
                 {data.attacks.map((atk, i) => (
                   <tr key={i}>
-                    <td>{atk.name}</td>
+                    <td>
+                      {atk.name}
+                      {atk.bypass ? (
+                        <span className="print-attack-bypass">Bypasses DR: {atk.bypass}</span>
+                      ) : null}
+                    </td>
                     <td className="num">{atk.attack}</td>
                     <td className="num">{atk.damage}</td>
                     <td>{atk.crit}</td>

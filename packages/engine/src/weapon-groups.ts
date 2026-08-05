@@ -87,3 +87,21 @@ export function normalizeWeaponGroup(raw: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+/**
+ * The free-text `WeaponInstance.group` tag every synthesized unarmed strike
+ * carries (`apps/web/src/model/unarmedStrike.ts` builds the entry, since no
+ * vendored weapon item is an unarmed strike). It lives here rather than in the
+ * web app because the engine has to recognize an unarmed strike too: the monk
+ * and brawler DR bypasses in `dr-bypass.ts` apply to it and to nothing else.
+ *
+ * Deliberately NOT a member of {@link WEAPON_GROUPS} — that's the vendored
+ * semantic-category vocabulary, and this is a per-weapon tag in the same free
+ * space as "longsword".
+ */
+export const UNARMED_STRIKE_GROUP = "unarmed strike";
+
+/** True when `w` is an unarmed strike entry, however the player named it. */
+export function isUnarmedStrikeWeapon(w: { group?: string }): boolean {
+  return (w.group ?? "").trim().toLowerCase() === UNARMED_STRIKE_GROUP;
+}

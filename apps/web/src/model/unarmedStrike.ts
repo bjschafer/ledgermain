@@ -23,7 +23,12 @@
  * stale on level-up, which {@link staleUnarmedDamage} exists to catch.
  */
 
-import { featNameSlug, unarmedDamageDie } from "@pf1/engine";
+import {
+  UNARMED_STRIKE_GROUP,
+  featNameSlug,
+  isUnarmedStrikeWeapon,
+  unarmedDamageDie,
+} from "@pf1/engine";
 import type { CharacterDoc, RefData, SizeId, WeaponInstance } from "@pf1/schema";
 
 import { grantedFeats } from "./feats.js";
@@ -32,8 +37,10 @@ import { grantedFeats } from "./feats.js";
  * The `WeaponInstance.group` tag every synthesized unarmed strike carries.
  * Free text by design: `group` is the exact-match key Weapon Focus and friends
  * store their choice against, so this string is what appears in those pickers.
+ * Defined in the engine, which needs to recognize an unarmed strike for the
+ * monk/brawler DR bypasses, and re-exported here where the entry is built.
  */
-export const UNARMED_STRIKE_GROUP = "unarmed strike";
+export { UNARMED_STRIKE_GROUP };
 
 /** Class levels that advance unarmed damage, by class tag. */
 const UNARMED_DAMAGE_CLASSES: Record<string, string> = {
@@ -142,7 +149,7 @@ export function unarmedStrikeMeta(source: UnarmedStrikeSource): string {
 
 /** True when `w` is an unarmed strike entry (however the player named it). */
 export function isUnarmedStrike(w: WeaponInstance): boolean {
-  return (w.group ?? "").trim().toLowerCase() === UNARMED_STRIKE_GROUP;
+  return isUnarmedStrikeWeapon(w);
 }
 
 /**

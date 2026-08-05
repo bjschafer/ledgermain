@@ -117,6 +117,18 @@ const ABILITIES: Record<string, AbilityDef> = {
     bonusEquivalent: 2,
     note: "+2d6 vs good",
   },
+  // Axiomatic has no entry in the vendored `RefData.itemAbilities` slice,
+  // unlike its chaotic opposite (`ability:anarchic`), so without this the
+  // lawful quarter of the alignment abilities would be unbuildable. Anarchic
+  // deliberately gets no curated twin: it's already pickable, and a second
+  // entry would show up twice in the picker.
+  axiomatic: {
+    id: "axiomatic",
+    name: "Axiomatic",
+    slot: "weapon",
+    bonusEquivalent: 2,
+    note: "+2d6 vs chaotic",
+  },
   "ghost-touch": {
     id: "ghost-touch",
     name: "Ghost Touch",

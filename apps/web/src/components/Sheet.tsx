@@ -12,6 +12,7 @@ import {
   effectiveCasterClassLevel,
   isCasterTag,
 } from "../model/casterLevel.js";
+import { bypassChipLabel, bypassTip } from "../model/drBypassDisplay.js";
 import { blastBurnWarning, blastSubLine } from "../model/kineticistBlastDisplay.js";
 import { combinedLanguages } from "../model/languages.js";
 import {
@@ -443,6 +444,24 @@ export function Sheet({
                       resetKey={doc.id}
                     />
                   </div>
+                  {/* What this weapon gets through: material, plus, alignment
+                      ability, or a monk's/brawler's unarmed class feature. A
+                      flag rather than a magnitude, so same chip the immunity
+                      lines use rather than a fourth seal. */}
+                  {atk.drBypass?.length ? (
+                    <div className="weapon-attack-bypass">
+                      <span className="weapon-attack-bypass-label">Bypasses DR</span>
+                      {atk.drBypass.map((b) => (
+                        <InfoTip
+                          key={`bypass-${b.qualifier}`}
+                          className="prof-chip bypass-chip"
+                          content={bypassTip(b)}
+                        >
+                          {bypassChipLabel(b)}
+                        </InfoTip>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
               );
             })}

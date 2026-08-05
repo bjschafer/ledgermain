@@ -880,11 +880,18 @@ export {
   carryAdjustments,
 } from "./encumbrance.js";
 export {
+  UNARMED_STRIKE_GROUP,
   WEAPON_GROUPS,
   isKnownWeaponGroup,
+  isUnarmedStrikeWeapon,
   normalizeWeaponGroup,
   type WeaponGroup,
 } from "./weapon-groups.js";
+export {
+  BRAWLER_STRIKE_ALIGNMENT_LEVEL,
+  weaponDrBypasses,
+  type BrawlerStrikeAlignment,
+} from "./dr-bypass.js";
 export {
   deriveProficiencies,
   grantsDeityFavoredWeapon,

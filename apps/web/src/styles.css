@@ -5372,6 +5372,32 @@ input[type="text"].saved-roll-name:focus {
   gap: 8px;
 }
 
+/* DR qualifiers this weapon overcomes, under its stat row. Only rendered for a
+   weapon that overcomes something, so the common case costs no vertical space. */
+.weapon-attack-bypass {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding-left: 2px;
+}
+
+.weapon-attack-bypass-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  opacity: 0.85;
+}
+
+/* Smaller than the proficiency/immunity chips it inherits from: several can sit
+   on one attack line, and they're a footnote to the seals above them. */
+.bypass-chip {
+  padding: 2px 9px;
+  font-size: 0.6875rem;
+  color: var(--sage);
+}
+
 /* Kinetic blast rows carry a second line (touch/range/descriptor/burn cost)
    under the blast name, since a blast has no gear entry to look those up in. */
 .blast-line-sub {
@@ -6744,6 +6770,14 @@ input[type="text"].saved-roll-name:focus {
   font-size: 0.6875rem;
   color: #5c5540;
   margin: 2px 0 0;
+}
+
+/* The screen sheet hides a weapon's DR bypasses behind hoverable chips; paper
+   has no hover, so they print as a line under the weapon name. */
+.print-attack-bypass {
+  display: block;
+  font-size: 0.625rem;
+  color: #5c5540;
 }
 
 .print-skill-list {
