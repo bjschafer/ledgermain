@@ -2552,6 +2552,35 @@ button:focus-visible,
   margin-bottom: 12px;
 }
 
+/* One category section (Armor & Shields, Potions & Consumables, ...) within
+   the gear list — a plain header, not collapsible, since a full inventory is
+   short enough to want visible at a glance. */
+.gear-group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px 4px;
+}
+
+.gear-group:not(:first-child) .gear-group-header {
+  border-top: 1px solid var(--line-soft);
+  margin-top: 4px;
+}
+
+.gear-group-header .section-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.gear-group-count {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  color: var(--faint);
+  margin-left: auto;
+}
+
 /* Name/meta and the trailing controls (qty stepper + Edit + Remove) share one
    line only while the name still gets a readable column; below that the whole
    control cluster drops to its own line rather than squeezing item names down
@@ -2625,6 +2654,32 @@ button:focus-visible,
   font-size: 0.625rem;
   font-family: var(--mono);
   color: var(--gold-dim-ink);
+}
+
+/* Wear-slot badge on a gear row (e.g. "Neck", "Ring") — which body slot a
+   resolved item occupies. `.badge-slot-conflict` marks it when more equipped
+   items claim the slot than PF1 allows (soft warning only; equipping is
+   never blocked). */
+.badge-slot {
+  display: inline-block;
+  font-size: 0.65em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-left: 0.5em;
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.badge-slot-conflict {
+  color: var(--oxblood-ink);
+  background: transparent;
+  border-color: var(--oxblood);
 }
 
 /* gear add-row buttons (below the list) */
