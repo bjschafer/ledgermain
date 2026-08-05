@@ -3757,6 +3757,16 @@ button:focus-visible,
   gap: 6px;
 }
 
+/* Brawler's flurry lends the two-weapon chain with strings attached (only
+   certain weapons qualify). `flex: 1 1 100%` forces it onto its own line
+   within `.saved-roll-twf`'s wrapping flex row, right under the grip/off-hand
+   selects rather than buried in the roll's general notes line. */
+.saved-roll-twf-restriction {
+  flex: 1 1 100%;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
 .chip.feat-chip .chip-x {
   background: none;
   border: none;
@@ -3887,6 +3897,10 @@ button:focus-visible,
    from its `size` attribute and does NOT shrink with its container, so on a
    narrow panel the name would spill over the attack numbers to its right —
    visibly so in Firefox, whose default input is wider than Chrome's. */
+/* Sized/weighted explicitly (not `inherit`) so the roll's name reads as a
+   heading over the value line beside it, rather than blending into body
+   text — the one thing that visually says "this is the roll", edit chrome
+   or not. */
 input[type="text"].saved-roll-name {
   width: 100%;
   box-sizing: border-box;
@@ -3895,8 +3909,8 @@ input[type="text"].saved-roll-name {
   padding: 2px 4px;
   margin: -2px -4px;
   font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
+  font-size: 1.0625rem;
+  font-weight: 700;
   color: inherit;
 }
 

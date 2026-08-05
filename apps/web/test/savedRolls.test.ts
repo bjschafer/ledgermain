@@ -25,7 +25,7 @@ import {
   updateSavedRoll,
 } from "../src/model/savedRolls.js";
 import { flurryTwfChain } from "../src/model/twf.js";
-import { unarmedStrikeWeapon } from "../src/model/unarmedStrike.js";
+import { isUnarmedStrikeSource, unarmedStrikeWeapon } from "../src/model/unarmedStrike.js";
 
 const ref = loadRefData();
 
@@ -915,7 +915,8 @@ describe("resolveSavedRoll — two-weapon fighting", () => {
 
     it("the chain isn't offered in the manual feat picker", () => {
       const { doc } = twoWeaponRoll({ offHand: "light" }, "Two-Weapon Fighting", "Power Attack");
-      const slugs = attachableFeats(doc, ref, { kind: "melee" }).map((f) => f.slug);
+      const groups = attachableFeats(doc, ref, { kind: "melee" });
+      const slugs = [...groups.auto, ...groups.reminder].map((f) => f.slug);
       expect(slugs).toEqual(["power-attack"]);
     });
   });
@@ -954,41 +955,147 @@ describe("ownedFeatSlugs() / attachableFeats()", () => {
     expect(ownedFeatSlugs(doc, ref)).toEqual(new Set(["power-attack", "iron-will"]));
   });
 
-  it("orders modeled+compatible feats first for a ranged source", () => {
-    const doc = withFeats("Iron Will", "Power Attack", "Rapid Shot", "Point-Blank Shot");
-    const list = attachableFeats(doc, ref, { kind: "ranged" });
-    expect(list.map((f) => f.slug)).toEqual([
-      // ranged-compatible modeled feats, alphabetical
-      "point-blank-shot",
-      "rapid-shot",
-      // the rest, alphabetical (Power Attack is modeled but melee-only)
-      "iron-will",
-      "power-attack",
-    ]);
-    expect(list[0]!.modeled).toBe(true);
-    expect(list[2]!.modeled).toBe(false);
+  it("groups modeled+compatible feats as auto and the rest as reminder for a ranged source", () => {
+    // Combat Reflexes is unmodeled but Combat-tagged, so it survives the
+    // combat-restricted reminder filter; Power Attack is modeled but
+    // melee-only, so it lands in reminder (Combat-tagged) rather than auto.
+    const doc = withFeats("Combat Reflexes", "Power Attack", "Rapid Shot", "Point-Blank Shot");
+    const groups = attachableFeats(doc, ref, { kind: "ranged" });
+    expect(groups.auto.map((f) => f.slug)).toEqual(["point-blank-shot", "rapid-shot"]);
+    expect(groups.reminder.map((f) => f.slug)).toEqual(["combat-reflexes", "power-attack"]);
+    expect(groups.auto[0]!.modeled).toBe(true);
+    expect(groups.reminder[0]!.modeled).toBe(false);
   });
 
-  it("orders melee-compatible feats first for a melee source and carries options", () => {
+  it("melee-compatible feats land in auto and carry options; ranged-only ones land in reminder", () => {
     const doc = withFeats("Rapid Shot", "Power Attack");
-    const list = attachableFeats(doc, ref, { kind: "melee" });
-    expect(list.map((f) => f.slug)).toEqual(["power-attack", "rapid-shot"]);
-    expect(list[0]!.options).toEqual([
+    const groups = attachableFeats(doc, ref, { kind: "melee" });
+    expect(groups.auto.map((f) => f.slug)).toEqual(["power-attack"]);
+    expect(groups.reminder.map((f) => f.slug)).toEqual(["rapid-shot"]);
+    expect(groups.auto[0]!.options).toEqual([
       { id: "one-handed", label: "One-handed" },
       { id: "two-handed", label: "Two-handed" },
     ]);
   });
 
-  it("uses the weapon's category for weapon sources (Longbow -> ranged-compatible first)", () => {
+  it("uses the weapon's category for weapon sources (Longbow -> Deadly Aim in auto, Power Attack in reminder)", () => {
     const doc = withFeats("Power Attack", "Deadly Aim");
-    const list = attachableFeats(doc, ref, { kind: "weapon", weaponName: "Longbow" });
-    expect(list.map((f) => f.slug)).toEqual(["deadly-aim", "power-attack"]);
+    const groups = attachableFeats(doc, ref, { kind: "weapon", weaponName: "Longbow" });
+    expect(groups.auto.map((f) => f.slug)).toEqual(["deadly-aim"]);
+    expect(groups.reminder.map((f) => f.slug)).toEqual(["power-attack"]);
   });
 
-  it("treats every modeled feat as compatible for custom sources", () => {
+  it("treats every modeled feat as auto for custom sources, and excludes statically-applied feats entirely", () => {
+    // Iron Will's +2 Will is already folded into the sheet's save number
+    // (FEAT_CLASSIFICATION bucket "numeric"), so attaching it here would
+    // double-count it — it never appears in either group.
     const doc = withFeats("Iron Will", "Power Attack", "Deadly Aim");
-    const list = attachableFeats(doc, ref, { kind: "custom" });
-    expect(list.map((f) => f.slug)).toEqual(["deadly-aim", "power-attack", "iron-will"]);
+    const groups = attachableFeats(doc, ref, { kind: "custom" });
+    expect(groups.auto.map((f) => f.slug)).toEqual(["deadly-aim", "power-attack"]);
+    expect(groups.reminder).toEqual([]);
+  });
+
+  it("narrows the reminder group to Combat-tagged feats on a combat-focused source", () => {
+    // Endurance ("General" tag, not modeled) clutters an attack roll's picker
+    // but is exactly the kind of thing worth reminding about on a save.
+    const doc = withFeats("Endurance", "Combat Reflexes");
+    for (const source of [{ kind: "melee" }, { kind: "ranged" }, { kind: "cmb" }] as const) {
+      const groups = attachableFeats(doc, ref, source);
+      expect(groups.reminder.map((f) => f.slug)).toEqual(["combat-reflexes"]);
+    }
+  });
+
+  it("keeps the broader reminder list (unfiltered by tag) for saves/skills/initiative/custom", () => {
+    const doc = withFeats("Endurance", "Combat Reflexes");
+    for (const source of [
+      { kind: "save", save: "fort" },
+      { kind: "initiative" },
+      { kind: "custom" },
+    ] as const) {
+      const groups = attachableFeats(doc, ref, source);
+      expect(groups.reminder.map((f) => f.slug)).toEqual(["combat-reflexes", "endurance"]);
+    }
+  });
+});
+
+describe("attachableFeats() and resolveSavedRoll() — Improved Unarmed Strike auto-chip", () => {
+  function unarmedDoc(): CharacterDoc {
+    let doc = createEmptyDoc("t");
+    doc = { ...doc, build: { ...doc.build, feats: [featId("Improved Unarmed Strike")] } };
+    doc = addWeapon(doc, unarmedStrikeWeapon(doc, ref));
+    doc = addSavedRoll(doc, { kind: "weapon", weaponName: "Unarmed Strike" }, "Unarmed Strike");
+    return doc;
+  }
+
+  it("isUnarmedStrikeSource identifies a roll pointed at the synthesized weapon", () => {
+    const doc = unarmedDoc();
+    expect(isUnarmedStrikeSource(doc, { kind: "weapon", weaponName: "Unarmed Strike" })).toBe(true);
+    expect(isUnarmedStrikeSource(doc, { kind: "melee" })).toBe(false);
+  });
+
+  it("resolveSavedRoll surfaces a non-detachable reminder chip when improvedUnarmedStrike is true", () => {
+    const doc = unarmedDoc();
+    const sheet = compute(doc, ref);
+    const resolved = resolveSavedRoll(
+      doc.build.savedRolls![0]!,
+      sheet,
+      ownedFeatSlugs(doc, ref),
+      undefined,
+      true,
+    );
+    const chip = resolved.featChips.find((c) => c.slug === "improved-unarmed-strike");
+    expect(chip).toMatchObject({ auto: true, owned: true, applied: true });
+    expect(resolved.notes).toContain(
+      "unarmed strikes deal lethal damage and do not provoke attacks of opportunity",
+    );
+  });
+
+  it("no chip appears when improvedUnarmedStrike is omitted", () => {
+    const doc = unarmedDoc();
+    const sheet = compute(doc, ref);
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet, ownedFeatSlugs(doc, ref));
+    expect(resolved.featChips.find((c) => c.slug === "improved-unarmed-strike")).toBeUndefined();
+  });
+
+  it("excludes Improved Unarmed Strike from the picker for an unarmed-strike roll", () => {
+    const doc = unarmedDoc();
+    const groups = attachableFeats(doc, ref, { kind: "weapon", weaponName: "Unarmed Strike" });
+    const slugs = [...groups.auto, ...groups.reminder].map((f) => f.slug);
+    expect(slugs).not.toContain("improved-unarmed-strike");
+  });
+
+  it("still offers Improved Unarmed Strike for a non-unarmed weapon roll", () => {
+    let doc = unarmedDoc();
+    doc = addWeapon(doc, { name: "Longsword", attackAbility: "str", damageDice: "1d8" });
+    const groups = attachableFeats(doc, ref, { kind: "weapon", weaponName: "Longsword" });
+    const slugs = [...groups.auto, ...groups.reminder].map((f) => f.slug);
+    expect(slugs).toContain("improved-unarmed-strike");
+  });
+});
+
+describe("resolveSavedRoll() grantedTwf passthrough (brawler's flurry labeling)", () => {
+  it("carries the granted chain whether or not this roll's two-weapon mode is on", () => {
+    let doc = createEmptyDoc("t");
+    doc = addClass(doc, "brawler");
+    doc = setClassLevel(doc, "brawler", 2);
+    doc = addWeapon(doc, unarmedStrikeWeapon(doc, ref));
+    doc = addSavedRoll(doc, { kind: "weapon", weaponName: "Unarmed Strike" }, "Flurry");
+    const sheet = compute(doc, ref);
+    const granted = flurryTwfChain(doc);
+    const resolved = resolveSavedRoll(
+      doc.build.savedRolls![0]!,
+      sheet,
+      ownedFeatSlugs(doc, ref),
+      granted,
+    );
+    expect(resolved.grantedTwf?.source).toBe("brawler's flurry");
+  });
+
+  it("is undefined for a character with no granted chain", () => {
+    const sheet = compute(fresh(), ref);
+    const doc = addSavedRoll(fresh(), { kind: "melee" }, "Melee");
+    const resolved = resolveSavedRoll(doc.build.savedRolls![0]!, sheet);
+    expect(resolved.grantedTwf).toBeUndefined();
   });
 });
 

@@ -17,10 +17,11 @@ import {
   setSavedRollFeatOption,
   setSavedRollTwf,
   updateSavedRoll,
-  type AttachableFeat,
+  type AttachableFeatGroups,
   type ResolvedSavedRoll,
 } from "../../model/savedRolls.js";
 import { flurryTwfChain, twfConfig } from "../../model/twf.js";
+import { hasImprovedUnarmedStrike, isUnarmedStrikeSource } from "../../model/unarmedStrike.js";
 import { attachableRangerBonuses } from "../../model/ranger.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "../builder/NumberField.js";
@@ -50,9 +51,19 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
   const saved = useMemo(() => doc.build.savedRolls ?? [], [doc]);
   const owned = useMemo(() => ownedFeatSlugs(doc, refData), [doc, refData]);
   const grantedTwf = useMemo(() => flurryTwfChain(doc), [doc]);
+  const hasIUS = useMemo(() => hasImprovedUnarmedStrike(doc, refData), [doc, refData]);
   const resolved = useMemo(
-    () => saved.map((r) => resolveSavedRoll(r, sheet, owned, grantedTwf)),
-    [saved, sheet, owned, grantedTwf],
+    () =>
+      saved.map((r) =>
+        resolveSavedRoll(
+          r,
+          sheet,
+          owned,
+          grantedTwf,
+          hasIUS && isUnarmedStrikeSource(doc, r.source),
+        ),
+      ),
+    [saved, sheet, owned, grantedTwf, hasIUS, doc],
   );
   const attachable = useMemo(
     () => saved.map((r) => attachableFeats(doc, refData, r.source)),
@@ -180,7 +191,7 @@ function SavedRollRow({
 }: {
   roll: SavedRoll;
   resolved: ResolvedSavedRoll;
-  attachable: AttachableFeat[];
+  attachable: AttachableFeatGroups;
   rangerAttachable: SavedRollRangerRef[];
   offHandWeapons: string[];
   onUpdate: (
@@ -201,9 +212,12 @@ function SavedRollRow({
   const twf = twfConfig(roll);
 
   const attached = new Set((roll.feats ?? []).map((f) => f.slug));
-  const addChoices = attachable.filter((f) => !attached.has(f.slug));
+  const autoChoices = attachable.auto.filter((f) => !attached.has(f.slug));
+  const reminderChoices = attachable.reminder.filter((f) => !attached.has(f.slug));
   /** Registry options for an attached chip's variant select, when the feat declares any. */
-  const optionsFor = (slug: string) => attachable.find((f) => f.slug === slug)?.options;
+  const optionsFor = (slug: string) =>
+    attachable.auto.find((f) => f.slug === slug)?.options ??
+    attachable.reminder.find((f) => f.slug === slug)?.options;
 
   const rangerAttached = new Set((roll.rangerBonuses ?? []).map((b) => `${b.kind}:${b.type}`));
   const rangerAddChoices = rangerAttachable.filter(
@@ -393,7 +407,9 @@ function SavedRollRow({
                   checked={twf !== undefined}
                   onChange={(e) => onSetTwf(e.target.checked ? { offHand: "light" } : undefined)}
                 />
-                Two-weapon fighting
+                {resolved.grantedTwf
+                  ? "Brawler's flurry (two-weapon fighting rules)"
+                  : "Two-weapon fighting"}
               </label>
               {twf ? (
                 <>
@@ -421,19 +437,26 @@ function SavedRollRow({
                       </option>
                     ))}
                   </select>
+                  {resolved.grantedTwf ? (
+                    <div className="saved-roll-twf-restriction">
+                      {resolved.grantedTwf.source}: {resolved.grantedTwf.restriction}
+                    </div>
+                  ) : null}
                 </>
               ) : null}
             </div>
           ) : null}
 
-          {addChoices.length > 0 ? (
+          {autoChoices.length > 0 || reminderChoices.length > 0 ? (
             <label className="saved-roll-adjust saved-roll-feat-add">
               + feat
               <select
                 value=""
                 aria-label={`attach a feat to ${roll.label}`}
                 onChange={(e) => {
-                  const feat = addChoices.find((f) => f.slug === e.target.value);
+                  const feat =
+                    autoChoices.find((f) => f.slug === e.target.value) ??
+                    reminderChoices.find((f) => f.slug === e.target.value);
                   if (!feat) return;
                   onAddFeat({
                     slug: feat.slug,
@@ -443,12 +466,24 @@ function SavedRollRow({
                 }}
               >
                 <option value="">Attach a feat…</option>
-                {addChoices.map((f) => (
-                  <option key={f.slug} value={f.slug}>
-                    {f.name}
-                    {f.modeled ? " (auto)" : ""}
-                  </option>
-                ))}
+                {autoChoices.length > 0 ? (
+                  <optgroup label="Applies automatically">
+                    {autoChoices.map((f) => (
+                      <option key={f.slug} value={f.slug}>
+                        {f.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ) : null}
+                {reminderChoices.length > 0 ? (
+                  <optgroup label="Reminder only">
+                    {reminderChoices.map((f) => (
+                      <option key={f.slug} value={f.slug}>
+                        {f.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ) : null}
               </select>
             </label>
           ) : null}
