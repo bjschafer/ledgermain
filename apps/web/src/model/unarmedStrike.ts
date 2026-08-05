@@ -29,7 +29,7 @@ import {
   isUnarmedStrikeWeapon,
   unarmedDamageDie,
 } from "@pf1/engine";
-import type { CharacterDoc, RefData, SizeId, WeaponInstance } from "@pf1/schema";
+import type { CharacterDoc, RefData, SavedRollSource, SizeId, WeaponInstance } from "@pf1/schema";
 
 import { grantedFeats } from "./feats.js";
 
@@ -150,6 +150,19 @@ export function unarmedStrikeMeta(source: UnarmedStrikeSource): string {
 /** True when `w` is an unarmed strike entry (however the player named it). */
 export function isUnarmedStrike(w: WeaponInstance): boolean {
   return isUnarmedStrikeWeapon(w);
+}
+
+/**
+ * True when a saved roll's `source` resolves to the character's synthesized
+ * Unarmed Strike weapon entry. Looked up against `doc.build.weapons` (the
+ * build-time source of truth for `group`, same reason `compatibleAppliesTo`
+ * in `savedRolls.ts` reads it directly) rather than the derived sheet, which
+ * doesn't carry `group` on a `ResolvedWeaponAttack`.
+ */
+export function isUnarmedStrikeSource(doc: CharacterDoc, source: SavedRollSource): boolean {
+  if (source.kind !== "weapon") return false;
+  const weapon = doc.build.weapons?.find((w) => w.name === source.weaponName);
+  return weapon !== undefined && isUnarmedStrike(weapon);
 }
 
 /**

@@ -41,6 +41,8 @@ import type {
   SavedRollTwf,
 } from "@pf1/schema";
 import {
+  FEAT_CLASSIFICATION,
+  FEAT_CLASSIFICATION_COMMUNITY,
   SITUATIONAL_FEAT_EFFECTS,
   TWF_CHAIN_SLUGS,
   featNameSlug,
@@ -52,6 +54,7 @@ import { localId } from "./ids.js";
 import { SAVE_NAMES, signed, signedSequence } from "./names.js";
 import { d20Formula, damageFormula } from "./rollFormula.js";
 import { offHandAbilityDelta, resolveTwf, twfConfig, type TwfFold } from "./twf.js";
+import { isUnarmedStrikeSource } from "./unarmedStrike.js";
 
 /** One pickable thing a saved roll can point at, for the "add" picker. */
 export interface SavedRollOption {
@@ -165,6 +168,14 @@ export interface ResolvedSavedRoll {
   featChips: SavedRollFeatChip[];
   /** Attached ranger favored-enemy/terrain bonuses, resolved for chip display. */
   rangerChips: SavedRollRangerChip[];
+  /**
+   * The two-weapon chain a class feature (brawler's flurry) currently lends
+   * the character, when the roll is attack-like enough for two-weapon mode to
+   * apply at all — present whether or not THIS roll's two-weapon mode is
+   * toggled on, so the UI can label the toggle "Brawler's flurry" up front
+   * rather than only after it's switched on.
+   */
+  grantedTwf?: GrantedTwfChain;
 }
 
 /** Source kinds attack-like enough for feat effects to apply their numbers. */
@@ -522,6 +533,13 @@ function foldAttachments(
   return { fold, notes: [...new Set(notes)], featChips, rangerChips };
 }
 
+/** Stable slug for Improved Unarmed Strike, the one feat `resolveSavedRoll`/`attachableFeats` special-case. */
+const IMPROVED_UNARMED_STRIKE_SLUG = featNameSlug("Improved Unarmed Strike");
+
+/** At-table reminder for the auto-applied Improved Unarmed Strike chip. */
+const IMPROVED_UNARMED_STRIKE_NOTE =
+  "unarmed strikes deal lethal damage and do not provoke attacks of opportunity";
+
 /**
  * Resolve one saved roll's current value + provenance from the live sheet.
  * `ownedFeatSlugs` — the character's currently-owned feats, by name slug — is
@@ -529,21 +547,33 @@ function foldAttachments(
  * existing call sites/tests, which predate feat attachments, valid).
  * `grantedTwf` is the two-weapon chain a class feature lends the character
  * (`flurryTwfChain`); omitted, they fight with only the feats they own.
+ * `improvedUnarmedStrike` is true when this roll's source is the character's
+ * synthesized Unarmed Strike weapon AND they effectively have Improved
+ * Unarmed Strike (taken or granted by class) — surfaces a non-detachable
+ * reminder chip the same way an owned two-weapon chain feat does, since
+ * "unarmed strikes are lethal, no AoO" is a fact about the character, not a
+ * per-round choice the player toggles.
  */
 export function resolveSavedRoll(
   roll: SavedRoll,
   sheet: DerivedSheet,
   ownedFeatSlugs?: ReadonlySet<string>,
   grantedTwf?: GrantedTwfChain,
+  improvedUnarmedStrike?: boolean,
 ): ResolvedSavedRoll {
   const attackModifier = roll.attackModifier ?? 0;
   const damageModifier = roll.damageModifier ?? 0;
   const isAttackLike = ATTACK_LIKE_KINDS.has(roll.source.kind);
   const { fold, notes, featChips, rangerChips } = foldAttachments(
-    // The two-weapon chain is applied by the roll's two-weapon mode, not as an
-    // attachment, so a legacy roll's chain refs never fold twice — they're
-    // re-surfaced below as auto chips.
-    (roll.feats ?? []).filter((f) => !TWF_CHAIN_SLUGS.has(f.slug)),
+    // The two-weapon chain is applied by the roll's two-weapon mode, and
+    // Improved Unarmed Strike (below) by the unarmed-strike source, not as an
+    // attachment — so a legacy roll's refs for either never fold twice;
+    // they're re-surfaced as auto chips instead.
+    (roll.feats ?? []).filter(
+      (f) =>
+        !TWF_CHAIN_SLUGS.has(f.slug) &&
+        !(improvedUnarmedStrike && f.slug === IMPROVED_UNARMED_STRIKE_SLUG),
+    ),
     roll.rangerBonuses ?? [],
     isAttackLike,
     sheet,
@@ -575,6 +605,19 @@ export function resolveSavedRoll(
     if (twf.offHandWeaponMissing) notes.push(`off-hand weapon "${cfg!.offHandWeapon}" not found`);
   }
 
+  if (improvedUnarmedStrike) {
+    featChips.push({
+      slug: IMPROVED_UNARMED_STRIKE_SLUG,
+      name: "Improved Unarmed Strike",
+      applied: true,
+      modeled: true,
+      owned: true,
+      auto: true,
+      note: IMPROVED_UNARMED_STRIKE_NOTE,
+    });
+    notes.push(IMPROVED_UNARMED_STRIKE_NOTE);
+  }
+
   const resolved = resolveSource(roll.source, sheet, attackModifier, damageModifier, fold, twf);
   if (!resolved) {
     return {
@@ -586,6 +629,7 @@ export function resolveSavedRoll(
       notes,
       featChips,
       rangerChips,
+      grantedTwf,
     };
   }
   const damage =
@@ -611,6 +655,7 @@ export function resolveSavedRoll(
     notes,
     featChips,
     rangerChips,
+    grantedTwf,
   };
 }
 
@@ -853,11 +898,41 @@ export interface AttachableFeat {
 }
 
 /**
+ * `attachableFeats`'s two picker groups: feats whose registry effect will
+ * actually fold numbers/notes into THIS roll ("Applies automatically"), and
+ * everything else, attachable only as an at-table reminder chip ("Reminder
+ * only"). Mirrors the `<optgroup>` split in `SavedRollsPanel`'s "+ feat"
+ * select.
+ */
+export interface AttachableFeatGroups {
+  auto: AttachableFeat[];
+  reminder: AttachableFeat[];
+}
+
+/**
+ * Classification buckets (`@pf1/engine`'s feat-classification audit) whose
+ * effect `compute()` already folds into the sheet's own numbers — Iron Will's
+ * +2 Will, Weapon Focus's +1 attack, Extra Rage's pool bump. Attaching one of
+ * these to a saved roll would double-count it, so `attachableFeats` excludes
+ * them outright rather than merely deprioritizing them.
+ */
+const STATICALLY_APPLIED_BUCKETS: ReadonlySet<string> = new Set([
+  "numeric",
+  "choice-numeric",
+  "pool",
+]);
+
+/** True when `slug`'s classified bucket (if any) is already reflected in the sheet's numbers. */
+function isStaticallyApplied(slug: string): boolean {
+  const bucket = FEAT_CLASSIFICATION[slug]?.bucket ?? FEAT_CLASSIFICATION_COMMUNITY[slug];
+  return bucket !== undefined && STATICALLY_APPLIED_BUCKETS.has(bucket);
+}
+
+/**
  * Which registry `appliesTo` values count as "compatible" with a saved-roll
- * source's kind, for ordering the picker (a filter for ranking, not
- * enforcement — incompatible feats still show up, just lower in the list).
- * `null` means "all" — no filtering (custom rolls, or a weapon source whose
- * melee/ranged category can't be determined).
+ * source's kind — which picker group a modeled feat lands in. `null` means
+ * "all" — no filtering (custom rolls, or a weapon source whose melee/ranged
+ * category can't be determined).
  */
 function compatibleAppliesTo(
   doc: CharacterDoc,
@@ -884,20 +959,42 @@ function compatibleAppliesTo(
 }
 
 /**
- * Feats the character owns, pickable as saved-roll attachments: modeled feats
- * compatible with `source`'s kind first (alphabetical), then every other
- * owned feat alphabetically (unmodeled feats, or modeled-but-incompatible
- * ones — e.g. a ranged feat on a melee roll — still show up as reminder
- * chips, just not privileged in the ordering). Does not exclude feats already
- * attached to a given roll — that filtering is the UI's job.
+ * Source kinds combat-focused enough that the "Reminder only" group is
+ * narrowed to Combat-tagged feats: an attack or maneuver roll has no use for
+ * Iron Will-style save feats or skill feats cluttering its picker. Saves,
+ * skills, initiative and custom rolls keep the broader reminder list — a
+ * custom bookmark in particular might be anything (an Aid Another, a trap
+ * Perception check), so it isn't narrowed at all.
+ */
+const COMBAT_RESTRICTED_KINDS = new Set<SavedRollSource["kind"]>([
+  "melee",
+  "ranged",
+  "weapon",
+  "cmb",
+]);
+
+/**
+ * Feats the character owns, pickable as saved-roll attachments, grouped into
+ * "applies automatically" (modeled AND compatible with `source`'s kind, per
+ * {@link compatibleAppliesTo}) and "reminder only" (everything else). Feats
+ * whose effect is already statically folded into the sheet ({@link
+ * isStaticallyApplied}) never appear in either group — attaching them would
+ * only double-count a number the sheet already shows. On a combat-focused
+ * source ({@link COMBAT_RESTRICTED_KINDS}) the reminder group is further
+ * narrowed to Combat-tagged feats. Does not exclude feats already attached to
+ * a given roll, or Improved Unarmed Strike on an unarmed-strike roll (both
+ * apply automatically instead) — that filtering is the UI's/`resolveSavedRoll`'s
+ * job respectively.
  */
 export function attachableFeats(
   doc: CharacterDoc,
   refData: RefData,
   source: SavedRollSource,
-): AttachableFeat[] {
+): AttachableFeatGroups {
   const compatible = compatibleAppliesTo(doc, source);
-  const all: AttachableFeat[] = doc.build.feats
+  const unarmedStrikeRoll = isUnarmedStrikeSource(doc, source);
+
+  const all = doc.build.feats
     .map((featId) => {
       const name = refData.feats[featId]?.name ?? featId;
       const slug = featNameSlug(name);
@@ -908,15 +1005,39 @@ export function attachableFeats(
         modeled: entry !== undefined,
         options: entry?.options,
         appliesTo: entry?.appliesTo,
+        tags: refData.feats[featId]?.tags ?? [],
       };
     })
     // The two-weapon chain isn't attachable: it comes with the roll's
     // two-weapon toggle, which applies every owned chain feat at once.
-    .filter((f) => !TWF_CHAIN_SLUGS.has(f.slug));
+    .filter((f) => !TWF_CHAIN_SLUGS.has(f.slug))
+    .filter((f) => !isStaticallyApplied(f.slug))
+    // Improved Unarmed Strike auto-applies to an unarmed-strike roll instead
+    // (see resolveSavedRoll), so it's never offered here for one.
+    .filter((f) => !(unarmedStrikeRoll && f.slug === IMPROVED_UNARMED_STRIKE_SLUG));
 
-  const isPrioritized = (f: AttachableFeat): boolean =>
+  const isAuto = (f: (typeof all)[number]): boolean =>
     f.modeled && (compatible === null || compatible.has(f.appliesTo!));
-  const prioritized = all.filter(isPrioritized).sort((a, b) => a.name.localeCompare(b.name));
-  const rest = all.filter((f) => !isPrioritized(f)).sort((a, b) => a.name.localeCompare(b.name));
-  return [...prioritized, ...rest];
+  const auto = all.filter(isAuto).sort((a, b) => a.name.localeCompare(b.name));
+  const reminderPool = all.filter((f) => !isAuto(f));
+  const reminder = (
+    COMBAT_RESTRICTED_KINDS.has(source.kind)
+      ? reminderPool.filter((f) => f.tags.includes("Combat"))
+      : reminderPool
+  ).sort((a, b) => a.name.localeCompare(b.name));
+
+  const strip = ({
+    slug,
+    name,
+    modeled,
+    options,
+    appliesTo,
+  }: (typeof all)[number]): AttachableFeat => ({
+    slug,
+    name,
+    modeled,
+    options,
+    appliesTo,
+  });
+  return { auto: auto.map(strip), reminder: reminder.map(strip) };
 }
