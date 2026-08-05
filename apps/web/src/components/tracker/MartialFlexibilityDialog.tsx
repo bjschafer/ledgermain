@@ -46,15 +46,27 @@ export function MartialFlexibilityDialog({
   onClose: () => void;
 }) {
   const [query, setQuery] = useState("");
+  const [hideIneligible, setHideIneligible] = useState(false);
 
   const combatFeats = useMemo(() => combatFeatsForMartialFlexibility(refData), [refData]);
   const ctx = useMemo(() => buildPrereqContext(doc, sheet, refData), [doc, sheet, refData]);
 
+  const prereqResults = useMemo(
+    () => new Map(combatFeats.map((f) => [f.id, evaluatePrereqs(f, ctx)])),
+    [combatFeats, ctx],
+  );
+
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return combatFeats;
-    return combatFeats.filter((f) => f.name.toLowerCase().includes(q));
-  }, [combatFeats, query]);
+    return combatFeats.filter((f) => {
+      if (q && !f.name.toLowerCase().includes(q)) return false;
+      // Never hide the feat currently borrowed, even if its prereqs no longer hold.
+      if (hideIneligible && f.id !== borrowedId && prereqResults.get(f.id)?.blocked) {
+        return false;
+      }
+      return true;
+    });
+  }, [combatFeats, query, hideIneligible, borrowedId, prereqResults]);
 
   const { visibleCount, rootRef, sentinelRef } = useIncrementalReveal(matches.length);
 
@@ -76,6 +88,14 @@ export function MartialFlexibilityDialog({
             aria-label="Search combat feats"
             autoFocus
           />
+          <button
+            type="button"
+            className="filter-toggle"
+            aria-pressed={hideIneligible}
+            onClick={() => setHideIneligible((v) => !v)}
+          >
+            {hideIneligible ? "▪ Hide ineligible" : "▫ Hide ineligible"}
+          </button>
         </div>
         <div className="spell-manager-panes is-single">
           <section className="spell-pane" aria-label="Combat feats">
@@ -92,7 +112,8 @@ export function MartialFlexibilityDialog({
                 )
               ) : (
                 matches.slice(0, visibleCount).map((feat) => {
-                  const res = evaluatePrereqs(feat, ctx);
+                  // Always present: prereqResults is keyed from the same combatFeats list.
+                  const res = prereqResults.get(feat.id)!;
                   const isBorrowed = feat.id === borrowedId;
                   const blocked = res.blocked && !isBorrowed;
                   return (
