@@ -727,6 +727,14 @@ export interface FeatPrerequisites {
   featsAnyOf?: FeatRef[][];
   /** Skill-rank requirements parsed from prose (best-effort). */
   skills: { skill: SkillId | null; ranks: number; raw: string }[];
+  /**
+   * Required caster kind, e.g. "arcane" for "Ability to cast arcane spells."
+   * Parsed only from an unconditional (non-"or") prose fragment, and only
+   * when the whole prereq text names exactly one kind — a feat naming both
+   * arcane and divine (a rare multiclass-caster prereq) is left unstructured
+   * rather than guessed at. See `transform/prereqs.ts`'s `parseCasterType`.
+   */
+  casterType?: "arcane" | "divine" | "psychic";
   /** The full prerequisite text, verbatim (HTML stripped). */
   prereqText?: string;
 }
