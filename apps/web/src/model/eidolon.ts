@@ -498,7 +498,9 @@ export function eidolonSubtypeVendoredEntry(
  * `casterLevel: 0`/`characterLevel: 0` (no eidolon casts, and a "character
  * level" prereq means the summoner's level, which the eidolon has no
  * independent stand-in for). Mirrors `model/companion.ts`'s
- * `companionFeatPrereqContext`.
+ * `companionFeatPrereqContext`, including the empty `casterKinds` (no
+ * eidolon casts, so an "ability to cast X spells" prereq is never met via
+ * the eidolon's own casting).
  */
 export function eidolonFeatPrereqContext(
   doc: CharacterDoc,
@@ -512,6 +514,7 @@ export function eidolonFeatPrereqContext(
     bab: eidolon.bab,
     casterLevel: 0,
     characterLevel: 0,
+    casterKinds: new Set(),
     selectedFeats: new Set(doc.build.eidolon?.feats ?? []),
     refData,
   };

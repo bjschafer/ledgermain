@@ -323,6 +323,45 @@ function parseCharacterLevel(text: string): number | undefined {
   return firstFragmentMatch(text, CHARACTER_LEVEL_FRAG_RE);
 }
 
+/**
+ * Matches "ability/able to cast|prepare|spontaneously cast ... arcane/divine/
+ * psychic spells" (the level/other words between "cast" and the kind are
+ * arbitrary, e.g. "cast 2nd-level arcane spells") or a bare "arcane/divine/
+ * psychic spellcaster" fragment. Exported for `apps/web/src/model/prereqs.ts`
+ * to mirror when deciding which prose fragment a met `casterType` check
+ * covers — kept here as the single source of the phrasing this parses.
+ */
+export const CASTER_TYPE_FRAG_RE =
+  /\b(?:ability|able)\s+to\s+(?:cast|prepare|spontaneously\s+cast)\b.*\b(arcane|divine|psychic)\s+spells?\b|\b(arcane|divine|psychic)\s+spellcaster\b/i;
+
+/**
+ * Required caster kind, from an unconditional (non-"or") fragment only —
+ * reuses `excludedFragments` so "Psychic Sensitivity or ability to cast
+ * psychic spells" (a real alternative: either the feat or the casting
+ * ability) is skipped exactly like every other extractor skips "or"
+ * fragments. Returns undefined when the text names more than one distinct
+ * kind (a rare multiclass-caster prereq, e.g. "able to cast 1st-level arcane
+ * spells, able to cast 1st-level divine spells") — that shape can't be
+ * represented by this single-value field, so it's left to `prereqText`
+ * rather than structuring just one of the two kinds and silently dropping
+ * the other.
+ */
+function parseCasterType(text: string): "arcane" | "divine" | "psychic" | undefined {
+  const excluded = excludedFragments(text);
+  const found = new Set<string>();
+  for (const clause of splitClauses(text)) {
+    for (const frag of splitFragments(clause)) {
+      if (excluded.has(frag)) continue;
+      const m = CASTER_TYPE_FRAG_RE.exec(frag);
+      const kind = m?.[1] ?? m?.[2];
+      if (kind) found.add(kind.toLowerCase());
+    }
+  }
+  return found.size === 1
+    ? (found.values().next().value as "arcane" | "divine" | "psychic")
+    : undefined;
+}
+
 /** Best-effort "N rank(s) in <skill>" capture; skill id mapping deferred. */
 function parseSkills(text: string): { skill: string | null; ranks: number; raw: string }[] {
   const out: { skill: string | null; ranks: number; raw: string }[] = [];
@@ -365,6 +404,8 @@ export function parsePrerequisites(
   if (cl !== undefined) result.casterLevel = cl;
   const charLevel = parseCharacterLevel(text);
   if (charLevel !== undefined) result.characterLevel = charLevel;
+  const casterType = parseCasterType(text);
+  if (casterType !== undefined) result.casterType = casterType;
   return result;
 }
 

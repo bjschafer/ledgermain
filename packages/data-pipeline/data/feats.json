@@ -6,6 +6,7 @@
     "prerequisites": {
       "abilities": [],
       "casterLevel": 5,
+      "casterType": "divine",
       "feats": [],
       "prereqText": "Ability to cast divine spells, caster level 5th, worshiper of Sarenrae.",
       "skills": []
@@ -3437,6 +3438,7 @@
     "name": "Mask Focus",
     "prerequisites": {
       "abilities": [],
+      "casterType": "arcane",
       "feats": [
         {
           "id": "btXWioB3SKJv8YEG",
@@ -4008,6 +4010,7 @@
     "name": "Spell Cartridges",
     "prerequisites": {
       "abilities": [],
+      "casterType": "arcane",
       "feats": [
         {
           "id": "QvlxYVVsBDlykPKe",
@@ -7598,6 +7601,7 @@
     "name": "Blessed Hammer",
     "prerequisites": {
       "abilities": [],
+      "casterType": "divine",
       "feats": [],
       "prereqText": "Ability to cast 3rd-level divine spells, proficient with warhammer, worshiper of Torag.",
       "skills": []
@@ -8805,6 +8809,7 @@
     "name": "Arcane Jinxer",
     "prerequisites": {
       "abilities": [],
+      "casterType": "arcane",
       "feats": [],
       "prereqText": "Arcane spellcaster, Halfling Jinx trait.",
       "skills": []
@@ -12742,6 +12747,7 @@
     "name": "Blooded Arcane Strike",
     "prerequisites": {
       "abilities": [],
+      "casterType": "arcane",
       "feats": [
         {
           "id": "QvlxYVVsBDlykPKe",
@@ -16580,6 +16586,7 @@
     "name": "Avid Spellbook Reader",
     "prerequisites": {
       "abilities": [],
+      "casterType": "arcane",
       "feats": [],
       "prereqText": "Ability to prepare arcane spells.",
       "skills": []
@@ -16794,6 +16801,7 @@
     "prerequisites": {
       "abilities": [],
       "casterLevel": 7,
+      "casterType": "divine",
       "feats": [],
       "prereqText": "Ability to cast divine spells, caster level 7th, worshiper of a Great Old One or Outer God.",
       "skills": []
@@ -19236,6 +19244,7 @@
     "name": "Scaled Disciple",
     "prerequisites": {
       "abilities": [],
+      "casterType": "divine",
       "feats": [],
       "prereqText": "Ability to spontaneously cast divine spells, kobold.",
       "skills": []
@@ -26278,6 +26287,7 @@
     "prerequisites": {
       "abilities": [],
       "casterLevel": 10,
+      "casterType": "arcane",
       "feats": [
         {
           "id": "ugSOPnNDy1vcXowA",
@@ -32941,6 +32951,7 @@
     "name": "Arcane Strike",
     "prerequisites": {
       "abilities": [],
+      "casterType": "arcane",
       "feats": [],
       "prereqText": "Ability to cast arcane spells.",
       "skills": []
@@ -34362,6 +34373,7 @@
     "prerequisites": {
       "abilities": [],
       "casterLevel": 12,
+      "casterType": "arcane",
       "feats": [
         {
           "id": "ugSOPnNDy1vcXowA",
@@ -36179,6 +36191,7 @@
     "prerequisites": {
       "abilities": [],
       "bab": 11,
+      "casterType": "divine",
       "feats": [],
       "prereqText": "Base attack bonus +11, ability to cast divine spells, alignment must be within one step of your deity's.",
       "skills": []
@@ -38476,6 +38489,7 @@
     "prerequisites": {
       "abilities": [],
       "bab": 4,
+      "casterType": "arcane",
       "feats": [],
       "prereqText": "Base attack bonus +4, ability to cast 2nd-level arcane spells, ability to cast at least one arcane force spell.",
       "skills": []
@@ -42444,6 +42458,7 @@
     "name": "Warrior Priest",
     "prerequisites": {
       "abilities": [],
+      "casterType": "divine",
       "feats": [],
       "prereqText": "Ability to cast divine spells, domain or mystery class feature.",
       "skills": []
@@ -44738,6 +44753,7 @@
     "name": "False Focus",
     "prerequisites": {
       "abilities": [],
+      "casterType": "arcane",
       "feats": [],
       "prereqText": "Knowledge (religion) 1 rank, ability to cast arcane spells.",
       "skills": [
@@ -45876,6 +45892,7 @@
     "name": "Eye of the Arclord",
     "prerequisites": {
       "abilities": [],
+      "casterType": "arcane",
       "feats": [],
       "prereqText": "Knowledge (arcana) 4 ranks, ability to cast arcane spells.",
       "skills": [
@@ -46687,6 +46704,7 @@
     "name": "Divine Dignity",
     "prerequisites": {
       "abilities": [],
+      "casterType": "divine",
       "feats": [
         {
           "id": "u7rGDZUL296QIuA0",
@@ -48121,6 +48139,7 @@
     "name": "Perfect Casting",
     "prerequisites": {
       "abilities": [],
+      "casterType": "divine",
       "feats": [
         {
           "id": "u7rGDZUL296QIuA0",
@@ -51343,6 +51362,7 @@
     "prerequisites": {
       "abilities": [],
       "casterLevel": 10,
+      "casterType": "divine",
       "feats": [],
       "prereqText": "Divine spellcaster, caster level 10th.",
       "skills": []
@@ -54495,6 +54515,7 @@
     "name": "Prophet",
     "prerequisites": {
       "abilities": [],
+      "casterType": "divine",
       "feats": [],
       "prereqText": "Ability to cast divine spells, and you must either have received a vision from your god (or another appropriate supernatural entity) or have the Marked by the Gods background (see Ultimate Campaign).",
       "skills": []
@@ -57974,6 +57995,7 @@
     "name": "Dawn's Blessing",
     "prerequisites": {
       "abilities": [],
+      "casterType": "divine",
       "feats": [],
       "prereqText": "Ability to cast divine spells, sandkin half-orc, worshiper of Sarenrae.",
       "skills": []
@@ -60899,6 +60921,7 @@
     "name": "Riving Strike",
     "prerequisites": {
       "abilities": [],
+      "casterType": "arcane",
       "feats": [
         {
           "id": "QvlxYVVsBDlykPKe",
@@ -61382,6 +61405,7 @@
     "prerequisites": {
       "abilities": [],
       "casterLevel": 10,
+      "casterType": "arcane",
       "feats": [],
       "prereqText": "Arcane spellcaster, caster level 10th.",
       "skills": []
@@ -63649,6 +63673,7 @@
         }
       ],
       "casterLevel": 4,
+      "casterType": "divine",
       "feats": [],
       "prereqText": "Ability to cast divine spells, summon familiar class ability, caster level 4th, Cha 13.",
       "skills": []
@@ -67908,6 +67933,7 @@
     "prerequisites": {
       "abilities": [],
       "casterLevel": 10,
+      "casterType": "arcane",
       "feats": [],
       "prereqText": "Arcane spellcaster, caster level 10th.",
       "skills": []
@@ -71044,6 +71070,7 @@
     "prerequisites": {
       "abilities": [],
       "casterLevel": 4,
+      "casterType": "arcane",
       "feats": [],
       "prereqText": "Arcane spellcaster, caster level 4th, serpentfolk.",
       "skills": []
@@ -72536,6 +72563,7 @@
           "min": 15
         }
       ],
+      "casterType": "arcane",
       "feats": [
         {
           "id": "QvlxYVVsBDlykPKe",

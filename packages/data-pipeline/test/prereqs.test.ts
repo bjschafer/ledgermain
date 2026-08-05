@@ -186,6 +186,60 @@ describe("parsePrerequisites — 'or'-joined @UUID feat refs (issue #108)", () =
   });
 });
 
+describe("parsePrerequisites — casterType", () => {
+  it("parses a bare 'ability to cast arcane spells' fragment", () => {
+    expect(parse("Ability to cast arcane spells.").casterType).toBe("arcane");
+  });
+
+  it("parses 'ability to prepare <kind> spells'", () => {
+    expect(parse("Ability to prepare arcane spells.").casterType).toBe("arcane");
+  });
+
+  it("parses 'ability to spontaneously cast <kind> spells'", () => {
+    expect(parse("Ability to spontaneously cast divine spells, kobold.").casterType).toBe("divine");
+  });
+
+  it("parses a bare '<kind> spellcaster' fragment", () => {
+    expect(parse("Arcane spellcaster, caster level 10th.").casterType).toBe("arcane");
+  });
+
+  it("tolerates words between 'cast' and the kind (spell level, etc.)", () => {
+    expect(parse("Base attack bonus +4, ability to cast 2nd-level arcane spells.").casterType).toBe(
+      "arcane",
+    );
+  });
+
+  it("does NOT structure a psychic caster requirement offered as an alternative to a feat", () => {
+    // Real-world shape: "Psychic Sensitivity or ability to cast psychic
+    // spells" is a genuine either/or — a character with the Psychic
+    // Sensitivity feat but no psychic spellcasting still qualifies, so
+    // hard-blocking on casterType here would be wrong.
+    const p = parse("Psychic Sensitivity or the ability to cast psychic spells.");
+    expect(p.casterType).toBeUndefined();
+  });
+
+  it("does not let an 'or' alternative in one fragment affect an unrelated AND-ed fragment", () => {
+    const p = parse(
+      "Cha 11, Psychic Sensitivity or the ability to cast psychic spells, Heal 3 ranks.",
+    );
+    expect(p.casterType).toBeUndefined();
+  });
+
+  it("leaves casterType unset when the text names more than one distinct kind", () => {
+    // Real-world shape (a multiclass-caster prereq): can't be represented by
+    // this single-value field, so it stays prose-only rather than picking
+    // one kind and silently dropping the other.
+    const p = parse(
+      "Wis 13, Int or Cha 13, able to cast 1st-level arcane spells, able to cast 1st-level divine spells.",
+    );
+    expect(p.casterType).toBeUndefined();
+  });
+
+  it("leaves casterType unset when no kind word is present", () => {
+    expect(parse("Ability to cast spells.").casterType).toBeUndefined();
+  });
+});
+
 describe("resolveNamedFeatPrereqs", () => {
   function feat(id: string, name: string, prereqText?: string): Feat {
     return {
