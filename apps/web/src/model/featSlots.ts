@@ -1,30 +1,38 @@
 /**
  * Feat "slots": the character's feat budget decomposed into typed buckets —
- * "generic" (any feat), "combat" (Fighter), "wizardBonus" (metamagic / item
- * creation / Spell Mastery), "combatStyle" (Ranger's chosen style tree),
- * "bloodline" (Sorcerer's chosen bloodline list), "monkList" (Monk's limited
- * list) — and a greedy assignment of the character's chosen feats into those
- * slots, so the UI can show which typed slots are unfilled and flag feats that
- * don't fit any remaining slot.
+ * "generic" (any feat), "combat" (Fighter), "brawlerCombat" (Brawler),
+ * "wizardBonus" (metamagic / item creation / Spell Mastery), "combatStyle"
+ * (Ranger's chosen style tree), "bloodline" (Sorcerer's chosen bloodline
+ * list), "monkList" (Monk's limited list) — and an assignment of the
+ * character's chosen feats into those slots, so the UI can show which typed
+ * slots are unfilled and flag feats that don't fit any remaining slot.
  *
  * Pure, framework-agnostic, no DOM — same split as the rest of `model/`.
  * Nothing here hard-blocks a feat pick (hybrid soft-warning posture, per
  * CLAUDE.md): a character can still take any feat the picker allows; this
  * module only classifies and warns.
  *
- * Assignment is greedy, most-restrictive-slot-first: a bloodline's 8-feat
- * list is tried before Fighter's 214-feat "Combat" tag, which is tried before
- * the fully unrestricted "generic" bucket. This means a feat that could
- * satisfy either a restricted slot or a generic slot preferentially fills the
- * restricted one, leaving the generic slot free for something else — the
- * same intuition a player applies by hand. Assignment order is otherwise the
- * order feats were added (`doc.build.feats`), which is a simplification: a
- * feat eligible for two different open restricted slots (rare — e.g. a
- * multiclass ranger/fighter with both open Combat-style and Combat slots)
- * gets whichever slot type is scanned first, not necessarily the "best"
- * assignment. Since the total slot count is unaffected either way, this only
- * affects which specific slot gets credited, not whether the budget balances
- * — acceptable given the project's soft-warn, best-effort posture.
+ * Assignment has two passes. First, `doc.build.featSlotAssignments` (a
+ * player-declared feat-instance -> slot-group-key pin, see its doc comment on
+ * `CharacterDoc`) is honored for every instance that still resolves — the
+ * named group exists, has room, and the feat is eligible for it — since some
+ * class features (a brawler's Bonus Combat Feats) need EXACTLY which feat
+ * fills which slot recorded, not just a count. Second, every remaining
+ * instance is greedily assigned most-restrictive-slot-first: a bloodline's
+ * 8-feat list is tried before Fighter's 214-feat "Combat" tag, which is tried
+ * before the fully unrestricted "generic" bucket. This means a feat that
+ * could satisfy either a restricted slot or a generic slot preferentially
+ * fills the restricted one, leaving the generic slot free for something else
+ * — the same intuition a player applies by hand. Assignment order is
+ * otherwise the order feats were added (`doc.build.feats`), which is a
+ * simplification: an unpinned feat eligible for two different open
+ * restricted slots (rare — e.g. a multiclass ranger/fighter with both open
+ * Combat-style and Combat slots) gets whichever slot type is scanned first,
+ * not necessarily the "best" assignment — a pin is exactly how a player
+ * resolves that ambiguity by hand. Since the total slot count is unaffected
+ * either way, an unpinned tie only affects which specific slot gets credited,
+ * not whether the budget balances — acceptable given the project's
+ * soft-warn, best-effort posture.
  */
 
 import type { CharacterDoc, Feat, RefData } from "@pf1/schema";
@@ -87,6 +95,8 @@ function slotKey(type: FeatSlotType): string {
       return "generic";
     case "combat":
       return "combat";
+    case "brawlerCombat":
+      return "brawlerCombat";
     case "wizardBonus":
       return "wizardBonus";
     case "magusBonus":
@@ -109,6 +119,8 @@ export function slotTypeLabel(type: FeatSlotType): string {
       return "Feat";
     case "combat":
       return "Combat feat";
+    case "brawlerCombat":
+      return "Brawler bonus combat feat";
     case "wizardBonus":
       return "Wizard bonus feat (metamagic / item creation / Spell Mastery)";
     case "magusBonus":
@@ -133,6 +145,8 @@ export function slotTypeBadge(type: FeatSlotType): string {
       return "Feat";
     case "combat":
       return "Combat";
+    case "brawlerCombat":
+      return "Brawler combat";
     case "wizardBonus":
       return "Wizard bonus";
     case "magusBonus":
@@ -164,6 +178,7 @@ function restrictivenessRank(type: FeatSlotType): number {
     case "magusBonus":
       return 3;
     case "combat":
+    case "brawlerCombat":
       return 4;
     case "generic":
       return 5;
@@ -183,6 +198,7 @@ export function featEligibleForSlot(feat: Feat, type: FeatSlotType): boolean {
     case "generic":
       return true;
     case "combat":
+    case "brawlerCombat":
       return feat.tags.includes("Combat");
     case "wizardBonus":
       return (
@@ -272,20 +288,54 @@ export function buildFeatSlotGroups(doc: CharacterDoc, refData: RefData): FeatSl
 }
 
 /**
- * Greedily assigns the character's chosen, non-granted feat INSTANCES
- * (`featInstances` — the primary instance of each `build.feats` entry plus
- * every `build.extraFeats` entry, so two instances of the same repeatable feat
- * are assigned independently and can fill two different open slots) to slot
- * groups (most-restrictive group first — see file doc comment), then reports
- * which groups have unfilled slots and which instances didn't fit anywhere.
+ * Assigns the character's chosen, non-granted feat INSTANCES (`featInstances`
+ * — the primary instance of each `build.feats` entry plus every
+ * `build.extraFeats` entry, so two instances of the same repeatable feat are
+ * assigned independently and can fill two different open slots) to slot
+ * groups, then reports which groups have unfilled slots and which instances
+ * didn't fit anywhere.
+ *
+ * Two passes over the same instance list (stable order throughout, so a
+ * pinned instance's position among its peers doesn't change): first, every
+ * instance with a still-valid `doc.build.featSlotAssignments` pin claims its
+ * named group; then every remaining (unpinned, or pinned-but-stale) instance
+ * is greedily assigned most-restrictive-group-first — see file doc comment
+ * for both passes' rationale.
  */
 export function assignFeatsToSlots(doc: CharacterDoc, refData: RefData): FeatSlotAssignment {
   const groups = buildFeatSlotGroups(doc, refData);
+  const groupByKey = new Map(groups.map((g) => [g.key, g]));
   const grantedIds = new Set(grantedFeats(doc, refData).map((g) => g.featId));
+  const pins = doc.build.featSlotAssignments ?? {};
+  const instances = featInstances(doc);
+  const pinnedInstanceIds = new Set<string>();
   const unassignedFeatIds: string[] = [];
 
-  for (const instance of featInstances(doc)) {
+  for (const instance of instances) {
     if (grantedIds.has(instance.featId)) continue; // fixed grants never consume a slot
+    const pinnedKey = pins[instance.instanceId];
+    if (pinnedKey === undefined) continue;
+    const feat = refData.feats[instance.featId];
+    if (!feat) continue;
+    const group = groupByKey.get(pinnedKey);
+    // A pin naming a slot group that no longer exists, is already full, or no
+    // longer accepts this feat is inert — soft-warning posture, matching the
+    // rest of this module (see `featSlotAssignments`'s doc comment): it falls
+    // through to the greedy pass below rather than blocking or erroring.
+    if (
+      !group ||
+      group.filledFeatIds.length >= group.total ||
+      !featEligibleForSlot(feat, group.type)
+    ) {
+      continue;
+    }
+    group.filledFeatIds.push(instance.featId);
+    pinnedInstanceIds.add(instance.instanceId);
+  }
+
+  for (const instance of instances) {
+    if (grantedIds.has(instance.featId)) continue;
+    if (pinnedInstanceIds.has(instance.instanceId)) continue;
     const feat = refData.feats[instance.featId];
     if (!feat) continue; // stale/unknown feat id — nothing to classify
     const target = groups.find(

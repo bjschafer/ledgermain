@@ -8,6 +8,7 @@ import {
   createEmptyDoc,
   setArchetypes,
   setClassLevel,
+  setFeatSlotPin,
   setRace,
   toggleFeat,
 } from "../src/model/doc.js";
@@ -361,5 +362,130 @@ describe("assignFeatsToSlots: repeatable feats assign each instance individually
     expect(combat.filledFeatIds).toHaveLength(2);
     expect(generic.filledFeatIds).toHaveLength(1);
     expect(unassignedFeatIds).toEqual([]);
+  });
+});
+
+describe("buildFeatSlotGroups: Brawler bonus combat feats", () => {
+  it("Brawler 5 has its own brawlerCombat group, sized to the Bonus Combat Feats progression", () => {
+    let doc = withRace("Elf");
+    doc = addClass(doc, "brawler");
+    doc = setClassLevel(doc, "brawler", 5);
+    const groups = buildFeatSlotGroups(doc, ref);
+    const brawlerGroup = groups.find((g) => g.type.kind === "brawlerCombat");
+    expect(brawlerGroup).toBeDefined();
+    expect(brawlerGroup!.label).toBe("Brawler bonus combat feat");
+    // floor((5+1)/3) = 2
+    expect(brawlerGroup!.total).toBe(2);
+    expect(groups.find((g) => g.type.kind === "combat")).toBeUndefined();
+  });
+
+  it("Cleave (Combat) is eligible for the brawler slot; Empower Spell (Metamagic) is not", () => {
+    const cleave = ref.feats[featId("Cleave")]!;
+    const empower = ref.feats[featId("Empower Spell")]!;
+    expect(featEligibleForSlot(cleave, { kind: "brawlerCombat" })).toBe(true);
+    expect(featEligibleForSlot(empower, { kind: "brawlerCombat" })).toBe(false);
+  });
+
+  it("a Fighter/Brawler multiclass keeps the two Combat-tag slot groups distinct rather than merged", () => {
+    let doc = withRace("Elf");
+    doc = addClass(doc, "fighter");
+    doc = setClassLevel(doc, "fighter", 2); // combat: 1+floor(2/2)=2
+    doc = addClass(doc, "brawler");
+    doc = setClassLevel(doc, "brawler", 5); // brawlerCombat: floor((5+1)/3)=2
+    const groups = buildFeatSlotGroups(doc, ref);
+    const combat = groups.find((g) => g.type.kind === "combat")!;
+    const brawlerGroup = groups.find((g) => g.type.kind === "brawlerCombat")!;
+    expect(combat.total).toBe(2);
+    expect(brawlerGroup.total).toBe(2);
+    expect(combat.key).not.toBe(brawlerGroup.key);
+    expect(combat.label).not.toBe(brawlerGroup.label);
+  });
+});
+
+describe("assignFeatsToSlots: player-declared slot pins (build.featSlotAssignments)", () => {
+  it("a pinned instance claims its named group even when the greedy pass would pick differently", () => {
+    let doc = withRace("Elf");
+    doc = addClass(doc, "fighter");
+    doc = setClassLevel(doc, "fighter", 2); // combat total=2
+    doc = addClass(doc, "brawler");
+    doc = setClassLevel(doc, "brawler", 5); // brawlerCombat total=2
+    const cleaveId = featId("Cleave");
+    const powerAttackId = featId("Power Attack");
+    doc = toggleFeat(doc, cleaveId);
+    doc = toggleFeat(doc, powerAttackId);
+    // Pin Power Attack to the brawler slot specifically — this is the whole
+    // point of pinning: recording exactly which feat is "the brawler's
+    // swappable bonus feat" rather than an arbitrary greedy pick.
+    doc = setFeatSlotPin(doc, powerAttackId, "brawlerCombat");
+    const { groups } = assignFeatsToSlots(doc, ref);
+    const brawlerGroup = groups.find((g) => g.type.kind === "brawlerCombat")!;
+    const combat = groups.find((g) => g.type.kind === "combat")!;
+    expect(brawlerGroup.filledFeatIds).toEqual([powerAttackId]);
+    expect(combat.filledFeatIds).toEqual([cleaveId]);
+  });
+
+  it("a pin whose group is already full falls back to the greedy pass instead of being dropped", () => {
+    let doc = withRace("Elf");
+    doc = addClass(doc, "brawler");
+    doc = setClassLevel(doc, "brawler", 2); // brawlerCombat total=1, generic total=1
+    const cleaveId = featId("Cleave");
+    const powerAttackId = featId("Power Attack");
+    doc = toggleFeat(doc, cleaveId);
+    doc = toggleFeat(doc, powerAttackId);
+    // Both pinned to the same single-slot group — only the first can fit.
+    doc = setFeatSlotPin(doc, cleaveId, "brawlerCombat");
+    doc = setFeatSlotPin(doc, powerAttackId, "brawlerCombat");
+    const { groups, unassignedFeatIds } = assignFeatsToSlots(doc, ref);
+    const brawlerGroup = groups.find((g) => g.type.kind === "brawlerCombat")!;
+    const generic = groups.find((g) => g.type.kind === "generic")!;
+    expect(brawlerGroup.filledFeatIds).toEqual([cleaveId]);
+    expect(generic.filledFeatIds).toEqual([powerAttackId]);
+    expect(unassignedFeatIds).toEqual([]);
+  });
+
+  it("a pin naming an unknown/stale slot group is ignored, not blocking", () => {
+    let doc = withRace("Elf");
+    doc = addClass(doc, "fighter");
+    doc = setClassLevel(doc, "fighter", 2);
+    const cleaveId = featId("Cleave");
+    doc = toggleFeat(doc, cleaveId);
+    doc = setFeatSlotPin(doc, cleaveId, "bloodline:Draconic"); // no such group on this build
+    const { groups, unassignedFeatIds } = assignFeatsToSlots(doc, ref);
+    const combat = groups.find((g) => g.type.kind === "combat")!;
+    expect(combat.filledFeatIds).toEqual([cleaveId]);
+    expect(unassignedFeatIds).toEqual([]);
+  });
+
+  it("a pin naming a slot the feat isn't eligible for is ignored", () => {
+    let doc = withRace("Elf");
+    doc = addClass(doc, "brawler");
+    doc = setClassLevel(doc, "brawler", 5); // brawlerCombat total=2
+    const empowerId = featId("Empower Spell"); // Metamagic, not Combat
+    doc = toggleFeat(doc, empowerId);
+    doc = setFeatSlotPin(doc, empowerId, "brawlerCombat");
+    const { groups } = assignFeatsToSlots(doc, ref);
+    const brawlerGroup = groups.find((g) => g.type.kind === "brawlerCombat")!;
+    const generic = groups.find((g) => g.type.kind === "generic")!;
+    expect(brawlerGroup.filledFeatIds).toEqual([]);
+    expect(generic.filledFeatIds).toEqual([empowerId]);
+  });
+
+  it("pins two instances of a repeatable feat to two different groups independently", () => {
+    let doc = withRace("Elf");
+    doc = addClass(doc, "fighter");
+    doc = setClassLevel(doc, "fighter", 2); // combat total=2
+    doc = addClass(doc, "brawler");
+    doc = setClassLevel(doc, "brawler", 5); // brawlerCombat total=2
+    const icId = featId("Improved Critical");
+    doc = toggleFeat(doc, icId); // primary instance, instanceId === icId
+    doc = addFeatInstance(doc, icId); // extra instance, its own instanceId
+    const extraInstanceId = doc.build.extraFeats![0]!.instanceId;
+    doc = setFeatSlotPin(doc, icId, "combat");
+    doc = setFeatSlotPin(doc, extraInstanceId, "brawlerCombat");
+    const { groups } = assignFeatsToSlots(doc, ref);
+    const combat = groups.find((g) => g.type.kind === "combat")!;
+    const brawlerGroup = groups.find((g) => g.type.kind === "brawlerCombat")!;
+    expect(combat.filledFeatIds).toEqual([icId]);
+    expect(brawlerGroup.filledFeatIds).toEqual([icId]);
   });
 });

@@ -5,7 +5,7 @@ import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 import { featNameSlug, resolveFeatEffect } from "@pf1/engine";
 
 import { combatStyleFeatSlugs } from "../../model/ranger.js";
-import { addFeatInstance, removeFeatInstance } from "../../model/doc.js";
+import { addFeatInstance, removeFeatInstance, setFeatSlotPin } from "../../model/doc.js";
 import { assignFeatsToSlots, featEligibleForSlot, slotTypeBadge } from "../../model/featSlots.js";
 import {
   chosenFeatCountExcludingGranted,
@@ -51,6 +51,8 @@ export interface FeatRenderContext {
   instancesByFeatId: Map<string, ReturnType<typeof featInstances>>;
   openRestrictedGroups: SlotGroup[];
   restrictedSlotGroups: SlotGroup[];
+  /** Every slot group, generic included — the full option list for the pin picker. */
+  allSlotGroups: SlotGroup[];
   unassignedFeatNames: string[];
   skillOptions: FeatChoiceOption[];
   weaponOptions: FeatChoiceOption[];
@@ -127,6 +129,7 @@ export function useFeatRenderContext(
     () => restrictedSlotGroups.filter((g) => g.filledFeatIds.length < g.total),
     [restrictedSlotGroups],
   );
+  const allSlotGroups = slotAssignment.groups;
 
   const skillOptions = useMemo(() => featChoiceOptions("skill", refData), [refData]);
   const weaponOptions = useMemo(
@@ -149,6 +152,7 @@ export function useFeatRenderContext(
     instancesByFeatId,
     openRestrictedGroups,
     restrictedSlotGroups,
+    allSlotGroups,
     unassignedFeatNames,
     skillOptions,
     weaponOptions,
@@ -183,6 +187,58 @@ export function PrereqChecklist({ res }: { res: PrereqResult }) {
           ⚠ {res.softText}
         </InfoTip>
       ) : null}
+    </div>
+  );
+}
+
+/**
+ * The slot groups a taken feat instance could be pinned to: every group with
+ * open-or-occupied room (`total > 0`) that the feat is eligible for,
+ * including "generic" (a player may want to explicitly reserve a base slot
+ * rather than a restricted one). Returns an empty list for a feat with no
+ * restricted-group option at all, so the caller can skip rendering the picker
+ * entirely rather than showing a select whose only choice is "Auto".
+ */
+function pinnableGroupsFor(feat: Feat, allGroups: SlotGroup[]): SlotGroup[] {
+  return allGroups.filter((g) => g.total > 0 && featEligibleForSlot(feat, g.type));
+}
+
+/**
+ * Compact "which slot is this?" picker for a taken feat instance — lets the
+ * player pin an instance to a specific class feat-slot group
+ * (`build.featSlotAssignments`) instead of trusting `assignFeatsToSlots`'s
+ * best-effort greedy guess. Only rendered when at least one non-generic
+ * option exists (see `pinnableGroupsFor`'s caller), so a character with only
+ * the plain per-level feat budget never sees it.
+ */
+function FeatSlotPinPicker({
+  instanceId,
+  pinned,
+  options,
+  update,
+}: {
+  instanceId: string;
+  pinned: string | undefined;
+  options: SlotGroup[];
+  update: (fn: (doc: CharacterDoc) => CharacterDoc) => void;
+}) {
+  return (
+    <div className="feat-choice">
+      <label className="feat-choice-label">
+        Slot:
+        <select
+          className="feat-choice-select"
+          value={pinned ?? ""}
+          onChange={(e) => update((d) => setFeatSlotPin(d, instanceId, e.target.value || null))}
+        >
+          <option value="">Auto</option>
+          {options.map((g) => (
+            <option key={g.key} value={g.key}>
+              {g.label}
+            </option>
+          ))}
+        </select>
+      </label>
     </div>
   );
 }
@@ -230,6 +286,13 @@ export function FeatEntry({
         : choiceDesc?.type === "school"
           ? fx.schoolOptions
           : [];
+
+  // A taken feat that could fill more than the plain per-level budget gets a
+  // pin picker so the player can record which specific class slot it fills
+  // (see `FeatSlotPinPicker`) — hidden entirely when the only eligible group
+  // is "generic", since pinning there has nothing to disambiguate.
+  const pinOptions = isSel ? pinnableGroupsFor(feat, fx.allSlotGroups) : [];
+  const showPinPicker = pinOptions.some((g) => g.type.kind !== "generic");
 
   const prereqBlock = <PrereqChecklist res={res} />;
 
@@ -336,6 +399,14 @@ export function FeatEntry({
                       Add a weapon with a type (in the Weapons section) to enable this picker.
                     </span>
                   </div>
+                )}
+                {showPinPicker && (
+                  <FeatSlotPinPicker
+                    instanceId={inst.instanceId}
+                    pinned={doc.build.featSlotAssignments?.[inst.instanceId]}
+                    options={pinOptions}
+                    update={update}
+                  />
                 )}
                 {idx === 0 ? prereqBlock : null}
                 {idx === 0 &&
@@ -451,6 +522,14 @@ export function FeatEntry({
               Add a weapon with a type (in the Weapons section) to enable this picker.
             </span>
           </div>
+        )}
+        {showPinPicker && (
+          <FeatSlotPinPicker
+            instanceId={feat.id}
+            pinned={doc.build.featSlotAssignments?.[feat.id]}
+            options={pinOptions}
+            update={update}
+          />
         )}
         {prereqBlock}
         {featContextNotes(feat.name).map((n, i) => (

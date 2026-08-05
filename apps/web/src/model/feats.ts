@@ -249,6 +249,7 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
 export type FeatSlotType =
   | { kind: "generic" }
   | { kind: "combat" }
+  | { kind: "brawlerCombat" }
   | { kind: "wizardBonus" }
   | { kind: "magusBonus" }
   | { kind: "combatStyle"; style: string }
@@ -282,6 +283,14 @@ function baseFeatureSlotType(
   switch (featureName) {
     case "bonus feats (fgt)":
       return { type: { kind: "combat" }, source: "Fighter" };
+    // Kept as its own `brawlerCombat` kind rather than folded into Fighter's
+    // "combat" (unlike Crusader's broad approximation further below, which
+    // deliberately merges) — a brawler can later swap ONE specific bonus feat
+    // for another (ACG, Bonus Combat Feats), so the player needs this group
+    // visually distinct even on a fighter/brawler multiclass, not merged into
+    // a shared bucket.
+    case "bonus combat feats (bra)":
+      return { type: { kind: "brawlerCombat" }, source: "Brawler" };
     case "bonus feats (wiz)":
       return { type: { kind: "wizardBonus" }, source: "Wizard" };
     case "bonus feats (mag)":

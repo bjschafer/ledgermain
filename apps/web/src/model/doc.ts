@@ -1102,6 +1102,48 @@ export function removeFeatInstance(
 }
 
 /**
+ * Pin (or clear, with `groupKey: null`) a taken feat INSTANCE to a specific
+ * class feat-slot group, recorded in `build.featSlotAssignments` — see that
+ * field's doc comment on `CharacterDoc` for why (a brawler's Bonus Combat
+ * Feats lets her later trade one specific bonus feat for another, so the
+ * player needs to record exactly which feat is "the brawler slot" rather than
+ * trusting `assignFeatsToSlots`'s best-effort greedy guess). `instanceId`
+ * matches `FeatInstance.instanceId` (`model/feats.ts`): a primary instance
+ * uses the feat id itself, an extra (repeatable-feat) instance uses its own
+ * `extraFeats` entry id. No validation that `groupKey` currently names a real
+ * slot group, or that the feat is eligible for it — soft-warning posture,
+ * matching every other free-choice transition in this module;
+ * `assignFeatsToSlots` re-checks both at read time and silently falls back to
+ * greedy auto-assignment for a pin that no longer resolves.
+ */
+export function setFeatSlotPin(
+  doc: CharacterDoc,
+  instanceId: string,
+  groupKey: string | null,
+): CharacterDoc {
+  const current = doc.build.featSlotAssignments ?? {};
+  if (groupKey === null) {
+    if (!(instanceId in current)) return doc;
+    const next = { ...current };
+    delete next[instanceId];
+    return {
+      ...doc,
+      build: {
+        ...doc.build,
+        featSlotAssignments: Object.keys(next).length > 0 ? next : undefined,
+      },
+    };
+  }
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      featSlotAssignments: { ...current, [instanceId]: groupKey },
+    },
+  };
+}
+
+/**
  * Add/remove `spellId` from `classTag`'s known-spell list (the spellbook, for
  * a curated-list caster). `classTag` is explicit rather than assumed — pass
  * the caster class the player is currently viewing (see

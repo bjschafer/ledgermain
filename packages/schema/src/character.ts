@@ -497,6 +497,30 @@ export interface CharacterDoc {
      */
     extraFeats?: { instanceId: string; featId: string; choiceId?: string }[];
     /**
+     * Player-declared attribution: which class feat-slot GROUP (a
+     * `FeatSlotGroup.key` from `apps/web/src/model/featSlots.ts`, e.g.
+     * "brawlerCombat", "combat", "bloodline:Draconic") a taken feat INSTANCE
+     * occupies. Keyed by feat INSTANCE id (a primary instance's key is the feat
+     * id itself, matching `feats[]`; an `extraFeats` instance uses its own
+     * `instanceId`) rather than by feat id alone, so two instances of the same
+     * repeatable feat can be pinned to two different slots.
+     *
+     * Exists because the model layer's own slot assignment
+     * (`assignFeatsToSlots`) is a greedy best-effort guess with no per-slot
+     * identity of its own; some class features (a brawler's Bonus Combat Feats,
+     * which lets her later trade one specific bonus feat for another) need the
+     * player to say exactly which feat fills which slot, not just how many are
+     * filled. Advisory only, matching this project's soft-warning posture for
+     * feat slots: an entry naming a slot group that no longer exists, or a feat
+     * no longer eligible for it, is silently ignored by `assignFeatsToSlots`
+     * (which falls back to auto-assigning that instance) rather than blocking
+     * anything. Unknown or stale entries are dropped at render time, not
+     * cleaned from the stored document, since they're inert rather than wrong.
+     * Optional/back-compat: absent means every instance is auto-assigned,
+     * matching every document that predates this feature.
+     */
+    featSlotAssignments?: Record<string, string>;
+    /**
      * Level-up ability score increases (one +1 per entry); the player chooses one
      * ability at each 4th character level. Capped at floor(level/4) when applied.
      */
