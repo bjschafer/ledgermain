@@ -41,6 +41,30 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-04-saved-roll-clarity",
+    date: "2026-08-04",
+    title: "Saved rolls: a clearer feat picker and fists that know their feats",
+    note: "The feat list on a saved roll now sorts itself into two groups: feats that change the numbers the moment you attach them, and feats that ride along as reminders. Feats whose bonus is already baked into your sheet, like Iron Will, no longer show up at all, and an attack roll only offers combat feats as reminders. Improved Unarmed Strike attaches itself to your unarmed strike rolls with a note that your punches are lethal and do not provoke. When a brawler turns a roll to two weapon fighting, the toggle now says it is their flurry and spells out what they can flurry with. Roll titles got bigger and bolder so the list is easier to scan mid fight.",
+  },
+  {
+    id: "2026-08-04-brawler-bonus-feats",
+    date: "2026-08-04",
+    title: "Brawlers: know which feats are your bonus feats",
+    note: "A brawler's bonus combat feats now have their own labeled slots in the feat list, kept separate from a fighter's, and any feat can be pinned to the class slot it was picked for. That matters at 5th level and every 3 after, when a brawler may swap out one bonus combat feat: the pin records which feats are on that list. The martial flexibility picker also grew the same hide ineligible toggle as the main feat picker, so you only scroll past feats you can actually borrow.",
+  },
+  {
+    id: "2026-08-04-caster-feat-checks",
+    date: "2026-08-04",
+    title: "Feats that need spellcasting now check for it",
+    note: "Arcane Strike and its kin used to wave a soft warning and let anyone take them. A feat whose requirement is the ability to cast arcane or divine spells now checks your classes for real: a wizard qualifies for Arcane Strike, a brawler does not, and a cleric passes Warrior Priest but not False Focus. Twenty eight feats picked up the check. One edge to know: casting through a spell like ability technically qualifies you too, and the sheet does not model those, so a build that leans on one will see these feats locked.",
+  },
+  {
+    id: "2026-08-04-gear-shelves",
+    date: "2026-08-04",
+    title: "Your backpack is no longer filed next to your holy avenger",
+    note: "The gear list now shelves itself: armor and shields, potions and consumables, magic items, adventuring gear, and everything else each sit under their own header instead of one long pile in the order you bought things. Items worn on a body slot carry a small badge naming it, and equipping two belts, or a third ring, turns the badges red to say something has to give. It never stops you: house rules are house rules.",
+  },
+  {
     id: "2026-08-04-dr-bypass",
     date: "2026-08-04",
     title: "Your attacks now say what they punch through",

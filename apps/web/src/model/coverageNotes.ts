@@ -99,6 +99,12 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "1,090 entries carry structured changes[]; the imported catalog adds 3,832 whose effects exist only as prose. The gap is promotion rather than coverage, and the weapon and armor special ability catalog sits on the same axis: keen is the only entry that moves numbers.",
   },
   {
+    category: "Monk flurry of blows",
+    note: "A monk's flurry sequence shows in Class Features as a reference string, but the sheet does not roll it: saved rolls and the attack lines use your normal attack progression. A brawler's flurry is the exception, rolled through a saved roll's two weapon fighting mode.",
+    issueDetail:
+      "Chained and unchained monk flurry labels are computed in the engine but stay display-only; nothing feeds them into iteratives or saved rolls. Chained flurry substitutes monk level for BAB, which the granted two-weapon-chain mechanism cannot express.",
+  },
+  {
     category: "Character traits",
     note: "The full published trait catalog is searchable in the picker, and a trait whose benefit comes with structured numbers or a fixed class-skill grant applies them to your sheet automatically. The rest show their benefit as text to apply at the table. Anything still missing can be added as a homebrew trait.",
     issueDetail:
