@@ -735,6 +735,21 @@ export interface FeatPrerequisites {
    * rather than guessed at. See `transform/prereqs.ts`'s `parseCasterType`.
    */
   casterType?: "arcane" | "divine" | "psychic";
+  /**
+   * Races that satisfy the feat's racial requirement — any ONE of them, so a
+   * feat reading "half-orc or orc" carries both. Names are the vendored
+   * `Race.name` with any parenthetical variant stripped ("Lashunta (Female)" →
+   * "Lashunta"), so a race matches by name rather than id.
+   *
+   * Extracted only from a prose fragment that is ENTIRELY race names ("dwarf
+   * or gnome"; "Android, kasatha, lashunta, or Triaxian") — see
+   * `transform/prereqs.ts`'s `resolveRacePrereqs`. A race merely mentioned
+   * inside a longer fragment ("orc ferocity racial trait", "proficient with
+   * sling or halfling sling staff") never produces a requirement, since the
+   * sentence usually isn't gating on the race itself. Optional/omitted when
+   * the feat has no parsed racial requirement.
+   */
+  races?: string[];
   /** The full prerequisite text, verbatim (HTML stripped). */
   prereqText?: string;
 }

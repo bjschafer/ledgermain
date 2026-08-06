@@ -1,8 +1,11 @@
 import { describe, expect, it } from "bun:test";
 
+import { compute } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
 
+import { createEmptyDoc, setRace } from "../src/model/doc.js";
 import {
+  buildPrereqContext,
   evaluatePrereqs,
   unqualifiedSelectedFeats,
   type PrereqContext,
@@ -307,5 +310,77 @@ describe("unqualifiedSelectedFeats() — issue #9 (retained feat whose prereq wa
 
   it("ignores an id with no matching feat in RefData", () => {
     expect(unqualifiedSelectedFeats(["not-a-real-feat-id"], ctx())).toEqual([]);
+  });
+});
+
+describe("race prerequisites", () => {
+  function raceId(name: string): string {
+    const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
+    if (!entry) throw new Error(`race not found: ${name}`);
+    return entry[0];
+  }
+
+  /** The `raceIdentity` set `buildPrereqContext` derives for a named race. */
+  function identityFor(name: string): ReadonlySet<string> {
+    const doc = setRace(createEmptyDoc("race-prereq-test"), raceId(name));
+    return buildPrereqContext(doc, compute(doc, ref), ref).raceIdentity!;
+  }
+
+  /** Baseline context with every ability high enough that only race can block. */
+  function raceCtx(race?: string): PrereqContext {
+    return ctx({
+      abilityTotals: { str: 16, dex: 16, con: 14, int: 16, wis: 16, cha: 14 },
+      raceIdentity: race ? identityFor(race) : undefined,
+    });
+  }
+
+  it("BLOCKS a racial feat for the wrong race", () => {
+    // Keen Scent: "Wis 13, half-orc or orc."
+    const res = evaluatePrereqs(featByName("Keen Scent"), raceCtx("Elf"));
+    expect(res.blocked).toBe(true);
+    expect(res.checks.find((c) => c.label === "Half-Orc or Orc")?.met).toBe(false);
+  });
+
+  it("ALLOWS the same feat for a race the prerequisite names", () => {
+    const res = evaluatePrereqs(featByName("Keen Scent"), raceCtx("Orc"));
+    expect(res.blocked).toBe(false);
+    expect(res.checks.find((c) => c.label === "Half-Orc or Orc")?.met).toBe(true);
+  });
+
+  it("qualifies a half-orc for orc feats and a half-elf for elf feats (creature subtypes)", () => {
+    // "Half-elves count as both elves and humans for any effect related to race."
+    // The same rule holds for half-orcs; the doc's creature subtypes carry it.
+    const orcFeat = featByName("Keen Scent"); // half-orc or orc
+    expect(evaluatePrereqs(orcFeat, raceCtx("Half-Orc")).blocked).toBe(false);
+    // Attuned to the Wild: "Elf."
+    const elfFeat = featByName("Attuned to the Wild");
+    expect(evaluatePrereqs(elfFeat, raceCtx("Half-Elf")).blocked).toBe(false);
+    expect(evaluatePrereqs(elfFeat, raceCtx("Dwarf")).blocked).toBe(true);
+  });
+
+  it("qualifies a drow for elf feats (elf subtype), but not an elf for drow feats", () => {
+    const elfFeat = featByName("Attuned to the Wild");
+    expect(evaluatePrereqs(elfFeat, raceCtx("Drow")).blocked).toBe(false);
+    // Umbral Scion's race fragment is "drow"; an elf is not a drow.
+    const drowFeat = featByName("Umbral Scion");
+    const res = evaluatePrereqs(drowFeat, raceCtx("Elf"));
+    expect(res.checks.find((c) => c.label === "Drow")?.met).toBe(false);
+  });
+
+  it("drops the prose warning once the race requirement is met", () => {
+    // Crowd of Bullies' whole prereq text is "Half-orc." — a met race check
+    // covers it, so nothing should remain to warn about.
+    const res = evaluatePrereqs(featByName("Crowd of Bullies"), raceCtx("Half-Orc"));
+    expect(res.blocked).toBe(false);
+    expect(res.warn).toBe(false);
+    expect(res.softText).toBeUndefined();
+  });
+
+  it("never blocks when the doc's race can't be resolved", () => {
+    // No raceIdentity at all (nothing chosen yet, or a stale id): the check is
+    // skipped rather than failed, and the prose warning carries the requirement.
+    const res = evaluatePrereqs(featByName("Keen Scent"), raceCtx());
+    expect(res.blocked).toBe(false);
+    expect(res.checks.some((c) => c.label === "Half-Orc or Orc")).toBe(false);
   });
 });

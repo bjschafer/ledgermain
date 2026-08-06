@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-05-racial-feat-checks",
+    date: "2026-08-05",
+    title: "Racial feats now check your race",
+    note: "A feat whose requirement is a race, like Keen Scent or Elemental Jaunt, used to show a soft warning and let anyone take it. It now checks: 461 feats picked up a race requirement, and the feat picker locks the ones you cannot qualify for. The martial flexibility picker checks the same way, so a brawler borrowing a combat feat mid fight is not offered another race's feats. Half elves and half orcs count as both of their parent races, and a drow qualifies for elf feats, a duergar for dwarf feats, a svirfneblin for gnome feats. A feat that only mentions a race in passing, like one needing a halfling sling staff or an orc ferocity racial trait, is left alone and still just warns.",
+  },
+  {
     id: "2026-08-04-saved-roll-clarity",
     date: "2026-08-04",
     title: "Saved rolls: a clearer feat picker and fists that know their feats",

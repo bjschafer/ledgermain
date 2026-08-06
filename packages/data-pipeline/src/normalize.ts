@@ -77,7 +77,7 @@ import {
 import { transformFeat } from "./transform/feats.js";
 import { transformFocusedSchool } from "./transform/focusedSchools.js";
 import { transformItem } from "./transform/items.js";
-import { resolveNamedFeatPrereqs } from "./transform/prereqs.js";
+import { resolveNamedFeatPrereqs, resolveRacePrereqs } from "./transform/prereqs.js";
 import { transformPrestigeClassPack } from "./transform/prestigeClasses.js";
 import { transformRace } from "./transform/races.js";
 import { transformRacialTrait } from "./transform/racialTraits.js";
@@ -550,8 +550,10 @@ export function normalize(opts: NormalizeOptions): {
 
   // Second prereq pass: needs the full feat name list, so it only runs once
   // `feats` above is complete — see the doc comment on
-  // `resolveNamedFeatPrereqs`.
+  // `resolveNamedFeatPrereqs`. The race pass is independent of it and needs
+  // the race-name set the same way.
   resolveNamedFeatPrereqs(feats);
+  resolveRacePrereqs(feats, raceNames);
 
   // --- traits: pf1-content community pack (Foundry's own system pack ships
   // none — traits aren't part of the base game data, see `@pf1/engine`

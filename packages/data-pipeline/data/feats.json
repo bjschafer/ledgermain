@@ -22,6 +22,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Samsaran.",
+      "races": ["Samsaran"],
       "skills": []
     },
     "tags": ["General"],
@@ -35,6 +36,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Craven racial trait or fearless racial trait, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Racial", "Halfling"],
@@ -195,6 +197,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Good alignment, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Racial", "Kobold"],
@@ -227,6 +230,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc.",
+      "races": ["Half-Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc"],
@@ -319,6 +323,7 @@
       "characterLevel": 11,
       "feats": [],
       "prereqText": "Character level 11th, sylph.",
+      "races": ["Sylph"],
       "skills": []
     },
     "tags": ["Racial", "Sylph"],
@@ -414,6 +419,7 @@
         }
       ],
       "prereqText": "Wis 13, dwarf or gnome, defensive training racial trait, Earth Child Style, Earth Child Topple, Greater Trip, Improved Trip, Improved Unarmed Strike, Stunning Fist, Acrobatics 9 ranks.",
+      "races": ["Dwarf", "Gnome"],
       "skills": [
         {
           "ranks": 9,
@@ -841,6 +847,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Duskwalker.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Racial", "Duskwalker"],
@@ -854,6 +861,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Dexterity 13, catfolk.",
+      "races": ["Catfolk"],
       "skills": []
     },
     "tags": ["Racial", "Catfolk"],
@@ -1136,6 +1144,7 @@
         }
       ],
       "prereqText": "Fortunate One, adaptable luck racial trait, character level 10th, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Racial", "Halfling"],
@@ -1410,6 +1419,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Duergar.",
+      "races": ["Duergar"],
       "skills": []
     },
     "tags": ["Racial", "Duergar"],
@@ -1463,6 +1473,7 @@
         }
       ],
       "prereqText": "Fire Tamer, character level 5th, goblin.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Racial", "Goblin"],
@@ -1682,6 +1693,7 @@
         }
       ],
       "prereqText": "Fiendish Darkness, darkness spell-like ability, caster level 3rd, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -1737,6 +1749,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -1915,6 +1928,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Knowledge (any) 1 rank, elf.",
+      "races": ["Elf"],
       "skills": [
         {
           "ranks": 1,
@@ -2052,6 +2066,7 @@
         }
       ],
       "prereqText": "Str 13, Cleave, Power Attack, base attack bonus +11, dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf", "Combat Trick"],
@@ -2118,6 +2133,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Human (Taldan).",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Combat", "Teamwork", "Racial", "Human"],
@@ -2397,6 +2413,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -2421,6 +2438,7 @@
         }
       ],
       "prereqText": "Sharpclaw, Tunnel Rat, ratfolk.",
+      "races": ["Ratfolk"],
       "skills": []
     },
     "tags": ["Racial", "Ratfolk"],
@@ -2976,6 +2994,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Intimidate 5 ranks, tiefling.",
+      "races": ["Tiefling"],
       "skills": [
         {
           "ranks": 5,
@@ -3310,6 +3329,7 @@
         }
       ],
       "prereqText": "Defiant Luck, human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -3323,6 +3343,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Fetchling, shadow walk spell-like ability.",
+      "races": ["Fetchling"],
       "skills": []
     },
     "tags": ["Fetchling", "Racial"],
@@ -3337,6 +3358,7 @@
       "characterLevel": 7,
       "feats": [],
       "prereqText": "Animal companion or mount class feature, character level 7th, half-orc or orc.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc"],
@@ -3392,6 +3414,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Darkvision 60 ft., tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -3863,6 +3886,7 @@
       ],
       "feats": [],
       "prereqText": "Con 13, skinwalker.",
+      "races": ["Skinwalker"],
       "skills": []
     },
     "sources": [
@@ -4142,6 +4166,7 @@
         }
       ],
       "prereqText": "Oread Burrower, Stony Step, character level 13th, oread.",
+      "races": ["Oread"],
       "skills": []
     },
     "tags": ["Racial", "Oread"],
@@ -4692,6 +4717,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Wayang.",
+      "races": ["Wayang"],
       "skills": []
     },
     "tags": ["General"],
@@ -4725,6 +4751,7 @@
         }
       ],
       "prereqText": "Scribe Scroll, aphorite, caster level 5th, crystalline dust racial trait.",
+      "races": ["Aphorite"],
       "skills": []
     },
     "tags": ["Racial", "Aphorite"],
@@ -5031,6 +5058,7 @@
       ],
       "feats": [],
       "prereqText": "Con 15, 6 HD, ogre.",
+      "races": ["Ogre"],
       "skills": []
     },
     "tags": ["Racial", "Ogre"],
@@ -5159,6 +5187,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-elf.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -5300,6 +5329,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin, Ride 1 rank.",
+      "races": ["Goblin"],
       "skills": [
         {
           "ranks": 1,
@@ -5337,6 +5367,7 @@
         }
       ],
       "prereqText": "Power Attack, half-orc.",
+      "races": ["Half-Orc"],
       "skills": []
     },
     "tags": ["Combat", "Combat Trick"],
@@ -5389,6 +5420,7 @@
       "characterLevel": 9,
       "feats": [],
       "prereqText": "Character level 9th, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -5408,6 +5440,7 @@
       "characterLevel": 3,
       "feats": [],
       "prereqText": "Cha 13, character level 3rd, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -5434,6 +5467,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Aasimar.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar"],
@@ -5486,6 +5520,7 @@
         }
       ],
       "prereqText": "Toughness, duergar.",
+      "races": ["Duergar"],
       "skills": []
     },
     "tags": ["Racial", "Duergar"],
@@ -5564,6 +5599,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Fighter level 11th, human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Human"],
@@ -5970,6 +6006,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, half-orc or orc, non-lawful.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc"],
@@ -6225,6 +6262,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ferocity racial trait, orc.",
+      "races": ["Orc"],
       "skills": []
     },
     "tags": ["Racial", "Orc"],
@@ -6330,6 +6368,7 @@
         }
       ],
       "prereqText": "Deft Hands, base attack bonus +7, wyrwood.",
+      "races": ["Wyrwood"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Wyrwood"],
@@ -6509,6 +6548,7 @@
       "casterLevel": 4,
       "feats": [],
       "prereqText": "Caster level 4th, gillman, favored enemy (aberrations) class feature.",
+      "races": ["Gillman"],
       "skills": []
     },
     "tags": ["General", "Gillman"],
@@ -6523,6 +6563,7 @@
       "characterLevel": 9,
       "feats": [],
       "prereqText": "Character level 9th, duskwalker, ward against corruption racial trait.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Racial", "Duskwalker"],
@@ -6631,6 +6672,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Gnome, gnome magic racial trait.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Racial", "Gnome"],
@@ -6867,6 +6909,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Human (Chelaxian).",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Combat", "Teamwork"],
@@ -7419,6 +7462,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ratfolk.",
+      "races": ["Ratfolk"],
       "skills": []
     },
     "tags": ["Combat", "Combat Trick"],
@@ -7590,6 +7634,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-elf.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["General"],
@@ -7752,6 +7797,7 @@
         }
       ],
       "prereqText": "Draconic Aspect, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Racial", "Kobold"],
@@ -7993,6 +8039,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Gnome, illusion resistance racial trait.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Racial", "Gnome"],
@@ -8303,6 +8350,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, gnoll.",
+      "races": ["Gnoll"],
       "skills": []
     },
     "tags": ["Combat"],
@@ -8382,6 +8430,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, strix.",
+      "races": ["Strix"],
       "skills": []
     },
     "tags": ["Monster", "Strix"],
@@ -8549,6 +8598,7 @@
         }
       ],
       "prereqText": "Str 13, Dex 15, Nimble Striker, base attack bonus +10, catfolk, cat's claws racial trait or Aspect of the Beast (claws of the beast manifestation).",
+      "races": ["Catfolk"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Catfolk", "Combat Trick"],
@@ -8771,6 +8821,7 @@
       "characterLevel": 3,
       "feats": [],
       "prereqText": "Triton, summon nature's ally II spell-like ability, character level 3rd.",
+      "races": ["Triton"],
       "skills": []
     },
     "tags": ["General", "Triton"],
@@ -8825,6 +8876,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Drow, darkness racial spell-like ability.",
+      "races": ["Drow"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Drow"],
@@ -9088,6 +9140,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Halfling, fearless and halfling luck racial traits.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Halfling"],
@@ -9157,6 +9210,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Racial", "Dwarf"],
@@ -9208,6 +9262,7 @@
         }
       ],
       "prereqText": "Point-Blank Shot, elf, weapon familiarity racial trait.",
+      "races": ["Elf"],
       "skills": []
     },
     "tags": ["Combat", "Teamwork"],
@@ -9956,6 +10011,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Fetchling, shadowy resistance racial trait.",
+      "races": ["Fetchling"],
       "skills": []
     },
     "tags": ["Racial", "Fetchling"],
@@ -10110,6 +10166,7 @@
         }
       ],
       "prereqText": "Demoralizing Lash, Intimidate 5 ranks, hobgoblin.",
+      "races": ["Hobgoblin"],
       "skills": [
         {
           "ranks": 5,
@@ -10271,6 +10328,7 @@
         }
       ],
       "prereqText": "Cha 13, Drow Nobility, able to use drow spell-like abilities, drow.",
+      "races": ["Drow"],
       "skills": []
     },
     "tags": ["Racial", "Drow"],
@@ -10284,6 +10342,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Spell Focus (illusion), Gnome.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Metamagic", "Combat", "Racial", "Gnome"],
@@ -10297,6 +10356,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Fiendish sorcery racial trait, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -10323,6 +10383,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Must be taken at 1st level, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -10362,6 +10423,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Dwarf, hardy racial trait.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Dwarf"],
@@ -10400,6 +10462,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, gnome, proficient with all martial weapons.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Gnome", "Combat Trick"],
@@ -10780,6 +10843,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Gathlain, racial fly speed.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -10793,6 +10857,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc or orc, rage class feature.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Half-Orc", "Orc"],
@@ -10868,6 +10933,7 @@
         }
       ],
       "prereqText": "Dispelling Blood, Knowledge (arcana) 9 ranks, vishkanya.",
+      "races": ["Vishkanya"],
       "skills": [
         {
           "ranks": 9,
@@ -10888,6 +10954,7 @@
       "characterLevel": 5,
       "feats": [],
       "prereqText": "Character level 5th, hydraulic push spell-like ability, undine.",
+      "races": ["Undine"],
       "skills": []
     },
     "tags": ["Racial", "Undine"],
@@ -11366,6 +11433,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bluff 1 rank; Disguise 1 rank; kitsune, nagaji, samsaran, tengu, or wayang.",
+      "races": ["Kitsune", "Nagaji", "Samsaran", "Tengu", "Wayang"],
       "skills": [
         {
           "ranks": 1,
@@ -11968,6 +12036,7 @@
         }
       ],
       "prereqText": "Con 15, Diehard, Endurance, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -12309,6 +12378,7 @@
         }
       ],
       "prereqText": "Cha 13, Fearless Curiosity, Intimidate 5 ranks, human.",
+      "races": ["Human"],
       "skills": [
         {
           "ranks": 5,
@@ -12372,6 +12442,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Changeling, coven hex or Coven-Touched.",
+      "races": ["Changeling"],
       "skills": []
     },
     "tags": ["Racial", "Changeling"],
@@ -12688,6 +12759,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Adaptive luck racial trait, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Racial", "Halfling"],
@@ -12788,6 +12860,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Duskwalker.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Racial", "Duskwalker"],
@@ -12866,6 +12939,7 @@
         }
       ],
       "prereqText": "Angelic Blood, Angelic Flesh, Angel Wings, aasimar, character level 11th.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar"],
@@ -12957,6 +13031,7 @@
         }
       ],
       "prereqText": "Spit Venom, nagaji.",
+      "races": ["Nagaji"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Nagaji"],
@@ -13104,6 +13179,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-elf, adaptability or ancestral arms racial trait.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Half-Elf"],
@@ -13232,6 +13308,7 @@
         }
       ],
       "prereqText": "Str 25, Improved Grapple, Improved Unarmed Strike, ogre, size Large or larger.",
+      "races": ["Ogre"],
       "skills": []
     },
     "tags": ["Monster", "Ogre"],
@@ -13674,6 +13751,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Fetchling, shadow walk spell-like ability.",
+      "races": ["Fetchling"],
       "skills": []
     },
     "tags": ["Fetchling", "Racial"],
@@ -14425,6 +14503,7 @@
         }
       ],
       "prereqText": "Channel Force, aasimar, channel energy 4d6.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar", "Channeling"],
@@ -14607,6 +14686,7 @@
       ],
       "feats": [],
       "prereqText": "Int 13, human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -14650,6 +14730,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Drow-blooded and drow magic racial traits, half-elf.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -14695,6 +14776,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Svirfneblin.",
+      "races": ["Svirfneblin"],
       "skills": []
     },
     "tags": ["Racial", "Svirfneblin"],
@@ -14931,6 +15013,7 @@
         }
       ],
       "prereqText": "Attuned to the Wild, Guardian of the Wild, elf.",
+      "races": ["Elf"],
       "skills": []
     },
     "tags": ["Racial", "Elf"],
@@ -14963,6 +15046,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bluff 5 ranks, Escape Artist 1 rank, gnome.",
+      "races": ["Gnome"],
       "skills": [
         {
           "ranks": 5,
@@ -15201,6 +15285,7 @@
       ],
       "feats": [],
       "prereqText": "Con 13; dwarf, half-orc, or orc.",
+      "races": ["Dwarf", "Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc", "Dwarf"],
@@ -15358,6 +15443,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ratfolk.",
+      "races": ["Ratfolk"],
       "skills": []
     },
     "tags": ["Racial", "Ratfolk"],
@@ -15832,6 +15918,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -15974,6 +16061,7 @@
         }
       ],
       "prereqText": "Wis 15, Stone Shroud, Stealth 6 ranks, dwarf, stonecunning racial trait.",
+      "races": ["Dwarf"],
       "skills": [
         {
           "ranks": 6,
@@ -16113,6 +16201,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -16126,6 +16215,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Android, kasatha, lashunta, or Triaxian.",
+      "races": ["Android", "Kasatha", "Lashunta", "Triaxian"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Android", "Kasatha", "Lashunta", "Triaxian"],
@@ -16246,6 +16336,7 @@
         }
       ],
       "prereqText": "Scorching Weapons, character level 7th, ifrit.",
+      "races": ["Ifrit"],
       "skills": []
     },
     "sources": [
@@ -16276,6 +16367,7 @@
         }
       ],
       "prereqText": "Angelic Blood, aasimar.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar"],
@@ -16844,6 +16936,7 @@
       "characterLevel": 5,
       "feats": [],
       "prereqText": "Character level 5th, shabti.",
+      "races": ["Shabti"],
       "skills": []
     },
     "tags": ["Origin", "Racial", "Shabti"],
@@ -16897,6 +16990,7 @@
       "characterLevel": 5,
       "feats": [],
       "prereqText": "Character level 5th, half-elf, multitalented racial trait.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -16973,6 +17067,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bleachling racial trait, gnome.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Racial", "Gnome"],
@@ -17367,6 +17462,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Racial", "Kobold"],
@@ -17380,6 +17476,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Racial", "Halfling"],
@@ -17789,6 +17886,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Channel energy 5d6, duskwalker, ghost hunter racial trait.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Racial", "Duskwalker"],
@@ -18037,6 +18135,7 @@
         }
       ],
       "prereqText": "Dex 13, base attack bonus +6 or monk level 6th, Greater Grapple, Improved Grapple, Improved Unarmed Strike, Kudzu Grappler, Kudzu Invasion, vine leshy.",
+      "races": ["Vine Leshy"],
       "skills": []
     },
     "tags": ["Combat"],
@@ -18114,6 +18213,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc.",
+      "races": ["Half-Orc"],
       "skills": []
     },
     "tags": ["Combat", "Teamwork"],
@@ -18215,6 +18315,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Aasimar, daylight spell-like ability, sufficiently high level (see below).",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar"],
@@ -18284,6 +18385,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Vishkanya.",
+      "races": ["Vishkanya"],
       "skills": []
     },
     "tags": ["Racial", "Vishkanya"],
@@ -18350,6 +18452,7 @@
       "characterLevel": 3,
       "feats": [],
       "prereqText": "Character level 3rd, drow.",
+      "races": ["Drow"],
       "skills": []
     },
     "tags": ["Racial", "Drow"],
@@ -18624,6 +18727,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 11, changeling.",
+      "races": ["Changeling"],
       "skills": []
     },
     "tags": ["Racial", "Changeling"],
@@ -18707,6 +18811,7 @@
         }
       ],
       "prereqText": "Disruptive, Spellbreaker, dwarf, 10th-level fighter.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf"],
@@ -18765,6 +18870,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Character level 15th, ifrit, oread, sylph, or undine.",
+      "races": ["Ifrit", "Oread", "Sylph", "Undine"],
       "skills": []
     },
     "tags": ["Racial", "Ifrit", "Oread", "Sylph", "Undine"],
@@ -19111,6 +19217,7 @@
         }
       ],
       "prereqText": "Cha 13, Monstrous Mask, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -19130,6 +19237,7 @@
         }
       ],
       "prereqText": "Swift Crystalline Dust, aphorite, crystalline dust racial trait.",
+      "races": ["Aphorite"],
       "skills": []
     },
     "tags": ["Racial", "Aphorite"],
@@ -19247,6 +19355,7 @@
       "casterType": "divine",
       "feats": [],
       "prereqText": "Ability to spontaneously cast divine spells, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Racial", "Kobold"],
@@ -19260,6 +19369,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc or orc, rage class feature.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Half-Orc", "Orc", "Combat Trick"],
@@ -19378,6 +19488,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Undine.",
+      "races": ["Undine"],
       "skills": []
     },
     "tags": ["Racial", "Undine"],
@@ -19391,6 +19502,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Goblin"],
@@ -19815,6 +19927,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Knowledge (arcana) 6 ranks, wyvaran.",
+      "races": ["Wyvaran"],
       "skills": [
         {
           "ranks": 6,
@@ -19955,6 +20068,7 @@
       ],
       "feats": [],
       "prereqText": "Wis 13, half-elf.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -20081,6 +20195,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Diplomacy 3 ranks, human (Keleshite).",
+      "races": ["Human"],
       "skills": [
         {
           "ranks": 3,
@@ -20236,6 +20351,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Craft (alchemy) 5 ranks, gathlain, racial fly speed.",
+      "races": ["Gathlain"],
       "skills": [
         {
           "ranks": 5,
@@ -20287,6 +20403,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Acrobatics 1 rank, vanara.",
+      "races": ["Vanara"],
       "skills": [
         {
           "ranks": 1,
@@ -20371,6 +20488,7 @@
         }
       ],
       "prereqText": "Cautious Fighter, base attack bonus +1, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Halfling", "Combat Trick"],
@@ -20473,6 +20591,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Fighter level 4th, human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Human"],
@@ -20492,6 +20611,7 @@
         }
       ],
       "prereqText": "Iron Will, base Will save +4, human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -20564,6 +20684,7 @@
         }
       ],
       "prereqText": "Well-Prepared, Sleight of Hand 1 rank, halfling.",
+      "races": ["Halfling"],
       "skills": [
         {
           "ranks": 1,
@@ -20583,6 +20704,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Duergar, slow and steady racial trait.",
+      "races": ["Duergar"],
       "skills": []
     },
     "tags": ["Racial", "Duergar"],
@@ -20748,6 +20870,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Both Improved Unarmed Strike and Improved Grapple or the grab ability, ogre, size Large or larger.",
+      "races": ["Ogre"],
       "skills": []
     },
     "tags": ["General"],
@@ -21091,6 +21214,7 @@
         }
       ],
       "prereqText": "Blood Drinker, dhampir.",
+      "races": ["Dhampir"],
       "skills": []
     },
     "tags": ["Racial", "Dhampir"],
@@ -21124,6 +21248,7 @@
         }
       ],
       "prereqText": "Angelic Blood, aasimar, character level 10th.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar"],
@@ -21137,6 +21262,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -21163,6 +21289,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Elf.",
+      "races": ["Elf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Elf", "Combat Trick"],
@@ -21214,6 +21341,7 @@
         }
       ],
       "prereqText": "Cha 15, Advanced Gathlain Magic, character level 9th, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -21354,6 +21482,7 @@
         }
       ],
       "prereqText": "Cautious Fighter, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Halfling", "Combat Trick"],
@@ -21379,6 +21508,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Handle Animal 1 rank; either the animal companion, divine bond (mount), or mount class feature; human.",
+      "races": ["Human"],
       "skills": [
         {
           "ranks": 1,
@@ -21592,6 +21722,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Dwarf, hardy racial trait.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Racial", "Dwarf"],
@@ -21806,6 +21937,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Duskwalker.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Origin", "Racial", "Duskwalker"],
@@ -21956,6 +22088,7 @@
         }
       ],
       "prereqText": "Exile's Path, Seen and Unseen, character level 11th, half-elf.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -22001,6 +22134,7 @@
         }
       ],
       "prereqText": "Str 13, Cleave, Goblin Cleaver, Orc Hewer, Power Attack, Strike Back, base attack bonus +11, dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf", "Combat Trick"],
@@ -22055,6 +22189,7 @@
         }
       ],
       "prereqText": "Craft Construct, Leadership, wyrwood.",
+      "races": ["Wyrwood"],
       "skills": []
     },
     "sources": [
@@ -22129,6 +22264,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Charisma 13, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Racial", "Kobold"],
@@ -22142,6 +22278,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Dhampir.",
+      "races": ["Dhampir"],
       "skills": []
     },
     "tags": ["Racial", "Dhampir"],
@@ -22371,6 +22508,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Iron Will or Mother's Gift, changeling.",
+      "races": ["Changeling"],
       "skills": []
     },
     "tags": ["General"],
@@ -22384,6 +22522,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Halfling"],
@@ -22430,6 +22569,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Nagaji.",
+      "races": ["Nagaji"],
       "skills": []
     },
     "sources": [
@@ -22950,6 +23090,7 @@
       ],
       "feats": [],
       "prereqText": "Wis 13, half-orc or orc.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc"],
@@ -23194,6 +23335,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Racial", "Goblin"],
@@ -23377,6 +23519,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Wyrwood.",
+      "races": ["Wyrwood"],
       "skills": []
     },
     "tags": ["Racial", "Wyrwood"],
@@ -23485,6 +23628,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-elf, half-orc, or halfling (see Special).",
+      "races": ["Half-Elf", "Half-Orc", "Halfling"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -23590,6 +23734,7 @@
       "bab": 5,
       "feats": [],
       "prereqText": "Base attack bonus +5, darkness spell-like ability, sneak attack class feature, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Tiefling"],
@@ -23638,6 +23783,7 @@
         }
       ],
       "prereqText": "Dex 13, Improved Grapple, Improved Unarmed Strike, Greater Grapple, base attack bonus +6, vine leshy.",
+      "races": ["Vine Leshy"],
       "skills": []
     },
     "tags": ["General", "Racial", "Vine Leshy"],
@@ -23716,6 +23862,7 @@
         }
       ],
       "prereqText": "Str 13, Con 13, orc or half-orc, Diehard, Endurance, base attack bonus +6.",
+      "races": ["Orc", "Half-Orc"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Half-Orc", "Orc", "Combat Trick"],
@@ -23939,6 +24086,7 @@
       "characterLevel": 7,
       "feats": [],
       "prereqText": "Character level 7th, duskwalker, ghost hunter racial trait.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Racial", "Duskwalker"],
@@ -24112,6 +24260,7 @@
         }
       ],
       "prereqText": "Cautious Fighter, base attack bonus +3, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Halfling"],
@@ -24198,6 +24347,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -24316,6 +24466,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bluff 1 rank, bloodline class feature, gnome.",
+      "races": ["Gnome"],
       "skills": [
         {
           "ranks": 1,
@@ -24387,6 +24538,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -24429,6 +24581,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Hobgoblin.",
+      "races": ["Hobgoblin"],
       "skills": []
     },
     "tags": ["Racial", "Hobgoblin"],
@@ -24800,6 +24953,7 @@
         }
       ],
       "prereqText": "Arcane Strike, Improved Unarmed Strike, wyrwood.",
+      "races": ["Wyrwood"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Wyrwood"],
@@ -25299,6 +25453,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Gnome, hatred racial trait.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Gnome", "Dwarf", "Combat Trick"],
@@ -26019,6 +26174,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Knowledge (arcana) 7 ranks, vishkanya.",
+      "races": ["Vishkanya"],
       "skills": [
         {
           "ranks": 7,
@@ -26431,6 +26587,7 @@
         }
       ],
       "prereqText": "Blood Drinker, base attack bonus +6, dhampir.",
+      "races": ["Dhampir"],
       "skills": []
     },
     "tags": ["General", "Racial", "Dhampir"],
@@ -26640,6 +26797,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin, Acrobatics 1 rank, Escape Artist 1 rank.",
+      "races": ["Goblin"],
       "skills": [
         {
           "ranks": 1,
@@ -26748,6 +26906,7 @@
       "characterLevel": 3,
       "feats": [],
       "prereqText": "Character level 3rd, tengu.",
+      "races": ["Tengu"],
       "skills": []
     },
     "tags": ["Racial", "Tengu"],
@@ -26762,6 +26921,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, goblin.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Combat", "Teamwork", "Racial", "Goblin"],
@@ -26827,6 +26987,7 @@
         }
       ],
       "prereqText": "Dex 13, Improved Grapple, Improved Unarmed Strike, base attack bonus +6, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -26915,6 +27076,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, Intimidate 1 rank, hobgoblin.",
+      "races": ["Hobgoblin"],
       "skills": [
         {
           "ranks": 1,
@@ -26971,6 +27133,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 10; elf, half-elf, or gnome.",
+      "races": ["Elf", "Half-Elf", "Gnome"],
       "skills": []
     },
     "tags": ["Racial", "Gnome", "Half-Elf", "Elf"],
@@ -27190,6 +27353,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bluff 1 rank, ki pool class feature, gnome.",
+      "races": ["Gnome"],
       "skills": [
         {
           "ranks": 1,
@@ -27258,6 +27422,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Hydraulic push spell-like ability, undine.",
+      "races": ["Undine"],
       "skills": []
     },
     "tags": ["Racial", "Undine"],
@@ -27411,6 +27576,7 @@
       "casterLevel": 1,
       "feats": [],
       "prereqText": "Caster level 1st, drow.",
+      "races": ["Drow"],
       "skills": []
     },
     "tags": ["Racial", "Drow"],
@@ -27701,6 +27867,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, half-orc or orc.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Half-Orc", "Orc"],
@@ -27714,6 +27881,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Sylph.",
+      "races": ["Sylph"],
       "skills": []
     },
     "tags": ["Racial", "Sylph"],
@@ -28095,6 +28263,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Dwarf, hardy racial trait.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Racial", "Dwarf"],
@@ -28226,6 +28395,7 @@
         }
       ],
       "prereqText": "Ghostbane Ichor, Knowledge (religion) 13 ranks, vishkanya.",
+      "races": ["Vishkanya"],
       "skills": [
         {
           "ranks": 13,
@@ -28327,6 +28497,7 @@
       ],
       "feats": [],
       "prereqText": "Con 13, aasimar.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar"],
@@ -28394,6 +28565,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Darkness spell-like ability, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -28407,6 +28579,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Aasimar, must be taken at 1st level.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar"],
@@ -28467,6 +28640,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Stealth 4 ranks, kobold.",
+      "races": ["Kobold"],
       "skills": [
         {
           "ranks": 4,
@@ -28609,6 +28783,7 @@
         }
       ],
       "prereqText": "Scribe Scroll, Scribe Spell Equation, aphorite, caster level 5th, crystalline dust racial trait.",
+      "races": ["Aphorite"],
       "skills": []
     },
     "tags": ["Racial", "Aphorite"],
@@ -28770,6 +28945,7 @@
       "bab": 5,
       "feats": [],
       "prereqText": "Base attack bonus +5, natural weapon racial trait, tengu.",
+      "races": ["Tengu"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Tengu", "Combat Trick"],
@@ -28783,6 +28959,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Racial", "Goblin"],
@@ -29140,6 +29317,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, hobgoblin.",
+      "races": ["Hobgoblin"],
       "skills": []
     },
     "tags": ["Racial", "Hobgoblin"],
@@ -29240,6 +29418,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Gillman.",
+      "races": ["Gillman"],
       "skills": []
     },
     "tags": ["Racial", "Gillman"],
@@ -29442,6 +29621,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Spellcraft 3 ranks, wyrwood.",
+      "races": ["Wyrwood"],
       "skills": [
         {
           "ranks": 3,
@@ -29509,6 +29689,7 @@
       "bab": 6,
       "feats": [],
       "prereqText": "Dex 13, base attack bonus +6, skinwalker.",
+      "races": ["Skinwalker"],
       "skills": []
     },
     "tags": ["General"],
@@ -29574,6 +29755,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 15, half-orc.",
+      "races": ["Half-Orc"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Half-Orc"],
@@ -29606,6 +29788,7 @@
       "characterLevel": 8,
       "feats": [],
       "prereqText": "Con 15, character level 8th, ghoran, natural magic racial trait.",
+      "races": ["Ghoran"],
       "skills": []
     },
     "tags": ["Racial", "Ghoran"],
@@ -29726,6 +29909,7 @@
         }
       ],
       "prereqText": "Cha 15, Dryad's Apprentice, character level 9th, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -29817,6 +30001,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Stealth 1 rank, kobold.",
+      "races": ["Kobold"],
       "skills": [
         {
           "ranks": 1,
@@ -29937,6 +30122,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ratfolk, swarming racial trait.",
+      "races": ["Ratfolk"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Ratfolk"],
@@ -30052,6 +30238,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin, bardic performance class feature.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Racial", "Goblin"],
@@ -30066,6 +30253,7 @@
       "characterLevel": 5,
       "feats": [],
       "prereqText": "Aphorite, character level 5th, crystalline dust racial trait.",
+      "races": ["Aphorite"],
       "skills": []
     },
     "tags": ["Racial", "Aphorite"],
@@ -30111,6 +30299,7 @@
         }
       ],
       "prereqText": "Int 13, Combat Expertise, Hammer Throw, Improved Trip, Point-Blank Shot, Precise Shot, base attack bonus +6, dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf"],
@@ -30135,6 +30324,7 @@
         }
       ],
       "prereqText": "Cha 13, Fearless Curiosity, Intimidate 10 ranks, human.",
+      "races": ["Human"],
       "skills": [
         {
           "ranks": 10,
@@ -30238,6 +30428,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Kobold"],
@@ -30341,6 +30532,7 @@
         }
       ],
       "prereqText": "Blind-Fight, Greater Blind-Fight, Improved Blind-Fight, Perception 15 ranks, human (Kellid).",
+      "races": ["Human"],
       "skills": [
         {
           "ranks": 15,
@@ -30468,6 +30660,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Totem Spirit (The Inner Sea World Guide 289), human (Shoanti).",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Human"],
@@ -30655,6 +30848,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ogre.",
+      "races": ["Ogre"],
       "skills": []
     },
     "tags": ["General"],
@@ -30779,6 +30973,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Wyvaran.",
+      "races": ["Wyvaran"],
       "skills": []
     },
     "tags": ["Racial", "Wyvaran"],
@@ -31617,6 +31812,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Undine.",
+      "races": ["Undine"],
       "skills": []
     },
     "tags": ["Racial", "Undine"],
@@ -31868,6 +32064,7 @@
         }
       ],
       "prereqText": "Draconic Aspect, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Racial", "Kobold"],
@@ -31881,6 +32078,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Stealth 5 ranks, wyrwood.",
+      "races": ["Wyrwood"],
       "skills": [
         {
           "ranks": 5,
@@ -31919,6 +32117,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bluff 1 rank, wild shape class feature, gnome.",
+      "races": ["Gnome"],
       "skills": [
         {
           "ranks": 1,
@@ -31943,6 +32142,7 @@
       ],
       "feats": [],
       "prereqText": "Str 21, ogre.",
+      "races": ["Ogre"],
       "skills": []
     },
     "tags": ["Monster", "Ogre"],
@@ -32253,6 +32453,7 @@
       ],
       "feats": [],
       "prereqText": "Dex 15, Fly 5 ranks, fly speed, gathlain.",
+      "races": ["Gathlain"],
       "skills": [
         {
           "ranks": 5,
@@ -32272,6 +32473,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin, sneak attack class feature.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Racial", "Goblin"],
@@ -32524,6 +32726,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Dwarf, Ninth Battalion TPA 25.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf", "Faction"],
@@ -32615,6 +32818,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Any metamagic feat, Spellcraft 7 ranks, ability to cast 2nd-level spells, human (Garundi).",
+      "races": ["Human"],
       "skills": [
         {
           "ranks": 7,
@@ -32758,6 +32962,7 @@
       ],
       "feats": [],
       "prereqText": "Wis 13, dwarf, stonecunning racial trait.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Racial", "Dwarf"],
@@ -32791,6 +32996,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Aphorite, crystalline dust racial trait.",
+      "races": ["Aphorite"],
       "skills": []
     },
     "tags": ["Racial", "Aphorite"],
@@ -32822,6 +33028,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Oread.",
+      "races": ["Oread"],
       "skills": []
     },
     "sources": [
@@ -33169,6 +33376,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Shabti.",
+      "races": ["Shabti"],
       "skills": []
     },
     "tags": ["Origin", "Racial", "Shabti"],
@@ -33420,6 +33628,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, bardic performance class feature, dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Racial", "Dwarf"],
@@ -33507,6 +33716,7 @@
         }
       ],
       "prereqText": "Int 13, Fast Learner, Improvisation, human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -33934,6 +34144,7 @@
         }
       ],
       "prereqText": "Int 13, Fast Learner, human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -34117,6 +34328,7 @@
         }
       ],
       "prereqText": "Cha 13, Drow Nobility, Improved Drow Nobility, able to use drow spell-like abilities, drow.",
+      "races": ["Drow"],
       "skills": []
     },
     "tags": ["Racial", "Drow"],
@@ -34299,6 +34511,7 @@
         }
       ],
       "prereqText": "Wis 13, dwarf or gnome, defensive training racial trait, Improved Unarmed Strike, Acrobatics 3 ranks.",
+      "races": ["Dwarf", "Gnome"],
       "skills": [
         {
           "ranks": 3,
@@ -34361,6 +34574,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Wyrwood.",
+      "races": ["Wyrwood"],
       "skills": []
     },
     "tags": ["Racial", "Wyrwood"],
@@ -35081,6 +35295,7 @@
         }
       ],
       "prereqText": "Wis 13, dwarf or gnome, defensive training racial trait, Earth Child Style, Improved Trip, Improved Unarmed Strike, Acrobatics 6 ranks.",
+      "races": ["Dwarf", "Gnome"],
       "skills": [
         {
           "ranks": 6,
@@ -35144,6 +35359,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Human (Tian).",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Human"],
@@ -35290,6 +35506,7 @@
         }
       ],
       "prereqText": "Dark Sight, Gloom Sight, fetchling.",
+      "races": ["Fetchling"],
       "skills": []
     },
     "tags": ["General"],
@@ -36914,6 +37131,7 @@
         }
       ],
       "prereqText": "Str 13, Cleave, Goblin Cleaver, Power Attack, dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf", "Combat Trick"],
@@ -37022,6 +37240,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc or orc, rage class feature.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc"],
@@ -37069,6 +37288,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Stealth 1 rank, half-elf.",
+      "races": ["Half-Elf"],
       "skills": [
         {
           "ranks": 1,
@@ -37301,6 +37521,7 @@
       "bab": 6,
       "feats": [],
       "prereqText": "Dex 13, base attack bonus +6, kitsune.",
+      "races": ["Kitsune"],
       "skills": []
     },
     "tags": ["Racial", "Kitsune"],
@@ -37611,6 +37832,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, Knowledge (nature) 3 ranks, gnome, gnome magic racial trait.",
+      "races": ["Gnome"],
       "skills": [
         {
           "ranks": 3,
@@ -38019,6 +38241,7 @@
         }
       ],
       "prereqText": "Cha 13, Fury of the Tainted, base attack bonus +8, rage class feature, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Tiefling"],
@@ -38397,6 +38620,7 @@
       ],
       "feats": [],
       "prereqText": "Wis 13, Stealth 1 rank, dwarf, stonecunning racial trait.",
+      "races": ["Dwarf"],
       "skills": [
         {
           "ranks": 1,
@@ -38505,6 +38729,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ability to cast spells; ifrit, oread, sylph, or undine.",
+      "races": ["Ifrit", "Oread", "Sylph", "Undine"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Ifrit", "Oread", "Sylph", "Undine"],
@@ -38668,6 +38893,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Sylph.",
+      "races": ["Sylph"],
       "skills": []
     },
     "tags": ["Racial", "Sylph"],
@@ -38730,6 +38956,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ability to cast spells, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Racial", "Kobold"],
@@ -38876,6 +39103,7 @@
       ],
       "feats": [],
       "prereqText": "Str 13, vine leshy.",
+      "races": ["Vine Leshy"],
       "skills": []
     },
     "tags": ["General"],
@@ -38902,6 +39130,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Grippli, toxic skin alternate racial trait.",
+      "races": ["Grippli"],
       "skills": []
     },
     "tags": ["Racial", "Grippli"],
@@ -39496,6 +39725,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, hobgoblin.",
+      "races": ["Hobgoblin"],
       "skills": []
     },
     "tags": ["Racial", "Hobgoblin"],
@@ -39656,6 +39886,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -39682,6 +39913,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Duergar.",
+      "races": ["Duergar"],
       "skills": []
     },
     "tags": ["Racial", "Duergar"],
@@ -39788,6 +40020,7 @@
         }
       ],
       "prereqText": "Blood Drinker, dhampir.",
+      "races": ["Dhampir"],
       "skills": []
     },
     "tags": ["General"],
@@ -39801,6 +40034,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin, Handle Animal 1 rank.",
+      "races": ["Goblin"],
       "skills": [
         {
           "ranks": 1,
@@ -39949,6 +40183,7 @@
         }
       ],
       "prereqText": "Dazzling Display, Demoralizing Lash, Taskmaster, Weapon Focus, Intimidate 10 ranks, hobgoblin, proficiency with selected weapon.",
+      "races": ["Hobgoblin"],
       "skills": [
         {
           "ranks": 10,
@@ -40077,6 +40312,7 @@
       "casterLevel": 5,
       "feats": [],
       "prereqText": "Caster level 5th, implements class feature, mental focus class feature, wyrwood.",
+      "races": ["Wyrwood"],
       "skills": []
     },
     "tags": ["Racial", "Wyrwood"],
@@ -40246,6 +40482,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Kitsune.",
+      "races": ["Kitsune"],
       "skills": []
     },
     "tags": ["Racial", "Kitsune"],
@@ -40325,6 +40562,7 @@
         }
       ],
       "prereqText": "Spit Venom, Virulent Venom, base attack bonus +7, nagaji.",
+      "races": ["Nagaji"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Nagaji"],
@@ -40344,6 +40582,7 @@
         }
       ],
       "prereqText": "Iron Will, Wonderseeker faction, gnome.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Racial", "Gnome"],
@@ -40714,6 +40953,7 @@
         }
       ],
       "prereqText": "Stony Step, character level 9th, oread.",
+      "races": ["Oread"],
       "skills": []
     },
     "tags": ["Racial", "Oread"],
@@ -40852,6 +41092,7 @@
         }
       ],
       "prereqText": "Combat Expertise, merfolk.",
+      "races": ["Merfolk"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Merfolk"],
@@ -40974,6 +41215,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Catfolk.",
+      "races": ["Catfolk"],
       "skills": []
     },
     "tags": ["Racial", "Catfolk"],
@@ -41138,6 +41380,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "sources": [
@@ -41380,6 +41623,7 @@
         }
       ],
       "prereqText": "Inner Light, aasimar, daylight spell-like ability.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar"],
@@ -41490,6 +41734,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, rage class feature, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Tiefling"],
@@ -41798,6 +42043,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, hobgoblin.",
+      "races": ["Hobgoblin"],
       "skills": []
     },
     "tags": ["Racial", "Hobgoblin"],
@@ -42072,6 +42318,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin, worshipper of Sarenrae.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Racial", "Goblin"],
@@ -42201,6 +42448,7 @@
         }
       ],
       "prereqText": "Str 13, Skill Focus (Fly), strix, wing-clipped racial trait.",
+      "races": ["Strix"],
       "skills": []
     },
     "tags": ["Racial", "Strix"],
@@ -42214,6 +42462,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Racial", "Halfling"],
@@ -42312,6 +42561,7 @@
         }
       ],
       "prereqText": "Dex 13, Greater Grapple, Improved Grapple, Improved Unarmed Strike, Kudzu Grappler, base attack bonus +6 or monk level 6th, vine leshy.",
+      "races": ["Vine Leshy"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Vine Leshy"],
@@ -42556,6 +42806,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bluff 1 rank, arcane school class feature, gnome.",
+      "races": ["Gnome"],
       "skills": [
         {
           "ranks": 1,
@@ -43182,6 +43433,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Duergar, two racial spell-like abilities usable once per day.",
+      "races": ["Duergar"],
       "skills": []
     },
     "tags": ["Racial", "Duergar"],
@@ -43214,6 +43466,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 15, seed racial trait, ghoran.",
+      "races": ["Ghoran"],
       "skills": []
     },
     "tags": ["Racial", "Ghoran"],
@@ -43265,6 +43518,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Orc.",
+      "races": ["Orc"],
       "skills": []
     },
     "tags": ["Combat", "Combat Trick"],
@@ -43344,6 +43598,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Racial", "Halfling"],
@@ -43357,6 +43612,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Tengu.",
+      "races": ["Tengu"],
       "skills": []
     },
     "tags": ["Racial", "Tengu"],
@@ -43516,6 +43772,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ratfolk, swarming racial trait.",
+      "races": ["Ratfolk"],
       "skills": []
     },
     "tags": ["Racial", "Ratfolk"],
@@ -43566,6 +43823,7 @@
         }
       ],
       "prereqText": "Int 13, Combat Expertise, Hammer Throw, Improved Hammer Throw, Improved Trip, Point-Blank Shot, Precise Shot, base attack bonus +6, dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf"],
@@ -43756,6 +44014,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc or orc.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Combat", "Teamwork", "Racial", "Half-Orc", "Orc"],
@@ -43858,6 +44117,7 @@
       ],
       "feats": [],
       "prereqText": "Con 15, gillman, water dependent racial trait.",
+      "races": ["Gillman"],
       "skills": []
     },
     "tags": ["Racial", "Gillman"],
@@ -44304,6 +44564,7 @@
         }
       ],
       "prereqText": "Con 13, Diehard, Endurance, half-orc or orc.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc"],
@@ -44357,6 +44618,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Suli.",
+      "races": ["Suli"],
       "skills": []
     },
     "tags": ["Racial", "Suli"],
@@ -44390,6 +44652,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin, Intimidate 1 rank.",
+      "races": ["Goblin"],
       "skills": [
         {
           "ranks": 1,
@@ -44459,6 +44722,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Knowledge (local) 5 ranks, half-elf.",
+      "races": ["Half-Elf"],
       "skills": [
         {
           "ranks": 5,
@@ -44832,6 +45096,7 @@
       ],
       "feats": [],
       "prereqText": "Con 13, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -44852,6 +45117,7 @@
         }
       ],
       "prereqText": "Swift Kitsune Shapechanger, base attack bonus +10, kitsune.",
+      "races": ["Kitsune"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Kitsune"],
@@ -45234,6 +45500,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Elf.",
+      "races": ["Elf"],
       "skills": []
     },
     "tags": ["General"],
@@ -45716,6 +45983,7 @@
         }
       ],
       "prereqText": "Exile's Path, character level 5th, half-elf.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -45825,6 +46093,7 @@
       ],
       "feats": [],
       "prereqText": "Con 13; dwarf, half-orc, or orc.",
+      "races": ["Dwarf", "Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc", "Dwarf"],
@@ -45967,6 +46236,7 @@
         }
       ],
       "prereqText": "Toughness, base attack bonus +1, orc.",
+      "races": ["Orc"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Orc", "Combat Trick"],
@@ -46047,6 +46317,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Dwarf, elf, or gnome; 100+ years old.",
+      "races": ["Dwarf", "Elf", "Gnome"],
       "skills": []
     },
     "sources": [
@@ -46120,6 +46391,7 @@
         }
       ],
       "prereqText": "Dwarf or gnome; defensive training racial trait; Improved Two-Weapon Fighting and Two-Weapon Fighting, or flurry of blows class feature; Twin Thunders; Weapon Focus with both wielded weapons; base attack bonus +6.",
+      "races": ["Dwarf", "Gnome"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Gnome", "Dwarf", "Combat Trick"],
@@ -46165,6 +46437,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Lawful alignment, wyvaran .",
+      "races": ["Wyvaran"],
       "skills": []
     },
     "tags": ["Racial", "Wyvaran"],
@@ -46259,6 +46532,7 @@
       "characterLevel": 5,
       "feats": [],
       "prereqText": "Cha 13, character level 5th, ghoran, spelleater racial trait.",
+      "races": ["Ghoran"],
       "skills": []
     },
     "tags": ["Racial", "Ghoran"],
@@ -46272,6 +46546,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Drow, spell-like abilities drow racial trait.",
+      "races": ["Drow"],
       "skills": []
     },
     "tags": ["Racial", "Drow"],
@@ -46353,6 +46628,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, bardic performance class feature, elf or half-elf.",
+      "races": ["Elf", "Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf", "Elf"],
@@ -46822,6 +47098,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Aasimar, able to prepare or cast consecrate.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Metamagic", "Racial", "Aasimar"],
@@ -46854,6 +47131,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Changeling.",
+      "races": ["Changeling"],
       "skills": []
     },
     "tags": ["Racial", "Changeling"],
@@ -47112,6 +47390,7 @@
         }
       ],
       "prereqText": "Channel Force, Improved Channel Force, aasimar, channel energy 6d6.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar", "Channeling"],
@@ -47275,6 +47554,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc or orc, rage class feature.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc"],
@@ -47491,6 +47771,7 @@
       "characterLevel": 13,
       "feats": [],
       "prereqText": "Cha 17, ability to cast speak with plants, character level 13th, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -47554,6 +47835,7 @@
         }
       ],
       "prereqText": "Augment Summoning, Spell Focus (conjuration), half-orc or orc.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc"],
@@ -47567,6 +47849,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bomb class feature, hobgoblin.",
+      "races": ["Hobgoblin"],
       "skills": []
     },
     "tags": ["Racial", "Hobgoblin"],
@@ -47735,6 +48018,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Combat", "Teamwork", "Racial", "Human"],
@@ -47930,6 +48214,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, gnome, gnome magic racial trait.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Racial", "Gnome"],
@@ -47956,6 +48241,7 @@
       "characterLevel": 5,
       "feats": [],
       "prereqText": "Triton, summon nature's ally II spell-like ability, character level 5th.",
+      "races": ["Triton"],
       "skills": []
     },
     "tags": ["General"],
@@ -48398,6 +48684,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Toxic racial trait, vishkanya.",
+      "races": ["Vishkanya"],
       "skills": []
     },
     "tags": ["Racial", "Vishkanya"],
@@ -48478,6 +48765,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, android.",
+      "races": ["Android"],
       "skills": []
     },
     "tags": ["Racial", "Android"],
@@ -48725,6 +49013,7 @@
       "characterLevel": 6,
       "feats": [],
       "prereqText": "Cha 13, character level 6th, ghoran, spelleater racial trait.",
+      "races": ["Ghoran"],
       "skills": []
     },
     "tags": ["Racial", "Ghoran"],
@@ -48927,6 +49216,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Intimidate 1 rank, orc.",
+      "races": ["Orc"],
       "skills": [
         {
           "ranks": 1,
@@ -48965,6 +49255,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Wayang.",
+      "races": ["Wayang"],
       "skills": []
     },
     "tags": ["Racial", "Wayang"],
@@ -48991,6 +49282,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Tengu.",
+      "races": ["Tengu"],
       "skills": []
     },
     "tags": ["Racial", "Tengu"],
@@ -49084,6 +49376,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Channel energy class feature, orc.",
+      "races": ["Orc"],
       "skills": []
     },
     "tags": ["General"],
@@ -49184,6 +49477,7 @@
         }
       ],
       "prereqText": "Str 13, Improved Sunder, Power Attack, base attack bonus +1, Craft (armor or weapons) 5 ranks, aphorite.",
+      "races": ["Aphorite"],
       "skills": [
         {
           "ranks": 5,
@@ -49264,6 +49558,7 @@
         }
       ],
       "prereqText": "Combat Expertise, Greater Blood Frenzy, base attack bonus +6, blood frenzy ability, sahuagin.",
+      "races": ["Sahuagin"],
       "skills": []
     },
     "tags": ["Monster", "Sahuagin"],
@@ -49333,6 +49628,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin, Escape Artist 1 rank.",
+      "races": ["Goblin"],
       "skills": [
         {
           "ranks": 1,
@@ -49446,6 +49742,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Racial", "Goblin"],
@@ -49841,6 +50138,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, half-elf.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -50357,6 +50655,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-elf.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -50487,6 +50786,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin, rage class feature.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Racial", "Goblin"],
@@ -50506,6 +50806,7 @@
         }
       ],
       "prereqText": "Draconic Aspect, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Racial", "Kobold"],
@@ -50556,6 +50857,7 @@
       ],
       "feats": [],
       "prereqText": "Con 15, aasimar.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar"],
@@ -50574,6 +50876,7 @@
       ],
       "feats": [],
       "prereqText": "Con 13, half-orc, orc ferocity racial trait.",
+      "races": ["Half-Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc"],
@@ -50726,6 +51029,7 @@
       "bab": 4,
       "feats": [],
       "prereqText": "Str 17, base attack bonus +4, half-orc.",
+      "races": ["Half-Orc"],
       "skills": []
     },
     "tags": ["Combat"],
@@ -50778,6 +51082,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Orc, rage class feature.",
+      "races": ["Orc"],
       "skills": []
     },
     "tags": ["General"],
@@ -50792,6 +51097,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf", "Combat Trick"],
@@ -50818,6 +51124,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Kitsune.",
+      "races": ["Kitsune"],
       "skills": []
     },
     "sources": [
@@ -50920,6 +51227,7 @@
         }
       ],
       "prereqText": "Cautious Fighter, Desperate Swing, base attack bonus +6, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Halfling", "Combat Trick"],
@@ -50944,6 +51252,7 @@
         }
       ],
       "prereqText": "Bodyguard, Combat Reflexes, wyvaran.",
+      "races": ["Wyvaran"],
       "skills": []
     },
     "tags": ["Racial", "Wyvaran"],
@@ -51007,6 +51316,7 @@
         }
       ],
       "prereqText": "Draconic Aspect, Draconic Breath, Draconic Glide, character level 10th, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Racial", "Kobold"],
@@ -51186,6 +51496,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc, intimidating racial trait.",
+      "races": ["Half-Orc"],
       "skills": []
     },
     "tags": ["Combat", "Teamwork"],
@@ -51274,6 +51585,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Halfling", "Combat Trick"],
@@ -51476,6 +51788,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Changeling.",
+      "races": ["Changeling"],
       "skills": []
     },
     "tags": ["Racial", "Changeling", "Teamwork"],
@@ -51903,6 +52216,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Tiefling"],
@@ -51981,6 +52295,7 @@
         }
       ],
       "prereqText": "Str 13, Con 17, orc or half-orc, Deathless Initiate, Deathless Master, Diehard, Endurance, Ironhide, base attack bonus +12.",
+      "races": ["Orc", "Half-Orc"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Half-Orc", "Orc", "Combat Trick"],
@@ -52008,6 +52323,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Perform (act) or Perform (dance) 3 ranks, human (Varisian).",
+      "races": ["Human"],
       "skills": [
         {
           "ranks": 3,
@@ -52329,6 +52645,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Draconic Aspect or dragon-scaled racial trait, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Racial", "Kobold"],
@@ -52408,6 +52725,7 @@
         }
       ],
       "prereqText": "Defiant Luck, Inexplicable Luck, human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Racial", "Human"],
@@ -52562,6 +52880,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Tiefling, must be taken at 1st level.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -52739,6 +53058,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ifrit, oread, sylph, or undine.",
+      "races": ["Ifrit", "Oread", "Sylph", "Undine"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Ifrit", "Oread", "Sylph", "Undine"],
@@ -52872,6 +53192,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ability to cast summon monster or summon nature's ally spells, drow.",
+      "races": ["Drow"],
       "skills": []
     },
     "tags": ["Racial", "Drow"],
@@ -53114,6 +53435,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Knowledge (religion) 9 ranks, vishkanya.",
+      "races": ["Vishkanya"],
       "skills": [
         {
           "ranks": 9,
@@ -53237,6 +53559,7 @@
         }
       ],
       "prereqText": "Improved Unarmed Strike, dwarf, proficiency with the cestus.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf"],
@@ -53262,6 +53585,7 @@
         }
       ],
       "prereqText": "Inner Flame, Scorching Weapons, character level 13th, ifrit.",
+      "races": ["Ifrit"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Ifrit", "Combat Trick"],
@@ -53449,6 +53773,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Racial", "Goblin"],
@@ -53546,6 +53871,7 @@
         }
       ],
       "prereqText": "Alertness, Sense Motive 3 ranks, human (Vudrani).",
+      "races": ["Human"],
       "skills": [
         {
           "ranks": 3,
@@ -53719,6 +54045,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc or orc.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc"],
@@ -53796,6 +54123,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, elf.",
+      "races": ["Elf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Elf", "Combat Trick"],
@@ -53895,6 +54223,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bluff 8 ranks, gnome, gnome magic racial trait.",
+      "races": ["Gnome"],
       "skills": [
         {
           "ranks": 8,
@@ -54182,6 +54511,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Appraise 5 ranks, Bluff 5 ranks, gnome.",
+      "races": ["Gnome"],
       "skills": [
         {
           "ranks": 5,
@@ -54219,6 +54549,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Human (Ulfen).",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Combat", "Teamwork", "Racial", "Human"],
@@ -54401,6 +54732,7 @@
         }
       ],
       "prereqText": "Acrobatic Steps, Nimble Moves, elf.",
+      "races": ["Elf"],
       "skills": []
     },
     "tags": ["Racial", "Elf"],
@@ -54445,6 +54777,7 @@
         }
       ],
       "prereqText": "Dented Helm, Hard-Headed, base attack bonus +11, dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf"],
@@ -54820,6 +55153,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Catfolk.",
+      "races": ["Catfolk"],
       "skills": []
     },
     "tags": ["Racial", "Catfolk"],
@@ -54895,6 +55229,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Aasimar, daylight racial spell-like ability.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Aasimar"],
@@ -55242,6 +55577,7 @@
         }
       ],
       "prereqText": "Hard-Headed, base attack bonus +6, dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf", "Combat Trick"],
@@ -55416,6 +55752,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Shabti.",
+      "races": ["Shabti"],
       "skills": []
     },
     "tags": ["Origin", "Racial", "Shabti"],
@@ -55446,6 +55783,7 @@
         }
       ],
       "prereqText": "Cha 17, Advanced Gathlain Magic, Greater Gathlain Magic, character level 15th, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -55825,6 +56163,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Elf or half-elf, keen senses racial trait.",
+      "races": ["Elf", "Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Elf", "Half-Elf"],
@@ -55949,6 +56288,7 @@
       "characterLevel": 3,
       "feats": [],
       "prereqText": "Ability to cast disrupt undead, character level 3rd, duskwalker.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Racial", "Duskwalker"],
@@ -56029,6 +56369,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Duskwalker.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Origin", "Racial", "Duskwalker"],
@@ -56111,6 +56452,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc or orc, worshiper of the Fire God.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc"],
@@ -56331,6 +56673,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Oread.",
+      "races": ["Oread"],
       "skills": []
     },
     "tags": ["Racial", "Oread"],
@@ -56768,6 +57111,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Human (Chelaxian or Taldan).",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Human"],
@@ -56964,6 +57308,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-elf.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -57422,6 +57767,7 @@
       ],
       "feats": [],
       "prereqText": "Dex 13, evasion class feature, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -57498,6 +57844,7 @@
         }
       ],
       "prereqText": "Deadly Kiss, toxic racial trait, vishkanya.",
+      "races": ["Vishkanya"],
       "skills": []
     },
     "tags": ["Racial", "Vishkanya"],
@@ -57576,6 +57923,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Grippli.",
+      "races": ["Grippli"],
       "skills": []
     },
     "tags": ["Racial", "Grippli"],
@@ -57684,6 +58032,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Gathlain, feather step spell-like ability.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -57778,6 +58127,7 @@
         }
       ],
       "prereqText": "Cha 13, Wis 13, Drow Nobility, Greater Drow Nobility, Improved Drow Nobility, able to use drow spell-like abilities, drow.",
+      "races": ["Drow"],
       "skills": []
     },
     "tags": ["General"],
@@ -58016,6 +58366,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, bardic performance class feature, half-orc or orc.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc"],
@@ -58217,6 +58568,7 @@
       ],
       "feats": [],
       "prereqText": "Con 13, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -58330,6 +58682,7 @@
         }
       ],
       "prereqText": "Cha 13, Wis 13, Greater Drow Nobility, character level 13th, drow.",
+      "races": ["Drow"],
       "skills": []
     },
     "tags": ["Racial", "Drow"],
@@ -58560,6 +58913,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Shabti.",
+      "races": ["Shabti"],
       "skills": []
     },
     "tags": ["Origin", "Racial", "Shabti"],
@@ -58584,6 +58938,7 @@
         }
       ],
       "prereqText": "Con 15, Corrupted Flesh, 6 HD, ogre.",
+      "races": ["Ogre"],
       "skills": []
     },
     "tags": ["General"],
@@ -58616,6 +58971,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Fetchling.",
+      "races": ["Fetchling"],
       "skills": []
     },
     "tags": ["Racial", "Fetchling"],
@@ -58700,6 +59056,7 @@
         }
       ],
       "prereqText": "Wis 17, Stone Cover, Stone Shroud, Stealth 11 ranks, dwarf, stonecunning racial trait.",
+      "races": ["Dwarf"],
       "skills": [
         {
           "ranks": 11,
@@ -58781,6 +59138,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Suli.",
+      "races": ["Suli"],
       "skills": []
     },
     "tags": ["Racial", "Suli"],
@@ -58864,6 +59222,7 @@
         }
       ],
       "prereqText": "Spit Venom, nagaji.",
+      "races": ["Nagaji"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Nagaji"],
@@ -58976,6 +59335,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Cecaelia.",
+      "races": ["Cecaelia"],
       "skills": []
     },
     "tags": ["General"],
@@ -59009,6 +59369,7 @@
         }
       ],
       "prereqText": "Airy Step, character level 9th, sylph.",
+      "races": ["Sylph"],
       "skills": []
     },
     "tags": ["Racial", "Sylph"],
@@ -59488,6 +59849,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bomb class feature, hobgoblin.",
+      "races": ["Hobgoblin"],
       "skills": []
     },
     "tags": ["Racial", "Hobgoblin"],
@@ -59633,6 +59995,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc or orc, nonlawful.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc"],
@@ -59806,6 +60169,7 @@
         }
       ],
       "prereqText": "Dwarf or gnome; defensive training racial trait; Improved Two-Weapon Fighting and Two-Weapon Fighting, or flurry of blows class feature; Twin Thunders; Twin Thunders Flurry; Weapon Focus with both wielded weapons; base attack bonus +9.",
+      "races": ["Dwarf", "Gnome"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Gnome", "Dwarf", "Combat Trick"],
@@ -59926,6 +60290,7 @@
         }
       ],
       "prereqText": "Str 13, Cleave, Power Attack, dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf", "Combat Trick"],
@@ -60009,6 +60374,7 @@
         }
       ],
       "prereqText": "Endurance, gillman.",
+      "races": ["Gillman"],
       "skills": []
     },
     "tags": ["General", "Gillman"],
@@ -60271,6 +60637,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin, worshipper of Sarenrae.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Racial", "Goblin"],
@@ -60451,6 +60818,7 @@
         }
       ],
       "prereqText": "Attuned to the Wild, elf.",
+      "races": ["Elf"],
       "skills": []
     },
     "tags": ["Racial", "Elf"],
@@ -60630,6 +60998,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Improved Counterspell or ability to cast dispel magic or greater dispel magic, aphorite, crystalline dust racial trait.",
+      "races": ["Aphorite"],
       "skills": []
     },
     "tags": ["Racial", "Aphorite"],
@@ -60643,6 +61012,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Orc, ferocity racial trait.",
+      "races": ["Orc"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Orc"],
@@ -60735,6 +61105,7 @@
         }
       ],
       "prereqText": "Power Attack, Disable Device 1 rank, orc.",
+      "races": ["Orc"],
       "skills": [
         {
           "ranks": 1,
@@ -60943,6 +61314,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Fleet of foot racial trait, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Racial", "Halfling"],
@@ -60999,6 +61371,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Undine.",
+      "races": ["Undine"],
       "skills": []
     },
     "tags": ["Racial", "Undine"],
@@ -61089,6 +61462,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bluff 1 rank, rage class feature, gnome.",
+      "races": ["Gnome"],
       "skills": [
         {
           "ranks": 1,
@@ -61598,6 +61972,7 @@
       "characterLevel": 11,
       "feats": [],
       "prereqText": "Str 15, character level 11th, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -61666,6 +62041,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Wyvaran.",
+      "races": ["Wyvaran"],
       "skills": []
     },
     "tags": ["Racial", "Wyvaran"],
@@ -61679,6 +62055,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Fetchling.",
+      "races": ["Fetchling"],
       "skills": []
     },
     "tags": ["General"],
@@ -61742,6 +62119,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Orc.",
+      "races": ["Orc"],
       "skills": []
     },
     "tags": ["Racial", "Orc"],
@@ -61807,6 +62185,7 @@
       "characterLevel": 9,
       "feats": [],
       "prereqText": "Character level 9th, duskwalker, ghost hunter racial trait.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Racial", "Duskwalker"],
@@ -61879,6 +62258,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Knowledge (religion) 3 ranks, human (Mwangi).",
+      "races": ["Human"],
       "skills": [
         {
           "ranks": 3,
@@ -61898,6 +62278,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-elf.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -62006,6 +62387,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Gnome.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Racial", "Gnome"],
@@ -62065,6 +62447,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Combat", "Teamwork", "Racial", "Kobold"],
@@ -62432,6 +62815,7 @@
         }
       ],
       "prereqText": "Iron Will, gillman, enchantment resistance racial trait.",
+      "races": ["Gillman"],
       "skills": []
     },
     "tags": ["Racial", "Gillman"],
@@ -62509,6 +62893,7 @@
         }
       ],
       "prereqText": "Gloom Sight, fetchling.",
+      "races": ["Fetchling"],
       "skills": []
     },
     "tags": ["Racial", "Fetchling"],
@@ -62560,6 +62945,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ratfolk.",
+      "races": ["Ratfolk"],
       "skills": []
     },
     "tags": ["Racial", "Ratfolk"],
@@ -62653,6 +63039,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Grippli, toxic skin alternate racial trait.",
+      "races": ["Grippli"],
       "skills": []
     },
     "tags": ["Racial", "Grippli"],
@@ -62690,6 +63077,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Aasimar, animal companion, familiar, or mount class feature.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar"],
@@ -62939,6 +63327,7 @@
       "characterLevel": 5,
       "feats": [],
       "prereqText": "Character level 5th, tengu.",
+      "races": ["Tengu"],
       "skills": []
     },
     "tags": ["Racial", "Tengu"],
@@ -63046,6 +63435,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Aasimar, channel energy 2d6.",
+      "races": ["Aasimar"],
       "skills": []
     },
     "tags": ["Racial", "Aasimar", "Channeling"],
@@ -63107,6 +63497,7 @@
       ],
       "feats": [],
       "prereqText": "Str 19, ogre, sneak attack +2d6.",
+      "races": ["Ogre"],
       "skills": []
     },
     "tags": ["General"],
@@ -63264,6 +63655,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Duskwalker, ghost hunter racial trait.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Racial", "Duskwalker"],
@@ -63359,6 +63751,7 @@
         }
       ],
       "prereqText": "Rapid Shot, elf.",
+      "races": ["Elf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Elf", "Combat Trick"],
@@ -63557,6 +63950,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ferocity racial trait, half-orc or orc, rage class feature.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Half-Orc", "Orc", "Combat Trick"],
@@ -63656,6 +64050,7 @@
         }
       ],
       "prereqText": "Combat Expertise, Improved Feint, ifrit.",
+      "races": ["Ifrit"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Ifrit"],
@@ -63689,6 +64084,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Blood frenzy ability, sahuagin.",
+      "races": ["Sahuagin"],
       "skills": []
     },
     "tags": ["General"],
@@ -64144,6 +64540,7 @@
       "bab": 5,
       "feats": [],
       "prereqText": "Base attack bonus +5, Lizardfolk.",
+      "races": ["Lizardfolk"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Lizardfolk"],
@@ -64157,6 +64554,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Gathlain, racial fly speed.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -64316,6 +64714,7 @@
         }
       ],
       "prereqText": "Attuned to the Wild, elf.",
+      "races": ["Elf"],
       "skills": []
     },
     "tags": ["Racial", "Elf"],
@@ -64329,6 +64728,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Changeling.",
+      "races": ["Changeling"],
       "skills": []
     },
     "tags": ["General"],
@@ -64720,6 +65120,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Dhampir.",
+      "races": ["Dhampir"],
       "skills": []
     },
     "tags": ["Racial", "Dhampir"],
@@ -65254,6 +65655,7 @@
         }
       ],
       "prereqText": "Hobgoblin Discipline, hobgoblin.",
+      "races": ["Hobgoblin"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Hobgoblin"],
@@ -65394,6 +65796,7 @@
       ],
       "feats": [],
       "prereqText": "Con 15, delicious racial trait, ghoran.",
+      "races": ["Ghoran"],
       "skills": []
     },
     "tags": ["Racial", "Ghoran"],
@@ -65443,6 +65846,7 @@
       "bab": 3,
       "feats": [],
       "prereqText": "Cha 13, base attack bonus +3, kitsune.",
+      "races": ["Kitsune"],
       "skills": []
     },
     "tags": ["Racial", "Kitsune"],
@@ -65727,6 +66131,7 @@
       ],
       "feats": [],
       "prereqText": "Dex 13, dwarf, mountaineer or stability racial trait.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Racial", "Dwarf"],
@@ -65945,6 +66350,7 @@
       "characterLevel": 5,
       "feats": [],
       "prereqText": "Cha 13, character level 5th, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -66358,6 +66764,7 @@
         }
       ],
       "prereqText": "Cha 13, Wis 13, Drow Nobility, Greater Drow Nobility, Improved Drow Nobility, Umbral Scion, able to use drow spell-like abilities, drow.",
+      "races": ["Drow"],
       "skills": []
     },
     "tags": ["Racial", "Drow"],
@@ -66459,6 +66866,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Duskwalker.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Origin", "Racial", "Duskwalker"],
@@ -66595,6 +67003,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, half-elf.",
+      "races": ["Half-Elf"],
       "skills": []
     },
     "tags": ["Racial", "Half-Elf"],
@@ -66621,6 +67030,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bluff 1 rank, weapon training class feature, gnome.",
+      "races": ["Gnome"],
       "skills": [
         {
           "ranks": 1,
@@ -66867,6 +67277,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Craft (alchemy) 1 rank, Profession (brewer) 1 rank, dwarf.",
+      "races": ["Dwarf"],
       "skills": [
         {
           "ranks": 1,
@@ -67058,6 +67469,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin, Acrobatics 1 rank.",
+      "races": ["Goblin"],
       "skills": [
         {
           "ranks": 1,
@@ -67338,6 +67750,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Grippli, toxic skin alternate racial trait.",
+      "races": ["Grippli"],
       "skills": []
     },
     "tags": ["Racial", "Grippli"],
@@ -67445,6 +67858,7 @@
       "bab": 8,
       "feats": [],
       "prereqText": "Base attack bonus +8, banner class feature, tiefling.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Tiefling"],
@@ -67596,6 +68010,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Dwarf or gnome, defensive training racial trait, Two-Weapon Fighting or flurry of blows class feature, Weapon Focus with both wielded weapons.",
+      "races": ["Dwarf", "Gnome"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Gnome", "Dwarf"],
@@ -68012,6 +68427,7 @@
       ],
       "feats": [],
       "prereqText": "Wis 13, ghoran.",
+      "races": ["Ghoran"],
       "skills": []
     },
     "tags": ["Racial", "Ghoran"],
@@ -68075,6 +68491,7 @@
         }
       ],
       "prereqText": "Str 13, Con 15, orc or half-orc, Deathless Initiate, Diehard, Endurance, Ironhide, base attack bonus +9.",
+      "races": ["Orc", "Half-Orc"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Half-Orc", "Orc", "Combat Trick"],
@@ -68094,6 +68511,7 @@
         }
       ],
       "prereqText": "Iron Will, hobgoblin.",
+      "races": ["Hobgoblin"],
       "skills": []
     },
     "tags": ["Racial", "Hobgoblin"],
@@ -68363,6 +68781,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Duskwalker.",
+      "races": ["Duskwalker"],
       "skills": []
     },
     "tags": ["Origin", "Racial", "Duskwalker"],
@@ -68400,6 +68819,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bluff 1 rank, favored enemy class feature, gnome.",
+      "races": ["Gnome"],
       "skills": [
         {
           "ranks": 1,
@@ -68424,6 +68844,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, gnome, gnome magic racial trait.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Racial", "Gnome"],
@@ -68554,6 +68975,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Half-orc or orc, nonlawful.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Half-Orc", "Orc", "Combat Trick"],
@@ -68578,6 +69000,7 @@
         }
       ],
       "prereqText": "Dodge, Mobility, Underfoot, goblin, Small size or smaller.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Goblin"],
@@ -68591,6 +69014,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ifrit.",
+      "races": ["Ifrit"],
       "skills": []
     },
     "sources": [
@@ -68684,6 +69108,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Tiefling, darkness racial spell-like ability.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Teamwork", "Racial", "Tiefling"],
@@ -68820,6 +69245,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Light and dark racial trait, wayang.",
+      "races": ["Wayang"],
       "skills": []
     },
     "tags": ["Racial", "Wayang"],
@@ -69198,6 +69624,7 @@
         }
       ],
       "prereqText": "Echoes of Stone, character level 9th, oread.",
+      "races": ["Oread"],
       "skills": []
     },
     "tags": ["Racial", "Oread"],
@@ -69603,6 +70030,7 @@
         }
       ],
       "prereqText": "Spit Venom, Viscous Venom, nagaji.",
+      "races": ["Nagaji"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Nagaji"],
@@ -69721,6 +70149,7 @@
         }
       ],
       "prereqText": "Int 13, Combat Expertise, Improved Trip, Point-Blank Shot, Precise Shot, base attack bonus +1, dwarf.",
+      "races": ["Dwarf"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Dwarf"],
@@ -69814,6 +70243,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Halfling", "Combat Trick"],
@@ -69827,6 +70257,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Aphorite, crystalline dust racial trait.",
+      "races": ["Aphorite"],
       "skills": []
     },
     "tags": ["Racial", "Aphorite"],
@@ -69846,6 +70277,7 @@
         }
       ],
       "prereqText": "Martial Versatility, fighter level 16th, human.",
+      "races": ["Human"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Human"],
@@ -69990,6 +70422,7 @@
         }
       ],
       "prereqText": "Sharptooth, ratfolk.",
+      "races": ["Ratfolk"],
       "skills": []
     },
     "tags": ["Racial", "Ratfolk"],
@@ -70260,6 +70693,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 17, dhampir.",
+      "races": ["Dhampir"],
       "skills": []
     },
     "tags": ["Racial", "Dhampir"],
@@ -70427,6 +70861,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Sneak attack class feature, kobold.",
+      "races": ["Kobold"],
       "skills": []
     },
     "tags": ["Racial", "Kobold"],
@@ -70515,6 +70950,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Dex 13, base attack bonus +1, catfolk, sprinter racial trait.",
+      "races": ["Catfolk"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Catfolk", "Combat Trick"],
@@ -70528,6 +70964,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Oread.",
+      "races": ["Oread"],
       "skills": []
     },
     "tags": ["Racial", "Oread"],
@@ -70657,6 +71094,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bluff 1 rank, Diplomacy 1 rank, tengu.",
+      "races": ["Tengu"],
       "skills": [
         {
           "ranks": 1,
@@ -70681,6 +71119,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Gnome, hatred racial trait.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Gnome", "Combat Trick"],
@@ -70814,6 +71253,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Tiefling, must be taken at 1st level.",
+      "races": ["Tiefling"],
       "skills": []
     },
     "tags": ["Racial", "Tiefling"],
@@ -70871,6 +71311,7 @@
         }
       ],
       "prereqText": "Skill Focus (Perception), goblin.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Racial", "Goblin"],
@@ -70885,6 +71326,7 @@
       "bab": 4,
       "feats": [],
       "prereqText": "Base attack bonus +4, halfling, low-blow racial trait.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Halfling"],
@@ -71330,6 +71772,7 @@
       "bab": 1,
       "feats": [],
       "prereqText": "Base attack bonus +1, orc.",
+      "races": ["Orc"],
       "skills": []
     },
     "tags": ["Combat"],
@@ -71348,6 +71791,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, Gnome.",
+      "races": ["Gnome"],
       "skills": []
     },
     "sources": [
@@ -71387,6 +71831,7 @@
       ],
       "feats": [],
       "prereqText": "Cha 13, gathlain.",
+      "races": ["Gathlain"],
       "skills": []
     },
     "tags": ["Racial", "Gathlain"],
@@ -71477,6 +71922,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Disable Device 1 rank, goblin.",
+      "races": ["Goblin"],
       "skills": [
         {
           "ranks": 1,
@@ -71634,6 +72080,7 @@
         }
       ],
       "prereqText": "Blind-Fight, fetchling.",
+      "races": ["Fetchling"],
       "skills": []
     },
     "tags": ["Combat"],
@@ -71647,6 +72094,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Adaptable luck racial trait, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Racial", "Halfling"],
@@ -71660,6 +72108,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Goblin.",
+      "races": ["Goblin"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Goblin", "Combat Trick"],
@@ -71673,6 +72122,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Aphorite, crystalline dust racial trait, nonchaotic alignment.",
+      "races": ["Aphorite"],
       "skills": []
     },
     "tags": ["Racial", "Aphorite"],
@@ -71854,6 +72304,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Dhampir.",
+      "races": ["Dhampir"],
       "skills": []
     },
     "tags": ["General"],
@@ -71874,6 +72325,7 @@
         }
       ],
       "prereqText": "Tengu Wings, character level 7th, tengu.",
+      "races": ["Tengu"],
       "skills": []
     },
     "tags": ["Racial", "Tengu"],
@@ -71887,6 +72339,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Able to use drow spell-like abilities, drow.",
+      "races": ["Drow"],
       "skills": []
     },
     "tags": ["Racial", "Drow"],
@@ -71997,6 +72450,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Favored enemy class feature, hobgoblin.",
+      "races": ["Hobgoblin"],
       "skills": []
     },
     "tags": ["Racial", "Hobgoblin"],
@@ -72523,6 +72977,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Ifrit.",
+      "races": ["Ifrit"],
       "skills": []
     },
     "tags": ["Racial", "Ifrit"],
@@ -72798,6 +73253,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Bleachling racial trait, gnome.",
+      "races": ["Gnome"],
       "skills": []
     },
     "tags": ["Racial", "Gnome"],
@@ -72868,6 +73324,7 @@
         }
       ],
       "prereqText": "Keen Scent, half-orc or orc.",
+      "races": ["Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc"],
@@ -73003,6 +73460,7 @@
       ],
       "feats": [],
       "prereqText": "Con 13; dwarf, half-orc, or orc.",
+      "races": ["Dwarf", "Half-Orc", "Orc"],
       "skills": []
     },
     "tags": ["Racial", "Half-Orc", "Orc", "Dwarf"],
@@ -73016,6 +73474,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Shabti.",
+      "races": ["Shabti"],
       "skills": []
     },
     "tags": ["Origin", "Racial", "Shabti"],
@@ -73055,6 +73514,7 @@
       "bab": 5,
       "feats": [],
       "prereqText": "Base attack bonus +5, adaptive luck racial trait, halfling.",
+      "races": ["Halfling"],
       "skills": []
     },
     "tags": ["Combat", "Racial", "Halfling", "Combat Trick"],
@@ -73081,6 +73541,7 @@
       "abilities": [],
       "feats": [],
       "prereqText": "Lizardfolk, swim speed.",
+      "races": ["Lizardfolk"],
       "skills": []
     },
     "tags": ["General"],

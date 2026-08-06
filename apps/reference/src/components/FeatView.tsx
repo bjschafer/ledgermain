@@ -22,6 +22,7 @@ export function FeatView({ feat }: { feat: Feat }) {
       {feat.tags.length > 0 && <p className="detail-sub">{feat.tags.join(" · ")}</p>}
 
       <div className="rows">
+        <Row label="Race">{p.races?.length ? p.races.join(" or ") : null}</Row>
         <Row label="Abilities">{abilities.length > 0 ? abilities.join(", ") : null}</Row>
         <Row label="Base attack">{p.bab !== undefined ? `+${p.bab}` : null}</Row>
         <Row label="Caster level">{p.casterLevel !== undefined ? `${p.casterLevel}` : null}</Row>

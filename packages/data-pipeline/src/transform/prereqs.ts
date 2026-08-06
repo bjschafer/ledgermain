@@ -409,6 +409,80 @@ export function parsePrerequisites(
   return result;
 }
 
+/** A race name with any parenthetical variant dropped ("Lashunta (Male)" → "Lashunta"). */
+function baseRaceName(name: string): string {
+  return name.replace(/\s*\(.*\)$/, "").trim();
+}
+
+/**
+ * Races named by a prereq fragment, but ONLY when the fragment is nothing but
+ * race names — "dwarf or gnome" and "Android, kasatha, lashunta, or Triaxian"
+ * qualify; "orc ferocity racial trait", "Goblin Cleaver" and "proficient with
+ * sling or halfling sling staff" do not.
+ *
+ * That whole-fragment requirement is what makes this safe to hard-block on.
+ * Race names are ordinary English words that turn up all over prereq prose —
+ * inside other feats' names, inside racial-trait names, inside a parenthetical
+ * aside — and a substring match on any of those would lock a legal character
+ * out of a feat they qualify for. A fragment that is only race names is
+ * always the "you must be one of these" clause.
+ */
+function parseRaceFragment(fragment: string, byName: ReadonlyMap<string, string>): string[] {
+  // A trailing aside ("halfling (see Special)") doesn't stop the fragment from
+  // being a pure race list; a leading "or" is the Oxford-comma tail.
+  const cleaned = fragment
+    .replace(/\(.*?\)/g, " ")
+    .replace(OR_PREFIX_RE, "")
+    .trim();
+  if (!cleaned) return [];
+  const parts = splitTopLevelOnOr(cleaned)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+  const matched: string[] = [];
+  for (const part of parts) {
+    const race = byName.get(part.toLowerCase());
+    if (!race) return [];
+    matched.push(race);
+  }
+  return matched;
+}
+
+/**
+ * Second pass over the transformed feats, filling `prerequisites.races` from
+ * each feat's prose. Needs the full race-name list, which is why it's a pass
+ * rather than part of `parsePrerequisites`. Mutates `feats` in place.
+ *
+ * Deliberately ignores the feat's `Racial`/race-name TAGS, which look like a
+ * cleaner signal than prose but aren't: they're applied to feats whose racial
+ * mention is only an example ("...such as by being an aasimar") or an
+ * incidental piece of equipment ("halfling sling staff"), and they miss races
+ * the prose does list. The prose fragment is both stricter and closer to what
+ * the published prerequisite actually says.
+ */
+export function resolveRacePrereqs(feats: Feat[], raceNames: Iterable<string>): void {
+  const byName = new Map<string, string>();
+  for (const name of raceNames) {
+    const base = baseRaceName(name);
+    // Two vendored races can share a base name (the Lashunta pair); either one
+    // yields the same requirement, so the first wins.
+    if (!byName.has(base.toLowerCase())) byName.set(base.toLowerCase(), base);
+  }
+
+  for (const feat of feats) {
+    const text = feat.prerequisites.prereqText;
+    if (!text) continue;
+    const races: string[] = [];
+    for (const clause of splitClauses(text)) {
+      for (const frag of splitFragments(clause)) {
+        for (const race of parseRaceFragment(frag, byName)) {
+          if (!races.includes(race)) races.push(race);
+        }
+      }
+    }
+    if (races.length > 0) feat.prerequisites.races = races;
+  }
+}
+
 /**
  * Second pass, run once every feat has been transformed: matches each feat's
  * still-unstructured `prereqText` fragments against the full vendored feat

@@ -4,7 +4,7 @@
  *
  * Policy (DESIGN.md §4 hybrid validation):
  *  - HARD-BLOCK only on STRUCTURED prerequisites we reliably parsed (ability
- *    minimums, BAB, caster level, character level, required feats, and
+ *    minimums, BAB, caster level, character level, race, required feats, and
  *    "any one of these feats" groups).
  *  - NEVER hard-block on free-text prose. When a feat's prereqs are only prose
  *    (`prereqText` with no structured signals), surface a SOFT WARNING instead.
@@ -19,9 +19,9 @@
  * fragments are left alone since their ✗ check and the prose already agree
  * there's no ambiguity to resolve). Conservative by construction: a fragment
  * is only ever dropped when it can be matched to a specific, satisfied
- * structured signal (ability/BAB/caster level/feat) via a narrow per-kind
+ * structured signal (ability/BAB/caster level/race/feat) via a narrow per-kind
  * regex/name match; anything that doesn't match — a skill rank, "proficient
- * with weapon", a class feature, race, alignment, etc. — always stays, so the
+ * with weapon", a class feature, alignment, etc. — always stays, so the
  * soft warning never silently hides prose the structured layer didn't actually
  * check.
  */
@@ -79,6 +79,16 @@ export interface PrereqContext {
   casterKinds: ReadonlySet<CasterKind>;
   /** Feat ids already selected on the document. */
   selectedFeats: ReadonlySet<string>;
+  /**
+   * Lowercased names the character's race answers to, for
+   * `prerequisites.races`: its own name plus its creature SUBTYPES, which is
+   * what makes a half-elf qualify for both elf and human feats, a drow for elf
+   * feats, and a duergar for dwarf feats. `undefined` when the doc's race id
+   * isn't in RefData at all (nothing chosen yet, or a stale id) — the race
+   * check is then skipped entirely rather than failed, so an unresolvable race
+   * never locks a feat.
+   */
+  raceIdentity?: ReadonlySet<string>;
   refData: RefData;
   /**
    * `featNameSlug`s whose structured prereqs should be waived (ranger combat
@@ -110,6 +120,7 @@ export function buildPrereqContext(
     const kind = CASTER_KIND[c.tag];
     if (kind && casterLevelForClass(c.tag, c.level) > 0) casterKinds.add(kind);
   }
+  const race = refData.races[doc.identity.race];
   return {
     abilityTotals,
     bab: sheet.bab,
@@ -117,9 +128,20 @@ export function buildPrereqContext(
     characterLevel: totalLevel(doc),
     casterKinds,
     selectedFeats: new Set([...doc.build.feats, ...grantedIds]),
+    raceIdentity: race
+      ? new Set([
+          baseRaceName(race.name).toLowerCase(),
+          ...race.creatureSubtypes.map((s) => s.toLowerCase()),
+        ])
+      : undefined,
     refData,
     bypassBlockedSlugs: combatStyleFeatSlugs(doc),
   };
+}
+
+/** Mirrors the data-pipeline's `baseRaceName` — "Lashunta (Female)" → "Lashunta". */
+function baseRaceName(name: string): string {
+  return name.replace(/\s*\(.*\)$/, "").trim();
 }
 
 /** A structured prerequisite signal, paired with a prose-fragment matcher. */
@@ -127,6 +149,29 @@ interface StructuredSignal {
   met: boolean;
   /** True if `fragment` (already trimmed) describes this exact signal. */
   test: (fragment: string) => boolean;
+}
+
+/**
+ * True when `fragment` is the prose form of a met race requirement — i.e. it
+ * names nothing but races drawn from `races`, in any of the shapes the source
+ * writes them: "dwarf", "half-orc or orc", "or halfling (see Special)". Mirrors
+ * the data-pipeline's `parseRaceFragment`, which built `races` from exactly
+ * these fragments.
+ */
+function raceFragmentMatches(fragment: string, races: readonly string[]): boolean {
+  const cleaned = fragment
+    .replace(/\(.*?\)/g, " ")
+    .replace(/^or\b/i, "")
+    .trim();
+  if (!cleaned) return false;
+  const parts = cleaned
+    .split(/\bor\b/i)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+  return (
+    parts.length > 0 &&
+    parts.every((part) => races.some((r) => r.toLowerCase() === part.toLowerCase()))
+  );
 }
 
 const ABILITY_FRAGMENT_RE = /^(str|dex|con|int|wis|cha)\s+(\d+)$/i;
@@ -179,6 +224,17 @@ export function evaluatePrereqs(feat: Feat, ctx: PrereqContext): PrereqResult {
   const checks: PrereqCheck[] = [];
   const signals: StructuredSignal[] = [];
   const p = feat.prerequisites;
+
+  // Race first — "you must be a dwarf" reads as the gate everything else sits
+  // under. Skipped outright when the doc's race can't be resolved, so an
+  // unknown race shows neither a ✓ nor a ✗ it can't back up.
+  if (p.races?.length && ctx.raceIdentity) {
+    const raceIdentity = ctx.raceIdentity;
+    const races = p.races;
+    const met = races.some((r) => raceIdentity.has(r.toLowerCase()));
+    checks.push({ label: races.join(" or "), met });
+    signals.push({ met, test: (frag) => raceFragmentMatches(frag, races) });
+  }
 
   for (const a of p.abilities) {
     const met = (ctx.abilityTotals[a.ability] ?? 0) >= a.min;

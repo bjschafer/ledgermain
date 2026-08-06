@@ -2,7 +2,11 @@ import { describe, expect, it } from "bun:test";
 
 import type { Feat } from "@pf1/schema";
 
-import { parsePrerequisites, resolveNamedFeatPrereqs } from "../src/transform/prereqs.js";
+import {
+  parsePrerequisites,
+  resolveNamedFeatPrereqs,
+  resolveRacePrereqs,
+} from "../src/transform/prereqs.js";
 import type { UuidResolver } from "../src/transform/common.js";
 
 /**
@@ -308,5 +312,85 @@ describe("resolveNamedFeatPrereqs", () => {
     const feats = [other, noPrereq];
     resolveNamedFeatPrereqs(feats);
     expect(noPrereq.prerequisites.feats).toEqual([]);
+  });
+});
+
+describe("resolveRacePrereqs", () => {
+  const RACES = [
+    "Dwarf",
+    "Elf",
+    "Gnome",
+    "Goblin",
+    "Half-Elf",
+    "Half-Orc",
+    "Halfling",
+    "Human",
+    "Orc",
+    "Lashunta (Female)",
+    "Lashunta (Male)",
+  ];
+
+  function feat(name: string, prereqText?: string): Feat {
+    return {
+      id: name,
+      name,
+      uuid: `Compendium.pf1.feats.Item.${name}`,
+      tags: [],
+      prerequisites: { abilities: [], feats: [], skills: [], prereqText },
+    };
+  }
+
+  function races(prereqText: string): string[] | undefined {
+    const f = feat("Subject", prereqText);
+    resolveRacePrereqs([f], RACES);
+    return f.prerequisites.races;
+  }
+
+  it("parses a lone race fragment, normalizing case to the vendored name", () => {
+    expect(races("Base attack bonus +1, orc.")).toEqual(["Orc"]);
+  });
+
+  it("parses an 'A or B' fragment as alternatives", () => {
+    expect(races("Wis 13, half-orc or orc.")).toEqual(["Half-Orc", "Orc"]);
+  });
+
+  it("parses an Oxford-comma race list spanning several fragments", () => {
+    expect(races("Con 13; dwarf, half-orc, or orc.")).toEqual(["Dwarf", "Half-Orc", "Orc"]);
+  });
+
+  it("collapses a parenthetical race variant to its base name", () => {
+    expect(races("Lashunta.")).toEqual(["Lashunta"]);
+  });
+
+  it("ignores a trailing parenthetical aside", () => {
+    expect(races("Half-elf, half-orc, or halfling (see Special).")).toEqual([
+      "Half-Elf",
+      "Half-Orc",
+      "Halfling",
+    ]);
+  });
+
+  it("ignores a race named inside a longer fragment (a racial trait, not the race)", () => {
+    expect(races("Con 13, orc ferocity racial trait.")).toBeUndefined();
+  });
+
+  it("ignores a race that is only part of another feat's name", () => {
+    expect(races("Str 13, Cleave, Goblin Cleaver, Power Attack.")).toBeUndefined();
+  });
+
+  it("ignores a race named inside an equipment clause", () => {
+    expect(
+      races("Point-Blank Shot, proficient with sling or halfling sling staff."),
+    ).toBeUndefined();
+  });
+
+  it("ignores an ethnicity parenthetical but keeps the race", () => {
+    expect(races("Human (Chelaxian).")).toEqual(["Human"]);
+  });
+
+  it("leaves a feat with no prereqText untouched", () => {
+    const f = feat("No Prereq Feat");
+    resolveRacePrereqs([f], RACES);
+    expect(f.prerequisites.races).toBeUndefined();
   });
 });
