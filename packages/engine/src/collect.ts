@@ -25,6 +25,7 @@ import { resolveFeatEffect } from "./feat-effects-resolve.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { ITEM_CHANGE_PATCHES } from "./item-effects.js";
 import { resolveKineticistDefense } from "./kineticist-defense.js";
+import { KINETICIST_ELEMENTS } from "./kineticist-elements.js";
 import { resolveKineticistWildTalent } from "./kineticist-wild-talents.js";
 import { resolveMagusArcanum } from "./magus-arcana.js";
 import { mediumSpiritBonus, MEDIUM_SPIRITS } from "./medium-spirits.js";
@@ -1172,10 +1173,12 @@ export function collectModifiers(
   // Talent ids resolve through the hand-authored table first, falling back
   // to the vendored catalog — see `@pf1/engine` `kineticist-wild-talents.ts`
   // `resolveKineticistWildTalent`. Gated on the character actually having
-  // kineticist levels. Nearly every talent is display-only (activated
-  // abilities with burn/action state — see that file's doc comment); the
-  // promoted set (Clockwork Heart's feat benefits) carries a real
-  // unconditional Change.
+  // kineticist levels. Most talents are display-only (activated abilities
+  // with burn/action state — see that file's doc comment); a promoted set
+  // (Clockwork Heart's feat benefits, the elemental-resistance Adaptation
+  // talents, Eyes of the Void's darkvision, Herbal Antivenom's poison-save
+  // bonus, ...) carries a real unconditional Change — see that file's doc
+  // comment for the list.
   const kineticistLevel = doc.identity.classes.find((c) => c.tag === "kineticist")?.level ?? 0;
   if (kineticistLevel > 0) {
     for (const talentId of doc.build.kineticistWildTalents ?? []) {
@@ -1193,6 +1196,39 @@ export function collectModifiers(
           out,
           ch.operator,
           ch.saveCategories,
+        );
+      }
+    }
+  }
+
+  // --- kineticist Skilled Kineticist (universal utility wild talent) ------
+  // RAW (Occult Adventures): "you gain a bonus equal to 1/2 your kineticist
+  // level on skill checks with the skills your primary element added to your
+  // class skill list." Which two skills that is depends on the player's
+  // PRIMARY element (`KINETICIST_ELEMENTS[...].classSkills`, the same table
+  // `compute.ts`'s `computeSkills` reads for the class-skill grant itself),
+  // not a player choice, so it can't live in the talent's own static
+  // `changes[]` (which has no access to `doc.build.kineticistElement`) —
+  // resolved here instead, the same "needs the character's own build state"
+  // shape as the Elemental Defense block below. Greater Skilled Kineticist's
+  // OWN bonus (a player-chosen THIRD skill) stays unmodeled: the schema has
+  // no field recording which skill was picked.
+  if (kineticistLevel > 0 && doc.build.kineticistElement) {
+    const hasSkilledKineticist = (doc.build.kineticistWildTalents ?? []).includes(
+      "universal:skilledKineticist",
+    );
+    if (hasSkilledKineticist) {
+      const primaryClassSkills =
+        KINETICIST_ELEMENTS[doc.build.kineticistElement]?.classSkills ?? [];
+      for (const skillId of primaryClassSkills) {
+        evalChange(
+          "floor(@classes.kineticist.level / 2)",
+          rollData,
+          `skill.${skillId}`,
+          "competence",
+          "Skilled Kineticist",
+          "universal:skilledKineticist",
+          out,
         );
       }
     }

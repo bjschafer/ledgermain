@@ -56,16 +56,49 @@
  *   - `earth:clockworkHeart` — the benefits of Improved Initiative and
  *     Lightning Reflexes while the graft stays wound (daily upkeep, kept as
  *     a contextNotes reminder rather than a live gate).
+ *   - `fire:heatAdaptation` / `water:heatAdaptation` and
+ *     `fire:coldAdaptation` / `water:coldAdaptation` — fire/cold resistance
+ *     equal to twice the burn currently held (`@attributes.burn.value`,
+ *     `rolldata.ts`); `air:aerialAdaptation` is the same shape for
+ *     electricity resistance.
+ *   - `void:eyesOfTheVoid` — a flat 60 ft. darkvision grant (RAW's
+ *     "+30 ft. instead if you already have darkvision" rider differs from
+ *     the grant and stays a contextNotes reminder, the same posture
+ *     `shifter-aspects.ts`'s Bat aspect documents).
+ *   - `void:eyesOfTheVoidGreater` — see in darkness (a flag sense).
+ *   - `wood:herbalAntivenom` — a +5 alchemical bonus on saves against
+ *     poison.
+ *   - `universal:skilledKineticist` — a competence bonus (half kineticist
+ *     level) on the two class skills the player's PRIMARY element granted.
+ *     Applied by a dedicated `collect.ts` block, not this talent's own
+ *     `changes[]`, since which two skills that is depends on
+ *     `doc.build.kineticistElement` — data the static table has no access
+ *     to. Greater Skilled Kineticist's own bonus (a player-chosen third
+ *     skill) stays unmodeled: the schema has no field for that pick.
  *
  * Talents whose effect is scoped to a blast (`fire:firesFury`) are applied by
  * `kinetic-blast.ts` off the picked-talent list rather than through a
  * `Change`, since no target expresses "only blasts that include fire".
  *
- * One flagged near-miss stays display-only, so a future pass doesn't
- * re-litigate it: `earth:earthWalk`, whose overflow bonus lands on
+ * Activated healing/buff talents that cost burn but grant no permanent bonus
+ * (`water:kineticHealer`, `void:voidHealer`, `wood:woodHealer`,
+ * `universal:kineticRestoration`, `air:celerity`) are surfaced in the
+ * tracker instead of the sheet — `apps/web/src/components/tracker/
+ * ResourcesPanel.tsx`'s `KineticUtilityActionsPanel`, sitting beside the Burn
+ * resource row the same way `ElementalDefensePanel` does — rather than
+ * through a `Change`, since "heal on activation" isn't a passive number.
+ *
+ * Flagged near-misses stay display-only, so a future pass doesn't
+ * re-litigate them: `earth:earthWalk`, whose overflow bonus lands on
  * CMD-vs-two-maneuvers and balance-scoped Acrobatics — maneuver- and
  * task-scoped targets this engine doesn't have, the same class of gap as the
- * save-category near-misses in `oracle-revelations.ts`.
+ * save-category near-misses in `oracle-revelations.ts`. `earth:earthClimb`
+ * and `wood:brachiation` (both "climb speed equal to land speed" while on a
+ * qualifying surface) share `rage-powers.ts`'s Raging Climber problem: a
+ * `climbSpeed` formula only ever sees the PRE-buff base land speed in roll
+ * data (`buildRollData`), so an automatic grant could understate the real
+ * number once another source (Swift Foot, a buff, ...) has already raised
+ * land speed — apply the current land speed by hand instead.
  *
  * The vendored catalog overlay at the bottom of this file — see
  * `mergedKineticistWildTalentCatalog` — still exists for completeness (a
@@ -112,6 +145,16 @@ export function minKineticistLevelForTalent(level: number): number {
 function id(element: string, slug: string): string {
   return `${element}:${slug}`;
 }
+
+/**
+ * "You gain [energy] resistance equal to twice your current amount of burn"
+ * — Cold/Heat/Aerial Adaptation's shared shape (Occult Adventures). Reads
+ * `@attributes.burn.value`, the live burn-held count `rolldata.ts` populates
+ * for exactly this — a non-kineticist or a kineticist holding no burn
+ * resolves to 0, which `defenses.ts`'s zero-value guard drops rather than
+ * showing a spurious "resist 0" seal.
+ */
+const TWICE_CURRENT_BURN_FORMULA = "2 * @attributes.burn.value";
 
 const UNIVERSAL_INFUSIONS: KineticistWildTalentDef[] = [
   {
@@ -981,7 +1024,12 @@ const AIR_TALENTS: KineticistWildTalentDef[] = [
     element: "air",
     level: 1,
     burn: 0,
-    summary: "Immune to altitude sickness; gain resistance to electricity.",
+    summary:
+      "Immune to altitude sickness; gain electricity resistance equal to twice your current burn.",
+    // RAW (Occult Adventures): "you gain an amount of electricity resistance
+    // equal to twice your current amount of burn." Altitude-sickness immunity
+    // has no sheet stat to land on and stays a reminder.
+    changes: [{ formula: TWICE_CURRENT_BURN_FORMULA, target: "eres.electricity", type: "untyped" }],
   },
   {
     slug: "airsLeap",
@@ -1298,6 +1346,9 @@ const EARTH_TALENTS: KineticistWildTalentDef[] = [
     element: "earth",
     level: 2,
     burn: 0,
+    // Deliberately display-only: a `climbSpeed` formula only sees the
+    // PRE-buff base land speed (see file doc comment's near-miss paragraph),
+    // so an automatic "= land speed" grant could understate the real number.
     summary: "Gain a climb speed equal to your land speed on stone and earth surfaces.",
   },
   {
@@ -1619,7 +1670,11 @@ const FIRE_TALENTS: KineticistWildTalentDef[] = [
     element: "fire",
     level: 1,
     burn: 0,
-    summary: "Endure elements against heat, and gain resist fire.",
+    summary: "Endure elements against heat, and gain resist fire equal to twice your current burn.",
+    // RAW (Occult Adventures): "You gain an amount of fire resistance equal
+    // to twice your current amount of burn." Endure elements has no sheet
+    // stat to land on and stays a reminder.
+    changes: [{ formula: TWICE_CURRENT_BURN_FORMULA, target: "eres.fire", type: "untyped" }],
   },
   {
     slug: "coldAdaptation",
@@ -1628,7 +1683,11 @@ const FIRE_TALENTS: KineticistWildTalentDef[] = [
     element: "fire",
     level: 1,
     burn: 0,
-    summary: "Endure elements against cold, and gain resist cold.",
+    summary: "Endure elements against cold, and gain resist cold equal to twice your current burn.",
+    // RAW (Occult Adventures): "You gain cold resistance equal to twice your
+    // current amount of burn." Endure elements has no sheet stat to land on
+    // and stays a reminder.
+    changes: [{ formula: TWICE_CURRENT_BURN_FORMULA, target: "eres.cold", type: "untyped" }],
   },
   {
     slug: "fireSculptor",
@@ -1911,7 +1970,8 @@ const WATER_TALENTS: KineticistWildTalentDef[] = [
     element: "water",
     level: 1,
     burn: 0,
-    summary: "Endure elements against heat, and gain resist fire.",
+    summary: "Endure elements against heat, and gain resist fire equal to twice your current burn.",
+    changes: [{ formula: TWICE_CURRENT_BURN_FORMULA, target: "eres.fire", type: "untyped" }],
   },
   {
     slug: "coldAdaptation",
@@ -1920,7 +1980,8 @@ const WATER_TALENTS: KineticistWildTalentDef[] = [
     element: "water",
     level: 1,
     burn: 0,
-    summary: "Endure elements against cold, and gain resist cold.",
+    summary: "Endure elements against cold, and gain resist cold equal to twice your current burn.",
+    changes: [{ formula: TWICE_CURRENT_BURN_FORMULA, target: "eres.cold", type: "untyped" }],
   },
   {
     slug: "kineticHealer",
@@ -2222,6 +2283,21 @@ const VOID_TALENTS: KineticistWildTalentDef[] = [
     level: 2,
     burn: 0,
     summary: "Grants 60 ft. darkvision, or extends existing darkvision by 30 ft.",
+    // RAW: "you gain darkvision with a range of 60 feet (if you already have
+    // darkvision, your darkvision's range increases by 30 feet)." Grant (60)
+    // and rider (+30) differ, the same shape `shifter-aspects.ts`'s Bat aspect
+    // documents as unrepresentable via senses.ts's highest-wins pool or its
+    // `operator: "add"` convention (max(grant, existing + rider) is neither) —
+    // applied as a flat, unconditional 60 ft. grant (senses resolve highest-
+    // wins against any other source), with the +30-if-already-had-it rider
+    // left as a reminder.
+    changes: [{ formula: "60", target: "sensedv", type: "untyped" }],
+    contextNotes: [
+      {
+        target: "sensedv",
+        text: "The flat 60 ft. grant applies (senses resolve highest-wins). RAW's rider differs from the grant: +30 ft. instead if you already have darkvision, which the sheet can't express, so add that 30 ft. by hand if it applies to you.",
+      },
+    ],
   },
   {
     slug: "noBreath",
@@ -2291,6 +2367,9 @@ const VOID_TALENTS: KineticistWildTalentDef[] = [
     burn: 0,
     summary:
       "Requires Eyes of the Void; grants true darkness-piercing sight, as the see in darkness monster ability.",
+    // "See in darkness" is a flag sense (`senses.ts`'s `sensesid` target,
+    // flag: true) — any positive source turns it on.
+    changes: [{ formula: "1", target: "sensesid", type: "untyped" }],
   },
   {
     slug: "gravityControlGreater",
@@ -2404,6 +2483,9 @@ const WOOD_TALENTS: KineticistWildTalentDef[] = [
     element: "wood",
     level: 3,
     burn: 0,
+    // Deliberately display-only — same near-miss as Earth Climb above (file
+    // doc comment): a `climbSpeed` formula only sees the pre-buff base land
+    // speed.
     summary: "Grants a climb speed equal to your base speed while moving through forested terrain.",
   },
   {
@@ -2444,6 +2526,13 @@ const WOOD_TALENTS: KineticistWildTalentDef[] = [
     burn: 0,
     summary:
       "Grants a +5 alchemical bonus on poison saves; touch a creature to attempt an immediate treat-poison check without a kit (1 burn instead produces a full neutralize poison).",
+    // RAW: "You gain a +5 alchemical bonus on saving throws against poison, as
+    // if you were always under the effect of antitoxin." The touch/treat-
+    // poison/neutralize-poison half is an activated ability with no sheet
+    // stat to land on and stays a reminder.
+    changes: [
+      { formula: "5", target: "allSavingThrows", type: "alchemical", saveCategories: ["poison"] },
+    ],
   },
   {
     slug: "plantDisguise",

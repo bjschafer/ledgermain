@@ -21,6 +21,7 @@ import { toggleLinkedBuff, toggleTableBuff } from "../../model/buffs.js";
 import { setMartialFlexibilityFeat } from "../../model/doc.js";
 import {
   clearKineticistDefenseBurn,
+  kineticUtilityActions,
   setKineticistDefenseBurn,
   setKineticistShroudMode,
 } from "../../model/kineticistBuild.js";
@@ -138,12 +139,15 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
                   <MentalFocusInvestmentPanel doc={doc} pool={pool} update={update} />
                 )}
                 {pool.name === "Burn" && pool.classTag === "kineticist" && (
-                  <ElementalDefensePanel
-                    doc={doc}
-                    refData={refData}
-                    burnHeld={used}
-                    update={update}
-                  />
+                  <>
+                    <ElementalDefensePanel
+                      doc={doc}
+                      refData={refData}
+                      burnHeld={used}
+                      update={update}
+                    />
+                    <KineticUtilityActionsPanel doc={doc} refData={refData} sheet={sheet} />
+                  </>
                 )}
               </div>
             );
@@ -584,6 +588,49 @@ function ElementalDefensePanel({
           {note}
         </p>
       ))}
+    </div>
+  );
+}
+
+/**
+ * A handful of picked kineticist wild talents are activated abilities that
+ * cost burn but grant no permanent bonus a `Change` could target (Kinetic
+ * Healer and its Void/Wood Healer counterparts, Kinetic Restoration,
+ * Celerity) — before this panel existed, picking one showed up nowhere but
+ * the builder, which is exactly the "produces no mechanical effect on the
+ * sheet or tracker" complaint the rest of the catalog's `changes[]`-backed
+ * entries don't have. Read-only: burn is still spent by hand via the Burn
+ * row above, the same way a barbarian tracks her own rage rounds (see
+ * `resources.ts`'s doc comment on why linked-buff toggles never auto-drain a
+ * pool). See `model/kineticistBuild.ts`'s `kineticUtilityActions` for which
+ * talents are covered and why.
+ */
+function KineticUtilityActionsPanel({
+  doc,
+  refData,
+  sheet,
+}: {
+  doc: CharacterDoc;
+  refData: RefData;
+  sheet: DerivedSheet;
+}) {
+  const actions = kineticUtilityActions(doc, refData, sheet);
+  if (actions.length === 0) return null;
+
+  return (
+    <div className="res-sub-row kinetic-utility-actions">
+      <div className="res-name">Utility talents</div>
+      <ul className="loadout-infusion-list">
+        {actions.map((action) => (
+          <li key={action.id}>
+            <b>{action.name}</b>
+            <span className="hint">
+              {" "}
+              ({action.burn} burn) · {action.detail}
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
