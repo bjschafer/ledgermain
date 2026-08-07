@@ -1652,6 +1652,25 @@ button:focus-visible,
   white-space: nowrap;
 }
 
+/* A kineticist wild talent above the character's current effective-level
+   gate (e.g. "Level 6") — same pill language as `.unqualified-badge`, next
+   to a locked pick's name rather than an already-taken one that lapsed. */
+.level-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border: 1px solid var(--oxblood);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--oxblood-ink);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
 /* inline choice picker (Skill Focus, future weapon feats, …) */
 .feat-choice {
   margin-top: 5px;

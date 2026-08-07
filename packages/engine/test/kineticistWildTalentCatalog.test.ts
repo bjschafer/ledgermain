@@ -10,6 +10,8 @@ import {
   mergedCompositeBlastCatalog,
   mergedKineticistWildTalentCatalog,
   resolveKineticistWildTalent,
+  wildTalentPrereqText,
+  wildTalentRequirementFragments,
 } from "../src/index.js";
 
 /**
@@ -119,6 +121,65 @@ describe("resolveKineticistWildTalent", () => {
 
   it("returns undefined for an id in neither table", () => {
     expect(resolveKineticistWildTalent("bogus:notReal", ref)).toBeUndefined();
+  });
+});
+
+describe("wildTalentPrereqText", () => {
+  const merged = mergedKineticistWildTalentCatalog(ref);
+  const byId = new Map(merged.map((t) => [t.id, t]));
+
+  it("undefined for a talent whose description states no prerequisite", () => {
+    const extendedRange = byId.get("universal:extendedRange")!;
+    expect(wildTalentPrereqText(extendedRange.description)).toBeUndefined();
+  });
+
+  it("extracts the Prerequisite clause, HTML-stripped, for a gated talent", () => {
+    const maelstrom = byId.get("water:maelstrom")!;
+    expect(wildTalentPrereqText(maelstrom.description)).toBe("extended range");
+  });
+
+  it("stops at the next stat label rather than swallowing it (Associated Blasts/Saving Throw)", () => {
+    const maelstrom = byId.get("water:maelstrom")!;
+    expect(wildTalentPrereqText(maelstrom.description)).not.toMatch(
+      /Associated Blasts|Saving Throw/,
+    );
+  });
+
+  it("undefined for undefined/empty input", () => {
+    expect(wildTalentPrereqText(undefined)).toBeUndefined();
+    expect(wildTalentPrereqText("")).toBeUndefined();
+  });
+});
+
+describe("wildTalentRequirementFragments", () => {
+  const merged = mergedKineticistWildTalentCatalog(ref);
+  const byId = new Map(merged.map((t) => [t.id, t]));
+
+  it("matches a fragment naming another wild talent by exact (case-insensitive) name", () => {
+    const fragments = wildTalentRequirementFragments("extended range", merged);
+    expect(fragments).toEqual([{ text: "extended range", talentId: "universal:extendedRange" }]);
+  });
+
+  it("matches a fragment naming a wild talent with a trailing 'wild talent' suffix", () => {
+    const fragments = wildTalentRequirementFragments("kinetic healer wild talent", merged);
+    expect(fragments[0]!.talentId).toBeDefined();
+  });
+
+  it("leaves an unresolvable fragment (a race, an archetype, an element clause) as prose only", () => {
+    const fragments = wildTalentRequirementFragments(
+      "kinetic fist, member of the Monastery of Unfolding Wind",
+      merged,
+    );
+    expect(fragments[0]).toEqual({ text: "kinetic fist", talentId: "universal:kineticFist" });
+    expect(fragments[1]!.talentId).toBeUndefined();
+    expect(fragments[1]!.text).toBe("member of the Monastery of Unfolding Wind");
+  });
+
+  it("real fixture: Unfolding Wind Infusion's prereq resolves Kinetic Fist as a matched requirement", () => {
+    const talent = byId.get("air:unfoldingWindInfusion")!;
+    const prereqText = wildTalentPrereqText(talent.description)!;
+    const fragments = wildTalentRequirementFragments(prereqText, merged);
+    expect(fragments.some((f) => f.talentId === "universal:kineticFist")).toBe(true);
   });
 });
 

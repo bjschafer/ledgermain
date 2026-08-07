@@ -8,6 +8,7 @@ import {
   KINETICIST_ELEMENT_TAGS,
   mergedCompositeBlastCatalog,
   mergedKineticistWildTalentCatalog,
+  minKineticistLevelForTalent,
 } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
@@ -17,7 +18,7 @@ import {
   expectedKineticistTalentCount,
   hasKineticistWildTalent,
   kineticistLevel,
-  kineticistTalentBelowLevel,
+  kineticistTalentPrereqResult,
   kineticistTalentsNeedWarning,
   knownKineticistElements,
   setKineticistElement,
@@ -25,10 +26,12 @@ import {
   talentMovesNumbers,
   setKineticistSimpleBlast,
   toggleKineticistWildTalent,
+  type KineticistTalentPrereqResult,
 } from "../../model/kineticistBuild.js";
 import { SKILL_NAMES } from "../../model/names.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { InfoTip } from "../InfoTip.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
@@ -152,42 +155,49 @@ function ElementalFocusSection({
 
           {primaryDef && (
             <div className="order-preview">
-              {primaryDef.alternateSimpleBlast ? (
-                <div style={{ marginTop: 4 }}>
-                  <div className="hint">
-                    Simple blast: {primaryDef.name} offers two; pick one when you gain the element.
-                  </div>
-                  <select
-                    className="order-select"
-                    value={chosenSimpleBlast(primaryDef.tag, blastChoices)?.id ?? ""}
-                    onChange={(e) =>
-                      update((d) =>
-                        setKineticistSimpleBlast(d, primaryDef.tag, e.target.value || null),
-                      )
-                    }
-                  >
-                    {elementSimpleBlasts(primaryDef.tag).map((b) => (
-                      <option key={b.id} value={b.id}>
-                        {b.name} ({b.damageType}, {b.descriptor})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ) : (
-                <div className="hint" style={{ marginTop: 4 }}>
-                  Simple blast: {primaryDef.simpleBlast.name} ({primaryDef.simpleBlast.damageType},{" "}
-                  {primaryDef.simpleBlast.descriptor})
-                </div>
-              )}
-              <div className="hint" style={{ marginTop: 2 }}>
-                Bonus class skills:{" "}
-                {primaryDef.classSkills.map((id) => SKILL_NAMES[id] ?? id).join(", ")}
+              <div>
+                <div className="hint">Simple Blast</div>
+                {primaryDef.alternateSimpleBlast ? (
+                  <>
+                    <p className="order-ability-summary">Choose one when you gain the element.</p>
+                    <select
+                      className="order-select"
+                      value={chosenSimpleBlast(primaryDef.tag, blastChoices)?.id ?? ""}
+                      onChange={(e) =>
+                        update((d) =>
+                          setKineticistSimpleBlast(d, primaryDef.tag, e.target.value || null),
+                        )
+                      }
+                    >
+                      {elementSimpleBlasts(primaryDef.tag).map((b) => (
+                        <option key={b.id} value={b.id}>
+                          {b.name} ({b.damageType}, {b.descriptor})
+                        </option>
+                      ))}
+                    </select>
+                  </>
+                ) : (
+                  <p className="order-ability-summary">
+                    {primaryDef.simpleBlast.name} ({primaryDef.simpleBlast.damageType},{" "}
+                    {primaryDef.simpleBlast.descriptor})
+                  </p>
+                )}
               </div>
-              <div className="hint" style={{ marginTop: 2 }}>
-                Defense. {primaryDef.defense.name}: {primaryDef.defense.summary}
+              <div>
+                <div className="hint">Bonus Class Skills</div>
+                <p className="order-ability-summary">
+                  {primaryDef.classSkills.map((id) => SKILL_NAMES[id] ?? id).join(", ")}
+                </p>
               </div>
-              <div className="hint" style={{ marginTop: 2 }}>
-                Basic utility. {primaryDef.basicUtility.name}: {primaryDef.basicUtility.summary}
+              <div>
+                <div className="hint">Elemental Defense</div>
+                <span className="cf-name">{primaryDef.defense.name}</span>
+                <p className="order-ability-summary">{primaryDef.defense.summary}</p>
+              </div>
+              <div>
+                <div className="hint">Basic Utility Wild Talent</div>
+                <span className="cf-name">{primaryDef.basicUtility.name}</span>
+                <p className="order-ability-summary">{primaryDef.basicUtility.summary}</p>
               </div>
             </div>
           )}
@@ -314,6 +324,8 @@ function WildTalentSection({
       burn: number;
       summary: string;
       description?: string;
+      unlockLevel?: number;
+      requirement?: KineticistTalentPrereqResult;
     }[] = [];
     for (const talent of catalog) {
       if (talent.category !== category) continue;
@@ -340,6 +352,8 @@ function WildTalentSection({
         burn: talent.burn,
         summary: talent.summary,
         description: talent.description,
+        unlockLevel: minKineticistLevelForTalent(talent.level),
+        requirement: kineticistTalentPrereqResult(doc, talent.description, catalog),
       });
     }
     return rows.sort((a, b) => {
@@ -347,8 +361,11 @@ function WildTalentSection({
       const sb = hasKineticistWildTalent(doc, b.id) ? 0 : 1;
       return sa - sb || a.elementName.localeCompare(b.elementName) || a.name.localeCompare(b.name);
     });
+    // Depends on the whole picked-talent list (not just this category's
+    // count) so a requirement check naming a talent from the OTHER category
+    // re-resolves live too.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [catalog, query, knownTags, chosen, category]);
+  }, [catalog, query, knownTags, doc.build.kineticistWildTalents, category]);
 
   return (
     <div className="subsection revelation-picker">
@@ -382,7 +399,8 @@ function WildTalentSection({
               : "Gained at 2nd, 4th, 6th, 8th, 10th, 12th, 14th, 16th, 18th, and 20th level."}{" "}
             Browses the full published catalog, scoped to known elements + universal talents;
             entries marked <span className="badge-modeled">M</span> carry a real, live mechanical
-            effect. The rest are prose-only. Free-choice: never blocks.
+            effect. The rest are prose-only. Free-choice, except the level gate below: a talent
+            above it locks until you reach it.
           </p>
           {knownTags.size === 0 && (
             <div className="empty">
@@ -399,9 +417,16 @@ function WildTalentSection({
           <div className="scroll">
             {talents.map((t) => {
               const isSel = hasKineticistWildTalent(doc, t.id);
-              const belowLevel = level > 0 && kineticistTalentBelowLevel(doc, refData, t.id);
+              const belowLevel = level > 0 && t.unlockLevel !== undefined && level < t.unlockLevel;
+              // Only a not-yet-picked talent is locked — an already-picked one
+              // (a legacy build, or the character's level since dropped) keeps
+              // working, same as a feat whose prereqs later lapse.
+              const blocked = belowLevel && !isSel;
               return (
-                <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                <div
+                  key={t.id}
+                  className={`pick-row${isSel ? " is-selected" : ""}${blocked ? " is-blocked" : ""}`}
+                >
                   <div className="pmain">
                     <div className="pname">
                       {t.name}
@@ -415,15 +440,33 @@ function WildTalentSection({
                           M
                         </span>
                       )}
+                      {belowLevel && (
+                        <span className="level-badge" title="Kineticist level required">
+                          Level {t.unlockLevel}
+                        </span>
+                      )}
                     </div>
                     <div className="preq">
                       <span className="desc-text">
                         {t.summary} ({t.burn} burn)
                       </span>
                     </div>
-                    {belowLevel && (
-                      <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Above your current effective-level gate
+                    {t.requirement && (
+                      <div className="preq">
+                        <span className="hint">Requires</span>
+                        {t.requirement.checks.map((c, i) => (
+                          <span key={i} className={c.met ? "ck-met" : "ck-unmet"}>
+                            {c.met ? "✓" : "✗"} {c.label}
+                          </span>
+                        ))}
+                        {t.requirement.softText ? (
+                          <InfoTip
+                            className="desc-text"
+                            content="Prerequisite text: verify manually (not auto-enforced)"
+                          >
+                            ⚠ {t.requirement.softText}
+                          </InfoTip>
+                        ) : null}
                       </div>
                     )}
                     {t.description ? <FeatureDescription html={t.description} /> : null}
@@ -431,9 +474,11 @@ function WildTalentSection({
                   <button
                     type="button"
                     className={`pick-btn ${isSel ? "remove" : "add"}`}
+                    disabled={blocked}
+                    title={blocked ? `Unlocks at kineticist level ${t.unlockLevel}` : undefined}
                     onClick={() => update((d) => toggleKineticistWildTalent(d, t.id))}
                   >
-                    {isSel ? "Remove" : "Add"}
+                    {isSel ? "Remove" : blocked ? "Locked" : "Add"}
                   </button>
                 </div>
               );
