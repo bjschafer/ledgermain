@@ -3,8 +3,8 @@
   "counts": {
     "alchemistDiscoveries": 168,
     "arcanistExploits": 73,
-    "archetypeFeatures": 6053,
-    "archetypes": 1427,
+    "archetypeFeatures": 6052,
+    "archetypes": 1425,
     "armors": 62,
     "blessings": 42,
     "bloodlineSpellLists": 51,
@@ -65,8 +65,8 @@
   "hashes": {
     "alchemist-discoveries.json": "e97c283d12adc65f44ec5e452cf3045b33080320ed3d1b147b5688de6a13b0bf",
     "arcanist-exploits.json": "08b122c5d40463453ff40e08427344fac64eb5cfbc75b7161fa5d369b5b163ee",
-    "archetype-features.json": "d3729cbd7693cc497d02a0e98806fdc47f63bb128e268c3c88bfb566cc79aa3a",
-    "archetypes.json": "b4f9940ca1ba85a9ee083654eb70247d69f20b96d0977dd217e9310f2247f76a",
+    "archetype-features.json": "072c3c8e58165d8084ac8a7510ad5ccc8d630e8f696231a4b38be4840204c601",
+    "archetypes.json": "749c70262f9a610f65fc91f9855674c93a7559f1f3f7575fac1c20287c54b8b0",
     "armors.json": "ed7612e0cefb17fdacc8b8ed3f462cd43d1b5e4ebd90a53fcd1f7d37f58aca29",
     "blessings.json": "c584300932c577ac5b123ab77416d453a8d5488e5838ce64409bd9cc0a772994",
     "bloodline-spell-lists.json": "3c0e5a2c4f90d3760fb8520ddca198172c47cff5ce77a1f6a00e97980c1afaea",

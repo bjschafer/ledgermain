@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-06-phantom-archetypes",
+    date: "2026-08-06",
+    title: "Two archetypes that were never real",
+    note: "The archetype list offered kineticists an archetype called Kineticist, and gunslingers a stray copy of their own deeds. Neither was a real archetype: both came from source entries filed under the class name instead of the archetype that owns them. They are gone. Sand blast and sirocco blast now sit where they belong, on the psammokinetic, which had been listing them in its description without ever granting them.",
+  },
+  {
     id: "2026-08-05-racial-feat-checks",
     date: "2026-08-05",
     title: "Racial feats now check your race",

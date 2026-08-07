@@ -175,6 +175,85 @@ const MISLINKED_SUPPLEMENTS = new Set<string>([
   "Dtql9vRY7VG5XtVN:M8A86NznHJUmql2H",
 ]);
 
+/** One hand-authored `links.supplements` entry, with a name to verify on apply. */
+interface UnlinkedSupplement {
+  /** `pf-arch-features/` doc `_id`. */
+  featureId: string;
+  /** That doc's `name`, verified against the pack — a rename guard. */
+  featureName: string;
+  /** Level the archetype grants it at, same meaning as a vendored entry's. */
+  level: number;
+}
+
+/**
+ * Features an archetype's prose describes but its `links.supplements` never
+ * lists, keyed by archetype doc `_id`. Without this they reach the orphan pass
+ * below, which groups by `tags[0]` — and these docs lead with the CLASS name
+ * rather than the archetype's, so that pass would mint a phantom archetype
+ * named after the class itself.
+ *
+ * Psammokinetic (`d4xmlizUWEUqNT3t`) links three of its five features and
+ * leaves sand blast and sirocco blast as bare `<h3>` headers in its own prose.
+ * Both are level 1: its Burning Winds feature (itself a level-1 supplement)
+ * grants them "in place of the air blast and electric blast normally granted
+ * to an aerokinetic", and a kineticist has its simple blast from 1st level.
+ */
+const UNLINKED_SUPPLEMENTS: Record<string, UnlinkedSupplement[]> = {
+  d4xmlizUWEUqNT3t: [
+    { featureId: "rO0zEswBqBJieKmQ", featureName: "Sand Blast (Psammokinetic)", level: 1 },
+    { featureId: "qG4JGsgUO4dmbUeZ", featureName: "Sirocco Blast (Psammokinetic)", level: 1 },
+  ],
+};
+
+/**
+ * Feature docs that belong to no archetype at all, keyed by doc `_id` (value
+ * is the doc `name`, verified on apply). The orphan pass would otherwise read
+ * their `tags[0]` as an archetype name and synthesize one.
+ *
+ * "Deeds (Gunslinger)" is the base class's own deed list, filed alongside the
+ * per-archetype "Deeds (<Archetype>)" docs that quote its preamble before
+ * describing their swaps. Nothing references it, and `class-features.json`
+ * already carries the real gunslinger Deeds.
+ */
+const NON_ARCHETYPE_FEATURES: Record<string, string> = {
+  xpkvxEpxvIyFX7EV: "Deeds (Gunslinger)",
+};
+
+/**
+ * Fails the build if either hand-authored table above no longer matches the
+ * pack — an id that vanished or moved to different content silently reverts
+ * the phantom archetype it was written to prevent. Same drift-guard posture as
+ * `supplements.ts`.
+ */
+function verifyHandAuthoredTables(
+  archById: ReadonlyMap<string, RawDoc>,
+  featById: ReadonlyMap<string, RawDoc>,
+): void {
+  const check = (doc: RawDoc | undefined, id: string, name: string, kind: string): void => {
+    if (doc === undefined) {
+      throw new Error(`[archetypes] ${kind} "${name}" (${id}) not found in the archetype pack`);
+    }
+    if (doc.name !== name) {
+      throw new Error(
+        `[archetypes] ${kind} ${id} is named "${doc.name}" upstream, not "${name}" — ` +
+          `the vendored content moved under this id`,
+      );
+    }
+  };
+
+  for (const [archId, entries] of Object.entries(UNLINKED_SUPPLEMENTS)) {
+    if (!archById.has(archId)) {
+      throw new Error(`[archetypes] archetype ${archId} not found in the archetype pack`);
+    }
+    for (const entry of entries) {
+      check(featById.get(entry.featureId), entry.featureId, entry.featureName, "feature");
+    }
+  }
+  for (const [featId, name] of Object.entries(NON_ARCHETYPE_FEATURES)) {
+    check(featById.get(featId), featId, name, "feature");
+  }
+}
+
 function classTagsForArchetypeDoc(folderName: string, fileBase: string): string[] {
   if (folderName === "Monk") return [/-uc-/.test(fileBase) ? "monkUnchained" : "monk"];
   if (folderName === "Summoner") return [/-uc-/.test(fileBase) ? "summonerUnchained" : "summoner"];
@@ -601,6 +680,11 @@ export function transformArchetypePack(
     archPack.filter((pf) => isFolderDoc(pf.doc)).map((pf) => [pf.doc._id, pf.doc.name]),
   );
 
+  verifyHandAuthoredTables(
+    new Map(archPack.filter((pf) => !isFolderDoc(pf.doc)).map((pf) => [pf.doc._id, pf.doc])),
+    featById,
+  );
+
   const archetypes: Archetype[] = [];
   const archetypeFeatures: ArchetypeFeature[] = [];
   /** `${classTag}:${archetypeSlug}` for every archetype we emit — guards the orphan pass below from re-creating one that already exists. */
@@ -623,9 +707,13 @@ export function transformArchetypePack(
     const description = descriptionValue(sys, resolveUuid);
     const sources = normalizeSources(sys.sources);
     const links = sys.links as Record<string, unknown> | undefined;
-    const supplements = Array.isArray(links?.supplements)
+    const vendoredSupplements = Array.isArray(links?.supplements)
       ? (links.supplements as { level?: number; uuid?: string }[])
       : [];
+    const supplements = [
+      ...vendoredSupplements,
+      ...(UNLINKED_SUPPLEMENTS[doc._id] ?? []).map((s) => ({ level: s.level, uuid: s.featureId })),
+    ];
 
     for (const classTag of classTags) {
       if (!classesByTag.has(classTag)) continue; // class not in this slice yet
@@ -642,35 +730,37 @@ export function transformArchetypePack(
 
       const pairing = buildPairingContext(classesByTag.get(classTag)!);
 
-      if (supplements.length > 0) {
-        for (const s of supplements) {
-          const uuid = s.uuid;
-          if (typeof uuid !== "string") continue;
-          const featureId = uuid.split(".").pop();
-          if (featureId !== undefined && MISLINKED_SUPPLEMENTS.has(`${doc._id}:${featureId}`))
-            continue;
-          const featDoc = featureId ? featById.get(featureId) : undefined;
-          if (!featDoc || featureId === undefined) continue;
-          consumedFeatureIds.add(featureId);
-          const explicitLevel = typeof s.level === "number" ? s.level : undefined;
-          const oldLevel = explicitLevel ?? 0;
-          archetypeFeatures.push(
-            makeFeature(
-              archetypeId,
-              bareName,
-              classTag,
-              featDoc,
-              oldLevel,
-              explicitLevel,
-              pairing,
-              resolveUuid,
-            ),
-          );
-        }
-      } else {
-        // Inline-prose archetype (no links.supplements) — recover features by
-        // matching pf-arch-features items tagged with this archetype's own
-        // name, same fallback as the orphan pass below.
+      for (const s of supplements) {
+        const uuid = s.uuid;
+        if (typeof uuid !== "string") continue;
+        const featureId = uuid.split(".").pop();
+        if (featureId !== undefined && MISLINKED_SUPPLEMENTS.has(`${doc._id}:${featureId}`))
+          continue;
+        const featDoc = featureId ? featById.get(featureId) : undefined;
+        if (!featDoc || featureId === undefined) continue;
+        consumedFeatureIds.add(featureId);
+        const explicitLevel = typeof s.level === "number" ? s.level : undefined;
+        const oldLevel = explicitLevel ?? 0;
+        archetypeFeatures.push(
+          makeFeature(
+            archetypeId,
+            bareName,
+            classTag,
+            featDoc,
+            oldLevel,
+            explicitLevel,
+            pairing,
+            resolveUuid,
+          ),
+        );
+      }
+
+      // Inline-prose archetype (no vendored links.supplements) — recover
+      // features by matching pf-arch-features items tagged with this
+      // archetype's own name, same fallback as the orphan pass below. Gated on
+      // the VENDORED list, so a hand-authored `UNLINKED_SUPPLEMENTS` entry adds
+      // to an archetype without switching off its tag-based recovery.
+      if (vendoredSupplements.length === 0) {
         for (const fp of featPack) {
           if (consumedFeatureIds.has(fp.doc._id)) continue;
           if (tagsOf(fp.doc)[0] !== bareName) continue;
@@ -705,6 +795,7 @@ export function transformArchetypePack(
   const groups = new Map<string, { tag: string; docs: RawDoc[] }>();
   for (const fp of featPack) {
     if (consumedFeatureIds.has(fp.doc._id)) continue;
+    if (fp.doc._id in NON_ARCHETYPE_FEATURES) continue;
     const tag = tagsOf(fp.doc)[0];
     if (!tag) continue;
     const key = `${tag}${classesOf(fp.doc).join(",")}`;

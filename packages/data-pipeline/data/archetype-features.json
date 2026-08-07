@@ -35144,15 +35144,6 @@
     ],
     "uuid": "archetype-feature:gunslinger:gunner-squire:safe-handling:2"
   },
-  "gunslinger:gunslinger:deeds:1": {
-    "archetypeId": "gunslinger:gunslinger",
-    "classTag": "gunslinger",
-    "description": "<p>Gunslingers spend grit points to accomplish deeds. Most deeds grant the gunslinger some momentary bonus or effect, but there are some that provide longer-lasting effects. Some deeds stay in effect as long as the gunslinger has at least 1 grit point. The following is the list of base gunslinger deeds. A gunslinger can only perform deeds of her level or lower. Unless otherwise noted, a deed can be performed multiple successive times, as long as the appropriate amount of grit is spent to perform the deed.</p>",
-    "id": "gunslinger:gunslinger:deeds:1",
-    "level": 1,
-    "name": "Deeds",
-    "uuid": "archetype-feature:gunslinger:gunslinger:deeds:1"
-  },
   "gunslinger:maverick:deeds:1": {
     "archetypeId": "gunslinger:maverick",
     "classTag": "gunslinger",
@@ -42861,24 +42852,6 @@
     ],
     "uuid": "archetype-feature:kineticist:kinetic-knight:knight-s-resolve:3"
   },
-  "kineticist:kineticist:sand-blast:1": {
-    "archetypeId": "kineticist:kineticist",
-    "classTag": "kineticist",
-    "description": "<p>Element air; Type simple blast (Sp); Level -; Burn 0</p><p>Blast Type physical; Damage slashing</p><p>You slice at a single foe with a stream of sand.</p>",
-    "id": "kineticist:kineticist:sand-blast:1",
-    "level": 1,
-    "name": "Sand Blast",
-    "uuid": "archetype-feature:kineticist:kineticist:sand-blast:1"
-  },
-  "kineticist:kineticist:sirocco-blast:1": {
-    "archetypeId": "kineticist:kineticist",
-    "classTag": "kineticist",
-    "description": "<p>Blast Type energy; Damage fire</p><p>You shoot a wave of superheated air to burn a single foe.</p>",
-    "id": "kineticist:kineticist:sirocco-blast:1",
-    "level": 1,
-    "name": "Sirocco Blast",
-    "uuid": "archetype-feature:kineticist:kineticist:sirocco-blast:1"
-  },
   "kineticist:leshykineticist:basic-leshykinesis:1": {
     "archetypeId": "kineticist:leshykineticist",
     "classTag": "kineticist",
@@ -43018,6 +42991,15 @@
     ],
     "uuid": "archetype-feature:kineticist:psammokinetic:ki-pool:3"
   },
+  "kineticist:psammokinetic:sand-blast:1": {
+    "archetypeId": "kineticist:psammokinetic",
+    "classTag": "kineticist",
+    "description": "<p>Element air; Type simple blast (Sp); Level -; Burn 0</p><p>Blast Type physical; Damage slashing</p><p>You slice at a single foe with a stream of sand.</p>",
+    "id": "kineticist:psammokinetic:sand-blast:1",
+    "level": 1,
+    "name": "Sand Blast",
+    "uuid": "archetype-feature:kineticist:psammokinetic:sand-blast:1"
+  },
   "kineticist:psammokinetic:sand-element:7": {
     "archetypeId": "kineticist:psammokinetic",
     "classTag": "kineticist",
@@ -43033,6 +43015,15 @@
       }
     ],
     "uuid": "archetype-feature:kineticist:psammokinetic:sand-element:7"
+  },
+  "kineticist:psammokinetic:sirocco-blast:1": {
+    "archetypeId": "kineticist:psammokinetic",
+    "classTag": "kineticist",
+    "description": "<p>Blast Type energy; Damage fire</p><p>You shoot a wave of superheated air to burn a single foe.</p>",
+    "id": "kineticist:psammokinetic:sirocco-blast:1",
+    "level": 1,
+    "name": "Sirocco Blast",
+    "uuid": "archetype-feature:kineticist:psammokinetic:sirocco-blast:1"
   },
   "kineticist:psychokinetcist:emotional-intensity:1": {
     "archetypeId": "kineticist:psychokinetcist",

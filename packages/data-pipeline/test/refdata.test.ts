@@ -1541,6 +1541,42 @@ describe("archetypes (Stage 11, third-party dataset — no archetype data in Fou
     });
   });
 
+  describe("orphan features whose tags[0] is the class, not the archetype", () => {
+    it("emits no archetype named after its own class", () => {
+      // The vanished-parent pass names a synthesized archetype after the
+      // orphan group's `tags[0]`. A handful of feature docs lead with the
+      // CLASS name there, which would mint e.g. a "Kineticist" archetype for
+      // the kineticist.
+      const selfNamed = Object.values(ref.archetypes).filter(
+        (a) => a.id === `${a.classTag}:${a.classTag}`,
+      );
+      expect(selfNamed).toEqual([]);
+    });
+
+    it("files Psammokinetic's two unlinked simple blasts under the archetype itself", () => {
+      // Its Burning Winds feature grants both "in place of the air blast and
+      // electric blast normally granted to an aerokinetic", but the archetype
+      // doc leaves them out of `links.supplements`.
+      expect(ref.archetypeFeatures["kineticist:psammokinetic:sand-blast:1"]?.name).toBe(
+        "Sand Blast",
+      );
+      expect(ref.archetypeFeatures["kineticist:psammokinetic:sirocco-blast:1"]?.name).toBe(
+        "Sirocco Blast",
+      );
+    });
+
+    it("drops the base-class deed list filed among the gunslinger archetype features", () => {
+      const deeds = Object.values(ref.archetypeFeatures).filter(
+        (f) => f.classTag === "gunslinger" && f.name === "Deeds",
+      );
+      expect(deeds.length).toBeGreaterThan(0);
+      for (const f of deeds) {
+        expect(ref.archetypes[f.archetypeId]?.classTag).toBe("gunslinger");
+        expect(f.archetypeId).not.toBe("gunslinger:gunslinger");
+      }
+    });
+  });
+
   it("id stability: a feature's id keeps its old level even when `.level` itself is corrected", () => {
     // Same posture as `SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL`: the id embeds
     // whatever the structured/legacy source would produce on its own, not the
