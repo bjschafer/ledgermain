@@ -5,6 +5,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
+import { mergedKineticistWildTalentCatalog } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
@@ -15,7 +16,9 @@ import {
   hasKineticistWildTalent,
   kineticistLevel,
   kineticistTalentBelowLevel,
+  kineticistTalentPrereqResult,
   kineticistTalentsNeedWarning,
+  kineticistTalentUnlockLevel,
   knownKineticistElements,
   setKineticistElement,
   setKineticistExpandedElement,
@@ -173,11 +176,62 @@ describe("wild talent toggle + budget math", () => {
     expect(kineticistTalentsNeedWarning(d, ref, "infusion")).toBe(true);
   });
 
-  it("kineticistTalentBelowLevel soft-flags a talent above the effective-level gate", () => {
+  it("kineticistTalentBelowLevel flags a talent above the effective-level gate (the picker hard-blocks a not-yet-picked one on this)", () => {
     // Chain is air, level 5 -> min kineticist level 2*5=10.
     const d = withClass("kineticist", 3);
     expect(kineticistTalentBelowLevel(d, ref, "air:chain")).toBe(true);
     expect(kineticistTalentBelowLevel(d, ref, "fire:burningInfusion")).toBe(false);
     expect(kineticistTalentBelowLevel(d, ref, "bogus:notReal")).toBe(false);
+  });
+
+  it("kineticistTalentUnlockLevel returns the raw threshold, undefined for an unresolvable id", () => {
+    expect(kineticistTalentUnlockLevel(ref, "air:chain")).toBe(10);
+    expect(kineticistTalentUnlockLevel(ref, "fire:burningInfusion")).toBe(1);
+    expect(kineticistTalentUnlockLevel(ref, "bogus:notReal")).toBeUndefined();
+  });
+});
+
+describe("kineticistTalentPrereqResult", () => {
+  const catalog = mergedKineticistWildTalentCatalog(ref);
+  const descriptionFor = (id: string) => catalog.find((t) => t.id === id)?.description;
+
+  it("undefined for a talent that states no prerequisite", () => {
+    expect(
+      kineticistTalentPrereqResult(
+        withClass("kineticist", 1),
+        descriptionFor("fire:burningInfusion"),
+        catalog,
+      ),
+    ).toBeUndefined();
+  });
+
+  it("a matched fragment (Maelstrom requires Extended Range) reads live off the character's picked talents", () => {
+    const withoutIt = withClass("kineticist", 8);
+    const withoutResult = kineticistTalentPrereqResult(
+      withoutIt,
+      descriptionFor("water:maelstrom"),
+      catalog,
+    )!;
+    expect(withoutResult.checks).toEqual([{ label: "extended range", met: false }]);
+    expect(withoutResult.softText).toBeUndefined();
+
+    const withIt = toggleKineticistWildTalent(withoutIt, "universal:extendedRange");
+    const withResult = kineticistTalentPrereqResult(
+      withIt,
+      descriptionFor("water:maelstrom"),
+      catalog,
+    )!;
+    expect(withResult.checks).toEqual([{ label: "extended range", met: true }]);
+  });
+
+  it("an unmatched fragment (a race, an archetype membership) is display-only prose, never a check", () => {
+    const d = withClass("kineticist", 10);
+    const result = kineticistTalentPrereqResult(
+      d,
+      descriptionFor("air:unfoldingWindInfusion"),
+      catalog,
+    )!;
+    expect(result.checks.some((c) => c.label === "kinetic fist")).toBe(true);
+    expect(result.softText).toBe("member of the Monastery of Unfolding Wind");
   });
 });

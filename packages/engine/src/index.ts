@@ -438,10 +438,13 @@ export {
   mergedKineticistWildTalentCatalog,
   wildTalentsForElement,
   minKineticistLevelForTalent,
+  wildTalentPrereqText,
+  wildTalentRequirementFragments,
   type KineticistWildTalentDef,
   type KineticistWildTalentCategory,
   type KineticistInfusionKind,
   type MergedKineticistWildTalentEntry,
+  type KineticistTalentRequirement,
 } from "./kineticist-wild-talents.js";
 export {
   PSYCHIC_DISCIPLINES,

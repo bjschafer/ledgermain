@@ -2861,3 +2861,73 @@ export function mergedKineticistWildTalentCatalog(
   }
   return merged;
 }
+
+/* --------------------------------------------------- prerequisite parsing */
+
+/**
+ * The RAW "Prerequisite" clause for a wild talent, lifted off the vendored
+ * description's leading paragraph. The source's own stat-block convention
+ * bakes every applicable label ("Prerequisite", "Blast Type", "Associated
+ * Blasts", "Saving Throw", "SR", …) into ONE paragraph, ahead of the actual
+ * prose — verified against all 115 prerequisite-bearing entries in the
+ * pinned slice: "Prerequisite" is always the first label when present, never
+ * interleaved with the others (`kineticWildTalents.test.ts` in
+ * `data-pipeline` pins that shape). HTML-stripped and trimmed; `undefined`
+ * for an entry that states no prerequisite.
+ */
+export function wildTalentPrereqText(description: string | undefined): string | undefined {
+  if (!description) return undefined;
+  const firstParagraph = /^<p>([\s\S]*?)<\/p>/.exec(description)?.[1];
+  if (!firstParagraph) return undefined;
+  const m = /<strong>Prerequisite<\/strong>\s*([\s\S]*?)(?=<strong>|$)/.exec(firstParagraph);
+  if (!m) return undefined;
+  const text = m[1]!
+    .replace(/<[^>]+>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > 0 ? text : undefined;
+}
+
+/** One comma-separated fragment of a wild talent's prerequisite prose. */
+export interface KineticistTalentRequirement {
+  /** Verbatim fragment text, trimmed. */
+  text: string;
+  /**
+   * Set when the fragment exact-matches another wild talent's name
+   * (case-insensitive, ignoring a trailing "wild talent") — a real,
+   * checkable signal: the caller can test it against the character's picked
+   * talent ids the same way `model/prereqs.ts` checks a feat's required-feat
+   * signal. Unmatched fragments (a race, an archetype membership, a specific
+   * simple/composite blast, "primary element (X)") name something this
+   * engine doesn't reliably resolve — see the file doc comment's ASSOCIATED
+   * BLASTS paragraph — and stay display-only prose, never a gate.
+   */
+  talentId?: string;
+}
+
+const TRAILING_WILD_TALENT_RE = /\s+wild talent$/i;
+
+/**
+ * Split a wild talent's prerequisite text (from {@link wildTalentPrereqText})
+ * into fragments, matching each against `catalog` by name. Comma-separated
+ * only — a couple of entries nest a comma inside a parenthetical (e.g.
+ * "Planar Infusion (Elysium, Heaven, Nirvana)"), splitting that aside into
+ * its own (unmatched, harmless) fragment rather than parsing parens
+ * specially, since nothing here is ever a hard gate.
+ */
+export function wildTalentRequirementFragments(
+  prereqText: string,
+  catalog: readonly MergedKineticistWildTalentEntry[],
+): KineticistTalentRequirement[] {
+  const byName = new Map<string, string>();
+  for (const t of catalog) byName.set(normalizeWildTalentName(t.name), t.id);
+  return prereqText
+    .split(",")
+    .map((raw) => raw.trim())
+    .filter((text) => text.length > 0)
+    .map((text) => {
+      const key = normalizeWildTalentName(text.replace(TRAILING_WILD_TALENT_RE, ""));
+      const talentId = byName.get(key);
+      return talentId ? { text, talentId } : { text };
+    });
+}

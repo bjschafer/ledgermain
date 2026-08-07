@@ -14,10 +14,24 @@
  * 18th, 20th — 10 total by 20th. No "Extra Wild Talent"-style feat exists
  * in the vendored slice (confirmed) — neither budget is ever feat-boosted.
  *
- * This module never blocks: taking more than the expected count on either
- * budget, or picking a talent above the character's effective-level gate
- * (`minKineticistLevelForTalent`), is a soft warning only, matching the
- * project's hybrid posture on feat/trait/skill budgets.
+ * Taking more than the expected count on either budget is a soft warning
+ * only, matching the project's hybrid posture on feat/trait/skill budgets.
+ * The talent-level gate (`minKineticistLevelForTalent`) is the one hard
+ * signal in this subsystem: RAW's "double the wild talent's effective spell
+ * level" formula is a fully reliable numeric fact for every one of the 278
+ * vendored entries, so a not-yet-picked talent above it is blocked the same
+ * way `model/prereqs.ts` blocks a feat on an unmet structured signal (an
+ * already-picked talent is never retroactively locked, same as a feat).
+ *
+ * A wild talent's RAW "Prerequisite" line (another talent it needs) is
+ * genuine prose the same way a feat's free-text prereqs are: it can name a
+ * race, an archetype membership, a specific simple/composite blast, or
+ * "primary element (X)", none of which this engine reliably resolves. Where
+ * it names another wild talent by an exact (case-insensitive) name match —
+ * `@pf1/engine`'s `wildTalentRequirementFragments` — that fragment gets a
+ * live ✓/✗ against the character's picked talents; everything else stays a
+ * soft, display-only line. Never a gate, matching the project's hybrid
+ * feat-prereq posture.
  */
 
 import {
@@ -26,6 +40,9 @@ import {
   KINETICIST_WILD_TALENTS,
   minKineticistLevelForTalent,
   resolveKineticistWildTalent,
+  wildTalentPrereqText,
+  wildTalentRequirementFragments,
+  type MergedKineticistWildTalentEntry,
 } from "@pf1/engine";
 import type {
   CharacterDoc,
@@ -301,23 +318,77 @@ export function kineticistTalentsNeedWarning(
 }
 
 /**
- * True when `talentId` is above the effective-level gate for the character's
- * current kineticist level (soft warning only — see file doc comment). False
- * (never "below level") for an unresolvable id. Resolves against both the
+ * The kineticist level `talentId` unlocks at (RAW's "double the wild
+ * talent's effective spell level" gate, `minKineticistLevelForTalent`) —
+ * `undefined` for an unresolvable id. Resolves against both the
  * hand-authored table and the vendored catalog — the vendored `level` field IS
  * a real level gate for this subsystem, unlike rage powers' (see
- * `KineticWildTalent.level`'s doc comment).
+ * `KineticWildTalent.level`'s doc comment). Used both to gate a not-yet-picked
+ * talent's Add button and to label its row ("Level 6").
+ */
+export function kineticistTalentUnlockLevel(
+  refData: RefData,
+  talentId: string,
+): number | undefined {
+  const talent = resolveKineticistWildTalent(talentId, refData);
+  return talent ? minKineticistLevelForTalent(talent.level) : undefined;
+}
+
+/**
+ * True when `talentId` is above the effective-level gate for the character's
+ * current kineticist level — the picker hard-blocks a not-yet-picked talent
+ * on this (see file doc comment). False (never "below level") for an
+ * unresolvable id or a character with no kineticist levels yet.
  */
 export function kineticistTalentBelowLevel(
   doc: CharacterDoc,
   refData: RefData,
   talentId: string,
 ): boolean {
-  const talent = resolveKineticistWildTalent(talentId, refData);
-  if (!talent) return false;
+  const unlockLevel = kineticistTalentUnlockLevel(refData, talentId);
+  if (unlockLevel === undefined) return false;
   const level = kineticistLevel(doc);
   if (level <= 0) return false;
-  return level < minKineticistLevelForTalent(talent.level);
+  return level < unlockLevel;
+}
+
+/** One requirement check against a wild talent's RAW "Prerequisite" clause — see file doc comment. */
+export interface KineticistTalentPrereqCheck {
+  label: string;
+  met: boolean;
+}
+
+export interface KineticistTalentPrereqResult {
+  /** Live ✓/✗ checks for every prerequisite fragment that named another wild talent by exact name. */
+  checks: KineticistTalentPrereqCheck[];
+  /** The remaining prerequisite prose (a race, an archetype, a blast, "primary element (X)") this engine can't verify — display only. */
+  softText?: string;
+}
+
+/**
+ * A wild talent's prerequisite readout, or `undefined` when its RAW
+ * description states no prerequisite at all. `catalog` is the caller's
+ * already-built `mergedKineticistWildTalentCatalog(refData)` (the picker
+ * builds it once for the whole list; passed in rather than rebuilt per
+ * talent).
+ */
+export function kineticistTalentPrereqResult(
+  doc: CharacterDoc,
+  description: string | undefined,
+  catalog: readonly MergedKineticistWildTalentEntry[],
+): KineticistTalentPrereqResult | undefined {
+  const prereqText = wildTalentPrereqText(description);
+  if (!prereqText) return undefined;
+  const checks: KineticistTalentPrereqCheck[] = [];
+  const prose: string[] = [];
+  for (const fragment of wildTalentRequirementFragments(prereqText, catalog)) {
+    if (fragment.talentId) {
+      checks.push({ label: fragment.text, met: hasKineticistWildTalent(doc, fragment.talentId) });
+    } else {
+      prose.push(fragment.text);
+    }
+  }
+  return { checks, softText: prose.length > 0 ? prose.join(", ") : undefined };
 }
 
 /* ------------------------------------------------------- utility actions */
