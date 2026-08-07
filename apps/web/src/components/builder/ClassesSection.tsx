@@ -13,6 +13,7 @@ import {
   setFavoredClass2,
   setFavoredClassBonus,
 } from "../../model/doc.js";
+import { hasFamiliarSource } from "../../model/familiar.js";
 import { favoredClassBonusLevels, isMultitalented } from "../../model/race.js";
 import { AnimalCompanionPicker } from "./AnimalCompanionPicker.js";
 import { ArcaneBondPicker } from "./ArcaneBondPicker.js";
@@ -677,17 +678,13 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       )}
 
       {/*
-        Tracked familiar — class-agnostic (see FamiliarPicker's doc comment).
-        Hidden while a wizard's arcane bond is a bonded object and no familiar
-        exists yet: RAW, that choice means no familiar at all, so offering
-        "Add a familiar" right below "Bonded object" read as contradictory.
-        Once a familiar exists (e.g. from before switching bond types, or
-        granted by another class/feature) it stays visible so it can be
-        edited or removed.
+        Tracked familiar — gated on `hasFamiliarSource` (see its doc comment
+        in model/familiar.ts) so a class with no familiar-granting feature or
+        feat (a kineticist, say) doesn't see an "Add a familiar" picker that
+        can't apply to them. An existing tracked familiar always stays
+        visible so it can still be edited or removed.
       */}
-      {(doc.build.arcaneBond?.type !== "object" || doc.build.familiar) && (
-        <FamiliarPicker doc={doc} update={update} />
-      )}
+      {hasFamiliarSource(doc, refData, sheet) && <FamiliarPicker doc={doc} update={update} />}
 
       {/* Tracked animal companion — druid Nature Bond / ranger Hunter's Bond / ACG Hunter's own Animal Companion / cavalier & samurai Mount. */}
       <AnimalCompanionPicker doc={doc} refData={refData} update={update} />
