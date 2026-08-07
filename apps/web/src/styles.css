@@ -4994,21 +4994,35 @@ input[type="text"].saved-roll-name:focus {
   font-weight: 500;
 }
 
-/* class features list (base grants + archetype swaps) */
-.cf-level-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 2px 0;
+/* class features list (base grants + archetype swaps) — grouped into one
+   header + row-list block per level, same "labeled group of rows" shape as
+   `.cf-group`/`.cf-group-head` (the Play tab's read-only counterpart) rather
+   than the level acting as a narrow flex-item gutter squeezed beside a
+   paragraph of wrapping feature rows. */
+.cf-level-group + .cf-level-group {
+  margin-top: 10px;
 }
 
-.cf-level {
+.cf-level-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 3px 2px;
+  border-bottom: 1px solid var(--line-soft);
   font-family: var(--mono);
   font-size: 0.6875rem;
-  color: var(--muted);
-  min-width: 42px;
-  flex-shrink: 0;
-  padding-top: 1px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-dim-ink);
+}
+
+.cf-level-count {
+  color: var(--faint);
+  letter-spacing: 0;
+  font-weight: 400;
+  text-transform: none;
 }
 
 .cf-name {
@@ -5079,49 +5093,67 @@ input[type="text"].saved-roll-name:focus {
 .cf-archetype-features {
   display: flex;
   flex-direction: column;
-  gap: 2px;
   margin-top: 4px;
 }
 
-/* Each feature is a row: name on the left, description toggle pinned to the
-   end — at 5+ features per level a separate "· DESCRIPTION" line under every
-   name read as noise. `flex-wrap` lets the (rare) very long name wrap on its
-   own without dragging the toggle down with it. */
+/* Each feature is a row on a two-column grid: name (grows) beside a
+   FIXED-width caret gutter, so the disclosure triangle sits at the same x
+   offset on every row regardless of name length — the flex layout this
+   replaced let a wrapping name push its trailing toggle onto an orphaned
+   line of its own. A row with no description renders no toggle at all (see
+   `ClassFeatureRow`/`ArchetypeFeatureRow`), leaving column 2 empty rather
+   than a dead triangle. The `+` selector borders and the hover fill give the
+   list row separation and a scannable "catalog" feel, matching `.pick-row`. */
 .cf-archetype-feature {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 20px;
+  align-items: start;
   column-gap: 8px;
-  padding: 1px 0;
+  padding: 7px 6px;
+  border-radius: 5px;
+}
+
+.cf-archetype-feature + .cf-archetype-feature {
+  border-top: 1px solid var(--line-soft);
+}
+
+.cf-archetype-feature:hover {
+  background: var(--surface-2);
 }
 
 .cf-archetype-feature .cf-name {
-  flex: 1 1 auto;
+  grid-column: 1;
   min-width: 0;
 }
 
-/* A replaces/context note is a sentence, not a row suffix — on its own
-   full-width line always, instead of a short one floating to the row's right
-   edge while a long one wraps below the name. */
+/* A replaces/context note is a sentence, not a row suffix — always its own
+   full-width line under the name rather than squeezed into the name column
+   or the caret gutter. Matches the block layout's gold left-rule treatment
+   (`.cf-block .feature-note`) so a rules reminder reads the same way in
+   both places. */
 .cf-archetype-feature .feature-note {
-  flex-basis: 100%;
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  padding-left: 8px;
+  border-left: 2px solid var(--gold-dim);
 }
 
 /* FeatureDescription's markup/behavior is untouched (see its docstring) —
-   this only repositions the `<details>` as a flex item: collapsed, it's a
-   small trailing item next to the name; open, `flex-basis: 100%` drops the
-   whole toggle+prose onto its own full-width line rather than squeezing the
-   prose into a narrow column. */
+   this only repositions the `<details>` as a grid item: collapsed, it's the
+   fixed-width caret gutter (column 2); open, it spans the full row width and
+   drops to its own line below, with the same left-rule treatment as
+   `.feature-note` so the expanded prose reads as a distinct block rather
+   than squeezed into the row grid. */
 .cf-archetype-feature .spell-detail {
+  grid-column: 2;
   margin: 0;
-  flex: 0 0 auto;
 }
 
 .cf-archetype-feature .spell-detail[open] {
-  flex-basis: 100%;
-  margin-top: 4px;
-  margin-left: 12px;
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  padding-left: 8px;
+  border-left: 2px solid var(--gold-dim);
 }
 
 /* Swap the "description" text label for a bare chevron here, matching the
@@ -5129,9 +5161,20 @@ input[type="text"].saved-roll-name:focus {
    of the per-row noise. The text stays in the DOM (still in the accessible
    name assistive tech announces for the toggle); this only hides it
    visually. `.spell-detail-summary::before` (the ▸/▾ glyph) sets its own
-   font-size, so it's unaffected by the parent going to 0. */
+   font-size, so it's unaffected by the parent going to 0. Centered in its
+   20px gutter and full-height so the whole cell is the click target, not
+   just the glyph. */
 .cf-archetype-feature .spell-detail-summary {
   font-size: 0;
+  width: 100%;
+  justify-content: center;
+  padding: 2px 0;
+  border-radius: 4px;
+}
+
+.cf-archetype-feature .spell-detail[open] > .spell-detail-summary {
+  width: auto;
+  justify-content: flex-start;
 }
 
 /* Base rule sets this to 9px, sized to sit next to the "description" text it

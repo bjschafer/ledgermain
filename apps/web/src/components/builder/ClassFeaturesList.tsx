@@ -257,8 +257,11 @@ export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; ref
       <h4 className="tracker-sub">Class Features</h4>
       <div className="cf-levels">
         {baseline.length > 0 && (
-          <div className="cf-level-row">
-            <span className="cf-level">Baseline changes</span>
+          <div className="cf-level-group">
+            <div className="cf-level-head">
+              <span className="cf-level-label">Baseline changes</span>
+              <span className="cf-level-count">{baseline.length}</span>
+            </div>
             <div className="cf-archetype-features">
               {baseline.map((entry, i) => (
                 <TimelineRow key={timelineKey(entry, i)} entry={entry} refData={refData} />
@@ -267,8 +270,11 @@ export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; ref
           </div>
         )}
         {levels.map((level) => (
-          <div className="cf-level-row" key={level}>
-            <span className="cf-level">Lv {level}</span>
+          <div className="cf-level-group" key={level}>
+            <div className="cf-level-head">
+              <span className="cf-level-label">Lv {level}</span>
+              <span className="cf-level-count">{byLevel.get(level)!.length}</span>
+            </div>
             <div className="cf-archetype-features">
               {byLevel.get(level)!.map((entry, i) => (
                 <TimelineRow key={timelineKey(entry, i)} entry={entry} refData={refData} />
