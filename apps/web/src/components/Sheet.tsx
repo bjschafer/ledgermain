@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { useMemo } from "react";
+import { useId, useMemo, useState } from "react";
 
 import { EFFECT_IMMUNITY_LABELS, qualifierLabel } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, DerivedSkill, RefData } from "@pf1/schema";
@@ -27,9 +27,11 @@ import {
 } from "../model/names.js";
 import { d20Formula, d20FormulaFor, damageFormula } from "../model/rollFormula.js";
 import { senseChipLabel, senseTip } from "../model/sensesDisplay.js";
+import { skillBreakdownComponents } from "../model/skillBreakdown.js";
 import { CopyButton } from "./CopyButton.js";
 import { HomebrewBadge } from "./HomebrewBadge.js";
 import { InfoTip } from "./InfoTip.js";
+import { Provenance } from "./Provenance.js";
 import { StatSeal } from "./StatSeal.js";
 
 /**
@@ -38,32 +40,57 @@ import { StatSeal } from "./StatSeal.js";
  * renders, so the hook can't live in the `.map()` callback directly). Mirrors
  * `StatSeal`'s recompute shimmer at a smaller scale — no baseline tint here
  * (skills aren't in the audited tint set), just the "something changed" flash.
+ *
+ * Expands to a `Provenance` breakdown, the same reveal AC/saves/attacks use
+ * (`StatSeal`'s button+caret pattern, at row scale — mirrors
+ * `SavedRollRow`'s compact-row-expands-below shape rather than a full seal,
+ * since a skill list is dozens of one-line rows, not a handful of big
+ * numbers). `skillBreakdownComponents` stitches ranks/ability/class
+ * skill/ACP onto the engine's own misc-modifier `components`.
  */
 function SkillRow({ s, resetKey }: { s: DerivedSkill; resetKey: string | number }) {
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
   const total = signed(s.total);
   const flashKey = useFlashKey(total, resetKey);
+  const components = useMemo(() => skillBreakdownComponents(s), [s]);
   return (
     <div
       className={`sheet-skill${s.classSkill ? " is-class" : ""}${s.ranks === 0 ? " is-untrained" : ""}`}
-      title={s.ranks === 0 ? "Untrained" : undefined}
     >
-      <span className="sk-name">
-        {skillName(s.id)}
-        {s.classSkill ? (
-          <span className="tag-cls" title="class skill">
-            class
+      <div className="sheet-skill-head" title={s.ranks === 0 ? "Untrained" : undefined}>
+        <button
+          type="button"
+          className="sheet-skill-toggle"
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={() => setOpen((o) => !o)}
+        >
+          <span className="caret">{open ? "▲" : "▼"}</span>
+          <span className="sk-name">
+            {skillName(s.id)}
+            {s.classSkill ? (
+              <span className="tag-cls" title="class skill">
+                class
+              </span>
+            ) : null}
           </span>
-        ) : null}
-      </span>
-      <span className="sk-total num">
-        {total}
-        {flashKey > 0 ? <span key={flashKey} className="seal-flash" aria-hidden="true" /> : null}
-      </span>
-      <CopyButton
-        className="copy-btn--row"
-        text={d20Formula([s.total])}
-        label={`${skillName(s.id)} check`}
-      />
+        </button>
+        <span className="sk-total num">
+          {total}
+          {flashKey > 0 ? <span key={flashKey} className="seal-flash" aria-hidden="true" /> : null}
+        </span>
+        <CopyButton
+          className="copy-btn--row"
+          text={d20Formula([s.total])}
+          label={`${skillName(s.id)} check`}
+        />
+      </div>
+      {open ? (
+        <div id={panelId} className="sheet-skill-detail">
+          <Provenance title={`${skillName(s.id)} breakdown`} components={components} />
+        </div>
+      ) : null}
     </div>
   );
 }
