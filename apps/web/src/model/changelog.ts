@@ -41,6 +41,30 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-06-kineticist-talents-do-things",
+    date: "2026-08-06",
+    title: "Kineticist wild talents that actually do something",
+    note: "Cold Adaptation, Heat Adaptation, and Aerial Adaptation now grant real energy resistance on your sheet, scaling with the burn you are holding. Eyes of the Void grants darkvision, Herbal Antivenom's bonus shows up on your Fortitude save against poison, and Skilled Kineticist boosts your element's class skills. Kinetic Healer, Void Healer, Wood Healer, Kinetic Restoration, and Celerity now appear as actions in the tracker's Resources panel with their burn cost and current effect, so they are usable at the table instead of only living in the builder.",
+  },
+  {
+    id: "2026-08-06-kineticist-picker-clarity",
+    date: "2026-08-06",
+    title: "A clearer kineticist picker",
+    note: "Wild talents above your current level now wear a Level badge and stay locked until you get there, instead of a small warning that was easy to miss. Infusions and utility talents that require another talent show it as a checklist line that checks itself off once you have the prerequisite. The Elemental Focus summary, your simple blast, class skills, defense, and basic utility, now reads as a clean list instead of a run-on paragraph.",
+  },
+  {
+    id: "2026-08-06-skill-breakdowns",
+    date: "2026-08-06",
+    title: "Skills now show their math",
+    note: "Every skill on the sheet expands now, same as your AC and saves. Open one up to see your ranks, ability modifier, the class skill bonus, any armor check penalty, and every other bonus stacked on top, with anything overridden crossed out.",
+  },
+  {
+    id: "2026-08-06-familiar-section-earned",
+    date: "2026-08-06",
+    title: "The Familiar section knows who gets one",
+    note: "The Familiar section in Classes now only appears for characters with an actual familiar source: a wizard's bond, a witch, an arcanist's exploit, an arcane bloodline sorcerer, the Familiar Bond feats, and the like. A kineticist, or anyone else without one, no longer sees it.",
+  },
+  {
     id: "2026-08-06-phantom-archetypes",
     date: "2026-08-06",
     title: "Two archetypes that were never real",
