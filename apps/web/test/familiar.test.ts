@@ -4,7 +4,15 @@ import { compute } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
-import { addClass, createEmptyDoc, setClassLevel } from "../src/model/doc.js";
+import {
+  addClass,
+  createEmptyDoc,
+  setArcaneBond,
+  setClassLevel,
+  setSorcererBloodline,
+  toggleFeat,
+} from "../src/model/doc.js";
+import { toggleArcanistExploit } from "../src/model/arcanistExploits.js";
 import {
   addFamiliarNonlethal,
   applyFamiliarDamage,
@@ -12,6 +20,7 @@ import {
   deriveFamiliarSheet,
   familiarSupersedingCondition,
   hasFamiliarCondition,
+  hasFamiliarSource,
   healFamiliar,
   healFamiliarNonlethal,
   isFamiliarConditionImplied,
@@ -196,5 +205,82 @@ describe("familiar's own active conditions", () => {
     expect(d.live.familiar?.conditions).toEqual(["frightened"]);
     expect(isFamiliarConditionImplied(d, "shaken")).toBe(true);
     expect(familiarSupersedingCondition(d, "shaken")).toBe("frightened");
+  });
+});
+
+describe("hasFamiliarSource() — gates FamiliarPicker's visibility", () => {
+  it("is false for a class with no familiar-granting feature or feat (e.g. kineticist)", () => {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "kineticist");
+    d = setClassLevel(d, "kineticist", 4);
+    const sheet = compute(d, ref);
+    expect(hasFamiliarSource(d, ref, sheet)).toBe(false);
+  });
+
+  it("is true whenever an existing tracked familiar already exists, regardless of class", () => {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "kineticist");
+    d = setFamiliar(d, "cat", "Mortlach");
+    const sheet = compute(d, ref);
+    expect(hasFamiliarSource(d, ref, sheet)).toBe(true);
+  });
+
+  it("is true for a wizard by default (arcane bond defaults toward familiar)", () => {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "wizard");
+    const sheet = compute(d, ref);
+    expect(hasFamiliarSource(d, ref, sheet)).toBe(true);
+  });
+
+  it("is false for a wizard whose arcane bond is set to a bonded object with no familiar yet", () => {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "wizard");
+    d = setArcaneBond(d, { type: "object" });
+    const sheet = compute(d, ref);
+    expect(hasFamiliarSource(d, ref, sheet)).toBe(false);
+  });
+
+  it("is true for a witch (base Witch's Familiar class feature, no pick required)", () => {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "witch");
+    const sheet = compute(d, ref);
+    expect(hasFamiliarSource(d, ref, sheet)).toBe(true);
+  });
+
+  it("is true for an arcanist who picked the Familiar exploit, false without it", () => {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "arcanist");
+    d = setClassLevel(d, "arcanist", 2);
+    let sheet = compute(d, ref);
+    expect(hasFamiliarSource(d, ref, sheet)).toBe(false);
+
+    d = toggleArcanistExploit(d, "familiar");
+    sheet = compute(d, ref);
+    expect(hasFamiliarSource(d, ref, sheet)).toBe(true);
+  });
+
+  it("is true for a sorcerer with the Arcane bloodline, false for a different bloodline", () => {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "sorcerer");
+    d = setSorcererBloodline(d, "Draconic");
+    let sheet = compute(d, ref);
+    expect(hasFamiliarSource(d, ref, sheet)).toBe(false);
+
+    d = setSorcererBloodline(d, "Arcane");
+    sheet = compute(d, ref);
+    expect(hasFamiliarSource(d, ref, sheet)).toBe(true);
+  });
+
+  it("is true for any class that picked the Familiar Bond feat", () => {
+    const familiarBondId = Object.values(ref.feats).find((f) => f.name === "Familiar Bond")!.id;
+    let d = createEmptyDoc("t");
+    d = addClass(d, "kineticist");
+    d = setClassLevel(d, "kineticist", 4);
+    let sheet = compute(d, ref);
+    expect(hasFamiliarSource(d, ref, sheet)).toBe(false);
+
+    d = toggleFeat(d, familiarBondId);
+    sheet = compute(d, ref);
+    expect(hasFamiliarSource(d, ref, sheet)).toBe(true);
   });
 });

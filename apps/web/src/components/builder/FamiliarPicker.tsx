@@ -26,8 +26,11 @@ interface FamiliarPickerProps {
  * and a bonded object, master-bonus-only), this models the familiar itself as
  * a full trackable creature (see `@pf1/engine` `deriveFamiliar` / the
  * tracker's `FamiliarPanel`) — any class/feature that grants a familiar
- * (Wizard arcane bond, an Arcanist exploit, a feat, ...) uses this, so it's
- * not gated behind a class check.
+ * (Wizard arcane bond, an Arcanist exploit, a feat, ...) uses this, so no
+ * single class check could gate it. `ClassesSection` renders this only when
+ * `model/familiar.ts`'s `hasFamiliarSource` finds a plausible source (or an
+ * existing tracked familiar already), so a class with no such feature or
+ * feat (a kineticist, say) never sees it.
  *
  * The species list is a single searchable `.pick-row` catalog (not a plain
  * `<select>`) so a player can compare species side by side — each row shows

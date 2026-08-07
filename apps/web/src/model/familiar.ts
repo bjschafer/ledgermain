@@ -10,6 +10,8 @@ import {
   buildRollData,
   CONDITION_LADDERS,
   deriveFamiliar,
+  featNameSlug,
+  resolveSorcererBloodlineOrMutation,
   type DerivedFamiliar,
 } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData, ResolvedStat } from "@pf1/schema";
@@ -206,6 +208,51 @@ export function deriveFamiliarSheet(
     },
     rollData,
   );
+}
+
+/**
+ * Whether the character plausibly has some source of a familiar, gating
+ * `FamiliarPicker`'s visibility (a kineticist, say, has none). An existing
+ * tracked familiar always counts, so switching away from its source never
+ * hides it. Otherwise, checked data-driven wherever the compute pipeline
+ * already resolves the choice, plus two spots it can't:
+ *  - a Wizard's arcane bond, unless it's set to a bonded object (mirrors
+ *    `ArcaneBondPicker`'s own choice, which `ClassesSection` used to encode
+ *    inline here)
+ *  - a Sorcerer with the Arcane bloodline (base or a wildblooded mutation
+ *    that keeps its Arcane Bond power): the same familiar-or-object choice
+ *    as a wizard's, but with no picker of its own to record which, so it's
+ *    always offered once the power exists
+ *  - any already-resolved, still-applied class feature literally named
+ *    "familiar" (word-boundary, so "Proven Weapon Familiarity" doesn't
+ *    false-positive) — catches a Witch's base Witch's Familiar, an
+ *    Arcanist's Familiar exploit, and a cleric/inquisitor's Crocodile domain
+ *  - the Familiar Bond feat (any class, given Iron Will) or its Improved
+ *    Familiar Bond follow-up
+ */
+export function hasFamiliarSource(
+  doc: CharacterDoc,
+  refData: RefData,
+  sheet: DerivedSheet,
+): boolean {
+  if (doc.build.familiar) return true;
+
+  const isWizard = doc.identity.classes.some((c) => c.tag === "wizard");
+  if (isWizard && doc.build.arcaneBond?.type !== "object") return true;
+
+  if (doc.build.sorcererBloodline) {
+    const bloodline = resolveSorcererBloodlineOrMutation(doc.build.sorcererBloodline, refData);
+    if (bloodline?.powers.some((p) => p.id === "arcaneBond")) return true;
+  }
+
+  if (sheet.classFeatures.some((f) => f.applied && /\bfamiliar\b/i.test(f.name))) return true;
+
+  return doc.build.feats.some((id) => {
+    const feat = refData.feats[id];
+    if (!feat) return false;
+    const slug = featNameSlug(feat.name);
+    return slug === "familiar-bond" || slug === "improved-familiar-bond";
+  });
 }
 
 export { BASE_FAMILIARS };
