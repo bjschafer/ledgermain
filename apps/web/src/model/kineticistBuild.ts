@@ -29,6 +29,7 @@ import {
 } from "@pf1/engine";
 import type {
   CharacterDoc,
+  DerivedSheet,
   KineticistBlastLoadout,
   KineticistGatherPowerMode,
   KineticistMetakinesisOption,
@@ -317,4 +318,96 @@ export function kineticistTalentBelowLevel(
   const level = kineticistLevel(doc);
   if (level <= 0) return false;
   return level < minKineticistLevelForTalent(talent.level);
+}
+
+/* ------------------------------------------------------- utility actions */
+
+/** One activated wild talent worth a visible row at the table: what it costs and what it currently does. */
+export interface KineticUtilityAction {
+  id: string;
+  name: string;
+  burn: number;
+  /** Live-computed effect text — the number a static picker summary can't carry (it scales with the sheet). */
+  detail: string;
+}
+
+/**
+ * Kinetic Healer/Void Healer/Wood Healer all read "heal a touched creature an
+ * amount equal to your unmodified blast damage" (Occult Adventures) — the
+ * amount isn't fixed text, it's whatever the character's blast currently
+ * rolls, so a static picker summary can't show it. Approximated off the
+ * character's first known blast line, the same "index 0 is the sample"
+ * simplification `BlastLoadoutPanel` already makes for save DCs — a
+ * kineticist with several blasts sees one representative number, not a
+ * per-blast breakdown.
+ */
+const HEALER_TALENT_IDS: readonly string[] = [
+  "water:kineticHealer",
+  "void:voidHealer",
+  "wood:woodHealer",
+];
+
+/**
+ * Activated kineticist wild talents worth surfacing as a visible action in
+ * the tracker (burn cost + a live-computed effect), for the ones this app
+ * picked provides no other on-sheet trace: `ResourcesPanel.tsx`'s
+ * `KineticUtilityActionsPanel` renders this list beside the Burn resource
+ * row. Everything else in the catalog stays picker-only prose (see
+ * `kineticist-wild-talents.ts`'s file doc comment) — this is a curated
+ * subset, not every burn-costing utility talent, picked for having a number
+ * worth computing live (a healing amount, a duration that scales with
+ * level).
+ */
+export function kineticUtilityActions(
+  doc: CharacterDoc,
+  refData: RefData,
+  sheet: DerivedSheet,
+): KineticUtilityAction[] {
+  const actions: KineticUtilityAction[] = [];
+  const blast = sheet.kineticBlasts[0];
+  const blastBonus = blast?.damageBonus.total ?? 0;
+  const blastBonusStr = blastBonus === 0 ? "" : blastBonus > 0 ? `+${blastBonus}` : `${blastBonus}`;
+  const blastAmount = blast
+    ? `${blast.damageDice}${blastBonusStr} hp`
+    : "your unmodified blast damage";
+
+  for (const talentId of HEALER_TALENT_IDS) {
+    if (!hasKineticistWildTalent(doc, talentId)) continue;
+    const talent = resolveKineticistWildTalent(talentId, refData);
+    if (!talent) continue;
+    actions.push({
+      id: talentId,
+      name: talent.name,
+      burn: talent.burn,
+      detail: `Touch to heal ${blastAmount}. Costs ${talent.burn} burn, or the target takes ${talent.burn} burn instead of you.`,
+    });
+  }
+
+  if (hasKineticistWildTalent(doc, "universal:kineticRestoration")) {
+    const talent = resolveKineticistWildTalent("universal:kineticRestoration", refData);
+    const level = kineticistLevel(doc);
+    if (talent) {
+      actions.push({
+        id: "universal:kineticRestoration",
+        name: talent.name,
+        burn: talent.burn,
+        detail: `Touch to channel ${level}d6 hp, split among the creatures you touch. Costs ${talent.burn} burn.`,
+      });
+    }
+  }
+
+  if (hasKineticistWildTalent(doc, "air:celerity")) {
+    const talent = resolveKineticistWildTalent("air:celerity", refData);
+    const level = kineticistLevel(doc);
+    if (talent) {
+      actions.push({
+        id: "air:celerity",
+        name: talent.name,
+        burn: talent.burn,
+        detail: `Grant yourself and nearby allies haste for 1 round, free. Accept 1 burn to extend it to 1 round per kineticist level (${level}).`,
+      });
+    }
+  }
+
+  return actions;
 }

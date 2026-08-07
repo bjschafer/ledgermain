@@ -414,3 +414,181 @@ describe("promoted wild talents (changes[] via collect.ts)", () => {
     expect(sheet.saves.ref.total).toBe(baseline.saves.ref.total);
   });
 });
+
+/**
+ * Cold/Heat/Aerial Adaptation (Occult Adventures): "you gain [an amount of
+ * energy] resistance equal to twice your current amount of burn." Fixture
+ * numbers are just "2 * burn", cited against the exact aonprd.com talent
+ * text quoted in `kineticist-wild-talents.ts`'s entries.
+ */
+describe("Cold/Heat/Aerial Adaptation (resistance = 2x burn currently held)", () => {
+  it("Cold Adaptation (fire) grants cold resistance equal to twice the burn held", () => {
+    const sheet = compute(
+      makeDoc(6, {
+        kineticistElement: "fire",
+        kineticistWildTalents: ["fire:coldAdaptation"],
+        currentBurn: 3,
+      }),
+      ref,
+    );
+    const resist = sheet.defenses?.resistances.find((r) => r.qualifier === "cold");
+    expect(resist?.total).toBe(6);
+  });
+
+  it("Heat Adaptation (water) grants fire resistance equal to twice the burn held", () => {
+    const sheet = compute(
+      makeDoc(6, {
+        kineticistElement: "water",
+        kineticistWildTalents: ["water:heatAdaptation"],
+        currentBurn: 2,
+      }),
+      ref,
+    );
+    const resist = sheet.defenses?.resistances.find((r) => r.qualifier === "fire");
+    expect(resist?.total).toBe(4);
+  });
+
+  it("Aerial Adaptation (air) grants electricity resistance equal to twice the burn held", () => {
+    const sheet = compute(
+      makeDoc(6, {
+        kineticistElement: "air",
+        kineticistWildTalents: ["air:aerialAdaptation"],
+        currentBurn: 1,
+      }),
+      ref,
+    );
+    const resist = sheet.defenses?.resistances.find((r) => r.qualifier === "electricity");
+    expect(resist?.total).toBe(2);
+  });
+
+  it("holding no burn grants no resistance line (not a spurious 'resist 0')", () => {
+    const sheet = compute(
+      makeDoc(6, {
+        kineticistElement: "fire",
+        kineticistWildTalents: ["fire:coldAdaptation", "fire:heatAdaptation"],
+        currentBurn: 0,
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances ?? []).toEqual([]);
+  });
+
+  it("a non-kineticist with a stale pick gets nothing (no burn feature to read)", () => {
+    const doc = makeDoc(6, {
+      kineticistElement: "fire",
+      kineticistWildTalents: ["fire:coldAdaptation"],
+      currentBurn: 3,
+    });
+    const fighter: CharacterDoc = {
+      ...doc,
+      identity: { ...doc.identity, classes: [{ tag: "fighter", level: 6 }] },
+    };
+    const sheet = compute(fighter, ref);
+    expect(sheet.defenses).toBeUndefined();
+  });
+});
+
+/**
+ * Eyes of the Void (Horror Adventures): "you gain darkvision with a range of
+ * 60 feet (if you already have darkvision, your darkvision's range increases
+ * by 30 feet)." Modeled as a flat 60 ft. grant (the +30 rider is a
+ * documented near-miss — see the file doc comment). Eyes of the Void,
+ * Greater: "you can see in darkness, as per the monster special ability."
+ */
+describe("Eyes of the Void / Eyes of the Void, Greater", () => {
+  it("Eyes of the Void grants 60 ft. darkvision", () => {
+    const sheet = compute(
+      makeDoc(6, { kineticistElement: "void", kineticistWildTalents: ["void:eyesOfTheVoid"] }),
+      ref,
+    );
+    const dv = sheet.senses.find((s) => s.kind === "darkvision");
+    expect(dv?.range).toBe(60);
+  });
+
+  it("Eyes of the Void, Greater grants see in darkness", () => {
+    const sheet = compute(
+      makeDoc(6, {
+        kineticistElement: "void",
+        kineticistWildTalents: ["void:eyesOfTheVoid", "void:eyesOfTheVoidGreater"],
+      }),
+      ref,
+    );
+    expect(sheet.senses.some((s) => s.kind === "seeInDarkness")).toBe(true);
+  });
+
+  it("without the talent, neither sense appears", () => {
+    const sheet = compute(makeDoc(6, { kineticistElement: "void" }), ref);
+    expect(sheet.senses.some((s) => s.kind === "darkvision")).toBe(false);
+    expect(sheet.senses.some((s) => s.kind === "seeInDarkness")).toBe(false);
+  });
+});
+
+/**
+ * Skilled Kineticist (Occult Adventures): "you gain a bonus equal to 1/2
+ * your kineticist level on skill checks with the skills your primary element
+ * added to your class skill list." Fire's two bonus class skills are Escape
+ * Artist (esc) and Knowledge (nature) (kna) — see
+ * `kineticist-elements.ts`'s fire entry.
+ */
+describe("Skilled Kineticist (competence bonus on the primary element's bonus class skills)", () => {
+  it("grants floor(kineticist level / 2) on the primary element's two class skills", () => {
+    const withTalent = compute(
+      makeDoc(9, {
+        kineticistElement: "fire",
+        kineticistWildTalents: ["universal:skilledKineticist"],
+      }),
+      ref,
+    );
+    const baseline = compute(makeDoc(9, { kineticistElement: "fire" }), ref);
+    expect(withTalent.skills.esc!.total).toBe(baseline.skills.esc!.total + 4);
+    expect(withTalent.skills.kna!.total).toBe(baseline.skills.kna!.total + 4);
+  });
+
+  it("does not bonus a skill outside the primary element's grant", () => {
+    const withTalent = compute(
+      makeDoc(9, {
+        kineticistElement: "fire",
+        kineticistWildTalents: ["universal:skilledKineticist"],
+      }),
+      ref,
+    );
+    const baseline = compute(makeDoc(9, { kineticistElement: "fire" }), ref);
+    expect(withTalent.skills.per!.total).toBe(baseline.skills.per!.total);
+  });
+
+  it("does nothing without the primary element set", () => {
+    const withTalent = compute(
+      makeDoc(9, { kineticistWildTalents: ["universal:skilledKineticist"] }),
+      ref,
+    );
+    const baseline = compute(makeDoc(9, {}), ref);
+    expect(withTalent.skills.esc!.total).toBe(baseline.skills.esc!.total);
+  });
+});
+
+/**
+ * Herbal Antivenom (Ultimate Wilderness): "you gain a +5 alchemical bonus on
+ * saving throws against poison, as if you were always under the effect of
+ * antitoxin." Surfaces as a Fortitude conditional (poison), not the headline
+ * total — same shape as Dwarf Hardy's poison bonus (`raceSaveNotes.test.ts`).
+ */
+describe("Herbal Antivenom (+5 alchemical bonus vs. poison)", () => {
+  it("leaves the headline Fortitude save alone", () => {
+    const withTalent = compute(
+      makeDoc(8, { kineticistElement: "wood", kineticistWildTalents: ["wood:herbalAntivenom"] }),
+      ref,
+    );
+    const baseline = compute(makeDoc(8, { kineticistElement: "wood" }), ref);
+    expect(withTalent.saves.fort.total).toBe(baseline.saves.fort.total);
+  });
+
+  it("shows +5 on Fortitude's poison conditional", () => {
+    const withTalent = compute(
+      makeDoc(8, { kineticistElement: "wood", kineticistWildTalents: ["wood:herbalAntivenom"] }),
+      ref,
+    );
+    const baseline = compute(makeDoc(8, { kineticistElement: "wood" }), ref);
+    const poison = withTalent.saves.fort.conditionals?.find((c) => c.categories.includes("poison"));
+    expect(poison?.total).toBe(baseline.saves.fort.total + 5);
+  });
+});

@@ -131,6 +131,17 @@ export function buildRollData(
     speedAttr[mode] = { total: baseSpeeds[mode] ?? 0 };
   }
 
+  // Burn currently held (kineticist) — `@attributes.burn.value`. A handful of
+  // published wild talents ("gain resistance equal to twice your current
+  // amount of burn" — Cold/Heat/Aerial Adaptation) scale directly off the
+  // live count rather than kineticist level, so it needs to be a roll-data
+  // path a `Change` formula can read, the same way `collect.ts`'s Elemental
+  // Defense block and `compute.ts`'s kinetic-blast overflow bonus each look
+  // this same value up independently. 0 for a non-kineticist (no "burn"-
+  // tagged class feature to find).
+  const burnFeature = Object.values(refData.classFeatures ?? {}).find((f) => f.tag === "burn");
+  const currentBurn = burnFeature ? (doc.live.resources[burnFeature.id]?.used ?? 0) : 0;
+
   return {
     abilities: rollAbilities,
     classes,
@@ -164,6 +175,7 @@ export function buildRollData(
       // 0 (no load ever gates a formula for them).
       encumbrance: { level: encumbranceLevel ?? 0 },
       speed: speedAttr,
+      burn: { value: currentBurn },
     },
     armor: { type: armorType },
     shield: { type: shieldType },
