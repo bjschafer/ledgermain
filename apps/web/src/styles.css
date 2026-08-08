@@ -4075,6 +4075,16 @@ input[type="text"].saved-roll-name:focus {
   gap: 4px;
 }
 
+/* Each picked phrenic amplification row carries a cost line and a collapsed
+   description, richer than the single-line field rows above it — a divider
+   between entries keeps a multi-amplification list from reading as one
+   run-on block. */
+.phrenic-amplification-row + .phrenic-amplification-row {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+}
+
 /* Polymorph / Wild Shape panel (issue #70) */
 .polymorph-start,
 .polymorph-active {

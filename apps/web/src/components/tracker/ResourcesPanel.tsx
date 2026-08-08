@@ -34,6 +34,10 @@ import {
   totalOccultistFocusInvested,
 } from "../../model/occultistImplements.js";
 import {
+  phrenicAmplificationActions,
+  type PhrenicAmplificationAction,
+} from "../../model/psychicAmplifications.js";
+import {
   addManualPool,
   drainResource,
   poolCadenceLabel,
@@ -76,6 +80,11 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
     update((d) => spendPool(syncDerivedPools(d, derived), pool, 1, { immuneToNonlethal }));
   const restore = (pool: DerivedResourcePool) =>
     update((d) => restorePool(syncDerivedPools(d, derived), pool, 1));
+  // Same generic spend as `drain` above but for a caller-chosen amount — the
+  // Phrenic Pool row's amplification actions spend a variable number of
+  // points per use, not always 1.
+  const spendAmount = (pool: DerivedResourcePool, n: number) =>
+    update((d) => spendPool(syncDerivedPools(d, derived), pool, n, { immuneToNonlethal }));
   const drainManual = (id: string) =>
     update((d) => drainResource(syncDerivedPools(d, derived), id, 1));
   const restoreManual = (id: string) =>
@@ -148,6 +157,14 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
                     />
                     <KineticUtilityActionsPanel doc={doc} refData={refData} sheet={sheet} />
                   </>
+                )}
+                {pool.name === "Phrenic Pool" && pool.classTag === "psychic" && (
+                  <PhrenicAmplificationActionsPanel
+                    doc={doc}
+                    refData={refData}
+                    left={pool.max - used}
+                    onSpend={(n) => spendAmount(pool, n)}
+                  />
                 )}
               </div>
             );
@@ -631,6 +648,109 @@ function KineticUtilityActionsPanel({
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+/**
+ * Picked phrenic amplifications, listed beside the Phrenic Pool resource row:
+ * each is a cast-time rider a psychic pays for out of that pool (see
+ * `model/psychicAmplifications.ts`'s `phrenicAmplificationActions`). A flat,
+ * parseable cost ("1 point", "2 points") gets a one-click spend button; a
+ * variable, conditional, or per-target/per-level cost ("1 or 2 points", "2
+ * points per level", ...) lets the player type the amount they're actually
+ * paying, since only the rules text below (the same collapsed-description
+ * idiom a class feature row uses) says which choice applies. Read-mostly:
+ * this is a spend tracker plus reference, not a cast-flow integration —
+ * nothing here validates that a typed amount matches a legal option, the
+ * same trust the Burn row already extends to a kineticist's own bookkeeping.
+ */
+function PhrenicAmplificationActionsPanel({
+  doc,
+  refData,
+  left,
+  onSpend,
+}: {
+  doc: CharacterDoc;
+  refData: RefData;
+  /** Phrenic Pool points currently remaining, from the row above. */
+  left: number;
+  onSpend: (n: number) => void;
+}) {
+  const actions = phrenicAmplificationActions(doc, refData);
+  if (actions.length === 0) return null;
+
+  return (
+    <div className="res-sub-row phrenic-amplification-actions">
+      <div className="res-name">Amplifications</div>
+      {actions.map((action) => (
+        <PhrenicAmplificationActionRow
+          key={action.id}
+          action={action}
+          left={left}
+          onSpend={onSpend}
+        />
+      ))}
+    </div>
+  );
+}
+
+function PhrenicAmplificationActionRow({
+  action,
+  left,
+  onSpend,
+}: {
+  action: PhrenicAmplificationAction;
+  left: number;
+  onSpend: (n: number) => void;
+}) {
+  const [amount, setAmount] = useState(1);
+  const flatCost = action.cost !== undefined && action.cost > 0;
+  const noCost = action.cost === 0;
+
+  return (
+    <div className="phrenic-amplification-row">
+      <div className="res-field-row">
+        <span className="res-field-label">
+          {action.name}
+          <span className="tag-mystery"> {action.tier === "major" ? "Major" : "Amp"}</span>
+        </span>
+        {flatCost ? (
+          <button
+            type="button"
+            className="pick-btn"
+            disabled={left < (action.cost ?? 0)}
+            onClick={() => onSpend(action.cost!)}
+          >
+            Spend {action.cost} {action.cost === 1 ? "point" : "points"}
+          </button>
+        ) : noCost ? (
+          <span className="hint">No pool cost</span>
+        ) : (
+          <>
+            <NumberField
+              value={amount}
+              min={1}
+              max={Math.max(left, 1)}
+              size={2}
+              onCommit={setAmount}
+              aria-label={`${action.name} points to spend`}
+            />
+            <button
+              type="button"
+              className="pick-btn"
+              disabled={left < amount}
+              onClick={() => onSpend(amount)}
+            >
+              Spend
+            </button>
+          </>
+        )}
+      </div>
+      <span className="hint">
+        {action.costLabel}: {action.summary}
+      </span>
+      {action.description ? <FeatureDescription html={action.description} /> : null}
     </div>
   );
 }
