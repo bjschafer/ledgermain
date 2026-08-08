@@ -59,21 +59,32 @@ function makeDoc(
 const BASE_ABILITIES = { str: 10, dex: 10, con: 10, int: 18, wis: 16, cha: 10 } as const;
 
 describe("PSYCHIC_DISCIPLINES table shape", () => {
-  it("ships exactly the 12 core Occult Adventures disciplines", () => {
-    expect(PSYCHIC_DISCIPLINE_TAGS).toHaveLength(12);
+  it("ships all 23 published psychic disciplines", () => {
+    expect(PSYCHIC_DISCIPLINE_TAGS).toHaveLength(23);
     expect([...PSYCHIC_DISCIPLINE_TAGS].sort()).toEqual([
       "abomination",
+      "bleaching",
       "dream",
       "enlightenment",
       "faith",
       "ferocity",
+      "hag_called",
       "haunted",
       "lore",
+      "mindtech",
       "pageantry",
       "pain",
+      "psychedelia",
+      "rapport",
       "rebirth",
+      "rivethun",
       "self-perfection",
+      "shadow",
+      "sorrow",
+      "superiority",
+      "symbiosis",
       "tranquility",
+      "warp",
     ]);
   });
 
@@ -94,7 +105,7 @@ describe("PSYCHIC_DISCIPLINES table shape", () => {
     }
   });
 
-  it("phrenic pool ability split matches the vendored prose: 6 Wisdom, 6 Charisma", () => {
+  it("phrenic pool ability split matches the vendored prose: 10 Wisdom, 13 Charisma", () => {
     const wis = PSYCHIC_DISCIPLINE_TAGS.filter(
       (t) => PSYCHIC_DISCIPLINES[t]!.phrenicPoolAbility === "wis",
     ).sort();
@@ -102,14 +113,32 @@ describe("PSYCHIC_DISCIPLINES table shape", () => {
       (t) => PSYCHIC_DISCIPLINES[t]!.phrenicPoolAbility === "cha",
     ).sort();
     expect(wis).toEqual([
+      "bleaching",
       "enlightenment",
       "faith",
       "ferocity",
       "lore",
+      "mindtech",
+      "psychedelia",
       "self-perfection",
+      "shadow",
       "tranquility",
     ]);
-    expect(cha).toEqual(["abomination", "dream", "haunted", "pageantry", "pain", "rebirth"]);
+    expect(cha).toEqual([
+      "abomination",
+      "dream",
+      "hag_called",
+      "haunted",
+      "pageantry",
+      "pain",
+      "rapport",
+      "rebirth",
+      "rivethun",
+      "sorrow",
+      "superiority",
+      "symbiosis",
+      "warp",
+    ]);
   });
 });
 
@@ -358,5 +387,102 @@ describe("promoted discipline power: Self-Perfection's AC Bonus (1st)", () => {
     const doc = makeDoc([{ tag: "psychic", level: 1 }], BASE_ABILITIES, "faith");
     const sheet = compute(doc, ref);
     expect(sheet.ac.normal).toBe(10); // no Dex (10), no Wis-to-AC
+  });
+});
+
+/**
+ * Splatbook disciplines (later Occult Adventures-adjacent books, verified
+ * 2026-08-07): the same fixture coverage as the core-12 promotion audit
+ * above, spot-checking bonus spell cadence, phrenic pool ability resolution,
+ * and the two promoted (unconditional, always-on) powers this batch adds.
+ */
+describe("splatbook discipline: bonus spells and phrenic pool ability", () => {
+  it("Bleaching (Wisdom): 1st-level bonus spell is Decrepit Disguise, 18th is Energy Drain", () => {
+    const bleaching = PSYCHIC_DISCIPLINES.bleaching!;
+    expect(bleaching.phrenicPoolAbility).toBe("wis");
+    expect(bleaching.bonusSpells[0]).toEqual({
+      level: 1,
+      id: "7u45op4znvtkvgv3",
+      name: "Decrepit Disguise",
+    });
+    expect(bleaching.bonusSpells.at(-1)).toEqual({
+      level: 18,
+      id: "khfprkujokr9uigq",
+      name: "Energy Drain",
+    });
+  });
+
+  it("Phrenic Pool with Bleaching (Wisdom-keyed): floor(level/2) + Wis mod, not the vendored Cha formula", () => {
+    // Wis 16 (+3), Cha 10 (+0) — same setup as the core-12 Faith fixture
+    // above, confirming the wis-alias correction also fires for a
+    // splatbook discipline.
+    const doc = makeDoc([{ tag: "psychic", level: 6 }], BASE_ABILITIES, "bleaching");
+    const sheet = compute(doc, ref);
+    const pool = deriveResourcePools(doc, ref, sheet.abilities).find(
+      (p) => p.classTag === "psychic" && p.name === "Phrenic Pool",
+    );
+    expect(pool!.max).toBe(6); // floor(6/2) + Wis 3
+  });
+
+  it("Sorrow (Charisma): 4th-level bonus spell is Silence, phrenic pool uses Cha", () => {
+    const sorrow = PSYCHIC_DISCIPLINES.sorrow!;
+    expect(sorrow.phrenicPoolAbility).toBe("cha");
+    expect(sorrow.bonusSpells.find((sp) => sp.level === 4)).toEqual({
+      level: 4,
+      id: "ow4t1zox6dtybgji",
+      name: "Silence",
+    });
+  });
+
+  it("Phrenic Pool with Sorrow (Charisma-keyed): unaffected by the wis-alias, stays floor(level/2) + Cha mod", () => {
+    const abilities = { ...BASE_ABILITIES, wis: 10, cha: 16 };
+    const doc = makeDoc([{ tag: "psychic", level: 6 }], abilities, "sorrow");
+    const sheet = compute(doc, ref);
+    const pool = deriveResourcePools(doc, ref, sheet.abilities).find(
+      (p) => p.classTag === "psychic" && p.name === "Phrenic Pool",
+    );
+    expect(pool!.max).toBe(6); // floor(6/2) + Cha 3 — Wis 10 must NOT leak in
+  });
+});
+
+describe("promoted discipline power: Hag-Called's Curse Mastery (13th)", () => {
+  // AoN (PsychicDisciplinesDisplay.aspx?ItemName=Hag-Called): "You become
+  // immune to spells of the curse subschool and curse effects."
+  it("grants curse immunity at 13th level", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 13 }], BASE_ABILITIES, "hag_called");
+    const sheet = compute(doc, ref);
+    expect((sheet.defenses?.effectImmunities ?? []).map((e) => e.qualifier)).toEqual(["curse"]);
+  });
+
+  it("grants nothing below 13th level", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 12 }], BASE_ABILITIES, "hag_called");
+    const sheet = compute(doc, ref);
+    expect(sheet.defenses?.effectImmunities).toBeUndefined();
+  });
+});
+
+describe("promoted discipline power: Symbiosis's One with Nature (1st)", () => {
+  // AoN (PsychicDisciplinesDisplay.aspx?ItemName=Symbiosis): "You gain a +2
+  // insight bonus on Knowledge (nature) checks." Only the flat bonus is
+  // modeled; the +4-while-scrying and 7th-level speak-with-animals upgrades
+  // are not.
+  it("grants +2 insight on Knowledge (nature) at 1st level", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 1 }], BASE_ABILITIES, "symbiosis");
+    const sheet = compute(doc, ref);
+    const natureKnowledge = sheet.skills["kna"]!;
+    const comp = natureKnowledge.components.find(
+      (c) => c.source === "One with Nature (Symbiosis Discipline)",
+    );
+    expect(comp?.value).toBe(2);
+    expect(comp?.type).toBe("insight");
+  });
+
+  it("contributes nothing under a different discipline", () => {
+    const doc = makeDoc([{ tag: "psychic", level: 1 }], BASE_ABILITIES, "faith");
+    const sheet = compute(doc, ref);
+    const natureKnowledge = sheet.skills["kna"]!;
+    expect(
+      natureKnowledge.components.some((c) => c.source === "One with Nature (Symbiosis Discipline)"),
+    ).toBe(false);
   });
 });

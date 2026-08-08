@@ -12,10 +12,10 @@ import {
 /**
  * Coverage for the vendored-catalog overlay — see `psychic-disciplines.ts`'s
  * "vendored catalog overlay" section doc comment. A discipline is a CHASSIS
- * (bonus spells/Discipline Powers/pool ability), so unlike the flat-menu
- * subsystems this asserts the two-shape merge: hand-authored rows keep full
- * mechanics, vendored-only rows are honestly `vendoredOnly: true` with no
- * bonus spells/powers/pool ability at all.
+ * (bonus spells/Discipline Powers/pool ability); now that all 23 published
+ * disciplines are hand-authored, the merge produces zero `vendoredOnly: true`
+ * rows in practice, but the shape stays covered for the (hypothetical)
+ * unmatched case.
  */
 const ref = loadRefData();
 
@@ -23,7 +23,7 @@ describe("mergedPsychicDisciplineCatalog", () => {
   const merged = mergedPsychicDisciplineCatalog(ref);
   const byTag = new Map(merged.map((d) => [d.tag, d]));
 
-  it("has exactly one row per vendored entry — every one of the 12 hand-authored disciplines matched", () => {
+  it("has exactly one row per vendored entry — every one of the 23 hand-authored disciplines matched", () => {
     expect(merged).toHaveLength(Object.keys(ref.psychicDisciplines).length);
   });
 
@@ -41,13 +41,8 @@ describe("mergedPsychicDisciplineCatalog", () => {
     }
   });
 
-  it("a vendored-only splatbook discipline is honestly display-only — no bonus spells/powers/pool ability", () => {
-    const entry = byTag.get("mindtech")!;
-    expect(entry.vendoredOnly).toBe(true);
-    expect(entry.name).toBe("Mindtech");
-    expect("bonusSpells" in entry).toBe(false);
-    expect("powers" in entry).toBe(false);
-    expect(PSYCHIC_DISCIPLINES.mindtech).toBeUndefined();
+  it("no row is vendoredOnly — every vendored entry now has a hand-authored match", () => {
+    expect(merged.every((d) => !d.vendoredOnly)).toBe(true);
   });
 
   it("every tag is unique", () => {
@@ -63,10 +58,11 @@ describe("resolvePsychicDiscipline", () => {
     expect(entry?.name).toBe("Abomination");
   });
 
-  it("falls back to a vendored-only stub for a splatbook discipline", () => {
+  it("resolves a formerly-vendored-only splatbook discipline through the hand-authored table now", () => {
     const entry = resolvePsychicDiscipline("mindtech", ref);
-    expect(entry?.vendoredOnly).toBe(true);
+    expect(entry?.vendoredOnly).toBe(false);
     expect(entry?.name).toBe("Mindtech");
+    expect(PSYCHIC_DISCIPLINES.mindtech).toBeDefined();
   });
 
   it("returns undefined for a tag in neither table", () => {
