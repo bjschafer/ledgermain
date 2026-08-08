@@ -5121,8 +5121,8 @@ input[type="text"].saved-roll-name:focus {
    replaced let a wrapping name push its trailing toggle onto an orphaned
    line of its own. A row with no description renders no toggle at all (see
    `ClassFeatureRow`/`ArchetypeFeatureRow`), leaving column 2 empty rather
-   than a dead triangle. The `+` selector borders and the hover fill give the
-   list row separation and a scannable "catalog" feel, matching `.pick-row`. */
+   than a dead triangle. The `+` selector borders give the list row
+   separation and a scannable "catalog" feel, matching `.pick-row`. */
 .cf-archetype-feature {
   display: grid;
   grid-template-columns: 1fr 20px;
@@ -5136,7 +5136,16 @@ input[type="text"].saved-roll-name:focus {
   border-top: 1px solid var(--line-soft);
 }
 
-.cf-archetype-feature:hover {
+/* `.cf-has-desc` (has a description to toggle, set by ClassFeatureRow /
+   ArchetypeFeatureRow) is the whole row's click target — see
+   `toggleFeatureDescription` — so only it gets the pointer cursor and hover
+   fill. A row with no description used to hover-highlight anyway, promising
+   a click target that wasn't there. */
+.cf-archetype-feature.cf-has-desc {
+  cursor: pointer;
+}
+
+.cf-archetype-feature.cf-has-desc:hover {
   background: var(--surface-2);
 }
 
