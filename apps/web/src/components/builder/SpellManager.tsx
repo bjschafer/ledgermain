@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { RefData } from "@pf1/schema";
 
 import { schoolLabel } from "../../model/spellcasting.js";
+import { undercastGrant, undercastGrantLabel } from "../../model/undercasting.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import type { SpellEntry, SpellFilter } from "../../model/spellSearch.js";
 import {
@@ -42,6 +43,7 @@ export function SpellManager({
   knownLimits,
   knownCountByLevel,
   isSpontaneous,
+  unlockClassLevelByLevel,
   refData,
   abilityMod,
   casterLevel,
@@ -58,6 +60,13 @@ export function SpellManager({
   knownLimits: Map<number, number>;
   knownCountByLevel: Map<number, number>;
   isSpontaneous: boolean;
+  /**
+   * Class level each spell level unlocks at (spontaneous casters only) — a
+   * level absent from `knownLimits` but present here is above the caster's
+   * current reach, not merely at/over the soft known-spell cap; see the
+   * `locked` computation in {@link SpellRow} below.
+   */
+  unlockClassLevelByLevel: Map<number, number>;
   refData: RefData;
   abilityMod: number;
   casterLevel: number;
@@ -160,28 +169,46 @@ export function SpellManager({
                     label={levelName(g.level)}
                     count={g.entries.length}
                   >
-                    {g.entries.map((sp) => (
-                      <SpellRow
-                        key={sp.id}
-                        spell={sp}
-                        refData={refData}
-                        abilityMod={abilityMod}
-                        casterLevel={casterLevel}
-                        isKnown={known.has(sp.id)}
-                        onToggle={onToggle}
-                        overLimit={
-                          isSpontaneous &&
-                          !known.has(sp.id) &&
-                          (knownCountByLevel.get(sp.level) ?? 0) >=
-                            (knownLimits.get(sp.level) ?? Infinity)
-                        }
-                        limitNote={limitNote(
-                          sp.level,
-                          knownCountByLevel.get(sp.level) ?? 0,
-                          knownLimits.get(sp.level),
-                        )}
-                      />
-                    ))}
+                    {g.entries.map((sp) => {
+                      const isKnown = known.has(sp.id);
+                      // A level absent from `knownLimits` for a spontaneous
+                      // caster is above her current max castable level (the
+                      // class table hasn't reached it yet) — distinct from
+                      // merely being at/over the soft known-spell cap below,
+                      // this one hard-blocks adding: prepared casters may plan
+                      // ahead onto a future spellbook page, but a spontaneous
+                      // caster can't learn a spell she can't yet cast at all.
+                      const locked = isSpontaneous && !isKnown && !knownLimits.has(sp.level);
+                      return (
+                        <SpellRow
+                          key={sp.id}
+                          spell={sp}
+                          refData={refData}
+                          abilityMod={abilityMod}
+                          casterLevel={casterLevel}
+                          isKnown={isKnown}
+                          onToggle={onToggle}
+                          locked={locked}
+                          lockedHint={
+                            locked
+                              ? lockedHint(casterTag, unlockClassLevelByLevel.get(sp.level))
+                              : undefined
+                          }
+                          overLimit={
+                            isSpontaneous &&
+                            !isKnown &&
+                            !locked &&
+                            (knownCountByLevel.get(sp.level) ?? 0) >=
+                              (knownLimits.get(sp.level) ?? 0)
+                          }
+                          limitNote={limitNote(
+                            sp.level,
+                            knownCountByLevel.get(sp.level) ?? 0,
+                            knownLimits.get(sp.level),
+                          )}
+                        />
+                      );
+                    })}
                   </ManagerLevelGroup>
                 ))
               )}
@@ -293,6 +320,13 @@ function limitNote(level: number, count: number, limit: number | undefined): str
   return `You already know ${count}/${limit} level-${level} spells: adding more exceeds your known limit.`;
 }
 
+/** Tooltip for a locked (not-yet-castable) spell level's disabled Add button. */
+function lockedHint(casterTag: string, unlockClassLevel: number | undefined): string {
+  return unlockClassLevel === undefined
+    ? `Not yet castable at your ${casterTag} level.`
+    : `Unlocks at ${casterTag} level ${unlockClassLevel}.`;
+}
+
 function SpellRow({
   spell,
   refData,
@@ -302,6 +336,8 @@ function SpellRow({
   onToggle,
   overLimit = false,
   limitNote,
+  locked = false,
+  lockedHint,
 }: {
   spell: SpellEntry;
   refData: RefData;
@@ -311,8 +347,12 @@ function SpellRow({
   onToggle?: (id: string) => void;
   overLimit?: boolean;
   limitNote?: string;
+  /** Above the caster's current max castable spell level: Add is hard-blocked (spontaneous casters only). */
+  locked?: boolean;
+  lockedHint?: string;
 }) {
   const data = refData.spells[spell.id];
+  const grant = isKnown ? undercastGrant(refData, spell.id) : undefined;
   return (
     <div className={`pick-row${isKnown ? " is-selected" : ""}`}>
       <div className="pmain">
@@ -335,15 +375,17 @@ function SpellRow({
             />
           )}
         </div>
+        {grant && <p className="hint spell-undercast-note">{undercastGrantLabel(grant)}</p>}
       </div>
       {onToggle && (
         <button
           type="button"
           className={`pick-btn ${isKnown ? "remove" : "add"}`}
           onClick={() => onToggle(spell.id)}
-          title={overLimit ? limitNote : undefined}
+          disabled={locked}
+          title={locked ? lockedHint : overLimit ? limitNote : undefined}
         >
-          {isKnown ? "Remove" : overLimit ? "Add (over limit)" : "Add"}
+          {isKnown ? "Remove" : locked ? "Locked" : overLimit ? "Add (over limit)" : "Add"}
         </button>
       )}
     </div>

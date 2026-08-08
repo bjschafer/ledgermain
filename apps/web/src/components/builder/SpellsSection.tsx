@@ -16,6 +16,7 @@ import {
   oracleChannelSpellsKnown,
   patronSpellsKnown,
   shamanSpiritSpellsKnown,
+  spellLevelUnlockClassLevel,
   spellsKnownLimitsByLevel,
   spellsPanelVisible,
   unlockedSpellLevels,
@@ -29,6 +30,7 @@ import {
   spellLevelMap,
 } from "../../model/preparedSpells.js";
 import { normalizeAlignmentCode } from "../../model/names.js";
+import { undercastGrant, undercastGrantLabel } from "../../model/undercasting.js";
 import type { SpellEntry } from "../../model/spellSearch.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
@@ -276,6 +278,20 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     return counts;
   }, [known, levelMap]);
 
+  // Class level each spell level unlocks at (spontaneous casters only): a
+  // level missing from `knownLimits` above is above the caster's current
+  // reach, and the SpellManager's picker hard-blocks adding there — this
+  // feeds the "Unlocks at <class> level N" hint on that disabled Add button.
+  const unlockClassLevelByLevel = useMemo(() => {
+    const map = new Map<number, number>();
+    if (!model || model.preparation !== "spontaneous") return map;
+    for (let lvl = 0; lvl <= 9; lvl++) {
+      const unlock = spellLevelUnlockClassLevel(model, lvl);
+      if (unlock !== undefined) map.set(lvl, unlock);
+    }
+    return map;
+  }, [model]);
+
   // A non-caster gets no panel at all rather than an empty one. The stranded
   // -state case (spells present, caster class gone) still renders the message.
   if (!casterTag) {
@@ -424,6 +440,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
           knownLimits={knownLimits}
           knownCountByLevel={knownCountByLevel}
           isSpontaneous={model?.preparation === "spontaneous"}
+          unlockClassLevelByLevel={unlockClassLevelByLevel}
           refData={refData}
           abilityMod={abilityMod}
           casterLevel={casterLevel}
@@ -708,6 +725,7 @@ function SpellLevelGroup({
       {!collapsed &&
         entries.map((sp) => {
           const spellData = refData.spells[sp.id];
+          const undercast = undercastGrant(refData, sp.id);
           return (
             <div key={sp.id} className="pick-row is-selected">
               <div className="pmain">
@@ -719,6 +737,9 @@ function SpellLevelGroup({
                     abilityMod={abilityMod}
                     casterLevel={casterLevel}
                   />
+                )}
+                {undercast && (
+                  <p className="hint spell-undercast-note">{undercastGrantLabel(undercast)}</p>
                 )}
               </div>
               <button type="button" className="pick-btn remove" onClick={() => onRemove(sp.id)}>

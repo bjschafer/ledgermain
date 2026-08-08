@@ -69,6 +69,7 @@ import {
 } from "../../model/spellcasting.js";
 import { newDaySummary } from "../../model/rest.js";
 import { buffsForSpell } from "../../model/spellBuffs.js";
+import { impliedUndercastSpells } from "../../model/undercasting.js";
 import {
   castSpontaneousSlot,
   resetSpontaneousSlots,
@@ -1489,7 +1490,8 @@ function SpontaneousView({
 
   // Known spells by spell level (cantrips land in level 0 here too, unless
   // grantsAllCantrips sources them from the whole class list below instead).
-  const knownByLevel = new Map<number, { id: string; name: string }[]>();
+  type KnownSpellEntry = { id: string; name: string; undercastOf?: string };
+  const knownByLevel = new Map<number, KnownSpellEntry[]>();
   for (const id of knownList) {
     const lvl = levelMap.get(id);
     const sp = refData.spells[id];
@@ -1571,6 +1573,24 @@ function SpontaneousView({
       (knownByLevel.get(lvl) ?? knownByLevel.set(lvl, []).get(lvl)!).push({
         id: sp.id,
         name: sp.name,
+      });
+    }
+  }
+  // Undercasting (Occult Adventures psychic spells "that can be undercast"):
+  // knowing a higher chain version (e.g. Mind Thrust IV) also grants every
+  // lower version in the same chain (Mind Thrust I-III), castable at ITS OWN
+  // level from that level's own slot pool — RAW never requires learning them
+  // separately, so, like the bonus-spell merges above, they're exempt from
+  // the known-spell cap; unlike those, they're tagged (`undercastOf`) so the
+  // row can show which known spell grants them.
+  {
+    const known = new Set(knownList);
+    for (const sp of impliedUndercastSpells(refData, knownList)) {
+      if (known.has(sp.id)) continue;
+      (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
+        id: sp.id,
+        name: sp.name,
+        undercastOf: sp.grantedByName,
       });
     }
   }
@@ -1702,6 +1722,14 @@ function SpontaneousView({
                       <div key={sp.id} className="prep-row">
                         <div className="prep-row-main">
                           <span className="prep-name">{sp.name}</span>
+                          {sp.undercastOf && (
+                            <span
+                              className="tag-mystery"
+                              title={`Undercast from your known ${sp.undercastOf}`}
+                            >
+                              undercast
+                            </span>
+                          )}
                           {spellData && (
                             <SpellDetail
                               spell={spellData}

@@ -3,7 +3,9 @@ import { describe, expect, it } from "bun:test";
 import {
   accessibleSpellLevels,
   casterModelFor,
+  spellLevelUnlockClassLevel,
   spellSlotsByLevel,
+  spellsKnownLimitsByLevel,
   unlockedSpellLevels,
 } from "../src/model/spellcasting.js";
 
@@ -108,5 +110,66 @@ describe("early-bonus-spells homebrew — accessibleSpellLevels() stays RAW", ()
     // Int +3 would unlock level 2/3 early under the homebrew, but this
     // RAW-only helper (used by classPrereqs.ts) must never reflect that.
     expect(accessibleSpellLevels(m, 1)).toEqual([0, 1]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Spontaneous learn-gate (a spell level beyond the caster's current reach
+// must be a HARD block on adding it to the known list, not the soft
+// over-the-known-cap advisory) — SpellManager.tsx's `locked` computation.
+// ---------------------------------------------------------------------------
+
+describe("spellLevelUnlockClassLevel() — the gate SpellManager's Add button relies on", () => {
+  it("sorcerer: 1st-level spells unlock at class level 1, 2nd-level at class level 4", () => {
+    const m = casterModelFor("sorcerer")!;
+    expect(spellLevelUnlockClassLevel(m, 1)).toBe(1);
+    expect(spellLevelUnlockClassLevel(m, 2)).toBe(4);
+  });
+
+  it("bard: never reaches level 7 (caps at 6th) → undefined, not a bogus class level", () => {
+    const m = casterModelFor("bard")!;
+    expect(spellLevelUnlockClassLevel(m, 6)).toBe(16);
+    expect(spellLevelUnlockClassLevel(m, 7)).toBeUndefined();
+  });
+
+  it("paladin: delayed caster, 1st-level spells unlock at class level 4", () => {
+    const m = casterModelFor("paladin")!;
+    expect(spellLevelUnlockClassLevel(m, 1)).toBe(4);
+  });
+
+  it("occultist: has no knownProgression at all, but still resolves via the per-day table", () => {
+    // CASTER_MODELS.occultist deliberately carries no knownProgression (see
+    // its doc comment) — spellLevelUnlockClassLevel must still work for it by
+    // reading the per-day table instead.
+    const m = casterModelFor("occultist")!;
+    expect(spellLevelUnlockClassLevel(m, 1)).toBe(1);
+    expect(spellLevelUnlockClassLevel(m, 6)).toBe(16);
+  });
+
+  it("every unlock level found is genuinely the FIRST class level granting that spell level (property check)", () => {
+    for (const tag of ["sorcerer", "bard", "psychic", "medium"]) {
+      const m = casterModelFor(tag)!;
+      for (let spellLevel = 0; spellLevel <= 9; spellLevel++) {
+        const unlock = spellLevelUnlockClassLevel(m, spellLevel);
+        if (unlock === undefined) continue;
+        expect(accessibleSpellLevels(m, unlock)).toContain(spellLevel);
+        if (unlock > 1) expect(accessibleSpellLevels(m, unlock - 1)).not.toContain(spellLevel);
+      }
+    }
+  });
+});
+
+describe("the bug this closes: a not-yet-reached spell level used to have no known-limit entry at all", () => {
+  it("sorcerer at class level 1 has no known-limit entry for 2nd-level spells (the `?? Infinity` trap)", () => {
+    const m = casterModelFor("sorcerer")!;
+    const limits = new Map(spellsKnownLimitsByLevel(m, 1).map((l) => [l.level, l.limit]));
+    // This is exactly the condition the old `knownLimits.get(level) ?? Infinity`
+    // formula mishandled: no entry here read as "no limit" (freely addable)
+    // instead of "not accessible yet" (must be blocked). The fix keys off
+    // `knownLimits.has(level)` instead, backed by spellLevelUnlockClassLevel
+    // above for the player-facing "unlocks at level N" hint.
+    expect(limits.has(1)).toBe(true);
+    expect(limits.has(2)).toBe(false);
+    expect(spellLevelUnlockClassLevel(m, 2)).toBe(4);
   });
 });

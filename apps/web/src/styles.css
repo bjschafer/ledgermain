@@ -1870,6 +1870,14 @@ button:focus-visible,
   margin: 0;
 }
 
+/* Undercast grant note on a known spell that's the higher version of an
+   undercastable chain (Occult Adventures) — small enough not to compete with
+   the spell name/detail line above it. */
+.spell-undercast-note {
+  margin: 2px 0 0;
+  font-size: 0.6875rem;
+}
+
 /* One collapsible level section within a spellbook/known-list scroll —
    previously unstyled, so adjacent groups (Cantrips, Level 1, granted
    cantrips, domain spells, …) had no vertical separation. */

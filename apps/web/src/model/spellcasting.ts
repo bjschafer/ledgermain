@@ -819,6 +819,29 @@ export function spellsKnownLimitsByLevel(
   return out;
 }
 
+/**
+ * Class level at which `model`'s progression table first grants access to
+ * `spellLevel` at all, or `undefined` if the class never reaches it (e.g.
+ * asking a 6th-level caster about spell level 9). Reads the per-day table
+ * (`baseSpellsPerDay`, always present) rather than requiring a
+ * `knownProgression` — the per-day and spells-known tables always go
+ * null/non-null together at every SRD-published class level (a class never
+ * gains slots to cast a level before it can select spells of that level, or
+ * vice versa), so this also works for occultist, whose known-spell cap has no
+ * separate table at all (see `CASTER_MODELS.occultist`'s doc comment). Used to
+ * tell a spontaneous caster's spell picker when a not-yet-reached level
+ * actually unlocks, distinct from the soft over-the-known-cap advisory.
+ */
+export function spellLevelUnlockClassLevel(
+  model: CasterModel,
+  spellLevel: number,
+): number | undefined {
+  for (let classLevel = 1; classLevel <= 20; classLevel++) {
+    if (baseSpellsPerDay(model.progression, classLevel, spellLevel) !== null) return classLevel;
+  }
+  return undefined;
+}
+
 // ---------------------------------------------------------------------------
 // Spells-prepared capacity ("hybrid" caster, e.g. arcanist)
 // ---------------------------------------------------------------------------
