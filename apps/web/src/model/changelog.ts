@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-07-racial-trait-swaps-enforced",
+    date: "2026-08-07",
+    title: "Alternate racial traits stop double-spending a swap",
+    note: "A race has one of each standard trait to trade, so picking Dreamspeaker now rules out Fleet-Footed and every other elf trait that wants Elven Magic. Both trait lists check each other, and a blocked entry says which pick took the trait.",
+  },
+  {
     id: "2026-08-06-kineticist-talents-do-things",
     date: "2026-08-06",
     title: "Kineticist wild talents that actually do something",

@@ -20,8 +20,9 @@ import {
 import { ABILITY_ABBR } from "../../model/names.js";
 import {
   availableRacialTraits,
-  conflictingRacialTraitIds,
   hasRacialTrait,
+  racialTraitConflictReason,
+  racialTraitConflicts,
   raceStandardTraitNotes,
   suppressedRaceTargets,
   toggleRacialTrait,
@@ -104,7 +105,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
     FLEXIBLE_ABILITY_SUPPRESS_TARGET,
   );
   const racialTraits = availableRacialTraits(doc, refData);
-  const racialTraitConflicts = conflictingRacialTraitIds(doc, refData);
+  const traitConflicts = racialTraitConflicts(doc, refData);
   const standardTraitNotes = raceStandardTraitNotes(doc, refData);
   const pendingRace = pendingRaceId != null ? refData.races[pendingRaceId] : undefined;
   const racial = racialLanguages(doc, refData);
@@ -259,17 +260,15 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
       {racialTraits.length > 0 && (
         <div style={{ marginTop: 12 }}>
           <p className="hint">
-            Alternate racial traits · swap a standard trait for an alternate
-            {racialTraitConflicts.size > 0 ? (
-              <span className="soft" style={{ marginLeft: 6 }}>
-                ⚠ two traits replace the same standard trait
-              </span>
-            ) : null}
+            Alternate racial traits · swap a standard trait for an alternate. Each standard trait
+            can only be traded once, so an alternate that wants one you've already traded can't be
+            added.
           </p>
           <div style={{ marginTop: 6 }}>
             {racialTraits.map((tr) => {
               const isSel = hasRacialTrait(doc, tr.id);
-              const conflict = isSel && racialTraitConflicts.has(tr.id);
+              const conflicts = traitConflicts.get(tr.id);
+              const reason = conflicts ? racialTraitConflictReason(conflicts) : null;
               return (
                 <div key={tr.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
@@ -278,18 +277,16 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
                       <span className="tag-bloodline" title={`Replaces ${tr.replaces.join(", ")}`}>
                         replaces {tr.replaces.join(", ")}
                       </span>
-                      {conflict ? (
-                        <span
-                          className="soft"
-                          title="Another chosen trait replaces the same standard trait"
-                        >
-                          ⚠ conflict
+                      {reason ? (
+                        <span className="soft" title={reason}>
+                          {isSel ? "⚠ conflict" : "⚠ unavailable"}
                         </span>
                       ) : null}
                     </div>
                     <div className="preq">
                       <span className="desc-text">{tr.summary}</span>
                     </div>
+                    {reason ? <div className="preq">{reason}</div> : null}
                     {isSel
                       ? tr.contextNotes?.map((note, i) => <RulesNote key={i} text={note.text} />)
                       : null}
@@ -297,6 +294,8 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
                   <button
                     type="button"
                     className={`pick-btn ${isSel ? "remove" : "add"}`}
+                    disabled={!isSel && reason != null}
+                    title={!isSel && reason != null ? reason : undefined}
                     onClick={() => update((d) => toggleRacialTrait(d, tr.id))}
                   >
                     {isSel ? "Remove" : "Add"}

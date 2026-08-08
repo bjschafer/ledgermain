@@ -12,6 +12,8 @@ import {
   availableVendoredRacialTraits,
   hasVendoredRacialTrait,
   openChangeTargetOptions,
+  racialTraitConflictReason,
+  racialTraitConflicts,
   setVendoredRacialTraitTarget,
   toggleVendoredRacialTrait,
   unfilledVendoredRacialTraitTargets,
@@ -113,6 +115,7 @@ export function VendoredRacialTraitPicker({
   const all = useMemo(() => availableVendoredRacialTraits(doc, refData), [doc, refData]);
   const points = vendoredRacialTraitPoints(doc, refData);
   const unfilled = unfilledVendoredRacialTraitTargets(doc, refData);
+  const traitConflicts = racialTraitConflicts(doc, refData);
   const targetOptions = useMemo(() => openChangeTargetOptions(doc), [doc]);
 
   const traits = useMemo(() => {
@@ -144,6 +147,8 @@ export function VendoredRacialTraitPicker({
     const isSel = hasVendoredRacialTrait(doc, t.id);
     const openChanges = t.openChanges ?? [];
     const fullyHandled = raceName != null && vendoredTraitFullyHandled(t, raceName);
+    const conflicts = traitConflicts.get(t.id);
+    const reason = conflicts ? racialTraitConflictReason(conflicts) : null;
     return (
       <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
         <div className="pmain">
@@ -168,7 +173,13 @@ export function VendoredRacialTraitPicker({
                 {t.racePoints} RP
               </span>
             ) : null}
+            {reason ? (
+              <span className="soft" title={reason}>
+                {isSel ? "⚠ conflict" : "⚠ unavailable"}
+              </span>
+            ) : null}
           </div>
+          {reason ? <div className="preq">{reason}</div> : null}
           {isSel
             ? t.contextNotes.map((note, i) => (
                 <RulesNote
@@ -220,6 +231,8 @@ export function VendoredRacialTraitPicker({
         <button
           type="button"
           className={`pick-btn ${isSel ? "remove" : "add"}`}
+          disabled={!isSel && reason != null}
+          title={!isSel && reason != null ? reason : undefined}
           onClick={() => update((d) => toggleVendoredRacialTrait(d, t.id))}
         >
           {isSel ? "Remove" : "Add"}
@@ -258,9 +271,10 @@ export function VendoredRacialTraitPicker({
             Effects the catalog states as structured numbers apply to your sheet automatically. A
             "replaces" tag says "applied automatically" when every named standard trait is verified
             to retire on its own; otherwise it's a reminder only, so retire the named standard
-            trait(s) yourself. Heritage-tagged entries are only yours if that's your heritage:
-            nothing checks it. Sections follow the published trait categories; entries the catalog
-            left untagged sit under Uncategorized.
+            trait(s) yourself. Either way each standard trait can only be traded once, so an entry
+            wanting one you've already traded can't be added. Heritage-tagged entries are only yours
+            if that's your heritage: nothing checks it. Sections follow the published trait
+            categories; entries the catalog left untagged sit under Uncategorized.
             {points.tagged > 0 ? (
               <>
                 {" "}

@@ -9,11 +9,11 @@ import { isMultitalented } from "../src/model/race.js";
 import {
   availableRacialTraits,
   availableVendoredRacialTraits,
-  conflictingRacialTraitIds,
   hasRacialTrait,
   hasVendoredRacialTrait,
   openChangeTargetOptions,
   raceStandardTraitNotes,
+  racialTraitConflicts,
   setVendoredRacialTraitTarget,
   suppressedRaceTargets,
   toggleRacialTrait,
@@ -102,31 +102,74 @@ describe("toggle + availability", () => {
 });
 
 describe("conflict detection", () => {
-  it("flags two alternates that replace the same standard trait", () => {
-    // Outrider and Practicality both replace Sure-Footed.
-    const doc = makeDoc("Halfling", ["halfling-outrider", "halfling-practicality"]);
-    const conflicts = conflictingRacialTraitIds(doc, ref);
-    expect(conflicts.has("halfling-outrider")).toBe(true);
-    expect(conflicts.has("halfling-practicality")).toBe(true);
+  it("nothing conflicts before anything is chosen", () => {
+    expect(racialTraitConflicts(makeDoc("Elf"), ref).size).toBe(0);
   });
 
-  it("no conflict when alternates replace different standard traits", () => {
+  it("a chosen alternate blocks every other one wanting the same standard trait", () => {
+    // Dreamspeaker replaces Elven Magic, so Fleet-Footed (Keen Senses + Elven
+    // Magic) is out — and so is any vendored entry that trades Elven Magic.
+    const conflicts = racialTraitConflicts(makeDoc("Elf", ["elf-dreamspeaker"]), ref);
+    expect(conflicts.get("elf-fleet-footed")).toEqual([
+      { standardTrait: "Elven Magic", claimedBy: "Dreamspeaker" },
+    ]);
+    // "Silent Hunter", vendored, also replaces Elven Magic.
+    expect(conflicts.get("7ungQuC9iDjjX2vP")).toEqual([
+      { standardTrait: "Elven Magic", claimedBy: "Dreamspeaker" },
+    ]);
+    // Urbanite trades Keen Senses, which is still on the table.
+    expect(conflicts.has("elf-urbanite")).toBe(false);
+    // The chosen trait never conflicts with itself.
+    expect(conflicts.has("elf-dreamspeaker")).toBe(false);
+  });
+
+  it("blocks across catalogs in the other direction too", () => {
+    // Vendored Silent Hunter chosen: the hand-authored pair that wants Elven
+    // Magic is now unavailable.
+    const conflicts = racialTraitConflicts(makeDoc("Elf", [], ["7ungQuC9iDjjX2vP"]), ref);
+    expect(conflicts.get("elf-dreamspeaker")).toEqual([
+      { standardTrait: "Elven Magic", claimedBy: "Silent Hunter" },
+    ]);
+    expect(conflicts.get("elf-fleet-footed")).toEqual([
+      { standardTrait: "Elven Magic", claimedBy: "Silent Hunter" },
+    ]);
+  });
+
+  it("flags both sides of a pair already saved in an older doc", () => {
+    // Outrider and Practicality both replace Sure-Footed.
+    const conflicts = racialTraitConflicts(
+      makeDoc("Halfling", ["halfling-outrider", "halfling-practicality"]),
+      ref,
+    );
+    expect(conflicts.get("halfling-outrider")?.[0]?.claimedBy).toBe("Practicality");
+    expect(conflicts.get("halfling-practicality")?.[0]?.claimedBy).toBe("Outrider");
+  });
+
+  it("alternates replacing different standard traits coexist", () => {
     // Sacred Tattoo (Orc Ferocity) + Shaman's Apprentice (Intimidating).
     const doc = makeDoc("Half-Orc", ["half-orc-sacred-tattoo", "half-orc-shamans-apprentice"]);
-    expect(conflictingRacialTraitIds(doc, ref).size).toBe(0);
+    const conflicts = racialTraitConflicts(doc, ref);
+    expect(conflicts.has("half-orc-sacred-tattoo")).toBe(false);
+    expect(conflicts.has("half-orc-shamans-apprentice")).toBe(false);
   });
 
-  it("all four Sylph alternates coexist without conflict (each replaces a distinct standard trait)", () => {
+  it("all four Sylph alternates coexist (each replaces a distinct standard trait)", () => {
     // Like the Wind (Energy Resistance), Whispering Wind (Spell-Like Ability),
-    // Storm in the Blood (Air Affinity), Mostly Human (Type/Languages) — no
-    // two of these swap the same standard trait, unlike Halfling's pair above.
-    const doc = makeDoc("Sylph", [
+    // Storm in the Blood (Air Affinity), Mostly Human (Type/Languages): no two
+    // of these swap the same standard trait, unlike Halfling's pair above.
+    const chosen = [
       "sylph-like-the-wind",
       "sylph-whispering-wind",
       "sylph-storm-in-the-blood",
       "sylph-mostly-human",
-    ]);
-    expect(conflictingRacialTraitIds(doc, ref).size).toBe(0);
+    ];
+    const conflicts = racialTraitConflicts(makeDoc("Sylph", chosen), ref);
+    for (const id of chosen) expect(conflicts.has(id)).toBe(false);
+  });
+
+  it("a stale id from a race change claims nothing", () => {
+    // Human trait ids left on an Elf doc: no Elf alternate is blocked.
+    expect(racialTraitConflicts(makeDoc("Elf", ["human-focused-study"]), ref).size).toBe(0);
   });
 });
 

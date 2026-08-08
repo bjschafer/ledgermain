@@ -5,10 +5,11 @@
  * `suppressTargets`, and `contextNotes`, applied through the same
  * change-collection path as character traits (see `@pf1/engine` `collect.ts`).
  *
- * This module never blocks. Two alternates that replace the same standard
- * trait conflict (you only have one Sure-Footed to trade away), but — matching
- * the project's hybrid soft-warning posture (`model/traits.ts`, archetype
- * conflict warnings for) — that is surfaced as a warning, never enforced.
+ * The one thing this module does enforce is the standard-trait budget: you
+ * only have one Sure-Footed to trade away, so two alternates that replace it
+ * can't coexist. That's a structural signal rather than a prose prereq, so it
+ * gets the hard-block half of the project's hybrid posture. See
+ * {@link racialTraitConflicts}.
  */
 
 import type { CharacterDoc, RacialTrait, RefData } from "@pf1/schema";
@@ -122,34 +123,104 @@ export function raceStandardTraitNotes(
   });
 }
 
-/**
- * Chosen alternate-racial-trait ids that replace the same standard trait as
- * another chosen one — a conflict, since a race only has one of each standard
- * trait to trade. Returns the set of offending ids (so the picker can flag
- * each). Only considers traits belonging to the current race; a stale id from a
- * race change is ignored.
- */
-export function conflictingRacialTraitIds(doc: CharacterDoc, refData: RefData): Set<string> {
-  const raceName = refData.races[doc.identity.race]?.name;
-  const chosen = (doc.build.racialTraits ?? [])
-    .map((id) => RACIAL_TRAITS[id])
-    .filter((t): t is typeof t & {} => t != null && t.race === raceName);
+/* --------------------------------------- standard-trait double-claims -- */
 
-  // Map each replaced standard-trait name to the chosen alternates that claim it.
-  const byReplaced = new Map<string, string[]>();
-  for (const t of chosen) {
-    for (const replaced of t.replaces) {
-      const list = byReplaced.get(replaced) ?? [];
-      list.push(t.id);
-      byReplaced.set(replaced, list);
+/** One alternate (either catalog) reduced to what it claims from the race. */
+interface TraitClaim {
+  id: string;
+  name: string;
+  /** Standard-trait names it trades away. */
+  replaces: string[];
+}
+
+/** Match "Elven Magic" across the two catalogs' independent spellings. */
+function normalizeStandardTraitName(name: string): string {
+  return name.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+/** Every alternate on offer for the current race, both catalogs, as claims. */
+function raceTraitClaims(doc: CharacterDoc, refData: RefData): TraitClaim[] {
+  const raceName = refData.races[doc.identity.race]?.name;
+  if (raceName === undefined) return [];
+  const handAuthored = alternateRacialTraitsForRace(raceName).map((t) => ({
+    id: t.id,
+    name: t.name,
+    replaces: t.replaces,
+  }));
+  const vendored = Object.values(refData.racialTraits)
+    .filter((t) => t.race.includes(raceName))
+    .map((t) => ({ id: t.id, name: t.name, replaces: t.replacedTraitNames }));
+  return [...handAuthored, ...vendored];
+}
+
+/** Which of the race's alternates the character has taken, from both catalogs. */
+function chosenRaceTraitIds(doc: CharacterDoc): Set<string> {
+  return new Set([...(doc.build.racialTraits ?? []), ...(doc.build.vendoredRacialTraits ?? [])]);
+}
+
+/** A standard trait already traded away, and the alternate that took it. */
+export interface StandardTraitClaimConflict {
+  /** The standard trait's name as this alternate spells it. */
+  standardTrait: string;
+  /** Name of the already-chosen alternate that claimed it. */
+  claimedBy: string;
+}
+
+/**
+ * For each of the race's alternates (BOTH catalogs), the standard traits it
+ * would double-claim against an alternate the character has already taken. A
+ * race has exactly one of each standard trait to trade, so two alternates that
+ * replace the same one can't coexist: this is a structural signal, not a prose
+ * prereq, so the pickers block on it rather than warning (`RaceSection`,
+ * `VendoredRacialTraitPicker`).
+ *
+ * An entry for a trait the character has *already* taken means it collides with
+ * a different chosen one, which only survives in docs built before the block
+ * existed. Those keep the warning treatment and stay removable; a trait never
+ * conflicts with itself.
+ *
+ * Traits from the two catalogs are compared against each other by standard-trait
+ * name, so hand-authored Dreamspeaker blocks vendored Silent Hunter (both trade
+ * Elven Magic) even though the catalogs share no ids. Stale ids from a race
+ * change carry no claim.
+ */
+export function racialTraitConflicts(
+  doc: CharacterDoc,
+  refData: RefData,
+): Map<string, StandardTraitClaimConflict[]> {
+  const claims = raceTraitClaims(doc, refData);
+  const chosen = chosenRaceTraitIds(doc);
+
+  // Standard-trait name -> the chosen alternates that have traded it away.
+  const claimedBy = new Map<string, TraitClaim[]>();
+  for (const claim of claims) {
+    if (!chosen.has(claim.id)) continue;
+    for (const replaced of claim.replaces) {
+      const key = normalizeStandardTraitName(replaced);
+      claimedBy.set(key, [...(claimedBy.get(key) ?? []), claim]);
     }
   }
 
-  const conflicts = new Set<string>();
-  for (const ids of byReplaced.values()) {
-    if (ids.length > 1) for (const id of ids) conflicts.add(id);
+  const conflicts = new Map<string, StandardTraitClaimConflict[]>();
+  for (const claim of claims) {
+    const hits: StandardTraitClaimConflict[] = [];
+    for (const replaced of claim.replaces) {
+      const other = claimedBy
+        .get(normalizeStandardTraitName(replaced))
+        ?.find((c) => c.id !== claim.id);
+      if (other) hits.push({ standardTrait: replaced, claimedBy: other.name });
+    }
+    if (hits.length > 0) conflicts.set(claim.id, hits);
   }
   return conflicts;
+}
+
+/** Tooltip/aria copy for a blocked or conflicting pick. */
+export function racialTraitConflictReason(hits: StandardTraitClaimConflict[]): string {
+  return hits
+    .map((h) => `${h.claimedBy} already replaces ${h.standardTrait}`)
+    .join("; ")
+    .concat(".");
 }
 
 /* ------------------------------------------ vendored racial traits -- */
