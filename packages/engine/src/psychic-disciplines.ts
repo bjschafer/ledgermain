@@ -9,12 +9,15 @@
  * prose-heavy, genuinely choice-bearing content — out of scope, same as
  * Oracle Revelations / Arcanist Exploits were at those classes' launches.
  *
- * Scope: the 12 core Occult Adventures disciplines (Abomination, Dream,
- * Enlightenment, Faith, Ferocity, Haunted, Lore, Pageantry, Pain, Rebirth,
- * Self-Perfection, Tranquility). The vendored Foundry pack ships a dozen more
- * `packs/class-abilities/*-discipline.*.yaml` entries from later splatbooks
- * (Mindtech, Bleaching, Hag-Called, Rivethun, Psychedelia,...) — those are out
- * of scope, matching `oracle-mysteries.ts`'s own scope note.
+ * Scope: all 23 published psychic disciplines, both the 12 core Occult
+ * Adventures ones (Abomination, Dream, Enlightenment, Faith, Ferocity,
+ * Haunted, Lore, Pageantry, Pain, Rebirth, Self-Perfection, Tranquility) and
+ * the 11 later-splatbook ones the vendored Foundry pack also carries
+ * (Bleaching, Hag-Called, Mindtech, Psychedelia, Rapport, Rivethun, Shadow,
+ * Sorrow, Superiority, Symbiosis, Warp) — unlike `oracle-mysteries.ts`, whose
+ * later-splatbook mysteries stay out of scope, every discipline needed its
+ * own hand-authored row regardless of book, since none of the 23 are linked
+ * from the class def (see provenance note below).
  *
  * Data provenance — the same unusual case as oracle mysteries: the vendored
  * pack DOES carry real structured content for this, just not linked from the
@@ -28,15 +31,16 @@
  *     vendored Phrenic Pool class feature's `uses.maxFormula`
  *     (`floor(@class.unlevel / 2) + @abilities.cha.mod`) hardcodes Charisma
  *     regardless of discipline — an upstream data simplification, since RAW
- *     the ability is discipline-determined (6 of these 12 use Wisdom). The
+ *     the ability is discipline-determined (10 of these 23 use Wisdom). The
  *     engine corrects this in `resources.ts` by aliasing `@abilities.cha` to
  *     Wisdom's values when evaluating the phrenic-pool formula for a
  *     Wisdom-based discipline (same aliasing mechanism as the cleric Wisdom
- *     house-rule).
+ *     house-rule). Every discipline across all 23 uses Wisdom or Charisma —
+ *     no splatbook entry needed a third ability aliased in.
  *   - `bonusSpells` ids are copied VERBATIM from the `@UUID[Compendium.pf1.
  *     spells.<id>]` references embedded in each discipline's vendored prose —
  *     real vendored spell ids, verified present in `RefData.spells` for all
- *     108 entries below (names below are the vendored `Spell.name`, e.g.
+ *     207 entries below (names below are the vendored `Spell.name`, e.g.
  *     "Arcane Sight, Greater", not the prose's own "Greater Arcane Sight"
  *     ordering — resolving by id sidesteps that drift, same as mysteries).
  *     `level` is the PSYCHIC level at which the spell is gained as a bonus
@@ -53,8 +57,9 @@
  *
  * `powers` (previously deferred): each discipline's "Discipline Powers"
  * sub-feature, hand-authored from aonprd.com's individual discipline pages
- * (`PsychicDisciplinesDisplay.aspx?ItemName=<Name>`, verified 2026-07-08) —
- * NOT vendored anywhere (the cached `*-discipline.*.yaml` carries only the
+ * (`PsychicDisciplinesDisplay.aspx?ItemName=<Name>`, verified 2026-07-08 for
+ * the 12 core disciplines and 2026-08-07 for the 11 splatbook ones) — NOT
+ * vendored anywhere (the cached `*-discipline.*.yaml` carries only the
  * Phrenic Pool Ability/Bonus Spells prose already mined above, confirmed by
  * direct inspection: no Discipline Powers text at all). PF1 RAW grants these
  * automatically at 1st, 5th, and 13th psychic level to whichever discipline is
@@ -67,15 +72,16 @@
  * safely apply unconditionally — those stay note-tier `GrantedFeature`s
  * (`archetypes.ts`'s `collectGrantedFeatures`, `origin.kind: "discipline"`)
  * with a summary only, same posture as a shaman's spirit ability. A handful
- * (promotion audit, verified 2026-07-29) genuinely are unconditional and
- * always-on once gained, so they additionally carry a real `changes` array
- * collected the same way `bloodline.powers`/`bloodragerBloodline.powers` are
- * (see `collect.ts`'s psychic discipline power loop): Faith's Resilience of
- * the Faithful (resistance bonus on all saves), Rebirth's Past-Life Memories
+ * (promotion audit, verified 2026-07-29 for the core 12 and 2026-08-07 for
+ * the 11 splatbook disciplines) genuinely are unconditional and always-on
+ * once gained, so they additionally carry a real `changes` array collected
+ * the same way `bloodline.powers`/`bloodragerBloodline.powers` are (see
+ * `collect.ts`'s psychic discipline power loop): Faith's Resilience of the
+ * Faithful (resistance bonus on all saves), Rebirth's Past-Life Memories
  * (flat Knowledge bonus), Ferocity's Enhanced Senses (scent — its
  * phrenic-pool-activated blindsense upgrade is NOT modeled), Abomination's
  * Psychic Safeguard (the constant base SR only — its dark-half-manifested
- * increase is conditional and NOT modeled), and Self-Perfection's AC Bonus
+ * increase is conditional and NOT modeled), Self-Perfection's AC Bonus
  * (Wis-to-AC/CMD, gated on armor/shield/encumbrance the same way the vendored
  * Monk "AC Bonus (MNK)" class feature's own `changes[]` does — its "loses this
  * while immobilized or helpless" clause is likewise not modeled there, so
@@ -83,7 +89,9 @@
  * new gap) and Pure Body (immunity to disease and poison, the same
  * `immEffect.disease`/`immEffect.poison` shape the data-pipeline's
  * `SUPPLEMENTAL_CLASS_FEATURE_EFFECT_IMMUNITY` already uses for the Monk's
- * Purity of Body / Diamond Body).
+ * Purity of Body / Diamond Body), Hag-Called's Curse Mastery (immunity to the
+ * curse subschool, `immEffect.curse`), and Symbiosis's One with Nature (flat
+ * insight bonus on Knowledge (nature)).
  */
 
 import type { Change, PsychicDiscipline, RefData, SourceRef } from "@pf1/schema";
@@ -170,6 +178,41 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
         // the dark-half-manifested increase to 16 + caster level is
         // conditional on the (activated, limited-use) Dark Half power.
         changes: [c("8 + @classes.psychic.level", "spellResist", "untyped", "set")],
+      },
+    ],
+  },
+  {
+    tag: "bleaching",
+    name: "Bleaching",
+    phrenicPoolAbility: "wis",
+    bonusSpells: [
+      { level: 1, id: "7u45op4znvtkvgv3", name: "Decrepit Disguise" },
+      { level: 4, id: "5j7llv2nys5makeq", name: "Steal Voice" },
+      { level: 6, id: "ds011sdiv3d8c86w", name: "Cup of Dust" },
+      { level: 8, id: "bc3nc0ri47egssht", name: "Enervation" },
+      { level: 10, id: "c7j4fxzlxyvll2t4", name: "Pessimism" },
+      { level: 12, id: "sxyiwj0z95piv96i", name: "Disintegrate" },
+      { level: 14, id: "9f3hf9h3j8q8062b", name: "Waves of Exhaustion" },
+      { level: 16, id: "jg3p4t3dv1a7nqvo", name: "Spell Immunity, Greater" },
+      { level: 18, id: "khfprkujokr9uigq", name: "Energy Drain" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Draining Touch",
+        summary:
+          "Melee touch attack, uses/day = Wis mod: the target takes 1d2 Charisma damage unless it succeeds at a Fortitude save. A creature cannot be the target of this power again for 24 hours; regain 1 phrenic pool point whenever the drain succeeds.",
+      },
+      {
+        level: 5,
+        name: "Emotionally Distant",
+        summary: "+4 bonus on saving throws to resist charm, emotion, and fear effects.",
+      },
+      {
+        level: 13,
+        name: "Drain Vibrancy",
+        summary:
+          "Standard action, 3/day: creatures in a 30 foot radius take 1 temporary negative level (2 at 17th level) unless they succeed at a Fortitude save.",
       },
     ],
   },
@@ -355,6 +398,55 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
     ],
   },
   {
+    tag: "hag_called",
+    name: "Hag-Called",
+    phrenicPoolAbility: "cha",
+    bonusSpells: [
+      { level: 1, id: "wjdhmfdgwrevax3w", name: "Ill Omen" },
+      { level: 4, id: "v3d3lnjj7ks0ztii", name: "Enthrall" },
+      { level: 6, id: "lsboosfk26m0ycqv", name: "Bestow Curse" },
+      { level: 8, id: "smbkd2yobhshbpqf", name: "Charm Monster" },
+      { level: 10, id: "w2yf0ksu14e91uae", name: "Threefold Aspect" },
+      { level: 12, id: "fxwycv6d7xwzua4t", name: "Veil" },
+      { level: 14, id: "578t0lra5ll3aifs", name: "Control Weather" },
+      { level: 16, id: "xmkvpl56appk20cl", name: "Trap the Soul" },
+      { level: 18, id: "66s5qm8kwycgobce", name: "Dominate Monster" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Threefold Casting",
+        summary:
+          "+2 insight bonus on skill checks for ritual magic with at least two secondary casters; within 30 feet of another hag, psychic, or witch, use aid another to grant that spellcaster a +1 bonus to caster level for 1 round.",
+      },
+      {
+        level: 1,
+        name: "Mother's Embrace",
+        summary:
+          "Uses/day = Cha mod: add 1d4 to a failed Will save, taking 2 Wisdom damage regardless of the outcome. Regain 1 phrenic pool point after performing an act of cruelty.",
+      },
+      {
+        level: 5,
+        name: "Deceptive Shapes",
+        summary:
+          "At will, change into any Small or Medium humanoid as alter self, without gaining any of the spell's special abilities or ability score adjustments and without mimicking a specific person.",
+      },
+      {
+        level: 13,
+        name: "Curse Mastery",
+        summary:
+          "Immunity to spells of the curse subschool and curse effects; the DC of your own curse descriptor spells increases by 1.",
+        // AoN (PsychicDisciplinesDisplay.aspx?ItemName=Hag-Called): "You
+        // become immune to spells of the curse subschool and curse
+        // effects." Same `immEffect.curse` slug (defenses.ts's closed
+        // EFFECT_IMMUNITY_LABELS vocabulary) Self-Perfection's Pure Body
+        // uses for disease/poison. The DC increase and the phrenic
+        // amplification unlock aren't modeled.
+        changes: [c("1", "immEffect.curse", "untyped")],
+      },
+    ],
+  },
+  {
     tag: "haunted",
     name: "Haunted",
     phrenicPoolAbility: "cha",
@@ -429,6 +521,42 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
         name: "Memory Palace",
         summary:
           "Create an extradimensional library (as mage's magnificent mansion, 10-ft. cubes = psychic level) granting +4 circumstance on one chosen Knowledge skill (more at 14th+).",
+      },
+    ],
+  },
+  {
+    tag: "mindtech",
+    name: "Mindtech",
+    phrenicPoolAbility: "wis",
+    bonusSpells: [
+      { level: 1, id: "iag7mp0kgnmql2mz", name: "Technomancy" },
+      { level: 4, id: "lygujduijp64f0wj", name: "Protection from Technology" },
+      { level: 6, id: "vhnguobyolslgepm", name: "Irradiate" },
+      { level: 8, id: "1yt3bidqyhkdf6a1", name: "Malfunction" },
+      { level: 10, id: "wp6qm9gnjxoqww4h", name: "Lightning Arc" },
+      { level: 12, id: "wph6xwqvqekl7ph9", name: "Destroy Robot" },
+      { level: 14, id: "snrnhiwqet5dmas0", name: "Memory of Function" },
+      { level: 16, id: "ijwcwnt3oatnfghq", name: "Prismatic Wall" },
+      { level: 18, id: "7mstq5c76h3e6zzx", name: "Time Stop" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Synergized Energy",
+        summary:
+          "Regain 1 phrenic pool point (max/day = Wis mod) whenever you use a battery, a generator, or the psychic battery discovery to restore charges to a piece of technological equipment.",
+      },
+      {
+        level: 5,
+        name: "Attune Implants",
+        summary:
+          "Once per day as a full round action, channel a cybernetic implant to increase your psychic spells' save DCs by 1 for a number of minutes equal to your psychic level. Requires at least one implanted piece of cybertech.",
+      },
+      {
+        level: 13,
+        name: "Dominate Technology",
+        summary:
+          "Once per day, meld your mind with and control a construct you had no hand in creating, as control construct, opposing its creator's Spellcraft checks at a -5 penalty while concentrating.",
       },
     ],
   },
@@ -517,6 +645,94 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
     ],
   },
   {
+    tag: "psychedelia",
+    name: "Psychedelia",
+    phrenicPoolAbility: "wis",
+    bonusSpells: [
+      { level: 1, id: "azyo7xhfwdtjchtm", name: "Polypurpose Panacea" },
+      { level: 4, id: "d4mp0m5xfnu9hbhn", name: "Mad Hallucination" },
+      { level: 6, id: "zk334ykycwiwb0gn", name: "Synesthesia" },
+      { level: 8, id: "n0bsyxchnigkkuqo", name: "Confusion" },
+      { level: 10, id: "82vi1xife3nlu8a0", name: "Mirage Arcana" },
+      { level: 12, id: "2ip53auf03bqxkl1", name: "Joyful Rapture" },
+      { level: 14, id: "ni0okhagwuk0jbe9", name: "Waves of Ecstasy" },
+      { level: 16, id: "xlzqpkl8fpm3sn4u", name: "Euphoric Tranquility" },
+      { level: 18, id: "lnahlmp5mih2ongh", name: "Astral Projection" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Drug Resistance",
+        summary:
+          "Take half as much ability damage (minimum 1) from ingested drugs; +4 bonus on saving throws to resist becoming addicted to a drug or to overcome an existing addiction.",
+      },
+      {
+        level: 1,
+        name: "Cognatogen",
+        summary:
+          "Once per day, imbibe a cognatogen granting a +2 natural armor bonus and a +4 alchemical bonus to a chosen mental ability score for 1 minute per psychic level, at the cost of a -2 penalty to a linked physical ability score for the duration.",
+      },
+      {
+        level: 5,
+        name: "Warped Brain",
+        summary:
+          "When a creature uses a mind affecting spell or ability against you, it must succeed at a Will save or become nauseated for 1 round, even if the effect itself fails or doesn't affect you.",
+      },
+      {
+        level: 13,
+        name: "Hallucinogenic Aura",
+        summary:
+          "Creatures within 30 feet must succeed at a Will save or become confused for 1d4 rounds; you are immune to your own aura, and an antidote can be brewed to protect others from it.",
+      },
+    ],
+  },
+  {
+    tag: "rapport",
+    name: "Rapport",
+    phrenicPoolAbility: "cha",
+    bonusSpells: [
+      { level: 1, id: "tjog6bufg5b08lvq", name: "Charm Person" },
+      { level: 4, id: "v3d3lnjj7ks0ztii", name: "Enthrall" },
+      { level: 6, id: "lisojmynoblunlex", name: "Coordinated Effort" },
+      { level: 8, id: "ofw6gnp6r7t2wcba", name: "Geas, Lesser" },
+      { level: 10, id: "lovx4kiq18gbvg4e", name: "Telepathy" },
+      { level: 12, id: "eg3i21asvo69mbma", name: "Battlemind Link" },
+      { level: 14, id: "uddlhatt6uq4e5yf", name: "Hold Person, Mass" },
+      { level: 16, id: "q2r6jrgsbwjgssdg", name: "Charm Monster, Mass" },
+      { level: 18, id: "xuuzj9lr2xbwaim4", name: "Overwhelming Presence" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Emotional Bond",
+        summary:
+          "After 10 minutes of mutual concentration, form an empathic link with allies (up to your Cha mod) that monitors their emotional state and unconsciousness until you next regain spells; from 4th level it also grants the benefits of status with those allies.",
+      },
+      {
+        level: 1,
+        name: "Emotional Push",
+        summary:
+          "Uses/day = 1 + 1 per 4 psychic levels: as an immediate action, you or a bonded ally add your Charisma bonus to a saving throw. Regain 1 phrenic pool point if the save succeeds.",
+      },
+      {
+        level: 5,
+        name: "Share Memory",
+        summary: "Use share memory at will, but only on a willing target.",
+      },
+      {
+        level: 5,
+        name: "Team Player",
+        summary: "Gain a bonus teamwork feat (another at 13th level).",
+      },
+      {
+        level: 13,
+        name: "Shared Skill",
+        summary:
+          "Each time you set up an emotional bond, choose one Intelligence or Charisma based class skill; any subject of that bond can use your bonus instead of their own on checks with that skill for as long as the bond lasts.",
+      },
+    ],
+  },
+  {
     tag: "rebirth",
     name: "Rebirth",
     phrenicPoolAbility: "cha",
@@ -564,6 +780,54 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
         name: "Physical Regression",
         summary:
           "Once per day as a standard action, spend 2 phrenic pool points to take on the form of a previous incarnation.",
+      },
+    ],
+  },
+  {
+    tag: "rivethun",
+    name: "Rivethun",
+    phrenicPoolAbility: "cha",
+    bonusSpells: [
+      { level: 1, id: "r8bhei88g6h26fp0", name: "Heightened Awareness" },
+      { level: 4, id: "usdv1eqvibmxun6x", name: "Bear's Endurance" },
+      { level: 6, id: "isrnyw9biluqoo80", name: "Aura Sight" },
+      { level: 8, id: "ev845glbl54em94v", name: "Persistent Vigor" },
+      { level: 10, id: "jbqo4o2b2tmdz7wv", name: "True Seeing" },
+      { level: 12, id: "37ubwx82nqaog3ib", name: "Thought Shield V" },
+      { level: 14, id: "blvetbc929cfx4m8", name: "Mind Blank" },
+      { level: 16, id: "mkrjbrp57yfdqrx0", name: "Iron Body" },
+      { level: 18, id: "au6p72aztjhtokwr", name: "Akashic Form" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Agitating Cognizance",
+        summary:
+          "Whenever you are not maintaining an altered form from metamorphosis (including the 24 hours it takes to complete), your phrenic pool maximum increases by 1.",
+        // AoN (PsychicDisciplinesDisplay.aspx?ItemName=Rivethun): the +1 is
+        // real and unconditional in its default (non-metamorphosed) state,
+        // but there's no `changes[]` target for a flat bonus to a resource
+        // pool's maximum in this engine (`resources.ts` computes Phrenic
+        // Pool max straight from the vendored feature's own formula, not
+        // through the generic stat-modifier pipeline `collect.ts` applies
+        // discipline power changes through) — display text only.
+      },
+      {
+        level: 1,
+        name: "Metamorphosis",
+        summary:
+          "Meditate for 1 hour to trigger a 24 hour physical metamorphosis granting a +1 enhancement bonus (+1 more per 5 psychic levels) to a chosen physical ability score until you assume a new form. Spending 1 phrenic pool point during the meditation instead grants a 1 hour per level alter self style transformation.",
+      },
+      {
+        level: 5,
+        name: "Spirit Channeling",
+        summary: "While metamorphosed, host a shaman wandering spirit and gain its spirit ability.",
+      },
+      {
+        level: 13,
+        name: "Greater Spirit Channeling",
+        summary:
+          "While metamorphosed, also gain your hosted wandering spirit's greater spirit ability.",
       },
     ],
   },
@@ -638,6 +902,169 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
     ],
   },
   {
+    tag: "shadow",
+    name: "Shadow",
+    phrenicPoolAbility: "wis",
+    bonusSpells: [
+      { level: 1, id: "h4hrop7rq2c9phyi", name: "Blurred Movement" },
+      { level: 4, id: "advqdmonj6ro62u7", name: "Fear the Sun" },
+      { level: 6, id: "jdsvncnna6oy189a", name: "Deeper Darkness" },
+      { level: 8, id: "cmwcavfyc1vbehy8", name: "Shadow Step" },
+      { level: 10, id: "2q48ogrz3840xwi7", name: "Shadow Evocation" },
+      { level: 12, id: "btoow6tyv39443gh", name: "Shadow Walk" },
+      { level: 14, id: "8rf2ucrtzmxooyw6", name: "Lunar Veil" },
+      { level: 16, id: "h9dzj2fr5lksdjcp", name: "Umbral Strike" },
+      { level: 18, id: "0mt9mso6wdhfafpo", name: "Polar Midnight" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Twilight Influence",
+        summary:
+          "Spontaneously convert a prepared spell into a Darkness domain spell, once per spell level per day. Regain 1 phrenic pool point per conversion, up to your Wisdom modifier per day.",
+      },
+      {
+        level: 5,
+        name: "Dark Defense",
+        summary:
+          "+2 deflection bonus to AC against an attack you have concealment against, or +4 if you have total concealment against it.",
+      },
+      {
+        level: 13,
+        name: "Adumbration",
+        summary:
+          "Bonus on Stealth checks equal to half your level; can use Stealth even while observed and without cover or concealment as long as you're within 10 feet of a shadow other than your own. No benefit in areas of bright light.",
+      },
+    ],
+  },
+  {
+    tag: "sorrow",
+    name: "Sorrow",
+    phrenicPoolAbility: "cha",
+    bonusSpells: [
+      { level: 1, id: "yk5bgi6j9kbtigof", name: "Sanctuary" },
+      { level: 4, id: "ow4t1zox6dtybgji", name: "Silence" },
+      { level: 6, id: "awia42zci8nufpfl", name: "Nondetection" },
+      { level: 8, id: "zt7cje76dck9hwp9", name: "Crushing Despair" },
+      { level: 10, id: "dlmeq0hpxfbjtibb", name: "Mind Fog" },
+      { level: 12, id: "z8xnkfpufuqapseq", name: "Eyebite" },
+      { level: 14, id: "c3qqu6l3vdcfaoh7", name: "Sequester" },
+      { level: 16, id: "hi72gh3dlf7a1qyt", name: "Maze" },
+      { level: 18, id: "esia6azb5g68tfs7", name: "Imprisonment" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Numb to the Pain",
+        summary:
+          "Morale bonus equal to your Charisma bonus (capped at your psychic level) on saving throws against mind affecting spells and effects.",
+      },
+      {
+        level: 1,
+        name: "Despair",
+        summary:
+          "Immediate action before a creature within 30 feet rolls an attack, a save against a fear effect, or a skill check: impose a penalty on the roll (-1, increasing by 1 per 6 psychic levels beyond 1st, to a maximum of -4 at 19th level). Uses/day = 3 + Cha mod; regain 1 phrenic pool point if the roll fails.",
+      },
+      {
+        level: 5,
+        name: "Wave of Gloom",
+        summary:
+          "Standard action, expending 1 use of despair: creatures within 30 feet take the same penalty on attack rolls, fear saves, and skill checks for 1d4 minutes unless they succeed at a Will save. You're immune to your own wave of gloom.",
+      },
+      {
+        level: 13,
+        name: "Fortress of Sorrow",
+        summary:
+          "Mentally construct a permanent demiplane retreat on the Astral Plane, as lesser create demiplane; travel there and back once per day each, as plane shift.",
+      },
+    ],
+  },
+  {
+    tag: "superiority",
+    name: "Superiority",
+    phrenicPoolAbility: "cha",
+    bonusSpells: [
+      { level: 1, id: "6ux76jy9wbi88br0", name: "Moment of Greatness" },
+      { level: 4, id: "wrh3m8ad4l8sbisc", name: "Deflect Blame" },
+      { level: 6, id: "8AMmUGAADKjE3lKU", name: "Unflappable Mien" },
+      { level: 8, id: "qy6sn5a4wrsa36yb", name: "Majestic Image" },
+      { level: 10, id: "9v2s3xjlakjm1eq1", name: "Mage's Private Sanctum" },
+      { level: 12, id: "9pbl3ktd5oqejl19", name: "Transformation" },
+      { level: 14, id: "0w3hvcp3gb2bhtv5", name: "Project Image" },
+      { level: 16, id: "9968j68bl9x9iq7u", name: "Clone" },
+      { level: 18, id: "xuuzj9lr2xbwaim4", name: "Overwhelming Presence" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Self-Assurance",
+        summary:
+          "Uses/day = Cha mod: as an immediate action declared before the roll, gain a morale bonus equal to half your psychic level (minimum 1) on an ability check, attack roll, saving throw, or skill check. Regain 1 phrenic pool point if it succeeds.",
+      },
+      {
+        level: 5,
+        name: "At Arm's Length",
+        summary:
+          "Gain Reach Spell as a bonus feat; spend phrenic pool points equal to the range increase instead of using a higher level spell slot when applying it.",
+      },
+      {
+        level: 13,
+        name: "Magical Hoarder",
+        summary:
+          "As an immediate action, spend 1 phrenic pool point to include yourself as a target of a beneficial spell another creature casts within 30 feet, identifying it with a Spellcraft check first if it's not an ally's spell.",
+      },
+    ],
+  },
+  {
+    tag: "symbiosis",
+    name: "Symbiosis",
+    phrenicPoolAbility: "cha",
+    bonusSpells: [
+      { level: 1, id: "zkvylzsupqboef0z", name: "Hide from Animals" },
+      { level: 4, id: "yyzf346hiq8ixt0u", name: "Hold Animal" },
+      { level: 6, id: "io2yjhr42chvcfb4", name: "Dominate Animal" },
+      { level: 8, id: "wi9uvm8p12qvq616", name: "Command Plants" },
+      { level: 10, id: "h9qiwo9kx8d1hqrn", name: "Awaken" },
+      { level: 12, id: "ed0epy1pofukpgm6", name: "Liveoak" },
+      { level: 14, id: "glt6uk3n6g6l2p6l", name: "Scrying, Greater" },
+      { level: 16, id: "szzwom7utm3sm15z", name: "Control Plants" },
+      { level: 18, id: "66s5qm8kwycgobce", name: "Dominate Monster" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Animal Mastery",
+        summary:
+          "Standard action, uses/day = 3 + Cha mod: share the senses of an animal you can see (HD up to your psychic level) for up to 1 hour per level, unless it succeeds at a Will save. From 7th level, you can instead control it, as dominate animal.",
+      },
+      {
+        level: 1,
+        name: "One with Nature",
+        summary:
+          "Cast detect animals or plants at will as a spell-like ability; +2 insight bonus on Knowledge (nature) checks (+4 to identify a matching creature while using detect animals or plants). From 7th level, speak with any animal you successfully identify.",
+        // AoN (PsychicDisciplinesDisplay.aspx?ItemName=Symbiosis): "You gain
+        // a +2 insight bonus on Knowledge (nature) checks." Unconditional
+        // and always on. `skill.kna` (Foundry's Knowledge (nature) skill
+        // id, same as `tables.ts`'s `SKILL_GROUPS`) is the single-subskill
+        // target; the +4 while using detect animals or plants and the 7th
+        // level speak-with-animal upgrade aren't modeled.
+        changes: [c("2", "skill.kna", "insight")],
+      },
+      {
+        level: 5,
+        name: "Bionetwork",
+        summary:
+          "Once per day, spend 10 minutes connecting to nearby plant life to remotely view a familiar location or scry on a creature within the network's range. Doesn't function in areas without vegetation.",
+      },
+      {
+        level: 13,
+        name: "Animate Trees",
+        summary:
+          "Standard action, animate up to 3 + Cha mod trees within 180 feet per day (controlling one at a time, more at higher level), as a treant's animate trees, for 10 minutes per level.",
+      },
+    ],
+  },
+  {
     tag: "tranquility",
     name: "Tranquility",
     phrenicPoolAbility: "wis",
@@ -671,6 +1098,48 @@ const DISCIPLINE_LIST: PsychicDisciplineDef[] = [
       },
     ],
   },
+  {
+    tag: "warp",
+    name: "Warp",
+    phrenicPoolAbility: "cha",
+    bonusSpells: [
+      { level: 1, id: "ja005kj1gh7g0dnk", name: "Entropic Shield" },
+      { level: 4, id: "kdnkszyxk0a7n62w", name: "Apport Object" },
+      { level: 6, id: "r190q9zxmei82lmv", name: "Displacement" },
+      { level: 8, id: "ojwg1ki98tq8xyh9", name: "Dimension Door" },
+      { level: 10, id: "k3zn13pbr5tr9zac", name: "Dismissal" },
+      { level: 12, id: "btccs4sjo2nog1a0", name: "Ethereal Jaunt" },
+      { level: 14, id: "5cdmojmydhwowzy1", name: "Teleport, Greater" },
+      { level: 16, id: "ef75tkrzjuotgra2", name: "Dimensional Lock" },
+      { level: 18, id: "4qriqew7d2ot7wr5", name: "Interplanetary Teleport" },
+    ],
+    powers: [
+      {
+        level: 1,
+        name: "Planar Scent",
+        summary:
+          "Constant detect magic limited to conjuration (calling), conjuration (summoning), conjuration (teleport), and illusion (shadow) effects; +2 insight bonus on Spellcraft checks to identify them.",
+      },
+      {
+        level: 1,
+        name: "Rift Reach",
+        summary:
+          "Move action, uses/day = 3 + Cha mod: tear open a rift within 10 feet lasting 1 round per level, letting you manipulate objects, make a single melee attack, or cast a spell through it. Range increases to 20 feet at 11th level and 30 feet at 15th.",
+      },
+      {
+        level: 5,
+        name: "Turn Aside",
+        summary:
+          "Gain Deflect Arrows as a bonus feat; spend 1 phrenic pool point as an immediate action for a +4 deflection bonus against a single ranged attack.",
+      },
+      {
+        level: 13,
+        name: "Sidestep",
+        summary:
+          "Move action: teleport up to 10 feet per psychic level per day in 5 foot increments with line of sight, without provoking attacks of opportunity. Can bring willing creatures along at an equal distance cost each.",
+      },
+    ],
+  },
 ];
 
 export const PSYCHIC_DISCIPLINES: Record<string, PsychicDisciplineDef> = Object.fromEntries(
@@ -697,11 +1166,11 @@ export const PSYCHIC_DISCIPLINE_TAGS: readonly string[] = DISCIPLINE_LIST.map((d
  *     this branch honestly (no fabricated pool ability, no empty bonus-spell
  *     list presented as if it were complete).
  *
- * Collision audit: all 12 hand-authored tags matched a vendored entry by
- * normalized name — zero misses, zero aliases needed. 11 vendored-only
- * splatbook disciplines (Bleaching, Hag-Called, Mindtech, Psychedelia,
- * Rapport, Rivethun, Shadow, Sorrow, Superiority, Symbiosis, Warp) remain
- * `vendoredOnly: true`.
+ * Collision audit: all 23 hand-authored tags matched a vendored entry by
+ * normalized name — zero misses, zero aliases needed, so no discipline is
+ * `vendoredOnly: true` today. The branch stays in place for the (currently
+ * hypothetical) case where the vendored pack ever adds a 24th discipline
+ * this table hasn't caught up to yet.
  */
 
 const PSYCHIC_DISCIPLINE_NAME_ALIASES: Record<string, string> = {};
