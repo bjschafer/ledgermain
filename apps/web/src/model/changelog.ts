@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-07-picker-styling-sweep",
+    date: "2026-08-07",
+    title: "Tidied up the class-choice panels",
+    note: "A sweep across the builder and tracker fixed panels that were rendering as unstyled text: domain, school and spirit-magic bonus slots now carry the same headings as the rest of the Play tab, companion and eidolon fields sit on one line instead of stacking, bloodline bonus spells lost their stray bullets, and powers you have not reached the level for are dimmed the way the other preview lists already dimmed them.",
+  },
+  {
     id: "2026-08-07-phrenic-amplifications-at-the-table",
     date: "2026-08-07",
     title: "Phrenic amplifications work at the table",

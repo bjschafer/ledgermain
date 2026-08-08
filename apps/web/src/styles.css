@@ -1130,6 +1130,7 @@ button:focus-visible,
 .mystery-bonus-spells,
 .curse-bonus-spells,
 .bloodline-powers,
+.bloodline-bonus-spells,
 .order-abilities,
 .discipline-bonus-spells {
   list-style: none;
@@ -1143,14 +1144,81 @@ button:focus-visible,
 .mystery-bonus-spells li,
 .curse-bonus-spells li,
 .bloodline-powers li,
+.bloodline-bonus-spells li,
 .order-abilities li,
 .discipline-bonus-spells li {
   font-size: 0.75rem;
 }
 
+/* A power or bonus spell the character hasn't reached the level for yet. Dimmed
+   rather than hidden, so the list doubles as a preview of what's coming. */
+.bloodline-powers .not-yet,
+.bloodline-bonus-spells .not-yet {
+  opacity: 0.55;
+}
+
 .order-ability-summary {
   margin: 2px 0 0;
   color: var(--muted);
+}
+
+/* Labeled readout: a `.hint` caption stacked over its value, the unit the
+   subsection pickers build their preview boxes out of. The value is usually a
+   <p>, and nothing resets <p>'s 1em browser margin, which otherwise swamps the
+   caption and doubles the gap between adjacent blocks. */
+.mystery-class-skills,
+.domain-description,
+.discipline-pool-ability,
+.bloodline-arcana,
+.bloodline-bonus-feats,
+.order-class-skills,
+.order-challenge,
+.blessing-power,
+.animal-companion-feats,
+.animal-companion-skills {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mystery-class-skills > p,
+.domain-description > p,
+.discipline-pool-ability > p,
+.bloodline-arcana > p,
+.bloodline-bonus-feats > p,
+.order-class-skills > p,
+.order-challenge > p,
+.blessing-power > p,
+.animal-companion-feats > p,
+.animal-companion-skills > p,
+.order-edicts {
+  margin: 0;
+}
+
+/* Repeated sub-blocks inside a picker: one per weapon-training tier, per bonus
+   class-skill slot, per optional bloodline sub-choice. Each is a select with
+   its own caption, so without rhythm the group reads as one run-on stack. */
+.weapon-training-tier + .weapon-training-tier,
+.bonus-class-skill-slot + .bonus-class-skill-slot,
+.bloodline-variant-picker,
+.bloodline-mutation-picker {
+  margin-top: 10px;
+}
+
+.bonus-class-skill-grant + .bonus-class-skill-grant {
+  margin-top: 14px;
+}
+
+/* The grant's source label. <h4> has no global reset, so this is a
+   browser-default heading otherwise. */
+.bonus-class-skill-grant > h4 {
+  margin: 0 0 6px;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-dim-ink);
 }
 
 /* Deeds panel (tracker) — a level-gated reference list of gunslinger grit /
@@ -3374,6 +3442,18 @@ button:focus-visible,
   font-size: 0.875rem;
 }
 
+/* Energy-type select plus its Add button, for buffs that need an element
+   chosen before they can be applied. */
+.buff-element-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.buff-element-add > select {
+  width: auto;
+}
+
 .buff-changes {
   font-size: 0.625rem;
   color: var(--faint);
@@ -4144,6 +4224,11 @@ input[type="text"].saved-roll-name:focus {
   gap: 4px;
   font-size: 0.6875rem;
   color: var(--muted);
+}
+
+.polymorph-attacks {
+  display: flex;
+  flex-direction: column;
 }
 
 .polymorph-attack-row {
@@ -5005,6 +5090,37 @@ input[type="text"].saved-roll-name:focus {
   margin-bottom: 0.25rem;
 }
 
+/* The bonus-slot sections that hang off the prepared-spell loadout (cleric and
+   inquisitor domains, wizard school, shaman spirit magic). Each is a titled
+   block between the loadout's own level groups, so it needs the rule and the
+   breathing room that separate it from the level above. */
+.domain-slots,
+.school-slots,
+.spirit-magic-slots {
+  margin-top: 16px;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 12px;
+}
+
+.domain-slots-head,
+.school-slots-head {
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* <h4> has no global reset, so without this these read as browser-default
+   headings among the mono small-caps ones the rest of the tracker uses. */
+.domain-slots-title,
+.school-slots-title {
+  margin: 0 0 2px;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-dim-ink);
+}
+
 /* `min-width: 0` because a flex item's automatic minimum is its content, and a
    <select>'s content is its longest option ("Competition (subdomain)"): without
    this the picker refuses to shrink and hangs off the end of its header row on
@@ -5047,7 +5163,15 @@ input[type="text"].saved-roll-name:focus {
    `.cf-group`/`.cf-group-head` (the Play tab's read-only counterpart) rather
    than the level acting as a narrow flex-item gutter squeezed beside a
    paragraph of wrapping feature rows. */
-.cf-level-group + .cf-level-group {
+/* Container for the per-level groups (class-features timeline) or per-level
+   rows (Deeds). Owns nothing but the stack; the rows carry their own rhythm. */
+.cf-levels {
+  display: flex;
+  flex-direction: column;
+}
+
+.cf-level-group + .cf-level-group,
+.cf-level-row + .cf-level-row {
   margin-top: 10px;
 }
 
@@ -5795,13 +5919,42 @@ input[type="text"].saved-roll-name:focus {
   grid-template-columns: repeat(2, 1fr);
 }
 
+/* A row of controls in a companion picker (focus/size selects, the name field,
+   the per-level ability-increase selects). Inline-block controls would
+   otherwise sit on one another's whitespace with no gap and no wrapping. */
+.familiar-fields,
+.animal-companion-fields,
+.animal-companion-asi {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.familiar-fields + .familiar-fields,
+.animal-companion-asi {
+  margin-top: 8px;
+}
+
+/* Controls default to `width: 100%`, which in a flex row would push every one
+   of them onto its own line. */
+.familiar-fields > select,
+.familiar-fields > input[type="text"],
+.animal-companion-fields > select,
+.animal-companion-fields > input[type="text"],
+.animal-companion-asi > select {
+  width: auto;
+  flex: 1 1 120px;
+}
+
 .familiar-skill-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
   gap: 6px;
 }
 
-.familiar-skill {
+.familiar-skill,
+.companion-skill-rank-row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -5820,7 +5973,8 @@ input[type="text"].saved-roll-name:focus {
   border-color: var(--gold-dim);
 }
 
-.familiar-skill .fs-name {
+.familiar-skill .fs-name,
+.companion-skill-rank-row .fs-name {
   color: var(--ink);
   line-height: 1.25;
 }
@@ -5829,9 +5983,16 @@ input[type="text"].saved-roll-name:focus {
   color: var(--gold-2);
 }
 
-.familiar-skill .fs-val {
+.familiar-skill .fs-val,
+.companion-skill-rank-row .fs-val {
   flex-shrink: 0;
   color: var(--muted);
+}
+
+/* The companion's rows are editable: name, stepper and total, against the
+   familiar's name and total. They need a wider track to fit the third child. */
+.animal-companion-skills .familiar-skill-grid {
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
 }
 
 .familiar-skill--primary .fs-val {
@@ -5848,6 +6009,15 @@ input[type="text"].saved-roll-name:focus {
 
 .familiar-abilities {
   margin-bottom: 4px;
+}
+
+/* The condition chips at the foot of each companion panel. The heading needs
+   clearance from the rest/damage controls directly above it. */
+.familiar-conditions,
+.phantom-conditions,
+.eidolon-conditions,
+.animal-companion-conditions {
+  margin-top: 12px;
 }
 
 /* ============================================================ phone pass --
