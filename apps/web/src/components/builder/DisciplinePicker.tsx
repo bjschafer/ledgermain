@@ -6,6 +6,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 import { setPsychicDiscipline } from "../../model/doc.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { Explainer } from "../Explainer.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
@@ -67,13 +68,18 @@ export function DisciplinePicker({ doc, refData, update }: DisciplinePickerProps
       {!collapsed && (
         <>
           <p className="hint discipline-picker-hint">
-            Pick one psychic discipline (PF1 grants one at level 1, never changed thereafter).
-            Browses the full published catalog: the 12 core Occult Adventures disciplines grant a
-            bonus spell known at 1st level, 4th level, and every 2 levels thereafter, and set which
-            ability (Wisdom or Charisma) feeds your phrenic pool; a vendored-only splatbook
-            discipline (marked below) has no bonus spells/Discipline Powers/pool ability modeled.
-            Free-choice: no validation.
+            Psychics choose one discipline at 1st level; it never changes.
           </p>
+          <Explainer title="How the discipline choice works">
+            <p className="hint spell-hint-line">
+              Browses the full published catalog. The 12 core Occult Adventures disciplines grant a
+              bonus spell known at 1st level, 4th level, and every 2 levels after that, and set
+              whether Wisdom or Charisma feeds your phrenic pool.
+            </p>
+            <p className="hint spell-hint-line">
+              This is a free choice: nothing here is validated against your character.
+            </p>
+          </Explainer>
           <select
             className="discipline-select"
             value={chosenTag}
@@ -93,8 +99,8 @@ export function DisciplinePicker({ doc, refData, update }: DisciplinePickerProps
               {disciplineDef.vendoredOnly ? (
                 <>
                   <p className="hint">
-                    Vendored-only discipline: no bonus spells, Discipline Powers, or phrenic pool
-                    ability resolution modeled. See below for the published prose.
+                    This discipline isn't modeled: no bonus spells, Discipline Powers, or phrenic
+                    pool ability. Read the published text below.
                   </p>
                   {disciplineDef.description ? (
                     <FeatureDescription html={disciplineDef.description} />

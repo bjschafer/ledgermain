@@ -74,10 +74,10 @@ export function MysteryPicker({ doc, refData, update }: MysteryPickerProps) {
       {!collapsed && (
         <>
           <p className="hint mystery-picker-hint">
-            Pick one mystery (PF1 grants one at level 1, never changed thereafter). Browses the full
-            published catalog; entries marked <span className="badge-modeled">M</span> carry
-            hand-verified class skills/bonus spells, the rest show their full published prose,
-            revelations included. Free-choice, no divine-calling validation.
+            Oracles choose one mystery at 1st level; it never changes. Browses the full published
+            catalog; entries marked <span className="badge-modeled">M</span> carry hand-verified
+            class skills/bonus spells, the rest show their full published prose, revelations
+            included. Free-choice, no divine-calling validation.
           </p>
           <select
             className="mystery-select"

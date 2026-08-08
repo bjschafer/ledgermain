@@ -215,7 +215,7 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
               <p className="hint domain-picker-hint">
                 {slots === 1
                   ? "Pick one domain (an inquisitor gets one at level 1). You gain its granted powers, but not its spells."
-                  : "Pick two domains (PF1 grants two at level 1). Each grants one bonus prepare-slot per accessible spell level, drawable from that domain's spell list."}{" "}
+                  : "Clerics choose two domains at 1st level. Each grants one bonus prepare-slot per accessible spell level, drawable from that domain's spell list."}{" "}
                 Free-choice, no deity validation. A domain with subdomains may swap in one of them
                 below, entirely replacing that domain choice.
               </p>

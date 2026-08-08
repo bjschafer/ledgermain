@@ -550,7 +550,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "Mesmerists learn a fixed set of spells known at each level from the mesmerist spell list (see spells-known table), starting with 4 knacks (0-level spells) and 2 first-level spells at 1st level. You can cast any spell you know by spending a slot of that level; knacks are cast at will once known. Mesmerists cap out at 6th-level spells. (Mesmerist Tricks, a resource pool, and the display-only Consummate Liar and Painful Stare bonuses are separate class features; which specific tricks are implanted is not modeled, same posture as other prose-only, choice-bearing subsystems in this engine.)",
     blurb:
-      "Spontaneous psychic caster: you know a limited set of spells drawn from the mesmerist list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane: no arcane spell failure applies.",
+      "Spontaneous psychic caster: you know a limited set of spells drawn from the mesmerist list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane, so no arcane spell failure applies.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
@@ -579,7 +579,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "An occultist's spells known are governed by her implement schools: add spells to your known list according to your implement selections (see the Implements picker). She gains two implement schools at 1st level, a further school at 2nd level and every 4 levels thereafter (to a maximum of seven; a school can be picked more than once to learn an extra spell from it), each granting one spell of every spell level she can cast, INCLUDING knacks (0-level). Your known-spell cap at every level equals your total implement picks, shown as an advisory limit, same soft posture as a sorcerer's spells-known cap. Mental Focus (a resource pool spent to activate focus powers) rides the generic per-day pool pipeline; resonant and focus powers themselves are picked in the Implements section, not part of casting.",
     blurb:
-      "Spontaneous psychic caster: casts spells known from her implement schools by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane: no arcane spell failure applies. (Implements, resonant powers, and focus powers are a separate subsystem, not modeled here.)",
+      "Spontaneous psychic caster: casts spells known from her implement schools by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane, so no arcane spell failure applies. Implements, resonant powers, and focus powers are picked in the Implements section, not here.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
@@ -598,7 +598,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "Spiritualists learn a fixed set of spells known at each level from the spiritualist spell list (see spells-known table), starting with 4 knacks (0-level spells) and 2 first-level spells at 1st level. You can cast any spell you know by spending a slot of that level; knacks are cast at will once known. Spiritualists cap out at 6th-level spells. (The phantom, the spiritualist's eidolon-like companion, is a separate subsystem, not modeled here, same posture as the summoner's eidolon.)",
     blurb:
-      "Spontaneous psychic caster: you know a limited set of spells drawn from the spiritualist list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane: no arcane spell failure applies.",
+      "Spontaneous psychic caster: you know a limited set of spells drawn from the spiritualist list and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed. Psychic magic is not arcane, so no arcane spell failure applies.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
@@ -615,9 +615,9 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     knownProgression: "sorcerer",
     knownLabel: "Spells Known",
     learnGuidance:
-      "Psychics learn a fixed set of spells known at each level from the psychic spell list (see spells-known table), starting with 4 knacks (cantrips) and 2 1st-level spells at 1st level; the counts are fixed and not adjusted by Intelligence. Your discipline (see the Discipline picker) also grants one bonus spell known at 1st level, 4th level, and every 2 levels thereafter (final one at 18th).",
+      "Psychics learn a fixed set of spells known at each level from the psychic spell list, shown in the spells-known table: 4 knacks and 2 first-level spells at 1st level. The counts are fixed and not adjusted by Intelligence. Your discipline, chosen in the Discipline picker, grants one additional bonus spell known at 1st level, 4th level, and every 2 levels after that, through 18th.",
     blurb:
-      "Spontaneous psychic caster (int-based): you know a limited set of spells and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; knacks (cantrips) are cast at will once known. Psychic magic is neither arcane nor divine: no arcane spell failure from armor. (Phrenic pool is tracked as a resource; phrenic amplifications and discipline powers are separate subsystems, not modeled here.)",
+      "Spontaneous psychic caster, Intelligence based: cast any known spell by spending a slot of the appropriate level, no daily preparation needed. Knacks are cast at will once known. Psychic magic is neither arcane nor divine, so no arcane spell failure applies.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },
@@ -630,7 +630,7 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     learnGuidance:
       "Mediums gain no spellcasting at all until 4th level (2 knacks at 1st level aside: knacks are known from 1st but the first real spell slot arrives at 4th), learning a fixed set of spells known from the medium list from then on (see spells-known table); the counts are fixed and not adjusted by Charisma. Mediums cap out at 4th-level spells.",
     blurb:
-      "Spontaneous psychic caster (cha-based, 4-level): you know a limited set of spells (up to 4th level, starting at class level 4) and cast any of them on the fly by spending a slot of the appropriate level. No daily preparation needed; knacks (cantrips) are cast at will once known. (Spirits, the medium's channeled-legend subsystem chosen at each day's seance, plus spirit surge, shared seance, and taboos are separate subsystems, not modeled here.)",
+      "Spontaneous psychic caster, Charisma based: spells cap at 4th level and don't start until 4th class level, though knacks are known from 1st and cast at will. Cast any known spell by spending a slot of the appropriate level, no daily preparation needed. Spirits, the channeled legend chosen at each day's seance, plus spirit surge, shared seance, and taboos, aren't modeled.",
     grantsAllCantrips: false,
     preparesFromClassList: false,
   },

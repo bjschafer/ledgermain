@@ -109,13 +109,12 @@ export function BloodragerBloodlinePicker({
       {!collapsed && (
         <>
           <p className="hint bloodline-picker-hint">
-            Pick one bloodline (PF1 grants one at level 1, never changed thereafter). Every
-            bloodline grants its powers at 1st/4th/8th/12th/16th/20th level, restricts your
-            Bloodline Feat picks (6th level and every 3 thereafter), and grants one bonus spell
-            known at 7th/10th/13th/16th level. Entries marked{" "}
-            <span className="badge-modeled">M</span> move real numbers or tracked uses on your
-            sheet; the rest show their rules text to apply at the table. Free choice, no heritage
-            validation.
+            Bloodragers choose one bloodline at 1st level; it never changes. Every bloodline grants
+            its powers at 1st/4th/8th/12th/16th/20th level, restricts your Bloodline Feat picks (6th
+            level and every 3 thereafter), and grants one bonus spell known at 7th/10th/13th/16th
+            level. Entries marked <span className="badge-modeled">M</span> move real numbers or
+            tracked uses on your sheet; the rest show their rules text to apply at the table. Free
+            choice, no heritage validation.
           </p>
           <select
             className="bloodline-select"
