@@ -69,10 +69,9 @@ export function CursePicker({ doc, refData, update }: CursePickerProps) {
       {!collapsed && (
         <>
           <p className="hint curse-picker-hint">
-            Pick one curse (PF1 grants one at level 1, never changed thereafter). Browses the full
-            published catalog; entries marked <span className="badge-modeled">M</span> carry
-            hand-verified mechanics; the rest show their full published prose. Free-choice: no
-            validation.
+            Oracles choose one curse at 1st level; it never changes. Browses the full published
+            catalog; entries marked <span className="badge-modeled">M</span> carry hand-verified
+            mechanics; the rest show their full published prose. Free-choice: no validation.
           </p>
           <select
             className="curse-select"

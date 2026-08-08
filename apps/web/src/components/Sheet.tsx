@@ -292,37 +292,6 @@ export function Sheet({
                 resetKey={doc.id}
               />
             ))}
-            {/* Immunity is a flag, not a magnitude, so it gets a chip rather
-                than a StatSeal — there is no number to seal. */}
-            {sheet.defenses.immunities?.map((entry) => (
-              <InfoTip
-                key={`imm-${entry.qualifier}`}
-                className="prof-chip immunity-chip"
-                content={`Immune to ${qualifierLabel(entry.qualifier)} damage, from ${entry.components
-                  .filter((c) => c.applied)
-                  .map((c) => c.source)
-                  .join(", ")}`}
-              >
-                Immune: {capitalizeFirst(qualifierLabel(entry.qualifier))}
-              </InfoTip>
-            ))}
-            {/* Immunity to something that isn't damage (magic sleep,
-                paralysis, critical hits) — same chip, but nothing in damage
-                resolution consumes it, so the tooltip says so outright. */}
-            {sheet.defenses.effectImmunities?.map((entry) => (
-              <InfoTip
-                key={`immEffect-${entry.qualifier}`}
-                className="prof-chip immunity-chip"
-                content={`Immune to ${EFFECT_IMMUNITY_LABELS[entry.qualifier]}, from ${entry.components
-                  .filter((c) => c.applied)
-                  .map((c) => c.source)
-                  .join(
-                    ", ",
-                  )}. Nothing rolls against this; it's here so you and your GM can see it.`}
-              >
-                Immune: {capitalizeFirst(EFFECT_IMMUNITY_LABELS[entry.qualifier] ?? "")}
-              </InfoTip>
-            ))}
             {sheet.defenses.sr ? (
               <StatSeal
                 label="SR"
@@ -333,6 +302,48 @@ export function Sheet({
                 resetKey={doc.id}
               />
             ) : null}
+            {/* Immunity is a flag, not a magnitude, so it gets a chip rather
+                than a StatSeal — there is no number to seal. Chips live in
+                their own full-width `.prof-strip` row (`.stat-group-grid >
+                .prof-strip` spans every column) instead of as `--3` grid
+                items directly, so each chip sizes to its text and wraps into
+                a flowing row instead of stretching to a full 1fr column and
+                wrapping its own label across two lines. */}
+            {((sheet.defenses.immunities?.length ?? 0) > 0 ||
+              (sheet.defenses.effectImmunities?.length ?? 0) > 0) && (
+              <div className="prof-strip">
+                {sheet.defenses.immunities?.map((entry) => (
+                  <InfoTip
+                    key={`imm-${entry.qualifier}`}
+                    className="prof-chip immunity-chip"
+                    content={`Immune to ${qualifierLabel(entry.qualifier)} damage, from ${entry.components
+                      .filter((c) => c.applied)
+                      .map((c) => c.source)
+                      .join(", ")}`}
+                  >
+                    Immune: {capitalizeFirst(qualifierLabel(entry.qualifier))}
+                  </InfoTip>
+                ))}
+                {/* Immunity to something that isn't damage (magic sleep,
+                    paralysis, critical hits) — same chip, but nothing in
+                    damage resolution consumes it, so the tooltip says so
+                    outright. */}
+                {sheet.defenses.effectImmunities?.map((entry) => (
+                  <InfoTip
+                    key={`immEffect-${entry.qualifier}`}
+                    className="prof-chip immunity-chip"
+                    content={`Immune to ${EFFECT_IMMUNITY_LABELS[entry.qualifier]}, from ${entry.components
+                      .filter((c) => c.applied)
+                      .map((c) => c.source)
+                      .join(
+                        ", ",
+                      )}. Nothing rolls against this; it's here so you and your GM can see it.`}
+                  >
+                    Immune: {capitalizeFirst(EFFECT_IMMUNITY_LABELS[entry.qualifier] ?? "")}
+                  </InfoTip>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       ) : null}

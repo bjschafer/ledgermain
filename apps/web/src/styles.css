@@ -1110,7 +1110,8 @@ button:focus-visible,
 .mystery-preview,
 .curse-preview,
 .bloodline-preview,
-.order-preview {
+.order-preview,
+.discipline-preview {
   margin-top: 10px;
   padding: 10px 12px;
   border: 1px solid var(--line);
@@ -1121,14 +1122,16 @@ button:focus-visible,
 .mystery-preview > * + *,
 .curse-preview > * + *,
 .bloodline-preview > * + *,
-.order-preview > * + * {
+.order-preview > * + *,
+.discipline-preview > * + * {
   margin-top: 8px;
 }
 
 .mystery-bonus-spells,
 .curse-bonus-spells,
 .bloodline-powers,
-.order-abilities {
+.order-abilities,
+.discipline-bonus-spells {
   list-style: none;
   margin: 4px 0 0;
   padding: 0;
@@ -1140,7 +1143,8 @@ button:focus-visible,
 .mystery-bonus-spells li,
 .curse-bonus-spells li,
 .bloodline-powers li,
-.order-abilities li {
+.order-abilities li,
+.discipline-bonus-spells li {
   font-size: 0.75rem;
 }
 
@@ -2251,6 +2255,14 @@ button:focus-visible,
   }
 }
 
+/* A `.prof-strip` chip row nested inside a stat grid (Damage Reduction &
+   Resistances' immunity chips alongside its DR/resistance/SR tiles) spans
+   every column instead of sitting in a single 1fr cell, which used to
+   stretch each chip to a full column and wrap its label across two lines. */
+.stat-group-grid > .prof-strip {
+  grid-column: 1 / -1;
+}
+
 /* provenance */
 .prov {
   margin: 8px 0 4px;
@@ -3099,7 +3111,6 @@ button:focus-visible,
 /* Immunity has no magnitude, so it reads as a chip inside the otherwise
    numeric Damage Reduction & Resistances group. */
 .immunity-chip {
-  align-self: center;
   color: var(--sage);
   border-color: var(--gold-dim);
 }
@@ -5047,6 +5058,17 @@ input[type="text"].saved-roll-name:focus {
 .cf-name {
   font-size: 0.75rem;
   color: var(--ink);
+}
+
+/* Inline "Lv N" / "Oracle Lv N" label ahead of a feature or bonus-spell name
+   in a preview list (Mystery, Curse, Bloodline, Discipline, Order, Deeds,
+   Patron, Spirit) — small and muted so it reads as metadata, not part of the
+   name (previously an unstyled span, i.e. plain inline text). */
+.cf-level {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--muted);
 }
 
 .cf-name.struck {

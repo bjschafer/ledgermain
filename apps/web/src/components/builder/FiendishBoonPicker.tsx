@@ -56,7 +56,7 @@ export function FiendishBoonPicker({ doc, update }: FiendishBoonPickerProps) {
           <p className="hint arcane-bond-hint">
             At 5th level, an antipaladin gains a boon from her dark patrons: a scaling
             weapon-enhancement bond, or a permanent fiendish servant. Once chosen, the form can't be
-            changed (PF1 RAW).
+            changed.
           </p>
           <div className="chips arcane-bond-type">
             <button

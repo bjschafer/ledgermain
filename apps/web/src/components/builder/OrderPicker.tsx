@@ -88,7 +88,7 @@ export function OrderPicker({ doc, refData, update }: OrderPickerProps) {
       {!collapsed && (
         <>
           <p className="hint order-picker-hint">
-            Pick one order (PF1 grants one at level 1, never changed thereafter). Browses the full
+            Cavaliers and samurai choose one order at 1st level; it never changes. Browses the full
             published catalog; entries marked <span className="badge-modeled">M</span> carry a
             structured chassis (bonus skills, Challenge rider, 2nd/8th/15th abilities). The rest
             show their full published text instead. Free-choice: no edict/alignment validation.
