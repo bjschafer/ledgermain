@@ -4,6 +4,7 @@ import type {
   DerivedSheet,
   RefData,
 } from "@pf1/schema";
+import type { MouseEvent as ReactMouseEvent } from "react";
 
 import { abilityTypeTag } from "../../model/abilityTypes.js";
 import { useInlineRolls } from "../../state/rollData.js";
@@ -48,6 +49,28 @@ export function FeatureDescription({ html }: { html: string }) {
 }
 
 /**
+ * Lets a click anywhere on a class-feature row toggle its description,
+ * instead of only the (previously invisible) chevron cell — the row already
+ * hover-highlighted as if the whole thing were a click target. A click
+ * inside `<summary>` is left alone since the browser already toggles the
+ * `<details>` from that (and Enter/Space on it, unchanged); toggling it again
+ * here would just flip it right back. A click inside the description body
+ * while it's open is also left alone, and any drag-selection is respected,
+ * so reading or copying the prose doesn't collapse it out from under you.
+ * Anything with its own click handling (InfoTip's badges/warnings) already
+ * stops the event from bubbling this far, so it needs no special case.
+ */
+function toggleFeatureDescription(e: ReactMouseEvent<HTMLDivElement>) {
+  const target = e.target as HTMLElement;
+  if (target.closest("summary")) return;
+  const details = e.currentTarget.querySelector<HTMLDetailsElement>(".spell-detail");
+  if (!details) return;
+  if (details.open && target.closest(".spell-detail-desc")) return;
+  if (window.getSelection()?.toString()) return;
+  details.open = !details.open;
+}
+
+/**
  * One granted class feature's row: name (struck through + "replaced by" when
  * an archetype swapped it out), its (Ex)/(Su)/(Sp) tag, mechanical `detail`,
  * origin label (e.g. "Hex", "Fire Domain" — omit via `showOrigin={false}`
@@ -83,7 +106,16 @@ export function ClassFeatureRow({
   const description = vendored?.description;
   const block = layout === "block";
   return (
-    <div className={`cf-archetype-feature${block ? " cf-block" : ""}`}>
+    // This click handler is a mouse/touch convenience layered on top of the
+    // real, already-keyboard-accessible toggle: the nested <summary> is its
+    // own tab stop with native Enter/Space handling. Giving the row a
+    // redundant keyboard listener would just add a second tab stop for the
+    // same action.
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+    <div
+      className={`cf-archetype-feature${block ? " cf-block" : ""}${description ? " cf-has-desc" : ""}`}
+      onClick={description ? toggleFeatureDescription : undefined}
+    >
       <span
         className={`cf-name${feature.applied ? "" : " struck"}`}
         title={feature.replacedBy ? `Replaced by ${feature.replacedBy}` : undefined}
@@ -145,8 +177,18 @@ export function ArchetypeFeatureRow({
   layout?: "inline" | "block";
 }) {
   const block = layout === "block";
+  const description = feature.description;
   return (
-    <div className={`cf-archetype-feature${block ? " cf-block" : ""}`}>
+    // This click handler is a mouse/touch convenience layered on top of the
+    // real, already-keyboard-accessible toggle: the nested <summary> is its
+    // own tab stop with native Enter/Space handling. Giving the row a
+    // redundant keyboard listener would just add a second tab stop for the
+    // same action.
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+    <div
+      className={`cf-archetype-feature${block ? " cf-block" : ""}${description ? " cf-has-desc" : ""}`}
+      onClick={description ? toggleFeatureDescription : undefined}
+    >
       <span className="cf-name">
         {feature.name}
         <AbilityTypeTag abilityType={feature.abilityType} />
@@ -175,7 +217,7 @@ export function ArchetypeFeatureRow({
       {feature.replacesText ? (
         <div className="hint feature-note">replaces: {feature.replacesText}</div>
       ) : null}
-      {feature.description ? <FeatureDescription html={feature.description} /> : null}
+      {description ? <FeatureDescription html={description} /> : null}
     </div>
   );
 }
