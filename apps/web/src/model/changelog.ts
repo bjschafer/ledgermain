@@ -41,6 +41,36 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-07-phrenic-amplifications-at-the-table",
+    date: "2026-08-07",
+    title: "Phrenic amplifications work at the table",
+    note: "Your picked amplifications now appear under the Phrenic Pool in the tracker's Resources panel with their point cost, a spend button, and their full rules text, so paying for a rider on a spell you are casting is one tap. In the builder, major amplifications stay locked until 11th level, and Dual Amplification checks that you know two other amplifications first.",
+  },
+  {
+    id: "2026-08-07-all-psychic-disciplines-modeled",
+    date: "2026-08-07",
+    title: "Every psychic discipline is modeled",
+    note: "All 23 published disciplines now grant their bonus spells known, feed the right ability into your phrenic pool, and list their discipline powers on your sheet. Previously only the 12 Occult Adventures core disciplines did; the splatbook ones were read-only text.",
+  },
+  {
+    id: "2026-08-07-undercasting",
+    date: "2026-08-07",
+    title: "Undercasting",
+    note: "Knowing the higher version of an undercastable spell, like Mind Thrust IV, now also gives you the lower versions: they show up in the Play tab as castable at their own spell levels, marked as undercast, without costing extra spells known. The builder notes what each known spell grants.",
+  },
+  {
+    id: "2026-08-07-spontaneous-spell-learning-gate",
+    date: "2026-08-07",
+    title: "Spontaneous casters learn spells on schedule",
+    note: "A sorcerer, psychic, or other spontaneous caster can no longer add a spell of a level they cannot cast yet; the button stays locked and tells you the class level that unlocks it. Prepared casters are untouched: scribing ahead into a spellbook is legitimate planning.",
+  },
+  {
+    id: "2026-08-07-class-feature-rows-expand-on-click",
+    date: "2026-08-07",
+    title: "Class feature rows open on click",
+    note: "A class feature's full description now expands from a click anywhere on its row, not just the tiny triangle, and rows with nothing more to show no longer light up as if they were clickable.",
+  },
+  {
     id: "2026-08-07-racial-trait-swaps-enforced",
     date: "2026-08-07",
     title: "Alternate racial traits stop double-spending a swap",
