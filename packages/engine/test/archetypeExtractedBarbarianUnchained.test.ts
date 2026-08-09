@@ -138,7 +138,7 @@ describe("Armored Hulk: Armored Swiftness / Improved Armored Swiftness", () => {
     expect(archetypeId("Armored Hulk")).toBe("barbarianUnchained:armored-hulk");
   });
 
-  it("Armored Swiftness stays blocked: it only offsets armor speed reduction, which is unmodeled", () => {
+  it("Armored Swiftness stays blocked: its cap-relative offset against armor speed reduction has no Change-shaped expression", () => {
     const id = "barbarianUnchained:armored-hulk:armored-swiftness:2";
     expect(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("blocked");
     expect(BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeUndefined();

@@ -177,7 +177,7 @@ export const BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Armored Swiftness",
     level: 2,
     bucket: "blocked",
-    note: "+5 ft. in medium/heavy armor, 'to a maximum of her speed' — the whole effect offsets armor speed reduction, which this engine deliberately does not model (armor never slows a character here), so applying +5 would exceed both the engine's own baseline and RAW's cap in every reachable state",
+    note: "+5 ft. in medium/heavy armor, 'to a maximum of her speed' — a cap-relative offset against the armor speed reduction compute.ts applies via encumberedSpeed(). A plain additive Change composes wrong at both edges: Slow and Steady races skip the reduction (so +5 overshoots RAW's cap), and at 5th+ Improved Armored Swiftness's own base-type bonus wins highest-within-type instead of RAW's stacking. Needs cap-aware plumbing, not a formula",
   },
   "barbarianUnchained:armored-hulk:improved-armored-swiftness:5": {
     archetypeId: "barbarianUnchained:armored-hulk",
