@@ -10,6 +10,11 @@
  * `bun run coverage:mech` prints the per-domain summary and top candidates.
  * `bun run coverage:mech --md <path>` also writes the full ranked report.
  *
+ * Archetype features additionally consult `ARCHETYPE_FEATURE_CLASSIFICATION`:
+ * a feature the extraction waves deliberately ruled situational/subsystem/
+ * blocked counts as reviewed and never flags; a `numeric` verdict that never
+ * produced a wired effect still does.
+ *
  * Heuristic, not a verdict: a flagged entry may be legitimately
  * situational, and an unflagged one may still deserve wiring. It ranks
  * candidates for promotion; it does not close them.
@@ -24,6 +29,7 @@ import { loadRefData } from "../packages/data-pipeline/src/index.js";
 import { mergedAlchemistDiscoveryCatalog } from "../packages/engine/src/alchemist-discoveries.js";
 import { mergedArcanistExploitCatalog } from "../packages/engine/src/arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "../packages/engine/src/archetype-effects-resolve.js";
+import { ARCHETYPE_FEATURE_CLASSIFICATION } from "../packages/engine/src/archetype-extracted/index.js";
 import { mergedSorcererBloodlineCatalog } from "../packages/engine/src/bloodlines.js";
 import { mergedBloodragerBloodlineCatalog } from "../packages/engine/src/bloodrager-bloodlines.js";
 import { BUFF_CHANGE_PATCHES } from "../packages/engine/src/buff-effects.js";
@@ -131,6 +137,13 @@ interface Audited {
   status: Status;
   /** Explicitly triaged as prose-only by a hand table (`displayOnly: true`). */
   acknowledged: boolean;
+  /**
+   * An extraction wave issued a deliberate not-wireable verdict
+   * (classification bucket `situational`/`subsystem`/`blocked`), so this
+   * entry is reviewed backlog, not undiscovered backlog — excluded from
+   * flagging entirely, unlike `acknowledged` which only annotates.
+   */
+  reviewed: boolean;
   activated: boolean;
   score: number;
   signals: string[];
@@ -175,6 +188,7 @@ function audit(
   status: Status,
   acknowledged: boolean,
   text: string,
+  reviewed = false,
 ): Audited {
   const prose = stripHtml(text);
   const { activated, score, signals } =
@@ -186,6 +200,7 @@ function audit(
     name,
     status,
     acknowledged,
+    reviewed,
     activated,
     score,
     signals,
@@ -307,6 +322,10 @@ function main(): void {
     const name = typeof e.name === "string" ? e.name : id;
     const resolved = resolveArchetypeFeatureEffect(id);
     const wired = resolved !== undefined && resolved.effect.changes.length > 0;
+    // A wave verdict of situational/subsystem/blocked is a deliberate
+    // prose-only ruling; `numeric` without an effect entry is real backlog.
+    const verdict = ARCHETYPE_FEATURE_CLASSIFICATION[id];
+    const reviewed = verdict !== undefined && verdict.bucket !== "numeric";
     results.push(
       audit(
         "archetype-features",
@@ -314,6 +333,7 @@ function main(): void {
         wired ? "wired" : resolved !== undefined ? "noted" : "prose",
         false,
         typeof e.description === "string" ? e.description : "",
+        reviewed,
       ),
     );
   }
@@ -393,7 +413,7 @@ function report(results: Audited[]): void {
   const domains = [...new Set(results.map((r) => r.domain))].sort();
   const lines: string[] = [];
   lines.push(
-    `${"domain".padEnd(26)} ${"total".padStart(6)} ${"wired".padStart(6)} ${"noted".padStart(6)} ${"prose".padStart(6)} ${"flagged".padStart(8)}`,
+    `${"domain".padEnd(26)} ${"total".padStart(6)} ${"wired".padStart(6)} ${"noted".padStart(6)} ${"prose".padStart(6)} ${"revwd".padStart(6)} ${"flagged".padStart(8)}`,
   );
   let flaggedTotal = 0;
   for (const domain of domains) {
@@ -401,20 +421,23 @@ function report(results: Audited[]): void {
     const wired = rs.filter((r) => r.status === "wired").length;
     const noted = rs.filter((r) => r.status === "noted").length;
     const prose = rs.filter((r) => r.status === "prose").length;
-    const flagged = rs.filter((r) => r.status !== "wired" && r.score >= FLAG_THRESHOLD).length;
+    const reviewed = rs.filter((r) => r.reviewed).length;
+    const flagged = rs.filter(
+      (r) => r.status !== "wired" && !r.reviewed && r.score >= FLAG_THRESHOLD,
+    ).length;
     flaggedTotal += flagged;
     lines.push(
-      `${domain.padEnd(26)} ${String(rs.length).padStart(6)} ${String(wired).padStart(6)} ${String(noted).padStart(6)} ${String(prose).padStart(6)} ${String(flagged).padStart(8)}`,
+      `${domain.padEnd(26)} ${String(rs.length).padStart(6)} ${String(wired).padStart(6)} ${String(noted).padStart(6)} ${String(prose).padStart(6)} ${String(reviewed).padStart(6)} ${String(flagged).padStart(8)}`,
     );
   }
   lines.push("");
   lines.push(
-    `flagged = not numbers-wired and prose signals score >= ${FLAG_THRESHOLD}. Total flagged: ${flaggedTotal}`,
+    `flagged = not numbers-wired, not review-triaged (revwd), and prose signals score >= ${FLAG_THRESHOLD}. Total flagged: ${flaggedTotal}`,
   );
   console.log(lines.join("\n"));
 
   const ranked = results
-    .filter((r) => r.status !== "wired" && r.score >= FLAG_THRESHOLD)
+    .filter((r) => r.status !== "wired" && !r.reviewed && r.score >= FLAG_THRESHOLD)
     .sort((a, b) => b.score - a.score);
 
   console.log("\nTop candidates (passive weighted above activated):");
