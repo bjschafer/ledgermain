@@ -155,9 +155,23 @@ interface Audited {
  * `Change` (top-level, choice-keyed, or option-keyed) serializes with a
  * `"formula"` key, and nothing prose-only does (`contextNotes` are
  * `{target, text}`; `uses.maxFormula` serializes capitalized).
+ *
+ * Several subsystem domains wire numbers through structured routes that
+ * never serialize a `Change`: class-skill grants (`classSkills` /
+ * `orderSkills` -> `compute.ts`'s `classSkillSet`), bonus-spell
+ * progressions (`bonusSpells` -> spells-known), the medium's
+ * `spiritBonusTargets` and occultist `appliesAsChange` resonant powers
+ * (both expanded in `collect.ts`), and `hasAbilitySubstitution`
+ * (`ability-substitution.ts`). Those count as wired too.
  */
 function defMovesNumbers(def: unknown): boolean {
-  return /"formula"/.test(JSON.stringify(def) ?? "");
+  const json = JSON.stringify(def) ?? "";
+  return (
+    json.includes('"formula"') ||
+    /"(?:classSkills|orderSkills|bonusSpells|spiritBonusTargets)":\[(?!\])/.test(json) ||
+    json.includes('"appliesAsChange":true') ||
+    json.includes('"hasAbilitySubstitution":true')
+  );
 }
 
 function rec(v: unknown): Record<string, unknown> {
