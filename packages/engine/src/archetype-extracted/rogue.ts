@@ -1,7 +1,7 @@
 /**
  * Rogue's slice of the pipeline (wave 2, 2026-07-06; see `index.ts` for the
- * per-class file convention this follows). Covers all 77 vendored rogue
- * archetypes, 241 features, read individually (rogue's archetype count is
+ * per-class file convention this follows). Covers all 78 vendored rogue
+ * archetypes, 257 features, read individually (rogue's archetype count is
  * small enough to afford the exhaustive per-feature pass the fighter pilot's
  * own recommendation flagged as optional for smaller classes — no
  * heuristic-assisted situational/subsystem split here).
@@ -11,13 +11,24 @@
  * The task brief for this wave flagged rogue's base features with "real
  * vendored changes (sneak attack via `sneakAttackDice` in tables.ts, trap
  * sense, etc.)" as the double-count trap to watch for. On inspection, that
- * premise only half-holds: EVERY rogue base class feature's vendored
- * `changes[]` is empty upstream (Trapfinding, Evasion, Trap Sense, Uncanny
+ * premise mostly doesn't hold: nearly every rogue base class feature's
+ * vendored `changes[]` is empty upstream (Evasion, Trap Sense, Uncanny
  * Dodge, Improved Uncanny Dodge, Advanced Talents, Master Strike — confirmed
  * against `class-features.json`), and none of them have a hand-authored
  * numeric table in the engine either (unlike e.g. barbarian's Damage
- * Reduction). They contribute a flat ZERO to the derived sheet today. Only
- * **Sneak Attack's die count** is modeled at all, and only as a display
+ * Reduction). They contribute a flat ZERO to the derived sheet today. The
+ * one exception is **Trapfinding** itself (`class-features.json` id
+ * `pEODJDoTk7uhCZY7`, confirmed as rogue's actual 1st-level grant via
+ * `classes.json`), which carries a real `max(1, floor(@class.unlevel / 2))
+ * skill.dev` Change already applied to every rogue. It's still safe to
+ * fully replace: it's a single, un-tiered, whole-feature grant (not a
+ * multi-tier atomic formula like fighter's Armor Training), so any
+ * archetype feature that cleanly swaps out the WHOLE thing — verified via
+ * the vendored `pairedBaseFeatureUuid` pointing at that exact uuid, e.g.
+ * Escapologist's Elusive or Spy's Skilled Liar — is a safe full swap, not
+ * the atomic-partial-tier trap `blocked` exists for. Separately, of all the
+ * base features, only **Sneak Attack's die count** is modeled at all beyond
+ * a flat zero or Trapfinding's `skill.dev` bonus, and only as a display
  * string — `sneakAttackDice(rogueLevel)` (`tables.ts`), called directly by
  * `archetypes.ts`'s `resolveClassFeatures` from the character's raw rogue
  * class level, with NO awareness of `applied`/`replacedBy` at all (i.e. even
@@ -32,10 +43,12 @@
  *    automatically — or left ambiguous, as EVERY level 1/2 feature is,
  *    since those levels each grant two base features at once) is always
  *    safe to backfill a real number for: there is nothing to double-count,
- *    because the thing being "replaced" was already contributing zero.
+ *    because the thing being "replaced" was either already contributing
+ *    zero, or (Trapfinding) is a single whole-feature grant being swapped
+ *    for another single whole-feature grant, not a partial tier of one.
  *    This is why this file's `blocked` bucket is much narrower than
  *    fighter's (no Armor-Training-style atomic-partial-tier trap exists for
- *    rogue — none of its base features carry a real scaling formula at all).
+ *    rogue — none of its base features carry a multi-tier scaling formula).
  *  - The ONE genuine trap is a feature that claims to modify **Sneak
  *    Attack's own die-count progression** — since that's hardcoded and
  *    unconditional in `tables.ts`/`archetypes.ts` (both out of this file's
@@ -654,12 +667,41 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Fey Prankster ──────────────────────────────────────────────────────
+  // NOTE: this archetype's prose reads verbatim as bard's own Fey Prankster
+  // (references "her bard level," bardic performance, language-dependent
+  // mind-affecting abilities) — the identical feature set is ALSO vendored
+  // under `bard:fey-prankster` (see bard.ts). A suspected vendored-data
+  // cross-tagging duplication (classTag: "rogue" on bard-flavored content),
+  // not fixed here; `@class.unlevel` still resolves off the rogue's own
+  // level for a character who has taken this rogue-tagged archetype, so any
+  // extraction below is internally consistent regardless.
   "rogue:fey-prankster:treacherous-plants:1": {
     archetypeId: "rogue:fey-prankster",
     name: "Treacherous Plants",
     level: 1,
     bucket: "situational",
     note: "+1/2-level Bluff bonus scoped to two specific Bluff uses (distraction-to-hide, feint) near plants — narrower than general Bluff",
+  },
+  "rogue:fey-prankster:incite-unreliability:1": {
+    archetypeId: "rogue:fey-prankster",
+    name: "Incite Unreliability",
+    level: 1,
+    bucket: "subsystem",
+    note: "performance-based lesser-confusion-equivalent compulsion on one target — no Change-shaped number",
+  },
+  "rogue:fey-prankster:mischievous-talent:1": {
+    archetypeId: "rogue:fey-prankster",
+    name: "Mischievous Talent",
+    level: 1,
+    bucket: "numeric",
+    note: "extracted — +1/2 level (min 1) on Bluff/Disguise/Sleight of Hand/Stealth, unconditional, purely additive",
+  },
+  "rogue:fey-prankster:song-of-clumsiness:1": {
+    archetypeId: "rogue:fey-prankster",
+    name: "Song of Clumsiness",
+    level: 1,
+    bucket: "subsystem",
+    note: "performance-based reflex-save compulsion (drop items/fall prone) — no Change-shaped number",
   },
   "rogue:fey-prankster:improved-dirty-trick:2": {
     archetypeId: "rogue:fey-prankster",
@@ -668,12 +710,26 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "grants Improved Dirty Trick as a bonus feat",
   },
+  "rogue:fey-prankster:dirty-trickster:2": {
+    archetypeId: "rogue:fey-prankster",
+    name: "Dirty Trickster",
+    level: 2,
+    bucket: "subsystem",
+    note: "grants Improved Dirty Trick as a bonus feat plus a prerequisite-counting rule — no Change-shaped number",
+  },
   "rogue:fey-prankster:steal-appearance:4": {
     archetypeId: "rogue:fey-prankster",
     name: "Steal Appearance",
     level: 4,
     bucket: "subsystem",
     note: "swaps two creatures'/items' apparent identity — a disguise-equivalent effect, no flat bonus",
+  },
+  "rogue:fey-prankster:master-of-mischief:5": {
+    archetypeId: "rogue:fey-prankster",
+    name: "Master of Mischief",
+    level: 5,
+    bucket: "subsystem",
+    note: "take-10/take-20-on-specific-skills mechanic — no Change-shaped number",
   },
   "rogue:fey-prankster:greater-dirty-trick:6": {
     archetypeId: "rogue:fey-prankster",
@@ -688,6 +744,13 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 8,
     bucket: "subsystem",
     note: "converts a plant into a trap with fixed DCs — no PC-facing bonus",
+  },
+  "rogue:fey-prankster:embarrassing-satire:8": {
+    archetypeId: "rogue:fey-prankster",
+    name: "Embarrassing Satire",
+    level: 8,
+    bucket: "subsystem",
+    note: "performance-based sickened effect on one target — no Change-shaped number",
   },
   "rogue:fey-prankster:unseen-trickster:12": {
     archetypeId: "rogue:fey-prankster",
@@ -1227,6 +1290,14 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Roof Runner ────────────────────────────────────────────────────────
+  // NOTE: this archetype's prose reads verbatim as hunter's own Roof Runner
+  // (references "her hunter level," "her animal companion," alters "the
+  // hunter's class skills") — the identical feature set is ALSO vendored
+  // under `hunter:roof-runner` (see hunter.ts). A suspected vendored-data
+  // cross-tagging duplication (classTag: "rogue" on hunter-flavored
+  // content), not fixed here; `@class.unlevel` still resolves off the
+  // rogue's own level for a character who has taken this rogue-tagged
+  // archetype, so any extraction below is internally consistent regardless.
   "rogue:roof-runner:roof-running:1": {
     archetypeId: "rogue:roof-runner",
     name: "Roof Running",
@@ -1234,12 +1305,54 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "removes rooftop movement/Reflex-save penalties while lightly armored — no engine-modeled penalty exists to remove",
   },
+  "rogue:roof-runner:weapon-and-armor-proficiency:1": {
+    archetypeId: "rogue:roof-runner",
+    name: "Weapon and Armor Proficiency",
+    level: 1,
+    bucket: "subsystem",
+    note: "proficiency grant — not a Change target",
+  },
+  "rogue:roof-runner:skilled:1": {
+    archetypeId: "rogue:roof-runner",
+    name: "Skilled",
+    level: 1,
+    bucket: "subsystem",
+    note: "adds Acrobatics/Escape Artist/Sleight of Hand to the class-skill list and swaps away medium-armor/shield proficiency — neither is a Change-shaped number (class-skill-list membership has no Change target)",
+  },
   "rogue:roof-runner:tumbling-descent:2": {
     archetypeId: "rogue:roof-runner",
     name: "Tumbling Descent",
     level: 2,
     bucket: "subsystem",
     note: "an Acrobatics-based descent mechanic with its own DC — not a bonus to a check",
+  },
+  "rogue:roof-runner:natural-leaper:2": {
+    archetypeId: "rogue:roof-runner",
+    name: "Natural Leaper",
+    level: 2,
+    bucket: "situational",
+    note: "real half-level Acrobatics bonus, but scoped to jump checks specifically — Acrobatics is one skill covering jump/balance/tumble together, so a general skill.acr Change would over-apply",
+  },
+  "rogue:roof-runner:shingle-stride:5": {
+    archetypeId: "rogue:roof-runner",
+    name: "Shingle Stride",
+    level: 5,
+    bucket: "situational",
+    note: "full-speed Acrobatics on narrow/uneven surfaces plus faster climbing (shared with the animal companion) — an action-economy rule, not a climb-speed number",
+  },
+  "rogue:roof-runner:alley-ghost:8": {
+    archetypeId: "rogue:roof-runner",
+    name: "Alley Ghost",
+    level: 8,
+    bucket: "subsystem",
+    note: "grants the Fast Stealth rogue talent's benefits — borrowed-subsystem ability grant, no flat number",
+  },
+  "rogue:roof-runner:master-climber:20": {
+    archetypeId: "rogue:roof-runner",
+    name: "Master Climber",
+    level: 20,
+    bucket: "numeric",
+    note: "unconditional climb speed equal to base land speed, replaces Master Strike (vendored changes: []) — see ROGUE_ARCHETYPE_EFFECTS_EXTRACTED below",
   },
 
   // ── Rotdrinker ─────────────────────────────────────────────────────────
@@ -1682,6 +1795,36 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     note: "grants an advanced rogue talent — talent-list, out of scope",
   },
 
+  // ── Spy ─────────────────────────────────────────────────────────────────
+  "rogue:spy:advanced-talents:0": {
+    archetypeId: "rogue:spy",
+    name: "Advanced Talents",
+    level: 0,
+    bucket: "subsystem",
+    note: "a recommended-picks list (crippling strike, master of disguise, stealthy sniper) for the existing advanced rogue talent slot — talent-list, out of scope, grants nothing of its own",
+  },
+  "rogue:spy:poison-use:0": {
+    archetypeId: "rogue:spy",
+    name: "Poison Use",
+    level: 0,
+    bucket: "subsystem",
+    note: "removes a self-poisoning risk the engine never modeled — nothing to remove. Replaces trap sense (vendored changes: [])",
+  },
+  "rogue:spy:rogue-talents:0": {
+    archetypeId: "rogue:spy",
+    name: "Rogue Talents",
+    level: 0,
+    bucket: "subsystem",
+    note: "a recommended-picks list (canny observer, guileful polyglot, honeyed words, major/minor magic, quick disguise) for the existing rogue talent slots — talent-list, out of scope, grants nothing of its own",
+  },
+  "rogue:spy:skilled-liar:0": {
+    archetypeId: "rogue:spy",
+    name: "Skilled Liar",
+    level: 0,
+    bucket: "situational",
+    note: "+1/2-level (min 1) Bluff bonus scoped to the opposed roll when deceiving someone (not feints or secret messages) — narrower than general Bluff, same shape as Guerrilla's Skilled Liar above. Replaces trapfinding — the real base Trapfinding grant (max(1, floor(@class.unlevel/2)) skill.dev) is cleanly paired to its own vendored uuid, a full single-feature swap, not a partial-tier trap",
+  },
+
   // ── Survivalist ────────────────────────────────────────────────────────
   "rogue:survivalist:hardy:1": {
     archetypeId: "rogue:survivalist",
@@ -2013,6 +2156,20 @@ export const ROGUE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "and Escape Artist checks. This ability replaces trapfinding, but counts as trapfinding " +
       "for the purposes of prerequisites and abilities that require trapfinding.",
   },
+  "rogue:fey-prankster:mischievous-talent:1": {
+    changes: [
+      c("max(1, floor(@class.unlevel / 2))", "skill.blf"),
+      c("max(1, floor(@class.unlevel / 2))", "skill.dis"),
+      c("max(1, floor(@class.unlevel / 2))", "skill.slt"),
+      c("max(1, floor(@class.unlevel / 2))", "skill.ste"),
+    ],
+    detail: (level) =>
+      `+${Math.max(1, Math.floor(level / 2))} Bluff/Disguise/Sleight of Hand/Stealth`,
+    confidence: "high",
+    provenance:
+      "A fey prankster adds half her class level (minimum 1) on Bluff, Disguise, Sleight of Hand, " +
+      "and Stealth skill checks, and can attempt Sleight of Hand checks untrained.",
+  },
   "rogue:filcher:rummage:3": {
     changes: [c("1 + floor((@class.unlevel - 3) / 3)", "skill.apr")],
     detail: (level) => `+${1 + Math.floor((level - 3) / 3)} Appraise`,
@@ -2093,6 +2250,21 @@ export const ROGUE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "At 1st level, a river rat gains a bonus equal to half her rogue level on Swim checks " +
       "(minimum +1)... All of these abilities apply only when she is wearing light or no armor " +
       "and carrying no more than a light load.",
+  },
+  "rogue:roof-runner:master-climber:20": {
+    changes: [
+      {
+        formula: "@attributes.speed.land.total",
+        target: "climbSpeed",
+        type: "base",
+        operator: "set",
+      },
+    ],
+    detail: () => "climb speed = base land speed",
+    confidence: "high",
+    provenance:
+      "At 20th level, a roof runner gains a climb speed equal to her base land speed, instead of " +
+      "being able to move at full speed while tracking.",
   },
   "rogue:sanctified-rogue:divine-purpose:4": {
     changes: [c("1", "fort", "sacred"), c("1", "will", "sacred")],

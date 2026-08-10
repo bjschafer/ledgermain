@@ -231,6 +231,60 @@ describe("Sanctified Rogue (rogue): Divine Purpose grants a flat sacred Fortitud
   });
 });
 
+describe("Fey Prankster (rogue): Mischievous Talent grants an unconditional min-1 skill bonus", () => {
+  const archetype = archetypeId("Fey Prankster", "rogue");
+
+  it("+2 at L4 (max(1, floor(level/2))) on Bluff/Disguise/Sleight of Hand/Stealth", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "rogue", level: 4 }], archetypes: [archetype] }),
+      ref,
+    );
+    for (const skill of ["blf", "dis", "slt", "ste"]) {
+      expect(
+        sheet.skills[skill]?.components.find((c) => c.source === "Mischievous Talent")?.value,
+      ).toBe(2);
+    }
+  });
+
+  it("floors to the minimum of +1 at L1", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "rogue", level: 1 }], archetypes: [archetype] }),
+      ref,
+    );
+    expect(
+      sheet.skills["blf"]?.components.find((c) => c.source === "Mischievous Talent")?.value,
+    ).toBe(1);
+  });
+});
+
+describe("Roof Runner (rogue): Master Climber sets climb speed to base land speed", () => {
+  const archetype = archetypeId("Roof Runner", "rogue");
+
+  it("climb speed = land speed at L20", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "rogue", level: 20 }], archetypes: [archetype] }),
+      ref,
+    );
+    const withoutArchetype = compute(makeDoc({ classes: [{ tag: "rogue", level: 20 }] }), ref);
+    expect(sheet.speeds.climb).toBe(withoutArchetype.speeds.land);
+  });
+});
+
+describe("Spy (rogue): Skilled Liar stays situational; Trapfinding it replaces carries a real vendored bonus", () => {
+  it("the real base Trapfinding grant is a whole-feature, un-tiered Change (max(1, floor(level/2)) skill.dev) — a clean swap target, not a partial-tier trap", () => {
+    const rogueClass = Object.values(ref.classes).find((cls) => cls.tag === "rogue")!;
+    const trapfindingId = rogueClass.features.find((f) => f.name === "Trapfinding")!.featureId;
+    const trapfinding = ref.classFeatures[trapfindingId];
+    expect(trapfinding?.changes).toEqual([
+      { formula: "max(1, floor(@class.unlevel / 2))", target: "skill.dev", type: "untyped" },
+    ]);
+  });
+
+  it("Skilled Liar's own bonus is scoped to the opposed deceive roll, so it stays situational (no extracted entry)", () => {
+    expect(resolveArchetypeFeatureEffect("rogue:spy:skilled-liar:0")).toBeUndefined();
+  });
+});
+
 describe("resolveArchetypeFeatureEffect precedence for rogue ids (issue #45)", () => {
   it("Knife Master's Hidden Blade resolves to the hand-verified table, not duplicated in the extracted table", () => {
     const resolved = resolveArchetypeFeatureEffect("rogue:knife-master:hidden-blade:1");

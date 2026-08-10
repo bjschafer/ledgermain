@@ -219,6 +219,42 @@ describe("Plains Druid: Run Like the Wind grants +10 land speed while light/no a
   });
 });
 
+describe("Elemental ally: Elemental Resistance grants a flat resist 5 to acid/cold/electricity/fire", () => {
+  const elementalAlly = archetypeId("Elemental ally");
+
+  it("resist 5 to all four energy types at L4, unconditional", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "druid", level: 4 }], archetypes: [elementalAlly] }),
+      ref,
+    );
+    for (const energy of ["acid", "cold", "electricity", "fire"] as const) {
+      expect(sheet.defenses?.resistances.find((r) => r.qualifier === energy)?.total).toBe(5);
+    }
+  });
+
+  it("stays flat 5 at L15 (no further scaling stated)", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "druid", level: 15 }], archetypes: [elementalAlly] }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(5);
+  });
+});
+
+describe("Restorer: Healing Touch grants a flat +2 Heal bonus", () => {
+  const restorer = archetypeId("Restorer");
+
+  it("+2 Heal at L1 (the first-aid-specific +3 rider is not modeled)", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "druid", level: 1 }], archetypes: [restorer] }),
+      ref,
+    );
+    expect(sheet.skills["hea"]?.components.find((c) => c.source === "Healing Touch")?.value).toBe(
+      2,
+    );
+  });
+});
+
 describe("resolveArchetypeFeatureEffect precedence: Menhir Savant's Spirit Sense stays hand-verified", () => {
   it("hand-verified table wins; druid.ts's extracted table has no entry for it", () => {
     const resolved = resolveArchetypeFeatureEffect("druid:menhir-savant:spirit-sense:1");

@@ -44,29 +44,30 @@ function archetypeId(name: string): string {
   return entry.id;
 }
 
-// The 31 archetypes this wave's audit actually covered (see
-// MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION's own archetypeId values) — the
-// archetype data source repoint (config.ts ARCHETYPE_REPO/ARCHETYPE_SHA)
-// brought magus from 31 to 39 archetypes, so "every vendored magus feature"
-// is no longer this table's job; classifying the other 8 is a follow-up
-// wave, not a regression of this one.
+// The archetypes MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION covers (its own
+// archetypeId values) — all 39 vendored magus archetypes as of this pass;
+// the 8 "-arcana"/race-restricted archetypes (Greensting Slayer, Hexbreaker,
+// Hexcrafter, Jistkan Artificer, and Kapenia Dancer's own arcana lists, plus
+// Spellblade's arcana list and Suli/Tiefling's race-restricted arcana) that
+// the archetype data source repoint (config.ts ARCHETYPE_REPO/ARCHETYPE_SHA)
+// originally left uncovered are now included.
 const AUDITED_MAGUS_ARCHETYPE_IDS = new Set(
   Object.values(MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION).map((e) => e.archetypeId),
 );
 
 describe("MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
-  it("covers every feature of the 31 originally-audited magus archetypes exactly once", () => {
-    expect(AUDITED_MAGUS_ARCHETYPE_IDS.size).toBe(31);
+  it("covers every feature of every vendored magus archetype exactly once", () => {
+    expect(AUDITED_MAGUS_ARCHETYPE_IDS.size).toBe(39);
     const magusFeatureIds = Object.values(ref.archetypeFeatures)
       .filter(
         (f) => f.archetypeId.startsWith("magus:") && AUDITED_MAGUS_ARCHETYPE_IDS.has(f.archetypeId),
       )
       .map((f) => f.id);
-    expect(magusFeatureIds.length).toBe(150);
+    expect(magusFeatureIds.length).toBe(170);
     for (const id of magusFeatureIds) {
       expect(MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION[id]).toBeDefined();
     }
-    expect(Object.keys(MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(150);
+    expect(Object.keys(MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(170);
   });
 
   it("every numeric-bucket classification entry has a matching extracted-effects entry", () => {
@@ -225,6 +226,29 @@ describe("resolveArchetypeFeatureEffect: resolves through magus's tables when ex
         MAGUS_ARCHETYPE_EFFECTS_EXTRACTED,
       ),
     ).toBeUndefined();
+  });
+});
+
+describe("Magus arcana sub-archetypes: every pick is subsystem (arcana list, deferred)", () => {
+  it("Suli/Tiefling/the -arcana archetypeIds exist in the vendored data", () => {
+    expect(archetypeId("Suli")).toBe("magus:suli");
+    expect(archetypeId("Tiefling")).toBe("magus:tiefling");
+  });
+
+  it("none of the newly-covered arcana picks cleared the numeric bar", () => {
+    const arcanaEntries = Object.values(MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION).filter((e) =>
+      e.archetypeId.includes("-arcana"),
+    );
+    expect(arcanaEntries.length).toBe(15);
+    for (const entry of arcanaEntries) {
+      expect(entry.bucket).toBe("subsystem");
+    }
+    expect(
+      MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION["magus:suli:energy-resistance-boost:1"]?.bucket,
+    ).toBe("subsystem");
+    expect(MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION["magus:tiefling:fiendblade:19"]?.bucket).toBe(
+      "subsystem",
+    );
   });
 });
 

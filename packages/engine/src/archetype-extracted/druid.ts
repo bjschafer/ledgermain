@@ -9,8 +9,8 @@
  *
  * ── DRUID_ARCHETYPE_FEATURE_CLASSIFICATION ────────────────────────────────
  *
- * Classification audit: EVERY feature of EVERY vendored druid archetype (71
- * archetypes, 360 features), read and bucketed as `numeric` / `situational` /
+ * Classification audit: EVERY feature of EVERY vendored druid archetype (75
+ * archetypes, 387 features), read and bucketed as `numeric` / `situational` /
  * `subsystem` / `blocked` — see the fighter pilot's rubric for the full
  * bucket definitions this was applied against; summarized:
  *  - "numeric": an unconditional (or armor-state-gated, matching the
@@ -37,20 +37,26 @@
  *    have no per-archetype modification hook (uses/day still rides the base
  *    Wild Shape class feature's own vendored `uses.maxFormula` unmodified,
  *    per the task's own guidance). Per-class base-feature audit: unlike
- *    fighter's Armor Training / Bonus Feats (FGT) or monk's AC Bonus / Fast
- *    Movement, NONE of druid's base progression features (Nature Bond, Wild
- *    Empathy, Wild Shape, Trackless Step, Woodland Stride, Resist Nature's
- *    Lure, Venom Immunity, A Thousand Faces, Timeless Body) are themselves
- *    `Change`-driven upstream — so there is no atomic-partial-tier
- *    composition trap for druid archetypes to fall into (see "blocked"
- *    below).
- *  - "blocked": none found. Checked every archetype's swap against druid's
- *    base kit (see the audit note above) — since none of druid's base
- *    features carry a vendored `Change` in the first place, there is no
- *    "unpaired partial replacement of an atomic Change-driven grant" trap
- *    for a druid archetype to trigger (the fighter Armor Training / monk
- *    Wis-to-AC shape of bug). Wild Shape's uses/day is read directly from
- *    the class feature's own `uses.maxFormula`, not through
+ *    fighter's Armor Training / Bonus Feats (FGT), which are each a single
+ *    atomic multi-tier formula, druid's base progression carries a few
+ *    real, whole-feature `Change` grants of its own — Nature Sense
+ *    (`class-features.json` id `UJPlPj3RUKLvmKzM`: +2 `skill.sur`/`skill.kna`),
+ *    Venom Immunity (`yzmKDxR63yS5fqlc`: `immEffect.poison`), and Timeless
+ *    Body (`5JlthJkVGEHPZypG`: `immEffect.magicalAging`) — but each is a
+ *    single-shot, un-tiered grant, not a multi-tier atomic formula. An
+ *    archetype feature that cleanly replaces the WHOLE feature (verified via
+ *    the vendored `pairedBaseFeatureUuid` pointing at that exact uuid, e.g.
+ *    Restorer's Healing Touch / Nature Sense or Reincarnated Druid's Tongue
+ *    of the Sun and Moon / Timeless Body) is a safe full swap, not the
+ *    atomic-partial-tier trap "blocked" exists for.
+ *  - "blocked": none found. Every druid archetype swap against druid's base
+ *    kit (see the audit note above) is either a full single-feature
+ *    replacement (safe, whether or not the vendored data pairs it) or
+ *    targets a base feature that itself carries no vendored `Change` — there
+ *    is no "unpaired PARTIAL replacement of a multi-tier atomic `Change`"
+ *    trap for a druid archetype to trigger (the fighter Armor Training /
+ *    monk Wis-to-AC shape of bug). Wild Shape's uses/day is read directly
+ *    from the class feature's own `uses.maxFormula`, not through
  *    `collectModifiers`, so a partial-tier wild-shape-frequency tweak
  *    (e.g. Wild Whisperer's "replaces the additional use of wild shape at
  *    6th/8th level") has no `Change` to double-count against either — it's
@@ -108,6 +114,14 @@
  *    (a see-through-fog utility vs. a narrow save bonus) — not necessarily a
  *    bug (PF1 splatbooks do reuse ability names across sourcebooks), but
  *    flagged since it could trip up a future id/name-based lookup.
+ *  - `druid:reincarnated-druid:wild-shape:0` — the id's `:0` level suffix
+ *    disagrees with the feature's own `level` field (6), which the
+ *    description agrees with ("A reincarnated druid gains this ability at
+ *    6th level").
+ *  - `druid:ashvawg-tamer:exotic-companion:9` — the vendored data's
+ *    level-based pairing heuristic links it to Venom Immunity's uuid (both
+ *    9th level), but the prose never claims a replacement; likely an
+ *    incidental same-level mispairing rather than a real swap.
  *
  * ── DRUID_ARCHETYPE_EFFECTS_EXTRACTED ──────────────────────────────────────
  *
@@ -369,6 +383,97 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 13,
     bucket: "subsystem",
     note: "grants an unrelated ability, subsystem interaction, or choice-list — no Change-shaped number to extract",
+  },
+  "druid:ashvawg-tamer:1st-level-or-higher:0": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "1st Level or Higher",
+    level: 0,
+    bucket: "subsystem",
+    note: "a monster-name sublist for the variant/exotic companion choice-list — no Change-shaped number of its own",
+  },
+  "druid:ashvawg-tamer:4th-level-or-higher-level-3:0": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "4th Level or Higher (Level –3)",
+    level: 0,
+    bucket: "subsystem",
+    note: "a monster-name sublist for the variant/exotic companion choice-list — no Change-shaped number of its own",
+  },
+  "druid:ashvawg-tamer:7th-level-or-higher-level-6:0": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "7th Level or Higher (Level –6)",
+    level: 0,
+    bucket: "subsystem",
+    note: "a monster-name sublist for the variant/exotic companion choice-list — no Change-shaped number of its own",
+  },
+  "druid:ashvawg-tamer:10th-level-or-higher-level-9:0": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "10th Level or Higher (Level –9)",
+    level: 0,
+    bucket: "subsystem",
+    note: "a monster-name sublist for the variant/exotic companion choice-list — no Change-shaped number of its own",
+  },
+  "druid:ashvawg-tamer:13th-level-or-higher-level-12:0": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "13th Level or Higher (Level –12)",
+    level: 0,
+    bucket: "subsystem",
+    note: "a monster-name sublist for the variant/exotic companion choice-list — no Change-shaped number of its own",
+  },
+  "druid:ashvawg-tamer:bestial-bond:4": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "Bestial Bond",
+    level: 4,
+    bucket: "subsystem",
+    note: "activated spell-like ability (cure serious wounds/neutralize poison/remove disease) targeting the animal companion, paid for with self-inflicted Wisdom damage — no baseline Change",
+  },
+  "druid:ashvawg-tamer:class-skills:0": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "Class Skills",
+    level: 0,
+    bucket: "subsystem",
+    note: "swaps Diplomacy/Heal for Intimidate/Knowledge (arcana) on the class-skill list — no Change target for class-skill-list membership exists",
+  },
+  "druid:ashvawg-tamer:exotic-companion:9": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "Exotic Companion",
+    level: 9,
+    bucket: "subsystem",
+    note: "expands the alternate-companion choice-list to stranger, smarter creatures — no Change-shaped number. The vendored data's level-based pairing heuristic links this to Venom Immunity's uuid (same level, 9th), but the prose never claims a replacement — a suspected mispairing, unfixed since this feature grants nothing numeric either way",
+  },
+  "druid:ashvawg-tamer:resist-nature-s-lure:0": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "Resist Nature's Lure",
+    level: 0,
+    bucket: "subsystem",
+    note: "the druid simply does not gain this ability — the real base Resist Nature's Lure carries no vendored Change either, so there is nothing to lose or extract",
+  },
+  "druid:ashvawg-tamer:undying-bond:6": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "Undying Bond",
+    level: 6,
+    bucket: "subsystem",
+    note: "extends bestial bond to cast resurrection on the animal companion — activated ability, no baseline Change",
+  },
+  "druid:ashvawg-tamer:variant-companion:4": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "Variant Companion",
+    level: 4,
+    bucket: "subsystem",
+    note: "expands the alternate-companion choice-list to non-animal creatures — no Change-shaped number",
+  },
+  "druid:ashvawg-tamer:venom-immunity:0": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "Venom Immunity",
+    level: 0,
+    bucket: "subsystem",
+    note: "the druid simply does not gain this ability. The real base Venom Immunity (gained at 9th) carries a vendored immEffect.poison Change, but this archetype feature grants nothing of its own — nothing for this table to extract; whether that base grant is actually suppressed for an ashvawg tamer is the swap machinery's concern, not this classification pass's",
+  },
+  "druid:ashvawg-tamer:wild-shape:0": {
+    archetypeId: "druid:ashvawg-tamer",
+    name: "Wild Shape",
+    level: 0,
+    bucket: "subsystem",
+    note: "removes the 6th-level bonus daily use, leaving the ashvawg tamer one use behind a standard druid thereafter — a cadence tweak; uses/day still rides the base class feature's own vendored uses.maxFormula unmodified, same posture as every other Wild Shape frequency change in this table",
   },
   "druid:bat-shaman:nature-bond:1": {
     archetypeId: "druid:bat-shaman",
@@ -864,6 +969,34 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "druid:eagle-shaman",
     name: "Bonus Feat",
     level: 9,
+    bucket: "numeric",
+    note: "high confidence — see DRUID_ARCHETYPE_EFFECTS_EXTRACTED below",
+  },
+  "druid:elemental-ally:elemental-eidolons:1": {
+    archetypeId: "druid:elemental-ally",
+    name: "Elemental Eidolons",
+    level: 1,
+    bucket: "subsystem",
+    note: "grants a summoner-style elemental eidolon in place of an animal companion, replaces nature's bond and wild shape — a full summoned-creature stat block, no Change-shaped number for the druid's own sheet",
+  },
+  "druid:elemental-ally:elemental-empathy:0": {
+    archetypeId: "druid:elemental-ally",
+    name: "Elemental Empathy",
+    level: 0,
+    bucket: "subsystem",
+    note: "replaces wild empathy with an elemental-subtype version of the same mechanic — the engine has no Change target for wild empathy checks either way",
+  },
+  "druid:elemental-ally:elemental-magic:0": {
+    archetypeId: "druid:elemental-ally",
+    name: "Elemental Magic",
+    level: 0,
+    bucket: "subsystem",
+    note: "lets animal-targeting spells also target elementals — a spell-targeting rule, no Change-shaped number",
+  },
+  "druid:elemental-ally:elemental-resistance:4": {
+    archetypeId: "druid:elemental-ally",
+    name: "Elemental Resistance",
+    level: 4,
     bucket: "numeric",
     note: "high confidence — see DRUID_ARCHETYPE_EFFECTS_EXTRACTED below",
   },
@@ -1713,6 +1846,76 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 4,
     bucket: "subsystem",
     note: "grants an unrelated ability, subsystem interaction, or choice-list — no Change-shaped number to extract",
+  },
+  "druid:reincarnated-druid:mysterious-stranger:2": {
+    archetypeId: "druid:reincarnated-druid",
+    name: "Mysterious Stranger",
+    level: 2,
+    bucket: "subsystem",
+    note: "adds half her druid level to the DC of OTHERS' Sense Motive/Diplomacy/Knowledge checks made to learn about her — a DC imposed on someone else's roll, not a bonus to her own sheet. Replaces woodland stride (real base Change: none)",
+  },
+  "druid:reincarnated-druid:many-lives:5": {
+    archetypeId: "druid:reincarnated-druid",
+    name: "Many Lives",
+    level: 5,
+    bucket: "subsystem",
+    note: "automatic reincarnate-on-death plus a 7-day locate-object-on-her-own-remains effect — narrative/utility ability, no Change-shaped number",
+  },
+  "druid:reincarnated-druid:resist-death-s-touch:4": {
+    archetypeId: "druid:reincarnated-druid",
+    name: "Resist Death's Touch",
+    level: 4,
+    bucket: "situational",
+    note: "+4 save bonus scoped to a narrow category (death effects, energy drain, necromancy) plus stabilization checks — not general fort/ref/will. Replaces resist nature's lure (real base Change: none)",
+  },
+  "druid:reincarnated-druid:cheat-death:9": {
+    archetypeId: "druid:reincarnated-druid",
+    name: "Cheat Death",
+    level: 9,
+    bucket: "subsystem",
+    note: "once/day reroll of a save vs. death effect/energy drain/necromancy or a failed stabilization check — a reroll mechanic, not a flat number. Replaces venom immunity (real base Change: immEffect.poison — cleanly paired to the vendored base feature's own uuid, a full single-feature swap, not a partial-tier trap)",
+  },
+  "druid:reincarnated-druid:tongue-of-the-sun-and-moon:15": {
+    archetypeId: "druid:reincarnated-druid",
+    name: "Tongue of the Sun and Moon",
+    level: 15,
+    bucket: "subsystem",
+    note: "speak-with-any-living-creature ability, no Change-shaped number. Replaces timeless body (real base Change: immEffect.magicalAging — cleanly paired to the vendored base feature's own uuid, a full single-feature swap, not a partial-tier trap)",
+  },
+  "druid:reincarnated-druid:wild-shape:0": {
+    archetypeId: "druid:reincarnated-druid",
+    name: "Wild Shape",
+    level: 0,
+    bucket: "subsystem",
+    note: "gained at 6th level (not the standard 4th) and functions at druid level minus 2 — a cadence tweak, uses/day still rides the base class feature's own vendored uses.maxFormula unmodified. The vendored feature's own level field is 6, disagreeing with this id's :0 suffix — a vendored-data oddity, unfixed",
+  },
+  "druid:restorer:healing-touch:0": {
+    archetypeId: "druid:restorer",
+    name: "Healing Touch",
+    level: 0,
+    bucket: "numeric",
+    note: "high confidence — see DRUID_ARCHETYPE_EFFECTS_EXTRACTED below. Replaces nature sense (real base Change: skill.sur/skill.kna +2 each — cleanly paired to the vendored base feature's own uuid, a full single-feature swap, not a partial-tier trap)",
+  },
+  "druid:restorer:natural-medic:0": {
+    archetypeId: "druid:restorer",
+    name: "Natural Medic",
+    level: 0,
+    bucket: "subsystem",
+    note: "lets a restorer spend any prepared spell to cast an unprepared cure spell of the same level or lower — a spell-substitution mechanic, no Change-shaped number. Replaces spontaneous casting",
+  },
+  "druid:restorer:enemy-of-blight:4": {
+    archetypeId: "druid:restorer",
+    name: "Enemy of Blight",
+    level: 4,
+    bucket: "subsystem",
+    note: "ignores magically-manipulated overgrowth for a Wisdom-bonus-scaled number of rounds/day — activated, resource-gated. Replaces resist nature's lure (real base Change: none)",
+  },
+  "druid:restorer:guide-across-lifetimes:13": {
+    archetypeId: "druid:restorer",
+    name: "Guide across Lifetimes",
+    level: 13,
+    bucket: "subsystem",
+    note: "1/day reincarnate spell-like ability without a material component — resource-gated, no baseline number. Replaces a thousand faces (real base Change: none)",
   },
   "druid:river-druid:ferrier:1": {
     archetypeId: "druid:river-druid",
@@ -2758,6 +2961,13 @@ export const DRUID_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "At 2nd level, an urban druid adds Diplomacy, Knowledge (history), Knowledge (local), and Knowledge (nobility) skills to her list of class skills. She also receives a +2 bonus on these skill checks.",
   },
+  "druid:restorer:healing-touch:0": {
+    changes: [c("2", "skill.hea")],
+    detail: () => "+2 Heal",
+    confidence: "medium",
+    provenance:
+      "A restorer gains a +2 bonus on Heal checks. When a restorer uses Heal to provide first aid, the bonus increases to +3. (the scoped +3-during-first-aid rider isn't modeled — the static sheet always shows the baseline +2.)",
+  },
   "druid:ancient-guardian:patience-of-nature:1": {
     changes: [
       c("floor(@class.unlevel / 2)", "skill.dip"),
@@ -2804,6 +3014,17 @@ export const DRUID_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     confidence: "medium",
     provenance:
       "At 3rd level, a tempest druid gains electricity resistance 5. As a standard action, he can transfer this resistance to another creature for 1 hour, after which time it reverts to him. (the temporary transfer-away window isn't modeled — the static sheet always shows the baseline 5.)",
+  },
+  "druid:elemental-ally:elemental-resistance:4": {
+    changes: [
+      c("5", "eres.acid"),
+      c("5", "eres.cold"),
+      c("5", "eres.electricity"),
+      c("5", "eres.fire"),
+    ],
+    detail: () => "energy resistance 5 (acid/cold/electricity/fire)",
+    confidence: "high",
+    provenance: "At 4th level, an elemental ally gains resist acid, cold, electricity, and fire 5.",
   },
   "druid:aquatic-druid:deep-diver:13": {
     changes: [c("floor(@class.unlevel / 2)", "dr.slashing-or-piercing")],

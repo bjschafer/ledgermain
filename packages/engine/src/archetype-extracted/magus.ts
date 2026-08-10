@@ -4,7 +4,7 @@
  * extracted content for it anywhere, and no existing ids to avoid duplicating.
  * This file establishes magus's slice from scratch, repeating the exact
  * methodology the fighter pilot (`fighter.ts`) already validated: every
- * vendored archetype feature for the class (31 magus archetypes, 150 features)
+ * vendored archetype feature for the class (39 magus archetypes, 170 features)
  * is read in full and bucketed as `numeric` / `situational` / `subsystem` /
  * `blocked`, and the `numeric` ones get a real `Change`-shaped extraction. Per
  * the per-class file convention (`index.ts`'s doc comment), this file owns
@@ -700,6 +700,123 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     note: "real +2 save bonus, but scoped to a specific spell subschool (divination/scrying) — saving throws aren't modeled per-school, only fort/ref/will as a whole, so applying it would over-apply to all Will saves",
   },
 
+  // ── magus:magus-greensting-slayer-arcana ── (Greensting Slayer's own arcana list, deferred — class note 2)
+  "magus:magus-greensting-slayer-arcana:dark-shifter:6": {
+    archetypeId: "magus:magus-greensting-slayer-arcana",
+    name: "Dark Shifter",
+    level: 6,
+    bucket: "subsystem",
+    note: "magus arcana pick (arcane-pool-spent, moves an ongoing darkness-descriptor spell effect to a new target) — arcana list, deferred (class note 2)",
+  },
+
+  // ── magus:magus-hexbreaker-arcana ── (Hexbreaker's own arcana list, deferred — class note 2)
+  "magus:magus-hexbreaker-arcana:improved-remove-curse:1": {
+    archetypeId: "magus:magus-hexbreaker-arcana",
+    name: "Improved Remove Curse",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (arcane-pool-spent caster-level-check bonus on remove curse/break enchantment) — arcana list, deferred (class note 2)",
+  },
+  "magus:magus-hexbreaker-arcana:wracking-dispel:1": {
+    archetypeId: "magus:magus-hexbreaker-arcana",
+    name: "Wracking Dispel",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (arcane-pool-spent damage rider on a successful dispel, with its own save DC) — arcana list, deferred (class note 2)",
+  },
+
+  // ── magus:magus-hexcrafter-arcana ── (Hexcrafter's own arcana list, deferred — class note 2)
+  "magus:magus-hexcrafter-arcana:accursed-strike:1": {
+    archetypeId: "magus:magus-hexcrafter-arcana",
+    name: "Accursed Strike",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (lets curse-descriptor spells be delivered via spellstrike) — arcana list, deferred (class note 2); spellstrike itself is prose-only (class note 3)",
+  },
+
+  // ── magus:magus-jistkan-artificer-arcana ── (Jistkan Artificer's own arcana list, deferred — class note 2)
+  "magus:magus-jistkan-artificer-arcana:sharpened-arm:1": {
+    archetypeId: "magus:magus-jistkan-artificer-arcana",
+    name: "Sharpened Arm",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (reworks the golem arm's damage type/crit range, adds arcane pool weapon abilities) — arcana list, deferred (class note 2); also golem-arm/unarmed-strike subsystem, no engine target for natural-attack damage",
+  },
+  "magus:magus-jistkan-artificer-arcana:shielding-arm:1": {
+    archetypeId: "magus:magus-jistkan-artificer-arcana",
+    name: "Shielding Arm",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (shield AC bonus equal to the golem arm's own enhancement bonus) — arcana list, deferred (class note 2); also a dynamic per-item value with no formula input",
+  },
+  "magus:magus-jistkan-artificer-arcana:flurrying-arm:11": {
+    archetypeId: "magus:magus-jistkan-artificer-arcana",
+    name: "Flurrying Arm",
+    level: 11,
+    bucket: "subsystem",
+    note: "magus arcana pick (grants monk flurry of blows on the golem arm) — arcana list, deferred (class note 2); no engine target for extra unarmed attacks either way",
+  },
+  "magus:magus-jistkan-artificer-arcana:break-spell:13": {
+    archetypeId: "magus:magus-jistkan-artificer-arcana",
+    name: "Break Spell",
+    level: 13,
+    bucket: "subsystem",
+    note: "magus arcana pick (arcane-pool-spent attack of opportunity to negate a targeted ranged spell attack) — arcana list, deferred (class note 2)",
+  },
+
+  // ── magus:magus-kapenia-dancer-arcana ── (Kapenia Dancer's own arcana list, deferred — class note 2)
+  "magus:magus-kapenia-dancer-arcana:elasticity:1": {
+    archetypeId: "magus:magus-kapenia-dancer-arcana",
+    name: "Elasticity",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (arcane-pool-spent reach on a bladed scarf for a turn) — arcana list, deferred (class note 2)",
+  },
+  "magus:magus-kapenia-dancer-arcana:spirit-fingers:1": {
+    archetypeId: "magus:magus-kapenia-dancer-arcana",
+    name: "Spirit Fingers",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (arcane-pool-spent steal-maneuver attempt on a melee hit) — arcana list, deferred (class note 2)",
+  },
+  "magus:magus-kapenia-dancer-arcana:kapenia-curse:9": {
+    archetypeId: "magus:magus-kapenia-dancer-arcana",
+    name: "Kapenia Curse",
+    level: 9,
+    bucket: "subsystem",
+    note: "magus arcana pick (arcane-pool-spent ability-damage rider on a bladed-scarf critical hit) — arcana list, deferred (class note 2)",
+  },
+  "magus:magus-kapenia-dancer-arcana:spirit-step:12": {
+    archetypeId: "magus:magus-kapenia-dancer-arcana",
+    name: "Spirit Step",
+    level: 12,
+    bucket: "subsystem",
+    note: "magus arcana pick (arcane-pool-spent teleport on a bladed-scarf critical hit) — arcana list, deferred (class note 2)",
+  },
+
+  // ── magus:magus-spellblade-arcana ── (Spellblade's own arcana list, deferred — class note 2)
+  "magus:magus-spellblade-arcana:pool-sourced-athame:1": {
+    archetypeId: "magus:magus-spellblade-arcana",
+    name: "Pool-Sourced Athame",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (lets arcane pool points create the force athame instead of a sacrificed spell) — arcana list, deferred (class note 2)",
+  },
+  "magus:magus-spellblade-arcana:spellblade-parry:1": {
+    archetypeId: "magus:magus-spellblade-arcana",
+    name: "Spellblade Parry",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (immediate-action deflection AC bonus scaled to the sacrificed spell's level, ending the athame early) — arcana list, deferred (class note 2)",
+  },
+  "magus:magus-spellblade-arcana:throw-athame:1": {
+    archetypeId: "magus:magus-spellblade-arcana",
+    name: "Throw Athame",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (thrown-weapon use of the force athame, with an arcane-pool-spent damage boost) — arcana list, deferred (class note 2)",
+  },
+
   // ── magus:mindblade ──
   "magus:mindblade:dual-manifest:13": {
     archetypeId: "magus:mindblade",
@@ -1166,6 +1283,45 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "restricts proficiency to simple weapons only — no Change",
   },
+
+  // ── magus:suli ── (Elemental Knight's own arcana list, deferred — class note 2)
+  "magus:suli:energy-resistance-boost:1": {
+    archetypeId: "magus:suli",
+    name: "Energy Resistance Boost",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (swift-action, pool-or-elemental-assault-spent +5 to racial energy resistances for 1 round) — arcana list, deferred (class note 2); also a 1-round activated buff, not a baseline number",
+  },
+  "magus:suli:assault-synergy:10": {
+    archetypeId: "magus:suli",
+    name: "Assault Synergy",
+    level: 10,
+    bucket: "subsystem",
+    note: "magus arcana pick (swift-action, elemental-assault-spent energy-damage rider on an offensive spell) — arcana list, deferred (class note 2)",
+  },
+  "magus:suli:energy-reflection:12": {
+    archetypeId: "magus:suli",
+    name: "Energy Reflection",
+    level: 12,
+    bucket: "subsystem",
+    note: "magus arcana pick (a restricted reflection-arcana variant spending elemental assault rounds as arcane pool points) — arcana list, deferred (class note 2)",
+  },
+
+  // ── magus:tiefling ── (Fiend Flayer's own arcana list, deferred — class note 2)
+  "magus:tiefling:bypassing-strike:1": {
+    archetypeId: "magus:tiefling",
+    name: "Bypassing Strike",
+    level: 1,
+    bucket: "subsystem",
+    note: "magus arcana pick (arcane-pool-spent DR bypass vs. evil outsiders on one attack) — arcana list, deferred (class note 2)",
+  },
+  "magus:tiefling:fiendblade:19": {
+    archetypeId: "magus:tiefling",
+    name: "Fiendblade",
+    level: 19,
+    bucket: "subsystem",
+    note: "magus arcana pick (conjures a temporary enhancement-bonus weapon, arcane-pool-spent) — arcana list, deferred (class note 2)",
+  },
 };
 
 /**
@@ -1181,7 +1337,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
  * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 8 of magus's 150 features
+ * extraction pass inferred this from prose." Only 8 of magus's 170 features
  * cleared the `numeric` bar (see `MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION`
  * above for the full per-feature audit) — magus's kit leans heavily on
  * arcane-pool spend-options, magus arcana, and prose-only spell-combat/
