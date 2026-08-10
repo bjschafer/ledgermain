@@ -10,10 +10,15 @@
  * `bun run coverage:mech` prints the per-domain summary and top candidates.
  * `bun run coverage:mech --md <path>` also writes the full ranked report.
  *
- * Archetype features additionally consult `ARCHETYPE_FEATURE_CLASSIFICATION`:
- * a feature the extraction waves deliberately ruled situational/subsystem/
- * blocked counts as reviewed and never flags; a `numeric` verdict that never
- * produced a wired effect still does.
+ * Archetype features additionally consult `ARCHETYPE_FEATURE_CLASSIFICATION`,
+ * and feats consult `FEAT_CLASSIFICATION` + `FEAT_CLASSIFICATION_COMMUNITY`:
+ * an entry the audits deliberately ruled situational/subsystem/blocked counts
+ * as reviewed and never flags; a mover verdict (`numeric`/`choice-numeric`/
+ * `pool`) that never produced a wired effect still does. Feats also wire
+ * numbers through two routes that never serialize a `Change` formula:
+ * `FEAT_POOL_EFFECTS` (resource-max deltas consumed by deriveResourcePools)
+ * and choice-type entries (changes materialize from the player's featChoices
+ * pick at collect time) — both count as wired.
  *
  * Heuristic, not a verdict: a flagged entry may be legitimately
  * situational, and an unflagged one may still deserve wiring. It ranks
@@ -35,7 +40,9 @@ import { mergedBloodragerBloodlineCatalog } from "../packages/engine/src/bloodra
 import { BUFF_CHANGE_PATCHES } from "../packages/engine/src/buff-effects.js";
 import { mergedOrderCatalog } from "../packages/engine/src/cavalier-orders.js";
 import { CLASS_FEATURE_CHANGE_PATCHES } from "../packages/engine/src/class-feature-effects.js";
-import { featNameSlug } from "../packages/engine/src/feat-effects.js";
+import { FEAT_CLASSIFICATION } from "../packages/engine/src/feat-classification.js";
+import { FEAT_CLASSIFICATION_COMMUNITY } from "../packages/engine/src/feat-classification-community.js";
+import { FEAT_POOL_EFFECTS, featNameSlug } from "../packages/engine/src/feat-effects.js";
 import { resolveFeatEffect } from "../packages/engine/src/feat-effects-resolve.js";
 import { mergedInvestigatorTalentCatalog } from "../packages/engine/src/investigator-talents.js";
 import { mergedKineticistWildTalentCatalog } from "../packages/engine/src/kineticist-wild-talents.js";
@@ -354,8 +361,17 @@ function main(): void {
 
   for (const e of Object.values(loadDataFile("feats.json"))) {
     if (typeof e.name !== "string") continue;
-    const resolved = resolveFeatEffect(featNameSlug(e.name));
-    const wired = resolved !== undefined && defMovesNumbers(resolved.entry);
+    const slug = featNameSlug(e.name);
+    const resolved = resolveFeatEffect(slug);
+    const wired =
+      (resolved !== undefined &&
+        (defMovesNumbers(resolved.entry) || rec(resolved.entry).type === "choice")) ||
+      FEAT_POOL_EFFECTS[slug] !== undefined;
+    // Same semantics as the archetype verdicts: a deliberate not-wireable
+    // ruling from either feat audit is reviewed backlog; a mover bucket
+    // that never produced a wired route is real backlog and still flags.
+    const bucket = FEAT_CLASSIFICATION[slug]?.bucket ?? FEAT_CLASSIFICATION_COMMUNITY[slug];
+    const reviewed = bucket === "situational" || bucket === "subsystem" || bucket === "blocked";
     results.push(
       audit(
         "feats",
@@ -363,6 +379,7 @@ function main(): void {
         wired ? "wired" : resolved !== undefined ? "noted" : "prose",
         false,
         typeof e.description === "string" ? e.description : "",
+        reviewed,
       ),
     );
   }
