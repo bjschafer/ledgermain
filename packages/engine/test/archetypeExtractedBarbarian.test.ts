@@ -114,8 +114,8 @@ const HEAVY_ARMOR: NonNullable<CharacterDoc["build"]["gear"]>[number] = {
 };
 
 describe("classification table covers every vendored barbarian archetype feature", () => {
-  it("has exactly 149 entries", () => {
-    expect(Object.keys(BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(149);
+  it("has exactly 161 entries", () => {
+    expect(Object.keys(BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(161);
   });
 
   it("every classification key matches a real vendored archetype-feature id", () => {
@@ -327,9 +327,84 @@ describe("Untamed Rager: Feral Appearance grants scaling general Intimidate (no 
   });
 });
 
+describe("Sharptooth: Scent of Blood grants scent, doubling range to keen scent at L5", () => {
+  const entry = BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:sharptooth:scent-of-blood:2"]!;
+  const formula = entry.changes[0]!.formula;
+
+  it("30 ft. below L5, 60 ft. at L5+", () => {
+    expect(evalAtLevel(formula, 2)).toBe(30);
+    expect(evalAtLevel(formula, 4)).toBe(30);
+    expect(evalAtLevel(formula, 5)).toBe(60);
+    expect(evalAtLevel(formula, 12)).toBe(60);
+  });
+
+  it("matches the entry's own detail string", () => {
+    expect(entry.detail?.(2)).toBe("scent 30 ft.");
+    expect(entry.detail?.(5)).toBe("scent 60 ft. (keen scent)");
+  });
+
+  it("shows up in compute()'s sheet.senses end-to-end (first sense-target extraction in this pipeline)", () => {
+    const sharptooth = archetypeId("Sharptooth");
+    const sheet = compute(makeDoc({ level: 5, archetypes: [sharptooth] }), ref);
+    const scent = sheet.senses.find((s) => s.kind === "scent");
+    expect(scent?.range).toBe(60);
+  });
+});
+
+describe("Superstitious: Keen Senses grants a level-gated sequence of special senses", () => {
+  const entry = BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:superstitious:keen-senses:7"]!;
+
+  it("low-light vision at L7 (formula index 0)", () => {
+    const formula = entry.changes[0]!.formula;
+    expect(evalAtLevel(formula, 6)).toBe(0);
+    expect(evalAtLevel(formula, 7)).toBe(1);
+  });
+
+  it("darkvision 60 ft. at L10 (formula index 1, operator add)", () => {
+    const formula = entry.changes[1]!.formula;
+    expect(entry.changes[1]!.operator).toBe("add");
+    expect(evalAtLevel(formula, 9)).toBe(0);
+    expect(evalAtLevel(formula, 10)).toBe(60);
+  });
+
+  it("scent 30 ft. at L13, blindsense 30 ft. at L16, blindsight 30 ft. at L19", () => {
+    expect(evalAtLevel(entry.changes[2]!.formula, 12)).toBe(0);
+    expect(evalAtLevel(entry.changes[2]!.formula, 13)).toBe(30);
+    expect(evalAtLevel(entry.changes[3]!.formula, 15)).toBe(0);
+    expect(evalAtLevel(entry.changes[3]!.formula, 16)).toBe(30);
+    expect(evalAtLevel(entry.changes[4]!.formula, 18)).toBe(0);
+    expect(evalAtLevel(entry.changes[4]!.formula, 19)).toBe(30);
+  });
+
+  it("matches the entry's own detail string across breakpoints", () => {
+    expect(entry.detail?.(7)).toBe("low-light vision");
+    expect(entry.detail?.(10)).toBe("low-light vision, darkvision 60 ft.");
+    expect(entry.detail?.(19)).toBe(
+      "low-light vision, darkvision 60 ft., scent, blindsense 30 ft., blindsight 30 ft.",
+    );
+  });
+
+  it("shows up in compute()'s sheet.senses end-to-end at L19 (all five senses, darkvision using the add-extension idiom)", () => {
+    const superstitious = archetypeId("Superstitious");
+    const sheet = compute(makeDoc({ level: 19, archetypes: [superstitious] }), ref);
+    expect(sheet.senses.find((s) => s.kind === "lowLight")).toBeDefined();
+    expect(sheet.senses.find((s) => s.kind === "darkvision")?.range).toBe(60);
+    expect(sheet.senses.find((s) => s.kind === "scent")?.range).toBe(30);
+    expect(sheet.senses.find((s) => s.kind === "blindsense")?.range).toBe(30);
+    expect(sheet.senses.find((s) => s.kind === "blindsight")?.range).toBe(30);
+  });
+
+  it("suppresses base Damage Reduction when paired (no double-count)", () => {
+    const superstitious = archetypeId("Superstitious");
+    const sheet = compute(makeDoc({ level: 19, archetypes: [superstitious] }), ref);
+    const feature = sheet.classFeatures.find((f) => f.name === "Damage Reduction");
+    expect(feature?.applied).toBe(false);
+  });
+});
+
 describe("BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED shape", () => {
-  it("has exactly 9 entries", () => {
-    expect(Object.keys(BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(9);
+  it("has exactly 11 entries", () => {
+    expect(Object.keys(BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(11);
   });
 
   it("every extracted id is classified numeric in the audit table", () => {

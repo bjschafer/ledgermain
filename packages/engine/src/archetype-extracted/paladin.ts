@@ -1823,6 +1823,62 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "situational",
     note: "extends natural-defense's benefit to allies via a resource spend — ally-targeting",
   },
+  "paladin:divine-hunter:domain:3": {
+    archetypeId: "paladin:divine-hunter",
+    name: "Domain",
+    level: 3,
+    bucket: "subsystem",
+    note: "domain-power + domain-spell grant, unrelated — no flat number",
+  },
+  "paladin:divine-hunter:otherworldly-companion:3": {
+    archetypeId: "paladin:divine-hunter",
+    name: "Otherworldly Companion",
+    level: 3,
+    bucket: "subsystem",
+    note: "celestial/fiendish template on the animal companion — no flat number; replaces hunter tactics, a base feature this class doesn't have (shared text with the Hunter-class Divine Hunter archetype — see divine-bond above), changes: [] regardless so no double-count risk",
+  },
+  "paladin:legate:celestial-armor:3": {
+    archetypeId: "paladin:legate",
+    name: "Celestial Armor",
+    level: 3,
+    bucket: "subsystem",
+    note: "activated instant-armor-style item creation with escalating enhancement/special abilities, resource-gated (Wis bonus + half level uses/day) — no flat Change-shaped AC number; replaces mercy (no vendored number)",
+  },
+  "paladin:redeemer:associates:0": {
+    archetypeId: "paladin:redeemer",
+    name: "Associates",
+    level: 0,
+    bucket: "subsystem",
+    note: "code-of-conduct exception allowing non-good associates — no number",
+  },
+  "paladin:redeemer:aura-of-mercy:11": {
+    archetypeId: "paladin:redeemer",
+    name: "Aura of Mercy",
+    level: 11,
+    bucket: "situational",
+    note: "grants merciful smite's bonuses to allies within 10 ft., not the paladin herself — ally-targeting; replaces aura of justice (no vendored number)",
+  },
+  "paladin:redeemer:merciful-smite:1": {
+    archetypeId: "paladin:redeemer",
+    name: "Merciful Smite",
+    level: 1,
+    bucket: "situational",
+    note: "reflavors smite evil to deal nonlethal damage without the normal penalty — Smite Evil isn't Change-shaped in this engine (hand-tabled resource, per this file's header note 1)",
+  },
+  "paladin:redeemer:monstrous-rapport:1": {
+    archetypeId: "paladin:redeemer",
+    name: "Monstrous Rapport",
+    level: 1,
+    bucket: "situational",
+    note: "+2 Diplomacy bonus scoped to creatures 'commonly considered monstrous' — a creature-type-scoped number, per the honesty bar; replaces detect evil (no vendored number)",
+  },
+  "paladin:redeemer:pact-of-peace:8": {
+    archetypeId: "paladin:redeemer",
+    name: "Pact of Peace",
+    level: 8,
+    bucket: "subsystem",
+    note: "lesser-geas-style activated ability on a defeated foe — no flat number; replaces aura of resolve, which DOES carry a real vendored Change (immEffect.charm) — a genuine loss, but a full single-feature swap (not a partial-tier trap), so nothing to backfill or suppress here",
+  },
 };
 
 /**

@@ -167,3 +167,38 @@ describe("blocked composition trap: Black-Blooded Oracle's Curse of Black Blood 
     expect(sheet.skills["blf"]?.total).toBe(withoutCurse.skills["blf"]?.total);
   });
 });
+
+describe("Oracle Black Blood Power: Darkvision grants 90 ft. at L15", () => {
+  // Unlike the archetype's other two features (Black Blood Spray, Dark
+  // Resilience — both activated/resource-gated, situational), Darkvision is
+  // an unconditional base feature not gated behind build.oracleCurse's
+  // hand-tabled-curse gap (see oracle.ts's classification note). collect.ts
+  // gates every archetype feature Change on the character's class level
+  // reaching the feature's OWN level (15 here), so nothing from this id
+  // applies below L15 — the earlier 60 ft. grant isn't reachable through this
+  // extraction (see oracle.ts's note on the sibling black-blood-revelation:1
+  // entry).
+  const blackBloodPower = archetypeId("Oracle Black Blood Power");
+
+  it("absent below L15 (feature not yet granted)", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "oracle", level: 10 }], archetypes: [blackBloodPower] }),
+      ref,
+    );
+    expect(sheet.senses.find((s) => s.kind === "darkvision")).toBeUndefined();
+  });
+
+  it("90 ft. at L15+", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "oracle", level: 15 }], archetypes: [blackBloodPower] }),
+      ref,
+    );
+    const dv = sheet.senses.find((s) => s.kind === "darkvision");
+    expect(dv?.range).toBe(90);
+  });
+
+  it("absent without the archetype", () => {
+    const sheet = compute(makeDoc({ classes: [{ tag: "oracle", level: 15 }] }), ref);
+    expect(sheet.senses.find((s) => s.kind === "darkvision")).toBeUndefined();
+  });
+});

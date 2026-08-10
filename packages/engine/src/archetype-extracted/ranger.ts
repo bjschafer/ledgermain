@@ -86,13 +86,24 @@
  *   Trap, Ilsurian Archer's Vicious Aim) and other spellcasting-model
  *   modifications are uniformly `subsystem` — no engine hook exists for a
  *   per-archetype caster-model swap.
- * - **Two minor suspected vendored-data quirks** (not fixed, noted at their
+ * - **Three minor suspected vendored-data quirks** (not fixed, noted at their
  *   entries): Hooded Champion's own "Favored Enemy" feature at 5th level
  *   restates the base Favored Enemy text verbatim with no additional
  *   modification, even though Hooded Champion already fully replaces
  *   Favored Enemy at 1st level via its Panache feature — likely a leftover
  *   reference-text duplicate. Realm Wanderer's Queen's Bond feature is
- *   vendored at level 0 even though its own prose says "At 4th level."
+ *   vendored at level 0 even though its own prose says "At 4th level." And a
+ *   cross-class content mixup: six of Skirmisher's seven features
+ *   (Conditioning, Mobility Training, Reconnaissance Training, Weapon and
+ *   Armor Proficiency, Wilderness Training, Mobile Mastery) are byte-identical
+ *   to `fighter:skirmisher`'s same-slug entries and don't fit a ranger's own
+ *   6+Int skill baseline (only Hunter's Tricks is genuinely ranger content);
+ *   six of Infiltrator's eight features (everything but Adaptation) are
+ *   byte-identical to the inquisitor/investigator Infiltrator archetype's
+ *   text, replacing base features (stern gaze, discern lies, poison
+ *   resistance, poison lore) a ranger doesn't have. A data-pipeline issue, out
+ *   of this file's scope to fix — each affected entry below mirrors its
+ *   sibling class's own classification for consistency.
  *
  * Confidence rubric for the extracted table below is identical to fighter's
  * (`archetype-extracted/fighter.ts`): "high" = literal/near-literal reflavor
@@ -1974,6 +1985,97 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "situational",
     note: "save bonus scoped to a specific effect type (poison, divination, curses, fear, etc.) — no qualified-save target exists (fort/ref/will are the only save targets this engine applies).",
   },
+  "ranger:infiltrator:forbidden-lore:2": {
+    archetypeId: "ranger:infiltrator",
+    name: "Forbidden Lore",
+    level: 2,
+    bucket: "subsystem",
+    note: "lifts an opposed-alignment spellcasting restriction, replacing track (changes: [], nothing lost) — spell-list rule, no number. Byte-identical to the inquisitor/investigator Infiltrator archetype's text (see this file's header comment); mirrors inquisitor.ts's own classification of the identical text",
+  },
+  "ranger:infiltrator:guileful-lore:1": {
+    archetypeId: "ranger:infiltrator",
+    name: "Guileful Lore",
+    level: 1,
+    bucket: "numeric",
+    note: "adds Wis modifier to Bluff and Diplomacy, unconditional and unscoped, replacing monster lore — extracted (see RANGER_ARCHETYPE_EFFECTS_EXTRACTED below). Byte-identical to the inquisitor/investigator Infiltrator archetype's text (see this file's header comment); already extracted identically under investigator:infiltrator:guileful-lore:1 and inquisitor:infiltrator:guileful-lore:1",
+  },
+  "ranger:infiltrator:master-of-disguise:1": {
+    archetypeId: "ranger:infiltrator",
+    name: "Master of Disguise",
+    level: 1,
+    bucket: "situational",
+    note: "reduces specific Disguise-check penalties (gender/race/age/size mismatch) by 2 and speeds up disguising, replacing trapfinding — a per-circumstance penalty adjustment, not a flat skill bonus. Byte-identical to the inquisitor/investigator Infiltrator archetype's text (see this file's header comment)",
+  },
+  "ranger:infiltrator:mimic-mastery:2": {
+    archetypeId: "ranger:infiltrator",
+    name: "Mimic Mastery",
+    level: 2,
+    bucket: "situational",
+    note: "+10 Disguise bonus, but scoped to using disguise self or a polymorph extract specifically, replacing poison resistance — a chosen-spell condition the engine can't check. Byte-identical to the inquisitor/investigator Infiltrator archetype's text (see this file's header comment)",
+  },
+  "ranger:infiltrator:misdirection:1": {
+    archetypeId: "ranger:infiltrator",
+    name: "Misdirection",
+    level: 1,
+    bucket: "subsystem",
+    note: "detects as a chosen alignment (misdirection-as-prepared), replacing stern gaze — detection spoof, no number. Byte-identical to the inquisitor/investigator Infiltrator archetype's text (see this file's header comment)",
+  },
+  "ranger:infiltrator:necessary-lies:5": {
+    archetypeId: "ranger:infiltrator",
+    name: "Necessary Lies",
+    level: 5,
+    bucket: "blocked",
+    note: "adds class level to saves vs. 'abilities that detect lies or reveal or force the truth', replacing discern lies — no qualified-save target models truth-detection/compulsion-to-honesty as a category (missing target, not an uncheckable condition). Byte-identical to the inquisitor/investigator Infiltrator archetype's text (see this file's header comment)",
+  },
+  "ranger:infiltrator:voice-mimicry:2": {
+    archetypeId: "ranger:infiltrator",
+    name: "Voice Mimicry",
+    level: 2,
+    bucket: "situational",
+    note: "a whole modifier table for a special voice-mimicry Disguise check, replacing poison lore — table-based mechanic, not a flat stat bonus. Byte-identical to the inquisitor/investigator Infiltrator archetype's text (see this file's header comment)",
+  },
+  "ranger:skirmisher:conditioning:2": {
+    archetypeId: "ranger:skirmisher",
+    name: "Conditioning",
+    level: 2,
+    bucket: "situational",
+    note: "vendored description is the literal string 'undefined' (no real prose to extract from); byte-identical placeholder to fighter:skirmisher:conditioning:2 — mirrored that file's classification",
+  },
+  "ranger:skirmisher:mobile-mastery:19": {
+    archetypeId: "ranger:skirmisher",
+    name: "Mobile Mastery",
+    level: 19,
+    bucket: "subsystem",
+    note: "20% miss chance, gated on armor/load state — no miss-chance Change target exists in this engine. Byte-identical to fighter:skirmisher:mobile-mastery:19 (see this file's header comment); mirrored that file's classification",
+  },
+  "ranger:skirmisher:mobility-training:3": {
+    archetypeId: "ranger:skirmisher",
+    name: "Mobility Training",
+    level: 3,
+    bucket: "numeric",
+    note: "dodge AC + land speed bonus gated on @armor.type<=1 (encumbrance half not checked) — extracted (see RANGER_ARCHETYPE_EFFECTS_EXTRACTED below). Byte-identical to fighter:skirmisher:mobility-training:3, already extracted there with this same formula (see this file's header comment); mirrored for consistency",
+  },
+  "ranger:skirmisher:reconnaissance-training:2": {
+    archetypeId: "ranger:skirmisher",
+    name: "Reconnaissance Training",
+    level: 2,
+    bucket: "situational",
+    note: "+1 Reflex save bonus (scaling every 4 levels) scoped to traps/natural hazards/environmental effects specifically, not general Reflex saves — no qualified-save sub-target exists. Byte-identical to fighter:skirmisher:reconnaissance-training:2 (see this file's header comment); mirrored that file's classification",
+  },
+  "ranger:skirmisher:weapon-and-armor-proficiency:1": {
+    archetypeId: "ranger:skirmisher",
+    name: "Weapon and Armor Proficiency",
+    level: 1,
+    bucket: "subsystem",
+    note: "proficiency change, no Change-shaped target. Byte-identical to fighter:skirmisher:weapon-and-armor-proficiency:1 (see this file's header comment); mirrored that file's classification",
+  },
+  "ranger:skirmisher:wilderness-training:1": {
+    archetypeId: "ranger:skirmisher",
+    name: "Wilderness Training",
+    level: 1,
+    bucket: "subsystem",
+    note: "grants Acrobatics/Stealth as class skills plus a skill-ranks-per-level bump — bonusSkillRanks is a live target elsewhere in this pipeline, but the stated baseline ('4 + Int instead of 2 + Int') matches FIGHTER's 2+Int skill progression, not a real ranger's own 6+Int, so the delta isn't genuine ranger:skirmisher content. Byte-identical to fighter:skirmisher:wilderness-training:1 (itself not extracted, see this file's header comment); not extracted here either",
+  },
 };
 
 /**
@@ -2125,5 +2227,44 @@ export const RANGER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "Heal checks and Profession (herbalism) checks. [Only applies once the player has added " +
       "a 'Profession (herbalism)' skill entry with id skill.pro.herbalism, same convention as " +
       "the hand-verified table's skill.crf.alchemy.]",
+  },
+
+  // Infiltrator's "Guileful Lore" — see the header comment's cross-class
+  // note — stacks a flat Wisdom-modifier bonus onto Bluff and Diplomacy,
+  // unconditionally, mirroring the identical extraction already made for
+  // investigator:infiltrator:guileful-lore:1 and
+  // inquisitor:infiltrator:guileful-lore:1.
+  "ranger:infiltrator:guileful-lore:1": {
+    changes: [c("@abilities.wis.mod", "skill.blf"), c("@abilities.wis.mod", "skill.dip")],
+    detail: () => "+Wis modifier to Bluff and Diplomacy",
+    confidence: "high",
+    provenance:
+      "She adds her Wisdom modifier on Bluff and Diplomacy skill checks in addition to the " +
+      "normal ability score modifiers.",
+  },
+
+  // Skirmisher's "Mobility Training" — see the header comment's cross-class
+  // note — is byte-identical to fighter:skirmisher:mobility-training:3,
+  // already extracted there with this same formula.
+  "ranger:skirmisher:mobility-training:3": {
+    changes: [
+      c("if(lte(@armor.type, 1), min(4, 1 + floor((@class.unlevel - 3) / 4)), 0)", "ac", "dodge"),
+      c(
+        "if(lte(@armor.type, 1), if(gte(@class.unlevel, 7), 10, 5), 0)",
+        "landSpeed",
+        "enhancement",
+      ),
+    ],
+    detail: (level) =>
+      `+${Math.min(4, 1 + Math.floor((level - 3) / 4))} dodge AC / +${level >= 7 ? 10 : 5} ft. ` +
+      `land speed (light/no armor; light load not checked)`,
+    confidence: "medium",
+    provenance:
+      "At 3rd level, a skirmisher learns to be more maneuverable while wearing light or no " +
+      "armor. He gains a +1 dodge bonus to AC while wearing light or no armor and while " +
+      "carrying no more than a light load. ... This bonus increases by 1 for every 4 levels " +
+      "beyond 3rd (to a maximum of +4 at 15th level). In addition, a skirmisher gains an " +
+      "enhancement bonus of +5 feet to his base speed. At 7th level, the bonus increases to " +
+      "+10 feet.",
   },
 };

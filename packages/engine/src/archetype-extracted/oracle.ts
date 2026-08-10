@@ -629,13 +629,85 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "activated feat-emulation ability (gains the benefit of a combat feat temporarily), resource-gated — no flat number",
   },
+  // The "oracle-<name>-power" ids below are a SEPARATE synthetic bucket from
+  // the ordinary archetypes above (e.g. `oracle:black-blooded-oracle`,
+  // `oracle:cyclopean-seer`) — same underlying content, individually
+  // re-vendored per sub-ability instead of bundled into one description.
+  // Checked against each archetype's own top-level `archetypes.json`
+  // description (not just the feature prose) to tell apart two genuinely
+  // different shapes: Black Blood's three abilities are listed as the
+  // Black-Blooded Oracle's own unconditional "class features" (nothing ties
+  // them to `build.oracleCurse`'s separate hand-tabled-curse gap — that gap
+  // only affects the ALREADY-classified `curse-of-black-blood:1`, a distinct
+  // feature that actually swaps the curse mechanism); Cyclopean Seer's three
+  // and Dual-Cursed's two are explicitly described as revelations ("this
+  // ability alters the revelation class feature" / "may select ... in place
+  // of a mystery revelation") layered on top of an ordinary, hand-tabled
+  // curse choice — deferred under rule 1 above, same as Hermit's Recluse's
+  // Stride, regardless of how clean the underlying number is.
+  "oracle:oracle-black-blood-power:black-blood-spray:1": {
+    archetypeId: "oracle:oracle-black-blood-power",
+    name: "Black Blood Spray",
+    level: 1,
+    bucket: "situational",
+    note: "real 1d8 + 1 per 2 levels cold damage, but an immediate-action reactive attack triggered by taking piercing/slashing damage, resource-gated (1/2 level/day) — a combat-event trigger, per the honesty bar",
+  },
+  "oracle:oracle-black-blood-power:dark-resilience:7": {
+    archetypeId: "oracle:oracle-black-blood-power",
+    name: "Dark Resilience",
+    level: 7,
+    bucket: "situational",
+    note: "real +4 circumstance bonus on a saving-throw reroll, but triggered only after failing a save vs. a specific effect list, resource-gated (1-3/day by level) — a combat-event trigger, per the honesty bar",
+  },
+  "oracle:oracle-black-blood-power:darkvision:15": {
+    archetypeId: "oracle:oracle-black-blood-power",
+    name: "Darkvision",
+    level: 15,
+    bucket: "numeric",
+    note: "darkvision 90 ft. at 15th — a base archetype feature, not gated on the curse-selection gap that blocks curse-of-black-blood:1 above (this feature never touches build.oracleCurse) — extracted via the sensedv target (see ORACLE_ARCHETYPE_EFFECTS_EXTRACTED below); collect.ts's own level-gate means the id's earlier 60 ft. clause can't apply below 15th (it's bundled into the already-classified black-blood-revelation:1 sibling entry instead, an under-count below 15th, not a double-count). The sibling entry's own note calling darkvision unmodeled predates this file's sense-target extraction; not corrected there (out of scope), but not repeated here",
+  },
+  "oracle:oracle-cyclopean-seer-power:doomsaying:1": {
+    archetypeId: "oracle:oracle-cyclopean-seer-power",
+    name: "Doomsaying",
+    level: 1,
+    bucket: "subsystem",
+    note: "activated, once-per-day-per-Cha-bonus penalty debuff granted as a revelation ('this ability alters the revelation class feature') — revelation-list addition, deferred, also resource-gated",
+  },
+  "oracle:oracle-cyclopean-seer-power:flash-of-insight:1": {
+    archetypeId: "oracle:oracle-cyclopean-seer-power",
+    name: "Flash of Insight",
+    level: 1,
+    bucket: "subsystem",
+    note: "borrowed cyclops racial spell-like ability, granted as a revelation — revelation-list addition, deferred",
+  },
+  "oracle:oracle-cyclopean-seer-power:prescience:5": {
+    archetypeId: "oracle:oracle-cyclopean-seer-power",
+    name: "Prescience",
+    level: 5,
+    bucket: "subsystem",
+    note: "a real, clean +2-then-scaling AC-vs-AoO/concentration bonus, but granted as a revelation ('all cyclopean seers have access to the following revelations') — revelation-list addition, deferred, same Hermit's Recluse's Stride precedent (a clean number still stays subsystem when it's a menu pick, not automatic)",
+  },
+  "oracle:oracle-dual-cursed-power:fortune:5": {
+    archetypeId: "oracle:oracle-dual-cursed-power",
+    name: "Fortune",
+    level: 5,
+    bucket: "subsystem",
+    note: "activated d20-reroll ability the dual-cursed oracle 'may select ... in place of a mystery revelation' — revelation-list addition, deferred, also resource-gated",
+  },
+  "oracle:oracle-dual-cursed-power:misfortune:1": {
+    archetypeId: "oracle:oracle-dual-cursed-power",
+    name: "Misfortune",
+    level: 1,
+    bucket: "subsystem",
+    note: "activated foe-targeting d20-reroll ability, same revelation-in-place-of-a-mystery-revelation shape as fortune above — revelation-list addition, deferred",
+  },
 };
 
 /**
  * ── ORACLE_ARCHETYPE_EFFECTS_EXTRACTED ────────────────────────────────────
  *
  * Machine-extracted mechanical effects for oracle archetype class features
- * (2). Clean-room from the published PF1 rules — the vendored prose this was
+ * (5). Clean-room from the published PF1 rules — the vendored prose this was
  * extracted from (`archetype-features.json`) is OGL, so reading it is fine; no
  * Foundry source was consulted (DESIGN.md §6).
  *
@@ -691,5 +763,25 @@ export const ORACLE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "At 7th level, a purifier's armor takes on a golden or silvery sheen ... and she also " +
       "gains armor training as a fighter 4 levels lower than her oracle level. (armor-weight " +
       "reduction and 11th-level heavy armor proficiency not modeled)",
+  },
+
+  // Black-Blooded Oracle's "Darkvision" is vendored as ONE feature id at
+  // level 15 even though its own prose covers both the base 60 ft. grant AND
+  // the 90 ft. upgrade — but `collect.ts` gates every archetype feature's
+  // Change on `f.level <= classLevel` (same as base class features), so this
+  // id's formula only ever runs once the character is already 15th level or
+  // higher. The base 60 ft. grant (levels 1-14) isn't reachable through THIS
+  // id at all — it's bundled instead into the already-classified (subsystem)
+  // black-blood-revelation:1 sibling entry, so a level 1-14 black-blooded
+  // oracle shows no darkvision from either entry: an under-count, not a
+  // double-count. Formula is a flat "90" rather than a conditional, since the
+  // <15 branch can never execute.
+  "oracle:oracle-black-blood-power:darkvision:15": {
+    changes: [c("90", "sensedv", "base")],
+    detail: () => "darkvision 90 ft.",
+    confidence: "medium",
+    provenance:
+      "A black-blooded oracle gains darkvision with a range of 60 feet. The range increases " +
+      "to 90 feet at 15th level.",
   },
 };

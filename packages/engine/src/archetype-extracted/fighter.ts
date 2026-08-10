@@ -2054,6 +2054,13 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note: "dodge AC + land speed bonus gated on @armor.type<=1 (encumbrance half not checked)",
   },
+  "fighter:skirmisher:hunter-s-tricks:5": {
+    archetypeId: "fighter:skirmisher",
+    name: "Hunter's Tricks",
+    level: 5,
+    bucket: "subsystem",
+    note: "grants access to a hunter's-tricks pick-list — no engine hook for a per-archetype spell-list/caster-model swap. Vendored prose is verbatim the ranger Skirmisher archetype's text (mentions 'ranger' throughout, 'replaces the ranger's spells class feature'), same shared cross-class content as this archetype's other entries above; bucket unaffected either way, no number to extract regardless of which class the text really describes",
+  },
   "fighter:skirmisher:conditioning:6": {
     archetypeId: "fighter:skirmisher",
     name: "Conditioning",
@@ -2833,6 +2840,13 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "situational",
     note: "real but conditional/narrowly-scoped number (specific maneuver, weapon, target state, or action) — not expressible without over-applying, per the honesty bar",
   },
+  "fighter:warlord:intimidating-prowess:1": {
+    archetypeId: "fighter:warlord",
+    name: "Intimidating Prowess",
+    level: 1,
+    bucket: "subsystem",
+    note: "grants Intimidating Prowess as a bonus feat — no independent number",
+  },
   "fighter:warlord:weapon-and-armor-proficiency:1": {
     archetypeId: "fighter:warlord",
     name: "Weapon and Armor Proficiency",
@@ -2840,12 +2854,26 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "proficiency change, no Change-shaped target",
   },
+  "fighter:warlord:unshakable:2": {
+    archetypeId: "fighter:warlord",
+    name: "Unshakable",
+    level: 2,
+    bucket: "situational",
+    note: "+2 save bonus scoped to fear effects specifically, not general Will saves — no qualified-save sub-target exists (fort/ref/will are the only save targets this engine applies)",
+  },
   "fighter:warlord:battle-bravado:3": {
     archetypeId: "fighter:warlord",
     name: "Battle Bravado",
     level: 3,
     bucket: "situational",
     note: "real but conditional/narrowly-scoped number (specific maneuver, weapon, target state, or action) — not expressible without over-applying, per the honesty bar",
+  },
+  "fighter:warlord:fear-me:5": {
+    archetypeId: "fighter:warlord",
+    name: "Fear Me",
+    level: 5,
+    bucket: "subsystem",
+    note: "raging-song-style activated performance (Skald-shaped bardic-performance emulation), resource/rounds-gated, ally-targeting DC — no flat number",
   },
   "fighter:warlord:weapon-training:5": {
     archetypeId: "fighter:warlord",
@@ -2860,6 +2888,20 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
       "using this archetype models any tier via the generic build.weaponTrainingGroups picker " +
       "same as any other fighter (Barsoomian itself isn't a real WEAPON_GROUPS entry — no " +
       "vendored weapon carries it — so that specific option can't be modeled either way).",
+  },
+  "fighter:warlord:minions:7": {
+    archetypeId: "fighter:warlord",
+    name: "Minions",
+    level: 7,
+    bucket: "subsystem",
+    note: "grants Leadership as a bonus feat — no independent number",
+  },
+  "fighter:warlord:intimidated-push:8": {
+    archetypeId: "fighter:warlord",
+    name: "Intimidated Push",
+    level: 8,
+    bucket: "subsystem",
+    note: "modifies a cohort's/followers' saving-throw bonus via Leadership — no cohort/followers subsystem exists in this engine to hook into",
   },
   "fighter:warlord:sun-bronzed-skin:19": {
     archetypeId: "fighter:warlord",

@@ -1254,6 +1254,90 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "proficiency + two bonus feats grant — no numeric target",
   },
+  "barbarian:breaker:feral-transformation:4": {
+    archetypeId: "barbarian:breaker",
+    name: "Feral Transformation",
+    level: 4,
+    bucket: "subsystem",
+    note: "polymorph-style animal-shape grant (beast shape I/II/III by level) tied to savage rapport's chosen animal — no single Change-shaped number for a multi-stat transformation",
+  },
+  "barbarian:breaker:savage-rapport:1": {
+    archetypeId: "barbarian:breaker",
+    name: "Savage Rapport",
+    level: 1,
+    bucket: "situational",
+    note: "real half-level (min 1) bonus on Handle Animal/Intimidate/Sense Motive, but scoped to checks involving the chosen animal type specifically — per the honesty bar",
+  },
+  "barbarian:giant-stalker:giant-stalker-rage-powers:1": {
+    archetypeId: "barbarian:giant-stalker",
+    name: "Giant Stalker Rage Powers",
+    level: 1,
+    bucket: "subsystem",
+    note: "grants three new rage powers (Giant Stalker Defense, Topple Giant, Underfoot) — rage powers are prose-only picks with no per-power modeling in this engine",
+  },
+  "barbarian:mounted-fury:bestial-mount:5": {
+    archetypeId: "barbarian:mounted-fury",
+    name: "Bestial Mount",
+    level: 5,
+    bucket: "subsystem",
+    note: "grants a druid-style animal companion (barbarian level -4) plus a morale Str bonus to the mount while raging and mounted — companion subsystem this engine doesn't model, and the Str bonus targets the mount, not the sheet owner. Replaces uncanny dodge/improved uncanny dodge (both changes: [], nothing to double-count)",
+  },
+  "barbarian:mounted-fury:fast-rider:1": {
+    archetypeId: "barbarian:mounted-fury",
+    name: "Fast Rider",
+    level: 1,
+    bucket: "situational",
+    note: "real +10 ft. speed, but granted to the mount, not the sheet owner's own landSpeed — per the honesty bar. Replaces fast movement (a single flat grant, cleanly suppressed by a paired swap — not a partial-tier atomicity trap)",
+  },
+  "barbarian:pack-hunter:bonus-feats:2": {
+    archetypeId: "barbarian:pack-hunter",
+    name: "Bonus Feats",
+    level: 2,
+    bucket: "subsystem",
+    note: "lets a rage-power pick be spent on a teamwork feat instead — a choice-list swap with no count delta; rage powers/teamwork feats are both prose-only in this engine",
+  },
+  "barbarian:pack-rager:rage-power:8": {
+    archetypeId: "barbarian:pack-rager",
+    name: "Rage power",
+    level: 8,
+    bucket: "subsystem",
+    note: "grants a bonus teamwork feat (must also be a combat feat) at 2nd and every 4 levels thereafter — feat-list-restricted bonus pick, no Change-shaped number",
+  },
+  "barbarian:sharptooth:scent-of-blood:2": {
+    archetypeId: "barbarian:sharptooth",
+    name: "Scent of Blood",
+    level: 2,
+    bucket: "numeric",
+    note: "unconditional Scent (2nd) upgrading to Keen Scent/doubled range (5th) — extracted via the sensesc target (see BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED below)",
+  },
+  "barbarian:superstitious:keen-senses:7": {
+    archetypeId: "barbarian:superstitious",
+    name: "Keen Senses",
+    level: 7,
+    bucket: "numeric",
+    note: "unconditional low-light vision (7th)/darkvision 60 ft. (10th)/scent (13th)/blindsense 30 ft. (16th)/blindsight 30 ft. (19th), each gated purely on class level — extracted via the sense* targets (see BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED below); the 'triple range if already low-light' rider isn't modeled (sensell carries no magnitude). Replaces damage reduction (hand-tabled, not Change-shaped in this engine — a full swap, not a partial-tier trap)",
+  },
+  "barbarian:wildborn:bonus-feat:4": {
+    archetypeId: "barbarian:wildborn",
+    name: "Bonus Feat",
+    level: 4,
+    bucket: "subsystem",
+    note: "lets a rage-power pick (4th/10th/16th) be spent on one of ten named feats instead — a choice-list swap with no count delta",
+  },
+  "barbarian:wildborn:inexhaustible:7": {
+    archetypeId: "barbarian:wildborn",
+    name: "Inexhaustible",
+    level: 7,
+    bucket: "situational",
+    note: "faster nonlethal-damage recovery plus double DR applied against nonlethal damage specifically — a nonlethal-only qualifier the dr target can't express without over-applying to lethal damage too",
+  },
+  "barbarian:wildborn:live-off-the-land:3": {
+    archetypeId: "barbarian:wildborn",
+    name: "Live Off the Land",
+    level: 3,
+    bucket: "situational",
+    note: "half-level Survival bonus scoped to hunting/gathering food specifically, plus a Fort save bonus scoped to extreme-temperature/environmental effects specifically — both real numbers, both narrower than any general skill/save target this engine applies",
+  },
 };
 
 /**
@@ -1407,5 +1491,63 @@ export const BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "the untamed rager gains a +1 bonus on Intimidate checks. This bonus increases by 1 " +
       "every 3 barbarian levels thereafter.",
+  },
+
+  // Sharptooth's "Scent of Blood" grants Scent (2nd) and doubles its range to
+  // Keen Scent (5th) — both unconditional, gated purely on class level.
+  // Baseline Scent range (30 ft.) matches this engine's own vendored Scent
+  // grants (Catfolk/Ratfolk, racial-traits.json); Keen Scent doubles that
+  // range per the universal monster rule.
+  "barbarian:sharptooth:scent-of-blood:2": {
+    changes: [c("if(gte(@class.unlevel, 5), 60, 30)", "sensesc", "base")],
+    detail: (level) => (level >= 5 ? "scent 60 ft. (keen scent)" : "scent 30 ft."),
+    confidence: "high",
+    provenance:
+      "At 2nd level, a sharptooth gains scent as per the universal monster rule. At 5th " +
+      "level, she also gains keen scent as per universal monster rule.",
+  },
+
+  // Superstitious's "Keen Senses" grants a fixed sequence of special senses,
+  // each gated purely on class level: low-light vision (7th, flag-only — the
+  // "triple range if already low-light" rider has no magnitude to extend
+  // since sensell carries no range at all), darkvision 60 ft. (10th, using
+  // operator "add" so a character who already has darkvision from another
+  // source gets +60 ft. instead of competing for the lower value — the
+  // sense-extension idiom senses.ts documents for exactly this "gain X, or
+  // +X if you already have it" wording), scent (13th), blindsense 30 ft.
+  // (16th), and blindsight 30 ft. (19th).
+  "barbarian:superstitious:keen-senses:7": {
+    changes: [
+      c("if(gte(@class.unlevel, 7), 1, 0)", "sensell", "base"),
+      {
+        formula: "if(gte(@class.unlevel, 10), 60, 0)",
+        target: "sensedv",
+        type: "base",
+        operator: "add",
+      },
+      c("if(gte(@class.unlevel, 13), 30, 0)", "sensesc", "base"),
+      c("if(gte(@class.unlevel, 16), 30, 0)", "sensebse", "base"),
+      c("if(gte(@class.unlevel, 19), 30, 0)", "sensebs", "base"),
+    ],
+    detail: (level) =>
+      level >= 19
+        ? "low-light vision, darkvision 60 ft., scent, blindsense 30 ft., blindsight 30 ft."
+        : level >= 16
+          ? "low-light vision, darkvision 60 ft., scent, blindsense 30 ft."
+          : level >= 13
+            ? "low-light vision, darkvision 60 ft., scent"
+            : level >= 10
+              ? "low-light vision, darkvision 60 ft."
+              : level >= 7
+                ? "low-light vision"
+                : "no senses yet",
+    confidence: "medium",
+    provenance:
+      "At 7th level, the superstitious barbarian gains low-light vision (triple normal " +
+      "vision range in dim light if she already has low-light vision). At 10th level, she " +
+      "gains darkvision 60 feet (or adds 60 feet to the range of any darkvision already " +
+      "possessed). At 13th level, she gains scent. At 16th level, she gains blindsense 30 " +
+      "feet. At 19th level, she gains blindsight 30 feet. This ability replaces damage " +
+      "reduction.",
   },
 };
