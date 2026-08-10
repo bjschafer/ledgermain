@@ -13704,7 +13704,14 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.eZ0c2h7CXvrIHclo"
   },
   "eew9hWENxwAiLP8S": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "saveCategories": ["charm", "compulsion"],
+        "target": "will",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [
       {
         "target": "will",
@@ -14201,7 +14208,13 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.g2iIRBrSeUhIkDvu"
   },
   "g6M0a4JgcPgjdjJT": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "1 + floor(@attributes.hd.total / 5)",
+        "target": "dr.cold-iron",
+        "type": "untyped"
+      }
+    ],
     "contextNotes": [
       {
         "target": "ac",

@@ -10,7 +10,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute, VENDORED_CHARACTER_TRAIT_SAVE_NOTES } from "../src/index.js";
+import { compute, SAVE_NOTE_TARGETS, VENDORED_CHARACTER_TRAIT_SAVE_NOTES } from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -63,7 +63,7 @@ describe("drift guard", () => {
   const noteToTraitIds = new Map<string, string[]>();
   for (const [id, trait] of Object.entries(ref.traits)) {
     for (const note of trait.contextNotes ?? []) {
-      if (note.target !== "allSavingThrows") continue;
+      if (!SAVE_NOTE_TARGETS.has(note.target)) continue;
       const text = note.text.trim();
       allSaveNoteTexts.add(text);
       const ids = noteToTraitIds.get(text) ?? [];
@@ -72,7 +72,7 @@ describe("drift guard", () => {
     }
   }
 
-  it("every table key matches some vendored trait's allSavingThrows note verbatim", () => {
+  it("every table key matches some vendored trait's save-targeted note verbatim", () => {
     const misses = Object.keys(VENDORED_CHARACTER_TRAIT_SAVE_NOTES).filter(
       (key) => !allSaveNoteTexts.has(key),
     );

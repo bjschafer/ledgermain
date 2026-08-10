@@ -766,3 +766,24 @@ describe("heritage ability-array swaps (supplemented arrays + Base Statistics su
     expect(withTrait.senses.some((s) => s.label === "Darkvision")).toBe(true);
   });
 });
+
+describe("supplement-authored prose-only numbers beyond ability arrays", () => {
+  it("Gathlain Fey Resilience: DR 1/cold iron, +1 per 5 HD", () => {
+    // "A gathlain with this racial trait gains DR 1/cold iron. This DR
+    // increases by 1 for every 5 HD the gathlain has." (Advanced Race
+    // Guide). Fighter L1: 1 + floor(1/5) = 1. Fighter L10: 1 + floor(10/5)
+    // = 3. The vendored entry ships the number as prose only (its own note
+    // says to set the DR by hand); the supplement's formula computes it.
+    const id = traitId("Fey Resilience");
+    const l1 = compute(makeDoc("Gathlain", [id]), ref);
+    expect(l1.defenses?.dr).toEqual([
+      { total: 1, qualifier: "cold-iron", components: expect.anything() },
+    ]);
+    const doc10 = makeDoc("Gathlain", [id]);
+    doc10.identity.classes = [{ tag: "fighter", level: 10 }];
+    const l10 = compute(doc10, ref);
+    expect(l10.defenses?.dr).toEqual([
+      { total: 3, qualifier: "cold-iron", components: expect.anything() },
+    ]);
+  });
+});

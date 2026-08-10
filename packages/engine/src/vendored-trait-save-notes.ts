@@ -35,7 +35,9 @@ export function scopedSave(formula: string, type: string, ...categories: string[
  * note's exact text.
  *
  * The vendored slice's ~86 distinct `allSavingThrows` notes were read in
- * full; 32 promote here. The rest stay prose because the scope they name has
+ * full; those plus a handful of `fort`-targeted siblings (see
+ * {@link SAVE_NOTE_TARGETS} for why the target makes no difference) promote
+ * here. The rest stay prose because the scope they name has
  * no vocabulary entry (nauseated/sickened, ability drain, sonic, gaze
  * attacks, entangled, negative levels, starvation, fatigue, sanity damage,
  * language-dependent, altitude sickness, the pain descriptor, the pattern/
@@ -77,6 +79,20 @@ export const VENDORED_RACIAL_TRAIT_SAVE_NOTES: Readonly<Record<string, readonly 
   // Ingested poisons are narrower than `poison`; nauseated/sickened have no entry.
   "+2 Racial bonus against disease, ingested poisons, and becoming nauseated or sickened.": [
     scopedSave("2", "racial", "disease"),
+  ],
+  "+2 Racial bonus against poison and disease, including magical diseases.": [
+    scopedSave("2", "racial", "poison", "disease"),
+  ],
+  // The +4 bump when accidentally self-poisoning has no expressible form;
+  // only the flat +2 promotes.
+  "+2 Racial bonus vs. poison; becomes +4 vs. accidental self poisoning.": [
+    scopedSave("2", "racial", "poison"),
+  ],
+  "+4 Racial bonus vs. diseases (incl. magical) and poisons": [
+    scopedSave("4", "racial", "disease", "poison"),
+  ],
+  "+4 Racial bonus vs. diseases and poisons incl. magical diseases.": [
+    scopedSave("4", "racial", "disease", "poison"),
   ],
   "+2 Racial bonus against disease.": [scopedSave("2", "racial", "disease")],
   // Dominate has no vocabulary entry; only the possession half is promoted.
@@ -368,6 +384,7 @@ export const PARTIALLY_PROMOTED_RACIAL_TRAIT_SAVE_NOTES: ReadonlySet<string> = n
   "+2 Racial bonus against fear, sleep and paralysis effects.",
   "+2 Racial bonus to resist becoming nauseated, sickened or diseased",
   "+2 Racial bonus vs. diseases and poisons; Requires 1 less save to heal diseases and poisons (min. 1 save)",
+  "+2 Racial bonus vs. poison; becomes +4 vs. accidental self poisoning.",
   "+2 Racial bonus vs. spells and spell-like abilities of necromancy school or with curse descriptor.",
   "+2 bonus versus poison. You have Electricity resistance 5",
   "+2 bonus vs diseases.  If you exceed the DC by 5 or more count as two consecutive saves",
@@ -403,10 +420,25 @@ export const PARTIALLY_PROMOTED_CHARACTER_TRAIT_SAVE_NOTES: ReadonlySet<string> 
 ]);
 
 /**
+ * Note targets eligible for promotion. The vendored packs are inconsistent
+ * about where they aim a save reminder — the same "+2 vs. poison" text ships
+ * as an `allSavingThrows` note on one entry and a `fort` note on its sibling —
+ * and the promoted `Change`s' own `saveCategories` already confine the bonus
+ * to the save(s) the category allows (poison/disease never reach Reflex), so
+ * a per-save-targeted note promotes identically to an `allSavingThrows` one.
+ */
+export const SAVE_NOTE_TARGETS: ReadonlySet<string> = new Set([
+  "allSavingThrows",
+  "fort",
+  "ref",
+  "will",
+]);
+
+/**
  * The scoped `Change`s an entry's own save notes imply.
  *
- * Only `allSavingThrows` notes are considered, so a table key can never pull a
- * save bonus out of a skill or AC reminder.
+ * Only save-targeted notes are considered (see {@link SAVE_NOTE_TARGETS}), so
+ * a table key can never pull a save bonus out of a skill or AC reminder.
  */
 export function saveChangesFromNotes(
   notes: readonly ContextNote[] | undefined,
@@ -415,7 +447,7 @@ export function saveChangesFromNotes(
   if (!notes || notes.length === 0) return [];
   const out: Change[] = [];
   for (const note of notes) {
-    if (note.target !== "allSavingThrows") continue;
+    if (!SAVE_NOTE_TARGETS.has(note.target)) continue;
     const hit = table[note.text.trim()];
     if (hit) out.push(...hit);
   }

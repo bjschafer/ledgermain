@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-09-alternate-racial-trait-numbers",
+    date: "2026-08-09",
+    title: "More alternate racial traits compute their numbers",
+    note: "A sweep through the alternate racial trait catalog promoted bonuses that were reminder text into real computed numbers: the ten changeling hag ancestries apply their ability scores correctly, the dwarf Stubborn trait shows its Will bonus against charm and compulsion on the saves panel, gathlain Fey Resilience computes its scaling damage reduction, and several disease and poison save bonuses (gnome, svirfneblin, half-elf) now appear as situational save lines. A handful of character traits with the same shape, like Venom Resistance, got the same promotion.",
+  },
+  {
     id: "2026-08-07-picker-styling-sweep",
     date: "2026-08-07",
     title: "Tidied up the class-choice panels",

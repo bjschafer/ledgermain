@@ -26,6 +26,7 @@ import { STANDARD_RACE_SAVE_BONUSES } from "./race-save-notes.js";
 import {
   PARTIALLY_PROMOTED_CHARACTER_TRAIT_SAVE_NOTES,
   PARTIALLY_PROMOTED_RACIAL_TRAIT_SAVE_NOTES,
+  SAVE_NOTE_TARGETS,
   VENDORED_CHARACTER_TRAIT_SAVE_NOTES,
   VENDORED_RACIAL_TRAIT_SAVE_NOTES,
 } from "./vendored-trait-save-notes.js";
@@ -69,14 +70,15 @@ function buffCoverage(buffName: string): SaveNoteCoverage {
  * (`"full"`), only partly (`"partial"`, a remainder still needs hand-
  * applying), or not promoted at all (`"none"`, today's plain reminder).
  *
- * Only `allSavingThrows` notes are ever promoted, matching every promotion
- * table's own scope — a skill or AC reminder always reads `"none"`.
+ * Only save-targeted notes are ever promoted (`SAVE_NOTE_TARGETS`, matching
+ * `saveChangesFromNotes`'s own scope) — a skill or AC reminder always reads
+ * `"none"`.
  */
 export function saveNoteCoverage(
   source: SaveNoteCatalog,
   note: Pick<ContextNote, "target" | "text">,
 ): SaveNoteCoverage {
-  if (note.target !== "allSavingThrows") return "none";
+  if (!SAVE_NOTE_TARGETS.has(note.target)) return "none";
   const text = note.text.trim();
   switch (source.catalog) {
     case "characterTrait":

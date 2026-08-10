@@ -3503,13 +3503,15 @@ export function applyPrestigeClassSupplements(
 }
 
 /**
- * Heritage-variant racial traits whose published replacement ability array
- * exists only as description prose upstream (the pack ships them with empty
- * `changes[]`). Each entry hand-authors that array so the engine's
- * `VENDORED_STANDARD_TRAIT_TARGETS` "Base Statistics" suppression can safely
- * retire the base race's array: without a landing replacement, suppression
- * would zero the character's racial modifiers, which is why these stayed
- * unmapped until now.
+ * Vendored racial traits whose published always-on numbers exist only as
+ * description prose upstream (the pack ships them with empty `changes[]`).
+ * The founding population is heritage-variant ability arrays: each such entry
+ * hand-authors its array so the engine's `VENDORED_STANDARD_TRAIT_TARGETS`
+ * "Base Statistics" suppression can safely retire the base race's array —
+ * without a landing replacement, suppression would zero the character's
+ * racial modifiers. The tail of the table extends the same drift-guarded
+ * mechanism to other unconditional prose-only numbers (scoped save bonuses,
+ * DR progressions).
  *
  * Keyed by trait **id** (heritage names repeat across race packs). `name` is
  * verified on apply, and `keyword` is the entry's own vendored
@@ -3876,6 +3878,26 @@ export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
       { formula: "2", target: "wis", type: "racial" },
       { formula: "-2", target: "int", type: "racial" },
       { formula: "2", target: "con", type: "racial", activeWhenBuff: SKINWALKER_CHANGE_SHAPE_GATE },
+    ],
+  },
+  // Dwarf Stubborn (APG): an always-on scoped save bonus the pack ships as
+  // prose. `saveCategories` confines it to the two enchantment subschools;
+  // the failed-save re-roll clause stays prose.
+  eew9hWENxwAiLP8S: {
+    name: "Stubborn",
+    keyword:
+      "receive a +2 racial bonus on Will saves to resist spells and spell-like abilities of the enchantment (charm) and enchantment (compulsion) schools",
+    changes: [
+      { formula: "2", target: "will", type: "racial", saveCategories: ["charm", "compulsion"] },
+    ],
+  },
+  // Gathlain Fey Resilience (ARG): DR 1/cold iron, +1 per 5 HD. The vendored
+  // entry's own note says to set the DR by hand; the formula does it instead.
+  g6M0a4JgcPgjdjJT: {
+    name: "Fey Resilience",
+    keyword: "gains DR 1/cold iron. This DR increases by 1 for every 5 HD",
+    changes: [
+      { formula: "1 + floor(@attributes.hd.total / 5)", target: "dr.cold-iron", type: "untyped" },
     ],
   },
 };

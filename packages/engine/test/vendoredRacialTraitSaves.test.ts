@@ -13,7 +13,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute, VENDORED_RACIAL_TRAIT_SAVE_NOTES } from "../src/index.js";
+import { compute, SAVE_NOTE_TARGETS, VENDORED_RACIAL_TRAIT_SAVE_NOTES } from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -69,7 +69,7 @@ describe("drift guard", () => {
   const noteToTraitIds = new Map<string, string[]>();
   for (const [id, trait] of Object.entries(ref.racialTraits)) {
     for (const note of trait.contextNotes ?? []) {
-      if (note.target !== "allSavingThrows") continue;
+      if (!SAVE_NOTE_TARGETS.has(note.target)) continue;
       const text = note.text.trim();
       allSaveNoteTexts.add(text);
       const ids = noteToTraitIds.get(text) ?? [];
@@ -78,7 +78,7 @@ describe("drift guard", () => {
     }
   }
 
-  it("every table key matches some vendored racial trait's allSavingThrows note verbatim", () => {
+  it("every table key matches some vendored racial trait's save-targeted note verbatim", () => {
     const misses = Object.keys(VENDORED_RACIAL_TRAIT_SAVE_NOTES).filter(
       (key) => !allSaveNoteTexts.has(key),
     );
@@ -263,5 +263,62 @@ describe("Elf Blightborn (deliberately partial; curse applies to every save)", (
     expect(withTrait.saves.fort.conditionals?.length).toBe(1);
     expect(withTrait.saves.ref.conditionals?.length).toBe(1);
     expect(withTrait.saves.will.conditionals?.length).toBe(1);
+  });
+});
+
+describe("Gnome Nosophobia (fort-targeted note promotes like an allSavingThrows one)", () => {
+  const id = vendoredTraitId("Nosophobia", "Gnome");
+  const base = compute(makeDoc("Gnome"), ref);
+  const withTrait = compute(makeDoc("Gnome", [id]), ref);
+
+  it("does not touch the headline Fortitude total", () => {
+    // Gnome Con +2 (mod +1): fighter L1 good Fort save (+2) + 1 = 3.
+    expect(base.saves.fort.total).toBe(3);
+    expect(withTrait.saves.fort.total).toBe(3);
+  });
+
+  it("adds a +4 racial disease/poison conditional on Fortitude only", () => {
+    // "These gnomes gain a +4 bonus on Fortitude saves against disease and
+    // poison, including magical diseases." (Advanced Player's Guide). The
+    // vendored note targets `fort` rather than `allSavingThrows`; the
+    // promotion is identical because both categories only reach Fortitude.
+    expect(withTrait.saves.fort.conditionals).toEqual([
+      { total: 7, categories: ["poison", "disease"], labels: ["poison", "disease"] },
+    ]);
+    expect(withTrait.saves.ref.conditionals).toBeUndefined();
+    // Gnome's own standard +2 racial vs. illusion (race-save-notes.ts) is the
+    // only Will line, unchanged by this trait.
+    expect(withTrait.saves.will.conditionals).toEqual(base.saves.will.conditionals);
+  });
+});
+
+describe("Dwarf Stubborn (supplement-authored scoped Will bonus)", () => {
+  const id = vendoredTraitId("Stubborn", "Dwarf");
+  const base = compute(makeDoc("Dwarf"), ref);
+  const withTrait = compute(makeDoc("Dwarf", [id]), ref);
+
+  it("does not touch the headline Will total", () => {
+    // Dwarf Wis +2 (mod +1): fighter L1 poor Will save (+0) + 1 = 1.
+    expect(base.saves.will.total).toBe(1);
+    expect(withTrait.saves.will.total).toBe(1);
+  });
+
+  it("adds a +2 racial charm/compulsion conditional on Will, merged with Hardy's line", () => {
+    // "Dwarves with this racial trait receive a +2 racial bonus on Will
+    // saves to resist spells and spell-like abilities of the enchantment
+    // (charm) and enchantment (compulsion) schools." (Advanced Player's
+    // Guide). The failed-save re-roll clause stays prose. Will = 1 + 2 = 3.
+    // Dwarf's own Hardy (+2 racial vs. spells and SLAs, race-save-notes.ts)
+    // resolves to the same Will total, so the two print one merged line —
+    // the same same-type, same-value merge the Blightborn fixture documents.
+    // (Stubborn REPLACES Hardy in print; retiring the note-only standard
+    // trait stays a picker-side reminder, see `RacialTrait.replacedTraitNames`.)
+    expect(withTrait.saves.will.conditionals).toEqual([
+      {
+        total: 3,
+        categories: ["spell", "sla", "charm", "compulsion"],
+        labels: ["spells", "SLAs", "charm", "compulsion"],
+      },
+    ]);
   });
 });
