@@ -59,6 +59,7 @@ import { mergedOracleMysteryCatalog } from "../packages/engine/src/oracle-myster
 import { ORACLE_REVELATIONS } from "../packages/engine/src/oracle-revelations.js";
 import { mergedPhrenicAmplificationCatalog } from "../packages/engine/src/phrenic-amplifications.js";
 import { mergedPsychicDisciplineCatalog } from "../packages/engine/src/psychic-disciplines.js";
+import { RACIAL_TRAIT_CLASSIFICATION } from "../packages/engine/src/racial-trait-classification/index.js";
 import { RACIAL_TRAITS } from "../packages/engine/src/racial-traits.js";
 import { mergedRagePowerCatalog } from "../packages/engine/src/rage-powers.js";
 import { mergedRogueTalentCatalog } from "../packages/engine/src/rogue-talents.js";
@@ -428,6 +429,10 @@ function main(): void {
       ).length > 0 ||
       (hand !== undefined && defMovesNumbers(hand));
     const noted = arrayLen(e.contextNotes) > 0;
+    // Same semantics as the archetype/feat verdicts: a deliberate
+    // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`
+    // verdict that never produced a wired route still flags.
+    const verdict = RACIAL_TRAIT_CLASSIFICATION[id];
     results.push(
       audit(
         "racial-traits",
@@ -435,6 +440,7 @@ function main(): void {
         wired ? "wired" : noted ? "noted" : "prose",
         rec(hand).displayOnly === true,
         typeof e.description === "string" ? e.description : "",
+        verdict !== undefined && verdict.bucket !== "numeric",
       ),
     );
   }
