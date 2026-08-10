@@ -289,6 +289,36 @@ describe("Impervious Messenger (bard): Cryptic Whisper models only the Linguisti
   });
 });
 
+describe("Thundercaller (bard): Bound to the Land is a genuinely paired swap of Bardic Knowledge", () => {
+  const thundercaller = archetypeId("Thundercaller", "bard");
+
+  it("+5 Handle Animal/Knowledge (nature)/Survival at L10 (floor(10/2), no minimum)", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "bard", level: 10 }], archetypes: [thundercaller] }),
+      ref,
+    );
+    expect(
+      sheet.skills["han"]?.components.find((c) => c.source === "Bound to the Land")?.value,
+    ).toBe(5);
+    expect(
+      sheet.skills["kna"]?.components.find((c) => c.source === "Bound to the Land")?.value,
+    ).toBe(5);
+    expect(
+      sheet.skills["sur"]?.components.find((c) => c.source === "Bound to the Land")?.value,
+    ).toBe(5);
+  });
+
+  it("Bardic Knowledge is genuinely suppressed (unlike Daredevil's unpaired swap above)", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "bard", level: 10 }], archetypes: [thundercaller] }),
+      ref,
+    );
+    expect(
+      sheet.skills["kar"]?.components.find((c) => c.source === "Bardic Knowledge"),
+    ).toBeUndefined();
+  });
+});
+
 describe("Court Bard (bard): Heraldic Expertise is blocked (Bardic Knowledge overlap, unpaired swap)", () => {
   const courtBard = archetypeId("Court Bard", "bard");
 

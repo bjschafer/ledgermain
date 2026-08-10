@@ -57,12 +57,14 @@
  *    confirmed in `class-features.json`) — unlike every other base feature
  *    an archetype might claim to replace. Grepping every vendored bard
  *    archetype feature's `pairedBaseFeatureUuid` against Bardic Knowledge's
- *    own uuid turns up ZERO matches: every single "this replaces bardic
- *    knowledge" claim in the prose is an UNPAIRED swap. That means
+ *    own uuid turns up exactly one match — Thundercaller's Bound to the Land,
+ *    whose swap `activeArchetypeSwaps` honors correctly (classified `numeric`
+ *    below, in the effects table). Every other "this replaces bardic
+ *    knowledge" claim in the prose is an UNPAIRED swap, so
  *    `activeArchetypeSwaps` never suppresses Bardic Knowledge for any of
- *    these archetypes today — the same composition trap as monk's Ironskin
+ *    those archetypes — the same composition trap as monk's Ironskin
  *    Monk (an ambiguous/unpaired swap
- *    displacing a base feature with real vendored `Change`s). This wave's
+ *    displacing a base feature with real vendored `Change`s). The
  *    rule: a bardic-knowledge-replacement whose own bonus touches ANY
  *    Knowledge sub-skill (`skill.knowledge` fans out to every `k*` skill —
  *    `tables.ts`'s `SKILL_GROUPS`) is `blocked` (extracting would double-
@@ -113,6 +115,25 @@
  *    ability verbatim). Neither changes this file's classification (both
  *    buckets are `subsystem` either way), but both are flagged here since a
  *    future data-quality pass might want to backfill the correct L11 text.
+ *  - `bard:buccaneer`'s Bonus Feat, Deeds, Exotic Pet, Grit, Gun Training,
+ *    Liquid Courage, Raider's Riposte, and Sword and Pistol entries describe
+ *    gunslinger grit/deeds/gun-training mechanics the base bard class
+ *    doesn't have (one entry even says "a gunslinger gains a bonus feat"
+ *    verbatim) — likely bled in from the separate `gunslinger:buccaneer`
+ *    archetype during compilation. None of them carry an extractable number
+ *    regardless of the mix-up.
+ *  - `bard:dawnflower-dervish`'s Burst of Speed, Desert Stride, Rapid Attack,
+ *    and Lightning Strike each claim in prose to replace an "armor training"
+ *    tier the bard class doesn't have; their `pairedBaseFeatureUuid`s
+ *    correctly point at real bard performance features instead (Inspire
+ *    Competence, Suggestion, Inspire Heroics), so it's the prose — not the
+ *    mechanical pairing — that's stale, apparently copied from the
+ *    `fighter:dawnflower-dervish` version of this same archetype.
+ *  - `bard:fey-prankster`'s Plant Traps, Steal Appearance, and Unseen
+ *    Trickster reference "rogue level," a rogue's Intelligence modifier, and
+ *    uncanny dodge — none of which the bard class has — reading like
+ *    contamination from an unrelated rogue archetype rather than genuine
+ *    Fey Prankster text.
  *
  * Methodology note (disclosed, same posture as `fighter.ts`): EVERY feature
  * of every vendored bard archetype was individually read against its full
@@ -2562,6 +2583,328 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note: "extracted — +1 at 1st, +1 every 4 levels thereafter (min at 1, cap +6 at 20th) on Bluff/Diplomacy/Intimidate/Linguistics/Sense Motive, purely additive (no base feature swapped); the accompanying verbal-duel 'edges' mechanic (Ultimate Intrigue) is not modeled",
   },
+  "bard:archivist:lore-master:2": {
+    archetypeId: "bard:archivist",
+    name: "Lore Master",
+    level: 2,
+    bucket: "subsystem",
+    note: "take-20-on-Knowledge-checks mechanic (limited uses/day, scaling with level), replaces versatile performance — no Change-shaped number",
+  },
+  "bard:buccaneer:bonus-feat:4": {
+    archetypeId: "bard:buccaneer",
+    name: "Bonus Feat",
+    level: 4,
+    bucket: "subsystem",
+    note: "restricted-list bonus-feat schedule reprint (combat/grit feats plus a short nautical list) — no count delta; vendored description is unedited gunslinger boilerplate, see this file's doc comment",
+  },
+  "bard:buccaneer:deeds:1": {
+    archetypeId: "bard:buccaneer",
+    name: "Deeds",
+    level: 1,
+    bucket: "subsystem",
+    note: "grants the grit/deeds resource subsystem (four swapped-in deeds) — resource + activation mechanic, no Change-shaped number; see this file's doc comment",
+  },
+  "bard:buccaneer:exotic-pet:5": {
+    archetypeId: "bard:buccaneer",
+    name: "Exotic Pet",
+    level: 5,
+    bucket: "subsystem",
+    note: "grants a familiar (wizard-style, half class level) plus conditional evasion while it's nearby — no Change-shaped number; replaces gun training 1, see this file's doc comment",
+  },
+  "bard:buccaneer:grit:1": {
+    archetypeId: "bard:buccaneer",
+    name: "Grit",
+    level: 1,
+    bucket: "subsystem",
+    note: "reflavors the grit resource pool to key off Charisma instead of Wisdom — a resource-pool mechanic like bardic performance, not a Change; see this file's doc comment",
+  },
+  "bard:buccaneer:gun-training:13": {
+    archetypeId: "bard:buccaneer",
+    name: "Gun Training",
+    level: 13,
+    bucket: "situational",
+    note: "real Dex-modifier-to-damage bonus but scoped to a single player-chosen firearm type when firing it — same unresolvable-free-choice bar as base Weapon Training's own group pick",
+  },
+  "bard:buccaneer:liquid-courage:2": {
+    archetypeId: "bard:buccaneer",
+    name: "Liquid Courage",
+    level: 2,
+    bucket: "subsystem",
+    note: "grog-point resource mechanic that substitutes for grit — activated resource ability, no Change-shaped number",
+  },
+  "bard:buccaneer:raider-s-riposte:17": {
+    archetypeId: "bard:buccaneer",
+    name: "Raider's Riposte",
+    level: 17,
+    bucket: "subsystem",
+    note: "grants a reactive attack-of-opportunity trigger — a rules permission, no numeric bonus to extract",
+  },
+  "bard:buccaneer:sword-and-pistol:9": {
+    archetypeId: "bard:buccaneer",
+    name: "Sword and Pistol",
+    level: 9,
+    bucket: "subsystem",
+    note: "grants Sword and Pistol as a named bonus feat, prerequisites waived — a specific feat grant, not a bonusFeats count",
+  },
+  "bard:dawnflower-dervish:burst-of-speed:3": {
+    archetypeId: "bard:dawnflower-dervish",
+    name: "Burst of Speed",
+    level: 3,
+    bucket: "situational",
+    note: "real reduction to the standard post-charge AC penalty, but scoped to the charging action specifically — no matching general target; paired to Inspire Competence's uuid for bookkeeping only, not itself a performance (prose's 'replaces armor training 1' is stale, see this file's doc comment)",
+  },
+  "bard:dawnflower-dervish:desert-stride:7": {
+    archetypeId: "bard:dawnflower-dervish",
+    name: "Desert Stride",
+    level: 7,
+    bucket: "subsystem",
+    note: "terrain-movement rule, no engine target (prose's 'replaces armor training 2' is stale, see this file's doc comment)",
+  },
+  "bard:dawnflower-dervish:lightning-strike:15": {
+    archetypeId: "bard:dawnflower-dervish",
+    name: "Lightning Strike",
+    level: 15,
+    bucket: "subsystem",
+    note: "grants an extra full-attack action at a stacking -2 penalty — an action-economy grant, no Change-shaped number; paired to Inspire Heroics' uuid for bookkeeping only (prose's 'replaces armor training 4' is stale, see this file's doc comment)",
+  },
+  "bard:dawnflower-dervish:rapid-attack:11": {
+    archetypeId: "bard:dawnflower-dervish",
+    name: "Rapid Attack",
+    level: 11,
+    bucket: "subsystem",
+    note: "lets a full attack be combined with movement — an action-economy rule, no Change-shaped number (prose's 'replaces armor training 3' is stale, see this file's doc comment)",
+  },
+  "bard:dirge-bard:bardic-performance:0": {
+    archetypeId: "bard:dirge-bard",
+    name: "Bardic Performance",
+    level: 0,
+    bucket: "subsystem",
+    note: "bardic performance modification (grants a new animate-dead-style performance type, replaces jack-of-all-trades) — no Change-shaped number to extract",
+  },
+  "bard:dirge-bard:haunted-eyes:2": {
+    archetypeId: "bard:dirge-bard",
+    name: "Haunted Eyes",
+    level: 2,
+    bucket: "situational",
+    note: "real +4 save bonus but scoped to fear/energy drain/death/necromantic effects specifically — no matching general save target; replaces well-versed (no vendored changes, safe swap either way)",
+  },
+  "bard:dirge-bard:haunting-refrain:5": {
+    archetypeId: "bard:dirge-bard",
+    name: "Haunting Refrain",
+    level: 5,
+    bucket: "situational",
+    note: "real Perform-for-Intimidate substitution plus a fear-save-DC penalty, but both scoped to demoralize/fear specifically — no matching general targets; replaces lore master",
+  },
+  "bard:dirge-bard:secrets-of-the-grave:2": {
+    archetypeId: "bard:dirge-bard",
+    name: "Secrets of the Grave",
+    level: 2,
+    bucket: "situational",
+    note: "real +1/2-level Knowledge (religion) bonus but scoped to identifying undead specifically, plus a spells-known addition — no matching general target; replaces versatile performance",
+  },
+  "bard:fey-prankster:greater-dirty-trick:6": {
+    archetypeId: "bard:fey-prankster",
+    name: "Greater Dirty Trick",
+    level: 6,
+    bucket: "subsystem",
+    note: "grants Greater Dirty Trick as a named bonus feat, prerequisites waived — a specific feat grant, not a bonusFeats count",
+  },
+  "bard:fey-prankster:improved-dirty-trick:2": {
+    archetypeId: "bard:fey-prankster",
+    name: "Improved Dirty Trick",
+    level: 2,
+    bucket: "subsystem",
+    note: "grants Improved Dirty Trick as a named bonus feat, prerequisites waived — a specific feat grant, not a bonusFeats count",
+  },
+  "bard:fey-prankster:plant-traps:8": {
+    archetypeId: "bard:fey-prankster",
+    name: "Plant Traps",
+    level: 8,
+    bucket: "subsystem",
+    note: "grants an activated plant-trap-crafting ability (DC keyed to a rogue level the bard doesn't have — see this file's doc comment) — no Change-shaped number on the bard's own sheet",
+  },
+  "bard:fey-prankster:steal-appearance:4": {
+    archetypeId: "bard:fey-prankster",
+    name: "Steal Appearance",
+    level: 4,
+    bucket: "subsystem",
+    note: "grants a disguise-swap ability with a target-facing save DC (keyed to a rogue level/Intelligence modifier the bard doesn't have — see this file's doc comment) — no Change-shaped number on the bard's own sheet",
+  },
+  "bard:fey-prankster:treacherous-plants:1": {
+    archetypeId: "bard:fey-prankster",
+    name: "Treacherous Plants",
+    level: 1,
+    bucket: "situational",
+    note: "real Bluff bonus but scoped to feint/hide actions taken adjacent to plants specifically — no matching general target (prose's 'rogue level' is stale, see this file's doc comment)",
+  },
+  "bard:fey-prankster:unseen-trickster:12": {
+    archetypeId: "bard:fey-prankster",
+    name: "Unseen Trickster",
+    level: 12,
+    bucket: "subsystem",
+    note: "lets Stealth be attempted without cover/concealment near plants — a rules exception, no Change-shaped number; paired to Soothing Performance's uuid for bookkeeping only",
+  },
+  "bard:lotus-geisha:enrapturing-performance:2": {
+    archetypeId: "bard:lotus-geisha",
+    name: "Enrapturing Performance",
+    level: 2,
+    bucket: "subsystem",
+    note: "bardic performance modification (a single-target performance variant with boosted DCs/bonuses) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism; no Change-shaped number to extract",
+  },
+  "bard:shadow-puppeteer:shadow-puppets:1": {
+    archetypeId: "bard:shadow-puppeteer",
+    name: "Shadow Puppets",
+    level: 1,
+    bucket: "subsystem",
+    note: "bardic performance modification (summons a shadow-conjuration creature) — no Change-shaped number to extract",
+  },
+  "bard:shadow-puppeteer:shadow-servant:1": {
+    archetypeId: "bard:shadow-puppeteer",
+    name: "Shadow Servant",
+    level: 1,
+    bucket: "subsystem",
+    note: "grants an unseen-servant-style spell-like ability — no Change-shaped number",
+  },
+  "bard:silver-balladeer:break-curse:6": {
+    archetypeId: "bard:silver-balladeer",
+    name: "Break Curse",
+    level: 6,
+    bucket: "subsystem",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism; no Change-shaped number to extract (paired to Suggestion)",
+  },
+  "bard:silver-balladeer:holy-vibration:9": {
+    archetypeId: "bard:silver-balladeer",
+    name: "Holy Vibration",
+    level: 9,
+    bucket: "subsystem",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism; no Change-shaped number to extract (paired to Inspire Greatness)",
+  },
+  "bard:silver-balladeer:mass-break-curse:18": {
+    archetypeId: "bard:silver-balladeer",
+    name: "Mass Break Curse",
+    level: 18,
+    bucket: "subsystem",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism; no Change-shaped number to extract (paired to Mass Suggestion)",
+  },
+  "bard:silver-balladeer:pure-heart:2": {
+    archetypeId: "bard:silver-balladeer",
+    name: "Pure Heart",
+    level: 2,
+    bucket: "situational",
+    note: "real +4 save bonus but scoped to curses/hexes/charm effects specifically — no matching general save target; replaces well-versed (no vendored changes, safe swap either way)",
+  },
+  "bard:silver-balladeer:silver-mastery:2": {
+    archetypeId: "bard:silver-balladeer",
+    name: "Silver Mastery",
+    level: 2,
+    bucket: "situational",
+    note: "real +1 attack bonus but scoped to mithral-material weapons specifically (no engine target for weapon material, only weapon group), plus a DR-bypass rule with no matching target either",
+  },
+  "bard:solacer:creative-treatment:2": {
+    archetypeId: "bard:solacer",
+    name: "Creative Treatment",
+    level: 2,
+    bucket: "situational",
+    note: "activated, limited-uses/day Heal-check reroll ability — not a flat number, same bar as the hand-verified table's Scoundrel's Fortune precedent",
+  },
+  "bard:solacer:inspire-tenacity:1": {
+    archetypeId: "bard:solacer",
+    name: "Inspire Tenacity",
+    level: 1,
+    bucket: "subsystem",
+    note: "bardic performance modification (ally stabilize + save-bonus aura, granted to allies rather than the bard's own sheet) — no Change-shaped number to extract",
+  },
+  "bard:songhealer:enhance-healing:2": {
+    archetypeId: "bard:songhealer",
+    name: "Enhance Healing",
+    level: 2,
+    bucket: "subsystem",
+    note: "activated ability (uses/day = Cha modifier) that boosts an item's caster level for healing effects — resource ability, no Change-shaped number",
+  },
+  "bard:songhealer:healing-performance:14": {
+    archetypeId: "bard:songhealer",
+    name: "Healing Performance",
+    level: 14,
+    bucket: "subsystem",
+    note: "bardic performance modification (spends rounds of performance for a heal/harm effect), replaces frightening tune — no Change-shaped number to extract",
+  },
+  "bard:sorrowsoul:darkness-denied:2": {
+    archetypeId: "bard:sorrowsoul",
+    name: "Darkness Denied",
+    level: 2,
+    bucket: "situational",
+    note: "real +4 save bonus but scoped to negative energy/death effects specifically — no matching general save target",
+  },
+  "bard:sorrowsoul:lyric-sorrow:1": {
+    archetypeId: "bard:sorrowsoul",
+    name: "Lyric Sorrow",
+    level: 1,
+    bucket: "subsystem",
+    note: "bardic performance modification (doubles round cost, boosts inspire courage/greatness/heroics when self-only) — no Change-shaped number to extract",
+  },
+  "bard:sound-striker:weird-words:6": {
+    archetypeId: "bard:sound-striker",
+    name: "Weird Words",
+    level: 6,
+    bucket: "subsystem",
+    note: "bardic performance modification (sonic-damage attack), replaces suggestion — no Change-shaped number to extract",
+  },
+  "bard:sound-striker:wordstrike:3": {
+    archetypeId: "bard:sound-striker",
+    name: "Wordstrike",
+    level: 3,
+    bucket: "subsystem",
+    note: "bardic performance modification (sonic-damage attack), replaces inspire competence — no Change-shaped number to extract",
+  },
+  "bard:speaker-of-the-palatine-eye:angelic-grace:1": {
+    archetypeId: "bard:speaker-of-the-palatine-eye",
+    name: "Angelic Grace",
+    level: 1,
+    bucket: "subsystem",
+    note: "class-skill swap plus a bonus language — no Change-shaped number",
+  },
+  "bard:speaker-of-the-palatine-eye:corpse-speaker:1": {
+    archetypeId: "bard:speaker-of-the-palatine-eye",
+    name: "Corpse Speaker",
+    level: 1,
+    bucket: "subsystem",
+    note: "grants a ventriloquism-style ability with a target-facing save DC — not a Change-shaped number on the bard's own sheet",
+  },
+  "bard:thundercaller:bardic-performance:0": {
+    archetypeId: "bard:thundercaller",
+    name: "Bardic Performance",
+    level: 0,
+    bucket: "subsystem",
+    note: "bardic performance modification (grants four new performance types: Thunder Call, Incite Rage, Call Lightning, Call Lightning Storm) — no Change-shaped number to extract",
+  },
+  "bard:thundercaller:bound-to-the-land:0": {
+    archetypeId: "bard:thundercaller",
+    name: "Bound to the Land",
+    level: 0,
+    bucket: "numeric",
+    note: "extracted — see BARD_ARCHETYPE_EFFECTS_EXTRACTED below. Replaces bardic knowledge, and unlike every other bard 'replaces bardic knowledge' claim in this file, this one's pairedBaseFeatureUuid correctly matches Bardic Knowledge's own uuid (verified against classes.json/class-features.json), so activeArchetypeSwaps genuinely suppresses it — safe to extract with no double-count risk",
+  },
+  "bard:watersinger:lifewater:5": {
+    archetypeId: "bard:watersinger",
+    name: "Lifewater",
+    level: 5,
+    bucket: "subsystem",
+    note: "bardic performance modification (sicken effect or a reposition maneuver), replaces the 5th-level use of lore master — no Change-shaped number to extract",
+  },
+  "bard:watersinger:watersong:1": {
+    archetypeId: "bard:watersinger",
+    name: "Watersong",
+    level: 1,
+    bucket: "subsystem",
+    note: "bardic performance modification (water-manipulation ability), replaces fascinate/suggestion/mass suggestion — no Change-shaped number to extract",
+  },
+  "bard:watersinger:waterstrike:3": {
+    archetypeId: "bard:watersinger",
+    name: "Waterstrike",
+    level: 3,
+    bucket: "subsystem",
+    note: "bardic performance modification (slam attack via manipulated water), replaces inspire competence — no Change-shaped number to extract (paired to Inspire Competence)",
+  },
 };
 
 /**
@@ -2803,5 +3146,26 @@ export const BARD_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "At 2nd level, a dervish dancer gains a bonus equal to half his level on Perform (dance) checks. This " +
       "ability replaces versatile performance. (the Perform-dance-in-place-of-Acrobatics substitution half is " +
       "not modeled)",
+  },
+
+  // ── Genuinely paired swap of Bardic Knowledge ─────────────────────────────
+  // Unlike every other "replaces bardic knowledge" claim in this file, this
+  // feature's vendored pairedBaseFeatureUuid actually matches Bardic
+  // Knowledge's own uuid (verified against classes.json/class-features.json),
+  // so activeArchetypeSwaps genuinely suppresses Bardic Knowledge when this
+  // archetype is active — safe to extract with no double-count risk, even
+  // though the replacement bonus itself touches a Knowledge sub-skill.
+
+  "bard:thundercaller:bound-to-the-land:0": {
+    changes: [
+      c("floor(@class.unlevel / 2)", "skill.han"),
+      c("floor(@class.unlevel / 2)", "skill.kna"),
+      c("floor(@class.unlevel / 2)", "skill.sur"),
+    ],
+    detail: (level) => `+${Math.floor(level / 2)} Handle Animal/Knowledge (nature)/Survival`,
+    confidence: "high",
+    provenance:
+      "A thundercaller gains a bonus equal to half her level on Handle Animal checks, Knowledge (nature) " +
+      "checks, and Survival checks. This replaces bardic knowledge.",
   },
 };
