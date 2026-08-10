@@ -28,7 +28,7 @@ import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import type { RefData } from "../packages/schema/src/index.js";
+import type { ContextNote, RefData } from "../packages/schema/src/index.js";
 import { loadRefData } from "../packages/data-pipeline/src/index.js";
 
 import { mergedAlchemistDiscoveryCatalog } from "../packages/engine/src/alchemist-discoveries.js";
@@ -67,6 +67,10 @@ import { mergedShamanSpiritCatalog } from "../packages/engine/src/shaman-spirits
 import { mergedShifterAspectCatalog } from "../packages/engine/src/shifter-aspects.js";
 import { mergedSlayerTalentCatalog } from "../packages/engine/src/slayer-talents.js";
 import { resolveTraitDef } from "../packages/engine/src/traits.js";
+import {
+  saveChangesFromNotes,
+  VENDORED_RACIAL_TRAIT_SAVE_NOTES,
+} from "../packages/engine/src/vendored-trait-save-notes.js";
 import {
   mergedVigilanteSocialTalentCatalog,
   mergedVigilanteTalentCatalog,
@@ -400,17 +404,36 @@ function main(): void {
     );
   }
 
+  // The hand table keys by its own `${race-slug}-${trait-slug}` ids, never by
+  // the vendored pack id this file iterates — match on race + name, the same
+  // identity the model layer uses to dedupe vendored entries against it.
+  const handTraitByRaceName = new Map(
+    Object.values(RACIAL_TRAITS).map((def) => [`${def.race}|${def.name}`, def]),
+  );
   for (const [id, e] of Object.entries(loadDataFile("racial-traits.json"))) {
     const name = typeof e.name === "string" ? e.name : id;
-    const hand: unknown = RACIAL_TRAITS[id];
-    const wired = arrayLen(e.changes) > 0 || (hand !== undefined && defMovesNumbers(hand));
+    const hand = handTraitByRaceName.get(`${String(e.race)}|${name}`);
+    // Vendored entries wire numbers through three routes beyond `changes[]`:
+    // `openChanges` (player-targeted "choose one" bonuses via
+    // `build.vendoredRacialTraitTargets`), save-category promotions keyed on
+    // the entry's own note text (`VENDORED_RACIAL_TRAIT_SAVE_NOTES`), and a
+    // hand-authored `RACIAL_TRAITS` counterpart that shadows the vendored
+    // entry in the picker.
+    const wired =
+      arrayLen(e.changes) > 0 ||
+      arrayLen(e.openChanges) > 0 ||
+      saveChangesFromNotes(
+        e.contextNotes as readonly ContextNote[] | undefined,
+        VENDORED_RACIAL_TRAIT_SAVE_NOTES,
+      ).length > 0 ||
+      (hand !== undefined && defMovesNumbers(hand));
     const noted = arrayLen(e.contextNotes) > 0;
     results.push(
       audit(
         "racial-traits",
         name,
         wired ? "wired" : noted ? "noted" : "prose",
-        false,
+        rec(hand).displayOnly === true,
         typeof e.description === "string" ? e.description : "",
       ),
     );
