@@ -270,8 +270,8 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "bard:archaeologist",
     name: "Archaeologist's Luck",
     level: 1,
-    bucket: "numeric",
-    note: "hand-verified, ground truth — see archetype-effects.ts (activated luck bonus, not modeled as a Change; recorded there as notes-only)",
+    bucket: "situational",
+    note: "hand-verified, ground truth — see archetype-effects.ts (activated rounds-per-day luck bonus, deliberately notes-only; a numeric verdict here would demand a Change the activation gate forbids)",
   },
   "bard:archaeologist:clever-explorer:2": {
     archetypeId: "bard:archaeologist",

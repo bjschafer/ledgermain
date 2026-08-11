@@ -40,7 +40,8 @@ describe("mergedMediumSpiritCatalog", () => {
 
   it("a vendored-only outsider-type spirit is honestly display-only — no Spirit Bonus targets/powers", () => {
     const entry = byTag.get("aeon")!;
-    expect(entry.vendoredOnly).toBe(true);
+    if (!entry.vendoredOnly) throw new Error("expected aeon to be vendored-only");
+    expect(entry.displayOnly).toBe(true);
     expect(entry.name).toBe("Aeon");
     expect("spiritBonusTargets" in entry).toBe(false);
     expect("powers" in entry).toBe(false);
@@ -49,8 +50,15 @@ describe("mergedMediumSpiritCatalog", () => {
 
   it("a vendored-only named-historical spirit is likewise display-only", () => {
     const entry = byTag.get("abrogail_thrune_i")!;
-    expect(entry.vendoredOnly).toBe(true);
+    if (!entry.vendoredOnly) throw new Error("expected abrogail_thrune_i to be vendored-only");
+    expect(entry.displayOnly).toBe(true);
     expect(entry.name).toBe("Abrogail Thrune I");
+  });
+
+  it("every vendored-only spirit is marked displayOnly (no entry carries a stray mechanic)", () => {
+    for (const entry of merged) {
+      if (entry.vendoredOnly) expect(entry.displayOnly).toBe(true);
+    }
   });
 
   it("every tag is unique", () => {

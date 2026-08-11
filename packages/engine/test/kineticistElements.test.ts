@@ -592,3 +592,37 @@ describe("Herbal Antivenom (+5 alchemical bonus vs. poison)", () => {
     expect(poison?.total).toBe(baseline.saves.fort.total + 5);
   });
 });
+
+/**
+ * Curse Breaker (Horror Adventures): "you gain a +4 bonus on saving throws
+ * against curses and hexes" (hexes omitted, not in the `saveCategories`
+ * vocabulary — see the entry's own comment). Curse is an ALL_SAVES category,
+ * so the conditional surfaces on Fortitude, Reflex, and Will alike, same
+ * shape as Witches' Woe (`classFeatureSaves.test.ts`).
+ */
+describe("Curse Breaker (+4 bonus on saves against curses)", () => {
+  it("leaves every headline save alone", () => {
+    const withTalent = compute(
+      makeDoc(8, { kineticistElement: "void", kineticistWildTalents: ["void:curseBreaker"] }),
+      ref,
+    );
+    const baseline = compute(makeDoc(8, { kineticistElement: "void" }), ref);
+    expect(withTalent.saves.fort.total).toBe(baseline.saves.fort.total);
+    expect(withTalent.saves.ref.total).toBe(baseline.saves.ref.total);
+    expect(withTalent.saves.will.total).toBe(baseline.saves.will.total);
+  });
+
+  it("shows +4 on the curse conditional for Fortitude, Reflex, and Will", () => {
+    const withTalent = compute(
+      makeDoc(8, { kineticistElement: "void", kineticistWildTalents: ["void:curseBreaker"] }),
+      ref,
+    );
+    const baseline = compute(makeDoc(8, { kineticistElement: "void" }), ref);
+    for (const save of ["fort", "ref", "will"] as const) {
+      const curse = withTalent.saves[save].conditionals?.find((c) =>
+        c.categories.includes("curse"),
+      );
+      expect(curse?.total).toBe(baseline.saves[save].total + 4);
+    }
+  });
+});

@@ -93,6 +93,14 @@ export interface BloodlineDef {
   /** Matches `doc.build.sorcererBloodline` / (where present) `RefData.bloodlineSpellLists` keys. */
   tag: string;
   name: string;
+  /**
+   * True for a bloodline whose entire tree (arcana, every power) was read
+   * and deliberately left prose-only: nothing anywhere in it is an
+   * unconditional number. The merged catalog surfaces this as its
+   * acknowledged flag so the coverage audit counts the ruling as reviewed
+   * triage instead of undiscovered backlog.
+   */
+  displayOnly?: boolean;
   arcana: {
     summary: string;
     /** Unconditional numeric modifiers (rare — see file doc comment). */
@@ -387,6 +395,9 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Arcane",
     name: "Arcane",
+    // Whole tree read: familiar/bonded-object grant, metamagic riders, spell
+    // access, and new-arcana slots — no unconditional number anywhere.
+    displayOnly: true,
     bonusFeatSlugs: feats(
       "Combat Casting",
       "Improved Counterspell",
@@ -559,6 +570,9 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Destined",
     name: "Destined",
+    // Whole tree read: every power is luck scoped to a spell-cast trigger, a
+    // per-day reroll, or an activated round-count — never always-on.
+    displayOnly: true,
     bonusFeatSlugs: feats(
       "Arcane Strike",
       "Diehard",
@@ -4862,6 +4876,9 @@ const BLOODLINE_LIST: BloodlineDef[] = [
   {
     tag: "Vestige",
     name: "Vestige",
+    // Whole tree read: identify/lore riders, activated auras, and summon
+    // upgrades — no unconditional number anywhere.
+    displayOnly: true,
     bonusFeatSlugs: feats(
       "Arcane Strike",
       "Augment Summoning",
@@ -5060,14 +5077,14 @@ export function mergedSorcererBloodlineCatalog(refData: RefData): MergedSorcerer
         ...handMatch,
         description: v.description,
         sources: v.sources,
-        displayOnly: false,
+        displayOnly: handMatch.displayOnly ?? false,
       });
     } else {
       merged.push(vendoredBloodlineToDef(v));
     }
   }
   for (const b of BLOODLINE_LIST) {
-    if (!usedHandTags.has(b.tag)) merged.push({ ...b, displayOnly: false });
+    if (!usedHandTags.has(b.tag)) merged.push({ ...b, displayOnly: b.displayOnly ?? false });
   }
   return merged;
 }

@@ -66,6 +66,8 @@
  *     the grant and stays a contextNotes reminder, the same posture
  *     `shifter-aspects.ts`'s Bat aspect documents).
  *   - `void:eyesOfTheVoidGreater` — see in darkness (a flag sense).
+ *   - `void:curseBreaker` — a +4 bonus on saves against curses (hexes stay
+ *     unmodeled — see the entry's own comment).
  *   - `wood:herbalAntivenom` — a +5 alchemical bonus on saves against
  *     poison.
  *   - `universal:skilledKineticist` — a competence bonus (half kineticist
@@ -98,7 +100,14 @@
  * `climbSpeed` formula only ever sees the PRE-buff base land speed in roll
  * data (`buildRollData`), so an automatic grant could understate the real
  * number once another source (Swift Foot, a buff, ...) has already raised
- * land speed — apply the current land speed by hand instead.
+ * land speed — apply the current land speed by hand instead. `earth:
+ * kineticCover` and `earth:pillar` (also duplicated onto other elements)
+ * grant a barrier/pillar whose hp is the created object's own stat, not the
+ * player's. `aether:reactiveTouchsight` grants an uncanny-dodge-shaped
+ * "never denied Dex to AC" effect this engine doesn't model as a Change
+ * anywhere. `fire:flameShield`'s melee-attacker damage needs both a spent
+ * activation and the Searing Flesh defense active, a double-gated state with
+ * no live toggle.
  *
  * The vendored catalog overlay at the bottom of this file — see
  * `mergedKineticistWildTalentCatalog` — still exists for completeness (a
@@ -135,6 +144,10 @@ export interface KineticistWildTalentDef {
   changes?: Change[];
   /** Non-mechanical reminders (upkeep, scaling, prerequisites). */
   contextNotes?: ContextNote[];
+  /** Deliberately prose-only after review — `scripts/mech-coverage.ts` reads this as acknowledged triage rather than flagging the entry. */
+  displayOnly?: boolean;
+  /** This entry's numbers flow through a dedicated engine path it never serializes as its own `changes[]` — name the route in a comment at each use. */
+  wiredElsewhere?: boolean;
 }
 
 /** `level <= 1 ? 1 : 2 * level` — see file doc comment's "LEVEL GATE" section. */
@@ -188,6 +201,7 @@ const UNIVERSAL_INFUSIONS: KineticistWildTalentDef[] = [
     burn: 1,
     summary:
       "Shape your kinetic blast into a non-reach light or one-handed melee weapon, usable to make melee attacks with blast damage.",
+    displayOnly: true,
   },
   {
     slug: "kineticFist",
@@ -220,6 +234,7 @@ const UNIVERSAL_INFUSIONS: KineticistWildTalentDef[] = [
     burn: 2,
     summary:
       "Requires Kinetic Blade; instantly move 30 ft. in any direction and make one kinetic-blade attack at +2 to hit / -2 AC until your next turn.",
+    displayOnly: true,
   },
   {
     slug: "focusedBlast",
@@ -231,6 +246,7 @@ const UNIVERSAL_INFUSIONS: KineticistWildTalentDef[] = [
     burn: 2,
     summary:
       "Blast gains a +1 enhancement bonus to attack rolls and CL checks to beat SR; more burn raises the bonus (up to +5 for 10 burn), or halve blast damage to halve the burn cost.",
+    displayOnly: true,
   },
   {
     slug: "kundaliniInfusion",
@@ -285,6 +301,7 @@ const UNIVERSAL_INFUSIONS: KineticistWildTalentDef[] = [
     burn: 2,
     summary:
       "Fire your kinetic blast at full effect against one target and a weaker (1st-level-equivalent) blast against up to 2 more targets within 120 ft.",
+    displayOnly: true,
   },
   {
     slug: "kineticWhip",
@@ -369,6 +386,7 @@ const UNIVERSAL_INFUSIONS: KineticistWildTalentDef[] = [
     level: 5,
     burn: 3,
     summary: "A hit attempts a grapple combat maneuver against the target.",
+    displayOnly: true,
   },
   {
     slug: "wall",
@@ -447,6 +465,12 @@ const UNIVERSAL_UTILITY: KineticistWildTalentDef[] = [
     burn: 0,
     summary:
       "Gain a competence bonus equal to 1/2 your kineticist level on one chosen class skill.",
+    // Applied by a dedicated `collect.ts` block reading
+    // `doc.build.kineticistElement` rather than this def's own `changes[]`
+    // (see file doc comment's promoted-set list): which two skills the bonus
+    // targets depends on the player's primary element, data this static
+    // table has no access to.
+    wiredElsewhere: true,
   },
   {
     slug: "infernalBargain",
@@ -595,6 +619,7 @@ const UNIVERSAL_UTILITY: KineticistWildTalentDef[] = [
     burn: 1,
     summary:
       "Summon and guide a Medium elemental of your element as summon monster IV (scaling with level) for 1 round per kineticist level.",
+    displayOnly: true,
   },
   {
     slug: "rideTheBlast",
@@ -614,6 +639,7 @@ const UNIVERSAL_UTILITY: KineticistWildTalentDef[] = [
     burn: 0,
     summary:
       "Functions as ethereal jaunt, using your element's matter as the conduit to the Ethereal Plane.",
+    displayOnly: true,
   },
   {
     slug: "elementalExile",
@@ -690,6 +716,7 @@ const AETHER_TALENTS: KineticistWildTalentDef[] = [
     burn: 4,
     summary:
       "Telekinetic blast strikes multiple targets within 120 ft., up to your kineticist level.",
+    displayOnly: true,
   },
   {
     slug: "telekineticFinesse",
@@ -758,6 +785,7 @@ const AETHER_TALENTS: KineticistWildTalentDef[] = [
     burn: 0,
     summary:
       "As invisibility, bending light and dampening sound, but your Stealth bonus against sight-based detection is halved in exchange for defeating sound-based blindsense/blindsight.",
+    displayOnly: true,
   },
   {
     slug: "healingBurst",
@@ -825,8 +853,13 @@ const AETHER_TALENTS: KineticistWildTalentDef[] = [
     element: "aether",
     level: 5,
     burn: 0,
+    // An uncanny-dodge-shaped grant (never denied Dex to AC from flat-
+    // footedness/an unseen attacker) — this engine doesn't model that as a
+    // Change anywhere (see e.g. `deeds.ts`'s and `vigilante-talents.ts`'s own
+    // uncanny dodge grants, both prose), so it stays a reminder here too.
     summary:
       "Requires Touchsight; you're never denied your Dex bonus to AC from flat-footedness or an unseen/invisible attacker within 30 ft., and always act in the surprise round against foes in that range.",
+    displayOnly: true,
   },
   {
     slug: "kineticRevivification",
@@ -943,6 +976,7 @@ const AIR_TALENTS: KineticistWildTalentDef[] = [
     burn: 2,
     summary:
       "Targets become mildly magnetic; metal weapons gain a +4 bonus on attacks against them.",
+    displayOnly: true,
   },
   {
     slug: "bolt",
@@ -1323,7 +1357,11 @@ const EARTH_TALENTS: KineticistWildTalentDef[] = [
     element: "earth",
     level: 1,
     burn: 0,
+    // The "2 hit points per kineticist level" the RAW gives the cover is the
+    // BARRIER's hp, not the player's — a created object's stat block, not a
+    // sheet number this talent grants the character.
     summary: "Raise a barrier of earth granting cover or improved cover against attacks.",
+    displayOnly: true,
   },
   {
     slug: "earthWalk",
@@ -1404,8 +1442,11 @@ const EARTH_TALENTS: KineticistWildTalentDef[] = [
     element: "earth",
     level: 3,
     burn: 0,
+    // Same near-miss as Kinetic Cover: the "3 hit points per kineticist
+    // level" RAW gives it is the pillar's own hp, not a player sheet number.
     summary:
       "Requires Kinetic Cover; raise a 5-ft.-square pillar of earth up to 15 ft. tall over 1 full round, lifting willing occupants with it until it crumbles after your Constitution bonus in rounds.",
+    displayOnly: true,
   },
   {
     slug: "tremorsense",
@@ -1545,6 +1586,7 @@ const FIRE_TALENTS: KineticistWildTalentDef[] = [
     level: 1,
     burn: 1,
     summary: "Targets catch fire, taking 1d6 fire damage per round until extinguished.",
+    displayOnly: true,
   },
   {
     slug: "fanOfFlames",
@@ -1710,6 +1752,7 @@ const FIRE_TALENTS: KineticistWildTalentDef[] = [
     // can express.
     summary:
       "Add your elemental overflow bonus to fire (and fire-inclusive composite) blast damage; stacks with blasts that already double that bonus.",
+    wiredElsewhere: true,
   },
   {
     slug: "fireSteed",
@@ -1720,6 +1763,7 @@ const FIRE_TALENTS: KineticistWildTalentDef[] = [
     burn: 0,
     summary:
       "Wreathe a willing mount in flame for 1 round (1 burn extends it to 1 round per kineticist level), granting fire resistance 10 and +10 ft. speed; anyone but you touching, striking, or mounting it takes 1d6 fire damage per round of contact.",
+    displayOnly: true,
   },
   {
     slug: "flameTrap",
@@ -1806,7 +1850,12 @@ const FIRE_TALENTS: KineticistWildTalentDef[] = [
     element: "fire",
     level: 5,
     burn: 1,
+    // RAW's melee-attacker fire damage (1/2 kineticist level) only applies
+    // while the Searing Flesh defense is ALSO active and this talent has been
+    // activated for its burn cost — a double-gated state this table has no
+    // live toggle for, unlike Clockwork Heart's single daily-upkeep gate.
     summary: "Surround yourself with flame, gaining the benefits of a fire shield spell.",
+    displayOnly: true,
   },
   {
     slug: "fireCorridor",
@@ -1890,6 +1939,7 @@ const WATER_TALENTS: KineticistWildTalentDef[] = [
     burn: 1,
     summary:
       "Blast douses nonmagical fires it strikes; more burn dispels magical fire effects too.",
+    displayOnly: true,
   },
   {
     slug: "entanglingInfusion",
@@ -1953,6 +2003,7 @@ const WATER_TALENTS: KineticistWildTalentDef[] = [
     burn: 4,
     summary:
       "Requires Extended Range; whip a 20-ft.-radius maelstrom into a nearby body of water that batters and repositions everyone caught in it (partial damage regardless of save) for rounds equal to your Constitution modifier.",
+    displayOnly: true,
   },
   {
     slug: "kineticCover",
@@ -1962,6 +2013,7 @@ const WATER_TALENTS: KineticistWildTalentDef[] = [
     level: 1,
     burn: 0,
     summary: "Raise a barrier of water granting cover or improved cover against attacks.",
+    displayOnly: true,
   },
   {
     slug: "heatAdaptation",
@@ -2032,6 +2084,7 @@ const WATER_TALENTS: KineticistWildTalentDef[] = [
     burn: 0,
     summary:
       "Disguise yourself in a misty veil (as disguise self) for minutes equal to your Constitution modifier; 1 burn makes it last until dismissed.",
+    displayOnly: true,
   },
   {
     slug: "coldSnap",
@@ -2327,6 +2380,7 @@ const VOID_TALENTS: KineticistWildTalentDef[] = [
     burn: 0,
     summary:
       "As Elemental Grip, but usable against a single undead creature as halt undead; mindless undead save at a -4 penalty.",
+    displayOnly: true,
   },
   {
     slug: "absentia",
@@ -2357,6 +2411,15 @@ const VOID_TALENTS: KineticistWildTalentDef[] = [
     burn: 0,
     summary:
       "Requires Emptiness; grants a +4 save bonus against curses and hexes; 1 burn lets you attempt a caster level check to end (or indefinitely suppress) a curse on yourself or an ally.",
+    // RAW: "You gain a +4 bonus on saving throws against curses and hexes."
+    // Only `curse` is promoted, the same call `class-feature-effects.ts`'s
+    // Witches' Woe makes: hexes aren't a `SAVE_CATEGORIES` entry of their
+    // own, and folding them into `curse` would be a guess that category
+    // deliberately avoids. The burn-spent removal/suppression half is an
+    // activated ability with no sheet stat to land on and stays a reminder.
+    changes: [
+      { formula: "4", target: "allSavingThrows", type: "untyped", saveCategories: ["curse"] },
+    ],
   },
   {
     slug: "eyesOfTheVoidGreater",
@@ -2425,6 +2488,7 @@ const WOOD_TALENTS: KineticistWildTalentDef[] = [
     burn: 3,
     summary:
       "A failed Fortitude save against piercing/slashing blast damage infects the target with fungal growth (damage over 10 rounds, then a lingering disease); an infected target grants your wood blasts +2 on attacks, DCs, and CL checks against it.",
+    displayOnly: true,
   },
   {
     slug: "toxicInfusionGreater",
@@ -2475,6 +2539,7 @@ const WOOD_TALENTS: KineticistWildTalentDef[] = [
     level: 2,
     burn: 0,
     summary: "Wood (and composite wood) blasts can deal nonlethal damage with no attack penalty.",
+    displayOnly: true,
   },
   {
     slug: "brachiation",
@@ -2611,6 +2676,7 @@ const WOOD_TALENTS: KineticistWildTalentDef[] = [
     burn: 1,
     summary:
       "Enter a tree to teleport to another tree of the same type within range, as tree stride, a number of times per activation equal to your kineticist level; an extra burn spends all remaining steps at once.",
+    displayOnly: true,
   },
   {
     slug: "woodSoldiers",
@@ -2774,6 +2840,21 @@ export interface MergedKineticistWildTalentEntry extends KineticistWildTalentDef
   sources?: SourceRef[];
 }
 
+/**
+ * Vendored-only infusion/utility names ruled prose-after-review: each
+ * element's auto-granted "Basic <Element>kinesis" utility talent (see file
+ * doc comment's SCOPE section) is already modeled as
+ * `KineticistElementDef.basicUtility` (`kineticist-elements.ts`), so a
+ * second hand-authored def here would double-count against the utility-
+ * talent budget — only these two ever surface through the vendored-only
+ * branch below (the other 5 elements' Basic entries never scored high
+ * enough to flag).
+ */
+const VENDORED_ONLY_DISPLAY_ONLY_NAMES: ReadonlySet<string> = new Set([
+  "Basic Aerokinesis",
+  "Basic Chaokinesis",
+]);
+
 function vendoredToDef(entry: KineticWildTalent): MergedKineticistWildTalentEntry {
   const elements = entry.elements.length > 0 ? entry.elements : ["universal"];
   return {
@@ -2792,6 +2873,7 @@ function vendoredToDef(entry: KineticWildTalent): MergedKineticistWildTalentEntr
     nameSuffix: entry.nameSuffix,
     description: entry.description,
     sources: entry.sources,
+    ...(VENDORED_ONLY_DISPLAY_ONLY_NAMES.has(entry.name) ? { displayOnly: true } : {}),
   };
 }
 

@@ -54,7 +54,9 @@ describe("mergedShamanSpiritCatalog", () => {
       expect(entry).toBeDefined();
       expect(entry!.spiritMagicSpells).toEqual(SHAMAN_SPIRITS[tag]!.spiritMagicSpells);
       expect(entry!.hexes).toEqual(SHAMAN_SPIRITS[tag]!.hexes);
-      expect(entry!.displayOnly).toBe(false);
+      // A hand entry is display-only exactly when its def deliberately says
+      // so (whole tree ruled prose-only), never as a merge artifact.
+      expect(entry!.displayOnly).toBe(SHAMAN_SPIRITS[tag]!.displayOnly ?? false);
       expect(entry!.description).toBeDefined();
     }
   });

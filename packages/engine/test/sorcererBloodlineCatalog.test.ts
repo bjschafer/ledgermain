@@ -32,13 +32,20 @@ describe("mergedSorcererBloodlineCatalog", () => {
       expect(entry).toBeDefined();
       expect(entry!.powers).toEqual(BLOODLINES[tag]!.powers);
       expect(entry!.arcana).toEqual(BLOODLINES[tag]!.arcana);
-      expect(entry!.displayOnly).toBe(false);
+      // A hand entry is display-only exactly when its def deliberately says
+      // so (whole tree ruled prose-only), never as a merge artifact.
+      expect(entry!.displayOnly).toBe(BLOODLINES[tag]!.displayOnly ?? false);
       expect(entry!.description).toBeDefined();
     }
   });
 
-  it("no vendored bloodline is left display-only (the whole catalog is hand-authored)", () => {
-    expect(merged.filter((b) => b.displayOnly)).toEqual([]);
+  it("display-only marks only the hand rulings (the whole catalog is hand-authored)", () => {
+    expect(
+      merged
+        .filter((b) => b.displayOnly)
+        .map((b) => b.tag)
+        .sort(),
+    ).toEqual(["Arcane", "Destined", "Vestige"]);
   });
 
   it('"Kobold" (spell-list tag) carries the vendored "Kobold Sorcerer" prose via the alias map', () => {

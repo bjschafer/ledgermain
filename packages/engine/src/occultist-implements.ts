@@ -158,6 +158,16 @@ export interface OccultistSchoolDef {
   resonantPower: OccultistResonantPower;
   /** The selectable focus-power menu for this school (excludes the base power). */
   focusPowers: OccultistFocusPowerDef[];
+  /**
+   * True for the four schools whose `resonantPower` is `appliesAsChange:
+   * false` — a real RAW number with no home in `DerivedSheet` (undead-HD
+   * pool, miss-chance %, spell-damage, or a CL bonus scoped to a
+   * conjuration-only spell-duration subset this engine's single caster-level
+   * stat can't express; see this file's header for the per-school detail).
+   * Marks the entry as triaged for the mech-coverage auditor, which
+   * otherwise has no way to see that the ruling was deliberate.
+   */
+  displayOnly?: boolean;
 }
 
 /** `min(floor(invested / perPoints), capBase + floor(occultistLevel / capPerLevels))`. */
@@ -248,6 +258,7 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       appliesAsChange: false,
       computeBonus: (invested, level) => cappedFocusBonus(invested, level, 2, 0, 1),
     },
+    displayOnly: true,
     focusPowers: [
       {
         slug: "mind-steed",
@@ -424,6 +435,7 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       appliesAsChange: false,
       computeBonus: (invested, level) => cappedFocusBonus(invested, level, 2, 1, 2),
     },
+    displayOnly: true,
     focusPowers: [
       {
         slug: "light-matrix",
@@ -485,6 +497,7 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       appliesAsChange: false,
       computeBonus: (invested, level) => 5 * cappedFocusBonus(invested, level, 1, 1, 2),
     },
+    displayOnly: true,
     focusPowers: [
       {
         slug: "cloak-image",
@@ -546,6 +559,7 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       appliesAsChange: false,
       computeBonus: (invested, level) => Math.min(2 * invested, 4 * level),
     },
+    displayOnly: true,
     focusPowers: [
       {
         slug: "necromantic-servant",
@@ -738,6 +752,17 @@ export interface MergedOccultistImplementVendoredEntry {
   summary: string;
   description?: string;
   sources?: SourceRef[];
+  /**
+   * Always true: every vendored-only entry in this domain is a Psychic
+   * Anthology Panoply variant (Mage's Paraphernalia, Performer's
+   * Accoutrements, Saint's Holy Regalia, Trappings of the Warrior) — its
+   * resonant power scales off mental focus pooled across TWO OR THREE
+   * separate implements at once, a cross-implement bookkeeping shape this
+   * engine's per-tag `live.occultistFocusInvested` doesn't support, so there
+   * is no base/resonant/focus-power data to wire at all (see the "vendored
+   * catalog overlay" section above).
+   */
+  displayOnly: true;
 }
 
 export type MergedOccultistImplementEntry =
@@ -752,6 +777,7 @@ function vendoredOnlyEntry(entry: OccultistImplement): MergedOccultistImplementV
     summary: plainTextPreview(entry.description ?? ""),
     description: entry.description,
     sources: entry.sources,
+    displayOnly: true,
   };
 }
 

@@ -7,6 +7,7 @@ import {
   orderByTag,
   ordersForClass,
   SAMURAI_ORDERS,
+  SPLATBOOK_ORDERS,
 } from "../src/index.js";
 
 /**
@@ -57,30 +58,70 @@ describe("SAMURAI_ORDERS — Warrior/Ronin, cavalier-ineligible", () => {
   });
 });
 
-describe("ordersForClass", () => {
-  it("cavalier sees exactly the six APG orders, never Warrior/Ronin", () => {
-    const names = ordersForClass("cavalier").map((o) => o.id);
-    expect(names.sort()).toEqual(
-      ["cockatrice", "dragon", "lion", "shield", "star", "sword"].sort(),
-    );
+describe("SPLATBOOK_ORDERS — the 30 published orders beyond the APG six and Warrior/Ronin", () => {
+  it("has exactly 30 entries", () => {
+    expect(Object.keys(SPLATBOOK_ORDERS)).toHaveLength(30);
   });
 
-  it("samurai sees the six APG orders PLUS Warrior/Ronin (8 total)", () => {
-    const names = ordersForClass("samurai").map((o) => o.id);
-    expect(names).toHaveLength(8);
-    expect(names).toContain("warrior");
-    expect(names).toContain("ronin");
-    expect(names).toContain("cockatrice");
+  it("every order grants two or three order skills, and abilities at 2nd/8th/15th", () => {
+    for (const order of Object.values(SPLATBOOK_ORDERS)) {
+      expect(order.orderSkills.length).toBeGreaterThanOrEqual(2);
+      expect(order.orderSkills.length).toBeLessThanOrEqual(3);
+      expect(order.abilities.map((a) => a.level)).toEqual([2, 8, 15]);
+    }
+  });
+
+  it("every order is displayOnly (Challenge rider and abilities stay prose, per the file's honesty bar)", () => {
+    for (const order of Object.values(SPLATBOOK_ORDERS)) {
+      expect(order.displayOnly).toBe(true);
+    }
+  });
+
+  it("only Eclipse and Songbird are samurai-only — their own text names only 'samurai'", () => {
+    const samuraiOnly = Object.values(SPLATBOOK_ORDERS)
+      .filter((o) => !o.forClasses.includes("cavalier"))
+      .map((o) => o.id)
+      .sort();
+    expect(samuraiOnly).toEqual(["order_of_the_eclipse", "order_of_the_songbird"]);
   });
 });
 
-describe("orderByTag — resolves across both tables", () => {
+describe("ordersForClass", () => {
+  it("cavalier sees the six APG orders plus every cavalier-eligible splatbook order (34 total), never Warrior/Ronin/Eclipse/Songbird", () => {
+    const names = ordersForClass("cavalier").map((o) => o.id);
+    expect(names).toHaveLength(34);
+    expect(names).toContain("cockatrice");
+    expect(names).toContain("order_of_the_asp");
+    expect(names).not.toContain("warrior");
+    expect(names).not.toContain("ronin");
+    expect(names).not.toContain("order_of_the_eclipse");
+    expect(names).not.toContain("order_of_the_songbird");
+  });
+
+  it("samurai sees every hand-authored order (38 total)", () => {
+    const names = ordersForClass("samurai").map((o) => o.id);
+    expect(names).toHaveLength(38);
+    expect(names).toContain("warrior");
+    expect(names).toContain("ronin");
+    expect(names).toContain("cockatrice");
+    expect(names).toContain("order_of_the_eclipse");
+    expect(names).toContain("order_of_the_songbird");
+  });
+});
+
+describe("orderByTag — resolves across all three tables", () => {
   it("finds a cavalier-table order", () => {
     expect(orderByTag("lion")?.name).toBe("Order of the Lion");
   });
 
   it("finds a samurai-only order", () => {
     expect(orderByTag("ronin")?.name).toBe("Order of the Ronin");
+  });
+
+  it("finds a splatbook order — the live compute.ts wiring path for its order skills", () => {
+    const order = orderByTag("order_of_the_asp");
+    expect(order?.name).toBe("Order of the Asp");
+    expect(order?.orderSkills).toEqual(["klo", "slt"]);
   });
 
   it("returns undefined for an unknown tag", () => {
@@ -128,5 +169,18 @@ describe("challengeRiderText — substitutes the live number into the order's te
     expect(text).toBe(
       "+1 morale bonus on attack rolls and +1 dodge bonus to AC against the challenge target.",
     );
+  });
+
+  it("Order of the Asp (splatbook) at L13: +4 phrasing, same progression as the APG orders", () => {
+    const text = challengeRiderText(SPLATBOOK_ORDERS.order_of_the_asp!, 13);
+    expect(text).toBe(
+      "+4 morale bonus on attack and damage rolls against the challenge target while it's entangled, exhausted, fatigued, flanked, nauseated, prone, shaken, staggered, or denied its Dex bonus to AC.",
+    );
+  });
+
+  it("Order of the Tome (splatbook): flat +2, no {n} in its template to substitute", () => {
+    const order = SPLATBOOK_ORDERS.order_of_the_tome!;
+    expect(order.challengeTemplate).not.toContain("{n}");
+    expect(challengeRiderText(order, 20)).toBe(order.challengeTemplate);
   });
 });

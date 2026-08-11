@@ -127,6 +127,20 @@ describe("compute(): cavalierOrder grants its 2 bonus class skills", () => {
     expect(sheet.skills.apr!.classSkill).toBe(true);
   });
 
+  // Order of the Asp (Ultimate Combat splatbook order, not one of the six
+  // APG orders): orderSkills = ["klo", "slt"] (Knowledge [local], Sleight of
+  // Hand).
+  it("Knowledge (local) becomes a class skill for an Order of the Asp cavalier", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "cavalier", level: 1 }],
+      cavalierOrder: "order_of_the_asp",
+      skillRanks: { klo: 1 },
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.skills.klo!.classSkill).toBe(true);
+    expect(sheet.skills.klo!.classSkillBonus).toBe(3);
+  });
+
   it("an unknown order tag grants nothing", () => {
     const doc = makeDoc({
       classes: [{ tag: "cavalier", level: 1 }],

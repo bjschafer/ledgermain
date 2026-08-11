@@ -528,6 +528,7 @@ export {
 export {
   CAVALIER_ORDERS,
   SAMURAI_ORDERS,
+  SPLATBOOK_ORDERS,
   orderByTag,
   ordersForClass,
   challengeRiderAt,

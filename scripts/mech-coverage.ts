@@ -37,7 +37,7 @@ import { resolveArchetypeFeatureEffect } from "../packages/engine/src/archetype-
 import { ARCHETYPE_FEATURE_CLASSIFICATION } from "../packages/engine/src/archetype-extracted/index.js";
 import { mergedSorcererBloodlineCatalog } from "../packages/engine/src/bloodlines.js";
 import { mergedBloodragerBloodlineCatalog } from "../packages/engine/src/bloodrager-bloodlines.js";
-import { BUFF_CHANGE_PATCHES } from "../packages/engine/src/buff-effects.js";
+import { BUFF_CHANGE_PATCHES, BUFF_PROSE_RULINGS } from "../packages/engine/src/buff-effects.js";
 import { mergedOrderCatalog } from "../packages/engine/src/cavalier-orders.js";
 import { CLASS_FEATURE_CLASSIFICATION } from "../packages/engine/src/class-feature-classification/index.js";
 import { CLASS_FEATURE_CHANGE_PATCHES } from "../packages/engine/src/class-feature-effects.js";
@@ -148,7 +148,12 @@ interface Audited {
   domain: string;
   name: string;
   status: Status;
-  /** Explicitly triaged as prose-only by a hand table (`displayOnly: true`). */
+  /**
+   * Explicitly triaged as prose-only by a hand table (`displayOnly: true`).
+   * Counts as reviewed triage for flagging purposes — an ack is the merged
+   * catalogs' equivalent of a classification table's deliberate
+   * situational/subsystem/blocked verdict, so it is not backlog.
+   */
   acknowledged: boolean;
   /**
    * An extraction wave issued a deliberate not-wireable verdict
@@ -183,7 +188,12 @@ function defMovesNumbers(def: unknown): boolean {
     json.includes('"formula"') ||
     /"(?:classSkills|orderSkills|bonusSpells|spiritBonusTargets)":\[(?!\])/.test(json) ||
     json.includes('"appliesAsChange":true') ||
-    json.includes('"hasAbilitySubstitution":true')
+    json.includes('"hasAbilitySubstitution":true') ||
+    // A def-level declaration that the entry's numbers flow through a
+    // dedicated engine path this def never serializes (the kinetic-blast
+    // damage pipeline, a bespoke collect.ts block, linked toggleable
+    // buffs). The declaring file's comment names the actual route.
+    json.includes('"wiredElsewhere":true')
   );
 }
 
@@ -241,21 +251,28 @@ function audit(
 // the richer signal source, so prefer it when a name matches.
 // ---------------------------------------------------------------------------
 
-function buildDescriptionIndex(): Map<string, string> {
-  const index = new Map<string, string>();
+function buildDescriptionIndex(): {
+  global: Map<string, string>;
+  byFile: Map<string, Map<string, string>>;
+} {
+  const global = new Map<string, string>();
+  const byFile = new Map<string, Map<string, string>>();
   for (const file of readdirSync(DATA_DIR)) {
     if (!file.endsWith(".json") || file === "meta.json") continue;
     const parsed: unknown = JSON.parse(readFileSync(join(DATA_DIR, file), "utf8"));
     if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) continue;
+    const local = new Map<string, string>();
     for (const raw of Object.values(parsed)) {
       const e = rec(raw);
       if (typeof e.name === "string" && typeof e.description === "string") {
         const key = e.name.toLowerCase();
-        if (!index.has(key)) index.set(key, e.description);
+        if (!global.has(key)) global.set(key, e.description);
+        if (!local.has(key)) local.set(key, e.description);
       }
     }
+    byFile.set(file, local);
   }
-  return index;
+  return { global, byFile };
 }
 
 // ---------------------------------------------------------------------------
@@ -274,22 +291,33 @@ function main(): void {
   const descriptions = buildDescriptionIndex();
   const results: Audited[] = [];
 
-  const textFor = (name: string, summary: unknown): string => {
-    const desc = descriptions.get(name.toLowerCase());
+  // Some catalog domains share entry names with unrelated content in other
+  // vendored files ("Snake" is a shifter aspect AND a kineticist talent;
+  // "Warmonger" a medium spirit AND a feat). Prefer the domain's own data
+  // file so the prose being scored belongs to the entry being audited, and
+  // fall back to the global first-file-wins index only when the domain has
+  // no vendored file of its own (hand-only catalogs).
+  const textFor = (name: string, summary: unknown, dataFile?: string): string => {
+    const key = name.toLowerCase();
+    const desc =
+      (dataFile ? descriptions.byFile.get(dataFile)?.get(key) : undefined) ??
+      descriptions.global.get(key);
     const sum = typeof summary === "string" ? summary : "";
     // Both when available: the summary sometimes states mechanics the
     // vendored blob buries, and vice versa.
     return desc ? `${desc} ${sum}` : sum;
   };
 
-  const auditCatalog = (domain: string, entries: unknown[]): void => {
+  const auditCatalog = (domain: string, entries: unknown[], dataFile?: string): void => {
     for (const raw of entries) {
       const e = rec(raw);
       const name = typeof e.name === "string" ? e.name : String(e.id ?? e.slug ?? "?");
       const wired = defMovesNumbers(raw);
       const noted = arrayLen(e.contextNotes) > 0;
       const status: Status = wired ? "wired" : noted ? "noted" : "prose";
-      results.push(audit(domain, name, status, e.displayOnly === true, textFor(name, e.summary)));
+      results.push(
+        audit(domain, name, status, e.displayOnly === true, textFor(name, e.summary, dataFile)),
+      );
     }
   };
 
@@ -324,8 +352,16 @@ function main(): void {
     ["witch-hexes", mergedWitchHexCatalog],
     ["witch-patrons", mergedWitchPatronCatalog],
   ];
-  for (const [domain, catalog] of catalogs) auditCatalog(domain, catalog(refData));
+  // Domains whose vendored file is not named `${domain}.json`.
+  const dataFileOverrides: Readonly<Record<string, string>> = {
+    "kineticist-wild-talents": "kinetic-wild-talents.json",
+    "witch-hexes": "hexes.json",
+  };
+  for (const [domain, catalog] of catalogs) {
+    auditCatalog(domain, catalog(refData), dataFileOverrides[domain] ?? `${domain}.json`);
+  }
 
+  // Hand-only catalog, no vendored file: the global index is the only source.
   auditCatalog("oracle-revelations", Object.values(ORACLE_REVELATIONS));
 
   // Vendored-changes domains: the vendored entry itself may carry changes,
@@ -462,6 +498,9 @@ function main(): void {
         wired ? "wired" : noted ? "noted" : "prose",
         false,
         typeof e.description === "string" ? e.description : "",
+        // Vendored buffs have no def to carry `displayOnly`, so their
+        // deliberate prose rulings live in a name set beside the patches.
+        BUFF_PROSE_RULINGS.has(name),
       ),
     );
   }
@@ -489,7 +528,7 @@ function report(results: Audited[]): void {
     const prose = rs.filter((r) => r.status === "prose").length;
     const reviewed = rs.filter((r) => r.reviewed).length;
     const flagged = rs.filter(
-      (r) => r.status !== "wired" && !r.reviewed && r.score >= FLAG_THRESHOLD,
+      (r) => r.status !== "wired" && !r.reviewed && !r.acknowledged && r.score >= FLAG_THRESHOLD,
     ).length;
     flaggedTotal += flagged;
     lines.push(
@@ -498,12 +537,14 @@ function report(results: Audited[]): void {
   }
   lines.push("");
   lines.push(
-    `flagged = not numbers-wired, not review-triaged (revwd), and prose signals score >= ${FLAG_THRESHOLD}. Total flagged: ${flaggedTotal}`,
+    `flagged = not numbers-wired, not review-triaged (revwd or displayOnly-ack'd), and prose signals score >= ${FLAG_THRESHOLD}. Total flagged: ${flaggedTotal}`,
   );
   console.log(lines.join("\n"));
 
   const ranked = results
-    .filter((r) => r.status !== "wired" && !r.reviewed && r.score >= FLAG_THRESHOLD)
+    .filter(
+      (r) => r.status !== "wired" && !r.reviewed && !r.acknowledged && r.score >= FLAG_THRESHOLD,
+    )
     .sort((a, b) => b.score - a.score);
 
   console.log("\nTop candidates (passive weighted above activated):");

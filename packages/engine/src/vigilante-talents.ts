@@ -93,6 +93,8 @@ export interface VigilanteTalentDef {
   changes: Change[];
   /** Non-mechanical reminders (identity-gating, prerequisite talent, exact numbers not modeled, ...). */
   contextNotes?: ContextNote[];
+  /** Deliberately prose-only after review — `scripts/mech-coverage.ts` reads this as acknowledged triage rather than flagging the entry. */
+  displayOnly?: boolean;
 }
 
 const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });
@@ -117,6 +119,11 @@ function buildSocial(entries: RawSocialTalent[]): VigilanteTalentDef[] {
     minLevel: e.minLevel ?? 1,
     changes: e.changes ?? [],
     contextNotes: e.contextNotes,
+    // Every social talent below carries no real Change (RAW's full-parity
+    // sweep confirmed each one is honest prose — identity-gated, cross-table,
+    // or a bonus this engine has no Change target for), so an entry with an
+    // empty changes[] is triage-acknowledged rather than backlog.
+    displayOnly: (e.changes?.length ?? 0) === 0,
   }));
 }
 
@@ -130,6 +137,12 @@ const SOCIAL_TALENT_LIST: VigilanteTalentDef[] = buildSocial([
     id: "beginnersLuck",
     name: "Beginner's Luck",
     summary: "Add your seamless guise bonus to Disguise checks made while using other talents.",
+    contextNotes: [
+      note(
+        "Adds the +20 seamless guise Disguise bonus only while using a vigilante talent in social identity, capped by onlooker count — situational and identity-gated, not a Change target.",
+      ),
+      identityGatedNote,
+    ],
   },
   {
     id: "bellflowerInnuendo",
@@ -229,6 +242,11 @@ const SOCIAL_TALENT_LIST: VigilanteTalentDef[] = buildSocial([
     name: "Many Guises",
     minLevel: 5,
     summary: "Create mundane (not specific-individual) social identities at will.",
+    contextNotes: [
+      note(
+        "+20 circumstance bonus on Disguise checks while in a mundane identity — a third identity state this engine doesn't track, not a Change target.",
+      ),
+    ],
   },
   {
     id: "mockingbird",
@@ -313,6 +331,11 @@ const SOCIAL_TALENT_LIST: VigilanteTalentDef[] = buildSocial([
     name: "Songbird",
     summary:
       "Cast animal messenger once per day as a spell-like ability; Handle Animal becomes a class skill.",
+    contextNotes: [
+      note(
+        "Grants a spell-like ability and a class-skill designation — this table has no class-skill grant route (unlike the mystery/element/order tables compute.ts reads), so add Handle Animal manually.",
+      ),
+    ],
   },
   {
     id: "transformationSequence",
@@ -387,6 +410,11 @@ const SOCIAL_TALENT_LIST: VigilanteTalentDef[] = buildSocial([
     name: "Companion to the Lonely",
     summary:
       "Once per day, spend an hour with a willing partner to bank a pool of morale points you can spend to reroll a Charisma check or Will save.",
+    contextNotes: [
+      note(
+        "Once per day, banks a morale-point pool equal to the higher of your or your partner's Charisma bonus, spent to reroll a Charisma check or Will save — activation-gated resource pool, not a Change target.",
+      ),
+    ],
   },
   {
     id: "everyman",
@@ -493,6 +521,10 @@ function buildTalent(entries: RawVigilanteTalent[]): VigilanteTalentEntry[] {
     changes: e.changes ?? [],
     contextNotes: e.contextNotes,
     gate: e.gate ?? "either",
+    // Same posture as buildSocial's displayOnly derivation: the handful of
+    // entries with a real changes[] (Monkey's Paws, Rooftop Infiltrator,
+    // Shadow's Sight, Shadow's Speed) are the only ones NOT triaged as prose.
+    displayOnly: (e.changes?.length ?? 0) === 0,
   }));
 }
 
@@ -514,12 +546,22 @@ const TALENT_LIST: VigilanteTalentEntry[] = buildTalent([
     name: "Armor Skin",
     summary:
       "No armor check penalty on Acrobatics/Escape Artist/Stealth in light or medium armor; full speed in medium armor at 8th level.",
+    contextNotes: [
+      note(
+        "Waives armor check penalty for 3 specific skills, only in light/medium armor — this engine applies ACP uniformly across skills, with no per-skill waiver target.",
+      ),
+    ],
   },
   {
     id: "brutalManeuver",
     name: "Brutal Maneuver",
     summary:
       "Take -5 on all attacks this round; a successful combat maneuver also deals your weapon's damage.",
+    contextNotes: [
+      note(
+        "Once-per-round trade of a -5 attack penalty for weapon damage on a successful maneuver — activation-gated, not a Change target.",
+      ),
+    ],
   },
   {
     id: "chaseMaster",
@@ -532,6 +574,11 @@ const TALENT_LIST: VigilanteTalentEntry[] = buildTalent([
     name: "Close the Gap",
     summary:
       "Designate a foe within 20 ft. each round; moving adjacent to it doesn't provoke, and you can charge it ignoring the -2 AC penalty from it.",
+    contextNotes: [
+      note(
+        "Foe-designated once per round; waives that foe's attack of opportunity and charge AC penalty — not a Change target.",
+      ),
+    ],
   },
   {
     id: "combatExpertise",
@@ -1023,6 +1070,11 @@ const TALENT_LIST: VigilanteTalentEntry[] = buildTalent([
     name: "Silent Dispatch",
     summary:
       "Ambushing an unaware foe lets you roll Stealth at a penalty to set the DC for others to hear the fight, instead of the normal battle-noise DC, until the target's first action.",
+    contextNotes: [
+      note(
+        "Sets a Perception DC for others to hear the fight; it doesn't grant you a bonus, so there's no Change target.",
+      ),
+    ],
   },
   {
     id: "steelSoldier",
@@ -1036,6 +1088,11 @@ const TALENT_LIST: VigilanteTalentEntry[] = buildTalent([
     name: "Steely Resolve",
     summary:
       "A few times per day, delay a failed Will save against a mind-affecting effect for several rounds before it takes hold.",
+    contextNotes: [
+      note(
+        "3/day activation-gated delay (half your level in rounds) on a failed save's onset — not an unconditional Change target.",
+      ),
+    ],
   },
   {
     id: "swampConcoctions",

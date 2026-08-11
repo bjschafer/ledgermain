@@ -45,7 +45,14 @@ describe("mergedOccultistImplementCatalog", () => {
     expect(entry.name).toBe("Mage's Paraphernalia (Panoply)");
     expect("basePower" in entry).toBe(false);
     expect("focusPowers" in entry).toBe(false);
+    expect(entry.displayOnly).toBe(true);
     expect(OCCULTIST_SCHOOLS.mages_paraphernalia).toBeUndefined();
+  });
+
+  it("every vendored-only entry (all 4 Panoply variants) is marked displayOnly", () => {
+    const vendoredOnly = merged.filter((e) => e.vendoredOnly);
+    expect(vendoredOnly).toHaveLength(4);
+    for (const entry of vendoredOnly) expect(entry.displayOnly).toBe(true);
   });
 
   it("every tag is unique", () => {

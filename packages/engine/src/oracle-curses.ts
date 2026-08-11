@@ -58,6 +58,13 @@ export interface OracleCurseDef {
   /** Matches `doc.build.oracleCurse` keys. */
   tag: string;
   name: string;
+  /**
+   * True for a curse read end-to-end and deliberately left prose-only (no
+   * unconditional number anywhere in its tree). The merged catalog surfaces
+   * this as its acknowledged flag so the coverage audit counts the ruling
+   * as reviewed triage instead of undiscovered backlog.
+   */
+  displayOnly?: boolean;
   /** Short rules summary (base effect + the 5th/10th/15th-level upgrades). */
   summary: string;
   /** Unconditional numeric modifiers (rare — see file doc comment). */
@@ -90,6 +97,10 @@ const CURSE_LIST: OracleCurseDef[] = [
   {
     tag: "deaf",
     name: "Deaf",
+    // Whole tree read: the initiative penalty is deliberately unwired (see
+    // the init note below) and everything else is a sense grant or a
+    // situational Perception line.
+    displayOnly: true,
     summary:
       "Deafened (with all its penalties); spells cast as if under Silent Spell (no level/casting-time increase). At 5th: +3 competence on non-hearing Perception, initiative penalty reduced to -2. At 10th: scent, no initiative penalty. At 15th: tremorsense 30 ft.",
     changes: [],
@@ -100,6 +111,13 @@ const CURSE_LIST: OracleCurseDef[] = [
       },
       {
         target: "init",
+        // Not wired as a Change: the live "Deafened" condition (conditions.ts)
+        // already applies its own flat -4 init untyped penalty when toggled
+        // on, which this curse's player is expected to do for the other
+        // deafened penalties (sound-based Perception, spell failure). A
+        // second untyped init Change here would stack with that instead of
+        // replacing it (untyped penalties always stack), overstating the
+        // penalty below 5th level and applying a nonzero one past 10th.
         text: "Deafened initiative penalty (-4 RAW) reduced to -2 at 5th level, removed at 10th — not auto-applied.",
       },
     ],
@@ -247,14 +265,14 @@ export function mergedOracleCurseCatalog(refData: RefData): MergedOracleCurseEnt
         ...handMatch,
         description: v.description,
         sources: v.sources,
-        displayOnly: false,
+        displayOnly: handMatch.displayOnly ?? false,
       });
     } else {
       merged.push(vendoredCurseToDef(v));
     }
   }
   for (const cu of CURSE_LIST) {
-    if (!usedHandTags.has(cu.tag)) merged.push({ ...cu, displayOnly: false });
+    if (!usedHandTags.has(cu.tag)) merged.push({ ...cu, displayOnly: cu.displayOnly ?? false });
   }
   return merged;
 }

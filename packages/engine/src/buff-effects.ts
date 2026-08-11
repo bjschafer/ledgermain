@@ -12,6 +12,31 @@
  * identically for every activation path (`toggleLinkedBuff`, `toggleTableBuff`,
  * or a manual add from the Buffs panel) without needing the buff's id at
  * collect-time. Applied generically in `collect.ts`'s active-buffs loop.
+ *
+ * Read and left unpromoted, beyond the save-category rejects documented
+ * below `SAVE_CATEGORY_PATCHES`:
+ * - Jump and both Aeromantic Concoction buffs (Air Walk, Feather Fall) grant
+ *   a bonus to Acrobatics checks to make high or long jumps specifically,
+ *   not to Acrobatics generally — the same "jump checks are narrower than
+ *   Acrobatics" gap `class-feature-effects.ts`'s Talmandor's Blessing leaves
+ *   unwired, for the identical reason: `skill.acr` has no jump-only slice.
+ * - Magboots' +10 circumstance bonus only applies while climbing metal
+ *   surfaces; `skill.clm` has no material-scoped slice, and an unconditional
+ *   Change would overstate onto climbing rope, wood, or stone too.
+ * - Animal Focus (Snake) scopes its attack and dodge-AC bonus to attacks of
+ *   opportunity specifically, not to attack rolls or AC generally — the same
+ *   shape rogue talents' AC-vs-AoO bonuses stay prose for; neither `attack`
+ *   nor `ac` has an AoO-only slice.
+ * - Inspiring Pain's +2 only applies to nonlethal damage rolls; like Spire
+ *   Totem's nonlethal-only damage bonus in `rage-powers.ts`, the engine's
+ *   weapon-damage targets are whole-attack, so an unconditional Change would
+ *   overstate onto lethal damage too.
+ * - Opportune Advice and Knowledgeable Strike (both Cryptid Scholar) grant
+ *   their bonus to ALLIES, not to whoever activates the buff, and scope it to
+ *   creatures sharing the type and subtype of a specific identified monster
+ *   (a per-use choice, not a standing property) — Knowledgeable Strike's
+ *   extra damage is also dice-based precision damage on the next hit, which
+ *   its own vendored note already flags as unsuited to a `Change`.
  */
 
 import type { Change } from "@pf1/schema";
@@ -188,3 +213,28 @@ export const BUFF_SAVE_NOTE_COVERAGE: Readonly<Record<string, "full" | "partial"
   "Daikyu of Commanding Presence": "full",
   Purity: "full",
 };
+
+/**
+ * Vendored buffs deliberately ruled prose-only: each promises a number the
+ * `Change` vocabulary cannot carry honestly, for the reasons documented in
+ * this file's header (jump-only Acrobatics slices, material-scoped Climb,
+ * reroll-scoped save bonuses, light-effect save scopes, AoO-scoped
+ * attack/AC, nonlethal-only damage, and ally-directed monster-scoped
+ * bonuses). `scripts/mech-coverage.ts` consumes this set as reviewed
+ * triage; membership means "read and rejected", never "not yet examined".
+ */
+export const BUFF_PROSE_RULINGS: ReadonlySet<string> = new Set([
+  "Danger Ward (Fortitude)",
+  "Danger Ward (Reflex)",
+  "Danger Ward (Will)",
+  "Sunblock Kohl",
+  "Veemod (Brown)",
+  "Jump",
+  "Aeromantic Concoction (Air Walk)",
+  "Aeromantic Concoction (Feather Fall)",
+  "Magboots",
+  "Animal Focus (Snake)",
+  "Inspiring Pain",
+  "Opportune Advice (Cryptid Scholar)",
+  "Knowledgeable Strike (Cryptid Scholar)",
+]);

@@ -30,7 +30,9 @@ describe("mergedOracleCurseCatalog", () => {
       const entry = byTag.get(tag);
       expect(entry).toBeDefined();
       expect(entry!.changes).toEqual(ORACLE_CURSES[tag]!.changes);
-      expect(entry!.displayOnly).toBe(false);
+      // A hand entry is display-only exactly when its def deliberately says
+      // so (whole tree ruled prose-only), never as a merge artifact.
+      expect(entry!.displayOnly).toBe(ORACLE_CURSES[tag]!.displayOnly ?? false);
       expect(entry!.description).toBeDefined();
     }
   });

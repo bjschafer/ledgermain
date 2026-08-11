@@ -540,9 +540,21 @@ export interface MergedMediumSpiritHandEntry extends MediumSpiritDef {
   sources?: SourceRef[];
 }
 
-/** A legendary spirit that exists ONLY in the vendored catalog — no Spirit Bonus targets/Séance Boon/Spirit Powers. */
+/**
+ * A legendary spirit that exists ONLY in the vendored catalog — no Spirit
+ * Bonus targets/Séance Boon/Spirit Powers. `displayOnly` is always `true`
+ * here: every one of these 34 spirits (12 outsider-type families that
+ * bundle 6 archetype variants apiece behind a shared alignment/taboo
+ * write-up, plus 22 named historical/NPC spirits with their own bespoke
+ * Lesser/Intermediate/Greater/Supreme-tier powers) carries only
+ * activation-gated, per-day, or situationally-conditioned numbers (auras,
+ * swift-action spell-likes, size/weapon/flanking-conditioned boons) — the
+ * same shape the 6 core spirits' own powers/boons already stay prose for,
+ * never a flat always-on `Change` this engine could honestly apply.
+ */
 export interface MergedMediumSpiritVendoredEntry {
   vendoredOnly: true;
+  displayOnly: true;
   tag: string;
   name: string;
   summary: string;
@@ -555,6 +567,7 @@ export type MergedMediumSpiritEntry = MergedMediumSpiritHandEntry | MergedMedium
 function vendoredOnlyEntry(entry: MediumSpirit): MergedMediumSpiritVendoredEntry {
   return {
     vendoredOnly: true,
+    displayOnly: true,
     tag: entry.id,
     name: entry.name,
     summary: plainTextPreview(entry.description ?? ""),

@@ -190,6 +190,14 @@ export interface ShamanSpiritDef {
   /** Matches `doc.build.shamanSpirit` keys. */
   tag: string;
   name: string;
+  /**
+   * True for a spirit whose entire tree (spirit ability, greater/true
+   * abilities, manifestation) was read and deliberately left prose-only:
+   * nothing anywhere in it is an unconditional number. The merged catalog
+   * surfaces this as its acknowledged flag so the coverage audit counts the
+   * ruling as reviewed triage instead of undiscovered backlog.
+   */
+  displayOnly?: boolean;
   spiritMagicSpells: ShamanSpiritMagicSpell[];
   /** 1st-level Spirit Ability — note-tier, see file doc comment. */
   ability: ShamanSpiritAbility;
@@ -232,6 +240,9 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
   {
     tag: "battle",
     name: "Battle",
+    // Whole tree read: every ability is a per-day activation, an enemy-state
+    // trigger, or a battle-trance round-count — never always-on.
+    displayOnly: true,
     spiritMagicSpells: [
       { level: 1, id: "jnlr9cuepka1l26e", name: "Enlarge Person" },
       { level: 2, id: "g33euis7yi9pwddy", name: "Fog Cloud" },
@@ -722,6 +733,9 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
   {
     tag: "nature",
     name: "Nature",
+    // Whole tree read: companion/entangle/storm grants and per-day touches —
+    // no unconditional number anywhere.
+    displayOnly: true,
     spiritMagicSpells: [
       { level: 1, id: "pg7dbmuuaksxhp3v", name: "Charm Animal" },
       { level: 2, id: "la7kuehewu85ybnt", name: "Barkskin" },
@@ -1938,14 +1952,14 @@ export function mergedShamanSpiritCatalog(refData: RefData): MergedShamanSpiritE
         ...handMatch,
         description: v.description,
         sources: v.sources,
-        displayOnly: false,
+        displayOnly: handMatch.displayOnly ?? false,
       });
     } else {
       merged.push(vendoredSpiritToDef(v));
     }
   }
   for (const s of SPIRIT_LIST) {
-    if (!usedHandTags.has(s.tag)) merged.push({ ...s, displayOnly: false });
+    if (!usedHandTags.has(s.tag)) merged.push({ ...s, displayOnly: s.displayOnly ?? false });
   }
   return merged;
 }

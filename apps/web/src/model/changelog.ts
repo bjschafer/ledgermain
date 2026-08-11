@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-10-splatbook-order-skills",
+    date: "2026-08-10",
+    title: "Every cavalier and samurai order grants its skills",
+    note: "All thirty splatbook orders joined the order catalog, so picking any of them now adds the order's class skills to your sheet automatically, the same way the core orders always have. Kineticists with Curse Breaker also see their bonus against curses as a saving throw line instead of buried rules text.",
+  },
+  {
     id: "2026-08-10-prestige-class-feature-numbers",
     date: "2026-08-10",
     title: "Prestige class features compute more of their numbers",

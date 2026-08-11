@@ -88,6 +88,16 @@ describe("OCCULTIST_SCHOOLS table", () => {
     );
   });
 
+  it("the other 4 schools carry displayOnly: true, exactly where appliesAsChange is false", () => {
+    for (const tag of OCCULTIST_SCHOOL_TAGS) {
+      const school = OCCULTIST_SCHOOLS[tag]!;
+      expect(school.displayOnly === true).toBe(!school.resonantPower.appliesAsChange);
+    }
+    expect(
+      new Set(OCCULTIST_SCHOOL_TAGS.filter((tag) => OCCULTIST_SCHOOLS[tag]!.displayOnly === true)),
+    ).toEqual(new Set(["conjuration", "evocation", "illusion", "necromancy"]));
+  });
+
   it("findOccultistFocusPower resolves a valid '<school>:<slug>' id and rejects garbage", () => {
     const found = findOccultistFocusPower("abjuration:aegis");
     expect(found?.power.name).toBe("Aegis");

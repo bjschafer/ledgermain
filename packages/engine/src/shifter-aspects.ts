@@ -81,6 +81,8 @@ export interface ShifterAspectDef {
   minorFormChanges: Change[];
   /** Non-mechanical reminders for the parts of the minor form not covered by `minorFormChanges`. */
   contextNotes?: ContextNote[];
+  /** Deliberately prose-only after review — `scripts/mech-coverage.ts` reads this as acknowledged triage rather than flagging the entry. */
+  displayOnly?: boolean;
 }
 
 const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });
@@ -110,6 +112,7 @@ interface RawAspect {
   summary: string;
   minorFormChanges?: Change[];
   contextNotes?: ContextNote[];
+  displayOnly?: boolean;
 }
 
 function build(entries: RawAspect[]): ShifterAspectDef[] {
@@ -120,6 +123,7 @@ function build(entries: RawAspect[]): ShifterAspectDef[] {
     majorFormNote: MAJOR_FORM_NOTE,
     minorFormChanges: e.minorFormChanges ?? [],
     contextNotes: e.contextNotes,
+    displayOnly: e.displayOnly,
   }));
 }
 
@@ -169,6 +173,7 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
         "Death-threshold adjustment — this engine doesn't model an incapacitation/death threshold stat.",
       ),
     ],
+    displayOnly: true,
   },
   {
     id: "bull",
@@ -206,6 +211,7 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
         "skill.kno",
       ),
     ],
+    displayOnly: true,
   },
   {
     id: "dragonfly",
@@ -213,6 +219,7 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
     summary:
       "+10 ft. enhancement bonus to speed when charging (+20 ft. at 8th level, +30 ft. at 15th).",
     contextNotes: [note("Charge-only — not an unconditional speed Change target.", "landSpeed")],
+    displayOnly: true,
   },
   {
     id: "electricEel",
@@ -221,6 +228,7 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
     contextNotes: [
       note("Damage rider on attacks — this engine has no per-attack damage-rider target."),
     ],
+    displayOnly: true,
   },
   {
     id: "elephant",
@@ -230,6 +238,7 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
     contextNotes: [
       note("Maneuver-specific, not a generic CMB Change target — apply manually.", "cmb"),
     ],
+    displayOnly: true,
   },
   {
     id: "falcon",
@@ -260,6 +269,7 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
         "will",
       ),
     ],
+    displayOnly: true,
   },
   {
     id: "horse",
@@ -307,6 +317,7 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
     name: "Mouse",
     summary: "Gain evasion, as the rogue class feature (improved evasion at 12th level).",
     contextNotes: [note("Ability grant, not a numeric Change.")],
+    displayOnly: true,
   },
   {
     id: "octopus",
@@ -350,6 +361,7 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
         "attack",
       ),
     ],
+    displayOnly: true,
   },
   {
     id: "snappingTurtle",

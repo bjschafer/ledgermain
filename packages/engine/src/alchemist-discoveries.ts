@@ -81,6 +81,8 @@ export interface AlchemistDiscoveryDef {
    * badge.
    */
   displayOnly: boolean;
+  /** This entry's numbers flow through a dedicated engine path it never serializes as its own `changes[]` — name the route in a comment at each use. */
+  wiredElsewhere?: boolean;
 }
 
 const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });
@@ -98,6 +100,8 @@ interface RawDiscovery {
   contextNotes?: ContextNote[];
   /** Set only on Cognatogen — see {@link AlchemistDiscoveryDef.displayOnly}. */
   modeled?: true;
+  /** Set only on Cognatogen — see {@link AlchemistDiscoveryDef.wiredElsewhere}. */
+  wiredElsewhere?: boolean;
 }
 
 function build(entries: RawDiscovery[]): AlchemistDiscoveryDef[] {
@@ -109,6 +113,7 @@ function build(entries: RawDiscovery[]): AlchemistDiscoveryDef[] {
     changes: e.changes ?? [],
     contextNotes: e.contextNotes,
     displayOnly: !e.modeled && (e.changes?.length ?? 0) === 0,
+    wiredElsewhere: e.wiredElsewhere,
   }));
 }
 
@@ -334,6 +339,11 @@ const DISCOVERY_LIST: AlchemistDiscoveryDef[] = build([
     id: "cognatogen",
     name: "Cognatogen",
     modeled: true,
+    // Wired via the Mutagen resource pool's linkedBuffIds (resources.ts /
+    // ResourcesPanel.tsx), which append cognatogen.ts's three toggleable
+    // buffs when this discovery is taken, rather than this entry's own
+    // changes[].
+    wiredElsewhere: true,
     summary:
       "As Mutagen, but grants +4 alchemical bonus to a chosen MENTAL ability score (Int, Wis, or Cha), -2 to the linked physical score (Int→Str, Wis→Dex, Cha→Con), +2 natural armor, 10 min/level; deals 2 points of ability damage to the penalized score when it expires.",
     contextNotes: [
