@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-10-prestige-class-feature-numbers",
+    date: "2026-08-10",
+    title: "Prestige class features compute more of their numbers",
+    note: "A sweep through the class feature catalog promoted two dozen prestige class bonuses from reminder text into real computed numbers. Duelists see Improved Reaction and the armor-gated Grace on their sheets, dragon disciples get their cumulative natural armor, living monoliths their damage reduction and soul stone save lines, and storm kindlers, lion blades, low templars, and a dozen others now watch their skill, save, resistance, and speed bonuses land automatically as they level.",
+  },
+  {
     id: "2026-08-09-alternate-racial-trait-numbers",
     date: "2026-08-09",
     title: "More alternate racial traits compute their numbers",

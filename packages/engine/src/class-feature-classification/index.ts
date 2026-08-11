@@ -26,10 +26,7 @@ import { CLASS_FEATURE_CLASSIFICATION_REACHABLE_6 } from "./reachable6.js";
 import { CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS } from "./unroutedDomains.js";
 import { CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED } from "./unroutedGranted.js";
 
-export type {
-  ClassFeatureClassificationBucket,
-  ClassFeatureClassificationEntry,
-} from "./types.js";
+export type { ClassFeatureClassificationBucket, ClassFeatureClassificationEntry } from "./types.js";
 
 export const CLASS_FEATURE_CLASSIFICATION_SHARDS: readonly Readonly<
   Record<string, ClassFeatureClassificationEntry>

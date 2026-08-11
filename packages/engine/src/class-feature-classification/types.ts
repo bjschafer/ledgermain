@@ -35,11 +35,7 @@
  *                    wrong sheet numbers are the worst failure mode.
  */
 
-export type ClassFeatureClassificationBucket =
-  | "numeric"
-  | "situational"
-  | "subsystem"
-  | "blocked";
+export type ClassFeatureClassificationBucket = "numeric" | "situational" | "subsystem" | "blocked";
 
 export interface ClassFeatureClassificationEntry {
   /** Vendored pack id — the `RefData.classFeatures` key this verdict covers. */

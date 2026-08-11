@@ -64,6 +64,13 @@
  *   phantom's mode): Scar: Suffering, Energumen, Alien Mind, Indomitable
  *   Will, Shared Consciousness, Spiritual Interference and its Greater
  *   version.
+ * - Scoped to one use of a skill, not the skill wholesale: Alchemist Alchemy
+ *   (the class-level Craft (alchemy) bonus applies only to checks made to
+ *   create alchemical items; published stat blocks print it parenthetically).
+ * - Explicitly non-stacking with same-shaped effects, which untyped bonuses
+ *   cannot express: Heritor's Honor (Cha to Will, "doesn't stack with those
+ *   from similar effects" — would double-count with antipaladin Unholy
+ *   Resilience or paladin Divine Grace).
  * - Not reachable through this table at all: Guarded Mind is a domain
  *   granted power (`RefData.domains[*].features`, a different collection
  *   path with no patch hook), Void Awareness is a chosen wizard arcane
@@ -229,6 +236,311 @@ const LIBERATED_MIND: Change = {
   saveCategories: ["charm", "compulsion", "fear"],
 };
 
+/**
+ * Souldrinker (prestige, Book of the Damned) 1st level: "This vow also grants
+ * the souldrinker a +3 bonus on saving throws against death effects and
+ * negative energy, which stacks with other such bonuses." Only the death half
+ * is expressible: negative energy names no `SAVE_CATEGORIES` entry.
+ */
+const APOCALYPTIC_VOW: Change = {
+  formula: "3",
+  target: "allSavingThrows",
+  type: "untyped",
+  saveCategories: ["death"],
+};
+
+/**
+ * Living Monolith (prestige, Faction Guide) 1st level: "The soul stone grants
+ * the living monolith a +2 bonus on saving throws against death effects,
+ * mind-affecting effects, effects that grant negative levels, and on saves to
+ * overcome negative levels." The negative-level clauses are not promoted:
+ * negative levels name no `SAVE_CATEGORIES` entry.
+ */
+const SOUL_STONE: Change = {
+  formula: "2",
+  target: "allSavingThrows",
+  type: "untyped",
+  saveCategories: ["death", "mind"],
+};
+
+/**
+ * Spherewalker (prestige, Pathfinder #2) 2nd level: "a spherewalker gains a
+ * +4 sacred bonus to resist sleep effects and only needs 4 hours of sleep."
+ * The reduced-sleep-requirement half is a rules exception with no target.
+ */
+const EFFICIENT_SLEEP: Change = {
+  formula: "4",
+  target: "allSavingThrows",
+  type: "sacred",
+  saveCategories: ["sleep"],
+};
+
+/**
+ * Proctor (prestige, Concordance of Rivals) 1st level: "The comforting
+ * inevitability of this fate grants the proctor a +2 bonus on Will saves."
+ * Unscoped, so the bare save target rather than a category.
+ */
+const SOULTENDED: Change = { formula: "2", target: "will", type: "untyped" };
+
+/**
+ * Halfling Opportunist (prestige, Adventurer's Guide) 2nd level: "Her
+ * halfling racial bonus on saving throws increases to +2. This bonus
+ * increases to +3 at 4th level." Typed `racial` deliberately: the vendored
+ * Halfling race's own Halfling Luck change is a racial-typed
+ * `allSavingThrows` +1, so a second racial-typed Change with the higher
+ * value supersedes it via highest-within-type stacking — exactly the
+ * "increases to" semantics. A luck typing would SUM with the racial +1 and
+ * over-credit every real halfling entrant by 1.
+ */
+const EXCEPTIONALLY_LUCKY: Change = {
+  formula: "if(gte(@class.unlevel, 4), 3, 2)",
+  target: "allSavingThrows",
+  type: "racial",
+};
+
+/**
+ * Asavir (prestige, Qadira Jewel of the East) 10th level: "Both the asavir
+ * and her mount gain a +1 luck bonus on all saving throws." The once/day
+ * roll-twice ability and the mount's copy are unmodeled (activated / no
+ * mount sheet).
+ */
+const JANNIS_BLESSING: Change = { formula: "1", target: "allSavingThrows", type: "luck" };
+
+/**
+ * Duelist (prestige, Core Rulebook) 4th level: "a duelist gains a +2
+ * competence bonus on Reflex saves while wearing light or no armor and not
+ * using a shield." The gate is expressible with the `@armor.type` /
+ * `@shield.type` numeric encodings (0 none, 1 light, 2 medium, 3 heavy),
+ * the same paths the psychic-discipline AC formulas already use.
+ */
+const DUELIST_GRACE: Change = {
+  formula: "if(and(lt(@armor.type, 2), lt(@shield.type, 1)), 2, 0)",
+  target: "ref",
+  type: "competence",
+};
+
+/**
+ * Duelist (prestige, Core Rulebook) 2nd level: "a duelist gains a +2 bonus on
+ * initiative checks, increasing to +4 at 8th level; this stacks with the
+ * Improved Initiative feat." Untyped reproduces the stated stacking (Improved
+ * Initiative's own bonus is untyped `init` in `feat-effects.ts`).
+ */
+const IMPROVED_REACTION: Change = {
+  formula: "if(gte(@class.unlevel, 8), 4, 2)",
+  target: "init",
+  type: "untyped",
+};
+
+/**
+ * Evangelist (prestige, Inner Sea Gods) 2nd level: "the evangelist gains a +1
+ * dodge bonus to AC. This bonus increases to +2 at 7th level." Losing it when
+ * denied Dex is generic dodge-bonus behavior the engine already applies.
+ */
+const PROTECTIVE_GRACE: Change = {
+  formula: "if(gte(@class.unlevel, 7), 2, 1)",
+  target: "ac",
+  type: "dodge",
+};
+
+/**
+ * Dragon Disciple (prestige, Core Rulebook): "a cumulative +1 natural armor
+ * bonus to AC at 1st, 4th, and 7th level (+3 total by 7th level)". This is
+ * the hand-authored prestige stub (`prestige:dragon-disciple:natural-armor`,
+ * empty vendored `changes[]`), and no other class-features entry shares the
+ * bare name "Natural Armor".
+ */
+const DRAGON_DISCIPLE_NATURAL_ARMOR: Change = {
+  formula: "min(3, 1 + floor((@class.unlevel - 1) / 3))",
+  target: "nac",
+  type: "natural",
+};
+
+/**
+ * Bloatmage (prestige, Pathfinder Chronicles: Seekers of Secrets) 3rd level:
+ * "her rolls of fatty, blood-laden flesh grant her a +1 natural armor bonus.
+ * At 7th level, this bonus increases to +2 but reduces her speed by 10 feet."
+ * The speed penalty is NOT wired: `applySpeedTarget` has no floor clamp, so a
+ * bare -10 landSpeed Change could drive a slowed or encumbered bloatmage
+ * below the published 5 ft floor.
+ */
+const CORPULENCE: Change = {
+  formula: "if(gte(@class.unlevel, 7), 2, if(gte(@class.unlevel, 3), 1, 0))",
+  target: "nac",
+  type: "natural",
+};
+
+/**
+ * Living Monolith (prestige, Faction Guide): "A living monolith gains DR
+ * 1/—... At 5th level and again at 8th level, this DR increases by 1." The
+ * bare `dr` target is unqualified DR/—; the fortification percentage and
+ * disease immunity halves have no engine target.
+ */
+const FORTIFIED_FLESH: Change = {
+  formula: "if(gte(@class.unlevel, 8), 3, if(gte(@class.unlevel, 5), 2, 1))",
+  target: "dr",
+  type: "untyped",
+};
+
+/**
+ * Low Templar (prestige, Pathfinder Campaign Setting) 1st level: "gains a +2
+ * bonus on all combat maneuver checks." Explicitly "all", so unscoped —
+ * unlike the size- or maneuver-scoped bonuses left as prose elsewhere.
+ */
+const DIRTY_FIGHTING: Change = { formula: "2", target: "cmb", type: "untyped" };
+
+/**
+ * Sanguine Angel (prestige, Faiths of Corruption) 10th level: "She gains fire
+ * resistance 30, telepathy with a range of 50 feet, and the see in darkness
+ * universal monster ability... granting her a fly speed of 50 feet with good
+ * maneuverability." The outsider type change and the maneuverability quality
+ * have no target. Senses and fly speed use `set` per the engine's sense-grant
+ * and speed conventions.
+ */
+const ANGEL_OF_EISETH: readonly Change[] = [
+  { formula: "30", target: "eres.fire", type: "untyped" },
+  { formula: "50", target: "sensetele", type: "untyped", operator: "set" },
+  { formula: "1", target: "sensesid", type: "untyped", operator: "set" },
+  { formula: "50", target: "flySpeed", type: "untyped", operator: "set" },
+];
+
+/**
+ * Mortal Usher (prestige, Book of the Dead) 9th level: "a mortal usher gains
+ * a 60-foot fly speed with good maneuverability and resistance to cold equal
+ * to 10 + his class level. The mortal usher gains a +5 circumstance bonus on
+ * Acrobatics checks and on concentration checks attempted while casting a
+ * spell." Concentration is not a modeled target; the maneuverability quality
+ * is untracked.
+ */
+const VANTH_WINGS: readonly Change[] = [
+  { formula: "60", target: "flySpeed", type: "untyped", operator: "set" },
+  { formula: "10 + @class.unlevel", target: "eres.cold", type: "untyped" },
+  { formula: "5", target: "skill.acr", type: "circumstance" },
+];
+
+/**
+ * Storm Kindler (prestige, Faiths of Purity): "A Storm Kindler gains a bonus
+ * equal to her class level on Fly and Swim checks... She gains resistance to
+ * electricity 5 and sonic 5. At 5th level... 10. At 9th level... 20." The
+ * weather-concentration waiver is a rules exception with no target.
+ */
+const OCEANIC_SPIRIT: readonly Change[] = [
+  { formula: "@class.unlevel", target: "skill.fly", type: "untyped" },
+  { formula: "@class.unlevel", target: "skill.swm", type: "untyped" },
+  {
+    formula: "if(gte(@class.unlevel, 9), 20, if(gte(@class.unlevel, 5), 10, 5))",
+    target: "eres.electricity",
+    type: "untyped",
+  },
+  {
+    formula: "if(gte(@class.unlevel, 9), 20, if(gte(@class.unlevel, 5), 10, 5))",
+    target: "eres.sonic",
+    type: "untyped",
+  },
+];
+
+/**
+ * Gray Gardener (prestige, Inner Sea Magic) 2nd level: "a Gray Gardener
+ * receives a morale bonus equal to 1/2 his class level on Intimidate and
+ * Sense Motive checks." The formula matches the Inquisitor's own vendored
+ * Stern Gaze `changes[]` verbatim — the name-keyed patch therefore also
+ * lands on the Inquisitor's entry, harmlessly: same morale type and same
+ * value, so highest-within-type stacking keeps the total unchanged. The RAW
+ * cross-class level stacking ("class levels stack with other classes that
+ * grant stern gaze") is not modeled; each class's copy scales off its own
+ * level, which can only under-credit a multiclass, never over-credit.
+ */
+const STERN_GAZE: readonly Change[] = [
+  { formula: "max(1, floor(@class.unlevel / 2))", target: "skill.int", type: "morale" },
+  { formula: "max(1, floor(@class.unlevel / 2))", target: "skill.sen", type: "morale" },
+];
+
+/**
+ * Enchanting Courtesan (prestige, Inner Sea Intrigue) 2nd level: "an
+ * enchanting courtesan gains a competence bonus equal to half his class level
+ * on Bluff, Diplomacy, Sense Motive, and Sleight of Hand checks." The
+ * modifier-substitution clause for attraction targets is not wired (it swaps
+ * which ability applies rather than adding a number).
+ */
+const SEDUCTIVE_INTUITION: readonly Change[] = [
+  { formula: "floor(@class.unlevel / 2)", target: "skill.blf", type: "competence" },
+  { formula: "floor(@class.unlevel / 2)", target: "skill.dip", type: "competence" },
+  { formula: "floor(@class.unlevel / 2)", target: "skill.sen", type: "competence" },
+  { formula: "floor(@class.unlevel / 2)", target: "skill.slt", type: "competence" },
+];
+
+/**
+ * Noble Scion (prestige, Paths of Prestige) 3rd level: "a noble scion gains a
+ * bonus equal to 1/2 his class level on Diplomacy, Knowledge (local), and
+ * Knowledge (nobility) checks." The DC reduction for other people's checks
+ * about the scion has no self-facing target.
+ */
+const ARISTOCRATIC_ERUDITION: readonly Change[] = [
+  { formula: "floor(@class.unlevel / 2)", target: "skill.dip", type: "untyped" },
+  { formula: "floor(@class.unlevel / 2)", target: "skill.klo", type: "untyped" },
+  { formula: "floor(@class.unlevel / 2)", target: "skill.kno", type: "untyped" },
+];
+
+/**
+ * Umbral Court Agent (prestige, Paths of Prestige): "An Umbral Court agent
+ * gains a competence bonus on Bluff, Diplomacy, and Knowledge (nobility)
+ * checks equal to his class level."
+ */
+const UMBRAL_COURTIER: readonly Change[] = [
+  { formula: "@class.unlevel", target: "skill.blf", type: "competence" },
+  { formula: "@class.unlevel", target: "skill.dip", type: "competence" },
+  { formula: "@class.unlevel", target: "skill.kno", type: "competence" },
+];
+
+/**
+ * Low Templar (prestige, Pathfinder Campaign Setting) 1st level: "The low
+ * templar gains a +2 bonus on all Bluff and Disguise checks, and on
+ * Linguistics checks made to create forgeries." The forgery-scoped
+ * Linguistics half is narrower than the skill and is not wired.
+ */
+const FLAG_OF_CONVENIENCE: readonly Change[] = [
+  { formula: "2", target: "skill.blf", type: "untyped" },
+  { formula: "2", target: "skill.dis", type: "untyped" },
+];
+
+/**
+ * Lion Blade (prestige, Inner Sea Intrigue) 10th level: "The Lion Blade gains
+ * a +10 circumstance bonus on Stealth checks." The spell-resistance-vs-
+ * mind-affecting half has no Change-shaped target.
+ */
+const SILENT_SOUL: Change = { formula: "10", target: "skill.ste", type: "circumstance" };
+
+/**
+ * Lion Blade (prestige, Inner Sea Intrigue) 9th level: "She gains a +2
+ * circumstance bonus on Disguise checks (this does not stack with the bonus
+ * from an actual disguise kit)." The kit's item bonus is unmodeled, so the
+ * parenthetical changes nothing here.
+ */
+const GRANDMASTER_OF_DISGUISE: Change = { formula: "2", target: "skill.dis", type: "circumstance" };
+
+/**
+ * Exalted (prestige, Inner Sea Gods) 7th level: the physical trait an exalted
+ * gains "confer[s] no special attacks or abilities and impose[s] a -4 penalty
+ * on Disguise checks." Permanent from the grant; the chosen protection effect
+ * has no expressible target.
+ */
+const ASPECT_OF_DIVINITY: Change = { formula: "-4", target: "skill.dis", type: "untyped" };
+
+/**
+ * Balanced Scale of Abadar (prestige, Faction Guide): "She gains a +2 sacred
+ * bonus to all Appraise checks." The fast-appraisal-at-a-penalty alternate
+ * use is an action-economy tradeoff, not a number.
+ */
+const APPRAISING_EYE: Change = { formula: "2", target: "skill.apr", type: "sacred" };
+
+/**
+ * Steel Falcon (prestige, Faction Guide) 5th level: "She gains a +10
+ * competence bonus on Acrobatics checks to make high or long jumps, a +4
+ * bonus on Perception checks, and the benefits of feather fall at all times."
+ * Only the Perception line is unscoped; jump checks are narrower than
+ * Acrobatics and feather fall is a rules exception.
+ */
+const TALMANDORS_BLESSING: Change = { formula: "4", target: "skill.per", type: "untyped" };
+
 export const CLASS_FEATURE_CHANGE_PATCHES: Readonly<Record<string, readonly Change[]>> = {
   Bravery: [BRAVERY],
   "Still Mind": [STILL_MIND],
@@ -241,4 +553,30 @@ export const CLASS_FEATURE_CHANGE_PATCHES: Readonly<Record<string, readonly Chan
   "Save Bonus Against Poison": [SAVE_BONUS_AGAINST_POISON],
   Incorruptible: [INCORRUPTIBLE],
   "Liberated Mind": [LIBERATED_MIND],
+  "Apocalyptic Vow": [APOCALYPTIC_VOW],
+  "Soul Stone": [SOUL_STONE],
+  "Efficient Sleep": [EFFICIENT_SLEEP],
+  Soultended: [SOULTENDED],
+  "Exceptionally Lucky": [EXCEPTIONALLY_LUCKY],
+  "Janni's Blessing": [JANNIS_BLESSING],
+  Grace: [DUELIST_GRACE],
+  "Improved Reaction": [IMPROVED_REACTION],
+  "Protective Grace": [PROTECTIVE_GRACE],
+  "Natural Armor": [DRAGON_DISCIPLE_NATURAL_ARMOR],
+  Corpulence: [CORPULENCE],
+  "Fortified Flesh": [FORTIFIED_FLESH],
+  "Dirty Fighting": [DIRTY_FIGHTING],
+  "Angel of Eiseth": ANGEL_OF_EISETH,
+  "Vanth Wings": VANTH_WINGS,
+  "Oceanic Spirit": OCEANIC_SPIRIT,
+  "Stern Gaze": STERN_GAZE,
+  "Seductive Intuition": SEDUCTIVE_INTUITION,
+  "Aristocratic Erudition": ARISTOCRATIC_ERUDITION,
+  "Umbral Courtier": UMBRAL_COURTIER,
+  "Flag of Convenience": FLAG_OF_CONVENIENCE,
+  "Silent Soul": [SILENT_SOUL],
+  "Grandmaster of Disguise": [GRANDMASTER_OF_DISGUISE],
+  "Aspect of Divinity": [ASPECT_OF_DIVINITY],
+  "Appraising Eye": [APPRAISING_EYE],
+  "Talmandor's Blessing": [TALMANDORS_BLESSING],
 };
