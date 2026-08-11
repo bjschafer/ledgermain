@@ -39,6 +39,7 @@ import { mergedSorcererBloodlineCatalog } from "../packages/engine/src/bloodline
 import { mergedBloodragerBloodlineCatalog } from "../packages/engine/src/bloodrager-bloodlines.js";
 import { BUFF_CHANGE_PATCHES } from "../packages/engine/src/buff-effects.js";
 import { mergedOrderCatalog } from "../packages/engine/src/cavalier-orders.js";
+import { CLASS_FEATURE_CLASSIFICATION } from "../packages/engine/src/class-feature-classification/index.js";
 import { CLASS_FEATURE_CHANGE_PATCHES } from "../packages/engine/src/class-feature-effects.js";
 import { FEAT_CLASSIFICATION } from "../packages/engine/src/feat-classification.js";
 import { FEAT_CLASSIFICATION_COMMUNITY } from "../packages/engine/src/feat-classification-community.js";
@@ -333,6 +334,10 @@ function main(): void {
     const name = typeof e.name === "string" ? e.name : id;
     const wired = arrayLen(e.changes) > 0 || CLASS_FEATURE_CHANGE_PATCHES[name] !== undefined;
     const noted = arrayLen(e.actions) > 0 || e.uses !== undefined || arrayLen(e.grantsBuffs) > 0;
+    // Same semantics as the archetype/feat/racial-trait verdicts: a deliberate
+    // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`
+    // verdict that never produced a wired route still flags.
+    const verdict = CLASS_FEATURE_CLASSIFICATION[id];
     results.push(
       audit(
         "class-features",
@@ -340,6 +345,7 @@ function main(): void {
         wired ? "wired" : noted ? "noted" : "prose",
         false,
         typeof e.description === "string" ? e.description : "",
+        verdict !== undefined && verdict.bucket !== "numeric",
       ),
     );
   }
