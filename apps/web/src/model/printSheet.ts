@@ -145,12 +145,22 @@ export interface PrintSheetData {
   header: PrintHeader;
   abilities: PrintAbility[];
   saves: PrintSave[];
-  ac: { normal: number; touch: number; flatFooted: number; cmd: number; cmdFlatFooted: number };
+  ac: {
+    normal: number;
+    touch: number;
+    flatFooted: number;
+    cmd: number;
+    cmdFlatFooted: number;
+    /** Same shape/reasoning as {@link PrintSave.conditionals}, for CMD. */
+    cmdConditionals: string[];
+  };
   hp: { current: number; max: number; temp: number; nonlethal: number };
   speeds: { label: string; value: number }[];
   initiative: string;
   bab: string;
   cmb: string;
+  /** Same shape/reasoning as {@link PrintSave.conditionals}, for CMB. */
+  cmbConditionals: string[];
   melee: string;
   ranged: string;
   attacks: PrintAttack[];
@@ -392,6 +402,9 @@ export function buildPrintSheet(
       flatFooted: sheet.ac.flatFooted,
       cmd: sheet.cmd,
       cmdFlatFooted: sheet.cmdFlatFooted,
+      cmdConditionals: (sheet.cmdConditionals ?? []).map(
+        (c) => `${signed(c.total)} vs. ${c.labels.join("/")}`,
+      ),
     },
     hp: {
       current: doc.live.hp.current,
@@ -405,6 +418,9 @@ export function buildPrintSheet(
     initiative: signed(sheet.initiative.total),
     bab: signed(sheet.bab),
     cmb: signed(sheet.cmb),
+    cmbConditionals: (sheet.cmbConditionals ?? []).map(
+      (c) => `${signed(c.total)} vs. ${c.labels.join("/")}`,
+    ),
     melee: signedSequence(sheet.attack.melee.total, sheet.attack.melee.iteratives),
     ranged: signedSequence(sheet.attack.ranged.total, sheet.attack.ranged.iteratives),
     attacks: [

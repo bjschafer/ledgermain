@@ -2913,6 +2913,20 @@ export interface DerivedSheet {
    */
   cmdFlatFooted: number;
   /**
+   * Situational CMB totals, one per distinct value — a bonus that applies
+   * only to a specific combat maneuver (Improved Trip's "+2 on attempts to
+   * trip") rather than to CMB in general. Same `ConditionalTotal` shape the
+   * saves use, and same posture: omitted (rather than empty) when nothing
+   * maneuver-scoped applies.
+   */
+  cmbConditionals?: ConditionalTotal[];
+  /**
+   * Situational CMD totals, mirroring {@link cmbConditionals} for the
+   * defensive side (e.g. "+4 CMD against disarm attempts"). `cmdFlatFooted`
+   * above has no equivalent field — flat-footed CMD stays a bare number.
+   */
+  cmdConditionals?: ConditionalTotal[];
+  /**
    * The character's current effective size category — race base size, shifted
    * by any relative "size"-target Change (Enlarge/Reduce Person,...), then
    * replaced outright by an active polymorph form's size if one is active (see

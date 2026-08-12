@@ -129,6 +129,26 @@ export interface Change {
    * fully backward compatible with no doc migration.
    */
   saveCategories?: readonly string[];
+  /**
+   * Maneuver-category scope: when present, this Change does NOT contribute to
+   * the headline `cmb`/`cmd` total, and instead contributes only to the
+   * conditional totals for the maneuvers named here (`MANEUVER_CATEGORIES`
+   * keys in `@pf1/engine`). The motivating shape is a bonus scoped to one
+   * combat maneuver rather than to CMB/CMD as a whole, e.g. "+2 on attempts
+   * to trip" or "+4 CMD against disarm attempts" — applying either
+   * unconditionally would inflate every other maneuver, which is why these
+   * entries were prose rather than Changes.
+   *
+   * Listing several keys means the bonus applies to each of them
+   * independently (an OR, not an intersection) — a bonus that needs *two*
+   * conditions at once has no representation here and stays prose.
+   *
+   * Only meaningful on `cmb`/`cmd` targets; ignored elsewhere. Absent (the
+   * default, and what every other `Change` in this codebase uses) means the
+   * Change applies unconditionally, so this is fully backward compatible with
+   * no doc migration.
+   */
+  maneuverCategories?: readonly string[];
 }
 
 /**

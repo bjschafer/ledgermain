@@ -31,6 +31,8 @@ export interface FeatChange {
   operator?: "add" | "set";
   /** Same semantics as {@link Change.saveCategories} — collect.ts passes it through. */
   saveCategories?: readonly string[];
+  /** Same semantics as {@link Change.maneuverCategories} — collect.ts passes it through. */
+  maneuverCategories?: readonly string[];
 }
 
 /** A feat that unconditionally applies a fixed set of typed modifiers. */

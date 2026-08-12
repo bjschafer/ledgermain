@@ -60,6 +60,7 @@ import { computeKineticBlasts } from "./kinetic-blast.js";
 import { KINETICIST_ELEMENTS } from "./kineticist-elements.js";
 import { ORACLE_MYSTERIES } from "./oracle-mysteries.js";
 import { resolveSave } from "./save-categories.js";
+import { maneuverConditionalTotals } from "./maneuver-categories.js";
 import { computeSenses } from "./senses.js";
 import {
   carryAdjustments,
@@ -1725,7 +1726,14 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
 
   // CMB / CMD
   const sizeSpecial = specialSizeMod(size);
-  const cmbStack = resolveStack(forTarget(collected, "cmb"));
+  // A maneuver-scoped modifier (Change.maneuverCategories — "+2 on attempts
+  // to trip") is held out of the headline stack, same as a save-category
+  // scope is held out of a save's headline total — applying it unconditionally
+  // would inflate every other maneuver too.
+  const cmbAllMods = forTarget(collected, "cmb");
+  const cmbUnconditional = cmbAllMods.filter((m) => (m.maneuverCategories?.length ?? 0) === 0);
+  const cmbScoped = cmbAllMods.filter((m) => (m.maneuverCategories?.length ?? 0) > 0);
+  const cmbStack = resolveStack(cmbUnconditional);
   // Tiny or smaller creatures use Dex in place of Str for CMB (CRB p.199);
   // Agile Maneuvers (APG p.150, "you can use your Dexterity modifier instead
   // of your Strength modifier when calculating your Combat Maneuver Bonus")
@@ -1742,6 +1750,11 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const cmbAbility = resolveSubstitution("cmb", cmbBaseAbility, abilityMods, substitutions);
   const cmbAbilityMod = cmbAbility.mod;
   const cmb = bab + cmbAbilityMod + sizeSpecial + cmbStack.total;
+  const cmbConditionals = maneuverConditionalTotals(
+    bab + cmbAbilityMod + sizeSpecial,
+    cmbUnconditional,
+    cmbScoped,
+  );
 
   // CMD = 10 + BAB + Str + Dex + special size mod, auto-including any of the
   // eight RAW-named AC bonus types (CMD_AC_TYPES above), any "ac" PENALTY
@@ -1767,17 +1780,31 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // nothing to mark `applied: false` on — it's simply absent from the sum.
   const explicitCmdMods = forTarget(collected, "cmd");
   const explicitCmdSourceIds = new Set(explicitCmdMods.map((m) => m.sourceId ?? m.source));
+  // The auto-derived-from-AC pool never carries a maneuver scope — only an
+  // explicit "cmd"-target Change can name one — but an explicit change CAN,
+  // so it's split the same way `cmbAllMods` is above before either stack
+  // is built.
+  const explicitCmdUnconditional = explicitCmdMods.filter(
+    (m) => (m.maneuverCategories?.length ?? 0) === 0,
+  );
+  const explicitCmdScoped = explicitCmdMods.filter((m) => (m.maneuverCategories?.length ?? 0) > 0);
   const autoCmdFromAc = forTarget(collected, "ac").filter(
     (m) =>
       (m.value < 0 || CMD_AC_TYPES.has(m.type.toLowerCase())) &&
       !explicitCmdSourceIds.has(m.sourceId ?? m.source),
   );
-  const cmdStack = resolveStack([...autoCmdFromAc, ...explicitCmdMods]);
+  const cmdUnconditionalMods = [...autoCmdFromAc, ...explicitCmdUnconditional];
+  const cmdStack = resolveStack(cmdUnconditionalMods);
   // CMD's Dex term is substitutable via the "cmd" slot (see the "AC" comment
   // above) — unlike "ac", nothing sets a non-Dex base here, since CMD has no
   // size-based substitution equivalent to CMB's Tiny-or-smaller rule.
   const cmdDexAbility = resolveSubstitution("cmd", "dex", abilityMods, substitutions);
   const cmd = 10 + bab + strMod + cmdDexAbility.mod + sizeSpecial + cmdStack.total;
+  const cmdConditionals = maneuverConditionalTotals(
+    10 + bab + strMod + cmdDexAbility.mod + sizeSpecial,
+    cmdUnconditionalMods,
+    explicitCmdScoped,
+  );
 
   // Flat-footed CMD (CRB p.199, same "Flat-Footed" sidebar that defines
   // flat-footed AC): loses the Dexterity bonus and any dodge bonus feeding
@@ -1792,7 +1819,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   // lose your Dexterity modifier... instead causes you to lose your Charisma
   // modifier"; CMD follows the same logic since it shares the same Dex term).
   const flatFootedDexMod = Math.min(cmdDexAbility.mod, 0);
-  const flatFootedCmdMods = [...autoCmdFromAc, ...explicitCmdMods].filter(
+  const flatFootedCmdMods = cmdUnconditionalMods.filter(
     (m) => m.type.toLowerCase() !== "dodge" || m.value < 0,
   );
   const flatFootedCmdStack = resolveStack(flatFootedCmdMods);
@@ -1933,6 +1960,8 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     cmb,
     cmd,
     cmdFlatFooted,
+    ...(cmbConditionals.length > 0 ? { cmbConditionals } : {}),
+    ...(cmdConditionals.length > 0 ? { cmdConditionals } : {}),
     initiative,
     attack,
     attacks,

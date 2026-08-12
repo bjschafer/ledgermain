@@ -829,6 +829,14 @@ export {
   type ScopedSaveModifier,
 } from "./save-categories.js";
 export {
+  MANEUVER_CATEGORIES,
+  MANEUVER_CATEGORY_ORDER,
+  maneuverCategoryLabel,
+  maneuverConditionalTotals,
+  type ManeuverCategory,
+  type ScopedManeuverModifier,
+} from "./maneuver-categories.js";
+export {
   STANDARD_RACE_SAVE_BONUSES,
   standardRaceSaveChanges,
   type StandardRaceSaveBonus,

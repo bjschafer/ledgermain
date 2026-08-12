@@ -91,6 +91,15 @@ export function PrintView({
                   <td>CMD</td>
                   <td className="num">{data.ac.cmd}</td>
                 </tr>
+                {data.ac.cmdConditionals.length > 0 ? (
+                  <tr>
+                    <td colSpan={4}>
+                      <span className="print-save-conditionals">
+                        {data.ac.cmdConditionals.join("; ")}
+                      </span>
+                    </td>
+                  </tr>
+                ) : null}
                 <tr>
                   <td colSpan={3}>CMD (flat-footed)</td>
                   <td className="num">{data.ac.cmdFlatFooted}</td>
@@ -178,6 +187,12 @@ export function PrintView({
             </span>
             <span className="print-stat">
               CMB <span className="num">{data.cmb}</span>
+              {data.cmbConditionals.length > 0 ? (
+                <span className="print-save-conditionals">
+                  {" "}
+                  ({data.cmbConditionals.join("; ")})
+                </span>
+              ) : null}
             </span>
           </div>
           {data.arcaneSpellFailure !== undefined && (

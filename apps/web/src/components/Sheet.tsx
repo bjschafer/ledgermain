@@ -254,6 +254,7 @@ export function Sheet({
             label="CMD"
             value={sheet.cmd}
             foot={`flat-footed ${sheet.cmdFlatFooted}`}
+            conditionals={sheet.cmdConditionals}
             resetKey={doc.id}
             baseline={baseline.cmd}
           />
@@ -392,6 +393,7 @@ export function Sheet({
           <StatSeal
             label="CMB"
             value={signed(sheet.cmb)}
+            conditionals={sheet.cmbConditionals}
             resetKey={doc.id}
             baseline={baseline.cmb}
             numericValue={sheet.cmb}

@@ -78,6 +78,38 @@ describe("buildPrintSheet — situational save totals", () => {
   });
 });
 
+describe("buildPrintSheet — maneuver-scoped cmb/cmd totals", () => {
+  it("formats cmb/cmd conditionals the same way save conditionals are formatted", () => {
+    let doc = createEmptyDoc("t");
+    doc = addClass(doc, "fighter");
+    const computed = compute(doc, ref);
+    // No content wires `maneuverCategories` yet — synthesize the sheet-level
+    // fields the way a compute() fixture eventually would, to cover the
+    // print-formatting logic itself rather than any particular source.
+    const sheet = {
+      ...computed,
+      cmbConditionals: [{ total: computed.cmb + 2, categories: ["trip"], labels: ["trip"] }],
+      cmdConditionals: [
+        { total: computed.cmd + 4, categories: ["bullRush"], labels: ["bull rush"] },
+      ],
+    };
+    const data = buildPrintSheet(doc, sheet, ref);
+
+    expect(data.cmbConditionals).toEqual([`+${computed.cmb + 2} vs. trip`]);
+    expect(data.ac.cmdConditionals).toEqual([`+${computed.cmd + 4} vs. bull rush`]);
+  });
+
+  it("is empty when nothing maneuver-scoped applies", () => {
+    let doc = createEmptyDoc("t");
+    doc = addClass(doc, "fighter");
+    const sheet = compute(doc, ref);
+    const data = buildPrintSheet(doc, sheet, ref);
+
+    expect(data.cmbConditionals).toEqual([]);
+    expect(data.ac.cmdConditionals).toEqual([]);
+  });
+});
+
 describe("buildPrintSheet — abilities/saves/AC", () => {
   it("matches the computed sheet's numbers", () => {
     let doc = createEmptyDoc("t");
