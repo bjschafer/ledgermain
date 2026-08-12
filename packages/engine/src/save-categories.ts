@@ -6,9 +6,9 @@
  * against one save (a poison always allows a Fortitude save; a fear effect
  * always a Will save), so a bonus vs. poison has no meaning on Reflex and must
  * not render there. Listing all three is the escape hatch for the categories
- * that genuinely vary — spells/SLAs/Su can call for any save, and curses and
- * stunning effects are inconsistent enough in PF1 that narrowing them would be
- * a guess.
+ * that genuinely vary — spells/SLAs/Su can call for any save, and curses,
+ * stunning, traps, and sonic effects are inconsistent enough in PF1 that
+ * narrowing them would be a guess.
  *
  * `parent` records that one category is a special case of another: a bonus
  * against the parent also applies to the child, so a "+2 vs. mind-affecting"
@@ -63,6 +63,18 @@ export const SAVE_CATEGORIES: Readonly<Record<string, SaveCategory>> = {
   disease: { label: "disease", saves: ["fort"] },
   death: { label: "death", saves: ["fort"] },
   petrification: { label: "petrification", saves: ["fort"] },
+  // Mostly Fortitude (stinking cloud), but sickened also arrives on a Will
+  // save (unholy blight), so both.
+  nausea: { label: "nausea/sickened", saves: ["fort", "will"] },
+  // Poison-style ability damage/drain is Fort; feeblemind-style is Will.
+  abilityDamage: { label: "ability damage/drain", saves: ["fort", "will"] },
+  // The save PF1 attaches to negative levels is the Fortitude save to remove
+  // them; initial bestowal usually allows none.
+  energyDrain: { label: "energy drain", saves: ["fort"] },
+  fatigue: { label: "fatigue/exhaustion", saves: ["fort"] },
+  pain: { label: "pain", saves: ["fort", "will"] },
+  // Positive-energy damage (cure spells, channel) saves are Will halves.
+  positiveEnergy: { label: "positive energy", saves: ["will"] },
 
   // Polymorph (baleful polymorph is Fort-or-Will; an unwilling shapechange
   // like lycanthropy is Fort) and transmutation (the school spans
@@ -73,6 +85,16 @@ export const SAVE_CATEGORIES: Readonly<Record<string, SaveCategory>> = {
   // keeps illusions out of mind-affecting below).
   polymorph: { label: "polymorph", saves: ["fort", "will"] },
   transmutation: { label: "transmutation", saves: ALL_SAVES },
+  // More school categories, siblings of transmutation above: necromancy
+  // spans death's Fort through cause fear's Will, and divination's rare
+  // offensive entries are no more consistent, so neither narrows.
+  necromancy: { label: "necromancy", saves: ALL_SAVES },
+  divination: { label: "divination", saves: ALL_SAVES },
+
+  // Reflex — the codebase's first Reflex-only category, which is fine:
+  // entangling effects (entangle, web) call for a Reflex save to avoid being
+  // caught, and nothing about them touches Fort or Will.
+  entangle: { label: "entangling", saves: ["ref"] },
 
   // Will categories. `mind` is the root of this family: fear, emotion, sleep,
   // and the enchantment school all carry the mind-affecting descriptor in PF1,
@@ -91,11 +113,29 @@ export const SAVE_CATEGORIES: Readonly<Record<string, SaveCategory>> = {
   despair: { label: "despair", saves: ["will"], parent: "emotion" },
   possession: { label: "possession", saves: ["will"] },
   mindReading: { label: "mind-reading", saves: ["will"], parent: "mind" },
+  // The confusion and insanity effects all carry the mind-affecting
+  // descriptor, so they inherit from `mind` like the rest of this family.
+  confusion: { label: "confusion", saves: ["will"], parent: "mind" },
+  // Nearly all language-dependent effects are mind-affecting enchantments,
+  // but the descriptor itself doesn't guarantee it, and the graph only
+  // carries edges that hold for EVERY effect in the child — so no parent.
+  languageDependent: { label: "language-dependent", saves: ["will"] },
+  // A medusa's gaze is Fort, a vampire's dominating gaze is Will; no gaze
+  // attack in PF1 calls for a Reflex save.
+  gaze: { label: "gaze attacks", saves: ["fort", "will"] },
+  // Ghoul paralysis is Fort, hold person is Will.
+  paralysis: { label: "paralysis", saves: ["fort", "will"] },
 
   // Inconsistent in PF1 — a curse or a stunning effect can key off more than
   // one save depending on the effect, so these deliberately stay unnarrowed.
   curse: { label: "curses", saves: ALL_SAVES },
   stun: { label: "stunning", saves: ALL_SAVES },
+  // Mechanical traps are nearly always Reflex, but magic traps deliver
+  // spells that can call for any save. A trap-sense-style bonus that targets
+  // only `ref` self-confines through its own target, per the mechanism
+  // above — this category doesn't need to narrow itself to match.
+  traps: { label: "traps", saves: ALL_SAVES },
+  sonic: { label: "sonic", saves: ALL_SAVES },
 };
 
 /**

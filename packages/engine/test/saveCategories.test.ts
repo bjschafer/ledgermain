@@ -290,3 +290,80 @@ describe("category inheritance (a bonus against the parent covers the child)", (
     }
   });
 });
+
+describe("new category fixtures (traps, confusion)", () => {
+  /** HUMAN fighter 1, all 10s, plus one buff change scoped to a single save target. */
+  function withTargeted(target: "fort" | "ref" | "will", saveCategories: string[]) {
+    const doc = makeDoc();
+    doc.identity.race = raceId("Human");
+    return compute(
+      {
+        ...doc,
+        live: {
+          ...doc.live,
+          activeBuffs: [
+            {
+              instanceId: "b1",
+              name: "Test",
+              changes: [{ formula: "2", type: "racial", target, saveCategories }],
+            },
+          ],
+        },
+      } as typeof doc,
+      ref,
+    );
+  }
+
+  it("credits a Reflex-targeted trap bonus to Reflex only", () => {
+    // Trap Sense (rogue) is the real-world analog: a bonus that only ever
+    // shows up on the Reflex save a trap actually triggers, even though the
+    // `traps` category itself stays unnarrowed for the magic-trap case.
+    const sheet = withTargeted("ref", ["traps"]);
+    expect(sheet.saves.ref.conditionals).toEqual([
+      { total: 2, categories: ["traps"], labels: ["traps"] },
+    ]);
+    expect(sheet.saves.fort.conditionals ?? []).toEqual([]);
+    expect(sheet.saves.will.conditionals ?? []).toEqual([]);
+  });
+
+  it("folds a mind-affecting bonus into confusion's total via the parent edge", () => {
+    // Confusion (PF1 Core Rulebook) is a mind-affecting effect, so a bonus
+    // against the whole family reaches it the same way it reaches fear or
+    // charm above.
+    const doc = makeDoc();
+    doc.identity.race = raceId("Human");
+    const sheet = compute(
+      {
+        ...doc,
+        live: {
+          ...doc.live,
+          activeBuffs: [
+            {
+              instanceId: "b1",
+              name: "Test",
+              changes: [
+                {
+                  formula: "2",
+                  type: "racial",
+                  target: "allSavingThrows",
+                  saveCategories: ["mind"],
+                },
+                {
+                  formula: "1",
+                  type: "morale",
+                  target: "allSavingThrows",
+                  saveCategories: ["confusion"],
+                },
+              ],
+            },
+          ],
+        },
+      } as typeof doc,
+      ref,
+    );
+    const confusion = sheet.saves.will.conditionals?.find((c) =>
+      c.categories.includes("confusion"),
+    );
+    expect(confusion?.total).toBe(3); // Will 0 + 2 mind-affecting + 1 confusion
+  });
+});
