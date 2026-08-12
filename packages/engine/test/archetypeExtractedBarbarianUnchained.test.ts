@@ -70,13 +70,13 @@ describe("BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () =>
     expect(Object.keys(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(161);
   });
 
-  it("bucket counts match the audited totals (19 numeric / 39 situational / 91 subsystem / 12 blocked)", () => {
+  it("bucket counts match the audited totals (20 numeric / 38 situational / 91 subsystem / 12 blocked)", () => {
     const counts: Record<string, number> = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts["numeric"]).toBe(19);
-    expect(counts["situational"]).toBe(39);
+    expect(counts["numeric"]).toBe(20);
+    expect(counts["situational"]).toBe(38);
     expect(counts["subsystem"]).toBe(91);
     expect(counts["blocked"]).toBe(12);
   });
@@ -85,7 +85,7 @@ describe("BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () =>
     const numericIds = Object.entries(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(19);
+    expect(numericIds.length).toBe(20);
     for (const id of numericIds) {
       expect(BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -376,6 +376,24 @@ describe("Untamed Rager: Feral Appearance grants a fully general Intimidate bonu
     const at = (level: number) => evaluateFormula(bonus!.formula, { class: { unlevel: level } });
     expect(at(3)).toBe(1);
     expect(at(6)).toBe(2);
+  });
+});
+
+describe("Untamed Rager: Dishonorable grants maneuver-scoped cmb/cmd vs. dirty trick", () => {
+  it("0 before 7th, +1 at L7, +2 at L10, mirroring both directions", () => {
+    const id = "barbarianUnchained:untamed-rager:dishonorable:7";
+    const entry = BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION[id];
+    expect(entry?.bucket).toBe("numeric");
+    const [cmbChange, cmdChange] = BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(cmbChange!.target).toBe("cmb");
+    expect(cmbChange!.maneuverCategories).toEqual(["dirtyTrick"]);
+    expect(cmdChange!.target).toBe("cmd");
+    expect(cmdChange!.maneuverCategories).toEqual(["dirtyTrick"]);
+    const at = (level: number) =>
+      evaluateFormula(cmbChange!.formula, { class: { unlevel: level } });
+    expect(at(6)).toBe(0);
+    expect(at(7)).toBe(1);
+    expect(at(10)).toBe(2);
   });
 });
 

@@ -270,6 +270,41 @@ describe("Roof Runner (rogue): Master Climber sets climb speed to base land spee
   });
 });
 
+describe("Bekyar Kidnapper (rogue): Abductor grants maneuver-scoped cmb/cmd vs. grapple", () => {
+  const archetype = archetypeId("Bekyar Kidnapper", "rogue");
+
+  it("+1 CMB/CMD vs. grapple at 3rd level, +2 at 6th", () => {
+    // "At 3rd level, a Bekyar kidnapper gains a +1 bonus on combat maneuver
+    // checks to grapple a foe. In addition, the Bekyar kidnapper treats her
+    // combat maneuver bonus as 1 higher when a foe tries to grapple her or
+    // when a grappled target attempts to break free of her grapple. These
+    // bonuses increase by 1 for every 3 levels beyond 3rd." Rogue has
+    // medium BAB (floor(level*3/4)); Str 12 (+1)/Dex 14 (+2) from this
+    // file's ABILITIES feed cmb (Str) and cmd (Str+Dex).
+    const at3 = compute(
+      makeDoc({ classes: [{ tag: "rogue", level: 3 }], archetypes: [archetype] }),
+      ref,
+    );
+    expect(at3.cmb).toBe(3); // BAB 2 + Str mod 1
+    expect(at3.cmd).toBe(15); // 10 + BAB 2 + Str mod 1 + Dex mod 2
+    expect(at3.cmbConditionals).toEqual([
+      { total: 4, categories: ["grapple"], labels: ["grapple"] },
+    ]);
+    expect(at3.cmdConditionals).toEqual([
+      { total: 16, categories: ["grapple"], labels: ["grapple"] },
+    ]);
+
+    const at6 = compute(
+      makeDoc({ classes: [{ tag: "rogue", level: 6 }], archetypes: [archetype] }),
+      ref,
+    );
+    expect(at6.cmb).toBe(5); // BAB 4 + Str mod 1
+    expect(at6.cmbConditionals).toEqual([
+      { total: 7, categories: ["grapple"], labels: ["grapple"] },
+    ]);
+  });
+});
+
 describe("Spy (rogue): Skilled Liar stays situational; Trapfinding it replaces carries a real vendored bonus", () => {
   it("the real base Trapfinding grant is a whole-feature, un-tiered Change (max(1, floor(level/2)) skill.dev) — a clean swap target, not a partial-tier trap", () => {
     const rogueClass = Object.values(ref.classes).find((cls) => cls.tag === "rogue")!;

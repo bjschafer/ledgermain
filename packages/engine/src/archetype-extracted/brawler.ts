@@ -332,8 +332,8 @@ export const BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "brawler:steel-breaker",
     name: "Sunder Training",
     level: 3,
-    bucket: "situational",
-    note: "real scaling CMB/CMD bonuses, but scoped to the sunder (and later disarm) maneuvers only — the engine's cmb/cmd targets are global, so applying them would over-apply to every other maneuver (class note 5); alters maneuver training",
+    bucket: "numeric",
+    note: "scaling CMB/CMD bonus vs. sunder (from 3rd) and disarm (from 7th), unconditional — now expressible via Change.maneuverCategories (maneuver-categories.ts), wired in BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED; alters maneuver training",
   },
 
   // ── brawler:strangler ──
@@ -571,24 +571,70 @@ export const BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // +2 on saves against a list of effect categories — the Change.saveCategories
   // idiom (same as monkUnchained's Scaled Fist/Draconic Mettle and slayer's
   // Pureblade/Steely Mind). Category mapping: "mind-affecting" -> mind,
-  // "poison" -> poison, "stunning" -> stun; "sleep" is a child of mind in
-  // SAVE_CATEGORIES so mind already covers it (naming it separately would only
-  // print a redundant line); "paralysis" and "polymorph" have no
-  // SAVE_CATEGORIES entry and are dropped — partial coverage, flagged in
-  // detail, hence "medium".
+  // "poison" -> poison, "stunning" -> stun, "paralysis" -> paralysis,
+  // "polymorph" -> polymorph (both added once save-categories.ts grew those
+  // entries — the vocabulary now covers every named scope); "sleep" is a
+  // child of mind in SAVE_CATEGORIES so mind already covers it (naming it
+  // separately would only print a redundant line).
   "brawler:verdant-grappler:phytological-anatomy:11": {
     changes: [
       {
         formula: "2",
         target: "allSavingThrows",
         type: "untyped",
-        saveCategories: ["mind", "poison", "stun"],
+        saveCategories: ["mind", "paralysis", "poison", "polymorph", "stun"],
       },
     ],
-    detail: () => "+2 vs. mind-affecting/poison/stun saves (paralysis, polymorph not modeled)",
-    confidence: "medium",
+    detail: () => "+2 vs. mind-affecting/paralysis/poison/polymorph/stun saves",
+    confidence: "high",
     provenance:
       "She gains a +2 bonus on saving throws against mind-affecting, paralysis, poison, " +
       "polymorph, sleep, and stunning effects.",
+  },
+
+  // ── Maneuver-scoped cmb/cmd (Change.maneuverCategories) ───────────────────
+
+  "brawler:steel-breaker:sunder-training:3": {
+    changes: [
+      {
+        formula: "2 + floor((@class.unlevel - 3) / 4)",
+        target: "cmb",
+        type: "untyped",
+        maneuverCategories: ["sunder"],
+      },
+      {
+        formula: "2 + floor((@class.unlevel - 3) / 4)",
+        target: "cmd",
+        type: "untyped",
+        maneuverCategories: ["sunder"],
+      },
+      {
+        formula: "if(gte(@class.unlevel, 7), 2 + floor((@class.unlevel - 7) / 4), 0)",
+        target: "cmb",
+        type: "untyped",
+        maneuverCategories: ["disarm"],
+      },
+      {
+        formula: "if(gte(@class.unlevel, 7), 2 + floor((@class.unlevel - 7) / 4), 0)",
+        target: "cmd",
+        type: "untyped",
+        maneuverCategories: ["disarm"],
+      },
+    ],
+    detail: (level) => {
+      const sunder = 2 + Math.floor((level - 3) / 4);
+      const disarm = level >= 7 ? 2 + Math.floor((level - 7) / 4) : 0;
+      return disarm > 0
+        ? `+${sunder} CMB/CMD vs. sunder, +${disarm} CMB/CMD vs. disarm`
+        : `+${sunder} CMB/CMD vs. sunder`;
+    },
+    confidence: "high",
+    provenance:
+      "At 3rd level, a steel-breaker receives additional training in sunder combat maneuvers. " +
+      "She gains a +2 bonus when attempting a sunder combat maneuver checks and a +2 bonus to " +
+      "her CMD when defending against this maneuver. At 7th level, these bonuses increase by " +
+      "1, and she gains a +2 bonus on disarm combat maneuver checks and a +2 bonus to her CMD " +
+      "when defending against a disarm maneuver. At 11th, 15th, and 19th levels, all of these " +
+      "bonuses increase by 1. This ability alters maneuver training.",
   },
 };

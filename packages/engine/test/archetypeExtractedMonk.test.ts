@@ -108,7 +108,7 @@ describe("Monk archetype classification: full coverage of every vendored feature
     expect(Object.keys(MONK_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(328);
   });
 
-  it("bucket counts (20 numeric, 41 situational, 262 subsystem, 5 blocked)", () => {
+  it("bucket counts (22 numeric, 39 situational, 262 subsystem, 5 blocked)", () => {
     const counts: Record<"numeric" | "situational" | "subsystem" | "blocked", number> = {
       numeric: 0,
       situational: 0,
@@ -118,7 +118,7 @@ describe("Monk archetype classification: full coverage of every vendored feature
     for (const entry of Object.values(MONK_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    expect(counts).toEqual({ numeric: 20, situational: 41, subsystem: 262, blocked: 5 });
+    expect(counts).toEqual({ numeric: 22, situational: 39, subsystem: 262, blocked: 5 });
   });
 
   it("every numeric-bucketed feature resolves to a real effect (hand-verified or extracted)", () => {
@@ -128,8 +128,8 @@ describe("Monk archetype classification: full coverage of every vendored feature
     }
   });
 
-  it("19 features were newly extracted this pass; Nornkith's nimble-reflexes:3 stays solely hand-verified", () => {
-    expect(Object.keys(MONK_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(19);
+  it("21 features are extracted; Nornkith's nimble-reflexes:3 stays solely hand-verified", () => {
+    expect(Object.keys(MONK_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(21);
     expect(MONK_ARCHETYPE_EFFECTS_EXTRACTED["monk:nornkith:nimble-reflexes:3"]).toBeUndefined();
   });
 });
@@ -289,6 +289,51 @@ describe("Terra-Cotta Monk: Stone Grip (flat Climb bonus, equal to monk level)",
     const sheet = sheetWith("Terra-Cotta Monk", 5);
     const without = sheetWithout(5);
     expect(sheet.skills["clm"]!.total - without.skills["clm"]!.total).toBe(5);
+  });
+});
+
+describe("Terra-Cotta Monk: Trap Dodge (Wis modifier bonus on ALL saves vs. traps)", () => {
+  it("+3 (Wis 16 modifier) on fort/ref/will vs. traps at 10th level, headlines untouched", () => {
+    // "At 10th level, a terra-cotta monk gains a bonus equal to his Wisdom
+    // modifier on all saving throws made against effects produced by
+    // mechanical traps." Wis 16 -> +3 modifier (this file's ABILITIES).
+    const sheet = sheetWith("Terra-Cotta Monk", 10);
+    const without = sheetWithout(10);
+    expect(sheet.saves.fort.total).toBe(without.saves.fort.total);
+    expect(sheet.saves.ref.total).toBe(without.saves.ref.total);
+    expect(sheet.saves.will.total).toBe(without.saves.will.total);
+    const trapsOf = (conds: { categories: string[]; total: number }[] | undefined) =>
+      conds?.find((c) => c.categories.includes("traps"));
+    expect(trapsOf(sheet.saves.fort.conditionals)?.total).toBe(sheet.saves.fort.total + 3);
+    expect(trapsOf(sheet.saves.ref.conditionals)?.total).toBe(sheet.saves.ref.total + 3);
+    expect(trapsOf(sheet.saves.will.conditionals)?.total).toBe(sheet.saves.will.total + 3);
+  });
+});
+
+describe("Wildcat: Brawler Maneuver Training (dirty-trick-scoped cmb/cmd, tiered)", () => {
+  it("+1 CMB/CMD vs. dirty trick at 4th level, +2 at 7th", () => {
+    // "At 4th level, a wildcat gains additional training with the dirty
+    // trick combat maneuver... a +1 bonus on combat maneuver checks... and
+    // a +1 bonus to his CMD... At 7th... the bonuses for the dirty trick
+    // combat maneuver increase to +2." Only the fixed dirty-trick tier is
+    // modeled; the 7th/10th/16th free-choice picks of another maneuver stay
+    // unmodeled, so the headline cmb/cmd (which those free picks don't
+    // touch either) stay identical with/without the archetype.
+    const at4 = sheetWith("Wildcat", 4);
+    const without4 = sheetWithout(4);
+    expect(at4.cmb).toBe(without4.cmb);
+    expect(at4.cmd).toBe(without4.cmd);
+    expect(at4.cmbConditionals).toEqual([
+      { total: at4.cmb + 1, categories: ["dirtyTrick"], labels: ["dirty trick"] },
+    ]);
+    expect(at4.cmdConditionals).toEqual([
+      { total: at4.cmd + 1, categories: ["dirtyTrick"], labels: ["dirty trick"] },
+    ]);
+
+    const at7 = sheetWith("Wildcat", 7);
+    expect(at7.cmbConditionals).toEqual([
+      { total: at7.cmb + 2, categories: ["dirtyTrick"], labels: ["dirty trick"] },
+    ]);
   });
 });
 

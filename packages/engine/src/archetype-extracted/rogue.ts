@@ -172,8 +172,8 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "rogue:bekyar-kidnapper",
     name: "Abductor",
     level: 3,
-    bucket: "situational",
-    note: "+1/3-level CMB/effective-CMB bonus scoped to the grapple maneuver specifically, not general cmb/cmd",
+    bucket: "numeric",
+    note: 'scaling CMB bonus to grapple plus a CMD bonus resisting a grapple/an escape from her own grapple, unconditional from 3rd — now expressible via Change.maneuverCategories (maneuver-categories.ts), wired in ROGUE_ARCHETYPE_EFFECTS_EXTRACTED. The defensive half is written cmd (the vocabulary\'s own resisting/defending side) even though the source text says "combat maneuver bonus" for it too.',
   },
 
   // ── Bellflower Irrigator ───────────────────────────────────────────────
@@ -2132,6 +2132,35 @@ export const ROGUE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "wearing armor, she gains a +2 competency bonus on Acrobatics and Fly skill checks. This " +
       "ability replaces trapfinding.",
   },
+
+  // Bekyar Kidnapper's "Abductor" (Change.maneuverCategories — cmb for her
+  // own grapple attempts, cmd for resisting a grapple against her or an
+  // escape from her own grapple).
+  "rogue:bekyar-kidnapper:abductor:3": {
+    changes: [
+      {
+        formula: "1 + floor((@class.unlevel - 3) / 3)",
+        target: "cmb",
+        type: "untyped",
+        maneuverCategories: ["grapple"],
+      },
+      {
+        formula: "1 + floor((@class.unlevel - 3) / 3)",
+        target: "cmd",
+        type: "untyped",
+        maneuverCategories: ["grapple"],
+      },
+    ],
+    detail: (level) => `+${1 + Math.floor((level - 3) / 3)} CMB/CMD vs. grapple`,
+    confidence: "high",
+    provenance:
+      "At 3rd level, a Bekyar kidnapper gains a +1 bonus on combat maneuver checks to grapple " +
+      "a foe. In addition, the Bekyar kidnapper treats her combat maneuver bonus as 1 higher " +
+      "when a foe tries to grapple her or when a grappled target attempts to break free of her " +
+      "grapple. These bonuses increase by 1 for every 3 levels beyond 3rd. This ability " +
+      "replaces trap sense.",
+  },
+
   "rogue:discretion-specialist:fast-talker:1": {
     changes: [
       c("max(1, floor(@class.unlevel / 2))", "skill.blf"),

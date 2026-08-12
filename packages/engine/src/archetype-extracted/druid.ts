@@ -1585,8 +1585,8 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "druid:mountain-druid",
     name: "Mountain Stance",
     level: 9,
-    bucket: "situational",
-    note: "+4 save/CMD bonus scoped to a narrow maneuver list (push/pull/bull rush/drag/forced movement) — not general cmd/fort",
+    bucket: "numeric",
+    note: "despite the name, not activation-gated (a permanent 9th-level Ex ability, no stance toggle in the text). The bull rush/drag half of the CMD bonus is expressible via Change.maneuverCategories and wired in DRUID_ARCHETYPE_EFFECTS_EXTRACTED; the generic push/pull/forced-movement save half has no matching SAVE_CATEGORIES entry and stays prose, as does the petrification immunity (no immEffect target) and the explicit trip/grapple/overrun exclusion.",
   },
   "druid:mountain-druid:mountain-stone:13": {
     archetypeId: "druid:mountain-druid",
@@ -3093,6 +3093,27 @@ export const DRUID_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "At 9th level and every 4 levels thereafter, a saurian shaman gains one of the following bonus feats: Improved Overrun, Nimble Moves, Power Attack, Skill Focus (Intimidate), or Vital Strike. This ability replaces venom immunity.",
   },
+
+  // Mountain Druid's "Mountain Stance" — despite the name, a permanent 9th-
+  // level Ex ability (no activation in the text). Only the bull-rush/drag
+  // half of the CMD bonus is expressible (Change.maneuverCategories); the
+  // generic push/pull/forced-movement save half, the petrification
+  // immunity, and the explicit trip/grapple/overrun exclusion stay prose.
+  "druid:mountain-druid:mountain-stance:9": {
+    changes: [
+      { formula: "4", target: "cmd", type: "untyped", maneuverCategories: ["bullRush", "drag"] },
+    ],
+    detail: () =>
+      "+4 CMD vs. bull rush/drag (petrification immunity, generic forced-movement save not modeled)",
+    confidence: "high",
+    provenance:
+      "At 9th level, a mountain druid gains immunity to petrification and receives a +4 bonus " +
+      "on saving throws or to CMD to resist any attempt to push, pull, bull rush, or drag her, " +
+      "or to resist any other effect that would physically move her from her position (e.g., " +
+      "repel wood, reverse gravity, or being blown away by high winds). This does not protect " +
+      "her against being tripped, grappled, or overrun. This ability replaces venom immunity.",
+  },
+
   "druid:serpent-shaman:bonus-feat:9": {
     changes: [c("1 + floor((@class.unlevel - 9) / 4)", "bonusFeats")],
     detail: (level) =>

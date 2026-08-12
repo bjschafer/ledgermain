@@ -403,8 +403,8 @@ describe("Superstitious: Keen Senses grants a level-gated sequence of special se
 });
 
 describe("BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED shape", () => {
-  it("has exactly 11 entries", () => {
-    expect(Object.keys(BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(11);
+  it("has exactly 12 entries", () => {
+    expect(Object.keys(BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(12);
   });
 
   it("every extracted id is classified numeric in the audit table", () => {
@@ -417,5 +417,30 @@ describe("BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED shape", () => {
     for (const entry of Object.values(BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED)) {
       expect(entry.provenance.length).toBeGreaterThan(10);
     }
+  });
+
+  it("Dishonorable (Untamed Rager): +1 CMB/CMD vs. dirty trick at 7th, +2 at 10th, end to end via compute()", () => {
+    // "At 7th level and every 3 barbarian levels thereafter, the untamed
+    // rager gains a +1 bonus on combat maneuver checks when performing
+    // dirty tricks and to her CMD to resist others' dirty tricks." Barbarian
+    // has full BAB, so BAB 7/10 at levels 7/10; this file's default ability
+    // block (Str 16/+3, Dex 14/+2) feeds cmb (Str only) and cmd (Str + Dex)
+    // the same as always.
+    const untamedRager = archetypeId("Untamed Rager");
+    const at7 = compute(makeDoc({ level: 7, archetypes: [untamedRager] }), ref);
+    expect(at7.cmb).toBe(10); // BAB 7 + Str mod 3
+    expect(at7.cmd).toBe(22); // 10 + BAB 7 + Str mod 3 + Dex mod 2
+    expect(at7.cmbConditionals).toEqual([
+      { total: 11, categories: ["dirtyTrick"], labels: ["dirty trick"] },
+    ]);
+    expect(at7.cmdConditionals).toEqual([
+      { total: 23, categories: ["dirtyTrick"], labels: ["dirty trick"] },
+    ]);
+
+    const at10 = compute(makeDoc({ level: 10, archetypes: [untamedRager] }), ref);
+    expect(at10.cmb).toBe(13); // BAB 10 + Str mod 3
+    expect(at10.cmbConditionals).toEqual([
+      { total: 15, categories: ["dirtyTrick"], labels: ["dirty trick"] },
+    ]);
   });
 });

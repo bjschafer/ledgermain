@@ -783,13 +783,11 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "fighter:dirty-fighter",
     name: "Maneuver Training",
     level: 5,
-    bucket: "situational",
+    bucket: "numeric",
     note:
-      "re-read after the weapon-group fix: not weapon-group-scoped at all — a real +2 number, " +
-      "but scoped to the dirty trick combat maneuver specifically (CMB when using it, CMD when " +
-      "targeted by it), same 'specific maneuver' exclusion as every other maneuver-scoped entry " +
-      "in this table. Reclassified from subsystem (the pilot's blind placeholder) to " +
-      "situational (a real number, correctly excluded on the honesty bar).",
+      "flat +2 on dirty trick combat maneuver checks and +2 CMD against dirty trick, " +
+      "unconditional from 5th level — now expressible via Change.maneuverCategories " +
+      "(maneuver-categories.ts), wired in FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED.",
   },
   "fighter:dirty-fighter:speedy-tricks:9": {
     archetypeId: "fighter:dirty-fighter",
@@ -3425,5 +3423,20 @@ export const FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "+1 bonus on attack and damage rolls. Every four levels thereafter (9th, 13th, and " +
       "17th), a fighter becomes further trained in another group of weapons... the bonuses " +
       "granted by previous weapon groups increase by +1 each.",
+  },
+
+  // ── Maneuver-scoped cmb/cmd (Change.maneuverCategories) ───────────────────
+
+  "fighter:dirty-fighter:maneuver-training:5": {
+    changes: [
+      { formula: "2", target: "cmb", type: "untyped", maneuverCategories: ["dirtyTrick"] },
+      { formula: "2", target: "cmd", type: "untyped", maneuverCategories: ["dirtyTrick"] },
+    ],
+    detail: () => "+2 CMB on dirty trick attempts / +2 CMD vs. dirty trick",
+    confidence: "high",
+    provenance:
+      "At 5th level, a dirty fighter becomes a master of dirty tricks. He gains a +2 bonus on " +
+      "dirty trick combat maneuver checks and +2 to his CMD when he is the target of a dirty " +
+      "trick combat maneuver. This ability replaces weapon training 1.",
   },
 };

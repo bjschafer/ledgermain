@@ -297,7 +297,7 @@ export const BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Stubborn",
     level: 3,
     bucket: "situational",
-    note: "vs.-traps-only save/AC bonus — same scoping bar Trap Sense's own real-world text fails",
+    note: "not a save bonus at all despite replacing trap sense: it's a scaling penalty on OTHER creatures' Diplomacy/Intimidate checks made against her, not a bonus to her own roll — no Change target models a penalty on another creature's check.",
   },
   "barbarianUnchained:brutish-swamper:wrastlin:6": {
     archetypeId: "barbarianUnchained:brutish-swamper",
@@ -1265,8 +1265,8 @@ export const BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "barbarianUnchained:untamed-rager",
     name: "Dishonorable",
     level: 7,
-    bucket: "situational",
-    note: "CMB/CMD bonus scoped to the dirty trick maneuver specifically — maneuver scoped; paired 1:1 to Damage Reduction so the base DR grant is already cleanly suppressed",
+    bucket: "numeric",
+    note: "scaling CMB/CMD bonus vs. dirty trick, unconditional from 7th — now expressible via Change.maneuverCategories (maneuver-categories.ts), wired in BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED; paired 1:1 to Damage Reduction so the base DR grant is already cleanly suppressed",
   },
   "barbarianUnchained:untamed-rager:feral-appearance:3": {
     archetypeId: "barbarianUnchained:untamed-rager",
@@ -1651,6 +1651,34 @@ export const BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "the untamed rager gains a +1 bonus on Intimidate checks. This bonus increases by 1 " +
       "every 3 barbarian levels thereafter.",
+  },
+
+  // Untamed Rager's "Dishonorable" (Change.maneuverCategories — mirrors the
+  // chained barbarian's identically-worded feature in ./barbarian.ts).
+  "barbarianUnchained:untamed-rager:dishonorable:7": {
+    changes: [
+      {
+        formula: "if(gte(@class.unlevel, 7), 1 + floor((@class.unlevel - 7) / 3), 0)",
+        target: "cmb",
+        type: "untyped",
+        maneuverCategories: ["dirtyTrick"],
+      },
+      {
+        formula: "if(gte(@class.unlevel, 7), 1 + floor((@class.unlevel - 7) / 3), 0)",
+        target: "cmd",
+        type: "untyped",
+        maneuverCategories: ["dirtyTrick"],
+      },
+    ],
+    detail: (level) =>
+      level >= 7
+        ? `+${1 + Math.floor((level - 7) / 3)} CMB/CMD vs. dirty trick`
+        : "not yet granted",
+    confidence: "high",
+    provenance:
+      "At 7th level and every 3 barbarian levels thereafter, the untamed rager gains a +1 " +
+      "bonus on combat maneuver checks when performing dirty tricks and to her CMD to resist " +
+      "others' dirty tricks. This ability replaces damage reduction.",
   },
 
   // Wildborn's "Damage reduction" (Blood of the Beast) replaces the base

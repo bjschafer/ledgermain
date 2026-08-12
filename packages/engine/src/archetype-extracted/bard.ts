@@ -298,15 +298,8 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "bard:archaeologist",
     name: "Trap Sense",
     level: 3,
-    bucket: "situational",
-    note: "real Reflex-save/dodge-AC bonus but scoped to traps only — no matching general target; paired to Inspire Competence's uuid for bookkeeping only, not itself a performance",
-  },
-  "bard:archaeologist:trap-sense:6": {
-    archetypeId: "bard:archaeologist",
-    name: "Trap Sense",
-    level: 6,
-    bucket: "situational",
-    note: "real Reflex-save/dodge-AC bonus but scoped to traps only — no matching general target; paired to Suggestion's uuid for bookkeeping only, not itself a performance",
+    bucket: "numeric",
+    note: 'the vendored description field for this id is mispaired (byte-identical to Inspire Competence\'s, not trap sense text at all — a data-pipeline artifact, not this ability); the Reflex-vs-traps half is wired via saveCategories: ["traps"], verified against aonprd.com\'s Archaeologist page rather than the corrupted vendored text, and BARD_ARCHETYPE_EFFECTS_EXTRACTED\'s provenance is written from that source. The dodge-AC-vs-traps half stays prose (no AC conditional mechanism). "bard:archaeologist:trap-sense:6" was a phantom duplicate key with no matching vendored id (this archetype has only 7 real features, none at a second Trap Sense level) — removed rather than left dangling.',
   },
   "bard:archaeologist:uncanny-dodge:2": {
     archetypeId: "bard:archaeologist",
@@ -2146,8 +2139,8 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "bard:sea-singer",
     name: "Sea Legs",
     level: 2,
-    bucket: "situational",
-    note: "real save/CMD bonuses but scoped to air/water effects and specific maneuvers (grapple/overrun/trip) — no matching general target",
+    bucket: "numeric",
+    note: "the flat +2 CMD vs. grapple/overrun/trip is unconditional from 2nd level and now expressible via Change.maneuverCategories, wired in BARD_ARCHETYPE_EFFECTS_EXTRACTED. The save bonus vs. air/water effects and prone-causing effects has no matching SAVE_CATEGORIES entry and stays prose.",
   },
   "bard:sea-singer:sea-shanty:1": {
     archetypeId: "bard:sea-singer",
@@ -3167,5 +3160,55 @@ export const BARD_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "A thundercaller gains a bonus equal to half her level on Handle Animal checks, Knowledge (nature) " +
       "checks, and Survival checks. This replaces bardic knowledge.",
+  },
+
+  // ── Maneuver-scoped cmd / save-category-scoped Reflex (Change.maneuverCategories / Change.saveCategories) ──
+
+  // Sea Singer's "Sea Legs": the CMD-vs-maneuvers half only (flat, unscoped
+  // by anything else). The air/water-effects and prone-causing-effects save
+  // bonus has no matching SAVE_CATEGORIES entry and is dropped.
+  "bard:sea-singer:sea-legs:2": {
+    changes: [
+      {
+        formula: "2",
+        target: "cmd",
+        type: "untyped",
+        maneuverCategories: ["grapple", "overrun", "trip"],
+      },
+    ],
+    detail: () => "+2 CMD vs. grapple/overrun/trip (air/water/prone save bonus not modeled)",
+    confidence: "high",
+    provenance:
+      "He gains a +2 bonus to CMD against grapple, overrun, and trip. This ability replaces well-versed.",
+  },
+
+  // Archaeologist's "Trap Sense": the vendored description field for this id
+  // is a data-pipeline mispairing (byte-identical to Inspire Competence's),
+  // so this provenance is drawn from aonprd.com's Archaeologist page instead
+  // of the (corrupted) vendored text — see this file's classification note
+  // for the same id. Only the Reflex-vs-traps half is expressible; the
+  // dodge-AC-vs-traps half has no AC conditional mechanism in this engine.
+  "bard:archaeologist:trap-sense:3": {
+    changes: [
+      {
+        formula: "if(gte(@class.unlevel, 3), 1 + floor((@class.unlevel - 3) / 3), 0)",
+        target: "ref",
+        type: "untyped",
+        saveCategories: ["traps"],
+      },
+    ],
+    detail: (level) =>
+      level >= 3
+        ? `+${1 + Math.floor((level - 3) / 3)} Reflex vs. traps (dodge AC vs. traps not modeled)`
+        : "not yet granted",
+    confidence: "high",
+    provenance:
+      "At 3rd level, an archaeologist gains trap sense +1, as the rogue class feature of the " +
+      "same name. An archaeologist gains an intuitive sense that alerts her to danger from " +
+      "traps, giving her a +1 bonus on Reflex saves made to avoid traps and a +1 dodge bonus " +
+      "to AC against attacks made by traps, with this bonus improving by +1 for every three " +
+      "levels gained after 3rd, to a maximum of +6 at 18th level. (aonprd.com, Archaeologist " +
+      "archetype; the vendored description for this id is mispaired, see this file's " +
+      "classification entry)",
   },
 };

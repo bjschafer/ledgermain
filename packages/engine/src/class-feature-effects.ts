@@ -415,6 +415,24 @@ const FORTIFIED_FLESH: Change = {
 const DIRTY_FIGHTING: Change = { formula: "2", target: "cmb", type: "untyped" };
 
 /**
+ * Liberator (prestige, Faiths of Purity) 6th level: "a liberator ignores
+ * half of an object's hardness when making a sunder attack or attacking an
+ * object. He also gains a +2 morale bonus on his opposed attack roll when
+ * making a sunder attempt (but not when defending against a sunder
+ * attempt)." The parenthetical confirms this is the sunder combat maneuver
+ * check itself (an "attack roll" opposed by the target's CMD, per how PF1
+ * text names that check), not a general attack-roll bonus — cmb only, never
+ * cmd, matching "not when defending". The hardness-ignoring half has no
+ * Change target.
+ */
+const GREATER_SUNDER: Change = {
+  formula: "2",
+  target: "cmb",
+  type: "morale",
+  maneuverCategories: ["sunder"],
+};
+
+/**
  * Sanguine Angel (prestige, Faiths of Corruption) 10th level: "She gains fire
  * resistance 30, telepathy with a range of 50 feet, and the see in darkness
  * universal monster ability... granting her a fly speed of 50 feet with good
@@ -606,4 +624,5 @@ export const CLASS_FEATURE_CHANGE_PATCHES: Readonly<Record<string, readonly Chan
   "Aspect of Divinity": [ASPECT_OF_DIVINITY],
   "Appraising Eye": [APPRAISING_EYE],
   "Talmandor's Blessing": [TALMANDORS_BLESSING],
+  "Greater Sunder": [GREATER_SUNDER],
 };

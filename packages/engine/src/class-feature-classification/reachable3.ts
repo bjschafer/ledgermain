@@ -439,8 +439,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_3: Readonly<
   umr9pzGSXWhyVxX3: {
     id: "umr9pzGSXWhyVxX3",
     name: "Greater Sunder",
-    bucket: "situational",
-    note: "The hardness-ignoring and attack-roll bonus only apply while making a sunder attempt specifically, an action-scoped condition.",
+    bucket: "numeric",
+    note: 'The +2 morale bonus on the sunder combat maneuver check is wired via CLASS_FEATURE_CHANGE_PATCHES (cmb, maneuverCategories: ["sunder"]) — the text\'s own "but not when defending" confirms it\'s cmb-only. The hardness-ignoring half has no Change target.',
   },
   v5euWGtNKvsdk1eq: {
     id: "v5euWGtNKvsdk1eq",

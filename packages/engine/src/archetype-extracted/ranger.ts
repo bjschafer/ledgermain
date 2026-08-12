@@ -1891,8 +1891,8 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "ranger:wilderness-explorer",
     name: "Hazard Sense",
     level: 4,
-    bucket: "situational",
-    note: "real number scoped to a specific action, maneuver, marked/memorized target, or narrow context the engine can't check without over-applying — same honesty bar as traits.ts/feat-effects.ts. Reflex/AC bonus scoped to natural hazards and wilderness traps specifically",
+    bucket: "numeric",
+    note: 'unconditional from 4th level. The Reflex half is wired via saveCategories: ["traps"] (conservatively under-scoping the real "natural hazards and wilderness traps" text, since only traps has a category); the dodge-AC half has no AC conditional mechanism and stays prose.',
   },
   "ranger:wilderness-explorer:indigenous-spirit:8": {
     archetypeId: "ranger:wilderness-explorer",
@@ -2266,5 +2266,31 @@ export const RANGER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "beyond 3rd (to a maximum of +4 at 15th level). In addition, a skirmisher gains an " +
       "enhancement bonus of +5 feet to his base speed. At 7th level, the bonus increases to " +
       "+10 feet.",
+  },
+
+  // Wilderness Explorer's "Hazard Sense" (Change.saveCategories — the
+  // Reflex half only; "natural hazards and wilderness traps" is
+  // conservatively under-scoped to just traps, since the vocabulary has no
+  // broader "natural hazard" category).
+  "ranger:wilderness-explorer:hazard-sense:4": {
+    changes: [
+      {
+        formula: "if(gte(@class.unlevel, 4), 1 + floor((@class.unlevel - 4) / 4), 0)",
+        target: "ref",
+        type: "untyped",
+        saveCategories: ["traps"],
+      },
+    ],
+    detail: (level) =>
+      level >= 4
+        ? `+${1 + Math.floor((level - 4) / 4)} Reflex vs. traps (dodge AC vs. wilderness traps not modeled)`
+        : "not yet granted",
+    confidence: "medium",
+    provenance:
+      "At 4th level, a wilderness explorer gains an intuitive understanding of natural hazards " +
+      "and traps fashioned from a natural environment. He gains a +1 bonus on Reflex saves " +
+      "against natural hazards and wilderness traps and a +1 dodge bonus to AC against attacks " +
+      "from wilderness traps. This bonus increases by 1 at 8th level and every 4 levels " +
+      "thereafter.",
   },
 };

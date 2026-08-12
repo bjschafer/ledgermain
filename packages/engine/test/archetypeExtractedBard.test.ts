@@ -343,3 +343,54 @@ describe("Court Bard (bard): Heraldic Expertise is blocked (Bardic Knowledge ove
     ).toBeDefined();
   });
 });
+
+describe("Sea Singer (bard): Sea Legs grants maneuver-scoped CMD vs. grapple/overrun/trip", () => {
+  const seaSinger = archetypeId("Sea Singer", "bard");
+
+  it("+2 CMD vs. grapple/overrun/trip at 2nd level, headline cmb/cmd untouched", () => {
+    // "He gains a +2 bonus to CMD against grapple, overrun, and trip." Bard
+    // has medium BAB (floor(level*3/4)), so BAB 1 at level 2; Str 10 (+0)
+    // and Dex 14 (+2) from this file's ABILITIES feed cmb (Str) and cmd
+    // (Str+Dex).
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "bard", level: 2 }], archetypes: [seaSinger] }),
+      ref,
+    );
+    expect(sheet.cmb).toBe(1);
+    expect(sheet.cmd).toBe(13);
+    expect(sheet.cmbConditionals ?? []).toEqual([]);
+    expect(sheet.cmdConditionals).toEqual([
+      {
+        total: 15,
+        categories: ["grapple", "overrun", "trip"],
+        labels: ["grapple", "overrun", "trip"],
+      },
+    ]);
+  });
+});
+
+describe("Archaeologist (bard): Trap Sense grants a scaling Reflex bonus vs. traps", () => {
+  const archaeologist = archetypeId("Archaeologist", "bard");
+
+  it("+1 Reflex vs. traps at 3rd level, +3 at 9th", () => {
+    // aonprd.com: "At 3rd level, an archaeologist gains trap sense +1... a
+    // +1 bonus on Reflex saves made to avoid traps... improving by +1 for
+    // every three levels gained after 3rd." The vendored description field
+    // for this archetype-feature id is a data-pipeline mispairing (it's
+    // literally Inspire Competence's text), so this is checked against the
+    // real published rule rather than the vendored blob.
+    const at3 = compute(
+      makeDoc({ classes: [{ tag: "bard", level: 3 }], archetypes: [archaeologist] }),
+      ref,
+    );
+    const trapsAt3 = at3.saves.ref.conditionals?.find((c) => c.categories.includes("traps"));
+    expect(trapsAt3?.total).toBe(at3.saves.ref.total + 1);
+
+    const at9 = compute(
+      makeDoc({ classes: [{ tag: "bard", level: 9 }], archetypes: [archaeologist] }),
+      ref,
+    );
+    const trapsAt9 = at9.saves.ref.conditionals?.find((c) => c.categories.includes("traps"));
+    expect(trapsAt9?.total).toBe(at9.saves.ref.total + 3);
+  });
+});

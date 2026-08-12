@@ -255,6 +255,29 @@ describe("Restorer: Healing Touch grants a flat +2 Heal bonus", () => {
   });
 });
 
+describe("Mountain Druid: Mountain Stance grants maneuver-scoped CMD vs. bull rush/drag", () => {
+  const mountainDruid = archetypeId("Mountain Druid");
+
+  it("+4 CMD vs. bull rush and drag only, at 9th level", () => {
+    // "At 9th level, a mountain druid gains immunity to petrification and
+    // receives a +4 bonus on saving throws or to CMD to resist any attempt
+    // to push, pull, bull rush, or drag her... This does not protect her
+    // against being tripped, grappled, or overrun." Druid has medium BAB
+    // (floor(level*3/4)); Str 14 (+2)/Dex 14 (+2) from this file's ABILITIES
+    // feed cmb (Str) and cmd (Str+Dex).
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "druid", level: 9 }], archetypes: [mountainDruid] }),
+      ref,
+    );
+    expect(sheet.cmb).toBe(8); // BAB 6 + Str mod 2
+    expect(sheet.cmd).toBe(20); // 10 + BAB 6 + Str mod 2 + Dex mod 2
+    expect(sheet.cmbConditionals ?? []).toEqual([]);
+    expect(sheet.cmdConditionals).toEqual([
+      { total: 24, categories: ["bullRush", "drag"], labels: ["bull rush", "drag"] },
+    ]);
+  });
+});
+
 describe("resolveArchetypeFeatureEffect precedence: Menhir Savant's Spirit Sense stays hand-verified", () => {
   it("hand-verified table wins; druid.ts's extracted table has no entry for it", () => {
     const resolved = resolveArchetypeFeatureEffect("druid:menhir-savant:spirit-sense:1");

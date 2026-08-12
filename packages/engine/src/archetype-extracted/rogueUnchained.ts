@@ -173,8 +173,8 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "rogueUnchained:bekyar-kidnapper",
     name: "Abductor",
     level: 3,
-    bucket: "situational",
-    note: "+1/3-level CMB/effective-CMB bonus scoped to the grapple maneuver specifically, not general cmb/cmd",
+    bucket: "numeric",
+    note: 'scaling CMB bonus to grapple plus a CMD bonus resisting a grapple/an escape from her own grapple, unconditional from 3rd — now expressible via Change.maneuverCategories (maneuver-categories.ts), wired in ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED. The defensive half is written cmd (the vocabulary\'s own resisting/defending side) even though the source text says "combat maneuver bonus" for it too.',
   },
   "rogueUnchained:bekyar-kidnapper:clean-capture:1": {
     archetypeId: "rogueUnchained:bekyar-kidnapper",
@@ -2131,6 +2131,33 @@ export const ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "When she is not wearing armor, she gains a +2 competency bonus on Acrobatics and Fly " +
       "skill checks.",
+  },
+
+  // Bekyar Kidnapper's "Abductor" (Change.maneuverCategories — mirrors the
+  // chained rogue's identically-worded feature in ./rogue.ts).
+  "rogueUnchained:bekyar-kidnapper:abductor:3": {
+    changes: [
+      {
+        formula: "1 + floor((@class.unlevel - 3) / 3)",
+        target: "cmb",
+        type: "untyped",
+        maneuverCategories: ["grapple"],
+      },
+      {
+        formula: "1 + floor((@class.unlevel - 3) / 3)",
+        target: "cmd",
+        type: "untyped",
+        maneuverCategories: ["grapple"],
+      },
+    ],
+    detail: (level) => `+${1 + Math.floor((level - 3) / 3)} CMB/CMD vs. grapple`,
+    confidence: "high",
+    provenance:
+      "At 3rd level, a Bekyar kidnapper gains a +1 bonus on combat maneuver checks to grapple " +
+      "a foe. In addition, the Bekyar kidnapper treats her combat maneuver bonus as 1 higher " +
+      "when a foe tries to grapple her or when a grappled target attempts to break free of her " +
+      "grapple. These bonuses increase by 1 for every 3 levels beyond 3rd. This ability " +
+      "replaces trap sense.",
   },
 
   // Dark Lurker's "Instinctual Sense" (replacing the 20th-level rogue talent)

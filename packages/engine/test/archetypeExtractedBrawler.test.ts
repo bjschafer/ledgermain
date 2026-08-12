@@ -2,7 +2,14 @@ import { describe, expect, it } from "bun:test";
 
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { evaluateFormula, isTargetApplied, resolveArchetypeFeatureEffect } from "../src/index.js";
+import type { CharacterDoc } from "@pf1/schema";
+
+import {
+  compute,
+  evaluateFormula,
+  isTargetApplied,
+  resolveArchetypeFeatureEffect,
+} from "../src/index.js";
 import {
   BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED,
   BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION,
@@ -69,19 +76,19 @@ describe("BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     expect(audited.size).toBe(19);
   });
 
-  it("bucket counts match this pass's audit: 1 numeric, 20 situational, 37 subsystem, 4 blocked", () => {
+  it("bucket counts match this pass's audit: 2 numeric, 19 situational, 37 subsystem, 4 blocked", () => {
     const counts = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    expect(counts).toEqual({ numeric: 1, situational: 20, subsystem: 37, blocked: 4 });
+    expect(counts).toEqual({ numeric: 2, situational: 19, subsystem: 37, blocked: 4 });
   });
 
   it("every numeric-bucket classification entry has a matching extracted-effects entry, and no stray entries exist", () => {
     const numericIds = Object.entries(BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(1);
+    expect(numericIds.length).toBe(2);
     for (const id of numericIds) {
       expect(BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -116,6 +123,84 @@ describe("every extracted change lands on an applied target with a real formula"
   }
 });
 
+describe("Steel-Breaker: Sunder Training grants maneuver-scoped cmb/cmd, end to end via compute()", () => {
+  function raceId(name: string): string {
+    const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
+    if (!entry) throw new Error(`race not found: ${name}`);
+    return entry[0];
+  }
+
+  function makeDoc(level: number, archetypes: string[]): CharacterDoc {
+    return {
+      schemaVersion: 1,
+      id: "test",
+      ownerId: "owner",
+      version: 1,
+      updatedAt: "2026-01-01T00:00:00.000Z",
+      identity: { name: "Test", race: raceId("Human"), classes: [{ tag: "brawler", level }] },
+      abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        archetypes,
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+      },
+      live: {
+        hp: { current: 0, temp: 0, nonlethal: 0 },
+        conditions: [],
+        activeBuffs: [],
+        resources: {},
+      },
+    };
+  }
+
+  it("+2 CMB/CMD vs. sunder only, at 3rd level (disarm not yet granted)", () => {
+    // "At 3rd level, a steel-breaker receives additional training in sunder
+    // combat maneuvers. She gains a +2 bonus when attempting a sunder combat
+    // maneuver checks and a +2 bonus to her CMD when defending against this
+    // maneuver." Brawler has full BAB, so BAB 3 at level 3.
+    const steelBreaker = Object.values(ref.archetypes).find(
+      (a) => a.name === "Steel-Breaker" && a.classTag === "brawler",
+    );
+    expect(steelBreaker?.id).toBe("brawler:steel-breaker");
+    const sheet = compute(makeDoc(3, [steelBreaker!.id]), ref);
+    expect(sheet.cmb).toBe(3);
+    expect(sheet.cmd).toBe(13);
+    expect(sheet.cmbConditionals).toEqual([
+      { total: 5, categories: ["sunder"], labels: ["sunder"] },
+    ]);
+    expect(sheet.cmdConditionals).toEqual([
+      { total: 15, categories: ["sunder"], labels: ["sunder"] },
+    ]);
+  });
+
+  it("+3 CMB/CMD vs. sunder, +2 CMB/CMD vs. disarm, at 7th level", () => {
+    // "At 7th level, these bonuses increase by 1, and she gains a +2 bonus
+    // on disarm combat maneuver checks and a +2 bonus to her CMD when
+    // defending against a disarm maneuver." BAB 7 at level 7; base brawler's
+    // own AC Bonus (BRA) class feature also contributes a +1 dodge bonus to
+    // CMD (its own tier starting at 4th level, unrelated to this archetype),
+    // so the CMD headline includes it while CMB (dodge doesn't apply there)
+    // does not.
+    const steelBreaker = Object.values(ref.archetypes).find(
+      (a) => a.name === "Steel-Breaker" && a.classTag === "brawler",
+    );
+    const sheet = compute(makeDoc(7, [steelBreaker!.id]), ref);
+    expect(sheet.cmb).toBe(7);
+    expect(sheet.cmd).toBe(18);
+    expect(sheet.cmbConditionals).toEqual([
+      { total: 10, categories: ["sunder"], labels: ["sunder"] },
+      { total: 9, categories: ["disarm"], labels: ["disarm"] },
+    ]);
+    expect(sheet.cmdConditionals).toEqual([
+      { total: 21, categories: ["sunder"], labels: ["sunder"] },
+      { total: 20, categories: ["disarm"], labels: ["disarm"] },
+    ]);
+  });
+});
+
 describe("Verdant Grappler: Phytological Anatomy grants a flat +2 vs. save categories", () => {
   it("archetype exists in the vendored data", () => {
     const entry = Object.values(ref.archetypes).find(
@@ -124,12 +209,18 @@ describe("Verdant Grappler: Phytological Anatomy grants a flat +2 vs. save categ
     expect(entry?.id).toBe("brawler:verdant-grappler");
   });
 
-  it("flat 2, allSavingThrows, scoped to mind/poison/stun (paralysis and polymorph have no SAVE_CATEGORIES entry; sleep is a child of mind)", () => {
+  it("flat 2, allSavingThrows, scoped to mind/paralysis/poison/polymorph/stun (sleep is a child of mind)", () => {
     const id = "brawler:verdant-grappler:phytological-anatomy:11";
     const [saveChange] = BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
     expect(saveChange!.target).toBe("allSavingThrows");
     expect(saveChange!.type).toBe("untyped");
-    expect(saveChange!.saveCategories).toEqual(["mind", "poison", "stun"]);
+    expect(saveChange!.saveCategories).toEqual([
+      "mind",
+      "paralysis",
+      "poison",
+      "polymorph",
+      "stun",
+    ]);
     // Flat and level-independent: +2 at the granting level and at 20th alike.
     expect(evaluateFormula(saveChange!.formula, { class: { unlevel: 11 } })).toBe(2);
     expect(evaluateFormula(saveChange!.formula, { class: { unlevel: 20 } })).toBe(2);
@@ -145,7 +236,7 @@ describe("resolveArchetypeFeatureEffect: resolves through this class's tables wh
       BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED,
     );
     expect(resolved?.source).toBe("extracted");
-    expect(resolved?.confidence).toBe("medium");
+    expect(resolved?.confidence).toBe("high");
     expect(resolved?.effect.changes[0]?.target).toBe("allSavingThrows");
   });
 

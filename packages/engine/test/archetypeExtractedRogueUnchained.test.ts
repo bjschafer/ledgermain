@@ -44,8 +44,8 @@ describe("ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     for (const entry of Object.values(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts["numeric"]).toBe(30);
-    expect(counts["situational"]).toBe(50);
+    expect(counts["numeric"]).toBe(31);
+    expect(counts["situational"]).toBe(49);
     expect(counts["subsystem"]).toBe(173);
     expect(counts["blocked"]).toBe(4);
   });
@@ -54,7 +54,7 @@ describe("ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const numericIds = Object.entries(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(30);
+    expect(numericIds.length).toBe(31);
     for (const id of numericIds) {
       expect(ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -115,6 +115,21 @@ describe("Acrobat: Expert Acrobat grants a competence bonus only when fully unar
     expect(evaluateFormula(acr!.formula, { armor: { type: 0 } })).toBe(2);
     expect(evaluateFormula(acr!.formula, { armor: { type: 1 } })).toBe(0);
     expect(evaluateFormula(fly!.formula, { armor: { type: 0 } })).toBe(2);
+  });
+});
+
+describe("Bekyar Kidnapper: Abductor grants maneuver-scoped cmb/cmd vs. grapple", () => {
+  it("+1 at L3, +2 at L6, cmb attempting/cmd resisting grapple", () => {
+    const id = "rogueUnchained:bekyar-kidnapper:abductor:3";
+    const [cmbChange, cmdChange] = ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(cmbChange!.target).toBe("cmb");
+    expect(cmbChange!.maneuverCategories).toEqual(["grapple"]);
+    expect(cmdChange!.target).toBe("cmd");
+    expect(cmdChange!.maneuverCategories).toEqual(["grapple"]);
+    const at = (level: number) =>
+      evaluateFormula(cmbChange!.formula, { class: { unlevel: level } });
+    expect(at(3)).toBe(1);
+    expect(at(6)).toBe(2);
   });
 });
 

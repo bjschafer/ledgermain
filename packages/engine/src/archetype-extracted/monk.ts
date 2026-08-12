@@ -1989,8 +1989,8 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "monk:terra-cotta-monk",
     name: "Trap Dodge",
     level: 10,
-    bucket: "situational",
-    note: "real but conditional/narrowly-scoped number (specific maneuver, weapon, target state, or action) — not expressible without over-applying, per the honesty bar (save bonus scoped to mechanical-trap effects specifically)",
+    bucket: "numeric",
+    note: 'unconditional Wisdom-modifier bonus on ALL saving throws vs. mechanical-trap effects — traps allows all three saves (save-categories.ts), so allSavingThrows + saveCategories: ["traps"] covers it exactly. Wired in MONK_ARCHETYPE_EFFECTS_EXTRACTED.',
   },
   "monk:terra-cotta-monk:trap-intuition:2": {
     archetypeId: "monk:terra-cotta-monk",
@@ -2290,8 +2290,8 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "monk:wildcat",
     name: "Brawler Maneuver Training",
     level: 4,
-    bucket: "situational",
-    note: "real but conditional/narrowly-scoped number (specific maneuver, weapon, target state, or action) — not expressible without over-applying, per the honesty bar (CMB/CMD bonuses scoped to specific combat maneuvers, starting with dirty trick, matching Dirty Fighter's identically-scoped Maneuver Training elsewhere in this pipeline)",
+    bucket: "numeric",
+    note: "the dirty trick tier (fixed at 4th, +1/+2/+3/+4 at 4th/7th/10th/16th) is expressible via Change.maneuverCategories and wired in MONK_ARCHETYPE_EFFECTS_EXTRACTED. The 7th/10th/16th-level picks of ANOTHER combat maneuver are a free player choice with no CharacterDoc field recording them — same unrecorded-choice bar as base brawler's own Maneuver Training — so only the dirty-trick portion is modeled.",
   },
   "monk:wildcat:dirty-blow:19": {
     archetypeId: "monk:wildcat",
@@ -2466,6 +2466,66 @@ export const MONK_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     detail: () => "+2 Reflex saves",
     confidence: "high",
     provenance: "At 3rd level, a nimble guardian gains a +2 bonus on all Reflex saving throws.",
+  },
+
+  // Terra-Cotta Monk's "Trap Dodge" — traps allows all three saves
+  // (save-categories.ts), matching this Wisdom-scaling, all-saves bonus
+  // exactly.
+  "monk:terra-cotta-monk:trap-dodge:10": {
+    changes: [
+      {
+        formula: "@abilities.wis.mod",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["traps"],
+      },
+    ],
+    detail: () => "Wis modifier bonus on saves vs. mechanical traps",
+    confidence: "high",
+    provenance:
+      "At 10th level, a terra-cotta monk gains a bonus equal to his Wisdom modifier on all " +
+      "saving throws made against effects produced by mechanical traps. This ability replaces " +
+      "improved evasion.",
+  },
+
+  // Wildcat's "Brawler Maneuver Training" — only the FIXED dirty-trick tier
+  // is modeled; the 7th/10th/16th-level picks of another maneuver are a
+  // free player choice this table can't express (same gap as base brawler's
+  // own Maneuver Training).
+  "monk:wildcat:brawler-maneuver-training:4": {
+    changes: [
+      {
+        formula:
+          "if(gte(@class.unlevel, 16), 4, if(gte(@class.unlevel, 10), 3, if(gte(@class.unlevel, 7), 2, if(gte(@class.unlevel, 4), 1, 0))))",
+        target: "cmb",
+        type: "untyped",
+        maneuverCategories: ["dirtyTrick"],
+      },
+      {
+        formula:
+          "if(gte(@class.unlevel, 16), 4, if(gte(@class.unlevel, 10), 3, if(gte(@class.unlevel, 7), 2, if(gte(@class.unlevel, 4), 1, 0))))",
+        target: "cmd",
+        type: "untyped",
+        maneuverCategories: ["dirtyTrick"],
+      },
+    ],
+    detail: (level) => {
+      const v = level >= 16 ? 4 : level >= 10 ? 3 : level >= 7 ? 2 : level >= 4 ? 1 : 0;
+      return v > 0
+        ? `+${v} CMB/CMD vs. dirty trick (further picks at 7th/10th/16th not modeled)`
+        : "not yet granted";
+    },
+    confidence: "medium",
+    provenance:
+      "At 4th level, a wildcat gains additional training with the dirty trick combat maneuver " +
+      "(Advanced Player’s Guide 320). He gains a +1 bonus on combat maneuver checks when " +
+      "attempting this combat maneuver and a +1 bonus to his CMD when defending against this " +
+      "maneuver. At 7th, 10th, and 16th levels, a wildcat becomes further trained in another " +
+      "combat maneuver, gaining the above +1 bonus on combat maneuver checks and to CMD. In " +
+      "addition, the bonuses granted by previous maneuver training increase by 1 each. For " +
+      "example, when a wildcat reaches 7th level, he gains a +1 bonus on one type of combat " +
+      "maneuver, +1 to her CMD against that combat maneuver, and the bonuses for the dirty " +
+      "trick combat maneuver increase to +2.",
   },
 
   // Ironskin Monk's "Unbreakable" capstone: the 75%-chance crit/sneak-attack

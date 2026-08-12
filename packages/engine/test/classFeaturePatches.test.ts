@@ -488,3 +488,22 @@ describe("Talmandor's Blessing (Steel Falcon, untyped Perception bonus)", () => 
     expect(sheet.skills.per!.total).toBe(4);
   });
 });
+
+describe("Greater Sunder (Liberator, morale bonus on the sunder combat maneuver check)", () => {
+  it("+2 cmb-only at 6th level, headline cmb untouched, cmd untouched", () => {
+    // "Beginning at 6th level, a liberator ignores half of an object's
+    // hardness when making a sunder attack or attacking an object. He also
+    // gains a +2 morale bonus on his opposed attack roll when making a
+    // sunder attempt (but not when defending against a sunder attempt)"
+    // (Faiths of Purity, 6th level). Liberator has high BAB, so BAB 6 at
+    // level 6; Str 10 and Medium size contribute nothing, so headline
+    // cmb/cmd read straight off BAB (cmd = 10 + BAB).
+    const sheet = compute(makeDoc("liberator", 6), ref);
+    expect(sheet.cmb).toBe(6);
+    expect(sheet.cmd).toBe(16);
+    expect(sheet.cmbConditionals).toEqual([
+      { total: 8, categories: ["sunder"], labels: ["sunder"] },
+    ]);
+    expect(sheet.cmdConditionals ?? []).toEqual([]);
+  });
+});
