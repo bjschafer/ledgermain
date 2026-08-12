@@ -192,8 +192,8 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "investigator:cipher",
     name: "Null Aura",
     level: 4,
-    bucket: "blocked",
-    note: "+4 bonus on saves against divination spells/SLAs/effects — no 'divination' entry in SAVE_CATEGORIES, so the category string would silently match no save; the anti-scrying rules text isn't a Change either",
+    bucket: "numeric",
+    note: "unconditional +4 save bonus vs. divination spells/SLAs/effects, expressed via saveCategories: ['divination']; the anti-scrying/nondetection rules text (knowledge-of-target condition, 9th-level constant nondetection) isn't a Change and is dropped",
   },
   "investigator:cipher:tenuous-threat:5": {
     archetypeId: "investigator:cipher",
@@ -862,8 +862,8 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "investigator:profiler",
     name: "Divination Analysis",
     level: 2,
-    bucket: "blocked",
-    note: "a caster-level increase (no 'cl' Change target — targets.ts's unapplied list) and a save bonus vs. divinations (no matching SAVE_CATEGORIES entry); neither clause has an applied target",
+    bucket: "numeric",
+    note: "unconditional save bonus vs. divinations (+1/+2/+3 at 2nd/5th/8th), expressed via saveCategories: ['divination']; the paired caster-level-to-extract-duration increase has no 'cl' Change target (targets.ts's unapplied list) and the 11th-level inspiration/concentration-check clause is unrelated — both dropped",
   },
   "investigator:profiler:expert-profiler:1": {
     archetypeId: "investigator:profiler",
@@ -1213,8 +1213,8 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "investigator:tekritanin-arbiter",
     name: "Hidden Meaning",
     level: 2,
-    bucket: "blocked",
-    note: "scaling save bonus (and eventual immunity) vs. language-dependent effects — no SAVE_CATEGORIES entry for 'language-dependent'",
+    bucket: "numeric",
+    note: "unconditional, unqualified save bonus vs. language-dependent effects (a real SAVE_CATEGORIES entry now that `languageDependent` exists); scales +2/+4/+6 through 8th, then the text claims immunity at 11th — dropped, no Change target expresses categorical save immunity",
   },
   "investigator:tekritanin-arbiter:poison-resistance:5": {
     archetypeId: "investigator:tekritanin-arbiter",
@@ -1261,7 +1261,7 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
  * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 26 of investigator's 158
+ * extraction pass inferred this from prose." Only 29 of investigator's 158
  * features cleared the `numeric` bar (see
  * `INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
  * per-feature audit) — investigator's kit leans heavily on the inspiration
@@ -1291,6 +1291,27 @@ export const INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "an antiquarian gains a +2 bonus on all saving throws against spells and effects with " +
       "the curse descriptor. This bonus increases to +4 at 5th level and to +6 at 8th level.",
+  },
+
+  // Cipher's "Null Aura" grants a flat, unconditional +4 save bonus vs.
+  // divination spells/SLAs/effects — a real SAVE_CATEGORIES entry. The
+  // anti-scrying/nondetection rules text (knowledge-of-target condition,
+  // 9th-level constant nondetection) isn't a Change and is dropped.
+  "investigator:cipher:null-aura:4": {
+    changes: [
+      {
+        formula: "4",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["divination"],
+      },
+    ],
+    detail: () =>
+      "+4 vs. divination spells/SLAs/effects (anti-scrying/nondetection rules text not modeled)",
+    confidence: "medium",
+    provenance:
+      "He gains a +4 bonus on saving throws against divination spells, spell-like abilities, " +
+      "and effects.",
   },
 
   // Conspirator's "Underhanded" grants an unconditional half-level Disguise
@@ -1563,6 +1584,29 @@ export const INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "create alchemical items",
   },
 
+  // Profiler's "Divination Analysis" save-bonus clause is unconditional
+  // (+1/+2/+3 at 2nd/5th/8th) — a real SAVE_CATEGORIES entry. The paired
+  // caster-level-to-extract-duration increase has no 'cl' Change target
+  // (targets.ts's unapplied list) and the 11th-level inspiration/
+  // concentration-check clause is unrelated; both dropped.
+  "investigator:profiler:divination-analysis:2": {
+    changes: [
+      {
+        formula: "if(gte(@class.unlevel, 8), 3, if(gte(@class.unlevel, 5), 2, 1))",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["divination"],
+      },
+    ],
+    detail: (level) =>
+      `+${level >= 8 ? 3 : level >= 5 ? 2 : 1} vs. divinations (caster-level/extract-duration increase and 11th-level inspiration clause not modeled)`,
+    confidence: "medium",
+    provenance:
+      "His caster level to determine the duration of his divination extracts increases by 1, " +
+      "and he gains a +1 bonus on saving throws against divinations. The increases to caster " +
+      "level and bonus on saving throws increase by 1 at 5th level and by another 1 at 8th level.",
+  },
+
   // Profiler's "Expert Profiler" base Sense Motive bonus is unconditional;
   // the free-inspiration-on-Sense-Motive spend-option and the
   // creature-tracking ability are dropped.
@@ -1632,6 +1676,28 @@ export const INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     confidence: "high",
     provenance:
       "A star watcher adds half his level (minimum 1) as a bonus on Knowledge (geography) checks.",
+  },
+
+  // Tekritanin Arbiter's "Hidden Meaning" is the same unconditional,
+  // uncapped-at-8th save-progression shape as Antiquarian's Curse Resistance,
+  // scoped to language-dependent effects — a real SAVE_CATEGORIES entry. The
+  // text's own claim of complete immunity at 11th has no Change target
+  // (categorical save immunity isn't expressible) and is dropped.
+  "investigator:tekritanin-arbiter:hidden-meaning:2": {
+    changes: [
+      {
+        formula: "if(gte(@class.unlevel, 8), 6, if(gte(@class.unlevel, 5), 4, 2))",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["languageDependent"],
+      },
+    ],
+    detail: (level) =>
+      `+${level >= 8 ? 6 : level >= 5 ? 4 : 2} vs. language-dependent effects (11th-level immunity not modeled)`,
+    confidence: "medium",
+    provenance:
+      "he gains a +2 bonus on all saving throws against language-dependent effects. This bonus " +
+      "increases to +4 at 5th level and to +6 at 8th level.",
   },
 
   // Tekritanin Arbiter's "Poison Resistance" is the same poison-save

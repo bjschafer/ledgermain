@@ -67,8 +67,8 @@ describe("INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     for (const entry of Object.values(INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    expect(counts.numeric).toBe(11);
-    expect(counts.blocked).toBe(9);
+    expect(counts.numeric).toBe(12);
+    expect(counts.blocked).toBe(8);
     expect(counts.situational).toBe(27);
     expect(counts.subsystem).toBe(96);
   });
@@ -77,7 +77,7 @@ describe("INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const numericIds = Object.entries(INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(11);
+    expect(numericIds.length).toBe(12);
     for (const id of numericIds) {
       expect(INQUISITOR_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -151,9 +151,8 @@ describe("blocked bucket: features with no expressible target or a vendored copy
     ).toBe("blocked");
   });
 
-  it("no SAVE_CATEGORIES key exists for magic-item-sourced effects, confusion/insanity-specifically, truth-detection, or fey-sourced SLAs specifically", () => {
+  it("no SAVE_CATEGORIES key exists for magic-item-sourced effects, truth-detection, or fey-sourced SLAs specifically", () => {
     const blockedSaveIds = [
-      "inquisitor:exarch:inflexible-will:1",
       "inquisitor:iconoclast:shake-effects:1",
       "inquisitor:infiltrator:necessary-lies:5",
       "inquisitor:sworn-of-the-eldest:feywatcher:3",
@@ -162,6 +161,16 @@ describe("blocked bucket: features with no expressible target or a vendored copy
       expect(INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("blocked");
       expect(INQUISITOR_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeUndefined();
     }
+  });
+});
+
+describe("Exarch: Inflexible Will flat save bonus vs. confusion/insanity effects", () => {
+  it("+2 on all saves, unconditional at every level (chaotic-descriptor scope not modeled)", () => {
+    const id = "inquisitor:exarch:inflexible-will:1";
+    const [change] = INQUISITOR_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(change!.target).toBe("allSavingThrows");
+    expect(change!.saveCategories).toEqual(["confusion"]);
+    expect(evaluateFormula(change!.formula, {})).toBe(2);
   });
 });
 

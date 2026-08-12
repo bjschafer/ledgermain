@@ -214,8 +214,8 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "inquisitor:exarch",
     name: "Inflexible Will",
     level: 1,
-    bucket: "blocked",
-    note: "+2 save bonus vs. 'confusion and insanity effects and effects with the chaotic descriptor', replacing monster lore (no vendored number to double-count) — no SAVE_CATEGORIES key matches this scope; 'compulsion' is broader (covers dominate/hold person etc., which aren't confusion/insanity effects) and would over-apply, and no category models alignment descriptors at all",
+    bucket: "numeric",
+    note: "unconditional +2 save bonus vs. confusion and insanity effects, expressed via saveCategories: ['confusion'] — save-categories.ts's `confusion` entry was written to cover exactly this Paizo phrase pairing; the additional 'effects with the chaotic descriptor' scope has no matching category (no category models alignment descriptors) and is dropped",
   },
 
   // ── inquisitor:exorcist ──
@@ -1171,14 +1171,15 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * extracted from (`archetype-features.json`) is OGL, so reading it is fine;
  * no Foundry source was consulted (DESIGN.md §6).
  *
- * Only 11 of inquisitor's 143 features cleared the `numeric` bar (see
+ * Only 12 of inquisitor's 143 features cleared the `numeric` bar (see
  * `INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
  * per-feature audit) — inquisitor's kit leans heavily on judgment/bane
  * reflavors, detection spell-likes, and enemy-scoped or per-target
  * conditional bonuses, all of which stay classification-only. Ten of the
- * eleven are 1st-level "add an ability modifier / a Stern-Gaze-shaped morale
- * bonus to named skills, unconditionally" grants (class notes 5/6); the
- * eleventh (Gifted Detective) is the same shape with one clause dropped.
+ * twelve are 1st-level "add an ability modifier / a Stern-Gaze-shaped morale
+ * bonus to named skills, unconditionally" grants (class notes 5/6); Gifted
+ * Detective is the same shape with one clause dropped, and Exarch's
+ * Inflexible Will is a flat `saveCategories`-scoped save bonus instead.
  *
  * Confidence rubric (identical to fighter.ts's/magus.ts's):
  *  - "high": a literal, single, fully general (no scope restriction) skill
@@ -1206,6 +1207,27 @@ export const INQUISITOR_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "Starting at 1st level, a cloaked wolf receives a morale bonus on all Disguise and Sleight " +
       "of Hand checks equal to half her inquisitor level (minimum +1).",
+  },
+
+  // Exarch's "Inflexible Will" grants a flat, unconditional +2 save bonus
+  // vs. confusion and insanity effects — `confusion` (save-categories.ts) was
+  // written to cover exactly this phrase pairing. The additional scope
+  // against "effects with the chaotic descriptor" has no matching category
+  // (no category models alignment descriptors) and is dropped.
+  "inquisitor:exarch:inflexible-will:1": {
+    changes: [
+      {
+        formula: "2",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["confusion"],
+      },
+    ],
+    detail: () => "+2 vs. confusion/insanity effects (chaotic-descriptor scope not modeled)",
+    confidence: "medium",
+    provenance:
+      "an exarch gains a +2 bonus on saving throws against confusion and insanity effects and " +
+      "effects with the chaotic descriptor.",
   },
 
   // Green Faith Marshal's "Wild Lore": the Cunning-Initiative-shaped

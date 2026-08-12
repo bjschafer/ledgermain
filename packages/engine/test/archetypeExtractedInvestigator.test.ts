@@ -66,7 +66,7 @@ describe("INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const numericIds = Object.entries(INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(26);
+    expect(numericIds.length).toBe(29);
     for (const id of numericIds) {
       expect(INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -75,12 +75,12 @@ describe("INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     }
   });
 
-  it("bucket counts match this pass's audit (158 total: 26 numeric, 32 situational, 86 subsystem, 14 blocked)", () => {
+  it("bucket counts match this pass's audit plus the save-categories re-sweep (158 total: 29 numeric, 32 situational, 86 subsystem, 11 blocked)", () => {
     const counts: Record<string, number> = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts).toEqual({ numeric: 26, situational: 32, subsystem: 86, blocked: 14 });
+    expect(counts).toEqual({ numeric: 29, situational: 32, subsystem: 86, blocked: 11 });
   });
 
   it("every classification entry references a real vendored feature id/name/level/archetypeId", () => {
@@ -447,13 +447,6 @@ describe("resolveArchetypeFeatureEffect: resolves through investigator's tables 
         INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED,
       ),
     ).toBeUndefined();
-    expect(
-      resolveArchetypeFeatureEffect(
-        "investigator:cipher:null-aura:4",
-        {},
-        INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED,
-      ),
-    ).toBeUndefined();
   });
 });
 
@@ -474,14 +467,49 @@ describe("blocked bucket: inspiration-pool basis/size divergences and missing SA
     );
   });
 
-  it("no SAVE_CATEGORIES entry exists for drug addiction, teleportation, or language-dependent effects, so those scaling-save features are blocked rather than mis-extracted", () => {
+  it("no SAVE_CATEGORIES entry exists for drug addiction or teleportation, so those scaling-save features are blocked rather than mis-extracted", () => {
     for (const id of [
       "investigator:hallucinist:drug-resistance:2",
       "investigator:portal-seeker:resist-teleportation:2",
-      "investigator:tekritanin-arbiter:hidden-meaning:2",
     ]) {
       expect(INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("blocked");
       expect(INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeUndefined();
     }
+  });
+});
+
+describe("Cipher: Null Aura flat save bonus vs. divination", () => {
+  it("+4 on all saves against divination spells/SLAs/effects, unconditional at every level", () => {
+    const id = "investigator:cipher:null-aura:4";
+    const [change] = INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(change!.target).toBe("allSavingThrows");
+    expect(change!.saveCategories).toEqual(["divination"]);
+    expect(evaluateFormula(change!.formula, {})).toBe(4);
+  });
+});
+
+describe("Profiler: Divination Analysis scaling save bonus vs. divinations", () => {
+  it("+1 at L2, +2 at L5, +3 at L8 and beyond (caster-level/extract-duration and inspiration clauses not modeled)", () => {
+    const id = "investigator:profiler:divination-analysis:2";
+    const [change] = INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(change!.saveCategories).toEqual(["divination"]);
+    const at = (level: number) => evaluateFormula(change!.formula, { class: { unlevel: level } });
+    expect(at(2)).toBe(1);
+    expect(at(5)).toBe(2);
+    expect(at(8)).toBe(3);
+    expect(at(20)).toBe(3);
+  });
+});
+
+describe("Tekritanin Arbiter: Hidden Meaning scaling save bonus vs. language-dependent effects", () => {
+  it("+2 at L2, +4 at L5, +6 at L8 and beyond (11th-level immunity not modeled)", () => {
+    const id = "investigator:tekritanin-arbiter:hidden-meaning:2";
+    const [change] = INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(change!.saveCategories).toEqual(["languageDependent"]);
+    const at = (level: number) => evaluateFormula(change!.formula, { class: { unlevel: level } });
+    expect(at(2)).toBe(2);
+    expect(at(5)).toBe(4);
+    expect(at(8)).toBe(6);
+    expect(at(11)).toBe(6);
   });
 });
