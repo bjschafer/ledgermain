@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-11-maneuver-bonuses",
+    date: "2026-08-11",
+    title: "Combat maneuver bonuses show under CMB and CMD",
+    note: "Bonuses tied to a specific combat maneuver now appear as their own lines under CMB and CMD instead of hiding in rules text. All twenty Improved and Greater maneuver feats compute both halves, so an Improved Trip character sees the +2 on trip attempts and the +2 against being tripped. A dwarf's Stability shows its +4 against bull rush and trip, and around sixty more feats, traits, racial traits, and archetype features landed the same way, including the archaeologist and wilderness explorer trap sense variants on saving throws.",
+  },
+  {
     id: "2026-08-11-more-save-scopes",
     date: "2026-08-11",
     title: "Saving throws recognize fifteen more kinds of effect",
