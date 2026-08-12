@@ -57,7 +57,9 @@ describe("importCharacterFile", () => {
   });
 
   it("routes a .por portfolio (ZIP magic) to the Hero Lab portfolio importer", async () => {
-    const por = new Uint8Array(readFileSync("test/fixtures/herolab-crush.por"));
+    const por = new Uint8Array(
+      readFileSync(new URL("./fixtures/herolab-crush.por", import.meta.url)),
+    );
     const { doc, report } = await importCharacterFile(por, ref);
     expect(doc.identity.name).toBe("Crush");
     expect(report?.source).toBe("herolab");

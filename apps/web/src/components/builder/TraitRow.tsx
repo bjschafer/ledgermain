@@ -1,8 +1,9 @@
-import { saveNoteCoverage, unappliedChanges } from "@pf1/engine";
+import { unappliedChanges } from "@pf1/engine";
 import type { CharacterDoc } from "@pf1/schema";
 import type { TraitDef } from "@pf1/engine";
 
 import { changeTargetLabel } from "../../model/names.js";
+import { contextNoteCoverage } from "../../model/rulesNotes.js";
 import { toggleTrait } from "../../model/traits.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
 import { InfoTip } from "../InfoTip.js";
@@ -52,7 +53,9 @@ export function TraitRow({
           <RulesNote
             key={i}
             text={note.text}
-            appliedAutomatically={saveNoteCoverage({ catalog: "characterTrait" }, note) === "full"}
+            appliedAutomatically={
+              contextNoteCoverage({ catalog: "characterTrait" }, note) === "full"
+            }
           />
         ))}
         {trait.description ? <FeatureDescription html={trait.description} /> : null}

@@ -7,7 +7,7 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { ContextNote } from "@pf1/schema";
 
-import { noteLines, stripNoteMarkup } from "../src/model/rulesNotes.js";
+import { contextNoteCoverage, noteLines, stripNoteMarkup } from "../src/model/rulesNotes.js";
 
 describe("stripNoteMarkup", () => {
   it("leaves plain prose untouched", () => {
@@ -69,6 +69,87 @@ describe("noteLines", () => {
 
   it("drops a note whose text is nothing but markup", () => {
     expect(noteLines([note("fort", "<b></b>")])).toEqual([]);
+  });
+});
+
+describe("contextNoteCoverage", () => {
+  const note = (target: string, text: string): ContextNote => ({ target, text });
+
+  it("reads a fully-promoted character trait maneuver note as full", () => {
+    // Rovagug's Zealot: "+2 Trait bonus on checks made to sunder." promotes
+    // whole via VENDORED_CHARACTER_TRAIT_MANEUVER_NOTES.
+    expect(
+      contextNoteCoverage(
+        { catalog: "characterTrait" },
+        note("cmb", "+2 Trait bonus on checks made to sunder."),
+      ),
+    ).toBe("full");
+  });
+
+  it("reads a partially-promoted character trait maneuver note as partial", () => {
+    // Prankster: the cmb half promotes, but the flatfooted-duration rider in
+    // the same note has no Change form and stays prose.
+    expect(
+      contextNoteCoverage(
+        { catalog: "characterTrait" },
+        note(
+          "cmb",
+          "+1 Trait bonus on dirty trick combat maneuver checks.  If you succeed at a dirty trick combat maneuver check against a flatfooted opponent, increase the duration of the condition caused by 1 round.",
+        ),
+      ),
+    ).toBe("partial");
+  });
+
+  it("reads a fully-promoted racial trait maneuver note as full", () => {
+    expect(
+      contextNoteCoverage(
+        { catalog: "racialTrait" },
+        note("cmd", "+1 bonus against trip maneuvers."),
+      ),
+    ).toBe("full");
+  });
+
+  it("reads a partially-promoted racial trait maneuver note as partial", () => {
+    // Half-Orc Destructive: the Strength-check-to-break-objects half of the
+    // same benefit is a different target and not this table's concern.
+    expect(
+      contextNoteCoverage({ catalog: "racialTrait" }, note("cmb", "+2 bonus on sunder attempts.")),
+    ).toBe("partial");
+  });
+
+  it("reads a fully-promoted standard race maneuver note as full", () => {
+    // Dwarf Stability, recovered by STANDARD_RACE_MANEUVER_BONUSES's "Bull
+    // Rush and Trip" match against the compendium's own note text.
+    expect(
+      contextNoteCoverage(
+        { catalog: "race", raceName: "Dwarf" },
+        note("cmd", "+4 Racial bonus to CMD when resisting a Bull Rush and Trip while on ground."),
+      ),
+    ).toBe("full");
+  });
+
+  it("reads an unpromoted maneuver note as none", () => {
+    expect(
+      contextNoteCoverage(
+        { catalog: "characterTrait" },
+        note("cmb", "+1 Trait bonus on checks made to feint."),
+      ),
+    ).toBe("none");
+  });
+
+  it("still reads a fully-promoted save note as full, unchanged by the maneuver route", () => {
+    expect(
+      contextNoteCoverage(
+        { catalog: "characterTrait" },
+        note("allSavingThrows", "+2 Trait bonus against fear effects."),
+      ),
+    ).toBe("full");
+  });
+
+  it("reads a note whose target is neither a save nor a maneuver target as none", () => {
+    expect(
+      contextNoteCoverage({ catalog: "characterTrait" }, note("ac", "+1 dodge bonus to AC.")),
+    ).toBe("none");
   });
 });
 

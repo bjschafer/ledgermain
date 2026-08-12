@@ -30,7 +30,9 @@ import { parseXml } from "../src/model/xml.js";
 
 const ref = loadRefData();
 
-const CRUSH_POR = new Uint8Array(readFileSync("test/fixtures/herolab-crush.por"));
+const CRUSH_POR = new Uint8Array(
+  readFileSync(new URL("./fixtures/herolab-crush.por", import.meta.url)),
+);
 
 const MINIMAL_XML = `<character name="Grombar" race="Human" alignment="CE"/>`;
 
