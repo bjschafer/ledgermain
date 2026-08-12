@@ -80,6 +80,42 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "You add your Wisdom modifier in addition to your Strength modifier on Swim checks.",
   },
+  // Unconditional +2 bonus on combat maneuver checks to bull rush and overrun
+  // (the Str-check/hardness-ignore half of the feat, for breaking doors and
+  // barriers, has no engine target).
+  "breaker-of-barriers": {
+    type: "static",
+    changes: [
+      {
+        target: "cmb",
+        type: "untyped",
+        formula: "2",
+        maneuverCategories: ["bullRush", "overrun"],
+      },
+    ],
+    confidence: "high",
+    provenance:
+      "You gain a +2 bonus on Strength checks to break down doors, walls, dams, and other barriers and on combat maneuver checks to bull rush and overrun opponents.",
+  },
+  // The "composure" scope the feat's own text defines spans mind-affecting
+  // effects and out-of-control-behavior effects "such as fear effects and
+  // nausea" — `mind` already reaches fear as an ancestor category, and
+  // `nausea` is named explicitly, so both are promoted; the "does not include
+  // physical effects such as fatigue" exclusion confirms the boundary rather
+  // than widening it.
+  "calm-disposition": {
+    type: "static",
+    changes: [
+      {
+        target: "allSavingThrows",
+        type: "untyped",
+        formula: "2",
+        saveCategories: ["mind", "nausea"],
+      },
+    ],
+    confidence: "high",
+    provenance: "You gain +2 bonus on saving throws against effects that affect your composure",
+  },
   // Grants a flat 10-foot climb speed, unconditional for a vine leshy.
   "climbing-vine": {
     type: "static",
@@ -223,6 +259,46 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "you gain a +2 bonus on all Knowledge (geography) checks. If you have 10 or more ranks in Knowledge (geography), increase your bonus to +4.",
   },
+  // Unconditional +2 CMD bonus against five named maneuvers (catfolk racial
+  // feat; Dex 13 is a prerequisite, not a gating condition).
+  "feline-grace": {
+    type: "static",
+    changes: [
+      {
+        target: "cmd",
+        type: "untyped",
+        formula: "2",
+        maneuverCategories: ["bullRush", "grapple", "overrun", "reposition", "trip"],
+      },
+    ],
+    confidence: "high",
+    provenance:
+      "You gain a +2 bonus to your CMD against bull rush, grapple, overrun, repositioning, and trip combat maneuvers.",
+  },
+  // Unconditional +4 bonus on saves against nauseated/sickened effects; the
+  // ingested-poison clause is scoped narrower than the engine's `poison`
+  // category (excludes injury/inhaled/contact poisons) and stays prose, same
+  // reasoning as `feat-save-categories.ts`'s Carrion Feeder entry.
+  "filth-forager": {
+    type: "static",
+    changes: [
+      { target: "allSavingThrows", type: "untyped", formula: "4", saveCategories: ["nausea"] },
+    ],
+    confidence: "high",
+    provenance:
+      "You gain a +4 bonus on all saving throws against diseases and any effect that would cause you to become nauseated or sickened.",
+  },
+  // Unconditional +4 bonus on saves against pain effects; the nonlethal-damage
+  // staggered/unconsciousness rules are a different mechanic (HP thresholds,
+  // not a save) and stay prose.
+  flagellant: {
+    type: "static",
+    changes: [
+      { target: "allSavingThrows", type: "untyped", formula: "4", saveCategories: ["pain"] },
+    ],
+    confidence: "high",
+    provenance: "You gain a +4 bonus on saving throws against pain effects.",
+  },
   // Unconditional fire resistance 5.
   "flame-heart": {
     type: "static",
@@ -250,6 +326,39 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "Your experience with infiltrating your own family or organization gives you a +2 bonus on Disguise checks. If you have 10 or more ranks in Disguise, this bonus increases to +4.",
   },
+  // The style clause ("While using Fox Style, you can perform dirty trick
+  // combat maneuvers as attacks of opportunity") is stance-gated and stays
+  // prose, matching this table's style-feat convention (see file header); the
+  // Int-19 bonus that follows carries no such prefix and is a flat character-
+  // stat threshold, not a live/stance condition, so it's promoted on its own.
+  "fox-trickery": {
+    type: "static",
+    changes: [
+      {
+        target: "cmb",
+        type: "untyped",
+        formula: "if(gte(@abilities.int.total, 19), 4, 0)",
+        maneuverCategories: ["dirtyTrick"],
+      },
+    ],
+    confidence: "high",
+    provenance:
+      "If your Intelligence is at least 19, you gain a +4 bonus on dirty trick combat maneuver checks.",
+  },
+  // Grapple-escape half of the feat only: a combat maneuver check to break a
+  // grapple IS a CMB check (CRB p. 201), so this fits the maneuver-category
+  // vocabulary; the paired "Escape Artist checks... to escape from bonds"
+  // clause has no matching engine target (a flat Escape Artist bonus would
+  // over-apply to every other Escape Artist use). The mind-affecting saving
+  // throw clause is handled separately by `feat-save-categories.ts`'s
+  // `FREE_SPIRIT` entry, additively — no overlap with this table.
+  "free-spirit": {
+    type: "static",
+    changes: [{ target: "cmb", type: "morale", formula: "2", maneuverCategories: ["grapple"] }],
+    confidence: "high",
+    provenance:
+      "a +2 morale bonus on saving throws made against mind-affecting effects and on all Escape Artist or grapple checks made to escape a grapple or to escape from bonds",
+  },
   // Unconditional cold resistance 3.
   "frozen-skin": {
     type: "static",
@@ -264,6 +373,16 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance:
       "your Strength is considered to be 4 higher for the purpose of determining your carrying capacity",
+  },
+  // Unconditional +2 bonus on saving throws against pain effects; the DR-
+  // while-drunk clause is a separate mechanic and stays prose.
+  implacable: {
+    type: "static",
+    changes: [
+      { target: "allSavingThrows", type: "untyped", formula: "2", saveCategories: ["pain"] },
+    ],
+    confidence: "high",
+    provenance: "You gain a +2 bonus on saving throws against pain effects.",
   },
   // Unconditional resistance 5 against negative energy damage.
   "improved-shadowy-resistance": {
@@ -282,12 +401,39 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "You gain a +2 bonus on Intimidate checks. If you have 10 or more ranks in Intimidate, this bonus increases to +4",
   },
+  // Nauseated/sickened half only: the ingested-poison half of "You gain a +2
+  // racial bonus on saving throws against any effect causing the nauseated or
+  // sickened conditions and against all ingested poisons (but not other
+  // poisons)" is narrower than the engine's `poison` category (excludes
+  // injury/inhaled/contact poisons, same reasoning as Carrion Feeder's own
+  // poison clause in `feat-save-categories.ts`) and stays prose, along with
+  // the unrelated Survival bonus.
+  ironguts: {
+    type: "static",
+    changes: [
+      { target: "allSavingThrows", type: "racial", formula: "2", saveCategories: ["nausea"] },
+    ],
+    confidence: "high",
+    provenance:
+      "You gain a +2 racial bonus on saving throws against any effect causing the nauseated or sickened conditions",
+  },
   // Unconditional +2 racial bonus on Perception checks.
   "jackal-heritage": {
     type: "static",
     changes: [{ target: "skill.per", type: "racial", formula: "2" }],
     confidence: "high",
     provenance: "a +2 racial bonus on Perception checks",
+  },
+  // "In addition, you gain a +2 bonus on combat maneuver checks to maintain a
+  // grapple" carries no "while using this style" prefix, unlike the preceding
+  // bludgeoning-damage sentence — matches this table's style-feat convention
+  // (see file header). The damage rider and the wings/free-hand exception stay
+  // prose.
+  "kraken-style": {
+    type: "static",
+    changes: [{ target: "cmb", type: "untyped", formula: "2", maneuverCategories: ["grapple"] }],
+    confidence: "high",
+    provenance: "you gain a +2 bonus on combat maneuver checks to maintain a grapple",
   },
   // Grants an unconditional +2 insight bonus on Bluff checks.
   "lifeless-gaze": {
@@ -369,15 +515,45 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "You get a +2 bonus on all Knowledge (nature) checks and Survival checks. If you have 10 or more ranks in one of these skills, the bonus increases to +4 for that skill.",
   },
-  // Unconditional +2/+4 rank-gated Intimidate bonus; the paralysis/sleep save bonus and Story completion benefit aren't captured.
+  // "Spells and effects that... cause negative levels" is the `energyDrain`
+  // category (negative levels only, per that category's own doc comment);
+  // "ability damage, ability drain, or ability penalties" is `abilityDamage`.
+  // The broader "utilize negative energy" clause (direct negative-energy
+  // damage, which doesn't always call for a save at all) has no matching
+  // category and stays prose, along with the inflict/cure-spell vulnerability
+  // swap.
+  "necromantic-affinity": {
+    type: "static",
+    changes: [
+      {
+        target: "allSavingThrows",
+        type: "untyped",
+        formula: "2",
+        saveCategories: ["energyDrain", "abilityDamage"],
+      },
+    ],
+    confidence: "high",
+    provenance:
+      "You gain a +2 bonus on saving throws made to resist spells and effects that utilize negative energy, cause negative levels, or cause ability damage, ability drain, or ability penalties.",
+  },
+  // Unconditional +2/+4 rank-gated Intimidate bonus, plus a flat save bonus
+  // against paralysis and sleep effects (both now expressible via
+  // `Change.saveCategories`); the Story completion benefit's fear aura isn't
+  // captured (needs a target this engine doesn't have).
   "never-conquered-forever-feared": {
     type: "static",
     changes: [
+      {
+        target: "allSavingThrows",
+        type: "untyped",
+        formula: "2",
+        saveCategories: ["paralysis", "sleep"],
+      },
       { target: "skill.int", type: "untyped", formula: "if(gte(@skills.int.rank,10),4,2)" },
     ],
     confidence: "high",
     provenance:
-      "Your stern demeanor gives you a +2 bonus on Intimidate checks. If you have 10 or more ranks in Intimidate, this bonus increases to +4.",
+      "Your stern demeanor gives you a +2 bonus on Intimidate checks. If you have 10 or more ranks in Intimidate, this bonus increases to +4. You also gain a +2 bonus on saves against paralysis and sleep effects.",
   },
   // Unconditional +2 Intimidate bonus; the conditional Diplomacy/Handle Animal bonuses and penalty aren't drafted.
   "nightmare-scars": {
@@ -424,6 +600,23 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance:
       "You gain a +2 bonus on all Knowledge (nobility) checks, and Knowledge (nobility) is always a class skill for you.",
+  },
+  // A combat maneuver check to break free of a grapple or pin IS a CMB check
+  // (CRB p. 201), so the maneuver half fits the vocabulary; "resist... effects
+  // that would entangle" maps to the `entangle` save category (Reflex only),
+  // named alongside "or slow you" — `slow` has no matching category (the
+  // slow spell's own save is Will, a different shape entirely), so only the
+  // entangle half of that clause is promoted. The Strength-check half
+  // (burst bonds/doors) has no engine target and stays prose.
+  "oath-of-the-unbound": {
+    type: "static",
+    changes: [
+      { target: "cmb", type: "untyped", formula: "2", maneuverCategories: ["grapple"] },
+      { target: "allSavingThrows", type: "untyped", formula: "2", saveCategories: ["entangle"] },
+    ],
+    confidence: "high",
+    provenance:
+      "You gain a +2 bonus on combat maneuver checks to break free of a grapple or pin, on Strength checks to burst bonds or to break through doors or walls, and on saving throws to resist spells and effects that would entangle or slow you.",
   },
   // Unconditional +2/+4 rank-gated bonus to Sense Motive and Spellcraft.
   "oracular-intuition": {
@@ -507,6 +700,14 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance:
       "You gain a +2 bonus on Acrobatics and Climb checks, and can take 10 on Climb checks even when distracted. If you have 10 or more ranks in one of these skills, the bonus increases to +4 for that skill.",
+  },
+  // Unconditional +2 CMB bonus on grapple checks (gathlain racial feat); the
+  // wings-as-free-hand rules exception has no engine target.
+  "sinuous-vines": {
+    type: "static",
+    changes: [{ target: "cmb", type: "untyped", formula: "2", maneuverCategories: ["grapple"] }],
+    confidence: "high",
+    provenance: "You gain a +2 bonus on combat maneuver checks to grapple",
   },
   // Unconditional rank-gated Skill Focus bonus (+3, or +6 at 10+ ranks) on Acrobatics.
   "skill-focus-acrobatics": {
@@ -848,6 +1049,17 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.",
   },
+  // The +4 CMD-vs-trip sentence carries no "while using this style" prefix,
+  // unlike the critical-confirmation clause that follows it — matches this
+  // table's style-feat convention (see file header) for a feat that lists a
+  // style feat (Snake Style) as a prerequisite. The Acrobatics/prone-save
+  // bonus and the AoO/critical-confirmation rules stay prose.
+  "snake-sidewind": {
+    type: "static",
+    changes: [{ target: "cmd", type: "untyped", formula: "4", maneuverCategories: ["trip"] }],
+    confidence: "high",
+    provenance: "You gain a +4 bonus to CMD against trip combat maneuvers",
+  },
   // Unconditional +2 bonus on Sense Motive checks (the feat's other benefits are situational).
   "snake-style": {
     type: "static",
@@ -945,6 +1157,15 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     ],
     confidence: "high",
     provenance: "This feat gives you an additional +1 bonus on Perception and Sense Motive checks",
+  },
+  // Own-CMB half only: the "-1 penalty on checks to escape your grapple" half
+  // targets the OPPONENT's roll, which this engine doesn't model (it only
+  // derives the PC's own sheet).
+  "unfair-grip": {
+    type: "static",
+    changes: [{ target: "cmb", type: "untyped", formula: "1", maneuverCategories: ["grapple"] }],
+    confidence: "high",
+    provenance: "you gain a +1 bonus on checks to maintain your grapple",
   },
   // Unconditional circumstance bonus to Knowledge (history) (the object-reading spell-like ability is left unmodeled).
   "unraveler-of-secrets": {

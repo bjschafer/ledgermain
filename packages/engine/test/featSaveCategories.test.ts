@@ -71,7 +71,7 @@ function makeDoc(feats: string[]): CharacterDoc {
 }
 
 describe("FEAT_SAVE_CATEGORY_CHANGES drift guard", () => {
-  it("every key names a real feat, and none double-ships a save-target change", () => {
+  it("every key names a real feat, and none double-ships an overlapping save-target change", () => {
     const problems: string[] = [];
     const bySlug = new Map<string, string>(); // slug -> feat id, first match wins
     for (const [id, f] of Object.entries(ref.feats)) {
@@ -86,12 +86,26 @@ describe("FEAT_SAVE_CATEGORY_CHANGES drift guard", () => {
         problems.push(`"${slug}" matches no RefData.feats name`);
         continue;
       }
+      // A resolveFeatEffect entry emitting a save-target change is only a
+      // real double-count risk if it shares a category with this table's own
+      // entry for the same slug (or is itself unscoped, i.e. a blanket
+      // bonus) — a resolveFeatEffect entry scoped to a DIFFERENT category
+      // (e.g. Filth Forager's disease line here, nausea in
+      // feat-effects-extracted-community.ts) composes safely, the same
+      // additive way this table composes with an unrelated skill bonus.
+      const ownCategories = new Set(
+        FEAT_SAVE_CATEGORY_CHANGES[slug]?.flatMap((ch) => ch.saveCategories ?? []) ?? [],
+      );
       const resolved = resolveFeatEffect(slug);
       if (resolved?.entry.type === "static") {
         for (const ch of resolved.entry.changes) {
-          if (saveTargets.has(ch.target)) {
+          if (!saveTargets.has(ch.target)) continue;
+          const otherCategories = ch.saveCategories ?? [];
+          const overlaps =
+            otherCategories.length === 0 || otherCategories.some((c) => ownCategories.has(c));
+          if (overlaps) {
             problems.push(
-              `"${slug}" already has a resolveFeatEffect entry emitting a "${ch.target}" change — would double-count`,
+              `"${slug}" already has a resolveFeatEffect entry emitting an overlapping "${ch.target}" change — would double-count`,
             );
           }
         }

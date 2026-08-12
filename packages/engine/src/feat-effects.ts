@@ -142,6 +142,23 @@ export function featNameSlug(name: string): string {
 }
 
 /**
+ * The Improved half of the Improved/Greater maneuver-feat family — see the
+ * "Combat maneuver feats" section of `FEAT_EFFECTS` below for the shape this
+ * encodes. `key` must name a `MANEUVER_CATEGORIES` (maneuver-categories.ts) key.
+ */
+function improvedManeuver(key: string): FeatChange[] {
+  return [
+    { target: "cmb", type: "untyped", formula: "2", maneuverCategories: [key] },
+    { target: "cmd", type: "untyped", formula: "2", maneuverCategories: [key] },
+  ];
+}
+
+/** The Greater half of the same family: CMB-only, no CMD line in any of the ten. */
+function greaterManeuver(key: string): FeatChange[] {
+  return [{ target: "cmb", type: "untyped", formula: "2", maneuverCategories: [key] }];
+}
+
+/**
  * Feat effects, keyed by name slug. Entries are either always-on (static) or
  * choice-based (player picks a target, engine emits changes after selection).
  */
@@ -195,6 +212,45 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
       { target: "skill.sen", type: "untyped", formula: "2" },
     ],
   },
+
+  // ── Combat maneuver feats (Improved/Greater X family) ───────────────────────
+  //
+  // The Improved half of each pair (CRB p. 131 for Bull Rush/Disarm/Grapple/
+  // Overrun/Sunder/Trip; Ultimate Combat for Dirty Trick/Drag/Reposition/Steal)
+  // is identical in shape across all ten maneuvers: "+2 bonus on checks made to
+  // <maneuver> a foe. You also receive a +2 bonus to your Combat Maneuver
+  // Defense whenever an opponent tries to <maneuver> you." Neither clause names
+  // a bonus type, so both are untyped (stack with everything, including each
+  // other's Greater half). The "no attack of opportunity" clause and the
+  // optional stamina-pool Combat Trick variant (Pathfinder Unchained; stamina
+  // isn't modeled anywhere in this engine) stay prose.
+  //
+  // The Greater half (APG for the CRB six, Ultimate Combat for the other four)
+  // adds only a CMB-side +2 — none of the ten mentions a CMD line — and each
+  // one's text explicitly says it "stacks with the bonus granted by Improved
+  // X", confirming the untyped-sums-by-default read rather than asking for a
+  // distinct type. The follow-up rider each Greater feat grants (extra AoOs,
+  // sunder bleed-through, and so on) has no engine target and stays prose.
+  "improved-bull-rush": { type: "static", changes: improvedManeuver("bullRush") },
+  "improved-dirty-trick": { type: "static", changes: improvedManeuver("dirtyTrick") },
+  "improved-disarm": { type: "static", changes: improvedManeuver("disarm") },
+  "improved-drag": { type: "static", changes: improvedManeuver("drag") },
+  "improved-grapple": { type: "static", changes: improvedManeuver("grapple") },
+  "improved-overrun": { type: "static", changes: improvedManeuver("overrun") },
+  "improved-reposition": { type: "static", changes: improvedManeuver("reposition") },
+  "improved-steal": { type: "static", changes: improvedManeuver("steal") },
+  "improved-sunder": { type: "static", changes: improvedManeuver("sunder") },
+  "improved-trip": { type: "static", changes: improvedManeuver("trip") },
+  "greater-bull-rush": { type: "static", changes: greaterManeuver("bullRush") },
+  "greater-dirty-trick": { type: "static", changes: greaterManeuver("dirtyTrick") },
+  "greater-disarm": { type: "static", changes: greaterManeuver("disarm") },
+  "greater-drag": { type: "static", changes: greaterManeuver("drag") },
+  "greater-grapple": { type: "static", changes: greaterManeuver("grapple") },
+  "greater-overrun": { type: "static", changes: greaterManeuver("overrun") },
+  "greater-reposition": { type: "static", changes: greaterManeuver("reposition") },
+  "greater-steal": { type: "static", changes: greaterManeuver("steal") },
+  "greater-sunder": { type: "static", changes: greaterManeuver("sunder") },
+  "greater-trip": { type: "static", changes: greaterManeuver("trip") },
 
   // ── Choice feats ───────────────────────────────────────────────────────────
 

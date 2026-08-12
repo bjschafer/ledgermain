@@ -162,3 +162,45 @@ describe("community feat sweep: pool promotions", () => {
     expect(pool?.max).toBe((basePool?.max ?? 0) + 1);
   });
 });
+
+/**
+ * Fixtures for the maneuver-category and save-category re-sweep (post-dates
+ * the original community classification pass; see feat-classification-
+ * community.ts's header) — proves both a community maneuver-scoped CMB/CMD
+ * feat and a community save-category feat compose the same way the hand-
+ * verified fixtures in maneuverCategories.test.ts and featSaveCategories.test.ts
+ * already established.
+ */
+describe("community maneuver/save-category promotions", () => {
+  it("Feline Grace: +2 CMD against all five named maneuvers, one merged line", () => {
+    // "You gain a +2 bonus to your CMD against bull rush, grapple, overrun,
+    // repositioning, and trip combat maneuvers." Fighter 5, str 16 (+3), dex
+    // 14 (+2): CMD = 10 + BAB 5 + str 3 + dex 2 = 20.
+    const base = makeDoc();
+    const withFeat = makeDoc({ feats: [featId("Feline Grace")] });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    expect(baseSheet.cmd).toBe(20);
+    expect(featSheet.cmd).toBe(20); // headline untouched
+    expect(featSheet.cmdConditionals).toEqual([
+      {
+        total: 22,
+        categories: ["bullRush", "grapple", "overrun", "reposition", "trip"],
+        labels: ["bull rush", "grapple", "overrun", "reposition", "trip"],
+      },
+    ]);
+  });
+
+  it("Flagellant: +4 untyped vs. pain effects, headline Fortitude untouched", () => {
+    // "You gain a +4 bonus on saving throws against pain effects." `pain`
+    // applies to both Fortitude and Will (save-categories.ts).
+    const base = makeDoc();
+    const withFeat = makeDoc({ feats: [featId("Flagellant")] });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    expect(featSheet.saves.fort.total).toBe(baseSheet.saves.fort.total);
+    expect(featSheet.saves.fort.conditionals).toEqual([
+      { total: baseSheet.saves.fort.total + 4, categories: ["pain"], labels: ["pain"] },
+    ]);
+  });
+});

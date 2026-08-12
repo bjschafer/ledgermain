@@ -325,7 +325,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "bravery-in-action": "blocked",
   breach: "subsystem",
   "break-guard": "subsystem",
-  "breaker-of-barriers": "situational",
+  "breaker-of-barriers": "numeric",
   "bred-commander": "subsystem",
   brewmaster: "blocked",
   "brilliant-spell-preperation": "subsystem",
@@ -364,7 +364,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "call-out": "subsystem",
   "call-truce": "subsystem",
   "callous-casting": "subsystem",
-  "calm-disposition": "situational",
+  "calm-disposition": "numeric",
   "camouflaged-trap": "subsystem",
   "cannon-master": "subsystem",
   "canny-tumble": "situational",
@@ -1088,7 +1088,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "feint-defender": "situational",
   "feint-partner": "subsystem",
   "feinting-flurry": "situational",
-  "feline-grace": "situational",
+  "feline-grace": "numeric",
   "felling-escape": "subsystem",
   "fencing-grace": "situational",
   "feral-combat-training": "subsystem",
@@ -1124,7 +1124,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "fight-on": "subsystem",
   "fighting-frenzy": "situational",
   "figment-s-fluidity": "subsystem",
-  "filth-forager": "situational",
+  "filth-forager": "numeric",
   "filthy-weapons": "subsystem",
   "final-embrace": "subsystem",
   "final-embrace-horror": "situational",
@@ -1141,7 +1141,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   firesight: "blocked",
   "first-general-of-the-east": "subsystem",
   flagbearer: "situational",
-  flagellant: "situational",
+  flagellant: "numeric",
   "flame-blade-dervish": "situational",
   "flame-heart": "numeric",
   "flame-warrior": "situational",
@@ -1208,8 +1208,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "fox-insight": "situational",
   "fox-shape": "subsystem",
   "fox-style": "subsystem",
-  "fox-trickery": "situational",
-  "free-spirit": "situational",
+  "fox-trickery": "numeric",
+  "free-spirit": "numeric",
   "freeze-in-place": "subsystem",
   "friend-to-animals": "subsystem",
   "friendly-face": "subsystem",
@@ -1444,7 +1444,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "illusive-gnome-surprise": "subsystem",
   "impact-critical-shot": "situational",
   "imperial-prankster": "situational",
-  implacable: "situational",
+  implacable: "numeric",
   "implant-bomb": "subsystem",
   "implement-focus": "subsystem",
   "implement-mastery": "subsystem",
@@ -1613,7 +1613,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "ironbound-master": "blocked",
   "ironclad-logic": "blocked",
   "ironclad-reactions": "subsystem",
-  ironguts: "situational",
+  ironguts: "numeric",
   ironhide: "blocked",
   "irrisen-icemage": "blocked",
   "jabbing-dancer": "subsystem",
@@ -1667,7 +1667,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "kobold-sniper": "situational",
   "kobold-style": "situational",
   "kraggodan-s-stance": "situational",
-  "kraken-style": "situational",
+  "kraken-style": "numeric",
   "kraken-throttle": "situational",
   "kraken-wrack": "situational",
   "kudzu-grappler": "subsystem",
@@ -1929,7 +1929,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "nature-s-wrath": "situational",
   "nature-soul": "numeric",
   neckbreaker: "subsystem",
-  "necromantic-affinity": "situational",
+  "necromantic-affinity": "numeric",
   "needle-in-a-haystack": "situational",
   "neither-elf-nor-human": "subsystem",
   nemesis: "subsystem",
@@ -1960,7 +1960,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "notorious-vigilante": "subsystem",
   "noxious-touch": "subsystem",
   "numbing-blow": "subsystem",
-  "oath-of-the-unbound": "situational",
+  "oath-of-the-unbound": "numeric",
   "object-of-legend": "situational",
   "oblivating-stare": "subsystem",
   "obscuring-beacon": "subsystem",
@@ -2489,7 +2489,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "sin-sharing-critical": "situational",
   "sincere-flattery": "blocked",
   "sinister-reputation": "subsystem",
-  "sinuous-vines": "situational",
+  "sinuous-vines": "numeric",
   "siphon-channel": "subsystem",
   "siphon-poison": "subsystem",
   "siphoning-blade": "subsystem",
@@ -2574,7 +2574,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "smiting-reversal": "subsystem",
   "smoking-boulder": "subsystem",
   "snake-fang": "subsystem",
-  "snake-sidewind": "situational",
+  "snake-sidewind": "numeric",
   "snake-style": "numeric",
   "snapping-flank": "subsystem",
   "snapping-jaws": "subsystem",
@@ -3032,7 +3032,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "undermining-exploit": "situational",
   "undersized-mount": "subsystem",
   "underworld-connections": "situational",
-  "unfair-grip": "situational",
+  "unfair-grip": "numeric",
   "unfettered-familiar": "subsystem",
   "unfettered-rage": "subsystem",
   "unfolding-wind-rush": "subsystem",
@@ -3259,10 +3259,14 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Flat cold damage added to natural weapons/unarmed strikes has no natural-attack damage target in the vocabulary.",
   "bravery-in-action":
     "Adds the fighter Bravery class feature bonus to initiative, but Bravery scales by fighter level, which has no formula primitive.",
+  "breaker-of-barriers":
+    "Wired via maneuverCategories: unconditional +2 CMB on bull rush and overrun checks. The Strength-check/hardness-ignore half (breaking doors and barriers) has no engine target.",
   brewmaster:
     "Bonus applies to Craft (alchemy) and Profession (brewer), both parameterized skill families with no stable per-instance target. [flag: parameterized-skill-family]",
   "burrowing-teeth":
     "Burrow speed is defined as half base speed, but base speed is not an available formula primitive.",
+  "calm-disposition":
+    "Wired via saveCategories: unconditional +2 vs mind-affecting and nausea/sickened effects (the feat's own text defines the 'composure' scope as spanning both). Does not extend to physical effects like fatigue, matching the feat's own exclusion.",
   "catfolk-exemplar":
     "One manifestation grants a numeric speed bonus, but the choice is among racial features (senses, speed, claw damage), not a skill or weapon choice axis. [flag: unsure]",
   "cecaelia-focus-tattoo":
@@ -3370,17 +3374,27 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Raises spell save DC against a chosen creature type; spell DC has no engine target regardless of scope.",
   "fearless-zeal":
     "The +2/+4 bonus applies to any single self-chosen roll after it's made, not a fixed sheet target.",
+  "feline-grace":
+    "Wired via maneuverCategories: unconditional +2 CMD against bull rush, grapple, overrun, reposition, and trip.",
   "fiendish-serpent":
     "Climb/swim speed equal to base speed; no formula primitive references base land speed.",
   "fiendish-wings":
     "Fly speed equal to base speed; no formula primitive references base land speed.",
   fiendskin:
     "Energy resistance/immunity keyed to the character's chosen patron's outsider subtype, state the engine doesn't model.",
+  "filth-forager":
+    "Wired via saveCategories: unconditional +4 vs nausea/sickened effects. The ingested-poison clause is narrower than the engine's poison category and the Survival bonus is unrelated; both stay prose.",
   firesight:
     "Immunity to dazzled has no immEffect target, and seeing through fire/smoke isn't a modeled mechanic.",
+  flagellant:
+    "Wired via saveCategories: unconditional +4 vs pain effects. The nonlethal-damage staggered/unconsciousness rules are a separate HP mechanic and stay prose.",
   "flame-heart": "Unconditional fire resistance 5.",
   "forgotten-past": "Unconditional rank-gated Perception bonus.",
   "forward-from-beneath": "Unconditional rank-gated Disguise bonus.",
+  "fox-trickery":
+    "Wired via maneuverCategories: the Int-19 threshold is a flat character-stat check, not a stance condition, so it's promoted (+4 CMB vs dirty trick) despite the feat requiring Fox Style. The 'while using Fox Style' AoO clause stays prose.",
+  "free-spirit":
+    "Wired via maneuverCategories: unconditional +2 morale CMB to break a grapple. The mind-affecting save half is handled separately (and additively) by feat-save-categories.ts; the Escape-Artist-to-escape-bonds half has no engine target.",
   "frozen-skin": "Unconditional cold resistance 3.",
   "graceful-athlete":
     "Substitutes Dex for Str on Climb/Swim, a replace rather than an additive bonus.",
@@ -3403,6 +3417,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Grants bonus skill ranks, a build-allocation resource with no derived-sheet target.",
   "hunter-of-dahak":
     "Favored enemy bonus increase against a race subset; favored-enemy state isn't modeled.",
+  implacable:
+    "Wired via saveCategories: unconditional +2 vs pain effects. The DR-while-drunk clause is a separate mechanic and stays prose.",
   "improved-armor-focus": "Armor check penalty reduction has no engine target.",
   "improved-day-job":
     "Day Job checks are a Pathfinder Society meta-mechanic the engine doesn't model.",
@@ -3422,6 +3438,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Untrained skill-check bonus and trained-only access have no per-skill or per-proficiency target in the engine's vocabulary.",
   "inner-breath": "Breathing immunity has no matching immEffect slug in the engine's vocabulary.",
   "innocent-blood": "Unconditional Intimidate bonus, rank-gated from +2 to +4 at 10 ranks.",
+  ironguts:
+    "Wired via saveCategories: unconditional +2 racial vs nausea/sickened effects. The ingested-poison clause is narrower than the engine's poison category and the Survival bonus is unrelated; both stay prose.",
   "inspirational-commander":
     "Applies to mass-combat army morale checks, a subsystem the engine doesn't model.",
   "ironbound-master":
@@ -3439,6 +3457,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Bonus is on a caster-level check to overcome SR, which has no engine target regardless of the identify-first condition.",
   "kobold-confidence":
     "Swaps Fort-save/stable ability from Con to Cha/Int/Wis, a substitution the engine can't express as an additive Change.",
+  "kraken-style":
+    "Wired via maneuverCategories: unconditional +2 CMB to maintain a grapple, unprefixed by the style's 'while using this style' condition on the preceding sentence. The bludgeoning-damage rider and wings/free-hand exception stay prose.",
   "lifeless-gaze": "Grants an unconditional +2 insight bonus on Bluff checks.",
   "light-gravity-acclimation":
     "Rank-gated Acrobatics bonus (+2, or +4 at 10 ranks) reads as an unconditional clause separate from the light-gravity effects.",
@@ -3480,8 +3500,10 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "mother-s-gift":
     "Three-branch manifestation choice (claw attack bonus, natural-armor stacking-suspect, or SR); not a skill/weapon choice axis so no single draft applies. [flag: unsure]",
   "nature-soul": "Unconditional +2 bonus to Knowledge (nature) and Survival, rank-gated to +4.",
+  "necromantic-affinity":
+    "Wired via saveCategories: unconditional +2 vs energy drain (negative levels) and ability damage/drain. The broader 'utilize negative energy' clause and the inflict/cure vulnerability swap have no matching engine target and stay prose.",
   "never-conquered-forever-feared":
-    "Unconditional +2/+4 rank-gated Intimidate bonus; the paralysis/sleep save bonus and Story completion benefit aren't captured.",
+    "Unconditional +2/+4 rank-gated Intimidate bonus, plus a saveCategories-wired +2 vs paralysis and sleep effects; the Story completion benefit's fear aura isn't captured.",
   "nightmare-scars":
     "Unconditional +2 Intimidate bonus; the conditional Diplomacy/Handle Animal bonuses and penalty aren't drafted.",
   "no-name":
@@ -3494,6 +3516,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Unconditional +2 Knowledge (nobility) bonus; the many family-specific sub-benefits aren't captured. [flag: unsure]",
   "noble-spell-resistance":
     "SR formula (11 + character level) replaces rather than adds to any other SR source, so it's stacking-suspect with no safe additive target.",
+  "oath-of-the-unbound":
+    "Wired via maneuverCategories and saveCategories: unconditional +2 CMB to break free of a grapple or pin (a combat maneuver check, CRB p. 201), +2 vs entangle effects. The Strength-check half and the slow half of the save clause have no matching engine target and stay prose.",
   "ominous-mien":
     "The +1 save DC applies only to spells from four specific subschools, a per-spell DC with no engine target.",
   "oracular-intuition": "Unconditional +2/+4 rank-gated bonus to Sense Motive and Spellcraft.",
@@ -3546,6 +3570,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Increases disrupt undead spell damage dice; spell damage isn't an engine target.",
   "sincere-flattery":
     "Circumstance bonus to Craft checks; Craft is a parameterized skill family with no stable per-instance target. [flag: parameterized-skill-family]",
+  "sinuous-vines":
+    "Wired via maneuverCategories: unconditional +2 CMB to grapple. The wings-count-as-free-hand rules exception has no engine target.",
   "skill-focus-acrobatics":
     "Unconditional rank-gated Skill Focus bonus (+3, or +6 at 10+ ranks) on Acrobatics.",
   "skill-focus-appraise": "Unconditional rank-gated Skill Focus bonus on Appraise.",
@@ -3602,6 +3628,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Unconditional +1 damage with slings, but fixed weapon-category damage targets don't exist outside choice-numeric drafts.",
   "small-but-deadly":
     "Removes an existing Strength penalty to damage rather than adding a bonus; not expressible as an additive Change.",
+  "snake-sidewind":
+    "Wired via maneuverCategories: unconditional +4 CMD vs trip, unprefixed by the style's 'while using this style' condition attached to the following sentence. The Acrobatics/prone-save bonus and AoO/critical-confirmation rules stay prose.",
   "snake-style":
     "Unconditional +2 bonus on Sense Motive checks (the feat's other benefits are situational).",
   "social-bravery":
@@ -3654,6 +3682,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Grants immunity to certain concentration-check triggers and a +2 concentration bonus; concentration checks have no engine target.",
   "undaunted-bravery":
     "Adds the bravery class-feature bonus (a variable class value with no engine primitive) to Intimidate and to the DC to intimidate the character.",
+  "unfair-grip":
+    "Wired via maneuverCategories: unconditional +1 CMB to maintain a grapple. The opponent-facing escape penalty targets a foe's roll, which this engine doesn't model.",
   unforgotten:
     "The base +1 Will bonus is explicitly replaced by a +1-all-saves bonus on completing the story goal; the engine doesn't track story-feat completion state.",
   "unraveler-of-secrets":

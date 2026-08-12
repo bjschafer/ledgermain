@@ -60,6 +60,14 @@
  * mirrors archetype-extracted/fighter.ts's own disclosed pilot methodology.
  * The situational/subsystem boundary doesn't affect engine correctness
  * (neither bucket ever emits a Change), only audit-file clarity.
+ *
+ * Frozen at the time of the original audit, with one exception: verdicts that
+ * turned on the lack of a maneuver-scoped CMB/CMD vocabulary or a save
+ * category the engine didn't yet have consult the current, larger vocabulary
+ * (`maneuver-categories.ts`, `save-categories.ts`) rather than the one that
+ * existed when the entry was first written — a handful of entries have been
+ * revisited and promoted on that basis, never on a re-reading of the rules
+ * text itself.
  */
 
 export type FeatClassificationBucket =
@@ -1021,26 +1029,26 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "greater-bull-rush": {
     slug: "greater-bull-rush",
     name: "Greater Bull Rush",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb wired via maneuverCategories (+2, stacks with the Improved half per the feat's own text); no CMD line in this feat's text; the follow-up rider has no engine target and stays prose",
   },
   "greater-dirty-trick": {
     slug: "greater-dirty-trick",
     name: "Greater Dirty Trick",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb wired via maneuverCategories (+2, stacks with the Improved half per the feat's own text); no CMD line in this feat's text; the follow-up rider has no engine target and stays prose",
   },
   "greater-disarm": {
     slug: "greater-disarm",
     name: "Greater Disarm",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb wired via maneuverCategories (+2, stacks with the Improved half per the feat's own text); no CMD line in this feat's text; the follow-up rider has no engine target and stays prose",
   },
   "greater-drag": {
     slug: "greater-drag",
     name: "Greater Drag",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb wired via maneuverCategories (+2, stacks with the Improved half per the feat's own text); no CMD line in this feat's text; the follow-up rider has no engine target and stays prose",
   },
   "greater-feint": {
     slug: "greater-feint",
@@ -1051,14 +1059,14 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "greater-grapple": {
     slug: "greater-grapple",
     name: "Greater Grapple",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb wired via maneuverCategories (+2, stacks with the Improved half per the feat's own text); no CMD line in this feat's text; the follow-up rider has no engine target and stays prose",
   },
   "greater-overrun": {
     slug: "greater-overrun",
     name: "Greater Overrun",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb wired via maneuverCategories (+2, stacks with the Improved half per the feat's own text); no CMD line in this feat's text; the follow-up rider has no engine target and stays prose",
   },
   "greater-penetrating-strike": {
     slug: "greater-penetrating-strike",
@@ -1069,8 +1077,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "greater-reposition": {
     slug: "greater-reposition",
     name: "Greater Reposition",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb wired via maneuverCategories (+2, stacks with the Improved half per the feat's own text); no CMD line in this feat's text; the follow-up rider has no engine target and stays prose",
   },
   "greater-shield-focus": {
     slug: "greater-shield-focus",
@@ -1099,20 +1107,20 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "greater-steal": {
     slug: "greater-steal",
     name: "Greater Steal",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb wired via maneuverCategories (+2, stacks with the Improved half per the feat's own text); no CMD line in this feat's text; the follow-up rider has no engine target and stays prose",
   },
   "greater-sunder": {
     slug: "greater-sunder",
     name: "Greater Sunder",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb wired via maneuverCategories (+2, stacks with the Improved half per the feat's own text); no CMD line in this feat's text; the follow-up rider has no engine target and stays prose",
   },
   "greater-trip": {
     slug: "greater-trip",
     name: "Greater Trip",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb wired via maneuverCategories (+2, stacks with the Improved half per the feat's own text); no CMD line in this feat's text; the follow-up rider has no engine target and stays prose",
   },
   "greater-two-weapon-fighting": {
     slug: "greater-two-weapon-fighting",
@@ -1189,8 +1197,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "improved-bull-rush": {
     slug: "improved-bull-rush",
     name: "Improved Bull Rush",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb/cmd both wired via maneuverCategories: +2 on checks to attempt the maneuver, +2 CMD vs the same; the no-AoO clause and the stamina-pool Combat Trick variant stay prose",
   },
   "improved-channel": {
     slug: "improved-channel",
@@ -1219,20 +1227,20 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "improved-dirty-trick": {
     slug: "improved-dirty-trick",
     name: "Improved Dirty Trick",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb/cmd both wired via maneuverCategories: +2 on checks to attempt the maneuver, +2 CMD vs the same; the no-AoO clause and the stamina-pool Combat Trick variant stay prose",
   },
   "improved-disarm": {
     slug: "improved-disarm",
     name: "Improved Disarm",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb/cmd both wired via maneuverCategories: +2 on checks to attempt the maneuver, +2 CMD vs the same; the no-AoO clause and the stamina-pool Combat Trick variant stay prose",
   },
   "improved-drag": {
     slug: "improved-drag",
     name: "Improved Drag",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb/cmd both wired via maneuverCategories: +2 on checks to attempt the maneuver, +2 CMD vs the same; the no-AoO clause and the stamina-pool Combat Trick variant stay prose",
   },
   "improved-familiar": {
     slug: "improved-familiar",
@@ -1249,8 +1257,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "improved-grapple": {
     slug: "improved-grapple",
     name: "Improved Grapple",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb/cmd both wired via maneuverCategories: +2 on checks to attempt the maneuver, +2 CMD vs the same; the no-AoO clause and the stamina-pool Combat Trick variant stay prose",
   },
   "improved-great-fortitude": {
     slug: "improved-great-fortitude",
@@ -1297,8 +1305,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "improved-overrun": {
     slug: "improved-overrun",
     name: "Improved Overrun",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb/cmd both wired via maneuverCategories: +2 on checks to attempt the maneuver, +2 CMD vs the same; the no-AoO clause and the stamina-pool Combat Trick variant stay prose",
   },
   "improved-precise-shot": {
     slug: "improved-precise-shot",
@@ -1309,8 +1317,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "improved-reposition": {
     slug: "improved-reposition",
     name: "Improved Reposition",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb/cmd both wired via maneuverCategories: +2 on checks to attempt the maneuver, +2 CMD vs the same; the no-AoO clause and the stamina-pool Combat Trick variant stay prose",
   },
   "improved-shield-bash": {
     slug: "improved-shield-bash",
@@ -1333,14 +1341,14 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "improved-steal": {
     slug: "improved-steal",
     name: "Improved Steal",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb/cmd both wired via maneuverCategories: +2 on checks to attempt the maneuver, +2 CMD vs the same; the no-AoO clause and the stamina-pool Combat Trick variant stay prose",
   },
   "improved-sunder": {
     slug: "improved-sunder",
     name: "Improved Sunder",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb/cmd both wired via maneuverCategories: +2 on checks to attempt the maneuver, +2 CMD vs the same; the no-AoO clause and the stamina-pool Combat Trick variant stay prose",
   },
   "improved-swap-places": {
     slug: "improved-swap-places",
@@ -1351,8 +1359,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "improved-trip": {
     slug: "improved-trip",
     name: "Improved Trip",
-    bucket: "situational",
-    note: "bonus scoped to one specific combat maneuver's CMB/CMD checks — not general cmb/cmd, per the honesty bar (same exclusion as archetype maneuver-scoped entries)",
+    bucket: "numeric",
+    note: "cmb/cmd both wired via maneuverCategories: +2 on checks to attempt the maneuver, +2 CMD vs the same; the no-AoO clause and the stamina-pool Combat Trick variant stay prose",
   },
   "improved-two-weapon-feint": {
     slug: "improved-two-weapon-feint",

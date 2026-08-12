@@ -93,9 +93,12 @@ describe("FEAT_CLASSIFICATION spot checks", () => {
     expect(FEAT_CLASSIFICATION["spell-penetration"]?.bucket).toBe("blocked");
   });
 
-  it("classifies maneuver-scoped Improved/Greater combat feats as situational, not numeric", () => {
-    expect(FEAT_CLASSIFICATION["improved-trip"]?.bucket).toBe("situational");
-    expect(FEAT_CLASSIFICATION["greater-bull-rush"]?.bucket).toBe("situational");
+  it("promotes the Improved/Greater maneuver family to numeric now that maneuverCategories exists", () => {
+    // Wired via Change.maneuverCategories (maneuver-categories.ts) — see
+    // maneuverCategories.test.ts and feats.test.ts's Improved/Greater Trip
+    // fixtures for the actual cmb/cmd behavior this promotion produces.
+    expect(FEAT_CLASSIFICATION["improved-trip"]?.bucket).toBe("numeric");
+    expect(FEAT_CLASSIFICATION["greater-bull-rush"]?.bucket).toBe("numeric");
   });
 
   it("classifies item-creation and metamagic feats as subsystem", () => {

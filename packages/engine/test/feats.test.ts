@@ -352,3 +352,53 @@ describe("Skill Focus feat", () => {
     expect(featSheet.skills["per"]!.total - baseSheet.skills["per"]!.total).toBe(3);
   });
 });
+
+// ─── Combat maneuver feats (Improved/Greater X family) ────────────────────────
+
+describe("Improved Trip (CRB p. 131, both halves wired via maneuverCategories)", () => {
+  it("adds +2 to the trip line on both CMB and CMD, headline totals untouched", () => {
+    // Fighter 4, all abilities 10 -> BAB 4, str/dex mod 0, no size mod.
+    // CMB = 4 + 0 + 0 = 4. CMD = 10 + 4 + 0 + 0 = 14.
+    // "you receive a +2 bonus on checks made to trip a foe. You also receive
+    // a +2 bonus to your Combat Maneuver Defense whenever an opponent tries
+    // to trip you." (PF1 CRB p. 131)
+    const base = makeDoc({ classes: [{ tag: "fighter", level: 4 }] });
+    const withFeat = makeDoc({
+      classes: [{ tag: "fighter", level: 4 }],
+      feats: [featId("Improved Trip")],
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+
+    expect(baseSheet.cmb).toBe(4);
+    expect(baseSheet.cmd).toBe(14);
+    // Headline totals are untouched — the bonus is category-scoped, not general.
+    expect(featSheet.cmb).toBe(4);
+    expect(featSheet.cmd).toBe(14);
+    expect(featSheet.cmbConditionals).toEqual([
+      { total: 6, categories: ["trip"], labels: ["trip"] },
+    ]);
+    expect(featSheet.cmdConditionals).toEqual([
+      { total: 16, categories: ["trip"], labels: ["trip"] },
+    ]);
+  });
+});
+
+describe("Greater Trip (APG, stacks with Improved Trip per the feat's own text)", () => {
+  it("adds another +2 to the CMB trip line only — no CMD line from Greater Trip", () => {
+    // Greater Trip: "You receive a +2 bonus on checks made to trip a foe.
+    // This bonus stacks with the bonus granted by Improved Trip." Both are
+    // untyped feat bonuses, which sum by default (stacking.ts) — no special
+    // handling needed for the "stacks with" clause. Greater Trip's text
+    // carries no CMD line at all.
+    const withBoth = makeDoc({
+      classes: [{ tag: "fighter", level: 4 }],
+      feats: [featId("Improved Trip"), featId("Greater Trip")],
+    });
+    const sheet = compute(withBoth, ref);
+    expect(sheet.cmb).toBe(4); // headline still untouched
+    expect(sheet.cmbConditionals).toEqual([{ total: 8, categories: ["trip"], labels: ["trip"] }]);
+    // CMD trip line comes from Improved Trip alone (+2), Greater Trip adds nothing.
+    expect(sheet.cmdConditionals).toEqual([{ total: 16, categories: ["trip"], labels: ["trip"] }]);
+  });
+});
