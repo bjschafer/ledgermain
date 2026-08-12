@@ -91,13 +91,13 @@ describe("saveNoteCoverage — standard racial traits (race-keyed substring matc
     ).toBe("full");
   });
 
-  it("a documented partial promotion reports partial (Android: paralysis has no vocabulary entry)", () => {
+  it("a fully-promoted race note reports full (Android: mind, paralysis, poison, and stun all fit)", () => {
     expect(
       saveNoteCoverage(
         { catalog: "race", raceName: "Android" },
         note("+4 Racial vs Mind Affecting, Paralysis, Poison, Stun"),
       ),
-    ).toBe("partial");
+    ).toBe("full");
   });
 
   it("a race with no promotion table reports none", () => {

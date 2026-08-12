@@ -140,32 +140,67 @@ describe("Half-Orc Pariah (merges two categories into one Will line)", () => {
   });
 });
 
-describe("Aasimar Deathless Spirit (Fortitude-only, deliberately partial)", () => {
+describe("Aasimar Deathless Spirit (deliberately partial; necromancy applies to every save)", () => {
   const id = vendoredTraitId("Deathless Spirit", "Aasimar");
   const base = compute(makeDoc("Aasimar"), ref);
   const withTrait = compute(makeDoc("Aasimar", [id]), ref);
 
-  it("promotes only the death-effects half of the note", () => {
+  it("promotes death, energy drain (the level-draining effect), and the necromancy school", () => {
     // Aasimar has no Con adjustment: fighter L1 good Fort save (+2) + Con
-    // mod (0) = 2, + the trait's +2 racial vs. death = 4. The same note also
-    // names energy drain, negative energy, and necromancy-school-only spells
-    // (narrower than the unscoped `spell`/`sla` categories), none of which
-    // have a vocabulary entry, so only "death" is promoted.
+    // mod (0) = 2, + the trait's +2 = 4. Negative energy DAMAGE (as opposed
+    // to the negative levels energyDrain covers) still has no vocabulary
+    // entry, so that clause alone stays prose.
     expect(base.saves.fort.total).toBe(2);
     expect(withTrait.saves.fort.conditionals).toEqual([
-      { total: 4, categories: ["death"], labels: ["death"] },
+      {
+        total: 4,
+        categories: ["death", "energyDrain", "necromancy"],
+        labels: ["death", "energy drain", "necromancy"],
+      },
     ]);
   });
 
-  it("does not appear on Reflex or Will (death effects are Fortitude-only)", () => {
-    expect(withTrait.saves.ref.conditionals).toBeUndefined();
-    expect(withTrait.saves.will.conditionals).toBeUndefined();
+  it("necromancy also reaches Reflex and Will, unlike death and energy drain which are Fortitude-only", () => {
+    // Aasimar Wis +2 (mod +1): Will floor = poor save (+0) + 1 = 1, + 2 =
+    // 3. Ref floor = poor save (+0) + Dex mod (0) = 0, + 2 = 2. Only
+    // "necromancy" names these lines, since death and energyDrain never
+    // reach Reflex or Will.
+    expect(base.saves.ref.total).toBe(0);
+    expect(base.saves.will.total).toBe(1);
+    expect(withTrait.saves.ref.conditionals).toEqual([
+      { total: 2, categories: ["necromancy"], labels: ["necromancy"] },
+    ]);
+    expect(withTrait.saves.will.conditionals).toEqual([
+      { total: 3, categories: ["necromancy"], labels: ["necromancy"] },
+    ]);
   });
 
-  it("the trait's second note (negative-energy resistance, no HP loss on a negative level) moves no save number", () => {
-    // Deathless Spirit ships two allSavingThrows notes; only the death-effects
-    // one is in the table, so no OTHER conditional appears anywhere.
+  it("the trait's second note (negative-energy resistance, no HP loss on a negative level) moves no additional save number", () => {
+    // Deathless Spirit ships two allSavingThrows notes; only the death/energy
+    // drain/necromancy one is in the table, so each save shows exactly one
+    // conditional line.
     expect(withTrait.saves.fort.conditionals?.length).toBe(1);
+    expect(withTrait.saves.ref.conditionals?.length).toBe(1);
+    expect(withTrait.saves.will.conditionals?.length).toBe(1);
+  });
+});
+
+describe("Ifrit Forge-Hardened (newly promoted: fatigue/exhaustion, Fortitude-only)", () => {
+  const id = vendoredTraitId("Forge-Hardened", "Ifrit");
+  const base = compute(makeDoc("Ifrit"), ref);
+  const withTrait = compute(makeDoc("Ifrit", [id]), ref);
+
+  it("adds a +2 racial fatigue/exhaustion conditional on Fortitude only", () => {
+    // Ifrit has no Con adjustment: fighter L1 good Fort save (+2) + Con mod
+    // (0) = 2, + the trait's +2 racial vs. fatigue/exhaustion = 4. The
+    // Craft (armor and weapons) bonus alongside it has no matching skill
+    // target and stays unwired.
+    expect(base.saves.fort.total).toBe(2);
+    expect(withTrait.saves.fort.conditionals).toEqual([
+      { total: 4, categories: ["fatigue"], labels: ["fatigue/exhaustion"] },
+    ]);
+    expect(withTrait.saves.ref.conditionals).toBeUndefined();
+    expect(withTrait.saves.will.conditionals).toBeUndefined();
   });
 });
 
@@ -224,42 +259,54 @@ describe("Halfling Practicality (untyped bonus, Will-only, coexists with the sta
   });
 });
 
-describe("Elf Blightborn (deliberately partial; curse applies to every save)", () => {
+describe("Elf Blightborn (widened: necromancy and energy drain now promote alongside curse)", () => {
   const id = vendoredTraitId("Blightborn", "Elf");
   const base = compute(makeDoc("Elf"), ref);
   const withTrait = compute(makeDoc("Elf", [id]), ref);
 
-  it("promotes only the curse-descriptor half of its necromancy/curse note", () => {
-    // Elf Con -2 (mod -1): Fort = good save (+2) - 1 = 1, + 2 curse = 3.
-    // Elf Dex +2 (mod +1): Ref = poor save (+0) + 1 = 1, + 2 curse = 3.
-    // `curse` is one of the two categories left unnarrowed to any single
-    // save, so it shows on Fortitude and Reflex as well as Will.
+  it("Fortitude merges curse, necromancy, and energy drain (removing negative levels) into one line", () => {
+    // Elf Con -2 (mod -1): Fort = good save (+2) - 1 = 1. Blightborn ships
+    // two separate allSavingThrows notes now that both promote: +2 racial
+    // vs. curse/necromancy, and +2 racial vs. energy drain (removing
+    // temporary negative levels). Both are the same type (racial) and the
+    // same value, so they stack to a single +2 rather than +4, landing all
+    // three category names on one merged line: 1 + 2 = 3.
     expect(base.saves.fort.total).toBe(1);
-    expect(base.saves.ref.total).toBe(1);
     expect(withTrait.saves.fort.conditionals).toEqual([
-      { total: 3, categories: ["curse"], labels: ["curses"] },
-    ]);
-    expect(withTrait.saves.ref.conditionals).toEqual([
-      { total: 3, categories: ["curse"], labels: ["curses"] },
+      {
+        total: 3,
+        categories: ["energyDrain", "necromancy", "curse"],
+        labels: ["energy drain", "necromancy", "curses"],
+      },
     ]);
   });
 
-  it("on Will, the curse line merges with Elf's own unrelated Elven Immunities enchantment bonus", () => {
-    // Elf has no Wis adjustment: Will = poor save (+0) + 0 = 0. Both Elven
+  it("Reflex only sees necromancy and curse (energy drain is Fortitude-only)", () => {
+    // Elf Dex +2 (mod +1): Ref = poor save (+0) + 1 = 1, + 2 = 3.
+    expect(base.saves.ref.total).toBe(1);
+    expect(withTrait.saves.ref.conditionals).toEqual([
+      { total: 3, categories: ["necromancy", "curse"], labels: ["necromancy", "curses"] },
+    ]);
+  });
+
+  it("on Will, the necromancy/curse line merges with Elf's own unrelated Elven Immunities enchantment bonus", () => {
+    // Elf has no Wis adjustment: Will = poor save (+0) + 0 = 0. Elven
     // Immunities' standard +2 racial vs. enchantment (race-save-notes.ts) and
-    // Blightborn's +2 racial vs. curse resolve to the same total (2), so the
-    // situational-total mechanism prints one merged line rather than two
-    // identical ones — this is the same-type, same-value merge behavior
-    // `save-categories.ts` documents, not a Blightborn-specific number.
+    // Blightborn's +2 racial vs. curse/necromancy resolve to the same total
+    // (2), so the situational-total mechanism prints one merged line rather
+    // than separate identical ones — the same same-type, same-value merge
+    // behavior `save-categories.ts` documents.
     expect(base.saves.will.total).toBe(0);
     expect(withTrait.saves.will.conditionals).toEqual([
-      { total: 2, categories: ["enchantment", "curse"], labels: ["enchantment", "curses"] },
+      {
+        total: 2,
+        categories: ["necromancy", "enchantment", "curse"],
+        labels: ["necromancy", "enchantment", "curses"],
+      },
     ]);
   });
 
-  it("Blightborn's other note (removing temporary negative levels) is left as prose, not a number", () => {
-    // Negative levels have no `SAVE_CATEGORIES` entry, so that note stays
-    // untouched: no third conditional appears anywhere on this trait.
+  it("every save still shows exactly one merged line (no unrelated third conditional appears)", () => {
     expect(withTrait.saves.fort.conditionals?.length).toBe(1);
     expect(withTrait.saves.ref.conditionals?.length).toBe(1);
     expect(withTrait.saves.will.conditionals?.length).toBe(1);

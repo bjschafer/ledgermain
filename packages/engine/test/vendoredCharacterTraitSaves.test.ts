@@ -189,3 +189,25 @@ describe("Draconic Lineage (deliberately partial)", () => {
     expect(withTrait.saves.ref.conditionals).toBeUndefined();
   });
 });
+
+describe("Blood Algorithm (Android) (newly promoted: the pain descriptor, Fortitude and Will)", () => {
+  const id = traitIdByName("Blood Algorithm (Android)");
+  const base = compute(makeDoc(), ref);
+  const withTrait = compute(makeDoc([id]), ref);
+
+  it("adds a +2 trait pain conditional on both Fortitude and Will", () => {
+    // Human, no ability adjustments: Fort = good save (+2) + Con mod (0) =
+    // 2, + 2 pain = 4. Will = poor save (+0) + Wis mod (0) = 0, + 2 pain =
+    // 2. `pain` allows both saves (Fort for stinking-cloud-style effects,
+    // Will for others), so the note's own +2 lands on both lines.
+    expect(base.saves.fort.total).toBe(2);
+    expect(base.saves.will.total).toBe(0);
+    expect(withTrait.saves.fort.conditionals).toEqual([
+      { total: 4, categories: ["pain"], labels: ["pain"] },
+    ]);
+    expect(withTrait.saves.will.conditionals).toEqual([
+      { total: 2, categories: ["pain"], labels: ["pain"] },
+    ]);
+    expect(withTrait.saves.ref.conditionals).toBeUndefined();
+  });
+});

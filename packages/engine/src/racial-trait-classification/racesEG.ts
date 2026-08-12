@@ -41,8 +41,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     id: "StOjhD9mqHZqSELy",
     race: "Elf",
     name: "Desert Runner",
-    bucket: "blocked",
-    note: "Fort save is scoped to fatigue, exhaustion, starvation, thirst, and temperature, none of which have a SAVE_CATEGORIES entry, and conChecks is an unapplied target (targets.ts).",
+    bucket: "numeric",
+    note: "Fort save is scoped to fatigue, exhaustion, starvation, thirst, and temperature; fatigue/exhaustion now has a SAVE_CATEGORIES entry and the note text matches a VENDORED_RACIAL_TRAIT_SAVE_NOTES key exactly, so that part is wired via collect.ts. Starvation and thirst are Constitution checks rather than saves, and temperature has no category, so both stay prose; the duplicate conChecks-targeted copy of the same text is likewise unwired (conChecks is an unapplied target, targets.ts).",
   },
   uSED8jnh3FejGkiw: {
     id: "uSED8jnh3FejGkiw",
@@ -111,8 +111,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     id: "RKMn7UZjPlPPU4Nv",
     race: "Elf",
     name: "Perfect",
-    bucket: "blocked",
-    note: "Save bonus is scoped to the transmutation school, which has no SAVE_CATEGORIES entry; the Bluff/Diplomacy half is separately scoped to humanoid targets.",
+    bucket: "numeric",
+    note: "Save bonus is scoped to the transmutation school, a real SAVE_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_SAVE_NOTES key exactly, so it is wired via collect.ts. The Bluff/Diplomacy half is separately scoped to humanoid targets and stays unwired.",
   },
   cL7K05jKkXxOmOt5: {
     id: "cL7K05jKkXxOmOt5",
@@ -300,8 +300,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     id: "lqFhyqE7frSbHfEA",
     race: "Gnome",
     name: "Magical Linguist (Gnome)",
-    bucket: "blocked",
-    note: "Save and DC bonuses are scoped to the language-dependent descriptor, a scope the save vocabulary explicitly excludes, and spellEffect has no matching target either.",
+    bucket: "numeric",
+    note: "Save bonus is scoped to the language-dependent descriptor (plus glyphs/symbols/magical writings, narrower than any category); language-dependent is now a real SAVE_CATEGORIES entry and the note text matches a VENDORED_RACIAL_TRAIT_SAVE_NOTES key exactly, so the save half is wired via collect.ts. The DC bonus still has no matching spellEffect target and stays prose.",
   },
   C3Q7w4YJ7ALgd1am: {
     id: "C3Q7w4YJ7ALgd1am",
@@ -370,8 +370,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     id: "scKsrtwKWy4eGdZx",
     race: "Goblin",
     name: "Eat Anything",
-    bucket: "blocked",
-    note: "Save bonus is scoped to the nauseated/sickened conditions, a scope the save vocabulary explicitly excludes; the Survival-to-forage half is also narrower than the whole skill.",
+    bucket: "numeric",
+    note: "Save bonus is scoped to the nauseated/sickened conditions, now the nausea SAVE_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_SAVE_NOTES key exactly, so it is wired via collect.ts. The Survival-to-forage half is separately narrower than the whole skill and stays unwired.",
   },
   eYZTYsiT5ssa2jrK: {
     id: "eYZTYsiT5ssa2jrK",

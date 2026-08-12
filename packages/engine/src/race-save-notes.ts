@@ -35,8 +35,8 @@
  * read in full. A bonus is only promoted when the whole of it fits categories
  * the `SAVE_CATEGORIES` vocabulary already carries. Where a note covers more
  * ground than the vocabulary does, the modelled part is applied and the rest
- * stays in the note (Android's paralysis, Duskwalker's negative energy,
- * Astomoi's inhaled poisons). Two are left alone entirely:
+ * stays in the note (Duskwalker's negative energy damage, Astomoi's inhaled
+ * poisons). Two are left alone entirely:
  *
  *   - Gillman: +2 vs. enchantment normally, but -2 against aboleths and their
  *     servants. One category with two totals depending on who is casting is
@@ -63,9 +63,9 @@ export interface StandardRaceSaveBonus {
   changes: Change[];
   /**
    * False when `changes` leaves part of the note's benefit unmodeled — see
-   * the entry's own inline comment for what stays prose (Android's
-   * paralysis, Astomoi's inhaled poisons, Duskwalker's negative energy).
-   * Defaults to true (the note is fully expressed) when omitted.
+   * the entry's own inline comment for what stays prose (Astomoi's inhaled
+   * poisons, Duskwalker's negative energy damage). Defaults to true (the
+   * note is fully expressed) when omitted.
    */
   full?: boolean;
 }
@@ -79,13 +79,11 @@ function racial(formula: string, ...categories: string[]): Change {
 export const STANDARD_RACE_SAVE_BONUSES: Readonly<
   Record<string, readonly StandardRaceSaveBonus[]>
 > = {
-  // Paralysis has no vocabulary entry, so it stays in the note.
   Android: [
     {
       match: "Mind Affecting, Paralysis, Poison, Stun",
       trait: "Constructed",
-      changes: [racial("4", "poison", "mind", "stun")],
-      full: false,
+      changes: [racial("4", "poison", "mind", "stun", "paralysis")],
     },
   ],
   Aphorite: [
@@ -125,7 +123,8 @@ export const STANDARD_RACE_SAVE_BONUSES: Readonly<
       changes: [racial("2", "enchantment")],
     },
   ],
-  // Negative energy has no vocabulary entry, so it stays in the note.
+  // Negative energy DAMAGE (as opposed to negative levels, which have their
+  // own energyDrain category) has no vocabulary entry, so it stays in the note.
   Duskwalker: [
     {
       match: "Negative Energy and Death",
