@@ -12,13 +12,18 @@
  * Bucket rubric (the archetype rubric, adapted):
  *  - "numeric"     — an unconditional, always-on number the sheet should
  *                    carry. Requires a wired route (the entry's own vendored
- *                    `changes[]`, or a `CLASS_FEATURE_CHANGE_PATCHES` entry
- *                    matching the feature's name) — the classification test
- *                    enforces this. A patch is only reachable when some
- *                    class's `RefData.classes[*].features` list grants the
- *                    feature (see `class-feature-effects.ts`'s header for the
- *                    reachability trap); a real number on an unreachable path
- *                    belongs in "blocked", not here.
+ *                    `changes[]`, a `CLASS_FEATURE_CHANGE_PATCHES` entry, or
+ *                    a `GRANTED_POWER_CHANGE_PATCHES` entry, matching the
+ *                    feature's name) — the classification test enforces
+ *                    this. `CLASS_FEATURE_CHANGE_PATCHES` is only reachable
+ *                    when some class's `RefData.classes[*].features` list
+ *                    grants the feature (see `class-feature-effects.ts`'s
+ *                    header for the reachability trap);
+ *                    `GRANTED_POWER_CHANGE_PATCHES` (`granted-power-effects/`)
+ *                    covers domain/subdomain, wizard school, druid nature-bond
+ *                    domain, and inquisition granted powers instead. A real
+ *                    number on a path neither table reaches belongs in
+ *                    "blocked", not here.
  *  - "situational" — a real number, but scoped to an activation, resource,
  *                    enemy state, or action the static sheet can't detect
  *                    without over-applying. Never given an unconditional
@@ -28,11 +33,11 @@
  *                    exception with no Change-shaped number.
  *  - "blocked"     — a real number with no expressible engine target, an
  *                    ambiguous/stacking-suspect reading, a scope outside the
- *                    `SAVE_CATEGORIES`/targets vocabulary, or a granting path
- *                    with no patch hook (domain/subdomain granted powers,
- *                    wizard school powers, druid-domain powers — note which).
- *                    Downgrading here rather than guessing is the point:
- *                    wrong sheet numbers are the worst failure mode.
+ *                    `SAVE_CATEGORIES`/targets vocabulary, or a player choice
+ *                    (e.g. a daily-chosen energy type, a rival alignment
+ *                    axis) a static entry can't express. Downgrading here
+ *                    rather than guessing is the point: wrong sheet numbers
+ *                    are the worst failure mode.
  */
 
 export type ClassFeatureClassificationBucket = "numeric" | "situational" | "subsystem" | "blocked";

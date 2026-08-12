@@ -4,8 +4,9 @@
  * real vendored entry (a refdata bump that rekeys or renames fails loudly,
  * same posture as the racial-trait classification guards), shards must not
  * collide, and a `numeric` verdict is only honest if some wired route
- * actually carries the number — the entry's own vendored `changes[]` or a
- * `CLASS_FEATURE_CHANGE_PATCHES` entry matching the feature's name.
+ * actually carries the number — the entry's own vendored `changes[]`, a
+ * `CLASS_FEATURE_CHANGE_PATCHES` entry, or a `GRANTED_POWER_CHANGE_PATCHES`
+ * entry, matching the feature's name.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -17,6 +18,7 @@ import {
   CLASS_FEATURE_CLASSIFICATION_SHARDS,
 } from "../src/class-feature-classification/index.js";
 import { CLASS_FEATURE_CHANGE_PATCHES } from "../src/class-feature-effects.js";
+import { GRANTED_POWER_CHANGE_PATCHES } from "../src/granted-power-effects/index.js";
 
 const ref = loadRefData();
 
@@ -44,7 +46,9 @@ describe("CLASS_FEATURE_CLASSIFICATION: structural guards", () => {
       const vendored = ref.classFeatures[entry.id];
       if (!vendored) continue; // covered by the id guard above
       const wired =
-        vendored.changes.length > 0 || CLASS_FEATURE_CHANGE_PATCHES[entry.name] !== undefined;
+        vendored.changes.length > 0 ||
+        CLASS_FEATURE_CHANGE_PATCHES[entry.name] !== undefined ||
+        GRANTED_POWER_CHANGE_PATCHES[entry.name] !== undefined;
       expect(wired, `${entry.name} (${entry.id}) is numeric but no route is wired`).toBe(true);
     }
   });

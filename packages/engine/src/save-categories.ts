@@ -62,6 +62,17 @@ export const SAVE_CATEGORIES: Readonly<Record<string, SaveCategory>> = {
   poison: { label: "poison", saves: ["fort"] },
   disease: { label: "disease", saves: ["fort"] },
   death: { label: "death", saves: ["fort"] },
+  petrification: { label: "petrification", saves: ["fort"] },
+
+  // Polymorph (baleful polymorph is Fort-or-Will; an unwilling shapechange
+  // like lycanthropy is Fort) and transmutation (the school spans
+  // disintegrate's Fort through slow's Will) are siblings of each other and
+  // of petrification above, not parent/child: a medusa's gaze and a
+  // lycanthropy curse aren't transmutation-school effects, so a bonus
+  // against the school must not silently cover them (same reasoning that
+  // keeps illusions out of mind-affecting below).
+  polymorph: { label: "polymorph", saves: ["fort", "will"] },
+  transmutation: { label: "transmutation", saves: ALL_SAVES },
 
   // Will categories. `mind` is the root of this family: fear, emotion, sleep,
   // and the enchantment school all carry the mind-affecting descriptor in PF1,

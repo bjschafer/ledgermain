@@ -1,9 +1,12 @@
 /**
  * Class-feature classification shard: cleric domain and subdomain granted
  * powers. These flow through `collect.ts`'s domains section, which applies
- * vendored `changes` but has NO patch hook - a real unconditional number here
- * buckets `blocked` with a note naming the unrouted path, never `numeric`
- * via a patch (see `class-feature-effects.ts`'s reachability header).
+ * vendored `changes` and, via `granted-power-effects/`'s
+ * `GRANTED_POWER_CHANGE_PATCHES`, hand-authored patches keyed by the power's
+ * name. A real unconditional number here buckets `numeric` once a patch
+ * entry exists; `blocked` is reserved for a number with no expressible
+ * engine target, a scope outside the `SAVE_CATEGORIES`/targets vocabulary,
+ * or a player choice a static entry can't express.
  */
 
 import type { ClassFeatureClassificationEntry } from "./types.js";
@@ -20,8 +23,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
   "3zggJMxuipE68IkT": {
     id: "3zggJMxuipE68IkT",
     name: "Perfected Form",
-    bucket: "blocked",
-    note: "The passive +1 sacred or profane bonus (scaling by 5 cleric levels, max +5) on saves versus polymorph, petrification, and transmutation effects is a real unconditional number, but the granting subdomain path has no patch hook; the once-per-day immediate-action temporary-HP surge is separately resource-gated.",
+    bucket: "numeric",
+    note: "The +1 sacred bonus on saves versus polymorph, petrification, and transmutation effects (scaling by 5 cleric levels, max +5) is wired via GRANTED_POWER_CHANGE_PATCHES. The once-per-day immediate-action temporary-HP-and-morale surge on a successful save stays prose, resource-gated.",
   },
   "subdomain-power:rivers:current-flow": {
     id: "subdomain-power:rivers:current-flow",
@@ -44,8 +47,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
   "subdomain-power:feather:eyes-of-the-hawk": {
     id: "subdomain-power:feather:eyes-of-the-hawk",
     name: "Eyes of the Hawk",
-    bucket: "blocked",
-    note: "The Perception bonus (half cleric level, minimum +1) is an unconditional passive racial bonus with no activation or resource gate, but the domain/subdomain path has no patch hook; the +2 Initiative bonus is separately conditioned on acting in a surprise round.",
+    bucket: "numeric",
+    note: "The Perception bonus (half cleric level, minimum +1) is wired as a racial-type Change via GRANTED_POWER_CHANGE_PATCHES. The +2 Initiative bonus stays prose: it only applies during a surprise round, a fight state the static sheet can't detect.",
   },
   "subdomain-power:nightmare:fearful-touch": {
     id: "subdomain-power:nightmare:fearful-touch",
@@ -110,8 +113,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
   QkHDkpopJ7P8g14c: {
     id: "QkHDkpopJ7P8g14c",
     name: "Guarded Mind",
-    bucket: "blocked",
-    note: '"You gain a +2 insight bonus on saving throws against all mind-affecting effects" is an unconditional passive number with no activation or resource gate, but this is a domain granted power (RefData.domains[*].features) with no patch hook reaching it.',
+    bucket: "numeric",
+    note: 'The +2 insight bonus on saves against mind-affecting effects is wired via GRANTED_POWER_CHANGE_PATCHES, scoped with saveCategories: ["mind"] rather than an unconditional Will bonus.',
   },
   "subdomain-power:agathion:protective-aura": {
     id: "subdomain-power:agathion:protective-aura",

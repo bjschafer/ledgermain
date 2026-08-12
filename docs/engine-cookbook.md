@@ -129,6 +129,17 @@ Two directories hold **machine-assisted, not machine-generated**, content: `feat
 
 The rule that _does_ hold for these files: never add an entry without its own `provenance` quote and an honest `confidence` rating, and never promote a `situational`/`subsystem`/`blocked`-bucketed feature into a `Change` just because it would be convenient -- the classification audit is as much the deliverable as the effects table, since it's what lets a future pass (or a human reviewer) find what's still unmodeled.
 
+### 3.5 Add a granted-power patch (domain/school/inquisition)
+
+A cleric/inquisitor domain, wizard arcane school (or focused school), and inquisitor inquisition all resolve their granted powers through one shared function, `collectGrantedFeatures()` (`archetypes.ts`) -- used for the class-feature display list and uses/day resource pools. Unlike a base class feature's own `changes[]` (§3.1, walked directly by `collect.ts`'s class-feature loop), nothing walked a _granted_ power's `changes[]` before `granted-power-effects/`: a domain power whose text plainly promises a bonus could sit inert forever.
+
+Worked example: **Guarded Mind** (Void domain and its Isolation/Stars subdomains), "+2 insight bonus on saving throws against all mind-affecting effects" -- the same save-category shape §3.1 describes, just reached through a different collection path.
+
+1. Author the `Change` in the right file under `granted-power-effects/`: `domains.ts` for cleric/inquisitor domains, subdomains, and druid nature-bond domain picks (all three resolve to `origin.kind: "domain"`); `schools.ts` for wizard arcane/focused schools (`origin.kind: "school"`); `inquisitions.ts` for inquisitor inquisitions (`origin.kind: "inquisition"`).
+2. Key it by the granted power's `name`, matching `CLASS_FEATURE_CHANGE_PATCHES`'s rationale (§3.1) -- but the uniqueness check is wider here: the name has to be unique across _every_ catalog `collectGrantedFeatures` can reach (domains, subdomains, schools, focused schools, inquisitions), not just the one file being edited.
+3. `collect.ts`'s granted-power loop calls `collectGrantedFeatures()` itself, filters to the `"domain"`/`"school"`/`"inquisition"` origins (every other origin -- bloodlines, hexes, rage powers, ... -- already has its own dedicated effect path, so it's deliberately excluded here to avoid a double-apply), looks up `GRANTED_POWER_CHANGE_PATCHES[grant.name]`, and evaluates with `@class.unlevel` set to the _granting_ class's level -- no new wiring needed once the entry exists.
+4. As with every hand patch table in this package: never apply the granted power's own vendored `changes[]` here, only the hand-authored patch -- and only for an unconditional, self-facing number. Same "note is more honest than a wrong number" posture as §3.1.
+
 ## 4. Testing
 
 Every non-trivial engine behavior gets a **hand-computed fixture test** against the real vendored data, loaded via `loadRefData()` from `@pf1/data-pipeline` -- not a mock `RefData`. The pattern, visible in essentially every file under `packages/engine/test/`:

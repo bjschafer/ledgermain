@@ -12,11 +12,17 @@ import type { ActiveBuff, CharacterDoc, Change, RefData } from "@pf1/schema";
 import { resolveAlchemistDiscovery } from "./alchemist-discoveries.js";
 import { ARCANIST_EXPLOITS } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
-import { activeArchetypeSwaps, domainCasterLevel, weaponTrainingReplaced } from "./archetypes.js";
+import {
+  activeArchetypeSwaps,
+  collectGrantedFeatures,
+  domainCasterLevel,
+  weaponTrainingReplaced,
+} from "./archetypes.js";
 import { resolveSorcererBloodlineOrMutation } from "./bloodline-mutations.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
 import { CLASS_FEATURE_CHANGE_PATCHES } from "./class-feature-effects.js";
+import { GRANTED_POWER_CHANGE_PATCHES } from "./granted-power-effects/index.js";
 import { FEAT_SAVE_CATEGORY_CHANGES } from "./feat-save-categories.js";
 import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
@@ -492,6 +498,56 @@ export function collectModifiers(
           ch.saveCategories,
         );
       }
+    }
+  }
+
+  // --- granted-power patches (domain/school/inquisition) ------
+  // `collectGrantedFeatures` already resolves every power a chosen cleric
+  // domain/subdomain, wizard arcane school/focused school, or inquisitor
+  // inquisition grants — for display and uses/day tracking. Nothing walked
+  // its `changes[]` before `GRANTED_POWER_CHANGE_PATCHES` existed, so an
+  // unconditional numeric bonus on one of these powers never reached the
+  // sheet no matter how plainly its published text stated it.
+  //
+  // The origin whitelist below is deliberate, not exhaustive of
+  // `GrantedFeature.origin.kind`: bloodlines, hexes, rage powers, and every
+  // other granted-power origin already have their own dedicated effect path
+  // (`bloodline-mutations.ts`, `witch-hexes.ts`, `rage-powers.ts`, ...), so
+  // routing them through this table too would risk a double-apply. Only
+  // domain/school/inquisition grants had no route at all.
+  //
+  // Only the hand patch table is applied here — never the granted power's
+  // own vendored `changes[]`, which were left unrouted deliberately (see
+  // `granted-power-effects/index.ts`'s doc comment; auditing them is a
+  // separate pass).
+  for (const gf of collectGrantedFeatures(doc, refData)) {
+    if (
+      gf.origin?.kind !== "domain" &&
+      gf.origin?.kind !== "school" &&
+      gf.origin?.kind !== "inquisition"
+    ) {
+      continue;
+    }
+    const patches = GRANTED_POWER_CHANGE_PATCHES[gf.grant.name];
+    if (!patches || patches.length === 0) continue;
+    const grantingLevel = doc.identity.classes.find((c) => c.tag === gf.classTag)?.level ?? 0;
+    if (grantingLevel === 0) continue;
+    const grantRollData: RollData = {
+      ...rollData,
+      class: { level: grantingLevel, unlevel: grantingLevel },
+    };
+    for (const ch of patches) {
+      evalChange(
+        ch.formula,
+        grantRollData,
+        ch.target,
+        ch.type,
+        gf.grant.name,
+        gf.grant.featureId,
+        out,
+        ch.operator,
+        ch.saveCategories,
+      );
     }
   }
 

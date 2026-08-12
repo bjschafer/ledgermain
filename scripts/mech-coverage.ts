@@ -41,6 +41,7 @@ import { BUFF_CHANGE_PATCHES, BUFF_PROSE_RULINGS } from "../packages/engine/src/
 import { mergedOrderCatalog } from "../packages/engine/src/cavalier-orders.js";
 import { CLASS_FEATURE_CLASSIFICATION } from "../packages/engine/src/class-feature-classification/index.js";
 import { CLASS_FEATURE_CHANGE_PATCHES } from "../packages/engine/src/class-feature-effects.js";
+import { GRANTED_POWER_CHANGE_PATCHES } from "../packages/engine/src/granted-power-effects/index.js";
 import { FEAT_CLASSIFICATION } from "../packages/engine/src/feat-classification.js";
 import { FEAT_CLASSIFICATION_COMMUNITY } from "../packages/engine/src/feat-classification-community.js";
 import { FEAT_POOL_EFFECTS, featNameSlug } from "../packages/engine/src/feat-effects.js";
@@ -368,7 +369,10 @@ function main(): void {
   // with a hand table or patch layered on top.
   for (const [id, e] of Object.entries(loadDataFile("class-features.json"))) {
     const name = typeof e.name === "string" ? e.name : id;
-    const wired = arrayLen(e.changes) > 0 || CLASS_FEATURE_CHANGE_PATCHES[name] !== undefined;
+    const wired =
+      arrayLen(e.changes) > 0 ||
+      CLASS_FEATURE_CHANGE_PATCHES[name] !== undefined ||
+      GRANTED_POWER_CHANGE_PATCHES[name] !== undefined;
     const noted = arrayLen(e.actions) > 0 || e.uses !== undefined || arrayLen(e.grantsBuffs) > 0;
     // Same semantics as the archetype/feat/racial-trait verdicts: a deliberate
     // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`

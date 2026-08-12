@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-11-granted-power-numbers",
+    date: "2026-08-11",
+    title: "Domain, school, and inquisition powers show real bonuses",
+    note: "Eleven always on powers granted by cleric domains and subdomains, wizard arcane schools, druid nature bonds, and inquisitions now compute their numbers instead of sitting as reminder text. Guarded Mind's save bonus against mind affecting effects, Eyes of the Hawk's Perception bonus, Perfected Form's save bonus against polymorph and petrification, Fire Supremacy and Fire Hardened's fire resistance, and Void Awareness's save bonus against spells all show up automatically now. Self Control, Patient Sensibility, Torturer's Presence, Grant the Initiative, and Labyrinthine Words, five inquisition powers, add their bonuses to your sheet the same way.",
+  },
+  {
     id: "2026-08-10-splatbook-order-skills",
     date: "2026-08-10",
     title: "Every cavalier and samurai order grants its skills",

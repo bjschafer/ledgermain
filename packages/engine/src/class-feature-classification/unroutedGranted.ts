@@ -2,10 +2,13 @@
  * Class-feature classification shard: granted powers outside every
  * `RefData.classes[*].features` list, covering wizard school powers,
  * druid-domain powers, inquisition granted powers, and warpriest blessing
- * powers. No
- * patch hook reaches any of these; a real unconditional number buckets
- * `blocked` with a note naming the unrouted path (see
- * `class-feature-effects.ts`'s header).
+ * powers. Wizard school, druid-domain, and inquisition powers flow through
+ * `granted-power-effects/`'s `GRANTED_POWER_CHANGE_PATCHES`; warpriest
+ * blessing powers have no collection path or patch hook at all. A real
+ * unconditional number on a patched origin buckets `numeric`; `blocked` is
+ * reserved for a number with no expressible engine target, a scope outside
+ * the `SAVE_CATEGORIES`/targets vocabulary, or a player choice a static
+ * entry can't express.
  */
 
 import type { ClassFeatureClassificationEntry } from "./types.js";
@@ -118,8 +121,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
   PmO50ReytvNYsuFW: {
     id: "PmO50ReytvNYsuFW",
     name: "Fire Supremacy",
-    bucket: "blocked",
-    note: "The base fire resistance (5, then 10 at 10th, immunity at 20th) is unconditional and self-targeted, a real number this domain/school path has no patch hook to carry.",
+    bucket: "numeric",
+    note: "Fire resistance 5 (10 at 10th level) is wired via GRANTED_POWER_CHANGE_PATCHES. The 20th-level fire immunity and the swift-action flame-retaliation clause stay prose: immunity isn't a resistance number, and retaliation needs an activation plus a nearby flame source.",
   },
   "blessing-power:curse:major": {
     id: "blessing-power:curse:major",
@@ -202,14 +205,14 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
   "inquisition-power:possession:self-control": {
     id: "inquisition-power:possession:self-control",
     name: "Self-Control",
-    bucket: "blocked",
-    note: "An unconditional +2 competence bonus on saves against charm/compulsion effects; charm and compulsion are valid save categories, but this granted-power path has no patch hook.",
+    bucket: "numeric",
+    note: "The +2 competence bonus on saves against charm/compulsion effects is wired via GRANTED_POWER_CHANGE_PATCHES, named as two saveCategories rather than the whole enchantment school since Illusion is unaffected.",
   },
   "inquisition-power:restoration:cleanse-impunity": {
     id: "inquisition-power:restoration:cleanse-impunity",
     name: "Cleanse Impunity",
     bucket: "blocked",
-    note: "A passive bonus to caster level checks scoped to a player-chosen alignment axis; caster-level-check bonuses have no expressible engine target, and the alignment choice adds ambiguity on top of the missing route.",
+    note: "A passive bonus to caster level checks scoped to a player-chosen alignment axis; caster-level-check bonuses have no expressible engine target, and the alignment choice adds ambiguity on top of that.",
   },
   khGQDuyL6TKASqYb: {
     id: "khGQDuyL6TKASqYb",
@@ -268,14 +271,14 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
   "druid-domain:plane-of-fire:fire-hardened": {
     id: "druid-domain:plane-of-fire:fire-hardened",
     name: "Fire Hardened",
-    bucket: "blocked",
-    note: "The base fire resistance 5 (scaling with any existing resistance) is unconditional and self-targeted; a real number this domain path has no patch hook to carry.",
+    bucket: "numeric",
+    note: "Fire resistance 5 is wired via GRANTED_POWER_CHANGE_PATCHES. RAW promises +5 on top of any existing natural fire resistance, but defenses.ts's highest-wins handling for eres.fire means a character with natural resistance sees the engine's usual highest-of behavior instead, a known documented divergence rather than the RAW stack. Fire-dominant-plane immunity, touch-share uses/day, and planar clauses stay prose.",
   },
   hsPaehLs8BaMEmcj: {
     id: "hsPaehLs8BaMEmcj",
     name: "Void Awareness",
-    bucket: "blocked",
-    note: "An unconditional insight bonus on saves against spells/spell-likes, scaling with level, with no activation or per-day limit; a real number this school path has no patch hook to carry.",
+    bucket: "numeric",
+    note: "The +2 insight bonus on saves against spells and spell-like abilities (scaling +1 per 5 wizard levels) is wired via GRANTED_POWER_CHANGE_PATCHES. The 20th-level roll-twice-take-the-better clause stays prose: compute() surfaces one deterministic total, never a roll.",
   },
   "inquisition-power:banishment:dismissive-touch": {
     id: "inquisition-power:banishment:dismissive-touch",
@@ -455,7 +458,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "UeYdiNoaF0gG08Y5",
     name: "Resistance (Power)",
     bucket: "blocked",
-    note: "The energy resistance is unconditional once an energy type is chosen for the day, but the type is a player choice reselected daily, and this school path has no patch hook regardless.",
+    note: "The energy resistance is unconditional once an energy type is chosen for the day, but the type is a player choice reselected daily that a static entry can't express.",
   },
   W1gEXsOJYt7oDOr7: {
     id: "W1gEXsOJYt7oDOr7",
@@ -539,7 +542,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:jungle:trap-sense",
     name: "Trap Sense",
     bucket: "blocked",
-    note: "Mirrors class-feature-effects.ts's precedent on trap sense variants: the bonus is scoped to traps specifically, a scope outside the save/AC vocabulary; this domain path also has no patch hook regardless.",
+    note: "Mirrors class-feature-effects.ts's precedent on trap sense variants: the bonus is scoped to traps specifically, a scope outside the save/AC vocabulary.",
   },
   "druid-domain:panther:move-in-darkness": {
     id: "druid-domain:panther:move-in-darkness",
@@ -551,7 +554,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:plane-of-air:wind-savant",
     name: "Wind Savant",
     bucket: "blocked",
-    note: "The save bonus against gases/inhaled poison is unconditional (no activation), but scoped to a 'gases' category narrower than any save-category the vocabulary carries; this domain path also has no patch hook.",
+    note: "The save bonus against gases/inhaled poison is unconditional (no activation), but scoped to a 'gases' category narrower than any save-category the vocabulary carries.",
   },
   "druid-domain:plane-of-earth:one-with-the-stone": {
     id: "druid-domain:plane-of-earth:one-with-the-stone",
@@ -604,8 +607,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
   "inquisition-power:politics:labyrinthine-words": {
     id: "inquisition-power:politics:labyrinthine-words",
     name: "Labyrinthine Words",
-    bucket: "blocked",
-    note: "An unconditional bonus (adding Wisdom modifier alongside Charisma modifier on Bluff/Diplomacy checks); a real self-facing number this granted-power path has no patch hook to carry.",
+    bucket: "numeric",
+    note: "Wisdom modifier added alongside Charisma modifier on Bluff and Diplomacy checks is wired via GRANTED_POWER_CHANGE_PATCHES, applied unconditionally to both skills even though the text scopes to lying and influencing specifically.",
   },
   "inquisition-power:recovery:focused-search": {
     id: "inquisition-power:recovery:focused-search",
@@ -616,8 +619,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
   "inquisition-power:redemption:patient-sensibility": {
     id: "inquisition-power:redemption:patient-sensibility",
     name: "Patient Sensibility",
-    bucket: "blocked",
-    note: "An unconditional +2 bonus on three named skills with no activation or resource gate; a real self-facing number this granted-power path has no patch hook to carry.",
+    bucket: "numeric",
+    note: "The +2 bonus on Diplomacy, Perception, and Sense Motive checks is wired via GRANTED_POWER_CHANGE_PATCHES.",
   },
   "inquisition-power:reformation:blessed-correction": {
     id: "inquisition-power:reformation:blessed-correction",
@@ -634,14 +637,14 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
   "inquisition-power:tactics:grant-the-initiative": {
     id: "inquisition-power:tactics:grant-the-initiative",
     name: "Grant the Initiative",
-    bucket: "blocked",
-    note: "An unconditional bonus (Wisdom modifier on initiative checks) for the inquisitor and nearby allies, no activation required; a real self-facing number this granted-power path has no patch hook to carry.",
+    bucket: "numeric",
+    note: "Wisdom modifier (never negative) added to initiative is wired via GRANTED_POWER_CHANGE_PATCHES. The allies-within-30-feet clause stays prose: it affects other characters' sheets, not this one's.",
   },
   "inquisition-power:torture:torturer-s-presence": {
     id: "inquisition-power:torture:torturer-s-presence",
     name: "Torturer's Presence",
-    bucket: "blocked",
-    note: "An unconditional +2 bonus on Intimidate checks with no activation or resource gate; a real self-facing number this granted-power path has no patch hook to carry.",
+    bucket: "numeric",
+    note: "The +2 bonus on Intimidate checks is wired via GRANTED_POWER_CHANGE_PATCHES, typed untyped so it stacks with the Inquisitor's own Stern Gaze morale bonus.",
   },
   "inquisition-power:true_death:hallowed-rite": {
     id: "inquisition-power:true_death:hallowed-rite",
@@ -659,7 +662,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "inquisition-power:zeal:scourge-of-the-enemy",
     name: "Scourge of the Enemy",
     bucket: "blocked",
-    note: "A favored-enemy-equivalent bonus scoped to a player-chosen rival religion, a choice-dependent target this granted-power path also has no patch hook to carry.",
+    note: "A favored-enemy-equivalent bonus scoped to a player-chosen rival religion, a choice-dependent target a static entry can't express.",
   },
   mITkHIcXI1Sfax21: {
     id: "mITkHIcXI1Sfax21",

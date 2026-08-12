@@ -71,10 +71,13 @@
  *   cannot express: Heritor's Honor (Cha to Will, "doesn't stack with those
  *   from similar effects" — would double-count with antipaladin Unholy
  *   Resilience or paladin Divine Grace).
- * - Not reachable through this table at all: Guarded Mind is a domain
- *   granted power (`RefData.domains[*].features`, a different collection
- *   path with no patch hook), Void Awareness is a chosen wizard arcane
- *   discovery (no per-discovery collection loop exists).
+ * - Not reachable through this table at all: Guarded Mind (a domain granted
+ *   power) and Void Awareness (a wizard arcane school granted power) flow
+ *   through a different collection path than `RefData.classes[*].features`,
+ *   so a name here would be a silent no-op for them. Both are wired instead
+ *   through `granted-power-effects/`'s `GRANTED_POWER_CHANGE_PATCHES`, the
+ *   patch table for domain/subdomain, wizard school, druid nature-bond
+ *   domain, and inquisition granted powers.
  */
 
 import type { Change } from "@pf1/schema";
