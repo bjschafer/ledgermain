@@ -140,7 +140,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
     id: "mznovwcbTMsYfx2u",
     name: "Sigil Master",
     bucket: "blocked",
-    note: "Save bonus against writing-based magical traps; class-feature-effects.ts's precedent list names Sigil Master directly, since SAVE_CATEGORIES has no axis for traps.",
+    note: "Save bonus against writing-based magical traps specifically, narrower than the general `traps` category (which now exists) since it excludes non-writing traps.",
   },
   "prestige:loremaster:greater-lore": {
     id: "prestige:loremaster:greater-lore",

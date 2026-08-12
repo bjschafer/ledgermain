@@ -64,6 +64,37 @@ function makeCleric(level: number, clericDomains: string[]): CharacterDoc {
   } as CharacterDoc;
 }
 
+/** Human druid, all abilities 10, chosen nature-bond domain as given. */
+function makeDruid(level: number, druidNatureBondDomain: string): CharacterDoc {
+  return {
+    schemaVersion: 1,
+    id: "granted-power-effects-druid-test",
+    ownerId: "tester",
+    version: 1,
+    updatedAt: "2026-01-01T00:00:00.000Z",
+    identity: {
+      name: "Test",
+      race: HUMAN,
+      classes: [{ tag: "druid", level }],
+    },
+    abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+    build: {
+      feats: [],
+      skillRanks: {},
+      classFeatureChoices: [],
+      spells: { known: [] },
+      gear: [],
+      druidNatureBondDomain,
+    },
+    live: {
+      hp: { current: 0, temp: 0, nonlethal: 0 },
+      conditions: [],
+      activeBuffs: [],
+      resources: {},
+    },
+  } as CharacterDoc;
+}
+
 describe("Guarded Mind (Void domain, +2 insight vs. mind-affecting on Will)", () => {
   it("a level-1 cleric with the Void domain gets the Will conditional", () => {
     // Cleric Will is a good save: 2 + floor(level/2). Level 1: 2 + 0 = 2.
@@ -143,5 +174,34 @@ describe("Guarded Mind (Void domain, +2 insight vs. mind-affecting on Will)", ()
     // unrelated "fear" conditional; the assertion is scoped to "mind".
     const sheet = compute(doc, ref);
     expect(sheet.saves.will.conditionals?.some((c) => c.categories.includes("mind"))).toBe(false);
+  });
+});
+
+describe("Trap Sense (Jungle nature-bond domain, untyped Reflex vs. traps)", () => {
+  it("+1 at 3rd level (the feature's own grant level, matching an effective rogue level equal to druid level)", () => {
+    // "At 3rd level, you gain the trap sense ability. This is identical to
+    // the rogue class ability. Your effective rogue level is equal to your
+    // druid level" (Faiths of Purity). The base rogue progression is
+    // floor(level / 3): +1 at 3rd, +2 at 6th, +3 at 9th. Druid Ref is a poor
+    // save: floor(level / 3). Level 3: Ref = floor(3/3) = 1. Bonus = 1. 1+1=2.
+    const sheet = compute(makeDruid(3, "Jungle"), ref);
+    expect(sheet.saves.ref.total).toBe(1);
+    expect(sheet.saves.ref.conditionals).toEqual([
+      { total: 2, categories: ["traps"], labels: ["traps"] },
+    ]);
+  });
+
+  it("+2 at 6th level", () => {
+    // Druid Ref = floor(6/3) = 2. Bonus = floor(6/3) = 2. 2+2=4.
+    const sheet = compute(makeDruid(6, "Jungle"), ref);
+    expect(sheet.saves.ref.total).toBe(2);
+    expect(sheet.saves.ref.conditionals).toEqual([
+      { total: 4, categories: ["traps"], labels: ["traps"] },
+    ]);
+  });
+
+  it("a druid with a different nature-bond domain gets nothing", () => {
+    const sheet = compute(makeDruid(6, "Desert"), ref);
+    expect(sheet.saves.ref.conditionals).toBeUndefined();
   });
 });

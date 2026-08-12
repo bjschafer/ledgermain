@@ -53,12 +53,19 @@
  * - Needs a player choice to know its scope, which a static table entry can't
  *   express: Force of Will (picks a descriptor from a list), Cypher:
  *   Thassilonian Focus (picks a school), Defy Danger (picks a danger).
- * - Narrower than any category in the vocabulary (traps, writing-based
- *   magic, visual effects, sonic/language-dependent effects, elemental
- *   descriptors, pain effects are all real PF1 scopes with no
- *   `SAVE_CATEGORIES` entry): Cypherlord, Sigil Master, Signifer Mask,
- *   Well-Versed, Eye of the Storm, Masochism, Trap Sense (every variant),
- *   Danger Sense's trap-Reflex variant.
+ * - Narrower than any category in the vocabulary, or a category the
+ *   vocabulary still doesn't carry at all (writing-based magic
+ *   specifically, visual effects, elemental descriptors): Cypherlord and
+ *   Sigil Master (both scoped to writing-based traps specifically, narrower
+ *   than the general `traps` category), Signifer Mask (visual effects),
+ *   Eye of the Storm (air/water descriptors). Trap Sense stays blocked for
+ *   a different reason now that `traps` exists: the name is shared by
+ *   bearers with genuinely different progressions (Rogue/Barbarian/
+ *   Investigator start at 3rd level, Aspis Agent's prestige copy at 4th,
+ *   Pathfinder Delver's at 2nd, all +1 per 3 levels thereafter), and this
+ *   table has no per-class scoping, so a single formula would misapply to
+ *   whichever bearers it doesn't match. Danger Sense's trap-Reflex variant
+ *   is blocked by a name collision instead (see its classification note).
  * - Needs an activation, a per-day/per-use resource, or is conditioned on
  *   live buff/creature state this loop cannot read (raging, a manifested
  *   phantom's mode): Scar: Suffering, Energumen, Alien Mind, Indomitable
@@ -109,6 +116,22 @@ const STILL_MIND: Change = {
   target: "allSavingThrows",
   type: "untyped",
   saveCategories: ["enchantment"],
+};
+
+/**
+ * Well-Versed (Bard, Skald) 2nd level: "The character gains a +4 bonus on
+ * saving throws made against bardic performance, sonic, and language-
+ * dependent effects." Only `sonic` and `languageDependent` are promoted:
+ * "bardic performance" names no `SAVE_CATEGORIES` entry of its own (most
+ * bardic performances are mind-affecting, but not uniformly so, the same
+ * reasoning that keeps this codebase from folding it into an existing
+ * category). Untyped in the source text.
+ */
+const WELL_VERSED: Change = {
+  formula: "4",
+  target: "allSavingThrows",
+  type: "untyped",
+  saveCategories: ["sonic", "languageDependent"],
 };
 
 /**
@@ -547,6 +570,7 @@ const TALMANDORS_BLESSING: Change = { formula: "4", target: "skill.per", type: "
 export const CLASS_FEATURE_CHANGE_PATCHES: Readonly<Record<string, readonly Change[]>> = {
   Bravery: [BRAVERY],
   "Still Mind": [STILL_MIND],
+  "Well-Versed": [WELL_VERSED],
   "Heart of Freedom": [HEART_OF_FREEDOM],
   Tranquility: [TRANQUILITY],
   "Eye of Mahathallah": [EYE_OF_MAHATHALLAH],

@@ -148,6 +148,37 @@ describe("Still Mind (monk, Will vs. enchantment) - a non-fear category", () => 
   });
 });
 
+describe("Well-Versed (Bard/Skald, untyped Will vs. sonic and language-dependent effects)", () => {
+  it("+4 at 2nd level (Bard, its own grant level)", () => {
+    // "The character gains a +4 bonus on saving throws made against bardic
+    // performance, sonic, and language-dependent effects" (2nd level; bardic
+    // performance omitted, not in the vocabulary). Bard Will is a good save:
+    // 2 + floor(level/2). Level 2: Will = 2 + 1 = 3. 3 + 4 = 7.
+    const sheet = compute(makeDoc("bard", 2), ref);
+    expect(sheet.saves.will.total).toBe(3);
+    expect(sheet.saves.will.conditionals).toEqual([
+      {
+        total: 7,
+        categories: ["languageDependent", "sonic"],
+        labels: ["language-dependent", "sonic"],
+      },
+    ]);
+  });
+
+  it("+4 at 2nd level (Skald, same feature name, same formula)", () => {
+    // Skald Will is also a good save: 2 + floor(level/2). Level 2: Will = 3.
+    const sheet = compute(makeDoc("skald", 2), ref);
+    expect(sheet.saves.will.total).toBe(3);
+    expect(sheet.saves.will.conditionals).toEqual([
+      {
+        total: 7,
+        categories: ["languageDependent", "sonic"],
+        labels: ["language-dependent", "sonic"],
+      },
+    ]);
+  });
+});
+
 describe("Heart of Freedom (Steel Falcon, three named categories merge to one line)", () => {
   it("+4 morale vs. charm, compulsion, and possession at 1st level", () => {
     // "gains a +4 morale bonus on saving throws against charm and compulsion

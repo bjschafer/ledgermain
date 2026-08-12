@@ -158,7 +158,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_2: Readonly<
     id: "Lv1PWQrPMCb6prvi",
     name: "Cypherlord",
     bucket: "blocked",
-    note: "Matches the class-feature-effects.ts precedent by name: the save bonus is scoped to writing-based magic, a category outside SAVE_CATEGORIES, and the free-action upgrade is an action-economy perk with no number.",
+    note: "The save bonus is scoped to writing-based magical symbols/glyphs/sigils and traps specifically, narrower than the general `traps` category (which now exists) since it excludes non-writing traps; the free-action upgrade is a separate action-economy perk with no number.",
   },
   QyCuPG69WyxYp70i: {
     id: "QyCuPG69WyxYp70i",

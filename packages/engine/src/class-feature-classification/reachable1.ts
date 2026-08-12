@@ -50,7 +50,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
     id: "sTlu3zgAEDdJnER5",
     name: "Danger Sense",
     bucket: "blocked",
-    note: "Every clause is scoped narrower than the vocabulary supports: the Reflex/AC bonuses apply only against traps (no 'traps' SAVE_CATEGORIES entry or AC sub-scope exists), and the Perception bonus applies only to avoiding surprise, not general Perception checks. Matches the standing precedent for trap-scoped save/AC bonuses in class-feature-effects.ts's header.",
+    note: "The Reflex-vs-traps clause is now expressible (saveCategories: [\"traps\"]), but 'Danger Sense' also names a wholly unrelated shieldmarshal initiative bonus (QsDvIB5mfC5c9DKG) reachable through the same name-keyed table, so it can't be safely wired without misapplying to that bearer. The AC-dodge and Perception-vs-surprise clauses stay unexpressible regardless (no AC conditional mechanism; Perception is scoped narrower than the whole skill).",
   },
   "15va0QO7X8dk5YTR": {
     id: "15va0QO7X8dk5YTR",
@@ -104,7 +104,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
     id: "BoEkMviJrW0PKmhj",
     name: "Trap Sense",
     bucket: "blocked",
-    note: "The Reflex-save and AC-dodge bonuses apply only against traps, a scope with no SAVE_CATEGORIES entry or AC sub-target; explicitly named in class-feature-effects.ts's header as never promoted for this reason, across every variant.",
+    note: "The Reflex clause is now expressible (saveCategories: [\"traps\"]), but this exact name is also granted by Aspis Agent's prestige copy (KpZwiUnU0VKymgmL, +1 at 4th and every 3 levels thereafter) and Pathfinder Delver's (HoV8PmENaujyGx7T, +1 at 2nd), both offset from this entry's Rogue/Barbarian/Investigator +1-at-3rd progression; CLASS_FEATURE_CHANGE_PATCHES keys purely by name with no per-class scoping, so one formula can't serve all three without misapplying to the other two. The AC-dodge half also has no engine mechanism regardless.",
   },
   IIlla2YtHAgM5P9U: {
     id: "IIlla2YtHAgM5P9U",
@@ -167,8 +167,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
   wew6ophJrcab24m6: {
     id: "wew6ophJrcab24m6",
     name: "Well-Versed",
-    bucket: "blocked",
-    note: "Save bonus is scoped to bardic performance, sonic, and language-dependent effects, none of which are SAVE_CATEGORIES entries; named explicitly in class-feature-effects.ts's header as a narrower-than-vocabulary case never promoted.",
+    bucket: "numeric",
+    note: 'The +4 bonus on saving throws against sonic and language-dependent effects is wired via CLASS_FEATURE_CHANGE_PATCHES, scoped with saveCategories: ["sonic", "languageDependent"]. The bardic-performance clause stays unpromoted: it names no SAVE_CATEGORIES entry of its own.',
   },
   zg6ReTqyzGwVgS4k: {
     id: "zg6ReTqyzGwVgS4k",
@@ -200,7 +200,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
     id: "KpZwiUnU0VKymgmL",
     name: "Trap Sense",
     bucket: "blocked",
-    note: "Same trap-scoped Reflex/AC bonus as every other Trap Sense variant, with no SAVE_CATEGORIES entry or AC sub-target for 'traps'; matches class-feature-effects.ts's header precedent.",
+    note: "The Reflex clause is now expressible (saveCategories: [\"traps\"]), but this Aspis Agent prestige copy's own progression (+1 at 4th level and every 3 levels thereafter) diverges from the base Rogue/Barbarian/Investigator copy's (+1 at 3rd) and Pathfinder Delver's (+1 at 2nd); since the name-keyed patch table has no per-class scoping, none of the three can be wired without misapplying to the others. The AC-dodge half also has no engine mechanism regardless.",
   },
   QOgv8IpxnWix0Vbv: {
     id: "QOgv8IpxnWix0Vbv",

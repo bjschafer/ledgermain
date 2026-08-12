@@ -541,8 +541,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
   "druid-domain:jungle:trap-sense": {
     id: "druid-domain:jungle:trap-sense",
     name: "Trap Sense",
-    bucket: "blocked",
-    note: "Mirrors class-feature-effects.ts's precedent on trap sense variants: the bonus is scoped to traps specifically, a scope outside the save/AC vocabulary.",
+    bucket: "numeric",
+    note: 'The Reflex-vs-traps half (floor(druid level / 3), matching the rogue class ability at an effective rogue level equal to druid level) is wired via GRANTED_POWER_CHANGE_PATCHES with saveCategories: ["traps"]. This is the only granted power named "Trap Sense" reachable through that table, so no cross-bearer collision applies here (unlike the class-feature-granted copies, which stay blocked in reachable1.ts). The AC-dodge half stays unmodeled: this engine has no AC conditional mechanism.',
   },
   "druid-domain:panther:move-in-darkness": {
     id: "druid-domain:panther:move-in-darkness",
