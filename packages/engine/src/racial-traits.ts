@@ -1083,9 +1083,16 @@ export function vendoredTraitSuppressTargets(
  * cites the exact vendored text and the alternate(s) whose own
  * `replacedTraitNames` (verified against `racial-traits.json`) name it.
  *
- *   - Duergar "Stability": `{cmd, "+4 Racial vs Bull Rush and Trip while on
- *     ground"}` — Duergar's only contextNote. Replaced (alongside the
- *     already-structured "Duergar Immunities") by "Dwarf Traits".
+ *   - Duergar "Stability" and Dwarf "Stability": both `{cmd, "+4 Racial vs
+ *     Bull Rush and Trip while on ground"}` — the identical note text (a
+ *     Duergar's own write-up borrows the dwarf's wholesale), now promoted to
+ *     a real `maneuverCategories` bonus by `race-maneuver-notes.ts`, so
+ *     unlike every other entry in this map it retires a NUMBER, not just a
+ *     reminder. Duergar's copy is replaced (alongside the already-structured
+ *     "Duergar Immunities") by "Dwarf Traits"; Dwarf's own copy is replaced
+ *     by "Relentless" and "Tightfisted" (the latter also names
+ *     "Stonecunning", which stays unmapped — see the closing paragraph
+ *     below).
  *   - Vine Leshy "Unassuming Foliage": `{skill.ste, "+4 Racial in Forests"}` —
  *     Vine Leshy's only contextNote. Replaced by "Swamp Leshy" and "Seasoned
  *     Spirit" (both also name "Climber", already structured-suppressed).
@@ -1149,12 +1156,18 @@ export function vendoredTraitSuppressTargets(
  * regional-variant/heritage bundles — those four races are handled entirely
  * by the hand-authored `RACIAL_TRAITS` table's own `suppressNotes`, not this
  * vendored map, so they're deliberately absent here the same way they're
- * absent from {@link VENDORED_STANDARD_TRAIT_TARGETS}.
+ * absent from {@link VENDORED_STANDARD_TRAIT_TARGETS}. Dwarf is the one
+ * exception, and only for Stability: every OTHER Dwarf note-only trait
+ * (Stonecunning, Hardy, Greed, Hatred, Defensive Training) stays on the
+ * hand-authored `RACIAL_TRAITS` route as before, unmapped here.
  */
 export const VENDORED_STANDARD_TRAIT_NOTES: Readonly<
   Record<string, Readonly<Record<string, readonly string[]>>>
 > = {
   Duergar: {
+    Stability: ["Bull Rush and Trip"],
+  },
+  Dwarf: {
     Stability: ["Bull Rush and Trip"],
   },
   "Vine Leshy": {

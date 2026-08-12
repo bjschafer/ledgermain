@@ -208,7 +208,7 @@ export const VENDORED_RACIAL_TRAIT_SAVE_NOTES: Readonly<Record<string, readonly 
  * full; those that fit the vocabulary promote here (covering many more
  * distinct traits than table keys, since notes repeat verbatim across
  * several traits). The rest stay prose because the scope they name has no
- * vocabulary entry (cold/fire/electricity/acid descriptors, dazzled,
+ * vocabulary entry (cold/fire/electricity/acid descriptors, dazzled, dazed,
  * negative energy damage as opposed to negative levels, arcane/divine as a
  * caster tradition, the lawful/chaotic/evil descriptors, movement-hampering
  * effects, ability drain or memory loss restricted to a single mental
@@ -436,6 +436,11 @@ export const VENDORED_CHARACTER_TRAIT_SAVE_NOTES: Readonly<Record<string, readon
   "+1 Trait bonus against transmutation spells and effects.": [
     scopedSave("1", "trait", "transmutation"),
   ],
+  // "Dazed" has no SAVE_CATEGORIES entry (a different condition from
+  //  confused, and not covered by any category), so only the confusion half
+  //  promotes; the once-per-day ally-save grant has no expressible form.
+  "+1 Trait bonus against spells and effects that grant the confused or dazed condition. Once per day as a full-round action, you may grant an adjacent ally a new Will saving throw to end an effect that grants the confused or dazed condition.":
+    [scopedSave("1", "trait", "confusion")],
 };
 
 /**
@@ -486,6 +491,7 @@ export const PARTIALLY_PROMOTED_CHARACTER_TRAIT_SAVE_NOTES: ReadonlySet<string> 
   "+1 Trait bonus against confusion, insanity, madness, and Wisdom damage and drain.",
   "+1 Trait bonus against spells from the necromancy school or any effect that deals negative energy damage.",
   "+1 Trait bonus against any effect causing the nauseated or sickened condition and against all ingested poisons.",
+  "+1 Trait bonus against spells and effects that grant the confused or dazed condition. Once per day as a full-round action, you may grant an adjacent ally a new Will saving throw to end an effect that grants the confused or dazed condition.",
 ]);
 
 /**

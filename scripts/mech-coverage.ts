@@ -75,6 +75,10 @@ import {
   VENDORED_RACIAL_TRAIT_SAVE_NOTES,
 } from "../packages/engine/src/vendored-trait-save-notes.js";
 import {
+  maneuverChangesFromNotes,
+  VENDORED_RACIAL_TRAIT_MANEUVER_NOTES,
+} from "../packages/engine/src/vendored-trait-maneuver-notes.js";
+import {
   mergedVigilanteSocialTalentCatalog,
   mergedVigilanteTalentCatalog,
 } from "../packages/engine/src/vigilante-talents.js";
@@ -460,18 +464,23 @@ function main(): void {
   for (const [id, e] of Object.entries(loadDataFile("racial-traits.json"))) {
     const name = typeof e.name === "string" ? e.name : id;
     const hand = handTraitByRaceName.get(`${String(e.race)}|${name}`);
-    // Vendored entries wire numbers through three routes beyond `changes[]`:
+    // Vendored entries wire numbers through four routes beyond `changes[]`:
     // `openChanges` (player-targeted "choose one" bonuses via
-    // `build.vendoredRacialTraitTargets`), save-category promotions keyed on
-    // the entry's own note text (`VENDORED_RACIAL_TRAIT_SAVE_NOTES`), and a
-    // hand-authored `RACIAL_TRAITS` counterpart that shadows the vendored
-    // entry in the picker.
+    // `build.vendoredRacialTraitTargets`), save-category and maneuver-category
+    // promotions keyed on the entry's own note text
+    // (`VENDORED_RACIAL_TRAIT_SAVE_NOTES` / `VENDORED_RACIAL_TRAIT_MANEUVER_NOTES`),
+    // and a hand-authored `RACIAL_TRAITS` counterpart that shadows the
+    // vendored entry in the picker.
     const wired =
       arrayLen(e.changes) > 0 ||
       arrayLen(e.openChanges) > 0 ||
       saveChangesFromNotes(
         e.contextNotes as readonly ContextNote[] | undefined,
         VENDORED_RACIAL_TRAIT_SAVE_NOTES,
+      ).length > 0 ||
+      maneuverChangesFromNotes(
+        e.contextNotes as readonly ContextNote[] | undefined,
+        VENDORED_RACIAL_TRAIT_MANEUVER_NOTES,
       ).length > 0 ||
       (hand !== undefined && defMovesNumbers(hand));
     const noted = arrayLen(e.contextNotes) > 0;

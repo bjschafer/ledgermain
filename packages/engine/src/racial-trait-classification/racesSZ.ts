@@ -111,8 +111,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_SZ: Readonly<
     id: "I6yOviSAKlkZqshg",
     race: "Tiefling",
     name: "Bullying",
-    bucket: "situational",
-    note: "The CMB bonus is scoped to disarm and steal maneuvers only; an unconditional 'cmb' Change would over-apply to every combat maneuver.",
+    bucket: "numeric",
+    note: "The CMB bonus is scoped to disarm and steal, now real MANEUVER_CATEGORIES entries; the note text matches a VENDORED_RACIAL_TRAIT_MANEUVER_NOTES key exactly, so it is wired via collect.ts.",
   },
   tTnTbwQMUCVklGGl: {
     id: "tTnTbwQMUCVklGGl",
@@ -216,8 +216,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_SZ: Readonly<
     id: "vXfdoGjzMenvozlp",
     race: "Vanara",
     name: "Whitecape",
-    bucket: "situational",
-    note: "The CMD bonus is scoped to resisting bull rush or trip specifically; an unconditional 'cmd' Change would over-apply to every combat maneuver.",
+    bucket: "numeric",
+    note: "The CMD bonus is scoped to resisting bull rush or trip, now real MANEUVER_CATEGORIES entries; the note text matches a VENDORED_RACIAL_TRAIT_MANEUVER_NOTES key exactly, so it is wired via collect.ts.",
   },
   xmVIIWMr8jcAFnhw: {
     id: "xmVIIWMr8jcAFnhw",

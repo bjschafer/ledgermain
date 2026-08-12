@@ -48,8 +48,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_AD: Readonly<
     id: "3vfffr4tidJuzisG",
     race: "Catfolk",
     name: "Nimble Faller",
-    bucket: "situational",
-    note: "The CMD bonus is scoped to trip attempts only; CMD is a single flat total, so scoping it to one maneuver would over-apply it against every other maneuver. The fall-safely half of the trait has no number at all.",
+    bucket: "numeric",
+    note: "The CMD bonus is scoped to trip attempts, now a real MANEUVER_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_MANEUVER_NOTES key exactly, so it is wired via collect.ts. The fall-safely half of the trait still has no number at all and stays prose.",
   },
   xy56alprFFyhWR0y: {
     id: "xy56alprFFyhWR0y",
@@ -62,8 +62,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_AD: Readonly<
     id: "Hi2xxPj8RqlQ5NYn",
     race: "Cecaelia",
     name: "Tripping Tentacles",
-    bucket: "situational",
-    note: "The CMB bonus is scoped to trip attempts only; CMB is a single flat total, so scoping it to one maneuver would over-apply it against every other maneuver check.",
+    bucket: "numeric",
+    note: "The CMB bonus is scoped to trip attempts, now a real MANEUVER_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_MANEUVER_NOTES key exactly, so it is wired via collect.ts.",
   },
   uvFRWmR4IU1kPbyM: {
     id: "uvFRWmR4IU1kPbyM",
@@ -370,8 +370,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_AD: Readonly<
     id: "HzKBmWjSHjYSNsU9",
     race: "Dwarf",
     name: "Relentless",
-    bucket: "situational",
-    note: "The CMB bonus is scoped to bull rush or overrun while both combatants stand on the ground; CMB is a single flat total, so scoping it to two maneuvers under a battlefield condition would over-apply it to every other check.",
+    bucket: "numeric",
+    note: "The CMB bonus is scoped to bull rush and overrun, now real MANEUVER_CATEGORIES entries; the note text matches a VENDORED_RACIAL_TRAIT_MANEUVER_NOTES key exactly, so it is wired via collect.ts. The standing-on-the-ground condition is treated as always-on, same call as dwarf Stability (`race-maneuver-notes.ts`), and stays in the visible note text.",
   },
   huJk8pF1KRKfeWzL: {
     id: "huJk8pF1KRKfeWzL",
@@ -419,8 +419,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_AD: Readonly<
     id: "qJGhs3rHo8bT01FW",
     race: "Dwarf",
     name: "Tightfisted",
-    bucket: "situational",
-    note: "The CMD bonus is scoped to steal and disarm maneuvers only; CMD is a single flat total, so scoping it to two maneuvers would over-apply it to every other maneuver. The Sleight-of-Hand-notice/attack-of-opportunity rider is likewise conditional on an opponent's action.",
+    bucket: "numeric",
+    note: "The CMD bonus is scoped to steal and disarm, now real MANEUVER_CATEGORIES entries; the note text matches a VENDORED_RACIAL_TRAIT_MANEUVER_NOTES key exactly, so it is wired via collect.ts. The Sleight-of-Hand-notice/attack-of-opportunity rider is still conditional on an opponent's action and stays prose.",
   },
   XVm7uHb6cw0AiUOh: {
     id: "XVm7uHb6cw0AiUOh",

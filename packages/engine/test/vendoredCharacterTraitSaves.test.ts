@@ -190,6 +190,26 @@ describe("Draconic Lineage (deliberately partial)", () => {
   });
 });
 
+describe("Devout Visionary (deliberately partial: dazed has no category)", () => {
+  const id = traitIdByName("Devout Visionary");
+  const base = compute(makeDoc(), ref);
+  const withTrait = compute(makeDoc([id]), ref);
+
+  it("promotes only the confusion half of its confused-or-dazed note", () => {
+    // Will floor = poor save (+0) + Wis mod (0) = 0, + the trait's +1 vs.
+    // confusion = 1. The same note also covers effects that grant the DAZED
+    // condition, which has no SAVE_CATEGORIES entry, and a once-per-day
+    // grant-an-ally-a-new-save ability, neither expressible as a Change, so
+    // only the confusion half promotes.
+    expect(base.saves.will.total).toBe(0);
+    expect(withTrait.saves.will.conditionals).toEqual([
+      { total: 1, categories: ["confusion"], labels: ["confusion"] },
+    ]);
+    expect(withTrait.saves.fort.conditionals).toBeUndefined();
+    expect(withTrait.saves.ref.conditionals).toBeUndefined();
+  });
+});
+
 describe("Blood Algorithm (Android) (newly promoted: the pain descriptor, Fortitude and Will)", () => {
   const id = traitIdByName("Blood Algorithm (Android)");
   const base = compute(makeDoc(), ref);

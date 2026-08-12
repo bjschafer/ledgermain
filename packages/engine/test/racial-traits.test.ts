@@ -366,6 +366,7 @@ describe("vendored alternate-trait note suppression (issue #41)", () => {
       "Aquatic Elf",
       "Duergar",
       "Duskwalker",
+      "Dwarf",
       "Gillman",
       "Grippli",
       "Nagaji",

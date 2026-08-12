@@ -279,8 +279,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     id: "BO8RYKHYIldtwfI1",
     race: "Gnome",
     name: "Dirty Trickster",
-    bucket: "situational",
-    note: "CMB bonus scoped to the dirty trick maneuver; cmb on the sheet is unconditional and would over-apply to every combat maneuver.",
+    bucket: "numeric",
+    note: "CMB bonus scoped to the dirty trick maneuver, now a real MANEUVER_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_MANEUVER_NOTES key exactly, so it is wired via collect.ts.",
   },
   wNE1rlrOUrO4IKnP: {
     id: "wNE1rlrOUrO4IKnP",

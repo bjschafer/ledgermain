@@ -6,9 +6,12 @@
  * and it must re-stack against the unconditional modifiers rather than
  * simply adding to that total.
  *
- * No real feat/trait wires `maneuverCategories` yet — every fixture here
- * synthesizes the scoped Change on a buff, the same way
- * `saveCategories.test.ts`'s "category inheritance" block does for saves.
+ * Every fixture here synthesizes the scoped Change on a buff, the same way
+ * `saveCategories.test.ts`'s "category inheritance" block does for saves —
+ * real content that wires `maneuverCategories` (character traits, racial
+ * traits) has its own fixtures in `traits.test.ts`,
+ * `vendoredCharacterTraitManeuvers.test.ts`, and
+ * `vendoredRacialTraitManeuvers.test.ts`.
  */
 
 import { describe, expect, it } from "bun:test";

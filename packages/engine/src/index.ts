@@ -841,6 +841,11 @@ export {
   standardRaceSaveChanges,
   type StandardRaceSaveBonus,
 } from "./race-save-notes.js";
+export {
+  STANDARD_RACE_MANEUVER_BONUSES,
+  standardRaceManeuverChanges,
+  type StandardRaceManeuverBonus,
+} from "./race-maneuver-notes.js";
 export { computeSenses, isSenseTarget, SENSE_TARGET_IDS } from "./senses.js";
 export {
   BUFF_INSTANCE_STATE,
@@ -927,6 +932,15 @@ export {
   VENDORED_CHARACTER_TRAIT_SAVE_NOTES,
   VENDORED_RACIAL_TRAIT_SAVE_NOTES,
 } from "./vendored-trait-save-notes.js";
+export {
+  maneuverChangesFromNotes,
+  scopedManeuver,
+  MANEUVER_NOTE_TARGETS,
+  PARTIALLY_PROMOTED_CHARACTER_TRAIT_MANEUVER_NOTES,
+  PARTIALLY_PROMOTED_RACIAL_TRAIT_MANEUVER_NOTES,
+  VENDORED_CHARACTER_TRAIT_MANEUVER_NOTES,
+  VENDORED_RACIAL_TRAIT_MANEUVER_NOTES,
+} from "./vendored-trait-maneuver-notes.js";
 export {
   saveNoteCoverage,
   type SaveNoteCatalog,

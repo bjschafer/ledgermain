@@ -160,8 +160,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_HR: Readonly<
     id: "NApPIjNkVNBxzQS3",
     race: "Half-Orc",
     name: "Gatecrasher",
-    bucket: "situational",
-    note: "Scoped to breaking objects and sunder attempts specifically, narrower than the whole Strength-check and CMB targets.",
+    bucket: "numeric",
+    note: "The sunder half is now the sunder MANEUVER_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_MANEUVER_NOTES key exactly, so it is wired via collect.ts. The Strength-check bonus to break objects (target strChecks) has no maneuver-category equivalent and stays prose.",
   },
   nmthVcIFBg9PNqhb: {
     id: "nmthVcIFBg9PNqhb",
@@ -335,8 +335,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_HR: Readonly<
     id: "g9H3WgBwfJUfaU4m",
     race: "Human",
     name: "Heart of the Snows",
-    bucket: "blocked",
-    note: "The Fortitude bonus is scoped to cold-climate effects, which SAVE_CATEGORIES has no entry for, and the CMD bonus is scoped to trip specifically, which cmd has no maneuver-specific sub-target for.",
+    bucket: "numeric",
+    note: "The CMD bonus is scoped to trip, now a real MANEUVER_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_MANEUVER_NOTES key exactly, so it is wired via collect.ts. The Fortitude bonus is still scoped to cold-climate effects, which SAVE_CATEGORIES has no entry for, and the slippery-terrain Acrobatics/Climb bonus is narrower than any skill target; both stay prose.",
   },
   DsH7y38wfWDPCINE: {
     id: "DsH7y38wfWDPCINE",

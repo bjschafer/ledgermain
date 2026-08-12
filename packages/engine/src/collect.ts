@@ -40,12 +40,18 @@ import { ORACLE_CURSES } from "./oracle-curses.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { polymorphFormOption } from "./polymorph.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
+import { standardRaceManeuverChanges } from "./race-maneuver-notes.js";
 import { standardRaceSaveChanges } from "./race-save-notes.js";
 import {
   saveChangesFromNotes,
   VENDORED_CHARACTER_TRAIT_SAVE_NOTES,
   VENDORED_RACIAL_TRAIT_SAVE_NOTES,
 } from "./vendored-trait-save-notes.js";
+import {
+  maneuverChangesFromNotes,
+  VENDORED_CHARACTER_TRAIT_MANEUVER_NOTES,
+  VENDORED_RACIAL_TRAIT_MANEUVER_NOTES,
+} from "./vendored-trait-maneuver-notes.js";
 import {
   effectiveRaceContextNotes,
   FLEXIBLE_ABILITY_SUPPRESS_TARGET,
@@ -267,10 +273,18 @@ export function collectModifiers(
     // POST-suppression notes, which is what keeps an alternate that replaces
     // the trait (Steel Soul for Hardy) from doubling up with it — see
     // `race-save-notes.ts`.
-    for (const ch of standardRaceSaveChanges(
-      race.name,
-      effectiveRaceContextNotes(race, activeRacialTraits, activeVendoredTraits),
-    )) {
+    // Same idea, for standard racial traits whose bonus is scoped to one
+    // named combat maneuver rather than a save category (dwarf/duergar
+    // Stability) — see `race-maneuver-notes.ts`.
+    const survivingRaceNotes = effectiveRaceContextNotes(
+      race,
+      activeRacialTraits,
+      activeVendoredTraits,
+    );
+    for (const ch of [
+      ...standardRaceSaveChanges(race.name, survivingRaceNotes),
+      ...standardRaceManeuverChanges(race.name, survivingRaceNotes),
+    ]) {
       evalChange(
         ch.formula,
         rollData,
@@ -345,6 +359,7 @@ export function collectModifiers(
       for (const ch of [
         ...t.changes,
         ...saveChangesFromNotes(t.contextNotes, VENDORED_RACIAL_TRAIT_SAVE_NOTES),
+        ...maneuverChangesFromNotes(t.contextNotes, VENDORED_RACIAL_TRAIT_MANEUVER_NOTES),
       ]) {
         if (!gateOpen(ch)) continue;
         evalChange(
@@ -687,6 +702,7 @@ export function collectModifiers(
     for (const ch of [
       ...trait.changes,
       ...saveChangesFromNotes(trait.contextNotes, VENDORED_CHARACTER_TRAIT_SAVE_NOTES),
+      ...maneuverChangesFromNotes(trait.contextNotes, VENDORED_CHARACTER_TRAIT_MANEUVER_NOTES),
     ]) {
       if (!gateOpen(ch)) continue;
       evalChange(
