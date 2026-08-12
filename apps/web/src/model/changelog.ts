@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-11-more-save-scopes",
+    date: "2026-08-11",
+    title: "Saving throws recognize fifteen more kinds of effect",
+    note: "The sheet can now show a separate saving throw line against traps, sonic effects, gaze attacks, paralysis, confusion, pain, fatigue and exhaustion, energy drain, ability damage, positive energy, nausea, entangling effects, language dependent effects, and the necromancy and divination schools. Around forty racial traits, character traits, class features, and archetype features that grant those bonuses moved from reminder text onto your saves: a bard's Well Versed, an elf's Desert Runner, a dwarf's Shadowhunter, the Jungle domain's trap sense, and an investigator Profiler's Divination Analysis all compute their lines automatically now.",
+  },
+  {
     id: "2026-08-11-granted-power-numbers",
     date: "2026-08-11",
     title: "Domain, school, and inquisition powers show real bonuses",
