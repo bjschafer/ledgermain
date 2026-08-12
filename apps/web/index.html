@@ -23,6 +23,41 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="apple-mobile-web-app-title" content="Ledgermain" />
 
+    <!--
+      Fallback for the case the error boundary cannot reach: the bundle never
+      runs at all (asset fetch blocked, parse error). It lives in #root, which
+      React clears on mount, and stays invisible for the first several seconds
+      so a slow-but-healthy load never flashes it. Styles are inline and
+      self-contained because a stylesheet that failed to load is one of the
+      things this has to survive.
+    -->
+    <style>
+      .boot-fallback {
+        max-width: 34rem;
+        margin: 15vh auto;
+        padding: 1.25rem 1.5rem;
+        border: 1px solid #ad8e2e;
+        border-radius: 6px;
+        background: #15171c;
+        color: #d9d4c3;
+        font-family: system-ui, sans-serif;
+        line-height: 1.5;
+        text-align: center;
+        opacity: 0;
+        animation: boot-fallback-reveal 0s linear 8s forwards;
+      }
+      .boot-fallback p + p {
+        margin-top: 0.75rem;
+        font-size: 0.875rem;
+        color: #94907f;
+      }
+      @keyframes boot-fallback-reveal {
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -31,7 +66,15 @@
     />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="boot-fallback">
+        <p>Ledgermain didn't finish loading.</p>
+        <p>
+          Reloading usually fixes it. If you're in a private window, or your browser blocks scripts
+          and storage, try a normal window.
+        </p>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
     <!--
       Cloudflare Web Analytics (cookieless, no PII). Injected only on the real

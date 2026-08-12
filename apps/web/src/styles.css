@@ -2585,6 +2585,17 @@ button:focus-visible,
   color: var(--gold-dim-ink);
 }
 
+/* Crash details: readable enough to retype into a bug report, quiet enough
+   not to be the loudest thing on the screen. */
+.crash-detail {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--faint);
+  max-width: 44ch;
+  margin: 12px auto;
+  overflow-wrap: anywhere;
+}
+
 .empty {
   color: var(--faint);
   font-style: italic;
