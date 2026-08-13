@@ -1203,8 +1203,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "improved-channel": {
     slug: "improved-channel",
     name: "Improved Channel",
-    bucket: "subsystem",
-    note: "channel-energy rider/restriction feat, no additional Change target beyond the pool itself",
+    bucket: "numeric",
+    note: "wired via abilityDC.channel: +2 to the channel energy DC (untyped, PZO1110 p.115/126) — see feat-effects.ts's StaticFeatEntry map",
   },
   "improved-charging-hurler": {
     slug: "improved-charging-hurler",

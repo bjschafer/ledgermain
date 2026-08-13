@@ -108,7 +108,7 @@ describe("Monk archetype classification: full coverage of every vendored feature
     expect(Object.keys(MONK_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(328);
   });
 
-  it("bucket counts (22 numeric, 39 situational, 262 subsystem, 5 blocked)", () => {
+  it("bucket counts (24 numeric, 39 situational, 260 subsystem, 5 blocked)", () => {
     const counts: Record<"numeric" | "situational" | "subsystem" | "blocked", number> = {
       numeric: 0,
       situational: 0,
@@ -118,7 +118,10 @@ describe("Monk archetype classification: full coverage of every vendored feature
     for (const entry of Object.values(MONK_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    expect(counts).toEqual({ numeric: 22, situational: 39, subsystem: 262, blocked: 5 });
+    // +2 numeric / -2 subsystem vs. the original audit: master-of-many-styles
+    // and martial-artist's "Pain Points" promoted once abilityDC.stunningFist
+    // / abilityDC.quiveringPalm (ability-dcs.ts) gave the DC half a target.
+    expect(counts).toEqual({ numeric: 24, situational: 39, subsystem: 260, blocked: 5 });
   });
 
   it("every numeric-bucketed feature resolves to a real effect (hand-verified or extracted)", () => {
@@ -128,8 +131,8 @@ describe("Monk archetype classification: full coverage of every vendored feature
     }
   });
 
-  it("21 features are extracted; Nornkith's nimble-reflexes:3 stays solely hand-verified", () => {
-    expect(Object.keys(MONK_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(21);
+  it("23 features are extracted; Nornkith's nimble-reflexes:3 stays solely hand-verified", () => {
+    expect(Object.keys(MONK_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(23);
     expect(MONK_ARCHETYPE_EFFECTS_EXTRACTED["monk:nornkith:nimble-reflexes:3"]).toBeUndefined();
   });
 });

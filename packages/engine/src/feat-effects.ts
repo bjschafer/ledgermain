@@ -252,6 +252,42 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
   "greater-sunder": { type: "static", changes: greaterManeuver("sunder") },
   "greater-trip": { type: "static", changes: greaterManeuver("trip") },
 
+  // ── Enemy-facing ability DC feats ────────────────────────────────────────
+  //
+  // Land on `abilityDC.<family>` (ability-dcs.ts's seven-family vocabulary:
+  // hex/channel/bomb/cruelty/mesmeristTrick/stunningFist/quiveringPalm).
+  // None of the three below name a bonus type, so all are untyped.
+
+  // Improved Channel (PZO1110 p.115/126): "Add 2 to the DC of saving throws
+  // made to resist the effects of your channel energy ability."
+  "improved-channel": {
+    type: "static",
+    changes: [{ target: "abilityDC.channel", type: "untyped", formula: "2" }],
+  },
+
+  // Stunning Fist Adept (community pack): "Add +1 to the saving throw DC
+  // against your Stunning Fist attacks." The feat text adds that this bonus
+  // "does not stack with feats that grant you bonuses to the DC for saving
+  // throws against your Stunning Fist attacks, such as Mantis Style" — a
+  // same-target non-stacking rule the plain untyped bucket can't express,
+  // but harmless today: Mantis Style's DC clause stays unpromoted/prose
+  // (feat-classification-community.ts), so no other abilityDC.stunningFist
+  // source exists to double up against.
+  "stunning-fist-adept": {
+    type: "static",
+    changes: [{ target: "abilityDC.stunningFist", type: "untyped", formula: "1" }],
+  },
+
+  // Quivering Palm Adept (community pack): "Add +2 to the saving throw DC
+  // against your quivering palm attacks." Prereq is the Quivering Palm class
+  // feature itself, so this only ever lands on a chained monk 15+ — the only
+  // build ability-dcs.ts emits a quiveringPalm DC line for; on anyone else
+  // the modifier is collected but has no line to land on, which is correct.
+  "quivering-palm-adept": {
+    type: "static",
+    changes: [{ target: "abilityDC.quiveringPalm", type: "untyped", formula: "2" }],
+  },
+
   // ── Choice feats ───────────────────────────────────────────────────────────
 
   // Skill Focus: +3 competence bonus on the chosen skill (PF1 CRB p. 134).

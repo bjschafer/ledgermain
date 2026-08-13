@@ -2186,7 +2186,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "quicken-blessing": "subsystem",
   "quiet-death": "situational",
   "quillbreaker-defense": "subsystem",
-  "quivering-palm-adept": "blocked",
+  "quivering-palm-adept": "numeric",
   "quivering-palm-versatility": "subsystem",
   "racial-heritage": "subsystem",
   "racial-heritage-mythic": "subsystem",
@@ -2765,7 +2765,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "stumbling-bash": "situational",
   "stunning-assault": "situational",
   "stunning-croak": "situational",
-  "stunning-fist-adept": "blocked",
+  "stunning-fist-adept": "numeric",
   "stunning-fist-mythic": "subsystem",
   "stunning-irruption": "situational",
   "stunning-pin": "subsystem",
@@ -3543,7 +3543,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "punishing-step":
     "Doubles the Dodge feat's dodge bonus specifically for CMD purposes; whether the engine already folds AC dodge bonuses into CMD is unclear, risking a double count. [flag: unsure]",
   "quivering-palm-adept":
-    "Raises the save DC of the quivering palm class feature, a single-ability DC with no general engine target.",
+    "Wired via abilityDC.quiveringPalm: +2 to the Quivering Palm DC (untyped) — see feat-effects.ts's StaticFeatEntry map. Its own prereq (the Quivering Palm class feature) means it only ever lands on a chained monk 15+, the one build ability-dcs.ts carries a quiveringPalm DC line for.",
   recalcitrant:
     "Adds +2 to the DC of others' Intimidate checks made against the character; the engine has no target for modifying incoming check DCs.",
   "scale-and-skin":
@@ -3647,7 +3647,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "stretched-wings":
     "Sets strix fly speed to a fixed 60 ft total rather than adding a delta; replaces the base racial value instead of adding to it.",
   "stunning-fist-adept":
-    "Raises the save DC of the Stunning Fist special attack; no engine target models a special attack's own DC.",
+    "Wired via abilityDC.stunningFist: +1 to the Stunning Fist DC (untyped) — see feat-effects.ts's StaticFeatEntry map. The feat's own 'does not stack with... Mantis Style' clause isn't modeled as a same-type restriction, harmless while Mantis Style's DC bonus stays unpromoted.",
   "sure-and-fleet": "Unconditional racial bonus to Acrobatics and Climb checks.",
   "sure-handed-alchemy":
     "Bonus is to Craft (alchemy) specifically; Craft is a parameterized family with no stable per-instance skill target.",

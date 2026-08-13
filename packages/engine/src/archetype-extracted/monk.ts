@@ -19,8 +19,11 @@
  * another archetype already classified in this file, stamped separately by
  * two different vendored sources for the same published content: Ironskin
  * Monk / Maneuver Master, Nimble Guardian / Nornkith, Hellcat / (the original)
- * Invested Regent content, Elemental Monk / Harrow Warden, and Black Asp /
- * (the original) Brazen Disciple content. Each twin gets its own
+ * Invested Regent content, Elemental Monk / Harrow Warden, Black Asp /
+ * (the original) Brazen Disciple content, and Master of Many Styles / Martial
+ * Artist (every Master of Many Styles feature in this data slice is a
+ * curly-quote-only variant of a Martial Artist feature's prose, not the
+ * genuine Ultimate Combat Master of Many Styles kit). Each twin gets its own
  * classification entry (and, where numeric, its own extracted entry —
  * `resolveArchetypeFeatureEffect` looks up by exact feature id, so a twin
  * under a different id resolves to nothing without one) rather than being
@@ -372,8 +375,8 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "monk:master-of-many-styles",
     name: "Pain Points",
     level: 3,
-    bucket: "subsystem",
-    note: "+1 crit-confirm bonus and +1 to Stunning Fist/Quivering Palm DC — critConfirm has no APPLIED target in this engine (compute.ts never consumes it) and there's no target for feat-DC bumps either, so neither half is expressible",
+    bucket: "numeric",
+    note: "the +1 Stunning Fist/Quivering Palm DC half is flat and unconditional, now expressible via abilityDC.stunningFist/abilityDC.quiveringPalm (ability-dcs.ts); the +1 crit-confirm half stays unwired — critConfirm has no APPLIED target in this engine (compute.ts never consumes it). Vendored description text under this archetypeId is a byte-identical (modulo curly-quote encoding) stamp of martial-artist:pain-points:3's — see this file's header doc comment on cross-tag twins; verdict mirrors that entry's.",
   },
   "monk:master-of-many-styles:exploit-weakness:4": {
     archetypeId: "monk:master-of-many-styles",
@@ -1177,8 +1180,8 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "monk:martial-artist",
     name: "Pain Points",
     level: 3,
-    bucket: "subsystem",
-    note: "critConfirm has no APPLIED target in this engine, and there's no target for feat-DC bumps either — neither half of this feature is expressible",
+    bucket: "numeric",
+    note: "the +1 Stunning Fist/Quivering Palm DC half is flat and unconditional, now expressible via abilityDC.stunningFist/abilityDC.quiveringPalm (ability-dcs.ts); the +1 crit-confirm half stays unwired — critConfirm has no APPLIED target in this engine (compute.ts never consumes it)",
   },
   "monk:martial-artist:physical-resistance:7": {
     archetypeId: "monk:martial-artist",
@@ -2819,5 +2822,35 @@ export const MONK_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     detail: () => "immune to fire",
     confidence: "high",
     provenance: "He has immunity to fire and vulnerability to cold.",
+  },
+
+  // Martial Artist's "Pain Points": the DC half is flat and unconditional,
+  // landing on abilityDC.stunningFist/abilityDC.quiveringPalm
+  // (ability-dcs.ts). The crit-confirm half is dropped — critConfirm has no
+  // APPLIED target in this engine (compute.ts never consumes it).
+  "monk:martial-artist:pain-points:3": {
+    changes: [c("1", "abilityDC.stunningFist"), c("1", "abilityDC.quiveringPalm")],
+    detail: () => "+1 Stunning Fist/Quivering Palm DC (crit-confirm bonus not modeled)",
+    confidence: "medium",
+    provenance:
+      "At 3rd level, a martial artist's advanced knowledge of humanoid anatomy grants a +1 " +
+      "bonus on critical hit confirmation rolls and increases the DC of his stunning fist and " +
+      "quivering palm by 1. This ability replaces still mind.",
+  },
+
+  // Master of Many Styles' vendored "Pain Points" row is a byte-identical
+  // (modulo curly-quote encoding) stamp of martial-artist:pain-points:3's
+  // description text under a different archetypeId — see this file's header
+  // doc comment on cross-tag twins. resolveArchetypeFeatureEffect looks up
+  // by exact feature id, so the twin needs its own entry to actually apply;
+  // verdict mirrors the martial-artist entry above.
+  "monk:master-of-many-styles:pain-points:3": {
+    changes: [c("1", "abilityDC.stunningFist"), c("1", "abilityDC.quiveringPalm")],
+    detail: () => "+1 Stunning Fist/Quivering Palm DC (crit-confirm bonus not modeled)",
+    confidence: "medium",
+    provenance:
+      "At 3rd level, a martial artist's advanced knowledge of humanoid anatomy grants a +1 " +
+      "bonus on critical hit confirmation rolls and increases the DC of his stunning fist and " +
+      "quivering palm by 1. This ability replaces still mind.",
   },
 };

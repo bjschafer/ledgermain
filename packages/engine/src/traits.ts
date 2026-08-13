@@ -178,14 +178,10 @@ const TRAIT_LIST: TraitDef[] = [
     name: "Sacred Conduit",
     category: "Faith",
     summary: "+1 trait bonus to the DC of any channeled energy you channel.",
-    changes: [],
-    contextNotes: [
-      {
-        target: "allChecks",
-        text: "+1 to your channel energy save DC — the sheet has no discrete channel-DC field yet; add it manually.",
-      },
-    ],
-    displayOnly: true,
+    // APG: "Whenever you channel energy, you gain a +1 trait bonus to the
+    // save DC of your channeled energy" — unconditional, no target/scope
+    // restriction, so a real Change onto abilityDC.channel (ability-dcs.ts).
+    changes: [t("1", "abilityDC.channel")],
   },
   {
     id: "childOfTheTemple",

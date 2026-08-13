@@ -392,7 +392,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "n4SWyKVcdmZK4t7d",
     name: "Quivering Palm",
     bucket: "subsystem",
-    note: "a once-per-day death-attack special ability with its own save DC, not a stat bonus this sheet carries.",
+    note: "a once-per-day death-attack special ability; its save DC is a real sheet line via ability-dcs.ts's quiveringPalm family (computed independently of this catalog), but the death-or-negate outcome itself is not a stat bonus this catalog's Change patches can express.",
   },
   nNCWIq0FyYUpBuZG: {
     id: "nNCWIq0FyYUpBuZG",
