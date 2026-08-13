@@ -84,6 +84,20 @@ import { resolveTraitDef } from "./traits.js";
  */
 const CHANNEL_ENERGY_NAME_RE = /^Channel (Energy|Positive Energy|Negative Energy)( \(WAR\))?$/;
 
+/**
+ * The two other vendored pool features whose `detail` carries a save DC, each
+ * mapping 1:1 onto an `ability-dcs.ts` family by exact feature name. Stunning
+ * Fist's mapping matters even without a modifier: its vendored `dcFormula` is
+ * monk-level-scoped, while the CRB feat text (and the `stunningFist` family)
+ * keys the DC off total character level, so a multiclass monk's pool line
+ * would otherwise under-DC. Quivering Palm's vendored formula agrees with the
+ * family's base; its mapping only carries `abilityDC.quiveringPalm` modifiers.
+ */
+const POOL_FAMILY_BY_FEATURE_NAME: Readonly<Record<string, string>> = {
+  "Stunning Fist": "stunningFist",
+  "Quivering Palm": "quiveringPalm",
+};
+
 /** The final family DC from `abilityDCs` for `key`, or `undefined` when absent/not computed. */
 function abilityDCFor(
   abilityDCs: readonly DerivedAbilityDC[] | undefined,
@@ -182,13 +196,14 @@ export interface DerivedResourcePool {
  * string, which would silently drift from `ability-dcs.ts`'s FINAL DC once an
  * `abilityDC.<family>`-targeted modifier applies (e.g. a +2 channel feat) —
  * the resources panel would keep showing the pre-modifier number. When given,
- * the two features with an unambiguous 1:1 family mapping (Channel Energy and
+ * the features with an unambiguous 1:1 family mapping (Channel Energy and
  * its cleric/paladin/warpriest/antipaladin reflavors -> `"channel"`; the
- * alchemist's Bomb -> `"bomb"`) substitute the family's final `dc` for the
- * independently-evaluated one instead. Deliberately conservative: no other
- * feature is matched (hex/cruelty/mesmerist trick/Stunning Fist/Quivering
- * Palm have no resource-pool counterpart in this file to override), and
- * omitting the param keeps every call site's existing output byte-identical.
+ * alchemist's Bomb -> `"bomb"`; Stunning Fist and Quivering Palm by exact
+ * name, see `POOL_FAMILY_BY_FEATURE_NAME`) substitute the family's final
+ * `dc` for the independently-evaluated one instead. Deliberately
+ * conservative: no other feature is matched (hex/cruelty/mesmerist trick
+ * have no DC-bearing resource pool in this file to override), and omitting
+ * the param keeps every call site's existing output byte-identical.
  */
 export function deriveResourcePools(
   doc: CharacterDoc,
@@ -401,10 +416,11 @@ export function deriveResourcePools(
       // (unlike bard's Inspire Courage), see raging-song.ts.
       detail = RAGING_SONG_DETAIL;
     } else {
-      const channelDC = CHANNEL_ENERGY_NAME_RE.test(feature.name)
-        ? abilityDCFor(abilityDCs, "channel")
-        : undefined;
-      detail = actionBasedDetail(feature, featureRollData as RollData, channelDC);
+      const family = CHANNEL_ENERGY_NAME_RE.test(feature.name)
+        ? "channel"
+        : POOL_FAMILY_BY_FEATURE_NAME[feature.name];
+      const familyDC = family ? abilityDCFor(abilityDCs, family) : undefined;
+      detail = actionBasedDetail(feature, featureRollData as RollData, familyDC);
     }
 
     let tableOptions: ToggleBuffOption[] | undefined;

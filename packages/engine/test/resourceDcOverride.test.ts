@@ -110,6 +110,68 @@ describe("deriveResourcePools abilityDCs override", () => {
     expect(withOverride.find((p) => p.name === "Bomb")?.detail).toContain("(DC 18 Ref)");
   });
 
+  it("multiclass monk's Stunning Fist pool detail matches the character-level DC line", () => {
+    // Monk 5 / Fighter 3, Wis 18. CRB Stunning Fist: DC 10 + 1/2 character
+    // level (8 -> +4) + Wis mod (+4) = 18; uses/day = monk level (5) + 1 per
+    // 4 non-monk levels (floor(3/4) = 0) = 5. The vendored dcFormula is
+    // monk-level-scoped (10 + floor(5/2) + 4 = 16), so without the override
+    // the pool line under-DCs against the feat text.
+    const doc = baseDoc({
+      identity: {
+        name: "Ando",
+        race: raceId("Human"),
+        classes: [
+          { tag: "monk", level: 5 },
+          { tag: "fighter", level: 3 },
+        ],
+      },
+      abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 18, cha: 10 },
+    });
+    const sheet = compute(doc, ref);
+    expect(sheet.abilityDCs).toEqual([
+      { key: "stunningFist", label: "Stunning Fist DC", dc: 18, save: "Fortitude" },
+    ]);
+
+    const pool = (dcs?: typeof sheet.abilityDCs) =>
+      deriveResourcePools(doc, ref, sheet.abilities, dcs).find((p) => p.name === "Stunning Fist");
+    expect(pool()?.max).toBe(5);
+    expect(pool()?.detail).toBe("DC 16 Fort");
+    expect(pool(sheet.abilityDCs)?.detail).toBe("DC 18 Fort");
+  });
+
+  it("Quivering Palm pool detail reflects an abilityDC.quiveringPalm modifier", () => {
+    // Chained monk 15, Wis 16: DC 10 + floor(15/2) + 3 = 20 (CRB monk table);
+    // +2 from a synthetic abilityDC.quiveringPalm buff -> 22. The vendored
+    // dcFormula agrees with the base here (monk level IS the right level for
+    // Quivering Palm), so the mapping only matters once a modifier applies.
+    const doc = baseDoc({
+      identity: {
+        name: "Shen",
+        race: raceId("Human"),
+        classes: [{ tag: "monk", level: 15 }],
+      },
+      abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 16, cha: 10 },
+      live: {
+        hp: { current: 0, temp: 0, nonlethal: 0 },
+        conditions: [],
+        resources: {},
+        activeBuffs: [
+          {
+            instanceId: "b1",
+            name: "Test Buff",
+            changes: [{ formula: "2", target: "abilityDC.quiveringPalm", type: "untyped" }],
+          },
+        ],
+      },
+    });
+    const sheet = compute(doc, ref);
+    const qp = sheet.abilityDCs?.find((d) => d.key === "quiveringPalm");
+    expect(qp?.dc).toBe(22);
+
+    const pools = deriveResourcePools(doc, ref, sheet.abilities, sheet.abilityDCs);
+    expect(pools.find((p) => p.name === "Quivering Palm")?.detail).toBe("DC 22 Fort");
+  });
+
   it("an unmapped pool (Rage) is byte-identical whether or not abilityDCs is passed", () => {
     const doc = baseDoc({
       identity: {
