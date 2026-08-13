@@ -151,6 +151,8 @@ export interface PrintSheetData {
     flatFooted: number;
     cmd: number;
     cmdFlatFooted: number;
+    /** Same shape/reasoning as {@link PrintSave.conditionals}, for normal AC. */
+    conditionals: string[];
     /** Same shape/reasoning as {@link PrintSave.conditionals}, for CMD. */
     cmdConditionals: string[];
   };
@@ -404,6 +406,11 @@ export function buildPrintSheet(
       flatFooted: sheet.ac.flatFooted,
       cmd: sheet.cmd,
       cmdFlatFooted: sheet.cmdFlatFooted,
+      // AC is not a signed modifier, so its conditional line prints the bare
+      // total ("19 vs. traps"), unlike the save/CMB/CMD lines.
+      conditionals: (sheet.ac.conditionals ?? []).map(
+        (c) => `${c.total} vs. ${c.labels.join("/")}`,
+      ),
       cmdConditionals: (sheet.cmdConditionals ?? []).map(
         (c) => `${signed(c.total)} vs. ${c.labels.join("/")}`,
       ),

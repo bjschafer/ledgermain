@@ -34,6 +34,7 @@ export function StatSeal({
   value,
   foot,
   conditionals,
+  unsignedConditionals,
   components,
   provTitle,
   className,
@@ -51,6 +52,12 @@ export function StatSeal({
    * into `value`, since the headline number stays the one you roll by default.
    */
   conditionals?: ConditionalTotal[];
+  /**
+   * Print conditional totals bare rather than sign-prefixed — for a stat
+   * that is a target number, not a modifier (AC's "19 traps", vs. a save's
+   * "+12 fear").
+   */
+  unsignedConditionals?: boolean;
   components?: ModifierComponent[];
   provTitle?: string;
   className?: string;
@@ -91,7 +98,8 @@ export function StatSeal({
         <div className="seal-conditionals">
           {conditionals.map((c) => (
             <span key={c.categories.join("/")}>
-              <b className="num">{signed(c.total)}</b> {c.labels.join("/")}
+              <b className="num">{unsignedConditionals ? c.total : signed(c.total)}</b>{" "}
+              {c.labels.join("/")}
             </span>
           ))}
         </div>

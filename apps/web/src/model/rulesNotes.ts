@@ -8,12 +8,18 @@
  */
 import type { ContextNote } from "@pf1/schema";
 import {
+  AC_NOTE_TARGETS,
   MANEUVER_NOTE_TARGETS,
+  PARTIALLY_PROMOTED_CHARACTER_TRAIT_AC_NOTES,
   PARTIALLY_PROMOTED_CHARACTER_TRAIT_MANEUVER_NOTES,
+  PARTIALLY_PROMOTED_RACIAL_TRAIT_AC_NOTES,
   PARTIALLY_PROMOTED_RACIAL_TRAIT_MANEUVER_NOTES,
   saveNoteCoverage,
+  STANDARD_RACE_AC_BONUSES,
   STANDARD_RACE_MANEUVER_BONUSES,
+  VENDORED_CHARACTER_TRAIT_AC_NOTES,
   VENDORED_CHARACTER_TRAIT_MANEUVER_NOTES,
+  VENDORED_RACIAL_TRAIT_AC_NOTES,
   VENDORED_RACIAL_TRAIT_MANEUVER_NOTES,
   type SaveNoteCoverage,
 } from "@pf1/engine";
@@ -89,6 +95,14 @@ function standardRaceManeuverCoverage(raceName: string, text: string): SaveNoteC
   return hit.full === false ? "partial" : "full";
 }
 
+function standardRaceAcCoverage(raceName: string, text: string): SaveNoteCoverage {
+  const entries = STANDARD_RACE_AC_BONUSES[raceName];
+  if (!entries) return "none";
+  const hit = entries.find((e) => text.includes(e.match));
+  if (!hit) return "none";
+  return hit.full === false ? "partial" : "full";
+}
+
 /**
  * Same question as `@pf1/engine`'s `saveNoteCoverage`, asked against the
  * maneuver-note promotion tables (`vendored-trait-maneuver-notes.ts`,
@@ -121,12 +135,43 @@ function maneuverNoteCoverage(
 }
 
 /**
+ * Same question again, asked against the AC-note promotion tables
+ * (`vendored-trait-ac-notes.ts`, `race-ac-notes.ts`): has this `ac` note's
+ * whole benefit already landed as a real `Change`, or does it still need a
+ * player to apply it by hand?
+ */
+function acNoteCoverage(
+  source: ContextNoteCatalog,
+  note: Pick<ContextNote, "target" | "text">,
+): SaveNoteCoverage {
+  if (!AC_NOTE_TARGETS.has(note.target)) return "none";
+  const text = note.text.trim();
+  switch (source.catalog) {
+    case "characterTrait":
+      return textTableCoverage(
+        text,
+        VENDORED_CHARACTER_TRAIT_AC_NOTES,
+        PARTIALLY_PROMOTED_CHARACTER_TRAIT_AC_NOTES,
+      );
+    case "racialTrait":
+      return textTableCoverage(
+        text,
+        VENDORED_RACIAL_TRAIT_AC_NOTES,
+        PARTIALLY_PROMOTED_RACIAL_TRAIT_AC_NOTES,
+      );
+    case "race":
+      return standardRaceAcCoverage(source.raceName, text);
+  }
+}
+
+/**
  * The single answer `RulesNote`'s `appliedAutomatically` cue needs: has
  * `note`'s whole benefit already landed as a real `Change` somewhere in
  * `collect.ts`? Tries the save-note route first (`saveNoteCoverage`), then
- * the maneuver-note route — a given note's `target` only ever matches one of
- * the two (`SAVE_NOTE_TARGETS` and `MANEUVER_NOTE_TARGETS` don't overlap), so
- * this never has to reconcile conflicting answers, only pick whichever route
+ * the maneuver-note route, then the AC-note route — a given note's `target`
+ * only ever matches one of the three (`SAVE_NOTE_TARGETS`,
+ * `MANEUVER_NOTE_TARGETS`, and `AC_NOTE_TARGETS` don't overlap), so this
+ * never has to reconcile conflicting answers, only pick whichever route
  * actually applies.
  *
  * "Partial" carries the same weight here as it does on the save side: the
@@ -140,5 +185,7 @@ export function contextNoteCoverage(
 ): SaveNoteCoverage {
   const save = saveNoteCoverage(source, note);
   if (save !== "none") return save;
-  return maneuverNoteCoverage(source, note);
+  const maneuver = maneuverNoteCoverage(source, note);
+  if (maneuver !== "none") return maneuver;
+  return acNoteCoverage(source, note);
 }

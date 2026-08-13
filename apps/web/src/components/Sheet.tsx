@@ -236,6 +236,8 @@ export function Sheet({
             value={sheet.ac.normal}
             components={sheet.ac.components}
             provTitle="AC components"
+            conditionals={sheet.ac.conditionals}
+            unsignedConditionals
             resetKey={doc.id}
             baseline={baseline.ac.normal}
           />
