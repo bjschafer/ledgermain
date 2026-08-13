@@ -28,6 +28,10 @@ import {
   acChangesFromNotes,
   VENDORED_RACIAL_TRAIT_AC_NOTES,
 } from "../src/vendored-trait-ac-notes.js";
+import {
+  clCheckChangesFromNotes,
+  VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES,
+} from "../src/vendored-trait-cl-check-notes.js";
 
 const ref = loadRefData();
 
@@ -83,6 +87,8 @@ describe("RACIAL_TRAIT_CLASSIFICATION: structural guards", () => {
         maneuverChangesFromNotes(vendored.contextNotes, VENDORED_RACIAL_TRAIT_MANEUVER_NOTES)
           .length > 0 ||
         acChangesFromNotes(vendored.contextNotes, VENDORED_RACIAL_TRAIT_AC_NOTES).length > 0 ||
+        clCheckChangesFromNotes(vendored.contextNotes, VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES)
+          .length > 0 ||
         (hand !== undefined && JSON.stringify(hand).includes('"formula"'));
       expect(wired, `${entry.race} :: ${entry.name} is numeric but no route is wired`).toBe(true);
     }

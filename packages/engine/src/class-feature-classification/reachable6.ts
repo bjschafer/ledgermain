@@ -44,7 +44,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "r3qzzfr6CETVEm0w",
     name: "Inexorable Cold",
     bucket: "blocked",
-    note: "a caster-level and counterspell/dispel-DC bonus scoped to spells with the cold descriptor; this codebase's SAVE_CATEGORIES vocabulary has no elemental-descriptor axis to express 'cold-descriptor spells only'.",
+    note: "clCheck.sr and clCheck.dispel could carry the counterspell/dispel/SR-check bonus, but it (and the flat +1 caster level, and the +1 to the DC of dispelling these spells) is scoped to cold-descriptor spells only; no target carries a descriptor axis, and the dispel-DC-of-your-own-spells bonus has no target at all.",
   },
   vTE94sQboMmdAakT: {
     id: "vTE94sQboMmdAakT",
@@ -242,7 +242,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "1jWdphZfvOQLR2cN",
     name: "Tenebrous Magic",
     bucket: "subsystem",
-    note: "grants a bonus feat plus a metamagic-application rule and a caster-level/dispel-DC bump scoped to darkness/shadow-descriptor spells; the bonus feat isn't this table's route and the descriptor scoping has no vocabulary axis.",
+    note: "grants a bonus feat plus a metamagic-application rule and, for darkness/shadow-descriptor or shadow-subschool spells, +2 caster level, +2 to those spells' save DCs, and a bigger penalty on dispel checks made against them in darkness; the bonus feat isn't this table's route, spellDC has no descriptor/subschool axis to match the scope, and neither the CL bump nor the dispel-DC-of-your-own-spells bonus has a target at all.",
   },
   "2YA3Ken4K90rB0EE": {
     id: "2YA3Ken4K90rB0EE",

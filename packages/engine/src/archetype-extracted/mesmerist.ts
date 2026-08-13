@@ -448,7 +448,7 @@ export const MESMERIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mental Manipulator",
     level: 1,
     bucket: "subsystem",
-    note: "expands the spell list plus a favored-enemy spell-DC bump at 5th — spell-DC isn't a Change target and spell-list additions aren't numbers, replaces consummate liar and alters mesmerist tricks with no compensating number to extract",
+    note: "expands the spell list plus a favored-enemy spell-DC bump at 5th — spellDC has no favored-enemy/creature-type axis, and spell-list additions aren't numbers, replaces consummate liar and alters mesmerist tricks with no compensating number to extract",
   },
   "mesmerist:hate-monger:out-for-blood:7": {
     archetypeId: "mesmerist:hate-monger",

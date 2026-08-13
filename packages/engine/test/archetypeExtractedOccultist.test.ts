@@ -82,10 +82,10 @@ describe("OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     for (const entry of Object.values(OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    expect(counts.numeric).toBe(2);
+    expect(counts.numeric).toBe(4);
     expect(counts.situational).toBe(10);
     expect(counts.subsystem).toBe(69);
-    expect(counts.blocked).toBe(19);
+    expect(counts.blocked).toBe(17);
     expect(counts.numeric + counts.situational + counts.subsystem + counts.blocked).toBe(100);
   });
 
@@ -93,14 +93,14 @@ describe("OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const numericIds = Object.entries(OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(2);
+    expect(numericIds.length).toBe(4);
     for (const id of numericIds) {
       expect(OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
     for (const id of Object.keys(OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED)) {
       expect(OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("numeric");
     }
-    expect(Object.keys(OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(2);
+    expect(Object.keys(OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(4);
   });
 });
 
@@ -284,15 +284,56 @@ describe("blocked bucket: vendored copy-paste errors (occultist)", () => {
   });
 });
 
-describe("blocked bucket: missing spell-DC target (occultist)", () => {
-  it("Necromantic Bond, Conductor, and Silksworn Arcana all promise an unconditional spell-DC increase with no engine target", () => {
-    for (const id of [
-      "occultist:necroccultist:necromantic-bond:1",
-      "occultist:planar-harmonizer:conductor:1",
-      "occultist:silksworn:silksworn-arcana:16",
-    ]) {
-      expect(OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("blocked");
-      expect(OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeUndefined();
-    }
+describe("blocked bucket: Silksworn Arcana's DC bonus needs a per-cast equipped-gear check spellDC.<school> can't express", () => {
+  it("Silksworn Arcana stays blocked (school-matched clothing slot is a live equipment condition)", () => {
+    const id = "occultist:silksworn:silksworn-arcana:16";
+    expect(OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("blocked");
+    expect(OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeUndefined();
+  });
+});
+
+describe("Necroccultist: Necromantic Bond raises the DC of necromancy spells by 2 at 14th level", () => {
+  it("archetype exists in the vendored data", () => {
+    expect(archetypeId("Necroccultist")).toBe("occultist:necroccultist");
+  });
+
+  it("if(unlevel >= 14, 2, 0) targeting spellDC.necromancy — 0 before 14th, +2 at and after", () => {
+    const id = "occultist:necroccultist:necromantic-bond:1";
+    const [dcChange] = OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(dcChange!.target).toBe("spellDC.necromancy");
+    const at = (level: number) => evaluateFormula(dcChange!.formula, { class: { unlevel: level } });
+    expect(at(10)).toBe(0);
+    expect(at(13)).toBe(0);
+    expect(at(14)).toBe(2);
+    expect(at(20)).toBe(2);
+  });
+
+  it("classified numeric, with a matching extracted entry", () => {
+    const id = "occultist:necroccultist:necromantic-bond:1";
+    expect(OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("numeric");
+    expect(OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
+  });
+});
+
+describe("Planar Harmonizer: Conductor raises the DC of conjuration spells by 2 at 14th level", () => {
+  it("archetype exists in the vendored data", () => {
+    expect(archetypeId("Planar Harmonizer")).toBe("occultist:planar-harmonizer");
+  });
+
+  it("if(unlevel >= 14, 2, 0) targeting spellDC.conjuration — 0 before 14th, +2 at and after", () => {
+    const id = "occultist:planar-harmonizer:conductor:1";
+    const [dcChange] = OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(dcChange!.target).toBe("spellDC.conjuration");
+    const at = (level: number) => evaluateFormula(dcChange!.formula, { class: { unlevel: level } });
+    expect(at(10)).toBe(0);
+    expect(at(13)).toBe(0);
+    expect(at(14)).toBe(2);
+    expect(at(20)).toBe(2);
+  });
+
+  it("classified numeric, with a matching extracted entry", () => {
+    const id = "occultist:planar-harmonizer:conductor:1";
+    expect(OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("numeric");
+    expect(OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
   });
 });

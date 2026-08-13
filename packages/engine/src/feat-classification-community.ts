@@ -759,7 +759,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   dislocate: "subsystem",
   "disorienting-blow": "situational",
   "disorienting-maneuver": "situational",
-  "dispel-focus": "blocked",
+  "dispel-focus": "numeric",
   "dispel-mastery": "subsystem",
   "dispel-synergy": "situational",
   "dispelling-blood": "subsystem",
@@ -916,7 +916,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "elven-battle-style": "subsystem",
   "elven-battle-torrent": "subsystem",
   "elven-battle-training": "situational",
-  "elven-spirit": "blocked",
+  "elven-spirit": "numeric",
   "embrace-of-the-dark-fey": "numeric",
   "emergency-attunement": "subsystem",
   "emissary-s-emboldening": "situational",
@@ -1303,7 +1303,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "greater-channel-smite": "subsystem",
   "greater-cloud-invocation": "subsystem",
   "greater-dirge-of-doom": "subsystem",
-  "greater-dispel-focus": "blocked",
+  "greater-dispel-focus": "numeric",
   "greater-drow-nobility": "subsystem",
   "greater-eldritch-heritage": "subsystem",
   "greater-elemental-focus": "blocked",
@@ -3204,7 +3204,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
 
 export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string>> = {
   "aberration-bane-caster":
-    "Bonus applies to spell save DC and to caster level checks vs SR, scoped to aberrations only; neither has an engine target.",
+    "Bonus applies to spell save DC and to caster level checks vs SR, scoped to aberrations only; spellDC and clCheck have no enemy-type axis.",
   "accomplished-sneak-attacker":
     "Unconditional +1d6 to sneak attack damage, but sneak attack dice have no engine target.",
   accursed:
@@ -3215,11 +3215,11 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "alchemical-strike":
     "Increases the DC of a thrown alchemical item's effect by 2 (more at higher BAB), but there is no engine target for an alchemical item's save DC. [flag: unsure]",
   "allied-spellcaster":
-    "The competence bonus applies to level checks to overcome spell resistance, which has no engine target; it is also teamwork-conditional.",
+    "The +2/+4 competence bonus on CL checks to overcome SR only applies while adjacent to another ally with this same feat (more if they share the prepared spell); clCheck has no conditional-buff mechanism for that.",
   "anatomical-savant":
     "Reduces the chance that fortification-like effects negate a critical hit or sneak attack, a mechanic with no matching engine target. [flag: unsure]",
   "ancient-draconic":
-    "The bonus applies to caster level checks to overcome spell resistance, which has no engine target.",
+    "The +1 bonus on caster level checks to overcome SR applies only to arcane spells with a verbal component; clCheck has no per-casting-component axis, so wiring it to clCheck.sr would over-apply to non-verbal and divine casting.",
   "angelic-flesh":
     "Benefit is a player choice among four non-skill/non-weapon sub-options (energy resistance, save bonus, DR-bypass material, natural armor), no single stable engine target; the natural-armor option is also stacking-suspect. [flag: multi-option-choice]",
   "aquatic-ancestry": "Unconditional +10 feet swim speed increase.",
@@ -3248,7 +3248,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "betrayal-sense":
     "Bonus equals the rogue trap sense bonus, a class-level-keyed value with no @class path support in formulas.",
   "bloatmage-initiate":
-    "Per-school caster level bonus has no engine target for a school-scoped choice, and the feat also imposes armor-check/Dex-cap/speed penalties the static sheet doesn't model.",
+    "Per-school caster LEVEL bonus (not a check) — cl stays an unapplied target regardless of school-scoping — and the feat also imposes armor-check/Dex-cap/speed penalties the static sheet doesn't model.",
   "blood-beak":
     "Sets the beak natural attack's damage die to 1d6 (replaces the base die rather than adding a modifier) plus a crit-triggered bleed rider; no clean additive engine target.",
   "blood-of-heroes":
@@ -3316,11 +3316,11 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "disciple-of-the-sword":
     "Grants Weapon Specialization's +2 damage, but fixed to a specific weapon (longsword) rather than a player pick, so it falls outside the choice-numeric weapon-choice mechanism and there is no non-choice per-weapon damage target.",
   "disciplinary-devotee":
-    "The +1 bonuses apply only to spells 'from your psychic discipline,' a subset the engine has no way to identify.",
+    "The +1 bonus on caster level checks (and concentration checks, not modeled) and the +1 insight save bonus both apply only to spells 'from your psychic discipline'; clCheck has no per-discipline axis.",
   "dispel-focus":
-    "+2 on dispel checks; caster-level/dispel checks have no engine target (same family as blocked concentration/SR checks).",
+    "Wired via clCheck.dispel (spell-dcs.ts): +2 on dispel checks, untyped (no bonus type named) — see feat-effects.ts's StaticFeatEntry map.",
   "diviner-s-delving":
-    "+2 on caster level checks to overcome SR with divination spells; caster-level-vs-SR checks have no engine target.",
+    "+2 on caster level checks to overcome SR, but only with divination spells; clCheck has no per-school axis (unlike spellDC), so wiring it to clCheck.sr would over-apply to every other school's SR checks.",
   "draconic-aspect":
     "Energy resistance 5 is a real number with a real target (eres.<energy>), but the choice axis is an energy type, which the choice-numeric bucket explicitly excludes.",
   "draconic-paragon":
@@ -3330,17 +3330,17 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "dryad-s-apprentice":
     "The +4 bonus applies only to Craft checks involving wood, a single Craft instance with no stable per-skill target.",
   earthtouched:
-    "The caster-level bonus is scoped to self-cast sorcerer spells with the earth descriptor and spells-known growth is keyed to sorcerer class level; neither has an engine target.",
+    "The caster LEVEL bonus (not a check) is scoped to self-cast sorcerer spells with the earth descriptor — cl stays an unapplied target regardless of scoping — and spells-known growth keyed to sorcerer class level also has no engine target.",
   "eldritch-researcher":
     "Unconditional +2 Spellcraft bonus rising to +4 at 10 ranks; the self-created-spell caster-level line is excluded as it has no target.",
   "elemental-focus":
-    "The save DC bonus applies only to spells of one chosen energy type, a per-energy-type spell DC with no engine target.",
+    "Scoped to a chosen energy descriptor, an axis spellDC's school vocabulary doesn't cover.",
   "elemental-knowledge":
     "The skill bonus applies to whichever element's associated skills the kineticist chose via a class feature, state the engine doesn't track for a stable target.",
   "elongated-cranium":
     "Grants bonuses and penalties to Intelligence/Wisdom/Charisma checks, not skill checks; ability checks have no engine target.",
   "elven-spirit":
-    "The core benefit is a caster-level-check-vs-spell-resistance bonus (explicitly no target); the Spellcraft bonus is likewise scoped to identifying magic items only.",
+    "Wired via clCheck.sr (spell-dcs.ts): +2 racial bonus on caster level checks to overcome spell resistance — see feat-effects.ts's StaticFeatEntry map. The Spellcraft bonus stays unwired: it's scoped to identify checks only, and the feat's own 'gain a different racial trait instead' clause is an unmodeled choice axis.",
   "embrace-of-the-dark-fey": "Unconditional +2 Intimidate bonus rising to +4 at 10 ranks.",
   "erastil-s-blessing":
     "Substitutes Wisdom for Dexterity on bow attack rolls rather than adding a bonus, so no additive Change formula applies.",
@@ -3371,7 +3371,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "fascinated-by-the-mundane":
     "The bonus covers all Charisma-based skills except Diplomacy, including Perform, a parameterized family with no stable per-instance target. [flag: parameterized-skill-family]",
   "favored-enemy-spellcasting":
-    "Raises spell save DC against a chosen creature type; spell DC has no engine target regardless of scope.",
+    "Raises spell save DC only against a chosen creature type; spellDC has no enemy-type axis.",
   "fearless-zeal":
     "The +2/+4 bonus applies to any single self-chosen roll after it's made, not a fixed sheet target.",
   "feline-grace":
@@ -3399,15 +3399,15 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "graceful-athlete":
     "Substitutes Dex for Str on Climb/Swim, a replace rather than an additive bonus.",
   "greater-dispel-focus":
-    "Bonus to a dispel check; no engine target, analogous to concentration/caster-level checks.",
+    "Wired via clCheck.dispel (spell-dcs.ts): +2 more on dispel checks, stacking with Dispel Focus per the feat text (untyped) — see feat-effects.ts's StaticFeatEntry map.",
   "greater-elemental-focus":
-    "Per-energy-type spell save DC increase; no engine target, analogous to per-school spell DC.",
+    "Scoped to a chosen energy descriptor like Elemental Focus; spellDC has no descriptor axis, only schools.",
   "greater-wilding-strike":
     "Increases unarmed strike damage die size, a replace rather than an additive bonus.",
   "grenade-expert":
     "Bonus to the single named Craft (alchemy) skill has no stable per-instance target.",
   "guardian-of-tradition":
-    "Caster level bonus scoped to domain spells only; no per-domain-spell CL target exists.",
+    "Caster LEVEL bonus (not a check), scoped to domain spells only; cl stays an unapplied target regardless of scoping.",
   "halfling-slinger":
     "Racial attack bonus fixed to sling only; no non-choice per-weapon-type target exists (weapon targets are choice-mechanism-only).",
   "heavy-gravity-acclimation": "Unconditional +4 effective Strength for carrying capacity.",
@@ -3449,12 +3449,12 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   ironhide:
     "Flat natural armor bonus; natural-armor grants are stacking-suspect against other natural armor and enhancement sources.",
   "irrisen-icemage":
-    "Caster level bonus keyed to a spell's energy descriptor, with no per-descriptor CL target in the engine's vocabulary.",
+    "Caster LEVEL bonus (not a check), keyed to a spell's energy descriptor; cl stays an unapplied target regardless of scoping.",
   "jackal-heritage": "Unconditional +2 racial bonus on Perception checks.",
   "keen-scent":
     "Grants the scent special ability, wired through the sense-grant mechanism rather than a Change number. [flag: sense-grant]",
   "knowledgeable-spellcaster":
-    "Bonus is on a caster-level check to overcome SR, which has no engine target regardless of the identify-first condition.",
+    "The +3/+5 bonus on CL checks to overcome SR only applies against a specific creature after identifying it via a Knowledge check; clCheck has no mechanism for a per-target, per-encounter conditional bonus like that.",
   "kobold-confidence":
     "Swaps Fort-save/stable ability from Con to Cha/Int/Wis, a substitution the engine can't express as an additive Change.",
   "kraken-style":
@@ -3471,7 +3471,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "majesty-of-the-yamaraj":
     "Grants one additional daily use of ghost hunter (racial trait), which has no featureTag in the POOL TAGS list. [flag: pool-no-tag]",
   maleficium:
-    "Save-DC bonus is scoped to spells with the evil descriptor; no per-descriptor spell-DC target exists.",
+    "Save-DC bonus is scoped to spells with the evil descriptor; spellDC has no descriptor axis, only schools.",
   "mantis-style":
     "Grants one additional daily use of Stunning Fist (the style-active DC bonus is situational and not covered here).",
   "mantis-torment": "Grants one additional daily use of Stunning Fist.",
@@ -3490,7 +3490,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "master-swimmer":
     "Swim speed formula depends on comparing to base land speed, which has no allowed formula primitive.",
   "messenger-of-fate":
-    "Caster-level bonus is scoped to the divination school; no per-school caster-level target exists.",
+    "Caster LEVEL bonus (not a check), scoped to the divination school; cl stays an unapplied target regardless of scoping.",
   "meta-word-mastery":
     "Grants three additional daily uses of meta words, which has no featureTag in the POOL TAGS list. [flag: pool-no-tag]",
   "monkey-style":
@@ -3519,18 +3519,18 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "oath-of-the-unbound":
     "Wired via maneuverCategories and saveCategories: unconditional +2 CMB to break free of a grapple or pin (a combat maneuver check, CRB p. 201), +2 vs entangle effects. The Strength-check half and the slow half of the save clause have no matching engine target and stay prose.",
   "ominous-mien":
-    "The +1 save DC applies only to spells from four specific subschools, a per-spell DC with no engine target.",
+    "Scoped to four specific subschools (compulsion, fear, phantasm, shadow); spellDC's vocabulary is school-level only, with no subschool axis.",
   "oracular-intuition": "Unconditional +2/+4 rank-gated bonus to Sense Motive and Spellcraft.",
   "oread-burrower":
     "Burrow speed equals half base land speed, but no formula primitive references land speed.",
   "pao-lung-self-improvement":
     "The bonus scales dynamically with repeated check failures and resets on success, state the engine doesn't track.",
   peacemaker:
-    "Raises the save DC only for an enumerated list of specific spells, a per-spell DC with no engine target.",
+    "Raises the save DC only for an enumerated list of specific spells; spellDC has no per-spell axis, only all-spells or per-school.",
   "planewalker-s-insight":
     "Only the unconditional Knowledge (planes) portion is drafted; the Sense Motive bonus is scoped to outsiders (situational) and omitted. [flag: unsure]",
   "poison-focus":
-    "Raises the save DC of crafted poisons and poison-descriptor spells, a per-effect DC with no engine target.",
+    "Raises the save DC of crafted poisons (not modeled) and poison-descriptor spells; spellDC has no descriptor axis for the spell half either.",
   "possessed-hand":
     "Only the unconditional +1 insight bonus to Disable Device and Sleight of Hand is drafted; the possessed-hand attack/damage bonus and permanent concentration penalty aren't captured. [flag: unsure]",
   "practiced-tactician": "Grants one additional daily use of the tactician ability.",
@@ -3549,7 +3549,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "scale-and-skin":
     "Grants a natural armor bonus triggered by being affected by transmutation magic; natural-armor bonuses are stacking-suspect and usually excluded.",
   "scaled-disciple":
-    "Grants +1 caster level only for spells in the dragon domain/subdomains, a narrow class/domain-scoped bonus with no general caster-level target.",
+    "Grants +1 caster LEVEL (not a check) only for spells in the dragon domain/subdomains; cl stays an unapplied target regardless of scoping.",
   "scavenger-s-eye": "Unconditional +2 bonus on Appraise checks.",
   scholar:
     "Grants +2 (+4 at 10 ranks) to two independently player-chosen Knowledge skills, but the choice draft format supports only a single {CHOICE} slot per feat. [flag: unsure]",
@@ -3559,7 +3559,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "self-exiled-noble":
     "Unconditional +2 bonus on Disguise checks (the attack/damage bonus vs former family is a separate, enumerated-subset benefit).",
   "shadow-caster":
-    "Treats caster level as 2 higher only for shadow-subschool or darkness/shadow-descriptor spells, a narrow spell-descriptor-scoped bonus with no engine target.",
+    "Treats caster LEVEL (not a check) as 2 higher only for shadow-subschool or darkness/shadow-descriptor spells; cl stays an unapplied target regardless of scoping.",
   "sharp-senses":
     "Unconditional +4 racial bonus on Perception, replacing the keen senses trait's +2.",
   "shield-material-mastery":
@@ -3637,7 +3637,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "soulless-gaze":
     "Intimidate bonus scales with the number of Damnation-tagged feats owned; feat-tag counting isn't an available formula primitive.",
   "spell-specialization":
-    "Caster-level bump scoped to a single chosen spell; a spell-specific effect has no engine target.",
+    "Caster LEVEL bump (not a check), scoped to a single chosen spell; cl stays an unapplied target regardless of scoping.",
   "spirit-focus":
     "Increases a shaman spirit-bonus value by 1; that class-feature value has no engine target.",
   "stone-soul":
@@ -3655,7 +3655,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Unconditional rank-gated Swim bonus (the marshy-terrain doubling is left unmodeled as situational).",
   "swift-swimmer": "Unconditional +15 ft swim speed for a lizardfolk who already has a swim speed.",
   "tapestry-traveler":
-    "Effectively raises caster level for teleportation-subschool spells and supernatural teleport abilities; no caster-level target exists in the engine vocabulary.",
+    "Effectively raises caster LEVEL (not a check) for teleportation-subschool spells and supernatural teleport abilities; cl stays an unapplied target regardless of scoping.",
   "totem-spirit":
     "Benefit varies by Shoanti tribe membership, a prose choice axis (not skill or weapon), so no single stable target applies.",
   "touched-by-sacred-fire":
@@ -3689,9 +3689,9 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "unraveler-of-secrets":
     "Unconditional circumstance bonus to Knowledge (history) (the object-reading spell-like ability is left unmodeled).",
   "unusual-heritage-gillman":
-    "Raises caster level for divination spells/SLAs by 1; no per-school caster-level target exists in the engine vocabulary.",
+    "Raises caster LEVEL (not a check) for divination spells/SLAs by 1; cl stays an unapplied target regardless of scoping.",
   "varisian-tattoo":
-    "Grants +1 caster level for a chosen school; no per-school caster-level target exists in the engine vocabulary.",
+    "Grants +1 caster LEVEL (not a check) for a chosen school; cl stays an unapplied target regardless of school-scoping.",
   "veiled-contempt":
     "Raises the DC other characters use to read the PC via Sense Motive; not a PC-facing stat the engine tracks.",
   "vengeful-death-vow":
@@ -3713,7 +3713,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "will-of-giants":
     "Grants immunity only to enchantment effects that target humanoids specifically; narrower than a general immEffect.charm/compulsion grant, so applying either would overclaim immunity.",
   "witch-knife":
-    "Adds to the save DC of patron spells specifically; no per-subset spell-DC target exists in the engine vocabulary.",
+    "Adds to the save DC of patron spells specifically (a witch class-feature subset); spellDC has no such per-spell-list axis.",
   "wood-crafter":
     "Bonus applies to Craft (armor) specifically; Craft is a parameterized family with no stable per-instance skill target.",
 };

@@ -215,7 +215,7 @@ export const PSYCHIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Psychic Duel Acumen",
     level: 4,
     bucket: "subsystem",
-    note: "adds a spell known, +1 DC for that one spell (no per-spell DC target exists), and d8s instead of d4s for duel manifestation damage — spell-list change plus unmodeled-duel dice (class note 3)",
+    note: "adds a spell known, +1 DC for that one spell (spellDC only has school-wide granularity, no per-spell target), and d8s instead of d4s for duel manifestation damage — spell-list change plus unmodeled-duel dice (class note 3)",
   },
   "psychic:psychic-duelist:thought-made-real:9": {
     archetypeId: "psychic:psychic-duelist",

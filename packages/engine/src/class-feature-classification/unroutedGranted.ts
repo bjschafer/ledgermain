@@ -212,7 +212,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "inquisition-power:restoration:cleanse-impunity",
     name: "Cleanse Impunity",
     bucket: "blocked",
-    note: "A passive bonus to caster level checks scoped to a player-chosen alignment axis; caster-level-check bonuses have no expressible engine target, and the alignment choice adds ambiguity on top of that.",
+    note: "clCheck.sr and clCheck model the SR-check and general caster-level-check bonuses here, but the SR-check share only applies against creatures of a player-chosen opposite alignment, a choice with no tracked field to read.",
   },
   khGQDuyL6TKASqYb: {
     id: "khGQDuyL6TKASqYb",

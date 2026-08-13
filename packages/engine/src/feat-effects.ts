@@ -313,6 +313,33 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
     changes: [{ target: "clCheck.sr", type: "untyped", formula: "2" }],
   },
 
+  // Dispel Focus (community pack): "Whenever you attempt a dispel check
+  // based on your caster level, you gain a +2 bonus on the check." No bonus
+  // type named, so untyped; lands on `clCheck.dispel` (spell-dcs.ts).
+  "dispel-focus": {
+    type: "static",
+    changes: [{ target: "clCheck.dispel", type: "untyped", formula: "2" }],
+  },
+
+  // Greater Dispel Focus (community pack): "Whenever you attempt a dispel
+  // check based on your caster level, you gain a +2 bonus to the check. This
+  // stacks with the bonus from Dispel Focus." Untyped, same as Dispel Focus.
+  "greater-dispel-focus": {
+    type: "static",
+    changes: [{ target: "clCheck.dispel", type: "untyped", formula: "2" }],
+  },
+
+  // Elven Spirit (community pack): "You possess the elven magic racial trait
+  // of the elves, granting you a +2 racial bonus on caster level checks made
+  // to overcome spell resistance." The feat's own Spellcraft bonus is scoped
+  // to identify checks only (situational, not wired) and the "alternatively
+  // gain a different racial trait" clause is an unmodeled choice axis; the
+  // default elven-magic grant itself is unconditional.
+  "elven-spirit": {
+    type: "static",
+    changes: [{ target: "clCheck.sr", type: "racial", formula: "2" }],
+  },
+
   // ── Choice feats ───────────────────────────────────────────────────────────
 
   // Skill Focus: +3 competence bonus on the chosen skill (PF1 CRB p. 134).

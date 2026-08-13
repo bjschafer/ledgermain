@@ -329,7 +329,7 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_HR: Readonly<
     race: "Human",
     name: "Dragon Scholar",
     bucket: "blocked",
-    note: "The caster-level-vs-SR bonus targets cl, which compute.ts does not apply, and the Knowledge (arcana) bonus is scoped to dragon-related checks, narrower than the skill's whole target.",
+    note: "The caster-level-check-vs-SR bonus is scoped to a dragon's spell resistance specifically, an attacker-property scope the clCheck.sr vocabulary explicitly excludes, and the Knowledge (arcana) bonus is scoped to dragon-related checks, narrower than the skill's whole target.",
   },
   g9H3WgBwfJUfaU4m: {
     id: "g9H3WgBwfJUfaU4m",
@@ -398,8 +398,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_HR: Readonly<
     id: "AqWhtrTEaKeJ9qZ6",
     race: "Human",
     name: "Unstoppable Magic",
-    bucket: "blocked",
-    note: "The bonus targets cl, which compute.ts does not apply.",
+    bucket: "numeric",
+    note: "The bonus is an unscoped caster-level check vs. spell resistance, now the clCheck.sr target; the note text matches a VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES key exactly, so it is wired via collect.ts.",
   },
   zZg9G22ykBGKWCuw: {
     id: "zZg9G22ykBGKWCuw",

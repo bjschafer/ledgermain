@@ -306,7 +306,7 @@ export const SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Crippling Darkness",
     level: 13,
     bucket: "subsystem",
-    note: "increases the save DC of specific spells cast in darkness against a target — no engine target for a scoped, subschool-conditional spell-DC bonus",
+    note: "spellDC exists but has no subschool/descriptor axis, and this bonus is additionally conditional on the target being in dim light or darkness — a scope no target expresses",
   },
   "sorcerer:wishcrafter:wishbound-arcana:1": {
     archetypeId: "sorcerer:wishcrafter",

@@ -251,8 +251,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_AD: Readonly<
     id: "WLj6hpVMQwt2vRRP",
     race: "Duergar",
     name: "Deep Magic",
-    bucket: "blocked",
-    note: "The bonus targets caster level checks to overcome SR and dispel checks; targets.ts lists 'cl' as collected but never applied by compute.ts, so there is no wireable route and this stays blocked.",
+    bucket: "numeric",
+    note: "Both halves are unscoped caster-level-check bonuses, now the clCheck.sr and clCheck.dispel targets; the note text matches a VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES key exactly, so it is wired via collect.ts.",
   },
   QdzlzrqWtgfjE4Fs: {
     id: "QdzlzrqWtgfjE4Fs",
@@ -406,7 +406,7 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_AD: Readonly<
     race: "Dwarf",
     name: "Spiritual Support",
     bucket: "blocked",
-    note: "The caster-level bonus is scoped to conjuration (healing) spells cast on allies, i.e. a 'cl.school.*' path; targets.ts only consumes the skill./attack.weapon./damage.weapon./dr./eres./imm./immEffect. prefixes, so there is no wireable route and this stays blocked.",
+    note: "This is a caster LEVEL bonus (cl.school.con), not a caster-level check — cl stays a deliberately unapplied target (moving it would change durations/damage everywhere, spell-dcs.ts) — and even a cl bonus would still need to be scoped to conjuration (healing) spells cast on allies, which the school-scoped clCheck/spellDC vocabulary doesn't reach either.",
   },
   eew9hWENxwAiLP8S: {
     id: "eew9hWENxwAiLP8S",

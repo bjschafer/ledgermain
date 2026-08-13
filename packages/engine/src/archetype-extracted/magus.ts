@@ -948,7 +948,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Arcane Pool",
     level: 1,
     bucket: "subsystem",
-    note: "redirects arcane pool spend into a save-DC/caster-level bump for enchantment/illusion spells cast — activated, and neither a spell-DC nor a 'cl' target exists (targets.ts unapplied list)",
+    note: "redirects arcane pool spend into a save-DC/caster-level bump for enchantment/illusion spells cast — spellDC could carry the DC half, but it's a per-spend activated bonus rather than a standing one, and 'cl' still isn't a target the engine applies (targets.ts unapplied list)",
   },
   "magus:puppetmaster:charmstrike:2": {
     archetypeId: "magus:puppetmaster",

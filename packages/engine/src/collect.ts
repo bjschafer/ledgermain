@@ -59,6 +59,10 @@ import {
   VENDORED_RACIAL_TRAIT_MANEUVER_NOTES,
 } from "./vendored-trait-maneuver-notes.js";
 import {
+  clCheckChangesFromNotes,
+  VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES,
+} from "./vendored-trait-cl-check-notes.js";
+import {
   effectiveRaceContextNotes,
   FLEXIBLE_ABILITY_SUPPRESS_TARGET,
   RACIAL_TRAITS,
@@ -382,6 +386,7 @@ export function collectModifiers(
         ...saveChangesFromNotes(t.contextNotes, VENDORED_RACIAL_TRAIT_SAVE_NOTES),
         ...maneuverChangesFromNotes(t.contextNotes, VENDORED_RACIAL_TRAIT_MANEUVER_NOTES),
         ...acChangesFromNotes(t.contextNotes, VENDORED_RACIAL_TRAIT_AC_NOTES),
+        ...clCheckChangesFromNotes(t.contextNotes, VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES),
       ]) {
         if (!gateOpen(ch)) continue;
         evalChange(

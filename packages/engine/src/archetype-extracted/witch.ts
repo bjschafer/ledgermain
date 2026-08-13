@@ -1172,7 +1172,7 @@ export const WITCH_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Season of the Witch",
     level: 1,
     bucket: "situational",
-    note: "+1 spell save DC, but only for spells dealing one specific energy type tied to the chosen season — a descriptor-scoped DC bump the engine's flat spell-DC number can't filter by damage type, real but conditional/narrowly-scoped number (specific maneuver, target state, location, or relationship condition) — not expressible without over-applying, per the honesty bar",
+    note: "+1 spell save DC, but only for spells dealing the one energy type tied to the season chosen as patron — spellDC has a school axis, not an energy-type one, so this scope isn't expressible without over-applying, per the honesty bar",
   },
   "witch:seducer:fey-charm:0": {
     archetypeId: "witch:seducer",

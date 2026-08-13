@@ -259,7 +259,7 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Blood Infusion",
     level: 1,
     bucket: "situational",
-    note: "+1 DC or a sicken rider on necromancy spells, chosen per-cast via a swift action at a self-inflicted HP cost — a real number, but scoped to a specific spell school cast that round, and DC isn't a target the engine applies anyway",
+    note: "spellDC.necromancy could carry the +1 DC option, but it's chosen per-cast via a swift action at a self-inflicted HP cost, not a standing bonus — an activated per-cast choice this engine doesn't model",
   },
   "wizard:cruoromancer:blood-command:5": {
     archetypeId: "wizard:cruoromancer",
@@ -302,7 +302,7 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Eldritch Grimoire",
     level: 1,
     bucket: "subsystem",
-    note: "+2 caster-level-check bonus and +1 save DC when casting from the grimoire — neither caster-level checks nor save DCs are targets the engine applies (targets.ts has no `cl` or DC target)",
+    note: "clCheck and spellDC could carry the +2 caster-level-check bonus and +1 save DC, but both only apply when casting from the grimoire against the specific Elder-Mythos creature list from Talisman of Revealing — a spell-subset-and-enemy-type scope no target expresses",
   },
   "wizard:elder-mythos-scholar:eldritch-knowledge:1": {
     archetypeId: "wizard:elder-mythos-scholar",
@@ -418,7 +418,7 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Death Bane",
     level: 5,
     bucket: "subsystem",
-    note: "maximizes cure-spell damage vs. undead, raises save DCs by 1 vs. undead, and grants a resource-gated weapon-property buff — DCs/maximization aren't engine targets, and the weapon buff is activated/resource-gated",
+    note: "maximizes cure-spell damage vs. undead, raises save DCs by 1 vs. undead, and grants a resource-gated weapon-property buff — spellDC has no enemy-type axis for the vs.-undead scope, maximization isn't an engine target, and the weapon buff is activated/resource-gated",
   },
   "wizard:hallowed-necromancer:ghostbane:10": {
     archetypeId: "wizard:hallowed-necromancer",

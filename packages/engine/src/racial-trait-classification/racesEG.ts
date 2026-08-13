@@ -119,7 +119,7 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     race: "Elf",
     name: "Retreat Magic",
     bucket: "blocked",
-    note: "Caster-level bonus for conjuration/illusion range and duration; cl is an unapplied target (targets.ts) even before the school scoping.",
+    note: "This is a caster LEVEL bonus (range/duration), not a caster-level check — cl stays a deliberately unapplied target (moving it would change durations/damage everywhere, spell-dcs.ts) — and it's further scoped to conjuration and illusion spells specifically, which no cl-shaped vocabulary reaches either.",
   },
   agovSwSID6zOPIDN: {
     id: "agovSwSID6zOPIDN",
@@ -238,7 +238,7 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     race: "Ghoran",
     name: "Spelleater",
     bucket: "subsystem",
-    note: "Grants dispel magic once per day as a spell-like ability; the dispel-check bonus is conditional on favored class and has no matching dispel-check target anyway.",
+    note: "Grants dispel magic once per day as a spell-like ability; the dispel-check bonus now has a clCheck.dispel target to land on, but it's conditional on the character's favored class being a spellcasting class, a build-time condition this trait's entry has no way to gate on.",
   },
   FJHJNZFjwC1tvKnM: {
     id: "FJHJNZFjwC1tvKnM",

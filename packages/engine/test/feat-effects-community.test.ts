@@ -204,3 +204,29 @@ describe("community maneuver/save-category promotions", () => {
     ]);
   });
 });
+
+/**
+ * Fixtures for the community feats promoted onto the new spell-DC/CL-check
+ * vocabulary (spell-dcs.ts) — the same re-sweep that wired Spell Focus and
+ * Spell Penetration in feat-classification.ts.
+ */
+describe("community spell-DC / CL-check promotions", () => {
+  it("Dispel Focus + Greater Dispel Focus: +2 each on dispel checks, stacking to +4 (community pack)", () => {
+    const sheet = compute(
+      makeDoc({ feats: [featId("Dispel Focus"), featId("Greater Dispel Focus")] }),
+      ref,
+    );
+    expect(sheet.clChecks?.dispel?.bonus).toBe(4);
+    expect(sheet.clChecks?.sr).toBeUndefined();
+  });
+
+  it("Elven Spirit: +2 racial on caster level checks to overcome SR (community pack)", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(makeDoc({ feats: [featId("Elven Spirit")] }), ref);
+    expect(base.clChecks).toBeUndefined();
+    expect(sheet.clChecks?.sr?.bonus).toBe(2);
+    expect(
+      sheet.clChecks?.sr?.components.some((c) => c.source === "Elven Spirit" && c.applied),
+    ).toBe(true);
+  });
+});

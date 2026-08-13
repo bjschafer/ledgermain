@@ -392,7 +392,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
     id: "iOYvcmxnuOA5h5H8",
     name: "Righteous Contravention",
     bucket: "blocked",
-    note: "Scoped to overcoming the spell resistance of evil creatures/objects and dispelling evil-sourced magic, a source-property scope the vocabulary has no axis for, matching class-feature-effects.ts's precedent pattern for this kind of scoping.",
+    note: "clCheck.sr and clCheck.dispel model the SR-check and dispel-check bonuses, but this one is scoped to evil creatures/objects/spells specifically, a source-property axis those targets don't carry.",
   },
   iu1bWa1gesZkMOEL: {
     id: "iu1bWa1gesZkMOEL",

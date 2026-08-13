@@ -227,7 +227,7 @@ export const SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Brood Bond",
     level: 1,
     bucket: "situational",
-    note: "vendored name/text mismatch — the description is actually Counter-Summon (Su), not Brood Bond. Grants a +5 dispel-check bonus specifically against summon monster/summon nature's ally spells, usable a limited number of times per day (3 + Cha mod) — a resource-spend, spell-type-scoped bonus on an unmodeled dispel-check roll; replaces summon monster",
+    note: "vendored name/text mismatch — the description is actually Counter-Summon (Su), not Brood Bond. clCheck.dispel exists, but this +5 only applies against summon monster/summon nature's ally spells specifically, and only a limited number of times per day (3 + Cha mod) — a spell-subset scope and a resource-spend clCheck.dispel doesn't carry; replaces summon monster",
   },
   "summoner:counter-summoner:detect-summons:2": {
     archetypeId: "summoner:counter-summoner",

@@ -979,6 +979,12 @@ export {
   VENDORED_RACIAL_TRAIT_AC_NOTES,
 } from "./vendored-trait-ac-notes.js";
 export {
+  clCheckChangesFromNotes,
+  scopedClCheck,
+  CL_CHECK_NOTE_TARGETS,
+  VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES,
+} from "./vendored-trait-cl-check-notes.js";
+export {
   saveNoteCoverage,
   type SaveNoteCatalog,
   type SaveNoteCoverage,

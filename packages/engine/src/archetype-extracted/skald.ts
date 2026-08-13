@@ -406,7 +406,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Horn Call",
     level: 7,
     bucket: "blocked",
-    note: "a real, scaling +1/+1/+1 DC increase on sonic-descriptor spells cast via the bonded horn, but this engine has no spell-save-DC applied target at all (targets.ts has no such target, unlike caster level's explicit 'cl' unapplied-target entry) — nothing to hang the number on. Paired to Lore Master for bookkeeping",
+    note: "spellDC exists but has no descriptor axis, and this scaling +1/+1/+1 DC increase only applies to sonic-descriptor spells cast using the bonded horn specifically — a descriptor-plus-item condition no target expresses. Paired to Lore Master for bookkeeping",
   },
   "skald:herald-of-the-horn:raging-song:1": {
     archetypeId: "skald:herald-of-the-horn",

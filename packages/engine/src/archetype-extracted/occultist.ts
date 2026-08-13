@@ -72,7 +72,7 @@
  *
  * Every `numeric` and `blocked` entry below carries its own reasoning either
  * inline (classification `note`) or in
- * `OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED`'s `provenance`. Only 2 of
+ * `OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED`'s `provenance`. Only 4 of
  * occultist's 100 features cleared the `numeric` bar — occultist's kit is
  * built almost entirely from the implement/mental-focus/focus-power
  * subsystem (deferred wholesale per note 2 above) plus a large volume of
@@ -443,8 +443,8 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "occultist:necroccultist",
     name: "Necromantic Bond",
     level: 1,
-    bucket: "blocked",
-    note: "restricts implements to necromancy (subsystem, no number) but ALSO states an unconditional 'at 14th level, the DCs of saving throws to resist a necroccultist's necromancy spells and necromancy focus powers increase by 2' — no spell-DC target exists anywhere in this engine (targets.ts), so the promised number has nothing to attach to",
+    bucket: "numeric",
+    note: "restricts implements to necromancy (subsystem, no number) but ALSO states an unconditional 'at 14th level, the DCs of saving throws to resist a necroccultist's necromancy spells and necromancy focus powers increase by 2' — the spell half is modeled via spellDC.necromancy; the focus-power half has no target (occultist focus powers carry no DC family at all) and is left unapplied",
   },
 
   // ── occultist:occult-historian ──
@@ -519,8 +519,8 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "occultist:planar-harmonizer",
     name: "Conductor",
     level: 1,
-    bucket: "blocked",
-    note: "restricts implements to conjuration and adds spells to the list (subsystem, no number) but ALSO states 'at 14th level, the DCs of saving throws to resist a planar harmonizer's conjuration spells and conjuration focus powers increase by 2' unconditionally — no spell-DC target exists anywhere in this engine (targets.ts), same gap as necromantic-bond above",
+    bucket: "numeric",
+    note: "restricts implements to conjuration and adds spells to the list (subsystem, no number) but ALSO states 'at 14th level, the DCs of saving throws to resist a planar harmonizer's conjuration spells and conjuration focus powers increase by 2' unconditionally — the spell half is modeled via spellDC.conjuration; the focus-power half has no target (occultist focus powers carry no DC family at all) and is left unapplied, same gap as necromantic-bond above",
   },
   "occultist:planar-harmonizer:harmonic-shield:4": {
     archetypeId: "occultist:planar-harmonizer",
@@ -754,7 +754,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Silksworn Arcana",
     level: 16,
     bucket: "blocked",
-    note: "'the spell's saving throw DC increases by 2' while wearing the matching magic clothing item — an otherwise-unconditional number (the clothing requirement is already implicit in casting at all), but no spell-DC target exists anywhere in this engine (targets.ts), same gap as necromantic-bond/conductor above",
+    note: "spellDC.<school> could carry this, but the +2 only applies while wearing a magic clothing item in the slot matching the SPELL's OWN school, a per-cast equipped-gear condition the engine doesn't track",
   },
   "occultist:silksworn:silksworn-deception:12": {
     archetypeId: "occultist:silksworn",
@@ -845,7 +845,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
  * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 2 of occultist's 100
+ * extraction pass inferred this from prose." Only 4 of occultist's 100
  * features cleared the `numeric` bar (see
  * `OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
  * per-feature audit) — occultist's kit is overwhelmingly implement/
@@ -890,5 +890,34 @@ export const OCCULTIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     detail: (level) => `+${Math.floor(level / 2)} Knowledge (planes)`,
     confidence: "high",
     provenance: "She gains a bonus on Knowledge (planes) checks equal to half her occultist level.",
+  },
+
+  // Necroccultist's and Planar Harmonizer's "at 14th level" save-DC bump only
+  // models the spell half of the stated bonus (spellDC.<school>) — the same
+  // sentence also raises the DC of the matching school's focus powers, but
+  // occultist focus powers have no DC family in this engine at all
+  // (`ability-dcs.ts`'s seven families don't include one), so that half is
+  // deliberately left off rather than invented.
+  "occultist:necroccultist:necromantic-bond:1": {
+    changes: [c("if(gte(@class.unlevel, 14), 2, 0)", "spellDC.necromancy")],
+    detail: (level) =>
+      level >= 14
+        ? "+2 DC on necromancy spells (focus powers too, not modeled)"
+        : "+2 DC on necromancy spells at 14th level",
+    confidence: "high",
+    provenance:
+      "at 14th level, the DCs of saving throws to resist a necroccultist's necromancy spells " +
+      "and necromancy focus powers increase by 2.",
+  },
+  "occultist:planar-harmonizer:conductor:1": {
+    changes: [c("if(gte(@class.unlevel, 14), 2, 0)", "spellDC.conjuration")],
+    detail: (level) =>
+      level >= 14
+        ? "+2 DC on conjuration spells (focus powers too, not modeled)"
+        : "+2 DC on conjuration spells at 14th level",
+    confidence: "high",
+    provenance:
+      "at 14th level, the DCs of saving throws to resist a planar harmonizer's conjuration " +
+      "spells and conjuration focus powers increase by 2.",
   },
 };
