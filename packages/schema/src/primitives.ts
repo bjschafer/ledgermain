@@ -149,6 +149,29 @@ export interface Change {
    * no doc migration.
    */
   maneuverCategories?: readonly string[];
+  /**
+   * AC-category scope: when present, this Change does NOT contribute to AC's
+   * headline totals, and instead contributes only to the conditional totals
+   * for the attack categories named here (`AC_CATEGORIES` keys in
+   * `@pf1/engine`). The motivating shape is a bonus scoped to a category of
+   * attacks rather than to AC as a whole, e.g. Trap Sense's "+1 dodge bonus
+   * to AC against attacks made by traps" — applying it unconditionally would
+   * inflate AC against everything else, which is why these entries were
+   * prose rather than Changes.
+   *
+   * Listing several keys means the bonus applies to each of them
+   * independently (an OR, not an intersection) — a bonus that needs *two*
+   * conditions at once has no representation here and stays prose.
+   *
+   * Only meaningful on the bare `ac` target (`aac`/`sac`/`nac` never carry a
+   * scope — no armor/shield/natural bonus in the vendored slice is
+   * conditional this way); ignored elsewhere, including the CMD
+   * auto-derivation from AC, which a scoped bonus never feeds. Absent (the
+   * default, and what every other `Change` in this codebase uses) means the
+   * Change applies unconditionally, so this is fully backward compatible
+   * with no doc migration.
+   */
+  acCategories?: readonly string[];
 }
 
 /**

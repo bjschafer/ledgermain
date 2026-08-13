@@ -18,6 +18,19 @@
  * scope: `@class.unlevel` is THIS class's level, which is what a
  * "+1 per four levels after 2nd" progression needs.
  *
+ * A key may also be scoped to ONE bearer as `"<classTag>:<Feature Name>"`
+ * (the tag is `ClassRef.tag`, e.g. `"rogue:Trap Sense"`). For that class the
+ * scoped key wins outright over any bare-name key (they never combine);
+ * classes without a scoped key still resolve the bare name. This exists for
+ * feature names shared by bearers with genuinely DIFFERENT formulas — Trap
+ * Sense starts at 3rd level for the rogue/barbarian/investigator family but
+ * at 2nd for Pathfinder Delver and 4th for Aspis Agent, so one bare-name
+ * formula would misapply to whichever bearers it doesn't match (the exact
+ * reason these names sat blocked before per-class keys existed). A bare-name
+ * key remains correct for a name with only one vendored bearer, or where
+ * every bearer shares one formula; prefer it there, since a scoped key
+ * silently stops matching if a refdata bump renames a class tag.
+ *
  * That loop only walks `RefData.classes[*].features` (a base/prestige class's
  * own automatic grant list) — it never sees a domain granted power, a chosen
  * arcane discovery/rage power/hex/revelation/talent, or an archetype feature
@@ -58,14 +71,7 @@
  *   specifically, visual effects, elemental descriptors): Cypherlord and
  *   Sigil Master (both scoped to writing-based traps specifically, narrower
  *   than the general `traps` category), Signifer Mask (visual effects),
- *   Eye of the Storm (air/water descriptors). Trap Sense stays blocked for
- *   a different reason now that `traps` exists: the name is shared by
- *   bearers with genuinely different progressions (Rogue/Barbarian/
- *   Investigator start at 3rd level, Aspis Agent's prestige copy at 4th,
- *   Pathfinder Delver's at 2nd, all +1 per 3 levels thereafter), and this
- *   table has no per-class scoping, so a single formula would misapply to
- *   whichever bearers it doesn't match. Danger Sense's trap-Reflex variant
- *   is blocked by a name collision instead (see its classification note).
+ *   Eye of the Storm (air/water descriptors).
  * - Needs an activation, a per-day/per-use resource, or is conditioned on
  *   live buff/creature state this loop cannot read (raging, a manifested
  *   phantom's mode): Scar: Suffering, Energumen, Alien Mind, Indomitable
@@ -585,6 +591,68 @@ const APPRAISING_EYE: Change = { formula: "2", target: "skill.apr", type: "sacre
  */
 const TALMANDORS_BLESSING: Change = { formula: "4", target: "skill.per", type: "untyped" };
 
+/**
+ * Trap Sense (Core Rulebook, rogue/barbarian; the investigator's is worded
+ * identically): "+1 bonus on Reflex saves made to avoid traps and a +1 dodge
+ * bonus to AC against attacks made by traps. These bonuses ... increase by
+ * +1 every three ... levels thereafter" from 3rd — +1 at 3rd, +2 at 6th, ...
+ * `floor(@class.unlevel / 3)`, matching the druid Jungle-domain copy in
+ * `granted-power-effects/domains.ts`. The save half is untyped and the AC
+ * half a dodge bonus, so copies from several classes sum, matching the
+ * prestige copies' explicit "stacks with trap sense from other classes".
+ *
+ * The bare key serves the three bearers sharing this progression; the two
+ * prestige copies below carry their own start levels under per-class keys
+ * (Aspis Agent from 4th, Pathfinder Delver from 2nd — see the key-grammar
+ * paragraph in the module doc comment).
+ */
+const TRAP_SENSE: readonly Change[] = [
+  {
+    formula: "floor(@class.unlevel / 3)",
+    target: "ref",
+    type: "untyped",
+    saveCategories: ["traps"],
+  },
+  {
+    formula: "floor(@class.unlevel / 3)",
+    target: "ac",
+    type: "dodge",
+    acCategories: ["traps"],
+  },
+];
+
+/** Aspis Agent (prestige): +1 at 4th, +1 every 3 levels thereafter. */
+const TRAP_SENSE_ASPIS_AGENT: readonly Change[] = [
+  {
+    formula: "1 + floor((@class.unlevel - 4) / 3)",
+    target: "ref",
+    type: "untyped",
+    saveCategories: ["traps"],
+  },
+  {
+    formula: "1 + floor((@class.unlevel - 4) / 3)",
+    target: "ac",
+    type: "dodge",
+    acCategories: ["traps"],
+  },
+];
+
+/** Pathfinder Delver (prestige): +1 at 2nd, +1 every 3 levels thereafter. */
+const TRAP_SENSE_PATHFINDER_DELVER: readonly Change[] = [
+  {
+    formula: "1 + floor((@class.unlevel - 2) / 3)",
+    target: "ref",
+    type: "untyped",
+    saveCategories: ["traps"],
+  },
+  {
+    formula: "1 + floor((@class.unlevel - 2) / 3)",
+    target: "ac",
+    type: "dodge",
+    acCategories: ["traps"],
+  },
+];
+
 export const CLASS_FEATURE_CHANGE_PATCHES: Readonly<Record<string, readonly Change[]>> = {
   Bravery: [BRAVERY],
   "Still Mind": [STILL_MIND],
@@ -624,5 +692,8 @@ export const CLASS_FEATURE_CHANGE_PATCHES: Readonly<Record<string, readonly Chan
   "Aspect of Divinity": [ASPECT_OF_DIVINITY],
   "Appraising Eye": [APPRAISING_EYE],
   "Talmandor's Blessing": [TALMANDORS_BLESSING],
+  "Trap Sense": TRAP_SENSE,
+  "aspisAgent:Trap Sense": TRAP_SENSE_ASPIS_AGENT,
+  "pathfinderDelver:Trap Sense": TRAP_SENSE_PATHFINDER_DELVER,
   "Greater Sunder": [GREATER_SUNDER],
 };

@@ -40,8 +40,14 @@ import { ORACLE_CURSES } from "./oracle-curses.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
 import { polymorphFormOption } from "./polymorph.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
+import { standardRaceAcChanges } from "./race-ac-notes.js";
 import { standardRaceManeuverChanges } from "./race-maneuver-notes.js";
 import { standardRaceSaveChanges } from "./race-save-notes.js";
+import {
+  acChangesFromNotes,
+  VENDORED_CHARACTER_TRAIT_AC_NOTES,
+  VENDORED_RACIAL_TRAIT_AC_NOTES,
+} from "./vendored-trait-ac-notes.js";
 import {
   saveChangesFromNotes,
   VENDORED_CHARACTER_TRAIT_SAVE_NOTES,
@@ -103,6 +109,14 @@ export interface CollectedModifier extends TypedModifier {
    * block). Only meaningful on `cmb`/`cmd`-target modifiers.
    */
   maneuverCategories?: readonly string[];
+  /**
+   * AC-category scope carried through from {@link Change}. When set, this
+   * modifier is excluded from AC's headline totals (and from the CMD
+   * auto-derivation that reads bare-`ac` modifiers) and contributes only to
+   * those categories' conditional totals (see `compute.ts`'s `computeAc`).
+   * Only meaningful on bare-`ac`-target modifiers.
+   */
+  acCategories?: readonly string[];
 }
 
 /** `@item.level` / `@cl` in a buff formula = the buff's caster/effect level. */
@@ -142,6 +156,7 @@ function evalChange(
   operator?: "add" | "set",
   saveCategories?: readonly string[],
   maneuverCategories?: readonly string[],
+  acCategories?: readonly string[],
 ): void {
   let value: number | null;
   try {
@@ -156,6 +171,7 @@ function evalChange(
   // headline total, so drop it here rather than filtering downstream.
   if (value === 0 && saveCategories !== undefined && saveCategories.length > 0) return;
   if (value === 0 && maneuverCategories !== undefined && maneuverCategories.length > 0) return;
+  if (value === 0 && acCategories !== undefined && acCategories.length > 0) return;
   out.push({
     target,
     type: type || "untyped",
@@ -165,6 +181,7 @@ function evalChange(
     operator,
     saveCategories,
     maneuverCategories,
+    acCategories,
   });
 }
 
@@ -265,6 +282,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
     // Standard racial traits the compendium ships only as prose: a save
@@ -284,6 +302,7 @@ export function collectModifiers(
     for (const ch of [
       ...standardRaceSaveChanges(race.name, survivingRaceNotes),
       ...standardRaceManeuverChanges(race.name, survivingRaceNotes),
+      ...standardRaceAcChanges(race.name, survivingRaceNotes),
     ]) {
       evalChange(
         ch.formula,
@@ -296,6 +315,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
 
@@ -336,6 +356,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -360,6 +381,7 @@ export function collectModifiers(
         ...t.changes,
         ...saveChangesFromNotes(t.contextNotes, VENDORED_RACIAL_TRAIT_SAVE_NOTES),
         ...maneuverChangesFromNotes(t.contextNotes, VENDORED_RACIAL_TRAIT_MANEUVER_NOTES),
+        ...acChangesFromNotes(t.contextNotes, VENDORED_RACIAL_TRAIT_AC_NOTES),
       ]) {
         if (!gateOpen(ch)) continue;
         evalChange(
@@ -373,6 +395,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
       // "Choose one" changes the source ships untargeted (`openChanges`): each
@@ -395,6 +418,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -418,6 +442,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
   }
@@ -444,9 +469,17 @@ export function collectModifiers(
       if (archetypeSwaps.has(grant.uuid)) continue;
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;
+      // A `"<classTag>:<name>"` key scopes a patch to one bearer of a shared
+      // feature name and, for that class, wins outright over any bare-name
+      // key (they never combine); every other class still resolves the bare
+      // name. This is what lets same-named features with genuinely different
+      // progressions (rogue vs. prestige Trap Sense) each carry their own
+      // formula — see CLASS_FEATURE_CHANGE_PATCHES's doc comment.
       for (const ch of [
         ...(feature.changes ?? []),
-        ...(CLASS_FEATURE_CHANGE_PATCHES[feature.name] ?? []),
+        ...(CLASS_FEATURE_CHANGE_PATCHES[`${cls.tag}:${feature.name}`] ??
+          CLASS_FEATURE_CHANGE_PATCHES[feature.name] ??
+          []),
       ]) {
         evalChange(
           ch.formula,
@@ -459,6 +492,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -537,6 +571,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -589,6 +624,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
   }
@@ -626,6 +662,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -646,6 +683,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
     // Hand-authored patches for a vendored buff whose own `changes[]` are
@@ -665,6 +703,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
   }
@@ -685,6 +724,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
   }
@@ -703,6 +743,7 @@ export function collectModifiers(
       ...trait.changes,
       ...saveChangesFromNotes(trait.contextNotes, VENDORED_CHARACTER_TRAIT_SAVE_NOTES),
       ...maneuverChangesFromNotes(trait.contextNotes, VENDORED_CHARACTER_TRAIT_MANEUVER_NOTES),
+      ...acChangesFromNotes(trait.contextNotes, VENDORED_CHARACTER_TRAIT_AC_NOTES),
     ]) {
       if (!gateOpen(ch)) continue;
       evalChange(
@@ -716,6 +757,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
   }
@@ -751,6 +793,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
       for (const power of bloodline.powers) {
@@ -774,6 +817,7 @@ export function collectModifiers(
             ch.operator,
             ch.saveCategories,
             ch.maneuverCategories,
+            ch.acCategories,
           );
         }
       }
@@ -812,6 +856,7 @@ export function collectModifiers(
             ch.operator,
             ch.saveCategories,
             ch.maneuverCategories,
+            ch.acCategories,
           );
         }
       }
@@ -845,6 +890,7 @@ export function collectModifiers(
             ch.operator,
             ch.saveCategories,
             ch.maneuverCategories,
+            ch.acCategories,
           );
         }
       }
@@ -878,6 +924,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -910,6 +957,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -952,6 +1000,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -983,6 +1032,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1024,6 +1074,7 @@ export function collectModifiers(
             ch.operator,
             ch.saveCategories,
             ch.maneuverCategories,
+            ch.acCategories,
           );
         }
         continue;
@@ -1043,6 +1094,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1077,6 +1129,7 @@ export function collectModifiers(
             ch.operator,
             ch.saveCategories,
             ch.maneuverCategories,
+            ch.acCategories,
           );
         }
       }
@@ -1112,6 +1165,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1134,6 +1188,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1157,6 +1212,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1179,6 +1235,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1198,6 +1255,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1234,6 +1292,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
       // Choose-one powers (Energy Resistance's energy type, the Elemental
@@ -1255,6 +1314,7 @@ export function collectModifiers(
             ch.operator,
             ch.saveCategories,
             ch.maneuverCategories,
+            ch.acCategories,
           );
         }
       }
@@ -1287,6 +1347,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1320,6 +1381,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1384,6 +1446,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
   }
@@ -1416,6 +1479,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1446,6 +1510,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1482,6 +1547,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     } else if (entry?.type === "choice") {
@@ -1500,6 +1566,7 @@ export function collectModifiers(
             ch.operator,
             ch.saveCategories,
             ch.maneuverCategories,
+            ch.acCategories,
           );
         }
       }
@@ -1519,6 +1586,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
 
@@ -1540,6 +1608,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
   }
@@ -1573,6 +1642,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     } else if (entry?.type === "choice" && instance.choiceId) {
@@ -1588,6 +1658,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1606,6 +1677,7 @@ export function collectModifiers(
         ch.operator,
         ch.saveCategories,
         ch.maneuverCategories,
+        ch.acCategories,
       );
     }
   }
@@ -1671,6 +1743,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }
@@ -1705,6 +1778,7 @@ export function collectModifiers(
           ch.operator,
           ch.saveCategories,
           ch.maneuverCategories,
+          ch.acCategories,
         );
       }
     }

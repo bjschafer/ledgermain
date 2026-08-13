@@ -79,6 +79,10 @@ import {
   VENDORED_RACIAL_TRAIT_MANEUVER_NOTES,
 } from "../packages/engine/src/vendored-trait-maneuver-notes.js";
 import {
+  acChangesFromNotes,
+  VENDORED_RACIAL_TRAIT_AC_NOTES,
+} from "../packages/engine/src/vendored-trait-ac-notes.js";
+import {
   mergedVigilanteSocialTalentCatalog,
   mergedVigilanteTalentCatalog,
 } from "../packages/engine/src/vigilante-talents.js";
@@ -371,11 +375,19 @@ function main(): void {
 
   // Vendored-changes domains: the vendored entry itself may carry changes,
   // with a hand table or patch layered on top.
+  // A patch key may be scoped to one bearer as "<classTag>:<Feature Name>"
+  // (see CLASS_FEATURE_CHANGE_PATCHES's doc comment) — for wiredness the tag
+  // half doesn't matter, only that SOME patch exists under the name.
+  const classPatchNames = new Set(
+    Object.keys(CLASS_FEATURE_CHANGE_PATCHES).map((k) =>
+      k.includes(":") ? k.slice(k.indexOf(":") + 1) : k,
+    ),
+  );
   for (const [id, e] of Object.entries(loadDataFile("class-features.json"))) {
     const name = typeof e.name === "string" ? e.name : id;
     const wired =
       arrayLen(e.changes) > 0 ||
-      CLASS_FEATURE_CHANGE_PATCHES[name] !== undefined ||
+      classPatchNames.has(name) ||
       GRANTED_POWER_CHANGE_PATCHES[name] !== undefined;
     const noted = arrayLen(e.actions) > 0 || e.uses !== undefined || arrayLen(e.grantsBuffs) > 0;
     // Same semantics as the archetype/feat/racial-trait verdicts: a deliberate
@@ -464,13 +476,13 @@ function main(): void {
   for (const [id, e] of Object.entries(loadDataFile("racial-traits.json"))) {
     const name = typeof e.name === "string" ? e.name : id;
     const hand = handTraitByRaceName.get(`${String(e.race)}|${name}`);
-    // Vendored entries wire numbers through four routes beyond `changes[]`:
+    // Vendored entries wire numbers through five routes beyond `changes[]`:
     // `openChanges` (player-targeted "choose one" bonuses via
-    // `build.vendoredRacialTraitTargets`), save-category and maneuver-category
-    // promotions keyed on the entry's own note text
-    // (`VENDORED_RACIAL_TRAIT_SAVE_NOTES` / `VENDORED_RACIAL_TRAIT_MANEUVER_NOTES`),
-    // and a hand-authored `RACIAL_TRAITS` counterpart that shadows the
-    // vendored entry in the picker.
+    // `build.vendoredRacialTraitTargets`), save-category / maneuver-category /
+    // ac-category promotions keyed on the entry's own note text
+    // (`VENDORED_RACIAL_TRAIT_SAVE_NOTES` / `VENDORED_RACIAL_TRAIT_MANEUVER_NOTES`
+    // / `VENDORED_RACIAL_TRAIT_AC_NOTES`), and a hand-authored `RACIAL_TRAITS`
+    // counterpart that shadows the vendored entry in the picker.
     const wired =
       arrayLen(e.changes) > 0 ||
       arrayLen(e.openChanges) > 0 ||
@@ -481,6 +493,10 @@ function main(): void {
       maneuverChangesFromNotes(
         e.contextNotes as readonly ContextNote[] | undefined,
         VENDORED_RACIAL_TRAIT_MANEUVER_NOTES,
+      ).length > 0 ||
+      acChangesFromNotes(
+        e.contextNotes as readonly ContextNote[] | undefined,
+        VENDORED_RACIAL_TRAIT_AC_NOTES,
       ).length > 0 ||
       (hand !== undefined && defMovesNumbers(hand));
     const noted = arrayLen(e.contextNotes) > 0;

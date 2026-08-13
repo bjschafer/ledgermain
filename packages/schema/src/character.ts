@@ -3694,6 +3694,18 @@ export interface ArmorClass {
   flatFooted: number;
   /** All AC contributions with provenance + applicability flags. */
   components: AcComponent[];
+  /**
+   * Situational AC totals, one per distinct value — a bonus that applies only
+   * against a category of attacks (Trap Sense's "+1 dodge bonus to AC against
+   * attacks made by traps") rather than to AC in general. Same
+   * `ConditionalTotal` shape the saves and CMB/CMD use, and same posture:
+   * omitted (rather than empty) when nothing AC-scoped applies. Each total is
+   * computed against `normal` only — `touch` and `flatFooted` stay bare
+   * numbers, the same call `cmdFlatFooted` makes (a conditional line per AC
+   * variant would triple the lines under the seal, and nearly every scoped
+   * bonus is dodge-typed, which flat-footed drops anyway).
+   */
+  conditionals?: ConditionalTotal[];
 }
 
 export interface AcComponent extends ModifierComponent {

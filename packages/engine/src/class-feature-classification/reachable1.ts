@@ -103,8 +103,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
   BoEkMviJrW0PKmhj: {
     id: "BoEkMviJrW0PKmhj",
     name: "Trap Sense",
-    bucket: "blocked",
-    note: "The Reflex clause is now expressible (saveCategories: [\"traps\"]), but this exact name is also granted by Aspis Agent's prestige copy (KpZwiUnU0VKymgmL, +1 at 4th and every 3 levels thereafter) and Pathfinder Delver's (HoV8PmENaujyGx7T, +1 at 2nd), both offset from this entry's Rogue/Barbarian/Investigator +1-at-3rd progression; CLASS_FEATURE_CHANGE_PATCHES keys purely by name with no per-class scoping, so one formula can't serve all three without misapplying to the other two. The AC-dodge half also has no engine mechanism regardless.",
+    bucket: "numeric",
+    note: 'Both halves wired via CLASS_FEATURE_CHANGE_PATCHES\' bare "Trap Sense" key: Reflex-vs-traps (saveCategories) and dodge-AC-vs-traps (acCategories), floor(level/3) for the Rogue/Barbarian/Investigator bearers. The offset prestige copies (Aspis Agent from 4th, Pathfinder Delver from 2nd) carry their own per-class keys, so this bare formula never reaches them.',
   },
   IIlla2YtHAgM5P9U: {
     id: "IIlla2YtHAgM5P9U",
@@ -199,8 +199,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
   KpZwiUnU0VKymgmL: {
     id: "KpZwiUnU0VKymgmL",
     name: "Trap Sense",
-    bucket: "blocked",
-    note: "The Reflex clause is now expressible (saveCategories: [\"traps\"]), but this Aspis Agent prestige copy's own progression (+1 at 4th level and every 3 levels thereafter) diverges from the base Rogue/Barbarian/Investigator copy's (+1 at 3rd) and Pathfinder Delver's (+1 at 2nd); since the name-keyed patch table has no per-class scoping, none of the three can be wired without misapplying to the others. The AC-dodge half also has no engine mechanism regardless.",
+    bucket: "numeric",
+    note: 'Both halves wired via CLASS_FEATURE_CHANGE_PATCHES\' "aspisAgent:Trap Sense" per-class key (Reflex-vs-traps saveCategories + dodge-AC-vs-traps acCategories, 1 + floor((level - 4) / 3) for this prestige copy\'s +1-at-4th progression); the per-class key shields it from the bare "Trap Sense" formula the base classes use.',
   },
   QOgv8IpxnWix0Vbv: {
     id: "QOgv8IpxnWix0Vbv",

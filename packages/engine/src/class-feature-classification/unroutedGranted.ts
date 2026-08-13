@@ -542,7 +542,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:jungle:trap-sense",
     name: "Trap Sense",
     bucket: "numeric",
-    note: 'The Reflex-vs-traps half (floor(druid level / 3), matching the rogue class ability at an effective rogue level equal to druid level) is wired via GRANTED_POWER_CHANGE_PATCHES with saveCategories: ["traps"]. This is the only granted power named "Trap Sense" reachable through that table, so no cross-bearer collision applies here (unlike the class-feature-granted copies, which stay blocked in reachable1.ts). The AC-dodge half stays unmodeled: this engine has no AC conditional mechanism.',
+    note: 'Both halves (floor(druid level / 3), matching the rogue class ability at an effective rogue level equal to druid level) are wired via GRANTED_POWER_CHANGE_PATCHES: Reflex-vs-traps with saveCategories: ["traps"] and dodge-AC-vs-traps with acCategories: ["traps"]. This is the only granted power named "Trap Sense" reachable through that table, so no cross-bearer collision applies here.',
   },
   "druid-domain:panther:move-in-darkness": {
     id: "druid-domain:panther:move-in-darkness",

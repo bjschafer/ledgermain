@@ -77,7 +77,25 @@ describe("CLASS_FEATURE_CHANGE_PATCHES drift guard", () => {
 
     const problems: string[] = [];
     for (const key of Object.keys(CLASS_FEATURE_CHANGE_PATCHES)) {
-      const matches = byName.get(key);
+      // A "<classTag>:<Feature Name>" key must name a real class AND a
+      // feature that class actually grants — a typo'd tag would otherwise be
+      // a silent no-op forever (the exact failure mode the bare-name check
+      // below guards against, one level deeper).
+      const colon = key.indexOf(":");
+      const name = colon > 0 ? key.slice(colon + 1) : key;
+      if (colon > 0) {
+        const tag = key.slice(0, colon);
+        const cls = Object.values(ref.classes).find((c) => c.tag === tag);
+        if (!cls) {
+          problems.push(`"${key}" names no RefData.classes tag`);
+          continue;
+        }
+        if (!cls.features.some((g) => ref.classFeatures[g.featureId]?.name === name)) {
+          problems.push(`"${key}": class "${tag}" grants no feature named "${name}"`);
+          continue;
+        }
+      }
+      const matches = byName.get(name);
       if (!matches || matches.length === 0) {
         problems.push(`"${key}" matches no RefData.classFeatures name`);
         continue;

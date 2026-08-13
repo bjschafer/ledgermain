@@ -62,6 +62,7 @@ import { KINETICIST_ELEMENTS } from "./kineticist-elements.js";
 import { ORACLE_MYSTERIES } from "./oracle-mysteries.js";
 import { resolveSave } from "./save-categories.js";
 import { maneuverConditionalTotals } from "./maneuver-categories.js";
+import { acConditionalTotals, type ScopedAcModifier } from "./ac-categories.js";
 import { computeSenses } from "./senses.js";
 import {
   carryAdjustments,
@@ -619,14 +620,22 @@ function computeAc(
   const sizeMod = SIZE_AC_MOD[size];
   if (sizeMod !== 0) cands.push({ category: "size", type: "size", value: sizeMod, source: "Size" });
 
-  // typed AC changes from items/features: ac / aac / sac / nac
+  // typed AC changes from items/features: ac / aac / sac / nac. An
+  // AC-category-scoped modifier (Change.acCategories — "+1 dodge bonus to AC
+  // against traps") is held out of the headline candidates, same as a
+  // save-category scope is held out of a save's headline total — it feeds
+  // only the conditional lines built after the headline stacks resolve.
+  // Only the bare "ac" target honors the scope (see Change.acCategories).
+  const acScoped: ScopedAcModifier[] = [];
   for (const target of ["ac", "aac", "sac", "nac"]) {
     for (const m of forTarget(collected, target)) {
-      cands.push({
-        ...m,
-        type: acBonusType(target, m.type),
-        category: categoryFor(target, m.type),
-      });
+      const type = acBonusType(target, m.type);
+      const category = categoryFor(target, m.type);
+      if (target === "ac" && (m.acCategories?.length ?? 0) > 0) {
+        acScoped.push({ ...m, type, stackCategory: category });
+        continue;
+      }
+      cands.push({ ...m, type, category });
     }
   }
 
@@ -679,11 +688,21 @@ function computeAc(
     0,
   );
 
+  const normal = sumWhere(() => true);
+  // Conditional lines hang off normal AC only — see ArmorClass.conditionals
+  // for why touch/flat-footed stay bare numbers.
+  const conditionals = acConditionalTotals(
+    normal,
+    cands.map((c) => ({ ...c, stackCategory: c.category })),
+    acScoped,
+  );
+
   return {
-    normal: sumWhere(() => true),
+    normal,
     touch: sumWhere((c) => TOUCH_CATEGORIES.has(c.category)),
     flatFooted,
     components,
+    ...(conditionals.length > 0 ? { conditionals } : {}),
   };
 }
 
@@ -1789,8 +1808,13 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     (m) => (m.maneuverCategories?.length ?? 0) === 0,
   );
   const explicitCmdScoped = explicitCmdMods.filter((m) => (m.maneuverCategories?.length ?? 0) > 0);
+  // An AC-category-scoped modifier (Change.acCategories) is conditional and
+  // held out of headline AC, so it must not leak into headline CMD either —
+  // and it earns no CMD conditional line (AC categories describe attacks,
+  // not maneuvers; only Change.maneuverCategories feeds cmdConditionals).
   const autoCmdFromAc = forTarget(collected, "ac").filter(
     (m) =>
+      (m.acCategories?.length ?? 0) === 0 &&
       (m.value < 0 || CMD_AC_TYPES.has(m.type.toLowerCase())) &&
       !explicitCmdSourceIds.has(m.sourceId ?? m.source),
   );

@@ -85,13 +85,12 @@ export const DOMAIN_POWER_PATCHES: Readonly<Record<string, readonly Change[]>> =
    * Trap Sense (Jungle nature-bond domain, druid): "At 3rd level, you gain
    * the trap sense ability. This is identical to the rogue class ability.
    * Your effective rogue level is equal to your druid level for the purpose
-   * of determining your trap sense bonus." Only the Reflex half is
-   * expressible: `saveCategories: ["traps"]` now exists, but there is no AC
-   * conditional mechanism in this engine, so the dodge-bonus-vs-traps half
-   * stays unmodeled. This is the only granted power named "Trap Sense"
-   * reachable through this table (the class-feature-granted copies live in
-   * `class-feature-effects.ts` and stay blocked there — see its header —
-   * because that table's bearers don't share one formula).
+   * of determining your trap sense bonus." Both halves of the rogue ability:
+   * the Reflex-vs-traps bonus (`saveCategories`) and the dodge-AC-vs-traps
+   * bonus (`acCategories`). This is the only granted power named "Trap
+   * Sense" reachable through this table (the class-feature-granted copies
+   * live in `class-feature-effects.ts` under per-class and bare keys — see
+   * its header for the key grammar their differing progressions need).
    */
   "Trap Sense": [
     {
@@ -99,6 +98,12 @@ export const DOMAIN_POWER_PATCHES: Readonly<Record<string, readonly Change[]>> =
       target: "ref",
       type: "untyped",
       saveCategories: ["traps"],
+    },
+    {
+      formula: "floor(@class.unlevel / 3)",
+      target: "ac",
+      type: "dodge",
+      acCategories: ["traps"],
     },
   ],
 };
