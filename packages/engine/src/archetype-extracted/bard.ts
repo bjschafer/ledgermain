@@ -299,7 +299,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Trap Sense",
     level: 3,
     bucket: "numeric",
-    note: 'the vendored description field for this id is mispaired (byte-identical to Inspire Competence\'s, not trap sense text at all — a data-pipeline artifact, not this ability); the Reflex-vs-traps half is wired via saveCategories: ["traps"], verified against aonprd.com\'s Archaeologist page rather than the corrupted vendored text, and BARD_ARCHETYPE_EFFECTS_EXTRACTED\'s provenance is written from that source. The dodge-AC-vs-traps half stays prose (no AC conditional mechanism). "bard:archaeologist:trap-sense:6" was a phantom duplicate key with no matching vendored id (this archetype has only 7 real features, none at a second Trap Sense level) — removed rather than left dangling.',
+    note: 'the vendored description field for this id is mispaired (byte-identical to Inspire Competence\'s, not trap sense text at all — a data-pipeline artifact, not this ability); both halves are wired via saveCategories: ["traps"] and acCategories: ["traps"], verified against aonprd.com\'s Archaeologist page rather than the corrupted vendored text, and BARD_ARCHETYPE_EFFECTS_EXTRACTED\'s provenance is written from that source. "bard:archaeologist:trap-sense:6" was a phantom duplicate key with no matching vendored id (this archetype has only 7 real features, none at a second Trap Sense level) — removed rather than left dangling.',
   },
   "bard:archaeologist:uncanny-dodge:2": {
     archetypeId: "bard:archaeologist",
@@ -3186,8 +3186,7 @@ export const BARD_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // is a data-pipeline mispairing (byte-identical to Inspire Competence's),
   // so this provenance is drawn from aonprd.com's Archaeologist page instead
   // of the (corrupted) vendored text — see this file's classification note
-  // for the same id. Only the Reflex-vs-traps half is expressible; the
-  // dodge-AC-vs-traps half has no AC conditional mechanism in this engine.
+  // for the same id. Both the Reflex and dodge-AC halves are expressible.
   "bard:archaeologist:trap-sense:3": {
     changes: [
       {
@@ -3196,10 +3195,16 @@ export const BARD_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
         type: "untyped",
         saveCategories: ["traps"],
       },
+      {
+        formula: "if(gte(@class.unlevel, 3), 1 + floor((@class.unlevel - 3) / 3), 0)",
+        target: "ac",
+        type: "dodge",
+        acCategories: ["traps"],
+      },
     ],
     detail: (level) =>
       level >= 3
-        ? `+${1 + Math.floor((level - 3) / 3)} Reflex vs. traps (dodge AC vs. traps not modeled)`
+        ? `+${1 + Math.floor((level - 3) / 3)} Reflex and dodge AC vs. traps`
         : "not yet granted",
     confidence: "high",
     provenance:

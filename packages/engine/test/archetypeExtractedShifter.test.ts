@@ -117,12 +117,12 @@ describe("Dragonblood Shifter: the wyrmshifter save-bonus / immunity line", () =
     expect(archetypeId("Dragonblood Shifter")).toBe("shifter:dragonblood-shifter");
   });
 
-  it("Wyrmshifter (9th): flat +2 racial, scoped to the sleep save category (paralysis dropped)", () => {
+  it("Wyrmshifter (9th): flat +2 racial, scoped to the sleep and paralysis save categories", () => {
     const id = "shifter:dragonblood-shifter:wyrmshifter:9";
     const [save] = SHIFTER_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
     expect(save!.target).toBe("allSavingThrows");
     expect(save!.type).toBe("racial");
-    expect(save!.saveCategories).toEqual(["sleep"]);
+    expect(save!.saveCategories).toEqual(["sleep", "paralysis"]);
     expect(evaluateFormula(save!.formula, {})).toBe(2);
   });
 
@@ -130,7 +130,7 @@ describe("Dragonblood Shifter: the wyrmshifter save-bonus / immunity line", () =
     const id = "shifter:dragonblood-shifter:improved-wyrmshifter:14";
     const [save] = SHIFTER_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
     expect(save!.target).toBe("allSavingThrows");
-    expect(save!.saveCategories).toEqual(["sleep"]);
+    expect(save!.saveCategories).toEqual(["sleep", "paralysis"]);
     expect(evaluateFormula(save!.formula, {})).toBe(4);
     const l9 = SHIFTER_ARCHETYPE_EFFECTS_EXTRACTED["shifter:dragonblood-shifter:wyrmshifter:9"]!;
     expect(save!.type).toBe(l9.changes[0]!.type);

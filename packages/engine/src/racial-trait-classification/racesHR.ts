@@ -503,7 +503,7 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_HR: Readonly<
     id: "4UPvvBKe9UXgCLj2",
     race: "Ratfolk",
     name: "Unnatural",
-    bucket: "blocked",
-    note: "The Charisma-skill penalty targets chaSkills, which compute.ts does not apply, and the dodge bonus is scoped to a property of the opponent (being an animal) besides.",
+    bucket: "numeric",
+    note: "The dodge bonus is scoped to animals, now a real AC_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_AC_NOTES key exactly, so it is wired via collect.ts. The Charisma-skill penalty still targets chaSkills, which compute.ts does not apply, and stays prose.",
   },
 };

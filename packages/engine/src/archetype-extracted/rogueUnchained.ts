@@ -1263,7 +1263,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Curse Sense",
     level: 4,
     bucket: "numeric",
-    note: "the save-vs-curses clause maps to saveCategories: ['curse'] — extracted. The haunt-scoped Perception/Spellcraft/AC bonuses are dropped: 'haunts' names no SAVE_CATEGORIES entry, and the AC bonus only applies against haunt attacks specifically.",
+    note: "the save-vs-curses clause maps to saveCategories: ['curse'] — extracted. The haunt-scoped Perception/Spellcraft/AC bonuses are dropped: 'haunts' names no SAVE_CATEGORIES or AC_CATEGORIES entry, and the AC bonus is scoped to haunt attacks specifically, not curses.",
   },
   "rogueUnchained:relic-raider:disable-curse:8": {
     archetypeId: "rogueUnchained:relic-raider",
@@ -2332,7 +2332,8 @@ export const ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
 
   // Relic Raider's "Curse Sense" names curses AND haunts. Only "curse" is a
   // SAVE_CATEGORIES entry; the haunt-scoped Perception/Spellcraft bonuses and
-  // the haunt-only AC bonus have no matching axis and are dropped.
+  // the haunt-only AC bonus have no matching axis on either SAVE_CATEGORIES
+  // or AC_CATEGORIES and are dropped.
   "rogueUnchained:relic-raider:curse-sense:4": {
     changes: [
       {

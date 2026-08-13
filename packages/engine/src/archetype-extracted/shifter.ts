@@ -104,14 +104,14 @@ export const SHIFTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Improved Wyrmshifter",
     level: 14,
     bucket: "numeric",
-    note: "raises the wyrmshifter racial save bonus to +4; only the sleep half has a SAVE_CATEGORIES entry (paralysis has none, dropped) — same partial posture as the L9 entry, and racial typed-bonus stacking (highest-within-type) composes the +2/+4 pair without double-counting; the form-of-the-dragon-II wild shape clause is subsystem (class note 2) and dropped",
+    note: "raises the wyrmshifter racial save bonus to +4 vs. sleep and paralysis effects, both real Change.saveCategories entries — racial typed-bonus stacking (highest-within-type) composes the +2/+4 pair without double-counting; the form-of-the-dragon-II wild shape clause is subsystem (class note 2) and dropped",
   },
   "shifter:dragonblood-shifter:wyrmshifter:9": {
     archetypeId: "shifter:dragonblood-shifter",
     name: "Wyrmshifter",
     level: 9,
     bucket: "numeric",
-    note: "unconditional +2 racial bonus on saves vs. sleep and paralysis effects — sleep is a real Change.saveCategories entry; paralysis has no SAVE_CATEGORIES entry and is dropped, flagged in detail. The delayed dragon-form wild shape clause is a wild-shape modification (class note 2) and is dropped",
+    note: "unconditional +2 racial bonus on saves vs. sleep and paralysis effects, both expressible via Change.saveCategories (['sleep', 'paralysis']). The delayed dragon-form wild shape clause is a wild-shape modification (class note 2) and is dropped",
   },
 
   // ── shifter:elementalist-shifter ──
@@ -535,31 +535,29 @@ export const SHIFTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  *  - "medium": composed from multiple sentences/tiers, or gated on a
  *    real-but-partial condition this engine CAN check (`@armor.type`,
  *    `@attributes.encumbrance.level`) while a textually-present second
- *    condition (the nonmetal-armor material axis) or a sibling clause (the
- *    paralysis save category) can't be checked and is dropped — partial
- *    honesty, flagged in `detail`.
+ *    condition (the nonmetal-armor material axis) can't be checked and is
+ *    dropped — partial honesty, flagged in `detail`.
  *  - "low": not used in this pass (a would-be "low" is bucketed `blocked`).
  */
 export const SHIFTER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
 > = {
   // Dragonblood Shifter's "Wyrmshifter" (9th) grants an unconditional +2
-  // racial bonus on saves vs. sleep and paralysis effects. `sleep` is a real
-  // Change.saveCategories entry (save-categories.ts); `paralysis` has no
-  // SAVE_CATEGORIES entry at all and is dropped, flagged in detail — the
-  // same partial posture as monkUnchained's Draconic Mettle. The delayed
-  // dragon-form wild shape clause is a wild-shape modification (header note
-  // 2) and stays prose-only.
+  // racial bonus on saves vs. sleep and paralysis effects. Both `sleep` and
+  // `paralysis` are real Change.saveCategories entries (save-categories.ts),
+  // so the full save-bonus clause is wired. The delayed dragon-form wild
+  // shape clause is a wild-shape modification (header note 2) and stays
+  // prose-only.
   "shifter:dragonblood-shifter:wyrmshifter:9": {
     changes: [
       {
         formula: "2",
         target: "allSavingThrows",
         type: "racial",
-        saveCategories: ["sleep"],
+        saveCategories: ["sleep", "paralysis"],
       },
     ],
-    detail: () => "+2 racial vs. sleep saves (paralysis category not modeled)",
+    detail: () => "+2 racial vs. sleep and paralysis (dragon wild shape not modeled)",
     confidence: "medium",
     provenance: "She gains a +2 racial bonus on saving throws against sleep and paralysis effects.",
   },
@@ -576,10 +574,10 @@ export const SHIFTER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
         formula: "4",
         target: "allSavingThrows",
         type: "racial",
-        saveCategories: ["sleep"],
+        saveCategories: ["sleep", "paralysis"],
       },
     ],
-    detail: () => "+4 racial vs. sleep saves (paralysis category not modeled)",
+    detail: () => "+4 racial vs. sleep and paralysis (dragon wild shape not modeled)",
     confidence: "medium",
     provenance: "Her bonus on saves against sleep and paralysis effects increases to +4.",
   },

@@ -356,8 +356,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     id: "f9g94BzVWjntaNQg",
     race: "Gnome",
     name: "Warden of Nature",
-    bucket: "situational",
-    note: "Dodge AC and attack bonus scoped to aberrations, oozes, and vermin; favored-enemy-shaped bonuses against a creature type have no modeled target.",
+    bucket: "numeric",
+    note: "The dodge AC bonus vs. aberrations is now a real AC_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_AC_NOTES key exactly, so it is wired via collect.ts (partial: oozes and vermin have no key, and the attack half has no attacker-type target, so both stay prose).",
   },
   OcHofX7dmPTO2FJc: {
     id: "OcHofX7dmPTO2FJc",

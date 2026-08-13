@@ -108,7 +108,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     category: "Character traits",
     note: "The full published trait catalog is searchable in the picker, and a trait whose benefit comes with structured numbers or a fixed class-skill grant applies them to your sheet automatically. The rest show their benefit as text to apply at the table. Anything still missing can be added as a homebrew trait.",
     issueDetail:
-      "1,981 vendored and searchable; 490 apply live effects, plus the 28 hand-authored core entries. The remaining ~1,490 are situational prose; 150 of those hold an unconditional number blocked on a missing axis (a choose-one skill pick, one named Craft, Perform, or Profession instance, caster-level and per-day-pool numbers), inventoried in the engine's trait table.",
+      "1,981 vendored and searchable; 607 apply live effects, plus the 28 hand-authored core entries. The remaining ~1,370 are situational prose; 150 of those hold an unconditional number blocked on a missing axis (a choose-one skill pick, one named Craft, Perform, or Profession instance, caster-level and per-day-pool numbers), inventoried in the engine's trait table.",
   },
 ];
 

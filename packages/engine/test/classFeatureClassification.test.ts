@@ -45,10 +45,20 @@ describe("CLASS_FEATURE_CLASSIFICATION: structural guards", () => {
       if (entry.bucket !== "numeric") continue;
       const vendored = ref.classFeatures[entry.id];
       if (!vendored) continue; // covered by the id guard above
+      // A per-class-scoped "<classTag>:<Feature Name>" key also counts as
+      // wired for a bearer that grants this exact feature id — the whole
+      // point of that key grammar (class-feature-effects.ts's doc comment)
+      // is to serve a feature name with no safe bare-key formula at all.
+      const grantingTags = Object.values(ref.classes)
+        .filter((c) => c.features.some((g) => g.featureId === entry.id))
+        .map((c) => c.tag);
       const wired =
         vendored.changes.length > 0 ||
         CLASS_FEATURE_CHANGE_PATCHES[entry.name] !== undefined ||
-        GRANTED_POWER_CHANGE_PATCHES[entry.name] !== undefined;
+        GRANTED_POWER_CHANGE_PATCHES[entry.name] !== undefined ||
+        grantingTags.some(
+          (tag) => CLASS_FEATURE_CHANGE_PATCHES[`${tag}:${entry.name}`] !== undefined,
+        );
       expect(wired, `${entry.name} (${entry.id}) is numeric but no route is wired`).toBe(true);
     }
   });

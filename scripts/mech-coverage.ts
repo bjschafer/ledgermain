@@ -72,14 +72,17 @@ import { mergedSlayerTalentCatalog } from "../packages/engine/src/slayer-talents
 import { resolveTraitDef } from "../packages/engine/src/traits.js";
 import {
   saveChangesFromNotes,
+  VENDORED_CHARACTER_TRAIT_SAVE_NOTES,
   VENDORED_RACIAL_TRAIT_SAVE_NOTES,
 } from "../packages/engine/src/vendored-trait-save-notes.js";
 import {
   maneuverChangesFromNotes,
+  VENDORED_CHARACTER_TRAIT_MANEUVER_NOTES,
   VENDORED_RACIAL_TRAIT_MANEUVER_NOTES,
 } from "../packages/engine/src/vendored-trait-maneuver-notes.js";
 import {
   acChangesFromNotes,
+  VENDORED_CHARACTER_TRAIT_AC_NOTES,
   VENDORED_RACIAL_TRAIT_AC_NOTES,
 } from "../packages/engine/src/vendored-trait-ac-notes.js";
 import {
@@ -454,7 +457,16 @@ function main(): void {
   for (const [id, e] of Object.entries(loadDataFile("traits.json"))) {
     const name = typeof e.name === "string" ? e.name : id;
     const def = resolveTraitDef(id, refData);
-    const wired = arrayLen(e.changes) > 0 || (def !== undefined && defMovesNumbers(def));
+    // Same note-text promotion routes the racial-traits block below consults,
+    // via the character-trait halves of the three tables — collect.ts applies
+    // them to vendored character traits identically.
+    const notes = e.contextNotes as readonly ContextNote[] | undefined;
+    const wired =
+      arrayLen(e.changes) > 0 ||
+      (def !== undefined && defMovesNumbers(def)) ||
+      saveChangesFromNotes(notes, VENDORED_CHARACTER_TRAIT_SAVE_NOTES).length > 0 ||
+      maneuverChangesFromNotes(notes, VENDORED_CHARACTER_TRAIT_MANEUVER_NOTES).length > 0 ||
+      acChangesFromNotes(notes, VENDORED_CHARACTER_TRAIT_AC_NOTES).length > 0;
     const noted = arrayLen(e.contextNotes) > 0;
     results.push(
       audit(

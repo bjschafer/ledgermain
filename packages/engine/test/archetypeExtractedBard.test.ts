@@ -369,22 +369,25 @@ describe("Sea Singer (bard): Sea Legs grants maneuver-scoped CMD vs. grapple/ove
   });
 });
 
-describe("Archaeologist (bard): Trap Sense grants a scaling Reflex bonus vs. traps", () => {
+describe("Archaeologist (bard): Trap Sense grants a scaling Reflex bonus and dodge AC bonus vs. traps", () => {
   const archaeologist = archetypeId("Archaeologist", "bard");
 
-  it("+1 Reflex vs. traps at 3rd level, +3 at 9th", () => {
+  it("+1 Reflex/AC vs. traps at 3rd level, +3 at 9th", () => {
     // aonprd.com: "At 3rd level, an archaeologist gains trap sense +1... a
-    // +1 bonus on Reflex saves made to avoid traps... improving by +1 for
-    // every three levels gained after 3rd." The vendored description field
-    // for this archetype-feature id is a data-pipeline mispairing (it's
-    // literally Inspire Competence's text), so this is checked against the
-    // real published rule rather than the vendored blob.
+    // +1 bonus on Reflex saves made to avoid traps and a +1 dodge bonus to
+    // AC against attacks made by traps... improving by +1 for every three
+    // levels gained after 3rd." The vendored description field for this
+    // archetype-feature id is a data-pipeline mispairing (it's literally
+    // Inspire Competence's text), so this is checked against the real
+    // published rule rather than the vendored blob.
     const at3 = compute(
       makeDoc({ classes: [{ tag: "bard", level: 3 }], archetypes: [archaeologist] }),
       ref,
     );
     const trapsAt3 = at3.saves.ref.conditionals?.find((c) => c.categories.includes("traps"));
     expect(trapsAt3?.total).toBe(at3.saves.ref.total + 1);
+    const acTrapsAt3 = at3.ac.conditionals?.find((c) => c.categories.includes("traps"));
+    expect(acTrapsAt3?.total).toBe(at3.ac.normal + 1);
 
     const at9 = compute(
       makeDoc({ classes: [{ tag: "bard", level: 9 }], archetypes: [archaeologist] }),
@@ -392,5 +395,7 @@ describe("Archaeologist (bard): Trap Sense grants a scaling Reflex bonus vs. tra
     );
     const trapsAt9 = at9.saves.ref.conditionals?.find((c) => c.categories.includes("traps"));
     expect(trapsAt9?.total).toBe(at9.saves.ref.total + 3);
+    const acTrapsAt9 = at9.ac.conditionals?.find((c) => c.categories.includes("traps"));
+    expect(acTrapsAt9?.total).toBe(at9.ac.normal + 3);
   });
 });

@@ -223,8 +223,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
   vKapZzmkqXs62B2A: {
     id: "vKapZzmkqXs62B2A",
     name: "AC Bonus",
-    bucket: "blocked",
-    note: "conditioned on wearing light or no armor and losing the bonus while immobilized, helpless, or medium/heavy-laden; also collides on name with Stalwart Defender's differently-scoped, stance-gated same-named 'AC Bonus' entry (class-features.json id EC3p8ctSreBlNBrS), so a single name-keyed patch could not serve both classes correctly.",
+    bucket: "numeric",
+    note: "Dodge AC and CMD bonus while wearing light or no armor and carrying no more than a light load (+1 at 1st, +2 at 5th, +3 at 9th), wired via the per-class 'studentOfPerfection:AC Bonus' key using the @armor.type/@attributes.encumbrance.level gate, which keeps this bearer's formula separate from Stalwart Defender's differently-scoped, unconditional 'AC Bonus' sharing the bare name. The immobilized/helpless clause is live condition state this collection path can't read and is dropped.",
   },
   NvdCjOAQyVCqb7Tl: {
     id: "NvdCjOAQyVCqb7Tl",

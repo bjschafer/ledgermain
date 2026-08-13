@@ -12,8 +12,8 @@
  * Classification audit: EVERY feature of EVERY vendored monk archetype (56
  * archetypes, 328 features), individually hand-read and bucketed as
  * `numeric` / `situational` / `subsystem` / `blocked` (see the fighter
- * pilot's rubric for the full bucket definitions). 20 numeric, 41
- * situational, 262 subsystem, 5 blocked.
+ * pilot's rubric for the full bucket definitions). 26 numeric, 37
+ * situational, 260 subsystem, 5 blocked.
  *
  * A handful of archetype ids are byte-identical (or near-identical) twins of
  * another archetype already classified in this file, stamped separately by
@@ -48,9 +48,8 @@
  *  - A qualified save bonus ("+2 vs. fear/poison/etc.") is `numeric` via
  *    `allSavingThrows` + `Change.saveCategories` only when every named
  *    condition (or at least one) has a real `SAVE_CATEGORIES` entry
- *    (save-categories.ts's closed vocabulary — alignment subtypes, specific
- *    conditions like exhaustion/fatigue, and spell schools like necromancy
- *    have none); otherwise `situational`.
+ *    (save-categories.ts's closed vocabulary — alignment subtypes have none);
+ *    otherwise `situational`.
  *  - A pure immunity grant is `numeric` via `immEffect.<slug>` only when the
  *    slug is in defenses.ts's closed `EFFECT_IMMUNITY_LABELS` vocabulary
  *    (fatigue, exhaustion, stunned, deathEffects, energyDrain,
@@ -789,7 +788,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Infernal Resilience",
     level: 5,
     bucket: "numeric",
-    note: "immunity to pain-descriptor effects isn't extracted (no 'pain' slug in the closed immEffect vocabulary); of the qualified save bonus (sicken/nauseate/stagger/stun), only 'stun' is a SAVE_CATEGORIES entry, so only that slice is extracted",
+    note: "immunity to pain-descriptor effects isn't extracted (no 'pain' slug in the closed immEffect vocabulary); of the qualified save bonus (sicken/nauseate/stagger/stun), 'stun' and 'nausea' (covers sicken/nauseate) are SAVE_CATEGORIES entries, so both are extracted; stagger alone has none and is dropped",
   },
   "monk:hamatulatsu-master:ki-pool:0": {
     archetypeId: "monk:hamatulatsu-master",
@@ -1524,7 +1523,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Draconic Mettle",
     level: 4,
     bucket: "numeric",
-    note: "qualified save bonus vs. fear/sleep, mirroring monkUnchained's identically-worded twin (paralysis isn't a modeled save category)",
+    note: "qualified save bonus vs. fear/sleep/paralysis, mirroring monkUnchained's identically-worded twin; all three are real SAVE_CATEGORIES entries",
   },
   "monk:scarred-monk:armor-of-scars:1": {
     archetypeId: "monk:scarred-monk",
@@ -1873,8 +1872,8 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "monk:spirit-master",
     name: "Resilient Soul",
     level: 3,
-    bucket: "situational",
-    note: "real but conditional/narrowly-scoped number (specific maneuver, weapon, target state, or action) — not expressible without over-applying, per the honesty bar (save bonus scoped to necromancy spells/effects — no 'necromancy' SAVE_CATEGORIES entry exists; that vocabulary is source/mind-affecting-family based, not school-based)",
+    bucket: "numeric",
+    note: "flat, unconditional +2 save bonus vs. necromancy spells and effects, expressible via Change.saveCategories (['necromancy'])",
   },
   "monk:spirit-master:spirit-burst:7": {
     archetypeId: "monk:spirit-master",
@@ -2146,8 +2145,8 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "monk:wanderer",
     name: "Long Walk",
     level: 3,
-    bucket: "situational",
-    note: "real but conditional/narrowly-scoped number (specific maneuver, weapon, target state, or action) — not expressible without over-applying, per the honesty bar (save bonus scoped to exhaustion/fatigue effects — neither is a SAVE_CATEGORIES entry); the Endurance bonus feat and forced-march doubling aren't Change-shaped either",
+    bucket: "numeric",
+    note: "flat, unconditional +2 save bonus vs. exhaustion/fatigue effects, expressible via Change.saveCategories (['fatigue']); the Endurance bonus feat and forced-march Constitution-check doubling aren't Change-shaped and are dropped",
   },
   "monk:wanderer:wanderer-s-wisdom:7": {
     archetypeId: "monk:wanderer",
@@ -2651,21 +2650,21 @@ export const MONK_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   },
 
   // Scaled Fist's "Draconic Mettle" grants a flat, unconditional +2 on saves
-  // vs. fear and sleep effects — mirrors monkUnchained's identically-worded
-  // Scaled Fist twin exactly. `fear`/`sleep` are real Change.saveCategories
-  // entries (save-categories.ts); `paralysis` has no SAVE_CATEGORIES entry at
-  // all and is dropped, flagged in `detail`.
+  // vs. fear, paralysis, and sleep effects — mirrors monkUnchained's
+  // identically-worded Scaled Fist twin exactly. `fear`/`paralysis`/`sleep`
+  // are all real Change.saveCategories entries (save-categories.ts), so
+  // nothing is dropped.
   "monk:scaled-fist:draconic-mettle:4": {
     changes: [
       {
         formula: "2",
         target: "allSavingThrows",
         type: "untyped",
-        saveCategories: ["fear", "sleep"],
+        saveCategories: ["fear", "paralysis", "sleep"],
       },
     ],
-    detail: () => "+2 vs. fear/sleep saves (paralysis not modeled)",
-    confidence: "medium",
+    detail: () => "+2 vs. fear/paralysis/sleep saves",
+    confidence: "high",
     provenance:
       "At 4th level, a scaled fist gains a +2 bonus on saving throws attempted against all fear, " +
       "paralysis, and sleep effects.",
@@ -2673,20 +2672,20 @@ export const MONK_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
 
   // Hamatulatsu Master's "Infernal Resilience": immunity to pain-descriptor
   // effects isn't extracted (no "pain" slug in the closed immEffect
-  // vocabulary). Of the qualified save bonus, only "stun" is a real
-  // SAVE_CATEGORIES entry (save-categories.ts) — sicken/nauseate/stagger have
-  // none, so only the stun slice is extracted.
+  // vocabulary). Of the qualified save bonus, "stun" and "nausea" (which
+  // covers sicken/nauseate) are real SAVE_CATEGORIES entries
+  // (save-categories.ts) — stagger alone has none and is dropped.
   "monk:hamatulatsu-master:infernal-resilience:5": {
     changes: [
       {
         formula: "2",
         target: "allSavingThrows",
         type: "untyped",
-        saveCategories: ["stun"],
+        saveCategories: ["stun", "nausea"],
       },
     ],
     detail: () =>
-      "+2 vs. stun saves (sicken/nauseate/stagger not modeled; pain immunity not modeled)",
+      "+2 vs. sicken/nauseate/stun saves (stagger not modeled; pain immunity not modeled)",
     confidence: "medium",
     provenance:
       "At 5th level, a hamatulatsu master gains immunity to all spells, spell-like abilities, " +
@@ -2731,6 +2730,26 @@ export const MONK_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "electricity resistance 10.",
   },
 
+  // Spirit Master's "Resilient Soul" grants a flat, unconditional +2 save
+  // bonus vs. necromancy spells and effects — a real Change.saveCategories
+  // entry (save-categories.ts), and nothing else in the ability's single
+  // sentence is dropped.
+  "monk:spirit-master:resilient-soul:3": {
+    changes: [
+      {
+        formula: "2",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["necromancy"],
+      },
+    ],
+    detail: () => "+2 vs. necromancy spells and effects",
+    confidence: "high",
+    provenance:
+      "At 3rd level, a spirit master gains a +2 bonus on saving throws against necromancy " +
+      "spells and effects. This ability replaces still mind.",
+  },
+
   // Spirit Master's "Spirit Mastery" capstone: the weekly true-resurrection
   // ritual is unmodeled, but DR/evil and ability-damage/-drain immunity are
   // flat and wholly unconditional at 20th level.
@@ -2771,6 +2790,30 @@ export const MONK_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     confidence: "high",
     provenance:
       "At 5th level, a terra-cotta monk adds a bonus equal to his class level on all Climb checks.",
+  },
+
+  // Wanderer's "Long Walk" grants a flat, unconditional +2 save bonus vs.
+  // exhaustion/fatigue effects — a real Change.saveCategories entry
+  // (save-categories.ts's `fatigue`). The Endurance bonus feat and the
+  // forced-march Constitution-check doubling aren't Change-shaped and are
+  // dropped.
+  "monk:wanderer:long-walk:3": {
+    changes: [
+      {
+        formula: "2",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["fatigue"],
+      },
+    ],
+    detail: () =>
+      "+2 vs. exhaustion/fatigue effects (Endurance feat/forced-march doubling not modeled)",
+    confidence: "medium",
+    provenance:
+      "At 3rd level, the wanderer gains Endurance as a bonus feat, and the feat bonus doubles " +
+      "when he makes Constitution checks because of a forced march. In addition, a wanderer " +
+      "gains a +2 bonus on saving throws against spells and effects that cause exhaustion and " +
+      "fatigue. This ability replaces still mind.",
   },
 
   // Weapon Adept's "Pure Power" capstone: a flat, unconditional +2 to

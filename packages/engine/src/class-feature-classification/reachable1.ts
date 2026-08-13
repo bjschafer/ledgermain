@@ -49,8 +49,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
   sTlu3zgAEDdJnER5: {
     id: "sTlu3zgAEDdJnER5",
     name: "Danger Sense",
-    bucket: "blocked",
-    note: "The Reflex-vs-traps clause is now expressible (saveCategories: [\"traps\"]), but 'Danger Sense' also names a wholly unrelated shieldmarshal initiative bonus (QsDvIB5mfC5c9DKG) reachable through the same name-keyed table, so it can't be safely wired without misapplying to that bearer. The AC-dodge and Perception-vs-surprise clauses stay unexpressible regardless (no AC conditional mechanism; Perception is scoped narrower than the whole skill).",
+    bucket: "numeric",
+    note: "Reflex vs. traps and dodge AC vs. traps are wired for the Rogue (Unchained) and Barbarian (Unchained) bearers via the per-class 'rogueUnchained:Danger Sense' and 'barbarianUnchained:Danger Sense' keys, which keep this bearer's formula separate from the unrelated shieldmarshal 'Danger Sense' sharing the bare name. The Perception-vs-surprise clause stays prose: narrower than the whole skill.",
   },
   "15va0QO7X8dk5YTR": {
     id: "15va0QO7X8dk5YTR",

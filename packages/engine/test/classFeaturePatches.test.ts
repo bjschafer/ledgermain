@@ -76,19 +76,20 @@ describe("Apocalyptic Vow (Souldrinker, Fortitude vs. death)", () => {
   });
 });
 
-describe("Soul Stone (Living Monolith, death on Fortitude + mind-affecting on Will)", () => {
+describe("Soul Stone (Living Monolith, death+negative-levels on Fortitude, mind-affecting on Will)", () => {
   it("+2 at 1st level, on two different saves", () => {
     // "The soul stone grants the living monolith a +2 bonus on saving
     // throws against death effects, mind-affecting effects, effects that
     // grant negative levels, and on saves to overcome negative levels"
-    // (Faction Guide, 1st level; negative levels are not a SAVE_CATEGORIES
-    // entry). Living Monolith Fort is good prestige (floor((level+1)/2)),
-    // Will is poor prestige (floor((level+1)/3)). Level 1:
-    // Fort = floor(2/2) = 1, Will = floor(2/3) = 0.
+    // (Faction Guide, 1st level). Both negative-level clauses are the same
+    // Fortitude axis, `energyDrain`, so they merge with `death` into one
+    // line (same total, same save). Living Monolith Fort is good prestige
+    // (floor((level+1)/2)), Will is poor prestige (floor((level+1)/3)).
+    // Level 1: Fort = floor(2/2) = 1, Will = floor(2/3) = 0.
     const sheet = compute(makeDoc("livingMonolith", 1), ref);
     expect(sheet.saves.fort.total).toBe(1);
     expect(sheet.saves.fort.conditionals).toEqual([
-      { total: 3, categories: ["death"], labels: ["death"] },
+      { total: 3, categories: ["death", "energyDrain"], labels: ["death", "energy drain"] },
     ]);
     expect(sheet.saves.will.total).toBe(0);
     expect(sheet.saves.will.conditionals).toEqual([

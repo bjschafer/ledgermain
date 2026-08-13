@@ -1360,8 +1360,8 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "rogue:rotdrinker",
     name: "Poison Resistance",
     level: 2,
-    bucket: "situational",
-    note: "+2/+4 save bonus scoped to poison specifically — no matching target (would over-apply as a blanket Fortitude bonus)",
+    bucket: "numeric",
+    note: "unconditional scaling save bonus vs. all poisons — a clean SAVE_CATEGORIES mapping",
   },
   "rogue:rotdrinker:unnatural-ingestion:4": {
     archetypeId: "rogue:rotdrinker",
@@ -2294,6 +2294,23 @@ export const ROGUE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "At 20th level, a roof runner gains a climb speed equal to her base land speed, instead of " +
       "being able to move at full speed while tracking.",
+  },
+  // Rotdrinker's "Poison Resistance" is a clean SAVE_CATEGORIES mapping,
+  // identical to the unchained rogue's own Rotdrinker archetype.
+  "rogue:rotdrinker:poison-resistance:2": {
+    changes: [
+      {
+        formula: "if(gte(@class.unlevel, 8), 4, 2)",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["poison"],
+      },
+    ],
+    detail: (level) => `+${level >= 8 ? 4 : 2} saves vs. poison`,
+    confidence: "high",
+    provenance:
+      "At 2nd level, a rotdrinker gains a +2 bonus on saving throws against all poisons. This " +
+      "bonus increases to +4 at 8th level.",
   },
   "rogue:sanctified-rogue:divine-purpose:4": {
     changes: [c("1", "fort", "sacred"), c("1", "will", "sacred")],

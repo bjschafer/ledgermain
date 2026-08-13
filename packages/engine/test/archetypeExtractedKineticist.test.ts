@@ -99,7 +99,7 @@ describe("KINETICIST_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
   });
 });
 
-describe("Arakineticist: Accursed Shadow grants a partial save bonus vs. death effects", () => {
+describe("Arakineticist: Accursed Shadow grants a save bonus vs. death effects and necromancy spells", () => {
   it("archetype exists in the vendored data", () => {
     expect(archetypeId("Arakineticist")).toBe("kineticist:arakineticist");
   });
@@ -108,7 +108,7 @@ describe("Arakineticist: Accursed Shadow grants a partial save bonus vs. death e
     const id = "kineticist:arakineticist:accursed-shadow:4";
     const [change] = KINETICIST_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
     expect(change!.target).toBe("allSavingThrows");
-    expect(change!.saveCategories).toEqual(["death"]);
+    expect(change!.saveCategories).toEqual(["death", "necromancy"]);
     const at = (level: number) => evaluateFormula(change!.formula, { class: { unlevel: level } });
     expect(at(4)).toBe(2);
     expect(at(8)).toBe(3);

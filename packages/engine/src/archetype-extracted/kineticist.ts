@@ -154,7 +154,7 @@ export const KINETICIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Accursed Shadow",
     level: 4,
     bucket: "numeric",
-    note: "flat, unconditional save bonus vs. death effects, expressible via Change.saveCategories (['death']); the 'necromancy spells' half of the same bonus has no matching save category and is dropped",
+    note: "flat, unconditional save bonus vs. death effects AND necromancy spells, both expressible via Change.saveCategories (['death', 'necromancy'])",
   },
   "kineticist:arakineticist:curse-spinner:6": {
     archetypeId: "kineticist:arakineticist",
@@ -761,7 +761,7 @@ export const KINETICIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * extraction pass inferred this from prose." Only 5 of kineticist's 86
  * features cleared the `numeric` bar (see
  * `KINETICIST_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
- * per-feature audit) — three of the five are partial extractions of a
+ * per-feature audit) — two of the five are partial extractions of a
  * multi-clause feature, with the unextractable clause dropped and noted
  * rather than guessed at.
  *
@@ -779,23 +779,21 @@ export const KINETICIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
 > = {
   // Arakineticist's "Accursed Shadow" grants a flat, unconditional save bonus
-  // vs. death effects (Change.saveCategories: ["death"]) on top of the
-  // ordinary Fortitude/Reflex/Will total. The published bonus also covers
-  // "necromancy spells" — a school-wide condition with no matching
-  // SAVE_CATEGORIES entry (only the individual enchantment/illusion schools
-  // are modeled) — dropped rather than guessed at.
+  // vs. death effects AND necromancy spells (Change.saveCategories: ["death",
+  // "necromancy"]) on top of the ordinary Fortitude/Reflex/Will total. Both
+  // halves are real SAVE_CATEGORIES entries, so nothing is dropped.
   "kineticist:arakineticist:accursed-shadow:4": {
     changes: [
       {
         formula: "min(6, 2 + floor(max(0, @class.unlevel - 4) / 4))",
         target: "allSavingThrows",
         type: "untyped",
-        saveCategories: ["death"],
+        saveCategories: ["death", "necromancy"],
       },
     ],
     detail: (level) =>
-      `+${Math.min(6, 2 + Math.floor(Math.max(0, level - 4) / 4))} vs. death effects (necromancy-spell half not modeled)`,
-    confidence: "medium",
+      `+${Math.min(6, 2 + Math.floor(Math.max(0, level - 4) / 4))} vs. necromancy spells and death effects`,
+    confidence: "high",
     provenance:
       "She gains a +2 bonus on saving throws against necromancy spells and death effects. " +
       "This bonus increases by 1 every 4 levels beyond 4th, to a maximum of +6 at 20th level.",

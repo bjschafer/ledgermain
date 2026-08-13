@@ -43,8 +43,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
   QyZuFZuT98jA78iq: {
     id: "QyZuFZuT98jA78iq",
     name: "Masochism",
-    bucket: "situational",
-    note: "Core benefit is a self-damage swift-action activation (attack/damage bonus scales with chosen self-inflicted damage); the +4 save bonus against pain effects also has no SAVE_CATEGORIES entry, since pain is not a modeled category.",
+    bucket: "numeric",
+    note: "The +4 class bonus on saves against pain effects is wired via the bare 'Masochism' key (the name is unique across class-feature-effects), using the `pain` SAVE_CATEGORIES entry. The self-damage swift-action activation (attack/damage bonus scaling with chosen self-inflicted damage) stays prose: a live activated ability with its own escalating cost/bonus track.",
   },
   msenGlypfNllZQuX: {
     id: "msenGlypfNllZQuX",
@@ -80,7 +80,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
     id: "5q20EcI3V9MD2Vta",
     name: "Soul Stone",
     bucket: "numeric",
-    note: "The +2 save bonus against death effects and mind-affecting effects is unconditional. The negative-level clause has no SAVE_CATEGORIES entry, and the 3/day enlarge-person activation is a separate subsystem grant.",
+    note: "The +2 save bonus is unconditional against death effects, mind-affecting effects, and (via the `energyDrain` category) both negative-level clauses. The 3/day enlarge-person activation is a separate subsystem grant.",
   },
   "9N5fuIg0zB8SrwRh": {
     id: "9N5fuIg0zB8SrwRh",

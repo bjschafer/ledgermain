@@ -1892,7 +1892,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Hazard Sense",
     level: 4,
     bucket: "numeric",
-    note: 'unconditional from 4th level. The Reflex half is wired via saveCategories: ["traps"] (conservatively under-scoping the real "natural hazards and wilderness traps" text, since only traps has a category); the dodge-AC half has no AC conditional mechanism and stays prose.',
+    note: 'unconditional from 4th level. Both halves are wired via saveCategories: ["traps"] and acCategories: ["traps"] (conservatively under-scoping the real "natural hazards and wilderness traps"/"wilderness traps" text, since only traps has a category).',
   },
   "ranger:wilderness-explorer:indigenous-spirit:8": {
     archetypeId: "ranger:wilderness-explorer",
@@ -2268,10 +2268,11 @@ export const RANGER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "+10 feet.",
   },
 
-  // Wilderness Explorer's "Hazard Sense" (Change.saveCategories — the
-  // Reflex half only; "natural hazards and wilderness traps" is
-  // conservatively under-scoped to just traps, since the vocabulary has no
-  // broader "natural hazard" category).
+  // Wilderness Explorer's "Hazard Sense" (Change.saveCategories /
+  // Change.acCategories — both halves are conservatively under-scoped to
+  // just traps, since the vocabulary has no broader "natural hazard"
+  // category, and the AC half is itself narrower in the source text
+  // (wilderness traps only, not natural hazards generally).
   "ranger:wilderness-explorer:hazard-sense:4": {
     changes: [
       {
@@ -2280,10 +2281,16 @@ export const RANGER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
         type: "untyped",
         saveCategories: ["traps"],
       },
+      {
+        formula: "if(gte(@class.unlevel, 4), 1 + floor((@class.unlevel - 4) / 4), 0)",
+        target: "ac",
+        type: "dodge",
+        acCategories: ["traps"],
+      },
     ],
     detail: (level) =>
       level >= 4
-        ? `+${1 + Math.floor((level - 4) / 4)} Reflex vs. traps (dodge AC vs. wilderness traps not modeled)`
+        ? `+${1 + Math.floor((level - 4) / 4)} Reflex vs. natural hazards/wilderness traps, dodge AC vs. wilderness traps`
         : "not yet granted",
     confidence: "medium",
     provenance:

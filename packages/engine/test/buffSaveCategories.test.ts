@@ -183,6 +183,20 @@ describe("a shared buff carries its scope to the companion", () => {
   });
 });
 
+describe("Animal Focus (Snake) (+2 dodge AC vs. attacks of opportunity)", () => {
+  it("leaves the headline AC and CMD alone and prints an AoO conditional", () => {
+    // @item.level 1: 2 + floor((1 - 1) / 7) * 2 = 2.
+    const sheet = compute(makeDoc([activate("Animal Focus (Snake)", 1)]), ref);
+    expect(sheet.ac.normal).toBe(10);
+    expect(sheet.ac.touch).toBe(10);
+    expect(sheet.ac.flatFooted).toBe(10);
+    expect(sheet.ac.conditionals).toEqual([{ total: 12, categories: ["aoo"], labels: ["AoOs"] }]);
+    // Fighter L1, all 10s: CMD 10 + BAB 1 = 11.
+    expect(sheet.cmd).toBe(11);
+    expect(sheet.cmdConditionals).toBeUndefined();
+  });
+});
+
 describe("the note-matching contract", () => {
   it("every patched buff still exists and still carries the note it was read from", () => {
     // The patches were transcribed from each buff's own contextNote, so a data

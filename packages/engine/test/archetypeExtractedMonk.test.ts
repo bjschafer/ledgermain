@@ -108,7 +108,7 @@ describe("Monk archetype classification: full coverage of every vendored feature
     expect(Object.keys(MONK_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(328);
   });
 
-  it("bucket counts (24 numeric, 39 situational, 260 subsystem, 5 blocked)", () => {
+  it("bucket counts (26 numeric, 37 situational, 260 subsystem, 5 blocked)", () => {
     const counts: Record<"numeric" | "situational" | "subsystem" | "blocked", number> = {
       numeric: 0,
       situational: 0,
@@ -118,10 +118,10 @@ describe("Monk archetype classification: full coverage of every vendored feature
     for (const entry of Object.values(MONK_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    // +2 numeric / -2 subsystem vs. the original audit: master-of-many-styles
-    // and martial-artist's "Pain Points" promoted once abilityDC.stunningFist
-    // / abilityDC.quiveringPalm (ability-dcs.ts) gave the DC half a target.
-    expect(counts).toEqual({ numeric: 24, situational: 39, subsystem: 260, blocked: 5 });
+    // +2 numeric / -2 situational vs. the prior audit: Spirit Master's
+    // Resilient Soul (necromancy) and Wanderer's Long Walk (fatigue) promoted
+    // once save-categories.ts grew those two categories.
+    expect(counts).toEqual({ numeric: 26, situational: 37, subsystem: 260, blocked: 5 });
   });
 
   it("every numeric-bucketed feature resolves to a real effect (hand-verified or extracted)", () => {
@@ -131,8 +131,8 @@ describe("Monk archetype classification: full coverage of every vendored feature
     }
   });
 
-  it("23 features are extracted; Nornkith's nimble-reflexes:3 stays solely hand-verified", () => {
-    expect(Object.keys(MONK_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(23);
+  it("25 features are extracted; Nornkith's nimble-reflexes:3 stays solely hand-verified", () => {
+    expect(Object.keys(MONK_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(25);
     expect(MONK_ARCHETYPE_EFFECTS_EXTRACTED["monk:nornkith:nimble-reflexes:3"]).toBeUndefined();
   });
 });
@@ -340,45 +340,58 @@ describe("Wildcat: Brawler Maneuver Training (dirty-trick-scoped cmb/cmd, tiered
   });
 });
 
-describe("Scaled Fist: Draconic Mettle (+2 vs. fear/sleep, paralysis not modeled)", () => {
-  it("headline Will save is unaffected; the fear/sleep conditional adds +2 on top", () => {
+describe("Scaled Fist: Draconic Mettle (+2 vs. fear/paralysis/sleep)", () => {
+  it("headline Will save is unaffected; the fear/sleep/enchantment conditional adds +2 on top, paralysis merges in on Fort", () => {
     const sheet = sheetWith("Scaled Fist", 4);
     const without = sheetWithout(4);
     expect(sheet.saves.will.total).toBe(without.saves.will.total);
+    expect(sheet.saves.fort.total).toBe(without.saves.fort.total);
     // Base monk's Still Mind (class-feature-effects.ts) independently grants
     // +2 vs. enchantment, unreplaced by Scaled Fist — same +2 total as
-    // Draconic Mettle's fear/sleep, so they merge into one conditional line.
+    // Draconic Mettle's fear/paralysis/sleep, so they merge into one
+    // conditional line on Will.
     expect(sheet.saves.will.conditionals).toEqual([
       {
         total: without.saves.will.total + 2,
-        categories: ["fear", "sleep", "enchantment"],
-        labels: ["fear", "sleep", "enchantment"],
+        categories: ["fear", "sleep", "enchantment", "paralysis"],
+        labels: ["fear", "sleep", "enchantment", "paralysis"],
       },
+    ]);
+    // Paralysis also allows a Fortitude save (fear/sleep/enchantment don't),
+    // so it earns its own conditional line there.
+    expect(sheet.saves.fort.conditionals).toEqual([
+      { total: without.saves.fort.total + 2, categories: ["paralysis"], labels: ["paralysis"] },
     ]);
   });
 });
 
-describe("Hamatulatsu Master: Infernal Resilience (+2 vs. stun only; sicken/nauseate/stagger/pain not modeled)", () => {
-  it("headline saves are unaffected; the stun conditional adds +2 on fort/ref/will", () => {
+describe("Hamatulatsu Master: Infernal Resilience (+2 vs. sicken/nauseate/stun; stagger/pain immunity not modeled)", () => {
+  it("headline saves are unaffected; the stun/nausea conditional adds +2 on fort/ref/will", () => {
     const sheet = sheetWith("Hamatulatsu Master", 5);
     const without = sheetWithout(5);
     expect(sheet.saves.fort.total).toBe(without.saves.fort.total);
     expect(sheet.saves.ref.total).toBe(without.saves.ref.total);
     expect(sheet.saves.will.total).toBe(without.saves.will.total);
+    // Nausea allows fort/will, stun allows all three — on Fortitude both
+    // merge into one line since they resolve to the same total.
     expect(sheet.saves.fort.conditionals).toEqual([
-      { total: without.saves.fort.total + 2, categories: ["stun"], labels: ["stunning"] },
+      {
+        total: without.saves.fort.total + 2,
+        categories: ["nausea", "stun"],
+        labels: ["nausea/sickened", "stunning"],
+      },
     ]);
     expect(sheet.saves.ref.conditionals).toEqual([
       { total: without.saves.ref.total + 2, categories: ["stun"], labels: ["stunning"] },
     ]);
     // Base monk's Still Mind independently grants +2 vs. enchantment
-    // (unreplaced here), will-only — merges with the stun line on Will only,
-    // since enchantment has no meaning on Fortitude/Reflex.
+    // (unreplaced here), will-only — merges with the stun/nausea line on
+    // Will, since enchantment has no meaning on Fortitude/Reflex.
     expect(sheet.saves.will.conditionals).toEqual([
       {
         total: without.saves.will.total + 2,
-        categories: ["enchantment", "stun"],
-        labels: ["enchantment", "stunning"],
+        categories: ["nausea", "enchantment", "stun"],
+        labels: ["nausea/sickened", "enchantment", "stunning"],
       },
     ]);
   });
@@ -416,6 +429,26 @@ describe("Soul Shepherd: Otherworldly Resilience (flat DR/adamantine + cold/elec
   });
 });
 
+describe("Spirit Master: Resilient Soul (+2 vs. necromancy spells and effects)", () => {
+  it("headline Will save is unaffected; the necromancy conditional adds +2 on fort/ref/will", () => {
+    const sheet = sheetWith("Spirit Master", 3);
+    const without = sheetWithout(3);
+    expect(sheet.saves.fort.total).toBe(without.saves.fort.total);
+    expect(sheet.saves.ref.total).toBe(without.saves.ref.total);
+    expect(sheet.saves.will.total).toBe(without.saves.will.total);
+    expect(sheet.saves.fort.conditionals).toEqual([
+      { total: without.saves.fort.total + 2, categories: ["necromancy"], labels: ["necromancy"] },
+    ]);
+    expect(sheet.saves.ref.conditionals).toEqual([
+      { total: without.saves.ref.total + 2, categories: ["necromancy"], labels: ["necromancy"] },
+    ]);
+    // Resilient Soul replaces Still Mind, so no separate enchantment line.
+    expect(sheet.saves.will.conditionals).toEqual([
+      { total: without.saves.will.total + 2, categories: ["necromancy"], labels: ["necromancy"] },
+    ]);
+  });
+});
+
 describe("Spirit Master: Spirit Mastery capstone (DR 10/evil + ability-damage/-drain immunity)", () => {
   it("DR 10/evil and both immunities at L20; weekly true-resurrection ritual not modeled", () => {
     const sheet = sheetWith("Spirit Master", 20);
@@ -440,6 +473,21 @@ describe("Weapon Adept: Pure Power capstone (+2 Str/Dex/Wis)", () => {
     expect(sheet.abilities.str.total - without.abilities.str.total).toBe(2);
     expect(sheet.abilities.dex.total - without.abilities.dex.total).toBe(2);
     expect(sheet.abilities.wis.total - without.abilities.wis.total).toBe(2);
+  });
+});
+
+describe("Wanderer: Long Walk (+2 vs. exhaustion/fatigue effects; Endurance feat/forced-march doubling not modeled)", () => {
+  it("headline Fortitude save is unaffected; the fatigue conditional adds +2 on top", () => {
+    const sheet = sheetWith("Wanderer", 3);
+    const without = sheetWithout(3);
+    expect(sheet.saves.fort.total).toBe(without.saves.fort.total);
+    expect(sheet.saves.fort.conditionals).toEqual([
+      {
+        total: without.saves.fort.total + 2,
+        categories: ["fatigue"],
+        labels: ["fatigue/exhaustion"],
+      },
+    ]);
   });
 });
 

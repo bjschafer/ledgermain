@@ -133,8 +133,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_5: Readonly<
   QsDvIB5mfC5c9DKG: {
     id: "QsDvIB5mfC5c9DKG",
     name: "Danger Sense",
-    bucket: "blocked",
-    note: "'Danger Sense' also names the Rogue (Unchained)/Barbarian (Unchained) trap-sense variant (Reflex/AC/Perception bonuses vs. traps), a wholly different mechanic; a name-keyed patch for the shieldmarshal's initiative bonus would misapply to that entry too.",
+    bucket: "numeric",
+    note: "The initiative bonus (1/2 class level) is wired via the per-class 'shieldmarshal:Danger Sense' key, which keeps this bearer's formula separate from the unrelated Rogue (Unchained)/Barbarian (Unchained) trap-sense variant sharing the bare name. The always-act-in-a-surprise-round clause has no Change-shaped target and stays prose.",
   },
   RfI1XamDv8W2xaCB: {
     id: "RfI1XamDv8W2xaCB",
@@ -271,8 +271,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_5: Readonly<
   A3QO3Z9rRKiyheCF: {
     id: "A3QO3Z9rRKiyheCF",
     name: "Damage Reduction",
-    bucket: "blocked",
-    note: "'Damage Reduction' also names Bloodrager/Barbarian's DR (+1 at 7th, +1 per 3 levels) and Pain Taster's DR (+1 at 2nd, +1 per 2 levels), each a different progression; a name-keyed patch cannot serve all three without wrong numbers for the others.",
+    bucket: "numeric",
+    note: "Unconditional DR 1/- at 5th, 3/- at 7th, 5/- at 10th (a separate automatic feature from Defensive Stance, not stance-gated), wired via the per-class 'stalwartDefender:Damage Reduction' key, which keeps this bearer's formula separate from the differently-paced Bloodrager/Barbarian and Pain Taster entries sharing the bare name.",
   },
   O6hbHICweSxh0y7Z: {
     id: "O6hbHICweSxh0y7Z",
@@ -343,8 +343,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_5: Readonly<
   EC3p8ctSreBlNBrS: {
     id: "EC3p8ctSreBlNBrS",
     name: "AC Bonus",
-    bucket: "blocked",
-    note: "'AC Bonus' also names Student of Perfection's dodge bonus, which has a different progression and is lost while wearing medium/heavy armor or carrying a medium/heavy load; a name-keyed patch cannot serve both without wrong numbers for one.",
+    bucket: "numeric",
+    note: "Unconditional dodge AC bonus, +1 at 1st rising to +4 at 10th (a separate automatic feature from Defensive Stance, not stance-gated; the vendored grant level is 10th itself, so it only ever manifests at +4), wired via the per-class 'stalwartDefender:AC Bonus' key, which keeps this bearer's formula separate from Student of Perfection's differently-scoped, armor-gated 'AC Bonus' sharing the bare name.",
   },
   EE0cYrzPcCFoZbuC: {
     id: "EE0cYrzPcCFoZbuC",
@@ -391,8 +391,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_5: Readonly<
   X0cBoKchAsSVfgwJ: {
     id: "X0cBoKchAsSVfgwJ",
     name: "Eye for Detail",
-    bucket: "blocked",
-    note: "'Eye for Detail' also names Twilight Talon's forgery bonus and Sleepless Detective's free trap-Perception-check ability, both wholly different mechanics from the shieldmarshal's own Intelligence-plus-Wisdom Perception/Sense Motive stacking; a name-keyed patch cannot serve all three.",
+    bucket: "numeric",
+    note: "The Intelligence-modifier half (Wisdom is already the skills' own governing ability) is wired to Perception and Sense Motive via the per-class 'shieldmarshal:Eye for Detail' key, which keeps this bearer's formula separate from Twilight Talon's forgery bonus and Sleepless Detective's ability sharing the bare name. The half-level bonus on Perception checks opposed by Disguise/Sleight of Hand is scoped to those specific opposed checks, narrower than the skill, and stays prose.",
   },
   Y1LZmoF3BpLMgUey: {
     id: "Y1LZmoF3BpLMgUey",
@@ -422,7 +422,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_5: Readonly<
     id: "gHlXKXXFXQkgAa2B",
     name: "Stalwart",
     bucket: "blocked",
-    note: "The save bonus is scoped to divine spells specifically, a spellcasting-tradition distinction SAVE_CATEGORIES does not carry (matches this file's own Nonbeliever/Mistrust of Magic precedent); the name also collides with the Inquisitor/Skyseeker 'stalwart' reroll-and-avoid ability, a wholly different mechanic.",
+    note: "The save bonus is scoped to divine spells specifically, a spellcasting-tradition distinction SAVE_CATEGORIES does not carry (matches this file's own Nonbeliever/Mistrust of Magic precedent). Per-class keys now exist to separate this from the Inquisitor/Skyseeker 'stalwart' reroll-and-avoid ability sharing the bare name, but the vocabulary gap is the real blocker.",
   },
   gNIhgXDhQOnOqjwj: {
     id: "gNIhgXDhQOnOqjwj",

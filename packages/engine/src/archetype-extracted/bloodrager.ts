@@ -454,7 +454,7 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Indomitable Stance",
     level: 1,
     bucket: "numeric",
-    note: "the +1 combat maneuver checks clause is flat and unconditional (extracted below); the CMD-vs-overrun, Reflex-vs-trample, AC-vs-charge, and attack/damage-vs-charging-creatures clauses are all narrowly attack-scoped and dropped, flagged in detail; replaces fast movement (unpaired, class note 2)",
+    note: "the +1 combat maneuver checks, +1 CMD vs. overrun, and +1 AC vs. charge clauses are all flat and unconditional, now expressible via Change.maneuverCategories/Change.acCategories (extracted below); Reflex-vs-trample and attack/damage-vs-charging-creatures have no matching save category or target and stay prose; replaces fast movement (unpaired, class note 2)",
   },
   "bloodrager:steelblood:weapon-and-armor-proficiency:1": {
     archetypeId: "bloodrager:steelblood",
@@ -606,21 +606,29 @@ export const BLOODRAGER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   },
 
   // Steelblood's "Indomitable Stance" packs five clauses into one sentence
-  // pair; only the first ("+1 bonus on combat maneuver checks") is flat and
-  // unconditional — the rest (CMD vs. overrun, Reflex vs. trample, AC vs.
-  // charge, attack/damage vs. charging creatures) are all narrowly scoped to
-  // specific maneuvers/attack types the static sheet can't isolate without
-  // over-applying to every combat maneuver check, AC roll, or attack roll.
-  // Dropping four of five clauses is why this is "medium" rather than "high".
+  // pair. Three are flat and unconditional: "+1 bonus on combat maneuver
+  // checks", "+1 to CMD against overrun combat maneuvers" (maneuverCategories
+  // now covers the CMD-scoped half), and "+1 to AC against charge attacks"
+  // (acCategories covers this half too). The other two (Reflex vs. trample,
+  // attack/damage vs. charging creatures) are narrowly scoped to specific
+  // save/attack shapes the vocabulary has no matching category or target
+  // for, and stay prose. Dropping two of five clauses is why this stays
+  // "medium" rather than "high".
   "bloodrager:steelblood:indomitable-stance:1": {
-    changes: [c("1", "cmb")],
+    changes: [
+      c("1", "cmb"),
+      { formula: "1", target: "cmd", type: "untyped", maneuverCategories: ["overrun"] },
+      { formula: "1", target: "ac", type: "untyped", acCategories: ["charge"] },
+    ],
     detail: () =>
-      "+1 combat maneuver checks (CMD vs. overrun, Reflex vs. trample, AC vs. charge, and " +
-      "atk/dmg vs. charging creatures not modeled)",
+      "+1 combat maneuver checks, +1 CMD vs. overrun, +1 AC vs. charge attacks (Reflex vs. " +
+      "trample and atk/dmg vs. charging creatures not modeled)",
     confidence: "medium",
     provenance:
-      "a steelblood gains a +1 bonus on combat maneuver checks, to CMD against overrun combat " +
-      "maneuvers, and on Reflex saving throws against trample attacks.",
+      "At 1st level, a steelblood gains a +1 bonus on combat maneuver checks, to CMD against " +
+      "overrun combat maneuvers, and on Reflex saving throws against trample attacks. He also " +
+      "gains a +1 bonus to his AC against charge attacks and on attack and damage rolls " +
+      "against charging creatures. This ability replaces fast movement.",
   },
 
   // Steelblood's "Armor Training" (Blood of the Beast) is a literal reflavor

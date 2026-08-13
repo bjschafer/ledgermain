@@ -377,14 +377,15 @@ describe("Skirmisher (ranger): Mobility Training grants dodge AC + land speed wh
   });
 });
 
-describe("Wilderness Explorer (ranger): Hazard Sense grants a scaling Reflex bonus vs. traps", () => {
+describe("Wilderness Explorer (ranger): Hazard Sense grants a scaling Reflex bonus vs. traps and a dodge AC bonus vs. wilderness traps", () => {
   const wildernessExplorer = archetypeId("Wilderness Explorer", "ranger");
 
-  it("+1 Reflex vs. traps at 4th level, +2 at 8th", () => {
+  it("+1 Reflex/AC vs. traps at 4th level, +2 at 8th", () => {
     // "At 4th level, a wilderness explorer gains an intuitive understanding
     // of natural hazards and traps fashioned from a natural environment. He
     // gains a +1 bonus on Reflex saves against natural hazards and
-    // wilderness traps... This bonus increases by 1 at 8th level and every
+    // wilderness traps and a +1 dodge bonus to AC against attacks from
+    // wilderness traps. This bonus increases by 1 at 8th level and every
     // 4 levels thereafter."
     const at4 = compute(
       makeDoc({ classes: [{ tag: "ranger", level: 4 }], archetypes: [wildernessExplorer] }),
@@ -392,6 +393,8 @@ describe("Wilderness Explorer (ranger): Hazard Sense grants a scaling Reflex bon
     );
     const trapsAt4 = at4.saves.ref.conditionals?.find((c) => c.categories.includes("traps"));
     expect(trapsAt4?.total).toBe(at4.saves.ref.total + 1);
+    const acTrapsAt4 = at4.ac.conditionals?.find((c) => c.categories.includes("traps"));
+    expect(acTrapsAt4?.total).toBe(at4.ac.normal + 1);
 
     const at8 = compute(
       makeDoc({ classes: [{ tag: "ranger", level: 8 }], archetypes: [wildernessExplorer] }),
@@ -399,5 +402,7 @@ describe("Wilderness Explorer (ranger): Hazard Sense grants a scaling Reflex bon
     );
     const trapsAt8 = at8.saves.ref.conditionals?.find((c) => c.categories.includes("traps"));
     expect(trapsAt8?.total).toBe(at8.saves.ref.total + 2);
+    const acTrapsAt8 = at8.ac.conditionals?.find((c) => c.categories.includes("traps"));
+    expect(acTrapsAt8?.total).toBe(at8.ac.normal + 2);
   });
 });

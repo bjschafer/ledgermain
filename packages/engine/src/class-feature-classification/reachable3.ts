@@ -109,8 +109,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_3: Readonly<
   eBMtTdKIROnXb5fF: {
     id: "eBMtTdKIROnXb5fF",
     name: "Poison Resistance",
-    bucket: "blocked",
-    note: "Shares the exact name 'Poison Resistance' with the Alchemist/Investigator entry (2qcz39w9O2Qlms0Q), but the two progressions differ (+2 base, +4 at 7th here vs. +2/+4/+6 at 2nd/5th/8th there); the name-keyed patch table would apply one formula to both grantors, so neither can be safely promoted.",
+    bucket: "numeric",
+    note: "+2 vs. poison, +4 at 7th (the vendored grant level is 7th itself, so the +2 tier is never seen in practice), wired via the per-class 'liberator:Poison Resistance' key, which keeps this bearer's formula separate from the Alchemist/Investigator entry's different pace sharing the bare name.",
   },
   gwZJB6sOfwrkSpUD: {
     id: "gwZJB6sOfwrkSpUD",
@@ -271,8 +271,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_3: Readonly<
   "2qcz39w9O2Qlms0Q": {
     id: "2qcz39w9O2Qlms0Q",
     name: "Poison Resistance",
-    bucket: "blocked",
-    note: "Shares the exact name 'Poison Resistance' with the Liberator entry (eBMtTdKIROnXb5fF), but the two progressions differ (+2/+4/+6 at 2nd/5th/8th here vs. +2 base/+4 at 7th there); the name-keyed patch table would apply one formula to both grantors, so neither can be safely promoted.",
+    bucket: "numeric",
+    note: "+2 vs. poison at 2nd, +4 at 5th, +6 at 8th, wired for the Alchemist and Investigator via the per-class 'alchemist:Poison Resistance' and 'investigator:Poison Resistance' keys, which keep this bearer's formula separate from the Liberator's differently-paced entry sharing the bare name. The alchemist's separate 10th-level poison immunity is a different named feature, not modeled here.",
   },
   "6QPYuJ1grudBotuu": {
     id: "6QPYuJ1grudBotuu",

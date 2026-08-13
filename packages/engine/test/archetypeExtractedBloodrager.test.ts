@@ -130,7 +130,7 @@ describe("Hag-Riven: Scarred Hide grants a flat, scaling natural armor bonus", (
   });
 });
 
-describe("Steelblood: Indomitable Stance grants a flat CMB bonus (the maneuver-scoped clauses are dropped)", () => {
+describe("Steelblood: Indomitable Stance grants flat CMB, CMD-vs-overrun, and AC-vs-charge bonuses (Reflex-vs-trample and atk/dmg-vs-charging clauses are dropped)", () => {
   it("archetype exists in the vendored data", () => {
     expect(archetypeId("Steelblood")).toBe("bloodrager:steelblood");
   });
@@ -142,6 +142,24 @@ describe("Steelblood: Indomitable Stance grants a flat CMB bonus (the maneuver-s
     expect(change!.type).toBe("untyped");
     expect(evaluateFormula(change!.formula, { class: { unlevel: 1 } })).toBe(1);
     expect(evaluateFormula(change!.formula, { class: { unlevel: 20 } })).toBe(1);
+  });
+
+  it("flat +1 CMD vs. overrun, scoped via maneuverCategories", () => {
+    const id = "bloodrager:steelblood:indomitable-stance:1";
+    const [, cmdChange] = BLOODRAGER_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(cmdChange!.target).toBe("cmd");
+    expect(cmdChange!.type).toBe("untyped");
+    expect(cmdChange!.maneuverCategories).toEqual(["overrun"]);
+    expect(evaluateFormula(cmdChange!.formula, { class: { unlevel: 1 } })).toBe(1);
+  });
+
+  it("flat +1 AC vs. charge attacks, scoped via acCategories", () => {
+    const id = "bloodrager:steelblood:indomitable-stance:1";
+    const [, , acChange] = BLOODRAGER_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(acChange!.target).toBe("ac");
+    expect(acChange!.type).toBe("untyped");
+    expect(acChange!.acCategories).toEqual(["charge"]);
+    expect(evaluateFormula(acChange!.formula, { class: { unlevel: 1 } })).toBe(1);
   });
 });
 

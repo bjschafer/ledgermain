@@ -47,13 +47,48 @@ export function scopedAc(formula: string, type: string, ...categories: string[])
  * Vendored ALTERNATE RACIAL TRAIT notes (`RefData.racialTraits`), keyed by
  * the note's exact text.
  */
-export const VENDORED_RACIAL_TRAIT_AC_NOTES: Readonly<Record<string, readonly Change[]>> = {};
+export const VENDORED_RACIAL_TRAIT_AC_NOTES: Readonly<Record<string, readonly Change[]>> = {
+  // Drow Defensive Training (Drow): the whole note is one dodge bonus
+  // against one attacker type, a clean AC_CATEGORIES fit.
+  "+4 dodge vs. aberrations": [scopedAc("4", "dodge", "aberrations")],
+  // Ratfolk Unnatural: the dodge half of the note now has a home; the -4
+  // Charisma-skill penalty (target chaSkills, an unapplied target) and the
+  // worse-starting-attitude rider stay prose.
+  "+2 Dodge bonus vs animals.": [scopedAc("2", "dodge", "animals")],
+  // Dwarf Deep Warrior: this note is the AC half only (a separate cmb note
+  // carries the grapple bonus, handled by the maneuver-note table) and is
+  // fully expressed on its own.
+  "+2 Dodge bonus vs. aberrations": [scopedAc("2", "dodge", "aberrations")],
+  // Gnome Warden of Nature: aberrations is the only one of the three named
+  // attacker types with an AC_CATEGORIES key; oozes and vermin stay prose.
+  "+2 Dodge bonus vs. aberrations, oozes and vermin.": [scopedAc("2", "dodge", "aberrations")],
+};
 
 /**
  * Vendored CHARACTER TRAIT notes (`RefData.traits`), keyed by the note's
  * exact text.
  */
-export const VENDORED_CHARACTER_TRAIT_AC_NOTES: Readonly<Record<string, readonly Change[]>> = {};
+export const VENDORED_CHARACTER_TRAIT_AC_NOTES: Readonly<Record<string, readonly Change[]>> = {
+  // Trap Savvy (Darklands): no bonus type is named in the note, so, like the
+  // sibling save note this trait ships ("+1 bonus against effects created by
+  // traps.", already wired untyped in `vendored-trait-save-notes.ts`), this
+  // is untyped rather than assumed to be a trait bonus. Fully expressed on
+  // its own; the Craft (traps) bonus and the paired save note live in their
+  // own notes.
+  "+1 bonus to AC against attacks by traps": [scopedAc("1", "untyped", "traps")],
+  // Blessed of the Norns: the traps half is promotable; the surprise-round
+  // half names a combat state with no AC_CATEGORIES equivalent and stays
+  // prose.
+  "+1 Trait bonus to your AC against traps, and during any surprise round in which you are caught unaware.":
+    [scopedAc("1", "trait", "traps")],
+  // Dwarf-Trained (Giantslayer): the trait requires "cannot be a dwarf or
+  // gnome", so the character can never also carry the dwarf/gnome Defensive
+  // Training dodge-vs-giants bonus this note says it doesn't stack with;
+  // that clause can never trigger and needs no special handling here.
+  "+2 Dodge bonus to AC against creatures with the giant subtype.": [
+    scopedAc("2", "dodge", "giants"),
+  ],
+};
 
 /**
  * Exact keys from {@link VENDORED_RACIAL_TRAIT_AC_NOTES} whose promoted
@@ -62,10 +97,15 @@ export const VENDORED_CHARACTER_TRAIT_AC_NOTES: Readonly<Record<string, readonly
  * part is now a real number; every other key in the table is fully expressed
  * by its `Change`s.
  */
-export const PARTIALLY_PROMOTED_RACIAL_TRAIT_AC_NOTES: ReadonlySet<string> = new Set([]);
+export const PARTIALLY_PROMOTED_RACIAL_TRAIT_AC_NOTES: ReadonlySet<string> = new Set([
+  "+2 Dodge bonus vs animals.",
+  "+2 Dodge bonus vs. aberrations, oozes and vermin.",
+]);
 
 /** Same idea as the racial set above, for character traits. */
-export const PARTIALLY_PROMOTED_CHARACTER_TRAIT_AC_NOTES: ReadonlySet<string> = new Set([]);
+export const PARTIALLY_PROMOTED_CHARACTER_TRAIT_AC_NOTES: ReadonlySet<string> = new Set([
+  "+1 Trait bonus to your AC against traps, and during any surprise round in which you are caught unaware.",
+]);
 
 /**
  * Note targets eligible for promotion. Only the bare `ac` target — a note

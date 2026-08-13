@@ -285,14 +285,16 @@ const APOCALYPTIC_VOW: Change = {
  * Living Monolith (prestige, Faction Guide) 1st level: "The soul stone grants
  * the living monolith a +2 bonus on saving throws against death effects,
  * mind-affecting effects, effects that grant negative levels, and on saves to
- * overcome negative levels." The negative-level clauses are not promoted:
- * negative levels name no `SAVE_CATEGORIES` entry.
+ * overcome negative levels." All four clauses are now expressible: both
+ * negative-level clauses (resisting a new negative level and the later save
+ * to remove one already gained) are the same Fortitude axis, `energyDrain`.
+ * The 3/day enlarge person activation is a separate subsystem grant.
  */
 const SOUL_STONE: Change = {
   formula: "2",
   target: "allSavingThrows",
   type: "untyped",
-  saveCategories: ["death", "mind"],
+  saveCategories: ["death", "mind", "energyDrain"],
 };
 
 /**
@@ -653,6 +655,182 @@ const TRAP_SENSE_PATHFINDER_DELVER: readonly Change[] = [
   },
 ];
 
+/**
+ * Danger Sense (Rogue Unchained / Barbarian Unchained, Pathfinder Unchained)
+ * 3rd level: "the character gains a +1 bonus on Reflex saves to avoid traps
+ * and a +1 dodge bonus to AC against attacks made by traps... These bonuses
+ * increase by 1 every 3 class levels thereafter (to a maximum of +6 at 18th
+ * level)." Same shape and progression as TRAP_SENSE above (the ability text
+ * even says it "counts as trap sense" and stacks with it), but "Danger
+ * Sense" ALSO names a wholly unrelated shieldmarshal initiative bonus
+ * sharing the bare name (DANGER_SENSE_SHIELDMARSHAL below), so both bearer
+ * families need their own per-class keys rather than a shared bare one. The
+ * Perception-vs-surprise clause is narrower than the whole skill and stays
+ * prose.
+ */
+const DANGER_SENSE: readonly Change[] = [
+  {
+    formula: "floor(@class.unlevel / 3)",
+    target: "ref",
+    type: "untyped",
+    saveCategories: ["traps"],
+  },
+  {
+    formula: "floor(@class.unlevel / 3)",
+    target: "ac",
+    type: "dodge",
+    acCategories: ["traps"],
+  },
+];
+
+/**
+ * Danger Sense (Shieldmarshal, prestige, Pathfinder Society Field Guide) 2nd
+ * level: "a shieldmarshal gains a bonus on initiative checks equal to 1/2
+ * his level, and can always act during a surprise round even if unaware of
+ * opponents." A wholly different mechanic from the rogue/barbarian trap-
+ * sense entry sharing the bare name (DANGER_SENSE above); the initiative
+ * half is a clean static formula, and the surprise-round action clause has
+ * no Change-shaped target.
+ */
+const DANGER_SENSE_SHIELDMARSHAL: Change = {
+  formula: "floor(@class.unlevel / 2)",
+  target: "init",
+  type: "untyped",
+};
+
+/**
+ * Poison Resistance (Alchemist / Investigator, Core Rulebook / Advanced
+ * Player's Guide) 2nd level: "the character gains a +2 bonus on all saving
+ * throws against poison. This bonus increases to +4 at 5th level, and then
+ * again to +6 at 8th level." Shares its bare name with the Liberator's
+ * differently-paced "Poison Resistance" (POISON_RESISTANCE_LIBERATOR
+ * below), so both need per-class keys. The alchemist's separate 10th-level
+ * poison immunity is a different named feature and is not modeled here.
+ */
+const POISON_RESISTANCE_ALCHEMIST_INVESTIGATOR: Change = {
+  formula: "if(gte(@class.unlevel, 8), 6, if(gte(@class.unlevel, 5), 4, 2))",
+  target: "allSavingThrows",
+  type: "untyped",
+  saveCategories: ["poison"],
+};
+
+/**
+ * Poison Resistance (Liberator, prestige, Faiths of Purity) 1st level: "He
+ * gains a +2 bonus on saving throws made against poisons. This bonus
+ * increases to +4 at 7th level." The vendored grant level for this feature
+ * is 7th itself, matching the LIBERATED_MIND/Rose Warden precedent above —
+ * every liberator who has the feature at all already satisfies the "at 7th
+ * level" clause, so the `if` is kept for fidelity to the two-tier text
+ * rather than collapsed to a bare "4".
+ */
+const POISON_RESISTANCE_LIBERATOR: Change = {
+  formula: "if(gte(@class.unlevel, 7), 4, 2)",
+  target: "allSavingThrows",
+  type: "untyped",
+  saveCategories: ["poison"],
+};
+
+/**
+ * Damage Reduction (Stalwart Defender, prestige, Ultimate Combat) 5th level:
+ * "a stalwart defender gains DR 1/-. At 7th level, this DR increases to
+ * 3/-, and at 10th level it increases to 5/-." Unconditional: it is a
+ * separate automatic class feature from Defensive Stance (the free-action
+ * activated dodge/morale package) and from the optional Defensive Power:
+ * Increased Damage Reduction, neither of which gates it in the vendored
+ * text. Shares its bare name with the barbarian/bloodrager and Pain Taster
+ * entries (each a different progression, per this table's own header), so a
+ * per-class key is required rather than a bare one.
+ */
+const STALWART_DEFENDER_DAMAGE_REDUCTION: Change = {
+  formula:
+    "if(gte(@class.unlevel, 10), 5, if(gte(@class.unlevel, 7), 3, if(gte(@class.unlevel, 5), 1, 0)))",
+  target: "dr",
+  type: "untyped",
+};
+
+/**
+ * AC Bonus (Stalwart Defender, prestige, Ultimate Combat): "A stalwart
+ * defender receives a dodge bonus to AC that starts at +1 and improves as
+ * the defender gains levels, until it reaches +4 at 10th level" — +1 at
+ * 1st, +2 at 4th, +3 at 7th, +4 at 10th. Also unconditional, same reasoning
+ * as the DR entry above (a separate automatic feature from Defensive
+ * Stance). The vendored grant level for this feature is 10th itself (like
+ * POISON_RESISTANCE_LIBERATOR/LIBERATED_MIND above), so in practice this
+ * only ever fires at the capped +4 — the tiered formula is kept for fidelity
+ * to the published four-step text. Dodge auto-applies to CMD too
+ * (`CMD_AC_TYPES` in `compute.ts`), matching RAW even though the text names
+ * only AC.
+ */
+const STALWART_DEFENDER_AC_BONUS: Change = {
+  formula: "min(4, 1 + floor((@class.unlevel - 1) / 3))",
+  target: "ac",
+  type: "dodge",
+};
+
+/**
+ * AC Bonus (Student of Perfection, prestige, Ultimate Intrigue) 1st level:
+ * "when a student of perfection wears light armor or no armor, he gains a
+ * +1 dodge bonus to his AC and CMD. This bonus increases by 1 at 5th and
+ * 9th levels. He loses these bonuses while immobilized or helpless, wearing
+ * medium or heavy armor, or carrying a medium or heavy load." The armor gate
+ * uses the same `@armor.type` idiom as Duelist Grace above; the load gate
+ * uses `@attributes.encumbrance.level`, matching the Daring Champion Nimble
+ * archetype entry's identical light-armor-and-light-load-or-less shape. The
+ * immobilized/helpless clause is live condition state this collection path
+ * cannot read and is dropped. Shares its bare name with the differently-
+ * scoped, unconditional Stalwart Defender "AC Bonus" above, so both need
+ * per-class keys.
+ */
+const STUDENT_OF_PERFECTION_AC_BONUS: readonly Change[] = [
+  {
+    formula:
+      "if(and(lte(@armor.type, 1), lte(@attributes.encumbrance.level, 0)), " +
+      "min(3, 1 + floor((@class.unlevel - 1) / 4)), 0)",
+    target: "ac",
+    type: "dodge",
+  },
+  {
+    formula:
+      "if(and(lte(@armor.type, 1), lte(@attributes.encumbrance.level, 0)), " +
+      "min(3, 1 + floor((@class.unlevel - 1) / 4)), 0)",
+    target: "cmd",
+    type: "dodge",
+  },
+];
+
+/**
+ * Eye for Detail (Shieldmarshal, prestige, Pathfinder Society Field Guide)
+ * 1st level: "A shieldmarshal adds his Intelligence bonus as well as his
+ * Wisdom bonus on Perception and Sense Motive checks." Wisdom is already the
+ * governing ability for both skills, so only the Intelligence half is a
+ * gap — the same `@abilities.<id>.mod` idiom as the "add Str in addition to
+ * Cha to Intimidate" entry in `feat-effects-extracted.ts`. The bonus equal
+ * to half level on Perception checks opposed by Disguise/Sleight of Hand is
+ * scoped to those specific opposed checks, narrower than the skill, and
+ * stays prose.
+ */
+const SHIELDMARSHAL_EYE_FOR_DETAIL: readonly Change[] = [
+  { formula: "@abilities.int.mod", target: "skill.per", type: "untyped" },
+  { formula: "@abilities.int.mod", target: "skill.sen", type: "untyped" },
+];
+
+/**
+ * Masochism (Pain Taster, prestige, Blood of the Night) 1st level: "She
+ * receives a +4 class bonus on saving throws made against pain effects."
+ * `pain` names a `SAVE_CATEGORIES` entry (Fort and Will), so this is now
+ * expressible; typed `class` verbatim from the text, matching how `trait`
+ * bonuses elsewhere in this codebase keep their own literal type name. The
+ * self-damage swift action (attack/damage-roll bonus scaling with chosen
+ * self-inflicted damage) is a live activated ability with its own
+ * escalating cost/bonus track and stays prose.
+ */
+const MASOCHISM: Change = {
+  formula: "4",
+  target: "allSavingThrows",
+  type: "class",
+  saveCategories: ["pain"],
+};
+
 export const CLASS_FEATURE_CHANGE_PATCHES: Readonly<Record<string, readonly Change[]>> = {
   Bravery: [BRAVERY],
   "Still Mind": [STILL_MIND],
@@ -696,4 +874,15 @@ export const CLASS_FEATURE_CHANGE_PATCHES: Readonly<Record<string, readonly Chan
   "aspisAgent:Trap Sense": TRAP_SENSE_ASPIS_AGENT,
   "pathfinderDelver:Trap Sense": TRAP_SENSE_PATHFINDER_DELVER,
   "Greater Sunder": [GREATER_SUNDER],
+  "rogueUnchained:Danger Sense": DANGER_SENSE,
+  "barbarianUnchained:Danger Sense": DANGER_SENSE,
+  "shieldmarshal:Danger Sense": [DANGER_SENSE_SHIELDMARSHAL],
+  "alchemist:Poison Resistance": [POISON_RESISTANCE_ALCHEMIST_INVESTIGATOR],
+  "investigator:Poison Resistance": [POISON_RESISTANCE_ALCHEMIST_INVESTIGATOR],
+  "liberator:Poison Resistance": [POISON_RESISTANCE_LIBERATOR],
+  "stalwartDefender:Damage Reduction": [STALWART_DEFENDER_DAMAGE_REDUCTION],
+  "stalwartDefender:AC Bonus": [STALWART_DEFENDER_AC_BONUS],
+  "studentOfPerfection:AC Bonus": STUDENT_OF_PERFECTION_AC_BONUS,
+  "shieldmarshal:Eye for Detail": SHIELDMARSHAL_EYE_FOR_DETAIL,
+  Masochism: [MASOCHISM],
 };

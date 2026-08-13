@@ -22,11 +22,11 @@
  *   unwired, for the identical reason: `skill.acr` has no jump-only slice.
  * - Magboots' +10 circumstance bonus only applies while climbing metal
  *   surfaces; `skill.clm` has no material-scoped slice, and an unconditional
- *   Change would overstate onto climbing rope, wood, or stone too.
- * - Animal Focus (Snake) scopes its attack and dodge-AC bonus to attacks of
- *   opportunity specifically, not to attack rolls or AC generally — the same
- *   shape rogue talents' AC-vs-AoO bonuses stay prose for; neither `attack`
- *   nor `ac` has an AoO-only slice.
+ *   Change would overstate onto climbing rope, wood, or stone too. Animal
+ *   Focus (Snake)'s dodge-AC-vs-AoO half is the same "attacks of
+ *   opportunity" scope, but `Change.acCategories` gives AC (unlike attack) a
+ *   real AoO slice — see `ANIMAL_FOCUS_SNAKE_AOO_AC` below. The buff's attack
+ *   half stays prose: `attack` still has no AoO-only slice.
  * - Inspiring Pain's +2 only applies to nonlethal damage rolls; like Spire
  *   Totem's nonlethal-only damage bonus in `rage-powers.ts`, the engine's
  *   weapon-damage targets are whole-attack, so an unconditional Change would
@@ -82,6 +82,29 @@ const RAGE_UNCHAINED_TEMP_HP: Change = {
     "(2 + max(0, floor((@classes.barbarianUnchained.level - 2) / 9))) * @attributes.hd.total",
   target: "tempHp",
   type: "untyped",
+};
+
+/**
+ * Animal Focus (Snake) (id `wm3VB0brsAuhua0V`). The vendored buff ships no
+ * `changes[]` at all — both halves of its benefit arrive as contextNotes:
+ *   - `ac`: "+[[2 + floor((@item.level - 1) / 7) * 2]] against attacks of
+ *     opportunity"
+ *   - `attack`: "+[[2 + floor((@item.level - 1) / 7) * 2]] to attacks of
+ *     opportunity"
+ * `Change.acCategories` gives the AC half a real `aoo` slice (see
+ * `ac-categories.ts`), so this patches that half in; the attack half stays
+ * prose, since `attack` has no such slice — the buff no longer belongs in
+ * `BUFF_PROSE_RULINGS` (it now has a wired route), but its attack-vs-AoO
+ * remainder still needs the reminder note the vendored contextNote carries.
+ * Formula mirrors the buff's own scaling (`@item.level` is the
+ * buff's own set level, per `collect.ts`'s "`@item.level` / `@cl` in a buff
+ * formula" comment) rather than a fresh derivation.
+ */
+const ANIMAL_FOCUS_SNAKE_AOO_AC: Change = {
+  formula: "2 + floor((@item.level - 1) / 7) * 2",
+  target: "ac",
+  type: "dodge",
+  acCategories: ["aoo"],
 };
 
 /**
@@ -190,6 +213,7 @@ export const SAVE_CATEGORY_PATCHES: Readonly<Record<string, readonly Change[]>> 
 
 export const BUFF_CHANGE_PATCHES: Readonly<Record<string, readonly Change[]>> = {
   "Rage (Unchained)": [RAGE_UNCHAINED_TEMP_HP],
+  "Animal Focus (Snake)": [ANIMAL_FOCUS_SNAKE_AOO_AC],
   ...SAVE_CATEGORY_PATCHES,
 };
 
@@ -233,7 +257,6 @@ export const BUFF_PROSE_RULINGS: ReadonlySet<string> = new Set([
   "Aeromantic Concoction (Air Walk)",
   "Aeromantic Concoction (Feather Fall)",
   "Magboots",
-  "Animal Focus (Snake)",
   "Inspiring Pain",
   "Opportune Advice (Cryptid Scholar)",
   "Knowledgeable Strike (Cryptid Scholar)",

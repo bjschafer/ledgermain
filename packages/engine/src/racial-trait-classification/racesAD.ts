@@ -230,8 +230,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_AD: Readonly<
     id: "gW9EZhxSnPytPicG",
     race: "Drow",
     name: "Defensive Training (Drow)",
-    bucket: "situational",
-    note: "The dodge bonus to AC is scoped to aberrations, a property of the opponent the sheet can't detect without over-applying to every attack.",
+    bucket: "numeric",
+    note: "The dodge bonus to AC is scoped to aberrations, now a real AC_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_AC_NOTES key exactly, so it is wired via collect.ts.",
   },
   zOmlqno4V0mvAO4m: {
     id: "zOmlqno4V0mvAO4m",
@@ -307,8 +307,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_AD: Readonly<
     id: "7LSKyC0eM1uQgBvm",
     race: "Dwarf",
     name: "Deep Warrior",
-    bucket: "situational",
-    note: "The dodge-AC bonus is scoped to aberrations and the CMB bonus is further scoped to grapple attempts against them; CMB is a single flat total, and the opponent type is a property the sheet can't detect, so both stay situational.",
+    bucket: "numeric",
+    note: "The dodge-AC bonus is scoped to aberrations, now a real AC_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_AC_NOTES key exactly, so it is wired via collect.ts. The CMB bonus is further scoped to grapple attempts against aberrations, an opponent-type scope the maneuver vocabulary doesn't carry, and stays prose.",
   },
   fRLqG0NKrKPmpHUr: {
     id: "fRLqG0NKrKPmpHUr",

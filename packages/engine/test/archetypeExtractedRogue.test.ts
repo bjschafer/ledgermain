@@ -210,6 +210,29 @@ describe("River Rat (rogue): Swamper grants an armor-gated Swim bonus", () => {
   });
 });
 
+describe("Rotdrinker (rogue): Poison Resistance grants a scaling save bonus vs. poison", () => {
+  const archetype = archetypeId("Rotdrinker", "rogue");
+
+  it("+2 saves vs. poison at L2, +4 at L8", () => {
+    // "At 2nd level, a rotdrinker gains a +2 bonus on saving throws against
+    // all poisons. This bonus increases to +4 at 8th level." Byte-identical
+    // text to the unchained rogue's own Rotdrinker archetype.
+    const at2 = compute(
+      makeDoc({ classes: [{ tag: "rogue", level: 2 }], archetypes: [archetype] }),
+      ref,
+    );
+    const poisonFortAt2 = at2.saves.fort.conditionals?.find((c) => c.categories.includes("poison"));
+    expect(poisonFortAt2?.total).toBe(at2.saves.fort.total + 2);
+
+    const at8 = compute(
+      makeDoc({ classes: [{ tag: "rogue", level: 8 }], archetypes: [archetype] }),
+      ref,
+    );
+    const poisonFortAt8 = at8.saves.fort.conditionals?.find((c) => c.categories.includes("poison"));
+    expect(poisonFortAt8?.total).toBe(at8.saves.fort.total + 4);
+  });
+});
+
 describe("Sanctified Rogue (rogue): Divine Purpose grants a flat sacred Fortitude/Will bonus", () => {
   const archetype = archetypeId("Sanctified Rogue");
 

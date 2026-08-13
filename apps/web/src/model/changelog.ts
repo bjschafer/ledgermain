@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-12-ac-conditional-lines",
+    date: "2026-08-12",
+    title: "Situational AC bonuses show under Armor Class",
+    note: "Bonuses that only apply against certain attacks now appear as their own lines under Armor Class on the builder, the tracker, and printed sheets, instead of hiding in rules text. A dwarf or gnome's +4 dodge bonus against giants shows up, trap sense computes both its Reflex and AC halves for every class that grants it, a drow's dodge bonus against aberrations lands, and a hunter's snake focus shows its bonus against attacks of opportunity. Features that share a name across classes but scale differently now compute correctly too: Trap Sense, Danger Sense, and Poison Resistance each show the right number for rogues, barbarians, investigators, alchemists, and the prestige classes that carry their own versions, and a stalwart defender's damage reduction and AC bonus are real numbers now.",
+  },
+  {
     id: "2026-08-12-ability-dcs",
     date: "2026-08-12",
     title: "Your ability save DCs show on the sheet",
