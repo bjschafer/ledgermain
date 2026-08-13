@@ -310,7 +310,13 @@ export function PrintView({
         {data.casters.map((c) => (
           <section key={c.classTag} className="print-block print-section print-spells">
             <h3>
-              {c.className} Spells <span className="print-hint">CL {c.casterLevel}</span>
+              {c.className} Spells{" "}
+              <span className="print-hint">
+                CL {c.casterLevel}
+                {c.srCheckBonus !== undefined &&
+                  ` (${c.srCheckBonus > 0 ? "+" : ""}${c.srCheckBonus} vs SR)`}
+                {c.dcNotes !== undefined && ` · DC ${c.dcNotes.join(", ")}`}
+              </span>
             </h3>
             <div className="print-spell-levels">
               {c.levels.map((lvl) => (

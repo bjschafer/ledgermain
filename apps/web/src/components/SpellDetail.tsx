@@ -1,9 +1,11 @@
 import { useState } from "react";
 
-import type { Spell } from "@pf1/schema";
+import type { DerivedClChecks, Spell } from "@pf1/schema";
 
 import type { ResolvedMetamagic } from "../model/metamagic.js";
 import { concentrationDC, concentrationScenarios, spellSaveDC } from "../model/spellcasting.js";
+import { spellDCAdjustment, srCheckBonus, srCheckDetail } from "../model/spellDCs.js";
+import { useSpellBonuses } from "../state/spellBonuses.js";
 import {
   formatCastingTime,
   formatSpellArea,
@@ -60,6 +62,12 @@ function damageLabel(part: { text: string; types: string[]; count?: number }): s
  * is the higher slot the spell occupies after metamagic and is surfaced as its
  * own line WITHOUT touching the DC (RAW: only Heighten changes the DC).
  * `metamagic` lists the applied feats as display-only context notes.
+ *
+ * The sheet's Spell Focus / Spell Penetration-family bonuses come from
+ * `useSpellBonuses` (see `state/spellBonuses.tsx` for why a context): the DC
+ * chip silently folds the matching school bonus in (the details Save row
+ * names the source), and the details SR row gains the character's full check
+ * vs SR when a CL-check bonus exists.
  */
 export function SpellDetail({
   spell,
@@ -76,8 +84,10 @@ export function SpellDetail({
   slotLevel?: number;
   metamagic?: ResolvedMetamagic[];
 }) {
+  const { spellDCs, clChecks } = useSpellBonuses();
   const save = spellSave(spell);
-  const dc = save ? spellSaveDC(spellLevel, abilityMod) : null;
+  const dcAdjust = spellDCAdjustment(spellDCs, spell.school);
+  const dc = save ? spellSaveDC(spellLevel, abilityMod) + dcAdjust.bonus : null;
   const saveLabel = save ? (SAVE_LABEL[save.type] ?? save.type) : null;
 
   const castingTime = formatCastingTime(spell);
@@ -123,9 +133,11 @@ export function SpellDetail({
             range={range}
             damage={damage}
             dc={dc}
+            dcDetail={dcAdjust.detail}
             save={save}
             slotLevel={slotLevel}
             metamagic={metamagic}
+            clChecks={clChecks}
           />
         )}
       </details>
@@ -142,9 +154,11 @@ function SpellDetailBody({
   range,
   damage,
   dc,
+  dcDetail,
   save,
   slotLevel,
   metamagic,
+  clChecks,
 }: {
   spell: Spell;
   spellLevel: number;
@@ -153,9 +167,11 @@ function SpellDetailBody({
   range: string | null;
   damage: ReturnType<typeof spellDamageParts>;
   dc: number | null;
+  dcDetail: string | null;
   save: { type: string; description: string } | null;
   slotLevel?: number;
   metamagic?: ResolvedMetamagic[];
+  clChecks?: DerivedClChecks;
 }) {
   const area = formatSpellArea(spell);
   const duration = formatSpellDuration(spell, casterLevel);
@@ -206,6 +222,7 @@ function SpellDetailBody({
           <span className="spell-detail-label">Save</span>
           <span className="spell-detail-value">
             DC {dc} {save!.description}
+            {dcDetail && <span className="spell-detail-fine">includes {dcDetail}</span>}
           </span>
         </div>
       )}
@@ -214,6 +231,15 @@ function SpellDetailBody({
           <span className="spell-detail-label">SR</span>
           <span className="spell-detail-value">
             {spell.sr.charAt(0).toUpperCase() + spell.sr.slice(1)}
+            {/* The full check only renders for a character with a CL-check
+                bonus — the base 1d20+CL case stays unannotated, and a spell
+                SR never applies to (sr starts with "no") gets no line. */}
+            {clChecks?.sr && !/^no\b/i.test(spell.sr) && (
+              <span className="spell-detail-fine">
+                your check 1d20+{casterLevel + srCheckBonus(clChecks)} vs SR (CL {casterLevel},{" "}
+                {srCheckDetail(clChecks)})
+              </span>
+            )}
           </span>
         </div>
       )}

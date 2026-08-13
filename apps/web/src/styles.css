@@ -4758,6 +4758,14 @@ input[type="text"].saved-roll-name:focus {
   color: var(--ink);
 }
 
+/* Secondary line under a Save/SR detail value — Spell Focus provenance, the
+   full check vs SR. Block display so it wraps under the value, not beside. */
+.spell-detail-fine {
+  display: block;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
 .conc-scenarios {
   margin-top: 2px;
 }

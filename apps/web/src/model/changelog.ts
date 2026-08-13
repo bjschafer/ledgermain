@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-12-spell-focus-and-penetration",
+    date: "2026-08-12",
+    title: "Spell Focus raises your spell DCs, Spell Penetration your checks",
+    note: "Spell Focus and Greater Spell Focus now raise the save DC shown on every spell of your chosen school, on the tracker, the builder, and printed sheets, and the spell's details name the feat behind the number. Spell Penetration and its Greater half now show your full caster level check against spell resistance in each spell's details, and the printed sheet carries the bonus next to your caster level. Dispel Focus, the duergar's Deep Magic, elven spirit, and a human's Unstoppable Magic land the same way.",
+  },
+  {
     id: "2026-08-12-ac-conditional-lines",
     date: "2026-08-12",
     title: "Situational AC bonuses show under Armor Class",

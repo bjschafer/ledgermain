@@ -47,7 +47,7 @@ export const REPEATABLE_FEAT_SLUGS: ReadonlySet<string> = new Set([
   "greater-weapon-specialization",
   "improved-critical", // display-only choice (no engine crit-range effect — see model/feats.ts DISPLAY_ONLY_FEAT_CHOICES)
   "skill-focus",
-  "spell-focus", // display-only choice (no engine DC effect — see model/feats.ts DISPLAY_ONLY_FEAT_CHOICES)
+  "spell-focus",
   "weapon-focus",
   "weapon-specialization",
 

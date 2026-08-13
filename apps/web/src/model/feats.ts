@@ -683,10 +683,10 @@ export function setExtraFeatChoice(
 
 /**
  * Choice-picker kinds the FeatsSection/FeatsPanel UI knows how to render.
- * "skill"/"weapon" also drive a real engine effect for feats registered in
- * FEAT_EFFECTS/FEAT_EFFECTS_EXTRACTED (Weapon Focus, Skill Focus, Greater
- * Weapon Focus, ...); "school" only ever appears via `DISPLAY_ONLY_FEAT_CHOICES`
- * below, since no engine target exists for a per-school spell save DC.
+ * All three drive a real engine effect for feats registered in
+ * FEAT_EFFECTS/FEAT_EFFECTS_EXTRACTED (Weapon Focus, Skill Focus, Spell
+ * Focus, ...); "weapon" also appears via the display-only and mechanical
+ * maps below.
  */
 export type FeatChoiceType = "skill" | "weapon" | "school";
 
@@ -697,8 +697,10 @@ export interface FeatChoiceDescriptor {
 
 /**
  * The 8 schools of magic (PF1 CRB) — clean-room list of standard rules
- * category names, not vendored content. Used only as picker options for
- * Spell Focus/Greater Spell Focus (`DISPLAY_ONLY_FEAT_CHOICES`).
+ * category names, not vendored content. Picker options for the "school"
+ * choice type (Spell Focus/Greater Spell Focus); ids match the engine's
+ * `SPELL_SCHOOLS` keys, i.e. the `spellDC.<school>` target suffixes their
+ * `build()` emits.
  */
 const SCHOOLS_OF_MAGIC: readonly { id: string; name: string }[] = [
   { id: "abjuration", name: "Abjuration" },
@@ -718,10 +720,6 @@ const SCHOOLS_OF_MAGIC: readonly { id: string; name: string }[] = [
  * resolves them and no Change is emitted (following the "don't invent a
  * target" guidance from feat-classification.ts):
  *
- *  - Spell Focus / Greater Spell Focus: a per-school spell save DC bonus has
- *    no engine target anywhere in targets.ts (see feat-classification.ts's
- *    "blocked" entries for both) — the school is recorded and shown, but
- *    never flows into a DC.
  *  - Improved Critical: doubling a weapon's threat range is stacking-suspect
  *    against a player-entered `WeaponInstance.critRange` that may already
  *    reflect Keen or another range-doubling source, and there's no "base"
@@ -730,6 +728,11 @@ const SCHOOLS_OF_MAGIC: readonly { id: string; name: string }[] = [
  *    The chosen weapon is recorded and shown, but the sheet's crit column
  *    isn't touched.
  *
+ * (Spell Focus / Greater Spell Focus lived here while no spell-DC target
+ * existed; they're engine-wired ChoiceFeatEntry feats now, and the school
+ * choices this map recorded flow into real `spellDC.<school>` Changes with
+ * no doc migration.)
+ *
  * `setFeatChoice`/`doc.build.featChoices` (the storage) and the "one choice
  * per feat id" limitation (see `toggleFeat` in doc.ts — `build.feats` is a
  * de-duped array, so a feat legally takable multiple times, like Weapon
@@ -737,8 +740,6 @@ const SCHOOLS_OF_MAGIC: readonly { id: string; name: string }[] = [
  * this map; it only widens what `featChoiceDescriptor` recognizes.
  */
 const DISPLAY_ONLY_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> = {
-  "spell-focus": { type: "school", label: "School" },
-  "greater-spell-focus": { type: "school", label: "School" },
   "improved-critical": { type: "weapon", label: "Weapon Type" },
 };
 
@@ -768,7 +769,7 @@ const MECHANICAL_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> = 
  *  2. `MECHANICAL_FEAT_CHOICES` — a choice consumed outside the Change
  *     pipeline (Martial/Exotic Weapon Proficiency's weapon pick).
  *  3. `DISPLAY_ONLY_FEAT_CHOICES` — a choice with no engine effect at all
- *     (Spell Focus's school, Improved Critical's weapon).
+ *     (Improved Critical's weapon).
  * The descriptor drives the UI picker rendered in FeatsSection/FeatsPanel.
  */
 export function featChoiceDescriptor(featName: string): FeatChoiceDescriptor | null {

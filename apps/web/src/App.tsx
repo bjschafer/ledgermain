@@ -40,6 +40,7 @@ import { PlayNav } from "./components/tracker/PlayNav.js";
 import { StatStrip } from "./components/tracker/StatStrip.js";
 import { Tracker } from "./components/tracker/Tracker.js";
 import { RollDataProvider } from "./state/rollData.js";
+import { SpellBonusesProvider } from "./state/spellBonuses.js";
 import { useAppLocation } from "./state/useAppLocation.js";
 import { useCharacter } from "./state/useCharacter.js";
 import { useTextSize, type TextSize } from "./state/useTextSize.js";
@@ -284,94 +285,98 @@ function Workbench({
 
   return (
     <RollDataProvider doc={props.doc} sheet={props.sheet} refData={props.refData}>
-      <div className="layout layout--with-nav">
-        {mode === "build" && (
-          /* On mobile (<=940px) `.mobile-build-header` collapses to a single
+      <SpellBonusesProvider sheet={props.sheet}>
+        <div className="layout layout--with-nav">
+          {mode === "build" && (
+            /* On mobile (<=940px) `.mobile-build-header` collapses to a single
            sticky block stacking the compact stat strip over the section-jump
            chips (styles.css); above 940px it's `display: contents`, so the
            strip is hidden and BuildNav flows into the layout grid's rail column
            exactly as before. */
-          <div className="mobile-build-header">
-            <StatStrip {...props} />
-            <BuildNav {...props} onActiveChange={onBuildSection} />
-          </div>
-        )}
-        {mode === "play" && (
-          /* Same header machinery for Play — StatStrip over the PlayNav jump rail
-           (see components/tracker/PlayNav). */
-          <div className="mobile-build-header">
-            <StatStrip {...props} />
-            <PlayNav {...props} onActiveChange={onPlaySection} />
-          </div>
-        )}
-        {/* Settings has no stat strip to stack with — the rail stands alone. */}
-        {mode === "settings" && <SettingsNav doc={props.doc} onActiveChange={onSettingsSection} />}
-        <div className="build-col">
-          {mode === "build" ? (
-            <>
-              <div id="section-identity">
-                <IdentitySection {...props} />
-              </div>
-              <div id="section-abilities">
-                <AbilitiesSection {...props} />
-              </div>
-              <div id="section-race">
-                <RaceSection {...props} />
-              </div>
-              <div id="section-traits">
-                <TraitsSection {...props} />
-              </div>
-              <div id="section-classes">
-                <ClassesSection {...props} />
-              </div>
-              <div id="section-hp">
-                <HitPointsSection {...props} />
-              </div>
-              <div id="section-skills">
-                <SkillsSection {...props} />
-              </div>
-              <div id="section-feats">
-                <FeatsSection {...props} />
-              </div>
-              <div id="section-gear">
-                <GearSection {...props} />
-              </div>
-              <div id="section-weapons">
-                <WeaponsSection {...props} />
-              </div>
-              <div id="section-spells">
-                <SpellsSection {...props} />
-              </div>
-            </>
-          ) : mode === "settings" ? (
-            <SettingsSection
-              {...props}
-              onImportCharacter={onImportCharacter}
-              onResetAll={onResetAll}
-              onDeleteCharacter={onDeleteCharacter}
-              actionPending={actionPending}
-              onOpenPrint={onOpenPrint}
-              textSize={textSize}
-              onTextSizeChange={onTextSizeChange}
-            />
-          ) : (
-            <Tracker {...props} />
+            <div className="mobile-build-header">
+              <StatStrip {...props} />
+              <BuildNav {...props} onActiveChange={onBuildSection} />
+            </div>
           )}
+          {mode === "play" && (
+            /* Same header machinery for Play — StatStrip over the PlayNav jump rail
+           (see components/tracker/PlayNav). */
+            <div className="mobile-build-header">
+              <StatStrip {...props} />
+              <PlayNav {...props} onActiveChange={onPlaySection} />
+            </div>
+          )}
+          {/* Settings has no stat strip to stack with — the rail stands alone. */}
+          {mode === "settings" && (
+            <SettingsNav doc={props.doc} onActiveChange={onSettingsSection} />
+          )}
+          <div className="build-col">
+            {mode === "build" ? (
+              <>
+                <div id="section-identity">
+                  <IdentitySection {...props} />
+                </div>
+                <div id="section-abilities">
+                  <AbilitiesSection {...props} />
+                </div>
+                <div id="section-race">
+                  <RaceSection {...props} />
+                </div>
+                <div id="section-traits">
+                  <TraitsSection {...props} />
+                </div>
+                <div id="section-classes">
+                  <ClassesSection {...props} />
+                </div>
+                <div id="section-hp">
+                  <HitPointsSection {...props} />
+                </div>
+                <div id="section-skills">
+                  <SkillsSection {...props} />
+                </div>
+                <div id="section-feats">
+                  <FeatsSection {...props} />
+                </div>
+                <div id="section-gear">
+                  <GearSection {...props} />
+                </div>
+                <div id="section-weapons">
+                  <WeaponsSection {...props} />
+                </div>
+                <div id="section-spells">
+                  <SpellsSection {...props} />
+                </div>
+              </>
+            ) : mode === "settings" ? (
+              <SettingsSection
+                {...props}
+                onImportCharacter={onImportCharacter}
+                onResetAll={onResetAll}
+                onDeleteCharacter={onDeleteCharacter}
+                actionPending={actionPending}
+                onOpenPrint={onOpenPrint}
+                textSize={textSize}
+                onTextSizeChange={onTextSizeChange}
+              />
+            ) : (
+              <Tracker {...props} />
+            )}
+          </div>
+          <div className="sheet-col">
+            <Sheet doc={props.doc} sheet={props.sheet} refData={props.refData} />
+          </div>
         </div>
-        <div className="sheet-col">
-          <Sheet doc={props.doc} sheet={props.sheet} refData={props.refData} />
-        </div>
-      </div>
-      <FloatingControls onOpenSheet={() => setSheetOpen(true)} />
-      <ScrollTopButton />
-      {sheetOpen && (
-        <Dialog
-          title={props.doc.identity.name || "Character Sheet"}
-          onClose={() => setSheetOpen(false)}
-        >
-          <Sheet doc={props.doc} sheet={props.sheet} refData={props.refData} hideName />
-        </Dialog>
-      )}
+        <FloatingControls onOpenSheet={() => setSheetOpen(true)} />
+        <ScrollTopButton />
+        {sheetOpen && (
+          <Dialog
+            title={props.doc.identity.name || "Character Sheet"}
+            onClose={() => setSheetOpen(false)}
+          >
+            <Sheet doc={props.doc} sheet={props.sheet} refData={props.refData} hideName />
+          </Dialog>
+        )}
+      </SpellBonusesProvider>
     </RollDataProvider>
   );
 }

@@ -26,6 +26,7 @@ import {
 import { preparedSpells, spellLevelMap } from "./preparedSpells.js";
 import { remaining as remainingUses } from "./resources.js";
 import { senseChipLabel } from "./sensesDisplay.js";
+import { spellDCSchoolDeltas, srCheckBonus } from "./spellDCs.js";
 import {
   casterClassesOf,
   casterModelFor,
@@ -125,6 +126,13 @@ export interface PrintCaster {
   ability: string;
   preparation: "prepared" | "spontaneous" | "hybrid";
   levels: PrintSpellLevel[];
+  /** Bonus on CL checks to overcome SR (Spell Penetration family); absent when zero. */
+  srCheckBonus?: number;
+  /**
+   * Per-school DC deltas over the printed DC column (which already folds an
+   * all-schools bonus in), e.g. `["Evocation +1"]` — Spell Focus family.
+   */
+  dcNotes?: string[];
 }
 
 export interface PrintResource {
@@ -286,16 +294,22 @@ function buildCasters(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData):
     for (const arr of spellsByLevel.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
 
     const levelSet = new Set<number>([...slots.map((s) => s.level), ...spellsByLevel.keys()]);
+    // An all-schools DC bonus applies to every printed DC, so it folds into
+    // the column; school-scoped extras become dcNotes (a per-LEVEL column
+    // can't vary by a spell's school).
+    const allSchoolsBonus = sheet.spellDCs?.all ?? 0;
     const levels: PrintSpellLevel[] = [...levelSet]
       .sort((a, b) => a - b)
       .map((level) => ({
         level,
         isCantrip: level === 0,
         slots: slots.find((s) => s.level === level)?.total ?? 0,
-        dc: spellSaveDC(level, abilityMod),
+        dc: spellSaveDC(level, abilityMod) + allSchoolsBonus,
         spells: spellsByLevel.get(level) ?? [],
       }));
 
+    const srBonus = srCheckBonus(sheet.clChecks);
+    const dcNotes = spellDCSchoolDeltas(sheet.spellDCs);
     out.push({
       classTag: tag,
       className: classDef?.name ?? tag,
@@ -303,6 +317,8 @@ function buildCasters(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData):
       ability: ABILITY_ABBR[model.ability],
       preparation: model.preparation,
       levels,
+      ...(srBonus !== 0 ? { srCheckBonus: srBonus } : {}),
+      ...(dcNotes.length > 0 ? { dcNotes } : {}),
     });
   }
   return out;
