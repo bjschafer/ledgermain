@@ -42,7 +42,13 @@
  * cheap no-op rather than a special case.
  */
 
-import type { CharacterDoc, ClassFeature, FeatureAction, RefData } from "@pf1/schema";
+import type {
+  CharacterDoc,
+  ClassFeature,
+  DerivedAbilityDC,
+  FeatureAction,
+  RefData,
+} from "@pf1/schema";
 
 import { collectGrantedFeatures, isPsychokinetcist, type GrantedFeature } from "./archetypes.js";
 import { BLOODRAGE_BUFF_ID } from "./bloodrage.js";
@@ -65,6 +71,26 @@ import {
 } from "./tables.js";
 import type { ToggleBuffOption } from "./toggle-buffs.js";
 import { resolveTraitDef } from "./traits.js";
+
+/**
+ * Matches a vendored Channel Energy class feature by name (cleric's own
+ * "Channel Energy", paladin's "Channel Positive Energy", warpriest's "Channel
+ * Energy (WAR)", antipaladin's "Channel Negative Energy") — mirrors
+ * `ability-dcs.ts`'s `channelInstances` regex of the same shape, duplicated
+ * here rather than imported since this module has no other dependency on
+ * that one and the vendored data carries no shared `tag` across the four
+ * (confirmed against the pinned slice: only the cleric's entry has
+ * `tag: "channelEnergy"`, the other three have none).
+ */
+const CHANNEL_ENERGY_NAME_RE = /^Channel (Energy|Positive Energy|Negative Energy)( \(WAR\))?$/;
+
+/** The final family DC from `abilityDCs` for `key`, or `undefined` when absent/not computed. */
+function abilityDCFor(
+  abilityDCs: readonly DerivedAbilityDC[] | undefined,
+  key: string,
+): number | undefined {
+  return abilityDCs?.find((d) => d.key === key)?.dc;
+}
 
 export interface DerivedResourcePool {
   /** Stable pool id (the class-feature id). */
@@ -150,11 +176,25 @@ export interface DerivedResourcePool {
  * Scan granted class features for `uses.maxFormula` pools. `abilities` (from a
  * computed sheet) lets formulas like Rage's `@abilities.con.mod` resolve against
  * final scores; omit it to use base scores.
+ *
+ * `abilityDCs` (optional, `DerivedSheet.abilityDCs`): this module independently
+ * evaluates each feature's own vendored `dcFormula` to build its `detail`
+ * string, which would silently drift from `ability-dcs.ts`'s FINAL DC once an
+ * `abilityDC.<family>`-targeted modifier applies (e.g. a +2 channel feat) —
+ * the resources panel would keep showing the pre-modifier number. When given,
+ * the two features with an unambiguous 1:1 family mapping (Channel Energy and
+ * its cleric/paladin/warpriest/antipaladin reflavors -> `"channel"`; the
+ * alchemist's Bomb -> `"bomb"`) substitute the family's final `dc` for the
+ * independently-evaluated one instead. Deliberately conservative: no other
+ * feature is matched (hex/cruelty/mesmerist trick/Stunning Fist/Quivering
+ * Palm have no resource-pool counterpart in this file to override), and
+ * omitting the param keeps every call site's existing output byte-identical.
  */
 export function deriveResourcePools(
   doc: CharacterDoc,
   refData: RefData,
   abilities?: Record<string, AbilityView>,
+  abilityDCs?: readonly DerivedAbilityDC[],
 ): DerivedResourcePool[] {
   const rollData = buildRollData(doc, refData, abilities as Parameters<typeof buildRollData>[2]);
   const pools: DerivedResourcePool[] = [];
@@ -344,7 +384,11 @@ export function deriveResourcePools(
       const damage = bombDamageDetail(classLevel, intMod);
       const action = feature.actions?.[0];
       const saveLabel = action?.save
-        ? formatSaveLabel(action.save, featureRollData as RollData)
+        ? formatSaveLabel(
+            action.save,
+            featureRollData as RollData,
+            abilityDCFor(abilityDCs, "bomb"),
+          )
         : null;
       detail = saveLabel ? `${damage.damageLabel} (${saveLabel})` : damage.damageLabel;
     } else if (feature.tag === "judgment" && classTag === "inquisitor") {
@@ -357,7 +401,10 @@ export function deriveResourcePools(
       // (unlike bard's Inspire Courage), see raging-song.ts.
       detail = RAGING_SONG_DETAIL;
     } else {
-      detail = actionBasedDetail(feature, featureRollData as RollData);
+      const channelDC = CHANNEL_ENERGY_NAME_RE.test(feature.name)
+        ? abilityDCFor(abilityDCs, "channel")
+        : undefined;
+      detail = actionBasedDetail(feature, featureRollData as RollData, channelDC);
     }
 
     let tableOptions: ToggleBuffOption[] | undefined;
@@ -434,7 +481,10 @@ export function deriveResourcePools(
     const pool = pools.find((p) => p.id === poolId);
     if (!pool) continue;
 
-    const linkedDetail = actionBasedDetail(feature, featureRollData);
+    const channelDC = CHANNEL_ENERGY_NAME_RE.test(feature.name)
+      ? abilityDCFor(abilityDCs, "channel")
+      : undefined;
+    const linkedDetail = actionBasedDetail(feature, featureRollData, channelDC);
     if (linkedDetail) {
       pool.detail = pool.detail
         ? `${pool.detail} · ${feature.name}: ${linkedDetail}`
@@ -604,14 +654,28 @@ function formatDamageLabel(action: FeatureAction, data: RollData): string | null
   return `${prefix}${touchSuffix} · ${dice}${typeSuffix}`;
 }
 
-/** Format a {@link FeatureAction}'s save into "DC 16 Fort", or `null` if its DC formula won't evaluate. */
-function formatSaveLabel(save: NonNullable<FeatureAction["save"]>, data: RollData): string | null {
+/**
+ * Format a {@link FeatureAction}'s save into "DC 16 Fort", or `null` if its DC
+ * formula won't evaluate. `dcOverride`, when given, replaces the
+ * independently-evaluated DC outright (see `deriveResourcePools`'s doc
+ * comment on `abilityDCs`) — still gated on `save.dcFormula` being present,
+ * so a feature with no save DC at all is unaffected either way.
+ */
+function formatSaveLabel(
+  save: NonNullable<FeatureAction["save"]>,
+  data: RollData,
+  dcOverride?: number,
+): string | null {
   if (!save.dcFormula) return null;
   let dc: number | null;
-  try {
-    dc = tryEvaluateFormula(save.dcFormula, data);
-  } catch {
-    return null;
+  if (dcOverride !== undefined) {
+    dc = dcOverride;
+  } else {
+    try {
+      dc = tryEvaluateFormula(save.dcFormula, data);
+    } catch {
+      return null;
+    }
   }
   if (dc === null || Number.isNaN(dc)) return null;
   const label = saveTypeLabel(save.type);
@@ -640,16 +704,22 @@ function pickPrimaryAction(actions: FeatureAction[]): FeatureAction | undefined 
  * `actions[]` — clean-room formatting over the Foundry actionType/damage/save
  * shape (data, not code; see CLAUDE.md licensing). `undefined` when the
  * feature has no actions, or its primary action has neither damage nor a
- * save worth showing (e.g. Smite Evil's bare "Use" activation).
+ * save worth showing (e.g. Smite Evil's bare "Use" activation). `dcOverride`
+ * passes through to {@link formatSaveLabel} (see `deriveResourcePools`'s doc
+ * comment on `abilityDCs`).
  */
-function actionBasedDetail(feature: ClassFeature, data: RollData): string | undefined {
+function actionBasedDetail(
+  feature: ClassFeature,
+  data: RollData,
+  dcOverride?: number,
+): string | undefined {
   const actions = feature.actions;
   if (!actions || actions.length === 0) return undefined;
   const action = pickPrimaryAction(actions);
   if (!action) return undefined;
 
   const damageLabel = formatDamageLabel(action, data);
-  const saveLabel = action.save ? formatSaveLabel(action.save, data) : null;
+  const saveLabel = action.save ? formatSaveLabel(action.save, data, dcOverride) : null;
 
   if (damageLabel && saveLabel) return `${damageLabel} (${saveLabel})`;
   return damageLabel ?? saveLabel ?? undefined;

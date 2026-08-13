@@ -60,8 +60,8 @@ import type { BuilderProps } from "../builder/types.js";
  */
 export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
   const derived = useMemo(
-    () => deriveResourcePools(doc, refData, sheet.abilities),
-    [doc, refData, sheet.abilities],
+    () => deriveResourcePools(doc, refData, sheet.abilities, sheet.abilityDCs),
+    [doc, refData, sheet.abilities, sheet.abilityDCs],
   );
   const derivedIds = new Set(derived.map((p) => p.id));
   const manualEntries = Object.entries(doc.live.resources).filter(([id]) => !derivedIds.has(id));

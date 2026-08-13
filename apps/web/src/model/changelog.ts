@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-12-ability-dcs",
+    date: "2026-08-12",
+    title: "Your ability save DCs show on the sheet",
+    note: "The sheet now shows the save DCs your abilities force on enemies: hexes, channel energy, bombs, cruelties, mesmerist tricks, Stunning Fist, and Quivering Palm, on the builder, the tracker, and printed sheets. A feat or trait that raises one of these DCs now raises the number you see too, instead of only showing up in rules text.",
+  },
+  {
     id: "2026-08-11-maneuver-bonuses",
     date: "2026-08-11",
     title: "Combat maneuver bonuses show under CMB and CMD",

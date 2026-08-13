@@ -198,6 +198,16 @@ export function PrintView({
           {data.arcaneSpellFailure !== undefined && (
             <p className="print-hint">Arcane Spell Failure {data.arcaneSpellFailure}%</p>
           )}
+          {data.abilityDCs.length > 0 && (
+            <div className="print-offense">
+              {data.abilityDCs.map((d) => (
+                <span className="print-stat" key={d.label}>
+                  {d.label} <span className="num">{d.dc}</span>
+                  {d.save ? ` (${d.save})` : ""}
+                </span>
+              ))}
+            </div>
+          )}
           {data.attacks.length > 0 && (
             <table className="print-table print-attacks">
               <thead>

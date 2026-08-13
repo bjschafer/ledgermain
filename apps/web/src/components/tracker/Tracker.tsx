@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { AbilityDcsPanel } from "./AbilityDcsPanel.js";
 import { ActiveFormPanel } from "./ActiveFormPanel.js";
 import { AfflictionsPanel } from "./AfflictionsPanel.js";
 import { BlastLoadoutPanel } from "./BlastLoadoutPanel.js";
@@ -64,6 +65,7 @@ export function Tracker(props: BuilderProps) {
         { id: "play-buffs", label: "Buffs", node: <BuffsPanel {...props} /> },
         { id: "play-spells", label: "Spells", node: <PreparedSpellsPanel {...props} /> },
         { id: "play-resources", label: "Resources", node: <ResourcesPanel {...props} /> },
+        { id: "play-abilitydcs", label: "Ability DCs", node: <AbilityDcsPanel {...props} /> },
         { id: "play-blast", label: "Blast Loadout", node: <BlastLoadoutPanel {...props} /> },
         { id: "play-rolls", label: "Saved Rolls", node: <SavedRollsPanel {...props} /> },
       ],

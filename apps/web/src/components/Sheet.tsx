@@ -28,6 +28,7 @@ import {
 import { d20Formula, d20FormulaFor, damageFormula } from "../model/rollFormula.js";
 import { senseChipLabel, senseTip } from "../model/sensesDisplay.js";
 import { skillBreakdownComponents } from "../model/skillBreakdown.js";
+import { AbilityDcList } from "./AbilityDcList.js";
 import { CopyButton } from "./CopyButton.js";
 import { HomebrewBadge } from "./HomebrewBadge.js";
 import { InfoTip } from "./InfoTip.js";
@@ -400,6 +401,27 @@ export function Sheet({
           />
         </div>
       </div>
+
+      {/* Ability DCs — enemy-facing DCs the character herself inflicts (hex,
+          channel energy, bomb, cruelty, mesmerist trick, Stunning Fist,
+          Quivering Palm). Own group right after Offense: these aren't part
+          of the melee/ranged/BAB/CMB block above, but they're the same
+          "numbers you use to hurt something" family, so they sit next to it
+          rather than under Casting or Tactical. Renders nothing when the
+          character has none of the seven families. */}
+      {sheet.abilityDCs && sheet.abilityDCs.length > 0 ? (
+        <div className="stat-group">
+          <div className="stat-group-header">
+            <span className="stat-group-legend">Ability DCs</span>
+            <div className="stat-group-rule" />
+          </div>
+          <AbilityDcList
+            abilityDCs={sheet.abilityDCs}
+            baselineDCs={baseline.abilityDCs}
+            resetKey={doc.id}
+          />
+        </div>
+      ) : null}
 
       {/* Casting — arcane spell failure —
           display-only, shown only for arcane casters (wizard/sorcerer/

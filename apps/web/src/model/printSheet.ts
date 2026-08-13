@@ -6,7 +6,7 @@
  * testable the same way every other `model/` module is.
  */
 import { deriveResourcePools, EFFECT_IMMUNITY_LABELS } from "@pf1/engine";
-import type { AbilityId, CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, DerivedAbilityDC, DerivedSheet, RefData } from "@pf1/schema";
 
 import { abilityTypeSuffix } from "./abilityTypes.js";
 import { casterLevelForClass, effectiveCasterClassLevel } from "./casterLevel.js";
@@ -164,6 +164,8 @@ export interface PrintSheetData {
   melee: string;
   ranged: string;
   attacks: PrintAttack[];
+  /** Same shape as `DerivedSheet.abilityDCs`; empty when the character has none of the seven families. */
+  abilityDCs: DerivedAbilityDC[];
   skills: PrintSkill[];
   feats: PrintFeat[];
   classFeatures: PrintClassFeature[];
@@ -351,7 +353,7 @@ function buildClassFeatures(sheet: DerivedSheet, refData: RefData): PrintClassFe
 }
 
 function buildResources(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData): PrintResource[] {
-  const derived = deriveResourcePools(doc, refData, sheet.abilities);
+  const derived = deriveResourcePools(doc, refData, sheet.abilities, sheet.abilityDCs);
   const derivedIds = new Set(derived.map((p) => p.id));
   const out: PrintResource[] = derived.map((pool) => {
     const stored = doc.live.resources[pool.id];
@@ -423,6 +425,7 @@ export function buildPrintSheet(
     ),
     melee: signedSequence(sheet.attack.melee.total, sheet.attack.melee.iteratives),
     ranged: signedSequence(sheet.attack.ranged.total, sheet.attack.ranged.iteratives),
+    abilityDCs: sheet.abilityDCs ?? [],
     attacks: [
       ...sheet.attacks.map((atk) => {
         const bonusStr = atk.damageBonus.total !== 0 ? signed(atk.damageBonus.total) : null;
