@@ -98,6 +98,10 @@ const APPLIED_TARGETS = new Set<string>([
   // `mDexA`/`acpA` above, which are also encumbrance/armor-training-gated)
   "carryStr",
   "carryMult",
+  // spell save DCs / caster level checks, all-scopes forms (computeSpellDCs /
+  // computeClChecks in spell-dcs.ts; the scoped forms are prefix-matched below)
+  "spellDC",
+  "clCheck",
 ]);
 
 /**
@@ -121,6 +125,13 @@ const APPLIED_TARGETS = new Set<string>([
  *   Fist, Quivering Palm — `ability-dcs.ts`'s `ABILITY_DC_FAMILIES`), applied
  *   to every instance of that family the character has. Also this engine's
  *   own convention, not a vendored Foundry target.
+ * - `spellDC.<school>` — a spell-save-DC bonus scoped to one school of magic
+ *   (`spell-dcs.ts`'s `SPELL_SCHOOLS` keys — Spell Focus). Also this engine's
+ *   own convention.
+ * - `clCheck.<kind>` — a caster-level-check bonus scoped to one kind of check
+ *   (`sr` to overcome spell resistance, `dispel` — Spell Penetration, Dispel
+ *   Focus). Distinct from the still-unapplied `cl` target (caster level
+ *   itself). Also this engine's own convention.
  */
 const APPLIED_TARGET_PREFIXES = [
   "skill.",
@@ -131,6 +142,8 @@ const APPLIED_TARGET_PREFIXES = [
   "imm.",
   "immEffect.",
   "abilityDC.",
+  "spellDC.",
+  "clCheck.",
 ];
 
 /** True if `compute()` (or the model-layer budgets it feeds) applies `target`. */

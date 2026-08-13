@@ -3043,6 +3043,25 @@ export interface DerivedSheet {
    * one of these.
    */
   abilityDCs?: DerivedAbilityDC[];
+  /**
+   * Bonuses to the character's own spell save DCs — the Spell Focus family.
+   * The sheet has no headline "spell DC" stat (each spell's DC is `10 + spell
+   * level + casting ability mod`, computed where the spell is displayed), so
+   * this carries only the BONUS terms: an all-schools part plus per-school
+   * totals, folded into each spell's displayed DC by school. Omitted (rather
+   * than empty) when nothing targets `spellDC`/`spellDC.<school>` — see
+   * `@pf1/engine`'s `spell-dcs.ts` for the target vocabulary.
+   */
+  spellDCs?: DerivedSpellDCs;
+  /**
+   * Bonuses on the character's caster level CHECKS — overcoming spell
+   * resistance (Spell Penetration) and dispel checks. Distinct from the `cl`
+   * target (a change to caster level itself, which would move durations and
+   * damage — deliberately still unapplied, see `@pf1/engine` `targets.ts`):
+   * these only ever add to the d20 + CL check. Omitted when nothing targets
+   * `clCheck`/`clCheck.sr`/`clCheck.dispel`.
+   */
+  clChecks?: DerivedClChecks;
 }
 
 /**
@@ -3061,6 +3080,54 @@ export interface DerivedAbilityDC {
   label: string;
   dc: number;
   save?: string;
+}
+
+/**
+ * Spell-save-DC bonus terms — see `DerivedSheet.spellDCs`. `all` is the bonus
+ * applying to every spell regardless of school (target `spellDC`; 0 when only
+ * school-scoped bonuses exist). Each `schools` entry is the TOTAL for spells
+ * of that school — the all-schools modifiers and the school-scoped ones are
+ * typed-stacked together, so a display consumer adds exactly one of `all` or
+ * a school's `bonus` to a spell's base DC, never both.
+ */
+export interface DerivedSpellDCs {
+  all: number;
+  /** Provenance for `all` (applied flags included, for strikethrough display). */
+  allComponents: ModifierComponent[];
+  /** Only schools with at least one school-scoped modifier appear. */
+  schools: DerivedSpellSchoolDC[];
+}
+
+/**
+ * One school's spell-DC bonus line. `key` is the engine's school key (e.g.
+ * `"evocation"`, matching the `spellDC.<key>` target suffix and the stored
+ * Spell Focus choice ids); `tag` is the vendored `Spell.school` abbreviation
+ * (`"evo"`) a display consumer matches a spell against.
+ */
+export interface DerivedSpellSchoolDC {
+  key: string;
+  tag: string;
+  label: string;
+  /** Total DC bonus for spells of this school, INCLUDING the all-schools part. */
+  bonus: number;
+  components: ModifierComponent[];
+}
+
+/**
+ * Caster-level check bonuses — see `DerivedSheet.clChecks`. `sr` covers checks
+ * to overcome spell resistance, `dispel` covers dispel checks; each folds in
+ * any general `clCheck` bonus, and each is omitted when nothing contributes
+ * to it.
+ */
+export interface DerivedClChecks {
+  sr?: DerivedClCheckBonus;
+  dispel?: DerivedClCheckBonus;
+}
+
+/** One caster-level check bonus with provenance. */
+export interface DerivedClCheckBonus {
+  bonus: number;
+  components: ModifierComponent[];
 }
 
 /** One granted proficiency's provenance — which class/feat/race granted it. */

@@ -68,14 +68,15 @@ export interface StaticFeatEntry {
 
 /**
  * A feat that requires a player selection before it has mechanical effect.
- * `choice.type` drives the UI picker ("skill" → skill list, "weapon" → weapon list).
- * `build(choiceId)` produces the changes to emit once a choice is stored in
- * `doc.build.featChoices[featId]`.
+ * `choice.type` drives the UI picker ("skill" → skill list, "weapon" → weapon
+ * list, "school" → the eight schools of magic, `spell-dcs.ts`'s
+ * `SPELL_SCHOOLS`). `build(choiceId)` produces the changes to emit once a
+ * choice is stored in `doc.build.featChoices[featId]`.
  */
 export interface ChoiceFeatEntry {
   type: "choice";
   /** Descriptor consumed by the UI to render a picker. */
-  choice: { type: "skill" | "weapon"; label: string };
+  choice: { type: "skill" | "weapon" | "school"; label: string };
   /** Produces the typed changes for the given player choice id. */
   build(choiceId: string): FeatChange[];
 }
@@ -290,6 +291,28 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
     changes: [{ target: "abilityDC.quiveringPalm", type: "untyped", formula: "2" }],
   },
 
+  // ── Caster-level check feats ─────────────────────────────────────────────
+  //
+  // Land on `clCheck.sr` (spell-dcs.ts): a bonus on the d20 + CL check to
+  // overcome spell resistance, never on caster level itself. Both feats'
+  // texts say the bonuses stack with each other, which the untyped bucket
+  // gets right.
+
+  // Spell Penetration (PF1 CRB p. 134): "+2 bonus on caster level checks
+  // (1d20 + caster level) made to overcome a creature's spell resistance."
+  "spell-penetration": {
+    type: "static",
+    changes: [{ target: "clCheck.sr", type: "untyped", formula: "2" }],
+  },
+
+  // Greater Spell Penetration (PF1 CRB p. 125): "+2 bonus on caster level
+  // checks ... to overcome a creature's spell resistance. This bonus stacks
+  // with the one from Spell Penetration."
+  "greater-spell-penetration": {
+    type: "static",
+    changes: [{ target: "clCheck.sr", type: "untyped", formula: "2" }],
+  },
+
   // ── Choice feats ───────────────────────────────────────────────────────────
 
   // Skill Focus: +3 competence bonus on the chosen skill (PF1 CRB p. 134).
@@ -307,6 +330,31 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
           formula: `if(gte(@skills.${choiceId}.rank, 10), 6, 3)`,
         },
       ];
+    },
+  },
+
+  // Spell Focus: +1 to the save DC of spells of the chosen school (PF1 CRB
+  // p. 134). The choiceId is a SPELL_SCHOOLS key ("evocation", ...) — the
+  // same ids the web's school picker has stored in `featChoices` since the
+  // choice was display-only, so existing docs light up without migration.
+  // Repeatable (one school per instance); untyped, so a second school's
+  // instance and Greater Spell Focus all stack per the feat texts.
+  "spell-focus": {
+    type: "choice",
+    choice: { type: "school", label: "School" },
+    build(choiceId: string): FeatChange[] {
+      return [{ target: `spellDC.${choiceId}`, type: "untyped", formula: "1" }];
+    },
+  },
+
+  // Greater Spell Focus (PF1 CRB p. 125): "+1 to the DC for all saving
+  // throws against spells from the school of magic you select. This bonus
+  // stacks with the bonus from Spell Focus."
+  "greater-spell-focus": {
+    type: "choice",
+    choice: { type: "school", label: "School" },
+    build(choiceId: string): FeatChange[] {
+      return [{ target: `spellDC.${choiceId}`, type: "untyped", formula: "1" }];
     },
   },
 

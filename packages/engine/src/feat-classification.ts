@@ -43,8 +43,9 @@
  *  - "blocked" — anything ambiguous, stacking-suspect (e.g. a
  *                        non-stacking AC type where RAW expects summing across
  *                        multiple takes), or requiring state/targets the
- *                        engine doesn't model (e.g. a per-school spell save DC
- *                        — no such target exists anywhere in targets.ts).
+ *                        engine doesn't model (e.g. an energy-descriptor-scoped
+ *                        spell save DC — schools have a target vocabulary in
+ *                        spell-dcs.ts, descriptors don't).
  *                        Downgrading to blocked (or situational) rather than
  *                        guessing a numeric entry is the point: wrong sheet
  *                        numbers are the worst failure mode.
@@ -1089,14 +1090,14 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "greater-spell-focus": {
     slug: "greater-spell-focus",
     name: "Greater Spell Focus",
-    bucket: "blocked",
-    note: "requires state the engine doesn't model: a per-school spell save DC bonus has no engine target at all (no spellDC-shaped Change target exists anywhere in targets.ts)",
+    bucket: "choice-numeric",
+    note: "wired via spellDC.<school> (spell-dcs.ts): +1 to the chosen school's spell save DCs, stacking with Spell Focus per the feat text (untyped, PZO1110 p.125) — see feat-effects.ts's ChoiceFeatEntry map",
   },
   "greater-spell-penetration": {
     slug: "greater-spell-penetration",
     name: "Greater Spell Penetration",
-    bucket: "blocked",
-    note: "requires state the engine doesn't model: a caster-level-check-vs-SR bonus has no engine target at all (no srCheck-shaped Change target exists anywhere in targets.ts)",
+    bucket: "numeric",
+    note: "wired via clCheck.sr (spell-dcs.ts): +2 on caster level checks to overcome spell resistance, stacking with Spell Penetration per the feat text (untyped, PZO1110 p.125) — see feat-effects.ts's StaticFeatEntry map",
   },
   "greater-spring-attack": {
     slug: "greater-spring-attack",
@@ -2133,8 +2134,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "spell-focus": {
     slug: "spell-focus",
     name: "Spell Focus",
-    bucket: "blocked",
-    note: "requires state the engine doesn't model: a per-school spell save DC bonus has no engine target at all (no spellDC-shaped Change target exists anywhere in targets.ts)",
+    bucket: "choice-numeric",
+    note: "wired via spellDC.<school> (spell-dcs.ts): +1 to the chosen school's spell save DCs (untyped, PZO1110 p.134) — see feat-effects.ts's ChoiceFeatEntry map",
   },
   "spell-mastery": {
     slug: "spell-mastery",
@@ -2145,8 +2146,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "spell-penetration": {
     slug: "spell-penetration",
     name: "Spell Penetration",
-    bucket: "blocked",
-    note: "requires state the engine doesn't model: a caster-level-check-vs-SR bonus has no engine target at all (no srCheck-shaped Change target exists anywhere in targets.ts)",
+    bucket: "numeric",
+    note: "wired via clCheck.sr (spell-dcs.ts): +2 on caster level checks to overcome spell resistance (untyped, PZO1110 p.134) — see feat-effects.ts's StaticFeatEntry map",
   },
   spellbreaker: {
     slug: "spellbreaker",

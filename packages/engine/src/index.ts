@@ -15,6 +15,14 @@ export {
   type ComputedAbilityDCs,
 } from "./ability-dcs.js";
 export {
+  SPELL_SCHOOLS,
+  spellDCTarget,
+  clCheckTarget,
+  computeSpellDCs,
+  computeClChecks,
+  type SpellSchoolDef,
+} from "./spell-dcs.js";
+export {
   ABILITY_SUBSTITUTIONS,
   collectAbilitySubstitutions,
   resolveSubstitution,

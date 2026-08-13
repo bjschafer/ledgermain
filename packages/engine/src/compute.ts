@@ -40,6 +40,7 @@ import type {
 import { ABILITY_IDS } from "@pf1/schema";
 
 import { computeAbilityDCs } from "./ability-dcs.js";
+import { computeClChecks, computeSpellDCs } from "./spell-dcs.js";
 import {
   ABILITY_LABEL,
   collectAbilitySubstitutions,
@@ -1986,6 +1987,13 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     rollData,
   );
 
+  // Spell-DC and caster-level-check bonuses — pure folds over `collected`
+  // (no doc/refData inputs), so like the ability DCs above they see the
+  // final pass's modifiers. Both come back undefined (field omitted) when
+  // nothing targets them, which is every non-caster character.
+  const spellDCs = computeSpellDCs(collected);
+  const clChecks = computeClChecks(collected);
+
   // Generic stat overrides (bounded allowlist)
   const overrides = doc.build.settings?.statOverrides ?? {};
   const { classFeatures, activeArchetypes } = resolveClassFeatures(
@@ -2024,6 +2032,8 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     arcaneSpellFailure,
     proficiencies,
     ...(abilityDCs.length > 0 ? { abilityDCs } : {}),
+    ...(spellDCs ? { spellDCs } : {}),
+    ...(clChecks ? { clChecks } : {}),
   };
 
   for (const [key, val] of Object.entries(overrides)) {

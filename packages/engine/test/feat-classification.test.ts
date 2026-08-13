@@ -89,8 +89,15 @@ describe("FEAT_CLASSIFICATION spot checks", () => {
 
   it("downgrades stacking-suspect / no-target feats to blocked rather than guessing numeric", () => {
     expect(FEAT_CLASSIFICATION["improved-natural-armor"]?.bucket).toBe("blocked");
-    expect(FEAT_CLASSIFICATION["spell-focus"]?.bucket).toBe("blocked");
-    expect(FEAT_CLASSIFICATION["spell-penetration"]?.bucket).toBe("blocked");
+  });
+
+  it("promotes the Spell Focus / Spell Penetration families now that spellDC/clCheck exist", () => {
+    // Wired via spellDC.<school> and clCheck.sr (spell-dcs.ts) — see
+    // spell-dcs.test.ts for the actual DC/CL-check behavior.
+    expect(FEAT_CLASSIFICATION["spell-focus"]?.bucket).toBe("choice-numeric");
+    expect(FEAT_CLASSIFICATION["greater-spell-focus"]?.bucket).toBe("choice-numeric");
+    expect(FEAT_CLASSIFICATION["spell-penetration"]?.bucket).toBe("numeric");
+    expect(FEAT_CLASSIFICATION["greater-spell-penetration"]?.bucket).toBe("numeric");
   });
 
   it("promotes the Improved/Greater maneuver family to numeric now that maneuverCategories exists", () => {
