@@ -1615,12 +1615,18 @@ export function archetypeHasModeledEffects(refData: RefData, archetypeId: string
 /**
  * `abilities` (from a computed sheet) lets Smite Evil's Cha-keyed detail
  * resolve against final scores; omit it to treat Cha modifier as 0 (matches
- * `deriveResourcePools`'s optional-abilities posture).
+ * `deriveResourcePools`'s optional-abilities posture). `familyDCs` (from
+ * `ability-dcs.ts`'s `computeAbilityDCs`) threads final ability-DC totals
+ * into the `feature-save-dc.ts` phrase substitution below, so a hex/cruelty
+ * contextNote agrees with the ability-DC panel when a player has applied an
+ * `abilityDC.<family>` modifier; omit it to fall back to the plain formula
+ * (byte-identical to before `familyDCs` existed).
  */
 export function resolveClassFeatures(
   doc: CharacterDoc,
   refData: RefData,
   abilities?: Record<AbilityId, AbilityView>,
+  familyDCs?: Readonly<Record<string, number>>,
 ): ResolvedClassFeatures {
   const replacedByUuid = activeArchetypeSwaps(doc, refData);
   const activeArchetypes: DerivedArchetype[] = [];
@@ -1674,7 +1680,7 @@ export function resolveClassFeatures(
   }
 
   const classFeatures: DerivedClassFeature[] = [];
-  const dcCtx = saveDCContext(doc, abilities);
+  const dcCtx = saveDCContext(doc, abilities, familyDCs);
   // Base race size, for the unarmed-damage table's Small/Large columns. Not
   // the character's effective size: a level-scaling class feature prints the
   // die the class table gives them, and Enlarge Person's own step is applied

@@ -116,6 +116,11 @@ const APPLIED_TARGETS = new Set<string>([
  *   immunity, and immunity to something that isn't damage (computeDefenses).
  *   Not a vendored Foundry vocabulary (no such target occurs upstream today) —
  *   this engine's own convention so a user-authored buff can grant them.
+ * - `abilityDC.<family>` — a modifier scoped to one enemy-facing ability-DC
+ *   family (hex, channel energy, bomb, cruelty, mesmerist trick, Stunning
+ *   Fist, Quivering Palm — `ability-dcs.ts`'s `ABILITY_DC_FAMILIES`), applied
+ *   to every instance of that family the character has. Also this engine's
+ *   own convention, not a vendored Foundry target.
  */
 const APPLIED_TARGET_PREFIXES = [
   "skill.",
@@ -125,6 +130,7 @@ const APPLIED_TARGET_PREFIXES = [
   "eres.",
   "imm.",
   "immEffect.",
+  "abilityDC.",
 ];
 
 /** True if `compute()` (or the model-layer budgets it feeds) applies `target`. */

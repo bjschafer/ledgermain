@@ -3031,6 +3031,36 @@ export interface DerivedSheet {
    * tracked for follow-up.
    */
   proficiencies: DerivedProficiencies;
+  /**
+   * Enemy-facing ability DCs the character herself inflicts on a target —
+   * witch/shaman hex, channel energy, alchemist bomb, antipaladin cruelty,
+   * mesmerist trick, Stunning Fist, Quivering Palm. One entry per family
+   * instance the character actually has (a multiclass witch/shaman carries
+   * two `"hex"` entries, disambiguated by `label`); omitted (rather than
+   * empty) when the character has none of the seven families, same posture
+   * as `cmbConditionals`. See `@pf1/engine`'s `ability-dcs.ts` for the
+   * `abilityDC.<family>` Change-target vocabulary that feeds a modifier into
+   * one of these.
+   */
+  abilityDCs?: DerivedAbilityDC[];
+}
+
+/**
+ * One enemy-facing ability DC line — see `DerivedSheet.abilityDCs`. `key` is
+ * the family key from `@pf1/engine`'s `ABILITY_DC_FAMILIES` (e.g. `"hex"`);
+ * `label` is player-facing, disambiguated by granting class when the
+ * character has more than one instance of the family (e.g. "Hex DC (Witch)"
+ * vs. "Hex DC (Shaman)"). `save` names the fixed save type ("Will",
+ * "Reflex", "Fortitude") for a family whose save never varies by use
+ * (channel energy, bomb, cruelty, Stunning Fist, Quivering Palm); omitted for
+ * a family whose save depends on which specific ability is triggered (hex,
+ * mesmerist trick).
+ */
+export interface DerivedAbilityDC {
+  key: string;
+  label: string;
+  dc: number;
+  save?: string;
 }
 
 /** One granted proficiency's provenance — which class/feat/race granted it. */

@@ -8,6 +8,13 @@
 
 export { compute, armorPieceAcp } from "./compute.js";
 export {
+  ABILITY_DC_FAMILIES,
+  abilityDCTarget,
+  computeAbilityDCs,
+  type AbilityDCFamily,
+  type ComputedAbilityDCs,
+} from "./ability-dcs.js";
+export {
   ABILITY_SUBSTITUTIONS,
   collectAbilitySubstitutions,
   resolveSubstitution,

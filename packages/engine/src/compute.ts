@@ -39,6 +39,7 @@ import type {
 } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
+import { computeAbilityDCs } from "./ability-dcs.js";
 import {
   ABILITY_LABEL,
   collectAbilitySubstitutions,
@@ -1947,9 +1948,28 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     };
   }
 
+  // Enemy-facing ability DCs (hex, channel energy, bomb, cruelty, mesmerist
+  // trick, Stunning Fist, Quivering Palm) — computed from the FINAL pass's
+  // abilities/collected/rollData so a belt-of-intellect-style ability change
+  // reaches these DCs like everything else on the sheet. `familyDCs` feeds
+  // `resolveClassFeatures` below so a hex/cruelty contextNote's substituted
+  // number agrees with the panel.
+  const { dcs: abilityDCs, familyDCs } = computeAbilityDCs(
+    doc,
+    refData,
+    abilities,
+    collected,
+    rollData,
+  );
+
   // Generic stat overrides (bounded allowlist)
   const overrides = doc.build.settings?.statOverrides ?? {};
-  const { classFeatures, activeArchetypes } = resolveClassFeatures(doc, refData, abilities);
+  const { classFeatures, activeArchetypes } = resolveClassFeatures(
+    doc,
+    refData,
+    abilities,
+    familyDCs,
+  );
   const sheet = {
     schemaVersion: SCHEMA_VERSION,
     level,
@@ -1979,6 +1999,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     activeForm,
     arcaneSpellFailure,
     proficiencies,
+    ...(abilityDCs.length > 0 ? { abilityDCs } : {}),
   };
 
   for (const [key, val] of Object.entries(overrides)) {

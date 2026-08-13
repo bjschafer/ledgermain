@@ -31,6 +31,18 @@ interface SaveDCPhrase {
   phrase: string;
   cls: SaveDCClass;
   ability: AbilityId;
+  /**
+   * The `ability-dcs.ts` family (`ABILITY_DC_FAMILIES` key) this phrase's
+   * math is ALSO the formula for, when one exists — set only for a phrase
+   * that maps 1:1 onto a family instance (today: the witch hex phrase and
+   * the antipaladin cruelty phrase; NOT the alchemist Con-based phrase,
+   * which is a different alchemist DC than the Int-based `bomb` family). When
+   * set and `SaveDCContext.familyDCs` carries a value for it, `dcFor` prefers
+   * that value over recomputing from `ability`/`cls` — the two are
+   * mathematically identical absent an `abilityDC.<family>` modifier, but
+   * only the family-DC path reflects one.
+   */
+  family?: string;
 }
 
 /**
@@ -51,14 +63,19 @@ const CLASS_ALIASES: Record<string, readonly string[]> = {
  * another ("...+ Int mod" vs "...+ Int modifier") can't shadow it.
  */
 export const SAVE_DC_PHRASES: readonly SaveDCPhrase[] = [
-  { phrase: "10 + 1/2 witch level + Int mod", cls: "witch", ability: "int" },
+  { phrase: "10 + 1/2 witch level + Int mod", cls: "witch", ability: "int", family: "hex" },
   { phrase: "10 + 1/2 slayer level + Int modifier", cls: "slayer", ability: "int" },
   { phrase: "10 + 1/2 investigator level + Int mod", cls: "investigator", ability: "int" },
   { phrase: "10 + 1/2 ninja level + Int modifier", cls: "ninja", ability: "int" },
   { phrase: "10 + 1/2 barbarian level + Cha mod", cls: "barbarian", ability: "cha" },
   { phrase: "10 + 1/2 barbarian level + Con mod", cls: "barbarian", ability: "con" },
   { phrase: "10 + 1/2 barbarian level + Str mod", cls: "barbarian", ability: "str" },
-  { phrase: "10 + 1/2 antipaladin level + Cha mod", cls: "antipaladin", ability: "cha" },
+  {
+    phrase: "10 + 1/2 antipaladin level + Cha mod",
+    cls: "antipaladin",
+    ability: "cha",
+    family: "cruelty",
+  },
   { phrase: "10 + half alchemist level + Con modifier", cls: "alchemist", ability: "con" },
   { phrase: "10 + half oracle level + Charisma modifier", cls: "oracle", ability: "cha" },
   { phrase: "10 + half sorcerer level + Charisma modifier", cls: "sorcerer", ability: "cha" },
@@ -88,11 +105,23 @@ export interface SaveDCContext {
   classLevels: Readonly<Record<string, number>>;
   characterLevel: number;
   abilityMods: Readonly<Partial<Record<AbilityId, number>>>;
+  /**
+   * Final ability-DC family totals (`ability-dcs.ts`'s `ComputedAbilityDCs.
+   * familyDCs`) — when a phrase names a `family` present here, `dcFor`
+   * substitutes this number instead of recomputing from `ability`/`cls`, so a
+   * modifier the player applied to that family (an `abilityDC.<family>`
+   * Change) shows up in the note text the same way it shows up on the
+   * ability-DC panel. Absent for a caller (or an old snapshot) that hasn't
+   * computed ability DCs — `dcFor` falls back to the plain formula, byte
+   * -identical to before this field existed.
+   */
+  familyDCs?: Readonly<Record<string, number>>;
 }
 
 export function saveDCContext(
   doc: CharacterDoc,
   abilities?: Record<AbilityId, AbilityView>,
+  familyDCs?: Readonly<Record<string, number>>,
 ): SaveDCContext {
   const classLevels: Record<string, number> = {};
   let characterLevel = 0;
@@ -106,7 +135,7 @@ export function saveDCContext(
       abilityMods[id as AbilityId] = view.mod;
     }
   }
-  return { classLevels, characterLevel, abilityMods };
+  return { classLevels, characterLevel, abilityMods, familyDCs };
 }
 
 /** The level the phrase's named class contributes, or 0 when the character has none of it. */
@@ -124,6 +153,8 @@ function levelFor(cls: SaveDCClass, ctx: SaveDCContext): number {
 function dcFor(entry: SaveDCPhrase, ctx: SaveDCContext): number | null {
   const level = levelFor(entry.cls, ctx);
   if (level <= 0) return null;
+  const familyDC = entry.family !== undefined ? ctx.familyDCs?.[entry.family] : undefined;
+  if (familyDC !== undefined) return familyDC;
   const mod = ctx.abilityMods[entry.ability];
   if (mod === undefined) return null;
   return 10 + Math.floor(level / 2) + mod;
