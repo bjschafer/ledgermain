@@ -145,7 +145,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "armor-focus": "situational",
   "armor-material-expertise": "subsystem",
   "armor-material-mastery": "subsystem",
-  "armor-of-the-pit": "blocked",
+  "armor-of-the-pit": "numeric",
   "armor-trick": "subsystem",
   "armored-athlete": "situational",
   "armored-rider": "subsystem",
@@ -196,7 +196,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "banish-possessor": "subsystem",
   "banishing-critical": "situational",
   "banner-of-doom": "situational",
-  "barracuda-dash": "blocked",
+  "barracuda-dash": "numeric",
   "barracuda-slam": "situational",
   "barracuda-style": "numeric",
   "barrage-of-styles": "situational",
@@ -322,7 +322,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "branch-pounce": "situational",
   "branded-for-retribution": "subsystem",
   "brash-stride": "subsystem",
-  "bravery-in-action": "blocked",
+  "bravery-in-action": "numeric",
   breach: "subsystem",
   "break-guard": "subsystem",
   "breaker-of-barriers": "numeric",
@@ -356,7 +356,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "burning-amplification": "subsystem",
   "burning-spell": "subsystem",
   "burrowing-shot": "subsystem",
-  "burrowing-teeth": "blocked",
+  "burrowing-teeth": "numeric",
   bushwhack: "subsystem",
   "but-a-scratch": "subsystem",
   "butterfly-s-sting": "subsystem",
@@ -1118,8 +1118,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "fiendish-heritage": "subsystem",
   "fiendish-obedience": "subsystem",
   "fiendish-resilience": "situational",
-  "fiendish-serpent": "blocked",
-  "fiendish-wings": "blocked",
+  "fiendish-serpent": "numeric",
+  "fiendish-wings": "numeric",
   fiendskin: "blocked",
   "fight-on": "subsystem",
   "fighting-frenzy": "situational",
@@ -1614,7 +1614,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "ironclad-logic": "blocked",
   "ironclad-reactions": "subsystem",
   ironguts: "numeric",
-  ironhide: "blocked",
+  ironhide: "numeric",
   "irrisen-icemage": "blocked",
   "jabbing-dancer": "subsystem",
   "jabbing-master": "situational",
@@ -1808,7 +1808,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "master-performer": "subsystem",
   "master-siege-engineer": "subsystem",
   "master-sniper": "subsystem",
-  "master-swimmer": "blocked",
+  "master-swimmer": "numeric",
   "masterful-display": "subsystem",
   "masterful-flourish": "subsystem",
   "mauler-s-endurance": "subsystem",
@@ -1989,7 +1989,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "orc-snarl": "situational",
   "orc-weapon-expertise": "situational",
   "ordered-mind": "subsystem",
-  "oread-burrower": "blocked",
+  "oread-burrower": "numeric",
   "oread-earth-glider": "subsystem",
   osirionology: "situational",
   "ostentatious-display": "situational",
@@ -2590,7 +2590,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "snuffing-spell": "subsystem",
   sociable: "situational",
   "sociable-mythic": "subsystem",
-  "social-bravery": "blocked",
+  "social-bravery": "numeric",
   "solar-spell": "subsystem",
   "solid-shadows": "subsystem",
   "solitary-survivor": "situational",
@@ -2726,7 +2726,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "stone-sense": "subsystem",
   "stone-shroud": "situational",
   "stone-singer": "subsystem",
-  "stone-soul": "blocked",
+  "stone-soul": "numeric",
   "stone-strider": "subsystem",
   "stone-to-flesh-savant": "subsystem",
   "stony-rampart": "subsystem",
@@ -3011,7 +3011,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "unbalancing-blow": "situational",
   "unblinking-flame-feint": "subsystem",
   "unblinking-flame-fist": "subsystem",
-  "unbound-bravery": "blocked",
+  "unbound-bravery": "numeric",
   unbreakable: "blocked",
   "uncanny-activation": "subsystem",
   "uncanny-alertness": "numeric",
@@ -3021,7 +3021,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   uncertainty: "subsystem",
   "uncivilized-tactics": "subsystem",
   "unconquerable-resolve": "subsystem",
-  "undaunted-bravery": "blocked",
+  "undaunted-bravery": "numeric",
   "undead-master": "subsystem",
   "undead-master-mythic": "subsystem",
   "under-and-over": "situational",
@@ -3221,12 +3221,12 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "ancient-draconic":
     "The +1 bonus on caster level checks to overcome SR applies only to arcane spells with a verbal component; clCheck has no per-casting-component axis, so wiring it to clCheck.sr would over-apply to non-verbal and divine casting.",
   "angelic-flesh":
-    "Benefit is a player choice among four non-skill/non-weapon sub-options (energy resistance, save bonus, DR-bypass material, natural armor), no single stable engine target; the natural-armor option is also stacking-suspect. [flag: multi-option-choice]",
+    "Benefit is a player choice among four named sub-options (Brazen, Golden, Silver, Steel); the feat-choice picker only offers skill/weapon axes, not a fixed named-option list like this. [flag: multi-option-choice]",
   "aquatic-ancestry": "Unconditional +10 feet swim speed increase.",
   "aquatic-combatant":
     "Unconditional +2 bonus on Swim checks (the underwater melee-penalty removal is situational and not part of this draft).",
   "armor-of-the-pit":
-    "Flat +2 natural armor bonus is stacking-suspect (natural-armor enhancement); alternate scaled-skin benefit is a player choice of energy type, an unsupported choice axis.",
+    "Unconditional +2 natural armor bonus (nac/untyped) is wired; the scaled-skin alternate benefit (energy resistance instead) is a player choice the engine's feat-choice picker can't offer, so it stays unwired.",
   "assured-destruction":
     "Modifies a racial daemonic-pact supernatural ability (damage dice, DC, success chance) gated on urdefhan race and another feat; needs state the engine doesn't model.",
   "astrological-timing":
@@ -3236,7 +3236,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "bag-of-bones":
     "Unconditional competence bonus on Escape Artist checks, tiered by Hit Dice. [flag: unsure - source text has the bonus drop from +5 to +4 at 10+ HD, which reads backwards; verify against original text before trusting the tier]",
   "barracuda-dash":
-    "Grants a swim speed equal to base land speed, but land speed isn't an available formula primitive so the value can't be expressed. [flag: no-primitive-for-base-speed]",
+    "Grants a swim speed equal to base land speed via @attributes.speed.land.total, wired unconditionally per the style-follow-up convention (the clause carries no 'while using this style' prefix).",
   "barracuda-style":
     "Unconditional Wisdom modifier added to Swim checks alongside the usual Strength modifier.",
   "battlefield-healer":
@@ -3246,29 +3246,28 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "bestow-luck":
     "Grants an extra use of the Defiant Luck racial ability, but defiantLuck is not in the pool tag list. [flag: pool-no-tag]",
   "betrayal-sense":
-    "Bonus equals the rogue trap sense bonus, a class-level-keyed value with no @class path support in formulas.",
+    "Bonus equals the rogue trap sense value (floor(rogueLevel/3) is expressible via @classes.rogue.level), but it's scoped to Perception-to-pierce-disguise and Sense-Motive-to-avoid-surprise specifically; skill.per/skill.sen apply to the whole skill, so wiring either would over-apply to every other use of that skill.",
   "bloatmage-initiate":
     "Per-school caster LEVEL bonus (not a check) — cl stays an unapplied target regardless of school-scoping — and the feat also imposes armor-check/Dex-cap/speed penalties the static sheet doesn't model.",
   "blood-beak":
-    "Sets the beak natural attack's damage die to 1d6 (replaces the base die rather than adding a modifier) plus a crit-triggered bleed rider; no clean additive engine target.",
+    "Sets the beak attack's damage die to 1d6 (a base-die replacement, not an add) plus a crit-triggered bleed rider; ndamage (targets.ts) is unapplied by compute.ts and, being a flat-modifier channel, couldn't carry a die replacement regardless.",
   "blood-of-heroes":
     "Doubles hero-point gain per level up; hero points are not in the pool tag list. [flag: pool-no-tag]",
   "bolstered-resilience":
     "Doubles existing DR rather than adding to it, a stacking-suspect multiplicative effect.",
   "born-of-frost":
-    "Flat cold damage added to natural weapons/unarmed strikes has no natural-attack damage target in the vocabulary.",
+    "Adds 1d6 cold damage to natural weapons/unarmed strikes on a hit; ndamage (targets.ts) names a natural-attack-damage target but compute.ts never consumes it, and the added damage is dice-valued rather than a flat modifier regardless.",
   "bravery-in-action":
-    "Adds the fighter Bravery class feature bonus to initiative, but Bravery scales by fighter level, which has no formula primitive.",
+    "Adds the fighter Bravery bonus to initiative, via @classes.fighter.level matching the hand-verified Bravery entry's progression.",
   "breaker-of-barriers":
     "Wired via maneuverCategories: unconditional +2 CMB on bull rush and overrun checks. The Strength-check/hardness-ignore half (breaking doors and barriers) has no engine target.",
   brewmaster:
     "Wired as two named instances: unconditional +2 on Craft (alchemy) and Profession (brewer) checks. The +1 poison-DC clause has no engine target.",
-  "burrowing-teeth":
-    "Burrow speed is defined as half base speed, but base speed is not an available formula primitive.",
+  "burrowing-teeth": "Unconditional burrow speed set to half base land speed (floored).",
   "calm-disposition":
     "Wired via saveCategories: unconditional +2 vs mind-affecting and nausea/sickened effects (the feat's own text defines the 'composure' scope as spanning both). Does not extend to physical effects like fatigue, matching the feat's own exclusion.",
   "catfolk-exemplar":
-    "One manifestation grants a numeric speed bonus, but the choice is among racial features (senses, speed, claw damage), not a skill or weapon choice axis. [flag: unsure]",
+    "One manifestation (Fast Sprinter) grants a numeric speed bonus, but the three-branch choice is among racial features (senses, speed, claw damage); the feat-choice picker only offers skill/weapon axes, not a fixed named-option list like this. [flag: unsure]",
   "cecaelia-focus-tattoo":
     "Each tattoo is a small competence bonus, but the choice among named tattoos is not a skill or weapon choice axis. [flag: unsure]",
   "champion-of-anarchy":
@@ -3377,9 +3376,9 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "feline-grace":
     "Wired via maneuverCategories: unconditional +2 CMD against bull rush, grapple, overrun, reposition, and trip.",
   "fiendish-serpent":
-    "Climb/swim speed equal to base speed; no formula primitive references base land speed.",
+    "Unconditional climb and swim speed set equal to base land speed; the can't-be-tripped clause has no engine target.",
   "fiendish-wings":
-    "Fly speed equal to base speed; no formula primitive references base land speed.",
+    "Unconditional fly speed set equal to base land speed (maneuverability class isn't a modeled sheet field).",
   fiendskin:
     "Energy resistance/immunity keyed to the character's chosen patron's outsider subtype, state the engine doesn't model.",
   "filth-forager":
@@ -3403,7 +3402,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "greater-elemental-focus":
     "Scoped to a chosen energy descriptor like Elemental Focus; spellDC has no descriptor axis, only schools.",
   "greater-wilding-strike":
-    "Increases unarmed strike damage die size, a replace rather than an additive bonus.",
+    "Same die-size replacement as Wilding Strike, to 1d10 (1d8 if Small); ndamage (targets.ts) is unapplied by compute.ts and couldn't carry a die-size replacement regardless.",
   "grenade-expert":
     "Bonus to the single named Craft (alchemy) skill has no stable per-instance target.",
   "guardian-of-tradition":
@@ -3433,7 +3432,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "improved-stalwart":
     "Doubles a DR value granted by the prerequisite Stalwart feat, whose bypass type isn't established here; non-armor DR grants are stacking-suspect.",
   "improved-wilding-strike":
-    "Replaces the unarmed-strike damage die rather than adding to it; a stacking-suspect override the engine can't safely apply.",
+    "Same die-size replacement as Wilding Strike, to 1d8 (1d6 if Small); ndamage (targets.ts) is unapplied by compute.ts and couldn't carry a die-size replacement regardless.",
   improvisation:
     "Untrained skill-check bonus and trained-only access have no per-skill or per-proficiency target in the engine's vocabulary.",
   "inner-breath": "Breathing immunity has no matching immEffect slug in the engine's vocabulary.",
@@ -3447,7 +3446,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "ironclad-logic":
     "Explicitly doesn't stack with Skill Focus (Diplomacy); drafting an untyped bonus would double-count under the engine's stacking rules.",
   ironhide:
-    "Flat natural armor bonus; natural-armor grants are stacking-suspect against other natural armor and enhancement sources.",
+    "Unconditional +1 natural armor bonus (nac/untyped, competes highest-wins with other natural armor sources as RAW requires).",
   "irrisen-icemage":
     "Caster LEVEL bonus (not a check), keyed to a spell's energy descriptor; cl stays an unapplied target regardless of scoping.",
   "jackal-heritage": "Unconditional +2 racial bonus on Perception checks.",
@@ -3488,7 +3487,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "master-delver":
     "Unconditional +2 Knowledge (dungeoneering) bonus; the Perception clause is scoped to noticing traps so is excluded.",
   "master-swimmer":
-    "Swim speed formula depends on comparing to base land speed, which has no allowed formula primitive.",
+    "Swim speed set to min(30, base land speed) is wired; the racial Swim-check bonus reduction (+8 to +2) has no engine target since the automatic +8-for-having-a-swim-speed bonus it modifies isn't itself modeled anywhere.",
   "messenger-of-fate":
     "Caster LEVEL bonus (not a check), scoped to the divination school; cl stays an unapplied target regardless of scoping.",
   "meta-word-mastery":
@@ -3498,7 +3497,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "monument-builder":
     "Rank-gated Knowledge (engineering) bonus (+2, or +4 at 10 ranks) is unconditional.",
   "mother-s-gift":
-    "Three-branch manifestation choice (claw attack bonus, natural-armor stacking-suspect, or SR); not a skill/weapon choice axis so no single draft applies. [flag: unsure]",
+    "Three-branch manifestation choice (Hag Claws, Surprisingly Tough, or Uncanny Resistance) fixed at feat-take; the feat-choice picker only offers skill/weapon axes, not a fixed named-option list like this. [flag: unsure]",
   "nature-soul": "Unconditional +2 bonus to Knowledge (nature) and Survival, rank-gated to +4.",
   "necromantic-affinity":
     "Wired via saveCategories: unconditional +2 vs energy drain (negative levels) and ability damage/drain. The broader 'utilize negative energy' clause and the inflict/cure vulnerability swap have no matching engine target and stay prose.",
@@ -3521,8 +3520,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "ominous-mien":
     "Scoped to four specific subschools (compulsion, fear, phantasm, shadow); spellDC's vocabulary is school-level only, with no subschool axis.",
   "oracular-intuition": "Unconditional +2/+4 rank-gated bonus to Sense Motive and Spellcraft.",
-  "oread-burrower":
-    "Burrow speed equals half base land speed, but no formula primitive references land speed.",
+  "oread-burrower": "Unconditional burrow speed set to half base land speed (floored).",
   "pao-lung-self-improvement":
     "The bonus scales dynamically with repeated check failures and resets on success, state the engine doesn't track.",
   peacemaker:
@@ -3547,7 +3545,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   recalcitrant:
     "Adds +2 to the DC of others' Intimidate checks made against the character; the engine has no target for modifying incoming check DCs.",
   "scale-and-skin":
-    "Grants a natural armor bonus triggered by being affected by transmutation magic; natural-armor bonuses are stacking-suspect and usually excluded.",
+    "Natural armor bonus increases by 1 (by 3 at CL 10+) only while currently affected by a transmutation spell/SLA; the engine has no state for 'currently affected by an effect of school X' to gate a Change on.",
   "scaled-disciple":
     "Grants +1 caster LEVEL (not a check) only for spells in the dragon domain/subdomains; cl stays an unapplied target regardless of scoping.",
   "scavenger-s-eye": "Unconditional +2 bonus on Appraise checks.",
@@ -3633,15 +3631,15 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "snake-style":
     "Unconditional +2 bonus on Sense Motive checks (the feat's other benefits are situational).",
   "social-bravery":
-    "Bluff/Intimidate morale bonus equals the bravery class feature's value, which scales by fighter level (no @class path available).",
+    "Bluff/Intimidate morale bonus equal to the Bravery value is wired via @classes.fighter.level; the DC-to-affect-you half targets an incoming check the engine doesn't model and stays prose.",
   "soulless-gaze":
     "Intimidate bonus scales with the number of Damnation-tagged feats owned; feat-tag counting isn't an available formula primitive.",
   "spell-specialization":
     "Caster LEVEL bump (not a check), scoped to a single chosen spell; cl stays an unapplied target regardless of scoping.",
   "spirit-focus":
-    "Increases a shaman spirit-bonus value by 1; that class-feature value has no engine target.",
+    "Increases a medium's Spirit Bonus by 1 for a CHOSEN legend of spirits — a pick from a fixed six-entry list the feat-choice picker can't offer (it builds options from refData only), so this waits on the choice-UI lever; once a legend pick exists, the wire itself is a one-line bump in collect.ts's medium spirit-bonus loop.",
   "stone-soul":
-    "Flat +1 to natural armor bonus is stacking-suspect against other natural-armor sources (racial base, later stackings of this same feat).",
+    "Natural armor bonus increases by 1 (nac/increase, sums with the natural bonus rather than competing); repeat takes only add stoneskin uses/day per the feat's own Special text, not a second armor increase, so the wiring is correct unrepeated.",
   "storm-soul": "Unconditional full immunity to electricity for cloud/storm giants.",
   "street-smarts": "Unconditional rank-gated bonus to Knowledge (local) and Sense Motive.",
   "stretched-wings":
@@ -3661,7 +3659,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "touched-by-sacred-fire":
     "Unconditional fire resistance 5 (the swift-action upgrade to 10 and the vs-fire-or-heat save bonus are left unmodeled as situational).",
   "tough-as-iron":
-    "Boosts an enhancement bonus to natural armor by 2; enhancement-to-natural-armor stacking is stacking-suspect.",
+    "The +2 only applies while the character already has an enhancement bonus to natural armor from another source (an amulet, a spell); the engine has no way to detect whether that source is present to gate the increase on.",
   "tower-shield-specialist":
     "Reduces tower shield armor check penalty by 3; no armor-check-penalty target exists in the engine vocabulary.",
   "tribal-scars":
@@ -3673,7 +3671,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "twilight-tattoo":
     "Unconditional Disguise bonus (the Sleight of Hand and anti-scrying Will save clauses are scoped/situational and left unmodeled).",
   "unbound-bravery":
-    "Adds the bravery class-feature bonus (a variable class value with no engine primitive) to specific checks; also scoped to escape-artist/grapple-escape only.",
+    "Escape Artist half wired via @classes.fighter.level; the grapple-escape half stays prose (a standing ruling treats grapple-escape as ambiguous between CMB and Escape Artist), as does the once-daily ally-grant clause.",
   unbreakable:
     "Doubles a fighter favored-class HP benefit and raises the effective Constitution used for the death threshold; neither favored-class bonuses nor the death-threshold calc are modeled.",
   "uncanny-alertness":
@@ -3681,7 +3679,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "uncanny-concentration":
     "Grants immunity to certain concentration-check triggers and a +2 concentration bonus; concentration checks have no engine target.",
   "undaunted-bravery":
-    "Adds the bravery class-feature bonus (a variable class value with no engine primitive) to Intimidate and to the DC to intimidate the character.",
+    "Intimidate half wired via @classes.fighter.level; the DC-to-intimidate-you half targets an incoming check the engine doesn't model and stays prose.",
   "unfair-grip":
     "Wired via maneuverCategories: unconditional +1 CMB to maintain a grapple. The opponent-facing escape penalty targets a foe's roll, which this engine doesn't model.",
   unforgotten:
@@ -3709,7 +3707,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Unconditional rank-gated Perception bonus (the extra surprise-round-only bonus is left unmodeled as situational).",
   "wilding-stride": "Unconditional +10 ft base speed increase.",
   "wilding-strike":
-    "Increases the unarmed strike damage die size rather than adding a flat amount; no engine target models a die-size change.",
+    "Sets the unarmed strike damage die to 1d6 (1d4 if Small), a die-size replacement rather than an add; ndamage (targets.ts) is unapplied by compute.ts and, being a flat-modifier channel, couldn't carry a die-size replacement regardless.",
   "will-of-giants":
     "Grants immunity only to enchantment effects that target humanoids specifically; narrower than a general immEffect.charm/compulsion grant, so applying either would overclaim immunity.",
   "witch-knife":

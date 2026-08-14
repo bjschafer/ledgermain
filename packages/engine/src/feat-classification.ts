@@ -1294,8 +1294,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "improved-natural-armor": {
     slug: "improved-natural-armor",
     name: "Improved Natural Armor",
-    bucket: "blocked",
-    note: 'stacking-suspect: RAW each additional take adds +1 more, but the engine\'s "natural" AC type is a non-stacking bucket (highest wins) — two Changes of the same type/target would not sum the way multiple takes require',
+    bucket: "numeric",
+    note: 'wired as nac/"increase" (stacking.ts), a bonus type reserved for explicit "increases by" wording that sums with the natural-armor bonus and with other increases rather than competing highest-wins; repeatable via extraFeats (apps/web repeatableFeats.ts already lists this feat), so a second take emits a second increase Change and correctly sums to +2',
   },
   "improved-natural-attack": {
     slug: "improved-natural-attack",

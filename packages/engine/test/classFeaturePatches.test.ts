@@ -359,6 +359,22 @@ describe("Oceanic Spirit (Storm Kindler, tiered Fly/Swim + electricity/sonic res
   });
 });
 
+describe("Wave Breaker (Storm Kindler, swim speed equal to twice base land speed)", () => {
+  it("60 ft swim speed at 4th level (Human, 30 ft base land speed)", () => {
+    // "At 4th level, a Storm Kindler gains a swim speed equal to twice her
+    // base land speed" (Faiths of Purity, 4th level). Human base land speed
+    // is 30 ft, so the swim speed reads as 60 ft.
+    const sheet = compute(makeDoc("stormKindler", 4), ref);
+    expect(sheet.speeds.swim).toBe(60);
+    expect(sheet.speeds.land).toBe(30);
+  });
+
+  it("grants nothing below 4th level", () => {
+    const sheet = compute(makeDoc("stormKindler", 3), ref);
+    expect(sheet.speeds.swim ?? 0).toBe(0);
+  });
+});
+
 describe("Stern Gaze (Gray Gardener, morale Intimidate/Sense Motive; Inquisitor's own copy unaffected)", () => {
   it("+2 morale at 4th level (Gray Gardener)", () => {
     // "a Gray Gardener receives a morale bonus equal to 1/2 his class level

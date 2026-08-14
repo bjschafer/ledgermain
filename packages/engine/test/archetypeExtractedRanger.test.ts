@@ -377,6 +377,47 @@ describe("Skirmisher (ranger): Mobility Training grants dodge AC + land speed wh
   });
 });
 
+describe("Abendego Diver (ranger): Aquatic Adaptation grants a swim speed equal to base land speed", () => {
+  // aonprd.com "Abendego Diver" (Ranger Archetype), Aquatic Adaptation (7th):
+  // "an Abendego diver gains a swim speed equal to his unmodified base
+  // speed." A human's base land speed is 30 ft.
+  const abendegoDiver = archetypeId("Abendego Diver", "ranger");
+
+  it("swim speed = base land speed (30 ft. human) at L7", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "ranger", level: 7 }], archetypes: [abendegoDiver] }),
+      ref,
+    );
+    const withoutArchetype = compute(makeDoc({ classes: [{ tag: "ranger", level: 7 }] }), ref);
+    expect(sheet.speeds.swim).toBe(withoutArchetype.speeds.land);
+    expect(sheet.speeds.swim).toBe(30);
+  });
+
+  it("not yet granted below L7", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "ranger", level: 6 }], archetypes: [abendegoDiver] }),
+      ref,
+    );
+    expect(sheet.speeds.swim ?? 0).toBe(0);
+  });
+});
+
+describe("Tidal Hunter (ranger): Wave Rush grants a swim speed equal to base land speed", () => {
+  // aonprd.com "Tidal Hunter" (Ranger Archetype), Wave Rush (7th): "a tidal
+  // hunter gains a swim speed equal to his base speed."
+  const tidalHunter = archetypeId("Tidal Hunter", "ranger");
+
+  it("swim speed = base land speed (30 ft. human) at L7", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "ranger", level: 7 }], archetypes: [tidalHunter] }),
+      ref,
+    );
+    const withoutArchetype = compute(makeDoc({ classes: [{ tag: "ranger", level: 7 }] }), ref);
+    expect(sheet.speeds.swim).toBe(withoutArchetype.speeds.land);
+    expect(sheet.speeds.swim).toBe(30);
+  });
+});
+
 describe("Wilderness Explorer (ranger): Hazard Sense grants a scaling Reflex bonus vs. traps and a dodge AC bonus vs. wilderness traps", () => {
   const wildernessExplorer = archetypeId("Wilderness Explorer", "ranger");
 

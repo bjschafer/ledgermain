@@ -203,7 +203,17 @@ export const MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Shared Prowess",
     level: 2,
     bucket: "subsystem",
-    note: "adds a dodge AC bonus equal to the champion spirit's Spirit Bonus while light/unarmored — extends what channeling the spirit grants, i.e. modifies a spirit bonus (class note 1); the base Spirit Bonus itself is applied directly by collect.ts/medium-spirits.ts, not through this table",
+    note:
+      "dodge AC equal to the champion spirit's Spirit Bonus while light/unarmored (@armor.type " +
+      "<=1 is checkable on its own). Investigated for this wave: the Spirit Bonus value only " +
+      "applies while a spirit is actively channeled (doc.live.mediumSpirit), and " +
+      "medium-spirits.ts's own architecture applies that directly in collect.ts's TypeScript, " +
+      "never through a Change formula — rolldata.ts exposes no @live.mediumSpirit path a Change " +
+      "formula in this table could check (class note 1). Wiring this would mean extending " +
+      "collect.ts's existing champion-spirit Spirit Bonus loop to also push an archetype-gated " +
+      "dodge AC Change (checking doc.build.archetypes for medium-of-the-master) — new " +
+      "cross-module plumbing in a file this wave doesn't own, not a self-contained " +
+      "medium-spirits.ts addition, so left unwired.",
   },
   "medium:medium-of-the-master:spirit-call:1": {
     archetypeId: "medium:medium-of-the-master",

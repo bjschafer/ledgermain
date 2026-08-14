@@ -87,7 +87,13 @@ describe("blocked bucket: sneak attack reprints and the Roof Runner class mismat
     }
   });
 
-  it("Roof Runner's Master Climber is blocked (no formula input for base land speed)", () => {
+  it("Roof Runner's Master Climber is blocked (verified against aonprd.com: it's Hunter's Roof Runner content, not a real rogue ability)", () => {
+    // aonprd.com's Hunter Roof Runner archetype (ArchetypeDisplay.aspx?
+    // FixedName=Hunter+Roof+Runner) has the 20th-level Master Climber that
+    // matches this entry's text verbatim; aonprd.com's Rogue Roof Runner
+    // archetype (PZO1118, Pathfinder Society Field Guide) has only two
+    // features total (Roof Running 1st, Tumbling Descent 2nd) and no
+    // 20th-level ability at all. Nothing to backfill.
     const entry =
       ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION[
         "rogueUnchained:roof-runner:master-climber:20"
@@ -447,10 +453,26 @@ describe("Sylvan Trickster: Fey Resistance — scaling DR/cold iron", () => {
   });
 });
 
-describe("Tidal Trickster: Wisdom of the Waves — Swim and Bluff only (swim speed grant dropped)", () => {
+describe("Tidal Trickster: Wisdom of the Waves — swim speed, Swim, and Bluff (underwater Will bonus dropped)", () => {
+  // aonprd.com "Tidal Trickster" (Rogue (Unchained) Archetype), Wisdom of the
+  // Waves (1st): "A tidal trickster gains a swim speed equal to her
+  // unmodified base land speed... she gains a racial bonus on Swim checks
+  // equal to 4 + half her rogue level... a bonus on Bluff checks equal to
+  // half her rogue level."
+  it("swim speed = base land speed via a base/set Change", () => {
+    const id = "rogueUnchained:tidal-trickster:wisdom-of-the-waves:1";
+    const [swimSpeed] = ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(swimSpeed!.target).toBe("swimSpeed");
+    expect(swimSpeed!.type).toBe("base");
+    expect(swimSpeed!.operator).toBe("set");
+    expect(
+      evaluateFormula(swimSpeed!.formula, { attributes: { speed: { land: { total: 30 } } } }),
+    ).toBe(30);
+  });
+
   it("4+floor(unlevel/2) racial Swim, floor(unlevel/2) Bluff", () => {
     const id = "rogueUnchained:tidal-trickster:wisdom-of-the-waves:1";
-    const [swm, blf] = ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    const [, swm, blf] = ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
     expect(swm!.target).toBe("skill.swm");
     expect(swm!.type).toBe("racial");
     expect(blf!.target).toBe("skill.blf");

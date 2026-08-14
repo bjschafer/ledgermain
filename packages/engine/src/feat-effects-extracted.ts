@@ -180,6 +180,23 @@ export const FEAT_EFFECTS_EXTRACTED: Readonly<Record<string, ExtractedFeatEntry>
       '"You gain a +2 bonus on all damage rolls you make using the selected weapon. This bonus to damage stacks with other damage roll bonuses, including any you gain from Weapon Specialization."',
   },
 
+  // Improved Natural Armor: natural armor bonus increases by +1 (Bestiary
+  // rules, universal monster feat). Wired as nac/"increase" (stacking.ts), a
+  // bonus type reserved for explicit "increases by" wording — it sums with
+  // the natural-armor bonus and with other increases rather than competing
+  // highest-wins the way an ordinary same-type bonus would. Repeatable
+  // ("A creature can gain this feat multiple times. Each time... its natural
+  // armor bonus increases by another point."): apps/web's repeatableFeats.ts
+  // already lists this feat, so a second take goes through doc.build.
+  // extraFeats and emits a second increase Change with its own sourceId,
+  // correctly summing to +2 rather than losing to highest-wins.
+  "improved-natural-armor": {
+    type: "static",
+    changes: [{ target: "nac", type: "increase", formula: "1" }],
+    confidence: "high",
+    provenance: '"The creature\'s natural armor bonus increases by +1."',
+  },
+
   // Master Craftsman: +2 on the chosen Craft/Profession skill (PF1 APG p.
   // 156). PARTIAL extraction — reuses the existing "skill" choice shape for
   // the flat bonus only; the feat's other clause (substituting skill ranks

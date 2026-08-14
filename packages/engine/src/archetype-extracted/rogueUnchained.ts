@@ -1302,7 +1302,17 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Master Climber",
     level: 20,
     bucket: "blocked",
-    note: `grants a climb speed equal to base land speed — no formula input exposes a character's own land speed to another Change's formula (race-dependent, a hardcoded number would be wrong for non-human races). Compounded by the class mismatch: ${ROOF_RUNNER_MISMATCH}`,
+    note:
+      `verified against aonprd.com: the real Hunter Roof Runner archetype ` +
+      `(ArchetypeDisplay.aspx?FixedName=Hunter+Roof+Runner) has a 20th-level Master Climber ` +
+      "granting a climb speed equal to base land speed, 'instead of being able to move at full " +
+      "speed while tracking' — matches this entry's text verbatim. The real ROGUE Roof Runner " +
+      "archetype (PZO1118, Pathfinder Society Field Guide; confirmed via aonprd.com's Rogue Roof " +
+      "Runner page and d20pfsrd) has only two features total, both at 1st/2nd level (Roof " +
+      "Running, Tumbling Descent) — no 20th-level ability exists in the real rogue archetype at " +
+      `all. This id's content is entirely Hunter's Roof Runner archetype misattributed to ` +
+      `rogueUnchained (class note: ${ROOF_RUNNER_MISMATCH}). Not wired: there is no real rogue ` +
+      "ability here to extract a number from.",
   },
   "rogueUnchained:roof-runner:natural-leaper:2": {
     archetypeId: "rogueUnchained:roof-runner",
@@ -1945,7 +1955,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Wisdom of the Waves",
     level: 1,
     bucket: "numeric",
-    note: "the Swim skill bonus and the Bluff bonus are both unconditional and extracted. The swim-SPEED grant (equal to base land speed) has no formula input to express it and is dropped, and the Will-save-while-underwater bonus is an uncheckable environmental condition and is also dropped.",
+    note: "the swim speed (swimSpeed/base/set, the same idiom hunter.ts's Watery Stride establishes), the Swim skill bonus, and the Bluff bonus are all extracted. The 'already has a racial swim speed, +10 ft. instead' branch is dropped (an 'already has X, gets Y instead' rider the engine can't check, same posture as this file's own darkvision-rider precedent), and the Will-save-while-underwater bonus is an uncheckable environmental condition and is also dropped.",
   },
 
   // ── Toxic Talon ────────────────────────────────────────────────────────
@@ -2582,12 +2592,18 @@ export const ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // unconditional skill bonuses are extracted.
   "rogueUnchained:tidal-trickster:wisdom-of-the-waves:1": {
     changes: [
+      {
+        formula: "@attributes.speed.land.total",
+        target: "swimSpeed",
+        type: "base",
+        operator: "set",
+      },
       c("4 + floor(@class.unlevel / 2)", "skill.swm", "racial"),
       c("floor(@class.unlevel / 2)", "skill.blf"),
     ],
     detail: (level) =>
-      `+${4 + Math.floor(level / 2)} racial Swim, +${Math.floor(level / 2)} Bluff ` +
-      "(swim speed and underwater Will bonus not modeled)",
+      `swim speed = base land speed, +${4 + Math.floor(level / 2)} racial Swim, ` +
+      `+${Math.floor(level / 2)} Bluff (underwater Will bonus not modeled)`,
     confidence: "medium",
     provenance:
       "A tidal trickster gains a swim speed equal to her unmodified base land speed (or " +

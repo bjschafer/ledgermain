@@ -385,8 +385,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
   knfcYfPniQcT4u3F: {
     id: "knfcYfPniQcT4u3F",
     name: "Wave Breaker",
-    bucket: "blocked",
-    note: "the swim speed grant is defined as twice the character's base land speed, a value that varies by race/build with no rollData path exposed to a Change formula for referencing it; the water-breathing half is also a separate per-day resource.",
+    bucket: "numeric",
+    note: "the swim speed grant (twice base land speed) is wired via CLASS_FEATURE_CHANGE_PATCHES; the water-breathing per-day-per-level half stays unmodeled prose.",
   },
   n4SWyKVcdmZK4t7d: {
     id: "n4SWyKVcdmZK4t7d",

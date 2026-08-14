@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-13-granted-speeds-bravery-natural-armor",
+    date: "2026-08-13",
+    title: "Granted speeds, Bravery feats, and natural armor feats compute",
+    note: "Feats and features that grant a whole movement speed now put it on your sheet: Barracuda Dash and Fiendish Serpent grant swim speeds, Fiendish Wings a fly speed, Oread Burrower and Burrowing Teeth burrow speeds, a Storm Kindler's Wave Breaker grants a swim speed of twice your land speed, and the Abendego diver and tidal hunter ranger archetypes land theirs too. Feats keyed to a fighter's Bravery scale with it now: Bravery in Action adds it to initiative, Social Bravery to Bluff and Intimidate, Undaunted Bravery to Intimidate, and Unbound Bravery to Escape Artist. Natural armor feats apply as well: Ironhide and Armor of the Pit add their bonus, and Improved Natural Armor and Stone Soul stack on top of natural armor you already have, the way an increase should.",
+  },
+  {
     id: "2026-08-13-named-craft-perform-profession-bonuses",
     date: "2026-08-13",
     title: "Bonuses to a named Craft, Perform, or Profession apply themselves",

@@ -148,8 +148,8 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "ranger:abendego-diver",
     name: "Aquatic Adaptation",
     level: 7,
-    bucket: "subsystem",
-    note: "grants a speed/stat equal to another of the character's own already-computed stats (e.g. 'a swim speed equal to base land speed') — the formula evaluator's rollData has no path exposing that input to a Change formula, so this can't be authored without guessing a fixed number.",
+    bucket: "numeric",
+    note: "unconditional swim speed equal to base land speed, the same swimSpeed/base/set idiom hunter.ts's Watery Stride already establishes — see the extracted table.",
   },
   "ranger:abendego-diver:shark-sense:8": {
     archetypeId: "ranger:abendego-diver",
@@ -1499,8 +1499,8 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "ranger:tidal-hunter",
     name: "Wave Rush",
     level: 7,
-    bucket: "subsystem",
-    note: "grants a speed/stat equal to another of the character's own already-computed stats (e.g. 'a swim speed equal to base land speed') — the formula evaluator's rollData has no path exposing that input to a Change formula, so this can't be authored without guessing a fixed number.",
+    bucket: "numeric",
+    note: "unconditional swim speed equal to base land speed, the same swimSpeed/base/set idiom hunter.ts's Watery Stride already establishes — see the extracted table.",
   },
   "ranger:tidal-hunter:tidal-surge:16": {
     archetypeId: "ranger:tidal-hunter",
@@ -2266,6 +2266,46 @@ export const RANGER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "beyond 3rd (to a maximum of +4 at 15th level). In addition, a skirmisher gains an " +
       "enhancement bonus of +5 feet to his base speed. At 7th level, the bonus increases to " +
       "+10 feet.",
+  },
+
+  // ── Swim speed grants (base land speed) ──────────────────────────────────
+
+  // Abendego Diver's "Aquatic Adaptation" (7th level, unpaired) grants an
+  // unconditional swim speed equal to base land speed — the same
+  // swimSpeed/"base"/"set" idiom hunter.ts's Watery Stride establishes for
+  // materially identical wording. The accompanying "+10 if already has a
+  // swim speed" rider is dropped (an "already has X, gets Y instead" branch
+  // the engine can't check — same posture as this file's own Strong Senses
+  // and rogueUnchained.ts's darkvision-rider precedent).
+  "ranger:abendego-diver:aquatic-adaptation:7": {
+    changes: [
+      {
+        formula: "@attributes.speed.land.total",
+        target: "swimSpeed",
+        type: "base",
+        operator: "set",
+      },
+    ],
+    detail: () => "swim speed = base land speed",
+    confidence: "high",
+    provenance:
+      "At 7th level, an Abendego diver gains a swim speed equal to his unmodified base speed.",
+  },
+
+  // Tidal Hunter's "Wave Rush" (7th level, unpaired) — byte-identical grant
+  // to Abendego Diver's Aquatic Adaptation above, same idiom.
+  "ranger:tidal-hunter:wave-rush:7": {
+    changes: [
+      {
+        formula: "@attributes.speed.land.total",
+        target: "swimSpeed",
+        type: "base",
+        operator: "set",
+      },
+    ],
+    detail: () => "swim speed = base land speed",
+    confidence: "high",
+    provenance: "At 7th level, a tidal hunter gains a swim speed equal to his base speed.",
   },
 
   // Wilderness Explorer's "Hazard Sense" (Change.saveCategories /

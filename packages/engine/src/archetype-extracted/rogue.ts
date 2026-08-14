@@ -1628,7 +1628,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Underhanded Maneuvers",
     level: 1,
     bucket: "situational",
-    note: "a combat-maneuver-check bonus (equal to sneak attack dice) scoped to the dirty trick/steal maneuvers specifically",
+    note: "a combat-maneuver-check bonus (sneak attack dice for dirty trick, 1.5x sneak attack dice for steal) that only applies when she could normally make a sneak attack (target flat-footed/flanked, etc.) — same honesty bar as Distracting Climber's climbing gate, no rollData signal for sneak-attack eligibility.",
   },
   "rogue:skulking-slayer:weapon-and-armor-proficiency:1": {
     archetypeId: "rogue:skulking-slayer",

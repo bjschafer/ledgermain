@@ -17,6 +17,14 @@
  * alone: those are genuinely different bonus types and stack with the armor
  * bonus itself, which is how magic vestment, barkskin, and an amulet of
  * natural armor are supposed to work.
+ *
+ * That pass-through is also how an "X increases by N" effect is expressed:
+ * a hand-authored change typed `increase` (a stacking type — see
+ * `stacking.ts`) escapes the normalization, so "your natural armor bonus
+ * increases by +1" sums with the natural-armor bonus itself instead of
+ * competing highest-wins against it. Use it only for explicit "increases by"
+ * wording; "you gain a +N natural armor bonus" is an ordinary same-type
+ * bonus and belongs to the normalized highest-wins group.
  */
 
 const AC_BONUS_TYPE: Readonly<Record<string, string>> = {

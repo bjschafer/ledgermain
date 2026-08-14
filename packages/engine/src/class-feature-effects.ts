@@ -491,6 +491,21 @@ const OCEANIC_SPIRIT: readonly Change[] = [
 ];
 
 /**
+ * Wave Breaker (Storm Kindler, prestige, Faiths of Purity) 4th level: "a
+ * Storm Kindler gains a swim speed equal to twice her base land speed."
+ * `@attributes.speed.land.total` resolves to base (pre-buff) land speed, the
+ * idiom this vocabulary uses for "base land speed" elsewhere (e.g. the
+ * bloodrager Sea bloodline). The per-day water-breathing half has no target
+ * and stays prose.
+ */
+const WAVE_BREAKER: Change = {
+  formula: "2 * @attributes.speed.land.total",
+  target: "swimSpeed",
+  type: "base",
+  operator: "set",
+};
+
+/**
  * Gray Gardener (prestige, Inner Sea Magic) 2nd level: "a Gray Gardener
  * receives a morale bonus equal to 1/2 his class level on Intimidate and
  * Sense Motive checks." The formula matches the Inquisitor's own vendored
@@ -860,6 +875,7 @@ export const CLASS_FEATURE_CHANGE_PATCHES: Readonly<Record<string, readonly Chan
   "Angel of Eiseth": ANGEL_OF_EISETH,
   "Vanth Wings": VANTH_WINGS,
   "Oceanic Spirit": OCEANIC_SPIRIT,
+  "Wave Breaker": [WAVE_BREAKER],
   "Stern Gaze": STERN_GAZE,
   "Seductive Intuition": SEDUCTIVE_INTUITION,
   "Aristocratic Erudition": ARISTOCRATIC_ERUDITION,

@@ -56,8 +56,16 @@ export function synthetic(source: string, type: string, value: number): Modifier
 /**
  * Bonus types whose same-type bonuses stack (sum) rather than taking the highest.
  * Empty string is treated as untyped.
+ *
+ * `increase` is this engine's own convention, not a PF1 bonus type: it marks
+ * an "X increases by N" effect (Improved Natural Armor's "natural armor bonus
+ * increases by +1"), which RAW modifies the existing bonus rather than
+ * competing with it, so it must sum both with the named-type group and with
+ * other increases. Distinct from `untyped` only because `acBonusType`
+ * normalizes untyped armor-family bonuses onto the real type name — an
+ * explicitly-set `increase` rides through that normalization.
  */
-const STACKING_TYPES = new Set(["dodge", "untyped", "circumstance", ""]);
+const STACKING_TYPES = new Set(["dodge", "untyped", "circumstance", "", "increase"]);
 
 /**
  * Of the stacking types above, `circumstance` is the one RAW carves an

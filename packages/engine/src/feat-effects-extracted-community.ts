@@ -12,7 +12,16 @@
  * against the full description before landing. "high" confidence throughout:
  * each is an unconditional published number whose shape already exists in the
  * hand-verified tables (flat/rank-gated skill bonuses, energy resistance,
- * immunity, speeds, carry capacity, CMD, initiative, SR).
+ * immunity, speeds, carry capacity, CMD, initiative, SR, natural armor).
+ *
+ * Two shapes added by the speed/class-value/natural-armor re-sweep: a "gains
+ * a swim/climb/burrow/fly speed equal to X" grant is wired as a `base`-type,
+ * `set`-operator Change on `@attributes.speed.land.total` (the character's
+ * race-base land speed — matching `bloodrager-bloodlines.ts`'s Serpentine
+ * Swim), never additive (double-count trap); and a bonus keyed to the fighter
+ * Bravery class feature reuses that hand-verified entry's own progression
+ * formula (`class-feature-effects.ts`) with `@classes.fighter.level` in place
+ * of the class-feature context's `@class.unlevel`.
  *
  * Style feats: the printed style rules only stance-gate clauses prefixed
  * "While using this style" (and follow-up feats that list a style feat as a
@@ -56,6 +65,17 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance: "You gain a +2 bonus on Swim checks",
   },
+  // Unconditional +2 natural armor bonus (nac/untyped, competes highest-wins
+  // with other natural armor sources). The Special clause's alternate benefit
+  // (energy resistance instead, for characters with the scaled skin racial
+  // trait) is a player choice the feat-choice picker can't offer and isn't
+  // drafted here.
+  "armor-of-the-pit": {
+    type: "static",
+    changes: [{ target: "nac", type: "untyped", formula: "2" }],
+    confidence: "high",
+    provenance: "You gain a +2 natural armor bonus.",
+  },
   // The published text really does say the +5 competence bonus "increases" to
   // +4 at 10+ Hit Dice (AoN corroborates the vendored text verbatim).
   // Implemented literally rather than guessing at the intended errata.
@@ -72,6 +92,23 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "gain a +5 competence bonus on Escape Artist checks. If you possess 10 or more Hit Dice, this bonus increases to +4",
   },
+  // Style follow-up feat (lists Barracuda Style as a prerequisite): the swim-
+  // speed clause carries no "while using this style" prefix, so per this
+  // table's style-feat convention (see file header) it's unconditional.
+  // @attributes.speed.land.total is the character's race-base land speed.
+  "barracuda-dash": {
+    type: "static",
+    changes: [
+      {
+        target: "swimSpeed",
+        type: "base",
+        formula: "@attributes.speed.land.total",
+        operator: "set",
+      },
+    ],
+    confidence: "high",
+    provenance: "You gain a swim speed equal to your base speed.",
+  },
   // Unconditional Wisdom modifier added to Swim checks alongside the usual Strength modifier.
   "barracuda-style": {
     type: "static",
@@ -79,6 +116,18 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance:
       "You add your Wisdom modifier in addition to your Strength modifier on Swim checks.",
+  },
+  // Adds the fighter Bravery bonus to initiative, matching the hand-verified
+  // Bravery entry's own progression formula (class-feature-effects.ts) with
+  // @classes.fighter.level in place of the class-feature context's
+  // @class.unlevel.
+  "bravery-in-action": {
+    type: "static",
+    changes: [
+      { target: "init", type: "untyped", formula: "1 + floor((@classes.fighter.level - 2) / 4)" },
+    ],
+    confidence: "high",
+    provenance: "You can add the bonus from bravery to your initiative checks.",
   },
   // Unconditional +2 bonus on combat maneuver checks to bull rush and overrun
   // (the Str-check/hardness-ignore half of the feat, for breaking doors and
@@ -107,6 +156,21 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     ],
     confidence: "high",
     provenance: "You gain a +2 bonus on Craft (alchemy) and Profession (brewer) checks",
+  },
+  // Unconditional burrow speed set to half base land speed (floored).
+  // @attributes.speed.land.total is the character's race-base land speed.
+  "burrowing-teeth": {
+    type: "static",
+    changes: [
+      {
+        target: "burrowSpeed",
+        type: "base",
+        formula: "floor(@attributes.speed.land.total / 2)",
+        operator: "set",
+      },
+    ],
+    confidence: "high",
+    provenance: "You gain a burrow speed equal to 1/2 your base speed.",
   },
   // The "composure" scope the feat's own text defines spans mind-affecting
   // effects and out-of-control-behavior effects "such as fear effects and
@@ -321,6 +385,45 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "You gain a +2 bonus to your CMD against bull rush, grapple, overrun, repositioning, and trip combat maneuvers.",
   },
+  // Unconditional climb and swim speed set equal to base land speed; the
+  // can't-be-tripped clause has no engine target.
+  // @attributes.speed.land.total is the character's race-base land speed.
+  "fiendish-serpent": {
+    type: "static",
+    changes: [
+      {
+        target: "climbSpeed",
+        type: "base",
+        formula: "@attributes.speed.land.total",
+        operator: "set",
+      },
+      {
+        target: "swimSpeed",
+        type: "base",
+        formula: "@attributes.speed.land.total",
+        operator: "set",
+      },
+    ],
+    confidence: "high",
+    provenance: "This grants you a climb speed and swim speed equal to your base speed",
+  },
+  // Unconditional fly speed set equal to base land speed (the good-
+  // maneuverability clause has no matching sheet field).
+  // @attributes.speed.land.total is the character's race-base land speed.
+  "fiendish-wings": {
+    type: "static",
+    changes: [
+      {
+        target: "flySpeed",
+        type: "base",
+        formula: "@attributes.speed.land.total",
+        operator: "set",
+      },
+    ],
+    confidence: "high",
+    provenance:
+      "Your wings grant you a fly speed equal to your base speed with good maneuverability.",
+  },
   // Unconditional +4 bonus on saves against nauseated/sickened effects; the
   // ingested-poison clause is scoped narrower than the engine's `poison`
   // category (excludes injury/inhaled/contact poisons) and stays prose, same
@@ -463,6 +566,14 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "You gain a +2 racial bonus on saving throws against any effect causing the nauseated or sickened conditions",
   },
+  // Unconditional +1 natural armor bonus (nac/untyped, competes highest-wins
+  // with other natural armor sources as RAW requires).
+  ironhide: {
+    type: "static",
+    changes: [{ target: "nac", type: "untyped", formula: "1" }],
+    confidence: "high",
+    provenance: "You gain a +1 natural armor bonus due to your unusually tough hide.",
+  },
   // Unconditional +2 racial bonus on Perception checks.
   "jackal-heritage": {
     type: "static",
@@ -540,6 +651,25 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     classSkills: ["kdu"],
     confidence: "high",
     provenance: "a +2 bonus on all Knowledge (dungeoneering) checks",
+  },
+  // Swim speed set to the lesser of 30 feet and base land speed. The paired
+  // clause reducing the racial "+8 for having a swim speed" Swim-check bonus
+  // to +2 has no engine target: that automatic +8 bonus isn't modeled
+  // anywhere in the engine for it to reduce.
+  // @attributes.speed.land.total is the character's race-base land speed.
+  "master-swimmer": {
+    type: "static",
+    changes: [
+      {
+        target: "swimSpeed",
+        type: "base",
+        formula: "min(30, @attributes.speed.land.total)",
+        operator: "set",
+      },
+    ],
+    confidence: "high",
+    provenance:
+      "You gain a swim speed of 30 feet or your unmodified base land speed, whichever is slower",
   },
   // First clause adds Wisdom modifier to Acrobatics unconditionally (separate from the style-active clauses that follow).
   "monkey-style": {
@@ -682,6 +812,21 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance:
       "You get a +2 bonus on Sense Motive checks and Spellcraft checks. If you have 10 or more ranks in one of these skills, the bonus increases to +4 for that skill.",
+  },
+  // Unconditional burrow speed set to half base land speed (floored).
+  // @attributes.speed.land.total is the character's race-base land speed.
+  "oread-burrower": {
+    type: "static",
+    changes: [
+      {
+        target: "burrowSpeed",
+        type: "base",
+        formula: "floor(@attributes.speed.land.total / 2)",
+        operator: "set",
+      },
+    ],
+    confidence: "high",
+    provenance: "You gain a burrow speed equal to 1/2 your base speed.",
   },
   // Only the unconditional Knowledge (planes) portion is drafted; the Sense Motive bonus is scoped to outsiders (situational) and omitted.
   "planewalker-s-insight": {
@@ -1121,6 +1266,39 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance: "You gain a +2 bonus on Sense Motive checks",
   },
+  // Bluff/Intimidate morale bonus equal to the Bravery value, using the
+  // hand-verified Bravery entry's own progression formula
+  // (class-feature-effects.ts) with @classes.fighter.level in place of the
+  // class-feature context's @class.unlevel. Morale type (as printed) means
+  // this competes rather than stacks with other morale bonuses on the same
+  // skill, matching RAW. The DC-to-affect-you clause targets an incoming
+  // check the engine doesn't model and stays prose.
+  "social-bravery": {
+    type: "static",
+    changes: [
+      {
+        target: "skill.blf",
+        type: "morale",
+        formula: "1 + floor((@classes.fighter.level - 2) / 4)",
+      },
+      {
+        target: "skill.int",
+        type: "morale",
+        formula: "1 + floor((@classes.fighter.level - 2) / 4)",
+      },
+    ],
+    confidence: "high",
+    provenance: "add a morale bonus equal to your bravery bonus on Bluff and Intimidate checks",
+  },
+  // Natural armor bonus increases by 1 (nac/increase, sums with the natural
+  // bonus rather than competing). Repeat takes only add stoneskin uses/day
+  // per the feat's own Special text, not a second armor increase.
+  "stone-soul": {
+    type: "static",
+    changes: [{ target: "nac", type: "increase", formula: "1" }],
+    confidence: "high",
+    provenance: "Your natural armor bonus increases by 1.",
+  },
   // Unconditional full immunity to electricity for cloud/storm giants.
   "storm-soul": {
     type: "static",
@@ -1202,6 +1380,25 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance: "you gain a +2 bonus on Disguise checks",
   },
+  // Escape Artist half only: the grapple-escape half ("combat maneuver checks
+  // to escape a grapple") stays prose per a standing ruling that grapple-
+  // escape is ambiguous between CMB and Escape Artist, and the once-daily
+  // ally-grant clause has no engine target. Uses the hand-verified Bravery
+  // entry's own progression formula (class-feature-effects.ts) with
+  // @classes.fighter.level in place of the class-feature context's
+  // @class.unlevel.
+  "unbound-bravery": {
+    type: "static",
+    changes: [
+      {
+        target: "skill.esc",
+        type: "untyped",
+        formula: "1 + floor((@classes.fighter.level - 2) / 4)",
+      },
+    ],
+    confidence: "high",
+    provenance: "You can add the bonus from bravery to Escape Artist checks",
+  },
   // Unconditional Perception and Sense Motive bonus (the vs-sleep/charm save bonus is an enumerated subset and left unmodeled as situational).
   "uncanny-alertness": {
     type: "static",
@@ -1211,6 +1408,23 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     ],
     confidence: "high",
     provenance: "This feat gives you an additional +1 bonus on Perception and Sense Motive checks",
+  },
+  // Intimidate half only: the "DC to intimidate you" half targets an
+  // incoming check the engine doesn't model and stays prose. Uses the
+  // hand-verified Bravery entry's own progression formula
+  // (class-feature-effects.ts) with @classes.fighter.level in place of the
+  // class-feature context's @class.unlevel.
+  "undaunted-bravery": {
+    type: "static",
+    changes: [
+      {
+        target: "skill.int",
+        type: "untyped",
+        formula: "1 + floor((@classes.fighter.level - 2) / 4)",
+      },
+    ],
+    confidence: "high",
+    provenance: "You can add your bonus from bravery to Intimidate checks",
   },
   // Own-CMB half only: the "-1 penalty on checks to escape your grapple" half
   // targets the OPPONENT's roll, which this engine doesn't model (it only

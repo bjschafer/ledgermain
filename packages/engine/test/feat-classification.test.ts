@@ -87,8 +87,10 @@ describe("FEAT_CLASSIFICATION spot checks", () => {
     expect(FEAT_CLASSIFICATION["master-craftsman"]?.bucket).toBe("choice-numeric");
   });
 
-  it("downgrades stacking-suspect / no-target feats to blocked rather than guessing numeric", () => {
-    expect(FEAT_CLASSIFICATION["improved-natural-armor"]?.bucket).toBe("blocked");
+  it("promotes Improved Natural Armor to numeric now that the increase stacking type exists", () => {
+    // Wired as nac/"increase" (stacking.ts) — see featResweepLevers.test.ts
+    // for the summing behavior, including a repeat take via extraFeats.
+    expect(FEAT_CLASSIFICATION["improved-natural-armor"]?.bucket).toBe("numeric");
   });
 
   it("promotes the Spell Focus / Spell Penetration families now that spellDC/clCheck exist", () => {

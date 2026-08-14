@@ -132,3 +132,75 @@ describe("AC bonus types compete rather than stack", () => {
     expect(sheet.ac.normal).toBe(13);
   });
 });
+
+/** A hand-authored active buff carrying explicit changes, for the cases no vendored buff exercises. */
+function handBuff(
+  name: string,
+  changes: { formula: string; target: string; type: string }[],
+): ActiveBuff {
+  return { instanceId: `hand-${name}`, buffId: `hand-${name}`, name, changes };
+}
+
+describe('the "increase" stacking type sums with the natural-armor bonus', () => {
+  // "Your natural armor bonus increases by +N" (Improved Natural Armor's
+  // wording, aonprd.com Monster Feats) modifies the existing bonus rather
+  // than competing with it, unlike "you gain a +N natural armor bonus"
+  // (Ironhide's wording) which is an ordinary same-type bonus.
+  it("a +1 increase adds on top of a +2 natural armor bonus (both applied)", () => {
+    const sheet = compute(
+      makeDoc(
+        [],
+        [
+          handBuff("Scaly Hide", [{ formula: "2", target: "nac", type: "untyped" }]),
+          handBuff("Hardened Hide", [{ formula: "1", target: "nac", type: "increase" }]),
+        ],
+      ),
+      ref,
+    );
+    // 10 + 2 (natural) + 1 (increase) = 13 — the increase must not be
+    // normalized into the natural group and lose highest-wins.
+    expect(sheet.ac.normal).toBe(13);
+    const natural = sheet.ac.components.filter((c) => c.category === "natural");
+    expect(natural.every((c) => c.applied)).toBe(true);
+  });
+
+  it("two increases sum with each other (repeatable 'increases by' takes)", () => {
+    const sheet = compute(
+      makeDoc(
+        [],
+        [
+          handBuff("Scaly Hide", [{ formula: "2", target: "nac", type: "untyped" }]),
+          handBuff("First Take", [{ formula: "1", target: "nac", type: "increase" }]),
+          handBuff("Second Take", [{ formula: "1", target: "nac", type: "increase" }]),
+        ],
+      ),
+      ref,
+    );
+    expect(sheet.ac.normal).toBe(14);
+  });
+
+  it("natural armor still never applies to touch AC, increases included", () => {
+    const sheet = compute(
+      makeDoc([], [handBuff("Hardened Hide", [{ formula: "1", target: "nac", type: "increase" }])]),
+      ref,
+    );
+    expect(sheet.ac.normal).toBe(11);
+    expect(sheet.ac.touch).toBe(10);
+  });
+
+  it("two untyped natural armor bonuses still compete rather than sum", () => {
+    // The contrast case: without the explicit increase type, normalization
+    // keeps same-type natural armor highest-wins.
+    const sheet = compute(
+      makeDoc(
+        [],
+        [
+          handBuff("Scaly Hide", [{ formula: "2", target: "nac", type: "untyped" }]),
+          handBuff("Rocky Hide", [{ formula: "1", target: "nac", type: "untyped" }]),
+        ],
+      ),
+      ref,
+    );
+    expect(sheet.ac.normal).toBe(12);
+  });
+});
