@@ -230,3 +230,53 @@ describe("community spell-DC / CL-check promotions", () => {
     ).toBe(true);
   });
 });
+
+/**
+ * Fixtures for the parameterized-skill-family re-sweep: named Craft/
+ * Profession/Perform instances and whole-family targets, now that compute.ts
+ * supports dotted per-instance targets and bare-prefix fan-out (see
+ * feat-classification-community.ts's brewmaster/fabulist/master-alchemist/
+ * fascinated-by-the-mundane notes).
+ */
+describe("community parameterized-skill-family promotions", () => {
+  it("Brewmaster: +2 on Craft (alchemy) and +2 on Profession (brewer), two distinct instances", () => {
+    const base = compute(makeDoc(), ref);
+    expect(base.skills["crf.alchemy"]).toBeUndefined();
+    expect(base.skills["pro.brewer"]).toBeUndefined();
+    const sheet = compute(makeDoc({ feats: [featId("Brewmaster")] }), ref);
+    // crf.alchemy: 0 ranks + 0 Int mod + 2 feat = 2.
+    expect(sheet.skills["crf.alchemy"]?.total).toBe(2);
+    // pro.brewer: 0 ranks + 1 Wis mod + 2 feat = 3.
+    expect(sheet.skills["pro.brewer"]?.total).toBe(3);
+  });
+
+  it("Master Alchemist: +2 on Craft (alchemy) only, no Profession instance created", () => {
+    const sheet = compute(makeDoc({ feats: [featId("Master Alchemist")] }), ref);
+    expect(sheet.skills["crf.alchemy"]?.total).toBe(2);
+    expect(sheet.skills["pro.brewer"]).toBeUndefined();
+  });
+
+  it("Fabulist: +1 on the four named Perform instances, and Perform is a class skill", () => {
+    const sheet = compute(makeDoc({ feats: [featId("Fabulist")] }), ref);
+    for (const slug of ["prf.act", "prf.comedy", "prf.oratory", "prf.sing"]) {
+      expect(sheet.skills[slug]?.components.some((c) => c.source === "Fabulist" && c.applied)).toBe(
+        true,
+      );
+      expect(sheet.skills[slug]?.classSkill).toBe(true);
+    }
+    // An unrelated Perform instance never named by the feat gets neither.
+    expect(sheet.skills["prf.dance"]).toBeUndefined();
+  });
+
+  it("Fascinated by the Mundane: +2 on the named Charisma skills and the whole Perform family, not Diplomacy", () => {
+    const base = compute(makeDoc({ skillRanks: { "prf.oratory": 2 } }), ref);
+    const sheet = compute(
+      makeDoc({ skillRanks: { "prf.oratory": 2 }, feats: [featId("Fascinated by the Mundane")] }),
+      ref,
+    );
+    for (const id of ["blf", "dis", "han", "int", "umd", "prf", "prf.oratory"]) {
+      expect(sheet.skills[id]?.total).toBe((base.skills[id]?.total ?? 0) + 2);
+    }
+    expect(sheet.skills.dip?.total).toBe(base.skills.dip?.total);
+  });
+});

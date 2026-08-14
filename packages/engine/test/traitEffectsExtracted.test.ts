@@ -7,7 +7,7 @@ import {
   TRAIT_PROMOTION_BLOCKERS,
 } from "../src/trait-effects-extracted.js";
 import { isTargetApplied } from "../src/targets.js";
-import { SKILL_ABILITY } from "../src/tables.js";
+import { SKILL_ABILITY, skillBaseId } from "../src/tables.js";
 import { mergedTraits, resolveTraitDef } from "../src/traits.js";
 
 const ref = loadRefData();
@@ -61,10 +61,10 @@ describe("TRAIT_EFFECTS_EXTRACTED", () => {
     }
   });
 
-  it("classSkills grants use known base skill ids", () => {
+  it("classSkills grants use known base or parameterized-instance skill ids", () => {
     for (const [id, entry] of entries) {
       for (const s of entry.classSkills ?? []) {
-        expect(SKILL_ABILITY[s], `${id}: unknown skill id ${s}`).toBeDefined();
+        expect(SKILL_ABILITY[skillBaseId(s)], `${id}: unknown skill id ${s}`).toBeDefined();
       }
     }
   });

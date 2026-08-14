@@ -66,7 +66,7 @@ describe("INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const numericIds = Object.entries(INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(29);
+    expect(numericIds.length).toBe(30);
     for (const id of numericIds) {
       expect(INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -75,12 +75,12 @@ describe("INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     }
   });
 
-  it("bucket counts match this pass's audit plus the save-categories re-sweep (158 total: 29 numeric, 32 situational, 86 subsystem, 11 blocked)", () => {
+  it("bucket counts match this pass's audit plus the save-categories re-sweep and the Gadgetry promotion (158 total: 30 numeric, 31 situational, 86 subsystem, 11 blocked)", () => {
     const counts: Record<string, number> = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts).toEqual({ numeric: 29, situational: 32, subsystem: 86, blocked: 11 });
+    expect(counts).toEqual({ numeric: 30, situational: 31, subsystem: 86, blocked: 11 });
   });
 
   it("every classification entry references a real vendored feature id/name/level/archetypeId", () => {
@@ -379,6 +379,17 @@ describe("Ruthless Agent: Enhanced Intimidation grants an unconditional Intimida
     const [change] = INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
     expect(change!.target).toBe("skill.int");
     expect(evaluateFormula(change!.formula, { class: { unlevel: 3 } })).toBe(1);
+  });
+});
+
+describe("Scavenger: Gadgetry grants an unconditional Craft (clockwork) bonus", () => {
+  it("class-level competence bonus — +1 at L1, +11 at L11", () => {
+    const id = "investigator:scavenger:gadgetry:1";
+    const [change] = INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(change!.target).toBe("skill.crf.clockwork");
+    expect(change!.type).toBe("competence");
+    expect(evaluateFormula(change!.formula, { class: { unlevel: 1 } })).toBe(1);
+    expect(evaluateFormula(change!.formula, { class: { unlevel: 11 } })).toBe(11);
   });
 });
 

@@ -318,8 +318,8 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "oracle:pei-zin-practitioner",
     name: "Master Herbalist",
     level: 1,
-    bucket: "subsystem",
-    note: "real, unconditional +1/2-level (min 1) bonus to Profession (herbalist) specifically, using Cha instead of Wis — Profession subskills aren't individually addressable via this engine's skill.<id> target vocabulary the way Craft/Perform subskills are (no herbalist-specific slug), so it can't be wired the way skill.crf.alchemy was for Sorcerer of Sleep",
+    bucket: "numeric",
+    note: "unconditional +1/2-level (min 1) competence bonus to Profession (herbalist) specifically, using the established skill.pro.herbalist target (same convention as the witch's Herb Witch entry) — extracted (see ORACLE_ARCHETYPE_EFFECTS_EXTRACTED below); the Cha-instead-of-Wis key-ability-score swap and the potion-identification-via-Profession-instead-of-Spellcraft rider have no engine hook and are dropped",
   },
   "oracle:pei-zin-practitioner:master-healing-technique:7": {
     archetypeId: "oracle:pei-zin-practitioner",
@@ -750,6 +750,20 @@ export const ORACLE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "to locate traps and on all Disable Device skill checks (minimum +1). (only the general " +
       "Disable Device half is extracted, matching the hand-verified sorcerer:seeker entry's own " +
       "precedent — the Perception half is scoped to 'checks made to locate traps' specifically)",
+  },
+  "oracle:pei-zin-practitioner:master-herbalist:1": {
+    changes: [c("max(1, floor(@class.unlevel / 2))", "skill.pro.herbalist", "competence")],
+    detail: (level) =>
+      `+${Math.max(1, Math.floor(level / 2))} Profession (herbalist) (Cha-for-Wis swap not modeled)`,
+    confidence: "high",
+    provenance:
+      "She gains a competence bonus on Profession (herbalist) checks equal to 1/2 her oracle " +
+      "level (minimum 1), and uses her Charisma modifier in place of her Wisdom modifier when " +
+      "attempting Profession (herbalist) checks. Additionally, a Pei Zin practitioner can " +
+      "identify potions as if via detect magic using Profession (herbalist) instead of " +
+      "Spellcraft, and she can attempt such a check after holding a potion for 1 round. " +
+      "(only the flat bonus is extracted; the key-ability swap and potion-identification rider " +
+      "are not modeled)",
   },
   "oracle:purifier:celestial-armor:7": {
     changes: [

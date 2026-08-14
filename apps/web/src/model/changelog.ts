@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-13-named-craft-perform-profession-bonuses",
+    date: "2026-08-13",
+    title: "Bonuses to a named Craft, Perform, or Profession apply themselves",
+    note: "A trait, feat, or archetype feature that boosts one named skill specialty now adds its bonus to that skill's row instead of only showing rules text: a sailor trait raises Profession (sailor), Brewmaster raises Craft (alchemy) and Profession (brewer), a snare setter's trapsmithing raises Craft (traps). A Craft or Perform row it touches appears on your sheet even before you put ranks in it, and class skill grants for a single specialty count too. Over forty traits, feats, and features across the catalog now land this way, including Breadth of Experience's +2 on every Knowledge and Profession skill.",
+  },
+  {
     id: "2026-08-12-spell-focus-and-penetration",
     date: "2026-08-12",
     title: "Spell Focus raises your spell DCs, Spell Penetration your checks",

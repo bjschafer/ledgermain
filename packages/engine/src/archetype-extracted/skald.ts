@@ -309,7 +309,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Sea Legs",
     level: 1,
     bucket: "numeric",
-    note: "mixed feature: the Swim clause is unconditional and extracted; Profession (sailor) is a parameterized skill instance with no established slug convention (same posture traits.ts already takes on Profession (sailor), see trait-effects-extracted.ts), and Survival-at-sea/Acrobatics-and-Climb-aboard-a-boat are location-conditional — all three dropped. Text says 'replaces bardic knowledge' but skald's real ability there is Well-Versed (no vendored changes, see file header)",
+    note: "mixed feature: the Swim clause and the Profession (sailor) clause are both unconditional and extracted (Profession (sailor) is a fixed instance, using the established skill.pro.<slug> convention); Survival-at-sea and Acrobatics/Climb-aboard-a-boat are location-conditional and dropped. Text says 'replaces bardic knowledge' but skald's real ability there is Well-Versed (no vendored changes, see file header)",
   },
   "skald:dragon-skald:wind-whistler:1": {
     archetypeId: "skald:dragon-skald",
@@ -918,14 +918,18 @@ export const SKALD_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   },
 
   // Dragon Skald's "Sea Legs" is a mixed feature (per the extraction bar):
-  // the Swim clause is unconditional and general; Profession (sailor) is a
-  // parameterized skill instance with no safe slug to assume, and the
+  // the Swim and Profession (sailor) clauses are both unconditional and
+  // general (Profession (sailor) is a fixed, non-player-chosen instance,
+  // using the established skill.pro.<slug> convention); the
   // Survival/Acrobatics/Climb clauses are explicitly location-conditional
-  // ("while at sea", "aboard a boat") — only Swim is extracted.
+  // ("while at sea", "aboard a boat") and dropped.
   "skald:dragon-skald:sea-legs:1": {
-    changes: [c("max(1, floor(@class.unlevel / 2))", "skill.swm")],
+    changes: [
+      c("max(1, floor(@class.unlevel / 2))", "skill.swm"),
+      c("max(1, floor(@class.unlevel / 2))", "skill.pro.sailor"),
+    ],
     detail: (level) =>
-      `+${Math.max(1, Math.floor(level / 2))} Swim (Profession (sailor)/at-sea/aboard-a-boat clauses not modeled)`,
+      `+${Math.max(1, Math.floor(level / 2))} Swim / Profession (sailor) (at-sea/aboard-a-boat clauses not modeled)`,
     confidence: "medium",
     provenance:
       "A dragon skald adds 1/2 his class level (minimum 1) on all Profession (sailor) checks, " +

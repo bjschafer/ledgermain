@@ -193,8 +193,9 @@ describe("Ifrit Forge-Hardened (newly promoted: fatigue/exhaustion, Fortitude-on
   it("adds a +2 racial fatigue/exhaustion conditional on Fortitude only", () => {
     // Ifrit has no Con adjustment: fighter L1 good Fort save (+2) + Con mod
     // (0) = 2, + the trait's +2 racial vs. fatigue/exhaustion = 4. The
-    // Craft (armor and weapons) bonus alongside it has no matching skill
-    // target and stays unwired.
+    // Craft (armor and weapons) bonus alongside it is wired separately via
+    // the racial-trait-changes data-pipeline supplement (skill.crf.armor /
+    // skill.crf.weapons), not through this save-notes table.
     expect(base.saves.fort.total).toBe(2);
     expect(withTrait.saves.fort.conditionals).toEqual([
       { total: 4, categories: ["fatigue"], labels: ["fatigue/exhaustion"] },

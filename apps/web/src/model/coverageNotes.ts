@@ -78,7 +78,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     category: "Archetypes",
     note: "Every published archetype is in the picker, and picking one swaps your class features and strikes through what it trades away. Only some archetype features move numbers on your sheet automatically: the rest show their rules text for you to apply at the table.",
     issueDetail:
-      "1,427 vendored archetypes; 152 carry at least one structured feature effect (27 hand-verified, 139 machine-extracted across 16 classes). The remaining features are structural or prose-only, so the gap is promotion rather than coverage.",
+      "1,425 vendored archetypes; 353 carry at least one structured feature effect. The remaining features are structural or prose-only, so the gap is promotion rather than coverage.",
   },
   {
     category: "Familiars",
@@ -108,7 +108,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     category: "Character traits",
     note: "The full published trait catalog is searchable in the picker, and a trait whose benefit comes with structured numbers or a fixed class-skill grant applies them to your sheet automatically. The rest show their benefit as text to apply at the table. Anything still missing can be added as a homebrew trait.",
     issueDetail:
-      "1,981 vendored and searchable; 607 apply live effects, plus the 28 hand-authored core entries. The remaining ~1,370 are situational prose; 150 of those hold an unconditional number blocked on a missing axis (a choose-one skill pick, one named Craft, Perform, or Profession instance, caster-level and per-day-pool numbers), inventoried in the engine's trait table.",
+      "1,981 vendored and searchable; 628 apply live effects, plus the 28 hand-authored core entries. The remaining ~1,350 are situational prose; 128 of those hold an unconditional number blocked on a missing axis (a choose-one skill or subskill pick, caster-level and per-day-pool numbers), inventoried in the engine's trait table.",
   },
 ];
 

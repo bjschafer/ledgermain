@@ -327,7 +327,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "break-guard": "subsystem",
   "breaker-of-barriers": "numeric",
   "bred-commander": "subsystem",
-  brewmaster: "blocked",
+  brewmaster: "numeric",
   "brilliant-spell-preperation": "subsystem",
   "brisk-spell": "subsystem",
   "bristling-bull-rush": "situational",
@@ -1040,7 +1040,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "eyes-of-judgment": "subsystem",
   "eyes-of-the-purge": "subsystem",
   "eyes-of-the-twilight": "subsystem",
-  fabulist: "blocked",
+  fabulist: "numeric",
   "faerie-s-strike": "situational",
   "falcon-s-cry": "subsystem",
   "fall-guy": "situational",
@@ -1058,7 +1058,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "fanged-crown-massacre": "situational",
   "far-roaming-familiar": "subsystem",
   "far-shot-mythic": "subsystem",
-  "fascinated-by-the-mundane": "blocked",
+  "fascinated-by-the-mundane": "numeric",
   "fascination-jinx": "situational",
   "fast-change": "subsystem",
   "fast-crawl": "subsystem",
@@ -1798,7 +1798,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "masked-intent": "subsystem",
   "masked-renown": "subsystem",
   "masked-symbol": "subsystem",
-  "master-alchemist": "blocked",
+  "master-alchemist": "numeric",
   "master-combat-performer": "subsystem",
   "master-delver": "numeric",
   "master-hammer-throw": "subsystem",
@@ -3262,7 +3262,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "breaker-of-barriers":
     "Wired via maneuverCategories: unconditional +2 CMB on bull rush and overrun checks. The Strength-check/hardness-ignore half (breaking doors and barriers) has no engine target.",
   brewmaster:
-    "Bonus applies to Craft (alchemy) and Profession (brewer), both parameterized skill families with no stable per-instance target. [flag: parameterized-skill-family]",
+    "Wired as two named instances: unconditional +2 on Craft (alchemy) and Profession (brewer) checks. The +1 poison-DC clause has no engine target.",
   "burrowing-teeth":
     "Burrow speed is defined as half base speed, but base speed is not an available formula primitive.",
   "calm-disposition":
@@ -3367,9 +3367,9 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "extreme-mood-swings":
     "Inflates every morale bonus the character receives by a flat amount, a cross-cutting multiplier with no single Change target.",
   fabulist:
-    "The bonus covers only four named Perform categories, a parameterized skill family with no stable per-instance target. [flag: parameterized-skill-family]",
+    "Wired as four named Perform instances (act, comedy, oratory, sing), unconditional +1 each, plus Perform as a class skill. The grit-regain-on-successful-Bluff clause is not a Change-shaped number.",
   "fascinated-by-the-mundane":
-    "The bonus covers all Charisma-based skills except Diplomacy, including Perform, a parameterized family with no stable per-instance target. [flag: parameterized-skill-family]",
+    "Wired as unconditional +2 on the named Charisma-based skills (Bluff, Disguise, Handle Animal, Intimidate, Use Magic Device) and the whole Perform family, matching the Diplomacy exclusion. The Charisma ability-check half has no engine target, and the Special clause (extending the bonus to Diplomacy, upgrading morale bonuses) requires an unmodeled in-play goal, so only the base Benefits bonus is wired.",
   "favored-enemy-spellcasting":
     "Raises spell save DC only against a chosen creature type; spellDC has no enemy-type axis.",
   "fearless-zeal":
@@ -3484,7 +3484,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "martial-focus":
     "Player picks a fighter weapon group; unconditional +1 damage while wielding a proficient weapon from it. [flag: weapon-group-choice]",
   "master-alchemist":
-    "Bonus is to Craft (alchemy) specifically, one instance of the parameterized Craft family with no stable target. [flag: parameterized-skill-family]",
+    "Wired as one named instance: unconditional +2 on Craft (alchemy) checks. The doses-per-batch and gp-as-sp crafting-speed rules have no engine target.",
   "master-delver":
     "Unconditional +2 Knowledge (dungeoneering) bonus; the Perception clause is scoped to noticing traps so is excluded.",
   "master-swimmer":
@@ -3569,7 +3569,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "shoki-s-argument":
     "Increases disrupt undead spell damage dice; spell damage isn't an engine target.",
   "sincere-flattery":
-    "Circumstance bonus to Craft checks; Craft is a parameterized skill family with no stable per-instance target. [flag: parameterized-skill-family]",
+    "The +4/+8 circumstance bonus applies only to a Craft check to recreate a specific object the character has already seen (and studied, for the higher tier), a scoped scenario the static sheet has no state for, not a blanket Craft bonus.",
   "sinuous-vines":
     "Wired via maneuverCategories: unconditional +2 CMB to grapple. The wings-count-as-free-hand rules exception has no engine target.",
   "skill-focus-acrobatics":
@@ -3579,7 +3579,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "skill-focus-bluff": "Unconditional rank-gated Skill Focus bonus on Bluff.",
   "skill-focus-climb": "Unconditional rank-gated Skill Focus bonus on Climb.",
   "skill-focus-craft":
-    "Skill Focus applies to one Craft subtype; Craft is a parameterized skill family with no stable per-instance target. [flag: parameterized-skill-family]",
+    "Skill Focus (Craft) applies to one Craft subtype the player picks; the feat-choice picker builds its option list from refData only, so it can't offer a character's own Craft instances. Choice UI, not a target-vocabulary gap.",
   "skill-focus-diplomacy": "Unconditional rank-gated Skill Focus bonus on Diplomacy.",
   "skill-focus-disable-device": "Unconditional rank-gated Skill Focus bonus on Disable Device.",
   "skill-focus-disguise": "Unconditional rank-gated Skill Focus bonus on Disguise.",
@@ -3611,9 +3611,9 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "skill-focus-lore": "Unconditional rank-gated Skill Focus bonus on Lore. [flag: unsure]",
   "skill-focus-perception": "Unconditional rank-gated Skill Focus bonus on Perception.",
   "skill-focus-perform":
-    "Skill Focus applies to one Perform subtype; Perform is a parameterized skill family with no stable per-instance target. [flag: parameterized-skill-family]",
+    "Skill Focus (Perform) applies to one Perform subtype the player picks; the feat-choice picker builds its option list from refData only, so it can't offer a character's own Perform instances. Choice UI, not a target-vocabulary gap.",
   "skill-focus-profession":
-    "Skill Focus applies to one Profession subtype; Profession is a parameterized skill family with no stable per-instance target. [flag: parameterized-skill-family]",
+    "Skill Focus (Profession) applies to one Profession subtype the player picks; the feat-choice picker builds its option list from refData only, so it can't offer a character's own Profession instances. Choice UI, not a target-vocabulary gap.",
   "skill-focus-ride": "Unconditional rank-gated Skill Focus bonus on Ride.",
   "skill-focus-sense-motive": "Unconditional rank-gated Skill Focus bonus on Sense Motive.",
   "skill-focus-sleight-of-hand": "Unconditional rank-gated Skill Focus bonus on Sleight of Hand.",

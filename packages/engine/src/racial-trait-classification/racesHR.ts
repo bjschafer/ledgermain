@@ -420,7 +420,7 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_HR: Readonly<
     race: "Ifrit",
     name: "Forge-Hardened",
     bucket: "numeric",
-    note: "Fatigue/exhaustion is now a real SAVE_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_SAVE_NOTES key exactly, so it is wired via collect.ts. Craft (armor and weapons) is still a parameterized subskill with no generic skill.crf target and stays unwired.",
+    note: "Fatigue/exhaustion is now a real SAVE_CATEGORIES entry; the note text matches a VENDORED_RACIAL_TRAIT_SAVE_NOTES key exactly, so it is wired via collect.ts. The Craft (armor) and Craft (weapons) bonus is wired via the racial-trait-changes supplement (skill.crf.armor / skill.crf.weapons).",
   },
   vyJuXppTrAQZWfE0: {
     id: "vyJuXppTrAQZWfE0",

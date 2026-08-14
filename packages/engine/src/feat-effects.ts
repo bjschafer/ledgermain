@@ -216,6 +216,20 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
     ],
   },
 
+  // Breadth of Experience (PZO1115 p. 151): "+2 bonus on all Knowledge and
+  // Profession skill checks." Unconditional and untyped; skill.knowledge fans
+  // out to every Knowledge subskill (the Bardic Knowledge idiom) and skill.pro
+  // fans out to every Profession instance the character has, per the same
+  // parameterized-prefix routing in compute.ts. The "can make checks with
+  // those skills untrained" clause has no Change-shaped target and stays prose.
+  "breadth-of-experience": {
+    type: "static",
+    changes: [
+      { target: "skill.knowledge", type: "untyped", formula: "2" },
+      { target: "skill.pro", type: "untyped", formula: "2" },
+    ],
+  },
+
   // ── Combat maneuver feats (Improved/Greater X family) ───────────────────────
   //
   // The Improved half of each pair (CRB p. 131 for Bull Rush/Disarm/Grapple/

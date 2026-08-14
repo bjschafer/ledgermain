@@ -97,6 +97,17 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "You gain a +2 bonus on Strength checks to break down doors, walls, dams, and other barriers and on combat maneuver checks to bull rush and overrun opponents.",
   },
+  // Two named parameterized-skill instances, each an unconditional +2 (the
+  // poison-DC clause has no engine target).
+  brewmaster: {
+    type: "static",
+    changes: [
+      { target: "skill.crf.alchemy", type: "untyped", formula: "2" },
+      { target: "skill.pro.brewer", type: "untyped", formula: "2" },
+    ],
+    confidence: "high",
+    provenance: "You gain a +2 bonus on Craft (alchemy) and Profession (brewer) checks",
+  },
   // The "composure" scope the feat's own text defines spans mind-affecting
   // effects and out-of-control-behavior effects "such as fear effects and
   // nausea" — `mind` already reaches fear as an ancestor category, and
@@ -258,6 +269,41 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance:
       "you gain a +2 bonus on all Knowledge (geography) checks. If you have 10 or more ranks in Knowledge (geography), increase your bonus to +4.",
+  },
+  // Four named parameterized-skill instances, each an unconditional +1, plus
+  // Perform as a class skill. The grit-regain-on-successful-Bluff clause is
+  // not a Change-shaped number.
+  fabulist: {
+    type: "static",
+    changes: [
+      { target: "skill.prf.act", type: "untyped", formula: "1" },
+      { target: "skill.prf.comedy", type: "untyped", formula: "1" },
+      { target: "skill.prf.oratory", type: "untyped", formula: "1" },
+      { target: "skill.prf.sing", type: "untyped", formula: "1" },
+    ],
+    classSkills: ["prf"],
+    confidence: "high",
+    provenance:
+      "You gain a +1 bonus on Perform (act, comedy, oratory, and sing) skill checks, and Perform is a class skill for you",
+  },
+  // Unconditional +2 on the named Charisma-based skills other than
+  // Diplomacy, matching the feat's own exclusion; the Perform family is
+  // included via the bare prefix. The Charisma ability-check half has no
+  // engine target, and the Special clause (extending to Diplomacy,
+  // upgrading morale bonuses) requires an unmodeled in-play goal.
+  "fascinated-by-the-mundane": {
+    type: "static",
+    changes: [
+      { target: "skill.blf", type: "untyped", formula: "2" },
+      { target: "skill.dis", type: "untyped", formula: "2" },
+      { target: "skill.han", type: "untyped", formula: "2" },
+      { target: "skill.int", type: "untyped", formula: "2" },
+      { target: "skill.umd", type: "untyped", formula: "2" },
+      { target: "skill.prf", type: "untyped", formula: "2" },
+    ],
+    confidence: "high",
+    provenance:
+      "You gain a +2 bonus on Charisma-based ability checks and skill checks other than Diplomacy checks.",
   },
   // Unconditional +2 CMD bonus against five named maneuvers (catfolk racial
   // feat; Dex 13 is a prerequisite, not a gating condition).
@@ -478,6 +524,14 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     ],
     confidence: "high",
     provenance: "you gain a +1 bonus on damage rolls",
+  },
+  // One named parameterized-skill instance, unconditional +2. The
+  // doses-per-batch and gp-as-sp crafting-speed rules have no engine target.
+  "master-alchemist": {
+    type: "static",
+    changes: [{ target: "skill.crf.alchemy", type: "untyped", formula: "2" }],
+    confidence: "high",
+    provenance: "You receive a +2 bonus on Craft (alchemy) checks",
   },
   // Unconditional +2 Knowledge (dungeoneering) bonus; the Perception clause is scoped to noticing traps so is excluded.
   "master-delver": {

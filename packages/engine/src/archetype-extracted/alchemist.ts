@@ -1015,8 +1015,8 @@ export const ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "alchemist:herbalist",
     name: "Herbalism",
     level: 1,
-    bucket: "numeric",
-    note: "flat competence bonus to Profession (herbalist) to create items/forage; the accompanying Craft(alchemy)-substitution and Int-to-Wis key-ability-score swap have no engine hook and are dropped",
+    bucket: "situational",
+    note: "the Profession (herbalist) competence bonus is scoped to checks made to create alchemical items and to forage for and process herbs, not the skill wholesale (same scoping as the investigator natural philosopher's herbalism); the Craft(alchemy)-substitution and Int-to-Wis key-ability-score swap have no engine hook either",
   },
   "alchemist:herbalist:natural-magic:1": {
     archetypeId: "alchemist:herbalist",
@@ -1931,20 +1931,6 @@ export const ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "At 2nd level, an ice chemist channels her affinity for cold energy into her personal " +
       "space, keeping herself and her gear cool. She gains cold resistance equal to her " +
       "alchemist level",
-  },
-
-  // Herbalist's "Herbalism" grants a flat competence bonus to Profession
-  // (herbalist) checks to create items and forage/process herbs; the
-  // Craft(alchemy)-substitution and Int-to-Wis key-ability-score swap have
-  // no engine hook and are dropped.
-  "alchemist:herbalist:herbalism:1": {
-    changes: [c("floor(@class.unlevel / 2)", "skill.pro.herbalist", "competence")],
-    detail: (level) =>
-      `+${Math.floor(level / 2)} competence Profession (herbalist) (Wis-as-key-ability, Craft substitution not modeled)`,
-    confidence: "medium",
-    provenance:
-      "he gains a competence bonus equal to half his alchemist level on Profession (herbalist) " +
-      "checks to create alchemical items and to forage for and process herbs",
   },
 
   // Mindchemist's "Perfect Recall" doubles the Intelligence bonus on every

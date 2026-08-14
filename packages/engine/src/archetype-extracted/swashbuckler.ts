@@ -541,7 +541,7 @@ export const SWASHBUCKLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Swagger",
     level: 3,
     bucket: "numeric",
-    note: "the Intimidate-check bonus clause is unconditional and level-scaling — extracted; the Intimidate-DC-against-her clause has no reciprocal target, the self-and-ally Profession (sailor) morale bonus lands on a freeform player-slugged sub-skill (pro.<slug>, the Master Smith trap), and the 7th-level charmed-life rider is a resource mechanic — all dropped and flagged",
+    note: "the Intimidate-check and Profession (sailor) bonus clauses are unconditional and level-scaling — extracted (Profession (sailor) is a fixed, non-player-chosen instance, using the established skill.pro.<slug> convention; only the corsair's own share of the self-and-ally morale bonus is wired, same ally-drop posture as cleric:divine-strategist:master-tactician:1); the Intimidate-DC-against-her clause has no reciprocal target, and the 7th-level charmed-life rider is a resource mechanic — both dropped and flagged",
   },
 
   // ── swashbuckler:veiled-blade ──
@@ -679,21 +679,23 @@ export const SWASHBUCKLER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "bonus increases by 1 at 6th level and every 4 swashbuckler levels thereafter.",
   },
 
-  // Shackles Corsair's "Swagger": only the Intimidate-check clause is
-  // extracted. The Intimidate-DC-against-her clause has no reciprocal
-  // Change target (it isn't the corsair's own roll — same drop as the
-  // cleric slice's Bastion), the self-and-ally Profession (sailor) morale
-  // bonus lands on a freeform player-slugged sub-skill (pro.<slug> — the
-  // Master Smith trap: guessing a slug would silently miss most
-  // characters), and the 7th-level demoralize-on-charmed-life rider is a
-  // resource mechanic. Untyped (the Intimidate clause names no bonus
-  // type; "morale" in the text attaches to the Profession clause).
-  // Replaces nimble per the vendored pairing (different target, no
-  // interaction).
+  // Shackles Corsair's "Swagger": the Intimidate-check and Profession
+  // (sailor) clauses are extracted. The Intimidate-DC-against-her clause has
+  // no reciprocal Change target (it isn't the corsair's own roll — same drop
+  // as the cleric slice's Bastion); only the corsair's own share of the
+  // self-and-ally Profession (sailor) morale bonus is wired (the ally half
+  // has no reciprocal target, same drop as cleric:divine-strategist's
+  // Master Tactician); the 7th-level demoralize-on-charmed-life rider is a
+  // resource mechanic. Intimidate is untyped (the clause names no bonus
+  // type); Profession (sailor) is morale, per the text. Replaces nimble per
+  // the vendored pairing (different target, no interaction).
   "swashbuckler:shackles-corsair:swagger:3": {
-    changes: [c("1 + floor((@class.unlevel - 3) / 4)", "skill.int")],
+    changes: [
+      c("1 + floor((@class.unlevel - 3) / 4)", "skill.int"),
+      c("1 + floor((@class.unlevel - 3) / 4)", "skill.pro.sailor", "morale"),
+    ],
     detail: (level) =>
-      `+${1 + Math.floor((level - 3) / 4)} Intimidate (DC-against-her and Profession (sailor) halves not modeled)`,
+      `+${1 + Math.floor((level - 3) / 4)} Intimidate / Profession (sailor) (DC-against-her half and ally share not modeled)`,
     confidence: "medium",
     provenance:
       "She gains a +1 bonus on Intimidate checks, and the DC of Intimidate checks made " +

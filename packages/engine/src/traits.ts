@@ -31,11 +31,11 @@
  * over-apply. This mirrors `conditions.ts`'s prone/blinded treatment.
  * - "Make skill X a class skill" rides the `TraitDef.classSkills` axis
  * (unioned into `compute.ts`'s classSkillSet, same as the feat
- * `classSkills` axis) — but only for grants naming a fixed base skill.
- * A grant naming one specific Craft/Profession/Perform instance (Child
- * of the Temple's temple-related Profession) stays a `contextNotes`
- * reminder: instance slugs are player-chosen, so the engine can't name
- * the instance the grant would attach to.
+ * `classSkills` axis) — for grants naming a fixed base skill or a fixed
+ * Craft/Profession/Perform instance (a dotted id like "prf.act" scopes
+ * to just that instance via `compute.ts`'s baseId fallback). Only grants
+ * whose instance is player-chosen or ambiguous (Child of the Temple's
+ * "temple-related Profession") stay a `contextNotes` reminder.
  * - `cl` (caster level) and `concentration` are real `Change` targets used
  * elsewhere in the vendored data (see `targets.ts`) but are not folded
  * into any discrete number on today's static sheet — Magical Knack and

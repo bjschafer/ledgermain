@@ -1019,8 +1019,8 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "investigator:scavenger",
     name: "Gadgetry",
     level: 1,
-    bucket: "situational",
-    note: "a Craft (clockwork) competence bonus equal to class level, but Craft (clockwork) is a freeform player-slugged skill instance rather than an established fixed convention like Craft (alchemy) — same caution as the Master Smith craft-specialization entries elsewhere in this pipeline; guessing the slug risks missing real characters",
+    bucket: "numeric",
+    note: "unconditional Craft (clockwork) competence bonus equal to class level — Craft (clockwork) is a single fixed, non-player-chosen instance (unlike Master Smith, which spans whichever of several Craft skills the player has for metal items), so it uses the established skill.crf.<slug> convention — extracted (see INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED below); the Knowledge (engineering)-as-Spellcraft item-identification rider is dropped",
   },
   "investigator:scavenger:jury-rig:2": {
     archetypeId: "investigator:scavenger",
@@ -1645,6 +1645,17 @@ export const INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     confidence: "high",
     provenance:
       "A ruthless agent adds half her investigator level (minimum +1) as a bonus on Intimidate checks.",
+  },
+
+  // Scavenger's "Gadgetry" Craft (clockwork) clause is unconditional and
+  // names one fixed instance (unlike Master Smith's multi-slug "metal
+  // items" span); the Knowledge (engineering)-as-Spellcraft item-ID rider
+  // is dropped.
+  "investigator:scavenger:gadgetry:1": {
+    changes: [c("@class.unlevel", "skill.crf.clockwork", "competence")],
+    detail: (level) => `+${level} competence Craft (clockwork)`,
+    confidence: "high",
+    provenance: "he gains a competence bonus on Craft (clockwork) checks equal to his class level.",
   },
 
   // Spiritualist's "Strong Life" death-effects clause uses a real

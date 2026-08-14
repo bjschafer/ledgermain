@@ -39,13 +39,13 @@ describe("ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     expect(Object.keys(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(257);
   });
 
-  it("buckets total 257 with the measured counts (numeric 30 / situational 50 / subsystem 173 / blocked 4)", () => {
+  it("buckets total 257 with the measured counts (numeric 32 / situational 48 / subsystem 173 / blocked 4)", () => {
     const counts: Record<string, number> = {};
     for (const entry of Object.values(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts["numeric"]).toBe(31);
-    expect(counts["situational"]).toBe(49);
+    expect(counts["numeric"]).toBe(32);
+    expect(counts["situational"]).toBe(48);
     expect(counts["subsystem"]).toBe(173);
     expect(counts["blocked"]).toBe(4);
   });
@@ -54,7 +54,7 @@ describe("ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const numericIds = Object.entries(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(31);
+    expect(numericIds.length).toBe(32);
     for (const id of numericIds) {
       expect(ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -345,13 +345,15 @@ describe("Sczarni Swindler: No Fool — scaling Will save", () => {
   });
 });
 
-describe("Sczarni Swindler: Poker Face — Bluff/Sense Motive only (Profession [gambler] dropped)", () => {
+describe("Sczarni Swindler: Poker Face — Bluff/Profession (gambler)/Sense Motive", () => {
   it("1 + floor((unlevel-3)/3) — +1 at L3, +2 at L6", () => {
     const id = "rogueUnchained:sczarni-swindler:poker-face:3";
-    const [blf, sen] = ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    const [blf, pro, sen] = ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
     expect(blf!.target).toBe("skill.blf");
+    expect(pro!.target).toBe("skill.pro.gambler");
     expect(sen!.target).toBe("skill.sen");
     expect(evaluateFormula(blf!.formula, { class: { unlevel: 3 } })).toBe(1);
+    expect(evaluateFormula(pro!.formula, { class: { unlevel: 3 } })).toBe(1);
     expect(evaluateFormula(sen!.formula, { class: { unlevel: 6 } })).toBe(2);
   });
 });
@@ -398,6 +400,16 @@ describe("Smuggler: Conceal Item — Sleight of Hand", () => {
     const [slt] = ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
     expect(evaluateFormula(slt!.formula, { class: { unlevel: 1 } })).toBe(1);
     expect(evaluateFormula(slt!.formula, { class: { unlevel: 10 } })).toBe(5);
+  });
+});
+
+describe("Snare Setter: Trapsmithing — Craft (traps) only (Perception-vs-traps half dropped)", () => {
+  it("floor(unlevel/2) — +1 at L2, +5 at L10", () => {
+    const id = "rogueUnchained:snare-setter:trapsmithing:1";
+    const [crf] = ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(crf!.target).toBe("skill.crf.traps");
+    expect(evaluateFormula(crf!.formula, { class: { unlevel: 2 } })).toBe(1);
+    expect(evaluateFormula(crf!.formula, { class: { unlevel: 10 } })).toBe(5);
   });
 });
 

@@ -189,30 +189,37 @@ describe("Noble Fencer: Aristocratic Discipline grants a Will save bonus scoped 
   });
 });
 
-describe("Shackles Corsair: Swagger extracts only the Intimidate-check clause", () => {
+describe("Shackles Corsair: Swagger extracts the Intimidate-check and Profession (sailor) clauses", () => {
   it("archetype exists in the vendored data", () => {
     expect(archetypeId("Shackles Corsair")).toBe("swashbuckler:shackles-corsair");
   });
 
-  it("+1 Intimidate at 3rd, +1 per 4 levels thereafter; medium confidence for the partial extraction", () => {
+  it("+1 Intimidate/Profession (sailor) at 3rd, +1 per 4 levels thereafter; medium confidence for the partial extraction", () => {
     const id = "swashbuckler:shackles-corsair:swagger:3";
     const entry = SWASHBUCKLER_ARCHETYPE_EFFECTS_EXTRACTED[id]!;
     expect(entry.confidence).toBe("medium");
-    const [change] = entry.changes;
-    expect(change!.target).toBe("skill.int");
-    expect(change!.type).toBe("untyped");
-    const at = (level: number) => evaluateFormula(change!.formula, { class: { unlevel: level } });
-    expect(at(3)).toBe(1);
-    expect(at(6)).toBe(1);
-    expect(at(7)).toBe(2);
-    expect(at(19)).toBe(5);
+    const [intimidate, profession] = entry.changes;
+    expect(intimidate!.target).toBe("skill.int");
+    expect(intimidate!.type).toBe("untyped");
+    expect(profession!.target).toBe("skill.pro.sailor");
+    expect(profession!.type).toBe("morale");
+    const at = (change: (typeof entry.changes)[number], level: number) =>
+      evaluateFormula(change.formula, { class: { unlevel: level } });
+    expect(at(intimidate!, 3)).toBe(1);
+    expect(at(intimidate!, 6)).toBe(1);
+    expect(at(intimidate!, 7)).toBe(2);
+    expect(at(intimidate!, 19)).toBe(5);
+    expect(at(profession!, 3)).toBe(1);
+    expect(at(profession!, 19)).toBe(5);
   });
 
-  it("drops the DC-against-her clause, the Profession (sailor) morale bonus, and the 7th-level charmed-life rider (all cited in the provenance but unmodeled)", () => {
+  it("drops the DC-against-her clause, the allies' share of the Profession (sailor) bonus, and the 7th-level charmed-life rider (all cited in the provenance but unmodeled)", () => {
     const feature = ref.archetypeFeatures["swashbuckler:shackles-corsair:swagger:3"]!;
     const description = strippedDescription(feature.description ?? "");
     expect(description).toContain("the DC of Intimidate checks made against her increases by 1");
-    expect(description).toContain("a +1 morale bonus on Profession (sailor) checks");
+    expect(description).toContain(
+      "She and her allies gain a +1 morale bonus on Profession (sailor) checks",
+    );
     expect(description).toContain("she uses charmed life");
   });
 

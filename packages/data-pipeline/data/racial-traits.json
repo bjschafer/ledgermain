@@ -9144,7 +9144,18 @@
     "uuid": "Compendium.pf1.pf-racial-traits.Item.RpWzdpSJZcaBAvhn"
   },
   "Rx1ayk8e3zpDoslL": {
-    "changes": [],
+    "changes": [
+      {
+        "formula": "2",
+        "target": "skill.crf.armor",
+        "type": "racial"
+      },
+      {
+        "formula": "2",
+        "target": "skill.crf.weapons",
+        "type": "racial"
+      }
+    ],
     "contextNotes": [
       {
         "target": "skill.crf",

@@ -353,6 +353,52 @@ describe("Skill Focus feat", () => {
   });
 });
 
+describe("Breadth of Experience feat", () => {
+  // Breadth of Experience: +2 untyped on all Knowledge subskills and all
+  // Profession instances (PZO1115 p. 151). skill.knowledge fans out to every
+  // "k*" skill; skill.pro fans out to the bare "pro" id plus every "pro.*"
+  // instance the character has ranks in.
+  it("adds +2 to every Knowledge subskill", () => {
+    const base = makeDoc({ classes: [{ tag: "wizard", level: 1 }] });
+    const withFeat = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: [featId("Breadth of Experience")],
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    expect(featSheet.skills["kar"]!.total - baseSheet.skills["kar"]!.total).toBe(2);
+    expect(featSheet.skills["khi"]!.total - baseSheet.skills["khi"]!.total).toBe(2);
+  });
+
+  it("adds +2 to a named Profession instance the character has ranks in", () => {
+    const base = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      skillRanks: { "pro.innkeeper": 1 },
+    });
+    const withFeat = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: [featId("Breadth of Experience")],
+      skillRanks: { "pro.innkeeper": 1 },
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    expect(
+      featSheet.skills["pro.innkeeper"]!.total - baseSheet.skills["pro.innkeeper"]!.total,
+    ).toBe(2);
+  });
+
+  it("does not touch an unrelated skill like Stealth", () => {
+    const base = makeDoc({ classes: [{ tag: "wizard", level: 1 }] });
+    const withFeat = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: [featId("Breadth of Experience")],
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    expect(featSheet.skills["ste"]!.total).toBe(baseSheet.skills["ste"]!.total);
+  });
+});
+
 // ─── Combat maneuver feats (Improved/Greater X family) ────────────────────────
 
 describe("Improved Trip (CRB p. 131, both halves wired via maneuverCategories)", () => {

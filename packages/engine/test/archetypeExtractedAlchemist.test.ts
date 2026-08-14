@@ -57,13 +57,13 @@ describe("ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     expect(Object.keys(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(219);
   });
 
-  it("bucket counts match the audited totals (numeric 13 / situational 6 / subsystem 156 / blocked 44)", () => {
+  it("bucket counts match the audited totals (numeric 12 / situational 7 / subsystem 156 / blocked 44)", () => {
     const counts: Record<string, number> = {};
     for (const entry of Object.values(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts["numeric"]).toBe(13);
-    expect(counts["situational"]).toBe(6);
+    expect(counts["numeric"]).toBe(12);
+    expect(counts["situational"]).toBe(7);
     expect(counts["subsystem"]).toBe(156);
     expect(counts["blocked"]).toBe(44);
   });
@@ -72,11 +72,11 @@ describe("ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const numericIds = Object.entries(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(13);
+    expect(numericIds.length).toBe(12);
     for (const id of numericIds) {
       expect(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
-    expect(Object.keys(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(13);
+    expect(Object.keys(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(12);
     for (const id of Object.keys(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED)) {
       expect(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("numeric");
     }
@@ -224,13 +224,11 @@ describe("Mindchemist: Perfect Recall doubles Intelligence on every Knowledge ch
   });
 });
 
-describe("Herbalist: Herbalism grants a flat competence bonus to Profession (herbalist)", () => {
-  it("floor(level/2) competence bonus (Wis-as-key-ability swap not modeled)", () => {
+describe("Herbalist: Herbalism stays unwired (bonus is scoped to crafting/foraging)", () => {
+  it("classifies as situational with no extracted entry", () => {
     const id = "alchemist:herbalist:herbalism:1";
-    const [proChange] = ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
-    expect(proChange!.target).toBe("skill.pro.herbalist");
-    expect(proChange!.type).toBe("competence");
-    expect(evaluateFormula(proChange!.formula, { class: { unlevel: 9 } })).toBe(4);
+    expect(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("situational");
+    expect(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeUndefined();
   });
 });
 

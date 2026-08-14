@@ -153,15 +153,17 @@ describe("Dragon Skald: Fearless Raider grants a flat +4 save vs. fear", () => {
   });
 });
 
-describe("Dragon Skald: Sea Legs extracts only the unconditional Swim clause", () => {
-  it("max(1, floor(unlevel/2)) on skill.swm", () => {
+describe("Dragon Skald: Sea Legs extracts the unconditional Swim and Profession (sailor) clauses", () => {
+  it("max(1, floor(unlevel/2)) on skill.swm and skill.pro.sailor", () => {
     const id = "skald:dragon-skald:sea-legs:1";
-    const [change] = SKALD_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
-    expect(change!.target).toBe("skill.swm");
-    expect(SKALD_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes.length).toBe(1);
-    const at = (level: number) => evaluateFormula(change!.formula, { class: { unlevel: level } });
-    expect(at(1)).toBe(1);
-    expect(at(10)).toBe(5);
+    const [swim, profession] = SKALD_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(swim!.target).toBe("skill.swm");
+    expect(profession!.target).toBe("skill.pro.sailor");
+    expect(SKALD_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes.length).toBe(2);
+    expect(evaluateFormula(swim!.formula, { class: { unlevel: 1 } })).toBe(1);
+    expect(evaluateFormula(swim!.formula, { class: { unlevel: 10 } })).toBe(5);
+    expect(evaluateFormula(profession!.formula, { class: { unlevel: 1 } })).toBe(1);
+    expect(evaluateFormula(profession!.formula, { class: { unlevel: 10 } })).toBe(5);
   });
 });
 

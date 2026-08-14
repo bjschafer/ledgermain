@@ -1482,7 +1482,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Poker Face",
     level: 3,
     bucket: "numeric",
-    note: "the Bluff and Sense Motive portions are unconditional and extracted. The Profession (gambler) portion is dropped (a freeform per-instance skill slug with no established convention, unlike Craft (alchemy)'s crf.alchemy), as is the non-humanoid-feint permission.",
+    note: "unconditional bonus on Bluff/Profession (gambler)/Sense Motive, using the skill.pro.gambler target — extracted, matching the sibling rogue:sczarni-swindler:poker-face:3 entry's ruling (the non-humanoid-feint rider is dropped)",
   },
   "rogueUnchained:sczarni-swindler:quicker-than-the-eye:2": {
     archetypeId: "rogueUnchained:sczarni-swindler",
@@ -1735,8 +1735,8 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "rogueUnchained:snare-setter",
     name: "Trapsmithing",
     level: 1,
-    bucket: "situational",
-    note: "Perception bonus scoped to detecting traps specifically, plus a Craft (traps) bonus/substitution — both narrower/freeform, not general Perception",
+    bucket: "numeric",
+    note: "the Craft (traps) portion is unconditional across that subskill — extracted, matching the sibling rogue:snare-setter:trapsmithing:1 entry's ruling (same byte-identical text). The Perception-to-detect-traps portion is scoped and dropped, as is the Craft-in-place-of-Disable-Device substitution.",
   },
 
   // ── Sniper ─────────────────────────────────────────────────────────────
@@ -2427,17 +2427,18 @@ export const ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   },
 
   // Sczarni Swindler's "Poker Face" names three skills plus a feint
-  // permission; Profession (gambler) is a freeform per-instance skill slug
-  // with no established convention here (unlike Craft (alchemy)'s
-  // crf.alchemy), so only Bluff and Sense Motive are extracted.
+  // permission; Profession (gambler) is a fixed, non-player-chosen instance
+  // (same posture as the sibling rogue:sczarni-swindler:poker-face:3 entry,
+  // which already wires skill.pro.gambler for the byte-identical feature).
   "rogueUnchained:sczarni-swindler:poker-face:3": {
     changes: [
       c("1 + floor((@class.unlevel - 3) / 3)", "skill.blf"),
+      c("1 + floor((@class.unlevel - 3) / 3)", "skill.pro.gambler"),
       c("1 + floor((@class.unlevel - 3) / 3)", "skill.sen"),
     ],
     detail: (level) =>
-      `+${1 + Math.floor((level - 3) / 3)} Bluff/Sense Motive (Profession [gambler] not modeled)`,
-    confidence: "medium",
+      `+${1 + Math.floor((level - 3) / 3)} Bluff/Profession (gambler)/Sense Motive`,
+    confidence: "high",
     provenance:
       "At 3rd level, the Sczarni swindler gains a +1 bonus on Bluff, Profession (gambler), and " +
       "Sense Motive checks. This bonus increases by 1 for every 3 levels beyond 3rd.",
@@ -2513,6 +2514,22 @@ export const ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     detail: (level) => `+${Math.max(1, Math.floor(level / 2))} Sleight of Hand`,
     confidence: "high",
     provenance: "A smuggler adds 1/2 her level on Sleight of Hand checks (minimum +1).",
+  },
+
+  // Snare Setter's "Trapsmithing" Craft (traps) clause is unconditional
+  // across that subskill (same posture as Craft (alchemy) elsewhere in this
+  // pipeline); the Perception-to-detect-traps portion is scoped and the
+  // Craft-in-place-of-Disable-Device substitution has no engine hook, so
+  // both are dropped. Byte-identical text to the sibling
+  // rogue:snare-setter:trapsmithing:1 entry, which reaches the same ruling.
+  "rogueUnchained:snare-setter:trapsmithing:1": {
+    changes: [c("floor(@class.unlevel / 2)", "skill.crf.traps")],
+    detail: (level) =>
+      `+${Math.floor(level / 2)} Craft (traps) (Perception-vs-traps half not modeled)`,
+    confidence: "medium",
+    provenance:
+      "A snare setter gains a bonus on Perception skill checks to detect traps and on Craft " +
+      "(traps) checks equal to 1/2 his snare setter level.",
   },
 
   // Swamp Poisoner's "Mucous Membrane" names an Escape Artist bonus (clean)

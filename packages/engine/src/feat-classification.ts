@@ -292,8 +292,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "breadth-of-experience": {
     slug: "breadth-of-experience",
     name: "Breadth of Experience",
-    bucket: "blocked",
-    note: "requires state the engine doesn't model: applies to the ENTIRE Knowledge skill group (all ~11 subskills) plus Profession — no group-level skill target exists, only per-skill skill.<id> targets",
+    bucket: "numeric",
+    note: "already hand-authored (verified) in FEAT_EFFECTS — see feat-effects.ts's StaticFeatEntry map",
   },
   "brew-potion": {
     slug: "brew-potion",

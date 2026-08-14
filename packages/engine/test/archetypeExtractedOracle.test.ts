@@ -137,6 +137,33 @@ describe("Purifier (oracle): Celestial Armor grants Armor Training as a fighter 
   });
 });
 
+describe("Pei Zin Practitioner (oracle): Master Herbalist grants a Profession (herbalist) competence bonus", () => {
+  const peiZinPractitioner = archetypeId("Pei Zin Practitioner");
+
+  it("+3 competence Profession (herbalist) at L7 (min 1)", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "oracle", level: 7 }], archetypes: [peiZinPractitioner] }),
+      ref,
+    );
+    const bonus = sheet.skills["pro.herbalist"]?.components.find(
+      (c) => c.source === "Master Herbalist",
+    );
+    expect(bonus?.value).toBe(3);
+    expect(bonus?.type).toBe("competence");
+  });
+
+  it("+1 competence at L1 (the stated minimum, floor(1/2) would otherwise be 0)", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "oracle", level: 1 }], archetypes: [peiZinPractitioner] }),
+      ref,
+    );
+    const bonus = sheet.skills["pro.herbalist"]?.components.find(
+      (c) => c.source === "Master Herbalist",
+    );
+    expect(bonus?.value).toBe(1);
+  });
+});
+
 describe("blocked composition trap: Black-Blooded Oracle's Curse of Black Blood (issue #45)", () => {
   // An unpaired, wholesale replacement of the oracle's curse with a custom
   // mechanic that isn't one of the 6 hand-tabled ORACLE_CURSES entries — the

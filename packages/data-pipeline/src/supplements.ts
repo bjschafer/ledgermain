@@ -3900,6 +3900,19 @@ export const SUPPLEMENTAL_RACIAL_TRAIT_CHANGES: Record<
       { formula: "1 + floor(@attributes.hd.total / 5)", target: "dr.cold-iron", type: "untyped" },
     ],
   },
+  // Ifrit Forge-Hardened (PZO1121 p. 126): "+2 racial bonus on Craft (armor
+  // and weapons) checks" names two specific Craft instances, unconditionally
+  // (the fatigue/exhaustion save half of this trait is already promoted
+  // separately via VENDORED_RACIAL_TRAIT_SAVE_NOTES, which matches the
+  // vendored contextNotes text rather than this table).
+  Rx1ayk8e3zpDoslL: {
+    name: "Forge-Hardened",
+    keyword: "+2 racial bonus on Craft (armor and weapons) checks",
+    changes: [
+      { formula: "2", target: "skill.crf.armor", type: "racial" },
+      { formula: "2", target: "skill.crf.weapons", type: "racial" },
+    ],
+  },
 };
 
 /**
