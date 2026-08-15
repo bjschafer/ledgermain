@@ -1,8 +1,9 @@
 import { describe, expect, it } from "bun:test";
 
 import { loadRefData } from "@pf1/data-pipeline";
+import type { CharacterDoc } from "@pf1/schema";
 
-import { evaluateFormula, resolveArchetypeFeatureEffect } from "../src/index.js";
+import { compute, evaluateFormula, resolveArchetypeFeatureEffect } from "../src/index.js";
 import {
   VIGILANTE_ARCHETYPE_EFFECTS_EXTRACTED,
   VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION,
@@ -68,16 +69,16 @@ describe("VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     for (const entry of Object.values(VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts["numeric"]).toBe(7);
+    expect(counts["numeric"]).toBe(8);
     expect(counts["blocked"]).toBe(0);
-    expect((counts["situational"] ?? 0) + (counts["subsystem"] ?? 0)).toBe(143 - 7);
+    expect((counts["situational"] ?? 0) + (counts["subsystem"] ?? 0)).toBe(143 - 8);
   });
 
   it("every numeric-bucket classification entry has a matching extracted-effects entry, and no stray entries exist", () => {
     const numericIds = Object.entries(VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(7);
+    expect(numericIds.length).toBe(8);
     for (const id of numericIds) {
       expect(VIGILANTE_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -100,8 +101,8 @@ describe("VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
 describe("VIGILANTE_ARCHETYPE_EFFECTS_EXTRACTED: provenance and applied-target hygiene", () => {
   const entries = Object.entries(VIGILANTE_ARCHETYPE_EFFECTS_EXTRACTED);
 
-  it("has exactly 7 entries", () => {
-    expect(entries.length).toBe(7);
+  it("has exactly 8 entries", () => {
+    expect(entries.length).toBe(8);
   });
 
   it("every provenance is a verbatim substring of the vendored description", () => {
@@ -273,5 +274,105 @@ describe("vigilante specialization: structural, never a Change (class note 3)", 
         expect(entry?.bucket).toBe("subsystem");
       }
     }
+  });
+});
+
+describe("Dragonscale Loyalist: False Allegiance house pick (build.pickChoices)", () => {
+  function raceId(name: string): string {
+    const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
+    if (!entry) throw new Error(`race not found: ${name}`);
+    return entry[0];
+  }
+
+  function makeDoc(pickChoices?: Record<string, string>): CharacterDoc {
+    return {
+      schemaVersion: 1,
+      id: "test",
+      ownerId: "owner",
+      version: 1,
+      updatedAt: "2026-01-01T00:00:00.000Z",
+      identity: {
+        name: "Test",
+        race: raceId("Human"),
+        classes: [{ tag: "vigilante", level: 5 }],
+      },
+      abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        archetypes: [archetypeId("Dragonscale Loyalist")],
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        pickChoices,
+      },
+      live: {
+        hp: { current: 0, temp: 0, nonlethal: 0 },
+        conditions: [],
+        activeBuffs: [],
+        resources: {},
+      },
+    };
+  }
+
+  const featureId = "vigilante:dragonscale-loyalist:false-allegiance:0";
+  const pickChoiceKey = `archetypeFeature:${featureId}`;
+
+  function sheetWithHouse(house: string | undefined) {
+    return compute(makeDoc(house ? { [pickChoiceKey]: house } : undefined), ref);
+  }
+
+  it("no stored pick: no house bonus", () => {
+    const sheet = sheetWithHouse(undefined);
+    const base = compute(makeDoc(undefined), ref);
+    expect(sheet.skills["apr"]?.total).toBe(base.skills["apr"]?.total);
+    expect(sheet.cmd).toBe(base.cmd);
+  });
+
+  it("garess and medvyed grant no baseline number", () => {
+    const base = compute(makeDoc(undefined), ref);
+    expect(sheetWithHouse("garess").cmd).toBe(base.cmd);
+    expect(sheetWithHouse("medvyed").cmd).toBe(base.cmd);
+  });
+
+  it("lebeda: +3 Appraise (fewer than 10 ranks)", () => {
+    const sheet = sheetWithHouse("lebeda");
+    const base = compute(makeDoc(undefined), ref);
+    expect(sheet.skills["apr"]!.total - base.skills["apr"]!.total).toBe(3);
+  });
+
+  it("lodovka: +2 Acrobatics/Climb/Swim", () => {
+    const sheet = sheetWithHouse("lodovka");
+    const base = compute(makeDoc(undefined), ref);
+    expect(sheet.skills["acr"]!.total - base.skills["acr"]!.total).toBe(2);
+    expect(sheet.skills["clm"]!.total - base.skills["clm"]!.total).toBe(2);
+    expect(sheet.skills["swm"]!.total - base.skills["swm"]!.total).toBe(2);
+  });
+
+  it("orlovsky: +3 CMD, headline CMB untouched", () => {
+    const sheet = sheetWithHouse("orlovsky");
+    const base = compute(makeDoc(undefined), ref);
+    expect(sheet.cmd - base.cmd).toBe(3);
+    expect(sheet.cmb).toBe(base.cmb);
+  });
+
+  it("rogarvia: +3 Knowledge (history)", () => {
+    const sheet = sheetWithHouse("rogarvia");
+    const base = compute(makeDoc(undefined), ref);
+    expect(sheet.skills["khi"]!.total - base.skills["khi"]!.total).toBe(3);
+  });
+
+  it("surtova: +2 Diplomacy/Intimidate", () => {
+    const sheet = sheetWithHouse("surtova");
+    const base = compute(makeDoc(undefined), ref);
+    expect(sheet.skills["dip"]!.total - base.skills["dip"]!.total).toBe(2);
+    expect(sheet.skills["int"]!.total - base.skills["int"]!.total).toBe(2);
+  });
+
+  it("a stale option id grants nothing", () => {
+    const sheet = sheetWithHouse("indomitable");
+    const base = compute(makeDoc(undefined), ref);
+    expect(sheet.cmd).toBe(base.cmd);
+    expect(sheet.skills["apr"]?.total).toBe(base.skills["apr"]?.total);
   });
 });

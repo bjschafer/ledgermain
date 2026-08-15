@@ -523,12 +523,19 @@ export const VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "vigilante:dragonscale-loyalist",
     name: "False Allegiance",
     level: 5,
-    bucket: "subsystem",
+    bucket: "numeric",
     note:
-      "grants a bonus feat plus one of seven house-specific abilities the player picks (shapes vary " +
-      "wildly: a +3 CMD bonus, scaling Diplomacy/Sense Motive bonuses, a Swim-ACP exemption, " +
-      "racial-trait grants, ...) — an unmodeled choice-list, no build field tracks which house was " +
-      "chosen, replaces startling appearance",
+      "one of seven house-specific grants chosen at 5th, wired via the archetypeFeature " +
+      "PickChoice mechanism. The numerically-clean houses are wired: Lodovka (Sea Legs' flat " +
+      "+2 Acrobatics/Climb/Swim), Orlovsky (+3 CMD), Lebeda/Rogarvia (their Skill Focus bonus " +
+      "feat's flat +3/+6 Appraise or Knowledge [history]), Surtova (Persuasive's flat " +
+      "+2/+4 Diplomacy and Intimidate). Garess (Sure Grasp's reroll, no flat number; dwarven " +
+      "stonecunning, scoped to noticing stonework) and Medvyed (Endurance, all narrow " +
+      "Fortitude-only special checks; resist nature's lure, scoped to fey attackers with no " +
+      "matching category) emit nothing. Each house's bonus feat itself has no baseline number " +
+      "beyond what's cited above and every house's remaining narrowly-scoped rider (gather-" +
+      "information-only Diplomacy, allies-only Sense Motive, resale percentage, ACP exemption, " +
+      "...) is dropped, per the honesty bar; replaces startling appearance",
   },
   "vigilante:dragonscale-loyalist:reflexive-reaction:0": {
     archetypeId: "vigilante:dragonscale-loyalist",
@@ -1591,5 +1598,71 @@ export const VIGILANTE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "At 12th level, an arachnid wildsoul can coat his hands and feet in super-sticky webbing, " +
       "even over equipment such as gloves and boots. This gives him a climb speed of 30 feet.",
+  },
+
+  // Dragonscale Loyalist's "False Allegiance" grants a bonus feat plus one of
+  // seven house-specific abilities at 5th level. Only the numerically-clean
+  // houses are wired (the flat bonus each cited house's own named bonus feat
+  // grants, per that feat's own text, plus one archetype-text-stated flat
+  // CMD bonus); every narrowly-scoped rider (gather-information-only
+  // Diplomacy, allies-only Sense Motive, resale percentage, Swim ACP
+  // exemption, dwarven stonecunning) is dropped, and Garess/Medvyed's houses
+  // emit nothing (their own named feats — Sure Grasp, Endurance — have no
+  // flat baseline number, and Medvyed's resist nature's lure bonus is scoped
+  // to fey attackers with no matching save category).
+  "vigilante:dragonscale-loyalist:false-allegiance:0": {
+    changes: [],
+    choice: {
+      label: "House",
+      options: [
+        { id: "garess", label: "House Garess" },
+        { id: "lebeda", label: "House Lebeda (+3/+6 Appraise)" },
+        { id: "lodovka", label: "House Lodovka (+2 Acrobatics/Climb/Swim)" },
+        { id: "medvyed", label: "House Medvyed" },
+        { id: "orlovsky", label: "House Orlovsky (+3 CMD)" },
+        { id: "rogarvia", label: "House Rogarvia (+3/+6 Knowledge [history])" },
+        { id: "surtova", label: "House Surtova (+2/+4 Diplomacy/Intimidate)" },
+      ],
+    },
+    choiceChanges: {
+      garess: [],
+      lebeda: [c("if(gte(@skills.apr.rank, 10), 6, 3)", "skill.apr")],
+      lodovka: [c("2", "skill.acr"), c("2", "skill.clm"), c("2", "skill.swm")],
+      medvyed: [],
+      orlovsky: [c("3", "cmd")],
+      rogarvia: [c("if(gte(@skills.khi.rank, 10), 6, 3)", "skill.khi")],
+      surtova: [
+        c("if(gte(@skills.dip.rank, 10), 4, 2)", "skill.dip"),
+        c("if(gte(@skills.int.rank, 10), 4, 2)", "skill.int"),
+      ],
+    },
+    detail: () =>
+      "Garess: none · Lebeda: +3/+6 Appraise · Lodovka: +2 Acrobatics/Climb/Swim · Medvyed: none · " +
+      "Orlovsky: +3 CMD · Rogarvia: +3/+6 Knowledge (history) · Surtova: +2/+4 Diplomacy/Intimidate " +
+      "(choice stored per pick)",
+    confidence: "medium",
+    // The full description is quoted verbatim (rather than excerpted per
+    // house) because the test fixture requires `provenance` to be one
+    // contiguous substring of the vendored text, and the wired houses aren't
+    // adjacent to each other in it.
+    provenance:
+      "Eventually, a loyalist begins training to infiltrate one of Brevoy’s great houses. " +
+      "At 5th level, a Dragonscale loyalist chooses one of the seven houses of Brevoy, gaining " +
+      "a bonus feat and a special ability appropriate to the chosen house. He need not meet " +
+      "the feat’s prerequisites. House Garess : The Dragonscale loyalist gains Sure Grasp " +
+      "UC and dwarves’ stonecunning racial trait. House Lebeda : The Dragonscale loyalist " +
+      "gains Skill Focus (Appraise). He can also resell items for 60% of their listed value, " +
+      "rather than 50%. The purchase limit of the settlement must be high enough to " +
+      "accommodate the increased value. House Lodovka : The Dragonscale loyalist gains Sea " +
+      "Legs UC . When attempting Swim checks, he ignores the armor check penalty of light or " +
+      "medium armor. If the loyalist has the heavy training vigilante talent, this applies to " +
+      "heavy armor as well. House Medvyed : The Dragonscale loyalist gains Endurance and the " +
+      "druid’s resist nature’s lure class feature. House Orlovsky: The Dragonscale " +
+      "loyalist gains Call Truce UI and a +3 bonus to his CMD. House Rogarvia : The Dragonscale " +
+      "loyalist gains Skill Focus (Knowledge [history]) and a +2 bonus on Diplomacy checks to " +
+      "gather information. This bonus increases to +4 when gathering information related to " +
+      "the Rogarvias. House Surtova : The Dragonscale loyalist gains Persuasive and a +4 bonus " +
+      "on Sense Motive checks against creatures that profess to be his allies. This ability " +
+      "replaces startling appearance.",
   },
 };
