@@ -47,10 +47,27 @@ import type { Change } from "@pf1/schema";
 
 import { DOMAIN_POWER_PATCHES } from "./domains.js";
 import { INQUISITION_POWER_PATCHES } from "./inquisitions.js";
-import { SCHOOL_POWER_PATCHES } from "./schools.js";
+import {
+  SCHOOL_POWER_CHOICES,
+  SCHOOL_POWER_PATCHES,
+  type GrantedPowerChoiceEntry,
+} from "./schools.js";
 
 export const GRANTED_POWER_CHANGE_PATCHES: Readonly<Record<string, readonly Change[]>> = {
   ...DOMAIN_POWER_PATCHES,
   ...SCHOOL_POWER_PATCHES,
   ...INQUISITION_POWER_PATCHES,
+};
+
+export type { GrantedPowerChoiceEntry };
+
+/**
+ * Choose-one granted-power selections (Resistance (Power)'s energy type), the
+ * `GRANTED_POWER_CHANGE_PATCHES` counterpart for powers that need a stored
+ * pick rather than an unconditional number. Only `schools.ts` has an entry
+ * today; the other two origin tables merge in here too so a future wave's
+ * domain/inquisition choice-pilot needs no change to this aggregator.
+ */
+export const GRANTED_POWER_CHOICES: Readonly<Record<string, GrantedPowerChoiceEntry>> = {
+  ...SCHOOL_POWER_CHOICES,
 };

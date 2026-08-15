@@ -57,7 +57,7 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
     const set = new Set(chosen);
     if (set.has(id)) set.delete(id);
     else set.add(id);
-    update((d) => setArchetypes(d, [...set]));
+    update((d) => setArchetypes(d, [...set], refData));
   }
 
   return (

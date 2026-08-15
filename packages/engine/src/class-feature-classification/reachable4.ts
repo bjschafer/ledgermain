@@ -19,8 +19,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
   nAf2hU0pfOBrOSAr: {
     id: "nAf2hU0pfOBrOSAr",
     name: "Monitor Expression",
-    bucket: "subsystem",
-    note: "Player picks one of four demigod expressions, each granting a different activation-gated ability (save bonus, spiritsense, deflection AC, or freedom of movement spell-like ability); choice- and activation-dependent, not a flat number.",
+    bucket: "numeric",
+    note: "Player picks one of four demigod expressions, wired via the classFeature pick-choice mechanism (CLASS_FEATURE_CHOICES). Only Executor's save bonus is unconditional and non-activated; Foster/Harmonizer/Impulsive stay activation-gated (spiritsense, deflection AC, freedom of movement) and their picks emit nothing.",
   },
   awikzWDddpbaic29: {
     id: "awikzWDddpbaic29",

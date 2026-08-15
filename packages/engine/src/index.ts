@@ -149,7 +149,12 @@ export {
   type TraitDef,
   type TraitCategory,
 } from "./traits.js";
-export { TRAIT_EFFECTS_EXTRACTED, type ExtractedTraitEntry } from "./trait-effects-extracted.js";
+export {
+  TRAIT_EFFECTS_EXTRACTED,
+  type ExtractedTraitEntry,
+  TRAIT_CHOICES,
+  type TraitChoiceEntry,
+} from "./trait-effects-extracted.js";
 export {
   RACIAL_TRAITS,
   alternateRacialTraitsForRace,
@@ -951,7 +956,16 @@ export {
   BUFF_SAVE_NOTE_COVERAGE,
   SAVE_CATEGORY_PATCHES,
 } from "./buff-effects.js";
-export { CLASS_FEATURE_CHANGE_PATCHES } from "./class-feature-effects.js";
+export {
+  CLASS_FEATURE_CHANGE_PATCHES,
+  CLASS_FEATURE_CHOICES,
+  type ClassFeatureChoiceEntry,
+} from "./class-feature-effects.js";
+export {
+  GRANTED_POWER_CHANGE_PATCHES,
+  GRANTED_POWER_CHOICES,
+  type GrantedPowerChoiceEntry,
+} from "./granted-power-effects/index.js";
 export { FEAT_SAVE_CATEGORY_CHANGES } from "./feat-save-categories.js";
 export {
   saveChangesFromNotes,

@@ -1,8 +1,9 @@
 import { describe, expect, it } from "bun:test";
 
+import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { evaluateFormula, resolveArchetypeFeatureEffect } from "../src/index.js";
+import { compute, evaluateFormula, resolveArchetypeFeatureEffect } from "../src/index.js";
 import {
   BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED,
   BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION,
@@ -40,6 +41,47 @@ function archetypeId(name: string): string {
   return entry.id;
 }
 
+function raceId(name: string): string {
+  const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
+  if (!entry) throw new Error(`race not found: ${name}`);
+  return entry[0];
+}
+
+function makeDoc(over: {
+  level: number;
+  archetypes?: string[];
+  pickChoices?: Record<string, string>;
+}): CharacterDoc {
+  return {
+    schemaVersion: 1,
+    id: "test",
+    ownerId: "owner",
+    version: 1,
+    updatedAt: "2026-01-01T00:00:00.000Z",
+    identity: {
+      name: "Test",
+      race: raceId("Human"),
+      classes: [{ tag: "barbarianUnchained", level: over.level }],
+    },
+    abilities: { str: 16, dex: 14, con: 14, int: 10, wis: 10, cha: 12 },
+    build: {
+      feats: [],
+      skillRanks: {},
+      archetypes: over.archetypes ?? [],
+      classFeatureChoices: [],
+      spells: { known: [] },
+      gear: [],
+      pickChoices: over.pickChoices,
+    },
+    live: {
+      hp: { current: 0, temp: 0, nonlethal: 0 },
+      conditions: [],
+      activeBuffs: [],
+      resources: {},
+    },
+  };
+}
+
 /** Mirror of the sweep's HTML-to-text strip, for re-verifying provenance quotes. */
 function stripHtml(html: string): string {
   return html
@@ -70,13 +112,13 @@ describe("BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () =>
     expect(Object.keys(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(161);
   });
 
-  it("bucket counts match the audited totals (21 numeric / 38 situational / 91 subsystem / 11 blocked)", () => {
+  it("bucket counts match the audited totals (22 numeric / 37 situational / 91 subsystem / 11 blocked)", () => {
     const counts: Record<string, number> = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts["numeric"]).toBe(21);
-    expect(counts["situational"]).toBe(38);
+    expect(counts["numeric"]).toBe(22);
+    expect(counts["situational"]).toBe(37);
     expect(counts["subsystem"]).toBe(91);
     expect(counts["blocked"]).toBe(11);
   });
@@ -85,7 +127,7 @@ describe("BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () =>
     const numericIds = Object.entries(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(21);
+    expect(numericIds.length).toBe(22);
     for (const id of numericIds) {
       expect(BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -507,5 +549,50 @@ describe("resolveArchetypeFeatureEffect: resolves through this file's tables whe
         BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED,
       ),
     ).toBeUndefined();
+  });
+});
+
+describe("Invulnerable Rager: Extreme Endurance fire-or-cold pick (build.pickChoices), end to end via compute()", () => {
+  // Identical rules text to chained barbarian's own entry (see
+  // archetypeExtractedBarbarian.test.ts) — 0 at 3rd, 1 at 6th, 2 at 9th.
+  // This class's extracted table IS merged into production
+  // (`archetype-extracted/index.ts`), so the choice mechanism runs through
+  // the real `compute()` pipeline, unlike this file's other formula
+  // fixtures above.
+  const invulnerableRager = archetypeId("Invulnerable Rager");
+  const featureId = "barbarianUnchained:invulnerable-rager:extreme-endurance:3";
+  const pickChoiceKey = `archetypeFeature:${featureId}`;
+
+  it("no stored pick: no fire or cold resistance", () => {
+    const sheet = compute(makeDoc({ level: 9, archetypes: [invulnerableRager] }), ref);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "cold")).toBeUndefined();
+  });
+
+  it("a stale option id grants nothing", () => {
+    const sheet = compute(
+      makeDoc({
+        level: 9,
+        archetypes: [invulnerableRager],
+        pickChoices: { [pickChoiceKey]: "acid" },
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "cold")).toBeUndefined();
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "acid")).toBeUndefined();
+  });
+
+  it("cold pick: 0 at L3, 1 at L6, 2 at L9", () => {
+    const pickChoices = { [pickChoiceKey]: "cold" };
+    const at3 = compute(makeDoc({ level: 3, archetypes: [invulnerableRager], pickChoices }), ref);
+    expect(at3.defenses?.resistances.find((r) => r.qualifier === "cold")).toBeUndefined();
+
+    const at6 = compute(makeDoc({ level: 6, archetypes: [invulnerableRager], pickChoices }), ref);
+    expect(at6.defenses?.resistances.find((r) => r.qualifier === "cold")?.total).toBe(1);
+    expect(at6.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+
+    const at9 = compute(makeDoc({ level: 9, archetypes: [invulnerableRager], pickChoices }), ref);
+    expect(at9.defenses?.resistances.find((r) => r.qualifier === "cold")?.total).toBe(2);
   });
 });

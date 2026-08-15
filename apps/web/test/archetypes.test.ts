@@ -44,6 +44,43 @@ describe("setArchetypes()", () => {
   });
 });
 
+describe("setArchetypes(): archetypeFeature pick-choice cleanup", () => {
+  const invulnerableRager = "barbarian:invulnerable-rager";
+  const featureId = "barbarian:invulnerable-rager:extreme-endurance:3";
+  const pickKey = `archetypeFeature:${featureId}`;
+
+  it("without refData, a removed archetype's stored pick lingers (back-compat, no cleanup)", () => {
+    let doc = setArchetypes(fresh(), [invulnerableRager]);
+    doc = { ...doc, build: { ...doc.build, pickChoices: { [pickKey]: "fire" } } };
+    doc = setArchetypes(doc, []);
+    expect(doc.build.pickChoices).toEqual({ [pickKey]: "fire" });
+  });
+
+  it("with refData, removing the declaring archetype drops its features' stored picks", () => {
+    let doc = setArchetypes(fresh(), [invulnerableRager], ref);
+    doc = { ...doc, build: { ...doc.build, pickChoices: { [pickKey]: "fire" } } };
+    doc = setArchetypes(doc, [], ref);
+    expect(doc.build.pickChoices).toEqual({});
+  });
+
+  it("with refData, keeping the archetype leaves its stored pick alone", () => {
+    let doc = setArchetypes(fresh(), [invulnerableRager], ref);
+    doc = { ...doc, build: { ...doc.build, pickChoices: { [pickKey]: "cold" } } };
+    doc = setArchetypes(doc, [invulnerableRager], ref);
+    expect(doc.build.pickChoices).toEqual({ [pickKey]: "cold" });
+  });
+
+  it("with refData, an unrelated stored pick survives removal of a different archetype", () => {
+    let doc = setArchetypes(fresh(), [invulnerableRager, "fighter:two-handed-fighter"], ref);
+    doc = {
+      ...doc,
+      build: { ...doc.build, pickChoices: { [pickKey]: "fire", other: "value" } },
+    };
+    doc = setArchetypes(doc, ["fighter:two-handed-fighter"], ref);
+    expect(doc.build.pickChoices).toEqual({ other: "value" });
+  });
+});
+
 describe("migrateDoc() backfills build.archetypes", () => {
   it("adds an empty archetypes array to a pre-Stage-11.3 doc", () => {
     const legacy = { ...fresh(), build: { ...fresh().build } } as CharacterDoc;

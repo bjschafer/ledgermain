@@ -36,7 +36,11 @@ function raceId(name: string): string {
 const HUMAN = raceId("Human");
 
 /** Human wizard, all abilities 10 (every mod 0), chosen school as given. */
-function makeWizard(level: number, wizardSchool?: string): CharacterDoc {
+function makeWizard(
+  level: number,
+  wizardSchool?: string,
+  pickChoices?: Record<string, string>,
+): CharacterDoc {
   return {
     schemaVersion: 1,
     id: "granted-power-schools-test",
@@ -55,6 +59,7 @@ function makeWizard(level: number, wizardSchool?: string): CharacterDoc {
       classFeatureChoices: [],
       spells: { known: [] },
       gear: [],
+      pickChoices,
       ...(wizardSchool ? { wizardSchool } : {}),
     },
     live: {
@@ -146,5 +151,54 @@ describe("Void Awareness (Void arcane school, insight save bonus vs. spells/SLAs
     // A level-5 fighter's own Bravery adds an unrelated "fear" conditional —
     // orthogonal to this hook, so the assertion targets "spell" specifically.
     expect(sheet.saves.will.conditionals?.some((c) => c.categories.includes("spell"))).toBeFalsy();
+  });
+});
+
+describe("Resistance (Power) (Abjuration arcane school, daily energy-type pick)", () => {
+  // "You gain resistance 5 to an energy type of your choice, chosen when you
+  // prepare spells. This resistance can be changed each day... At 11th
+  // level, this resistance increases to 10." Vendored grant level is 0
+  // (immediate). Stored under build.pickChoices["classFeature:<id>"] since
+  // the granting power routes through collect.ts's granted-power loop (not
+  // the base class-feature loop) — see GRANTED_POWER_CHOICES's doc comment.
+  const featureId = "UeYdiNoaF0gG08Y5";
+  const pickChoiceKey = `classFeature:${featureId}`;
+
+  it("no stored pick: no energy resistance at all", () => {
+    const sheet = compute(makeWizard(5, "abj"), ref);
+    expect(sheet.defenses?.resistances.length ?? 0).toBe(0);
+  });
+
+  it("a stale option id grants nothing", () => {
+    const sheet = compute(makeWizard(5, "abj", { [pickChoiceKey]: "psychic" }), ref);
+    expect(sheet.defenses?.resistances.length ?? 0).toBe(0);
+  });
+
+  it("fire pick, level 5: resistance 5 (below the 11th-level tier bump)", () => {
+    const sheet = compute(makeWizard(5, "abj", { [pickChoiceKey]: "fire" }), ref);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(5);
+  });
+
+  it("fire pick, level 11: resistance 10 (11th-level tier bump applied)", () => {
+    const sheet = compute(makeWizard(11, "abj", { [pickChoiceKey]: "fire" }), ref);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(10);
+  });
+
+  it("cold pick applies to cold, not fire", () => {
+    const sheet = compute(makeWizard(5, "abj", { [pickChoiceKey]: "cold" }), ref);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "cold")?.total).toBe(5);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+  });
+
+  it("a wizard of a different school gets nothing extra even with a stored pick", () => {
+    // Fire Supremacy's own unconditional resistance (level 10: the "10"
+    // tier) still applies; Resistance (Power)'s choice route contributes
+    // NOTHING on top of it, since this wizard never took the Abjuration
+    // school and `collectGrantedFeatures` never grants a power named
+    // "Resistance (Power)" for a fire-elemental wizard. If the choice route
+    // wrongly applied anyway, untyped bonuses stack and the total would
+    // read 15 (10 + 5), not 10.
+    const sheet = compute(makeWizard(10, "fire-elemental", { [pickChoiceKey]: "fire" }), ref);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(10);
   });
 });

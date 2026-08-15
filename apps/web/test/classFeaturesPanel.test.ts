@@ -31,6 +31,7 @@ function archetypeFeature(
     archetypeName,
     feature: {
       level: 1,
+      featureId: "stub-archetype-feature",
       name: "Stub Archetype Feature",
       ambiguous: false,
       ...overrides,

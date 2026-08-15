@@ -5,8 +5,11 @@
  * same posture as the racial-trait classification guards), shards must not
  * collide, and a `numeric` verdict is only honest if some wired route
  * actually carries the number — the entry's own vendored `changes[]`, a
- * `CLASS_FEATURE_CHANGE_PATCHES` entry, or a `GRANTED_POWER_CHANGE_PATCHES`
- * entry, matching the feature's name.
+ * `CLASS_FEATURE_CHANGE_PATCHES` entry, a `GRANTED_POWER_CHANGE_PATCHES`
+ * entry (matching the feature's name), or a `CLASS_FEATURE_CHOICES` /
+ * `GRANTED_POWER_CHOICES` choose-one entry (a choice-gated route still
+ * counts as wired: the mechanism exists even though an unfilled or stale
+ * pick emits nothing).
  */
 
 import { describe, expect, it } from "bun:test";
@@ -17,8 +20,14 @@ import {
   CLASS_FEATURE_CLASSIFICATION,
   CLASS_FEATURE_CLASSIFICATION_SHARDS,
 } from "../src/class-feature-classification/index.js";
-import { CLASS_FEATURE_CHANGE_PATCHES } from "../src/class-feature-effects.js";
-import { GRANTED_POWER_CHANGE_PATCHES } from "../src/granted-power-effects/index.js";
+import {
+  CLASS_FEATURE_CHANGE_PATCHES,
+  CLASS_FEATURE_CHOICES,
+} from "../src/class-feature-effects.js";
+import {
+  GRANTED_POWER_CHANGE_PATCHES,
+  GRANTED_POWER_CHOICES,
+} from "../src/granted-power-effects/index.js";
 
 const ref = loadRefData();
 
@@ -56,8 +65,12 @@ describe("CLASS_FEATURE_CLASSIFICATION: structural guards", () => {
         vendored.changes.length > 0 ||
         CLASS_FEATURE_CHANGE_PATCHES[entry.name] !== undefined ||
         GRANTED_POWER_CHANGE_PATCHES[entry.name] !== undefined ||
+        CLASS_FEATURE_CHOICES[entry.name] !== undefined ||
+        GRANTED_POWER_CHOICES[entry.name] !== undefined ||
         grantingTags.some(
-          (tag) => CLASS_FEATURE_CHANGE_PATCHES[`${tag}:${entry.name}`] !== undefined,
+          (tag) =>
+            CLASS_FEATURE_CHANGE_PATCHES[`${tag}:${entry.name}`] !== undefined ||
+            CLASS_FEATURE_CHOICES[`${tag}:${entry.name}`] !== undefined,
         );
       expect(wired, `${entry.name} (${entry.id}) is numeric but no route is wired`).toBe(true);
     }

@@ -29,7 +29,13 @@
  */
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
-import { mergedTraits, resolveTraitDef, type TraitCategory, type TraitDef } from "@pf1/engine";
+import {
+  mergedTraits,
+  resolveTraitDef,
+  TRAIT_CHOICES,
+  type TraitCategory,
+  type TraitDef,
+} from "@pf1/engine";
 
 /** The conventional number of traits a PF1 character takes at creation. */
 export const EXPECTED_TRAIT_COUNT = 2;
@@ -85,12 +91,54 @@ export function hasTrait(doc: CharacterDoc, id: string): boolean {
   return (doc.build.traits ?? []).includes(id);
 }
 
-/** Add or remove a trait id. No-op add if already present (no duplicates). */
+/**
+ * Add or remove a trait id. No-op add if already present (no duplicates).
+ * Removing a trait that DECLARES a choose-one selection (`TRAIT_CHOICES`)
+ * also drops its stored `pickChoices` entry — a re-added trait should start
+ * unchosen, same cleanup `toggleRagePower` does for rage powers.
+ */
 export function toggleTrait(doc: CharacterDoc, traitId: string): CharacterDoc {
   const current = doc.build.traits ?? [];
   const has = current.includes(traitId);
   const traits = has ? current.filter((t) => t !== traitId) : [...current, traitId];
-  return { ...doc, build: { ...doc.build, traits } };
+  let pickChoices = doc.build.pickChoices;
+  const choiceKey = `trait:${traitId}`;
+  if (has && pickChoices && choiceKey in pickChoices) {
+    const { [choiceKey]: _dropped, ...rest } = pickChoices;
+    pickChoices = rest;
+  }
+  return { ...doc, build: { ...doc.build, traits, pickChoices } };
+}
+
+/**
+ * Store (or clear, with `undefined`) the choose-one selection for a trait
+ * that declares one in `TRAIT_CHOICES` — `build.pickChoices["trait:<id>"]`.
+ * Pure transition consumed by `TraitRow`'s per-entry dropdown.
+ */
+export function setTraitChoice(
+  doc: CharacterDoc,
+  traitId: string,
+  optionId: string | undefined,
+): CharacterDoc {
+  const key = `trait:${traitId}`;
+  const existing = doc.build.pickChoices ?? {};
+  if (optionId === undefined) {
+    if (!(key in existing)) return doc;
+    const { [key]: _dropped, ...rest } = existing;
+    return { ...doc, build: { ...doc.build, pickChoices: rest } };
+  }
+  if (existing[key] === optionId) return doc;
+  return { ...doc, build: { ...doc.build, pickChoices: { ...existing, [key]: optionId } } };
+}
+
+/** The stored choose-one selection for a trait, if any. */
+export function traitChoice(doc: CharacterDoc, traitId: string): string | undefined {
+  return doc.build.pickChoices?.[`trait:${traitId}`];
+}
+
+/** The declared choice descriptor for a trait, if `TRAIT_CHOICES` has one. */
+export function traitChoiceDescriptor(traitId: string) {
+  return TRAIT_CHOICES[traitId]?.choice;
 }
 
 /** The number of traits currently chosen. */

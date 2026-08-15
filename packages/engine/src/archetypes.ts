@@ -1646,6 +1646,7 @@ export function resolveClassFeatures(
       const resolved = resolveArchetypeFeatureEffect(f.id);
       features.push({
         level: f.level,
+        featureId: f.id,
         name: f.name,
         description: f.description,
         // A resolved pairing or a structured `replacesSlot` both give the UI

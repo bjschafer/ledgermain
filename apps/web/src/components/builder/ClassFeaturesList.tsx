@@ -1,4 +1,5 @@
 import type {
+  CharacterDoc,
   DerivedArchetypeFeature,
   DerivedClassFeature,
   DerivedSheet,
@@ -7,8 +8,57 @@ import type {
 import type { MouseEvent as ReactMouseEvent } from "react";
 
 import { abilityTypeTag } from "../../model/abilityTypes.js";
+import {
+  archetypeFeatureChoice,
+  archetypeFeatureChoiceDescriptor,
+  classFeatureChoice,
+  classFeatureChoiceDescriptor,
+  setArchetypeFeatureChoice,
+  setClassFeatureChoice,
+} from "../../model/featureChoices.js";
 import { useInlineRolls } from "../../state/rollData.js";
 import { InfoTip } from "../InfoTip.js";
+
+type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
+
+/**
+ * The choose-one select a feature declaring a `PickChoice` gets, once it's
+ * actually active on the sheet — shared markup for both row kinds, mirroring
+ * `RagePowerPicker`'s dropdown. Renders nothing without both `doc` and
+ * `update` (the Play tab's read-only `ClassFeaturesPanel` passes neither).
+ */
+function ChoiceSelect({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: readonly { id: string; label: string }[];
+  value: string;
+  onChange: (optionId: string | undefined) => void;
+}) {
+  return (
+    // Stops the click from bubbling to the row's description-toggle handler
+    // (see `toggleFeatureDescription`'s doc comment on interactive elements).
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
+    <label
+      className="hint feature-note"
+      style={{ display: "block" }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {label}:{" "}
+      <select value={value} onChange={(e) => onChange(e.target.value || undefined)}>
+        <option value="">Choose</option>
+        {options.map((o) => (
+          <option key={o.id} value={o.id}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
 
 /**
  * The statblock (Ex)/(Su)/(Sp) suffix on a feature's name, tipped with what
@@ -96,15 +146,22 @@ export function ClassFeatureRow({
   refData,
   showOrigin = true,
   layout = "inline",
+  doc,
+  update,
 }: {
   feature: DerivedClassFeature;
   refData: RefData;
   showOrigin?: boolean;
   layout?: "inline" | "block";
+  doc?: CharacterDoc;
+  update?: Updater;
 }) {
   const vendored = refData.classFeatures[feature.featureId];
   const description = vendored?.description;
   const block = layout === "block";
+  const choiceDescriptor = feature.applied
+    ? classFeatureChoiceDescriptor(feature.classTag, feature.name)
+    : undefined;
   return (
     // This click handler is a mouse/touch convenience layered on top of the
     // real, already-keyboard-accessible toggle: the nested <summary> is its
@@ -134,6 +191,16 @@ export function ClassFeatureRow({
           {n.text}
         </div>
       ))}
+      {doc && update && choiceDescriptor ? (
+        <ChoiceSelect
+          label={choiceDescriptor.label}
+          options={choiceDescriptor.options}
+          value={classFeatureChoice(doc, feature.featureId) ?? ""}
+          onChange={(optionId) =>
+            update((d) => setClassFeatureChoice(d, feature.featureId, optionId))
+          }
+        />
+      ) : null}
       {description ? <FeatureDescription html={description} /> : null}
     </div>
   );
@@ -170,14 +237,19 @@ export function ArchetypeFeatureRow({
   archetypeName,
   showOrigin = true,
   layout = "inline",
+  doc,
+  update,
 }: {
   feature: DerivedArchetypeFeature;
   archetypeName: string;
   showOrigin?: boolean;
   layout?: "inline" | "block";
+  doc?: CharacterDoc;
+  update?: Updater;
 }) {
   const block = layout === "block";
   const description = feature.description;
+  const choiceDescriptor = archetypeFeatureChoiceDescriptor(feature.featureId);
   return (
     // This click handler is a mouse/touch convenience layered on top of the
     // real, already-keyboard-accessible toggle: the nested <summary> is its
@@ -217,6 +289,16 @@ export function ArchetypeFeatureRow({
       {feature.replacesText ? (
         <div className="hint feature-note">replaces: {feature.replacesText}</div>
       ) : null}
+      {doc && update && choiceDescriptor ? (
+        <ChoiceSelect
+          label={choiceDescriptor.label}
+          options={choiceDescriptor.options}
+          value={archetypeFeatureChoice(doc, feature.featureId) ?? ""}
+          onChange={(optionId) =>
+            update((d) => setArchetypeFeatureChoice(d, feature.featureId, optionId))
+          }
+        />
+      ) : null}
       {description ? <FeatureDescription html={description} /> : null}
     </div>
   );
@@ -237,11 +319,26 @@ function timelineKey(entry: TimelineEntry, i: number): string {
     : `${entry.archetypeName}-${entry.feature.name}-${i}`;
 }
 
-function TimelineRow({ entry, refData }: { entry: TimelineEntry; refData: RefData }) {
+function TimelineRow({
+  entry,
+  refData,
+  doc,
+  update,
+}: {
+  entry: TimelineEntry;
+  refData: RefData;
+  doc?: CharacterDoc;
+  update?: Updater;
+}) {
   return entry.kind === "base" ? (
-    <ClassFeatureRow feature={entry.feature} refData={refData} />
+    <ClassFeatureRow feature={entry.feature} refData={refData} doc={doc} update={update} />
   ) : (
-    <ArchetypeFeatureRow feature={entry.feature} archetypeName={entry.archetypeName} />
+    <ArchetypeFeatureRow
+      feature={entry.feature}
+      archetypeName={entry.archetypeName}
+      doc={doc}
+      update={update}
+    />
   );
 }
 
@@ -266,7 +363,17 @@ function TimelineRow({ entry, refData }: { entry: TimelineEntry; refData: RefDat
  * statblock (Ex)/(Su)/(Sp) tag via {@link AbilityTypeTag}; archetype features
  * carry their own resolved `abilityType`, when the vendored entry states one.
  */
-export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; refData: RefData }) {
+export function ClassFeaturesList({
+  sheet,
+  refData,
+  doc,
+  update,
+}: {
+  sheet: DerivedSheet;
+  refData: RefData;
+  doc?: CharacterDoc;
+  update?: Updater;
+}) {
   if (sheet.classFeatures.length === 0 && sheet.activeArchetypes.length === 0) return null;
 
   const baseline: TimelineEntry[] = [];
@@ -306,7 +413,13 @@ export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; ref
             </div>
             <div className="cf-archetype-features">
               {baseline.map((entry, i) => (
-                <TimelineRow key={timelineKey(entry, i)} entry={entry} refData={refData} />
+                <TimelineRow
+                  key={timelineKey(entry, i)}
+                  entry={entry}
+                  refData={refData}
+                  doc={doc}
+                  update={update}
+                />
               ))}
             </div>
           </div>
@@ -319,7 +432,13 @@ export function ClassFeaturesList({ sheet, refData }: { sheet: DerivedSheet; ref
             </div>
             <div className="cf-archetype-features">
               {byLevel.get(level)!.map((entry, i) => (
-                <TimelineRow key={timelineKey(entry, i)} entry={entry} refData={refData} />
+                <TimelineRow
+                  key={timelineKey(entry, i)}
+                  entry={entry}
+                  refData={refData}
+                  doc={doc}
+                  update={update}
+                />
               ))}
             </div>
           </div>
