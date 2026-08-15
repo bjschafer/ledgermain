@@ -2000,6 +2000,79 @@ export function applyArchetypeFeatureLevelSupplements(features: ArchetypeFeature
 }
 
 /**
+ * Base-feature pairings for archetype features whose prose plainly names what
+ * they replace but which reach `transformArchetypePack` with no
+ * `pairedBaseFeatureUuid` — leaving the builder to show the feature's own text
+ * as a soft warning instead of a struck-through swap.
+ *
+ * `pairBaseFeature` pairs off the source's structured `replaces` flag first
+ * and falls back to a level lookup that only fires when the base class grants
+ * exactly ONE feature at that level. An entry belongs here when both paths
+ * miss: the flag is absent upstream and the level is contested.
+ *
+ * `keyword` is checked against the feature's CURRENT description, so an
+ * upstream rewrite of the sentence this pairing was read from fails the build
+ * instead of silently pairing off stale prose. A feature that arrives already
+ * paired throws too — that means upstream started supplying the link and the
+ * entry should be retired rather than shadowing it.
+ */
+export const SUPPLEMENTAL_ARCHETYPE_FEATURE_PAIRING: Record<
+  string,
+  { name: string; keyword: string; pairedBaseFeatureUuid: string }
+> = {
+  // Sharptooth's swim speed replaces Fast Movement, but the source sets no
+  // `replaces` flag and the sentence that says so is typo'd ("his replaces
+  // fast movement"), so no parse recovers it. Barbarian's 1st level grants
+  // both Fast Movement and Rage, so the level fallback declines to guess.
+  // Mirrored across both chassis, which carry the archetype identically.
+  "barbarian:sharptooth:swim-like-a-fish:1": {
+    name: "Swim Like a Fish",
+    keyword: "replaces fast movement",
+    pairedBaseFeatureUuid: "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp",
+  },
+  "barbarianUnchained:sharptooth:swim-like-a-fish:1": {
+    name: "Swim Like a Fish",
+    keyword: "replaces fast movement",
+    pairedBaseFeatureUuid: "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp",
+  },
+};
+
+/**
+ * Apply {@link SUPPLEMENTAL_ARCHETYPE_FEATURE_PAIRING} in place, with the same
+ * drift guards as `applyRacialTraitAliasSupplements`: the feature must exist,
+ * still carry the expected name, still say the sentence the pairing was read
+ * from, and not already be paired upstream.
+ */
+export function applyArchetypeFeaturePairingSupplements(features: ArchetypeFeature[]): void {
+  const byId = new Map(features.map((f) => [f.id, f]));
+  for (const [id, s] of Object.entries(SUPPLEMENTAL_ARCHETYPE_FEATURE_PAIRING)) {
+    const feature = byId.get(id);
+    if (feature === undefined) {
+      throw new Error(
+        `[supplements] archetype feature "${s.name}" (${id}) not found in vendored set`,
+      );
+    }
+    if (feature.name !== s.name) {
+      throw new Error(
+        `[supplements] archetype feature ${id} is now named "${feature.name}", expected "${s.name}"`,
+      );
+    }
+    const prose = (feature.description ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
+    if (!prose.toLowerCase().includes(s.keyword)) {
+      throw new Error(
+        `[supplements] archetype feature "${s.name}" (${id}) description no longer says "${s.keyword}" — re-verify what it replaces before re-pairing`,
+      );
+    }
+    if (feature.pairedBaseFeatureUuid !== undefined) {
+      throw new Error(
+        `[supplements] archetype feature "${s.name}" (${id}) now pairs upstream — retire its supplement entry`,
+      );
+    }
+    feature.pairedBaseFeatureUuid = s.pairedBaseFeatureUuid;
+  }
+}
+
+/**
  * `@cl`-keyed projectile-count formulas for the handful of spells whose EFFECT
  * COUNT scales with caster level (rather than their `damage.parts[].formula`).
  * The vendored `damage.parts` carries only the flat per-hit damage — Magic

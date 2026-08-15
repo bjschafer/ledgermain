@@ -6922,6 +6922,7 @@
     "id": "barbarian:sharptooth:swim-like-a-fish:1",
     "level": 1,
     "name": "Swim Like a Fish",
+    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp",
     "sources": [
       {
         "id": "PZO1140",
@@ -9478,6 +9479,7 @@
     "id": "barbarianUnchained:sharptooth:swim-like-a-fish:1",
     "level": 1,
     "name": "Swim Like a Fish",
+    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp",
     "sources": [
       {
         "id": "PZO1140",

@@ -47,16 +47,13 @@
  *         `uses.maxFormula` (`4 + @abilities.con.mod + (2 * (@class.unlevel
  *         - 1))`) already applied generically by `deriveResourcePools`.
  *         Recorded, not modeled.
- *      2. A suspected vendored-data issue: an UNPAIRED feature whose prose
- *         either (a) is a byte-identical reflavor of a base class feature
- *         the pairing script should have linked (Sharptooth's "Swim Like a
- *         Fish" vs. Fast Movement), or (b) restates the base Damage
+ *      2. A vendored-data issue: a feature that restates the base Damage
  *         Reduction progression verbatim with no "this ability replaces…"
  *         language at all and a `level` field that contradicts its own
  *         prose (Jungle Rager's "Damage reduction" entry) — extracting a
- *         number for either risks sitting on top of a base grant this table
- *         has no way to confirm is actually suppressed. See the report notes
- *         for the specific ids.
+ *         number risks sitting on top of a base grant this table has no way
+ *         to confirm is actually suppressed. See the report notes for the
+ *         specific ids.
  *
  * Precedent this pass leaned on:
  *  - Fast Movement (base L1) carries a real vendored Change (`landSpeed`,
@@ -990,8 +987,8 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "barbarian:sharptooth",
     name: "Swim Like a Fish (10 ft.)",
     level: 1,
-    bucket: "blocked",
-    note: "suspected vendored-data issue: this feature's prose is a byte-identical reflavor of the base Fast Movement class feature (same +10 ft., same @armor.type<=1/not-heavy-load condition, even the same \"stacks with other bonuses\" sentence) yet carries no pairedBaseFeatureUuid at all. Extracting a duplicate Change would be harmless in practice (landSpeed's \"base\" type takes highest-only, so the total wouldn't double), but recording rather than guessing per the blocked-bucket rubric — the vendored pairing script likely dropped a link here that should point at Fast Movement's uuid.",
+    bucket: "numeric",
+    note: "unconditional swim speed, 10 ft. at 1st and +5 ft. every 5 levels thereafter — extracted via the swimSpeed target (see BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED below). Its Fast Movement pairing is hand-supplied (SUPPLEMENTAL_ARCHETYPE_FEATURE_PAIRING): the source sets no replaces flag and barbarian's 1st level grants two features, so neither vendored pairing path fires",
   },
 
   // ── Shoanti Burn Rider ─────────────────────────────────────────────────
@@ -1505,6 +1502,26 @@ export const BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "At 2nd level, a sharptooth gains scent as per the universal monster rule. At 5th " +
       "level, she also gains keen scent as per universal monster rule.",
+  },
+
+  // Sharptooth's "Swim Like a Fish" grants a swim speed outright, so the
+  // swimSpeed/"base"/"set" idiom applies rather than an additive bonus. The
+  // 5-level step is uncapped in the prose; 20th level is where it stops
+  // mattering in play (30 ft.).
+  "barbarian:sharptooth:swim-like-a-fish:1": {
+    changes: [
+      {
+        formula: "10 + 5 * floor(@class.unlevel / 5)",
+        target: "swimSpeed",
+        type: "base",
+        operator: "set",
+      },
+    ],
+    detail: (level) => `swim speed ${10 + 5 * Math.floor(level / 5)} ft.`,
+    confidence: "high",
+    provenance:
+      "A sharptooth gains a swim speed of 10 feet. At 5th level and every 5 levels " +
+      "thereafter, her swim speed increases by 5 feet.",
   },
 
   // Superstitious's "Keen Senses" grants a fixed sequence of special senses,

@@ -98,6 +98,7 @@ import {
 } from "./transform/subdomainPowers.js";
 import {
   applyArchetypeFeatureLevelSupplements,
+  applyArchetypeFeaturePairingSupplements,
   applyBuffSupplements,
   applyClassFeatureChangesSupplements,
   applyClassFeatureEffectImmunitySupplements,
@@ -823,6 +824,7 @@ export function normalize(opts: NormalizeOptions): {
   );
   mergeDuplicateArchetypes(archetypes, archetypeFeatures);
   applyArchetypeFeatureLevelSupplements(archetypeFeatures);
+  applyArchetypeFeaturePairingSupplements(archetypeFeatures);
 
   // --- rage powers (fourth-party dataset; Foundry ships only a stub — see
   // config.ts PFDATA_REPO/PFDATA_SHA and RagePower's doc comment) -----------

@@ -124,7 +124,7 @@ describe("classification table covers every vendored barbarian archetype feature
     }
   });
 
-  it("blocked entries are the rounds/day-cadence and suspected-mispairing cases", () => {
+  it("blocked entries are the rounds/day-cadence and base-restatement cases", () => {
     const blocked = Object.entries(BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, e]) => e.bucket === "blocked")
       .map(([id]) => id);
@@ -136,7 +136,6 @@ describe("classification table covers every vendored barbarian archetype feature
         "barbarian:jungle-rager:damage-reduction:8",
         "barbarian:mad-dog:rage:4",
         "barbarian:raging-cannibal:consume-vigor:2",
-        "barbarian:sharptooth:swim-like-a-fish:1",
         "barbarian:shoanti-burn-rider:give-me-fire:5",
       ].sort(),
     );
@@ -351,6 +350,41 @@ describe("Sharptooth: Scent of Blood grants scent, doubling range to keen scent 
   });
 });
 
+describe("Sharptooth: Swim Like a Fish grants a swim speed stepping every 5 levels", () => {
+  // Advanced Class Guide: "A sharptooth gains a swim speed of 10 feet. At 5th
+  // level and every 5 levels thereafter, her swim speed increases by 5 feet."
+  const entry = BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:sharptooth:swim-like-a-fish:1"]!;
+  const formula = entry.changes[0]!.formula;
+
+  it("10 ft. at L1-4, 15 at L5, 20 at L10, 30 at L20", () => {
+    expect(evalAtLevel(formula, 1)).toBe(10);
+    expect(evalAtLevel(formula, 4)).toBe(10);
+    expect(evalAtLevel(formula, 5)).toBe(15);
+    expect(evalAtLevel(formula, 9)).toBe(15);
+    expect(evalAtLevel(formula, 10)).toBe(20);
+    expect(evalAtLevel(formula, 20)).toBe(30);
+  });
+
+  it("matches the entry's own detail string", () => {
+    expect(entry.detail?.(1)).toBe("swim speed 10 ft.");
+    expect(entry.detail?.(20)).toBe("swim speed 30 ft.");
+  });
+
+  it("shows up in compute()'s sheet.speeds.swim, and only with the archetype", () => {
+    const sharptooth = archetypeId("Sharptooth", "barbarian");
+    const sheet = compute(makeDoc({ level: 10, archetypes: [sharptooth] }), ref);
+    expect(sheet.speeds.swim).toBe(20);
+    expect(compute(makeDoc({ level: 10 }), ref).speeds.swim ?? 0).toBe(0);
+  });
+
+  it("is paired against Fast Movement, which the hand-authored pairing supplement supplies", () => {
+    const feature = ref.archetypeFeatures["barbarian:sharptooth:swim-like-a-fish:1"];
+    expect(feature?.pairedBaseFeatureUuid).toBe(
+      "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp",
+    );
+  });
+});
+
 describe("Superstitious: Keen Senses grants a level-gated sequence of special senses", () => {
   const entry = BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED["barbarian:superstitious:keen-senses:7"]!;
 
@@ -403,8 +437,8 @@ describe("Superstitious: Keen Senses grants a level-gated sequence of special se
 });
 
 describe("BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED shape", () => {
-  it("has exactly 12 entries", () => {
-    expect(Object.keys(BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(12);
+  it("has exactly 13 entries", () => {
+    expect(Object.keys(BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(13);
   });
 
   it("every extracted id is classified numeric in the audit table", () => {

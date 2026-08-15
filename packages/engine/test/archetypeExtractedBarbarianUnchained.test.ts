@@ -70,22 +70,22 @@ describe("BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () =>
     expect(Object.keys(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(161);
   });
 
-  it("bucket counts match the audited totals (20 numeric / 38 situational / 91 subsystem / 12 blocked)", () => {
+  it("bucket counts match the audited totals (21 numeric / 38 situational / 91 subsystem / 11 blocked)", () => {
     const counts: Record<string, number> = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts["numeric"]).toBe(20);
+    expect(counts["numeric"]).toBe(21);
     expect(counts["situational"]).toBe(38);
     expect(counts["subsystem"]).toBe(91);
-    expect(counts["blocked"]).toBe(12);
+    expect(counts["blocked"]).toBe(11);
   });
 
   it("every numeric-bucket classification entry has a matching extracted-effects entry, and no stray entries exist", () => {
     const numericIds = Object.entries(BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(20);
+    expect(numericIds.length).toBe(21);
     for (const id of numericIds) {
       expect(BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -276,6 +276,38 @@ describe("Savage Barbarian: Naked Courage / Natural Toughness", () => {
       BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED,
     );
     expect(resolved?.source).toBe("extracted");
+  });
+});
+
+describe("Sharptooth: Swim Like a Fish grants a swim speed stepping every 5 levels", () => {
+  // Advanced Class Guide: "A sharptooth gains a swim speed of 10 feet. At 5th
+  // level and every 5 levels thereafter, her swim speed increases by 5 feet."
+  const entry =
+    BARBARIAN_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[
+      "barbarianUnchained:sharptooth:swim-like-a-fish:1"
+    ]!;
+  const at = (level: number) =>
+    evaluateFormula(entry.changes[0]!.formula, { class: { unlevel: level } });
+
+  it("10 ft. at L1-4, 15 at L5, 20 at L10, 30 at L20", () => {
+    expect(at(1)).toBe(10);
+    expect(at(4)).toBe(10);
+    expect(at(5)).toBe(15);
+    expect(at(9)).toBe(15);
+    expect(at(10)).toBe(20);
+    expect(at(20)).toBe(30);
+  });
+
+  it("sets rather than adds, so it doesn't stack with another swim-speed grant", () => {
+    expect(entry.changes[0]!.target).toBe("swimSpeed");
+    expect(entry.changes[0]!.operator).toBe("set");
+  });
+
+  it("is paired against Fast Movement, which the hand-authored pairing supplement supplies", () => {
+    const feature = ref.archetypeFeatures["barbarianUnchained:sharptooth:swim-like-a-fish:1"];
+    expect(feature?.pairedBaseFeatureUuid).toBe(
+      "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp",
+    );
   });
 });
 
