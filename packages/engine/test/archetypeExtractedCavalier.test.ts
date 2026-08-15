@@ -1,8 +1,9 @@
 import { describe, expect, it } from "bun:test";
 
 import { loadRefData } from "@pf1/data-pipeline";
+import type { CharacterDoc } from "@pf1/schema";
 
-import { evaluateFormula, resolveArchetypeFeatureEffect } from "../src/index.js";
+import { compute, evaluateFormula, resolveArchetypeFeatureEffect } from "../src/index.js";
 import {
   CAVALIER_ARCHETYPE_EFFECTS_EXTRACTED,
   CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION,
@@ -82,7 +83,7 @@ describe("CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const numericIds = Object.entries(CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(9);
+    expect(numericIds.length).toBe(10);
     for (const id of numericIds) {
       expect(CAVALIER_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -96,8 +97,8 @@ describe("CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     for (const entry of Object.values(CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    expect(counts.numeric).toBe(9);
-    expect(counts.situational).toBe(60);
+    expect(counts.numeric).toBe(10);
+    expect(counts.situational).toBe(59);
     expect(counts.subsystem).toBe(114);
     expect(counts.blocked).toBe(7);
     expect(counts.numeric + counts.situational + counts.subsystem + counts.blocked).toBe(190);
@@ -308,5 +309,89 @@ describe("blocked bucket: Bonus Feat reflavors that double-count the base Bonus 
     expect(tactician?.uses?.maxFormula).toBe("1 + floor(@class.unlevel / 5)");
     const entry = CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION["cavalier:strategist:tactician:1"];
     expect(entry?.bucket).toBe("blocked");
+  });
+});
+
+describe("Disciple of the Pike: Weapon Training polearms-or-spears pick (build.pickChoices)", () => {
+  function raceId(name: string): string {
+    const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
+    if (!entry) throw new Error(`race not found: ${name}`);
+    return entry[0];
+  }
+
+  function makeDoc(
+    level: number,
+    weapon: NonNullable<CharacterDoc["build"]["weapons"]>[number],
+    pickChoices?: Record<string, string>,
+  ): CharacterDoc {
+    return {
+      schemaVersion: 1,
+      id: "test",
+      ownerId: "owner",
+      version: 1,
+      updatedAt: "2026-01-01T00:00:00.000Z",
+      identity: {
+        name: "Test",
+        race: raceId("Human"),
+        classes: [{ tag: "cavalier", level }],
+      },
+      abilities: { str: 14, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        archetypes: [archetypeId("Disciple of the Pike")],
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        weapons: [weapon],
+        pickChoices,
+      },
+      live: {
+        hp: { current: 0, temp: 0, nonlethal: 0 },
+        conditions: [],
+        activeBuffs: [],
+        resources: {},
+      },
+    };
+  }
+
+  const featureId = "cavalier:disciple-of-the-pike:weapon-training:5";
+  const pickChoiceKey = `archetypeFeature:${featureId}`;
+  const glaive: NonNullable<CharacterDoc["build"]["weapons"]>[number] = {
+    name: "Glaive",
+    attackAbility: "str",
+    category: "melee",
+    weaponGroups: ["polearms"],
+  };
+  const spear: NonNullable<CharacterDoc["build"]["weapons"]>[number] = {
+    name: "Spear",
+    attackAbility: "str",
+    category: "melee",
+    weaponGroups: ["spears"],
+  };
+
+  // Cavalier has full BAB: BAB 5 + Str mod 2 = 7 at L5, BAB 9 + Str mod 2 = 11 at L9.
+
+  it("no stored pick: no attack/damage bonus", () => {
+    const sheet = compute(makeDoc(5, glaive), ref);
+    expect(sheet.attacks[0]!.attack.total).toBe(7);
+  });
+
+  it("polearms pick: +1 attack/damage at L5, +2 at L9", () => {
+    const pickChoices = { [pickChoiceKey]: "polearms" };
+    const at5 = compute(makeDoc(5, glaive, pickChoices), ref);
+    expect(at5.attacks[0]!.attack.total).toBe(8); // 7 + 1
+    expect(at5.attacks[0]!.damageBonus.total).toBe(3); // Str mod 2 + 1
+
+    const at9 = compute(makeDoc(9, glaive, pickChoices), ref);
+    expect(at9.attacks[0]!.attack.total).toBe(13); // 11 + 2
+  });
+
+  it("polearms pick doesn't apply to a spear, and vice versa", () => {
+    const polearmsPick = compute(makeDoc(5, spear, { [pickChoiceKey]: "polearms" }), ref);
+    expect(polearmsPick.attacks[0]!.attack.total).toBe(7); // no bonus
+
+    const spearsPick = compute(makeDoc(5, spear, { [pickChoiceKey]: "spears" }), ref);
+    expect(spearsPick.attacks[0]!.attack.total).toBe(8); // +1 bonus applies
   });
 });
