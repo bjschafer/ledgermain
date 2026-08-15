@@ -26,6 +26,7 @@ function makeDoc(over?: {
   feats?: string[];
   featChoices?: Record<string, string>;
   skillRanks?: Record<string, number>;
+  extraFeats?: { instanceId: string; featId: string; choiceId?: string }[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -43,6 +44,7 @@ function makeDoc(over?: {
       feats: over?.feats ?? [],
       featChoices: over?.featChoices,
       skillRanks: over?.skillRanks ?? { acr: 5 },
+      extraFeats: over?.extraFeats,
       classFeatureChoices: [],
       spells: { known: [] },
       gear: [],
@@ -278,5 +280,169 @@ describe("community parameterized-skill-family promotions", () => {
       expect(sheet.skills[id]?.total).toBe((base.skills[id]?.total ?? 0) + 2);
     }
     expect(sheet.skills.dip?.total).toBe(base.skills.dip?.total);
+  });
+});
+
+/**
+ * Fixtures for the "options" / "energy" / "craft" feat-choice axes (extends
+ * `ChoiceFeatEntry` beyond skill/weapon/school — see feat-effects.ts).
+ */
+describe("feat-choice axes: options / energy / craft", () => {
+  const angelicFlesh = featId("Angelic Flesh");
+
+  it("Angelic Flesh: no choice stored emits nothing at all, not even the penalty", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(makeDoc({ feats: [angelicFlesh] }), ref);
+    expect(sheet.skills.dis?.total).toBe(base.skills.dis?.total);
+    expect(sheet.skills.ste?.total).toBe(base.skills.ste?.total);
+    expect(sheet.ac.normal).toBe(base.ac.normal);
+    expect(sheet.defenses?.resistances ?? []).toEqual([]);
+  });
+
+  it("Angelic Flesh (Steel): +1 natural armor, plus the unconditional -2/-2", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [angelicFlesh], featChoices: { [angelicFlesh]: "steel" } }),
+      ref,
+    );
+    expect(sheet.ac.normal).toBe(base.ac.normal + 1);
+    expect(
+      sheet.ac.components.some(
+        (c) => c.category === "natural" && c.source === "Angelic Flesh" && c.applied,
+      ),
+    ).toBe(true);
+    expect(sheet.skills.dis?.total).toBe((base.skills.dis?.total ?? 0) - 2);
+    expect(sheet.skills.ste?.total).toBe((base.skills.ste?.total ?? 0) - 2);
+  });
+
+  it("Angelic Flesh (Brazen): fire resistance 5, plus the unconditional -2/-2", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [angelicFlesh], featChoices: { [angelicFlesh]: "brazen" } }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(5);
+    expect(sheet.skills.dis?.total).toBe((base.skills.dis?.total ?? 0) - 2);
+    expect(sheet.skills.ste?.total).toBe((base.skills.ste?.total ?? 0) - 2);
+  });
+
+  it("Angelic Flesh (Silver): +2 vs paralysis/petrification/poison, plus the unconditional -2/-2", () => {
+    const sheet = compute(
+      makeDoc({ feats: [angelicFlesh], featChoices: { [angelicFlesh]: "silver" } }),
+      ref,
+    );
+    const fortCond = sheet.saves.fort.conditionals?.find((c) => c.categories.includes("poison"));
+    expect(fortCond?.total).toBe(sheet.saves.fort.total + 2);
+    expect([...(fortCond?.categories ?? [])].sort()).toEqual([
+      "paralysis",
+      "petrification",
+      "poison",
+    ]);
+    // Petrification/poison are Fortitude-only; paralysis also allows Will.
+    const willCond = sheet.saves.will.conditionals?.find((c) => c.categories.includes("paralysis"));
+    expect(willCond?.total).toBe(sheet.saves.will.total + 2);
+  });
+
+  it("Angelic Flesh (Golden): only the unconditional -2/-2, no numeric target for its own benefit", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [angelicFlesh], featChoices: { [angelicFlesh]: "golden" } }),
+      ref,
+    );
+    expect(sheet.ac.normal).toBe(base.ac.normal);
+    expect(sheet.defenses?.resistances ?? []).toEqual([]);
+    expect(sheet.skills.dis?.total).toBe((base.skills.dis?.total ?? 0) - 2);
+    expect(sheet.skills.ste?.total).toBe((base.skills.ste?.total ?? 0) - 2);
+  });
+
+  const expandedFiendishResistance = featId("Expanded Fiendish Resistance");
+
+  it("Expanded Fiendish Resistance: no choice stored emits nothing", () => {
+    const sheet = compute(makeDoc({ feats: [expandedFiendishResistance] }), ref);
+    expect(sheet.defenses?.resistances ?? []).toEqual([]);
+  });
+
+  it("Expanded Fiendish Resistance: resistance 5 to the chosen (RAW-supported) energy type", () => {
+    const sheet = compute(
+      makeDoc({
+        feats: [expandedFiendishResistance],
+        featChoices: { [expandedFiendishResistance]: "fire" },
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(5);
+  });
+
+  it("Expanded Fiendish Resistance: Sonic is on the shared 'energy' picker but outside this feat's own RAW list, so it's a safe no-op", () => {
+    const sheet = compute(
+      makeDoc({
+        feats: [expandedFiendishResistance],
+        featChoices: { [expandedFiendishResistance]: "sonic" },
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances ?? []).toEqual([]);
+  });
+
+  it("Expanded Fiendish Resistance: repeatable, each extraFeats instance keeps its own choice", () => {
+    const sheet = compute(
+      makeDoc({
+        feats: [expandedFiendishResistance],
+        featChoices: { [expandedFiendishResistance]: "acid" },
+        extraFeats: [{ instanceId: "x1", featId: expandedFiendishResistance, choiceId: "cold" }],
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "acid")?.total).toBe(5);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "cold")?.total).toBe(5);
+  });
+
+  const skillFocusCraft = featId("Skill Focus (Craft)");
+
+  it("Skill Focus (Craft): no choice stored emits nothing", () => {
+    const base = compute(makeDoc({ skillRanks: { "crf.alchemy": 5 } }), ref);
+    const sheet = compute(
+      makeDoc({ feats: [skillFocusCraft], skillRanks: { "crf.alchemy": 5 } }),
+      ref,
+    );
+    expect(sheet.skills["crf.alchemy"]?.total).toBe(base.skills["crf.alchemy"]?.total);
+  });
+
+  it("Skill Focus (Craft): +3 on the chosen Craft instance below 10 ranks, +6 at 10+", () => {
+    // crf.alchemy: 5 ranks + 3 class skill (fighter) + 0 Int mod = 8 -> +3 = 11.
+    const low = compute(
+      makeDoc({
+        feats: [skillFocusCraft],
+        featChoices: { [skillFocusCraft]: "crf.alchemy" },
+        skillRanks: { "crf.alchemy": 5 },
+      }),
+      ref,
+    );
+    expect(low.skills["crf.alchemy"]?.total).toBe(11);
+
+    // crf.alchemy: 10 ranks + 3 class skill + 0 Int mod = 13 -> +6 = 19.
+    const high = compute(
+      makeDoc({
+        feats: [skillFocusCraft],
+        featChoices: { [skillFocusCraft]: "crf.alchemy" },
+        skillRanks: { "crf.alchemy": 10 },
+      }),
+      ref,
+    );
+    expect(high.skills["crf.alchemy"]?.total).toBe(19);
+  });
+
+  it("Skill Focus (Craft): repeatable, primary + extraFeats instance each target their own instance", () => {
+    const sheet = compute(
+      makeDoc({
+        feats: [skillFocusCraft],
+        featChoices: { [skillFocusCraft]: "crf.alchemy" },
+        skillRanks: { "crf.alchemy": 5, "crf.armor": 5 },
+        extraFeats: [{ instanceId: "x1", featId: skillFocusCraft, choiceId: "crf.armor" }],
+      }),
+      ref,
+    );
+    expect(sheet.skills["crf.alchemy"]?.total).toBe(11);
+    expect(sheet.skills["crf.armor"]?.total).toBe(11);
   });
 });

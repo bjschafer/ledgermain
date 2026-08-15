@@ -38,6 +38,7 @@ function makeDoc(over: {
   rogueTalents?: string[];
   clericDomains?: string[];
   druidNatureBondDomain?: string;
+  skillRanks?: Record<string, number>;
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -59,7 +60,7 @@ function makeDoc(over: {
       rogueTalents: over.rogueTalents,
       clericDomains: over.clericDomains,
       druidNatureBondDomain: over.druidNatureBondDomain,
-      skillRanks: {},
+      skillRanks: over.skillRanks ?? {},
       classFeatureChoices: [],
       spells: { known: [] },
       gear: [],
@@ -766,6 +767,35 @@ describe("featChoiceOptions", () => {
       "Transmutation",
     ]);
   });
+
+  it('returns the 5-type energy vocabulary for type "energy"', () => {
+    const opts = featChoiceOptions("energy", ref);
+    expect(opts.map((o) => o.name)).toEqual(["Acid", "Cold", "Electricity", "Fire", "Sonic"]);
+  });
+
+  it('returns the descriptor\'s own list for type "options", or empty without a descriptor', () => {
+    const descriptor = featChoiceDescriptor("Angelic Flesh");
+    expect(descriptor?.type).toBe("options");
+    const opts = featChoiceOptions("options", ref, undefined, descriptor ?? undefined);
+    expect(opts.map((o) => o.name)).toEqual(["Brazen", "Golden", "Silver", "Steel"]);
+    expect(featChoiceOptions("options", ref)).toEqual([]);
+  });
+
+  it('returns the character\'s own Craft/Perform/Profession instances for type "craft"/"perform"/"profession", empty without one', () => {
+    const doc = makeDoc({
+      classes: [{ tag: "fighter", level: 1 }],
+      skillRanks: { "crf.alchemy": 1, "crf.armor": 1, "prf.oratory": 1, acr: 5 },
+    });
+    const craft = featChoiceOptions("craft", ref, doc);
+    expect(craft.map((o) => o.id).sort()).toEqual(["crf.alchemy", "crf.armor"]);
+    expect(craft.find((o) => o.id === "crf.alchemy")?.name).toBe("Craft (Alchemy)");
+
+    const perform = featChoiceOptions("perform", ref, doc);
+    expect(perform.map((o) => o.id)).toEqual(["prf.oratory"]);
+
+    expect(featChoiceOptions("profession", ref, doc)).toEqual([]);
+    expect(featChoiceOptions("craft", ref)).toEqual([]);
+  });
 });
 
 // ─── choice-requiring feats without a picker ─────────────────────
@@ -792,6 +822,28 @@ describe("featChoiceDescriptor: issue #55 additions", () => {
     // Greater Weapon Focus/Specialization (machine-extracted) keep working.
     expect(featChoiceDescriptor("Greater Weapon Focus")?.type).toBe("weapon");
     expect(featChoiceDescriptor("Greater Weapon Specialization")?.type).toBe("weapon");
+  });
+});
+
+describe("featChoiceDescriptor: options / energy / craft-family axes", () => {
+  it('Angelic Flesh gets an "options" descriptor carrying its own four-branch list', () => {
+    const desc = featChoiceDescriptor("Angelic Flesh");
+    expect(desc?.type).toBe("options");
+    expect(desc?.options?.map((o) => o.id)).toEqual(["brazen", "golden", "silver", "steel"]);
+  });
+
+  it('Expanded Fiendish Resistance gets an "energy" descriptor', () => {
+    expect(featChoiceDescriptor("Expanded Fiendish Resistance")).toEqual({
+      type: "energy",
+      label: "Energy type",
+    });
+  });
+
+  it('Skill Focus (Craft) gets a "craft" descriptor', () => {
+    expect(featChoiceDescriptor("Skill Focus (Craft)")).toEqual({
+      type: "craft",
+      label: "Craft skill",
+    });
   });
 });
 

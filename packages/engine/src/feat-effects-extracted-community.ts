@@ -51,6 +51,55 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance: "You gain a +4 bonus to your CMD.",
   },
+  // Unconditional -2 Disguise/-2 Stealth penalty, plus one of four named
+  // metallic-affinity benefits the player picks. Brazen's energy resistance
+  // and Steel's natural armor bonus are real Change-shaped numbers; Golden's
+  // save bonus (blindness/dazzling/patterns/light descriptor) and CL bump,
+  // and Silver's/Steel's "counts as silver/cold iron for DR" clauses, have no
+  // matching engine target and stay unwired. Silver's own save bonus DOES
+  // land: paralysis/petrification/poison are all named `SAVE_CATEGORIES`.
+  "angelic-flesh": {
+    type: "choice",
+    choice: {
+      type: "options",
+      label: "Metallic affinity",
+      options: [
+        { id: "brazen", label: "Brazen" },
+        { id: "golden", label: "Golden" },
+        { id: "silver", label: "Silver" },
+        { id: "steel", label: "Steel" },
+      ],
+    },
+    confidence: "high",
+    provenance:
+      "You take a -2 penalty on Disguise and Stealth checks but gain one of the following benefits, depending on the metallic affinity of your flesh (choose one).",
+    build(choiceId: string) {
+      const penalties = [
+        { target: "skill.dis", type: "untyped", formula: "-2" },
+        { target: "skill.ste", type: "untyped", formula: "-2" },
+      ];
+      if (choiceId === "brazen") {
+        return [...penalties, { target: "eres.fire", type: "untyped", formula: "5" }];
+      }
+      if (choiceId === "silver") {
+        return [
+          ...penalties,
+          {
+            target: "allSavingThrows",
+            type: "untyped",
+            formula: "2",
+            saveCategories: ["paralysis", "petrification", "poison"],
+          },
+        ];
+      }
+      if (choiceId === "steel") {
+        return [...penalties, { target: "nac", type: "natural", formula: "1" }];
+      }
+      // Golden (and any stale/unrecognized choice id): only the
+      // unconditional penalty applies — no engine target for its benefit.
+      return penalties;
+    },
+  },
   // Unconditional +10 feet swim speed increase.
   "aquatic-ancestry": {
     type: "static",
@@ -323,6 +372,28 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance:
       "You gain a +2 bonus on skill checks with that skill. If you have 10 or more ranks in the chosen skill, this bonus increases to +4.",
+  },
+  // Energy resistance 5 to a chosen type. RAW's own list (acid/cold/
+  // electricity/fire) is a subset of the shared "energy" picker's five
+  // options (which also offers sonic, for feats that DO grant it) — picking
+  // Sonic here is a safe no-op, the same posture as any stale choice id.
+  "expanded-fiendish-resistance": {
+    type: "choice",
+    choice: { type: "energy", label: "Energy type" },
+    confidence: "high",
+    provenance:
+      "Pick one of the following energy types that you do not already have resistance to: acid, cold, electricity, or fire. You gain resistance 5 to that energy type.",
+    build(choiceId: string) {
+      if (
+        choiceId !== "acid" &&
+        choiceId !== "cold" &&
+        choiceId !== "electricity" &&
+        choiceId !== "fire"
+      ) {
+        return [];
+      }
+      return [{ target: `eres.${choiceId}`, type: "untyped", formula: "5" }];
+    },
   },
   // Unconditional +2 Knowledge (geography) bonus rising to +4 at 10 ranks.
   explorer: {
@@ -957,6 +1028,24 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance:
       "You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.",
+  },
+  // Rank-gated Skill Focus bonus (+3, or +6 at 10+ ranks), scoped to a
+  // Craft subtype instance the player already has (not a refData-wide skill
+  // list) — same formula shape as skill-focus-acrobatics etc, targeting the
+  // chosen instance id directly.
+  "skill-focus-craft": {
+    type: "choice",
+    choice: { type: "craft", label: "Craft skill" },
+    confidence: "high",
+    provenance:
+      "You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.",
+    build: (choiceId: string) => [
+      {
+        target: `skill.${choiceId}`,
+        type: "untyped",
+        formula: `if(gte(@skills.${choiceId}.rank, 10), 6, 3)`,
+      },
+    ],
   },
   // Unconditional rank-gated Skill Focus bonus on Diplomacy.
   "skill-focus-diplomacy": {

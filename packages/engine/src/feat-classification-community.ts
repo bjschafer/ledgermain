@@ -99,7 +99,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "angel-wings": "situational",
   "angelbane-strike": "subsystem",
   "angelic-blood": "situational",
-  "angelic-flesh": "blocked",
+  "angelic-flesh": "choice-numeric",
   "animal-affinity-mythic": "subsystem",
   "animal-ally": "subsystem",
   "animal-call": "subsystem",
@@ -976,7 +976,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "exotic-heritage": "choice-numeric",
   "expanded-arcana": "subsystem",
   "expanded-enhance-arrows": "subsystem",
-  "expanded-fiendish-resistance": "blocked",
+  "expanded-fiendish-resistance": "choice-numeric",
   "expanded-hunter-tactics": "subsystem",
   "expanded-metakinesis": "subsystem",
   "expanded-phrenic-pool": "pool",
@@ -2505,7 +2505,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "skill-focus-artistry": "numeric",
   "skill-focus-bluff": "numeric",
   "skill-focus-climb": "numeric",
-  "skill-focus-craft": "blocked",
+  "skill-focus-craft": "choice-numeric",
   "skill-focus-diplomacy": "numeric",
   "skill-focus-disable-device": "numeric",
   "skill-focus-disguise": "numeric",
@@ -3221,7 +3221,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "ancient-draconic":
     "The +1 bonus on caster level checks to overcome SR applies only to arcane spells with a verbal component; clCheck has no per-casting-component axis, so wiring it to clCheck.sr would over-apply to non-verbal and divine casting.",
   "angelic-flesh":
-    "Benefit is a player choice among four named sub-options (Brazen, Golden, Silver, Steel); the feat-choice picker only offers skill/weapon axes, not a fixed named-option list like this. [flag: multi-option-choice]",
+    "Wired via the entry's own named-option choice axis: Brazen grants eres.fire 5, Silver grants +2 vs paralysis/petrification/poison (saveCategories), Steel grants +1 natural armor (nac); the unconditional -2 Disguise/-2 Stealth penalty applies to every branch. Golden's save bonus and the DR-bypass clauses on Silver/Steel have no matching target and stay unwired.",
   "aquatic-ancestry": "Unconditional +10 feet swim speed increase.",
   "aquatic-combatant":
     "Unconditional +2 bonus on Swim checks (the underwater melee-penalty removal is situational and not part of this draft).",
@@ -3321,7 +3321,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "diviner-s-delving":
     "+2 on caster level checks to overcome SR, but only with divination spells; clCheck has no per-school axis (unlike spellDC), so wiring it to clCheck.sr would over-apply to every other school's SR checks.",
   "draconic-aspect":
-    "Energy resistance 5 is a real number with a real target (eres.<energy>), but the choice axis is an energy type, which the choice-numeric bucket explicitly excludes.",
+    "Energy resistance 5 (eres.<energy>) is reachable via the choice-numeric options axis (five dragon colors, two sharing the acid type), but the Special clause swaps in a flat +1 natural armor bonus instead when the dragon-scaled racial trait is present, and build(choiceId) has no access to the character's other picks to branch on that.",
   "draconic-paragon":
     "Unconditional fly speed grant from upgraded wings; the breath-weapon damage increase and extra sleep/paralysis save bonus aren't modeled.",
   "dragonfly-style":
@@ -3348,7 +3348,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "exotic-heritage":
     "Player picks any skill; unconditional +2 bonus rising to +4 at 10 ranks in that skill.",
   "expanded-fiendish-resistance":
-    "Energy resistance is parameterized by a chosen energy type, an axis outside the skill/weapon choice UI.",
+    "Wired via the shared 'energy' choice axis: eres.<type> 5 for the chosen type. RAW excludes sonic from this feat's own list; picking it is a safe no-op rather than a fabricated resistance.",
   "expanded-phrenic-pool": "Flat +2 increase to the phrenic pool maximum.",
   "expanded-resistance":
     "The save bonus is parameterized by a chosen school of magic, an axis outside the skill/weapon choice UI.",
@@ -3577,7 +3577,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "skill-focus-bluff": "Unconditional rank-gated Skill Focus bonus on Bluff.",
   "skill-focus-climb": "Unconditional rank-gated Skill Focus bonus on Climb.",
   "skill-focus-craft":
-    "Skill Focus (Craft) applies to one Craft subtype the player picks; the feat-choice picker builds its option list from refData only, so it can't offer a character's own Craft instances. Choice UI, not a target-vocabulary gap.",
+    "Wired via the 'craft' choice axis: the picker offers the character's own Craft skill instances, and the chosen instance gets the same rank-gated +3/+6 formula as the plain skill-focus-<skill> entries.",
   "skill-focus-diplomacy": "Unconditional rank-gated Skill Focus bonus on Diplomacy.",
   "skill-focus-disable-device": "Unconditional rank-gated Skill Focus bonus on Disable Device.",
   "skill-focus-disguise": "Unconditional rank-gated Skill Focus bonus on Disguise.",
@@ -3609,9 +3609,9 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "skill-focus-lore": "Unconditional rank-gated Skill Focus bonus on Lore. [flag: unsure]",
   "skill-focus-perception": "Unconditional rank-gated Skill Focus bonus on Perception.",
   "skill-focus-perform":
-    "Skill Focus (Perform) applies to one Perform subtype the player picks; the feat-choice picker builds its option list from refData only, so it can't offer a character's own Perform instances. Choice UI, not a target-vocabulary gap.",
+    "Skill Focus (Perform) applies to one Perform subtype the player picks; the choice axis for a character's own Perform instances exists (see skill-focus-craft) but this entry isn't wired to it yet.",
   "skill-focus-profession":
-    "Skill Focus (Profession) applies to one Profession subtype the player picks; the feat-choice picker builds its option list from refData only, so it can't offer a character's own Profession instances. Choice UI, not a target-vocabulary gap.",
+    "Skill Focus (Profession) applies to one Profession subtype the player picks; the choice axis for a character's own Profession instances exists (see skill-focus-craft) but this entry isn't wired to it yet.",
   "skill-focus-ride": "Unconditional rank-gated Skill Focus bonus on Ride.",
   "skill-focus-sense-motive": "Unconditional rank-gated Skill Focus bonus on Sense Motive.",
   "skill-focus-sleight-of-hand": "Unconditional rank-gated Skill Focus bonus on Sleight of Hand.",

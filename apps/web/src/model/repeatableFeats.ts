@@ -94,6 +94,7 @@ export const REPEATABLE_FEAT_SLUGS: ReadonlySet<string> = new Set([
   "elemental-channel",
   "empower-spell-like-ability",
   "exotic-weapon-proficiency",
+  "expanded-fiendish-resistance", // "pick another energy type you do not have resistance to"
   "fleet",
   "improved-natural-armor",
   "improved-natural-attack",
@@ -101,6 +102,7 @@ export const REPEATABLE_FEAT_SLUGS: ReadonlySet<string> = new Set([
   "martial-weapon-proficiency",
   "quicken-spell-like-ability",
   "rapid-reload",
+  "skill-focus-craft", // "applies to a new skill", same shape as skill-focus
   "spell-mastery",
   "versatile-summon-monster",
 ]);
