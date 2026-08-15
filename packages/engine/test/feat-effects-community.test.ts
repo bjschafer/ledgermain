@@ -445,4 +445,372 @@ describe("feat-choice axes: options / energy / craft", () => {
     expect(sheet.skills["crf.alchemy"]?.total).toBe(11);
     expect(sheet.skills["crf.armor"]?.total).toBe(11);
   });
+
+  const skillFocusPerform = featId("Skill Focus (Perform)");
+  const skillFocusProfession = featId("Skill Focus (Profession)");
+
+  it("Skill Focus (Perform): +3 below 10 ranks, +6 at 10+, mirrors Skill Focus (Craft)", () => {
+    const low = compute(
+      makeDoc({
+        feats: [skillFocusPerform],
+        featChoices: { [skillFocusPerform]: "prf.oratory" },
+        skillRanks: { "prf.oratory": 5 },
+      }),
+      ref,
+    );
+    // prf.oratory: 5 ranks - 1 Cha mod (not a fighter class skill) + 3 feat = 7.
+    expect(low.skills["prf.oratory"]?.total).toBe(7);
+    const high = compute(
+      makeDoc({
+        feats: [skillFocusPerform],
+        featChoices: { [skillFocusPerform]: "prf.oratory" },
+        skillRanks: { "prf.oratory": 10 },
+      }),
+      ref,
+    );
+    // 10 ranks - 1 Cha mod + 6 feat = 15.
+    expect(high.skills["prf.oratory"]?.total).toBe(15);
+  });
+
+  it("Skill Focus (Profession): +3 below 10 ranks, +6 at 10+, mirrors Skill Focus (Craft)", () => {
+    const low = compute(
+      makeDoc({
+        feats: [skillFocusProfession],
+        featChoices: { [skillFocusProfession]: "pro.brewer" },
+        skillRanks: { "pro.brewer": 5 },
+      }),
+      ref,
+    );
+    // pro.brewer: 5 ranks + 3 class skill (fighter) + 1 Wis mod = 9 -> +3 = 12.
+    expect(low.skills["pro.brewer"]?.total).toBe(12);
+    const high = compute(
+      makeDoc({
+        feats: [skillFocusProfession],
+        featChoices: { [skillFocusProfession]: "pro.brewer" },
+        skillRanks: { "pro.brewer": 10 },
+      }),
+      ref,
+    );
+    // 10 ranks + 3 class skill + 1 Wis mod + 6 feat = 20.
+    expect(high.skills["pro.brewer"]?.total).toBe(20);
+  });
+});
+
+/**
+ * Fixtures for content wave C1: the remaining choice-blocked community feats
+ * wired onto the "options"/"energy"/craft-family axes.
+ */
+describe("content wave C1: options-axis feat choices", () => {
+  const mothersGift = featId("Mother's Gift");
+
+  it("Mother's Gift: no choice stored emits nothing", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(makeDoc({ feats: [mothersGift] }), ref);
+    expect(sheet.ac.normal).toBe(base.ac.normal);
+    expect(sheet.defenses?.sr).toBeUndefined();
+  });
+
+  it("Mother's Gift (Hag Claws): no PC-facing claw-attack target, emits nothing", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [mothersGift], featChoices: { [mothersGift]: "hag-claws" } }),
+      ref,
+    );
+    expect(sheet.ac.normal).toBe(base.ac.normal);
+    expect(sheet.defenses?.sr).toBeUndefined();
+  });
+
+  it("Mother's Gift (Surprisingly Tough): +1 natural armor bonus", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [mothersGift], featChoices: { [mothersGift]: "surprisingly-tough" } }),
+      ref,
+    );
+    expect(sheet.ac.normal).toBe(base.ac.normal + 1);
+    expect(
+      sheet.ac.components.some(
+        (c) => c.category === "natural" && c.source === "Mother's Gift" && c.applied,
+      ),
+    ).toBe(true);
+  });
+
+  it("Mother's Gift (Uncanny Resistance): SR = 6 + character level (fighter 5 -> 11)", () => {
+    const sheet = compute(
+      makeDoc({ feats: [mothersGift], featChoices: { [mothersGift]: "uncanny-resistance" } }),
+      ref,
+    );
+    expect(sheet.defenses?.sr?.total).toBe(11);
+  });
+
+  it("Mother's Gift: repeatable, primary + extraFeats instance each apply their own manifestation", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({
+        feats: [mothersGift],
+        featChoices: { [mothersGift]: "surprisingly-tough" },
+        extraFeats: [{ instanceId: "x1", featId: mothersGift, choiceId: "uncanny-resistance" }],
+      }),
+      ref,
+    );
+    expect(sheet.ac.normal).toBe(base.ac.normal + 1);
+    expect(sheet.defenses?.sr?.total).toBe(11);
+  });
+
+  const cecaeliaTattoo = featId("Cecaelia Focus Tattoo");
+
+  it("Cecaelia Focus Tattoo: no choice stored emits nothing", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(makeDoc({ feats: [cecaeliaTattoo] }), ref);
+    expect(sheet.saves.fort.conditionals ?? []).toEqual(base.saves.fort.conditionals ?? []);
+  });
+
+  it("Cecaelia Focus Tattoo (Crimson Spiral): +1 competence vs death effects, Fortitude only", () => {
+    const sheet = compute(
+      makeDoc({ feats: [cecaeliaTattoo], featChoices: { [cecaeliaTattoo]: "crimson-spiral" } }),
+      ref,
+    );
+    expect(sheet.saves.fort.conditionals).toEqual([
+      { total: sheet.saves.fort.total + 1, categories: ["death"], labels: ["death"] },
+    ]);
+  });
+
+  it("Cecaelia Focus Tattoo (Aureoln Prong): on-land-only darkvision range has no target, emits nothing", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [cecaeliaTattoo], featChoices: { [cecaeliaTattoo]: "aureoln-prong" } }),
+      ref,
+    );
+    expect(sheet.saves.fort.conditionals ?? []).toEqual(base.saves.fort.conditionals ?? []);
+  });
+
+  const auspiciousBirth = featId("Auspicious Birth");
+
+  it("Auspicious Birth: no choice stored emits nothing", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(makeDoc({ feats: [auspiciousBirth] }), ref);
+    expect(sheet.saves.ref.total).toBe(base.saves.ref.total);
+  });
+
+  it("Auspicious Birth (Apparent Retrograde): +1 luck bonus on Reflex saves", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({
+        feats: [auspiciousBirth],
+        featChoices: { [auspiciousBirth]: "apparent-retrograde" },
+      }),
+      ref,
+    );
+    expect(sheet.saves.ref.total).toBe(base.saves.ref.total + 1);
+  });
+
+  it("Auspicious Birth (Sun Sign): spell-DC/CL descriptor scoping has no target, emits nothing", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [auspiciousBirth], featChoices: { [auspiciousBirth]: "sun-sign" } }),
+      ref,
+    );
+    expect(sheet.saves.ref.total).toBe(base.saves.ref.total);
+  });
+
+  const tribalScars = featId("Tribal Scars");
+
+  it("Tribal Scars (Bearpelt): +1 Fortitude, +2 Intimidate", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [tribalScars], featChoices: { [tribalScars]: "bearpelt" } }),
+      ref,
+    );
+    expect(sheet.saves.fort.total).toBe(base.saves.fort.total + 1);
+    expect(sheet.skills.int?.total).toBe((base.skills.int?.total ?? 0) + 2);
+  });
+
+  it("Tribal Scars (Greattusk): +2 CMB on bull rush/overrun, +2 Ride", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [tribalScars], featChoices: { [tribalScars]: "greattusk" } }),
+      ref,
+    );
+    expect(sheet.cmb).toBe(base.cmb);
+    expect(sheet.cmbConditionals).toEqual([
+      {
+        total: base.cmb + 2,
+        categories: ["bullRush", "overrun"],
+        labels: ["bull rush", "overrun"],
+      },
+    ]);
+    expect(sheet.skills.rid?.total).toBe((base.skills.rid?.total ?? 0) + 2);
+  });
+
+  it("Tribal Scars (Ice Chasm): +1 Reflex, +2 Climb", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [tribalScars], featChoices: { [tribalScars]: "ice-chasm" } }),
+      ref,
+    );
+    expect(sheet.saves.ref.total).toBe(base.saves.ref.total + 1);
+    expect(sheet.skills.clm?.total).toBe((base.skills.clm?.total ?? 0) + 2);
+  });
+
+  it("Tribal Scars (Night Hunt): +2 Perception, +2 Survival", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [tribalScars], featChoices: { [tribalScars]: "night-hunt" } }),
+      ref,
+    );
+    expect(sheet.skills.per?.total).toBe((base.skills.per?.total ?? 0) + 2);
+    expect(sheet.skills.sur?.total).toBe((base.skills.sur?.total ?? 0) + 2);
+  });
+
+  it("Tribal Scars (Raptorscale): +5 ft base speed, +2 Acrobatics", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [tribalScars], featChoices: { [tribalScars]: "raptorscale" } }),
+      ref,
+    );
+    expect(sheet.speeds.land).toBe((base.speeds.land ?? 0) + 5);
+    expect(sheet.skills.acr?.total).toBe((base.skills.acr?.total ?? 0) + 2);
+  });
+
+  it("Tribal Scars (Slothjaw): +1 Will, +2 Handle Animal", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [tribalScars], featChoices: { [tribalScars]: "slothjaw" } }),
+      ref,
+    );
+    expect(sheet.saves.will.total).toBe(base.saves.will.total + 1);
+    expect(sheet.skills.han?.total).toBe((base.skills.han?.total ?? 0) + 2);
+  });
+
+  const totemSpirit = featId("Totem Spirit");
+
+  it("Totem Spirit (Lyrune-Quah): +1 Will, +2 Perception", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [totemSpirit], featChoices: { [totemSpirit]: "lyrune-quah" } }),
+      ref,
+    );
+    expect(sheet.saves.will.total).toBe(base.saves.will.total + 1);
+    expect(sheet.skills.per?.total).toBe((base.skills.per?.total ?? 0) + 2);
+  });
+
+  it("Totem Spirit (Shadde-Quah): +2 Intimidate wired; extra rage rounds has no pool-per-choice mechanism, stays unwired", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [totemSpirit], featChoices: { [totemSpirit]: "shadde-quah" } }),
+      ref,
+    );
+    expect(sheet.skills.int?.total).toBe((base.skills.int?.total ?? 0) + 2);
+  });
+
+  it("Totem Spirit (Skoan-Quah): +2 Heal wired; bonus damage vs undead has no target, stays unwired", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [totemSpirit], featChoices: { [totemSpirit]: "skoan-quah" } }),
+      ref,
+    );
+    expect(sheet.skills.hea?.total).toBe((base.skills.hea?.total ?? 0) + 2);
+  });
+
+  it("Totem Spirit (Tamiir-Quah): +5 ft base speed, +2 Acrobatics", () => {
+    const base = compute(makeDoc(), ref);
+    const sheet = compute(
+      makeDoc({ feats: [totemSpirit], featChoices: { [totemSpirit]: "tamiir-quah" } }),
+      ref,
+    );
+    expect(sheet.speeds.land).toBe((base.speeds.land ?? 0) + 5);
+    expect(sheet.skills.acr?.total).toBe((base.skills.acr?.total ?? 0) + 2);
+  });
+
+  const whisperedKnowledge = featId("Whispered Knowledge");
+
+  it("Whispered Knowledge (Secret of Bone): DR 5/bludgeoning", () => {
+    const sheet = compute(
+      makeDoc({
+        feats: [whisperedKnowledge],
+        featChoices: { [whisperedKnowledge]: "bone" },
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.dr.find((d) => d.qualifier === "bludgeoning")?.total).toBe(5);
+  });
+
+  it("Whispered Knowledge (Secret of the Grave): fast healing has no target, emits nothing", () => {
+    const sheet = compute(
+      makeDoc({
+        feats: [whisperedKnowledge],
+        featChoices: { [whisperedKnowledge]: "grave" },
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.dr ?? []).toEqual([]);
+  });
+
+  const draconicAspect = featId("Draconic Aspect");
+
+  it("Draconic Aspect (Red): resistance 5 to fire", () => {
+    const sheet = compute(
+      makeDoc({ feats: [draconicAspect], featChoices: { [draconicAspect]: "red" } }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(5);
+  });
+
+  it("Draconic Aspect (Black and Green): both share the acid energy type", () => {
+    const black = compute(
+      makeDoc({ feats: [draconicAspect], featChoices: { [draconicAspect]: "black" } }),
+      ref,
+    );
+    const green = compute(
+      makeDoc({ feats: [draconicAspect], featChoices: { [draconicAspect]: "green" } }),
+      ref,
+    );
+    expect(black.defenses?.resistances.find((r) => r.qualifier === "acid")?.total).toBe(5);
+    expect(green.defenses?.resistances.find((r) => r.qualifier === "acid")?.total).toBe(5);
+  });
+});
+
+/**
+ * Spirit Focus (content wave C1): the +1 lives in collect.ts's medium
+ * spirit-bonus loop, not in feat-effects-extracted-community.ts's build() —
+ * see that loop's comment. `abilitySkills` legends (Archmage's Int-based
+ * skills) fan out to every skill.<id> keyed to that ability, matching the
+ * plain Spirit Bonus's own fan-out (mediumSpirits.test.ts's Archmage fixture).
+ */
+describe("content wave C1: Spirit Focus (medium spirit-bonus loop)", () => {
+  const spiritFocus = featId("Spirit Focus");
+
+  function mediumDoc(over: { mediumSpirit?: string; featChoice?: string }): CharacterDoc {
+    const doc = makeDoc({
+      classes: [{ tag: "medium", level: 5 }],
+      feats: over.featChoice !== undefined ? [spiritFocus] : [],
+      featChoices: over.featChoice !== undefined ? { [spiritFocus]: over.featChoice } : undefined,
+    });
+    return { ...doc, live: { ...doc.live, mediumSpirit: over.mediumSpirit } };
+  }
+
+  it("channeled spirit matches the chosen legend: +1 on top of the Spirit Bonus", () => {
+    const withoutFocus = compute(mediumDoc({ mediumSpirit: "guardian" }), ref);
+    const withFocus = compute(mediumDoc({ mediumSpirit: "guardian", featChoice: "guardian" }), ref);
+    // Guardian's Spirit Bonus is flat AC/Fortitude/Reflex/CMD; check AC.
+    expect(withFocus.ac.normal).toBe(withoutFocus.ac.normal + 1);
+  });
+
+  it("channeled spirit differs from the chosen legend: no change", () => {
+    const withoutFocus = compute(mediumDoc({ mediumSpirit: "guardian" }), ref);
+    const withFocus = compute(
+      mediumDoc({ mediumSpirit: "guardian", featChoice: "trickster" }),
+      ref,
+    );
+    expect(withFocus.ac.normal).toBe(withoutFocus.ac.normal);
+  });
+
+  it("feat taken with no choice stored: no change", () => {
+    const withoutFeat = compute(mediumDoc({ mediumSpirit: "guardian" }), ref);
+    const doc = mediumDoc({ mediumSpirit: "guardian" });
+    const withFeatNoChoice = compute(
+      { ...doc, build: { ...doc.build, feats: [spiritFocus] } },
+      ref,
+    );
+    expect(withFeatNoChoice.ac.normal).toBe(withoutFeat.ac.normal);
+  });
 });

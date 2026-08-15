@@ -125,6 +125,35 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance: "You gain a +2 natural armor bonus.",
   },
+  // Five fixed astrological events; only Apparent Retrograde produces a real
+  // Change (a luck bonus on a modeled save). Conjunction's teamwork-feat
+  // scaling, Eclipse's cover substitution, Meteor Shower's per-extra-ranged-
+  // attack cumulative dodge bonus (no acCategories key for "ranged attacks"),
+  // Passing Comet's occult-skill-unlock scope, and Sun Sign's spell-DC/CL
+  // descriptor scoping all have no matching engine target and stay unwired.
+  "auspicious-birth": {
+    type: "choice",
+    choice: {
+      type: "options",
+      label: "Astrological event",
+      options: [
+        { id: "apparent-retrograde", label: "Apparent Retrograde" },
+        { id: "conjunction", label: "Conjunction" },
+        { id: "eclipse", label: "Eclipse" },
+        { id: "meteor-shower", label: "Meteor Shower" },
+        { id: "passing-comet", label: "Passing Comet" },
+        { id: "sun-sign", label: "Sun Sign" },
+      ],
+    },
+    confidence: "high",
+    provenance: "Apparent Retrograde: You gain a +1 luck bonus on Reflex saves.",
+    build(choiceId: string) {
+      if (choiceId === "apparent-retrograde") {
+        return [{ target: "ref", type: "luck", formula: "1" }];
+      }
+      return [];
+    },
+  },
   // The published text really does say the +5 competence bonus "increases" to
   // +4 at 10+ Hit Dice (AoN corroborates the vendored text verbatim).
   // Implemented literally rather than guessing at the intended errata.
@@ -240,6 +269,45 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance: "You gain +2 bonus on saving throws against effects that affect your composure",
   },
+  // Eight named tattoos, only one active at a time; only Crimson Spiral's
+  // Fortitude-save-vs-death-effects half produces a real Change (the
+  // Constitution-check-to-stabilize half has no ability-check target). The
+  // other seven tattoos are each conditioned on "while on land"/"while
+  // underwater" (an environment state this engine doesn't track) or grant an
+  // unmodeled darkvision-range increase, so they stay unwired.
+  "cecaelia-focus-tattoo": {
+    type: "choice",
+    choice: {
+      type: "options",
+      label: "Focus tattoo",
+      options: [
+        { id: "aureoln-prong", label: "Aureoln Prong" },
+        { id: "cobalt-prong", label: "Cobalt Prong" },
+        { id: "crimson-spiral", label: "Crimson Spiral" },
+        { id: "emerald-helix", label: "Emerald Helix" },
+        { id: "indigo-vines", label: "Indigo Vines" },
+        { id: "inky-whorls", label: "Inky Whorls" },
+        { id: "silver-whorls", label: "Silver Whorls" },
+        { id: "teal-helix", label: "Teal Helix" },
+      ],
+    },
+    confidence: "high",
+    provenance:
+      "+1 competence bonus on Fortitude saves against death effects and on Constitution checks to become stable",
+    build(choiceId: string) {
+      if (choiceId === "crimson-spiral") {
+        return [
+          {
+            target: "allSavingThrows",
+            type: "competence",
+            formula: "1",
+            saveCategories: ["death"],
+          },
+        ];
+      }
+      return [];
+    },
+  },
   // Grants a flat 10-foot climb speed, unconditional for a vine leshy.
   "climbing-vine": {
     type: "static",
@@ -322,6 +390,42 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     ],
     confidence: "high",
     provenance: "You gain a +2 bonus on Knowledge checks if you have 1-5 ranks in that skill.",
+  },
+  // Five chromatic dragon colors (black/green share acid); each grants
+  // resistance 5 to the matching energy type. The Special clause (a flat +1
+  // natural armor bonus instead, for a character with the dragon-scaled
+  // racial trait) can't be branched on inside build(choiceId) — it has no
+  // access to the character's other racial-trait picks — so the eres.<type>
+  // grant below is only accurate for a kobold WITHOUT that trait; the
+  // dragon-scaled special stays unwired.
+  "draconic-aspect": {
+    type: "choice",
+    choice: {
+      type: "options",
+      label: "Dragon color",
+      options: [
+        { id: "black", label: "Black (acid)" },
+        { id: "blue", label: "Blue (electricity)" },
+        { id: "green", label: "Green (acid)" },
+        { id: "red", label: "Red (fire)" },
+        { id: "white", label: "White (cold)" },
+      ],
+    },
+    confidence: "high",
+    provenance:
+      "Your scales take on the color of that dragon, and you gain resistance 5 to the dragon color's corresponding energy type.",
+    build(choiceId: string) {
+      const energyByColor: Record<string, string> = {
+        black: "acid",
+        blue: "electricity",
+        green: "acid",
+        red: "fire",
+        white: "cold",
+      };
+      const energy = energyByColor[choiceId];
+      if (!energy) return [];
+      return [{ target: `eres.${energy}`, type: "untyped", formula: "5" }];
+    },
   },
   // Unconditional fly speed grant from upgraded wings; the breath-weapon damage increase and extra sleep/paralysis save bonus aren't modeled.
   "draconic-paragon": {
@@ -758,6 +862,44 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance:
       "You gain a +2 bonus on Knowledge (engineering) checks. If you have 10 or more ranks in Knowledge (engineering), this bonus increases to +4",
+  },
+  // Three manifestations, repeatable up to three times (one per
+  // manifestation; RAW: "effects do not stack"). Hag Claws has no PC-facing
+  // claw-attack target (racial natural attacks aren't modeled as a weapon
+  // instance in this engine); Surprisingly Tough's "increases by +1" phrasing
+  // matches the nac/"increase" convention (see Improved Natural Armor,
+  // feat-effects-extracted.ts); Uncanny Resistance is a flat spell-resistance
+  // grant on the same operator:"set" pattern every other SR source uses
+  // (defenses.ts).
+  "mother-s-gift": {
+    type: "choice",
+    choice: {
+      type: "options",
+      label: "Manifestation",
+      options: [
+        { id: "hag-claws", label: "Hag Claws" },
+        { id: "surprisingly-tough", label: "Surprisingly Tough" },
+        { id: "uncanny-resistance", label: "Uncanny Resistance" },
+      ],
+    },
+    confidence: "high",
+    provenance: "Your natural armor bonus increases by +1.",
+    build(choiceId: string) {
+      if (choiceId === "surprisingly-tough") {
+        return [{ target: "nac", type: "increase", formula: "1" }];
+      }
+      if (choiceId === "uncanny-resistance") {
+        return [
+          {
+            target: "spellResist",
+            type: "untyped",
+            formula: "6 + @attributes.hd.total",
+            operator: "set",
+          },
+        ];
+      }
+      return [];
+    },
   },
   // Unconditional +2 bonus to Knowledge (nature) and Survival, rank-gated to +4.
   "nature-soul": {
@@ -1257,6 +1399,40 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.",
   },
+  // Rank-gated Skill Focus bonus (+3, or +6 at 10+ ranks), scoped to a
+  // Perform subtype instance the player already has — same shape as
+  // skill-focus-craft, targeting the chosen instance id directly.
+  "skill-focus-perform": {
+    type: "choice",
+    choice: { type: "perform", label: "Perform skill" },
+    confidence: "high",
+    provenance:
+      "You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.",
+    build: (choiceId: string) => [
+      {
+        target: `skill.${choiceId}`,
+        type: "untyped",
+        formula: `if(gte(@skills.${choiceId}.rank, 10), 6, 3)`,
+      },
+    ],
+  },
+  // Rank-gated Skill Focus bonus (+3, or +6 at 10+ ranks), scoped to a
+  // Profession subtype instance the player already has — same shape as
+  // skill-focus-craft, targeting the chosen instance id directly.
+  "skill-focus-profession": {
+    type: "choice",
+    choice: { type: "profession", label: "Profession skill" },
+    confidence: "high",
+    provenance:
+      "You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.",
+    build: (choiceId: string) => [
+      {
+        target: `skill.${choiceId}`,
+        type: "untyped",
+        formula: `if(gte(@skills.${choiceId}.rank, 10), 6, 3)`,
+      },
+    ],
+  },
   // Unconditional rank-gated Skill Focus bonus on Ride.
   "skill-focus-ride": {
     type: "static",
@@ -1379,6 +1555,32 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance: "add a morale bonus equal to your bravery bonus on Bluff and Intimidate checks",
   },
+  // Select a legend of spirits; the +1 only applies while that SAME legend
+  // is the one currently channeled (`live.mediumSpirit`), which build() has
+  // no visibility into. The actual +1 is applied in collect.ts's medium
+  // spirit-bonus loop once a channeled-spirit match is confirmed there, not
+  // via this build() — see that loop's own comment for the wire.
+  "spirit-focus": {
+    type: "choice",
+    choice: {
+      type: "options",
+      label: "Legend of spirits",
+      options: [
+        { id: "archmage", label: "Archmage" },
+        { id: "champion", label: "Champion" },
+        { id: "guardian", label: "Guardian" },
+        { id: "hierophant", label: "Hierophant" },
+        { id: "marshal", label: "Marshal" },
+        { id: "trickster", label: "Trickster" },
+      ],
+    },
+    confidence: "high",
+    provenance:
+      "Select a legend of spirits. Your spirit bonus from spirits of that legend increases by 1.",
+    build() {
+      return [];
+    },
+  },
   // Natural armor bonus increases by 1 (nac/increase, sums with the natural
   // bonus rather than competing). Repeat takes only add stoneskin uses/day
   // per the feat's own Special text, not a second armor increase.
@@ -1434,6 +1636,67 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance: "Your swim speed increases by 15 feet.",
   },
+  // Seven Shoanti tribes; each grants a save + skill pair, except
+  // Shadde-Quah and Skoan-Quah, whose second clause (extra rage rounds; bonus
+  // weapon damage against undead) has no matching engine target and stays
+  // unwired for those two branches only. Shadde-Quah's rage-rounds clause
+  // can't route through FEAT_POOL_EFFECTS either: that table applies to
+  // every instance of a feat unconditionally, with no way to gate it on
+  // which tribe was chosen.
+  "totem-spirit": {
+    type: "choice",
+    choice: {
+      type: "options",
+      label: "Shoanti tribe",
+      options: [
+        { id: "lyrune-quah", label: "Lyrune-Quah (Moon Clan)" },
+        { id: "shadde-quah", label: "Shadde-Quah (Axe Clan)" },
+        { id: "shriikirri-quah", label: "Shriikirri-Quah (Hawk Clan)" },
+        { id: "shundar-quah", label: "Shundar-Quah (Spire Clan)" },
+        { id: "sklar-quah", label: "Sklar-Quah (Sun Clan)" },
+        { id: "skoan-quah", label: "Skoan-Quah (Skull Clan)" },
+        { id: "tamiir-quah", label: "Tamiir-Quah (Wind Clan)" },
+      ],
+    },
+    confidence: "high",
+    provenance:
+      "Your base land speed increases by 5 feet. You also gain a +2 bonus on Acrobatics checks.",
+    build(choiceId: string) {
+      switch (choiceId) {
+        case "lyrune-quah":
+          return [
+            { target: "will", type: "untyped", formula: "1" },
+            { target: "skill.per", type: "untyped", formula: "2" },
+          ];
+        case "shadde-quah":
+          return [{ target: "skill.int", type: "untyped", formula: "2" }];
+        case "shriikirri-quah":
+          return [
+            { target: "init", type: "untyped", formula: "2" },
+            { target: "skill.rid", type: "untyped", formula: "2" },
+          ];
+        case "shundar-quah":
+          return [
+            { target: "fort", type: "untyped", formula: "1" },
+            { target: "skill.per", type: "untyped", formula: "2" },
+          ];
+        case "sklar-quah":
+          return [
+            { target: "ref", type: "untyped", formula: "1" },
+            { target: "skill.acr", type: "untyped", formula: "2" },
+          ];
+        case "skoan-quah":
+          return [{ target: "skill.hea", type: "untyped", formula: "2" }];
+        case "tamiir-quah":
+          return [
+            { target: "landSpeed", type: "untyped", formula: "5" },
+            { target: "skill.acr", type: "untyped", formula: "2" },
+          ];
+        default:
+          return [];
+      }
+    },
+  },
   // Unconditional fire resistance 5 (the swift-action upgrade to 10 and the vs-fire-or-heat save bonus are left unmodeled as situational).
   "touched-by-sacred-fire": {
     type: "static",
@@ -1441,6 +1704,67 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance:
       "You gain fire resistance 5 and a +2 bonus on all saving throws to resist the effects of fire or heat.",
+  },
+  // Six Mammoth Lord followings, each a flat save + skill pair — fully
+  // expressible, no unwireable clauses.
+  "tribal-scars": {
+    type: "choice",
+    choice: {
+      type: "options",
+      label: "Following",
+      options: [
+        { id: "bearpelt", label: "Bearpelt" },
+        { id: "greattusk", label: "Greattusk" },
+        { id: "ice-chasm", label: "Ice Chasm" },
+        { id: "night-hunt", label: "Night Hunt" },
+        { id: "raptorscale", label: "Raptorscale" },
+        { id: "slothjaw", label: "Slothjaw" },
+      ],
+    },
+    confidence: "high",
+    provenance:
+      "Your base land speed increases by 5 feet, and you gain a +2 bonus on Acrobatics checks.",
+    build(choiceId: string) {
+      switch (choiceId) {
+        case "bearpelt":
+          return [
+            { target: "fort", type: "untyped", formula: "1" },
+            { target: "skill.int", type: "untyped", formula: "2" },
+          ];
+        case "greattusk":
+          return [
+            {
+              target: "cmb",
+              type: "untyped",
+              formula: "2",
+              maneuverCategories: ["bullRush", "overrun"],
+            },
+            { target: "skill.rid", type: "untyped", formula: "2" },
+          ];
+        case "ice-chasm":
+          return [
+            { target: "ref", type: "untyped", formula: "1" },
+            { target: "skill.clm", type: "untyped", formula: "2" },
+          ];
+        case "night-hunt":
+          return [
+            { target: "skill.per", type: "untyped", formula: "2" },
+            { target: "skill.sur", type: "untyped", formula: "2" },
+          ];
+        case "raptorscale":
+          return [
+            { target: "landSpeed", type: "untyped", formula: "5" },
+            { target: "skill.acr", type: "untyped", formula: "2" },
+          ];
+        case "slothjaw":
+          return [
+            { target: "will", type: "untyped", formula: "1" },
+            { target: "skill.han", type: "untyped", formula: "2" },
+          ];
+        default:
+          return [];
+      }
+    },
   },
   // Unconditional rank-gated Sense Motive bonus (the emotion-spell DC/CL boost and below-quarter-HP completion benefit are left unmodeled as situational).
   "true-love": {
@@ -1544,6 +1868,33 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     changes: [{ target: "init", type: "untyped", formula: "1" }],
     confidence: "high",
     provenance: "You gain a +1 bonus on initiative checks",
+  },
+  // Four undead "secrets"; only Secret of Bone's DR 5/bludgeoning is a real,
+  // permanent Change (dr.<qualifier> is a live target — see how Invulnerable
+  // Rager's DR is wired in archetype-effects.ts). Secret of Blood/Brains are
+  // swift-action-triggered, on-hit, temporary effects with no static-sheet
+  // target; Secret of the Grave's fast healing has no fastHealing Change
+  // target anywhere in this engine.
+  "whispered-knowledge": {
+    type: "choice",
+    choice: {
+      type: "options",
+      label: "Secret",
+      options: [
+        { id: "blood", label: "Secret of Blood" },
+        { id: "bone", label: "Secret of Bone" },
+        { id: "brains", label: "Secret of Brains" },
+        { id: "grave", label: "Secret of the Grave" },
+      ],
+    },
+    confidence: "high",
+    provenance: "Your bones harden and calcify. You gain DR 5/bludgeoning.",
+    build(choiceId: string) {
+      if (choiceId === "bone") {
+        return [{ target: "dr.bludgeoning", type: "untyped", formula: "5" }];
+      }
+      return [];
+    },
   },
   // Unconditional rank-gated Perception bonus (the extra surprise-round-only bonus is left unmodeled as situational).
   "wilding-senses": {

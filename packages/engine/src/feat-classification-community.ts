@@ -175,7 +175,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "aura-flare": "subsystem",
   "aura-of-succumbing": "subsystem",
   "aural-insight": "subsystem",
-  "auspicious-birth": "blocked",
+  "auspicious-birth": "choice-numeric",
   "authoritative-spell": "subsystem",
   "aversion-tolerance": "situational",
   "avid-spellbook-reader": "situational",
@@ -386,7 +386,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "caustic-slur": "subsystem",
   "cautious-fighter": "situational",
   "cavalry-formation": "subsystem",
-  "cecaelia-focus-tattoo": "blocked",
+  "cecaelia-focus-tattoo": "choice-numeric",
   "celestial-guidance": "situational",
   "celestial-obedience": "subsystem",
   "celestial-servant": "subsystem",
@@ -809,7 +809,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "dorn-dergar-master": "subsystem",
   "double-bane": "subsystem",
   "draconian-law": "situational",
-  "draconic-aspect": "blocked",
+  "draconic-aspect": "choice-numeric",
   "draconic-breath": "subsystem",
   "draconic-glide": "subsystem",
   "draconic-heritage": "subsystem",
@@ -1880,7 +1880,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "moonlight-summons": "subsystem",
   moontouched: "situational",
   "morrigna-s-wrappings": "situational",
-  "mother-s-gift": "blocked",
+  "mother-s-gift": "choice-numeric",
   "motivated-march": "subsystem",
   "motivating-display": "situational",
   "mountain-eyes": "subsystem",
@@ -2528,8 +2528,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "skill-focus-lore": "numeric",
   "skill-focus-mythic": "subsystem",
   "skill-focus-perception": "numeric",
-  "skill-focus-perform": "blocked",
-  "skill-focus-profession": "blocked",
+  "skill-focus-perform": "choice-numeric",
+  "skill-focus-profession": "choice-numeric",
   "skill-focus-ride": "numeric",
   "skill-focus-sense-motive": "numeric",
   "skill-focus-sleight-of-hand": "numeric",
@@ -2639,7 +2639,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "spinning-throw": "subsystem",
   "spirit-ally": "subsystem",
   "spirit-beacon": "situational",
-  "spirit-focus": "blocked",
+  "spirit-focus": "choice-numeric",
   "spirit-of-the-corps": "subsystem",
   "spirit-of-the-wild": "situational",
   "spirit-oni-master": "subsystem",
@@ -2927,7 +2927,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "torch-handling": "subsystem",
   "torrid-tolerance": "subsystem",
   "totem-beast": "subsystem",
-  "totem-spirit": "blocked",
+  "totem-spirit": "choice-numeric",
   "totemic-disciple": "subsystem",
   "totemic-initiate": "subsystem",
   "totemic-master": "subsystem",
@@ -2963,7 +2963,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   trepanation: "subsystem",
   triangulate: "subsystem",
   "tribal-hunter": "subsystem",
-  "tribal-scars": "blocked",
+  "tribal-scars": "choice-numeric",
   "tribe-mentality": "subsystem",
   "trick-shooter": "situational",
   "trick-spell": "subsystem",
@@ -3152,7 +3152,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "whip-slinger": "subsystem",
   whipcrack: "subsystem",
   "whirling-hold": "subsystem",
-  "whispered-knowledge": "blocked",
+  "whispered-knowledge": "choice-numeric",
   "whispering-way-disciple": "subsystem",
   "wicked-valor": "subsystem",
   "wild-flanking": "subsystem",
@@ -3226,13 +3226,13 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "aquatic-combatant":
     "Unconditional +2 bonus on Swim checks (the underwater melee-penalty removal is situational and not part of this draft).",
   "armor-of-the-pit":
-    "Unconditional +2 natural armor bonus (nac/untyped) is wired; the scaled-skin alternate benefit (energy resistance instead) is a player choice the engine's feat-choice picker can't offer, so it stays unwired.",
+    "Unconditional +2 natural armor bonus (nac/untyped) is wired. The scaled-skin alternate (energy resistance instead) can't be added as a second choice branch without regressing docs that already have this feat: collect.ts's choice-type feats emit nothing at all until a choiceId is stored, and there's no way to make an unset choice fall back to today's default +2.",
   "assured-destruction":
     "Modifies a racial daemonic-pact supernatural ability (damage dice, DC, success chance) gated on urdefhan race and another feat; needs state the engine doesn't model.",
   "astrological-timing":
     "Grants a flat percentage increase to an augury spell's chance of a successful reading; no engine target exists for spell-success-chance mechanics.",
   "auspicious-birth":
-    "Player picks one of five fixed, mutually exclusive benefits at 1st level along a non-skill/non-weapon axis; no matching choice mechanism in the engine. [flag: choice-axis-unsupported]",
+    "Wired via the entry's own named-option choice axis: Apparent Retrograde grants a +1 luck bonus on Reflex saves. Conjunction's teamwork-feat scaling, Eclipse's cover substitution, Meteor Shower's per-ranged-attack cumulative dodge bonus, Passing Comet's occult-skill-unlock scope, and Sun Sign's spell-DC/CL descriptor scoping have no matching engine target and stay unwired.",
   "bag-of-bones":
     "Unconditional competence bonus on Escape Artist checks, tiered by Hit Dice. [flag: unsure - source text has the bonus drop from +5 to +4 at 10+ HD, which reads backwards; verify against original text before trusting the tier]",
   "barracuda-dash":
@@ -3267,9 +3267,9 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "calm-disposition":
     "Wired via saveCategories: unconditional +2 vs mind-affecting and nausea/sickened effects (the feat's own text defines the 'composure' scope as spanning both). Does not extend to physical effects like fatigue, matching the feat's own exclusion.",
   "catfolk-exemplar":
-    "One manifestation (Fast Sprinter) grants a numeric speed bonus, but the three-branch choice is among racial features (senses, speed, claw damage); the feat-choice picker only offers skill/weapon axes, not a fixed named-option list like this. [flag: unsure]",
+    "Verified against RAW text: Fast Sprinter's +10 ft bonus applies only 'when using the charge, run, or withdraw actions', not as a baseline speed increase this engine's landSpeed target could honestly carry (action-conditional speed bonuses stay unwired elsewhere too, e.g. Bravery in Action's cavalier speed bonus). Enhanced Senses and Sharp Claws grant racial traits (scent/low-light vision/claw damage die), not a number. No branch of the three-way choice has a matching engine target.",
   "cecaelia-focus-tattoo":
-    "Each tattoo is a small competence bonus, but the choice among named tattoos is not a skill or weapon choice axis. [flag: unsure]",
+    "Wired via the entry's own named-option choice axis: Crimson Spiral grants +1 competence on Fortitude saves against death effects (its Constitution-check-to-stabilize half has no ability-check target). The other seven tattoos are each conditioned on 'while on land'/'while underwater' (an environment state this engine doesn't track) or grant an unmodeled darkvision-range increase, so they stay unwired.",
   "champion-of-anarchy":
     "Bonus damage applies only against lawful creatures; enemy alignment is state the engine does not model.",
   "champion-of-balance":
@@ -3321,7 +3321,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "diviner-s-delving":
     "+2 on caster level checks to overcome SR, but only with divination spells; clCheck has no per-school axis (unlike spellDC), so wiring it to clCheck.sr would over-apply to every other school's SR checks.",
   "draconic-aspect":
-    "Energy resistance 5 (eres.<energy>) is reachable via the choice-numeric options axis (five dragon colors, two sharing the acid type), but the Special clause swaps in a flat +1 natural armor bonus instead when the dragon-scaled racial trait is present, and build(choiceId) has no access to the character's other picks to branch on that.",
+    "Wired via the entry's own named-option choice axis: each of the five dragon colors grants eres.<energy> 5 (two colors share the acid type). The Special clause, which swaps in a flat +1 natural armor bonus instead for a character with the dragon-scaled racial trait, can't be branched on inside build(choiceId) (no access to the character's other racial-trait picks), so the eres grant is only accurate for a kobold without that trait; the dragon-scaled special stays unwired.",
   "draconic-paragon":
     "Unconditional fly speed grant from upgraded wings; the breath-weapon damage increase and extra sleep/paralysis save bonus aren't modeled.",
   "dragonfly-style":
@@ -3380,7 +3380,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "fiendish-wings":
     "Unconditional fly speed set equal to base land speed (maneuverability class isn't a modeled sheet field).",
   fiendskin:
-    "Energy resistance/immunity keyed to the character's chosen patron's outsider subtype, state the engine doesn't model.",
+    "The benefit's TIER (resistance 5, stacking resistance 5, immunity, or immunity plus a creature-type change) depends on the total number of Damnation-tagged feats owned, which has no formula primitive (the same gap as Soulless Gaze's Intimidate scaling); even the lowest tier's energy-type choice is gated on the patron's outsider subtype, state this engine doesn't track. Neither axis is safely wireable.",
   "filth-forager":
     "Wired via saveCategories: unconditional +4 vs nausea/sickened effects. The ingested-poison clause is narrower than the engine's poison category and the Survival bonus is unrelated; both stay prose.",
   firesight:
@@ -3497,7 +3497,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "monument-builder":
     "Rank-gated Knowledge (engineering) bonus (+2, or +4 at 10 ranks) is unconditional.",
   "mother-s-gift":
-    "Three-branch manifestation choice (Hag Claws, Surprisingly Tough, or Uncanny Resistance) fixed at feat-take; the feat-choice picker only offers skill/weapon axes, not a fixed named-option list like this. [flag: unsure]",
+    "Wired via the entry's own named-option choice axis: Surprisingly Tough grants +1 natural armor (nac/increase), Uncanny Resistance grants spell resistance 6 + character level (spellResist/set). Hag Claws has no PC-facing claw-attack target (racial natural attacks aren't modeled as a weapon instance). Repeatable up to three times per RAW, one manifestation per instance.",
   "nature-soul": "Unconditional +2 bonus to Knowledge (nature) and Survival, rank-gated to +4.",
   "necromantic-affinity":
     "Wired via saveCategories: unconditional +2 vs energy drain (negative levels) and ability damage/drain. The broader 'utilize negative energy' clause and the inflict/cure vulnerability swap have no matching engine target and stay prose.",
@@ -3510,7 +3510,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "noble-impostor":
     "Unconditional +2 bonus to Bluff and Knowledge (nobility); the Story goal/completion benefits aren't captured.",
   "noble-scion":
-    "Unconditional +2 Knowledge (nobility) bonus; the five alternate Scion sub-benefits chosen at feat-take aren't captured. [flag: unsure]",
+    "Unconditional +2 Knowledge (nobility) bonus (plus the class-skill grant) is wired. The five alternate Scion sub-benefits can't be added as a second choice branch without regressing docs that already have this feat: collect.ts's choice-type feats emit nothing at all until a choiceId is stored, and there's no way to make an unset choice fall back to today's default bonus.",
   "noble-scion-oppara":
     "Unconditional +2 Knowledge (nobility) bonus; the many family-specific sub-benefits aren't captured. [flag: unsure]",
   "noble-spell-resistance":
@@ -3550,7 +3550,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Grants +1 caster LEVEL (not a check) only for spells in the dragon domain/subdomains; cl stays an unapplied target regardless of scoping.",
   "scavenger-s-eye": "Unconditional +2 bonus on Appraise checks.",
   scholar:
-    "Grants +2 (+4 at 10 ranks) to two independently player-chosen Knowledge skills, but the choice draft format supports only a single {CHOICE} slot per feat. [flag: unsure]",
+    "Grants +2 (+4 at 10 ranks) to two INDEPENDENTLY player-chosen Knowledge skills; ChoiceFeatEntry only carries a single choiceId slot per feat instance, so a second, independent pick has no place to live.",
   "sea-legs": "Unconditional +2 bonus on Acrobatics, Climb, and Swim checks.",
   "seen-and-unseen":
     "Unconditional +2 bonus on all Stealth checks (the feat's other benefits are enumerated-subset save bonuses and untargetable tracking penalties).",
@@ -3609,9 +3609,9 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "skill-focus-lore": "Unconditional rank-gated Skill Focus bonus on Lore. [flag: unsure]",
   "skill-focus-perception": "Unconditional rank-gated Skill Focus bonus on Perception.",
   "skill-focus-perform":
-    "Skill Focus (Perform) applies to one Perform subtype the player picks; the choice axis for a character's own Perform instances exists (see skill-focus-craft) but this entry isn't wired to it yet.",
+    "Wired via the 'perform' choice axis: the picker offers the character's own Perform skill instances, and the chosen instance gets the same rank-gated +3/+6 formula as the plain skill-focus-<skill> entries.",
   "skill-focus-profession":
-    "Skill Focus (Profession) applies to one Profession subtype the player picks; the choice axis for a character's own Profession instances exists (see skill-focus-craft) but this entry isn't wired to it yet.",
+    "Wired via the 'profession' choice axis: the picker offers the character's own Profession skill instances, and the chosen instance gets the same rank-gated +3/+6 formula as the plain skill-focus-<skill> entries.",
   "skill-focus-ride": "Unconditional rank-gated Skill Focus bonus on Ride.",
   "skill-focus-sense-motive": "Unconditional rank-gated Skill Focus bonus on Sense Motive.",
   "skill-focus-sleight-of-hand": "Unconditional rank-gated Skill Focus bonus on Sleight of Hand.",
@@ -3637,7 +3637,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "spell-specialization":
     "Caster LEVEL bump (not a check), scoped to a single chosen spell; cl stays an unapplied target regardless of scoping.",
   "spirit-focus":
-    "Increases a medium's Spirit Bonus by 1 for a CHOSEN legend of spirits — a pick from a fixed six-entry list the feat-choice picker can't offer (it builds options from refData only), so this waits on the choice-UI lever; once a legend pick exists, the wire itself is a one-line bump in collect.ts's medium spirit-bonus loop.",
+    "The named-option choice axis records which legend of spirits the player picked; the +1 itself is applied in collect.ts's medium spirit-bonus loop, gated on that choice matching the currently channeled spirit (live.mediumSpirit) — build() has no visibility into live state, so it emits nothing.",
   "stone-soul":
     "Natural armor bonus increases by 1 (nac/increase, sums with the natural bonus rather than competing); repeat takes only add stoneskin uses/day per the feat's own Special text, not a second armor increase, so the wiring is correct unrepeated.",
   "storm-soul": "Unconditional full immunity to electricity for cloud/storm giants.",
@@ -3655,7 +3655,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "tapestry-traveler":
     "Effectively raises caster LEVEL (not a check) for teleportation-subschool spells and supernatural teleport abilities; cl stays an unapplied target regardless of scoping.",
   "totem-spirit":
-    "Benefit varies by Shoanti tribe membership, a prose choice axis (not skill or weapon), so no single stable target applies.",
+    "Wired via the entry's own named-option choice axis: five of the seven tribes are a plain save + skill pair. Shadde-Quah's Intimidate half is wired but its extra-rage-rounds half isn't (FEAT_POOL_EFFECTS applies to every instance of a feat unconditionally, with no way to gate it on which tribe was chosen); Skoan-Quah's Heal half is wired but its bonus weapon damage against undead has no matching engine target.",
   "touched-by-sacred-fire":
     "Unconditional fire resistance 5 (the swift-action upgrade to 10 and the vs-fire-or-heat save bonus are left unmodeled as situational).",
   "tough-as-iron":
@@ -3663,7 +3663,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "tower-shield-specialist":
     "Reduces tower shield armor check penalty by 3; no armor-check-penalty target exists in the engine vocabulary.",
   "tribal-scars":
-    "Choose one of six tribe-specific bonus packages; the choice axis is a prose tribe pick, not skill or weapon, so no stable target applies. [flag: unsure]",
+    "Wired via the entry's own named-option choice axis: all six Mammoth Lord followings are a plain save + skill pair (Greattusk's bull-rush/overrun half also goes through maneuverCategories) — fully expressible, no unwireable clauses.",
   "true-love":
     "Unconditional rank-gated Sense Motive bonus (the emotion-spell DC/CL boost and below-quarter-HP completion benefit are left unmodeled as situational).",
   "truth-seeker":
@@ -3695,14 +3695,14 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "vengeful-death-vow":
     "Imposes a penalty on enemies' attack rolls against the PC; no engine target models a defender-side penalty to attackers.",
   "virtuous-creed":
-    "Choose one of six virtue packages, each gated on maintaining its creed; the choice axis is a prose virtue pick, not skill or weapon, and adherence isn't tracked. [flag: unsure]",
+    "Each of the six virtues' bonus is conditioned on maintaining that virtue's creed (suspended for 24h on any violation); this engine has no adherence-tracking state to gate a Change on, so applying any virtue's bonus unconditionally would overclaim for a character who's broken their creed.",
   "warren-digger": "Unconditional burrow speed grant of 10 feet (repeatable).",
   "warrior-priest":
     "Unconditional initiative bonus (the concentration-check bonus has no engine target and is left unmodeled).",
   "waterway-caster":
     "Grants concentration-check bonuses/auto-successes; concentration checks have no engine target.",
   "whispered-knowledge":
-    "Choose one of four undead 'secrets' (one grants DR 5/bludgeoning); the choice axis is a prose secret pick, not skill or weapon, so no stable target applies. [flag: unsure]",
+    "Wired via the entry's own named-option choice axis: Secret of Bone grants DR 5/bludgeoning (dr.<qualifier> is a live target — see how Invulnerable Rager's DR is wired in archetype-effects.ts). Secret of Blood/Brains are swift-action-triggered, on-hit, temporary effects with no static-sheet target; Secret of the Grave's fast healing has no fastHealing Change target anywhere in this engine.",
   "wilding-senses":
     "Unconditional rank-gated Perception bonus (the extra surprise-round-only bonus is left unmodeled as situational).",
   "wilding-stride": "Unconditional +10 ft base speed increase.",

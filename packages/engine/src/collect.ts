@@ -1991,6 +1991,44 @@ export function collectModifiers(
           }
         }
       }
+
+      // Spirit Focus (community pack): "Select a legend of spirits. Your
+      // spirit bonus from spirits of that legend increases by 1." The feat's
+      // own choice axis (feat-effects-extracted-community.ts) has no
+      // build()-time access to `live.mediumSpirit`, so the match against the
+      // CURRENTLY channeled spirit is checked here instead — +1 on the same
+      // targets as the Spirit Bonus above, only when the chosen legend is the
+      // one actually channeled.
+      const spiritFocusFeatId = (doc.build.feats ?? []).find(
+        (id) => featNameSlug(refData.feats[id]?.name ?? "") === "spirit-focus",
+      );
+      if (spiritFocusFeatId && doc.build.featChoices?.[spiritFocusFeatId] === spirit.tag) {
+        const focusSource = `Spirit Focus (${spirit.name} Spirit)`;
+        const focusSourceId = `spiritFocus:${spirit.tag}`;
+        for (const t of spirit.spiritBonusTargets) {
+          if (t.kind === "flat") {
+            out.push({
+              target: t.target,
+              type: "untyped",
+              value: 1,
+              source: focusSource,
+              sourceId: focusSourceId,
+            });
+          } else {
+            for (const [skillId, ability] of Object.entries(SKILL_ABILITY)) {
+              if (ability !== t.ability) continue;
+              out.push({
+                target: `skill.${skillId}`,
+                type: "untyped",
+                value: 1,
+                source: focusSource,
+                sourceId: focusSourceId,
+              });
+            }
+          }
+        }
+      }
+
       if (spirit.seanceBoonChange) {
         out.push({
           target: spirit.seanceBoonChange.target,

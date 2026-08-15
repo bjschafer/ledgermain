@@ -46,7 +46,10 @@ export const REPEATABLE_FEAT_SLUGS: ReadonlySet<string> = new Set([
   "greater-weapon-focus",
   "greater-weapon-specialization",
   "improved-critical", // display-only choice (no engine crit-range effect — see model/feats.ts DISPLAY_ONLY_FEAT_CHOICES)
+  "mother-s-gift", // "up to three times", one manifestation per instance
   "skill-focus",
+  "skill-focus-perform", // "applies to a new skill", same shape as skill-focus-craft
+  "skill-focus-profession", // "applies to a new skill", same shape as skill-focus-craft
   "spell-focus",
   "weapon-focus",
   "weapon-specialization",
@@ -91,6 +94,7 @@ export const REPEATABLE_FEAT_SLUGS: ReadonlySet<string> = new Set([
   // Everything else confirmed repeatable by vendored "Special" text.
   "ability-focus",
   "alignment-channel",
+  "catfolk-exemplar", // "take this feat multiple times... choose a different manifestation"
   "elemental-channel",
   "empower-spell-like-ability",
   "exotic-weapon-proficiency",
@@ -105,6 +109,7 @@ export const REPEATABLE_FEAT_SLUGS: ReadonlySet<string> = new Set([
   "skill-focus-craft", // "applies to a new skill", same shape as skill-focus
   "spell-mastery",
   "versatile-summon-monster",
+  "virtuous-creed", // "gain this feat multiple times... choose a new virtue" (each virtue itself stays unwired, see feat-classification-community.ts)
 ]);
 
 /** Whether `featName` is in the curated RAW-repeatable set (see file doc comment). */
