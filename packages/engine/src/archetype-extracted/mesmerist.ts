@@ -462,7 +462,7 @@ export const MESMERIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Xenophobe",
     level: 5,
     bucket: "situational",
-    note: "ranger favored-enemy analog (+2, +2/4 levels, also on Intimidate) — real numbers scoped to a single chosen enemy creature type the engine has no build field to track for a non-ranger class, same posture as other classes' favored-enemy reflavors; replaces mental potency and manifold tricks",
+    note: "ranger favored-enemy analog (+2, +2/4 levels, also on Intimidate) — a PickChoice could record which creature type was chosen, but the attack/damage/skill Change vocabulary has no creature-type-scoped axis to condition the bonus on (only AC has a narrow giants/aberrations/animals category, and Xenophobe's bonus isn't an AC bonus at all), so it can't be expressed without applying against every foe; same posture as other classes' favored-enemy reflavors; replaces mental potency and manifold tricks",
   },
 
   // ── mesmerist:material-manipulator ──

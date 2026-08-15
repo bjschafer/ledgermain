@@ -493,7 +493,7 @@ export const WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Weapon Training",
     level: 5,
     bucket: "situational",
-    note: "a real fighter Weapon Training grant, but scoped only to the player's sacred weapons (whichever weapon(s) they've taken Weapon Focus with) — no build field tracks which weapon group(s) that is, same posture as the hand-verified table's Myrmidarch (magus) Weapon Training entry; replaces channel energy (class note 3)",
+    note: "a real fighter Weapon Training grant, but 'sacred weapons' here is defined by the vendored text as 'weapons with which the warpriest has taken Weapon Focus' — an open, potentially-plural set driven by the player's own feat picks, not a weapon group or a single named weapon. PickChoice only supports a small fixed option list, so this doesn't fit it any more than Myrmidarch's (magus) multi-slot Weapon Training does; replaces channel energy (class note 3)",
   },
 
   // ── warpriest:proclaimer ──

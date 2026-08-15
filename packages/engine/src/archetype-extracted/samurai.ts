@@ -241,7 +241,7 @@ export const SAMURAI_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Armor Expertise",
     level: 3,
     bucket: "situational",
-    note: "real fighter Armor Training progression, but only while wearing ONE player-selected armor type (chain shirt, scale mail, ...) — no build field tracks which armor was chosen, so a blanket mDexA/acpA bonus would over-apply (same bar as cavalier Disciple of the Pike's chosen-group Weapon Training); replaces weapon expertise (zero vendored changes)",
+    note: "real fighter Armor Training progression, but only while wearing ONE player-selected armor type (chain shirt, scale mail, ...). The mDexA/acpA targets apply globally to whatever armor is currently worn (compute.ts has no per-armor-instance scoping, unlike the coarse @armor.type light/medium/heavy tier) — a PickChoice can name which armor was picked, but the underlying Change targets still can't be conditioned on it, so a blanket mDexA/acpA bonus would over-apply; replaces weapon expertise (zero vendored changes)",
   },
   "samurai:yojimbo:intercept:4": {
     archetypeId: "samurai:yojimbo",
