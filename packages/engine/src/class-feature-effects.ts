@@ -95,6 +95,8 @@
 
 import type { Change } from "@pf1/schema";
 
+import type { PickChoice } from "./rage-powers.js";
+
 /**
  * Fighter's signature always-on save bonus, and the most conspicuous vendored
  * gap this table closes: every fighter has this from 2nd level, so a
@@ -844,6 +846,77 @@ const MASOCHISM: Change = {
   target: "allSavingThrows",
   type: "class",
   saveCategories: ["pain"],
+};
+
+/** A choose-one class-feature selection, see {@link CLASS_FEATURE_CHOICES}. */
+export interface ClassFeatureChoiceEntry {
+  /** Dropdown prompt + option list, same shape rage powers use. */
+  choice: PickChoice;
+  /**
+   * Per-option Changes, keyed by option id — applied only when
+   * `doc.build.pickChoices["classFeature:<the granting feature's own
+   * vendored id>"]` matches a key. No stored pick, or a stale option id,
+   * emits nothing, same posture as `CLASS_FEATURE_CHANGE_PATCHES`.
+   */
+  choiceChanges: Readonly<Record<string, readonly Change[]>>;
+}
+
+/**
+ * Proctor's "Monitor Expression" (Pathfinder Player Companion: Divine
+ * Anthology p. 25-ish era prestige feature): "a proctor must select a
+ * specific expression of her role for her monitor demigod." Four options,
+ * only one of which (Executor) carries an unconditional, non-activated
+ * number — Foster/Harmonizer/Impulsive are all swift-action abilities with
+ * a rounds/day or at-will activation this engine doesn't track, so their
+ * `choiceChanges` stay empty (a picked-but-unmodeled option, same posture as
+ * a rage power with `changes: []`).
+ *
+ * Executor: "+4 bonus on saving throws against disease, paralysis, poison,
+ * sleep, and stunning. At 5th level, this bonus also applies on saves
+ * against mind-affecting effects." The sleep/mind-affecting halves are kept
+ * mutually exclusive (sleep is itself mind-affecting) so a 5th-level-plus
+ * executor doesn't double-count on sleep saves: the `sleep` category grant
+ * zeroes out once the broader `mind` category takes over.
+ */
+const MONITOR_EXPRESSION_EXECUTOR: readonly Change[] = [
+  {
+    formula: "4",
+    target: "allSavingThrows",
+    type: "untyped",
+    saveCategories: ["disease", "paralysis", "poison", "stun"],
+  },
+  {
+    formula: "if(gte(@class.unlevel, 5), 0, 4)",
+    target: "allSavingThrows",
+    type: "untyped",
+    saveCategories: ["sleep"],
+  },
+  {
+    formula: "if(gte(@class.unlevel, 5), 4, 0)",
+    target: "allSavingThrows",
+    type: "untyped",
+    saveCategories: ["mind"],
+  },
+];
+
+export const CLASS_FEATURE_CHOICES: Readonly<Record<string, ClassFeatureChoiceEntry>> = {
+  "Monitor Expression": {
+    choice: {
+      label: "Monitor expression",
+      options: [
+        { id: "executor", label: "Executor" },
+        { id: "foster", label: "Foster" },
+        { id: "harmonizer", label: "Harmonizer" },
+        { id: "impulsive", label: "Impulsive" },
+      ],
+    },
+    choiceChanges: {
+      executor: MONITOR_EXPRESSION_EXECUTOR,
+      foster: [],
+      harmonizer: [],
+      impulsive: [],
+    },
+  },
 };
 
 export const CLASS_FEATURE_CHANGE_PATCHES: Readonly<Record<string, readonly Change[]>> = {

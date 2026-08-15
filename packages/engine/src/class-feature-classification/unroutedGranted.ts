@@ -457,8 +457,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
   UeYdiNoaF0gG08Y5: {
     id: "UeYdiNoaF0gG08Y5",
     name: "Resistance (Power)",
-    bucket: "blocked",
-    note: "The energy resistance is unconditional once an energy type is chosen for the day, but the type is a player choice reselected daily that a static entry can't express.",
+    bucket: "numeric",
+    note: "The daily-reselected energy type is wired via GRANTED_POWER_CHOICES (build.pickChoices, free-choice posture): the player edits the pick when it changes in play.",
   },
   W1gEXsOJYt7oDOr7: {
     id: "W1gEXsOJYt7oDOr7",

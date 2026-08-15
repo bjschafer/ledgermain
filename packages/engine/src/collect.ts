@@ -21,8 +21,11 @@ import {
 import { resolveSorcererBloodlineOrMutation } from "./bloodline-mutations.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
-import { CLASS_FEATURE_CHANGE_PATCHES } from "./class-feature-effects.js";
-import { GRANTED_POWER_CHANGE_PATCHES } from "./granted-power-effects/index.js";
+import { CLASS_FEATURE_CHANGE_PATCHES, CLASS_FEATURE_CHOICES } from "./class-feature-effects.js";
+import {
+  GRANTED_POWER_CHANGE_PATCHES,
+  GRANTED_POWER_CHOICES,
+} from "./granted-power-effects/index.js";
 import { FEAT_SAVE_CATEGORY_CHANGES } from "./feat-save-categories.js";
 import { CONDITIONS } from "./conditions.js";
 import { FAMILIARS } from "./familiars.js";
@@ -501,6 +504,31 @@ export function collectModifiers(
           ch.acCategories,
         );
       }
+      // Choose-one class features (Proctor's Monitor Expression): apply the
+      // stored selection's changes. Same per-class-key-wins precedence as
+      // CLASS_FEATURE_CHANGE_PATCHES above; the stored pick itself is keyed
+      // by the feature's own vendored id (one pick per grant instance), not
+      // by name. No stored pick, or a stale option id, emits nothing.
+      const classFeatureChoice =
+        CLASS_FEATURE_CHOICES[`${cls.tag}:${feature.name}`] ?? CLASS_FEATURE_CHOICES[feature.name];
+      if (classFeatureChoice) {
+        const picked = doc.build.pickChoices?.[`classFeature:${feature.id}`];
+        for (const ch of (picked && classFeatureChoice.choiceChanges[picked]) || []) {
+          evalChange(
+            ch.formula,
+            featureRollData,
+            ch.target,
+            ch.type,
+            feature.name,
+            feature.id,
+            out,
+            ch.operator,
+            ch.saveCategories,
+            ch.maneuverCategories,
+            ch.acCategories,
+          );
+        }
+      }
     }
 
     // --- Weapon Training group picks ---------------------------
@@ -611,14 +639,15 @@ export function collectModifiers(
       continue;
     }
     const patches = GRANTED_POWER_CHANGE_PATCHES[gf.grant.name];
-    if (!patches || patches.length === 0) continue;
+    const choiceEntry = GRANTED_POWER_CHOICES[gf.grant.name];
+    if ((!patches || patches.length === 0) && !choiceEntry) continue;
     const grantingLevel = doc.identity.classes.find((c) => c.tag === gf.classTag)?.level ?? 0;
     if (grantingLevel === 0) continue;
     const grantRollData: RollData = {
       ...rollData,
       class: { level: grantingLevel, unlevel: grantingLevel },
     };
-    for (const ch of patches) {
+    for (const ch of patches ?? []) {
       evalChange(
         ch.formula,
         grantRollData,
@@ -632,6 +661,29 @@ export function collectModifiers(
         ch.maneuverCategories,
         ch.acCategories,
       );
+    }
+    // Choose-one granted powers (Resistance (Power)'s energy type): apply
+    // the stored selection's changes. Stored under the same `classFeature:`
+    // namespace a base class feature's choice uses (both key off the
+    // granting entry's own vendored id) — no stored pick, or a stale option
+    // id, emits nothing.
+    if (choiceEntry) {
+      const picked = doc.build.pickChoices?.[`classFeature:${gf.grant.featureId}`];
+      for (const ch of (picked && choiceEntry.choiceChanges[picked]) || []) {
+        evalChange(
+          ch.formula,
+          grantRollData,
+          ch.target,
+          ch.type,
+          gf.grant.name,
+          gf.grant.featureId,
+          out,
+          ch.operator,
+          ch.saveCategories,
+          ch.maneuverCategories,
+          ch.acCategories,
+        );
+      }
     }
   }
 
