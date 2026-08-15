@@ -127,6 +127,7 @@ export function TraitManager({
                       trait={tr}
                       selected={selected.has(tr.id)}
                       update={update}
+                      doc={doc}
                     />
                   ))
               )}
@@ -145,7 +146,9 @@ export function TraitManager({
               {taken.length === 0 ? (
                 <div className="empty">Nothing here yet. Search on the left and add a trait.</div>
               ) : (
-                taken.map((tr) => <TraitRow key={tr.id} trait={tr} selected update={update} />)
+                taken.map((tr) => (
+                  <TraitRow key={tr.id} trait={tr} selected update={update} doc={doc} />
+                ))
               )}
             </div>
           </section>

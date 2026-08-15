@@ -4,7 +4,12 @@ import type { TraitDef } from "@pf1/engine";
 
 import { changeTargetLabel } from "../../model/names.js";
 import { contextNoteCoverage } from "../../model/rulesNotes.js";
-import { toggleTrait } from "../../model/traits.js";
+import {
+  setTraitChoice,
+  toggleTrait,
+  traitChoice,
+  traitChoiceDescriptor,
+} from "../../model/traits.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
 import { InfoTip } from "../InfoTip.js";
 import { RulesNote } from "../RulesNote.js";
@@ -16,17 +21,24 @@ import { FeatureDescription } from "./ClassFeaturesList.js";
  * catalog entry instead surfaces its full HTML `description` in the same
  * collapsible `<details>` `FeatEntry` uses for feats, so prose-only traits
  * (the majority of the ~2,000-entry catalog) aren't left with a blank row.
+ * A trait declaring a `TRAIT_CHOICES` entry (Deep Cover's Bluff-or-Disguise
+ * class skill) gets a select once taken, mirroring `RagePowerPicker`'s
+ * choose-one dropdown; `doc` is optional purely so a caller that doesn't
+ * have one handy still compiles; every current caller passes it.
  */
 export function TraitRow({
   trait,
   selected,
   update,
+  doc,
 }: {
   trait: TraitDef;
   selected: boolean;
   update: (fn: (doc: CharacterDoc) => CharacterDoc) => void;
+  doc?: CharacterDoc;
 }) {
   const missing = unappliedChanges(trait.changes);
+  const choiceDescriptor = traitChoiceDescriptor(trait.id);
   return (
     <div className={`pick-row${selected ? " is-selected" : ""}`}>
       <div className="pmain">
@@ -58,6 +70,24 @@ export function TraitRow({
             }
           />
         ))}
+        {selected && doc && choiceDescriptor ? (
+          <label className="hint" style={{ marginTop: 2, display: "block" }}>
+            {choiceDescriptor.label}:{" "}
+            <select
+              value={traitChoice(doc, trait.id) ?? ""}
+              onChange={(e) =>
+                update((d2) => setTraitChoice(d2, trait.id, e.target.value || undefined))
+              }
+            >
+              <option value="">Choose</option>
+              {choiceDescriptor.options.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
         {trait.description ? <FeatureDescription html={trait.description} /> : null}
       </div>
       <button

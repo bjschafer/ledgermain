@@ -12,7 +12,9 @@ import {
   hasDrawback,
   hasTrait,
   resolveTrait,
+  setTraitChoice,
   toggleTrait,
+  traitChoice,
   traitsNeedWarning,
 } from "../src/model/traits.js";
 
@@ -236,5 +238,43 @@ describe("model/traits: vendored catalog + id-stability migration (issue #74)", 
     expect(expectedTraitCount(doc, ref)).toBe(3);
     // Four chosen against a three budget reads as over budget.
     expect(traitsNeedWarning(doc, ref)).toBe(true);
+  });
+});
+
+describe("model/traits: choose-one selections (build.pickChoices)", () => {
+  // Deep Cover: "Bluff or Disguise (your choice) is a class skill for you."
+  const DEEP_COVER = "9QVXtD2lZkIzyBt5";
+
+  it("setTraitChoice stores the pick under the trait:<id> key", () => {
+    const doc = setTraitChoice(makeDoc([DEEP_COVER]), DEEP_COVER, "blf");
+    expect(doc.build.pickChoices).toEqual({ [`trait:${DEEP_COVER}`]: "blf" });
+    expect(traitChoice(doc, DEEP_COVER)).toBe("blf");
+  });
+
+  it("setTraitChoice with undefined clears the stored pick", () => {
+    let doc = setTraitChoice(makeDoc([DEEP_COVER]), DEEP_COVER, "dis");
+    doc = setTraitChoice(doc, DEEP_COVER, undefined);
+    expect(traitChoice(doc, DEEP_COVER)).toBeUndefined();
+  });
+
+  it("setTraitChoice is a no-op (same object) when the value is unchanged", () => {
+    const doc = setTraitChoice(makeDoc([DEEP_COVER]), DEEP_COVER, "blf");
+    expect(setTraitChoice(doc, DEEP_COVER, "blf")).toBe(doc);
+    expect(setTraitChoice(makeDoc([DEEP_COVER]), DEEP_COVER, undefined)).toEqual(
+      makeDoc([DEEP_COVER]),
+    );
+  });
+
+  it("removing a declaring trait drops its stored choice (no ghost pick on re-add)", () => {
+    let doc = setTraitChoice(makeDoc([DEEP_COVER, "reactionary"]), DEEP_COVER, "dis");
+    doc = toggleTrait(doc, DEEP_COVER);
+    expect(doc.build.traits).toEqual(["reactionary"]);
+    expect(traitChoice(doc, DEEP_COVER)).toBeUndefined();
+  });
+
+  it("removing a non-declaring trait leaves other stored choices alone", () => {
+    let doc = setTraitChoice(makeDoc([DEEP_COVER, "reactionary"]), DEEP_COVER, "blf");
+    doc = toggleTrait(doc, "reactionary");
+    expect(traitChoice(doc, DEEP_COVER)).toBe("blf");
   });
 });
