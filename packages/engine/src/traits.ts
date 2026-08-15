@@ -466,9 +466,11 @@ export function resolveTraitDef(id: string, refData: RefData): TraitDef | undefi
  * the exact shape of `featGrantedClassSkills`. Checks the same resolution
  * chain as `collect.ts`'s trait loop: hand-authored/vendored first, homebrew
  * as the fallback, unknown ids skipped. Also folds in `TRAIT_CHOICES`' own
- * `choiceClassSkills`, gated on `doc.build.pickChoices["trait:<traitId>"]` —
- * no stored pick, or a stale option id, grants nothing, same safe default as
- * every other choice-gated grant.
+ * `choiceClassSkills` (fixed-menu picks) and `familyClassSkillTemplate`
+ * (own-instance Craft/Perform/Profession picks), gated on
+ * `doc.build.pickChoices["trait:<traitId>"]` — no stored pick, or a stale
+ * option id, grants nothing, same safe default as every other choice-gated
+ * grant.
  */
 export function traitGrantedClassSkills(
   doc: {
@@ -485,9 +487,10 @@ export function traitGrantedClassSkills(
     const def = resolveTraitDef(traitId, refData) ?? doc.build.homebrew?.traits?.[traitId];
     for (const s of def?.classSkills ?? []) skills.push(s);
     const choiceEntry = TRAIT_CHOICES[traitId];
-    if (choiceEntry?.choiceClassSkills) {
-      const picked = doc.build.pickChoices?.[`trait:${traitId}`];
-      for (const s of (picked && choiceEntry.choiceClassSkills[picked]) || []) skills.push(s);
+    const picked = doc.build.pickChoices?.[`trait:${traitId}`];
+    if (picked) {
+      for (const s of choiceEntry?.choiceClassSkills?.[picked] ?? []) skills.push(s);
+      for (const s of choiceEntry?.familyClassSkillTemplate?.(picked) ?? []) skills.push(s);
     }
   }
   return skills;

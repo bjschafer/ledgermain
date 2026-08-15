@@ -154,6 +154,7 @@ export {
   type ExtractedTraitEntry,
   TRAIT_CHOICES,
   type TraitChoiceEntry,
+  type TraitChoiceFamily,
 } from "./trait-effects-extracted.js";
 export {
   RACIAL_TRAITS,
