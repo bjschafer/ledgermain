@@ -33,6 +33,7 @@ const ABILITIES = { str: 12, dex: 14, con: 14, int: 10, wis: 12, cha: 16 } as co
 function makeDoc(over: {
   classes: { tag: string; level: number }[];
   archetypes?: string[];
+  pickChoices?: Record<string, string>;
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -53,6 +54,7 @@ function makeDoc(over: {
       classFeatureChoices: [],
       spells: { known: [] },
       gear: [],
+      pickChoices: over.pickChoices,
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -227,5 +229,55 @@ describe("Oracle Black Blood Power: Darkvision grants 90 ft. at L15", () => {
   it("absent without the archetype", () => {
     const sheet = compute(makeDoc({ classes: [{ tag: "oracle", level: 15 }] }), ref);
     expect(sheet.senses.find((s) => s.kind === "darkvision")).toBeUndefined();
+  });
+});
+
+describe("Elementalist Oracle: Elemental Form air/earth/fire/water pick (build.pickChoices)", () => {
+  const elementalistOracle = archetypeId("Elementalist Oracle");
+  const featureId = "oracle:elementalist-oracle:elemental-form:11";
+  const pickChoiceKey = `archetypeFeature:${featureId}`;
+
+  function sheetWithSubtype(subtype: string | undefined) {
+    return compute(
+      makeDoc({
+        classes: [{ tag: "oracle", level: 11 }],
+        archetypes: [elementalistOracle],
+        pickChoices: subtype ? { [pickChoiceKey]: subtype } : undefined,
+      }),
+      ref,
+    );
+  }
+
+  it("no stored pick: no subtype grant", () => {
+    const sheet = sheetWithSubtype(undefined);
+    expect(sheet.speeds.fly ?? 0).toBe(0);
+    expect(sheet.senses.find((s) => s.kind === "tremorsense")).toBeUndefined();
+    expect(sheet.defenses?.immunities ?? []).toEqual([]);
+  });
+
+  it("air: fly speed 30 ft.", () => {
+    expect(sheetWithSubtype("air").speeds.fly).toBe(30);
+  });
+
+  it("earth: tremorsense 30 ft.", () => {
+    const sheet = sheetWithSubtype("earth");
+    expect(sheet.senses.find((s) => s.kind === "tremorsense")?.range).toBe(30);
+  });
+
+  it("fire: immune to fire", () => {
+    const sheet = sheetWithSubtype("fire");
+    const immunities = (sheet.defenses?.immunities ?? []).map((e) => e.qualifier);
+    expect(immunities).toEqual(["fire"]);
+  });
+
+  it("water: swim speed 30 ft.", () => {
+    expect(sheetWithSubtype("water").speeds.swim).toBe(30);
+  });
+
+  it("a stale option id grants nothing", () => {
+    const sheet = sheetWithSubtype("void");
+    expect(sheet.speeds.fly ?? 0).toBe(0);
+    expect(sheet.speeds.swim ?? 0).toBe(0);
+    expect(sheet.defenses?.immunities ?? []).toEqual([]);
   });
 });
