@@ -1,5 +1,5 @@
 import { unappliedChanges } from "@pf1/engine";
-import type { CharacterDoc } from "@pf1/schema";
+import type { CharacterDoc, RefData } from "@pf1/schema";
 import type { TraitDef } from "@pf1/engine";
 
 import { changeTargetLabel } from "../../model/names.js";
@@ -9,11 +9,20 @@ import {
   toggleTrait,
   traitChoice,
   traitChoiceDescriptor,
+  traitChoiceIsFamily,
+  traitChoiceOptions,
 } from "../../model/traits.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
 import { InfoTip } from "../InfoTip.js";
 import { RulesNote } from "../RulesNote.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+
+/** Title-cased family name, for the family-choice label and empty-state hint. */
+const FAMILY_LABEL: Readonly<Record<string, string>> = {
+  craft: "Craft",
+  perform: "Perform",
+  profession: "Profession",
+};
 
 /**
  * One trait row — shared by the panel's chosen list and the picker's catalog.
@@ -22,23 +31,36 @@ import { FeatureDescription } from "./ClassFeaturesList.js";
  * collapsible `<details>` `FeatEntry` uses for feats, so prose-only traits
  * (the majority of the ~2,000-entry catalog) aren't left with a blank row.
  * A trait declaring a `TRAIT_CHOICES` entry (Deep Cover's Bluff-or-Disguise
- * class skill) gets a select once taken, mirroring `RagePowerPicker`'s
- * choose-one dropdown; `doc` is optional purely so a caller that doesn't
- * have one handy still compiles; every current caller passes it.
+ * class skill; Clan Artisan's own-Craft-instance pick) gets a select once
+ * taken, mirroring `RagePowerPicker`'s choose-one dropdown and, for a
+ * family-shaped choice, `FeatEntry`'s craft/perform/profession picker (same
+ * empty-state hint when the character has no instance of that family yet).
+ * `doc`/`refData` are optional purely so a caller that doesn't have them
+ * handy still compiles; every current caller passes both.
  */
 export function TraitRow({
   trait,
   selected,
   update,
   doc,
+  refData,
 }: {
   trait: TraitDef;
   selected: boolean;
   update: (fn: (doc: CharacterDoc) => CharacterDoc) => void;
   doc?: CharacterDoc;
+  refData?: RefData;
 }) {
   const missing = unappliedChanges(trait.changes);
   const choiceDescriptor = traitChoiceDescriptor(trait.id);
+  const choiceOptions =
+    selected && doc && refData && choiceDescriptor
+      ? traitChoiceOptions(doc, refData, trait.id)
+      : [];
+  const familyHint =
+    choiceDescriptor && traitChoiceIsFamily(choiceDescriptor)
+      ? `Add a ${choiceDescriptor.families.map((f) => FAMILY_LABEL[f] ?? f).join(", ")} skill (in the Skills section) to enable this picker.`
+      : null;
   return (
     <div className={`pick-row${selected ? " is-selected" : ""}`}>
       <div className="pmain">
@@ -70,7 +92,7 @@ export function TraitRow({
             }
           />
         ))}
-        {selected && doc && choiceDescriptor ? (
+        {selected && doc && choiceDescriptor && choiceOptions.length > 0 ? (
           <label className="hint" style={{ marginTop: 2, display: "block" }}>
             {choiceDescriptor.label}:{" "}
             <select
@@ -80,13 +102,18 @@ export function TraitRow({
               }
             >
               <option value="">Choose</option>
-              {choiceDescriptor.options.map((o) => (
+              {choiceOptions.map((o) => (
                 <option key={o.id} value={o.id}>
-                  {o.label}
+                  {o.name}
                 </option>
               ))}
             </select>
           </label>
+        ) : null}
+        {selected && choiceDescriptor && choiceOptions.length === 0 && familyHint ? (
+          <div className="hint" style={{ marginTop: 2 }}>
+            {familyHint}
+          </div>
         ) : null}
         {trait.description ? <FeatureDescription html={trait.description} /> : null}
       </div>

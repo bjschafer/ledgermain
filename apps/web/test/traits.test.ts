@@ -15,6 +15,9 @@ import {
   setTraitChoice,
   toggleTrait,
   traitChoice,
+  traitChoiceDescriptor,
+  traitChoiceIsFamily,
+  traitChoiceOptions,
   traitsNeedWarning,
 } from "../src/model/traits.js";
 
@@ -276,5 +279,40 @@ describe("model/traits: choose-one selections (build.pickChoices)", () => {
     let doc = setTraitChoice(makeDoc([DEEP_COVER, "reactionary"]), DEEP_COVER, "blf");
     doc = toggleTrait(doc, "reactionary");
     expect(traitChoice(doc, DEEP_COVER)).toBe("blf");
+  });
+});
+
+describe("model/traits: traitChoiceOptions / traitChoiceIsFamily", () => {
+  // Deep Cover: fixed-menu choice (Bluff or Disguise).
+  const DEEP_COVER = "9QVXtD2lZkIzyBt5";
+  // Clan Artisan (Xa Hoi): family-shaped choice (the character's own Craft
+  // instance).
+  const CLAN_ARTISAN = "JxJr7ofe0yC95eDJ";
+
+  it("traitChoiceIsFamily distinguishes the two choice shapes", () => {
+    expect(traitChoiceIsFamily(traitChoiceDescriptor(DEEP_COVER)!)).toBe(false);
+    expect(traitChoiceIsFamily(traitChoiceDescriptor(CLAN_ARTISAN)!)).toBe(true);
+  });
+
+  it("a fixed-menu trait returns its own declared options, independent of the doc", () => {
+    const doc = makeDoc([DEEP_COVER]);
+    expect(traitChoiceOptions(doc, ref, DEEP_COVER)).toEqual([
+      { id: "blf", name: "Bluff" },
+      { id: "dis", name: "Disguise" },
+    ]);
+  });
+
+  it("a family-shaped trait is empty until the character has an instance of that family", () => {
+    const doc = makeDoc([CLAN_ARTISAN]);
+    expect(traitChoiceOptions(doc, ref, CLAN_ARTISAN)).toEqual([]);
+  });
+
+  it("a family-shaped trait enumerates the character's own Craft instances, sorted", () => {
+    const doc = makeDoc([CLAN_ARTISAN]);
+    doc.build.skillRanks = { "crf.traps": 0, "crf.alchemy": 1 };
+    expect(traitChoiceOptions(doc, ref, CLAN_ARTISAN)).toEqual([
+      { id: "crf.alchemy", name: "Craft (Alchemy)" },
+      { id: "crf.traps", name: "Craft (Traps)" },
+    ]);
   });
 });

@@ -34,8 +34,11 @@ import {
   resolveTraitDef,
   TRAIT_CHOICES,
   type TraitCategory,
+  type TraitChoiceEntry,
   type TraitDef,
 } from "@pf1/engine";
+
+import { featChoiceOptions } from "./feats.js";
 
 /** The conventional number of traits a PF1 character takes at creation. */
 export const EXPECTED_TRAIT_COUNT = 2;
@@ -139,6 +142,44 @@ export function traitChoice(doc: CharacterDoc, traitId: string): string | undefi
 /** The declared choice descriptor for a trait, if `TRAIT_CHOICES` has one. */
 export function traitChoiceDescriptor(traitId: string) {
   return TRAIT_CHOICES[traitId]?.choice;
+}
+
+/**
+ * True when a trait's declared choice is the family-shaped own-instance axis
+ * (a player's own Craft/Perform/Profession skill, e.g. Clan Artisan) rather
+ * than a fixed named-option list (e.g. Deep Cover's Bluff-or-Disguise).
+ */
+export function traitChoiceIsFamily(
+  choice: NonNullable<ReturnType<typeof traitChoiceDescriptor>>,
+): choice is Extract<TraitChoiceEntry["choice"], { families: unknown }> {
+  return "families" in choice;
+}
+
+/**
+ * Selectable options for a trait's declared choice. A fixed choice returns
+ * its own option list; a family-shaped choice returns the character's OWN
+ * Craft/Perform/Profession skill instances across every family the trait
+ * draws from (merged and sorted for a trait spanning more than one family,
+ * e.g. Tattooed Focus's "Craft, Perform, or Profession") — reuses
+ * `model/feats.ts`'s `featChoiceOptions` family branch directly, since a
+ * trait's own-instance enumeration is identical to a feat's. Empty for a
+ * trait with no declared choice, or a family choice when the character has
+ * no instance of any listed family yet (the caller renders a hint, same
+ * posture as `FeatEntry`'s empty-family hint).
+ */
+export function traitChoiceOptions(
+  doc: CharacterDoc,
+  refData: RefData,
+  traitId: string,
+): { id: string; name: string }[] {
+  const choice = traitChoiceDescriptor(traitId);
+  if (!choice) return [];
+  if (traitChoiceIsFamily(choice)) {
+    return choice.families
+      .flatMap((family) => featChoiceOptions(family, refData, doc))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }
+  return choice.options.map((o) => ({ id: o.id, name: o.label }));
 }
 
 /** The number of traits currently chosen. */
