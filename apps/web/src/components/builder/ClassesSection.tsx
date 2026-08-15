@@ -701,7 +701,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Weapon Training group picks — fighter only, hidden once L5 or if an archetype replaced it. */}
       <WeaponTrainingPicker doc={doc} update={update} />
 
-      <ClassFeaturesList sheet={sheet} refData={refData} />
+      <ClassFeaturesList sheet={sheet} refData={refData} doc={doc} update={update} />
     </Panel>
   );
 }

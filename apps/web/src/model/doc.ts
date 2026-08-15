@@ -746,10 +746,40 @@ export function setArcaneBond(
  * whole list, same shape as `setClericDomains`. No conflict validation here —
  * the model layer stays free-choice; the engine's `resolveClassFeatures`
  * applies swaps last-wins if two chosen archetypes ever overlap a slot.
+ *
+ * `refData`, when given, also drops any `pickChoices["archetypeFeature:<id>"]`
+ * entry belonging to an archetype that just dropped OUT of the list — a
+ * re-added archetype should start every choose-one feature unchosen, same
+ * hygiene `toggleRagePower` applies on deselect. Optional (rather than
+ * required) purely for back-compat with existing callers that build a doc
+ * directly and have no `RefData` handy; the one caller that can actually
+ * REMOVE an archetype through the UI (`ArchetypePicker`) always has one.
  */
-export function setArchetypes(doc: CharacterDoc, archetypes: string[]): CharacterDoc {
+export function setArchetypes(
+  doc: CharacterDoc,
+  archetypes: string[],
+  refData?: RefData,
+): CharacterDoc {
   const trimmed = archetypes.filter((a) => typeof a === "string" && a.length > 0);
-  return { ...doc, build: { ...doc.build, archetypes: trimmed } };
+  let pickChoices = doc.build.pickChoices;
+  const removed = (doc.build.archetypes ?? []).filter((a) => !trimmed.includes(a));
+  if (refData && removed.length > 0 && pickChoices) {
+    const removedFeatureIds = new Set(
+      Object.values(refData.archetypeFeatures)
+        .filter((f) => removed.includes(f.archetypeId))
+        .map((f) => f.id),
+    );
+    const next: Record<string, string> = {};
+    for (const [key, value] of Object.entries(pickChoices)) {
+      const featureId = key.startsWith("archetypeFeature:")
+        ? key.slice("archetypeFeature:".length)
+        : undefined;
+      if (featureId !== undefined && removedFeatureIds.has(featureId)) continue;
+      next[key] = value;
+    }
+    pickChoices = next;
+  }
+  return { ...doc, build: { ...doc.build, archetypes: trimmed, pickChoices } };
 }
 
 /**
