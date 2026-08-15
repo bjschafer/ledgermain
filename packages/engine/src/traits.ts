@@ -45,7 +45,7 @@
 
 import type { Change, RefData, Trait, TraitCategory, TraitDef } from "@pf1/schema";
 
-import { TRAIT_EFFECTS_EXTRACTED } from "./trait-effects-extracted.js";
+import { TRAIT_CHOICES, TRAIT_EFFECTS_EXTRACTED } from "./trait-effects-extracted.js";
 
 // TraitCategory/TraitDef live in @pf1/schema (not here) so a homebrew trait
 // stored in `CharacterDoc.build.homebrew.traits` can share the exact same
@@ -465,13 +465,17 @@ export function resolveTraitDef(id: string, refData: RefData): TraitDef | undefi
  * always a class skill for you") — unioned into `compute()`'s classSkillSet,
  * the exact shape of `featGrantedClassSkills`. Checks the same resolution
  * chain as `collect.ts`'s trait loop: hand-authored/vendored first, homebrew
- * as the fallback, unknown ids skipped.
+ * as the fallback, unknown ids skipped. Also folds in `TRAIT_CHOICES`' own
+ * `choiceClassSkills`, gated on `doc.build.pickChoices["trait:<traitId>"]` —
+ * no stored pick, or a stale option id, grants nothing, same safe default as
+ * every other choice-gated grant.
  */
 export function traitGrantedClassSkills(
   doc: {
     build: {
       traits?: readonly string[];
       homebrew?: { traits?: Record<string, TraitDef> };
+      pickChoices?: Record<string, string>;
     };
   },
   refData: RefData,
@@ -480,6 +484,11 @@ export function traitGrantedClassSkills(
   for (const traitId of doc.build.traits ?? []) {
     const def = resolveTraitDef(traitId, refData) ?? doc.build.homebrew?.traits?.[traitId];
     for (const s of def?.classSkills ?? []) skills.push(s);
+    const choiceEntry = TRAIT_CHOICES[traitId];
+    if (choiceEntry?.choiceClassSkills) {
+      const picked = doc.build.pickChoices?.[`trait:${traitId}`];
+      for (const s of (picked && choiceEntry.choiceClassSkills[picked]) || []) skills.push(s);
+    }
   }
   return skills;
 }

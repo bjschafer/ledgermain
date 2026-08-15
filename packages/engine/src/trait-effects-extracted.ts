@@ -32,6 +32,8 @@
 
 import type { Change } from "@pf1/schema";
 
+import type { PickChoice } from "./rage-powers.js";
+
 export interface ExtractedTraitEntry {
   /** Typed modifiers for the unconditional clause(s). */
   changes?: readonly Change[];
@@ -470,6 +472,51 @@ export const TRAIT_EFFECTS_EXTRACTED: Readonly<Record<string, ExtractedTraitEntr
   },
 };
 
+/** A choose-one trait selection, see {@link TRAIT_CHOICES}. */
+export interface TraitChoiceEntry {
+  /** Dropdown prompt + option list, same shape rage powers use. */
+  choice: PickChoice;
+  /**
+   * Per-option class-skill grants, keyed by option id — the choice-driven
+   * counterpart to `ExtractedTraitEntry.classSkills`, consumed by
+   * `traitGrantedClassSkills` once a pick is stored.
+   */
+  choiceClassSkills?: Readonly<Record<string, readonly string[]>>;
+  /**
+   * Per-option typed modifiers, keyed by option id — consumed in
+   * `collect.ts`'s trait loop exactly like `ExtractedTraitEntry.changes`,
+   * gated on `doc.build.pickChoices["trait:<traitId>"]`.
+   */
+  choiceChanges?: Readonly<Record<string, readonly Change[]>>;
+}
+
+/**
+ * Hand-authored table for traits whose fixed-menu choice RAW locks in when
+ * the trait is taken (a skill-vs-skill class-skill grant, an own-instance
+ * Craft/Perform/Profession pick). The player's selection lives in
+ * `doc.build.pickChoices["trait:<traitId>"]`, same posture as the rage-power
+ * `choice`/`choiceChanges` pattern this mirrors: no stored pick, or a stale
+ * option id, emits nothing. Separate from `TraitDef`/`ExtractedTraitEntry`
+ * (rather than a field there) since a hand-authored `TRAITS` entry could
+ * just as easily need this axis — keeping it name-space-keyed by trait id
+ * lets one table serve both catalogs.
+ */
+export const TRAIT_CHOICES: Readonly<Record<string, TraitChoiceEntry>> = {
+  // Deep Cover: "Bluff or Disguise (your choice) is a class skill for you."
+  // The always-on "take 10 to assume/maintain your cover identity" clause
+  // for both skills stays prose (already carried as vendored contextNotes).
+  "9QVXtD2lZkIzyBt5": {
+    choice: {
+      label: "Class skill",
+      options: [
+        { id: "blf", label: "Bluff" },
+        { id: "dis", label: "Disguise" },
+      ],
+    },
+    choiceClassSkills: { blf: ["blf"], dis: ["dis"] },
+  },
+};
+
 /**
  * Prose-only traits the sweep found to carry a genuinely unconditional
  * published number that still cannot be promoted — each value names the
@@ -547,8 +594,6 @@ export const TRAIT_PROMOTION_BLOCKERS: Readonly<Record<string, string>> = {
   unv2smjzMnDXHpcr: "ability-substitution mechanic, not an additive bonus",
   // Darklands Trader
   zGc6FMFSliXxASGn: "player-choice class skill (Diplomacy or Knowledge dungeoneering)",
-  // Deep Cover
-  "9QVXtD2lZkIzyBt5": "player-choice class skill (Bluff or Disguise)",
   // Distance Aptitude
   "6ZGdu6NbIl8nuRcc":
     "Unconditional caster level bonus (spell/SLA range); caster level has no target.",

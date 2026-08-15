@@ -83,6 +83,7 @@ import {
   type ShamanSpiritAbility,
 } from "./shaman-spirits.js";
 import { resolveSlayerTalent } from "./slayer-talents.js";
+import { TRAIT_CHOICES } from "./trait-effects-extracted.js";
 import { resolveTraitDef } from "./traits.js";
 import { totalLevel } from "./rolldata.js";
 import type { TypedModifier } from "./stacking.js";
@@ -764,6 +765,29 @@ export function collectModifiers(
         ch.maneuverCategories,
         ch.acCategories,
       );
+    }
+    // Choose-one traits (Deep Cover's Bluff-or-Disguise class skill): apply
+    // the stored selection's changes. No stored pick, or a stale option id,
+    // emits nothing — same safe default as every other pick-choice namespace.
+    const traitChoice = TRAIT_CHOICES[traitId];
+    if (traitChoice?.choiceChanges) {
+      const picked = doc.build.pickChoices?.[`trait:${traitId}`];
+      for (const ch of (picked && traitChoice.choiceChanges[picked]) || []) {
+        if (!gateOpen(ch)) continue;
+        evalChange(
+          ch.formula,
+          rollData,
+          ch.target,
+          ch.type,
+          trait.name,
+          trait.id,
+          out,
+          ch.operator,
+          ch.saveCategories,
+          ch.maneuverCategories,
+          ch.acCategories,
+        );
+      }
     }
   }
 
