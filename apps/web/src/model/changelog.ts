@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-14-archetype-abilities-that-showed-nothing",
+    date: "2026-08-14",
+    title: "Archetype abilities that used to show only rules text now compute",
+    note: "A handful of archetype abilities were listed on your sheet without their numbers. They apply now: a plague bringer's and an internal alchemist's disease save bonuses climb from +2 to +6 as you level, a horticulturist gets +2 Knowledge (nature) and +2 Survival, and a holy tactician's bonus teamwork feats are counted toward your feat total. A sharptooth barbarian gains a swim speed that starts at 10 feet and grows every five levels, and Fast Movement now shows struck through as the ability it trades away.",
+  },
+  {
     id: "2026-08-13-granted-speeds-bravery-natural-armor",
     date: "2026-08-13",
     title: "Granted speeds, Bravery feats, and natural armor feats compute",

@@ -670,7 +670,7 @@ export const SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Teamwork Feats",
     level: 12,
     bucket: "blocked",
-    note: "byte-identical vendored description to teamwork-feat:4 (both state the same 4th-and-12th-level grant in one sentence) — a duplicate-id vendoring artifact; the earlier id (:4) is extracted, this one is recorded as the duplicate to avoid double-counting the same grant twice",
+    note: "byte-identical vendored description to teamwork-feat:4 — a duplicate-id vendoring artifact reprinting the same 4th-and-12th-level grant in one sentence. teamwork-feat:4 is the canonical id and its extracted formula already counts both breakpoints (1 feat at 4th, 2 at 12th); this id carries no independent grant and stays blocked to avoid double-counting",
   },
   "summoner:twinned-summoner:twin-summoner:16": {
     archetypeId: "summoner:twinned-summoner",

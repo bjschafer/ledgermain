@@ -2,7 +2,11 @@ import { describe, expect, it } from "bun:test";
 
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { evaluateFormula, resolveArchetypeFeatureEffect } from "../src/index.js";
+import {
+  CLASS_FEATURE_CHANGE_PATCHES,
+  evaluateFormula,
+  resolveArchetypeFeatureEffect,
+} from "../src/index.js";
 import {
   ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED,
   ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION,
@@ -57,26 +61,26 @@ describe("ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     expect(Object.keys(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(219);
   });
 
-  it("bucket counts match the audited totals (numeric 12 / situational 7 / subsystem 156 / blocked 44)", () => {
+  it("bucket counts match the audited totals (numeric 15 / situational 7 / subsystem 157 / blocked 40)", () => {
     const counts: Record<string, number> = {};
     for (const entry of Object.values(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts["numeric"]).toBe(12);
+    expect(counts["numeric"]).toBe(15);
     expect(counts["situational"]).toBe(7);
-    expect(counts["subsystem"]).toBe(156);
-    expect(counts["blocked"]).toBe(44);
+    expect(counts["subsystem"]).toBe(157);
+    expect(counts["blocked"]).toBe(40);
   });
 
   it("every numeric-bucket classification entry has a matching extracted-effects entry, and no stray entries exist", () => {
     const numericIds = Object.entries(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(12);
+    expect(numericIds.length).toBe(15);
     for (const id of numericIds) {
       expect(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
-    expect(Object.keys(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(12);
+    expect(Object.keys(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(15);
     for (const id of Object.keys(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED)) {
       expect(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("numeric");
     }
@@ -224,6 +228,86 @@ describe("Mindchemist: Perfect Recall doubles Intelligence on every Knowledge ch
   });
 });
 
+describe("Plague Bringer: Disease Resistance grants a scaling save bonus vs. disease", () => {
+  it("+2 at L2, +4 at L5, +6 at L8, capped at +6 (10th-level disease immunity not modeled)", () => {
+    const id = "alchemist:plague-bringer:disease-resistance:2";
+    const [saveChange] = ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(saveChange!.target).toBe("allSavingThrows");
+    expect(saveChange!.saveCategories).toEqual(["disease"]);
+    const at = (level: number) =>
+      evaluateFormula(saveChange!.formula, { class: { unlevel: level } });
+    expect(at(2)).toBe(2);
+    expect(at(5)).toBe(4);
+    expect(at(8)).toBe(6);
+    expect(at(20)).toBe(6);
+  });
+
+  it("the sibling id Disease Immunity carries no independent grant (vendored-data duplicate)", () => {
+    const id = "alchemist:plague-bringer:disease-immunity:10";
+    expect(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("blocked");
+    expect(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeUndefined();
+  });
+});
+
+describe("Internal Alchemist: Disease Resistance mirrors the alchemist's Poison Resistance progression", () => {
+  it("+2 at L3-4 (its own gate), +4 at L5, +6 at L8 (poison immunity's disease clause not modeled)", () => {
+    const id = "alchemist:internal-alchemist:disease-resistance:3";
+    const [saveChange] = ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(saveChange!.target).toBe("allSavingThrows");
+    expect(saveChange!.saveCategories).toEqual(["disease"]);
+    const at = (level: number) =>
+      evaluateFormula(saveChange!.formula, { class: { unlevel: level } });
+    expect(at(3)).toBe(2);
+    expect(at(4)).toBe(2);
+    expect(at(5)).toBe(4);
+    expect(at(8)).toBe(6);
+  });
+
+  it("this matches the real alchemist Poison Resistance Change patch it mirrors", () => {
+    // Poison Resistance itself carries `changes: []` upstream (see the file
+    // header's class note 4) — its real number is applied via
+    // CLASS_FEATURE_CHANGE_PATCHES at collect time, keyed by class+name.
+    expect(CLASS_FEATURE_CHANGE_PATCHES["alchemist:Poison Resistance"]).toEqual([
+      {
+        formula: "if(gte(@class.unlevel, 8), 6, if(gte(@class.unlevel, 5), 4, 2))",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["poison"],
+      },
+    ]);
+    const poisonResistances = Object.values(ref.classFeatures).filter(
+      (f) => f.name === "Poison Resistance",
+    );
+    expect(poisonResistances.length).toBeGreaterThan(0);
+    for (const feature of poisonResistances) {
+      expect(feature.changes ?? []).toEqual([]);
+    }
+  });
+
+  it("the sibling id Disease Immunity carries no independent grant (vendored-data duplicate)", () => {
+    const id = "alchemist:internal-alchemist:disease-immunity:10";
+    expect(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("blocked");
+    expect(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeUndefined();
+  });
+});
+
+describe("Horticulturist: Plant Voice grants flat Knowledge (nature)/Survival bonuses", () => {
+  it("+2 Knowledge (nature), +2 Survival, unconditional", () => {
+    const id = "alchemist:horticulturist:plant-voice:2";
+    const [knChange, surChange] = ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(knChange!.target).toBe("skill.kna");
+    expect(surChange!.target).toBe("skill.sur");
+    expect(evaluateFormula(knChange!.formula, {})).toBe(2);
+    expect(evaluateFormula(surChange!.formula, {})).toBe(2);
+  });
+
+  it("the sibling id Speak With Plants carries no independent grant (vendored-data duplicate)", () => {
+    const id = "alchemist:horticulturist:speak-with-plants:10";
+    expect(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("subsystem");
+    expect(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeUndefined();
+  });
+});
+
 describe("Herbalist: Herbalism stays unwired (bonus is scoped to crafting/foraging)", () => {
   it("classifies as situational with no extracted entry", () => {
     const id = "alchemist:herbalist:herbalism:1";
@@ -263,7 +347,7 @@ describe("resolveArchetypeFeatureEffect: resolves through alchemist's tables whe
 });
 
 describe("blocked bucket: vendored-data duplicate-id pairs (byte-identical description within one archetype)", () => {
-  const duplicatePairs: [string, string][] = [
+  const allDuplicatePairs: [string, string][] = [
     [
       "alchemist:dragonblood-chymist:draconic-resistances:2",
       "alchemist:dragonblood-chymist:draconic-immunity:10",
@@ -285,17 +369,66 @@ describe("blocked bucket: vendored-data duplicate-id pairs (byte-identical descr
   ];
 
   it("each pair really does share byte-identical vendored description text (confirms the duplication, not a guess)", () => {
-    for (const [a, b] of duplicatePairs) {
+    for (const [a, b] of allDuplicatePairs) {
       expect(ref.archetypeFeatures[a]?.description).toBe(ref.archetypeFeatures[b]?.description);
     }
   });
 
-  it("both ids in every pair are bucketed blocked, with no extracted entry for either", () => {
-    for (const [a, b] of duplicatePairs) {
+  // These three groups have no id designated canonical: neither id in the
+  // pair carries a real number, so both stay blocked.
+  const fullyBlockedPairs: [string, string][] = [
+    [
+      "alchemist:dragonblood-chymist:draconic-resistances:2",
+      "alchemist:dragonblood-chymist:draconic-immunity:10",
+    ],
+    [
+      "alchemist:crypt-breaker:alkahest-bombs:1",
+      "alchemist:crypt-breaker:alkahest-bomb-damage-increase:3",
+    ],
+    ["alchemist:reanimator:bomb:1", "alchemist:reanimator:simple-reanimation:7"],
+  ];
+
+  it("both ids in every fully-blocked pair are bucketed blocked, with no extracted entry for either", () => {
+    for (const [a, b] of fullyBlockedPairs) {
       expect(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION[a]?.bucket).toBe("blocked");
       expect(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION[b]?.bucket).toBe("blocked");
       expect(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[a]).toBeUndefined();
       expect(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[b]).toBeUndefined();
+    }
+  });
+
+  // These three groups DO describe a real number: one id per pair is
+  // designated canonical and carries the wired numeric entry, while its
+  // sibling stays unwired with a note that it's a reprint of the canonical
+  // id's text.
+  const canonicalizedPairs: {
+    canonical: string;
+    sibling: string;
+    siblingBucket: "blocked" | "subsystem";
+  }[] = [
+    {
+      canonical: "alchemist:plague-bringer:disease-resistance:2",
+      sibling: "alchemist:plague-bringer:disease-immunity:10",
+      siblingBucket: "blocked",
+    },
+    {
+      canonical: "alchemist:internal-alchemist:disease-resistance:3",
+      sibling: "alchemist:internal-alchemist:disease-immunity:10",
+      siblingBucket: "blocked",
+    },
+    {
+      canonical: "alchemist:horticulturist:plant-voice:2",
+      sibling: "alchemist:horticulturist:speak-with-plants:10",
+      siblingBucket: "subsystem",
+    },
+  ];
+
+  it("the canonical id in each pair is numeric with a wired entry, and the sibling has none", () => {
+    for (const { canonical, sibling, siblingBucket } of canonicalizedPairs) {
+      expect(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION[canonical]?.bucket).toBe("numeric");
+      expect(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[canonical]).toBeDefined();
+      expect(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION[sibling]?.bucket).toBe(siblingBucket);
+      expect(ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED[sibling]).toBeUndefined();
     }
   });
 });

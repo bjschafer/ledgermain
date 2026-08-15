@@ -149,6 +149,51 @@ describe("Vindictive Bastard (paladin): Teamwork Feat, bonusFeats every 6 levels
   });
 });
 
+describe("Holy Tactician (paladin): Tactical Acumen, bonusFeats every 4 levels from L3 (canonical id for a duplicate-id pair)", () => {
+  // Tactical Acumen (level 3) and Bonus Teamwork Feat (level 7) carry
+  // byte-identical vendored text (PZO1118 p.64: "At 3rd level, a holy
+  // tactician gains a teamwork feat as a bonus feat... She gains an
+  // additional bonus feat for every four levels attained after 3rd, to a
+  // maximum of five bonus feats at 19th level."). Tactical Acumen is the
+  // canonical id; Bonus Teamwork Feat stays blocked so the grant is counted
+  // once, not twice, once a holy tactician reaches 7th level.
+  const holyTactician = archetypeId("Holy Tactician");
+
+  it("1 feat at L3, 2 at L7, 3 at L11, 4 at L15, 5 at L19 (the stated max)", () => {
+    const levelsToFeats: [number, number][] = [
+      [3, 1],
+      [7, 2],
+      [11, 3],
+      [15, 4],
+      [19, 5],
+    ];
+    for (const [level, feats] of levelsToFeats) {
+      const sheet = compute(
+        makeDoc({ classes: [{ tag: "paladin", level }], archetypes: [holyTactician] }),
+        ref,
+      );
+      const own = sheet.activeArchetypes
+        .find((a) => a.id === holyTactician)
+        ?.features.find((f) => f.name === "Tactical Acumen");
+      expect(own?.detail, `L${level}`).toBe(`${feats} bonus feat(s) (teamwork feats)`);
+    }
+  });
+
+  it("Bonus Teamwork Feat (the duplicate id) carries no separate grant of its own", () => {
+    const sheet = compute(
+      makeDoc({ classes: [{ tag: "paladin", level: 19 }], archetypes: [holyTactician] }),
+      ref,
+    );
+    const duplicate = sheet.activeArchetypes
+      .find((a) => a.id === holyTactician)
+      ?.features.find((f) => f.name === "Bonus Teamwork Feat");
+    expect(duplicate?.detail).toBeUndefined();
+    expect(
+      resolveArchetypeFeatureEffect("paladin:holy-tactician:bonus-teamwork-feat:7"),
+    ).toBeUndefined();
+  });
+});
+
 describe("Empyreal Knight (paladin): Celestial Heart grants scaling energy resistance", () => {
   const empyrealKnight = archetypeId("Empyreal Knight");
 

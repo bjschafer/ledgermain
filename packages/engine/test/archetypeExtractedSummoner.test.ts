@@ -136,6 +136,12 @@ describe("Twinned Summoner: Teamwork Feat grants a cumulative bonus-feat count",
     expect(archetypeId("Twinned Summoner")).toBe("summoner:twinned-summoner");
   });
 
+  // Ultimate Combat (PZO9480 p.18): "At 4th level and at 12th level, a
+  // twinned summoner gains a bonus teamwork feat" — a 4th-level feat plus a
+  // SECOND, additional feat at 12th (2 total from 12th on), not a
+  // level-12-only re-grant. teamwork-feats:12 (below) reprints this same
+  // sentence under a separate id/level and is `blocked` as the duplicate, so
+  // this formula is the only place both breakpoints are counted.
   it("0 below L4, 1 at L4-L11, 2 at L12+", () => {
     const id = "summoner:twinned-summoner:teamwork-feat:4";
     const [feats] = SUMMONER_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;

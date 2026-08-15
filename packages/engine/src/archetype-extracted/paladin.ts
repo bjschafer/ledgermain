@@ -72,16 +72,19 @@
  *   Self-Sufficient) to `subsystem` — flagged as a process-doc finding in the
  *   wave report rather than silently worked around.
  *
- * Also found: three suspected vendored-data duplicate-text bugs (a single
- * multi-tier ability's prose byte-for-byte repeated across 2-3 separate
- * archetype-feature ids at different levels) — Mind Sword's Touch Treatment
+ * Also found: three vendored-data duplicate-text ids (a single multi-tier
+ * ability's prose byte-for-byte repeated across 2-3 separate archetype-
+ * feature ids at different levels) — Mind Sword's Touch Treatment
  * (Minor/Moderate/Major, ids at levels 3/12/18 but the shared text itself
  * says "at 3rd... at 9th... at 15th"), Temple Champion's Blessing
- * (Minor/Major, ids at levels 5/11, identical text), and — the one case where
- * this actually mattered for composition safety, since the shared text is a
- * clean `bonusFeats` formula — Holy Tactician's Tactical Acumen (id level 3)
- * / Bonus Teamwork Feat (id level 7), `blocked` rather than double-extracted.
- * None were fixed here (reported, not fixed, per the task's own instruction).
+ * (Minor/Major, ids at levels 5/11, identical text), both `subsystem`
+ * either way (neither ability is `Change`-shaped, so there's no double-count
+ * risk regardless of which id is treated as canonical). Holy Tactician's
+ * Tactical Acumen (id level 3) and Bonus Teamwork Feat (id level 7) share
+ * the same byte-identical, `bonusFeats`-shaped text; Tactical Acumen is the
+ * canonical id and carries the extracted `bonusFeats` formula, while Bonus
+ * Teamwork Feat stays `blocked` as its duplicate to avoid double-counting
+ * the same grant twice.
  */
 
 import {
@@ -623,15 +626,15 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "paladin:holy-tactician",
     name: "Tactical Acumen",
     level: 3,
-    bucket: "blocked",
-    note: "blocked: suspected vendored duplicate — this id's description is byte-identical to Bonus Teamwork Feat (level 7)'s, describing the SAME bonus-teamwork-feat-every-4-levels cadence twice under two different ids/levels. The underlying formula is clean and bonusFeats-shaped, but extracting it under both ids would double-count once a holy tactician reaches 7th level and both entries are simultaneously active archetype features. Reported, not fixed.",
+    bucket: "numeric",
+    note: "unconditional bonus teamwork feat at 3rd and every 4 levels thereafter (max 5 at 19th) — canonical id for this ability's byte-identical duplicate pair (see Bonus Teamwork Feat's entry, level 7, same id/level split); the teamwork-feat-list restriction and its prerequisite requirement aren't modeled, only the count — extracted (see PALADIN_ARCHETYPE_EFFECTS_EXTRACTED below)",
   },
   "paladin:holy-tactician:bonus-teamwork-feat:7": {
     archetypeId: "paladin:holy-tactician",
     name: "Bonus Teamwork Feat",
     level: 7,
     bucket: "blocked",
-    note: "blocked: suspected vendored duplicate — see Tactical Acumen (level 3)'s entry; same reasoning, mirrored id.",
+    note: "byte-identical vendored description to Tactical Acumen (level 3) — a duplicate-id vendoring artifact describing the same bonus-teamwork-feat-every-4-levels cadence twice. Tactical Acumen is the canonical id and carries the extracted bonusFeats formula; this id carries no independent grant and stays blocked to avoid double-counting.",
   },
   "paladin:holy-tactician:guide-the-battle:8": {
     archetypeId: "paladin:holy-tactician",
@@ -1885,7 +1888,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * ── PALADIN_ARCHETYPE_EFFECTS_EXTRACTED ───────────────────────────────────
  *
  * Machine-extracted mechanical effects for paladin archetype class features
- * (2). Clean-room from the published PF1 rules — the vendored prose this was
+ * (16). Clean-room from the published PF1 rules — the vendored prose this was
  * extracted from (`archetype-features.json`) is OGL, so reading it is fine; no
  * Foundry source was consulted (DESIGN.md §6).
  *
@@ -1942,6 +1945,24 @@ export const PALADIN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "At 3rd level and every 6 levels thereafter, the vindictive bastard gains a bonus feat in " +
       "addition to those gained from normal advancement. These bonus feats must be selected from " +
       "those listed as teamwork feats.",
+  },
+
+  // Holy Tactician's "Tactical Acumen" (level 3) and "Bonus Teamwork Feat"
+  // (level 7) carry byte-identical vendored text — a duplicate-id vendoring
+  // artifact, not two separate grants. Tactical Acumen is the canonical id;
+  // Bonus Teamwork Feat stays `blocked` (see its classification entry) so the
+  // formula below is counted once, not twice, once a holy tactician reaches
+  // 7th level and both ids would otherwise be simultaneously active. The
+  // teamwork-feat-list restriction and its prerequisite requirement aren't
+  // modeled, only the count.
+  "paladin:holy-tactician:tactical-acumen:3": {
+    changes: [c("1 + floor((@class.unlevel - 3) / 4)", "bonusFeats")],
+    detail: (level) => `${1 + Math.floor((level - 3) / 4)} bonus feat(s) (teamwork feats)`,
+    confidence: "high",
+    provenance:
+      "At 3rd level, a holy tactician gains a teamwork feat as a bonus feat. She must meet the " +
+      "prerequisites for this feat. She gains an additional bonus feat for every four levels " +
+      "attained after 3rd, to a maximum of five bonus feats at 19th level.",
   },
 
   // ── General, unconditional scaling bonuses ────────────────────────────────

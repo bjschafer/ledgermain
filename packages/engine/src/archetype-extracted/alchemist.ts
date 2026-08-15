@@ -73,12 +73,19 @@
  * carry the complete Seed Pod ability text including every condition tier).
  * Extracting a real number under more than one id sharing identical prose
  * within one archetype would double it once a character reaches both
- * features' level gates, so every id in each group is `blocked`/`subsystem`
- * with a note rather than picked apart. `eldritch-poisoner` additionally
- * carries five level-0 ids (`cure`, `effect`, `frequency`, `save`, `type`)
- * that are not features at all — they are the individual column cells of
- * the arcanotoxin poison's SRD stat block (Type/Save/Frequency/Effect/Cure),
- * scraped as standalone archetype features by the third-party compilation.
+ * features' level gates, so at most one id per group may carry the number.
+ * Three groups (`plague-bringer`, `internal-alchemist`, `horticulturist`)
+ * have one id per group designated canonical, carrying the wired `numeric`
+ * entry for the real number the shared prose describes, while the sibling
+ * id stays `blocked`/`subsystem` noting it is a reprint of the canonical
+ * id's text with no independent grant. The remaining four groups
+ * (`dragonblood-chymist`, `crypt-breaker`, `reanimator`, `herbalist`) have
+ * no canonical id: every id in them stays `blocked`/`subsystem` with a
+ * note. `eldritch-poisoner` additionally carries five level-0 ids (`cure`,
+ * `effect`, `frequency`, `save`, `type`) that are not features at all —
+ * they are the individual column cells of the arcanotoxin poison's SRD
+ * stat block (Type/Save/Frequency/Effect/Cure), scraped as standalone
+ * archetype features by the third-party compilation.
  * Also: `brown-fur-transmuter`'s three features are pure arcanist mechanics
  * (arcanist exploits, an arcane reservoir) with no alchemist content at
  * all — filed under the `alchemist:` class tag in the vendored pull despite
@@ -1110,15 +1117,15 @@ export const ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "alchemist:horticulturist",
     name: "Plant Voice",
     level: 2,
-    bucket: "blocked",
-    note: "SUSPECTED VENDORED-DATA DUPLICATE: description is byte-identical to speak-with-plants:10's (both describe the same +2 Knowledge [nature]/Survival bonus). Extracting under both ids would double it once a horticulturist reaches both level gates",
+    bucket: "numeric",
+    note: "canonical id for the flat +2 Knowledge (nature)/Survival bonus this archetype's description text stamps on both plant-voice:2 and speak-with-plants:10 (byte-identical vendored duplicate); the 10th-level constant speak with plants SLA has no applied target",
   },
   "alchemist:horticulturist:speak-with-plants:10": {
     archetypeId: "alchemist:horticulturist",
     name: "Speak With Plants",
     level: 10,
-    bucket: "blocked",
-    note: "SUSPECTED VENDORED-DATA DUPLICATE: description is byte-identical to plant-voice:2's — see that entry",
+    bucket: "subsystem",
+    note: "reprint of plant-voice:2's description text (vendored duplicate) and grants no independent number; the 10th-level constant speak with plants SLA it actually names has no applied target",
   },
 
   // ── alchemist:ice-chemist ──
@@ -1166,14 +1173,14 @@ export const ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Disease Immunity",
     level: 10,
     bucket: "blocked",
-    note: "SUSPECTED VENDORED-DATA DUPLICATE: description is byte-identical to disease-resistance:3's (both describe the same disease-save-bonus-mirrors-poison-bonus progression). Extracting under both ids would double it once an internal alchemist reaches both gates",
+    note: "reprint of disease-resistance:3's description text (vendored duplicate) and carries no independent grant — see that id for the wired save bonus",
   },
   "alchemist:internal-alchemist:disease-resistance:3": {
     archetypeId: "alchemist:internal-alchemist",
     name: "Disease Resistance",
     level: 3,
-    bucket: "blocked",
-    note: "SUSPECTED VENDORED-DATA DUPLICATE: description is byte-identical to disease-immunity:10's — see that entry",
+    bucket: "numeric",
+    note: "canonical id for the disease save bonus this archetype's description text stamps on both disease-resistance:3 and disease-immunity:10 (byte-identical vendored duplicate); mirrors the base alchemist's Poison Resistance progression, gated to start at 3rd level",
   },
   "alchemist:internal-alchemist:uncanny-dodge:6": {
     archetypeId: "alchemist:internal-alchemist",
@@ -1403,14 +1410,14 @@ export const ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Disease immunity",
     level: 10,
     bucket: "blocked",
-    note: "SUSPECTED VENDORED-DATA DUPLICATE: description is byte-identical to disease-resistance:2's (both describe the same +2/+4/+6-then-immune disease progression, itself real and `disease` IS a supported SAVE_CATEGORIES entry). Extracting under both ids would double it once a plague bringer reaches both gates — escalation-worthy: this pair would otherwise have been a clean numeric win",
+    note: "reprint of disease-resistance:2's description text (vendored duplicate) and carries no independent grant — see that id for the wired save bonus",
   },
   "alchemist:plague-bringer:disease-resistance:2": {
     archetypeId: "alchemist:plague-bringer",
     name: "Disease Resistance",
     level: 2,
-    bucket: "blocked",
-    note: "SUSPECTED VENDORED-DATA DUPLICATE: description is byte-identical to disease-immunity:10's — see that entry",
+    bucket: "numeric",
+    note: "canonical id for the scaling disease save bonus this archetype's description text stamps on both disease-resistance:2 and disease-immunity:10 (byte-identical vendored duplicate); the 10th-level full disease immunity clause has no immunity display target and is dropped",
   },
   "alchemist:plague-bringer:plague-vial:1": {
     archetypeId: "alchemist:plague-bringer",
@@ -1955,5 +1962,69 @@ export const ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     detail: () => "5 acid resistance",
     confidence: "high",
     provenance: "At 3rd level, an Oenopion researcher gains acid resistance 5.",
+  },
+
+  // Plague Bringer's "Disease Resistance" and "Disease Immunity" share
+  // byte-identical vendored description text (see the header's oddity
+  // list); `disease-resistance:2` is the canonical id for the scaling save
+  // bonus, matching the base alchemist's Poison Resistance progression
+  // (+2/+4/+6 at 2nd/5th/8th, confirmed against
+  // `POISON_RESISTANCE_ALCHEMIST_INVESTIGATOR` in `class-feature-effects.ts`).
+  // The 10th-level "completely immune to disease" clause has no immunity
+  // display target in this engine and is dropped.
+  "alchemist:plague-bringer:disease-resistance:2": {
+    changes: [
+      {
+        formula: "if(gte(@class.unlevel, 8), 6, if(gte(@class.unlevel, 5), 4, 2))",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["disease"],
+      },
+    ],
+    detail: (level) =>
+      `+${level >= 8 ? 6 : level >= 5 ? 4 : 2} vs. disease (10th-level disease immunity not modeled)`,
+    confidence: "high",
+    provenance:
+      "a plague bringer gains a +2 bonus on all saving throws against disease. This bonus " +
+      "increases to +4 at 5th level, and to +6 at 8th level.",
+  },
+
+  // Internal Alchemist's "Disease Resistance" and "Disease Immunity" share
+  // byte-identical vendored description text (see the header's oddity
+  // list); `disease-resistance:3` is the canonical id. The bonus is
+  // defined as mirroring "his alchemist class bonus against poison" — the
+  // same +2/+4/+6 at 2nd/5th/8th progression as Plague Bringer above
+  // (confirmed against `POISON_RESISTANCE_ALCHEMIST_INVESTIGATOR` in
+  // `class-feature-effects.ts`); this feature's own 3rd-level gate just
+  // means the bonus is always +2 the first two levels it's held (3rd-4th).
+  // The "becomes immune to disease" clause riding on the separate,
+  // unmodeled 10th-level poison immunity ability is dropped.
+  "alchemist:internal-alchemist:disease-resistance:3": {
+    changes: [
+      {
+        formula: "if(gte(@class.unlevel, 8), 6, if(gte(@class.unlevel, 5), 4, 2))",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["disease"],
+      },
+    ],
+    detail: (level) =>
+      `+${level >= 8 ? 6 : level >= 5 ? 4 : 2} vs. disease, mirroring the alchemist's poison bonus (disease immunity at poison immunity not modeled)`,
+    confidence: "high",
+    provenance:
+      "an internal alchemist gains a bonus on all saving throws against disease equal to his " +
+      "alchemist class bonus against poison.",
+  },
+
+  // Horticulturist's "Plant Voice" and "Speak With Plants" share
+  // byte-identical vendored description text (see the header's oddity
+  // list); `plant-voice:2` is the canonical id for the flat Knowledge
+  // (nature)/Survival bonus. The 10th-level constant speak with plants
+  // spell-like ability has no applied target and is dropped.
+  "alchemist:horticulturist:plant-voice:2": {
+    changes: [c("2", "skill.kna"), c("2", "skill.sur")],
+    detail: () => "+2 Knowledge (nature), +2 Survival (10th-level speak with plants not modeled)",
+    confidence: "high",
+    provenance: "He gains a +2 bonus on Knowledge (nature) and Survival checks",
   },
 };
