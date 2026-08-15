@@ -618,8 +618,8 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "barbarian:invulnerable-rager",
     name: "Extreme Endurance",
     level: 3,
-    bucket: "situational",
-    note: "fire OR cold energy resistance — real eres.<x> target exists, but which energy type applies is a player build-time choice this table has no generic way to record",
+    bucket: "numeric",
+    note: "fire OR cold energy resistance, wired via the archetypeFeature pick-choice mechanism (build.pickChoices) now that a generic way to record the player's build-time energy-type choice exists.",
   },
   "barbarian:invulnerable-rager:invulnerability:2": {
     archetypeId: "barbarian:invulnerable-rager",
@@ -1385,6 +1385,37 @@ export const BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "an armored hulk's land speed is faster than the norm for her race by +10 feet. This " +
       "benefit applies when she is wearing any armor, including heavy armor, but not while " +
       "carrying a heavy load.",
+  },
+
+  // Invulnerable Rager's "Extreme Endurance" (Advanced Class Guide p. 27) is
+  // a fire-or-cold pick made when the feature is gained ("choose one") —
+  // wired via the `archetypeFeature:<id>` pick-choice mechanism
+  // (`doc.build.pickChoices`), the same posture rage powers' Energy
+  // Resistance uses. `changes` stays empty (no unconditional half exists);
+  // both `choiceChanges` branches carry the identical scaling formula, just
+  // targeting the chosen energy's `eres.<type>`. "For every three levels
+  // beyond 3rd" means the bonus is still 0 at 3rd itself, first ticking up
+  // at 6th.
+  "barbarian:invulnerable-rager:extreme-endurance:3": {
+    changes: [],
+    choice: {
+      label: "Energy type",
+      options: [
+        { id: "fire", label: "Fire" },
+        { id: "cold", label: "Cold" },
+      ],
+    },
+    choiceChanges: {
+      fire: [c("max(0, floor((@class.unlevel - 3) / 3))", "eres.fire")],
+      cold: [c("max(0, floor((@class.unlevel - 3) / 3))", "eres.cold")],
+    },
+    detail: (level) =>
+      `fire or cold resistance ${Math.max(0, Math.floor((level - 3) / 3))} (choice stored per pick)`,
+    confidence: "high",
+    provenance:
+      "the invulnerable rager is inured to either hot or cold climate effects (choose one) as " +
+      "if using endure elements. In addition, the barbarian gains 1 point of fire or cold " +
+      "resistance for every three levels beyond 3rd.",
   },
 
   // Deepwater Rager's "Strong Lungs" (Blood of the Sea) adds Con modifier to

@@ -43,6 +43,8 @@
 
 import type { Change } from "@pf1/schema";
 
+import type { PickChoice } from "./rage-powers.js";
+
 export interface ArchetypeFeatureEffect {
   /**
    * Typed modifiers this feature grants — evaluated via the normal formula
@@ -61,6 +63,20 @@ export interface ArchetypeFeatureEffect {
    * notes-only entry).
    */
   detail?: (classLevel: number) => string;
+  /**
+   * A selection RAW locks in when the feature is gained (an energy type, a
+   * skill, ...), same shape/posture as the rage-power `choice` axis. The
+   * player's pick lives in
+   * `doc.build.pickChoices["archetypeFeature:<this feature's RefEntity id>"]`;
+   * until one is stored, `choiceChanges` emit nothing.
+   */
+  choice?: PickChoice;
+  /**
+   * Per-option Changes, keyed by option id — applied only when the resolved
+   * choice matches a key. A stale option id (the table changed since the
+   * pick was made) emits nothing, same as every other choice namespace.
+   */
+  choiceChanges?: Readonly<Record<string, readonly Change[]>>;
 }
 
 const c = (formula: string, target: string, type = "untyped"): Change => ({

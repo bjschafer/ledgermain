@@ -56,6 +56,7 @@ function makeDoc(over: {
   archetypes?: string[];
   gear?: CharacterDoc["build"]["gear"];
   abilities?: CharacterDoc["abilities"];
+  pickChoices?: Record<string, string>;
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -76,6 +77,7 @@ function makeDoc(over: {
       classFeatureChoices: [],
       spells: { known: [] },
       gear: over.gear ?? [],
+      pickChoices: over.pickChoices,
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -437,8 +439,8 @@ describe("Superstitious: Keen Senses grants a level-gated sequence of special se
 });
 
 describe("BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED shape", () => {
-  it("has exactly 13 entries", () => {
-    expect(Object.keys(BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(13);
+  it("has exactly 14 entries", () => {
+    expect(Object.keys(BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(14);
   });
 
   it("every extracted id is classified numeric in the audit table", () => {
@@ -476,5 +478,57 @@ describe("BARBARIAN_ARCHETYPE_EFFECTS_EXTRACTED shape", () => {
     expect(at10.cmbConditionals).toEqual([
       { total: 15, categories: ["dirtyTrick"], labels: ["dirty trick"] },
     ]);
+  });
+});
+
+describe("Invulnerable Rager: Extreme Endurance fire-or-cold pick (build.pickChoices)", () => {
+  // "the barbarian gains 1 point of fire or cold resistance for every three
+  // levels beyond 3rd" — 0 at 3rd, 1 at 6th, 2 at 9th. Exercised end to end
+  // via compute() since the archetypeFeature choice mechanism is wired in
+  // collect.ts's archetype-feature loop (unlike this file's other formula
+  // fixtures, which evaluate below the full pipeline — see this file's
+  // header comment).
+  const invulnerableRager = archetypeId("Invulnerable Rager");
+  const featureId = "barbarian:invulnerable-rager:extreme-endurance:3";
+  const pickChoiceKey = `archetypeFeature:${featureId}`;
+
+  it("no stored pick: no fire or cold resistance", () => {
+    const sheet = compute(makeDoc({ level: 9, archetypes: [invulnerableRager] }), ref);
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "cold")).toBeUndefined();
+  });
+
+  it("a stale option id (not fire or cold) grants nothing", () => {
+    const sheet = compute(
+      makeDoc({
+        level: 9,
+        archetypes: [invulnerableRager],
+        pickChoices: { [pickChoiceKey]: "acid" },
+      }),
+      ref,
+    );
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "cold")).toBeUndefined();
+    expect(sheet.defenses?.resistances.find((r) => r.qualifier === "acid")).toBeUndefined();
+  });
+
+  it("fire pick: 0 at L3, 1 at L6, 2 at L9", () => {
+    const pickChoices = { [pickChoiceKey]: "fire" };
+    const at3 = compute(makeDoc({ level: 3, archetypes: [invulnerableRager], pickChoices }), ref);
+    expect(at3.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
+
+    const at6 = compute(makeDoc({ level: 6, archetypes: [invulnerableRager], pickChoices }), ref);
+    expect(at6.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(1);
+    expect(at6.defenses?.resistances.find((r) => r.qualifier === "cold")).toBeUndefined();
+
+    const at9 = compute(makeDoc({ level: 9, archetypes: [invulnerableRager], pickChoices }), ref);
+    expect(at9.defenses?.resistances.find((r) => r.qualifier === "fire")?.total).toBe(2);
+  });
+
+  it("cold pick: 1 at L6, applies to cold not fire", () => {
+    const pickChoices = { [pickChoiceKey]: "cold" };
+    const at6 = compute(makeDoc({ level: 6, archetypes: [invulnerableRager], pickChoices }), ref);
+    expect(at6.defenses?.resistances.find((r) => r.qualifier === "cold")?.total).toBe(1);
+    expect(at6.defenses?.resistances.find((r) => r.qualifier === "fire")).toBeUndefined();
   });
 });

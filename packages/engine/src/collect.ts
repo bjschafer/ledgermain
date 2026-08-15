@@ -671,6 +671,28 @@ export function collectModifiers(
           ch.acCategories,
         );
       }
+      // Choose-one archetype features (Invulnerable Rager's Extreme
+      // Endurance fire-or-cold pick): apply the stored selection's changes.
+      // No stored pick, or a stale option id, emits nothing — same posture
+      // as every other pick-choice namespace.
+      if (resolved.effect.choiceChanges) {
+        const picked = doc.build.pickChoices?.[`archetypeFeature:${f.id}`];
+        for (const ch of (picked && resolved.effect.choiceChanges[picked]) || []) {
+          evalChange(
+            ch.formula,
+            archFeatureRollData,
+            ch.target,
+            ch.type,
+            f.name,
+            f.uuid,
+            out,
+            ch.operator,
+            ch.saveCategories,
+            ch.maneuverCategories,
+            ch.acCategories,
+          );
+        }
+      }
     }
   }
 

@@ -3447,6 +3447,14 @@ export interface DerivedClassFeature {
 /** One feature granted by an active archetype (in addition to/instead of the base grant). */
 export interface DerivedArchetypeFeature {
   level: number;
+  /**
+   * The vendored `RefData.archetypeFeatures` id (`RefEntity.id`, e.g.
+   * `"barbarian:invulnerable-rager:extreme-endurance:3"`) — stable per
+   * feature, used to key `doc.build.pickChoices["archetypeFeature:<id>"]`
+   * for the handful of features that declare a choose-one selection (see
+   * `@pf1/engine` `archetype-effects.ts`'s `choice`/`choiceChanges`).
+   */
+  featureId: string;
   name: string;
   description?: string;
   /**
