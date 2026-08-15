@@ -45,6 +45,21 @@ describe("formula: data-path resolution", () => {
     expect(evaluateFormula("@abilities.str.mod", ctx)).toBe(0);
     expect(evaluateFormula("@nonexistent.path", ctx)).toBe(0);
   });
+
+  it("resolves a parameterized skill instance id's own embedded dot", () => {
+    // rolldata.ts stores Craft/Perform/Profession instances under a FLAT key
+    // that is the whole id ("crf.alchemy"), not a nested "crf" -> "alchemy"
+    // object — a rank-gated formula like Skill Focus (Craft)'s must resolve
+    // the id as one unit rather than walking it segment by segment.
+    const skillCtx = { skills: { "crf.alchemy": { rank: 12 }, acr: { rank: 3 } } };
+    expect(evaluateFormula("@skills.crf.alchemy.rank", skillCtx)).toBe(12);
+    expect(evaluateFormula("if(gte(@skills.crf.alchemy.rank, 10), 6, 3)", skillCtx)).toBe(6);
+    // A 2nd-level instance id ("prf.oratory-2") still resolves as one unit.
+    const collision = { skills: { "prf.oratory-2": { rank: 1 } } };
+    expect(evaluateFormula("@skills.prf.oratory-2.rank", collision)).toBe(1);
+    // Unrelated 2-segment skill paths are unaffected.
+    expect(evaluateFormula("@skills.acr.rank", skillCtx)).toBe(3);
+  });
 });
 
 describe("formula: functions", () => {

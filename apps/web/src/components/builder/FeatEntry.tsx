@@ -34,6 +34,15 @@ type Feat = RefData["feats"][string];
 type FeatChoiceOption = ReturnType<typeof featChoiceOptions>[number];
 type SlotGroup = ReturnType<typeof assignFeatsToSlots>["groups"][number];
 
+/** Picker placeholder text per choice type — "Choose a {type}..." reads oddly for a few. */
+const CHOICE_PLACEHOLDER: Readonly<Record<string, string>> = {
+  energy: "Choose an energy...",
+  options: "Choose an option...",
+  craft: "Choose a Craft skill...",
+  perform: "Choose a Perform skill...",
+  profession: "Choose a Profession skill...",
+};
+
 /**
  * The shared derived state a feat surface needs to render its rows: prereq
  * results, the taken/granted sets, slot-budget assignment, and the player-choice
@@ -57,6 +66,10 @@ export interface FeatRenderContext {
   skillOptions: FeatChoiceOption[];
   weaponOptions: FeatChoiceOption[];
   schoolOptions: FeatChoiceOption[];
+  energyOptions: FeatChoiceOption[];
+  craftOptions: FeatChoiceOption[];
+  performOptions: FeatChoiceOption[];
+  professionOptions: FeatChoiceOption[];
   chosen: number;
   expected: number;
 }
@@ -138,6 +151,22 @@ export function useFeatRenderContext(
     [doc.build.weapons, refData],
   );
   const schoolOptions = useMemo(() => featChoiceOptions("school", refData), [refData]);
+  const energyOptions = useMemo(() => featChoiceOptions("energy", refData), [refData]);
+  const craftOptions = useMemo(
+    () => featChoiceOptions("craft", refData, doc),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [doc.build.skillRanks, refData],
+  );
+  const performOptions = useMemo(
+    () => featChoiceOptions("perform", refData, doc),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [doc.build.skillRanks, refData],
+  );
+  const professionOptions = useMemo(
+    () => featChoiceOptions("profession", refData, doc),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [doc.build.skillRanks, refData],
+  );
 
   const chosen = chosenFeatCountExcludingGranted(doc, refData);
   const expected = expectedFeatCount(doc, refData);
@@ -157,6 +186,10 @@ export function useFeatRenderContext(
     skillOptions,
     weaponOptions,
     schoolOptions,
+    energyOptions,
+    craftOptions,
+    performOptions,
+    professionOptions,
     chosen,
     expected,
   };
@@ -285,7 +318,22 @@ export function FeatEntry({
         ? fx.weaponOptions
         : choiceDesc?.type === "school"
           ? fx.schoolOptions
-          : [];
+          : choiceDesc?.type === "energy"
+            ? fx.energyOptions
+            : choiceDesc?.type === "craft"
+              ? fx.craftOptions
+              : choiceDesc?.type === "perform"
+                ? fx.performOptions
+                : choiceDesc?.type === "profession"
+                  ? fx.professionOptions
+                  : choiceDesc?.type === "options"
+                    ? (choiceDesc.options ?? []).map((o) => ({ id: o.id, name: o.label }))
+                    : [];
+  const emptyFamilyHint: Record<string, string> = {
+    craft: "Add a Craft skill (in the Skills section) to enable this picker.",
+    perform: "Add a Perform skill (in the Skills section) to enable this picker.",
+    profession: "Add a Profession skill (in the Skills section) to enable this picker.",
+  };
 
   // A taken feat that could fill more than the plain per-level budget gets a
   // pin picker so the player can record which specific class slot it fills
@@ -383,7 +431,9 @@ export function FeatEntry({
                           );
                         }}
                       >
-                        <option value="">Choose a {choiceDesc.type}...</option>
+                        <option value="">
+                          {CHOICE_PLACEHOLDER[choiceDesc.type] ?? `Choose a ${choiceDesc.type}...`}
+                        </option>
                         {choiceOpts.map((opt) => (
                           <option key={opt.id} value={opt.id}>
                             {opt.name}
@@ -397,6 +447,13 @@ export function FeatEntry({
                   <div className="feat-choice">
                     <span className="hint" style={{ fontSize: "0.6875rem" }}>
                       Add a weapon with a type (in the Weapons section) to enable this picker.
+                    </span>
+                  </div>
+                )}
+                {choiceDesc && emptyFamilyHint[choiceDesc.type] && choiceOpts.length === 0 && (
+                  <div className="feat-choice">
+                    <span className="hint" style={{ fontSize: "0.6875rem" }}>
+                      {emptyFamilyHint[choiceDesc.type]}
                     </span>
                   </div>
                 )}
@@ -506,7 +563,9 @@ export function FeatEntry({
                 value={doc.build.featChoices?.[feat.id] ?? ""}
                 onChange={(e) => update((d) => setFeatChoice(d, feat.id, e.target.value || null))}
               >
-                <option value="">Choose a {choiceDesc.type}...</option>
+                <option value="">
+                  {CHOICE_PLACEHOLDER[choiceDesc.type] ?? `Choose a ${choiceDesc.type}...`}
+                </option>
                 {choiceOpts.map((opt) => (
                   <option key={opt.id} value={opt.id}>
                     {opt.name}
@@ -520,6 +579,13 @@ export function FeatEntry({
           <div className="feat-choice">
             <span className="hint" style={{ fontSize: "0.6875rem" }}>
               Add a weapon with a type (in the Weapons section) to enable this picker.
+            </span>
+          </div>
+        )}
+        {choiceDesc && emptyFamilyHint[choiceDesc.type] && choiceOpts.length === 0 && (
+          <div className="feat-choice">
+            <span className="hint" style={{ fontSize: "0.6875rem" }}>
+              {emptyFamilyHint[choiceDesc.type]}
             </span>
           </div>
         )}

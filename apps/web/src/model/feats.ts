@@ -34,6 +34,7 @@ import type { CharacterDoc, ContextNote, Feat, RefData } from "@pf1/schema";
 import {
   activeArchetypeSwaps,
   buildRollData,
+  ENERGY_TYPES,
   featNameSlug,
   KINETIC_BLAST_WEAPON_GROUP,
   resolveArchetypeFeatureEffect,
@@ -44,9 +45,16 @@ import {
 } from "@pf1/engine";
 
 import { parentBloodlineTagOf, parentDomainTagOf } from "./doc.js";
-import { SKILL_NAMES } from "./names.js";
+import { SKILL_NAMES, skillName } from "./names.js";
 import { effectiveCombatStyleId } from "./ranger.js";
 import { suppressedRaceTargets } from "./racialTraits.js";
+
+/** `"craft" | "perform" | "profession"` -> the `skillRanks` id prefix it enumerates. */
+const SKILL_FAMILY_PREFIX: Readonly<Record<string, string>> = {
+  craft: "crf",
+  perform: "prf",
+  profession: "pro",
+};
 
 /** Total character level (sum of all class levels). */
 function totalLevel(doc: CharacterDoc): number {
@@ -683,16 +691,31 @@ export function setExtraFeatChoice(
 
 /**
  * Choice-picker kinds the FeatsSection/FeatsPanel UI knows how to render.
- * All three drive a real engine effect for feats registered in
- * FEAT_EFFECTS/FEAT_EFFECTS_EXTRACTED (Weapon Focus, Skill Focus, Spell
+ * "skill"/"weapon"/"school" drive a real engine effect for feats registered
+ * in FEAT_EFFECTS/FEAT_EFFECTS_EXTRACTED (Weapon Focus, Skill Focus, Spell
  * Focus, ...); "weapon" also appears via the display-only and mechanical
- * maps below.
+ * maps below. The rest mirror `@pf1/engine`'s `ChoiceFeatEntry.choice.type`:
+ *  - "options": a fixed named-option list the entry itself carries (Angelic
+ *    Flesh's Brazen/Golden/Silver/Steel) — see `options` below.
+ *  - "energy": the shared 5-type vocabulary (`ENERGY_TYPES`).
+ *  - "craft" | "perform" | "profession": the character's OWN skill
+ *    instances of that family.
  */
-export type FeatChoiceType = "skill" | "weapon" | "school";
+export type FeatChoiceType =
+  | "skill"
+  | "weapon"
+  | "school"
+  | "options"
+  | "energy"
+  | "craft"
+  | "perform"
+  | "profession";
 
 export interface FeatChoiceDescriptor {
   type: FeatChoiceType;
   label: string;
+  /** Only set for `type: "options"` — the entry's own fixed option list. */
+  options?: readonly { id: string; label: string }[];
 }
 
 /**
@@ -813,11 +836,22 @@ export function featContextNotes(featName: string): ContextNote[] {
  * - "school": the 8 schools of magic, in a fixed traditional order (not
  *   alphabetical — matches how they're conventionally listed in the rules).
  *   `refData` and `doc` are unused; the list is static.
+ * - "options": `descriptor`'s own fixed list (Angelic Flesh's named
+ *   branches), in the order the entry declares them. Empty without a
+ *   `descriptor` (or one whose `options` is unset).
+ * - "energy": the shared 5-type vocabulary (`ENERGY_TYPES`), in a fixed
+ *   traditional order. `refData` and `doc` are unused.
+ * - "craft" | "perform" | "profession": the character's OWN skill instances
+ *   of that family (`doc.build.skillRanks` ids prefixed `crf.`/`prf.`/`pro.`),
+ *   sorted alphabetically by display name. Empty when `doc` is not provided
+ *   or the character has no instance of that family yet — the UI renders a
+ *   soft hint in that case, same posture as "weapon".
  */
 export function featChoiceOptions(
   choiceType: string,
   _refData: RefData,
   doc?: CharacterDoc,
+  descriptor?: FeatChoiceDescriptor,
 ): { id: string; name: string }[] {
   if (choiceType === "skill") {
     return Object.entries(SKILL_NAMES)
@@ -837,6 +871,19 @@ export function featChoiceOptions(
   }
   if (choiceType === "school") {
     return SCHOOLS_OF_MAGIC.map((s) => ({ ...s }));
+  }
+  if (choiceType === "options") {
+    return (descriptor?.options ?? []).map((o) => ({ id: o.id, name: o.label }));
+  }
+  if (choiceType === "energy") {
+    return ENERGY_TYPES.map((e) => ({ id: e.id, name: e.label }));
+  }
+  const familyPrefix = SKILL_FAMILY_PREFIX[choiceType];
+  if (familyPrefix && doc) {
+    return Object.keys(doc.build.skillRanks ?? {})
+      .filter((id) => id.startsWith(`${familyPrefix}.`))
+      .map((id) => ({ id, name: skillName(id) }))
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
   return [];
 }
@@ -872,7 +919,7 @@ export function featInstanceDisplayName(
   const descriptor = featChoiceDescriptor(feat.name);
   if (!descriptor) return feat.name;
   const label =
-    featChoiceOptions(descriptor.type, refData, doc).find((o) => o.id === choiceId)?.name ??
-    choiceId;
+    featChoiceOptions(descriptor.type, refData, doc, descriptor).find((o) => o.id === choiceId)
+      ?.name ?? choiceId;
   return `${feat.name}: ${label}`;
 }

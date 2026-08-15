@@ -23,6 +23,8 @@
 
 import type { AbilityId, ContextNote } from "@pf1/schema";
 
+import type { PickChoice } from "./rage-powers.js";
+
 export interface FeatChange {
   target: string;
   type: string;
@@ -67,19 +69,58 @@ export interface StaticFeatEntry {
 }
 
 /**
- * A feat that requires a player selection before it has mechanical effect.
- * `choice.type` drives the UI picker ("skill" → skill list, "weapon" → weapon
- * list, "school" → the eight schools of magic, `spell-dcs.ts`'s
- * `SPELL_SCHOOLS`). `build(choiceId)` produces the changes to emit once a
- * choice is stored in `doc.build.featChoices[featId]`.
+ * A single named option in a fixed choice list carried directly on a
+ * `ChoiceFeatEntry` (the `"options"` axis below) — reuses `PickChoice`'s
+ * option element shape verbatim (`rage-powers.ts`) so a Pick-choice consumer
+ * and a feat-choice consumer never drift on what an "option" looks like.
  */
-export interface ChoiceFeatEntry {
+export type FeatChoiceOption = PickChoice["options"][number];
+
+/**
+ * The five energy types PF1 feats commonly offer a resistance/save pick from
+ * (acid, cold, electricity, fire, sonic) — the `"energy"` choice axis's fixed
+ * vocabulary. A feat whose text enumerates a NARROWER subset (e.g. "acid,
+ * cold, electricity, or fire" with no sonic) uses `"options"` with its own
+ * list instead, rather than this shared constant, so the picker never offers
+ * a type the feat doesn't actually grant.
+ */
+export const ENERGY_TYPES: readonly FeatChoiceOption[] = [
+  { id: "acid", label: "Acid" },
+  { id: "cold", label: "Cold" },
+  { id: "electricity", label: "Electricity" },
+  { id: "fire", label: "Fire" },
+  { id: "sonic", label: "Sonic" },
+];
+
+/**
+ * A feat that requires a player selection before it has mechanical effect.
+ * `choice.type` drives the UI picker:
+ *   - "skill" → the full skill list.
+ *   - "weapon" → the character's own weapon groups.
+ *   - "school" → the eight schools of magic, `spell-dcs.ts`'s `SPELL_SCHOOLS`.
+ *   - "options" → a fixed named-option list the entry itself carries (e.g.
+ *     Angelic Flesh's Brazen/Golden/Silver/Steel).
+ *   - "energy" → {@link ENERGY_TYPES}.
+ *   - "craft" | "perform" | "profession" → the character's OWN skill
+ *     instances of that family (`doc.build.skillRanks` keys prefixed
+ *     `crf.`/`prf.`/`pro.`, enumerated web-side); `build(choiceId)` receives
+ *     the instance id (e.g. `"crf.alchemy"`) and targets `skill.<id>`.
+ * `build(choiceId)` produces the changes to emit once a choice is stored in
+ * `doc.build.featChoices[featId]`.
+ */
+export type ChoiceFeatEntry = {
   type: "choice";
-  /** Descriptor consumed by the UI to render a picker. */
-  choice: { type: "skill" | "weapon" | "school"; label: string };
   /** Produces the typed changes for the given player choice id. */
   build(choiceId: string): FeatChange[];
-}
+} & (
+  | {
+      choice: {
+        type: "skill" | "weapon" | "school" | "energy" | "craft" | "perform" | "profession";
+        label: string;
+      };
+    }
+  | { choice: { type: "options"; label: string; options: readonly FeatChoiceOption[] } }
+);
 
 /**
  * A situational feat effect for the saved-rolls UI (attack/damage tweaks that
