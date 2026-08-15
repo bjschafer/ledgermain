@@ -104,16 +104,22 @@ function tokenize(src: string): Token[] {
     }
     if (c === "@") {
       let j = i + 1;
-      // "-" is allowed inside a path (not just letters/digits/dots) so a
-      // parameterized skill instance id can be referenced directly, e.g.
-      // `@skills.crf.basket-weaving.rank` — `slugifySkillLabel` (model/names.ts)
-      // is the only producer of such ids and only ever emits `[a-z0-9-]`.
-      // Tradeoff: a hand-authored formula that subtracts a literal number
-      // directly against a path with NO surrounding space (`@cl-2`) would
-      // misparse as one path token instead of "path minus 2" — none of this
-      // codebase's formulas do that today (always `@cl - 2`), so this is
-      // accepted rather than guarded against.
-      while (j < n && (isAlpha(src[j]!) || isDigit(src[j]!) || src[j] === "." || src[j] === "-"))
+      // "-" continues a path when followed by a letter (hyphenated skill
+      // instance slugs: `@skills.crf.basket-weaving.rank`), or by a digit
+      // ONLY under the `skills.` prefix (dedup suffixes: `prf.oratory-2`).
+      // Everywhere else "-" before a digit stays the minus operator, because
+      // vendored inline rolls subtract with no surrounding space
+      // (`@item.level-8` in buffs.json) and must keep meaning "path minus 8";
+      // no vendored formula subtracts spacelessly under `@skills.`.
+      while (
+        j < n &&
+        (isAlpha(src[j]!) ||
+          isDigit(src[j]!) ||
+          src[j] === "." ||
+          (src[j] === "-" &&
+            j + 1 < n &&
+            (isAlpha(src[j + 1]!) || (isDigit(src[j + 1]!) && src.startsWith("skills.", i + 1)))))
+      )
         j++;
       tokens.push({ t: "path", v: src.slice(i + 1, j) });
       i = j;

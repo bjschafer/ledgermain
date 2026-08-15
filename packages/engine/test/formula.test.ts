@@ -60,6 +60,20 @@ describe("formula: data-path resolution", () => {
     // Unrelated 2-segment skill paths are unaffected.
     expect(evaluateFormula("@skills.acr.rank", skillCtx)).toBe(3);
   });
+
+  it("keeps spaceless subtraction outside @skills meaning minus", () => {
+    // Vendored inline rolls subtract with no surrounding space — buffs.json's
+    // Aura of Protection uses "1 + floor((@item.level-8) / 4)". The hyphen
+    // continues a path only for skill-instance slugs, never before a digit
+    // outside the skills prefix.
+    const ctx2 = { item: { level: 16 }, cl: 7 };
+    expect(evaluateFormula("@item.level-8", ctx2)).toBe(8);
+    expect(evaluateFormula("1 + floor((@item.level-8) / 4)", ctx2)).toBe(3);
+    expect(evaluateFormula("@cl-2", ctx2)).toBe(5);
+    // Hyphen-then-letter outside skills still resolves (to 0 when missing)
+    // rather than crashing: "@some-path" is one token.
+    expect(evaluateFormula("@some-path", ctx2)).toBe(0);
+  });
 });
 
 describe("formula: functions", () => {
