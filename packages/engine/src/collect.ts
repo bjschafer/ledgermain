@@ -843,25 +843,32 @@ export function collectModifiers(
     // Choose-one traits (Deep Cover's Bluff-or-Disguise class skill): apply
     // the stored selection's changes. No stored pick, or a stale option id,
     // emits nothing — same safe default as every other pick-choice namespace.
+    // A family-shaped choice (an own Craft/Perform/Profession instance, e.g.
+    // Clan Artisan) instead runs the picked FULL instance id through
+    // `familyChangeTemplate` — the trait-choice analog of a `ChoiceFeatEntry`
+    // feat's `build(choiceId)` below, since the instance id can't be
+    // enumerated into a fixed `choiceChanges` map ahead of time.
     const traitChoice = TRAIT_CHOICES[traitId];
-    if (traitChoice?.choiceChanges) {
-      const picked = doc.build.pickChoices?.[`trait:${traitId}`];
-      for (const ch of (picked && traitChoice.choiceChanges[picked]) || []) {
-        if (!gateOpen(ch)) continue;
-        evalChange(
-          ch.formula,
-          rollData,
-          ch.target,
-          ch.type,
-          trait.name,
-          trait.id,
-          out,
-          ch.operator,
-          ch.saveCategories,
-          ch.maneuverCategories,
-          ch.acCategories,
-        );
-      }
+    const traitPicked = doc.build.pickChoices?.[`trait:${traitId}`];
+    const traitChoiceChanges = traitPicked
+      ? (traitChoice?.choiceChanges?.[traitPicked] ??
+        traitChoice?.familyChangeTemplate?.(traitPicked))
+      : undefined;
+    for (const ch of traitChoiceChanges ?? []) {
+      if (!gateOpen(ch)) continue;
+      evalChange(
+        ch.formula,
+        rollData,
+        ch.target,
+        ch.type,
+        trait.name,
+        trait.id,
+        out,
+        ch.operator,
+        ch.saveCategories,
+        ch.maneuverCategories,
+        ch.acCategories,
+      );
     }
   }
 

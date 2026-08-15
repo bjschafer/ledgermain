@@ -103,7 +103,7 @@ export function TraitsSection(props: BuilderProps) {
           <div className="empty">No traits chosen yet. “Choose traits” to add some.</div>
         ) : (
           chosenTraits.map((tr) => (
-            <TraitRow key={tr.id} trait={tr} selected update={update} doc={doc} />
+            <TraitRow key={tr.id} trait={tr} selected update={update} doc={doc} refData={refData} />
           ))
         )}
       </div>
