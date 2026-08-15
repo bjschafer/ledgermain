@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-14-choose-one-abilities-compute",
+    date: "2026-08-14",
+    title: "Abilities that ask you to choose now offer the choice and compute",
+    note: "Many feats, traits, and class abilities say choose an option and gain its benefit, and the sheet used to show only the text. Now they offer the pick right where they appear, and your sheet updates with what you chose. Feats like Angelic Flesh, Tribal Scars, Totem Spirit, and Draconic Aspect apply their chosen branch, Skill Focus works for your own Craft, Perform, and Profession skills, and Spirit Focus boosts a medium channeling the chosen legend. Around seventy traits with a pick, like Clan Artisan or Secret Knowledge, apply their bonus to the skill you name. Archetype abilities join in too: a Monk of the Four Winds picks an aspect and gains its movement, an invulnerable rager picks fire or cold for Extreme Endurance, and a skirmisher fighter picks a Conditioning specialization. Anything left unchosen simply waits, nothing is assumed for you.",
+  },
+  {
     id: "2026-08-14-same-name-archetypes-untangled",
     date: "2026-08-14",
     title: "Same-named archetypes no longer borrow each other's abilities",
