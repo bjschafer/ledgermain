@@ -36,6 +36,7 @@ const ABILITIES = { str: 14, dex: 14, con: 14, int: 10, wis: 16, cha: 10 } as co
 function makeDoc(over: {
   classes: { tag: string; level: number }[];
   archetypes?: string[];
+  pickChoices?: Record<string, string>;
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -56,6 +57,7 @@ function makeDoc(over: {
       classFeatureChoices: [],
       spells: { known: [] },
       gear: [],
+      pickChoices: over.pickChoices,
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -108,7 +110,7 @@ describe("Monk archetype classification: full coverage of every vendored feature
     expect(Object.keys(MONK_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(328);
   });
 
-  it("bucket counts (26 numeric, 37 situational, 260 subsystem, 5 blocked)", () => {
+  it("bucket counts (27 numeric, 37 situational, 259 subsystem, 5 blocked)", () => {
     const counts: Record<"numeric" | "situational" | "subsystem" | "blocked", number> = {
       numeric: 0,
       situational: 0,
@@ -118,10 +120,11 @@ describe("Monk archetype classification: full coverage of every vendored feature
     for (const entry of Object.values(MONK_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    // +2 numeric / -2 situational vs. the prior audit: Spirit Master's
-    // Resilient Soul (necromancy) and Wanderer's Long Walk (fatigue) promoted
-    // once save-categories.ts grew those two categories.
-    expect(counts).toEqual({ numeric: 26, situational: 37, subsystem: 260, blocked: 5 });
+    // +1 numeric / -1 subsystem vs. the prior audit: Monk of the Four Winds'
+    // Aspect of the Carp (the canonical id for the archetype's choose-one
+    // aspect pick) promoted once the archetypeFeature PickChoice mechanism
+    // existed to record which aspect was taken.
+    expect(counts).toEqual({ numeric: 27, situational: 37, subsystem: 259, blocked: 5 });
   });
 
   it("every numeric-bucketed feature resolves to a real effect (hand-verified or extracted)", () => {
@@ -131,8 +134,8 @@ describe("Monk archetype classification: full coverage of every vendored feature
     }
   });
 
-  it("25 features are extracted; Nornkith's nimble-reflexes:3 stays solely hand-verified", () => {
-    expect(Object.keys(MONK_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(25);
+  it("26 features are extracted; Nornkith's nimble-reflexes:3 stays solely hand-verified", () => {
+    expect(Object.keys(MONK_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(26);
     expect(MONK_ARCHETYPE_EFFECTS_EXTRACTED["monk:nornkith:nimble-reflexes:3"]).toBeUndefined();
   });
 });
@@ -513,5 +516,67 @@ describe("Brazen Disciple: Genie Apotheosis capstone (fire immunity; outsider ty
     const sheet = sheetWith("Brazen Disciple", 20);
     const immunities = (sheet.defenses?.immunities ?? []).map((e) => e.qualifier);
     expect(immunities).toEqual(["fire"]);
+  });
+});
+
+describe("Monk of the Four Winds: Aspect of the {Carp,Ki-Rin,Monkey,Owl,Oni,Tiger} choose-one pick (build.pickChoices)", () => {
+  const fourWinds = archetypeId("Monk of the Four Winds", "monk");
+  const featureId = "monk:monk-of-the-four-winds:aspect-of-the-carp:1";
+  const pickChoiceKey = `archetypeFeature:${featureId}`;
+
+  function sheetWithAspect(aspect: string | undefined) {
+    return compute(
+      makeDoc({
+        classes: [{ tag: "monk", level: 5 }],
+        archetypes: [fourWinds],
+        pickChoices: aspect ? { [pickChoiceKey]: aspect } : undefined,
+      }),
+      ref,
+    );
+  }
+
+  it("no stored pick: no swim/climb/fly speed granted", () => {
+    const sheet = sheetWithAspect(undefined);
+    expect(sheet.speeds.swim ?? 0).toBe(0);
+    expect(sheet.speeds.climb ?? 0).toBe(0);
+    expect(sheet.speeds.fly ?? 0).toBe(0);
+  });
+
+  // "= land speed" is wired via @attributes.speed.land.total, the same
+  // pre-Fast-Movement BASE land speed idiom hunter.ts's Watery Stride and
+  // bloodrager-bloodlines.ts's Serpentine Swim use — a Human's base 30 ft.,
+  // not the archetype's own Fast-Movement-boosted 40 ft. at 5th level.
+
+  it("carp: swim speed = base land speed (30 ft.)", () => {
+    const sheet = sheetWithAspect("carp");
+    expect(sheet.speeds.swim).toBe(30);
+    expect(sheet.speeds.fly ?? 0).toBe(0);
+  });
+
+  it("ki-rin: fly speed = base land speed (30 ft.)", () => {
+    const sheet = sheetWithAspect("ki-rin");
+    expect(sheet.speeds.fly).toBe(30);
+  });
+
+  it("monkey: climb speed = base land speed (30 ft.)", () => {
+    const sheet = sheetWithAspect("monkey");
+    expect(sheet.speeds.climb).toBe(30);
+  });
+
+  it("owl: fly speed is a flat 30 ft., independent of land speed", () => {
+    const sheet = sheetWithAspect("owl");
+    expect(sheet.speeds.fly).toBe(30);
+  });
+
+  it("oni and tiger grant no baseline speed number", () => {
+    expect(sheetWithAspect("oni").speeds.fly ?? 0).toBe(0);
+    expect(sheetWithAspect("tiger").speeds.swim ?? 0).toBe(0);
+  });
+
+  it("a stale option id grants nothing", () => {
+    const sheet = sheetWithAspect("dragon");
+    expect(sheet.speeds.swim ?? 0).toBe(0);
+    expect(sheet.speeds.climb ?? 0).toBe(0);
+    expect(sheet.speeds.fly ?? 0).toBe(0);
   });
 });
