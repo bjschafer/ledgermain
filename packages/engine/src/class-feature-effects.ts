@@ -64,8 +64,11 @@
  *   Mistrust of Magic (scoped to a spellcasting TRADITION - arcane, divine,
  *   psychic - a distinction `SAVE_CATEGORIES` does not carry).
  * - Needs a player choice to know its scope, which a static table entry can't
- *   express: Force of Will (picks a descriptor from a list), Cypher:
- *   Thassilonian Focus (picks a school), Defy Danger (picks a danger).
+ *   express: Force of Will (picks a descriptor from a list), Defy Danger
+ *   (picks a danger). Cypher: Thassilonian Focus is the same shape but *is*
+ *   wired, through `CLASS_FEATURE_CHOICES` below rather than this bare-Change
+ *   table: `SAVE_CATEGORIES` happens to carry four of its seven school
+ *   options.
  * - Narrower than any category in the vocabulary, or a category the
  *   vocabulary still doesn't carry at all (writing-based magic
  *   specifically, visual effects, elemental descriptors): Cypherlord and
@@ -899,7 +902,67 @@ const MONITOR_EXPRESSION_EXECUTOR: readonly Change[] = [
   },
 ];
 
+/**
+ * Cyphermage (prestige, Paths of Prestige) "Cypher: Thassilonian Focus": "The
+ * Cyphermage chooses one of the seven schools of Thassilonian magic... He
+ * gains a +2 insight bonus on all saving throws against spells and spell-like
+ * abilities from that school of magic." The seven Thassilonian schools are
+ * every standard school except Divination (each tied to one of the seven
+ * runelords' sins: Envy/Abjuration, Gluttony/Necromancy, Greed/Transmutation,
+ * Lust/Enchantment, Pride/Illusion, Sloth/Conjuration, Wrath/Evocation).
+ * `SAVE_CATEGORIES` only carries four of those seven as a school-scoped
+ * category (`enchantment`, `illusion`, `necromancy`, `transmutation`);
+ * Abjuration, Conjuration, and Evocation have no matching entry, so those
+ * three picks are valid but emit nothing, the same posture as Monitor
+ * Expression's activation-gated options below.
+ */
+const THASSILONIAN_FOCUS_SCHOOLS = [
+  "abjuration",
+  "conjuration",
+  "enchantment",
+  "evocation",
+  "illusion",
+  "necromancy",
+  "transmutation",
+] as const;
+const THASSILONIAN_FOCUS_LABELS: Readonly<
+  Record<(typeof THASSILONIAN_FOCUS_SCHOOLS)[number], string>
+> = {
+  abjuration: "Abjuration",
+  conjuration: "Conjuration",
+  enchantment: "Enchantment",
+  evocation: "Evocation",
+  illusion: "Illusion",
+  necromancy: "Necromancy",
+  transmutation: "Transmutation",
+};
+
+/** `+2 insight` vs. one `SAVE_CATEGORIES` school key. */
+function thassilonianFocusChange(saveCategory: string): readonly Change[] {
+  return [
+    { formula: "2", target: "allSavingThrows", type: "insight", saveCategories: [saveCategory] },
+  ];
+}
+
 export const CLASS_FEATURE_CHOICES: Readonly<Record<string, ClassFeatureChoiceEntry>> = {
+  "Cypher: Thassilonian Focus": {
+    choice: {
+      label: "Thassilonian school",
+      options: THASSILONIAN_FOCUS_SCHOOLS.map((id) => ({
+        id,
+        label: THASSILONIAN_FOCUS_LABELS[id],
+      })),
+    },
+    choiceChanges: {
+      abjuration: [],
+      conjuration: [],
+      enchantment: thassilonianFocusChange("enchantment"),
+      evocation: [],
+      illusion: thassilonianFocusChange("illusion"),
+      necromancy: thassilonianFocusChange("necromancy"),
+      transmutation: thassilonianFocusChange("transmutation"),
+    },
+  },
   "Monitor Expression": {
     choice: {
       label: "Monitor expression",

@@ -85,8 +85,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
   "9N5fuIg0zB8SrwRh": {
     id: "9N5fuIg0zB8SrwRh",
     name: "Path of Darkness - Path of Light",
-    bucket: "subsystem",
-    note: "Player picks a path (darkness or light) that waives one alignment trait for alignment-based magical effects, a rules exception with no number; the accompanying Diplomacy bonus is scoped to creatures of a specific alignment subtype, narrower than the flat skill target.",
+    bucket: "blocked",
+    note: "Either path's waived alignment trait (for alignment-based magical effects) is a rules exception with no number; the accompanying Diplomacy bonus is scoped to creatures with the chosen path's alignment subtype, and skill targets carry no category-scoping vocabulary the way saves/maneuvers/AC/clCheck do, so it stays unexpressible regardless of which path is picked.",
   },
   "9ewVQ2Nd8oySPajt": {
     id: "9ewVQ2Nd8oySPajt",
@@ -103,8 +103,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
   U23BBZ0CW4t36X91: {
     id: "U23BBZ0CW4t36X91",
     name: "Dilettante Studies",
-    bucket: "subsystem",
-    note: "Umbrella choice feature: the noble scion picks two dilettante studies from four options. The vendored data lists all four (Performer/Scholar/Scoundrel/Warrior) as automatic level-1 grants in Noble Scion's features list, a vendoring artifact that would over-apply every option if patched.",
+    bucket: "blocked",
+    note: "The noble scion picks two dilettante studies from four options (Performer/Scholar/Scoundrel/Warrior) at 5th level and two more at 9th; the classFeature pick-choice mechanism (CLASS_FEATURE_CHOICES) only supports a single choose-one selection, not a multi-slot pick, so this feature's own grant (separate from the four sub-features' own always-on level-1 entries below) stays unwired.",
   },
   bNMKUlTvjAs7m4VC: {
     id: "bNMKUlTvjAs7m4VC",

@@ -12,6 +12,13 @@
  * swift-action/at-will abilities this engine doesn't track, so picking one
  * of them is a valid pick that still emits nothing (same posture as a rage
  * power with `changes: []`).
+ *
+ * Cyphermage's "Cypher: Thassilonian Focus" (prestige class, level 1): "The
+ * Cyphermage chooses one of the seven schools of Thassilonian magic... He
+ * gains a +2 insight bonus on all saving throws against spells and
+ * spell-like abilities from that school of magic." Seven options; only four
+ * (enchantment, illusion, necromancy, transmutation) have a matching
+ * `SAVE_CATEGORIES` entry, so only those emit a Change.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -62,8 +69,42 @@ function makeProctor(level: number, pickChoices?: Record<string, string>): Chara
   };
 }
 
+/** Human cyphermage, all abilities 10 (every mod 0). */
+function makeCyphermage(level: number, pickChoices?: Record<string, string>): CharacterDoc {
+  return {
+    schemaVersion: 1,
+    id: "class-feature-choices-test-cyphermage",
+    ownerId: "tester",
+    version: 1,
+    updatedAt: "2026-01-01T00:00:00.000Z",
+    identity: {
+      name: "Test",
+      race: HUMAN,
+      classes: [{ tag: "cyphermage", level }],
+    },
+    abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+    build: {
+      feats: [],
+      skillRanks: {},
+      classFeatureChoices: [],
+      spells: { known: [] },
+      gear: [],
+      pickChoices,
+    },
+    live: {
+      hp: { current: 0, temp: 0, nonlethal: 0 },
+      conditions: [],
+      activeBuffs: [],
+      resources: {},
+    },
+  };
+}
+
 const FEATURE_ID = "nAf2hU0pfOBrOSAr";
 const PICK_KEY = `classFeature:${FEATURE_ID}`;
+
+const THASSILONIAN_FOCUS_FEATURE_ID = "XwM9u3NIYkxVdjrj";
+const THASSILONIAN_FOCUS_PICK_KEY = `classFeature:${THASSILONIAN_FOCUS_FEATURE_ID}`;
 
 describe("Monitor Expression: below the choice threshold, only level 2 grant applies", () => {
   it("no stored pick: no save conditionals from this feature", () => {
@@ -130,5 +171,59 @@ describe("Monitor Expression: at 5th level, the mind-affecting clause broadens W
     // category-scoped change outright, rather than printing a redundant
     // "sleep" line identical to "mind"'s.
     expect(sheet.saves.will.conditionals?.some((c) => c.categories.includes("sleep"))).toBe(false);
+  });
+});
+
+describe("Cypher: Thassilonian Focus: seven picks, four with a matching SAVE_CATEGORIES entry", () => {
+  it("no stored pick: no illusion save conditional", () => {
+    const sheet = compute(makeCyphermage(1), ref);
+    expect(
+      sheet.saves.will.conditionals?.some((c) => c.categories.includes("illusion")),
+    ).toBeFalsy();
+  });
+
+  it("a stale option id grants nothing", () => {
+    const sheet = compute(makeCyphermage(1, { [THASSILONIAN_FOCUS_PICK_KEY]: "bogus" }), ref);
+    expect(
+      sheet.saves.will.conditionals?.some((c) => c.categories.includes("illusion")),
+    ).toBeFalsy();
+  });
+
+  it("abjuration/conjuration/evocation are valid picks that still emit nothing (no matching SAVE_CATEGORIES entry)", () => {
+    for (const option of ["abjuration", "conjuration", "evocation"]) {
+      const sheet = compute(makeCyphermage(1, { [THASSILONIAN_FOCUS_PICK_KEY]: option }), ref);
+      expect(sheet.saves.will.total, `${option} unexpectedly changed the Will total`).toBe(1); // highPrestige floor at level 1: floor((1+1)/2)
+      expect(
+        sheet.saves.will.conditionals,
+        `${option} unexpectedly emitted a save conditional`,
+      ).toBeUndefined();
+    }
+  });
+
+  it("illusion: +2 insight vs. illusions on Will only (Will-only category)", () => {
+    const sheet = compute(makeCyphermage(1, { [THASSILONIAN_FOCUS_PICK_KEY]: "illusion" }), ref);
+    expect(sheet.saves.will.total).toBe(1); // headline unaffected: category-scoped bonus is held out
+    const line = sheet.saves.will.conditionals?.find((c) => c.categories.includes("illusion"));
+    expect(line?.total).toBe(3); // floor 1 + 2
+    expect(sheet.saves.fort.conditionals).toBeUndefined();
+  });
+
+  it("transmutation: +2 insight vs. transmutation on all three saves (ALL_SAVES category)", () => {
+    const sheet = compute(
+      makeCyphermage(1, { [THASSILONIAN_FOCUS_PICK_KEY]: "transmutation" }),
+      ref,
+    );
+    const fortLine = sheet.saves.fort.conditionals?.find((c) =>
+      c.categories.includes("transmutation"),
+    );
+    const refLine = sheet.saves.ref.conditionals?.find((c) =>
+      c.categories.includes("transmutation"),
+    );
+    const willLine = sheet.saves.will.conditionals?.find((c) =>
+      c.categories.includes("transmutation"),
+    );
+    expect(fortLine?.total).toBe(2); // lowPrestige floor 0 + 2
+    expect(refLine?.total).toBe(2); // lowPrestige floor 0 + 2
+    expect(willLine?.total).toBe(3); // highPrestige floor 1 + 2
   });
 });

@@ -212,7 +212,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "inquisition-power:restoration:cleanse-impunity",
     name: "Cleanse Impunity",
     bucket: "blocked",
-    note: "clCheck.sr and clCheck model the SR-check and general caster-level-check bonuses here, but the SR-check share only applies against creatures of a player-chosen opposite alignment, a choice with no tracked field to read.",
+    note: "The Wisdom-bonus caster level check applies to overcoming the SR of creatures with, and dispelling effects bearing, the inquisitor's chosen opposite alignment descriptor; clCheck only carries `sr`/`dispel` kinds, with no alignment axis to scope either to. The remaining curse/disease/poison-removal caster level checks have no clCheck kind of their own at all.",
   },
   khGQDuyL6TKASqYb: {
     id: "khGQDuyL6TKASqYb",
@@ -662,7 +662,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "inquisition-power:zeal:scourge-of-the-enemy",
     name: "Scourge of the Enemy",
     bucket: "blocked",
-    note: "A favored-enemy-equivalent bonus scoped to a player-chosen rival religion, a choice-dependent target a static entry can't express.",
+    note: "A favored-enemy-equivalent bonus (attack/damage/skill rolls per the ranger ability) against members of a player-chosen rival religion; there is no religion-scoped axis anywhere in the vocabulary, the same reason ranger Favored Enemy itself stays a situational selection rather than an unconditional Change.",
   },
   mITkHIcXI1Sfax21: {
     id: "mITkHIcXI1Sfax21",

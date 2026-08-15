@@ -146,7 +146,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_2: Readonly<
     id: "KbH78K4CQJqWBOns",
     name: "Opposition Alignment",
     bucket: "blocked",
-    note: "The caster-level-check bonus is scoped to a player-chosen opposition alignment against creatures of that alignment subtype, a choice-dependent scope the vocabulary has no axis for.",
+    note: "The +1 bonus is on caster level checks to overcome the spell resistance of creatures with the divine scion's chosen opposition alignment subtype; clCheck only carries `sr`/`dispel` kinds, with no alignment-subtype axis, so an unconditional clCheck.sr Change would over-apply against every creature regardless of alignment.",
   },
   KvTvQsGXYoa7nbmZ: {
     id: "KvTvQsGXYoa7nbmZ",
@@ -409,8 +409,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_2: Readonly<
   XwM9u3NIYkxVdjrj: {
     id: "XwM9u3NIYkxVdjrj",
     name: "Cypher: Thassilonian Focus",
-    bucket: "blocked",
-    note: "Matches the class-feature-effects.ts precedent by name: the save bonus is scoped to a player-chosen school of magic, a choice-dependent scope with no tracked field to read.",
+    bucket: "numeric",
+    note: "Player picks one of the seven Thassilonian schools of magic, wired via the classFeature pick-choice mechanism (CLASS_FEATURE_CHOICES). SAVE_CATEGORIES names four of the seven as a school (enchantment, illusion, necromancy, transmutation), so those picks grant the +2 insight save bonus; Abjuration/Conjuration/Evocation have no matching category, so those picks emit nothing.",
   },
   Z95i8p91EoxGvlcP: {
     id: "Z95i8p91EoxGvlcP",
