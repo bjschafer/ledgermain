@@ -374,8 +374,8 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "cavalier:disciple-of-the-pike",
     name: "Weapon Training",
     level: 5,
-    bucket: "situational",
-    note: "real fighter-style Weapon Training progression, but the group is a player pick between polearms OR spears with no build field tracking which — a chosen-weapon-group scope, same bar as a chosen weapon",
+    bucket: "numeric",
+    note: "polearms-or-spears weapon group is wired via the archetypeFeature PickChoice mechanism, mirroring fighter's own Weapon Training target idiom (attack.weapon.<group>/damage.weapon.<group>)",
   },
 
   // ── cavalier:drakerider ──
@@ -1683,5 +1683,40 @@ export const CAVALIER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "At 12th level, a Spellscar drifter becomes permanently marked by long exposure to the " +
       "Spellscar Desert. The Spellscar drifter gains spell resistance equal to 10 + his " +
       "character level.",
+  },
+
+  // Disciple of the Pike's "Weapon Training" is a single-slot fighter-style
+  // Weapon Training restricted to ONE of two weapon groups (polearms or
+  // spears — both real vendored weapon-group tags, weapon-groups.ts),
+  // "progress[ing] as though his fighter level were equal to his cavalier
+  // level." Fighter's own tier-1 Weapon Training starts at 5th level
+  // (WEAPON_TRAINING_LEVELS[0] in tables.ts) — matching this feature's own
+  // 5th-level gate exactly, so the tier-1 formula transfers unchanged.
+  "cavalier:disciple-of-the-pike:weapon-training:5": {
+    changes: [],
+    choice: {
+      label: "Weapon group",
+      options: [
+        { id: "polearms", label: "Polearms" },
+        { id: "spears", label: "Spears" },
+      ],
+    },
+    choiceChanges: {
+      polearms: [
+        c("1 + floor((@class.unlevel - 5) / 4)", "attack.weapon.polearms"),
+        c("1 + floor((@class.unlevel - 5) / 4)", "damage.weapon.polearms"),
+      ],
+      spears: [
+        c("1 + floor((@class.unlevel - 5) / 4)", "attack.weapon.spears"),
+        c("1 + floor((@class.unlevel - 5) / 4)", "damage.weapon.spears"),
+      ],
+    },
+    detail: (level) => `+${1 + Math.floor((level - 5) / 4)} attack/damage (chosen weapon group)`,
+    confidence: "high",
+    provenance:
+      "At 5th level, a disciple of the pike gains weapon training, just like a fighter. He " +
+      "must select polearms or spears as his weapon group, and never gains another weapon " +
+      "group. His bonuses with the selected group otherwise progress as though his fighter " +
+      "level were equal to his cavalier level.",
   },
 };

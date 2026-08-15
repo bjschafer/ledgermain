@@ -76,19 +76,24 @@ describe("BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     expect(audited.size).toBe(19);
   });
 
-  it("bucket counts match this pass's audit: 2 numeric, 19 situational, 37 subsystem, 4 blocked", () => {
+  it("bucket counts match this pass's audit: 3 numeric, 16 situational, 39 subsystem, 4 blocked", () => {
     const counts = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    expect(counts).toEqual({ numeric: 2, situational: 19, subsystem: 37, blocked: 4 });
+    // +1 numeric vs. the prior audit: Winding Path Renegade's School Focus (the
+    // canonical id for the archetype's choose-one mystery pick) promoted once
+    // the archetypeFeature PickChoice mechanism existed to record which
+    // mystery was taken. The three mystery sibling ids move from situational
+    // to subsystem (the pick and any wired branch live on School Focus now).
+    expect(counts).toEqual({ numeric: 3, situational: 16, subsystem: 39, blocked: 4 });
   });
 
   it("every numeric-bucket classification entry has a matching extracted-effects entry, and no stray entries exist", () => {
     const numericIds = Object.entries(BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(2);
+    expect(numericIds.length).toBe(3);
     for (const id of numericIds) {
       expect(BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -130,7 +135,11 @@ describe("Steel-Breaker: Sunder Training grants maneuver-scoped cmb/cmd, end to 
     return entry[0];
   }
 
-  function makeDoc(level: number, archetypes: string[]): CharacterDoc {
+  function makeDoc(
+    level: number,
+    archetypes: string[],
+    pickChoices?: Record<string, string>,
+  ): CharacterDoc {
     return {
       schemaVersion: 1,
       id: "test",
@@ -146,6 +155,7 @@ describe("Steel-Breaker: Sunder Training grants maneuver-scoped cmb/cmd, end to 
         classFeatureChoices: [],
         spells: { known: [] },
         gear: [],
+        pickChoices,
       },
       live: {
         hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -312,5 +322,71 @@ describe("blocked bucket: base-feature double-count and copy-paste traps, record
     expect(
       BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED["brawler:venomfist:venomous-strike:1"],
     ).toBeUndefined();
+  });
+});
+
+describe("Winding Path Renegade: School Focus mystery pick (build.pickChoices)", () => {
+  function raceId(name: string): string {
+    const entry = Object.entries(ref.races).find(([, r]) => r.name === name);
+    if (!entry) throw new Error(`race not found: ${name}`);
+    return entry[0];
+  }
+
+  function makeDoc(archetypes: string[], pickChoices?: Record<string, string>): CharacterDoc {
+    return {
+      schemaVersion: 1,
+      id: "test",
+      ownerId: "owner",
+      version: 1,
+      updatedAt: "2026-01-01T00:00:00.000Z",
+      identity: { name: "Test", race: raceId("Human"), classes: [{ tag: "brawler", level: 2 }] },
+      abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+      build: {
+        feats: [],
+        skillRanks: {},
+        archetypes,
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        pickChoices,
+      },
+      live: {
+        hp: { current: 0, temp: 0, nonlethal: 0 },
+        conditions: [],
+        activeBuffs: [],
+        resources: {},
+      },
+    };
+  }
+
+  const windingPathRenegade = Object.values(ref.archetypes).find(
+    (a) => a.name === "Winding Path Renegade" && a.classTag === "brawler",
+  )!.id;
+  const featureId = "brawler:winding-path-renegade:school-focus:2";
+  const pickChoiceKey = `archetypeFeature:${featureId}`;
+
+  function sheetWithMystery(mystery: string | undefined) {
+    return compute(
+      makeDoc([windingPathRenegade], mystery ? { [pickChoiceKey]: mystery } : undefined),
+      ref,
+    );
+  }
+
+  it("no stored pick: no land speed bump", () => {
+    const sheet = sheetWithMystery(undefined);
+    const base = compute(makeDoc([]), ref);
+    expect(sheet.speeds.land).toBe(base.speeds.land);
+  });
+
+  it("unblinking-flame: +10 ft. enhancement land speed", () => {
+    const sheet = sheetWithMystery("unblinking-flame");
+    const base = compute(makeDoc([]), ref);
+    expect((sheet.speeds.land ?? 0) - (base.speeds.land ?? 0)).toBe(10);
+  });
+
+  it("unfolding-wind and untwisting-iron grant no baseline number", () => {
+    const base = compute(makeDoc([]), ref);
+    expect(sheetWithMystery("unfolding-wind").speeds.land).toBe(base.speeds.land);
+    expect(sheetWithMystery("untwisting-iron").speeds.land).toBe(base.speeds.land);
   });
 });

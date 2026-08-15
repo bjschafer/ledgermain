@@ -495,7 +495,7 @@ export const MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Gozreh's Domain",
     level: 1,
     bucket: "subsystem",
-    note: "grants the 1st-level granted power of a player-chosen domain (Air/Animal/Plant/Water/Weather) plus its bonus spells — requires a domain-choice pick this pipeline has no build field for, and the chosen domain's own granted power varies per domain (no single Change formula fits all cases); inventing a new build field is out of scope",
+    note: "grants the 1st-level granted power of a player-chosen domain (Air/Animal/Plant/Water/Weather) plus its bonus spells. A PickChoice could record which domain was picked, but every one of the five domains' own 1st-level granted powers (Lightning Arc, Speak with Animals, Wooden Fist, Icicle, Storm Burst) is itself an activated Sp/Su ability with a limited daily/rounds-per-day use, not an always-on number — so no branch would clear the honesty bar regardless of which domain is chosen",
   },
   "medium:storm-dreamer:storm-seer:7": {
     archetypeId: "medium:storm-dreamer",

@@ -53,9 +53,10 @@
  *    (choice-scoped) and School Focus itself is `subsystem` (the pick).
  */
 
-import type {
-  ArchetypeFeatureClassificationEntry,
-  ExtractedArchetypeFeatureEffect,
+import {
+  c,
+  type ArchetypeFeatureClassificationEntry,
+  type ExtractedArchetypeFeatureEffect,
 } from "./types.js";
 
 /** Keyed by the archetype feature's own `RefEntity.id` (same key `archetype-effects.ts` uses). */
@@ -509,29 +510,29 @@ export const BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "brawler:winding-path-renegade",
     name: "Mystery of Unblinking Flame",
     level: 2,
-    bucket: "situational",
-    note: "the +10 enhancement speed at 2nd is unconditional by its own text, but School Focus grants exactly ONE player-chosen mystery of the three and no build field tracks the choice — extracting would apply all three mysteries to every winding path renegade (class note 7); the 8th/14th abilities are activated regardless",
+    bucket: "subsystem",
+    note: "one of three mutually-exclusive mysteries chosen via School Focus; the pick and its wired branch (this mystery's +10 ft. enhancement speed at 2nd) live on the canonical id school-focus:2",
   },
   "brawler:winding-path-renegade:mystery-of-unfolding-wind:2": {
     archetypeId: "brawler:winding-path-renegade",
     name: "Mystery of Unfolding Wind",
     level: 2,
-    bucket: "situational",
-    note: "choice-gated like the other mysteries (class note 7); its numbers have no target anyway — range-increment bonuses aren't modeled and Deflect Arrows is a named feat grant",
+    bucket: "subsystem",
+    note: "one of three mutually-exclusive mysteries chosen via School Focus; the pick lives on the canonical id school-focus:2, where this option emits nothing (a range-increment bonus has no Change target, Deflect Arrows is a named feat grant)",
   },
   "brawler:winding-path-renegade:mystery-of-untwisting-iron:2": {
     archetypeId: "brawler:winding-path-renegade",
     name: "Mystery of Untwisting Iron",
     level: 2,
-    bucket: "situational",
-    note: "choice-gated like the other mysteries (class note 7); the half-level Craft (metal) bonus at 8th is additionally scoped to freeform crf.<slug> skill instances no fixed slug convention covers",
+    bucket: "subsystem",
+    note: "one of three mutually-exclusive mysteries chosen via School Focus; the pick lives on the canonical id school-focus:2, where this option emits nothing (2nd-level masterwork-equipment is a quality flag with no Change target, and the 8th-level half-level Craft (metal) bonus is scoped to a freeform crf.<slug> skill instance PickChoice's fixed options can't name)",
   },
   "brawler:winding-path-renegade:school-focus:2": {
     archetypeId: "brawler:winding-path-renegade",
     name: "School Focus",
     level: 2,
-    bucket: "subsystem",
-    note: "the pick itself: grants the ONE mystery taught at her old monastery (a player choice among the three L2 mystery features) — a choice-list grant with no number of its own (class note 7)",
+    bucket: "numeric",
+    note: "canonical id: the pick itself, wired via the archetypeFeature PickChoice mechanism. Only Mystery of Unblinking Flame's unconditional +10 ft. enhancement speed carries a Change; the other two mysteries' branches emit nothing (see their own entries)",
   },
 };
 
@@ -636,5 +637,37 @@ export const BRAWLER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "1, and she gains a +2 bonus on disarm combat maneuver checks and a +2 bonus to her CMD " +
       "when defending against a disarm maneuver. At 11th, 15th, and 19th levels, all of these " +
       "bonuses increase by 1. This ability alters maneuver training.",
+  },
+
+  // Winding Path Renegade's "School Focus" grants ONE of three mutually-
+  // exclusive mysteries (each its own sibling feature id) taught at her old
+  // monastery. Only Mystery of Unblinking Flame's 2nd-level "increases her
+  // speed by 10 feet (this is treated as an enhancement bonus)" is
+  // unconditional; Unfolding Wind's 2nd-level grant is a range-increment
+  // bonus (no target) + a named feat, and Untwisting Iron's is an equipment-
+  // quality flag (no target) — both emit nothing. All three mysteries' 8th/
+  // 14th-level tiers are activated or freeform-skill-scoped and stay
+  // unmodeled regardless of which is picked.
+  "brawler:winding-path-renegade:school-focus:2": {
+    changes: [],
+    choice: {
+      label: "Mystery",
+      options: [
+        { id: "unblinking-flame", label: "Mystery of Unblinking Flame (+10 ft. speed)" },
+        { id: "unfolding-wind", label: "Mystery of Unfolding Wind" },
+        { id: "untwisting-iron", label: "Mystery of Untwisting Iron" },
+      ],
+    },
+    choiceChanges: {
+      "unblinking-flame": [c("10", "landSpeed", "enhancement")],
+      "unfolding-wind": [],
+      "untwisting-iron": [],
+    },
+    detail: () =>
+      "unblinking flame: +10 ft. enhancement speed · unfolding wind/untwisting iron: no baseline number (choice stored per pick)",
+    confidence: "high",
+    provenance:
+      "At 2nd level, a winding path renegade continues the training she left behind, gaining " +
+      "the benefits of the mystery taught at her old monastery.",
   },
 };

@@ -4,21 +4,22 @@
  * `ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION` (the full per-feature audit —
  * every feature of every vendored arcanist archetype, individually read
  * against `packages/data-pipeline/data/archetype-features.json`) plus an
- * (empty) `ARCANIST_ARCHETYPE_EFFECTS_EXTRACTED`, kept for shape-parity with
- * every other class file so `index.ts`'s aggregator spread pattern doesn't
- * need a special case.
+ * `ARCANIST_ARCHETYPE_EFFECTS_EXTRACTED`.
  *
- * **Result: all 15 vendored arcanist archetypes (52 features) classify
- * `subsystem` — zero `numeric` extractions.** This confirms, at the
- * individual-feature level, what the hand-verified table's audit already
+ * **Result: of 15 vendored arcanist archetypes (52 features), only Elemental
+ * Master's "Elemental Movement" classifies `numeric`** (a choose-one pick
+ * among four flat movement grants, wired via the archetypeFeature PickChoice
+ * mechanism) — every other feature classifies `subsystem`. This confirms, at
+ * the individual-feature level, what the hand-verified table's audit already
  * concluded at the archetype level (`archetype-effects.ts`'s "Audited all 11
  * vendored arcanist archetypes..." comment predates 4 later-added archetypes;
  * School Savant recorded there as the representative no-Change entry): every
  * arcanist archetype reworks the arcane reservoir, arcanist exploits, or
  * spells-known/spell-list subsystems — none of which this engine models via
- * `Change` — rather than granting a flat, unconditional number. An honest
- * all-subsystem classification is a valid result; no entry was force-fit into
- * `numeric` to avoid an empty extracted table.
+ * `Change` — rather than granting a flat, unconditional number. Elemental
+ * Movement's own choice mechanism doesn't help the other archetypes: an
+ * activated reservoir spend, a granted exploit, or a spell-list change has no
+ * Change-shaped number regardless of which option a player picks.
  *
  * The most common shapes seen: (1) an activated ability that spends 1+
  * points from the arcane reservoir for a scripted effect (debuff, spell
@@ -42,6 +43,7 @@
  */
 
 import {
+  c,
   type ArchetypeFeatureClassificationEntry,
   type ExtractedArchetypeFeatureEffect,
 } from "./types.js";
@@ -160,7 +162,7 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Elemental Movement (Su)",
     level: 15,
     bucket: "subsystem",
-    note: "grants one of four different flat movement-speed bonuses depending on the element chosen at 1st level — no schema field records which element was chosen, so the correct Change can't be selected safely.",
+    note: "a stale, unreachable id from an earlier archetype-data revision (superseded by elemental-movement:15, which no longer matches any vendored feature under this exact key) — the wired choice lives on the canonical elemental-movement:15.",
   },
   "arcanist:magaambyan-initiate:aura-of-good-ex:1": {
     archetypeId: "arcanist:magaambyan-initiate",
@@ -418,8 +420,8 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "arcanist:elemental-master",
     name: "Elemental Movement",
     level: 15,
-    bucket: "subsystem",
-    note: "grants one of four different flat movement-speed bonuses depending on the element chosen at 1st level — no schema field records which element was chosen, so the correct Change can't be selected safely.",
+    bucket: "numeric",
+    note: "canonical id: one of four flat movement-speed grants (air fly 90 ft., earth burrow 30 ft., fire +30 ft. land speed, water swim 60 ft.) depending on the element chosen at 1st level, wired via the archetypeFeature PickChoice mechanism.",
   },
   "arcanist:elemental-master:greater-elemental-attack:11": {
     archetypeId: "arcanist:elemental-master",
@@ -606,11 +608,46 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
 };
 
 /**
- * No arcanist feature classified `numeric` — see this file's doc comment.
- * Kept as an empty, correctly-typed table so `index.ts`'s per-class
- * import + two-spread pattern needs no special case for an all-subsystem
- * class.
+ * Elemental Master's "Elemental Movement" is the one arcanist feature
+ * classified `numeric` — see this file's doc comment. Its vendored
+ * description carries all four elements' numbers directly (no aonprd lookup
+ * needed): "Air grants a fly speed of 90 feet (average maneuverability),
+ * earth grants a burrow speed of 30 feet, fire grants a increase of 30 feet
+ * to base land speed, and water grants a swim speed of 60 feet." Air/earth/
+ * water are flat grants of a movement mode the character doesn't otherwise
+ * have (the swimSpeed/flySpeed/burrowSpeed "base"/"set" idiom other
+ * archetype speed features use); fire is a plain additive bonus to land
+ * speed the character already has (the landSpeed/"base" idiom, no `set`,
+ * matching Fast Movement's own shape).
  */
 export const ARCANIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   Record<string, ExtractedArchetypeFeatureEffect>
-> = {};
+> = {
+  "arcanist:elemental-master:elemental-movement:15": {
+    changes: [],
+    choice: {
+      label: "Element",
+      options: [
+        { id: "air", label: "Air (fly speed 90 ft.)" },
+        { id: "earth", label: "Earth (burrow speed 30 ft.)" },
+        { id: "fire", label: "Fire (+30 ft. land speed)" },
+        { id: "water", label: "Water (swim speed 60 ft.)" },
+      ],
+    },
+    choiceChanges: {
+      air: [{ formula: "90", target: "flySpeed", type: "base", operator: "set" }],
+      earth: [{ formula: "30", target: "burrowSpeed", type: "base", operator: "set" }],
+      fire: [c("30", "landSpeed", "base")],
+      water: [{ formula: "60", target: "swimSpeed", type: "base", operator: "set" }],
+    },
+    detail: () =>
+      "air: fly 90 ft. · earth: burrow 30 ft. · fire: +30 ft. land speed · water: swim 60 ft. (choice stored per pick)",
+    confidence: "high",
+    provenance:
+      "At 15th level, an elemental master gains an elemental movement. This enhancement is " +
+      "based on her chosen element type. Air grants a fly speed of 90 feet (average " +
+      "maneuverability), earth grants a burrow speed of 30 feet, fire grants a increase of " +
+      "30 feet to base land speed, and water grants a swim speed of 60 feet. This ability " +
+      "replaces the arcanist exploit gained at 15th level.",
+  },
+};

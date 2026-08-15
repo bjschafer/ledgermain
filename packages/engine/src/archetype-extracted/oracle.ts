@@ -213,8 +213,8 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "oracle:elementalist-oracle",
     name: "Elemental Form",
     level: 11,
-    bucket: "situational",
-    note: "real per-option number (e.g. fly speed 30 ft.), but the subtype (air/earth/fire/water) is a player choice with no build field to record which was picked — same 'untracked binary/multi-way choice' exclusion as Cavern Sniper's bow-or-crossbow pick",
+    bucket: "numeric",
+    note: "wired via the archetypeFeature PickChoice mechanism: air grants fly speed 30 ft., earth grants tremorsense 30 ft., fire grants fire immunity (the accompanying cold vulnerability has no matching target), water grants swim speed 30 ft. (the accompanying water-breathing has no matching target)",
   },
   "oracle:elementalist-oracle:elemental-revelation:20": {
     archetypeId: "oracle:elementalist-oracle",
@@ -797,5 +797,38 @@ export const ORACLE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     provenance:
       "A black-blooded oracle gains darkvision with a range of 60 feet. The range increases " +
       "to 90 feet at 15th level.",
+  },
+
+  // Elementalist Oracle's "Elemental Form" grants one of four subtypes at
+  // 11th level. Fly speed (air) and swim speed (water) use the flat-grant
+  // "base"/"set" idiom; tremorsense (earth) uses the sensets sense target;
+  // fire immunity uses the imm.fire target (a flag, "1" turns it on). The
+  // fire subtype's cold VULNERABILITY and the water subtype's water-breathing
+  // both have no matching Change target and are dropped.
+  "oracle:elementalist-oracle:elemental-form:11": {
+    changes: [],
+    choice: {
+      label: "Subtype",
+      options: [
+        { id: "air", label: "Air (fly speed 30 ft.)" },
+        { id: "earth", label: "Earth (tremorsense 30 ft.)" },
+        { id: "fire", label: "Fire (immune to fire)" },
+        { id: "water", label: "Water (swim speed 30 ft.)" },
+      ],
+    },
+    choiceChanges: {
+      air: [{ formula: "30", target: "flySpeed", type: "base", operator: "set" }],
+      earth: [c("30", "sensets", "base")],
+      fire: [c("1", "imm.fire")],
+      water: [{ formula: "30", target: "swimSpeed", type: "base", operator: "set" }],
+    },
+    detail: () =>
+      "air: fly 30 ft. · earth: tremorsense 30 ft. · fire: immune to fire (cold vulnerability not modeled) · water: swim 30 ft. (water breathing not modeled)",
+    confidence: "high",
+    provenance:
+      "At 11th level, you gain the air, earth, fire, or water subtype and an associated " +
+      "ability: Air: Fly speed of 30 feet with perfect maneuverability. Earth: Tremorsense " +
+      "with a range of 30 feet. Fire: Immunity to fire and vulnerability to cold. Water: Swim " +
+      "speed of 30 feet and the ability to breathe underwater.",
   },
 };

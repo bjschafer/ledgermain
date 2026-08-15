@@ -34,7 +34,11 @@ function archetypeId(name: string, classTag: string): string {
   return entry.id;
 }
 
-function makeDoc(level: number, archetypes: string[]): CharacterDoc {
+function makeDoc(
+  level: number,
+  archetypes: string[],
+  pickChoices?: Record<string, string>,
+): CharacterDoc {
   return {
     schemaVersion: 1,
     id: "test",
@@ -54,6 +58,7 @@ function makeDoc(level: number, archetypes: string[]): CharacterDoc {
       classFeatureChoices: [],
       spells: { known: [] },
       gear: [],
+      pickChoices,
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -96,5 +101,116 @@ describe("Maneuver Training (Dirty Fighter, dirty-trick-scoped cmb/cmd)", () => 
     const sheet = compute(makeDoc(5, []), ref);
     expect(sheet.cmbConditionals ?? []).toEqual([]);
     expect(sheet.cmdConditionals ?? []).toEqual([]);
+  });
+});
+
+describe("Cavern Sniper: Sniper Training bow-or-crossbow pick (build.pickChoices)", () => {
+  const cavernSniper = archetypeId("Cavern Sniper", "fighter");
+  const featureId = "fighter:cavern-sniper:sniper-training:5";
+  const pickChoiceKey = `archetypeFeature:${featureId}`;
+  const bow: NonNullable<CharacterDoc["build"]["weapons"]>[number] = {
+    name: "Longbow",
+    attackAbility: "dex",
+    category: "ranged",
+    weaponGroups: ["bows"],
+  };
+  const crossbow: NonNullable<CharacterDoc["build"]["weapons"]>[number] = {
+    name: "Light Crossbow",
+    attackAbility: "dex",
+    category: "ranged",
+    weaponGroups: ["crossbows"],
+  };
+
+  function makeDocWithWeapon(
+    level: number,
+    archetypes: string[],
+    weapon: NonNullable<CharacterDoc["build"]["weapons"]>[number],
+    pickChoices?: Record<string, string>,
+  ): CharacterDoc {
+    const doc = makeDoc(level, archetypes, pickChoices);
+    return { ...doc, build: { ...doc.build, weapons: [weapon] } };
+  }
+
+  it("no stored pick: no attack/damage bonus", () => {
+    const sheet = compute(makeDocWithWeapon(5, [cavernSniper], bow), ref);
+    const base = compute(makeDocWithWeapon(5, [], bow), ref);
+    expect(sheet.attacks[0]!.attack.total).toBe(base.attacks[0]!.attack.total);
+  });
+
+  it("bows pick: +2 attack/damage at L5, +3 at L9", () => {
+    const pickChoices = { [pickChoiceKey]: "bows" };
+    const at5 = compute(makeDocWithWeapon(5, [cavernSniper], bow, pickChoices), ref);
+    const base5 = compute(makeDocWithWeapon(5, [], bow), ref);
+    expect(at5.attacks[0]!.attack.total - base5.attacks[0]!.attack.total).toBe(2);
+    expect(at5.attacks[0]!.damageBonus.total - base5.attacks[0]!.damageBonus.total).toBe(2);
+
+    const at9 = compute(makeDocWithWeapon(9, [cavernSniper], bow, pickChoices), ref);
+    const base9 = compute(makeDocWithWeapon(9, [], bow), ref);
+    expect(at9.attacks[0]!.attack.total - base9.attacks[0]!.attack.total).toBe(3);
+  });
+
+  it("crossbows pick doesn't apply to a bow, and vice versa", () => {
+    const base = compute(makeDocWithWeapon(5, [], crossbow), ref);
+    const bowsPick = compute(
+      makeDocWithWeapon(5, [cavernSniper], crossbow, { [pickChoiceKey]: "bows" }),
+      ref,
+    );
+    expect(bowsPick.attacks[0]!.attack.total).toBe(base.attacks[0]!.attack.total);
+
+    const crossbowsPick = compute(
+      makeDocWithWeapon(5, [cavernSniper], crossbow, { [pickChoiceKey]: "crossbows" }),
+      ref,
+    );
+    expect(crossbowsPick.attacks[0]!.attack.total - base.attacks[0]!.attack.total).toBe(2);
+  });
+});
+
+describe("Skirmisher: Conditioning specialization pick (build.pickChoices)", () => {
+  const skirmisher = archetypeId("Skirmisher", "fighter");
+  const featureId = "fighter:skirmisher:conditioning:2";
+  const pickChoiceKey = `archetypeFeature:${featureId}`;
+
+  function sheetWithSpec(level: number, spec: string | undefined) {
+    return compute(makeDoc(level, [skirmisher], spec ? { [pickChoiceKey]: spec } : undefined), ref);
+  }
+
+  // Fighter Fortitude is a good save (2 + floor(level/2): 3 at L2, 5 at L6);
+  // Will is a poor save (floor(level/3): 0 at L2). Abilities are all 10
+  // (mod 0), so each conditional's `total` is that class-level base plus the
+  // specialization's own bonus. Category order follows SAVE_CATEGORY_ORDER
+  // (save-categories.ts's declaration order), not the order cited in text.
+
+  it("no stored pick: no conditional save lines", () => {
+    const sheet = sheetWithSpec(2, undefined);
+    expect(sheet.saves.fort.conditionals ?? []).toEqual([]);
+    expect(sheet.saves.will.conditionals ?? []).toEqual([]);
+  });
+
+  it("alpine: fatigue-scoped Fortitude bonus, +1 at L2, +2 at L6", () => {
+    expect(sheetWithSpec(2, "alpine").saves.fort.conditionals).toEqual([
+      { total: 4, categories: ["fatigue"], labels: ["fatigue/exhaustion"] },
+    ]);
+    expect(sheetWithSpec(6, "alpine").saves.fort.conditionals).toEqual([
+      { total: 7, categories: ["fatigue"], labels: ["fatigue/exhaustion"] },
+    ]);
+  });
+
+  it("counter-interrogation: charm/divination-scoped Will bonus, +1 at L2", () => {
+    expect(sheetWithSpec(2, "counter-interrogation").saves.will.conditionals).toEqual([
+      { total: 1, categories: ["divination", "charm"], labels: ["divination", "charm"] },
+    ]);
+  });
+
+  it("jungle: disease/poison-scoped Fortitude bonus, +1 at L2", () => {
+    expect(sheetWithSpec(2, "jungle").saves.fort.conditionals).toEqual([
+      { total: 4, categories: ["poison", "disease"], labels: ["poison", "disease"] },
+    ]);
+  });
+
+  it("light-infantry: no matching save category, no conditional lines", () => {
+    const sheet = sheetWithSpec(2, "light-infantry");
+    expect(sheet.saves.fort.conditionals ?? []).toEqual([]);
+    expect(sheet.saves.ref.conditionals ?? []).toEqual([]);
+    expect(sheet.saves.will.conditionals ?? []).toEqual([]);
   });
 });

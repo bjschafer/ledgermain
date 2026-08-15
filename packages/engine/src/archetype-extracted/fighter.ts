@@ -535,15 +535,8 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "fighter:cavern-sniper",
     name: "Sniper Training",
     level: 5,
-    bucket: "situational",
-    note:
-      "re-read after the weapon-group fix: the group is a BINARY player choice (bow OR " +
-      "crossbow, not both, not free-for-all), same unmodeled shape as base Weapon Training's " +
-      "free choice — no build field captures which of the two was picked, so which target " +
-      "(attack.weapon.bows vs. attack.weapon.crossbows) to emit can't be determined. Stays " +
-      "situational rather than guessing; a per-archetype restricted-choice picker would be " +
-      "needed to unlock this, out of scope for the generic build.weaponTrainingGroups picker " +
-      "built in this pass (that picker has no restriction mechanism).",
+    bucket: "numeric",
+    note: "bow-or-crossbow weapon group is wired via the archetypeFeature PickChoice mechanism (build.pickChoices), targeting attack.weapon.bows/damage.weapon.bows or attack.weapon.crossbows/damage.weapon.crossbows",
   },
   "fighter:cavern-sniper:greater-imbued-shot:9": {
     archetypeId: "fighter:cavern-sniper",
@@ -2035,8 +2028,8 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "fighter:skirmisher",
     name: "Conditioning",
     level: 2,
-    bucket: "situational",
-    note: "real but choice-gated number: the skirmisher picks one of four specializations (Alpine/Counter-Interrogation/Jungle/Light Infantry Training) at 2nd level, each granting +1 (increasing by 1 per 4 levels beyond 2nd) on a narrow save category (Fort vs. cold/altitude/fatigue, Will vs. charms/divinations, Fort vs. disease/poison, or Reflex vs. half-damage-on-a-save effects) — not expressible without a choice UI and over-applying across all four at once, per the honesty bar",
+    bucket: "numeric",
+    note: "one of four specializations chosen at 2nd level, wired via the archetypeFeature PickChoice mechanism against SAVE_CATEGORIES: Alpine scopes to fatigue/exhaustion only (cold-weather exposure and altitude sickness have no matching category), Counter-Interrogation to charm+divination, Jungle to disease+poison; Light Infantry Training's 'half damage on a successful save' scope has no matching category and emits nothing when picked",
   },
   "fighter:skirmisher:reconnaissance-training:2": {
     archetypeId: "fighter:skirmisher",
@@ -2136,11 +2129,11 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "situational",
     note:
-      "re-read after the weapon-group fix: not weapon-group-scoped — the bonus is tied to ONE " +
-      "specific weapon the player chose at 1st level (the 'steelbound weapon'), the same shape " +
-      "as Weapon Focus's per-weapon free-text tag, but this archetype's own weapon choice isn't " +
-      "tracked anywhere in the schema (no build field records which weapon is 'steelbound'). " +
-      "Reclassified from subsystem (the pilot's blind placeholder) to situational.",
+      "not weapon-group-scoped — the bonus is tied to ONE specific weapon the player chose at " +
+      "1st level (the 'steelbound weapon'), the same free-text per-weapon shape Weapon Focus " +
+      'uses (a `type: "weapon"` featChoice, not a PickChoice). PickChoice only supports a ' +
+      "small fixed option list, so an open-ended named-weapon pick can't move to it; stays " +
+      "situational.",
   },
   "fighter:swarm-fighter:athletic-prowess:1": {
     archetypeId: "fighter:swarm-fighter",
@@ -3424,5 +3417,103 @@ export const FIGHTER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "At 5th level, a dirty fighter becomes a master of dirty tricks. He gains a +2 bonus on " +
       "dirty trick combat maneuver checks and +2 to his CMD when he is the target of a dirty " +
       "trick combat maneuver. This ability replaces weapon training 1.",
+  },
+
+  // ── Choose-one archetype features (build.pickChoices) ─────────────────────
+
+  // Cavern Sniper's "Sniper Training" grants Weapon-Training-shaped attack/
+  // damage bonuses scoped to ONE weapon group, bow or crossbow, chosen at
+  // 5th level — the weapon-group vocabulary (weapon-groups.ts) already has
+  // both as real vendored tags, so the binary maps cleanly onto a two-option
+  // PickChoice instead of the generic build.weaponTrainingGroups picker
+  // (which has no restriction mechanism).
+  "fighter:cavern-sniper:sniper-training:5": {
+    changes: [],
+    choice: {
+      label: "Weapon group",
+      options: [
+        { id: "bows", label: "Bows" },
+        { id: "crossbows", label: "Crossbows" },
+      ],
+    },
+    choiceChanges: {
+      bows: [
+        c("2 + floor((@class.unlevel - 5) / 4)", "attack.weapon.bows"),
+        c("2 + floor((@class.unlevel - 5) / 4)", "damage.weapon.bows"),
+      ],
+      crossbows: [
+        c("2 + floor((@class.unlevel - 5) / 4)", "attack.weapon.crossbows"),
+        c("2 + floor((@class.unlevel - 5) / 4)", "damage.weapon.crossbows"),
+      ],
+    },
+    detail: (level) => `+${2 + Math.floor((level - 5) / 4)} attack/damage (chosen weapon group)`,
+    confidence: "high",
+    provenance:
+      "At 5th level, the cavern sniper chooses the bow or crossbow weapon group and gains a " +
+      "+2 bonus on attack rolls and damage rolls. This bonus increases by +1 for every four " +
+      "levels beyond 5th. This ability replaces weapon training 1, 3, and 4.",
+  },
+
+  // Skirmisher's "Conditioning" grants a scaling save bonus from one of four
+  // specializations chosen at 2nd level. Alpine/Counter-Interrogation/Jungle
+  // map onto real SAVE_CATEGORIES keys (fatigue; charm+divination;
+  // disease+poison); Light Infantry Training's "half damage on a successful
+  // save" scope has no matching category (traps/stun/sonic are the closest
+  // ALL_SAVES entries but none captures "any half-damage-on-save effect")
+  // and is left unwired for that option.
+  "fighter:skirmisher:conditioning:2": {
+    changes: [],
+    choice: {
+      label: "Specialization",
+      options: [
+        { id: "alpine", label: "Alpine Training (Fort vs. cold/fatigue)" },
+        {
+          id: "counter-interrogation",
+          label: "Counter-Interrogation Training (Will vs. charm/divination)",
+        },
+        { id: "jungle", label: "Jungle Training (Fort vs. disease/poison)" },
+        { id: "light-infantry", label: "Light Infantry Training (Reflex, half-damage effects)" },
+      ],
+    },
+    choiceChanges: {
+      alpine: [
+        {
+          formula: "1 + floor((@class.unlevel - 2) / 4)",
+          target: "allSavingThrows",
+          type: "untyped",
+          saveCategories: ["fatigue"],
+        },
+      ],
+      "counter-interrogation": [
+        {
+          formula: "1 + floor((@class.unlevel - 2) / 4)",
+          target: "allSavingThrows",
+          type: "untyped",
+          saveCategories: ["charm", "divination"],
+        },
+      ],
+      jungle: [
+        {
+          formula: "1 + floor((@class.unlevel - 2) / 4)",
+          target: "allSavingThrows",
+          type: "untyped",
+          saveCategories: ["disease", "poison"],
+        },
+      ],
+      "light-infantry": [],
+    },
+    detail: (level) =>
+      `+${1 + Math.floor((level - 2) / 4)} vs. chosen specialization's save category (Light Infantry Training not modeled)`,
+    confidence: "medium",
+    provenance:
+      "The skirmisher must choose one of the specializations below, gaining a +1 bonus on " +
+      "saving throws of the appropriate type. This bonus increases by 1 for every 4 levels " +
+      "beyond 2nd. Alpine Training: bonus on Fortitude saving throws against altitude " +
+      "sickness, exposure to cold weather, and other effects that cause fatigue or " +
+      "exhaustion. Counter-Interrogation Training: bonus on Will saving throws against " +
+      "charms and divinations. Jungle Training: bonus on Fortitude saving throws against " +
+      "disease and poison. Light Infantry Training: bonus on Reflex saving throws against " +
+      "attacks that deal half damage on a successful save, but not against traps, natural " +
+      "hazards, or environmental effects.",
   },
 };

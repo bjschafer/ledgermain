@@ -1235,43 +1235,43 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "monk:monk-of-the-four-winds",
     name: "Aspect of the Carp",
     level: 1,
-    bucket: "subsystem",
-    note: "one of six mutually-exclusive aspects chosen at 1st level (swim speed = land speed, nonevil-only) — no schema field/picker exists to record which was taken, so none is safely extractable even though several grant a real, otherwise-unconditional speed value",
+    bucket: "numeric",
+    note: "canonical id for the archetype's choose-one aspect pick (six mutually-exclusive options chosen at 1st level): swim/climb/fly speed set to land speed and the flat 30 ft. fly speed are wired via choiceChanges; gaseous form (oni) and the hourly charge-speed multiplier (tiger) have no Change target and emit nothing when picked — the other five aspect ids just point back here",
   },
   "monk:monk-of-the-four-winds:aspect-of-the-ki-rin:1": {
     archetypeId: "monk:monk-of-the-four-winds",
     name: "Aspect of the Ki-Rin",
     level: 1,
     bucket: "subsystem",
-    note: "one of six mutually-exclusive aspects chosen at 1st level (fly speed = land speed (must land each turn), lawful-good-only) — no schema field/picker exists to record which was taken, so none is safely extractable even though several grant a real, otherwise-unconditional speed value",
+    note: "one of six mutually-exclusive aspects chosen at 1st level; the pick and its wired branches live on the canonical id aspect-of-the-carp:1",
   },
   "monk:monk-of-the-four-winds:aspect-of-the-monkey:1": {
     archetypeId: "monk:monk-of-the-four-winds",
     name: "Aspect of the Monkey",
     level: 1,
     bucket: "subsystem",
-    note: "one of six mutually-exclusive aspects chosen at 1st level (climb speed = land speed plus a prehensile tail) — no schema field/picker exists to record which was taken, so none is safely extractable even though several grant a real, otherwise-unconditional speed value",
+    note: "one of six mutually-exclusive aspects chosen at 1st level; the pick and its wired branches live on the canonical id aspect-of-the-carp:1",
   },
   "monk:monk-of-the-four-winds:aspect-of-the-oni:1": {
     archetypeId: "monk:monk-of-the-four-winds",
     name: "Aspect of the Oni",
     level: 1,
     bucket: "subsystem",
-    note: "one of six mutually-exclusive aspects chosen at 1st level (gaseous form for a level-scaled duration/day, evil-only) — no schema field/picker exists to record which was taken, so none is safely extractable even though several grant a real, otherwise-unconditional speed value",
+    note: "one of six mutually-exclusive aspects chosen at 1st level; the pick lives on the canonical id aspect-of-the-carp:1, where this option emits nothing (gaseous form has no Change target)",
   },
   "monk:monk-of-the-four-winds:aspect-of-the-owl:1": {
     archetypeId: "monk:monk-of-the-four-winds",
     name: "Aspect of the Owl",
     level: 1,
     bucket: "subsystem",
-    note: "one of six mutually-exclusive aspects chosen at 1st level (flat 30 ft. fly speed) — no schema field/picker exists to record which was taken, so none is safely extractable even though several grant a real, otherwise-unconditional speed value",
+    note: "one of six mutually-exclusive aspects chosen at 1st level; the pick and its wired branches live on the canonical id aspect-of-the-carp:1",
   },
   "monk:monk-of-the-four-winds:aspect-of-the-tiger:1": {
     archetypeId: "monk:monk-of-the-four-winds",
     name: "Aspect of the Tiger",
     level: 1,
     bucket: "subsystem",
-    note: "one of six mutually-exclusive aspects chosen at 1st level (hourly 10x-speed charge with pounce) — no schema field/picker exists to record which was taken, so none is safely extractable even though several grant a real, otherwise-unconditional speed value",
+    note: "one of six mutually-exclusive aspects chosen at 1st level; the pick lives on the canonical id aspect-of-the-carp:1, where this option emits nothing (the hourly charge-speed multiplier has no Change target)",
   },
   "monk:monk-of-the-healing-hand:ancient-healing-hand:7": {
     archetypeId: "monk:monk-of-the-healing-hand",
@@ -1530,7 +1530,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Armor of Scars",
     level: 1,
     bucket: "subsystem",
-    note: "one of several ki-gated mortification picks with no schema field/picker (same posture as Soul Shepherd's Mortification) — even the one real number here (+1 natural armor, stacking) is additionally gated on holding at least 1 ki point",
+    note: "one of several ki-gated mortification picks (same posture as Soul Shepherd's Mortification) — even the one real number here (+1 natural armor, stacking) is additionally gated on holding at least 1 ki point, a resource state the static sheet can't check",
   },
   "monk:scarred-monk:blood-eagle:1": {
     archetypeId: "monk:scarred-monk",
@@ -2895,5 +2895,70 @@ export const MONK_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "At 3rd level, a martial artist's advanced knowledge of humanoid anatomy grants a +1 " +
       "bonus on critical hit confirmation rolls and increases the DC of his stunning fist and " +
       "quivering palm by 1. This ability replaces still mind.",
+  },
+
+  // Monk of the Four Winds' six Aspects are a choose-one pick at 1st level;
+  // aspect-of-the-carp:1 is the canonical id the choice/choiceChanges live
+  // on (see its classification entry). Carp/Monkey grant a swim/climb speed
+  // equal to base land speed (the swimSpeed/climbSpeed "base"/"set" idiom);
+  // Ki-Rin grants the same for fly speed, with a "must land each turn"
+  // maneuvering caveat that has no numeric effect; Owl grants a flat 30 ft.
+  // fly speed. Oni's gaseous form and Tiger's hourly charge-speed multiplier
+  // have no Change target and emit nothing when picked.
+  "monk:monk-of-the-four-winds:aspect-of-the-carp:1": {
+    changes: [],
+    choice: {
+      label: "Aspect",
+      options: [
+        { id: "carp", label: "Carp (swim speed)" },
+        { id: "ki-rin", label: "Ki-Rin (fly speed, lawful good only)" },
+        { id: "monkey", label: "Monkey (climb speed)" },
+        { id: "oni", label: "Oni (gaseous form, evil only)" },
+        { id: "owl", label: "Owl (fly speed 30 ft.)" },
+        { id: "tiger", label: "Tiger (charge speed multiplier)" },
+      ],
+    },
+    choiceChanges: {
+      carp: [
+        {
+          formula: "@attributes.speed.land.total",
+          target: "swimSpeed",
+          type: "base",
+          operator: "set",
+        },
+      ],
+      "ki-rin": [
+        {
+          formula: "@attributes.speed.land.total",
+          target: "flySpeed",
+          type: "base",
+          operator: "set",
+        },
+      ],
+      monkey: [
+        {
+          formula: "@attributes.speed.land.total",
+          target: "climbSpeed",
+          type: "base",
+          operator: "set",
+        },
+      ],
+      oni: [],
+      owl: [{ formula: "30", target: "flySpeed", type: "base", operator: "set" }],
+      tiger: [],
+    },
+    detail: () =>
+      "carp: swim speed = land speed · ki-rin: fly speed = land speed (must land each turn) · " +
+      "monkey: climb speed = land speed · owl: fly speed 30 ft. · oni/tiger: no baseline number " +
+      "(choice stored per pick)",
+    confidence: "high",
+    provenance:
+      "Aspect of the Carp: he can breathe water and gains a swim speed equal to his land speed. " +
+      "Aspect of the Ki-Rin: he gains a fly speed equal to his land speed, but he must end each " +
+      "turn on the ground. Aspect of the Monkey: the monk gains a climb speed equal to his land " +
+      "speed. Aspect of the Owl: he gains a fly speed of 30 feet. Aspect of the Oni: he can " +
+      "assume gaseous form as a standard action for 1 minute per day per monk level. Aspect of " +
+      "the Tiger: once per hour, the monk can move at 10 times his normal land speed when he " +
+      "makes a charge and is treated as if he had the pounce ability.",
   },
 };
