@@ -55,11 +55,11 @@ describe("INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const inquisitorFeatureIds = Object.values(ref.archetypeFeatures)
       .filter((f) => f.archetypeId.startsWith("inquisitor:"))
       .map((f) => f.id);
-    expect(inquisitorFeatureIds.length).toBe(143);
+    expect(inquisitorFeatureIds.length).toBe(139);
     for (const id of inquisitorFeatureIds) {
       expect(INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION[id]).toBeDefined();
     }
-    expect(Object.keys(INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(143);
+    expect(Object.keys(INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(139);
   });
 
   it("bucket counts match the audited totals", () => {
@@ -68,8 +68,8 @@ describe("INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
       counts[entry.bucket]++;
     }
     expect(counts.numeric).toBe(12);
-    expect(counts.blocked).toBe(8);
-    expect(counts.situational).toBe(27);
+    expect(counts.blocked).toBe(7);
+    expect(counts.situational).toBe(24);
     expect(counts.subsystem).toBe(96);
   });
 
@@ -140,15 +140,6 @@ describe("blocked bucket: features with no expressible target or a vendored copy
     const monsterLore = Object.values(ref.classFeatures).find((f) => f.name === "Monster Lore");
     expect(track?.changes ?? []).toEqual([]);
     expect(monsterLore?.changes ?? []).toEqual([]);
-  });
-
-  it("Infiltrator's Adaptation is a vendored copy-paste error (ranger Infiltrator archetype's text under the inquisitor Infiltrator archetype's id)", () => {
-    const feature = ref.archetypeFeatures["inquisitor:infiltrator:adaptation:3"]!;
-    expect(feature.description).toContain("The ranger selects");
-    expect(feature.description).toContain("replaces favored terrain");
-    expect(
-      INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION["inquisitor:infiltrator:adaptation:3"]?.bucket,
-    ).toBe("blocked");
   });
 
   it("no SAVE_CATEGORIES key exists for magic-item-sourced effects, truth-detection, or fey-sourced SLAs specifically", () => {

@@ -7,7 +7,7 @@
  * (the aggregator, a later integration step not done here) needs one new
  * import + one new spread line.
  *
- * Every one of hunter's 21 vendored archetypes (102 features), individually
+ * Every one of hunter's 21 vendored archetypes (100 features), individually
  * read against `packages/data-pipeline/data/archetype-features.json` and
  * bucketed `numeric` / `situational` / `subsystem` / `blocked` using the same
  * bar `archetype-effects.ts`'s own header documents.
@@ -67,14 +67,7 @@
  *    than adding on top, and re-expressing it as a second `"set"` value
  *    would lose too (set-vs-set resolves to the lower of the two). Fast
  *    Swimmer is `blocked` for exactly this reason — see its entry.
- * 8. **Two minor vendored-data oddities, not corrected**: Roof Runner's own
- *    "Roof Running" and "Tumbling Descent" features claim to replace
- *    "trapfinding" and "trap sense" respectively — abilities the hunter
- *    chassis doesn't have at all (those are core ROGUE class features).
- *    Neither claim changes this file's bucketing (nothing numeric was going
- *    to be extracted from either feature anyway), but it's the same style of
- *    prose inconsistency `archetype-effects.ts`'s header warns about.
- * 9. **Divine Hunter is a vendored-data class-tag mismatch, not a real
+ * 8. **Divine Hunter is a vendored-data class-tag mismatch, not a real
  *    hunter archetype.** All 9 of its features describe PALADIN class
  *    features verbatim (aura of resolve/justice/courage, lay on hands,
  *    divine bond, a domain, smite-evil-fueled feat grants) with no hunter
@@ -123,12 +116,12 @@ const TEAMWORK_FEAT_NOTE =
 const NAMED_FEAT_GRANT_NOTE =
   "grants a fixed named feat, not a countable bonusFeats slot (class note 4)";
 
-/** Shared note text for Divine Hunter's vendored-data class-tag mismatch (see class note 9). */
+/** Shared note text for Divine Hunter's vendored-data class-tag mismatch (see class note 8). */
 const DIVINE_HUNTER_MISMATCH =
   "the vendored description is Paladin class-feature text (aura of resolve/justice/courage, " +
   "lay on hands, divine bond, a domain, smite-evil-fueled feat grants) under a hunter: id — a " +
   "vendored-data class-tag mismatch, confirmed by its own Precise Shot entry claiming to " +
-  "replace Heavy Armor Proficiency, which the hunter class doesn't have (class note 9). No " +
+  "replace Heavy Armor Proficiency, which the hunter class doesn't have (class note 8). No " +
   "hunter number extracted regardless of bucket.";
 
 /** Keyed by the archetype feature's own `RefEntity.id` (same key `archetype-effects.ts` uses). */
@@ -297,7 +290,7 @@ export const HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     note: COMPANION_SCOPED_NOTE + " Polymorphs the companion into a Tiny animal.",
   },
 
-  // ── hunter:divine-hunter (see class note 9 — vendored-data class-tag mismatch) ──
+  // ── hunter:divine-hunter (see class note 8 — vendored-data class-tag mismatch) ──
   "hunter:divine-hunter:aura-of-care:8": {
     archetypeId: "hunter:divine-hunter",
     name: "Aura of Care",
@@ -827,17 +820,6 @@ export const HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
       "Acrobatics is one skill covering jump/balance/tumble together, so a general skill.acr " +
       "Change would over-apply to unrelated Acrobatics uses.",
   },
-  "hunter:roof-runner:roof-running:1": {
-    archetypeId: "hunter:roof-runner",
-    name: "Roof Running",
-    level: 1,
-    bucket: "situational",
-    note:
-      "full-speed movement plus no Dex-skill/Reflex penalty, scoped to rooftops/similar " +
-      "surfaces while lightly armored or unarmored. Also claims to replace 'trapfinding,' an " +
-      "ability the hunter chassis doesn't have at 1st level — a vendored-data oddity (class " +
-      "note 8), noted rather than corrected.",
-  },
   "hunter:roof-runner:shingle-stride:5": {
     archetypeId: "hunter:roof-runner",
     name: "Shingle Stride",
@@ -857,16 +839,6 @@ export const HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
       "ExtractedArchetypeFeatureEffect type carries no classSkills field (that's a structural " +
       "relationship computed from refData.classes, not a Change target) — and swaps away " +
       "medium-armor/shield proficiency, also not Change-shaped.",
-  },
-  "hunter:roof-runner:tumbling-descent:2": {
-    archetypeId: "hunter:roof-runner",
-    name: "Tumbling Descent",
-    level: 2,
-    bucket: "subsystem",
-    note:
-      "Acrobatics-based descent maneuver with its own DC, replaces 'trap sense' — another " +
-      "ability the hunter chassis doesn't have (class note 8, same vendored-data oddity as " +
-      "Roof Running above).",
   },
   "hunter:roof-runner:weapon-and-armor-proficiency:1": {
     archetypeId: "hunter:roof-runner",
@@ -1062,7 +1034,7 @@ export const HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
  * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 5 of hunter's 102 features
+ * extraction pass inferred this from prose." Only 5 of hunter's 100 features
  * cleared the `numeric` bar (see `HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION`
  * above for the full per-feature audit) — hunter's kit leans heavily on
  * companion-scoped bonuses, Animal Focus's activated aspect lists, and

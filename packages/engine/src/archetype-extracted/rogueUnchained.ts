@@ -1,7 +1,7 @@
 /**
  * Rogue (Unchained)'s slice of the pipeline (see `index.ts` for the per-class
  * file convention this follows). Covers all 76 vendored `rogueUnchained:*`
- * archetypes, 257 features, read individually.
+ * archetypes, 251 features, read individually.
  *
  * ── Class-specific mechanical facts this pass relies on ───────────────────
  *
@@ -36,7 +36,7 @@
  *    empty slot. Finesse Training (UC) similarly carries a real
  *    `bonusFeats: 1` (its free Weapon Finesse grant) and Rogue's Edge (UC)
  *    carries `bonusFeats: floor(@class.unlevel / 5)`; no feature in this
- *    file's 257 replaces or modifies either one, so neither ever comes up as
+ *    file's 251 replaces or modifies either one, so neither ever comes up as
  *    a double-count risk in practice. Danger Sense, Debilitating Injury,
  *    Sneak Attack (UC), Evasion, Rogue Talents, Uncanny Dodge, Improved
  *    Uncanny Dodge, Advanced Talents (ROG), and Master Strike (UC) all carry
@@ -53,17 +53,7 @@
  *    Trickster's Resist Nature's Lure) stays `situational` — no matching
  *    axis, same posture `class-feature-effects.ts`'s own doc comment
  *    documents for its declined candidates.
- * 5. **Roof Runner's eight features are vendored under the wrong class.**
- *    Every one of their descriptions reads as the HUNTER class's own "Roof
- *    Runner" archetype verbatim — "adds half her HUNTER level," "alters the
- *    HUNTER's class skills," "a HUNTER is proficient with all simple and
- *    martial weapons," "her ANIMAL COMPANION can move at full speed" — with
- *    no rogue-appropriate rewrite at all. This is the "vendored prose has a
- *    known copy-paste error" case the pipeline expects: treated
- *    conservatively throughout (no numeric extraction from any of the eight,
- *    even where the wording would otherwise look extractable), since the
- *    text's own subject class can't be trusted.
- * 6. **Darkvision/blindsight grants** are expressible as a `sense*` target
+ * 5. **Darkvision/blindsight grants** are expressible as a `sense*` target
  *    (`senses.ts`'s `SENSE_TARGET_IDS`, in `targets.ts`'s applied set) —
  *    resolution is highest-wins across sources. Two features here (Shadow
  *    Scion's Shadow Dweller, Shadow Walker's Expanded Sight) grant a flat 30
@@ -89,14 +79,11 @@
  *    TARGET rather than the rogue's own sheet, an action/roll-substitution
  *    mechanic, an absolute state grant with no modifier shape (auto-20 on a
  *    roll, "never flat-footed"), or a sense/speed grant with no formula input
- *    to express its stated value (see note 5 above for Roof Runner, and
- *    Tidal Trickster's swim-speed-equal-to-land-speed clause, dropped from an
- *    otherwise-numeric entry).
+ *    to express its stated value (Tidal Trickster's swim-speed-equal-to-
+ *    land-speed clause, dropped from an otherwise-numeric entry).
  *  - "blocked": the text promises an unconditional number but no applied
  *    target exists, or the vendored prose is internally inconsistent /
- *    plainly misattributed (the three Sneak Attack reprints; Roof Runner's
- *    Master Climber compounds a missing-target problem with the same
- *    class-mismatch issue as its siblings).
+ *    plainly misattributed (the three Sneak Attack reprints).
  *
  * Confidence: "high" = a literal, unconditional clause with no interpretive
  * reading, even if a separate NON-numeric rider is dropped alongside it.
@@ -121,12 +108,6 @@ const BLOCKED_SNEAK_ATTACK_REPRINT =
   "all. Suspected vendored-data artifact (a duplicate/mistagged CSV row), not a real archetype " +
   "modification. Left unmodeled rather than risk anything touching the hardcoded, atomic " +
   "sneakAttackDice() progression (tables.ts, out of this file's scope).";
-
-const ROOF_RUNNER_MISMATCH =
-  "the vendored description is the HUNTER class's own 'Roof Runner' archetype text verbatim " +
-  "(references hunter level / an animal companion / 'alters the hunter's class skills' / 'a " +
-  "hunter is proficient...') under a rogueUnchained: id — a vendored-data class mismatch, not a " +
-  "real rogue ability. Treated conservatively: no number extracted from this archetype.";
 
 /** Keyed by the archetype feature's own `RefEntity.id` (same key `archetype-effects.ts` uses). */
 export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
@@ -1290,71 +1271,19 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Roof Runner ────────────────────────────────────────────────────────
-  "rogueUnchained:roof-runner:alley-ghost:8": {
-    archetypeId: "rogueUnchained:roof-runner",
-    name: "Alley Ghost",
-    level: 8,
-    bucket: "subsystem",
-    note: `grants the fast stealth rogue talent's benefits — a talent-list grant, no flat number. Also, ${ROOF_RUNNER_MISMATCH}`,
-  },
-  "rogueUnchained:roof-runner:master-climber:20": {
-    archetypeId: "rogueUnchained:roof-runner",
-    name: "Master Climber",
-    level: 20,
-    bucket: "blocked",
-    note:
-      `verified against aonprd.com: the real Hunter Roof Runner archetype ` +
-      `(ArchetypeDisplay.aspx?FixedName=Hunter+Roof+Runner) has a 20th-level Master Climber ` +
-      "granting a climb speed equal to base land speed, 'instead of being able to move at full " +
-      "speed while tracking' — matches this entry's text verbatim. The real ROGUE Roof Runner " +
-      "archetype (PZO1118, Pathfinder Society Field Guide; confirmed via aonprd.com's Rogue Roof " +
-      "Runner page and d20pfsrd) has only two features total, both at 1st/2nd level (Roof " +
-      "Running, Tumbling Descent) — no 20th-level ability exists in the real rogue archetype at " +
-      `all. This id's content is entirely Hunter's Roof Runner archetype misattributed to ` +
-      `rogueUnchained (class note: ${ROOF_RUNNER_MISMATCH}). Not wired: there is no real rogue ` +
-      "ability here to extract a number from.",
-  },
-  "rogueUnchained:roof-runner:natural-leaper:2": {
-    archetypeId: "rogueUnchained:roof-runner",
-    name: "Natural Leaper",
-    level: 2,
-    bucket: "situational",
-    note: `Acrobatics bonus scoped to jump checks specifically, not general Acrobatics. Also, ${ROOF_RUNNER_MISMATCH}`,
-  },
   "rogueUnchained:roof-runner:roof-running:1": {
     archetypeId: "rogueUnchained:roof-runner",
     name: "Roof Running",
     level: 1,
     bucket: "subsystem",
-    note: `a terrain-specific move-at-full-speed/no-Dex-skill-or-Reflex-penalty permission, no flat number. Also, ${ROOF_RUNNER_MISMATCH}`,
-  },
-  "rogueUnchained:roof-runner:shingle-stride:5": {
-    archetypeId: "rogueUnchained:roof-runner",
-    name: "Shingle Stride",
-    level: 5,
-    bucket: "subsystem",
-    note: `a movement-rule permission (full speed on narrow surfaces, faster climbing), no flat number. Also, ${ROOF_RUNNER_MISMATCH}`,
-  },
-  "rogueUnchained:roof-runner:skilled:1": {
-    archetypeId: "rogueUnchained:roof-runner",
-    name: "Skilled",
-    level: 1,
-    bucket: "subsystem",
-    note: `adds class skills (not tracked as a Change) and a proficiency swap. Also, ${ROOF_RUNNER_MISMATCH}`,
+    note: "a terrain-specific move-at-full-speed/no-Dex-skill-or-Reflex-penalty permission, no flat number",
   },
   "rogueUnchained:roof-runner:tumbling-descent:2": {
     archetypeId: "rogueUnchained:roof-runner",
     name: "Tumbling Descent",
     level: 2,
     bucket: "subsystem",
-    note: `a DC-based fall/descent mechanic, no flat bonus granted. Also, ${ROOF_RUNNER_MISMATCH}`,
-  },
-  "rogueUnchained:roof-runner:weapon-and-armor-proficiency:1": {
-    archetypeId: "rogueUnchained:roof-runner",
-    name: "Weapon and Armor Proficiency",
-    level: 1,
-    bucket: "subsystem",
-    note: `proficiency text, no Change-shaped target. Also, ${ROOF_RUNNER_MISMATCH}`,
+    note: "a DC-based fall/descent mechanic, no flat bonus granted",
   },
 
   // ── Rotdrinker ─────────────────────────────────────────────────────────
@@ -1531,7 +1460,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Shadow Dweller",
     level: 1,
     bucket: "numeric",
-    note: "grants a flat, scaling darkvision (sensedv) — extracted as a highest-wins flat grant, dropping the 'if already had darkvision, +10' initial rider (grant/rider mismatch, see class note 6). The Stealth bonus is scoped to dim light/darkness and dropped.",
+    note: "grants a flat, scaling darkvision (sensedv) — extracted as a highest-wins flat grant, dropping the 'if already had darkvision, +10' initial rider (grant/rider mismatch, see class note 5). The Stealth bonus is scoped to dim light/darkness and dropped.",
   },
   "rogueUnchained:shadow-scion:shadow-master:20": {
     archetypeId: "rogueUnchained:shadow-scion",
@@ -1568,7 +1497,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Expanded Sight",
     level: 1,
     bucket: "numeric",
-    note: "grants a flat, scaling darkvision (sensedv) — same grant/rider mismatch as Shadow Scion's Shadow Dweller (class note 6); the light-sensitivity-removal rider is a non-numeric trait swap, dropped",
+    note: "grants a flat, scaling darkvision (sensedv) — same grant/rider mismatch as Shadow Scion's Shadow Dweller (class note 5); the light-sensitivity-removal rider is a non-numeric trait swap, dropped",
   },
   "rogueUnchained:shadow-walker:favored-illumination:4": {
     archetypeId: "rogueUnchained:shadow-walker",
@@ -2116,7 +2045,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * `rogueUnchained:*` entries at all today) — every entry here additionally
  * carries `confidence`/`provenance` so a reviewer (or the UI) can never
  * confuse "a human read the rulebook and checked this" with "an extraction
- * pass inferred this from prose." Only 30 of Rogue (Unchained)'s 257 features
+ * pass inferred this from prose." Only 30 of Rogue (Unchained)'s 251 features
  * cleared the `numeric` bar (see
  * `ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
  * per-feature audit) — this kit leans heavily on rogue-talent substitutions,

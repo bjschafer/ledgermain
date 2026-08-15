@@ -280,19 +280,6 @@ describe("Fey Prankster (rogue): Mischievous Talent grants an unconditional min-
   });
 });
 
-describe("Roof Runner (rogue): Master Climber sets climb speed to base land speed", () => {
-  const archetype = archetypeId("Roof Runner", "rogue");
-
-  it("climb speed = land speed at L20", () => {
-    const sheet = compute(
-      makeDoc({ classes: [{ tag: "rogue", level: 20 }], archetypes: [archetype] }),
-      ref,
-    );
-    const withoutArchetype = compute(makeDoc({ classes: [{ tag: "rogue", level: 20 }] }), ref);
-    expect(sheet.speeds.climb).toBe(withoutArchetype.speeds.land);
-  });
-});
-
 describe("Bekyar Kidnapper (rogue): Abductor grants maneuver-scoped cmb/cmd vs. grapple", () => {
   const archetype = archetypeId("Bekyar Kidnapper", "rogue");
 

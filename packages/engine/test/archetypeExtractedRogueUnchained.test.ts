@@ -32,22 +32,22 @@ describe("ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const rogueUnchainedFeatureIds = Object.values(ref.archetypeFeatures)
       .filter((f) => f.archetypeId.startsWith("rogueUnchained:"))
       .map((f) => f.id);
-    expect(rogueUnchainedFeatureIds.length).toBe(257);
+    expect(rogueUnchainedFeatureIds.length).toBe(251);
     for (const id of rogueUnchainedFeatureIds) {
       expect(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION[id]).toBeDefined();
     }
-    expect(Object.keys(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(257);
+    expect(Object.keys(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(251);
   });
 
-  it("buckets total 257 with the measured counts (numeric 32 / situational 48 / subsystem 173 / blocked 4)", () => {
+  it("buckets total 251 with the measured counts (numeric 32 / situational 47 / subsystem 169 / blocked 3)", () => {
     const counts: Record<string, number> = {};
     for (const entry of Object.values(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
     expect(counts["numeric"]).toBe(32);
-    expect(counts["situational"]).toBe(48);
-    expect(counts["subsystem"]).toBe(173);
-    expect(counts["blocked"]).toBe(4);
+    expect(counts["situational"]).toBe(47);
+    expect(counts["subsystem"]).toBe(169);
+    expect(counts["blocked"]).toBe(3);
   });
 
   it("every numeric-bucket classification entry has a matching extracted-effects entry, and no stray entries exist", () => {
@@ -72,7 +72,7 @@ describe("ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
   });
 });
 
-describe("blocked bucket: sneak attack reprints and the Roof Runner class mismatch", () => {
+describe("blocked bucket: sneak attack reprints and trapfinding", () => {
   it("the three Sneak Attack archetype-feature rows are byte-identical to the base description, not a real change", () => {
     const baseSneakAttack = Object.values(ref.classFeatures).find((f) => f.name === "Sneak Attack");
     expect(baseSneakAttack).toBeDefined();
@@ -85,23 +85,6 @@ describe("blocked bucket: sneak attack reprints and the Roof Runner class mismat
       expect(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION[id]?.bucket).toBe("blocked");
       expect(ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeUndefined();
     }
-  });
-
-  it("Roof Runner's Master Climber is blocked (verified against aonprd.com: it's Hunter's Roof Runner content, not a real rogue ability)", () => {
-    // aonprd.com's Hunter Roof Runner archetype (ArchetypeDisplay.aspx?
-    // FixedName=Hunter+Roof+Runner) has the 20th-level Master Climber that
-    // matches this entry's text verbatim; aonprd.com's Rogue Roof Runner
-    // archetype (PZO1118, Pathfinder Society Field Guide) has only two
-    // features total (Roof Running 1st, Tumbling Descent 2nd) and no
-    // 20th-level ability at all. Nothing to backfill.
-    const entry =
-      ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION[
-        "rogueUnchained:roof-runner:master-climber:20"
-      ];
-    expect(entry?.bucket).toBe("blocked");
-    expect(
-      ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED["rogueUnchained:roof-runner:master-climber:20"],
-    ).toBeUndefined();
   });
 
   it("Trapfinding carries a real vendored skill.dev change, unlike every other rogueUnchained base feature", () => {

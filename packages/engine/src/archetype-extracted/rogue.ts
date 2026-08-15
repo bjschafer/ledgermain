@@ -1,7 +1,7 @@
 /**
  * Rogue's slice of the pipeline (wave 2, 2026-07-06; see `index.ts` for the
  * per-class file convention this follows). Covers all 78 vendored rogue
- * archetypes, 257 features, read individually (rogue's archetype count is
+ * archetypes, 251 features, read individually (rogue's archetype count is
  * small enough to afford the exhaustive per-feature pass the fighter pilot's
  * own recommendation flagged as optional for smaller classes — no
  * heuristic-assisted situational/subsystem split here).
@@ -1290,14 +1290,6 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── Roof Runner ────────────────────────────────────────────────────────
-  // NOTE: this archetype's prose reads verbatim as hunter's own Roof Runner
-  // (references "her hunter level," "her animal companion," alters "the
-  // hunter's class skills") — the identical feature set is ALSO vendored
-  // under `hunter:roof-runner` (see hunter.ts). A suspected vendored-data
-  // cross-tagging duplication (classTag: "rogue" on hunter-flavored
-  // content), not fixed here; `@class.unlevel` still resolves off the
-  // rogue's own level for a character who has taken this rogue-tagged
-  // archetype, so any extraction below is internally consistent regardless.
   "rogue:roof-runner:roof-running:1": {
     archetypeId: "rogue:roof-runner",
     name: "Roof Running",
@@ -1305,54 +1297,12 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "subsystem",
     note: "removes rooftop movement/Reflex-save penalties while lightly armored — no engine-modeled penalty exists to remove",
   },
-  "rogue:roof-runner:weapon-and-armor-proficiency:1": {
-    archetypeId: "rogue:roof-runner",
-    name: "Weapon and Armor Proficiency",
-    level: 1,
-    bucket: "subsystem",
-    note: "proficiency grant — not a Change target",
-  },
-  "rogue:roof-runner:skilled:1": {
-    archetypeId: "rogue:roof-runner",
-    name: "Skilled",
-    level: 1,
-    bucket: "subsystem",
-    note: "adds Acrobatics/Escape Artist/Sleight of Hand to the class-skill list and swaps away medium-armor/shield proficiency — neither is a Change-shaped number (class-skill-list membership has no Change target)",
-  },
   "rogue:roof-runner:tumbling-descent:2": {
     archetypeId: "rogue:roof-runner",
     name: "Tumbling Descent",
     level: 2,
     bucket: "subsystem",
     note: "an Acrobatics-based descent mechanic with its own DC — not a bonus to a check",
-  },
-  "rogue:roof-runner:natural-leaper:2": {
-    archetypeId: "rogue:roof-runner",
-    name: "Natural Leaper",
-    level: 2,
-    bucket: "situational",
-    note: "real half-level Acrobatics bonus, but scoped to jump checks specifically — Acrobatics is one skill covering jump/balance/tumble together, so a general skill.acr Change would over-apply",
-  },
-  "rogue:roof-runner:shingle-stride:5": {
-    archetypeId: "rogue:roof-runner",
-    name: "Shingle Stride",
-    level: 5,
-    bucket: "situational",
-    note: "full-speed Acrobatics on narrow/uneven surfaces plus faster climbing (shared with the animal companion) — an action-economy rule, not a climb-speed number",
-  },
-  "rogue:roof-runner:alley-ghost:8": {
-    archetypeId: "rogue:roof-runner",
-    name: "Alley Ghost",
-    level: 8,
-    bucket: "subsystem",
-    note: "grants the Fast Stealth rogue talent's benefits — borrowed-subsystem ability grant, no flat number",
-  },
-  "rogue:roof-runner:master-climber:20": {
-    archetypeId: "rogue:roof-runner",
-    name: "Master Climber",
-    level: 20,
-    bucket: "numeric",
-    note: "unconditional climb speed equal to base land speed, replaces Master Strike (vendored changes: []) — see ROGUE_ARCHETYPE_EFFECTS_EXTRACTED below",
   },
 
   // ── Rotdrinker ─────────────────────────────────────────────────────────
@@ -2279,21 +2229,6 @@ export const ROGUE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "At 1st level, a river rat gains a bonus equal to half her rogue level on Swim checks " +
       "(minimum +1)... All of these abilities apply only when she is wearing light or no armor " +
       "and carrying no more than a light load.",
-  },
-  "rogue:roof-runner:master-climber:20": {
-    changes: [
-      {
-        formula: "@attributes.speed.land.total",
-        target: "climbSpeed",
-        type: "base",
-        operator: "set",
-      },
-    ],
-    detail: () => "climb speed = base land speed",
-    confidence: "high",
-    provenance:
-      "At 20th level, a roof runner gains a climb speed equal to her base land speed, instead of " +
-      "being able to move at full speed while tracking.",
   },
   // Rotdrinker's "Poison Resistance" is a clean SAVE_CATEGORIES mapping,
   // identical to the unchained rogue's own Rotdrinker archetype.

@@ -55,18 +55,18 @@ describe("INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const investigatorFeatureIds = Object.values(ref.archetypeFeatures)
       .filter((f) => f.archetypeId.startsWith("investigator:"))
       .map((f) => f.id);
-    expect(investigatorFeatureIds.length).toBe(158);
+    expect(investigatorFeatureIds.length).toBe(153);
     for (const id of investigatorFeatureIds) {
       expect(INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION[id]).toBeDefined();
     }
-    expect(Object.keys(INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(158);
+    expect(Object.keys(INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(153);
   });
 
   it("every numeric-bucket classification entry has a matching extracted-effects entry, and no stray entries exist", () => {
     const numericIds = Object.entries(INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(30);
+    expect(numericIds.length).toBe(29);
     for (const id of numericIds) {
       expect(INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -75,12 +75,12 @@ describe("INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     }
   });
 
-  it("bucket counts match this pass's audit plus the save-categories re-sweep and the Gadgetry promotion (158 total: 30 numeric, 31 situational, 86 subsystem, 11 blocked)", () => {
+  it("bucket counts match this pass's audit plus the save-categories re-sweep and the Gadgetry promotion (153 total: 29 numeric, 31 situational, 83 subsystem, 10 blocked)", () => {
     const counts: Record<string, number> = { numeric: 0, situational: 0, subsystem: 0, blocked: 0 };
     for (const entry of Object.values(INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts).toEqual({ numeric: 30, situational: 31, subsystem: 86, blocked: 11 });
+    expect(counts).toEqual({ numeric: 29, situational: 31, subsystem: 83, blocked: 10 });
   });
 
   it("every classification entry references a real vendored feature id/name/level/archetypeId", () => {
@@ -268,17 +268,6 @@ describe("Guardian of Immortality: Desert Survivor's fire-resistance clause", ()
     expect(change!.target).toBe("allSavingThrows");
     expect(change!.type).toBe("alchemical");
     expect(evaluateFormula(change!.formula, {})).toBe(1);
-  });
-});
-
-describe("Infiltrator: Guileful Lore stacks Wisdom modifier onto Bluff and Diplomacy", () => {
-  it("adds Wis mod to both skills, unconditionally", () => {
-    const id = "investigator:infiltrator:guileful-lore:1";
-    const [blf, dip] = INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
-    expect(blf!.target).toBe("skill.blf");
-    expect(dip!.target).toBe("skill.dip");
-    expect(evaluateFormula(blf!.formula, { abilities: { wis: { mod: 3 } } })).toBe(3);
-    expect(evaluateFormula(dip!.formula, { abilities: { wis: { mod: -1 } } })).toBe(-1);
   });
 });
 

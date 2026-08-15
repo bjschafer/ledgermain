@@ -324,59 +324,6 @@ describe("suppression-composition case: Sable Company Marine's additive feature 
   });
 });
 
-describe("Infiltrator (ranger): Guileful Lore adds Wis modifier to Bluff and Diplomacy", () => {
-  // Vendored prose here is byte-identical to the inquisitor/investigator
-  // Infiltrator archetype's own Guileful Lore text (see ranger.ts's header
-  // comment) — same formula already extracted for both sibling classes.
-  const infiltrator = archetypeId("Infiltrator", "ranger");
-
-  it("+Wis modifier (12 -> +1) to both skills", () => {
-    const sheet = compute(
-      makeDoc({ classes: [{ tag: "ranger", level: 1 }], archetypes: [infiltrator] }),
-      ref,
-    );
-    expect(sheet.skills["blf"]?.components.find((c) => c.source === "Guileful Lore")?.value).toBe(
-      1,
-    );
-    expect(sheet.skills["dip"]?.components.find((c) => c.source === "Guileful Lore")?.value).toBe(
-      1,
-    );
-  });
-});
-
-describe("Skirmisher (ranger): Mobility Training grants dodge AC + land speed while lightly armored", () => {
-  // Vendored prose here is byte-identical to fighter:skirmisher:mobility-
-  // training:3, already extracted there with this same formula (see
-  // ranger.ts's header comment).
-  const skirmisher = archetypeId("Skirmisher", "ranger");
-
-  it("+1 dodge AC / +5 ft. speed unarmored at L3", () => {
-    const unarmored = compute(
-      makeDoc({ classes: [{ tag: "ranger", level: 3 }], archetypes: [skirmisher] }),
-      ref,
-    );
-    const own = unarmored.activeArchetypes
-      .find((a) => a.id === skirmisher)
-      ?.features.find((f) => f.name === "Mobility Training");
-    expect(own?.detail).toBe(
-      "+1 dodge AC / +5 ft. land speed (light/no armor; light load not checked)",
-    );
-  });
-
-  it("+4 dodge AC / +10 ft. speed at L15+", () => {
-    const sheet = compute(
-      makeDoc({ classes: [{ tag: "ranger", level: 15 }], archetypes: [skirmisher] }),
-      ref,
-    );
-    const own = sheet.activeArchetypes
-      .find((a) => a.id === skirmisher)
-      ?.features.find((f) => f.name === "Mobility Training");
-    expect(own?.detail).toBe(
-      "+4 dodge AC / +10 ft. land speed (light/no armor; light load not checked)",
-    );
-  });
-});
-
 describe("Abendego Diver (ranger): Aquatic Adaptation grants a swim speed equal to base land speed", () => {
   // aonprd.com "Abendego Diver" (Ranger Archetype), Aquatic Adaptation (7th):
   // "an Abendego diver gains a swim speed equal to his unmodified base

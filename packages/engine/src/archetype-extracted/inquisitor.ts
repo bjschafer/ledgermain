@@ -1,6 +1,6 @@
 /**
  * Inquisitor's slice of the pipeline. Every vendored archetype feature whose
- * id starts with `inquisitor:` (37 archetypes, 143 features) is read in full
+ * id starts with `inquisitor:` (37 archetypes, 139 features) is read in full
  * and bucketed as `numeric` / `situational` / `subsystem` / `blocked`, and the
  * `numeric` ones get a real `Change`-shaped extraction. Same methodology as
  * the fighter/magus pilots (see those files' header comments for the general
@@ -65,11 +65,6 @@
  *    `SAVE_CATEGORIES` key without being either too broad or fabricated.
  *    These are `blocked`, not `situational` — the gap is a missing target,
  *    not an uncheckable condition.
- * 8. `inquisitor:infiltrator:adaptation:3` is a vendored copy-paste error:
- *    its full text is the *ranger* Infiltrator archetype's "Adaptation"
- *    ability verbatim ("The ranger selects...", "This class ability
- *    replaces favored terrain") pasted under the inquisitor Infiltrator
- *    archetype's id. `blocked` — no real inquisitor ability to extract from.
  */
 
 import {
@@ -431,13 +426,6 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── inquisitor:infiltrator ──
-  "inquisitor:infiltrator:adaptation:3": {
-    archetypeId: "inquisitor:infiltrator",
-    name: "Adaptation",
-    level: 3,
-    bucket: "blocked",
-    note: "vendored copy-paste error: the description is verbatim the RANGER Infiltrator archetype's 'Adaptation' ability ('The ranger selects...', 'replaces favored terrain') pasted under the inquisitor Infiltrator archetype's id — not a real inquisitor ability to extract from (class note 8)",
-  },
   "inquisitor:infiltrator:forbidden-lore:2": {
     archetypeId: "inquisitor:infiltrator",
     name: "Forbidden Lore",
@@ -452,20 +440,6 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "numeric",
     note: "adds Wis modifier to Bluff and Diplomacy, unconditional and unscoped, replacing monster lore (nothing to double-count) — class note 5",
   },
-  "inquisitor:infiltrator:master-of-disguise:1": {
-    archetypeId: "inquisitor:infiltrator",
-    name: "Master of Disguise",
-    level: 1,
-    bucket: "situational",
-    note: "reduces specific Disguise-check penalties (gender/race/age/size mismatch) by 2 and speeds up disguising, replacing trapfinding — a per-circumstance penalty adjustment, not a flat skill bonus",
-  },
-  "inquisitor:infiltrator:mimic-mastery:2": {
-    archetypeId: "inquisitor:infiltrator",
-    name: "Mimic Mastery",
-    level: 2,
-    bucket: "situational",
-    note: "+10 Disguise bonus, but scoped to using disguise self or a polymorph extract specifically, replacing poison resistance — a chosen-spell condition the engine can't check",
-  },
   "inquisitor:infiltrator:misdirection:1": {
     archetypeId: "inquisitor:infiltrator",
     name: "Misdirection",
@@ -479,13 +453,6 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 5,
     bucket: "blocked",
     note: "adds class level to saves vs. 'abilities that detect lies or reveal or force the truth', replacing discern lies — no SAVE_CATEGORIES key models truth-detection/compulsion-to-honesty as a category",
-  },
-  "inquisitor:infiltrator:voice-mimicry:2": {
-    archetypeId: "inquisitor:infiltrator",
-    name: "Voice Mimicry",
-    level: 2,
-    bucket: "situational",
-    note: "a whole modifier table for a special voice-mimicry Disguise check, replacing poison lore — table-based mechanic, not a flat stat bonus",
   },
 
   // ── inquisitor:keeper-of-construct ──
@@ -1171,7 +1138,7 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * extracted from (`archetype-features.json`) is OGL, so reading it is fine;
  * no Foundry source was consulted (DESIGN.md §6).
  *
- * Only 12 of inquisitor's 143 features cleared the `numeric` bar (see
+ * Only 12 of inquisitor's 139 features cleared the `numeric` bar (see
  * `INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
  * per-feature audit) — inquisitor's kit leans heavily on judgment/bane
  * reflavors, detection spell-likes, and enemy-scoped or per-target

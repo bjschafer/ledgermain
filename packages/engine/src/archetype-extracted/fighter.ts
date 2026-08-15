@@ -13,7 +13,7 @@
  * ── FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION ──────────────────────────────
  *
  * Classification audit for the pilot slice: EVERY feature of EVERY vendored
- * fighter archetype (67 archetypes, 383 features), read and bucketed as
+ * fighter archetype (66 archetypes, 378 features), read and bucketed as
  * `numeric` / `situational` / `subsystem` / `blocked` — the reviewable
  * artifact the pipeline produces alongside the extracted-effects table, and
  * the input a future wave (other classes) mechanically repeats.
@@ -2036,7 +2036,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Conditioning",
     level: 2,
     bucket: "situational",
-    note: "real but conditional/narrowly-scoped number (specific maneuver, weapon, target state, or action) — not expressible without over-applying, per the honesty bar",
+    note: "real but choice-gated number: the skirmisher picks one of four specializations (Alpine/Counter-Interrogation/Jungle/Light Infantry Training) at 2nd level, each granting +1 (increasing by 1 per 4 levels beyond 2nd) on a narrow save category (Fort vs. cold/altitude/fatigue, Will vs. charms/divinations, Fort vs. disease/poison, or Reflex vs. half-damage-on-a-save effects) — not expressible without a choice UI and over-applying across all four at once, per the honesty bar",
   },
   "fighter:skirmisher:reconnaissance-training:2": {
     archetypeId: "fighter:skirmisher",
@@ -2051,20 +2051,6 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 3,
     bucket: "numeric",
     note: "dodge AC + land speed bonus gated on @armor.type<=1 (encumbrance half not checked)",
-  },
-  "fighter:skirmisher:hunter-s-tricks:5": {
-    archetypeId: "fighter:skirmisher",
-    name: "Hunter's Tricks",
-    level: 5,
-    bucket: "subsystem",
-    note: "grants access to a hunter's-tricks pick-list — no engine hook for a per-archetype spell-list/caster-model swap. Vendored prose is verbatim the ranger Skirmisher archetype's text (mentions 'ranger' throughout, 'replaces the ranger's spells class feature'), same shared cross-class content as this archetype's other entries above; bucket unaffected either way, no number to extract regardless of which class the text really describes",
-  },
-  "fighter:skirmisher:conditioning:6": {
-    archetypeId: "fighter:skirmisher",
-    name: "Conditioning",
-    level: 6,
-    bucket: "situational",
-    note: "real but conditional/narrowly-scoped number (specific maneuver, weapon, target state, or action) — not expressible without over-applying, per the honesty bar",
   },
   "fighter:skirmisher:mobile-mastery:19": {
     archetypeId: "fighter:skirmisher",

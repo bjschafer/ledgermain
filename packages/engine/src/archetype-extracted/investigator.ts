@@ -1,5 +1,5 @@
 /**
- * Investigator's slice of the pipeline. Covers all 158 vendored archetype
+ * Investigator's slice of the pipeline. Covers all 153 vendored archetype
  * features across the 36 investigator archetypes that carry any (a 37th,
  * Dread Investigator, has zero linked features in the vendored pack — nothing
  * to classify there, not a gap in this pass).
@@ -553,27 +553,6 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
   },
 
   // ── investigator:infiltrator ──
-  "investigator:infiltrator:adaptation:3": {
-    archetypeId: "investigator:infiltrator",
-    name: "Adaptation",
-    level: 3,
-    bucket: "subsystem",
-    note: "ranger favored-enemy adaptation pick-list; deferred subsystem",
-  },
-  "investigator:infiltrator:forbidden-lore:2": {
-    archetypeId: "investigator:infiltrator",
-    name: "Forbidden Lore",
-    level: 2,
-    bucket: "subsystem",
-    note: "removes an alignment restriction on spellcasting; no flat number",
-  },
-  "investigator:infiltrator:guileful-lore:1": {
-    archetypeId: "investigator:infiltrator",
-    name: "Guileful Lore",
-    level: 1,
-    bucket: "numeric",
-    note: "unconditional Wisdom-modifier bonus stacked onto Bluff and Diplomacy, in addition to the normal ability modifier",
-  },
   "investigator:infiltrator:master-of-disguise:1": {
     archetypeId: "investigator:infiltrator",
     name: "Master of Disguise",
@@ -587,20 +566,6 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 2,
     bucket: "situational",
     note: "+10 Disguise bonus, but only when using disguise self/polymorph extracts; extract-use-scoped and alchemy-adjacent",
-  },
-  "investigator:infiltrator:misdirection:1": {
-    archetypeId: "investigator:infiltrator",
-    name: "Misdirection",
-    level: 1,
-    bucket: "subsystem",
-    note: "daily alignment-detection choice; no flat number",
-  },
-  "investigator:infiltrator:necessary-lies:5": {
-    archetypeId: "investigator:infiltrator",
-    name: "Necessary Lies",
-    level: 5,
-    bucket: "blocked",
-    note: "class-level save bonus vs. lie-detection/truth-compulsion effects — no matching SAVE_CATEGORIES entry",
   },
   "investigator:infiltrator:voice-mimicry:2": {
     archetypeId: "investigator:infiltrator",
@@ -1261,7 +1226,7 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
  * `ARCHETYPE_FEATURE_EFFECTS` (the hand-verified table) — every entry here
  * additionally carries `confidence`/`provenance` so a reviewer (or the UI)
  * can never confuse "a human read the rulebook and checked this" with "an
- * extraction pass inferred this from prose." Only 29 of investigator's 158
+ * extraction pass inferred this from prose." Only 29 of investigator's 153
  * features cleared the `numeric` bar (see
  * `INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION` above for the full
  * per-feature audit) — investigator's kit leans heavily on the inspiration
@@ -1478,18 +1443,6 @@ export const INVESTIGATOR_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
     detail: () => "+1 alchemical bonus on all saving throws",
     confidence: "high",
     provenance: "granting him a +1 alchemical bonus on all saving throws.",
-  },
-
-  // Infiltrator's "Guileful Lore" stacks a flat Wisdom-modifier bonus onto
-  // Bluff and Diplomacy, unconditionally, in addition to the normal ability
-  // modifier the sheet already applies.
-  "investigator:infiltrator:guileful-lore:1": {
-    changes: [c("@abilities.wis.mod", "skill.blf"), c("@abilities.wis.mod", "skill.dip")],
-    detail: () => "+Wis modifier to Bluff and Diplomacy",
-    confidence: "high",
-    provenance:
-      "She adds her Wisdom modifier on Bluff and Diplomacy skill checks in addition to the " +
-      "normal ability score modifiers.",
   },
 
   // Jinyiwei's "Celestial Insight" grants an unconditional, uncapped-at-18th

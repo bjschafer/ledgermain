@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-14-same-name-archetypes-untangled",
+    date: "2026-08-14",
+    title: "Same-named archetypes no longer borrow each other's abilities",
+    note: "Skirmisher, Infiltrator, and Roof Runner are archetype names that several classes share, and each class's version was showing every other class's abilities too. Now each shows only its own: a Skirmisher ranger keeps hunter's tricks while the fighter version keeps its training abilities, an Infiltrator inquisitor, investigator, or ranger sees only that class's published features, and a Roof Runner hunter and rogue each keep their own. Numbers that leaked across, like a dodge bonus and faster speed on a Skirmisher ranger or a climb speed on a Roof Runner rogue, are gone. A Skirmisher fighter's Conditioning, which showed no rules text at all, now lists its four specializations.",
+  },
+  {
     id: "2026-08-14-archetype-abilities-that-showed-nothing",
     date: "2026-08-14",
     title: "Archetype abilities that used to show only rules text now compute",

@@ -152,16 +152,28 @@ function cleanClassName(raw: string): string {
 }
 
 /**
- * A tiny number of `links.supplements` entries point at the wrong feature —
- * confirmed by reading both docs: the archetype's OTHER features are
- * consistently for its own class, and the referenced feature is itself
- * `associations.classes`-tagged for an unrelated class's SAME-NAMED but
- * unrelated archetype (e.g. Wizard's "Primalist" cross-wired onto a feature
- * belonging to Bloodrager's own, entirely different, "Primalist" archetype).
+ * `links.supplements` entries that point at a feature the archetype does not
+ * actually have — confirmed by reading the docs against the published
+ * archetypes (aonprd.com). Two defect shapes land here:
+ *
+ * 1. A single cross-wired link (e.g. Wizard's "Primalist" pointing at a
+ *    feature belonging to Bloodrager's own, entirely different, "Primalist"
+ *    archetype).
+ * 2. Same-named archetypes of DIFFERENT classes sharing one identical
+ *    supplements list that is the UNION of every class's real features — so
+ *    each class's doc links every other class's features too. Fighter's and
+ *    Ranger's "Skirmisher" (Ultimate Wilderness p. 50 / APG p. 128), the
+ *    Inquisitor/Investigator/Ranger "Infiltrator" trio (UM p. 45 / ACG
+ *    p. 100 / APG p. 125), and the Hunter/Rogue "Roof Runner" pair (Ultimate
+ *    Intrigue p. 65 / Ultimate Combat p. 74) are each distinct published
+ *    archetypes that merely collide on the name; the entries below cut each
+ *    doc's list back to the features its own class's archetype actually has.
+ *
  * NOT a general "class mismatch" filter — genuinely shared multi-class
- * archetypes (Divine Hunter, Skirmisher, Musketeer, ...) legitimately
- * reference features tagged for their OTHER class, so that broader check
- * produces false positives. Keyed by `${archetype doc _id}:${feature doc _id}`.
+ * archetypes (Divine Hunter, Musketeer, ...) legitimately reference features
+ * tagged for their OTHER class, so that broader check produces false
+ * positives. Keyed by `${archetype doc _id}:${feature doc _id}`; both halves
+ * are verified against the pack by `verifyHandAuthoredTables`.
  */
 const MISLINKED_SUPPLEMENTS = new Set<string>([
   // Wizard (Primalist) level-4 supplement resolves to Bloodrager (Primalist)'s
@@ -173,6 +185,65 @@ const MISLINKED_SUPPLEMENTS = new Set<string>([
   // Scroll Scholar is shared by clerics AND wizards, "they give up different
   // class abilities" — this specific feature is the cleric half).
   "Dtql9vRY7VG5XtVN:M8A86NznHJUmql2H",
+  // Fighter (Skirmisher): Hunter's Tricks belongs to Ranger's Skirmisher
+  // ("replaces the ranger's spells class feature"); the fighter archetype's
+  // published features are the other six. Also drops the second of the pack's
+  // two "Conditioning (Skirmisher)" docs, whose description is the literal
+  // string "undefined" — it collides with the real Conditioning doc
+  // (9drbcaDXi0bFWOLG) at the same feature id and was shadowing its text.
+  "hR437j5U9QRPdNwZ:Kwyaha7WDP7I82X6", // Hunter's Tricks
+  "hR437j5U9QRPdNwZ:qOfxQ37HHkTnrBQN", // Conditioning ("undefined" duplicate)
+  // Ranger (Skirmisher): the published archetype's only feature is Hunter's
+  // Tricks; everything else in the shared list is Fighter's Skirmisher
+  // (fighter-only prose: "4 + his Intelligence modifier, instead of 2 +",
+  // proficiency cut down from the fighter's full list).
+  "CN3ZrOSkzl9OMWOF:IFvrB7zvPNCv6iuC", // Wilderness Training
+  "CN3ZrOSkzl9OMWOF:zSGoQujEyu1EkZja", // Weapon and Armor Proficiency
+  "CN3ZrOSkzl9OMWOF:9drbcaDXi0bFWOLG", // Conditioning
+  "CN3ZrOSkzl9OMWOF:qOfxQ37HHkTnrBQN", // Conditioning ("undefined" duplicate)
+  "CN3ZrOSkzl9OMWOF:J4ZvEcg0e85U7MBF", // Reconnaissance Training
+  "CN3ZrOSkzl9OMWOF:YKVE8S0tCbk0lyo2", // Mobility Training
+  "CN3ZrOSkzl9OMWOF:HPsTMw8CZH5xZ8Ur", // Mobile Mastery
+  // Inquisitor (Infiltrator): keeps its four published features (Misdirection,
+  // Guileful Lore, Forbidden Lore, Necessary Lies — each "replaces" an
+  // inquisitor ability); the rest are Investigator's and Ranger's.
+  "SpZMUHMWYxqa8ssB:8ZCE9BFOM05mRb4s", // Master of Disguise (investigator)
+  "SpZMUHMWYxqa8ssB:7KFjXgRedy0i6se6", // Voice Mimicry (investigator)
+  "SpZMUHMWYxqa8ssB:kulyaQ3ogZeuBL8a", // Mimic Mastery (investigator)
+  "SpZMUHMWYxqa8ssB:74ajr14rTXsjEXr9", // Adaptation (ranger)
+  // Investigator (Infiltrator): keeps Master of Disguise, Mimic Mastery, and
+  // Voice Mimicry ("replaces trapfinding / poison resistance / poison lore");
+  // the rest are Inquisitor's and Ranger's.
+  "0GKCT3HUv8VPr3c0:Hpl0fQW3Cr7H7Nme", // Misdirection (inquisitor)
+  "0GKCT3HUv8VPr3c0:zvtkRWYUhFJF2ijA", // Guileful Lore (inquisitor)
+  "0GKCT3HUv8VPr3c0:ozGHZOU4xBqqC1Vc", // Forbidden Lore (inquisitor)
+  "0GKCT3HUv8VPr3c0:oE9xetAmBcos6AKZ", // Necessary Lies (inquisitor)
+  "0GKCT3HUv8VPr3c0:74ajr14rTXsjEXr9", // Adaptation (ranger)
+  // Ranger (Infiltrator): the published archetype's only feature is Adaptation
+  // ("replaces favored terrain"); the rest are Inquisitor's and Investigator's.
+  "TzrcDsuCb2ZwsAi3:8ZCE9BFOM05mRb4s", // Master of Disguise (investigator)
+  "TzrcDsuCb2ZwsAi3:Hpl0fQW3Cr7H7Nme", // Misdirection (inquisitor)
+  "TzrcDsuCb2ZwsAi3:zvtkRWYUhFJF2ijA", // Guileful Lore (inquisitor)
+  "TzrcDsuCb2ZwsAi3:7KFjXgRedy0i6se6", // Voice Mimicry (investigator)
+  "TzrcDsuCb2ZwsAi3:kulyaQ3ogZeuBL8a", // Mimic Mastery (investigator)
+  "TzrcDsuCb2ZwsAi3:ozGHZOU4xBqqC1Vc", // Forbidden Lore (inquisitor)
+  "TzrcDsuCb2ZwsAi3:oE9xetAmBcos6AKZ", // Necessary Lies (inquisitor)
+  // Hunter (Roof Runner): Roof Running and Tumbling Descent are Rogue's Roof
+  // Runner ("replaces trapfinding" / "replaces trap sense" — abilities a
+  // hunter doesn't have); the hunter archetype's published features are the
+  // other five plus its modified proficiency line.
+  "AhAT5FR5jo2KerXw:jZhFYjHiYMnZq3TE", // Roof Running
+  "AhAT5FR5jo2KerXw:0oeHXFCV7IJTjC6o", // Tumbling Descent
+  // Rogue (Roof Runner): the published archetype has only Roof Running and
+  // Tumbling Descent; the rest are Hunter's Roof Runner (hunter-only prose:
+  // "half her hunter level", "her animal companion", "the hunter's class
+  // skills", "A hunter is proficient...").
+  "lxH6abiAZBEffNrT:CQJ1Ex3eT4jgZrzz", // Skilled
+  "lxH6abiAZBEffNrT:HO6k2YxVvshFcPfk", // Weapon and Armor Proficiency
+  "lxH6abiAZBEffNrT:3QNbLf1CBqzH9Cnp", // Natural Leaper
+  "lxH6abiAZBEffNrT:oG5TWEejQaHiHL6t", // Shingle Stride
+  "lxH6abiAZBEffNrT:PLyFr49ZjT4DIVVF", // Alley Ghost
+  "lxH6abiAZBEffNrT:uio7FIXrXryhg5Pw", // Master Climber
 ]);
 
 /** One hand-authored `links.supplements` entry, with a name to verify on apply. */
@@ -251,6 +322,15 @@ function verifyHandAuthoredTables(
   }
   for (const [featId, name] of Object.entries(NON_ARCHETYPE_FEATURES)) {
     check(featById.get(featId), featId, name, "feature");
+  }
+  for (const key of MISLINKED_SUPPLEMENTS) {
+    const [archId, featId] = key.split(":");
+    if (archId === undefined || !archById.has(archId)) {
+      throw new Error(`[archetypes] mislinked-supplement archetype ${archId} not in the pack`);
+    }
+    if (featId === undefined || !featById.has(featId)) {
+      throw new Error(`[archetypes] mislinked-supplement feature ${featId} not in the pack`);
+    }
   }
 }
 

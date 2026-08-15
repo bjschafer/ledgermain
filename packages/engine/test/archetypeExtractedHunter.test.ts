@@ -56,11 +56,11 @@ describe("HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const hunterFeatureIds = Object.values(ref.archetypeFeatures)
       .filter((f) => f.archetypeId.startsWith("hunter:"))
       .map((f) => f.id);
-    expect(hunterFeatureIds.length).toBe(102);
+    expect(hunterFeatureIds.length).toBe(100);
     for (const id of hunterFeatureIds) {
       expect(HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION[id]).toBeDefined();
     }
-    expect(Object.keys(HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(102);
+    expect(Object.keys(HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(100);
   });
 
   it("every numeric-bucket classification entry has a matching extracted-effects entry, and vice versa (no stray entries)", () => {
@@ -83,7 +83,7 @@ describe("HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     }
     expect(counts.numeric).toBe(5);
     expect(counts.blocked).toBe(2);
-    expect(counts.situational + counts.subsystem).toBe(102 - 5 - 2);
+    expect(counts.situational + counts.subsystem).toBe(100 - 5 - 2);
   });
 
   it("every provenance is a verbatim substring of the vendored description after HTML-stripping and whitespace-squashing", () => {

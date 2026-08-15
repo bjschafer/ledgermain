@@ -32484,7 +32484,7 @@
   "fighter:skirmisher:conditioning:2": {
     "archetypeId": "fighter:skirmisher",
     "classTag": "fighter",
-    "description": "undefined",
+    "description": "<p>At 2nd level, a skirmisher becomes more resistant to mental and physical threats that are commonly employed by his enemies or often encountered in the terrain in which he operates. The skirmisher must choose one of the specializations below, gaining a +1 bonus on saving throws of the appropriate type. This bonus increases by 1 for every 4 levels beyond 2nd.</p><ul><li>Alpine Training (Ex): A skirmisher operating in mountainous terrain becomes resistant to cold climates and the rigors of long treks at high altitudes. He gains a bonus on Fortitude saving throws against altitude sickness, exposure to cold weather, and other effects that cause fatigue or exhaustion.</li>  <li>Counter-Interrogation Training (Ex): A skirmisher undertaking infiltration missions learns to resist interrogation and persuasion. The skirmisher gains a bonus on Will saving throws against charms and divinations.</li><li>Jungle Training (Ex): Through repeated exposure, a skirmisher operating in jungles and wetlands builds up a tolerance against pathogens and toxins. He gains a bonus on Fortitude saving throws against disease and poison.</li><li>Light Infantry Training (Ex): A skirmisher fighting in a light infantry unit learns to avoid fire from enemy artillery, siege weapons, and spellcasters. He gains a bonus on Reflex saving throws against attacks that deal half damage on a successful save (such as the fireball spell) but not against traps, natural hazards, or environmental effects.</li></ul>",
     "id": "fighter:skirmisher:conditioning:2",
     "level": 2,
     "name": "Conditioning",
@@ -32496,22 +32496,6 @@
       }
     ],
     "uuid": "archetype-feature:fighter:skirmisher:conditioning:2"
-  },
-  "fighter:skirmisher:hunter-s-tricks:5": {
-    "archetypeId": "fighter:skirmisher",
-    "classTag": "fighter",
-    "description": "<p>At 5th level, a skirmisher ranger learns the use of hunter's tricks, which typically grant a boon or bonus to the ranger or a nearby ally. At 5th level, the ranger learns one trick, selected from the list below. At 7th level, and every two levels thereafter, he learns another trick. A ranger can use these tricks a total number of times per day equal to 1/2 his ranger level + his Wisdom modifier. Tricks are usually swift actions, but sometimes move or free actions that modify a standard action, usually an attack action. Once a trick is chosen, it can't be retrained. A ranger cannot select an individual trick more than once. This ability replaces the ranger's spells class feature. Skirmishers do not gain any spells or spellcasting ability, do not have a caster level, and cannot use spell trigger and spell completion magic items.</p>",
-    "id": "fighter:skirmisher:hunter-s-tricks:5",
-    "level": 5,
-    "name": "Hunter's Tricks",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.RzEzudurxQFirFoF",
-    "sources": [
-      {
-        "id": "PZO1140",
-        "pages": "50"
-      }
-    ],
-    "uuid": "archetype-feature:fighter:skirmisher:hunter-s-tricks:5"
   },
   "fighter:skirmisher:mobile-mastery:19": {
     "archetypeId": "fighter:skirmisher",
@@ -36901,21 +36885,6 @@
     ],
     "uuid": "archetype-feature:hunter:roof-runner:natural-leaper:2"
   },
-  "hunter:roof-runner:roof-running:1": {
-    "archetypeId": "hunter:roof-runner",
-    "classTag": "hunter",
-    "description": "<p>At 1st level, a roof runner becomes entirely adept at moving across the tops of buildings, spires, and similar locations. Provided she is wearing light armor or no armor, the roof runner can move at full speed while traveling across the tops of buildings or similar structures, and takes no penalties on any Dexterity-based Skill checks or Reflex saves that might be incurred from moving about on a roof. This ability replaces trapfinding.</p>",
-    "id": "hunter:roof-runner:roof-running:1",
-    "level": 1,
-    "name": "Roof Running",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:hunter:roof-runner:roof-running:1"
-  },
   "hunter:roof-runner:shingle-stride:5": {
     "archetypeId": "hunter:roof-runner",
     "classTag": "hunter",
@@ -36945,21 +36914,6 @@
       }
     ],
     "uuid": "archetype-feature:hunter:roof-runner:skilled:1"
-  },
-  "hunter:roof-runner:tumbling-descent:2": {
-    "archetypeId": "hunter:roof-runner",
-    "classTag": "hunter",
-    "description": "<p>At 2nd level, a roof runner can use her acrobatics skill to attempt a rapid descent from a rooftop or another surface, ricocheting against another surface and then diving through an opening (such as a balcony or window) directly below. So long as she has at least two surfaces no farther than 10 feet apart to bounce against, she can ricochet her body back from one to the next, descending great distances with a single check. The DC is 10 + 5 for every additional 10-foot increment descended beyond the initial 10 feet dropped. If she fails, she falls the full distance. This ability replaces trap sense.</p>",
-    "id": "hunter:roof-runner:tumbling-descent:2",
-    "level": 2,
-    "name": "Tumbling Descent",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:hunter:roof-runner:tumbling-descent:2"
   },
   "hunter:roof-runner:weapon-and-armor-proficiency:1": {
     "archetypeId": "hunter:roof-runner",
@@ -37966,21 +37920,6 @@
     ],
     "uuid": "archetype-feature:inquisitor:immolator:servant-of-the-flame:1"
   },
-  "inquisitor:infiltrator:adaptation:3": {
-    "archetypeId": "inquisitor:infiltrator",
-    "classTag": "inquisitor",
-    "description": "<p>At 3rd level, an infiltrator learns how to copy the unusual abilities of his prey. He chooses one type of creature he has selected as a favored enemy, such as 'aberrations.' The ranger selects one ability or feat from the adaptation list for that type (see below). A ranger can use adaptations for 10 minutes per day per ranger level he possesses. This duration does not need to be consecutive, but it must be used in 10-minute increments. If the adaptation requires the ranger to make a more specific choice (such as what skill to use with Skill Focus), this choice is permanent and cannot be changed.</p><p>At 8th, 13th, and 15th-level, the ranger chooses another one of his favored enemy types and selects one adaptation from that type's list, as well as an additional adaptation from any one list of a creature type he's selected (including the one just chosen, if so desired). The infiltrator can only use one adaptation at a time. This class ability replaces favored terrain.</p>",
-    "id": "inquisitor:infiltrator:adaptation:3",
-    "level": 3,
-    "name": "Adaptation",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:inquisitor:infiltrator:adaptation:3"
-  },
   "inquisitor:infiltrator:forbidden-lore:2": {
     "archetypeId": "inquisitor:infiltrator",
     "classTag": "inquisitor",
@@ -38011,36 +37950,6 @@
     ],
     "uuid": "archetype-feature:inquisitor:infiltrator:guileful-lore:1"
   },
-  "inquisitor:infiltrator:master-of-disguise:1": {
-    "archetypeId": "inquisitor:infiltrator",
-    "classTag": "inquisitor",
-    "description": "<p>At 1st level, an infiltrator can use disguise with great results. When disguising himself as a different gender, race, age category, or size category, an infiltrator reduces the penalties for each by -2. For example, if the infiltrator disguises himself as a female two age categories older than himself, he would take a -2 to the check instead of a -6. Also, an infiltrator can disguise himself with 1d3 minutes of work (instead of the normal 1d3 10 minutes of work). This ability replaces trapfinding.</p>",
-    "id": "inquisitor:infiltrator:master-of-disguise:1",
-    "level": 1,
-    "name": "Master of Disguise",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:inquisitor:infiltrator:master-of-disguise:1"
-  },
-  "inquisitor:infiltrator:mimic-mastery:2": {
-    "archetypeId": "inquisitor:infiltrator",
-    "classTag": "inquisitor",
-    "description": "<p>At 2nd level, when an infiltrator uses disguise self or any polymorph extracts on himself, he is treated as 2 investigator levels higher for the purpose of determining the duration of that extract's effect. He can use these extracts to take the appearance of specific individuals of the type of form he chooses, gaining a +10 to Disguise checks even if that extract does not typically grant such a bonus. Furthermore, these extracts grant the infiltrator a +10 bonus to Disguise checks made as part of his voice mimicry ability. This ability replaces poison resistance.</p>",
-    "id": "inquisitor:infiltrator:mimic-mastery:2",
-    "level": 2,
-    "name": "Mimic Mastery",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:inquisitor:infiltrator:mimic-mastery:2"
-  },
   "inquisitor:infiltrator:misdirection:1": {
     "archetypeId": "inquisitor:infiltrator",
     "classTag": "inquisitor",
@@ -38070,21 +37979,6 @@
       }
     ],
     "uuid": "archetype-feature:inquisitor:infiltrator:necessary-lies:5"
-  },
-  "inquisitor:infiltrator:voice-mimicry:2": {
-    "archetypeId": "inquisitor:infiltrator",
-    "classTag": "inquisitor",
-    "description": "<p>At 2nd level, an infiltrator learns to mimic voices and sounds around him. Using this ability requires a special Disguise check, and creatures hearing the voice can make a Perception check to discover the ruse. An infiltrator can attempt to emulate any creature or other sound he's heard clearly for at least 1 minute. The bonuses or penalties to this special Disguise check are modified in the following ways, all of which are cumulative.</p><table><tbody><tr>  <td><b>Disguised Voice</b></td><td><b>Check Modifier</b></td></tr>  <tr><td>Voice is not your own, but not that of a distinct individual</td><td>+5</td></tr><tr><td>Voice is that of a different gender</td><td>-2</td></tr><tr><td>Voice is that of a different race</td><td>-2</td></tr><tr><td>Voice is that of a different age category</td><td>-2</td></tr><tr><td>Voice is that of a different size category</td><td>-5</td></tr></tbody></table><p>Also, the creature making the Perception check gains a bonus based on its familiarity with specific voices, just as if it were confronted with a normal disguise (Core Rulebook 95). This ability is a language-dependent effect, meaning that if a creature cannot hear or understand what the infiltrator is saying, the ruse fails. Magic items, feats, and traits that affect typical disguises do not affect this disguise check.</p><p>At 8th level, the infiltrator gains the effects of its master of disguise class feature on this special use of the Disguise skill (no penalty for a voice of a different gender, race, or age category, and only a -3 penalty for a different size category). This ability replaces poison lore.</p>",
-    "id": "inquisitor:infiltrator:voice-mimicry:2",
-    "level": 2,
-    "name": "Voice Mimicry",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:inquisitor:infiltrator:voice-mimicry:2"
   },
   "inquisitor:keeper-of-construct:construct-influence:1": {
     "archetypeId": "inquisitor:keeper-of-construct",
@@ -40424,51 +40318,6 @@
     ],
     "uuid": "archetype-feature:investigator:holomog-demolitionist:studied-strike:4"
   },
-  "investigator:infiltrator:adaptation:3": {
-    "archetypeId": "investigator:infiltrator",
-    "classTag": "investigator",
-    "description": "<p>At 3rd level, an infiltrator learns how to copy the unusual abilities of his prey. He chooses one type of creature he has selected as a favored enemy, such as 'aberrations.' The ranger selects one ability or feat from the adaptation list for that type (see below). A ranger can use adaptations for 10 minutes per day per ranger level he possesses. This duration does not need to be consecutive, but it must be used in 10-minute increments. If the adaptation requires the ranger to make a more specific choice (such as what skill to use with Skill Focus), this choice is permanent and cannot be changed.</p><p>At 8th, 13th, and 15th-level, the ranger chooses another one of his favored enemy types and selects one adaptation from that type's list, as well as an additional adaptation from any one list of a creature type he's selected (including the one just chosen, if so desired). The infiltrator can only use one adaptation at a time. This class ability replaces favored terrain.</p>",
-    "id": "investigator:infiltrator:adaptation:3",
-    "level": 3,
-    "name": "Adaptation",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:investigator:infiltrator:adaptation:3"
-  },
-  "investigator:infiltrator:forbidden-lore:2": {
-    "archetypeId": "investigator:infiltrator",
-    "classTag": "investigator",
-    "description": "<p>While other inquisitors learned to track unbelievers, an infiltrator learns how to cast their spells. An infiltrator can cast spells of an alignment opposed to her or her deity (ignoring the restriction in the Chaotic, Evil, Good, and Lawful Spells class ability). This ability replaces track.</p>",
-    "id": "investigator:infiltrator:forbidden-lore:2",
-    "level": 2,
-    "name": "Forbidden Lore",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:investigator:infiltrator:forbidden-lore:2"
-  },
-  "investigator:infiltrator:guileful-lore:1": {
-    "archetypeId": "investigator:infiltrator",
-    "classTag": "investigator",
-    "description": "<p>At 1st level, the infiltrator's will is bent toward subterfuge and deception. She adds her Wisdom modifier on Bluff and Diplomacy skill checks in addition to the normal ability score modifiers. This ability replaces monster lore.</p>",
-    "id": "investigator:infiltrator:guileful-lore:1",
-    "level": 1,
-    "name": "Guileful Lore",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:investigator:infiltrator:guileful-lore:1"
-  },
   "investigator:infiltrator:master-of-disguise:1": {
     "archetypeId": "investigator:infiltrator",
     "classTag": "investigator",
@@ -40498,36 +40347,6 @@
       }
     ],
     "uuid": "archetype-feature:investigator:infiltrator:mimic-mastery:2"
-  },
-  "investigator:infiltrator:misdirection:1": {
-    "archetypeId": "investigator:infiltrator",
-    "classTag": "investigator",
-    "description": "<p>At 1st level, each day when the infiltrator prepares spells, she may choose an alignment. She detects as that alignment as if she had used misdirection on a creature with that alignment (this does not change any divination results about her other than her alignment). This power replaces stern gaze.</p>",
-    "id": "investigator:infiltrator:misdirection:1",
-    "level": 1,
-    "name": "Misdirection",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:investigator:infiltrator:misdirection:1"
-  },
-  "investigator:infiltrator:necessary-lies:5": {
-    "archetypeId": "investigator:infiltrator",
-    "classTag": "investigator",
-    "description": "<p>An infiltrator adds her class level on saving throws against abilities that detect lies or reveal or force the truth, such as detect lies and zone of truth. This power replaces discern lies.</p>",
-    "id": "investigator:infiltrator:necessary-lies:5",
-    "level": 5,
-    "name": "Necessary Lies",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:investigator:infiltrator:necessary-lies:5"
   },
   "investigator:infiltrator:voice-mimicry:2": {
     "archetypeId": "investigator:infiltrator",
@@ -63835,114 +63654,6 @@
     ],
     "uuid": "archetype-feature:ranger:infiltrator:adaptation:3"
   },
-  "ranger:infiltrator:forbidden-lore:2": {
-    "archetypeId": "ranger:infiltrator",
-    "classTag": "ranger",
-    "description": "<p>While other inquisitors learned to track unbelievers, an infiltrator learns how to cast their spells. An infiltrator can cast spells of an alignment opposed to her or her deity (ignoring the restriction in the Chaotic, Evil, Good, and Lawful Spells class ability). This ability replaces track.</p>",
-    "id": "ranger:infiltrator:forbidden-lore:2",
-    "level": 2,
-    "name": "Forbidden Lore",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.BO7BEFHDcf6qBaYV",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:infiltrator:forbidden-lore:2"
-  },
-  "ranger:infiltrator:guileful-lore:1": {
-    "archetypeId": "ranger:infiltrator",
-    "classTag": "ranger",
-    "description": "<p>At 1st level, the infiltrator's will is bent toward subterfuge and deception. She adds her Wisdom modifier on Bluff and Diplomacy skill checks in addition to the normal ability score modifiers. This ability replaces monster lore.</p>",
-    "id": "ranger:infiltrator:guileful-lore:1",
-    "level": 1,
-    "name": "Guileful Lore",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:infiltrator:guileful-lore:1"
-  },
-  "ranger:infiltrator:master-of-disguise:1": {
-    "archetypeId": "ranger:infiltrator",
-    "classTag": "ranger",
-    "description": "<p>At 1st level, an infiltrator can use disguise with great results. When disguising himself as a different gender, race, age category, or size category, an infiltrator reduces the penalties for each by -2. For example, if the infiltrator disguises himself as a female two age categories older than himself, he would take a -2 to the check instead of a -6. Also, an infiltrator can disguise himself with 1d3 minutes of work (instead of the normal 1d3 10 minutes of work). This ability replaces trapfinding.</p>",
-    "id": "ranger:infiltrator:master-of-disguise:1",
-    "level": 1,
-    "name": "Master of Disguise",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:infiltrator:master-of-disguise:1"
-  },
-  "ranger:infiltrator:mimic-mastery:2": {
-    "archetypeId": "ranger:infiltrator",
-    "classTag": "ranger",
-    "description": "<p>At 2nd level, when an infiltrator uses disguise self or any polymorph extracts on himself, he is treated as 2 investigator levels higher for the purpose of determining the duration of that extract's effect. He can use these extracts to take the appearance of specific individuals of the type of form he chooses, gaining a +10 to Disguise checks even if that extract does not typically grant such a bonus. Furthermore, these extracts grant the infiltrator a +10 bonus to Disguise checks made as part of his voice mimicry ability. This ability replaces poison resistance.</p>",
-    "id": "ranger:infiltrator:mimic-mastery:2",
-    "level": 2,
-    "name": "Mimic Mastery",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.BO7BEFHDcf6qBaYV",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:infiltrator:mimic-mastery:2"
-  },
-  "ranger:infiltrator:misdirection:1": {
-    "archetypeId": "ranger:infiltrator",
-    "classTag": "ranger",
-    "description": "<p>At 1st level, each day when the infiltrator prepares spells, she may choose an alignment. She detects as that alignment as if she had used misdirection on a creature with that alignment (this does not change any divination results about her other than her alignment). This power replaces stern gaze.</p>",
-    "id": "ranger:infiltrator:misdirection:1",
-    "level": 1,
-    "name": "Misdirection",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:infiltrator:misdirection:1"
-  },
-  "ranger:infiltrator:necessary-lies:5": {
-    "archetypeId": "ranger:infiltrator",
-    "classTag": "ranger",
-    "description": "<p>An infiltrator adds her class level on saving throws against abilities that detect lies or reveal or force the truth, such as detect lies and zone of truth. This power replaces discern lies.</p>",
-    "id": "ranger:infiltrator:necessary-lies:5",
-    "level": 5,
-    "name": "Necessary Lies",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:infiltrator:necessary-lies:5"
-  },
-  "ranger:infiltrator:voice-mimicry:2": {
-    "archetypeId": "ranger:infiltrator",
-    "classTag": "ranger",
-    "description": "<p>At 2nd level, an infiltrator learns to mimic voices and sounds around him. Using this ability requires a special Disguise check, and creatures hearing the voice can make a Perception check to discover the ruse. An infiltrator can attempt to emulate any creature or other sound he's heard clearly for at least 1 minute. The bonuses or penalties to this special Disguise check are modified in the following ways, all of which are cumulative.</p><table><tbody><tr>  <td><b>Disguised Voice</b></td><td><b>Check Modifier</b></td></tr>  <tr><td>Voice is not your own, but not that of a distinct individual</td><td>+5</td></tr><tr><td>Voice is that of a different gender</td><td>-2</td></tr><tr><td>Voice is that of a different race</td><td>-2</td></tr><tr><td>Voice is that of a different age category</td><td>-2</td></tr><tr><td>Voice is that of a different size category</td><td>-5</td></tr></tbody></table><p>Also, the creature making the Perception check gains a bonus based on its familiarity with specific voices, just as if it were confronted with a normal disguise (Core Rulebook 95). This ability is a language-dependent effect, meaning that if a creature cannot hear or understand what the infiltrator is saying, the ruse fails. Magic items, feats, and traits that affect typical disguises do not affect this disguise check.</p><p>At 8th level, the infiltrator gains the effects of its master of disguise class feature on this special use of the Disguise skill (no penalty for a voice of a different gender, race, or age category, and only a -3 penalty for a different size category). This ability replaces poison lore.</p>",
-    "id": "ranger:infiltrator:voice-mimicry:2",
-    "level": 2,
-    "name": "Voice Mimicry",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.BO7BEFHDcf6qBaYV",
-    "sources": [
-      {
-        "id": "PZO1115",
-        "pages": "125"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:infiltrator:voice-mimicry:2"
-  },
   "ranger:jungle-lord:animal-focus:1": {
     "archetypeId": "ranger:jungle-lord",
     "classTag": "ranger",
@@ -64682,22 +64393,6 @@
     ],
     "uuid": "archetype-feature:ranger:shapeshifter:shifter-s-blessing:3"
   },
-  "ranger:skirmisher:conditioning:2": {
-    "archetypeId": "ranger:skirmisher",
-    "classTag": "ranger",
-    "description": "undefined",
-    "id": "ranger:skirmisher:conditioning:2",
-    "level": 2,
-    "name": "Conditioning",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.BO7BEFHDcf6qBaYV",
-    "sources": [
-      {
-        "id": "PZO1140",
-        "pages": "50"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:skirmisher:conditioning:2"
-  },
   "ranger:skirmisher:hunter-s-tricks:5": {
     "archetypeId": "ranger:skirmisher",
     "classTag": "ranger",
@@ -64712,83 +64407,6 @@
       }
     ],
     "uuid": "archetype-feature:ranger:skirmisher:hunter-s-tricks:5"
-  },
-  "ranger:skirmisher:mobile-mastery:19": {
-    "archetypeId": "ranger:skirmisher",
-    "classTag": "ranger",
-    "description": "<p>At 19th level, a skirmisher learns to position his body and conceal his body proportions with clothes so well that it is difficult to hit him. He gains a 20% miss chance on attacks against him. Mobile mastery functions even when the skirmisher is flat-footed, but not when he is immobilized or helpless, when he wears medium or heavy armor, or when he carries a medium or heavy load.</p>",
-    "id": "ranger:skirmisher:mobile-mastery:19",
-    "level": 19,
-    "name": "Mobile Mastery",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.oRac7XDHBN0JzuyY",
-    "sources": [
-      {
-        "id": "PZO1140",
-        "pages": "50"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:skirmisher:mobile-mastery:19"
-  },
-  "ranger:skirmisher:mobility-training:3": {
-    "archetypeId": "ranger:skirmisher",
-    "classTag": "ranger",
-    "description": "<p>At 3rd level, a skirmisher learns to be more maneuverable while wearing light or no armor. He gains a +1 dodge bonus to AC while wearing light or no armor and while carrying no more than a light load. Anything that causes the skirmisher to lose his Dexterity bonus to AC also causes the skirmisher to lose this dodge bonus. This bonus increases by 1 for every 4 levels beyond 3rd (to a maximum of +4 at 15th level).</p><p>In addition, a skirmisher gains an enhancement bonus of +5 feet to his base speed. At 7th level, the bonus increases to +10 feet. This benefit applies only when he is wearing no armor or light armor, and when he is carrying no more than a light load.</p>",
-    "id": "ranger:skirmisher:mobility-training:3",
-    "level": 3,
-    "name": "Mobility Training",
-    "sources": [
-      {
-        "id": "PZO1140",
-        "pages": "50"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:skirmisher:mobility-training:3"
-  },
-  "ranger:skirmisher:reconnaissance-training:2": {
-    "archetypeId": "ranger:skirmisher",
-    "classTag": "ranger",
-    "description": "<p>A skirmisher operating in heavily trapped or naturally hazardous areas learns to expertly avoid them. At 2nd level, he gains a +1 bonus on Reflex saving throws to avoid traps, natural hazards, and environmental effects. This bonus increases by 1 for every 4 levels beyond 2nd.</p>",
-    "id": "ranger:skirmisher:reconnaissance-training:2",
-    "level": 2,
-    "name": "Reconnaissance Training",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.BO7BEFHDcf6qBaYV",
-    "sources": [
-      {
-        "id": "PZO1140",
-        "pages": "50"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:skirmisher:reconnaissance-training:2"
-  },
-  "ranger:skirmisher:weapon-and-armor-proficiency:1": {
-    "archetypeId": "ranger:skirmisher",
-    "classTag": "ranger",
-    "description": "<p>A skirmisher is proficient with light armor and shields but not with medium armor, heavy armor, or tower shields.</p>",
-    "id": "ranger:skirmisher:weapon-and-armor-proficiency:1",
-    "level": 1,
-    "name": "Weapon and Armor Proficiency",
-    "sources": [
-      {
-        "id": "PZO1140",
-        "pages": "50"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:skirmisher:weapon-and-armor-proficiency:1"
-  },
-  "ranger:skirmisher:wilderness-training:1": {
-    "archetypeId": "ranger:skirmisher",
-    "classTag": "ranger",
-    "description": "<p>A skirmisher relies on his skills and the element of surprise rather than the heaviest shields and armor. He gains Acrobatics and Stealth as class skills. In addition, the skirmisher gains a number of skill ranks at each level equal to 4 + his Intelligence modifier, instead of 2 + his Intelligence modifier.</p>",
-    "id": "ranger:skirmisher:wilderness-training:1",
-    "level": 1,
-    "name": "Wilderness Training",
-    "sources": [
-      {
-        "id": "PZO1140",
-        "pages": "50"
-      }
-    ],
-    "uuid": "archetype-feature:ranger:skirmisher:wilderness-training:1"
   },
   "ranger:spirit-ranger:spirit-bond:4": {
     "archetypeId": "ranger:spirit-ranger",
@@ -68596,53 +68214,6 @@
     ],
     "uuid": "archetype-feature:rogue:river-rat:swamper:1"
   },
-  "rogue:roof-runner:alley-ghost:8": {
-    "archetypeId": "rogue:roof-runner",
-    "classTag": "rogue",
-    "description": "<p>At 8th level, a roof runner gains the benefits of the fast stealth rogue talent.</p>",
-    "id": "rogue:roof-runner:alley-ghost:8",
-    "level": 8,
-    "name": "Alley Ghost",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogue:roof-runner:alley-ghost:8"
-  },
-  "rogue:roof-runner:master-climber:20": {
-    "archetypeId": "rogue:roof-runner",
-    "classTag": "rogue",
-    "description": "<p>At 20th level, a roof runner gains a climb speed equal to her base land speed, instead of being able to move at full speed while tracking.</p>",
-    "id": "rogue:roof-runner:master-climber:20",
-    "level": 20,
-    "name": "Master Climber",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.KmVwFz2ajNtvgvbp",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogue:roof-runner:master-climber:20"
-  },
-  "rogue:roof-runner:natural-leaper:2": {
-    "archetypeId": "rogue:roof-runner",
-    "classTag": "rogue",
-    "description": "<p>At 2nd level, a roof runner adds half her hunter level on Acrobatics checks to jump.</p>",
-    "id": "rogue:roof-runner:natural-leaper:2",
-    "level": 2,
-    "name": "Natural Leaper",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogue:roof-runner:natural-leaper:2"
-  },
   "rogue:roof-runner:roof-running:1": {
     "archetypeId": "rogue:roof-runner",
     "classTag": "rogue",
@@ -68658,36 +68229,6 @@
     ],
     "uuid": "archetype-feature:rogue:roof-runner:roof-running:1"
   },
-  "rogue:roof-runner:shingle-stride:5": {
-    "archetypeId": "rogue:roof-runner",
-    "classTag": "rogue",
-    "description": "<p>At 5th level, a roof runner and her animal companion can move at full speed without penalty when using Acrobatics to cross narrow or uneven surfaces, and climb at half speed (instead of one-quarter speed) without taking the - 5 penalty.</p>",
-    "id": "rogue:roof-runner:shingle-stride:5",
-    "level": 5,
-    "name": "Shingle Stride",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogue:roof-runner:shingle-stride:5"
-  },
-  "rogue:roof-runner:skilled:1": {
-    "archetypeId": "rogue:roof-runner",
-    "classTag": "rogue",
-    "description": "<p>A roof runner adds Acrobatics, Escape Artist, and Sleight of Hand to her list of class skills.</p><p>This alters the hunter's class skills and replaces the hunter's proficiency with medium armor and shields.</p>",
-    "id": "rogue:roof-runner:skilled:1",
-    "level": 1,
-    "name": "Skilled",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogue:roof-runner:skilled:1"
-  },
   "rogue:roof-runner:tumbling-descent:2": {
     "archetypeId": "rogue:roof-runner",
     "classTag": "rogue",
@@ -68702,21 +68243,6 @@
       }
     ],
     "uuid": "archetype-feature:rogue:roof-runner:tumbling-descent:2"
-  },
-  "rogue:roof-runner:weapon-and-armor-proficiency:1": {
-    "archetypeId": "rogue:roof-runner",
-    "classTag": "rogue",
-    "description": "<p>A hunter is proficient with all simple and martial weapons and with light armor.</p>",
-    "id": "rogue:roof-runner:weapon-and-armor-proficiency:1",
-    "level": 1,
-    "name": "Weapon and Armor Proficiency",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogue:roof-runner:weapon-and-armor-proficiency:1"
   },
   "rogue:rotdrinker:poison-resistance:2": {
     "archetypeId": "rogue:rotdrinker",
@@ -72578,53 +72104,6 @@
     ],
     "uuid": "archetype-feature:rogueUnchained:river-rat:swamper:1"
   },
-  "rogueUnchained:roof-runner:alley-ghost:8": {
-    "archetypeId": "rogueUnchained:roof-runner",
-    "classTag": "rogueUnchained",
-    "description": "<p>At 8th level, a roof runner gains the benefits of the fast stealth rogue talent.</p>",
-    "id": "rogueUnchained:roof-runner:alley-ghost:8",
-    "level": 8,
-    "name": "Alley Ghost",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.ZfnHhhTFQVo0Lj4P",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogueUnchained:roof-runner:alley-ghost:8"
-  },
-  "rogueUnchained:roof-runner:master-climber:20": {
-    "archetypeId": "rogueUnchained:roof-runner",
-    "classTag": "rogueUnchained",
-    "description": "<p>At 20th level, a roof runner gains a climb speed equal to her base land speed, instead of being able to move at full speed while tracking.</p>",
-    "id": "rogueUnchained:roof-runner:master-climber:20",
-    "level": 20,
-    "name": "Master Climber",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.9l1EOZ2l3wLudvJN",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogueUnchained:roof-runner:master-climber:20"
-  },
-  "rogueUnchained:roof-runner:natural-leaper:2": {
-    "archetypeId": "rogueUnchained:roof-runner",
-    "classTag": "rogueUnchained",
-    "description": "<p>At 2nd level, a roof runner adds half her hunter level on Acrobatics checks to jump.</p>",
-    "id": "rogueUnchained:roof-runner:natural-leaper:2",
-    "level": 2,
-    "name": "Natural Leaper",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogueUnchained:roof-runner:natural-leaper:2"
-  },
   "rogueUnchained:roof-runner:roof-running:1": {
     "archetypeId": "rogueUnchained:roof-runner",
     "classTag": "rogueUnchained",
@@ -72640,37 +72119,6 @@
     ],
     "uuid": "archetype-feature:rogueUnchained:roof-runner:roof-running:1"
   },
-  "rogueUnchained:roof-runner:shingle-stride:5": {
-    "archetypeId": "rogueUnchained:roof-runner",
-    "classTag": "rogueUnchained",
-    "description": "<p>At 5th level, a roof runner and her animal companion can move at full speed without penalty when using Acrobatics to cross narrow or uneven surfaces, and climb at half speed (instead of one-quarter speed) without taking the - 5 penalty.</p>",
-    "id": "rogueUnchained:roof-runner:shingle-stride:5",
-    "level": 5,
-    "name": "Shingle Stride",
-    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.iyYyc3rKW0cBZ1cs",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogueUnchained:roof-runner:shingle-stride:5"
-  },
-  "rogueUnchained:roof-runner:skilled:1": {
-    "archetypeId": "rogueUnchained:roof-runner",
-    "classTag": "rogueUnchained",
-    "description": "<p>A roof runner adds Acrobatics, Escape Artist, and Sleight of Hand to her list of class skills.</p><p>This alters the hunter's class skills and replaces the hunter's proficiency with medium armor and shields.</p>",
-    "id": "rogueUnchained:roof-runner:skilled:1",
-    "level": 1,
-    "name": "Skilled",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogueUnchained:roof-runner:skilled:1"
-  },
   "rogueUnchained:roof-runner:tumbling-descent:2": {
     "archetypeId": "rogueUnchained:roof-runner",
     "classTag": "rogueUnchained",
@@ -72685,21 +72133,6 @@
       }
     ],
     "uuid": "archetype-feature:rogueUnchained:roof-runner:tumbling-descent:2"
-  },
-  "rogueUnchained:roof-runner:weapon-and-armor-proficiency:1": {
-    "archetypeId": "rogueUnchained:roof-runner",
-    "classTag": "rogueUnchained",
-    "description": "<p>A hunter is proficient with all simple and martial weapons and with light armor.</p>",
-    "id": "rogueUnchained:roof-runner:weapon-and-armor-proficiency:1",
-    "level": 1,
-    "name": "Weapon and Armor Proficiency",
-    "sources": [
-      {
-        "id": "PZO1118",
-        "pages": "74"
-      }
-    ],
-    "uuid": "archetype-feature:rogueUnchained:roof-runner:weapon-and-armor-proficiency:1"
   },
   "rogueUnchained:rotdrinker:poison-resistance:2": {
     "archetypeId": "rogueUnchained:rotdrinker",
