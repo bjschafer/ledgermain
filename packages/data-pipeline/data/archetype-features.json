@@ -30903,6 +30903,7 @@
     "id": "fighter:gloomblade:shadow-weapon:1",
     "level": 1,
     "name": "Shadow Weapon",
+    "pairedBaseFeatureUuid": "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa",
     "sources": [
       {
         "id": "PZO1141",

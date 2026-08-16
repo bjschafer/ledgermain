@@ -775,6 +775,15 @@ export {
 } from "./archetypes.js";
 export { ARCHETYPE_FEATURE_EFFECTS, type ArchetypeFeatureEffect } from "./archetype-effects.js";
 export {
+  ARCHETYPE_TIER_REPLACEMENTS,
+  ARMOR_TRAINING_GRANT_UUID,
+  ARMOR_TRAINING_TIER_LEVELS,
+  armorTrainingTiersKept,
+  replacedTierLevels,
+  type ReplacedGrantKind,
+  type TierReplacementEntry,
+} from "./archetype-tier-replacements.js";
+export {
   ARCHETYPE_FEATURE_EFFECTS_EXTRACTED,
   ARCHETYPE_FEATURE_CLASSIFICATION,
   // Per-class slices, re-exported directly for callers that want one class's

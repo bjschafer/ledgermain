@@ -210,6 +210,40 @@ describe("expectedFeatCount: Ranger Combat Style bonus feats", () => {
   });
 });
 
+describe("expectedFeatCount: single bonus-feat instances traded away by an archetype", () => {
+  // `ARCHETYPE_TIER_REPLACEMENTS` (engine) + vendored leveled
+  // `replacesSlot: { kind: "bonus feat" }` entries each remove ONE slot at a
+  // named gain level from the owning class's budget — the whole-feature swap
+  // below can't express these. Expectations are diffs against the plain-class
+  // sheet so they stay robust to unrelated budget parts.
+  const plainCount = (classes: { tag: string; level: number }[]) =>
+    expectedFeatCount(makeDoc({ classes, race: "Elf" }), ref);
+  const archCount = (classes: { tag: string; level: number }[], archetypes: string[]) =>
+    expectedFeatCount(makeDoc({ classes, race: "Elf", archetypes }), ref);
+
+  it("Eldritch Guardian fighter 1: the 1st-level bonus feat is gone (hand table)", () => {
+    const classes = [{ tag: "fighter", level: 1 }];
+    expect(plainCount(classes) - archCount(classes, ["fighter:eldritch-guardian"])).toBe(1);
+  });
+
+  it("Druman Blackjacket fighter 16: four instances gone (4th/8th/12th/16th)", () => {
+    const classes = [{ tag: "fighter", level: 16 }];
+    expect(plainCount(classes) - archCount(classes, ["fighter:druman-blackjacket"])).toBe(4);
+    const at10 = [{ tag: "fighter", level: 10 }];
+    expect(plainCount(at10) - archCount(at10, ["fighter:druman-blackjacket"])).toBe(2);
+  });
+
+  it("Opportunist fighter 20: Cunning Edge takes all five late instances", () => {
+    const classes = [{ tag: "fighter", level: 20 }];
+    expect(plainCount(classes) - archCount(classes, ["fighter:opportunist"])).toBe(5);
+  });
+
+  it("Champion of the Faith warpriest 6: vendored 'bonus feat' slot at 3rd is honored", () => {
+    const classes = [{ tag: "warpriest", level: 6 }];
+    expect(plainCount(classes) - archCount(classes, ["warpriest:champion-of-the-faith"])).toBe(1);
+  });
+});
+
 describe("expectedFeatCount: archetype swaps of bonus-feat features (issue #40)", () => {
   // Two ranger archetypes both swap out the base "Combat Style Feat" (which
   // grants the bonus-feat slots counted above) at rL 2, but differ in what

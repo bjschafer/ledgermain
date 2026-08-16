@@ -18,6 +18,11 @@ import {
   domainCasterLevel,
   weaponTrainingReplaced,
 } from "./archetypes.js";
+import {
+  ARMOR_TRAINING_GRANT_UUID,
+  armorTrainingTiersKept,
+  replacedTierLevels,
+} from "./archetype-tier-replacements.js";
 import { resolveSorcererBloodlineOrMutation } from "./bloodline-mutations.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
 import { BUFF_CHANGE_PATCHES } from "./buff-effects.js";
@@ -478,6 +483,38 @@ export function collectModifiers(
       if (archetypeSwaps.has(grant.uuid)) continue;
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;
+      // Partial-tier Armor Training replacement: an archetype that trades
+      // away SOME tiers (Unbreakable's Quick Recovery, ...) can't use the
+      // whole-grant swap above, so the vendored all-tiers formula is
+      // substituted with the kept-tier count — each tier is exactly +1 max
+      // Dex / -1 ACP. See `archetype-tier-replacements.ts`.
+      if (grant.uuid === ARMOR_TRAINING_GRANT_UUID) {
+        const replaced = replacedTierLevels(doc, refData, "armor training", cls.tag);
+        if (replaced.size > 0) {
+          const kept = armorTrainingTiersKept(cls.level, replaced);
+          if (kept > 0) {
+            evalChange(
+              String(kept),
+              featureRollData,
+              "mDexA",
+              "untyped",
+              feature.name,
+              feature.id,
+              out,
+            );
+            evalChange(
+              String(-kept),
+              featureRollData,
+              "acpA",
+              "untyped",
+              feature.name,
+              feature.id,
+              out,
+            );
+          }
+          continue;
+        }
+      }
       // A `"<classTag>:<name>"` key scopes a patch to one bearer of a shared
       // feature name and, for that class, wins outright over any bare-name
       // key (they never combine); every other class still resolves the bare

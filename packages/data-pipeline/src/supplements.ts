@@ -2035,6 +2035,15 @@ export const SUPPLEMENTAL_ARCHETYPE_FEATURE_PAIRING: Record<
     keyword: "replaces fast movement",
     pairedBaseFeatureUuid: "Compendium.pf1.class-abilities.Item.9EX00obqhGHcrOdp",
   },
+  // Gloomblade trades the whole Armor Training progression (plus heavy
+  // armor/shield proficiency, which the sheet doesn't model) for its shadow
+  // weapon, but the source sets no `replaces` flag and the sentence sits at
+  // the very end of a long ability description, so no parse recovers it.
+  "fighter:gloomblade:shadow-weapon:1": {
+    name: "Shadow Weapon",
+    keyword: "replaces the fighter's armor training",
+    pairedBaseFeatureUuid: "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa",
+  },
 };
 
 /**

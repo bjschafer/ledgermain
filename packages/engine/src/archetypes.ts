@@ -26,6 +26,7 @@ import { resolveAlchemistDiscovery } from "./alchemist-discoveries.js";
 import { ANTIPALADIN_CRUELTIES } from "./antipaladin-cruelties.js";
 import { resolveArcanistExploit } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
+import { ARCHETYPE_TIER_REPLACEMENTS } from "./archetype-tier-replacements.js";
 import { resolveSorcererBloodlineOrMutation } from "./bloodline-mutations.js";
 import { type BloodlineResourcePool } from "./bloodlines.js";
 import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
@@ -1351,6 +1352,33 @@ const MISPAIRED_TARGET_REMAP: ReadonlyMap<string, string | null> = new Map([
     "druid:feral-child:native-cunning:3",
     "Compendium.pf1.class-abilities.Item.sJdBOE9lwz5XAkUi", // Wild Shape
   ],
+  // Unarmed Fighter's Tough Guy (3rd) prose says "replaces armor training 1"
+  // — ONE tier — but is vendored paired to the whole Armor Training grant.
+  // Unlike the many archetypes handled by suppress-plus-backfill (a sibling
+  // "Armor Training" row carrying the kept-tier schedule in
+  // `archetype-extracted/fighter.ts`), the unarmed fighter has no such row:
+  // RAW it keeps exactly tier 3 (nothing in UC p. 48 replaces it). The
+  // per-tier trades live in `ARCHETYPE_TIER_REPLACEMENTS`
+  // (archetype-tier-replacements.ts), so the boolean pairing must go
+  // entirely or it would strip the tier the fighter RAW keeps.
+  ["fighter:unarmed-fighter:tough-guy:3", null],
+  // "replaces the Nth-level bonus feat" prose level-matched to Bravery
+  // (fighter's own level-2 feature) — same CSV quirk as the brawler
+  // entries above. None of these archetypes replaces bravery with the
+  // feature in question (each trades a bonus-feat slot, carried by
+  // `ARCHETYPE_TIER_REPLACEMENTS`), so honoring the pairing wrongly
+  // suppresses Bravery — which is wired (fear-save note).
+  ["fighter:corsair:deck-fighting:2", null],
+  ["fighter:eldritch-guardian:share-training:2", null],
+  ["fighter:siegebreaker:breaker-momentum:2", null],
+  ["fighter:weapon-bearer-squire:swift-sharpening:2", null],
+  // Real feature (cantrip casting + Knowledge bonuses) level-matched to
+  // Bravery, which the archetype never replaces. The published text trades
+  // the 2nd-level bonus feat away, but the vendored description omits that
+  // sentence entirely, so the instance can't carry a drift-guarded
+  // `ARCHETYPE_TIER_REPLACEMENTS` entry — one feat slot stays over-granted
+  // for this archetype until the vendored prose gains the sentence.
+  ["fighter:child-of-acavna-and-amaznen:lore-of-acavna-and-amaznen:2", null],
 ]);
 
 /**
@@ -1385,6 +1413,23 @@ const MISPAIRED_TARGET_REMAP: ReadonlyMap<string, string | null> = new Map([
 const SPURIOUS_DUPLICATE_PAIRINGS: ReadonlySet<string> = new Set([
   "monk:maneuver-master:evasion:9",
   "monk:nornkith:evasion:9",
+  // Generic "Bonus Feat" schedule-reprint rows level-matched to Bravery
+  // (fighter's own level-2 feature). None of these rows replaces anything
+  // itself; verified against the published rules that dragoon, titan
+  // fighter, and cavern sniper never trade Bravery at all (cavern sniper
+  // loses it to Silent Shooter, whose own pairing is correct), while
+  // tactician and unarmed fighter lose it to Tactical Awareness / Harsh
+  // Training, which carry their own correct pairings — the reprint row's
+  // duplicate claim only corrupts the "replaced by" attribution.
+  // Deliberately NOT here: fighter:druman-blackjacket:bonus-feat:2, an
+  // empty artifact row whose Bravery pairing stands in for Well-Paid
+  // Loyalty (the real level-2 Bravery replacement, absent from the vendored
+  // dataset) — dropping it would wrongly restore Bravery.
+  "fighter:dragoon:bonus-feat:2",
+  "fighter:titan-fighter:bonus-feat:2",
+  "fighter:cavern-sniper:bonus-feat:2",
+  "fighter:tactician:bonus-feat:2",
+  "fighter:unarmed-fighter:bonus-feat:2",
 ]);
 
 /**
@@ -1558,6 +1603,12 @@ const WEAPON_TRAINING_REPLACEMENTS: ReadonlySet<string> = new Set([
   "fighter:two-handed-fighter",
   "fighter:unarmed-fighter",
   "fighter:ustalavic-duelist",
+  // Martial Flexibility's text trades away weapon training (and weapon
+  // mastery) wholesale on top of four bonus-feat instances — the vendored
+  // feature is unpaired, so without this entry the picker would still offer
+  // weapon-training groups. The bonus-feat half lives in
+  // `archetype-tier-replacements.ts`.
+  "fighter:varisian-free-style-fighter",
 ]);
 
 /**
@@ -2033,8 +2084,19 @@ export function archetypeReplacedSlotKeys(
 ): Map<string, { kind: string; level?: number }> {
   const slots = new Map<string, { kind: string; level?: number }>();
   for (const f of Object.values(refData.archetypeFeatures)) {
-    if (f.archetypeId !== archetypeId || !f.replacesSlot) continue;
-    slots.set(slotKey(f.replacesSlot), f.replacesSlot);
+    if (f.archetypeId !== archetypeId) continue;
+    if (f.replacesSlot) slots.set(slotKey(f.replacesSlot), f.replacesSlot);
+    // Hand-table single-tier replacements (one Armor Training tier, one
+    // bonus-feat instance) claim the same kind of slot key, so two
+    // archetypes trading away the same tier conflict exactly like two
+    // archetypes trading away the same hex.
+    const tierEntry = ARCHETYPE_TIER_REPLACEMENTS[f.id];
+    if (tierEntry) {
+      for (const level of tierEntry.levels) {
+        const slot = { kind: tierEntry.kind, level };
+        slots.set(slotKey(slot), slot);
+      }
+    }
   }
   return slots;
 }

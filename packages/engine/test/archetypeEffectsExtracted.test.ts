@@ -587,36 +587,32 @@ describe("resolveArchetypeFeatureEffect precedence (issue #45)", () => {
   });
 });
 
-describe("blocked composition trap: partial-tier Armor Training swaps (issue #45)", () => {
+describe("partial-tier Armor Training swaps route through the tier table, not this one", () => {
   // Unbreakable never pairs ANY feature to Armor Training's base-feature
-  // uuid — Quick Recovery (L11) and Unlimited Endurance (L15) each claim to
-  // "replace armor training 3"/"4" (a single tier of the atomic mDexA/acpA
-  // formula) but are UNPAIRED, so `activeArchetypeSwaps` never suppresses
-  // the base grant at all. Classified `blocked` rather than backfilled: with
-  // no compensating entry in either table, the base Armor Training formula
-  // just keeps applying in full — RAW-imperfect (a real character would lose
-  // some tiers), but not a double-count, and not something this table can
-  // safely fix without splitting Armor Training into per-tier grants.
+  // uuid — Quick Recovery (L11) and Unlimited Endurance (L15) each replace a
+  // single tier of the atomic mDexA/acpA formula. That is handled by
+  // `ARCHETYPE_TIER_REPLACEMENTS` (`collect.ts` substitutes the kept-tier
+  // count for the vendored formula — see archetypeTierReplacements.test.ts),
+  // NOT by an effects-table entry: a backfilled number here would double up
+  // on the substituted base grant.
   const unbreakable = archetypeId("Unbreakable");
 
-  it("Quick Recovery and Unlimited Endurance have no entry in either table", () => {
+  it("Quick Recovery and Unlimited Endurance have no entry in either effects table", () => {
     expect(resolveArchetypeFeatureEffect("fighter:unbreakable:quick-recovery:11")).toBeUndefined();
     expect(
       resolveArchetypeFeatureEffect("fighter:unbreakable:unlimited-endurance:15"),
     ).toBeUndefined();
   });
 
-  it("base Armor Training keeps applying in full at L15 — neither table piles a number on top", () => {
+  it("the base Armor Training row stays un-struck (tiers 1-2 are kept) with no piled-on detail", () => {
     const sheet = compute(
       makeDoc({ classes: [{ tag: "fighter", level: 15 }], archetypes: [unbreakable] }),
       ref,
     );
     const feature = sheet.classFeatures.find((f) => f.name === "Armor Training" && f.level === 3);
-    expect(feature?.applied).toBe(true); // never suppressed — no paired swap exists at all
+    expect(feature?.applied).toBe(true); // partial replacement, not a paired whole-grant swap
     expect(feature?.replacedBy).toBeUndefined();
 
-    // Quick Recovery / Unlimited Endurance carry no `detail` — this agent did
-    // not backfill a second, doubled-up mDexA/acpA number for them.
     const archEntry = sheet.activeArchetypes.find((a) => a.id === unbreakable);
     expect(archEntry?.features.find((f) => f.name === "Quick Recovery")?.detail).toBeUndefined();
     expect(

@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-15-single-tier-archetype-trades",
+    date: "2026-08-15",
+    title: "Single armor training steps and bonus feats traded by archetypes now compute",
+    note: "Some fighter archetypes trade away a single step of armor training or a single bonus feat instead of a whole feature, and the sheet used to ignore those trades. Now they land: an Unbreakable fighter keeps armor training 1 and 2, an unarmed fighter keeps exactly armor training 3, and max Dex and armor check penalty follow. Archetypes that give up specific bonus feats, like the Eldritch Guardian's familiar and the Opportunist's Cunning Edge, subtract those slots from your feat count, and the same works for monk, warpriest, and swashbuckler archetypes. Two archetypes trading the same step now conflict in the picker. Also fixed: Corsair, Siegebreaker, Weapon Bearer Squire, and Eldritch Guardian fighters wrongly lost Bravery to a data mixup and have it back, and the Gloomblade now correctly gives up armor training for its shadow weapon.",
+  },
+  {
     id: "2026-08-14-choose-one-abilities-compute",
     date: "2026-08-14",
     title: "Abilities that ask you to choose now offer the choice and compute",

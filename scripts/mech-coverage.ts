@@ -40,8 +40,15 @@ import { mergedBloodragerBloodlineCatalog } from "../packages/engine/src/bloodra
 import { BUFF_CHANGE_PATCHES, BUFF_PROSE_RULINGS } from "../packages/engine/src/buff-effects.js";
 import { mergedOrderCatalog } from "../packages/engine/src/cavalier-orders.js";
 import { CLASS_FEATURE_CLASSIFICATION } from "../packages/engine/src/class-feature-classification/index.js";
-import { CLASS_FEATURE_CHANGE_PATCHES } from "../packages/engine/src/class-feature-effects.js";
-import { GRANTED_POWER_CHANGE_PATCHES } from "../packages/engine/src/granted-power-effects/index.js";
+import {
+  CLASS_FEATURE_CHANGE_PATCHES,
+  CLASS_FEATURE_CHOICES,
+} from "../packages/engine/src/class-feature-effects.js";
+import { ARCHETYPE_TIER_REPLACEMENTS } from "../packages/engine/src/archetype-tier-replacements.js";
+import {
+  GRANTED_POWER_CHANGE_PATCHES,
+  GRANTED_POWER_CHOICES,
+} from "../packages/engine/src/granted-power-effects/index.js";
 import { FEAT_CLASSIFICATION } from "../packages/engine/src/feat-classification.js";
 import { FEAT_CLASSIFICATION_COMMUNITY } from "../packages/engine/src/feat-classification-community.js";
 import { FEAT_POOL_EFFECTS, featNameSlug } from "../packages/engine/src/feat-effects.js";
@@ -386,9 +393,18 @@ function main(): void {
   // (see CLASS_FEATURE_CHANGE_PATCHES's doc comment) — for wiredness the tag
   // half doesn't matter, only that SOME patch exists under the name.
   const classPatchNames = new Set(
-    Object.keys(CLASS_FEATURE_CHANGE_PATCHES).map((k) =>
-      k.includes(":") ? k.slice(k.indexOf(":") + 1) : k,
-    ),
+    [
+      ...Object.keys(CLASS_FEATURE_CHANGE_PATCHES),
+      // Choose-one selections are a wired route too: the changes materialize
+      // from the player's stored pick (`classFeature:` namespace) rather
+      // than unconditionally, but the entry moves numbers all the same.
+      ...Object.keys(CLASS_FEATURE_CHOICES),
+      ...Object.keys(GRANTED_POWER_CHOICES),
+      // Keep both the raw key and the tag-stripped form: a key's colon is
+      // usually a "<classTag>:" scope, but some feature NAMES carry one too
+      // ("Cypher: Thassilonian Focus"), so stripping unconditionally would
+      // lose those.
+    ].flatMap((k) => (k.includes(":") ? [k, k.slice(k.indexOf(":") + 1).trim()] : [k])),
   );
   for (const [id, e] of Object.entries(loadDataFile("class-features.json"))) {
     const name = typeof e.name === "string" ? e.name : id;
@@ -416,7 +432,14 @@ function main(): void {
   for (const [id, e] of Object.entries(loadDataFile("archetype-features.json"))) {
     const name = typeof e.name === "string" ? e.name : id;
     const resolved = resolveArchetypeFeatureEffect(id);
-    const wired = resolved !== undefined && resolved.effect.changes.length > 0;
+    const wired =
+      (resolved !== undefined &&
+        (resolved.effect.changes.length > 0 ||
+          // Choose-one picks and single-tier replacements move numbers
+          // through their own routes (stored pick / kept-tier substitution)
+          // even when the entry's unconditional `changes` list is empty.
+          Object.keys(resolved.effect.choiceChanges ?? {}).length > 0)) ||
+      ARCHETYPE_TIER_REPLACEMENTS[id] !== undefined;
     // A wave verdict of situational/subsystem/blocked is a deliberate
     // prose-only ruling; `numeric` without an effect entry is real backlog.
     const verdict = ARCHETYPE_FEATURE_CLASSIFICATION[id];

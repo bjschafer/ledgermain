@@ -37,6 +37,7 @@ import {
   ENERGY_TYPES,
   featNameSlug,
   KINETIC_BLAST_WEAPON_GROUP,
+  replacedTierLevels,
   resolveArchetypeFeatureEffect,
   resolveFeatEffect,
   ROGUE_TALENTS,
@@ -470,6 +471,12 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
       ...rollData,
       class: { level: cls.level, unlevel: cls.level },
     };
+    // Single bonus-feat instances traded away by an active archetype
+    // (Eldritch Guardian's Familiar takes the 1st-level slot, warpriest
+    // Divine Commander features each take one named-level slot, ...) —
+    // subtracted from this class's slot counts below. See
+    // `archetype-tier-replacements.ts` in @pf1/engine.
+    let replacedSlots = replacedTierLevels(doc, refData, "bonus feat", cls.tag).size;
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;
       // Swapped out by an active archetype — its slots no longer count.
@@ -496,7 +503,12 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
           continue;
         }
         if (value === null || Number.isNaN(value)) continue;
-        const count = Math.trunc(value);
+        let count = Math.trunc(value);
+        if (count > 0 && replacedSlots > 0) {
+          const cut = Math.min(count, replacedSlots);
+          count -= cut;
+          replacedSlots -= cut;
+        }
         if (count === 0) continue;
         const { type, source } = baseFeatureSlotType(
           feature.name.trim().toLowerCase(),
