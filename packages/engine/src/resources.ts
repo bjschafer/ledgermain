@@ -58,6 +58,7 @@ import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.
 import {
   BARDIC_PERFORMANCE_DETAIL,
   bardicPerformanceToggleOptions,
+  bardVariantRemovesInspireCourage,
 } from "./bardic-performances.js";
 import { judgmentPoolDetail, judgmentToggleOptions } from "./judgments.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
@@ -432,13 +433,21 @@ export function deriveResourcePools(
       detail = actionBasedDetail(feature, featureRollData as RollData, familyDC);
     }
 
+    // The character's chosen archetypes for THIS granting class — bard/skald
+    // performance toggle lists are archetype-aware (variants drop replaced
+    // base performance types and add their own; see
+    // bardic-performance-variants/ and raging-song-variants.ts).
+    const classArchetypeIds = (doc.build.archetypes ?? []).filter(
+      (id) => refData.archetypes[id]?.classTag === classTag,
+    );
+
     let tableOptions: ToggleBuffOption[] | undefined;
     if (feature.tag === "judgment" && classTag === "inquisitor") {
       tableOptions = judgmentToggleOptions();
     } else if (feature.tag === "bardicPerformance" && classTag === "bard") {
-      tableOptions = bardicPerformanceToggleOptions(classLevel);
+      tableOptions = bardicPerformanceToggleOptions(classLevel, classArchetypeIds);
     } else if (feature.tag === "ragingSong" && classTag === "skald") {
-      tableOptions = ragingSongToggleOptions(classLevel);
+      tableOptions = ragingSongToggleOptions(classLevel, classArchetypeIds);
     }
 
     // Feats that raise this pool's maximum (Extra Rage, Extra Reservoir, …
@@ -463,10 +472,25 @@ export function deriveResourcePools(
     // hand-authored `BLOODRAGE_BUFF` constant instead (`toggleLinkedBuff`
     // accepts any `Buff`-shaped object, not specifically one sourced from
     // `refData.buffs`).
-    const linkedBuffIds =
+    let linkedBuffIds =
       feature.tag === "bloodrage" && classTag === "bloodrager"
         ? [BLOODRAGE_BUFF_ID]
         : resolveGrantsBuffs(feature.grantsBuffs, refData);
+
+    // Inspire Courage rides the Bardic Performance POOL feature's vendored
+    // linked buff, and the pool feature itself is never the thing an
+    // archetype replaces — so when a chosen bard archetype replaces Inspire
+    // Courage, the suppression has to happen here rather than through the
+    // archetype swap machinery (see bardVariantRemovesInspireCourage).
+    if (
+      feature.tag === "bardicPerformance" &&
+      classTag === "bard" &&
+      bardVariantRemovesInspireCourage(classArchetypeIds)
+    ) {
+      linkedBuffIds = linkedBuffIds.filter(
+        (id) => !/inspire courage/i.test(refData.buffs[id]?.name ?? ""),
+      );
+    }
 
     // Alchemist Cognatogen (Ultimate Magic discovery): RAW it's brewed in
     // place of a mutagen, so it shares the Mutagen pool rather than getting

@@ -77,6 +77,8 @@
 
 import type { Change } from "@pf1/schema";
 
+import { mergePerformanceDefs } from "./bardic-performance-variants/types.js";
+import { RAGING_SONG_VARIANTS } from "./raging-song-variants.js";
 import type { ToggleBuffOption } from "./toggle-buffs.js";
 
 const INSPIRED_RAGE_CHANGES: Change[] = [
@@ -176,15 +178,48 @@ export const SKALD_SONG_OF_THE_FALLEN: ToggleBuffOption = {
   ],
 };
 
-/** The Raging Song pool's `tableOptions`, filtered to the performance types the skald has unlocked at `skaldLevel`. See file doc comment for RAW numbers and deferrals. */
-export function ragingSongToggleOptions(skaldLevel: number): ToggleBuffOption[] {
-  const options: ToggleBuffOption[] = [];
-  if (skaldLevel >= 1) options.push(SKALD_INSPIRED_RAGE);
-  if (skaldLevel >= 3) options.push(SKALD_SONG_OF_MARCHING);
-  if (skaldLevel >= 6) options.push(SKALD_SONG_OF_STRENGTH);
-  if (skaldLevel >= 10) options.push(SKALD_DIRGE_OF_DOOM);
-  if (skaldLevel >= 14) options.push(SKALD_SONG_OF_THE_FALLEN);
-  return options;
+/**
+ * The five base performance types as `{tag, minLevel, option}` rows — the tag
+ * (the option id after `ragingSong:`) is what archetype variants'
+ * `removesTags` reference (see `raging-song-variants.ts`).
+ */
+const BASE_RAGING_SONGS: { tag: string; minLevel: number; option: ToggleBuffOption }[] = [
+  { tag: "inspiredRage", minLevel: 1, option: SKALD_INSPIRED_RAGE },
+  { tag: "songOfMarching", minLevel: 3, option: SKALD_SONG_OF_MARCHING },
+  { tag: "songOfStrength", minLevel: 6, option: SKALD_SONG_OF_STRENGTH },
+  { tag: "dirgeOfDoom", minLevel: 10, option: SKALD_DIRGE_OF_DOOM },
+  { tag: "songOfTheFallen", minLevel: 14, option: SKALD_SONG_OF_THE_FALLEN },
+];
+
+/**
+ * The Raging Song pool's `tableOptions`, filtered to the performance types the
+ * skald has unlocked at `skaldLevel`, with the character's skald archetypes
+ * applied (base songs they remove dropped, their own variant songs appended —
+ * see `raging-song-variants.ts`). See file doc comment for RAW numbers and
+ * deferrals.
+ */
+export function ragingSongToggleOptions(
+  skaldLevel: number,
+  archetypeIds: readonly string[] = [],
+): ToggleBuffOption[] {
+  const baseDefs = BASE_RAGING_SONGS.map((s) => ({
+    tag: s.tag,
+    name: s.option.name,
+    summary: "",
+    minLevel: s.minLevel,
+    changes: s.option.changes,
+    contextNotes: s.option.contextNotes,
+  }));
+  const baseByTag = new Map(BASE_RAGING_SONGS.map((s) => [s.tag, s.option]));
+  return mergePerformanceDefs(baseDefs, RAGING_SONG_VARIANTS, archetypeIds, skaldLevel).map(
+    ({ def, idSuffix }) =>
+      baseByTag.get(idSuffix) ?? {
+        id: `ragingSong:${idSuffix}`,
+        name: def.name,
+        changes: def.changes,
+        contextNotes: def.contextNotes,
+      },
+  );
 }
 
 /** Resource-pool `detail` line for the Raging Song pool — see `resources.ts`'s `feature.tag === "ragingSong"` branch. */

@@ -68,26 +68,15 @@
  * `judgments.ts` / `raging-song.ts`).
  */
 
-import type { Change, ContextNote } from "@pf1/schema";
-
+import { BARD_PERFORMANCE_VARIANTS } from "./bardic-performance-variants/index.js";
+import {
+  type BardicPerformanceDef,
+  MAINTAIN_NOTE,
+  mergePerformanceDefs,
+} from "./bardic-performance-variants/types.js";
 import type { ToggleBuffOption } from "./toggle-buffs.js";
 
-const MAINTAIN_NOTE: ContextNote = {
-  target: "allChecks",
-  text: "Maintaining a performance costs 1 round from the Bardic Performance pool per round it stays active. This pool is not auto-decremented while a toggle here is on; track your own rounds spent.",
-};
-
-export interface BardicPerformanceDef {
-  /** Slug, e.g. "countersong" — prefixed with `bardicPerformance:` to become `ToggleBuffOption.id`. */
-  tag: string;
-  name: string;
-  /** One-line rules summary (paraphrased, not verbatim SRD text). */
-  summary: string;
-  /** Bard level this performance type is gained at. */
-  minLevel: number;
-  changes: Change[];
-  contextNotes?: ContextNote[];
-}
+export type { BardicPerformanceDef };
 
 export const BARD_PERFORMANCES: BardicPerformanceDef[] = [
   {
@@ -300,15 +289,38 @@ export const BARD_PERFORMANCES: BardicPerformanceDef[] = [
 export const BARDIC_PERFORMANCE_DETAIL = "rounds/day · toggle performances below";
 
 /**
- * `BARD_PERFORMANCES`, filtered to what a bard of `bardLevel` has learned and
- * mapped to the generic `ToggleBuffOption` shape `resources.ts` surfaces on
- * the pool. Inspire Courage is intentionally absent — see file doc comment.
+ * `BARD_PERFORMANCES`, filtered to what a bard of `bardLevel` has learned,
+ * with the character's bard archetypes applied (base types they remove
+ * dropped, their own variant performances appended — see
+ * `bardic-performance-variants/`), mapped to the generic `ToggleBuffOption`
+ * shape `resources.ts` surfaces on the pool. Inspire Courage is intentionally
+ * absent — see file doc comment.
  */
-export function bardicPerformanceToggleOptions(bardLevel: number): ToggleBuffOption[] {
-  return BARD_PERFORMANCES.filter((p) => p.minLevel <= bardLevel).map((p) => ({
-    id: `bardicPerformance:${p.tag}`,
-    name: p.name,
-    changes: p.changes,
-    contextNotes: p.contextNotes,
+export function bardicPerformanceToggleOptions(
+  bardLevel: number,
+  archetypeIds: readonly string[] = [],
+): ToggleBuffOption[] {
+  return mergePerformanceDefs(
+    BARD_PERFORMANCES,
+    BARD_PERFORMANCE_VARIANTS,
+    archetypeIds,
+    bardLevel,
+  ).map(({ def, idSuffix }) => ({
+    id: `bardicPerformance:${idSuffix}`,
+    name: def.name,
+    changes: def.changes,
+    contextNotes: def.contextNotes,
   }));
+}
+
+/**
+ * True when one of the character's bard archetypes replaces Inspire Courage —
+ * `resources.ts` then drops the vendored Inspire Courage linked buff from the
+ * Bardic Performance pool (the buff rides the never-replaced pool feature
+ * itself, so the archetype swap machinery can't suppress it).
+ */
+export function bardVariantRemovesInspireCourage(archetypeIds: readonly string[]): boolean {
+  return BARD_PERFORMANCE_VARIANTS.some(
+    (v) => v.removesInspireCourage === true && archetypeIds.includes(v.archetypeId),
+  );
 }
