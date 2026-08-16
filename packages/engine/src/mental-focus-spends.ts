@@ -11,47 +11,59 @@
  * resolved via `findOccultistFocusPower`) are per-pick, each carrying its own
  * `OccultistFocusPowerDef.spendToggle`.
  *
- * Only the base-power half is actually reachable from here today:
- * `resources.ts`'s call into this factory forwards `classLevel` and the
- * character's known implement school tags (deduped `build.occultistImplements`)
- * only — NOT `build.occultistFocusPowers` — so there is no way for this
- * function to know which menu powers a character picked. (Contrast
- * `resources.ts`'s ki-pool branch, which does forward `build.monkKiPowers` /
- * `build.ninjaTricks` into `kiSpendToggleOptions` — the occultist branch is
- * missing the analogous argument.) A picked menu power's own `spendToggle`
- * (Aegis, Inspired Assault, Sudden Speed — see `occultist-implements.ts`) is
- * therefore populated data with nowhere to surface yet; closing that gap
- * needs a `resources.ts` change to pass `build.occultistFocusPowers` through
- * and resolve each id via `findOccultistFocusPower`, out of scope here.
+ * Both halves surface here: `resources.ts` forwards the known implement
+ * school tags (each contributing its base power's `spendToggle`, when it has
+ * one) AND the picked menu-power ids, mirroring how the ki-pool branch
+ * forwards `build.monkKiPowers` / `build.ninjaTricks` into
+ * `kiSpendToggleOptions`. A menu pick whose school isn't a currently-known
+ * implement is skipped rather than surfaced — the same stale-pick tolerance
+ * `archetypes.ts`'s occultist grant loop and the web's
+ * `chosenOccultistFocusPowerCount` apply to `build.occultistFocusPowers`.
  */
 
-import { OCCULTIST_SCHOOLS } from "./occultist-implements.js";
+import { findOccultistFocusPower, OCCULTIST_SCHOOLS } from "./occultist-implements.js";
 import type { ToggleBuffOption } from "./toggle-buffs.js";
 
 /** Resource-pool `detail` line for Mental Focus — see `resources.ts`'s `feature.tag === "mentalFocus"` branch. */
 export const MENTAL_FOCUS_DETAIL = "points/day · toggle focus powers below";
 
 /**
- * The Mental Focus pool's `tableOptions` contribution from every known
- * implement school's automatic base focus power. `classLevel` isn't needed by
- * any base power's own formula today (each is self-scaling off
- * `@classes.occultist.level`, resolved when the toggle is active) — kept in
- * the signature for parity with every other pool's toggle-option factory and
- * for a future level-gated base power.
+ * The Mental Focus pool's `tableOptions`: every known implement school's
+ * automatic base focus power, then every picked menu focus power carrying a
+ * `spendToggle` (Aegis, Inspired Assault, Sudden Speed). `classLevel` gates
+ * a menu power's `minLevel` (no toggle-carrying power states one today); no
+ * base power's own formula needs it (each is self-scaling off
+ * `@classes.occultist.level`, resolved when the toggle is active).
  */
 export function mentalFocusToggleOptions(
   classLevel: number,
   implementSchoolTags: readonly string[],
+  focusPowerIds: readonly string[],
 ): ToggleBuffOption[] {
   if (classLevel < 1) return [];
   const options: ToggleBuffOption[] = [];
-  for (const tag of new Set(implementSchoolTags)) {
+  const knownTags = new Set(implementSchoolTags);
+  for (const tag of knownTags) {
     const school = OCCULTIST_SCHOOLS[tag];
     const toggle = school?.basePower.spendToggle;
     if (!toggle) continue;
     options.push({
       id: `mentalFocus:${tag}:base`,
       name: toggle.name ?? school.basePower.name,
+      changes: toggle.changes,
+      contextNotes: toggle.contextNotes,
+    });
+  }
+  for (const focusPowerId of new Set(focusPowerIds)) {
+    const found = findOccultistFocusPower(focusPowerId);
+    if (!found || !knownTags.has(found.school.tag)) continue;
+    const { power } = found;
+    const toggle = power.spendToggle;
+    if (!toggle) continue;
+    if (power.minLevel !== undefined && classLevel < power.minLevel) continue;
+    options.push({
+      id: `mentalFocus:${found.school.tag}:${power.slug}`,
+      name: toggle.name ?? power.name,
       changes: toggle.changes,
       contextNotes: toggle.contextNotes,
     });

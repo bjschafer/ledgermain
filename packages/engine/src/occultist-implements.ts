@@ -154,14 +154,10 @@ export interface OccultistFocusPowerDef {
   /**
    * Pool-spend toggle data for this focus power, same shape
    * `mental-focus-spends.ts`'s `mentalFocusToggleOptions` surfaces for base
-   * powers. `resources.ts`'s call into that factory only forwards
-   * `build.occultistImplements` (known schools), not `build.
-   * occultistFocusPowers` (picked menu powers) — so, unlike the base-power
-   * half, nothing currently reads this field for a picked menu power at
-   * runtime. Populated anyway (Aegis, Inspired Assault, Sudden Speed) as the
-   * data a future `resources.ts` change would need to close that gap; until
-   * then these three are display-only, identically to every other entry that
-   * has no `spendToggle` at all.
+   * powers. When the power is picked (`build.occultistFocusPowers`) and its
+   * school is a currently-known implement, the factory surfaces it on the
+   * Mental Focus pool row as `mentalFocus:<schoolTag>:<slug>`. Populated for
+   * Aegis, Inspired Assault, and Sudden Speed.
    */
   spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }

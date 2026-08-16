@@ -56,7 +56,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_3: Readonly<
     id: "YGbFrqaGvnCbAKKV",
     name: "Sacred Weapon",
     bucket: "subsystem",
-    note: "Weapon damage-by-level table plus a swift-action, rounds-per-day (uses.maxFormula already wired) enhancement bonus with a player-chosen special ability from an alignment-gated list; not a flat Change target.",
+    note: "Weapon damage-by-level table plus a swift-action, rounds-per-day (uses.maxFormula already wired) enhancement bonus; the flat-enhancement spend is surfaced as a toggle on the pool row (sacred-weapon-spends.ts), while the damage table and the player-chosen special abilities from the alignment-gated list stay prose.",
   },
   k5S5PArYaCZhUqnh: {
     id: "k5S5PArYaCZhUqnh",

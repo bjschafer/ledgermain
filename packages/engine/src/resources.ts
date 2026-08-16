@@ -541,7 +541,11 @@ export function deriveResourcePools(
       tableOptions = emptyToUndefined(sacredWeaponToggleOptions(classLevel, classArchetypeIds));
     } else if (feature.tag === "mentalFocus" && classTag === "occultist") {
       tableOptions = emptyToUndefined(
-        mentalFocusToggleOptions(classLevel, [...new Set(doc.build.occultistImplements ?? [])]),
+        mentalFocusToggleOptions(
+          classLevel,
+          [...new Set(doc.build.occultistImplements ?? [])],
+          doc.build.occultistFocusPowers ?? [],
+        ),
       );
     }
 

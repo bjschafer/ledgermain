@@ -13,14 +13,12 @@
  * schedule as Legacy Weapon, applied to armor/a shield instead of a weapon.
  *
  * Aegis/Inspired Assault/Sudden Speed are occultist MENU focus powers
- * (`build.occultistFocusPowers`), not base powers — `resources.ts`'s call
- * into `mentalFocusToggleOptions` only forwards known implement schools, not
- * picked menu powers, so these three carry `spendToggle` data with no path
- * onto the Mental Focus pool's `tableOptions` yet (see `mental-focus-
- * spends.ts`'s doc comment). The tests below exercise their stored
- * `spendToggle.changes` directly through `compute()`, the same numeric
- * verification a pool-driven toggle would get, without pretending
- * `deriveResourcePools` surfaces them.
+ * (`build.occultistFocusPowers`), not base powers — `mentalFocusToggleOptions`
+ * surfaces them on the pool from the picked ids `resources.ts` forwards,
+ * gated on the pick's school being a currently-known implement. The numeric
+ * tests below exercise their stored `spendToggle.changes` directly through
+ * `compute()` (identical to what the pool-driven toggle applies); the
+ * pool-surfacing tests cover the id/gating half.
  */
 
 import { describe, expect, it } from "bun:test";
@@ -237,18 +235,44 @@ describe("Sacred Weapon enhancement through compute()", () => {
 
 describe("mentalFocusToggleOptions: Legacy Weapon (occultist transmutation base power)", () => {
   it("surfaces mentalFocus:transmutation:base when transmutation is a known school", () => {
-    const options = mentalFocusToggleOptions(5, ["transmutation"]);
+    const options = mentalFocusToggleOptions(5, ["transmutation"], []);
     expect(options.map((o) => o.id)).toContain("mentalFocus:transmutation:base");
   });
 
   it("omits it when transmutation isn't known", () => {
-    const options = mentalFocusToggleOptions(5, ["abjuration"]);
+    const options = mentalFocusToggleOptions(5, ["abjuration"], []);
     expect(options.map((o) => o.id)).not.toContain("mentalFocus:transmutation:base");
   });
 
   it("dedupes and ignores unknown school tags without throwing", () => {
-    const options = mentalFocusToggleOptions(5, ["transmutation", "transmutation", "not-a-school"]);
+    const options = mentalFocusToggleOptions(
+      5,
+      ["transmutation", "transmutation", "not-a-school"],
+      [],
+    );
     expect(options.filter((o) => o.id === "mentalFocus:transmutation:base")).toHaveLength(1);
+  });
+});
+
+describe("mentalFocusToggleOptions: picked menu focus powers", () => {
+  it("surfaces a picked power's spendToggle when its school is a known implement", () => {
+    const options = mentalFocusToggleOptions(7, ["abjuration"], ["abjuration:aegis"]);
+    expect(options.map((o) => o.id)).toContain("mentalFocus:abjuration:aegis");
+  });
+
+  it("skips a stale pick whose school is no longer a known implement", () => {
+    const options = mentalFocusToggleOptions(7, ["transmutation"], ["abjuration:aegis"]);
+    expect(options.map((o) => o.id)).not.toContain("mentalFocus:abjuration:aegis");
+  });
+
+  it("skips picks without spendToggle data and unresolvable ids, and dedupes repeats", () => {
+    const options = mentalFocusToggleOptions(
+      7,
+      ["evocation", "abjuration"],
+      ["evocation:energy-ward", "not:a-power", "abjuration:aegis", "abjuration:aegis"],
+    );
+    expect(options.filter((o) => o.id === "mentalFocus:abjuration:aegis")).toHaveLength(1);
+    expect(options.some((o) => o.id.includes("energy-ward"))).toBe(false);
   });
 });
 
@@ -298,7 +322,7 @@ describe("Legacy Weapon enhancement through compute()", () => {
   });
 });
 
-describe("Occultist menu focus power spendToggle data (not yet wired onto the pool)", () => {
+describe("Occultist menu focus power spendToggle data", () => {
   it("Aegis at L7: +2 AC enhancement (min(4, 1 + floor(7/6)) = min(4, 2))", () => {
     const found = findOccultistFocusPower("abjuration:aegis");
     expect(found?.power.spendToggle).toBeDefined();
@@ -345,13 +369,13 @@ describe("Occultist menu focus power spendToggle data (not yet wired onto the po
     expect(found?.power.spendToggle).toBeUndefined();
   });
 
-  it("the Mental Focus pool does NOT surface Aegis even when picked (no build.occultistFocusPowers seam yet)", () => {
+  it("the Mental Focus pool surfaces Aegis when picked with abjuration known", () => {
     const doc = makeOccultistDoc({ level: 7, occultistImplements: ["abjuration"] });
     doc.build.occultistFocusPowers = ["abjuration:aegis"];
     const sheet = compute(doc, ref);
     const pools = deriveResourcePools(doc, ref, sheet.abilities);
     const pool = pools.find((p) => p.name === "Mental Focus");
-    expect(pool!.tableOptions?.some((o) => o.id.includes("aegis"))).not.toBe(true);
+    expect(pool!.tableOptions?.map((o) => o.id)).toContain("mentalFocus:abjuration:aegis");
   });
 });
 

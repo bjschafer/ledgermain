@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-16-pool-spend-toggles",
+    date: "2026-08-16",
+    title: "Point-spend effects are toggles on their pools",
+    note: "Abilities that spend a pool point for a temporary boost now sit on their resource trackers as toggles, the same way judgments and performances do. A monk's ki pool offers the extra speed and dodge AC spends, a ninja's adds the speed burst and an insight bonus to Stealth, and picked ki powers like Diamond Resilience and Sudden Speed appear at their levels. A magus can switch on the arcane pool weapon enhancement, an arcanist's reservoir boosts spell DCs, a gunslinger with grit in hand gets the initiative bonus, and a swashbuckler at 15th can raise Dizzying Defense. Warpriests toggle the Sacred Weapon enhancement on its rounds tracker, and an occultist's Mental Focus pool lists Legacy Weapon along with picked focus powers like Aegis, Inspired Assault, and Sudden Speed. Each one applies its numbers to your sheet while it is on.",
+  },
+  {
     id: "2026-08-16-archetype-performance-variants",
     date: "2026-08-16",
     title: "Archetype performances and songs join the pool toggles",
