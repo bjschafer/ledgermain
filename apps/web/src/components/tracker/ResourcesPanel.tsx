@@ -8,6 +8,7 @@ import {
   OCCULTIST_PHYSICAL_ABILITIES,
   OCCULTIST_SCHOOLS,
   resolveKineticistDefense,
+  slaClaimedPoolIds,
   type DerivedResourcePool,
   type ToggleBuffOption,
 } from "@pf1/engine";
@@ -64,6 +65,10 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
     [doc, refData, sheet.abilities, sheet.abilityDCs],
   );
   const derivedIds = new Set(derived.map((p) => p.id));
+  // Pools whose uses counter lives on the Spell-Like Abilities panel — still
+  // derived (they rest and sync like any pool), just not rendered twice.
+  const slaClaimed = slaClaimedPoolIds(sheet.spellLikeAbilities);
+  const visiblePools = derived.filter((pool) => !slaClaimed.has(pool.id));
   const manualEntries = Object.entries(doc.live.resources).filter(([id]) => !derivedIds.has(id));
   // Same caster-level floor `BuffsPanel` uses for a newly-added buff's
   // duration suggestion — a linked-buff toggle is just a shortcut into the
@@ -90,7 +95,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
   const restoreManual = (id: string) =>
     update((d) => restoreResource(syncDerivedPools(d, derived), id, 1));
 
-  const hasAny = derived.length > 0 || manualEntries.length > 0;
+  const hasAny = visiblePools.length > 0 || manualEntries.length > 0;
 
   return (
     <Panel
@@ -114,7 +119,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
         <div className="empty">No pools. Add item charges or other one-off pools below.</div>
       ) : (
         <div className="res-list">
-          {derived.map((pool) => {
+          {visiblePools.map((pool) => {
             const stored = doc.live.resources[pool.id];
             const used = stored?.used ?? 0;
             return (

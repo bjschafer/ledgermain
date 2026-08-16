@@ -80,6 +80,7 @@ import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
 import { RAGING_SONG_DETAIL, ragingSongToggleOptions } from "./raging-song.js";
 import { resourceTagSlug } from "./resource-tag.js";
+import { deriveSlaResourcePools } from "./spell-like-abilities/index.js";
 import { SACRED_WEAPON_DETAIL, sacredWeaponToggleOptions } from "./sacred-weapon-spends.js";
 import { buildRollData, type AbilityView } from "./rolldata.js";
 import {
@@ -676,6 +677,11 @@ export function deriveResourcePools(
   // traits like "A Sure Thing") — same character-level roll data as the
   // scans above.
   pools.push(...deriveTraitResourcePools(doc, refData, rollData));
+
+  // Metered spell-like-ability grants with no source pool of their own
+  // (`sla:*` ids — see `spell-like-abilities/index.ts`); grants that attach
+  // to a pool already derived above add nothing here.
+  pools.push(...deriveSlaResourcePools(doc, refData, abilities));
 
   return pools;
 }

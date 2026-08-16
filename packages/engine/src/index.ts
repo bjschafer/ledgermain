@@ -790,6 +790,22 @@ export {
   perDayActivationToggleOptions,
   type PerDayActivationDef,
 } from "./per-day-activations/index.js";
+export {
+  ARCHETYPE_SLA_GRANTS,
+  ARCHETYPE_SLA_GRANTS_AM,
+  ARCHETYPE_SLA_GRANTS_NZ,
+  CLASS_FEATURE_SLA_GRANTS,
+  deriveSlaResourcePools,
+  deriveSpellLikeAbilities,
+  FEAT_SLA_GRANTS,
+  RACE_SLA_GRANTS,
+  RACIAL_TRAIT_SLA_GRANTS,
+  SLA_GRANT_TABLES,
+  slaClaimedPoolIds,
+  type RaceSlaGrantDef,
+  type SlaGrantDef,
+  type SlaSourceTables,
+} from "./spell-like-abilities/index.js";
 export { rageFatigueOnEnd, UNCHAINED_RAGE_FATIGUE_ROUNDS } from "./rage-fatigue.js";
 export type { RageFatigue } from "./rage-fatigue.js";
 export {

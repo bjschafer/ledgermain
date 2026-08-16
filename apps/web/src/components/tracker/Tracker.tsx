@@ -22,6 +22,7 @@ import { ResourcesPanel } from "./ResourcesPanel.js";
 import { SavedRollsPanel } from "./SavedRollsPanel.js";
 import { ShifterAspectPanel } from "./ShifterAspectPanel.js";
 import { SkinwalkerChangeShapePanel } from "./SkinwalkerChangeShapePanel.js";
+import { SpellLikeAbilitiesPanel } from "./SpellLikeAbilitiesPanel.js";
 import { SpellResistancePanel } from "./SpellResistancePanel.js";
 import { VigilanteIdentityPanel } from "./VigilanteIdentityPanel.js";
 import { XpPanel } from "./XpPanel.js";
@@ -64,6 +65,7 @@ export function Tracker(props: BuilderProps) {
         { id: "play-conditions", label: "Conditions", node: <ConditionsPanel {...props} /> },
         { id: "play-buffs", label: "Buffs", node: <BuffsPanel {...props} /> },
         { id: "play-spells", label: "Spells", node: <PreparedSpellsPanel {...props} /> },
+        { id: "play-sla", label: "Spell-Like", node: <SpellLikeAbilitiesPanel {...props} /> },
         { id: "play-resources", label: "Resources", node: <ResourcesPanel {...props} /> },
         { id: "play-abilitydcs", label: "Ability DCs", node: <AbilityDcsPanel {...props} /> },
         { id: "play-blast", label: "Blast Loadout", node: <BlastLoadoutPanel {...props} /> },

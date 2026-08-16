@@ -42,6 +42,12 @@ import { mergedOrderCatalog } from "../packages/engine/src/cavalier-orders.js";
 import { CLASS_FEATURE_CLASSIFICATION } from "../packages/engine/src/class-feature-classification/index.js";
 import { PER_DAY_ACTIVATIONS } from "../packages/engine/src/per-day-activations/index.js";
 import {
+  ARCHETYPE_SLA_GRANTS,
+  CLASS_FEATURE_SLA_GRANTS,
+  FEAT_SLA_GRANTS,
+  RACIAL_TRAIT_SLA_GRANTS,
+} from "../packages/engine/src/spell-like-abilities/index.js";
+import {
   CLASS_FEATURE_CHANGE_PATCHES,
   CLASS_FEATURE_CHOICES,
 } from "../packages/engine/src/class-feature-effects.js";
@@ -430,7 +436,10 @@ function main(): void {
       GRANTED_POWER_CHANGE_PATCHES[name] !== undefined ||
       // Per-day activation toggles surfaced on the feature's own pool row
       // (per-day-activations/, id-keyed) move numbers while toggled on.
-      (PER_DAY_ACTIVATIONS[id]?.length ?? 0) > 0;
+      (PER_DAY_ACTIVATIONS[id]?.length ?? 0) > 0 ||
+      // Spell-like-ability grants become castable rows with real spell facts
+      // (spell-like-abilities/, id-keyed) — a wired route, not prose.
+      (CLASS_FEATURE_SLA_GRANTS[id]?.length ?? 0) > 0;
     const noted = arrayLen(e.actions) > 0 || e.uses !== undefined || arrayLen(e.grantsBuffs) > 0;
     // Same semantics as the archetype/feat/racial-trait verdicts: a deliberate
     // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`
@@ -458,7 +467,8 @@ function main(): void {
           // through their own routes (stored pick / kept-tier substitution)
           // even when the entry's unconditional `changes` list is empty.
           Object.keys(resolved.effect.choiceChanges ?? {}).length > 0)) ||
-      ARCHETYPE_TIER_REPLACEMENTS[id] !== undefined;
+      ARCHETYPE_TIER_REPLACEMENTS[id] !== undefined ||
+      (ARCHETYPE_SLA_GRANTS[id]?.length ?? 0) > 0;
     // A wave verdict of situational/subsystem/blocked is a deliberate
     // prose-only ruling; `numeric` without an effect entry is real backlog.
     const verdict = ARCHETYPE_FEATURE_CLASSIFICATION[id];
@@ -482,7 +492,8 @@ function main(): void {
     const wired =
       (resolved !== undefined &&
         (defMovesNumbers(resolved.entry) || rec(resolved.entry).type === "choice")) ||
-      FEAT_POOL_EFFECTS[slug] !== undefined;
+      FEAT_POOL_EFFECTS[slug] !== undefined ||
+      (FEAT_SLA_GRANTS[slug]?.length ?? 0) > 0;
     // Same semantics as the archetype verdicts: a deliberate not-wireable
     // ruling from either feat audit is reviewed backlog; a mover bucket
     // that never produced a wired route is real backlog and still flags.
@@ -561,7 +572,8 @@ function main(): void {
         e.contextNotes as readonly ContextNote[] | undefined,
         VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES,
       ).length > 0 ||
-      (hand !== undefined && defMovesNumbers(hand));
+      (hand !== undefined && defMovesNumbers(hand)) ||
+      (RACIAL_TRAIT_SLA_GRANTS[id]?.length ?? 0) > 0;
     const noted = arrayLen(e.contextNotes) > 0;
     // Same semantics as the archetype/feat verdicts: a deliberate
     // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`

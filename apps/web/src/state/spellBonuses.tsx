@@ -47,3 +47,14 @@ export function SpellBonusesProvider({
 export function useSpellBonuses(): SpellBonuses {
   return useContext(SpellBonusesContext);
 }
+
+/**
+ * Re-provides the EMPTY bonus set beneath the app-wide provider — for spell
+ * rows that are NOT spells being cast. Spell-like abilities are the case:
+ * PF1 RAW, Spell Focus and the rest of the spell-feat family do not apply
+ * to SLAs, so their `SpellDetail` strips must not fold the sheet's spell-DC
+ * or CL-check bonuses in.
+ */
+export function SpellBonusesExclusion({ children }: { children: ReactNode }) {
+  return <SpellBonusesContext.Provider value={EMPTY}>{children}</SpellBonusesContext.Provider>;
+}

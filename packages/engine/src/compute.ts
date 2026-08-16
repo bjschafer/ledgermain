@@ -41,6 +41,7 @@ import { ABILITY_IDS } from "@pf1/schema";
 
 import { computeAbilityDCs } from "./ability-dcs.js";
 import { computeClChecks, computeSpellDCs } from "./spell-dcs.js";
+import { deriveSpellLikeAbilities } from "./spell-like-abilities/index.js";
 import {
   ABILITY_LABEL,
   collectAbilitySubstitutions,
@@ -1994,6 +1995,15 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   const spellDCs = computeSpellDCs(collected);
   const clChecks = computeClChecks(collected);
 
+  // Castable spell-like-ability rows (racial innates, heritage traits, class
+  // features, feats) — derived from the final pass's abilities so score
+  // gates (Gnome Magic's Charisma 11) and DC mods see buffs/items.
+  const spellLikeAbilities = deriveSpellLikeAbilities(
+    doc,
+    refData,
+    abilities as Parameters<typeof deriveSpellLikeAbilities>[2],
+  );
+
   // Generic stat overrides (bounded allowlist)
   const overrides = doc.build.settings?.statOverrides ?? {};
   const { classFeatures, activeArchetypes } = resolveClassFeatures(
@@ -2034,6 +2044,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     ...(abilityDCs.length > 0 ? { abilityDCs } : {}),
     ...(spellDCs ? { spellDCs } : {}),
     ...(clChecks ? { clChecks } : {}),
+    ...(spellLikeAbilities.length > 0 ? { spellLikeAbilities } : {}),
   };
 
   for (const [key, val] of Object.entries(overrides)) {

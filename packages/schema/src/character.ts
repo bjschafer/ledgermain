@@ -3062,6 +3062,17 @@ export interface DerivedSheet {
    * `clCheck`/`clCheck.sr`/`clCheck.dispel`.
    */
   clChecks?: DerivedClChecks;
+  /**
+   * Spell-like abilities the character can cast — racial innates (gnome
+   * magic, a tiefling's darkness), heritage traits, class features, and
+   * feats that grant a specific named spell usable N/day, at will, or
+   * constantly. Each row resolves the granted spell against `RefData.spells`
+   * so the UI can render real spell facts (save, range, duration) with the
+   * SLA's own caster level and DC ability. Omitted (rather than empty) when
+   * the character has none, same posture as `abilityDCs` — see
+   * `@pf1/engine`'s `spell-like-abilities/` for the grant tables.
+   */
+  spellLikeAbilities?: DerivedSpellLikeAbility[];
 }
 
 /**
@@ -3128,6 +3139,44 @@ export interface DerivedClChecks {
 export interface DerivedClCheckBonus {
   bonus: number;
   components: ModifierComponent[];
+}
+
+/**
+ * One castable spell-like ability — see `DerivedSheet.spellLikeAbilities`.
+ *
+ * `id` is stable across recomputes (`sla:<sourceKey>:<slug>`); when the
+ * ability is metered it doubles as the synthetic resource-pool id, so
+ * `live.resources` tracking survives level-ups and rebuilds. `poolId` names
+ * the `live.resources` key the uses counter lives under — the row's own `id`
+ * for a synthetic pool, or the granting trait/feature's id when the vendored
+ * entry already derives a pool of its own (heritage "Spell-Like Ability"
+ * traits), so uses are never double-tracked.
+ *
+ * `spellId` may be undefined when the granted spell's name doesn't resolve
+ * against the vendored spell slice — the row still renders name-only rather
+ * than vanishing. `spellLevel` and `abilityMod` feed the SLA save DC
+ * (`10 + spell level + ability mod`, Charisma-based unless the grant says
+ * otherwise); `casterLevel` resolves the spell's `@cl`-scaled values.
+ */
+export interface DerivedSpellLikeAbility {
+  id: string;
+  /** Display name — the granted spell's name unless the grant overrides it. */
+  name: string;
+  /** Resolved `RefData.spells` key, when the spell name resolves. */
+  spellId?: string;
+  spellLevel: number;
+  casterLevel: number;
+  /** The DC ability's modifier (Charisma unless the grant overrides). */
+  abilityMod: number;
+  frequency: "perDay" | "perWeek" | "atWill" | "constant";
+  /** `live.resources` key for the uses counter; absent for at-will/constant. */
+  poolId?: string;
+  /** Player-facing origin, e.g. "Gnome", "Spell-Like Ability (Tiefling - Beastbrood)". */
+  source: string;
+  /** Granting class tag, or the synthetic markers "racial"/"feat". */
+  classTag: string;
+  /** Rider reminder from the grant (self-only scope, shared-uses caveats, ...). */
+  note?: string;
 }
 
 /** One granted proficiency's provenance — which class/feat/race granted it. */
