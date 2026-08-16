@@ -21,7 +21,7 @@
  *                      The UI renders a picker for these feats (FeatsSection.tsx).
  */
 
-import type { AbilityId, ContextNote } from "@pf1/schema";
+import type { AbilityId, CharacterDoc, ContextNote, RefData } from "@pf1/schema";
 
 import type { PickChoice } from "./rage-powers.js";
 
@@ -183,6 +183,29 @@ export function featNameSlug(name: string): string {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
+}
+
+/**
+ * The character's own feats, normalized to name slugs — `doc.build.feats`
+ * PLUS `doc.build.extraFeats` (repeatable-feat instances), resolved through
+ * `refData.feats` and slugged via `featNameSlug`. One entry per feat
+ * OCCURRENCE (a repeatable feat taken twice yields its slug twice), matching
+ * `resources.ts`'s `collectFeatPoolBonuses`, which relies on this shared
+ * iteration rather than re-deriving it; a caller that only needs
+ * presence/absence (e.g. `grit-panache-spends.ts`'s feat-gated deeds) wraps
+ * the result in a `Set`.
+ */
+export function characterFeatSlugs(doc: CharacterDoc, refData: RefData): string[] {
+  const featIds = [
+    ...(doc.build.feats ?? []),
+    ...(doc.build.extraFeats ?? []).map((e) => e.featId),
+  ];
+  const slugs: string[] = [];
+  for (const featId of featIds) {
+    const feat = refData.feats[featId];
+    if (feat) slugs.push(featNameSlug(feat.name));
+  }
+  return slugs;
 }
 
 /**

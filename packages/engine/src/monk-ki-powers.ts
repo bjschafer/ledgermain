@@ -69,6 +69,13 @@ export interface MonkKiPowerDef {
   contextNotes?: ContextNote[];
   /** Always true here — no ki power has a flat always-on numeric effect. */
   displayOnly: true;
+  /**
+   * Optional pool-spend toggle for this power — surfaced on the Ki Pool
+   * resource row (`ki-spends.ts`'s `kiSpendToggleOptions`) the same way
+   * `bardic-performances.ts`'s table surfaces performance types. Absent for
+   * every entry until a later content wave populates it.
+   */
+  spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }
 
 const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });

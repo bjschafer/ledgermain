@@ -204,7 +204,21 @@ interface Audited {
  * `spiritBonusTargets` and occultist `appliesAsChange` resonant powers
  * (both expanded in `collect.ts`), and `hasAbilitySubstitution`
  * (`ability-substitution.ts`). Those count as wired too.
+ *
+ * A def's `spendToggle` field (the ki/arcane/grit/panache/sacred-weapon/
+ * mental-focus pool-spend toggles — `MonkKiPowerDef`/`NinjaTrickDef`/
+ * `MagusArcanaDef`/`ArcanistExploitDef`/`OccultistFocusPowerDef`, surfaced on
+ * a resource pool's `tableOptions` by `resources.ts`'s per-tag dispatch) also
+ * counts as wired once it carries a non-empty `changes[]` — checked
+ * structurally via `hasSpendToggleChanges` rather than relying solely on the
+ * generic `"formula"` substring match above, so a future `spendToggle` shape
+ * change can't silently stop counting.
  */
+function hasSpendToggleChanges(def: unknown): boolean {
+  const spendToggle = rec(def).spendToggle;
+  return spendToggle !== undefined && arrayLen(rec(spendToggle).changes) > 0;
+}
+
 function defMovesNumbers(def: unknown): boolean {
   const json = JSON.stringify(def) ?? "";
   return (
@@ -212,6 +226,7 @@ function defMovesNumbers(def: unknown): boolean {
     /"(?:classSkills|orderSkills|bonusSpells|spiritBonusTargets)":\[(?!\])/.test(json) ||
     json.includes('"appliesAsChange":true') ||
     json.includes('"hasAbilitySubstitution":true') ||
+    hasSpendToggleChanges(def) ||
     // A def-level declaration that the entry's numbers flow through a
     // dedicated engine path this def never serializes (the kinetic-blast
     // damage pipeline, a bespoke collect.ts block, linked toggleable

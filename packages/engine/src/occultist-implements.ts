@@ -112,7 +112,14 @@
  * `changes: []` entries.
  */
 
-import type { AbilityId, OccultistImplement, RefData, SourceRef } from "@pf1/schema";
+import type {
+  AbilityId,
+  Change,
+  ContextNote,
+  OccultistImplement,
+  RefData,
+  SourceRef,
+} from "@pf1/schema";
 
 export interface OccultistBaseFocusPower {
   name: string;
@@ -126,6 +133,14 @@ export interface OccultistFocusPowerDef {
   /** Minimum occultist level to select, when RAW states one; omitted = no gate. */
   minLevel?: number;
   summary: string;
+  /**
+   * Optional pool-spend toggle for this focus power — surfaced on the Mental
+   * Focus resource row (`mental-focus-spends.ts`'s `mentalFocusToggleOptions`
+   * merges it in for a character's picked menu powers) the same way
+   * `bardic-performances.ts`'s table surfaces performance types. Absent for
+   * every entry until a later content wave populates it.
+   */
+  spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }
 
 export interface OccultistResonantPower {

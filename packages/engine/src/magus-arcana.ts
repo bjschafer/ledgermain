@@ -69,6 +69,13 @@ export interface MagusArcanaDef {
   contextNotes?: ContextNote[];
   /** Always true here — no base arcana has a flat always-on numeric effect. */
   displayOnly: true;
+  /**
+   * Optional pool-spend toggle for this arcana — surfaced on the Arcane Pool
+   * resource row (`arcane-spends.ts`'s `arcanePoolToggleOptions`) the same
+   * way `bardic-performances.ts`'s table surfaces performance types. Absent
+   * for every entry until a later content wave populates it.
+   */
+  spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }
 
 const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });

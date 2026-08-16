@@ -105,6 +105,13 @@ export interface NinjaTrickDef {
   contextNotes?: ContextNote[];
   /** True when this trick has no live `Change` — Wall Climber is the sole exception, see file doc comment. */
   displayOnly: boolean;
+  /**
+   * Optional pool-spend toggle for this trick — surfaced on the Ki Pool
+   * resource row (`ki-spends.ts`'s `kiSpendToggleOptions`) the same way
+   * `bardic-performances.ts`'s table surfaces performance types. Absent for
+   * every entry until a later content wave populates it.
+   */
+  spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }
 
 const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });

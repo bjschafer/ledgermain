@@ -567,6 +567,7 @@ export {
   SITUATIONAL_FEAT_EFFECTS,
   ENERGY_TYPES,
   featNameSlug,
+  characterFeatSlugs,
   type FeatChange,
   type StaticFeatEntry,
   type ChoiceFeatEntry,
@@ -769,6 +770,21 @@ export {
   BARDIC_PERFORMANCE_DETAIL,
   type BardicPerformanceDef,
 } from "./bardic-performances.js";
+export { kiSpendToggleOptions, KI_POOL_DETAIL } from "./ki-spends.js";
+export {
+  arcanePoolToggleOptions,
+  arcaneReservoirToggleOptions,
+  ARCANE_POOL_DETAIL,
+  ARCANE_RESERVOIR_DETAIL,
+} from "./arcane-spends.js";
+export {
+  gritToggleOptions,
+  panacheToggleOptions,
+  GRIT_DETAIL,
+  PANACHE_DETAIL,
+} from "./grit-panache-spends.js";
+export { sacredWeaponToggleOptions, SACRED_WEAPON_DETAIL } from "./sacred-weapon-spends.js";
+export { mentalFocusToggleOptions, MENTAL_FOCUS_DETAIL } from "./mental-focus-spends.js";
 export { rageFatigueOnEnd, UNCHAINED_RAGE_FATIGUE_ROUNDS } from "./rage-fatigue.js";
 export type { RageFatigue } from "./rage-fatigue.js";
 export {

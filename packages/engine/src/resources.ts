@@ -51,20 +51,35 @@ import type {
 } from "@pf1/schema";
 
 import { collectGrantedFeatures, isPsychokinetcist, type GrantedFeature } from "./archetypes.js";
+import {
+  ARCANE_POOL_DETAIL,
+  ARCANE_RESERVOIR_DETAIL,
+  arcanePoolToggleOptions,
+  arcaneReservoirToggleOptions,
+} from "./arcane-spends.js";
 import { BLOODRAGE_BUFF_ID } from "./bloodrage.js";
 import { COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
-import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
+import { characterFeatSlugs, FEAT_POOL_EFFECTS } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
 import {
   BARDIC_PERFORMANCE_DETAIL,
   bardicPerformanceToggleOptions,
   bardVariantRemovesInspireCourage,
 } from "./bardic-performances.js";
+import {
+  GRIT_DETAIL,
+  gritToggleOptions,
+  PANACHE_DETAIL,
+  panacheToggleOptions,
+} from "./grit-panache-spends.js";
 import { judgmentPoolDetail, judgmentToggleOptions } from "./judgments.js";
+import { KI_POOL_DETAIL, kiSpendToggleOptions } from "./ki-spends.js";
+import { MENTAL_FOCUS_DETAIL, mentalFocusToggleOptions } from "./mental-focus-spends.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
 import { RAGING_SONG_DETAIL, ragingSongToggleOptions } from "./raging-song.js";
 import { resourceTagSlug } from "./resource-tag.js";
+import { SACRED_WEAPON_DETAIL, sacredWeaponToggleOptions } from "./sacred-weapon-spends.js";
 import { buildRollData, type AbilityView } from "./rolldata.js";
 import {
   bombDamageDetail,
@@ -88,6 +103,18 @@ import { resolveTraitDef } from "./traits.js";
  * `tag: "channelEnergy"`, the other three have none).
  */
 const CHANNEL_ENERGY_NAME_RE = /^Channel (Energy|Positive Energy|Negative Energy)( \(WAR\))?$/;
+
+/**
+ * `[]` -> `undefined` for a pool's `tableOptions` — an empty toggle table
+ * (a pool-spend factory whose content isn't wired for this character, or
+ * hasn't landed yet at all — see ki-spends.ts/arcane-spends.ts/
+ * grit-panache-spends.ts/sacred-weapon-spends.ts/mental-focus-spends.ts)
+ * must stay `undefined` rather than `[]`, so the tracker's resources panel
+ * never renders an empty toggle section for it.
+ */
+function emptyToUndefined<T>(options: T[]): T[] | undefined {
+  return options.length > 0 ? options : undefined;
+}
 
 /**
  * The two other vendored pool features whose `detail` carries a save DC, each
@@ -159,11 +186,12 @@ export interface DerivedResourcePool {
    * the granting `ClassFeature.grantsBuffs` UUIDs (or, for a linked feature
    * with no independent pool of its own — e.g. Inspire Courage, see the
    * "linked features" pass — from ITS `grantsBuffs`, merged onto the pool it
-   * draws uses from). Only 3 of the 12 vendored features carrying
-   * `grantsBuffs` point at a buff inside the vendored slice (Rage, Inspire
-   * Courage, Aura of Protection); the other 9 point outside it and resolve to
-   * nothing here — unresolvable UUIDs are silently skipped, never thrown.
-   * Empty when none resolve. The tracker uses this to render an
+   * draws uses from). Most vendored features carrying `grantsBuffs` point
+   * outside the vendored buff slice (a feat, an item, or an unvendored
+   * ability) and resolve to nothing here; a handful — Rage, Inspire Courage,
+   * Aura of Protection, and hunter's Animal Focus among them — do point at a
+   * real vendored buff. Unresolvable UUIDs are silently skipped, never
+   * thrown. Empty when none resolve. The tracker uses this to render an
    * activate/deactivate toggle; it deliberately does NOT drain the pool's
    * uses on activation (see `deriveResourcePools`'s doc comment).
    */
@@ -425,6 +453,37 @@ export function deriveResourcePools(
       // same shape as Judgment above — Inspired Rage has no vendored buff
       // (unlike bard's Inspire Courage), see raging-song.ts.
       detail = RAGING_SONG_DETAIL;
+    } else if (
+      feature.tag === "kiPool" &&
+      (classTag === "monk" || classTag === "monkUnchained" || classTag === "ninja")
+    ) {
+      // Ki-spending powers/tricks have no vendored buff to resolve — surfaced
+      // via `tableOptions` below, see ki-spends.ts.
+      detail = KI_POOL_DETAIL;
+    } else if (feature.tag === "arcanePool" && classTag === "magus") {
+      // Pool-spending magus arcana have no vendored buff — surfaced via
+      // `tableOptions` below, see arcane-spends.ts.
+      detail = ARCANE_POOL_DETAIL;
+    } else if (feature.tag === "arcaneReservoir" && classTag === "arcanist") {
+      // Pool-spending arcanist exploits have no vendored buff — surfaced via
+      // `tableOptions` below, see arcane-spends.ts.
+      detail = ARCANE_RESERVOIR_DETAIL;
+    } else if (feature.tag === "grit" && classTag === "gunslinger") {
+      // Grit-spending deeds have no vendored buff — surfaced via
+      // `tableOptions` below, see grit-panache-spends.ts.
+      detail = GRIT_DETAIL;
+    } else if (feature.tag === "panache" && classTag === "swashbuckler") {
+      // Panache-spending deeds have no vendored buff — surfaced via
+      // `tableOptions` below, see grit-panache-spends.ts.
+      detail = PANACHE_DETAIL;
+    } else if (feature.tag === "sacredWeapon" && classTag === "warpriest") {
+      // Sacred Weapon's blessing-derived riders have no vendored buff —
+      // surfaced via `tableOptions` below, see sacred-weapon-spends.ts.
+      detail = SACRED_WEAPON_DETAIL;
+    } else if (feature.tag === "mentalFocus" && classTag === "occultist") {
+      // Occultist focus powers have no vendored buff — surfaced via
+      // `tableOptions` below, see mental-focus-spends.ts.
+      detail = MENTAL_FOCUS_DETAIL;
     } else {
       const family = CHANNEL_ENERGY_NAME_RE.test(feature.name)
         ? "channel"
@@ -448,6 +507,42 @@ export function deriveResourcePools(
       tableOptions = bardicPerformanceToggleOptions(classLevel, classArchetypeIds);
     } else if (feature.tag === "ragingSong" && classTag === "skald") {
       tableOptions = ragingSongToggleOptions(classLevel, classArchetypeIds);
+    } else if (
+      feature.tag === "kiPool" &&
+      (classTag === "monk" || classTag === "monkUnchained" || classTag === "ninja")
+    ) {
+      // Pool-spend toggle tables are empty until a later content wave lands
+      // (see ki-spends.ts) — an empty result stays `undefined` rather than
+      // `[]` so the tracker never renders an empty toggle section.
+      tableOptions = emptyToUndefined(
+        kiSpendToggleOptions(
+          classTag,
+          classLevel,
+          classArchetypeIds,
+          doc.build.monkKiPowers ?? [],
+          doc.build.ninjaTricks ?? [],
+        ),
+      );
+    } else if (feature.tag === "arcanePool" && classTag === "magus") {
+      tableOptions = emptyToUndefined(
+        arcanePoolToggleOptions(classLevel, classArchetypeIds, doc.build.magusArcana ?? []),
+      );
+    } else if (feature.tag === "arcaneReservoir" && classTag === "arcanist") {
+      tableOptions = emptyToUndefined(
+        arcaneReservoirToggleOptions(doc.build.arcanistExploits ?? []),
+      );
+    } else if (feature.tag === "grit" && classTag === "gunslinger") {
+      tableOptions = emptyToUndefined(
+        gritToggleOptions(classLevel, new Set(characterFeatSlugs(doc, refData))),
+      );
+    } else if (feature.tag === "panache" && classTag === "swashbuckler") {
+      tableOptions = emptyToUndefined(panacheToggleOptions(classLevel, classArchetypeIds));
+    } else if (feature.tag === "sacredWeapon" && classTag === "warpriest") {
+      tableOptions = emptyToUndefined(sacredWeaponToggleOptions(classLevel, classArchetypeIds));
+    } else if (feature.tag === "mentalFocus" && classTag === "occultist") {
+      tableOptions = emptyToUndefined(
+        mentalFocusToggleOptions(classLevel, [...new Set(doc.build.occultistImplements ?? [])]),
+      );
     }
 
     // Feats that raise this pool's maximum (Extra Rage, Extra Reservoir, …
@@ -600,12 +695,14 @@ const COMPENDIUM_UUID_RE = /^Compendium\.pf1\.[^.]+\.Item\.([^.]+)$/;
 
 /**
  * Resolve a `ClassFeature.grantsBuffs` UUID list against `refData.buffs`,
- * dropping anything outside the vendored slice — never throwing. Of the 12
- * vendored features carrying `grantsBuffs`, only 3 resolve (Rage, Inspire
- * Courage, Aura of Protection).
+ * dropping anything outside the vendored slice — never throwing. Most
+ * vendored features carrying `grantsBuffs` point outside the vendored buff
+ * slice; a handful — Rage, Inspire Courage, Aura of Protection, and hunter's
+ * Animal Focus among them — resolve to a real vendored buff.
  *
- * An audit of the other 9 occurrences (7 unique UUIDs, `Spellbooks
- * (ARC/MAG/WIZ)` sharing one): the data pipeline's `grantsBuffs` field
+ * An audit of nine features whose `grantsBuffs` UUIDs do NOT resolve to a
+ * buff (7 unique UUIDs, `Spellbooks (ARC/MAG/WIZ)` sharing one): the data
+ * pipeline's `grantsBuffs` field
  * (`transform/classes.ts`) is populated from Foundry's generic
  * `links.supplements` — NOT a buffs-only relation — so it also picks up linked
  * feats and items. Checked each of the 7 against the raw pinned clone:
@@ -826,14 +923,8 @@ function collectFeatPoolBonuses(
   abilities?: Record<string, AbilityView>,
 ): Map<string, number> {
   const bonuses = new Map<string, number>();
-  const featIds = [
-    ...(doc.build.feats ?? []),
-    ...(doc.build.extraFeats ?? []).map((e) => e.featId),
-  ];
-  for (const featId of featIds) {
-    const feat = refData.feats[featId];
-    if (!feat) continue;
-    const effect = FEAT_POOL_EFFECTS[featNameSlug(feat.name)];
+  for (const slug of characterFeatSlugs(doc, refData)) {
+    const effect = FEAT_POOL_EFFECTS[slug];
     if (!effect) continue;
     const delta =
       typeof effect.maxDelta === "number"
