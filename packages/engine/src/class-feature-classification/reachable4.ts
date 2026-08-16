@@ -14,7 +14,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
     id: "KmtDDLu690DySH1e",
     name: "Fervor",
     bucket: "situational",
-    note: "Rounds-per-day activation (free action to enter or end); the attack/damage/DR/caster-level/speed benefits and the Charisma penalty only apply while the fervor is active.",
+    note: "No vendored uses.maxFormula, so no pool row ever derives and there's no toggle surface to attach to, despite the rich self-buff shape (attack/damage/DR/caster-level/speed benefits and a Charisma penalty, all conditional on the fervor being active).",
   },
   nAf2hU0pfOBrOSAr: {
     id: "nAf2hU0pfOBrOSAr",
@@ -62,7 +62,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
     id: "2TsDfK0SKC8IGVx4",
     name: "Smite Evil",
     bucket: "situational",
-    note: "Once-per-day swift-action activation against a chosen target; the Charisma-to-attack, level-to-damage, DR bypass, and deflection AC all only apply while smite is active against that target.",
+    note: "The Charisma-to-attack, level-to-damage, DR bypass, and deflection AC (all single-target scoped, active only against the chosen smite target) already reach the sheet as a pool detail line (tables.ts's smiteEvilDetail/smiteEvilLabel, applied via resources.ts's name+classTag matching) rather than as a Change; not additionally wired as a per-day activation toggle.",
   },
   ciyImu4uU8FDRucB: {
     id: "ciyImu4uU8FDRucB",
@@ -200,7 +200,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
     id: "etOoJgoeaBRenCir",
     name: "Charmed Life",
     bucket: "situational",
-    note: "Limited-use (starting 3/day) immediate-action activation before a save roll; the Charisma-modifier bonus only applies when spent.",
+    note: "The Charisma-modifier bonus applies to a single saving throw, declared as an immediate action before that one roll: a single-roll spend, the residue category every pool-spend table deliberately excludes (a toggle left on would over-apply to every save). The pool itself rides the generic resource-pool pipeline.",
   },
   wdi1pSAXbTqBMeGx: {
     id: "wdi1pSAXbTqBMeGx",

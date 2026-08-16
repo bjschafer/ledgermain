@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-16-per-day-activation-toggles",
+    date: "2026-08-16",
+    title: "Daily powers join the pool toggles",
+    note: "More limited-use powers now sit on their daily-use trackers as toggles. A warpriest can switch on the Sacred Armor enhancement bonus alongside Sacred Weapon, and wizard school powers arrive too: Protective Ward applies its deflection bonus to AC, Perfection of Self offers a toggle per ability score for its enhancement bonus, and Shape Emotions in ward mode adds its morale bonus on saves against mind-affecting effects. Each applies its numbers to your sheet while it is on, at the level the power arrives.",
+  },
+  {
     id: "2026-08-16-pool-spend-toggles",
     date: "2026-08-16",
     title: "Point-spend effects are toggles on their pools",

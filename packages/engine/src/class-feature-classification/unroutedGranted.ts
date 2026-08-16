@@ -20,7 +20,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:vulture:death-s-companion",
     name: "Death's Companion",
     bucket: "situational",
-    note: "Immediate-action save bonus with a per-day use limit and a round-limited duration equal to druid level; not always-on.",
+    note: "A real self save bonus (vs. disease/death effects), but the hand-authored vendored entry carries no `uses.maxFormula` at all — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to, even though the effect itself is otherwise toggle-shaped.",
   },
   dcCZW51UewXFLLGo: {
     id: "dcCZW51UewXFLLGo",
@@ -38,13 +38,13 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "Lz9i4zNAH50umw3s",
     name: "Shape Emotions",
     bucket: "situational",
-    note: "Activated 30-foot aura with a rounds-per-day budget and a caster-chosen mode (ward self and allies, or penalize enemies); no unconditional number.",
+    note: "The ward mode's +4 morale bonus on saves against mind-affecting effects (self-inclusive: 'you and your allies') is surfaced as a per-day activation toggle on the feature's own pool row (per-day-activations/granted.ts); the fear-step-down clause and the enemy-facing enhance mode stay prose.",
   },
   ROJkE2g2kWfhy6TI: {
     id: "ROJkE2g2kWfhy6TI",
     name: "Aura of Prescience",
     bucket: "subsystem",
-    note: "Activated aura granting allies (not clearly the caster) an insight bonus; a castable ability rather than a bonus landing on the caster's own sheet.",
+    note: "The insight bonus reads 'allies within this aura,' never 'you and your allies' (contrast this school's Foretell/Shape Emotions powers, which write the self-inclusive phrase explicitly) — the caster is excluded by design, not by ambiguity, so no Change lands on the wizard's own sheet.",
   },
   "inquisition-power:illumination:aura-of-enlightenment": {
     id: "inquisition-power:illumination:aura-of-enlightenment",
@@ -56,7 +56,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "vQ6i4zS5T7z1UNOM",
     name: "Foretell",
     bucket: "situational",
-    note: "Activated aura, rounds-per-day budget, explicitly includes 'you and your allies' when aiding; scoped to an activation the static sheet cannot represent as always-on.",
+    note: "The aid mode's +2 luck bonus is self-inclusive ('you and your allies') but spans ability checks, attack rolls, caster level checks, all saving throws, and skill checks at once; no Change target aggregates that broadly, and wiring only a subset (e.g. attack + allSavingThrows) would misrepresent the power's real scope. The hinder mode is enemy-facing.",
   },
   EzZ8XZHjMCBwaL5o: {
     id: "EzZ8XZHjMCBwaL5o",
@@ -74,13 +74,13 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:jungle:brachiation",
     name: "Brachiation",
     bucket: "situational",
-    note: "Free-action climb speed and Acrobatics bonus limited to a rounds-per-day budget, not a permanent stat.",
+    note: "A real self climb speed and Acrobatics bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to, even though the effect itself is otherwise toggle-shaped.",
   },
   "druid-domain:plane-of-water:aquatic-veil": {
     id: "druid-domain:plane-of-water:aquatic-veil",
     name: "Aquatic Veil",
     bucket: "situational",
-    note: "Standard-action activation, duration capped at Wisdom-modifier rounds, and a per-day use limit gate the Swim bonus.",
+    note: "A real self Swim bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to; the breathe-underwater and pseudopod-reach clauses would stay prose regardless.",
   },
   "75Y2PY8Uha3o0fHE": {
     id: "75Y2PY8Uha3o0fHE",
@@ -92,13 +92,13 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:plane-of-air:aerial-agility",
     name: "Aerial Agility",
     bucket: "situational",
-    note: "Free-action activation with a Wisdom-modifier round cap and a per-day use limit around Fly/Acrobatics.",
+    note: "A real self Fly/Acrobatics bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to; the subjective-gravity clauses would stay prose regardless.",
   },
   "druid-domain:serpent:slither": {
     id: "druid-domain:serpent:slither",
     name: "Slither",
     bucket: "situational",
-    note: "Free-action, 1-round duration, per-day use limit around a dodge/CMB bonus while squeezing through terrain.",
+    note: "A real self dodge AC/CMB/Escape Artist bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to; the squeeze-through-terrain clause would stay prose regardless.",
   },
   "inquisition-power:reformation:awaken-discontent": {
     id: "inquisition-power:reformation:awaken-discontent",
@@ -224,7 +224,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "qIFUwyCjea79rUri",
     name: "Protective Ward",
     bucket: "situational",
-    note: "Standard-action activation, Intelligence-modifier round duration, and a per-day use limit gate the deflection bonus.",
+    note: "The +1 (+1 per 5 wizard levels) deflection AC bonus is self-inclusive ('all allies in this area, including you') and is surfaced as a per-day activation toggle on the feature's own pool row (per-day-activations/granted.ts); the standard-action activation and Intelligence-modifier round duration stay prose reminders.",
   },
   tJCegZfiuMpDkVEd: {
     id: "tJCegZfiuMpDkVEd",
@@ -236,7 +236,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "u7r3RkiMNAhv9I2d",
     name: "Augment",
     bucket: "situational",
-    note: "Standard-action touch, level-scaled bonus, and a rounds/uses-per-day cap gate the ability-score or natural-armor bonus.",
+    note: "Standard-action touch that grants the bonus to 'a creature' the wizard touches — like Diviner's Fortune (Divination school), RAW never writes 'yourself or an ally,' so it reads as ally-directed rather than a guaranteed bonus on the wizard's own sheet; the level-scaled amount and rounds/uses-per-day cap stay prose either way.",
   },
   "blessing-power:air:major": {
     id: "blessing-power:air:major",
@@ -290,7 +290,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "0BZYhHw4PbbWJuhP",
     name: "Earth Glide (WIZ)",
     bucket: "subsystem",
-    note: "Grants a temporary earth-glide movement mode gated to a rounds-per-day budget; a movement-mode grant, not a Change-shaped bonus.",
+    note: "Grants a temporary earth-glide movement mode gated to a rounds-per-day budget. This engine has a `burrowSpeed` Change target (used elsewhere for earth-glide-shaped grants that state a speed), but this power's text never gives one — no fall-back rate, no 'equal to your base speed' clause — so there is no RAW number to attach to it.",
   },
   "1aP0lmJYDqM5pMHY": {
     id: "1aP0lmJYDqM5pMHY",
@@ -356,7 +356,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:monkey:monkey-athletics",
     name: "Monkey Athletics",
     bucket: "situational",
-    note: "Free-action activation with a per-day use limit gates a competence bonus to one of four named skill checks.",
+    note: "A real self competence bonus to one of four named skill checks (Acrobatics/Climb/Disable Device/Sleight of Hand), but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface for the four choose-one options this power would otherwise mirror (see Perfection of Self's per-ability-score toggles).",
   },
   "druid-domain:ruins:ruin-touch": {
     id: "druid-domain:ruins:ruin-touch",
@@ -470,7 +470,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "W7nMOLi2kXGEKe72",
     name: "Invisibility Field",
     bucket: "subsystem",
-    note: "Grants greater invisibility as a swift action gated to a rounds-per-day budget; a granted effect, not a Change-shaped bonus.",
+    note: "Self-facing, but grants Invisibility, Greater as a swift action — a condition/effect grant with no matching Change target in this engine's vocabulary (invisibility isn't a stat bonus), not a scoping problem.",
   },
   YPqkXzcxHtggndAY: {
     id: "YPqkXzcxHtggndAY",
@@ -560,19 +560,19 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:plane-of-earth:one-with-the-stone",
     name: "One with the Stone",
     bucket: "subsystem",
-    note: "Grants an earth-glide movement mode (or alternatively a familiar), gated to a rounds-per-day budget; not a Change-shaped bonus.",
+    note: "Unlike Earth Glide (WIZ), this power DOES state a speed ('earth glide... with a speed equal to your base speed'), which would map to `burrowSpeed`, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to. The alternative familiar grant stays prose regardless.",
   },
   "druid-domain:plane-of-earth:spelunker": {
     id: "druid-domain:plane-of-earth:spelunker",
     name: "Spelunker",
     bucket: "situational",
-    note: "Free-action activation, 1-round duration, and a per-day use limit gate the terrain immunity and damage reduction.",
+    note: "The hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach anything to. The DR 5/— is also scoped to 'rocky hazards,' a qualifier with no match in this engine's DR vocabulary (material/alignment/weapon-type, not terrain-hazard-type), so even a wireable version would need a qualifier this engine doesn't carry.",
   },
   "druid-domain:the-uskbond:absorb-pain": {
     id: "druid-domain:the-uskbond:absorb-pain",
     name: "Absorb Pain",
     bucket: "situational",
-    note: "The save bonus against pain effects only applies for the round after an immediate-action trigger (taking lethal damage and using the ability), gated to a per-day use limit; not unconditional.",
+    note: "A real self save bonus against pain effects for the round after the triggering immediate action, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to, even though the trigger-then-toggle shape otherwise matches this table's pattern.",
   },
   ei3z5reJYduGyrrC: {
     id: "ei3z5reJYduGyrrC",
@@ -692,7 +692,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "qzCj0dGiKmIMw4wf",
     name: "Perfection of Self",
     bucket: "situational",
-    note: "A swift-action enhancement bonus to a chosen ability score lasting 1 round, gated to a per-day use limit; not unconditional.",
+    note: "The self enhancement bonus to a chosen ability score is surfaced as six per-day activation toggles (one per ability score) on the feature's own pool row (per-day-activations/granted.ts), standing in for the 'single ability score of your choice' pick; the swift-action activation and 1-round duration stay prose reminders.",
   },
   raSRxU51tCnX2oMy: {
     id: "raSRxU51tCnX2oMy",

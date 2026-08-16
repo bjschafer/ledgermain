@@ -50,7 +50,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_3: Readonly<
     id: "UBv1y1h93jrnhWxO",
     name: "Sacred Armor",
     bucket: "subsystem",
-    note: "Swift-action activated, minutes-per-day resource (the pool itself is already tracked via the vendored uses.maxFormula), and the enhancement bonus plus chosen armor special ability vary daily by player pick; no single flat Change.",
+    note: "The armor enhancement bonus is surfaced as a per-day activation toggle on the feature's own pool row (per-day-activations/reachable34.ts); the daily-chosen armor special ability trade stays prose.",
   },
   YGbFrqaGvnCbAKKV: {
     id: "YGbFrqaGvnCbAKKV",
@@ -350,7 +350,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_3: Readonly<
     id: "Rh4www7gtV7wvUzg",
     name: "Grit",
     bucket: "subsystem",
-    note: "Defines the grit resource pool (the daily maximum is already tracked via the vendored uses.maxFormula); spending and regaining grit are activation-driven, not a flat Change.",
+    note: "Defines the grit resource pool itself (the daily maximum is already tracked via the vendored uses.maxFormula) with no number of its own; the actual grit-spent deeds are surfaced as toggles on this pool row via grit-panache-spends.ts.",
   },
   Rzexvt4z8taA8dCu: {
     id: "Rzexvt4z8taA8dCu",

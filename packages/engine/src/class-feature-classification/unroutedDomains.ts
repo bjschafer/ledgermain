@@ -18,7 +18,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "kHXw5V06TkymXxF3",
     name: "Aura of Protection (Domain Power)",
     bucket: "situational",
-    note: "Emitting a 30-foot aura costs a rounds-per-day resource pool; the deflection AC bonus and elemental resistance apply to allies inside the aura, not an unconditional bonus to the cleric's own sheet.",
+    note: "The power's text reads \"you and your allies,\" so the deflection AC bonus reaches the cleric too, not allies alone. It already surfaces as an activate/deactivate toggle on this pool's row through the vendored linked buff (`grantsBuffs`) that `resources.ts`'s own `linkedBuffIds` pass resolves, whose `changes[]` carries the deflection bonus; no per-day-activations entry is needed. The elemental-resistance clause named in the power's description isn't captured in that buff's changes and stays unmodeled prose.",
   },
   "3zggJMxuipE68IkT": {
     id: "3zggJMxuipE68IkT",
@@ -60,7 +60,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "yDG7xVuH7oqWS4Mt",
     name: "Deflection Aura",
     bucket: "situational",
-    note: "Once-per-day rounds-limited aura; the deflection AC/CMD bonus applies to allies inside the aura, not the cleric unconditionally.",
+    note: 'Once-per-day rounds-limited aura; the deflection AC/CMD bonus applies to allies inside the aura (the power\'s text reads "allies," not "you and your allies"), not the cleric unconditionally. It already surfaces as an activate/deactivate toggle on this pool\'s row through the vendored linked buff (`grantsBuffs`) that `resources.ts`\'s own `linkedBuffIds` pass resolves; no per-day-activations entry is needed.',
   },
   "subdomain-power:demon:fury-of-the-abyss": {
     id: "subdomain-power:demon:fury-of-the-abyss",
@@ -78,7 +78,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "LY6y8GWhXzK8wDDZ",
     name: "Wooden Fist",
     bucket: "situational",
-    note: "Free-action activation drawing from a rounds-per-day pool; the unarmed damage bonus only applies while the power is active.",
+    note: "Free-action activation drawing from a rounds-per-day pool; the unarmed damage bonus is self-facing while active, but it scales with the granting class's level (half cleric level, minimum +1) — a formula this table can't express safely across a domain power's cleric/inquisitor/druid bearers (no `@class.unlevel` context here, and a `classTag` guard would just hide the toggle for the other bearers), so it stays prose.",
   },
   T4q7Ib0ED01PNDyT: {
     id: "T4q7Ib0ED01PNDyT",
@@ -90,7 +90,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "domain:destruction:destructive-aura",
     name: "Destructive Aura",
     bucket: "situational",
-    note: "Rounds-per-day aura; the damage bonus and automatic-crit-confirmation apply to any attack (including the cleric's own) made against a creature inside the aura, and only while the aura is active.",
+    note: "This synthetic id carries no vendored `uses.maxFormula`, so no pool row derives for it to attach a toggle to. Independently, the damage bonus and automatic-crit-confirmation apply to any attack (including the cleric's own) made against a creature inside the aura, and only while the aura is active, not an unconditional bonus.",
   },
   "subdomain-power:insect:exoskeleton": {
     id: "subdomain-power:insect:exoskeleton",
@@ -252,7 +252,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "GidNLmDQBdokwgUn",
     name: "Bramble Armor",
     bucket: "situational",
-    note: "Free-action activation drawing from a rounds-per-day pool; the retaliation damage against attackers only applies while bramble armor is active.",
+    note: "Free-action activation drawing from a rounds-per-day pool; the retaliation damage (1d6 + 1 per two cleric levels) is dice-based damage dealt to whoever strikes the cleric, not a bonus number on the cleric's own sheet, so it has no Change-shaped target and stays prose.",
   },
   KF3SgIKeBACJhSZ1: {
     id: "KF3SgIKeBACJhSZ1",
@@ -288,7 +288,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "WMtJbAlvzaLnzYVy",
     name: "Might of the Gods",
     bucket: "situational",
-    note: "Rounds-per-day activated effect; the Strength enhancement bonus only applies while the power is active.",
+    note: "Rounds-per-day activated effect; the Strength enhancement bonus is self-facing while active, but it equals the granting class's level outright — a formula this table can't express safely across a domain power's cleric/inquisitor/druid bearers (no `@class.unlevel` context here, and a `classTag` guard would just hide the toggle for the other bearers), so it stays prose.",
   },
   XhpyFMIbhL5ogMVe: {
     id: "XhpyFMIbhL5ogMVe",
@@ -306,7 +306,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "subdomain-power:flowing:go-with-the-flow",
     name: "Go with the Flow",
     bucket: "subsystem",
-    note: "Touch power applying a calm-emotions-style effect to a target, drawing from a uses-per-day pool; no bonus number applies to the cleric's own sheet.",
+    note: "This synthetic id carries no vendored `uses.maxFormula`, so no pool row derives for it to attach a toggle to. Independently, it is a touch power applying a calm-emotions-style effect to a target; no bonus number applies to the cleric's own sheet.",
   },
   "subdomain-power:portal:sacred-threshold": {
     id: "subdomain-power:portal:sacred-threshold",
@@ -324,7 +324,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "subdomain-power:protean:aura-of-chaos",
     name: "Aura of Chaos",
     bucket: "subsystem",
-    note: "Rounds-per-day aura forcing enemies to declare and resolve an action type against a Will save; a condition effect on enemies, not a bonus number on the cleric.",
+    note: "This synthetic id carries no vendored `uses.maxFormula`, so no pool row derives for it to attach a toggle to. Independently, it forces enemies within the aura to declare and resolve an action type against a Will save; a condition effect on enemies, not a bonus number on the cleric.",
   },
   u5LefrXZxQgLqmyJ: {
     id: "u5LefrXZxQgLqmyJ",
@@ -474,7 +474,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "subdomain-power:home:guarded-hearth",
     name: "Guarded Hearth",
     bucket: "situational",
-    note: "Requires a once-per-day, 10-minute setup and only benefits creatures the cleric designates while they remain inside the warded area; the sacred bonus (Wisdom modifier) is scoped to that setup and area.",
+    note: "This synthetic id carries no vendored `uses.maxFormula`, so no pool row derives for it to attach a toggle to, even though the sacred bonus (a flat Wisdom modifier, not level-scaling) could otherwise cover the cleric if self-designated. It also requires a 10-minute setup and only benefits creatures the cleric designates while they remain inside the warded area, a player choice this table has no stored pick to key from.",
   },
   "subdomain-power:imagination:haze-of-daydreams": {
     id: "subdomain-power:imagination:haze-of-daydreams",

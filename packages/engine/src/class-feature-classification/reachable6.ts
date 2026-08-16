@@ -26,7 +26,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "2Az38ZPYwjYBKZd2",
     name: "Rage (UC)",
     bucket: "situational",
-    note: "the textbook 'while raging' state: attack/damage/Will/AC/temp-HP all apply only while the rage buff is active, which this catalog's numeric bucket cannot express unconditionally.",
+    note: "already reaches the sheet through the generic grantsBuffs resolution (resources.ts's resolveGrantsBuffs), not this table: the vendored Rage (Unchained) buff (id ciAO4KwMonUzAGY0) carries the +2 melee attack/damage/Will and -2 AC changes and surfaces as a linked-buff toggle on the Rage pool row automatically. The 2-temp-HP-per-HD clause has no vendored Change or contextNote and stays unmodeled prose.",
   },
   YCT3N8TaDSPt1AQb: {
     id: "YCT3N8TaDSPt1AQb",
@@ -272,7 +272,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "EYejyvbnCJKiWeel",
     name: "Veil Pool",
     bucket: "subsystem",
-    note: "a resource pool spent to activate a disguise-self-style transformation with level-gated sensory upgrades; the pool size rides the generic resource-pool pipeline, and the transformation itself is an activated ability, not a baseline Change.",
+    note: "the prose describes a class-level-plus-ability-modifier pool that funds a disguise-self-style transformation with level-gated sensory upgrades, but the vendored feature carries no uses field at all (unlike Ki Pool/Arcane Pool), so deriveResourcePools never derives a Veil Pool row for a toggle to attach to — the same reachability gap as Founders' Favor.",
   },
   EpDI0Qi5SDRmL4lK: {
     id: "EpDI0Qi5SDRmL4lK",
