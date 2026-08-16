@@ -126,7 +126,7 @@ export const SWASHBUCKLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Elysian Conviction",
     level: 2,
     bucket: "situational",
-    note: "real Cha-to-saves bonus vs. mind-affecting, but only while she has at least 1 panache point — live resource state the engine can't check (class note 2)",
+    note: "real Cha-to-saves bonus vs. mind-affecting, gated on live resource state the engine can't check statically — surfaced as a panache-pool spend toggle instead (grit-panache-spends.ts)",
   },
 
   // ── swashbuckler:courser ──
@@ -135,7 +135,7 @@ export const SWASHBUCKLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Confounding Target",
     level: 4,
     bucket: "situational",
-    note: "real +10 ft. speed, but gated on at least 1 panache point (live resource state, class note 2) plus light/no armor; the Spring Attack grant is a named-feat grant, not a count",
+    note: "real +10 ft. speed, gated on at least 1 panache point (live resource state, class note 2) plus light/no armor — surfaced as a panache-pool spend toggle instead (grit-panache-spends.ts); the Spring Attack grant is a named-feat grant, not a count",
   },
   "swashbuckler:courser:deeds:1": {
     archetypeId: "swashbuckler:courser",
@@ -156,7 +156,7 @@ export const SWASHBUCKLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Swift Target",
     level: 1,
     bucket: "situational",
-    note: "real +5 ft. speed, but gated on at least 1 panache point (live resource state, class note 2) plus light/no armor; the Dodge grant is a named-feat grant, not a count",
+    note: "real +5 ft. speed, gated on at least 1 panache point (live resource state, class note 2) plus light/no armor — surfaced as a panache-pool spend toggle instead (grit-panache-spends.ts), tiered up to +10 ft. at Confounding Target's 4th level; the Dodge grant is a named-feat grant, not a count",
   },
 
   // ── swashbuckler:daring-infiltrator ──

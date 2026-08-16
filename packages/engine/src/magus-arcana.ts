@@ -88,8 +88,21 @@ const ARCANA_LIST: MagusArcanaDef[] = [
       "Swift action, 1 arcane pool point: gain an insight bonus equal to your Intelligence modifier on all attack rolls until the end of your turn.",
     minLevel: 3,
     changes: [],
-    contextNotes: [note("Costs 1 arcane pool point per use; apply the insight bonus manually.")],
+    contextNotes: [
+      note(
+        "Costs 1 arcane pool point per use: toggle it on the Arcane Pool resource row instead of applying the insight bonus by hand.",
+      ),
+    ],
     displayOnly: true,
+    spendToggle: {
+      changes: [{ formula: "@abilities.int.mod", target: "attack", type: "insight" }],
+      contextNotes: [
+        note(
+          "Lasts until the end of your turn: remember to toggle it back off before your next turn starts.",
+          "attack",
+        ),
+      ],
+    },
   },
   {
     id: "broadStudy",
@@ -264,9 +277,30 @@ const ARCANA_LIST: MagusArcanaDef[] = [
     minLevel: 3,
     changes: [],
     contextNotes: [
-      note("Temporary shield bonus while active — not a permanent Change; apply manually.", "ac"),
+      note(
+        "Costs 1 arcane pool point per use: toggle it on the Arcane Pool resource row instead of applying the shield bonus by hand.",
+        "ac",
+      ),
     ],
     displayOnly: true,
+    spendToggle: {
+      // Vendored Shield (the spell) grants its identical "shield bonus to AC"
+      // via `{ target: "sac", type: "base" }` (buffs.json), not a bare "ac"
+      // target: `sac` is this engine's dedicated shield-bonus-to-AC target
+      // (`ac-bonus-types.ts` normalizes it onto the real "shield" bonus
+      // type/category), which is what makes this correctly compete
+      // highest-wins against an actual worn shield or the Shield spell
+      // instead of stacking with either. A bare "ac" target would land in
+      // the AC breakdown's touch-AC-eligible "generic" category, which is
+      // wrong for a shield-type bonus.
+      changes: [{ formula: "@abilities.int.mod", target: "sac", type: "shield" }],
+      contextNotes: [
+        note(
+          "Lasts until the start of your next turn: remember to toggle it back off. Modeled as a shield bonus, so it will not stack with an actual shield or the Shield spell.",
+          "ac",
+        ),
+      ],
+    },
   },
   {
     id: "stillMagic",

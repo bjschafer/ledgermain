@@ -44,8 +44,8 @@ function baseDoc(over: Partial<CharacterDoc>): CharacterDoc {
   } as CharacterDoc;
 }
 
-describe("pool-spend toggle tables (mechanism, empty content)", () => {
-  it("monk 4 / magus 5 / gunslinger 3 derives Ki Pool, Arcane Pool, and Grit without tableOptions", () => {
+describe("pool-spend toggle tables (mechanism contract)", () => {
+  it("monk 4 / magus 5 / gunslinger 3 derives Ki Pool, Arcane Pool, and Grit with spend toggles", () => {
     const doc = baseDoc({
       identity: {
         name: "Scaffold",
@@ -71,8 +71,14 @@ describe("pool-spend toggle tables (mechanism, empty content)", () => {
     expect(arcanePool).toBeDefined();
     expect(grit).toBeDefined();
 
-    expect(kiPool?.tableOptions).toBeUndefined();
-    expect(arcanePool?.tableOptions).toBeUndefined();
-    expect(grit?.tableOptions).toBeUndefined();
+    // Populated factories attach real options; a factory with nothing to
+    // offer must leave tableOptions undefined (never []), so the web app
+    // never renders an empty toggle section.
+    expect(kiPool?.tableOptions?.length).toBeGreaterThan(0);
+    expect(arcanePool?.tableOptions?.length).toBeGreaterThan(0);
+    expect(grit?.tableOptions?.length).toBeGreaterThan(0);
+    for (const pool of pools) {
+      expect(pool.tableOptions).not.toEqual([]);
+    }
   });
 });

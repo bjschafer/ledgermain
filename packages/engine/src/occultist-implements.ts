@@ -100,16 +100,25 @@
  *     per focus invested (cap = 4 × occultist level) — this engine has no
  *     undead-control-pool stat anywhere.
  *
- * BASE FOCUS POWERS and the FOCUS-POWER MENU are, per the task brief,
- * note-tier/`displayOnly` (name + one-line summary, no `Change[]`) —
- * EVERY occultist focus power (base or menu) is an ACTIVATED ability spent
- * from the Mental Focus pool (a swift/standard/move action, often with its
- * own duration/save), not a passive always-on bonus, so none of them are
- * candidates for a persistent sheet `Change` the way a resonant power's
- * always-on investment bonus is — same "activated, not passive" reasoning
- * `psychic-disciplines.ts` gives for leaving phrenic amplifications
- * unmodeled, and `oracle-revelations.ts`/`witch-hexes.ts` give for their own
- * `changes: []` entries.
+ * BASE FOCUS POWERS and the FOCUS-POWER MENU are every occultist focus
+ * power (base or menu), each spent from the Mental Focus pool as a
+ * swift/standard/move action. An activated spend is not disqualifying by
+ * itself: one with a standing, clean numeric self-effect and no dice terms
+ * (Legacy Weapon, Aegis, Inspired Assault, Sudden Speed) carries `spendToggle`
+ * data, the same shape `judgments.ts` and `bardic-performances.ts` use for
+ * their own activated, pool-spend abilities — see `OccultistBaseFocusPower.
+ * spendToggle` and `OccultistFocusPowerDef.spendToggle`'s own doc comments
+ * for which of these four are actually wired onto the Mental Focus pool
+ * today versus awaiting a `resources.ts` change. Everything else stays
+ * note-tier/`displayOnly` (name + one-line
+ * summary, no `Change[]`) for its own reason: a dice-based grant
+ * (temp HP, healing), a reactive next-roll bonus, a depleting absorption
+ * pool this engine has no stat for, a full action-economy clone (haste), or
+ * a player choice with no vocabulary axis (Energy Ward's chosen energy
+ * type) — same "no modelable target" reasoning `psychic-disciplines.ts`
+ * gives for leaving phrenic amplifications unmodeled, and
+ * `oracle-revelations.ts`/`witch-hexes.ts` give for their own `changes: []`
+ * entries.
  */
 
 import type {
@@ -124,6 +133,15 @@ import type {
 export interface OccultistBaseFocusPower {
   name: string;
   summary: string;
+  /**
+   * Optional pool-spend toggle for this base power, surfaced on the Mental
+   * Focus resource row for every character who knows this school (
+   * `mental-focus-spends.ts`'s `mentalFocusToggleOptions`, keyed off
+   * `build.occultistImplements`), the base-power counterpart to
+   * `OccultistFocusPowerDef.spendToggle`. Absent for every entry except
+   * Transmutation's Legacy Weapon.
+   */
+  spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }
 
 export interface OccultistFocusPowerDef {
@@ -134,11 +152,16 @@ export interface OccultistFocusPowerDef {
   minLevel?: number;
   summary: string;
   /**
-   * Optional pool-spend toggle for this focus power — surfaced on the Mental
-   * Focus resource row (`mental-focus-spends.ts`'s `mentalFocusToggleOptions`
-   * merges it in for a character's picked menu powers) the same way
-   * `bardic-performances.ts`'s table surfaces performance types. Absent for
-   * every entry until a later content wave populates it.
+   * Pool-spend toggle data for this focus power, same shape
+   * `mental-focus-spends.ts`'s `mentalFocusToggleOptions` surfaces for base
+   * powers. `resources.ts`'s call into that factory only forwards
+   * `build.occultistImplements` (known schools), not `build.
+   * occultistFocusPowers` (picked menu powers) — so, unlike the base-power
+   * half, nothing currently reads this field for a picked menu power at
+   * runtime. Populated anyway (Aegis, Inspired Assault, Sudden Speed) as the
+   * data a future `resources.ts` change would need to close that gap; until
+   * then these three are display-only, identically to every other entry that
+   * has no `spendToggle` at all.
    */
   spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }
@@ -221,6 +244,25 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
         name: "Aegis",
         summary:
           "Standard action, 1 focus: touch a suit of armor or a shield to grant it an enhancement bonus of 1 + 1 for every 6 occultist levels (max +4 at 18th), or an equivalent special ability instead. Lasts 1 minute.",
+        spendToggle: {
+          changes: [
+            {
+              formula: "min(4, 1 + floor(@classes.occultist.level / 6))",
+              target: "ac",
+              type: "enhancement",
+            },
+          ],
+          contextNotes: [
+            {
+              target: "allChecks",
+              text: "Costs 1 focus and lasts 1 minute, touching your own armor or shield.",
+            },
+            {
+              target: "allChecks",
+              text: "You can grant an equivalent special ability instead of this flat bonus; that trade isn't modeled here.",
+            },
+          ],
+        },
       },
       {
         slug: "energy-shield",
@@ -398,6 +440,29 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
         name: "Inspired Assault",
         summary:
           "Standard action, 1 focus: touch a living creature to grant it a morale bonus on attack rolls and fear saves of 1 + 1 per 6 occultist levels (max +4), lasting 1 minute.",
+        // Occultist tops out at 20th level, where floor(20 / 6) = 3, so the
+        // formula's own +1 reaches the stated max of +4 without a clamp.
+        spendToggle: {
+          changes: [
+            {
+              formula: "1 + floor(@classes.occultist.level / 6)",
+              target: "attack",
+              type: "morale",
+            },
+            {
+              formula: "1 + floor(@classes.occultist.level / 6)",
+              target: "allSavingThrows",
+              type: "morale",
+              saveCategories: ["fear"],
+            },
+          ],
+          contextNotes: [
+            {
+              target: "allChecks",
+              text: "Costs 1 focus and lasts 1 minute; RAW this targets a touched living creature (yourself included). This tracker applies it to your own sheet only, the same way other pool toggles do.",
+            },
+          ],
+        },
       },
       {
         slug: "mental-discord",
@@ -484,6 +549,12 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
         slug: "energy-ward",
         name: "Energy Ward",
         minLevel: 7,
+        // No spendToggle: the resistance tiers are otherwise clean flat
+        // numbers, but RAW picks the energy type at activation (acid, cold,
+        // electricity, or fire) with no picker for that choice in this
+        // engine, the same "residue" call judgments.ts's Resistance makes
+        // for the identical shape. The melee-reflect-damage clause is dice
+        // (1d6) on top of that, a second reason it stays note-tier.
         summary:
           "Standard action, 1 focus: gain resistance 10 (15 at 13th, 20 at 19th) to one chosen energy type, and creatures that hit you in melee take 1d6 of that energy damage. Lasts 1 round/occultist level.",
       },
@@ -626,6 +697,30 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
       name: "Legacy Weapon",
       summary:
         "1 focus: touch a weapon to grant it an enhancement bonus of 1 + 1 for every 6 occultist levels (max +4 at 18th), stacking with the weapon's own enhancement bonus to a maximum total of +5; can imbue a weapon special ability instead of a flat bonus. Lasts 1 minute.",
+      spendToggle: {
+        changes: [
+          {
+            formula: "min(4, 1 + floor(@classes.occultist.level / 6))",
+            target: "attack",
+            type: "enhancement",
+          },
+          {
+            formula: "min(4, 1 + floor(@classes.occultist.level / 6))",
+            target: "wdamage",
+            type: "enhancement",
+          },
+        ],
+        contextNotes: [
+          {
+            target: "allChecks",
+            text: "Costs 1 focus, lasts 1 minute, and applies to one touched weapon: turn this off before making attacks with a different one.",
+          },
+          {
+            target: "allChecks",
+            text: "You can imbue a weapon special ability instead of some or all of this flat bonus; that trade isn't modeled here.",
+          },
+        ],
+      },
     },
     resonantPower: {
       name: "Physical Enhancement",
@@ -656,6 +751,16 @@ const SCHOOL_LIST: OccultistSchoolDef[] = [
         name: "Sudden Speed",
         summary:
           "Swift action, 1 focus: increase your land speed by 30 ft. for 1 minute; doesn't stack with itself.",
+        // RAW states no bonus type for the +30 ft (verified against
+        // aonprd.com's live text) — untyped, per the Core Rulebook default
+        // for an unstated bonus; the ability's own "doesn't stack with
+        // itself" clause is the standard override an untyped bonus needs
+        // (a typed bonus wouldn't need it, since same-type bonuses already
+        // don't stack by the general stacking rule).
+        spendToggle: {
+          changes: [{ formula: "30", target: "landSpeed", type: "untyped" }],
+          contextNotes: [{ target: "allChecks", text: "Costs 1 focus and lasts 1 minute." }],
+        },
       },
       {
         slug: "quickness",

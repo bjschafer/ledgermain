@@ -110,7 +110,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "mpe3JHJMINddqLWr",
     name: "Arcane Pool",
     bucket: "subsystem",
-    note: "the pool size already derives generically via deriveResourcePools's uses.maxFormula path (same mechanism as the Extra Arcane Pool feat, per feat-classification.ts); the weapon-enhancement spend itself is an activated ability, not a baseline Change.",
+    note: "the pool size already derives generically via deriveResourcePools's uses.maxFormula path (same mechanism as the Extra Arcane Pool feat, per feat-classification.ts); the spend is surfaced as a toggle on the pool row rather than a baseline Change.",
   },
   pqu1Mvo46iRpVH3I: {
     id: "pqu1Mvo46iRpVH3I",
@@ -152,7 +152,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "Fb7VxWMSOZRN71K8",
     name: "Favor: Crucisal's Guidance",
     bucket: "situational",
-    note: "a swift-action favor-point spend, active for 1 minute and only 'in an urban environment'; not an unconditional bonus.",
+    note: "a swift-action favor-point spend, active for 1 minute and only 'in an urban environment'; not an unconditional bonus. Also not reachable as a pool toggle: its Founders' Favor pool carries no vendored uses.maxFormula at all (unlike Judgment/Bardic Performance/Sacred Weapon), so deriveResourcePools never derives a Founders' Favor row for a toggle to attach to.",
   },
   JKJoHy5NveXGaZqv: {
     id: "JKJoHy5NveXGaZqv",

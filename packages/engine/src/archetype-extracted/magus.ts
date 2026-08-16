@@ -61,7 +61,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Arcane Pool",
     level: 1,
     bucket: "subsystem",
-    note: "redirects arcane pool spend-options to armor enhancement instead of weapon enhancement; pool size/cadence unchanged — see class note 1 (spend-option changes are subsystem), no baseline number to extract",
+    note: "redirects arcane pool spend-options to armor enhancement instead of weapon enhancement; pool size/cadence unchanged — see class note 1 (spend-option changes are subsystem), no baseline number to extract; the armor-enhancement spend itself is modeled as a pool spend-toggle (arcane-spends.ts), which swaps in for the base weapon toggle on this archetype",
   },
   "magus:armored-battlemage:armor-training:3": {
     archetypeId: "magus:armored-battlemage",
@@ -382,7 +382,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Arcane Pool",
     level: 1,
     bucket: "subsystem",
-    note: "redirects arcane pool spend into sneak-attack dice on a melee attack — an activated, sneak-attack-conditional dice bonus (not a flat modifier), same posture as other activated/resource-gated abilities this pipeline leaves unmodeled",
+    note: "redirects arcane pool spend into sneak-attack dice on a melee attack — an activated, sneak-attack-conditional dice bonus (not a flat modifier), same posture as other activated/resource-gated abilities this pipeline leaves unmodeled; the pool spend-toggle table (arcane-spends.ts) suppresses the base weapon toggle for this archetype and surfaces a context-note-only entry in its place, since the dice bonus itself still has no Change target",
   },
   "magus:greensting-slayer:evasion:7": {
     archetypeId: "magus:greensting-slayer",

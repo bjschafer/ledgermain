@@ -3506,7 +3506,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "nightmare-scars":
     "Unconditional +2 Intimidate bonus; the conditional Diplomacy/Handle Animal bonuses and penalty aren't drafted.",
   "no-name":
-    "Unconditional +2 Bluff bonus; the grit-point Disguise bonus is an activated, conditional effect and isn't drafted.",
+    "Unconditional +2 Bluff bonus; the grit-point Disguise bonus is surfaced as a grit-pool spend toggle instead (grit-panache-spends.ts).",
   "noble-impostor":
     "Unconditional +2 bonus to Bluff and Knowledge (nobility); the Story goal/completion benefits aren't captured.",
   "noble-scion":

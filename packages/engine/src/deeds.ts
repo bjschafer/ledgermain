@@ -131,9 +131,9 @@ const GUNSLINGER_DEED_LIST: DeedDef[] = forClass("gunslinger", [
     name: "Gunslinger's Dodge",
     minLevel: 1,
     actionType: "immediate",
-    cost: "1 (or 0 to drop prone for +4 AC)",
+    cost: "1",
     summary:
-      "Move 5 ft. for a +2 AC bonus against a triggering ranged attack, or drop prone for +4 AC instead; light/medium armor and no more than a light load required.",
+      "Move 5 ft. for a +2 AC bonus against a triggering ranged attack, or spend the same grit point to drop prone for +4 AC instead; light/medium armor and no more than a light load required.",
   },
   {
     id: "quickClear",
@@ -150,7 +150,7 @@ const GUNSLINGER_DEED_LIST: DeedDef[] = forClass("gunslinger", [
     actionType: "passive",
     cost: "0 (requires 1+ grit)",
     summary:
-      "+2 initiative while holding at least 1 grit point; with Quick Draw, draw a firearm as part of the initiative check.",
+      "+2 initiative while holding at least 1 grit point; with Quick Draw, draw a firearm as part of the initiative check. Available as a toggle on the Grit pool.",
   },
   {
     id: "pistolWhip",

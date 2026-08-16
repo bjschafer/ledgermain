@@ -37,7 +37,9 @@
  *     sundering") is passive, but there is no sunder-specific damage target;
  *   - Furious Defense/Formless Mastery grant a flat AC bonus, but only for
  *     limited duration once activated (immediate action, spends ki), same
- *     "activated, not always-on" gap as the witch's Ward hex;
+ *     "activated, not always-on" gap as the witch's Ward hex — the AC-dodge
+ *     half of each is real enough to surface as a `spendToggle` instead (see
+ *     below), even though it stays out of the always-on `changes` field;
  *   - Branch Runner (addition) is passive, but it adds HALF the fast movement
  *     bonus (itself a value that scales by monk level) to a racial climb speed
  *     the monk may not even have — not a flat number, and conditional on
@@ -51,7 +53,14 @@
  * None of these clear the bar for an unconditional Change on the monk's own
  * sheet, so — same discipline as `witch-hexes.ts` — EVERY entry here is
  * `displayOnly: true` with `changes: []`; a `contextNotes` reminder carries
- * the ki cost/duration/save shape instead.
+ * the ki cost/duration/save shape instead. A handful of activated powers
+ * (Furious Defense, Formless Mastery, Sudden Speed, Diamond Resilience,
+ * Diamond Soul, Wind Jump) additionally carry a `spendToggle` — a real,
+ * temporary `Change` the player can switch on when they spend the ki, surfaced
+ * on the Ki Pool resource row rather than folded into `changes` (see
+ * `ki-spends.ts`). Building-Up Koan's random confusion-on-failure downside
+ * keeps it out of that set: modeling only the success case would silently
+ * drop the real risk of a toggle with no failure state.
  */
 
 import type { Change, ContextNote, MonkKiPower, RefData, SourceRef } from "@pf1/schema";
@@ -72,8 +81,9 @@ export interface MonkKiPowerDef {
   /**
    * Optional pool-spend toggle for this power — surfaced on the Ki Pool
    * resource row (`ki-spends.ts`'s `kiSpendToggleOptions`) the same way
-   * `bardic-performances.ts`'s table surfaces performance types. Absent for
-   * every entry until a later content wave populates it.
+   * `bardic-performances.ts`'s table surfaces performance types. Present only
+   * for the powers whose activated effect is a clean, unconditional `Change`
+   * (see file doc comment); absent otherwise.
    */
   spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }
@@ -86,6 +96,8 @@ interface RawPower {
   minLevel?: number;
   summary: string;
   contextNotes?: ContextNote[];
+  /** Pool-spend toggle for this power, surfaced on the Ki Pool resource row — see `ki-spends.ts`. */
+  spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }
 
 function toDef(e: RawPower): MonkKiPowerDef {
@@ -97,6 +109,7 @@ function toDef(e: RawPower): MonkKiPowerDef {
     changes: [],
     contextNotes: e.contextNotes,
     displayOnly: true,
+    spendToggle: e.spendToggle,
   };
 }
 
@@ -199,6 +212,10 @@ const KI_POWER_LIST: MonkKiPowerDef[] = [
     name: "Sudden Speed",
     summary: "Increase your base speed by 30 feet for 1 minute.",
     contextNotes: [note("1 ki point, swift action to activate.")],
+    spendToggle: {
+      changes: [{ formula: "30", target: "landSpeed", type: "untyped" }],
+      contextNotes: [note("1 ki point, swift action, lasts 1 minute.")],
+    },
   }),
   toDef({
     id: "wholenessOfBody",
@@ -270,8 +287,16 @@ const KI_POWER_LIST: MonkKiPowerDef[] = [
     name: "Formless Mastery",
     minLevel: 7,
     summary:
-      "Gain a +4 dodge bonus to AC and a +4 circumstance bonus on attack rolls against a foe using a fighting style you know.",
+      "Gain a +4 dodge bonus to AC, a +4 circumstance bonus on attack rolls, and a bonus on damage rolls equal to your monk level against a foe using a fighting style you know.",
     contextNotes: [note("1 ki point to activate.", "ac")],
+    spendToggle: {
+      changes: [{ formula: "4", target: "ac", type: "dodge" }],
+      contextNotes: [
+        note(
+          "Only the AC half is applied here: the +4 circumstance bonus on attack rolls and the monk-level damage bonus apply only against a foe using a fighting style you know, so track those by hand. 1 ki point, immediate action, lasts until the end of your next turn.",
+        ),
+      ],
+    },
   }),
   toDef({
     id: "furiousDefense",
@@ -279,6 +304,10 @@ const KI_POWER_LIST: MonkKiPowerDef[] = [
     minLevel: 7,
     summary: "Gain a +4 dodge bonus to AC until the start of your next turn.",
     contextNotes: [note("1 ki point, immediate action to activate.", "ac")],
+    spendToggle: {
+      changes: [{ formula: "4", target: "ac", type: "dodge" }],
+      contextNotes: [note("1 ki point, immediate action, lasts until the end of your next turn.")],
+    },
   }),
   // -- 8th level --
   toDef({
@@ -308,7 +337,12 @@ const KI_POWER_LIST: MonkKiPowerDef[] = [
     minLevel: 8,
     summary:
       "Gain a Wisdom-based insight bonus to AC and attack rolls, or become confused if the koan misfires.",
-    contextNotes: [note("2 ki points to activate.", "ac")],
+    contextNotes: [
+      note("2 ki points to activate.", "ac"),
+      note(
+        "Will save, DC 15 + half your monk level: success grants a Wisdom-modifier insight bonus to AC, attack rolls, saving throws, and skill checks until the end of the round; failure leaves you confused for 1 round instead.",
+      ),
+    ],
   }),
   toDef({
     id: "diamondBody",
@@ -352,6 +386,25 @@ const KI_POWER_LIST: MonkKiPowerDef[] = [
     minLevel: 8,
     summary: "Gain a fly speed equal to your base land speed for 1 minute.",
     contextNotes: [note("1 ki point to activate; requires High Jump.")],
+    spendToggle: {
+      // `@attributes.speed.land.total` resolves to base (pre-buff) land
+      // speed (see `rolldata.ts`'s doc comment) — exactly the "base land
+      // speed" RAW asks for here, not a live/buffed speed, so evaluation
+      // order against other active toggles doesn't matter.
+      changes: [
+        {
+          formula: "@attributes.speed.land.total",
+          target: "flySpeed",
+          type: "base",
+          operator: "set",
+        },
+      ],
+      contextNotes: [
+        note(
+          "1 ki point, lasts 1 minute, perfect maneuverability (this app has no separate maneuverability field to record). Requires High Jump.",
+        ),
+      ],
+    },
   }),
   // -- 10th level --
   toDef({
@@ -387,7 +440,22 @@ const KI_POWER_LIST: MonkKiPowerDef[] = [
     name: "Diamond Resilience",
     minLevel: 12,
     summary: "Gain DR 2/— for 1 minute.",
-    contextNotes: [note("1 ki point to activate.")],
+    contextNotes: [
+      note(
+        "1 ki point to activate. DR 2/—, rising to DR 4/— at 16th level and DR 6/— at 19th level.",
+      ),
+    ],
+    spendToggle: {
+      changes: [
+        {
+          formula:
+            "if(gte(@classes.monkUnchained.level, 19), 6, if(gte(@classes.monkUnchained.level, 16), 4, 2))",
+          target: "dr",
+          type: "untyped",
+        },
+      ],
+      contextNotes: [note("1 ki point, swift action, lasts 1 minute.")],
+    },
   }),
   toDef({
     id: "diamondSoul",
@@ -395,6 +463,19 @@ const KI_POWER_LIST: MonkKiPowerDef[] = [
     minLevel: 12,
     summary: "Gain spell resistance equal to your monk level + 10, for a number of rounds.",
     contextNotes: [note("2 ki points to activate.")],
+    spendToggle: {
+      changes: [
+        {
+          formula: "@classes.monkUnchained.level + 10",
+          target: "spellResist",
+          type: "untyped",
+          operator: "set",
+        },
+      ],
+      contextNotes: [
+        note("2 ki points, swift action, lasts a number of rounds equal to your monk level."),
+      ],
+    },
   }),
   toDef({
     id: "masterThoughtKoan",

@@ -75,6 +75,13 @@
  * `contextNotes` reminder carries a trick-name prerequisite (a small handful
  * require another specific trick already known — soft-noted only, PF1
  * prereqs are hybrid per CLAUDE.md) or a ki-cost/DC reminder where relevant.
+ * Herbal Compound is the one exception with a real activated effect: its
+ * benefit-plus-drawback is deterministic (no random or foe-dependent
+ * component), so it carries a `spendToggle` — a temporary `Change` surfaced on
+ * the Ki Pool resource row (see `ki-spends.ts`) — even though `changes` itself
+ * stays empty. Acrobatic Master's own bonus scopes to a single chosen check
+ * rather than every Acrobatics check while active, so it stays `displayOnly`
+ * with no `spendToggle`.
  *
  * The 21 tricks added by a later follow-up (bringing the table from 44 to 65 —
  * full vendored parity) were reviewed against the same honesty bar and none
@@ -108,8 +115,9 @@ export interface NinjaTrickDef {
   /**
    * Optional pool-spend toggle for this trick — surfaced on the Ki Pool
    * resource row (`ki-spends.ts`'s `kiSpendToggleOptions`) the same way
-   * `bardic-performances.ts`'s table surfaces performance types. Absent for
-   * every entry until a later content wave populates it.
+   * `bardic-performances.ts`'s table surfaces performance types. Present only
+   * for a trick whose activated effect is a clean, deterministic `Change`
+   * (Herbal Compound); absent otherwise.
    */
   spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }
@@ -123,6 +131,8 @@ interface RawTrick {
   contextNotes?: ContextNote[];
   /** Real Changes — omitted/empty for every entry except Wall Climber, see file doc comment. */
   changes?: Change[];
+  /** Pool-spend toggle for this trick, surfaced on the Ki Pool resource row — see `ki-spends.ts`. */
+  spendToggle?: { name?: string; changes: Change[]; contextNotes?: ContextNote[] };
 }
 
 function forTier(tier: NinjaTrickTier, minLevel: number, entries: RawTrick[]): NinjaTrickDef[] {
@@ -137,6 +147,7 @@ function forTier(tier: NinjaTrickTier, minLevel: number, entries: RawTrick[]): N
       changes,
       contextNotes: e.contextNotes,
       displayOnly: changes.length === 0,
+      spendToggle: e.spendToggle,
     };
   });
 }
@@ -239,6 +250,14 @@ const TRICK_LIST: NinjaTrickDef[] = [
       name: "Herbal Compound",
       summary:
         "Move action, spend 1 ki: consume a prepared herbal compound for a +4 alchemical bonus on Will saves for 10 minutes per ninja level, at a -2 penalty to AC and Reflex saves for the duration.",
+      spendToggle: {
+        changes: [
+          { formula: "4", target: "will", type: "alchemical" },
+          { formula: "-2", target: "ac", type: "untyped" },
+          { formula: "-2", target: "ref", type: "untyped" },
+        ],
+        contextNotes: [note("1 ki point, move action, lasts 10 minutes per ninja level.")],
+      },
     },
     {
       id: "hiddenWeapons",

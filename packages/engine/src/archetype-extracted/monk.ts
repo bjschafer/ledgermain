@@ -312,7 +312,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Ki Pool",
     level: 4,
     bucket: "subsystem",
-    note: "Ki Pool (unchanged progression, rides the generic resource-pool pipeline for free) minus the speed-increase power — no baseline number change",
+    note: "the vendored description under this id is Ironskin Monk's Ki Pool replacement text (an object/construct damage bonus that replaces the speed option), stamped onto the wrong archetype id — Maneuver Master's real published kit never touches the base Ki Pool at all. Treated as vendored-data contamination: the base ki-spend toggle table (ki-spends.ts) does NOT exclude the speed option for Maneuver Master monks, unlike the genuine Ironskin Monk replacement this text is copied from.",
   },
   "monk:maneuver-master:staggering-blow:5": {
     archetypeId: "monk:maneuver-master",
