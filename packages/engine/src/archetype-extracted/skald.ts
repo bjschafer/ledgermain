@@ -26,9 +26,13 @@
  *    raging-song sub-performance** (a new "Song of X", a change to Inspired
  *    Rage's own bonuses, a rage-power grant tied to raging song, etc.) is
  *    `subsystem` — same posture as bard's bardic-performance rule
- *    (`bard.ts`'s rule 1), because the engine has no generic "activated
- *    performance buff" mechanism beyond the one existing Raging Song buff
- *    already wired up.
+ *    (`bard.ts`'s rule 1). All five base raging-song performance types
+ *    (Inspired Rage, Song of Marching, Song of Strength, Dirge of Doom, Song
+ *    of the Fallen) carry a hand-authored toggle on the Raging Song pool's
+ *    `tableOptions` (`raging-song.ts`), but that mechanism covers only those
+ *    five: an archetype feature that grants a genuinely new sub-song, or
+ *    otherwise modifies one of the five, still has no buff of its own to
+ *    hang a Change on.
  * 3. **Rage Powers** (`rage-power:6` and its 3-level cadence) are a modeled
  *    pick-list shared with barbarian (`rage-powers.ts`) — any feature that
  *    grants, restricts, or swaps a rage power (including "totem" rage-power

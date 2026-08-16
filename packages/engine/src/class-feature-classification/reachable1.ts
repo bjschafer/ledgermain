@@ -11,7 +11,7 @@ const POOL_NOTE =
   "Grants a limited-use resource pool/points, not a flat sheet number; pools with a vendored uses.maxFormula already ride the generic resource-pool pipeline (resources.ts) for free, and this is not a Change-shaped effect for this table either way.";
 
 const PERFORMANCE_NOTE =
-  "A bardic-performance-shaped ability (activated, maintained, chosen from a list of effects): mirrors the archetype-wave rule that any performance modification is subsystem, whether or not it happens to carry a clean formula, since there is no Change mechanism for an activated maintained effect beyond the resource pool plus linked-buff toggle.";
+  "A bardic-performance-shaped ability (activated, maintained, chosen from a list of effects): mirrors the archetype-wave rule that any performance modification is subsystem, whether or not it happens to carry a clean formula, since this table tracks unconditional Change targets and an activated maintained effect isn't one. Hand-authored toggles on the Bardic Performance pool (bardic-performances.ts) cover the twelve core CRB performance types besides Inspire Courage, which rides its own vendored linked buff; entries outside that set still have no Change-shaped target.";
 
 const COMMAND_NOTE =
   "One of Battle Herald's mutually exclusive maintained-action commands, chosen from a list while Inspiring Command is active: same activated/maintained-choice shape as a bardic performance, so subsystem rather than a flat Change even though the bonus itself has a clean formula.";
@@ -84,7 +84,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
     bucket: "subsystem",
     note:
       PERFORMANCE_NOTE +
-      " Also purely ally-targeted (the bard explicitly cannot use it on himself), reinforcing there is no self-facing number to carry.",
+      " Modeled as a note-tier toggle on the Bardic Performance pool (bardic-performances.ts); also purely ally-targeted (the bard explicitly cannot use it on himself), reinforcing there is no self-facing number to carry.",
   },
   "6Ouq3IotfDzfos5z": {
     id: "6Ouq3IotfDzfos5z",
@@ -116,7 +116,9 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
     id: "LIFTbzT5WDcsDn0O",
     name: "Inspire Heroics",
     bucket: "subsystem",
-    note: PERFORMANCE_NOTE,
+    note:
+      PERFORMANCE_NOTE +
+      " Modeled as a numeric toggle on the Bardic Performance pool (bardic-performances.ts), applying its saving-throw/AC bonus as a real Change while active.",
   },
   NxKDrK81s0pokh0U: {
     id: "NxKDrK81s0pokh0U",
@@ -142,7 +144,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
     bucket: "subsystem",
     note:
       PERFORMANCE_NOTE +
-      " Also grants bonus Hit Dice and temporary hit points, a shape with no single flat Change target anyway.",
+      " Modeled as a numeric toggle on the Bardic Performance pool (bardic-performances.ts), applying its attack-roll/Fortitude-save bonuses as real Changes; the bonus Hit Dice and temporary hit points stay a context note since neither is a flat Change target.",
   },
   ZBLJDlr8YK8zuo9I: {
     id: "ZBLJDlr8YK8zuo9I",
@@ -494,7 +496,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
     bucket: "subsystem",
     note:
       PERFORMANCE_NOTE +
-      " Also purely enemy-facing (fascinates a target, applying a skill penalty to the target, not a bonus to the bard).",
+      " Modeled as a note-tier toggle on the Bardic Performance pool (bardic-performances.ts); also purely enemy-facing (fascinates a target, applying a skill penalty to the target, not a bonus to the bard).",
   },
   tWvzTJUsT2FaBOZd: {
     id: "tWvzTJUsT2FaBOZd",

@@ -55,10 +55,14 @@ import { BLOODRAGE_BUFF_ID } from "./bloodrage.js";
 import { COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
 import { FEAT_POOL_EFFECTS, featNameSlug } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
+import {
+  BARDIC_PERFORMANCE_DETAIL,
+  bardicPerformanceToggleOptions,
+} from "./bardic-performances.js";
 import { judgmentPoolDetail, judgmentToggleOptions } from "./judgments.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
-import { RAGING_SONG_DETAIL, SKALD_INSPIRED_RAGE } from "./raging-song.js";
+import { RAGING_SONG_DETAIL, ragingSongToggleOptions } from "./raging-song.js";
 import { resourceTagSlug } from "./resource-tag.js";
 import { buildRollData, type AbilityView } from "./rolldata.js";
 import {
@@ -411,6 +415,11 @@ export function deriveResourcePools(
       // judgments.ts) — surfaced via `tableOptions` below instead of
       // `linkedBuffIds`; this just annotates the simultaneous-count cap.
       detail = judgmentPoolDetail(classLevel);
+    } else if (feature.tag === "bardicPerformance" && classTag === "bard") {
+      // Inspire Courage rides its vendored linked buff (FEATURE_BUFF_POOL_TAG
+      // below); every other CRB performance type has no vendored buff —
+      // surfaced via `tableOptions`, see bardic-performances.ts.
+      detail = BARDIC_PERFORMANCE_DETAIL;
     } else if (feature.tag === "ragingSong" && classTag === "skald") {
       // same shape as Judgment above — Inspired Rage has no vendored buff
       // (unlike bard's Inspire Courage), see raging-song.ts.
@@ -426,8 +435,10 @@ export function deriveResourcePools(
     let tableOptions: ToggleBuffOption[] | undefined;
     if (feature.tag === "judgment" && classTag === "inquisitor") {
       tableOptions = judgmentToggleOptions();
+    } else if (feature.tag === "bardicPerformance" && classTag === "bard") {
+      tableOptions = bardicPerformanceToggleOptions(classLevel);
     } else if (feature.tag === "ragingSong" && classTag === "skald") {
-      tableOptions = [SKALD_INSPIRED_RAGE];
+      tableOptions = ragingSongToggleOptions(classLevel);
     }
 
     // Feats that raise this pool's maximum (Extra Rage, Extra Reservoir, …

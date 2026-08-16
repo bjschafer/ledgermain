@@ -1,11 +1,15 @@
 /**
  * Hand-computed fixture tests for the skald's Raging Song pool and its
- * flagship Inspired Rage toggle. RAW numbers verified against aonprd.com's
- * live Skald class page (2026-07-08): Raging Song rounds/day = 3 + Cha mod at
- * 1st, +2/level thereafter (matches the vendored `uses.maxFormula` exactly —
- * no hand-authoring needed for the pool itself). Inspired Rage: +2 morale
- * Str/Con, +1 morale Will, -1 AC at 1st; Will increases by 1 every 4 levels;
- * Str/Con increases by 2 at 8th and 16th.
+ * five performance-type toggles. RAW numbers verified against aonprd.com's
+ * live Skald class page (Inspired Rage 2026-07-08; Song of Marching, Song of
+ * Strength, Dirge of Doom, Song of the Fallen 2026-08-15): Raging Song
+ * rounds/day = 3 + Cha mod at 1st, +2/level thereafter (matches the vendored
+ * `uses.maxFormula` exactly, no hand-authoring needed for the pool itself).
+ * Inspired Rage: +2 morale Str/Con, +1 morale Will, -1 AC at 1st; Will
+ * increases by 1 every 4 levels; Str/Con increases by 2 at 8th and 16th.
+ * Song of Strength (6th): allies add max(1, floor(skald level / 2)) on
+ * Climb/Swim (`skill.clm`/`skill.swm`, confirmed against other engine
+ * modules' use of the same ids, e.g. familiars.ts, rage-powers.ts).
  */
 
 import { describe, expect, it } from "bun:test";
@@ -13,12 +17,19 @@ import { describe, expect, it } from "bun:test";
 import type { ActiveBuff, CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
+import { compute, deriveResourcePools } from "../src/index.js";
+// Imported directly from the module rather than `../src/index.js`: the new
+// performance-type exports (everything but `SKALD_INSPIRED_RAGE` and
+// `RAGING_SONG_DETAIL`) aren't wired into the barrel file yet.
 import {
-  compute,
-  deriveResourcePools,
   RAGING_SONG_DETAIL,
+  ragingSongToggleOptions,
+  SKALD_DIRGE_OF_DOOM,
   SKALD_INSPIRED_RAGE,
-} from "../src/index.js";
+  SKALD_SONG_OF_MARCHING,
+  SKALD_SONG_OF_STRENGTH,
+  SKALD_SONG_OF_THE_FALLEN,
+} from "../src/raging-song.js";
 
 const ref = loadRefData();
 
@@ -123,5 +134,93 @@ describe("Inspired Rage changes through compute()", () => {
 
   it("carries context notes about the single-character/ally-sharing simplification", () => {
     expect(SKALD_INSPIRED_RAGE.contextNotes?.length).toBeGreaterThan(0);
+  });
+});
+
+describe("ragingSongToggleOptions: level-gated performance types", () => {
+  it("skald L1 sees only Inspired Rage", () => {
+    const options = ragingSongToggleOptions(1);
+    expect(options.map((o) => o.id)).toEqual(["ragingSong:inspiredRage"]);
+  });
+
+  it("skald L5 sees Inspired Rage and Song of Marching only (Song of Strength unlocks at 6th)", () => {
+    const options = ragingSongToggleOptions(5);
+    expect(options.map((o) => o.id)).toEqual([
+      "ragingSong:inspiredRage",
+      "ragingSong:songOfMarching",
+    ]);
+  });
+
+  it("skald L14 sees all five performance types", () => {
+    const options = ragingSongToggleOptions(14);
+    expect(options.map((o) => o.id)).toEqual([
+      "ragingSong:inspiredRage",
+      "ragingSong:songOfMarching",
+      "ragingSong:songOfStrength",
+      "ragingSong:dirgeOfDoom",
+      "ragingSong:songOfTheFallen",
+    ]);
+  });
+
+  it("every option id is unique and prefixed with ragingSong:", () => {
+    const options = ragingSongToggleOptions(20);
+    const ids = options.map((o) => o.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const id of ids) expect(id.startsWith("ragingSong:")).toBe(true);
+  });
+});
+
+function activeBuffFor(option: typeof SKALD_SONG_OF_STRENGTH): ActiveBuff {
+  return {
+    instanceId: `buff-${option.id}`,
+    effectTag: option.id,
+    name: option.name,
+    changes: option.changes,
+    contextNotes: option.contextNotes,
+  };
+}
+
+describe("Song of Strength changes through compute()", () => {
+  it("L7: max(1, floor(7/2)) = 3 on Climb and Swim", () => {
+    const noBuff = compute(makeDoc({ level: 7 }), ref);
+    const withBuff = compute(
+      makeDoc({ level: 7, activeBuffs: [activeBuffFor(SKALD_SONG_OF_STRENGTH)] }),
+      ref,
+    );
+    expect(withBuff.skills["clm"]!.total - noBuff.skills["clm"]!.total).toBe(3);
+    expect(withBuff.skills["swm"]!.total - noBuff.skills["swm"]!.total).toBe(3);
+  });
+
+  it("L6 (unlock level): max(1, floor(6/2)) = 3 on Climb and Swim, the max(1, ...) floor never actually binds since the ability doesn't unlock before 6th", () => {
+    const noBuff = compute(makeDoc({ level: 6 }), ref);
+    const withBuff = compute(
+      makeDoc({ level: 6, activeBuffs: [activeBuffFor(SKALD_SONG_OF_STRENGTH)] }),
+      ref,
+    );
+    expect(withBuff.skills["clm"]!.total - noBuff.skills["clm"]!.total).toBe(3);
+    expect(withBuff.skills["swm"]!.total - noBuff.skills["swm"]!.total).toBe(3);
+  });
+});
+
+describe("Note-tier performance types: empty changes, non-empty notes", () => {
+  it("Song of Marching has no Change entries and at least one context note", () => {
+    expect(SKALD_SONG_OF_MARCHING.changes).toEqual([]);
+    expect(SKALD_SONG_OF_MARCHING.contextNotes?.length).toBeGreaterThan(0);
+  });
+
+  it("Dirge of Doom has no Change entries and at least one context note", () => {
+    expect(SKALD_DIRGE_OF_DOOM.changes).toEqual([]);
+    expect(SKALD_DIRGE_OF_DOOM.contextNotes?.length).toBeGreaterThan(0);
+  });
+
+  it("Song of the Fallen has no Change entries and at least one context note", () => {
+    expect(SKALD_SONG_OF_THE_FALLEN.changes).toEqual([]);
+    expect(SKALD_SONG_OF_THE_FALLEN.contextNotes?.length).toBeGreaterThan(0);
+  });
+});
+
+describe("RAGING_SONG_DETAIL reflects multiple toggle options", () => {
+  it("no longer names Inspired Rage exclusively", () => {
+    expect(RAGING_SONG_DETAIL).not.toContain("Inspired Rage");
   });
 });

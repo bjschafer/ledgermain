@@ -33,7 +33,19 @@
  *    `grantsBuffs`, and none of these archetype features grant, reflavor, or
  *    modify a performance via a vendored buff of their own — there is still no
  *    mechanism to hang a NEW or MODIFIED performance on without hand-
- *    authoring a bespoke buff per archetype (the "don't invent one" line). Any
+ *    authoring a bespoke buff per archetype (the "don't invent one" line). The
+ *    other twelve core CRB performance types (Countersong, Distraction,
+ *    Fascinate, Inspire Competence, Suggestion, Inspire Greatness, Inspire
+ *    Heroics, Dirge of Doom, Frightening Tune, Soothing Performance, Mass
+ *    Suggestion, Deadly Performance) carry the same shape of toggle,
+ *    hand-authored onto the Bardic Performance pool's `tableOptions` in
+ *    `bardic-performances.ts` rather than reached via `grantsBuffs`; Inspire
+ *    Greatness and Inspire Heroics apply real numeric Changes when toggled,
+ *    the rest are note-tier reminders. None of this reaches the archetype
+ *    features classified below: a feature that itself grants a new
+ *    performance, reflavors an existing one, or modifies performance action
+ *    economy still has no buff of its own to hang a Change on, so the "don't
+ *    invent one" rule stands for everything in this file. Any
  *    archetype feature that grants a NEW performance, reflavors an existing
  *    one, or changes performance action economy/rounds-cost — whether or not
  *    it's structurally paired via `pairedBaseFeatureUuid` to one of the ten
@@ -166,7 +178,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Attract Rats",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:animal-speaker:nature-s-speaker:5": {
     archetypeId: "bard:animal-speaker",
@@ -180,7 +192,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Soothing Performance",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:animal-speaker:summon-nature-s-ally:1": {
     archetypeId: "bard:animal-speaker",
@@ -201,7 +213,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Arcane Armor",
     level: 10,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Jack of All Trades)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Jack of All Trades)",
   },
   "bard:arcane-duelist:arcane-bond:5": {
     archetypeId: "bard:arcane-duelist",
@@ -222,7 +234,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bladethirst",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:arcane-duelist:bonus-feat:2": {
     archetypeId: "bard:arcane-duelist",
@@ -236,7 +248,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mass Bladethirst",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:arcane-duelist:rallying-cry:1": {
     archetypeId: "bard:arcane-duelist",
@@ -320,7 +332,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Lamentable Belaborment",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:archivist:lore-master-1-day:2": {
     archetypeId: "bard:archivist",
@@ -348,7 +360,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Pedantic Lecture",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:archivist:probable-path:10": {
     archetypeId: "bard:archivist",
@@ -369,7 +381,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Devilbane Refrain",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:argent-voice:limning-verse:1": {
     archetypeId: "bard:argent-voice",
@@ -383,7 +395,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Shattering Crescendo",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:arrowsong-minstrel:arcane-archery:1": {
     archetypeId: "bard:arrowsong-minstrel",
@@ -397,7 +409,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Arrowsong Strike",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:arrowsong-minstrel:diminished-spellcasting:1": {
     archetypeId: "bard:arrowsong-minstrel",
@@ -425,14 +437,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Inspire Teamwork",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:averaka-arbiter:ritual-of-reconciliation:8": {
     archetypeId: "bard:averaka-arbiter",
     name: "Ritual of Reconciliation",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:averaka-arbiter:versatile-teamwork:2": {
     archetypeId: "bard:averaka-arbiter",
@@ -495,7 +507,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mass Song of Surrender",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:buccaneer:song-of-surrender:4": {
     archetypeId: "bard:buccaneer",
@@ -523,21 +535,21 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Impossible Sleight of Hand",
     level: 15,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Heroics)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Heroics)",
   },
   "bard:busker:inventive-juggler:9": {
     archetypeId: "bard:busker",
     name: "Inventive Juggler",
     level: 9,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Greatness)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Greatness)",
   },
   "bard:busker:living-statue:3": {
     archetypeId: "bard:busker",
     name: "Living Statue",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:busker:patter:1": {
     archetypeId: "bard:busker",
@@ -551,7 +563,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Quick Hands",
     level: 1,
     bucket: "subsystem",
-    note: "activated stunt (performance-equivalent) granting a scaling Acrobatics/AC/Reflex/attack buff, same shape as Archaeologist's Luck — no generic activated-performance-buff mechanism to hang it on",
+    note: "activated stunt (performance-equivalent) granting a scaling Acrobatics/AC/Reflex/attack buff, same shape as Archaeologist's Luck — the pool's hand-authored toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not a bespoke archetype stunt like this one, so it still has no buff of its own to hang a Change-shaped number on",
   },
   "bard:celebrity:famous:1": {
     archetypeId: "bard:celebrity",
@@ -572,7 +584,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Shining Star",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:chelish-diva:costume-proficiency-heavy:11": {
     archetypeId: "bard:chelish-diva",
@@ -593,7 +605,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Devastating Aria",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:chelish-diva:famous:1": {
     archetypeId: "bard:chelish-diva",
@@ -614,7 +626,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Scathing Tirade",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:chronicler-of-worlds:amoral-scholar:2": {
     archetypeId: "bard:chronicler-of-worlds",
@@ -628,7 +640,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mantra of Tabris",
     level: 15,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Heroics)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Heroics)",
   },
   "bard:chronicler-of-worlds:planar-lore:1": {
     archetypeId: "bard:chronicler-of-worlds",
@@ -642,7 +654,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Quintessence Infusion",
     level: 9,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Greatness)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Greatness)",
   },
   "bard:chronicler-of-worlds:scrivener-s-versatility:2": {
     archetypeId: "bard:chronicler-of-worlds",
@@ -663,7 +675,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Glorious Epic",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:court-bard:heraldic-expertise:1": {
     archetypeId: "bard:court-bard",
@@ -677,7 +689,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mockery",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:court-bard:satire:1": {
     archetypeId: "bard:court-bard",
@@ -691,7 +703,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Scandal",
     level: 14,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Frightening Tune)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Frightening Tune)",
   },
   "bard:court-bard:wide-audience:5": {
     archetypeId: "bard:court-bard",
@@ -726,7 +738,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Defuse Tension",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:court-fool:distracting-motley:1": {
     archetypeId: "bard:court-fool",
@@ -740,7 +752,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Nature Lore",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:cultivator:plant-magic:1": {
     archetypeId: "bard:cultivator",
@@ -824,7 +836,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Meditative Whirl",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:dawnflower-dervish:spinning-spellcaster:5": {
     archetypeId: "bard:dawnflower-dervish",
@@ -859,14 +871,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Incite Violence",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:demagogue:righteous-cause:18": {
     archetypeId: "bard:demagogue",
     name: "Righteous Cause",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:dervish-dancer:battle-dance:1": {
     archetypeId: "bard:dervish-dancer",
@@ -880,42 +892,42 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Battle Fury",
     level: 20,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Deadly Performance)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Deadly Performance)",
   },
   "bard:dervish-dancer:dance-of-fury:12": {
     archetypeId: "bard:dervish-dancer",
     name: "Dance of Fury",
     level: 12,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Soothing Performance)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Soothing Performance)",
   },
   "bard:dervish-dancer:fleet:1": {
     archetypeId: "bard:dervish-dancer",
     name: "Fleet",
     level: 1,
     bucket: "situational",
-    note: "real, scaling land-speed bonus but only while the battle dance performance is active — conditional on an activated-performance state the engine doesn't toggle",
+    note: "real, scaling land-speed bonus but only while the battle dance performance is active — battle dance is Dervish Dancer's own redefinition of bardic performance, not one of the core CRB performance types the hand-authored toggles (bardic-performances.ts) cover, so there is no toggle for this activated state",
   },
   "bard:dervish-dancer:leaf-on-the-wind:14": {
     archetypeId: "bard:dervish-dancer",
     name: "Leaf on the Wind",
     level: 14,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Frightening Tune)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Frightening Tune)",
   },
   "bard:dervish-dancer:rain-of-blows:6": {
     archetypeId: "bard:dervish-dancer",
     name: "Rain of Blows",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:dervish-dancer:razor-s-kiss:8": {
     archetypeId: "bard:dervish-dancer",
     name: "Razor's Kiss",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:dervish-dancer:versatile-dance:2": {
     archetypeId: "bard:dervish-dancer",
@@ -964,14 +976,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Show Yourselves",
     level: 15,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Heroics)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Heroics)",
   },
   "bard:detective:true-confession:9": {
     archetypeId: "bard:detective",
     name: "True Confession",
     level: 9,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Greatness)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Greatness)",
   },
   "bard:disciple-of-the-forked-tongue:discordant-spiral:1": {
     archetypeId: "bard:disciple-of-the-forked-tongue",
@@ -992,7 +1004,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Venomous Whispers",
     level: 9,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Greatness)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Greatness)",
   },
   "bard:dragon-herald:coat-of-arms:1": {
     archetypeId: "bard:dragon-herald",
@@ -1013,7 +1025,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diplomatic Protection",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:dragon-herald:dragon-patron:1": {
     archetypeId: "bard:dragon-herald",
@@ -1034,7 +1046,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Extol Glory",
     level: 10,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Jack of All Trades)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Jack of All Trades)",
   },
   "bard:dragon-herald:master-of-persuasion:5": {
     archetypeId: "bard:dragon-herald",
@@ -1048,14 +1060,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Rebuke Foes",
     level: 12,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Soothing Performance)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Soothing Performance)",
   },
   "bard:dragon-herald:retreat-to-lair:15": {
     archetypeId: "bard:dragon-herald",
     name: "Retreat to Lair",
     level: 15,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Heroics)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Heroics)",
   },
   "bard:dragon-herald:weapon-and-armor-proficiency:1": {
     archetypeId: "bard:dragon-herald",
@@ -1069,7 +1081,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Frightful Song",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:dragon-yapper:yapping-song:1": {
     archetypeId: "bard:dragon-yapper",
@@ -1090,7 +1102,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Harmonizing Familiar",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:duettist:performing-familiar:4": {
     archetypeId: "bard:duettist",
@@ -1104,7 +1116,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Symphonic Familiar",
     level: 14,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Frightening Tune)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Frightening Tune)",
   },
   "bard:duettist:versatile-familiar:2": {
     archetypeId: "bard:duettist",
@@ -1160,21 +1172,21 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Scorn of the Wilds",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:fey-courtier:stone-dance:15": {
     archetypeId: "bard:fey-courtier",
     name: "Stone Dance",
     level: 15,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Heroics)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Heroics)",
   },
   "bard:fey-courtier:summon-fey-allies:3": {
     archetypeId: "bard:fey-courtier",
     name: "Summon Fey Allies",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:fey-prankster:dirty-trickster:2": {
     archetypeId: "bard:fey-prankster",
@@ -1188,7 +1200,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Embarrassing Satire",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:fey-prankster:incite-unreliability:1": {
     archetypeId: "bard:fey-prankster",
@@ -1223,7 +1235,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Divinatory Song",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:filidh:echoes-of-nature-s-song:1": {
     archetypeId: "bard:filidh",
@@ -1251,21 +1263,21 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Song of the Cycle",
     level: 20,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Deadly Performance)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Deadly Performance)",
   },
   "bard:filidh:unity-of-life:15": {
     archetypeId: "bard:filidh",
     name: "Unity of Life",
     level: 15,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Heroics)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Heroics)",
   },
   "bard:filidh:voices-of-life:8": {
     archetypeId: "bard:filidh",
     name: "Voices of Life",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:filidh:weapon-and-armor-proficiency:1": {
     archetypeId: "bard:filidh",
@@ -1293,7 +1305,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Gremlin's Luck",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:first-world-minstrel:resist-nature-s-lure:2": {
     archetypeId: "bard:first-world-minstrel",
@@ -1314,14 +1326,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fan the Flames",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:flame-dancer:fire-break:6": {
     archetypeId: "bard:flame-dancer",
     name: "Fire Break",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:flame-dancer:fire-dance:1": {
     archetypeId: "bard:flame-dancer",
@@ -1335,7 +1347,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Song of the Fiery Gaze",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:flamesinger:blazing-blades:1": {
     archetypeId: "bard:flamesinger",
@@ -1384,7 +1396,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Transparent Fate",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:geisha:geisha-knowledge:1": {
     archetypeId: "bard:geisha",
@@ -1433,7 +1445,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Master of Manipulation",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:hoaxer:bad-deal:1": {
     archetypeId: "bard:hoaxer",
@@ -1454,7 +1466,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Curse Breaker",
     level: 12,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Soothing Performance)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Soothing Performance)",
   },
   "bard:hoaxer:curse-crafter:5": {
     archetypeId: "bard:hoaxer",
@@ -1503,14 +1515,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Song of Subterfuge",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:impervious-messenger:unbroken-stride:8": {
     archetypeId: "bard:impervious-messenger",
     name: "Unbroken Stride",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:juggler:combat-juggling:2": {
     archetypeId: "bard:juggler",
@@ -1587,7 +1599,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Deadly Lure",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:luring-piper:fey-secrets:1": {
     archetypeId: "bard:luring-piper",
@@ -1601,7 +1613,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fey-Wounding Song",
     level: 12,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Soothing Performance)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Soothing Performance)",
   },
   "bard:luring-piper:luring-presentation:1": {
     archetypeId: "bard:luring-piper",
@@ -1664,21 +1676,21 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Metamagic Mastery",
     level: 14,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Frightening Tune)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Frightening Tune)",
   },
   "bard:magician:spell-suppression:8": {
     archetypeId: "bard:magician",
     name: "Spell Suppression",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:magician:wand-mastery:10": {
     archetypeId: "bard:magician",
     name: "Wand Mastery",
     level: 10,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Jack of All Trades)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Jack of All Trades)",
   },
   "bard:masked-performer:dual-identity:1": {
     archetypeId: "bard:masked-performer",
@@ -1692,7 +1704,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Exaggerated Pose",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:masked-performer:masked-talent:5": {
     archetypeId: "bard:masked-performer",
@@ -1706,7 +1718,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Multiplicity of Masks",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:masked-performer:seamless-guise:1": {
     archetypeId: "bard:masked-performer",
@@ -1727,14 +1739,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Stage Combat",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:mute-musician:ceaseless-performance:15": {
     archetypeId: "bard:mute-musician",
     name: "Ceaseless Performance",
     level: 15,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Heroics)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Heroics)",
   },
   "bard:mute-musician:dulled-horror:2": {
     archetypeId: "bard:mute-musician",
@@ -1748,7 +1760,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Eldritch Caesura",
     level: 10,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Jack of All Trades)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Jack of All Trades)",
   },
   "bard:mute-musician:eschew-materials:1": {
     archetypeId: "bard:mute-musician",
@@ -1769,7 +1781,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Maddening Harmonics",
     level: 14,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Frightening Tune)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Frightening Tune)",
   },
   "bard:mute-musician:mute:1": {
     archetypeId: "bard:mute-musician",
@@ -1783,28 +1795,28 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Song of the Conjunction",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:mute-musician:symphony-of-silence:3": {
     archetypeId: "bard:mute-musician",
     name: "Symphony of Silence",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:negotiator:advanced-talents:10": {
     archetypeId: "bard:negotiator",
     name: "Advanced Talents",
     level: 10,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Jack of All Trades)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Jack of All Trades)",
   },
   "bard:negotiator:binding-contract:9": {
     archetypeId: "bard:negotiator",
     name: "Binding Contract",
     level: 9,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Greatness)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Greatness)",
   },
   "bard:negotiator:fast-talk:1": {
     archetypeId: "bard:negotiator",
@@ -1846,7 +1858,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "In Your Head",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:phrenologist:phrenological-knowledge:1": {
     archetypeId: "bard:phrenologist",
@@ -1860,7 +1872,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Phrenological Savant",
     level: 10,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Jack of All Trades)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Jack of All Trades)",
   },
   "bard:phrenologist:skull-sonata:1": {
     archetypeId: "bard:phrenologist",
@@ -1888,7 +1900,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Leshy Speaker",
     level: 9,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Greatness)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Greatness)",
   },
   "bard:plant-speaker:mystical-allegory:5": {
     archetypeId: "bard:plant-speaker",
@@ -1909,7 +1921,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mass Punchline",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:prankster:mock:1": {
     archetypeId: "bard:prankster",
@@ -1923,7 +1935,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Punchline",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:prankster:swap:2": {
     archetypeId: "bard:prankster",
@@ -1944,7 +1956,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Damning Performance",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:provocateur:damning-performance:4": {
     archetypeId: "bard:provocateur",
@@ -1965,7 +1977,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Countless Contingencies",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:ringleader:cunning-plan:1": {
     archetypeId: "bard:ringleader",
@@ -1986,7 +1998,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Inspire competence",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:ringleader:inspired-plan:2": {
     archetypeId: "bard:ringleader",
@@ -2021,21 +2033,21 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Dramatic Subtext",
     level: 9,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Greatness)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Greatness)",
   },
   "bard:sandman:greater-stealspell:15": {
     archetypeId: "bard:sandman",
     name: "Greater Stealspell",
     level: 15,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Heroics)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Heroics)",
   },
   "bard:sandman:mass-slumber-song:18": {
     archetypeId: "bard:sandman",
     name: "Mass Slumber Song",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:sandman:master-of-deception:1": {
     archetypeId: "bard:sandman",
@@ -2049,7 +2061,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Slumber Song",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:sandman:sneak-attack:5": {
     archetypeId: "bard:sandman",
@@ -2070,7 +2082,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Spell Catching",
     level: 20,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Deadly Performance)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Deadly Performance)",
   },
   "bard:sandman:stealspell:1": {
     archetypeId: "bard:sandman",
@@ -2091,21 +2103,21 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Battle Song",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:savage-skald:berserkergang:12": {
     archetypeId: "bard:savage-skald",
     name: "Berserkergang",
     level: 12,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Soothing Performance)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Soothing Performance)",
   },
   "bard:savage-skald:incite-rage:6": {
     archetypeId: "bard:savage-skald",
     name: "Incite Rage",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:savage-skald:inspiring-blow:1": {
     archetypeId: "bard:savage-skald",
@@ -2119,14 +2131,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Song of the Fallen",
     level: 10,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Jack of All Trades)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Jack of All Trades)",
   },
   "bard:sea-singer:call-the-storm:18": {
     archetypeId: "bard:sea-singer",
     name: "Call the Storm",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:sea-singer:familiar:2": {
     archetypeId: "bard:sea-singer",
@@ -2154,14 +2166,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Still Water",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:sea-singer:whistle-the-wind:6": {
     archetypeId: "bard:sea-singer",
     name: "Whistle the Wind",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:sea-singer:world-traveler:1": {
     archetypeId: "bard:sea-singer",
@@ -2203,21 +2215,21 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Break Curse (Su)",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:silver-balladeer:holy-vibration-su:9": {
     archetypeId: "bard:silver-balladeer",
     name: "Holy Vibration (Su)",
     level: 9,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Greatness)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Greatness)",
   },
   "bard:silver-balladeer:mass-break-curse-su:18": {
     archetypeId: "bard:silver-balladeer",
     name: "Mass Break Curse (Su)",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:silver-balladeer:pure-heart-ex:2": {
     archetypeId: "bard:silver-balladeer",
@@ -2252,7 +2264,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Invigorating Artistry",
     level: 10,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Jack of All Trades)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Jack of All Trades)",
   },
   "bard:solacer:learned-physician:1": {
     archetypeId: "bard:solacer",
@@ -2273,7 +2285,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Healing Performance (Su)",
     level: 14,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Frightening Tune)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Frightening Tune)",
   },
   "bard:sorrowsoul:darkness-denied-ex:2": {
     archetypeId: "bard:sorrowsoul",
@@ -2301,14 +2313,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Weird Words (Su)",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:sound-striker:wordstrike-su:3": {
     archetypeId: "bard:sound-striker",
     name: "Wordstrike (Su)",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:speaker-of-the-palatine-eye:angelic-grace-ex:1": {
     archetypeId: "bard:speaker-of-the-palatine-eye",
@@ -2329,7 +2341,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Keen Ritualist",
     level: 10,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Jack of All Trades)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Jack of All Trades)",
   },
   "bard:stonesinger:earth-magic:1": {
     archetypeId: "bard:stonesinger",
@@ -2343,7 +2355,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Quake",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:stonesinger:stone-song:1": {
     archetypeId: "bard:stonesinger",
@@ -2378,14 +2390,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Harmless Performer",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:street-performer:madcap-prank:9": {
     archetypeId: "bard:street-performer",
     name: "Madcap Prank",
     level: 9,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Greatness)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Greatness)",
   },
   "bard:street-performer:quick-change:5": {
     archetypeId: "bard:street-performer",
@@ -2399,7 +2411,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Slip through the Crowd",
     level: 15,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Heroics)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Heroics)",
   },
   "bard:street-performer:streetwise:1": {
     archetypeId: "bard:street-performer",
@@ -2413,21 +2425,21 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Comparative Arcane Studies",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:studious-librarian:critical-research-focus:8": {
     archetypeId: "bard:studious-librarian",
     name: "Critical Research Focus",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:studious-librarian:one-with-the-library:20": {
     archetypeId: "bard:studious-librarian",
     name: "One with the Library",
     level: 20,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Deadly Performance)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Deadly Performance)",
   },
   "bard:studious-librarian:perfect-recollection:19": {
     archetypeId: "bard:studious-librarian",
@@ -2448,7 +2460,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Brigh's Anger",
     level: 8,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Dirge of Doom)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Dirge of Doom)",
   },
   "bard:voice-of-brigh:brigh-s-knowledge:1": {
     archetypeId: "bard:voice-of-brigh",
@@ -2469,14 +2481,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Brigh's Spark",
     level: 12,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Soothing Performance)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Soothing Performance)",
   },
   "bard:voice-of-brigh:brigh-s-wrath:14": {
     archetypeId: "bard:voice-of-brigh",
     name: "Brigh's Wrath",
     level: 14,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Frightening Tune)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Frightening Tune)",
   },
   "bard:voice-of-brigh:distraction:1": {
     archetypeId: "bard:voice-of-brigh",
@@ -2497,7 +2509,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Song of the Wild",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:voice-of-the-wild:wild-knowledge:1": {
     archetypeId: "bard:voice-of-the-wild",
@@ -2539,7 +2551,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Waterstrike (Su)",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:wit:cantrips:1": {
     archetypeId: "bard:wit",
@@ -2553,14 +2565,14 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Cutting Remark",
     level: 3,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Inspire Competence)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Competence)",
   },
   "bard:wit:duel-master:10": {
     archetypeId: "bard:wit",
     name: "Duel Master",
     level: 10,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism (issue #45 bard rubric); no Change-shaped number to extract (paired to Jack of All Trades)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Jack of All Trades)",
   },
   "bard:wit:on-the-ball:5": {
     archetypeId: "bard:wit",
@@ -2742,7 +2754,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Enrapturing Performance",
     level: 2,
     bucket: "subsystem",
-    note: "bardic performance modification (a single-target performance variant with boosted DCs/bonuses) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism; no Change-shaped number to extract",
+    note: "bardic performance modification (a single-target performance variant with boosted DCs/bonuses) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number",
   },
   "bard:shadow-puppeteer:shadow-puppets:1": {
     archetypeId: "bard:shadow-puppeteer",
@@ -2763,21 +2775,21 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Break Curse",
     level: 6,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism; no Change-shaped number to extract (paired to Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Suggestion)",
   },
   "bard:silver-balladeer:holy-vibration:9": {
     archetypeId: "bard:silver-balladeer",
     name: "Holy Vibration",
     level: 9,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism; no Change-shaped number to extract (paired to Inspire Greatness)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Inspire Greatness)",
   },
   "bard:silver-balladeer:mass-break-curse:18": {
     archetypeId: "bard:silver-balladeer",
     name: "Mass Break Curse",
     level: 18,
     bucket: "subsystem",
-    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine models bardic performance only as a rounds/day resource pool with no activated-performance-buff mechanism; no Change-shaped number to extract (paired to Mass Suggestion)",
+    note: "bardic performance modification (reflavors/grants/modifies a performance type) — the engine's hand-authored performance toggles (bardic-performances.ts) cover only the twelve core CRB performance types, not archetype-specific reflavors/replacements, so this variant still has no buff of its own to carry a Change-shaped number (paired to Mass Suggestion)",
   },
   "bard:silver-balladeer:pure-heart:2": {
     archetypeId: "bard:silver-balladeer",

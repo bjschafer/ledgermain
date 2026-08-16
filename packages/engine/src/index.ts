@@ -754,7 +754,21 @@ export {
   judgmentToggleOptions,
   type JudgmentDef,
 } from "./judgments.js";
-export { SKALD_INSPIRED_RAGE, RAGING_SONG_DETAIL } from "./raging-song.js";
+export {
+  SKALD_INSPIRED_RAGE,
+  SKALD_SONG_OF_MARCHING,
+  SKALD_SONG_OF_STRENGTH,
+  SKALD_DIRGE_OF_DOOM,
+  SKALD_SONG_OF_THE_FALLEN,
+  ragingSongToggleOptions,
+  RAGING_SONG_DETAIL,
+} from "./raging-song.js";
+export {
+  BARD_PERFORMANCES,
+  bardicPerformanceToggleOptions,
+  BARDIC_PERFORMANCE_DETAIL,
+  type BardicPerformanceDef,
+} from "./bardic-performances.js";
 export { rageFatigueOnEnd, UNCHAINED_RAGE_FATIGUE_ROUNDS } from "./rage-fatigue.js";
 export type { RageFatigue } from "./rage-fatigue.js";
 export {

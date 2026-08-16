@@ -56,7 +56,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_2: Readonly<
     id: "1HQUUhQhowqKfmCA",
     name: "Inspired Rage",
     bucket: "situational",
-    note: "Bardic-performance-style activation buffing allies while sustained; the Strength/Constitution/Will bonuses and AC penalty only exist during the performance.",
+    note: "Bardic-performance-style activation buffing allies while sustained; the Strength/Constitution/Will bonuses and AC penalty only exist during the performance. Modeled as a hand-authored toggle on the Raging Song pool (raging-song.ts), applying the buff to the skald's own sheet rather than allies since this tracker only follows one character; that toggle does not change this table's bucket.",
   },
   K0modP8yUhhYONJh: {
     id: "K0modP8yUhhYONJh",

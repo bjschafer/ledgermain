@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-15-bardic-performances-toggle",
+    date: "2026-08-15",
+    title: "Bardic performances and skald songs are toggles on their pool",
+    note: "A bard's performance types now sit on the Bardic Performance rounds tracker as toggles, the same way an inquisitor's judgments do. Inspire Greatness and Inspire Heroics apply their attack, save, and AC bonuses to your sheet while active, and the rest, from Countersong to Deadly Performance, appear at the level you gain them with their numbers and save DCs spelled out. Skalds get their full song list too: Song of Strength adds half your level to Climb and Swim while it plays, and Song of Marching, Dirge of Doom, and Song of the Fallen join Inspired Rage. Inspire Courage keeps working exactly as before.",
+  },
+  {
     id: "2026-08-15-single-tier-archetype-trades",
     date: "2026-08-15",
     title: "Single armor training steps and bonus feats traded by archetypes now compute",
