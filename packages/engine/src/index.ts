@@ -785,6 +785,11 @@ export {
 } from "./grit-panache-spends.js";
 export { sacredWeaponToggleOptions, SACRED_WEAPON_DETAIL } from "./sacred-weapon-spends.js";
 export { mentalFocusToggleOptions, MENTAL_FOCUS_DETAIL } from "./mental-focus-spends.js";
+export {
+  PER_DAY_ACTIVATIONS,
+  perDayActivationToggleOptions,
+  type PerDayActivationDef,
+} from "./per-day-activations/index.js";
 export { rageFatigueOnEnd, UNCHAINED_RAGE_FATIGUE_ROUNDS } from "./rage-fatigue.js";
 export type { RageFatigue } from "./rage-fatigue.js";
 export {

@@ -75,6 +75,7 @@ import {
 import { judgmentPoolDetail, judgmentToggleOptions } from "./judgments.js";
 import { KI_POOL_DETAIL, kiSpendToggleOptions } from "./ki-spends.js";
 import { MENTAL_FOCUS_DETAIL, mentalFocusToggleOptions } from "./mental-focus-spends.js";
+import { perDayActivationToggleOptions } from "./per-day-activations/index.js";
 import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
 import { RACIAL_TRAITS } from "./racial-traits.js";
 import { RAGING_SONG_DETAIL, ragingSongToggleOptions } from "./raging-song.js";
@@ -547,6 +548,17 @@ export function deriveResourcePools(
           doc.build.occultistFocusPowers ?? [],
         ),
       );
+    }
+
+    // Generic per-day activation toggles (per-day-activations/): hand-authored
+    // self-facing effects keyed by this vendored feature's pack id — the
+    // pool-spend pattern above generalized so ANY pool row can carry
+    // activation toggles without a named per-tag branch. Appended after the
+    // named branches so a feature that someday grows both keeps its
+    // class-specific menu first.
+    const perDayOptions = perDayActivationToggleOptions(feature.id, classTag, classLevel);
+    if (perDayOptions.length > 0) {
+      tableOptions = [...(tableOptions ?? []), ...perDayOptions];
     }
 
     // Feats that raise this pool's maximum (Extra Rage, Extra Reservoir, …

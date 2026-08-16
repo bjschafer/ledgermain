@@ -40,6 +40,7 @@ import { mergedBloodragerBloodlineCatalog } from "../packages/engine/src/bloodra
 import { BUFF_CHANGE_PATCHES, BUFF_PROSE_RULINGS } from "../packages/engine/src/buff-effects.js";
 import { mergedOrderCatalog } from "../packages/engine/src/cavalier-orders.js";
 import { CLASS_FEATURE_CLASSIFICATION } from "../packages/engine/src/class-feature-classification/index.js";
+import { PER_DAY_ACTIVATIONS } from "../packages/engine/src/per-day-activations/index.js";
 import {
   CLASS_FEATURE_CHANGE_PATCHES,
   CLASS_FEATURE_CHOICES,
@@ -426,7 +427,10 @@ function main(): void {
     const wired =
       arrayLen(e.changes) > 0 ||
       classPatchNames.has(name) ||
-      GRANTED_POWER_CHANGE_PATCHES[name] !== undefined;
+      GRANTED_POWER_CHANGE_PATCHES[name] !== undefined ||
+      // Per-day activation toggles surfaced on the feature's own pool row
+      // (per-day-activations/, id-keyed) move numbers while toggled on.
+      (PER_DAY_ACTIVATIONS[id]?.length ?? 0) > 0;
     const noted = arrayLen(e.actions) > 0 || e.uses !== undefined || arrayLen(e.grantsBuffs) > 0;
     // Same semantics as the archetype/feat/racial-trait verdicts: a deliberate
     // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`
