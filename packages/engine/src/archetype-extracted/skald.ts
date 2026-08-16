@@ -32,7 +32,16 @@
  *    `tableOptions` (`raging-song.ts`), but that mechanism covers only those
  *    five: an archetype feature that grants a genuinely new sub-song, or
  *    otherwise modifies one of the five, still has no buff of its own to
- *    hang a Change on.
+ *    hang a Change on in THIS table. A sibling mechanism
+ *    (`raging-song-variants.ts`) now hand-authors that swap for ten
+ *    archetypes whose raging song replaces or adds a sub-song (bacchanal,
+ *    battle-scion, boaster, court-poet, dragon-skald, instigator,
+ *    spell-warrior, twilight-speaker, undying-word, wyrm-singer) as a
+ *    level-gated toggle on the same Raging Song pool, some with real
+ *    `Change`s — flagged per entry below. The `subsystem`/`situational`
+ *    bucket here still holds regardless, since it tracks this
+ *    prose-to-`Change` extraction table specifically, not that toggle
+ *    system.
  * 3. **Rage Powers** (`rage-power:6` and its 3-level cadence) are a modeled
  *    pick-list shared with barbarian (`rage-powers.ts`) — any feature that
  *    grants, restricts, or swaps a rage power (including "totem" rage-power
@@ -131,7 +140,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Raging Song",
     level: 1,
     bucket: "situational",
-    note: "activated, ally-facing performance (class note 1); embeds Song of Urging (an animal-influence check) in place of song of marching — nothing to extract regardless",
+    note: "activated, ally-facing performance (class note 1); embeds Song of Urging in place of song of marching and Maddening Dance in place of dirge of doom, both now modeled as level-gated toggles on the Raging Song pool (raging-song-variants.ts) — nothing to extract here regardless, neither carries a Change-shaped number of its own",
   },
 
   // ── skald:battle-scion ──
@@ -161,7 +170,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Raging Song",
     level: 1,
     bucket: "situational",
-    note: "activated, ally-facing performance (class note 1); embeds Song of Questing (a geas/quest-like binding) in place of a 10th/14th-level slot — nothing to extract regardless",
+    note: "activated, ally-facing performance (class note 1); embeds Song of Questing (a geas/quest-like binding) in place of both the 10th-level dirge of doom and 14th-level song of the fallen slots, now modeled as a level-gated toggle on the Raging Song pool (raging-song-variants.ts) — nothing to extract here regardless, no Change-shaped number",
   },
 
   // ── skald:bekyar-demon-dancer ──
@@ -251,7 +260,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Raging Song",
     level: 1,
     bucket: "situational",
-    note: "activated, ally-facing performance (class note 1); embeds Song of Endurance, Song of Surmounting (scaling terrain-movement bonus), and Frightful Boast — nothing to extract regardless",
+    note: "activated, ally-facing performance (class note 1); embeds Song of Endurance and Song of Surmounting (scaling terrain-movement bonus) alongside the base songs, and Frightful Boast in place of song of the fallen, all three now modeled as level-gated toggles on the Raging Song pool (raging-song-variants.ts) — nothing to extract here regardless, none carry a Change-shaped number",
   },
 
   // ── skald:bold-schemer ──
@@ -290,7 +299,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Raging Song",
     level: 1,
     bucket: "situational",
-    note: "activated, ally-facing performance (class note 1); embeds Insightful Contemplation (Int/Cha morale bonus) in place of Inspired Rage and Song of Inspiration in place of Song of Strength — nothing to extract regardless",
+    note: "activated, ally-facing performance (class note 1); embeds Insightful Contemplation (Int/Cha morale bonus) in place of Inspired Rage and Song of Inspiration (Wisdom-skill version of Song of Strength) in place of Song of Strength, both now modeled as level-gated toggles with real Changes on the Raging Song pool (raging-song-variants.ts) — nothing to extract here in this table regardless, that modeling lives in the toggle system, not the Change-extraction table",
   },
 
   // ── skald:dragon-skald ──
@@ -306,7 +315,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Raging Song",
     level: 1,
     bucket: "situational",
-    note: "activated, ally-facing performance (class note 1); embeds Glorious Epic (a Diplomacy/Intimidate circumstance-bonus grant) in place of song of marching — nothing to extract regardless",
+    note: "activated, ally-facing performance (class note 1); embeds Glorious Epic (a Diplomacy/Intimidate circumstance-bonus grant) in place of song of marching, now modeled as a level-gated toggle on the Raging Song pool (raging-song-variants.ts) — nothing to extract here regardless, no Change-shaped number of its own",
   },
   "skald:dragon-skald:sea-legs:1": {
     archetypeId: "skald:dragon-skald",
@@ -470,7 +479,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Raging Song",
     level: 1,
     bucket: "situational",
-    note: "activated, ally-facing performance (class note 1); embeds Song of Rabble-Rousing (enthrall) and Song of Riot (a foster-hatred-like compulsion) in place of dirge of doom/song of the fallen slots — nothing to extract regardless",
+    note: "activated, ally-facing performance (class note 1); embeds Song of Rabble-Rousing (enthrall) alongside the base songs and Song of Riot (a foster-hatred-like compulsion) in place of dirge of doom, both now modeled as level-gated toggles on the Raging Song pool (raging-song-variants.ts) — nothing to extract here regardless; song of the fallen itself is an unmodified restatement",
   },
   "skald:instigator:revolutionary-heart:7": {
     archetypeId: "skald:instigator",
@@ -553,7 +562,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Raging Song",
     level: 1,
     bucket: "situational",
-    note: "activated, ally-facing performance (class note 1); embeds Enhance Weapons (a scaling weapon-enhancement grant to allies) in place of inspired rage and Song of Arcane Manipulation in place of dirge of doom — nothing to extract regardless (the Enhance Weapons numbers are ally-equipment-facing, not the skald's own stat block, and activated/resource-gated either way)",
+    note: "activated, ally-facing performance (class note 1); embeds Enhance Weapons (a scaling weapon-enhancement grant to allies) in place of inspired rage and Song of Arcane Manipulation in place of dirge of doom, both now modeled as level-gated toggles on the Raging Song pool (raging-song-variants.ts, note-tier: no Change entries) — nothing to extract here regardless (the Enhance Weapons numbers are ally-equipment-facing, not the skald's own stat block, and activated/resource-gated either way)",
   },
   "skald:spell-warrior:spell-tamper:20": {
     archetypeId: "skald:spell-warrior",
@@ -567,7 +576,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Weapon Song",
     level: 1,
     bucket: "subsystem",
-    note: "a one-sentence stub introducing the Enhance Weapons raging song detailed in the sibling raging-song:1 entry — modifies raging song (class note 2), nothing of its own to extract",
+    note: "a one-sentence stub introducing the Enhance Weapons raging song detailed in the sibling raging-song:1 entry (now modeled there as a toggle, raging-song-variants.ts) — modifies raging song (class note 2), nothing of its own to extract",
   },
 
   // ── skald:sunsinger ──
@@ -680,7 +689,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Raging Song",
     level: 1,
     bucket: "situational",
-    note: "activated, ally-facing performance (class note 1); embeds Inspired Devotion (attack/save bonus) in place of inspired rage plus Song of Understanding/Song of Secrecy sub-songs — nothing to extract regardless",
+    note: "activated, ally-facing performance (class note 1); embeds Inspired Devotion (attack/save bonus) in place of inspired rage, Song of Understanding in place of song of strength, and Song of Secrecy (Stealth bonus) in place of dirge of doom, all now modeled as level-gated toggles on the Raging Song pool (raging-song-variants.ts) — nothing to extract here in this table regardless, that modeling lives in the toggle system with its own Changes for Inspired Devotion and Song of Secrecy",
   },
   "skald:twilight-speaker:twilight-envoy:1": {
     archetypeId: "skald:twilight-speaker",
@@ -710,7 +719,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Undying Song",
     level: 1,
     bucket: "situational",
-    note: "a full raging-song restatement (class note 1): Inspire Resilience replaces inspired rage (keeps only the Will-save progression, drops Str/AC), plus Song of Defiance (endure elements) and Dirge of Determination (reduces ability damage/drain) sub-songs — nothing to extract regardless",
+    note: "a full raging-song restatement (class note 1): Inspire Resilience replaces inspired rage (keeps the Con and Will progression, drops the Str bonus and the AC penalty — verified against d20pfsrd's Undying Word page, 2026-08-16; the vendored text only states Str/AC are dropped), plus Song of Defiance (endure elements) in place of song of strength and Dirge of Determination (reduces ability damage/drain) in place of dirge of doom, all now modeled as level-gated toggles on the Raging Song pool (raging-song-variants.ts) with a real Change for Inspire Resilience's Con/Will bonuses — nothing to extract here in this table regardless, that modeling lives in the toggle system",
   },
 
   // ── skald:urban-skald ──
@@ -837,7 +846,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Draconic Rage",
     level: 1,
     bucket: "subsystem",
-    note: "a raging-song variant with different Inspired Rage bonuses (melee attack/damage and paralysis/sleep saves instead of Str/Con) — modifies raging song (class note 2)",
+    note: "a raging-song variant with different Inspired Rage bonuses (melee attack/damage and paralysis/sleep saves instead of Str/Con), now modeled as a level-gated toggle with real Changes on the Raging Song pool (raging-song-variants.ts) — nothing to extract here in this table regardless, that modeling lives in the toggle system, not the Change-extraction table",
   },
   "skald:wyrm-singer:wyrm-saga:14": {
     archetypeId: "skald:wyrm-singer",
@@ -851,7 +860,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Wyrm Song",
     level: 1,
     bucket: "subsystem",
-    note: "a one-sentence stub introducing the Draconic Rage/Wyrm Saga raging-song reflavors detailed in their own sibling entries — modifies raging song (class note 2), nothing of its own to extract",
+    note: "a one-sentence stub introducing the Draconic Rage/Wyrm Saga raging-song reflavors detailed in their own sibling entries (Draconic Rage now modeled as a toggle, raging-song-variants.ts) — modifies raging song (class note 2), nothing of its own to extract",
   },
 };
 

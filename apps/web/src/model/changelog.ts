@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-16-archetype-performance-variants",
+    date: "2026-08-16",
+    title: "Archetype performances and songs join the pool toggles",
+    note: "Bard archetypes that swap out performance types now show their own on the Bardic Performance tracker, in place of what they trade away. A court bard toggles Satire and Mockery instead of Inspire Courage and Inspire Competence, a sea singer gets Sea Shanty, a sandman gets Stealspell, and so on across some fifty archetypes, each at the level it arrives. Variants with numbers for your own sheet apply them while the toggle is on, like the savage skald's Inspiring Blow temp HP or the masked performer's Seamless Guise bonus to Disguise. Skald archetypes join too: a court poet's Inspired Rage sharpens the mind instead of the body, a wyrm-singer's Draconic Rage boosts melee attack and damage, and swapped-in songs like Song of Questing appear in their slot. Battle dancers and buskers redefine the whole pool and are not covered yet.",
+  },
+  {
     id: "2026-08-15-bardic-performances-toggle",
     date: "2026-08-15",
     title: "Bardic performances and skald songs are toggles on their pool",
