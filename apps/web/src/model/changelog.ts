@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-16-spell-like-abilities",
+    date: "2026-08-16",
+    title: "Spell-like abilities are castable now",
+    note: "Abilities that let you cast a specific spell get their own tracker panel with real spell details: save DC, caster level, range, duration, and a use counter that refills on a full rest. A gnome's dancing lights, a tiefling's darkness, a drow's faerie fire, heritage traits like a Hungerseed's alter self, class features like the Hellknight's discern lies, archetype grants, and feats like Drow Nobility all appear on their own. The numbers use the ability's own caster level rather than your spellcasting, and Spell Focus leaves these DCs alone, as the rules say.",
+  },
+  {
     id: "2026-08-16-per-day-activation-toggles",
     date: "2026-08-16",
     title: "Daily powers join the pool toggles",
