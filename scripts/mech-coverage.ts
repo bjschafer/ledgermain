@@ -49,8 +49,9 @@ import {
 } from "../packages/engine/src/spell-like-abilities/index.js";
 import {
   COMPANION_EFFECT_ARCHETYPE_FEATURES,
+  COMPANION_EFFECT_CLASS_FEATURES,
   COMPANION_EFFECT_FEATS,
-} from "../packages/engine/src/companion-master-effects.js";
+} from "../packages/engine/src/companion-master-effects/index.js";
 import {
   CLASS_FEATURE_CHANGE_PATCHES,
   CLASS_FEATURE_CHOICES,
@@ -443,7 +444,10 @@ function main(): void {
       (PER_DAY_ACTIVATIONS[id]?.length ?? 0) > 0 ||
       // Spell-like-ability grants become castable rows with real spell facts
       // (spell-like-abilities/, id-keyed) — a wired route, not prose.
-      (CLASS_FEATURE_SLA_GRANTS[id]?.length ?? 0) > 0;
+      (CLASS_FEATURE_SLA_GRANTS[id]?.length ?? 0) > 0 ||
+      // Companion/mount master effects route numbers onto the tracked
+      // companion's own stat block (companion-master-effects/, id-keyed).
+      COMPANION_EFFECT_CLASS_FEATURES[id] !== undefined;
     const noted = arrayLen(e.actions) > 0 || e.uses !== undefined || arrayLen(e.grantsBuffs) > 0;
     // Same semantics as the archetype/feat/racial-trait verdicts: a deliberate
     // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`

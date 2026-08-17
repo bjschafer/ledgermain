@@ -92,7 +92,7 @@
 
 import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
 
-import type { ResolvedCompanionMasterEffects } from "./companion-master-effects.js";
+import type { ResolvedCompanionMasterEffects } from "./companion-master-effects/index.js";
 import { CONDITIONS } from "./conditions.js";
 import {
   classifyNaturalAttacks,

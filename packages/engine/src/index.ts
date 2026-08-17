@@ -661,13 +661,15 @@ export {
 } from "./companion.js";
 export {
   COMPANION_EFFECT_FEATS,
+  COMPANION_EFFECT_CLASS_FEATURES,
   COMPANION_EFFECT_ARCHETYPE_FEATURES,
   collectCompanionMasterEffects,
   type ArchetypeCompanionEffect,
+  type ClassFeatureCompanionEffect,
   type CompanionLevelEffect,
   type CompanionMasterEffect,
   type ResolvedCompanionMasterEffects,
-} from "./companion-master-effects.js";
+} from "./companion-master-effects/index.js";
 export {
   PHANTOM_BASE_ABILITIES,
   EMOTIONAL_FOCI,
