@@ -48,6 +48,10 @@ import {
   RACIAL_TRAIT_SLA_GRANTS,
 } from "../packages/engine/src/spell-like-abilities/index.js";
 import {
+  COMPANION_EFFECT_ARCHETYPE_FEATURES,
+  COMPANION_EFFECT_FEATS,
+} from "../packages/engine/src/companion-master-effects.js";
+import {
   CLASS_FEATURE_CHANGE_PATCHES,
   CLASS_FEATURE_CHOICES,
 } from "../packages/engine/src/class-feature-effects.js";
@@ -468,7 +472,10 @@ function main(): void {
           // even when the entry's unconditional `changes` list is empty.
           Object.keys(resolved.effect.choiceChanges ?? {}).length > 0)) ||
       ARCHETYPE_TIER_REPLACEMENTS[id] !== undefined ||
-      (ARCHETYPE_SLA_GRANTS[id]?.length ?? 0) > 0;
+      (ARCHETYPE_SLA_GRANTS[id]?.length ?? 0) > 0 ||
+      // Companion/mount master effects route numbers onto the tracked
+      // companion's own stat block rather than the master's sheet.
+      COMPANION_EFFECT_ARCHETYPE_FEATURES[id] !== undefined;
     // A wave verdict of situational/subsystem/blocked is a deliberate
     // prose-only ruling; `numeric` without an effect entry is real backlog.
     const verdict = ARCHETYPE_FEATURE_CLASSIFICATION[id];
@@ -493,7 +500,8 @@ function main(): void {
       (resolved !== undefined &&
         (defMovesNumbers(resolved.entry) || rec(resolved.entry).type === "choice")) ||
       FEAT_POOL_EFFECTS[slug] !== undefined ||
-      (FEAT_SLA_GRANTS[slug]?.length ?? 0) > 0;
+      (FEAT_SLA_GRANTS[slug]?.length ?? 0) > 0 ||
+      COMPANION_EFFECT_FEATS[slug] !== undefined;
     // Same semantics as the archetype verdicts: a deliberate not-wireable
     // ruling from either feat audit is reviewed backlog; a mover bucket
     // that never produced a wired route is real backlog and still flags.

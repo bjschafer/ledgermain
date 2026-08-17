@@ -11,6 +11,7 @@
 import {
   BASE_COMPANIONS,
   buildRollData,
+  collectCompanionMasterEffects,
   companionAbilityIncreaseSlots,
   companionEffectiveLevel,
   CONDITION_LADDERS,
@@ -18,6 +19,7 @@ import {
   featNameSlug,
   MOUNT_SPECIES_BY_RIDER_SIZE,
   type DerivedCompanion,
+  type ResolvedCompanionMasterEffects,
 } from "@pf1/engine";
 import type { AbilityId, AnimalCompanionBuild, CharacterDoc, RefData } from "@pf1/schema";
 
@@ -342,17 +344,27 @@ export function animalFocusBuffs(refData: RefData): { id: string; name: string }
 }
 
 /**
- * Whether the character owns the Boon Companion feat (+4 effective druid
- * level, capped at character level — CRB "Boon Companion"). Resolved here
- * (rather than inside `@pf1/engine`'s pure `companion.ts`, which never takes
- * `RefData`) by turning each owned feat id into its name/slug the same way
- * `resources.ts`'s `FEAT_POOL_EFFECTS` lookup does.
+ * Every master-side companion effect for this document (Boon Companion,
+ * Animal Ally, archetype features — see `@pf1/engine`
+ * `companion-master-effects.ts`), resolved once per derivation. Replaces the
+ * former Boon-Companion-only special case: the feat now lives in
+ * `COMPANION_EFFECT_FEATS` alongside its siblings.
  */
-export function hasBoonCompanionFeat(doc: CharacterDoc, refData: RefData): boolean {
-  return doc.build.feats.some((id) => {
-    const feat = refData.feats[id];
-    return feat != null && featNameSlug(feat.name) === "boon-companion";
-  });
+export function companionMasterEffects(
+  doc: CharacterDoc,
+  refData: RefData,
+): ResolvedCompanionMasterEffects {
+  return collectCompanionMasterEffects(doc, refData);
+}
+
+/**
+ * The companion's effective druid level including master-side effects — what
+ * the picker and panel should display. Bare `companionEffectiveLevel(doc)`
+ * misses feat/archetype contributions (and grants that create the companion
+ * with no class source at all, e.g. Animal Ally).
+ */
+export function companionLevelWithMasterEffects(doc: CharacterDoc, refData: RefData): number {
+  return companionEffectiveLevel(doc, false, companionMasterEffects(doc, refData));
 }
 
 /**
@@ -386,11 +398,14 @@ export function deriveCompanionSheet(
 ): DerivedCompanion | undefined {
   if (!doc.build.animalCompanion) return undefined;
   const rollData = buildRollData(doc, refData);
+  // Boon Companion rides the master-effects table now — passing `false` for
+  // the legacy boolean is what prevents it double-counting.
   return deriveCompanion(
     doc,
     rollData,
-    hasBoonCompanionFeat(doc, refData),
+    false,
     companionHasWeaponFinesse(doc, refData),
+    companionMasterEffects(doc, refData),
   );
 }
 

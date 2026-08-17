@@ -92,6 +92,7 @@
 
 import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
 
+import type { ResolvedCompanionMasterEffects } from "./companion-master-effects.js";
 import { CONDITIONS } from "./conditions.js";
 import {
   classifyNaturalAttacks,
@@ -708,11 +709,24 @@ function baseCompanionEffectiveLevel(doc: CharacterDoc): number {
  * Returns 0 (no companion) when the document has no companion source at all
  * — Boon Companion's own prerequisite is already having an animal companion,
  * so the bonus never creates one from nothing.
+ *
+ * `master` carries the generalized master-side contributions from
+ * `companion-master-effects.ts` (resolved by the caller, same posture):
+ * `grantLevels` behave like a class source (they can create the companion —
+ * Animal Ally, an archetype's own grant), `bonusLevels` like Boon Companion
+ * (boost-only). The legacy `hasBoonCompanion` boolean is kept for callers
+ * that predate the table; passing BOTH it and a resolved Boon Companion
+ * entry would double-count, so `deriveCompanionSheet` now passes only
+ * `master`.
  */
-export function companionEffectiveLevel(doc: CharacterDoc, hasBoonCompanion = false): number {
-  const base = baseCompanionEffectiveLevel(doc);
+export function companionEffectiveLevel(
+  doc: CharacterDoc,
+  hasBoonCompanion = false,
+  master?: Pick<ResolvedCompanionMasterEffects, "grantLevels" | "bonusLevels">,
+): number {
+  const base = baseCompanionEffectiveLevel(doc) + (master?.grantLevels ?? 0);
   if (base <= 0) return 0;
-  return Math.min(totalLevel(doc), base + (hasBoonCompanion ? 4 : 0));
+  return Math.min(totalLevel(doc), base + (master?.bonusLevels ?? 0) + (hasBoonCompanion ? 4 : 0));
 }
 
 export interface DerivedCompanionSkill {
@@ -824,13 +838,14 @@ export function deriveCompanion(
   rollData: RollData,
   hasBoonCompanion = false,
   hasWeaponFinesse = false,
+  master?: ResolvedCompanionMasterEffects,
 ): DerivedCompanion | undefined {
   const build = doc.build.animalCompanion;
   if (!build) return undefined;
   const species = BASE_COMPANIONS[build.speciesId];
   if (!species) return undefined;
 
-  const level = companionEffectiveLevel(doc, hasBoonCompanion);
+  const level = companionEffectiveLevel(doc, hasBoonCompanion, master);
   if (level <= 0) return undefined;
 
   const row = companionProgressionRow(level);
@@ -888,7 +903,13 @@ export function deriveCompanion(
     .filter((c): c is NonNullable<typeof c> => c != null && c.changes.length > 0)
     .map((c) => ({ instanceId: `condition:${c.id}`, name: c.name, changes: c.changes }));
 
-  const routed = routeSharedBuffs([...sharedBuffs, ...conditionBuffs], rollData);
+  // Master-side companion effects (companion-master-effects.ts) enter the
+  // very same routing as shared buffs and conditions — one synthetic buff
+  // per table entry, evaluated against the MASTER's roll data.
+  const routed = routeSharedBuffs(
+    [...sharedBuffs, ...conditionBuffs, ...(master?.buffs ?? [])],
+    rollData,
+  );
 
   abilities = applySharedAbilityBonuses(abilities, routed.ability, abilityMod);
   const strMod = abilities.str.mod;
@@ -1059,6 +1080,7 @@ export function deriveCompanion(
   const specialNotes = [
     ...(species.specialNotes ?? []),
     ...(grown?.specialNote ? [grown.specialNote] : []),
+    ...(master?.notes ?? []),
   ];
 
   return {
@@ -1091,8 +1113,8 @@ export function deriveCompanion(
       detail: COMPANION_SPECIAL_ABILITY_DETAIL[name] ?? "",
     })),
     specialNotes,
-    bonusTricks: row.bonusTricks,
-    bonusFeats: row.feats,
+    bonusTricks: row.bonusTricks + (master?.bonusTricks ?? 0),
+    bonusFeats: row.feats + (master?.bonusFeats ?? 0),
     skillPointsAvailable,
     skillPointsSpent,
   };

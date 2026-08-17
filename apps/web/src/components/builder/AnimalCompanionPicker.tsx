@@ -9,6 +9,7 @@ import {
   cavalierLevel,
   clearCompanion,
   companionFeatPrereqContext,
+  companionMasterEffects,
   deriveCompanionSheet,
   mountSpeciesHint,
   samuraiLevel,
@@ -55,7 +56,9 @@ const ABILITY_OPTIONS: { id: AbilityId; label: string }[] = [
  * Bond", see `@pf1/engine` `companionEffectiveLevel`'s doc comment), or
  * cavalier/samurai levels (the "Mount" class feature, granted at 1st level
  * unlike the ranger's 4th-level gate) — a druid choosing the domain option
- * instead, and a ranger below 4th level, simply see no picker yet.
+ * instead, and a ranger below 4th level, simply see no picker yet. Master-
+ * side grants (Animal Ally, archetype companion grants) open the picker too,
+ * with no source toggle to click — the grant itself is the source.
  */
 export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionPickerProps) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:AnimalCompanion", false);
@@ -69,19 +72,24 @@ export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionP
   const canHunterCompanion = hunterLevel >= 1;
   const canCavalierMount = cavLevel >= 1;
   const canSamuraiMount = samLevel >= 1;
+  // Master-side grants (Animal Ally, archetype companion grants — see
+  // `@pf1/engine` companion-master-effects.ts) can create a companion with
+  // no class source chosen at all, so they open the picker too.
+  const masterEffects = companionMasterEffects(doc, refData);
   if (
     !canNatureBond &&
     !canHuntersBond &&
     !canHunterCompanion &&
     !canCavalierMount &&
-    !canSamuraiMount
+    !canSamuraiMount &&
+    masterEffects.grantLevels <= 0
   )
     return null;
 
   const companion = doc.build.animalCompanion;
   const species = companion ? BASE_COMPANIONS[companion.speciesId] : undefined;
   const sources = companion?.source ?? [];
-  const effectiveLevel = companionEffectiveLevel(doc);
+  const effectiveLevel = companionEffectiveLevel(doc, false, masterEffects);
   const increaseSlots = companionAbilityIncreaseSlots(effectiveLevel);
   const abilityIncreases = companion?.abilityIncreases ?? [];
   const sizeIsSmall = refData.races[doc.identity.race]?.size === "sm";

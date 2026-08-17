@@ -158,6 +158,19 @@ The trait namespace additionally supports a **family variant** for picks over th
 
 Cleanup on deselect is a per-namespace concern, not automatic: `apps/web/src/model/ragePowers.ts`'s `toggleRagePower` and `model/traits.ts`'s `toggleTrait` both drop their own namespace's stale key when the declaring entry is removed, and `model/doc.ts`'s `setArchetypes` does the same (given a `RefData` to resolve which features belonged to the removed archetype) for `archetypeFeature:`. `classFeature:` has no such seam yet -- `removeClass` has no `RefData` in scope to enumerate a removed class's feature ids -- so a stale `classFeature:` pick is inert (the class-feature loops only ever walk the character's current classes) but not purged; a future wave threading `RefData` through class removal would close that gap.
 
+### 3.7 Route a master feature onto the tracked animal companion / mount
+
+The tracked companion (`build.animalCompanion`, derived by `companion.ts`'s `deriveCompanion`) has its own stat block, so a master-side feature that modifies the COMPANION's numbers must never become a normal `Change` on the master's sheet -- it goes in `companion-master-effects.ts` instead, keyed by feat slug (`COMPANION_EFFECT_FEATS`) or archetype-feature classification key (`COMPANION_EFFECT_ARCHETYPE_FEATURES`, with an explicit `archetypeId` + `minLevel` gate).
+
+An entry has two effect surfaces:
+
+1. **`changes`** -- Change-shaped stat effects on the companion (ability ids, `ac`/`nac`/..., saves, `skill.*`, `attack`, `damage`, `*Speed`, `init`). Each entry becomes one synthetic `ActiveBuff` and rides `routeSharedBuffs` (`shared-creature-buffs.ts`), the same pipeline shared buffs and the companion's own conditions already use -- typed stacking and per-source provenance come free. Formulas evaluate against the MASTER's roll data, so `@classes.<tag>.level` works. Only targets that router buckets are honored; anything else silently does nothing, so check the bucket list in its doc comment first.
+2. **Structured fields** the buff route can't express: `level` (effective-druid-level contributions -- `grants: true` entries CREATE a companion like a class source does, Animal Ally being the canon example; `grants: false` entries only boost an existing one, the Boon Companion shape) and flat `bonusTricks`/`bonusFeats` count additions. Contributions floor at 0 and the summed effective level stays capped at total character level in `companionEffectiveLevel`.
+
+`collectCompanionMasterEffects(doc, refData)` resolves the active entries (it, not `companion.ts`, takes `RefData` -- the companion module stays pure); the web's `deriveCompanionSheet` passes the result into `deriveCompanion`. Register any new table in `scripts/mech-coverage.ts`'s wired checks in the same change, and verify the vendored description text before wiring -- classification notes have misquoted numbers more than once.
+
+Out of scope by design: multi-companion splits (one tracked stat block), species-list expansions beyond `BASE_COMPANIONS`, master-facing mounted-combat numbers (those are ordinary master-sheet rulings), and familiar/eidolon/phantom internals (their own modules).
+
 ## 4. Testing
 
 Every non-trivial engine behavior gets a **hand-computed fixture test** against the real vendored data, loaded via `loadRefData()` from `@pf1/data-pipeline` -- not a mock `RefData`. The pattern, visible in essentially every file under `packages/engine/test/`:

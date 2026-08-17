@@ -495,7 +495,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Brute Steed",
     level: 1,
     bucket: "subsystem",
-    note: "mount ability-score adjustment — mount-scoped (class note 1), no Change",
+    note: "mount +2 Str / -2 Dex — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked mount's own stat block",
   },
   "cavalier:fell-rider:deadly-rampage:11": {
     archetypeId: "cavalier:fell-rider",

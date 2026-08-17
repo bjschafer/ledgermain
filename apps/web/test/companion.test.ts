@@ -12,9 +12,10 @@ import {
   clearCompanion,
   companionFeatPrereqContext,
   companionHasWeaponFinesse,
+  companionLevelWithMasterEffects,
+  companionMasterEffects,
   companionSupersedingCondition,
   deriveCompanionSheet,
-  hasBoonCompanionFeat,
   hasCompanionCondition,
   healCompanion,
   healCompanionNonlethal,
@@ -143,9 +144,29 @@ describe("model/companion.ts transitions", () => {
     expect(d.build.animalCompanion?.abilityIncreases).toEqual(["str", "dex"]);
   });
 
-  it("hasBoonCompanionFeat is false when the feat isn't owned", () => {
+  it("companionMasterEffects resolves nothing when no companion-affecting feat is owned", () => {
     const d = createEmptyDoc("t");
-    expect(hasBoonCompanionFeat(d, ref)).toBe(false);
+    const master = companionMasterEffects(d, ref);
+    expect(master.grantLevels).toBe(0);
+    expect(master.bonusLevels).toBe(0);
+    expect(master.buffs).toEqual([]);
+  });
+
+  it("Boon Companion routes through the master-effects table: druid-7 wolf derives at level 11, capped at character level", () => {
+    // Druid 7 + Boon Companion: effective druid level 7 + 4 = 11, character
+    // level cap is 7 + 4 = 11 only if character level allows — a pure druid 7
+    // caps at 7. Add 4 fighter levels so the +4 has room (CRB feat text:
+    // "to a maximum effective druid level equal to your character level").
+    const boonId = Object.values(ref.feats).find((f) => f.name === "Boon Companion")!.id;
+    let d = druid7();
+    d = addClass(d, "fighter");
+    d = setClassLevel(d, "fighter", 4);
+    d = setCompanion(d, "wolf", "Fang");
+    d = toggleCompanionSource(d, "nature-bond");
+    expect(companionLevelWithMasterEffects(d, ref)).toBe(7);
+    d = { ...d, build: { ...d.build, feats: [...d.build.feats, boonId] } };
+    expect(companionLevelWithMasterEffects(d, ref)).toBe(11);
+    expect(deriveCompanionSheet(d, ref)!.level).toBe(11);
   });
 
   it("companionHasWeaponFinesse reads the COMPANION's own feats (build.animalCompanion.feats), not the master's", () => {

@@ -660,6 +660,15 @@ export {
   type FlyManeuverability as CompanionFlyManeuverability,
 } from "./companion.js";
 export {
+  COMPANION_EFFECT_FEATS,
+  COMPANION_EFFECT_ARCHETYPE_FEATURES,
+  collectCompanionMasterEffects,
+  type ArchetypeCompanionEffect,
+  type CompanionLevelEffect,
+  type CompanionMasterEffect,
+  type ResolvedCompanionMasterEffects,
+} from "./companion-master-effects.js";
+export {
   PHANTOM_BASE_ABILITIES,
   EMOTIONAL_FOCI,
   EMOTIONAL_FOCUS_IDS,

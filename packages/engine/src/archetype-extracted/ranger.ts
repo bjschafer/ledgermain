@@ -203,7 +203,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Strong Bond",
     level: 12,
     bucket: "subsystem",
-    note: "modifies/replaces Hunter's Bond (or grants an animal companion/mount/familiar-like ally) — the companion system has no archetype hooks (per project notes).",
+    note: "effective druid level becomes ranger level at 12th — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES (+3 undoes hunters-bond's -3)",
   },
   "ranger:blightwarden:emulate-taint:1": {
     archetypeId: "ranger:blightwarden",
