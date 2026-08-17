@@ -290,7 +290,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_5: Readonly<
     id: "R7Byu97rL8jPeqaz",
     name: "Discern Lies",
     bucket: "subsystem",
-    note: "Grants use of discern lies as a spell-like ability from a rounds-per-day pool; a subsystem grant, not a flat bonus. Several sibling class features share this exact name across other classes with the same shape.",
+    note: "Grants use of discern lies as a spell-like ability from a rounds-per-day pool, wired via the spell-like-abilities route; a subsystem grant, not a flat bonus. Several sibling class features share this exact name across other classes with the same shape.",
   },
   TewYQ3TQt5nbzZUG: {
     id: "TewYQ3TQt5nbzZUG",
@@ -314,19 +314,19 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_5: Readonly<
     id: "r4c0rB7XE9KGLisb",
     name: "Swift Shield Other",
     bucket: "subsystem",
-    note: "Grants use of shield other as a quickened spell-like ability on an ally, gated on a Charisma-bonus use pool.",
+    note: "Grants use of shield other as a quickened spell-like ability on an ally, gated on a Charisma-bonus use pool, wired via the spell-like-abilities route.",
   },
   "2PyGmB1R6ciYAaBb": {
     id: "2PyGmB1R6ciYAaBb",
     name: "Mystique of Ardad Lili (Ex and Sp)",
     bucket: "situational",
-    note: "The Diplomacy/Intimidate bonus is scoped to targets of the sanguine angel's own creature type, a favored-enemy-shaped scope with no modeled target; the dominate person half is a once-per-day spell-like ability.",
+    note: "The Diplomacy/Intimidate bonus is scoped to targets of the sanguine angel's own creature type, a favored-enemy-shaped scope with no modeled target; the dominate person half is a once-per-day spell-like ability, wired via the spell-like-abilities route.",
   },
   "2rnVuPmVOKZpZ7dd": {
     id: "2rnVuPmVOKZpZ7dd",
     name: "Arcana: The Rider",
     bucket: "subsystem",
-    note: "Grants phantom steed and sanctuary as spell-like effects while riding; a subsystem grant, not a flat bonus.",
+    note: "Grants phantom steed and sanctuary as spell-like effects while riding; choice-gated in practice (all twelve Sidereal Arcana auto-list on every stargazer with no pick-tracking, the Arcana: The Thrush defect below), so left unwired.",
   },
   "9jImL8ktlHUGcNoa": {
     id: "9jImL8ktlHUGcNoa",
@@ -356,7 +356,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_5: Readonly<
     id: "F9RBv0eTNHdIg6pP",
     name: "Arcana: The Stranger",
     bucket: "subsystem",
-    note: "Grants cultural adaptation as a spell-like ability from a uses-per-day pool; a subsystem grant, not a flat bonus.",
+    note: "Grants cultural adaptation as a spell-like ability from a uses-per-day pool; choice-gated in practice (all twelve Sidereal Arcana auto-list on every stargazer with no pick-tracking, the Arcana: The Thrush defect below), so left unwired.",
   },
   JHMjcL8WElA3MopJ: {
     id: "JHMjcL8WElA3MopJ",
@@ -374,13 +374,13 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_5: Readonly<
     id: "TLFiwIpn9Aogn7QT",
     name: "Deductive Examination",
     bucket: "subsystem",
-    note: "Grants use of residual tracking as a spell-like ability three times per day; a subsystem grant, not a flat bonus.",
+    note: "Grants use of residual tracking as a spell-like ability three times per day, wired via the spell-like-abilities route; a subsystem grant, not a flat bonus.",
   },
   UfQ6HFpCWDPyQ9Kz: {
     id: "UfQ6HFpCWDPyQ9Kz",
     name: "Summon Mantis",
     bucket: "subsystem",
-    note: "Once-per-day summon monster-equivalent spell-like ability; a subsystem grant, not a flat bonus.",
+    note: "Once-per-day summon monster-equivalent spell-like ability; the summoning subsystem, out of the spell-like-abilities table's scope.",
   },
   WCLjLkw2CREssenw: {
     id: "WCLjLkw2CREssenw",

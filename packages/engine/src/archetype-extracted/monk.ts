@@ -214,7 +214,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Firewater Breath",
     level: 19,
     bucket: "subsystem",
-    note: "one-shot ki-gated cone damage spell-like ability — activated, resource-gated, and dice-based damage isn't modeled as a flat Change either way",
+    note: "custom fire-cone damage with no named-spell equivalent, costed in ki points rather than a day/week counter — spell-equivalent effect, cross-pool spend",
   },
   "monk:harrow-warden:elemental-strike:1": {
     archetypeId: "monk:harrow-warden",
@@ -732,7 +732,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Born in Darkness",
     level: 7,
     bucket: "subsystem",
-    note: "ki-spend darkness spell-like ability — activated, resource-gated, no bonus magnitude to extract",
+    note: "functions as darkness, costed in ki points rather than a day/week counter — cross-pool spend",
   },
   "monk:gray-disciple:earth-glide:12": {
     archetypeId: "monk:gray-disciple",
@@ -760,14 +760,14 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fade from Sight",
     level: 4,
     bucket: "subsystem",
-    note: "ki-spend invisibility, gated on already having invisibility as a spell-like ability — activated, resource-gated, no bonus magnitude",
+    note: "functions as invisibility, costed in ki points rather than a day/week counter — cross-pool spend, additionally gated on already having invisibility as an SLA from elsewhere",
   },
   "monk:gray-disciple:gray-heart:6": {
     archetypeId: "monk:gray-disciple",
     name: "Gray Heart",
     level: 6,
     bucket: "subsystem",
-    note: "ki-spend enlarge person, gated on already having it as a spell-like ability — activated, resource-gated, no bonus magnitude",
+    note: "functions as enlarge person, costed in ki points rather than a day/week counter — cross-pool spend, additionally gated on already having enlarge person as an SLA from elsewhere",
   },
   "monk:hamatulatsu-master:alignment:0": {
     archetypeId: "monk:hamatulatsu-master",
@@ -1460,7 +1460,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Walk with the Master",
     level: 20,
     bucket: "subsystem",
-    note: "ki-spend travel spell-like abilities plus an outsider type change — activated, resource-gated, no baseline number",
+    note: "choice-gated among etherealness/plane shift/shadow walk, costed in ki points rather than a day/week counter — cross-pool spend; the outsider type change stays unmodeled",
   },
   "monk:qinggong-monk:activation:0": {
     archetypeId: "monk:qinggong-monk",
@@ -1971,7 +1971,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Rainmaker",
     level: 19,
     bucket: "subsystem",
-    note: "ki-spend earthquake spell-like ability, location-gated (underground) — activated, resource-gated",
+    note: "functions as earthquake, costed in ki points rather than a day/week counter — cross-pool spend, additionally location-gated (underground)",
   },
   "monk:terra-cotta-monk:stone-grip:5": {
     archetypeId: "monk:terra-cotta-monk",
@@ -1985,7 +1985,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Sudden Adit",
     level: 12,
     bucket: "subsystem",
-    note: "ki-spend passwall spell-like ability — activated, resource-gated",
+    note: "functions as passwall, costed in ki points rather than a day/week counter — cross-pool spend",
   },
   "monk:terra-cotta-monk:trap-dodge:10": {
     archetypeId: "monk:terra-cotta-monk",
@@ -2055,7 +2055,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Iron Body",
     level: 19,
     bucket: "subsystem",
-    note: "ki-spend iron body spell-like ability — activated, resource-gated, DR-based not flat",
+    note: "functions as iron body, costed in ki points rather than a day/week counter — cross-pool spend",
   },
   "monk:treetop-monk:branch-runner:3": {
     archetypeId: "monk:treetop-monk",
@@ -2139,7 +2139,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Light Step",
     level: 5,
     bucket: "subsystem",
-    note: "ki-spend choice among several spell-like abilities (ant haul/feather step/pass without trace/tireless pursuit) — no flat bonus magnitude, a bundled activated menu",
+    note: "choice-gated among ant haul/feather step/pass without trace/tireless pursuit, costed in ki points rather than a day/week counter — cross-pool spend",
   },
   "monk:wanderer:long-walk:3": {
     archetypeId: "monk:wanderer",

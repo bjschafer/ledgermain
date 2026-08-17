@@ -190,7 +190,7 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Conjurer's Focus (Sp)",
     level: 1,
     bucket: "subsystem",
-    note: "reservoir-spend summon monster spell-like ability with a scaling spell level — activated resource ability.",
+    note: "reservoir-spend scaling summon monster spell-like ability — summoning subsystem, cross-pool spend.",
   },
   "arcanist:occultist:planar-spells:1": {
     archetypeId: "arcanist:occultist",
@@ -204,7 +204,7 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Planar Contact (Sp)",
     level: 7,
     bucket: "subsystem",
-    note: "grants augury/contact other plane spell-like abilities — not Change-shaped.",
+    note: "augury 1/day and contact other plane 1/week, wired via the spell-like-abilities route under arcanist:occultist:planar-contact:7.",
   },
   "arcanist:occultist:perfect-summoner:20": {
     archetypeId: "arcanist:occultist",
@@ -484,14 +484,14 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Conjurer's Focus",
     level: 1,
     bucket: "subsystem",
-    note: "reservoir-spend summon monster spell-like ability with a scaling spell level — activated resource ability.",
+    note: "reservoir-spend scaling summon monster spell-like ability — summoning subsystem, cross-pool spend.",
   },
   "arcanist:occultist:planar-contact:7": {
     archetypeId: "arcanist:occultist",
     name: "Planar Contact",
     level: 7,
     bucket: "subsystem",
-    note: "grants augury/contact other plane spell-like abilities — not Change-shaped.",
+    note: "augury 1/day and contact other plane 1/week, wired via the spell-like-abilities route.",
   },
   "arcanist:school-savant:school-focus:1": {
     archetypeId: "arcanist:school-savant",

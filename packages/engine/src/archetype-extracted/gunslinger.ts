@@ -163,7 +163,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Deeds",
     level: 1,
     bucket: "subsystem",
-    note: "swaps four deeds for grit-gated terrain/social/spell-like abilities (Seadog's Gait, Pirate's Jargon, Rope Swing, Captain's Curse) — deeds subsystem (class note 2)",
+    note: "swaps four deeds for grit-gated terrain/social/spell-like abilities (Seadog's Gait, Pirate's Jargon, Rope Swing, Captain's Curse) — deeds subsystem (class note 2); Captain's Curse (old salt's curse/black mark) resolves to real spells but costs grit points, not a day/week counter — cross-pool spend",
   },
   "gunslinger:buccaneer:exotic-pet:5": {
     archetypeId: "gunslinger:buccaneer",
@@ -220,7 +220,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mass Song of Surrender",
     level: 18,
     bucket: "subsystem",
-    note: "an enchantment (compulsion) spell-like ability replacing 'mass suggestion' (a bard spell — see the archetype-wide note above) — enemy-effect subsystem, no player number",
+    note: "a custom enchantment (compulsion) effect, not a named spell (replaces 'mass suggestion' — a bard spell, see the archetype-wide note above) — spell-equivalent effect, enemy-facing, no player number",
   },
   "gunslinger:buccaneer:raider-s-riposte:17": {
     archetypeId: "gunslinger:buccaneer",
@@ -234,7 +234,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Song of Surrender",
     level: 4,
     bucket: "subsystem",
-    note: "an enchantment (compulsion) spell-like ability replacing 'suggestion' (a bard spell — see the archetype-wide note above) — enemy-effect subsystem, no player number",
+    note: "a custom enchantment (compulsion) effect, not a named spell (replaces 'suggestion' — a bard spell, see the archetype-wide note above) — spell-equivalent effect, enemy-facing, no player number",
   },
   "gunslinger:buccaneer:sword-and-pistol:9": {
     archetypeId: "gunslinger:buccaneer",

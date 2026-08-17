@@ -470,7 +470,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Evidence Disposal",
     level: 4,
     bucket: "subsystem",
-    note: "dress-corpse spell-like ability — resource-gated, no baseline number",
+    note: "dress corpse, wired via the spell-like-abilities route (the 12th-level disintegrate-corpse upgrade isn't modeled)",
   },
   "rogueUnchained:discretion-specialist:fast-talker:1": {
     archetypeId: "rogueUnchained:discretion-specialist",
@@ -500,7 +500,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Dream Infiltrator",
     level: 8,
     bucket: "subsystem",
-    note: "dream scan/dream travel spell-like abilities — resource-gated",
+    note: "dream scan, wired via the spell-like-abilities route (the 12th-level option to cast dream travel instead isn't modeled)",
   },
   "rogueUnchained:dreamthief:dreamshard-focus:1": {
     archetypeId: "rogueUnchained:dreamthief",
@@ -546,7 +546,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Earthcraft",
     level: 2,
     bucket: "subsystem",
-    note: "a daily point pool spent on spell-like abilities — resource-gated",
+    note: "a daily earthcraft-point pool spent at varying per-spell costs across several named spells — a shared point-pool budget, not a per-spell counter",
   },
   "rogueUnchained:earthshadow:earthlink:1": {
     archetypeId: "rogueUnchained:earthshadow",
@@ -562,7 +562,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Detect Magic",
     level: 2,
     bucket: "subsystem",
-    note: "at-will detect magic spell-like ability — no flat number",
+    note: "detect magic (at will), wired via the spell-like-abilities route",
   },
   "rogueUnchained:eldritch-raider:eldritch-intuition:3": {
     archetypeId: "rogueUnchained:eldritch-raider",
@@ -777,7 +777,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Enthralling Agitation",
     level: 4,
     bucket: "subsystem",
-    note: "enthrall spell-like ability + an influence-shifting check — resource-gated, no baseline number",
+    note: "as the spell enthrall, but the published DC scales with 1/2 rogue level rather than spell level — this table's DC is fixed to spell level, so wiring it would drift wrong as she levels; left as prose. The influence-shifting check isn't modeled either",
   },
   "rogueUnchained:galtan-agitator:leadership:12": {
     archetypeId: "rogueUnchained:galtan-agitator",
@@ -950,7 +950,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Misdirection",
     level: 4,
     bucket: "subsystem",
-    note: "self-only misdirection spell-like ability — resource-gated",
+    note: "misdirection (self plus a chosen creature), wired via the spell-like-abilities route",
   },
   "rogueUnchained:kintargo-rebel:sophisticated-stealth:3": {
     archetypeId: "rogueUnchained:kintargo-rebel",
@@ -966,7 +966,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Kitsune's Charm",
     level: 3,
     bucket: "subsystem",
-    note: "charm person spell-like ability — resource-gated",
+    note: "charm person, wired via the spell-like-abilities route",
   },
   "rogueUnchained:kitsune-trickster:kitsune-s-guile:1": {
     archetypeId: "rogueUnchained:kitsune-trickster",
@@ -1308,7 +1308,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Divine Epiphany",
     level: 8,
     bucket: "subsystem",
-    note: "once-per-day augury spell-like ability — resource-gated, no baseline number",
+    note: "augury, wired via the spell-like-abilities route",
   },
   "rogueUnchained:sanctified-rogue:divine-purpose:4": {
     archetypeId: "rogueUnchained:sanctified-rogue",
@@ -1474,7 +1474,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Shadow Speaker",
     level: 14,
     bucket: "subsystem",
-    note: "a commune-with-nature-equivalent spell-like ability, limited uses/day — no flat number",
+    note: "functions as commune with nature (the vendored text names the actual spell, just reflavored to trigger via meditation), wired via the spell-like-abilities route",
   },
   "rogueUnchained:shadow-scion:shadow-step:8": {
     archetypeId: "rogueUnchained:shadow-scion",
@@ -1511,7 +1511,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Illumination Control",
     level: 3,
     bucket: "subsystem",
-    note: "a daily point pool spent on light/darkness spell-like abilities — resource-gated",
+    note: "a daily illumination-point pool spent at varying per-spell costs across several named light/darkness spells — a shared point-pool budget, not a per-spell counter",
   },
 
   // ── Sharper ────────────────────────────────────────────────────────────
@@ -1760,7 +1760,7 @@ export const ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Endure Elements",
     level: 3,
     bucket: "subsystem",
-    note: "once-per-day endure elements spell-like ability — resource-gated, no baseline number",
+    note: "endure elements, wired via the spell-like-abilities route",
   },
   "rogueUnchained:survivalist:hardy:1": {
     archetypeId: "rogueUnchained:survivalist",

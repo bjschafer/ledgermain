@@ -271,7 +271,7 @@ export const SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Enhanced Varisian Tattoo",
     level: 9,
     bucket: "subsystem",
-    note: "grants a chosen known spell as a once/day spell-like ability at +2 CL (replaces a bloodline power) — no Change-shaped number",
+    note: "a chosen known spell as a once/day spell-like ability at +2 CL, but which spell isn't stored anywhere in the doc — choice-gated; replaces a bloodline power",
   },
   "sorcerer:umbral-scion:diminished-spellcasting:1": {
     archetypeId: "sorcerer:umbral-scion",

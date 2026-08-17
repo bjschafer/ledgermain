@@ -120,7 +120,7 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Versatile Healing Channel",
     level: 5,
     bucket: "subsystem",
-    note: "spends channel-energy uses to cast an escalating list of spells as spell-like abilities — resource/spell-list mechanic, no flat number",
+    note: "each tier costs channel-energy uses, not a day/week counter of its own — cross-pool spend across an escalating spell list",
   },
 
   // ── cleric:appeaser ──
@@ -614,7 +614,7 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fiendish Familiar",
     level: 3,
     bucket: "subsystem",
-    note: "grants (and augments) a fiendish familiar with augury/divination spell-like abilities — familiar subsystem",
+    note: "fiendish augury 1/day and fiendish divination 1-3/day (9th, scaling at 13th) wired via the spell-like-abilities route; the familiar grant/mouthpiece rider stays familiar subsystem",
   },
 
   // ── cleric:forgemaster ──
@@ -761,7 +761,7 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Circumvent Obfuscation",
     level: 1,
     bucket: "subsystem",
-    note: "spends channel-energy uses on an escalating list of truth-detection spell-like abilities — resource/spell-list mechanic",
+    note: "each tier costs two channel-energy uses, not a day/week counter of its own — cross-pool spend; several tiers also alter the spell's standard scope (self-only true seeing, scoped greater dispel magic)",
   },
   "cleric:lawspeaker:divine-judgment:1": {
     archetypeId: "cleric:lawspeaker",

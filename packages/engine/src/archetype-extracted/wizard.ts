@@ -527,7 +527,7 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Great Odyssey",
     level: 1,
     bucket: "subsystem",
-    note: "replaces arcane school with a Mount spell-like ability and a ship-command ability — modifies/reworks arcane school mechanics (rubric note 1)",
+    note: "replaces arcane school with a Mount spell-like ability (a duration budget of 2 hours/wizard level spent in 2-hour blocks, not a per-spell counter — non-counter budget) and a ship-command ability (rubric note 1)",
   },
 
   "wizard:primalist:primal-magic:1": {
@@ -572,7 +572,7 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Secrets Revealed",
     level: 5,
     bucket: "blocked",
-    note: "grants comprehend languages/identify as scaling spell-like abilities; 'replaces her bonus feat for 5th level' — an UNPAIRED partial-tier removal from Bonus Feats (WIZ)",
+    note: "comprehend languages/identify at scaling uses/day, but one becomes constant at 11th level and the other at 13th ('scholar's choice', not stored) — the counter would silently understate once either goes constant, so left as prose; 'replaces her bonus feat for 5th level' is an UNPAIRED partial-tier removal from Bonus Feats (WIZ)",
   },
   "wizard:scroll-scholar:flash-of-insight:10": {
     archetypeId: "wizard:scroll-scholar",

@@ -290,7 +290,7 @@ export const ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Alchemist Circles",
     level: 1,
     bucket: "subsystem",
-    note: "a whole new blood-pool spell-like-ability subsystem replacing bombs — unmodeled resource mechanic",
+    note: "choice-gated spell-like-ability grant (any formula-book spell of the right level) fueled by a blood pool and an unused extract slot — no stored pick to key from, replaces bombs",
   },
   "alchemist:blood-alchemist:blood-knowledge:4": {
     archetypeId: "alchemist:blood-alchemist",
@@ -2020,7 +2020,9 @@ export const ALCHEMIST_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
   // byte-identical vendored description text (see the header's oddity
   // list); `plant-voice:2` is the canonical id for the flat Knowledge
   // (nature)/Survival bonus. The 10th-level constant speak with plants
-  // spell-like ability has no applied target and is dropped.
+  // ability is explicitly supernatural in the vendored text, not
+  // spell-like, so it's outside the spell-like-abilities table's charter
+  // and has no applied target here either.
   "alchemist:horticulturist:plant-voice:2": {
     changes: [c("2", "skill.kna"), c("2", "skill.sur")],
     detail: () => "+2 Knowledge (nature), +2 Survival (10th-level speak with plants not modeled)",

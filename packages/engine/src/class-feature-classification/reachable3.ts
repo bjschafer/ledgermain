@@ -20,7 +20,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_3: Readonly<
     id: "WXjbAV4Cr2mmbHBq",
     name: "Terrain Dominance",
     bucket: "subsystem",
-    note: "Grants a bonus scoped to whichever terrain the character already mastered, chosen from a list of a dozen wildly different spell-like abilities, resistances, and combat bonuses; the target depends entirely on an unrecorded pick.",
+    note: "Grants a bonus scoped to whichever terrain the character already mastered, chosen from a list of a dozen wildly different spell-like abilities, resistances, and combat bonuses; choice-gated, the target depends entirely on an unrecorded pick.",
   },
   RIjKEsxj9nYs2W0f: {
     id: "RIjKEsxj9nYs2W0f",
@@ -266,7 +266,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_3: Readonly<
     id: "ZvwRtHL9eolE7jSJ",
     name: "Discern Lies",
     bucket: "subsystem",
-    note: "Grants discern lies as a spell-like ability a number of times per day; a granted ability, not a flat sheet number.",
+    note: "Grants discern lies as a spell-like ability a number of times per day, wired via the spell-like-abilities route; a granted ability, not a flat sheet number.",
   },
   "2qcz39w9O2Qlms0Q": {
     id: "2qcz39w9O2Qlms0Q",
@@ -416,19 +416,19 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_3: Readonly<
     id: "izFlIPdU4a9yHBDm",
     name: "Detect Undead",
     bucket: "subsystem",
-    note: "Grants detect undead as an at-will spell-like ability; a granted ability, not a flat sheet number.",
+    note: "Grants detect undead as an at-will spell-like ability, wired via the spell-like-abilities route; a granted ability, not a flat sheet number.",
   },
   p1UI7pVRl5B0hyKK: {
     id: "p1UI7pVRl5B0hyKK",
     name: "Reforged Heart (Su or Sp)",
     bucket: "subsystem",
-    note: "Grants greater make whole as a once-per-day spell-like ability; a granted ability, not a flat sheet number.",
+    note: "Grants greater make whole as a once-per-day spell-like ability; unresolvable, greater make whole isn't in the vendored spell slice.",
   },
   rJ8E3SxHrK2PR5S8: {
     id: "rJ8E3SxHrK2PR5S8",
     name: "Lantern Arcana",
     bucket: "subsystem",
-    note: "Grants a large tiered list of spell-like abilities gained at different levels with per-day use counts; a granted-ability list, not a flat number.",
+    note: "Grants a large tiered list of spell-like abilities gained at different levels with per-day use counts, wired via the spell-like-abilities route; a granted-ability list, not a flat number.",
   },
   rVgbJRQKdL8Qxx0S: {
     id: "rVgbJRQKdL8Qxx0S",

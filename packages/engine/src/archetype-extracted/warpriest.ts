@@ -160,7 +160,7 @@ export const WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Enthrall",
     level: 4,
     bucket: "subsystem",
-    note: "grants enthrall as a fervor-spend spell-like ability, replacing channel energy (class note 3) — no flat number",
+    note: "enthrall, but metered by spending 2 uses of the fervor pool rather than its own N/day counter — this table can't reference another feature's pool, so left as prose; replaces channel energy (class note 3)",
   },
   "warpriest:cult-leader:hide-in-plain-sight:12": {
     archetypeId: "warpriest:cult-leader",
@@ -234,7 +234,7 @@ export const WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fervent Boon",
     level: 9,
     bucket: "subsystem",
-    note: "spends fervor uses to cast deity-boon spell-like abilities, replacing the 9th-level bonus feat (unpaired, class note 5) — resource mechanic, no flat number",
+    note: "spends fervor uses to cast a spell-like ability from the character's deity-specific sentinel boon, which isn't stored anywhere in the doc — choice-gated; replaces the 9th-level bonus feat (unpaired, class note 5)",
   },
   "warpriest:divine-champion:know-the-infidel:6": {
     archetypeId: "warpriest:divine-champion",
@@ -352,7 +352,7 @@ export const WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Detect Chaos",
     level: 3,
     bucket: "subsystem",
-    note: "grants a detect-chaos spell-like ability, replacing the 3rd-level bonus feat (unpaired, class note 5) — no Change-shaped number",
+    note: "detect chaos, wired via the spell-like-abilities route (the at-will upgrade if he has detect chaos from elsewhere isn't modeled); replaces the 3rd-level bonus feat (unpaired, class note 5)",
   },
 
   // ── warpriest:forgepriest ──

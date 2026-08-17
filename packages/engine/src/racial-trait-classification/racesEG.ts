@@ -84,14 +84,14 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     race: "Elf",
     name: "Fey-Sighted",
     bucket: "subsystem",
-    note: "Grants detect magic as a constant spell-like ability, no Change-shaped number.",
+    note: "Wired as a castable constant spell-like-ability row (spell-like-abilities/racial.ts); still no Change-shaped number.",
   },
   MQnZG0JAiMqtO91T: {
     id: "MQnZG0JAiMqtO91T",
     race: "Elf",
     name: "Frostmelding",
     bucket: "subsystem",
-    note: "Grants meld into stone once per day as a spell-like ability, no Change-shaped number.",
+    note: "Wired as a castable spell-like-ability row (spell-like-abilities/racial.ts), attached to this trait's own daily-use pool; still no Change-shaped number.",
   },
   XWa9YUpaCR5IIqUp: {
     id: "XWa9YUpaCR5IIqUp",
@@ -126,7 +126,7 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     race: "Elf",
     name: "Sense Thoughts",
     bucket: "subsystem",
-    note: "Grants detect thoughts once per day as a spell-like ability, no Change-shaped number.",
+    note: "Wired as a castable spell-like-ability row (spell-like-abilities/racial.ts), attached to this trait's own daily-use pool; still no Change-shaped number.",
   },
   A25WUoiogbprnnzS: {
     id: "A25WUoiogbprnnzS",
@@ -203,7 +203,7 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     race: "Gathlain",
     name: "Natural Bounty",
     bucket: "subsystem",
-    note: "Grants goodberry, then plant growth and heroes' feast at higher levels, as spell-like abilities, no Change-shaped number.",
+    note: "Wired as castable spell-like-ability rows (goodberry, then plant growth and heroes' feast at higher levels, spell-like-abilities/racial.ts), attached to this trait's own daily-use pool; still no Change-shaped number.",
   },
   "7VH3Akj7yTzcw8Qx": {
     id: "7VH3Akj7yTzcw8Qx",
@@ -238,7 +238,7 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     race: "Ghoran",
     name: "Spelleater",
     bucket: "subsystem",
-    note: "Grants dispel magic once per day as a spell-like ability; the dispel-check bonus now has a clCheck.dispel target to land on, but it's conditional on the character's favored class being a spellcasting class, a build-time condition this trait's entry has no way to gate on.",
+    note: "Wired as a castable spell-like-ability row (dispel magic once per day, spell-like-abilities/racial.ts); the dispel-check bonus now has a clCheck.dispel target to land on, but it's conditional on the character's favored class being a spellcasting class, a build-time condition this trait's entry has no way to gate on.",
   },
   FJHJNZFjwC1tvKnM: {
     id: "FJHJNZFjwC1tvKnM",

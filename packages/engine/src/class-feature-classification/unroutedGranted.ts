@@ -104,7 +104,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "inquisition-power:reformation:awaken-discontent",
     name: "Awaken Discontent",
     bucket: "subsystem",
-    note: "A charm-person-equivalent spell-like effect cast on a target; no bonus to the inquisitor's own sheet.",
+    note: "Casts charm person itself on a target (the vendored text names the actual spell), wired via the spell-like-abilities route; no bonus to the inquisitor's own sheet.",
   },
   "inquisition-power:sedition:undermine-authority": {
     id: "inquisition-power:sedition:undermine-authority",
@@ -200,7 +200,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "inquisition-power:heresy:word-of-anathema",
     name: "Word of Anathema",
     bucket: "subsystem",
-    note: "A bestow-curse-equivalent spell-like effect cast on an enemy; not a bonus to the inquisitor.",
+    note: "Acts as bestow curse itself on an enemy (the vendored text names the actual spell), wired via the spell-like-abilities route; not a bonus to the inquisitor.",
   },
   "inquisition-power:possession:self-control": {
     id: "inquisition-power:possession:self-control",
@@ -284,7 +284,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "inquisition-power:banishment:dismissive-touch",
     name: "Dismissive Touch",
     bucket: "subsystem",
-    note: "A dismissal-equivalent spell-like effect delivered via touch attack against evil outsiders; not a bonus to the inquisitor.",
+    note: "Casts dismissal itself via touch attack against evil outsiders (the vendored text names the actual spell), wired via the spell-like-abilities route; not a bonus to the inquisitor.",
   },
   "0BZYhHw4PbbWJuhP": {
     id: "0BZYhHw4PbbWJuhP",
@@ -314,7 +314,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "HMmsaPUiNgB5Xa8u",
     name: "Creator's Will",
     bucket: "subsystem",
-    note: "Casts Minor/Major Creation as a spell-like ability on a per-day budget; not a bonus to the caster's sheet.",
+    note: "Casts Minor/Major Creation as a spell-like ability on a per-day budget; the Major Creation tier is wired via the spell-like-abilities route (attaches to the vendored pool, gated 12th level+), the superseded 8th-level Minor Creation tier is not; not a bonus to the caster's sheet.",
   },
   Uo6HdLirmPk8haqz: {
     id: "Uo6HdLirmPk8haqz",
@@ -392,13 +392,13 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "inquisition-power:order:mantle-against-chaos",
     name: "Mantle against Chaos",
     bucket: "subsystem",
-    note: "Casts protection from chaos as a spell-like ability on a limited-minutes-per-day budget; not a plain bonus.",
+    note: "Casts protection from chaos as a spell-like ability on a limited-minutes-per-day budget; a non-counter budget with no vendored uses block, so left unwired.",
   },
   "inquisition-power:truth:grasp-of-honesty": {
     id: "inquisition-power:truth:grasp-of-honesty",
     name: "Grasp of Honesty",
     bucket: "subsystem",
-    note: "Applies zone of truth to a creature the inquisitor is grappling, pinning, or touching; a spell-like effect on a target, not a self bonus.",
+    note: "Applies zone of truth to a creature the inquisitor is grappling, pinning, or touching, wired via the spell-like-abilities route (rounds/day); a spell-like effect on a target, not a self bonus.",
   },
   "inquisition-power:zeal:zealous-surge": {
     id: "inquisition-power:zeal:zealous-surge",
@@ -440,13 +440,13 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "52vhE9asxPlXIr39",
     name: "Elemental Wall",
     bucket: "subsystem",
-    note: "Creates a Wall of Fire-equivalent barrier gated to a rounds-per-day budget; a spell-like effect, not a bonus.",
+    note: "Creates a Wall of Fire-equivalent barrier (acid/cold/electricity/fire, chosen at creation, not fire-only) gated to a rounds-per-day budget; spell-equivalent, not the actual spell, so left unwired.",
   },
   OLh9DNRqDf7yjSwM: {
     id: "OLh9DNRqDf7yjSwM",
     name: "Send Senses",
     bucket: "subsystem",
-    note: "A scrying-sensor spell-like effect gated to a per-day use limit; not a Change-shaped bonus.",
+    note: "Functions as a Clairaudience/Clairvoyance spell (the vendored text names the actual combined spell), wired via the spell-like-abilities route (attaches to the vendored pool); not a Change-shaped bonus.",
   },
   QqMg8O5rYRKoGtHW: {
     id: "QqMg8O5rYRKoGtHW",
@@ -470,7 +470,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "W7nMOLi2kXGEKe72",
     name: "Invisibility Field",
     bucket: "subsystem",
-    note: "Self-facing, but grants Invisibility, Greater as a swift action — a condition/effect grant with no matching Change target in this engine's vocabulary (invisibility isn't a stat bonus), not a scoping problem.",
+    note: "Self-facing, but grants Invisibility, Greater as a swift action — a condition/effect grant with no matching Change target in this engine's vocabulary (invisibility isn't a stat bonus), not a scoping problem. Wired via the spell-like-abilities route (attaches to the vendored pool) so the tracker at least surfaces it as a castable ability.",
   },
   YPqkXzcxHtggndAY: {
     id: "YPqkXzcxHtggndAY",

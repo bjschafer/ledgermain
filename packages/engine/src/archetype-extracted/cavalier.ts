@@ -731,7 +731,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Transcend Language",
     level: 3,
     bucket: "subsystem",
-    note: "limited-use tongues spell-like ability — resource mechanic, replaces cavalier's charge",
+    note: "tongues 3/day, wired via the spell-like-abilities route; replaces cavalier's charge",
   },
 
   // ── cavalier:honor-guard ──
@@ -770,7 +770,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Champion of the Roads",
     level: 9,
     bucket: "subsystem",
-    note: "limited-use dimension door spell-like ability — resource mechanic, no Change",
+    note: "dimension door (scaling 1-3/day), wired via the spell-like-abilities route",
   },
   "cavalier:hooded-knight:feytouched-mount:1": {
     archetypeId: "cavalier:hooded-knight",

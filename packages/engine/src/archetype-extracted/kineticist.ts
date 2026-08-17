@@ -161,7 +161,7 @@ export const KINETICIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Curse Spinner",
     level: 6,
     bucket: "subsystem",
-    note: "grants two fixed spell-like abilities (remove curse, bestow curse) usable via burn spend, counted as utility wild talents — pick-list-shaped grant, no flat number",
+    note: "remove curse (6th) and bestow curse (8th), each costed in accepted burn rather than a day/week counter — cross-pool spend, counted as utility wild talents",
   },
   "kineticist:arakineticist:living-curse:1": {
     archetypeId: "kineticist:arakineticist",

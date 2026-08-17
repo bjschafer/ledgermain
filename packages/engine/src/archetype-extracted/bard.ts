@@ -185,7 +185,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Nature's Speaker",
     level: 5,
     bucket: "subsystem",
-    note: "grants at-will speak with animals (spell-like) on chosen animal kinds — no Change-shaped number",
+    note: "at-will speak with animals, wired via the spell-like-abilities route (kind restriction is a note rider)",
   },
   "bard:animal-speaker:soothing-performance:3": {
     archetypeId: "bard:animal-speaker",
@@ -269,7 +269,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Inspiring Healing (CLW)",
     level: 5,
     bucket: "subsystem",
-    note: "spends bardic performance rounds for a spell-like heal — resource conversion, no flat number",
+    note: "cure light/moderate/serious wounds (by level) costed in bardic performance rounds, not a day/week counter — cross-pool spend",
   },
   "bard:archaeologist:advanced-talent:12": {
     archetypeId: "bard:archaeologist",
@@ -1151,7 +1151,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Devout Spell Knowledge",
     level: 2,
     bucket: "subsystem",
-    note: "grants a domain spell-like ability — no Change-shaped number",
+    note: "choice-gated: the domain's 1st-level spell (scaling by level) depends on a deity-domain pick this table can't resolve to a fixed spell name",
   },
   "bard:faith-singer:faithful:1": {
     archetypeId: "bard:faith-singer",
@@ -2768,7 +2768,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Shadow Servant",
     level: 1,
     bucket: "subsystem",
-    note: "grants an unseen-servant-style spell-like ability — no Change-shaped number",
+    note: "at-will unseen servant reflavored as a formless shadow, wired via the spell-like-abilities route",
   },
   "bard:silver-balladeer:break-curse:6": {
     archetypeId: "bard:silver-balladeer",

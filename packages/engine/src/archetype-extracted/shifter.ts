@@ -409,7 +409,7 @@ export const SHIFTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Final Aspect",
     level: 20,
     bucket: "subsystem",
-    note: "at-will swarm skin spell-like ability with swarm-ability picks — SLA/form subsystem",
+    note: "swarm skin (at will), wired via the spell-like-abilities route (CL = total character level); the swarm-ability picks it draws on are the swarm flow/greater swarm flow subsystem",
   },
   "shifter:swarm-shifter:greater-swarm-flow:14": {
     archetypeId: "shifter:swarm-shifter",
@@ -446,7 +446,7 @@ export const SHIFTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Speak with Plants",
     level: 1,
     bucket: "subsystem",
-    note: "spell-like ability 3+Cha times/day — SLA resource, no Change",
+    note: "speak with plants, wired via the spell-like-abilities route",
   },
   "shifter:verdant-shifter:verdant-body:1": {
     archetypeId: "shifter:verdant-shifter",

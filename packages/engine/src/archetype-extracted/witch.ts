@@ -892,7 +892,7 @@ export const WITCH_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Special",
     level: 0,
     bucket: "subsystem",
-    note: "activated, resource-gated ability (swift/standard action, uses/day, or minutes/day) — same posture as ki/grit/panache/Archaeologist's Luck; no baseline always-on number to apply (a bundle of once-per-day insight bonuses/spell-likes gated on consulting the mirror)",
+    note: "activated, resource-gated ability (swift/standard action, uses/day, or minutes/day) — same posture as ki/grit/panache/Archaeologist's Luck; no baseline always-on number to apply. Two of its tiers (clairaudience/clairvoyance, scrying) are named spell-like abilities, but all its benefits share one cryptic-omens point pool — a shared point-pool budget, not a per-spell counter",
   },
   "witch:mountain-witch:grand-hexes:0": {
     archetypeId: "witch:mountain-witch",
@@ -1116,7 +1116,7 @@ export const WITCH_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Know Direction",
     level: 0,
     bucket: "subsystem",
-    note: "a location-gated (near a large body of water) at-will spell-like ability — no baseline number",
+    note: "know direction (at will), wired via the spell-like-abilities route (the near-water location gate isn't modeled)",
   },
   "witch:sea-witch:major-hexes:0": {
     archetypeId: "witch:sea-witch",

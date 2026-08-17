@@ -276,7 +276,7 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Extraplanar Expulsion",
     level: 13,
     bucket: "subsystem",
-    note: "spell-like ability (dispel chaos/evil/good/law) fueled by sacrificing an unused high-level extract slot; activated resource ability, no flat number",
+    note: "choice-gated among dispel chaos/evil/good/law, fueled by sacrificing an unused extract slot rather than a day/week counter — cross-pool spend",
   },
   "investigator:cult-hunter:purify-mind-and-body-reroll:11": {
     archetypeId: "investigator:cult-hunter",
@@ -396,7 +396,7 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Grave Magic",
     level: 1,
     bucket: "subsystem",
-    note: "extract-slot-to-spell-like-ability conversion; alchemy/extract-adjacent subsystem (class note 4)",
+    note: "fixed spell per extract-slot level sacrificed, but the cost is an extract slot rather than a day/week counter — cross-pool spend (class note 4)",
   },
   "investigator:gravedigger:kill-the-dead:4": {
     archetypeId: "investigator:gravedigger",
@@ -505,7 +505,7 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Shared Hallucinations",
     level: 3,
     bucket: "subsystem",
-    note: "resource-spend spell-like-ability grants (minor image/oneiric horror/synesthesia/aura alteration); activated, no flat number",
+    note: "functions as minor image/oneiric horror/synesthesia/aura alteration, but costed in hallucinogen-duration minutes or an inspiration use rather than a day/week counter — non-counter budget / cross-pool spend",
   },
   "investigator:hallucinist:simultaneous-study:6": {
     archetypeId: "investigator:hallucinist",
@@ -611,7 +611,7 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Alchemical Illumination",
     level: 2,
     bucket: "subsystem",
-    note: "burns an extract/potion to cast a light-themed spell as a spell-like ability; alchemy/extract-adjacent resource ability (class note 4)",
+    note: "choice among light/continual flame/daylight/discovery torch/searing light/judgment light (by level), costed in a burned extract/infusion/potion rather than a day/week counter — cross-pool spend (class note 4)",
   },
   "investigator:lamplighter:lamplighter:1": {
     archetypeId: "investigator:lamplighter",
@@ -821,7 +821,7 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Blood Sleuth",
     level: 4,
     bucket: "subsystem",
-    note: "inspiration-spend spell-like-ability grants (discern next of kin / blood biography); activated resource ability",
+    note: "discern next of kin or blood biography, costed in inspiration uses rather than a day/week counter — cross-pool spend",
   },
   "investigator:profiler:divination-analysis:2": {
     archetypeId: "investigator:profiler",
@@ -934,7 +934,7 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Compel Obedience",
     level: 11,
     bucket: "subsystem",
-    note: "geas/quest-equivalent spell-like ability once per day; activated, no flat number",
+    note: "geas/quest 1/day, wired via the spell-like-abilities route (the 17th-level second-target upgrade isn't modeled)",
   },
   "investigator:ruthless-agent:concoction-of-truth:7": {
     archetypeId: "investigator:ruthless-agent",
@@ -1061,7 +1061,7 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Commune with Spirits",
     level: 1,
     bucket: "subsystem",
-    note: "resource-limited spell-like-ability uses (comprehend languages/detect secret doors/identify/etc.); alchemy-replacement resource subsystem",
+    note: "choice-gated: a shared day-counter pool spent across a growing list of named spells (comprehend languages/detect secret doors/identify, later augury/speak with dead/locate object/legend lore) — not expressible as a per-spell day counter",
   },
   "investigator:spiritualist:sixth-sense:3": {
     archetypeId: "investigator:spiritualist",

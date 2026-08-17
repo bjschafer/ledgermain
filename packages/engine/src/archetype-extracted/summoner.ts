@@ -271,7 +271,7 @@ export const SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Transmogrify",
     level: 12,
     bucket: "subsystem",
-    note: "grants transmogrify 1/day as an SLA — spell-like-ability grant, no flat number; replaces greater shield ally",
+    note: "transmogrify, wired via the spell-like-abilities route; replaces greater shield ally",
   },
 
   // ── summoner:first-worlder ──
@@ -423,7 +423,7 @@ export const SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Reflect on the Land",
     level: 12,
     bucket: "subsystem",
-    note: "grants commune with nature 1/day as an SLA (caster level text references 'occultist level' — a vendored-data oddity, see natural-focus above) — spell-like-ability grant, no flat number",
+    note: "commune with nature, wired via the spell-like-abilities route (defaults CL to the summoner's own class level; the vendored text's 'occultist level' phrase is a data oddity, see natural-focus above)",
   },
   "summoner:naturalist:second-animal-focus:10": {
     archetypeId: "summoner:naturalist",
@@ -451,7 +451,7 @@ export const SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Tree Talker",
     level: 8,
     bucket: "subsystem",
-    note: "grants speak with plants 3/day as an SLA plus a message-relay effect (caster level text references 'occultist level' — see natural-focus's vendored-data oddity note) — spell-like-ability grant, no flat number",
+    note: "speak with plants, wired via the spell-like-abilities route (defaults CL to the summoner's own class level; the vendored text's 'occultist level' phrase is a data oddity, see natural-focus's note); the message-relay rider isn't modeled",
   },
 
   // ── summoner:pyroclast ──

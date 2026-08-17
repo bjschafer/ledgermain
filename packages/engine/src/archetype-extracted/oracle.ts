@@ -151,7 +151,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Final Revelation",
     level: 20,
     bucket: "subsystem",
-    note: "cleanly paired to the mystery's Final Revelation capstone, but grants only spell-like abilities and a resource-refund rider — no flat number",
+    note: "discern location, prying eyes, and stone tell, wired via the spell-like-abilities route; the flash-of-insight resource-refund rider isn't modeled",
   },
   "oracle:divine-numerologist:calculate-the-odds:1": {
     archetypeId: "oracle:divine-numerologist",
@@ -678,7 +678,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Flash of Insight",
     level: 1,
     bucket: "subsystem",
-    note: "borrowed cyclops racial spell-like ability, granted as a revelation — revelation-list addition, deferred",
+    note: "grants the cyclops racial Flash of Insight ability, which the vendored archetype text marks (Su) not (Sp) — not a spell-like ability at all, so out of this table's scope regardless",
   },
   "oracle:oracle-cyclopean-seer-power:prescience:5": {
     archetypeId: "oracle:oracle-cyclopean-seer-power",

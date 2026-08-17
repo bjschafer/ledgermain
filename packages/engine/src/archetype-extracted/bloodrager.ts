@@ -106,7 +106,7 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Spirit Guardian",
     level: 2,
     bucket: "subsystem",
-    note: "uses-per-day spiritual-weapon/summon-nature's-ally/spiritual-ally spell-like ability the player chooses at cast time — resource-gated pick, no baseline number; replaces uncanny dodge (no vendored changes) and the 6th/18th bloodline feats (class note 5)",
+    note: "choice-gated: spiritual weapon/summon nature's ally II/spiritual ally/summon nature's ally VI, picked at cast time with no stored pick; replaces uncanny dodge (no vendored changes) and the 6th/18th bloodline feats (class note 5)",
   },
   "bloodrager:ancestral-harbinger:spirit-servants:5": {
     archetypeId: "bloodrager:ancestral-harbinger",
@@ -491,7 +491,7 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Rune Training",
     level: 1,
     bucket: "subsystem",
-    note: "at-will read magic, 1/day comprehend languages (text only), plus two 1st-level spell-list additions — spell-like-ability/spell-list grants, no baseline number",
+    note: "read magic at will and comprehend languages 1/day, wired via the spell-like-abilities route; the arcane mark/erase spell-list additions stay unmodeled (spells-known grant, not an SLA)",
   },
   "bloodrager:symbol-striker:weapon-rune:6": {
     archetypeId: "bloodrager:symbol-striker",

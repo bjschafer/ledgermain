@@ -575,7 +575,7 @@ export const HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Breath of Life",
     level: 10,
     bucket: "subsystem",
-    note: "1/day breath of life spell-like ability — resource-gated spell-like grant, no flat number.",
+    note: "1/day breath of life, wired via the spell-like-abilities route.",
   },
   "hunter:forester:camouflage:7": {
     archetypeId: "hunter:forester",

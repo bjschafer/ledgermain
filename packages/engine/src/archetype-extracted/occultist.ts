@@ -155,7 +155,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Spirit Warrior",
     level: 5,
     bucket: "subsystem",
-    note: "spell-like-ability grant (functions as spiritual ally), limited uses per day — standalone summon effect, not a stat bonus; replaces aura sight",
+    note: "spiritual ally, wired via the spell-like-abilities route; replaces aura sight",
   },
   "occultist:battle-host:weapon-and-armor-proficiency:1": {
     archetypeId: "occultist:battle-host",
@@ -238,7 +238,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Symbolism",
     level: 5,
     bucket: "subsystem",
-    note: "spell-like-ability grant (comprehend languages) plus a Linguistics-check bonus scoped to deciphering a hidden message found via this specific ability — narrow, non-general skill use, and the SLA itself has no stat-bonus shape",
+    note: "comprehend languages, wired via the spell-like-abilities route; the paired Linguistics-check bonus is scoped to deciphering a hidden message found this way — narrow, non-general skill use",
   },
 
   // ── occultist:extemporaneous-channeler ──
@@ -527,7 +527,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Harmonic Shield",
     level: 4,
     bucket: "subsystem",
-    note: "removes ability-check penalties for being on a plane whose alignment traits clash with the harmonizer's own (this engine has no plane-alignment-clash concept to check), plus an activated planar-adaptation spell-like ability — no bonus-shaped number",
+    note: "removes ability-check penalties for being on a plane whose alignment traits clash with the harmonizer's own (this engine has no plane-alignment-clash concept to check); the planar-adaptation benefit is bought with mental-focus points at a duration, not a per-spell N/day counter — non-counter budget",
   },
   "occultist:planar-harmonizer:outside-messenger:5": {
     archetypeId: "occultist:planar-harmonizer",
@@ -557,7 +557,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Manifest Abilities",
     level: 12,
     bucket: "subsystem",
-    note: "activated ability that copies a slain creature's special abilities or spell-like abilities from a trophy — standalone ability grant, not a stat modifier, resource-gated",
+    note: "copies a slain creature's special/spell-like abilities from a trophy — which ability depends on the specific creature and has no stored pick to key from, choice-gated",
   },
   "occultist:psychodermist:monster-hunting-lore:2": {
     archetypeId: "occultist:psychodermist",

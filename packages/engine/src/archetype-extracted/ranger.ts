@@ -1001,7 +1001,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Daylight",
     level: 1,
     bucket: "subsystem",
-    note: "grants an unrelated named feat, proficiency, borrowed class feature (uncanny dodge, rage, rogue talent, evasion, etc.), or other subsystem the engine doesn't model — no exploitable number. spell-like ability, not Change-shaped",
+    note: "treats daylight as a 3rd-level ranger spell — a spell-list addition, not a spell-like ability (the earlier extraction pass mislabeled it)",
   },
   "ranger:lantern-lighter:enhanced-vision:1": {
     archetypeId: "ranger:lantern-lighter",
@@ -1302,7 +1302,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Spirit Bond",
     level: 4,
     bucket: "subsystem",
-    note: "grants an unrelated named feat, proficiency, borrowed class feature (uncanny dodge, rage, rogue talent, evasion, etc.), or other subsystem the engine doesn't model — no exploitable number. augury spell-like ability, replaces hunter's bond",
+    note: "augury, wired via the spell-like-abilities route (usable only within a favored terrain, not modeled); replaces hunter's bond",
   },
   "ranger:spirit-ranger:wisdom-of-the-spirits:12": {
     archetypeId: "ranger:spirit-ranger",
@@ -1344,7 +1344,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Control Weather",
     level: 16,
     bucket: "subsystem",
-    note: "grants an unrelated named feat, proficiency, borrowed class feature (uncanny dodge, rage, rogue talent, evasion, etc.), or other subsystem the engine doesn't model — no exploitable number. spell-like ability",
+    note: "control weather, wired via the spell-like-abilities route",
   },
   "ranger:stormwalker:flash-shot:19": {
     archetypeId: "ranger:stormwalker",
@@ -1498,7 +1498,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Tidal Surge",
     level: 16,
     bucket: "subsystem",
-    note: "grants an unrelated named feat, proficiency, borrowed class feature (uncanny dodge, rage, rogue talent, evasion, etc.), or other subsystem the engine doesn't model — no exploitable number. spell-like ability, once/day",
+    note: "tidal surge, wired via the spell-like-abilities route",
   },
   "ranger:toxic-herbalist:toxic-touch:1": {
     archetypeId: "ranger:toxic-herbalist",
@@ -1659,7 +1659,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Invisibility Trick",
     level: 17,
     bucket: "subsystem",
-    note: "grants an unrelated named feat, proficiency, borrowed class feature (uncanny dodge, rage, rogue talent, evasion, etc.), or other subsystem the engine doesn't model — no exploitable number. spell-like ability, replaces hide in plain sight",
+    note: "greater invisibility (self only), wired via the spell-like-abilities route; replaces hide in plain sight",
   },
   "ranger:warden:master-of-terrain:1": {
     archetypeId: "ranger:warden",
@@ -1729,7 +1729,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Watery Summons",
     level: 8,
     bucket: "subsystem",
-    note: "grants an unrelated named feat, proficiency, borrowed class feature (uncanny dodge, rage, rogue talent, evasion, etc.), or other subsystem the engine doesn't model — no exploitable number. summon-monster-style spell-like ability, replaces swift tracker",
+    note: "summon nature's ally III (scaling to IV+ at higher levels) as a spell-like ability — summoning subsystem, replaces swift tracker",
   },
   "ranger:wild-hunter:animal-focus:1": {
     archetypeId: "ranger:wild-hunter",

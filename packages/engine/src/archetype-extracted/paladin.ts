@@ -732,7 +732,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Champion of Life",
     level: 20,
     bucket: "subsystem",
-    note: "breath-of-life spell-like ability, resource-gated — no flat number; replaces holy champion but doesn't restate its DR text",
+    note: "breath of life, wired via the spell-like-abilities route; replaces holy champion but doesn't restate its DR text",
   },
   "paladin:iomedaen-enforcer:detect-chaos:1": {
     archetypeId: "paladin:iomedaen-enforcer",
@@ -1264,7 +1264,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Call Celestial Ally",
     level: 8,
     bucket: "subsystem",
-    note: "planar-ally-as-spell-like-ability grant, unrelated, replaces aura of resolve",
+    note: "lesser/normal/greater planar ally as a single weekly slot that upgrades at 12th/16th level — no way to represent an upgrading slot without over-counting weekly uses if all three tiers were wired; left as prose. Replaces aura of resolve",
   },
   "paladin:sacred-shield:bastion-of-good:1": {
     archetypeId: "paladin:sacred-shield",
@@ -1334,7 +1334,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Talmandor's Gift",
     level: 11,
     bucket: "subsystem",
-    note: "summon-monster-as-spell-like-ability grant, unrelated, replaces aura of justice",
+    note: "summon monster VII (a fixed avoral agathion) as a spell-like ability — summoning subsystem, replaces aura of justice",
   },
   "paladin:shining-knight:skilled-rider:3": {
     archetypeId: "paladin:shining-knight",
@@ -1635,7 +1635,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Locate Ally",
     level: 1,
     bucket: "subsystem",
-    note: "locate-creature-as-spell-like-ability utility, unrelated",
+    note: "locate creature, wired via the spell-like-abilities route (the 24-hour-proximity ally restriction isn't modeled)",
   },
   "paladin:vindictive-bastard:no-aura:1": {
     archetypeId: "paladin:vindictive-bastard",

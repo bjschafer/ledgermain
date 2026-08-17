@@ -133,7 +133,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fermented Fruit",
     level: 1,
     bucket: "subsystem",
-    note: "adds goodberry to the spell list plus a 1/day spell-like use and a minor incidental 1 hp cure on the fermented berries — spell-list addition, no stable Change-shaped number",
+    note: "goodberry, wired via the spell-like-abilities route; the spell-list addition and the fermented-berry rider (1 hp cure, +1 vs. fear) aren't modeled",
   },
   "skald:bacchanal:raging-song:1": {
     archetypeId: "skald:bacchanal",

@@ -122,6 +122,9 @@ describe("alternate racial trait resource pools", () => {
     const sheet = compute(doc, ref);
     const pools = deriveResourcePools(doc, ref, sheet.abilities);
     expect(RACIAL_TRAITS["sylph-like-the-wind"]?.resourcePool).toBeUndefined();
-    expect(pools.some((p) => p.classTag === "racial")).toBe(false);
+    // The trait itself derives nothing. The sylph RACE still meters its own
+    // innate feather fall SLA (`sla:race:*`), so assert on the trait's id
+    // rather than "no racial pools at all".
+    expect(pools.some((p) => p.id === "sylph-like-the-wind")).toBe(false);
   });
 });

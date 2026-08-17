@@ -320,7 +320,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
     id: "SY96O48qbFnXat9N",
     name: "Plant Speech",
     bucket: "subsystem",
-    note: "Grants an at-will (in favored terrain) or once-per-day spell-like ability; no Change-shaped number.",
+    note: "Grants an at-will (in favored terrain) or once-per-day spell-like ability, wired via the spell-like-abilities route for the guaranteed once-per-day fallback; no Change-shaped number.",
   },
   SqnjRLbrfDk4DyS7: {
     id: "SqnjRLbrfDk4DyS7",
@@ -398,7 +398,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
     id: "iu1bWa1gesZkMOEL",
     name: "Animal Speech",
     bucket: "subsystem",
-    note: "Grants an at-will (in favored terrain) or once-per-day spell-like ability; no Change-shaped number.",
+    note: "Grants an at-will (in favored terrain) or once-per-day spell-like ability, wired via the spell-like-abilities route for the guaranteed once-per-day fallback; no Change-shaped number.",
   },
   kBTSp8Q0cTjvAjNa: {
     id: "kBTSp8Q0cTjvAjNa",

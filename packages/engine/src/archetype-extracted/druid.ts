@@ -424,7 +424,7 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bestial Bond",
     level: 4,
     bucket: "subsystem",
-    note: "activated spell-like ability (cure serious wounds/neutralize poison/remove disease) targeting the animal companion, paid for with self-inflicted Wisdom damage — no baseline Change",
+    note: "choice-gated among three spells at cast time, non-counter budget (self-inflicted Wisdom damage instead of a day/week meter)",
   },
   "druid:ashvawg-tamer:class-skills:0": {
     archetypeId: "druid:ashvawg-tamer",
@@ -1915,7 +1915,7 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Guide across Lifetimes",
     level: 13,
     bucket: "subsystem",
-    note: "1/day reincarnate spell-like ability without a material component — resource-gated, no baseline number. Replaces a thousand faces (real base Change: none)",
+    note: "1/day reincarnate without a material component, wired via the spell-like-abilities route. Replaces a thousand faces (real base Change: none)",
   },
   "druid:river-druid:ferrier:1": {
     archetypeId: "druid:river-druid",

@@ -488,7 +488,7 @@ export const MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Dream Storm",
     level: 5,
     bucket: "subsystem",
-    note: "grants spell-like abilities usable only while in Storm Trance, consuming trance duration — activated/resource-gated, no flat number",
+    note: "choice-gated among call lightning/sleet storm/wind wall, each cast costing a minute of Storm Trance duration rather than a day/week counter — non-counter budget",
   },
   "medium:storm-dreamer:gozreh-s-domain:1": {
     archetypeId: "medium:storm-dreamer",
@@ -606,7 +606,7 @@ export const MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Spiritual Swan Song",
     level: 15,
     bucket: "subsystem",
-    note: "grants a spell-like ability (varying by legend) each time the vessel saves against losing control — spirit/influence-conditioned resource grant, no flat number",
+    note: "choice-gated: which spell depends on the possessing spirit's legend (and the archmage/hierophant legends offer a further pick), granted a use at a time by a saving throw rather than a day/week counter — no stored pick to key from",
   },
   "medium:vessel-of-the-failed:will-of-the-failed:1": {
     archetypeId: "medium:vessel-of-the-failed",
@@ -643,7 +643,7 @@ export const MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Void Channeler",
     level: 3,
     bucket: "subsystem",
-    note: "a limited-use burst-damage spell-like ability (dice-based, with a Will save and secondary confusion) targeting nearby creatures — an activated area attack, not a passive character stat",
+    note: "a custom dice-based burst (Will save, secondary confusion) with no named-spell equivalent — spell-equivalent effect, an activated area attack rather than a passive character stat",
   },
 };
 

@@ -288,7 +288,7 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Nature's Ally",
     level: 5,
     bucket: "subsystem",
-    note: "commune with nature 1/week — spell-like ability grant, no number",
+    note: "commune with nature 1/week, wired via the spell-like-abilities route",
   },
   "inquisitor:green-faith-marshal:power-of-nature:1": {
     archetypeId: "inquisitor:green-faith-marshal",
@@ -530,7 +530,7 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Blessed Script",
     level: 5,
     bucket: "subsystem",
-    note: "tattoos spells for spell-like-ability use — spell-access mechanic, no number",
+    note: "choice-gated: any holy-book spell of the right level tattooed by the player, once per day — no stored pick to key from",
   },
   "inquisitor:living-grimoire:holy-book:1": {
     archetypeId: "inquisitor:living-grimoire",
@@ -567,7 +567,7 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Summon Monster",
     level: 1,
     bucket: "subsystem",
-    note: "summon monster as a scaling spell-like ability — summoning subsystem, no Change target",
+    note: "scaling summon monster spell-like ability — summoning subsystem",
   },
   "inquisitor:monster-tactician:summon-tactics:5": {
     archetypeId: "inquisitor:monster-tactician",
@@ -770,7 +770,7 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Raise Animal Companion",
     level: 16,
     bucket: "subsystem",
-    note: "raise-dead-style spell-like ability, replacing third judgment — companion utility, no number",
+    note: "the literal raise animal companion spell, but its cost is a permanent-until-24h negative level rather than a day/week counter — non-counter budget, replacing third judgment",
   },
   "inquisitor:sacred-huntsmaster:second-animal-focus:17": {
     archetypeId: "inquisitor:sacred-huntsmaster",
@@ -846,7 +846,7 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Speak with Dead",
     level: 6,
     bucket: "subsystem",
-    note: "speak with dead off an eaten sin, replacing a bonus teamwork feat — spell-like ability, no flat number",
+    note: "functions as speak with dead, but gated on having eaten a sin (that ability's own resource) rather than its own day/week counter — cross-pool spend, replacing a bonus teamwork feat",
   },
   "inquisitor:sin-eater:teamwork-feat:3": {
     archetypeId: "inquisitor:sin-eater",

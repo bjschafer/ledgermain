@@ -122,7 +122,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_2: Readonly<
     id: "BHRh4Kz6G9j5lvhN",
     name: "Toxic Trick",
     bucket: "subsystem",
-    note: "Choose-a-trick-per-level resource of extraordinary/spell-like abilities, the same shape as a rogue-talent-style catalog.",
+    note: "Choose-a-trick-per-level resource of extraordinary/spell-like abilities, the same shape as a rogue-talent-style catalog; choice-gated, no single spell to key from the catalog as a whole.",
   },
   CSRimOtiqsmzjmGG: {
     id: "CSRimOtiqsmzjmGG",
@@ -290,7 +290,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_2: Readonly<
     id: "S9lYCsz7oA7v3GzR",
     name: "Discern Lies",
     bucket: "subsystem",
-    note: "Rounds/day spell-like-ability grant (Discern Lies as the spell); an activation grant with no unconditional number.",
+    note: "Rounds/day spell-like-ability grant (Discern Lies as the spell), wired via the spell-like-abilities route (attaches to the vendored pool); still no unconditional sheet number.",
   },
   V3TQ2f5HeX4K6l4p: {
     id: "V3TQ2f5HeX4K6l4p",
@@ -440,13 +440,13 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_2: Readonly<
     id: "lOYalHX4eZ75GDHo",
     name: "Expanded Portfolio",
     bucket: "subsystem",
-    note: "Grants access to a chosen cleric domain plus its spells as once/day spell-like abilities; a subsystem grant, not a number.",
+    note: "Grants access to a chosen cleric domain plus its spells as once/day spell-like abilities; choice-gated (the domain and its spell list aren't stored per-spell), not a number.",
   },
   lRmf8xptuEyiZ8o5: {
     id: "lRmf8xptuEyiZ8o5",
     name: "Ardent Vision",
     bucket: "subsystem",
-    note: "Grants at-will detect chaos/evil/good/law against a chosen opposed alignment; a spell-like-ability grant, not a number.",
+    note: "Grants at-will detect chaos/evil/good/law against a chosen opposed alignment; choice-gated (the fixed alignment pick isn't stored), not a number.",
   },
   oRac7XDHBN0JzuyY: {
     id: "oRac7XDHBN0JzuyY",

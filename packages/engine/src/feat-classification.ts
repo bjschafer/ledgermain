@@ -1487,7 +1487,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "magical-tail",
     name: "Magical Tail",
     bucket: "subsystem",
-    note: "grants a new spell-like ability (kitsune), no Change-shaped number",
+    note: "grants a new spell-like ability (kitsune); count-dependent grant (a different spell per copy taken) doesn't fit the spell-like-abilities table, which dedupes repeated copies",
   },
   manyshot: {
     slug: "manyshot",

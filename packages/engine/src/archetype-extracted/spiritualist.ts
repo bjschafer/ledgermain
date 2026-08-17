@@ -91,7 +91,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Drowned Powers",
     level: 5,
     bucket: "subsystem",
-    note: "spell-like-ability grants (hydraulic push, slipstream, ride the waves, fluid form) — no Change target for SLA daily uses",
+    note: "hydraulic push/slipstream/ride the waves/fluid form, wired via the spell-like-abilities route",
   },
   "spiritualist:drowned-channeler:drowned-spells:2": {
     archetypeId: "spiritualist:drowned-channeler",
@@ -232,7 +232,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Emotional Power",
     level: 5,
     bucket: "subsystem",
-    note: "grants a chain of spell-like abilities keyed to the phantom's emotional focus — no Change target for SLA daily uses",
+    note: "a chain of spell-like abilities keyed to the phantom's emotional focus, a build-time pick this table has no per-choice key for — choice-gated",
   },
   "spiritualist:fractured-mind:emotional-spellcasting:0": {
     archetypeId: "spiritualist:fractured-mind",
@@ -303,7 +303,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Contagious Touch",
     level: 12,
     bucket: "subsystem",
-    note: "phantom spell-like ability (contagion) — companion-only",
+    note: "phantom spell-like ability (contagion) — companion-only, out of the SLA table's scope",
   },
   "spiritualist:grim-apostle:distended-gullet:17": {
     archetypeId: "spiritualist:grim-apostle",
@@ -352,7 +352,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Killing Word",
     level: 17,
     bucket: "subsystem",
-    note: "phantom spell-like ability (power word kill) — companion-only",
+    note: "phantom spell-like ability (power word kill) — companion-only, out of the SLA table's scope",
   },
   "spiritualist:grim-apostle:marked-for-death:0": {
     archetypeId: "spiritualist:grim-apostle",
@@ -408,7 +408,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Wail of the Hungry",
     level: 12,
     bucket: "subsystem",
-    note: "phantom spell-like ability (waves of fatigue) — companion-only",
+    note: "phantom spell-like ability (waves of fatigue) — companion-only, out of the SLA table's scope",
   },
   "spiritualist:grim-apostle:weakening-strike:0": {
     archetypeId: "spiritualist:grim-apostle",
@@ -470,14 +470,14 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Involuate",
     level: 11,
     bucket: "subsystem",
-    note: "grants a spell-like ability (animate objects) — no Change target for SLA uses",
+    note: "animate objects, wired via the spell-like-abilities route (CL = total character level)",
   },
   "spiritualist:involutionist:spirit-awareness:5": {
     archetypeId: "spiritualist:involutionist",
     name: "Spirit Awareness",
     level: 5,
     bucket: "subsystem",
-    note: "grants spell-like abilities (detect psychic significance, analyze aura) — no Change target",
+    note: "detect psychic significance (at will) and analyze aura (1/day), wired via the spell-like-abilities route",
   },
   "spiritualist:involutionist:spirit-manifestation:3": {
     archetypeId: "spiritualist:involutionist",
@@ -595,7 +595,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Disfiguring Touch",
     level: 7,
     bucket: "subsystem",
-    note: "grants a spell-like ability (disfiguring touch) — no Change target for SLA uses",
+    note: "disfiguring touch, wired via the spell-like-abilities route",
   },
   "spiritualist:plague-eater:fused-well-being:10": {
     archetypeId: "spiritualist:plague-eater",
@@ -623,14 +623,14 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Remove Disease",
     level: 9,
     bucket: "subsystem",
-    note: "grants a spell-like ability (remove disease) — no Change target",
+    note: "remove disease, wired via the spell-like-abilities route",
   },
   "spiritualist:plague-eater:remove-sickness:5": {
     archetypeId: "spiritualist:plague-eater",
     name: "Remove Sickness",
     level: 5,
     bucket: "subsystem",
-    note: "grants an at-will spell-like ability (remove sickness) — no Change target",
+    note: "remove sickness (at will), wired via the spell-like-abilities route",
   },
   "spiritualist:plague-eater:spiritual-inoculation:4": {
     archetypeId: "spiritualist:plague-eater",
@@ -644,7 +644,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Withdraw Affliction",
     level: 16,
     bucket: "subsystem",
-    note: "grants a spell-like ability (withdraw affliction) — no Change target",
+    note: "withdraw affliction, wired via the spell-like-abilities route",
   },
 
   // ── spiritualist:priest-of-the-fallen ──
@@ -727,7 +727,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Inflict Pain",
     level: 7,
     bucket: "subsystem",
-    note: "grants a spell-like ability (inflict pain) — no Change target",
+    note: "inflict pain, wired via the spell-like-abilities route",
   },
   "spiritualist:scourge:spell-scourge:4": {
     archetypeId: "spiritualist:scourge",
@@ -757,28 +757,28 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Karmic Insight",
     level: 7,
     bucket: "subsystem",
-    note: "grants a spell-like ability (augury) — no Change target",
+    note: "augury, wired via the spell-like-abilities route",
   },
   "spiritualist:seeker-of-enlightenment:knowledge-of-the-ancestors:16": {
     archetypeId: "spiritualist:seeker-of-enlightenment",
     name: "Knowledge of the Ancestors",
     level: 16,
     bucket: "subsystem",
-    note: "grants a spell-like ability (legend lore) — no Change target",
+    note: "legend lore, wired via the spell-like-abilities route",
   },
   "spiritualist:seeker-of-enlightenment:pinpoint-influence:9": {
     archetypeId: "spiritualist:seeker-of-enlightenment",
     name: "Pinpoint Influence",
     level: 9,
     bucket: "subsystem",
-    note: "grants a spell-like ability (locate object) — no Change target",
+    note: "locate object, wired via the spell-like-abilities route",
   },
   "spiritualist:seeker-of-enlightenment:words-of-the-past:5": {
     archetypeId: "spiritualist:seeker-of-enlightenment",
     name: "Words of the Past",
     level: 5,
     bucket: "subsystem",
-    note: "grants an at-will spell-like ability (comprehend languages) — no Change target",
+    note: "comprehend languages (at will), wired via the spell-like-abilities route",
   },
 
   // ── spiritualist:shadow-caller ──
@@ -979,7 +979,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Settlement Aspect",
     level: 0,
     bucket: "subsystem",
-    note: "grants a chain of spell-like abilities keyed to a chosen settlement aspect — no Change target for SLA daily uses",
+    note: "a chain of spell-like abilities keyed to a chosen settlement aspect, a build-time pick this table has no per-choice key for — choice-gated",
   },
   "spiritualist:zeitgeist-binder:settlement-avatar:0": {
     archetypeId: "spiritualist:zeitgeist-binder",

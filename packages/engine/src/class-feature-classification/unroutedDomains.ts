@@ -246,7 +246,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "FZdWscHJvJpGPoDz",
     name: "Lightning Lord",
     bucket: "subsystem",
-    note: "Grants a limited-use call-lightning-style spell-like ability; no bonus number applies to the cleric's own sheet.",
+    note: "Grants a limited-use spell-like ability that literally functions as call lightning, wired via the spell-like-abilities route (attaches to the vendored pool); no bonus number applies to the cleric's own sheet.",
   },
   GidNLmDQBdokwgUn: {
     id: "GidNLmDQBdokwgUn",
@@ -342,7 +342,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "yUdt1JIkSsQabXTF",
     name: "Remote Viewing",
     bucket: "subsystem",
-    note: "Grants an at-will clairaudience/clairvoyance-style spell-like ability for a rounds-per-day pool; no bonus number applies to the cleric's own sheet.",
+    note: "Grants Clairaudience/Clairvoyance itself (the vendored text names the actual combined spell, not a style-alike) as an at-will spell-like ability for a rounds-per-day pool, wired via the spell-like-abilities route (attaches to the vendored pool); no bonus number applies to the cleric's own sheet.",
   },
   zeLaBkwTp9wlzZJv: {
     id: "zeLaBkwTp9wlzZJv",

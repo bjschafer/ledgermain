@@ -104,7 +104,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "kg2aBHv1n6Exxkb0",
     name: "Sculpt Ice and Snow",
     bucket: "subsystem",
-    note: "grants a stone-shape/fabricate-style utility spell-like ability usable a limited number of times per day; not a stat bonus.",
+    note: "grants a stone-shape/fabricate-style utility spell-like ability usable a limited number of times per day; spell-equivalent, not the actual spell (works ice/snow only, adds its own hardness/melt rules), so left unwired.",
   },
   mpe3JHJMINddqLWr: {
     id: "mpe3JHJMINddqLWr",
@@ -362,7 +362,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "XJtvco1XWggmr5LU",
     name: "Abundant Step",
     bucket: "subsystem",
-    note: "grants a dimension-door-style spell-like ability paid for with ki points; an ability grant, not a stat bonus.",
+    note: "grants a dimension door spell-like ability paid for with ki points; pool-spend cast, rides the ki pool, so left unwired rather than minting a synthetic counter that misstates the cost.",
   },
   XmALhWqXdN9yOmtd: {
     id: "XmALhWqXdN9yOmtd",

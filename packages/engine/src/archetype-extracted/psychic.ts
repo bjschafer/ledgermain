@@ -141,7 +141,7 @@ export const PSYCHIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Know the Land",
     level: 9,
     bucket: "subsystem",
-    note: "1/day spell-like ability (commune with nature) plus a slot-conversion option — limited-use activated ability, no number",
+    note: "commune with nature, wired via the spell-like-abilities route; the spell-slot-conversion option isn't modeled",
   },
   "psychic:magaambyan-telepath:nature-s-command:1": {
     archetypeId: "psychic:magaambyan-telepath",
@@ -261,14 +261,14 @@ export const PSYCHIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Aura of Intimidation",
     level: 9,
     bucket: "subsystem",
-    note: "1/day spell-like ability (aura of doom) plus a slot-conversion option, with the imposed condition worsening at 11th/19th — limited-use activated ability, enemy-facing",
+    note: "aura of doom, wired via the spell-like-abilities route; the slot-conversion option and the 11th/19th-level condition worsening (frightened, then panicked) aren't modeled",
   },
   "psychic:terror-weaver:manipulation:2": {
     archetypeId: "psychic:terror-weaver",
     name: "Manipulation",
     level: 2,
     bucket: "subsystem",
-    note: "1/day spell-like ability (charm person) plus a slot-conversion option and a spells-known swap — limited-use activated ability plus spell-list change (class note 3)",
+    note: "charm person, wired via the spell-like-abilities route; the slot-conversion option and a spells-known swap aren't modeled (class note 3)",
   },
   "psychic:terror-weaver:persistent-nightmare:15": {
     archetypeId: "psychic:terror-weaver",

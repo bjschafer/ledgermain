@@ -329,7 +329,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Improved Tattooed Spell",
     level: 11,
     bucket: "subsystem",
-    note: "extra daily use of a spell-like ability — resource mechanic",
+    note: "adds a use to tattooed spell's own choice-gated grant — still choice-gated, no stored pick to key from",
   },
   "magus:esoteric:ki-arcana:4": {
     archetypeId: "magus:esoteric",
@@ -343,7 +343,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Tattooed Spell",
     level: 5,
     bucket: "subsystem",
-    note: "grants spell-like abilities from tattooed spells, replaces bonus feats — resource mechanic",
+    note: "choice-gated: any spellbook spell of the right level tattooed by the player, once per day — no stored pick to key from; replaces bonus feats",
   },
   "magus:esoteric:unarmed-spellstrike:2": {
     archetypeId: "magus:esoteric",

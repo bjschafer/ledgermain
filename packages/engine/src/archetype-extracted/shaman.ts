@@ -74,7 +74,7 @@ export const SHAMAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Etherealness",
     level: 18,
     bucket: "subsystem",
-    note: "1/day etherealness spell-like ability — resource-gated, no number",
+    note: "etherealness, wired via the spell-like-abilities route",
   },
   "shaman:animist:exorcism:8": {
     archetypeId: "shaman:animist",
@@ -88,7 +88,7 @@ export const SHAMAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Spirit Shaman",
     level: 20,
     bucket: "subsystem",
-    note: "at-will ethereal jaunt + 1/day astral projection spell-like abilities, replaces manifestation — no number",
+    note: "ethereal jaunt (at will) and astral projection (1/day), wired via the spell-like-abilities route; replaces manifestation",
   },
   "shaman:animist:wrangle-condition:2": {
     archetypeId: "shaman:animist",
@@ -196,7 +196,7 @@ export const SHAMAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Greentongue",
     level: 2,
     bucket: "subsystem",
-    note: "uses-per-day speak with plants + suggestion spell-like abilities — resource-gated, no number",
+    note: "speak with plants and suggestion, wired via the spell-like-abilities route",
   },
   "shaman:grasping-vine:spirit:1": {
     archetypeId: "shaman:grasping-vine",

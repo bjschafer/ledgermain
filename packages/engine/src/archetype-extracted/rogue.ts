@@ -495,7 +495,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Evidence Disposal",
     level: 4,
     bucket: "subsystem",
-    note: "dress-corpse spell-like ability — resource-gated, no baseline number",
+    note: "dress corpse, wired via the spell-like-abilities route (the 12th-level disintegrate-corpse upgrade isn't modeled)",
   },
   "rogue:discretion-specialist:no-loose-ends:4": {
     archetypeId: "rogue:discretion-specialist",
@@ -532,7 +532,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Dream Infiltrator",
     level: 8,
     bucket: "subsystem",
-    note: "dream scan/dream travel spell-like abilities — resource-gated",
+    note: "dream scan, wired via the spell-like-abilities route (the 12th-level option to cast dream travel instead isn't modeled)",
   },
 
   // ── Driver ─────────────────────────────────────────────────────────────
@@ -564,7 +564,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Earthcraft",
     level: 2,
     bucket: "subsystem",
-    note: "a daily point pool spent on spell-like abilities — resource-gated",
+    note: "a daily earthcraft-point pool spent at varying per-spell costs across several named spells — a shared point-pool budget, not a per-spell counter",
   },
 
   // ── Eldritch Raider ────────────────────────────────────────────────────
@@ -573,7 +573,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Detect Magic",
     level: 2,
     bucket: "subsystem",
-    note: "at-will detect magic spell-like ability — no flat number",
+    note: "detect magic (at will), wired via the spell-like-abilities route",
   },
   "rogue:eldritch-raider:eldritch-intuition:3": {
     archetypeId: "rogue:eldritch-raider",
@@ -810,7 +810,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Enthralling Agitation",
     level: 4,
     bucket: "subsystem",
-    note: "enthrall spell-like ability + an influence-shifting check — resource-gated, no baseline number",
+    note: "as the spell enthrall, but the published DC scales with 1/2 rogue level rather than spell level — this table's DC is fixed to spell level, so wiring it would drift wrong as she levels; left as prose. The influence-shifting check isn't modeled either",
   },
   "rogue:galtan-agitator:revolutionary-s-cause:8": {
     archetypeId: "rogue:galtan-agitator",
@@ -976,7 +976,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Misdirection",
     level: 4,
     bucket: "subsystem",
-    note: "self-only misdirection spell-like ability — resource-gated",
+    note: "misdirection (self plus a chosen creature), wired via the spell-like-abilities route",
   },
 
   // ── Kitsune Trickster ──────────────────────────────────────────────────
@@ -992,7 +992,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Kitsune's Charm",
     level: 3,
     bucket: "subsystem",
-    note: "charm person spell-like ability — resource-gated",
+    note: "charm person, wired via the spell-like-abilities route",
   },
 
   // ── Knife Master ───────────────────────────────────────────────────────
@@ -1334,7 +1334,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Divine Epiphany",
     level: 8,
     bucket: "subsystem",
-    note: "an augury-equivalent spell-like ability — resource-gated",
+    note: "augury (not merely equivalent — the vendored text casts the actual spell), wired via the spell-like-abilities route",
   },
 
   // ── Sapper ─────────────────────────────────────────────────────────────
@@ -1502,7 +1502,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Shadow Speaker",
     level: 14,
     bucket: "subsystem",
-    note: "a commune-with-nature-equivalent spell-like ability — resource-gated",
+    note: "functions as commune with nature (the vendored text names the actual spell, just reflavored to trigger via meditation), wired via the spell-like-abilities route",
   },
   "rogue:shadow-scion:shadow-master:20": {
     archetypeId: "rogue:shadow-scion",
@@ -1525,7 +1525,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Illumination Control",
     level: 3,
     bucket: "subsystem",
-    note: "a point pool spent on light-related spell-like abilities — resource-gated",
+    note: "a daily illumination-point pool spent at varying per-spell costs across several named light/darkness spells — a shared point-pool budget, not a per-spell counter",
   },
   "rogue:shadow-walker:favored-illumination:4": {
     archetypeId: "rogue:shadow-walker",
@@ -1788,7 +1788,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Endure Elements",
     level: 3,
     bucket: "subsystem",
-    note: "an endure-elements-equivalent spell-like ability — resource-gated",
+    note: "endure elements (not merely equivalent — the vendored text casts the actual spell), wired via the spell-like-abilities route",
   },
 
   // ── Swamp Poisoner ─────────────────────────────────────────────────────

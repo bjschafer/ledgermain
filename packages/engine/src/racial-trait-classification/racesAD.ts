@@ -21,7 +21,7 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_AD: Readonly<
     race: "Aasimar",
     name: "Halo",
     bucket: "subsystem",
-    note: "Grants an at-will light spell-like ability; the +2 Intimidate and blind/dazzle-save bonuses only apply while the halo is active and are gated to the linked Halo buff (Related Buff), so this trait record carries no Change-shaped number of its own.",
+    note: "Wired as a castable at-will spell-like-ability row (light, spell-like-abilities/racial.ts); the +2 Intimidate and blind/dazzle-save bonuses only apply while the halo is active and are gated to the linked Halo buff (Related Buff).",
   },
   ZW41vB78wXvRWWfs: {
     id: "ZW41vB78wXvRWWfs",

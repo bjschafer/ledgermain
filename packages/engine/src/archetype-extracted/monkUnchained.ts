@@ -146,7 +146,7 @@ export const MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Confounding Koan",
     level: 12,
     bucket: "subsystem",
-    note: "ki-spend confusion spell-like ability, standard action — activated, resource-gated, no baseline number",
+    note: "functions as confusion (language-dependent), costed in ki points rather than a day/week counter — cross-pool spend",
   },
   "monkUnchained:brazen-disciple:efreeti-s-guile:3": {
     archetypeId: "monkUnchained:brazen-disciple",
@@ -174,7 +174,7 @@ export const MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Genie Apotheosis",
     level: 20,
     bucket: "subsystem",
-    note: "capstone creature-type change, energy immunity/vulnerability, and a 1/day limited wish spell-like ability — no Change-shaped number, same posture as monk-of-the-seven-forms' Immortality capstone in `./monk.ts`",
+    note: "capstone creature-type change and energy immunity/vulnerability stay no-Change (same posture as monk-of-the-seven-forms' Immortality capstone in `./monk.ts`); the 1/day limited wish is wired via the spell-like-abilities route",
   },
 
   // ── monkUnchained:disciple-of-wholness ──
@@ -227,7 +227,7 @@ export const MONK_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Genie Style",
     level: 2,
     bucket: "subsystem",
-    note: "grants access to a menu of genie-themed style feats by level, plus a conditional energy immunity/enlarge-reduce spell-like ability at 18th — a choice-list mechanism and a conditional grant, no Change-shaped number",
+    note: "grants access to a menu of genie-themed style feats by level — choice-list mechanism; the 18th-level Janni Style enlarge/reduce person grant is choice-gated (player's choice each activation) and constant only while that specific style feat is active, no Change-shaped number",
   },
   "monkUnchained:elemental-monk:planar-guide:14": {
     archetypeId: "monkUnchained:elemental-monk",
