@@ -389,7 +389,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Divine Bond",
     level: 5,
     bucket: "subsystem",
-    note: "mount-only Divine Bond variant + celestial template on the mount — no flat number",
+    note: "mount gains the celestial template at 8th level (no flat rider, same as divine hunter's Otherworldly Companion) and a fly speed of twice its land speed at 12th. The fly-speed doubling can't be expressed as a Change: companion Change formulas evaluate against the MASTER's roll data, and the mount's own land speed isn't on that path",
   },
   "paladin:empyreal-knight:empyreal-champion:20": {
     archetypeId: "paladin:empyreal-knight",
@@ -1320,7 +1320,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonded Eagle",
     level: 5,
     bucket: "subsystem",
-    note: "animal-companion grant via the Divine Bond slot, unrelated",
+    note: "grants a bird companion via Divine Bond, effective druid level equal to paladin level 1:1 — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block. The smite-evil-sharing secondary ability stays unwired (activated, resource-gated)",
   },
   "paladin:scion-of-talmandor:consensus:8": {
     archetypeId: "paladin:scion-of-talmandor",
@@ -1341,7 +1341,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Skilled Rider",
     level: 3,
     bucket: "subsystem",
-    note: "Ride-ACP removal (no roll-data path, same as Swiftsurge) + extends Divine Grace's bonus to the mount (an unrelated extension, not a swap) — replaces divine health (no vendored number)",
+    note: "mount gains the master's Charisma bonus on all saving throws (Divine Grace extended to the mount) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block. The accompanying Ride-ACP removal has no roll-data path (same as Swiftsurge) and stays unwired",
   },
   "paladin:shining-knight:divine-bond:5": {
     archetypeId: "paladin:shining-knight",
@@ -1838,7 +1838,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Otherworldly Companion",
     level: 3,
     bucket: "subsystem",
-    note: "celestial/fiendish template on the animal companion — no flat number; replaces hunter tactics, a base feature this class doesn't have (shared text with the Hunter-class Divine Hunter archetype — see divine-bond above), changes: [] regardless so no double-count risk",
+    note: "companion gains the celestial or fiendish template based on the master's own alignment. Neither template carries a flat numeric rider in this codebase's vendored data (DR, resistances, and SR aren't companion stat targets), so there is nothing left to wire",
   },
   "paladin:legate:celestial-armor:3": {
     archetypeId: "paladin:legate",

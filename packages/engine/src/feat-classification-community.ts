@@ -3222,6 +3222,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "The +1 bonus on caster level checks to overcome SR applies only to arcane spells with a verbal component; clCheck has no per-casting-component axis, so wiring it to clCheck.sr would over-apply to non-verbal and divine casting.",
   "angelic-flesh":
     "Wired via the entry's own named-option choice axis: Brazen grants eres.fire 5, Silver grants +2 vs paralysis/petrification/poison (saveCategories), Steel grants +1 natural armor (nac); the unconditional -2 Disguise/-2 Stealth penalty applies to every branch. Golden's save bonus and the DR-bypass clauses on Silver/Steel have no matching target and stay unwired.",
+  "animal-ally":
+    "Grants an animal companion at character level -3, stacking with other companion sources (from a fixed species list) - wired via COMPANION_EFFECT_FEATS onto the tracked companion's stat block. The species restriction is a soft hint only, unenforced, same as every other companion source.",
   "aquatic-ancestry": "Unconditional +10 feet swim speed increase.",
   "aquatic-combatant":
     "Unconditional +2 bonus on Swim checks (the underwater melee-penalty removal is situational and not part of this draft).",
@@ -3255,6 +3257,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Doubles hero-point gain per level up; hero points are not in the pool tag list. [flag: pool-no-tag]",
   "bolstered-resilience":
     "Doubles existing DR rather than adding to it, a stacking-suspect multiplicative effect.",
+  "boon-companion":
+    "+4 effective druid level, to a maximum equal to character level - wired via COMPANION_EFFECT_FEATS onto the tracked companion's stat block. The familiar half of the same feat text stays out of scope (familiar.ts derives off master level directly, with no feat-level boost modeled there).",
   "born-of-frost":
     "Adds 1d6 cold damage to natural weapons/unarmed strikes on a hit; ndamage (targets.ts) names a natural-attack-damage target but compute.ts never consumes it, and the added damage is dice-valued rather than a flat modifier regardless.",
   "bravery-in-action":
@@ -3295,10 +3299,14 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "civilized-ghoulishness":
     "Channel resistance has no engine target; the feat also grants a Disguise bonus scoped to posing as human.",
   "climbing-vine": "Grants a flat 10-foot climb speed, unconditional for a vine leshy.",
+  "corpse-companion":
+    "Changes the companion's type to undead (Constitution score removed, Charisma forced to 12) with cascading undead traits and a different save array the engine doesn't model. Even the ability-score override alone would need a 'set' operator, which shared-creature-buffs.ts's routing explicitly doesn't support for ability scores, so this stays fully unwired rather than half-applying one override in isolation.",
   "cover-tracks":
     "Increases the DC for others to track you/allies; no engine target for a DC others roll against, not a check you make.",
   cunning:
     "Grants 1 additional skill point per Hit Die; no engine target for the skill-point pool itself.",
+  "curious-companion":
+    "Unlocks plant and vermin companions as legal base types alongside the standard animal list; those species aren't in BASE_COMPANIONS (companion.ts), so this is species data work, not an effect to wire.",
   "cut-your-losses":
     "Unconditional +2 Str-equivalent for carrying capacity (separate from the withdraw-specific pickup benefit, which is situational).",
   "dawn-s-blessing":
@@ -3343,6 +3351,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "embrace-of-the-dark-fey": "Unconditional +2 Intimidate bonus rising to +4 at 10 ranks.",
   "erastil-s-blessing":
     "Substitutes Wisdom for Dexterity on bow attack rolls rather than adding a bonus, so no additive Change formula applies.",
+  "evolved-companion":
+    "Grants the companion one 1-point evolution (excluding pounce and reach) from the summoner eidolon evolution list; that vocabulary lives in eidolon.ts and isn't exposed to companion.ts, so there is no evolution-shaped target to wire onto yet.",
   "exceptional-pull":
     "Modifies a wielded weapon's Strength rating and removes the resulting attack penalty, a weapon-build parameter the engine doesn't model.",
   "exotic-heritage":
@@ -3494,6 +3504,10 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Grants three additional daily uses of meta words, which has no featureTag in the POOL TAGS list. [flag: pool-no-tag]",
   "monkey-style":
     "First clause adds Wisdom modifier to Acrobatics unconditionally (separate from the style-active clauses that follow).",
+  "monstrous-companion":
+    "Swaps the animal companion for a magical-beast cohort (Leadership-style, its own effective-cohort-level table), not this project's tracked companion model at all - an entirely unmodeled cohort subsystem.",
+  "monstrous-mount":
+    "Unlocks exotic monstrous-mount species onto the companion/mount picker, advancing on the same level-scaling table as a normal companion or mount; the stat blocks themselves aren't in BASE_COMPANIONS, so this is species data work, not an effect to wire.",
   "monument-builder":
     "Rank-gated Knowledge (engineering) bonus (+2, or +4 at 10 ranks) is unconditional.",
   "mother-s-gift":
@@ -3570,6 +3584,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "The +4/+8 circumstance bonus applies only to a Craft check to recreate a specific object the character has already seen (and studied, for the higher tier), a scoped scenario the static sheet has no state for, not a blanket Craft bonus.",
   "sinuous-vines":
     "Wired via maneuverCategories: unconditional +2 CMB to grapple. The wings-count-as-free-hand rules exception has no engine target.",
+  "skaveling-companion":
+    "Replaces the companion with one fixed Large skaveling stat block (Bestiary 2, urdefhan-only prerequisite) rather than scaling on the normal companion progression table; doesn't fit BASE_COMPANIONS' level-scaling model without a bespoke fixed-stat-block entry point, so this stays unwired.",
   "skill-focus-acrobatics":
     "Unconditional rank-gated Skill Focus bonus (+3, or +6 at 10+ ranks) on Acrobatics.",
   "skill-focus-appraise": "Unconditional rank-gated Skill Focus bonus on Appraise.",
@@ -3688,6 +3704,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Unconditional circumstance bonus to Knowledge (history) (the object-reading spell-like ability is left unmodeled).",
   "unusual-heritage-gillman":
     "Raises caster LEVEL (not a check) for divination spells/SLAs by 1; cl stays an unapplied target regardless of scoping.",
+  "vampiric-companion":
+    "Changes the companion or familiar's type to undead and grants fast healing 5 alongside the master's own vampire/dhampir weaknesses. Fast healing has no companion-model target (deriveCompanion carries no fast-healing/regeneration field), and the type change carries the same unmodeled undead cascade as Corpse Companion, so this stays unwired.",
   "varisian-tattoo":
     "Grants +1 caster LEVEL (not a check) for a chosen school; cl stays an unapplied target regardless of school-scoping.",
   "veiled-contempt":

@@ -1056,11 +1056,25 @@ export interface CharacterDoc {
      * `tables.ts` `fiendishBoonLabel`) — the actual weapon math stays
      * manual, the same restraint paladin's own Divine Bond gets today (which
      * has no `build.*` field at all to record its choice, let alone modeled
-     * numbers). "servant" grants a permanent fiendish companion creature —
-     * deferred to the companion-creature work (companion stat blocks); surfaced as a note
-     * only. Empty/undefined for non-antipaladins or a boon not yet chosen.
+     * numbers). "servant" grants a permanent fiendish creature via a Summon
+     * Monster III+ progression (not a druid-style animal companion — the
+     * vendored text never mentions an effective druid level for it), a shape
+     * the tracked companion model doesn't cover; surfaced as a note only.
+     * Empty/undefined for non-antipaladins or a boon not yet chosen.
      */
     antipaladinBoon?: "weapon" | "servant";
+    /**
+     * Paladin's Divine Bond form, chosen at 5th level and never changed
+     * thereafter (PF1 CRB Divine Bond: "Once the form is chosen, it cannot
+     * be changed"). "weapon" grants a scaling weapon-enhancement bond whose
+     * numbers stay a display-only summary line, the same restraint
+     * `antipaladinBoon`'s weapon option gets. "mount" grants a companion
+     * mount using the paladin's level as her effective druid level, wired
+     * via `@pf1/engine`'s `COMPANION_EFFECT_CLASS_FEATURES` onto the tracked
+     * companion's stat block. Empty/undefined for non-paladins or a bond not
+     * yet chosen.
+     */
+    paladinBond?: "weapon" | "mount";
     /**
      * The alignment component a 12th-level brawler's unarmed strikes count as
      * for overcoming damage reduction (ACG, Brawler's Strike: "she chooses one

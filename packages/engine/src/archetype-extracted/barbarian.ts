@@ -693,7 +693,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "War Beast (Ex)",
     level: 1,
     bucket: "subsystem",
-    note: "animal companion grant, replaces several rage powers (unmodeled either way) — no number",
+    note: "animal companion grant (barbarian level 1:1) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block; replaces several rage powers (unmodeled either way)",
   },
 
   // ── Mooncursed ─────────────────────────────────────────────────────────
@@ -1025,7 +1025,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mount",
     level: 4,
     bucket: "subsystem",
-    note: "animal companion (mount) grant, replaces several rage powers (unmodeled either way) — no number",
+    note: "animal companion (mount) grant, horse/pony, barbarian level -3 — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block (species restriction unenforced, same as every other companion source); replaces several rage powers (unmodeled either way)",
   },
 
   // ── Superstitious ──────────────────────────────────────────────────────
@@ -1277,14 +1277,14 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bestial Mount",
     level: 5,
     bucket: "subsystem",
-    note: "grants a druid-style animal companion (barbarian level -4) plus a morale Str bonus to the mount while raging and mounted — companion subsystem this engine doesn't model, and the Str bonus targets the mount, not the sheet owner. Replaces uncanny dodge/improved uncanny dodge (both changes: [], nothing to double-count)",
+    note: "grants a druid-style animal companion (barbarian level -4) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block; the +2 morale Str bonus to the mount stays unwired (gated on a live raging-and-mounted state this engine doesn't track). Replaces uncanny dodge/improved uncanny dodge (both changes: [], nothing to double-count)",
   },
   "barbarian:mounted-fury:fast-rider:1": {
     archetypeId: "barbarian:mounted-fury",
     name: "Fast Rider",
     level: 1,
     bucket: "situational",
-    note: "real +10 ft. speed, but granted to the mount, not the sheet owner's own landSpeed — per the honesty bar. Replaces fast movement (a single flat grant, cleanly suppressed by a paired swap — not a partial-tier atomicity trap)",
+    note: "unconditional +10 ft. mount speed — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's landSpeed. Replaces fast movement (a single flat grant, cleanly suppressed by a paired swap — not a partial-tier atomicity trap)",
   },
   "barbarian:pack-hunter:bonus-feats:2": {
     archetypeId: "barbarian:pack-hunter",

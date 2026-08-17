@@ -89,8 +89,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
   "6Ouq3IotfDzfos5z": {
     id: "6Ouq3IotfDzfos5z",
     name: "Shaitan's Blessing",
-    bucket: "blocked",
-    note: "The save bonus belongs entirely to the asavir's mount, not the asavir — matches the standing precedent named for this exact feature in class-feature-effects.ts's header. Mounts/animal companions have no modeled sheet in this engine, so there is no PC-facing target at all.",
+    bucket: "subsystem",
+    note: "+2 racial (+4 at 9th) save bonus vs. mind-affecting and fear effects on the asavir's mount — wired via COMPANION_EFFECT_CLASS_FEATURES onto the tracked companion's stat block.",
   },
   B1a8xXoo2CkuI2oF: {
     id: "B1a8xXoo2CkuI2oF",
@@ -318,7 +318,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
     id: "Got8x5eMbGLgR2lc",
     name: "Janni's Blessing",
     bucket: "numeric",
-    note: "At 10th level grants an unconditional +1 luck bonus on all saving throws to the asavir herself; proposed as a CLASS_FEATURE_CHANGE_PATCHES entry (the roll-twice-and-choose-better half and the mount's own copy of the bonus are left unmodeled — see proposals file).",
+    note: "At 10th level grants an unconditional +1 luck bonus on all saving throws to the asavir herself, wired via CLASS_FEATURE_CHANGE_PATCHES; the mount's matching +1 luck save is wired via COMPANION_EFFECT_CLASS_FEATURES onto the tracked companion's stat block. The roll-twice-and-choose-better half stays unmodeled (no reroll mechanic).",
   },
   IqXnJQyvUwxe95hT: {
     id: "IqXnJQyvUwxe95hT",
@@ -366,13 +366,13 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
     id: "UbYjMsQ8DDXRaX84",
     name: "Marid's Blessing",
     bucket: "subsystem",
-    note: "Grants a rules exception (no concentration check required for the mount's movement) plus a save bonus that belongs to the mount, not the asavir; the PC-facing content is the rules exception, which has no Change-shaped number, and the mount stat has no modeled sheet to land on.",
+    note: "+2 racial bonus on Reflex saves to the asavir's mount — wired via COMPANION_EFFECT_CLASS_FEATURES onto the tracked companion's stat block. The no-concentration-check-for-movement clause is a rules exception with no Change-shaped number and stays unmodeled.",
   },
   X0tGpISvrvBwb180: {
     id: "X0tGpISvrvBwb180",
     name: "Equine Bond",
     bucket: "subsystem",
-    note: "Grants an animal companion (a horse) whose statistics scale with an effective druid level derived from asavir level — a companion grant, mirroring Nature Bond's animal-companion half, with no flat number of its own.",
+    note: "Grants a horse companion, effective druid level = asavir level + 2 (stacking with other companion sources) — wired via COMPANION_EFFECT_CLASS_FEATURES onto the tracked companion's stat block.",
   },
   XkVXOND8Q1nta92s: {
     id: "XkVXOND8Q1nta92s",

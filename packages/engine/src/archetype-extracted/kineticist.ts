@@ -330,7 +330,7 @@ export const KINETICIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mount",
     level: 4,
     bucket: "subsystem",
-    note: "grants a druid-style animal companion mount — companion mechanics are unmodeled in this engine",
+    note: "grants a druid-style animal companion mount, horse/pony, kineticist level -3 — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block (species restriction unenforced, same as every other companion source)",
   },
 
   // ── kineticist:dark-elementalist ──

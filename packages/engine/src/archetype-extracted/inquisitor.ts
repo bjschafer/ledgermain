@@ -735,7 +735,7 @@ export const INQUISITOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Animal Companion",
     level: 1,
     bucket: "subsystem",
-    note: "hunter-style animal companion, replacing judgment 1/day — companion subsystem, no character-facing Change",
+    note: "hunter-style animal companion (inquisitor level 1:1) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block; replaces judgment 1/day",
   },
   "inquisitor:sacred-huntsmaster:animal-focus:4": {
     archetypeId: "inquisitor:sacred-huntsmaster",

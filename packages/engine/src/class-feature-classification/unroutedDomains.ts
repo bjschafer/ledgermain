@@ -366,7 +366,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "1jMb1iCiNjS5yfwe",
     name: "Animal Companion",
     bucket: "subsystem",
-    note: "Grants an animal companion; the companion's own stats are computed elsewhere, and this grant carries no Change-shaped bonus number on the cleric's own sheet.",
+    note: "Grants an animal companion, effective druid level = cleric level - 3 (Animal domain) — wired via COMPANION_EFFECT_CLASS_FEATURES onto the tracked companion's stat block, gated on the Animal domain tag. A druid taking the same domain through Nature Bond uses a different offset, tracked separately.",
   },
   Iu8gyBT93dRpGtgH: {
     id: "Iu8gyBT93dRpGtgH",
@@ -582,7 +582,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "szRzBgTW01Vov922",
     name: "Serpent Companion",
     bucket: "subsystem",
-    note: "Grants an animal companion (a viper or constrictor snake); the companion's own stats are computed elsewhere, and this grant carries no Change-shaped bonus number on the cleric's own sheet.",
+    note: "Grants a viper/constrictor snake companion, effective druid level = cleric level - 2 — wired via COMPANION_EFFECT_CLASS_FEATURES onto the tracked companion's stat block, gated on the Venom subdomain tag. Despite the ability's own name, this is granted by the VENOM subdomain (Scalykind's subdomain); there is no 'Serpent' subdomain in the vendored data.",
   },
   t3eiENbbesGZBnc2: {
     id: "t3eiENbbesGZBnc2",

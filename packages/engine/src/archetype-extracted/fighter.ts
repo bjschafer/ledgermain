@@ -1674,7 +1674,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Steadfast Mount",
     level: 2,
     bucket: "situational",
-    note: "real but conditional/narrowly-scoped number (specific maneuver, weapon, target state, or action) — not expressible without over-applying, per the honesty bar",
+    note: "real scaling +1 dodge AC / +1 morale save bonus to the mount, but only while the roughrider is mounted on it or adjacent to it — a live mounted-or-adjacent state this engine doesn't track, so it stays unwired per the honesty bar",
   },
   "fighter:roughrider:armored-charger:3": {
     archetypeId: "fighter:roughrider",
@@ -1688,7 +1688,7 @@ export const FIGHTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mounted Mettle",
     level: 5,
     bucket: "situational",
-    note: "conditional on being mounted/adjacent to mount (no mounted-state roll data)",
+    note: "real scaling +1 attack/damage bonus to BOTH the roughrider and the mount, but only while he is mounted or adjacent to his mount — same live mounted-or-adjacent state Steadfast Mount needs and doesn't have, so both the master-side and companion-side halves stay unwired",
   },
   "fighter:roughrider:leap-from-the-saddle:7": {
     archetypeId: "fighter:roughrider",

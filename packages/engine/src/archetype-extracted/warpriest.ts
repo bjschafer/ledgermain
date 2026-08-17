@@ -285,7 +285,7 @@ export const WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mount",
     level: 0,
     bucket: "subsystem",
-    note: "grants a druid-style animal companion mount, replacing blessings (class note 4, itself a resource with no Change target) — companion stats aren't the character's own numbers",
+    note: "grants a druid-style animal companion mount (warpriest level 1:1) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block; replaces blessings (class note 4, itself a resource with no Change target)",
   },
 
   // ── warpriest:feral-champion ──

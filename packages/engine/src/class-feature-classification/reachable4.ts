@@ -331,8 +331,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
   T8jF1LURViyIo56i: {
     id: "T8jF1LURViyIo56i",
     name: "Companion Soul",
-    bucket: "blocked",
-    note: "The Will-save bonus and the scrying/revival abilities belong to the warden's animal companion, not the warden; class-feature-effects.ts's precedent list names Companion Soul directly.",
+    bucket: "subsystem",
+    note: "+8 morale bonus on Will saves against enchantment (replacing the companion's own +4 Devotion) — wired via COMPANION_EFFECT_CLASS_FEATURES onto the tracked companion's stat block. The scry-on-companion and raise-on-death utility abilities stay out of scope (ritual/live-state action, not a sheet number).",
   },
   TVNMlZUmKtoMPkRd: {
     id: "TVNMlZUmKtoMPkRd",
@@ -464,7 +464,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
     id: "woNYqzlTSHOo5Sgo",
     name: "Ironpaw",
     bucket: "blocked",
-    note: "Grants damage reduction to the warden's animal companion and summoned creatures, not the warden herself; matches the ally/companion-only precedent, and this table's patch route only feeds the granting character's own sheet, not companion.ts's separate computation.",
+    note: "Grants DR/cold-iron equal to the warden's class level to her animal companion and any summoned creature (summon nature's ally), not the warden herself. DR has no companion-model target either (deriveCompanion carries no damage-reduction field at all), so this stays fully unwired regardless of which sheet it would land on.",
   },
   y20pzrzm7hDwvwUt: {
     id: "y20pzrzm7hDwvwUt",

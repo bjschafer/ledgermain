@@ -1052,9 +1052,10 @@ export const VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 0,
     bucket: "subsystem",
     note:
-      "grants a mount (druid-animal-companion equivalent) plus teamwork-feat sharing and avenger-" +
-      "talent access regardless of specialization — companion/ally subsystem, replaces vigilante " +
-      "specialization (" +
+      "grants a mount (vigilante level 1:1) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto " +
+      "the tracked companion's stat block; the 3rd-level teamwork-feat sharing and 5th-level " +
+      "startling-appearance sharing stay unwired (behavior/ability riders, not flat numbers), as " +
+      "does avenger-talent access regardless of specialization. Replaces vigilante specialization (" +
       NOTE_SPECIALIZATION_STRUCTURAL +
       ")",
   },

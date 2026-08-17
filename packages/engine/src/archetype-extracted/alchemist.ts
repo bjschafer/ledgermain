@@ -1760,7 +1760,7 @@ export const ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Flying Beast Tamer",
     level: 1,
     bucket: "subsystem",
-    note: "flying animal-companion grant, replaces mutagen with an unrelated ability — class note 3",
+    note: "flying animal-companion grant (alchemist level 1:1) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block; replaces mutagen with an unrelated ability, class note 3",
   },
 };
 

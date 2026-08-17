@@ -602,14 +602,14 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Feathered Companion",
     level: 1,
     bucket: "subsystem",
-    note: "modifies/replaces Hunter's Bond (or grants an animal companion/mount/familiar-like ally) — the companion system has no archetype hooks (per project notes).",
+    note: "grants a bird companion at 1st level, effective level equal to ranger level (no -3 offset) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block",
   },
   "ranger:falconer:hunter-s-bond:4": {
     archetypeId: "ranger:falconer",
     name: "Hunter's Bond",
     level: 4,
     bucket: "subsystem",
-    note: "modifies/replaces Hunter's Bond (or grants an animal companion/mount/familiar-like ally) — the companion system has no archetype hooks (per project notes).",
+    note: "restores the feathered companion to full hit points at 4th level (no new companion or levels granted). Hit points are not an adjustable companion stat in this table, so the companion is already computed at full hit points and this ability has nothing left to do",
   },
   "ranger:falconer:swoop-for-the-kill:6": {
     archetypeId: "ranger:falconer",
@@ -868,7 +868,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Strong Bond",
     level: 12,
     bucket: "subsystem",
-    note: "modifies/replaces Hunter's Bond (or grants an animal companion/mount/familiar-like ally) — the companion system has no archetype hooks (per project notes).",
+    note: "effective druid level becomes ranger level at 12th — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES (+3 undoes mounted bond's -3)",
   },
   "ranger:horse-lord:spiritual-bond:17": {
     archetypeId: "ranger:horse-lord",
@@ -987,7 +987,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Strong Bond",
     level: 12,
     bucket: "subsystem",
-    note: "modifies/replaces Hunter's Bond (or grants an animal companion/mount/familiar-like ally) — the companion system has no archetype hooks (per project notes).",
+    note: "effective druid level becomes ranger level at 12th — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES (+3 undoes hunter's bond's -3)",
   },
   "ranger:jungle-lord:victory-cry:20": {
     archetypeId: "ranger:jungle-lord",

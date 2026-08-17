@@ -145,14 +145,14 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fast Rider",
     level: 1,
     bucket: "subsystem",
-    note: "increases a ridden MOUNT's speed by 10 ft. — the mount's own number, not the bloodrager's (class note 4); replaces fast movement (unpaired, class note 2)",
+    note: "unconditional +10 ft. mount speed — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's landSpeed (class note 4); replaces fast movement (unpaired, class note 2)",
   },
   "bloodrager:bloodrider:feral-mount:5": {
     archetypeId: "bloodrager:bloodrider",
     name: "Feral Mount",
     level: 5,
     bucket: "subsystem",
-    note: "grants a druid-style animal companion (as a mount) plus a Str morale bonus for the mount while bloodraging — the companion's numbers (class note 4); replaces uncanny dodge and improved uncanny dodge (no vendored changes)",
+    note: "grants a druid-style animal companion (bloodrager level -4) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block (class note 4); the Str morale bonus while bloodraging stays unwired (gated on a live rage state this engine doesn't track); replaces uncanny dodge and improved uncanny dodge (no vendored changes)",
   },
   "bloodrager:bloodrider:blood-bond:9": {
     archetypeId: "bloodrager:bloodrider",

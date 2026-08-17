@@ -753,7 +753,7 @@ export const BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "War Beast",
     level: 1,
     bucket: "subsystem",
-    note: "animal companion grant, replaces several rage powers (unmodeled either way) — no number",
+    note: "animal companion grant (barbarian level 1:1) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block; replaces several rage powers (unmodeled either way)",
   },
 
   // ── Mooncursed ─────────────────────────────────────────────────────────
@@ -792,14 +792,14 @@ export const BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bestial Mount",
     level: 5,
     bucket: "subsystem",
-    note: "grants an animal-companion-shaped mount, plus a +2 morale bonus to the MOUNT's Strength while raging — an ally/mount bonus, not the character's own number; replaces uncanny dodge and improved uncanny dodge, both nothing to suppress",
+    note: "grants a druid-style animal companion (barbarian level -4) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block; the +2 morale Str bonus to the mount stays unwired (gated on a live raging-and-mounted state this engine doesn't track); replaces uncanny dodge and improved uncanny dodge, both nothing to suppress",
   },
   "barbarianUnchained:mounted-fury:fast-rider:1": {
     archetypeId: "barbarianUnchained:mounted-fury",
     name: "Fast Rider",
     level: 1,
     bucket: "subsystem",
-    note: "the +10 ft. speed increase applies to the MOUNT the barbarian rides, not the character's own land speed — ally/mount-only bonus; replaces fast movement, so the character's own speed neither gains this nor keeps the base grant",
+    note: "unconditional +10 ft. mount speed — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's landSpeed; replaces fast movement, so the character's own speed neither gains this nor keeps the base grant",
   },
 
   // ── Numerian Liberator ─────────────────────────────────────────────────
@@ -1122,7 +1122,7 @@ export const BARBARIAN_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mount",
     level: 4,
     bucket: "subsystem",
-    note: "animal companion (mount) grant, replaces several rage powers (unmodeled either way) — no number",
+    note: "animal companion (mount) grant, horse/pony, barbarian level -3 — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block (species restriction unenforced, same as every other companion source); replaces several rage powers (unmodeled either way)",
   },
 
   // ── Superstitious ──────────────────────────────────────────────────────

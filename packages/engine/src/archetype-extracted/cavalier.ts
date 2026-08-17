@@ -123,7 +123,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Guard Companion",
     level: 4,
     bucket: "subsystem",
-    note: "animal-companion grant — companion-scoped (class note 1), no Change",
+    note: "grants a SECOND animal companion (functions as druid nature bond at effective druid level = cavalier level - 3, no share spells; replaces expert trainer, not mount) — a multi-companion split (this engine tracks one companion stat block), so the fully-specified level formula stays unwired despite being a plain classLevel/-3 grant",
   },
   "cavalier:castellan:mighty-defense:11": {
     archetypeId: "cavalier:castellan",
@@ -523,7 +523,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Rampage",
     level: 3,
     bucket: "situational",
-    note: "Trample named feat, a mounted-overrun attack bonus, and a mount damage bonus — maneuver/mount-scoped mix",
+    note: "Trample named feat, a mounted-overrun attack bonus, and an unconditional +2 damage bonus on the mount's own hoof/trample attacks (real per vendored text, 'even when not overrunning') — but the companion damage route applies a bonus to every attack line alike with no per-attack-type scoping, and only horse/pony (of the tracked companion species) have hoof attacks at all, so wiring it would incorrectly buff bite/claw/gore attacks on any other mount species",
   },
   "cavalier:fell-rider:terror:14": {
     archetypeId: "cavalier:fell-rider",
@@ -814,7 +814,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Hunting Pack",
     level: 1,
     bucket: "subsystem",
-    note: "animal-companion grant (possibly multiple) — companion-scoped (class note 1), replaces mount",
+    note: "replaces mount with a standard animal-companion grant (effective druid level = cavalier level, no offset) that can be split across multiple companions — a multi-companion split (this engine tracks one companion stat block), so the plain classLevel/0 grant stays unwired despite the formula itself being trivial",
   },
   "cavalier:huntmaster:improved-quarry:20": {
     archetypeId: "cavalier:huntmaster",
@@ -879,7 +879,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fast Mount",
     level: 1,
     bucket: "subsystem",
-    note: "increases the MOUNT's speed, not the hussar's own — mount-scoped (class note 1), never extracted",
+    note: "scaling +10 to +30 land speed on the mount's own stat block (mount-scoped, class note 1) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked mount's own stat block; the same bonus to fly/swim/climb speed isn't modeled",
   },
   "cavalier:hussar:maneuverable-mount:9": {
     archetypeId: "cavalier:hussar",
@@ -1101,7 +1101,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Desert Wind",
     level: 1,
     bucket: "subsystem",
-    note: "increases the MOUNT's speed, not the horselord's own — mount-scoped (class note 1), never extracted",
+    note: "scaling +5/5-levels land speed on the mount's own stat block (mount-scoped, class note 1) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked mount's own stat block; the same bonus to fly/swim/climb speed isn't modeled",
   },
   "cavalier:qadiran-horselord:mount:1": {
     archetypeId: "cavalier:qadiran-horselord",
@@ -1145,7 +1145,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fierce Devotion",
     level: 5,
     bucket: "subsystem",
-    note: "expands the mount's devotion ability — mount-scoped (class note 1)",
+    note: "extends the mount's devotion save bonus to fear/emotion, one level ahead of the base companion table's own devotion grant (mount-scoped, class note 1) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked mount's own stat block; the unnatural-aura immunity isn't modeled",
   },
   "cavalier:saurian-champion:nimble-rider:2": {
     archetypeId: "cavalier:saurian-champion",
@@ -1159,7 +1159,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Primeval Devotion",
     level: 14,
     bucket: "subsystem",
-    note: "increases the mount's devotion save bonus — mount-scoped (class note 1)",
+    note: "+2 to the mount's devotion save bonus (mount-scoped, class note 1) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked mount's own stat block; the paired 'half this bonus to other saving throws' clause is ambiguous and isn't modeled",
   },
   "cavalier:saurian-champion:quick-rider:8": {
     archetypeId: "cavalier:saurian-champion",
@@ -1187,7 +1187,7 @@ export const CAVALIER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Titanic Mount",
     level: 10,
     bucket: "subsystem",
-    note: "grows the mount by a size category with scaling stat adjustments — mount-scoped (class note 1)",
+    note: "grows the mount by a size category with a scheduled Str/Con/natural-armor bundle (mount-scoped, class note 1) — the ability-score/natural-armor bundle is wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked mount's own stat block; the size change itself (attack/AC size penalty, damage die size, reach) has no companion target",
   },
   "cavalier:saurian-champion:wild-warrior:1": {
     archetypeId: "cavalier:saurian-champion",

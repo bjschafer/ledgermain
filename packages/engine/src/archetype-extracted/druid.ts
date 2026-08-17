@@ -676,7 +676,7 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Phantom",
     level: 1,
     bucket: "subsystem",
-    note: "grants an unrelated ability, subsystem interaction, or choice-list — no Change-shaped number to extract",
+    note: "grants the spiritualist's phantom (plus etheric tether at 1st, bonded manifestation at 4th, spiritual bond at 14th), effective spiritualist level equal to druid level 1:1. Phantom internals are out of scope for the companion table and stay unwired here",
   },
   "druid:death-druid:soul-magic:1": {
     archetypeId: "druid:death-druid",
@@ -788,7 +788,7 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Devolved Companion",
     level: 1,
     bucket: "subsystem",
-    note: "grants an unrelated ability, subsystem interaction, or choice-list — no Change-shaped number to extract",
+    note: "restricts the nature bond companion to ape base stats and suppresses the normal 4th-level increase to Large size (all other 4th-level benefits still apply). Size progression isn't a companion stat target in this table, so the cap has nothing to attach to",
   },
   "druid:devolutionist:undomesticate:4": {
     archetypeId: "druid:devolutionist",
@@ -1124,7 +1124,7 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fungal Companion",
     level: 4,
     bucket: "subsystem",
-    note: "grants an unrelated ability, subsystem interaction, or choice-list — no Change-shaped number to extract",
+    note: "grants the companion a level-gated chain of named special attacks (partial fungal template at 4th, poisonous blood at 10th, poison spore cloud at 14th, create spawn at 20th). These are named abilities, not a bonus-tricks/bonus-feats count, and no companion Change target exists for granting a named special attack",
   },
   "druid:fungal-pilgrim:spore-spawning:4": {
     archetypeId: "druid:fungal-pilgrim",
@@ -1838,7 +1838,7 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Primal Bond",
     level: 1,
     bucket: "subsystem",
-    note: "restricts the nature bond animal-companion choice (dinosaur/megafauna) and grants a companion-targeting spell option — no Change-shaped number for the druid herself",
+    note: "treats the progenitor as the fey type when beneficial, plus a wild-magic (spell-reroll) or plant-creation option depending on the chosen form. Has nothing to do with the nature bond animal companion despite the shared name with goliath druid's differently-scoped Primal Bond; no companion-scoped number exists here at all",
   },
   "druid:progenitor:fey-shape:4": {
     archetypeId: "druid:progenitor",

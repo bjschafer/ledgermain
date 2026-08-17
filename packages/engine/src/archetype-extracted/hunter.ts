@@ -280,7 +280,14 @@ export const HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Skill Bond",
     level: 3,
     bucket: "subsystem",
-    note: COMPANION_SCOPED_NOTE + " Lets the companion borrow the hunter's skill ranks.",
+    note:
+      "lets the companion use the hunter's own ranks (capped at hunter level) in a player-" +
+      "chosen skill, in place of its own ranks, whichever gives the higher total. " +
+      COMPANION_SCOPED_NOTE +
+      " Not wireable even as a companion Change: the companion skill route only honors the six " +
+      "tracked companion skills (acr/clm/fly/per/ste/swm), which excludes most of what this " +
+      "ability is meant to share (Diplomacy in the ability's own example), and 'ranks in place " +
+      "of its own, whichever is higher' isn't a flat-additive Change shape regardless.",
   },
   "hunter:courtly-hunter:subtle-companion:2": {
     archetypeId: "hunter:courtly-hunter",
@@ -642,8 +649,12 @@ export const HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 1,
     bucket: "subsystem",
     note:
+      "replaces the base Animal Companion grant (effective druid level = hunter level, no " +
+      "offset) with the same formula split across multiple companions, and splits precise " +
+      "companion/woodland stride/teamwork-feat sharing across them too. " +
       COMPANION_SCOPED_NOTE +
-      " Splits the hunter's effective druid level across multiple companions.",
+      " A multi-companion split (this engine tracks one companion stat block), so the plain " +
+      "classLevel/0 grant stays unwired despite the formula itself being trivial.",
   },
   "hunter:packmaster:pack-focus:1": {
     archetypeId: "hunter:packmaster",
@@ -871,8 +882,13 @@ export const HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 1,
     bucket: "subsystem",
     note:
+      "restricts companion choice; at 7th level, for a companion whose growth table caps at " +
+      "Medium the way a bear's does, grants Str +4/Dex -2/Con +2/AC +1 natural armor and a " +
+      "one-die-size natural-attack damage increase, plus growth to Large. " +
       COMPANION_SCOPED_NOTE +
-      " Restricts companion choice and grants a size-increase option at 7th.",
+      " The Str/Dex/Con/natural-armor bundle is wired via COMPANION_EFFECT_ARCHETYPE_FEATURES " +
+      "onto the tracked companion's stat block, gated on the bear species; the Large size " +
+      "increase itself and the natural-attack damage die increase have no companion target.",
   },
   "hunter:totem-bonded:shared-strength:1": {
     archetypeId: "hunter:totem-bonded",
@@ -904,8 +920,10 @@ export const HUNTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
       "modeled — situational in isolation); at 15th, the text removes the daily-duration cap " +
       "entirely ('she can use brachiation with no limit on the duration'), which this pass " +
       "reads as becoming unconditional from that point on. Only the 15th-level-and-later, " +
-      "'equal to her base speed' tier is extracted; the companion's own climb-speed enhancement " +
-      "bonus is dropped (class note 1).",
+      "'equal to her base speed' tier is extracted for the hunter's own sheet here. The " +
+      "companion's own climb-speed enhancement bonus (+10 ft. from 1st level, +20 ft. from 8th, " +
+      "unconditional and not duration-limited) is wired via COMPANION_EFFECT_ARCHETYPE_FEATURES " +
+      "onto the tracked companion's stat block instead (class note 1).",
   },
   "hunter:treestrider:improved-unarmed-strike:2": {
     archetypeId: "hunter:treestrider",

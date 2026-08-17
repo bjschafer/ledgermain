@@ -45,6 +45,7 @@ import { MesmeristBoldStarePicker } from "./MesmeristBoldStarePicker.js";
 import { MesmeristTrickPicker } from "./MesmeristTrickPicker.js";
 import { MysteryPicker } from "./MysteryPicker.js";
 import { NinjaTrickPicker } from "./NinjaTrickPicker.js";
+import { PaladinBondPicker } from "./PaladinBondPicker.js";
 import { PatronPicker } from "./PatronPicker.js";
 import { PhrenicAmplificationPicker } from "./PhrenicAmplificationPicker.js";
 import { FamiliarPicker } from "./FamiliarPicker.js";
@@ -582,6 +583,11 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
           <CrueltyPicker doc={doc} update={update} />
           <FiendishBoonPicker doc={doc} update={update} />
         </>
+      )}
+
+      {/* Divine Bond picker — paladin only, from 5th level. */}
+      {doc.identity.classes.some((c) => c.tag === "paladin") && (
+        <PaladinBondPicker doc={doc} update={update} />
       )}
 
       {/* Brawler's Strike alignment — brawler only, and only from 12th level. */}

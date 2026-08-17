@@ -460,7 +460,7 @@ export const BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Animal Companion",
     level: 1,
     bucket: "subsystem",
-    note: "grants a druid-progression animal companion — companion stats are not the character's numbers; replaces the bonus combat feats gained at 2nd/8th/14th/20th",
+    note: "grants a druid-progression animal companion (brawler level 1:1) — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block; replaces the bonus combat feats gained at 2nd/8th/14th/20th",
   },
   "brawler:wild-child:hunter-s-tricks:5": {
     archetypeId: "brawler:wild-child",
@@ -474,7 +474,7 @@ export const BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Maneuver Training",
     level: 3,
     bucket: "subsystem",
-    note: "restates the base Maneuver Training text (player-chosen per-maneuver bonuses the engine can't scope, class note 5) and adds companion bonus tricks — alters maneuver training",
+    note: "restates the base Maneuver Training text (player-chosen per-maneuver bonuses the engine can't scope, class note 5); its own bonus companion trick at 3rd level is wired via COMPANION_EFFECT_ARCHETYPE_FEATURES (bonusTricks), but the matching bonus trick each later 7th/11th/15th/19th tier adds isn't scaled for — alters maneuver training",
   },
   "brawler:wild-child:wild-tricks:5": {
     archetypeId: "brawler:wild-child",

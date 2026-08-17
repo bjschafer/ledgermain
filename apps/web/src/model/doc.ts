@@ -545,6 +545,18 @@ export function setAntipaladinBoon(
 }
 
 /**
+ * Set the paladin's Divine Bond form (PF1 CRB RAW: chosen at 5th level,
+ * "once the form is chosen, it cannot be changed" — same single-fixed-choice
+ * posture as `setAntipaladinBoon`). Pass `null` to clear.
+ */
+export function setPaladinBond(doc: CharacterDoc, bond: "weapon" | "mount" | null): CharacterDoc {
+  return {
+    ...doc,
+    build: { ...doc.build, paladinBond: bond ?? undefined },
+  };
+}
+
+/**
  * Set the alignment component a 12th-level brawler's unarmed strikes count as
  * for overcoming damage reduction (ACG, Brawler's Strike). Pass `null` to
  * clear. RAW forbids picking the opposite of the brawler's own alignment; the

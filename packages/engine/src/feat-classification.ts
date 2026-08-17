@@ -1576,8 +1576,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "mounted-shield": {
     slug: "mounted-shield",
     name: "Mounted Shield",
-    bucket: "subsystem",
-    note: "grants an ability, proficiency, or rules exception with no Change-shaped number (heuristic-assisted bulk pass, see file header)",
+    bucket: "blocked",
+    note: "Real number (\"add your base shield bonus, including Shield Focus but not enhancement bonuses, to your mount's AC\"), but the value is read off the MASTER's own shield/Shield Focus, not the mount's build. Master roll data (rolldata.ts) carries @shield.type (a 0-3 armor-weight tier for gating formulas like the monk AC bonus check), not a resolvable shield-AC-bonus number, so there is no path a companion-master-effects formula could read without silently evaluating to 0.",
   },
   "mounted-skirmisher": {
     slug: "mounted-skirmisher",

@@ -390,7 +390,7 @@ export const ANTIPALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Corpse Rider",
     level: 5,
     bucket: "subsystem",
-    note: "fiendish boon variant: bonded weapon, or an undead animal-companion mount — companion/mount subsystems and boon choice-lists, no flat number for the character (class note 1)",
+    note: "if the undead-mount boon is chosen, grants a mount with effective druid level equal to antipaladin level 1:1 — wired via COMPANION_EFFECT_ARCHETYPE_FEATURES onto the tracked companion's stat block. The undead type swap (Charisma in place of Constitution, an undead save array) has no matching companion stat surface and stays unwired; the bonded-weapon boon option is a separate, unrelated choice (class note 1)",
   },
   "antipaladin:seal-breaker:aura-of-death:8": {
     archetypeId: "antipaladin:seal-breaker",
