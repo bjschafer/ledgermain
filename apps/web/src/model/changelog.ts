@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-16-companion-master-features",
+    date: "2026-08-16",
+    title: "Your feats and features now reach your companion's sheet",
+    note: "The animal companion and mount stat block now reacts to what the rider knows. Boon Companion and Animal Ally raise or grant effective druid level (Animal Ally can create the companion on its own), a beast master, horse lord, or jungle lord ranger hits full level at 12th, and a falconer's bird arrives at 1st. A paladin can finally pick the mount half of Divine Bond, a cleric with the Animal or Venom domain gets the granted companion, and archetype mounts arrive for mad dogs, mounted furies, bloodriders, wild children, sacred huntsmasters, divine commanders, and more. Stat riders land too: a shining knight's mount shares her Charisma bonus on saves, a hussar's mount speeds up, a saurian champion's beast grows into its Titanic Mount numbers, and the asavir's blessings guard her steed.",
+  },
+  {
     id: "2026-08-16-spell-like-abilities",
     date: "2026-08-16",
     title: "Spell-like abilities are castable now",
