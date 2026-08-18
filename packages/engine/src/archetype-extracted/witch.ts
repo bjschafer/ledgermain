@@ -297,7 +297,7 @@ export const WITCH_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Manifest Pact",
     level: 6,
     bucket: "subsystem",
-    note: "grants Improved Familiar as a bonus feat (forced to a quasit) plus a permanent negative level on replacement — a named-feat/narrative grant, no independent number",
+    note: "grants Improved Familiar as a bonus feat (forced to a quasit; the quasit itself is selectable in the tracked-familiar picker) plus a permanent negative level on replacement — a named-feat/narrative grant, no independent number",
   },
   "witch:dimensional-occultist:commune-with-familiar:8": {
     archetypeId: "witch:dimensional-occultist",

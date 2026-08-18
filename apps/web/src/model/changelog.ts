@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-17-improved-familiars",
+    date: "2026-08-17",
+    title: "Improved familiars arrive in the picker",
+    note: "The familiar catalog now carries the improved familiars: imp, quasit, pseudodragon, homunculus, all ten mephits, faerie dragon, dire rat, stirge, the four Small elementals, and a shelf of outsiders from silvanshee to voidworm, plus celestial, fiendish, entropic, and resolute templates you can lay over any standard animal. Each species gets its real stat block on the Play tab: damage reduction, energy resistances, immunities, spell resistance, its own skills and languages, and spell-like abilities with per-day counters that refill on a new day. The picker warns when you lack the feat, the caster level, or the alignment a species asks for, and never blocks the pick.",
+  },
+  {
     id: "2026-08-16-companion-master-features",
     date: "2026-08-16",
     title: "Your feats and features now reach your companion's sheet",

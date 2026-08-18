@@ -573,7 +573,7 @@ const TRICK_LIST: NinjaTrickDef[] = [
         "Gain an improved familiar (treating your ninja level as your effective wizard level), chosen from calligraphy wyrm, pipefox, shikigami kami, or spirit oni, provided your alignment is compatible with the choice.",
       contextNotes: [
         note(
-          "None of those familiar options exist in this project's Familiar picker (familiars.ts) — set up a stand-in in the Familiar section of the Classes panel; this entry is informational only.",
+          "None of the four kami-flavored options exist in the Familiar picker's improved catalog (improved-familiars/) — pick a stand-in species in the Familiar section of the Classes panel; this entry is informational only.",
         ),
       ],
     },

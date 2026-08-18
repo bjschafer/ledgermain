@@ -1247,7 +1247,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "improved-familiar",
     name: "Improved Familiar",
     bucket: "subsystem",
-    note: "expands the familiar choice list, no Change-shaped number",
+    note: "expands the familiar choice list, no Change-shaped number; the unlocked species are modeled in improved-familiars/ and the picker soft-warns on this feat's prerequisites",
   },
   "improved-feint": {
     slug: "improved-feint",

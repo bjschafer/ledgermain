@@ -82,9 +82,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Familiars",
-    note: "The standard animal familiars are all here, each with its own tracked stat block. Improved familiars are not: an imp, quasit, pseudodragon or mephit is defined by its spell-like abilities, damage reduction and resistances, none of which the sheet tracks, and its hit points and skills follow different rules than an animal's.",
+    note: "The improved familiar catalog covers the common picks, not the whole published list: a species missing from the picker has no stat block to track, and a familiar archetype (a sage, a mascot, an emissary) is not modeled at all.",
     issueDetail:
-      "23 species modeled. Improved familiars are blocked on four things: hit points take the higher of half the master's and the creature's own, no SR/DR/resistance block exists, spell-like abilities are unmodeled, and the animal-type skill rule does not apply to an outsider. The picker also has no alignment or caster-level gate to enforce their prerequisites.",
+      "47 species and 4 templates modeled. The published expanded Improved Familiar table exceeds 90 rows; the remainder lack authored stat blocks, the kami familiars the ninja's spiritual companion trick names among them. Familiar archetypes are a separate absent subsystem.",
   },
   {
     category: "Witch patrons",
