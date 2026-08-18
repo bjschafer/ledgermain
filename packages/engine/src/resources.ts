@@ -58,6 +58,7 @@ import {
   arcaneReservoirToggleOptions,
 } from "./arcane-spends.js";
 import { BLOODRAGE_BUFF_ID } from "./bloodrage.js";
+import { channelVariantFor, type ChannelVariantDef } from "./channel-variants.js";
 import { COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
 import { characterFeatSlugs, FEAT_POOL_EFFECTS } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
@@ -332,7 +333,14 @@ export function deriveResourcePools(
 
     const feature = refData.classFeatures[grant.featureId];
     if (!feature) return;
-    const formula = feature.uses?.maxFormula;
+    // Channel-progression archetype overrides (channel-variants.ts): a
+    // variant's usesFormula both replaces a vendored maxFormula (Blossoming
+    // Light) and SUPPLIES one for a `uses.source`-shaped base (Hospitaler's
+    // own pool where the base paladin spends Lay on Hands), which keeps the
+    // feature out of the linked-merge branch below.
+    const isChannel = CHANNEL_ENERGY_NAME_RE.test(feature.name);
+    const channelVariant = isChannel ? channelVariantFor(doc, classTag) : undefined;
+    const formula = channelVariant?.usesFormula ?? feature.uses?.maxFormula;
     if (!formula) {
       // No maxFormula — either nothing (most features) or a `uses.source`
       // pointer to another feature's pool. Either way it can't become its
@@ -487,11 +495,16 @@ export function deriveResourcePools(
       // `tableOptions` below, see mental-focus-spends.ts.
       detail = MENTAL_FOCUS_DETAIL;
     } else {
-      const family = CHANNEL_ENERGY_NAME_RE.test(feature.name)
-        ? "channel"
-        : POOL_FAMILY_BY_FEATURE_NAME[feature.name];
+      const family = isChannel ? "channel" : POOL_FAMILY_BY_FEATURE_NAME[feature.name];
       const familyDC = family ? abilityDCFor(abilityDCs, family) : undefined;
-      detail = actionBasedDetail(feature, featureRollData as RollData, familyDC);
+      detail = actionBasedDetail(
+        withChannelVariantFormulas(feature, channelVariant),
+        featureRollData as RollData,
+        familyDC,
+      );
+      if (channelVariant?.note) {
+        detail = detail ? `${detail} · ${channelVariant.note}` : channelVariant.note;
+      }
     }
 
     // The character's chosen archetypes for THIS granting class — bard/skald
@@ -621,10 +634,12 @@ export function deriveResourcePools(
 
     pools.push({
       id: feature.id,
-      name: feature.name,
+      name: channelVariant?.displayName ?? feature.name,
       max: poolMax,
       restValue,
-      per: feature.uses?.per,
+      // A variant-supplied pool (no vendored `uses` block of its own) is a
+      // daily budget per the archetype text.
+      per: feature.uses?.per ?? (channelVariant?.usesFormula ? "day" : undefined),
       classTag,
       detail,
       nonlethalPerUse,
@@ -878,6 +893,31 @@ function pickPrimaryAction(actions: FeatureAction[]): FeatureAction | undefined 
  * passes through to {@link formatSaveLabel} (see `deriveResourcePools`'s doc
  * comment on `abilityDCs`).
  */
+/**
+ * A copy of `feature` with its actions' damage and save-DC formulas replaced
+ * by the channel variant's (see `channel-variants.ts`), or `feature`
+ * unchanged when no formula override applies. The DC substitution matters
+ * for the detail line's fallback path (a caller that didn't thread
+ * `abilityDCs` evaluates the action's own `dcFormula`); the headline DC
+ * panel gets the same substitution in `ability-dcs.ts`.
+ */
+function withChannelVariantFormulas(
+  feature: ClassFeature,
+  variant: ChannelVariantDef | undefined,
+): ClassFeature {
+  if ((!variant?.damageFormula && !variant?.dcFormula) || !feature.actions) return feature;
+  return {
+    ...feature,
+    actions: feature.actions.map((a) => ({
+      ...a,
+      ...(variant.damageFormula &&
+        a.damage && { damage: { ...a.damage, formula: variant.damageFormula } }),
+      ...(variant.dcFormula &&
+        a.save?.dcFormula && { save: { ...a.save, dcFormula: variant.dcFormula } }),
+    })),
+  };
+}
+
 function actionBasedDetail(
   feature: ClassFeature,
   data: RollData,

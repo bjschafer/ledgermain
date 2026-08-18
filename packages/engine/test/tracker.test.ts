@@ -208,9 +208,8 @@ describe("resource pools derived from class features", () => {
     expect(channel).toBeDefined();
     expect(channel?.max).toBe(5);
     expect(channel?.per).toBe("day");
-    // Derived from the feature's vendored `actions[]` now (issue: bare
-    // resource-pool detail) rather than the old cleric-gated hand-authored
-    // `channelEnergyDetail` — see `resources.ts`'s `actionBasedDetail`.
+    // Derived from the feature's vendored `actions[]` — see `resources.ts`'s
+    // `actionBasedDetail`.
     expect(channel?.detail).toBe("3d6 (DC 14 Will)");
   });
 

@@ -17,6 +17,7 @@
 
 import type { AbilityId, CharacterDoc, DerivedAbilityDC, RefData } from "@pf1/schema";
 
+import { channelVariantFor } from "./channel-variants.js";
 import { forTarget, type CollectedModifier } from "./collect.js";
 import { featNameSlug } from "./feat-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
@@ -140,6 +141,9 @@ function channelInstances(doc: CharacterDoc, refData: RefData, rollData: RollDat
       }
       const action = feature.actions?.find((a) => a.save?.dcFormula);
       if (!action?.save?.dcFormula) continue;
+      // Channel-progression archetype overrides (channel-variants.ts) — an
+      // effective-level offset changes the DC formula too.
+      const dcFormula = channelVariantFor(doc, cls.tag)?.dcFormula ?? action.save.dcFormula;
       let featureRollData: RollData = {
         ...rollData,
         class: { level: cls.level, unlevel: cls.level },
@@ -149,7 +153,7 @@ function channelInstances(doc: CharacterDoc, refData: RefData, rollData: RollDat
       }
       let dc: number | null;
       try {
-        dc = tryEvaluateFormula(action.save.dcFormula, featureRollData);
+        dc = tryEvaluateFormula(dcFormula, featureRollData);
       } catch {
         continue;
       }
