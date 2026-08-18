@@ -1872,10 +1872,22 @@ export interface ActiveFormNaturalAttack {
  * doc comment for how this relates to `build.arcaneBond`.
  */
 export interface FamiliarBuild {
-  /** Species id — key into `@pf1/engine` `BASE_FAMILIARS` (e.g. "cat"). */
+  /**
+   * Species id — key into `@pf1/engine` `BASE_FAMILIARS` (e.g. "cat") or,
+   * for an Improved Familiar, `IMPROVED_FAMILIARS` (e.g. "imp"). The two
+   * tables share one id namespace; the picker draws from both.
+   */
   speciesId: string;
   /** Player-given name (e.g. "Mortlach"). */
   name: string;
+  /**
+   * Improved Familiar template applied to a standard animal species (the
+   * "celestial hawk" / "fiendish viper" rows of the published table,
+   * generalized to any standard species per the expanded lists) — key into
+   * `@pf1/engine` `FAMILIAR_TEMPLATES`. Only meaningful on a `BASE_FAMILIARS`
+   * species; ignored when `speciesId` is itself an improved species.
+   */
+  template?: string;
   /** Free-text notes (e.g. personality, tricks, house-rule tweaks). */
   notes?: string;
 }
@@ -1985,6 +1997,15 @@ export interface FamiliarLiveState {
    * Omitted/empty = no shared buffs.
    */
   sharedBuffIds?: string[];
+  /**
+   * Uses SPENT today per familiar spell-like ability, keyed by the species'
+   * SLA slug (see `@pf1/engine` `improved-familiars/types.ts`). Only metered
+   * abilities (N/day, N/week) track here; at-will/constant abilities never
+   * do. Reset wholesale by the New Day action (a v1 simplification for the
+   * rare per-week meter, documented on the def type). Omitted/empty = nothing
+   * spent.
+   */
+  slaUses?: Record<string, number>;
   /**
    * The familiar's OWN active conditions — condition ids, keys into
    * `@pf1/engine` `CONDITIONS`, tracked independently of the master's own

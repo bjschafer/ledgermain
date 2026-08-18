@@ -136,7 +136,8 @@ function abilityField(rollData: RollData, ability: string, field: "total" | "mod
 /** Case-insensitive spell-name index, cached per RefData instance (the web app memoizes one). */
 const spellIndexCache = new WeakMap<RefData, Map<string, string>>();
 
-function spellIdByName(refData: RefData, name: string): string | undefined {
+/** Resolve a spell name to its `RefData.spells` id, case-insensitively — exported for the familiar SLA panel's reuse of the same degradation posture. */
+export function spellIdByName(refData: RefData, name: string): string | undefined {
   let index = spellIndexCache.get(refData);
   if (!index) {
     index = new Map<string, string>();
@@ -155,7 +156,7 @@ function spellIdByName(refData: RefData, name: string): string | undefined {
  * (see `types.ts`'s header for the clean-room ruling), else the spell's
  * nominal level.
  */
-function effectiveSpellLevel(spell: Spell): number {
+export function effectiveSpellLevel(spell: Spell): number {
   const byClass = spell.learnedAt.class;
   const sorWiz = byClass["wizard"] ?? byClass["sorcerer"];
   if (sorWiz !== undefined) return sorWiz;

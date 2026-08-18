@@ -48,11 +48,30 @@
  *     stepped formula that reproduces every row of the published table
  *     exactly (verified by hand against all ten rows) — see
  *     {@link familiarNaturalArmorAdj} / {@link familiarIntScore}.
+ *
+ * Improved Familiars (`improved-familiars/`): non-animal species and the four
+ * animal templates ride this same derivation — the published feat keeps the
+ * normal familiar rules with exactly two exceptions (type unchanged; no Speak
+ * with Animals of Its Kind), so HP stays half the master's and attacks stay
+ * on the master's BAB even for a multi-HD creature. The improved surfaces
+ * (own Int/skill ranks/class skills, defenses, spell-like abilities) are
+ * feature-detected off the species entry — see `improved-familiars/types.ts`
+ * for the rules posture, including the deliberate better-of Int resolution.
  */
 
 import type { AbilityId, ActiveBuff, CharacterDoc, ModifierComponent, SizeId } from "@pf1/schema";
 
 import { CONDITIONS } from "./conditions.js";
+import {
+  FAMILIAR_TEMPLATES,
+  IMPROVED_FAMILIARS,
+  isImprovedFamiliar,
+} from "./improved-familiars/index.js";
+import type {
+  CreatureDefenses,
+  FamiliarSlaDef,
+  ImprovedFamiliar,
+} from "./improved-familiars/types.js";
 import { abilityMod, totalLevel } from "./rolldata.js";
 import {
   creatureSaveConditionals,
@@ -72,13 +91,20 @@ import type { RollData } from "./formula.js";
 /** How well a species flies — drives the Fly skill's maneuverability bonus below. */
 export type FlyManeuverability = "clumsy" | "poor" | "average" | "good" | "perfect";
 
-/** Fly skill bonus granted by each maneuverability class (PF1 CRB "Fly"). */
+/**
+ * Fly skill bonus granted by each maneuverability class (PF1 CRB "Fly":
+ * clumsy −8, poor −4, average +0, good +4, perfect +8). The good/perfect
+ * values were originally doubled (+8/+16) to make the bat's printed Fly +16
+ * reconcile without ranks — a compensating error: the real decomposition is
+ * RAW +4 plus the bat's own 1 invested rank (and the class-skill +3), which
+ * `ownSkillRanks` now models directly.
+ */
 const FLY_MANEUVER_BONUS: Record<FlyManeuverability, number> = {
   clumsy: -8,
   poor: -4,
   average: 0,
-  good: 8,
-  perfect: 16,
+  good: 4,
+  perfect: 8,
 };
 
 /** Stealth's size modifier (PF1 CRB "Stealth") — smaller creatures hide better. */
@@ -183,6 +209,15 @@ export interface BaseFamiliar {
   skillRacialMods?: Record<string, number>;
   /** Skill id -> ability override (e.g. cat's Climb uses Dex, not Str). */
   skillAbilityOverrides?: Partial<Record<string, AbilityId>>;
+  /**
+   * The creature's own invested skill ranks (skill id → ranks), where the
+   * printed stat block only reconciles with ranks — the familiar "whichever
+   * is better" rule compares these against the master's ranks per skill.
+   * Ranks, not totals: subtract the printed ability/size/racial/class-skill
+   * parts back out when authoring. Most standard animals carry none; every
+   * improved species has its full printed allocation.
+   */
+  ownSkillRanks?: Record<string, number>;
 }
 
 /**
@@ -223,6 +258,9 @@ export const BASE_FAMILIARS: Readonly<Record<string, BaseFamiliar>> = {
     senses: ["blindsense 20 ft.", "low-light vision"],
     flyManeuverability: "good",
     skillRacialMods: { per: 4 },
+    // Printed Fly +16 = Dex +2, size +6, good +4, 1 rank, class +3 — see
+    // FLY_MANEUVER_BONUS's doc comment.
+    ownSkillRanks: { fly: 1 },
   },
   cat: {
     name: "Cat",
@@ -492,6 +530,19 @@ export const BASE_FAMILIARS: Readonly<Record<string, BaseFamiliar>> = {
 export const BASE_FAMILIAR_IDS = Object.keys(BASE_FAMILIARS);
 
 /**
+ * Look up a familiar species across the standard table and the Improved
+ * Familiar shards (`improved-familiars/`) — one shared id namespace, standard
+ * first (the namespaces must never collide; a drift guard in
+ * `improvedFamiliars.test.ts` enforces it). Lives here rather than in
+ * `improved-familiars/index.ts` so that directory never imports this module
+ * at runtime (its `types.ts` import of {@link BaseFamiliar} is type-only) —
+ * keeping the module graph acyclic.
+ */
+export function familiarSpecies(id: string): BaseFamiliar | ImprovedFamiliar | undefined {
+  return BASE_FAMILIARS[id] ?? IMPROVED_FAMILIARS[id];
+}
+
+/**
  * Familiar's Intelligence score at a given master level (CRB "Familiars"
  * progression table) — replaces the base animal's own Int entirely. The
  * published table steps every 2 master levels (6 at ML1-2, 7 at ML3-4, ...,
@@ -622,6 +673,30 @@ export interface DerivedFamiliarAc {
   components: ModifierComponent[];
 }
 
+/**
+ * One spell-like ability on the familiar's derived sheet, from an improved
+ * species' own stat block (`ImprovedFamiliar.slas`). The save DC is finished
+ * web-side (10 + spell level + `dcMod`) because resolving the spell's level
+ * needs `RefData`, which this pure module never sees — same split as the
+ * spell name → `SpellDetail` resolution.
+ */
+export interface DerivedFamiliarSla {
+  /** The def's slug — also the `live.familiar.slaUses` key for metered abilities. */
+  slug: string;
+  name: string;
+  /** Vendored spell name to resolve for detail display (`spell ?? name` from the def). */
+  spell: string;
+  frequency: FamiliarSlaDef["frequency"];
+  cl: number;
+  /** The familiar's OWN modifier for the DC ability (post-shared-buffs), Cha by default. */
+  dcMod: number;
+  /** Present for metered abilities: the per-period budget and what's left today. */
+  usesMax?: number;
+  usesRemaining?: number;
+  per?: "day" | "week";
+  note?: string;
+}
+
 /** The full derived stat block for a tracked familiar (`build.familiar`). */
 export interface DerivedFamiliar {
   speciesId: string;
@@ -650,8 +725,28 @@ export interface DerivedFamiliar {
   /** Total natural armor (base animal's own + the level-scaled table bonus). */
   naturalArmor: number;
   specialAbilities: FamiliarSpecialAbility[];
-  /** Present once the master reaches level 11 (master's level + 5). */
+  /**
+   * The higher of the progression table's SR (master level + 5, from ML 11)
+   * and an improved species' own printed SR; absent when neither applies.
+   */
   spellResistance?: number;
+  /** Full printed type line for an improved species ("Outsider (devil, evil, extraplanar, lawful)"). */
+  creatureType?: string;
+  /** An improved species' own Hit Dice (the HD whichever-is-higher rule + display). */
+  hd?: number;
+  /**
+   * DR / energy resistance / immunities / fast healing, from an improved
+   * species' stat block or an applied template. SR is deliberately absent
+   * here — it's folded into {@link spellResistance} so the sheet shows one
+   * number.
+   */
+  defenses?: Omit<CreatureDefenses, "sr">;
+  /** Spell-like abilities, for improved species that carry them. */
+  slas?: DerivedFamiliarSla[];
+  /** Languages, as printed (improved species only; display). */
+  languages?: string[];
+  /** Special-quality reminders with no numeric surface ("poison (DC 13)", "breath weapon..."). */
+  specialNotes?: string[];
 }
 
 /** AC bucket membership mirroring `compute.ts`'s (duplicated locally — compute.ts's are private). */
@@ -727,11 +822,18 @@ export function deriveFamiliar(
 ): DerivedFamiliar | undefined {
   const build = doc.build.familiar;
   if (!build) return undefined;
-  const species = BASE_FAMILIARS[build.speciesId];
+  const species = familiarSpecies(build.speciesId);
   if (!species) return undefined;
+  const improved = isImprovedFamiliar(species) ? species : undefined;
+  // Templates only apply to a standard animal species (see the schema doc
+  // comment on `FamiliarBuild.template`); an unknown template id degrades to
+  // none, same soft posture as an unknown species.
+  const template = !improved && build.template ? FAMILIAR_TEMPLATES[build.template] : undefined;
 
   const level = Math.max(1, totalLevel(doc));
-  const intScore = familiarIntScore(level);
+  // Better-of for an improved species' own printed Int — see
+  // `improved-familiars/types.ts`'s rules-posture note.
+  const intScore = Math.max(familiarIntScore(level), improved?.ownInt ?? 0);
   let abilities: Record<AbilityId, { score: number; mod: number }> = {
     str: { score: species.abilities.str, mod: abilityMod(species.abilities.str) },
     dex: { score: species.abilities.dex, mod: abilityMod(species.abilities.dex) },
@@ -862,8 +964,16 @@ export function deriveFamiliar(
   const skillIds = new Set<string>([
     ...Object.keys(SKILL_ABILITY),
     ...Object.keys(doc.build.skillRanks ?? {}),
+    ...Object.keys(species.ownSkillRanks ?? {}),
   ]);
   const skills: Record<string, DerivedFamiliarSkill> = {};
+  // The Universal Monster Rules animal class-skill set only applies to an
+  // animal/vermin chassis; an improved non-animal species carries its own
+  // printed class-skill list instead (a templated animal stays an animal).
+  const classSkills: ReadonlySet<string> =
+    improved && improved.typeKind !== "animal" && improved.typeKind !== "vermin"
+      ? new Set(improved.classSkills ?? [])
+      : ANIMAL_CLASS_SKILLS;
   const hasClimbSpeed = species.speeds.climb !== undefined;
   const hasSwimSpeed = species.speeds.swim !== undefined;
   for (const id of skillIds) {
@@ -875,11 +985,11 @@ export function deriveFamiliar(
     if (id === "swm" && hasSwimSpeed) ability = "dex";
     const abilityModVal = abilities[ability].mod;
 
-    // v1: the familiar never separately invests its own ranks (see the
-    // module doc comment's "Skills" bullet) — "whichever is better" always
-    // resolves to the master's.
-    const ranks = doc.build.skillRanks?.[id] ?? 0;
-    const classSkillBonus = ANIMAL_CLASS_SKILLS.has(id) && ranks >= 1 ? 3 : 0;
+    // "Whichever is better" per skill: the master's invested ranks vs the
+    // creature's own printed ranks (most standard animals carry none, so
+    // this usually resolves to the master's — the original v1 behavior).
+    const ranks = Math.max(doc.build.skillRanks?.[id] ?? 0, species.ownSkillRanks?.[id] ?? 0);
+    const classSkillBonus = classSkills.has(id) && ranks >= 1 ? 3 : 0;
 
     let racial = species.skillRacialMods?.[id] ?? 0;
     if (id === "clm" && hasClimbSpeed) racial += 8;
@@ -922,9 +1032,65 @@ export function deriveFamiliar(
     };
   }
 
+  // --- improved-familiar surfaces -------------------------------------------
+  // Improved species and templates are mutually exclusive (templates only
+  // apply to standard animals), so this is a pick, not a merge. Every
+  // BASE_FAMILIARS animal is 1 HD — the tier argument stays explicit so a
+  // future multi-HD base can't silently get the wrong template tier.
+  const rawDefenses = improved?.defenses ?? template?.defensesForHd(1);
+  const defenses: Omit<CreatureDefenses, "sr"> | undefined = rawDefenses
+    ? {
+        ...(rawDefenses.dr !== undefined && { dr: rawDefenses.dr }),
+        ...(rawDefenses.fastHealing !== undefined && { fastHealing: rawDefenses.fastHealing }),
+        ...(rawDefenses.resist !== undefined && { resist: rawDefenses.resist }),
+        ...(rawDefenses.immune !== undefined && { immune: rawDefenses.immune }),
+        ...(rawDefenses.weaknesses !== undefined && { weaknesses: rawDefenses.weaknesses }),
+      }
+    : undefined;
+  const hasDefenses = defenses !== undefined && Object.keys(defenses).length > 0;
+  // One SR on the sheet: the higher of the species' own and the progression's.
+  const srValue = Math.max(rawDefenses?.sr ?? 0, level >= 11 ? level + 5 : 0);
+
+  // "Improved familiars do not gain the ability to speak with other creatures
+  // of their kind" (the feat's second exception) — applies to templated
+  // animals too, since a celestial hawk is itself an improved familiar.
+  const specialAbilities = familiarSpecialAbilities(level).filter(
+    (a) => !(improved || template) || a.name !== "Speak with Animals of Its Kind",
+  );
+  if (template) {
+    specialAbilities.push({
+      name: `${template.name} template`,
+      minLevel: 1,
+      detail: template.note,
+    });
+  }
+
+  const slas: DerivedFamiliarSla[] | undefined = improved?.slas?.map((def) => {
+    const metered = typeof def.frequency === "object" ? def.frequency : undefined;
+    const spent = doc.live.familiar?.slaUses?.[def.slug] ?? 0;
+    return {
+      slug: def.slug,
+      name: def.name,
+      spell: def.spell ?? def.name,
+      frequency: def.frequency,
+      cl: def.cl,
+      dcMod: abilities[def.dcAbility ?? "cha"].mod,
+      ...(metered && {
+        usesMax: metered.uses,
+        usesRemaining: Math.max(0, metered.uses - spent),
+        per: metered.per,
+      }),
+      ...(def.note !== undefined && { note: def.note }),
+    };
+  });
+
+  const senses = template
+    ? [...species.senses, ...template.senses.filter((s) => !species.senses.includes(s))]
+    : species.senses;
+
   return {
     speciesId: build.speciesId,
-    speciesName: species.name,
+    speciesName: template ? `${template.name} ${species.name}` : species.name,
     name: build.name,
     size,
     level,
@@ -936,7 +1102,7 @@ export function deriveFamiliar(
     },
     init: dexMod + resolveStack(sharedInit).total,
     speeds: applySharedSpeeds(species.speeds, sharedSpeed),
-    senses: species.senses,
+    senses,
     ac: { normal: acNormal, touch: acTouch, flatFooted: acFlatFooted, components: acComponents },
     saves,
     saveConditionals,
@@ -946,7 +1112,15 @@ export function deriveFamiliar(
     attacks,
     skills,
     naturalArmor,
-    specialAbilities: familiarSpecialAbilities(level),
-    spellResistance: level >= 11 ? level + 5 : undefined,
+    specialAbilities,
+    spellResistance: srValue > 0 ? srValue : undefined,
+    ...(improved && {
+      creatureType: improved.creatureType,
+      hd: improved.hd,
+      ...(improved.languages !== undefined && { languages: improved.languages }),
+      ...(improved.specialNotes !== undefined && { specialNotes: improved.specialNotes }),
+    }),
+    ...(hasDefenses && { defenses }),
+    ...(slas !== undefined && slas.length > 0 && { slas }),
   };
 }

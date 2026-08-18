@@ -631,11 +631,24 @@ export {
   type FamiliarMasterInputs,
   type FamiliarSpecialAbility,
   type FlyManeuverability,
+  familiarSpecies,
   type DerivedFamiliar,
   type DerivedFamiliarAc,
   type DerivedFamiliarAttack,
   type DerivedFamiliarSkill,
+  type DerivedFamiliarSla,
 } from "./familiar.js";
+export {
+  FAMILIAR_TEMPLATES,
+  IMPROVED_FAMILIARS,
+  isImprovedFamiliar,
+  type CreatureDefenses,
+  type FamiliarSlaDef,
+  type FamiliarTemplate,
+  type FamiliarTypeKind,
+  type ImprovedFamiliar,
+  type ImprovedFamiliarPrereq,
+} from "./improved-familiars/index.js";
 export {
   BASE_COMPANIONS,
   BASE_COMPANION_IDS,
@@ -808,6 +821,8 @@ export {
   CLASS_FEATURE_SLA_GRANTS,
   deriveSlaResourcePools,
   deriveSpellLikeAbilities,
+  effectiveSpellLevel,
+  spellIdByName,
   FEAT_SLA_GRANTS,
   RACE_SLA_GRANTS,
   RACIAL_TRAIT_SLA_GRANTS,
