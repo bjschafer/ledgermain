@@ -10,13 +10,20 @@ import {
   buildRollData,
   CONDITION_LADDERS,
   deriveFamiliar,
+  FAMILIAR_TEMPLATES,
+  familiarSpecies,
   featNameSlug,
+  isImprovedFamiliar,
   resolveSorcererBloodlineOrMutation,
   type DerivedFamiliar,
+  type ImprovedFamiliarPrereq,
 } from "@pf1/engine";
-import type { CharacterDoc, DerivedSheet, RefData, ResolvedStat } from "@pf1/schema";
+import type { CharacterDoc, DerivedSheet, FamiliarBuild, RefData, ResolvedStat } from "@pf1/schema";
 
+import { alignmentWithinOneStep } from "./alignment.js";
+import { effectiveCasterLevel } from "./casterLevel.js";
 import { toggleConditionIn } from "./conditions.js";
+import { normalizeAlignmentCode } from "./names.js";
 
 /**
  * Set (or replace) the tracked familiar's species + name. A blank (or
@@ -31,22 +38,147 @@ import { toggleConditionIn } from "./conditions.js";
  * to the NEW species' name instead of carrying the stale one forward —
  * swapping Cat for Owl shouldn't leave an owl named "Cat". A name the player
  * actually typed is preserved across a species swap, as before.
+ *
+ * Looks up the species across BOTH `BASE_FAMILIARS` and the Improved
+ * Familiar tables (`familiarSpecies`, one shared id namespace), so an
+ * improved species auto-names correctly too (e.g. "Imp", not "Familiar").
+ * Switching TO an improved species drops any standard-animal `template`
+ * (`FamiliarBuild.template`) — the two are mutually exclusive.
  */
 export function setFamiliar(doc: CharacterDoc, speciesId: string, name: string): CharacterDoc {
   const existing = doc.build.familiar;
   const hadAutoName =
     existing != null &&
     existing.speciesId !== speciesId &&
-    existing.name === (BASE_FAMILIARS[existing.speciesId]?.name ?? existing.name);
+    existing.name === (familiarSpecies(existing.speciesId)?.name ?? existing.name);
   const trimmed = hadAutoName ? "" : name.trim();
-  const fallbackName = BASE_FAMILIARS[speciesId]?.name ?? "Familiar";
+  const newSpecies = familiarSpecies(speciesId);
+  const fallbackName = newSpecies?.name ?? "Familiar";
+  const nextFamiliar: FamiliarBuild = {
+    ...doc.build.familiar,
+    speciesId,
+    name: trimmed || fallbackName,
+  };
+  if (newSpecies && isImprovedFamiliar(newSpecies)) {
+    delete nextFamiliar.template;
+  }
   return {
     ...doc,
     build: {
       ...doc.build,
-      familiar: { ...doc.build.familiar, speciesId, name: trimmed || fallbackName },
+      familiar: nextFamiliar,
     },
   };
+}
+
+/**
+ * Set (or clear, `templateId: undefined`) the Improved Familiar template
+ * (`FAMILIAR_TEMPLATES`, e.g. "celestial") applied to a standard animal
+ * species. No-ops when there's no familiar yet, when the current species is
+ * itself an improved species (templates only apply to standard animals — see
+ * `FamiliarBuild.template`'s schema doc comment), or when `templateId` isn't
+ * a recognized template id.
+ */
+export function setFamiliarTemplate(
+  doc: CharacterDoc,
+  templateId: string | undefined,
+): CharacterDoc {
+  const build = doc.build.familiar;
+  if (!build) return doc;
+  const species = familiarSpecies(build.speciesId);
+  if (species && isImprovedFamiliar(species)) return doc;
+  if (templateId !== undefined && !FAMILIAR_TEMPLATES[templateId]) return doc;
+
+  const nextFamiliar: FamiliarBuild = { ...build };
+  if (templateId === undefined) delete nextFamiliar.template;
+  else nextFamiliar.template = templateId;
+  return { ...doc, build: { ...doc.build, familiar: nextFamiliar } };
+}
+
+/** The improved species' own SLA def for `slug`, or `undefined` when there's no familiar/species/def. */
+function familiarSlaDef(doc: CharacterDoc, slug: string) {
+  const build = doc.build.familiar;
+  if (!build) return undefined;
+  const species = familiarSpecies(build.speciesId);
+  if (!species || !isImprovedFamiliar(species)) return undefined;
+  return species.slas?.find((s) => s.slug === slug);
+}
+
+/**
+ * Record one more use of a familiar spell-like ability spent today
+ * (`live.familiar.slaUses[slug]`), clamped to the def's `usesMax`. No-ops for
+ * an unmetered (constant/at-will) or unrecognized slug.
+ */
+export function spendFamiliarSla(doc: CharacterDoc, slug: string): CharacterDoc {
+  const def = familiarSlaDef(doc, slug);
+  if (!def || typeof def.frequency !== "object") return doc;
+  const current = doc.live.familiar?.slaUses?.[slug] ?? 0;
+  const spent = Math.min(def.frequency.uses, current + 1);
+  return withFamiliarLive(doc, { slaUses: { ...doc.live.familiar?.slaUses, [slug]: spent } });
+}
+
+/**
+ * Undo one spent use of a familiar spell-like ability
+ * (`live.familiar.slaUses[slug]`), clamped at 0. No-ops for an unmetered
+ * (constant/at-will) or unrecognized slug.
+ */
+export function restoreFamiliarSla(doc: CharacterDoc, slug: string): CharacterDoc {
+  const def = familiarSlaDef(doc, slug);
+  if (!def || typeof def.frequency !== "object") return doc;
+  const current = doc.live.familiar?.slaUses?.[slug] ?? 0;
+  const spent = Math.max(0, current - 1);
+  return withFamiliarLive(doc, { slaUses: { ...doc.live.familiar?.slaUses, [slug]: spent } });
+}
+
+/** Clear every familiar SLA's spent-uses counter (e.g. alongside the New Day rest action). No-ops when absent. */
+export function resetFamiliarSlaUses(doc: CharacterDoc): CharacterDoc {
+  const current = doc.live.familiar;
+  if (!current || !current.slaUses) return doc;
+  const familiar = { ...current };
+  delete familiar.slaUses;
+  return { ...doc, live: { ...doc.live, familiar } };
+}
+
+/**
+ * Soft, non-blocking warnings for the published Improved Familiar table
+ * prerequisites (`ImprovedFamiliar.prereq` / `FamiliarTemplate.prereq`) —
+ * hybrid-prereq posture (see CLAUDE.md): every warning here is informational
+ * only, and the picker always allows the pick regardless. Checks, in order:
+ * caster level (best single-class caster level, advancement-aware), the
+ * Improved Familiar feat itself (also accepts its Improved Familiar Bond
+ * follow-up), and alignment (within one step on each axis of the familiar's
+ * own alignment, when both the master's alignment and the prereq's parse).
+ */
+export function improvedFamiliarPrereqWarnings(
+  doc: CharacterDoc,
+  refData: RefData,
+  prereq: ImprovedFamiliarPrereq,
+): string[] {
+  const warnings: string[] = [];
+
+  const cl = effectiveCasterLevel(doc, refData);
+  if (cl < prereq.casterLevel) {
+    warnings.push(`Requires caster level ${prereq.casterLevel} (currently ${cl})`);
+  }
+
+  const hasFeat = doc.build.feats.some((id) => {
+    const feat = refData.feats[id];
+    if (!feat) return false;
+    const slug = featNameSlug(feat.name);
+    return slug === "improved-familiar" || slug === "improved-familiar-bond";
+  });
+  if (!hasFeat) warnings.push("Requires the Improved Familiar feat");
+
+  if (prereq.alignment) {
+    const masterCode = doc.identity.alignment
+      ? normalizeAlignmentCode(doc.identity.alignment)
+      : undefined;
+    if (masterCode && alignmentWithinOneStep(masterCode, prereq.alignment) === false) {
+      warnings.push(`Alignment must be within one step of ${prereq.alignment}`);
+    }
+  }
+
+  return warnings;
 }
 
 /** Update the tracked familiar's free-text notes. No-ops if there's no familiar yet. */

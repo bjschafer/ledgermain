@@ -31,4 +31,53 @@ export const FAMILIAR_TEMPLATES: Readonly<Record<string, FamiliarTemplate>> = {
     prereq: { casterLevel: 3, alignment: "NG" },
     source: "Bestiary p.294 (celestial creature); CRB Improved Familiar table",
   },
+  // Same tier shape as celestial, mirrored to evil energy types (cold/fire
+  // instead of acid/cold/electricity) and a good-aligned bypass.
+  fiendish: {
+    id: "fiendish",
+    name: "Fiendish",
+    senses: ["darkvision 60 ft."],
+    defensesForHd: (hd) =>
+      hd >= 11
+        ? { resist: ["cold 15", "fire 15"], dr: "10/good" }
+        : hd >= 5
+          ? { resist: ["cold 10", "fire 10"], dr: "5/good" }
+          : { resist: ["cold 5", "fire 5"], sr: 5 },
+    note: "Smite good 1/day (swift action): adds its Cha bonus to attack rolls and its HD to damage against a good foe, until the target dies or the fiendish creature rests.",
+    prereq: { casterLevel: 3, alignment: "NE" },
+    source: "Bestiary p.294 (fiendish creature); CRB Improved Familiar table",
+  },
+  // Bestiary 2's chaos-aligned counterpart to fiendish/resolute: resists
+  // acid/fire (not cold), DR bypassed by lawful.
+  entropic: {
+    id: "entropic",
+    name: "Entropic",
+    senses: ["darkvision 60 ft."],
+    defensesForHd: (hd) =>
+      hd >= 11
+        ? { resist: ["acid 15", "fire 15"], dr: "10/lawful" }
+        : hd >= 5
+          ? { resist: ["acid 10", "fire 10"], dr: "5/lawful" }
+          : { resist: ["acid 5", "fire 5"], sr: 5 },
+    note: "Smite law 1/day (swift action): adds its Cha bonus to attack rolls and its HD to damage against a lawful foe, until the target dies or the entropic creature rests.",
+    prereq: { casterLevel: 3, alignment: "CN" },
+    source: "Bestiary 2 p.294 (entropic creature); CRB Improved Familiar table",
+  },
+  // Bestiary 2's law-aligned counterpart to entropic: resists acid/cold/fire
+  // (verified against three independent source pulls — NOT acid/cold/sonic),
+  // DR bypassed by chaotic.
+  resolute: {
+    id: "resolute",
+    name: "Resolute",
+    senses: ["darkvision 60 ft."],
+    defensesForHd: (hd) =>
+      hd >= 11
+        ? { resist: ["acid 15", "cold 15", "fire 15"], dr: "10/chaotic" }
+        : hd >= 5
+          ? { resist: ["acid 10", "cold 10", "fire 10"], dr: "5/chaotic" }
+          : { resist: ["acid 5", "cold 5", "fire 5"], sr: 5 },
+    note: "Smite chaos 1/day (swift action): adds its Cha bonus to attack rolls and its HD to damage against a chaotic foe, until the target dies or the resolute creature rests.",
+    prereq: { casterLevel: 3, alignment: "LN" },
+    source: "Bestiary 2 p.294 (resolute creature); CRB Improved Familiar table",
+  },
 };

@@ -5938,6 +5938,40 @@ input[type="text"].saved-roll-name:focus {
   grid-template-columns: repeat(2, 1fr);
 }
 
+.familiar-defenses-line {
+  margin-top: 10px;
+}
+
+.familiar-sla-list {
+  margin-top: 10px;
+}
+
+.familiar-special-notes {
+  margin-top: 8px;
+}
+
+.familiar-special-note {
+  margin: 0 0 6px;
+}
+
+.familiar-template-select {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.familiar-template-select select {
+  display: block;
+  margin-top: 4px;
+}
+
+.familiar-improved-heading {
+  margin-top: 18px;
+}
+
+.familiar-prereq-warning {
+  color: var(--oxblood-ink);
+}
+
 /* A row of controls in a companion picker (focus/size selects, the name field,
    the per-level ability-increase selects). Inline-block controls would
    otherwise sit on one another's whitespace with no gap and no wrapping. */

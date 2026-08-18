@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { CONDITIONS, CONDITION_IDS } from "@pf1/engine";
+import { CONDITIONS, CONDITION_IDS, effectiveSpellLevel, spellIdByName } from "@pf1/engine";
 
 import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
@@ -14,20 +14,27 @@ import {
   healFamiliar,
   healFamiliarNonlethal,
   restFamiliar,
+  restoreFamiliarSla,
   setFamiliarInReach,
+  spendFamiliarSla,
   toggleFamiliarCondition,
 } from "../../model/familiar.js";
 import { creatureAbilityRows } from "../../model/creatureDisplay.js";
 import {
+  familiarSlaDc,
+  formatCreatureDefenses,
   formatFamiliarAttackDamage,
   formatFamiliarAttackName,
   formatFamiliarAttackRoll,
   formatFamiliarSummary,
+  formatSlaFrequency,
   partitionFamiliarSkills,
   PRIMARY_FAMILIAR_SKILLS,
 } from "../../model/familiarDisplay.js";
 import { signed } from "../../model/names.js";
+import { SpellBonusesExclusion } from "../../state/spellBonuses.js";
 import { InfoTip } from "../InfoTip.js";
+import { SpellDetail } from "../SpellDetail.js";
 import { StatSeal } from "../StatSeal.js";
 import type { BuilderProps } from "../builder/types.js";
 
@@ -71,6 +78,16 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
       defaultCollapsed
     >
       <div className="familiar-summary hint">{formatFamiliarSummary(familiar)}</div>
+      {(familiar.creatureType !== undefined || familiar.hd !== undefined) && (
+        <div className="familiar-summary hint">
+          {[familiar.creatureType, familiar.hd !== undefined ? `${familiar.hd} HD` : null]
+            .filter((part): part is string => part != null)
+            .join(" · ")}
+        </div>
+      )}
+      {familiar.languages && familiar.languages.length > 0 && (
+        <div className="familiar-summary hint">Languages: {familiar.languages.join(", ")}</div>
+      )}
 
       <label className="hp-inline familiar-in-reach">
         <input
@@ -212,6 +229,11 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
             <StatSeal label="SR" value={familiar.spellResistance} className="seal--compact" />
           ) : null}
         </div>
+        {familiar.defenses && (
+          <div className="familiar-defenses-line hint">
+            {formatCreatureDefenses(familiar.defenses)}
+          </div>
+        )}
       </div>
 
       <div className="stat-group familiar-stat-group">
@@ -273,6 +295,73 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
         </div>
       </div>
 
+      {familiar.slas && familiar.slas.length > 0 ? (
+        <>
+          <h4 className="tracker-sub">Spell-like abilities</h4>
+          <div className="res-list familiar-sla-list">
+            {familiar.slas.map((sla) => {
+              const spellId = spellIdByName(refData, sla.spell);
+              const spell = spellId ? refData.spells[spellId] : undefined;
+              const dc = familiarSlaDc(sla, refData);
+              const metered = sla.usesMax !== undefined;
+              const remaining = sla.usesRemaining ?? 0;
+              return (
+                <div key={sla.slug} className="res-row">
+                  <div className="res-main">
+                    <div className="res-head">
+                      <span className="res-name">{sla.name}</span>
+                      <span className="res-sub">{formatSlaFrequency(sla.frequency)}</span>
+                      <span className="res-sub">CL {sla.cl}</span>
+                      {dc !== undefined ? <span className="res-sub">DC {dc}</span> : null}
+                    </div>
+                    {sla.note ? <div className="res-detail">{sla.note}</div> : null}
+                    {spell ? (
+                      <SpellBonusesExclusion>
+                        <SpellDetail
+                          spell={spell}
+                          spellLevel={effectiveSpellLevel(spell)}
+                          abilityMod={sla.dcMod}
+                          casterLevel={sla.cl}
+                        />
+                      </SpellBonusesExclusion>
+                    ) : null}
+                  </div>
+                  {metered ? (
+                    <>
+                      <div className="res-count num">
+                        {remaining}
+                        <span className="res-slash">/</span>
+                        {sla.usesMax}
+                      </div>
+                      <div className="res-btns">
+                        <button
+                          type="button"
+                          className="btn-ghost"
+                          onClick={() => update((d) => spendFamiliarSla(d, sla.slug))}
+                          disabled={remaining <= 0}
+                          aria-label={`spend ${sla.name}`}
+                        >
+                          −
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-ghost"
+                          onClick={() => update((d) => restoreFamiliarSla(d, sla.slug))}
+                          disabled={remaining >= (sla.usesMax ?? 0)}
+                          aria-label={`restore ${sla.name}`}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      ) : null}
+
       <h4 className="tracker-sub">Skills</h4>
       <div className="familiar-skill-grid">
         {primarySkills.map((s) => (
@@ -310,6 +399,16 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
             ))}
           </div>
         </>
+      ) : null}
+
+      {familiar.specialNotes && familiar.specialNotes.length > 0 ? (
+        <div className="familiar-special-notes">
+          {familiar.specialNotes.map((note, i) => (
+            <p key={i} className="hint familiar-special-note">
+              {note}
+            </p>
+          ))}
+        </div>
       ) : null}
     </Panel>
   );

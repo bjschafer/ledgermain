@@ -20,7 +20,9 @@
  *   3. Resources — `restAllResources`: every stored pool's `used` resets so
  *      remaining uses match its refill value (`max` for almost every pool;
  *      Arcane Reservoir's is lower per RAW). Requires `refData` to derive
- *      pools; without it, falls back to the old always-full reset.
+ *      pools; without it, falls back to the old always-full reset. A tracked
+ *      familiar's own metered spell-like abilities (`resetFamiliarSlaUses`)
+ *      reset alongside, unconditionally (no `refData` needed).
  *   4. Spells — `restPreparedSpells` + `resetSpontaneousSlots`, once per
  *      caster class (multiclass support) when `refData` is given, so a
  *      multiclass character's prepared loadout AND spontaneous slots reset for
@@ -43,6 +45,7 @@ import { deriveResourcePools, type DerivedResourcePool } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import { getNegativeLevels, restAbilityDamage } from "./afflictions.js";
+import { resetFamiliarSlaUses } from "./familiar.js";
 import { restHp } from "./hp.js";
 import { clearKineticistDefenseBurn } from "./kineticistBuild.js";
 import { resetSpiritMagicSlots, restPreparedSpells } from "./preparedSpells.js";
@@ -232,6 +235,9 @@ export function restNewDay(
   // A kineticist's Elemental Defense boost lasts "until the next time your
   // burn is removed" — which is this.
   next = clearKineticistDefenseBurn(next);
+  // An Improved Familiar's own metered spell-like abilities (e.g. the imp's
+  // 1/day suggestion) reset the same as any other daily resource.
+  next = resetFamiliarSlaUses(next);
 
   let casterClasses: { classTag: string | undefined; name: string }[] | undefined;
   if (refData) {

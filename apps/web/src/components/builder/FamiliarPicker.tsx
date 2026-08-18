@@ -1,14 +1,23 @@
 import { useMemo, useState } from "react";
 
-import { BASE_FAMILIARS } from "@pf1/engine";
-import type { CharacterDoc } from "@pf1/schema";
+import { BASE_FAMILIARS, IMPROVED_FAMILIARS } from "@pf1/engine";
+import type { CharacterDoc, RefData } from "@pf1/schema";
 
-import { clearFamiliar, setFamiliar, setFamiliarNotes } from "../../model/familiar.js";
+import {
+  clearFamiliar,
+  improvedFamiliarPrereqWarnings,
+  setFamiliar,
+  setFamiliarNotes,
+  setFamiliarTemplate,
+} from "../../model/familiar.js";
 import {
   familiarSpeciesOptions,
+  familiarTemplateOptions,
   filterFamiliarSpecies,
+  filterImprovedFamiliarOptions,
   formatFamiliarSpeciesAttacks,
   formatFamiliarSpeciesSummary,
+  improvedFamiliarOptions,
 } from "../../model/familiarDisplay.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
@@ -17,6 +26,7 @@ type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface FamiliarPickerProps {
   doc: CharacterDoc;
+  refData: RefData;
   update: Updater;
 }
 
@@ -38,15 +48,38 @@ interface FamiliarPickerProps {
  * before committing. The same list both creates the familiar (no row
  * selected yet) and re-species an existing one (the current species shows
  * `is-selected`); `setFamiliar` keeps the name in sync (see its doc comment).
+ *
+ * Below the standard catalog, the same search box also filters a second
+ * "Improved familiars" catalog (`improvedFamiliarOptions`) — non-animal
+ * species from the Improved Familiar feat. Its published prerequisites
+ * (caster level, the feat itself, alignment) show as soft warning text per
+ * row (`improvedFamiliarPrereqWarnings`); the pick is never blocked, same
+ * hybrid-prereq posture as the rest of the app. When the CURRENT species is
+ * a standard animal (not itself improved), a template `<select>` lets the
+ * player layer an Improved Familiar template (celestial, etc.) on top —
+ * templates and improved species are mutually exclusive, so that control
+ * only appears for a standard animal.
  */
-export function FamiliarPicker({ doc, update }: FamiliarPickerProps) {
+export function FamiliarPicker({ doc, refData, update }: FamiliarPickerProps) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Familiar", false);
   const [query, setQuery] = useState("");
   const familiar = doc.build.familiar;
   const species = familiar ? BASE_FAMILIARS[familiar.speciesId] : undefined;
+  const currentIsImproved = familiar != null && IMPROVED_FAMILIARS[familiar.speciesId] != null;
 
   const options = useMemo(() => familiarSpeciesOptions(), []);
   const shown = filterFamiliarSpecies(options, query);
+
+  const improvedOptions = useMemo(() => improvedFamiliarOptions(), []);
+  const shownImproved = filterImprovedFamiliarOptions(improvedOptions, query);
+
+  const templateOptions = useMemo(() => familiarTemplateOptions(), []);
+  const selectedTemplate = familiar?.template
+    ? templateOptions.find((t) => t.id === familiar.template)
+    : undefined;
+  const templateWarnings = selectedTemplate
+    ? improvedFamiliarPrereqWarnings(doc, refData, selectedTemplate.template.prereq)
+    : [];
 
   return (
     <div className="subsection familiar-picker">
@@ -109,6 +142,35 @@ export function FamiliarPicker({ doc, update }: FamiliarPickerProps) {
                   </p>
                 );
               })()}
+              {!currentIsImproved && (
+                <div className="familiar-template-select">
+                  <label>
+                    <span className="hint">Improved Familiar template</span>
+                    <select
+                      value={familiar.template ?? ""}
+                      onChange={(e) =>
+                        update((d) => setFamiliarTemplate(d, e.target.value || undefined))
+                      }
+                    >
+                      <option value="">None</option>
+                      {templateOptions.map((t) => (
+                        <option key={t.id} value={t.id}>
+                          {t.template.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  {selectedTemplate && (
+                    <p className="hint familiar-effect">
+                      {selectedTemplate.template.name}: {selectedTemplate.defensesLine}.{" "}
+                      {selectedTemplate.template.note}
+                    </p>
+                  )}
+                  {templateWarnings.length > 0 && (
+                    <p className="hint familiar-prereq-warning">{templateWarnings.join(". ")}</p>
+                  )}
+                </div>
+              )}
               <button
                 type="button"
                 className="btn-ghost"
@@ -147,6 +209,62 @@ export function FamiliarPicker({ doc, update }: FamiliarPickerProps) {
                           <span className="desc-text">
                             {o.masterBonus ? `Master bonus: ${o.masterBonus}.` : null}
                             {o.masterBonusNote ? ` ${o.masterBonusNote}.` : null}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      className="pick-btn"
+                      onClick={() => update((d) => setFamiliar(d, o.id, familiar?.name ?? ""))}
+                    >
+                      {isSelected ? "Selected" : "Select"}
+                    </button>
+                  </div>
+                );
+              })
+            )}
+          </div>
+
+          <h4 className="tracker-sub familiar-improved-heading">Improved familiars</h4>
+          <p className="hint familiar-hint">
+            Non-animal species from the Improved Familiar feat. Prerequisites show as warnings below
+            each option: picking one is never blocked, even if a prerequisite isn't met yet.
+          </p>
+          <div className="scroll">
+            {shownImproved.length === 0 ? (
+              <div className="empty">No improved familiars match.</div>
+            ) : (
+              shownImproved.map((o) => {
+                const isSelected = familiar?.speciesId === o.id;
+                const warnings = improvedFamiliarPrereqWarnings(doc, refData, o.species.prereq);
+                return (
+                  <div
+                    key={o.id}
+                    className={`pick-row${isSelected ? " is-selected" : ""}${warnings.length > 0 ? " is-unqualified" : ""}`}
+                  >
+                    <div className="pmain">
+                      <div className="pname">{o.species.name}</div>
+                      <div className="preq">
+                        <span>{o.compareLine}</span>
+                      </div>
+                      {o.defensesLine && (
+                        <div className="preq">
+                          <span className="desc-text">{o.defensesLine}</span>
+                        </div>
+                      )}
+                      {o.slaHint && (
+                        <div className="preq">
+                          <span className="desc-text">{o.slaHint}</span>
+                        </div>
+                      )}
+                      <div className="preq">
+                        <span className="desc-text">{o.prereqLine}</span>
+                      </div>
+                      {warnings.length > 0 && (
+                        <div className="preq">
+                          <span className="desc-text familiar-prereq-warning">
+                            {warnings.join(". ")}
                           </span>
                         </div>
                       )}

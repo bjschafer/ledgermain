@@ -9,14 +9,24 @@
 
 import {
   BASE_FAMILIARS,
+  effectiveSpellLevel,
+  FAMILIAR_TEMPLATES,
   FAMILIARS,
+  IMPROVED_FAMILIARS,
+  spellIdByName,
   type BaseFamiliar,
+  type CreatureDefenses,
   type DerivedFamiliar,
   type DerivedFamiliarAttack,
+  type DerivedFamiliarSla,
   type FamiliarDef,
   type FamiliarNaturalAttack,
+  type FamiliarSlaDef,
+  type FamiliarTemplate,
+  type ImprovedFamiliar,
+  type ImprovedFamiliarPrereq,
 } from "@pf1/engine";
-import type { Change, SkillId } from "@pf1/schema";
+import type { Change, RefData, SkillId } from "@pf1/schema";
 
 import { signed, skillName } from "./names.js";
 
@@ -209,4 +219,121 @@ export function formatFamiliarAttackDamage(attack: DerivedFamiliarAttack): strin
   const bonus = attack.damageBonus !== 0 ? signed(attack.damageBonus) : "";
   const note = attack.note ? ` ${attack.note}` : "";
   return `${attack.damageDice}${bonus}${note}`;
+}
+
+/**
+ * "DR 5/good or silver · Immune fire, poison · Resist acid 10, cold 10 ·
+ * Fast healing 2" — a creature's static defenses, in the app's own "·"
+ * separator convention. Skips absent parts; `""` when nothing applies. Takes
+ * either the full `CreatureDefenses` (a template's own, SR included) or the
+ * derived familiar's `Omit<CreatureDefenses, "sr">` (SR is folded into the
+ * derived sheet's own `spellResistance` field instead — see that field's doc
+ * comment) — SR is never part of this line either way.
+ */
+export function formatCreatureDefenses(defenses: Partial<CreatureDefenses> | undefined): string {
+  if (!defenses) return "";
+  const parts: string[] = [];
+  if (defenses.dr) parts.push(`DR ${defenses.dr}`);
+  if (defenses.immune && defenses.immune.length > 0) {
+    parts.push(`Immune ${defenses.immune.join(", ")}`);
+  }
+  if (defenses.resist && defenses.resist.length > 0) {
+    parts.push(`Resist ${defenses.resist.join(", ")}`);
+  }
+  if (defenses.fastHealing !== undefined) parts.push(`Fast healing ${defenses.fastHealing}`);
+  if (defenses.weaknesses && defenses.weaknesses.length > 0) {
+    parts.push(defenses.weaknesses.join(", "));
+  }
+  return parts.join(" · ");
+}
+
+/** "Constant" | "At will" | "1/day" | "2/day" | "1/week" — a familiar SLA's frequency, for display. */
+export function formatSlaFrequency(freq: FamiliarSlaDef["frequency"]): string {
+  if (freq === "constant") return "Constant";
+  if (freq === "atWill") return "At will";
+  return `${freq.uses}/${freq.per}`;
+}
+
+/**
+ * A familiar spell-like ability's save DC (`10 + effective spell level +
+ * dcMod`), resolved against the vendored spell the SLA names
+ * (`spellIdByName`). `undefined` when the spell doesn't resolve (an SLA name
+ * with no vendored match) — the row renders without a DC in that case, same
+ * degrade-quietly posture as `spell-like-abilities/`'s own resolution.
+ */
+export function familiarSlaDc(sla: DerivedFamiliarSla, refData: RefData): number | undefined {
+  const spellId = spellIdByName(refData, sla.spell);
+  const spell = spellId ? refData.spells[spellId] : undefined;
+  if (!spell) return undefined;
+  return 10 + effectiveSpellLevel(spell) + sla.dcMod;
+}
+
+/** "Improved Familiar feat, caster level 7, alignment within one step of LE" — omits the alignment clause when absent. */
+export function formatImprovedFamiliarPrereq(prereq: ImprovedFamiliarPrereq): string {
+  const parts = ["Improved Familiar feat", `caster level ${prereq.casterLevel}`];
+  if (prereq.alignment) parts.push(`alignment within one step of ${prereq.alignment}`);
+  return parts.join(", ");
+}
+
+/** "6 spell-like abilities", or the names themselves when there are only one or two. `undefined` when the species has none. */
+function formatSlaHint(slas: readonly FamiliarSlaDef[] | undefined): string | undefined {
+  if (!slas || slas.length === 0) return undefined;
+  if (slas.length <= 2) return slas.map((s) => s.name).join(", ");
+  return `${slas.length} spell-like abilities`;
+}
+
+/** One browsable row in the Improved Familiar species picker. */
+export interface ImprovedFamiliarOption {
+  id: string;
+  species: ImprovedFamiliar;
+  /** Creature type line + size/speed/senses, e.g. "Outsider (...) · Tiny · Speed 20 ft., fly 50 ft. · ...". */
+  compareLine: string;
+  defensesLine: string | undefined;
+  slaHint: string | undefined;
+  prereqLine: string;
+}
+
+/** Every Improved Familiar species, alphabetical by display name, for the builder's picker. */
+export function improvedFamiliarOptions(): ImprovedFamiliarOption[] {
+  return Object.entries(IMPROVED_FAMILIARS)
+    .map(([id, species]) => ({
+      id,
+      species,
+      compareLine: [species.creatureType, formatFamiliarSpeciesSummary(species)].join(" · "),
+      defensesLine: species.defenses ? formatCreatureDefenses(species.defenses) : undefined,
+      slaHint: formatSlaHint(species.slas),
+      prereqLine: formatImprovedFamiliarPrereq(species.prereq),
+    }))
+    .sort((a, b) => a.species.name.localeCompare(b.species.name));
+}
+
+/** Case-insensitive substring match against each Improved Familiar option's display name; empty query returns everything. */
+export function filterImprovedFamiliarOptions(
+  options: readonly ImprovedFamiliarOption[],
+  query: string,
+): ImprovedFamiliarOption[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return [...options];
+  return options.filter((o) => o.species.name.toLowerCase().includes(q));
+}
+
+/** One browsable row in the Improved Familiar template picker. */
+export interface FamiliarTemplateOption {
+  id: string;
+  template: FamiliarTemplate;
+  /** The template's 1-HD defenses (every `BASE_FAMILIARS` animal is 1 HD today). */
+  defensesLine: string;
+  prereqLine: string;
+}
+
+/** Every Improved Familiar template, alphabetical by display name, for a standard-species familiar's picker. */
+export function familiarTemplateOptions(): FamiliarTemplateOption[] {
+  return Object.values(FAMILIAR_TEMPLATES)
+    .map((template) => ({
+      id: template.id,
+      template,
+      defensesLine: formatCreatureDefenses(template.defensesForHd(1)),
+      prereqLine: formatImprovedFamiliarPrereq(template.prereq),
+    }))
+    .sort((a, b) => a.template.name.localeCompare(b.template.name));
 }

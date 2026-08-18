@@ -145,3 +145,31 @@ const ALIGNMENT_FULL_LABELS: Record<string, string> = {
   NE: "Neutral Evil",
   CE: "Chaotic Evil",
 };
+
+/** Law axis order (Lawful -> Neutral -> Chaotic) for {@link alignmentWithinOneStep}'s distance check. */
+const LAW_AXIS_ORDER: Record<string, number> = { L: 0, N: 1, C: 2 };
+/** Moral axis order (Good -> Neutral -> Evil) for {@link alignmentWithinOneStep}'s distance check. */
+const MORAL_AXIS_ORDER: Record<string, number> = { G: 0, N: 1, E: 2 };
+
+/** A code's law/moral axis letters; bare "N" (true neutral) sits at the middle of both axes. */
+function alignmentAxes(code: string): { law: string; moral: string } {
+  return code === "N" ? { law: "N", moral: "N" } : { law: code[0]!, moral: code[1]! };
+}
+
+/**
+ * Whether two alignments (free text or codes, e.g. "LE", "lawful evil") are
+ * within one step of each other on BOTH axes (PF1's usual "one step"
+ * alignment rule, e.g. the Improved Familiar feat's alignment prereq).
+ * `undefined` when either fails to parse via `normalizeAlignmentCode` —
+ * callers should treat that as "nothing to check", not a failed check.
+ */
+export function alignmentWithinOneStep(a: string, b: string): boolean | undefined {
+  const codeA = normalizeAlignmentCode(a);
+  const codeB = normalizeAlignmentCode(b);
+  if (!codeA || !codeB) return undefined;
+  const axesA = alignmentAxes(codeA);
+  const axesB = alignmentAxes(codeB);
+  const lawDist = Math.abs(LAW_AXIS_ORDER[axesA.law]! - LAW_AXIS_ORDER[axesB.law]!);
+  const moralDist = Math.abs(MORAL_AXIS_ORDER[axesA.moral]! - MORAL_AXIS_ORDER[axesB.moral]!);
+  return lawDist <= 1 && moralDist <= 1;
+}

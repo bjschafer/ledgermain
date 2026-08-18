@@ -690,7 +690,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         can't apply to them. An existing tracked familiar always stays
         visible so it can still be edited or removed.
       */}
-      {hasFamiliarSource(doc, refData, sheet) && <FamiliarPicker doc={doc} update={update} />}
+      {hasFamiliarSource(doc, refData, sheet) && (
+        <FamiliarPicker doc={doc} refData={refData} update={update} />
+      )}
 
       {/* Tracked animal companion — druid Nature Bond / ranger Hunter's Bond / ACG Hunter's own Animal Companion / cavalier & samurai Mount. */}
       <AnimalCompanionPicker doc={doc} refData={refData} update={update} />
