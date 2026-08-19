@@ -805,11 +805,7 @@ export {
   GRIT_DETAIL,
   PANACHE_DETAIL,
 } from "./grit-panache-spends.js";
-export {
-  CHANNEL_VARIANTS,
-  channelVariantFor,
-  type ChannelVariantDef,
-} from "./channel-variants.js";
+export { CHANNEL_VARIANTS, channelVariantFor, type ChannelVariantDef } from "./channel-variants.js";
 export { sacredWeaponToggleOptions, SACRED_WEAPON_DETAIL } from "./sacred-weapon-spends.js";
 export { mentalFocusToggleOptions, MENTAL_FOCUS_DETAIL } from "./mental-focus-spends.js";
 export {

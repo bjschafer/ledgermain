@@ -3,12 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import {
-  CHANNEL_VARIANTS,
-  channelVariantFor,
-  compute,
-  deriveResourcePools,
-} from "../src/index.js";
+import { CHANNEL_VARIANTS, channelVariantFor, compute, deriveResourcePools } from "../src/index.js";
 
 const ref = loadRefData();
 
@@ -40,7 +35,12 @@ function makeClericDoc(archetypes: string[]): CharacterDoc {
       gear: [],
       archetypes,
     },
-    live: { hp: { current: 30, temp: 0, nonlethal: 0 }, conditions: [], activeBuffs: [], resources: {} },
+    live: {
+      hp: { current: 30, temp: 0, nonlethal: 0 },
+      conditions: [],
+      activeBuffs: [],
+      resources: {},
+    },
   } as CharacterDoc;
 }
 

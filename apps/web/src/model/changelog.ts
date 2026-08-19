@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-18-channel-energy-variants",
+    date: "2026-08-18",
+    title: "Channel energy follows your archetype and prestige class",
+    note: "Archetypes that reshape channel energy now show their real numbers. A fiendish vessel channels evil on d4s, a blossoming light's pool grows with her level, an evangelist's damage caps at 7d6, a scroll scholar's dice run a step behind, and a hospitaler gets her own channel pool at paladin level minus 3, separate from lay on hands. Prestige classes join in: Holy Vindicator levels stack into your channel dice and save DC, and a Death Slayer without another channeling class gets her own harm-undead pool. The Flames of Hell and Student of Faith traits now add their +1 to your channel save DC as well.",
+  },
+  {
     id: "2026-08-17-improved-familiars",
     date: "2026-08-17",
     title: "Improved familiars arrive in the picker",

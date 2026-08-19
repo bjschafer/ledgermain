@@ -61,30 +61,23 @@ describe("CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     }
   });
 
-  it("bucket counts: 11 numeric, 36 situational, 84 subsystem, 6 blocked", () => {
+  it("bucket counts: 11 numeric, 36 situational, 88 subsystem, 2 blocked", () => {
     const counts: Record<string, number> = {};
     for (const entry of Object.values(CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
     expect(counts["numeric"]).toBe(11);
     expect(counts["situational"]).toBe(36);
-    expect(counts["subsystem"]).toBe(84);
-    expect(counts["blocked"]).toBe(6);
+    expect(counts["subsystem"]).toBe(88);
+    expect(counts["blocked"]).toBe(2);
   });
 
-  it("blocked entries are the channel-dice/uses divergences and the unapplied-target case", () => {
+  it("blocked entries are the unapplied-target case and the channel divergence with no unconditional override hook", () => {
     const blocked = Object.entries(CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, e]) => e.bucket === "blocked")
       .map(([id]) => id);
     expect(blocked.sort()).toEqual(
-      [
-        "cleric:appeaser:channel-utility:0",
-        "cleric:blossoming-light:luminous-font:1",
-        "cleric:evangelist:sermonic-performance:1",
-        "cleric:fiendish-vessel:channel-evil:1",
-        "cleric:forgemaster:divine-smith:1",
-        "cleric:scroll-scholar:secrets-revealed:5",
-      ].sort(),
+      ["cleric:appeaser:channel-utility:0", "cleric:forgemaster:divine-smith:1"].sort(),
     );
   });
 
@@ -351,11 +344,11 @@ describe("resolveArchetypeFeatureEffect: resolves through cleric's tables when e
   });
 });
 
-describe("blocked bucket: channel-dice/uses divergences (cleric)", () => {
-  it("Blossoming Light's Luminous Font resizes channel energy's uses/day — recorded as blocked, not backfilled", () => {
+describe("subsystem bucket: channel-dice/uses divergences wired via channel-variants.ts (cleric)", () => {
+  it("Blossoming Light's Luminous Font resizes channel energy's uses/day — subsystem, not a Change-extraction target", () => {
     const entry =
       CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION["cleric:blossoming-light:luminous-font:1"];
-    expect(entry?.bucket).toBe("blocked");
+    expect(entry?.bucket).toBe("subsystem");
     expect(
       CLERIC_ARCHETYPE_EFFECTS_EXTRACTED["cleric:blossoming-light:luminous-font:1"],
     ).toBeUndefined();
@@ -369,8 +362,17 @@ describe("blocked bucket: channel-dice/uses divergences (cleric)", () => {
     expect(channelEnergy?.uses?.maxFormula).toBe("3 + @abilities.cha.mod");
   });
 
-  it("Fiendish Vessel's Channel Evil promises a d4-based progression divergent from the vendored d6-based one — blocked", () => {
+  it("Fiendish Vessel's Channel Evil promises a d4-based progression divergent from the vendored d6-based one — subsystem", () => {
     const entry = CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION["cleric:fiendish-vessel:channel-evil:1"];
-    expect(entry?.bucket).toBe("blocked");
+    expect(entry?.bucket).toBe("subsystem");
+  });
+
+  it("Sermonic Performance's 7d6 channel-energy cap and Secrets Revealed's lagged progression are subsystem too", () => {
+    expect(
+      CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION["cleric:evangelist:sermonic-performance:1"]?.bucket,
+    ).toBe("subsystem");
+    expect(
+      CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION["cleric:scroll-scholar:secrets-revealed:5"]?.bucket,
+    ).toBe("subsystem");
   });
 });

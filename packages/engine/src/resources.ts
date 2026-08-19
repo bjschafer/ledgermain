@@ -58,7 +58,14 @@ import {
   arcaneReservoirToggleOptions,
 } from "./arcane-spends.js";
 import { BLOODRAGE_BUFF_ID } from "./bloodrage.js";
-import { channelVariantFor, type ChannelVariantDef } from "./channel-variants.js";
+import {
+  CHANNEL_PRESTIGE_GRANTS,
+  channelStackingLevels,
+  channelVariantFor,
+  deathSlayerLevels,
+  hasBaseChannelClass,
+  type ChannelVariantDef,
+} from "./channel-variants.js";
 import { COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
 import { characterFeatSlugs, FEAT_POOL_EFFECTS } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
@@ -340,7 +347,21 @@ export function deriveResourcePools(
     // feature out of the linked-merge branch below.
     const isChannel = CHANNEL_ENERGY_NAME_RE.test(feature.name);
     const channelVariant = isChannel ? channelVariantFor(doc, classTag) : undefined;
-    const formula = channelVariant?.usesFormula ?? feature.uses?.maxFormula;
+    // A formula-less prestige Channel Energy grant (Death Slayer) becomes a
+    // real standalone pool only when no other class supplies a base channel
+    // feature — with one, the prestige levels ride the stacking rules
+    // instead, and a second counter for one budget would be wrong. See
+    // channel-variants.ts's prestige section.
+    const channelPrestige =
+      isChannel && !channelVariant && !feature.uses && (feature.actions?.length ?? 0) === 0
+        ? CHANNEL_PRESTIGE_GRANTS[classTag]
+        : undefined;
+    const prestigeActive =
+      channelPrestige !== undefined && !hasBaseChannelClass(doc, refData, classTag);
+    const formula =
+      channelVariant?.usesFormula ??
+      (prestigeActive ? channelPrestige.usesFormula : undefined) ??
+      feature.uses?.maxFormula;
     if (!formula) {
       // No maxFormula — either nothing (most features) or a `uses.source`
       // pointer to another feature's pool. Either way it can't become its
@@ -497,14 +518,40 @@ export function deriveResourcePools(
     } else {
       const family = isChannel ? "channel" : POOL_FAMILY_BY_FEATURE_NAME[feature.name];
       const familyDC = family ? abilityDCFor(abilityDCs, family) : undefined;
-      detail = actionBasedDetail(
-        withChannelVariantFormulas(feature, channelVariant),
-        featureRollData as RollData,
-        familyDC,
-      );
-      if (channelVariant?.note) {
-        detail = detail ? `${detail} · ${channelVariant.note}` : channelVariant.note;
-      }
+      // Holy Vindicator levels stack into the channel formulas outright (a
+      // general stack, dice and DC alike); the DC side is mirrored in
+      // ability-dcs.ts, which supplies `familyDC` on the production path.
+      const stackingBonus = isChannel ? channelStackingLevels(doc, classTag) : 0;
+      const detailRollData =
+        stackingBonus > 0
+          ? {
+              ...featureRollData,
+              class: { level: classLevel, unlevel: classLevel + stackingBonus },
+            }
+          : featureRollData;
+      const detailFeature = prestigeActive
+        ? {
+            ...feature,
+            actions: [
+              {
+                damage: { formula: channelPrestige.damageFormula, types: ["positive"] },
+                save: { type: "will", dcFormula: channelPrestige.dcFormula },
+              },
+            ],
+          }
+        : withChannelVariantFormulas(feature, channelVariant);
+      detail = actionBasedDetail(detailFeature, detailRollData as RollData, familyDC);
+      const notes = [
+        channelVariant?.note,
+        prestigeActive ? channelPrestige.note : undefined,
+        // Death Slayer's stack is dice-only AND undead-only — a reminder
+        // rather than a formula substitution, which would overstate the
+        // heal dice (see channel-variants.ts's prestige section).
+        isChannel && classTag !== "deathSlayer" && deathSlayerLevels(doc) > 0
+          ? "Death Slayer levels stack when determining damage dice against undead"
+          : undefined,
+      ].filter((n): n is string => n !== undefined);
+      for (const n of notes) detail = detail ? `${detail} · ${n}` : n;
     }
 
     // The character's chosen archetypes for THIS granting class — bard/skald
@@ -637,9 +684,9 @@ export function deriveResourcePools(
       name: channelVariant?.displayName ?? feature.name,
       max: poolMax,
       restValue,
-      // A variant-supplied pool (no vendored `uses` block of its own) is a
-      // daily budget per the archetype text.
-      per: feature.uses?.per ?? (channelVariant?.usesFormula ? "day" : undefined),
+      // A variant- or prestige-supplied pool (no vendored `uses` block of its
+      // own) is a daily budget per the published text.
+      per: feature.uses?.per ?? (channelVariant?.usesFormula || prestigeActive ? "day" : undefined),
       classTag,
       detail,
       nonlethalPerUse,

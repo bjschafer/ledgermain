@@ -190,6 +190,12 @@ export const TRAIT_EFFECTS_EXTRACTED: Readonly<Record<string, ExtractedTraitEntr
     changes: [{ target: "skill.pro.gambling", type: "trait", formula: "1" }],
     provenance: "You gain a +1 trait bonus on Profession (gambling) checks",
   },
+  // Flames of Hell (Any Archdevil): Promoted the unconditional +1 channel-energy save DC trait bonus onto abilityDC.channel (ability-dcs.ts); previously blocked on a stale claim that no channel-DC target exists.
+  TfCzuODwDA5uUD1F: {
+    changes: [{ target: "abilityDC.channel", type: "trait", formula: "1" }],
+    provenance:
+      "Add 1 to the DC of saving throws made to resist the effects of your channel energy ability.",
+  },
   // Folgrit's Bounty (Folgrit): Promoted the unconditional +1 Profession (cook) trait bonus; the nourishing-meal ability stays prose (not a numeric target).
   ZkmQ9OBNeWLFHLNA: {
     changes: [{ target: "skill.pro.cook", type: "trait", formula: "1" }],
@@ -384,6 +390,12 @@ export const TRAIT_EFFECTS_EXTRACTED: Readonly<Record<string, ExtractedTraitEntr
   gxqfCYfs0CZ1xRl8: {
     classSkills: ["sen"],
     provenance: "Sense Motive is always a class skill for you",
+  },
+  // Student of Faith (Rise of the Runelords): Promoted the unconditional +1 channel-energy save DC trait bonus; the +1 caster-level bonus on cure spells stays unmodeled (cl is a real Change target elsewhere in the vendored data but isn't folded into any sheet number, see traits.ts).
+  wuIVOJSw3KzSjEqQ: {
+    changes: [{ target: "abilityDC.channel", type: "trait", formula: "1" }],
+    provenance:
+      "whenever you channel energy, you gain a +1 trait bonus to the save DC of your channeled energy.",
   },
   // Swamp Rebel (Wanshou): Unconditional class skill grant promoted; +2 Stealth stays prose (scoped to swampy terrain).
   XEcvPIy23VWciRCO: {
@@ -1501,9 +1513,6 @@ export const TRAIT_PROMOTION_BLOCKERS: Readonly<Record<string, string>> = {
     "Extra daily channel-energy use; no resource-count target for bonus daily uses.",
   // Family Trade
   QCTPDU21TE7P7bSe: "Class skill grant is a player choice of skill, not expressible.",
-  // Flames of Hell (Any Archdevil)
-  TfCzuODwDA5uUD1F:
-    "unconditional +1 to channel energy save DC - no channel-DC target on the allowlist",
   // Focused Burn
   "9yeh2oXP6rvnMYN7":
     "Bomb fire-damage bonus scales with the bomb's own damage dice; not an allowed formula shape.",
@@ -1557,7 +1566,8 @@ export const TRAIT_PROMOTION_BLOCKERS: Readonly<Record<string, string>> = {
   // Roving Range
   hwHQDXLXjdtIGg7S: "unconditional range-increment increase has no expressible target",
   // Sacred Conduit
-  gQ9RoYriwgWKTIjz: "Channeled-energy save DC bonus; DC has no matching target.",
+  gQ9RoYriwgWKTIjz:
+    "Vendored reprint of the hand-authored Sacred Conduit trait (traits.ts); the +1 channel-energy save DC bonus is already wired there, so this duplicate stays unwired to avoid double-applying.",
   // Scion of Legend (Return of the Runelords)
   A7IyTMzJRauORoEt:
     "player choice of skill, open-ended (tied to a prior-campaign hero's skill ranks)",
@@ -1566,9 +1576,6 @@ export const TRAIT_PROMOTION_BLOCKERS: Readonly<Record<string, string>> = {
     "player-choice save target (Fortitude/Reflex/Will) determined at trait selection",
   // Spirit Lodge Dreamer (Human; Erutaki)
   wCRZAyjbEScwWQuN: "unconditional concealment miss-chance reduction has no matching target axis",
-  // Student of Faith (Rise of the Runelords)
-  wuIVOJSw3KzSjEqQ:
-    "caster level (cure spells) and channeled-energy save DC bonuses, neither has a modeled target",
   // Sword Scion (Kingmaker)
   Vw1ZVONnNwzQeNDN:
     "weapon-specific attack/combat-maneuver bonus (longsword/Aldori dueling sword only), no per-weapon target",

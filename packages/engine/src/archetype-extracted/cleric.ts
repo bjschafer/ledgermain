@@ -26,17 +26,18 @@
  *    restatement of the SRD text, just gated to a later level than 1st) is
  *    `situational` — there is no always-on baseline number to extract from
  *    an activated ability, regardless of who or what it targets.
- * 3. **Channel-dice/uses changes are `blocked`.** The dice count and save DC
- *    are clean-room hardcoded from cleric level in `tables.ts`'s
- *    `channelEnergyDetail` (1d6 + 1d6 per 2 levels beyond 1st; the vendored
- *    Channel Energy `classFeatures` entry carries an empty `changes[]` and
- *    only the `uses.maxFormula` resource is vendored) — there is no override
- *    hook a `Change` could feed into. Any archetype that promises a
- *    DIFFERENT dice progression, a different die type, a shifted effective
- *    level for the dice/DC calculation, or a resized uses-per-day pool
- *    (double-counting the vendored `uses.maxFormula`, the same "pool-size
- *    changes are blocked" trap prior waves hit with Arcane Pool) is `blocked`
- *    rather than silently applying a wrong or double-counted number.
+ * 3. **Channel-dice/uses changes ride `channel-variants.ts`, not this
+ *    table.** The dice count, save DC, and uses/day evaluate the vendored
+ *    Channel Energy `classFeatures` formulas generically (1d6 + 1d6 per 2
+ *    levels beyond 1st, `10 + 1/2 level + Cha`, `3 + Cha`) — but that path
+ *    carries no `Change`-shaped target this table's `numeric` bucket could
+ *    populate either way, vendored or overridden. An archetype that promises
+ *    a different dice progression, a different die type, a shifted effective
+ *    level, or a resized uses-per-day pool is still `blocked`/`subsystem`
+ *    here (this table has no override surface for it), but where the
+ *    divergence is real `channel-variants.ts` supplies a dedicated formula
+ *    override wired into `resources.ts`/`ability-dcs.ts` — see each such
+ *    feature's own note for whether it's covered there.
  * 4. **Bardic Performance grafts are `subsystem`.** Evangelist's Sermonic
  *    Performance grants bard performances (Countersong, Fascinate, Inspire
  *    Courage/Greatness/Heroics) wholesale. `bard.ts`'s own extraction pass
@@ -136,7 +137,7 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Channel Utility",
     level: 5,
     bucket: "blocked",
-    note: "treats cleric level as 4 lower when determining the opposite-energy channel's damage/healing — a genuine divergence from the vendored channel-dice progression (tables.ts's channelEnergyDetail hardcodes cleric level directly with no override hook), so the divergence can't be expressed (class note 3)",
+    note: "treats cleric level as 4 lower, but only when channeling the ENERGY OPPOSITE her own alignment's — channel-variants.ts's override hook (class note 3) applies unconditionally to a granting class, so this conditional-on-which-energy divergence still can't be expressed there and stays prose",
   },
   "cleric:appeaser:divine-apologist:0": {
     archetypeId: "cleric:appeaser",
@@ -188,8 +189,8 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "cleric:blossoming-light",
     name: "Luminous Font",
     level: 1,
-    bucket: "blocked",
-    note: "resets channel energy's uses/day to 5 + Cha mod (plus +1 every 2 levels) instead of the vendored 3 + Cha mod — a resource-pool SIZE divergence that would double-count the vendored uses.maxFormula if backfilled (class note 3); the bundled Diplomacy/Intimidate bonus, expanded-target riders, and 10th-level atonement SLA are separately activated/narrowly scoped and add nothing extractable on their own",
+    bucket: "subsystem",
+    note: "resets channel energy's uses/day to 5 + Cha mod plus a level-scaled bump instead of the vendored flat 3 + Cha mod — a resource-pool SIZE divergence, so no Change target here, but wired via channel-variants.ts's dedicated override (class note 3); the bundled Diplomacy/Intimidate bonus, expanded-target riders, and 10th-level atonement SLA are separately activated/narrowly scoped and add nothing extractable on their own",
   },
   "cleric:blossoming-light:promise-of-faith:1": {
     archetypeId: "cleric:blossoming-light",
@@ -583,8 +584,8 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "cleric:evangelist",
     name: "Sermonic Performance",
     level: 1,
-    bucket: "blocked",
-    note: "grafts bardic performance onto channel energy's 1st/9th/15th-level slots and explicitly caps the cleric's channel energy damage at 7d6 — a genuine divergence from the vendored channel-dice progression (tables.ts hardcodes it from cleric level with no override hook) that would silently over-apply if left unmodeled and can't be expressed either way (class note 3)",
+    bucket: "subsystem",
+    note: "grafts bardic performance onto channel energy's 1st/9th/15th-level slots (bardic-performance grant, class note 4) and caps the cleric's channel energy damage at 7d6 — the cap has no Change target of its own, but is wired via channel-variants.ts's dedicated override (class note 3)",
   },
   "cleric:evangelist:single-minded:1": {
     archetypeId: "cleric:evangelist",
@@ -606,8 +607,8 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "cleric:fiendish-vessel",
     name: "Channel Evil",
     level: 1,
-    bucket: "blocked",
-    note: "replaces channel energy with a d4-based progression (1d4, +1d4 every 2 levels to 10d4 at 19th) instead of the vendored 1d6-based one — a divergence from the hardcoded channelEnergyDetail table with no override hook (class note 3), on top of being activated/resource-gated regardless (class note 2)",
+    bucket: "subsystem",
+    note: "replaces channel energy with a d4-based progression (1d4, +1d4 every 2 levels to 10d4 at 19th) instead of the vendored 1d6-based one — no Change target for a dice-progression swap, but wired via channel-variants.ts's dedicated override (class note 3), on top of being activated/resource-gated regardless (class note 2)",
   },
   "cleric:fiendish-vessel:fiendish-familiar:3": {
     archetypeId: "cleric:fiendish-vessel",
@@ -952,8 +953,8 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "cleric:scroll-scholar",
     name: "Secrets Revealed",
     level: 5,
-    bucket: "blocked",
-    note: "replaces the cleric's normal 5th-level channel-energy-damage increase, capping it at 3d6 through 7th level and running 1d6 behind the vendored progression for the rest of her career — a divergence from the hardcoded channelEnergyDetail table with no override hook (class note 3)",
+    bucket: "subsystem",
+    note: "delays the cleric's normal 5th-level channel-energy-damage increase to 7th, running 1d6 behind the vendored progression for the rest of her career — no Change target for a dice-progression shift, but wired via channel-variants.ts's dedicated override (class note 3); the bundled comprehend languages/identify spell-like abilities are activated/resource-gated on their own schedule",
   },
   "cleric:scroll-scholar:weapon-and-armor-proficiency:1": {
     archetypeId: "cleric:scroll-scholar",

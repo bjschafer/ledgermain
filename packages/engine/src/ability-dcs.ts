@@ -17,7 +17,12 @@
 
 import type { AbilityId, CharacterDoc, DerivedAbilityDC, RefData } from "@pf1/schema";
 
-import { channelVariantFor } from "./channel-variants.js";
+import {
+  CHANNEL_PRESTIGE_GRANTS,
+  channelStackingLevels,
+  channelVariantFor,
+  hasBaseChannelClass,
+} from "./channel-variants.js";
 import { forTarget, type CollectedModifier } from "./collect.js";
 import { featNameSlug } from "./feat-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
@@ -140,13 +145,27 @@ function channelInstances(doc: CharacterDoc, refData: RefData, rollData: RollDat
         continue;
       }
       const action = feature.actions?.find((a) => a.save?.dcFormula);
-      if (!action?.save?.dcFormula) continue;
+      // A formula-less prestige Channel Energy grant (Death Slayer) carries a
+      // real standalone DC only when no other class supplies a base channel
+      // feature — with one, its levels ride the stacking rules below instead.
+      // Mirrors resources.ts's pool synthesis exactly; see
+      // channel-variants.ts's prestige section.
+      const prestige =
+        !feature.uses && (feature.actions?.length ?? 0) === 0
+          ? CHANNEL_PRESTIGE_GRANTS[cls.tag]
+          : undefined;
+      const prestigeActive = prestige !== undefined && !hasBaseChannelClass(doc, refData, cls.tag);
       // Channel-progression archetype overrides (channel-variants.ts) — an
       // effective-level offset changes the DC formula too.
-      const dcFormula = channelVariantFor(doc, cls.tag)?.dcFormula ?? action.save.dcFormula;
+      const dcFormula =
+        channelVariantFor(doc, cls.tag)?.dcFormula ??
+        (prestigeActive ? prestige.dcFormula : action?.save?.dcFormula);
+      if (!dcFormula) continue;
+      // Holy Vindicator levels stack into the channel DC outright (a general
+      // stack); resources.ts mirrors the same bump on the dice/detail side.
       let featureRollData: RollData = {
         ...rollData,
-        class: { level: cls.level, unlevel: cls.level },
+        class: { level: cls.level, unlevel: cls.level + channelStackingLevels(doc, cls.tag) },
       };
       if (clericWisdomHouserule && cls.tag === "cleric") {
         featureRollData = withClericWisdomHouserule(featureRollData);
