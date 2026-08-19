@@ -28,6 +28,7 @@ import {
 import { d20Formula, d20FormulaFor, damageFormula } from "../model/rollFormula.js";
 import { senseChipLabel, senseTip } from "../model/sensesDisplay.js";
 import { skillBreakdownComponents } from "../model/skillBreakdown.js";
+import { weaponAttackSubLine } from "../model/weaponAttackDisplay.js";
 import { AbilityDcList } from "./AbilityDcList.js";
 import { CopyButton } from "./CopyButton.js";
 import { HomebrewBadge } from "./HomebrewBadge.js";
@@ -465,9 +466,13 @@ export function Sheet({
               // build.weapons is untouched by baselineSheet's live-only strip, so
               // the attacks array lines up index-for-index with `sheet.attacks`.
               const baseAtk = baseline.attacks[i];
+              const subLine = weaponAttackSubLine(atk);
               return (
                 <div key={i} className="weapon-attack-row">
-                  <span className="weapon-attack-name">{atk.name}</span>
+                  <span className="weapon-attack-name">
+                    {atk.name}
+                    {subLine && <span className="hint blast-line-sub">{subLine}</span>}
+                  </span>
                   <div className="weapon-attack-stats">
                     <StatSeal
                       label="Attack"

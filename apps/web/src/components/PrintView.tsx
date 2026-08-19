@@ -232,6 +232,7 @@ export function PrintView({
                   <tr key={i}>
                     <td>
                       {atk.name}
+                      {atk.sub ? <span className="print-attack-bypass">{atk.sub}</span> : null}
                       {atk.bypass ? (
                         <span className="print-attack-bypass">Bypasses DR: {atk.bypass}</span>
                       ) : null}

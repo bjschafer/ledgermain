@@ -928,7 +928,7 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Uncanny Aim",
     level: 4,
     bucket: "subsystem",
-    note: "range-increment increase + a damage-die-step increase for specific pistols — no engine target for either",
+    note: "range-increment increase (10 ft. at 4th) + a damage-die-step increase (at 8th) for specific pistols — range increment now displays but has no Change target to increase it, and die-step increases remain inexpressible",
   },
 
   // ── Heister ────────────────────────────────────────────────────────────

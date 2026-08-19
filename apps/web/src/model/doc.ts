@@ -2102,7 +2102,8 @@ export function addWeapon(doc: CharacterDoc, weapon: WeaponInstance): CharacterD
  * free-text `group` tag. Optional `abilityInfo` is the pick-time snapshot for
  * any `abilities` id from `RefData.itemAbilities` (see
  * `WeaponInstance.abilityInfo`'s doc comment) and is stored only alongside a
- * surviving `abilities` list.
+ * surviving `abilities` list. `ref.rangeIncrement`/`misfire`/`capacity`/
+ * `firearmEra` are snapshotted the same optional-when-truthy way as `weight`.
  */
 export function addWeaponFromRef(
   doc: CharacterDoc,
@@ -2146,6 +2147,10 @@ export function addWeaponFromRef(
       ? { weaponGroups: ref.weaponGroups.map(normalizeWeaponGroup) }
       : {}),
     ...(ref.weight ? { weight: ref.weight } : {}),
+    ...(ref.rangeIncrement ? { rangeIncrement: ref.rangeIncrement } : {}),
+    ...(ref.misfire ? { misfire: ref.misfire } : {}),
+    ...(ref.capacity ? { capacity: ref.capacity } : {}),
+    ...(ref.firearmEra ? { firearmEra: ref.firearmEra } : {}),
     // The vendored proficiency tag is always one of the three RAW categories
     // (see data-pipeline's weapons.json) — WeaponRef types it as a plain
     // `string` only because Foundry's own field isn't a closed enum.

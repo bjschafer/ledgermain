@@ -1624,7 +1624,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Hunter's Aim",
     level: 4,
     bucket: "subsystem",
-    note: "replaces Hunter's Bond with an unrelated ability/resource — companion system has no archetype hooks and the replacement itself isn't Change-shaped. touch-AC targeting with firearms vs. favored enemy",
+    note: "replaces Hunter's Bond with an unrelated ability/resource — companion system has no archetype hooks. the replacement (aonprd: extends the firearm's touch-AC band by one range increment against a favored enemy) still isn't Change-shaped: the shipped touch-AC band is a fixed per-weapon era-based display value with no per-target/favored-enemy extension hook",
   },
   "ranger:urban-ranger:favored-community:3": {
     archetypeId: "ranger:urban-ranger",

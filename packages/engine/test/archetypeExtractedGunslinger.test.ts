@@ -63,14 +63,14 @@ describe("GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     expect(Object.keys(GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(82);
   });
 
-  it("bucket counts match the audited totals (59 subsystem, 14 situational, 5 blocked, 4 numeric)", () => {
+  it("bucket counts match the audited totals (65 subsystem, 10 situational, 3 blocked, 4 numeric)", () => {
     const counts: Record<string, number> = {};
     for (const entry of Object.values(GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts["subsystem"]).toBe(59);
-    expect(counts["situational"]).toBe(14);
-    expect(counts["blocked"]).toBe(5);
+    expect(counts["subsystem"]).toBe(65);
+    expect(counts["situational"]).toBe(10);
+    expect(counts["blocked"]).toBe(3);
     expect(counts["numeric"]).toBe(4);
   });
 

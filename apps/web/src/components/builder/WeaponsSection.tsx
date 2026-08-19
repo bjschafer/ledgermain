@@ -126,6 +126,10 @@ function WeaponForm({
     if (!weapon.proficiency) delete weapon.proficiency;
     if (!weapon.masterwork || (weapon.enhancement ?? 0) > 0) delete weapon.masterwork;
     if (!weapon.weight) delete weapon.weight;
+    if (!weapon.rangeIncrement) delete weapon.rangeIncrement;
+    if (!weapon.misfire) delete weapon.misfire;
+    if (!weapon.capacity) delete weapon.capacity;
+    if (!weapon.firearmEra) delete weapon.firearmEra;
     onSave(weapon);
   }
 
@@ -308,6 +312,63 @@ function WeaponForm({
             onChange={(e) => field("weight", Number(e.target.value))}
           />
         </label>
+        {form.category === "ranged" && (
+          <>
+            <label className="field">
+              <span>Range increment (ft, blank = none)</span>
+              <input
+                type="number"
+                value={form.rangeIncrement ?? ""}
+                placeholder="—"
+                min={0}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  field("rangeIncrement", v === "" ? undefined : Number(v));
+                }}
+              />
+            </label>
+            <label className="field">
+              <span>Misfire (blank = not a firearm)</span>
+              <input
+                type="number"
+                value={form.misfire ?? ""}
+                placeholder="—"
+                min={0}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  field("misfire", v === "" ? undefined : Number(v));
+                }}
+              />
+            </label>
+            <label className="field">
+              <span>Capacity (shots, blank = not a firearm)</span>
+              <input
+                type="number"
+                value={form.capacity ?? ""}
+                placeholder="—"
+                min={0}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  field("capacity", v === "" ? undefined : Number(v));
+                }}
+              />
+            </label>
+            <label className="field">
+              <span>Firearm era</span>
+              <select
+                value={form.firearmEra ?? ""}
+                onChange={(e) =>
+                  field("firearmEra", (e.target.value || undefined) as WeaponInstance["firearmEra"])
+                }
+              >
+                <option value="">Not a firearm</option>
+                <option value="early">Early</option>
+                <option value="advanced">Advanced</option>
+                <option value="modern">Modern</option>
+              </select>
+            </label>
+          </>
+        )}
       </div>
       <AbilityPicker
         options={weaponAbilityOptions}

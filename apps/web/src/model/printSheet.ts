@@ -37,6 +37,7 @@ import {
   spellSlotsByLevel,
   storedClassTag,
 } from "./spellcasting.js";
+import { weaponAttackSubLine } from "./weaponAttackDisplay.js";
 
 export interface PrintHeader {
   name: string;
@@ -81,6 +82,13 @@ export interface PrintAttack {
    * where the screen sheet has hoverable chips and paper does not.
    */
   bypass?: string;
+  /**
+   * Range increment / firearm misfire / capacity / touch-AC band, from
+   * `weaponAttackSubLine` — the same string the on-screen sheet's grey
+   * sub-line shows, so the two never drift. Absent for a melee weapon with no
+   * firearm data.
+   */
+  sub?: string;
 }
 
 export interface PrintSkill {
@@ -456,12 +464,14 @@ export function buildPrintSheet(
         const bonusStr = atk.damageBonus.total !== 0 ? signed(atk.damageBonus.total) : null;
         const dmgStr =
           [atk.damageDice, bonusStr].filter(Boolean).join("") || signed(atk.damageBonus.total);
+        const sub = weaponAttackSubLine(atk);
         return {
           name: atk.name,
           attack: signedSequence(atk.attack.total, atk.attack.iteratives),
           damage: dmgStr,
           crit: atk.crit,
           ...(atk.drBypass?.length ? { bypass: bypassLine(atk.drBypass) } : {}),
+          ...(sub ? { sub } : {}),
         };
       }),
       // Blasts share the weapon table rather than getting a section of their

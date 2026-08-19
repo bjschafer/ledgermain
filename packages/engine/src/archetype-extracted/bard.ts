@@ -131,8 +131,10 @@
  *    Liquid Courage, Raider's Riposte, and Sword and Pistol entries describe
  *    gunslinger grit/deeds/gun-training mechanics the base bard class
  *    doesn't have (one entry even says "a gunslinger gains a bonus feat"
- *    verbatim) — likely bled in from the separate `gunslinger:buccaneer`
- *    archetype during compilation. None of them carry an extractable number
+ *    verbatim) — confirmed (via aonprd/d20pfsrd) bled in from the separate
+ *    `gunslinger:buccaneer` archetype during compilation; the real bard
+ *    buccaneer has only four features (Hilt Bash, Song of Surrender, Knock
+ *    Out, Mass Song of Surrender). None of them carry an extractable number
  *    regardless of the mix-up.
  *  - `bard:dawnflower-dervish`'s Burst of Speed, Desert Stride, Rapid Attack,
  *    and Lightning Strike each claim in prose to replace an "armor training"
@@ -2628,7 +2630,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Gun Training",
     level: 13,
     bucket: "situational",
-    note: "real Dex-modifier-to-damage bonus but scoped to a single player-chosen firearm type when firing it — same unresolvable-free-choice bar as base Weapon Training's own group pick",
+    note: "confirmed contamination, not a real bard buccaneer feature: aonprd/d20pfsrd's bard buccaneer has only four features (Hilt Bash, Song of Surrender, Knock Out, Mass Song of Surrender), none gunslinger-related — the shipped Dex-to-damage mechanism (gun-training.ts) exists but has nothing genuine to wire here; see this file's doc comment",
   },
   "bard:buccaneer:liquid-courage:2": {
     archetypeId: "bard:buccaneer",

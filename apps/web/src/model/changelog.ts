@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-18-firearms",
+    date: "2026-08-18",
+    title: "Firearms show misfire, capacity, and range",
+    note: "Every ranged weapon now prints its range increment on the Attacks line. Firearms add their misfire range, ammunition capacity, and the distance within which they strike touch AC instead of normal AC. Gun Training works too: a gunslinger's chosen firearm type now adds her Dexterity modifier to damage automatically once picked from the new firearm type picker on the Classes tab, and musket masters and pistoleros get the same bonus with every two handed or one handed firearm they carry, no picking required.",
+  },
+  {
     id: "2026-08-18-casting-economy",
     date: "2026-08-18",
     title: "Spell slots and spells known follow your archetype",

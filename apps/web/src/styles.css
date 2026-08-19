@@ -5755,8 +5755,9 @@ input[type="text"].saved-roll-name:focus {
   color: var(--sage);
 }
 
-/* Kinetic blast rows carry a second line (touch/range/descriptor/burn cost)
-   under the blast name, since a blast has no gear entry to look those up in. */
+/* A second line under a name: kinetic blast rows use it for touch/range/
+   descriptor/burn cost, weapon attack rows for range increment and firearm
+   misfire/capacity/touch-AC data. */
 .blast-line-sub {
   display: block;
   font-weight: 400;

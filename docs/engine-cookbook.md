@@ -171,6 +171,19 @@ An entry has two effect surfaces:
 
 Out of scope by design: multi-companion splits (one tracked stat block), species-list expansions beyond `BASE_COMPANIONS`, master-facing mounted-combat numbers (those are ordinary master-sheet rulings), and familiar/eidolon/phantom internals (their own modules).
 
+### 3.8 Route a per-weapon-type Dex-to-damage grant (Gun Training family)
+
+A handful of gunslinger-family features grant "Dex modifier to damage" with a firearm the player either picks freely (Gun Training itself, and most archetype reflavors) or with an entire handedness category at once (Musket/Pistol Training) -- neither shape fits a plain `Change`: a picked weapon TYPE has no schema field to key off of, and a handedness split has no vendored `WEAPON_GROUPS` tag on its own. `gun-training.ts` covers both shapes directly rather than forcing them through `CLASS_FEATURE_CHANGE_PATCHES`.
+
+Each `GunTrainingGrant` in `GUN_TRAINING_GRANTS` is either:
+
+- **`{ kind: "picks", unlockLevels }`** -- a free-text picker, one more slot unlocking at each listed class level. `build.gunTrainingPicks[classTag]` stores the picks in order; a weapon qualifies when its `name`/`group` matches one of the picks unlocked at the character's current level (`picksMatch`, the same free-text substring convention `rogueFinesseTrainingMatches` uses for Finesse Training). An optional `pickGroupTag` names a `WEAPON_GROUPS` slug (e.g. `"crossbows"` for Bolt Ace) purely as a hint for a picker UI's option pool -- matching itself never consults it.
+- **`{ kind: "groups", groups, minLevel }`** -- no player choice: every weapon carrying one of the listed `WEAPON_GROUPS` tags qualifies once `minLevel` is reached. Musket/Pistol Training use the pipeline-synthesized `firearms-two-handed`/`firearms-one-handed` tags (`weapon-groups.ts`) this way.
+
+An archetype either gets its own `archetypeId` entry (replacing the base grant outright, same class-tag resolution rule Weapon Training-style routes use) or, if it loses Gun Training to something this vocabulary can't express (a different subsystem entirely, or a category with no `WEAPON_GROUPS` tag to scope a picker to), its id goes in the base entry's `suppressedBy` list instead -- otherwise the base picks grant would stay (incorrectly) active for an archetype that no longer has it. An archetype that only widens what a normal pick can name, without replacing the feature, needs neither: the base entry already covers it. `gunTrainingMatches(doc, weapon)` (consumed by `computeWeaponAttacks` as the ranged counterpart to `rogueFinesseTrainingMatches`) is the single entry point -- resolve archetype grants first, fall back to the base grant unless suppressed, same two-step every caller needs.
+
+This route only ever carries the Dex-to-damage half. `ResolvedWeaponAttack` separately surfaces `rangeIncrement` and, for anything flagged as a firearm, a `firearm: { misfire?, capacity?, touchRangeFt? }` display block (touch AC within the first range increment for an early firearm, the first five for advanced/modern) -- both are read-only sheet display, not adjustable by any deed or Change. Misfire-chance adjustments, a broken-firearm state, reload economy, and deed action mechanics remain entirely unmodeled.
+
 ## 4. Testing
 
 Every non-trivial engine behavior gets a **hand-computed fixture test** against the real vendored data, loaded via `loadRefData()` from `@pf1/data-pipeline` -- not a mock `RefData`. The pattern, visible in essentially every file under `packages/engine/test/`:

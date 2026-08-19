@@ -25,14 +25,44 @@
  *   gets Dex-to-damage from 5th level on, matched via the vendored
  *   `firearms-two-handed`/`firearms-one-handed` `WEAPON_GROUPS` slugs
  *   (`weapon-groups.ts`) rather than a picker.
+ * - **Bolt Ace's Crossbow Training** ("picks" scope, `pickGroupTag:
+ *   "crossbows"`): same 5th/9th/13th/17th cadence as base Gun Training, but
+ *   the picked TYPE is a crossbow rather than a firearm (aonprd.com, "This
+ *   ability replaces gun training" — the whole progression, not just tier
+ *   1). `pickGroupTag` doesn't change matching (still free-text against the
+ *   picked weapon's name/group, same as every other picks-scope entry) — it
+ *   only tells a picker UI which `WEAPON_GROUPS` slug to draw its option pool
+ *   from instead of the implicit "firearms" default.
+ * - **Mysterious Stranger's Stranger's Fortune** and **Commando's
+ *   Trapsmith** each replace only Gun Training's 5th-level tier with an
+ *   unrelated ability (misfire-ignoring luck / a ranger trap), leaving the
+ *   9th/13th/17th tiers on the normal schedule — modeled as an
+ *   `archetypeId` entry with `unlockLevels: [9, 13, 17]` (no 5th-level pick
+ *   slot at all).
+ * - **Buccaneer** replaces Gun Training 1, 2, and 4 with unrelated abilities
+ *   (a familiar, a bonus feat, a riposte), leaving only the 13th-level tier —
+ *   `unlockLevels: [13]`, a single pick.
+ * - **Gulch Gunner's Belly Shot** replaces Gun Training 2/3/4 (9th/13th/17th)
+ *   with scaling precision damage, leaving only the 5th-level tier —
+ *   `unlockLevels: [5]`, a single pick, the mirror image of the two entries
+ *   above.
  *
- * Many other gunslinger archetypes (Bolt Ace's Crossbow Training, Mysterious
- * Stranger's delayed schedule, etc.) also replace or reflavor Gun Training
- * but don't have a modeled entry here yet — the base
- * entry's `suppressedBy` list is where a future wave adds their archetype
- * ids once it gives them their own {@link GunTrainingGrant}, so an
- * unmodeled archetype doesn't silently keep granting the base picks version
- * it no longer has.
+ * Not every archetype that touches Gun Training gets its own entry:
+ * **Techslinger's Technic Training**, **Experimental Gunsmith's
+ * Innovations**, and **Firebrand's Bombs** each replace the whole
+ * progression (all four tiers) with something this picks/groups vocabulary
+ * can't express — Technic Training's "advanced technology firearm" category
+ * has no `WEAPON_GROUPS` tag to scope a picker to (unlike Bolt Ace's
+ * crossbows), and Innovations/Bombs aren't a Dex-to-damage bonus at all.
+ * Those three ids are in the base entry's `suppressedBy` so the base picks
+ * grant doesn't stay (incorrectly) active for them. **Wyrm Sniper's Heavy
+ * Gunner** is deliberately NOT suppressed and has no entry of its own: it
+ * doesn't replace Gun Training, it just widens what a normal Gun Training
+ * pick can name (a light siege weapon type instead of a firearm type) — the
+ * base picks entry's free-text matching already accepts that without any
+ * changes. Every other gunslinger archetype (Gun Tank, Maverick, Scatter
+ * Gunner, Siege Gunner, etc.) doesn't touch Gun Training at all, so the base
+ * entry applies to them unmodified too.
  */
 
 import type { CharacterDoc, WeaponInstance } from "@pf1/schema";
@@ -44,6 +74,16 @@ export interface GunTrainingPicksScope {
   kind: "picks";
   /** Class levels at which a new weapon-type pick unlocks, in grant order. */
   unlockLevels: number[];
+  /**
+   * Semantic `WEAPON_GROUPS` tag (`weapon-groups.ts`) whose member weapons
+   * form a picker UI's option pool for this grant — e.g. Bolt Ace's
+   * Crossbow Training sets `"crossbows"` so a picker offers crossbows
+   * instead of firearms. Absent means "firearms" (the default every other
+   * picks-scope entry implies). Purely a UI hint: matching itself
+   * (`picksMatch`) is always free-text against the picked weapon's
+   * name/group, regardless of this field.
+   */
+  pickGroupTag?: string;
 }
 
 /** Category-wide scope: every weapon tagged with one of `groups` qualifies once `minLevel` is reached. */
@@ -66,10 +106,13 @@ export interface GunTrainingGrant {
   scope: GunTrainingPicksScope | GunTrainingGroupsScope;
   /**
    * BASE-entry only: archetype ids that replace this class's Gun Training
-   * with a variant that has no {@link GunTrainingGrant} of its own yet.
-   * Selecting one of these suppresses the base grant instead of leaving it
-   * (incorrectly) active — see the module doc comment. Empty until a future
-   * wave adds those archetypes' own entries.
+   * wholesale with a variant this module can't express as its own
+   * {@link GunTrainingGrant} (see the module doc comment). Selecting one of
+   * these suppresses the base grant instead of leaving it (incorrectly)
+   * active. An archetype that gets its own `archetypeId` entry elsewhere in
+   * {@link GUN_TRAINING_GRANTS} doesn't need to be listed here too —
+   * {@link gunTrainingMatches} already prefers a matching archetype entry
+   * over the base one regardless of this list.
    */
   suppressedBy?: string[];
 }
@@ -78,7 +121,15 @@ export const GUN_TRAINING_GRANTS: GunTrainingGrant[] = [
   {
     classTag: "gunslinger",
     scope: { kind: "picks", unlockLevels: [5, 9, 13, 17] },
-    suppressedBy: [],
+    // Technic Training/Innovations/Bombs each replace ALL four Gun Training
+    // tiers with something outside this picks/groups vocabulary (see the
+    // module doc comment) — suppress the base grant so it doesn't stay
+    // active for them.
+    suppressedBy: [
+      "gunslinger:techslinger",
+      "gunslinger:experimental-gunsmith",
+      "gunslinger:firebrand",
+    ],
   },
   {
     classTag: "gunslinger",
@@ -89,6 +140,44 @@ export const GUN_TRAINING_GRANTS: GunTrainingGrant[] = [
     classTag: "gunslinger",
     archetypeId: "gunslinger:pistolero",
     scope: { kind: "groups", groups: ["firearms-one-handed"], minLevel: 5 },
+  },
+  {
+    // "This ability replaces gun training" — the whole progression, ported
+    // to a chosen crossbow type each tier (aonprd.com, Bolt Ace).
+    classTag: "gunslinger",
+    archetypeId: "gunslinger:bolt-ace",
+    scope: { kind: "picks", unlockLevels: [5, 9, 13, 17], pickGroupTag: "crossbows" },
+  },
+  {
+    // Exotic Pet/Sword and Pistol/Raider's Riposte replace tiers 1, 2, and 4
+    // respectively, leaving only the 13th-level pick (aonprd.com, Buccaneer:
+    // "A buccaneer gains this ability only at 13th level with a single type
+    // of firearm.").
+    classTag: "gunslinger",
+    archetypeId: "gunslinger:buccaneer",
+    scope: { kind: "picks", unlockLevels: [13] },
+  },
+  {
+    // Trapsmith "alters gun training", trading only the 5th-level tier for a
+    // ranger trap; 9th/13th/17th are untouched (aonprd.com, Commando).
+    classTag: "gunslinger",
+    archetypeId: "gunslinger:commando",
+    scope: { kind: "picks", unlockLevels: [9, 13, 17] },
+  },
+  {
+    // Belly Shot "replaces the gun training ability gained at 9th, 13th, and
+    // 17th level", leaving only the 5th-level tier (aonprd.com, Gulch
+    // Gunner) — the mirror image of Commando/Mysterious Stranger above.
+    classTag: "gunslinger",
+    archetypeId: "gunslinger:gulch-gunner",
+    scope: { kind: "picks", unlockLevels: [5] },
+  },
+  {
+    // Stranger's Fortune "replaces gun training 1" only; 9th/13th/17th are
+    // untouched (aonprd.com, Mysterious Stranger).
+    classTag: "gunslinger",
+    archetypeId: "gunslinger:mysterious-stranger",
+    scope: { kind: "picks", unlockLevels: [9, 13, 17] },
   },
 ];
 

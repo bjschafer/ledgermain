@@ -35,6 +35,7 @@ import { DruidDomainPicker } from "./DruidDomainPicker.js";
 import { EidolonPicker } from "./EidolonPicker.js";
 import { FavoredWeaponPicker } from "./FavoredWeaponPicker.js";
 import { FiendishBoonPicker } from "./FiendishBoonPicker.js";
+import { GunTrainingPicker } from "./GunTrainingPicker.js";
 import { HexPicker } from "./HexPicker.js";
 import { ImplementPicker } from "./ImplementPicker.js";
 import { InvestigatorTalentPicker } from "./InvestigatorTalentPicker.js";
@@ -708,6 +709,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {/* Weapon Training group picks — fighter only, hidden once L5 or if an archetype replaced it. */}
       <WeaponTrainingPicker doc={doc} update={update} />
+
+      {/* Gun Training firearm-type picks — gunslinger only, hidden for musket master/pistolero (category-wide, no choice). */}
+      <GunTrainingPicker doc={doc} refData={refData} update={update} />
 
       <ClassFeaturesList sheet={sheet} refData={refData} doc={doc} update={update} />
     </Panel>

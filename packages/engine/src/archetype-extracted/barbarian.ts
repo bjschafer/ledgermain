@@ -856,7 +856,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Crack Shot",
     level: 5,
     bucket: "situational",
-    note: "Dex-to-damage with firearms (a real weapon group) while raging — the live rage-state condition disqualifies it despite the weapon-group half being otherwise checkable",
+    note: "Dex-to-damage with firearms while raging (confirmed on aonprd: 'while raging', replaces improved uncanny dodge) — the firearms weapon-group half now has a Dex-to-damage mechanism (gun-training.ts / per-weapon damageAbility), but the rage gate has no seam in this archetype-extracted route, so it stays unwired; a player can approximate it with a per-weapon damageAbility: 'dex' override while raging",
   },
   "barbarian:savage-technologist:primal-magnetism:3": {
     archetypeId: "barbarian:savage-technologist",

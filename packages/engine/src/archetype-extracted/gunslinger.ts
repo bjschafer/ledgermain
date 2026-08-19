@@ -35,25 +35,35 @@
  *    blunderbuss, musket, pistol, ...) — the vendored feature itself carries
  *    `changes: []` (confirmed via `class-features.json`), matching the
  *    engine's general stance that per-weapon-type player choices are a
- *    deferred, unmodeled area (no schema field tracks "which firearm type is
- *    Gun Training'd"). Every archetype reflavor of Gun Training (crossbows,
- *    two-handed-firearms-as-a-whole, one-handed-firearms-as-a-whole,
- *    advanced-tech firearms, light siege engines) is `situational` for the
- *    single-type variants (weapon-choice-scoped, same as the base) or
- *    `blocked` for the two whole-category variants (see fact 4).
+ *    deferred, unmodeled area for a plain `Change` target. Unlike most such
+ *    choices, though, this one now has its OWN non-Change wiring:
+ *    `gun-training.ts`'s `build.gunTrainingPicks` mechanism carries the
+ *    Dex-to-damage half for the base feature and for every archetype
+ *    reflavor whose covered weapon set is expressible with that module's
+ *    picks/groups vocabulary (Bolt Ace's crossbows, Mysterious Stranger's/
+ *    Commando's/Buccaneer's/Gulch Gunner's partial schedules, Musket/Pistol
+ *    Training's handedness split) — those entries are `subsystem` here, not
+ *    `blocked`, with a note pointing at `gun-training.ts`. Techslinger's
+ *    advanced-tech firearms and Wyrm Sniper's light siege engines/Firebrand's
+ *    bombs/Experimental Gunsmith's innovations are the exceptions: see fact 4
+ *    and each entry's own note for why.
  * 4. **Musket Training** (Musket Master) and **Pistol Training** (Pistolero)
  *    depart from Gun Training's per-type-choice shape: they grant their
  *    Dex-mod damage bonus to an entire HANDEDNESS CATEGORY of firearms (all
- *    two-handed, or all one-handed) with no player choice involved. That's
- *    exactly the shape `damage.weapon.<group>` (Weapon Training's semantic
- *    weapon-group target) exists for — except `WEAPON_GROUPS`
- *    (`weapon-groups.ts`) only carries a single undifferentiated `"firearms"`
- *    tag; the vendored weapon data draws no line between one-handed and
- *    two-handed firearms. A `damage.weapon.firearms` Change would therefore
- *    over-apply to the wrong handedness half of the category. Both entries
- *    are `blocked` on this missing split — see the classification notes for
- *    specifics; worth escalating as a target gap two independent features
- *    want.
+ *    two-handed, or all one-handed) with no player choice involved.
+ *    `gun-training.ts`'s groups scope covers this via the pipeline-synthesized
+ *    `firearms-two-handed`/`firearms-one-handed` `WEAPON_GROUPS` tags
+ *    (`weapon-groups.ts`), so both are `subsystem` (wired outside this
+ *    table's own `Change`-based extraction, not `blocked`). Techslinger's
+ *    Technic Training (advanced technology firearms) has no comparable
+ *    vendored tag to scope a picker to, so it stays unwired and its
+ *    archetype id is in `gun-training.ts`'s base-entry `suppressedBy` list
+ *    instead — same for Experimental Gunsmith's Innovations and Firebrand's
+ *    Bombs, whose replacements aren't a Dex-to-damage bonus at all. Wyrm
+ *    Sniper's Heavy Gunner is the odd one out: it doesn't replace Gun
+ *    Training, it just widens the picked TYPE to include light siege
+ *    weapons, so the base picks entry already covers it with no change
+ *    needed.
  * 5. **Nimble** (base L2 feature) carries a real vendored Change:
  *    `1 + floor((@class.unlevel - 2) / 4)` dodge AC, gated in prose (but NOT
  *    in the vendored formula itself) on light-or-no armor. Ten archetype
@@ -132,8 +142,8 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "gunslinger:bolt-ace",
     name: "Crossbow Training",
     level: 5,
-    bucket: "situational",
-    note: "Gun Training's exact shape (Dex-mod damage + reduced misfire-equivalent, plus a crit-multiplier bump) ported to a player-chosen crossbow type each tier — weapon-choice-scoped, same as base Gun Training (class note 3)",
+    bucket: "subsystem",
+    note: "the Dex-to-damage half is wired via gun-training.ts's own bolt-ace picks entry (pickGroupTag: \"crossbows\", same 5th/9th/13th/17th cadence, replacing the whole base progression per aonprd's 'this ability replaces gun training'); the reduced misfire-equivalent and the crit-multiplier bump stay unmodeled (no broken-item-state tracking, no crit-multiplier target)",
   },
   "gunslinger:bolt-ace:deeds:1": {
     archetypeId: "gunslinger:bolt-ace",
@@ -170,7 +180,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Exotic Pet",
     level: 5,
     bucket: "subsystem",
-    note: "grants a familiar (with conditional evasion while it's nearby) in place of Gun Training 1 — familiar subsystem plus a proximity-conditional evasion grant, neither a flat number; the vendored Gun Training slot it replaces carries changes: [] (class note 3), so no baseline is lost either",
+    note: "grants a familiar (with conditional evasion while it's nearby) in place of Gun Training 1 — familiar subsystem plus a proximity-conditional evasion grant, neither a flat number. Gun Training's Dex-to-damage half is now wired (gun-training.ts), so this is a real trade rather than a free one; the buccaneer's sole surviving Gun Training tier (13th) is wired via gun-training.ts's own buccaneer entry",
   },
   "gunslinger:buccaneer:grit:1": {
     archetypeId: "gunslinger:buccaneer",
@@ -191,8 +201,8 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "gunslinger:buccaneer",
     name: "Gun Training",
     level: 13,
-    bucket: "situational",
-    note: "Gun Training's exact weapon-choice-scoped shape, delayed to 13th level with no further stated scaling — still weapon-choice-scoped (class note 3)",
+    bucket: "subsystem",
+    note: "a buccaneer's sole surviving Gun Training tier (Exotic Pet/Sword and Pistol/Raider's Riposte replace tiers 1, 2, and 4 — see those entries) — wired via gun-training.ts's own buccaneer entry (unlockLevels: [13])",
   },
   "gunslinger:buccaneer:hilt-bash:1": {
     archetypeId: "gunslinger:buccaneer",
@@ -227,7 +237,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Raider's Riposte",
     level: 17,
     bucket: "subsystem",
-    note: "grants a triggered attack of opportunity when an enemy misses one with an AoO, replacing Gun Training 4 — an action-economy permission, no flat number",
+    note: "grants a triggered attack of opportunity when an enemy misses one with an AoO, replacing Gun Training 4 — an action-economy permission, no flat number. Gun Training's Dex-to-damage half is now wired (gun-training.ts), so this trades away a real tier; the buccaneer's sole surviving tier (13th) is wired via gun-training.ts's own buccaneer entry",
   },
   "gunslinger:buccaneer:song-of-surrender:4": {
     archetypeId: "gunslinger:buccaneer",
@@ -241,7 +251,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Sword and Pistol",
     level: 9,
     bucket: "subsystem",
-    note: "grants a single named feat (Sword and Pistol) in place of Gun Training 2 — a fixed feat grant, not the generic bonusFeats budget",
+    note: "grants a single named feat (Sword and Pistol) in place of Gun Training 2 — a fixed feat grant, not the generic bonusFeats budget. Gun Training's Dex-to-damage half is now wired (gun-training.ts), so this trades away a real tier; the buccaneer's sole surviving tier (13th) is wired via gun-training.ts's own buccaneer entry",
   },
 
   // ── gunslinger:bushwhacker ──
@@ -294,7 +304,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Trapsmith",
     level: 5,
     bucket: "subsystem",
-    note: "grants a ranger-trap-crafting subsystem in place of the next Gun Training tier — trap mechanics aren't modeled, and the replaced Gun Training tier carries changes: [] (class note 3)",
+    note: "grants a ranger-trap-crafting subsystem in place of Gun Training's 5th-level tier only (aonprd: Trapsmith 'alters gun training,' 9th/13th/17th are untouched) — trap mechanics aren't modeled, but the traded-away tier now carries a real Dex-to-damage bonus via gun-training.ts; the surviving 9th/13th/17th tiers are wired via gun-training.ts's own commando entry",
   },
 
   // ── gunslinger:experimental-gunsmith ──
@@ -310,7 +320,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Innovations",
     level: 5,
     bucket: "subsystem",
-    note: "a weapon-modification choice-list (expanded capacity, expanded chamber, grapple launcher, recoilless, vial launcher) in place of Gun Training — each innovation is itself a mixed bag of niche weapon-property changes with no engine target, and the replaced Gun Training tier carries changes: [] (class note 3)",
+    note: "a weapon-modification choice-list (expanded capacity, expanded chamber, grapple launcher, recoilless, vial launcher) replacing Gun Training's whole progression (5th/9th/13th/17th, aonprd) — each innovation is itself a mixed bag of niche weapon-property changes with no engine target. Gun Training's Dex-to-damage half is now wired (gun-training.ts), so this archetype id is in the base grant's suppressedBy list rather than left to (incorrectly) keep granting it",
   },
 
   // ── gunslinger:firebrand ──
@@ -319,7 +329,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bombs",
     level: 5,
     bucket: "subsystem",
-    note: "grants the alchemist bombs class feature (Cha-based) in place of Gun Training — bomb mechanics are a distinct subsystem (alchemist-discoveries.ts territory, not wired to archetype-extracted), and the replaced Gun Training tier carries changes: [] (class note 3)",
+    note: "grants the alchemist bombs class feature (Cha-based) replacing Gun Training's whole progression (aonprd: 'This ability replaces gun training,' all four tiers) — bomb mechanics are a distinct subsystem (alchemist-discoveries.ts territory, not wired to archetype-extracted). Gun Training's Dex-to-damage half is now wired (gun-training.ts), so this archetype id is in the base grant's suppressedBy list rather than left to (incorrectly) keep granting it",
   },
   "gunslinger:firebrand:gunsmith:1": {
     archetypeId: "gunslinger:firebrand",
@@ -365,7 +375,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Belly Shot",
     level: 9,
     bucket: "situational",
-    note: "real, level-scaling precision damage dice, but scoped to adjacent-target ranged firearm hits — a per-attack positioning condition, same posture as Bushwhacker's Sneak Shot",
+    note: "real, level-scaling precision damage dice, but scoped to adjacent-target ranged firearm hits — a per-attack positioning condition, same posture as Bushwhacker's Sneak Shot. Also replaces Gun Training's 9th/13th/17th tiers (aonprd: 'This ability replaces the gun training ability gained at 9th, 13th, and 17th level'), leaving only the 5th-level tier, which is wired via gun-training.ts's own gulch-gunner entry (unlockLevels: [5])",
   },
   "gunslinger:gulch-gunner:deeds:1": {
     archetypeId: "gunslinger:gulch-gunner",
@@ -395,7 +405,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Go By Feel",
     level: 1,
     bucket: "subsystem",
-    note: "a drawback (misfire chance can never drop below a natural 1) — misfire isn't modeled at all in this engine, so there's no number to adjust either way",
+    note: "a drawback (misfire chance can never drop below a natural 1) — the misfire VALUE now displays on the attack line (ResolvedWeaponAttack.firearm.misfire), but nothing in this engine adjusts it up or down, so this floor on such adjustments has nothing to constrain either way",
   },
 
   // ── gunslinger:gun-tank ──
@@ -448,7 +458,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Safe Handling",
     level: 2,
     bucket: "subsystem",
-    note: "reduces a firearm's misfire chance by 1 on the next attack — misfire isn't modeled at all; replaces Nimble (structurally paired to the whole feature, pure loss per class note 5, despite the 'nimble +1' phrasing suggesting only a partial tier)",
+    note: "reduces a firearm's misfire chance by 1 on the next attack — the misfire VALUE now displays on the attack line, but nothing tracks a per-attack adjustment to it, so this has no mechanism to hook into; replaces Nimble (structurally paired to the whole feature, pure loss per class note 5, despite the 'nimble +1' phrasing suggesting only a partial tier)",
   },
 
   // ── gunslinger:maverick ──
@@ -466,7 +476,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Deeds",
     level: 1,
     bucket: "subsystem",
-    note: "swaps two deeds (Steady Aim, Fast Musket) for grit-gated range-increment and reload-time abilities — deeds subsystem (class note 2), and range increment isn't a modeled target either way",
+    note: "swaps two deeds (Steady Aim, Fast Musket) for grit-gated range-increment and reload-time abilities — deeds subsystem (class note 2). The range increment itself now displays on the attack line (ResolvedWeaponAttack.rangeIncrement), but nothing adjusts it in response to a grit-spend deed, so Steady Aim has no target to modify either way",
   },
   "gunslinger:musket-master:gunsmith:1": {
     archetypeId: "gunslinger:musket-master",
@@ -479,8 +489,8 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "gunslinger:musket-master",
     name: "Musket Training",
     level: 5,
-    bucket: "blocked",
-    note: "a real, level-scaling Dex-mod damage bonus, but to ALL two-handed firearms as a category (no player choice, unlike Gun Training) — WEAPON_GROUPS's single undifferentiated 'firearms' tag can't distinguish handedness, so a damage.weapon.firearms Change would over-apply to one-handed firearms too (class note 4)",
+    bucket: "subsystem",
+    note: "a real, level-scaling Dex-mod damage bonus to ALL two-handed firearms as a category (no player choice, unlike Gun Training) — wired via gun-training.ts's groups scope, matched against the pipeline-synthesized firearms-two-handed WEAPON_GROUPS tag (weapon-groups.ts) rather than a damage.weapon.firearms Change, which is why it lands here rather than numeric",
   },
   "gunslinger:musket-master:rapid-reloader:1": {
     archetypeId: "gunslinger:musket-master",
@@ -516,8 +526,8 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "gunslinger:mysterious-stranger",
     name: "Gun Training",
     level: 9,
-    bucket: "situational",
-    note: "Gun Training's exact weapon-choice-scoped shape, delayed to a 9th/13th/17th cadence — still weapon-choice-scoped (class note 3)",
+    bucket: "subsystem",
+    note: "the surviving 9th/13th/17th Gun Training tiers (Stranger's Fortune replaces only tier 1, see that entry) — wired via gun-training.ts's own mysterious-stranger entry (unlockLevels: [9, 13, 17])",
   },
   "gunslinger:mysterious-stranger:gunsmith:1": {
     archetypeId: "gunslinger:mysterious-stranger",
@@ -538,7 +548,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Stranger's Fortune",
     level: 5,
     bucket: "subsystem",
-    note: "lets the gunslinger ignore a misfire a limited number of times per day, in place of Gun Training 1 — misfire isn't modeled, and the replaced Gun Training tier carries changes: [] (class note 3)",
+    note: "lets the gunslinger ignore a misfire a limited number of times per day, in place of Gun Training 1 — misfire ADJUSTMENT (ignoring one) isn't modeled, though the misfire VALUE itself now displays on the attack line (ResolvedWeaponAttack.firearm.misfire). Gun Training's Dex-to-damage half is now wired too, so this trades away a real tier; the surviving 9th/13th/17th tiers are wired via gun-training.ts's own mysterious-stranger entry",
   },
 
   // ── gunslinger:pistolero ──
@@ -560,8 +570,8 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "gunslinger:pistolero",
     name: "Pistol Training",
     level: 5,
-    bucket: "blocked",
-    note: "a real, level-scaling Dex-mod damage bonus, but to ALL one-handed firearms as a category (no player choice, unlike Gun Training) — WEAPON_GROUPS's single undifferentiated 'firearms' tag can't distinguish handedness, so a damage.weapon.firearms Change would over-apply to two-handed firearms too (class note 4)",
+    bucket: "subsystem",
+    note: "a real, level-scaling Dex-mod damage bonus to ALL one-handed firearms as a category (no player choice, unlike Gun Training) — wired via gun-training.ts's groups scope, matched against the pipeline-synthesized firearms-one-handed WEAPON_GROUPS tag (weapon-groups.ts) rather than a damage.weapon.firearms Change, which is why it lands here rather than numeric",
   },
   "gunslinger:pistolero:weapon-and-armor-proficiency:1": {
     archetypeId: "gunslinger:pistolero",
@@ -667,7 +677,7 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Technic Training",
     level: 5,
     bucket: "situational",
-    note: "Gun Training's exact weapon-choice-scoped shape ported to advanced technology firearms — weapon-choice-scoped (class note 3)",
+    note: "Gun Training's exact weapon-choice-scoped shape ported to advanced technology firearms, replacing the whole progression (5th/9th/13th/17th) — weapon-choice-scoped, but 'advanced technology firearm' has no WEAPON_GROUPS tag to scope a picker to (unlike Bolt Ace's crossbows), so gun-training.ts leaves this unwired and suppresses the base grant for this archetype id instead of letting it (incorrectly) stay active",
   },
 
   // ── gunslinger:thronewarden ──
@@ -705,8 +715,8 @@ export const GUNSLINGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "gunslinger:wyrm-sniper",
     name: "Heavy Gunner",
     level: 5,
-    bucket: "situational",
-    note: "Gun Training's exact weapon-choice-scoped shape, letting the chosen 'type' be a light siege weapon instead of a firearm — still weapon-choice-scoped (class note 3)",
+    bucket: "subsystem",
+    note: "doesn't replace Gun Training (aonprd's text carries no 'replaces' clause) — it just widens the picked TYPE to include a light siege weapon 'as part of her gun training class ability.' The base gun-training.ts picks entry already covers this unmodified: its free-text matching accepts any picked name, siege weapon or firearm alike, so no archetype-specific override exists or is needed",
   },
   "gunslinger:wyrm-sniper:master-siege-engineer:12": {
     archetypeId: "gunslinger:wyrm-sniper",

@@ -187,8 +187,8 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_3: Readonly<
   KeqW25zOjSQAl3n2: {
     id: "KeqW25zOjSQAl3n2",
     name: "Gun Training",
-    bucket: "blocked",
-    note: "Damage bonus (and reduced misfire increase) scoped to one specific firearm type the player chooses, with more types picked up at later levels; no per-weapon-type target exists, and the picks themselves aren't recorded anywhere the engine can read.",
+    bucket: "subsystem",
+    note: "The Dex-to-damage half is wired via gun-training.ts's picks scope (build.gunTrainingPicks, consumed by gunTrainingMatches in computeWeaponAttacks), not a CLASS_FEATURE_CHANGE_PATCHES Change, so it lands here rather than numeric. The reduced misfire-value increase stays unmodeled: no broken-item-state tracking exists to reduce.",
   },
   O93n7H9kMd1xC58Q: {
     id: "O93n7H9kMd1xC58Q",
