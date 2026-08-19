@@ -75,11 +75,28 @@ function useTipState() {
     // true so this also catches scroll on a nested scrollable container, not
     // just the window) is simpler than re-measuring on every scroll tick and
     // matches how transient tooltips normally behave.
-    const onScroll = () => dispatch({ type: "closeAll" });
+    //
+    // Opening can itself scroll, though: clicking or tapping the trigger
+    // focuses it, and the browser scrolls a newly focused element into view.
+    // That scroll arrives *after* the tip is already open, so taking it at
+    // face value dismisses the tip the tap just asked for — worst exactly
+    // where it matters, on a partly off-screen disabled control whose only
+    // way to explain itself is this bubble. Arming on the next frame skips
+    // it: the rendering steps fire scroll events before animation-frame
+    // callbacks, so an open-induced scroll always lands while still
+    // disarmed, and any genuine later scroll lands after.
+    let armed = false;
+    const arm = requestAnimationFrame(() => {
+      armed = true;
+    });
+    const onScroll = () => {
+      if (armed) dispatch({ type: "closeAll" });
+    };
     document.addEventListener("pointerdown", onPointerDown, true);
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("scroll", onScroll, true);
     return () => {
+      cancelAnimationFrame(arm);
       document.removeEventListener("pointerdown", onPointerDown, true);
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("scroll", onScroll, true);
