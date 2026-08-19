@@ -2454,7 +2454,7 @@ export const DRUID_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "grants an unrelated ability, subsystem interaction, or choice-list — no Change-shaped number to extract",
+    note: "the -1 spell per day per level is wired via the casting-economy tables",
   },
   "druid:survivor:nature-bond:1": {
     archetypeId: "druid:survivor",

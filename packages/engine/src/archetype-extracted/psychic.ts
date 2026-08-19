@@ -88,7 +88,7 @@ export const PSYCHIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Written in the Stars",
     level: 1,
     bucket: "subsystem",
-    note: "nightly constellation attunement granting bonus constellation spell slots plus a chosen-school casting-time drawback — spell slots/spell-list changes aren't Change targets (class note 3)",
+    note: "a real +1 slot per spell level, but restricted to spells matching her attuned constellation — restricted-slot machinery, not a generic slot; folding it into the flat slot count would overstate what she can prepare. The chosen-school casting-time drawback also has no matching engine hook",
   },
 
   // ── psychic:formless-adept ──
@@ -215,7 +215,7 @@ export const PSYCHIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Psychic Duel Acumen",
     level: 4,
     bucket: "subsystem",
-    note: "adds a spell known, +1 DC for that one spell (spellDC only has school-wide granularity, no per-spell target), and d8s instead of d4s for duel manifestation damage — spell-list change plus unmodeled-duel dice (class note 3)",
+    note: "the added spell known is wired via the casting-economy tables; the +1 DC for that one spell (spellDC only has school-wide granularity, no per-spell target) and d8s instead of d4s for duel manifestation damage have no matching engine hook",
   },
   "psychic:psychic-duelist:thought-made-real:9": {
     archetypeId: "psychic:psychic-duelist",

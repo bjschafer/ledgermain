@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-18-casting-economy",
+    date: "2026-08-18",
+    title: "Spell slots and spells known follow your archetype",
+    note: "Archetypes that trade casting away now show honest slot counts. The diminished spellcasting family (kensai and six other magus archetypes, crusader and cloistered cleric, arrowsong minstrel, purifier, umbral scion, witch watcher, and friends) drops one slot from every spell level, an energy scientist mixes one fewer extract, and an eldritch font arcanist casts one more spell per level while readying one fewer. On the plus side, a silksworn occultist gains extra slots at 8th, 12th, and 16th, and a Nirmathi irregular ranger casts an extra spell of every level. Fixed bonus spells arrive too: all eighteen oracle archetypes with their own bonus spell schedules (community guardian, purifier, planar oracle, and the rest) swap the right mystery spells out for their own lists, and a brazen deceiver's shadow magic, a flamesinger's summons, a projectionist's possession chain, Lay Healer, Seed of Discord, Death Curse, and Vision Magic all appear in your known list automatically.",
+  },
+  {
     id: "2026-08-18-channel-energy-variants",
     date: "2026-08-18",
     title: "Channel energy follows your archetype and prestige class",

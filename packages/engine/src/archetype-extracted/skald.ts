@@ -523,7 +523,7 @@ export const SKALD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Seed of Discord",
     level: 1,
     bucket: "subsystem",
-    note: "grants a fixed schedule of bonus spells known — spells-known aren't a Change-shaped number in this engine",
+    note: "wired via the casting-economy tables (a fixed schedule of bonus spells known as he reaches the level to cast each)",
   },
 
   // ── skald:serpent-herald ──

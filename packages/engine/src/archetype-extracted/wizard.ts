@@ -505,7 +505,7 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Patron Spells",
     level: 1,
     bucket: "subsystem",
-    note: "witch-style patron spell list added to the spellbook plus spontaneous casting of them — spell-list mechanic, no Change-shaped stat",
+    note: "adds the chosen witch patron's fixed spell list to the spellbook, but which patron is a player choice this archetype has no stored pick for (the witch's own patron picker isn't reachable from a wizard build) — choice-gated, no Change-shaped stat",
   },
   "wizard:pact-wizard-hhh:great-power-greater-expense:5": {
     archetypeId: "wizard:pact-wizard-hhh",
@@ -520,7 +520,7 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonded Book",
     level: 1,
     bucket: "subsystem",
-    note: "bonded spellbook variant granting extra spells learned per level and faster preparation — spellbook mechanic, no Change-shaped stat",
+    note: "doubles the number of freely-chosen spells added to the spellbook per level-up (2 to 4); the wizard's spellbook has no enforced per-level size cap in this engine, so there's no count for the delta to edit. The reduced copy cost/time and prep-time riders have no matching engine hook either",
   },
   "wizard:poleiheira-adherent:great-odyssey:1": {
     archetypeId: "wizard:poleiheira-adherent",
@@ -557,7 +557,7 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Runic Focus",
     level: 1,
     bucket: "subsystem",
-    note: "an ioun-stone-like bonded focus granting Thassilonian-school spell slots and reduced material-component costs, explicitly WITHOUT granting that school's actual powers ('always functions as a universalist wizard') — a spellbook/bond mechanic with no Change-shaped stat, and no arcane-school composition gap since the ability itself disclaims the school powers",
+    note: "a real +2 slot per spell level, but restricted to one chosen Thassilonian school ('always functions as a universalist wizard' otherwise) — restricted-slot machinery, not a generic slot; folding it into the flat slot count would overstate what she can prepare. The reduced material-component-cost rider on that school has no matching engine hook",
   },
 
   "wizard:scroll-scholar:diligent-student:1": {
@@ -806,7 +806,7 @@ export const WIZARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Reanimator",
     level: 1,
     bucket: "subsystem",
-    note: "adds necromancy spells to the spellbook with spontaneous-casting and reduced effective spell level for animate-dead-family spells — spell-list mechanic, no Change-shaped stat",
+    note: "the nine fixed necromancy spells added to the spellbook are wired via the casting-economy tables; the spontaneous-cast-via-sacrifice option and the -1-effective-level rider on four of the spells have no matching engine hook",
   },
   "wizard:undead-master:lich-loved:20": {
     archetypeId: "wizard:undead-master",

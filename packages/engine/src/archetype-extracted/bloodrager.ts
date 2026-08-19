@@ -182,7 +182,7 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Reduced Spells Known",
     level: 1,
     bucket: "subsystem",
-    note: "one fewer spell known per spell level — spells known isn't a Change target (class note 6)",
+    note: "the -1 spell known per level is wired via the casting-economy tables",
   },
   "bloodrager:bloody-knuckled-rowdy:combat-style-student:2": {
     archetypeId: "bloodrager:bloody-knuckled-rowdy",

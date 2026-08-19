@@ -398,7 +398,7 @@ export const MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Mind and Soul",
     level: 1,
     bucket: "subsystem",
-    note: "lets the medium use Wisdom instead of Charisma for all medium class abilities, plus reduces spells known by one per level — an ability-score-basis swap with no Change target (same posture as magus's Eldritch Scion Int-to-Cha swap) and a spells-known reduction with no Change target either",
+    note: "the -1 spell known per level is wired via the casting-economy tables; the Wisdom-instead-of-Charisma swap for medium class abilities is an ability-score-basis swap with no Change target (same posture as magus's Eldritch Scion Int-to-Cha swap)",
   },
   "medium:rivethun-spirit-channeler:spiritual-invocation:1": {
     archetypeId: "medium:rivethun-spirit-channeler",

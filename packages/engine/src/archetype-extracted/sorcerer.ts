@@ -166,7 +166,7 @@ export const SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Lay Healer",
     level: 3,
     bucket: "subsystem",
-    note: "adds two specific spells to spells known in place of bloodline spells — no Change-shaped number",
+    note: "wired via the casting-economy tables (two specific spells known in place of the bloodline spells otherwise gained at these levels)",
   },
   "sorcerer:razmiran-priest:razmiran-channel:9": {
     archetypeId: "sorcerer:razmiran-priest",
@@ -278,7 +278,7 @@ export const SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces spells per day of each level by one — no engine target to reduce spell slots (spells-per-day comes from CASTER_MODELS/tables, not collectModifiers)",
+    note: "the -1 slot per level is wired via the casting-economy tables",
   },
   "sorcerer:umbral-scion:encroaching-darkness:1": {
     archetypeId: "sorcerer:umbral-scion",

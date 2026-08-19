@@ -431,7 +431,7 @@ export const SPIRITUALIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Death Curse",
     level: 4,
     bucket: "subsystem",
-    note: "a phantom-death-triggered curse ability plus two added spells known — no Change-shaped number",
+    note: "the two added spells known are wired via the casting-economy tables; the accompanying phantom-death-triggered bestow curse spell-like ability has no matching engine hook",
   },
   "spiritualist:hag-haunted:hag-phantom:0": {
     archetypeId: "spiritualist:hag-haunted",

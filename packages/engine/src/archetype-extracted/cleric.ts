@@ -107,7 +107,7 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces non-domain spell slots by one per level — no Change target for spell-slot counts",
+    note: "the -1 non-domain spell slot per level is wired via the casting-economy tables",
   },
   "cleric:angelfire-apostle:extra-channel:1": {
     archetypeId: "cleric:angelfire-apostle",
@@ -243,7 +243,7 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Power of the Unknown",
     level: 1,
     bucket: "subsystem",
-    note: "restricts to one domain from a fixed list and doubles domain spell slots per level — domains (and spell-slot counts) are subsystem (class note 1)",
+    note: "restricts to one domain from a fixed list and doubles domain spell slots per level — domain slots are a restricted-use grant (usable only for domain spells), so this stays residue rather than folding into the general slot total (class note 1)",
   },
   "cleric:channeler-of-the-unknown:spontaneous-casting:1": {
     archetypeId: "cleric:channeler-of-the-unknown",
@@ -273,7 +273,7 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "one domain instead of two, plus one fewer non-domain spell per level — domain subsystem plus an unmodeled spell-slot count",
+    note: "the -1 non-domain spell per level is wired via the casting-economy tables; the one-domain-instead-of-two restriction is domain subsystem (this engine already grants exactly one domain-spell slot total, so the restriction is numerically inert here)",
   },
   "cleric:cloistered-cleric:scribe-scroll:4": {
     archetypeId: "cleric:cloistered-cleric",
@@ -347,7 +347,7 @@ export const CLERIC_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "one domain instead of two, one fewer spell per level — domain subsystem plus an unmodeled spell-slot count",
+    note: "the -1 spell per level is wired via the casting-economy tables; the one-domain-instead-of-two restriction is domain subsystem (this engine already grants exactly one domain-spell slot total, so the restriction is numerically inert here)",
   },
   "cleric:crusader:legion-s-blessing:8": {
     archetypeId: "cleric:crusader",

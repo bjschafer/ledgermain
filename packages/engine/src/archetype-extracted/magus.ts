@@ -322,7 +322,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces spell slots by one per level — no Change target for spell-slot counts",
+    note: "the -1 slot per level is wired via the casting-economy tables",
   },
   "magus:esoteric:improved-tattooed-spell:11": {
     archetypeId: "magus:esoteric",
@@ -465,7 +465,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces spell slots by one per level — no Change target",
+    note: "the -1 slot per level is wired via the casting-economy tables",
   },
   "magus:iron-ring-striker:empower-combat:7": {
     archetypeId: "magus:iron-ring-striker",
@@ -553,7 +553,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces spell slots by one per level — no Change target",
+    note: "the -1 slot per level is wired via the casting-economy tables",
   },
   "magus:kapenia-dancer:kapenia-dancer-arcana:3": {
     archetypeId: "magus:kapenia-dancer",
@@ -597,7 +597,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces spell slots by one per level — no Change target",
+    note: "the -1 slot per level is wired via the casting-economy tables",
   },
   "magus:kensai:fighter-training:7": {
     archetypeId: "magus:kensai",
@@ -881,7 +881,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces spell slots by one per level — no Change target",
+    note: "the -1 slot per level is wired via the casting-economy tables",
   },
   "magus:myrmidarch:fighter-training:7": {
     archetypeId: "magus:myrmidarch",
@@ -1022,7 +1022,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces spell slots by one per level — no Change target",
+    note: "the -1 slot per level is wired via the casting-economy tables",
   },
   "magus:skirnir:greater-spellshield:16": {
     archetypeId: "magus:skirnir",
@@ -1117,7 +1117,7 @@ export const MAGUS_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces spell slots by one per level — no Change target",
+    note: "the -1 slot per level is wired via the casting-economy tables",
   },
   "magus:soul-forger:fortify-bond:4": {
     archetypeId: "magus:soul-forger",

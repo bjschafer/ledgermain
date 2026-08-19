@@ -78,7 +78,7 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
     category: "Archetypes",
     note: "Every published archetype is in the picker, and picking one swaps your class features and strikes through what it trades away. Only some archetype features move numbers on your sheet automatically: the rest show their rules text for you to apply at the table.",
     issueDetail:
-      "1,425 vendored archetypes; 355 carry at least one structured feature effect. The remaining features are structural or prose-only, so the gap is promotion rather than coverage.",
+      "1,425 vendored archetypes; 396 carry at least one structured feature effect. The remaining features are structural or prose-only, so the gap is promotion rather than coverage.",
   },
   {
     category: "Familiars",

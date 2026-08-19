@@ -99,7 +99,7 @@ export const ARCANIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Font of Power",
     level: 1,
     bucket: "subsystem",
-    note: "reworks spells-known/prepared counts (extra slots, fewer prepared) — spellcasting-model subsystem, no engine hook.",
+    note: "the +1 slot and -1 prepared per level are both wired via the casting-economy tables.",
   },
   "arcanist:eldritch-font:eldritch-surge-su:3": {
     archetypeId: "arcanist:eldritch-font",

@@ -941,7 +941,7 @@ export const INVESTIGATOR_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Concoction of Truth",
     level: 7,
     bucket: "subsystem",
-    note: "adds a free extract slot for one specific spell; alchemy/extract subsystem (class note 4)",
+    note: "the fixed Discern Lies formula grant is wired via the casting-economy bonus-known table; the free extract slot for it is restricted to that spell only (doesn't count against the daily allotment), so it stays residue rather than folding into the general slot total",
   },
   "investigator:ruthless-agent:enhanced-intimidation:1": {
     archetypeId: "investigator:ruthless-agent",

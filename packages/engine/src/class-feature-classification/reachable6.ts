@@ -182,7 +182,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "NOhmhKgboJ9qdGvg",
     name: "Elemental Overflow",
     bucket: "situational",
-    note: "every bonus scales off the kineticist's CURRENT burn count, a live resource total that changes turn to turn; an unconditional Change would be wrong the instant burn changes.",
+    note: "already reaches the sheet through a dedicated live route, not this table: kinetic-blast.ts calls tables.ts's kineticOverflowBonus with the kineticist's current live burn total on every recompute, and the resulting attack/damage bonus is applied directly to the kinetic-blast line. An unconditional Change would be wrong here (the bonus tracks burn turn to turn), which is exactly why the dedicated route exists instead. The 6th/11th/16th-level ability-score-boost/crit-negation upgrades remain display-only (tables.ts's kineticOverflowLabel sibling, never applied).",
   },
   RzEzudurxQFirFoF: {
     id: "RzEzudurxQFirFoF",

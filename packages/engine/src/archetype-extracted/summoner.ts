@@ -379,7 +379,7 @@ export const SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Chaos Magic",
     level: 2,
     bucket: "subsystem",
-    note: "swaps specific bonus spells known for a reduced spells-known count (spell levels 1-6) — no Change target exists for a spells-known count (class note 5)",
+    note: "the -1 known per spell level (1-6) and the six fixed replacement spells known are both wired via the casting-economy tables",
   },
   "summoner:morphic-savant:eidolon-of-chaos:1": {
     archetypeId: "summoner:morphic-savant",
@@ -714,7 +714,7 @@ export const SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Law Magic",
     level: 0,
     bucket: "subsystem",
-    note: "swaps specific bonus spells known for a reduced spells-known count (spell levels 1-6) — no Change target exists for a spells-known count (class note 5)",
+    note: "the -1 known per spell level (1-6) and the six fixed replacement spells known are both wired via the casting-economy tables",
   },
   "summoner:unwavering-conduit:unwavering-monsters:0": {
     archetypeId: "summoner:unwavering-conduit",

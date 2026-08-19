@@ -726,7 +726,7 @@ export const OCCULTIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Devoted Mystic",
     level: 1,
     bucket: "subsystem",
-    note: "grants more implement schools on an accelerated schedule and later increases spells-per-day counts — pick-list/spell-slot-count changes, no Change target for either (spell slot counts aren't Change-shaped, per magus pilot precedent)",
+    note: "the +1 slot of each level at 8th/12th/16th is wired via the casting-economy tables; the accelerated-schedule implement-school pick-list grant has no matching engine hook",
   },
   "occultist:silksworn:implement-mastery:20": {
     archetypeId: "occultist:silksworn",

@@ -1236,7 +1236,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Vision Magic",
     level: 4,
     bucket: "subsystem",
-    note: "spontaneous-casting progression swap + spell-list additions — a casting mechanic change, no Change target",
+    note: "the four named bonus spells known are wired via the casting-economy tables; the accompanying spontaneous-casting progression swap and hydraulic push/torrent spell-list additions have no matching engine hook",
   },
   "paladin:pearl-seeker:divine-hippocampus:5": {
     archetypeId: "paladin:pearl-seeker",
@@ -1250,7 +1250,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Spells",
     level: 4,
     bucket: "subsystem",
-    note: "domain-spell-slot grant, unrelated",
+    note: "a genuine +1 slot per level of paladin spells she can cast, but restricted to her chosen domain — domain-slot machinery, not a generic slot; folding it into the flat slot count would overstate what she can prepare",
   },
   "paladin:sacred-servant:divine-bond:5": {
     archetypeId: "paladin:sacred-servant",
@@ -1362,7 +1362,7 @@ export const PALADIN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Dragon Magic",
     level: 4,
     bucket: "subsystem",
-    note: "spell-list swap + reduced spells-per-level — a spellcasting mechanic, no Change target",
+    note: "the -1 slot per level is wired via the casting-economy tables; the accompanying spell-list swap to Apsu's domain spells has no matching engine hook",
   },
   "paladin:silver-champion:drake-mount:5": {
     archetypeId: "paladin:silver-champion",

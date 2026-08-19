@@ -2195,7 +2195,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Burn",
     level: 2,
     bucket: "subsystem",
-    note: "grants the kineticist burn resource mechanic — a whole unmodeled subsystem, no baseline number",
+    note: "grants the kineticist burn resource mechanic to a non-kineticist; resources.ts's burn-pool resolution is hardcoded to classTag === 'kineticist' (the gate every kineticist burn number rides), so this grant needs a hook there before a pool derives — the gap is that gate, not an unmodeled subsystem",
   },
   "monk:water-dancer:elemental-focus-su-and-sp:0": {
     archetypeId: "monk:water-dancer",

@@ -531,7 +531,7 @@ export const MESMERIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Spells",
     level: 1,
     bucket: "subsystem",
-    note: "restates the base mesmerist spellcasting rules plus a fixed must-learn spell list — no Change",
+    note: "restates the base mesmerist spellcasting rules; the fixed must-learn spell list (4th/7th/10th/13th/16th level) is wired via the casting-economy bonus-known table",
   },
 
   // ── mesmerist:spirit-walker ──
@@ -651,7 +651,7 @@ export const MESMERIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces spells per day by one per level — no Change target for spell-slot counts",
+    note: "the -1 slot per level is wired via the casting-economy tables",
   },
   "mesmerist:umbral-mesmerist:ephemeral-stare:5": {
     archetypeId: "mesmerist:umbral-mesmerist",

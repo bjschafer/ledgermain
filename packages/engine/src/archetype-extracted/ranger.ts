@@ -1099,7 +1099,7 @@ export const RANGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Spells",
     level: 4,
     bucket: "subsystem",
-    note: "modifies the ranger's spellcasting model (spell list additions, casting-stat swap, or a spell-less variant) — no engine hook for per-archetype spell-list/caster-model changes.",
+    note: "the +1 spell of every level is wired via the casting-economy tables; the accompanying option to prepare one chosen druid spell per day as if on the ranger list has no matching engine hook",
   },
   "ranger:planar-scout:planar-empathy:1": {
     archetypeId: "ranger:planar-scout",

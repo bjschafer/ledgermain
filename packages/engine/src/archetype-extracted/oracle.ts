@@ -109,7 +109,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 2,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels)",
   },
   "oracle:community-guardian:renewing-radiance:3": {
     archetypeId: "oracle:community-guardian",
@@ -172,7 +172,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 10,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels)",
   },
   "oracle:divine-numerologist:final-revelation:20": {
     archetypeId: "oracle:divine-numerologist",
@@ -207,7 +207,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 4,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells (paired to Exchange Spell (High), also not Change-shaped) — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels; the Summon Monster V grant's elemental-only restriction isn't enforced); paired to Exchange Spell (High), also not Change-shaped",
   },
   "oracle:elementalist-oracle:elemental-form:11": {
     archetypeId: "oracle:elementalist-oracle",
@@ -228,7 +228,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 4,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells (paired to Exchange Spell (High)) — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels); paired to Exchange Spell (High), also not Change-shaped",
   },
   "oracle:enlightened-philosopher:mental-acuity:7": {
     archetypeId: "oracle:enlightened-philosopher",
@@ -256,7 +256,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 4,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells (paired to Exchange Spell (High)) — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels); paired to Exchange Spell (High), also not Change-shaped",
   },
   "oracle:hermit:fade-from-memory:7": {
     archetypeId: "oracle:hermit",
@@ -277,7 +277,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 4,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells (paired to Exchange Spell (High)) — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels); paired to Exchange Spell (High), also not Change-shaped",
   },
   "oracle:keleshite-prophet:divining-dance:1": {
     archetypeId: "oracle:keleshite-prophet",
@@ -291,7 +291,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 6,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels)",
   },
   "oracle:ocean-s-echo:inspiring-song:1": {
     archetypeId: "oracle:ocean-s-echo",
@@ -305,7 +305,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 4,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells (paired to Exchange Spell (High)) — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels); paired to Exchange Spell (High), also not Change-shaped",
   },
   "oracle:pei-zin-practitioner:healer-s-way:1": {
     archetypeId: "oracle:pei-zin-practitioner",
@@ -333,7 +333,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 2,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels)",
   },
   "oracle:planar-oracle:planar-resistance:3": {
     archetypeId: "oracle:planar-oracle",
@@ -361,7 +361,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 2,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels)",
   },
   "oracle:psychic-searcher:oracle-s-curse:1": {
     archetypeId: "oracle:psychic-searcher",
@@ -389,21 +389,21 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 4,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells (paired to Exchange Spell (High)) — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels); paired to Exchange Spell (High), also not Change-shaped",
   },
   "oracle:purifier:diminished-spellcasting:1": {
     archetypeId: "oracle:purifier",
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces spells/day by one per level — spells-per-day comes from apps/web's hardcoded table, not a Change target",
+    note: "the -1 slot per level is wired via the casting-economy tables; the accompanying suppression of the automatic cure/inflict bonus-known grant has no engine hook and stays unmodeled",
   },
   "oracle:purifier:bonus-spell:2": {
     archetypeId: "oracle:purifier",
     name: "Bonus Spell",
     level: 2,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels)",
   },
   "oracle:purifier:see-sin:3": {
     archetypeId: "oracle:purifier",
@@ -459,7 +459,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 2,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels)",
   },
   "oracle:river-soul:river-bound-curse:1": {
     archetypeId: "oracle:river-soul",
@@ -480,7 +480,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 2,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels)",
   },
   "oracle:river-soul:river-soul-revelation:20": {
     archetypeId: "oracle:river-soul",
@@ -529,14 +529,14 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 4,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells (paired to Exchange Spell (High)) — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels); paired to Exchange Spell (High), also not Change-shaped",
   },
   "oracle:shigenjo:bonus-spell:2": {
     archetypeId: "oracle:shigenjo",
     name: "Bonus Spell",
     level: 2,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels)",
   },
   "oracle:shigenjo:ki-pool:7": {
     archetypeId: "oracle:shigenjo",
@@ -578,7 +578,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 2,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels)",
   },
   "oracle:stargazer:star-chart:7": {
     archetypeId: "oracle:stargazer",
@@ -606,7 +606,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Bonus Spell",
     level: 2,
     bucket: "subsystem",
-    note: "replaces mystery bonus spells — not Change-shaped either way",
+    note: "wired via the casting-economy tables (replaces the mystery's own bonus spells at these oracle levels)",
   },
   "oracle:tree-soul:living-steel-dolls:11": {
     archetypeId: "oracle:tree-soul",

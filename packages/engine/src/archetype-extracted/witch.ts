@@ -1396,7 +1396,7 @@ export const WITCH_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 0,
     bucket: "subsystem",
-    note: "reduces her OWN spells-known count by one per level — no engine target exists for adjusting spells-known/spells-per-day",
+    note: "the -1 slot per level is wired via the casting-economy tables",
   },
   "witch:wyrm-witch:draconic-patronage:0": {
     archetypeId: "witch:wyrm-witch",

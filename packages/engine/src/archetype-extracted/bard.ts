@@ -416,7 +416,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Diminished Spellcasting",
     level: 1,
     bucket: "subsystem",
-    note: "reduces spells per day by one of each level — no engine target to reduce spell slots (spells-per-day comes from CASTER_MODELS/tables, not collectModifiers)",
+    note: "the -1 slot per level is wired via the casting-economy tables",
   },
   "bard:arrowsong-minstrel:precise-minstrel:2": {
     archetypeId: "bard:arrowsong-minstrel",
@@ -479,7 +479,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Invoke Vyriavaxus",
     level: 2,
     bucket: "subsystem",
-    note: "adds specific spells to spells known at fixed levels — no Change-shaped number",
+    note: "the fixed 2nd/6th/10th/14th/18th-level spell grants are wired via the casting-economy bonus-known table",
   },
   "bard:brazen-deceiver:shameless-scoundrel:1": {
     archetypeId: "bard:brazen-deceiver",
@@ -1361,7 +1361,7 @@ export const BARD_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Fire Music",
     level: 1,
     bucket: "subsystem",
-    note: "grants Fire Music as a named bonus feat plus scaling summon monster spells known — no Change-shaped number",
+    note: "grants Fire Music as a named bonus feat (unmodeled here); the scaling summon monster spells known are wired via the casting-economy bonus-known table",
   },
   "bard:flamesinger:wildfire:2": {
     archetypeId: "bard:flamesinger",

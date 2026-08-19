@@ -783,7 +783,7 @@ export const ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Limited Extracts",
     level: 1,
     bucket: "subsystem",
-    note: "reduces extracts-per-day and restricts descriptors — no Change target for extract-slot counts",
+    note: "the -1 extract slot per level is wired via the casting-economy tables; the elemental/energy descriptor restriction on which extracts can be prepared has no matching engine hook",
   },
   "alchemist:energy-scientist:salvage-energy:2": {
     archetypeId: "alchemist:energy-scientist",
