@@ -13,11 +13,27 @@ function readJson<T>(dir: string, file: string): T {
   return JSON.parse(readFileSync(join(dir, file), "utf8")) as T;
 }
 
+/** One parsed RefData per directory — see `loadRefData`. */
+const cache = new Map<string, RefData>();
+
 /**
  * Load the vendored, normalized RefData from disk (default: the committed
  * `data/` directory). Reassembles the per-collection files into one RefData.
+ *
+ * The result is cached per directory and shared by every caller. RefData is
+ * immutable reference data, but it is ~34 MB of JSON: hundreds of test files
+ * call this at module scope, and one live copy each is enough retained heap to
+ * exhaust a CI runner. Callers must not mutate what they get back.
  */
 export function loadRefData(dir: string = OUTPUT_DIR): RefData {
+  const cached = cache.get(dir);
+  if (cached) return cached;
+  const data = readRefData(dir);
+  cache.set(dir, data);
+  return data;
+}
+
+function readRefData(dir: string): RefData {
   const meta = readJson<RefDataMeta>(dir, "meta.json");
   return {
     meta,
