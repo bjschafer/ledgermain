@@ -44,7 +44,10 @@ jobs:
   e2e:
     name: E2E (Playwright)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # The suite itself runs in 6-8 minutes; the rest is headroom for a cold
+    # browser cache, which on its own has come within a minute of the old
+    # 20-minute ceiling.
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
 
@@ -55,6 +58,23 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      # Browser downloads are the least predictable thing in this job: the same
+      # three engines have taken anywhere from 39s to 12m49s, and at the slow
+      # end they ate enough of the budget that the suite got cancelled
+      # mid-run. Cache them on the resolved Playwright version, since that is
+      # what decides which browser revisions are needed.
+      - name: Resolve Playwright version
+        id: playwright
+        run: |
+          echo "version=$(node -p "require('./apps/web/node_modules/@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ms-playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
       # Invoke the workspace's pinned CLI by path: on a clean runner, `bunx
       # playwright` resolves the latest registry package instead of the local
       # @playwright/test, and installs browser revisions the pinned version
@@ -63,8 +83,17 @@ jobs:
       # Three engines, because layout is where they disagree: Chromium and
       # Firefox run the whole suite, WebKit only the layout sweep (see the
       # projects in playwright.config.ts).
+      #
+      # The apt system libraries live outside the cached directory, so they are
+      # installed on every run either way; only the browser downloads are
+      # skipped on a hit.
       - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: apps/web/node_modules/.bin/playwright install --with-deps chromium firefox webkit
+
+      - name: Install Playwright system dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: apps/web/node_modules/.bin/playwright install-deps chromium firefox webkit
 
       # playwright.config.ts keys retries/reporter/webServer reuse off CI,
       # which GitHub Actions sets automatically — no manual CI=1 needed here.
