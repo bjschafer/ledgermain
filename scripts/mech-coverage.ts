@@ -48,6 +48,7 @@ import {
   RACIAL_TRAIT_SLA_GRANTS,
 } from "../packages/engine/src/spell-like-abilities/index.js";
 import {
+  ARCHETYPE_BONUS_KNOWN_SPELLS,
   ARCHETYPE_CASTING_ADJUSTMENTS,
   CHARACTER_TRAIT_CASTING_ADJUSTMENTS,
   CLASS_FEATURE_CASTING_ADJUSTMENTS,
@@ -488,6 +489,7 @@ function main(): void {
       ARCHETYPE_TIER_REPLACEMENTS[id] !== undefined ||
       (ARCHETYPE_SLA_GRANTS[id]?.length ?? 0) > 0 ||
       (ARCHETYPE_CASTING_ADJUSTMENTS[id]?.length ?? 0) > 0 ||
+      ARCHETYPE_BONUS_KNOWN_SPELLS[id] !== undefined ||
       // Companion/mount master effects route numbers onto the tracked
       // companion's own stat block rather than the master's sheet.
       COMPANION_EFFECT_ARCHETYPE_FEATURES[id] !== undefined;

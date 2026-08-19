@@ -1212,6 +1212,12 @@ export function bloodragerBonusSpellsKnown(
  * displayed known list automatically and they do NOT count against the
  * spells-known cap.
  *
+ * `replacedLevels` drops the entries an active archetype's Bonus Spell
+ * schedule replaces ("These bonus spells replace the oracle's mystery bonus
+ * spells from these levels") — pass
+ * `sheet.bonusKnownSpells?.mysteryReplacedLevels` through; `"all"` empties
+ * the list.
+ *
  * @example
  *   mysterySpellsKnown(ref, "life", 5)  // → [Detect Undead, Lesser Restoration]
  *   mysterySpellsKnown(ref, "life", 1)  // → []  (starts at oracle level 2)
@@ -1220,12 +1226,15 @@ export function mysterySpellsKnown(
   refData: RefData,
   mysteryTag: string | undefined,
   oracleLevel: number,
+  replacedLevels?: readonly number[] | "all",
 ): { id: string; name: string; level: number }[] {
   if (!mysteryTag) return [];
+  if (replacedLevels === "all") return [];
   const mystery = ORACLE_MYSTERIES[mysteryTag];
   if (!mystery) return [];
+  const replaced = new Set(replacedLevels ?? []);
   return mystery.bonusSpells
-    .filter((sp) => sp.level <= oracleLevel)
+    .filter((sp) => sp.level <= oracleLevel && !replaced.has(sp.level))
     .map((sp) => ({ id: sp.id, name: refData.spells[sp.id]?.name ?? sp.name, level: sp.level }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }

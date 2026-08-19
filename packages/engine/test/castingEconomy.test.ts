@@ -11,6 +11,7 @@ import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import {
+  ARCHETYPE_BONUS_KNOWN_SPELLS,
   ARCHETYPE_CASTING_ADJUSTMENTS,
   CHARACTER_TRAIT_CASTING_ADJUSTMENTS,
   CLASS_FEATURE_CASTING_ADJUSTMENTS,
@@ -18,7 +19,9 @@ import {
   FEAT_CASTING_ADJUSTMENTS,
   RACIAL_TRAIT_CASTING_ADJUSTMENTS,
   RACIAL_TRAITS,
+  resolveBonusKnownSpells,
   resolveCastingAdjustments,
+  spellIdByName,
   type CastingAdjustmentDef,
   type CastingAdjustmentTables,
 } from "../src/index.js";
@@ -265,5 +268,83 @@ describe("resolution paths (injected tables)", () => {
     if (sheet.castingAdjustments !== undefined) {
       expect(sheet.castingAdjustments.length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe("bonus-known-spell table drift guards", () => {
+  it("keys resolve, spells resolve, levels are sane", () => {
+    for (const [key, def] of Object.entries(ARCHETYPE_BONUS_KNOWN_SPELLS)) {
+      expect(ref.archetypeFeatures[key], `bonus-known key ${key} not vendored`).toBeDefined();
+      expect(def.spells.length, `bonus-known ${key}: empty spell list`).toBeGreaterThan(0);
+      for (const grant of def.spells) {
+        expect(
+          spellIdByName(ref, grant.spell),
+          `bonus-known ${key}: unresolvable spell "${grant.spell}"`,
+        ).toBeDefined();
+        expect(
+          Number.isInteger(grant.atLevel) && grant.atLevel >= 1 && grant.atLevel <= 20,
+          `bonus-known ${key}: bad atLevel ${grant.atLevel}`,
+        ).toBe(true);
+        if (grant.spellLevel !== undefined) {
+          expect(
+            Number.isInteger(grant.spellLevel) && grant.spellLevel >= 0 && grant.spellLevel <= 9,
+            `bonus-known ${key}: bad spellLevel ${grant.spellLevel}`,
+          ).toBe(true);
+        }
+      }
+      if (def.replacesMysteryBonusSpellLevels !== undefined) {
+        expect(
+          ref.archetypeFeatures[key]!.classTag,
+          `bonus-known ${key}: mystery replacement on a non-oracle feature`,
+        ).toBe("oracle");
+      }
+    }
+  });
+});
+
+describe("resolveBonusKnownSpells (injected table)", () => {
+  it("gates on archetype + atLevel, resolves ids and class-list levels, unions replaced levels", () => {
+    const af = Object.values(ref.archetypeFeatures).find(
+      (f) => f.classTag === "oracle" && f.level <= 2,
+    );
+    expect(af).toBeDefined();
+    const cureId = spellIdByName(ref, "Cure Light Wounds");
+    expect(cureId).toBeDefined();
+    const table = {
+      [af!.id]: {
+        spells: [
+          { spell: "Cure Light Wounds", atLevel: 2 },
+          { spell: "Cure Light Wounds", atLevel: 10 },
+        ],
+        replacesMysteryBonusSpellLevels: [2, 4],
+      },
+    };
+    const withOracle = (level: number) =>
+      baseDoc({
+        identity: { name: "Test", race: raceId("Human"), classes: [{ tag: "oracle", level }] },
+        build: {
+          feats: [],
+          skillRanks: {},
+          classFeatureChoices: [],
+          spells: { known: [] },
+          gear: [],
+          archetypes: [af!.archetypeId],
+        },
+      });
+    const resolved = resolveBonusKnownSpells(withOracle(4), ref, table);
+    expect(resolved).toBeDefined();
+    // The atLevel-10 copy is not yet gained at oracle 4.
+    expect(resolved!.spells).toHaveLength(1);
+    expect(resolved!.spells[0]!.spellId).toBe(cureId!);
+    expect(resolved!.spells[0]!.classTag).toBe("oracle");
+    // Cure Light Wounds is a 1st-level oracle (cleric-list) spell.
+    expect(resolved!.spells[0]!.level).toBe(1);
+    expect(resolved!.mysteryReplacedLevels).toEqual([2, 4]);
+
+    // Archetype not chosen → nothing.
+    const noArch = baseDoc({
+      identity: { name: "Test", race: raceId("Human"), classes: [{ tag: "oracle", level: 4 }] },
+    });
+    expect(resolveBonusKnownSpells(noArch, ref, table)).toBeUndefined();
   });
 });

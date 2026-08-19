@@ -41,7 +41,7 @@ import { ABILITY_IDS } from "@pf1/schema";
 
 import { computeAbilityDCs } from "./ability-dcs.js";
 import { computeClChecks, computeSpellDCs } from "./spell-dcs.js";
-import { resolveCastingAdjustments } from "./casting-economy/index.js";
+import { resolveBonusKnownSpells, resolveCastingAdjustments } from "./casting-economy/index.js";
 import { deriveSpellLikeAbilities } from "./spell-like-abilities/index.js";
 import {
   ABILITY_LABEL,
@@ -2006,8 +2006,10 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
   );
 
   // Slot / spells-known count edits the web's casting model folds into its
-  // slot math (level-gated only, so base scores suffice).
+  // slot math (level-gated only, so base scores suffice), and fixed
+  // bonus-known-spell grants its known-spell merges append.
   const castingAdjustments = resolveCastingAdjustments(doc, refData);
+  const bonusKnownSpells = resolveBonusKnownSpells(doc, refData);
 
   // Generic stat overrides (bounded allowlist)
   const overrides = doc.build.settings?.statOverrides ?? {};
@@ -2051,6 +2053,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     ...(clChecks ? { clChecks } : {}),
     ...(spellLikeAbilities.length > 0 ? { spellLikeAbilities } : {}),
     ...(castingAdjustments.length > 0 ? { castingAdjustments } : {}),
+    ...(bonusKnownSpells !== undefined ? { bonusKnownSpells } : {}),
   };
 
   for (const [key, val] of Object.entries(overrides)) {

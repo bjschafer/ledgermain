@@ -814,6 +814,9 @@ export {
   type PerDayActivationDef,
 } from "./per-day-activations/index.js";
 export {
+  ARCHETYPE_BONUS_KNOWN_SPELLS,
+  ARCHETYPE_BONUS_KNOWN_SPELLS_AM,
+  ARCHETYPE_BONUS_KNOWN_SPELLS_NZ,
   ARCHETYPE_CASTING_ADJUSTMENTS,
   ARCHETYPE_CASTING_ADJUSTMENTS_AM,
   ARCHETYPE_CASTING_ADJUSTMENTS_NZ,
@@ -822,7 +825,10 @@ export {
   CLASS_FEATURE_CASTING_ADJUSTMENTS,
   FEAT_CASTING_ADJUSTMENTS,
   RACIAL_TRAIT_CASTING_ADJUSTMENTS,
+  resolveBonusKnownSpells,
   resolveCastingAdjustments,
+  type BonusKnownSpellDef,
+  type BonusKnownSpellsDef,
   type CastingAdjustmentDef,
   type CastingAdjustmentTables,
 } from "./casting-economy/index.js";

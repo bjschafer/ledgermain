@@ -52,3 +52,36 @@ export interface CastingAdjustmentDef {
   /** Shown alongside the adjustment in slot detail UI when present. */
   note?: string;
 }
+
+/** One fixed spell a feature adds to the class's known list. */
+export interface BonusKnownSpellDef {
+  /** Exact vendored spell name (`RefData.spells` name, case-insensitive). */
+  spell: string;
+  /** Granting-class level at which the spell is gained. */
+  atLevel: number;
+  /**
+   * Explicit "known as an Nth-level spell" override. Omitted, the spell's
+   * own level on the granting class's list applies (nominal level when the
+   * spell is off-list).
+   */
+  spellLevel?: number;
+}
+
+/**
+ * Fixed named-spell known grants (oracle archetype Bonus Spell schedules,
+ * "gains X as a 2nd-level spell known" riders), keyed by archetype-feature
+ * id. Player-CHOSEN additions ("add any spell from the druid list") have no
+ * stored pick and stay residue — only fixed schedules belong here.
+ */
+export interface BonusKnownSpellsDef {
+  spells: readonly BonusKnownSpellDef[];
+  /**
+   * Oracle archetype Bonus Spell rows replace the MYSTERY's bonus spells
+   * gained at these oracle class levels ("These bonus spells replace the
+   * oracle's mystery bonus spells from these levels"); `"all"` replaces the
+   * whole mystery schedule. The web's oracle known-merge filters
+   * `mysterySpellsKnown` output accordingly.
+   */
+  replacesMysteryBonusSpellLevels?: readonly number[] | "all";
+  note?: string;
+}

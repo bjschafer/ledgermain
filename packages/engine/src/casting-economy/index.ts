@@ -10,20 +10,31 @@
  * they decide a feature is present.
  */
 
-import type { CharacterDoc, DerivedCastingAdjustment, RefData } from "@pf1/schema";
+import type {
+  CharacterDoc,
+  DerivedBonusKnownSpell,
+  DerivedBonusKnownSpells,
+  DerivedCastingAdjustment,
+  RefData,
+} from "@pf1/schema";
 
 import { collectGrantedFeatures } from "../archetypes.js";
 import { featNameSlug } from "../feat-effects.js";
 import { RACIAL_TRAITS } from "../racial-traits.js";
+import { spellIdByName } from "../spell-like-abilities/index.js";
 import { resolveTraitDef } from "../traits.js";
+import { ARCHETYPE_BONUS_KNOWN_SPELLS_AM } from "./bonus-knownAM.js";
+import { ARCHETYPE_BONUS_KNOWN_SPELLS_NZ } from "./bonus-knownNZ.js";
 import { ARCHETYPE_CASTING_ADJUSTMENTS_AM } from "./archetypesAM.js";
 import { ARCHETYPE_CASTING_ADJUSTMENTS_NZ } from "./archetypesNZ.js";
 import { CLASS_FEATURE_CASTING_ADJUSTMENTS } from "./class-features.js";
 import { FEAT_CASTING_ADJUSTMENTS } from "./feats.js";
 import { CHARACTER_TRAIT_CASTING_ADJUSTMENTS, RACIAL_TRAIT_CASTING_ADJUSTMENTS } from "./traits.js";
-import type { CastingAdjustmentDef } from "./types.js";
+import type { BonusKnownSpellsDef, CastingAdjustmentDef } from "./types.js";
 
-export type { CastingAdjustmentDef } from "./types.js";
+export type { BonusKnownSpellDef, BonusKnownSpellsDef, CastingAdjustmentDef } from "./types.js";
+export { ARCHETYPE_BONUS_KNOWN_SPELLS_AM } from "./bonus-knownAM.js";
+export { ARCHETYPE_BONUS_KNOWN_SPELLS_NZ } from "./bonus-knownNZ.js";
 export { CLASS_FEATURE_CASTING_ADJUSTMENTS } from "./class-features.js";
 export { ARCHETYPE_CASTING_ADJUSTMENTS_AM } from "./archetypesAM.js";
 export { ARCHETYPE_CASTING_ADJUSTMENTS_NZ } from "./archetypesNZ.js";
@@ -185,4 +196,70 @@ export function resolveCastingAdjustments(
   }
 
   return out;
+}
+
+/** The A–M / N–Z bonus-known shard merge — keys are vendored pack ids. */
+export const ARCHETYPE_BONUS_KNOWN_SPELLS: Readonly<Record<string, BonusKnownSpellsDef>> = {
+  ...ARCHETYPE_BONUS_KNOWN_SPELLS_AM,
+  ...ARCHETYPE_BONUS_KNOWN_SPELLS_NZ,
+};
+
+/**
+ * Fixed bonus-known-spell grants the character's active archetypes provide,
+ * resolved to `DerivedSheet.bonusKnownSpells`. Gating mirrors
+ * {@link resolveCastingAdjustments}'s archetype path (archetype chosen,
+ * class level at the feature's level) with each spell additionally gated on
+ * its own `atLevel`; the file-under level prefers an explicit `spellLevel`,
+ * then the granting class's list level, then the spell's nominal level —
+ * the same degradation order the SLA rows use. Returns `undefined` when
+ * nothing resolves so `compute` can omit the sheet field.
+ */
+export function resolveBonusKnownSpells(
+  doc: CharacterDoc,
+  refData: RefData,
+  table: Readonly<Record<string, BonusKnownSpellsDef>> = ARCHETYPE_BONUS_KNOWN_SPELLS,
+): DerivedBonusKnownSpells | undefined {
+  const chosenArchetypes = new Set(doc.build.archetypes ?? []);
+  if (chosenArchetypes.size === 0) return undefined;
+
+  const spells: DerivedBonusKnownSpell[] = [];
+  let mysteryReplacedLevels: number[] | "all" | undefined;
+
+  for (const [featureId, def] of Object.entries(table)) {
+    const af = refData.archetypeFeatures[featureId];
+    if (!af || !chosenArchetypes.has(af.archetypeId)) continue;
+    const classLevel = doc.identity.classes.find((c) => c.tag === af.classTag)?.level ?? 0;
+    if (classLevel < af.level) continue;
+
+    if (def.replacesMysteryBonusSpellLevels !== undefined) {
+      if (def.replacesMysteryBonusSpellLevels === "all" || mysteryReplacedLevels === "all") {
+        mysteryReplacedLevels = "all";
+      } else {
+        mysteryReplacedLevels = [
+          ...new Set([...(mysteryReplacedLevels ?? []), ...def.replacesMysteryBonusSpellLevels]),
+        ].sort((a, b) => a - b);
+      }
+    }
+
+    for (const grant of def.spells) {
+      if (classLevel < grant.atLevel) continue;
+      const spellId = spellIdByName(refData, grant.spell);
+      const spell = spellId ? refData.spells[spellId] : undefined;
+      const level = grant.spellLevel ?? spell?.learnedAt.class[af.classTag] ?? spell?.level ?? 0;
+      spells.push({
+        id: `bonusknown:${featureId}:${featNameSlug(grant.spell)}`,
+        classTag: af.classTag,
+        ...(spellId !== undefined ? { spellId } : {}),
+        name: spell?.name ?? grant.spell,
+        level,
+        source: af.name,
+      });
+    }
+  }
+
+  if (spells.length === 0 && mysteryReplacedLevels === undefined) return undefined;
+  return {
+    spells,
+    ...(mysteryReplacedLevels !== undefined ? { mysteryReplacedLevels } : {}),
+  };
 }

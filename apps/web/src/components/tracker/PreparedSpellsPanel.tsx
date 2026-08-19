@@ -978,27 +978,47 @@ function PreparedView({
   // Casters with no curated "known" list (cleric) prepare directly from the
   // full class spell list; everyone else prepares from their known list.
   const knownByLevel = useMemo(() => {
+    // Archetype fixed bonus spells known (engine casting-economy tables):
+    // preparable exactly like the shaman spirit-magic merge below — appended
+    // to whichever base list this caster prepares from, deduped by spell id.
+    const bonusKnown = (sheet.bonusKnownSpells?.spells ?? []).filter(
+      (sp) => sp.classTag === casterTag && sp.spellId !== undefined,
+    );
+    const appendBonus = (map: Map<number, { id: string; name: string }[]>): typeof map => {
+      if (bonusKnown.length === 0) return map;
+      const present = new Set([...map.values()].flat().map((e) => e.id));
+      for (const sp of bonusKnown) {
+        if (present.has(sp.spellId!)) continue;
+        (map.get(sp.level) ?? map.set(sp.level, []).get(sp.level)!).push({
+          id: sp.spellId!,
+          name: sp.name,
+        });
+      }
+      for (const arr of map.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
+      return map;
+    };
     if (model.preparesFromClassList) {
       const base = classSpellsByLevel(refData, casterTag, {
         excludeCantrips: model.grantsAllCantrips,
       });
+      const merged = new Map<number, { id: string; name: string }[]>();
+      for (const [lvl, arr] of base) merged.set(lvl, [...arr]);
       // Shaman spirit magic bonus spells: merge in any that aren't already on
       // the base shaman list, so the chosen spirit's spell list is
       // preparable/castable here too, not just displayed in the builder's
       // Spells section — see model/spellcasting. shamanSpiritSpellsKnown.
-      if (casterTag !== "shaman") return base;
-      const merged = new Map<number, { id: string; name: string }[]>();
-      for (const [lvl, arr] of base) merged.set(lvl, [...arr]);
-      const present = new Set([...merged.values()].flat().map((e) => e.id));
-      for (const sp of shamanSpiritSpellsKnown(refData, doc.build.shamanSpirit, classLevel)) {
-        if (present.has(sp.id)) continue;
-        (merged.get(sp.level) ?? merged.set(sp.level, []).get(sp.level)!).push({
-          id: sp.id,
-          name: sp.name,
-        });
+      if (casterTag === "shaman") {
+        const present = new Set([...merged.values()].flat().map((e) => e.id));
+        for (const sp of shamanSpiritSpellsKnown(refData, doc.build.shamanSpirit, classLevel)) {
+          if (present.has(sp.id)) continue;
+          (merged.get(sp.level) ?? merged.set(sp.level, []).get(sp.level)!).push({
+            id: sp.id,
+            name: sp.name,
+          });
+        }
+        for (const arr of merged.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
       }
-      for (const arr of merged.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
-      return merged;
+      return appendBonus(merged);
     }
     const map = new Map<number, { id: string; name: string }[]>();
     for (const id of known) {
@@ -1008,8 +1028,17 @@ function PreparedView({
       (map.get(lvl) ?? map.set(lvl, []).get(lvl)!).push({ id, name: sp.name });
     }
     for (const arr of map.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
-    return map;
-  }, [model, refData, casterTag, known, levelMap, doc.build.shamanSpirit, classLevel]);
+    return appendBonus(map);
+  }, [
+    model,
+    refData,
+    casterTag,
+    known,
+    levelMap,
+    doc.build.shamanSpirit,
+    classLevel,
+    sheet.bonusKnownSpells,
+  ]);
 
   // Only this class's prepared instances (a multiclass character's other
   // caster class(es) are bucketed/rendered by their own PreparedView), kept
@@ -1534,7 +1563,12 @@ function SpontaneousView({
   if (casterTag === "oracle") {
     const known = new Set(knownList);
     const bonus = [
-      ...mysterySpellsKnown(refData, doc.build.oracleMystery, classLevel),
+      ...mysterySpellsKnown(
+        refData,
+        doc.build.oracleMystery,
+        classLevel,
+        sheet.bonusKnownSpells?.mysteryReplacedLevels,
+      ),
       ...curseSpellsKnown(refData, doc.build.oracleCurse, classLevel),
       ...oracleChannelSpellsKnown(refData, doc.build.oracleChannelAlignment, classLevel),
     ];
@@ -1583,6 +1617,21 @@ function SpontaneousView({
       if (lvl === undefined) continue;
       (knownByLevel.get(lvl) ?? knownByLevel.set(lvl, []).get(lvl)!).push({
         id: sp.id,
+        name: sp.name,
+      });
+    }
+  }
+  // Archetype fixed bonus spells known (engine casting-economy tables): same
+  // treatment as the per-family merges above — castable, cap-exempt, deduped.
+  // Filed under the engine-resolved spell level (the psychic/witch
+  // convention).
+  {
+    const known = new Set(knownList);
+    for (const sp of sheet.bonusKnownSpells?.spells ?? []) {
+      if (sp.classTag !== casterTag) continue;
+      if (sp.spellId !== undefined && known.has(sp.spellId)) continue;
+      (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
+        id: sp.spellId ?? sp.id,
         name: sp.name,
       });
     }

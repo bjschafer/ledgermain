@@ -173,10 +173,22 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   const mysteryEntries = useMemo<SpellEntry[]>(() => {
     if (casterTag !== "oracle") return [];
     return [
-      ...mysterySpellsKnown(refData, doc.build.oracleMystery, classLevel),
+      ...mysterySpellsKnown(
+        refData,
+        doc.build.oracleMystery,
+        classLevel,
+        sheet.bonusKnownSpells?.mysteryReplacedLevels,
+      ),
       ...curseSpellsKnown(refData, doc.build.oracleCurse, classLevel),
     ];
-  }, [casterTag, refData, doc.build.oracleMystery, doc.build.oracleCurse, classLevel]);
+  }, [
+    casterTag,
+    refData,
+    doc.build.oracleMystery,
+    doc.build.oracleCurse,
+    classLevel,
+    sheet.bonusKnownSpells,
+  ]);
 
   // Oracle's auto-known cure/inflict spells (her permanent 1st-level choice,
   // `build.oracleChannelAlignment`): same "auto-granted, read-only, exempt
@@ -211,6 +223,16 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
     if (casterTag !== "shaman") return [];
     return shamanSpiritSpellsKnown(refData, doc.build.shamanSpirit, classLevel);
   }, [casterTag, refData, doc.build.shamanSpirit, classLevel]);
+
+  // Archetype fixed bonus spells known (engine casting-economy tables): same
+  // "auto-granted, read-only, exempt from the cap" treatment as the
+  // per-family blocks above, for any caster class.
+  const archetypeBonusEntries = useMemo<SpellEntry[]>(() => {
+    if (!casterTag) return [];
+    return (sheet.bonusKnownSpells?.spells ?? [])
+      .filter((sp) => sp.classTag === casterTag)
+      .map((sp) => ({ id: sp.spellId ?? sp.id, name: sp.name, level: sp.level }));
+  }, [casterTag, sheet.bonusKnownSpells]);
 
   const preparesFromClassList = !!model?.preparesFromClassList;
 
@@ -526,6 +548,19 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
             refData={refData}
             abilityMod={abilityMod}
             casterLevel={casterLevel}
+          />
+        )}
+
+        {/* Archetype fixed bonus spells: read-only, auto-granted, exempt from the known cap. */}
+        {archetypeBonusEntries.length > 0 && (
+          <MysterySpellsBlock
+            entries={archetypeBonusEntries}
+            refData={refData}
+            abilityMod={abilityMod}
+            casterLevel={casterLevel}
+            title="Archetype Bonus Spells"
+            tagLabel="archetype"
+            storageKey="archetype-bonus-spells"
           />
         )}
 

@@ -3119,6 +3119,44 @@ export interface DerivedSheet {
    * adjustment tables.
    */
   castingAdjustments?: DerivedCastingAdjustment[];
+  /**
+   * Fixed named spells added to a caster class's known list by archetype
+   * features (oracle Bonus Spell schedules, "gains X as a 2nd-level spell
+   * known"). The web's known-spell merges append these the same way the
+   * per-family bonus-known routes (bloodline/mystery/patron/...) are
+   * appended: castable, exempt from the known cap, deduped against picked
+   * spells. Omitted when the character has none.
+   */
+  bonusKnownSpells?: DerivedBonusKnownSpells;
+}
+
+/** See `DerivedSheet.bonusKnownSpells`. */
+export interface DerivedBonusKnownSpells {
+  spells: DerivedBonusKnownSpell[];
+  /**
+   * Oracle class levels whose MYSTERY bonus spells are replaced by an active
+   * archetype's Bonus Spell schedule (`"all"` = the whole schedule). The
+   * web's oracle known-merge filters `mysterySpellsKnown` output by these.
+   */
+  mysteryReplacedLevels?: number[] | "all";
+}
+
+/**
+ * One fixed bonus known spell — see `DerivedSheet.bonusKnownSpells`.
+ * `level` is the spell level the entry files under in the class's economy
+ * (explicit "as an Nth-level spell" override, else the granting class's
+ * list level, else the spell's nominal level). `spellId` resolves against
+ * `RefData.spells` when the named spell is vendored.
+ */
+export interface DerivedBonusKnownSpell {
+  /** Stable id: `bonusknown:<archetype-feature id>:<spell slug>`. */
+  id: string;
+  classTag: string;
+  spellId?: string;
+  name: string;
+  level: number;
+  /** Player-facing source label (the granting feature's archetype/feature name). */
+  source: string;
 }
 
 /**
