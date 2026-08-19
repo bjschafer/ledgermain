@@ -320,8 +320,14 @@ const BOTH: readonly RagePowerEdition[] = ["barbarian", "barbarianUnchained"];
  * (see `raging-song.ts`'s `INSPIRED_RAGE_CHANGES`) — it is not "morally
  * Rage" for rage-power purposes, so including its `effectTag` here would let
  * a skald's song silently unlock rage powers RAW never grants it.
+ *
+ * Exported so `pc-natural-attacks/class-archetype.ts` can reuse the same two
+ * buff ids to gate the raging-only natural-attack grants this table's Animal
+ * Fury/Blood/Totem family carries (Animal Fury, Lesser Abyssal Blood, Lesser
+ * Beast Totem, Lesser Draconic Blood) — one buff gate, not a duplicated
+ * literal prone to drift.
  */
-const WHILE_RAGING: BuffGate = { buffIds: ["UgjpRD8vtiSWRxuL", "ciAO4KwMonUzAGY0"] };
+export const WHILE_RAGING: BuffGate = { buffIds: ["UgjpRD8vtiSWRxuL", "ciAO4KwMonUzAGY0"] };
 
 /** `@classes.barbarian.level + @classes.barbarianUnchained.level` — see `apps/web/src/model/ragePowers.ts`'s `barbarianLevel` for why summing both is correct (a character only ever truly has one, but summing is safe regardless). Missing class paths resolve to 0 (Foundry roll-data convention). */
 const BARBARIAN_LEVEL_SUM = "@classes.barbarian.level + @classes.barbarianUnchained.level";
@@ -385,7 +391,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     summary: "Gain a bite natural attack while raging, usable as part of a full attack.",
     contextNotes: [
       note(
-        "1d4 damage (1d3 if Small); no natural-attack builder in this app — add the bite manually to Weapons while raging.",
+        "Wired via the PC natural-attack table (ragePower:animalFury): a secondary bite, base attack bonus -5, half Strength to damage, appears on the sheet only while the Rage buff is active.",
       ),
     ],
   },
@@ -1496,7 +1502,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
       "As Animal Fury, but the bite attack deals damage as though the barbarian were one size category larger.",
     contextNotes: [
       note(
-        "Requires Animal Fury. Natural-attack sizing bump, not modeled as a Change — same manual-Weapons-entry posture as Animal Fury itself.",
+        "Requires Animal Fury, whose bite is wired via the PC natural-attack table. This power's own effective-size-up rider has no hook onto that grant's dice (it isn't a fresh attack line to attach a Change to) and stays a manual reminder.",
       ),
     ],
   },
@@ -2151,7 +2157,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
       "While raging, grows two primary claw attacks dealing 1d6 slashing (1d4 if Small) plus Strength modifier, at full base attack bonus.",
     contextNotes: [
       note(
-        "Blood rage powers are mutually exclusive as a family — only one blood line may be known. Natural-attack grant, not modeled as a Change — add the claws manually to Weapons while raging, same posture as Animal Fury.",
+        "Blood rage powers are mutually exclusive as a family — only one blood line may be known. Wired via the PC natural-attack table (ragePower:lesserAbyssalBlood), appearing only while raging.",
       ),
     ],
   },
@@ -2173,7 +2179,11 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
     minLevel: 1,
     summary:
       "Gains a bite attack, or if she already has one, it deals damage as though she were one size larger.",
-    contextNotes: [note("Natural-attack grant/upsize, not modeled as a Change.")],
+    contextNotes: [
+      note(
+        "Grants a bite, or upsizes an existing one, depending on whether the barbarian already has a bite attack — the PC natural-attack table's grants are independent per source, with no way to conditionally suppress or upgrade a DIFFERENT source's line, so this dual-branch behavior stays a manual reminder.",
+      ),
+    ],
   },
   {
     id: "lesserBeastTotem",
@@ -2183,7 +2193,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
       "While raging, grows two primary claw attacks dealing 1d6 slashing (1d4 if Small) plus Strength modifier, at full base attack bonus.",
     contextNotes: [
       note(
-        "Natural-attack grant, not modeled as a Change — same manual-Weapons-entry posture as Animal Fury/Lesser Abyssal Blood.",
+        "Wired via the PC natural-attack table (ragePower:lesserBeastTotem), appearing only while raging. Greater Beast Totem's claw-die bump to 1d8 and its pounce ability aren't modeled — there's no hook to upgrade an existing grant's dice without double-granting a second pair of claws.",
       ),
     ],
   },
@@ -2257,7 +2267,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
       "While raging, grows two primary claw attacks dealing 1d6 slashing (1d4 if Small) plus Strength modifier, at full base attack bonus.",
     contextNotes: [
       note(
-        "Natural-attack grant, not modeled as a Change — same manual-Weapons-entry posture as Lesser Abyssal Blood/Lesser Beast Totem.",
+        "Wired via the PC natural-attack table (ragePower:lesserDraconicBlood), appearing only while raging.",
       ),
     ],
   },
@@ -2319,7 +2329,7 @@ const RAGE_POWER_LIST: RagePowerDef[] = build([
       "While raging, grows a gore attack (1d8 piercing, 1d6 if Small, plus Strength modifier) — primary if unarmed, secondary (half Strength, -5 to hit) if also attacking with weapons.",
     contextNotes: [
       note(
-        "Natural-attack grant, not modeled as a Change — same manual-Weapons-entry posture as Animal Fury.",
+        "Unlike Animal Fury (always secondary) or the Blood/Totem claw powers (always primary), this power's primary-vs-secondary split depends on whether the barbarian is ALSO wielding a weapon that round — a per-round tactical fact this static sheet can't check, so it stays a manual reminder rather than the PC natural-attack table's fixed kind.",
       ),
     ],
   },

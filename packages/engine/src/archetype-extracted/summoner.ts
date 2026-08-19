@@ -48,9 +48,12 @@
  *
  * Given these five facts, summoner's kit — built almost entirely around the
  * eidolon, summon monster, and the three companion-interaction class
- * features above — produces exactly ONE `numeric` entry across all 88
- * features (Twinned Summoner's Teamwork Feat, an unconditional bonus-feat
- * count). This was verified by reading each of the 88 features individually,
+ * features above — produces two `numeric` entries across all 88 features:
+ * Twinned Summoner's Teamwork Feat (an unconditional bonus-feat count) and
+ * Storm Caller's Storm's Wings, whose 10th-level clause moves the flight
+ * evolution from the eidolon's build onto the summoner's OWN sheet — the one
+ * exception to fact 1 above, since at that point it's no longer an eidolon
+ * stat. This was verified by reading each of the 88 features individually,
  * not inferred from a class-level heuristic; see each entry's `note`.
  *
  * ── Vendored-data oddities found (worth flagging, no numeric impact) ───────
@@ -551,8 +554,8 @@ export const SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "summoner:storm-caller",
     name: "Storm's Wings",
     level: 6,
-    bucket: "blocked",
-    note: "at 10th level the storm caller himself (not the eidolon) automatically and unconditionally gains 'the flight evolution' — a real flySpeed-shaped grant on the summoner's own sheet, but this feature's own vendored text never restates the flight evolution's actual speed/maneuverability (only cross-references 'Pathfinder Unchained 37'), so there is no number in the vendored prose to quote for provenance; guessing the value isn't permitted",
+    bucket: "numeric",
+    note: "at 10th level the storm caller automatically and unconditionally gains a fly speed equal to base land speed, average maneuverability, on his OWN sheet — the flight evolution's own numbers, unambiguous even though this feature's text only cross-references it (Pathfinder Unchained 37), extracted below. The 6th-level clause (optionally buying the evolution early by spending 2 of the eidolon's evolution points) stays unmodeled: it's a resource spend against the eidolon's own pool, not an unconditional grant",
   },
   "summoner:storm-caller:stormy-eidolon:1": {
     archetypeId: "summoner:storm-caller",
@@ -798,5 +801,39 @@ export const SUMMONER_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       `${(level >= 4 ? 1 : 0) + (level >= 12 ? 1 : 0)} bonus teamwork feat(s) (restriction not modeled)`,
     confidence: "medium",
     provenance: "At 4th level and at 12th level, a twinned summoner gains a bonus teamwork feat.",
+  },
+
+  // Storm's Wings' 10th-level clause: "the storm caller automatically gains
+  // the flight evolution without reducing the number of evolution points
+  // available to the eidolon" — a `set`-operator flySpeed grant equal to
+  // base land speed, average maneuverability, mirroring the flight
+  // evolution's own definition (`eidolon.ts`'s "flight" evolution: `speed: {
+  // mode: "fly", amount: "base" }`, "A fly speed equal to base speed
+  // (average maneuverability)") since the archetype text itself only
+  // cross-references the evolution by name rather than restating its
+  // number. `if(gte(..., 10), ..., 0)` below 10th level, the same
+  // threshold-gated `set` idiom `bloodrager-bloodlines.ts` uses for a
+  // speed grant that only turns on at a specific level (e.g. its own
+  // 12th-level swimSpeed entry) — average maneuverability has no Change
+  // target in this engine (`targets.ts` carries no maneuverability slug),
+  // so it stays a `detail()` reminder only. The 6th-level optional early
+  // grant (spending 2 of the eidolon's own evolution points) isn't
+  // modeled — see the classification entry's note.
+  "summoner:storm-caller:storm-s-wings:6": {
+    changes: [
+      {
+        formula: "if(gte(@classes.summoner.level, 10), @attributes.speed.land.total, 0)",
+        target: "flySpeed",
+        type: "base",
+        operator: "set",
+      },
+    ],
+    detail: (level) =>
+      level >= 10
+        ? "fly speed equal to base land speed (average maneuverability)"
+        : "no automatic flight yet (10th level required for the free grant)",
+    confidence: "medium",
+    provenance:
+      "At 10th level, the storm caller automatically gains the flight evolution without reducing the number of evolution points available to the eidolon.",
   },
 };

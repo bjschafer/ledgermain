@@ -25,6 +25,12 @@ import {
   signedSequence,
   skillName,
 } from "../model/names.js";
+import {
+  naturalAttackDamageLabel,
+  naturalAttackName,
+  naturalAttackNoteLine,
+  naturalAttackTypeSuffix,
+} from "../model/naturalAttackDisplay.js";
 import { d20Formula, d20FormulaFor, damageFormula } from "../model/rollFormula.js";
 import { senseChipLabel, senseTip } from "../model/sensesDisplay.js";
 import { skillBreakdownComponents } from "../model/skillBreakdown.js";
@@ -531,6 +537,70 @@ export function Sheet({
                       ))}
                     </div>
                   ) : null}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Natural attacks (the PC's own claws/bite/etc; omitted from the
+          engine entirely while an active-form is running, so this never
+          shows alongside a polymorph form's attack lines) ------------- */}
+      {sheet.naturalAttacks && sheet.naturalAttacks.length > 0 && (
+        <div className="stat-group">
+          <div className="stat-group-header">
+            <span className="stat-group-legend">Natural Attacks</span>
+            <div className="stat-group-rule" />
+          </div>
+          <div className="weapon-attack-list">
+            {sheet.naturalAttacks.map((atk, i) => {
+              const dmgStr = naturalAttackDamageLabel(atk);
+              const suffix = naturalAttackTypeSuffix(atk);
+              const noteLine = naturalAttackNoteLine(atk);
+              // Matched by name rather than index: a buff-gated grant can
+              // appear/vanish between live and baseline, same reasoning as
+              // the kinetic-blast baseline lookup below.
+              const baseAtk = baseline.naturalAttacks?.find((b) => b.name === atk.name);
+              return (
+                <div key={i} className="weapon-attack-row">
+                  <span className="weapon-attack-name">
+                    {naturalAttackName(atk)}
+                    {suffix && <span className="hint"> {suffix}</span>}
+                    {noteLine && <span className="hint blast-line-sub">{noteLine}</span>}
+                  </span>
+                  <div className="weapon-attack-stats">
+                    <StatSeal
+                      label="Attack"
+                      value={signed(atk.attackBonus)}
+                      components={atk.attackComponents}
+                      provTitle={`${atk.name} attack`}
+                      className="seal--compact"
+                      resetKey={doc.id}
+                      baseline={baseAtk?.attackBonus}
+                      numericValue={atk.attackBonus}
+                      copy={{
+                        formula: d20Formula([atk.attackBonus]),
+                        label: `${atk.name} attack`,
+                      }}
+                    />
+                    <StatSeal
+                      label="Dmg"
+                      value={dmgStr}
+                      components={
+                        atk.damageComponents.length > 0 ? atk.damageComponents : undefined
+                      }
+                      provTitle={`${atk.name} damage`}
+                      className="seal--compact"
+                      resetKey={doc.id}
+                      baseline={baseAtk?.damageBonus}
+                      numericValue={atk.damageBonus}
+                      copy={{
+                        formula: damageFormula(atk.damageDice, atk.damageBonus),
+                        label: `${atk.name} damage`,
+                      }}
+                    />
+                  </div>
                 </div>
               );
             })}

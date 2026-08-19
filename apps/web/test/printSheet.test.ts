@@ -127,6 +127,54 @@ describe("buildPrintSheet — abilities/saves/AC", () => {
   });
 });
 
+describe("buildPrintSheet — natural attacks", () => {
+  it("shares the weapon attack table, with the secondary suffix and notes folded in", () => {
+    let doc = createEmptyDoc("t");
+    doc = addClass(doc, "fighter");
+    doc = setClassLevel(doc, "fighter", 1);
+    const sheet = compute(doc, ref);
+    // Grant tables are hand-authored elsewhere; this only checks buildPrintSheet's
+    // own passthrough, so the fixture stands in rather than depending on a real grant.
+    const withClaws = {
+      ...sheet,
+      naturalAttacks: [
+        {
+          name: "Claw",
+          count: 2,
+          kind: "primary" as const,
+          attackBonus: 4,
+          attackComponents: [],
+          damageDice: "1d4",
+          damageBonus: 2,
+          damageComponents: [],
+        },
+        {
+          name: "Bite",
+          count: 1,
+          kind: "secondary" as const,
+          attackBonus: -1,
+          attackComponents: [],
+          damageDice: "1d6",
+          damageBonus: 1,
+          damageComponents: [],
+          notes: ["Only while raging"],
+        },
+      ],
+    };
+    const data = buildPrintSheet(doc, withClaws, ref);
+
+    const claw = data.attacks.find((a) => a.name === "2 claws");
+    expect(claw?.attack).toBe("+4");
+    expect(claw?.damage).toBe("1d4+2");
+    expect(claw?.crit).toBeUndefined();
+
+    const bite = data.attacks.find((a) => a.name === "Bite (secondary)");
+    expect(bite?.attack).toBe("-1");
+    expect(bite?.damage).toBe("1d6+1");
+    expect(bite?.sub).toBe("Only while raging");
+  });
+});
+
 describe("buildPrintSheet — feats", () => {
   it("lists a chosen feat by name", () => {
     let doc = createEmptyDoc("t");

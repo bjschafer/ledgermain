@@ -142,8 +142,8 @@
  *     bonus is conditional on a location this engine has no state for and
  *     stays prose); Tribe's Manifestation (a flat bonus to all saves equal to
  *     Cha modifier, plus compulsion immunity); Wood's Manifestation (+4
- *     natural armor plus paralysis/poison/sleep/stunned immunity; polymorph
- *     immunity has no slug and stays prose); and Restoration's Healer's Touch
+ *     natural armor plus paralysis/poison/polymorph/sleep/stunned immunity);
+ *     and Restoration's Healer's Touch
  *     and Manifestation, promoted identically to Life's own (see its entry's
  *     citation for the verification history).
  */
@@ -1803,18 +1803,16 @@ const SPIRIT_LIST: ShamanSpiritDef[] = [
       // natural armor bonus to her Armor Class... She gains immunity to
       // paralysis, poison, polymorph, sleep, and stun." Unconditional,
       // always on. `nac` (natural armor, typed "natural" - same convention
-      // as `witch-hexes.ts`'s natural-armor hexes) and four of the five
-      // listed immunities (`paralysis`, `poison`, `sleep`, `stunned`) all
-      // have clean targets in `defenses.ts`'s closed vocabularies.
-      // `polymorph` is NOT in `EFFECT_IMMUNITY_LABELS` (no
-      // `immEffect.polymorph` slug exists anywhere in this engine) so it's
-      // left prose-only rather than inventing one; the DR against wooden
-      // weapons/wood-creature natural attacks is too narrow a bypass
-      // qualifier to model and also stays prose.
+      // as `witch-hexes.ts`'s natural-armor hexes) and all five listed
+      // immunities (`paralysis`, `poison`, `polymorph`, `sleep`, `stunned`)
+      // have clean targets in `defenses.ts`'s closed vocabularies. The DR
+      // against wooden weapons/wood-creature natural attacks is too narrow a
+      // bypass qualifier to model and stays prose.
       changes: [
         c("4", "nac", "natural"),
         c("1", "immEffect.paralysis"),
         c("1", "immEffect.poison"),
+        c("1", "immEffect.polymorph"),
         c("1", "immEffect.sleep"),
         c("1", "immEffect.stunned"),
       ],

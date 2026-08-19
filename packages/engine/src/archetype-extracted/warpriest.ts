@@ -301,7 +301,7 @@ export const WARPRIEST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Sacred Claws",
     level: 0,
     bucket: "subsystem",
-    note: "redirects sacred weapon's damage-by-level table onto natural claw attacks instead of a wielded weapon — sacred weapon carries no vendored changes to begin with (class note 2), and there's no natural-attack damage target either way",
+    note: "redirects sacred weapon's damage-by-level table onto natural claw attacks instead of a wielded weapon — sacred weapon carries no vendored changes to begin with (class note 2), so there's still no baseline number to redirect, even though nattack/ndamage are real targets now",
   },
   "warpriest:feral-champion:wild-shape:7": {
     archetypeId: "warpriest:feral-champion",

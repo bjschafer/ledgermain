@@ -317,9 +317,9 @@ export const VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 1,
     bucket: "subsystem",
     note:
-      "unarmed strike damage as a monk of his level while in his vigilante identity — no Change " +
-      "target for unarmed-strike damage dice (nattack/ndamage are unapplied per targets.ts), and " +
-      "identity-gated besides",
+      "unarmed strike damage as a monk of his level while in his vigilante identity — unarmed " +
+      "strike damage isn't a natural attack (nattack/ndamage don't cover it) and has no Change " +
+      "target of its own, and identity-gated besides",
   },
   "vigilante:brute:scale-surroundings:4": {
     archetypeId: "vigilante:brute",
@@ -406,9 +406,10 @@ export const VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     level: 6,
     bucket: "subsystem",
     note:
-      "gains a gore natural attack while in his vigilante identity — no Change target for natural-" +
-      "attack damage (nattack/ndamage unapplied per targets.ts), identity-gated besides, replaces " +
-      "the 6th-level vigilante talent",
+      "gains a gore natural attack (nattack/ndamage are applied targets now, via the PC natural-" +
+      "attack table), but " +
+      NOTE_IDENTITY_GATED +
+      "; replaces the 6th-level vigilante talent",
   },
   "vigilante:chu-ye-enforcer:deceitful-form:4": {
     archetypeId: "vigilante:chu-ye-enforcer",
@@ -437,8 +438,9 @@ export const VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     bucket: "situational",
     note:
       "grants Improved Unarmed Strike plus a real unarmed-strike damage bonus (half level, min +1, " +
-      "max +5), but scoped to unarmed strikes specifically — no Change target for unarmed-strike " +
-      "damage (nattack/ndamage unapplied), replaces the 1st-level social talent",
+      "max +5), but scoped to unarmed strikes specifically — unarmed strike damage isn't a " +
+      "natural attack (nattack/ndamage don't cover it) and has no Change target of its own, " +
+      "replaces the 1st-level social talent",
   },
   "vigilante:chu-ye-enforcer:third-eye:12": {
     archetypeId: "vigilante:chu-ye-enforcer",
@@ -1384,7 +1386,8 @@ export const VIGILANTE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     note:
       "real, scaling natural armor bonus (+1 at 12th/16th/20th), but " +
       NOTE_IDENTITY_GATED +
-      "; the claw/bite natural attacks have no Change target (nattack/ndamage unapplied) and the " +
+      "; the claw/bite natural attacks are a real PC natural-attack grant now (nattack/ndamage " +
+      "are applied targets), but the same identity gate blocks wiring them too, and the " +
       "18th-level bear-form shapechange is unmodeled",
   },
 

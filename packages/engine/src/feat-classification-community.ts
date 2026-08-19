@@ -2219,7 +2219,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "rat-catcher": "situational",
   "rat-stack": "subsystem",
   "ray-shield": "subsystem",
-  razortusk: "subsystem",
+  razortusk: "numeric",
   "reach-defense": "situational",
   "reach-spell-like-ability": "subsystem",
   "reactive-arcane-shield": "subsystem",
@@ -3252,7 +3252,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "bloatmage-initiate":
     "Per-school caster LEVEL bonus (not a check) — cl stays an unapplied target regardless of school-scoping — and the feat also imposes armor-check/Dex-cap/speed penalties the static sheet doesn't model.",
   "blood-beak":
-    "Sets the beak attack's damage die to 1d6 (a base-die replacement, not an add) plus a crit-triggered bleed rider; ndamage (targets.ts) is unapplied by compute.ts and, being a flat-modifier channel, couldn't carry a die replacement regardless.",
+    "Sets the beak attack's damage die to 1d6 (a base-die replacement, not an add) plus a crit-triggered bleed rider; ndamage (targets.ts) is now applied by compute.ts (pc-natural-attacks/index.ts, folded into every PC natural-attack line's damage), but as a flat-modifier channel it still can't carry a base-die replacement or a crit-triggered bleed rider.",
   "blood-of-heroes":
     "Doubles hero-point gain per level up; hero points are not in the pool tag list. [flag: pool-no-tag]",
   "bolstered-resilience":
@@ -3260,7 +3260,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "boon-companion":
     "+4 effective druid level, to a maximum equal to character level - wired via COMPANION_EFFECT_FEATS onto the tracked companion's stat block. The familiar half of the same feat text stays out of scope (familiar.ts derives off master level directly, with no feat-level boost modeled there).",
   "born-of-frost":
-    "Adds 1d6 cold damage to natural weapons/unarmed strikes on a hit; ndamage (targets.ts) names a natural-attack-damage target but compute.ts never consumes it, and the added damage is dice-valued rather than a flat modifier regardless.",
+    "Adds 1d6 cold damage to natural weapons/unarmed strikes on a hit; ndamage (targets.ts) is now applied by compute.ts to PC natural-attack lines (pc-natural-attacks/index.ts) but not to unarmed strikes (a WeaponInstance, not a natural-attack line), and being a flat-modifier channel it couldn't carry dice-valued damage regardless.",
   "bravery-in-action":
     "Adds the fighter Bravery bonus to initiative, via @classes.fighter.level matching the hand-verified Bravery entry's progression.",
   "breaker-of-barriers":
@@ -3412,7 +3412,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "greater-elemental-focus":
     "Scoped to a chosen energy descriptor like Elemental Focus; spellDC has no descriptor axis, only schools.",
   "greater-wilding-strike":
-    "Same die-size replacement as Wilding Strike, to 1d10 (1d8 if Small); ndamage (targets.ts) is unapplied by compute.ts and couldn't carry a die-size replacement regardless.",
+    "Same die-size replacement as Wilding Strike, to 1d10 (1d8 if Small); ndamage (targets.ts) is now applied by compute.ts to PC natural-attack lines (pc-natural-attacks/index.ts), not to unarmed strikes (a WeaponInstance), and being a flat-modifier channel couldn't carry a die-size replacement regardless.",
   "grenade-expert":
     "Bonus to the single named Craft (alchemy) skill has no stable per-instance target.",
   "guardian-of-tradition":
@@ -3442,7 +3442,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "improved-stalwart":
     "Doubles a DR value granted by the prerequisite Stalwart feat, whose bypass type isn't established here; non-armor DR grants are stacking-suspect.",
   "improved-wilding-strike":
-    "Same die-size replacement as Wilding Strike, to 1d8 (1d6 if Small); ndamage (targets.ts) is unapplied by compute.ts and couldn't carry a die-size replacement regardless.",
+    "Same die-size replacement as Wilding Strike, to 1d8 (1d6 if Small); ndamage (targets.ts) is now applied by compute.ts to PC natural-attack lines (pc-natural-attacks/index.ts), not to unarmed strikes (a WeaponInstance), and being a flat-modifier channel couldn't carry a die-size replacement regardless.",
   improvisation:
     "Untrained skill-check bonus and trained-only access have no per-skill or per-proficiency target in the engine's vocabulary.",
   "inner-breath": "Breathing immunity has no matching immEffect slug in the engine's vocabulary.",
@@ -3511,7 +3511,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "monument-builder":
     "Rank-gated Knowledge (engineering) bonus (+2, or +4 at 10 ranks) is unconditional.",
   "mother-s-gift":
-    "Wired via the entry's own named-option choice axis: Surprisingly Tough grants +1 natural armor (nac/increase), Uncanny Resistance grants spell resistance 6 + character level (spellResist/set). Hag Claws has no PC-facing claw-attack target (racial natural attacks aren't modeled as a weapon instance). Repeatable up to three times per RAW, one manifestation per instance.",
+    "Wired via the entry's own named-option choice axis: Hag Claws grants +1 nattack/+1 ndamage (pool-wide, like every other nattack/ndamage source), Surprisingly Tough grants +1 natural armor (nac/increase), Uncanny Resistance grants spell resistance 6 + character level (spellResist/set). Repeatable up to three times per RAW, one manifestation per instance.",
   "nature-soul": "Unconditional +2 bonus to Knowledge (nature) and Survival, rank-gated to +4.",
   "necromantic-affinity":
     "Wired via saveCategories: unconditional +2 vs energy drain (negative levels) and ability damage/drain. The broader 'utilize negative energy' clause and the inflict/cure vulnerability swap have no matching engine target and stay prose.",
@@ -3556,6 +3556,8 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Doubles the Dodge feat's dodge bonus specifically for CMD purposes; whether the engine already folds AC dodge bonuses into CMD is unclear, risking a double count. [flag: unsure]",
   "quivering-palm-adept":
     "Wired via abilityDC.quiveringPalm: +2 to the Quivering Palm DC (untyped) — see feat-effects.ts's StaticFeatEntry map. Its own prereq (the Quivering Palm class feature) means it only ever lands on a chained monk 15+, the one build ability-dcs.ts carries a quiveringPalm DC line for.",
+  razortusk:
+    "Grants a bite attack (half-orc), always secondary per the feat's own text regardless of being the character's only natural attack — wired via FEAT_NATURAL_ATTACKS (pc-natural-attacks/feats.ts, kind explicitly overridden to secondary).",
   recalcitrant:
     "Adds +2 to the DC of others' Intimidate checks made against the character; the engine has no target for modifying incoming check DCs.",
   "scale-and-skin":
@@ -3725,7 +3727,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Unconditional rank-gated Perception bonus (the extra surprise-round-only bonus is left unmodeled as situational).",
   "wilding-stride": "Unconditional +10 ft base speed increase.",
   "wilding-strike":
-    "Sets the unarmed strike damage die to 1d6 (1d4 if Small), a die-size replacement rather than an add; ndamage (targets.ts) is unapplied by compute.ts and, being a flat-modifier channel, couldn't carry a die-size replacement regardless.",
+    "Sets the unarmed strike damage die to 1d6 (1d4 if Small), a die-size replacement rather than an add; ndamage (targets.ts) is now applied by compute.ts to PC natural-attack lines (pc-natural-attacks/index.ts), not to unarmed strikes (a WeaponInstance, not a natural-attack line), and being a flat-modifier channel couldn't carry a die-size replacement regardless.",
   "will-of-giants":
     "Grants immunity only to enchantment effects that target humanoids specifically; narrower than a general immEffect.charm/compulsion grant, so applying either would overclaim immunity.",
   "witch-knife":

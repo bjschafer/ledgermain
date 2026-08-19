@@ -3696,14 +3696,15 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         // to acid, petrification, and polymorph effects (except when cast on
         // self), as well as a +2 bonus to save DCs and on checks to overcome
         // spell penetration against creatures with the lawful subtype."
-        // Polymorph-effect immunity has no closed-vocabulary immEffect slug
-        // (only specific named effects like sleep/paralysis/phantasms are
-        // covered) — stays display only, unlike acid/petrification.
-        changes: [c("1", "imm.acid", "untyped"), c("1", "immEffect.petrification", "untyped")],
+        changes: [
+          c("1", "imm.acid", "untyped"),
+          c("1", "immEffect.petrification", "untyped"),
+          c("1", "immEffect.polymorph", "untyped"),
+        ],
         contextNotes: [
           {
             target: "allChecks",
-            text: "Also immune to polymorph effects (except your own); no polymorph-immunity target exists, so that clause and the +2 vs. lawful save DC/penetration bonus stay manual.",
+            text: "The polymorph immunity carves out your own self-cast polymorph effects, which this Change can't distinguish; the +2 vs. lawful save DC/penetration bonus stays manual.",
           },
         ],
       },
@@ -4355,14 +4356,11 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Superior Transformation",
         summary:
           "Immune to polymorph effects unless willing; once per day, a self-cast polymorph spell also grants a fly speed of 60 ft., a swim speed of 60 ft., or +30 ft. base land speed (your choice).",
-        // "Immune to polymorph effects" has no immEffect slug in the closed
-        // vocabulary (magicSleep/sleep/paralysis/... doesn't include
-        // polymorph) — stays display only, same gap Verdant's Shepherd of
-        // the Trees hits below.
+        changes: [c("1", "immEffect.polymorph", "untyped")],
         contextNotes: [
           {
             target: "allChecks",
-            text: "Polymorph immunity has no tracked target; the bonus movement mode only applies once daily when self-polymorphing; both display only.",
+            text: "The immunity carves out effects you're willing to accept, which this Change can't distinguish; the once-daily bonus movement mode from a self-cast polymorph spell stays manual.",
           },
         ],
       },
@@ -4854,20 +4852,16 @@ const BLOODLINE_LIST: BloodlineDef[] = [
         name: "Shepherd of the Trees",
         summary:
           "+4 natural armor; immune to paralysis, poison, polymorph, sleep, and stunning; tremorsense 30 ft. even when not rooted.",
-        // "Polymorph" has no immEffect slug in the closed vocabulary — the
-        // other four map cleanly. Tremorsense is genuinely unconditional
-        // here (unlike Rooting's 15th-level version, which only applies
-        // while rooted).
+        // Tremorsense is genuinely unconditional here (unlike Rooting's
+        // 15th-level version, which only applies while rooted).
         changes: [
           c("4", "nac", "natural"),
           c("1", "immEffect.paralysis", "untyped"),
           c("1", "immEffect.poison", "untyped"),
+          c("1", "immEffect.polymorph", "untyped"),
           c("1", "immEffect.sleep", "untyped"),
           c("1", "immEffect.stunned", "untyped"),
           c("30", "sensets", "untyped"),
-        ],
-        contextNotes: [
-          { target: "allChecks", text: "Polymorph immunity has no tracked target; display only." },
         ],
       },
     ],

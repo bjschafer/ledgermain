@@ -459,7 +459,7 @@ const HEX_LIST: WitchHexDef[] = [
       summary:
         "Your nails grow into natural weapons dealing 1d3 damage (1d2 if Small) as a secondary attack; trimmed nails regrow within 1d4 days.",
       contextNotes: [
-        note("Grants a natural claw attack. Add it by hand if you use it.", "nattack"),
+        note("Wired via the PC natural-attack table (hex:nails); standing once the hex is known."),
       ],
     },
     {

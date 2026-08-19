@@ -35,11 +35,19 @@
  *    `pairedBaseFeatureUuid` — so Fast Movement's Change keeps applying in
  *    full regardless, a pre-existing over-application gap unrelated to
  *    (and not touched by) any of this file's own extractions.
- * 3. **Natural attacks** (claws, slams, bites) aren't a modeled subsystem
- *    anywhere in this engine — `nattack`/`ndamage` are explicitly listed as
- *    unapplied targets (`targets.ts`). Hag-Riven's claws, Rageshaper's
- *    Terrible Slam, and every feature riding either stay `subsystem` for
- *    that reason, independent of whatever real numbers their prose states.
+ * 3. **Natural attacks** (claws, slams, bites): Hag-Riven's Claws of the Hag
+ *    and Rageshaper's Terrible Slam are both unconditional, standing grants
+ *    — wired outside this file, via `pc-natural-attacks/class-archetype.ts`'s
+ *    `ARCHETYPE_FEATURE_NATURAL_ATTACKS` (level-scaled dice, matching each
+ *    feature's own breakpoints). This file's own classification entries for
+ *    those two features stay `subsystem` regardless, since this pipeline's
+ *    `numeric` bucket means "extracted a Change HERE," and a rider each
+ *    carries (Claws of the Hag's DR-bypass/threat-range steps, Terrible
+ *    Slam's hardness-bypass) has no target either way. Every OTHER feature
+ *    riding either grant (Sorcerous Claws' enhancement bonus, Hexing Claws'
+ *    feat swap, ...) stays `subsystem` too — a resource-spend or pick-list
+ *    layered on top of a grant that, while now wired, still can't carry an
+ *    enhancement bonus or a conditional feat swap through this table's shape.
  * 4. **Mounts and animal companions** (Bloodrider's Feral Mount) carry the
  *    mount's own numbers, never the bloodrager's — no mount subsystem is
  *    tracked here, the same ruling `samurai.ts`/`cavalier.ts` use for
@@ -258,14 +266,14 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Claws of the Hag",
     level: 1,
     bucket: "subsystem",
-    note: "grants a scaling primary claw natural attack (1d4 to 1d8, magic at 2nd, 19-20 crit at 13th) — natural-attack targets aren't consumed by this engine (class note 3)",
+    note: "wired via the PC natural-attack table, not this pipeline (class note 3) — the base scaling claws (1d4 to 1d8) appear on the sheet, while the magic-DR-bypass-at-2nd and 19-20-crit-at-13th riders stay a manual reminder there",
   },
   "bloodrager:hag-riven:sorcerous-claws:5": {
     archetypeId: "bloodrager:hag-riven",
     name: "Sorcerous Claws",
     level: 5,
     bucket: "subsystem",
-    note: "swift-action enhancement bonus (up to +5) and weapon properties to her claws, paid for by sacrificing a spell slot — resource-spend ability riding the unmodeled claws (class note 3)",
+    note: "swift-action enhancement bonus (up to +5) and weapon properties to her claws, paid for by sacrificing a spell slot — a resource-spend rider on top of the now-wired claws (class note 3), no target for the bonus itself",
   },
   "bloodrager:hag-riven:scarred-hide:7": {
     archetypeId: "bloodrager:hag-riven",
@@ -279,7 +287,7 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Hexing Claws",
     level: 10,
     bucket: "subsystem",
-    note: "Critical Focus as a named bonus feat (claw-attacks only) plus a daily-chosen Critical-Focus-dependent feat swap — pick-list grants riding the unmodeled claws (class note 3)",
+    note: "Critical Focus as a named bonus feat (claw-attacks only) plus a daily-chosen Critical-Focus-dependent feat swap — pick-list grants riding the now-wired claws (class note 3), neither expressible as a Change",
   },
 
   // ── bloodrager:id-rager ──
@@ -394,7 +402,7 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Terrible Slam",
     level: 1,
     bucket: "subsystem",
-    note: "grants a slam natural attack (as \"the shifter claws class ability,\" class note 7) that ignores 5-20 points of an object's hardness — natural-attack target unmodeled (class note 3), and object hardness isn't tracked either",
+    note: 'grants a slam natural attack (as "the shifter claws class ability," class note 7), wired via the PC natural-attack table, not this pipeline (class note 3) — the hardness-ignoring rider (5 to 20 points by level) has no target and stays a manual reminder there',
   },
   "bloodrager:rageshaper:invulnerable-defenses:2": {
     archetypeId: "bloodrager:rageshaper",

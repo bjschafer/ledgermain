@@ -444,7 +444,7 @@ export const BRAWLER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Phytological Anatomy",
     level: 11,
     bucket: "numeric",
-    note: "flat, unconditional +2 on saves vs. mind-affecting, paralysis, poison, polymorph, sleep, and stunning effects — the mind/poison/stun save categories carry it (sleep is a child of mind); paralysis and polymorph have no SAVE_CATEGORIES entry and are dropped, flagged in detail",
+    note: "flat, unconditional +2 on saves vs. mind-affecting, paralysis, poison, polymorph, sleep, and stunning effects — all six map onto Change.saveCategories (sleep as a child of mind, the rest 1:1), see the extraction below",
   },
   "brawler:verdant-grappler:thorny-embrace:5": {
     archetypeId: "brawler:verdant-grappler",

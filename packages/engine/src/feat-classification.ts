@@ -63,12 +63,13 @@
  * (neither bucket ever emits a Change), only audit-file clarity.
  *
  * Frozen at the time of the original audit, with one exception: verdicts that
- * turned on the lack of a maneuver-scoped CMB/CMD vocabulary or a save
- * category the engine didn't yet have consult the current, larger vocabulary
- * (`maneuver-categories.ts`, `save-categories.ts`) rather than the one that
- * existed when the entry was first written — a handful of entries have been
- * revisited and promoted on that basis, never on a re-reading of the rules
- * text itself.
+ * turned on the lack of a maneuver-scoped CMB/CMD vocabulary, a save
+ * category, or (as of the PC natural-attack mechanism) a PC-facing natural-
+ * attack target the engine didn't yet have consult the current, larger
+ * vocabulary (`maneuver-categories.ts`, `save-categories.ts`,
+ * `pc-natural-attacks/`) rather than the one that existed when the entry was
+ * first written — a handful of entries have been revisited and promoted on
+ * that basis, never on a re-reading of the rules text itself.
  */
 
 export type FeatClassificationBucket =
@@ -208,8 +209,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "aspect-of-the-beast": {
     slug: "aspect-of-the-beast",
     name: "Aspect of the Beast",
-    bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    bucket: "blocked",
+    note: "one of four manifestations chosen once and never changed; Claws of the Beast (primary claw attack, 1d4/1d3 if Small) would grant cleanly through FEAT_NATURAL_ATTACKS, but the feat has no ChoiceFeatEntry/stored pick to gate it on, and PcNaturalAttackDef.when(doc) has no refData to resolve the character's opaque feat id back to this slug even if one were stored — the other three manifestations (Night Senses, Predator's Leap, Wild Instinct) stay unwired regardless",
   },
   athletic: {
     slug: "athletic",
@@ -670,8 +671,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "eldritch-claws": {
     slug: "eldritch-claws",
     name: "Eldritch Claws",
-    bucket: "situational",
-    note: "real numeric bonus, but scoped to a specific maneuver/weapon/enemy-state/action the static sheet can't detect without over-applying — per the honesty bar (heuristic-assisted bulk pass, see file header)",
+    bucket: "subsystem",
+    note: "grants a DR-bypass property (magic and silver, cold iron too via the Combat Trick) on the character's natural weapons, not an attack/damage number — natural-attack lines (pc-natural-attacks/) have no per-attack property surface to carry it",
   },
   "elemental-channel": {
     slug: "elemental-channel",
@@ -1589,7 +1590,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "multiattack",
     name: "Multiattack",
     bucket: "subsystem",
-    note: "reduces secondary natural-attack penalty — natural-attack-specific penalty isn't modeled as a discrete number",
+    note: "softens the PC's own secondary-natural-attack penalty from -5 to -2, applied directly by pc-natural-attacks/index.ts's resolver (a characterFeatSlugs check, same as it already does for companion/eidolon Multiattack) rather than as a Change — no FEAT_EFFECTS/FEAT_NATURAL_ATTACKS entry needed",
   },
   "multiweapon-fighting": {
     slug: "multiweapon-fighting",
@@ -2248,8 +2249,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "tail-terror": {
     slug: "tail-terror",
     name: "Tail Terror",
-    bucket: "subsystem",
-    note: "grants a new natural tail-slap attack (kobold), no existing Change target for a new natural attack",
+    bucket: "numeric",
+    note: "wired via FEAT_NATURAL_ATTACKS (pc-natural-attacks/feats.ts), not FEAT_EFFECTS: grants a secondary Tail Slap natural attack, 1d4 bludgeoning; the Combat Trick's stamina-spend upgrade to a primary attack stays unwired (stamina subsystem)",
   },
   technologist: {
     slug: "technologist",

@@ -864,10 +864,16 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
       "You gain a +2 bonus on Knowledge (engineering) checks. If you have 10 or more ranks in Knowledge (engineering), this bonus increases to +4",
   },
   // Three manifestations, repeatable up to three times (one per
-  // manifestation; RAW: "effects do not stack"). Hag Claws has no PC-facing
-  // claw-attack target (racial natural attacks aren't modeled as a weapon
-  // instance in this engine); Surprisingly Tough's "increases by +1" phrasing
-  // matches the nac/"increase" convention (see Improved Natural Armor,
+  // manifestation; RAW: "effects do not stack"). Hag Claws' "+1 bonus on
+  // attack and damage rolls with your claws" now has a home in nattack/
+  // ndamage (pc-natural-attacks/index.ts folds both into every PC
+  // natural-attack line's total) — untyped per the same convention as
+  // Weapon Focus's unstated-type feat bonus. Like every other nattack/
+  // ndamage source, the bonus is pool-wide rather than scoped to "claws"
+  // specifically, but a changeling's only PC natural attack is normally its
+  // racial claws, so this matches the feat's intent in the overwhelming
+  // common case. Surprisingly Tough's "increases by +1" phrasing matches the
+  // nac/"increase" convention (see Improved Natural Armor,
   // feat-effects-extracted.ts); Uncanny Resistance is a flat spell-resistance
   // grant on the same operator:"set" pattern every other SR source uses
   // (defenses.ts).
@@ -883,8 +889,14 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
       ],
     },
     confidence: "high",
-    provenance: "Your natural armor bonus increases by +1.",
+    provenance: "You gain a +1 bonus on attack and damage rolls with your claws.",
     build(choiceId: string) {
+      if (choiceId === "hag-claws") {
+        return [
+          { target: "nattack", type: "untyped", formula: "1" },
+          { target: "ndamage", type: "untyped", formula: "1" },
+        ];
+      }
       if (choiceId === "surprisingly-tough") {
         return [{ target: "nac", type: "increase", formula: "1" }];
       }

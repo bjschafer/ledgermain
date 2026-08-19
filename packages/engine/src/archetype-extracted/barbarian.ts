@@ -803,7 +803,7 @@ export const BARBARIAN_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Animal Fury",
     level: 2,
     bucket: "subsystem",
-    note: "grants a bite natural attack while raging — no natural-attack target is applied by this engine",
+    note: "forces animal fury as the 2nd-level rage power pick — a restriction on which power is chosen, not an independent grant; Animal Fury's own bite is wired via the ragePower:animalFury PC natural-attack entry regardless of which archetype forced the pick",
   },
   "barbarian:raging-cannibal:consume-vigor:2": {
     archetypeId: "barbarian:raging-cannibal",

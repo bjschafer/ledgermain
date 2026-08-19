@@ -73,9 +73,9 @@ describe("SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     for (const entry of Object.values(SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts["numeric"]).toBe(1);
+    expect(counts["numeric"]).toBe(2);
     expect(counts["situational"]).toBe(12);
-    expect(counts["blocked"]).toBe(3);
+    expect(counts["blocked"]).toBe(2);
     expect(counts["subsystem"]).toBe(72);
   });
 
@@ -83,7 +83,7 @@ describe("SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const numericIds = Object.entries(SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(1);
+    expect(numericIds.length).toBe(2);
     for (const id of numericIds) {
       expect(SUMMONER_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -106,8 +106,8 @@ describe("SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
 describe("SUMMONER_ARCHETYPE_EFFECTS_EXTRACTED: provenance and applied-target hygiene", () => {
   const entries = Object.entries(SUMMONER_ARCHETYPE_EFFECTS_EXTRACTED);
 
-  it("has exactly 1 entry", () => {
-    expect(entries.length).toBe(1);
+  it("has exactly 2 entries", () => {
+    expect(entries.length).toBe(2);
   });
 
   it("every provenance is a verbatim substring of the vendored description", () => {
@@ -215,14 +215,25 @@ describe("blocked bucket: duplicate id and unquantifiable-number cases", () => {
       SUMMONER_ARCHETYPE_EFFECTS_EXTRACTED["summoner:naturalist:natural-focus:1"],
     ).toBeUndefined();
   });
+});
 
-  it("Storm Caller's Storm's Wings grants the summoner flight at 10th level but never states a speed — blocked, not guessed", () => {
+describe("Storm Caller's Storm's Wings: flight evolution grant at 10th level (numeric, not blocked)", () => {
+  it("the flight evolution's own numbers (fly speed = base land speed) back the extraction, since the archetype text only cross-references it", () => {
     const entry =
       SUMMONER_ARCHETYPE_FEATURE_CLASSIFICATION["summoner:storm-caller:storm-s-wings:6"];
-    expect(entry?.bucket).toBe("blocked");
+    expect(entry?.bucket).toBe("numeric");
+    const extracted =
+      SUMMONER_ARCHETYPE_EFFECTS_EXTRACTED["summoner:storm-caller:storm-s-wings:6"]!;
+    expect(extracted).toBeDefined();
     expect(
-      SUMMONER_ARCHETYPE_EFFECTS_EXTRACTED["summoner:storm-caller:storm-s-wings:6"],
-    ).toBeUndefined();
+      evaluateFormula(extracted.changes[0]!.formula, { classes: { summoner: { level: 9 } } }),
+    ).toBe(0);
+    expect(
+      evaluateFormula(extracted.changes[0]!.formula, {
+        classes: { summoner: { level: 10 } },
+        attributes: { speed: { land: { total: 30 } } },
+      }),
+    ).toBe(30);
   });
 });
 

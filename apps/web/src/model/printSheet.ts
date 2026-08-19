@@ -23,6 +23,12 @@ import {
   signedSequence,
   skillName,
 } from "./names.js";
+import {
+  naturalAttackDamageLabel,
+  naturalAttackName,
+  naturalAttackNoteLine,
+  naturalAttackTypeSuffix,
+} from "./naturalAttackDisplay.js";
 import { preparedSpells, spellLevelMap } from "./preparedSpells.js";
 import { remaining as remainingUses } from "./resources.js";
 import { senseChipLabel } from "./sensesDisplay.js";
@@ -75,7 +81,8 @@ export interface PrintAttack {
   name: string;
   attack: string;
   damage: string;
-  crit: string;
+  /** Absent for a natural attack, which the schema doesn't carry a crit multiplier for. */
+  crit?: string;
   /**
    * DR qualifiers this weapon overcomes, comma-joined ("cold iron, silver,
    * magic"). Absent when it overcomes none. Printed under the weapon name,
@@ -85,8 +92,8 @@ export interface PrintAttack {
   /**
    * Range increment / firearm misfire / capacity / touch-AC band, from
    * `weaponAttackSubLine` — the same string the on-screen sheet's grey
-   * sub-line shows, so the two never drift. Absent for a melee weapon with no
-   * firearm data.
+   * sub-line shows, so the two never drift for a weapon. A natural attack
+   * reuses this slot for its own granting-def reminders instead.
    */
   sub?: string;
 }
@@ -494,6 +501,19 @@ export function buildPrintSheet(
           attack: signed(blast.attack.total),
           damage: [blast.damageDice, bonusStr].filter(Boolean).join(""),
           crit: blast.crit,
+        };
+      }),
+      // The PC's own natural attacks (claws, a bite from a rage power, ...) —
+      // sharing this table rather than a section of their own, same posture
+      // as the blasts above.
+      ...(sheet.naturalAttacks ?? []).map((atk) => {
+        const suffix = naturalAttackTypeSuffix(atk);
+        const noteLine = naturalAttackNoteLine(atk);
+        return {
+          name: suffix ? `${naturalAttackName(atk)} ${suffix}` : naturalAttackName(atk),
+          attack: signed(atk.attackBonus),
+          damage: naturalAttackDamageLabel(atk),
+          ...(noteLine ? { sub: noteLine } : {}),
         };
       }),
     ],

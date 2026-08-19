@@ -87,6 +87,12 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "47 species and 4 templates modeled. The published expanded Improved Familiar table exceeds 90 rows; the remainder lack authored stat blocks, the kami familiars the ninja's spiritual companion trick names among them. Familiar archetypes are a separate absent subsystem.",
   },
   {
+    category: "Eidolon evolutions",
+    note: "Every evolution is pickable and point-costed on your eidolon, but only the structured kinds (extra attacks, armor, ability increases, size, speed) change its derived stat block. The rest, like Grab, Poison, Immunity, Fast Healing, or Damage Reduction, show as picked abilities with rules text for you to apply at the table.",
+    issueDetail:
+      "81 evolutions are pickable against the pool; 18 (the attack, armor, ability, size, and speed kinds) move numbers in the eidolon derivation. The other 63 are display kind: picked and point-costed but applying nothing, defenses included, since the eidolon's defense block is fed only by unchained subtype grants, never by evolution picks.",
+  },
+  {
     category: "Witch patrons",
     note: 'The published patrons are all in the picker with their bonus spells. The nine "unique" patrons are shown but not applied: the hex one grants, the theme you pick under it, and the spells it swaps in are all yours to apply by hand.',
     issueDetail:

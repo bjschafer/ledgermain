@@ -26,11 +26,16 @@
  *    restatements of its cadence (minutes- or hours-per-day conversions) or
  *    its available form list are `subsystem` — pool sizing isn't a Change
  *    target, and none of them yields a baseline modifier.
- * 3. **Shifter Claws** (base L1, no vendored `changes`) and every archetype
- *    natural-attack reflavor of it (slams, bites, gores, morphic weaponry,
- *    swarm touch attacks) are per-attack profiles — `nattack`/`ndamage`
- *    aren't applied targets (`targets.ts` unapplied list), so these are
- *    `situational`.
+ * 3. **Shifter Claws** (base L1, no vendored `changes`) is wired outside this
+ *    file, via `pc-natural-attacks/class-archetype.ts`'s
+ *    `CLASS_FEATURE_NATURAL_ATTACKS` (keyed off the vendored class-feature
+ *    id, level-scaled dice), since that table — not this archetype-effects
+ *    one — is where a PC-body natural-attack grant belongs. This file's own
+ *    entries stay `situational`/`subsystem` for other reasons: an archetype
+ *    reflavor tied to an activated aspect/form (fact 1 above), a player
+ *    choice with no stored pick field (Adaptive Claws), or a rider (DR
+ *    bypass, an attached economy) the natural-attack table's per-line shape
+ *    can't express even though the base grant itself now can be.
  * 4. **Defensive Instinct** (base L2) is the only base shifter feature whose
  *    vendored entry carries real `changes` (Wis mod + level/4 to ac/cmd).
  *    The one archetype feature replacing it (Wild Effigy's Heart of Earth)
@@ -67,7 +72,7 @@ export const SHIFTER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Adaptive Claws",
     level: 1,
     bucket: "situational",
-    note: "swaps the shifter-claws attack profile for a bite/gore/tail-slap choice — per-attack natural-attack profile (class note 3)",
+    note: "lets the shifter manifest a bite/gore/tail-slap attack instead of claws, same dice as Shifter Claws — a per-use player choice with no stored pick field, so the base Shifter Claws grant (wired, class note 3) stays the sheet's default rather than this alternate form",
   },
   "shifter:adaptive-shifter:reactive-aspect:1": {
     archetypeId: "shifter:adaptive-shifter",

@@ -42,11 +42,13 @@
  * with other bomb-type riders per RAW — Paizo's own "don't stack, one per
  * bomb" rule, worth noting but not enforced by this table), an activated/
  * limited-use ability, or a passive prose ability with no flat always-on
- * number this engine's Change system can safely target (e.g. Feral Mutagen's
- * extra natural attacks require a natural-attack builder this engine doesn't
- * have; mutagen-conditional numbers like Bone-Spike Mutagen's ride an
- * untoggleable variant, not the sheet). Those entries have `changes: []` and
- * a `contextNotes` reminder carrying the mechanic's numbers/prerequisite
+ * number this engine's Change system can safely target (e.g. mutagen-
+ * conditional numbers like Bone-Spike Mutagen's ride an untoggleable
+ * variant, not the sheet). Feral Mutagen is the one exception: its claws/
+ * bite are wired through `pc-natural-attacks/class-archetype.ts`'s
+ * `discovery:feralMutagen` entry, gated on any of the three Mutagen buffs.
+ * Those other entries have `changes: []` and a `contextNotes` reminder
+ * carrying the mechanic's numbers/prerequisite
  * instead. The exceptions that cleared the bar (consumed by `collect.ts`'s
  * alchemist-discovery loop): Awakened Intellect's permanent +2 Int, Chameleon's
  * +4/+8 enhancement to Stealth, Pheromones' +3 competence to Bluff/Diplomacy/
@@ -218,7 +220,7 @@ const DISCOVERY_LIST: AlchemistDiscoveryDef[] = build([
       "While a mutagen is active, gain two claw attacks and a bite attack as primary natural attacks at your full base attack bonus, plus +2 on Intimidate checks.",
     contextNotes: [
       note(
-        "Natural-attack grant while mutagen active — this engine has no natural-attack builder to wire it into; add the attacks manually.",
+        "Claws/bite are wired via the PC natural-attack table, gated on the Mutagen buff. The +2 Intimidate rider has no Change target and stays a manual reminder.",
       ),
     ],
   },

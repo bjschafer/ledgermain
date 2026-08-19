@@ -10,6 +10,7 @@ import {
 import { FEAT_EFFECTS, FEAT_POOL_EFFECTS, featNameSlug } from "../src/feat-effects.js";
 import { FEAT_EFFECTS_EXTRACTED } from "../src/feat-effects-extracted.js";
 import { FEAT_EFFECTS_EXTRACTED_COMMUNITY } from "../src/feat-effects-extracted-community.js";
+import { FEAT_NATURAL_ATTACKS } from "../src/pc-natural-attacks/feats.js";
 
 const ref = loadRefData();
 
@@ -81,7 +82,8 @@ describe("FEAT_CLASSIFICATION_COMMUNITY completeness", () => {
         const wired =
           slug in FEAT_EFFECTS_EXTRACTED_COMMUNITY ||
           slug in FEAT_EFFECTS ||
-          slug in FEAT_EFFECTS_EXTRACTED;
+          slug in FEAT_EFFECTS_EXTRACTED ||
+          slug in FEAT_NATURAL_ATTACKS;
         expect(wired ? slug : `${slug}: mover without an effects entry`).toBe(slug);
       }
       if (bucket === "pool") {

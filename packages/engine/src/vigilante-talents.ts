@@ -792,7 +792,9 @@ const TALENT_LIST: VigilanteTalentEntry[] = buildTalent([
     summary:
       "Gain claws as natural weapons (1d4 piercing/slashing, 1d3 if Small; 1d6/1d4 at 11th level), extendable at will.",
     contextNotes: [
-      note("Natural-attack grant — this engine has no natural-attack builder; add manually."),
+      note(
+        "Claw attack lines derive automatically (see the PC natural-attack table); the piercing-or-slashing damage-type choice stays at the table.",
+      ),
     ],
   },
   {

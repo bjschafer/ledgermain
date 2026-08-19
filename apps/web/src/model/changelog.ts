@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-19-pc-natural-attacks",
+    date: "2026-08-19",
+    title: "Natural attacks get real attack lines",
+    note: "Racial claws, a bite from a rage power, mutagen claws, and any other natural attack your character grows now show up on the Attacks panel with their own numbers: primary attacks at full strength, secondary attacks at the right penalty and half damage bonus. Buffs and other effects that boost natural attack rolls or damage now apply to those lines too, and the print sheet lists them the same way.",
+  },
+  {
     id: "2026-08-18-firearms",
     date: "2026-08-18",
     title: "Firearms show misfire, capacity, and range",
