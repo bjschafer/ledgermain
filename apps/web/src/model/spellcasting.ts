@@ -110,6 +110,7 @@ import {
 import type {
   AbilityId,
   CharacterDoc,
+  DerivedCastingAdjustment,
   ElementalSchoolTag,
   RefData,
   WizardSchoolTag,
@@ -137,6 +138,59 @@ export function bonusSpellsForLevel(abilityMod: number, spellLevel: number): num
   if (spellLevel === 0) return 0;
   if (abilityMod < spellLevel) return 0;
   return Math.floor((abilityMod - spellLevel) / 4) + 1;
+}
+
+// ---------------------------------------------------------------------------
+// Casting-economy adjustments (engine hand tables)
+// ---------------------------------------------------------------------------
+
+/**
+ * A caster class's summed slot/known/prepared count deltas from
+ * `DerivedSheet.castingAdjustments`, ready for the fold in
+ * {@link spellSlotsByLevel} / {@link spellsKnownLimitsByLevel} /
+ * {@link preparedCapacityByLevel}: `each` applies at every leveled spell
+ * level (1–9, never cantrips), `byLevel` at its explicit levels only
+ * (cantrips included when an adjustment names level 0). Adjustments only
+ * ever EDIT levels the class progression already emits — they never add a
+ * slot row at a level the caster can't reach.
+ */
+export interface CastingDeltas {
+  each: number;
+  byLevel: ReadonlyMap<number, number>;
+}
+
+/**
+ * Sum the sheet's casting adjustments for one caster class and count kind.
+ * Returns `undefined` when nothing matches so callers can pass the result
+ * straight through as the optional fold parameter.
+ */
+export function castingDeltasFor(
+  adjustments: readonly DerivedCastingAdjustment[] | undefined,
+  classTag: string,
+  kind: DerivedCastingAdjustment["kind"],
+): CastingDeltas | undefined {
+  if (!adjustments) return undefined;
+  let each = 0;
+  const byLevel = new Map<number, number>();
+  let any = false;
+  for (const adj of adjustments) {
+    if (adj.classTag !== classTag || adj.kind !== kind) continue;
+    any = true;
+    if (adj.spellLevels === "each") {
+      each += adj.delta;
+    } else {
+      for (const level of adj.spellLevels) {
+        byLevel.set(level, (byLevel.get(level) ?? 0) + adj.delta);
+      }
+    }
+  }
+  return any ? { each, byLevel } : undefined;
+}
+
+/** The summed delta at one spell level (0 without deltas; `each` skips cantrips). */
+function deltaAt(deltas: CastingDeltas | undefined, level: number): number {
+  if (!deltas) return 0;
+  return (level >= 1 ? deltas.each : 0) + (deltas.byLevel.get(level) ?? 0);
 }
 
 // ---------------------------------------------------------------------------
@@ -670,7 +724,7 @@ export function grantedCantrips(
 // Spell slots per day
 // ---------------------------------------------------------------------------
 
-/** Slot capacity at one spell level: base (table) + bonus (ability) = total. */
+/** Slot capacity at one spell level: base (table) + bonus (ability) + adjustment = total. */
 export interface SpellSlotLevel {
   /** Spell level, 0–9. */
   level: number;
@@ -678,7 +732,13 @@ export interface SpellSlotLevel {
   base: number;
   /** Bonus slots from a high casting ability (0 for cantrips). */
   bonus: number;
-  /** Slots available to prepare at this level. */
+  /**
+   * Summed casting-economy adjustment folded into `total` (see
+   * {@link CastingDeltas}); present only when nonzero. May exceed what
+   * `total` actually moved when the clamp at 0 bit.
+   */
+  adjustment?: number;
+  /** Slots available to prepare at this level (never below 0). */
   total: number;
 }
 
@@ -745,6 +805,7 @@ export function spellSlotsByLevel(
   classLevel: number,
   abilityMod: number,
   earlyBonusSpells?: "toSecond" | "all",
+  slotDeltas?: CastingDeltas,
 ): SpellSlotLevel[] {
   const out: SpellSlotLevel[] = [];
   const early = new Set(earlyBonusLevels(model, classLevel, abilityMod, earlyBonusSpells));
@@ -752,7 +813,14 @@ export function spellSlotsByLevel(
     const base = baseSpellsPerDay(model.progression, classLevel, level);
     if (base === null && !early.has(level)) continue;
     const bonus = bonusSpellsForLevel(abilityMod, level);
-    out.push({ level, base: base ?? 0, bonus, total: (base ?? 0) + bonus });
+    const adjustment = deltaAt(slotDeltas, level);
+    out.push({
+      level,
+      base: base ?? 0,
+      bonus,
+      ...(adjustment !== 0 ? { adjustment } : {}),
+      total: Math.max(0, (base ?? 0) + bonus + adjustment),
+    });
   }
   return out;
 }
@@ -808,13 +876,14 @@ export function unlockedSpellLevels(
 export function spellsKnownLimitsByLevel(
   model: CasterModel,
   classLevel: number,
+  knownDeltas?: CastingDeltas,
 ): { level: number; limit: number }[] {
   if (!model.knownProgression) return [];
   const out: { level: number; limit: number }[] = [];
   for (let level = 0; level <= 9; level++) {
     const limit = baseSpellsKnown(model.knownProgression, classLevel, level);
     if (limit === null) continue;
-    out.push({ level, limit });
+    out.push({ level, limit: Math.max(0, limit + deltaAt(knownDeltas, level)) });
   }
   return out;
 }
@@ -867,13 +936,14 @@ export function preparedCapacityByLevel(
   classLevel: number,
   abilityMod?: number,
   earlyBonusSpells?: "toSecond" | "all",
+  preparedDeltas?: CastingDeltas,
 ): { level: number; limit: number }[] {
   if (!model.preparedProgression) return [];
   const out: { level: number; limit: number }[] = [];
   for (let level = 0; level <= 9; level++) {
     const limit = baseSpellsPrepared(model.preparedProgression, classLevel, level);
     if (limit === null) continue;
-    out.push({ level, limit });
+    out.push({ level, limit: Math.max(0, limit + deltaAt(preparedDeltas, level)) });
   }
   if (earlyBonusSpells !== undefined && abilityMod !== undefined) {
     const covered = new Set(out.map((o) => o.level));

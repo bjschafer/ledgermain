@@ -814,6 +814,19 @@ export {
   type PerDayActivationDef,
 } from "./per-day-activations/index.js";
 export {
+  ARCHETYPE_CASTING_ADJUSTMENTS,
+  ARCHETYPE_CASTING_ADJUSTMENTS_AM,
+  ARCHETYPE_CASTING_ADJUSTMENTS_NZ,
+  CASTING_ADJUSTMENT_TABLES,
+  CHARACTER_TRAIT_CASTING_ADJUSTMENTS,
+  CLASS_FEATURE_CASTING_ADJUSTMENTS,
+  FEAT_CASTING_ADJUSTMENTS,
+  RACIAL_TRAIT_CASTING_ADJUSTMENTS,
+  resolveCastingAdjustments,
+  type CastingAdjustmentDef,
+  type CastingAdjustmentTables,
+} from "./casting-economy/index.js";
+export {
   ARCHETYPE_SLA_GRANTS,
   ARCHETYPE_SLA_GRANTS_AM,
   ARCHETYPE_SLA_GRANTS_NZ,

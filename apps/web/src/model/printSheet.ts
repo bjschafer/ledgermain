@@ -30,6 +30,7 @@ import { spellDCSchoolDeltas, srCheckBonus } from "./spellDCs.js";
 import {
   casterClassesOf,
   casterModelFor,
+  castingDeltasFor,
   grantedCantrips,
   knownSpellsFor,
   spellSaveDC,
@@ -244,6 +245,7 @@ function buildCasters(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData):
       classLevel,
       abilityMod,
       doc.build.settings?.earlyBonusSpells,
+      castingDeltasFor(sheet.castingAdjustments, tag, "slots"),
     );
 
     // Prepared/hybrid casters: what's actually loaded for the day. Spells

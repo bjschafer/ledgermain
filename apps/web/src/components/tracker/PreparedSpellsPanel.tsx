@@ -51,6 +51,7 @@ import {
   bloodlineSpellsKnown,
   casterClassesOf,
   casterModelFor,
+  castingDeltasFor,
   curseSpellsKnown,
   disciplineSpellsKnown,
   ELEMENTAL_SCHOOL_LABELS,
@@ -954,7 +955,14 @@ function PreparedView({
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
   const earlyBonusSpells = doc.build.settings?.earlyBonusSpells;
-  const slots = spellSlotsByLevel(model, effectiveClassLevel, abilityMod, earlyBonusSpells);
+  const slotDeltas = castingDeltasFor(sheet.castingAdjustments, casterTag, "slots");
+  const slots = spellSlotsByLevel(
+    model,
+    effectiveClassLevel,
+    abilityMod,
+    earlyBonusSpells,
+    slotDeltas,
+  );
   // Metamagic: owned feats + the highest slot the caster can fill (metamagic
   // can't push a spell past it).
   const owned = useMemo(() => ownedMetamagic(doc, refData), [doc, refData]);
@@ -1448,10 +1456,12 @@ function SpontaneousView({
   const abilityLabel = model.ability.toUpperCase();
   const earlyBonusSpells = doc.build.settings?.earlyBonusSpells;
 
+  const slotDeltas = castingDeltasFor(sheet.castingAdjustments, casterTag, "slots");
+
   // Full slot breakdown includes base + bonus per level; use for bonus display.
   const slotsPerLevel = useMemo(
-    () => spellSlotsByLevel(model, effectiveClassLevel, abilityMod, earlyBonusSpells),
-    [model, effectiveClassLevel, abilityMod, earlyBonusSpells],
+    () => spellSlotsByLevel(model, effectiveClassLevel, abilityMod, earlyBonusSpells, slotDeltas),
+    [model, effectiveClassLevel, abilityMod, earlyBonusSpells, slotDeltas],
   );
   const slotBonusByLevel = new Map(slotsPerLevel.map((s) => [s.level, s.bonus]));
 
@@ -1462,6 +1472,7 @@ function SpontaneousView({
     abilityMod,
     classTag,
     earlyBonusSpells,
+    slotDeltas,
   );
   const anyUsed = status.some((s) => s.used > 0);
 
@@ -1766,6 +1777,7 @@ function SpontaneousView({
                                 castLevel,
                                 classTag,
                                 earlyBonusSpells,
+                                slotDeltas,
                               )
                             }
                           />
@@ -1789,6 +1801,7 @@ function SpontaneousView({
                                 castLevel,
                                 classTag,
                                 earlyBonusSpells,
+                                slotDeltas,
                               ),
                             )
                           }
@@ -1858,19 +1871,28 @@ function HybridView({
   const abilityMod = sheet.abilities[model.ability].mod;
   const abilityLabel = model.ability.toUpperCase();
   const earlyBonusSpells = doc.build.settings?.earlyBonusSpells;
+  const slotDeltas = castingDeltasFor(sheet.castingAdjustments, casterTag, "slots");
+  const preparedDeltas = castingDeltasFor(sheet.castingAdjustments, casterTag, "prepared");
 
   // Prepare: wizard-shaped daily readying cap (no ability bonus under RAW; the
   // early-bonus-spells homebrew is the one exception — see
   // `preparedCapacityByLevel`'s doc comment — so a level it unlocks early on
   // the Cast side below always has something preparable to fill it).
   const preparedCapacity = useMemo(
-    () => preparedCapacityByLevel(model, effectiveClassLevel, abilityMod, earlyBonusSpells),
-    [model, effectiveClassLevel, abilityMod, earlyBonusSpells],
+    () =>
+      preparedCapacityByLevel(
+        model,
+        effectiveClassLevel,
+        abilityMod,
+        earlyBonusSpells,
+        preparedDeltas,
+      ),
+    [model, effectiveClassLevel, abilityMod, earlyBonusSpells, preparedDeltas],
   );
   // Cast: sorcerer-shaped per-day slot pool (ability-bonus slots included).
   const castSlots = useMemo(
-    () => spellSlotsByLevel(model, effectiveClassLevel, abilityMod, earlyBonusSpells),
-    [model, effectiveClassLevel, abilityMod, earlyBonusSpells],
+    () => spellSlotsByLevel(model, effectiveClassLevel, abilityMod, earlyBonusSpells, slotDeltas),
+    [model, effectiveClassLevel, abilityMod, earlyBonusSpells, slotDeltas],
   );
   const castStatus = spontaneousSlotStatus(
     doc,
@@ -1879,6 +1901,7 @@ function HybridView({
     abilityMod,
     classTag,
     earlyBonusSpells,
+    slotDeltas,
   );
   const castStatusByLevel = new Map(castStatus.map((s) => [s.level, s]));
   const castBonusByLevel = new Map(castSlots.map((s) => [s.level, s.bonus]));
@@ -2152,6 +2175,7 @@ function HybridView({
                                     castLevel,
                                     classTag,
                                     earlyBonusSpells,
+                                    slotDeltas,
                                   )
                                 }
                               />
@@ -2175,6 +2199,7 @@ function HybridView({
                                     castLevel,
                                     classTag,
                                     earlyBonusSpells,
+                                    slotDeltas,
                                   ),
                                 )
                               }

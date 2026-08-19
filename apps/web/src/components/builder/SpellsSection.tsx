@@ -11,6 +11,7 @@ import {
   curseSpellsKnown,
   disciplineSpellsKnown,
   grantedCantrips,
+  castingDeltasFor,
   knownSpellsFor,
   mysterySpellsKnown,
   oracleChannelSpellsKnown,
@@ -260,9 +261,13 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
             abilityMod,
             doc.build.settings?.earlyBonusSpells,
           )
-        : spellsKnownLimitsByLevel(model, effectiveClassLevel);
+        : spellsKnownLimitsByLevel(
+            model,
+            effectiveClassLevel,
+            casterTag ? castingDeltasFor(sheet.castingAdjustments, casterTag, "known") : undefined,
+          );
     return new Map(limits.map((l) => [l.level, l.limit]));
-  }, [model, effectiveClassLevel, casterTag, doc, abilityMod]);
+  }, [model, effectiveClassLevel, casterTag, doc, abilityMod, sheet.castingAdjustments]);
 
   // Count known spells per level (for the advisory).
   const levelMap = useMemo(

@@ -48,6 +48,13 @@ import {
   RACIAL_TRAIT_SLA_GRANTS,
 } from "../packages/engine/src/spell-like-abilities/index.js";
 import {
+  ARCHETYPE_CASTING_ADJUSTMENTS,
+  CHARACTER_TRAIT_CASTING_ADJUSTMENTS,
+  CLASS_FEATURE_CASTING_ADJUSTMENTS,
+  FEAT_CASTING_ADJUSTMENTS,
+  RACIAL_TRAIT_CASTING_ADJUSTMENTS,
+} from "../packages/engine/src/casting-economy/index.js";
+import {
   COMPANION_EFFECT_ARCHETYPE_FEATURES,
   COMPANION_EFFECT_CLASS_FEATURES,
   COMPANION_EFFECT_FEATS,
@@ -445,6 +452,9 @@ function main(): void {
       // Spell-like-ability grants become castable rows with real spell facts
       // (spell-like-abilities/, id-keyed) — a wired route, not prose.
       (CLASS_FEATURE_SLA_GRANTS[id]?.length ?? 0) > 0 ||
+      // Casting-economy slot/known count edits fold into the web's slot math
+      // (casting-economy/, id-keyed) — a wired route, not prose.
+      (CLASS_FEATURE_CASTING_ADJUSTMENTS[id]?.length ?? 0) > 0 ||
       // Companion/mount master effects route numbers onto the tracked
       // companion's own stat block (companion-master-effects/, id-keyed).
       COMPANION_EFFECT_CLASS_FEATURES[id] !== undefined;
@@ -477,6 +487,7 @@ function main(): void {
           Object.keys(resolved.effect.choiceChanges ?? {}).length > 0)) ||
       ARCHETYPE_TIER_REPLACEMENTS[id] !== undefined ||
       (ARCHETYPE_SLA_GRANTS[id]?.length ?? 0) > 0 ||
+      (ARCHETYPE_CASTING_ADJUSTMENTS[id]?.length ?? 0) > 0 ||
       // Companion/mount master effects route numbers onto the tracked
       // companion's own stat block rather than the master's sheet.
       COMPANION_EFFECT_ARCHETYPE_FEATURES[id] !== undefined;
@@ -505,6 +516,7 @@ function main(): void {
         (defMovesNumbers(resolved.entry) || rec(resolved.entry).type === "choice")) ||
       FEAT_POOL_EFFECTS[slug] !== undefined ||
       (FEAT_SLA_GRANTS[slug]?.length ?? 0) > 0 ||
+      (FEAT_CASTING_ADJUSTMENTS[slug]?.length ?? 0) > 0 ||
       COMPANION_EFFECT_FEATS[slug] !== undefined;
     // Same semantics as the archetype verdicts: a deliberate not-wireable
     // ruling from either feat audit is reviewed backlog; a mover bucket
@@ -535,7 +547,8 @@ function main(): void {
       (def !== undefined && defMovesNumbers(def)) ||
       saveChangesFromNotes(notes, VENDORED_CHARACTER_TRAIT_SAVE_NOTES).length > 0 ||
       maneuverChangesFromNotes(notes, VENDORED_CHARACTER_TRAIT_MANEUVER_NOTES).length > 0 ||
-      acChangesFromNotes(notes, VENDORED_CHARACTER_TRAIT_AC_NOTES).length > 0;
+      acChangesFromNotes(notes, VENDORED_CHARACTER_TRAIT_AC_NOTES).length > 0 ||
+      (CHARACTER_TRAIT_CASTING_ADJUSTMENTS[id]?.length ?? 0) > 0;
     const noted = arrayLen(e.contextNotes) > 0;
     results.push(
       audit(
@@ -585,7 +598,8 @@ function main(): void {
         VENDORED_RACIAL_TRAIT_CL_CHECK_NOTES,
       ).length > 0 ||
       (hand !== undefined && defMovesNumbers(hand)) ||
-      (RACIAL_TRAIT_SLA_GRANTS[id]?.length ?? 0) > 0;
+      (RACIAL_TRAIT_SLA_GRANTS[id]?.length ?? 0) > 0 ||
+      (RACIAL_TRAIT_CASTING_ADJUSTMENTS[id]?.length ?? 0) > 0;
     const noted = arrayLen(e.contextNotes) > 0;
     // Same semantics as the archetype/feat verdicts: a deliberate
     // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`

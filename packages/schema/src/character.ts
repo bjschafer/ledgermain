@@ -3108,6 +3108,36 @@ export interface DerivedSheet {
    * `@pf1/engine`'s `spell-like-abilities/` for the grant tables.
    */
   spellLikeAbilities?: DerivedSpellLikeAbility[];
+  /**
+   * Flat count edits to a caster class's slots per day, spells-known limits,
+   * or (hybrid casters) readied-spells capacity, granted by class features,
+   * archetypes, feats, or traits ("+1 slot of each spell level", "one fewer
+   * spell known per level"). The web's casting model folds these into
+   * `spellSlotsByLevel`-family results; they only ever EDIT spell levels the
+   * class progression already grants, never unlock new ones. Omitted when the
+   * character has none — see `@pf1/engine`'s `casting-economy/` for the
+   * adjustment tables.
+   */
+  castingAdjustments?: DerivedCastingAdjustment[];
+}
+
+/**
+ * One resolved casting-economy count edit — see
+ * `DerivedSheet.castingAdjustments`. `classTag` names the caster class whose
+ * economy this edits; `spellLevels` is an explicit level list or `"each"`
+ * (every accessible level 1–9); `delta` is signed and the fold clamps each
+ * level's result at 0.
+ */
+export interface DerivedCastingAdjustment {
+  /** Stable id: `castadj:<source id>:<slug>`. */
+  id: string;
+  kind: "slots" | "known" | "prepared";
+  classTag: string;
+  spellLevels: number[] | "each";
+  delta: number;
+  /** Player-facing source label (feature/feat/trait name). */
+  source: string;
+  note?: string;
 }
 
 /**

@@ -20,7 +20,7 @@
 
 import type { CharacterDoc } from "@pf1/schema";
 
-import type { CasterModel } from "./spellcasting.js";
+import type { CasterModel, CastingDeltas } from "./spellcasting.js";
 import { spellSlotsByLevel } from "./spellcasting.js";
 
 // ---------------------------------------------------------------------------
@@ -103,8 +103,9 @@ export function spontaneousSlotStatus(
   abilityMod: number,
   classTag?: string,
   earlyBonusSpells?: "toSecond" | "all",
+  slotDeltas?: CastingDeltas,
 ): SpontaneousLevelStatus[] {
-  const slots = spellSlotsByLevel(model, classLevel, abilityMod, earlyBonusSpells);
+  const slots = spellSlotsByLevel(model, classLevel, abilityMod, earlyBonusSpells, slotDeltas);
   const used = slotsUsed(doc, classTag);
   return slots.map(({ level, total }) => {
     const usedCount = used[level] ?? 0;
@@ -134,8 +135,9 @@ export function castSpontaneousSlot(
   spellLevel: number,
   classTag?: string,
   earlyBonusSpells?: "toSecond" | "all",
+  slotDeltas?: CastingDeltas,
 ): CharacterDoc {
-  const slots = spellSlotsByLevel(model, classLevel, abilityMod, earlyBonusSpells);
+  const slots = spellSlotsByLevel(model, classLevel, abilityMod, earlyBonusSpells, slotDeltas);
   const entry = slots.find((s) => s.level === spellLevel);
   if (!entry || entry.total <= 0) return doc;
   const current = slotsUsed(doc, classTag);
