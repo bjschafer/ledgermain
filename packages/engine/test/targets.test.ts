@@ -28,11 +28,15 @@ describe("isTargetApplied", () => {
     // "thrown"), but that condition lives in compute.ts, not here — this
     // module only tracks whether the target is EVER consumed.
     "tattack",
+    // Natural attack rolls/damage — derivePcNaturalAttacks (the PC's own
+    // body) and computePolymorphAttacks (an active polymorph form).
+    "nattack",
+    "ndamage",
   ])("treats %s as applied", (target) => {
     expect(isTargetApplied(target)).toBe(true);
   });
 
-  it.each(["nattack", "allChecks"])("treats %s as unapplied", (target) => {
+  it.each(["allChecks"])("treats %s as unapplied", (target) => {
     expect(isTargetApplied(target)).toBe(false);
   });
 });

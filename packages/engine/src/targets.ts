@@ -73,6 +73,10 @@ const APPLIED_TARGETS = new Set<string>([
   "mwdamage",
   "rwdamage",
   "twdamage",
+  // natural attack rolls/damage (derivePcNaturalAttacks for the PC's own
+  // body, plus computePolymorphAttacks for an active polymorph form)
+  "nattack",
+  "ndamage",
   // movement speeds
   "landSpeed",
   "flySpeed",
@@ -164,8 +168,6 @@ export function unappliedChanges(changes: readonly Change[]): Change[] {
  * bothered to give a target a friendly name yet.
  */
 export const UNAPPLIED_TARGET_LABELS: Record<string, string> = {
-  nattack: "natural attack rolls",
-  ndamage: "natural attack damage",
   concentration: "concentration checks",
   cl: "caster level",
   critConfirm: "crit confirmation rolls",

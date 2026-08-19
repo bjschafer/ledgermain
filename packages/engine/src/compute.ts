@@ -74,6 +74,7 @@ import {
   encumberedSpeed,
   loadTierLabel,
 } from "./encumbrance.js";
+import { derivePcNaturalAttacks } from "./pc-natural-attacks/index.js";
 import {
   computePolymorphAttacks,
   polymorphFormOption,
@@ -1991,6 +1992,21 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     size,
   );
 
+  // The PC's own body's natural attacks (bite, claws, ...) from a racial
+  // trait/class feature/archetype feature/feat grant — see
+  // `pc-natural-attacks/index.ts`. Undefined both when the character has no
+  // grants and while an active polymorph form replaces her own body.
+  const naturalAttacks = derivePcNaturalAttacks(
+    doc,
+    refData,
+    bab,
+    strMod,
+    sizeAttackMod,
+    size,
+    collected,
+    flatAttackPenaltyComponents,
+  );
+
   // Kinetic blast lines (Occult Adventures) — every simple blast known plus
   // every composite qualified for, resolved with the live Elemental Overflow
   // bonus that scales with burn currently held. Empty for non-kineticists.
@@ -2022,6 +2038,12 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     const af = doc.live.activeForm;
     const option = polymorphFormOption(af.tier, af.creatureType, af.size, af.element);
     const tierDef = POLYMORPH_TIERS[af.tier as PolymorphTier];
+    // A polymorph form's attacks ARE natural attacks, so nattack/ndamage
+    // (Change targets aimed at "natural attack rolls"/"natural attack
+    // damage" — see targets.ts) fold in here too; the general attack/damage
+    // buckets deliberately don't — see computePolymorphAttacks' doc comment.
+    const formNattackTotal = resolveStack(forTarget(collected, "nattack")).total;
+    const formNdamageTotal = resolveStack(forTarget(collected, "ndamage")).total;
     activeForm = {
       tier: af.tier,
       tierName: tierDef?.name ?? af.tier,
@@ -2030,7 +2052,14 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
       element: af.element,
       formName: af.formName,
       naturalArmor: option?.naturalArmor ?? 0,
-      attacks: computePolymorphAttacks(bab, strMod, sizeAttackMod, af.naturalAttacks ?? []),
+      attacks: computePolymorphAttacks(
+        bab,
+        strMod,
+        sizeAttackMod,
+        af.naturalAttacks ?? [],
+        formNattackTotal,
+        formNdamageTotal,
+      ),
       notes: [
         ...(tierDef?.notes ?? []),
         ...(option?.notes ?? []),
@@ -2100,6 +2129,7 @@ export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
     initiative,
     attack,
     attacks,
+    ...(naturalAttacks ? { naturalAttacks } : {}),
     kineticBlasts,
     hp,
     speeds,

@@ -3043,6 +3043,16 @@ export interface DerivedSheet {
   /** Per-weapon attack + damage lines derived from build.weapons. */
   attacks: ResolvedWeaponAttack[];
   /**
+   * The PC's OWN natural-attack lines (bite, claws, ...) granted by a
+   * racial trait, class feature, archetype feature, or feat — see
+   * `@pf1/engine`'s `pc-natural-attacks/` for the hand-authored grant
+   * tables and resolver. Omitted (rather than empty) when the character has
+   * no such grants, same posture as `abilityDCs`. Always omitted while
+   * `live.activeForm` is set: an active polymorph form replaces the PC's own
+   * body, and `activeForm.attacks` is that surface's line to show instead.
+   */
+  naturalAttacks?: DerivedNaturalAttack[];
+  /**
    * Kinetic blast lines — every simple blast the kineticist knows plus every
    * composite blast she qualifies for. Empty for a character with no
    * kineticist levels or no chosen element.
@@ -3388,6 +3398,28 @@ export interface ArmorProficiencyLine {
 export interface DerivedProficiencies {
   weapons: WeaponProficiencyLine[];
   armor: ArmorProficiencyLine[];
+}
+
+/**
+ * One resolved natural-attack line on `DerivedSheet.naturalAttacks` — the
+ * PC's OWN body's natural weapons, distinct from `DerivedPolymorphAttack`
+ * (an assumed form's transcribed lines) and from a companion/eidolon's own
+ * attack block. See `@pf1/engine`'s `pc-natural-attacks/`.
+ */
+export interface DerivedNaturalAttack {
+  name: string;
+  count: number;
+  kind: "primary" | "secondary";
+  /** BAB + Str + size + attack/mattack/nattack stack + flat attack penalties, minus the secondary penalty when `kind === "secondary"`. */
+  attackBonus: number;
+  attackComponents: ModifierComponent[];
+  /** Display-only damage-dice string, size-scaled from the grant's Medium-baseline dice. Omitted for a line with no separate damage die. */
+  damageDice?: string;
+  /** Str-scaled damage addend (full, half, or ×1.5 per `natural-attacks.ts`) plus the damage/ndamage stack total. */
+  damageBonus: number;
+  damageComponents: ModifierComponent[];
+  /** Display-only reminders from the granting def(s). */
+  notes?: string[];
 }
 
 /** One resolved natural-attack line on `DerivedActiveForm.attacks` — see `@pf1/engine` `computePolymorphAttacks`. */

@@ -608,19 +608,28 @@ export interface ResolvedPolymorphAttack {
  * (no iteratives, no Weapon Finesse/Dex-to-hit substitution) — the player
  * transcribes the form's attack lines off its stat block; this only supplies
  * the BAB/Str/size math common to every natural attack (design brief for
- * "keep it simple").
+ * "keep it simple"). `nattackTotal`/`ndamageTotal` (the resolved `nattack`/
+ * `ndamage` Change-target stacks — see `targets.ts`) fold in on top, since a
+ * polymorph form's attacks ARE natural attacks and a buff granting "+2 on
+ * natural attack rolls" should reach them; the general `attack`/`damage`
+ * buckets deliberately do NOT (keeping this module's transcription simple,
+ * per the brief above — a general attack/damage bonus already reaches the
+ * form's ability-score/size math through `bab`/`strMod`/`sizeAttackMod`).
  */
 export function computePolymorphAttacks(
   bab: number,
   strMod: number,
   sizeAttackMod: number,
   attacks: readonly PolymorphNaturalAttackInput[],
+  nattackTotal = 0,
+  ndamageTotal = 0,
 ): ResolvedPolymorphAttack[] {
   return attacks.map((a) => {
     const kind = a.kind ?? "primary";
     const secondary = kind === "secondary";
-    const attackBonus = bab + strMod + sizeAttackMod - (secondary ? 5 : 0);
-    const damageBonus = secondary ? (strMod >= 0 ? Math.floor(strMod / 2) : strMod) : strMod;
+    const attackBonus = bab + strMod + sizeAttackMod + nattackTotal - (secondary ? 5 : 0);
+    const damageBonus =
+      (secondary ? (strMod >= 0 ? Math.floor(strMod / 2) : strMod) : strMod) + ndamageTotal;
     return {
       name: a.name,
       count: a.count ?? 1,

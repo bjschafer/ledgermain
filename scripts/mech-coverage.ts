@@ -86,6 +86,12 @@ import { mergedOccultistImplementCatalog } from "../packages/engine/src/occultis
 import { mergedOracleCurseCatalog } from "../packages/engine/src/oracle-curses.js";
 import { mergedOracleMysteryCatalog } from "../packages/engine/src/oracle-mysteries.js";
 import { ORACLE_REVELATIONS } from "../packages/engine/src/oracle-revelations.js";
+import {
+  ARCHETYPE_FEATURE_NATURAL_ATTACKS,
+  CLASS_FEATURE_NATURAL_ATTACKS,
+  FEAT_NATURAL_ATTACKS,
+  RACIAL_TRAIT_NATURAL_ATTACKS,
+} from "../packages/engine/src/pc-natural-attacks/index.js";
 import { mergedPhrenicAmplificationCatalog } from "../packages/engine/src/phrenic-amplifications.js";
 import { mergedPsychicDisciplineCatalog } from "../packages/engine/src/psychic-disciplines.js";
 import { RACIAL_TRAIT_CLASSIFICATION } from "../packages/engine/src/racial-trait-classification/index.js";
@@ -458,7 +464,10 @@ function main(): void {
       (CLASS_FEATURE_CASTING_ADJUSTMENTS[id]?.length ?? 0) > 0 ||
       // Companion/mount master effects route numbers onto the tracked
       // companion's own stat block (companion-master-effects/, id-keyed).
-      COMPANION_EFFECT_CLASS_FEATURES[id] !== undefined;
+      COMPANION_EFFECT_CLASS_FEATURES[id] !== undefined ||
+      // A granted natural-attack line onto the PC's own body
+      // (pc-natural-attacks/, id-keyed).
+      (CLASS_FEATURE_NATURAL_ATTACKS[id]?.length ?? 0) > 0;
     const noted = arrayLen(e.actions) > 0 || e.uses !== undefined || arrayLen(e.grantsBuffs) > 0;
     // Same semantics as the archetype/feat/racial-trait verdicts: a deliberate
     // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`
@@ -492,7 +501,9 @@ function main(): void {
       ARCHETYPE_BONUS_KNOWN_SPELLS[id] !== undefined ||
       // Companion/mount master effects route numbers onto the tracked
       // companion's own stat block rather than the master's sheet.
-      COMPANION_EFFECT_ARCHETYPE_FEATURES[id] !== undefined;
+      COMPANION_EFFECT_ARCHETYPE_FEATURES[id] !== undefined ||
+      // A granted natural-attack line onto the PC's own body.
+      (ARCHETYPE_FEATURE_NATURAL_ATTACKS[id]?.length ?? 0) > 0;
     // A wave verdict of situational/subsystem/blocked is a deliberate
     // prose-only ruling; `numeric` without an effect entry is real backlog.
     const verdict = ARCHETYPE_FEATURE_CLASSIFICATION[id];
@@ -519,7 +530,9 @@ function main(): void {
       FEAT_POOL_EFFECTS[slug] !== undefined ||
       (FEAT_SLA_GRANTS[slug]?.length ?? 0) > 0 ||
       (FEAT_CASTING_ADJUSTMENTS[slug]?.length ?? 0) > 0 ||
-      COMPANION_EFFECT_FEATS[slug] !== undefined;
+      COMPANION_EFFECT_FEATS[slug] !== undefined ||
+      // A granted natural-attack line onto the PC's own body.
+      (FEAT_NATURAL_ATTACKS[slug]?.length ?? 0) > 0;
     // Same semantics as the archetype verdicts: a deliberate not-wireable
     // ruling from either feat audit is reviewed backlog; a mover bucket
     // that never produced a wired route is real backlog and still flags.
@@ -601,7 +614,9 @@ function main(): void {
       ).length > 0 ||
       (hand !== undefined && defMovesNumbers(hand)) ||
       (RACIAL_TRAIT_SLA_GRANTS[id]?.length ?? 0) > 0 ||
-      (RACIAL_TRAIT_CASTING_ADJUSTMENTS[id]?.length ?? 0) > 0;
+      (RACIAL_TRAIT_CASTING_ADJUSTMENTS[id]?.length ?? 0) > 0 ||
+      // A granted natural-attack line onto the PC's own body.
+      (RACIAL_TRAIT_NATURAL_ATTACKS[id]?.length ?? 0) > 0;
     const noted = arrayLen(e.contextNotes) > 0;
     // Same semantics as the archetype/feat verdicts: a deliberate
     // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`

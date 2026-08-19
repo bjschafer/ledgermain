@@ -857,6 +857,21 @@ export {
   type SlaGrantDef,
   type SlaSourceTables,
 } from "./spell-like-abilities/index.js";
+export {
+  ARCHETYPE_FEATURE_NATURAL_ATTACKS,
+  CLASS_FEATURE_NATURAL_ATTACKS,
+  derivePcNaturalAttacks,
+  FEAT_NATURAL_ATTACKS,
+  PC_NATURAL_ATTACK_TABLES,
+  RACE_NATURAL_ATTACKS,
+  RACIAL_TRAIT_NATURAL_ATTACKS,
+  type PcNaturalAttackBuffGate,
+  type PcNaturalAttackDef,
+  type PcNaturalAttackKind,
+  type PcNaturalAttackLine,
+  type PcNaturalAttackTables,
+  type RaceNaturalAttackDef,
+} from "./pc-natural-attacks/index.js";
 export { rageFatigueOnEnd, UNCHAINED_RAGE_FATIGUE_ROUNDS } from "./rage-fatigue.js";
 export type { RageFatigue } from "./rage-fatigue.js";
 export {
