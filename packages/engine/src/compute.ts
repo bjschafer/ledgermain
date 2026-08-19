@@ -90,6 +90,7 @@ import { hasSlowAndSteady } from "./racial-traits.js";
 import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolldata.js";
 import { resolveStack, synthetic, toComponents, type TypedModifier } from "./stacking.js";
 import { normalizeWeaponGroup } from "./weapon-groups.js";
+import { gunTrainingMatches } from "./gun-training.js";
 import {
   babForLevels,
   fractionalBab,
@@ -1310,7 +1311,7 @@ function towerShieldAttackComponents(doc: CharacterDoc): ModifierComponent[] {
  *              (CRB p.153, see {@link towerShieldAttackComponents})
  *
  * Damage bonus (numeric; dice displayed separately):
- *   damage = floor(ability mod × damageMultiplier) [melee, damageAbility="str"/"dex" only]
+ *   damage = ability damage [see below]
  *            + enhancement
  *            + any "damage" target changes from the collected modifier set,
  *              plus "twdamage" (thrown weapon damage) under the same
@@ -1325,13 +1326,21 @@ function towerShieldAttackComponents(doc: CharacterDoc): ModifierComponent[] {
  * {@link weaponGroupKeys} for how a weapon's matching `<group>` keys are
  * gathered.
  *
- * `damageAbility` is normally "str" (or the player's own explicit "dex"/"none"
- * override — extended the union to allow a hand-set Dex-to-damage source like
- * Slashing Grace). When the stored value is unset or the default "str", Rogue
- * (Unchained)'s Finesse Training substitutes Dex automatically for a matching
- * weapon — see {@link rogueFinesseTrainingMatches} — so the player doesn't
- * have to flip the per-weapon field by hand for the class feature that's
- * supposed to grant it for free.
+ * Ability damage — melee vs. ranged read very differently:
+ * - Melee: floor(ability mod × damageMultiplier), STR by default. An explicit
+ *   player-set "dex"/"none" override is allowed (e.g. Slashing Grace); when
+ *   the stored value is unset or the default "str", Rogue (Unchained)'s
+ *   Finesse Training substitutes Dex automatically for a matching weapon —
+ *   see {@link rogueFinesseTrainingMatches} — so the player doesn't have to
+ *   flip the per-weapon field by hand for the class feature that's supposed
+ *   to grant it for free.
+ * - Ranged: the default/unset "str" contributes NOTHING (no composite-bow
+ *   rating modeled — a plain bow must not gain Str damage). Dex damage only
+ *   applies via an explicit player-set "dex" override, or automatically for a
+ *   firearm covered by the Gun Training family — see {@link
+ *   gunTrainingMatches} — and is always ×1 (never damageMultiplier-scaled;
+ *   Gun Training's own text carries no two-handed-weapon scaling), including
+ *   a negative Dex modifier applying in full.
  *
  * `baseSize`/`effectiveSize` (the race size the weapon's `damageDice` was
  * written for, and the wielder's current effective size) rewrite the
@@ -1424,32 +1433,60 @@ function computeWeaponAttacks(
       ...flatAttackPenaltyComponents,
     ];
 
-    // Ability-to-damage: STR or DEX, only melee, scaled by damageMultiplier.
-    // An unset/default "str" value is auto-promoted to "dex" for a weapon
-    // matching Rogue (Unchained)'s Finesse Training; an explicit player-set
-    // "dex"/"none" always wins over the auto-match.
+    // Ability-to-damage: STR or DEX. Melee (unchanged): scaled by
+    // damageMultiplier; an unset/default "str" value is auto-promoted to
+    // "dex" for a weapon matching Rogue (Unchained)'s Finesse Training.
+    // Ranged: the default/unset "str" contributes NOTHING (no composite-bow
+    // rating modeled here — a plain bow must not gain Str damage); only an
+    // explicit player-set "dex" (the escape hatch for an unmodeled
+    // Dex-to-damage source) or a Gun Training family match
+    // (`gunTrainingMatches`, auto — same "str doesn't block the auto-match"
+    // convention as autoFinesseDex) ever apply. Either way an explicit
+    // "dex"/"none" always wins over an auto-match.
     const autoFinesseDex =
       (w.damageAbility === undefined || w.damageAbility === "str") &&
       category === "melee" &&
       rogueFinesseTrainingMatches(doc, w);
-    const damageAbility = autoFinesseDex ? "dex" : (w.damageAbility ?? "str");
+    const autoGunTrainingDex =
+      (w.damageAbility === undefined || w.damageAbility === "str") &&
+      category === "ranged" &&
+      gunTrainingMatches(doc, w);
+    const damageAbility: "str" | "dex" | "none" =
+      category === "melee"
+        ? autoFinesseDex
+          ? "dex"
+          : (w.damageAbility ?? "str")
+        : autoGunTrainingDex || w.damageAbility === "dex"
+          ? "dex"
+          : "none";
     // "none" carries no ability at all, so there is nothing to substitute for.
-    const resolvedDamageAbility =
+    // Melee's Str/Dex term can be swapped by a registered ability
+    // substitution (Guided, Zen Archer's Perfect Strike, ...); no ranged
+    // damage substitution is registered (`ability-substitution.ts` has no
+    // "damage.ranged" slot — nothing published needs one), so the ranged Dex
+    // case reads the modifier directly.
+    const resolvedDamageAbility: ResolvedAbility | undefined =
       damageAbility === "none"
         ? undefined
-        : resolveSubstitution("damage.melee", damageAbility, abilityMods, substitutions);
+        : category === "melee"
+          ? resolveSubstitution("damage.melee", damageAbility, abilityMods, substitutions)
+          : { ability: "dex", mod: abilityMods.dex };
     const damageAbilityMod = resolvedDamageAbility?.mod ?? 0;
     const mult = w.damageMultiplier ?? 1;
-    const appliesAbilityDamage =
-      (damageAbility === "str" || damageAbility === "dex") && category === "melee";
-    // The multiplier (1.5× two-handed, 0.5× off-hand) scales a Str/Dex BONUS
-    // only — a penalty is never multiplied up or reduced (PF1 RAW: the full
-    // penalty always applies).
+    const appliesAbilityDamage = damageAbility === "str" || damageAbility === "dex";
+    // The multiplier (1.5× two-handed, 0.5× off-hand) scales a melee Str/Dex
+    // BONUS only — a penalty is never multiplied up or reduced (PF1 RAW: the
+    // full penalty always applies). Ranged ability damage is always ×1 (Gun
+    // Training and its archetype variants read "a bonus... equal to her
+    // Dexterity modifier", with no two-handed-weapon scaling), including a
+    // negative Dex modifier applying in full.
     const abilityDamage = !appliesAbilityDamage
       ? 0
-      : damageAbilityMod >= 0
-        ? Math.floor(damageAbilityMod * mult)
-        : damageAbilityMod;
+      : category === "ranged"
+        ? damageAbilityMod
+        : damageAbilityMod >= 0
+          ? Math.floor(damageAbilityMod * mult)
+          : damageAbilityMod;
 
     // General "damage" target changes + per-group feat bonuses (e.g. Weapon
     // Specialization via "damage.weapon.<group>", or a semantic weapon-group
@@ -1475,8 +1512,10 @@ function computeWeaponAttacks(
     const damageComponents: ModifierComponent[] = [];
     if (appliesAbilityDamage) {
       // The ×multiplier annotation only describes what actually happened —
-      // a penalty (see abilityDamage above) isn't scaled, so it gets no label.
-      const multLabel = mult !== 1 && damageAbilityMod >= 0 ? ` ×${mult}` : "";
+      // a penalty (see abilityDamage above) isn't scaled, so it gets no label,
+      // and ranged ability damage is never scaled at all (see abilityDamage).
+      const multLabel =
+        category === "melee" && mult !== 1 && damageAbilityMod >= 0 ? ` ×${mult}` : "";
       const abilityLabel = damageAbility === "dex" ? "Dexterity" : "Strength";
       damageComponents.push(synthetic(`${abilityLabel}${multLabel}`, "ability", abilityDamage));
     }
@@ -1507,7 +1546,10 @@ function computeWeaponAttacks(
     if (drBypass.length > 0) result.drBypass = drBypass;
     if (appliesAbilityDamage) {
       result.damageAbilityMod = damageAbilityMod;
-      result.damageMultiplier = mult;
+      // Ranged ability damage is never damageMultiplier-scaled (see
+      // abilityDamage above) — reporting `mult` there would misdescribe what
+      // was actually applied, so ranged always reports 1.
+      result.damageMultiplier = category === "ranged" ? 1 : mult;
     }
     // Display-only dice string, size-scaled when the wielder's effective size
     // (Enlarge/Reduce Person, an active polymorph form) differs from the size
@@ -1517,6 +1559,30 @@ function computeWeaponAttacks(
     // purely a display correction.
     if (w.damageDice !== undefined) {
       result.damageDice = scaleWeaponDamageDice(w.damageDice, baseSize, effectiveSize);
+    }
+    // Range increment (ranged only) and firearm-specific display data
+    // (Ultimate Combat) — see WeaponInstance's rangeIncrement/misfire/
+    // capacity/firearmEra doc comments. "Firearm" is detected rather than
+    // gated on category alone, since it's the presence of these fields (or a
+    // "firearms"-tagged group) that actually distinguishes a firearm from a
+    // bow or crossbow, both also ranged.
+    if (category === "ranged" && w.rangeIncrement !== undefined) {
+      result.rangeIncrement = w.rangeIncrement;
+    }
+    const isFirearm =
+      w.misfire !== undefined ||
+      w.firearmEra !== undefined ||
+      groupKeys.some((g) => g === "firearms" || g.startsWith("firearms-"));
+    if (isFirearm) {
+      const touchRangeFt =
+        w.rangeIncrement !== undefined && w.firearmEra !== undefined
+          ? w.rangeIncrement * (w.firearmEra === "early" ? 1 : 5)
+          : undefined;
+      result.firearm = {
+        ...(w.misfire !== undefined ? { misfire: w.misfire } : {}),
+        ...(w.capacity !== undefined ? { capacity: w.capacity } : {}),
+        ...(touchRangeFt !== undefined ? { touchRangeFt } : {}),
+      };
     }
     return result;
   });

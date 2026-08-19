@@ -1014,6 +1014,20 @@ export interface WeaponRef extends RefEntity {
   price?: number;
   /** Total weight in pounds. */
   weight?: number;
+  /**
+   * Range increment in feet, from the primary attack action's `range.value`
+   * when `range.units === "ft"`. Applies to any ranged or thrown weapon (bows,
+   * crossbows, firearms), not just firearms. Absent for melee-only weapons and
+   * for the rare entry whose upstream value doesn't parse as a plain positive
+   * number.
+   */
+  rangeIncrement?: number;
+  /** Upper bound of a firearm's misfire range (e.g. 2 means "misfires on a natural 1-2"). Absent for non-firearms. */
+  misfire?: number;
+  /** Shots a firearm holds before it must be reloaded. Absent for non-firearms. */
+  capacity?: number;
+  /** Firearm technology tier, from the weapon's "Early/Advanced/Modern Firearm" tag. Absent when untagged (e.g. the Madsen Light Machine Gun). */
+  firearmEra?: "early" | "advanced" | "modern";
 }
 
 /* -------------------------------------------------------------- archetypes -- */

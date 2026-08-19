@@ -92,6 +92,7 @@
     "name": "Heavy Crank Crossbow",
     "price": 400,
     "proficiency": "exotic",
+    "rangeIncrement": 120,
     "sources": [
       {
         "id": "PZO9452",
@@ -116,6 +117,7 @@
     "name": "Hunga Munga",
     "price": 4,
     "proficiency": "martial",
+    "rangeIncrement": 15,
     "sources": [
       {
         "id": "PZO9452",
@@ -257,11 +259,13 @@
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "2d8",
+    "firearmEra": "modern",
     "group": "maxim-m1910-machine-gun",
     "id": "1qsCQ6TiPgSsNPFj",
     "name": "Maxim M1910 Machine Gun",
     "price": 1500,
     "proficiency": "exotic",
+    "rangeIncrement": 120,
     "sources": [
       {
         "id": "PZO9071",
@@ -269,7 +273,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.1qsCQ6TiPgSsNPFj",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 140
   },
@@ -310,6 +314,7 @@
     "name": "Orc Hornbow",
     "price": 130,
     "proficiency": "exotic",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO9481",
@@ -389,6 +394,7 @@
     "name": "Trident",
     "price": 15,
     "proficiency": "martial",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1110",
@@ -407,16 +413,20 @@
   "2pK6KVVGJgaJMWE7": {
     "attackAbility": "dex",
     "baseTypes": ["Double-Barreled Musket"],
+    "capacity": 2,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d12",
+    "firearmEra": "early",
     "group": "double-barreled-musket",
     "id": "2pK6KVVGJgaJMWE7",
+    "misfire": 3,
     "name": "Double-Barreled Musket",
     "price": 2500,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1123",
@@ -428,7 +438,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.2pK6KVVGJgaJMWE7",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 11
   },
@@ -493,6 +503,7 @@
     "name": "Dwarven Heavy Pelletbow",
     "price": 75,
     "proficiency": "exotic",
+    "rangeIncrement": 60,
     "sources": [
       {
         "id": "PZO9491",
@@ -517,6 +528,7 @@
     "name": "Heavy Crossbow (Underwater)",
     "price": 100,
     "proficiency": "simple",
+    "rangeIncrement": 120,
     "sources": [
       {
         "id": "PZO9452",
@@ -531,16 +543,20 @@
   "3ymi1TiBmp2nTbxj": {
     "attackAbility": "dex",
     "baseTypes": ["Double-Barreled Pistol"],
+    "capacity": 2,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "early",
     "group": "double-barreled-pistol",
     "id": "3ymi1TiBmp2nTbxj",
+    "misfire": 2,
     "name": "Double-Barreled Pistol",
     "price": 1750,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1123",
@@ -552,7 +568,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.3ymi1TiBmp2nTbxj",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 5
   },
@@ -569,6 +585,7 @@
     "name": "Shuriken",
     "price": 0.2,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1110",
@@ -601,6 +618,7 @@
     "name": "Shoanti Bolas",
     "price": 15,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO9425",
@@ -825,6 +843,7 @@
     "name": "Thorn Bow",
     "price": 50,
     "proficiency": "exotic",
+    "rangeIncrement": 40,
     "sources": [
       {
         "id": "PZO9410",
@@ -848,6 +867,7 @@
     "name": "Kunai",
     "price": 2,
     "proficiency": "simple",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO9452",
@@ -910,16 +930,20 @@
   "6dixCIl251JU2pJH": {
     "attackAbility": "str",
     "baseTypes": ["Nagant M1895 Revolver"],
+    "capacity": 7,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "str",
     "damageDice": "1d8",
+    "firearmEra": "modern",
     "group": "nagant-m1895-revolver",
     "id": "6dixCIl251JU2pJH",
+    "misfire": 1,
     "name": "Nagant M1895 Revolver",
     "price": 400,
     "proficiency": "exotic",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO9071",
@@ -927,7 +951,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.6dixCIl251JU2pJH",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
@@ -997,6 +1021,7 @@
     "name": "Repeating Hand Crossbow",
     "price": 800,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO9452",
@@ -1020,6 +1045,7 @@
     "name": "Net",
     "price": 20,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1110",
@@ -1072,6 +1098,7 @@
     "name": "Scorpion Whip",
     "price": 5,
     "proficiency": "exotic",
+    "rangeIncrement": 15,
     "sources": [
       {
         "id": "PZO1123",
@@ -1097,6 +1124,7 @@
     "name": "Harpoon",
     "price": 5,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1123",
@@ -1134,13 +1162,16 @@
   "891YnkwG0uH5lYF7": {
     "attackAbility": "str",
     "baseTypes": ["Dagger Pistol", "Dagger", "Pistol"],
+    "capacity": 1,
     "category": "melee",
     "critMult": 3,
     "critRange": 20,
     "damageAbility": "str",
     "damageDice": "1d4",
+    "firearmEra": "early",
     "group": "dagger-pistol",
     "id": "891YnkwG0uH5lYF7",
+    "misfire": 1,
     "name": "Dagger Pistol",
     "price": 740,
     "proficiency": "exotic",
@@ -1155,7 +1186,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.891YnkwG0uH5lYF7",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
@@ -1172,6 +1203,7 @@
     "name": "Grappling Hook",
     "price": 6,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO9422",
@@ -1186,16 +1218,20 @@
   "8ZfCKla7JiarRC75": {
     "attackAbility": "dex",
     "baseTypes": ["Axe Musket"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "early",
     "group": "axe-musket",
     "id": "8ZfCKla7JiarRC75",
+    "misfire": 2,
     "name": "Axe Musket",
     "price": 1600,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO1123",
@@ -1207,23 +1243,27 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.8ZfCKla7JiarRC75",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
   "8swHnPGMoZGkVHjp": {
     "attackAbility": "dex",
     "baseTypes": ["Revolver"],
+    "capacity": 6,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "advanced",
     "group": "revolver",
     "id": "8swHnPGMoZGkVHjp",
+    "misfire": 1,
     "name": "Revolver",
     "price": 4000,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1123",
@@ -1231,7 +1271,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.8swHnPGMoZGkVHjp",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
@@ -1269,6 +1309,7 @@
     "name": "Poisoned Sand Tube",
     "price": 1,
     "proficiency": "martial",
+    "rangeIncrement": 15,
     "sources": [
       {
         "id": "PZO9452",
@@ -1345,6 +1386,7 @@
     "name": "Shortbow",
     "price": 30,
     "proficiency": "martial",
+    "rangeIncrement": 60,
     "sources": [
       {
         "id": "PZO1110",
@@ -1372,6 +1414,7 @@
     "id": "AzvaEePCpHBoKWnw",
     "name": "Amentum",
     "proficiency": "martial",
+    "rangeIncrement": 50,
     "sources": [
       {
         "id": "PZO9452",
@@ -1448,6 +1491,7 @@
     "name": "Hand Crossbow",
     "price": 100,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO1110",
@@ -1524,6 +1568,7 @@
     "name": "Blowgun",
     "price": 2,
     "proficiency": "simple",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1110",
@@ -1542,13 +1587,16 @@
   "CadEsVvAN7kdruSH": {
     "attackAbility": "dex",
     "baseTypes": ["Thark Rifle"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d10",
+    "firearmEra": "advanced",
     "group": "thark-rifle",
     "id": "CadEsVvAN7kdruSH",
+    "misfire": 2,
     "name": "Thark Rifle",
     "price": 6500,
     "proficiency": "exotic",
@@ -1559,7 +1607,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.CadEsVvAN7kdruSH",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
@@ -1576,6 +1624,7 @@
     "name": "Light Crank Crossbow",
     "price": 250,
     "proficiency": "exotic",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO9452",
@@ -1680,6 +1729,7 @@
     "name": "Light Hammer",
     "price": 1,
     "proficiency": "martial",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1110",
@@ -1799,16 +1849,20 @@
   "EOyNLLDmi1aiZNL6": {
     "attackAbility": "dex",
     "baseTypes": ["Culverin"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "2d8",
+    "firearmEra": "early",
     "group": "culverin",
     "id": "EOyNLLDmi1aiZNL6",
+    "misfire": 1,
     "name": "Culverin",
     "price": 4000,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO1123",
@@ -1820,7 +1874,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.EOyNLLDmi1aiZNL6",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 40
   },
@@ -1851,16 +1905,20 @@
   "Ey9KrEfCDEqBAXuO": {
     "attackAbility": "dex",
     "baseTypes": ["Double-Barreled Shotgun"],
+    "capacity": 2,
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "advanced",
     "group": "double-barreled-shotgun",
     "id": "Ey9KrEfCDEqBAXuO",
+    "misfire": 2,
     "name": "Double-Barreled Shotgun",
     "price": 7000,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1123",
@@ -1872,7 +1930,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.Ey9KrEfCDEqBAXuO",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 15
   },
@@ -1913,6 +1971,7 @@
     "name": "Pilum",
     "price": 5,
     "proficiency": "martial",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO9452",
@@ -1983,16 +2042,20 @@
   "FGtPRARd9Z57clLg": {
     "attackAbility": "dex",
     "baseTypes": ["Double Hackbut"],
+    "capacity": 2,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "2d12",
+    "firearmEra": "early",
     "group": "double-hackbut",
     "id": "FGtPRARd9Z57clLg",
+    "misfire": 2,
     "name": "Double Hackbut",
     "price": 4000,
     "proficiency": "exotic",
+    "rangeIncrement": 50,
     "sources": [
       {
         "id": "PZO1123",
@@ -2004,7 +2067,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.FGtPRARd9Z57clLg",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 18
   },
@@ -2046,6 +2109,7 @@
     "name": "Chain-Hammer",
     "price": 34,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO9481",
@@ -2070,6 +2134,7 @@
     "name": "Composite Shortbow",
     "price": 75,
     "proficiency": "martial",
+    "rangeIncrement": 70,
     "sources": [
       {
         "id": "PZO1110",
@@ -2088,16 +2153,20 @@
   "GSOV1nL3D76xqnKY": {
     "attackAbility": "dex",
     "baseTypes": ["Dragoon Musket"],
+    "capacity": 3,
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d12",
+    "firearmEra": "early",
     "group": "dragoon-musket",
     "id": "GSOV1nL3D76xqnKY",
+    "misfire": 2,
     "name": "Dragoon Musket",
     "price": 2000,
     "proficiency": "exotic",
+    "rangeIncrement": 60,
     "sources": [
       {
         "id": "PZO1136",
@@ -2105,7 +2174,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.GSOV1nL3D76xqnKY",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
@@ -2140,16 +2209,20 @@
   "GlbFk7TosnBKkr8d": {
     "attackAbility": "dex",
     "baseTypes": ["Coat Pistol"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d4",
+    "firearmEra": "early",
     "group": "coat-pistol",
     "id": "GlbFk7TosnBKkr8d",
+    "misfire": 1,
     "name": "Coat Pistol",
     "price": 750,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1123",
@@ -2161,7 +2234,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.GlbFk7TosnBKkr8d",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
@@ -2177,6 +2250,7 @@
     "name": "Flask Thrower",
     "price": 25,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO9481",
@@ -2249,6 +2323,7 @@
     "name": "Light Crossbow (Underwater)",
     "price": 70,
     "proficiency": "simple",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO9452",
@@ -2263,16 +2338,20 @@
   "IOKMMNXFRZkx5wvJ": {
     "attackAbility": "dex",
     "baseTypes": ["Rifle"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d10",
+    "firearmEra": "advanced",
     "group": "rifle",
     "id": "IOKMMNXFRZkx5wvJ",
+    "misfire": 1,
     "name": "Rifle",
     "price": 5000,
     "proficiency": "exotic",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO1123",
@@ -2284,7 +2363,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.IOKMMNXFRZkx5wvJ",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
@@ -2387,6 +2466,7 @@
     "name": "Atlatl",
     "price": 2,
     "proficiency": "martial",
+    "rangeIncrement": 50,
     "sources": [
       {
         "id": "PZO9452",
@@ -2632,6 +2712,7 @@
     "name": "Dwarven Light Pelletbow",
     "price": 50,
     "proficiency": "exotic",
+    "rangeIncrement": 40,
     "sources": [
       {
         "id": "PZO9491",
@@ -2754,6 +2835,7 @@
     "name": "Javelin",
     "price": 1,
     "proficiency": "simple",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO1110",
@@ -3044,6 +3126,7 @@
     "id": "LWPBZON5AHSjxqXi",
     "name": "Throwing Arrow Cord",
     "proficiency": "martial",
+    "rangeIncrement": 60,
     "sources": [
       {
         "id": "PZO9452",
@@ -3067,6 +3150,7 @@
     "name": "Sibat",
     "price": 2,
     "proficiency": "martial",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO9452",
@@ -3246,6 +3330,7 @@
     "name": "Shortspear",
     "price": 1,
     "proficiency": "simple",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1110",
@@ -3401,6 +3486,7 @@
     "name": "Whip",
     "price": 1,
     "proficiency": "exotic",
+    "rangeIncrement": 15,
     "sources": [
       {
         "id": "PZO1110",
@@ -3453,6 +3539,7 @@
     "name": "Jolting Dart",
     "price": 100,
     "proficiency": "martial",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1121",
@@ -3619,16 +3706,20 @@
   "PT81W3PcwSrepF3I": {
     "attackAbility": "dex",
     "baseTypes": ["Dragon Pistol"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d6",
+    "firearmEra": "early",
     "group": "dragon-pistol",
     "id": "PT81W3PcwSrepF3I",
+    "misfire": 2,
     "name": "Dragon Pistol",
     "price": 1000,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1123",
@@ -3640,7 +3731,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.PT81W3PcwSrepF3I",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
@@ -3700,16 +3791,20 @@
   "PnCZEHzxpiz8NRSH": {
     "attackAbility": "dex",
     "baseTypes": ["Blunderbuss"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "early",
     "group": "blunderbuss",
     "id": "PnCZEHzxpiz8NRSH",
+    "misfire": 2,
     "name": "Blunderbuss",
     "price": 2000,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1123",
@@ -3721,7 +3816,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.PnCZEHzxpiz8NRSH",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 8
   },
@@ -3738,6 +3833,7 @@
     "name": "Longbow",
     "price": 75,
     "proficiency": "martial",
+    "rangeIncrement": 100,
     "sources": [
       {
         "id": "PZO1110",
@@ -3766,6 +3862,7 @@
     "name": "Boomerang",
     "price": 3,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO9452",
@@ -3856,16 +3953,20 @@
   "QgxsKomo8GDsEGNe": {
     "attackAbility": "dex",
     "baseTypes": ["Buckler Gun"],
+    "capacity": 2,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d6",
+    "firearmEra": "early",
     "group": "buckler-gun",
     "id": "QgxsKomo8GDsEGNe",
+    "misfire": 1,
     "name": "Buckler Gun",
     "price": 750,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1123",
@@ -3877,23 +3978,27 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.QgxsKomo8GDsEGNe",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
   "QhRGBeQuwG6OWZxM": {
     "attackAbility": "dex",
     "baseTypes": ["Paddle-Foot Pistol"],
+    "capacity": 4,
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d6",
+    "firearmEra": "early",
     "group": "paddle-foot-pistol",
     "id": "QhRGBeQuwG6OWZxM",
+    "misfire": 2,
     "name": "Paddle-Foot Pistol",
     "price": 2500,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO9486",
@@ -3901,7 +4006,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.QhRGBeQuwG6OWZxM",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 5
   },
@@ -3951,16 +4056,20 @@
   "RFfwbr0xWBDWvExu": {
     "attackAbility": "dex",
     "baseTypes": ["Musket"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d12",
+    "firearmEra": "early",
     "group": "musket",
     "id": "RFfwbr0xWBDWvExu",
+    "misfire": 2,
     "name": "Musket",
     "price": 1500,
     "proficiency": "exotic",
+    "rangeIncrement": 40,
     "sources": [
       {
         "id": "PZO1123",
@@ -3972,7 +4081,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.RFfwbr0xWBDWvExu",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 9
   },
@@ -4002,16 +4111,20 @@
   "RRh1u2ccgLv1ynu8": {
     "attackAbility": "dex",
     "baseTypes": ["Pistol"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "early",
     "group": "pistol",
     "id": "RRh1u2ccgLv1ynu8",
+    "misfire": 1,
     "name": "Pistol",
     "price": 1000,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1123",
@@ -4023,7 +4136,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.RRh1u2ccgLv1ynu8",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
@@ -4068,6 +4181,7 @@
     "name": "Light Crossbow",
     "price": 35,
     "proficiency": "simple",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO1110",
@@ -4125,6 +4239,7 @@
     "name": "Heavy Slaver's Crossbow",
     "price": 400,
     "proficiency": "exotic",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO1130",
@@ -4202,6 +4317,7 @@
     "name": "Light Slaver's Crossbow",
     "price": 250,
     "proficiency": "exotic",
+    "rangeIncrement": 40,
     "sources": [
       {
         "id": "PZO1130",
@@ -4277,6 +4393,7 @@
     "id": "T5N66YUFkpdxXv3d",
     "name": "Stingchuck",
     "proficiency": "simple",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO9410",
@@ -4301,6 +4418,7 @@
     "name": "Dire Bolas",
     "price": 20,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO9453",
@@ -4426,6 +4544,7 @@
     "name": "Shrillshaft Javelin",
     "price": 35,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO9411",
@@ -4568,16 +4687,20 @@
   "VhBxnIv5zfzrlb93": {
     "attackAbility": "dex",
     "baseTypes": ["Pepperbox"],
+    "capacity": 6,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "early",
     "group": "pepperbox",
     "id": "VhBxnIv5zfzrlb93",
+    "misfire": 2,
     "name": "Pepperbox",
     "price": 3000,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1123",
@@ -4589,7 +4712,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.VhBxnIv5zfzrlb93",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 5
   },
@@ -4630,6 +4753,7 @@
     "name": "Sling Glove",
     "price": 5,
     "proficiency": "exotic",
+    "rangeIncrement": 50,
     "sources": [
       {
         "id": "PZO9410",
@@ -4796,6 +4920,7 @@
     "name": "Stormshaft Javelin",
     "price": 35,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO9481",
@@ -4843,6 +4968,7 @@
     "name": "Wushu Dart",
     "price": 0.2,
     "proficiency": "martial",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1123",
@@ -4867,9 +4993,11 @@
     "damageDice": "2d6",
     "group": "madsen-light-machine-gun",
     "id": "YCrz2YNXSylt4Gl3",
+    "misfire": 2,
     "name": "Madsen Light Machine Gun",
     "price": 1000,
     "proficiency": "exotic",
+    "rangeIncrement": 100,
     "sources": [
       {
         "id": "PZO9071",
@@ -4877,23 +5005,27 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.YCrz2YNXSylt4Gl3",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 20
   },
   "YHAGfpGI0Ghd9udz": {
     "attackAbility": "dex",
     "baseTypes": ["Cylinder Rifle"],
+    "capacity": 8,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "early",
     "group": "cylinder-rifle",
     "id": "YHAGfpGI0Ghd9udz",
+    "misfire": 3,
     "name": "Cylinder Rifle",
     "price": 6000,
     "proficiency": "exotic",
+    "rangeIncrement": 40,
     "sources": [
       {
         "id": "PZO9486",
@@ -4901,7 +5033,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.YHAGfpGI0Ghd9udz",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 12
   },
@@ -5023,6 +5155,7 @@
     "name": "Halfling Sling Staff",
     "price": 20,
     "proficiency": "exotic",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO1110",
@@ -5166,16 +5299,20 @@
   "aLCy6zW8AldME74r": {
     "attackAbility": "dex",
     "baseTypes": ["Radium Pistol"],
+    "capacity": 6,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "advanced",
     "group": "radium-pistol",
     "id": "aLCy6zW8AldME74r",
+    "misfire": 1,
     "name": "Radium Pistol",
     "price": 4500,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "DYN0032-E",
@@ -5183,7 +5320,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.aLCy6zW8AldME74r",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 3
   },
@@ -5316,16 +5453,20 @@
   "an7axxZjvKQogI90": {
     "attackAbility": "dex",
     "baseTypes": ["Air Repeater"],
+    "capacity": 6,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "early",
     "group": "air-repeater",
     "id": "an7axxZjvKQogI90",
+    "misfire": 1,
     "name": "Air Repeater",
     "price": 600,
     "proficiency": "exotic",
+    "rangeIncrement": 50,
     "sources": [
       {
         "id": "PZO9495",
@@ -5333,7 +5474,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.an7axxZjvKQogI90",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
@@ -5452,6 +5593,7 @@
     "name": "Crystal Chakram",
     "price": 20,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO9216",
@@ -5477,6 +5619,7 @@
     "name": "Dwarven Sphinx Hammer",
     "price": 45,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO9491",
@@ -5491,16 +5634,20 @@
   "bYvcTqrIQa3Y9Tvs": {
     "attackAbility": "str",
     "baseTypes": ["Breech-Loader"],
+    "capacity": 2,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d6",
+    "firearmEra": "early",
     "group": "breech-loader",
     "id": "bYvcTqrIQa3Y9Tvs",
+    "misfire": 1,
     "name": "Breech-Loader",
     "price": 3000,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO9495",
@@ -5508,7 +5655,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.bYvcTqrIQa3Y9Tvs",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
@@ -5602,6 +5749,7 @@
     "id": "cJV7OBm9KiF2WWiu",
     "name": "Sling",
     "proficiency": "simple",
+    "rangeIncrement": 50,
     "sources": [
       {
         "id": "PZO1110",
@@ -5665,6 +5813,7 @@
     "name": "Phaleros",
     "price": 5,
     "proficiency": "martial",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO9285",
@@ -5742,6 +5891,7 @@
     "name": "Stonebow",
     "price": 35,
     "proficiency": "simple",
+    "rangeIncrement": 50,
     "sources": [
       {
         "id": "PZO9452",
@@ -5756,16 +5906,20 @@
   "d2Xx40c91wwckazK": {
     "attackAbility": "dex",
     "baseTypes": ["Sword Cane Pistol"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d4",
+    "firearmEra": "early",
     "group": "sword-cane-pistol",
     "id": "d2Xx40c91wwckazK",
+    "misfire": 1,
     "name": "Sword Cane Pistol",
     "price": 775,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1123",
@@ -5777,7 +5931,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.d2Xx40c91wwckazK",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 1
   },
@@ -5876,6 +6030,7 @@
     "name": "Heavy Wrist Launcher",
     "price": 250,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO1134",
@@ -6060,16 +6215,20 @@
   "fzP5dhevEliYzAv4": {
     "attackAbility": "dex",
     "baseTypes": ["Mosin-Nagant M1891 Rifle"],
+    "capacity": 5,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d10",
+    "firearmEra": "modern",
     "group": "mosin-nagant-m1891-rifle",
     "id": "fzP5dhevEliYzAv4",
+    "misfire": 1,
     "name": "Mosin-Nagant M1891 Rifle",
     "price": 500,
     "proficiency": "exotic",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO9071",
@@ -6077,7 +6236,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.fzP5dhevEliYzAv4",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 9
   },
@@ -6094,6 +6253,7 @@
     "name": "Throwing Axe",
     "price": 8,
     "proficiency": "martial",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1110",
@@ -6112,16 +6272,20 @@
   "gYFqEtGQkZFiPPmG": {
     "attackAbility": "dex",
     "baseTypes": ["Dragoon Pistol"],
+    "capacity": 3,
     "category": "ranged",
     "critMult": 3,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "early",
     "group": "dragoon-pistol",
     "id": "gYFqEtGQkZFiPPmG",
+    "misfire": 1,
     "name": "Dragoon Pistol",
     "price": 1500,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO1136",
@@ -6129,7 +6293,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.gYFqEtGQkZFiPPmG",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsOneHanded"],
     "weaponSubtype": "ranged",
     "weight": 5
   },
@@ -6242,11 +6406,13 @@
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "4d6",
+    "firearmEra": "modern",
     "group": "lawrence-1917-flamethrower",
     "id": "hHwOUIg2oTyV6vME",
     "name": "Lawrence 1917 Flamethrower",
     "price": 800,
     "proficiency": "exotic",
+    "rangeIncrement": 60,
     "sources": [
       {
         "id": "PZO9071",
@@ -6254,7 +6420,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.hHwOUIg2oTyV6vME",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 20
   },
@@ -6295,6 +6461,7 @@
     "name": "Kestros",
     "price": 1,
     "proficiency": "exotic",
+    "rangeIncrement": 50,
     "sources": [
       {
         "id": "PZO9452",
@@ -6630,6 +6797,7 @@
     "name": "Reflex Bow",
     "price": 125,
     "proficiency": "martial",
+    "rangeIncrement": 100,
     "sources": [
       {
         "id": "PZO9489",
@@ -6677,6 +6845,7 @@
     "name": "Bolas",
     "price": 5,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1110",
@@ -6780,6 +6949,7 @@
     "name": "Horse Bow",
     "price": 150,
     "proficiency": "exotic",
+    "rangeIncrement": 110,
     "sources": [
       {
         "id": "PZO9489",
@@ -6802,6 +6972,7 @@
     "name": "Wrist Launcher",
     "price": 200,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1134",
@@ -6825,6 +6996,7 @@
     "name": "Throwing Shield",
     "price": 50,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO9452",
@@ -6919,6 +7091,7 @@
     "name": "Dart",
     "price": 0.5,
     "proficiency": "simple",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1110",
@@ -6970,6 +7143,7 @@
     "name": "Repeating Heavy Crossbow",
     "price": 400,
     "proficiency": "exotic",
+    "rangeIncrement": 120,
     "sources": [
       {
         "id": "PZO1110",
@@ -7055,6 +7229,7 @@
     "name": "Composite Longbow",
     "price": 100,
     "proficiency": "martial",
+    "rangeIncrement": 110,
     "sources": [
       {
         "id": "PZO1110",
@@ -7083,6 +7258,7 @@
     "name": "Brutal Bola",
     "price": 15,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.n0vno5RNBzsHvH33",
     "weaponSubtype": "ranged",
     "weight": 2
@@ -7124,6 +7300,7 @@
     "name": "Halfling Double Sling",
     "price": 10,
     "proficiency": "exotic",
+    "rangeIncrement": 50,
     "sources": [
       {
         "id": "PZO9415",
@@ -7475,6 +7652,7 @@
     "name": "Wahaika",
     "price": 3,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1123",
@@ -7571,6 +7749,7 @@
     "name": "Launching Crossbow",
     "price": 75,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO9410",
@@ -7616,6 +7795,7 @@
     "name": "Hurlbat",
     "price": 8,
     "proficiency": "martial",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO9452",
@@ -7669,6 +7849,7 @@
     "name": "Tube Arrow Shooter",
     "price": 3,
     "proficiency": "martial",
+    "rangeIncrement": 40,
     "sources": [
       {
         "id": "PZO9452",
@@ -7726,6 +7907,7 @@
     "name": "Spear",
     "price": 2,
     "proficiency": "simple",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1110",
@@ -7805,6 +7987,7 @@
     "name": "Gastraphetes",
     "price": 65,
     "proficiency": "martial",
+    "rangeIncrement": 120,
     "sources": [
       {
         "id": "PZO9285",
@@ -7854,6 +8037,7 @@
     "name": "Repeating Light Crossbow",
     "price": 250,
     "proficiency": "exotic",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO1110",
@@ -7926,6 +8110,7 @@
     "name": "Starknife",
     "price": 24,
     "proficiency": "martial",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1110",
@@ -8003,11 +8188,13 @@
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d6",
+    "firearmEra": "early",
     "group": "fire-lance",
     "id": "uMKYQeN9RWCuuucG",
     "name": "Fire Lance",
     "price": 25,
     "proficiency": "exotic",
+    "rangeIncrement": 10,
     "sources": [
       {
         "id": "PZO1123",
@@ -8019,7 +8206,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.uMKYQeN9RWCuuucG",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 4
   },
@@ -8198,6 +8385,7 @@
     "name": "Heavy Crossbow",
     "price": 50,
     "proficiency": "simple",
+    "rangeIncrement": 120,
     "sources": [
       {
         "id": "PZO1110",
@@ -8281,6 +8469,7 @@
     "name": "Double Crossbow",
     "price": 300,
     "proficiency": "exotic",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO9452",
@@ -8324,16 +8513,20 @@
   "wUBozJUAb1DYim2w": {
     "attackAbility": "str",
     "baseTypes": ["Pepperbox Rifle"],
+    "capacity": 4,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d10",
+    "firearmEra": "advanced",
     "group": "pepperbox-rifle",
     "id": "wUBozJUAb1DYim2w",
+    "misfire": 2,
     "name": "Pepperbox Rifle",
     "price": 7000,
     "proficiency": "exotic",
+    "rangeIncrement": 80,
     "sources": [
       {
         "id": "PZO1123",
@@ -8345,7 +8538,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.wUBozJUAb1DYim2w",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 15
   },
@@ -8456,6 +8649,7 @@
     "name": "Rope Dart",
     "price": 1,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO9452",
@@ -8501,16 +8695,20 @@
   "xWh4TQU1hx0tVFC5": {
     "attackAbility": "dex",
     "baseTypes": ["Warhammer Musket"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "early",
     "group": "warhammer-musket",
     "id": "xWh4TQU1hx0tVFC5",
+    "misfire": 2,
     "name": "Warhammer Musket",
     "price": 1600,
     "proficiency": "exotic",
+    "rangeIncrement": 30,
     "sources": [
       {
         "id": "PZO1123",
@@ -8522,23 +8720,27 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.xWh4TQU1hx0tVFC5",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 6
   },
   "xhUw4hzZlljYFCzj": {
     "attackAbility": "dex",
     "baseTypes": ["Radium Rifle"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 4,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d10",
+    "firearmEra": "advanced",
     "group": "radium-rifle",
     "id": "xhUw4hzZlljYFCzj",
+    "misfire": 1,
     "name": "Radium Rifle",
     "price": 5500,
     "proficiency": "exotic",
+    "rangeIncrement": 100,
     "sources": [
       {
         "id": "DYN0032-E",
@@ -8546,7 +8748,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.xhUw4hzZlljYFCzj",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 10
   },
@@ -8630,16 +8832,20 @@
   "ygEm8O4e0ayAvAsd": {
     "attackAbility": "dex",
     "baseTypes": ["Shotgun"],
+    "capacity": 1,
     "category": "ranged",
     "critMult": 2,
     "critRange": 20,
     "damageAbility": "none",
     "damageDice": "1d8",
+    "firearmEra": "advanced",
     "group": "shotgun",
     "id": "ygEm8O4e0ayAvAsd",
+    "misfire": 2,
     "name": "Shotgun",
     "price": 5000,
     "proficiency": "exotic",
+    "rangeIncrement": 20,
     "sources": [
       {
         "id": "PZO1123",
@@ -8651,7 +8857,7 @@
       }
     ],
     "uuid": "Compendium.pf1.weapons-and-ammo.Item.ygEm8O4e0ayAvAsd",
-    "weaponGroups": ["firearms"],
+    "weaponGroups": ["firearms", "firearmsTwoHanded"],
     "weaponSubtype": "ranged",
     "weight": 12
   },

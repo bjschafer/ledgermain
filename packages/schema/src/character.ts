@@ -1219,6 +1219,29 @@ export interface CharacterDoc {
      */
     rogueFinesseWeapons?: string[];
     /**
+     * Gun Training family weapon-type picks (Ultimate Combat, gunslinger 5th
+     * level and every 4 levels thereafter through 17th — PF1 RAW: "she can
+     * select one specific type of firearm... whenever [she] fires that type
+     * of firearm"), keyed by the GRANTING CLASS TAG (e.g. "gunslinger") since
+     * a future non-gunslinger source could grant its own independent picks.
+     * Each key's array is in grant order — index 0 = the type chosen at the
+     * first unlock level, index 1 = the second, etc. (`@pf1/engine`
+     * `GUN_TRAINING_GRANTS`' "picks"-scope `unlockLevels`). Values are
+     * free-text weapon TYPE names (e.g. "musket", "pistol"), matched the same
+     * way as `rogueFinesseWeapons` above: case-insensitive substring against
+     * a `WeaponInstance`'s `name`, OR exact match against its free-text
+     * `group` tag — not a `@pf1/engine` `WEAPON_GROUPS` slug (RAW scopes each
+     * pick to one firearm type, not a whole semantic group; contrast Musket
+     * Training/Pistol Training, which ARE group-wide and need no picks at
+     * all — see `GUN_TRAINING_GRANTS`'s "groups" scope). Picks beyond the
+     * character's currently-unlocked tier count are ignored rather than
+     * truncated, so leveling back down doesn't destroy a later pick.
+     * Empty/undefined for a character with no Gun Training family levels, or
+     * one who hasn't picked yet. Back-compat: documents without this field
+     * are unaffected.
+     */
+    gunTrainingPicks?: Partial<Record<string, string[]>>;
+    /**
      * Rogue's Edge (UC) skill unlock picks, in grant order — index 0 = the
      * skill chosen at 5th level, index 1 = 10th, index 2 = 15th, index 3 =
      * 20th (PF1 Unchained RAW: "at 5th level, and every 5 levels thereafter,
@@ -2830,12 +2853,19 @@ export interface WeaponInstance {
   attackAbility: "str" | "dex";
   /**
    * Which ability modifier adds to the damage bonus.
-   * - `"str"` (default): STR × damageMultiplier, melee only.
-   * - `"dex"`: DEX × damageMultiplier, melee only — a hand-set override for a
+   * - `"str"` (default): STR × damageMultiplier for a melee weapon. A ranged
+   *   weapon left at the default gets NO ability damage at all (a bow's Str
+   *   bonus needs a composite-bow rating this app doesn't model yet) — `"str"`
+   *   is never applied on the ranged side.
+   * - `"dex"`: melee — DEX × damageMultiplier, a hand-set override for a
    *   Dex-to-damage source the player wants to force on (e.g. Slashing Grace).
    *   Rogue (Unchained)'s Finesse Training (`build.rogueFinesseWeapons`)
    *   applies this automatically for a matching weapon instead of requiring it
-   *   to be set by hand; see `computeWeaponAttacks` in `compute.ts`.
+   *   to be set by hand; see `computeWeaponAttacks` in `compute.ts`. Ranged —
+   *   DEX always at ×1 (never `damageMultiplier`-scaled), either hand-set as
+   *   the escape hatch for an unmodeled Dex-to-damage source, or applied
+   *   automatically for a firearm covered by the Gun Training family (`@pf1/
+   *   engine` `gunTrainingMatches`, keyed off `build.gunTrainingPicks`).
    * - `"none"`: no ability modifier to damage (ranged, finesse, thrown without STR).
    */
   damageAbility?: "str" | "dex" | "none";
@@ -2919,6 +2949,43 @@ export interface WeaponInstance {
    * autosave) — treated as "unknown, don't penalize" rather than guessing.
    */
   proficiency?: "simple" | "martial" | "exotic";
+  /**
+   * Range increment in feet, snapshotted from `WeaponRef.rangeIncrement` at
+   * pick-time, or entered directly for a hand-authored custom ranged weapon.
+   * Meaningful only for `category: "ranged"`. Feeds `ResolvedWeaponAttack
+   * .rangeIncrement` for display and, combined with `firearmEra`,
+   * `.firearm.touchRangeFt`.
+   */
+  rangeIncrement?: number;
+  /**
+   * Upper bound of a firearm's misfire range (Ultimate Combat firearms
+   * rules), e.g. `2` misfires on a natural attack roll of 1 or 2.
+   * Snapshotted from `WeaponRef.misfire` at pick-time, or entered directly
+   * for a hand-authored custom firearm. Display-only — the engine has no
+   * broken-item-state tracking, so it never adjusts this value (Gun
+   * Training's "misfire value increases by 2 instead of 4" benefit applies
+   * to a BROKEN firearm's misfire range, not this printed one; see
+   * `gun-training.ts`'s module doc comment).
+   */
+  misfire?: number;
+  /**
+   * Ammunition capacity (Ultimate Combat firearms rules), e.g. `5` for a
+   * five-shot revolver. Snapshotted from `WeaponRef.capacity` at pick-time,
+   * or entered directly for a hand-authored custom firearm. Display-only —
+   * this app doesn't track loaded-ammunition state.
+   */
+  capacity?: number;
+  /**
+   * Firearm era (Ultimate Combat firearms rules), governing how far out an
+   * attack resolves against touch AC instead of normal AC: `"early"` — first
+   * range increment only; `"advanced"` — first FIVE range increments;
+   * `"modern"` (Reign of Winter's late-era firearms) — treated identically to
+   * `"advanced"`, since nothing in the published rules distinguishes them for
+   * this purpose. Snapshotted from `WeaponRef.firearmEra` at pick-time, or
+   * chosen directly for a hand-authored custom firearm. Undefined for a
+   * non-firearm weapon, or a firearm entered before this field existed.
+   */
+  firearmEra?: "early" | "advanced" | "modern";
 }
 
 /* ----------------------------------------------------------- derived sheet -- */
@@ -3766,6 +3833,33 @@ export interface ResolvedWeaponAttack {
    * Derived by `@pf1/engine`'s `weaponDrBypasses`.
    */
   drBypass?: WeaponDrBypass[];
+  /**
+   * Range increment in feet, copied from `WeaponInstance.rangeIncrement`.
+   * Ranged weapons only — omitted for melee and for a ranged weapon with no
+   * snapshotted range.
+   */
+  rangeIncrement?: number;
+  /**
+   * Firearm-specific display data, present only when the source
+   * `WeaponInstance` is (detectably) a firearm — it carries a `misfire`
+   * value, a `firearmEra`, or a semantic weapon-group tag containing
+   * "firearms". Omitted entirely for a non-firearm weapon.
+   */
+  firearm?: {
+    /** Copied from `WeaponInstance.misfire`. */
+    misfire?: number;
+    /** Copied from `WeaponInstance.capacity`. */
+    capacity?: number;
+    /**
+     * Distance within which this firearm resolves against touch AC instead
+     * of normal AC: `rangeIncrement` for `firearmEra: "early"`,
+     * `rangeIncrement × 5` for `"advanced"`/`"modern"` (Ultimate Combat
+     * firearms rules — see `WeaponInstance.firearmEra`'s doc comment for the
+     * "modern" ruling). Present only when both `rangeIncrement` and
+     * `firearmEra` are known.
+     */
+    touchRangeFt?: number;
+  };
 }
 
 /**

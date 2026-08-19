@@ -450,6 +450,7 @@ exports[`normalized-output snapshots weapon: Composite Longbow (ranged, STR-to-d
   "name": "Composite Longbow",
   "price": 100,
   "proficiency": "martial",
+  "rangeIncrement": 110,
   "sources": [
     {
       "id": "PZO1110",

@@ -35,6 +35,11 @@ export const WEAPON_GROUPS = [
   "crossbows",
   "double",
   "firearms",
+  // Pipeline-synthesized subgroup tags of "firearms" (split by hand count,
+  // for Musket Training / Pistol Training-style category effects) — not
+  // Foundry vocabulary, see `transformWeapon` in data-pipeline.
+  "firearms-one-handed",
+  "firearms-two-handed",
   "flails",
   "hammers",
   "monk",

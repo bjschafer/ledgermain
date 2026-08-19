@@ -545,6 +545,13 @@ export {
   type DeedDef,
 } from "./deeds.js";
 export {
+  GUN_TRAINING_GRANTS,
+  gunTrainingMatches,
+  type GunTrainingGrant,
+  type GunTrainingPicksScope,
+  type GunTrainingGroupsScope,
+} from "./gun-training.js";
+export {
   CAVALIER_ORDERS,
   SAMURAI_ORDERS,
   SPLATBOOK_ORDERS,

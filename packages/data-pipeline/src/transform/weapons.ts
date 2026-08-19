@@ -19,11 +19,22 @@ export function transformWeapon(doc: RawDoc): WeaponRef {
 
   const ability = (action?.ability ?? {}) as Record<string, unknown>;
   const actionType = str(action?.actionType);
-  const rangeUnits = str((action?.range as Record<string, unknown>)?.units);
+  const range = action?.range as Record<string, unknown> | undefined;
+  const rangeUnits = str(range?.units);
   const damageAbility = str(ability.damage);
   const weaponSubtype = str(sys.weaponSubtype);
   const baseTypes = asStringArray(sys.baseTypes);
   const weaponGroups = asStringArray(sys.weaponGroups);
+  const ammo = (sys.ammo ?? {}) as Record<string, unknown>;
+
+  // Pipeline-synthesized handedness subgroups of "firearms" — Foundry's own
+  // weaponGroups vocabulary never splits firearms by hand count, but Musket
+  // Training / Pistol Training-style category effects need to target exactly
+  // that split. camelCase to match the vendored ("bladesHeavy") style; the
+  // engine normalizes to kebab-case.
+  const emittedWeaponGroups = weaponGroups.includes("firearms")
+    ? [...weaponGroups, asNumber(sys.hands) === 2 ? "firearmsTwoHanded" : "firearmsOneHanded"]
+    : weaponGroups;
 
   return {
     id: doc._id,
@@ -38,13 +49,32 @@ export function transformWeapon(doc: RawDoc): WeaponRef {
     damageAbility: damageAbility === "str" ? "str" : "none",
     damageMultiplier: weaponSubtype === "2h" ? 1.5 : undefined,
     proficiency: subType,
-    weaponGroups: weaponGroups.length > 0 ? weaponGroups : undefined,
+    weaponGroups: emittedWeaponGroups.length > 0 ? emittedWeaponGroups : undefined,
     weaponSubtype,
     baseTypes: baseTypes.length > 0 ? baseTypes : undefined,
     group: slugifyBase(baseTypes[0]),
     price: asNumber(sys.price),
     weight: readWeight(sys.weight),
+    rangeIncrement: rangeUnits === "ft" ? parsePositiveNumber(range?.value) : undefined,
+    misfire: asNumber(ammo.misfire),
+    capacity: asNumber(ammo.capacity),
+    firearmEra: firearmEraOf(sys.tags),
   };
+}
+
+/** Leniently parses a plain positive number from an upstream field that's a string and sometimes empty/non-numeric. */
+function parsePositiveNumber(value: unknown): number | undefined {
+  const n = asNumber(value);
+  return n !== undefined && n > 0 ? n : undefined;
+}
+
+/** Maps a weapon's "Early/Advanced/Modern Firearm" tag (if any) to its era. */
+function firearmEraOf(tags: unknown): "early" | "advanced" | "modern" | undefined {
+  const list = asStringArray(tags);
+  if (list.includes("Early Firearm")) return "early";
+  if (list.includes("Advanced Firearm")) return "advanced";
+  if (list.includes("Modern Firearm")) return "modern";
+  return undefined;
 }
 
 /** True if a pack doc is the kind of mundane base weapon we vendor. */
