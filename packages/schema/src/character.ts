@@ -501,6 +501,12 @@ export interface CharacterDoc {
      * Dragon mystery's associated element, which its revelations read.
      * Values are option ids from the declaring entry's option list.
      *
+     * One exception to the option-id rule: a metamagic-discount trait
+     * (Magical Lineage, Wayang Spellhunter) stores its chosen SPELL id under
+     * `"trait:<traitId>"` — consumed by the web spell panels' metamagic slot
+     * math (apps/web `model/metamagic.ts`), which declares those traits
+     * itself rather than through the engine's `TRAIT_CHOICES`.
+     *
      * Optional for back-compat, same posture as `featChoices` above: no
      * choice stored means the entry's choice-gated changes emit nothing.
      */
@@ -2470,7 +2476,10 @@ export interface PreparedSpell {
    * metamagic feat the character has (by `featNameSlug`, key into
    * `@pf1/engine`'s `METAMAGIC_FEATS`); the sum of their slot-level increases
    * bumps the slot this instance occupies (e.g. an Empowered Fireball — base
-   * 3rd — consumes a 5th-level slot). Absent/empty means an unmodified spell,
+   * 3rd — consumes a 5th-level slot), less any always-on metamagic cost
+   * discount for this spell (Magical Lineage and kin — derived per cast in
+   * apps/web `model/metamagic.ts`, never stored here; the total increase
+   * never drops below 0). Absent/empty means an unmodified spell,
    * so every prepared instance authored before it is unchanged. Only the SLOT accounting
    * is modeled; the numeric effect on the spell is a display-only note (see
    * `METAMAGIC_FEATS`'s honesty-bar doc comment). Save DC is unaffected by

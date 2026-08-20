@@ -2,6 +2,7 @@ import { unappliedChanges } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 import type { TraitDef } from "@pf1/engine";
 
+import { metamagicDiscountSpellOptions, metamagicDiscountTrait } from "../../model/metamagic.js";
 import { changeTargetLabel } from "../../model/names.js";
 import { contextNoteCoverage } from "../../model/rulesNotes.js";
 import {
@@ -52,6 +53,15 @@ export function TraitRow({
   refData?: RefData;
 }) {
   const missing = unappliedChanges(trait.changes);
+  // Metamagic-discount traits (Magical Lineage, Wayang Spellhunter) name ONE
+  // chosen spell; the pick feeds the spell panels' slot math (see
+  // `model/metamagic.ts`) and is stored in the same `pickChoices` slot as
+  // every other trait choice.
+  const spellChoice = metamagicDiscountTrait(trait);
+  const spellOptions =
+    selected && refData && spellChoice
+      ? metamagicDiscountSpellOptions(refData, spellChoice.maxSpellLevel)
+      : [];
   const choiceDescriptor = traitChoiceDescriptor(trait.id);
   const choiceOptions =
     selected && doc && refData && choiceDescriptor
@@ -114,6 +124,28 @@ export function TraitRow({
           <div className="hint" style={{ marginTop: 2 }}>
             {familyHint}
           </div>
+        ) : null}
+        {selected && doc && spellChoice && spellOptions.length > 0 ? (
+          <label className="hint" style={{ marginTop: 2, display: "block" }}>
+            Chosen spell:{" "}
+            <select
+              value={traitChoice(doc, trait.id) ?? ""}
+              onChange={(e) =>
+                update((d2) => setTraitChoice(d2, trait.id, e.target.value || undefined))
+              }
+            >
+              <option value="">Choose</option>
+              {spellOptions.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.name} (level {o.level})
+                </option>
+              ))}
+            </select>{" "}
+            <span className="soft">
+              Metamagic applied to the chosen spell costs 1 slot level less; the spell panels apply
+              it automatically.
+            </span>
+          </label>
         ) : null}
         {trait.description ? <FeatureDescription html={trait.description} /> : null}
       </div>

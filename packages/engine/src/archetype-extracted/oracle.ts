@@ -508,7 +508,7 @@ export const ORACLE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Seeker Magic",
     level: 15,
     bucket: "subsystem",
-    note: "replaces the 15th-level revelation with a metamagic-cost reduction on mystery bonus spells — revelation-list modification, deferred",
+    note: "replaces the 15th-level revelation with a metamagic-cost reduction on mystery bonus spells — the reduction is applied in the web spell panels' slot math (apps/web model/metamagic.ts); the lost 15th-level revelation pick stays a revelation-list modification, deferred",
   },
   "oracle:seer:natural-divination:1": {
     archetypeId: "oracle:seer",

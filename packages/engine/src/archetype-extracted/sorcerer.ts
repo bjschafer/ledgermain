@@ -194,7 +194,7 @@ export const SORCERER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Seeker Magic",
     level: 15,
     bucket: "subsystem",
-    note: "reduces a metamagic feat's spell-level cost by 1 on bonus spells specifically — no Change-shaped target for metamagic-cost reduction",
+    note: "reduces a metamagic feat's spell-level cost by 1 on bloodline bonus spells — no Change-shaped target; the reduction is applied in the web spell panels' slot math (apps/web model/metamagic.ts)",
   },
   "sorcerer:sorcerer-of-sleep:pesh-expert:1": {
     archetypeId: "sorcerer:sorcerer-of-sleep",

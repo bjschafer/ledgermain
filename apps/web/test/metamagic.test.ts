@@ -10,6 +10,10 @@ import type { CharacterDoc } from "@pf1/schema";
 
 import { addClass, createEmptyDoc, setClassLevel, toggleFeat } from "../src/model/doc.js";
 import {
+  metamagicDiscountFor,
+  metamagicDiscountSources,
+  metamagicDiscountSpellOptions,
+  metamagicDiscountTrait,
   metamagicEffectiveIncrease,
   metamagicSlotIncrease,
   ownedMetamagic,
@@ -21,6 +25,8 @@ import {
   setPreparedMetamagicLevels,
   togglePreparedMetamagic,
 } from "../src/model/preparedSpells.js";
+import { bloodlineSpellsKnown } from "../src/model/spellcasting.js";
+import { setTraitChoice, toggleTrait } from "../src/model/traits.js";
 
 const ref = loadRefData();
 
@@ -73,6 +79,142 @@ describe("slot / effective level math", () => {
     expect(resolved).toHaveLength(1);
     expect(resolved[0]!.def.name).toBe("Maximize Spell");
     expect(resolved[0]!.increase).toBe(3);
+  });
+});
+
+describe("always-on metamagic cost discounts", () => {
+  function spellId(name: string): string {
+    const entry = Object.entries(ref.spells).find(([, s]) => s.name === name);
+    if (!entry) throw new Error(`spell not found: ${name}`);
+    return entry[0];
+  }
+
+  // Vendored catalog id for Wayang Spellhunter (the hand-authored table
+  // doesn't carry it; the vendored name has a region suffix).
+  const wayangId = Object.entries(ref.traits).find(([, t]) =>
+    t.name.startsWith("Wayang Spellhunter"),
+  )![0];
+
+  const fireball = spellId("Fireball");
+
+  /** A wizard with Magical Lineage naming `spell`. */
+  function withMagicalLineage(spell: string): CharacterDoc {
+    let doc = setClassLevel(addClass(createEmptyDoc("t"), "wizard"), "wizard", 10);
+    doc = toggleTrait(doc, "magicalLineage");
+    return setTraitChoice(doc, "magicalLineage", spell);
+  }
+
+  it("a discount trait with no stored spell pick contributes nothing", () => {
+    const doc = toggleTrait(createEmptyDoc("t"), "magicalLineage");
+    expect(metamagicDiscountSources(doc, ref)).toEqual([]);
+  });
+
+  it("recognizes both traits by name, across catalogs", () => {
+    expect(metamagicDiscountTrait({ name: "Magical Lineage" })?.label).toBe("Magical Lineage");
+    expect(metamagicDiscountTrait({ name: ref.traits[wayangId]!.name })?.maxSpellLevel).toBe(3);
+    expect(metamagicDiscountTrait({ name: "Reactionary" })).toBeUndefined();
+  });
+
+  it("Magical Lineage reduces the SUMMED increase by 1, on the chosen spell only", () => {
+    // Trait text: "Pick one spell when you choose this trait. When you apply
+    // metamagic feats to this spell, treat its actual level as 1 lower for
+    // determining the spell's final adjusted level." — i.e. the whole cast's
+    // total increase drops by 1, not each feat's.
+    const doc = withMagicalLineage(fireball);
+    const sources = metamagicDiscountSources(doc, ref);
+    const applied = [{ slug: "empower-spell" }, { slug: "silent-spell" }]; // +2 +1
+    const match = metamagicDiscountFor(sources, fireball);
+    expect(match).toEqual({ amount: 1, labels: ["Magical Lineage"] });
+    expect(metamagicSlotIncrease(applied, match.amount)).toBe(2);
+    // A spell the trait doesn't name pays full price.
+    const other = metamagicDiscountFor(sources, spellId("Lightning Bolt"));
+    expect(other.amount).toBe(0);
+    expect(metamagicSlotIncrease(applied, other.amount)).toBe(3);
+  });
+
+  it("never reduces the total increase below 0 (the slot never drops below the base level)", () => {
+    const doc = withMagicalLineage(fireball);
+    const { amount } = metamagicDiscountFor(metamagicDiscountSources(doc, ref), fireball);
+    // Still Spell is +1; discounted the cast sits in its ordinary base slot.
+    expect(metamagicSlotIncrease([{ slug: "still-spell" }], amount)).toBe(0);
+    // No metamagic applied means nothing to discount.
+    expect(metamagicSlotIncrease([], amount)).toBe(0);
+    expect(metamagicSlotIncrease(undefined, amount)).toBe(0);
+  });
+
+  it("Magical Lineage and Wayang Spellhunter both apply when both name the same spell", () => {
+    // Neither trait's benefit is a typed "trait bonus" on a roll (each is an
+    // untyped cost reduction with no non-stacking clause), so the common RAW
+    // reading lets both reduce the same cast. Wayang Spellhunter: "Select a
+    // spell of 3rd level or below. When you use the chosen spell with a
+    // metamagic feat, it uses up a spell slot one level lower than it
+    // normally would."
+    let doc = withMagicalLineage(fireball);
+    doc = setTraitChoice(toggleTrait(doc, wayangId), wayangId, fireball);
+    const discount = metamagicDiscountFor(metamagicDiscountSources(doc, ref), fireball);
+    expect(discount.amount).toBe(2);
+    expect(discount.labels.sort()).toEqual(["Magical Lineage", "Wayang Spellhunter"]);
+    // Quickened (+4) Fireball: 3rd + max(0, 4 - 2) = a 5th-level slot.
+    expect(metamagicSlotIncrease([{ slug: "quicken-spell" }], discount.amount)).toBe(2);
+  });
+
+  it("Heighten interplay: the discount lowers the slot cost, never the chosen DC bump", () => {
+    const doc = withMagicalLineage(fireball);
+    const { amount } = metamagicDiscountFor(metamagicDiscountSources(doc, ref), fireball);
+    const applied = [{ slug: "heighten-spell", levels: 3 }];
+    // Heighten Fireball to 6th with Magical Lineage: occupies a 5th-level
+    // slot (3 + max(0, 3 - 1) = 5)...
+    expect(metamagicSlotIncrease(applied, amount)).toBe(2);
+    // ...but the spell is still a 6th-level effect for save DC purposes —
+    // Heighten's effective level is the level the player chose to heighten
+    // to, not the discounted slot.
+    expect(metamagicEffectiveIncrease(applied)).toBe(3);
+  });
+
+  it("Seeker Magic applies to bloodline bonus spells at sorcerer 15+, and never stacks", () => {
+    // Archetype text: "When a seeker applies a metamagic feat to any bonus
+    // spells granted by his mystery or his bloodline, he reduces the
+    // metamagic feat's spell level adjustment by 1. ... This reduction ...
+    // does not stack with similar reductions from other abilities."
+    let doc = setClassLevel(addClass(createEmptyDoc("t"), "sorcerer"), "sorcerer", 15);
+    doc = {
+      ...doc,
+      build: { ...doc.build, archetypes: ["sorcerer:seeker"], sorcererBloodline: "Draconic" },
+    };
+    const bonusIds = bloodlineSpellsKnown(ref, "Draconic", 15).map((sp) => sp.id);
+    expect(bonusIds.length).toBeGreaterThan(0);
+    const sources = metamagicDiscountSources(doc, ref, "sorcerer");
+    expect(metamagicDiscountFor(sources, bonusIds[0]!)).toEqual({
+      amount: 1,
+      labels: ["Seeker Magic"],
+    });
+    // Not a bloodline bonus spell: no discount.
+    expect(metamagicDiscountFor(sources, fireball).amount).toBe(0);
+    // Non-stacking: Magical Lineage naming the same bonus spell doesn't add
+    // Seeker Magic's reduction on top.
+    let both = toggleTrait(doc, "magicalLineage");
+    both = setTraitChoice(both, "magicalLineage", bonusIds[0]!);
+    const stacked = metamagicDiscountFor(
+      metamagicDiscountSources(both, ref, "sorcerer"),
+      bonusIds[0]!,
+    );
+    expect(stacked).toEqual({ amount: 1, labels: ["Magical Lineage"] });
+    // The feature unlocks at 15th level; below that there is no source.
+    const low = setClassLevel(doc, "sorcerer", 14);
+    expect(metamagicDiscountSources(low, ref, "sorcerer")).toEqual([]);
+    // The class scoping matters: the same doc viewed as another class's
+    // panel gets no Seeker source.
+    expect(metamagicDiscountSources(doc, ref, "wizard")).toEqual([]);
+  });
+
+  it("Wayang Spellhunter's picker offers only spells of 3rd level or below", () => {
+    const wayangOptions = metamagicDiscountSpellOptions(ref, 3);
+    expect(wayangOptions.length).toBeGreaterThan(0);
+    expect(wayangOptions.every((o) => o.level <= 3)).toBe(true);
+    // Magical Lineage has no level cap: the full catalog is offered.
+    const allOptions = metamagicDiscountSpellOptions(ref);
+    expect(allOptions.some((o) => o.level === 9)).toBe(true);
+    expect(allOptions.length).toBeGreaterThan(wayangOptions.length);
   });
 });
 

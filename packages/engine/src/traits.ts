@@ -277,13 +277,10 @@ const TRAIT_LIST: TraitDef[] = [
     category: "Magic",
     summary:
       "Choose one spell; when applying metamagic feats to that spell, treat its effective level as 1 lower for determining the level increase.",
+    // No Change: the discount is applied to the chosen spell's metamagic slot
+    // math in the web spell panels (apps/web `model/metamagic.ts`), keyed off
+    // the spell pick stored in `build.pickChoices`.
     changes: [],
-    contextNotes: [
-      {
-        target: "allChecks",
-        text: "Applies only to one chosen spell's metamagic cost — situational, not tracked as a number here.",
-      },
-    ],
     displayOnly: true,
   },
   {

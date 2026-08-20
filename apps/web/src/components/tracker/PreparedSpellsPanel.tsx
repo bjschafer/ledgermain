@@ -40,8 +40,12 @@ import {
 } from "../../model/preparedSpells.js";
 import {
   appliedMetamagicIncrease,
+  type MetamagicDiscount,
+  metamagicDiscountFor,
+  metamagicDiscountSources,
   metamagicEffectiveIncrease,
   metamagicSlotIncrease,
+  NO_METAMAGIC_DISCOUNT,
   ownedMetamagic,
   resolveAppliedMetamagic,
   setMetamagicLevels,
@@ -101,6 +105,8 @@ interface PreparedRow {
   baseLevel: number;
   /** Metamagic applied to this instance; empty for an unmodified spell. */
   metamagic: AppliedMetamagic[];
+  /** Always-on metamagic cost discount for this spell (see `metamagicDiscountFor`). */
+  discount: MetamagicDiscount;
 }
 
 // ---------------------------------------------------------------------------
@@ -114,12 +120,18 @@ interface PreparedRow {
  * disabled when applying it (or raising a variable feat's level) would push
  * the spell's slot level past `maxSlotLevel` (the caster's highest slot). Only
  * rendered when the character owns at least one metamagic feat.
+ *
+ * `discount` is the spell's always-on metamagic cost reduction (Magical
+ * Lineage and kin, see `metamagicDiscountFor`): it comes off the summed
+ * increase (never below 0) in every slot computation here, and is surfaced as
+ * a note line so the cheaper cost is visible rather than silently different.
  */
 function MetamagicControl({
   owned,
   applied,
   baseLevel,
   maxSlotLevel,
+  discount = NO_METAMAGIC_DISCOUNT,
   onToggle,
   onSetLevels,
 }: {
@@ -127,6 +139,7 @@ function MetamagicControl({
   applied: AppliedMetamagic[];
   baseLevel: number;
   maxSlotLevel: number;
+  discount?: MetamagicDiscount;
   onToggle: (slug: string) => void;
   onSetLevels: (slug: string, levels: number) => void;
 }) {
@@ -134,12 +147,21 @@ function MetamagicControl({
   const appliedBySlug = new Map(applied.map((a) => [a.slug, a]));
   const currentIncrease = metamagicSlotIncrease(applied);
   const activeCount = applied.length;
+  // Slot level once the discount is taken off a total increase (floor: the
+  // spell's own level — the total increase never goes below 0).
+  const slotFor = (increase: number) => baseLevel + Math.max(0, increase - discount.amount);
 
   return (
     <details className="prep-metamagic">
       <summary className="prep-metamagic-summary">
         Metamagic{activeCount > 0 ? ` (${activeCount})` : ""}
       </summary>
+      {discount.amount > 0 && (
+        <p className="hint prep-metamagic-discount">
+          {discount.labels.join(" and ")}: metamagic on this spell costs {discount.amount} slot{" "}
+          {discount.amount === 1 ? "level" : "levels"} less (never below level {baseLevel}).
+        </p>
+      )}
       <div className="prep-metamagic-list">
         {owned.map((def) => {
           const active = appliedBySlug.get(def.slug);
@@ -147,11 +169,11 @@ function MetamagicControl({
           const thisIncrease = isActive ? appliedMetamagicIncrease(active) : def.slotIncrease;
           const otherIncrease = currentIncrease - (isActive ? thisIncrease : 0);
           // Adding a (default) increment must keep the slot level within reach.
-          const wouldExceed =
-            !isActive && baseLevel + otherIncrease + def.slotIncrease > maxSlotLevel;
+          const wouldExceed = !isActive && slotFor(otherIncrease + def.slotIncrease) > maxSlotLevel;
           // For a variable feat, how high its own level may go before the slot
-          // would overflow (also capped by the feat's own `maxIncrease`).
-          const roomForVariable = maxSlotLevel - baseLevel - otherIncrease;
+          // would overflow (also capped by the feat's own `maxIncrease`). The
+          // discount widens the room by its amount.
+          const roomForVariable = maxSlotLevel - baseLevel - otherIncrease + discount.amount;
           const variableMax = Math.min(def.maxIncrease ?? roomForVariable, roomForVariable);
 
           return (
@@ -163,7 +185,7 @@ function MetamagicControl({
                 disabled={wouldExceed}
                 title={
                   wouldExceed
-                    ? `Applying ${def.name} would need a level-${baseLevel + otherIncrease + def.slotIncrease} slot, beyond your highest (level ${maxSlotLevel}).`
+                    ? `Applying ${def.name} would need a level-${slotFor(otherIncrease + def.slotIncrease)} slot, beyond your highest (level ${maxSlotLevel}).`
                     : def.note
                 }
                 onClick={() => onToggle(def.slug)}
@@ -964,9 +986,14 @@ function PreparedView({
     slotDeltas,
   );
   // Metamagic: owned feats + the highest slot the caster can fill (metamagic
-  // can't push a spell past it).
+  // can't push a spell past it) + this character's always-on cost discounts
+  // (Magical Lineage and kin — see `metamagicDiscountSources`).
   const owned = useMemo(() => ownedMetamagic(doc, refData), [doc, refData]);
   const maxSlotLevel = slots.length > 0 ? slots[slots.length - 1]!.level : 0;
+  const discountSources = useMemo(
+    () => metamagicDiscountSources(doc, refData, casterTag),
+    [doc, refData, casterTag],
+  );
 
   const cantripList = useMemo(
     () => (model.grantsAllCantrips ? grantedCantrips(refData, casterTag) : []),
@@ -1062,9 +1089,11 @@ function PreparedView({
     preparedCountBySpell.set(p.spellId, (preparedCountBySpell.get(p.spellId) ?? 0) + 1);
     const spellData = refData.spells[p.spellId];
     // Metamagic: a modified spell occupies — and is bucketed under — a higher
-    // slot (base + Σ slot increases), e.g. an Empowered Fireball (base 3rd)
-    // lands in the level-5 bucket and counts against its capacity.
-    const slotLevel = baseLevel + metamagicSlotIncrease(p.metamagic);
+    // slot (base + Σ slot increases, less any always-on discount for this
+    // spell), e.g. an Empowered Fireball (base 3rd) lands in the level-5
+    // bucket and counts against its capacity — level 4 with Magical Lineage.
+    const discount = metamagicDiscountFor(discountSources, p.spellId);
+    const slotLevel = baseLevel + metamagicSlotIncrease(p.metamagic, discount.amount);
     const row: PreparedRow = {
       index,
       spellId: p.spellId,
@@ -1073,6 +1102,7 @@ function PreparedView({
       cost: spellData ? oppositionCost(spellData, doc, refData) : 1,
       baseLevel,
       metamagic: p.metamagic ?? [],
+      discount,
     };
     (preparedByLevel.get(slotLevel) ?? preparedByLevel.set(slotLevel, []).get(slotLevel)!).push(
       row,
@@ -1233,6 +1263,7 @@ function PreparedView({
                               applied={r.metamagic}
                               baseLevel={r.baseLevel}
                               maxSlotLevel={maxSlotLevel}
+                              discount={r.discount}
                               onToggle={(slug) => {
                                 update((d) => togglePreparedMetamagic(d, r.index, slug));
                                 flashRow(r.index);
@@ -1509,6 +1540,10 @@ function SpontaneousView({
   // choice is transient (nothing is stored on the doc; casting just spends a
   // higher slot), so it lives in component state keyed by spell id.
   const owned = useMemo(() => ownedMetamagic(doc, refData), [doc, refData]);
+  const discountSources = useMemo(
+    () => metamagicDiscountSources(doc, refData, casterTag),
+    [doc, refData, casterTag],
+  );
   const [castMetamagic, setCastMetamagic] = useState<Record<string, AppliedMetamagic[]>>({});
   const maxSlotLevel = status.length > 0 ? status[status.length - 1]!.level : 0;
   const remainingByLevel = new Map(status.map((s) => [s.level, s.remaining]));
@@ -1771,10 +1806,13 @@ function SpontaneousView({
                   {knownHere.map((sp) => {
                     const spellData = refData.spells[sp.id];
                     // Cast-time metamagic: the chosen feats bump the slot the
-                    // Cast button spends; only Heighten also raises the
-                    // effective level (and thus DC).
+                    // Cast button spends (less any always-on discount for this
+                    // spell); only Heighten also raises the effective level
+                    // (and thus DC), driven by the chosen levels, never by the
+                    // discounted slot.
                     const applied = castMetamagic[sp.id] ?? [];
-                    const castLevel = level + metamagicSlotIncrease(applied);
+                    const discount = metamagicDiscountFor(discountSources, sp.id);
+                    const castLevel = level + metamagicSlotIncrease(applied, discount.amount);
                     const effectiveLevel = level + metamagicEffectiveIncrease(applied);
                     const castRemaining = remainingByLevel.get(castLevel) ?? 0;
                     const castExhausted = castRemaining <= 0;
@@ -1805,6 +1843,7 @@ function SpontaneousView({
                             applied={applied}
                             baseLevel={level}
                             maxSlotLevel={maxSlotLevel}
+                            discount={discount}
                             onToggle={(slug) => toggleCastMM(sp.id, slug)}
                             onSetLevels={(slug, n) => setCastMMLevels(sp.id, slug, n)}
                           />
@@ -1960,6 +1999,10 @@ function HybridView({
   // metamagic when casting, spending a higher slot — a transient, un-persisted
   // choice kept in component state keyed by spell id.
   const owned = useMemo(() => ownedMetamagic(doc, refData), [doc, refData]);
+  const discountSources = useMemo(
+    () => metamagicDiscountSources(doc, refData, casterTag),
+    [doc, refData, casterTag],
+  );
   const [castMetamagic, setCastMetamagic] = useState<Record<string, AppliedMetamagic[]>>({});
   const maxSlotLevel = castStatus.length > 0 ? castStatus[castStatus.length - 1]!.level : 0;
   const toggleCastMM = (spellId: string, slug: string) =>
@@ -2180,7 +2223,8 @@ function HybridView({
                       {preparedHere.map((sp) => {
                         const spellData = refData.spells[sp.id];
                         const applied = castMetamagic[sp.id] ?? [];
-                        const castLevel = level + metamagicSlotIncrease(applied);
+                        const discount = metamagicDiscountFor(discountSources, sp.id);
+                        const castLevel = level + metamagicSlotIncrease(applied, discount.amount);
                         const effectiveLevel = level + metamagicEffectiveIncrease(applied);
                         const castRemaining = castStatusByLevel.get(castLevel)?.remaining ?? 0;
                         const castExhausted = castRemaining <= 0;
@@ -2203,6 +2247,7 @@ function HybridView({
                                 applied={applied}
                                 baseLevel={level}
                                 maxSlotLevel={maxSlotLevel}
+                                discount={discount}
                                 onToggle={(slug) => toggleCastMM(sp.id, slug)}
                                 onSetLevels={(slug, n) => setCastMMLevels(sp.id, slug, n)}
                               />

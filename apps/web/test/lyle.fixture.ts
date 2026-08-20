@@ -186,7 +186,9 @@ export function buildLyleDoc(ref: RefData): CharacterDoc {
 
   // --- traits (character traits, not racial) ----------------------------------
   doc = toggleTrait(doc, "reactionary"); // +2 trait Initiative
-  doc = toggleTrait(doc, "magicalLineage"); // Magic Missile — no numeric effect modeled
+  // Magic Missile is Lyle's chosen spell, but no pick is stored here (the
+  // source sheet doesn't carry it), so the metamagic slot discount stays off.
+  doc = toggleTrait(doc, "magicalLineage");
 
   // --- feats -------------------------------------------------------------------
   // House rule: "Feats Allowed: +2" per the PDF's own adjustment line — recorded
