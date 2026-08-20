@@ -38,14 +38,57 @@ The browser download is self-contained; its **host dependencies** are not.
 `playwright install --with-deps` (what CI runs) shells out to `apt`, so on a
 Debian/Ubuntu box it just works. On Arch/EndeavourOS there is no apt, and
 WebKit wants old-ABI libraries the rolling repos no longer carry: `libicu*.so.74`
-(Arch is on 78), `libxml2.so.2` (Arch is on .so.16), plus `libflite*.so.1`,
-`libbacktrace.so.0`, and `libjxl.so.0.8`. Sourcing those means AUR builds of
-pinned legacy packages.
+(Arch is on 78), `libxml2.so.2` (Arch is on .so.16), plus `libflite*.so.1`.
+Neither the official repos nor the AUR carry ICU 74 or libjxl 0.8, so there is
+no package route — and Playwright's launch check hard-fails on _any_ missing
+entry, so partial coverage buys nothing.
 
-So on Arch: chromium and firefox run locally, WebKit does not. Don't chase it
-— `webkit-layout` is one spec (`layout.spec.ts`), CI runs it on Ubuntu every
-push, and it fails loudly there if it regresses. Run `--project=chromium
---project=firefox` locally and let CI own the third engine.
+**This is handled, and needs nothing from you day to day.**
+`scripts/webkit-deps.ts` probes the host (it `ldd`s WebKit's `MiniBrowser` with
+the launcher's own search path, so bundled libraries aren't miscounted as host
+gaps), and:
+
+- `bun run e2e` **drops** the `webkit-layout` project on such a host, printing a
+  one-line notice, instead of failing it with a launch error that reads like a
+  layout regression. On Ubuntu and in CI the project is present as always — the
+  config is unchanged there.
+- `bun run e2e:webkit` runs that project **natively where it can**, and only
+  otherwise routes through an Ubuntu container. So on CI it is a plain
+  `playwright test` with no indirection.
+
+Verify what you're getting with `node_modules/.bin/playwright test --list`:
+two projects on Arch, three on Ubuntu.
+
+#### The container (one-time setup)
+
+A [distrobox](https://distrobox.it/) box named `pf1-e2e`. distrobox shares
+`$HOME`, so the checkout, its `node_modules`, and `~/.cache/ms-playwright` are
+the _same files_ inside and out: nothing to sync, no second browser download.
+
+```bash
+sudo pacman -S podman distrobox    # rootless; no daemon, no docker group
+distrobox create --yes --name pf1-e2e --image docker.io/library/ubuntu:24.04 \
+  --additional-packages "nodejs npm curl ca-certificates"
+
+# from the repo root; double quotes so $PWD expands on the host, not in the box
+distrobox enter --name pf1-e2e -- bash -lc \
+  "sudo npm i -g bun && cd $PWD/apps/web && sudo -E node_modules/.bin/playwright install-deps webkit"
+```
+
+Ubuntu 24.04 is the pin that matters: it's where `libicu74` and `libxml2.so.2`
+come from, and it's what Playwright's own image uses. bun goes in via `npm i -g`
+so it lands in the container's `/usr/local` — the bun install script would put
+it in `~/.bun`, which is _shared_, and could then shadow the host's
+`/usr/bin/bun`. `PF1_E2E_BOX` overrides the box name.
+
+After a Playwright version bump, re-run the `install-deps` line; the browsers
+themselves come from the shared cache via the host's `bun run e2e:install`.
+
+Two things to know about how the box runs: distrobox shares the host's network,
+so the box and host contend for port 5173 — don't run both at once. And
+`e2e-webkit.ts` sets `CI=1` for the inner run precisely because of that, so it
+boots its own dev server rather than silently reusing the host's (see the
+dev-server gotcha below).
 
 ## Running tests
 
@@ -53,13 +96,16 @@ push, and it fails loudly there if it regresses. Run `--project=chromium
 bun run e2e                              # full suite, from repo root
 bun run e2e -- e2e/smoke.spec.ts         # one file (note the `--`)
 bun run e2e -- -g "toggling a condition" # by test name
-bun run e2e -- --project=chromium        # one engine (see the WebKit note above)
+bun run e2e -- --project=chromium        # one engine
+bun run e2e:webkit                       # the webkit-layout project (see below)
 cd apps/web && node_modules/.bin/playwright test   # equivalent, run directly
 ```
 
 Runs headless — don't add `--headed`, there's no display in an agent session.
-All three projects run by default, so a missing browser surfaces as a failed
-project rather than a skipped one.
+Every project the host can actually run goes by default, so a browser that was
+never fetched surfaces as a failed project rather than a skipped one. The one
+project that gets dropped rather than failed is `webkit-layout`, and only where
+WebKit cannot launch at all — see the Arch section above.
 
 ## Never `bunx playwright test` (the two-instances gotcha)
 

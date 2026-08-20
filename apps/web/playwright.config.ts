@@ -1,4 +1,15 @@
 import { defineConfig, devices } from "@playwright/test";
+import { hasNativeWebkitDeps } from "./scripts/webkit-deps.ts";
+
+// Announced rather than silent: a project that vanishes without a word reads as
+// coverage that passed. Workers re-load this config, and only they get
+// TEST_WORKER_INDEX, so the notice prints once instead of once per worker.
+const webkitRunsHere = hasNativeWebkitDeps();
+if (!webkitRunsHere && process.env.TEST_WORKER_INDEX === undefined) {
+  console.warn(
+    "[playwright] skipping webkit-layout: this host is missing libraries WebKit needs. Run `bun run e2e:webkit`.",
+  );
+}
 
 /**
  * E2E config. Specs live in ./e2e and are named *.spec.ts so the bun unit-test
@@ -22,14 +33,23 @@ export default defineConfig({
   // Chromium and Firefox both run the whole suite. WebKit runs only the layout
   // sweep: engine differences show up in sizing far more than in behavior, and
   // a third full pass costs more CI time than it has ever caught.
+  //
+  // WebKit is dropped, not failed, on hosts whose libraries it can't link
+  // against (`bun run e2e:webkit` runs it there via a container instead). It
+  // would otherwise fail every local run with a launch error that reads like a
+  // layout regression.
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
     { name: "firefox", use: { ...devices["Desktop Firefox"] } },
-    {
-      name: "webkit-layout",
-      testMatch: /layout\.spec\.ts/,
-      use: { ...devices["Desktop Safari"] },
-    },
+    ...(webkitRunsHere
+      ? [
+          {
+            name: "webkit-layout",
+            testMatch: /layout\.spec\.ts/,
+            use: { ...devices["Desktop Safari"] },
+          },
+        ]
+      : []),
   ],
   webServer: {
     command: "bun run dev",
