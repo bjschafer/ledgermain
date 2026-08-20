@@ -319,7 +319,7 @@ export const BLOODRAGER_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Meta-Rage",
     level: 5,
     bucket: "subsystem",
-    note: "applies a known metamagic feat to a bloodrager spell by sacrificing rounds of bloodrage — resource-spend activated ability, no baseline number; replaces improved uncanny dodge (no vendored changes)",
+    note: "Modeled in the tracker's spell panel as a free-metamagic cast option spending bloodrage rounds (apps/web model/freeMetamagic.ts) — 2 x the spell's adjusted level, min 2; no baseline Change of its own; replaces improved uncanny dodge (no vendored changes)",
   },
 
   // ── bloodrager:primalist ──

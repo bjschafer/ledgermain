@@ -168,8 +168,8 @@ export function resolveAppliedMetamagic(
 // Heighten's effective-level (DC) bump is driven by the levels the player
 // chose, never by the discounted slot.
 //
-// Out of scope here (per-day / resource-spend / activated free metamagic):
-// Metamagic Mastery, arcanist exploits, Meta-Rage, and kin.
+// Out of scope here: the resource-spend free applications (universalist
+// Metamagic Mastery, Meta-Rage) live in `model/freeMetamagic.ts`.
 // ---------------------------------------------------------------------------
 
 /** A trait whose benefit names ONE chosen spell that casts cheaper under metamagic. */

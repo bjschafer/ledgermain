@@ -4695,6 +4695,26 @@ input[type="text"].saved-roll-name:focus {
   cursor: not-allowed;
 }
 
+/* "Free via <ability>" row: the resource-spend free-metamagic arm above the
+   feat chips (see model/freeMetamagic.ts). */
+.prep-metamagic-free {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.mm-free-remaining {
+  font-size: 0.625rem;
+}
+
+.mm-free-note {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.625rem;
+}
+
 .mm-levels {
   display: inline-flex;
   align-items: center;

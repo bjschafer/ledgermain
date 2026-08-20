@@ -262,9 +262,9 @@ const AMPLIFICATION_LIST: PhrenicAmplificationDef[] = [
     {
       id: "mimicMetamagic",
       name: "Mimic Metamagic",
-      costLabel: "2+ points",
+      costLabel: "2 points per level the feat would add (min 2)",
       summary:
-        "Apply a metamagic feat you know to the linked spell without increasing its level or casting time.",
+        "Choose two metamagic feats when gaining this amplification (you need not have them); apply one of them to the linked spell without increasing its level or casting time.",
     },
     {
       id: "spaceRendingSpell",

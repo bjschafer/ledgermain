@@ -1,6 +1,6 @@
 import { useMemo, useState, type ReactNode } from "react";
 
-import type { MetamagicDef } from "@pf1/engine";
+import { deriveResourcePools, type MetamagicDef } from "@pf1/engine";
 import type {
   AppliedMetamagic,
   Buff,
@@ -38,6 +38,15 @@ import {
   togglePreparedMetamagic,
   unprepareSpell,
 } from "../../model/preparedSpells.js";
+import {
+  type FreeMetamagicOffer,
+  freeMetamagicOffer,
+  freeMetamagicSources,
+  freeMetamagicSpendMessage,
+  pluralUnit,
+  slotIncreaseWithFree,
+  spendFreeMetamagic,
+} from "../../model/freeMetamagic.js";
 import {
   appliedMetamagicIncrease,
   type MetamagicDiscount,
@@ -107,6 +116,8 @@ interface PreparedRow {
   metamagic: AppliedMetamagic[];
   /** Always-on metamagic cost discount for this spell (see `metamagicDiscountFor`). */
   discount: MetamagicDiscount;
+  /** Free-application state for this instance (see `model/freeMetamagic.ts`), when the class has a source. */
+  freeOffer?: FreeMetamagicOffer;
 }
 
 // ---------------------------------------------------------------------------
@@ -125,6 +136,14 @@ interface PreparedRow {
  * Lineage and kin, see `metamagicDiscountFor`): it comes off the summed
  * increase (never below 0) in every slot computation here, and is surfaced as
  * a note line so the cheaper cost is visible rather than silently different.
+ *
+ * `free` is the row's resource-spend free-application state (universalist
+ * Metamagic Mastery, Meta-Rage — see `model/freeMetamagic.ts`): an extra
+ * "Free via <ability>" chip that, while armed, re-gates the feat chips by the
+ * ability's own constraint instead of the paid slot math (the paid cap can be
+ * stricter than the ability allows, e.g. Meta-Rage empowering a spell the
+ * bloodrager has no higher slot for) and ignores `discount` (no double-dip:
+ * with no higher slot consumed there is nothing for the trait to reduce).
  */
 function MetamagicControl({
   owned,
@@ -132,6 +151,7 @@ function MetamagicControl({
   baseLevel,
   maxSlotLevel,
   discount = NO_METAMAGIC_DISCOUNT,
+  free,
   onToggle,
   onSetLevels,
 }: {
@@ -140,6 +160,7 @@ function MetamagicControl({
   baseLevel: number;
   maxSlotLevel: number;
   discount?: MetamagicDiscount;
+  free?: { offer: FreeMetamagicOffer; onToggle: () => void };
   onToggle: (slug: string) => void;
   onSetLevels: (slug: string, levels: number) => void;
 }) {
@@ -150,6 +171,8 @@ function MetamagicControl({
   // Slot level once the discount is taken off a total increase (floor: the
   // spell's own level — the total increase never goes below 0).
   const slotFor = (increase: number) => baseLevel + Math.max(0, increase - discount.amount);
+  const freeArmed = free?.offer.armed ?? false;
+  const freeCaps = free?.offer.source.capsAtMaxSlot ?? false;
 
   return (
     <details className="prep-metamagic">
@@ -162,18 +185,51 @@ function MetamagicControl({
           {discount.amount === 1 ? "level" : "levels"} less (never below level {baseLevel}).
         </p>
       )}
+      {free && (free.offer.remaining > 0 || free.offer.armed) && (
+        <div className="prep-metamagic-free">
+          <button
+            type="button"
+            className={`mm-chip mm-chip-free${free.offer.armed ? " is-active" : ""}`}
+            aria-pressed={free.offer.armed}
+            title={free.offer.source.note}
+            onClick={free.onToggle}
+          >
+            Free via {free.offer.source.label}
+            {free.offer.cost !== null &&
+              ` (${free.offer.cost} ${pluralUnit(free.offer.source, free.offer.cost)})`}
+          </button>
+          <span className="hint mm-free-remaining">
+            {free.offer.remaining} {pluralUnit(free.offer.source, free.offer.remaining)} left
+          </span>
+          {free.offer.armed && free.offer.blocked && (
+            <p className="hint mm-free-note">{free.offer.blocked}</p>
+          )}
+          {free.offer.armed && !free.offer.blocked && applied.length === 0 && (
+            <p className="hint mm-free-note">Pick one metamagic feat below to apply it free.</p>
+          )}
+        </div>
+      )}
       <div className="prep-metamagic-list">
         {owned.map((def) => {
           const active = appliedBySlug.get(def.slug);
           const isActive = active !== undefined;
           const thisIncrease = isActive ? appliedMetamagicIncrease(active) : def.slotIncrease;
           const otherIncrease = currentIncrease - (isActive ? thisIncrease : 0);
-          // Adding a (default) increment must keep the slot level within reach.
-          const wouldExceed = !isActive && slotFor(otherIncrease + def.slotIncrease) > maxSlotLevel;
+          // Adding a (default) increment must keep the slot level within
+          // reach — or, while a free application is armed, within the free
+          // ability's own cap (none for Meta-Rage; the modified-level cap for
+          // Metamagic Mastery, which never sees the trait discount).
+          const wouldExceed = freeArmed
+            ? !isActive && freeCaps && baseLevel + def.slotIncrease > maxSlotLevel
+            : !isActive && slotFor(otherIncrease + def.slotIncrease) > maxSlotLevel;
           // For a variable feat, how high its own level may go before the slot
           // would overflow (also capped by the feat's own `maxIncrease`). The
-          // discount widens the room by its amount.
-          const roomForVariable = maxSlotLevel - baseLevel - otherIncrease + discount.amount;
+          // discount widens the room by its amount. While a free application
+          // is armed the paid slot math no longer binds; Heighten past 9th is
+          // meaningless, so 9 is the uncapped ceiling.
+          const roomForVariable = freeArmed
+            ? (freeCaps ? maxSlotLevel : 9) - baseLevel
+            : maxSlotLevel - baseLevel - otherIncrease + discount.amount;
           const variableMax = Math.min(def.maxIncrease ?? roomForVariable, roomForVariable);
 
           return (
@@ -185,7 +241,9 @@ function MetamagicControl({
                 disabled={wouldExceed}
                 title={
                   wouldExceed
-                    ? `Applying ${def.name} would need a level-${slotFor(otherIncrease + def.slotIncrease)} slot, beyond your highest (level ${maxSlotLevel}).`
+                    ? freeArmed
+                      ? `Applying ${def.name} would make the spell level ${baseLevel + def.slotIncrease}, above your highest castable level (${maxSlotLevel}).`
+                      : `Applying ${def.name} would need a level-${slotFor(otherIncrease + def.slotIncrease)} slot, beyond your highest (level ${maxSlotLevel}).`
                     : def.note
                 }
                 onClick={() => onToggle(def.slug)}
@@ -994,6 +1052,20 @@ function PreparedView({
     () => metamagicDiscountSources(doc, refData, casterTag),
     [doc, refData, casterTag],
   );
+  // Resource-spend free metamagic (universalist Metamagic Mastery here): the
+  // backing pool and the per-row offer state — see `model/freeMetamagic.ts`.
+  // Arming is transient (the ability applies at CAST time, so it is never
+  // part of the stored preparation): an armed row stays bucketed at its base
+  // level and the pool is spent on the Cast click.
+  const derivedPools = useMemo(
+    () => deriveResourcePools(doc, refData, sheet.abilities, sheet.abilityDCs),
+    [doc, refData, sheet.abilities, sheet.abilityDCs],
+  );
+  const freeSource = useMemo(
+    () => freeMetamagicSources(doc, refData, casterTag, derivedPools)[0],
+    [doc, refData, casterTag, derivedPools],
+  );
+  const [freeArmedByIndex, setFreeArmedByIndex] = useState<Record<number, boolean>>({});
 
   const cantripList = useMemo(
     () => (model.grantsAllCantrips ? grantedCantrips(refData, casterTag) : []),
@@ -1092,8 +1164,22 @@ function PreparedView({
     // slot (base + Σ slot increases, less any always-on discount for this
     // spell), e.g. an Empowered Fireball (base 3rd) lands in the level-5
     // bucket and counts against its capacity — level 4 with Magical Lineage.
+    // An engaged free application (Metamagic Mastery) keeps the row at its
+    // base level: the spell is prepared plain and modified as it is cast.
     const discount = metamagicDiscountFor(discountSources, p.spellId);
-    const slotLevel = baseLevel + metamagicSlotIncrease(p.metamagic, discount.amount);
+    const freeOffer = freeSource
+      ? freeMetamagicOffer({
+          doc,
+          source: freeSource,
+          baseLevel,
+          applied: p.metamagic ?? [],
+          maxSlotLevel,
+          armed: freeArmedByIndex[index] === true,
+        })
+      : undefined;
+    const slotLevel =
+      baseLevel +
+      slotIncreaseWithFree(metamagicSlotIncrease(p.metamagic, discount.amount), freeOffer);
     const row: PreparedRow = {
       index,
       spellId: p.spellId,
@@ -1103,6 +1189,7 @@ function PreparedView({
       baseLevel,
       metamagic: p.metamagic ?? [],
       discount,
+      freeOffer,
     };
     (preparedByLevel.get(slotLevel) ?? preparedByLevel.set(slotLevel, []).get(slotLevel)!).push(
       row,
@@ -1264,6 +1351,20 @@ function PreparedView({
                               baseLevel={r.baseLevel}
                               maxSlotLevel={maxSlotLevel}
                               discount={r.discount}
+                              free={
+                                r.freeOffer
+                                  ? {
+                                      offer: r.freeOffer,
+                                      onToggle: () => {
+                                        setFreeArmedByIndex((prev) => ({
+                                          ...prev,
+                                          [r.index]: prev[r.index] !== true,
+                                        }));
+                                        flashRow(r.index);
+                                      },
+                                    }
+                                  : undefined
+                              }
                               onToggle={(slug) => {
                                 update((d) => togglePreparedMetamagic(d, r.index, slug));
                                 flashRow(r.index);
@@ -1282,7 +1383,15 @@ function PreparedView({
                             doc={doc}
                             update={update}
                             casterLevel={casterLevel}
-                            onCast={(d) => (isCantrip ? d : setExpendedAt(d, r.index, true))}
+                            onCast={(d) =>
+                              isCantrip
+                                ? d
+                                : spendFreeMetamagic(
+                                    setExpendedAt(d, r.index, true),
+                                    derivedPools,
+                                    r.freeOffer,
+                                  )
+                            }
                           />
                         )}
                         {!isCantrip && !r.expended && (
@@ -1319,8 +1428,21 @@ function PreparedView({
                           <button
                             type="button"
                             className="pick-btn remove prep-cast"
+                            title={
+                              r.freeOffer?.engaged
+                                ? `Cast ${r.name} with metamagic via ${r.freeOffer.source.label} (also spends ${r.freeOffer.cost} ${pluralUnit(r.freeOffer.source, r.freeOffer.cost ?? 0)})`
+                                : undefined
+                            }
                             onClick={() => {
-                              update((d) => setExpendedAt(d, r.index, true));
+                              const msg = freeMetamagicSpendMessage(r.freeOffer);
+                              update((d) =>
+                                spendFreeMetamagic(
+                                  setExpendedAt(d, r.index, true),
+                                  derivedPools,
+                                  r.freeOffer,
+                                ),
+                              );
+                              if (msg) showToast({ message: msg });
                               setConfirmRecover(null);
                             }}
                           >
@@ -1547,6 +1669,18 @@ function SpontaneousView({
   const [castMetamagic, setCastMetamagic] = useState<Record<string, AppliedMetamagic[]>>({});
   const maxSlotLevel = status.length > 0 ? status[status.length - 1]!.level : 0;
   const remainingByLevel = new Map(status.map((s) => [s.level, s.remaining]));
+  // Resource-spend free metamagic (Meta-Rage here): a transient per-spell
+  // "cast this one free" arm, spending the backing pool on the Cast click —
+  // see `model/freeMetamagic.ts`.
+  const derivedPools = useMemo(
+    () => deriveResourcePools(doc, refData, sheet.abilities, sheet.abilityDCs),
+    [doc, refData, sheet.abilities, sheet.abilityDCs],
+  );
+  const freeSource = useMemo(
+    () => freeMetamagicSources(doc, refData, casterTag, derivedPools)[0],
+    [doc, refData, casterTag, derivedPools],
+  );
+  const [freeArmedBySpell, setFreeArmedBySpell] = useState<Record<string, boolean>>({});
   const toggleCastMM = (spellId: string, slug: string) =>
     setCastMetamagic((prev) => ({
       ...prev,
@@ -1809,13 +1943,45 @@ function SpontaneousView({
                     // Cast button spends (less any always-on discount for this
                     // spell); only Heighten also raises the effective level
                     // (and thus DC), driven by the chosen levels, never by the
-                    // discounted slot.
+                    // discounted slot. An engaged free application (Meta-Rage)
+                    // keeps the cast at the base slot and spends the pool
+                    // instead — the Heighten DC bump still applies.
                     const applied = castMetamagic[sp.id] ?? [];
                     const discount = metamagicDiscountFor(discountSources, sp.id);
-                    const castLevel = level + metamagicSlotIncrease(applied, discount.amount);
+                    const freeOffer = freeSource
+                      ? freeMetamagicOffer({
+                          doc,
+                          source: freeSource,
+                          baseLevel: level,
+                          applied,
+                          maxSlotLevel,
+                          armed: freeArmedBySpell[sp.id] === true,
+                        })
+                      : undefined;
+                    const castLevel =
+                      level +
+                      slotIncreaseWithFree(
+                        metamagicSlotIncrease(applied, discount.amount),
+                        freeOffer,
+                      );
                     const effectiveLevel = level + metamagicEffectiveIncrease(applied);
                     const castRemaining = remainingByLevel.get(castLevel) ?? 0;
                     const castExhausted = castRemaining <= 0;
+                    const castSpend = (d: CharacterDoc) =>
+                      spendFreeMetamagic(
+                        castSpontaneousSlot(
+                          d,
+                          model,
+                          effectiveClassLevel,
+                          abilityMod,
+                          castLevel,
+                          classTag,
+                          earlyBonusSpells,
+                          slotDeltas,
+                        ),
+                        derivedPools,
+                        freeOffer,
+                      );
                     return (
                       <div key={sp.id} className="prep-row">
                         <div className="prep-row-main">
@@ -1844,6 +2010,18 @@ function SpontaneousView({
                             baseLevel={level}
                             maxSlotLevel={maxSlotLevel}
                             discount={discount}
+                            free={
+                              freeOffer
+                                ? {
+                                    offer: freeOffer,
+                                    onToggle: () =>
+                                      setFreeArmedBySpell((prev) => ({
+                                        ...prev,
+                                        [sp.id]: prev[sp.id] !== true,
+                                      })),
+                                  }
+                                : undefined
+                            }
                             onToggle={(slug) => toggleCastMM(sp.id, slug)}
                             onSetLevels={(slug, n) => setCastMMLevels(sp.id, slug, n)}
                           />
@@ -1856,18 +2034,7 @@ function SpontaneousView({
                             update={update}
                             casterLevel={casterLevel}
                             castExhausted={castExhausted}
-                            onCast={(d) =>
-                              castSpontaneousSlot(
-                                d,
-                                model,
-                                effectiveClassLevel,
-                                abilityMod,
-                                castLevel,
-                                classTag,
-                                earlyBonusSpells,
-                                slotDeltas,
-                              )
-                            }
+                            onCast={castSpend}
                           />
                         )}
                         <TipButton
@@ -1875,24 +2042,17 @@ function SpontaneousView({
                           disabled={castExhausted}
                           disabledReason={`No level-${castLevel} slots remaining`}
                           title={
-                            castLevel === level
-                              ? `Cast ${sp.name} (spend 1 level-${level} slot)`
-                              : `Cast ${sp.name} with metamagic (spend 1 level-${castLevel} slot)`
+                            freeOffer?.engaged
+                              ? `Cast ${sp.name} with metamagic via ${freeOffer.source.label} (spend 1 level-${level} slot and ${freeOffer.cost} ${pluralUnit(freeOffer.source, freeOffer.cost ?? 0)})`
+                              : castLevel === level
+                                ? `Cast ${sp.name} (spend 1 level-${level} slot)`
+                                : `Cast ${sp.name} with metamagic (spend 1 level-${castLevel} slot)`
                           }
-                          onClick={() =>
-                            update((d) =>
-                              castSpontaneousSlot(
-                                d,
-                                model,
-                                effectiveClassLevel,
-                                abilityMod,
-                                castLevel,
-                                classTag,
-                                earlyBonusSpells,
-                                slotDeltas,
-                              ),
-                            )
-                          }
+                          onClick={() => {
+                            const msg = freeMetamagicSpendMessage(freeOffer);
+                            update(castSpend);
+                            if (msg) showToast({ message: msg });
+                          }}
                         >
                           Cast
                         </TipButton>
