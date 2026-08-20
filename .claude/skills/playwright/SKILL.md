@@ -14,14 +14,38 @@ the package scripts, or `apps/web/node_modules/.bin/playwright` directly.
 
 ## First run in a new checkout or worktree
 
-Playwright browsers are cached globally (`~/Library/Caches/ms-playwright` on
-macOS), so they usually don't need reinstalling per-worktree — but
-`node_modules` is per-checkout and worktrees don't have it.
+Playwright browsers are cached globally (`~/.cache/ms-playwright` on Linux,
+`~/Library/Caches/ms-playwright` on macOS), so they usually don't need
+reinstalling per-worktree — but `node_modules` is per-checkout and worktrees
+don't have it.
 
 ```bash
-bun install                      # once per worktree — node_modules isn't shared
-apps/web/node_modules/.bin/playwright install chromium # idempotent; fast no-op if already cached
+bun install         # once per worktree — node_modules isn't shared
+bun run e2e:install # browsers; idempotent, fast no-op if already cached
 ```
+
+`e2e:install` pulls **all three** engines, matching both CI and the three
+projects in `playwright.config.ts`. Installing only chromium leaves the
+firefox and webkit projects failing with `browserType.launch: Executable
+doesn't exist at …/firefox-<rev>/firefox` — which reads like a broken pin but
+is just a browser that was never fetched. Firefox is not optional here: it is
+the maintainer's own browser and the reason the cross-engine setup exists at
+all.
+
+### WebKit needs system libraries, and can't get them on Arch
+
+The browser download is self-contained; its **host dependencies** are not.
+`playwright install --with-deps` (what CI runs) shells out to `apt`, so on a
+Debian/Ubuntu box it just works. On Arch/EndeavourOS there is no apt, and
+WebKit wants old-ABI libraries the rolling repos no longer carry: `libicu*.so.74`
+(Arch is on 78), `libxml2.so.2` (Arch is on .so.16), plus `libflite*.so.1`,
+`libbacktrace.so.0`, and `libjxl.so.0.8`. Sourcing those means AUR builds of
+pinned legacy packages.
+
+So on Arch: chromium and firefox run locally, WebKit does not. Don't chase it
+— `webkit-layout` is one spec (`layout.spec.ts`), CI runs it on Ubuntu every
+push, and it fails loudly there if it regresses. Run `--project=chromium
+--project=firefox` locally and let CI own the third engine.
 
 ## Running tests
 
@@ -29,11 +53,13 @@ apps/web/node_modules/.bin/playwright install chromium # idempotent; fast no-op 
 bun run e2e                              # full suite, from repo root
 bun run e2e -- e2e/smoke.spec.ts         # one file (note the `--`)
 bun run e2e -- -g "toggling a condition" # by test name
+bun run e2e -- --project=chromium        # one engine (see the WebKit note above)
 cd apps/web && node_modules/.bin/playwright test   # equivalent, run directly
 ```
 
-Runs headless by default (`chromium` project only) — don't add `--headed`,
-there's no display in an agent session.
+Runs headless — don't add `--headed`, there's no display in an agent session.
+All three projects run by default, so a missing browser surfaces as a failed
+project rather than a skipped one.
 
 ## Never `bunx playwright test` (the two-instances gotcha)
 
