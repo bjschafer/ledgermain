@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-19-plain-language-bonuses",
+    date: "2026-08-19",
+    title: "Bonuses in plain language",
+    note: "The bonus rows on custom abilities, homebrew feats, races, traits, and custom buffs used to ask you to pick from a list of engine shorthand like imm.sonic. They now read as English: Sonic immunity, Fire resistance, Fortitude save, DR /cold iron, sorted into groups so the long list is scannable. Bonus types are spelled out too, Enhancement instead of enh, with a few more of them offered, and each row is labelled so it is clear which dropdown is the target and which is the stacking type.",
+  },
+  {
     id: "2026-08-19-custom-abilities",
     date: "2026-08-19",
     title: "Write your own class features",

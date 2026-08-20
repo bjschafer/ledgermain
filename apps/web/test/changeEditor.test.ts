@@ -5,7 +5,42 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { changesToDrafts, draftsToChanges, emptyChangeDraft } from "../src/model/changeEditor.js";
+import {
+  CHANGE_TARGET_GROUPS,
+  CHANGE_TARGETS,
+  CHANGE_TYPE_OPTIONS,
+  changesToDrafts,
+  draftsToChanges,
+  emptyChangeDraft,
+} from "../src/model/changeEditor.js";
+import { changeTargetLabel } from "../src/model/names.js";
+
+describe("CHANGE_TARGET_GROUPS", () => {
+  it("offers only targets the sheet knows how to name, so no row renders as a raw id", () => {
+    const unnamed = CHANGE_TARGETS.filter((t) => changeTargetLabel(t) === t);
+    expect(unnamed).toEqual([]);
+  });
+
+  it("lists every target exactly once across its groups", () => {
+    expect(new Set(CHANGE_TARGETS).size).toBe(CHANGE_TARGETS.length);
+  });
+
+  it("gives every option a label distinct from its raw engine id", () => {
+    const raw = CHANGE_TARGET_GROUPS.flatMap((g) => g.options).filter((o) => o.label === o.id);
+    expect(raw).toEqual([]);
+  });
+});
+
+describe("CHANGE_TYPE_OPTIONS", () => {
+  it("labels every stacking type without repeating an id", () => {
+    expect(new Set(CHANGE_TYPE_OPTIONS.map((o) => o.id)).size).toBe(CHANGE_TYPE_OPTIONS.length);
+    expect(CHANGE_TYPE_OPTIONS.every((o) => o.label.length > 0)).toBe(true);
+  });
+
+  it("defaults to untyped, the only choice that is always safe to stack", () => {
+    expect(CHANGE_TYPE_OPTIONS[0]?.id).toBe("untyped");
+  });
+});
 
 describe("emptyChangeDraft()", () => {
   it("returns a draft with a non-empty target/type and a nonzero default value", () => {

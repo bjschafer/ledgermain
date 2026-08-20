@@ -6,68 +6,143 @@
  * framework-agnostic so it's unit-testable without a DOM; the `TARGETS`/
  * `TYPES` option lists were previously duplicated locally inside
  * `BuffsPanel.tsx`'s `CustomBuffForm` — kept here as the one source now.
+ *
+ * Option labels are written to stand alone when the `<select>` is closed and
+ * only the chosen row shows: "Fire resistance", not "Fire" under a group
+ * heading nobody can see at that point.
  */
 import type { Change } from "@pf1/schema";
 
-/** Common typed-modifier targets offered by every Change-authoring form (not exhaustive). */
-export const CHANGE_TARGETS: readonly string[] = [
-  "attack",
-  "mattack",
-  "rattack",
-  "ac",
-  "allSavingThrows",
-  "fort",
-  "ref",
-  "will",
-  "str",
-  "dex",
-  "con",
-  "int",
-  "wis",
-  "cha",
-  "init",
-  "cmb",
-  "cmd",
-  "skills",
-  "spellResist",
-  "dr",
-  "dr.magic",
-  "dr.silver",
-  "dr.cold-iron",
-  "dr.adamantine",
-  "dr.good",
-  "dr.evil",
-  "dr.lawful",
-  "dr.chaotic",
-  "eres.fire",
-  "eres.cold",
-  "eres.electricity",
-  "eres.acid",
-  "eres.sonic",
-  "imm.acid",
-  "imm.cold",
-  "imm.electricity",
-  "imm.fire",
-  "imm.sonic",
+/** One option in a Change-authoring dropdown: the raw engine id plus its display label. */
+export interface ChangeOption {
+  /** The `Change.target`/`Change.type` string the engine actually reads. */
+  id: string;
+  label: string;
+}
+
+/** A labelled block of targets, rendered as an `<optgroup>`. */
+export interface ChangeTargetGroup {
+  label: string;
+  options: readonly ChangeOption[];
+}
+
+/**
+ * Common typed-modifier targets offered by every Change-authoring form (not
+ * exhaustive — the engine accepts any target string; these are the ones worth
+ * putting in a dropdown).
+ */
+export const CHANGE_TARGET_GROUPS: readonly ChangeTargetGroup[] = [
+  {
+    label: "Attack rolls",
+    options: [
+      { id: "attack", label: "All attack rolls" },
+      { id: "mattack", label: "Melee attack rolls" },
+      { id: "rattack", label: "Ranged attack rolls" },
+    ],
+  },
+  {
+    label: "Defense",
+    options: [
+      { id: "ac", label: "Armor Class" },
+      { id: "allSavingThrows", label: "All saving throws" },
+      { id: "fort", label: "Fortitude save" },
+      { id: "ref", label: "Reflex save" },
+      { id: "will", label: "Will save" },
+      { id: "spellResist", label: "Spell resistance" },
+    ],
+  },
+  {
+    label: "Ability scores",
+    options: [
+      { id: "str", label: "Strength" },
+      { id: "dex", label: "Dexterity" },
+      { id: "con", label: "Constitution" },
+      { id: "int", label: "Intelligence" },
+      { id: "wis", label: "Wisdom" },
+      { id: "cha", label: "Charisma" },
+    ],
+  },
+  {
+    label: "Checks and skills",
+    options: [
+      { id: "init", label: "Initiative" },
+      { id: "cmb", label: "CMB (combat maneuvers)" },
+      { id: "cmd", label: "CMD (maneuver defense)" },
+      { id: "skills", label: "All skills" },
+    ],
+  },
+  {
+    /* "DR /silver" is how the rulebook writes it (DR 5/silver): the material
+       named after the slash is what cuts through. */
+    label: "Damage reduction",
+    options: [
+      { id: "dr", label: "DR (any damage)" },
+      { id: "dr.magic", label: "DR /magic" },
+      { id: "dr.silver", label: "DR /silver" },
+      { id: "dr.cold-iron", label: "DR /cold iron" },
+      { id: "dr.adamantine", label: "DR /adamantine" },
+      { id: "dr.good", label: "DR /good" },
+      { id: "dr.evil", label: "DR /evil" },
+      { id: "dr.lawful", label: "DR /lawful" },
+      { id: "dr.chaotic", label: "DR /chaotic" },
+    ],
+  },
+  {
+    label: "Energy resistance",
+    options: [
+      { id: "eres.fire", label: "Fire resistance" },
+      { id: "eres.cold", label: "Cold resistance" },
+      { id: "eres.electricity", label: "Electricity resistance" },
+      { id: "eres.acid", label: "Acid resistance" },
+      { id: "eres.sonic", label: "Sonic resistance" },
+    ],
+  },
+  {
+    /* Immunity is on/off, so any nonzero value reads the same to the engine;
+       the row still needs a value because a Change carries one. */
+    label: "Energy immunity",
+    options: [
+      { id: "imm.fire", label: "Fire immunity" },
+      { id: "imm.cold", label: "Cold immunity" },
+      { id: "imm.electricity", label: "Electricity immunity" },
+      { id: "imm.acid", label: "Acid immunity" },
+      { id: "imm.sonic", label: "Sonic immunity" },
+    ],
+  },
 ];
 
-/** Stacking-type options offered by every Change-authoring form. */
-export const CHANGE_TYPES: readonly string[] = [
-  "untyped",
-  "enh",
-  "morale",
-  "luck",
-  "sacred",
-  "competence",
-  "dodge",
-  "deflection",
-  "resistance",
-  "circumstance",
-  "racial",
-  "trait",
-  "natural armor",
-  "size",
+/** Flat list of every offered target id, in dropdown order. */
+export const CHANGE_TARGETS: readonly string[] = CHANGE_TARGET_GROUPS.flatMap((g) =>
+  g.options.map((o) => o.id),
+);
+
+/**
+ * Stacking-type options offered by every Change-authoring form, ordered with
+ * the ones a player reaches for most first rather than alphabetically.
+ */
+export const CHANGE_TYPE_OPTIONS: readonly ChangeOption[] = [
+  { id: "untyped", label: "Untyped" },
+  { id: "enh", label: "Enhancement" },
+  { id: "morale", label: "Morale" },
+  { id: "luck", label: "Luck" },
+  { id: "insight", label: "Insight" },
+  { id: "competence", label: "Competence" },
+  { id: "sacred", label: "Sacred" },
+  { id: "profane", label: "Profane" },
+  { id: "dodge", label: "Dodge" },
+  { id: "deflection", label: "Deflection" },
+  { id: "natural armor", label: "Natural armor" },
+  { id: "resistance", label: "Resistance" },
+  { id: "circumstance", label: "Circumstance" },
+  { id: "alchemical", label: "Alchemical" },
+  { id: "racial", label: "Racial" },
+  { id: "trait", label: "Trait" },
+  { id: "inherent", label: "Inherent" },
+  { id: "size", label: "Size" },
 ];
+
+/** Flat list of every offered stacking type id. */
+export const CHANGE_TYPES: readonly string[] = CHANGE_TYPE_OPTIONS.map((o) => o.id);
 
 /** One editable row in a Change-list form — the UI-facing draft of a `Change`. */
 export interface ChangeDraft {

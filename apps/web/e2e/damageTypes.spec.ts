@@ -38,7 +38,7 @@ async function gotoPlay(page: Page) {
 async function grantDr(page: Page, target: string, value: string) {
   await page.getByText("Custom buff (expert)").click();
   const form = page.locator(".cb-grid");
-  await form.getByLabel("Target").selectOption(target);
+  await form.getByLabel("Bonus applies to").selectOption(target);
   await form.getByLabel("Value", { exact: true }).fill(value);
   await form.getByRole("button", { name: "Add" }).click();
 }

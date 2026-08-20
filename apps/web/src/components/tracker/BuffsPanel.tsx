@@ -13,6 +13,7 @@ import type { RollData } from "@pf1/engine";
 
 import { Panel } from "../builder/Panel.js";
 import { NumberField } from "../builder/NumberField.js";
+import { ChangeTargetSelect, ChangeTypeSelect } from "../builder/ChangeListEditor.js";
 import { SearchMiss } from "../builder/SearchMiss.js";
 import { RulesNote } from "../RulesNote.js";
 import {
@@ -30,7 +31,6 @@ import {
   roundsToDisplay,
   toRounds,
 } from "../../model/buffs.js";
-import { CHANGE_TARGETS, CHANGE_TYPES } from "../../model/changeEditor.js";
 import { isSharedWithCompanion, toggleSharedBuffCompanion } from "../../model/companion.js";
 import { isSharedWithEidolon, toggleSharedBuffEidolon } from "../../model/eidolon.js";
 import { isSharedWithFamiliar, toggleSharedBuff } from "../../model/familiar.js";
@@ -514,20 +514,8 @@ function CustomBuffForm({
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <select value={target} onChange={(e) => setTarget(e.target.value)} aria-label="Target">
-          {CHANGE_TARGETS.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-        <select value={type} onChange={(e) => setType(e.target.value)} aria-label="Bonus type">
-          {CHANGE_TYPES.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
+        <ChangeTargetSelect value={target} onChange={setTarget} aria-label="Bonus applies to" />
+        <ChangeTypeSelect value={type} onChange={setType} aria-label="Bonus type" />
         <NumberField
           className="num"
           size={3}

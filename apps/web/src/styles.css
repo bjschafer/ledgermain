@@ -654,6 +654,27 @@ textarea {
   line-height: 1.4;
 }
 
+/* The dropdown a <select> opens is drawn by the browser, not by us — without
+   these it falls back to a white system list in the middle of a dark sheet. */
+option,
+optgroup {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+optgroup {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+}
+
+optgroup > option {
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 0.875rem;
+}
+
 input[type="checkbox"],
 input[type="radio"] {
   accent-color: var(--gold);
@@ -3607,12 +3628,25 @@ button:focus-visible,
   letter-spacing: 0.06em;
 }
 
+/* The name gets its own line: the two dropdowns below it spell out what the
+   bonus hits ("Electricity resistance") and would otherwise be squeezed to a
+   few characters in this narrow column. */
 .cb-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr auto auto auto;
+  grid-template-columns: 1.4fr 1.1fr auto auto auto;
   gap: 6px;
   margin-top: 10px;
   align-items: center;
+}
+
+.cb-grid > input[type="text"] {
+  grid-column: 1 / -1;
+}
+
+/* A <select>'s intrinsic width is its longest option, which would push the
+   grid's fr columns past the panel. */
+.cb-grid > select {
+  min-width: 0;
 }
 
 @media (max-width: 620px) {
@@ -3624,7 +3658,7 @@ button:focus-visible,
 /* Homebrew race/feat authoring (`HomebrewRaceEditor`/`HomebrewFeatEditor`) —
    same collapsed-`<details>` "expert door" idiom as `.custom-buff`, but a
    taller form (name/size/speeds/languages/…) needs a stacked layout rather
-   than `.cb-grid`'s single row. */
+   than `.cb-grid`'s compact grid. */
 .hb-editor {
   margin-top: 12px;
 }
@@ -3689,14 +3723,34 @@ button:focus-visible,
 
 .hb-change-row {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 80px auto;
+  grid-template-columns: 1.5fr 1.2fr 76px auto;
   gap: 6px;
   align-items: center;
+}
+
+/* A <select>'s intrinsic width is its longest option ("DR bypassed by
+   adamantine"), which would blow the grid's fr columns out past the form. */
+.hb-change-row > select {
+  min-width: 0;
+}
+
+/* Column captions above the first row — the selects alone don't say which is
+   the target and which is the stacking type. Presentational, hence
+   aria-hidden: each control carries its own aria-label. */
+.hb-change-head {
+  font-size: 0.6875rem;
+  font-family: var(--mono);
+  letter-spacing: 0.03em;
+  color: var(--muted);
 }
 
 @media (max-width: 620px) {
   .hb-change-row {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .hb-change-head {
+    display: none;
   }
 }
 
