@@ -1,23 +1,24 @@
 /**
- * Homebrew races/feats foundation (phase 1: schema + model, no UI). Covers
- * the RefData overlay, id helpers, and the doc transitions in
- * `src/model/homebrew.ts`, plus one integration-shaped test that a homebrew
- * race actually drives `compute()`.
+ * Homebrew races/feats/traits/abilities: the RefData overlay, id helpers, and
+ * the doc transitions in `src/model/homebrew.ts`, plus integration-shaped
+ * tests that a homebrew entity actually drives `compute()`.
  */
 import { describe, expect, it } from "bun:test";
 
 import { compute } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
-import type { CharacterDoc, Feat, Race, TraitDef } from "@pf1/schema";
+import type { CharacterDoc, Feat, HomebrewClassFeature, Race, TraitDef } from "@pf1/schema";
 
 import { createEmptyDoc, setFlexibleAbility, setRace } from "../src/model/doc.js";
 import {
   homebrewId,
   isHomebrewId,
+  removeHomebrewAbility,
   removeHomebrewFeat,
   removeHomebrewRace,
   removeHomebrewTrait,
   resolveRefData,
+  upsertHomebrewAbility,
   upsertHomebrewFeat,
   upsertHomebrewRace,
   upsertHomebrewTrait,
@@ -60,6 +61,18 @@ function makeFeat(over: Partial<Feat> = {}): Feat {
     uuid: "hb-feat-fixture",
     tags: [],
     prerequisites: { abilities: [], feats: [], skills: [] },
+    ...over,
+  };
+}
+
+function makeAbility(over: Partial<HomebrewClassFeature> = {}): HomebrewClassFeature {
+  return {
+    id: "hb-ability-fixture",
+    name: "Mark of the Storm Herald",
+    uuid: "hb-ability-fixture",
+    level: 3,
+    changes: [],
+    grantsBuffs: [],
     ...over,
   };
 }
@@ -126,6 +139,25 @@ describe("resolveRefData()", () => {
     expect(overlaid).not.toBe(ref);
     expect(overlaid.feats[id]).toEqual(feat);
     expect(overlaid.races).toBe(ref.races);
+  });
+
+  it("merges a homebrew ability into classFeatures without disturbing vendored ones", () => {
+    const id = homebrewId();
+    const abilityDef = makeAbility();
+    const doc = upsertHomebrewAbility(createEmptyDoc("t"), id, abilityDef);
+    const overlaid = resolveRefData(doc, ref);
+    expect(overlaid).not.toBe(ref);
+    expect(overlaid.classFeatures[id]).toEqual(abilityDef);
+    expect(Object.keys(overlaid.classFeatures).length).toBe(
+      Object.keys(ref.classFeatures).length + 1,
+    );
+    expect(overlaid.races).toBe(ref.races);
+    expect(overlaid.feats).toBe(ref.feats);
+  });
+
+  it("returns the SAME reference for a doc carrying only homebrew traits (traits aren't RefData)", () => {
+    const doc = upsertHomebrewTrait(createEmptyDoc("t"), homebrewId(), makeTrait());
+    expect(resolveRefData(doc, ref)).toBe(ref);
   });
 
   it("merges both races and feats together", () => {
@@ -267,6 +299,45 @@ describe("upsertHomebrewFeat() / removeHomebrewFeat()", () => {
   });
 });
 
+describe("upsertHomebrewAbility() / removeHomebrewAbility()", () => {
+  it("upsert adds the ability under build.homebrew.classFeatures", () => {
+    const id = homebrewId();
+    const abilityDef = makeAbility();
+    const doc = upsertHomebrewAbility(createEmptyDoc("t"), id, abilityDef);
+    expect(doc.build.homebrew?.classFeatures?.[id]).toEqual(abilityDef);
+  });
+
+  it("upsert overwrites an existing entry under the same id", () => {
+    const id = homebrewId();
+    let doc = upsertHomebrewAbility(createEmptyDoc("t"), id, makeAbility());
+    doc = upsertHomebrewAbility(doc, id, makeAbility({ name: "Renamed", level: 7 }));
+    expect(Object.keys(doc.build.homebrew!.classFeatures!).length).toBe(1);
+    expect(doc.build.homebrew?.classFeatures?.[id]?.name).toBe("Renamed");
+    expect(doc.build.homebrew?.classFeatures?.[id]?.level).toBe(7);
+  });
+
+  it("remove drops the entry and prunes homebrew back to undefined when empty", () => {
+    const id = homebrewId();
+    let doc = upsertHomebrewAbility(createEmptyDoc("t"), id, makeAbility());
+    doc = removeHomebrewAbility(doc, id);
+    expect(doc.build.homebrew).toBeUndefined();
+  });
+
+  it("remove leaves sibling homebrew kinds alone", () => {
+    const abilityIdKey = homebrewId();
+    let doc = upsertHomebrewFeat(createEmptyDoc("t"), homebrewId(), makeFeat());
+    doc = upsertHomebrewAbility(doc, abilityIdKey, makeAbility());
+    const removed = removeHomebrewAbility(doc, abilityIdKey);
+    expect(removed.build.homebrew?.classFeatures).toBeUndefined();
+    expect(Object.keys(removed.build.homebrew!.feats!).length).toBe(1);
+  });
+
+  it("remove of an unknown id is a no-op", () => {
+    const doc = createEmptyDoc("t");
+    expect(removeHomebrewAbility(doc, "hb-nope")).toBe(doc);
+  });
+});
+
 describe("upsertHomebrewTrait() / removeHomebrewTrait()", () => {
   it("upsert adds the trait under build.homebrew.traits", () => {
     const id = homebrewId();
@@ -370,5 +441,21 @@ describe("integration: a homebrew trait drives compute()", () => {
     const baseline = compute(createEmptyDoc("t"), ref);
     const sheet = compute(doc, ref);
     expect(sheet.saves.fort.total).toBe(baseline.saves.fort.total + 1);
+  });
+});
+
+describe("integration: a homebrew ability drives compute()", () => {
+  it("shows up in the class-feature timeline and applies its changes", () => {
+    const id = homebrewId();
+    const doc = upsertHomebrewAbility(
+      setRace(createEmptyDoc("t"), HUMAN_ID),
+      id,
+      makeAbility({ changes: [{ formula: "2", target: "fort", type: "sacred" }] }),
+    );
+
+    const baseline = compute(setRace(createEmptyDoc("t"), HUMAN_ID), ref);
+    const sheet = compute(doc, resolveRefData(doc, ref));
+    expect(sheet.classFeatures.some((f) => f.featureId === id)).toBe(true);
+    expect(sheet.saves.fort.total).toBe(baseline.saves.fort.total + 2);
   });
 });

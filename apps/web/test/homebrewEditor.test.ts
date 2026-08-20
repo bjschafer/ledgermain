@@ -1,6 +1,6 @@
 /**
- * Homebrew race/feat/trait editor form-state mapping (`model/
- * homebrewEditor.ts`, phase 2 of homebrew content support). Covers
+ * Homebrew race/feat/trait/ability editor form-state mapping (`model/
+ * homebrewEditor.ts`). Covers
  * validation, the ability-modifier encoding (must match vendored fixed-mod
  * races bit-for-bit — see `buildHomebrewRace`'s doc comment and the Elf
  * fixture below), and the draft <-> entity round-trip used by the edit form.
@@ -11,10 +11,13 @@ import { loadRefData } from "@pf1/data-pipeline";
 import { raceGrantsFlexibleAbility } from "@pf1/engine";
 
 import {
+  abilityToDraft,
+  buildHomebrewAbility,
   buildHomebrewFeat,
   buildHomebrewRace,
   buildHomebrewTrait,
   descriptionHtmlToText,
+  emptyHomebrewAbilityDraft,
   emptyHomebrewFeatDraft,
   emptyHomebrewRaceDraft,
   emptyHomebrewTraitDraft,
@@ -341,5 +344,90 @@ describe("textToDescriptionHtml() / descriptionHtmlToText()", () => {
 
   it("returns an empty string for undefined html", () => {
     expect(descriptionHtmlToText(undefined)).toBe("");
+  });
+});
+
+describe("buildHomebrewAbility()", () => {
+  it("rejects a blank name", () => {
+    const result = buildHomebrewAbility("hb-1", { ...emptyHomebrewAbilityDraft(), name: " " });
+    expect(result.ok).toBe(false);
+  });
+
+  it("rejects a level outside 1-20", () => {
+    const draft = { ...emptyHomebrewAbilityDraft(), name: "Mark" };
+    expect(buildHomebrewAbility("hb-1", { ...draft, level: 0 }).ok).toBe(false);
+    expect(buildHomebrewAbility("hb-1", { ...draft, level: 21 }).ok).toBe(false);
+    expect(buildHomebrewAbility("hb-1", { ...draft, level: 20 }).ok).toBe(true);
+  });
+
+  it("omits uses entirely for a 0 max, so the ability is always-on rather than a zero pool", () => {
+    const result = buildHomebrewAbility("hb-1", { ...emptyHomebrewAbilityDraft(), name: "Mark" });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.uses).toBeUndefined();
+  });
+
+  it("writes uses as a numeric maxFormula with the chosen period", () => {
+    const result = buildHomebrewAbility("hb-1", {
+      ...emptyHomebrewAbilityDraft(),
+      name: "Mark",
+      usesMax: 3,
+      usesPer: "day",
+    });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.uses).toEqual({ maxFormula: "3", per: "day" });
+  });
+
+  it("leaves classTag and abilityType undefined rather than empty strings", () => {
+    const result = buildHomebrewAbility("hb-1", { ...emptyHomebrewAbilityDraft(), name: "Mark" });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.classTag).toBeUndefined();
+    expect(result.value.abilityType).toBeUndefined();
+  });
+
+  it("converts typed-bonus drafts into the ability's changes", () => {
+    const result = buildHomebrewAbility("hb-1", {
+      ...emptyHomebrewAbilityDraft(),
+      name: "Mark",
+      changes: [{ target: "will", type: "sacred", value: 2 }],
+    });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.changes).toEqual([{ formula: "2", target: "will", type: "sacred" }]);
+  });
+});
+
+describe("abilityToDraft()", () => {
+  it("round-trips every authored field", () => {
+    const built = buildHomebrewAbility("hb-1", {
+      name: "Mark of the Storm Herald",
+      description: "Lightning answers you.",
+      level: 4,
+      classTag: "fighter",
+      abilityType: "su",
+      usesMax: 2,
+      usesPer: "round",
+      changes: [{ target: "will", type: "sacred", value: 2 }],
+    });
+    if (!built.ok) throw new Error("build failed");
+    const draft = abilityToDraft(built.value);
+    expect(draft.name).toBe("Mark of the Storm Herald");
+    expect(draft.description).toBe("Lightning answers you.");
+    expect(draft.level).toBe(4);
+    expect(draft.classTag).toBe("fighter");
+    expect(draft.abilityType).toBe("su");
+    expect(draft.usesMax).toBe(2);
+    expect(draft.usesPer).toBe("round");
+    expect(draft.changes).toEqual([{ target: "will", type: "sacred", value: 2 }]);
+  });
+
+  it("maps an absent uses block back to a 0 max with the default period", () => {
+    const built = buildHomebrewAbility("hb-1", { ...emptyHomebrewAbilityDraft(), name: "Mark" });
+    if (!built.ok) throw new Error("build failed");
+    const draft = abilityToDraft(built.value);
+    expect(draft.usesMax).toBe(0);
+    expect(draft.usesPer).toBe("day");
   });
 });

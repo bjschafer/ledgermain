@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-19-custom-abilities",
+    date: "2026-08-19",
+    title: "Write your own class features",
+    note: "A GM handed you a campaign ability, or your character has something the app does not model yet? Build it yourself on the Classes tab, under Custom abilities. Give it a name, the rules text, and the level you gained it, and it joins your class feature timeline and the Play tab's feature list like any other. If it grants a flat bonus you can wire that in, and if it is limited use you can give it a per day count that becomes a real tracker you spend down and refill on a rest. Unlike a homebrew feat, it costs you nothing from your feat budget.",
+  },
+  {
     id: "2026-08-19-pc-natural-attacks",
     date: "2026-08-19",
     title: "Natural attacks get real attack lines",

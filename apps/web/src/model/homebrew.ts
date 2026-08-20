@@ -1,5 +1,5 @@
 /**
- * Homebrew races/feats/traits: user-authored entries stored inside the doc
+ * Homebrew races/feats/traits/abilities: user-authored entries stored in the doc
  * (`CharacterDoc.build.homebrew`, see its doc comment for why). Every
  * homebrew entity is keyed by a `hb-`-prefixed id (see {@link homebrewId}) so
  * it can never collide with a vendored id. Races/feats are overlaid onto
@@ -8,8 +8,18 @@
  * vendored), so they have no RefData overlay — a homebrew trait definition
  * is instead read straight from `doc.build.homebrew.traits` wherever `TRAITS`
  * is consulted (`@pf1/engine` `collect.ts`, this app's `model/traits.ts`).
+ * Homebrew abilities overlay like races/feats do (onto
+ * `refData.classFeatures`), which is what makes their description, (Ex)/(Su)/
+ * (Sp) tag, and `uses` pool resolve through the vendored lookups.
  */
-import type { CharacterDoc, Feat, Race, RefData, TraitDef } from "@pf1/schema";
+import type {
+  CharacterDoc,
+  Feat,
+  HomebrewClassFeature,
+  Race,
+  RefData,
+  TraitDef,
+} from "@pf1/schema";
 
 import { removeFeatInstance, setRace } from "./doc.js";
 import { localId } from "./ids.js";
@@ -35,19 +45,24 @@ export function isHomebrewId(id: string): boolean {
  */
 export function resolveRefData(doc: CharacterDoc, refData: RefData): RefData {
   const homebrew = doc.build.homebrew;
-  if (!homebrew || (!homebrew.races && !homebrew.feats)) return refData;
+  if (!homebrew || (!homebrew.races && !homebrew.feats && !homebrew.classFeatures)) return refData;
   return {
     ...refData,
     races: homebrew.races ? { ...refData.races, ...homebrew.races } : refData.races,
     feats: homebrew.feats ? { ...refData.feats, ...homebrew.feats } : refData.feats,
+    classFeatures: homebrew.classFeatures
+      ? { ...refData.classFeatures, ...homebrew.classFeatures }
+      : refData.classFeatures,
   };
 }
 
-/** Drops `build.homebrew` entirely once its `races`/`feats`/`traits` maps are all empty, matching the schema's back-compat "optional/absent = none" posture. */
+/** Drops `build.homebrew` entirely once its `races`/`feats`/`traits`/`classFeatures` maps are all empty, matching the schema's back-compat "optional/absent = none" posture. */
 function pruneHomebrew(
   homebrew: NonNullable<CharacterDoc["build"]["homebrew"]>,
 ): CharacterDoc["build"]["homebrew"] {
-  if (!homebrew.races && !homebrew.feats && !homebrew.traits) return undefined;
+  if (!homebrew.races && !homebrew.feats && !homebrew.traits && !homebrew.classFeatures) {
+    return undefined;
+  }
   return homebrew;
 }
 
@@ -170,4 +185,48 @@ export function removeHomebrewTrait(doc: CharacterDoc, id: string): CharacterDoc
   };
   if ((doc.build.traits ?? []).includes(id)) next = toggleTrait(next, id);
   return next;
+}
+
+/**
+ * Add or overwrite a homebrew ability definition under `id` (use
+ * {@link homebrewId} for new entries). Unlike a race/feat/trait there's no
+ * second "select it" step: an authored ability is a granted one, since the
+ * player wrote it precisely because their character has it.
+ */
+export function upsertHomebrewAbility(
+  doc: CharacterDoc,
+  id: string,
+  ability: HomebrewClassFeature,
+): CharacterDoc {
+  const homebrew = doc.build.homebrew ?? {};
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      homebrew: { ...homebrew, classFeatures: { ...homebrew.classFeatures, [id]: ability } },
+    },
+  };
+}
+
+/**
+ * Remove a homebrew ability definition. Nothing else in the doc references
+ * it (its definition IS its grant), so unlike {@link removeHomebrewFeat} this
+ * needs no selection cleanup. A stored `pickChoices` entry can't exist for
+ * one either: homebrew abilities declare no choose-one options.
+ */
+export function removeHomebrewAbility(doc: CharacterDoc, id: string): CharacterDoc {
+  const homebrew = doc.build.homebrew;
+  if (!homebrew?.classFeatures?.[id]) return doc;
+  const classFeatures = { ...homebrew.classFeatures };
+  delete classFeatures[id];
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      homebrew: pruneHomebrew({
+        ...homebrew,
+        classFeatures: Object.keys(classFeatures).length > 0 ? classFeatures : undefined,
+      }),
+    },
+  };
 }

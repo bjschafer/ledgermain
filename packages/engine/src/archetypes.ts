@@ -104,7 +104,9 @@ export interface GrantedFeature {
    * ki power/style strike/rogue talent/investigator talent/vigilante talent/
    * shifter aspect/rage power/occultist implement/focus power/kineticist
    * composite blast/wild talent/medium spirit power/slayer talent/chosen
-   * inquisition/warpriest blessing rather than the class itself.
+   * inquisition/warpriest blessing rather than the class itself, or (kind
+   * `"custom"`) from a user-authored homebrew ability, which belongs to no
+   * class at all.
    */
   origin?: {
     kind:
@@ -137,7 +139,8 @@ export interface GrantedFeature {
       | "spiritPower"
       | "slayerTalent"
       | "inquisition"
-      | "blessing";
+      | "blessing"
+      | "custom";
     label: string;
   };
   /**
@@ -1230,6 +1233,31 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
         });
       }
     }
+  }
+
+  // Homebrew abilities (`build.homebrew.classFeatures`): GM-granted campaign
+  // content with no class table to hang off, so the grant is synthesized here
+  // from the authored entry itself. Feeding them through this one funnel is
+  // what gets them display (`resolveClassFeatures`), resource pools
+  // (`resources.ts`'s `deriveResourcePools`, which reads `uses` off the
+  // overlaid `refData.classFeatures` entry), and provenance for free. Their
+  // `changes[]` are the one exception — vendored class-feature changes aren't
+  // applied generically, so `collect.ts` applies homebrew ones on its own
+  // path. The homebrew id doubles as the grant uuid: `hb-`-prefixed ids can
+  // never collide with a vendored uuid, so an archetype swap can't target one.
+  for (const [id, ability] of Object.entries(doc.build.homebrew?.classFeatures ?? {})) {
+    out.push({
+      classTag: ability.classTag ?? "",
+      level: ability.level,
+      grant: {
+        level: ability.level,
+        uuid: id,
+        featureId: id,
+        name: ability.name,
+        resolved: true,
+      },
+      origin: { kind: "custom", label: "Custom" },
+    });
   }
 
   return out;

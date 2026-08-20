@@ -1,5 +1,5 @@
 import type { AbilityId, Change, ContextNote, SizeId, SkillId, TraitDef } from "./primitives.js";
-import type { Feat, Race } from "./refdata.js";
+import type { ClassFeature, Feat, Race } from "./refdata.js";
 
 /**
  * A PF1 wizard arcane school tag: one of the eight specialist schools, or
@@ -25,6 +25,32 @@ export type ElementalSchoolTag =
   | "metal-elemental"
   | "void-elemental"
   | "aether-elemental";
+
+/**
+ * A user-authored class feature: a GM-granted campaign ability, or a
+ * stand-in for something the app doesn't model yet. Stored in
+ * `CharacterDoc.build.homebrew.classFeatures` and overlaid onto
+ * `RefData.classFeatures` at compute time (`apps/web/src/model/homebrew.ts`
+ * `resolveRefData`), so its description, `abilityType` tag, and `uses` pool
+ * resolve through the same lookups a vendored feature's do.
+ *
+ * It's a `ClassFeature` plus the two things a vendored feature carries on its
+ * grant rather than on itself: the level it was gained at and (optionally)
+ * which class granted it. Both are display-only, and both exist because the
+ * engine synthesizes a `ClassFeatureGrant` for these rather than reading one
+ * off a class table (`@pf1/engine` `collectGrantedFeatures`).
+ */
+export interface HomebrewClassFeature extends ClassFeature {
+  /** Character level this was gained at — groups the entry in the builder's level timeline. */
+  level: number;
+  /**
+   * Granting class tag, when the ability belongs to one of the character's
+   * classes. Omitted for an ability that belongs to no class (the common
+   * case for a campaign reward), which is why the derived entry's `classTag`
+   * falls back to `""`.
+   */
+  classTag?: string;
+}
 
 /**
  * The character document is the single source of truth: it holds build choices
@@ -1410,11 +1436,17 @@ export interface CharacterDoc {
      * consulted (`@pf1/engine` `collect.ts`, and this app's `model/
      * traits.ts`). Optional/absent = no homebrew, fully back-compat (same
      * posture as `build.racialTraits`).
+     *
+     * `classFeatures` covers GM-granted campaign abilities that aren't feats
+     * (see {@link HomebrewClassFeature}). Unlike races/feats/traits it has no
+     * separate "selected" list: authoring one IS granting it, since there's
+     * no catalog to pick from.
      */
     homebrew?: {
       races?: Record<string, Race>;
       feats?: Record<string, Feat>;
       traits?: Record<string, TraitDef>;
+      classFeatures?: Record<string, HomebrewClassFeature>;
     };
     /**
      * Point-buy budget for the builder's optional point-buy readout — one of
@@ -3682,7 +3714,8 @@ export interface DerivedClassFeature {
       | "spiritPower"
       | "slayerTalent"
       | "inquisition"
-      | "blessing";
+      | "blessing"
+      | "custom";
     label: string;
   };
   /**

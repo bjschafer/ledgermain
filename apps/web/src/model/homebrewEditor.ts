@@ -1,5 +1,6 @@
 /**
- * Form-state <-> `Race`/`Feat`/`TraitDef` mapping for the homebrew authoring
+ * Form-state <-> `Race`/`Feat`/`TraitDef`/`HomebrewClassFeature` mapping for
+ * the homebrew authoring
  * UI (phase 2 of homebrew content support — see `model/homebrew.ts` for the
  * phase-1 doc-embedded storage + `RefData` overlay this builds on top of).
  *
@@ -7,10 +8,19 @@
  * encoding, which must match the vendored data bit-for-bit — see
  * `buildHomebrewRace`'s doc comment) is unit-testable without React.
  * Components (`components/builder/HomebrewRaceEditor.tsx`,
- * `HomebrewFeatEditor.tsx`, `HomebrewTraitEditor.tsx`) stay thin wrappers
- * around this module.
+ * `HomebrewFeatEditor.tsx`, `HomebrewTraitEditor.tsx`,
+ * `HomebrewAbilityEditor.tsx`) stay thin wrappers around this module.
  */
-import type { AbilityId, Feat, Race, SizeId, SkillId, TraitCategory, TraitDef } from "@pf1/schema";
+import type {
+  AbilityId,
+  Feat,
+  HomebrewClassFeature,
+  Race,
+  SizeId,
+  SkillId,
+  TraitCategory,
+  TraitDef,
+} from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
 import { type ChangeDraft, changesToDrafts, draftsToChanges } from "./changeEditor.js";
@@ -247,6 +257,103 @@ export function buildHomebrewTrait(id: string, draft: HomebrewTraitDraft): Build
     changes: draftsToChanges(draft.changes),
   };
   return { ok: true, value: trait };
+}
+
+/* -------------------------------------------------------- abilities -- */
+
+/** Statblock ability-type options for a homebrew ability; "" leaves it untagged. */
+export const ABILITY_TYPE_OPTIONS: readonly { id: string; label: string }[] = [
+  { id: "", label: "None" },
+  { id: "ex", label: "Extraordinary (Ex)" },
+  { id: "su", label: "Supernatural (Su)" },
+  { id: "sp", label: "Spell-like (Sp)" },
+];
+
+/** Recharge periods a homebrew ability's use pool can declare — the only two `poolCadenceLabel` renders a chip for. */
+export const USES_PER_OPTIONS: readonly { id: string; label: string }[] = [
+  { id: "day", label: "per day" },
+  { id: "round", label: "per round" },
+];
+
+export interface HomebrewAbilityDraft {
+  name: string;
+  /** Plain text; converted to a minimal HTML description via {@link textToDescriptionHtml}. */
+  description: string;
+  /** Character level gained at — display grouping in the builder's level timeline. */
+  level: number;
+  /** Granting class tag, or "" for an ability that belongs to no class. */
+  classTag: string;
+  /** One of {@link ABILITY_TYPE_OPTIONS}' ids. */
+  abilityType: string;
+  /** Uses in the recharge period; 0 means the ability isn't a limited-use pool at all. */
+  usesMax: number;
+  /** One of {@link USES_PER_OPTIONS}' ids; ignored when `usesMax` is 0. */
+  usesPer: string;
+  changes: ChangeDraft[];
+}
+
+export function emptyHomebrewAbilityDraft(): HomebrewAbilityDraft {
+  return {
+    name: "",
+    description: "",
+    level: 1,
+    classTag: "",
+    abilityType: "",
+    usesMax: 0,
+    usesPer: "day",
+    changes: [],
+  };
+}
+
+/** Reconstructs an editable draft from an existing homebrew ability, for the edit form. */
+export function abilityToDraft(ability: HomebrewClassFeature): HomebrewAbilityDraft {
+  return {
+    name: ability.name,
+    description: descriptionHtmlToText(ability.description),
+    level: ability.level,
+    classTag: ability.classTag ?? "",
+    abilityType: ability.abilityType ?? "",
+    usesMax: Number(ability.uses?.maxFormula) || 0,
+    usesPer: ability.uses?.per ?? "day",
+    changes: changesToDrafts(ability.changes),
+  };
+}
+
+/**
+ * Builds the stored ability. `uses` is omitted entirely for a 0 max rather
+ * than written as a zero pool: `ClassFeature.uses` absent means "not a
+ * limited-use feature", which is what an ability with no per-day cap is, and
+ * `deriveResourcePools` already skips a non-positive max anyway.
+ * `grantsBuffs` is empty because there's no way to author a buff from here —
+ * a player who wants a togglable effect writes a custom buff instead.
+ */
+export function buildHomebrewAbility(
+  id: string,
+  draft: HomebrewAbilityDraft,
+): BuildResult<HomebrewClassFeature> {
+  const name = draft.name.trim();
+  if (!name) return { ok: false, error: "Name is required." };
+  if (!Number.isInteger(draft.level) || draft.level < 1 || draft.level > 20) {
+    return { ok: false, error: "Level must be between 1 and 20." };
+  }
+  if (!Number.isInteger(draft.usesMax) || draft.usesMax < 0) {
+    return { ok: false, error: "Uses must be a whole number, or 0 for no limit." };
+  }
+
+  const ability: HomebrewClassFeature = {
+    id,
+    uuid: id,
+    name,
+    subType: "classFeat",
+    description: textToDescriptionHtml(draft.description),
+    level: draft.level,
+    classTag: draft.classTag || undefined,
+    abilityType: draft.abilityType || undefined,
+    uses: draft.usesMax > 0 ? { maxFormula: String(draft.usesMax), per: draft.usesPer } : undefined,
+    changes: draftsToChanges(draft.changes),
+    grantsBuffs: [],
+  };
+  return { ok: true, value: ability };
 }
 
 /* --------------------------------------------------------- description HTML -- */

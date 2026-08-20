@@ -909,6 +909,33 @@ export function collectModifiers(
     }
   }
 
+  // --- homebrew abilities (build.homebrew.classFeatures) -----------------
+  // A vendored class feature's `changes[]` are routed per-subsystem rather
+  // than generically (see the granted-power section below), but a homebrew
+  // ability has no subsystem to route through: the player authored the
+  // modifier by hand, so it applies unconditionally, exactly like a homebrew
+  // feat's or trait's own `changes[]`. Authoring the ability IS granting it
+  // (there's no catalog to select from), so there's no separate selected-ids
+  // list to intersect with here.
+  for (const [id, ability] of Object.entries(doc.build.homebrew?.classFeatures ?? {})) {
+    for (const ch of ability.changes ?? []) {
+      if (!gateOpen(ch)) continue;
+      evalChange(
+        ch.formula,
+        rollData,
+        ch.target,
+        ch.type,
+        ability.name,
+        id,
+        out,
+        ch.operator,
+        ch.saveCategories,
+        ch.maneuverCategories,
+        ch.acCategories,
+      );
+    }
+  }
+
   // --- sorcerer bloodline arcana + powers (build choice) ----------
   // Bloodline arcana/powers are hand-authored clean-room content (not in the
   // vendored Foundry data pack — see `@pf1/engine` `bloodlines.ts`), same

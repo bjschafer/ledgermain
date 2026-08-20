@@ -3678,6 +3678,15 @@ button:focus-visible,
   flex: 1 1 140px;
 }
 
+/* A field's controls sitting on one line (a count beside its period, say),
+   shrink-wrapped rather than stretched the way `.hb-change-row`'s grid
+   columns are. */
+.hb-inline-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .hb-change-row {
   display: grid;
   grid-template-columns: 1.4fr 1fr 80px auto;

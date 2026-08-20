@@ -26,6 +26,7 @@ import { BloodragerBloodlinePicker } from "./BloodragerBloodlinePicker.js";
 import { BrawlerStrikePicker } from "./BrawlerStrikePicker.js";
 import { CastingAdvancementPicker } from "./CastingAdvancementPicker.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
+import { HomebrewAbilityEditor } from "./HomebrewAbilityEditor.js";
 import { CrueltyPicker } from "./CrueltyPicker.js";
 import { CursePicker } from "./CursePicker.js";
 import { DisciplinePicker } from "./DisciplinePicker.js";
@@ -712,6 +713,9 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {/* Gun Training firearm-type picks — gunslinger only, hidden for musket master/pistolero (category-wide, no choice). */}
       <GunTrainingPicker doc={doc} refData={refData} update={update} />
+
+      {/* Homebrew abilities — GM-granted campaign features, listed in the timeline below. */}
+      <HomebrewAbilityEditor doc={doc} sheet={sheet} refData={refData} update={update} />
 
       <ClassFeaturesList sheet={sheet} refData={refData} doc={doc} update={update} />
     </Panel>

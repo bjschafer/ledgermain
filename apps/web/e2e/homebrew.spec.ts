@@ -3,12 +3,14 @@ import { expect, test, type Page } from "@playwright/test";
 import { typeSearch } from "./search.js";
 
 /**
- * Homebrew race/feat authoring (phase 2): drives the real "Homebrew races" /
- * "Homebrew feats" authoring doors in the Build tab and asserts the created
+ * Homebrew authoring: drives the real "Homebrew races" / "Homebrew feats" /
+ * "Custom abilities" authoring doors in the Build tab and asserts the created
  * content actually flows through `compute()` (a fixed +2 Str race changes the
- * sheet's Strength) and through the normal feat-selection path (a created
- * feat shows up, marked homebrew, in the Play tab's feat list). Reuses the
- * console/pageerror guard from tracker.spec.ts.
+ * sheet's Strength) and through the normal display paths (a created feat
+ * shows up, marked homebrew, in the Play tab's feat list; a created ability
+ * lands in the class-feature timeline and, with a use count, in the Play
+ * tab's resource pools). Reuses the console/pageerror guard from
+ * tracker.spec.ts.
  */
 
 const benign = (t: string) =>
@@ -117,6 +119,42 @@ test("creating a homebrew feat adds it to the character, badged as homebrew", as
   await playFeatsPanel.getByRole("button", { name: "Feats", exact: true }).click(); // expand (defaultCollapsed)
   await expect(playFeatsPanel.getByText("Keen Nose")).toBeVisible();
   await expect(playFeatsPanel.getByText("homebrew")).toBeVisible();
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
+test("creating a custom ability adds it to the class-feature timeline and a use pool", async ({
+  page,
+}) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoBuild(page);
+
+  const classesPanel = panelByTitle(page, "Classes");
+  await classesPanel.getByText("Custom abilities").click();
+  await classesPanel.getByRole("button", { name: "+ Create custom ability" }).click();
+
+  await classesPanel.getByLabel("Name").fill("Mark of the Storm Herald");
+  await classesPanel.getByLabel("Description").fill("Lightning answers you.");
+  const level = classesPanel.getByLabel("Level gained");
+  await level.fill("3");
+  await level.press("Enter"); // NumberField commits on blur/Enter
+  const uses = classesPanel.getByLabel("Uses", { exact: true });
+  await uses.fill("2");
+  await uses.press("Enter");
+  await classesPanel.getByRole("button", { name: "Create ability" }).click();
+
+  // The timeline groups by level, so the ability lands under its own "Lv 3".
+  const timeline = classesPanel.locator(".class-features");
+  const levelGroup = timeline.locator(".cf-level-group", { hasText: "Lv 3" });
+  await expect(levelGroup.getByText("Mark of the Storm Herald")).toBeVisible();
+  await expect(levelGroup.getByText("(Custom)")).toBeVisible();
+
+  // Play tab: the ability is a real tracked pool, spendable without a class.
+  await page.getByRole("tab", { name: "Play" }).click();
+  const resourcesPanel = panelByTitle(page, "Resources");
+  await expect(resourcesPanel.getByText("Mark of the Storm Herald")).toBeVisible();
+  await expect(resourcesPanel.getByText("per day")).toBeVisible();
 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
