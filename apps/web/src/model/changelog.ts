@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-19-metamagic",
+    date: "2026-08-19",
+    title: "Metamagic, the whole shelf",
+    note: "Every metamagic feat in the book can now be applied when you prepare or cast a spell, not just the core ten: pick Dazing Spell on a prepared fireball and it moves to the right slot level on its own. Magical Lineage and Wayang Spellhunter ask which spell you chose and quietly discount the cost on that one. And two spend-to-cast abilities are real buttons: a Universalist wizard's Metamagic Mastery and the Metamagic Rager's Meta-Rage burn their uses or rage rounds to skip the level increase entirely.",
+  },
+  {
     id: "2026-08-19-plain-language-bonuses",
     date: "2026-08-19",
     title: "Bonuses in plain language",

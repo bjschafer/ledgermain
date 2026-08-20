@@ -105,6 +105,12 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "1,090 entries carry structured changes[]; the imported catalog adds 3,832 whose effects exist only as prose. The gap is promotion rather than coverage, and the weapon and armor special ability catalog sits on the same axis: keen is the only entry that moves numbers.",
   },
   {
+    category: "Metamagic",
+    note: "Applying a metamagic feat tracks the slot cost, not the effect: Empower's bigger numbers or Dazing's save stay rules text for you to apply at the table. Class abilities that grant free or cheaper metamagic through a choice the sheet cannot store yet, like the Theologian's chosen domain spell or a magus arcana's once-a-day feat, are not applied either.",
+    issueDetail:
+      "All 84 vendored metamagic-tagged feats carry slot costs. Unmodeled free-application grants: Theologian Domain Secret and psychic Mimic Metamagic need stored feat-and-spell picks; magus metamagic arcana and oracle Guiding Star are once-a-day with no tracked pool; arcanist Metamixing, the Magician bard's Metamagic Mastery, and Arcane bloodline's Metamagic Adept only change casting time, which the sheet has no action surface for.",
+  },
+  {
     category: "Monk flurry of blows",
     note: "A monk's flurry sequence shows in Class Features as a reference string, but the sheet does not roll it: saved rolls and the attack lines use your normal attack progression. A brawler's flurry is the exception, rolled through a saved roll's two weapon fighting mode.",
     issueDetail:
