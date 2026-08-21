@@ -37,9 +37,12 @@ import {
   type SummonListEntry,
   type SummonSpell,
 } from "../model/summonLists.js";
+import { useTrackState } from "../hooks/useTrackState.js";
 import type { RefIndex } from "../shared/indexCodec.js";
 import { AdjustmentPicker } from "./AdjustPanel.js";
+import { conditionNames } from "./ConditionView.js";
 import { MonsterView } from "./MonsterView.js";
+import { TrackPanel } from "./TrackPanel.js";
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
 
@@ -271,6 +274,8 @@ function SummonLevelPage({
 
       {params.creature && (
         <SummonCreaturePanel
+          // Keyed so per-creature tracker state resets when the selection changes.
+          key={params.creature}
           index={index}
           spell={spell}
           uptoLevel={level}
@@ -399,6 +404,8 @@ function SummonCreaturePanel({
   onSetTemplate: (key: string | undefined) => void;
 }) {
   const [state, setState] = useState<CreatureState>({ status: "loading" });
+  const [track, updateTrack] = useTrackState(creatureId);
+  const names = useMemo(() => conditionNames(index.entries), [index]);
 
   useEffect(() => {
     let live = true;
@@ -477,6 +484,14 @@ function SummonCreaturePanel({
           </p>
         </>
       )}
+
+      <TrackPanel
+        index={index}
+        monster={result.monster}
+        names={names}
+        state={track}
+        update={updateTrack}
+      />
 
       <MonsterView
         monster={result.monster}

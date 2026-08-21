@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-21-monster-tracking",
+    date: "2026-08-21",
+    title: "Run a monster from its reference page",
+    note: "Every bestiary page, and the summoning helper, now carries a tracker for running that creature in a fight. Tick damage and healing against the printed hit points, with any template you applied already folded into the total, and mark conditions from the full list, each one showing its rules text right on the page. At 0 and below the tracker reads the statblock for you: disabled at exactly 0, dying until the creature's own Constitution says dead, destroyed outright for undead and constructs, and a reminder when regeneration means it cannot die. Each browser tab tracks its own copy, so an encounter is one tab per monster; everything survives a reload and clears when the tab closes.",
+  },
+  {
     id: "2026-08-21-template-diff",
     date: "2026-08-21",
     title: "Templates show their work",

@@ -84,6 +84,7 @@ export function DetailPage({
       <DetailBody
         collection={collection}
         entry={state.entry}
+        index={index}
         ladders={index.ladders}
         names={names}
       />
@@ -99,11 +100,13 @@ export function DetailPage({
 function DetailBody({
   collection,
   entry,
+  index,
   ladders,
   names,
 }: {
   collection: CollectionId;
   entry: AnyEntry;
+  index: RefIndex;
   ladders: string[][];
   names: Map<string, string>;
 }) {
@@ -121,7 +124,16 @@ function DetailBody({
     case "conditions":
       return <ConditionView condition={entry as ConditionDef} ladders={ladders} names={names} />;
     case "monsters":
-      return <MonsterDetail monster={entry as Monster} />;
+      // Keyed so tracker state (captured per monster id on mount) never leaks
+      // across a monster-to-monster navigation.
+      return (
+        <MonsterDetail
+          key={entry.id}
+          monster={entry as Monster}
+          index={index}
+          conditionNames={names}
+        />
+      );
     case "monster-templates":
       return <MonsterTemplateView template={entry as MonsterTemplate} />;
   }

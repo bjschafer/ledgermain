@@ -1,11 +1,14 @@
 import type { Monster, MonsterTemplate } from "@pf1/schema";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
+import { useTrackState } from "../hooks/useTrackState.js";
 import { applyAdjustments } from "../model/adjust/apply.js";
 import { AUGMENT_SUMMONING, STATBLOCK_TEMPLATES } from "../model/adjust/templates.js";
 import type { AdjustNote, StatblockAdjustment } from "../model/adjust/types.js";
+import type { RefIndex } from "../shared/indexCodec.js";
 import { AdjustmentNotes, AdjustmentPicker } from "./AdjustPanel.js";
 import { Chip, Description, Row, Sources } from "./parts.js";
+import { TrackPanel } from "./TrackPanel.js";
 
 const ABILITY_ORDER = ["str", "dex", "con", "int", "wis", "cha"] as const;
 const ABILITY_LABEL: Record<(typeof ABILITY_ORDER)[number], string> = {
@@ -253,19 +256,31 @@ const ADJUSTMENT_OPTIONS: readonly StatblockAdjustment[] = [
 ];
 
 /**
- * Wraps `MonsterView` with the "Adjust statblock" picker: readers stack any of
- * the seven simple templates plus Augment Summoning against the printed
- * statblock, entirely client-side and without touching the route.
+ * Wraps `MonsterView` with the "Adjust statblock" picker and the encounter
+ * tracker: readers stack any of the seven simple templates plus Augment
+ * Summoning against the printed statblock, entirely client-side and without
+ * touching the route. Selections persist per browser tab alongside the
+ * tracker's hp and conditions (`useTrackState`), so a reload mid-fight brings
+ * the whole worksheet back.
  */
-export function MonsterDetail({ monster }: { monster: Monster }) {
-  const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
+export function MonsterDetail({
+  monster,
+  index,
+  conditionNames,
+}: {
+  monster: Monster;
+  index: RefIndex;
+  /** Condition id -> display name, for the tracker's condition chips. */
+  conditionNames: Map<string, string>;
+}) {
+  const [track, updateTrack] = useTrackState(monster.id);
+  const selected = useMemo(() => new Set(track.adjustments), [track.adjustments]);
 
   function toggle(key: string): void {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
-      return next;
+    updateTrack({
+      adjustments: selected.has(key)
+        ? track.adjustments.filter((k) => k !== key)
+        : [...track.adjustments, key],
     });
   }
 
@@ -288,7 +303,7 @@ export function MonsterDetail({ monster }: { monster: Monster }) {
             type="button"
             className="adjust-reset"
             disabled={applied.length === 0}
-            onClick={() => setSelected(new Set())}
+            onClick={() => updateTrack({ adjustments: [] })}
           >
             Reset
           </button>
@@ -307,6 +322,13 @@ export function MonsterDetail({ monster }: { monster: Monster }) {
           title="Feats"
         />
       </section>
+      <TrackPanel
+        index={index}
+        monster={result?.monster ?? monster}
+        names={conditionNames}
+        state={track}
+        update={updateTrack}
+      />
       <MonsterView
         monster={result?.monster ?? monster}
         base={monster}

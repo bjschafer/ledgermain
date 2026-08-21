@@ -1050,3 +1050,159 @@ code {
     gap: 2px;
   }
 }
+
+/* ------------------------------------------------------- encounter tracking -- */
+
+.track-hint {
+  margin: 6px 0 0;
+  font-size: 0.6875rem;
+  color: var(--faint);
+}
+
+.track-hp {
+  margin-top: 10px;
+}
+
+.track-hp-reading {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.track-hp-current {
+  font-family: var(--mono);
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.track-hp-current.is-disabled,
+.track-hp-current.is-dying {
+  color: var(--oxblood-ink);
+}
+
+.track-hp-current.is-dead,
+.track-hp-current.is-destroyed {
+  color: var(--faint);
+}
+
+.track-hp-max {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.track-hp-note {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--faint);
+}
+
+.track-hp-bar {
+  height: 5px;
+  margin: 6px 0 8px;
+  border-radius: 3px;
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  overflow: hidden;
+}
+
+.track-hp-fill {
+  height: 100%;
+  background: var(--sage);
+}
+
+.track-hp-fill.is-disabled,
+.track-hp-fill.is-dying,
+.track-hp-fill.is-dead,
+.track-hp-fill.is-destroyed {
+  background: var(--oxblood);
+}
+
+.track-hp-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.track-hp-controls input {
+  width: 64px;
+  padding: 3px 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+}
+
+.track-hp-button {
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-family: var(--body);
+  font-size: 0.75rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.track-hp-button:hover {
+  color: var(--ink);
+}
+
+.track-hp-button.is-damage:hover {
+  border-color: var(--oxblood);
+  color: var(--oxblood-ink);
+}
+
+.track-hp-button.is-heal:hover {
+  border-color: var(--sage);
+  color: var(--sage);
+}
+
+.track-hp-status {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  color: var(--oxblood-ink);
+}
+
+.track-hp-status a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+}
+
+.track-hp-status.is-dead,
+.track-hp-status.is-destroyed {
+  color: var(--muted);
+}
+
+.track-hp-regen {
+  color: var(--muted);
+}
+
+/* Condition names are short; denser tiles than the template picker. */
+.track-cond-grid {
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+}
+
+.track-active-list {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.75rem;
+}
+
+.track-active-name {
+  margin-right: 6px;
+  font-weight: 600;
+  color: var(--gold-2);
+}
+
+.track-active-summary {
+  color: var(--muted);
+}
