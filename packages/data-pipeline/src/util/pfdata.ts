@@ -215,8 +215,14 @@ function resolveFormattingDirectives(text: string): string {
     .replace(/@span\[([^\]]*)\](?:\{[^}]*\})?/g, "$1");
 }
 
-/** Inline-level conversion for one line/cell of source text: cross-refs, link/formatting directives, entity-decoding, entity-escaping, then markdown bold/italic. */
-function inlineToHtml(raw: string): string {
+/**
+ * Inline-level conversion for one line/cell of source text: cross-refs,
+ * link/formatting directives, entity-decoding, entity-escaping, then markdown
+ * bold/italic. Exported for `util/monsterStatblock.ts`, which assembles
+ * statblock display lines from directive prop values — each prop value is one
+ * inline text fragment in exactly this dialect, never a block.
+ */
+export function inlineToHtml(raw: string): string {
   let text = resolveCrossRefs(raw);
   text = resolveLinkDirectives(text);
   text = decodeNamedEntities(text);
@@ -224,6 +230,23 @@ function inlineToHtml(raw: string): string {
   text = resolveFormattingDirectives(text);
   text = text.replace(/\*\*([^*]+?)\*\*/g, "<strong>$1</strong>");
   text = text.replace(/\*([^*]+?)\*/g, "<em>$1</em>");
+  return text;
+}
+
+/**
+ * Inline-level conversion to PLAIN TEXT: cross-refs and link/formatting
+ * directives resolved to their display text, entities decoded, markdown
+ * bold/italic markers stripped. For `util/monsterStatblock.ts`'s display-
+ * string fields (senses, special attacks, ...), which the reference site
+ * renders as text nodes — HTML tags there would print literally.
+ */
+export function inlineToPlainText(raw: string): string {
+  let text = resolveCrossRefs(raw);
+  text = resolveLinkDirectives(text);
+  text = decodeNamedEntities(text);
+  text = text.replace(/@(?:HL|hl|b|strong|i|em|span)\[([^\]]*)\](?:\{[^}]*\})?/g, "$1");
+  text = text.replace(/\*\*([^*]+?)\*\*/g, "$1");
+  text = text.replace(/\*([^*]+?)\*/g, "$1");
   return text;
 }
 

@@ -48,7 +48,7 @@ function main(): void {
   }
 
   console.log(`[generate] normalizing from ${PACKS_DIR}`);
-  const { refData } = normalize({
+  const { refData, monsters, monsterTemplates } = normalize({
     packsDir: PACKS_DIR,
     archetypesDir: ARCHETYPES_DIR,
     archFeaturesDir: ARCH_FEATURES_DIR,
@@ -66,7 +66,7 @@ function main(): void {
     generatedAt: sourceCommitDate(),
   });
 
-  emit(refData, OUTPUT_DIR);
+  emit(refData, OUTPUT_DIR, { monsters, monsterTemplates });
 
   const c = refData.meta.counts;
   console.log(`[generate] wrote ${OUTPUT_DIR}`);

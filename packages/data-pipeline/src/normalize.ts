@@ -27,6 +27,8 @@ import type {
   MesmeristTrick,
   MonkKiPower,
   MonkStyleStrike,
+  Monster,
+  MonsterTemplate,
   OccultistImplement,
   OracleCurse,
   OracleMystery,
@@ -127,6 +129,8 @@ import { transformInvestigatorTalents } from "./transform/investigatorTalents.js
 import { transformKineticWildTalents } from "./transform/kineticWildTalents.js";
 import { transformMagicItems } from "./transform/magicItems.js";
 import { transformMagusArcana } from "./transform/magusArcana.js";
+import { transformMonsters } from "./transform/monsters.js";
+import { transformMonsterTemplates } from "./transform/monsterTemplates.js";
 import { transformMediumSpirits } from "./transform/mediumSpirits.js";
 import { transformMesmeristBoldStares } from "./transform/mesmeristBoldStares.js";
 import { transformMesmeristTricks } from "./transform/mesmeristTricks.js";
@@ -228,10 +232,12 @@ function buildUuidIndex(packsDir: string): Map<string, string> {
   return index;
 }
 
-/** Build the normalized RefData slice from the source packs. */
+/** Build the normalized RefData slice (plus the monster sidecar collections) from the source packs. */
 export function normalize(opts: NormalizeOptions): {
   refData: RefData;
   contentVersion: string;
+  monsters: Monster[];
+  monsterTemplates: MonsterTemplate[];
 } {
   const { packsDir } = opts;
 
@@ -1025,6 +1031,20 @@ export function normalize(opts: NormalizeOptions): {
   const blessings: Blessing[] = transformBlessings(blessingDict);
   classFeatures.push(...blessingClassFeatures(blessings));
 
+  // Sidecar collections (never `RefData` keys — see `Monster` in schema).
+  const { monsters, stats: monsterStats } = transformMonsters(
+    opts.pfDataJsonDir,
+    SLICE.monsterFiles,
+  );
+  const monsterTemplates = transformMonsterTemplates(
+    opts.pfDataJsonDir,
+    SLICE.monsterTemplateFiles,
+  );
+  const monsterUnknownKeyCount = [...monsterStats.unknownKeys.values()].reduce(
+    (total, perDirective) => [...perDirective.values()].reduce((t, n) => t + n, total),
+    0,
+  );
+
   const counts = {
     races: races.length,
     racialTraits: racialTraits.length,
@@ -1085,6 +1105,15 @@ export function normalize(opts: NormalizeOptions): {
     eidolonSubtypes: eidolonSubtypes.length,
     inquisitions: inquisitions.length,
     blessings: blessings.length,
+    // Sidecar collections + their parse diagnostics (statblock DSL keys
+    // outside the known tables / numeric fields that failed to parse / prose
+    // found inside a statblock region) — pinned by the vendored-output tests
+    // so a source bump that changes the DSL fails loudly.
+    monsters: monsters.length,
+    "monster-templates": monsterTemplates.length,
+    monsterParseUnknownKeys: monsterUnknownKeyCount,
+    monsterParseNumericFailures: monsterStats.numericFailures.length,
+    monsterParseStrayProseLines: monsterStats.strayBlockLines,
   };
 
   const meta: RefDataMeta = {
@@ -1166,7 +1195,7 @@ export function normalize(opts: NormalizeOptions): {
     blessings: byId(blessings),
   };
 
-  return { refData, contentVersion };
+  return { refData, contentVersion, monsters, monsterTemplates };
 }
 
 function asTag(doc: RawDoc): string {

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import type { RefData, RefDataMeta } from "@pf1/schema";
+import type { Monster, MonsterTemplate, RefData, RefDataMeta } from "@pf1/schema";
 
 import { OUTPUT_DIR } from "./config.js";
 
@@ -30,6 +30,35 @@ export function loadRefData(dir: string = OUTPUT_DIR): RefData {
   if (cached) return cached;
   const data = readRefData(dir);
   cache.set(dir, data);
+  return data;
+}
+
+/** Same per-directory memoization for the sidecar collections `loadRefData` deliberately excludes. */
+const monsterCache = new Map<string, Record<string, Monster>>();
+const monsterTemplateCache = new Map<string, Record<string, MonsterTemplate>>();
+
+/**
+ * Load the vendored monster sidecar collection (`monsters.json`). Deliberately
+ * NOT part of `loadRefData()` — see `Monster`'s doc comment in `@pf1/schema`:
+ * the reference site is its only consumer, and the eagerly-shared RefData heap
+ * should not carry several megabytes of statblocks nobody else reads. Same
+ * contract otherwise: memoized per directory, throws on a missing file, do
+ * not mutate the result.
+ */
+export function loadMonsters(dir: string = OUTPUT_DIR): Record<string, Monster> {
+  const cached = monsterCache.get(dir);
+  if (cached) return cached;
+  const data = readJson<Record<string, Monster>>(dir, "monsters.json");
+  monsterCache.set(dir, data);
+  return data;
+}
+
+/** Load the vendored monster-template sidecar collection (`monster-templates.json`) — see `loadMonsters`. */
+export function loadMonsterTemplates(dir: string = OUTPUT_DIR): Record<string, MonsterTemplate> {
+  const cached = monsterTemplateCache.get(dir);
+  if (cached) return cached;
+  const data = readJson<Record<string, MonsterTemplate>>(dir, "monster-templates.json");
+  monsterTemplateCache.set(dir, data);
   return data;
 }
 

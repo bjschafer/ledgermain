@@ -88,15 +88,38 @@ const FILES: { key: keyof RefData; file: string }[] = [
 ];
 
 /**
- * Write each RefData collection to its own JSON file, hash the contents, then
- * write meta.json (with the hashes) last so meta is content-addressable.
+ * Sidecar collections: emitted beside the RefData files, hashed into
+ * `meta.hashes` like everything else, but deliberately not `RefData` keys —
+ * see `Monster`'s doc comment in `@pf1/schema` for the posture.
  */
-export function emit(refData: RefData, outputDir: string): void {
+export interface SidecarCollections {
+  monsters: { id: string }[];
+  monsterTemplates: { id: string }[];
+}
+
+const SIDECAR_FILES: { key: keyof SidecarCollections; file: string }[] = [
+  { key: "monsters", file: "monsters.json" },
+  { key: "monsterTemplates", file: "monster-templates.json" },
+];
+
+/**
+ * Write each RefData collection (and each sidecar collection) to its own JSON
+ * file, hash the contents, then write meta.json (with the hashes) last so
+ * meta is content-addressable.
+ */
+export function emit(refData: RefData, outputDir: string, sidecar: SidecarCollections): void {
   mkdirSync(outputDir, { recursive: true });
   const hashes: Record<string, string> = {};
 
   for (const { key, file } of FILES) {
     const text = stableStringify(refData[key]);
+    writeFileSync(join(outputDir, file), text);
+    hashes[file] = sha256(text);
+  }
+
+  for (const { key, file } of SIDECAR_FILES) {
+    const byId = Object.fromEntries(sidecar[key].map((entry) => [entry.id, entry]));
+    const text = stableStringify(byId);
     writeFileSync(join(outputDir, file), text);
     hashes[file] = sha256(text);
   }

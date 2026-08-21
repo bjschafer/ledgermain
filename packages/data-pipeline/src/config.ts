@@ -168,9 +168,18 @@ export const SYSTEM_VERSION = "11.11";
  * the only fallback for features linked without a structured level), and
  * `pairedBaseFeatureUuid` now prefers matching `replacesText` against the
  * base class's own feature names over the previous level-collision-only
- * heuristic.
+ * heuristic. v28 adds the first two SIDECAR collections —
+ * `monsters.json`/`monster-templates.json` (the full "Pf Data 1e" bestiary:
+ * every parseable statblock across `SLICE.monsterFiles`, plus the monster
+ * templates). Sidecar means: emitted beside the RefData files and present in
+ * `meta.counts`/`meta.hashes`, but deliberately NOT keys of `RefData` — the
+ * only consumer is `apps/reference`, and `loadRefData()` is eagerly parsed by
+ * hundreds of engine test processes that should not pay several extra
+ * megabytes of statblock heap. Loaded on demand via `loadMonsters()`/
+ * `loadMonsterTemplates()` instead; see `Monster`'s doc comment in
+ * `@pf1/schema` and `util/monsterStatblock.ts` for the parsing postures.
  */
-export const SCHEMA_VERSION = 27;
+export const SCHEMA_VERSION = 28;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).
@@ -375,5 +384,70 @@ export const SLICE = {
     "magic_wondrous_slotless04",
     "magic_wondrous_slotless05",
     "magic_wondrous_slotless06",
+  ],
+  /**
+   * Pf Data 1e monster dictionaries → the `monsters.json` SIDECAR collection
+   * (see `Monster` in schema — deliberately not a `RefData` key). Explicit
+   * list, same posture as `magicItemFiles`: a source bump that adds or renames
+   * a file is a reviewed change here, not a silent glob pickup. The
+   * `monster_families*`/`monster_types`/`monster_subtypes` siblings are
+   * deliberately excluded — crosslinks to them degrade to plain text.
+   */
+  monsterFiles: [
+    "monsters01",
+    "monsters02",
+    "monsters03",
+    "monsters04",
+    "monsters05",
+    "monsters06",
+    "monsters07",
+    "monsters08",
+    "monsters09",
+    "monsters10",
+    "monsters11",
+    "monsters12",
+    "monsters13",
+    "monsters14",
+    "monsters15",
+    "monsters16",
+    "monsters17",
+    "monsters18",
+    "monsters19",
+    "monsters20",
+    "monsters21",
+    "monsters22",
+    "monsters23",
+    "monsters24",
+    "monsters25",
+    "monsters26",
+    "monsters27",
+    "monsters28",
+    "monsters29",
+    "monsters30",
+    "monsters31",
+    "monsters32",
+    "monsters33",
+    "monsters34",
+    "monsters35",
+    "monsters36",
+    "monsters37",
+    "monsters38",
+    "monsters39",
+    "monsters40",
+    "monsters41",
+    "monsters42",
+    "monsters_mythic",
+    "monsters_mythic2",
+    "monsters_unique",
+    "monsters_unique2",
+    "monsters_unique3",
+    "monsters_unique4",
+  ],
+  /** Pf Data 1e monster-template dictionaries → `monster-templates.json` (sidecar, see `MonsterTemplate`). */
+  monsterTemplateFiles: [
+    "monster_template1",
+    "monster_template2",
+    "monster_template3",
+    "monster_template4",
   ],
 } as const;

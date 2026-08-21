@@ -2000,4 +2000,107 @@ export interface Blessing extends RefEntity {
   majorPower: BlessingPower;
 }
 
+/* ------------------------------------------------- monsters (sidecar) -- */
+
+/**
+ * A published monster statblock, sourced from the "Pf Data 1e" dataset's
+ * `json/monsters*.json` dictionaries (`::mh`/`::minfo`/`::mdefense`/
+ * `::moffense`/`::mstats`/`::meco` directive blocks parsed by data-pipeline
+ * `util/monsterStatblock.ts`).
+ *
+ * DELIBERATELY NOT part of `RefData`: monsters are consumed only by the
+ * reference site, and `loadRefData()` is eagerly parsed by hundreds of engine
+ * test processes where several extra megabytes of statblocks would be pure
+ * heap cost. The collection is emitted beside the RefData files as
+ * `monsters.json` (present in `meta.counts`/`meta.hashes`) and loaded on
+ * demand via data-pipeline's `loadMonsters()`.
+ *
+ * Numeric fields (`ac`/`touchAc`/`flatFootedAc`/`hp`, `abilityScores`) are
+ * validated against an external oracle at import time; everything else is a
+ * printed-style display string assembled from the source's structured
+ * directive props, or rendered HTML for the prose sections. Every statblock
+ * field is optional — a handful of entries legitimately omit whole directive
+ * blocks, and an honest gap beats a fabricated value.
+ */
+export interface Monster extends RefEntity {
+  /** Challenge rating as printed: "1/3", "5", "30". */
+  cr: string;
+  /** Mythic rank (MR), when the statblock has one. */
+  mythicRank?: number;
+  xp?: number;
+  /** As printed: "N", "CE", "NG or NE", ... */
+  alignment?: string;
+  size?: string;
+  /** "animal", "outsider", "magical beast", ... */
+  creatureType?: string;
+  subtypes?: string[];
+  init?: string;
+  /** Assembled senses line, Perception included: "low-light vision, scent; Perception +4". */
+  senses?: string;
+  aura?: string;
+  ac?: number;
+  touchAc?: number;
+  flatFootedAc?: number;
+  /** The AC breakdown as printed: "+3 Dex, +1 size". */
+  acMods?: string;
+  hp?: number;
+  /** Hit-dice expression: "1d8+1". */
+  hd?: string;
+  /** Trailing hp-line text as printed: "fast healing 5", "regeneration 10 (cold iron)". */
+  hpNote?: string;
+  fort?: string;
+  ref?: string;
+  will?: string;
+  defensiveAbilities?: string;
+  dr?: string;
+  immune?: string;
+  resist?: string;
+  sr?: string;
+  weaknesses?: string;
+  /** Assembled speed line: "40 ft., climb 20 ft., fly 60 ft. (good)". */
+  speed?: string;
+  melee?: string;
+  ranged?: string;
+  space?: string;
+  reach?: string;
+  specialAttacks?: string;
+  /** Rendered spell-like-ability / spells-known blocks (`::mspell`), printed-style HTML. */
+  spellsHtml?: string;
+  /** A missing key is a printed "—" (undead Con, mindless Int, ...). */
+  abilityScores?: Partial<Record<"str" | "dex" | "con" | "int" | "wis" | "cha", number>>;
+  /** Rare free-text qualifier on the ability line, e.g. Str "— (20 while corporeal)". */
+  statNote?: string;
+  bab?: string;
+  cmb?: string;
+  cmd?: string;
+  feats?: string;
+  skills?: string;
+  racialModifiers?: string;
+  languages?: string;
+  sq?: string;
+  environment?: string;
+  organization?: string;
+  treasure?: string;
+  /** Rendered "Special Abilities" section, same restricted-HTML shape as `description`. */
+  specialAbilitiesHtml?: string;
+}
+
+/**
+ * A monster template ("Celestial", "Fiendish", "Skeleton", ...), sourced from
+ * the same dataset's `json/monster_template*.json` (`::th` header + prose).
+ * Same sidecar posture as `Monster` — emitted as `monster-templates.json`,
+ * loaded via `loadMonsterTemplates()`, never part of `RefData`.
+ */
+export interface MonsterTemplate extends RefEntity {
+  /** CR adjustment as printed: "+0 or +1", "+2". */
+  cr: string;
+  acquired?: boolean;
+  simple?: boolean;
+  inherited?: boolean;
+  /** Named on the Summon Monster lists' template options (celestial/fiendish/entropic/resolute). */
+  summonable?: boolean;
+  /** The source's weaker "maybe summonable" marker. */
+  maybeSummonable?: boolean;
+}
+
 export type { SourceRef };
