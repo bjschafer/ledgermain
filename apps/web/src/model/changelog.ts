@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-21-bestiary",
+    date: "2026-08-21",
+    title: "The reference site has the whole bestiary",
+    note: "The quick-reference site now carries nearly 3,000 monster statblocks and about 170 monster templates, searchable by name next to spells, feats, and gear. Each monster page shows the full printed statblock: AC, hit points, saves, attacks, special abilities, spell-like abilities, and ecology.",
+  },
+  {
     id: "2026-08-20-rasugen",
     date: "2026-08-20",
     title: "The mnemostiller's rasugen is a real toggle",

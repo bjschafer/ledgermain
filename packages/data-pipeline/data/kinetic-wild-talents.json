@@ -1912,7 +1912,7 @@
   },
   "greater_toxic_infusion": {
     "burn": 4,
-    "description": "<p><strong>Prerequisite</strong> toxic infusion   <strong>Associated Blasts</strong> Autumn Blast, Spring Blast, Summer Blast, Verdant Blast, Winter Blast, Wood Blast   <strong>Saving Throw</strong> Fortitude negates</p>\n<p>Your plant toxin is more virulent. Each time you use this infusion, choose a physical ability score. Creatures that take piercing or slashing damage from your blast are exposed to your poison.</p>\n<p>1d2 ability damage to the chosen ability score</p>",
+    "description": "<p><strong>Prerequisite</strong> toxic infusion   <strong>Associated Blasts</strong> Autumn Blast, Spring Blast, Summer Blast, Verdant Blast, Winter Blast, Wood Blast   <strong>Saving Throw</strong> Fortitude negates</p>\n<p>Your plant toxin is more virulent. Each time you use this infusion, choose a physical ability score. Creatures that take piercing or slashing damage from your blast are exposed to your poison.</p>\n<p>Blast-injury; <em>save</em> Fortitude negates; <em>frequency</em> 1/round for 6 rounds; <em>effect</em> 1d2 ability damage to the chosen ability score; <em>cure</em> 2 consecutive saves</p>",
     "elements": ["wood"],
     "id": "greater_toxic_infusion",
     "infusionKind": "substance",
@@ -3427,7 +3427,7 @@
   },
   "spore_infusion": {
     "burn": 3,
-    "description": "<p><strong>Associated Blasts</strong> Autumn Blast, Spring Blast, Summer Blast, Verdant Blast, Winter Blast, Wood Blast   <strong>Saving Throw</strong> Fortitude negates</p>\n<p>Creatures that take piercing or slashing damage from your blast are infected with spores. If a target fails its Fortitude save, it takes 1d6 points of damage per round for 10 rounds as plants and fungi grow out of its body. At the end of that time, the target is exposed to the pulsing puffs disease. This infusion is a disease effect. When using a wood kinetic blast against a creature infected by this infusion, you gain a +2 bonus on attack rolls, to saving throw DCs, and on caster level checks to overcome spell resistance.</p>\n<p><strong>Pulsing Puffs</strong></p>",
+    "description": "<p><strong>Associated Blasts</strong> Autumn Blast, Spring Blast, Summer Blast, Verdant Blast, Winter Blast, Wood Blast   <strong>Saving Throw</strong> Fortitude negates</p>\n<p>Creatures that take piercing or slashing damage from your blast are infected with spores. If a target fails its Fortitude save, it takes 1d6 points of damage per round for 10 rounds as plants and fungi grow out of its body. At the end of that time, the target is exposed to the pulsing puffs disease. This infusion is a disease effect. When using a wood kinetic blast against a creature infected by this infusion, you gain a +2 bonus on attack rolls, to saving throw DCs, and on caster level checks to overcome spell resistance.</p>\n<p><strong>Pulsing Puffs:</strong> Blast-injury; <em>save</em> Fort DC 18; <em>onset</em> 1 minute; <em>frequency</em> 1/day; <em>effect</em> 1d6 Dex damage; <em>cure</em> 2 consecutive saves</p>",
     "elements": ["wood"],
     "id": "spore_infusion",
     "infusionKind": "substance",

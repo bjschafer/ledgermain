@@ -20,7 +20,16 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { CONDITIONS, CONDITION_LADDERS } from "../../../packages/engine/src/conditions.js";
-import type { ArmorRef, Feat, Item, RefDataMeta, Spell, WeaponRef } from "@pf1/schema";
+import type {
+  ArmorRef,
+  Feat,
+  Item,
+  Monster,
+  MonsterTemplate,
+  RefDataMeta,
+  Spell,
+  WeaponRef,
+} from "@pf1/schema";
 
 import { bucketCount, bucketForId } from "../src/shared/bucketing.js";
 import type { CollectionId } from "../src/shared/collections.js";
@@ -29,6 +38,8 @@ import {
   conditionFacet,
   featFacet,
   itemFacet,
+  monsterFacet,
+  monsterTemplateFacet,
   spellFacet,
   weaponFacet,
 } from "../src/shared/facets.js";
@@ -98,6 +109,13 @@ emit<Item>("items", readCollection("items.json"), itemFacet);
 // Conditions have no vendored JSON: they are the engine's hand-authored
 // clean-room table, emitted here as an ordinary collection.
 emit("conditions", CONDITIONS, conditionFacet);
+// The two sidecar collections (emitted beside RefData, never RefData keys).
+emit<Monster>("monsters", readCollection("monsters.json"), monsterFacet);
+emit<MonsterTemplate>(
+  "monster-templates",
+  readCollection("monster-templates.json"),
+  monsterTemplateFacet,
+);
 
 const index: RefIndex = {
   meta: {

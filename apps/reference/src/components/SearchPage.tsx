@@ -37,7 +37,7 @@ export function SearchPage({ index }: { index: RefIndex }) {
         className="search-box"
         type="search"
         autoFocus
-        placeholder="Search spells, feats, gear, conditions…"
+        placeholder="Search spells, feats, gear, monsters…"
         value={filter.query}
         onChange={(e) => setFilter((f) => ({ ...f, query: e.target.value }))}
         aria-label="Search the reference"

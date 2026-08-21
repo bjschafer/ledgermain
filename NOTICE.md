@@ -169,7 +169,13 @@ This is derivative Open Game Content drawn from four pinned, upstream sources:
     `class_ability_hellknight_orders.json`, the unrelated Hellknight order
     chassis, unvendored) into `RefData.cavalierOrders`, and
     `json/class_ability_aspects.json` (the full published shifter-aspect
-    catalog, issue #74) into `RefData.shifterAspects` --
+    catalog, issue #74) into `RefData.shifterAspects`;
+  - `json/monsters01..42.json` + `json/monsters_unique*.json` +
+    `json/monsters_mythic*.json` (the full monster statblock corpus) and
+    `json/monster_template1..4.json` (monster templates) into the
+    `monsters.json`/`monster-templates.json` SIDECAR collections (emitted
+    beside the RefData files for the reference site; deliberately not
+    `RefData` keys -- see `Monster` in `@pf1/schema`) --
 
   see each type's doc comment (`@pf1/schema`). Code is GPL-3.0-or-later
   (never copied in, same clean-room posture as Sec.2a/2c); its

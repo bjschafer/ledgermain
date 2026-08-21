@@ -8,7 +8,7 @@
  */
 
 import type { ConditionDef } from "@pf1/engine";
-import type { ArmorRef, Feat, Item, Spell, WeaponRef } from "@pf1/schema";
+import type { ArmorRef, Feat, Item, Monster, MonsterTemplate, Spell, WeaponRef } from "@pf1/schema";
 
 import {
   formatCrit,
@@ -69,4 +69,30 @@ export function itemFacet(item: Item): string {
 
 export function conditionFacet(_condition: ConditionDef): string {
   return "Condition";
+}
+
+/** e.g. `CR 5 · Large magical beast` — kept short: the facet column is the index's biggest string cost. */
+export function monsterFacet(monster: Monster): string {
+  const kind = [monster.size, monster.creatureType].filter(Boolean).join(" ");
+  return joinDot([
+    monster.cr
+      ? `CR ${monster.cr}${monster.mythicRank !== undefined ? `/MR ${monster.mythicRank}` : ""}`
+      : null,
+    kind || null,
+  ]);
+}
+
+/** e.g. `CR +1 · simple template`. */
+export function monsterTemplateFacet(template: MonsterTemplate): string {
+  const kind = template.simple
+    ? "simple"
+    : template.inherited
+      ? "inherited"
+      : template.acquired
+        ? "acquired"
+        : null;
+  return joinDot([
+    template.cr ? `CR ${template.cr}` : null,
+    kind ? `${kind} template` : "template",
+  ]);
 }

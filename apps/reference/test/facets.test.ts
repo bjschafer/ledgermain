@@ -1,5 +1,5 @@
 import type { ConditionDef } from "@pf1/engine";
-import type { ArmorRef, Feat, Item, Spell, WeaponRef } from "@pf1/schema";
+import type { ArmorRef, Feat, Item, Monster, MonsterTemplate, Spell, WeaponRef } from "@pf1/schema";
 import { describe, expect, it } from "bun:test";
 
 import {
@@ -7,6 +7,8 @@ import {
   conditionFacet,
   featFacet,
   itemFacet,
+  monsterFacet,
+  monsterTemplateFacet,
   spellFacet,
   weaponFacet,
 } from "../src/shared/facets.js";
@@ -165,5 +167,44 @@ describe("conditionFacet", () => {
       changes: [],
     };
     expect(conditionFacet(shaken)).toBe("Condition");
+  });
+});
+
+describe("monsterFacet", () => {
+  it("shows CR plus size and type", () => {
+    const monster: Monster = {
+      id: "m",
+      name: "Testbeast",
+      uuid: "u",
+      cr: "5",
+      size: "Large",
+      creatureType: "magical beast",
+    };
+    expect(monsterFacet(monster)).toBe("CR 5 · Large magical beast");
+  });
+
+  it("appends the mythic rank and tolerates a missing size/type", () => {
+    const monster: Monster = {
+      id: "m",
+      name: "Mythic Testbeast",
+      uuid: "u",
+      cr: "9",
+      mythicRank: 3,
+    };
+    expect(monsterFacet(monster)).toBe("CR 9/MR 3");
+  });
+});
+
+describe("monsterTemplateFacet", () => {
+  it("shows the CR adjustment and template kind", () => {
+    const template: MonsterTemplate = {
+      id: "t",
+      name: "Celestial",
+      uuid: "u",
+      cr: "+0 or +1",
+      simple: true,
+      acquired: true,
+    };
+    expect(monsterTemplateFacet(template)).toBe("CR +0 or +1 · simple template");
   });
 });

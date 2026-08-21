@@ -39,7 +39,9 @@ describe("RefData.hexes", () => {
   });
 
   it("renders a ::aff[...] curse block as labeled prose (Blight Hex)", () => {
-    expect(ref.hexes.blight!.description).toContain("<strong>Blight Hex</strong>");
+    expect(ref.hexes.blight!.description).toContain(
+      "<strong>Blight Hex:</strong> Curse; <em>save</em> Will negates; <em>frequency</em> 1/day; <em>effect</em> 1 Con damage",
+    );
   });
 
   it("resolves ‹hex/…› cross-refs between entries to plain display text", () => {

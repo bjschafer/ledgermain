@@ -22,7 +22,7 @@ export function ReferenceLink() {
       href={referenceSiteUrl()}
       target="_blank"
       rel="noopener noreferrer"
-      title="Look up spells, feats, gear, and conditions (opens in a new tab)"
+      title="Look up spells, feats, gear, monsters, and conditions (opens in a new tab)"
       // The label is hidden on phones (styles.css), where the glyph alone
       // would otherwise leave this control unnamed.
       aria-label="Reference site"

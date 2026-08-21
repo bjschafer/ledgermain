@@ -1,5 +1,5 @@
 import type { ConditionDef } from "@pf1/engine";
-import type { ArmorRef, Feat, Item, Spell, WeaponRef } from "@pf1/schema";
+import type { ArmorRef, Feat, Item, Monster, MonsterTemplate, Spell, WeaponRef } from "@pf1/schema";
 import { useEffect, useMemo, useState } from "react";
 
 import { loadEntry, type AnyEntry } from "../data/loader.js";
@@ -8,6 +8,7 @@ import type { RefIndex } from "../shared/indexCodec.js";
 import { conditionNames, ConditionView } from "./ConditionView.js";
 import { FeatView } from "./FeatView.js";
 import { ArmorView, ItemView, WeaponView } from "./GearView.js";
+import { MonsterTemplateView, MonsterView } from "./MonsterView.js";
 import { SpellView } from "./SpellView.js";
 
 type State =
@@ -119,5 +120,9 @@ function DetailBody({
       return <ItemView item={entry as Item} />;
     case "conditions":
       return <ConditionView condition={entry as ConditionDef} ladders={ladders} names={names} />;
+    case "monsters":
+      return <MonsterView monster={entry as Monster} />;
+    case "monster-templates":
+      return <MonsterTemplateView template={entry as MonsterTemplate} />;
   }
 }

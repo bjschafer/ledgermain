@@ -108,11 +108,22 @@ describe("pfDataDescriptionToHtml", () => {
     );
   });
 
-  it('renders a ::aff[Name]{eff="..."} affliction block as a labeled paragraph, cross-refs resolved', () => {
+  it("renders a ::aff[Name]{...} affliction block as the printed one-line shape, cross-refs resolved", () => {
     const html = pfDataDescriptionToHtml([
       '::aff[Curse of Fire]{iconC curse eff="Target gains ‹umr/vulnerability› to fire"}',
     ]);
-    expect(html).toBe("<p><strong>Curse of Fire:</strong> Target gains vulnerability to fire</p>");
+    expect(html).toBe(
+      "<p><strong>Curse of Fire:</strong> Curse; <em>effect</em> Target gains vulnerability to fire</p>",
+    );
+  });
+
+  it("spells an ::aff effect from ability-damage keys and composes save/frequency/cure", () => {
+    const html = pfDataDescriptionToHtml([
+      '::aff{iconP poison type=Bite-injury saveF=14 freqR=6 effStr="1d3" cure1}',
+    ]);
+    expect(html).toBe(
+      "<p>Poison; Bite-injury; <em>save</em> Fort DC 14; <em>frequency</em> 1/round for 6 rounds; <em>effect</em> 1d3 Str damage; <em>cure</em> 1 save</p>",
+    );
   });
 
   it("escapes stray HTML-significant characters in prose", () => {

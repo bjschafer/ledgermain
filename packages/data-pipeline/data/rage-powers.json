@@ -304,7 +304,7 @@
     "uuid": "pfdata:rage-power:breathtaker"
   },
   "cairn_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a cairn linnorm. The character's melee attacks deal an additional 1 point of negative energy damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of decay</em> (Will negates). A character must be at least 8th level to select this rage power.</p>\n<p><strong>Curse of Decay:</strong> Target takes 1 point of Con damage per day and ages at a rate of 1 year per day (eventually incurring all of the penalties of old age but none of the bonuses)</p>",
+    "description": "<p>The character channels the power of a cairn linnorm. The character's melee attacks deal an additional 1 point of negative energy damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of decay</em> (Will negates). A character must be at least 8th level to select this rage power.</p>\n<p><strong>Curse of Decay:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target takes 1 point of Con damage per day and ages at a rate of 1 year per day (eventually incurring all of the penalties of old age but none of the bonuses)</p>",
     "id": "cairn_linnorm_death_curse",
     "name": "Cairn Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -407,7 +407,7 @@
     "uuid": "pfdata:rage-power:contagious_rage"
   },
   "crag_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a crag linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of fire</em> (Will negates). A character must be at least 4th level to select this rage power.</p>\n<p><strong>Curse of Fire:</strong> Target gains vulnerability to fire</p>",
+    "description": "<p>The character channels the power of a crag linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of fire</em> (Will negates). A character must be at least 4th level to select this rage power.</p>\n<p><strong>Curse of Fire:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire</p>",
     "id": "crag_linnorm_death_curse",
     "name": "Crag Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -845,7 +845,7 @@
     "uuid": "pfdata:rage-power:fire_totem"
   },
   "fjord_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a fjord linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of drowning</em> (Will negates). A character must be at least 4th level to select this rage power.</p>\n<p><strong>Curse of Drowning:</strong> Target is unable to breathe water (even with magic), can hold its breath only half as long as normal, and is sickened whenever it holds its breath</p>",
+    "description": "<p>The character channels the power of a fjord linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of drowning</em> (Will negates). A character must be at least 4th level to select this rage power.</p>\n<p><strong>Curse of Drowning:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is unable to breathe water (even with magic), can hold its breath only half as long as normal, and is sickened whenever it holds its breath</p>",
     "id": "fjord_linnorm_death_curse",
     "name": "Fjord Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -1518,7 +1518,7 @@
     "uuid": "pfdata:rage-power:guarded_stance_stance"
   },
   "hissing_rage": {
-    "description": "<p>Once per hour, the barbarian can spit venom at an adjacent enemy as a standard action. She must make a touch attack to successfully spit on a foe in this way, but she can also apply this poison as a swift action when she hits with a bite attack.</p>\n<p><strong>Hissing Rage Poison:</strong> 1d2</p>",
+    "description": "<p>Once per hour, the barbarian can spit venom at an adjacent enemy as a standard action. She must make a touch attack to successfully spit on a foe in this way, but she can also apply this poison as a swift action when she hits with a bite attack.</p>\n<p><strong>Hissing Rage Poison:</strong> Bite-contact or injury; <em>save</em> Fort DC 10 + 1/2 the barbarian's level + their Con modifier; <em>frequency</em> 1/round for 6 rounds; <em>effect</em> 1d2 Str damage; <em>cure</em> 2 consecutive saves</p>",
     "id": "hissing_rage",
     "name": "Hissing Rage",
     "nameSuffix": "(Su)",
@@ -1610,7 +1610,7 @@
     "uuid": "pfdata:rage-power:hurling_charge"
   },
   "ice_linnorm_death_curse": {
-    "description": "<p>The character channels the power of an ice linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed, the attacker suffers the <em>curse of frost.</em> A character must be at least 4th level to select this rage power.</p>\n<p><strong>Curse of Frost:</strong> Target gains vulnerability to cold</p>",
+    "description": "<p>The character channels the power of an ice linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed, the attacker suffers the <em>curse of frost.</em> A character must be at least 4th level to select this rage power.</p>\n<p><strong>Curse of Frost:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to cold</p>",
     "id": "ice_linnorm_death_curse",
     "name": "Ice Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2850,7 +2850,7 @@
     "uuid": "pfdata:rage-power:swift_foot"
   },
   "taiga_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a taiga linnorm. The character's melee attacks deal an additional 1 point of electricity damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of electricity</em> (Will negates). A character must be at least 4th level to select this rage power.</p>\n<p><strong>Curse of Electricity:</strong> Target gains vulnerability to electricity</p>",
+    "description": "<p>The character channels the power of a taiga linnorm. The character's melee attacks deal an additional 1 point of electricity damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of electricity</em> (Will negates). A character must be at least 4th level to select this rage power.</p>\n<p><strong>Curse of Electricity:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to electricity</p>",
     "id": "taiga_linnorm_death_curse",
     "name": "Taiga Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2862,7 +2862,7 @@
     "uuid": "pfdata:rage-power:taiga_linnorm_death_curse"
   },
   "tarn_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a tarn linnorm. The character's melee attacks deal an additional 1 point of acid damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of death</em> (Will negates). A character must be at least 4th level to select this rage power.</p>\n<p><strong>Curse of Death:</strong> Target is no longer affected by healing spells and can't heal damage naturally by resting</p>",
+    "description": "<p>The character channels the power of a tarn linnorm. The character's melee attacks deal an additional 1 point of acid damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of death</em> (Will negates). A character must be at least 4th level to select this rage power.</p>\n<p><strong>Curse of Death:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is no longer affected by healing spells and can't heal damage naturally by resting</p>",
     "id": "tarn_linnorm_death_curse",
     "name": "Tarn Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2900,7 +2900,7 @@
     "uuid": "pfdata:rage-power:terrifying_howl"
   },
   "tor_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a tor linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of boiling blood</em> (Will negates). A character must be at least 8th level to select this rage power.</p>\n<p><strong>Curse of Boiling Blood:</strong> Target gains vulnerability to fire and is permanently staggered from the pain of its boiling blood (this is a pain effect)</p>",
+    "description": "<p>The character channels the power of a tor linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of boiling blood</em> (Will negates). A character must be at least 8th level to select this rage power.</p>\n<p><strong>Curse of Boiling Blood:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire and is permanently staggered from the pain of its boiling blood (this is a pain effect)</p>",
     "id": "tor_linnorm_death_curse",
     "name": "Tor Linnorm Death Curse",
     "nameSuffix": "(Su)",

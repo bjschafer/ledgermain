@@ -6,12 +6,12 @@
 
 The pipeline reads from four upstream repos, each pinned to an **exact commit** (never a branch) in `packages/data-pipeline/src/config.ts`, so the normalized output is fully reproducible and never silently drifts:
 
-| Constant                         | Source                                | What it supplies                                                                      |
-| -------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------- |
-| `FOUNDRY_SHA` / `SYSTEM_VERSION` | Foundry VTT's `pf1` system repo       | Core classes, feats, spells, races, buffs, items -- the bulk of the data              |
-| `ARCHETYPE_SHA`                  | `Tryss_Farron/pf1e-archetypes`        | Archetypes, archetype features, prestige classes/features                             |
-| `PF_CONTENT_SHA`                 | `foundryvtt_pathfinder1e/pf1-content` | The larger community feats/traits/racial-traits packs                                 |
-| `PFDATA_SHA`                     | `jasontankapps/pathfinder-data-1-e`   | Prose-only subsystem catalogs (rage powers, hexes, talents, etc.) merged at read time |
+| Constant                         | Source                                | What it supplies                                                                                                                                                                                                                                                                |
+| -------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `FOUNDRY_SHA` / `SYSTEM_VERSION` | Foundry VTT's `pf1` system repo       | Core classes, feats, spells, races, buffs, items -- the bulk of the data                                                                                                                                                                                                        |
+| `ARCHETYPE_SHA`                  | `Tryss_Farron/pf1e-archetypes`        | Archetypes, archetype features, prestige classes/features                                                                                                                                                                                                                       |
+| `PF_CONTENT_SHA`                 | `foundryvtt_pathfinder1e/pf1-content` | The larger community feats/traits/racial-traits packs                                                                                                                                                                                                                           |
+| `PFDATA_SHA`                     | `jasontankapps/pathfinder-data-1-e`   | Prose-only subsystem catalogs (rage powers, hexes, talents, etc.) merged at read time, plus the monster/monster-template sidecar collections (statblocks parsed by `util/monsterStatblock.ts`; numeric fidelity checked with `bun scripts/monster-oracle-diff.ts` after a bump) |
 
 A hand-authored supplement (`packages/data-pipeline/src/supplements.ts`) fills a handful of gaps none of the four sources carry (e.g. the Aberrant bloodline's bonus-spell list) -- same trap applies when editing it (see below).
 

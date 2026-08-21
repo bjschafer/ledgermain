@@ -21,7 +21,15 @@ const refDir = join(appRoot, "public/ref");
 const dataDir = join(appRoot, "../../packages/data-pipeline/data");
 
 /** Collections read out of `meta.json` — conditions come from the engine instead. */
-const FROM_DATA = ["spells", "feats", "weapons", "armors", "items"] as const;
+const FROM_DATA = [
+  "spells",
+  "feats",
+  "weapons",
+  "armors",
+  "items",
+  "monsters",
+  "monster-templates",
+] as const;
 
 let index: RefIndex;
 let meta: RefDataMeta;

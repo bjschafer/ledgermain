@@ -439,10 +439,14 @@ function checkKeys(
 const text = (v: string | true | undefined): string | undefined =>
   typeof v === "string" ? inlineToPlainText(v).trim() : undefined;
 
-/** Leading signed integer of a prop value; `undefined` for absent / "-" / unparseable. */
+/**
+ * Leading signed integer of a prop value; `undefined` for absent / "-" /
+ * unparseable. Thousands separators stripped first — the source quotes
+ * `xp="1,200"` and the comma would otherwise truncate the parse to 1.
+ */
 function intOf(v: string | true | undefined): number | undefined {
   if (typeof v !== "string") return undefined;
-  const m = /^[+-]?\d+/.exec(v.trim());
+  const m = /^[+-]?\d+/.exec(v.replace(/,/g, "").trim());
   return m ? parseInt(m[0], 10) : undefined;
 }
 
@@ -652,10 +656,9 @@ function applyOffense(monster: MonsterFields, props: Props, stats: MonsterParseS
     monster.reach = reach;
   }
 
+  // Rider keys first (alphabetical by label, close to the printed order),
+  // then the free-text `specAtt` items in source order.
   const specials: string[] = [];
-  if (typeof props.specAtt === "string") {
-    specials.push(...props.specAtt.split("~").map((s) => inlineToPlainText(s).trim()));
-  }
   for (const [key, label] of Object.entries(SPECIAL_ATTACK_KEYS)) {
     const v = props[key];
     if (v === undefined) continue;
@@ -665,10 +668,21 @@ function applyOffense(monster: MonsterFields, props: Props, stats: MonsterParseS
       specials.push(`${label} (${inlineToPlainText(v)}${/^\d+$/.test(v) ? " ft." : ""})`);
     else specials.push(`${label} (${inlineToPlainText(v)})`);
   }
-  if (specials.length > 0) {
-    specials.sort((a, b) => a.localeCompare(b));
-    monster.specialAttacks = specials.join(", ");
+  specials.sort((a, b) => a.localeCompare(b));
+  if (typeof props.specAtt === "string") {
+    for (const rawItem of props.specAtt.split("~")) {
+      const item = inlineToPlainText(rawItem).trim();
+      if (item === "") continue;
+      // A "("-leading item is a parenthetical for the special before it —
+      // the source writes e.g. `web specAtt="(+8 ranged, DC 14, hp 5)"`.
+      if (item.startsWith("(") && specials.length > 0) {
+        specials[specials.length - 1] += ` ${item}`;
+      } else {
+        specials.push(item);
+      }
+    }
   }
+  if (specials.length > 0) monster.specialAttacks = specials.join(", ");
 }
 
 /**

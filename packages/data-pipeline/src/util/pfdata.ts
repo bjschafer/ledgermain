@@ -296,28 +296,133 @@ export function parseDirectiveProps(raw: string): Record<string, string | true> 
 }
 
 /**
- * `::aff[Name]{prop="value"...}` — a Foundry-style affliction/curse/poison
- * stat block (used by a handful of rage powers' curse chains), OR the
- * name-less `::aff{prop="value"...}` variant (no `[Name]` at all — a
- * natural-attack-embedded poison/disease/curse stat block, e.g. a witch hex
- * granting a claw attack with a poison rider; ~600 occurrences across the full
- * pinned dataset, first exercised by the witch-hex import). We aren't trying
- * to fully re-render the block's game-mechanical structure (onset, frequency,
- * cure DC,...) — just surface its `eff`/`effStr` prose (the human-readable
- * effect description, which is what a player actually reads), labeled with the
- * block's own name when one is given. The name-less variant has nothing to
- * label it with (`type=` is a delivery-vector tag like "Claw-injury", not a
- * display name), so it renders its prose unlabeled rather than fabricating
- * one.
+ * The ability-damage/-drain keys an `::aff` directive spells its effect with
+ * (`effStr=1d3` is "1d3 Str damage"; the `D` suffix is drain). Also reused
+ * with an `in`/`sec` prefix for split initial/secondary effects
+ * (`ineffConD`/`seceffStr`).
+ */
+const AFF_EFFECT_KEYS: [string, string][] = [
+  ["effStr", "Str damage"],
+  ["effDex", "Dex damage"],
+  ["effCon", "Con damage"],
+  ["effInt", "Int damage"],
+  ["effWis", "Wis damage"],
+  ["effCha", "Cha damage"],
+  ["effStrD", "Str drain"],
+  ["effDexD", "Dex drain"],
+  ["effConD", "Con drain"],
+  ["effIntD", "Int drain"],
+  ["effWisD", "Wis drain"],
+  ["effChaD", "Cha drain"],
+];
+
+/** "1d3 Str damage, 1d3 Con damage and unconsciousness" — the composed effect of one `::aff` key set, or `undefined` when it states none. */
+function affEffectText(props: Record<string, string | true>, prefix = ""): string | undefined {
+  const parts: string[] = [];
+  for (const [key, label] of AFF_EFFECT_KEYS) {
+    const v = props[`${prefix}${key}`];
+    if (typeof v === "string") parts.push(`${v} ${label}`);
+  }
+  const extra = props[`${prefix}effExtra`];
+  if (typeof extra === "string") parts.push(extra);
+  if (parts.length === 0) return undefined;
+  const joiner = props[`${prefix}effOr`] !== undefined ? " or " : " and ";
+  const last = parts.pop()!;
+  return parts.length > 0 ? `${parts.join(", ")}${joiner}${last}` : last;
+}
+
+/** "1 save" / "2 consecutive saves" — the cure a `::aff` flag encodes. */
+const AFF_CURE_FLAGS: [string, string][] = [
+  ["cure1", "1 save"],
+  ["cure2", "2 saves"],
+  ["cure2c", "2 consecutive saves"],
+  ["cure3", "3 saves"],
+  ["cure3c", "3 consecutive saves"],
+];
+
+/**
+ * `::aff[Name]{prop="value"...}` — an affliction (poison/disease/curse/
+ * infestation) stat block, with or without the `[Name]` label (the name-less
+ * variant is a natural-attack-embedded rider — e.g. a bite's poison — whose
+ * `type=` is a delivery-vector tag like "Bite-injury", not a display name).
+ * Composed into the printed one-line affliction shape: type; save; onset;
+ * frequency; effect; cure — with the effect either stated as prose (`eff`),
+ * spelled from ability-damage keys (`effStr=1d3` -> "1d3 Str damage"), or
+ * split initial/secondary (`ineff*`/`seceff*`). Non-textual metadata
+ * (`icon*`, `nolink`, `start`) is ignored. The rare formula-stated DCs
+ * (`dcHD`/`dcF`/...) render as their closest prose.
  */
 function renderAfflictionBlock(name: string | undefined, propsRaw: string): string {
   const props = parseDirectiveProps(propsRaw);
-  const effText = props.eff ?? props.effStr;
-  const hasEffText = typeof effText === "string" && effText.trim() !== "";
-  if (name === undefined) return hasEffText ? `<p>${inlineToHtml(effText)}</p>` : "";
+  const text = (v: string | true | undefined): string | undefined =>
+    typeof v === "string" && v.trim() !== "" ? v : undefined;
+
+  const supertype = props.poison
+    ? "Poison"
+    : props.curse
+      ? "Curse"
+      : props.infest
+        ? "Infestation"
+        : props.disease
+          ? "Disease"
+          : undefined;
+  const type = [supertype, text(props.type)].filter((t) => t !== undefined).join("; ");
+
+  let save = text(props.save);
+  if (save === undefined && text(props.saveF)) save = `Fort DC ${props.saveF}`;
+  if (save === undefined && text(props.saveW)) save = `Will DC ${props.saveW}`;
+  if (save === undefined && (props.dcF || props.dcW) && (props.dcHD || props.dcLev)) {
+    const kind = props.dcF ? "Fort" : "Will";
+    const base = props.dcHD
+      ? `1/2 the ${props.dcHD}'s HD`
+      : `1/2 the ${String(props.dcLev)}'s level`;
+    const mod = text(props.dcMod) ?? "";
+    save = `${kind} DC 10 + ${base}${mod ? ` + their ${mod} modifier` : ""}`;
+  }
+
+  let frequency = text(props.freq);
+  if (frequency === undefined) {
+    const unit = props.freqR
+      ? "round"
+      : props.freqM
+        ? "minute"
+        : props.freqH
+          ? "hour"
+          : props.freqD
+            ? "day"
+            : undefined;
+    const count = props.freqR ?? props.freqM ?? props.freqH ?? props.freqD;
+    if (unit && typeof count === "string") frequency = `1/${unit} for ${count} ${unit}s`;
+  }
+
+  const effect = text(props.eff) ?? affEffectText(props);
+  const initial = text(props.ineff) ?? affEffectText(props, "in");
+  const secondary = text(props.seceff) ?? affEffectText(props, "sec");
+
+  let cure = text(props.cure);
+  if (cure === undefined) {
+    cure = AFF_CURE_FLAGS.find(([flag]) => props[flag] !== undefined)?.[1];
+  }
+
+  const segments: string[] = [];
+  if (type !== "") segments.push(inlineToHtml(type));
+  if (save !== undefined) segments.push(`<em>save</em> ${inlineToHtml(save)}`);
+  const onset = text(props.onset);
+  if (onset !== undefined) segments.push(`<em>onset</em> ${inlineToHtml(onset)}`);
+  if (frequency !== undefined) segments.push(`<em>frequency</em> ${inlineToHtml(frequency)}`);
+  if (effect !== undefined) segments.push(`<em>effect</em> ${inlineToHtml(effect)}`);
+  if (initial !== undefined) segments.push(`<em>initial effect</em> ${inlineToHtml(initial)}`);
+  if (secondary !== undefined)
+    segments.push(`<em>secondary effect</em> ${inlineToHtml(secondary)}`);
+  if (cure !== undefined) segments.push(`<em>cure</em> ${inlineToHtml(cure)}`);
+  let body = segments.join("; ");
+  const extraText = text(props.extra);
+  if (extraText !== undefined) body += `${body === "" ? "" : ". "}${inlineToHtml(extraText)}`;
+
+  if (name === undefined) return body === "" ? "" : `<p>${body}</p>`;
   const label = inlineToHtml(name);
-  if (hasEffText) return `<p><strong>${label}:</strong> ${inlineToHtml(effText)}</p>`;
-  return `<p><strong>${label}</strong></p>`;
+  if (body === "") return `<p><strong>${label}</strong></p>`;
+  return `<p><strong>${label}:</strong> ${body}</p>`;
 }
 
 const AFFLICTION_BLOCK_RE = /^::aff(?:\[([^\]]*)\])?\{([^}]*)\}$/;
