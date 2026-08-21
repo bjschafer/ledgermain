@@ -22,7 +22,10 @@ const DARKVISION_60: AdjustOp = {
   skipIfPresent: "darkvision",
 };
 
-/** SR = new CR + 5, shared by all four "outer plane" simple templates. */
+/**
+ * SR = new CR + 5. Ops apply in order, so every template lists this AFTER its
+ * CR-adjusting op; putting it first would compute SR off the pre-template CR.
+ */
 const SR_FROM_CR_PLUS_5: AdjustOp = { kind: "srFromCr", delta: 5 };
 
 /** CR +0 at HD 1-4, +1 at HD 5+, shared by all four "outer plane" simple templates. */
@@ -76,13 +79,13 @@ const CELESTIAL: StatblockAdjustment = {
         { minHd: 11, value: "10/evil" },
       ],
     },
+    OUTER_PLANE_CR_TIERS,
     SR_FROM_CR_PLUS_5,
     {
       kind: "appendLine",
       field: "specialAttacks",
       text: "smite evil 1/day (swift action; adds {chaMod} to attack rolls and {hd} to damage rolls against evil foes; persists until the target is dead or the creature rests).",
     },
-    OUTER_PLANE_CR_TIERS,
   ],
   notes: OUTER_PLANE_NOTES,
 };
@@ -124,13 +127,13 @@ const FIENDISH: StatblockAdjustment = {
         { minHd: 11, value: "10/good" },
       ],
     },
+    OUTER_PLANE_CR_TIERS,
     SR_FROM_CR_PLUS_5,
     {
       kind: "appendLine",
       field: "specialAttacks",
       text: "smite good 1/day (swift action; adds {chaMod} to attack rolls and {hd} to damage rolls against good foes; persists until the target is dead or the creature rests).",
     },
-    OUTER_PLANE_CR_TIERS,
   ],
   notes: OUTER_PLANE_NOTES,
 };
@@ -171,13 +174,13 @@ const ENTROPIC: StatblockAdjustment = {
         { minHd: 11, value: "10/lawful" },
       ],
     },
+    OUTER_PLANE_CR_TIERS,
     SR_FROM_CR_PLUS_5,
     {
       kind: "appendLine",
       field: "specialAttacks",
       text: "smite law 1/day (swift action; adds {chaMod} to attack rolls and {hd} to damage rolls against lawful foes; persists until the target is dead or the creature rests).",
     },
-    OUTER_PLANE_CR_TIERS,
   ],
   notes: OUTER_PLANE_NOTES,
 };
@@ -220,13 +223,13 @@ const RESOLUTE: StatblockAdjustment = {
         { minHd: 11, value: "10/chaotic" },
       ],
     },
+    OUTER_PLANE_CR_TIERS,
     SR_FROM_CR_PLUS_5,
     {
       kind: "appendLine",
       field: "specialAttacks",
       text: "smite chaos 1/day (swift action; adds {chaMod} to attack rolls and {hd} to damage rolls against chaotic foes; persists until the target is dead or the creature rests).",
     },
-    OUTER_PLANE_CR_TIERS,
   ],
   notes: OUTER_PLANE_NOTES,
 };
