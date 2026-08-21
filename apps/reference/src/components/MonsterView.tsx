@@ -3,11 +3,11 @@ import { useMemo } from "react";
 
 import { useTrackState } from "../hooks/useTrackState.js";
 import { applyAdjustments } from "../model/adjust/apply.js";
+import { conditionAdjustments } from "../model/adjust/conditions.js";
 import { AUGMENT_SUMMONING, STATBLOCK_TEMPLATES } from "../model/adjust/templates.js";
 import type { AdjustNote, StatblockAdjustment } from "../model/adjust/types.js";
-import type { RefIndex } from "../shared/indexCodec.js";
 import { AdjustmentNotes, AdjustmentPicker } from "./AdjustPanel.js";
-import { Chip, Description, Row, Sources } from "./parts.js";
+import { Chip, Description, Sources } from "./parts.js";
 import { TrackPanel } from "./TrackPanel.js";
 
 const ABILITY_ORDER = ["str", "dex", "con", "int", "wis", "cha"] as const;
@@ -20,12 +20,9 @@ const ABILITY_LABEL: Record<(typeof ABILITY_ORDER)[number], string> = {
   cha: "Cha",
 };
 
-/** `Str 10, Dex 17, Con —, Int 2, Wis 13, Cha 4` — a missing score is the printed em dash. */
-function abilityLine(monster: Monster): string | null {
-  if (!monster.abilityScores) return null;
-  return ABILITY_ORDER.map(
-    (key) => `${ABILITY_LABEL[key]} ${monster.abilityScores?.[key] ?? "—"}`,
-  ).join(", ");
+function abilityMod(score: number): string {
+  const mod = Math.floor(score / 2) - 5;
+  return mod >= 0 ? `+${mod}` : String(mod);
 }
 
 /** `N Small animal (air, extraplanar)` — the printed type line. */
@@ -35,209 +32,238 @@ function typeLine(monster: Monster): string | null {
   return head || subtypes ? `${head}${subtypes}` : null;
 }
 
+const text = (value: string | number | undefined): string | null =>
+  value === undefined || value === "" ? null : String(value);
+
 /**
- * Statblock fields are display strings, so every line is declared as a plain
- * `monster -> text` getter. Rendering the same getter against the printed
- * statblock and the adjusted one is what makes the before/after diff fall out
- * for free: what the reader sees change is exactly what changed.
+ * One bold-label segment of a statblock line. Statblock fields are display
+ * strings, so every segment is a plain `monster -> text` getter; segments on
+ * the same line render semicolon-separated, exactly as the books print them.
  */
-interface StatLine {
+interface Seg {
   label: string;
   get: (m: Monster) => string | null;
 }
 
-const text = (value: string | number | undefined): string | null =>
-  value === undefined || value === "" ? null : String(value);
+type Line = readonly Seg[];
 
-/** The stat strip: the numbers a template moves most, kept above the fold. */
-const STAT_CHIPS: ReadonlyArray<StatLine & { key: string; tone?: "save" | "damage" }> = [
-  { key: "cr", label: "CR", get: (m) => text(m.cr) },
-  { key: "mr", label: "MR", get: (m) => text(m.mythicRank) },
-  {
-    key: "xp",
-    label: "XP",
-    get: (m) => (m.xp === undefined ? null : m.xp.toLocaleString("en-US")),
-  },
-  {
-    key: "ac",
-    label: "AC",
-    get: (m) =>
-      m.ac === undefined ? null : `${m.ac}, touch ${m.touchAc}, flat-footed ${m.flatFootedAc}`,
-  },
-  {
-    key: "hp",
-    label: "hp",
-    tone: "damage",
-    get: (m) =>
-      m.hp === undefined
-        ? null
-        : `${m.hp}${m.hd ? ` (${m.hd})` : ""}${m.hpNote ? `; ${m.hpNote}` : ""}`,
-  },
-  { key: "fort", label: "Fort", tone: "save", get: (m) => text(m.fort) },
-  { key: "ref", label: "Ref", tone: "save", get: (m) => text(m.ref) },
-  { key: "will", label: "Will", tone: "save", get: (m) => text(m.will) },
+const INTRO_LINES: readonly Line[] = [
+  [
+    { label: "Init", get: (m) => text(m.init) },
+    { label: "Senses", get: (m) => text(m.senses) },
+  ],
+  [{ label: "Aura", get: (m) => text(m.aura) }],
 ];
 
-const STAT_ROWS: readonly StatLine[] = [
-  { label: "Type", get: typeLine },
-  { label: "Init", get: (m) => text(m.init) },
-  { label: "Senses", get: (m) => text(m.senses) },
-  { label: "Aura", get: (m) => text(m.aura) },
-  { label: "AC mods", get: (m) => text(m.acMods) },
-  { label: "Defensive", get: (m) => text(m.defensiveAbilities) },
-  { label: "DR", get: (m) => text(m.dr) },
-  { label: "Immune", get: (m) => text(m.immune) },
-  { label: "Resist", get: (m) => text(m.resist) },
-  { label: "SR", get: (m) => text(m.sr) },
-  { label: "Weaknesses", get: (m) => text(m.weaknesses) },
-  { label: "Speed", get: (m) => text(m.speed) },
-  { label: "Melee", get: (m) => text(m.melee) },
-  { label: "Ranged", get: (m) => text(m.ranged) },
-  {
-    label: "Space/Reach",
-    get: (m) =>
-      m.space || m.reach ? `${m.space ?? "5 ft."}${m.reach ? `, reach ${m.reach}` : ""}` : null,
-  },
-  { label: "Special Attacks", get: (m) => text(m.specialAttacks) },
-  { label: "Abilities", get: abilityLine },
-  { label: "Ability note", get: (m) => text(m.statNote) },
-  { label: "Base Atk", get: (m) => text(m.bab) },
-  { label: "CMB", get: (m) => text(m.cmb) },
-  { label: "CMD", get: (m) => text(m.cmd) },
-  { label: "Feats", get: (m) => text(m.feats) },
-  { label: "Skills", get: (m) => text(m.skills) },
-  { label: "Racial Mods", get: (m) => text(m.racialModifiers) },
-  { label: "Languages", get: (m) => text(m.languages) },
-  { label: "SQ", get: (m) => text(m.sq) },
-  { label: "Environment", get: (m) => text(m.environment) },
-  { label: "Organization", get: (m) => text(m.organization) },
-  { label: "Treasure", get: (m) => text(m.treasure) },
+const DEFENSE_LINES: readonly Line[] = [
+  [{ label: "AC", get: (m) => (m.acMods ? `(${m.acMods})` : null) }],
+  [
+    { label: "Defensive Abilities", get: (m) => text(m.defensiveAbilities) },
+    { label: "DR", get: (m) => text(m.dr) },
+    { label: "Immune", get: (m) => text(m.immune) },
+    { label: "Resist", get: (m) => text(m.resist) },
+    { label: "SR", get: (m) => text(m.sr) },
+  ],
+  [{ label: "Weaknesses", get: (m) => text(m.weaknesses) }],
 ];
 
-/**
- * The adjusted value with the printed one still readable beside it. A pure
- * append (the common case: a template bolting text onto `specialAttacks`)
- * highlights only the tail, so the reader isn't asked to re-read the line to
- * find the new words.
- */
-function DiffValue({ before, after }: { before: string | null; after: string }) {
-  if (before === null || before === after) return <>{after}</>;
-  if (after.startsWith(before)) {
-    return (
-      <>
-        {before}
-        <span className="diff-add">{after.slice(before.length)}</span>
-      </>
-    );
-  }
-  if (after.endsWith(before)) {
-    return (
-      <>
-        <span className="diff-add">{after.slice(0, after.length - before.length)}</span>
-        {before}
-      </>
-    );
-  }
+const OFFENSE_LINES: readonly Line[] = [
+  [{ label: "Speed", get: (m) => text(m.speed) }],
+  [{ label: "Melee", get: (m) => text(m.melee) }],
+  [{ label: "Ranged", get: (m) => text(m.ranged) }],
+  [
+    { label: "Space", get: (m) => text(m.space) },
+    { label: "Reach", get: (m) => text(m.reach) },
+  ],
+  [{ label: "Special Attacks", get: (m) => text(m.specialAttacks) }],
+];
+
+const STATISTICS_LINES: readonly Line[] = [
+  [
+    { label: "Base Atk", get: (m) => text(m.bab) },
+    { label: "CMB", get: (m) => text(m.cmb) },
+    { label: "CMD", get: (m) => text(m.cmd) },
+  ],
+  [{ label: "Feats", get: (m) => text(m.feats) }],
+  [{ label: "Skills", get: (m) => text(m.skills) }],
+  [{ label: "Racial Modifiers", get: (m) => text(m.racialModifiers) }],
+  [{ label: "Languages", get: (m) => text(m.languages) }],
+  [{ label: "SQ", get: (m) => text(m.sq) }],
+];
+
+const ECOLOGY_LINES: readonly Line[] = [
+  [{ label: "Environment", get: (m) => text(m.environment) }],
+  [{ label: "Organization", get: (m) => text(m.organization) }],
+  [{ label: "Treasure", get: (m) => text(m.treasure) }],
+];
+
+function StatLine({ monster, segs }: { monster: Monster; segs: Line }) {
+  const present = segs
+    .map((seg) => ({ seg, value: seg.get(monster) }))
+    .filter((x): x is { seg: Seg; value: string } => x.value !== null);
+  if (present.length === 0) return null;
   return (
-    <>
-      <span className="diff-was">{before}</span>
-      <span className="diff-arrow" aria-hidden="true">
-        →
-      </span>
-      {after}
-    </>
+    <p className="sb-line">
+      {present.map(({ seg, value }, i) => (
+        <span key={seg.label}>
+          {i > 0 && "; "}
+          <b className="sb-label">{seg.label}</b> {value}
+        </span>
+      ))}
+    </p>
+  );
+}
+
+/** Mono-uppercase legend with the gold tick and hairline rule, the sheet's stat-group idiom. */
+function SectionHead({ title }: { title: string }) {
+  return (
+    <div className="sb-section-head">
+      <span className="sb-section-legend">{title}</span>
+      <span className="sb-section-rule" aria-hidden="true" />
+    </div>
+  );
+}
+
+function StatSection({
+  monster,
+  title,
+  lines,
+  children,
+}: {
+  monster: Monster;
+  title: string;
+  lines: readonly Line[];
+  /** Extra content rendered after the lines (the offense spell blocks, the ability pips). */
+  children?: React.ReactNode;
+}) {
+  const hasLines = lines.some((line) => line.some((seg) => seg.get(monster) !== null));
+  if (!hasLines && !children) return null;
+  return (
+    <section className="sb-section">
+      <SectionHead title={title} />
+      {lines.map((line, i) => (
+        <StatLine key={line[0]?.label ?? i} monster={monster} segs={line} />
+      ))}
+      {children}
+    </section>
+  );
+}
+
+/** The headline numbers as sheet-style seal tiles: AC, hp, and the three saves. */
+function SealRow({ monster }: { monster: Monster }) {
+  const seals: Array<{ label: string; value: string; foot?: string }> = [];
+  if (monster.ac !== undefined) {
+    seals.push({
+      label: "AC",
+      value: String(monster.ac),
+      foot: `touch ${monster.touchAc ?? "?"} · ff ${monster.flatFootedAc ?? "?"}`,
+    });
+  }
+  if (monster.hp !== undefined) {
+    seals.push({
+      label: "HP",
+      value: String(monster.hp),
+      foot: [monster.hd, monster.hpNote].filter(Boolean).join("; ") || undefined,
+    });
+  }
+  for (const [label, value] of [
+    ["Fort", monster.fort],
+    ["Ref", monster.ref],
+    ["Will", monster.will],
+  ] as const) {
+    if (value !== undefined) seals.push({ label, value });
+  }
+  if (seals.length === 0) return null;
+  return (
+    <div className="sb-seals">
+      {seals.map((seal) => (
+        <div key={seal.label} className="sb-seal">
+          <span className="sb-seal-label">{seal.label}</span>
+          <span className="sb-seal-value num">{seal.value}</span>
+          {seal.foot && <span className="sb-seal-foot num">{seal.foot}</span>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Str through Cha as the sheet's ability-pip strip; a missing score is the printed em dash. */
+function AbilityPips({ monster }: { monster: Monster }) {
+  const scores = monster.abilityScores;
+  if (!scores) return null;
+  return (
+    <div className="sb-pips">
+      {ABILITY_ORDER.map((key) => {
+        const score = scores[key];
+        return (
+          <div key={key} className="sb-pip">
+            <span className="sb-pip-abbr">{ABILITY_LABEL[key]}</span>
+            <span className="sb-pip-mod num">{score === undefined ? "—" : abilityMod(score)}</span>
+            <span className="sb-pip-score num">{score ?? "—"}</span>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
 export function MonsterView({
   monster,
-  base,
   appliedLabels,
   notes,
 }: {
   monster: Monster;
-  /** The printed statblock, when `monster` is an adjusted copy of it: drives the diff. */
-  base?: Monster;
-  /** Labels of the applied adjustments; an empty array still prints the "printed statblock" caption. */
+  /** Labels of applied templates/feats/conditions, shown as a quiet reminder line. */
   appliedLabels?: readonly string[];
   /** Caveats from `applyAdjustments`, shown under the statblock rather than above it. */
   notes?: readonly AdjustNote[];
 }) {
-  const adjusted = (appliedLabels?.length ?? 0) > 0;
-  const printed = adjusted ? base : undefined;
+  const crParts = [
+    monster.cr ? `CR ${monster.cr}` : null,
+    monster.mythicRank !== undefined ? `MR ${monster.mythicRank}` : null,
+    monster.xp !== undefined ? `XP ${monster.xp.toLocaleString("en-US")}` : null,
+  ].filter(Boolean);
+
   return (
     <>
-      <div className={adjusted ? "statblock is-adjusted" : "statblock"}>
-        {appliedLabels && (
-          <div className="statblock-caption">
-            <span className="statblock-caption-label">
-              {adjusted ? "Adjusted" : "Printed statblock"}
-            </span>
-            {appliedLabels.map((label) => (
-              <span key={label} className="statblock-caption-chip">
-                {label}
-              </span>
-            ))}
-          </div>
+      <div className="statblock">
+        {appliedLabels && appliedLabels.length > 0 && (
+          <p className="sb-applied">{appliedLabels.join(" · ")} applied</p>
         )}
 
-        <div className="stat-strip">
-          {STAT_CHIPS.map((chip) => {
-            const value = chip.get(monster);
-            if (value === null) return null;
-            const before = printed ? chip.get(printed) : null;
-            const changed = before !== null && before !== value;
-            return (
-              <Chip key={chip.key} tone={chip.tone} changed={changed}>
-                <span className="stat-chip-label">{chip.label}</span>
-                <span>
-                  {changed ? (
-                    <>
-                      <span className="diff-was">{before}</span>
-                      <span className="diff-arrow" aria-hidden="true">
-                        →
-                      </span>
-                      {value}
-                    </>
-                  ) : (
-                    value
-                  )}
-                </span>
-              </Chip>
-            );
-          })}
+        <div className="sb-typeline">
+          <span>{typeLine(monster)}</span>
+          {crParts.length > 0 && <span className="sb-cr num">{crParts.join(" · ")}</span>}
         </div>
 
-        {STAT_ROWS.map((line) => {
-          const value = line.get(monster);
-          const before = printed ? line.get(printed) : null;
-          if (value === null) {
-            // A template can only ever remove a line by emptying it, but say so
-            // rather than letting the row vanish out from under the reader.
-            if (before === null) return null;
-            return (
-              <Row key={line.label} label={line.label} changed status="removed">
-                <span className="diff-was">{before}</span>
-              </Row>
-            );
-          }
-          const changed = printed !== undefined && before !== value;
-          return (
-            <Row
-              key={line.label}
-              label={line.label}
-              changed={changed}
-              status={changed && before === null ? "added" : undefined}
-            >
-              {changed ? <DiffValue before={before} after={value} /> : value}
-            </Row>
-          );
-        })}
+        {INTRO_LINES.map((line, i) => (
+          <StatLine key={line[0]?.label ?? i} monster={monster} segs={line} />
+        ))}
+
+        <SealRow monster={monster} />
+
+        <StatSection monster={monster} title="Defense" lines={DEFENSE_LINES} />
+
+        <StatSection monster={monster} title="Offense" lines={OFFENSE_LINES}>
+          <Description html={monster.spellsHtml} />
+        </StatSection>
+
+        {(monster.abilityScores || monster.statNote) && (
+          <section className="sb-section">
+            <SectionHead title="Statistics" />
+            <AbilityPips monster={monster} />
+            {monster.statNote && <p className="sb-line sb-stat-note">{monster.statNote}</p>}
+            {STATISTICS_LINES.map((line, i) => (
+              <StatLine key={line[0]?.label ?? i} monster={monster} segs={line} />
+            ))}
+          </section>
+        )}
+
+        <StatSection monster={monster} title="Ecology" lines={ECOLOGY_LINES} />
       </div>
 
       {notes && <AdjustmentNotes notes={notes} />}
 
-      <Description html={monster.spellsHtml} />
       {monster.specialAbilitiesHtml && (
         <Description
           html={`<p><strong>Special Abilities</strong></p>\n${monster.specialAbilitiesHtml}`}
@@ -257,22 +283,13 @@ const ADJUSTMENT_OPTIONS: readonly StatblockAdjustment[] = [
 
 /**
  * Wraps `MonsterView` with the "Adjust statblock" picker and the encounter
- * tracker: readers stack any of the seven simple templates plus Augment
- * Summoning against the printed statblock, entirely client-side and without
- * touching the route. Selections persist per browser tab alongside the
- * tracker's hp and conditions (`useTrackState`), so a reload mid-fight brings
- * the whole worksheet back.
+ * tracker: templates and Augment Summoning stack against the printed
+ * statblock, and marked conditions move the printed numbers too, all
+ * client-side and without touching the route. Selections persist per browser
+ * tab alongside the tracker's hp and conditions (`useTrackState`), so a
+ * reload mid-fight brings the whole worksheet back.
  */
-export function MonsterDetail({
-  monster,
-  index,
-  conditionNames,
-}: {
-  monster: Monster;
-  index: RefIndex;
-  /** Condition id -> display name, for the tracker's condition chips. */
-  conditionNames: Map<string, string>;
-}) {
+export function MonsterDetail({ monster }: { monster: Monster }) {
   const [track, updateTrack] = useTrackState(monster.id);
   const selected = useMemo(() => new Set(track.adjustments), [track.adjustments]);
 
@@ -288,51 +305,49 @@ export function MonsterDetail({
     () => ADJUSTMENT_OPTIONS.filter((option) => selected.has(option.key)),
     [selected],
   );
+  const condAdjs = useMemo(() => conditionAdjustments(track.conditions), [track.conditions]);
+  const adjustments = useMemo(() => [...applied, ...condAdjs], [applied, condAdjs]);
 
   const result = useMemo(
-    () => (applied.length > 0 ? applyAdjustments(monster, applied) : null),
-    [monster, applied],
+    () => (adjustments.length > 0 ? applyAdjustments(monster, adjustments) : null),
+    [monster, adjustments],
   );
+  const shown = result?.monster ?? monster;
 
   return (
     <>
-      <section className="adjust-section">
-        <div className="adjust-section-head">
-          <h2 className="adjust-section-title">Adjust statblock</h2>
+      <section className="rpanel">
+        <header className="rpanel-header">
+          <h2>Adjust statblock</h2>
           <button
             type="button"
-            className="adjust-reset"
+            className="btn-ghost"
             disabled={applied.length === 0}
             onClick={() => updateTrack({ adjustments: [] })}
           >
             Reset
           </button>
+        </header>
+        <div className="rpanel-body">
+          <AdjustmentPicker
+            options={STATBLOCK_TEMPLATES}
+            selected={selected}
+            onToggle={toggle}
+            title="Templates"
+            hint="stack freely"
+          />
+          <AdjustmentPicker
+            options={[AUGMENT_SUMMONING]}
+            selected={selected}
+            onToggle={toggle}
+            title="Feats"
+          />
         </div>
-        <AdjustmentPicker
-          options={STATBLOCK_TEMPLATES}
-          selected={selected}
-          onToggle={toggle}
-          title="Templates"
-          hint="stack freely"
-        />
-        <AdjustmentPicker
-          options={[AUGMENT_SUMMONING]}
-          selected={selected}
-          onToggle={toggle}
-          title="Feats"
-        />
       </section>
-      <TrackPanel
-        index={index}
-        monster={result?.monster ?? monster}
-        names={conditionNames}
-        state={track}
-        update={updateTrack}
-      />
+      <TrackPanel monster={shown} state={track} update={updateTrack} />
       <MonsterView
-        monster={result?.monster ?? monster}
-        base={monster}
-        appliedLabels={applied.map((option) => option.label)}
+        monster={shown}
+        appliedLabels={adjustments.map((option) => option.label)}
         notes={result?.notes}
       />
     </>

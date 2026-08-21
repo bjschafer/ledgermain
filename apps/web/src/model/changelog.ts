@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-21-reference-redesign",
+    date: "2026-08-21",
+    title: "Monster pages read like the book, fight like the sheet",
+    note: "Monster statblocks on the reference site now read like the printed page: Defense, Offense, Statistics, and Ecology sections, the headline numbers as the tracker's stat tiles, and ability scores as pips. Marked conditions move the numbers too: shaken drops the attack line, saves, and every skill, entangled sinks Dexterity and everything downstream of it, prone hits melee attacks and AC, and the fear, fatigue, sickness, and grapple ladders upgrade to the worse condition instead of stacking. Templates and conditions change the stats in place, with one quiet line naming what is applied. Hit points stay gold while a creature is healthy and only turn red once it is truly hurting, and the whole reference site now shares the tracker's typefaces and panel styling, so the two feel like one product.",
+  },
+  {
     id: "2026-08-21-monster-tracking",
     date: "2026-08-21",
     title: "Run a monster from its reference page",

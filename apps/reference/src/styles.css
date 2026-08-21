@@ -24,8 +24,9 @@
   --oxblood-ink: #d4705a;
   --sage: #88a06a;
 
-  --body: system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: ui-monospace, "SF Mono", "IBM Plex Mono", monospace;
+  --display: "Fraunces", Georgia, serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
 
   --radius: 4px;
 }
@@ -42,11 +43,28 @@ body,
 }
 
 body {
-  background: var(--bg);
+  background: radial-gradient(1200px 600px at 80% -10%, #1c2733 0%, transparent 60%), var(--bg);
+  background-repeat: no-repeat;
   color: var(--ink);
   font-family: var(--body);
   font-size: 15px;
   line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.num {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
 a {
@@ -525,28 +543,54 @@ code {
 
 /* --------------------------------------------------------- statblock adjust -- */
 
-.adjust-section {
+/* The tracker's panel chrome: gold-tinted header band, 2px gold rule, quiet
+   surface body. Tint rather than saturate; the accent budget goes to the rule. */
+.rpanel {
   margin-bottom: 14px;
-  padding: 10px 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
+  overflow: hidden;
 }
 
-.adjust-section-head {
+.rpanel-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
+  padding: 8px 12px;
+  background: color-mix(in oklab, var(--gold) 18%, var(--surface));
+  border-bottom: 2px solid var(--gold);
 }
 
-.adjust-section-title {
-  margin: 0;
-  font-size: 0.6875rem;
-  font-family: var(--mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold-dim-ink);
+.rpanel-header h2 {
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.rpanel-body {
+  padding: 10px 12px 12px;
+}
+
+.btn-ghost {
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--muted);
+  font-family: var(--body);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  border-color: var(--oxblood);
+  color: var(--ink);
+}
+
+.btn-ghost:disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .adjust-picker {
@@ -660,28 +704,6 @@ code {
   color: var(--gold-dim-ink);
 }
 
-.adjust-reset {
-  padding: 3px 9px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: transparent;
-  color: var(--muted);
-  font-family: var(--body);
-  font-size: 0.75rem;
-  cursor: pointer;
-}
-
-.adjust-reset:hover:not(:disabled) {
-  color: var(--ink);
-  border-color: var(--line-soft);
-}
-
-.adjust-reset:disabled {
-  border-color: var(--line-soft);
-  color: var(--line);
-  cursor: default;
-}
-
 .adjust-note-list {
   display: flex;
   flex-direction: column;
@@ -706,108 +728,174 @@ code {
 
 /* ------------------------------------------------------------- statblock -- */
 
-/* The box is always here, printed or adjusted: toggling a template must never
-   reflow the statblock sideways, only change what's inside it. */
+/* Reads like the printed page: intro lines, then Defense / Offense /
+   Statistics / Ecology under the sheet's stat-group legends, with the
+   headline numbers up front as seal tiles. Adjustments (templates, marked
+   conditions) change the numbers in place; the only cue is the quiet
+   "applied" line, never a reflow or a recolor of the whole block. */
 .statblock {
-  padding: 8px 12px 10px;
-  border: 1px solid transparent;
-  border-radius: var(--radius);
+  padding: 2px 0;
 }
 
-.statblock.is-adjusted {
-  border-color: var(--line-soft);
-  background: var(--surface-2);
+.sb-applied {
+  margin: 0 0 6px;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--gold-dim-ink);
 }
 
-.statblock-caption {
+.sb-typeline {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 4px 8px;
-  margin-bottom: 8px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--line-soft);
+  justify-content: space-between;
+  gap: 2px 12px;
+  margin-bottom: 2px;
+  font-size: 0.875rem;
+  color: var(--ink);
 }
 
-.statblock-caption-label {
+.sb-cr {
+  font-size: 0.75rem;
+  color: var(--gold-2);
+  white-space: nowrap;
+}
+
+.sb-line {
+  margin: 2px 0;
+  padding-left: 14px;
+  text-indent: -14px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.sb-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.sb-stat-note {
+  font-style: italic;
+}
+
+.sb-section {
+  margin-top: 12px;
+}
+
+.sb-section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.sb-section-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sb-section-legend::before {
+  content: "";
+  width: 3px;
+  height: 13px;
+  border-radius: 2px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+.sb-section-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--line-soft);
+}
+
+.sb-seals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  gap: 8px;
+  margin: 10px 0 2px;
+}
+
+.sb-seal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 6px 7px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-align: center;
+  min-height: 64px;
+}
+
+.sb-seal-label {
   font-family: var(--mono);
   font-size: 0.625rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--muted);
 }
 
-.statblock.is-adjusted .statblock-caption-label {
-  color: var(--sage);
-}
-
-.statblock-caption-chip {
-  padding: 1px 8px;
-  border: 1px solid var(--gold-dim);
-  border-radius: 10px;
+.sb-seal-value {
+  font-size: 1.375rem;
+  font-weight: 600;
   color: var(--gold-2);
-  font-size: 0.6875rem;
+  line-height: 1.1;
+  margin-top: 2px;
 }
 
-.row.row-changed {
-  padding: 2px 6px;
-  margin: -2px -6px -2px -8px;
-  background: var(--surface);
-  border-left: 2px solid var(--sage);
+.sb-seal-foot {
+  font-size: 0.625rem;
+  color: var(--faint);
+  margin-top: 2px;
+}
+
+.sb-pips {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin: 4px 0 8px;
+}
+
+.sb-pip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
 }
 
-.row.row-changed .row-label {
-  color: var(--sage);
+.sb-pip-abbr {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
 }
 
-.row-tag {
-  margin-left: 5px;
-  padding: 0 4px;
-  border-radius: 2px;
-  background: var(--sage);
-  color: var(--bg);
-  font-size: 0.5625rem;
-  letter-spacing: 0.06em;
+.sb-pip-mod {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
 }
 
-.row.is-removed .row-label,
-.row.is-removed {
-  border-left-color: var(--faint);
-}
-
-.row.is-removed .row-tag {
-  background: var(--faint);
-}
-
-.stat-chip.row-changed {
-  border-color: var(--sage);
-  color: var(--sage);
-}
-
-.stat-chip-label {
+.sb-pip-score {
+  font-size: 0.6875rem;
   color: var(--faint);
-}
-
-.stat-chip.row-changed .stat-chip-label {
-  color: var(--sage);
-}
-
-/* The printed value, kept beside the adjusted one so the reader can see the
-   move rather than having to remember it. */
-.diff-was {
-  color: var(--faint);
-  text-decoration: line-through;
-  text-decoration-color: var(--line);
-}
-
-.diff-arrow {
-  margin: 0 5px;
-  color: var(--sage);
-}
-
-.diff-add {
-  color: var(--sage);
 }
 
 @media (max-width: 520px) {
@@ -820,10 +908,13 @@ code {
     min-width: 0;
   }
 
-  /* A before/after chip is long enough to run off a phone; let it wrap. */
   .stat-chip {
     max-width: 100%;
     white-space: normal;
+  }
+
+  .sb-pips {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -1053,70 +1144,84 @@ code {
 
 /* ------------------------------------------------------- encounter tracking -- */
 
+.hint {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
 .track-hint {
-  margin: 6px 0 0;
+  margin: 10px 0 0;
   font-size: 0.6875rem;
   color: var(--faint);
 }
 
 .track-hp {
-  margin-top: 10px;
+  margin-bottom: 12px;
 }
 
-.track-hp-reading {
+.hp-display {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 6px;
+  justify-content: space-between;
+  gap: 6px 12px;
 }
 
-.track-hp-current {
-  font-family: var(--mono);
-  font-size: 1.375rem;
+/* The sheet's hp reading: gold while healthy, oxblood only once it's in
+   trouble (a quarter of max or worse) — red never means "at full". */
+.hp-big {
+  font-size: 2.125rem;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--gold-2);
+  transition: color 0.35s ease;
 }
 
-.track-hp-current.is-disabled,
-.track-hp-current.is-dying {
+.hp-big[data-low="true"] {
   color: var(--oxblood-ink);
 }
 
-.track-hp-current.is-dead,
-.track-hp-current.is-destroyed {
+.hp-big .hp-slash {
   color: var(--faint);
+  font-size: 1.375rem;
+  margin: 0 4px;
 }
 
-.track-hp-max {
-  font-family: var(--mono);
-  font-size: 0.8125rem;
-  color: var(--muted);
+.hp-fill-track {
+  height: 3px;
+  background: var(--line-soft);
+  border-radius: 2px;
+  margin: 6px 0 10px;
 }
 
-.track-hp-note {
-  font-size: 0.75rem;
-  font-style: italic;
-  color: var(--faint);
-}
-
-.track-hp-bar {
-  height: 5px;
-  margin: 6px 0 8px;
-  border-radius: 3px;
-  background: var(--bg);
-  border: 1px solid var(--line-soft);
-  overflow: hidden;
-}
-
-.track-hp-fill {
+.hp-fill-bar {
   height: 100%;
-  background: var(--sage);
+  border-radius: 2px;
+  background: var(--gold-dim);
+  transition:
+    width 0.35s ease,
+    background-color 0.35s ease;
 }
 
-.track-hp-fill.is-disabled,
-.track-hp-fill.is-dying,
-.track-hp-fill.is-dead,
-.track-hp-fill.is-destroyed {
+.hp-fill-bar[data-low="true"] {
   background: var(--oxblood);
+}
+
+.hp-status-line {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--oxblood-ink);
+}
+
+.hp-status-line a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+}
+
+.hp-status-regen {
+  font-weight: 400;
+  color: var(--muted);
 }
 
 .track-hp-controls {
@@ -1127,8 +1232,8 @@ code {
 
 .track-hp-controls input {
   width: 64px;
-  padding: 3px 6px;
-  background: var(--surface);
+  padding: 6px 8px;
+  background: var(--surface-2);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--ink);
@@ -1136,73 +1241,108 @@ code {
   font-size: 0.8125rem;
 }
 
-.track-hp-button {
-  padding: 3px 10px;
+.btn-act {
+  padding: 6px 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--bg);
+  background: var(--surface-2);
+  color: var(--ink);
   font-family: var(--body);
-  font-size: 0.75rem;
-  color: var(--muted);
+  font-size: 0.8125rem;
   cursor: pointer;
 }
 
-.track-hp-button:hover {
-  color: var(--ink);
-}
-
-.track-hp-button.is-damage:hover {
+.btn-act.dmg:hover {
   border-color: var(--oxblood);
   color: var(--oxblood-ink);
 }
 
-.track-hp-button.is-heal:hover {
+.btn-act.heal:hover {
   border-color: var(--sage);
   color: var(--sage);
 }
 
-.track-hp-status {
-  margin: 8px 0 0;
-  font-size: 0.75rem;
-  color: var(--oxblood-ink);
+.btn-act:active {
+  transform: scale(0.96);
 }
 
-.track-hp-status a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: var(--line);
-}
-
-.track-hp-status.is-dead,
-.track-hp-status.is-destroyed {
-  color: var(--muted);
-}
-
-.track-hp-regen {
-  color: var(--muted);
-}
-
-/* Condition names are short; denser tiles than the template picker. */
-.track-cond-grid {
-  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
-}
-
-.track-active-list {
-  margin: 10px 0 0;
-  padding: 0;
-  list-style: none;
+/* Condition chips, straight from the sheet: solid border = moves numbers,
+   dashed + ° = reference only, dimmed + ▲ = implied by a stricter active
+   ladder sibling. Active is the warm-gradient gold treatment. (`.cond-chip`,
+   not `.chip`: the search page owns that name for its facet toggles.) */
+.cond-chips {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
-  font-size: 0.75rem;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.track-active-name {
-  margin-right: 6px;
-  font-weight: 600;
+.cond-chip {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.8125rem;
+  font-family: var(--body);
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    border-color 0.12s,
+    background 0.12s;
+}
+
+.cond-chip:hover {
+  border-color: var(--gold-dim);
+}
+
+.cond-chip[aria-pressed="true"] {
+  background: linear-gradient(180deg, #2c2718, #211d12);
+  border-color: var(--gold);
   color: var(--gold-2);
 }
 
-.track-active-summary {
+.cond-chip:disabled {
+  cursor: not-allowed;
+}
+
+.cond-chip:active {
+  transform: scale(0.96);
+}
+
+.cond-chip.display-only {
+  opacity: 0.82;
+  border-style: dashed;
+}
+
+.cond-chip.implied {
+  opacity: 0.55;
+}
+
+.cond-chip .dot {
+  color: var(--faint);
+  font-size: 0.7em;
+  vertical-align: super;
+  margin-left: 1px;
+}
+
+/* Active conditions with their rules text, the sheet's cond-notes rows. */
+.cond-notes {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.75rem;
   color: var(--muted);
+}
+
+.cond-notes li {
+  padding: 4px 0;
+  border-top: 1px solid var(--line-soft);
+  line-height: 1.5;
+}
+
+.cond-notes b {
+  color: var(--ink);
+}
+
+.cond-notes b a {
+  color: inherit;
 }

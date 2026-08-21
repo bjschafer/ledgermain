@@ -45,6 +45,17 @@ export type AdjustOp =
   | { kind: "srFromCr"; delta: number }
   /** CR adjustment by HD tier; delta applies to the printed CR (fractions step along the CR ladder). */
   | { kind: "crTiers"; tiers: Array<HdTier<number>> }
+  /** Flat shift to printed attack bonuses; "melee" scope leaves the ranged line alone (prone). Never touches CMB (mirrors the engine's separate `attack`/`cmb` targets). */
+  | { kind: "attackShift"; delta: number; scope: "all" | "melee" }
+  /** Flat shift to every parsed weapon-damage bonus on the melee and ranged lines (sickened). */
+  | { kind: "damageShift"; delta: number }
+  /** Flat shift to AC, touch, and flat-footed together (an untyped penalty hits all three). */
+  | { kind: "acShift"; delta: number }
+  /** Flat shift to all three saves. */
+  | { kind: "saveShift"; delta: number }
+  | { kind: "initShift"; delta: number }
+  /** Flat shift to printed skill bonuses: every one, or just the named skill. Perception inside the senses line shifts too. */
+  | { kind: "skillShift"; delta: number; skill?: string }
   | {
       kind: "appendLine";
       field:

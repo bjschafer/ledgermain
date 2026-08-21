@@ -549,6 +549,137 @@ function applyOp(b: Builder, op: Exclude<AdjustOp, { kind: "ability" }>): void {
     case "subtypes":
       applySubtypes(b, op.add);
       break;
+    case "attackShift":
+      applyAttackShift(b, "melee", op.delta);
+      if (op.scope === "all") applyAttackShift(b, "ranged", op.delta);
+      break;
+    case "damageShift":
+      applyDamageShift(b, "melee", op.delta);
+      applyDamageShift(b, "ranged", op.delta);
+      break;
+    case "acShift":
+      applyAcShift(b, op.delta);
+      break;
+    case "saveShift":
+      applySave(b, "fort", op.delta);
+      applySave(b, "ref", op.delta);
+      applySave(b, "will", op.delta);
+      break;
+    case "initShift":
+      applyInit(b, op.delta);
+      break;
+    case "skillShift":
+      applySkillShift(b, op.delta, op.skill);
+      break;
+  }
+}
+
+/** Flat shift to every attack bonus on one printed attack line. */
+function applyAttackShift(b: Builder, field: "melee" | "ranged", delta: number): void {
+  const text = b.monster[field];
+  if (!text || delta === 0) return;
+  const parsed = parseAttackLine(text);
+  if (!parsed) {
+    const label = field === "melee" ? "Melee" : "Ranged";
+    b.manual(
+      `${label} line could not be parsed; adjust attack rolls by ${renderLeadingInt(delta, true)} by hand.`,
+    );
+    return;
+  }
+  const next = mapAttacks(parsed, (attack) => shiftAttackBonus(attack, delta));
+  const rendered = renderAttackLine(next);
+  if (rendered !== text) {
+    b.monster = { ...b.monster, [field]: rendered };
+    b.change(field, "shifted");
+  }
+}
+
+/** Flat shift to every parsed weapon-damage bonus on one printed attack line. */
+function applyDamageShift(b: Builder, field: "melee" | "ranged", delta: number): void {
+  const text = b.monster[field];
+  if (!text || delta === 0) return;
+  const parsed = parseAttackLine(text);
+  if (!parsed) {
+    const label = field === "melee" ? "Melee" : "Ranged";
+    b.manual(
+      `${label} line could not be parsed; adjust damage by ${renderLeadingInt(delta, true)} by hand.`,
+    );
+    return;
+  }
+  const unshifted: string[] = [];
+  const next = mapAttacks(parsed, (attack) => {
+    if (!attack.damage) return attack;
+    const core = attack.damage.core;
+    if (core.kind !== "dice") {
+      unshifted.push(attack.namePart.trim());
+      return attack;
+    }
+    const newBonus = (core.bonus ?? 0) + delta;
+    return withDamageCore(attack, { ...core, bonus: newBonus === 0 ? null : newBonus });
+  });
+  const rendered = renderAttackLine(next);
+  if (rendered !== text) {
+    b.monster = { ...b.monster, [field]: rendered };
+    b.change(field, "shifted");
+  }
+  for (const name of unshifted) {
+    b.manual(`Damage for "${name}" in ${field} could not be parsed; adjust by hand.`);
+  }
+}
+
+/** An untyped AC penalty/bonus applies to normal, touch, and flat-footed AC alike. */
+function applyAcShift(b: Builder, delta: number): void {
+  if (delta === 0) return;
+  for (const field of ["ac", "touchAc", "flatFootedAc"] as const) {
+    const v = b.monster[field];
+    if (v !== undefined) {
+      b.monster = { ...b.monster, [field]: v + delta };
+      b.change(field, "recomputed");
+    }
+  }
+}
+
+const SIGNED_INT_RE = /[+-]\d+/g;
+
+/** Shift every signed bonus in a printed list ("Perception +8, Stealth +4 (+8 in forests)"). */
+function shiftSignedBonuses(text: string, delta: number): string {
+  return text.replace(SIGNED_INT_RE, (m) => renderLeadingInt(Number(m) + delta, true));
+}
+
+/**
+ * Flat skill-check shift. `skill` narrows it to one named skill; otherwise
+ * every printed bonus on the Skills line shifts, conditional parentheticals
+ * included (a global check penalty moves those totals too). The Perception
+ * rider inside the senses line shifts either way; the Racial Modifiers line
+ * never does (those are components, not check totals).
+ */
+function applySkillShift(b: Builder, delta: number, skill: string | undefined): void {
+  if (delta === 0) return;
+
+  const skills = b.monster.skills;
+  if (skills !== undefined) {
+    const next = skill
+      ? skills.replace(
+          new RegExp(`(${skill}\\s)([+-]\\d+)`, "g"),
+          (_m, head: string, bonus: string) => head + renderLeadingInt(Number(bonus) + delta, true),
+        )
+      : shiftSignedBonuses(skills, delta);
+    if (next !== skills) {
+      b.monster = { ...b.monster, skills: next };
+      b.change("skills", "shifted");
+    }
+  }
+
+  const senses = b.monster.senses;
+  if (senses !== undefined && (skill === undefined || skill === "Perception")) {
+    const next = senses.replace(
+      /(Perception\s)([+-]\d+)/,
+      (_m, head: string, bonus: string) => head + renderLeadingInt(Number(bonus) + delta, true),
+    );
+    if (next !== senses) {
+      b.monster = { ...b.monster, senses: next };
+      b.change("senses", "shifted");
+    }
   }
 }
 

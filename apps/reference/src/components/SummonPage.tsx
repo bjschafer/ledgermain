@@ -38,9 +38,9 @@ import {
   type SummonSpell,
 } from "../model/summonLists.js";
 import { useTrackState } from "../hooks/useTrackState.js";
+import { conditionAdjustments } from "../model/adjust/conditions.js";
 import type { RefIndex } from "../shared/indexCodec.js";
 import { AdjustmentPicker } from "./AdjustPanel.js";
-import { conditionNames } from "./ConditionView.js";
 import { MonsterView } from "./MonsterView.js";
 import { TrackPanel } from "./TrackPanel.js";
 
@@ -405,7 +405,6 @@ function SummonCreaturePanel({
 }) {
   const [state, setState] = useState<CreatureState>({ status: "loading" });
   const [track, updateTrack] = useTrackState(creatureId);
-  const names = useMemo(() => conditionNames(index.entries), [index]);
 
   useEffect(() => {
     let live = true;
@@ -438,8 +437,9 @@ function SummonCreaturePanel({
     const list: StatblockAdjustment[] = [];
     if (templateAdjustment) list.push(templateAdjustment);
     if (augmentOn) list.push(AUGMENT_SUMMONING);
+    list.push(...conditionAdjustments(track.conditions));
     return list;
-  }, [templateAdjustment, augmentOn]);
+  }, [templateAdjustment, augmentOn, track.conditions]);
 
   if (state.status === "loading") return <p className="notice">Loading…</p>;
   if (state.status === "missing") {
@@ -485,17 +485,10 @@ function SummonCreaturePanel({
         </>
       )}
 
-      <TrackPanel
-        index={index}
-        monster={result.monster}
-        names={names}
-        state={track}
-        update={updateTrack}
-      />
+      <TrackPanel monster={result.monster} state={track} update={updateTrack} />
 
       <MonsterView
         monster={result.monster}
-        base={state.monster}
         appliedLabels={adjustments.map((adj) => adj.label)}
         notes={result.notes}
       />
