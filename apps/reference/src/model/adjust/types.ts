@@ -1,0 +1,92 @@
+/**
+ * Statblock adjustment: the shared contract for applying templates and
+ * feat-style modifiers (Augment Summoning) to a vendored `Monster` client-side.
+ *
+ * Vendored statblocks are mostly printed display strings, so an adjustment is
+ * applied at three tiers of fidelity, and the result is honest about which tier
+ * each field got: numeric fields are recomputed, semi-structured strings
+ * (saves, attack lines, CMB/CMD) are parsed and shifted, and everything else is
+ * either string-appended or left alone with a `manual` note telling the reader
+ * what to adjust by hand. A field that fails to parse NEVER gets a fabricated
+ * value — the original text stays, flagged with a note.
+ *
+ * Effects are declarative ops (not functions) so template definitions read like
+ * the published rules text they were authored from and can be audited row by
+ * row against it.
+ */
+
+import type { Monster } from "@pf1/schema";
+
+export type AbilityKey = "str" | "dex" | "con" | "int" | "wis" | "cha";
+
+export type AbilityDeltas = Partial<Record<AbilityKey, number>>;
+
+/** Pick the entry with the highest `minHd` that is <= the creature's HD count. */
+export interface HdTier<T> {
+  minHd: number;
+  value: T;
+}
+
+/**
+ * Text ops may embed `{hd}` (hit-dice count) and `{chaMod}` (signed Cha
+ * modifier, "+2"/"-1"); the applier substitutes them, or downgrades the op to a
+ * `manual` note when the statblock lacks the needed value.
+ */
+export type AdjustOp =
+  | { kind: "ability"; deltas: AbilityDeltas }
+  | { kind: "naturalArmor"; delta: number }
+  /** One size-category step (+1 grows, -1 shrinks): AC/attack/CMB/CMD size mods, damage dice, space/reach. */
+  | { kind: "sizeStep"; delta: 1 | -1 }
+  /** `value` is the printed DR text ("5/magic"); null = no DR at that tier. Merges with existing DR by keeping both, noted. */
+  | { kind: "drTiers"; tiers: Array<HdTier<string | null>> }
+  /** Grants `resist <energy> N` for each listed energy; merges highest-wins with existing resist entries. */
+  | { kind: "resistTiers"; energies: string[]; tiers: Array<HdTier<number>> }
+  /** SR = numeric CR + delta; skipped with a note when CR is fractional-weird or SR already higher. */
+  | { kind: "srFromCr"; delta: number }
+  /** CR adjustment by HD tier; delta applies to the printed CR (fractions step along the CR ladder). */
+  | { kind: "crTiers"; tiers: Array<HdTier<number>> }
+  | {
+      kind: "appendLine";
+      field:
+        | "senses"
+        | "aura"
+        | "defensiveAbilities"
+        | "specialAttacks"
+        | "sq"
+        | "speed"
+        | "immune"
+        | "weaknesses";
+      text: string;
+      /** Skip the append when the field already contains this substring (case-insensitive). */
+      skipIfPresent?: string;
+    }
+  | { kind: "subtypes"; add: string[] };
+
+/** One named source of ops: a template, or a feat-style modifier. */
+export interface StatblockAdjustment {
+  /** Stable slug; for templates it matches the `monster-templates.json` id when one exists. Used in URLs. */
+  key: string;
+  label: string;
+  ops: AdjustOp[];
+  /** Honest limits always shown alongside an applied result ("does not adjust skill modifiers"). */
+  notes?: string[];
+}
+
+export type FieldChangeKind = "recomputed" | "shifted" | "appended";
+
+export interface FieldChange {
+  field: keyof Monster;
+  kind: FieldChangeKind;
+}
+
+export interface AdjustNote {
+  text: string;
+  /** `manual` = the reader must finish this adjustment by hand; `info` = context only. */
+  severity: "info" | "manual";
+}
+
+export interface AdjustResult {
+  monster: Monster;
+  changes: FieldChange[];
+  notes: AdjustNote[];
+}
