@@ -22,8 +22,9 @@
  * Feats (FGT)", "Bloodline Feat (SOR)") remain player-choice slots counted
  * by `expectedFeatCount`. Some class features are named DIFFERENTLY than the
  * specific feat they grant (Monk's "Unarmed Strike" grants "Improved Unarmed
- * Strike" — see `FEATURE_NAME_OVERRIDES` below); those are resolved through
- * the override map before the by-name lookup.
+ * Strike", warpriest's "Focus Weapon" grants "Weapon Focus"); those resolve
+ * through `FEATURE_NAME_OVERRIDES` or the feature's own `grantsBuffs` link —
+ * see `grantedFeatIdOf`.
  *
  * Only "Human" by race name grants the racial bonus feat here. Half-Elves receive
  * Skill Focus as a specific racial feat (Adaptability), which is not a free feat
@@ -99,6 +100,34 @@ function resolvedFeatureName(featureName: string): string {
   return FEATURE_NAME_OVERRIDES[key] ?? key;
 }
 
+/** `Compendium.pf1.feats.Item.<id>` -> `<id>`; a buff/item UUID -> no match. */
+const FEAT_UUID_RE = /^Compendium\.pf1\.feats\.Item\.([^.]+)$/;
+
+/**
+ * The specific feat a `bonusFeats`-carrying class feature hands the character
+ * outright, or undefined when the feature grants a free SLOT the player fills.
+ * Resolved by name first (through `FEATURE_NAME_OVERRIDES`, which also covers
+ * homebrew features, whose `grantsBuffs` is always empty), then by the
+ * feature's own `grantsBuffs` link, which names the granted feat directly for
+ * the vendored features Foundry titles after the ability rather than the feat
+ * it hands out: brawler's "Unarmed Strike (BRA)", warpriest's "Focus Weapon",
+ * "Swashbuckler Weapon Training". No vendored feature that grants real slots
+ * carries a feat-resolving link, so the two signals never disagree.
+ */
+function grantedFeatIdOf(
+  feature: { name: string; grantsBuffs: readonly string[] },
+  byName: Map<string, string>,
+  refData: RefData,
+): string | undefined {
+  const named = byName.get(resolvedFeatureName(feature.name));
+  if (named) return named;
+  for (const uuid of feature.grantsBuffs) {
+    const id = FEAT_UUID_RE.exec(uuid)?.[1];
+    if (id && refData.feats[id]) return id;
+  }
+  return undefined;
+}
+
 /**
  * Cleric domain tag (`Domain.tag`) -> the specific feat that domain hands the
  * character as a bonus feat. Two domains carry a `bonusFeats` change on the
@@ -159,7 +188,7 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;
       if (!(feature.changes ?? []).some((ch) => ch.target === "bonusFeats")) continue;
-      const featId = byName.get(resolvedFeatureName(feature.name));
+      const featId = grantedFeatIdOf(feature, byName, refData);
       if (!featId || seen.has(featId)) continue;
       seen.add(featId);
       const featName = refData.feats[featId]?.name ?? feature.name;
@@ -484,7 +513,7 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
       const feature = refData.classFeatures[grant.featureId];
       if (!feature) continue;
       // Fixed feat grant, not a slot — handled by grantedFeats().
-      if (byName.has(resolvedFeatureName(feature.name))) continue;
+      if (grantedFeatIdOf(feature, byName, refData)) continue;
       // Rogue (Unchained)'s "Rogue's Edge (UC)" — vendored-data bug: its
       // `changes[]`
       // carries a `bonusFeats` formula (`floor(@class.unlevel / 5)`), but the

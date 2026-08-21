@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-21-granted-feat-slots",
+    date: "2026-08-21",
+    title: "Brawlers, warpriests, and swashbucklers had a feat too many",
+    note: "Some classes hand you a specific feat rather than a free pick, and three of them were being counted as a free pick as well. A brawler's Improved Unarmed Strike, a warpriest's Weapon Focus, and a swashbuckler's Improved Critical at 5th level now show up as granted feats on the sheet, and the feat budget is one lower to match. If you had already spent a slot buying one of those yourself, you have it back.",
+  },
+  {
     id: "2026-08-21-reference-redesign",
     date: "2026-08-21",
     title: "Monster pages read like the book, fight like the sheet",

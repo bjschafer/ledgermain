@@ -322,6 +322,67 @@ describe("expectedFeatCount: Monk Bonus Feat (Unarmed Strike quirk fixed)", () =
   });
 });
 
+describe("expectedFeatCount: fixed grants named after the ability, not the feat", () => {
+  // Brawler's "Unarmed Strike (BRA)", warpriest's "Focus Weapon" and
+  // "Swashbuckler Weapon Training" carry the same flat `bonusFeats: 1` change
+  // as Monk's Unarmed Strike above, but none of their names resolve to a feat
+  // even through `FEATURE_NAME_OVERRIDES`. Each is a fixed grant, recovered
+  // from the feature's own `grantsBuffs` link — never a free slot.
+
+  it("Brawler 5 Half-Orc → 3 base + Bonus Combat Feats(2) = 5", () => {
+    const doc = makeDoc({ classes: [{ tag: "brawler", level: 5 }], race: "Half-Orc" });
+    // base: ceil(5/2)=3; Bonus Combat Feats: floor((5+1)/3)=2 → total=5
+    expect(expectedFeatCount(doc, ref)).toBe(5);
+  });
+
+  it("Brawler 1 is granted Improved Unarmed Strike outright", () => {
+    const doc = makeDoc({ classes: [{ tag: "brawler", level: 1 }], race: "Half-Orc" });
+    const granted = grantedFeats(doc, ref);
+    expect(granted.map((g) => g.featName)).toEqual(["Improved Unarmed Strike"]);
+    const unarmed = granted.find((g) => g.featureName === "Unarmed Strike (BRA)");
+    expect(unarmed!.classTag).toBe("brawler");
+  });
+
+  it("Warpriest 1 Elf → 1 base feat, Focus Weapon grants Weapon Focus", () => {
+    const doc = makeDoc({ classes: [{ tag: "warpriest", level: 1 }], race: "Elf" });
+    expect(expectedFeatCount(doc, ref)).toBe(1);
+    expect(grantedFeats(doc, ref).map((g) => g.featName)).toEqual(["Weapon Focus"]);
+  });
+
+  it("Swashbuckler 5 Elf → 3 base + Bonus Feats(1) = 4", () => {
+    const doc = makeDoc({ classes: [{ tag: "swashbuckler", level: 5 }], race: "Elf" });
+    // base: ceil(5/2)=3; Bonus Feats (SWA): floor(5/4)=1 → total=4
+    expect(expectedFeatCount(doc, ref)).toBe(4);
+    expect(grantedFeats(doc, ref).map((g) => g.featName)).toEqual(["Improved Critical"]);
+  });
+
+  it("Swashbuckler 4 Elf → 2 base + Bonus Feats(1), nothing granted before 5th", () => {
+    const doc = makeDoc({ classes: [{ tag: "swashbuckler", level: 4 }], race: "Elf" });
+    expect(expectedFeatCount(doc, ref)).toBe(3);
+    expect(grantedFeats(doc, ref)).toEqual([]);
+  });
+
+  // The two signals must never disagree: a feature that hands out real slots
+  // (Bonus Feats (FGT), Bloodline Feat (SOR), ...) carries no feat-resolving
+  // `grantsBuffs` link, so resolving grants this way can't eat a slot.
+  it("no slot-granting class feature links to a feat", () => {
+    const featIds = new Set(Object.keys(ref.feats));
+    for (const feature of Object.values(ref.classFeatures)) {
+      if (!feature.changes.some((c) => c.target === "bonusFeats")) continue;
+      const linked = feature.grantsBuffs
+        .map((u) => /^Compendium\.pf1\.feats\.Item\.([^.]+)$/.exec(u)?.[1])
+        .filter((id): id is string => !!id && featIds.has(id));
+      if (linked.length === 0) continue;
+      // Linked to a feat -> a fixed grant of exactly that one feat, so its
+      // formula is a flat 1, never a per-level slot progression.
+      expect(linked.length).toBe(1);
+      expect(
+        feature.changes.filter((c) => c.target === "bonusFeats").map((c) => c.formula),
+      ).toEqual(["1"]);
+    }
+  });
+});
+
 describe("cleric domain fixed bonus feats (issue #99)", () => {
   it("Darkness domain grants Blind-Fight outright, Rune grants Scribe Scroll", () => {
     const darkness = makeDoc({
