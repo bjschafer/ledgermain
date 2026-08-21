@@ -96,7 +96,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "subdomain-power:insect:exoskeleton",
     name: "Exoskeleton",
     bucket: "situational",
-    note: "Growing the exoskeleton is an activated, 1-round-duration effect; the natural armor bonus and temporary hit points only apply while it is active.",
+    note: "Growing the exoskeleton is a 1-round-duration activation drawn from this power's own per-day pool, so it would need a per-day-activations toggle rather than a permanent Change; that shard stays empty for domain powers whose numbers scale with the granting class's level (see its header), and this one does (+1 natural armor per 5 cleric levels). Independently, the temporary hit points are dice-valued (1d4 + 1 per 2 cleric levels), which no engine formula path evaluates to a number.",
   },
   "subdomain-power:petrification:fossil-form": {
     id: "subdomain-power:petrification:fossil-form",

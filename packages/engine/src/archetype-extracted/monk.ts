@@ -1796,7 +1796,7 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Monastic Mount",
     level: 4,
     bucket: "situational",
-    note: "real number (temp HP and shared class-ability access), but granted to an ally/mount rather than the sheet owner — no target for granting another character a bonus from this build; also ki-spend/resource-gated",
+    note: "real number (temp HP and shared class-ability access), but granted to an ally/mount rather than the sheet owner; even with companion-master-effects able to route always-on level-scaled Changes onto a tracked mount, this grant fires on a live ki-pool spend rather than a stored build choice, so it has no gate to attach to there either",
   },
   "monk:sohei:skills:0": {
     archetypeId: "monk:sohei",

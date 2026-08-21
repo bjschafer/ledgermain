@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-20-rasugen",
+    date: "2026-08-20",
+    title: "The mnemostiller's rasugen is a real toggle",
+    note: "An alchemist with the mnemostiller archetype now gets Rasugen on the Mutagen tracker instead of the mutagen options the archetype trades away. Flip it on and the numbers land where they should: +2 on all three saving throws, 2 temporary hit points per alchemist level, and the -2 Intelligence cost, with a reminder of the skills you cannot use while it runs.",
+  },
+  {
     id: "2026-08-19-metamagic",
     date: "2026-08-19",
     title: "Metamagic, the whole shelf",

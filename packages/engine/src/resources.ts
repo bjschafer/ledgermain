@@ -67,6 +67,7 @@ import {
   type ChannelVariantDef,
 } from "./channel-variants.js";
 import { COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
+import { RASUGEN_BUFF_ID } from "./rasugen.js";
 import { characterFeatSlugs, FEAT_POOL_EFFECTS } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
 import {
@@ -677,6 +678,28 @@ export function deriveResourcePools(
       (doc.build.alchemistDiscoveries ?? []).includes(COGNATOGEN_DISCOVERY_ID)
     ) {
       linkedBuffIds.push(...Object.values(COGNATOGEN_BUFF_IDS));
+    }
+
+    // Mnemostiller archetype's Rasugen: RAW "replaces mutagen" outright (and
+    // bars mutagen/cognatogen/inspiring cognatogen from ever being gained by
+    // other means), unlike Cognatogen above which shares the pool alongside
+    // the vendored buffs. The vendored "Rasugen" archetype feature carries no
+    // `pairedBaseFeatureUuid`, so the base Mutagen class feature still
+    // derives its pool here rather than being suppressed — this repurposes
+    // that same pool for a mnemostiller instead of growing a second one, by
+    // dropping the vendored Mutagen buffs (and any Cognatogen ids, though RAW
+    // a mnemostiller can never have picked that discovery) and linking
+    // `rasugen.ts`'s hand-authored buff in their place.
+    if (
+      classTag === "alchemist" &&
+      feature.name === "Mutagen" &&
+      classArchetypeIds.includes("alchemist:mnemostiller")
+    ) {
+      const cognatogenIds = new Set<string>(Object.values(COGNATOGEN_BUFF_IDS));
+      linkedBuffIds = linkedBuffIds.filter(
+        (id) => !cognatogenIds.has(id) && !(refData.buffs[id]?.name ?? "").startsWith("Mutagen,"),
+      );
+      linkedBuffIds.push(RASUGEN_BUFF_ID);
     }
 
     pools.push({

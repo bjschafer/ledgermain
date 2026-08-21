@@ -61,15 +61,15 @@ describe("ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     expect(Object.keys(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(219);
   });
 
-  it("bucket counts match the audited totals (numeric 15 / situational 7 / subsystem 157 / blocked 40)", () => {
+  it("bucket counts match the audited totals (numeric 15 / situational 8 / subsystem 157 / blocked 39)", () => {
     const counts: Record<string, number> = {};
     for (const entry of Object.values(ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
     expect(counts["numeric"]).toBe(15);
-    expect(counts["situational"]).toBe(7);
+    expect(counts["situational"]).toBe(8);
     expect(counts["subsystem"]).toBe(157);
-    expect(counts["blocked"]).toBe(40);
+    expect(counts["blocked"]).toBe(39);
   });
 
   it("every numeric-bucket classification entry has a matching extracted-effects entry, and no stray entries exist", () => {

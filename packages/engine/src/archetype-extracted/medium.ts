@@ -472,7 +472,7 @@ export const MEDIUM_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Consume Spirit",
     level: 7,
     bucket: "subsystem",
-    note: "activated ability to consume an incorporeal creature for a player-chosen +1 (atk/save/skill) and temp HP, capacity gated by spirit bonus — a resource-gated, choice-list ability, no unconditional number",
+    note: "activated ability to consume an incorporeal creature for a player-chosen +1 (atk/save/skill) and temp HP equal to the consumed creature's own Hit Dice, capacity gated by spirit bonus — a resource-gated, choice-list ability whose temp HP value isn't even derivable from the medium's own sheet, no unconditional number",
   },
   "medium:spirit-eater:ectoplasmic-strikes:3": {
     archetypeId: "medium:spirit-eater",

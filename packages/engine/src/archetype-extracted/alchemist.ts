@@ -39,7 +39,11 @@
  *    shape, no vendored buff data at all) is `subsystem` — there is nothing
  *    vendored to conflict with, it is simply an unimplemented resource,
  *    same posture as every other activated/limited-use ability this table
- *    leaves unmodeled.
+ *    leaves unmodeled. Mnemostiller's Rasugen (rasugen:1) is the one
+ *    exception that got built: same mutagen-family shape as Cognatogen,
+ *    hand-authored in `rasugen.ts` and wired into the Mutagen pool in place
+ *    of the vendored buffs it replaces — `situational`, since its numbers
+ *    only land while the buff is toggled active.
  * 4. **Poison Resistance/Use/Immunity, Swift Alchemy/Poisoning** (the base
  *    features most archetypes replace to make room) all carry `changes: []`
  *    upstream (confirmed against `class-features.json`) — replacing them
@@ -1325,14 +1329,14 @@ export const ALCHEMIST_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     name: "Persistent rasugen",
     level: 14,
     bucket: "subsystem",
-    note: "extends rasugen's duration only — no magnitude change (see rasugen:1)",
+    note: "extends rasugen's duration to 1 hour/level, a contextNote on the Rasugen buff (rasugen.ts) since duration.value isn't evaluated by the engine; no magnitude change",
   },
   "alchemist:mnemostiller:rasugen:1": {
     archetypeId: "alchemist:mnemostiller",
     name: "Rasugen",
     level: 1,
-    bucket: "blocked",
-    note: 'a mutagen-family variant (brewed/imbibed "in all other ways like a mutagen") granting +2 alchemical on all saves and temp HP/level — replaces mutagen with real numbers of its own shape, needs buff-patch plumbing (class note 3)',
+    bucket: "situational",
+    note: "a mutagen-family toggle (+2 alchemical on all saves, temp HP/level, -2 Int) hand-authored as its own buff (rasugen.ts), wired into the Mutagen pool's linkedBuffIds in place of the vendored Mutagen/Cognatogen buffs it replaces; the numbers only apply while the buff is toggled active, a live-toggle condition this always-on extraction table can't express, same posture as Mutagen/Cognatogen themselves (class note 3)",
   },
 
   // ── alchemist:oenopion-researcher ──

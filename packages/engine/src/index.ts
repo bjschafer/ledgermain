@@ -213,6 +213,7 @@ export {
 export { BLOODRAGE_BUFF, BLOODRAGE_BUFF_ID } from "./bloodrage.js";
 export { FALSE_LIFE_BUFF, FALSE_LIFE_BUFF_ID } from "./false-life.js";
 export { COGNATOGEN_BUFFS, COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
+export { RASUGEN_BUFF, RASUGEN_BUFF_ID } from "./rasugen.js";
 export {
   ARCANIST_EXPLOITS,
   ARCANIST_EXPLOIT_IDS,

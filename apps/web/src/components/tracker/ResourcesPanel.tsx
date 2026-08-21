@@ -7,6 +7,8 @@ import {
   deriveResourcePools,
   OCCULTIST_PHYSICAL_ABILITIES,
   OCCULTIST_SCHOOLS,
+  RASUGEN_BUFF,
+  RASUGEN_BUFF_ID,
   resolveKineticistDefense,
   slaClaimedPoolIds,
   type DerivedResourcePool,
@@ -347,14 +349,15 @@ function ResourceRow({
 
 /**
  * Buffs linked from a resource pool that have no `refData.buffs` entry to
- * resolve against (Bloodrager's Bloodrage; the alchemist's Cognatogen — see
- * `@pf1/engine`'s `bloodrage.ts`/`cognatogen.ts` doc comments for why they're
- * hand-authored rather than vendored). Checked as a fallback in
- * {@link LinkedBuffToggle} below.
+ * resolve against (Bloodrager's Bloodrage; the alchemist's Cognatogen and
+ * mnemostiller's Rasugen — see `@pf1/engine`'s `bloodrage.ts`/`cognatogen.ts`/
+ * `rasugen.ts` doc comments for why they're hand-authored rather than
+ * vendored). Checked as a fallback in {@link LinkedBuffToggle} below.
  */
 const SYNTHETIC_LINKED_BUFFS: Readonly<Record<string, Buff>> = {
   [BLOODRAGE_BUFF_ID]: BLOODRAGE_BUFF,
   ...COGNATOGEN_BUFFS,
+  [RASUGEN_BUFF_ID]: RASUGEN_BUFF,
 };
 
 /**
