@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { DetailPage } from "./components/DetailPage.js";
 import { SearchPage } from "./components/SearchPage.js";
+import { SummonPage } from "./components/SummonPage.js";
 import { loadIndex } from "./data/loader.js";
 import { useHashRoute } from "./hooks/useHashRoute.js";
 import type { RefIndex } from "./shared/indexCodec.js";
@@ -25,9 +26,14 @@ export function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <a className="app-title" href="#/">
-          Ledgermain <span className="app-title-sub">Reference</span>
-        </a>
+        <div className="summon-nav-group">
+          <a className="app-title" href="#/">
+            Ledgermain <span className="app-title-sub">Reference</span>
+          </a>
+          <a className="summon-nav-link" href="#/summon">
+            Summons
+          </a>
+        </div>
         <span className="app-version">
           {index
             ? `Data: PF1 v${index.meta.dataVersion.split("+")[0]} · content ${index.meta.contentVersion}`
@@ -41,6 +47,8 @@ export function App() {
         {index &&
           (route.kind === "detail" ? (
             <DetailPage index={index} collection={route.collection} id={route.id} />
+          ) : route.kind === "summon" ? (
+            <SummonPage index={index} route={route} />
           ) : (
             <SearchPage index={index} />
           ))}
@@ -52,7 +60,7 @@ export function App() {
           <a href="OGL.txt" target="_blank" rel="noreferrer">
             OGL
           </a>{" "}
-          and Paizo&apos;s Community Use Policy — see the{" "}
+          and Paizo&apos;s Community Use Policy; see the{" "}
           <a href="NOTICE.md" target="_blank" rel="noreferrer">
             notice
           </a>

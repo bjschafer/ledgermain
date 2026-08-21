@@ -36,9 +36,7 @@ describe("celestial lion (Bestiary: lion CR 3, 5d8+10, Str 21/Con 15/Cha 6)", ()
   });
 
   it("appends darkvision and the substituted smite line", () => {
-    expect(result.monster.senses).toBe(
-      "low-light vision, scent; Perception +9, darkvision 60 ft.",
-    );
+    expect(result.monster.senses).toBe("low-light vision, scent; Perception +9, darkvision 60 ft.");
     // {hd} = 5, {chaMod} = -2 (Cha 6): substituted verbatim, honesty over prettiness.
     expect(result.monster.specialAttacks).toContain(
       "smite evil 1/day (swift action; adds -2 to attack rolls and 5 to damage rolls against evil foes",

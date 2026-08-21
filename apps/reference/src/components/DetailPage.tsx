@@ -8,7 +8,7 @@ import type { RefIndex } from "../shared/indexCodec.js";
 import { conditionNames, ConditionView } from "./ConditionView.js";
 import { FeatView } from "./FeatView.js";
 import { ArmorView, ItemView, WeaponView } from "./GearView.js";
-import { MonsterTemplateView, MonsterView } from "./MonsterView.js";
+import { MonsterDetail, MonsterTemplateView } from "./MonsterView.js";
 import { SpellView } from "./SpellView.js";
 
 type State =
@@ -121,7 +121,7 @@ function DetailBody({
     case "conditions":
       return <ConditionView condition={entry as ConditionDef} ladders={ladders} names={names} />;
     case "monsters":
-      return <MonsterView monster={entry as Monster} />;
+      return <MonsterDetail monster={entry as Monster} />;
     case "monster-templates":
       return <MonsterTemplateView template={entry as MonsterTemplate} />;
   }

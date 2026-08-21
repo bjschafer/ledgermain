@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-21-summoning-helper",
+    date: "2026-08-21",
+    title: "A summoning helper on the reference site",
+    note: "The reference site gained a Summons section: pick Summon Monster or Summon Nature's Ally at any level and get the full creature list, with the lower lists and their 1d3 and 1d4+1 counts alongside. Choose a creature and its statblock arrives already adjusted: celestial, fiendish, entropic, or resolute applied on the spot, Augment Summoning folded into every number, and anything that cannot be recomputed flagged for you to adjust by hand. Every monster page can also try on the simple templates now, advanced, giant, and young included.",
+  },
+  {
     id: "2026-08-21-bestiary",
     date: "2026-08-21",
     title: "The reference site has the whole bestiary",

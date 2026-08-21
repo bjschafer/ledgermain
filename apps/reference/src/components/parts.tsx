@@ -27,12 +27,21 @@ export function Sources({ sources }: { sources: SourceRef[] | undefined }) {
 }
 
 /** One label/value line in a detail stat block. Renders nothing for empty values. */
-export function Row({ label, children }: { label: string; children: React.ReactNode }) {
+export function Row({
+  label,
+  children,
+  changed,
+}: {
+  label: string;
+  children: React.ReactNode;
+  /** Marks the row as changed by a statblock adjustment (adds "row-changed"). */
+  changed?: boolean;
+}) {
   if (children === null || children === undefined || children === false || children === "") {
     return null;
   }
   return (
-    <div className="row">
+    <div className={changed ? "row row-changed" : "row"}>
       <span className="row-label">{label}</span>
       <span className="row-value">{children}</span>
     </div>
@@ -40,6 +49,18 @@ export function Row({ label, children }: { label: string; children: React.ReactN
 }
 
 /** A compact pill in the always-visible stat strip under an entry's name. */
-export function Chip({ children, tone }: { children: React.ReactNode; tone?: "save" | "damage" }) {
-  return <span className={`stat-chip${tone ? ` is-${tone}` : ""}`}>{children}</span>;
+export function Chip({
+  children,
+  tone,
+  changed,
+}: {
+  children: React.ReactNode;
+  tone?: "save" | "damage";
+  /** Marks the chip as changed by a statblock adjustment (adds "row-changed"). */
+  changed?: boolean;
+}) {
+  const classes = ["stat-chip"];
+  if (tone) classes.push(`is-${tone}`);
+  if (changed) classes.push("row-changed");
+  return <span className={classes.join(" ")}>{children}</span>;
 }
