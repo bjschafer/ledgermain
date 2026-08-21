@@ -336,6 +336,7 @@ code {
 .stat-chip {
   display: inline-flex;
   align-items: center;
+  gap: 5px;
   padding: 2px 8px;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
@@ -532,8 +533,15 @@ code {
   background: var(--surface);
 }
 
+.adjust-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .adjust-section-title {
-  margin: 0 0 8px;
+  margin: 0;
   font-size: 0.6875rem;
   font-family: var(--mono);
   letter-spacing: 0.12em;
@@ -542,56 +550,114 @@ code {
 }
 
 .adjust-picker {
-  margin: 8px 0;
+  margin: 10px 0 0;
+}
+
+.adjust-picker-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 5px;
 }
 
 .adjust-picker-title {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--faint);
 }
 
-.adjust-picker-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 16px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.adjust-picker-item {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
-  font-size: 0.8125rem;
-  color: var(--ink);
-  cursor: pointer;
-}
-
-.adjust-picker-label {
-  font-weight: 500;
-}
-
 .adjust-picker-hint {
-  font-family: var(--mono);
   font-size: 0.6875rem;
   color: var(--faint);
 }
 
-.adjust-applied {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
+.adjust-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(236px, 1fr));
+  gap: 4px;
 }
 
-.adjust-applied-chips {
+/* Toggle card, not a bare checkbox: the whole tile is the hit target, and the
+   selected state has to read from across the table. */
+.adjust-option {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  align-items: baseline;
+  gap: 7px;
+  padding: 5px 9px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-size: 0.8125rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.adjust-option:hover {
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.adjust-option.is-on {
+  border-color: var(--gold-dim);
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.adjust-option input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.adjust-option:has(input:focus-visible) {
+  outline: 2px solid var(--gold-dim);
+  outline-offset: 1px;
+}
+
+.adjust-option-box {
+  position: relative;
+  top: 2px;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+}
+
+.adjust-option.is-on .adjust-option-box {
+  border-color: var(--gold-dim);
+  background: var(--gold);
+}
+
+.adjust-option.is-on .adjust-option-box::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0;
+  width: 4px;
+  height: 8px;
+  border: solid var(--bg);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.adjust-option-label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.adjust-option-cr {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  color: var(--faint);
+}
+
+.adjust-option.is-on .adjust-option-cr {
+  color: var(--gold-dim-ink);
 }
 
 .adjust-reset {
@@ -605,9 +671,15 @@ code {
   cursor: pointer;
 }
 
-.adjust-reset:hover {
+.adjust-reset:hover:not(:disabled) {
   color: var(--ink);
   border-color: var(--line-soft);
+}
+
+.adjust-reset:disabled {
+  border-color: var(--line-soft);
+  color: var(--line);
+  cursor: default;
 }
 
 .adjust-note-list {
@@ -632,16 +704,54 @@ code {
   font-weight: 600;
 }
 
-/* Tints the statblock below so it's never mistaken for the printed original. */
-.adjust-tinted {
-  padding: 10px 12px;
+/* ------------------------------------------------------------- statblock -- */
+
+/* The box is always here, printed or adjusted: toggling a template must never
+   reflow the statblock sideways, only change what's inside it. */
+.statblock {
+  padding: 8px 12px 10px;
+  border: 1px solid transparent;
   border-radius: var(--radius);
+}
+
+.statblock.is-adjusted {
+  border-color: var(--line-soft);
   background: var(--surface-2);
+}
+
+.statblock-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.statblock-caption-label {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.statblock.is-adjusted .statblock-caption-label {
+  color: var(--sage);
+}
+
+.statblock-caption-chip {
+  padding: 1px 8px;
+  border: 1px solid var(--gold-dim);
+  border-radius: 10px;
+  color: var(--gold-2);
+  font-size: 0.6875rem;
 }
 
 .row.row-changed {
   padding: 2px 6px;
-  margin: -2px -6px;
+  margin: -2px -6px -2px -8px;
   background: var(--surface);
   border-left: 2px solid var(--sage);
   border-radius: var(--radius);
@@ -651,8 +761,52 @@ code {
   color: var(--sage);
 }
 
+.row-tag {
+  margin-left: 5px;
+  padding: 0 4px;
+  border-radius: 2px;
+  background: var(--sage);
+  color: var(--bg);
+  font-size: 0.5625rem;
+  letter-spacing: 0.06em;
+}
+
+.row.is-removed .row-label,
+.row.is-removed {
+  border-left-color: var(--faint);
+}
+
+.row.is-removed .row-tag {
+  background: var(--faint);
+}
+
 .stat-chip.row-changed {
   border-color: var(--sage);
+  color: var(--sage);
+}
+
+.stat-chip-label {
+  color: var(--faint);
+}
+
+.stat-chip.row-changed .stat-chip-label {
+  color: var(--sage);
+}
+
+/* The printed value, kept beside the adjusted one so the reader can see the
+   move rather than having to remember it. */
+.diff-was {
+  color: var(--faint);
+  text-decoration: line-through;
+  text-decoration-color: var(--line);
+}
+
+.diff-arrow {
+  margin: 0 5px;
+  color: var(--sage);
+}
+
+.diff-add {
   color: var(--sage);
 }
 
@@ -664,6 +818,12 @@ code {
 
   .row-label {
     min-width: 0;
+  }
+
+  /* A before/after chip is long enough to run off a phone; let it wrap. */
+  .stat-chip {
+    max-width: 100%;
+    white-space: normal;
   }
 }
 
@@ -739,19 +899,7 @@ code {
 }
 
 .summon-feats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 18px;
   margin: 12px 0;
-}
-
-.summon-feat-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8125rem;
-  color: var(--ink);
-  cursor: pointer;
 }
 
 .summon-duration {
@@ -892,23 +1040,6 @@ code {
   font-size: 0.75rem;
   font-style: italic;
   color: var(--faint);
-}
-
-.summon-adjust-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 10px 0;
-}
-
-.summon-adjust-chip {
-  padding: 2px 9px;
-  border: 1px solid var(--gold-dim);
-  border-radius: 10px;
-  background: var(--surface-2);
-  color: var(--gold-2);
-  font-family: var(--mono);
-  font-size: 0.6875rem;
 }
 
 @media (max-width: 520px) {

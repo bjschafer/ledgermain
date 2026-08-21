@@ -31,18 +31,27 @@ export function Row({
   label,
   children,
   changed,
+  status,
 }: {
   label: string;
   children: React.ReactNode;
   /** Marks the row as changed by a statblock adjustment (adds "row-changed"). */
   changed?: boolean;
+  /** How the adjustment touched it, for the marker in the label gutter. */
+  status?: "added" | "removed";
 }) {
   if (children === null || children === undefined || children === false || children === "") {
     return null;
   }
+  const classes = ["row"];
+  if (changed) classes.push("row-changed");
+  if (status) classes.push(`is-${status}`);
   return (
-    <div className={changed ? "row row-changed" : "row"}>
-      <span className="row-label">{label}</span>
+    <div className={classes.join(" ")}>
+      <span className="row-label">
+        {label}
+        {status && <span className="row-tag">{status === "added" ? "new" : "gone"}</span>}
+      </span>
       <span className="row-value">{children}</span>
     </div>
   );

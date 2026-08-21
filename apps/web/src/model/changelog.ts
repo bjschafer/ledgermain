@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-21-template-diff",
+    date: "2026-08-21",
+    title: "Templates show their work",
+    note: "Applying a template on the reference site now shows the move, not just the result. Every line and chip a template touches keeps the printed value beside the adjusted one, so you can watch CR, hit points, saves, and attack lines shift. Text a template adds is highlighted where it lands, brand new lines are tagged, and the statblock holds its place instead of reflowing under you, labeled printed or adjusted at the top. The pickers are proper toggle tiles now, split into templates and feats, with one reset to get back to the printed creature.",
+  },
+  {
     id: "2026-08-21-summoning-helper",
     date: "2026-08-21",
     title: "A summoning helper on the reference site",

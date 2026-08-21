@@ -13,49 +13,68 @@ function crHint(adjustment: StatblockAdjustment): string | null {
   return min === max ? `CR ${fmt(min)}` : `CR ${fmt(min)} to ${fmt(max)}`;
 }
 
-/** Checkbox list of templates / feat-style adjustments the reader can toggle and stack. */
+/** Toggle grid of templates / feat-style adjustments the reader can stack. */
 export function AdjustmentPicker({
   options,
   selected,
   onToggle,
   title,
+  hint,
 }: {
   options: readonly StatblockAdjustment[];
   selected: ReadonlySet<string>;
   onToggle: (key: string) => void;
   title?: string;
+  /** Quiet aside next to the group title ("stack freely", "pick one"). */
+  hint?: string;
 }) {
   return (
     <div className="adjust-picker">
-      {title && <span className="adjust-picker-title">{title}</span>}
-      <ul className="adjust-picker-list">
+      {title && (
+        <div className="adjust-picker-head">
+          <span className="adjust-picker-title">{title}</span>
+          {hint && <span className="adjust-picker-hint">{hint}</span>}
+        </div>
+      )}
+      <div className="adjust-picker-grid">
         {options.map((option) => {
-          const hint = crHint(option);
+          const cr = crHint(option);
+          const on = selected.has(option.key);
           return (
-            <li key={option.key}>
-              <label className="adjust-picker-item">
-                <input
-                  type="checkbox"
-                  checked={selected.has(option.key)}
-                  onChange={() => onToggle(option.key)}
-                />
-                <span className="adjust-picker-label">{option.label}</span>
-                {hint && <span className="adjust-picker-hint">{hint}</span>}
-              </label>
-            </li>
+            <label
+              key={option.key}
+              className={on ? "adjust-option is-on" : "adjust-option"}
+              title={option.notes?.join(" ")}
+            >
+              <input type="checkbox" checked={on} onChange={() => onToggle(option.key)} />
+              <span className="adjust-option-box" aria-hidden="true" />
+              <span className="adjust-option-label">{option.label}</span>
+              {cr && <span className="adjust-option-cr">{cr}</span>}
+            </label>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 }
 
-/** The notes an `applyAdjustments` result carries: manual call-outs read loud, info notes read quiet. */
+/**
+ * The notes an `applyAdjustments` result carries: manual call-outs read loud,
+ * info notes read quiet. Stacked templates repeat each other's standing
+ * caveats, so identical lines are printed once.
+ */
 export function AdjustmentNotes({ notes }: { notes: readonly AdjustNote[] }) {
-  if (notes.length === 0) return null;
+  const seen = new Set<string>();
+  const unique = notes.filter((note) => {
+    const key = `${note.severity}|${note.text}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  if (unique.length === 0) return null;
   return (
     <ul className="adjust-note-list">
-      {notes.map((note, i) => (
+      {unique.map((note, i) => (
         <li
           key={`${note.severity}-${i}`}
           className={note.severity === "manual" ? "adjust-note is-manual" : "adjust-note"}

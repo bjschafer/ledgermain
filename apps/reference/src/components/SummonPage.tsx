@@ -38,7 +38,7 @@ import {
   type SummonSpell,
 } from "../model/summonLists.js";
 import type { RefIndex } from "../shared/indexCodec.js";
-import { AdjustmentNotes, AdjustmentPicker } from "./AdjustPanel.js";
+import { AdjustmentPicker } from "./AdjustPanel.js";
 import { MonsterView } from "./MonsterView.js";
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
@@ -201,17 +201,17 @@ function SummonLevelPage({
         {SUMMON_SPELL_LABEL[spell]} {romanLevel(level)}
       </h2>
 
-      <div className="summon-feats" role="group" aria-label="Feats">
-        {FEAT_OPTIONS.map((opt) => (
-          <label key={opt.slug} className="summon-feat-toggle">
-            <input
-              type="checkbox"
-              checked={featSet.has(opt.slug)}
-              onChange={() => toggleFeat(opt.slug)}
-            />
-            {opt.label}
-          </label>
-        ))}
+      <div className="summon-feats adjust-picker-grid" role="group" aria-label="Feats">
+        {FEAT_OPTIONS.map((opt) => {
+          const on = featSet.has(opt.slug);
+          return (
+            <label key={opt.slug} className={on ? "adjust-option is-on" : "adjust-option"}>
+              <input type="checkbox" checked={on} onChange={() => toggleFeat(opt.slug)} />
+              <span className="adjust-option-box" aria-hidden="true" />
+              <span className="adjust-option-label">{opt.label}</span>
+            </label>
+          );
+        })}
       </div>
 
       <label className="cl-input">
@@ -451,7 +451,6 @@ function SummonCreaturePanel({
   );
 
   const result = applyAdjustments(state.monster, adjustments);
-  const changedFields = new Set(result.changes.map((c) => c.field));
 
   return (
     <section className="summon-creature-panel">
@@ -470,6 +469,7 @@ function SummonCreaturePanel({
             selected={templateKey ? new Set([templateKey]) : new Set()}
             onToggle={(key) => onSetTemplate(templateKey === key ? undefined : key)}
             title="Template"
+            hint="pick one"
           />
           <p className="summon-template-footnote">
             Core Rulebook table footnote: summoned with the celestial template if you are good, or
@@ -478,19 +478,12 @@ function SummonCreaturePanel({
         </>
       )}
 
-      {adjustments.length > 0 && (
-        <div className="summon-adjust-chips">
-          {adjustments.map((adj) => (
-            <span key={adj.key} className="summon-adjust-chip">
-              {adj.label}
-            </span>
-          ))}
-        </div>
-      )}
-
-      <AdjustmentNotes notes={result.notes} />
-
-      <MonsterView monster={result.monster} changedFields={changedFields} />
+      <MonsterView
+        monster={result.monster}
+        base={state.monster}
+        appliedLabels={adjustments.map((adj) => adj.label)}
+        notes={result.notes}
+      />
     </section>
   );
 }
