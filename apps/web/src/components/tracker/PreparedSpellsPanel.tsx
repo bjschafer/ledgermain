@@ -12,7 +12,6 @@ import type {
 
 import { addBuff, makeActiveBuff, removeBuff, suggestRounds } from "../../model/buffs.js";
 import { casterLevelForClass, effectiveCasterClassLevel } from "../../model/casterLevel.js";
-import { parentBloodlineTagOf } from "../../model/doc.js";
 import {
   castPreparedAsConversion,
   castSpiritMagicSlot,
@@ -61,19 +60,13 @@ import {
   toggleMetamagic,
 } from "../../model/metamagic.js";
 import {
-  bloodlineSpellsKnown,
   casterClassesOf,
   casterModelFor,
   castingDeltasFor,
-  curseSpellsKnown,
-  disciplineSpellsKnown,
   ELEMENTAL_SCHOOL_LABELS,
   grantedCantrips,
   isElementalSchoolTag,
   knownSpellsFor,
-  mysterySpellsKnown,
-  oracleChannelSpellsKnown,
-  patronSpellsKnown,
   preparedCapacityByLevel,
   SCHOOL_LABELS,
   shamanSpiritSpellsKnown,
@@ -83,7 +76,7 @@ import {
 } from "../../model/spellcasting.js";
 import { newDaySummary } from "../../model/rest.js";
 import { buffsForSpell } from "../../model/spellBuffs.js";
-import { impliedUndercastSpells } from "../../model/undercasting.js";
+import { bonusKnownSpellsFor } from "../../model/knownSpells.js";
 import {
   castSpontaneousSlot,
   resetSpontaneousSlots,
@@ -1707,121 +1700,16 @@ function SpontaneousView({
     if (lvl === undefined || !sp) continue;
     (knownByLevel.get(lvl) ?? knownByLevel.set(lvl, []).get(lvl)!).push({ id, name: sp.name });
   }
-  // Bloodline bonus spells known: auto-granted, castable at the table just like
-  // chosen known spells (they still consume a slot of the matching level — only
-  // the spells-known *cap* exempts them, not slot spending). Merge in, skipping
-  // ids already present (e.g. also separately added to `known`) to avoid dupes.
-  if (casterTag === "sorcerer") {
-    const known = new Set(knownList);
-    // Bonus spells come from the BASE bloodline's spell list even when
-    // `sorcererBloodline` names a wildblooded mutation instead (RAW — see
-    // `SorcererBloodlineMutation` doc comment).
-    const bloodlineTag = doc.build.sorcererBloodline
-      ? parentBloodlineTagOf(refData, doc.build.sorcererBloodline)
-      : undefined;
-    for (const sp of bloodlineSpellsKnown(refData, bloodlineTag, classLevel)) {
-      if (known.has(sp.id)) continue;
-      (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
-        id: sp.id,
-        name: sp.name,
-      });
-    }
-  }
-  // Oracle mystery + curse bonus spells known: same treatment as sorcerer
-  // bloodline spells above — castable at the table, only exempt from the cap.
-  if (casterTag === "oracle") {
-    const known = new Set(knownList);
-    const bonus = [
-      ...mysterySpellsKnown(
-        refData,
-        doc.build.oracleMystery,
-        classLevel,
-        sheet.bonusKnownSpells?.mysteryReplacedLevels,
-      ),
-      ...curseSpellsKnown(refData, doc.build.oracleCurse, classLevel),
-      ...oracleChannelSpellsKnown(refData, doc.build.oracleChannelAlignment, classLevel),
-    ];
-    for (const sp of bonus) {
-      if (known.has(sp.id)) continue;
-      (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
-        id: sp.id,
-        name: sp.name,
-      });
-    }
-  }
-  // Psychic discipline bonus spells known: same treatment as sorcerer
-  // bloodline spells above — castable at the table, only exempt from the
-  // known cap. Unlike the oracle branch, entries are filed under the spell's
-  // own castable spell level (via `levelMap`, falling back to the spell's
-  // nominal level) — `disciplineSpellsKnown`'s `level` field is the psychic
-  // CLASS level that unlocked the spell (1, 4, 6, ..., 18), not a slot level.
-  if (casterTag === "psychic") {
-    const known = new Set(knownList);
-    for (const sp of disciplineSpellsKnown(refData, doc.build.psychicDiscipline, classLevel)) {
-      if (known.has(sp.id)) continue;
-      const lvl = levelMap.get(sp.id) ?? refData.spells[sp.id]?.level;
-      if (lvl === undefined) continue;
-      (knownByLevel.get(lvl) ?? knownByLevel.set(lvl, []).get(lvl)!).push({
-        id: sp.id,
-        name: sp.name,
-      });
-    }
-  }
-  // Witch patron bonus spells known (added to the familiar's spells): same
-  // treatment as sorcerer bloodline spells above — castable at the table,
-  // only exempt from the known cap. Like the psychic branch above (and
-  // unlike the oracle branch), entries are filed under the spell's own
-  // castable spell level via `levelMap` — `patronSpellsKnown`'s `level`
-  // field is the WITCH class level that unlocked the spell (2, 4, ..., 18),
-  // not a slot level. A patron spell that doesn't resolve against the
-  // vendored spell slice at all (see `patronSpellsKnown`'s doc comment) has
-  // no `levelMap` entry either, so it's silently skipped here — same
-  // "unresolvable, never thrown" tolerance every other bonus-spell merge
-  // above uses.
-  if (casterTag === "witch") {
-    const known = new Set(knownList);
-    for (const sp of patronSpellsKnown(refData, doc.build.witchPatron, classLevel)) {
-      if (known.has(sp.id)) continue;
-      const lvl = levelMap.get(sp.id) ?? refData.spells[sp.id]?.level;
-      if (lvl === undefined) continue;
-      (knownByLevel.get(lvl) ?? knownByLevel.set(lvl, []).get(lvl)!).push({
-        id: sp.id,
-        name: sp.name,
-      });
-    }
-  }
-  // Archetype fixed bonus spells known (engine casting-economy tables): same
-  // treatment as the per-family merges above — castable, cap-exempt, deduped.
-  // Filed under the engine-resolved spell level (the psychic/witch
-  // convention).
-  {
-    const known = new Set(knownList);
-    for (const sp of sheet.bonusKnownSpells?.spells ?? []) {
-      if (sp.classTag !== casterTag) continue;
-      if (sp.spellId !== undefined && known.has(sp.spellId)) continue;
-      (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
-        id: sp.spellId ?? sp.id,
-        name: sp.name,
-      });
-    }
-  }
-  // Undercasting (Occult Adventures psychic spells "that can be undercast"):
-  // knowing a higher chain version (e.g. Mind Thrust IV) also grants every
-  // lower version in the same chain (Mind Thrust I-III), castable at ITS OWN
-  // level from that level's own slot pool — RAW never requires learning them
-  // separately, so, like the bonus-spell merges above, they're exempt from
-  // the known-spell cap; unlike those, they're tagged (`undercastOf`) so the
-  // row can show which known spell grants them.
-  {
-    const known = new Set(knownList);
-    for (const sp of impliedUndercastSpells(refData, knownList)) {
-      if (known.has(sp.id)) continue;
-      (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push({
-        id: sp.id,
-        name: sp.name,
-        undercastOf: sp.grantedByName,
-      });
-    }
+  // Bonus spells known (bloodline, mystery/curse/channel, discipline, patron,
+  // archetype grants) plus undercastable chain versions: all auto-granted and
+  // castable at the table, exempt only from the spells-known cap, and assembled
+  // in `model/knownSpells.ts` so the crafting picker sees the same set.
+  for (const sp of bonusKnownSpellsFor(doc, refData, sheet, casterTag, classLevel, levelMap)) {
+    (knownByLevel.get(sp.level) ?? knownByLevel.set(sp.level, []).get(sp.level)!).push(
+      sp.undercastOf
+        ? { id: sp.id, name: sp.name, undercastOf: sp.undercastOf }
+        : { id: sp.id, name: sp.name },
+    );
   }
   for (const arr of knownByLevel.values()) arr.sort((a, b) => a.name.localeCompare(b.name));
 

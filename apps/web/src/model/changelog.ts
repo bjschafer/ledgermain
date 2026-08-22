@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-21-craft-consumables",
+    date: "2026-08-21",
+    title: "Scribe your own scrolls",
+    note: "The potion, scroll, and wand picker in Gear now has a Craft side for anyone holding Scribe Scroll, Brew Potion, or Craft Wand. It lists only the spells you can actually cast, priced from the level your own class casts them at, and shows what creating one costs (half the market price), how long it takes, and the Spellcraft DC. You can also choose the caster level, anywhere from the cheapest legal version up to your own, so a scroll of dispel magic can be worth casting. Scrolls and wands are labelled arcane or divine, spells with a material component are flagged so you remember to pay for it, and an optional tick pays the cost straight out of your purse. Multiclass casters pick which class is doing the work.",
+  },
+  {
     id: "2026-08-21-granted-feat-slots",
     date: "2026-08-21",
     title: "Brawlers, warpriests, and swashbucklers had a feat too many",

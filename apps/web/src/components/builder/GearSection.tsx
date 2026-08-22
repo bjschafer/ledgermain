@@ -16,6 +16,7 @@ import {
   setGearEquipped,
   setGearQuantity,
   setMoney,
+  spendMoney,
   updateGearItem,
 } from "../../model/doc.js";
 import {
@@ -32,6 +33,14 @@ import {
   generateConsumables,
 } from "../../model/consumables.js";
 import {
+  type CasterLevelChoice,
+  craftableKinds,
+  type CraftEntry,
+  craftSources,
+  generateCraftEntries,
+  itemCreationFeatFor,
+} from "../../model/crafting.js";
+import {
   gearItemSlot,
   gearSlotConflicts,
   groupGearByCategory,
@@ -40,6 +49,7 @@ import {
 import { ARMOR_MATERIALS } from "../../model/materials.js";
 import { changeTargetLabel } from "../../model/names.js";
 import { noteLines } from "../../model/rulesNotes.js";
+import { showToast } from "../../state/toast.js";
 import { InfoTip } from "../InfoTip.js";
 import { RulesNote } from "../RulesNote.js";
 import { BagIcon } from "../icons.js";
@@ -573,6 +583,11 @@ function consumableMeta(entry: ConsumableEntry): string {
   return parts.join(" · ");
 }
 
+/** Trim a price to at most two decimals — half of an odd base price is rarely whole. */
+function gp(amount: number): string {
+  return String(Math.round(amount * 100) / 100);
+}
+
 /** A one-line summary of a {@link ArmorRef} for the picker preview. */
 function armorRefMeta(a: ArmorRef): string {
   const weight = a.weightClass ? `${WEIGHT_LABEL[a.weightClass] ?? "—"} ` : "";
@@ -618,6 +633,15 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   const [showConsumablePicker, setShowConsumablePicker] = useState(false);
   const [consumableKind, setConsumableKind] = useState<ConsumableKind>("potion");
   const [consumableQuery, setConsumableQuery] = useState("");
+
+  // Craft side of the same picker — only reachable with the matching item-
+  // creation feat. `craftCasterLevel` is a policy, not a fixed number: each
+  // spell clamps it to its own legal range (see `resolveCraftCasterLevel`).
+  const [consumableMode, setConsumableMode] = useState<"buy" | "craft">("buy");
+  const [craftClassTag, setCraftClassTag] = useState<string | null>(null);
+  const [craftCasterLevel, setCraftCasterLevel] = useState<CasterLevelChoice>("min");
+  const [showUncastable, setShowUncastable] = useState(false);
+  const [deductCraftCost, setDeductCraftCost] = useState(false);
 
   // Kit picker — class kits expand to their packed gear.
   const [showKitPicker, setShowKitPicker] = useState(false);
@@ -677,6 +701,40 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
     return all.filter((c) => !q || c.spellName.toLowerCase().includes(q)).slice(0, 80);
   }, [refData.spells, consumableKind, consumableQuery]);
 
+  // Which kinds the character holds the item-creation feat for, and which
+  // caster class they'd be crafting as (multiclass casters get a chooser).
+  const craftKinds = useMemo(() => craftableKinds(doc, refData), [doc, refData]);
+  const sources = useMemo(() => craftSources(doc, refData, sheet), [doc, refData, sheet]);
+  const craftSource = useMemo(
+    () => sources.find((s) => s.classTag === craftClassTag) ?? sources[0],
+    [sources, craftClassTag],
+  );
+  // Craft mode only actually engages for a kind whose feat is held; a kind
+  // without it falls back to the market list rather than dead-ending.
+  const crafting =
+    consumableMode === "craft" && craftSource !== undefined && craftKinds.has(consumableKind);
+
+  const filteredCraft = useMemo(() => {
+    if (!crafting || !craftSource) return [];
+    const all = generateCraftEntries(
+      craftSource,
+      refData.spells,
+      consumableKind,
+      craftCasterLevel,
+      showUncastable,
+    );
+    const q = consumableQuery.trim().toLowerCase();
+    return all.filter((c) => !q || c.spellName.toLowerCase().includes(q)).slice(0, 80);
+  }, [
+    crafting,
+    craftSource,
+    refData.spells,
+    consumableKind,
+    craftCasterLevel,
+    showUncastable,
+    consumableQuery,
+  ]);
+
   // Kits are a small, fixed set (~40), so the whole list renders unfiltered
   // and there's no result cap to explain like the item/armor pickers have.
   const filteredKits = useMemo(() => {
@@ -698,6 +756,34 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
 
   function handleAddConsumable(entry: ConsumableEntry) {
     update((d) => addCustomGearItem(d, entry.name, { price: entry.price, charges: entry.charges }));
+    setShowConsumablePicker(false);
+    setConsumableQuery("");
+  }
+
+  /**
+   * A crafted item is worth its market price and costs half that to make, so
+   * the gear row carries the former while the purse (optionally) loses the
+   * latter. Too little coin doesn't block the add — the item is still made,
+   * and the shortfall is reported rather than silently swallowed.
+   */
+  function handleAddCraft(entry: CraftEntry) {
+    let short = false;
+    update((d) => {
+      const withItem = addCustomGearItem(d, entry.name, {
+        price: entry.price,
+        charges: entry.charges,
+      });
+      if (!deductCraftCost) return withItem;
+      const paid = spendMoney(withItem, entry.cost);
+      if (paid) return paid;
+      short = true;
+      return withItem;
+    });
+    showToast({
+      message: short
+        ? `${entry.name} added, but there wasn't ${gp(entry.cost)} gp to pay for it`
+        : `${entry.name} crafted${deductCraftCost ? ` for ${gp(entry.cost)} gp` : ""}`,
+    });
     setShowConsumablePicker(false);
     setConsumableQuery("");
   }
@@ -1167,7 +1253,10 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Add consumable — potions/scrolls/wands derived from the
           vendored spell list, since Foundry ships no static consumable items.
           Picked entries become self-contained custom gear (name/price/charges
-          on the instance), so nothing hits the engine. */}
+          on the instance), so nothing hits the engine. The Craft side of the
+          toggle prices the same catalog for a character with the matching
+          item-creation feat: their own spells, their own caster level, half
+          price. See model/crafting.ts. */}
       <div className="gear-add-row">
         {!showConsumablePicker ? (
           <button type="button" className="btn-ghost" onClick={() => setShowConsumablePicker(true)}>
@@ -1191,6 +1280,23 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                   </button>
                 ))}
               </div>
+              {craftKinds.size > 0 && craftSource !== undefined && (
+                <div className="kind-toggle" role="tablist" aria-label="Buy or craft">
+                  {(["buy", "craft"] as const).map((mode) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      className="chip"
+                      role="tab"
+                      aria-selected={consumableMode === mode}
+                      aria-pressed={consumableMode === mode}
+                      onClick={() => setConsumableMode(mode)}
+                    >
+                      {mode === "buy" ? "Buy" : "Craft"}
+                    </button>
+                  ))}
+                </div>
+              )}
               <input
                 className="search"
                 type="text"
@@ -1210,8 +1316,123 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                 Cancel
               </button>
             </div>
+
+            {consumableMode === "craft" && craftSource !== undefined && (
+              <div className="craft-controls">
+                {sources.length > 1 && (
+                  <label className="field enh-field">
+                    <span>Crafting as</span>
+                    <select
+                      value={craftSource.classTag}
+                      onChange={(e) => setCraftClassTag(e.target.value)}
+                    >
+                      {sources.map((src) => (
+                        <option key={src.classTag} value={src.classTag}>
+                          {src.label} (CL {src.casterLevel})
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+                <label className="field enh-field">
+                  <span>Caster level</span>
+                  <select
+                    value={String(craftCasterLevel)}
+                    onChange={(e) =>
+                      setCraftCasterLevel(e.target.value === "min" ? "min" : Number(e.target.value))
+                    }
+                  >
+                    <option value="min">Minimum</option>
+                    {Array.from({ length: craftSource.casterLevel }, (_, i) => i + 1).map((n) => (
+                      <option key={n} value={n}>
+                        CL {n}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="check">
+                  <input
+                    type="checkbox"
+                    checked={deductCraftCost}
+                    onChange={(e) => setDeductCraftCost(e.target.checked)}
+                  />
+                  <span>Pay from purse</span>
+                </label>
+                <label className="check">
+                  <input
+                    type="checkbox"
+                    checked={showUncastable}
+                    onChange={(e) => setShowUncastable(e.target.checked)}
+                  />
+                  <span>Show spells I can't cast</span>
+                </label>
+              </div>
+            )}
+
+            {consumableMode === "craft" && craftSource === undefined && (
+              <p className="hint">
+                No class on this build can cast yet, so there is nothing to craft from.
+              </p>
+            )}
+            {consumableMode === "craft" && craftSource !== undefined && !crafting && (
+              <p className="hint">
+                {itemCreationFeatFor(consumableKind)?.featName} is needed to make these. Showing
+                what a shop would sell instead.
+              </p>
+            )}
+            {crafting && (
+              <p className="hint">
+                Creating costs half the market price and takes the listed time. Any material
+                component is paid on top, in full. A prepared caster must have the spell prepared
+                that day.
+              </p>
+            )}
+
             <div className="scroll">
-              {filteredConsumables.length === 0 ? (
+              {crafting ? (
+                filteredCraft.length === 0 ? (
+                  <div className="empty">
+                    {showUncastable
+                      ? "No spells match."
+                      : "No spells you can cast match. Try \u201cShow spells I can\u2019t cast\u201d."}
+                  </div>
+                ) : (
+                  filteredCraft.map((entry) => (
+                    <div key={entry.id} className="pick-row">
+                      <div className="pmain">
+                        <div className="pname">{entry.name}</div>
+                        {/* Two lines, split by what they answer: what the item
+                            is, then what making it takes. Both wrap, so each
+                            stays short enough to avoid a dangling separator. */}
+                        <div className="preq craft-meta">
+                          <span>spell lvl {entry.spellLevel}</span>
+                          <span>CL {entry.casterLevel}</span>
+                          <span>worth {gp(entry.price)} gp</span>
+                          {entry.charges != null ? <span>{entry.charges} charges</span> : null}
+                        </div>
+                        <div className="preq craft-meta">
+                          <span>{gp(entry.cost)} gp to craft</span>
+                          <span>{entry.time}</span>
+                          <span>Spellcraft DC {entry.dc}</span>
+                          {entry.needsMaterial ? (
+                            <span className="soft">material component costs extra</span>
+                          ) : null}
+                          {!entry.castable ? (
+                            <span className="ck-unmet">not on your spell list</span>
+                          ) : null}
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        className="pick-btn add"
+                        onClick={() => handleAddCraft(entry)}
+                      >
+                        Craft
+                      </button>
+                    </div>
+                  ))
+                )
+              ) : filteredConsumables.length === 0 ? (
                 <div className="empty">No spells match.</div>
               ) : (
                 filteredConsumables.map((entry) => (
@@ -1232,7 +1453,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                   </div>
                 ))
               )}
-              {filteredConsumables.length === 80 ? (
+              {(crafting ? filteredCraft.length : filteredConsumables.length) === 80 ? (
                 <div className="empty">Showing first 80. Refine your search.</div>
               ) : null}
             </div>

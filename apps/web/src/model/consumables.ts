@@ -118,15 +118,34 @@ export function minCasterLevel(level: number): number {
   return Math.max(1, 2 * level - 1);
 }
 
+/** The definition row for `kind`, or `undefined` for an unknown kind. */
+export function consumableKindDef(kind: ConsumableKind): ConsumableKindDef | undefined {
+  return CONSUMABLE_KINDS.find((k) => k.kind === kind);
+}
+
 /**
- * Market price of the minimum-CL version. A 0-level spell is priced as level ½
- * per the item-creation tables.
+ * Market price at an arbitrary caster level. A 0-level spell is priced as
+ * level ½ per the item-creation tables. Crafting at above the minimum caster
+ * level is the reason this takes `casterLevel` at all: a CL 10 scroll of
+ * dispel magic is a different (dearer) item than the CL 5 one a shop stocks.
+ */
+export function consumablePriceAt(
+  kind: ConsumableKind,
+  spellLevel: number,
+  casterLevel: number,
+): number {
+  const def = consumableKindDef(kind);
+  if (!def) return 0;
+  const factor = spellLevel === 0 ? 0.5 : spellLevel;
+  return factor * casterLevel * def.priceFactor;
+}
+
+/**
+ * Market price of the minimum-CL version — what a shop stocks, and what the
+ * Buy side of the picker lists.
  */
 export function consumablePrice(kind: ConsumableKind, level: number): number {
-  const def = CONSUMABLE_KINDS.find((k) => k.kind === kind);
-  if (!def) return 0;
-  const factor = level === 0 ? 0.5 : level;
-  return factor * minCasterLevel(level) * def.priceFactor;
+  return consumablePriceAt(kind, level, minCasterLevel(level));
 }
 
 /** True when a spell's every ranged action targets personal or touch range. */
@@ -141,14 +160,23 @@ function isPersonalOrTouch(spell: Spell): boolean {
   return sawRange;
 }
 
-/** Whether `spell` can be made into a consumable of `kind`. */
-export function isConsumableEligible(spell: Spell, kind: ConsumableKind): boolean {
-  const def = CONSUMABLE_KINDS.find((k) => k.kind === kind);
+/**
+ * Whether `spell`, cast as a `level`-level spell, can be made into a
+ * consumable of `kind`. The explicit level matters when crafting: the same
+ * spell sits at different levels on different class lists, and it is the
+ * crafter's own list level that decides whether it clears the kind's cap.
+ */
+export function isConsumableEligibleAt(spell: Spell, kind: ConsumableKind, level: number): boolean {
+  const def = consumableKindDef(kind);
   if (!def) return false;
-  const level = effectiveSpellLevel(spell);
   if (level > def.maxSpellLevel) return false;
   if (kind === "potion" && !isPersonalOrTouch(spell)) return false;
   return true;
+}
+
+/** Whether a spell can be made into a consumable of `kind` at its market level. */
+export function isConsumableEligible(spell: Spell, kind: ConsumableKind): boolean {
+  return isConsumableEligibleAt(spell, kind, effectiveSpellLevel(spell));
 }
 
 /**
@@ -159,7 +187,7 @@ export function generateConsumables(
   spells: Record<string, Spell>,
   kind: ConsumableKind,
 ): ConsumableEntry[] {
-  const def = CONSUMABLE_KINDS.find((k) => k.kind === kind);
+  const def = consumableKindDef(kind);
   if (!def) return [];
   const out: ConsumableEntry[] = [];
   for (const spell of Object.values(spells)) {

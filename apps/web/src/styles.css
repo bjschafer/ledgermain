@@ -2873,13 +2873,18 @@ button:focus-visible,
 
 .gear-picker-head {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   align-items: center;
   padding: 10px 12px 0;
 }
 
+/* Wide enough to still read as a search box once the kind chips and the
+   buy/craft toggle have taken their share of the row; below that it wraps to
+   its own line rather than shrinking to a few characters. */
 .gear-picker-head .search {
   flex: 1;
+  min-width: 180px;
   margin-bottom: 0;
 }
 
@@ -2889,6 +2894,44 @@ button:focus-visible,
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+
+/* Craft-mode controls in the consumables picker: which caster class is doing
+   the work, at what caster level, and the two opt-ins (pay from the purse,
+   widen the list past what you can cast). Sits between the search head and the
+   result list, so it carries the head's padding rather than the list's. */
+.gear-picker .craft-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  padding: 10px 12px 0;
+}
+
+.gear-picker .craft-controls .check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--ink-dim);
+  white-space: nowrap;
+}
+
+.gear-picker .craft-controls .check input {
+  width: auto;
+  margin: 0;
+}
+
+/* The craft row's numbers are a wrapping list of separate facts, so they need
+   a separator of their own: run together they read as one broken sentence. */
+.pick-row .craft-meta > span:not(:last-child)::after {
+  content: " \00b7";
+  color: var(--faint);
+}
+
+.gear-picker > .hint {
+  margin: 0;
+  padding: 10px 12px 0;
 }
 
 .gear-picker .scroll {

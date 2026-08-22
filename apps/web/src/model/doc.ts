@@ -1607,6 +1607,41 @@ export function setMoney(doc: CharacterDoc, field: MoneyField, value: number): C
   return { ...doc, live: { ...doc.live, money: cleaned } };
 }
 
+/** Total purse value in copper pieces. */
+export function purseInCopper(doc: CharacterDoc): number {
+  const m = doc.live.money ?? {};
+  return (m.pp ?? 0) * 1000 + (m.gp ?? 0) * 100 + (m.sp ?? 0) * 10 + (m.cp ?? 0);
+}
+
+/**
+ * Pay `gp` out of the purse, or return `null` when there isn't enough coin.
+ *
+ * The remainder is re-denominated rather than subtracted from one column,
+ * since a 187.5 gp crafting cost rarely comes out of gold alone. Platinum is
+ * preserved wherever the remainder allows: a purse is broken into smaller coin
+ * only as far as paying requires, never consolidated upward, so paying 5 gp
+ * out of 100 gp doesn't silently return 9 pp and change.
+ */
+export function spendMoney(doc: CharacterDoc, gp: number): CharacterDoc | null {
+  const costCp = Math.round(gp * 100);
+  if (!Number.isFinite(costCp) || costCp <= 0) return doc;
+  const total = purseInCopper(doc);
+  if (costCp > total) return null;
+
+  let rest = total - costCp;
+  const pp = Math.min(doc.live.money?.pp ?? 0, Math.floor(rest / 1000));
+  rest -= pp * 1000;
+  const gpOut = Math.floor(rest / 100);
+  rest -= gpOut * 100;
+  const sp = Math.floor(rest / 10);
+  rest -= sp * 10;
+
+  let next = setMoney(doc, "pp", pp);
+  next = setMoney(next, "gp", gpOut);
+  next = setMoney(next, "sp", sp);
+  return setMoney(next, "cp", rest);
+}
+
 /**
  * Set or clear the user's maximum-HP override (e.g. rolled HP).
  * When `value` is null, NaN, or <= 0, the override key is removed entirely so
