@@ -9,6 +9,10 @@ import {
   encodeTrackState,
   hpStatus,
   isTrackEmpty,
+  clampCopies,
+  copiesStorageKey,
+  MAX_COPIES,
+  trackStorageKey,
 } from "../src/model/track.js";
 
 function monster(overrides: Partial<Monster>): Monster {
@@ -118,5 +122,22 @@ describe("hp status", () => {
     expect(hpStatus(troll, -30).regenerationCaveat).toBeDefined();
     expect(hpStatus(troll, 0).regenerationCaveat).toBeUndefined();
     expect(hpStatus(wolf, -5).regenerationCaveat).toBeUndefined();
+  });
+});
+
+describe("copy storage keys", () => {
+  test("keeps the original key for the first copy so pre-copies records still load", () => {
+    expect(trackStorageKey("wolf", 0)).toBe("track:wolf");
+    expect(trackStorageKey("wolf", 1)).toBe("track:wolf#2");
+    expect(trackStorageKey("wolf", 4)).toBe("track:wolf#5");
+    expect(copiesStorageKey("wolf")).toBe("track:wolf:copies");
+  });
+
+  test("clamps the copy count to 1..MAX_COPIES and survives junk", () => {
+    expect(clampCopies(0)).toBe(1);
+    expect(clampCopies(3)).toBe(3);
+    expect(clampCopies(99)).toBe(MAX_COPIES);
+    expect(clampCopies(Number.NaN)).toBe(1);
+    expect(clampCopies(2.7)).toBe(2);
   });
 });

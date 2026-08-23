@@ -31,7 +31,7 @@ import {
   type Route,
   type SummonRouteParams,
 } from "../hooks/useHashRoute.js";
-import { useTrackState } from "../hooks/useTrackState.js";
+import { useTrackGroup } from "../hooks/useTrackState.js";
 import { applyAdjustments } from "../model/adjust/apply.js";
 import { conditionAdjustments } from "../model/adjust/conditions.js";
 import {
@@ -573,7 +573,8 @@ function SummonCreaturePanel({
   onSetEvo: (slugs: string[]) => void;
 }) {
   const [state, setState] = useState<CreatureState>({ status: "loading" });
-  const [track, updateTrack] = useTrackState(creatureId);
+  const group = useTrackGroup(creatureId);
+  const track = group.states[group.activeIndex] ?? group.states[0]!;
 
   useEffect(() => {
     let live = true;
@@ -780,7 +781,7 @@ function SummonCreaturePanel({
         />
       )}
 
-      <TrackPanel monster={result.monster} state={track} update={updateTrack} />
+      <TrackPanel monster={result.monster} group={group} />
 
       <MonsterView
         monster={result.monster}

@@ -2,13 +2,14 @@ import type { Monster } from "@pf1/schema";
 import { useState } from "react";
 
 import { detailHref } from "../hooks/useHashRoute.js";
+import type { TrackGroup } from "../hooks/useTrackState.js";
 import {
   CONDITION_ORDER,
   CONDITIONS,
   supersedingCondition,
   toggleCondition,
 } from "../model/adjust/conditions.js";
-import { clampDamage, hpStatus, type TrackState } from "../model/track.js";
+import { clampDamage, hpStatus, MAX_COPIES } from "../model/track.js";
 
 /**
  * The GM-side encounter tracker on a statblock page: damage and healing
@@ -17,39 +18,103 @@ import { clampDamage, hpStatus, type TrackState } from "../model/track.js";
  * the page above). No dice, in keeping with the rest of the site: the
  * tracker records what happened at the table, it never rolls anything.
  *
+ * Several copies of the creature (a summon's 1d3 of a kind, a pack of wolves)
+ * share the page: a copy strip shows every copy's hp at a glance, and the hp
+ * controls, chips, and the statblock's condition effects follow the active
+ * one. One copy is the default and the strip stays out of the way until a
+ * second is added.
+ *
  * Chip semantics mirror the sheet's conditions panel: solid border = moves
  * numbers, dashed + ° = reference only, dimmed + ▲ = implied by a stricter
  * active condition on its ladder.
  */
 export function TrackPanel({
   monster,
-  state,
-  update,
+  group,
 }: {
   /** The statblock as displayed: the adjusted copy when templates are on, so max hp matches the page. */
   monster: Monster;
-  state: TrackState;
-  update: (patch: Partial<TrackState>) => void;
+  group: TrackGroup;
 }) {
-  const tracking = state.damage > 0 || state.conditions.length > 0;
+  const copies = group.states.length;
+  const state = group.states[group.activeIndex] ?? group.states[0]!;
+  const tracking = copies > 1 || group.states.some((s) => s.damage > 0 || s.conditions.length > 0);
   const active = state.conditions;
+  const update = (patch: Parameters<TrackGroup["update"]>[1]) =>
+    group.update(group.activeIndex, patch);
 
   return (
     <section className="rpanel">
       <header className="rpanel-header">
         <h2>Track</h2>
-        <button
-          type="button"
-          className="btn-ghost"
-          disabled={!tracking}
-          onClick={() => update({ damage: 0, conditions: [] })}
-        >
-          Reset
-        </button>
+        <div className="track-header-actions">
+          <span className="track-copies-ctl" role="group" aria-label="Copies of this creature">
+            <button
+              type="button"
+              className="btn-ghost"
+              disabled={copies <= 1}
+              onClick={group.removeCopy}
+              aria-label="Remove a copy"
+            >
+              −
+            </button>
+            <span className="track-copies-count num">
+              {copies} {copies === 1 ? "copy" : "copies"}
+            </span>
+            <button
+              type="button"
+              className="btn-ghost"
+              disabled={copies >= MAX_COPIES}
+              onClick={group.addCopy}
+              aria-label="Add a copy"
+            >
+              +
+            </button>
+          </span>
+          <button type="button" className="btn-ghost" disabled={!tracking} onClick={group.resetAll}>
+            Reset
+          </button>
+        </div>
       </header>
       <div className="rpanel-body">
+        {copies > 1 && (
+          <div className="track-copies" role="tablist" aria-label="Copies">
+            {group.states.map((s, i) => {
+              const max = monster.hp ?? 0;
+              const current = max - s.damage;
+              const low = max > 0 && current <= Math.floor(max / 4);
+              const classes = ["track-copy"];
+              if (i === group.activeIndex) classes.push("is-active");
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === group.activeIndex}
+                  className={classes.join(" ")}
+                  onClick={() => group.setActiveIndex(i)}
+                >
+                  <span className="track-copy-n">{i + 1}</span>
+                  {monster.hp !== undefined && (
+                    <span
+                      className="track-copy-hp num"
+                      data-low={low || current <= 0 ? "true" : undefined}
+                    >
+                      {current}/{max}
+                    </span>
+                  )}
+                  {s.conditions.length > 0 && (
+                    <span className="track-copy-conds">{s.conditions.length} cond.</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         {monster.hp !== undefined && (
           <HpTracker
+            key={group.activeIndex}
             monster={monster}
             damage={state.damage}
             onDamage={(d) => update({ damage: d })}
@@ -99,8 +164,8 @@ export function TrackPanel({
         )}
 
         <p className="hint track-hint">
-          Each browser tab tracks its own copy of this creature: open one tab per monster in the
-          fight. Survives a reload, cleared when the tab closes.
+          Each browser tab tracks its own fight: add copies here for several of this creature at
+          once, or open one tab per monster. Survives a reload, cleared when the tab closes.
         </p>
       </div>
     </section>

@@ -1196,6 +1196,85 @@ code {
   font-size: 0.8125rem;
 }
 
+/* Header right-hand cluster: the copies stepper beside Reset. */
+.track-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.track-copies-ctl {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.track-copies-ctl .btn-ghost {
+  padding: 2px 8px;
+  line-height: 1.2;
+}
+
+.track-copies-count {
+  font-size: 0.75rem;
+  color: var(--muted);
+  min-width: 4.5em;
+  text-align: center;
+}
+
+/* One tab per copy: number, hp at a glance, condition count. The active
+   copy takes the gold rule; low hp goes oxblood like the big readout. */
+.track-copies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.track-copy {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--muted);
+  font-family: var(--body);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.track-copy:hover {
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.track-copy.is-active {
+  border-color: var(--gold-dim);
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.track-copy-n {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  color: var(--faint);
+}
+
+.track-copy-hp {
+  font-weight: 600;
+  color: var(--gold-2);
+}
+
+.track-copy-hp[data-low="true"] {
+  color: var(--oxblood-ink);
+}
+
+.track-copy-conds {
+  font-size: 0.6875rem;
+  color: var(--faint);
+}
+
 .track-hint {
   margin: 10px 0 0;
   font-size: 0.6875rem;

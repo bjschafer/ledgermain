@@ -25,6 +25,29 @@ export interface TrackState {
 
 export const EMPTY_TRACK: TrackState = { damage: 0, conditions: [], adjustments: [] };
 
+/**
+ * Several copies of one creature on one page (three celestial eagles from a
+ * single casting) each get their own record. Copy 0 keeps the original
+ * `track:<id>` key so a record written before copies existed still loads as
+ * the first copy; later copies hang off it as `#2`, `#3`, ... and the count
+ * lives beside them.
+ */
+export function trackStorageKey(monsterId: string, copy: number): string {
+  return copy === 0 ? `track:${monsterId}` : `track:${monsterId}#${copy + 1}`;
+}
+
+export function copiesStorageKey(monsterId: string): string {
+  return `track:${monsterId}:copies`;
+}
+
+/** Hard ceiling on copies per page: a summon yields at most 1d4+1 (+1 Superior Summoning) of a kind. */
+export const MAX_COPIES = 12;
+
+export function clampCopies(n: number): number {
+  if (!Number.isFinite(n)) return 1;
+  return Math.max(1, Math.min(MAX_COPIES, Math.trunc(n)));
+}
+
 export function isTrackEmpty(state: TrackState): boolean {
   return state.damage === 0 && state.conditions.length === 0 && state.adjustments.length === 0;
 }

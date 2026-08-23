@@ -1,7 +1,7 @@
 import type { Monster, MonsterTemplate } from "@pf1/schema";
 import { useMemo } from "react";
 
-import { useTrackState } from "../hooks/useTrackState.js";
+import { useTrackGroup } from "../hooks/useTrackState.js";
 import { applyAdjustments } from "../model/adjust/apply.js";
 import { conditionAdjustments } from "../model/adjust/conditions.js";
 import { AUGMENT_SUMMONING, STATBLOCK_TEMPLATES } from "../model/adjust/templates.js";
@@ -290,14 +290,17 @@ const ADJUSTMENT_OPTIONS: readonly StatblockAdjustment[] = [
  * reload mid-fight brings the whole worksheet back.
  */
 export function MonsterDetail({ monster }: { monster: Monster }) {
-  const [track, updateTrack] = useTrackState(monster.id);
-  const selected = useMemo(() => new Set(track.adjustments), [track.adjustments]);
+  const group = useTrackGroup(monster.id);
+  // Templates apply to every copy on the page, so they live on copy 0's record.
+  const primary = group.states[0]!;
+  const activeState = group.states[group.activeIndex] ?? primary;
+  const selected = useMemo(() => new Set(primary.adjustments), [primary.adjustments]);
 
   function toggle(key: string): void {
-    updateTrack({
+    group.update(0, {
       adjustments: selected.has(key)
-        ? track.adjustments.filter((k) => k !== key)
-        : [...track.adjustments, key],
+        ? primary.adjustments.filter((k) => k !== key)
+        : [...primary.adjustments, key],
     });
   }
 
@@ -305,7 +308,10 @@ export function MonsterDetail({ monster }: { monster: Monster }) {
     () => ADJUSTMENT_OPTIONS.filter((option) => selected.has(option.key)),
     [selected],
   );
-  const condAdjs = useMemo(() => conditionAdjustments(track.conditions), [track.conditions]);
+  const condAdjs = useMemo(
+    () => conditionAdjustments(activeState.conditions),
+    [activeState.conditions],
+  );
   const adjustments = useMemo(() => [...applied, ...condAdjs], [applied, condAdjs]);
 
   const result = useMemo(
@@ -323,7 +329,7 @@ export function MonsterDetail({ monster }: { monster: Monster }) {
             type="button"
             className="btn-ghost"
             disabled={applied.length === 0}
-            onClick={() => updateTrack({ adjustments: [] })}
+            onClick={() => group.update(0, { adjustments: [] })}
           >
             Reset
           </button>
@@ -344,7 +350,7 @@ export function MonsterDetail({ monster }: { monster: Monster }) {
           />
         </div>
       </section>
-      <TrackPanel monster={shown} state={track} update={updateTrack} />
+      <TrackPanel monster={shown} group={group} />
       <MonsterView
         monster={shown}
         appliedLabels={adjustments.map((option) => option.label)}
