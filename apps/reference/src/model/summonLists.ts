@@ -436,7 +436,7 @@ export const SUMMON_COUNTS = { sameLevel: "1", oneLower: "1d3", twoOrMoreLower: 
  * giants, and so on), compiled per level for Summon Monster and Summon
  * Nature's Ally on the OGL d20pfsrd spell pages with the AP number as the
  * source. They are campaign options, not core, so they sit behind one
- * "Adventure Path alternatives" toggle rather than a feat; each row carries
+ * "Alternative Summoning Options" toggle rather than a feat; each row carries
  * its AP number as the note. Rows the compilation marks with an asterisk
  * take the Summon Monster alignment template; rows it marks "young" get the
  * Young template applied (its own reading of the AP text, flagged as such).
@@ -455,7 +455,7 @@ export const SUMMON_COUNTS = { sameLevel: "1", oneLower: "1d3", twoOrMoreLower: 
 export type SummonAltList = "good" | "neutral" | "evil" | "ap-sm" | "ap-sna";
 
 export interface SummonAltListDef {
-  /** Feat name (or "Adventure Path alternatives"), as the section heading. */
+  /** Feat name (or "Alternative Summoning Options"), as the section heading. */
   label: string;
   /** Which spell's table this extends. */
   spell: SummonSpell;
@@ -769,7 +769,7 @@ export const SUMMON_ALT_LISTS: Record<SummonAltList, SummonAltListDef> = {
     },
   },
   "ap-sm": {
-    label: "Adventure Path alternatives",
+    label: "Alternative Summoning Options",
     spell: "sm",
     toggleSlug: AP_ALTERNATIVES_SLUG,
     source: "various Adventure Paths, via d20pfsrd",
@@ -925,7 +925,7 @@ export const SUMMON_ALT_LISTS: Record<SummonAltList, SummonAltListDef> = {
     },
   },
   "ap-sna": {
-    label: "Adventure Path alternatives",
+    label: "Alternative Summoning Options",
     spell: "sna",
     toggleSlug: AP_ALTERNATIVES_SLUG,
     source: "various Adventure Paths, via d20pfsrd",

@@ -157,7 +157,7 @@ const EXPECTED_ALT_COUNTS: Record<string, Record<number, number>> = {
 
 const FEAT_LISTS = ["good", "neutral", "evil"] as const;
 
-describe("SUMMON_ALT_LISTS (Summon Good/Neutral/Evil Monster, Adventure Path alternatives)", () => {
+describe("SUMMON_ALT_LISTS (Summon Good/Neutral/Evil Monster, Alternative Summoning Options)", () => {
   it("matches the hand-counted row counts at every level", () => {
     for (const key of SUMMON_ALT_LIST_ORDER) {
       for (let level = 1; level <= 9; level++) {

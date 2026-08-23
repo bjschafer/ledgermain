@@ -227,7 +227,7 @@ function activeAltLists(spell: SummonSpell, featSet: ReadonlySet<string>): Summo
 
 /** Not a feat: a campaign-level switch for the Adventure Path alternative lists, kept in the same URL slot. */
 const LIST_OPTIONS: readonly FeatOption[] = [
-  { slug: AP_ALTERNATIVES_SLUG, label: "Adventure Path alternatives" },
+  { slug: AP_ALTERNATIVES_SLUG, label: "Alternative Summoning Options" },
 ];
 
 function SummonLevelPage({
