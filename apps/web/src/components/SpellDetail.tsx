@@ -5,6 +5,7 @@ import type { DerivedClChecks, Spell } from "@pf1/schema";
 import type { ResolvedMetamagic } from "../model/metamagic.js";
 import { concentrationDC, concentrationScenarios, spellSaveDC } from "../model/spellcasting.js";
 import { spellDCAdjustment, srCheckBonus, srCheckDetail } from "../model/spellDCs.js";
+import { detectSummonSpell, summonHelperHref } from "../model/summonLink.js";
 import { useSpellBonuses } from "../state/spellBonuses.js";
 import {
   formatCastingTime,
@@ -84,7 +85,7 @@ export function SpellDetail({
   slotLevel?: number;
   metamagic?: ResolvedMetamagic[];
 }) {
-  const { spellDCs, clChecks } = useSpellBonuses();
+  const { spellDCs, clChecks, summonFeats } = useSpellBonuses();
   const save = spellSave(spell);
   const dcAdjust = spellDCAdjustment(spellDCs, spell.school);
   const dc = save ? spellSaveDC(spellLevel, abilityMod) + dcAdjust.bonus : null;
@@ -93,8 +94,15 @@ export function SpellDetail({
   const castingTime = formatCastingTime(spell);
   const range = formatSpellRange(spell, casterLevel);
   const damage = spellDamageParts(spell, casterLevel);
+  const summonSpell = detectSummonSpell(spell.name);
+  const summonLink = summonSpell ? summonHelperHref(summonSpell, summonFeats, casterLevel) : null;
 
-  const hasStrip = castingTime !== null || range !== null || dc !== null || damage.length > 0;
+  const hasStrip =
+    castingTime !== null ||
+    range !== null ||
+    dc !== null ||
+    damage.length > 0 ||
+    summonLink !== null;
 
   // The body is built only once the disclosure is opened. A closed <details>
   // still constructs its whole subtree, and the browse pane in the spell
@@ -119,6 +127,17 @@ export function SpellDetail({
               {damageLabel(d)}
             </span>
           ))}
+          {summonLink && (
+            <a
+              className="spell-chip is-link"
+              href={summonLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Open the reference site's summoning helper for this spell, with your feats and caster level preselected (opens in a new tab)"
+            >
+              Summon helper
+            </a>
+          )}
         </div>
       )}
 

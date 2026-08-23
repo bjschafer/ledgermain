@@ -4819,6 +4819,18 @@ input[type="text"].saved-roll-name:focus {
   color: var(--oxblood-ink);
 }
 
+/* The summon-helper deep link (SpellDetail.tsx) is a chip that's also an
+   <a>, so it needs the anchor reset the span-based chips don't. */
+.spell-chip.is-link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.spell-chip.is-link:hover {
+  color: var(--gold-2);
+  border-color: var(--gold-dim);
+}
+
 .spell-detail {
   margin-top: 6px;
 }

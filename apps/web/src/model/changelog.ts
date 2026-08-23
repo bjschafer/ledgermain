@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-22-summon-deep-link",
+    date: "2026-08-22",
+    title: "Summon spells link straight into the summoning helper",
+    note: "A Summon Monster or Summon Nature's Ally spell on your sheet now carries a summon helper link. It opens the reference site's summoning helper at the right list and level, with your Augment Summoning or Superior Summoning and your caster level already set.",
+  },
+  {
     id: "2026-08-21-craft-consumables",
     date: "2026-08-21",
     title: "Scribe your own scrolls",

@@ -285,7 +285,7 @@ function Workbench({
 
   return (
     <RollDataProvider doc={props.doc} sheet={props.sheet} refData={props.refData}>
-      <SpellBonusesProvider sheet={props.sheet}>
+      <SpellBonusesProvider doc={props.doc} sheet={props.sheet} refData={props.refData}>
         <div className="layout layout--with-nav">
           {mode === "build" && (
             /* On mobile (<=940px) `.mobile-build-header` collapses to a single

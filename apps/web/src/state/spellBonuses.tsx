@@ -11,35 +11,55 @@
  * Outside the provider (tests) the value is empty, which adjusts nothing
  * rather than adjusting wrongly. The print view doesn't consume this — it
  * folds the same sheet fields in directly (`model/printSheet.ts`).
+ *
+ * `summonFeats` rides along here rather than in its own context for the same
+ * reason: it's more per-character data every `SpellDetail` needs to build its
+ * summon-helper deep link, and a second context for one string array would
+ * just be more places to remember to provide it.
  */
 import { createContext, useContext, useMemo } from "react";
 import type { ReactNode } from "react";
 
-import type { DerivedClChecks, DerivedSheet, DerivedSpellDCs } from "@pf1/schema";
+import type {
+  CharacterDoc,
+  DerivedClChecks,
+  DerivedSheet,
+  DerivedSpellDCs,
+  RefData,
+} from "@pf1/schema";
+
+import { summonFeatSlugs } from "../model/summonLink.js";
 
 export interface SpellBonuses {
   spellDCs?: DerivedSpellDCs;
   clChecks?: DerivedClChecks;
+  /** Reference-site feat slugs among Augment Summoning / Superior Summoning; empty outside the provider. */
+  summonFeats: string[];
 }
 
-const EMPTY: SpellBonuses = {};
+const EMPTY: SpellBonuses = { summonFeats: [] };
 
 const SpellBonusesContext = createContext<SpellBonuses>(EMPTY);
 
 export function SpellBonusesProvider({
+  doc,
   sheet,
+  refData,
   children,
 }: {
+  doc: CharacterDoc;
   sheet: DerivedSheet;
+  refData: RefData;
   children: ReactNode;
 }) {
-  const value = useMemo<SpellBonuses>(() => {
-    if (!sheet.spellDCs && !sheet.clChecks) return EMPTY;
-    return {
+  const value = useMemo<SpellBonuses>(
+    () => ({
       ...(sheet.spellDCs ? { spellDCs: sheet.spellDCs } : {}),
       ...(sheet.clChecks ? { clChecks: sheet.clChecks } : {}),
-    };
-  }, [sheet.spellDCs, sheet.clChecks]);
+      summonFeats: summonFeatSlugs(doc, refData),
+    }),
+    [doc, refData, sheet.spellDCs, sheet.clChecks],
+  );
   return <SpellBonusesContext.Provider value={value}>{children}</SpellBonusesContext.Provider>;
 }
 
