@@ -13,6 +13,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  AP_ALTERNATIVES_SLUG,
   SUMMON_ALT_LIST_ORDER,
   SUMMON_ALT_LISTS,
   SUMMON_LISTS,
@@ -144,19 +145,43 @@ describe("SUMMON_LISTS", () => {
 
 // Hand-counted from each feat's table on aonprd.com (Summon Good Monster,
 // Summon Neutral Monster, Summon Evil Monster FeatDisplay pages).
+// The AP rows are hand-counted from d20pfsrd's "Alternative Summoning
+// Options" tables on its Summon Monster / Summon Nature's Ally pages.
 const EXPECTED_ALT_COUNTS: Record<string, Record<number, number>> = {
   good: { 1: 6, 2: 5, 3: 6, 4: 7, 5: 5, 6: 5, 7: 7, 8: 5, 9: 6 },
   neutral: { 1: 2, 2: 2, 3: 5, 4: 6, 5: 4, 6: 5, 7: 4, 8: 1, 9: 3 },
   evil: { 1: 6, 2: 7, 3: 7, 4: 7, 5: 7, 6: 7, 7: 7, 8: 7, 9: 7 },
+  "ap-sm": { 1: 1, 2: 7, 3: 7, 4: 7, 5: 5, 6: 6, 7: 5, 8: 3, 9: 2 },
+  "ap-sna": { 1: 0, 2: 5, 3: 1, 4: 5, 5: 4, 6: 2, 7: 3, 8: 0, 9: 0 },
 };
 
-describe("SUMMON_ALT_LISTS (Summon Good/Neutral/Evil Monster)", () => {
-  it("covers every level 1..9 on all three lists with the hand-counted row counts", () => {
+const FEAT_LISTS = ["good", "neutral", "evil"] as const;
+
+describe("SUMMON_ALT_LISTS (Summon Good/Neutral/Evil Monster, Adventure Path alternatives)", () => {
+  it("matches the hand-counted row counts at every level", () => {
     for (const key of SUMMON_ALT_LIST_ORDER) {
       for (let level = 1; level <= 9; level++) {
-        expect(SUMMON_ALT_LISTS[key].levels[level]?.length, `${key}[${level}]`).toBe(
+        expect(SUMMON_ALT_LISTS[key].levels[level]?.length ?? 0, `${key}[${level}]`).toBe(
           EXPECTED_ALT_COUNTS[key]![level]!,
         );
+      }
+    }
+  });
+
+  it("the feat lists extend Summon Monster; the AP lists split by spell under one toggle", () => {
+    for (const key of FEAT_LISTS) expect(SUMMON_ALT_LISTS[key].spell).toBe("sm");
+    expect(SUMMON_ALT_LISTS["ap-sm"].spell).toBe("sm");
+    expect(SUMMON_ALT_LISTS["ap-sna"].spell).toBe("sna");
+    expect(SUMMON_ALT_LISTS["ap-sm"].toggleSlug).toBe(AP_ALTERNATIVES_SLUG);
+    expect(SUMMON_ALT_LISTS["ap-sna"].toggleSlug).toBe(AP_ALTERNATIVES_SLUG);
+  });
+
+  it("every AP row names its Adventure Path", () => {
+    for (const key of ["ap-sm", "ap-sna"] as const) {
+      for (const entries of Object.values(SUMMON_ALT_LISTS[key].levels)) {
+        for (const e of entries) {
+          expect(e.note, `${key} "${e.label}"`).toMatch(/^Adventure Path #\d+/);
+        }
       }
     }
   });
@@ -179,20 +204,42 @@ describe("SUMMON_ALT_LISTS (Summon Good/Neutral/Evil Monster)", () => {
     expect(problems).toEqual([]);
   });
 
-  it("only the rows printed as celestial/fiendish carry a forced template, matching their list's alignment", () => {
+  it("only rows printed as celestial/fiendish (and, on the AP lists, young) carry a forced template", () => {
     for (const key of SUMMON_ALT_LIST_ORDER) {
+      // "Young bronze dragon" on the good list is an age category, not the template.
+      const re = key.startsWith("ap-") ? /^(Celestial|Fiendish|Young) / : /^(Celestial|Fiendish) /;
       for (const entries of Object.values(SUMMON_ALT_LISTS[key].levels)) {
         for (const e of entries) {
-          const printed = /^(Celestial|Fiendish) /.exec(e.label)?.[1]?.toLowerCase();
+          const printed = re.exec(e.label)?.[1]?.toLowerCase();
           expect(e.template, `${key} "${e.label}"`).toBe(
-            printed as "celestial" | "fiendish" | undefined,
+            printed as "celestial" | "fiendish" | "young" | undefined,
           );
+        }
+      }
+    }
+  });
+
+  it("feat-list rows never take the asterisk picker and their forced template matches the list's alignment", () => {
+    for (const key of FEAT_LISTS) {
+      for (const entries of Object.values(SUMMON_ALT_LISTS[key].levels)) {
+        for (const e of entries) {
+          expect(e.templated, `${key} "${e.label}"`).toBeUndefined();
           if (e.template) {
             expect(e.template, `${key} "${e.label}"`).toBe(
               key === "good" ? "celestial" : "fiendish",
             );
           }
-          expect(e.templated, `${key} "${e.label}"`).toBeUndefined();
+        }
+      }
+    }
+  });
+
+  it("AP rows marked with the asterisk take the picker; young rows take both", () => {
+    for (const key of ["ap-sm", "ap-sna"] as const) {
+      for (const entries of Object.values(SUMMON_ALT_LISTS[key].levels)) {
+        for (const e of entries) {
+          expect(e.templated ?? false, `${key} "${e.label}"`).toBe(e.label.endsWith("*"));
+          if (e.template === "young") expect(e.templated, `${key} "${e.label}"`).toBe(true);
         }
       }
     }
@@ -213,7 +260,7 @@ describe("SUMMON_ALT_LISTS (Summon Good/Neutral/Evil Monster)", () => {
   });
 
   it("feat slugs follow the sheet's featNameSlug shape", () => {
-    expect(SUMMON_ALT_LIST_ORDER.map((k) => SUMMON_ALT_LISTS[k].featSlug)).toEqual([
+    expect(FEAT_LISTS.map((k) => SUMMON_ALT_LISTS[k].toggleSlug)).toEqual([
       "summon-good-monster",
       "summon-neutral-monster",
       "summon-evil-monster",

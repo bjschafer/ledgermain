@@ -50,6 +50,7 @@ import {
 import type { AdjustNote, StatblockAdjustment } from "../model/adjust/types.js";
 import { attackEvolutionsAllowed, evolutionBySlug, EVOLUTIONS } from "../model/evolutions.js";
 import {
+  AP_ALTERNATIVES_SLUG,
   SUMMON_ALT_LIST_ORDER,
   SUMMON_ALT_LISTS,
   SUMMON_COUNTS,
@@ -146,9 +147,9 @@ const FEAT_OPTIONS: Record<SummonSpell, readonly FeatOption[]> = {
   sm: [
     { slug: AUGMENT_SUMMONING_SLUG, label: "Augment Summoning" },
     { slug: SUPERIOR_SUMMONING_SLUG, label: "Superior Summoning" },
-    { slug: SUMMON_ALT_LISTS.good.featSlug, label: SUMMON_ALT_LISTS.good.label },
-    { slug: SUMMON_ALT_LISTS.neutral.featSlug, label: SUMMON_ALT_LISTS.neutral.label },
-    { slug: SUMMON_ALT_LISTS.evil.featSlug, label: SUMMON_ALT_LISTS.evil.label },
+    { slug: SUMMON_ALT_LISTS.good.toggleSlug, label: SUMMON_ALT_LISTS.good.label },
+    { slug: SUMMON_ALT_LISTS.neutral.toggleSlug, label: SUMMON_ALT_LISTS.neutral.label },
+    { slug: SUMMON_ALT_LISTS.evil.toggleSlug, label: SUMMON_ALT_LISTS.evil.label },
     { slug: VERSATILE_SM_SLUG, label: "Versatile Summon Monster" },
     { slug: EVOLVED_SLUG, label: "Evolved Summoned Monster" },
     { slug: SACRED_SUMMONS_SLUG, label: "Sacred Summons" },
@@ -216,11 +217,18 @@ function SpellLevelPicker({ spell }: { spell: SummonSpell }) {
   );
 }
 
-/** The alignment lists a Summon Monster caster's ticked feats unlock, in table order. */
+/** The alternate lists this spell's ticked feats and toggles unlock, in table order. */
 function activeAltLists(spell: SummonSpell, featSet: ReadonlySet<string>): SummonAltList[] {
-  if (spell !== "sm") return [];
-  return SUMMON_ALT_LIST_ORDER.filter((key) => featSet.has(SUMMON_ALT_LISTS[key].featSlug));
+  return SUMMON_ALT_LIST_ORDER.filter((key) => {
+    const def = SUMMON_ALT_LISTS[key];
+    return def.spell === spell && featSet.has(def.toggleSlug);
+  });
 }
+
+/** Not a feat: a campaign-level switch for the Adventure Path alternative lists, kept in the same URL slot. */
+const LIST_OPTIONS: readonly FeatOption[] = [
+  { slug: AP_ALTERNATIVES_SLUG, label: "Adventure Path alternatives" },
+];
 
 function SummonLevelPage({
   index,
@@ -298,6 +306,19 @@ function SummonLevelPage({
         })}
       </div>
 
+      <div className="summon-feats adjust-picker-grid" role="group" aria-label="Lists">
+        {LIST_OPTIONS.map((opt) => {
+          const on = featSet.has(opt.slug);
+          return (
+            <label key={opt.slug} className={on ? "adjust-option is-on" : "adjust-option"}>
+              <input type="checkbox" checked={on} onChange={() => toggleFeat(opt.slug)} />
+              <span className="adjust-option-box" aria-hidden="true" />
+              <span className="adjust-option-label">{opt.label}</span>
+            </label>
+          );
+        })}
+      </div>
+
       <label className="cl-input">
         CL
         <input
@@ -346,7 +367,6 @@ function SummonLevelPage({
       )}
 
       <SummonLevelLists
-        spell={spell}
         level={level}
         entries={entries}
         altLists={altLists}
@@ -366,7 +386,6 @@ function SummonLevelPage({
               {SUMMON_SPELL_LABEL[spell]} {romanLevel(lvl)} list ({countLabel})
             </summary>
             <SummonLevelLists
-              spell={spell}
               level={lvl}
               entries={SUMMON_LISTS[spell][lvl] ?? []}
               altLists={altLists}
@@ -399,14 +418,12 @@ function SummonLevelPage({
 
 /** One level's standard rows, followed by each unlocked alignment list's rows for that level. */
 function SummonLevelLists({
-  spell,
   level,
   entries,
   altLists,
   hrefFor,
   selectedId,
 }: {
-  spell: SummonSpell;
   level: number;
   entries: readonly SummonListEntry[];
   altLists: readonly SummonAltList[];
@@ -416,20 +433,19 @@ function SummonLevelLists({
   return (
     <>
       <SummonEntryList entries={entries} hrefFor={hrefFor} selectedId={selectedId} />
-      {spell === "sm" &&
-        altLists.map((key) => {
-          const def = SUMMON_ALT_LISTS[key];
-          const rows = def.levels[level] ?? [];
-          return (
-            <section key={key} className="summon-alt-section">
-              <h4 className="summon-alt-heading">
-                {def.label} {romanLevel(level)}
-                <span className="summon-alt-source">{def.source}</span>
-              </h4>
-              <SummonEntryList entries={rows} hrefFor={hrefFor} selectedId={selectedId} />
-            </section>
-          );
-        })}
+      {altLists.map((key) => {
+        const def = SUMMON_ALT_LISTS[key];
+        const rows = def.levels[level] ?? [];
+        return (
+          <section key={key} className="summon-alt-section">
+            <h4 className="summon-alt-heading">
+              {def.label} {romanLevel(level)}
+              <span className="summon-alt-source">{def.source}</span>
+            </h4>
+            <SummonEntryList entries={rows} hrefFor={hrefFor} selectedId={selectedId} />
+          </section>
+        );
+      })}
     </>
   );
 }
@@ -607,16 +623,17 @@ function SummonCreaturePanel({
   const versatileSnaOn = spell === "sna" && featSet.has(VERSATILE_SNA_SLUG);
   const evolvedOn = spell === "sm" && featSet.has(EVOLVED_SLUG);
 
-  // The row is printed with its template ("Celestial dog"): applied, not picked.
+  // The row is printed with its template ("Celestial dog", "Young frost
+  // giant"): applied, not picked. An asterisk on the same row still offers
+  // the alignment picker on top.
   const forcedTemplate = entry?.template ? statblockTemplate(entry.template) : undefined;
 
   // Which templates this row may pick from, gated by each template's own rules.
   const templateOptions = useMemo<StatblockAdjustment[]>(() => {
-    if (forcedTemplate) return [];
     const keys: string[] = [];
-    if (spell === "sm" && entry?.templated) {
+    if (entry?.templated) {
       keys.push(...SUMMON_TEMPLATE_KEYS);
-      if (neutralOn) keys.push(COUNTERPOISED_KEY);
+      if (spell === "sm" && neutralOn) keys.push(COUNTERPOISED_KEY);
       if (versatileSmOn) keys.push(...VERSATILE_SM_TEMPLATE_KEYS);
     }
     if (
@@ -629,7 +646,7 @@ function SummonCreaturePanel({
     return keys
       .map((key) => statblockTemplate(key))
       .filter((t): t is StatblockAdjustment => t !== undefined);
-  }, [forcedTemplate, spell, entry, neutralOn, versatileSmOn, versatileSnaOn, monster]);
+  }, [spell, entry, neutralOn, versatileSmOn, versatileSnaOn, monster]);
 
   const disabledTemplates = useMemo(() => {
     const map = new Map<string, string>();
@@ -645,17 +662,17 @@ function SummonCreaturePanel({
     templateKey && !disabledTemplates.has(templateKey)
       ? templateOptions.find((t) => t.key === templateKey)
       : undefined;
-  const templateAdjustment = forcedTemplate ?? pickedTemplate;
 
   // Versatile Summon Nature's Ally trades the Augment Summoning benefit for the template.
   const versatileSnaSwap = versatileSnaOn && pickedTemplate !== undefined;
 
   const adjustments = useMemo<StatblockAdjustment[]>(() => {
     const list: StatblockAdjustment[] = [];
-    if (templateAdjustment) list.push(templateAdjustment);
+    if (forcedTemplate) list.push(forcedTemplate);
+    if (pickedTemplate) list.push(pickedTemplate);
     if (augmentOn && !versatileSnaSwap) list.push(AUGMENT_SUMMONING);
     if (found?.list === "good") list.push(SUMMON_GOOD_DIEHARD);
-    if (found?.list === "neutral" || templateAdjustment?.key === COUNTERPOISED_KEY) {
+    if (found?.list === "neutral" || pickedTemplate?.key === COUNTERPOISED_KEY) {
       list.push(SUMMON_NEUTRAL_WILL);
     }
     if (spell === "sna") {
@@ -664,7 +681,16 @@ function SummonCreaturePanel({
     }
     list.push(...conditionAdjustments(track.conditions));
     return list;
-  }, [templateAdjustment, augmentOn, versatileSnaSwap, found, spell, featSet, track.conditions]);
+  }, [
+    forcedTemplate,
+    pickedTemplate,
+    augmentOn,
+    versatileSnaSwap,
+    found,
+    spell,
+    featSet,
+    track.conditions,
+  ]);
 
   const evolutions = useMemo(
     () =>
@@ -734,10 +760,10 @@ function SummonCreaturePanel({
         Open in the bestiary
       </a>
 
-      {forcedTemplate && (
+      {forcedTemplate && found && found.list !== "standard" && (
         <p className="summon-template-footnote">
-          Printed on the {found?.list ? SUMMON_ALT_LISTS[found.list as SummonAltList].label : ""}{" "}
-          list as a {forcedTemplate.label.toLowerCase()}; the template is applied.
+          Printed on the {SUMMON_ALT_LISTS[found.list].label} list as a{" "}
+          {forcedTemplate.label.toLowerCase()}; the template is applied.
         </p>
       )}
 
@@ -751,10 +777,12 @@ function SummonCreaturePanel({
             hint="pick one"
             disabled={disabledTemplates}
           />
-          {spell === "sm" && entry?.templated && (
+          {entry?.templated && (
             <p className="summon-template-footnote">
               Core Rulebook table footnote: summoned with the celestial template if you are good, or
               the fiendish template if you are evil. If you are neutral, you may choose either.
+              {found?.list.startsWith("ap-") &&
+                " The Adventure Path compilation reads the asterisk as celestial if good, entropic if chaotic, fiendish if evil, resolute if lawful."}
               {neutralOn &&
                 " Summon Neutral Monster: counterpoised may stand in for either, with +2 on Will."}
               {versatileSmOn &&

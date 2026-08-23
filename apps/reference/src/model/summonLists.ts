@@ -64,8 +64,8 @@ export interface SummonListEntry {
   monsterId: string | null;
   /** Summon Monster asterisk: summoned with the celestial or fiendish (or entropic/resolute) template. */
   templated?: boolean;
-  /** The row is printed with this template already on it ("Celestial dog"); the helper applies it, no picker. */
-  template?: "celestial" | "fiendish";
+  /** The row is printed with this template already on it ("Celestial dog", "Young frost giant"); the helper applies it, no picker. */
+  template?: "celestial" | "fiendish" | "young";
   /** Printed qualifier worth keeping, e.g. alignment/plane notes from the table. */
   note?: string;
   /** Cast-time choice within one printed row: an "Elemental (Small)" casting picks one element. */
@@ -421,13 +421,25 @@ export const SUMMON_SPELL_LABEL: Record<SummonSpell, string> = {
 export const SUMMON_COUNTS = { sameLevel: "1", oneLower: "1d3", twoOrMoreLower: "1d4+1" } as const;
 
 /**
- * The three alignment-gated alternate lists a caster with Summon Good
- * Monster (Pathfinder Player Companion: Champions of Purity, pg. 33), Summon
- * Neutral Monster (Champions of Balance, pg. 33), or Summon Evil Monster
- * (Champions of Corruption, pg. 33) may draw from IN ADDITION to the
- * standard Summon Monster table. Each feat's table is reproduced from the
- * Archives of Nethys FeatDisplay page for that feat; labels keep the printed
- * creature name and alignment, superscript source markers dropped.
+ * Alternate creature lists drawn from IN ADDITION to the standard table.
+ *
+ * Three are alignment-gated feats for Summon Monster: Summon Good Monster
+ * (Pathfinder Player Companion: Champions of Purity, pg. 33), Summon Neutral
+ * Monster (Champions of Balance, pg. 33), Summon Evil Monster (Champions of
+ * Corruption, pg. 33). Each feat's table is reproduced from the Archives of
+ * Nethys FeatDisplay page for that feat; labels keep the printed creature
+ * name and alignment, superscript source markers dropped.
+ *
+ * Two are the Adventure Path "alternative summoning options": creatures
+ * individual Paizo Adventure Paths opened up to summoners of a particular
+ * god, cult, or region (snakes for a serpent-god's clerics, Irrisen's
+ * giants, and so on), compiled per level for Summon Monster and Summon
+ * Nature's Ally on the OGL d20pfsrd spell pages with the AP number as the
+ * source. They are campaign options, not core, so they sit behind one
+ * "Adventure Path alternatives" toggle rather than a feat; each row carries
+ * its AP number as the note. Rows the compilation marks with an asterisk
+ * take the Summon Monster alignment template; rows it marks "young" get the
+ * Young template applied (its own reading of the AP text, flagged as such).
  *
  * Rows printed as "Celestial X" / "Fiendish X" map to the base creature with
  * `template` set, since the bestiary has no separate statblock for them. A
@@ -440,23 +452,36 @@ export const SUMMON_COUNTS = { sameLevel: "1", oneLower: "1d3", twoOrMoreLower: 
  * adjust module and the summon page; this file is only the tables.
  */
 
-export type SummonAltList = "good" | "neutral" | "evil";
+export type SummonAltList = "good" | "neutral" | "evil" | "ap-sm" | "ap-sna";
 
 export interface SummonAltListDef {
-  /** Feat name, as the section heading. */
+  /** Feat name (or "Adventure Path alternatives"), as the section heading. */
   label: string;
-  /** Reference-site feat slug, matching the sheet's featNameSlug of the feat name. */
-  featSlug: string;
+  /** Which spell's table this extends. */
+  spell: SummonSpell;
+  /** Toggle slug in the URL's feats list: the sheet's featNameSlug of the feat name, or the AP toggle. */
+  toggleSlug: string;
   source: string;
+  /** Levels with no alternatives are simply absent. */
   levels: Record<number, readonly SummonListEntry[]>;
 }
 
 const NOT_IN_BESTIARY = "Not in the bestiary data; use the printed statblock.";
 
+/** One toggle covers both spells' Adventure Path lists: it is a campaign-level switch, not a feat. */
+export const AP_ALTERNATIVES_SLUG = "ap-alternatives";
+
+const EXTRAPLANAR = "Gains the extraplanar subtype; otherwise as printed.";
+
+function ap(n: number, extra?: string): string {
+  return extra ? `Adventure Path #${n}. ${extra}` : `Adventure Path #${n}`;
+}
+
 export const SUMMON_ALT_LISTS: Record<SummonAltList, SummonAltListDef> = {
   good: {
     label: "Summon Good Monster",
-    featSlug: "summon-good-monster",
+    spell: "sm",
+    toggleSlug: "summon-good-monster",
     source: "Champions of Purity pg. 33",
     levels: {
       // 1st Level: 6 rows.
@@ -563,7 +588,8 @@ export const SUMMON_ALT_LISTS: Record<SummonAltList, SummonAltListDef> = {
   },
   neutral: {
     label: "Summon Neutral Monster",
-    featSlug: "summon-neutral-monster",
+    spell: "sm",
+    toggleSlug: "summon-neutral-monster",
     source: "Champions of Balance pg. 33",
     levels: {
       // 1st Level: 2 rows.
@@ -627,7 +653,8 @@ export const SUMMON_ALT_LISTS: Record<SummonAltList, SummonAltListDef> = {
   },
   evil: {
     label: "Summon Evil Monster",
-    featSlug: "summon-evil-monster",
+    spell: "sm",
+    toggleSlug: "summon-evil-monster",
     source: "Champions of Corruption pg. 33",
     levels: {
       // 1st Level: 6 rows.
@@ -741,6 +768,239 @@ export const SUMMON_ALT_LISTS: Record<SummonAltList, SummonAltListDef> = {
       ],
     },
   },
+  "ap-sm": {
+    label: "Adventure Path alternatives",
+    spell: "sm",
+    toggleSlug: AP_ALTERNATIVES_SLUG,
+    source: "various Adventure Paths, via d20pfsrd",
+    levels: {
+      // 1st Level Alternatives: 1 row.
+      1: [
+        {
+          label: "Bloody human skeleton",
+          monsterId: null,
+          note: ap(47, `${EXTRAPLANAR} ${NOT_IN_BESTIARY}`),
+        },
+      ],
+      // 2nd Level Alternatives: 7 rows.
+      2: [
+        { label: "Akata", monsterId: "akata", note: ap(64) },
+        { label: "Elk*", monsterId: "herd_animal_elk", templated: true, note: ap(32) },
+        { label: "Grig", monsterId: "grig", note: ap(50, EXTRAPLANAR) },
+        { label: "Hell hound", monsterId: "hell_hound", note: ap(29, "Evil, Lawful") },
+        { label: "Merfolk*", monsterId: "merfolk", templated: true, note: ap(38) },
+        { label: "Reefclaw", monsterId: "reefclaw", note: ap(55) },
+        {
+          label: "Venomous snake*",
+          monsterId: "snake_venomous_snake",
+          templated: true,
+          note: ap(42),
+        },
+      ],
+      // 3rd Level Alternatives: 7 rows.
+      3: [
+        { label: "Blink dog*", monsterId: "blink_dog", templated: true, note: ap(41) },
+        { label: "Choker", monsterId: "choker", note: ap(23, EXTRAPLANAR) },
+        { label: "Dire boar*", monsterId: "boar_dire_boar_daeodon", templated: true, note: ap(32) },
+        {
+          label: "Human natural wererat rogue 2",
+          monsterId: null,
+          note: ap(59, `${EXTRAPLANAR} ${NOT_IN_BESTIARY}`),
+        },
+        {
+          label: "Iron cobra (no poison)",
+          monsterId: "iron_cobra",
+          note: ap(35, `${EXTRAPLANAR} Summoned without its poison.`),
+        },
+        { label: "Nosoi psychopomp", monsterId: "psychopomp_nosoi", note: ap(44) },
+        { label: "Silvanshee agathion", monsterId: "agathion_silvanshee", note: ap(50, "Good") },
+      ],
+      // 4th Level Alternatives: 7 rows.
+      4: [
+        { label: "Amphisbaena", monsterId: "amphisbaena", note: ap(42) },
+        {
+          label: "Cerberi",
+          monsterId: "cerberi",
+          note: ap(
+            29,
+            "Evil, Lawful. The AP prints the name as Cerberai; this is the closest statblock.",
+          ),
+        },
+        { label: "Choker", monsterId: "choker", note: ap(59, EXTRAPLANAR) },
+        { label: "Giant mantis*", monsterId: "mantis_giant_mantis", templated: true, note: ap(53) },
+        {
+          label: "Gibbering mouther*",
+          monsterId: "gibbering_mouther",
+          templated: true,
+          note: ap(23),
+        },
+        { label: "Grick*", monsterId: "grick", templated: true, note: ap(23) },
+        { label: "Tiger*", monsterId: "tiger", templated: true, note: ap(53) },
+      ],
+      // 5th Level Alternatives: 5 rows.
+      5: [
+        {
+          label: "Emperor cobra*",
+          monsterId: "snake_emperor_cobra",
+          templated: true,
+          note: ap(42),
+        },
+        { label: "Cloaker*", monsterId: "cloaker", templated: true, note: ap(41) },
+        { label: "Merrow, saltwater", monsterId: "merrow_saltwater_merrow", note: ap(55) },
+        { label: "Shadow mastiff", monsterId: "shadow_mastiff", note: ap(59, "Evil") },
+        { label: "Vulpinal agathion", monsterId: "agathion_vulpinal", note: ap(50, "Good") },
+      ],
+      // 6th Level Alternatives: 6 rows.
+      6: [
+        { label: "Bulette", monsterId: "bulette", note: ap(35, EXTRAPLANAR) },
+        { label: "Chaos beast", monsterId: "chaos_beast", note: ap(64, "Chaotic") },
+        { label: "Griffon*", monsterId: "griffon", templated: true, note: ap(26) },
+        { label: "Mothman", monsterId: "mothman", note: ap(64, EXTRAPLANAR) },
+        { label: "Tylosaurus (dinosaur)", monsterId: "dinosaur_tylosaurus", note: ap(55) },
+        { label: "Vanth psychopomp", monsterId: "psychopomp_vanth", note: ap(44) },
+      ],
+      // 7th Level Alternatives: 5 rows.
+      7: [
+        { label: "Behir", monsterId: "behir", note: ap(35, EXTRAPLANAR) },
+        {
+          label: "Daughter of the Dead",
+          monsterId: "daughter_of_urgathoa",
+          note: ap(
+            47,
+            `${EXTRAPLANAR} Bestiary 3 prints this creature as the daughter of Urgathoa.`,
+          ),
+        },
+        { label: "Emkrah", monsterId: null, note: ap(23, NOT_IN_BESTIARY) },
+        {
+          label: "Giant anaconda*",
+          monsterId: "snake_giant_anaconda",
+          templated: true,
+          note: ap(42),
+        },
+        {
+          label: "Young frost giant*",
+          monsterId: "giant_frost_frost_giant",
+          templated: true,
+          template: "young",
+          note: ap(
+            38,
+            "The AP names the creature only; reading it as the Young template is the compilation's.",
+          ),
+        },
+      ],
+      // 8th Level Alternatives: 3 rows.
+      8: [
+        {
+          label: "Frost giant*",
+          monsterId: "giant_frost_frost_giant",
+          templated: true,
+          note: ap(38),
+        },
+        { label: "Gorgon", monsterId: "gorgon", note: ap(35, EXTRAPLANAR) },
+        {
+          label: "Young cloud giant*",
+          monsterId: "giant_cloud_giant",
+          templated: true,
+          template: "young",
+          note: ap(
+            38,
+            "The AP names the creature only; reading it as the Young template is the compilation's.",
+          ),
+        },
+      ],
+      // 9th Level Alternatives: 2 rows.
+      9: [
+        { label: "Cloud giant*", monsterId: "giant_cloud_giant", templated: true, note: ap(38) },
+        {
+          label: "Young storm giant*",
+          monsterId: "giant_storm_giant",
+          templated: true,
+          template: "young",
+          note: ap(
+            38,
+            "The AP names the creature only; reading it as the Young template is the compilation's.",
+          ),
+        },
+      ],
+    },
+  },
+  "ap-sna": {
+    label: "Adventure Path alternatives",
+    spell: "sna",
+    toggleSlug: AP_ALTERNATIVES_SLUG,
+    source: "various Adventure Paths, via d20pfsrd",
+    levels: {
+      // 2nd Level Alternatives: 5 rows.
+      2: [
+        { label: "Axe beak", monsterId: "axe_beak", note: ap(75) },
+        {
+          label: "Celestial elk",
+          monsterId: "herd_animal_elk",
+          template: "celestial",
+          note: ap(32),
+        },
+        { label: "Dire badger", monsterId: "badger_dire_badger", note: ap(75) },
+        { label: "Giant porcupine", monsterId: "porcupine_giant_porcupine", note: ap(75) },
+        {
+          label: "Venomous snake*",
+          monsterId: "snake_venomous_snake",
+          templated: true,
+          note: ap(42),
+        },
+      ],
+      // 3rd Level Alternatives: 1 row.
+      3: [
+        {
+          label: "Celestial dire boar",
+          monsterId: "boar_dire_boar_daeodon",
+          template: "celestial",
+          note: ap(32),
+        },
+      ],
+      // 4th Level Alternatives: 5 rows.
+      4: [
+        { label: "Amphisbaena", monsterId: "amphisbaena", note: ap(42) },
+        { label: "Giant chameleon lizard", monsterId: "lizard_giant_chameleon", note: ap(75) },
+        { label: "Giant skunk", monsterId: "skunk_giant_skunk", note: ap(75) },
+        { label: "Seaweed leshy", monsterId: "leshy_seaweed_leshy", note: ap(75) },
+        { label: "Giant vulture", monsterId: "vulture_giant_vulture", note: ap(75) },
+      ],
+      // 5th Level Alternatives: 4 rows.
+      5: [
+        {
+          label: "Emperor cobra*",
+          monsterId: "snake_emperor_cobra",
+          templated: true,
+          note: ap(42),
+        },
+        { label: "Giant owl", monsterId: "owl_giant_owl", note: ap(75) },
+        { label: "Giant gar", monsterId: "gar", note: ap(75) },
+        { label: "Merrow, saltwater (NE)", monsterId: "merrow_saltwater_merrow", note: ap(55) },
+      ],
+      // 6th Level Alternatives: 2 rows.
+      6: [
+        { label: "Shambling mound", monsterId: "shambling_mound", note: ap(75) },
+        { label: "Tylosaurus (dinosaur) (N)", monsterId: "dinosaur_tylosaurus", note: ap(55) },
+      ],
+      // 7th Level Alternatives: 3 rows.
+      7: [
+        {
+          label: "Giant anaconda*",
+          monsterId: "snake_giant_anaconda",
+          templated: true,
+          note: ap(42),
+        },
+        { label: "Giant flytrap", monsterId: "giant_flytrap", note: ap(75) },
+        { label: "Giant snapping turtle", monsterId: "turtle_giant_snapping_turtle", note: ap(75) },
+      ],
+    },
+  },
 };
 
-export const SUMMON_ALT_LIST_ORDER: readonly SummonAltList[] = ["good", "neutral", "evil"];
+export const SUMMON_ALT_LIST_ORDER: readonly SummonAltList[] = [
+  "good",
+  "neutral",
+  "evil",
+  "ap-sm",
+  "ap-sna",
+];
