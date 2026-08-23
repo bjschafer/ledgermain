@@ -469,7 +469,7 @@ export interface SummonAltListDef {
 const NOT_IN_BESTIARY = "Not in the bestiary data; use the printed statblock.";
 
 /** One toggle covers both spells' Adventure Path lists: it is a campaign-level switch, not a feat. */
-export const AP_ALTERNATIVES_SLUG = "ap-alternatives";
+export const ALTERNATIVE_SUMMONING_OPTIONS_SLUG = "alternative-summoning-options";
 
 const EXTRAPLANAR = "Gains the extraplanar subtype; otherwise as printed.";
 
@@ -771,7 +771,7 @@ export const SUMMON_ALT_LISTS: Record<SummonAltList, SummonAltListDef> = {
   "ap-sm": {
     label: "Alternative Summoning Options",
     spell: "sm",
-    toggleSlug: AP_ALTERNATIVES_SLUG,
+    toggleSlug: ALTERNATIVE_SUMMONING_OPTIONS_SLUG,
     source: "various Adventure Paths, via d20pfsrd",
     levels: {
       // 1st Level Alternatives: 1 row.
@@ -927,7 +927,7 @@ export const SUMMON_ALT_LISTS: Record<SummonAltList, SummonAltListDef> = {
   "ap-sna": {
     label: "Alternative Summoning Options",
     spell: "sna",
-    toggleSlug: AP_ALTERNATIVES_SLUG,
+    toggleSlug: ALTERNATIVE_SUMMONING_OPTIONS_SLUG,
     source: "various Adventure Paths, via d20pfsrd",
     levels: {
       // 2nd Level Alternatives: 5 rows.

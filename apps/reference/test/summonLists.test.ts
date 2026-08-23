@@ -13,7 +13,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
-  AP_ALTERNATIVES_SLUG,
+  ALTERNATIVE_SUMMONING_OPTIONS_SLUG,
   SUMMON_ALT_LIST_ORDER,
   SUMMON_ALT_LISTS,
   SUMMON_LISTS,
@@ -172,8 +172,8 @@ describe("SUMMON_ALT_LISTS (Summon Good/Neutral/Evil Monster, Alternative Summon
     for (const key of FEAT_LISTS) expect(SUMMON_ALT_LISTS[key].spell).toBe("sm");
     expect(SUMMON_ALT_LISTS["ap-sm"].spell).toBe("sm");
     expect(SUMMON_ALT_LISTS["ap-sna"].spell).toBe("sna");
-    expect(SUMMON_ALT_LISTS["ap-sm"].toggleSlug).toBe(AP_ALTERNATIVES_SLUG);
-    expect(SUMMON_ALT_LISTS["ap-sna"].toggleSlug).toBe(AP_ALTERNATIVES_SLUG);
+    expect(SUMMON_ALT_LISTS["ap-sm"].toggleSlug).toBe(ALTERNATIVE_SUMMONING_OPTIONS_SLUG);
+    expect(SUMMON_ALT_LISTS["ap-sna"].toggleSlug).toBe(ALTERNATIVE_SUMMONING_OPTIONS_SLUG);
   });
 
   it("every AP row names its Adventure Path", () => {

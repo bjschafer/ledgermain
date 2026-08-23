@@ -50,7 +50,7 @@ import {
 import type { AdjustNote, StatblockAdjustment } from "../model/adjust/types.js";
 import { attackEvolutionsAllowed, evolutionBySlug, EVOLUTIONS } from "../model/evolutions.js";
 import {
-  AP_ALTERNATIVES_SLUG,
+  ALTERNATIVE_SUMMONING_OPTIONS_SLUG,
   SUMMON_ALT_LIST_ORDER,
   SUMMON_ALT_LISTS,
   SUMMON_COUNTS,
@@ -227,7 +227,7 @@ function activeAltLists(spell: SummonSpell, featSet: ReadonlySet<string>): Summo
 
 /** Not a feat: a campaign-level switch for the Adventure Path alternative lists, kept in the same URL slot. */
 const LIST_OPTIONS: readonly FeatOption[] = [
-  { slug: AP_ALTERNATIVES_SLUG, label: "Alternative Summoning Options" },
+  { slug: ALTERNATIVE_SUMMONING_OPTIONS_SLUG, label: "Alternative Summoning Options" },
 ];
 
 function SummonLevelPage({
