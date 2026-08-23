@@ -48,14 +48,31 @@ export function detectSummonSpell(spellName: string): DetectedSummonSpell | null
   return { list: match[1]!.toLowerCase() === "monster" ? "sm" : "sna", level };
 }
 
-/** Reference-site feat slugs among Augment Summoning / Superior Summoning. */
-const SUMMON_HELPER_FEAT_SLUGS = new Set(["augment-summoning", "superior-summoning"]);
+/**
+ * The feat slugs the reference site's summoning helper understands: its own
+ * `featNameSlug` of each feat name, so the two apps agree without sharing
+ * code. Summon Monster feats and Summon Nature's Ally feats are both listed;
+ * the helper ignores whichever don't apply to the spell it opened on.
+ */
+const SUMMON_HELPER_FEAT_SLUGS = new Set([
+  "augment-summoning",
+  "superior-summoning",
+  "summon-good-monster",
+  "summon-neutral-monster",
+  "summon-evil-monster",
+  "versatile-summon-monster",
+  "evolved-summoned-monster",
+  "sacred-summons",
+  "moonlight-summons",
+  "starlight-summons",
+  "versatile-summon-nature-s-ally",
+]);
 
 /**
- * Which of Augment Summoning / Superior Summoning this character has, as the
- * reference site's feat slugs -- built the same way `ownedMetamagic` walks
- * owned feats (primary, extra, and class-granted), just filtered to the two
- * slugs the summoning helper understands.
+ * Which summoning feats this character has, as the reference site's feat
+ * slugs -- built the same way `ownedMetamagic` walks owned feats (primary,
+ * extra, and class-granted), just filtered to the slugs the summoning helper
+ * understands.
  */
 export function summonFeatSlugs(doc: CharacterDoc, refData: RefData): string[] {
   const slugs = new Set<string>();

@@ -4,7 +4,7 @@
  *
  * The summon route is a stable deep-link contract for external callers (the
  * character sheet will eventually link a cast of Summon Monster straight into a
- * preselected view): `#/summon/<sm|sna>/<1-9>?feats=a,b&template=t&creature=id`.
+ * preselected view): `#/summon/<sm|sna>/<1-9>?feats=a,b&template=t&creature=id&evo=x,y`.
  * Every piece of helper state lives in the URL, unknown query params and
  * unknown slugs are ignored, and existing param names never change meaning —
  * additions only.
@@ -23,6 +23,8 @@ export interface SummonRouteParams {
   creature?: string;
   /** Caster level, for the duration line (1 round/level). */
   cl?: number;
+  /** Evolved Summoned Monster picks: 1-point evolution slugs, comma-separated in the URL. Unknown slugs ignored. */
+  evo: string[];
 }
 
 export type Route =
@@ -39,7 +41,8 @@ function parseSummonParams(query: string): SummonRouteParams {
   const creature = search.get("creature") ?? undefined;
   const clRaw = Number.parseInt(search.get("cl") ?? "", 10);
   const cl = Number.isInteger(clRaw) && clRaw >= 1 && clRaw <= 40 ? clRaw : undefined;
-  return { feats, template, creature, cl };
+  const evo = (search.get("evo") ?? "").split(",").filter(Boolean);
+  return { feats, template, creature, cl, evo };
 }
 
 export function parseHash(hash: string): Route {
@@ -85,6 +88,7 @@ export function summonHref(
   if (params?.template) search.set("template", params.template);
   if (params?.creature) search.set("creature", params.creature);
   if (params?.cl) search.set("cl", String(params.cl));
+  if (params?.evo?.length) search.set("evo", params.evo.join(","));
   const query = search.toString();
   return query ? `${path}?${query}` : path;
 }

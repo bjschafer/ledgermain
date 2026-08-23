@@ -30,7 +30,7 @@ describe("parseHash", () => {
       kind: "summon",
       spell: undefined,
       level: undefined,
-      params: { feats: [], template: undefined, creature: undefined },
+      params: { feats: [], template: undefined, creature: undefined, cl: undefined, evo: [] },
     });
     expect(parseHash("#/summon/sm")).toMatchObject({
       kind: "summon",
@@ -52,8 +52,18 @@ describe("parseHash", () => {
         feats: ["augment-summoning", "superior-summoning"],
         template: "celestial",
         creature: "dog_riding_dog",
+        cl: undefined,
+        evo: [],
       },
     });
+  });
+
+  it("carries Evolved Summoned Monster picks as a comma list, additive to the contract", () => {
+    expect(summonRoute("#/summon/sm/3?evo=bite,claws").params.evo).toEqual(["bite", "claws"]);
+    expect(summonRoute("#/summon/sm/3?evo=").params.evo).toEqual([]);
+    const href = summonHref("sm", 3, { evo: ["bite", "improved-natural-armor"], creature: "dog" });
+    expect(href).toBe("#/summon/sm/3?creature=dog&evo=bite%2Cimproved-natural-armor");
+    expect(summonRoute(href).params.evo).toEqual(["bite", "improved-natural-armor"]);
   });
 
   it("degrades gracefully on junk instead of erroring", () => {
@@ -87,7 +97,13 @@ describe("parseHash", () => {
       kind: "summon",
       spell: "sm",
       level: 5,
-      params: { feats: ["augment-summoning"], template: "celestial", creature: "dog" },
+      params: {
+        feats: ["augment-summoning"],
+        template: "celestial",
+        creature: "dog",
+        cl: undefined,
+        evo: [],
+      },
     });
     expect(summonHref()).toBe("#/summon");
     expect(summonHref("sna", 2)).toBe("#/summon/sna/2");

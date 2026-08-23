@@ -64,6 +64,8 @@ export interface SummonListEntry {
   monsterId: string | null;
   /** Summon Monster asterisk: summoned with the celestial or fiendish (or entropic/resolute) template. */
   templated?: boolean;
+  /** The row is printed with this template already on it ("Celestial dog"); the helper applies it, no picker. */
+  template?: "celestial" | "fiendish";
   /** Printed qualifier worth keeping, e.g. alignment/plane notes from the table. */
   note?: string;
   /** Cast-time choice within one printed row: an "Elemental (Small)" casting picks one element. */
@@ -417,3 +419,328 @@ export const SUMMON_SPELL_LABEL: Record<SummonSpell, string> = {
 
 /** How many creatures a casting yields, by how far below the spell's level the chosen list is. */
 export const SUMMON_COUNTS = { sameLevel: "1", oneLower: "1d3", twoOrMoreLower: "1d4+1" } as const;
+
+/**
+ * The three alignment-gated alternate lists a caster with Summon Good
+ * Monster (Pathfinder Player Companion: Champions of Purity, pg. 33), Summon
+ * Neutral Monster (Champions of Balance, pg. 33), or Summon Evil Monster
+ * (Champions of Corruption, pg. 33) may draw from IN ADDITION to the
+ * standard Summon Monster table. Each feat's table is reproduced from the
+ * Archives of Nethys FeatDisplay page for that feat; labels keep the printed
+ * creature name and alignment, superscript source markers dropped.
+ *
+ * Rows printed as "Celestial X" / "Fiendish X" map to the base creature with
+ * `template` set, since the bestiary has no separate statblock for them. A
+ * row whose creature the vendored bestiary lacks keeps its printed label with
+ * a null id and a note; the helper renders it inert rather than guessing at a
+ * stand-in.
+ *
+ * Per-list riders (Diehard for the good list, the Will bonus for the neutral
+ * list, the standard-action casting note for the evil list) live with the
+ * adjust module and the summon page; this file is only the tables.
+ */
+
+export type SummonAltList = "good" | "neutral" | "evil";
+
+export interface SummonAltListDef {
+  /** Feat name, as the section heading. */
+  label: string;
+  /** Reference-site feat slug, matching the sheet's featNameSlug of the feat name. */
+  featSlug: string;
+  source: string;
+  levels: Record<number, readonly SummonListEntry[]>;
+}
+
+const NOT_IN_BESTIARY = "Not in the bestiary data; use the printed statblock.";
+
+export const SUMMON_ALT_LISTS: Record<SummonAltList, SummonAltListDef> = {
+  good: {
+    label: "Summon Good Monster",
+    featSlug: "summon-good-monster",
+    source: "Champions of Purity pg. 33",
+    levels: {
+      // 1st Level: 6 rows.
+      1: [
+        { label: "Celestial dog (NG)", monsterId: "dog", template: "celestial" },
+        { label: "Celestial dolphin (NG)", monsterId: "dolphin", template: "celestial" },
+        { label: "Celestial eagle (NG)", monsterId: "eagle", template: "celestial" },
+        {
+          label: "Celestial fire beetle (NG)",
+          monsterId: "beetle_fire_beetle",
+          template: "celestial",
+        },
+        { label: "Celestial pony (NG)", monsterId: "horse_pony", template: "celestial" },
+        { label: "Celestial viper (NG)", monsterId: "familiar_viper", template: "celestial" },
+      ],
+      // 2nd Level: 5 rows.
+      2: [
+        { label: "Celestial octopus (NG)", monsterId: "octopus", template: "celestial" },
+        { label: "Celestial wolf (NG)", monsterId: "wolf", template: "celestial" },
+        { label: "Faun (CG)", monsterId: "faun" },
+        { label: "Grig (NG)", monsterId: "grig", note: "Summoned without its fiddle ability." },
+        { label: "Pseudodragon (NG)", monsterId: "pseudodragon" },
+      ],
+      // 3rd Level: 6 rows.
+      3: [
+        { label: "Blink dog (LG)", monsterId: "blink_dog" },
+        { label: "Celestial shark (NG)", monsterId: "shark", template: "celestial" },
+        { label: "Foo dog (NG)", monsterId: null, note: NOT_IN_BESTIARY },
+        { label: "Lantern archon (LG)", monsterId: "archon_lantern_archon" },
+        { label: "Lyrakien azata (CG)", monsterId: "azata_lyrakien" },
+        { label: "Silvanshee agathion (NG)", monsterId: "agathion_silvanshee" },
+      ],
+      // 4th Level: 7 rows.
+      4: [
+        { label: "Celestial dire wolf (NG)", monsterId: "wolf_dire_wolf", template: "celestial" },
+        {
+          label: "Celestial giant eagle (NG)",
+          monsterId: "eagle_giant_eagle",
+          template: "celestial",
+        },
+        { label: "Celestial pegasus (CG)", monsterId: "pegasus", template: "celestial" },
+        { label: "Faerie dragon (NG)", monsterId: "dragon_other_faerie_dragon" },
+        { label: "Foo lion (NG)", monsterId: null, note: NOT_IN_BESTIARY },
+        { label: "Hound archon (LG)", monsterId: "archon_hound_archon" },
+        { label: "Pixie (NG)", monsterId: "pixie" },
+      ],
+      // 5th Level: 5 rows.
+      5: [
+        { label: "Bralani azata (CG)", monsterId: "azata_bralani" },
+        { label: "Celestial orca (NG)", monsterId: "dolphin_orca", template: "celestial" },
+        { label: "Djinni (CG)", monsterId: "genie_djinni" },
+        { label: "Unicorn (CG)", monsterId: "unicorn" },
+        { label: "Vulpinal agathion (NG)", monsterId: "agathion_vulpinal" },
+      ],
+      // 6th Level: 5 rows.
+      6: [
+        {
+          label: "Celestial giant octopus (NG)",
+          monsterId: "octopus_giant_octopus",
+          template: "celestial",
+        },
+        { label: "Kirin (LG)", monsterId: "kirin" },
+        { label: "Legion archon (LG)", monsterId: "archon_legion_archon" },
+        // Printed "(LG)" on the feat table; the Bestiary lillend is CG, and the
+        // statblock is what the player reads, so the label follows it.
+        { label: "Lillend azata (CG)", monsterId: "azata_lillend" },
+        { label: "Wood giant (CG)", monsterId: "giant_wood_giant" },
+      ],
+      // 7th Level: 7 rows.
+      7: [
+        {
+          label: "Celestial dire shark (NG)",
+          monsterId: "shark_dire_shark_megalodon",
+          template: "celestial",
+        },
+        { label: "Celestial roc (NG)", monsterId: "roc", template: "celestial" },
+        { label: "Movanic deva (NG)", monsterId: "angel_movanic_deva" },
+        { label: "Shedu (LG)", monsterId: "shedu" },
+        { label: "Shield archon (LG)", monsterId: "archon_shield_archon" },
+        { label: "Treant (NG)", monsterId: "treant" },
+        {
+          label: "Young bronze dragon (LG)",
+          monsterId: "dragon_metallic_bronze_young_bronze_dragon",
+        },
+      ],
+      // 8th Level: 5 rows.
+      8: [
+        { label: "Cloud giant (NG)", monsterId: "giant_cloud_giant" },
+        { label: "Dragon horse (NG)", monsterId: "dragon_horse" },
+        { label: "Lammasu (LG)", monsterId: "lammasu" },
+        { label: "Monadic deva (NG)", monsterId: "angel_monadic_deva" },
+        { label: "Young gold dragon (LG)", monsterId: "dragon_metallic_gold_young_gold_dragon" },
+      ],
+      // 9th Level: 6 rows.
+      9: [
+        { label: "Astral deva (NG)", monsterId: "angel_astral_deva" },
+        { label: "Couatl (LG)", monsterId: "couatl" },
+        { label: "Ghaele azata (CG)", monsterId: "azata_ghaele" },
+        { label: "Leonal agathion (NG)", monsterId: "agathion_leonal" },
+        { label: "Storm giant (CG)", monsterId: "giant_storm_giant" },
+        { label: "Trumpet archon (LG)", monsterId: "archon_trumpet_archon" },
+      ],
+    },
+  },
+  neutral: {
+    label: "Summon Neutral Monster",
+    featSlug: "summon-neutral-monster",
+    source: "Champions of Balance pg. 33",
+    levels: {
+      // 1st Level: 2 rows.
+      1: [
+        { label: "Sprite (CN)", monsterId: "sprite" },
+        { label: "Stirge (N)", monsterId: "stirge" },
+      ],
+      // 2nd Level: 2 rows.
+      2: [
+        { label: "Atomie (CN)", monsterId: "atomie" },
+        { label: "Brownie (N)", monsterId: "brownie" },
+      ],
+      // 3rd Level: 5 rows.
+      3: [
+        { label: "Arbiter (inevitable) (LN)", monsterId: "inevitable_arbiter" },
+        { label: "Nosoi (psychopomp) (N)", monsterId: "psychopomp_nosoi" },
+        { label: "Paracletus (aeon) (N)", monsterId: "aeon_paracletus" },
+        { label: "Thoqqua (N)", monsterId: "thoqqua" },
+        { label: "Voidworm (protean) (CN)", monsterId: "protean_voidworm" },
+      ],
+      // 4th Level: 6 rows.
+      4: [
+        { label: "D'ziriak (N)", monsterId: "dziriak" },
+        { label: "Magmin (CN)", monsterId: "magmin" },
+        { label: "Mephit (any) (N)", monsterId: "mephit" },
+        { label: "Satyr (CN)", monsterId: "satyr" },
+        { label: "Shae (N)", monsterId: "shae" },
+        { label: "Viduus (psychopomp) (N)", monsterId: "psychopomp_viduus" },
+      ],
+      // 5th Level: 4 rows.
+      5: [
+        { label: "Catrina (psychopomp) (N)", monsterId: "psychopomp_catrina" },
+        { label: "Mercane (LN)", monsterId: "mercane" },
+        { label: "Rast (N)", monsterId: "rast" },
+        { label: "Tojanida (N)", monsterId: "tojanida" },
+      ],
+      // 6th Level: 5 rows.
+      6: [
+        { label: "Chaos beast (CN)", monsterId: "chaos_beast" },
+        { label: "Invisible stalker (N)", monsterId: "invisible_stalker" },
+        { label: "Naunet (protean) (CN)", monsterId: "protean_naunet" },
+        { label: "Theletos (aeon) (N)", monsterId: "aeon_theletos" },
+        { label: "Vanth (psychopomp) (N)", monsterId: "psychopomp_vanth" },
+      ],
+      // 7th Level: 4 rows.
+      7: [
+        { label: "Axiomite (LN)", monsterId: "axiomite" },
+        { label: "Jyoti (N)", monsterId: "jyoti" },
+        { label: "Shoki (psychopomp) (N)", monsterId: "psychopomp_shoki" },
+        { label: "Zelekhut (inevitable) (LN)", monsterId: "inevitable_zelekhut" },
+      ],
+      // 8th Level: 1 row.
+      8: [{ label: "Imentesh (protean) (CN)", monsterId: "protean_imentesh" }],
+      // 9th Level: 3 rows.
+      9: [
+        { label: "Akhana (aeon) (N)", monsterId: "aeon_akhana" },
+        { label: "Morrigna (psychopomp)", monsterId: "psychopomp_morrigna" },
+        { label: "Valkyrie (CN)", monsterId: "valkyrie" },
+      ],
+    },
+  },
+  evil: {
+    label: "Summon Evil Monster",
+    featSlug: "summon-evil-monster",
+    source: "Champions of Corruption pg. 33",
+    levels: {
+      // 1st Level: 6 rows.
+      1: [
+        { label: "Fiendish dire rat (NE)", monsterId: "rat_dire_rat", template: "fiendish" },
+        {
+          label: "Fiendish fire beetle (NE)",
+          monsterId: "beetle_fire_beetle",
+          template: "fiendish",
+        },
+        {
+          label: "Fiendish ghost scorpion (NE)",
+          monsterId: "scorpion_ghost_scorpion",
+          template: "fiendish",
+        },
+        { label: "Fiendish pony (NE)", monsterId: "horse_pony", template: "fiendish" },
+        { label: "Fiendish stingray (NE)", monsterId: "ray_stingray", template: "fiendish" },
+        { label: "Fiendish vulture (NE)", monsterId: "vulture", template: "fiendish" },
+      ],
+      // 2nd Level: 7 rows.
+      2: [
+        { label: "Damned petitioner (LE)", monsterId: null, note: NOT_IN_BESTIARY },
+        { label: "Fiendish squid (NE)", monsterId: "squid", template: "fiendish" },
+        { label: "Fuath (gremlin, CE)", monsterId: "gremlin_fuath" },
+        { label: "Hunted petitioner (NE)", monsterId: null, note: NOT_IN_BESTIARY },
+        { label: "Larvae petitioner (CE)", monsterId: null, note: NOT_IN_BESTIARY },
+        { label: "Lemure (devil, LE)", monsterId: "devil_lemure" },
+        { label: "Pugwampi (gremlin, NE)", monsterId: "gremlin_pugwampi" },
+      ],
+      // 3rd Level: 7 rows.
+      3: [
+        { label: "Augur (kyton, LE)", monsterId: "kyton_augur" },
+        { label: "Cacodaemon (daemon, NE)", monsterId: "daemon_cacodaemon" },
+        { label: "Doru (div, NE)", monsterId: "div_doru" },
+        { label: "Dretch (demon, CE)", monsterId: "demon_dretch" },
+        { label: "Fiendish shark (NE)", monsterId: "shark", template: "fiendish" },
+        { label: "Howler (CE)", monsterId: "howler" },
+        { label: "Tripurasura (asura, LE)", monsterId: "asura_tripurasura" },
+      ],
+      // 4th Level: 7 rows.
+      4: [
+        { label: "Aghash (div, NE)", monsterId: "div_aghash" },
+        { label: "Hell hound (LE)", monsterId: "hell_hound" },
+        { label: "Kelpie (NE)", monsterId: "kelpie" },
+        { label: "Schir (demon, CE)", monsterId: "demon_schir" },
+        { label: "Spring-heeled Jack (CE)", monsterId: "spring_heeled_jack" },
+        { label: "Yeth hound (NE)", monsterId: "yeth_hound" },
+        { label: "Zebub (devil, LE)", monsterId: "devil_accuser_devil_zebub" },
+      ],
+      // 5th Level: 7 rows.
+      5: [
+        { label: "Babau (demon, CE)", monsterId: "demon_babau" },
+        { label: "Barbazu (devil, LE)", monsterId: "devil_bearded_devil_barbazu" },
+        { label: "Evangelist (kyton, LE)", monsterId: "kyton" },
+        {
+          label: "Fiendish giant moray eel (NE)",
+          monsterId: "eel_giant_moray_eel",
+          template: "fiendish",
+        },
+        { label: "Lurker in light (NE)", monsterId: "lurker_in_light" },
+        { label: "Salamander (CE)", monsterId: "salamander" },
+        { label: "Shadow mastiff (NE)", monsterId: "shadow_mastiff" },
+      ],
+      // 6th Level: 7 rows.
+      6: [
+        { label: "Efreeti (genie, LE)", monsterId: "genie_efreeti" },
+        { label: "Erinyes (devil, LE)", monsterId: "devil_erinyes" },
+        {
+          label: "Fiendish giant octopus (NE)",
+          monsterId: "octopus_giant_octopus",
+          template: "fiendish",
+        },
+        { label: "Pairaka (div, NE)", monsterId: "div_pairaka" },
+        { label: "Shadow demon (CE)", monsterId: "demon_shadow_demon" },
+        { label: "Soul eater (NE)", monsterId: "soul_eater" },
+        { label: "Succubus (demon, CE)", monsterId: "demon_succubus" },
+      ],
+      // 7th Level: 7 rows.
+      7: [
+        { label: "Bebilith (CE)", monsterId: "bebilith" },
+        { label: "Bogeyman (NE)", monsterId: "bogeyman" },
+        { label: "Leukodaemon (daemon, NE)", monsterId: "daemon_leukodaemon" },
+        { label: "Nuckelavee (NE)", monsterId: "nuckelavee" },
+        { label: "Osyluth (devil, LE)", monsterId: "devil_bone_devil_osyluth" },
+        { label: "Sacristan (kyton, LE)", monsterId: "kyton_sacristan" },
+        { label: "Vrock (demon, CE)", monsterId: "demon_vrock" },
+      ],
+      // 8th Level: 7 rows.
+      8: [
+        { label: "Baregara (CE)", monsterId: "baregara" },
+        { label: "Dorvae (NE)", monsterId: "dorvae" },
+        { label: "Hamatula (devil, LE)", monsterId: "devil_barbed_devil_hamatula" },
+        { label: "Hezrou (demon, CE)", monsterId: "demon_hezrou" },
+        { label: "Meladaemon (daemon, NE)", monsterId: "daemon_meladaemon" },
+        { label: "Rusalka (NE)", monsterId: "rusalka" },
+        {
+          label: "Young adult green dragon (LE)",
+          monsterId: null,
+          note: "The bestiary data has the young and adult green dragon only; use the printed young adult statblock.",
+        },
+      ],
+      // 9th Level: 7 rows.
+      9: [
+        { label: "Ankou (LE)", monsterId: "ankou" },
+        { label: "Nalfeshnee (demon, CE)", monsterId: "demon_nalfeshnee" },
+        { label: "Derghodaemon (daemon, NE)", monsterId: "daemon_derghodaemon" },
+        { label: "Gelugon (devil, LE)", monsterId: "devil_ice_devil_gelugon" },
+        { label: "Glabrezu (demon, CE)", monsterId: "demon_glabrezu" },
+        { label: "Sepid (div, NE)", monsterId: "div_sepid" },
+        { label: "Thanadaemon (daemon, NE)", monsterId: "daemon_thanadaemon" },
+      ],
+    },
+  },
+};
+
+export const SUMMON_ALT_LIST_ORDER: readonly SummonAltList[] = ["good", "neutral", "evil"];

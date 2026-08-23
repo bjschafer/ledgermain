@@ -66,6 +66,28 @@ describe("summonFeatSlugs", () => {
     const doc = wizardWith("Augment Summoning");
     expect(summonFeatSlugs(doc, ref)).toEqual(["augment-summoning"]);
   });
+
+  it("carries the list, versatile, and nature's-ally feats under the helper's slugs", () => {
+    const doc = wizardWith(
+      "Summon Good Monster",
+      "Versatile Summon Monster",
+      "Evolved Summoned Monster",
+      "Sacred Summons",
+      "Moonlight Summons",
+      "Starlight Summons",
+      "Versatile Summon Nature's Ally",
+      "Toughness",
+    );
+    expect(summonFeatSlugs(doc, ref)).toEqual([
+      "evolved-summoned-monster",
+      "moonlight-summons",
+      "sacred-summons",
+      "starlight-summons",
+      "summon-good-monster",
+      "versatile-summon-monster",
+      "versatile-summon-nature-s-ally",
+    ]);
+  });
 });
 
 describe("summonHelperHref", () => {

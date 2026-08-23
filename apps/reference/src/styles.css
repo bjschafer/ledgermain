@@ -649,6 +649,19 @@ code {
   color: var(--ink);
 }
 
+/* A template the creature can't legally take: still listed (the reason is on
+   hover) so the reader learns the rule, but visibly out of reach. */
+.adjust-option.is-disabled {
+  color: var(--faint);
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
+.adjust-option.is-disabled:hover {
+  border-color: var(--line-soft);
+  color: var(--faint);
+}
+
 .adjust-option input {
   position: absolute;
   opacity: 0;
@@ -1124,6 +1137,40 @@ code {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--faint);
+}
+
+/* An unlocked alignment list (Summon Good/Neutral/Evil Monster) under the
+   standard rows for the same level: a quiet subheading, same row styling. */
+.summon-alt-section {
+  margin-top: 10px;
+}
+
+.summon-alt-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 4px;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-2);
+}
+
+.summon-alt-source {
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--faint);
+}
+
+/* Casting-time riders (Sacred Summons, Summon Evil Monster): rules the
+   statblock can't carry, printed once above the lists. */
+.summon-cast-note {
+  margin: 0 0 10px;
+  font-size: 0.8125rem;
+  color: var(--muted);
 }
 
 .summon-template-footnote {

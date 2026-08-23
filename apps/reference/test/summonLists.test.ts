@@ -12,7 +12,13 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { SUMMON_LISTS, SUMMON_SPELL_LABEL, type SummonSpell } from "../src/model/summonLists.js";
+import {
+  SUMMON_ALT_LIST_ORDER,
+  SUMMON_ALT_LISTS,
+  SUMMON_LISTS,
+  SUMMON_SPELL_LABEL,
+  type SummonSpell,
+} from "../src/model/summonLists.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const appRoot = join(here, "..");
@@ -133,5 +139,84 @@ describe("SUMMON_LISTS", () => {
   it("carries no em or en dash in any string value", () => {
     const offenders = allStrings().filter(({ value }) => DASH_RE.test(value));
     expect(offenders).toEqual([]);
+  });
+});
+
+// Hand-counted from each feat's table on aonprd.com (Summon Good Monster,
+// Summon Neutral Monster, Summon Evil Monster FeatDisplay pages).
+const EXPECTED_ALT_COUNTS: Record<string, Record<number, number>> = {
+  good: { 1: 6, 2: 5, 3: 6, 4: 7, 5: 5, 6: 5, 7: 7, 8: 5, 9: 6 },
+  neutral: { 1: 2, 2: 2, 3: 5, 4: 6, 5: 4, 6: 5, 7: 4, 8: 1, 9: 3 },
+  evil: { 1: 6, 2: 7, 3: 7, 4: 7, 5: 7, 6: 7, 7: 7, 8: 7, 9: 7 },
+};
+
+describe("SUMMON_ALT_LISTS (Summon Good/Neutral/Evil Monster)", () => {
+  it("covers every level 1..9 on all three lists with the hand-counted row counts", () => {
+    for (const key of SUMMON_ALT_LIST_ORDER) {
+      for (let level = 1; level <= 9; level++) {
+        expect(SUMMON_ALT_LISTS[key].levels[level]?.length, `${key}[${level}]`).toBe(
+          EXPECTED_ALT_COUNTS[key]![level]!,
+        );
+      }
+    }
+  });
+
+  it("every mapped id exists in the vendored bestiary, and every unmapped row says why", () => {
+    const problems: string[] = [];
+    for (const key of SUMMON_ALT_LIST_ORDER) {
+      for (const [level, entries] of Object.entries(SUMMON_ALT_LISTS[key].levels)) {
+        for (const e of entries) {
+          if (e.monsterId !== null && !(e.monsterId in monsters)) {
+            problems.push(`${key}[${level}] "${e.label}" -> ${e.monsterId}`);
+          }
+          if (e.monsterId === null && !e.note) {
+            problems.push(`${key}[${level}] "${e.label}" has no id and no note`);
+          }
+          if (e.variants) problems.push(`${key}[${level}] "${e.label}" uses variants`);
+        }
+      }
+    }
+    expect(problems).toEqual([]);
+  });
+
+  it("only the rows printed as celestial/fiendish carry a forced template, matching their list's alignment", () => {
+    for (const key of SUMMON_ALT_LIST_ORDER) {
+      for (const entries of Object.values(SUMMON_ALT_LISTS[key].levels)) {
+        for (const e of entries) {
+          const printed = /^(Celestial|Fiendish) /.exec(e.label)?.[1]?.toLowerCase();
+          expect(e.template, `${key} "${e.label}"`).toBe(
+            printed as "celestial" | "fiendish" | undefined,
+          );
+          if (e.template) {
+            expect(e.template, `${key} "${e.label}"`).toBe(
+              key === "good" ? "celestial" : "fiendish",
+            );
+          }
+          expect(e.templated, `${key} "${e.label}"`).toBeUndefined();
+        }
+      }
+    }
+  });
+
+  it("has unique labels within each level and no dashes anywhere", () => {
+    for (const key of SUMMON_ALT_LIST_ORDER) {
+      const def = SUMMON_ALT_LISTS[key];
+      expect(DASH_RE.test(def.label + def.source)).toBe(false);
+      for (const entries of Object.values(def.levels)) {
+        const labels = entries.map((e) => e.label);
+        expect(new Set(labels).size).toBe(labels.length);
+        for (const e of entries) {
+          expect(DASH_RE.test(e.label + (e.note ?? "")), `${key} "${e.label}"`).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("feat slugs follow the sheet's featNameSlug shape", () => {
+    expect(SUMMON_ALT_LIST_ORDER.map((k) => SUMMON_ALT_LISTS[k].featSlug)).toEqual([
+      "summon-good-monster",
+      "summon-neutral-monster",
+      "summon-evil-monster",
+    ]);
   });
 });

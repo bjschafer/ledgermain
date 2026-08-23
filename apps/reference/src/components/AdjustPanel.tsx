@@ -20,6 +20,7 @@ export function AdjustmentPicker({
   onToggle,
   title,
   hint,
+  disabled,
 }: {
   options: readonly StatblockAdjustment[];
   selected: ReadonlySet<string>;
@@ -27,6 +28,8 @@ export function AdjustmentPicker({
   title?: string;
   /** Quiet aside next to the group title ("stack freely", "pick one"). */
   hint?: string;
+  /** Options this creature can't take, keyed to the reason shown on hover. */
+  disabled?: ReadonlyMap<string, string>;
 }) {
   return (
     <div className="adjust-picker">
@@ -40,13 +43,22 @@ export function AdjustmentPicker({
         {options.map((option) => {
           const cr = crHint(option);
           const on = selected.has(option.key);
+          const why = disabled?.get(option.key);
+          const classes = ["adjust-option"];
+          if (on) classes.push("is-on");
+          if (why) classes.push("is-disabled");
           return (
             <label
               key={option.key}
-              className={on ? "adjust-option is-on" : "adjust-option"}
-              title={option.notes?.join(" ")}
+              className={classes.join(" ")}
+              title={why ? `${option.label}: ${why}.` : option.notes?.join(" ")}
             >
-              <input type="checkbox" checked={on} onChange={() => onToggle(option.key)} />
+              <input
+                type="checkbox"
+                checked={on}
+                disabled={why !== undefined && !on}
+                onChange={() => onToggle(option.key)}
+              />
               <span className="adjust-option-box" aria-hidden="true" />
               <span className="adjust-option-label">{option.label}</span>
               {cr && <span className="adjust-option-cr">{cr}</span>}
