@@ -297,15 +297,73 @@ describe("applyAdjustments: sizeStep (grow one size category)", () => {
     expect(result.monster.melee).toBe("2 slams +2 (1d3)");
   });
 
-  it("adds the space/reach and Stealth informational notes", () => {
+  it("recomputes space and reach off the size table (Tiny 2-1/2 ft./0 ft. -> Small 5 ft./5 ft.)", () => {
+    expect(result.monster.space).toBe("5 ft.");
+    expect(result.monster.reach).toBe("5 ft.");
+    expect(result.changes).toContainEqual({ field: "space", kind: "recomputed" });
+    expect(result.changes).toContainEqual({ field: "reach", kind: "recomputed" });
+  });
+
+  it("leaves the Skills line alone when neither Fly nor Stealth is printed", () => {
+    expect(result.monster.skills).toBe(animateHair.skills);
+  });
+});
+
+describe("applyAdjustments: sizeStep shifts size-scaled skills and infers reach shape", () => {
+  const grow = { key: "grow", label: "Grow", ops: [{ kind: "sizeStep", delta: 1 } as const] };
+  const shrink = {
+    key: "shrink",
+    label: "Shrink",
+    ops: [{ kind: "sizeStep", delta: -1 } as const],
+  };
+
+  it("Stealth moves -4 per size step, conditional parenthetical included; Large 10 ft./5 ft. is long, so Huge reach is 10 ft.", () => {
+    // lion: Large, space 10 ft., reach 5 ft., Stealth +8 (+12 in undergrowth).
+    const result = applyAdjustments(fixture("lion"), [grow]);
+    expect(result.monster.skills).toBe(
+      "Acrobatics +11, Perception +9, Stealth +4 (+8 in undergrowth)",
+    );
+    expect(result.monster.space).toBe("15 ft.");
+    expect(result.monster.reach).toBe("10 ft.");
+    expect(result.notes.some((n) => n.text.startsWith("Reach assumes"))).toBe(false);
+  });
+
+  it("Fly moves +2 per size step when shrinking (Small -> Tiny)", () => {
+    // eagle: Small, Fly +8, Perception +10.
+    const result = applyAdjustments(fixture("eagle"), [shrink]);
+    expect(result.monster.skills).toBe("Fly +10, Perception +10");
+    expect(result.monster.size).toBe("Tiny");
+  });
+
+  it("a Large humanoid with 10 ft. reach is tall, so Huge reach is 15 ft.", () => {
+    const result = applyAdjustments(fixture("giant_hill_giant"), [grow]);
+    expect(result.monster.space).toBe("15 ft.");
+    expect(result.monster.reach).toBe("15 ft.");
+  });
+
+  it("shrinking a Large creature to Medium lands on the one possible reach (5 ft.)", () => {
+    const result = applyAdjustments(fixture("lion"), [shrink]);
+    expect(result.monster.space).toBe("5 ft.");
+    expect(result.monster.reach).toBe("5 ft.");
+  });
+
+  it("a Huge long creature with a conditional reach keeps the parenthetical and notes it", () => {
+    // Fabricated fixture: space 15 ft., reach 10 ft. (15 ft. with bite) is the long-Huge shape.
+    const base = { ...fixture("elephant"), reach: "10 ft. (15 ft. with bite)" };
+    const result = applyAdjustments(base, [grow]);
+    expect(result.monster.reach).toBe("15 ft. (15 ft. with bite)");
     expect(result.notes).toContainEqual({
-      text: "Space/reach not adjusted for size.",
+      text: "Conditional reach values (a longer reach with one attack) were not adjusted.",
       severity: "info",
     });
-    expect(result.notes).toContainEqual({
-      text: "Skills (Stealth) not adjusted for size.",
-      severity: "info",
-    });
+  });
+
+  it("Medium -> Large reach is the ambiguous case: animals assume long (5 ft.), with a note", () => {
+    const base = { ...fixture("wolf"), space: "5 ft.", reach: "5 ft." };
+    const result = applyAdjustments(base, [grow]);
+    expect(result.monster.space).toBe("10 ft.");
+    expect(result.monster.reach).toBe("5 ft.");
+    expect(result.notes.some((n) => n.text.startsWith("Reach assumes a long"))).toBe(true);
   });
 });
 

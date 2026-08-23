@@ -69,6 +69,72 @@ const AC_ATTACK_SIZE_MOD: Record<string, number> = {
   Colossal: -8,
 };
 
+/** Printed space by size ("Table: Creature Size"); Fine through Tiny share a reach of 0. */
+const SPACE_BY_SIZE: Record<string, string> = {
+  Fine: "1/2 ft.",
+  Diminutive: "1 ft.",
+  Tiny: "2-1/2 ft.",
+  Small: "5 ft.",
+  Medium: "5 ft.",
+  Large: "10 ft.",
+  Huge: "15 ft.",
+  Gargantuan: "20 ft.",
+  Colossal: "30 ft.",
+};
+
+/** Natural reach in feet by size, for tall (upright) and long (horizontal) creatures. */
+const REACH_BY_SIZE: Record<string, { tall: number; long: number }> = {
+  Fine: { tall: 0, long: 0 },
+  Diminutive: { tall: 0, long: 0 },
+  Tiny: { tall: 0, long: 0 },
+  Small: { tall: 5, long: 5 },
+  Medium: { tall: 5, long: 5 },
+  Large: { tall: 10, long: 5 },
+  Huge: { tall: 15, long: 10 },
+  Gargantuan: { tall: 20, long: 15 },
+  Colossal: { tall: 30, long: 20 },
+};
+
+/** Size modifiers to Fly and Stealth checks, by size (the skills' own tables). */
+const FLY_SIZE_MOD: Record<string, number> = {
+  Fine: 8,
+  Diminutive: 6,
+  Tiny: 4,
+  Small: 2,
+  Medium: 0,
+  Large: -2,
+  Huge: -4,
+  Gargantuan: -6,
+  Colossal: -8,
+};
+const STEALTH_SIZE_MOD: Record<string, number> = {
+  Fine: 16,
+  Diminutive: 12,
+  Tiny: 8,
+  Small: 4,
+  Medium: 0,
+  Large: -4,
+  Huge: -8,
+  Gargantuan: -12,
+  Colossal: -16,
+};
+
+/**
+ * Creature types that stand upright, for the one reach case the printed
+ * statblock can't settle: a Small or Medium creature growing to Large, where
+ * the table splits into tall (10 ft.) and long (5 ft.). Everything else is
+ * treated as long, the more common shape among animals and beasts.
+ */
+const TALL_CREATURE_TYPES = new Set([
+  "humanoid",
+  "monstrous humanoid",
+  "outsider",
+  "fey",
+  "undead",
+  "construct",
+  "plant",
+]);
+
 /** CMB/CMD's own "special size modifier" (inverted sign from the AC/attack table). */
 const CMB_CMD_SIZE_MOD: Record<string, number> = {
   Fine: -8,
@@ -204,6 +270,16 @@ export function applyAdjustments(base: Monster, adjustments: StatblockAdjustment
       if (op.kind !== "ability") continue;
       for (const [key, delta] of Object.entries(op.deltas) as [AbilityKey, number | undefined][]) {
         if (delta === undefined) continue;
+        const except = op.except;
+        if (except && except.ability === key) {
+          const score = base.abilityScores?.[key];
+          if (score !== undefined && score <= except.atMost) {
+            b.info(
+              `${ABILITY_LABEL[key]} not changed: the base score of ${score} falls under the published exception (${except.atMost} or less).`,
+            );
+            continue;
+          }
+        }
         mergedAbilityDeltas[key] = (mergedAbilityDeltas[key] ?? 0) + delta;
       }
     }
@@ -561,9 +637,9 @@ function applyOp(b: Builder, op: Exclude<AdjustOp, { kind: "ability" }>): void {
       applyAcShift(b, op.delta);
       break;
     case "saveShift":
-      applySave(b, "fort", op.delta);
-      applySave(b, "ref", op.delta);
-      applySave(b, "will", op.delta);
+      for (const save of ["fort", "ref", "will"] as const) {
+        if (op.save === undefined || op.save === save) applySave(b, save, op.delta);
+      }
       break;
     case "initShift":
       applyInit(b, op.delta);
@@ -571,7 +647,295 @@ function applyOp(b: Builder, op: Exclude<AdjustOp, { kind: "ability" }>): void {
     case "skillShift":
       applySkillShift(b, op.delta, op.skill);
       break;
+    case "attackRider":
+      applyAttackRider(b, "melee", op.tiers);
+      applyAttackRider(b, "ranged", op.tiers);
+      break;
+    case "speedGrant":
+      applySpeedGrant(b, op);
+      break;
+    case "speedShift":
+      applySpeedShift(b, op.delta);
+      break;
+    case "slaTiers":
+      applySlaTiers(b, op.tiers);
+      break;
+    case "primaryNaturalDiceStep":
+      applyPrimaryNaturalDiceStep(b, op.steps);
+      break;
   }
+}
+
+// ---------------------------------------------------------------------------
+// Natural-attack detection on printed attack lines
+// ---------------------------------------------------------------------------
+
+/**
+ * Natural-weapon names as they print (singular). Anything else on an attack
+ * line ("mwk longsword", "+1 lance", "unarmed strike", "swarm") is treated as
+ * manufactured or special and left alone by the natural-only ops.
+ */
+const NATURAL_ATTACK_NAMES = new Set([
+  "bite",
+  "claw",
+  "slam",
+  "gore",
+  "talon",
+  "sting",
+  "stinger",
+  "hoof",
+  "tail slap",
+  "tail",
+  "wing",
+  "tentacle",
+  "pincer",
+  "horn",
+  "tusk",
+  "kick",
+  "headbutt",
+  "rake",
+  "tongue",
+  "spine",
+  "quill",
+  "barb",
+  "pseudopod",
+  "vine",
+  "branch",
+  "root",
+  "stomp",
+  "slap",
+  "fin",
+  "beak",
+  "fang",
+  "jaws",
+  "proboscis",
+  "tail sting",
+  "tail spike",
+  "wing buffet",
+]);
+
+/** "2 claws" -> "claw", "hooves" -> "hoof", "+1 tail slap" -> "tail slap"; lowercased, count/enhancement stripped. */
+function naturalAttackName(namePart: string): string | null {
+  let name = namePart
+    .trim()
+    .toLowerCase()
+    .replace(/^\d+\s+/, "")
+    .replace(/^(\+\d+|mwk|masterwork)\s+/, "")
+    .trim();
+  if (name === "hooves") name = "hoof";
+  else if (name.endsWith("ves")) name = name.slice(0, -3) + "f";
+  else if (name.endsWith("es") && NATURAL_ATTACK_NAMES.has(name.slice(0, -2))) {
+    name = name.slice(0, -2);
+  } else if (name.endsWith("s") && name !== "jaws") name = name.slice(0, -1);
+  return NATURAL_ATTACK_NAMES.has(name) ? name : null;
+}
+
+/** The rules' own tie-break order for "one primary natural weapon" when a creature has several. */
+const PRIMARY_NATURAL_PRIORITY = ["bite", "claw", "slam", "gore", "talon", "sting"];
+
+function applyAttackRider(
+  b: Builder,
+  field: "melee" | "ranged",
+  tiers: Array<{ minHd: number; value: string }>,
+): void {
+  const text = b.monster[field];
+  if (!text) return;
+  const hd = hdCount(b.monster.hd);
+  if (hd === null) {
+    b.manual(
+      "Hit Dice could not be determined; bonus energy damage not added to attacks, add by hand.",
+    );
+    return;
+  }
+  const amount = tierFor(tiers, hd);
+  if (amount === undefined) return;
+
+  const parsed = parseAttackLine(text);
+  if (!parsed) {
+    const label = field === "melee" ? "Melee" : "Ranged";
+    b.manual(
+      `${label} line could not be parsed; add "plus ${amount}" to each natural attack by hand.`,
+    );
+    return;
+  }
+  const next = mapAttacks(parsed, (attack) => {
+    if (!attack.damage || naturalAttackName(attack.namePart) === null) return attack;
+    const rider = attack.damage.rider ? `${attack.damage.rider} plus ${amount}` : ` plus ${amount}`;
+    return { ...attack, damage: { ...attack.damage, rider } };
+  });
+  const rendered = renderAttackLine(next);
+  if (rendered !== text) {
+    b.monster = { ...b.monster, [field]: rendered };
+    b.change(field, "appended");
+  }
+}
+
+function applyPrimaryNaturalDiceStep(b: Builder, steps: number): void {
+  const text = b.monster.melee;
+  if (!text) {
+    b.info("No melee line; no primary natural weapon to enlarge.");
+    return;
+  }
+  const parsed = parseAttackLine(text);
+  if (!parsed) {
+    b.manual(
+      "Melee line could not be parsed; increase one primary natural weapon's damage dice by one step by hand.",
+    );
+    return;
+  }
+  const natural = flattenAttacks(parsed)
+    .map((attack, index) => ({ attack, index, name: naturalAttackName(attack.namePart) }))
+    .filter(
+      (x): x is { attack: (typeof x)["attack"]; index: number; name: string } => x.name !== null,
+    );
+  if (natural.length === 0) {
+    b.manual(
+      "No natural attack found on the melee line; pick one primary natural weapon and increase its damage dice by one step by hand.",
+    );
+    return;
+  }
+  let target = natural.length === 1 ? natural[0]! : undefined;
+  if (!target) {
+    for (const name of PRIMARY_NATURAL_PRIORITY) {
+      target = natural.find((x) => x.name === name);
+      if (target) break;
+    }
+  }
+  if (!target) {
+    b.manual(
+      "Several natural attacks but none from the bite/claw/slam/gore/talon/sting list; pick one primary natural weapon and increase its damage dice by one step by hand.",
+    );
+    return;
+  }
+  const chosen = target;
+  if (!chosen.attack.damage) return;
+  const stepped = stepDiceTerm(chosen.attack.damage.core, steps);
+  if (stepped === null) {
+    b.manual(
+      `Damage dice for "${chosen.attack.namePart.trim()}" are not on the standard size chart; increase them one step by hand.`,
+    );
+    return;
+  }
+  const next = mapAttacks(parsed, (attack, index) =>
+    index === chosen.index ? withDamageCore(attack, stepped) : attack,
+  );
+  const rendered = renderAttackLine(next);
+  if (rendered !== text) {
+    b.monster = { ...b.monster, melee: rendered };
+    b.change("melee", "shifted");
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Speed line
+// ---------------------------------------------------------------------------
+
+const SPEED_TOKEN_RE = /^(?:(fly|swim|climb|burrow)\s+)?(\d+)\s*ft\.(.*)$/;
+
+/** Highest numeric speed on the line, any mode ("40 ft., climb 20 ft., fly 60 ft. (good)" -> 60). */
+function highestSpeed(speed: string): number | null {
+  let best: number | null = null;
+  for (const part of speed.split(", ")) {
+    const m = part.trim().match(SPEED_TOKEN_RE);
+    if (m) best = Math.max(best ?? 0, Number(m[2]));
+  }
+  return best;
+}
+
+function applySpeedGrant(b: Builder, op: Extract<AdjustOp, { kind: "speedGrant" }>): void {
+  const speed = b.monster.speed;
+  const highest = speed ? highestSpeed(speed) : null;
+  if (speed === undefined || highest === null) {
+    b.manual(
+      `Speed line could not be read; add a ${op.movement} speed by hand (the rules derive it from the creature's highest speed).`,
+    );
+    return;
+  }
+  let value = Math.floor(highest * op.multiplier) + op.plus;
+  if (op.maxPerHd !== undefined) {
+    const hd = hdCount(b.monster.hd);
+    if (hd === null) {
+      b.info(
+        `${op.movement} speed cap of ${op.maxPerHd} ft. per Hit Die not applied; Hit Dice could not be read.`,
+      );
+    } else {
+      value = Math.min(value, op.maxPerHd * hd);
+    }
+  }
+  // Speeds print in 5-ft. increments.
+  value = Math.floor(value / 5) * 5;
+
+  const parts = speed.split(", ");
+  const existingIdx = parts.findIndex((part) => part.trim().startsWith(`${op.movement} `));
+  const maneuver = op.maneuverability ? ` (${op.maneuverability})` : "";
+  const token = `${op.movement} ${value} ft.${maneuver}`;
+  if (existingIdx >= 0) {
+    const m = parts[existingIdx]!.trim().match(SPEED_TOKEN_RE);
+    if (m && Number(m[2]) >= value) {
+      b.info(
+        `Existing ${op.movement} speed already meets or exceeds the granted ${value} ft.; kept as printed.`,
+      );
+      return;
+    }
+    parts[existingIdx] = token;
+  } else {
+    parts.push(token);
+  }
+  b.monster = { ...b.monster, speed: parts.join(", ") };
+  b.change("speed", existingIdx >= 0 ? "recomputed" : "appended");
+}
+
+function applySpeedShift(b: Builder, delta: number): void {
+  const speed = b.monster.speed;
+  if (speed === undefined || delta === 0) return;
+  const next = speed.replace(
+    /(\d+)(\s*ft\.)/g,
+    (_m, n: string, unit: string) => `${Number(n) + delta}${unit}`,
+  );
+  if (next === speed) {
+    b.manual(
+      `Speed line could not be read; add ${renderLeadingInt(delta, true)} ft. to every speed by hand.`,
+    );
+    return;
+  }
+  b.monster = { ...b.monster, speed: next };
+  b.change("speed", "shifted");
+}
+
+// ---------------------------------------------------------------------------
+// Spell-like abilities by HD tier
+// ---------------------------------------------------------------------------
+
+function applySlaTiers(b: Builder, tiers: Array<{ minHd: number; value: string }>): void {
+  const hd = hdCount(b.monster.hd);
+  if (hd === null) {
+    b.manual(
+      "Hit Dice could not be determined; granted spell-like abilities not added, add by hand.",
+    );
+    return;
+  }
+  const granted = tiers
+    .filter((t) => t.minHd <= hd)
+    .sort((x, y) => x.minHd - y.minHd)
+    .map((t) => t.value);
+  if (granted.length === 0) return;
+
+  const cha = b.monster.abilityScores?.cha;
+  const entries = granted.map((text) =>
+    text.replace(/\{dc(\d+)\}/g, (_m, level: string) => {
+      if (cha === undefined) return "DC 10 + spell level + Cha modifier";
+      return `DC ${10 + Number(level) + abilityMod(cha)}`;
+    }),
+  );
+  if (cha === undefined && granted.some((t) => /\{dc\d+\}/.test(t))) {
+    b.info("Spell-like ability save DCs left as a formula: this creature has no Charisma score.");
+  }
+  const block = `<p><b>Spell-Like Abilities</b> (granted; 1/day each)<br>${entries.join(", ")}</p>`;
+  b.monster = {
+    ...b.monster,
+    spellsHtml: b.monster.spellsHtml ? `${b.monster.spellsHtml}\n${block}` : block,
+  };
+  b.change("spellsHtml", "appended");
 }
 
 /** Flat shift to every attack bonus on one printed attack line. */
@@ -658,10 +1022,15 @@ function applySkillShift(b: Builder, delta: number, skill: string | undefined): 
 
   const skills = b.monster.skills;
   if (skills !== undefined) {
+    // A named skill's conditional parenthetical ("Stealth +4 (+8 in undergrowth)")
+    // is a check total too, so it moves with the main bonus.
     const next = skill
       ? skills.replace(
-          new RegExp(`(${skill}\\s)([+-]\\d+)`, "g"),
-          (_m, head: string, bonus: string) => head + renderLeadingInt(Number(bonus) + delta, true),
+          new RegExp(`(${skill}\\s)([+-]\\d+)(\\s*\\([^)]*\\))?`, "g"),
+          (_m, head: string, bonus: string, paren: string | undefined) =>
+            head +
+            renderLeadingInt(Number(bonus) + delta, true) +
+            (paren ? shiftSignedBonuses(paren, delta) : ""),
         )
       : shiftSignedBonuses(skills, delta);
     if (next !== skills) {
@@ -733,10 +1102,90 @@ function applySizeStep(b: Builder, delta: 1 | -1): void {
   applySizeStepAttackField(b, "melee", acAttackDelta, delta);
   applySizeStepAttackField(b, "ranged", acAttackDelta, delta);
 
-  if (b.monster.space !== undefined || b.monster.reach !== undefined) {
-    b.info("Space/reach not adjusted for size.");
+  if (newSize !== oldSize) {
+    applySizeSpaceReach(b, oldSize, newSize);
+    applySkillShift(b, FLY_SIZE_MOD[newSize]! - FLY_SIZE_MOD[oldSize]!, "Fly");
+    applySkillShift(b, STEALTH_SIZE_MOD[newSize]! - STEALTH_SIZE_MOD[oldSize]!, "Stealth");
   }
-  b.info("Skills (Stealth) not adjusted for size.");
+}
+
+/** Leading "N ft." (N may be a fraction like "2-1/2") plus whatever trails it. */
+function parseFeet(text: string): { feet: number; trailing: string } | null {
+  const m = text.match(/^(\d+(?:-\d+\/\d+)?|\d+\/\d+)\s*ft\.(.*)$/s);
+  if (!m) return null;
+  const raw = m[1]!;
+  let feet: number;
+  if (raw.includes("-")) {
+    const [whole, frac] = raw.split("-");
+    const [num, den] = frac!.split("/");
+    feet = Number(whole) + Number(num) / Number(den);
+  } else if (raw.includes("/")) {
+    const [num, den] = raw.split("/");
+    feet = Number(num) / Number(den);
+  } else {
+    feet = Number(raw);
+  }
+  return { feet, trailing: m[2] ?? "" };
+}
+
+/**
+ * Space comes straight off the size table. Reach needs the creature's shape
+ * once it is Large or bigger: the printed reach tells tall from long whenever
+ * the creature is already Large+, and shrinking to Medium or below lands on a
+ * single value either way. Only a Small/Medium creature growing to Large is
+ * ambiguous; that case falls back to the creature-type heuristic and says so.
+ */
+function applySizeSpaceReach(b: Builder, oldSize: string, newSize: string): void {
+  const space = b.monster.space;
+  if (space !== undefined) {
+    const parsed = parseFeet(space);
+    const expected = parseFeet(SPACE_BY_SIZE[oldSize]!)!.feet;
+    if (parsed && parsed.feet === expected) {
+      b.monster = { ...b.monster, space: SPACE_BY_SIZE[newSize]! + parsed.trailing };
+      b.change("space", "recomputed");
+    } else {
+      b.info("Space not adjusted: the printed space does not match the base creature's size.");
+    }
+  }
+
+  const reach = b.monster.reach;
+  if (reach === undefined) return;
+  const parsed = parseFeet(reach);
+  if (!parsed) {
+    b.manual(`Reach could not be read; set it for a ${newSize} creature by hand.`);
+    return;
+  }
+  const oldTable = REACH_BY_SIZE[oldSize]!;
+  const newTable = REACH_BY_SIZE[newSize]!;
+  let shape: "tall" | "long" | undefined;
+  if (oldTable.tall !== oldTable.long) {
+    if (parsed.feet === oldTable.tall) shape = "tall";
+    else if (parsed.feet === oldTable.long) shape = "long";
+  }
+  let newReach: number;
+  if (newTable.tall === newTable.long) {
+    newReach = newTable.tall;
+  } else if (shape) {
+    newReach = newTable[shape];
+  } else if (parsed.feet !== oldTable.tall && oldTable.tall !== oldTable.long) {
+    b.manual(
+      `Reach "${reach}" does not match the table for a ${oldSize} creature; set it for a ${newSize} creature by hand.`,
+    );
+    return;
+  } else {
+    const tall = TALL_CREATURE_TYPES.has((b.monster.creatureType ?? "").toLowerCase());
+    newReach = tall ? newTable.tall : newTable.long;
+    b.info(
+      tall
+        ? `Reach assumes a tall (upright) creature at ${newSize}: ${newTable.tall} ft.; a long one reaches ${newTable.long} ft.`
+        : `Reach assumes a long (horizontal) creature at ${newSize}: ${newTable.long} ft.; a tall one reaches ${newTable.tall} ft.`,
+    );
+  }
+  b.monster = { ...b.monster, reach: `${newReach} ft.${parsed.trailing}` };
+  b.change("reach", "recomputed");
+  if (/\d/.test(parsed.trailing)) {
+    b.info("Conditional reach values (a longer reach with one attack) were not adjusted.");
+  }
 }
 
 function applySizeStepAttackField(
@@ -917,15 +1366,7 @@ function applyCrTiers(b: Builder, tiers: Array<{ minHd: number; value: number }>
 
 function applyAppendLine(
   b: Builder,
-  field:
-    | "senses"
-    | "aura"
-    | "defensiveAbilities"
-    | "specialAttacks"
-    | "sq"
-    | "speed"
-    | "immune"
-    | "weaknesses",
+  field: Extract<AdjustOp, { kind: "appendLine" }>["field"],
   text: string,
   skipIfPresent: string | undefined,
 ): void {

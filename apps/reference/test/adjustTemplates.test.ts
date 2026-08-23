@@ -12,9 +12,17 @@ import { fileURLToPath } from "node:url";
 
 import {
   AUGMENT_SUMMONING,
+  COUNTERPOISED_KEY,
+  MOONLIGHT_SUMMONS,
+  STARLIGHT_SUMMONS,
   STATBLOCK_TEMPLATES,
   statblockTemplate,
+  SUMMON_GOOD_DIEHARD,
+  SUMMON_NEUTRAL_WILL,
   SUMMON_TEMPLATE_KEYS,
+  templateIneligibility,
+  VERSATILE_SM_TEMPLATE_KEYS,
+  VERSATILE_SNA_TEMPLATE_KEYS,
 } from "../src/model/adjust/templates.js";
 import type { AdjustOp, StatblockAdjustment } from "../src/model/adjust/types.js";
 
@@ -68,11 +76,228 @@ describe("STATBLOCK_TEMPLATES vendored-id alignment", () => {
     expect(vendoredTemplates[AUGMENT_SUMMONING.key]).toBeUndefined();
   });
 
-  it("covers all seven requested templates by exact vendored id", () => {
+  it("covers all fourteen authored templates by exact vendored id", () => {
     const keys = STATBLOCK_TEMPLATES.map((t) => t.key).sort();
     expect(keys).toEqual(
-      ["advanced", "celestial", "entropic", "fiendish", "giant", "resolute", "young"].sort(),
+      [
+        "advanced",
+        "aerial",
+        "aqueous",
+        "celestial",
+        "chthonic",
+        "counterpoised",
+        "dark",
+        "entropic",
+        "fiendish",
+        "fiery",
+        "giant",
+        "primordial",
+        "resolute",
+        "young",
+      ].sort(),
     );
+  });
+
+  it("every template that derives SR from CR lists its CR op first (SR reads the NEW CR)", () => {
+    for (const template of STATBLOCK_TEMPLATES) {
+      const kinds = template.ops.map((op) => op.kind);
+      const sr = kinds.indexOf("srFromCr");
+      if (sr < 0) continue;
+      const cr = kinds.indexOf("crTiers");
+      expect(cr, `"${template.key}" crTiers before srFromCr`).toBeGreaterThanOrEqual(0);
+      expect(cr, `"${template.key}" crTiers before srFromCr`).toBeLessThan(sr);
+    }
+  });
+});
+
+describe("Versatile Summon Monster / Nature's Ally pick lists", () => {
+  it("match the feat texts: six for summon monster (with dark), five for nature's ally (without)", () => {
+    expect([...VERSATILE_SM_TEMPLATE_KEYS].sort()).toEqual(
+      ["aerial", "aqueous", "chthonic", "dark", "fiery", "primordial"].sort(),
+    );
+    expect([...VERSATILE_SNA_TEMPLATE_KEYS].sort()).toEqual(
+      ["aerial", "aqueous", "chthonic", "fiery", "primordial"].sort(),
+    );
+    for (const key of [...VERSATILE_SM_TEMPLATE_KEYS, COUNTERPOISED_KEY]) {
+      expect(statblockTemplate(key), `key "${key}"`).toBeDefined();
+    }
+  });
+
+  it("gates the elemental-plane templates on type/subtype, fiery also on a swim speed, primordial on nothing", () => {
+    const outsider = { creatureType: "outsider", subtypes: ["evil", "lawful"] };
+    const airAnimal = { creatureType: "animal", subtypes: ["air"] };
+    const swimmer = { creatureType: "animal", speed: "swim 80 ft." };
+    const plain = { creatureType: "animal", speed: "40 ft." };
+    for (const key of ["aerial", "aqueous", "chthonic", "fiery", "dark"]) {
+      expect(templateIneligibility(key, outsider), key).not.toBeNull();
+      expect(templateIneligibility(key, airAnimal), key).not.toBeNull();
+      expect(templateIneligibility(key, plain), key).toBeNull();
+    }
+    expect(templateIneligibility("fiery", swimmer)).not.toBeNull();
+    expect(templateIneligibility("aqueous", swimmer)).toBeNull();
+    expect(templateIneligibility("primordial", outsider)).toBeNull();
+    expect(templateIneligibility("celestial", outsider)).toBeNull();
+  });
+});
+
+describe("elemental-plane templates (Monster Summoner's Handbook)", () => {
+  it.each([
+    ["aerial", "air", "electricity"],
+    ["aqueous", "water", "cold"],
+    ["chthonic", "earth", "acid"],
+  ])(
+    "%s grants the %s subtype, resist %s 10/15/20, DR -/3/5, and 1/1d6/2d6 natural-attack damage",
+    (key, subtype, energy) => {
+      const t = byKey(key);
+      expect(findOp(t, "subtypes")?.add).toEqual([subtype]);
+      const resist = findOp(t, "resistTiers");
+      expect(resist?.energies).toEqual([energy]);
+      expect(resist?.tiers.map((x) => x.value)).toEqual([10, 15, 20]);
+      expect(findOp(t, "drTiers")?.tiers.map((x) => x.value)).toEqual([null, "3/-", "5/-"]);
+      expect(findOp(t, "attackRider")?.tiers.map((x) => x.value)).toEqual([
+        `1 ${energy}`,
+        `1d6 ${energy}`,
+        `2d6 ${energy}`,
+      ]);
+      expect(findOp(t, "crTiers")?.tiers).toEqual([
+        { minHd: 1, value: 0 },
+        { minHd: 5, value: 1 },
+      ]);
+    },
+  );
+
+  it("aerial flies at its highest speed, perfect, capped at 10 ft. per HD; aqueous swims at highest +10; chthonic burrows at half", () => {
+    expect(findOp(byKey("aerial"), "speedGrant")).toEqual({
+      kind: "speedGrant",
+      movement: "fly",
+      multiplier: 1,
+      plus: 0,
+      maxPerHd: 10,
+      maneuverability: "perfect",
+    });
+    expect(findOp(byKey("aqueous"), "speedGrant")).toMatchObject({
+      movement: "swim",
+      multiplier: 1,
+      plus: 10,
+    });
+    expect(findOp(byKey("chthonic"), "speedGrant")).toMatchObject({
+      movement: "burrow",
+      multiplier: 0.5,
+      plus: 0,
+    });
+  });
+
+  it("fiery has the steeper 1/2d6/3d6 fire ladder, no resistance, and the fire-subtype immunity/vulnerability", () => {
+    const t = byKey("fiery");
+    expect(findOp(t, "resistTiers")).toBeUndefined();
+    expect(findOp(t, "attackRider")?.tiers.map((x) => x.value)).toEqual([
+      "1 fire",
+      "2d6 fire",
+      "3d6 fire",
+    ]);
+    expect(appendLineFor(t, "immune")?.text).toBe("fire");
+    expect(appendLineFor(t, "weaknesses")?.text).toBe("vulnerability to cold");
+    expect(findOp(t, "speedGrant")).toBeUndefined();
+  });
+
+  it("primordial: SR = new CR + 6, +10 ft. to all speeds, one primary natural weapon up a step, cumulative SLAs", () => {
+    const t = byKey("primordial");
+    expect(findOp(t, "srFromCr")?.delta).toBe(6);
+    expect(findOp(t, "speedShift")?.delta).toBe(10);
+    expect(findOp(t, "primaryNaturalDiceStep")?.steps).toBe(1);
+    expect(findOp(t, "drTiers")?.tiers.map((x) => x.value)).toEqual([
+      null,
+      "5/cold iron",
+      "10/cold iron",
+    ]);
+    expect(findOp(t, "slaTiers")?.tiers).toEqual([
+      { minHd: 1, value: "dancing lights" },
+      { minHd: 5, value: "faerie fire" },
+      { minHd: 11, value: "lesser confusion ({dc1})" },
+    ]);
+  });
+
+  it("dark: darkvision + low-light vision, DR -/5 magic/10 magic, resist cold and electricity 5/10/15, SR = CR + 5", () => {
+    const t = byKey("dark");
+    expect(appendLineFor(t, "senses")?.text).toBe("darkvision 60 ft.");
+    expect(t.ops.some((op) => op.kind === "appendLine" && op.text === "low-light vision")).toBe(
+      true,
+    );
+    expect(findOp(t, "drTiers")?.tiers.map((x) => x.value)).toEqual([null, "5/magic", "10/magic"]);
+    const resist = findOp(t, "resistTiers");
+    expect(resist?.energies.sort()).toEqual(["cold", "electricity"]);
+    expect(resist?.tiers.map((x) => x.value)).toEqual([5, 10, 15]);
+    expect(findOp(t, "srFromCr")?.delta).toBe(5);
+  });
+});
+
+describe("counterpoised creature (Champions of Balance)", () => {
+  const t = byKey("counterpoised");
+
+  it("resists cold, electricity, and fire 5/10/15, DR -/5 adamantine/10 adamantine, SR = CR + 5", () => {
+    const resist = findOp(t, "resistTiers");
+    expect(resist?.energies.sort()).toEqual(["cold", "electricity", "fire"]);
+    expect(resist?.tiers.map((x) => x.value)).toEqual([5, 10, 15]);
+    expect(findOp(t, "drTiers")?.tiers.map((x) => x.value)).toEqual([
+      null,
+      "5/adamantine",
+      "10/adamantine",
+    ]);
+    expect(findOp(t, "srFromCr")?.delta).toBe(5);
+  });
+
+  it("appends smite bias against the four corner alignments", () => {
+    const smite = appendLineFor(t, "specialAttacks");
+    expect(smite?.text).toContain("smite bias 1/day");
+    expect(smite?.text).toContain("chaotic evil, chaotic good, lawful evil, or lawful good");
+    expect(smite?.text).toContain("{chaMod}");
+    expect(smite?.text).toContain("{hd}");
+  });
+});
+
+describe("advanced creature's Int exception", () => {
+  it("is conditional logic on the ability op, not a note", () => {
+    const ability = findOp(byKey("advanced"), "ability");
+    expect(ability?.except).toEqual({ ability: "int", atMost: 2 });
+    expect((byKey("advanced").notes ?? []).join(" ")).not.toContain("Int score of 2 or less");
+  });
+});
+
+describe("summon feat riders", () => {
+  it("Moonlight: light, confusion/sleep immunity, silver natural weapons", () => {
+    const immune = MOONLIGHT_SUMMONS.ops.filter(
+      (op) => op.kind === "appendLine" && op.field === "immune",
+    );
+    expect(immune.map((op) => (op as { text: string }).text).sort()).toEqual([
+      "confusion effects",
+      "sleep effects",
+    ]);
+    expect(appendLineFor(MOONLIGHT_SUMMONS, "sq")?.text).toContain("silver");
+  });
+
+  it("Starlight: Blind-Fight, cold iron natural weapons", () => {
+    expect(appendLineFor(STARLIGHT_SUMMONS, "feats")?.text).toBe("Blind-Fight");
+    expect(appendLineFor(STARLIGHT_SUMMONS, "sq")?.text).toContain("cold iron");
+  });
+
+  it("Summon Good Monster grants Diehard; Summon Neutral Monster grants +2 Will only", () => {
+    expect(appendLineFor(SUMMON_GOOD_DIEHARD, "feats")?.text).toBe("Diehard");
+    expect(findOp(SUMMON_NEUTRAL_WILL, "saveShift")).toEqual({
+      kind: "saveShift",
+      delta: 2,
+      save: "will",
+    });
+  });
+
+  it("every feat rider resolves through statblockTemplate by key", () => {
+    for (const adj of [
+      MOONLIGHT_SUMMONS,
+      STARLIGHT_SUMMONS,
+      SUMMON_GOOD_DIEHARD,
+      SUMMON_NEUTRAL_WILL,
+    ]) {
+      expect(statblockTemplate(adj.key)).toBe(adj);
+    }
   });
 });
 
