@@ -105,6 +105,7 @@ import {
   applyClassFeatureChangesSupplements,
   applyClassFeatureEffectImmunitySupplements,
   applyClassFeatureUsesSupplements,
+  applyClassSkillSupplements,
   applyDruidDomainFeatureSupplements,
   applyItemSupplements,
   applyPrestigeClassSupplements,
@@ -354,6 +355,9 @@ export function normalize(opts: NormalizeOptions): {
   const classes: Class[] = selectedClassDocs.map((d) =>
     transformClass(d, (id) => classFeaturesById[id]?.name ?? null, resolveUuid),
   );
+
+  // --- class skills the vendored class doc omits (the cleric's Craft) -------
+  applyClassSkillSupplements(classes);
 
   // --- prestige classes (hand-authored; the pinned Foundry pack ships none) --
   // Mutates `classes`/`classFeatures` in place (pushes the two supplemental

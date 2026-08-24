@@ -352,6 +352,40 @@ export function applyClassFeatureChangesSupplements(features: ClassFeature[]): v
 }
 
 /**
+ * Class-skill ids the vendored class doc omits, keyed by class tag.
+ *
+ * Cleric is the only base class in the pinned pack whose
+ * `system.classSkills` drops `crf` — Craft is a cleric class skill (CRB
+ * p. 40). Ranks in any Craft subskill therefore missed the +3 trained bonus.
+ */
+export const SUPPLEMENTAL_CLASS_SKILLS: Record<string, readonly string[]> = {
+  cleric: ["crf"],
+};
+
+/**
+ * Apply `SUPPLEMENTAL_CLASS_SKILLS` in place, unioning the listed ids into the
+ * class's own `classSkills`. Throws if a keyed class is absent, or if upstream
+ * has since added every id itself and the entry is now dead weight — the same
+ * loud data-drift posture as `applyClassFeatureChangesSupplements`.
+ */
+export function applyClassSkillSupplements(classes: Class[]): void {
+  const byTag = new Map(classes.map((c) => [c.tag, c]));
+  for (const [tag, skills] of Object.entries(SUPPLEMENTAL_CLASS_SKILLS)) {
+    const cls = byTag.get(tag);
+    if (cls === undefined) {
+      throw new Error(`[supplements] class "${tag}" not found in vendored classes`);
+    }
+    const missing = skills.filter((s) => !cls.classSkills.includes(s));
+    if (missing.length === 0) {
+      throw new Error(
+        `[supplements] class "${tag}" already lists ${skills.join(", ")} upstream — drop the supplement`,
+      );
+    }
+    cls.classSkills = [...cls.classSkills, ...missing].sort();
+  }
+}
+
+/**
  * Class features whose published text grants an unconditional immunity to
  * something that ISN'T damage — the same `immEffect.<slug>` axis as
  * `SUPPLEMENTAL_RACE_EFFECT_IMMUNITY` below (display-only plus a soft flag on

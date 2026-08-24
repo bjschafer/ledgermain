@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-24-cleric-craft-class-skill",
+    date: "2026-08-24",
+    title: "Craft counts as a cleric class skill",
+    note: "A cleric putting ranks into any Craft skill now gets the +3 class skill bonus. Craft was missing from the cleric's class skill list, so a rank in Craft (weapons) or Craft (armor) was reading three points low.",
+  },
+  {
     id: "2026-08-22-summon-feats-and-lists",
     date: "2026-08-22",
     title: "The summoning helper knows your other summoning feats",
