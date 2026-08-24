@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-24-prestige-class-skills",
+    date: "2026-08-24",
+    title: "Prestige class skill lists match the books",
+    note: "Sense Motive was missing from most prestige class skill lists and Sleight of Hand from a dozen, while others carried a Craft their published entry never grants. A few lists, the Lion Blade's and the Red Mantis assassin's among them, stopped partway through. Every affected class now lists what the book lists, so a rank in one of those skills picks up the +3 it is owed. The Lion Blade also gets its proper d8 hit die.",
+  },
+  {
     id: "2026-08-24-cleric-craft-class-skill",
     date: "2026-08-24",
     title: "Craft counts as a cleric class skill",

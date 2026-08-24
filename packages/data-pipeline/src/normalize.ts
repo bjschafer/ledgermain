@@ -160,6 +160,7 @@ import { transformWitchPatrons } from "./transform/witchPatrons.js";
 import { blessingClassFeatures, transformBlessings } from "./transform/warpriestBlessings.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
 import { readPfDataDictionary } from "./util/pfdata.js";
+import { applyPfDataPrestigeChassis } from "./transform/prestigeClassSkills.js";
 import { makeUuid, parseUuid } from "./util/uuid.js";
 
 export interface NormalizeOptions {
@@ -379,6 +380,17 @@ export function normalize(opts: NormalizeOptions): {
     classes,
     classFeatures,
     resolveUuid,
+  );
+
+  // --- prestige chassis correction: the module's `classSkills` arrays are
+  // systematically incomplete (Sense Motive missing almost everywhere, a
+  // handful of lists truncated) and sometimes over-generous (a Craft the
+  // published list doesn't grant), so the pinned prose catalog's own "Class
+  // Skills" sentence wins where it states one. Mutates `classes` in place.
+  const prestigeChassis = applyPfDataPrestigeChassis(
+    classes,
+    opts.pfDataJsonDir,
+    new Set(SUPPLEMENTAL_PRESTIGE_CLASSES.map((c) => c.name)),
   );
 
   // After BOTH prestige passes above: several supplemented features (the
@@ -1053,6 +1065,8 @@ export function normalize(opts: NormalizeOptions): {
     races: races.length,
     racialTraits: racialTraits.length,
     classes: classes.length,
+    prestigeChassisCorrected: prestigeChassis.fixes.length,
+    prestigeChassisUnstated: prestigeChassis.unstated.length,
     classFeatures: classFeatures.length,
     feats: feats.length,
     traits: traits.length,
