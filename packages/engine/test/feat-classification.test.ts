@@ -25,6 +25,7 @@ const ref = loadRefData();
 const VALID_BUCKETS: ReadonlySet<FeatClassificationBucket> = new Set([
   "numeric",
   "choice-numeric",
+  "substitution",
   "situational",
   "pool",
   "subsystem",

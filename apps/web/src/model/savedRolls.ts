@@ -912,13 +912,16 @@ export interface AttachableFeatGroups {
 /**
  * Classification buckets (`@pf1/engine`'s feat-classification audit) whose
  * effect `compute()` already folds into the sheet's own numbers — Iron Will's
- * +2 Will, Weapon Focus's +1 attack, Extra Rage's pool bump. Attaching one of
- * these to a saved roll would double-count it, so `attachableFeats` excludes
- * them outright rather than merely deprioritizing them.
+ * +2 Will, Weapon Focus's +1 attack, Extra Rage's pool bump, Fencing Grace's
+ * Dex-for-Str swap on a rapier's damage. Attaching one of these to a saved
+ * roll would double-count it (or, for a substitution, restate a swap the
+ * weapon's line already reflects), so `attachableFeats` excludes them
+ * outright rather than merely deprioritizing them.
  */
 const STATICALLY_APPLIED_BUCKETS: ReadonlySet<string> = new Set([
   "numeric",
   "choice-numeric",
+  "substitution",
   "pool",
 ]);
 

@@ -546,6 +546,13 @@ export {
   type DeedDef,
 } from "./deeds.js";
 export {
+  DEX_WEAPON_FEATS,
+  dexWeaponFeatSources,
+  type DexWeaponFeatDef,
+  type DexWeaponScope,
+  type DexWeaponSlot,
+} from "./dex-weapon-feats.js";
+export {
   GUN_TRAINING_GRANTS,
   gunTrainingMatches,
   type GunTrainingGrant,

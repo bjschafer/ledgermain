@@ -51,6 +51,7 @@ import {
   type ResolvedAbility,
 } from "./ability-substitution.js";
 import { acBonusType } from "./ac-bonus-types.js";
+import { dexWeaponFeatSources } from "./dex-weapon-feats.js";
 import { chosenBonusClassSkills } from "./bonus-class-skills.js";
 import { traitGrantedClassSkills } from "./traits.js";
 import { featGrantedClassSkills } from "./feat-effects-resolve.js";
@@ -1374,14 +1375,25 @@ function computeWeaponAttacks(
     // is already using, so a Str weapon and a Weapon Finesse'd Dex weapon each
     // get the substitution written for their own base ability, and neither
     // gets one written for the other's.
+    // Weapon Finesse and the grace feats (Dervish Dance) swap Dex in for Str
+    // on this weapon's lines. They are per-weapon-TYPE substitutions, so they
+    // can't be registered in `ABILITY_SUBSTITUTIONS`; see
+    // `dex-weapon-feats.ts`. A weapon already on "dex" needs no promotion;
+    // one on "str" gets it, since a stored "str" is indistinguishable from
+    // the default every picked weapon arrives with — the same "str doesn't
+    // block the auto-match" convention `autoFinesseDex` below already uses.
+    const dexFeats = dexWeaponFeatSources(doc, refData, w, abilityMods);
     const attackAbility = resolveSubstitution(
       category === "melee" ? "attack.melee" : "attack.ranged",
-      w.attackAbility,
+      w.attackAbility === "str" && dexFeats.attack ? "dex" : w.attackAbility,
       abilityMods,
       substitutions,
     );
     const attackAbilityMod = attackAbility.mod;
-    const attackAbilityLabel = abilityLabelFor(attackAbility);
+    const attackAbilityLabel =
+      w.attackAbility === "str" && dexFeats.attack && !attackAbility.substitution
+        ? `${abilityLabelFor(attackAbility)} (${dexFeats.attack})`
+        : abilityLabelFor(attackAbility);
     const groupKeys = weaponGroupKeys(w);
     // Whether THIS instance represents a thrown attack — the app models one
     // weapon instance with a single fixed category, so "thrown" only applies
@@ -1447,7 +1459,7 @@ function computeWeaponAttacks(
     const autoFinesseDex =
       (w.damageAbility === undefined || w.damageAbility === "str") &&
       category === "melee" &&
-      rogueFinesseTrainingMatches(doc, w);
+      (rogueFinesseTrainingMatches(doc, w) || dexFeats.damage !== undefined);
     const autoGunTrainingDex =
       (w.damageAbility === undefined || w.damageAbility === "str") &&
       category === "ranged" &&
@@ -1518,7 +1530,17 @@ function computeWeaponAttacks(
       const multLabel =
         category === "melee" && mult !== 1 && damageAbilityMod >= 0 ? ` ×${mult}` : "";
       const abilityLabel = damageAbility === "dex" ? "Dexterity" : "Strength";
-      damageComponents.push(synthetic(`${abilityLabel}${multLabel}`, "ability", abilityDamage));
+      // Name the feat that made this line read Dexterity — a Fencing Grace
+      // rapier otherwise shows an unexplained Dex figure where every other
+      // melee weapon shows Str. Only for the AUTO promotion: a hand-set
+      // "dex" is the player's own doing and needs no explanation.
+      const promotedBy =
+        damageAbility === "dex" && w.damageAbility !== "dex" && dexFeats.damage
+          ? ` (${dexFeats.damage})`
+          : "";
+      damageComponents.push(
+        synthetic(`${abilityLabel}${promotedBy}${multLabel}`, "ability", abilityDamage),
+      );
     }
     if (enh !== 0) damageComponents.push(synthetic(`${w.name} (enhancement)`, "enh", enh));
     damageComponents.push(...toComponents(weaponDamageStack.modifiers));

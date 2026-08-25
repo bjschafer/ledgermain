@@ -27,6 +27,13 @@
  *                        weapon type, a skill). Extracted ONLY when the
  *                        existing featChoices "skill"/"weapon" choice-UI shape
  *                        already covers it; otherwise classified and deferred.
+ *  - "substitution" — swaps which ability modifier feeds a term ("use Dex
+ *                        instead of Str for a rapier's damage"). Never a
+ *                        Change: a substitution replaces the modifier it
+ *                        names rather than adding to it. Wired through
+ *                        `dex-weapon-feats.ts` (per-weapon) or
+ *                        `ability-substitution.ts` (whole-character), both of
+ *                        which compute.ts reads directly.
  *  - "situational" — a REAL number, but scoped to a specific maneuver,
  *                        weapon, enemy/ally state, or action the static sheet
  *                        can't detect without over-applying — the same honesty
@@ -75,6 +82,7 @@
 export type FeatClassificationBucket =
   | "numeric"
   | "choice-numeric"
+  | "substitution"
   | "situational"
   | "pool"
   | "subsystem"
@@ -378,7 +386,7 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
     slug: "combat-reflexes",
     name: "Combat Reflexes",
     bucket: "subsystem",
-    note: "extra attacks-of-opportunity count — the engine doesn't track AoO usage at all",
+    note: "extra attacks-of-opportunity count — no Change to extract, but the vendored `uses.maxFormula` (1 + Dex bonus, per round) already meters it as a tracked resource pool via resources.ts's deriveFeatResourcePools",
   },
   "combat-vigor": {
     slug: "combat-vigor",
@@ -2381,8 +2389,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "weapon-finesse": {
     slug: "weapon-finesse",
     name: "Weapon Finesse",
-    bucket: "subsystem",
-    note: "Dex-for-Str attack substitution — not modeled as a Change (would require compute.ts to conditionally swap the attack ability), out of scope here",
+    bucket: "substitution",
+    note: "Dex-for-Str on the attack line of a light weapon, rapier, whip, or spiked chain — a substitution, never a Change; wired through dex-weapon-feats.ts, which promotes a matching weapon's attackAbility in computeWeaponAttacks",
   },
   "weapon-focus": {
     slug: "weapon-focus",

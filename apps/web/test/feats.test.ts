@@ -911,6 +911,16 @@ describe("featChoiceDescriptor: issue #55 additions", () => {
     expect(desc).toEqual({ type: "weapon", label: "Weapon Type" });
   });
 
+  it('Slashing Grace gets a "weapon" descriptor, consumed by dexWeaponFeatSources', () => {
+    expect(featChoiceDescriptor("Slashing Grace")).toEqual({ type: "weapon", label: "Weapon" });
+  });
+
+  it("the other Dex-to-damage feats name their own weapon and so need no picker", () => {
+    for (const name of ["Fencing Grace", "Dervish Dance", "Starry Grace", "Dance of Chains"]) {
+      expect(featChoiceDescriptor(name)).toBeNull();
+    }
+  });
+
   it("engine-wired choice feats (Weapon Focus, Skill Focus) still resolve through resolveFeatEffect first", () => {
     expect(featChoiceDescriptor("Weapon Focus")).toEqual({ type: "weapon", label: "Weapon Type" });
     expect(featChoiceDescriptor("Skill Focus")?.type).toBe("skill");

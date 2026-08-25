@@ -17,6 +17,7 @@ const ref = loadRefData();
 const VALID_BUCKETS = new Set([
   "numeric",
   "choice-numeric",
+  "substitution",
   "situational",
   "pool",
   "subsystem",

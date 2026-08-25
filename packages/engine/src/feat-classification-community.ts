@@ -14,7 +14,9 @@
  * wired into FEAT_EFFECTS_EXTRACTED_COMMUNITY (feat-effects-extracted-
  * community.ts) or FEAT_POOL_EFFECTS (feat-effects.ts). Mythic-tagged feats
  * are bucketed "subsystem" wholesale: mythic tiers and mythic power are not
- * modeled anywhere in this engine.
+ * modeled anywhere in this engine. The lone exception is Weapon Finesse
+ * (Mythic), whose benefit reads off Weapon Finesse rather than off any mythic
+ * resource and so applies in full to a character who has it.
  *
  * Compact by design, unlike the original audit's per-feat prose: at ~3,170
  * entries a note per feat would swamp the file, and for the two bulk buckets
@@ -625,7 +627,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "damned-disciple": "subsystem",
   "damned-soldier": "subsystem",
   "dampen-presence": "subsystem",
-  "dance-of-chains": "situational",
+  "dance-of-chains": "substitution",
   "dangerous-tail": "subsystem",
   "daring-exploit": "subsystem",
   "dark-affinity": "subsystem",
@@ -706,7 +708,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "deny-death": "subsystem",
   "deny-the-reaper": "numeric",
   "derro-magister": "blocked",
-  "dervish-dance": "subsystem",
+  "dervish-dance": "substitution",
   "desert-dweller": "situational",
   "designated-antagonist": "subsystem",
   "desperate-battler": "situational",
@@ -1090,7 +1092,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "feinting-flurry": "situational",
   "feline-grace": "numeric",
   "felling-escape": "subsystem",
-  "fencing-grace": "situational",
+  "fencing-grace": "substitution",
   "feral-combat-training": "subsystem",
   "feral-grace": "subsystem",
   "feral-heart": "situational",
@@ -2544,7 +2546,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "skyseeker-impact": "situational",
   "skyseeker-style": "situational",
   "skyseeker-thrash": "situational",
-  "slashing-grace": "subsystem",
+  "slashing-grace": "substitution",
   "slayer-s-feint": "subsystem",
   "slayer-s-knack": "situational",
   "slaying-sprint": "subsystem",
@@ -2689,7 +2691,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "stance-of-the-xorn": "situational",
   "standing-tall": "situational",
   "starlight-summons": "subsystem",
-  "starry-grace": "situational",
+  "starry-grace": "substitution",
   "startling-getaway": "subsystem",
   "startling-shapechanger": "subsystem",
   "startoss-comet": "subsystem",
@@ -3134,7 +3136,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "weapon-adept": "subsystem",
   "weapon-bearer": "subsystem",
   "weapon-evoker-mastery": "subsystem",
-  "weapon-finesse-mythic": "subsystem",
+  "weapon-finesse-mythic": "substitution",
   "weapon-focus-mythic": "subsystem",
   "weapon-material-mastery": "subsystem",
   "weapon-of-the-chosen": "subsystem",

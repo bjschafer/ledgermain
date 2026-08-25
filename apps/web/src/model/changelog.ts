@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-25-dex-to-damage-feats",
+    date: "2026-08-25",
+    title: "Fencing Grace and the rest of the Dex to damage feats work",
+    note: "Take Fencing Grace and your rapier now does Dexterity damage on its own, no fiddling. Same for Slashing Grace with the weapon you chose, Dervish Dance with a scimitar, Starry Grace with a starknife, Dance of Chains with a spiked chain, and Weapon Finesse on the attack line. The damage row names the feat that did it. These feats let you keep swinging off Strength if you would rather, so the swap only happens when Dexterity is the better score, and it steps aside when the weapon is set to a two handed or off hand grip. You can still set the damage ability by hand on any weapon: that choice always wins, and Dexterity is finally one of the options.",
+  },
+  {
     id: "2026-08-24-private-feedback-contact",
     date: "2026-08-24",
     title: "Contact details you leave with feedback stay private",

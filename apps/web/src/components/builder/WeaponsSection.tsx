@@ -26,8 +26,14 @@ const ATTACK_ABILITIES = [
   { value: "str" as const, label: "Strength (STR)" },
   { value: "dex" as const, label: "Dexterity (DEX)" },
 ];
+// Dexterity belongs here for the Weapon Finesse family (Fencing Grace,
+// Slashing Grace, Dervish Dance, ...): the engine auto-promotes a matching
+// weapon on its own, but the field stays hand-settable for the sources it
+// can't recognize — a custom weapon it can't identify, or a class feature
+// like the Aldori swordlord's that grants the same swap.
 const DAMAGE_ABILITIES = [
   { value: "str" as const, label: "Strength (STR)" },
+  { value: "dex" as const, label: "Dexterity (DEX)" },
   { value: "none" as const, label: "None" },
 ];
 const DAMAGE_MULTIPLIERS = [
@@ -242,7 +248,7 @@ function WeaponForm({
           <span>Damage ability</span>
           <select
             value={form.damageAbility ?? "str"}
-            onChange={(e) => field("damageAbility", e.target.value as "str" | "none")}
+            onChange={(e) => field("damageAbility", e.target.value as "str" | "dex" | "none")}
           >
             {DAMAGE_ABILITIES.map(({ value, label }) => (
               <option key={value} value={value}>

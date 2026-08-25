@@ -808,20 +808,26 @@ const DISPLAY_ONLY_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> 
 };
 
 /**
- * Martial/Exotic Weapon Proficiency's weapon pick — unlike
- * `DISPLAY_ONLY_FEAT_CHOICES` above, this choice IS mechanically consumed:
- * `@pf1/engine`'s `deriveProficiencies` (`proficiency.ts`) reads it straight
- * off `doc.build.featChoices`/`extraFeats[].choiceId` to grant proficiency
- * with the chosen weapon, which feeds the real -4 non-proficient attack
- * penalty. It's just never routed through `resolveFeatEffect`'s Change
- * pipeline — "am I proficient with this weapon" is a set-membership fact, not
- * a stacking bonus, so there's no `Change` for it to `build`. Kept in its own
- * map (rather than folded into `DISPLAY_ONLY_FEAT_CHOICES`) so that map's own
- * "no engine effect at all" claim stays true.
+ * Weapon picks that ARE mechanically consumed, just never as a `Change` —
+ * the opposite of `DISPLAY_ONLY_FEAT_CHOICES` above. Each is read straight
+ * off `doc.build.featChoices`/`extraFeats[].choiceId` by an engine module:
+ * `proficiency.ts`'s `deriveProficiencies` for the two proficiency picks
+ * (feeding the real -4 non-proficient attack penalty), `dex-weapon-feats.ts`
+ * for Slashing Grace. Neither shape is a stacking bonus — one is a
+ * set-membership fact, the other an ability substitution — so neither has a
+ * `Change` for an entry to `build`. Kept in its own map (rather than folded
+ * into `DISPLAY_ONLY_FEAT_CHOICES`) so that map's own "no engine effect at
+ * all" claim stays true.
  */
 const MECHANICAL_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> = {
   "martial-weapon-proficiency": { type: "weapon", label: "Weapon" },
   "exotic-weapon-proficiency": { type: "weapon", label: "Weapon" },
+  // Slashing Grace names its own weapon ("choose one kind of light or
+  // one-handed slashing weapon"), and `@pf1/engine`'s `dexWeaponFeatSources`
+  // reads the pick straight off `featChoices` to swap that weapon's damage
+  // line to Dexterity. Like the proficiency picks above it's a substitution,
+  // not a stacking bonus, so it never routes through `resolveFeatEffect`.
+  "slashing-grace": { type: "weapon", label: "Weapon" },
 };
 
 /**
@@ -831,7 +837,7 @@ const MECHANICAL_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> = 
  *     Focus, Master Craftsman, ...) via `resolveFeatEffect` — its `build()`
  *     emits a real Change once a choice is stored.
  *  2. `MECHANICAL_FEAT_CHOICES` — a choice consumed outside the Change
- *     pipeline (Martial/Exotic Weapon Proficiency's weapon pick).
+ *     pipeline (Martial/Exotic Weapon Proficiency, Slashing Grace).
  *  3. `DISPLAY_ONLY_FEAT_CHOICES` — a choice with no engine effect at all
  *     (Improved Critical's weapon).
  * The descriptor drives the UI picker rendered in FeatsSection/FeatsPanel.
