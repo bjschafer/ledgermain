@@ -22,6 +22,11 @@ export default defineConfig({
           // allowed-vs-disallowed *behavior*, so they supply both kinds of
           // origin themselves — and stay green when the deployed list changes.
           ALLOWED_APP_ORIGINS: "http://localhost:5173,https://ledgermain.whizkid.dev",
+          // Likewise pinned: the route tests care that *an* owner is
+          // distinguished from everyone else, not which account it is. The
+          // unset case is a behavior of its own and is covered directly
+          // against `isOwner` (feedbackContacts.test.ts).
+          OWNER_ID: "discord:owner-under-test",
         },
       },
     }),

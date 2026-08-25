@@ -15,7 +15,8 @@ export interface Session {
   createdAt: string;
 }
 
-function randomToken(bytes: number): string {
+/** Random lowercase-hex token of `bytes` bytes; the id primitive for anything opaque. */
+export function randomToken(bytes: number): string {
   const buf = new Uint8Array(bytes);
   crypto.getRandomValues(buf);
   return Array.from(buf, (b) => b.toString(16).padStart(2, "0")).join("");

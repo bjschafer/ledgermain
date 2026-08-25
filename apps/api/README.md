@@ -8,7 +8,7 @@ ever reads are the three envelope fields `CharacterDoc` already carries for
 this purpose (`id`, `version`, `updatedAt`), plus writing a server-assigned
 `ownerId`.
 
-Deployed and live at `api.ledgermain.whizkid.dev` (two KV namespaces, the
+Deployed and live at `api.ledgermain.whizkid.dev` (three KV namespaces, the
 custom-domain route, the Discord Application, and the `DISCORD_CLIENT_SECRET`
 are all in place). The remaining opt-in step is client-side: the web app only
 talks to this API when built with `VITE_API_URL` set — unset (the default)
@@ -17,15 +17,24 @@ redeploy.
 
 ## Architecture
 
-- **Storage**: two Workers KV namespaces (`kv_namespaces` in
-  `wrangler.jsonc`):
+- **Storage**: three Workers KV namespaces (`kv_namespaces` in
+  `wrangler.jsonc`), split by what the data _is_. `KV` holds only regenerable
+  operational state and can be cleared wholesale in an incident; the other two
+  hold data a user gave us, and can't.
   - `KV` — session tokens (`session:<token>` → `{ ownerId, createdAt }`,
-    30-day TTL) and short-lived Discord OAuth CSRF-state nonces
-    (`oauthstate:<nonce>` → `redirect_uri`, 10-minute TTL).
+    30-day TTL), short-lived Discord OAuth CSRF-state nonces
+    (`oauthstate:<nonce>` → `redirect_uri`, 10-minute TTL), the cached GitHub
+    installation token, and per-IP feedback rate-limit counters.
   - `CHARACTERS` — one entry per document, keyed `<ownerId>::<docId>`, value
     = the raw `CharacterDoc` JSON. `version`/`updatedAt` are duplicated into
     the KV entry's `metadata` so listing a user's characters is a single
     `list({ prefix })` call — it never has to fetch/parse every blob.
+  - `FEEDBACK_CONTACTS` — the contact handle a feedback submission opted to
+    leave, keyed by the opaque `ref` printed in the public issue, 180-day TTL.
+    The handle is deliberately **never** written into the issue: that tracker
+    is public, and GitHub keeps issue-body edit history readable, so an address
+    posted there could not be taken back by editing it out. Readable only by
+    the account named in `vars.OWNER_ID` (see `src/feedbackContacts.ts`).
 - **Auth**: Discord OAuth (DESIGN §2.1 named GitHub OAuth or email
   magic-link; Discord was substituted for GitHub since the actual target
   audience — TTRPG players, not developers — overwhelmingly already has a
@@ -127,8 +136,16 @@ redeploy is just `wrangler deploy`.
      `wrangler secret put DISCORD_CLIENT_SECRET` — run this yourself,
      interactively, from a terminal you trust; never paste the secret into
      a file, another CLI's argument list, or an agent transcript.
-2. **Deploy**: `wrangler deploy` (from `apps/api/`).
-3. **Wire the web app** — set `apps/web`'s API-base env var (`VITE_API_URL`,
+2. **Name the owner** — set `wrangler.jsonc`'s `vars.OWNER_ID` to your own
+   `discord:<user id>` (Discord → Settings → Advanced → Developer Mode, then
+   right-click your name → Copy User ID). This is the only account that can
+   read a stored feedback contact handle via
+   `GET /api/feedback/contact/<ref>`; an empty value fails closed, so a fork
+   that skips this step exposes no handles rather than all of them. Not a
+   secret, hence a `var` and not `wrangler secret put`: holding the id grants
+   nothing without a session for that account.
+3. **Deploy**: `wrangler deploy` (from `apps/api/`).
+4. **Wire the web app** — set `apps/web`'s API-base env var (`VITE_API_URL`,
    see `apps/web/src/sync/config.ts`) to `https://api.ledgermain.whizkid.dev`.
    This is a **build-time** value: Vite inlines `import.meta.env.VITE_API_URL`
    when `vite build` runs, so it must be present in the build environment, not
@@ -152,6 +169,12 @@ Lets anyone using the app — no GitHub account, no exposed email — send feedb
 (a missing feat, a wrong number, a bug) straight from the UI. The Worker opens a
 GitHub issue **as a GitHub App bot**, so reports never appear authored by the
 owner's account, and the only durable credential is the App's private key.
+
+The submitter's side of that bargain: the optional contact handle they leave is
+the one field that never reaches the issue. It goes to the `FEEDBACK_CONTACTS`
+namespace and the issue carries only a ref, which the owner trades for the
+handle at `GET /api/feedback/contact/<ref>`. Their character is attached only
+when they tick the box, and the form says so.
 
 Defense in depth for the one public, unauthenticated write:
 

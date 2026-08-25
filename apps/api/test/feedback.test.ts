@@ -159,10 +159,23 @@ describe("issueBody", () => {
     expect(body).not.toContain("Contact");
   });
 
-  it("neutralizes mentions in the message and contact", () => {
-    const body = issueBody({ ...base, message: "cc @maintainer", contact: "@someone" });
-    expect(body).toContain("@​maintainer");
-    expect(body).toContain("@​someone");
+  // The whole point of the contact store: a handle typed into the form must not
+  // be recoverable from the public issue, including from its edit history.
+  it("publishes a lookup ref in place of the contact handle", () => {
+    const body = issueBody({ ...base, contact: "player@example.com" }, "0123456789abcdef");
+    expect(body).toContain("**Contact:** provided privately (ref `0123456789abcdef`)");
+    expect(body).not.toContain("player@example.com");
+  });
+
+  it("cannot print a handle even when one is present and no ref was minted", () => {
+    const body = issueBody({ ...base, contact: "player@example.com" });
+    expect(body).not.toContain("player@example.com");
+    expect(body).not.toContain("Contact");
+  });
+
+  it("neutralizes mentions in the message", () => {
+    const body = issueBody({ ...base, message: "cc @maintainer" });
+    expect(body).toContain("@\u200Bmaintainer");
   });
 
   it("neutralizes issue references so the bot can't backlink-spam", () => {

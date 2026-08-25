@@ -36,17 +36,31 @@
     "GITHUB_APP_ID": "4310904",
     "GITHUB_APP_INSTALLATION_ID": "146878087",
     "GITHUB_FEEDBACK_REPO": "bjschafer/ledgermain",
+
+    // The single account allowed to read stored feedback contact handles
+    // (src/feedbackContacts.ts), as the `discord:<user id>` string sessions
+    // carry. Not a secret: it's an identifier, and holding it grants nothing
+    // without a session for that account. An empty value fails closed, so an
+    // unprovisioned deploy exposes no handles rather than all of them.
+    "OWNER_ID": "",
   },
 
-  // Two KV namespaces:
-  //  - KV: session tokens (`session:<token>` -> {ownerId, createdAt}) and
-  //    short-lived OAuth `state` nonces (`oauthstate:<nonce>` -> redirectUri).
+  // Three KV namespaces, split by what the data *is* rather than by who writes
+  // it. KV holds only regenerable operational state, so it can be cleared
+  // wholesale in an incident without losing anything; the other two hold data a
+  // user gave us, which can't.
+  //  - KV: session tokens (`session:<token>` -> {ownerId, createdAt}),
+  //    short-lived OAuth `state` nonces (`oauthstate:<nonce>` -> redirectUri),
+  //    the cached GitHub installation token, and per-IP rate-limit counters.
   //  - CHARACTERS: opaque CharacterDoc blobs, keyed `<ownerId>::<docId>`.
+  //  - FEEDBACK_CONTACTS: contact handles left with feedback, keyed by the ref
+  //    printed in the public issue. Everything in here expires (180 days).
   // Local `wrangler dev`/vitest-pool-workers use Miniflare's local KV
   // simulation and do not need real ids to work.
   "kv_namespaces": [
     { "binding": "KV", "id": "94d09d616b3648dfb5f9bf7d5393cce3" },
     { "binding": "CHARACTERS", "id": "c648b619c69240148cb8c5204769a3b6" },
+    { "binding": "FEEDBACK_CONTACTS", "id": "16f6ba88b7874804af5b6301f9f3491a" },
   ],
 
   // First-party usage/health telemetry (see src/analytics.ts): one PII-free

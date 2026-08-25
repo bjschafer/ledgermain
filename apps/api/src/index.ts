@@ -11,10 +11,12 @@ import { deleteCharacter, getCharacter, listCharacters, putCharacter } from "./c
 import { handlePreflight, withCors } from "./cors.js";
 import { handleCallback, handleStart } from "./discord-oauth.js";
 import { handleFeedback } from "./feedback.js";
+import { CONTACT_REF_PATTERN, handleContactLookup } from "./feedbackContacts.js";
 import { errorJson, json } from "./http.js";
 import { deleteSession, ownerIdFromRequest } from "./session.js";
 
 const CHARACTER_PATH = /^\/api\/characters(?:\/([^/]+))?$/;
+const FEEDBACK_CONTACT_PATH = /^\/api\/feedback\/contact\/([^/]+)$/;
 
 /**
  * Coarse, fixed-enum label for a request — for telemetry (analytics.ts) and
@@ -28,6 +30,7 @@ function routeLabel(method: string, pathname: string): string {
   if (pathname === "/auth/logout") return "auth.logout";
   if (pathname === "/api/me") return "me";
   if (pathname === "/api/feedback") return "feedback.submit";
+  if (FEEDBACK_CONTACT_PATH.test(pathname)) return "feedback.contact";
   const charMatch = CHARACTER_PATH.exec(pathname);
   if (charMatch) {
     const hasId = Boolean(charMatch[1]);
@@ -69,6 +72,17 @@ async function route(request: Request, env: Env): Promise<Response> {
     const ownerId = await ownerIdFromRequest(request, env.KV);
     if (!ownerId) return errorJson(401, "Not authenticated");
     return json({ ownerId });
+  }
+
+  // Owner-only: reads back the contact handle a submission chose to leave,
+  // which is deliberately absent from the public issue (see feedbackContacts.ts).
+  const contactMatch = FEEDBACK_CONTACT_PATH.exec(pathname);
+  if (contactMatch) {
+    if (method !== "GET") return errorJson(405, "Method not allowed");
+    const ref = contactMatch[1]!;
+    // Shape-checked before the handler so a junk ref can't reach KV at all.
+    if (!CONTACT_REF_PATTERN.test(ref)) return errorJson(404, "Not found");
+    return handleContactLookup(request, env, ref);
   }
 
   // Public (unauthenticated) — anyone using the app can send feedback. Guarded

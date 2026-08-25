@@ -226,7 +226,7 @@ function FeedbackModal({
 
             <label className="feedback-field">
               <span>
-                Contact <span className="hint">(optional, if you'd like a reply)</span>
+                Contact <span className="hint">(optional, kept private)</span>
               </span>
               <input
                 type="text"
@@ -266,7 +266,8 @@ function FeedbackModal({
 
             <p className="hint feedback-disclosure">
               Your report is posted to a public issue tracker. Your browser and app version are
-              included to help with bugs.{" "}
+              included to help with bugs. Anything you put in Contact stays off it: only I can read
+              that, and it's deleted within six months.{" "}
               {draft.includeBuild
                 ? "Your character sheet will be attached to it, including its name and anything you've typed into it."
                 : "Your character data is not sent."}

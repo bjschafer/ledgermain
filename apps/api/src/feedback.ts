@@ -14,6 +14,10 @@
  *  3. A coarse per-IP rate limit in KV — a backstop, not the main defense
  *     (Turnstile is), so its KV eventual-consistency sloppiness is acceptable.
  *
+ * The one submitted field that never lands in the issue is the contact handle:
+ * it goes to the owner-only store in `feedbackContacts.ts`, and the issue
+ * carries only a ref to it.
+ *
  * Honest limit: a public browser endpoint can't *prove* a caller is our SPA —
  * anything the client holds is visible in devtools. Turnstile + hostname
  * assertion is the strongest practical approximation; it makes scripted abuse
@@ -21,6 +25,7 @@
  */
 import { PayloadTooLargeError, readBodyWithCap } from "./body.js";
 import { allowedHostnames } from "./cors.js";
+import { newContactRef, storeContact } from "./feedbackContacts.js";
 import { createIssue, getInstallationToken } from "./githubApp.js";
 import { errorJson, json } from "./http.js";
 import { verifyTurnstile } from "./turnstile.js";
@@ -192,7 +197,13 @@ function details(summary: string, lang: string, text: string): string {
   ].join("\n");
 }
 
-export function issueBody(value: FeedbackBody): string {
+/**
+ * `contactRef` is passed iff the submission carried a contact handle. Note what
+ * this function never reads: `value.contact`. The handle lives in the
+ * owner-only store (`feedbackContacts.ts`) and only its ref is published, so
+ * there is no path by which an address reaches this public body.
+ */
+export function issueBody(value: FeedbackBody, contactRef?: string): string {
   const parts = [
     // Blockquote the free text; mentions/refs already neutralized.
     neutralizeRefs(value.message)
@@ -205,8 +216,8 @@ export function issueBody(value: FeedbackBody): string {
   if (value.context) {
     parts.push(`**Context:** ${neutralizeRefs(value.context)}`);
   }
-  if (value.contact) {
-    parts.push(`**Contact (opt-in):** ${neutralizeRefs(value.contact)}`);
+  if (contactRef) {
+    parts.push(`**Contact:** provided privately (ref \`${contactRef}\`)`);
   }
   if (value.userAgent) {
     // Inside an unclosable code fence (see `details`), so nothing here can
@@ -279,12 +290,37 @@ export async function handleFeedback(request: Request, env: Env): Promise<Respon
     return errorJson(429, "Too many submissions — please try again later");
   }
 
+  // Minted before the issue so the body can name it, but only stored after the
+  // issue exists. Storing first would leave an orphaned handle behind every
+  // submission whose issue creation failed, which is exactly the data this
+  // change exists to stop accumulating.
+  const contactRef = value.contact ? newContactRef() : undefined;
+
   const token = await getInstallationToken(env, Math.floor(Date.now() / 1000));
   const created = await createIssue(env, token, {
     title: issueTitle(value.category, value.message),
-    body: issueBody(value),
+    body: issueBody(value, contactRef),
     labels: ["feedback"],
   });
+
+  if (contactRef && value.contact) {
+    // Never allowed to fail the request: the feedback itself has landed, and
+    // throwing here would show the user an error and invite a retry that files
+    // a duplicate issue. A lost handle costs a reply; a duplicate costs triage.
+    try {
+      await storeContact(env, contactRef, value.contact, created.number);
+    } catch (err) {
+      console.error(
+        JSON.stringify({
+          level: "error",
+          event: "feedback_contact_store_failed",
+          ref: contactRef,
+          issue: created.number,
+          message: err instanceof Error ? err.message : String(err),
+        }),
+      );
+    }
+  }
 
   return json({ ok: true, url: created.htmlUrl, number: created.number }, { status: 201 });
 }

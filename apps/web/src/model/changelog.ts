@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-24-private-feedback-contact",
+    date: "2026-08-24",
+    title: "Contact details you leave with feedback stay private",
+    note: "The feedback form files a report on a public issue tracker, and until now the Discord handle or email you left went onto it in the open. It doesn't any more. Your contact goes somewhere only I can read, the public report just notes that you left one, and it's deleted within six months. Everything else about the form is unchanged, and leaving contact blank still works fine.",
+  },
+  {
     id: "2026-08-24-prestige-class-skills",
     date: "2026-08-24",
     title: "Prestige class skill lists match the books",
