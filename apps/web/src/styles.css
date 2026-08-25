@@ -7537,6 +7537,25 @@ input[type="text"].saved-roll-name:focus {
   display: flex;
 }
 
+/* The mobile "Sheet" button opens the whole derived sheet in here — a single
+   tall document rather than the self-scrolling panes the picker dialogs put in
+   `.dialog-body`, so it needs a scroller of its own. `min-width: 0` because a
+   flex item's automatic minimum is its content's min-content width, which the
+   sheet's widest row would otherwise push past the surface. */
+.sheet-dialog-scroll {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+
+/* Inside the dialog the sheet's own frame doubles the surface's — drop it and
+   let the scroller run edge to edge. */
+.sheet-dialog-scroll > .sheet {
+  border: none;
+  border-radius: 0;
+}
+
 /* ConfirmDialog's body: a message plus two actions, stacked and padded
    rather than the edge-to-edge two-pane layout the picker dialogs use. */
 .confirm-dialog-body {

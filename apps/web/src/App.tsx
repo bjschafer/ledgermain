@@ -373,7 +373,12 @@ function Workbench({
             title={props.doc.identity.name || "Character Sheet"}
             onClose={() => setSheetOpen(false)}
           >
-            <Sheet doc={props.doc} sheet={props.sheet} refData={props.refData} hideName />
+            {/* The picker dialogs fill `.dialog-body` with panes that scroll
+                themselves; the sheet is one tall document, so it brings its
+                own scroller or the dialog surface just clips it. */}
+            <div className="sheet-dialog-scroll">
+              <Sheet doc={props.doc} sheet={props.sheet} refData={props.refData} hideName />
+            </div>
           </Dialog>
         )}
       </SpellBonusesProvider>

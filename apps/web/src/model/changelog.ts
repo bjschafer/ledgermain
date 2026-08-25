@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-25-phone-sheet-scrolls",
+    date: "2026-08-25",
+    title: "The sheet scrolls on a phone",
+    note: "Tapping Sheet on a phone opened the sheet but cut it off partway down, around Defense, with no way to reach the rest. Your skills, saves, attacks and the rest of the page were there the whole time and simply could not be scrolled to. The sheet now scrolls the whole way, and the page behind it stays put while you do.",
+  },
+  {
     id: "2026-08-25-dex-to-damage-feats",
     date: "2026-08-25",
     title: "Fencing Grace and the rest of the Dex to damage feats work",
