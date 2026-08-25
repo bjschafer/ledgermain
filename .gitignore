@@ -47,6 +47,11 @@ blob-report/
 .env.local
 .env.*.local
 
+# Feedback reports pulled down for debugging (scripts/feedback-pull.ts). These
+# are real players' character documents, names and free text included: they are
+# fetched to look at, never to keep in the repo.
+.feedback/
+
 # Editor / OS
 .DS_Store
 .idea/

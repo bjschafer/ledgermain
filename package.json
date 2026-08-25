@@ -28,6 +28,7 @@
     "data:bump": "bun scripts/refdata-bump.ts",
     "coverage:issue": "bun scripts/coverage-issue.ts",
     "coverage:mech": "bun scripts/mech-coverage.ts",
+    "feedback:pull": "bun scripts/feedback-pull.ts",
     "deploy": "bun run build && bun run --filter @pf1/web deploy"
   },
   "devDependencies": {

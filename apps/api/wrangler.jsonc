@@ -42,7 +42,7 @@
     // carry. Not a secret: it's an identifier, and holding it grants nothing
     // without a session for that account. An empty value fails closed, so an
     // unprovisioned deploy exposes no handles rather than all of them.
-    "OWNER_ID": "",
+    "OWNER_ID": "discord:392833842563514378",
   },
 
   // Three KV namespaces, split by what the data *is* rather than by who writes
