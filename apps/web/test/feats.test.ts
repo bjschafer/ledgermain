@@ -353,13 +353,36 @@ describe("expectedFeatCount: fixed grants named after the ability, not the feat"
     const doc = makeDoc({ classes: [{ tag: "swashbuckler", level: 5 }], race: "Elf" });
     // base: ceil(5/2)=3; Bonus Feats (SWA): floor(5/4)=1 → total=4
     expect(expectedFeatCount(doc, ref)).toBe(4);
-    expect(grantedFeats(doc, ref).map((g) => g.featName)).toEqual(["Improved Critical"]);
+    expect(grantedFeats(doc, ref).map((g) => g.featName)).toEqual([
+      "Weapon Finesse",
+      "Improved Critical",
+    ]);
   });
 
-  it("Swashbuckler 4 Elf → 2 base + Bonus Feats(1), nothing granted before 5th", () => {
+  it("Swashbuckler 1 is granted Weapon Finesse by Swashbuckler Finesse", () => {
+    const doc = makeDoc({ classes: [{ tag: "swashbuckler", level: 1 }], race: "Elf" });
+    expect(expectedFeatCount(doc, ref)).toBe(1);
+    const granted = grantedFeats(doc, ref);
+    expect(granted.map((g) => g.featName)).toEqual(["Weapon Finesse"]);
+    expect(granted[0]!.featureName).toBe("Swashbuckler Finesse");
+  });
+
+  it("Swashbuckler 4 Elf → 2 base + Bonus Feats(1); Improved Critical waits for 5th", () => {
     const doc = makeDoc({ classes: [{ tag: "swashbuckler", level: 4 }], race: "Elf" });
     expect(expectedFeatCount(doc, ref)).toBe(3);
-    expect(grantedFeats(doc, ref)).toEqual([]);
+    expect(grantedFeats(doc, ref).map((g) => g.featName)).toEqual(["Weapon Finesse"]);
+  });
+
+  // The reported bug: the granted feat was invisible, so the player bought it
+  // by hand and the budget counted the purchase. It must not, either way.
+  it("a hand-bought copy of a granted feat never eats a slot", () => {
+    const base = makeDoc({ classes: [{ tag: "swashbuckler", level: 5 }], race: "Elf" });
+    const weaponFinesse = grantedFeats(base, ref).find((g) => g.featName === "Weapon Finesse")!;
+    const doc = {
+      ...base,
+      build: { ...base.build, feats: [...base.build.feats, weaponFinesse.featId] },
+    };
+    expect(chosenFeatCountExcludingGranted(doc, ref)).toBe(base.build.feats.length);
   });
 
   // The two signals must never disagree: a feature that hands out real slots

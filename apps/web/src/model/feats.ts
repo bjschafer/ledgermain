@@ -37,16 +37,19 @@ import {
   buildRollData,
   ENERGY_TYPES,
   featNameSlug,
+  grantedFeatIdOf,
+  grantedFeats,
   KINETIC_BLAST_WEAPON_GROUP,
   replacedTierLevels,
   resolveArchetypeFeatureEffect,
   resolveFeatEffect,
   ROGUE_TALENTS,
   tryEvaluateFormula,
+  type GrantedFeat,
   type RollData,
 } from "@pf1/engine";
 
-import { parentBloodlineTagOf, parentDomainTagOf } from "./doc.js";
+import { parentBloodlineTagOf } from "./doc.js";
 import { SKILL_NAMES, skillName } from "./names.js";
 import { effectiveCombatStyleId } from "./ranger.js";
 import { suppressedRaceTargets } from "./racialTraits.js";
@@ -63,6 +66,14 @@ function totalLevel(doc: CharacterDoc): number {
   return doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
 }
 
+/**
+ * Fixed feat grants live in `@pf1/engine`'s `granted-feats.ts`, which also
+ * folds them into the doc `compute()` reads so a granted feat moves numbers
+ * like a chosen one. Re-exported here because this module is where the rest
+ * of the app looks for anything feat-shaped.
+ */
+export { grantedFeats, type GrantedFeat };
+
 /** feat name (lowercased, trimmed) -> feat id, for fixed-grant detection. */
 function featIdByName(refData: RefData): Map<string, string> {
   const map = new Map<string, string>();
@@ -70,210 +81,6 @@ function featIdByName(refData: RefData): Map<string, string> {
     map.set(feat.name.trim().toLowerCase(), feat.id);
   }
   return map;
-}
-
-/**
- * Class feature name (lowercased, trimmed) -> the actual granted feat's name
- * (lowercased, trimmed), for the handful of cases where Foundry names the
- * class feature differently than the specific feat it auto-grants. Monk's
- * "Unarmed Strike" class feature carries a vendored `{formula: "1", target:
- * "bonusFeats", type: "untyped"}` change representing the automatic grant of
- * "Improved Unarmed Strike" (confirmed via the class feature's description
- * text and the vendored `links.supplements` UUID pointing at that feat) —
- * but "unarmed strike" doesn't match "improved unarmed strike" by name, so
- * without this override it falls through to being counted as a floating
- * bonus-feat slot instead of the specific fixed grant it actually is.
- */
-const FEATURE_NAME_OVERRIDES: Record<string, string> = {
-  "unarmed strike": "improved unarmed strike",
-  // Rogue (Unchained)'s "Finesse Training (UC)" grants Weapon Finesse as a
-  // bonus feat at 1st level (same `bonusFeats`-change-with-mismatched-name
-  // shape as Monk's Unarmed Strike above) — confirmed via the vendored
-  // feature's description text and its `grantsBuffs` UUID resolving to the
-  // "Weapon Finesse" feat.
-  "finesse training (uc)": "weapon finesse",
-};
-
-/** The feat name (lowercased, trimmed) a class feature name resolves to. */
-function resolvedFeatureName(featureName: string): string {
-  const key = featureName.trim().toLowerCase();
-  return FEATURE_NAME_OVERRIDES[key] ?? key;
-}
-
-/** `Compendium.pf1.feats.Item.<id>` -> `<id>`; a buff/item UUID -> no match. */
-const FEAT_UUID_RE = /^Compendium\.pf1\.feats\.Item\.([^.]+)$/;
-
-/**
- * The specific feat a `bonusFeats`-carrying class feature hands the character
- * outright, or undefined when the feature grants a free SLOT the player fills.
- * Resolved by name first (through `FEATURE_NAME_OVERRIDES`, which also covers
- * homebrew features, whose `grantsBuffs` is always empty), then by the
- * feature's own `grantsBuffs` link, which names the granted feat directly for
- * the vendored features Foundry titles after the ability rather than the feat
- * it hands out: brawler's "Unarmed Strike (BRA)", warpriest's "Focus Weapon",
- * "Swashbuckler Weapon Training". No vendored feature that grants real slots
- * carries a feat-resolving link, so the two signals never disagree.
- */
-function grantedFeatIdOf(
-  feature: { name: string; grantsBuffs: readonly string[] },
-  byName: Map<string, string>,
-  refData: RefData,
-): string | undefined {
-  const named = byName.get(resolvedFeatureName(feature.name));
-  if (named) return named;
-  for (const uuid of feature.grantsBuffs) {
-    const id = FEAT_UUID_RE.exec(uuid)?.[1];
-    if (id && refData.feats[id]) return id;
-  }
-  return undefined;
-}
-
-/**
- * Cleric domain tag (`Domain.tag`) -> the specific feat that domain hands the
- * character as a bonus feat. Two domains carry a `bonusFeats` change on the
- * domain doc, but — unlike a class feature named after the feat it grants —
- * the granted feat is named only in the domain's description prose ("...gains
- * @UUID[...]{Blind-Fight} as a bonus feat"), so the feat identity can't be
- * recovered from the change alone. Hand-authored from that prose, same
- * clean-room posture as `FEATURE_NAME_OVERRIDES`. Values are feat names
- * (lowercased, trimmed) resolved through `featIdByName`.
- */
-const DOMAIN_GRANTED_FEATS: Record<string, string> = {
-  Darkness: "blind-fight",
-  Rune: "scribe scroll",
-};
-
-/**
- * Druid nature-bond domain tag (`DruidDomain.tag`) -> the specific feat that
- * domain hands the character as a bonus feat, same shape as
- * `DOMAIN_GRANTED_FEATS` above. Wolf is the only one of the 25 nature-bond
- * domains whose granted power is a fixed feat rather than prose ("Improved
- * Trip: You gain Improved Trip as a bonus feat"), hand-authored into
- * `DruidDomain.changes` by `data-pipeline`'s `SUPPLEMENTAL_DRUID_DOMAIN_FEATURES`
- * (issue #117).
- */
-const DRUID_DOMAIN_GRANTED_FEATS: Record<string, string> = {
-  Wolf: "improved trip",
-};
-
-/** A specific feat handed to the character by a class feature (no slot used). */
-export interface GrantedFeat {
-  /** Id into RefData.feats. */
-  featId: string;
-  featName: string;
-  /** Class that granted it (tag) and the granting feature's name, for display. */
-  classTag: string;
-  featureName: string;
-}
-
-/**
- * Specific feats granted outright by class features: any granted, resolved
- * feature carrying a `bonusFeats` change whose *name* matches a feat in
- * RefData (Wizard "Scribe Scroll", Sorcerer "Eschew Materials"). These are
- * auto-applied — the player never spends a slot or adds them manually.
- * Deduped by feat id (first grant wins).
- */
-export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[] {
-  const byName = featIdByName(refData);
-  const archetypeSwaps = activeArchetypeSwaps(doc, refData);
-  const out: GrantedFeat[] = [];
-  const seen = new Set<string>();
-  for (const cls of doc.identity.classes) {
-    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
-    if (!classDef) continue;
-    for (const grant of classDef.features) {
-      if (grant.level > cls.level || !grant.resolved) continue;
-      // Swapped out by an active archetype — no longer granted (mirrors collect.ts).
-      if (archetypeSwaps.has(grant.uuid)) continue;
-      const feature = refData.classFeatures[grant.featureId];
-      if (!feature) continue;
-      if (!(feature.changes ?? []).some((ch) => ch.target === "bonusFeats")) continue;
-      const featId = grantedFeatIdOf(feature, byName, refData);
-      if (!featId || seen.has(featId)) continue;
-      seen.add(featId);
-      const featName = refData.feats[featId]?.name ?? feature.name;
-      out.push({ featId, featName, classTag: cls.tag, featureName: feature.name });
-    }
-  }
-  // Cleric domain fixed bonus feats (Darkness grants Blind-Fight, Rune grants
-  // Scribe Scroll). Gated on the character actually having cleric levels; a
-  // stale domain tag on a non-cleric grants nothing. `clericDomains` holds
-  // domain AND subdomain tags: a subdomain keeps the feat only when it kept
-  // the parent's `bonusFeats` change (the data-pipeline import drops it for a
-  // subdomain that replaces the granting ability), so the change is what's
-  // checked rather than the tag naming a top-level domain.
-  if (doc.identity.classes.some((c) => c.tag === "cleric")) {
-    for (const tag of doc.build.clericDomains ?? []) {
-      const parentTag = parentDomainTagOf(refData, tag);
-      const featName = DOMAIN_GRANTED_FEATS[parentTag];
-      if (!featName) continue;
-      const entity =
-        Object.values(refData.domains).find((d) => d.tag === tag) ??
-        Object.values(refData.subdomains).find((s) => s.tag === tag);
-      if (!entity?.changes.some((ch) => ch.target === "bonusFeats")) continue;
-      const featId = byName.get(featName);
-      if (!featId || seen.has(featId)) continue;
-      seen.add(featId);
-      out.push({
-        featId,
-        featName: refData.feats[featId]?.name ?? featName,
-        classTag: "cleric",
-        featureName: tag === parentTag ? `${tag} Domain` : `${tag} Subdomain`,
-      });
-    }
-  }
-
-  // Druid nature-bond domain fixed bonus feat (Wolf grants Improved Trip).
-  // Gated on the character actually having druid levels; a stale domain tag
-  // on a non-druid grants nothing. Unlike `clericDomains`, a single tag with
-  // no subdomain layer — see `DruidDomain.changes`'s doc comment.
-  if (doc.identity.classes.some((c) => c.tag === "druid") && doc.build.druidNatureBondDomain) {
-    const tag = doc.build.druidNatureBondDomain;
-    const featName = DRUID_DOMAIN_GRANTED_FEATS[tag];
-    if (featName) {
-      const domain = Object.values(refData.druidDomains).find((d) => d.tag === tag);
-      if (domain?.changes.some((ch) => ch.target === "bonusFeats")) {
-        const featId = byName.get(featName);
-        if (featId && !seen.has(featId)) {
-          seen.add(featId);
-          out.push({
-            featId,
-            featName: refData.feats[featId]?.name ?? featName,
-            classTag: "druid",
-            featureName: `${tag} Domain`,
-          });
-        }
-      }
-    }
-  }
-
-  // Rogue talents that grant a fixed feat outright ("Finesse Rogue" grants
-  // Weapon Finesse, no player-chosen target needed; see
-  // `ROGUE_TALENTS[id].grantsFeat` in `@pf1/engine` `rogue-talents.ts`), same
-  // "talent grants a feat" shape as Rogue (Unchained)'s vendored "Finesse
-  // Training (UC)" -> `FEATURE_NAME_OVERRIDES` entry above, but sourced from
-  // the player's own `build.rogueTalents` picks rather than a vendored
-  // class-feature grant.
-  const rogueClass = doc.identity.classes.find(
-    (c) => c.tag === "rogue" || c.tag === "rogueUnchained",
-  );
-  if (rogueClass) {
-    for (const talentId of doc.build.rogueTalents ?? []) {
-      const grantsFeat = ROGUE_TALENTS[talentId]?.grantsFeat;
-      if (!grantsFeat) continue;
-      const featId = byName.get(grantsFeat);
-      if (!featId || seen.has(featId)) continue;
-      seen.add(featId);
-      const featName = refData.feats[featId]?.name ?? grantsFeat;
-      out.push({
-        featId,
-        featName,
-        classTag: rogueClass.tag,
-        featureName: ROGUE_TALENTS[talentId]!.name,
-      });
-    }
-  }
-  return out;
 }
 
 /**

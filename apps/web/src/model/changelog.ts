@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-26-class-granted-feats-apply",
+    date: "2026-08-26",
+    title: "Feats your class hands you now do their job",
+    note: "A swashbuckler's Swashbuckler Finesse gives you Weapon Finesse, but the rapier kept swinging off Strength, so the only fix was to buy the feat again and go a feat over budget. That's done with. A feat your class grants now moves the same numbers a feat you picked would, and it still costs you nothing. If you bought a copy by hand to work around this, it stopped counting against your feats: you can drop it from the feat picker whenever you like. The same goes for an unchained rogue's Finesse Training, a gunslinger's Gunsmithing, and the finesse a daring champion, warrior poet, inspired blade, picaroon, Okayo corsair or musketeer gets in place of the swashbuckler's. Prestige classes that hand over a named feat, from the duelist's Combat Reflexes to the pit fighter's dirty trick line, grant it too.",
+  },
+  {
     id: "2026-08-25-phone-sheet-scrolls",
     date: "2026-08-25",
     title: "The sheet scrolls on a phone",

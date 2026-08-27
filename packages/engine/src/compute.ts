@@ -56,6 +56,7 @@ import { chosenBonusClassSkills } from "./bonus-class-skills.js";
 import { traitGrantedClassSkills } from "./traits.js";
 import { featGrantedClassSkills } from "./feat-effects-resolve.js";
 import { resolveClassFeatures } from "./archetypes.js";
+import { withGrantedFeats } from "./granted-feats.js";
 import { computeRanger } from "./ranger.js";
 import { orderByTag } from "./cavalier-orders.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
@@ -1613,7 +1614,13 @@ function computeWeaponAttacks(
 
 /* ----------------------------------------------------------------- compute */
 
-export function compute(doc: CharacterDoc, refData: RefData): DerivedSheet {
+export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet {
+  // Feats a class hands over outright (swashbuckler finesse's Weapon Finesse,
+  // a gunslinger's Gunsmithing, monk's Improved Unarmed Strike) are folded
+  // into `build.feats` once, here, so every feat-reading path below treats
+  // them as feats the character has — which is what the rules say they are.
+  // Never written back to the stored document; see `granted-feats.ts`.
+  const doc = withGrantedFeats(inputDoc, refData);
   const level = totalLevel(doc);
   const race = refData.races[doc.identity.race];
   // Pre-buff base speeds, threaded into rollData so set-formulas (Slow,

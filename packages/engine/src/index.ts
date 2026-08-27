@@ -898,6 +898,13 @@ export {
   type ResolvedClassFeatures,
   type GrantedFeature,
 } from "./archetypes.js";
+export {
+  grantedFeats,
+  grantedFeatIdOf,
+  withGrantedFeats,
+  FEATURE_NAME_OVERRIDES,
+  type GrantedFeat,
+} from "./granted-feats.js";
 export { ARCHETYPE_FEATURE_EFFECTS, type ArchetypeFeatureEffect } from "./archetype-effects.js";
 export {
   ARCHETYPE_TIER_REPLACEMENTS,
