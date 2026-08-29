@@ -833,9 +833,13 @@ function ArcanistExploitActionRow({
   const [amount, setAmount] = useState(1);
   const flatCost = action.cost !== undefined && action.cost > 0;
   const noCost = action.cost === 0;
-  // A no-cost exploit already says so on its own control, so the meta line
-  // carries the action alone rather than printing "No cost" twice.
-  const meta = [action.action, noCost ? undefined : action.costLabel].filter(Boolean).join(" · ");
+  // The cost belongs to whichever control states it: a flat cost is already on
+  // the spend button, and a no-cost exploit says so where that button would be.
+  // Only a variable cost ("1 or more points") has nowhere else to appear, since
+  // its button reads a bare "Spend".
+  const meta = [action.action, flatCost || noCost ? undefined : action.costLabel]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <div className="arcanist-exploit-row">
