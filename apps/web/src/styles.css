@@ -1984,6 +1984,10 @@ button:focus-visible,
   background: var(--surface-2);
   position: sticky;
   top: 0;
+  /* `.pick-row`'s `content-visibility: auto` makes every row its own stacking
+     context, so the rows paint over a stuck heading and swallow its clicks,
+     which is what broke collapsing a level. Lift the heading above them. */
+  z-index: 1;
 }
 
 .spell-level-head.is-collapsible {
@@ -7632,6 +7636,40 @@ input[type="text"].saved-roll-name:focus {
   min-height: 0;
   min-width: 0;
   background: var(--surface);
+  /* Anchors the pane's own scroll-to-top button (PaneScrollTop.tsx). */
+  position: relative;
+}
+
+/* Scroll-to-top for a picker pane. Anchored to the pane rather than the
+   viewport: each pane scrolls on its own, so a viewport-anchored button
+   couldn't say which list it would rewind. Clears the scrollbar gutter and
+   sits above the sticky level headings. */
+.pane-top-btn {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--gold-dim);
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--gold-2), var(--gold));
+  color: var(--bg);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.pane-top-btn:hover {
+  background: linear-gradient(180deg, var(--gold-2), var(--gold-2));
+}
+
+.pane-top-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 .spell-pane-head {

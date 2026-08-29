@@ -122,6 +122,75 @@ test("spell levels collapse, and the state survives reopening", async ({ page })
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
 
+/**
+ * Deep in a long class list the level heading is stuck to the top of the pane,
+ * sitting over the rows rather than beside them. `.pick-row`'s
+ * `content-visibility: auto` makes every row its own stacking context, so
+ * without an explicit z-index the rows paint over the stuck heading and take
+ * its clicks: the level stops collapsing, and the two texts overlap on screen.
+ *
+ * Asserted by hit-testing the heading rather than by `locator.click()`, which
+ * scrolls its target into view first and in doing so un-sticks the heading —
+ * clicking away the very condition under test.
+ */
+test("a level heading stuck to the top of a scrolled pane still collapses", async ({ page }) => {
+  // Browses the class list unfiltered, so it holds the suite's largest DOM.
+  test.slow();
+  const { consoleErrors, pageErrors } = guard(page);
+  const panel = await gotoWizardSpells(page);
+  await panel.getByRole("button", { name: "Edit spellbook" }).click();
+
+  const dialog = page.getByRole("dialog");
+  const browse = dialog.locator(".spell-pane").first();
+  const body = browse.locator(".spell-pane-body");
+  const level1 = browse.getByRole("button", { name: /^Level 1/ });
+
+  await expect(spellRow(browse, page, "Alarm")).toBeVisible();
+  await body.evaluate((el) => el.scrollTo(0, 3000));
+  await expect(level1).toHaveAttribute("aria-expanded", "true");
+
+  // Over the heading's own label, the topmost element is the heading.
+  const point = await level1.evaluate((head) => {
+    const r = head.getBoundingClientRect();
+    const x = r.left + 30;
+    const y = r.top + r.height / 2;
+    return { x, y, onTop: head.contains(document.elementFromPoint(x, y)) };
+  });
+  expect(point.onTop).toBe(true);
+
+  await page.mouse.click(point.x, point.y);
+  await expect(level1).toHaveAttribute("aria-expanded", "false");
+  await expect(spellRow(browse, page, "Alarm")).toHaveCount(0);
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
+test("a scrolled pane offers a way back to the top", async ({ page }) => {
+  test.slow();
+  const { consoleErrors, pageErrors } = guard(page);
+  const panel = await gotoWizardSpells(page);
+  await panel.getByRole("button", { name: "Edit spellbook" }).click();
+
+  const dialog = page.getByRole("dialog");
+  const browse = dialog.locator(".spell-pane").first();
+  const body = browse.locator(".spell-pane-body");
+  const toTop = browse.getByRole("button", { name: "Back to top of the spell list" });
+
+  // Absent at the top of the list: nothing to rewind.
+  await expect(spellRow(browse, page, "Alarm")).toBeVisible();
+  await expect(toTop).toHaveCount(0);
+
+  await body.evaluate((el) => el.scrollTo(0, 3000));
+  await toTop.click();
+
+  await expect.poll(() => body.evaluate((el) => el.scrollTop)).toBe(0);
+  await expect(toTop).toHaveCount(0);
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
 test("the school and level filters narrow the browse pane", async ({ page }) => {
   const { consoleErrors, pageErrors } = guard(page);
   const panel = await gotoWizardSpells(page);

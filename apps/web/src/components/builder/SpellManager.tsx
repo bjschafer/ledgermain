@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import type { RefData } from "@pf1/schema";
 
@@ -16,6 +16,7 @@ import {
   schoolsOf,
 } from "../../model/spellSearch.js";
 import { Dialog } from "../Dialog.js";
+import { PaneScrollTop } from "../PaneScrollTop.js";
 import { SpellDetail } from "../SpellDetail.js";
 import { SearchMiss } from "./SearchMiss.js";
 import { Caret } from "../Caret.js";
@@ -74,6 +75,8 @@ export function SpellManager({
 }) {
   const [filter, setFilter] = useState<SpellFilter>(EMPTY_SPELL_FILTER);
   const editable = onToggle !== undefined;
+  const browseBody = useRef<HTMLDivElement>(null);
+  const knownBody = useRef<HTMLDivElement>(null);
 
   const schools = useMemo(() => schoolsOf(entries, schoolLabel), [entries]);
   const levels = useMemo(() => levelsOf(entries), [entries]);
@@ -154,7 +157,7 @@ export function SpellManager({
               <span className="spell-pane-title">{filtered ? "Matches" : "Spell list"}</span>
               <span className="spell-pane-count">{matches.length}</span>
             </div>
-            <div className="spell-pane-body">
+            <div className="spell-pane-body" ref={browseBody}>
               {browseGroups.length === 0 ? (
                 filter.query.trim() ? (
                   <SearchMiss query={filter.query.trim()} picker="spells" />
@@ -213,6 +216,7 @@ export function SpellManager({
                 ))
               )}
             </div>
+            <PaneScrollTop targetRef={browseBody} label="Back to top of the spell list" />
           </section>
 
           {editable && (
@@ -221,7 +225,7 @@ export function SpellManager({
                 <span className="spell-pane-title">{knownLabel}</span>
                 <span className="spell-pane-count">{known.size}</span>
               </div>
-              <div className="spell-pane-body">
+              <div className="spell-pane-body" ref={knownBody}>
                 {knownGroups.length === 0 ? (
                   <div className="empty">Nothing here yet. Search on the left and add a spell.</div>
                 ) : (
@@ -262,6 +266,10 @@ export function SpellManager({
                   })
                 )}
               </div>
+              <PaneScrollTop
+                targetRef={knownBody}
+                label={`Back to top of ${knownLabel.toLowerCase()}`}
+              />
             </section>
           )}
         </div>

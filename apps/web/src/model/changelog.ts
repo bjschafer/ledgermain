@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-28-spellbook-list-navigation",
+    date: "2026-08-28",
+    title: "Getting around a long spell list",
+    note: "An arcanist browses close to nineteen hundred spells, and the level heading that should have folded a level away was buried under the rows: clicking it did nothing. It works again, so you can collapse the levels you are done with and leave the one you are shopping in. A button also appears in the corner of a list once you have scrolled a way into it, and takes you back to the top in one tap. Both panes have one, the class list and your own known list.",
+  },
+  {
     id: "2026-08-26-class-granted-feats-apply",
     date: "2026-08-26",
     title: "Feats your class hands you now do their job",
