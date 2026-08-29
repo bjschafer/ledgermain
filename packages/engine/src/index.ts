@@ -219,7 +219,9 @@ export {
   ARCANIST_EXPLOIT_IDS,
   resolveArcanistExploit,
   mergedArcanistExploitCatalog,
+  type ArcanistExploitActivation,
   type ArcanistExploitDef,
+  type ArcanistExploitScale,
   type MergedArcanistExploitEntry,
 } from "./arcanist-exploits.js";
 export {

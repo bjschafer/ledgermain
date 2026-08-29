@@ -4294,6 +4294,36 @@ input[type="text"].saved-roll-name:focus {
   border-top: 1px solid var(--line-soft);
 }
 
+/* Each picked exploit row carries a cost/action line, its scaled number, and
+   a collapsed description — same divider treatment as the amplification rows
+   above, for the same reason. */
+.arcanist-exploit-row + .arcanist-exploit-row {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+}
+
+/* The one number an exploit scales, resolved at this character's level. Sits
+   right of the name so a stack of them lines up beside the spend buttons
+   instead of tracking the name column's ragged width. */
+/* A row's cost/action line and its toggle pointer are separate sentences:
+   inline spans would run them together without so much as a space. */
+.arcanist-exploit-row > .hint {
+  display: block;
+  margin-top: 4px;
+}
+
+.exploit-scale {
+  margin-left: auto;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.exploit-scale b {
+  color: var(--ink);
+}
+
 /* Polymorph / Wild Shape panel (issue #70) */
 .polymorph-start,
 .polymorph-active {

@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-28-arcanist-exploits-on-the-tracker",
+    date: "2026-08-28",
+    title: "Your exploits sit next to your reservoir",
+    note: "An arcanist exploit is something you spend a reservoir point to do, but almost none of them changed a number on the sheet, so they only ever appeared in the class features reference at the bottom of the Play tab. Easy to forget one exists in the middle of a fight. Every exploit you have picked now has a row under Arcane Reservoir, with what it costs, how you activate it, and a button that takes the point off your pool. The row also works out the number that scales with your level, so Dimensional Slide tells a 13th level arcanist she can step 130 feet, and Acid Jet shows the dice it throws with your Charisma already added. Exploits that leave something running behind them, like Spell Resistance, still toggle on the reservoir row itself.",
+  },
+  {
     id: "2026-08-28-spellbook-list-navigation",
     date: "2026-08-28",
     title: "Getting around a long spell list",

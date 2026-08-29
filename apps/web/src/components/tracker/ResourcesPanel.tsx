@@ -37,6 +37,10 @@ import {
   totalOccultistFocusInvested,
 } from "../../model/occultistImplements.js";
 import {
+  arcanistExploitActions,
+  type ArcanistExploitAction,
+} from "../../model/arcanistExploits.js";
+import {
   phrenicAmplificationActions,
   type PhrenicAmplificationAction,
 } from "../../model/psychicAmplifications.js";
@@ -169,6 +173,15 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
                   <PhrenicAmplificationActionsPanel
                     doc={doc}
                     refData={refData}
+                    left={pool.max - used}
+                    onSpend={(n) => spendAmount(pool, n)}
+                  />
+                )}
+                {pool.name === "Arcane Reservoir" && pool.classTag === "arcanist" && (
+                  <ArcanistExploitActionsPanel
+                    doc={doc}
+                    refData={refData}
+                    sheet={sheet}
                     left={pool.max - used}
                     onSpend={(n) => spendAmount(pool, n)}
                   />
@@ -758,6 +771,123 @@ function PhrenicAmplificationActionRow({
       <span className="hint">
         {action.costLabel}: {action.summary}
       </span>
+      {action.description ? <FeatureDescription html={action.description} /> : null}
+    </div>
+  );
+}
+
+/**
+ * Picked arcanist exploits, listed beside the Arcane Reservoir resource row.
+ * All but a handful of the 73 published exploits are activated abilities that
+ * spend a reservoir point and leave nothing behind for a `Change` to target,
+ * so before this panel they lived only in the builder and the collapsed
+ * class-features reference: a player who took Dimensional Slide had to
+ * remember it unaided and work out its distance by hand. This row is the same
+ * "actions hang off the pool they spend" shape `KineticUtilityActionsPanel`
+ * and `PhrenicAmplificationActionsPanel` already use, plus the one number
+ * each exploit scales (resolved at the character's level by
+ * `model/arcanistExploits.ts`'s `arcanistExploitActions`).
+ *
+ * A flat cost gets a one-click spend; a variable one ("1 or more points")
+ * lets the player type what they're actually paying, the same trust the
+ * Phrenic Pool row extends. An exploit that also carries a lasting effect
+ * (`arcane-spends.ts`'s `spendToggle`) points at its toggle on the row above
+ * rather than offering a second, divergent way to pay for the same thing.
+ */
+function ArcanistExploitActionsPanel({
+  doc,
+  refData,
+  sheet,
+  left,
+  onSpend,
+}: {
+  doc: CharacterDoc;
+  refData: RefData;
+  sheet: DerivedSheet;
+  /** Arcane Reservoir points currently remaining, from the row above. */
+  left: number;
+  onSpend: (n: number) => void;
+}) {
+  const actions = arcanistExploitActions(doc, refData, sheet);
+  if (actions.length === 0) return null;
+
+  return (
+    <div className="res-sub-row arcanist-exploit-actions">
+      <div className="res-name">Exploits</div>
+      {actions.map((action) => (
+        <ArcanistExploitActionRow key={action.id} action={action} left={left} onSpend={onSpend} />
+      ))}
+    </div>
+  );
+}
+
+function ArcanistExploitActionRow({
+  action,
+  left,
+  onSpend,
+}: {
+  action: ArcanistExploitAction;
+  left: number;
+  onSpend: (n: number) => void;
+}) {
+  const [amount, setAmount] = useState(1);
+  const flatCost = action.cost !== undefined && action.cost > 0;
+  const noCost = action.cost === 0;
+  // A no-cost exploit already says so on its own control, so the meta line
+  // carries the action alone rather than printing "No cost" twice.
+  const meta = [action.action, noCost ? undefined : action.costLabel].filter(Boolean).join(" · ");
+
+  return (
+    <div className="arcanist-exploit-row">
+      <div className="res-field-row">
+        <span className="res-field-label">
+          {action.name}
+          {action.category ? <span className="tag-mystery"> Greater</span> : null}
+        </span>
+        {action.scaleValue ? (
+          <span className="exploit-scale">
+            {action.scaleLabel} <b>{action.scaleValue}</b>
+          </span>
+        ) : null}
+        {flatCost ? (
+          <button
+            type="button"
+            className="pick-btn"
+            disabled={left < (action.cost ?? 0)}
+            onClick={() => onSpend(action.cost!)}
+          >
+            Spend {action.cost} {action.cost === 1 ? "point" : "points"}
+          </button>
+        ) : noCost ? (
+          <span className="hint">No reservoir cost</span>
+        ) : (
+          <>
+            <NumberField
+              value={amount}
+              min={1}
+              max={Math.max(left, 1)}
+              size={2}
+              onCommit={setAmount}
+              aria-label={`${action.name} points to spend`}
+            />
+            <button
+              type="button"
+              className="pick-btn"
+              disabled={left < amount}
+              onClick={() => onSpend(amount)}
+            >
+              Spend
+            </button>
+          </>
+        )}
+      </div>
+      <span className="hint">
+        {meta ? `${meta}: ` : ""}
+        {action.summary}
+      </span>
+      {action.hasToggle ? (
+        <span className="hint">Its lasting effect toggles on the reservoir row above.</span>
+      ) : null}
       {action.description ? <FeatureDescription html={action.description} /> : null}
     </div>
   );
