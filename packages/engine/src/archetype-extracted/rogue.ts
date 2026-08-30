@@ -1205,8 +1205,8 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "rogue:pirate",
     name: "Unflinching",
     level: 3,
-    bucket: "situational",
-    note: "+1/3-level save bonus scoped to fear AND mind-affecting effects specifically — no matching target (would over-apply as a blanket Will bonus)",
+    bucket: "numeric",
+    note: "unconditional save bonus vs. fear and mind-affecting effects — expressible via saveCategories: ['mind'] (fear is a child category, already covered)",
   },
 
   // ── Planar Sneak ───────────────────────────────────────────────────────
@@ -2208,6 +2208,26 @@ export const ROGUE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "An Okeno liberator adds 1/2 her class level to Escape Artist checks, and never takes a " +
       "penalty on Disable Device checks when using improvised tools to open locks. This ability " +
       "replaces trapfinding.",
+  },
+  // Pirate's "Unflinching" names fear AND mind-affecting effects — "mind" in
+  // SAVE_CATEGORIES already covers fear as a child category (save-categories.ts),
+  // so a single saveCategories: ["mind"] entry reproduces both halves of the
+  // prose without a redundant "fear" line.
+  "rogue:pirate:unflinching:3": {
+    changes: [
+      {
+        formula: "1 + floor((@class.unlevel - 3) / 3)",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["mind"],
+      },
+    ],
+    detail: (level) => `+${1 + Math.floor((level - 3) / 3)} saves vs. fear/mind-affecting`,
+    confidence: "high",
+    provenance:
+      "At 3rd level, a pirate gains a +1 bonus on saving throws against fear and mind-affecting " +
+      "effects. This bonus increases by +1 for every three levels, to a maximum of +6 at 18th " +
+      "level.",
   },
   "rogue:rake:rake-s-smile:3": {
     changes: [

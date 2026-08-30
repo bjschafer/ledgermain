@@ -3,7 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { compute, resolveArchetypeFeatureEffect } from "../src/index.js";
+import { compute, evaluateFormula, resolveArchetypeFeatureEffect } from "../src/index.js";
 
 /**
  * hand-computed fixture tests for
@@ -363,5 +363,21 @@ describe("blocked composition trap: Sneak Attack reprint rows (issue #45)", () =
     const feature = sheet.classFeatures.find((f) => f.name === "Sneak Attack");
     // sneakAttackDice(10) => 5d6 ("+5d6" per tables.ts's dice-label convention)
     expect(feature?.detail).toBe("5d6");
+  });
+});
+
+describe("Pirate (rogue): Unflinching grants saves vs. fear/mind-affecting via saveCategories", () => {
+  // Ultimate Combat pirate archetype: "+1 bonus on saving throws against fear
+  // and mind-affecting effects... increases by +1 for every three levels, to a
+  // maximum of +6 at 18th level." The vendored text is byte-identical to the
+  // unchained pirate's, whose entry this mirrors.
+  it("1 + floor((unlevel-3)/3): +1 at L3, +6 at L18", () => {
+    const eff = resolveArchetypeFeatureEffect("rogue:pirate:unflinching:3");
+    expect(eff?.source).toBe("extracted");
+    const [save] = eff!.effect.changes;
+    expect(save!.target).toBe("allSavingThrows");
+    expect(save!.saveCategories).toEqual(["mind"]);
+    expect(evaluateFormula(save!.formula, { class: { unlevel: 3 } })).toBe(1);
+    expect(evaluateFormula(save!.formula, { class: { unlevel: 18 } })).toBe(6);
   });
 });
