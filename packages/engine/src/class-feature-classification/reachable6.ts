@@ -152,7 +152,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "Fb7VxWMSOZRN71K8",
     name: "Favor: Crucisal's Guidance",
     bucket: "situational",
-    note: "a swift-action favor-point spend, active for 1 minute and only 'in an urban environment'; not an unconditional bonus. Also not reachable as a pool toggle: its Founders' Favor pool carries no vendored uses.maxFormula at all (unlike Judgment/Bardic Performance/Sacred Weapon), so deriveResourcePools never derives a Founders' Favor row for a toggle to attach to.",
+    note: "a swift-action favor-point spend, active for 1 minute and only 'in an urban environment'; not an unconditional bonus. Also not reachable as a pool toggle: its Founders' Favor pool carries no vendored uses.maxFormula at all (unlike Judgment/Bardic Performance/Sacred Weapon) — resources.ts hand-resolves the pool's size (class level plus the highest of Int/Wis/Cha modifier) so a row derives, but this power itself still has no linked buff or tableOptions entry for a toggle to attach to.",
   },
   JKJoHy5NveXGaZqv: {
     id: "JKJoHy5NveXGaZqv",
@@ -272,7 +272,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_6: Readonly<
     id: "EYejyvbnCJKiWeel",
     name: "Veil Pool",
     bucket: "subsystem",
-    note: "the prose describes a class-level-plus-ability-modifier pool that funds a disguise-self-style transformation with level-gated sensory upgrades, but the vendored feature carries no uses field at all (unlike Ki Pool/Arcane Pool), so deriveResourcePools never derives a Veil Pool row for a toggle to attach to — the same reachability gap as Founders' Favor.",
+    note: "the prose describes a class-level-plus-ability-modifier pool that funds a disguise-self-style transformation with level-gated sensory upgrades, but the vendored feature carries no uses field at all (unlike Ki Pool/Arcane Pool), so deriveResourcePools never derives a Veil Pool row for a toggle to attach to. Unlike Founders' Favor's formula, the ability score is a locked-in 1st-level player pick ('the character makes this choice at 1st level, after which it cannot be changed'), not an automatic highest-of-three — this table has no stored field for that pick, so the formula can't be hand-resolved either.",
   },
   EpDI0Qi5SDRmL4lK: {
     id: "EpDI0Qi5SDRmL4lK",

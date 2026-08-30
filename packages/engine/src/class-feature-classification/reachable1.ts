@@ -58,7 +58,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_1: Readonly<
     bucket: "subsystem",
     note:
       POOL_NOTE +
-      " Blood Pool carries no vendored uses field either, so it does not even ride that pipeline automatically; the pool size, spend/recover rules, and overload risk (sickened, then a homicidal rage) are all player-tracked mechanics with no flat Change target.",
+      " Blood Pool carries no vendored uses field, so resources.ts hand-resolves its size (equal to bloatmage level) directly; the spend/recover rules and overload risk (sickened, then a homicidal rage) are still all player-tracked mechanics with no flat Change target.",
   },
   "9H0XqVPPLL8evAIc": {
     id: "9H0XqVPPLL8evAIc",

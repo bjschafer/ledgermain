@@ -90,7 +90,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     id: "domain:destruction:destructive-aura",
     name: "Destructive Aura",
     bucket: "situational",
-    note: "This synthetic id carries no vendored `uses.maxFormula`, so no pool row derives for it to attach a toggle to. Independently, the damage bonus and automatic-crit-confirmation apply to any attack (including the cleric's own) made against a creature inside the aura, and only while the aura is active, not an unconditional bonus.",
+    note: "This synthetic id carries no vendored `uses.maxFormula`; resources.ts hand-resolves the pool's size (rounds/day equal to cleric level) so a row derives, but there's still no toggle surface for this power to attach to. Independently, the damage bonus and automatic-crit-confirmation apply to any attack (including the cleric's own) made against a creature inside the aura, and only while the aura is active, not an unconditional bonus.",
   },
   "subdomain-power:insect:exoskeleton": {
     id: "subdomain-power:insect:exoskeleton",

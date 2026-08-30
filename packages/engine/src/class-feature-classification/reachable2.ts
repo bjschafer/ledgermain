@@ -230,7 +230,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_2: Readonly<
     id: "PeRuht2i67Ad63Dn",
     name: "Deed: Unstoppable",
     bucket: "situational",
-    note: "Temporary hit points (class-level-scaled per the vendored text) and a doubled Constitution-check bonus only apply while the parent Adrenaline Rush ability is active. That feature carries no vendored `uses.maxFormula` despite describing a rounds-per-day resource, so no pool row ever derives for this deed to attach a toggle to.",
+    note: "Temporary hit points (class-level-scaled per the vendored text) and a doubled Constitution-check bonus only apply while the parent Adrenaline Rush ability is active. That feature carries no vendored `uses.maxFormula`, though resources.ts hand-resolves its rounds-per-day pool so the row now derives; there's still no linked buff for this deed's temp-HP/Con-check bonus to attach a toggle to.",
   },
   QkceRDLMpXqRJ5AQ: {
     id: "QkceRDLMpXqRJ5AQ",

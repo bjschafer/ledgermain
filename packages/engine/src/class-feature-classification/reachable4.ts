@@ -14,7 +14,7 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_4: Readonly<
     id: "KmtDDLu690DySH1e",
     name: "Fervor",
     bucket: "situational",
-    note: "No vendored uses.maxFormula, so no pool row ever derives and there's no toggle surface to attach to, despite the rich self-buff shape (attack/damage/DR/caster-level/speed benefits and a Charisma penalty, all conditional on the fervor being active).",
+    note: "No vendored uses.maxFormula; resources.ts hand-resolves the pool's size (rounds/day equal to mystery cultist level) so a row derives, but there's still no toggle surface to attach to — the rich self-buff shape (attack/damage/DR/caster-level/speed benefits and a Charisma penalty) has no linked buff and stays conditional on the fervor being active.",
   },
   nAf2hU0pfOBrOSAr: {
     id: "nAf2hU0pfOBrOSAr",

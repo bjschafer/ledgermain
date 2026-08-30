@@ -5,11 +5,16 @@
  * blessing powers). See `types.ts` for what belongs in this table and
  * `index.ts` for the merge.
  *
- * All three entries below are wizard arcane-school powers — no druid-domain
- * or inquisition-power entry in this shard's classification file carries a
- * vendored `uses.maxFormula` (they're hand-authored `SUPPLEMENTAL_DRUID_
- * DOMAIN_FEATURES` / inquisition entries with no `uses` block at all), so
- * none of them ever derive a pool row to attach a toggle to.
+ * All three entries below are wizard arcane-school powers, which carry a
+ * vendored `uses.maxFormula` outright. Several druid-domain and
+ * inquisition-power entries in this shard's classification file carry no
+ * `uses` block of their own (`SUPPLEMENTAL_DRUID_DOMAIN_FEATURES` /
+ * inquisition entries) — `resources.ts`'s `HAND_RESOLVED_USES_FORMULA`
+ * supplies a formula for the ones the published text states unambiguously
+ * (Brachiation, Aquatic Veil, Aerial Agility, Slither, Monkey Athletics,
+ * Death's Companion, Absorb Pain, One with the Stone, Spelunker, Mantle
+ * against Chaos), so those DO derive a pool row now — but none of them has a
+ * `PerDayActivationDef` here yet, so there's still no toggle to attach.
  *
  * Protective Ward and Perfection of Self scale with wizard level, so their
  * formulas reference `@classes.wizard.level` and carry `classTag: "wizard"`

@@ -20,7 +20,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:vulture:death-s-companion",
     name: "Death's Companion",
     bucket: "situational",
-    note: "A real self save bonus (vs. disease/death effects), but the hand-authored vendored entry carries no `uses.maxFormula` at all — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to, even though the effect itself is otherwise toggle-shaped.",
+    note: "A real self save bonus (vs. disease/death effects), but the hand-authored vendored entry carries no `uses.maxFormula` at all — resources.ts hand-resolves the pool's size (3 + Wisdom modifier per day) so a row derives, but there's still no per-day-activation toggle surface to attach it to, even though the effect itself is otherwise toggle-shaped.",
   },
   dcCZW51UewXFLLGo: {
     id: "dcCZW51UewXFLLGo",
@@ -74,13 +74,13 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:jungle:brachiation",
     name: "Brachiation",
     bucket: "situational",
-    note: "A real self climb speed and Acrobatics bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to, even though the effect itself is otherwise toggle-shaped.",
+    note: "A real self climb speed and Acrobatics bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — resources.ts hand-resolves the pool's size (rounds/day equal to druid level) so a row derives, but there's still no per-day-activation toggle surface to attach it to, even though the effect itself is otherwise toggle-shaped.",
   },
   "druid-domain:plane-of-water:aquatic-veil": {
     id: "druid-domain:plane-of-water:aquatic-veil",
     name: "Aquatic Veil",
     bucket: "situational",
-    note: "A real self Swim bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to; the breathe-underwater and pseudopod-reach clauses would stay prose regardless.",
+    note: "A real self Swim bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — resources.ts hand-resolves the pool's size (3 + Wisdom modifier per day) so a row derives, but there's still no per-day-activation toggle surface to attach it to; the breathe-underwater and pseudopod-reach clauses would stay prose regardless.",
   },
   "75Y2PY8Uha3o0fHE": {
     id: "75Y2PY8Uha3o0fHE",
@@ -92,13 +92,13 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:plane-of-air:aerial-agility",
     name: "Aerial Agility",
     bucket: "situational",
-    note: "A real self Fly/Acrobatics bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to; the subjective-gravity clauses would stay prose regardless.",
+    note: "A real self Fly/Acrobatics bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — resources.ts hand-resolves the pool's size (3 + Wisdom modifier per day) so a row derives, but there's still no per-day-activation toggle surface to attach it to; the subjective-gravity clauses would stay prose regardless.",
   },
   "druid-domain:serpent:slither": {
     id: "druid-domain:serpent:slither",
     name: "Slither",
     bucket: "situational",
-    note: "A real self dodge AC/CMB/Escape Artist bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to; the squeeze-through-terrain clause would stay prose regardless.",
+    note: "A real self dodge AC/CMB/Escape Artist bonus, but the hand-authored vendored entry carries no `uses.maxFormula` — resources.ts hand-resolves the pool's size (3 + Wisdom modifier per day) so a row derives, but there's still no per-day-activation toggle surface to attach it to; the squeeze-through-terrain clause would stay prose regardless.",
   },
   "inquisition-power:reformation:awaken-discontent": {
     id: "inquisition-power:reformation:awaken-discontent",
@@ -356,7 +356,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:monkey:monkey-athletics",
     name: "Monkey Athletics",
     bucket: "situational",
-    note: "A real self competence bonus to one of four named skill checks (Acrobatics/Climb/Disable Device/Sleight of Hand), but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface for the four choose-one options this power would otherwise mirror (see Perfection of Self's per-ability-score toggles).",
+    note: "A real self competence bonus to one of four named skill checks (Acrobatics/Climb/Disable Device/Sleight of Hand), but the hand-authored vendored entry carries no `uses.maxFormula` — resources.ts hand-resolves the pool's size (3 + Wisdom modifier per day) so a row derives, but there's still no per-day-activation toggle surface for the four choose-one options this power would otherwise mirror (see Perfection of Self's per-ability-score toggles).",
   },
   "druid-domain:ruins:ruin-touch": {
     id: "druid-domain:ruins:ruin-touch",
@@ -392,7 +392,7 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "inquisition-power:order:mantle-against-chaos",
     name: "Mantle against Chaos",
     bucket: "subsystem",
-    note: "Casts protection from chaos as a spell-like ability on a limited-minutes-per-day budget; a non-counter budget with no vendored uses block, so left unwired.",
+    note: "Casts protection from chaos as a spell-like ability on a limited-minutes-per-day budget; carries no vendored uses block, but resources.ts hand-resolves the pool's size (minutes/day equal to inquisitor level, minimum 1) so a row derives. The spell-like-ability cast itself stays unwired here (no linked buff or toggle).",
   },
   "inquisition-power:truth:grasp-of-honesty": {
     id: "inquisition-power:truth:grasp-of-honesty",
@@ -560,19 +560,19 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_GRANTED: Readonly<
     id: "druid-domain:plane-of-earth:one-with-the-stone",
     name: "One with the Stone",
     bucket: "subsystem",
-    note: "Unlike Earth Glide (WIZ), this power DOES state a speed ('earth glide... with a speed equal to your base speed'), which would map to `burrowSpeed`, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to. The alternative familiar grant stays prose regardless.",
+    note: "Unlike Earth Glide (WIZ), this power DOES state a speed ('earth glide... with a speed equal to your base speed'), which would map to `burrowSpeed`, but the hand-authored vendored entry carries no `uses.maxFormula` — resources.ts hand-resolves the pool's size (rounds/day equal to druid level) so a row derives, but there's still no per-day-activation toggle surface to attach it to. The alternative familiar grant stays prose regardless.",
   },
   "druid-domain:plane-of-earth:spelunker": {
     id: "druid-domain:plane-of-earth:spelunker",
     name: "Spelunker",
     bucket: "situational",
-    note: "The hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach anything to. The DR 5/— is also scoped to 'rocky hazards,' a qualifier with no match in this engine's DR vocabulary (material/alignment/weapon-type, not terrain-hazard-type), so even a wireable version would need a qualifier this engine doesn't carry.",
+    note: "The hand-authored vendored entry carries no `uses.maxFormula` — resources.ts hand-resolves the pool's size (3 + Wisdom modifier per day) so a row derives, but there's still no per-day-activation toggle surface to attach anything to. The DR 5/— is also scoped to 'rocky hazards,' a qualifier with no match in this engine's DR vocabulary (material/alignment/weapon-type, not terrain-hazard-type), so even a wireable version would need a qualifier this engine doesn't carry.",
   },
   "druid-domain:the-uskbond:absorb-pain": {
     id: "druid-domain:the-uskbond:absorb-pain",
     name: "Absorb Pain",
     bucket: "situational",
-    note: "A real self save bonus against pain effects for the round after the triggering immediate action, but the hand-authored vendored entry carries no `uses.maxFormula` — no pool row ever derives, so there's no per-day-activation toggle surface to attach it to, even though the trigger-then-toggle shape otherwise matches this table's pattern.",
+    note: "A real self save bonus against pain effects for the round after the triggering immediate action, but the hand-authored vendored entry carries no `uses.maxFormula` — resources.ts hand-resolves the pool's size (3 + Wisdom modifier per day) so a row derives, but there's still no per-day-activation toggle surface to attach it to, even though the trigger-then-toggle shape otherwise matches this table's pattern.",
   },
   ei3z5reJYduGyrrC: {
     id: "ei3z5reJYduGyrrC",

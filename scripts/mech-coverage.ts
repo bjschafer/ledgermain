@@ -75,6 +75,7 @@ import {
 import { FEAT_CLASSIFICATION } from "../packages/engine/src/feat-classification.js";
 import { FEAT_CLASSIFICATION_COMMUNITY } from "../packages/engine/src/feat-classification-community.js";
 import { FEAT_POOL_EFFECTS, featNameSlug } from "../packages/engine/src/feat-effects.js";
+import { HAND_RESOLVED_USES_FORMULA } from "../packages/engine/src/resources.js";
 import { resolveFeatEffect } from "../packages/engine/src/feat-effects-resolve.js";
 import { mergedInvestigatorTalentCatalog } from "../packages/engine/src/investigator-talents.js";
 import { mergedKineticistWildTalentCatalog } from "../packages/engine/src/kineticist-wild-talents.js";
@@ -471,7 +472,14 @@ function main(): void {
       // A granted natural-attack line onto the PC's own body
       // (pc-natural-attacks/, id-keyed).
       (CLASS_FEATURE_NATURAL_ATTACKS[id]?.length ?? 0) > 0;
-    const noted = arrayLen(e.actions) > 0 || e.uses !== undefined || arrayLen(e.grantsBuffs) > 0;
+    const noted =
+      arrayLen(e.actions) > 0 ||
+      e.uses !== undefined ||
+      arrayLen(e.grantsBuffs) > 0 ||
+      // resources.ts hand-resolves a `uses.maxFormula` for a handful of
+      // features whose vendored entry carries no `uses` block at all — a
+      // real pool row derives even though the raw data has nothing to check.
+      HAND_RESOLVED_USES_FORMULA[id] !== undefined;
     // Same semantics as the archetype/feat/racial-trait verdicts: a deliberate
     // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`
     // verdict that never produced a wired route still flags.

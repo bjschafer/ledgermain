@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-30-per-day-pools-for-missing-uses",
+    date: "2026-08-30",
+    title: "Pool rows the imported data forgot to count",
+    note: "Fifteen rounds-per-day and uses-per-day abilities never got a pool row on the tracker because the imported data carries no uses count for them, leaving you to track them on scratch paper. They derive their pools now: nine druid animal and terrain domain powers such as Brachiation, Aquatic Veil, and Monkey Athletics, the Destruction domain's destructive aura, the Order inquisition's Mantle against Chaos, and four prestige class pools, the darechaser's Adrenaline Rush, the bloatmage's blood pool, the mystery cultist's fervor, and the Westcrown devil's founders' favor.",
+  },
+  {
     id: "2026-08-30-eidolon-defense-evolutions",
     date: "2026-08-30",
     title: "Eidolon defenses that come from evolutions",

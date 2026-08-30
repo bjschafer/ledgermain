@@ -141,6 +141,83 @@ const POOL_FAMILY_BY_FEATURE_NAME: Readonly<Record<string, string>> = {
   "Quivering Palm": "quiveringPalm",
 };
 
+/**
+ * Hand-authored `uses.maxFormula` for features whose vendored (or hand-
+ * authored `data-pipeline` supplement) entry describes a rounds/uses-per-day
+ * resource in prose but carries no `uses` block at all — the same gap
+ * Inspire Courage would face if bardic performance didn't already supply a
+ * pool for it to ride (`FEATURE_BUFF_POOL_TAG` below). These have no
+ * existing pool to ride, so this supplies the missing formula directly,
+ * keyed by feature id (stable across name collisions) and consulted as a
+ * last-resort fallback alongside `feature.uses?.maxFormula` below. Clean-room
+ * from the cited published text; the numeric effect each pool funds stays
+ * unwired prose unless a `per-day-activations` entry says otherwise — this
+ * table only supplies the missing cap.
+ */
+export const HAND_RESOLVED_USES_FORMULA: Readonly<Record<string, string>> = {
+  // Adrenaline Rush (darechaser, Pathfinder Society Field Guide/PZO9474 p.
+  // 10): "a number of rounds per day equal to 4 + her Constitution modifier.
+  // At each level after 1st, she can use adrenaline rush for an additional 2
+  // rounds."
+  sYpUn32u8UCvhGAb: "4 + @abilities.con.mod + 2 * (@class.unlevel - 1)",
+  // Blood Pool (bloatmage, Pathfinder Society Field Guide): "a bloatmage's
+  // normal pool of blood points is equal to her bloatmage level."
+  "15va0QO7X8dk5YTR": "@class.unlevel",
+  // Founders' Favor (Westcrown devil, Cheliax: Empire of Devils p. 22): "a
+  // pool of favor points equal to his class level + his Intelligence,
+  // Wisdom, or Charisma modifier (whichever is highest)."
+  YCT3N8TaDSPt1AQb:
+    "@class.unlevel + max(@abilities.int.mod, @abilities.wis.mod, @abilities.cha.mod)",
+  // Fervor (mystery cultist, Pathfinder Society Field Guide/PZO9255 p. 48):
+  // "enter a religious fervor for a number of rounds per day equal to her
+  // class level."
+  KmtDDLu690DySH1e: "@class.unlevel",
+  // Destructive Aura (Destruction domain, 8th level; hand-authored
+  // data-pipeline supplement — the Foundry pack has no document for it, see
+  // domains.test.ts): "emit a 30-foot aura of destruction for a number of
+  // rounds per day equal to your cleric level."
+  "domain:destruction:destructive-aura": "@class.unlevel",
+  // Brachiation (Jungle domain, 1st level, hand-authored supplement): "for a
+  // number of rounds per day equal to your druid level, you may climb..."
+  "druid-domain:jungle:brachiation": "@class.unlevel",
+  // Aquatic Veil (Plane of Water domain, 1st level, hand-authored
+  // supplement): "you can use this ability a number of times per day equal
+  // to 3 + your Wisdom modifier."
+  "druid-domain:plane-of-water:aquatic-veil": "3 + @abilities.wis.mod",
+  // Aerial Agility (Plane of Air domain, 1st level, hand-authored
+  // supplement): "you can use this ability a number of times equal to 3 +
+  // your Wisdom modifier."
+  "druid-domain:plane-of-air:aerial-agility": "3 + @abilities.wis.mod",
+  // Slither (Serpent domain, 1st level, hand-authored supplement): "you can
+  // use this ability a number of times per day equal to 3 + your Wisdom
+  // modifier."
+  "druid-domain:serpent:slither": "3 + @abilities.wis.mod",
+  // Monkey Athletics (Monkey domain, 1st level, hand-authored supplement):
+  // "you can use this ability a number of times per day equal to 3 + your
+  // Wisdom modifier."
+  "druid-domain:monkey:monkey-athletics": "3 + @abilities.wis.mod",
+  // Death's Companion (Vulture domain, 1st level, hand-authored supplement):
+  // "you may use this ability a number of times per day equal to 3 + your
+  // Wisdom modifier."
+  "druid-domain:vulture:death-s-companion": "3 + @abilities.wis.mod",
+  // Absorb Pain (The Uskbond domain, 1st level, hand-authored supplement):
+  // "you can use this ability a number of times per day equal to 3 + your
+  // Wisdom modifier."
+  "druid-domain:the-uskbond:absorb-pain": "3 + @abilities.wis.mod",
+  // One with the Stone (Plane of Earth domain, 8th level, hand-authored
+  // supplement): "you can use this ability for a number of rounds per day
+  // equal to your druid level."
+  "druid-domain:plane-of-earth:one-with-the-stone": "@class.unlevel",
+  // Spelunker (Plane of Earth domain, 1st level, hand-authored supplement):
+  // "you can use this ability a number of times per day equal to 3 + your
+  // Wisdom modifier."
+  "druid-domain:plane-of-earth:spelunker": "3 + @abilities.wis.mod",
+  // Mantle against Chaos (Order inquisition): "you can use this ability for
+  // a number of minutes per day equal to your inquisitor level (minimum
+  // 1)."
+  "inquisition-power:order:mantle-against-chaos": "max(1, @class.unlevel)",
+};
+
 /** The final family DC from `abilityDCs` for `key`, or `undefined` when absent/not computed. */
 function abilityDCFor(
   abilityDCs: readonly DerivedAbilityDC[] | undefined,
@@ -362,7 +439,8 @@ export function deriveResourcePools(
     const formula =
       channelVariant?.usesFormula ??
       (prestigeActive ? channelPrestige.usesFormula : undefined) ??
-      feature.uses?.maxFormula;
+      feature.uses?.maxFormula ??
+      HAND_RESOLVED_USES_FORMULA[feature.id];
     if (!formula) {
       // No maxFormula — either nothing (most features) or a `uses.source`
       // pointer to another feature's pool. Either way it can't become its
@@ -707,9 +785,13 @@ export function deriveResourcePools(
       name: channelVariant?.displayName ?? feature.name,
       max: poolMax,
       restValue,
-      // A variant- or prestige-supplied pool (no vendored `uses` block of its
-      // own) is a daily budget per the published text.
-      per: feature.uses?.per ?? (channelVariant?.usesFormula || prestigeActive ? "day" : undefined),
+      // A variant-, prestige-, or hand-resolved-supplied pool (no vendored
+      // `uses` block of its own) is a daily budget per the published text.
+      per:
+        feature.uses?.per ??
+        (channelVariant?.usesFormula || prestigeActive || HAND_RESOLVED_USES_FORMULA[feature.id]
+          ? "day"
+          : undefined),
       classTag,
       detail,
       nonlethalPerUse,
