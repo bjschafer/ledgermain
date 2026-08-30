@@ -265,3 +265,24 @@ describe("Steel Soul (a feat that REPLACES a racial bonus of the same type)", ()
     });
   });
 });
+
+describe("Angelic Blood (newly promoted: the evil descriptor, all three saves)", () => {
+  it("+2 untyped vs. evil at 1st level, Con-check and adjacent-damage riders unmodeled", () => {
+    // "You gain a +2 bonus on saving throws against effects with the evil
+    // descriptor and on Constitution checks to stabilize..." Only the save
+    // half fits allSavingThrows; the stabilize check and the adjacent-damage
+    // rider on taking bleed/blood drain damage stay unmodeled. Wizard 1:
+    // Fort/Ref 0, Will 2.
+    const withFeat = makeDoc([featId("Angelic Blood")]);
+    const sheet = compute(withFeat, ref);
+    expect(sheet.saves.fort.conditionals).toEqual([
+      { total: 2, categories: ["evil"], labels: ["evil"] },
+    ]);
+    expect(sheet.saves.ref.conditionals).toEqual([
+      { total: 2, categories: ["evil"], labels: ["evil"] },
+    ]);
+    expect(sheet.saves.will.conditionals).toEqual([
+      { total: 4, categories: ["evil"], labels: ["evil"] },
+    ]);
+  });
+});

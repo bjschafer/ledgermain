@@ -34,11 +34,11 @@
  *   originating from demon worshipers and from creatures of the demon type"),
  *   Witchbreaker ("of hags and witches"), Fey-Guarded ("cast by creatures of
  *   the fey type"), Dragonheart ("of creatures with the dragon type"),
- *   Lastwall Phalanx ("of evil creatures"), Pure Legion Assault ("abilities
- *   from outsiders"), Robot's Bane ("from robots"), Shrouded in Mystery
- *   ("only against humanoid creatures of races other than your own"),
- *   Angelic Blood/Divine Defiance/Fury of the Tainted (a spell's alignment or
- *   casting tradition, not its effect).
+ *   Pure Legion Assault ("abilities from outsiders"), Robot's Bane ("from
+ *   robots"), Shrouded in Mystery ("only against humanoid creatures of races
+ *   other than your own"), Divine Defiance ("divine spells and the
+ *   spell-like abilities granted by levels in a divine casting class" -
+ *   casting tradition, not alignment or effect).
  * - Narrower than any category in the vocabulary (pain, elemental/energy
  *   descriptors, written/visual/sonic effects, ability damage/drain, and
  *   "ingested" as a poison sub-scope are all real PF1 scopes with no
@@ -62,8 +62,10 @@
  *   "for 24 hours after you meditate"), Standing Tall (once/day move action),
  *   Dragon Style and Deadhand Style (stance-gated "while using this style"),
  *   Pesh Euphoria (after taking a dose of pesh), Fury of the Tainted ("while
- *   raging"), Battle Cry and Courage in Numbers (scale with nearby allies,
- *   a live-adjacency count this loop doesn't have).
+ *   raging"), Battle Cry, Courage in Numbers, and Lastwall Phalanx (all three
+ *   scale with a count of nearby allies, a live-adjacency count this loop
+ *   doesn't have; Lastwall Phalanx's own scope, "against evil creatures", now
+ *   fits the `evil` key, but its magnitude is the blocker, not the scope).
  * - A reroll rather than a bonus (explicitly out of scope): Aboleth Deceiver.
  * - Needs a player choice this static table can't express: Expanded
  *   Resistance and Spell Denial (pick a school), Disciplinary Devotee (a
@@ -383,6 +385,22 @@ const STEEL_SOUL: FeatChange = {
   saveCategories: ["spell", "sla"],
 };
 
+/**
+ * Angelic Blood (Con 13, aasimar): "You gain a +2 bonus on saving throws
+ * against effects with the evil descriptor and on Constitution checks to
+ * stabilize when you are reduced to negative hit points (but not dead)."
+ * Only the save half fits this table (Constitution checks are a different
+ * target); the adjacent-damage-to-evil-creatures rider on taking bleed/blood
+ * drain damage is a triggered reactive effect, not a standing bonus, and
+ * stays unmodeled. No type named, so untyped.
+ */
+const ANGELIC_BLOOD: FeatChange = {
+  target: "allSavingThrows",
+  type: "untyped",
+  formula: "2",
+  saveCategories: ["evil"],
+};
+
 export const FEAT_SAVE_CATEGORY_CHANGES: Readonly<Record<string, readonly FeatChange[]>> = {
   "fearless-curiosity": [FEARLESS_CURIOSITY],
   "intimidating-confidence": [INTIMIDATING_CONFIDENCE],
@@ -405,4 +423,5 @@ export const FEAT_SAVE_CATEGORY_CHANGES: Readonly<Record<string, readonly FeatCh
   "filth-forager": [FILTH_FORAGER],
   "improved-shadowy-resistance": [IMPROVED_SHADOWY_RESISTANCE],
   "steel-soul": [STEEL_SOUL],
+  "angelic-blood": [ANGELIC_BLOOD],
 };

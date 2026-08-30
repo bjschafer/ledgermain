@@ -12,8 +12,8 @@
  * Classification audit: EVERY feature of EVERY vendored monk archetype (56
  * archetypes, 328 features), individually hand-read and bucketed as
  * `numeric` / `situational` / `subsystem` / `blocked` (see the fighter
- * pilot's rubric for the full bucket definitions). 26 numeric, 37
- * situational, 260 subsystem, 5 blocked.
+ * pilot's rubric for the full bucket definitions). 28 numeric, 36
+ * situational, 259 subsystem, 5 blocked.
  *
  * A handful of archetype ids are byte-identical (or near-identical) twins of
  * another archetype already classified in this file, stamped separately by
@@ -48,8 +48,8 @@
  *  - A qualified save bonus ("+2 vs. fear/poison/etc.") is `numeric` via
  *    `allSavingThrows` + `Change.saveCategories` only when every named
  *    condition (or at least one) has a real `SAVE_CATEGORIES` entry
- *    (save-categories.ts's closed vocabulary — alignment subtypes have none);
- *    otherwise `situational`.
+ *    (save-categories.ts's closed vocabulary, which now includes an
+ *    evil/good/lawful/chaotic alignment axis); otherwise `situational`.
  *  - A pure immunity grant is `numeric` via `immEffect.<slug>` only when the
  *    slug is in defenses.ts's closed `EFFECT_IMMUNITY_LABELS` vocabulary
  *    (fatigue, exhaustion, stunned, deathEffects, energyDrain,
@@ -983,8 +983,8 @@ export const MONK_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "monk:karmic-monk",
     name: "Balanced Mind",
     level: 3,
-    bucket: "situational",
-    note: "real but conditional/narrowly-scoped number (specific maneuver, weapon, target state, or action) — not expressible without over-applying, per the honesty bar (save bonus scoped to chaos/evil/good/law-subtype effects and creatures — no matching SAVE_CATEGORIES entry exists; that vocabulary has no alignment axis)",
+    bucket: "numeric",
+    note: "save bonus against all four alignment subtypes/descriptors at once, wired via SAVE_CATEGORIES' evil/good/lawful/chaotic keys",
   },
   "monk:karmic-monk:class-skills:0": {
     archetypeId: "monk:karmic-monk",
@@ -2960,5 +2960,25 @@ export const MONK_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "assume gaseous form as a standard action for 1 minute per day per monk level. Aspect of " +
       "the Tiger: once per hour, the monk can move at 10 times his normal land speed when he " +
       "makes a charge and is treated as if he had the pounce ability.",
+  },
+
+  // Karmic Monk's "Balanced Mind" names all four alignment subtypes/
+  // descriptors at once (chaos, evil, good, law), each now a SAVE_CATEGORIES
+  // key, and no type stated, so untyped.
+  "monk:karmic-monk:balanced-mind:3": {
+    changes: [
+      {
+        formula: "2",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["chaotic", "evil", "good", "lawful"],
+      },
+    ],
+    detail: () => "+2 saves vs. chaotic/evil/good/lawful effects and creatures",
+    confidence: "high",
+    provenance:
+      "At 3rd level, a karmic monk receives a +2 bonus on saving throws against effects with " +
+      "the chaos, evil, good, or law subtype. He also receives this bonus against the abilities " +
+      "and effects of creatures of the listed subtypes. This ability replaces still mind.",
   },
 };

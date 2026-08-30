@@ -110,7 +110,7 @@ describe("Monk archetype classification: full coverage of every vendored feature
     expect(Object.keys(MONK_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(328);
   });
 
-  it("bucket counts (27 numeric, 37 situational, 259 subsystem, 5 blocked)", () => {
+  it("bucket counts (28 numeric, 36 situational, 259 subsystem, 5 blocked)", () => {
     const counts: Record<"numeric" | "situational" | "subsystem" | "blocked", number> = {
       numeric: 0,
       situational: 0,
@@ -120,11 +120,9 @@ describe("Monk archetype classification: full coverage of every vendored feature
     for (const entry of Object.values(MONK_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket]++;
     }
-    // +1 numeric / -1 subsystem vs. the prior audit: Monk of the Four Winds'
-    // Aspect of the Carp (the canonical id for the archetype's choose-one
-    // aspect pick) promoted once the archetypeFeature PickChoice mechanism
-    // existed to record which aspect was taken.
-    expect(counts).toEqual({ numeric: 27, situational: 37, subsystem: 259, blocked: 5 });
+    // +1 numeric / -1 situational vs. the prior audit: Karmic Monk's
+    // Balanced Mind promoted once SAVE_CATEGORIES gained an alignment axis.
+    expect(counts).toEqual({ numeric: 28, situational: 36, subsystem: 259, blocked: 5 });
   });
 
   it("every numeric-bucketed feature resolves to a real effect (hand-verified or extracted)", () => {
@@ -134,8 +132,8 @@ describe("Monk archetype classification: full coverage of every vendored feature
     }
   });
 
-  it("26 features are extracted; Nornkith's nimble-reflexes:3 stays solely hand-verified", () => {
-    expect(Object.keys(MONK_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(26);
+  it("27 features are extracted; Nornkith's nimble-reflexes:3 stays solely hand-verified", () => {
+    expect(Object.keys(MONK_ARCHETYPE_EFFECTS_EXTRACTED).length).toBe(27);
     expect(MONK_ARCHETYPE_EFFECTS_EXTRACTED["monk:nornkith:nimble-reflexes:3"]).toBeUndefined();
   });
 });
@@ -313,6 +311,29 @@ describe("Terra-Cotta Monk: Trap Dodge (Wis modifier bonus on ALL saves vs. trap
     expect(trapsOf(sheet.saves.fort.conditionals)?.total).toBe(sheet.saves.fort.total + 3);
     expect(trapsOf(sheet.saves.ref.conditionals)?.total).toBe(sheet.saves.ref.total + 3);
     expect(trapsOf(sheet.saves.will.conditionals)?.total).toBe(sheet.saves.will.total + 3);
+  });
+});
+
+describe("Karmic Monk: Balanced Mind (newly promoted: all four alignment keys at once)", () => {
+  it("+2 on fort/ref/will vs. chaotic/evil/good/lawful at 3rd level, headlines untouched", () => {
+    // "At 3rd level, a karmic monk receives a +2 bonus on saving throws
+    // against effects with the chaos, evil, good, or law subtype. He also
+    // receives this bonus against the abilities and effects of creatures of
+    // the listed subtypes." All four categories resolve to the same total,
+    // so they merge into one conditional line per save.
+    const sheet = sheetWith("Karmic Monk", 3);
+    const without = sheetWithout(3);
+    expect(sheet.saves.fort.total).toBe(without.saves.fort.total);
+    expect(sheet.saves.ref.total).toBe(without.saves.ref.total);
+    expect(sheet.saves.will.total).toBe(without.saves.will.total);
+    const line = (total: number) => ({
+      total: total + 2,
+      categories: ["evil", "good", "lawful", "chaotic"],
+      labels: ["evil", "good", "lawful", "chaotic"],
+    });
+    expect(sheet.saves.fort.conditionals).toEqual([line(sheet.saves.fort.total)]);
+    expect(sheet.saves.ref.conditionals).toEqual([line(sheet.saves.ref.total)]);
+    expect(sheet.saves.will.conditionals).toEqual([line(sheet.saves.will.total)]);
   });
 });
 

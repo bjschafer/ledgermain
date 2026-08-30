@@ -153,8 +153,8 @@ export const RACIAL_TRAIT_CLASSIFICATION_RACES_EG: Readonly<
     id: "QLhGfJhpG2KXm17L",
     race: "Elf",
     name: "Vigilance",
-    bucket: "situational",
-    note: "Dodge AC bonus scoped to chaotic creatures; a creature-alignment-scoped bonus has no modeled target.",
+    bucket: "numeric",
+    note: "Dodge AC bonus scoped to chaotic creatures, wired via AC_CATEGORIES' chaotic key (vendored-trait-ac-notes.ts).",
   },
   Lu5fwnybIjW7E4KB: {
     id: "Lu5fwnybIjW7E4KB",

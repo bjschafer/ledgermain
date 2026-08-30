@@ -231,3 +231,50 @@ describe("Blood Algorithm (Android) (newly promoted: the pain descriptor, Fortit
     expect(withTrait.saves.ref.conditionals).toBeUndefined();
   });
 });
+
+describe("Repel Sin (Tiefling; The Motherless) (newly promoted: the evil descriptor)", () => {
+  const id = traitIdByName("Repel Sin (Tiefling; The Motherless)");
+  const base = compute(makeDoc(), ref);
+  const withTrait = compute(makeDoc([id]), ref);
+
+  it("adds a +2 trait evil conditional on all three saves", () => {
+    // Human, no ability adjustments: Fort 2, Ref 0, Will 0 (fighter L1: good
+    // Fort +2, poor Ref/Will +0). "Effects with the [evil] descriptor" can be
+    // rolled against any save, so all three gain the conditional.
+    expect(base.saves.fort.total).toBe(2);
+    expect(withTrait.saves.fort.conditionals).toEqual([
+      { total: 4, categories: ["evil"], labels: ["evil"] },
+    ]);
+    expect(withTrait.saves.ref.conditionals).toEqual([
+      { total: 2, categories: ["evil"], labels: ["evil"] },
+    ]);
+    expect(withTrait.saves.will.conditionals).toEqual([
+      { total: 2, categories: ["evil"], labels: ["evil"] },
+    ]);
+  });
+});
+
+describe("Driven By Guilt (Strange Aeons) (newly promoted: evil creatures as a source, not a type)", () => {
+  const id = traitIdByName("Driven By Guilt (Strange Aeons)");
+  const base = compute(makeDoc(), ref);
+  const withTrait = compute(makeDoc([id]), ref);
+
+  it("promotes only the save half, on all three saves; the once-per-day attack/damage rider stays prose", () => {
+    // Human, no ability adjustments: Fort 2, Ref 0, Will 0 (fighter L1: good
+    // Fort +2, poor Ref/Will +0). "Evil creatures" names no creature TYPE
+    // (unlike "evil outsiders" or "devils"), so the plain `evil` key applies
+    // without over-narrowing, and `evil` allows any save; the separate
+    // once-per-day swift-action attack/damage rider targets `attack`, which
+    // has no alignment axis, and stays in the note.
+    expect(base.saves.fort.total).toBe(2);
+    expect(withTrait.saves.fort.conditionals).toEqual([
+      { total: 3, categories: ["evil"], labels: ["evil"] },
+    ]);
+    expect(withTrait.saves.ref.conditionals).toEqual([
+      { total: 1, categories: ["evil"], labels: ["evil"] },
+    ]);
+    expect(withTrait.saves.will.conditionals).toEqual([
+      { total: 1, categories: ["evil"], labels: ["evil"] },
+    ]);
+  });
+});

@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-30-alignment-scoped-saves-and-ac",
+    date: "2026-08-30",
+    title: "Bonuses against evil, and the other three",
+    note: "Traits, feats, and buffs that protect you against creatures or effects of a particular alignment now land on your sheet instead of reading as text. A tiefling's Repel Sin guards your saves against evil effects, Angelic Blood adds its two, the Haunted drawback takes its two away, and an elf with Vigilance sees the dodge bonus against chaotic attackers as its own line on the armor seal, the same way the giants line works. The karmic monk's Balanced Mind and the planar sneak's Planar Sense scale with level, and the Angelic Aspect spells carry their deflection and resistance halves when toggled on. A bonus written against a narrower slice, like evil outsiders only, stays as rules text.",
+  },
+  {
     id: "2026-08-30-per-day-pools-for-missing-uses",
     date: "2026-08-30",
     title: "Pool rows the imported data forgot to count",

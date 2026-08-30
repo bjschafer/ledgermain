@@ -108,6 +108,29 @@ const ANIMAL_FOCUS_SNAKE_AOO_AC: Change = {
 };
 
 /**
+ * Angelic Aspect (all three tiers): "+2 Deflection vs Evil creatures." and
+ * "+2 Resistance vs Evil creatures." are the self-facing halves of
+ * Protection from Evil, which all three tiers grant — `evil` is an
+ * attacker-alignment `AC_CATEGORIES`/`SAVE_CATEGORIES` key, the same shape as
+ * `giants`/`aberrations` for AC. Shared across all three tiers since the
+ * self-facing numbers are identical; only the Greater tier's own note also
+ * bundles an ally-facing +4 aura and other content these two `Change`s don't
+ * cover (see `BUFF_SAVE_NOTE_COVERAGE`).
+ */
+const ANGELIC_ASPECT_EVIL_AC: Change = {
+  formula: "2",
+  target: "ac",
+  type: "deflection",
+  acCategories: ["evil"],
+};
+const ANGELIC_ASPECT_EVIL_SAVE: Change = {
+  formula: "2",
+  target: "allSavingThrows",
+  type: "resistance",
+  saveCategories: ["evil"],
+};
+
+/**
  * The other shape of vendored gap this table fills: a buff whose save bonus
  * applies only against a CATEGORY of effects. The pack has no way to say
  * "against fear", so bless arrives with its +1 morale to attack rolls as a
@@ -119,15 +142,20 @@ const ANIMAL_FOCUS_SNAKE_AOO_AC: Change = {
  *
  * Only promoted where the whole bonus is a standing modifier that fits the
  * vocabulary. All 190 vendored buffs were read for this sweep; left as prose:
- * - Angelic Aspect (all three tiers): the evil-creature-scoped resistance and
- *   deflection notes name a property of the attacker, not the effect. The
- *   "+2 Morale vs existing Enchantment [charm] and [compulsion] effects" note
- *   looks like a fit but isn't one — Protection from Evil (which Angelic
- *   Aspect grants) only ever offers that +2 as an EXTRA saving throw against
- *   an effect already controlling the target, rolled at the original effect's
- *   DC, per its own published text. There is no standing enchantment-save
- *   bonus in the spell to promote, only a break-free grant conditioned on an
- *   active effect this loop has no way to read.
+ * - Angelic Aspect (all three tiers): the "+2 Morale vs existing Enchantment
+ *   [charm] and [compulsion] effects" note looks like a fit but isn't one —
+ *   Protection from Evil (which Angelic Aspect grants) only ever offers that
+ *   +2 as an EXTRA saving throw against an effect already controlling the
+ *   target, rolled at the original effect's DC, per its own published text.
+ *   There is no standing enchantment-save bonus in the spell to promote, only
+ *   a break-free grant conditioned on an active effect this loop has no way
+ *   to read. The self-facing resistance/deflection halves DO now fit
+ *   (`evil` is an attacker-alignment axis, same as `giants`/`aberrations` for
+ *   AC) — see `SAVE_CATEGORY_PATCHES`/`ANGELIC_ASPECT_EVIL_AC` below. The
+ *   Greater tier's own note also bundles an ally-facing +4 aura and a
+ *   "bodily contact prevented" clause with no `Change` form; those stay in
+ *   the note, which is why all three tiers are marked "partial" rather than
+ *   "full" in `BUFF_SAVE_NOTE_COVERAGE`.
  * - Lion's Call (the vendored formula evaluates to +0, so there is no number
  *   to carry), Sunblock Kohl and Veemod (light-based dazzling, a descriptor
  *   with no `SAVE_CATEGORIES` entry), Opportune Advice (gated on having
@@ -214,6 +242,9 @@ export const SAVE_CATEGORY_PATCHES: Readonly<Record<string, readonly Change[]>> 
 export const BUFF_CHANGE_PATCHES: Readonly<Record<string, readonly Change[]>> = {
   "Rage (Unchained)": [RAGE_UNCHAINED_TEMP_HP],
   "Animal Focus (Snake)": [ANIMAL_FOCUS_SNAKE_AOO_AC],
+  "Angelic Aspect, Lesser": [ANGELIC_ASPECT_EVIL_AC, ANGELIC_ASPECT_EVIL_SAVE],
+  "Angelic Aspect": [ANGELIC_ASPECT_EVIL_AC, ANGELIC_ASPECT_EVIL_SAVE],
+  "Angelic Aspect, Greater": [ANGELIC_ASPECT_EVIL_AC, ANGELIC_ASPECT_EVIL_SAVE],
   ...SAVE_CATEGORY_PATCHES,
 };
 
@@ -236,6 +267,13 @@ export const BUFF_SAVE_NOTE_COVERAGE: Readonly<Record<string, "full" | "partial"
   "Karyukai Tea Set": "full",
   "Daikyu of Commanding Presence": "full",
   Purity: "full",
+  // All three tiers carry other content in the same or a sibling note (the
+  // enchantment break-free grant, and the Greater tier's ally-facing aura and
+  // "bodily contact prevented" clause) that the evil resistance/deflection
+  // Changes don't cover.
+  "Angelic Aspect, Lesser": "partial",
+  "Angelic Aspect": "partial",
+  "Angelic Aspect, Greater": "partial",
 };
 
 /**

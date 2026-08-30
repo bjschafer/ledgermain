@@ -75,6 +75,7 @@ import {
 import { FEAT_CLASSIFICATION } from "../packages/engine/src/feat-classification.js";
 import { FEAT_CLASSIFICATION_COMMUNITY } from "../packages/engine/src/feat-classification-community.js";
 import { FEAT_POOL_EFFECTS, featNameSlug } from "../packages/engine/src/feat-effects.js";
+import { FEAT_SAVE_CATEGORY_CHANGES } from "../packages/engine/src/feat-save-categories.js";
 import { HAND_RESOLVED_USES_FORMULA } from "../packages/engine/src/resources.js";
 import { resolveFeatEffect } from "../packages/engine/src/feat-effects-resolve.js";
 import { mergedInvestigatorTalentCatalog } from "../packages/engine/src/investigator-talents.js";
@@ -544,7 +545,12 @@ function main(): void {
       (FEAT_CASTING_ADJUSTMENTS[slug]?.length ?? 0) > 0 ||
       COMPANION_EFFECT_FEATS[slug] !== undefined ||
       // A granted natural-attack line onto the PC's own body.
-      (FEAT_NATURAL_ATTACKS[slug]?.length ?? 0) > 0;
+      (FEAT_NATURAL_ATTACKS[slug]?.length ?? 0) > 0 ||
+      // An additive category-scoped save bonus (composes alongside whatever
+      // resolveFeatEffect returns, so it's checked separately — see
+      // feat-save-categories.ts's own doc comment on why it's a separate
+      // table from the precedence chain above).
+      FEAT_SAVE_CATEGORY_CHANGES[slug] !== undefined;
     // Same semantics as the archetype verdicts: a deliberate not-wireable
     // ruling from either feat audit is reviewed backlog; a mover bucket
     // that never produced a wired route is real backlog and still flags.

@@ -187,6 +187,10 @@ describe("ac-category vocabulary", () => {
       "giants",
       "aberrations",
       "animals",
+      "evil",
+      "good",
+      "lawful",
+      "chaotic",
     ]);
     expect(AC_CATEGORIES.traps?.label).toBe("traps");
     expect(AC_CATEGORIES.aoo?.label).toBe("AoOs");
@@ -194,6 +198,10 @@ describe("ac-category vocabulary", () => {
     expect(AC_CATEGORIES.giants?.label).toBe("giants");
     expect(AC_CATEGORIES.aberrations?.label).toBe("aberrations");
     expect(AC_CATEGORIES.animals?.label).toBe("animals");
+    expect(AC_CATEGORIES.evil?.label).toBe("evil");
+    expect(AC_CATEGORIES.good?.label).toBe("good");
+    expect(AC_CATEGORIES.lawful?.label).toBe("lawful");
+    expect(AC_CATEGORIES.chaotic?.label).toBe("chaotic");
   });
 
   it("falls back to the raw key for an unknown category", () => {

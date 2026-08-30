@@ -136,6 +136,18 @@ export const SAVE_CATEGORIES: Readonly<Record<string, SaveCategory>> = {
   // above — this category doesn't need to narrow itself to match.
   traps: { label: "traps", saves: ALL_SAVES },
   sonic: { label: "sonic", saves: ALL_SAVES },
+
+  // Alignment descriptors: an effect with the evil/good/lawful/chaotic
+  // descriptor, or one created by a creature of that alignment (the player
+  // rolls the save knowing the source, same self-confinement `traps` and
+  // `sonic` rely on above). A spell carrying one of these descriptors can
+  // call for any save (order's wrath is Will, unholy blight is Will, a
+  // chaos-descriptor attack can be Fort or Reflex depending on the effect),
+  // so all four stay unnarrowed like curse/stun/traps/sonic above.
+  evil: { label: "evil", saves: ALL_SAVES },
+  good: { label: "good", saves: ALL_SAVES },
+  lawful: { label: "lawful", saves: ALL_SAVES },
+  chaotic: { label: "chaotic", saves: ALL_SAVES },
 };
 
 /**

@@ -197,6 +197,24 @@ describe("Animal Focus (Snake) (+2 dodge AC vs. attacks of opportunity)", () => 
   });
 });
 
+describe("Angelic Aspect, Lesser (newly promoted: +2 deflection AC and +2 resistance save vs. evil)", () => {
+  it("leaves headline AC and saves alone and prints an evil conditional on both", () => {
+    const sheet = compute(makeDoc([activate("Angelic Aspect, Lesser")]), ref);
+    // Fighter L1, all 10s: AC 10, Fort +2, Ref +0, Will +0.
+    expect(sheet.ac.normal).toBe(10);
+    expect(sheet.ac.conditionals).toEqual([{ total: 12, categories: ["evil"], labels: ["evil"] }]);
+    expect(sheet.saves.fort.conditionals).toEqual([
+      { total: 4, categories: ["evil"], labels: ["evil"] },
+    ]);
+    expect(sheet.saves.ref.conditionals).toEqual([
+      { total: 2, categories: ["evil"], labels: ["evil"] },
+    ]);
+    expect(sheet.saves.will.conditionals).toEqual([
+      { total: 2, categories: ["evil"], labels: ["evil"] },
+    ]);
+  });
+});
+
 describe("the note-matching contract", () => {
   it("every patched buff still exists and still carries the note it was read from", () => {
     // The patches were transcribed from each buff's own contextNote, so a data

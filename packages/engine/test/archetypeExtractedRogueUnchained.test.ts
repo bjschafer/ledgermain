@@ -39,13 +39,13 @@ describe("ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     expect(Object.keys(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION).length).toBe(251);
   });
 
-  it("buckets total 251 with the measured counts (numeric 32 / situational 47 / subsystem 169 / blocked 3)", () => {
+  it("buckets total 251 with the measured counts (numeric 33 / situational 46 / subsystem 169 / blocked 3)", () => {
     const counts: Record<string, number> = {};
     for (const entry of Object.values(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)) {
       counts[entry.bucket] = (counts[entry.bucket] ?? 0) + 1;
     }
-    expect(counts["numeric"]).toBe(32);
-    expect(counts["situational"]).toBe(47);
+    expect(counts["numeric"]).toBe(33);
+    expect(counts["situational"]).toBe(46);
     expect(counts["subsystem"]).toBe(169);
     expect(counts["blocked"]).toBe(3);
   });
@@ -54,7 +54,7 @@ describe("ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION: coverage", () => {
     const numericIds = Object.entries(ROGUE_UNCHAINED_ARCHETYPE_FEATURE_CLASSIFICATION)
       .filter(([, entry]) => entry.bucket === "numeric")
       .map(([id]) => id);
-    expect(numericIds.length).toBe(32);
+    expect(numericIds.length).toBe(33);
     for (const id of numericIds) {
       expect(ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]).toBeDefined();
     }
@@ -254,6 +254,17 @@ describe("Pirate: Unflinching — saves vs. fear/mind-affecting via saveCategori
     const [save] = ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
     expect(save!.target).toBe("allSavingThrows");
     expect(save!.saveCategories).toEqual(["mind"]);
+    expect(evaluateFormula(save!.formula, { class: { unlevel: 3 } })).toBe(1);
+    expect(evaluateFormula(save!.formula, { class: { unlevel: 18 } })).toBe(6);
+  });
+});
+
+describe("Planar Sneak: Planar Sense — saves vs. chaotic/evil/good/lawful (elemental half not modeled)", () => {
+  it("1 + floor((unlevel-3)/3) — +1 at L3, +6 at L18", () => {
+    const id = "rogueUnchained:planar-sneak:planar-sense:3";
+    const [save] = ROGUE_UNCHAINED_ARCHETYPE_EFFECTS_EXTRACTED[id]!.changes;
+    expect(save!.target).toBe("allSavingThrows");
+    expect(save!.saveCategories).toEqual(["chaotic", "evil", "good", "lawful"]);
     expect(evaluateFormula(save!.formula, { class: { unlevel: 3 } })).toBe(1);
     expect(evaluateFormula(save!.formula, { class: { unlevel: 18 } })).toBe(6);
   });

@@ -41,6 +41,16 @@ export const AC_CATEGORIES: Readonly<Record<string, AcCategory>> = {
   giants: { label: "giants" },
   aberrations: { label: "aberrations" },
   animals: { label: "animals" },
+
+  // Attacker-alignment categories: a bonus against attacks from creatures of
+  // that alignment (Elf Vigilance's "+2 dodge bonus to AC against attacks by
+  // chaotic creatures"), not a subtype-plus-type intersection (an "evil
+  // outsiders"-scoped note is narrower than this key alone and stays prose —
+  // see `vendored-trait-ac-notes.ts`).
+  evil: { label: "evil" },
+  good: { label: "good" },
+  lawful: { label: "lawful" },
+  chaotic: { label: "chaotic" },
 };
 
 /**

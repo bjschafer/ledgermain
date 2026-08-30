@@ -1214,8 +1214,8 @@ export const ROGUE_ARCHETYPE_FEATURE_CLASSIFICATION: Readonly<
     archetypeId: "rogue:planar-sneak",
     name: "Planar Sense",
     level: 3,
-    bucket: "situational",
-    note: "+1/3-level save bonus scoped to eight specific descriptors (air/chaos/earth/evil/fire/good/law/water) — no matching target",
+    bucket: "numeric",
+    note: "+1/3-level save bonus scoped to eight descriptors; the four alignment ones (chaos/evil/good/law) are wired via SAVE_CATEGORIES, the four elemental ones (air/earth/fire/water) have no matching category and stay in the note",
   },
   "rogue:planar-sneak:elemental-execution:4": {
     archetypeId: "rogue:planar-sneak",
@@ -2369,5 +2369,26 @@ export const ROGUE_ARCHETYPE_EFFECTS_EXTRACTED: Readonly<
       "a weapon. She adds her Intelligence modifier to damage dealt with splash weapons, " +
       "including any splash damage. She adds 1/2 her level to Craft (alchemy) checks. This " +
       "ability replaces evasion.",
+  },
+
+  // Planar Sneak's "Planar Sense" names eight descriptors; only the four
+  // alignment ones have a SAVE_CATEGORIES entry, so only those four are
+  // carried — the air/earth/fire/water half stays in the note.
+  "rogue:planar-sneak:planar-sense:3": {
+    changes: [
+      {
+        formula: "1 + floor((@class.unlevel - 3) / 3)",
+        target: "allSavingThrows",
+        type: "untyped",
+        saveCategories: ["chaotic", "evil", "good", "lawful"],
+      },
+    ],
+    detail: (level) =>
+      `+${1 + Math.floor((level - 3) / 3)} saves vs. chaotic/evil/good/lawful (air/earth/fire/water half not modeled)`,
+    confidence: "high",
+    provenance:
+      "At 3rd level, a planar sneak gains a +1 bonus on saving throws against all effects with " +
+      "the air, chaos, earth, evil, fire, good, law, or water descriptors. This bonus increases " +
+      "by 1 for every 3 rogue levels thereafter (to a maximum of +6 at 18th level).",
   },
 };

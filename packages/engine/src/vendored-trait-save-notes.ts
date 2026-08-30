@@ -210,25 +210,37 @@ export const VENDORED_RACIAL_TRAIT_SAVE_NOTES: Readonly<Record<string, readonly 
  * several traits). The rest stay prose because the scope they name has no
  * vocabulary entry (cold/fire/electricity/acid descriptors, dazzled, dazed,
  * negative energy damage as opposed to negative levels, arcane/divine as a
- * caster tradition, the lawful/chaotic/evil descriptors, movement-hampering
- * effects, ability drain or memory loss restricted to a single mental
- * score, extraordinary abilities, spells named for a rune/word, the shadow
- * descriptor), because the scope is narrower than any category (inhaled/
- * ingested/contact poison delivery, the phantasm subschool, Wisdom-only
- * ability damage/drain), because it is a property of the ATTACKER rather
- * than the effect (dragons, undead, fey, aberrations, devils, elves,
- * humans, lamias, mummies, the plant or vermin type, evil creatures or
- * outsiders, worshippers of your own god, creatures with the cold subtype,
- * demons, linnorms), because it is a limited-use resource or reroll rather
- * than a passive bonus, because a caveat makes it unexpressible (a bonus
- * that only applies while adjacent to an ally/eidolon/open flame, while
- * wielding a firearm, while imbibing alcohol, while serving a leader you
- * deem legitimate, while fighting demons, while on a plane or in a region,
- * or "except when you can see, hear, smell, or taste" the source), or
- * because the bonus is scoped to a descriptor chosen freely at character
- * creation from a mix of fitting and non-fitting options (a chosen energy
- * type, a chosen poison, a chosen alignment descriptor) that a fixed table
- * entry cannot follow.
+ * caster tradition, movement-hampering effects, ability drain or memory loss
+ * restricted to a single mental score, extraordinary abilities, spells
+ * named for a rune/word, the shadow descriptor), because the scope is
+ * narrower than any category (inhaled/ingested/contact poison delivery, the
+ * phantasm subschool, Wisdom-only ability damage/drain), because it is a
+ * property of the ATTACKER rather than the effect (dragons, undead, fey,
+ * aberrations, outsiders, elves, humans, lamias, mummies, the plant or
+ * vermin type, worshippers of your own god, creatures with the cold
+ * subtype, demons, linnorms), because it is a limited-use resource or
+ * reroll rather than a passive bonus, because a caveat makes it
+ * unexpressible (a bonus that only applies while adjacent to an
+ * ally/eidolon/open flame, while wielding a firearm, while imbibing
+ * alcohol, while serving a leader you deem legitimate, while fighting
+ * demons, while on a plane or in a region, or "except when you can see,
+ * hear, smell, or taste" the source), or because the bonus is scoped to a
+ * descriptor chosen freely at character creation from a mix of fitting and
+ * non-fitting options (a chosen energy type, a chosen poison, a choice of
+ * two alignment descriptors with no tracked field recording which one was
+ * picked) that a fixed table entry cannot follow.
+ *
+ * The `evil`/`good`/`lawful`/`chaotic` categories cover a plain "effects with
+ * the X descriptor" or "effects created by X creatures" note, but not every
+ * alignment-flavored note fits: an alignment crossed with a creature TYPE
+ * (devils specifically, rather than evil creatures generally; "outsiders
+ * with the evil/good subtype"; "evil arcane spellcasters", which also
+ * crosses a casting tradition) is narrower than the plain alignment key and
+ * would over-apply past what the trait actually covers, so it stays
+ * attacker-property prose alongside the dragons/undead/etc. group above. The
+ * same holds crossed with another category already in this vocabulary
+ * ("the mind-affecting effects of outsiders with the good subtype" is
+ * narrower than either `mind` or `good` alone).
  *
  * Where a note names one or more fitting scopes alongside content that is
  * not expressible, only the fitting part is promoted and the note keeps
@@ -441,6 +453,24 @@ export const VENDORED_CHARACTER_TRAIT_SAVE_NOTES: Readonly<Record<string, readon
   //  promotes; the once-per-day ally-save grant has no expressible form.
   "+1 Trait bonus against spells and effects that grant the confused or dazed condition. Once per day as a full-round action, you may grant an adjacent ally a new Will saving throw to end an effect that grants the confused or dazed condition.":
     [scopedSave("1", "trait", "confusion")],
+  // No type named, so untyped; a penalty rather than a bonus, same as the
+  // other untyped penalty entries above.
+  "-2 Penalty against spells with the evil descriptor": [scopedSave("-2", "untyped", "evil")],
+  "+2 Trait bonus against spells and effects with the [evil] descriptor.": [
+    scopedSave("2", "trait", "evil"),
+  ],
+  // The attack-roll rider against lawful-aligned humanoids is a different
+  // target (attack has no alignment axis) and stays in the note.
+  "+2 Trait bonus against effects with the lawful descriptor.": [
+    scopedSave("2", "trait", "lawful"),
+  ],
+  // The once-per-day swift-action attack/damage rider against evil creatures
+  // is a different target (attack has no alignment axis) and stays in the
+  // note; "evil creatures" here names no creature type, so the plain `evil`
+  // key applies without over-narrowing.
+  "+1 Trait bonus against any spells or spell-like abilities cast by evil creatures.": [
+    scopedSave("1", "trait", "evil"),
+  ],
 };
 
 /**

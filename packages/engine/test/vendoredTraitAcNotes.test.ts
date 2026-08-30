@@ -220,3 +220,15 @@ describe("Dwarf-Trained (Giantslayer) (+2 dodge AC vs. giants, attack half stays
     ]);
   });
 });
+
+describe("Elf Vigilance (newly promoted: dodge AC vs. chaotic creatures, an alignment rather than a type)", () => {
+  it("leaves headline AC alone and prints a chaotic conditional", () => {
+    const id = vendoredTraitId("Vigilance", "Elf");
+    const sheet = compute(makeDoc("Elf", [id]), ref);
+    // Elf: Dex +2 (12, mod +1), Int +2, Con -2 - base AC 10 + Dex 1 = 11.
+    expect(sheet.ac.normal).toBe(11);
+    expect(sheet.ac.conditionals).toEqual([
+      { total: 13, categories: ["chaotic"], labels: ["chaotic"] },
+    ]);
+  });
+});

@@ -200,6 +200,19 @@ describe("save-category vocabulary", () => {
     expect(saveCategoryLabel("su")).toBe("Su");
   });
 
+  it("leaves the alignment descriptors on all three saves, terse and unnarrowed", () => {
+    for (const key of ["evil", "good", "lawful", "chaotic"]) {
+      for (const save of ["fort", "ref", "will"] as const) {
+        expect(categoryAppliesToSave(key, save)).toBe(true);
+      }
+      expect(SAVE_CATEGORIES[key]?.parent).toBeUndefined();
+    }
+    expect(saveCategoryLabel("evil")).toBe("evil");
+    expect(saveCategoryLabel("good")).toBe("good");
+    expect(saveCategoryLabel("lawful")).toBe("lawful");
+    expect(saveCategoryLabel("chaotic")).toBe("chaotic");
+  });
+
   it("falls back to the raw key for an unknown category", () => {
     expect(saveCategoryLabel("nonsense")).toBe("nonsense");
     expect(categoryAppliesToSave("nonsense", "will")).toBe(false);

@@ -62,6 +62,10 @@ export const VENDORED_RACIAL_TRAIT_AC_NOTES: Readonly<Record<string, readonly Ch
   // Gnome Warden of Nature: aberrations is the only one of the three named
   // attacker types with an AC_CATEGORIES key; oozes and vermin stay prose.
   "+2 Dodge bonus vs. aberrations, oozes and vermin.": [scopedAc("2", "dodge", "aberrations")],
+  // Elf Vigilance: "chaotic creatures" names an alignment, not a creature
+  // type, so it fits the plain `chaotic` key rather than needing a
+  // type-plus-alignment intersection.
+  "+2 Dodge bonus vs. chaotic creatures.": [scopedAc("2", "dodge", "chaotic")],
 };
 
 /**
