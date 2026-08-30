@@ -142,4 +142,24 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
     detail:
       "No condition in the catalog except the rage/bloodrage fatigue aftermath states its duration in rounds structurally, so every other countdown starts from a number typed at the table rather than from data.",
   },
+  {
+    category: "Immunity grants",
+    detail:
+      "Features and traits that grant an immunity have no display target: the derived sheet carries no immunities block, so every immunity grant stays prose.",
+  },
+  {
+    category: "Skill substitutions",
+    detail:
+      "Rules letting one skill or ability score stand in for another on specific checks have no engine route, so the substituted check keeps its default basis.",
+  },
+  {
+    category: "Precision and nonlethal damage kinds",
+    detail:
+      "Damage lines carry no precision or lethality axis, so effects keyed to those kinds (precision riders, precision-immunity interactions, lethal-to-nonlethal conversions) have no target.",
+  },
+  {
+    category: "Virtual feat prerequisites",
+    detail:
+      "Abilities that count as a feat or as another class's levels for prerequisite purposes never reach the prerequisite checker, which reads only feats actually owned or granted.",
+  },
 ];

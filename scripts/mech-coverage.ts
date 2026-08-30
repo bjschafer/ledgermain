@@ -15,10 +15,12 @@
  * an entry the audits deliberately ruled situational/subsystem/blocked counts
  * as reviewed and never flags; a mover verdict (`numeric`/`choice-numeric`/
  * `pool`) that never produced a wired effect still does. Feats also wire
- * numbers through two routes that never serialize a `Change` formula:
- * `FEAT_POOL_EFFECTS` (resource-max deltas consumed by deriveResourcePools)
- * and choice-type entries (changes materialize from the player's featChoices
- * pick at collect time) — both count as wired.
+ * numbers through three routes that never serialize a `Change` formula:
+ * `FEAT_POOL_EFFECTS` (resource-max deltas consumed by deriveResourcePools),
+ * choice-type entries (changes materialize from the player's featChoices
+ * pick at collect time), and `DEX_WEAPON_FEATS` (Dex-for-Str substitutions on
+ * a weapon's attack/damage line, applied by `computeWeaponAttacks`) — all
+ * three count as wired.
  *
  * Heuristic, not a verdict: a flagged entry may be legitimately
  * situational, and an unflagged one may still deserve wiring. It ranks
@@ -40,6 +42,7 @@ import { mergedBloodragerBloodlineCatalog } from "../packages/engine/src/bloodra
 import { BUFF_CHANGE_PATCHES, BUFF_PROSE_RULINGS } from "../packages/engine/src/buff-effects.js";
 import { mergedOrderCatalog } from "../packages/engine/src/cavalier-orders.js";
 import { CLASS_FEATURE_CLASSIFICATION } from "../packages/engine/src/class-feature-classification/index.js";
+import { DEX_WEAPON_FEATS } from "../packages/engine/src/dex-weapon-feats.js";
 import { PER_DAY_ACTIVATIONS } from "../packages/engine/src/per-day-activations/index.js";
 import {
   ARCHETYPE_SLA_GRANTS,
@@ -528,6 +531,7 @@ function main(): void {
       (resolved !== undefined &&
         (defMovesNumbers(resolved.entry) || rec(resolved.entry).type === "choice")) ||
       FEAT_POOL_EFFECTS[slug] !== undefined ||
+      DEX_WEAPON_FEATS[slug] !== undefined ||
       (FEAT_SLA_GRANTS[slug]?.length ?? 0) > 0 ||
       (FEAT_CASTING_ADJUSTMENTS[slug]?.length ?? 0) > 0 ||
       COMPANION_EFFECT_FEATS[slug] !== undefined ||
