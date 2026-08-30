@@ -6,6 +6,7 @@ import {
   EIDOLON_EVOLUTIONS,
   EIDOLON_SUBTYPE_IDS,
   EIDOLON_CHOICE_ENERGIES,
+  EIDOLON_DR_ALIGNMENTS,
   EIDOLON_SUBTYPES,
   eidolonVariant,
   type DerivedEidolon,
@@ -375,6 +376,38 @@ function EvolutionSection({ doc, update }: { doc: CharacterDoc; update: Updater 
                     {ABILITY_OPTIONS.map((a) => (
                       <option key={a.id} value={a.id}>
                         {a.label}
+                      </option>
+                    ))}
+                  </select>
+                )}
+                {(def.kind === "resistance" || def.kind === "immunity") && (
+                  <select
+                    className="familiar-select"
+                    style={{ marginLeft: 4 }}
+                    value={pick.choice ?? ""}
+                    onChange={(e) => update((d) => setEidolonEvolutionChoice(d, i, e.target.value))}
+                    aria-label={`${def.name} energy type ${i + 1}`}
+                  >
+                    <option value="">Choose an energy...</option>
+                    {EIDOLON_CHOICE_ENERGIES.map((energy) => (
+                      <option key={energy} value={energy}>
+                        {energy[0]!.toUpperCase() + energy.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                )}
+                {def.kind === "dr" && (
+                  <select
+                    className="familiar-select"
+                    style={{ marginLeft: 4 }}
+                    value={pick.choice ?? ""}
+                    onChange={(e) => update((d) => setEidolonEvolutionChoice(d, i, e.target.value))}
+                    aria-label={`Damage Reduction bypass alignment ${i + 1}`}
+                  >
+                    <option value="">Choose an alignment...</option>
+                    {EIDOLON_DR_ALIGNMENTS.map((alignment) => (
+                      <option key={alignment} value={alignment}>
+                        {alignment[0]!.toUpperCase() + alignment.slice(1)}
                       </option>
                     ))}
                   </select>

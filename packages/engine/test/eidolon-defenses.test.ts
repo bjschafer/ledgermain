@@ -173,7 +173,7 @@ function makeDoc(overrides: {
 }
 
 describe("deriveEidolon defenses field", () => {
-  it("a chained eidolon (no subtype system at all) always derives defenses: undefined", () => {
+  it("a chained eidolon with no defense-shaped evolutions picked derives defenses: undefined (chained has no subtype system at all)", () => {
     const doc = makeDoc({
       classTag: "summoner",
       level: 12,
@@ -182,6 +182,154 @@ describe("deriveEidolon defenses field", () => {
     const eidolon = deriveEidolon(doc, buildRollData(doc, ref));
     expect(eidolon).toBeDefined();
     expect(eidolon!.defenses).toBeUndefined();
+  });
+});
+
+/**
+ * The Resistance/Immunity/Damage Reduction evolutions are shared by both
+ * variants (`EIDOLON_EVOLUTIONS` is one table; `deriveEidolon` is one
+ * function) — a chained eidolon has no subtype system to feed `defenses` at
+ * all, so these three evolutions are its ONLY way to populate that block.
+ * Expected values hand-computed from d20pfsrd.com's "Eidolons" evolution
+ * list: Resistance ("resist 5 against that energy type... increases by 5
+ * for every 5 summoner levels... to a maximum of 15 at 10th level"),
+ * Immunity ("gaining immunity to that type... Summoner must be at least 7th
+ * level"), Damage Reduction ("DR 5 that can be bypassed by weapons that
+ * possess the chosen alignment... Summoner must be at least 9th level").
+ */
+describe("deriveEidolon defenses: Resistance/Immunity/Damage Reduction evolution picks", () => {
+  function chainedWith(level: number, evolutions: { id: string; choice?: string }[]) {
+    const doc = makeDoc({
+      classTag: "summoner",
+      level,
+      eidolon: { baseForm: "biped", name: "Grix", evolutions },
+    });
+    return deriveEidolon(doc, buildRollData(doc, ref))!;
+  }
+
+  it("Resistance follows the evolution's own 5/10/15-by-level schedule", () => {
+    expect(chainedWith(1, [{ id: "resistance", choice: "fire" }]).defenses).toEqual({
+      resistances: [{ energy: "fire", amount: 5 }],
+      damageImmunities: [],
+      effectImmunities: [],
+      dr: [],
+    });
+    expect(chainedWith(5, [{ id: "resistance", choice: "fire" }]).defenses?.resistances).toEqual([
+      { energy: "fire", amount: 10 },
+    ]);
+    expect(chainedWith(10, [{ id: "resistance", choice: "fire" }]).defenses?.resistances).toEqual([
+      { energy: "fire", amount: 15 },
+    ]);
+  });
+
+  it("Resistance picked twice for two different energies gives two independent lines", () => {
+    const defenses = chainedWith(1, [
+      { id: "resistance", choice: "cold" },
+      { id: "resistance", choice: "acid" },
+    ]).defenses;
+    expect(defenses?.resistances).toEqual([
+      { energy: "cold", amount: 5 },
+      { energy: "acid", amount: 5 },
+    ]);
+  });
+
+  it("Immunity grants a flat damage immunity, independent of level scaling", () => {
+    const defenses = chainedWith(20, [{ id: "immunity", choice: "electricity" }]).defenses;
+    expect(defenses?.damageImmunities).toEqual(["electricity"]);
+  });
+
+  it("Damage Reduction grants DR 5 bypassed by the chosen alignment", () => {
+    const defenses = chainedWith(20, [{ id: "damage-reduction", choice: "evil" }]).defenses;
+    expect(defenses?.dr).toEqual([{ amount: 5, bypass: "evil" }]);
+  });
+
+  it("a pick with no choice (or an invalid one) grants nothing — open-changes posture, never a guessed default", () => {
+    expect(chainedWith(20, [{ id: "resistance" }]).defenses).toBeUndefined();
+    expect(chainedWith(20, [{ id: "immunity", choice: "not-an-energy" }]).defenses).toBeUndefined();
+    expect(
+      chainedWith(20, [{ id: "damage-reduction", choice: "not-an-alignment" }]).defenses,
+    ).toBeUndefined();
+  });
+
+  it("an unchained eidolon with no subtype set resolves the same three evolutions identically to the chained branch", () => {
+    const doc = makeDoc({
+      classTag: "summonerUnchained",
+      level: 10,
+      eidolon: {
+        baseForm: "biped",
+        name: "Zeph",
+        evolutions: [
+          { id: "resistance", choice: "fire" },
+          { id: "immunity", choice: "cold" },
+          { id: "damage-reduction", choice: "chaotic" },
+        ],
+      },
+    });
+    const defenses = deriveEidolon(doc, buildRollData(doc, ref))!.defenses;
+    expect(defenses).toEqual({
+      resistances: [{ energy: "fire", amount: 15 }],
+      damageImmunities: ["cold"],
+      effectImmunities: [],
+      dr: [{ amount: 5, bypass: "chaotic" }],
+    });
+  });
+
+  /**
+   * Stacking against a real unchained subtype's own grants (Angel:
+   * aonprd.com "Subtypes - Eidolon (Unchained)" — 4th "electricity
+   * resistance 10 and fire resistance 10" is a FLAT, non-scaling grant).
+   * `foldEidolonGrantDefenses` takes the highest amount per energy across
+   * BOTH sources (same rule PF1 uses for same-type energy resistance:
+   * it doesn't stack, only the better value applies) — never a sum.
+   */
+  it("a same-energy Resistance pick and a subtype's flat resistance grant: highest wins, not a sum", () => {
+    function angelWith(level: number, evolutions: { id: string; choice?: string }[]) {
+      const doc = makeDoc({
+        classTag: "summonerUnchained",
+        level,
+        eidolon: { baseForm: "biped", subtype: "angel", name: "Seraph", evolutions },
+      });
+      return deriveEidolon(doc, buildRollData(doc, ref))!.defenses;
+    }
+
+    // At 7th, the evolution's own scaled amount (10, per the 5/10/15
+    // schedule) ties the subtype's flat 10 — same result either way.
+    // At 10th the evolution's schedule has grown past the subtype's flat
+    // value (15 > 10), so the merged line reads 15, not 10 and not 25.
+    const electricityAt10 = angelWith(10, [
+      { id: "resistance", choice: "electricity" },
+    ])?.resistances.find((r) => r.energy === "electricity");
+    expect(electricityAt10).toEqual({ energy: "electricity", amount: 15 });
+
+    // Below 10th, the subtype's flat grant is still the better value, so
+    // the evolution's smaller scaled amount never overrides it downward.
+    const electricityAt4 = angelWith(4, [
+      { id: "resistance", choice: "electricity" },
+    ])?.resistances.find((r) => r.energy === "electricity");
+    expect(electricityAt4).toEqual({ energy: "electricity", amount: 10 });
+  });
+
+  it("a Damage Reduction pick with a DIFFERENT bypass than the subtype's own DR grant surfaces as a second line", () => {
+    const doc = makeDoc({
+      classTag: "summonerUnchained",
+      level: 12,
+      eidolon: {
+        baseForm: "biped",
+        subtype: "angel",
+        name: "Seraph",
+        // Angel's own 12th-level grant is DR 5/evil; this pick adds a
+        // second, independent DR line rather than merging into it.
+        evolutions: [{ id: "damage-reduction", choice: "good" }],
+      },
+    });
+    const defenses = deriveEidolon(doc, buildRollData(doc, ref))!.defenses;
+    // Ordering is by ascending grant level (see `foldEidolonGrantDefenses`'s
+    // doc comment); the evolution pick is always "unlocked" at level 0, so
+    // it sorts before the subtype's own 12th-level grant.
+    expect(defenses?.dr).toEqual([
+      { amount: 5, bypass: "good" },
+      { amount: 5, bypass: "evil" },
+    ]);
   });
 });
 

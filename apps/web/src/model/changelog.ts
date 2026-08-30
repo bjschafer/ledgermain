@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-30-eidolon-defense-evolutions",
+    date: "2026-08-30",
+    title: "Eidolon defenses that come from evolutions",
+    note: "The Resistance, Immunity, and Damage Reduction evolutions were pickable and point-costed, but the eidolon's defense line never moved: only its subtype grants fed it. Pick one now and a dropdown on the evolution chip asks for the energy type, or for the alignment that bypasses the reduction, and the stat block updates on the spot. Resistance grows with your summoner level the same way subtype resistances do, and when the subtype already grants the same protection the two do not stack: the better one shows. Fast Healing and the action-shaped evolutions, like Grab and Poison, still read as rules text.",
+  },
+  {
     id: "2026-08-28-arcanist-exploits-on-the-tracker",
     date: "2026-08-28",
     title: "Your exploits sit next to your reservoir",

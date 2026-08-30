@@ -2228,12 +2228,16 @@ export interface EidolonEvolutionPick {
   /** Evolution id — key into `@pf1/engine` `EIDOLON_EVOLUTIONS`. */
   id: string;
   /**
-   * Per-pick target for evolutions that need one (currently only
-   * `"ability-increase"`, an {@link AbilityId}). Ignored by every other
-   * evolution id. Defaults to `"str"` when required but missing/invalid
-   * (`@pf1/engine` `deriveEidolon`) — Str is the overwhelmingly common
-   * choice for a melee-combat eidolon, mirroring `AnimalCompanionBuild`'s
-   * own Str default over `PhantomBuild`'s Cha default.
+   * Per-pick target for evolutions that need one: `"ability-increase"` reads
+   * it as an {@link AbilityId} (defaulting to `"str"` when missing/invalid —
+   * the overwhelmingly common choice for a melee-combat eidolon, mirroring
+   * `AnimalCompanionBuild`'s own Str default over `PhantomBuild`'s Cha
+   * default); `"resistance"`/`"immunity"` read it as an energy slug (`@pf1/engine`
+   * `EIDOLON_RESISTANCE_ENERGIES`); `"damage-reduction"` reads it as an
+   * alignment slug (`EIDOLON_DR_ALIGNMENTS`) — those three grant NOTHING
+   * without a valid choice stored, the same open-changes posture as a
+   * subtype's own `choiceResistance` grant, rather than guessing an energy/
+   * alignment. Ignored by every other evolution id.
    */
   choice?: AbilityId | string;
 }

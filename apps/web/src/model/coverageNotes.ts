@@ -88,9 +88,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Eidolon evolutions",
-    note: "Every evolution is pickable and point-costed on your eidolon, but only the structured kinds (extra attacks, armor, ability increases, size, speed) change its derived stat block. The rest, like Grab, Poison, Immunity, Fast Healing, or Damage Reduction, show as picked abilities with rules text for you to apply at the table.",
+    note: "Every evolution is pickable and point-costed on your eidolon, but only the structured kinds (extra attacks, armor, ability increases, size, speed, energy resistance and immunity, damage reduction) change its derived stat block. The rest, like Grab, Poison, or Fast Healing, show as picked abilities with rules text for you to apply at the table.",
     issueDetail:
-      "81 evolutions are pickable against the pool; 18 (the attack, armor, ability, size, and speed kinds) move numbers in the eidolon derivation. The other 63 are display kind: picked and point-costed but applying nothing, defenses included, since the eidolon's defense block is fed only by unchained subtype grants, never by evolution picks.",
+      "81 evolutions are pickable against the pool; 21 move numbers in the eidolon derivation. The other 60 are display kind: event- and action-shaped effects (Poison, Grab, Trample, the spell-like Magic chain), per-attack riders (Improved Damage), and effects with no field on the eidolon block (Fast Healing, Spell Resistance, Skilled's per-skill bonus).",
   },
   {
     category: "Witch patrons",

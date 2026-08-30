@@ -150,10 +150,13 @@
  *     point evolution from Advanced Player's Guide's own "Evolutions" list
  *     is present below (no splatbook-only entries beyond APG core), but only
  *     the ones with a clean, unconditional numeric shape (attacks, ability
- *     increase, natural armor, one size step, and a handful of movement
- *     modes) are wired as real numeric grants; the rest are `displayOnly`
- *     with a paraphrased `summary`, same honesty-bar discipline as
- *     `rogue-talents.ts`/`witch-hexes.ts`. Size growth is capped at "Large"
+ *     increase, natural armor, one size step, a handful of movement modes,
+ *     and Resistance/Immunity/Damage Reduction — folded into
+ *     `DerivedEidolon.defenses`, the same block an unchained subtype grant
+ *     feeds, see `evolutionDefenseGrant`) are wired as real numeric grants;
+ *     the rest are `displayOnly` with a paraphrased `summary`, same
+ *     honesty-bar discipline as `rogue-talents.ts`/`witch-hexes.ts`. Size
+ *     growth is capped at "Large"
  *     (the 4-point "Large" evolution); the further Huge upsize (available at
  *     13th by spending Large's own evolution again) is NOT modeled — a
  *     documented v1 simplification, not a missed rule.
@@ -679,7 +682,16 @@ export function eidolonSummonerLevel(doc: CharacterDoc): number {
 }
 
 /** Which "kind" of numeric grant an evolution contributes — see module doc comment for the honesty-bar split. */
-export type EidolonEvolutionKind = "ability" | "attack" | "armor" | "size" | "speed" | "display";
+export type EidolonEvolutionKind =
+  | "ability"
+  | "attack"
+  | "armor"
+  | "size"
+  | "speed"
+  | "resistance"
+  | "immunity"
+  | "dr"
+  | "display";
 
 export interface EidolonSpeedGrant {
   mode: "climb" | "swim" | "fly" | "burrow";
@@ -708,6 +720,54 @@ export interface EidolonEvolutionDef {
   speed?: EidolonSpeedGrant;
   /** `kind: "ability"` grant — always +2 to the pick's `choice` ability (Ability Increase is the only structured ability evolution). */
   abilityBonus?: number;
+}
+
+/**
+ * A pick of `kind: "resistance"` or `"immunity"` reads its own
+ * `EidolonEvolutionPick.choice` as one of these energy slugs (the
+ * Resistance/Immunity evolutions' own printed list — same vocabulary the
+ * Unchained subtype `choiceResistance` grant already uses). Re-exported
+ * alias of `EIDOLON_CHOICE_ENERGIES` so callers don't need to reach into
+ * `eidolon-unchained.ts` just for this.
+ */
+export const EIDOLON_RESISTANCE_ENERGIES: readonly string[] = EIDOLON_CHOICE_ENERGIES;
+
+/** A `kind: "dr"` pick's `choice` reads as one of these alignment slugs (d20pfsrd.com Damage Reduction evolution: "bypassed by weapons that possess the chosen alignment," opposing one of the eidolon's own alignment components). */
+export const EIDOLON_DR_ALIGNMENTS: readonly string[] = ["good", "evil", "lawful", "chaotic"];
+
+/**
+ * Builds the `EidolonSubtypeGrant`-shaped defense entry a `resistance`/
+ * `immunity`/`dr` evolution pick contributes, so `deriveEidolon` can fold it
+ * through `foldEidolonGrantDefenses` — the exact same highest-wins/immunity-
+ * supersedes-resistance merge a subtype grant already uses, rather than a
+ * second merge implementation. `level: 0` keeps the synthetic grant always
+ * "unlocked": an evolution pick's own `minLevel` is soft-noted-only (never
+ * blocks, same as every other evolution's `minLevel`), so nothing here
+ * should re-gate it by level. Returns `undefined` for a pick with no
+ * `choice`, or one outside the accepted vocabulary — the open-changes
+ * posture already used for `choiceResistance`/`choiceEvolutions`: never a
+ * guessed default.
+ */
+function evolutionDefenseGrant(
+  def: EidolonEvolutionDef,
+  choice: string | undefined,
+): EidolonSubtypeGrant | undefined {
+  switch (def.kind) {
+    case "resistance":
+      return choice && EIDOLON_RESISTANCE_ENERGIES.includes(choice)
+        ? { level: 0, note: def.name, resistances: [{ energy: choice, amount: 5, scales: true }] }
+        : undefined;
+    case "immunity":
+      return choice && EIDOLON_RESISTANCE_ENERGIES.includes(choice)
+        ? { level: 0, note: def.name, damageImmunities: [choice] }
+        : undefined;
+    case "dr":
+      return choice && EIDOLON_DR_ALIGNMENTS.includes(choice)
+        ? { level: 0, note: def.name, dr: { amount: 5, bypass: choice } }
+        : undefined;
+    default:
+      return undefined;
+  }
 }
 
 const attackEvo = (
@@ -892,15 +952,14 @@ const EVOLUTION_LIST: EidolonEvolutionDef[] = [
     "A successful attack allows a free CMB check to push the target 5 feet away.",
   ),
   displayEvo("reach", "Reach", 1, "Increases one natural attack's reach by 5 feet."),
-  displayEvo(
-    "resistance",
-    "Resistance",
-    1,
-    "Energy resistance 5 against one chosen energy type; scales with summoner level.",
-    {
-      repeatable: true,
-    },
-  ),
+  {
+    id: "resistance",
+    name: "Resistance",
+    cost: 1,
+    kind: "resistance",
+    repeatable: true,
+    summary: "Energy resistance 5 against one chosen energy type; scales with summoner level.",
+  },
   displayEvo(
     "scent",
     "Scent",
@@ -1024,9 +1083,15 @@ const EVOLUTION_LIST: EidolonEvolutionDef[] = [
     "Grows an additional head, unlocking further head-based evolutions.",
     { repeatable: true },
   ),
-  displayEvo("immunity", "Immunity", 2, "Immunity to one chosen energy type. Requires 7th level.", {
+  {
+    id: "immunity",
+    name: "Immunity",
+    cost: 2,
+    kind: "immunity",
     minLevel: 7,
-  }),
+    repeatable: true,
+    summary: "Immunity to one chosen energy type. Requires 7th level.",
+  },
   displayEvo(
     "keen-scent",
     "Keen Scent",
@@ -1160,15 +1225,15 @@ const EVOLUTION_LIST: EidolonEvolutionDef[] = [
     3,
     "Appears celestial; +2 on several saves; SR 5+HD vs. evil spells. Good-aligned summoner only.",
   ),
-  displayEvo(
-    "damage-reduction",
-    "Damage Reduction",
-    3,
-    "DR 5, bypassed by a chosen opposing alignment type. Requires 9th level.",
-    {
-      minLevel: 9,
-    },
-  ),
+  {
+    id: "damage-reduction",
+    name: "Damage Reduction",
+    cost: 3,
+    kind: "dr",
+    minLevel: 9,
+    summary:
+      "DR 5, bypassed by a chosen opposing alignment type. Requires 9th level (the published DR 10 upgrade at 12th level for 2 more points isn't modeled).",
+  },
   displayEvo(
     "fiendish-appearance",
     "Fiendish Appearance",
@@ -1406,7 +1471,7 @@ export interface DerivedEidolon {
   small: boolean;
   /** Whether Avian/Tauric's own default-Small sidebar rule is in effect (`size === "sm"` for a reason OTHER than the `small` flag above) — see `EidolonBuild.mediumSizeUpgrade`'s doc comment. Always `false` for every other base form. */
   formDefaultsSmall: boolean;
-  /** Unchained-subtype-sourced DR/resistances/immunities, folded from the subtype's unlocked grants (see `foldEidolonGrantDefenses`). `undefined` for a chained eidolon, an unmodeled/no subtype, or a subtype whose unlocked grants carry no structured defense fields. */
+  /** DR/resistances/immunities, folded (see `foldEidolonGrantDefenses`) from the unchained subtype's unlocked grants AND any Resistance/Immunity/Damage Reduction evolution picks (both variants) — `evolutionDefenseGrant` reshapes a pick into the same grant shape a subtype grant already uses, so the two sources merge through one highest-wins pass. `undefined` when nothing from either source carries a structured defense field (a chained eidolon with none of those three evolutions picked, an unmodeled/no subtype with no such picks either, etc.). */
   defenses?: DerivedEidolonDefenses;
 }
 
@@ -1614,6 +1679,14 @@ function applyEvolutionEffect(
       else if (def.speed?.mode === "fly") acc.hasFlight = true;
       else if (def.speed?.mode === "burrow") acc.hasBurrow = true;
       break;
+    case "resistance":
+    case "immunity":
+    case "dr":
+      // Structured, but folded separately into `defenses` via
+      // `evolutionDefenseGrant`/`foldEidolonGrantDefenses` (see
+      // `deriveEidolon`'s pick loop) — this accumulator only tracks the
+      // ability/attack/armor/size/speed effects the OTHER kinds contribute.
+      break;
     case "display":
       break;
   }
@@ -1684,6 +1757,10 @@ export function deriveEidolon(
   const chosenEvolutions: { id: string; name: string; cost: number; choice?: string }[] = [];
   let evolutionPointsSpent = 0;
   const acc = newEvolutionAccumulator();
+  // Resistance/Immunity/Damage Reduction picks, reshaped into the same
+  // grant shape a subtype's themed grant already uses — merged with any
+  // subtype grants below through the one `foldEidolonGrantDefenses` pass.
+  const evolutionDefenseGrants: EidolonSubtypeGrant[] = [];
 
   for (const pick of picks) {
     const def = EIDOLON_EVOLUTIONS[pick.id];
@@ -1691,6 +1768,8 @@ export function deriveEidolon(
     evolutionPointsSpent += def.cost;
     chosenEvolutions.push({ id: def.id, name: def.name, cost: def.cost, choice: pick.choice });
     applyEvolutionEffect(acc, def, pick.choice);
+    const defenseGrant = evolutionDefenseGrant(def, pick.choice);
+    if (defenseGrant) evolutionDefenseGrants.push(defenseGrant);
   }
 
   // --- unchained only: the subtype's own themed grants (evolutionIds/
@@ -2067,8 +2146,13 @@ export function deriveEidolon(
     abilityIncreaseSlots,
     small,
     formDefaultsSmall,
-    defenses: subtype
-      ? foldEidolonGrantDefenses(subtype.grants, level, build.subtypeGrantChoices)
-      : undefined,
+    defenses:
+      subtype || evolutionDefenseGrants.length > 0
+        ? foldEidolonGrantDefenses(
+            [...(subtype?.grants ?? []), ...evolutionDefenseGrants],
+            level,
+            build.subtypeGrantChoices,
+          )
+        : undefined,
   };
 }
