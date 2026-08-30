@@ -76,6 +76,7 @@ import {
   RACIAL_TRAITS,
   vendoredTraitSuppressTargets,
 } from "./racial-traits.js";
+import { RACIAL_TRAIT_CHOICES } from "./racial-trait-choices.js";
 import { resolveInvestigatorTalent } from "./investigator-talents.js";
 import { resolveNinjaTrick } from "./ninja-tricks.js";
 import { resolveRagePower } from "./rage-powers.js";
@@ -372,6 +373,28 @@ export function collectModifiers(
           ch.acCategories,
         );
       }
+      // Choose-one racial traits (Tiefling's Maw or Claw): apply the stored
+      // selection's changes. No stored pick, or a stale option id, emits
+      // nothing — same posture as `CLASS_FEATURE_CHOICES`.
+      const traitChoiceEntry = RACIAL_TRAIT_CHOICES[t.id];
+      if (traitChoiceEntry) {
+        const picked = doc.build.pickChoices?.[`racialTrait:${t.id}`];
+        for (const ch of (picked && traitChoiceEntry.choiceChanges[picked]) || []) {
+          evalChange(
+            ch.formula,
+            rollData,
+            ch.target,
+            ch.type,
+            t.name,
+            t.id,
+            out,
+            ch.operator,
+            ch.saveCategories,
+            ch.maneuverCategories,
+            ch.acCategories,
+          );
+        }
+      }
     }
 
     // Vendored alternate racial traits — the ~80-race `RefData.racialTraits`
@@ -434,6 +457,29 @@ export function collectModifiers(
           ch.maneuverCategories,
           ch.acCategories,
         );
+      }
+      // Choose-one vendored racial traits (a fixed, enumerable option list —
+      // distinct from the free-text `openChanges` targeting above): same
+      // `racialTrait:<id>` namespace and posture as the hand-authored branch.
+      const vendoredChoiceEntry = RACIAL_TRAIT_CHOICES[t.id];
+      if (vendoredChoiceEntry) {
+        const picked = doc.build.pickChoices?.[`racialTrait:${t.id}`];
+        for (const ch of (picked && vendoredChoiceEntry.choiceChanges[picked]) || []) {
+          if (!gateOpen(ch)) continue;
+          evalChange(
+            ch.formula,
+            rollData,
+            ch.target,
+            ch.type,
+            t.name,
+            t.id,
+            out,
+            ch.operator,
+            ch.saveCategories,
+            ch.maneuverCategories,
+            ch.acCategories,
+          );
+        }
       }
     }
   }

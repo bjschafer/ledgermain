@@ -101,6 +101,7 @@ import { mergedPhrenicAmplificationCatalog } from "../packages/engine/src/phreni
 import { mergedPsychicDisciplineCatalog } from "../packages/engine/src/psychic-disciplines.js";
 import { RACIAL_TRAIT_CLASSIFICATION } from "../packages/engine/src/racial-trait-classification/index.js";
 import { RACIAL_TRAITS } from "../packages/engine/src/racial-traits.js";
+import { RACIAL_TRAIT_CHOICES } from "../packages/engine/src/racial-trait-choices.js";
 import { mergedRagePowerCatalog } from "../packages/engine/src/rage-powers.js";
 import { mergedRogueTalentCatalog } from "../packages/engine/src/rogue-talents.js";
 import { mergedShamanHexCatalog } from "../packages/engine/src/shaman-hexes.js";
@@ -634,7 +635,13 @@ function main(): void {
       (RACIAL_TRAIT_SLA_GRANTS[id]?.length ?? 0) > 0 ||
       (RACIAL_TRAIT_CASTING_ADJUSTMENTS[id]?.length ?? 0) > 0 ||
       // A granted natural-attack line onto the PC's own body.
-      (RACIAL_TRAIT_NATURAL_ATTACKS[id]?.length ?? 0) > 0;
+      (RACIAL_TRAIT_NATURAL_ATTACKS[id]?.length ?? 0) > 0 ||
+      // Choose-one racial traits: the pick-choice route moves numbers through
+      // its own stored-pick mechanism even when every option's `choiceChanges`
+      // is empty (the trait's real effect lives in a different table keyed
+      // off the same pick, e.g. RACIAL_TRAIT_NATURAL_ATTACKS) — same posture
+      // as the archetype-feature choiceChanges check above.
+      Object.keys(RACIAL_TRAIT_CHOICES[id]?.choiceChanges ?? {}).length > 0;
     const noted = arrayLen(e.contextNotes) > 0;
     // Same semantics as the archetype/feat verdicts: a deliberate
     // situational/subsystem/blocked ruling is reviewed backlog; a `numeric`

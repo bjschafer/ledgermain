@@ -442,11 +442,17 @@ export const CLASS_FEATURE_CLASSIFICATION_REACHABLE_2: Readonly<
     bucket: "subsystem",
     note: "Grants access to a chosen cleric domain plus its spells as once/day spell-like abilities; choice-gated (the domain and its spell list aren't stored per-spell), not a number.",
   },
+  c61UW4qjDBxLEBaK: {
+    id: "c61UW4qjDBxLEBaK",
+    name: "Aura Sense",
+    bucket: "subsystem",
+    note: "Grants at-will detect chaos/evil/good/law, one type active at a time; wired via CLASS_FEATURE_SLA_GRANTS as four picked-option grants keyed on the stored classFeature: pick, not a Change-shaped number.",
+  },
   lRmf8xptuEyiZ8o5: {
     id: "lRmf8xptuEyiZ8o5",
     name: "Ardent Vision",
     bucket: "subsystem",
-    note: "Grants at-will detect chaos/evil/good/law against a chosen opposed alignment; choice-gated (the fixed alignment pick isn't stored), not a number.",
+    note: "Grants at-will detect chaos/evil/good/law against a chosen opposed alignment; wired via CLASS_FEATURE_SLA_GRANTS as four picked-option grants keyed on the stored classFeature: pick, not a Change-shaped number.",
   },
   oRac7XDHBN0JzuyY: {
     id: "oRac7XDHBN0JzuyY",

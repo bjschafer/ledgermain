@@ -264,6 +264,91 @@ describe("Stargazer Sidereal Arcana: deliberately left unwired (auto-listed choi
   });
 });
 
+describe("Exalted, Ardent Vision (8th): choice-gated at-will detect chaos/evil/good/law", () => {
+  // Pathfinder Player Companion: Faiths of Corruption p. 200: "the exalted
+  // ... gains the ability to cast detect chaos/evil/good/law at will, with a
+  // caster level equal to her character level. The exalted must choose one
+  // alignment to detect that is opposed to her alignment ... once this
+  // choice is made it can't be changed." Four options, one def each, gated
+  // by `when` on `classFeature:lRmf8xptuEyiZ8o5`.
+  function makeExalted(level: number, pickChoices?: Record<string, string>): CharacterDoc {
+    return baseDoc({
+      identity: { name: "Test", race: HUMAN, classes: [{ tag: "exalted", level }] },
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        pickChoices,
+      },
+    });
+  }
+
+  it("no stored pick: nothing granted", () => {
+    const slas = slasFor(makeExalted(8));
+    expect(slas.some((s) => s.id.startsWith("sla:lRmf8xptuEyiZ8o5:"))).toBe(false);
+  });
+
+  it("a stale option id grants nothing", () => {
+    const slas = slasFor(makeExalted(8, { "classFeature:lRmf8xptuEyiZ8o5": "bogus" }));
+    expect(slas.some((s) => s.id.startsWith("sla:lRmf8xptuEyiZ8o5:"))).toBe(false);
+  });
+
+  it("'evil' pick: only Detect Evil grants, at will, caster level = character level", () => {
+    const doc = makeExalted(8, { "classFeature:lRmf8xptuEyiZ8o5": "evil" });
+    const own = slasFor(doc).filter((s) => s.id.startsWith("sla:lRmf8xptuEyiZ8o5:"));
+    expect(own).toHaveLength(1);
+    expect(own[0]?.name).toBe("Detect Evil");
+    expect(own[0]?.frequency).toBe("atWill");
+    expect(own[0]?.casterLevel).toBe(8); // @attributes.hd.total override, not @class.unlevel
+    expect(own[0]?.poolId).toBeUndefined();
+  });
+
+  it("'law' pick: only Detect Law grants", () => {
+    const doc = makeExalted(8, { "classFeature:lRmf8xptuEyiZ8o5": "law" });
+    const own = slasFor(doc).filter((s) => s.id.startsWith("sla:lRmf8xptuEyiZ8o5:"));
+    expect(own).toHaveLength(1);
+    expect(own[0]?.name).toBe("Detect Law");
+  });
+});
+
+describe("Pure Legion Enforcer, Aura Sense (1st): choice-gated at-will detect chaos/evil/good/law", () => {
+  // Pathfinder Player Companion: Faiths of Corruption p. 32: "A Pure Legion
+  // enforcer can cast detect chaos/evil/good/law at will as a spell-like
+  // ability, though he can detect only auras of moderate or higher power. He
+  // can detect only one type of aura at any given time." No caster level is
+  // stated, so it defaults to the granting class's own level.
+  function makeEnforcer(level: number, pickChoices?: Record<string, string>): CharacterDoc {
+    return baseDoc({
+      identity: { name: "Test", race: HUMAN, classes: [{ tag: "pureLegionEnforcer", level }] },
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        pickChoices,
+      },
+    });
+  }
+
+  it("no stored pick: nothing granted", () => {
+    const slas = slasFor(makeEnforcer(3));
+    expect(slas.some((s) => s.id.startsWith("sla:c61UW4qjDBxLEBaK:"))).toBe(false);
+  });
+
+  it("'chaos' pick: only Detect Chaos grants, at will, caster level = granting class level", () => {
+    const doc = makeEnforcer(3, { "classFeature:c61UW4qjDBxLEBaK": "chaos" });
+    const own = slasFor(doc).filter((s) => s.id.startsWith("sla:c61UW4qjDBxLEBaK:"));
+    expect(own).toHaveLength(1);
+    expect(own[0]?.name).toBe("Detect Chaos");
+    expect(own[0]?.frequency).toBe("atWill");
+    expect(own[0]?.casterLevel).toBe(3);
+    expect(own[0]?.note).toContain("moderate");
+  });
+});
+
 describe("deriveSpellLikeAbilities matches compute()'s spellLikeAbilities for a mixed case", () => {
   it("inquisitor 8 with the Reformation inquisition and the Weather domain slot unused", () => {
     const doc = baseDoc({

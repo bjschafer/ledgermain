@@ -172,6 +172,7 @@ export {
   type AlternateRacialTrait,
   type RacialTraitResourcePool,
 } from "./racial-traits.js";
+export { RACIAL_TRAIT_CHOICES, type RacialTraitChoiceEntry } from "./racial-trait-choices.js";
 export {
   BLOODLINES,
   BLOODLINE_TAGS,
@@ -855,6 +856,7 @@ export {
   ARCHETYPE_SLA_GRANTS,
   ARCHETYPE_SLA_GRANTS_AM,
   ARCHETYPE_SLA_GRANTS_NZ,
+  CLASS_FEATURE_SLA_CHOICES,
   CLASS_FEATURE_SLA_GRANTS,
   deriveSlaResourcePools,
   deriveSpellLikeAbilities,

@@ -7,8 +7,11 @@ import {
   archetypeFeatureChoiceDescriptor,
   classFeatureChoice,
   classFeatureChoiceDescriptor,
+  racialTraitChoice,
+  racialTraitChoiceDescriptor,
   setArchetypeFeatureChoice,
   setClassFeatureChoice,
+  setRacialTraitChoice,
 } from "../src/model/featureChoices.js";
 
 function makeDoc(pickChoices?: Record<string, string>): CharacterDoc {
@@ -106,6 +109,18 @@ describe("model/featureChoices: classFeatureChoiceDescriptor", () => {
   it("returns undefined for a feature name with no declared choice", () => {
     expect(classFeatureChoiceDescriptor("fighter", "Bravery")).toBeUndefined();
   });
+
+  it("falls back to CLASS_FEATURE_SLA_CHOICES by featureId when name/GRANTED_POWER lookups miss", () => {
+    // Exalted's Ardent Vision — an SLA choice, keyed by vendored id rather
+    // than name (see the function's doc comment).
+    const descriptor = classFeatureChoiceDescriptor("exalted", "Ardent Vision", "lRmf8xptuEyiZ8o5");
+    expect(descriptor?.label).toBe("Detected alignment");
+    expect(descriptor?.options.map((o) => o.id).sort()).toEqual(["chaos", "evil", "good", "law"]);
+  });
+
+  it("without a featureId, an SLA-only choice resolves to undefined", () => {
+    expect(classFeatureChoiceDescriptor("exalted", "Ardent Vision")).toBeUndefined();
+  });
 });
 
 describe("model/featureChoices: classFeatureChoice / setClassFeatureChoice", () => {
@@ -131,5 +146,39 @@ describe("model/featureChoices: classFeatureChoice / setClassFeatureChoice", () 
   it("is a no-op (same object) when the value is unchanged", () => {
     const doc = setClassFeatureChoice(makeDoc(), MONITOR_EXPRESSION, "executor");
     expect(setClassFeatureChoice(doc, MONITOR_EXPRESSION, "executor")).toBe(doc);
+  });
+});
+
+// Tiefling's vendored "Maw or Claw" alternate racial trait.
+const MAW_OR_CLAW = "qquaaM62KEX4ulIi";
+
+describe("model/featureChoices: racialTraitChoiceDescriptor", () => {
+  it("returns the declared choice for Maw or Claw", () => {
+    const descriptor = racialTraitChoiceDescriptor(MAW_OR_CLAW);
+    expect(descriptor?.label).toBe("Maw or Claw");
+    expect(descriptor?.options.map((o) => o.id).sort()).toEqual(["bite", "claws"]);
+  });
+
+  it("returns undefined for a trait id with no declared choice", () => {
+    expect(racialTraitChoiceDescriptor("not-a-real-trait-id")).toBeUndefined();
+  });
+});
+
+describe("model/featureChoices: racialTraitChoice / setRacialTraitChoice", () => {
+  it("stores the pick under the racialTrait:<id> key", () => {
+    const doc = setRacialTraitChoice(makeDoc(), MAW_OR_CLAW, "bite");
+    expect(doc.build.pickChoices).toEqual({ [`racialTrait:${MAW_OR_CLAW}`]: "bite" });
+    expect(racialTraitChoice(doc, MAW_OR_CLAW)).toBe("bite");
+  });
+
+  it("undefined clears the stored pick", () => {
+    let doc = setRacialTraitChoice(makeDoc(), MAW_OR_CLAW, "claws");
+    doc = setRacialTraitChoice(doc, MAW_OR_CLAW, undefined);
+    expect(racialTraitChoice(doc, MAW_OR_CLAW)).toBeUndefined();
+  });
+
+  it("is a no-op (same object) when the value is unchanged", () => {
+    const doc = setRacialTraitChoice(makeDoc(), MAW_OR_CLAW, "bite");
+    expect(setRacialTraitChoice(doc, MAW_OR_CLAW, "bite")).toBe(doc);
   });
 });

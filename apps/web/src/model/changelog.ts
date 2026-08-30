@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-30-choices-on-features-and-traits",
+    date: "2026-08-30",
+    title: "Features that ask you to choose now ask",
+    note: "Racial traits and class features that grant a pick from a list finally have somewhere to store it. A tiefling who trades her spell-like ability for Maw or Claw chooses the bite or the pair of claws right on the trait, and the attack shows up on her attack list with the right dice. The exalted's Ardent Vision and the Pure Legion enforcer's Aura Sense ask which detect spell you keyed and list it with your other spell-like abilities at the right caster level. A pick the sheet cannot enumerate, like a whole spell list, still reads as text.",
+  },
+  {
     id: "2026-08-30-skill-focus-instances-and-aspect",
     date: "2026-08-30",
     title: "Pick your craft, and your beast",

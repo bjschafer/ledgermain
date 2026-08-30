@@ -13,6 +13,7 @@
  * grant level already gates when the feature appears.
  */
 
+import type { PickChoice } from "../rage-powers.js";
 import type { SlaGrantDef } from "./types.js";
 
 export const CLASS_FEATURE_SLA_GRANTS: Readonly<Record<string, readonly SlaGrantDef[]>> = {
@@ -600,4 +601,117 @@ export const CLASS_FEATURE_SLA_GRANTS: Readonly<Record<string, readonly SlaGrant
       uses: { formula: "if(gte(@class.unlevel, 10), 2, 1)", per: "day" },
     },
   ],
+
+  // Exalted, Ardent Vision (8th): "the exalted can always discern the
+  // enemies of her faith. She gains the ability to cast detect
+  // chaos/evil/good/law at will, with a caster level equal to her character
+  // level. The exalted must choose one alignment to detect that is opposed
+  // to her alignment (or one of her choice is if she is neutral), and once
+  // this choice is made it can't be changed." Four options, one per
+  // alignment axis; `when` gates each on the matching stored pick — see
+  // `CLASS_FEATURE_SLA_CHOICES` below for the picker descriptor. The
+  // published "opposed to her alignment"/neutral-picks-freely constraint on
+  // WHICH of the four is available isn't enforced here (same posture as
+  // every other free-choice picker in this codebase); the "can't be changed
+  // once made" lock isn't enforced either, since nothing in this engine
+  // enforces build-choice permanence.
+  lRmf8xptuEyiZ8o5: [
+    {
+      slug: "detect-chaos",
+      spell: "Detect Chaos",
+      frequency: "atWill",
+      cl: "@attributes.hd.total",
+      when: (doc) => doc.build.pickChoices?.["classFeature:lRmf8xptuEyiZ8o5"] === "chaos",
+    },
+    {
+      slug: "detect-evil",
+      spell: "Detect Evil",
+      frequency: "atWill",
+      cl: "@attributes.hd.total",
+      when: (doc) => doc.build.pickChoices?.["classFeature:lRmf8xptuEyiZ8o5"] === "evil",
+    },
+    {
+      slug: "detect-good",
+      spell: "Detect Good",
+      frequency: "atWill",
+      cl: "@attributes.hd.total",
+      when: (doc) => doc.build.pickChoices?.["classFeature:lRmf8xptuEyiZ8o5"] === "good",
+    },
+    {
+      slug: "detect-law",
+      spell: "Detect Law",
+      frequency: "atWill",
+      cl: "@attributes.hd.total",
+      when: (doc) => doc.build.pickChoices?.["classFeature:lRmf8xptuEyiZ8o5"] === "law",
+    },
+  ],
+
+  // Pure Legion Enforcer, Aura Sense (1st): "can cast detect chaos/evil/
+  // good/law at will as a spell-like ability, though he can detect only
+  // auras of moderate or higher power. He can detect only one type of aura
+  // at any given time." No caster level is stated, so the grant defaults to
+  // the granting class's level (this shard's own default, see the file's
+  // header). Unlike Ardent Vision the published text doesn't lock the pick
+  // permanently ("at any given time" implies it's re-selectable), but both
+  // routes through the same free-choice `pickChoices` posture either way.
+  c61UW4qjDBxLEBaK: [
+    {
+      slug: "detect-chaos",
+      spell: "Detect Chaos",
+      frequency: "atWill",
+      note: "detects only auras of moderate power or higher",
+      when: (doc) => doc.build.pickChoices?.["classFeature:c61UW4qjDBxLEBaK"] === "chaos",
+    },
+    {
+      slug: "detect-evil",
+      spell: "Detect Evil",
+      frequency: "atWill",
+      note: "detects only auras of moderate power or higher",
+      when: (doc) => doc.build.pickChoices?.["classFeature:c61UW4qjDBxLEBaK"] === "evil",
+    },
+    {
+      slug: "detect-good",
+      spell: "Detect Good",
+      frequency: "atWill",
+      note: "detects only auras of moderate power or higher",
+      when: (doc) => doc.build.pickChoices?.["classFeature:c61UW4qjDBxLEBaK"] === "good",
+    },
+    {
+      slug: "detect-law",
+      spell: "Detect Law",
+      frequency: "atWill",
+      note: "detects only auras of moderate power or higher",
+      when: (doc) => doc.build.pickChoices?.["classFeature:c61UW4qjDBxLEBaK"] === "law",
+    },
+  ],
+};
+
+/**
+ * Choice descriptors (dropdown prompt + option list) for the enumerable
+ * choice-gated `CLASS_FEATURE_SLA_GRANTS` entries above — read by
+ * `apps/web`'s `model/featureChoices.ts` (`classFeatureChoiceDescriptor`) to
+ * render the same choose-one select `CLASS_FEATURE_CHOICES` gets, keyed by
+ * the granting feature's own vendored id. Not consulted by the engine itself
+ * (the `when` predicates above key directly off `build.pickChoices`); purely
+ * a UI-facing declaration, same split as `PickChoice` elsewhere.
+ */
+export const CLASS_FEATURE_SLA_CHOICES: Readonly<Record<string, PickChoice>> = {
+  lRmf8xptuEyiZ8o5: {
+    label: "Detected alignment",
+    options: [
+      { id: "chaos", label: "Chaos" },
+      { id: "evil", label: "Evil" },
+      { id: "good", label: "Good" },
+      { id: "law", label: "Law" },
+    ],
+  },
+  c61UW4qjDBxLEBaK: {
+    label: "Aura type",
+    options: [
+      { id: "chaos", label: "Chaos" },
+      { id: "evil", label: "Evil" },
+      { id: "good", label: "Good" },
+      { id: "law", label: "Law" },
+    ],
+  },
 };

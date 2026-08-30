@@ -33,7 +33,7 @@ import type { RaceSlaGrantDef, SlaGrantDef } from "./types.js";
 
 export type { RaceSlaGrantDef, SlaGrantDef } from "./types.js";
 export { RACE_SLA_GRANTS, RACIAL_TRAIT_SLA_GRANTS } from "./racial.js";
-export { CLASS_FEATURE_SLA_GRANTS } from "./class-features.js";
+export { CLASS_FEATURE_SLA_CHOICES, CLASS_FEATURE_SLA_GRANTS } from "./class-features.js";
 export { FEAT_SLA_GRANTS } from "./feats.js";
 export { ARCHETYPE_SLA_GRANTS_AM } from "./archetypesAM.js";
 export { ARCHETYPE_SLA_GRANTS_NZ } from "./archetypesNZ.js";
@@ -191,6 +191,7 @@ function collectSlaGrants(
     ) {
       return false;
     }
+    if (def.when && !def.when(doc)) return false;
     return true;
   };
 
@@ -278,6 +279,7 @@ function collectSlaGrants(
       ) {
         continue;
       }
+      if (def.when && !def.when(doc)) continue;
       push({
         def,
         id: `sla:${g.grant.featureId}:${def.slug}`,
@@ -306,6 +308,7 @@ function collectSlaGrants(
       } as RollData;
       for (const def of defs) {
         if (def.minLevel !== undefined && classLevel < def.minLevel) continue;
+        if (def.when && !def.when(doc)) continue;
         push({
           def,
           id: `sla:${featureId}:${def.slug}`,

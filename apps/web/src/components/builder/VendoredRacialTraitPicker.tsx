@@ -5,6 +5,11 @@ import type { CharacterDoc, RacialTrait, RefData } from "@pf1/schema";
 import { vendoredTraitFullyHandled } from "@pf1/engine";
 
 import {
+  racialTraitChoice,
+  racialTraitChoiceDescriptor,
+  setRacialTraitChoice,
+} from "../../model/featureChoices.js";
+import {
   groupRacialTraitsByCategory,
   type RacialTraitCategory,
 } from "../../model/racialTraitCategory.js";
@@ -24,7 +29,7 @@ import { contextNoteCoverage } from "../../model/rulesNotes.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { RulesNote } from "../RulesNote.js";
-import { FeatureDescription } from "./ClassFeaturesList.js";
+import { ChoiceSelect, FeatureDescription } from "./ClassFeaturesList.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -150,6 +155,7 @@ export function VendoredRacialTraitPicker({
     const fullyHandled = raceName != null && vendoredTraitFullyHandled(t, raceName);
     const conflicts = traitConflicts.get(t.id);
     const reason = conflicts ? racialTraitConflictReason(conflicts) : null;
+    const choiceDescriptor = racialTraitChoiceDescriptor(t.id);
     return (
       <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
         <div className="pmain">
@@ -226,6 +232,14 @@ export function VendoredRacialTraitPicker({
                 );
               })}
             </div>
+          ) : null}
+          {isSel && choiceDescriptor ? (
+            <ChoiceSelect
+              label={choiceDescriptor.label}
+              options={choiceDescriptor.options}
+              value={racialTraitChoice(doc, t.id) ?? ""}
+              onChange={(optionId) => update((d) => setRacialTraitChoice(d, t.id, optionId))}
+            />
           ) : null}
           {t.description ? <FeatureDescription html={t.description} /> : null}
         </div>

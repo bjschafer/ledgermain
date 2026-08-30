@@ -6,6 +6,11 @@ import { ABILITY_IDS } from "@pf1/schema";
 
 import { setBonusLanguages, setFlexibleAbility, setRace } from "../../model/doc.js";
 import {
+  racialTraitChoice,
+  racialTraitChoiceDescriptor,
+  setRacialTraitChoice,
+} from "../../model/featureChoices.js";
+import {
   languageLabel,
   pickableLanguages,
   racialLanguages,
@@ -31,6 +36,7 @@ import { ConfirmDialog } from "../ConfirmDialog.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
 import { LeafIcon } from "../icons.js";
 import { RulesNote } from "../RulesNote.js";
+import { ChoiceSelect } from "./ClassFeaturesList.js";
 import { HomebrewRaceEditor } from "./HomebrewRaceEditor.js";
 import { Panel } from "./Panel.js";
 import { SearchMiss } from "./SearchMiss.js";
@@ -266,6 +272,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
               const isSel = hasRacialTrait(doc, tr.id);
               const conflicts = traitConflicts.get(tr.id);
               const reason = conflicts ? racialTraitConflictReason(conflicts) : null;
+              const choiceDescriptor = racialTraitChoiceDescriptor(tr.id);
               return (
                 <div key={tr.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
                   <div className="pmain">
@@ -287,6 +294,16 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
                     {isSel
                       ? tr.contextNotes?.map((note, i) => <RulesNote key={i} text={note.text} />)
                       : null}
+                    {isSel && choiceDescriptor ? (
+                      <ChoiceSelect
+                        label={choiceDescriptor.label}
+                        options={choiceDescriptor.options}
+                        value={racialTraitChoice(doc, tr.id) ?? ""}
+                        onChange={(optionId) =>
+                          update((d) => setRacialTraitChoice(d, tr.id, optionId))
+                        }
+                      />
+                    ) : null}
                   </div>
                   <button
                     type="button"

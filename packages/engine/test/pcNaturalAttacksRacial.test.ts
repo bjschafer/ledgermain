@@ -29,6 +29,10 @@ const CECAELIA = raceId("Cecaelia");
 const CHANGELING = raceId("Changeling");
 const CATFOLK = raceId("Catfolk");
 const LIZARDFOLK = raceId("Lizardfolk");
+const TIEFLING = raceId("Tiefling");
+
+// The vendored Tiefling "Maw or Claw" alternate racial trait.
+const MAW_OR_CLAW_ID = "qquaaM62KEX4ulIi";
 
 // The vendored "Hag Magic (AoE)" Changeling alternate trait, whose own
 // `replacedTraitNames` names `"Claws"` verbatim (see `racial.ts`'s Changeling
@@ -146,6 +150,64 @@ describe("pc-natural-attacks/racial.ts: RACIAL_TRAIT_NATURAL_ATTACKS", () => {
       },
     });
     const attacks = attacksFor(withTrait)!;
+    expect(attacks).toHaveLength(1);
+    expect(attacks[0]!.name).toBe("Claw");
+    expect(attacks[0]!.count).toBe(2);
+    expect(attacks[0]!.kind).toBe("primary");
+    expect(attacks[0]!.damageDice).toBe("1d4");
+  });
+
+  it("(racial trait, choice-gated) Tiefling's Maw or Claw grants nothing without a stored pick", () => {
+    // ARG p. 169: "The tiefling can choose a bite attack that deals 1d6
+    // points of damage or two claws that each deal 1d4 points of damage."
+    // No `build.pickChoices["racialTrait:qquaaM62KEX4ulIi"]` entry yet, so
+    // neither option's `when` predicate is satisfied.
+    const doc = baseDoc(TIEFLING, {
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        vendoredRacialTraits: [MAW_OR_CLAW_ID],
+      },
+    });
+    expect(attacksFor(doc)).toBeUndefined();
+  });
+
+  it("(racial trait, choice-gated) Tiefling's Maw or Claw: 'bite' pick grants a 1d6 bite only", () => {
+    const doc = baseDoc(TIEFLING, {
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        vendoredRacialTraits: [MAW_OR_CLAW_ID],
+        pickChoices: { [`racialTrait:${MAW_OR_CLAW_ID}`]: "bite" },
+      },
+    });
+    const attacks = attacksFor(doc)!;
+    expect(attacks).toHaveLength(1);
+    expect(attacks[0]!.name).toBe("Bite");
+    expect(attacks[0]!.count).toBe(1);
+    expect(attacks[0]!.kind).toBe("primary");
+    expect(attacks[0]!.damageDice).toBe("1d6");
+  });
+
+  it("(racial trait, choice-gated) Tiefling's Maw or Claw: 'claws' pick grants two 1d4 claws only", () => {
+    const doc = baseDoc(TIEFLING, {
+      build: {
+        feats: [],
+        skillRanks: {},
+        classFeatureChoices: [],
+        spells: { known: [] },
+        gear: [],
+        vendoredRacialTraits: [MAW_OR_CLAW_ID],
+        pickChoices: { [`racialTrait:${MAW_OR_CLAW_ID}`]: "claws" },
+      },
+    });
+    const attacks = attacksFor(doc)!;
     expect(attacks).toHaveLength(1);
     expect(attacks[0]!.name).toBe("Claw");
     expect(attacks[0]!.count).toBe(2);

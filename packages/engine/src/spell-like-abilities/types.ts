@@ -18,10 +18,15 @@
  * stated frequency (N/day, N/week, at will, constant). What does not:
  * spell-EQUIVALENT effects that are not an actual spell ("a wall-of-fire-like
  * barrier"), scaling summon-monster lists (the summoning subsystem),
- * choice-from-a-list SLA grants with no stored pick to key from, feats that
+ * choice-from-a-list SLA grants whose option list can't be enumerated (a
+ * chosen domain's full spell list, "any formula-book spell"), feats that
  * apply metamagic to existing SLAs, slot-conversion riders, and budgets that
  * are not a use counter (minutes divisible across uses stay prose unless the
- * vendored entry itself meters them).
+ * vendored entry itself meters them). A choice-from-a-list grant whose option
+ * set IS short and enumerable from the published text (an alignment, an
+ * element, ...) is one def per option, gated by `when` on the matching
+ * `build.pickChoices["classFeature:<id>"]`/`["racialTrait:<id>"]` entry — see
+ * `when` below.
  *
  * DC and caster level, clean-room from the CRB magic chapter's spell-like
  * ability rules: the save DC is `10 + spell level + Charisma modifier` unless
@@ -33,7 +38,7 @@
  * text or published errata pins a different one.
  */
 
-import type { AbilityId } from "@pf1/schema";
+import type { AbilityId, CharacterDoc } from "@pf1/schema";
 
 export interface SlaGrantDef {
   /**
@@ -90,6 +95,14 @@ export interface SlaGrantDef {
   spellLevel?: number;
   /** Rider reminder rendered as fine print ("self only", "objects only", ...). */
   note?: string;
+  /**
+   * Extra applicability gate, checked after `minLevel`/`minAbility` — the
+   * enumerable choice-from-a-list shape (see the header): each option is its
+   * own def, gated on the matching stored pick. No stored pick, or a pick
+   * that matches no def's `when`, grants nothing (same open-changes posture
+   * as `CLASS_FEATURE_CHOICES`/`PcNaturalAttackDef.when`).
+   */
+  when?: (doc: CharacterDoc) => boolean;
 }
 
 /**

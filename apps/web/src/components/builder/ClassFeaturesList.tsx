@@ -27,7 +27,7 @@ type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
  * `RagePowerPicker`'s dropdown. Renders nothing without both `doc` and
  * `update` (the Play tab's read-only `ClassFeaturesPanel` passes neither).
  */
-function ChoiceSelect({
+export function ChoiceSelect({
   label,
   options,
   value,
@@ -160,7 +160,7 @@ export function ClassFeatureRow({
   const description = vendored?.description;
   const block = layout === "block";
   const choiceDescriptor = feature.applied
-    ? classFeatureChoiceDescriptor(feature.classTag, feature.name)
+    ? classFeatureChoiceDescriptor(feature.classTag, feature.name, feature.featureId)
     : undefined;
   return (
     // This click handler is a mouse/touch convenience layered on top of the
