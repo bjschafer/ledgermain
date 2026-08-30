@@ -485,6 +485,43 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
     },
   },
 
+  // Aspect of the Beast (PF1 APG p. 151): one of four manifestations, chosen
+  // once and never changed. Only Wild Instinct has a plain, unconditional
+  // Change: "+2 bonus on Initiative checks and a +2 bonus on Survival skill
+  // checks." The other three have no target this build(choiceId) can reach:
+  //   - Claws of the Beast grants a natural attack, wired separately through
+  //     PC_NATURAL_ATTACK_TABLES.feat (pc-natural-attacks/feats.ts), gated on
+  //     this same stored choice via requiredChoiceId — not a Change at all.
+  //   - Night Senses' benefit depends on which vision tier the character's
+  //     BASE RACE innately has (normal/low-light/darkvision), which
+  //     build(choiceId) has no doc/refData access to resolve; expressing it
+  //     would need new per-race vision-tier lookup machinery.
+  //   - Predator's Leap (waiving the running-jump distance prerequisite) has
+  //     no jump-distance field on the derived sheet at all.
+  // All three stay display-only; the pick itself is still real and stored.
+  "aspect-of-the-beast": {
+    type: "choice",
+    choice: {
+      type: "options",
+      label: "Manifestation",
+      options: [
+        { id: "night-senses", label: "Night Senses" },
+        { id: "claws-of-the-beast", label: "Claws of the Beast" },
+        { id: "predators-leap", label: "Predator's Leap" },
+        { id: "wild-instinct", label: "Wild Instinct" },
+      ],
+    },
+    build(choiceId: string): FeatChange[] {
+      if (choiceId === "wild-instinct") {
+        return [
+          { target: "init", type: "untyped", formula: "2" },
+          { target: "skill.sur", type: "untyped", formula: "2" },
+        ];
+      }
+      return [];
+    },
+  },
+
   // ── Summoning feats (community pf1-content pack) ────────────────────────
   //
   // None of these carry vendored `changes[]` (confirmed for every name-matched

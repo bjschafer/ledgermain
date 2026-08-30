@@ -82,6 +82,17 @@ export interface PcNaturalAttackDef {
   requiredBuff?: PcNaturalAttackBuffGate;
   /** Extra applicability gate evaluated after the level/buff gates, for a grant conditioned on a stored build choice. */
   when?: (doc: CharacterDoc) => boolean;
+  /**
+   * Feat-sourced grant only: restricts this def to the SAME feat occurrence's
+   * stored choice (`doc.build.featChoices[featId]` / `extraFeats[].choiceId`)
+   * equaling this id — e.g. Aspect of the Beast's four manifestations share
+   * one feat table entry keyed by slug, and only the "claws-of-the-beast"
+   * pick should grant the claw attack. Resolved by the feat-loop in
+   * `index.ts`, which has the feat's own id (and so its own choice) in scope;
+   * ignored for race/racialTrait/classFeature/archetypeFeature grants, which
+   * have no per-occurrence choiceId to gate on.
+   */
+  requiredChoiceId?: string;
   /** Display-only reminder rendered as fine print on the derived line(s) ("bite only usable while raging"). */
   note?: string;
 }

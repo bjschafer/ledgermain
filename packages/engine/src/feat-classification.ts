@@ -217,8 +217,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "aspect-of-the-beast": {
     slug: "aspect-of-the-beast",
     name: "Aspect of the Beast",
-    bucket: "blocked",
-    note: "one of four manifestations chosen once and never changed; Claws of the Beast (primary claw attack, 1d4/1d3 if Small) would grant cleanly through FEAT_NATURAL_ATTACKS, but the feat has no ChoiceFeatEntry/stored pick to gate it on, and PcNaturalAttackDef.when(doc) has no refData to resolve the character's opaque feat id back to this slug even if one were stored — the other three manifestations (Night Senses, Predator's Leap, Wild Instinct) stay unwired regardless",
+    bucket: "choice-numeric",
+    note: "one of four manifestations chosen once and never changed: Wild Instinct (+2 Initiative/+2 Survival) is a plain ChoiceFeatEntry Change, and Claws of the Beast grants through PC_NATURAL_ATTACK_TABLES.feat gated on the same stored pick (requiredChoiceId); Night Senses (base-race-conditioned vision tier) and Predator's Leap (no jump-distance field on the derived sheet) stay display-only",
   },
   athletic: {
     slug: "athletic",

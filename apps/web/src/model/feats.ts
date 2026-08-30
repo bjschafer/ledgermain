@@ -61,6 +61,26 @@ const SKILL_FAMILY_PREFIX: Readonly<Record<string, string>> = {
   profession: "pro",
 };
 
+/**
+ * The bare `SKILL_NAMES` ids for the three parameterized families
+ * (`"crf"`/`"prf"`/`"pro"`) — umbrella rows, not skills a character can
+ * actually roll on their own, so `featChoiceOptions("skill", ...)` excludes
+ * them in favor of the character's own named instances.
+ */
+const SKILL_FAMILY_BASE_IDS = new Set(Object.values(SKILL_FAMILY_PREFIX));
+
+/** The character's own `skillRanks` instances of one parameterized family, sorted by display name. */
+function skillFamilyInstances(
+  doc: CharacterDoc | undefined,
+  familyPrefix: string,
+): { id: string; name: string }[] {
+  if (!doc) return [];
+  return Object.keys(doc.build.skillRanks ?? {})
+    .filter((id) => id.startsWith(`${familyPrefix}.`))
+    .map((id) => ({ id, name: skillName(id) }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
 /** Total character level (sum of all class levels). */
 function totalLevel(doc: CharacterDoc): number {
   return doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
@@ -679,8 +699,13 @@ export function featContextNotes(featName: string): ContextNote[] {
 /**
  * Returns the list of selectable options for a given choice type.
  *
- * - "skill": the full skill list sorted alphabetically by display name.
- *   `refData` and `doc` are unused; the list is static.
+ * - "skill": the base skill list (excluding the Craft/Perform/Profession
+ *   umbrella rows, which aren't pickable skills on their own), sorted
+ *   alphabetically by display name, followed by the character's own
+ *   Craft/Perform/Profession instances (also alphabetical) when `doc` is
+ *   provided — same instance enumeration as the "craft"/"perform"/
+ *   "profession" branches below, so a feat that targets any skill (Skill
+ *   Focus) can land on a specific Craft/Perform/Profession the player has.
  * - "weapon": the distinct non-empty `group` labels present on `doc.build.weapons`,
  *   sorted alphabetically, plus "kinetic blast" for a kineticist who has chosen
  *   an element ("Kinetic blasts count as a type of weapon for the purpose of
@@ -708,9 +733,14 @@ export function featChoiceOptions(
   descriptor?: FeatChoiceDescriptor,
 ): { id: string; name: string }[] {
   if (choiceType === "skill") {
-    return Object.entries(SKILL_NAMES)
+    const baseSkills = Object.entries(SKILL_NAMES)
+      .filter(([id]) => !SKILL_FAMILY_BASE_IDS.has(id))
       .map(([id, name]) => ({ id, name }))
       .sort((a, b) => a.name.localeCompare(b.name));
+    const familyInstances = Object.values(SKILL_FAMILY_PREFIX)
+      .flatMap((prefix) => skillFamilyInstances(doc, prefix))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    return [...baseSkills, ...familyInstances];
   }
   if (choiceType === "weapon" && doc) {
     const seen = new Set<string>();
@@ -734,10 +764,7 @@ export function featChoiceOptions(
   }
   const familyPrefix = SKILL_FAMILY_PREFIX[choiceType];
   if (familyPrefix && doc) {
-    return Object.keys(doc.build.skillRanks ?? {})
-      .filter((id) => id.startsWith(`${familyPrefix}.`))
-      .map((id) => ({ id, name: skillName(id) }))
-      .sort((a, b) => a.name.localeCompare(b.name));
+    return skillFamilyInstances(doc, familyPrefix);
   }
   return [];
 }

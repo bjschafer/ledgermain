@@ -351,6 +351,47 @@ describe("Skill Focus feat", () => {
     const featSheet = compute(withFeat, ref);
     expect(featSheet.skills["per"]!.total - baseSheet.skills["per"]!.total).toBe(3);
   });
+
+  // Skill Focus's choice is normally a base skill id ("per"), but the same
+  // "skill.<choiceId>" target / "@skills.<choiceId>.rank" formula both parse
+  // a dotted parameterized instance id transparently (see formula.ts's
+  // resolvePath and compute.ts's skillTargets grouping) — a player can Skill
+  // Focus a specific Craft/Perform/Profession instance they already have.
+  it("applies to a specific Craft instance when the choice is a dotted skill id", () => {
+    const fId = featId("Skill Focus");
+    const base = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      skillRanks: { "crf.alchemy": 1 },
+    });
+    const withFeat = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      feats: [fId],
+      featChoices: { [fId]: "crf.alchemy" },
+      skillRanks: { "crf.alchemy": 1 },
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    expect(featSheet.skills["crf.alchemy"]!.total - baseSheet.skills["crf.alchemy"]!.total).toBe(3);
+    // Doesn't bleed onto a different Craft instance or the bare "crf" id.
+    expect(featSheet.skills["crf"]?.total ?? 0).toBe(baseSheet.skills["crf"]?.total ?? 0);
+  });
+
+  it("gives +6 on a Craft instance with 10+ ranks (dotted choice id)", () => {
+    const fId = featId("Skill Focus");
+    const base = makeDoc({
+      classes: [{ tag: "wizard", level: 10 }],
+      skillRanks: { "crf.alchemy": 10 },
+    });
+    const withFeat = makeDoc({
+      classes: [{ tag: "wizard", level: 10 }],
+      feats: [fId],
+      featChoices: { [fId]: "crf.alchemy" },
+      skillRanks: { "crf.alchemy": 10 },
+    });
+    const baseSheet = compute(base, ref);
+    const featSheet = compute(withFeat, ref);
+    expect(featSheet.skills["crf.alchemy"]!.total - baseSheet.skills["crf.alchemy"]!.total).toBe(6);
+  });
 });
 
 describe("Breadth of Experience feat", () => {
@@ -396,6 +437,47 @@ describe("Breadth of Experience feat", () => {
     const baseSheet = compute(base, ref);
     const featSheet = compute(withFeat, ref);
     expect(featSheet.skills["ste"]!.total).toBe(baseSheet.skills["ste"]!.total);
+  });
+});
+
+describe("Aspect of the Beast feat (PF1 APG p. 151, choice: options)", () => {
+  const fId = featId("Aspect of the Beast");
+
+  it("no choice stored emits nothing", () => {
+    const base = compute(makeDoc({ classes: [{ tag: "druid", level: 4 }] }), ref);
+    const sheet = compute(makeDoc({ classes: [{ tag: "druid", level: 4 }], feats: [fId] }), ref);
+    expect(sheet.initiative.total).toBe(base.initiative.total);
+    expect(sheet.skills["sur"]!.total).toBe(base.skills["sur"]!.total);
+  });
+
+  it("Wild Instinct: +2 Initiative and +2 Survival", () => {
+    const base = compute(makeDoc({ classes: [{ tag: "druid", level: 4 }] }), ref);
+    const sheet = compute(
+      makeDoc({
+        classes: [{ tag: "druid", level: 4 }],
+        feats: [fId],
+        featChoices: { [fId]: "wild-instinct" },
+      }),
+      ref,
+    );
+    expect(sheet.initiative.total).toBe(base.initiative.total + 2);
+    expect(sheet.skills["sur"]!.total).toBe(base.skills["sur"]!.total + 2);
+  });
+
+  it("Night Senses / Predator's Leap: real, stored picks, but no numeric target for either", () => {
+    const base = compute(makeDoc({ classes: [{ tag: "druid", level: 4 }] }), ref);
+    for (const choiceId of ["night-senses", "predators-leap"]) {
+      const sheet = compute(
+        makeDoc({
+          classes: [{ tag: "druid", level: 4 }],
+          feats: [fId],
+          featChoices: { [fId]: choiceId },
+        }),
+        ref,
+      );
+      expect(sheet.initiative.total).toBe(base.initiative.total);
+      expect(sheet.skills["sur"]!.total).toBe(base.skills["sur"]!.total);
+    }
   });
 });
 

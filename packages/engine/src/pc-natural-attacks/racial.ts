@@ -25,11 +25,6 @@
  *     a grapple damage check, or as a standard action against a bound/
  *     helpless/paralyzed target — an opponent-state-gated action option, not
  *     a standing attack line a full-attack routine can include.
- *   - Tiefling "Maw or Claw" (`qquaaM62KEX4ulIi`): a build-time EITHER/OR
- *     choice (a bite OR two claws, never both) with no `CharacterDoc` field
- *     to record which the player picked — granting both would be wrong for
- *     every character, and granting either one by default would be wrong for
- *     half of them.
  *   - Tiefling/Aasimar "Variant Tiefling/Aasimar Abilities"
  *     (`5YDsKDGSzLMoH1dv`/`ZW41vB78wXvRWWfs`): a d% GM/player random table
  *     with ~100 unrelated results, two of which happen to be a bite or claws
@@ -192,6 +187,29 @@ export const RACE_NATURAL_ATTACKS: Readonly<Record<string, readonly RaceNaturalA
 
 export const RACIAL_TRAIT_NATURAL_ATTACKS: Readonly<Record<string, readonly PcNaturalAttackDef[]>> =
   {
+    // Tiefling "Maw or Claw" (Advanced Race Guide p. 169, replaces
+    // Spell-Like Ability): "The tiefling can choose a bite attack that deals
+    // 1d6 points of damage or two claws that each deal 1d4 points of damage.
+    // These attacks are primary natural attacks." A build-time EITHER/OR
+    // choice, gated on `doc.build.pickChoices["racialTrait:qquaaM62KEX4ulIi"]`
+    // (declared for the web picker in `racial-trait-choices.ts`'s
+    // `RACIAL_TRAIT_CHOICES`) — no stored pick grants neither line, matching
+    // this table's usual "no stored pick, no attack" posture. Both names
+    // already classify primary by `natural-attacks.ts`'s name heuristic, so
+    // no explicit `kind` override is needed.
+    qquaaM62KEX4ulIi: [
+      {
+        slug: "maw",
+        attacks: [{ name: "Bite", mediumDice: "1d6" }],
+        when: (doc) => doc.build.pickChoices?.["racialTrait:qquaaM62KEX4ulIi"] === "bite",
+      },
+      {
+        slug: "claw",
+        attacks: [{ name: "Claw", count: 2, mediumDice: "1d4" }],
+        when: (doc) => doc.build.pickChoices?.["racialTrait:qquaaM62KEX4ulIi"] === "claws",
+      },
+    ],
+
     // aonprd.com Catfolk "Cat's Claws" (replaces Natural Hunter): "a pair of
     // claws they can use as natural weapons. These claws are primary attacks
     // that deal 1d4 points of damage."

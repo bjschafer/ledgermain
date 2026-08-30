@@ -144,7 +144,11 @@ export function useFeatRenderContext(
   );
   const allSlotGroups = slotAssignment.groups;
 
-  const skillOptions = useMemo(() => featChoiceOptions("skill", refData), [refData]);
+  const skillOptions = useMemo(
+    () => featChoiceOptions("skill", refData, doc),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [doc.build.skillRanks, refData],
+  );
   const weaponOptions = useMemo(
     () => featChoiceOptions("weapon", refData, doc),
     // eslint-disable-next-line react-hooks/exhaustive-deps

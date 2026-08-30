@@ -137,7 +137,105 @@ describe("FEAT_NATURAL_ATTACKS: real feat-keyed grants", () => {
   });
 
   it("FEAT_NATURAL_ATTACKS is keyed by the same name-slug convention as the rest of the feat tables", () => {
-    expect(Object.keys(FEAT_NATURAL_ATTACKS).sort()).toEqual(["razortusk", "tail-terror"]);
+    expect(Object.keys(FEAT_NATURAL_ATTACKS).sort()).toEqual([
+      "aspect-of-the-beast",
+      "razortusk",
+      "tail-terror",
+    ]);
+  });
+});
+
+describe("Aspect of the Beast (Claws of the Beast manifestation)", () => {
+  // PF1 APG p. 151: "You grow a pair of claws. These claws are primary
+  // attacks that deal 1d4 points of damage (1d3 if you are Small)."
+  const ASPECT_OF_THE_BEAST = featId("Aspect of the Beast");
+
+  it("grants 2 primary claws when the stored choice is claws-of-the-beast", () => {
+    const doc = baseDoc({
+      build: {
+        ...baseDoc().build,
+        feats: [ASPECT_OF_THE_BEAST],
+        featChoices: { [ASPECT_OF_THE_BEAST]: "claws-of-the-beast" },
+      },
+    });
+    const attacks = derivePcNaturalAttacks(
+      doc,
+      ref,
+      5,
+      4,
+      SIZE_AC_MOD.med,
+      "med",
+      [],
+      [],
+      PC_NATURAL_ATTACK_TABLES,
+    )!;
+    expect(attacks).toHaveLength(1);
+    const claw = attacks[0]!;
+    expect(claw.name).toBe("Claw");
+    expect(claw.count).toBe(2);
+    expect(claw.kind).toBe("primary");
+    expect(claw.damageDice).toBe("1d4");
+  });
+
+  it("scales the claw dice down to 1d3 for a Small character", () => {
+    const doc = baseDoc({
+      identity: { name: "Test", race: raceId("Kobold"), classes: [{ tag: "fighter", level: 5 }] },
+      build: {
+        ...baseDoc().build,
+        feats: [ASPECT_OF_THE_BEAST],
+        featChoices: { [ASPECT_OF_THE_BEAST]: "claws-of-the-beast" },
+      },
+    });
+    const attacks = derivePcNaturalAttacks(
+      doc,
+      ref,
+      5,
+      4,
+      SIZE_AC_MOD.sm,
+      "sm",
+      [],
+      [],
+      PC_NATURAL_ATTACK_TABLES,
+    )!;
+    expect(attacks[0]!.damageDice).toBe("1d3");
+  });
+
+  it("grants nothing for a different manifestation (Wild Instinct)", () => {
+    const doc = baseDoc({
+      build: {
+        ...baseDoc().build,
+        feats: [ASPECT_OF_THE_BEAST],
+        featChoices: { [ASPECT_OF_THE_BEAST]: "wild-instinct" },
+      },
+    });
+    const attacks = derivePcNaturalAttacks(
+      doc,
+      ref,
+      5,
+      4,
+      SIZE_AC_MOD.med,
+      "med",
+      [],
+      [],
+      PC_NATURAL_ATTACK_TABLES,
+    );
+    expect(attacks).toBeUndefined();
+  });
+
+  it("grants nothing when no choice is stored", () => {
+    const doc = baseDoc({ build: { ...baseDoc().build, feats: [ASPECT_OF_THE_BEAST] } });
+    const attacks = derivePcNaturalAttacks(
+      doc,
+      ref,
+      5,
+      4,
+      SIZE_AC_MOD.med,
+      "med",
+      [],
+      [],
+      PC_NATURAL_ATTACK_TABLES,
+    );
+    expect(attacks).toBeUndefined();
   });
 });
 

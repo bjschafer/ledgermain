@@ -30,7 +30,7 @@ import { collectGrantedFeatures } from "../archetypes.js";
 import type { CollectedModifier } from "../collect.js";
 import { forTarget } from "../collect.js";
 import { scaleWeaponDamageDice } from "../compute.js";
-import { characterFeatSlugs } from "../feat-effects.js";
+import { characterFeatSlugs, featNameSlug } from "../feat-effects.js";
 import {
   classifyNaturalAttacks,
   naturalAttackBonus,
@@ -133,6 +133,32 @@ interface ResolvedPcNaturalAttackGrant {
   levelInScope: number;
 }
 
+/**
+ * Every owned feat occurrence (`build.feats` plus `build.extraFeats`),
+ * paired with the choiceId stored for that SAME occurrence — same
+ * `{slug, choiceId}` shape as `dex-weapon-feats.ts`'s local `ownedFeats` /
+ * `proficiency.ts`'s local `collectFeatInstances`, needed here so
+ * {@link PcNaturalAttackDef.requiredChoiceId} can gate a feat-sourced grant
+ * on the player's stored pick (Aspect of the Beast's four manifestations).
+ */
+function ownedFeatOccurrences(
+  doc: CharacterDoc,
+  refData: RefData,
+): { slug: string; choiceId?: string }[] {
+  const out: { slug: string; choiceId?: string }[] = [];
+  for (const featId of doc.build.feats ?? []) {
+    const feat = refData.feats[featId];
+    if (!feat) continue;
+    out.push({ slug: featNameSlug(feat.name), choiceId: doc.build.featChoices?.[featId] });
+  }
+  for (const instance of doc.build.extraFeats ?? []) {
+    const feat = refData.feats[instance.featId];
+    if (!feat) continue;
+    out.push({ slug: featNameSlug(feat.name), choiceId: instance.choiceId });
+  }
+  return out;
+}
+
 /** The shared collection pass — every gate lives here so a suppressed or gated grant never contributes a line. */
 function collectPcNaturalAttackGrants(
   doc: CharacterDoc,
@@ -209,11 +235,16 @@ function collectPcNaturalAttackGrants(
     }
   }
 
-  // Feats — slug-keyed; a duplicate copy of the same feat grants once (via `pushed`).
-  for (const slug of characterFeatSlugs(doc, refData)) {
+  // Feats — slug-keyed; a duplicate copy of the same feat grants once (via
+  // `pushed`). A def with `requiredChoiceId` only applies when THIS
+  // occurrence's own stored choice matches (Aspect of the Beast).
+  for (const { slug, choiceId } of ownedFeatOccurrences(doc, refData)) {
     const defs = tables.feat[slug];
     if (!defs) continue;
-    for (const def of defs) push(def);
+    for (const def of defs) {
+      if (def.requiredChoiceId !== undefined && def.requiredChoiceId !== choiceId) continue;
+      push(def);
+    }
   }
 
   return grants;

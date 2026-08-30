@@ -867,6 +867,33 @@ describe("featChoiceOptions", () => {
     expect(opts.some((o) => o.id === "per" && o.name === "Perception")).toBe(true);
   });
 
+  it('excludes the bare Craft/Perform/Profession umbrella rows from type "skill" (not real pickable skills)', () => {
+    const opts = featChoiceOptions("skill", ref);
+    expect(opts.some((o) => o.id === "crf")).toBe(false);
+    expect(opts.some((o) => o.id === "prf")).toBe(false);
+    expect(opts.some((o) => o.id === "pro")).toBe(false);
+  });
+
+  it('appends the character\'s own Craft/Perform/Profession instances after the base skills for type "skill"', () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 1 }],
+      skillRanks: { "crf.alchemy": 1, "prf.oratory": 1 },
+    });
+    const opts = featChoiceOptions("skill", ref, doc);
+    const perIdx = opts.findIndex((o) => o.id === "per");
+    const craftIdx = opts.findIndex((o) => o.id === "crf.alchemy");
+    const performIdx = opts.findIndex((o) => o.id === "prf.oratory");
+    expect(perIdx).toBeGreaterThanOrEqual(0);
+    expect(craftIdx).toBeGreaterThan(perIdx);
+    expect(performIdx).toBeGreaterThan(perIdx);
+    expect(opts.find((o) => o.id === "crf.alchemy")?.name).toBe("Craft (Alchemy)");
+  });
+
+  it('type "skill" is unaffected by a doc with no Craft/Perform/Profession instances', () => {
+    const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }], skillRanks: { per: 1 } });
+    expect(featChoiceOptions("skill", ref, doc)).toEqual(featChoiceOptions("skill", ref));
+  });
+
   it("returns empty for type weapon (deferred)", () => {
     const opts = featChoiceOptions("weapon", ref);
     expect(opts).toHaveLength(0);

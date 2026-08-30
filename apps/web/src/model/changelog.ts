@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-08-30-skill-focus-instances-and-aspect",
+    date: "2026-08-30",
+    title: "Pick your craft, and your beast",
+    note: "Skill Focus and the feats that share its skill picker can finally point at one of your own Craft, Perform, or Profession skills instead of stopping at the base list: pick Craft (alchemy) and the bonus lands on that exact line, growing at ten ranks as written. Aspect of the Beast now asks which manifestation you took. Wild instinct adds its two to Initiative and Survival, claws of the beast puts two claw attacks on your attack list with the right dice for your size, and night senses and predator's leap stay as rules text.",
+  },
+  {
     id: "2026-08-30-alignment-scoped-saves-and-ac",
     date: "2026-08-30",
     title: "Bonuses against evil, and the other three",
