@@ -43,8 +43,8 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   {
     id: "2026-09-03-discovery-prerequisites",
     date: "2026-09-03",
-    title: "Alchemist discoveries show what they need",
-    note: "Around a hundred alchemist discoveries were printing a line of raw markup where their prerequisite should have been. They now read as the book prints them, so Dread Bomb says it wants alchemist 6 and the anguish bomb discovery instead of a string of punctuation. A handful of section headings elsewhere in the reference text were doing the same thing and now render as headings.",
+    title: "Reference text stops printing its own markup",
+    note: "Around a hundred alchemist discoveries were printing a line of raw markup where their prerequisite should have been. They now read as the book prints them, so Dread Bomb says it wants alchemist 6 and the anguish bomb discovery instead of a string of punctuation. On the bestiary, a hundred and twenty creatures were missing their whole statistics line: no ability scores, no feats, no skills, no CMB or CMD. Those are back. Traps and haunts print their notice DC, trigger and effect, and section headings render as headings.",
   },
   {
     id: "2026-09-03-foundry-data-refresh",

@@ -989,6 +989,100 @@ function applyEcology(monster: MonsterFields, props: Props, stats: MonsterParseS
 
 const DIRECTIVE_RE = /^::([a-z][a-zA-Z0-9]*)(?:\[([^\]]*)\])?(?:\{(.*)\})?\s*$/;
 
+/**
+ * A statblock directive that reached the prose path rather than the directive
+ * loop, rendered as markdown for `pfDataDescriptionToHtml`.
+ *
+ * These only occur inside a blockquote, where an entry quotes a *second*
+ * creature as an aside: the Waldgeist's possessed tree, the goblin vulture
+ * pilot's animal companion. The directive loop deliberately doesn't see
+ * through the `>` (those are asides, not statblocks the entry publishes), so
+ * without this they printed raw.
+ *
+ * The props run through the same `apply*` parsers a real block uses, against a
+ * scratch `MonsterFields`, so skill codes, treasure codes, AC triples and hit
+ * dice decode identically and nothing is re-implemented here. Markdown rather
+ * than HTML, because the caller still passes the result through the prose
+ * renderer.
+ */
+function statblockDirectiveToMarkdown(
+  name: string,
+  label: string | undefined,
+  props: Props,
+  footnotes: Map<string, string>,
+  stats: MonsterParseStats,
+): string | undefined {
+  if (name === "mh") {
+    const cr = text(props.cr);
+    return `#### ${label ?? ""}${cr !== undefined ? ` (CR ${cr})` : ""}`;
+  }
+
+  const m: MonsterFields = { cr: "" };
+  if (name === "minfo") applyInfo(m, props, stats);
+  else if (name === "mdefense") applyDefense(m, props, stats, label ?? "");
+  else if (name === "moffense") applyOffense(m, props, stats);
+  else if (name === "mstats") applyStats(m, props, footnotes, stats, label ?? "");
+  else if (name === "meco") applyEcology(m, props, stats);
+  else return undefined;
+
+  const ac =
+    m.ac === undefined
+      ? undefined
+      : `${m.ac}, touch ${m.touchAc ?? m.ac}, flat-footed ${m.flatFootedAc ?? m.ac}` +
+        (m.acMods ? ` (${m.acMods})` : "");
+  const saves = (["fort", "ref", "will"] as const)
+    .map((k) =>
+      m[k] === undefined
+        ? undefined
+        : `**${k === "fort" ? "Fort" : k === "ref" ? "Ref" : "Will"}** ${m[k]}`,
+    )
+    .filter((part): part is string => part !== undefined);
+  const abilities = (["str", "dex", "con", "int", "wis", "cha"] as const)
+    .map((k) => {
+      const v = m.abilityScores?.[k];
+      return v === undefined ? undefined : `**${k[0]!.toUpperCase()}${k.slice(1)}** ${v}`;
+    })
+    .filter((part): part is string => part !== undefined);
+
+  const pair = (lbl: string, value: string | undefined): string | undefined =>
+    value === undefined || value === "" ? undefined : `**${lbl}** ${value}`;
+
+  const parts = [
+    pair("Init", m.init),
+    pair("Senses", m.senses),
+    pair("Aura", m.aura),
+    pair("AC", ac),
+    m.hp === undefined ? undefined : `**hp** ${m.hp}${m.hd ? ` (${m.hd})` : ""}`,
+    saves.length > 0 ? saves.join(", ") : undefined,
+    pair("Defensive Abilities", m.defensiveAbilities),
+    pair("DR", m.dr),
+    pair("Immune", m.immune),
+    pair("Resist", m.resist),
+    pair("SR", m.sr),
+    pair("Weaknesses", m.weaknesses),
+    pair("Speed", m.speed),
+    pair("Melee", m.melee),
+    pair("Ranged", m.ranged),
+    pair("Space", m.space),
+    pair("Reach", m.reach),
+    pair("Special Attacks", m.specialAttacks),
+    abilities.length > 0 ? abilities.join(", ") : undefined,
+    pair("Base Atk", m.bab),
+    pair("CMB", m.cmb),
+    pair("CMD", m.cmd),
+    pair("Feats", m.feats),
+    pair("Skills", m.skills),
+    pair("Racial Modifiers", m.racialModifiers),
+    pair("Languages", m.languages),
+    pair("SQ", m.sq),
+    pair("Environment", m.environment),
+    pair("Organization", m.organization),
+    pair("Treasure", m.treasure),
+  ].filter((part): part is string => part !== undefined);
+
+  return parts.length === 0 ? undefined : parts.join("; ");
+}
+
 export interface ParsedMonsterEntry {
   /** One per `::mh` header, in source order. */
   blocks: {
@@ -1051,7 +1145,16 @@ export function parseMonsterEntry(
         sections.push(currentSection);
         continue;
       }
-      if (current !== undefined && currentSection === undefined) {
+      // Deliberately NOT gated on `currentSection`: a published statblock
+      // prints Statistics and Ecology *after* the Tactics block, so those
+      // directives arrive while a `::sh` section is open and still describe
+      // the creature itself. Requiring no open section meant they fell through
+      // to prose, which is why 120 creatures reached the site with their whole
+      // Statistics line missing (no ability scores, feats, skills or CMB/CMD)
+      // and the raw directive printed in the description instead. No block in
+      // the dataset states the same directive twice, so there is nothing here
+      // for a later section to overwrite.
+      if (current !== undefined) {
         if (dname === "mspell") {
           current.spellsHtmlParts.push(renderSpellBlock(props, stats));
           continue;
@@ -1108,8 +1211,23 @@ export function parseMonsterEntry(
   // does handle before rendering a section.
   const prepare = (sectionLines: string[]): string[] =>
     sectionLines.map((l) => {
-      const h = /^::(?:h4|th)\[([^\]]*)\](?:\{.*\})?\s*$/.exec(l.trim());
-      return h ? `#### ${h[1]}` : l;
+      // Strip a blockquote marker before matching: an entry that quotes a
+      // second creature as an aside puts the whole statblock behind `>`.
+      const trimmed = l.trim().replace(/^>[ \t]?/, "");
+      const h = /^::(?:h4|th)\[([^\]]*)\](?:\{.*\})?\s*$/.exec(trimmed);
+      if (h) return `#### ${h[1]}`;
+      const d = DIRECTIVE_RE.exec(trimmed);
+      if (d) {
+        const rendered = statblockDirectiveToMarkdown(
+          d[1]!,
+          d[2],
+          d[3] !== undefined ? parseDirectiveProps(d[3]) : {},
+          footnotes,
+          stats,
+        );
+        if (rendered !== undefined) return rendered;
+      }
+      return l;
     });
 
   const descriptionParts: string[] = [];

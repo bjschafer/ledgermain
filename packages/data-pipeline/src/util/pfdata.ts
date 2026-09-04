@@ -459,6 +459,62 @@ const PREREQ_DIRECTIVE_RE = /^::prereq\{([^}]*)\}$/;
  */
 const DIV_DIRECTIVE_RE = /^::div\{[^}]*\}$/;
 
+/**
+ * `::trap[Name]{...}` and `::haunt{...}` — the trap and haunt statblocks the
+ * books print as a boxed block. Rendered as the same labelled lines, since
+ * nothing consumes them structurally (`Monster` models creatures, not hazards)
+ * and dropping them would lose the whole hazard.
+ *
+ * The bare flags (`mechanical`, `magic`, `manual`, `automatic`, `terrain`)
+ * are the trap's type and reset, printed as the books do; `start` is a layout
+ * hint for the dataset's own renderer and carries nothing.
+ */
+const TRAP_DIRECTIVE_RE = /^::trap(?:\[([^\]]*)\])?\{([^}]*)\}$/;
+const HAUNT_DIRECTIVE_RE = /^::haunt\{([^}]*)\}$/;
+const TRAP_FLAG_LABELS: [string, string][] = [
+  ["mechanical", "mechanical"],
+  ["magic", "magic"],
+  ["manual", "manual reset"],
+  ["automatic", "automatic reset"],
+  ["terrain", "terrain"],
+];
+
+function renderHazardDirective(
+  kind: "trap" | "haunt",
+  name: string | undefined,
+  propsRaw: string,
+): string {
+  const props = parseDirectiveProps(propsRaw);
+  const val = (key: string): string | undefined =>
+    typeof props[key] === "string" ? inlineToHtml(props[key]) : undefined;
+  const line = (label: string, value: string | undefined): string | undefined =>
+    value === undefined || value === "" ? undefined : `<strong>${label}</strong> ${value}`;
+
+  const flags = TRAP_FLAG_LABELS.filter(([k]) => props[k] === true).map(([, label]) => label);
+  const parts = [
+    line("CR", val("cr")),
+    flags.length > 0 ? `<strong>Type</strong> ${flags.join("; ")}` : undefined,
+    line("Perception DC", val("pdc")),
+    line("Disable Device DC", val("dddc")),
+    line("Notice", val("notice")),
+    line("hp", val("hp")),
+    line("Trigger", val("trigger")),
+    line("Reset", val("reset")),
+    line("Repair", val("repair")),
+    line("Weakness", val("weak")),
+    line("Effect", val("eff")),
+  ].filter((part): part is string => part !== undefined);
+
+  const heading =
+    name !== undefined && name !== ""
+      ? `<strong>${inlineToHtml(name)}</strong>`
+      : kind === "haunt"
+        ? "<strong>Haunt</strong>"
+        : undefined;
+  const body = [heading, ...parts].filter((part): part is string => part !== undefined);
+  return body.length === 0 ? "" : `<p>${body.join("<br />")}</p>`;
+}
+
 function renderPrereqDirective(propsRaw: string): string {
   const props = parseDirectiveProps(propsRaw);
   const parts: string[] = [];
@@ -770,8 +826,16 @@ function renderAbDirective(name: string | undefined, propsRaw: string): string {
  * blockquoted rather than plain paragraphs.
  */
 function stripBlockLevelMarkers(lines: string[]): string[] {
-  return lines.map((line) => {
+  return lines.map((rawLine) => {
+    // Unwrap the blockquote FIRST: a `>:::div{...}` fence never matched the
+    // `:::` test below and leaked its container markup into the prose.
+    const bqOuter = /^>[ \t]?(.*)$/.exec(rawLine);
+    const line = bqOuter ? bqOuter[1]! : rawLine;
     if (line.trim().startsWith(":::")) return "";
+    // A lone `::` with no directive name after it is a source typo, not a
+    // directive; keep the prose and drop the marker.
+    const stray = /^::\s+(.*)$/.exec(line.trim());
+    if (stray) return stray[1]!;
     // A `‹SOURCE ...›` citation embedded mid-prose (not just as the entry's
     // OWN leading citation, already handled by `pfDataBodyLines`) — e.g. a
     // nested variant/errata block citing its own book. Blanked rather than
@@ -823,6 +887,10 @@ function renderBlock(lines: string[]): string {
     if (DIV_DIRECTIVE_RE.test(lines[0]!)) return "";
     const prereq = PREREQ_DIRECTIVE_RE.exec(lines[0]!);
     if (prereq) return renderPrereqDirective(prereq[1]!);
+    const trap = TRAP_DIRECTIVE_RE.exec(lines[0]!);
+    if (trap) return renderHazardDirective("trap", trap[1], trap[2]!);
+    const haunt = HAUNT_DIRECTIVE_RE.exec(lines[0]!);
+    if (haunt) return renderHazardDirective("haunt", undefined, haunt[1]!);
     const list = LIST_DIRECTIVE_RE.exec(lines[0]!);
     if (list) return renderListDirective(list[1]!, list[2]!);
     const ab = AB_DIRECTIVE_RE.exec(lines[0]!);
