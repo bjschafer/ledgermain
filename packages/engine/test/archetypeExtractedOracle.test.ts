@@ -186,14 +186,14 @@ describe("blocked composition trap: Black-Blooded Oracle's Curse of Black Blood 
     });
     doc.build.oracleCurse = "wasting";
     const sheet = compute(doc, ref);
-    // Wasting's own -4 chaSkills Change is authored but inert (chaSkills is
-    // an UNAPPLIED target in this engine) — this assertion documents that,
-    // not a claim this archetype's own curse text is modeled anywhere.
+    // Wasting's -4 on Charisma skills lands as usual; this documents that the
+    // archetype leaves an independently picked curse alone, not a claim that
+    // this archetype's own curse text is modeled anywhere.
     const withoutCurse = compute(
       makeDoc({ classes: [{ tag: "oracle", level: 5 }], archetypes: [blackBloodedOracle] }),
       ref,
     );
-    expect(sheet.skills["blf"]?.total).toBe(withoutCurse.skills["blf"]?.total);
+    expect(sheet.skills["blf"]?.total).toBe(withoutCurse.skills["blf"]!.total - 4);
   });
 });
 

@@ -213,3 +213,32 @@ describe("formula: errors", () => {
     expect(() => parseFormula("(2 + 3")).toThrow(FormulaSyntaxError);
   });
 });
+
+describe("formula: vendored function spellings", () => {
+  it("lookup(index, ...values) is zero-based and 0 out of range", () => {
+    // Age Resistance (buffs.json): lookup(@ageCategory.physical, 0, 0, 1, 3, 3)
+    // maps young/adult/middle/old/venerable to the physical-score penalty it
+    // negates (CRB "Aging Effects": -1 at middle age, -2 more at old, -3 more
+    // at venerable). An untracked age resolves to 0 and selects the adult 0.
+    const f = "lookup(@ageCategory.physical, 0, 0, 1, 3, 3)";
+    expect(evaluateFormula(f, {})).toBe(0);
+    expect(evaluateFormula(f, { ageCategory: { physical: 2 } })).toBe(1);
+    expect(evaluateFormula(f, { ageCategory: { physical: 3 } })).toBe(3);
+    expect(evaluateFormula(f, { ageCategory: { physical: 4 } })).toBe(3);
+    expect(evaluateFormula(f, { ageCategory: { physical: 9 } })).toBe(0);
+    expect(evaluateFormula(f, { ageCategory: { physical: -1 } })).toBe(0);
+  });
+
+  it("clamped and mins alias clamp and min", () => {
+    // Magical Knack (traits.json): clamped(@class.level - (@class.level - 2), 0, 2)
+    expect(
+      evaluateFormula("clamped(@class.level - (@class.level - 2), 0, 2)", { class: { level: 7 } }),
+    ).toBe(2);
+    expect(evaluateFormula("clamped(5, 0, 4)")).toBe(4);
+    expect(evaluateFormula("mins(7, 12)")).toBe(7);
+    // Caustic Blood (spells.json) uses mins inside a dice count; it stays a
+    // dice term, so the numeric evaluator still declines rather than throwing
+    // a syntax error.
+    expect(tryEvaluateFormula("(mins(7, @cl / 2))d6", { cl: 10 })).toBeNull();
+  });
+});

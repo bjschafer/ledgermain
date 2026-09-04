@@ -302,7 +302,22 @@ const FUNCTIONS: Record<string, Fn> = {
   abs: (a) => Math.abs(a[0] ?? 0),
   sign: (a) => Math.sign(a[0] ?? 0),
   clamp: (a) => Math.min(Math.max(a[0] ?? 0, a[1] ?? 0), a[2] ?? 0),
+  // Vendored spellings the same data uses alongside the canonical names:
+  // `clamped` (Magical Knack) and `mins` (Caustic Blood) mean clamp and min.
+  clamped: (a) => Math.min(Math.max(a[0] ?? 0, a[1] ?? 0), a[2] ?? 0),
+  mins: (a) => Math.min(...a),
+  // `lookup(index, ...values)` picks the zero-based `index`-th value, 0 when
+  // out of range. The Age Resistance buffs use it to map an age category to
+  // a bonus; a missing `@ageCategory` path resolves to 0, which selects the
+  // adult (no bonus) entry, so an untracked age is harmless.
+  lookup: (a) => {
+    const idx = Math.trunc(a[0] ?? 0);
+    return idx >= 0 && idx < a.length - 1 ? (a[idx + 1] ?? 0) : 0;
+  },
 };
+
+/** Every function name the evaluator accepts, for data-vs-engine drift tests. */
+export const FORMULA_FUNCTION_NAMES: readonly string[] = Object.keys(FUNCTIONS);
 
 /* -------------------------------------------------------------- evaluator -- */
 

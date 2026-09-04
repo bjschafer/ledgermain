@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { ANTIPALADIN_CRUELTIES, ANTIPALADIN_CRUELTY_IDS, antipaladinCrueltyDC } from "@pf1/engine";
-import type { CharacterDoc } from "@pf1/schema";
+import type { CharacterDoc, DerivedSheet } from "@pf1/schema";
 
 import {
   antipaladinLevel as getAntipaladinLevel,
@@ -17,6 +17,7 @@ type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
 interface CrueltyPickerProps {
   doc: CharacterDoc;
+  sheet: DerivedSheet;
   update: Updater;
 }
 
@@ -42,7 +43,7 @@ const TIER_LABEL: Record<string, string> = {
  * "— Cruelty"), via `collectGrantedFeatures`/`resolveClassFeatures` in
  * `@pf1/engine` `archetypes.ts`.
  */
-export function CrueltyPicker({ doc, update }: CrueltyPickerProps) {
+export function CrueltyPicker({ doc, sheet, update }: CrueltyPickerProps) {
   const isAntipaladin = doc.identity.classes.some((c) => c.tag === "antipaladin");
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Cruelties", false);
@@ -52,8 +53,7 @@ export function CrueltyPicker({ doc, update }: CrueltyPickerProps) {
     [doc.build.antipaladinCruelties],
   );
   const level = getAntipaladinLevel(doc);
-  const chaMod = Math.floor((doc.abilities.cha - 10) / 2);
-  const dc = antipaladinCrueltyDC(level, chaMod);
+  const dc = antipaladinCrueltyDC(level, sheet.abilities.cha.mod);
 
   const cruelties = useMemo(() => {
     const q = query.trim().toLowerCase();

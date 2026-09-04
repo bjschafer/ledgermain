@@ -17,11 +17,11 @@
  *     always-on numeric effect:
  *       - Wasting: "-4 penalty on Charisma-based skill checks, except for
  *         Intimidate" — the vendored `wasting-curse.DT09HcrTJjBwRTM6.yaml`
- *         carries a REAL `changes[]` entry (`formula: "-4"`,
- *         `target: "chaSkills"`, `type: "untyped"`), copied verbatim below;
- *         the Intimidate exception isn't expressible via the `chaSkills`
- *         target (which the vendored data itself doesn't carve out either),
- *         so it's called out in `contextNotes` instead of narrowing the target.
+ *         carries a `chaSkills` group target, which `compute.ts` does not
+ *         consume (and which could not carve out Intimidate anyway), so the
+ *         penalty is written as one `skill.<id>` change per Charisma skill
+ *         except Intimidate. Perform fans out to every Perform instance the
+ *         character has via the parameterized-prefix rule in computeSkills.
  *       - Lame: "reducing your base land speed by 10 feet if your base speed
  *         is 30 feet or more; by 5 feet if less" is prose-only upstream (no
  *         vendored `changes[]`), but is cleanly expressible with this
@@ -174,12 +174,8 @@ const CURSE_LIST: OracleCurseDef[] = [
     name: "Wasting",
     summary:
       "-4 penalty on Charisma-based skill checks (except Intimidate); +4 competence on saves vs. disease. At 5th: immune to sickened. At 10th: immune to disease. At 15th: immune to nauseated.",
-    changes: [c("-4", "chaSkills")],
+    changes: ["blf", "dip", "dis", "han", "prf", "umd"].map((id) => c("-4", `skill.${id}`)),
     contextNotes: [
-      {
-        target: "chaSkills",
-        text: "Intimidate is exempt from this -4, but the penalty above applies to all Charisma-based skills — back it out manually for Intimidate checks.",
-      },
       {
         target: "allSavingThrows",
         text: "+4 competence bonus on saves against disease — situational, not folded into the general saves total.",

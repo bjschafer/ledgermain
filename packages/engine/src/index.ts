@@ -61,6 +61,7 @@ export {
   FormulaSyntaxError,
   type RollData,
   type FormulaNode,
+  FORMULA_FUNCTION_NAMES,
 } from "./formula.js";
 export { buildRollData, abilityMod, totalLevel, type AbilityView } from "./rolldata.js";
 export {

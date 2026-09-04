@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-03-cruelty-dc-wasting-curse-age-resistance",
+    date: "2026-09-03",
+    title: "Three numbers that were quietly wrong",
+    note: "An antipaladin's cruelty save DC now uses the same Charisma modifier as the rest of the sheet, so a racial bonus, a buff, or ability damage moves it. An oracle with the Wasting curse takes the minus four on Bluff, Diplomacy, Disguise, Handle Animal, Perform, and Use Magic Device, with Intimidate left alone as written. And the Age Resistance buffs apply their bonus instead of silently doing nothing.",
+  },
+  {
     id: "2026-08-30-choices-on-features-and-traits",
     date: "2026-08-30",
     title: "Features that ask you to choose now ask",

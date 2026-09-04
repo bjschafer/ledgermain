@@ -56,10 +56,10 @@
  *   - "<Ability>-BASED skill checks" (Archmage's Int-skills, Champion's
  *     Str-skills, Hierophant's Wis-skills, Marshal's Cha-skills) ARE
  *     modeled — NOT via a fake
- *     `chaSkills`-style group target (confirmed inert: `oracle-curses.ts`
- *     copies a vendored `chaSkills` target verbatim for Wasting curse, but
- *     `compute.ts` never special-cases it, so it silently contributes
- *     nothing — a known upstream-data gap this table deliberately does NOT
+ *     `chaSkills`-style group target (`compute.ts` never special-cases those,
+ *     so a change aimed at one silently contributes nothing; the Wasting
+ *     curse in `oracle-curses.ts` spells out its Cha skills one by one for
+ *     the same reason — a known upstream-data gap this table deliberately does NOT
  *     repeat), but the same pattern `collect.ts`'s occultist Enchantment
  *     block already uses: loop `SKILL_ABILITY` for the matching ability and
  *     push one real `skill.<id>` `Change` per skill (see

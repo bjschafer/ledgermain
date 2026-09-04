@@ -582,7 +582,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {/* Cruelty + Fiendish Boon pickers — antipaladin only (B). */}
       {doc.identity.classes.some((c) => c.tag === "antipaladin") && (
         <>
-          <CrueltyPicker doc={doc} update={update} />
+          <CrueltyPicker doc={doc} sheet={sheet} update={update} />
           <FiendishBoonPicker doc={doc} update={update} />
         </>
       )}

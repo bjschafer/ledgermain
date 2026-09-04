@@ -90,7 +90,7 @@ Deliberately out of scope, so you know what _not_ to expect:
 
 - No dice roller. It computes and explains modifiers; it doesn't roll.
 - No party, GM, or real-time multiplayer. The architecture keeps this cheap to add later, but it isn't on the roadmap.
-- A few rules subsystems aren't modeled yet (spell resistance, full encumbrance). The builder is honest about what it can't enforce rather than silently wrong.
+- Not every published option moves numbers. The builder is honest about what it can't enforce rather than silently wrong, and the "What's Not Covered" panel in Settings lists exactly what still reads as text.
 
 Content breadth and known gaps are tracked in the [issue tracker](https://github.com/bjschafer/ledgermain/issues).
 

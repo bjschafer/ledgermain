@@ -73,3 +73,17 @@ describe("compute() + build.oracleCurse (Lame)", () => {
     expect(withCurse).toEqual(withoutCurse);
   });
 });
+
+describe("compute() + build.oracleCurse (Wasting)", () => {
+  // APG "Wasting": -4 penalty on Charisma-based skill checks, except Intimidate.
+  it("a Wasting oracle 5 takes -4 on Charisma skills but not Intimidate", () => {
+    const withCurse = compute(makeDoc([{ tag: "oracle", level: 5 }], "wasting"), ref);
+    const withoutCurse = compute(makeDoc([{ tag: "oracle", level: 5 }], undefined), ref);
+    for (const id of ["blf", "dip", "dis", "han", "prf", "umd"]) {
+      expect(withCurse.skills[id]!.total).toBe(withoutCurse.skills[id]!.total - 4);
+    }
+    expect(withCurse.skills["int"]!.total).toBe(withoutCurse.skills["int"]!.total);
+    // A non-Charisma skill is untouched.
+    expect(withCurse.skills["per"]!.total).toBe(withoutCurse.skills["per"]!.total);
+  });
+});
