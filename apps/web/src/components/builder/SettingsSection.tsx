@@ -13,7 +13,8 @@ import { useState, type ChangeEvent, type ReactNode } from "react";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { absoluteLink, whatsNewHash } from "../../model/appLocation.js";
-import { CHANGELOG, formatEntryDate } from "../../model/changelog.js";
+import { formatEntryDate } from "../../model/changelog.js";
+import { CHANGELOG } from "../../model/changelogEntries.js";
 import { COVERAGE_NOTES } from "../../model/coverageNotes.js";
 import { characterExportFilename, characterExportJson } from "../../model/exportCharacter.js";
 import {

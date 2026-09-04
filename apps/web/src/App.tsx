@@ -1,36 +1,17 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 
 import type { CharacterDoc } from "@pf1/schema";
 
 import type { AppLocation, Mode } from "./model/appLocation.js";
-import {
-  CHANGELOG,
-  hasUnseenEntries,
-  initChangelogSeen,
-  markChangelogSeen,
-} from "./model/changelog.js";
+import { hasUnseenEntries, initChangelogSeen, markChangelogSeen } from "./model/changelog.js";
 
-import { AbilitiesSection } from "./components/builder/AbilitiesSection.js";
-import { BuildNav, useAttentionBadges } from "./components/builder/BuildNav.js";
-import { ClassesSection } from "./components/builder/ClassesSection.js";
-import { FeatsSection } from "./components/builder/FeatsSection.js";
-import { GearSection } from "./components/builder/GearSection.js";
-import { WeaponsSection } from "./components/builder/WeaponsSection.js";
-import { HitPointsSection } from "./components/builder/HitPointsSection.js";
-import { IdentitySection } from "./components/builder/IdentitySection.js";
-import { RaceSection } from "./components/builder/RaceSection.js";
-import { SettingsNav } from "./components/builder/SettingsNav.js";
-import { SettingsSection } from "./components/builder/SettingsSection.js";
-import { SkillsSection } from "./components/builder/SkillsSection.js";
-import { SpellsSection } from "./components/builder/SpellsSection.js";
-import { TraitsSection } from "./components/builder/TraitsSection.js";
+import { useAttentionBadges } from "./components/builder/BuildNav.js";
 import type { BuilderProps } from "./components/builder/types.js";
 import { CharacterSwitcher } from "./components/CharacterSwitcher.js";
 import { Dialog } from "./components/Dialog.js";
 import { FeedbackButton } from "./components/FeedbackButton.js";
 import { FloatingControls } from "./components/FloatingControls.js";
 import { PreviewNotice } from "./components/PreviewNotice.js";
-import { PrintView } from "./components/PrintView.js";
 import { ReferenceLink } from "./components/ReferenceLink.js";
 import { ScrollTopButton } from "./components/ScrollTopButton.js";
 import { Sheet } from "./components/Sheet.js";
@@ -44,6 +25,92 @@ import { SpellBonusesProvider } from "./state/spellBonuses.js";
 import { useAppLocation } from "./state/useAppLocation.js";
 import { useCharacter } from "./state/useCharacter.js";
 import { useTextSize, type TextSize } from "./state/useTextSize.js";
+
+/**
+ * Build, Settings and Print are mutually exclusive with the tracker and none
+ * of them is what a player opens at the table, so each is a chunk of its own
+ * and Play alone ships in the initial download. The trees are named exports,
+ * hence the `.then` shim: `lazy` wants a module whose default is the
+ * component.
+ */
+const BuildMode = lazy(() =>
+  import("./components/BuildMode.js").then((m) => ({ default: m.BuildMode })),
+);
+const SettingsMode = lazy(() =>
+  import("./components/SettingsMode.js").then((m) => ({ default: m.SettingsMode })),
+);
+const PrintView = lazy(() =>
+  import("./components/PrintView.js").then((m) => ({ default: m.PrintView })),
+);
+
+/** Held between "reference data is still loading" and "a mode chunk is still loading". */
+function LoadingScreen() {
+  return (
+    <div className="state-screen">
+      <div>
+        <div className="glyph">✦</div>
+        <p>Unrolling the compendium…</p>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * A mode's Suspense fallback. Fills *both* of the grid slots the mode tree
+ * occupies (rail, column), so the sheet column doesn't slide a track over for
+ * the frames a chunk is in flight.
+ */
+function ModeFallback() {
+  return (
+    <>
+      <div />
+      <div className="build-col">
+        <LoadingScreen />
+      </div>
+    </>
+  );
+}
+
+/**
+ * Whether to dot the Settings tab, and the bookkeeping that clears it.
+ *
+ * The entries are fetched rather than imported: the list is the single largest
+ * string in the app and lives with the Settings panel that renders it, so the
+ * dot resolves a beat late instead of holding the whole prose in the initial
+ * chunk. Undecided reads as no dot, which is also what a reader on their
+ * first-ever visit sees.
+ *
+ * Held until the sheet is up, so the fetch never races the reference data a
+ * player is actually waiting on. Nobody is looking for the dot on a screen
+ * that hasn't drawn a character yet.
+ */
+function useChangelogCue(mode: Mode, ready: boolean): boolean {
+  const [unseen, setUnseen] = useState(false);
+
+  useEffect(() => {
+    if (!ready) return;
+    let cancelled = false;
+    void import("./model/changelogEntries.js").then(({ CHANGELOG }) => {
+      if (cancelled) return;
+      setUnseen(hasUnseenEntries(CHANGELOG, initChangelogSeen(CHANGELOG)));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [ready]);
+
+  // Opening Settings *is* seeing the list — the newest entries render inline
+  // at the top of the What's New panel, so there's nothing further to click.
+  useEffect(() => {
+    if (mode !== "settings" || !unseen) return;
+    void import("./model/changelogEntries.js").then(({ CHANGELOG }) => {
+      markChangelogSeen(CHANGELOG);
+      setUnseen(false);
+    });
+  }, [mode, unseen]);
+
+  return unseen;
+}
 
 /**
  * Aggregate "unfinished business" cue on the Build mode tab — the sum of the
@@ -72,26 +139,18 @@ export function App() {
   const mode = location.mode;
   const [printOpen, setPrintOpen] = useState(false);
   const [textSize, setTextSize] = useTextSize();
-  const [changelogUnseen, setChangelogUnseen] = useState(() =>
-    hasUnseenEntries(CHANGELOG, initChangelogSeen()),
-  );
-
-  // Opening Settings *is* seeing the list — the newest entries render inline
-  // at the top of the What's New panel, so there's nothing further to click.
-  useEffect(() => {
-    if (mode !== "settings" || !changelogUnseen) return;
-    markChangelogSeen();
-    setChangelogUnseen(false);
-  }, [mode, changelogUnseen]);
+  const changelogUnseen = useChangelogCue(mode, store.status === "ready");
 
   if (printOpen && store.doc && store.sheet && store.refData) {
     return (
-      <PrintView
-        doc={store.doc}
-        sheet={store.sheet}
-        refData={store.refData}
-        onClose={() => setPrintOpen(false)}
-      />
+      <Suspense fallback={<LoadingScreen />}>
+        <PrintView
+          doc={store.doc}
+          sheet={store.sheet}
+          refData={store.refData}
+          onClose={() => setPrintOpen(false)}
+        />
+      </Suspense>
     );
   }
 
@@ -172,14 +231,7 @@ export function App() {
         </div>
       </header>
 
-      {store.status === "loading" && (
-        <div className="state-screen">
-          <div>
-            <div className="glyph">✦</div>
-            <p>Unrolling the compendium…</p>
-          </div>
-        </div>
-      )}
+      {store.status === "loading" && <LoadingScreen />}
 
       {store.status === "error" && (
         <div className="state-screen">
@@ -220,7 +272,18 @@ export function App() {
  * anything that sizes itself off that layout is enough; nothing here retries,
  * because a target that isn't in the DOM by then belongs to a tab the reader
  * isn't in.
+ *
+ * Rendered as a component, and from *inside* the mode's Suspense boundary, so
+ * a cold load straight into Build starts counting those frames when the mode's
+ * chunk paints rather than when the shell does. The `restored` ref is what
+ * keeps a later mode switch (which re-suspends the boundary and so re-runs
+ * this effect) from yanking the reader back.
  */
+function SectionRestore({ sectionId }: { sectionId: string | undefined }) {
+  useRestoreSection(sectionId);
+  return null;
+}
+
 function useRestoreSection(sectionId: string | undefined) {
   const restored = useRef(false);
 
@@ -271,8 +334,6 @@ function Workbench({
 }) {
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  useRestoreSection(initialLocation.section);
-
   const onBuildSection = useCallback(
     (id: string) => onActiveSection("build", id),
     [onActiveSection],
@@ -287,69 +348,17 @@ function Workbench({
     <RollDataProvider doc={props.doc} sheet={props.sheet} refData={props.refData}>
       <SpellBonusesProvider doc={props.doc} sheet={props.sheet} refData={props.refData}>
         <div className="layout layout--with-nav">
-          {mode === "build" && (
-            /* On mobile (<=940px) `.mobile-build-header` collapses to a single
-           sticky block stacking the compact stat strip over the section-jump
-           chips (styles.css); above 940px it's `display: contents`, so the
-           strip is hidden and BuildNav flows into the layout grid's rail column
-           exactly as before. */
-            <div className="mobile-build-header">
-              <StatStrip {...props} />
-              <BuildNav {...props} onActiveChange={onBuildSection} />
-            </div>
-          )}
-          {mode === "play" && (
-            /* Same header machinery for Play — StatStrip over the PlayNav jump rail
-           (see components/tracker/PlayNav). */
-            <div className="mobile-build-header">
-              <StatStrip {...props} />
-              <PlayNav {...props} onActiveChange={onPlaySection} />
-            </div>
-          )}
-          {/* Settings has no stat strip to stack with — the rail stands alone. */}
-          {mode === "settings" && (
-            <SettingsNav doc={props.doc} onActiveChange={onSettingsSection} />
-          )}
-          <div className="build-col">
+          {/* One boundary around the whole mode, rail included: SectionRestore
+              is a sibling of the mode tree, so it waits on the same chunk the
+              scroll target arrives in. */}
+          <Suspense fallback={<ModeFallback />}>
+            <SectionRestore sectionId={initialLocation.section} />
             {mode === "build" ? (
-              <>
-                <div id="section-identity">
-                  <IdentitySection {...props} />
-                </div>
-                <div id="section-abilities">
-                  <AbilitiesSection {...props} />
-                </div>
-                <div id="section-race">
-                  <RaceSection {...props} />
-                </div>
-                <div id="section-traits">
-                  <TraitsSection {...props} />
-                </div>
-                <div id="section-classes">
-                  <ClassesSection {...props} />
-                </div>
-                <div id="section-hp">
-                  <HitPointsSection {...props} />
-                </div>
-                <div id="section-skills">
-                  <SkillsSection {...props} />
-                </div>
-                <div id="section-feats">
-                  <FeatsSection {...props} />
-                </div>
-                <div id="section-gear">
-                  <GearSection {...props} />
-                </div>
-                <div id="section-weapons">
-                  <WeaponsSection {...props} />
-                </div>
-                <div id="section-spells">
-                  <SpellsSection {...props} />
-                </div>
-              </>
+              <BuildMode {...props} onActiveSection={onBuildSection} />
             ) : mode === "settings" ? (
-              <SettingsSection
+              <SettingsMode
                 {...props}
+                onActiveSection={onSettingsSection}
                 onImportCharacter={onImportCharacter}
                 onResetAll={onResetAll}
                 onDeleteCharacter={onDeleteCharacter}
@@ -359,9 +368,19 @@ function Workbench({
                 onTextSizeChange={onTextSizeChange}
               />
             ) : (
-              <Tracker {...props} />
+              <>
+                {/* Same header machinery as Build: StatStrip over the PlayNav
+                    jump rail (see components/tracker/PlayNav). */}
+                <div className="mobile-build-header">
+                  <StatStrip {...props} />
+                  <PlayNav {...props} onActiveChange={onPlaySection} />
+                </div>
+                <div className="build-col">
+                  <Tracker {...props} />
+                </div>
+              </>
             )}
-          </div>
+          </Suspense>
           <div className="sheet-col">
             <Sheet doc={props.doc} sheet={props.sheet} refData={props.refData} />
           </div>

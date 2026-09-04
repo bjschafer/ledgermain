@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 
+import { CHANGELOG } from "../src/model/changelogEntries.js";
 import {
-  CHANGELOG,
   formatEntryDate,
   hasUnseenEntries,
   latestEntryId,
