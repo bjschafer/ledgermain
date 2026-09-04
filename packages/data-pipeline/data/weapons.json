@@ -967,6 +967,7 @@
     "group": "quarterstaff",
     "id": "6eAg4BT0RM8tfyUN",
     "name": "Quarterstaff",
+    "price": 0,
     "proficiency": "simple",
     "sources": [
       {
@@ -1147,6 +1148,7 @@
     "group": "wooden-stake",
     "id": "7zvBqNNlc5i5EtFd",
     "name": "Wooden Stake",
+    "price": 0,
     "proficiency": "simple",
     "sources": [
       {
@@ -1413,6 +1415,7 @@
     "group": "amentum",
     "id": "AzvaEePCpHBoKWnw",
     "name": "Amentum",
+    "price": 0,
     "proficiency": "martial",
     "rangeIncrement": 50,
     "sources": [
@@ -3125,6 +3128,7 @@
     "group": "throwing-arrow-cord",
     "id": "LWPBZON5AHSjxqXi",
     "name": "Throwing Arrow Cord",
+    "price": 0,
     "proficiency": "martial",
     "rangeIncrement": 60,
     "sources": [
@@ -3692,6 +3696,7 @@
     "group": "halfling-stitched-sling",
     "id": "PMH2RqF2x1X4Baoj",
     "name": "Halfling Stitched Sling",
+    "price": 0,
     "proficiency": "exotic",
     "sources": [
       {
@@ -4230,7 +4235,7 @@
     "attackAbility": "dex",
     "baseTypes": ["Heavy Slaver's Crossbow"],
     "category": "ranged",
-    "critMult": 1,
+    "critMult": 2,
     "critRange": 19,
     "damageAbility": "none",
     "damageDice": "1d8",
@@ -4308,7 +4313,7 @@
     "attackAbility": "dex",
     "baseTypes": ["Light Slaver's Crossbow"],
     "category": "ranged",
-    "critMult": 1,
+    "critMult": 2,
     "critRange": 19,
     "damageAbility": "none",
     "damageDice": "1d4",
@@ -4392,6 +4397,7 @@
     "group": "stingchuck",
     "id": "T5N66YUFkpdxXv3d",
     "name": "Stingchuck",
+    "price": 0,
     "proficiency": "simple",
     "rangeIncrement": 10,
     "sources": [
@@ -5748,6 +5754,7 @@
     "group": "sling",
     "id": "cJV7OBm9KiF2WWiu",
     "name": "Sling",
+    "price": 0,
     "proficiency": "simple",
     "rangeIncrement": 50,
     "sources": [
@@ -7741,7 +7748,7 @@
     "attackAbility": "dex",
     "baseTypes": ["Launching Crossbow"],
     "category": "ranged",
-    "critMult": 1,
+    "critMult": 2,
     "critRange": 20,
     "damageAbility": "none",
     "group": "launching-crossbow",
@@ -8412,6 +8419,7 @@
     "group": "club",
     "id": "vu3N4zCRDTUJ5FW4",
     "name": "Club",
+    "price": 0,
     "proficiency": "simple",
     "sources": [
       {

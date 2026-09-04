@@ -308,18 +308,6 @@ export function parseElementalOpposition(html: string): ElementalSchoolTag[] {
 }
 
 /**
- * Upstream spell-name repairs for the elemental "Spells" lists: two entries
- * lost the separator between adjacent names, one is misspelled. Applied before
- * name resolution so the affected spells aren't silently dropped; everything
- * else that fails to resolve (e.g. spells outside the vendored slice) is.
- */
-const ELEMENTAL_SPELL_NAME_FIXES: Record<string, string[]> = {
-  "firey body": ["fiery body"],
-  "share memorypact": ["share memory"],
-  "spiritual weaponlife pact": ["spiritual weapon", "life pact"],
-};
-
-/**
  * Normalize a spell name for matching an elemental school's free-text list
  * against real spell names. Beyond case/whitespace/apostrophe folding, a
  * trailing arabic numeral becomes its roman equivalent — the lists write
@@ -356,7 +344,10 @@ export function parseElementalSpellEntries(
   if (start < 0) return [];
   const out: { level: number; spellId: string }[] = [];
   for (const li of norm.slice(start).matchAll(/<li>(.*?)<\/li>/g)) {
-    const m = /^\s*<strong>\s*(\d)(?:st|nd|rd|th)?\s*<\/strong>\s*(.*)$/i.exec(li[1]!);
+    // Three schools (aether, fire, void) wrap the whole entry in a <p>; the
+    // other five put <strong> at the top of the <li>. Tolerate both rather
+    // than matching the shape whichever happened to be current.
+    const m = /^\s*(?:<p>\s*)?<strong>\s*(\d)(?:st|nd|rd|th)?\s*<\/strong>\s*(.*)$/i.exec(li[1]!);
     if (!m) continue;
     const level = Number(m[1]);
     const names = m[2]!
@@ -375,11 +366,8 @@ export function parseElementalSpellEntries(
         i += 2;
         continue;
       }
-      const single = names[i]!;
-      for (const name of ELEMENTAL_SPELL_NAME_FIXES[single.toLowerCase()] ?? [single]) {
-        const spellId = resolveName(name);
-        if (spellId) out.push({ level, spellId });
-      }
+      const spellId = resolveName(names[i]!);
+      if (spellId) out.push({ level, spellId });
       i += 1;
     }
   }

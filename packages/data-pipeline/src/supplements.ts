@@ -293,6 +293,10 @@ export function resolveBloodlineSupplements(
  * isn't a "fill only if missing" gap-fill — it corrects an
  * existing-but-incomplete or existing-but-wrong formula).
  *
+ * - Destructive Aura (Destruction domain, Core Rulebook p. 43) is "a number
+ *   of rounds per day equal to your cleric level"; the vendored formula
+ *   halves it. The domain's own granted-power document only appeared upstream
+ *   after the v11.11 tag, and arrived with the halved figure.
  * - Grit (gunslinger, Ultimate Combat p. 9) and Panache (swashbuckler,
  *   Advanced Class Guide p. 16) are each RAW "equal to her Wisdom/Charisma
  *   modifier (minimum 1)", but the vendored formula is a bare
@@ -319,6 +323,11 @@ export function resolveBloodlineSupplements(
  *   untouched.)
  */
 export const SUPPLEMENTAL_CLASS_FEATURE_USES_MAX_FORMULA: Record<string, string> = {
+  // Destructive Aura (Destruction domain, Core Rulebook p. 43) is RAW "a
+  // number of rounds per day equal to your cleric level", but the vendored
+  // formula halves it (`floor(@class.unlevel / 2)`), so an 8th-level cleric
+  // gets 4 rounds instead of 8.
+  "Destructive Aura": "@class.unlevel",
   Grit: "max(1, @abilities.wis.mod)",
   Panache: "max(1, @abilities.cha.mod)",
   "Smite Evil": "floor((@class.unlevel - 1) / 3) + 1",
@@ -1232,22 +1241,6 @@ export function applyRaceEffectImmunitySupplements(races: Race[]): void {
  * fills, there's no vendored entity to correct or extend, so the whole
  * `ClassFeature` is authored here from scratch.
  *
- * - Destruction domain (Core Rulebook p. 43) grants two powers, Destructive
- *   Smite (1st) and Destructive Aura (8th); only Destructive Smite exists as
- *   a `class-abilities` document in the pinned pack, so `Domain.features`
- *   resolves to a single entry and the 8th-level power never appears.
- *   Written clean-room from the published rule (not copied from Foundry's
- *   own system scripts): a 30-foot aura, active for a number of rounds per
- *   day equal to cleric level (rounds need not be consecutive), granting a
- *   morale bonus on damage equal to half cleric level to every attack made
- *   against a target within it (including the cleric's own) and
- *   auto-confirming every critical threat rolled there. Three subdomains
- *   (Catastrophe, Hatred, Rage) name Destructive Aura as the power they
- *   displace (`transform/subdomainPowers.ts`'s `replaces` field, parsed from
- *   the Pf Data 1e source's own `replace="..."` property) — until this power
- *   exists in `Domain.features`, that displacement is a no-op, and each of
- *   those three subdomains comes out right only because there was nothing
- *   there yet to remove.
  * - Glory domain's granted-powers preamble (Core Rulebook p. 44) reads "when
  *   you channel positive energy to harm undead creatures, the save DC to
  *   halve the damage is increased by 2" — a real bonus with no
@@ -1257,9 +1250,12 @@ export function applyRaceEffectImmunitySupplements(races: Race[]): void {
  *   evaluates directly off vendored data, with no per-source-modifier target
  *   to wire a +2 onto, so this stays prose-only rather than inventing a
  *   mechanism. The Hubris and Legend subdomains each name "the channel boost
- *   ability of the Glory domain" as what they displace — same displacement
- *   mechanics as Destructive Aura above, and the same reason this entry has
- *   to exist before that displacement can do anything.
+ *   ability of the Glory domain" as what they displace
+ *   (`transform/subdomainPowers.ts`'s `replaces` field, parsed from the Pf
+ *   Data 1e source's own `replace="..."` property), and that displacement is
+ *   a no-op until the power it names exists in `Domain.features` — so each of
+ *   those two subdomains comes out right only because this entry puts
+ *   something there to remove.
  *
  * Synthetic id/uuid follow the same non-Foundry-shaped posture as the
  * prestige-class supplement below: a `domain:` id prefix and `domain-feature:`
@@ -1270,16 +1266,6 @@ export const SUPPLEMENTAL_DOMAIN_FEATURES: Record<
   string,
   { slug: string; name: string; abilityType?: string; level: number; description: string }[]
 > = {
-  Destruction: [
-    {
-      slug: "destructive-aura",
-      name: "Destructive Aura",
-      abilityType: "su",
-      level: 8,
-      description:
-        "<p>You can emit a 30-foot aura of destruction for a number of rounds per day equal to your cleric level; these rounds need not be consecutive. Every attack made against a creature within the aura, including your own, gains a morale bonus on damage rolls equal to half your cleric level, and every critical threat rolled within the aura is automatically confirmed as a critical hit.</p>",
-    },
-  ],
   Glory: [
     {
       slug: "channel-boost",

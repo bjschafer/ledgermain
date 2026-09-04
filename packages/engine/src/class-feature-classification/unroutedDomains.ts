@@ -38,20 +38,20 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "situational",
     note: "Standard action, uses-per-day resource pool (3 + Wisdom modifier), and the morale bonus targets a creature within 30 feet, not the cleric unconditionally.",
   },
-  "subdomain-power:azata:elysium-s-call": {
-    id: "subdomain-power:azata:elysium-s-call",
+  ibbnnyASQkqZ28yl: {
+    id: "ibbnnyASQkqZ28yl",
     name: "Elysium's Call",
     bucket: "situational",
     note: "Touch-activated buff bundle (reroll, save bonus, escape-grapple bonus, difficult-terrain ignore) lasting 1/2 cleric level rounds; entirely dependent on the touch action being used.",
   },
-  "subdomain-power:feather:eyes-of-the-hawk": {
-    id: "subdomain-power:feather:eyes-of-the-hawk",
+  CVyecjW52RuSAD1p: {
+    id: "CVyecjW52RuSAD1p",
     name: "Eyes of the Hawk",
     bucket: "numeric",
     note: "The Perception bonus (half cleric level, minimum +1) is wired as a racial-type Change via GRANTED_POWER_CHANGE_PATCHES. The +2 Initiative bonus stays prose: it only applies during a surprise round, a fight state the static sheet can't detect.",
   },
-  "subdomain-power:nightmare:fearful-touch": {
-    id: "subdomain-power:nightmare:fearful-touch",
+  q68c1enBp2oR7eUe: {
+    id: "q68c1enBp2oR7eUe",
     name: "Fearful Touch",
     bucket: "situational",
     note: "Melee touch attack that inflicts a Will-save penalty and attack-roll penalty on the struck target for 1 round; the number belongs to the enemy's state, not an unconditional bonus to the cleric.",
@@ -62,8 +62,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "situational",
     note: 'Once-per-day rounds-limited aura; the deflection AC/CMD bonus applies to allies inside the aura (the power\'s text reads "allies," not "you and your allies"), not the cleric unconditionally. It already surfaces as an activate/deactivate toggle on this pool\'s row through the vendored linked buff (`grantsBuffs`) that `resources.ts`\'s own `linkedBuffIds` pass resolves; no per-day-activations entry is needed.',
   },
-  "subdomain-power:demon:fury-of-the-abyss": {
-    id: "subdomain-power:demon:fury-of-the-abyss",
+  xNJl1YTfmDqielcJ: {
+    id: "xNJl1YTfmDqielcJ",
     name: "Fury of the Abyss",
     bucket: "situational",
     note: "Swift-action activation lasting 1 round with a self-imposed AC penalty tradeoff; the enhancement bonus is not always-on.",
@@ -86,8 +86,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "situational",
     note: "Must be declared before a specific attack and draws from a uses-per-day pool (3 + Wisdom modifier); not an unconditional bonus.",
   },
-  "domain:destruction:destructive-aura": {
-    id: "domain:destruction:destructive-aura",
+  qyqbVqtFmw5QBRbg: {
+    id: "qyqbVqtFmw5QBRbg",
     name: "Destructive Aura",
     bucket: "situational",
     note: "This synthetic id carries no vendored `uses.maxFormula`; resources.ts hand-resolves the pool's size (rounds/day equal to cleric level) so a row derives, but there's still no toggle surface for this power to attach to. Independently, the damage bonus and automatic-crit-confirmation apply to any attack (including the cleric's own) made against a creature inside the aura, and only while the aura is active, not an unconditional bonus.",
@@ -116,14 +116,14 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "numeric",
     note: 'The +2 insight bonus on saves against mind-affecting effects is wired via GRANTED_POWER_CHANGE_PATCHES, scoped with saveCategories: ["mind"] rather than an unconditional Will bonus.',
   },
-  "subdomain-power:agathion:protective-aura": {
-    id: "subdomain-power:agathion:protective-aura",
+  xD8I6VFbwDzMRTy8: {
+    id: "xD8I6VFbwDzMRTy8",
     name: "Protective Aura",
     bucket: "situational",
     note: "Activated 30-foot aura; the deflection AC and resistance bonuses (plus protection from evil) apply to allies inside it, not the cleric unconditionally.",
   },
-  "subdomain-power:archon:aura-of-menace": {
-    id: "subdomain-power:archon:aura-of-menace",
+  j8Z4O8Z7otvM8yXE: {
+    id: "j8Z4O8Z7otvM8yXE",
     name: "Aura of Menace",
     bucket: "situational",
     note: "Activated 30-foot aura imposing a penalty on enemies inside it; a penalty on enemies rather than a bonus to the cleric, and only while the aura is maintained.",
@@ -140,14 +140,14 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "situational",
     note: "Activated 30-foot aura imposing a Perception penalty and reduced-HD treatment on enemies inside it; not a bonus to the cleric and only while maintained.",
   },
-  "subdomain-power:caves:tunnel-runner": {
-    id: "subdomain-power:caves:tunnel-runner",
+  "6sMuqfF59UWKJzkd": {
+    id: "6sMuqfF59UWKJzkd",
     name: "Tunnel Runner",
     bucket: "situational",
     note: 'An activated state ("while this ability is active") scoped to being underground; the Stealth and Initiative bonuses only apply during that window, alongside the granted spider climb and darkvision.',
   },
-  "subdomain-power:devil:hell-s-corruption": {
-    id: "subdomain-power:devil:hell-s-corruption",
+  QDXZaSHgaJPulkpi: {
+    id: "QDXZaSHgaJPulkpi",
     name: "Hell's Corruption",
     bucket: "situational",
     note: "Melee touch attack that inflicts a save penalty and doubled-worse-of-two skill checks on the struck target; scoped to the target's state, not an unconditional bonus to the cleric.",
@@ -170,14 +170,14 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "situational",
     note: "Activated 30-foot aura; the saving-throw and hardness bonuses apply to allies inside it, not the cleric unconditionally.",
   },
-  "subdomain-power:leadership:inspiring-command": {
-    id: "subdomain-power:leadership:inspiring-command",
+  Gd8xhOE25nKMyDzX: {
+    id: "Gd8xhOE25nKMyDzX",
     name: "Inspiring Command",
     bucket: "situational",
     note: "Requires issuing the command as an activated action; the insight bonus applies to designated allies for 1 round only.",
   },
-  "subdomain-power:memory:recall": {
-    id: "subdomain-power:memory:recall",
+  "4IOTGQ6trl6VRCyb": {
+    id: "4IOTGQ6trl6VRCyb",
     name: "Recall",
     bucket: "situational",
     note: "Touch-activated power scoped to a Knowledge check made within the past minute; the insight bonus (Wisdom modifier) only applies to that retry.",
@@ -188,14 +188,14 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "situational",
     note: "Standard-action touch power; the sacred save bonus applies to the touched creature for 1 hour, not an unconditional bonus to the cleric.",
   },
-  "subdomain-power:resolve:bestow-resolve": {
-    id: "subdomain-power:resolve:bestow-resolve",
+  ujrmDoTMy0oWUEal: {
+    id: "ujrmDoTMy0oWUEal",
     name: "Bestow Resolve",
     bucket: "situational",
     note: "Activated power scoped to allies within 20 feet; the temporary hit points last only 1 minute and require the activation.",
   },
-  "subdomain-power:resurrection:gift-of-life": {
-    id: "subdomain-power:resurrection:gift-of-life",
+  "32fPRb3zIgNVv6Av": {
+    id: "32fPRb3zIgNVv6Av",
     name: "Gift of Life",
     bucket: "subsystem",
     note: "Grants a unique short-term revival ability on a creature that died within the last minute; the returned creature's temporary hit-point total is a one-off ritual detail, not a Change-shaped bonus on the cleric's own sheet.",
@@ -206,8 +206,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "situational",
     note: "The always-on class-skill grant carries no numeric target, but the meaningful number here (+4 sacred bonus) only applies to skill checks made to see through a disguise or find something hidden or concealed, a narrow scoped circumstance the static sheet can't detect.",
   },
-  "subdomain-power:smoke:cloud-of-smoke": {
-    id: "subdomain-power:smoke:cloud-of-smoke",
+  crFYRQunvrXQNYFX: {
+    id: "crFYRQunvrXQNYFX",
     name: "Cloud of Smoke",
     bucket: "situational",
     note: "Standard-action activated cloud imposing a penalty and concealment on enemies inside it for a limited duration; not an unconditional bonus to the cleric.",
@@ -320,8 +320,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "situational",
     note: "Only applies when casting a teleportation-descriptor spell; the caster-level increase and temporary hit points are conditioned on that trigger.",
   },
-  "subdomain-power:protean:aura-of-chaos": {
-    id: "subdomain-power:protean:aura-of-chaos",
+  "7rSXC0YKhLa17VcD": {
+    id: "7rSXC0YKhLa17VcD",
     name: "Aura of Chaos",
     bucket: "subsystem",
     note: "This synthetic id carries no vendored `uses.maxFormula`, so no pool row derives for it to attach a toggle to. Independently, it forces enemies within the aura to declare and resolve an action type against a Will save; a condition effect on enemies, not a bonus number on the cleric.",
@@ -434,8 +434,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "situational",
     note: "The Charisma-check bonus (1 + one-fifth cleric level) only applies against creatures sharing the cleric's own creature type and subtype, a scoped condition the static sheet cannot detect without over-applying to every roll.",
   },
-  "subdomain-power:blood:wounding-blade": {
-    id: "subdomain-power:blood:wounding-blade",
+  "1qA0W7xIIRGxOEdA": {
+    id: "1qA0W7xIIRGxOEdA",
     name: "Wounding Blade",
     bucket: "subsystem",
     note: "Grants the wounding weapon special quality to a touched weapon for a limited duration; a rules-exception weapon-quality grant, not a Change-shaped bonus.",
@@ -452,26 +452,26 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "subsystem",
     note: "Ranged touch attack inflicting the sickened condition on a target within 30 feet; a condition effect on the enemy, not a bonus number on the cleric.",
   },
-  "subdomain-power:curse:malign-eye": {
-    id: "subdomain-power:curse:malign-eye",
+  RGVUWMi9hxULzXLX: {
+    id: "RGVUWMi9hxULzXLX",
     name: "Malign Eye",
     bucket: "situational",
     note: "Activated power scoped to one target within 30 feet; the save penalty applies to that target for up to 1 minute, not an unconditional bonus to the cleric.",
   },
-  "subdomain-power:decay:aura-of-decay": {
-    id: "subdomain-power:decay:aura-of-decay",
+  wajEi32qMlGuuzVW: {
+    id: "wajEi32qMlGuuzVW",
     name: "Aura of Decay",
     bucket: "situational",
     note: "An emitted aura; the per-round damage and cumulative Strength penalty apply to living creatures (other than the cleric) inside it, scoped to enemy state and the aura's active area.",
   },
-  "subdomain-power:family:binding-ties": {
-    id: "subdomain-power:family:binding-ties",
+  H1jBsPMYx5GH8U4g: {
+    id: "H1jBsPMYx5GH8U4g",
     name: "Binding Ties",
     bucket: "subsystem",
     note: "Touch power that transfers a condition from an ally onto the cleric for a limited duration; a rules-exception effect, not a Change-shaped bonus number.",
   },
-  "subdomain-power:home:guarded-hearth": {
-    id: "subdomain-power:home:guarded-hearth",
+  PgM9OTpmavqN4JKm: {
+    id: "PgM9OTpmavqN4JKm",
     name: "Guarded Hearth",
     bucket: "situational",
     note: "This synthetic id carries no vendored `uses.maxFormula`, so no pool row derives for it to attach a toggle to, even though the sacred bonus (a flat Wisdom modifier, not level-scaling) could otherwise cover the cleric if self-designated. It also requires a 10-minute setup and only benefits creatures the cleric designates while they remain inside the warded area, a player choice this table has no stored pick to key from.",
@@ -482,8 +482,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "subsystem",
     note: "Emitted aura imposing the fascinated condition on enemies inside it (Will save to resist); a condition effect, not a bonus number on the cleric's own sheet.",
   },
-  "subdomain-power:insanity:insane-focus": {
-    id: "subdomain-power:insanity:insane-focus",
+  CItAoMTHm5BVVtVt: {
+    id: "CItAoMTHm5BVVtVt",
     name: "Insane Focus",
     bucket: "situational",
     note: "Touch-activated power scoped to a willing creature; the save bonus and confusion immunity last 1 minute and depend on that activation.",
@@ -494,14 +494,14 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "subsystem",
     note: "Triggered by taking damage and passing a DC 25 concentration check; grants the benefits of a referenced spell effect rather than a direct Change-shaped bonus number.",
   },
-  "subdomain-power:light:blinding-flash": {
-    id: "subdomain-power:light:blinding-flash",
+  PUOMft9SAMoityU0: {
+    id: "PUOMft9SAMoityU0",
     name: "Blinding Flash",
     bucket: "subsystem",
     note: "Emitted flash that blinds or dazzles creatures in the area (Fortitude save to resist blindness); a condition effect on enemies, not a bonus number on the cleric's own sheet.",
   },
-  "subdomain-power:night:night-hunter": {
-    id: "subdomain-power:night:night-hunter",
+  sOXc6XpR4j7lA2rr: {
+    id: "sOXc6XpR4j7lA2rr",
     name: "Night Hunter",
     bucket: "subsystem",
     note: "Grants an invisibility-style effect while in dim light or darkness for a limited duration; a rules-exception sense/concealment grant, not a Change-shaped bonus number.",
@@ -512,9 +512,9 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "subsystem",
     note: "Irradiates an unattended object that sickens creatures passing near it (Will save to resist); a condition effect on whoever triggers it, not a bonus number on the cleric.",
   },
-  "subdomain-power:rage:rage": {
-    id: "subdomain-power:rage:rage",
-    name: "Rage",
+  HJMvo9iDrDwjLAgM: {
+    id: "HJMvo9iDrDwjLAgM",
+    name: "Rage (Cleric)",
     bucket: "subsystem",
     note: "Grants access to barbarian rage (and, at higher levels, a rage power); the rage state itself is a rules-exception grant tracked as its own mechanic, not a Change-shaped bonus number here.",
   },
@@ -542,8 +542,8 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "subsystem",
     note: "Activated power inflicting a dominate-monster-style effect (or Constitution damage and staggered as an alternative) on a target creature; a rules-exception mind-control effect, not a bonus number on the cleric.",
   },
-  "subdomain-power:souls:touch-the-spirit-world": {
-    id: "subdomain-power:souls:touch-the-spirit-world",
+  BkYvIUfGyQGkxCWn: {
+    id: "BkYvIUfGyQGkxCWn",
     name: "Touch the Spirit World",
     bucket: "subsystem",
     note: "Touch power granting a weapon the ability to affect incorporeal creatures for a limited duration; a rules-exception weapon-quality grant, not a Change-shaped bonus.",
@@ -566,14 +566,14 @@ export const CLASS_FEATURE_CLASSIFICATION_UNROUTED_DOMAINS: Readonly<
     bucket: "subsystem",
     note: "On a successful melee hit, forgoes damage to instead inflict a greater-command-style effect on the struck creature; a mind-control effect on the enemy, not a bonus number on the cleric.",
   },
-  "subdomain-power:undead:death-s-kiss": {
-    id: "subdomain-power:undead:death-s-kiss",
+  XWgx2P8BeLQLWsKt: {
+    id: "XWgx2P8BeLQLWsKt",
     name: "Death's Kiss",
     bucket: "subsystem",
     note: "Melee touch attack that reclassifies a target as undead for positive/negative energy interactions for a limited duration; a rules-exception effect on the target, not a bonus number on the cleric.",
   },
-  "subdomain-power:wards:warding-rune": {
-    id: "subdomain-power:wards:warding-rune",
+  "2a9giLaMUP7K9aDQ": {
+    id: "2a9giLaMUP7K9aDQ",
     name: "Warding Rune",
     bucket: "subsystem",
     note: "Triggered when a creature is damaged by the cleric's own blast rune; imposes a sanctuary-style effect on that creature's ability to attack the cleric, a condition effect rather than a Change-shaped bonus.",

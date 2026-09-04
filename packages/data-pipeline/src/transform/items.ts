@@ -1,7 +1,7 @@
 import type { Item, ItemContent } from "@pf1/schema";
 
 import type { RawDoc } from "../util/packs.js";
-import { makeUuid, parseUuid } from "../util/uuid.js";
+import { makeUuid } from "../util/uuid.js";
 import {
   asNumber,
   descriptionValue,
@@ -9,32 +9,47 @@ import {
   normalizeContextNotes,
   normalizeSources,
   normalizeUses,
+  readPrice,
   readWeight,
   type UuidResolver,
 } from "./common.js";
 
 /**
- * Foundry models a container's contents as embedded copies of the packed items,
- * each carrying a `compendiumSource` UUID back to the canonical entry. We keep
- * the link when it points into the `items` pack and snapshot the embedded copy
- * otherwise (the sole cross-pack case today is a weapon — see `ItemContent`).
+ * The container a doc is packed inside, if any. Docs carrying this are copies
+ * held by a container (36 separate "Torch" docs, one per kit that packs one),
+ * never catalog entries in their own right — emitting them would put 600
+ * duplicates in front of anyone browsing gear.
+ */
+export function packedInsideContainer(doc: RawDoc): string | undefined {
+  const flags = (doc.flags ?? {}) as Record<string, unknown>;
+  const pf1 = (flags.pf1 ?? {}) as Record<string, unknown>;
+  return typeof pf1.container === "string" ? pf1.container : undefined;
+}
+
+/**
+ * A container's contents, built from the sibling docs that name it in
+ * `flags.pf1.container`. They used to be embedded under `system.items` with a
+ * `_stats.compendiumSource` link back to the catalog entry they copy; the pack
+ * rewrite that landed after v11.11 promoted them to standalone docs and
+ * dropped that link, so the catalog entry is recovered by name instead
+ * (`itemIdByName`, built over the catalog docs only). An entry that resolves to
+ * nothing keeps a weight/price snapshot, the same fallback the one genuine
+ * cross-pack case has always used (the Vampire Slayer's Kit's wooden stake).
+ *
  * Deliberately non-recursive: a packed container stays one entry.
  */
-function normalizeContents(value: unknown): ItemContent[] | undefined {
-  if (typeof value !== "object" || value === null) return undefined;
+export function buildContainerContents(
+  children: RawDoc[],
+  /** Catalog item ids keyed by lowercased name. */
+  itemIdByName: ReadonlyMap<string, string>,
+): ItemContent[] {
   const entries: ItemContent[] = [];
-
-  for (const raw of Object.values(value as Record<string, unknown>)) {
-    if (typeof raw !== "object" || raw === null) continue;
-    const child = raw as Record<string, unknown>;
+  for (const child of children) {
     const name = child.name;
     if (typeof name !== "string" || name === "") continue;
 
     const sys = (child.system ?? {}) as Record<string, unknown>;
-    const stats = (child._stats ?? {}) as Record<string, unknown>;
-    const source = typeof stats.compendiumSource === "string" ? stats.compendiumSource : "";
-    const parsed = source ? parseUuid(source) : null;
-    const itemId = parsed?.pack === "items" ? parsed.id : undefined;
+    const itemId = itemIdByName.get(name.toLowerCase());
 
     const entry: ItemContent = { name };
     if (itemId) entry.itemId = itemId;
@@ -47,14 +62,13 @@ function normalizeContents(value: unknown): ItemContent[] | undefined {
     if (!itemId) {
       const weight = readWeight(sys.weight);
       if (weight != null) entry.weight = weight;
-      const price = asNumber(sys.price);
+      const price = readPrice(sys.price);
       if (price != null) entry.price = price;
     }
 
     entries.push(entry);
   }
-
-  return entries.length > 0 ? entries : undefined;
+  return entries;
 }
 
 export function transformItem(doc: RawDoc, resolveUuid: UuidResolver): Item {
@@ -69,13 +83,12 @@ export function transformItem(doc: RawDoc, resolveUuid: UuidResolver): Item {
     sources: normalizeSources(sys.sources),
     subType: typeof sys.subType === "string" ? sys.subType : undefined,
     slot: typeof sys.slot === "string" ? sys.slot : undefined,
-    price: asNumber(sys.price),
+    price: readPrice(sys.price),
     weight: readWeight(sys.weight),
     cl: asNumber(sys.cl),
     changes: normalizeChanges(sys.changes),
     contextNotes: normalizeContextNotes(sys.contextNotes, resolveUuid),
     uses: normalizeUses(sys.uses),
     aura: aura && typeof aura.school === "string" ? { school: aura.school } : undefined,
-    contents: normalizeContents(sys.items),
   };
 }

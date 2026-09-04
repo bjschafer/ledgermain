@@ -65,7 +65,7 @@
     "8": ["0kppkhsencd6tzvh"],
     "9": ["19p4nr8rsvt42lmn"]
   },
-  "Archon": {
+  "Archon (Good Domain)": {
     "1": ["21bxbzdaawjrnvyo"],
     "2": ["zujht80bgjdk9cyb"],
     "3": ["hu8179fdqfkl0bqj"],
@@ -74,6 +74,17 @@
     "6": ["gfvnfa5k1tnpvg8v"],
     "7": ["odcyzsuexods8ek9"],
     "8": ["n0vm6or4nwaylpfa"],
+    "9": ["mi52crelhwuy6bmp"]
+  },
+  "Archon (Law Domain)": {
+    "1": ["21bxbzdaawjrnvyo"],
+    "2": ["zujht80bgjdk9cyb"],
+    "3": ["hu8179fdqfkl0bqj"],
+    "4": ["8zeulunjetwrdgwj"],
+    "5": ["3lgy3s4h4087ojht"],
+    "6": ["gfvnfa5k1tnpvg8v"],
+    "7": ["7e22urxux6i2mua5"],
+    "8": ["lzj5umxjvogvpg6b"],
     "9": ["mi52crelhwuy6bmp"]
   },
   "Aristocracy": {
@@ -109,7 +120,7 @@
     "8": ["iq0as5470o8q9y39"],
     "9": ["qk3oeq4awbc1smjw"]
   },
-  "Azata": {
+  "Azata (Chaos Domain)": {
     "1": ["pysrx5kxfjvsjjsi"],
     "2": ["zujht80bgjdk9cyb"],
     "3": ["7d6sv5ecvi7kho3m"],
@@ -118,6 +129,17 @@
     "6": ["gfvnfa5k1tnpvg8v"],
     "7": ["3zi4ie97hxr1d3ng"],
     "8": ["o0s3eo85npgigh3w"],
+    "9": ["mi52crelhwuy6bmp"]
+  },
+  "Azata (Good Domain)": {
+    "1": ["pysrx5kxfjvsjjsi"],
+    "2": ["zujht80bgjdk9cyb"],
+    "3": ["7d6sv5ecvi7kho3m"],
+    "4": ["erndkoe44rgj0lob"],
+    "5": ["sg3eq6xpsum65fgm"],
+    "6": ["gfvnfa5k1tnpvg8v"],
+    "7": ["odcyzsuexods8ek9"],
+    "8": ["n0vm6or4nwaylpfa"],
     "9": ["mi52crelhwuy6bmp"]
   },
   "Blood": {
@@ -329,7 +351,7 @@
     "8": ["o0s3eo85npgigh3w"],
     "9": ["mi52crelhwuy6bmp"]
   },
-  "Demon": {
+  "Demon (Chaos Domain)": {
     "1": ["wa7p5zwwl1p0rt92"],
     "2": ["zujht80bgjdk9cyb"],
     "3": ["8u1xa5javcxc6szk"],
@@ -340,7 +362,18 @@
     "8": ["o0s3eo85npgigh3w"],
     "9": ["mi52crelhwuy6bmp"]
   },
-  "Devil": {
+  "Demon (Evil Domain)": {
+    "1": ["wa7p5zwwl1p0rt92"],
+    "2": ["zujht80bgjdk9cyb"],
+    "3": ["8u1xa5javcxc6szk"],
+    "4": ["okui7mft5bquqfrg"],
+    "5": ["xgv1e2ayf1e0br9j"],
+    "6": ["qf4bqjgeff1q4hjt"],
+    "7": ["baocube6vvey9zlc"],
+    "8": ["flrn1xmm2wfrxbkf"],
+    "9": ["mi52crelhwuy6bmp"]
+  },
+  "Devil (Evil Domain)": {
     "1": ["2p6fzj5t03oivndd"],
     "2": ["zujht80bgjdk9cyb"],
     "3": ["zqj5qzyl46af27v0"],
@@ -349,6 +382,17 @@
     "6": ["qf4bqjgeff1q4hjt"],
     "7": ["baocube6vvey9zlc"],
     "8": ["flrn1xmm2wfrxbkf"],
+    "9": ["mi52crelhwuy6bmp"]
+  },
+  "Devil (Law Domain)": {
+    "1": ["2p6fzj5t03oivndd"],
+    "2": ["zujht80bgjdk9cyb"],
+    "3": ["zqj5qzyl46af27v0"],
+    "4": ["8zeulunjetwrdgwj"],
+    "5": ["3lgy3s4h4087ojht"],
+    "6": ["qf4bqjgeff1q4hjt"],
+    "7": ["7e22urxux6i2mua5"],
+    "8": ["lzj5umxjvogvpg6b"],
     "9": ["mi52crelhwuy6bmp"]
   },
   "Divine": {
@@ -1133,15 +1177,8 @@
     "9": ["mi52crelhwuy6bmp"]
   },
   "Revolution": {
-    "1": ["eu4u4mr1naoiqohz"],
     "2": ["v3d3lnjj7ks0ztii"],
-    "3": ["o87h8gjxevcbztgd"],
-    "4": ["lvzq2mwkqmozolpl"],
-    "5": ["myg2b9ww43nnlbr2"],
-    "6": ["1m5rpvirt48brv71"],
-    "7": ["080el1lfozrhf6c2"],
-    "8": ["blvetbc929cfx4m8"],
-    "9": ["kdzx88z16gs8l392"]
+    "6": ["1m5rpvirt48brv71"]
   },
   "Riot": {
     "1": ["ekhygw5fzfe52n35"],

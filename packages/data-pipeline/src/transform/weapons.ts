@@ -2,7 +2,7 @@ import type { WeaponRef } from "@pf1/schema";
 
 import type { RawDoc } from "../util/packs.js";
 import { makeUuid } from "../util/uuid.js";
-import { asNumber, asStringArray, normalizeSources, readWeight } from "./common.js";
+import { asNumber, asStringArray, normalizeSources, readPrice, readWeight } from "./common.js";
 
 /** Weapon subtypes we vendor. Ammunition, siege, and magical excluded. */
 const PROFICIENCIES = new Set(["simple", "martial", "exotic"]);
@@ -53,7 +53,7 @@ export function transformWeapon(doc: RawDoc): WeaponRef {
     weaponSubtype,
     baseTypes: baseTypes.length > 0 ? baseTypes : undefined,
     group: slugifyBase(baseTypes[0]),
-    price: asNumber(sys.price),
+    price: readPrice(sys.price),
     weight: readWeight(sys.weight),
     rangeIncrement: rangeUnits === "ft" ? parsePositiveNumber(range?.value) : undefined,
     misfire: asNumber(ammo.misfire),

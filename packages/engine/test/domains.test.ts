@@ -214,11 +214,11 @@ describe("cleric subdomain selection (in place of a parent domain)", () => {
   });
 });
 
-describe("Destruction domain's hand-authored 8th-level power", () => {
+describe("Destruction domain's 8th-level power", () => {
   // CRB p. 43: Destruction grants Destructive Smite (1st) and Destructive
-  // Aura (8th). The Foundry pack has no document for Destructive Aura at
-  // all, so it's hand-authored in data-pipeline `supplements.ts` — before
-  // that fix, a Destruction cleric never saw their 8th-level power.
+  // Aura (8th). Destructive Aura was hand-authored in data-pipeline
+  // `supplements.ts` until the Foundry pack grew a document for it; the
+  // supplement is now only its rounds-per-day formula, which the pack halves.
   it("a level-1 Destruction cleric gets Destructive Smite only", () => {
     expect(domainFeatureNames(makeCleric(1, ["Destruction"]))).toEqual(["Destructive Smite"]);
   });
@@ -242,7 +242,10 @@ describe("Destruction domain's hand-authored 8th-level power", () => {
       "Destructive Smite",
       "Hateful Aura",
     ]);
-    expect(domainFeatureNames(makeCleric(8, ["Rage"]))).toEqual(["Destructive Smite", "Rage"]);
+    expect(domainFeatureNames(makeCleric(8, ["Rage"]))).toEqual([
+      "Destructive Smite",
+      "Rage (Cleric)",
+    ]);
   });
 
   it("Torture subdomain replaces Destructive Smite instead, keeping Destructive Aura", () => {

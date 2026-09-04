@@ -685,13 +685,16 @@ describe("elemental school bonus-slot spell lists (elemental-school-spell-lists.
     expect(names("fire-elemental", 4)).toContain("Elemental Body I"); // "elemental body i"
   });
 
-  it("repairs the three known upstream name defects", () => {
+  // These three names were misspelled or run together upstream ("firey body",
+  // "spiritual weaponlife pact", "share memorypact") and were repaired by a
+  // hand-authored table here until upstream fixed the descriptions itself.
+  // Kept as a guard that the spells still land, by whichever route.
+  it("resolves the names that were once upstream defects", () => {
     const names = (tag: string, level: number) =>
       ref.elementalSchoolSpellLists[tag]![level]!.map((id) => ref.spells[id]!.name);
-    expect(names("fire-elemental", 9)).toContain("Fiery Body"); // source: "firey body"
-    expect(names("aether-elemental", 2)).toContain("Spiritual Weapon"); // "spiritual weaponlife pact"
-    expect(names("aether-elemental", 2)).toContain("Life Pact");
-    expect(names("void-elemental", 2)).toContain("Share Memory"); // "share memorypact"
+    expect(names("fire-elemental", 9)).toContain("Fiery Body");
+    expect(names("aether-elemental", 2)).toContain("Spiritual Weapon");
+    expect(names("void-elemental", 2)).toContain("Share Memory");
   });
 });
 
@@ -741,9 +744,9 @@ describe("focused arcane schools (wizard-schools/focused-schools/*.yaml)", () =>
 });
 
 describe("cleric subdomains (domains/subdomains/*.yaml)", () => {
-  it("emits 136 subdomains, every one resolved to at least one parent domain", () => {
-    expect(Object.keys(ref.subdomains).length).toBe(136);
-    expect(ref.meta.counts.subdomains).toBe(136);
+  it("emits 140 subdomains, every one resolved to at least one parent domain", () => {
+    expect(Object.keys(ref.subdomains).length).toBe(140);
+    expect(ref.meta.counts.subdomains).toBe(140);
     for (const sub of Object.values(ref.subdomains)) {
       expect(sub.parentDomainTags.length, sub.name).toBeGreaterThan(0);
       for (const parentTag of sub.parentDomainTags) {
@@ -771,8 +774,8 @@ describe("cleric subdomains (domains/subdomains/*.yaml)", () => {
     expect(byLevel["Remote Viewing (Domain Power)"]).toBeUndefined();
   });
 
-  it("every subdomain resolves granted powers of its own (125 imported, 11 from the Foundry pack)", () => {
-    expect(ref.meta.counts.subdomainsWithImportedPowers).toBe(125);
+  it("every subdomain resolves granted powers of its own (65 imported, 75 from the Foundry pack)", () => {
+    expect(ref.meta.counts.subdomainsWithImportedPowers).toBe(65);
     for (const sub of Object.values(ref.subdomains)) {
       expect(sub.features.length, sub.name).toBeGreaterThan(0);
     }
@@ -786,7 +789,9 @@ describe("cleric subdomains (domains/subdomains/*.yaml)", () => {
     expect(suddenShift.abilityType).toBe("sp");
     expect(suddenShift.description).toContain("teleport up to 10 feet");
     // APG p. 89 — the subdomain's own citation, not the parent domain's.
-    expect(suddenShift.sources).toEqual([{ id: "advanced-player-s-guide", pages: "89" }]);
+    // Cited by product code now that the power comes from the Foundry pack
+    // rather than the Pf Data 1e import.
+    expect(suddenShift.sources).toEqual([{ id: "PZO1115", pages: "89" }]);
   });
 
   it("a subdomain keeps its parent's non-power domain bonus unless it replaces it (Travel)", () => {
@@ -822,8 +827,8 @@ describe("cleric subdomains (domains/subdomains/*.yaml)", () => {
 
 describe("subdomain spell lists (subdomainSpellLists, merged onto the parent domain's list)", () => {
   it("emits one list per subdomain", () => {
-    expect(Object.keys(ref.subdomainSpellLists).length).toBe(136);
-    expect(ref.meta.counts.subdomainSpellLists).toBe(136);
+    expect(Object.keys(ref.subdomainSpellLists).length).toBe(140);
+    expect(ref.meta.counts.subdomainSpellLists).toBe(140);
   });
 
   it("Aeon overrides only levels 1/5/6 of Knowledge's list, keeps the rest", () => {

@@ -104,7 +104,7 @@
     "conditions": [],
     "activeBuffs": [
       {
-        "instanceId": "7ca91160-0e1e-4e61-9e68-90026a970830",
+        "instanceId": "buff-sample-bulls-strength",
         "buffId": "ClOy4KHJFDdt0ALh",
         "name": "Bull's Strength",
         "changes": [
@@ -119,7 +119,7 @@
         "remainingRounds": 42
       },
       {
-        "instanceId": "e654d9c5-6208-4405-a6e5-9bae362e4b80",
+        "instanceId": "buff-sample-bless",
         "buffId": "QYVZS8MfOKzjpCm1",
         "name": "Bless",
         "changes": [

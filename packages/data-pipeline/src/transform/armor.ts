@@ -2,7 +2,7 @@ import type { ArmorRef } from "@pf1/schema";
 
 import type { RawDoc } from "../util/packs.js";
 import { makeUuid } from "../util/uuid.js";
-import { asNumber, asStringArray, normalizeSources, readWeight } from "./common.js";
+import { asNumber, asStringArray, normalizeSources, readPrice, readWeight } from "./common.js";
 
 const ARMOR_WEIGHT: Record<string, ArmorRef["weightClass"]> = {
   lightArmor: 1,
@@ -35,7 +35,7 @@ export function transformArmor(doc: RawDoc): ArmorRef {
     weightClass: equipSub ? (ARMOR_WEIGHT[equipSub] ?? undefined) : undefined,
     baseTypes: baseTypes.length > 0 ? baseTypes : undefined,
     proficiency: equipSub,
-    price: asNumber(sys.price),
+    price: readPrice(sys.price),
     weight,
     asf: asNumber(sys.spellFailure),
   };

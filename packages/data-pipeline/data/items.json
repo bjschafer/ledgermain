@@ -3,43 +3,26 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
-      },
-      {
-        "itemId": "tPIf3G5a6QZAnM4F",
-        "name": "Prismatic Crystal"
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
       },
       {
         "itemId": "wjvxmolafiegvesl",
         "name": "Belt Pouch"
       },
       {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
+        "itemId": "tPIf3G5a6QZAnM4F",
+        "name": "Prismatic Crystal"
       },
       {
         "itemId": "ygmrcisvftnvjyob",
         "name": "Flint And Steel"
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
       }
     ],
     "contextNotes": [],
     "id": "0A67B0qcuGhlLnPK",
     "name": "Kit, Psychic's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1132",
@@ -144,7 +127,7 @@
     "changes": [],
     "cl": 9,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer dies, he is automatically affected by breath of life.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr><p>The first time that the wearer dies, he is automatically affected by breath of life.</p>",
     "id": "10sYHJgoPNRINvIs",
     "name": "Talisman of Life's Breath, Greater",
     "price": 35000,
@@ -170,7 +153,7 @@
     "changes": [],
     "cl": 7,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer becomes grappled, entangled, or paralyzed, he is automatically affected by Freedom of Movement for 3 rounds.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr><p>The first time that the wearer becomes grappled, entangled, or paralyzed, he is automatically affected by Freedom of Movement for 3 rounds.</p>",
     "id": "18ucrDrOpyJ9PPtz",
     "name": "Talisman of Freedom, Lesser",
     "price": 900,
@@ -232,7 +215,7 @@
     "changes": [],
     "cl": 1,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer falls at least 5 feet, he is automatically affected by Feather Fall.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr><p>The first time that the wearer falls at least 5 feet, he is automatically affected by Feather Fall.</p>",
     "id": "1pVnewyLQzxMm5Of",
     "name": "Talisman of Beneficial Winds, Greater",
     "price": 500,
@@ -258,7 +241,7 @@
     "changes": [],
     "cl": 1,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer would gain the frightened or panicked condition, he gains the shaken condition instead.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr><p>The first time that the wearer would gain the frightened or panicked condition, he gains the shaken condition instead.</p>",
     "id": "1xX9RpN7lE1Kmb90",
     "name": "Talisman of Warrior's Courage, Greater",
     "price": 4500,
@@ -284,7 +267,7 @@
     "changes": [],
     "cl": 1,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer falls at least 5 feet, he is automatically affected by Feather Fall.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr><p>The first time that the wearer falls at least 5 feet, he is automatically affected by Feather Fall.</p>",
     "id": "22BilpOY4Ojtp65W",
     "name": "Talisman of Beneficial Winds, Lesser",
     "price": 50,
@@ -482,13 +465,38 @@
     "changes": [],
     "contents": [
       {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
+      },
+      {
         "itemId": "snfogneawzopfzzl",
         "name": "Torch",
         "quantity": 10
       },
       {
-        "itemId": "zopwdgykghmkpulz",
-        "name": "Ink"
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "hdK27WBFJFUNODbx",
+        "name": "Journal, blank"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
       },
       {
         "itemId": "nbbqukzwghrixhyl",
@@ -500,21 +508,8 @@
         "name": "Belt Pouch"
       },
       {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       },
       {
         "itemId": "40dCFYP3DRYLZK2q",
@@ -522,25 +517,14 @@
         "quantity": 2
       },
       {
-        "itemId": "gbrjebshlzusiqwz",
-        "name": "Inkpen"
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "hdK27WBFJFUNODbx",
-        "name": "Journal, blank"
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
       }
     ],
     "contextNotes": [],
     "id": "3QoyxChtFEAw4TUj",
     "name": "Kit, Occultist's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1132",
@@ -552,7 +536,7 @@
   "3V5aC0PcNcsBCEPh": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>This mildly toxic liniment numbs flesh and can soothe injuries. Though the tincture is actually poisonous, an imbiber who avoids becoming poisoned recovers from minor injuries.</p><h2>Snake Oil</h2><p><strong>Type</strong> poison (contact); <strong>Save</strong> Fortitude DC 12<br /><strong>Onset</strong> 1 round; <strong>Frequency</strong> 1/minute for 5 minutes<br /><strong>Effect</strong> On a failed save, snake oil deals 1 point of nonlethal damage. However, on a successful save, the toxin heals 1d6 points of nonlethal damage; <strong>Cure</strong> 1 save</p>",
+    "description": "<p>This mildly toxic liniment numbs flesh and can soothe injuries. Though the tincture is actually poisonous, an imbiber who avoids becoming poisoned recovers from minor injuries.</p><h2>Snake Oil</h2><p><strong>Type</strong> poison (contact); <strong>Save</strong> Fortitude DC 12<br><strong>Onset</strong> 1 round; <strong>Frequency</strong> 1/minute for 5 minutes<br><strong>Effect</strong> On a failed save, snake oil deals 1 point of nonlethal damage. However, on a successful save, the toxin heals 1d6 points of nonlethal damage; <strong>Cure</strong> 1 save</p>",
     "id": "3V5aC0PcNcsBCEPh",
     "name": "Snake Oil",
     "price": 20,
@@ -1325,28 +1309,12 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "NgwFMX44jn9pD5k2",
-        "name": "Sponge"
-      },
-      {
         "itemId": "DGFs2jVxtanZnxQB",
         "name": "Comb"
       },
       {
-        "itemId": "qtVn6uvpmPlc30AX",
-        "name": "Mirror, Miniature"
-      },
-      {
-        "itemId": "JFt3CfOysONkqB6X",
-        "name": "Chewing Stick"
-      },
-      {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "7aCkyFhei7ZRweuQ",
-        "name": "Hairbrush"
+        "itemId": "MyTszOhmpMPGkDO8",
+        "name": "Scissors"
       },
       {
         "itemId": "TlhTyr56K905zx6Q",
@@ -1357,11 +1325,28 @@
         "name": "Nail File"
       },
       {
-        "itemId": "MyTszOhmpMPGkDO8",
-        "name": "Scissors"
+        "itemId": "7aCkyFhei7ZRweuQ",
+        "name": "Hairbrush"
+      },
+      {
+        "itemId": "NgwFMX44jn9pD5k2",
+        "name": "Sponge"
+      },
+      {
+        "itemId": "qtVn6uvpmPlc30AX",
+        "name": "Mirror, Miniature"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "JFt3CfOysONkqB6X",
+        "name": "Chewing Stick"
       }
     ],
     "contextNotes": [],
+    "description": "<p>This pouch of toiletries includes a comb, scissors, a nail file, a sponge, a hairbrush, a miniature mirror, soap, a chewing stick, and tooth powder.</p>",
     "id": "6yfwD4QhSsmXaCUX",
     "name": "Grooming Kit",
     "price": 1,
@@ -1527,6 +1512,7 @@
     "contextNotes": [],
     "id": "7aCkyFhei7ZRweuQ",
     "name": "Hairbrush",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.7aCkyFhei7ZRweuQ"
   },
@@ -1849,12 +1835,51 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       },
       {
         "itemId": "gbrjebshlzusiqwz",
         "name": "Inkpen"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "jewqhqesccxrvivd",
+        "name": "Candle",
+        "quantity": 10
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
       },
       {
         "itemId": "iegwwsarycqwoezj",
@@ -1866,56 +1891,18 @@
         "quantity": 10
       },
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
-      },
-      {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "ucgkbtqiybhyiwwk",
-        "name": "Spell Component Pouch"
-      },
-      {
         "itemId": "ygmrcisvftnvjyob",
         "name": "Flint And Steel"
       },
       {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
-        "itemId": "jewqhqesccxrvivd",
-        "name": "Candle",
-        "quantity": 10
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "zopwdgykghmkpulz",
-        "name": "Ink"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       }
     ],
     "contextNotes": [],
     "id": "8gOHyRFOj2K0F0Qj",
     "name": "Kit, Witch's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -1977,16 +1964,33 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "etmrlhlbyoahuunz",
-        "name": "Gunsmith's Kit"
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "PtMcbl9zBVnwn0mA",
+        "name": "Powder horn"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
       },
       {
         "itemId": "lSCPUK5Ea6R0t4fz",
         "name": "Backpack, common"
       },
       {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       },
       {
         "itemId": "yMoclCylbCRKyaZF",
@@ -1998,42 +2002,26 @@
         "quantity": 10
       },
       {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
         "itemId": "qlmtnppwxkubqyhp",
         "name": "Rope"
       },
       {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
+        "itemId": "etmrlhlbyoahuunz",
+        "name": "Gunsmith's Kit"
       },
       {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
       },
       {
         "itemId": "bsztkhkrhgmsbqpt",
         "name": "Waterskin"
-      },
-      {
-        "itemId": "PtMcbl9zBVnwn0mA",
-        "name": "Powder horn"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
       }
     ],
     "contextNotes": [],
     "id": "9IQU7ZRO4KhglOV0",
     "name": "Kit, Gunslinger's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -2077,13 +2065,16 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
       },
       {
         "itemId": "qlmtnppwxkubqyhp",
         "name": "Rope"
+      },
+      {
+        "itemId": "zompehbhvegvncwu",
+        "name": "Manacles, common"
       },
       {
         "itemId": "jewqhqesccxrvivd",
@@ -2091,62 +2082,60 @@
         "quantity": 10
       },
       {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "s5KkeKPLnneb0WR4",
-        "name": "Holy symbol (Wood)"
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
       },
       {
         "itemId": "ucgkbtqiybhyiwwk",
         "name": "Spell Component Pouch"
       },
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
       },
       {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       },
       {
         "itemId": "lSCPUK5Ea6R0t4fz",
         "name": "Backpack, common"
       },
       {
-        "itemId": "zompehbhvegvncwu",
-        "name": "Manacles, common"
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
       },
       {
         "itemId": "fdfdwpuaqjjudyeo",
         "name": "Holy text, cheap"
       },
       {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
         "itemId": "yMoclCylbCRKyaZF",
         "name": "Soap"
       },
       {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
       },
       {
         "itemId": "bsztkhkrhgmsbqpt",
         "name": "Waterskin"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
       }
     ],
     "contextNotes": [],
     "id": "9NkBjZfztOP8qgsY",
     "name": "Kit, Inquisitor's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -2473,6 +2462,7 @@
     "contextNotes": [],
     "id": "Asg5Ek4CFqb80P7C",
     "name": "Spoon",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.Asg5Ek4CFqb80P7C",
     "weight": 0.1
@@ -2586,7 +2576,7 @@
   "Bhq8Wf3NG9d51aLk": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 1 gp; Weight 1 lb.<br />Category Entertainment</p>\n<h3>Description</h3>\n<p>Whether bent, colored, or scratched, marked cards allow an informed user to know what’s on the front of the card by viewing the mark on the back. Realizing that the cards are marked requires a DC 25 Perception check or DC 20 Profession (gambler) check. The listed price is for a common paper deck.</p>",
+    "description": "<p>Price 1 gp; Weight 1 lb.<br>Category Entertainment</p>\n<h3>Description</h3>\n<p>Whether bent, colored, or scratched, marked cards allow an informed user to know what’s on the front of the card by viewing the mark on the back. Realizing that the cards are marked requires a DC 25 Perception check or DC 20 Profession (gambler) check. The listed price is for a common paper deck.</p>",
     "id": "Bhq8Wf3NG9d51aLk",
     "name": "Marked cards",
     "price": 1,
@@ -2677,6 +2667,10 @@
     "changes": [],
     "contents": [
       {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
         "itemId": "snfogneawzopfzzl",
         "name": "Torch",
         "quantity": 10
@@ -2691,10 +2685,6 @@
         "name": "Ink"
       },
       {
-        "itemId": "ucgkbtqiybhyiwwk",
-        "name": "Spell Component Pouch"
-      },
-      {
         "itemId": "iegwwsarycqwoezj",
         "name": "Bedroll"
       },
@@ -2703,12 +2693,16 @@
         "name": "Soap"
       },
       {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
+      },
+      {
         "itemId": "habofoapdifirevm",
         "name": "Pot, common"
       },
       {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
       },
       {
         "itemId": "wjvxmolafiegvesl",
@@ -2719,22 +2713,19 @@
         "name": "Mess Kit"
       },
       {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
       },
       {
         "itemId": "lSCPUK5Ea6R0t4fz",
         "name": "Backpack, common"
-      },
-      {
-        "itemId": "gbrjebshlzusiqwz",
-        "name": "Inkpen"
       }
     ],
     "contextNotes": [],
     "description": "<p>The kit does not contain a spellbook because a wizard begins play with a spellbook and does not need to purchase one.</p>",
     "id": "CDQCyfYfW9aneX9e",
     "name": "Kit, Wizard's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -2889,8 +2880,39 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "jewqhqesccxrvivd",
+        "name": "Candle",
+        "quantity": 10
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
       },
       {
         "itemId": "iegwwsarycqwoezj",
@@ -2901,48 +2923,18 @@
         "name": "Flint And Steel"
       },
       {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
         "itemId": "lSCPUK5Ea6R0t4fz",
         "name": "Backpack, common"
       },
       {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
-      },
-      {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "jewqhqesccxrvivd",
-        "name": "Candle",
-        "quantity": 10
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
       }
     ],
     "contextNotes": [],
     "id": "CUhcL6yCE9VW0AXv",
     "name": "Kit, Oracle's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -3040,7 +3032,7 @@
   "D0NxKkJTZebPbFZO": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 30 gp; Weight 2 lbs.<br />Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>This chain is made of interlocking metal links roughly an inch long, and thick enough to bear large amounts of weight. It has hardness 10 and 5 hit points. It can be burst with a DC 26 Strength check.</p>",
+    "description": "<p>Price 30 gp; Weight 2 lbs.<br>Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>This chain is made of interlocking metal links roughly an inch long, and thick enough to bear large amounts of weight. It has hardness 10 and 5 hit points. It can be burst with a DC 26 Strength check.</p>",
     "id": "D0NxKkJTZebPbFZO",
     "name": "Chain",
     "price": 30,
@@ -3080,6 +3072,7 @@
     "contextNotes": [],
     "id": "DGFs2jVxtanZnxQB",
     "name": "Comb",
+    "price": 0,
     "subType": "tradeGoods",
     "uuid": "Compendium.pf1.items.Item.DGFs2jVxtanZnxQB"
   },
@@ -3235,27 +3228,6 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "fdfdwpuaqjjudyeo",
-        "name": "Holy text, cheap"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
-        "itemId": "s5KkeKPLnneb0WR4",
-        "name": "Holy symbol (Wood)"
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
-      },
-      {
         "itemId": "iegwwsarycqwoezj",
         "name": "Bedroll"
       },
@@ -3264,34 +3236,56 @@
         "name": "Soap"
       },
       {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
         "itemId": "Ueae6c2qqJJGpncA",
         "name": "Mess Kit"
       },
       {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
+        "itemId": "fdfdwpuaqjjudyeo",
+        "name": "Holy text, cheap"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
       },
       {
         "itemId": "qlmtnppwxkubqyhp",
         "name": "Rope"
       },
       {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
         "itemId": "lSCPUK5Ea6R0t4fz",
         "name": "Backpack, common"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       }
     ],
     "contextNotes": [],
     "id": "E13qnAa0Fdu7mvcZ",
     "name": "Kit, Paladin's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -3303,7 +3297,7 @@
   "E5nTyLkJ67sg0dNy": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>A huge open-air canopy, plus stakes, poles, and ropes. A pavilion holds 10 creatures and takes 90 minutes to assemble. Pavilion tents are large enough to accommodate a small fire in the center.</p><hr /><p>Two Small creatures count as a Medium creature, and one Large creature counts as two Medium creatures. Packing up a tent takes half as long as assembling it.</p>",
+    "description": "<p>A huge open-air canopy, plus stakes, poles, and ropes. A pavilion holds 10 creatures and takes 90 minutes to assemble. Pavilion tents are large enough to accommodate a small fire in the center.</p><hr><p>Two Small creatures count as a Medium creature, and one Large creature counts as two Medium creatures. Packing up a tent takes half as long as assembling it.</p>",
     "id": "E5nTyLkJ67sg0dNy",
     "name": "Tent, pavilion",
     "price": 100,
@@ -3735,6 +3729,7 @@
     "contextNotes": [],
     "id": "GZtAdQ7gJlCe9z64",
     "name": "Knife",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.GZtAdQ7gJlCe9z64",
     "weight": 0.1
@@ -4108,43 +4103,44 @@
         "name": "Backpack, common"
       },
       {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
-        "itemId": "fwfwshvyweqbthwk",
-        "name": "Blanket"
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
       },
       {
         "itemId": "bsztkhkrhgmsbqpt",
         "name": "Waterskin"
       },
       {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "fwfwshvyweqbthwk",
+        "name": "Blanket"
       },
       {
         "itemId": "qlmtnppwxkubqyhp",
         "name": "Rope"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
       }
     ],
     "contextNotes": [],
     "id": "InAHKpiWiATsMJNe",
     "name": "Kit, Shifter's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1140",
@@ -4157,38 +4153,12 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
         "itemId": "bsztkhkrhgmsbqpt",
         "name": "Waterskin"
       },
       {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       },
       {
         "itemId": "Ueae6c2qqJJGpncA",
@@ -4199,17 +4169,44 @@
         "name": "Manacles, common"
       },
       {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
         "itemId": "ygmrcisvftnvjyob",
         "name": "Flint And Steel"
       },
       {
         "itemId": "lSCPUK5Ea6R0t4fz",
         "name": "Backpack, common"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
       }
     ],
     "contextNotes": [],
     "id": "IvvqBUI4UMiY5XVQ",
     "name": "Kit, Slayer's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1129",
@@ -4225,7 +4222,7 @@
     "changes": [],
     "cl": 9,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer dies, he is automatically affected by breath of life.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr><p>The first time that the wearer dies, he is automatically affected by breath of life.</p>",
     "id": "IztzOuUqOp2IjWoQ",
     "name": "Talisman of Life's Breath, Lesser",
     "price": 3500,
@@ -4247,31 +4244,6 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
         "itemId": "snfogneawzopfzzl",
         "name": "Torch",
         "quantity": 10
@@ -4281,8 +4253,8 @@
         "name": "Bedroll"
       },
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
       },
       {
         "itemId": "Ueae6c2qqJJGpncA",
@@ -4291,11 +4263,37 @@
       {
         "itemId": "qlmtnppwxkubqyhp",
         "name": "Rope"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
       }
     ],
     "contextNotes": [],
     "id": "J5sXKSqZLcTwqGJi",
     "name": "Kit, Swashbuckler's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1129",
@@ -4309,6 +4307,7 @@
     "contextNotes": [],
     "id": "JFt3CfOysONkqB6X",
     "name": "Chewing Stick",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.JFt3CfOysONkqB6X"
   },
@@ -4584,7 +4583,7 @@
   "KPNvysfviHeHJ3PY": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>This clay container resembles a fuse grenade, but trails a pulley and wire rather than a fuse. Pulling the cord (a move action) sparks a flint and steel within the device, causing the grenade to explode. The pull cord can be attached to a door or drawer within 5 feet, or strung across a 5-foot square, causing the grenade to detonate when its tripwire is disturbed. A pull-cord grenade cannot be reused.</p><p>This can be crafted with a DC 25 Craft (traps) check.</p><h3>Pull-Cord Grenade</h3><p><strong>Type</strong> mechanical; <strong>Perception</strong> DC 15; <strong>Disable Device</strong> DC 15</p><h3>Effects</h3><p><strong>Trigger</strong> touch; <strong>Reset</strong> none<br /><strong>Effect</strong> explosion (2d6 bludgeoning damage and 1d6 fire damage); Reflex DC 15 half; multiple targets (all targets within 10 feet)</p>",
+    "description": "<p>This clay container resembles a fuse grenade, but trails a pulley and wire rather than a fuse. Pulling the cord (a move action) sparks a flint and steel within the device, causing the grenade to explode. The pull cord can be attached to a door or drawer within 5 feet, or strung across a 5-foot square, causing the grenade to detonate when its tripwire is disturbed. A pull-cord grenade cannot be reused.</p><p>This can be crafted with a DC 25 Craft (traps) check.</p><h3>Pull-Cord Grenade</h3><p><strong>Type</strong> mechanical; <strong>Perception</strong> DC 15; <strong>Disable Device</strong> DC 15</p><h3>Effects</h3><p><strong>Trigger</strong> touch; <strong>Reset</strong> none<br><strong>Effect</strong> explosion (2d6 bludgeoning damage and 1d6 fire damage); Reflex DC 15 half; multiple targets (all targets within 10 feet)</p>",
     "id": "KPNvysfviHeHJ3PY",
     "name": "Pull-cord grenade",
     "price": 150,
@@ -4860,7 +4859,7 @@
     "changes": [],
     "cl": 7,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer rolls a natural 1 on a d20 roll (such as on an ability check, attack roll, saving throw, or skill check), he can immediately roll again and take the new result instead.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr><p>The first time that the wearer rolls a natural 1 on a d20 roll (such as on an ability check, attack roll, saving throw, or skill check), he can immediately roll again and take the new result instead.</p>",
     "id": "M4oAiw7nLbLmPLuB",
     "name": "Talisman of Good Fortune, Lesser",
     "price": 1680,
@@ -4881,7 +4880,7 @@
   "MOoBkOynV1fgrGtr": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 50 gp; Weight 3 lbs.<br />Category Tools</p>\n<h3>Description</h3>\n<p>This 50-page tome contains accurate drawings of common animal, humanoid, and monster tracks, as well as notes on stride length, tread depth, and similarly useful information. The book gives you a +2 circumstance bonus to identify a creature by its tracks, though the use of shoes makes identifying many humanoids difficult or impossible. Though the book can’t help you identify unique individuals, it can help you tell an ogre’s footprint from a troll’s footprint, or an elf’s track from an orc’s. Books sold in different areas may have different footprints, depending on what creatures are common to that location.</p>",
+    "description": "<p>Price 50 gp; Weight 3 lbs.<br>Category Tools</p>\n<h3>Description</h3>\n<p>This 50-page tome contains accurate drawings of common animal, humanoid, and monster tracks, as well as notes on stride length, tread depth, and similarly useful information. The book gives you a +2 circumstance bonus to identify a creature by its tracks, though the use of shoes makes identifying many humanoids difficult or impossible. Though the book can’t help you identify unique individuals, it can help you tell an ogre’s footprint from a troll’s footprint, or an elf’s track from an orc’s. Books sold in different areas may have different footprints, depending on what creatures are common to that location.</p>",
     "id": "MOoBkOynV1fgrGtr",
     "name": "Footprint book",
     "price": 50,
@@ -4898,7 +4897,7 @@
   "Mehr2G7J5uVsOem9": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 1 sp–10 gp; Weight 2 lbs.<br />Category Entertainment</p>\n<h3>Description</h3>\n<p>Board games have innumerable types and variations. Siege, a strategy game where players try to surround the other’s pieces, is popular with older adults, while more chaotic games like Wyvern’s Race and Doppel are tavern favorites.</p>",
+    "description": "<p>Price 1 sp–10 gp; Weight 2 lbs.<br>Category Entertainment</p>\n<h3>Description</h3>\n<p>Board games have innumerable types and variations. Siege, a strategy game where players try to surround the other’s pieces, is popular with older adults, while more chaotic games like Wyvern’s Race and Doppel are tavern favorites.</p>",
     "id": "Mehr2G7J5uVsOem9",
     "name": "Board Game",
     "price": 0.1,
@@ -4979,17 +4978,8 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
-      },
-      {
-        "itemId": "6kZGQ2chmr3jpS1t",
-        "name": "Entertainer's outfit"
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       },
       {
         "itemId": "manvtbznrwjmnrua",
@@ -4997,28 +4987,20 @@
         "quantity": 5
       },
       {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
-      },
-      {
-        "itemId": "gbrjebshlzusiqwz",
-        "name": "Inkpen"
-      },
-      {
-        "itemId": "JKd53uSpcNZkvrvk",
-        "name": "Hypnotist’s locket (locket)"
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
         "itemId": "zopwdgykghmkpulz",
         "name": "Ink"
       },
       {
-        "itemId": "dpakeysfhdqijytc",
-        "name": "Stationery"
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
       },
       {
         "itemId": "ygmrcisvftnvjyob",
@@ -5029,13 +5011,31 @@
         "name": "Belt Pouch"
       },
       {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
+        "itemId": "JKd53uSpcNZkvrvk",
+        "name": "Hypnotist’s locket (locket)"
+      },
+      {
+        "itemId": "dpakeysfhdqijytc",
+        "name": "Stationery"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "6kZGQ2chmr3jpS1t",
+        "name": "Entertainer's outfit"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
       }
     ],
     "contextNotes": [],
     "id": "MpOdZs55Qg4Vg64a",
     "name": "Kit, Mesmerist's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1132",
@@ -5187,6 +5187,7 @@
     "contextNotes": [],
     "id": "MyTszOhmpMPGkDO8",
     "name": "Scissors",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.MyTszOhmpMPGkDO8"
   },
@@ -5239,8 +5240,16 @@
     "changes": [],
     "contents": [
       {
+        "itemId": "fwfwshvyweqbthwk",
+        "name": "Blanket"
+      },
+      {
         "itemId": "lSCPUK5Ea6R0t4fz",
         "name": "Backpack, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
       },
       {
         "itemId": "snfogneawzopfzzl",
@@ -5248,8 +5257,8 @@
         "quantity": 10
       },
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
       },
       {
         "itemId": "manvtbznrwjmnrua",
@@ -5257,21 +5266,14 @@
         "quantity": 5
       },
       {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "fwfwshvyweqbthwk",
-        "name": "Blanket"
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       }
     ],
     "contextNotes": [],
     "id": "NKiPR96W8na5kPqG",
     "name": "Kit, Vigilante's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1134",
@@ -5328,33 +5330,8 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
         "itemId": "habofoapdifirevm",
         "name": "Pot, common"
-      },
-      {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
       },
       {
         "itemId": "snfogneawzopfzzl",
@@ -5362,17 +5339,43 @@
         "quantity": 10
       },
       {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
       },
       {
         "itemId": "iegwwsarycqwoezj",
         "name": "Bedroll"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
       }
     ],
     "contextNotes": [],
     "id": "NSMSSJ0Gd82OdHtd",
     "name": "Kit, Summoner's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -5446,6 +5449,7 @@
     "contextNotes": [],
     "id": "NgwFMX44jn9pD5k2",
     "name": "Sponge",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.NgwFMX44jn9pD5k2"
   },
@@ -5535,7 +5539,7 @@
     "changes": [],
     "cl": 7,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer rolls a natural 1 on a d20 roll (such as on an ability check, attack roll, saving throw, or skill check), he can immediately roll again and take the new result instead.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr><p>The first time that the wearer rolls a natural 1 on a d20 roll (such as on an ability check, attack roll, saving throw, or skill check), he can immediately roll again and take the new result instead.</p>",
     "id": "O7SF8wOMF6t4KXao",
     "name": "Talisman of Good Fortune, Greater",
     "price": 16800,
@@ -5620,24 +5624,41 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
         "itemId": "bsztkhkrhgmsbqpt",
         "name": "Waterskin"
       },
       {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       },
       {
         "itemId": "habofoapdifirevm",
         "name": "Pot, common"
       },
       {
-        "itemId": "s5KkeKPLnneb0WR4",
-        "name": "Holy symbol (Wood)"
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "fdfdwpuaqjjudyeo",
+        "name": "Holy text, cheap"
       },
       {
         "itemId": "manvtbznrwjmnrua",
@@ -5645,8 +5666,12 @@
         "quantity": 5
       },
       {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
       },
       {
         "itemId": "iegwwsarycqwoezj",
@@ -5655,32 +5680,12 @@
       {
         "itemId": "ygmrcisvftnvjyob",
         "name": "Flint And Steel"
-      },
-      {
-        "itemId": "ucgkbtqiybhyiwwk",
-        "name": "Spell Component Pouch"
-      },
-      {
-        "itemId": "fdfdwpuaqjjudyeo",
-        "name": "Holy text, cheap"
-      },
-      {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
       }
     ],
     "contextNotes": [],
     "id": "OfoCzk8jZTsoqUO6",
     "name": "Kit, Warpriest's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1129",
@@ -5713,7 +5718,7 @@
     "changes": [],
     "cl": 7,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer is reduced to fewer than 1/2 his maximum hit points, he automatically heals 4d8+7 hit points.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr><p>The first time that the wearer is reduced to fewer than 1/2 his maximum hit points, he automatically heals 4d8+7 hit points.</p>",
     "id": "Ot3fahTlX8fKBJyt",
     "name": "Talisman of Healing Power, Lesser",
     "price": 2400,
@@ -5734,7 +5739,7 @@
   "PAKcUjy6pLGlHNT5": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>A laboratory-created version of the expensive and infamous Osirian drug mumia (Pathfinder Campaign Setting: Lost Kingdoms 21), synthetic mumia is a mixture of honey, embalming fluids, and various animal organs. The murky liquid comes enclosed in small packets made of intestine. Mumia and synthetic mumia may be taken interchangeably to stave off the effects of addiction to either substance, and is thus used by some mumia junkies hoping to quit their addiction. Crafting synthetic mumia requires a successful DC 14 Craft (Alchemy) check.</p><h3>Synthetic Mumia</h3><p><strong>Type</strong> ingested or injury; <strong>Addiction</strong> moderate, Fortitude DC 14<br /><strong>Effects</strong> 1 hour; +2 alchemical bonus on saving throws against spells and effects with the curse or disease descriptor, fatigue<br /><strong>Damage</strong> 1d2 Wis damage</p>",
+    "description": "<p>A laboratory-created version of the expensive and infamous Osirian drug mumia (Pathfinder Campaign Setting: Lost Kingdoms 21), synthetic mumia is a mixture of honey, embalming fluids, and various animal organs. The murky liquid comes enclosed in small packets made of intestine. Mumia and synthetic mumia may be taken interchangeably to stave off the effects of addiction to either substance, and is thus used by some mumia junkies hoping to quit their addiction. Crafting synthetic mumia requires a successful DC 14 Craft (Alchemy) check.</p><h3>Synthetic Mumia</h3><p><strong>Type</strong> ingested or injury; <strong>Addiction</strong> moderate, Fortitude DC 14<br><strong>Effects</strong> 1 hour; +2 alchemical bonus on saving throws against spells and effects with the curse or disease descriptor, fatigue<br><strong>Damage</strong> 1d2 Wis damage</p>",
     "id": "PAKcUjy6pLGlHNT5",
     "name": "Synthetic mumia",
     "price": 150,
@@ -5846,28 +5851,29 @@
     "changes": [],
     "contents": [
       {
-        "name": "Wooden Stake",
-        "weight": 1
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
       },
       {
-        "itemId": "gjtuklwkrbqykmdk",
-        "name": "Mirror"
+        "name": "Wooden Stake",
+        "price": 0,
+        "weight": 1
       },
       {
         "itemId": "ieedspgjoepqnfqj",
         "name": "Hammer"
       },
       {
+        "itemId": "pzoofblizyixlcoc",
+        "name": "Silversheen"
+      },
+      {
         "itemId": "CmjSKOVJuQnV8o3S",
         "name": "Holy water"
       },
       {
-        "itemId": "s5KkeKPLnneb0WR4",
-        "name": "Holy symbol (Wood)"
-      },
-      {
-        "itemId": "pzoofblizyixlcoc",
-        "name": "Silversheen"
+        "itemId": "gjtuklwkrbqykmdk",
+        "name": "Mirror"
       },
       {
         "itemId": "vqwyugaticvrbzhn",
@@ -5878,6 +5884,7 @@
     "description": "<p>This small, latched wooden case contains numerous tools and devices used in hunting and slaying <em>vampires</em>. It contains 10 cloves of garlic, four masterwork wooden stakes, a hammer, a silvered mirror, 4 vials of holy water, 1 application of silversheen, and a masterwork holy symbol. It also contains numerous regents and powders used for treating wounds and making wards, salves, and other concoctions. In addition to its general usefulness, when displayed, a vampire slayer's kit grants its owner a +2 bonus on all <em>Charisma</em>-based skill checks made to investigate or seek out vampires.</p>",
     "id": "PI7uxv6NWE1RX7B8",
     "name": "Kit, Vampire Slayer's",
+    "price": 0,
     "uuid": "Compendium.pf1.items.Item.PI7uxv6NWE1RX7B8"
   },
   "PIbBQB3Ijy20VkcZ": {
@@ -5978,7 +5985,7 @@
   "PnsFxcvqpr27rPkv": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>A hanging tent is a small tent (able to comfortably house a single Medium creature) with a teardrop shape, which hangs from a sturdy anchor rope. The rope can be tied to a tree limb, grappling hook, or even a piton hammered into a cliff side. Hanging tents are used primarily in mountainous terrain (where no flat surface may be available for camping) and swamps (where no dry ground may be available).</p><p>Climbing in or out of a hanging tent is a <em>full-round action</em> that requires a DC 10 <em>Climb</em> check. Failure indicates another attempt must be made, while failure by 5 or more indicates the camper has fallen from the tent.</p><hr /><p>Two Small creatures count as a Medium creature. Packing up a tent takes half as long as assembling it.</p>",
+    "description": "<p>A hanging tent is a small tent (able to comfortably house a single Medium creature) with a teardrop shape, which hangs from a sturdy anchor rope. The rope can be tied to a tree limb, grappling hook, or even a piton hammered into a cliff side. Hanging tents are used primarily in mountainous terrain (where no flat surface may be available for camping) and swamps (where no dry ground may be available).</p><p>Climbing in or out of a hanging tent is a <em>full-round action</em> that requires a DC 10 <em>Climb</em> check. Failure indicates another attempt must be made, while failure by 5 or more indicates the camper has fallen from the tent.</p><hr><p>Two Small creatures count as a Medium creature. Packing up a tent takes half as long as assembling it.</p>",
     "id": "PnsFxcvqpr27rPkv",
     "name": "Tent, hanging",
     "price": 20,
@@ -6081,13 +6088,29 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
       },
       {
         "itemId": "fwfwshvyweqbthwk",
         "name": "Blanket"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
       },
       {
         "itemId": "yMoclCylbCRKyaZF",
@@ -6098,34 +6121,19 @@
         "name": "Flint And Steel"
       },
       {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
       },
       {
         "itemId": "wjvxmolafiegvesl",
         "name": "Belt Pouch"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
       }
     ],
     "contextNotes": [],
     "id": "QLENWzTGoaS1Vzxa",
     "name": "Kit, Barbarian's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -6167,7 +6175,7 @@
     "changes": [],
     "cl": 7,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer is reduced to fewer than 1/2 his maximum hit points, he automatically heals 4d8+7 hit points.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr><p>The first time that the wearer is reduced to fewer than 1/2 his maximum hit points, he automatically heals 4d8+7 hit points.</p>",
     "id": "Qq43T3lvVznI2IU0",
     "name": "Talisman of Healing Power, Greater",
     "price": 24000,
@@ -6191,6 +6199,7 @@
     "contextNotes": [],
     "id": "QqdYeaj0M8e5FWWK",
     "name": "Cup",
+    "price": 0,
     "subType": "tradeGoods",
     "uuid": "Compendium.pf1.items.Item.QqdYeaj0M8e5FWWK",
     "weight": 0.1
@@ -6649,23 +6658,6 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "xkunfssqoyoupryi",
-        "name": "Kit, Alchemy Crafting"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
-        "itemId": "gbrjebshlzusiqwz",
-        "name": "Inkpen"
-      },
-      {
         "itemId": "snfogneawzopfzzl",
         "name": "Torch",
         "quantity": 10
@@ -6675,16 +6667,16 @@
         "name": "Ink"
       },
       {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
         "itemId": "iegwwsarycqwoezj",
         "name": "Bedroll"
       },
       {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
       },
       {
         "itemId": "yMoclCylbCRKyaZF",
@@ -6695,18 +6687,36 @@
         "name": "Waterskin"
       },
       {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "xkunfssqoyoupryi",
+        "name": "Kit, Alchemy Crafting"
+      },
+      {
         "itemId": "lSCPUK5Ea6R0t4fz",
         "name": "Backpack, common"
       },
       {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
       }
     ],
     "contextNotes": [],
     "description": "<p>The kit does not contain a formula book because an alchemist begins play with a formula book and does not need to purchase one.</p>",
     "id": "T3gaWSK4oJ5vD7Ff",
     "name": "Kit, Alchemist's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -6755,32 +6765,33 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
       },
       {
         "itemId": "habofoapdifirevm",
         "name": "Pot, common"
       },
       {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
       },
       {
         "itemId": "Ueae6c2qqJJGpncA",
         "name": "Mess Kit"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
       },
       {
         "itemId": "snfogneawzopfzzl",
@@ -6788,18 +6799,18 @@
         "quantity": 10
       },
       {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       },
       {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       }
     ],
     "contextNotes": [],
     "id": "TS9gdYSdnKENTTzu",
     "name": "Kit, Sorcerer's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -6875,24 +6886,8 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "jjitxdnizmpbthys",
-        "name": "Holly and Mistletoe"
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
       },
       {
         "itemId": "snfogneawzopfzzl",
@@ -6900,20 +6895,29 @@
         "quantity": 10
       },
       {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "hwrgbauvnnirgqdy",
+        "name": "Feed",
+        "quantity": 5
+      },
+      {
+        "itemId": "jjitxdnizmpbthys",
+        "name": "Holly and Mistletoe"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
         "itemId": "ygmrcisvftnvjyob",
         "name": "Flint And Steel"
       },
       {
-        "itemId": "fwfwshvyweqbthwk",
-        "name": "Blanket"
-      },
-      {
         "itemId": "ucgkbtqiybhyiwwk",
         "name": "Spell Component Pouch"
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
       },
       {
         "itemId": "bsztkhkrhgmsbqpt",
@@ -6925,9 +6929,16 @@
         "quantity": 5
       },
       {
-        "itemId": "hwrgbauvnnirgqdy",
-        "name": "Feed",
-        "quantity": 5
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "fwfwshvyweqbthwk",
+        "name": "Blanket"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       }
     ],
     "contextNotes": [],
@@ -6947,6 +6958,7 @@
     "contextNotes": [],
     "id": "TlhTyr56K905zx6Q",
     "name": "Tooth Powder",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.TlhTyr56K905zx6Q"
   },
@@ -7049,7 +7061,7 @@
   "UGXnzXJCs1DhuB43": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 5 sp; Weight 1 lb.<br />Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>A drill can create a 1-inch-diameter hole in stone, wood, or metal as a standard action. Harder materials wear down or break the drill more quickly. Hearing the sound of drilling requires a DC 15 Perception check.</p>",
+    "description": "<p>Price 5 sp; Weight 1 lb.<br>Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>A drill can create a 1-inch-diameter hole in stone, wood, or metal as a standard action. Harder materials wear down or break the drill more quickly. Hearing the sound of drilling requires a DC 15 Perception check.</p>",
     "id": "UGXnzXJCs1DhuB43",
     "name": "Drill",
     "price": 0.5,
@@ -7115,7 +7127,7 @@
   "UVTxDWJGurLK899W": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 5 sp; Weight 1/2 lb.<br />Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>Handheld magnets are relatively weak and are mainly used to detect or pull iron, mithral, or adamantine at a short range. They are not powerful enough to tug metal over significant distances or aid in disarming creatures wielding metal weapons. This hand-sized horseshoe magnet can lift up to a 3-pound iron weight.</p>",
+    "description": "<p>Price 5 sp; Weight 1/2 lb.<br>Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>Handheld magnets are relatively weak and are mainly used to detect or pull iron, mithral, or adamantine at a short range. They are not powerful enough to tug metal over significant distances or aid in disarming creatures wielding metal weapons. This hand-sized horseshoe magnet can lift up to a 3-pound iron weight.</p>",
     "id": "UVTxDWJGurLK899W",
     "name": "Magnet",
     "price": 0.5,
@@ -7181,28 +7193,28 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "jzu5QqK20bW9gkN1",
-        "name": "Fork"
-      },
-      {
-        "itemId": "fASUzJozDXZldwNT",
-        "name": "Bowl"
-      },
-      {
-        "itemId": "GZtAdQ7gJlCe9z64",
-        "name": "Knife"
+        "itemId": "QqdYeaj0M8e5FWWK",
+        "name": "Cup"
       },
       {
         "itemId": "tVkpdPfIJomoFjUl",
         "name": "Plate"
       },
       {
-        "itemId": "QqdYeaj0M8e5FWWK",
-        "name": "Cup"
-      },
-      {
         "itemId": "Asg5Ek4CFqb80P7C",
         "name": "Spoon"
+      },
+      {
+        "itemId": "GZtAdQ7gJlCe9z64",
+        "name": "Knife"
+      },
+      {
+        "itemId": "jzu5QqK20bW9gkN1",
+        "name": "Fork"
+      },
+      {
+        "itemId": "fASUzJozDXZldwNT",
+        "name": "Bowl"
       }
     ],
     "contextNotes": [],
@@ -7221,7 +7233,7 @@
   "UkegZt8uGdHyVKxG": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 100 gp; Weight —<br />Category Entertainment</p>\n<h3>Description</h3>\n<p>This is a traditional fortune-telling deck of cards used by soothsayers and seers. Some harrow decks are elaborately illustrated, but most are parchment or paper cards with hand-painted images. Harrow decks are often handed down through generations and treated with utmost care by their users as a result.</p>",
+    "description": "<p>Price 100 gp; Weight —<br>Category Entertainment</p>\n<h3>Description</h3>\n<p>This is a traditional fortune-telling deck of cards used by soothsayers and seers. Some harrow decks are elaborately illustrated, but most are parchment or paper cards with hand-painted images. Harrow decks are often handed down through generations and treated with utmost care by their users as a result.</p>",
     "id": "UkegZt8uGdHyVKxG",
     "name": "Harrow deck",
     "price": 100,
@@ -7394,6 +7406,7 @@
     "contextNotes": [],
     "id": "VWirsdZNCFFB9WDN",
     "name": "Nail File",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.VWirsdZNCFFB9WDN"
   },
@@ -7535,7 +7548,7 @@
   "VnuR64nBjAMA859i": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>A medium tent holds two creatures and takes 30 minutes to assemble.</p><hr /><p>Two Small creatures count as a Medium creature, and one Large creature counts as two Medium creatures. Packing up a tent takes half as long as assembling it.</p>",
+    "description": "<p>A medium tent holds two creatures and takes 30 minutes to assemble.</p><hr><p>Two Small creatures count as a Medium creature, and one Large creature counts as two Medium creatures. Packing up a tent takes half as long as assembling it.</p>",
     "id": "VnuR64nBjAMA859i",
     "name": "Tent, medium",
     "price": 15,
@@ -7553,8 +7566,8 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
+        "itemId": "iclfnaawjjxuvupa",
+        "name": "Incense",
         "quantity": 10
       },
       {
@@ -7562,8 +7575,21 @@
         "name": "Ectoplasmic Residue"
       },
       {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "HR0dO8pNmZLlQwaD",
+        "name": "Censer"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "OiVZjOl24GBYj70c",
+        "name": "Magnetized Paper"
       },
       {
         "itemId": "manvtbznrwjmnrua",
@@ -7571,42 +7597,30 @@
         "quantity": 5
       },
       {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
       },
       {
-        "itemId": "iclfnaawjjxuvupa",
-        "name": "Incense",
-        "quantity": 10
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
       },
       {
         "itemId": "wjvxmolafiegvesl",
         "name": "Belt Pouch"
       },
       {
-        "itemId": "HR0dO8pNmZLlQwaD",
-        "name": "Censer"
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
       },
       {
         "itemId": "habofoapdifirevm",
         "name": "Pot, common"
-      },
-      {
-        "itemId": "OiVZjOl24GBYj70c",
-        "name": "Magnetized Paper"
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
       }
     ],
     "contextNotes": [],
     "id": "Vs4WiNGamVNMEEZI",
     "name": "Kit, Spiritualist's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1132",
@@ -7697,12 +7711,33 @@
     "changes": [],
     "contents": [
       {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
         "itemId": "ygmrcisvftnvjyob",
         "name": "Flint And Steel"
       },
       {
         "itemId": "xkunfssqoyoupryi",
         "name": "Kit, Alchemy Crafting"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
       },
       {
         "itemId": "lSCPUK5Ea6R0t4fz",
@@ -7714,46 +7749,26 @@
         "quantity": 5
       },
       {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
         "itemId": "zopwdgykghmkpulz",
         "name": "Ink"
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
-      },
-      {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
-      },
-      {
-        "itemId": "gbrjebshlzusiqwz",
-        "name": "Inkpen"
       },
       {
         "itemId": "bsztkhkrhgmsbqpt",
         "name": "Waterskin"
       },
       {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
       }
     ],
     "contextNotes": [],
     "id": "WCOgvNJk5nn7gZwd",
     "name": "Kit, Investigator's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1129",
@@ -7828,34 +7843,37 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
         "itemId": "snfogneawzopfzzl",
         "name": "Torch",
         "quantity": 10
       },
       {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
-      },
-      {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
       },
       {
         "itemId": "iegwwsarycqwoezj",
         "name": "Bedroll"
       },
       {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
       },
       {
         "itemId": "jewqhqesccxrvivd",
@@ -7863,33 +7881,31 @@
         "quantity": 10
       },
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
       },
       {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "ucgkbtqiybhyiwwk",
-        "name": "Spell Component Pouch"
-      },
-      {
-        "itemId": "s5KkeKPLnneb0WR4",
-        "name": "Holy symbol (Wood)"
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
       },
       {
         "itemId": "yMoclCylbCRKyaZF",
         "name": "Soap"
       },
       {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       }
     ],
     "contextNotes": [],
     "id": "WWKhzslqDsrmw4ka",
     "name": "Kit, Shaman's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1129",
@@ -8132,13 +8148,8 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       },
       {
         "itemId": "yMoclCylbCRKyaZF",
@@ -8149,20 +8160,25 @@
         "name": "Waterskin"
       },
       {
-        "itemId": "fwfwshvyweqbthwk",
-        "name": "Blanket"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
       },
       {
         "itemId": "habofoapdifirevm",
         "name": "Pot, common"
       },
       {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
+        "itemId": "fwfwshvyweqbthwk",
+        "name": "Blanket"
       },
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
       },
       {
         "itemId": "manvtbznrwjmnrua",
@@ -8170,13 +8186,14 @@
         "quantity": 5
       },
       {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
       }
     ],
     "contextNotes": [],
     "id": "Xb8d1z9x8uWXCTBM",
     "name": "Kit, Bloodrager's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1129",
@@ -8304,7 +8321,7 @@
   "YZL8MoaHg4c5vjeT": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 1 sp; Weight 2 lbs.<br />Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>Marbles can be used to slow opponents. One 2-pound bag of marbles covers an area 5 feet square. A creature entering a square with marbles scattered on it must succeed at a DC 10 Reflex save or fall prone (the creature’s stability bonus to trip applies to this save). Any creature moving at half speed or slower can pick its way through a square of marbles with no trouble.</p>",
+    "description": "<p>Price 1 sp; Weight 2 lbs.<br>Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>Marbles can be used to slow opponents. One 2-pound bag of marbles covers an area 5 feet square. A creature entering a square with marbles scattered on it must succeed at a DC 10 Reflex save or fall prone (the creature’s stability bonus to trip applies to this save). Any creature moving at half speed or slower can pick its way through a square of marbles with no trouble.</p>",
     "id": "YZL8MoaHg4c5vjeT",
     "name": "Marbles",
     "price": 0.1,
@@ -8509,14 +8526,6 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "s5KkeKPLnneb0WR4",
-        "name": "Holy symbol (Wood)"
-      },
-      {
-        "itemId": "jjitxdnizmpbthys",
-        "name": "Holly and Mistletoe"
-      },
-      {
         "itemId": "51x0lv7ZfztqvTs2",
         "name": "Automatic writing planchette"
       },
@@ -8535,19 +8544,28 @@
         "quantity": 10
       },
       {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "jjitxdnizmpbthys",
+        "name": "Holly and Mistletoe"
+      },
+      {
         "itemId": "iiQX34d6zVtN6DLX",
         "name": "Candlestick",
         "quantity": 10
-      },
-      {
-        "itemId": "ucgkbtqiybhyiwwk",
-        "name": "Spell Component Pouch"
       }
     ],
     "contextNotes": [],
     "description": "<p>This kit includes tools that aid in contacting supernatural beings.</p>",
     "id": "ZscTIwRwTi7EW0oW",
     "name": "Kit, Medium's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1132",
@@ -9070,7 +9088,7 @@
     "changes": [],
     "cl": 5,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer takes 5 or more points of fire damage in a single round, he is automatically affected by Protection from Energy, which protects him from subsequent fire damage. Talismans that protect against other energy types are much less common.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr><p>The first time that the wearer takes 5 or more points of fire damage in a single round, he is automatically affected by Protection from Energy, which protects him from subsequent fire damage. Talismans that protect against other energy types are much less common.</p>",
     "id": "b9tOqqeiV976KizJ",
     "name": "Talisman of Protection From Flames, Lesser",
     "price": 1250,
@@ -9211,6 +9229,7 @@
     "description": "<p>This polished lantern contains a <em>continual flame</em> and sheds light as a common lamp. If its font of consecrated crystal and metalwork is filled with <em>holy water</em>, the lamp's light is sanctified for 24 hours, adding a +1 bonus to the save DC of channeled positive energy or energy channeled to harm evil <em>outsiders</em> within a 30-foot radius.</p>",
     "id": "bascdsklyibhfpmg",
     "name": "Lamp, Celestial",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1121"
@@ -9842,6 +9861,7 @@
   "cejaaqjlwwfmnrmw": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>This collection of genealogical tables, descriptions of common traits found in particular noble families, heraldry, scurrilous rumors, and ancestral deeds provides readers with a great deal of insight into the aristocracy. Consulting this book grants a +2 circumstance bonus on <em>Knowledge</em> (nobility) checks.</p>",
     "id": "cejaaqjlwwfmnrmw",
     "name": "Heritage Book",
     "price": 50,
@@ -9965,6 +9985,7 @@
     "description": "<p>A clay pitcher.</p>\n<p><b>Empty Weight</b>: 1 lb.; <b>Capacity</b>: 1/2 gallon/4 lb.</p>",
     "id": "cprbtuufkhcnfwhv",
     "name": "Pitcher, Clay",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1110"
@@ -10345,6 +10366,7 @@
     "description": "<p>This honey mead is sweet and strong and, according to <em>bards</em>, is an indisputable aid to singing.</p>\n<p>The listed prices are for a tavern or restaurant in an average city.</p>",
     "id": "detecfeexzqvpogf",
     "name": "Mead, Linnorm",
+    "price": 0,
     "sources": [
       {
         "id": "PZO9410"
@@ -10498,6 +10520,7 @@
     "description": "<p>This small box of specially prepared <em>catfolk</em> pheromones and alchemical reagents can be used to leave a small group of subtle but long-lasting scents that only <em>catfolk</em> can smell and decipher. Given a minute, a <em>catfolk</em> can create a scent mixture and apply it to a solid object, such as a tree, a wall, or even a smaller item such as a weapon or <em>potion</em> vial. When the <em>catfolk</em> does this, it leaves one of the following scent impressions: danger, food, shelter, or possession. The possession impression is always keyed to the specific <em>catfolk</em> using the kit, and signifies that she owns the territory or item. Other races can attempt to use this kit to create the danger, food, or shelter impression, but doing so requires a successful DC 20 <em>Craft</em> (alchemy) check. A <em>catfolk</em> can detect a particular scent applied with a trailscent kit from 30 feet away. If the scent is upwind, the range at which a <em>catfolk</em> can detect the scent increases to 60 feet; if it is downwind, the range drops to 15 feet. A <em>catfolk</em> with the <em>scent</em> racial quality doubles those distances. A scent impression lasts for 1 year or until it is washed away. Each kit has 10 uses.</p>",
     "id": "dkrmavjzueiofktv",
     "name": "Kit, Trailscent",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1121"
@@ -10676,6 +10699,7 @@
         "text": "+2 to resist cold weather. Does not stack with survival skill bonus."
       }
     ],
+    "description": "<p>The most basic of cold-weather gear, animal furs serve to keep their wearers warm. Wearing enough fur to cover the body provides a +2 bonus on Fortitude saves to resist cold weather. This does not stack with any bonuses gained from the Survival skill.</p>",
     "id": "dthfczwrxurvmcyo",
     "name": "Furs",
     "price": 12,
@@ -10705,6 +10729,7 @@
   "dwckcumyhqlapvnh": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>This device consists of a flat disc upon which two other discs are mounted. The mounted discs can rotate on a central axis, allowing them to spin and move as days pass. The bottom disc represents the latitude of the user; an astrolabe is useless if the user is outside the preset latitude. The upper disc represents the sky, and is filled with astronomical features. Anyone can be shown how to use an astrolabe at night to determine the date and time (which takes 1 minute). When using an astrolabe, you can make a Survival check using your Intelligence modifier instead of your Wisdom modifier to avoid becoming lost.</p>",
     "id": "dwckcumyhqlapvnh",
     "name": "Astrolabe",
     "price": 1000,
@@ -10775,6 +10800,7 @@
         "text": "+8 vs sight based attacks"
       }
     ],
+    "description": "<p>These spectacles have lenses made of smoked glass that help protect against creatures with gaze attacks. You are always treated as averting your gaze when dealing with gaze attacks, and you gain a +8 circumstance bonus on saving throws against visual-based attacks (any attack that a blind creature would be immune to). You take a -4 penalty on Perception checks while wearing the goggles, and all opponents are treated as having concealment (20% miss chance).</p>",
     "id": "dxoaodiakqybbbyc",
     "name": "Smoked Goggles",
     "price": 10,
@@ -10923,48 +10949,13 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
       },
       {
         "itemId": "pjbwjzojocninnhz",
         "name": "Musical instrument, common"
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
-      },
-      {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
-      },
-      {
-        "itemId": "hdK27WBFJFUNODbx",
-        "name": "Journal, blank"
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "gjtuklwkrbqykmdk",
-        "name": "Mirror"
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
       },
       {
         "itemId": "snfogneawzopfzzl",
@@ -10972,14 +10963,50 @@
         "quantity": 10
       },
       {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "hdK27WBFJFUNODbx",
+        "name": "Journal, blank"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "gjtuklwkrbqykmdk",
+        "name": "Mirror"
       }
     ],
     "contextNotes": [],
     "id": "eRkG1d4hKYEgxuRa",
     "name": "Kit, Bard's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -11134,6 +11161,7 @@
     "description": "<p><b>Price</b> varies; <b>Weight</b> varies</p>\n<p>Hellknights often equip their steeds with armor similar to their own. Typical <em>barding</em> for Hellknight steeds features ornamental spikes (these spikes deal no damage). Such <em>barding</em> is usually designed to look similar to the armor of the horse's rider, or to look skeletal, <em>fiendish</em>, or similar to a <em>nightmare</em>. Hellknight <em>barding</em> can be made from Hellknight leather, Hellknight half-plate, or Hellknight plate; it costs four times as much and weighs twice as much. Hellknight half-plate <em>barding</em> or Hellknight plate <em>barding</em> slows a mount's speed from 40 feet to 30 feet, from 50 feet to 35 feet, or from 60 feet to 40 feet. A mount wearing such armor moves at only triple its normal speed when running instead of quadruple.</p>",
     "id": "ejxztxdidupiifax",
     "name": "Barding, Hellknight",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1138",
@@ -11303,21 +11331,21 @@
     "changes": [],
     "contents": [
       {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
         "itemId": "snfogneawzopfzzl",
         "name": "Torch",
         "quantity": 10
       },
       {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
-      },
-      {
         "itemId": "fwfwshvyweqbthwk",
         "name": "Blanket"
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
       },
       {
         "itemId": "manvtbznrwjmnrua",
@@ -11325,12 +11353,12 @@
         "quantity": 5
       },
       {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
       },
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
       },
       {
         "itemId": "lSCPUK5Ea6R0t4fz",
@@ -11340,6 +11368,7 @@
     "contextNotes": [],
     "id": "ergfTqkBYmNCaOKx",
     "name": "Kit, Monk's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -11445,7 +11474,7 @@
   "f8ylRQHZTqeJTQZZ": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 20 gp; Weight 4 lbs.<br />Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>This 2-foot-long metal tube has right angles at each end with mirrors inside; if you look in one end, you can see out the other end, allowing you safely peer over obstacles, around corners, or into small spaces your head where wouldn’t fit. When using a periscope, the end of the tube counts as a Diminutive object, making it much less likely that an observed creature notices you; if you have total concealment from the creature except for the end of the periscope, use the tube’s Diminutive size modifier on your Stealth check instead of your own size modifier. Distortion from the mirrors gives you a –4 penalty on Perception checks while looking through the periscope. Though the tube is fairly sturdy (hardness 5, 2 hit points), the mirrors inside are fragile (hardness 1, 1 hit point), and any damage that gets through the tube’s hardness applies to the tube and the mirrors.</p>",
+    "description": "<p>Price 20 gp; Weight 4 lbs.<br>Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>This 2-foot-long metal tube has right angles at each end with mirrors inside; if you look in one end, you can see out the other end, allowing you safely peer over obstacles, around corners, or into small spaces your head where wouldn’t fit. When using a periscope, the end of the tube counts as a Diminutive object, making it much less likely that an observed creature notices you; if you have total concealment from the creature except for the end of the periscope, use the tube’s Diminutive size modifier on your Stealth check instead of your own size modifier. Distortion from the mirrors gives you a –4 penalty on Perception checks while looking through the periscope. Though the tube is fairly sturdy (hardness 5, 2 hit points), the mirrors inside are fragile (hardness 1, 1 hit point), and any damage that gets through the tube’s hardness applies to the tube and the mirrors.</p>",
     "id": "f8ylRQHZTqeJTQZZ",
     "name": "Periscope",
     "price": 20,
@@ -11464,6 +11493,7 @@
     "contextNotes": [],
     "id": "fASUzJozDXZldwNT",
     "name": "Bowl",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.fASUzJozDXZldwNT",
     "weight": 0.2
@@ -11685,6 +11715,7 @@
     "description": "<p>The bright red berries of the holly tree have many uses as decorations and ritual objects. Druids harvest holly berries with specially prepared tools and during sacred times of the year.</p>",
     "id": "frydnvdxagxetrkz",
     "name": "Holly",
+    "price": 0,
     "sources": [
       {
         "id": "PZO9410",
@@ -11711,6 +11742,7 @@
     "description": "<p>This golden-colored parasitic plant grows on many different sorts of trees. Druids harvest mistletoe with specially prepared tools and during sacred times of the year.</p>",
     "id": "fubyjhqaertcabjp",
     "name": "Mistletoe",
+    "price": 0,
     "sources": [
       {
         "id": "PZO9410"
@@ -11726,7 +11758,7 @@
     "changes": [],
     "cl": 3,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer is hit by two or more ranged attacks in a single round, he is immediately affected by Protection from Arrows.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr><p>The first time that the wearer is hit by two or more ranged attacks in a single round, he is immediately affected by Protection from Arrows.</p>",
     "id": "fw0RqsZxcUSOeXM6",
     "name": "Talisman of Arrow Protection, Greater",
     "price": 6000,
@@ -11958,6 +11990,7 @@
         "text": "+8 vs sight based attacks"
       }
     ],
+    "description": "<p>These goggles, carved from bone with a narrow slit opening and held in place with leather straps, work as smoked goggles. In addition, they provide immunity to polar mirages.</p>",
     "id": "gEoAP62h3nRtBBYH",
     "name": "Snow goggles",
     "price": 12,
@@ -12042,41 +12075,28 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
+        "itemId": "gjtuklwkrbqykmdk",
+        "name": "Mirror"
+      },
+      {
+        "itemId": "pjbwjzojocninnhz",
+        "name": "Musical instrument, common"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
       },
       {
         "itemId": "bsztkhkrhgmsbqpt",
         "name": "Waterskin"
       },
       {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
       },
       {
-        "itemId": "gjtuklwkrbqykmdk",
-        "name": "Mirror"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
       },
       {
         "itemId": "snfogneawzopfzzl",
@@ -12084,25 +12104,39 @@
         "quantity": 10
       },
       {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
       },
       {
         "itemId": "ucgkbtqiybhyiwwk",
         "name": "Spell Component Pouch"
       },
       {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       },
       {
-        "itemId": "pjbwjzojocninnhz",
-        "name": "Musical instrument, common"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
       }
     ],
     "contextNotes": [],
     "id": "gUpHbLavbKf0niXy",
     "name": "Kit, Skald's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1129",
@@ -12298,12 +12332,14 @@
     "description": "<table border=\"1\">\n<thead>\n<tr>\n<th>Type</th>\n<th>Price</th>\n<th>Weight</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Common</td>\n<td>5 gp</td>\n<td>4 lbs.</td>\n</tr>\n<tr>\n<td>Masterwork</td>\n<td>50 gp</td>\n<td>5 lbs.</td>\n</tr>\n</tbody>\n</table>\n<p>A survival kit provides the necessary tools for day-to-day existence in a temperate wilderness. It typically contains a <em>flint and steel</em>, a <em>mess kit</em>, two waterskins (enough to hold water for 1 person for 1 day), very basic maps showing major landmarks, and a small utility knife.</p>\n<p>A masterwork survival kit contains higher quality gear and a guide to identifying flora and fauna. It grants you a +2 circumstance bonus on Survival checks to get along in the wild, deal with severe weather, keep from getting lost, avoid natural hazards such as quicksand, and predict the weather.</p>",
     "id": "gjnpbspqfceldzlj",
     "name": "Kit, Survival",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.gjnpbspqfceldzlj"
   },
   "gjntilmfnmbrrtnj": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>This gauntlet, made from layers of thick leather, is worn on the falconer's off hand to give a falcon a place to stand before and after a hunt. The gauntlet also has a tassel and a ring attached to the falcon's tether.</p>",
     "id": "gjntilmfnmbrrtnj",
     "name": "Falconry Gauntlet",
     "price": 10,
@@ -12480,8 +12516,16 @@
     "changes": [],
     "contents": [
       {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
         "itemId": "qlmtnppwxkubqyhp",
         "name": "Rope"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
       },
       {
         "itemId": "manvtbznrwjmnrua",
@@ -12489,16 +12533,8 @@
         "quantity": 5
       },
       {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
-      },
-      {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
       },
       {
         "itemId": "snfogneawzopfzzl",
@@ -12506,21 +12542,22 @@
         "quantity": 10
       },
       {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       },
       {
         "itemId": "wjvxmolafiegvesl",
         "name": "Belt Pouch"
       },
       {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
       }
     ],
     "contextNotes": [],
     "id": "gsNpMbSOoLgSHSIl",
     "name": "Kit, Brawler's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1129",
@@ -12565,20 +12602,12 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
       },
       {
         "itemId": "zkfnrahkeufabend",
         "name": "Bit And Bridle"
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
       },
       {
         "itemId": "gW1bPqOvVfpmqEqd",
@@ -12589,8 +12618,17 @@
         "name": "Rope"
       },
       {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
+        "itemId": "hwrgbauvnnirgqdy",
+        "name": "Feed",
+        "quantity": 5
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
       },
       {
         "itemId": "snfogneawzopfzzl",
@@ -12598,39 +12636,39 @@
         "quantity": 10
       },
       {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
         "itemId": "manvtbznrwjmnrua",
         "name": "Trail Rations",
         "quantity": 5
       },
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
       },
       {
         "itemId": "yMoclCylbCRKyaZF",
         "name": "Soap"
       },
       {
-        "itemId": "hwrgbauvnnirgqdy",
-        "name": "Feed",
-        "quantity": 5
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       },
       {
         "itemId": "dn6yBOrH8vUpXahk",
         "name": "Saddle (riding)"
       },
       {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       }
     ],
     "contextNotes": [],
     "id": "gui1XLiivTOxvLSN",
     "name": "Kit, Cavalier's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -12780,7 +12818,7 @@
     "changes": [],
     "cl": 1,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer would gain the frightened or panicked condition, he gains the shaken condition instead.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr><p>The first time that the wearer would gain the frightened or panicked condition, he gains the shaken condition instead.</p>",
     "id": "h0Qfttpk46Tm7mWg",
     "name": "Talisman of Warrior's Courage, Lesser",
     "price": 450,
@@ -12882,7 +12920,7 @@
   "hZHvBXYVfzuJeqFs": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>A large tent holds four creatures and takes 45 minutes to assemble.</p><hr /><p>Two Small creatures count as a Medium creature, and one Large creature counts as two Medium creatures. Packing up a tent takes half as long as assembling it.</p>",
+    "description": "<p>A large tent holds four creatures and takes 45 minutes to assemble.</p><hr><p>Two Small creatures count as a Medium creature, and one Large creature counts as two Medium creatures. Packing up a tent takes half as long as assembling it.</p>",
     "id": "hZHvBXYVfzuJeqFs",
     "name": "Tent, large",
     "price": 30,
@@ -13676,6 +13714,7 @@
   "iraqyvoonkpazsgu": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>This drink is a favorite of goblins, boggards, and other primitive humanoids. It is made by soaking a poisonous toad or frog (or its eggs) in weak beer, or by \"milking\" these animals for their poison and mixing it with the beer (which allows the animal to be used over and over again). Some tribes use wide-mouthed jugs and leave the dead animal inside as a crunchy treat for eating once the drink is gone. A creature drunk on bufo has the dazzled condition in addition to the normal intoxication effect.</p>",
     "id": "iraqyvoonkpazsgu",
     "name": "Bufo",
     "price": 1,
@@ -13850,6 +13889,7 @@
   "ivujqhmcdthziwog": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>Similar to but weaker than a sunrod, this stick glows like a candle when struck and lasts for 12 hours.</p>",
     "id": "ivujqhmcdthziwog",
     "name": "Candlerod",
     "price": 1,
@@ -14097,6 +14137,7 @@
     "description": "<p>Druids commonly use these plants as divine focuses when casting spells.</p>",
     "id": "jjitxdnizmpbthys",
     "name": "Holly and Mistletoe",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1110",
@@ -14128,6 +14169,7 @@
     "description": "<p>This basic jug is fitted with a stopper and holds 1 gallon of liquid.</p>\n<p><b>Empty Weight</b>: 1 lb.; <b>Capacity</b>: 1 gallon/8 lb.</p>",
     "id": "jkbfhstxwydccotf",
     "name": "Jug, clay",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1110",
@@ -14269,6 +14311,7 @@
   "jtnhlonprmebmcvw": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>These reed or bamboo whistles mimic the calls of various wild animals. Each whistle is keyed to a specific type of animal and a specific call (usually signaling the availability of food or a mate to draw the animal closer). Using the correct whistle gives you a +2 bonus on <em>Survival</em> checks to track animals of the specific animal type or to get along in the wild.</p>",
     "id": "jtnhlonprmebmcvw",
     "name": "Kit, Animal Call",
     "price": 0.1,
@@ -14287,6 +14330,7 @@
     "description": "<p>A geographically relevant map grants a user a +1 <em>circumstance bonus</em> on <em>Survival</em> checks made to navigate in the wilderness. It also can be used to grant the same bonus on <em>Knowledge</em> (dungeoneering) checks made to navigate underground.</p>",
     "id": "jvnlfptrftfhlkkp",
     "name": "Map",
+    "price": 0,
     "sources": [
       {
         "id": "PZO9410"
@@ -14362,6 +14406,7 @@
     "description": "<p><b>Price</b> varies; <b>Weight</b> varies</p>\n<p><b>Common</b> 105 gp 15 lbs.</p>\n<p><b>Superior</b> 380 gp 24 lbs.</p>\n<p>This kit provides useful tools for bounty hunters. It includes basic maps showing major landmarks, caltrops, common <em>manacles</em> with an average <em>lock</em>, a <em>net</em>, a <em>sap</em>, and a 10-foot <em>chain</em>. Bounty hunters are notoriously individualistic, so variant kits are common. One such variant is the superior bounty hunter's kit, which replaces the common <em>manacles</em> with masterwork <em>manacles</em> and the average <em>lock</em> with a good <em>lock</em>, and includes a footprint <em>book</em>, a <em>tanglefoot bag</em>, and masterwork <em>thieves' tools</em>.</p>",
     "id": "jzfhvdgsjgdqljoc",
     "name": "Kit, Bounty Hunter's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO9455"
@@ -14375,6 +14420,7 @@
     "contextNotes": [],
     "id": "jzu5QqK20bW9gkN1",
     "name": "Fork",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.jzu5QqK20bW9gkN1",
     "weight": 0.1
@@ -14693,6 +14739,7 @@
     "description": "<table border=\"1\">\n<thead>\n<tr>\n<th>Type</th>\n<th>Price</th>\n<th>Weight</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Common</td>\n<td>16 gp</td>\n<td>54 lbs.</td>\n</tr>\n<tr>\n<td>Exotic Mount</td>\n<td>36 gp</td>\n<td>59 lbs.</td>\n</tr>\n</tbody>\n</table>\n<p>This kit includes a bit and bridle, a saddle, a saddle blanket, saddlebags, and 2 days' worth of feed for a mount. The weight can be lightened 10 pounds by discarding the feed.</p>",
     "id": "klgarsgufbovztjz",
     "name": "Kit, Riding",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.klgarsgufbovztjz"
   },
@@ -14761,6 +14808,7 @@
   "kuaqnhesurdacanx": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>Made of waxed cotton or cork, earplugs give you a +2 <em>circumstance bonus</em> on saves against effects that require hearing, but also cause a -5 penalty on hearing-based <em>Perception</em> checks.</p>",
     "id": "kuaqnhesurdacanx",
     "name": "Earplugs",
     "price": 0.03,
@@ -14787,6 +14835,7 @@
     "description": "<p>The listed prices are for a tavern or restaurant in an average city.</p>",
     "id": "kufxykxfevwmibqj",
     "name": "Meat",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1110"
@@ -15024,6 +15073,7 @@
         "text": "-4 on rough ice"
       }
     ],
+    "description": "<p>These honed metal blades are worn on boots to enable swift passage over ice. The wearer may move (but not climb) at her full speed on level icy surfaces. Her speed is halved when moving up an icy slope, but she may run or charge downhill on gentle or steep snowy slopes at quadruple speed. However, any skill check penalties for traversing rough ice while wearing skates are doubled, and the wearer takes a -4 penalty on combat maneuver checks to bull rush, drag, or trip, and to CMD against these maneuvers. Donning or removing skates takes 1 minute.</p>",
     "id": "lQrG8StzgHP2bdGD",
     "name": "Skates",
     "price": 10,
@@ -15201,6 +15251,7 @@
   "losspxodvsjlcdfg": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p><strong>Price</strong> 5 cp-2 gp; <strong>Weight</strong> 1/2 lb.-8 lbs.</p><p>This alcoholic beverage is made by fermenting honey and water. It may be flavored with spices, fruit, or hops.</p>",
     "id": "losspxodvsjlcdfg",
     "name": "Mead",
     "price": 0.05,
@@ -15427,7 +15478,7 @@
   "lzupxmcxhslzyiyj": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>This alchemically treated wooden stick instantly creates thick, opaque smoke when burned. The smoke fills a 10-foot cube (treat the effect as a <em>fog cloud</em> spell, except that a moderate or stronger wind dissipates the smoke in 1 round). The stick is consumed after 1 round, and the smoke dissipates naturally after 1 minute.</p><h3>Alchemical Recipe</h3><p><strong>Recipe</strong> (4 darkwood + 5 saltpeter)/calcination; <br /><strong>Craft</strong> DC 20; <strong>Time</strong> 1 hour; <strong>Tools </strong>crucible; <strong>Type</strong> alchemical tool</p><h3>Alchemical Power Component</h3><p>Smokesticks work best with spells that create clouds or smoke.</p><ul><li>Fog Cloud (M): Increase the radius of the cloud by 5 feet.</li><li>Obscuring Mist (M): The spell creates a smoky haze instead of mist. This haze cannot be dispersed by fire spells and dissipates naturally after 1 minute.</li><li>Pyrotechnics (M): Increase the radius of the cloud by 5 feet and the duration by 2 rounds.</li></ul>",
+    "description": "<p>This alchemically treated wooden stick instantly creates thick, opaque smoke when burned. The smoke fills a 10-foot cube (treat the effect as a <em>fog cloud</em> spell, except that a moderate or stronger wind dissipates the smoke in 1 round). The stick is consumed after 1 round, and the smoke dissipates naturally after 1 minute.</p><h3>Alchemical Recipe</h3><p><strong>Recipe</strong> (4 darkwood + 5 saltpeter)/calcination; <br><strong>Craft</strong> DC 20; <strong>Time</strong> 1 hour; <strong>Tools </strong>crucible; <strong>Type</strong> alchemical tool</p><h3>Alchemical Power Component</h3><p>Smokesticks work best with spells that create clouds or smoke.</p><ul><li>Fog Cloud (M): Increase the radius of the cloud by 5 feet.</li><li>Obscuring Mist (M): The spell creates a smoky haze instead of mist. This haze cannot be dispersed by fire spells and dissipates naturally after 1 minute.</li><li>Pyrotechnics (M): Increase the radius of the cloud by 5 feet and the duration by 2 rounds.</li></ul>",
     "id": "lzupxmcxhslzyiyj",
     "name": "Smokestick",
     "price": 20,
@@ -15552,7 +15603,7 @@
   "maLeJRYKU4TYt5Lp": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 1 gp; Weight 1 lb.<br />Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>This stick of red wax is used to seal envelopes, often using an impression from a signet ring as proof they were sent by you.</p>",
+    "description": "<p>Price 1 gp; Weight 1 lb.<br>Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>This stick of red wax is used to seal envelopes, often using an impression from a signet ring as proof they were sent by you.</p>",
     "id": "maLeJRYKU4TYt5Lp",
     "name": "Sealing wax",
     "price": 1,
@@ -15612,6 +15663,7 @@
     "description": "<p><b>Price</b> varies; <b>Weight</b> -</p>\n<p>This ash-gray powder is refined from the crushed bones of creatures that died of virulent diseases, illegally produced by nefarious <em>alchemists</em>, and sold on the black market to those seeking to spread illness and death. The application of the powder depends on the <em>disease</em> from which it is refined. Someone using powder made from diseases contracted by ingestion must apply it to food (a <em>full-round action</em>) for the victim to consume. Those using powder made from diseases contracted by injury must apply the powder to weapons (a <em>standard action</em>, as per the <em>poison</em> application rules) and deal damage to victims to subject them to the <em>contagion</em>. Diseases contracted by inhalation require the user to disperse the powder by <em>throwing</em> it into the air. <em>Throwing</em> a handful of plague powder is a splash attack with a range increment of 5 feet. Anyone standing in the square of impact must succeed at a save with a DC equal to that of the <em>disease</em> from which the powder is made to avoid contracting the illness, while those in adjacent squares must attempt the same save with a +4 bonus. Diseases spread through contact can use any of the three manners of application.</p>\n<p>The most common <em>disease</em> refined for these powders is filth fever, costing 144 gp, but refined plague powders of other diseases are available, with a price equal to the base save DC of the <em>disease</em> squared. Making a plague powder always requires access to a sample of the <em>disease</em> and exposes the creator to the <em>disease</em> in question each day of crafting. Crafting a dose of plague powder requires a successful DC 25 <em>Craft</em> (alchemy) check.</p>",
     "id": "maodkxvdbjqufjca",
     "name": "Plague Powder",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1135",
@@ -15624,7 +15676,7 @@
   "mbhdwlzmycxkuobo": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Also known as \"alchemist's ice,\" this sealed jar of crystalline blue fluid immediately starts to evaporate once opened. During the next 1d6 rounds, you can use it to freeze a liquid or to coat an object in a thin layer of ice. You can also throw liquid ice as a <em>splash weapon</em>. A direct hit deals 1d6 points of cold damage; creatures within 5 feet of where it hits take 1 point of cold damage from the splash.</p><h3>Alchemical Power Component</h3><p>Liquid ice augments cold magic.</p><ul><li>Cone of Cold (M): The spell deals +1 point of damage per <em>caster level</em>.</li><li>Gentle Repose (M): The spell's duration increases to 2 days per level.</li><li>Ray of Frost (F): The spell deals +1 point of damage.</li><li>Ray of Frost (M): The spell creates an icicle of frozen water vapor that strikes the target and deals 1d3 points of piercing damage and 1 point of cold damage.</li><li>Protection from Energy (M): If cast to ward against fire, increase the amount of fire damage absorbed by 5.</li><li>Resist Energy (M): If cast to ward against fire, increase the fire <em>resistance</em> to 12. At <em>caster level</em> 7th, you may use two jars of liquid ice as a power component to increase the fire <em>resistance</em> to 24. At <em>caster level</em> 11th, you may use three jars as a power component to increase the fire <em>resistance</em> to 36.</li></ul><p><sup>(M): the alchemical item is expend as a material component.;<br />(F): the item is used as a focus and is not expend.</sup></p>",
+    "description": "<p>Also known as \"alchemist's ice,\" this sealed jar of crystalline blue fluid immediately starts to evaporate once opened. During the next 1d6 rounds, you can use it to freeze a liquid or to coat an object in a thin layer of ice. You can also throw liquid ice as a <em>splash weapon</em>. A direct hit deals 1d6 points of cold damage; creatures within 5 feet of where it hits take 1 point of cold damage from the splash.</p><h3>Alchemical Power Component</h3><p>Liquid ice augments cold magic.</p><ul><li>Cone of Cold (M): The spell deals +1 point of damage per <em>caster level</em>.</li><li>Gentle Repose (M): The spell's duration increases to 2 days per level.</li><li>Ray of Frost (F): The spell deals +1 point of damage.</li><li>Ray of Frost (M): The spell creates an icicle of frozen water vapor that strikes the target and deals 1d3 points of piercing damage and 1 point of cold damage.</li><li>Protection from Energy (M): If cast to ward against fire, increase the amount of fire damage absorbed by 5.</li><li>Resist Energy (M): If cast to ward against fire, increase the fire <em>resistance</em> to 12. At <em>caster level</em> 7th, you may use two jars of liquid ice as a power component to increase the fire <em>resistance</em> to 24. At <em>caster level</em> 11th, you may use three jars as a power component to increase the fire <em>resistance</em> to 36.</li></ul><p><sup>(M): the alchemical item is expend as a material component.;<br>(F): the item is used as a focus and is not expend.</sup></p>",
     "id": "mbhdwlzmycxkuobo",
     "name": "Liquid Ice",
     "price": 40,
@@ -15663,7 +15715,7 @@
   "mfrrgztsoebuqkng": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>A small tent holds one Medium creature and takes 20 minutes to assemble.</p><hr /><p>Two Small creatures count as a Medium creature. Packing up a tent takes half as long as assembling it.</p>",
+    "description": "<p>A small tent holds one Medium creature and takes 20 minutes to assemble.</p><hr><p>Two Small creatures count as a Medium creature. Packing up a tent takes half as long as assembling it.</p>",
     "id": "mfrrgztsoebuqkng",
     "name": "Tent, small",
     "price": 10,
@@ -100179,6 +100231,7 @@
     "description": "<table border=\"1\">\n<thead>\n<tr>\n<th>Type</th>\n<th>Price</th>\n<th>Weight</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Common</td>\n<td>15 gp</td>\n<td>25 lbs.</td>\n</tr>\n<tr>\n<td>Deluxe</td>\n<td>130 gp</td>\n<td>15 lbs.</td>\n</tr>\n</tbody>\n</table>\n<p>This bundle of essential supplies for exploring ruins and abandoned cities includes two candles, <em>chalk</em>, a <em>hammer</em> and four pitons, 50 feet of hemp rope, a <em>hooded lantern</em> with 5 flasks of <em>oil</em>, two sacks, two torches, and four tindertwigs. A deluxe <em>dungeoneering kit</em> contains two candles, <em>chalk</em>, a <em>hammer</em> and four pitons, 50 feet of <em>silk rope</em>, two sacks, three sunrods, four tindertwigs, and an <em>everburning torch</em>.</p>",
     "id": "mijtpngfgvtiqqyx",
     "name": "Kit, Dungeoneering",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.mijtpngfgvtiqqyx"
   },
@@ -100234,6 +100287,7 @@
   "mljvgnyummstsuww": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>This small metal rod has a tiny sharp wheel on one end and a bulb on the other. You score the glass with the wheel and tap it with the bulb to break it. If you succeed at a DC 15 Sleight of Hand check, you can break the glass very quietly (DC 15 <em>Perception</em> check to hear). Most thieves use <em>glue paper</em> with a <em>glass cutter</em> to reduce noise and capture glass fragments.</p>",
     "id": "mljvgnyummstsuww",
     "name": "Glass Cutter",
     "price": 5,
@@ -100532,29 +100586,8 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "jwVHSbHYArXOtGKv",
-        "name": "Piton",
-        "quantity": 10
-      },
-      {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
-      },
-      {
-        "itemId": "yGrLgCtNMMV9cUvt",
-        "name": "Caltrops"
-      },
-      {
-        "itemId": "nbbqukzwghrixhyl",
-        "name": "Chalk",
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
         "quantity": 10
       },
       {
@@ -100562,12 +100595,28 @@
         "name": "Thieves' Tools, common"
       },
       {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
-      },
-      {
         "itemId": "gjtuklwkrbqykmdk",
         "name": "Mirror"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "yGrLgCtNMMV9cUvt",
+        "name": "Caltrops"
+      },
+      {
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       },
       {
         "itemId": "manvtbznrwjmnrua",
@@ -100575,38 +100624,44 @@
         "quantity": 5
       },
       {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
-      },
-      {
         "itemId": "bsztkhkrhgmsbqpt",
         "name": "Waterskin"
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
       },
       {
         "itemId": "lSCPUK5Ea6R0t4fz",
         "name": "Backpack, common"
       },
       {
+        "itemId": "nbbqukzwghrixhyl",
+        "name": "Chalk",
+        "quantity": 10
+      },
+      {
         "itemId": "gnynrdudvahpbxkz",
         "name": "Grappling hook, common"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "jwVHSbHYArXOtGKv",
+        "name": "Piton",
+        "quantity": 10
       }
     ],
     "contextNotes": [],
     "id": "nGuE4jwuo379IcNX",
     "name": "Kit, Rogue's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -100678,6 +100733,7 @@
     "description": "<p>This emerald-colored adhesive is a concoction made from animal glands, urine, and other powerful scents combined with a strong alchemical binding agent that is difficult to wash off. A target splashed with it smells like weak prey to predators. Creatures with the <em>scent</em> ability can detect a marked creature at five times the normal range, note its direction as a <em>free action</em>, pinpoint it when it is within 25 feet, and track it by scent with a +5 bonus on its <em>Survival</em> checks. Immersion in water within 1 round of exposure washes it off; otherwise the effect decreases by one range increment per day (four times normal range after 1 day, three times range after 2 days, and so on) until the creature is again at normal scent levels.</p>",
     "id": "naxaqhpuvwccmgzv",
     "name": "Wild Animal Musk",
+    "price": 0,
     "sources": [
       {
         "id": "PZO9410"
@@ -100771,7 +100827,7 @@
   "nlAzay8CayaK7699": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 2 cp; Weight 1 lb.<br />Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>A whetstone allows you to sharpen a blade by sliding it against the stone at a precise angle. Honing a blade with a whetstone requires about 15 minutes of work and grants the weapon a +1 bonus on your damage roll the first time you hit with it. This only works on nonmagical blades.</p>",
+    "description": "<p>Price 2 cp; Weight 1 lb.<br>Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>A whetstone allows you to sharpen a blade by sliding it against the stone at a precise angle. Honing a blade with a whetstone requires about 15 minutes of work and grants the weapon a +1 bonus on your damage roll the first time you hit with it. This only works on nonmagical blades.</p>",
     "id": "nlAzay8CayaK7699",
     "name": "Whetstone",
     "price": 0.02,
@@ -100964,7 +101020,7 @@
   "nwkkmpvpkoopmvum": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p><strong>Category</strong> Dungeon Guide<strong><br />Accuracy</strong> +6<br /><strong>Associated Skill</strong> <em>Knowledge</em> (religion) (DC 25)</p><h3>Description</h3><p>This long-lost tome contains the detailed accounts of the mysterious and terrible things found when exploring a haunted burial ground centuries ago.</p><h3>Skill Bonuses</h3><ul><li>See through a <em>vampire</em> or <em>dhampir's</em> disguise (<em>Perception</em> +4)</li></ul>",
+    "description": "<p><strong>Category</strong> Dungeon Guide<strong><br>Accuracy</strong> +6<br><strong>Associated Skill</strong> <em>Knowledge</em> (religion) (DC 25)</p><h3>Description</h3><p>This long-lost tome contains the detailed accounts of the mysterious and terrible things found when exploring a haunted burial ground centuries ago.</p><h3>Skill Bonuses</h3><ul><li>See through a <em>vampire</em> or <em>dhampir's</em> disguise (<em>Perception</em> +4)</li></ul>",
     "id": "nwkkmpvpkoopmvum",
     "name": "Liron Treye's Journal",
     "price": 4600,
@@ -101031,7 +101087,7 @@
     "changes": [],
     "cl": 1,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer is hit by a natural attack from an evil summoned creature, the wearer is automatically affected by Protection from Evil. Other versions of this talisman, which affect chaotic, lawful, and good summoned creatures, are much less common.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr><p>The first time that the wearer is hit by a natural attack from an evil summoned creature, the wearer is automatically affected by Protection from Evil. Other versions of this talisman, which affect chaotic, lawful, and good summoned creatures, are much less common.</p>",
     "id": "o3GroXbqFrUSdlvh",
     "name": "Talisman of Sealed Summons, Greater",
     "price": 4500,
@@ -101162,7 +101218,7 @@
     "changes": [],
     "cl": 1,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer is hit by a natural attack from an evil summoned creature, the wearer is automatically affected by Protection from Evil. Other versions of this talisman, which affect chaotic, lawful, and good summoned creatures, are much less common.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr><p>The first time that the wearer is hit by a natural attack from an evil summoned creature, the wearer is automatically affected by Protection from Evil. Other versions of this talisman, which affect chaotic, lawful, and good summoned creatures, are much less common.</p>",
     "id": "oR0jEBnO1RdhTnbd",
     "name": "Talisman of Sealed Summons, Lesser",
     "price": 450,
@@ -101243,7 +101299,7 @@
   "odYSsefhV1v1TXdQ": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Price 5 sp; Weight —<br />Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>This needle allows you to stitch together cloth, canvas, or thin leather.</p>",
+    "description": "<p>Price 5 sp; Weight —<br>Category Adventuring Gear</p>\n<h3>Description</h3>\n<p>This needle allows you to stitch together cloth, canvas, or thin leather.</p>",
     "id": "odYSsefhV1v1TXdQ",
     "name": "Sewing needle",
     "price": 0.5,
@@ -101669,7 +101725,7 @@
   "pWELX6ZgwkxnXcL8": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>This 6-foot length of copper wire is strong and flexible. By attaching it to two pitons or iron spikes across an area, you can create a simple tripwire trap.</p><h3>Tripwire Trap - CR 1/3</h3><p>Type mechanical; Perception DC 15; Disable Device DC 10</p><h3>Effects</h3><p>Trigger location; Reset automatic<br />Effect trip combat maneuver +5 (+10 if the target is running)</p>",
+    "description": "<p>This 6-foot length of copper wire is strong and flexible. By attaching it to two pitons or iron spikes across an area, you can create a simple tripwire trap.</p><h3>Tripwire Trap - CR 1/3</h3><p>Type mechanical; Perception DC 15; Disable Device DC 10</p><h3>Effects</h3><p>Trigger location; Reset automatic<br>Effect trip combat maneuver +5 (+10 if the target is running)</p>",
     "id": "pWELX6ZgwkxnXcL8",
     "name": "Wire",
     "price": 5,
@@ -101717,7 +101773,7 @@
   "pbporbkxdlpdpnut": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p><strong>Category</strong> Dungeon Guides<strong><br />Accuracy</strong> +7<br /><strong>Associated Skill</strong> Knowledge (engineering) (DC 25)</p><h3>Description</h3><p>This thick leather-bound book was stolen from the Technic League by unknown hands, and describes one of the earliest surveys of the Silver Mount of Numeria and nearby ruins. The League’s assassins brutally hunt down anyone with a copy.</p><h3>Skill Bonuses</h3><ul><li>Disable clockwork traps (<em>Disable Device</em> +2)</li><li>Evaluate certain relics (<em>Appraise</em> +4)</li><li>Identify <em>construct</em> creature (<em>Knowledge</em> [arcana] +4)</li></ul>",
+    "description": "<p><strong>Category</strong> Dungeon Guides<strong><br>Accuracy</strong> +7<br><strong>Associated Skill</strong> Knowledge (engineering) (DC 25)</p><h3>Description</h3><p>This thick leather-bound book was stolen from the Technic League by unknown hands, and describes one of the earliest surveys of the Silver Mount of Numeria and nearby ruins. The League’s assassins brutally hunt down anyone with a copy.</p><h3>Skill Bonuses</h3><ul><li>Disable clockwork traps (<em>Disable Device</em> +2)</li><li>Evaluate certain relics (<em>Appraise</em> +4)</li><li>Identify <em>construct</em> creature (<em>Knowledge</em> [arcana] +4)</li></ul>",
     "id": "pbporbkxdlpdpnut",
     "name": "A Thread of Silver",
     "price": 6700,
@@ -101734,6 +101790,7 @@
   "pbvwijegvapeaogs": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>A leather or wooden scroll case easily holds four scrolls; you can cram more inside, but retrieving any of them becomes a full-round action rather than a move action. You must destroy the scroll case to damage its contents (hardness 2 for leather or 5 for wood, 2 hit points, break DC 15). A scroll case is not watertight, and must still be protected from the elements.</p>",
     "id": "pbvwijegvapeaogs",
     "name": "Case, Scroll",
     "price": 1,
@@ -101816,25 +101873,12 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
-      },
-      {
-        "itemId": "zopwdgykghmkpulz",
-        "name": "Ink"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       },
       {
         "itemId": "ygmrcisvftnvjyob",
         "name": "Flint And Steel"
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
       },
       {
         "itemId": "manvtbznrwjmnrua",
@@ -101842,28 +101886,41 @@
         "quantity": 5
       },
       {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
       },
       {
         "itemId": "gbrjebshlzusiqwz",
         "name": "Inkpen"
       },
       {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
         "itemId": "ucgkbtqiybhyiwwk",
         "name": "Spell Component Pouch"
       },
       {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
       },
       {
         "itemId": "bsztkhkrhgmsbqpt",
@@ -101873,6 +101930,7 @@
     "contextNotes": [],
     "id": "pfhsNOG9sb4ViJ4A",
     "name": "Kit, Arcanist's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1129",
@@ -101887,6 +101945,7 @@
     "description": "<p>This single-malt smooth rye whiskey is a favorite of old soldiers everywhere.</p>\n<p>The listed prices are for a tavern or restaurant in an average city.</p>",
     "id": "pintzgaflhzlrtry",
     "name": "Whiskey, Oldlaw",
+    "price": 0,
     "sources": [
       {
         "id": "PZO9410"
@@ -102051,20 +102110,45 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
       },
       {
         "itemId": "Ueae6c2qqJJGpncA",
         "name": "Mess Kit"
       },
       {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
+        "itemId": "fdfdwpuaqjjudyeo",
+        "name": "Holy text, cheap"
       },
       {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
       },
       {
         "itemId": "wjvxmolafiegvesl",
@@ -102076,43 +102160,19 @@
         "quantity": 10
       },
       {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
-        "itemId": "fdfdwpuaqjjudyeo",
-        "name": "Holy text, cheap"
-      },
-      {
-        "itemId": "s5KkeKPLnneb0WR4",
-        "name": "Holy symbol (Wood)"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
       },
       {
         "itemId": "snfogneawzopfzzl",
         "name": "Torch",
         "quantity": 10
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
-      },
-      {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
       }
     ],
     "contextNotes": [],
     "id": "pxaHUL6GnMFzBHKE",
     "name": "Kit, Cleric's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -102153,6 +102213,7 @@
   "pzxgojmlevlsbfed": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>This elevated camp bed is made of wood and canvas, and is particularly useful when the ground is wet or rocky. It is large enough for a full-grown human, but folds down into a 4-foot-by-9-inch cylindrical bag.</p>",
     "id": "pzxgojmlevlsbfed",
     "name": "Cot",
     "price": 1,
@@ -102169,7 +102230,7 @@
   "q0OL5ps7wDeqyUBg": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Food spoils more quickly in hot climates, and Qadirans have become experts at using the spices that they trade to help preserve their meals. After importing plants from across the planes, Qadiran druids and alchemists bred and magically adapted unique species with enhanced medicinal properties. Al-Zabriti tribes generally have supplies of the following spices on hand. To gain the benefits of these spices, a character must consume multiple doses over 1 or more days, as indicated for each spice. Once the benefit is gained, continued consumption at that rate maintains the benefit.<br /><br /><strong>Sunrise Cinnamon</strong>: A warming spice, sunrise cinnamon is used for seasoning both sweet and savory foods. It promotes sweating, and a character who ingests it twice per day for 5 days gains a +4 alchemical bonus on Fortitude saves made to resist the effects of hot environments. An ounce of ground sunrise cinnamon sells for 15 gp and seasons 10 meals.</p>",
+    "description": "<p>Food spoils more quickly in hot climates, and Qadirans have become experts at using the spices that they trade to help preserve their meals. After importing plants from across the planes, Qadiran druids and alchemists bred and magically adapted unique species with enhanced medicinal properties. Al-Zabriti tribes generally have supplies of the following spices on hand. To gain the benefits of these spices, a character must consume multiple doses over 1 or more days, as indicated for each spice. Once the benefit is gained, continued consumption at that rate maintains the benefit.<br><br><strong>Sunrise Cinnamon</strong>: A warming spice, sunrise cinnamon is used for seasoning both sweet and savory foods. It promotes sweating, and a character who ingests it twice per day for 5 days gains a +4 alchemical bonus on Fortitude saves made to resist the effects of hot environments. An ounce of ground sunrise cinnamon sells for 15 gp and seasons 10 meals.</p>",
     "id": "q0OL5ps7wDeqyUBg",
     "name": "Sunrise cinnamon",
     "price": 15,
@@ -102207,7 +102268,7 @@
   "q8UJF3P0VkZLVyeD": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p><strong>Price</strong> 1 sp–100 gp<br /><strong>Category</strong> Entertainment</p><h3>Description</h3><p>Playing cards range from block-printed symbols on thick paper to elaborate, hand-painted works of art on waxed vellum, ivory, wood, or even metal.</p>",
+    "description": "<p><strong>Price</strong> 1 sp–100 gp<br><strong>Category</strong> Entertainment</p><h3>Description</h3><p>Playing cards range from block-printed symbols on thick paper to elaborate, hand-painted works of art on waxed vellum, ivory, wood, or even metal.</p>",
     "id": "q8UJF3P0VkZLVyeD",
     "name": "Cards",
     "price": 0.1,
@@ -102305,25 +102366,49 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
+      },
+      {
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
       },
       {
         "itemId": "Ueae6c2qqJJGpncA",
         "name": "Mess Kit"
       },
       {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
+        "itemId": "gbrjebshlzusiqwz",
+        "name": "Inkpen"
       },
       {
         "itemId": "yMoclCylbCRKyaZF",
         "name": "Soap"
       },
       {
-        "itemId": "gbrjebshlzusiqwz",
-        "name": "Inkpen"
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
+        "itemId": "zopwdgykghmkpulz",
+        "name": "Ink"
+      },
+      {
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
       },
       {
         "itemId": "snfogneawzopfzzl",
@@ -102335,38 +102420,15 @@
         "name": "Pot, common"
       },
       {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "zopwdgykghmkpulz",
-        "name": "Ink"
-      },
-      {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
-      },
-      {
-        "itemId": "ucgkbtqiybhyiwwk",
-        "name": "Spell Component Pouch"
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       }
     ],
     "contextNotes": [],
     "description": "<p>The kit does not contain a spellbook because a magus begins play with a spellbook.</p>",
     "id": "qYM1rGPtKbKo5Yqw",
     "name": "Kit, Magus's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -102513,13 +102575,24 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       },
       {
         "itemId": "iegwwsarycqwoezj",
         "name": "Bedroll"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
       },
       {
         "itemId": "snfogneawzopfzzl",
@@ -102527,16 +102600,13 @@
         "quantity": 10
       },
       {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
         "itemId": "bsztkhkrhgmsbqpt",
         "name": "Waterskin"
       },
       {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
       },
       {
         "itemId": "Ueae6c2qqJJGpncA",
@@ -102549,19 +102619,12 @@
       {
         "itemId": "ygmrcisvftnvjyob",
         "name": "Flint And Steel"
-      },
-      {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
       }
     ],
     "contextNotes": [],
     "id": "qltDGFNjwMPljQmH",
     "name": "Kit, Ranger's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -102661,7 +102724,7 @@
   "qozwdcnkxulxsepe": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>You can throw a flask of acid as a <em>splash weapon</em> with a range increment of 10 feet.</p><p>A direct hit deals 1d6 points of acid damage. Every creature within 5 feet of the point where the acid hits takes 1 point of acid damage from the splash.</p><h3>Alchemical Power Component</h3><p>A common flask of acid has many uses as an alchemical power component, particularly with attack spells.</p><ul><li>Acid Arrow (M): The spell's acid lasts 1 round longer than normal.</li><li>Acid Fog (M): The fog's radius and height increase by 5 feet.</li><li>Acid Splash (F): The spell deals +1 point of damage.</li><li>Acid Splash (M): The spell lasts 1 round longer than normal.</li><li>Dispel Magic (M): Using acid as a material component while attempting to dispel or counterspell a spell or effect with the earth subtype gives you a +2 bonus on your dispel check. This bonus applies whether you are using dispel magic, greater dispel magic, or some other spell that you can use for counterspelling (for example, if you have the Improved Counterspell feat).</li><li>Grease (M): The grease is acidic and deals 1 point of acid damage per round to any creature in the area or holding the greased object.</li><li>Wall of Ice (M): For each flask of acid used as a power component, you may designate one 10-foot square of ice wall that, if <em>broken</em> through, deals 1d6 acid damage in addition to the normal cold damage.</li></ul><p><sup>(M): the alchemical item is expend as a material component.;<br />(F): the item is used as a focus and is not expend.</sup></p>",
+    "description": "<p>You can throw a flask of acid as a <em>splash weapon</em> with a range increment of 10 feet.</p><p>A direct hit deals 1d6 points of acid damage. Every creature within 5 feet of the point where the acid hits takes 1 point of acid damage from the splash.</p><h3>Alchemical Power Component</h3><p>A common flask of acid has many uses as an alchemical power component, particularly with attack spells.</p><ul><li>Acid Arrow (M): The spell's acid lasts 1 round longer than normal.</li><li>Acid Fog (M): The fog's radius and height increase by 5 feet.</li><li>Acid Splash (F): The spell deals +1 point of damage.</li><li>Acid Splash (M): The spell lasts 1 round longer than normal.</li><li>Dispel Magic (M): Using acid as a material component while attempting to dispel or counterspell a spell or effect with the earth subtype gives you a +2 bonus on your dispel check. This bonus applies whether you are using dispel magic, greater dispel magic, or some other spell that you can use for counterspelling (for example, if you have the Improved Counterspell feat).</li><li>Grease (M): The grease is acidic and deals 1 point of acid damage per round to any creature in the area or holding the greased object.</li><li>Wall of Ice (M): For each flask of acid used as a power component, you may designate one 10-foot square of ice wall that, if <em>broken</em> through, deals 1d6 acid damage in addition to the normal cold damage.</li></ul><p><sup>(M): the alchemical item is expend as a material component.;<br>(F): the item is used as a focus and is not expend.</sup></p>",
     "id": "qozwdcnkxulxsepe",
     "name": "Acid",
     "price": 10,
@@ -102720,8 +102783,10 @@
   "qtVn6uvpmPlc30AX": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>A tiny steel mirror.</p>",
     "id": "qtVn6uvpmPlc30AX",
     "name": "Mirror, Miniature",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1110"
@@ -102772,6 +102837,7 @@
   "qvzpwkvaorvszxmt": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p><strong>Price</strong> 1 sp/sq. yd.; <strong>Weight</strong> 1 lb.</p><p>This square yard of heavy cloth is suitable for painting, for covering items in a rainstorm, for creating a sail, or as an improvised bag. It is not waterproof but can be treated with <em>oil</em>, wax, or resin to make it water-resistant.</p>",
     "id": "qvzpwkvaorvszxmt",
     "name": "Canvas",
     "price": 0.1,
@@ -103013,6 +103079,7 @@
     "description": "<table border=\"1\">\n<thead>\n<tr>\n<th>Type</th>\n<th>Price</th>\n<th>Weight</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Common</td>\n<td>75 gp</td>\n<td>5 lbs.</td>\n</tr>\n<tr>\n<td>Cheating</td>\n<td>300 gp</td>\n<td>5 lbs.</td>\n</tr>\n</tbody>\n</table>\n<p>Particularly useful for travelers moving through areas too small or remote to support a full-time place for gambling, this small, tightly packed suitcase holds decks of cards, a betting wheel, numbered cloths, colored wooden chips, and a wide variety of other sorts of specialized equipment necessary for many different games of chance. A cheating gambler's kit is very similar, except its cards are marked and its games are rigged, giving a knowledgeable user a +4 <em>circumstance bonus</em> on <em>Profession</em> (gambler) checks when using these materials. A DC 25 <em>Perception</em> or DC 20 <em>Profession</em> (gambler) check exposes the ruse.</p>",
     "id": "rcfhitbmkesztzzd",
     "name": "Kit, Gambler's",
+    "price": 0,
     "subType": "gear",
     "uuid": "Compendium.pf1.items.Item.rcfhitbmkesztzzd"
   },
@@ -103038,6 +103105,7 @@
   "rctxgmkocuvjcjyo": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>This hollow container is made of wood, a gourd, or metal, and carries liquid like a <em>waterskin</em>, but is more resistant to punctures and cuts.</p>",
     "id": "rctxgmkocuvjcjyo",
     "name": "Canteen",
     "price": 2,
@@ -103172,6 +103240,7 @@
   "rketafoqnfebqrpp": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>This beer-like drink, made from manioc root or corn, requires extensive chewing as part of its production.</p>",
     "id": "rketafoqnfebqrpp",
     "name": "Cauim",
     "price": 1,
@@ -103464,7 +103533,7 @@
   "sUw8RMVNvDOCBl4u": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>You can throw a flask of alchemist's fire as a <em>splash weapon</em> with a range increment of 10 feet.</p><p>A direct hit deals 1d6 points of fire damage. Every creature within 5 feet of the point where the flask hits takes 1 point of fire damage from the splash. On the round following a direct hit, the target takes an additional 1d6 points of damage. If desired, the target can use a <em>full-round action</em> to attempt to extinguish the flames before taking this additional damage. Extinguishing the flames requires a DC 15 <em>Reflex</em> save. Rolling on the ground provides the target a +2 bonus on the save. Leaping into a lake or magically extinguishing the flames automatically smothers the fire.</p><h3>Alchemical Power Component</h3><p>This dwarven favorite can make fire spells last longer.</p><ul><li>Burning Hands (M): One target that fails its <em>Reflex</em> saving throw (your choice) catches on fire as if it has been struck by <em>alchemist's</em> fire.</li><li>Fireball (M): One target per <em>caster level</em> that fails its <em>Reflex</em> saving throw (your choice) catches on fire as if it has been struck by <em>alchemist's</em> fire.</li><li>Flaming Sphere (M): Any creature damaged by a <em>flaming sphere</em> catches on fire as if it has been struck by <em>alchemist's</em> fire.</li><li>Protection from Energy (M): If cast to ward against cold, increase the amount of cold damage absorbed by 5.</li><li>Resist Energy (M): If cast to ward against cold, increase the cold <em>resistance</em> to 12. At <em>caster level</em> 7th, you may use two flasks of <em>alchemist's</em> fire as a power component to increase the cold <em>resistance</em> to 24. At <em>caster level</em> 11th, you may use three flasks as a power component to increase the cold <em>resistance</em> to 36.</li><li>Scorching Ray (F): Add a +1 <em>circumstance bonus</em> on your <em>attack roll</em> with all rays from the spell.</li><li>Scorching Ray (M): Any target damaged by a <em>scorching ray</em> catches on fire as if it has been struck by <em>alchemist's</em> fire.</li></ul><p><sup>(M): the alchemical item is expend as a material component.;<br />(F): the item is used as a focus and is not expend.</sup></p>",
+    "description": "<p>You can throw a flask of alchemist's fire as a <em>splash weapon</em> with a range increment of 10 feet.</p><p>A direct hit deals 1d6 points of fire damage. Every creature within 5 feet of the point where the flask hits takes 1 point of fire damage from the splash. On the round following a direct hit, the target takes an additional 1d6 points of damage. If desired, the target can use a <em>full-round action</em> to attempt to extinguish the flames before taking this additional damage. Extinguishing the flames requires a DC 15 <em>Reflex</em> save. Rolling on the ground provides the target a +2 bonus on the save. Leaping into a lake or magically extinguishing the flames automatically smothers the fire.</p><h3>Alchemical Power Component</h3><p>This dwarven favorite can make fire spells last longer.</p><ul><li>Burning Hands (M): One target that fails its <em>Reflex</em> saving throw (your choice) catches on fire as if it has been struck by <em>alchemist's</em> fire.</li><li>Fireball (M): One target per <em>caster level</em> that fails its <em>Reflex</em> saving throw (your choice) catches on fire as if it has been struck by <em>alchemist's</em> fire.</li><li>Flaming Sphere (M): Any creature damaged by a <em>flaming sphere</em> catches on fire as if it has been struck by <em>alchemist's</em> fire.</li><li>Protection from Energy (M): If cast to ward against cold, increase the amount of cold damage absorbed by 5.</li><li>Resist Energy (M): If cast to ward against cold, increase the cold <em>resistance</em> to 12. At <em>caster level</em> 7th, you may use two flasks of <em>alchemist's</em> fire as a power component to increase the cold <em>resistance</em> to 24. At <em>caster level</em> 11th, you may use three flasks as a power component to increase the cold <em>resistance</em> to 36.</li><li>Scorching Ray (F): Add a +1 <em>circumstance bonus</em> on your <em>attack roll</em> with all rays from the spell.</li><li>Scorching Ray (M): Any target damaged by a <em>scorching ray</em> catches on fire as if it has been struck by <em>alchemist's</em> fire.</li></ul><p><sup>(M): the alchemical item is expend as a material component.;<br>(F): the item is used as a focus and is not expend.</sup></p>",
     "id": "sUw8RMVNvDOCBl4u",
     "name": "Alchemist's Fire",
     "price": 20,
@@ -103496,7 +103565,7 @@
   "sWQqcN3agKN7xYIF": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Food spoils more quickly in hot climates, and Qadirans have become experts at using the spices that they trade to help preserve their meals. After importing plants from across the planes, Qadiran druids and alchemists bred and magically adapted unique species with enhanced medicinal properties. Al-Zabriti tribes generally have supplies of the following spices on hand. To gain the benefits of these spices, a character must consume multiple doses over 1 or more days, as indicated for each spice. Once the benefit is gained, continued consumption at that rate maintains the benefit.<br /><br /><strong>Violet Salt</strong>: Salt is of vital importance for retaining a body’s water. If a dose of Qadiran violet salt is consumed as part of a meal, it grants a +4 alchemical bonus on Constitution checks to resist the effects of ongoing thirst for the next 24 hours. A dose of violet salt sells for 5 gp and seasons one meal.</p>",
+    "description": "<p>Food spoils more quickly in hot climates, and Qadirans have become experts at using the spices that they trade to help preserve their meals. After importing plants from across the planes, Qadiran druids and alchemists bred and magically adapted unique species with enhanced medicinal properties. Al-Zabriti tribes generally have supplies of the following spices on hand. To gain the benefits of these spices, a character must consume multiple doses over 1 or more days, as indicated for each spice. Once the benefit is gained, continued consumption at that rate maintains the benefit.<br><br><strong>Violet Salt</strong>: Salt is of vital importance for retaining a body’s water. If a dose of Qadiran violet salt is consumed as part of a meal, it grants a +4 alchemical bonus on Constitution checks to resist the effects of ongoing thirst for the next 24 hours. A dose of violet salt sells for 5 gp and seasons one meal.</p>",
     "id": "sWQqcN3agKN7xYIF",
     "name": "Violet salt",
     "price": 5,
@@ -104124,6 +104193,7 @@
     "contextNotes": [],
     "id": "tVkpdPfIJomoFjUl",
     "name": "Plate",
+    "price": 0,
     "subType": "tradeGoods",
     "uuid": "Compendium.pf1.items.Item.tVkpdPfIJomoFjUl",
     "weight": 0.4
@@ -104188,35 +104258,36 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "snfogneawzopfzzl",
-        "name": "Torch",
-        "quantity": 10
+        "itemId": "manvtbznrwjmnrua",
+        "name": "Trail Rations",
+        "quantity": 5
       },
       {
         "itemId": "fwfwshvyweqbthwk",
         "name": "Blanket"
       },
       {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
-      },
-      {
-        "itemId": "manvtbznrwjmnrua",
-        "name": "Trail Rations",
-        "quantity": 5
-      },
-      {
         "itemId": "wjvxmolafiegvesl",
         "name": "Belt Pouch"
       },
       {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
+      },
+      {
         "itemId": "lSCPUK5Ea6R0t4fz",
         "name": "Backpack, common"
+      },
+      {
+        "itemId": "snfogneawzopfzzl",
+        "name": "Torch",
+        "quantity": 10
       }
     ],
     "contextNotes": [],
     "id": "th9yV3T4EYlW4IyP",
     "name": "Kit, Kineticist's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1132",
@@ -104328,6 +104399,7 @@
     "description": "<p>This mild sedative is normally used to treat insomnia, making the drinker reluctant to take hasty actions but adept at remaining still or silent. One cup of the tonic gives a <em>halfling</em> a -4 penalty on <em>initiative</em> checks for 10 minutes and a +2 <em>alchemical bonus</em> on <em>Stealth</em> checks for that time.</p><p><strong>Note</strong>: Non-<em>halflings</em> do not receive any bonuses from this drink.</p>",
     "id": "towjvfazznprlghe",
     "name": "Tonic, Medicinal",
+    "price": 0,
     "sources": [
       {
         "id": "PZO9415"
@@ -104457,6 +104529,7 @@
     "description": "<p><b>Price</b> 50 gp; <b>Weight</b> 25 lbs.</p>\n<p>Two separate compartments make up this black glass canister the size of a helmet. The large lower compartment contains hundreds of jagged shards of obsidian. The upper airtight chamber contains a sticky resin that hardens immediately upon contact with air. When you strike the canister with a bludgeoning melee weapon as a <em>standard action</em>, both compartments <em>shatter</em>, causing the obsidian shards to adhere to the weapon.</p>\n<p>The weapon deals piercing damage rather than bludgeoning damage for 10 minutes, at which point the resin dries and the shards fall off, or until you roll a natural 1 on an <em>attack roll</em>, which causes the shards to break off prematurely. If the weapon is made of a special material, the special properties of its material are suppressed while the obsidian shards adhere to the weapon.</p>\n<p>If you use a rockshard canister to coat an <em>unarmed strike</em> or <em>natural weapon</em>, you take 2d6 points of piercing damage when shattering the canister to apply the shards. For unarmed attacks, this can be avoided by carefully applying thick leather or <em>rope</em> straps to your hands and feet, which requires 5 minutes of work, prior to smashing the canister.</p>",
     "id": "twywiikyzvkmxdmt",
     "name": "Rockshard Canister",
+    "price": 0,
     "sources": [
       {
         "id": "PZO9468"
@@ -104468,6 +104541,7 @@
   "txkgvmomhompjpbr": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>Often extracted from phosphorescent insects, tiny marine plants, or subterranean fungi, glowing ink emits a faint but steady light (typically red or green) that allows you to read it in normal darkness-this includes darkness created by spells like darkness, but not the supernatural darkness created by deeper darkness. If there is glowing ink on an object, you have a +2 bonus on Perception checks to locate it. Mixing glowing ink with marker dye makes the dye glow in the dark until it fades.</p>",
     "id": "txkgvmomhompjpbr",
     "name": "Ink, Glowing",
     "price": 5,
@@ -104550,7 +104624,7 @@
     "changes": [],
     "cl": 3,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time that the wearer is hit by two or more ranged attacks in a single round, he is immediately affected by Protection from Arrows.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr><p>The first time that the wearer is hit by two or more ranged attacks in a single round, he is immediately affected by Protection from Arrows.</p>",
     "id": "uSBQp4RJgdPwM79t",
     "name": "Talisman of Arrow Protection, Lesser",
     "price": 600,
@@ -105054,6 +105128,7 @@
   "uzgshagmudqicdqa": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>Useful on any terrain where traction may be a concern, cleats are shoes with spikes or hooks attached to the soles. Cleats reduce the penalty for walking over slick surfaces by 50%; for example, walking across ice normally costs 2 squares for every square of movement, but with cleats it costs only 1.5 squares for every square. Cleats cause damage to any type of finished flooring.</p>",
     "id": "uzgshagmudqicdqa",
     "name": "Cleats",
     "price": 5,
@@ -105213,6 +105288,7 @@
     "description": "<p>According to legend, the inventor of this dark and harsh liquor actually did attack a dragon bare handed (and presumably lived to pass on the recipe). Halflings who drink four cups of Dragon Punch Whiskey in the space of an hour take a -4 penalty to <em>Dexterity</em> but gain a +4 <em>alchemical bonus</em> on saves against fear for the next 10 minutes</p><p>The listed prices are for a tavern or restaurant in an average city.</p><p><strong>Note</strong>: Non-<em>halflings</em> do not receive any bonuses from this drink.</p>",
     "id": "vdzdvyrkhcwcrdxr",
     "name": "Whiskey, Dragon Punch",
+    "price": 0,
     "sources": [
       {
         "id": "PZO9415"
@@ -105687,6 +105763,7 @@
     "description": "<p>This is a small ornament used to hold an element of clothing, such as a cloak or cape, in place. Many organizations provide special brooches as a symbol of membership or to honor a special achievement.</p>",
     "id": "vzwbifqupjkgjerc",
     "name": "Brooch",
+    "price": 0,
     "slot": "clothing",
     "sources": [
       {
@@ -106183,7 +106260,7 @@
     "changes": [],
     "cl": 5,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer takes 5 or more points of fire damage in a single round, he is automatically affected by Protection from Energy, which protects him from subsequent fire damage. Talismans that protect against other energy types are much less common.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr><p>The first time that the wearer takes 5 or more points of fire damage in a single round, he is automatically affected by Protection from Energy, which protects him from subsequent fire damage. Talismans that protect against other energy types are much less common.</p>",
     "id": "xAhUeDVKHgmKi6AM",
     "name": "Talisman of Protection From Flames, Greater",
     "price": 12500,
@@ -106206,41 +106283,37 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
         "itemId": "manvtbznrwjmnrua",
         "name": "Trail Rations",
         "quantity": 5
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
       },
       {
         "itemId": "qlmtnppwxkubqyhp",
         "name": "Rope"
       },
       {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
-      },
-      {
-        "itemId": "bsztkhkrhgmsbqpt",
-        "name": "Waterskin"
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
       },
       {
         "itemId": "iegwwsarycqwoezj",
         "name": "Bedroll"
       },
       {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       },
       {
         "itemId": "wjvxmolafiegvesl",
@@ -106250,11 +106323,16 @@
         "itemId": "snfogneawzopfzzl",
         "name": "Torch",
         "quantity": 10
+      },
+      {
+        "itemId": "bsztkhkrhgmsbqpt",
+        "name": "Waterskin"
       }
     ],
     "contextNotes": [],
     "id": "xHQnf15yV6edm5lz",
     "name": "Kit, Fighter's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1123",
@@ -106629,6 +106707,7 @@
   "xyxrjmrhsdeshjpc": {
     "changes": [],
     "contextNotes": [],
+    "description": "<p>This portfolio contains examples of official letters along with proper forms of address, etiquette, and turns of phrase. Used by bureaucrats, diplomats, and clerks, it's also useful for counterfeiting official correspondence. It provides a +2 circumstance bonus on Diplomacy checks when dealing with city officials and a +2 circumstance bonus on Linguistics checks when creating forgeries. A book of letters is only accurate for a particular region, such as a country or even a town, and only provides its bonus relating to that region.</p>",
     "id": "xyxrjmrhsdeshjpc",
     "name": "Book of Letters",
     "price": 50,
@@ -107056,7 +107135,7 @@
     "changes": [],
     "cl": 5,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time the wearer rolls initiative, she is immediately affected by Anticipate Peril.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr><p>The first time the wearer rolls initiative, she is immediately affected by Anticipate Peril.</p>",
     "id": "yskhmjCzSVt5cXDP",
     "name": "Talisman of Danger Sense, Greater",
     "price": 7500,
@@ -107144,6 +107223,7 @@
     "description": "<p><strong>Price</strong> Varies; <strong>Weight</strong> Varies</p><p>The cost of jewelry varies wildly by its quality. Many cultures consciously use jewelry as a form of portable wealth, most notably in belts and bangles made from coins. A commoner's ornaments may only be worth a few copper pieces, a tradesman's a few silver pieces, and a merchant's a few gold pieces, while nobles rarely wear jewelry worth less than 100 gp.</p>",
     "id": "yvciawsufviwltoq",
     "name": "Jewelry",
+    "price": 0,
     "slot": "clothing",
     "sources": [
       {
@@ -107416,7 +107496,7 @@
     "changes": [],
     "cl": 7,
     "contextNotes": [],
-    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr /><p>The first time that the wearer becomes grappled, entangled, or paralyzed, he is automatically affected by Freedom of Movement for 3 rounds.</p>",
+    "description": "<p>A greater talisman functions as a lesser talisman of the same type, but has much greater longevity. It can provide its benefits once per day.</p><hr><p>The first time that the wearer becomes grappled, entangled, or paralyzed, he is automatically affected by Freedom of Movement for 3 rounds.</p>",
     "id": "zOsDeV5lYU20HGZ9",
     "name": "Talisman of Freedom, Greater",
     "price": 9000,
@@ -107555,7 +107635,7 @@
     "changes": [],
     "cl": 5,
     "contextNotes": [],
-    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr /><p>The first time the wearer rolls initiative, she is immediately affected by Anticipate Peril.</p>",
+    "description": "<p>These amulets are imbued with magic that allows them to protect their wearer against a very specific danger. A talisman triggers automatically as soon as the listed condition is fulfilled. Although talismans occupy the neck slot, up to three talismans can be worn on one cord or chain. Wearing multiple talismans in this way offers a greater variety of protection, but a wearer can benefit from only one talisman's effect at a time. If another talisman would be triggered while its wearer is under the effect of another talisman, that talisman is not triggered and can still be used later. A lesser talisman carries only enough magical energy to protect its wearer once, after which it crumbles to dust.</p><hr><p>The first time the wearer rolls initiative, she is immediately affected by Anticipate Peril.</p>",
     "id": "zmEmuFW2F4POCKkA",
     "name": "Talisman of Danger Sense, Lesser",
     "price": 750,
@@ -107860,32 +107940,8 @@
     "changes": [],
     "contents": [
       {
-        "itemId": "wjvxmolafiegvesl",
-        "name": "Belt Pouch"
-      },
-      {
-        "itemId": "Ueae6c2qqJJGpncA",
-        "name": "Mess Kit"
-      },
-      {
-        "itemId": "yMoclCylbCRKyaZF",
-        "name": "Soap"
-      },
-      {
-        "itemId": "lSCPUK5Ea6R0t4fz",
-        "name": "Backpack, common"
-      },
-      {
-        "itemId": "qlmtnppwxkubqyhp",
-        "name": "Rope"
-      },
-      {
-        "itemId": "iegwwsarycqwoezj",
-        "name": "Bedroll"
-      },
-      {
-        "itemId": "habofoapdifirevm",
-        "name": "Pot, common"
+        "itemId": "s5KkeKPLnneb0WR4",
+        "name": "Holy symbol (Wood)"
       },
       {
         "itemId": "snfogneawzopfzzl",
@@ -107893,30 +107949,55 @@
         "quantity": 10
       },
       {
-        "itemId": "ygmrcisvftnvjyob",
-        "name": "Flint And Steel"
+        "itemId": "ucgkbtqiybhyiwwk",
+        "name": "Spell Component Pouch"
+      },
+      {
+        "itemId": "lSCPUK5Ea6R0t4fz",
+        "name": "Backpack, common"
       },
       {
         "itemId": "bsztkhkrhgmsbqpt",
         "name": "Waterskin"
       },
       {
-        "itemId": "ucgkbtqiybhyiwwk",
-        "name": "Spell Component Pouch"
+        "itemId": "wjvxmolafiegvesl",
+        "name": "Belt Pouch"
       },
       {
-        "itemId": "s5KkeKPLnneb0WR4",
-        "name": "Holy symbol (Wood)"
+        "itemId": "qlmtnppwxkubqyhp",
+        "name": "Rope"
       },
       {
         "itemId": "manvtbznrwjmnrua",
         "name": "Trail Rations",
         "quantity": 5
+      },
+      {
+        "itemId": "ygmrcisvftnvjyob",
+        "name": "Flint And Steel"
+      },
+      {
+        "itemId": "habofoapdifirevm",
+        "name": "Pot, common"
+      },
+      {
+        "itemId": "Ueae6c2qqJJGpncA",
+        "name": "Mess Kit"
+      },
+      {
+        "itemId": "iegwwsarycqwoezj",
+        "name": "Bedroll"
+      },
+      {
+        "itemId": "yMoclCylbCRKyaZF",
+        "name": "Soap"
       }
     ],
     "contextNotes": [],
     "id": "zwNOw4PH8gpi29p9",
     "name": "Kit, Hunter's",
+    "price": 0,
     "sources": [
       {
         "id": "PZO1129",

@@ -88,7 +88,7 @@
         "type": "resist"
       }
     ],
-    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Protection from Chaos / Evil / Good / Law</li><li>2nd—Shield Other</li><li>3rd—Remove Blindness/Deafness</li><li>4th—Spell Immunity</li><li>5th—Atonement</li><li>6th—Antimagic Field</li><li>7th—Repulsion</li><li>8th—Mind Blank</li><li>9th—Prismatic Sphere</li></ul>",
+    "description": "<p><strong>Associated Domain</strong>: Protection.</p><h3>Replacement Power</h3><p>The following granted power replaces the Aura of Protection (Domain Power) power of the Protection Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Protection from Chaos / Evil / Good / Law</p></li><li><p>3rd—Remove Blindness/Deafness</p></li><li><p>5th—Atonement</p></li></ul>",
     "features": [
       {
         "featureId": "Bw3GiobZvSJb8dGI",
@@ -119,14 +119,14 @@
   },
   "3CgcWBGI6vtz7vZx": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Command</li>\n<li>3rd—Suggestion</li>\n<li>6th—Planar Binding (devils only)</li>\n</ul>",
+    "description": "<p><em>Devils are a race of lawful evil outsiders (see PZO1112 p. 71).</em></p><p><strong>Associated Domain</strong>: Evil.</p><h3>Replacement Power</h3><p>The following granted power replaces the Touch of Evil power of the Evil Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Command</p></li><li><p>3rd—Suggestion</p></li><li><p>6th—Planar Binding (devils only)</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:devil:hell-s-corruption",
+        "featureId": "QDXZaSHgaJPulkpi",
         "level": 0,
         "name": "Hell's Corruption",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:devil:hell-s-corruption"
+        "uuid": "Compendium.pf1.class-abilities.Item.QDXZaSHgaJPulkpi"
       },
       {
         "featureId": "wK9bxQqe49GfT9xh",
@@ -137,14 +137,20 @@
       }
     ],
     "id": "3CgcWBGI6vtz7vZx",
-    "name": "Devil Subdomain",
+    "name": "Devil Subdomain (Evil Domain)",
     "parentDomainTags": ["Evil", "Law"],
-    "tag": "Devil",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "90"
+      }
+    ],
+    "tag": "Devil (Evil Domain)",
     "uuid": "Compendium.pf1.class-abilities.Item.3CgcWBGI6vtz7vZx"
   },
   "3FkaGJVcOYKsA7Lg": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Keen Edge</li>\n<li>5th—Suffocation</li>\n<li>9th—Suffocation, Mass</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Death.</p><h3>Replacement Power</h3><p>The following granted power replaces the Death's Embrace (CLE) power of the Death Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>3rd—Keen Edge</p></li><li><p>5th—Suffocation</p></li><li><p>9th—Suffocation, Mass</p></li></ul>",
     "features": [
       {
         "featureId": "u5LefrXZxQgLqmyJ",
@@ -154,22 +160,28 @@
         "uuid": "Compendium.pf1.class-abilities.Item.u5LefrXZxQgLqmyJ"
       },
       {
-        "featureId": "subdomain-power:murder:killing-blow",
+        "featureId": "7igyFr0NfuK3k4vq",
         "level": 8,
         "name": "Killing Blow",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:murder:killing-blow"
+        "uuid": "Compendium.pf1.class-abilities.Item.7igyFr0NfuK3k4vq"
       }
     ],
     "id": "3FkaGJVcOYKsA7Lg",
     "name": "Murder Subdomain",
     "parentDomainTags": ["Death"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "94"
+      }
+    ],
     "tag": "Murder",
     "uuid": "Compendium.pf1.class-abilities.Item.3FkaGJVcOYKsA7Lg"
   },
   "4eIRlzM1ODGr9aDq": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Seek Thoughts</li>\n<li>5th—Telepathic Bond</li>\n<li>8th—Mind Blank</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Knowledge.</p><h3>Replacement Power</h3><p>The following granted power replaces the Remote Viewing power of the Knowledge Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>3rd—Seek Thoughts</p></li><li><p>5th—Telepathic Bond</p></li><li><p>8th—Mind Blank</p></li></ul>",
     "features": [
       {
         "featureId": "iv3eNHISB84mHLox",
@@ -179,29 +191,35 @@
         "uuid": "Compendium.pf1.class-abilities.Item.iv3eNHISB84mHLox"
       },
       {
-        "featureId": "subdomain-power:thought:read-minds",
+        "featureId": "s8se3CKardfNcZKd",
         "level": 8,
         "name": "Read Minds",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:thought:read-minds"
+        "uuid": "Compendium.pf1.class-abilities.Item.s8se3CKardfNcZKd"
       }
     ],
     "id": "4eIRlzM1ODGr9aDq",
     "name": "Thought Subdomain",
     "parentDomainTags": ["Knowledge"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "97"
+      }
+    ],
     "tag": "Thought",
     "uuid": "Compendium.pf1.class-abilities.Item.4eIRlzM1ODGr9aDq"
   },
   "4r1t3LvBKkw2RCq6": {
     "changes": [],
-    "description": "<p>Replacement Domain Spells:</p>\n<ul>\n<li>1st—Expeditious Retreat</li>\n<li>3rd—Fly</li>\n<li>6th—Planar Ally (azata only)</li>\n</ul>",
+    "description": "<p><em>Azatas are a race of lawful good outsiders (PZO1112 p. 23).</em></p><p><strong>Associated Domain</strong>: Chaos.</p><h3>Replacement Power</h3><p>The following granted power replaces the Touch of Chaos power of the Chaos Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Expeditious Retreat</p></li><li><p>3rd—Fly</p></li><li><p>6th—Planar Ally (azata only)</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:azata:elysium-s-call",
+        "featureId": "ibbnnyASQkqZ28yl",
         "level": 0,
         "name": "Elysium's Call",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:azata:elysium-s-call"
+        "uuid": "Compendium.pf1.class-abilities.Item.ibbnnyASQkqZ28yl"
       },
       {
         "featureId": "Vf0LVJue8NkXSupp",
@@ -212,9 +230,15 @@
       }
     ],
     "id": "4r1t3LvBKkw2RCq6",
-    "name": "Azata Subdomain",
+    "name": "Azata Subdomain (Chaos Domain)",
     "parentDomainTags": ["Chaos", "Good"],
-    "tag": "Azata",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "87"
+      }
+    ],
+    "tag": "Azata (Chaos Domain)",
     "uuid": "Compendium.pf1.class-abilities.Item.4r1t3LvBKkw2RCq6"
   },
   "51FDels17DGl7Yq9": {
@@ -251,14 +275,14 @@
   },
   "52sdtdkBoRICEFaU": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd — Memory Lapse</li>\n<li>6th — Modify Memory</li>\n<li>8th — Moment of Prescience</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Knowledge.</p><h3>Replacement Power</h3><p>The following granted power replaces the Lore Keeper (Domain Power) power of the Knowledge Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd — Memory Lapse</p></li><li><p>6th — Modify Memory</p></li><li><p>8th — Moment of Prescience</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:memory:recall",
+        "featureId": "4IOTGQ6trl6VRCyb",
         "level": 0,
         "name": "Recall",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:memory:recall"
+        "uuid": "Compendium.pf1.class-abilities.Item.4IOTGQ6trl6VRCyb"
       },
       {
         "featureId": "yUdt1JIkSsQabXTF",
@@ -271,6 +295,12 @@
     "id": "52sdtdkBoRICEFaU",
     "name": "Memory Subdomain",
     "parentDomainTags": ["Knowledge"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "93"
+      }
+    ],
     "tag": "Memory",
     "uuid": "Compendium.pf1.class-abilities.Item.52sdtdkBoRICEFaU"
   },
@@ -282,7 +312,7 @@
         "type": "untyped"
       }
     ],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Arcane Lock</li>\n<li>4th—Dimensional Anchor</li>\n<li>6th—Guards and Wards</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Rune.</p><h3>Replacement Power</h3><p>The following granted power replaces the Spell Rune power of the Rune Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Arcane Lock</p></li><li><p>4th—Dimensional Anchor</p></li><li><p>6th—Guards and Wards</p></li></ul>",
     "features": [
       {
         "featureId": "Wj2W2g5Ive3PlIlg",
@@ -292,16 +322,22 @@
         "uuid": "Compendium.pf1.class-abilities.Item.Wj2W2g5Ive3PlIlg"
       },
       {
-        "featureId": "subdomain-power:wards:warding-rune",
+        "featureId": "2a9giLaMUP7K9aDQ",
         "level": 6,
         "name": "Warding Rune",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:wards:warding-rune"
+        "uuid": "Compendium.pf1.class-abilities.Item.2a9giLaMUP7K9aDQ"
       }
     ],
     "id": "63vMiCfBi4PWsZQo",
     "name": "Wards Subdomain",
     "parentDomainTags": ["Rune"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "97"
+      }
+    ],
     "tag": "Wards",
     "uuid": "Compendium.pf1.class-abilities.Item.63vMiCfBi4PWsZQo"
   },
@@ -313,14 +349,14 @@
         "type": "base"
       }
     ],
-    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Expeditious Retreat</li>\n<li>4th—Locate Creature</li>\n<li>9th—World Wave</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Travel.</p><h3>Replacement Power</h3><p>The following granted power replaces the Agile Feet (Domain Power) power of the Travel Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Expeditious Retreat</p></li><li><p>4th—Locate Creature</p></li><li><p>9th—World Wave</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:exploration:door-sight",
+        "featureId": "IAuoySnVKaJqT7b6",
         "level": 0,
         "name": "Door Sight",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:exploration:door-sight"
+        "uuid": "Compendium.pf1.class-abilities.Item.IAuoySnVKaJqT7b6"
       },
       {
         "featureId": "fkjS3pJidUdLWsFF",
@@ -333,12 +369,18 @@
     "id": "6aiPH3iI5bqykMOC",
     "name": "Exploration Subdomain",
     "parentDomainTags": ["Travel"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "90"
+      }
+    ],
     "tag": "Exploration",
     "uuid": "Compendium.pf1.class-abilities.Item.6aiPH3iI5bqykMOC"
   },
   "6n8L6nbXyfRXoTCF": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>5th—Call Lightning Storm</li>\n<li>6th—Sirocco</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Weather.</p><h3>Replacement Power</h3><p>The following granted power replaces the Lightning Lord power of the Weather Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>5th—Call Lightning Storm</p></li><li><p>6th—Sirocco</p></li></ul>",
     "features": [
       {
         "featureId": "Kgcm3ye8CYGipsg3",
@@ -348,22 +390,28 @@
         "uuid": "Compendium.pf1.class-abilities.Item.Kgcm3ye8CYGipsg3"
       },
       {
-        "featureId": "subdomain-power:storms:gale-aura",
+        "featureId": "9kzk4UPBCJXDFElH",
         "level": 6,
         "name": "Gale Aura",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:storms:gale-aura"
+        "uuid": "Compendium.pf1.class-abilities.Item.9kzk4UPBCJXDFElH"
       }
     ],
     "id": "6n8L6nbXyfRXoTCF",
     "name": "Storms Subdomain",
     "parentDomainTags": ["Weather"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "96"
+      }
+    ],
     "tag": "Storms",
     "uuid": "Compendium.pf1.class-abilities.Item.6n8L6nbXyfRXoTCF"
   },
   "6rqIMKpnCiimDyLo": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Command</li>\n<li>5th—Waves of Fatigue</li>\n<li>7th—Waves of Exhaustion</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Artifice.</p><h3>Replacement Power</h3><p>The following granted power replaces the Dancing Weapons power of the Artifice Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Command</p></li><li><p>5th—Waves of Fatigue</p></li><li><p>7th—Waves of Exhaustion</p></li></ul>",
     "features": [
       {
         "featureId": "zeLaBkwTp9wlzZJv",
@@ -373,29 +421,28 @@
         "uuid": "Compendium.pf1.class-abilities.Item.zeLaBkwTp9wlzZJv"
       },
       {
-        "featureId": "9ezUAbso44HrKLyr",
+        "featureId": "7ZiUSYUV1zRqgkrf",
         "level": 8,
-        "name": "Dancing Weapons",
+        "name": "Aura of Repitition",
         "resolved": true,
-        "uuid": "Compendium.pf1.class-abilities.Item.9ezUAbso44HrKLyr"
-      },
-      {
-        "featureId": "subdomain-power:toil:aura-of-repetition",
-        "level": 8,
-        "name": "Aura of Repetition",
-        "resolved": true,
-        "uuid": "pfdata:subdomain-power:toil:aura-of-repetition"
+        "uuid": "Compendium.pf1.class-abilities.Item.7ZiUSYUV1zRqgkrf"
       }
     ],
     "id": "6rqIMKpnCiimDyLo",
     "name": "Toil Subdomain",
     "parentDomainTags": ["Artifice"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "97"
+      }
+    ],
     "tag": "Toil",
     "uuid": "Compendium.pf1.class-abilities.Item.6rqIMKpnCiimDyLo"
   },
   "7HBmv5FWqBF1bJ4D": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Continual Flame</li>\n<li>3rd—Daylight</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Sun.</p><h3>Replacement Power</h3><p>The following granted power replaces the Nimbus of Light power of the Sun Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Continual Flame</p></li><li><p>3rd—Daylight</p></li></ul>",
     "features": [
       {
         "featureId": "Dre4YCOxboyBbIjg",
@@ -405,16 +452,22 @@
         "uuid": "Compendium.pf1.class-abilities.Item.Dre4YCOxboyBbIjg"
       },
       {
-        "featureId": "subdomain-power:day:day-s-resurgence",
+        "featureId": "sK6JLiWAo3CR0YGU",
         "level": 8,
         "name": "Day's Resurgence",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:day:day-s-resurgence"
+        "uuid": "Compendium.pf1.class-abilities.Item.sK6JLiWAo3CR0YGU"
       }
     ],
     "id": "7HBmv5FWqBF1bJ4D",
     "name": "Day Subdomain",
     "parentDomainTags": ["Sun"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "88"
+      }
+    ],
     "tag": "Day",
     "uuid": "Compendium.pf1.class-abilities.Item.7HBmv5FWqBF1bJ4D"
   },
@@ -470,7 +523,7 @@
   },
   "8aFTPx0YF8gKMOYN": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Bull's Strength</li>\n<li>6th—Moonstruck</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Destruction.</p><h3>Replacement Power</h3><p>The following granted power replaces the Destructive Aura power of the Destruction Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Bull's Strength</p></li><li><p>6th—Moonstruck</p></li></ul>",
     "features": [
       {
         "featureId": "T4q7Ib0ED01PNDyT",
@@ -480,22 +533,28 @@
         "uuid": "Compendium.pf1.class-abilities.Item.T4q7Ib0ED01PNDyT"
       },
       {
-        "featureId": "subdomain-power:rage:rage",
+        "featureId": "HJMvo9iDrDwjLAgM",
         "level": 8,
-        "name": "Rage",
+        "name": "Rage (Cleric)",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:rage:rage"
+        "uuid": "Compendium.pf1.class-abilities.Item.HJMvo9iDrDwjLAgM"
       }
     ],
     "id": "8aFTPx0YF8gKMOYN",
     "name": "Rage Subdomain",
     "parentDomainTags": ["Destruction"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "95"
+      }
+    ],
     "tag": "Rage",
     "uuid": "Compendium.pf1.class-abilities.Item.8aFTPx0YF8gKMOYN"
   },
   "95GjZ4XzJdKJJTWY": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Rest Eternal</li>\n<li>6th—Geas/Quest</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Repose.</p><h3>Replacement Power</h3><p>The following granted power replaces the Ward Against Death power of the Repose Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>4th—Rest Eternal</p></li><li><p>6th—Geas/Quest</p></li></ul>",
     "features": [
       {
         "featureId": "mS7LSsQQkjVvKx9z",
@@ -505,22 +564,28 @@
         "uuid": "Compendium.pf1.class-abilities.Item.mS7LSsQQkjVvKx9z"
       },
       {
-        "featureId": "subdomain-power:ancestors:speak-with-dead",
+        "featureId": "7HRCWdO0jGotRtUq",
         "level": 8,
-        "name": "Speak With Dead",
+        "name": "Speak with Dead",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:ancestors:speak-with-dead"
+        "uuid": "Compendium.pf1.class-abilities.Item.7HRCWdO0jGotRtUq"
       }
     ],
     "id": "95GjZ4XzJdKJJTWY",
     "name": "Ancestors Subdomain",
     "parentDomainTags": ["Repose"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "86"
+      }
+    ],
     "tag": "Ancestors",
     "uuid": "Compendium.pf1.class-abilities.Item.95GjZ4XzJdKJJTWY"
   },
   "9CCh20rnR8xpYiEn": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>2nd—Augury</li>\n<li>3rd—Borrow Fortune</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Luck.</p><h3>Replacement Power</h3><p>The following granted power replaces the Good Fortune power of the Luck Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Augury</p></li><li><p>3rd—Borrow Fortune</p></li></ul>",
     "features": [
       {
         "featureId": "FcJawJG5igJPDHnQ",
@@ -530,16 +595,22 @@
         "uuid": "Compendium.pf1.class-abilities.Item.FcJawJG5igJPDHnQ"
       },
       {
-        "featureId": "subdomain-power:fate:tugging-strands",
+        "featureId": "s0jumWNJU25qqe2U",
         "level": 8,
         "name": "Tugging Strands",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:fate:tugging-strands"
+        "uuid": "Compendium.pf1.class-abilities.Item.s0jumWNJU25qqe2U"
       }
     ],
     "id": "9CCh20rnR8xpYiEn",
     "name": "Fate Subdomain",
     "parentDomainTags": ["Luck"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "90"
+      }
+    ],
     "tag": "Fate",
     "uuid": "Compendium.pf1.class-abilities.Item.9CCh20rnR8xpYiEn"
   },
@@ -645,14 +716,14 @@
   },
   "AF8sKDTWPV3HVNGu": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Goodberry</li>\n<li>4th—Blight</li>\n<li>8th—Sunburst</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Weather.</p><h3>Replacement Power</h3><p>The following granted power replaces the Storm Burst power of the Weather Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Goodberry</p></li><li><p>4th—Blight</p></li><li><p>8th—Sunburst</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:seasons:untouched-by-the-seasons",
+        "featureId": "j6Hz8L9OeGUq5v23",
         "level": 0,
         "name": "Untouched by the Seasons",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:seasons:untouched-by-the-seasons"
+        "uuid": "Compendium.pf1.class-abilities.Item.j6Hz8L9OeGUq5v23"
       },
       {
         "featureId": "FZdWscHJvJpGPoDz",
@@ -665,12 +736,18 @@
     "id": "AF8sKDTWPV3HVNGu",
     "name": "Seasons Subdomain",
     "parentDomainTags": ["Weather"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "96"
+      }
+    ],
     "tag": "Seasons",
     "uuid": "Compendium.pf1.class-abilities.Item.AF8sKDTWPV3HVNGu"
   },
   "AG9FTuIWE2J2mJ7o": {
     "changes": [],
-    "description": "<p><strong>Granted Powers:</strong> You are a spirit of freedom and a staunch foe against all who would enslave and oppress.</p><p><strong>Associated Domain:</strong> Liberation</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Remove Fear</li><li>2nd—Enthrall</li><li>3rd—Remove Curse</li><li>4th—Freedom of Movement</li><li>5th—Break Enchantment</li><li>6th—Symbol of Persuasion</li><li>7th—Refuge</li><li>8th—Mind Blank</li><li>9th—Freedom</li></ul>",
+    "description": "<p><strong>Associated Domain:</strong> Liberation.</p><h3>Domain Powers</h3><p>The following granted power replaces the Freedom's Call power of the Liberation Domain.</p><p></p><h3>Domain Spells</h3><ul><li><p>2nd—Enthrall</p></li><li><p>6th—Symbol of Persuasion</p></li></ul>",
     "features": [
       {
         "featureId": "2mnWAoFKqKKxWCt4",
@@ -711,11 +788,11 @@
         "uuid": "pfdata:subdomain-power:torture:painful-smite"
       },
       {
-        "featureId": "domain:destruction:destructive-aura",
+        "featureId": "qyqbVqtFmw5QBRbg",
         "level": 8,
         "name": "Destructive Aura",
         "resolved": true,
-        "uuid": "domain-feature:destruction:destructive-aura"
+        "uuid": "Compendium.pf1.class-abilities.Item.qyqbVqtFmw5QBRbg"
       }
     ],
     "id": "AW8RWHDiMKhwglcQ",
@@ -751,21 +828,21 @@
   },
   "BwDN5DEhxdzLrPLZ": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Zone of Truth</li>\n<li>6th—Geas/Quest</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Glory.</p><h3>Replacement Power</h3><p>The following granted power replaces the Touch of Glory power of the Glory Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Zone of Truth</p></li><li><p>6th—Geas/Quest</p></li></ul>",
     "features": [
+      {
+        "featureId": "OCQqGf9TIRC47Ex2",
+        "level": 0,
+        "name": "Honor Bound",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.OCQqGf9TIRC47Ex2"
+      },
       {
         "featureId": "domain:glory:channel-boost",
         "level": 0,
         "name": "Channel Boost",
         "resolved": true,
         "uuid": "domain-feature:glory:channel-boost"
-      },
-      {
-        "featureId": "subdomain-power:honor:honor-bound",
-        "level": 0,
-        "name": "Honor Bound",
-        "resolved": true,
-        "uuid": "pfdata:subdomain-power:honor:honor-bound"
       },
       {
         "featureId": "KXN1Y4DDcWd8ZraE",
@@ -778,19 +855,25 @@
     "id": "BwDN5DEhxdzLrPLZ",
     "name": "Honor Subdomain",
     "parentDomainTags": ["Glory"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "92"
+      }
+    ],
     "tag": "Honor",
     "uuid": "Compendium.pf1.class-abilities.Item.BwDN5DEhxdzLrPLZ"
   },
   "C2DvBVzMotvjAP3S": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Doom</li>\n<li>3rd—Rage</li>\n<li>6th—Planar Binding (demons only).</li>\n</ul>",
+    "description": "<p><em>Demons are a race of chaotic evil outsiders (see PZO1112 p. 56).</em></p><p><strong>Associated Domain</strong>: Chaos.</p><h3>Replacement Power</h3><p>The following granted power replaces the Touch of Chaos power of the Chaos Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Doom</p></li><li><p>3rd—Rage</p></li><li><p>6th—Planar Binding (demons only).</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:demon:fury-of-the-abyss",
+        "featureId": "xNJl1YTfmDqielcJ",
         "level": 0,
         "name": "Fury of the Abyss",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:demon:fury-of-the-abyss"
+        "uuid": "Compendium.pf1.class-abilities.Item.xNJl1YTfmDqielcJ"
       },
       {
         "featureId": "Vf0LVJue8NkXSupp",
@@ -801,9 +884,15 @@
       }
     ],
     "id": "C2DvBVzMotvjAP3S",
-    "name": "Demon Subdomain",
+    "name": "Demon Subdomain (Chaos Domain)",
     "parentDomainTags": ["Chaos", "Evil"],
-    "tag": "Demon",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "89-90"
+      }
+    ],
+    "tag": "Demon (Chaos Domain)",
     "uuid": "Compendium.pf1.class-abilities.Item.C2DvBVzMotvjAP3S"
   },
   "CgDxKisDe3MCRPg5": {
@@ -915,14 +1004,14 @@
   },
   "EZXEjeRFfHbfCvub": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells</b>:</p>\n<ul>\n<li>1st—Magic Fang</li>\n<li>3rd—Beast Shape I (animals only)</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Animal.</p><h3>Replacement Power</h3><p>The following granted power replaces the Speak with Animals power of the Animal Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Magic Fang</p></li><li><p>3rd—Beast Shape I (animals only)</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:fur:predator-s-grace",
+        "featureId": "pOtDRenD12YkEJuX",
         "level": 0,
         "name": "Predator's Grace",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:fur:predator-s-grace"
+        "uuid": "Compendium.pf1.class-abilities.Item.pOtDRenD12YkEJuX"
       },
       {
         "featureId": "1jMb1iCiNjS5yfwe",
@@ -935,19 +1024,25 @@
     "id": "EZXEjeRFfHbfCvub",
     "name": "Fur Subdomain",
     "parentDomainTags": ["Animal"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "91"
+      }
+    ],
     "tag": "Fur",
     "uuid": "Compendium.pf1.class-abilities.Item.EZXEjeRFfHbfCvub"
   },
   "FX18F44BI61SEuP9": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Command Undead</li>\n<li>5th—Command, Greater</li>\n<li>6th—Planar Binding (inevitables only)</li>\n</ul>",
+    "description": "<p><em>Inevitables are a race of lawful neutral outsiders (see PZO1116).</em></p><p><strong>Associated Domain</strong>: Law.</p><h3>Replacement Power</h3><p>The following granted power replaces the Touch of Law power of the Law Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>3rd—Command Undead</p></li><li><p>5th—Command, Greater</p></li><li><p>6th—Planar Binding (inevitables only)</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:inevitable:command",
+        "featureId": "bvumhSbDp3dlu5yd",
         "level": 0,
         "name": "Command",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:inevitable:command"
+        "uuid": "Compendium.pf1.class-abilities.Item.bvumhSbDp3dlu5yd"
       },
       {
         "featureId": "J4QibEdTUK559sGO",
@@ -960,8 +1055,45 @@
     "id": "FX18F44BI61SEuP9",
     "name": "Inevitable Subdomain",
     "parentDomainTags": ["Law"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "92"
+      }
+    ],
     "tag": "Inevitable",
     "uuid": "Compendium.pf1.class-abilities.Item.FX18F44BI61SEuP9"
+  },
+  "Fxw5pyc0y52FY55G": {
+    "changes": [],
+    "description": "<p><em>Azatas are a race of lawful good outsiders (PZO1112 p. 23).</em></p><p><strong>Associated Domain</strong>: Good.</p><h3>Replacement Power</h3><p>The following granted power replaces the Touch of Good power of the Good Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Expeditious Retreat</p></li><li><p>3rd—Fly</p></li><li><p>6th—Planar Ally (azata only)</p></li></ul>",
+    "features": [
+      {
+        "featureId": "ibbnnyASQkqZ28yl",
+        "level": 0,
+        "name": "Elysium's Call",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ibbnnyASQkqZ28yl"
+      },
+      {
+        "featureId": "t3eiENbbesGZBnc2",
+        "level": 8,
+        "name": "Holy Lance",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.t3eiENbbesGZBnc2"
+      }
+    ],
+    "id": "Fxw5pyc0y52FY55G",
+    "name": "Azata Subdomain (Good Domain)",
+    "parentDomainTags": ["Good"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "87"
+      }
+    ],
+    "tag": "Azata (Good Domain)",
+    "uuid": "Compendium.pf1.class-abilities.Item.Fxw5pyc0y52FY55G"
   },
   "GoOZGKSbOmodZHqF": {
     "changes": [],
@@ -997,14 +1129,14 @@
   },
   "GsblgyzYht907slf": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Animate Dead</li>\n<li>6th—Antilife Shell</li>\n<li>9th—Trap the Soul</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Repose.</p><h3>Replacement Power</h3><p>The following granted power replaces the Gentle Rest (Domain Power) power of the Repose Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>3rd—Animate Dead</p></li><li><p>6th—Antilife Shell</p></li><li><p>9th—Trap the Soul</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:souls:touch-the-spirit-world",
+        "featureId": "BkYvIUfGyQGkxCWn",
         "level": 0,
         "name": "Touch the Spirit World",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:souls:touch-the-spirit-world"
+        "uuid": "Compendium.pf1.class-abilities.Item.BkYvIUfGyQGkxCWn"
       },
       {
         "featureId": "KF3SgIKeBACJhSZ1",
@@ -1017,6 +1149,12 @@
     "id": "GsblgyzYht907slf",
     "name": "Souls Subdomain",
     "parentDomainTags": ["Repose"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "96"
+      }
+    ],
     "tag": "Souls",
     "uuid": "Compendium.pf1.class-abilities.Item.GsblgyzYht907slf"
   },
@@ -1053,7 +1191,7 @@
   },
   "HeeQpOyLQXsOtIJG": {
     "changes": [],
-    "description": "<p><b>Replacement Power:</b> The domain spells provided by the Insect domain affect vermin rather than animals, treating them as if they were not immune to spells with the mindaffecting descriptor. Any such spell that allows a Will save can instead be negated by the target vermin with a successful Fortitude save at the same DC.</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Giant Vermin</li>\n<li>5th—Vermin Shape II</li>\n<li>8th—Summon Nature's Ally VIII (1d3 goliath stag beetles; Pathfinder RPG Bestiary 2 44)</li>\n</ul>",
+    "description": "<p><b>Replacement Power:</b> The domain spells provided by the Insect domain affect vermin rather than animals, treating them as if they were not immune to spells with the mind-affecting descriptor. Any such spell that allows a Will save can instead be negated by the target vermin with a successful Fortitude save at the same DC.</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Giant Vermin</li>\n<li>5th—Vermin Shape II</li>\n<li>8th—Summon Nature's Ally VIII (1d3 goliath stag beetles; Pathfinder RPG Bestiary 2 44)</li>\n</ul>",
     "features": [
       {
         "featureId": "subdomain-power:insect:exoskeleton",
@@ -1115,7 +1253,7 @@
   },
   "IlHsGNP2P7U035Hk": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Locate Object</li>\n<li>7th—Ethereal Jaunt</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Trickery.</p><h3>Replacement Power</h3><p>The following granted power replaces the Master's Illusion power of the Trickery Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>3rd—Locate Object</p></li><li><p>7th—Ethereal Jaunt</p></li></ul>",
     "features": [
       {
         "featureId": "hVrmBvlqeeLbwVxn",
@@ -1125,16 +1263,22 @@
         "uuid": "Compendium.pf1.class-abilities.Item.hVrmBvlqeeLbwVxn"
       },
       {
-        "featureId": "subdomain-power:thievery:thief-of-the-gods",
+        "featureId": "JsAjDlSmJKFlWKeW",
         "level": 8,
         "name": "Thief of the Gods",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:thievery:thief-of-the-gods"
+        "uuid": "Compendium.pf1.class-abilities.Item.JsAjDlSmJKFlWKeW"
       }
     ],
     "id": "IlHsGNP2P7U035Hk",
     "name": "Thievery Subdomain",
     "parentDomainTags": ["Trickery"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "96-97"
+      }
+    ],
     "tag": "Thievery",
     "uuid": "Compendium.pf1.class-abilities.Item.IlHsGNP2P7U035Hk"
   },
@@ -1172,7 +1316,7 @@
   },
   "Jjo1BND4tvEJnO1I": {
     "changes": [],
-    "description": "<p><strong>Granted Powers:</strong> You can manipulate lightning, mist, and wind, traffic with air creatures, and are resistant to electricity damage.</p><p><strong>Associated Domain:</strong> Air</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Whispering Wind</li><li>2nd—Wind Wall</li><li>3rd—Gaseous Form</li><li>4th—Air Walk</li><li>5th—Control Winds</li><li>6th—Wind Walk</li><li>7th—Elemental Body IV (air only)</li><li>8th— Whirlwind</li><li>9th—Winds of Vengeance</li></ul>",
+    "description": "<p><strong>Associated Domain:</strong> Air.</p><h3>Replacement Power</h3><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Whispering Wind</p></li><li><p>6th—Wind Walk</p></li><li><p>9th—Winds of Vengeance</p></li></ul>",
     "features": [
       {
         "featureId": "4KrSL8mgSPLF7f9c",
@@ -1209,7 +1353,7 @@
         "type": "untyped"
       }
     ],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>5th—Enervation</li>\n<li>6th—Modify Memory</li>\n<li>9th—Energy Drain</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Darkness.</p><h3>Replacement Power</h3><p>The following granted power replaces the Eyes of Darkness power of the Darkness Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>5th—Enervation</p></li><li><p>6th—Modify Memory</p></li><li><p>9th—Energy Drain</p></li></ul>",
     "features": [
       {
         "featureId": "Le6qmKF8wkhVCPCz",
@@ -1219,16 +1363,22 @@
         "uuid": "Compendium.pf1.class-abilities.Item.Le6qmKF8wkhVCPCz"
       },
       {
-        "featureId": "subdomain-power:loss:aura-of-forgetfulness",
+        "featureId": "7EC0mC6pUPikLYkg",
         "level": 8,
         "name": "Aura of Forgetfulness",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:loss:aura-of-forgetfulness"
+        "uuid": "Compendium.pf1.class-abilities.Item.7EC0mC6pUPikLYkg"
       }
     ],
     "id": "JtHGFUJPUL1lJUOA",
     "name": "Loss Subdomain",
     "parentDomainTags": ["Darkness"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "93"
+      }
+    ],
     "tag": "Loss",
     "uuid": "Compendium.pf1.class-abilities.Item.JtHGFUJPUL1lJUOA"
   },
@@ -1397,7 +1547,7 @@
         "type": "untyped"
       }
     ],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Comprehend Languages</li>\n<li>2nd—Share Language</li>\n<li>3rd—Tongues</li>\n<li>5th—Telepathic Bond</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Rune.</p><h3>Replacement Power</h3><p>The following granted power replaces the Spell Rune power of the Rune Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Comprehend Languages</p></li><li><p>2nd—Share Language</p></li><li><p>3rd—Tongues</p></li><li><p>5th—Telepathic Bond</p></li></ul>",
     "features": [
       {
         "featureId": "Wj2W2g5Ive3PlIlg",
@@ -1407,16 +1557,22 @@
         "uuid": "Compendium.pf1.class-abilities.Item.Wj2W2g5Ive3PlIlg"
       },
       {
-        "featureId": "subdomain-power:language:rune-shift",
+        "featureId": "y4nP7W9asEPjLxJP",
         "level": 6,
         "name": "Rune Shift",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:language:rune-shift"
+        "uuid": "Compendium.pf1.class-abilities.Item.y4nP7W9asEPjLxJP"
       }
     ],
     "id": "Lb3YISPq7wexIalZ",
     "name": "Language Subdomain",
     "parentDomainTags": ["Rune"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "92"
+      }
+    ],
     "tag": "Language",
     "uuid": "Compendium.pf1.class-abilities.Item.Lb3YISPq7wexIalZ"
   },
@@ -1472,7 +1628,7 @@
   },
   "M18QnM8Xd0mUvSuR": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Touch of Idiocy</li>\n<li>4th—Confusion</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Charm.</p><h3>Replacement Power</h3><p>The following granted power replaces the Charming Smile power of the Charm Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Touch of Idiocy</p></li><li><p>4th—Confusion</p></li></ul>",
     "features": [
       {
         "featureId": "Jle1tYl0Fr251J97",
@@ -1482,18 +1638,55 @@
         "uuid": "Compendium.pf1.class-abilities.Item.Jle1tYl0Fr251J97"
       },
       {
-        "featureId": "subdomain-power:lust:anything-to-please",
+        "featureId": "2xdHjc4DRWBEOJV5",
         "level": 8,
         "name": "Anything to Please",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:lust:anything-to-please"
+        "uuid": "Compendium.pf1.class-abilities.Item.2xdHjc4DRWBEOJV5"
       }
     ],
     "id": "M18QnM8Xd0mUvSuR",
     "name": "Lust Subdomain",
     "parentDomainTags": ["Charm"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "93"
+      }
+    ],
     "tag": "Lust",
     "uuid": "Compendium.pf1.class-abilities.Item.M18QnM8Xd0mUvSuR"
+  },
+  "M7SWUcZJJGT7DcC5": {
+    "changes": [],
+    "description": "<p><em>Archons are a race of lawful good outsiders (PZO1112 p. 18).</em></p><p><strong>Associated Domain</strong>: Law.</p><h3>Replacement Power</h3><p>The following granted power replaces the Staff of Order power of the Law Domain.</p><p></p><h2>Replacement Domain Spells</h2><ul><li><p>1st—Divine Favor</p></li><li><p>3rd—Prayer</p></li><li><p>6th—Planar Ally (archon only)</p></li></ul>",
+    "features": [
+      {
+        "featureId": "AwMFhb8HETerKlVk",
+        "level": 0,
+        "name": "Touch of Law",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.AwMFhb8HETerKlVk"
+      },
+      {
+        "featureId": "j8Z4O8Z7otvM8yXE",
+        "level": 8,
+        "name": "Aura of Menace",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.j8Z4O8Z7otvM8yXE"
+      }
+    ],
+    "id": "M7SWUcZJJGT7DcC5",
+    "name": "Archon Subdomain (Law Domain)",
+    "parentDomainTags": ["Law"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "86"
+      }
+    ],
+    "tag": "Archon (Law Domain)",
+    "uuid": "Compendium.pf1.class-abilities.Item.M7SWUcZJJGT7DcC5"
   },
   "MMzblKaO4G5vayvK": {
     "changes": [],
@@ -1572,14 +1765,14 @@
   },
   "Nc629yyeBE0UeG2n": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Bless</li>\n<li>3rd—Prayer</li>\n<li>6th—Brilliant Inspiration</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Nobility.</p><h3>Replacement Power</h3><p>The following granted power replaces theInspiring Word (Domain Power) power of the Nobility Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Bless</p></li><li><p>3rd—Prayer</p></li><li><p>6th—Brilliant Inspiration</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:leadership:inspiring-command",
+        "featureId": "Gd8xhOE25nKMyDzX",
         "level": 0,
         "name": "Inspiring Command",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:leadership:inspiring-command"
+        "uuid": "Compendium.pf1.class-abilities.Item.Gd8xhOE25nKMyDzX"
       },
       {
         "featureId": "hd6MiVc69RyEuDpU",
@@ -1592,6 +1785,12 @@
     "id": "Nc629yyeBE0UeG2n",
     "name": "Leadership Subdomain",
     "parentDomainTags": ["Nobility"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "92-93"
+      }
+    ],
     "tag": "Leadership",
     "uuid": "Compendium.pf1.class-abilities.Item.Nc629yyeBE0UeG2n"
   },
@@ -1622,7 +1821,7 @@
   },
   "OIC39qE2PPdjPuNk": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>3rd—Heroism</li>\n<li>6th—Heroism, Greater</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Glory.</p><h3>Replacement Power</h3><p>The following granted power replaces the Divine Presence power of the Glory Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>3rd—Heroism</p></li><li><p>6th—Heroism, Greater</p></li></ul>",
     "features": [
       {
         "featureId": "0BFuaPpChxXneJwF",
@@ -1639,29 +1838,35 @@
         "uuid": "domain-feature:glory:channel-boost"
       },
       {
-        "featureId": "subdomain-power:heroism:aura-of-heroism",
+        "featureId": "Lzhedjmay1oc4ktw",
         "level": 8,
         "name": "Aura of Heroism",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:heroism:aura-of-heroism"
+        "uuid": "Compendium.pf1.class-abilities.Item.Lzhedjmay1oc4ktw"
       }
     ],
     "id": "OIC39qE2PPdjPuNk",
     "name": "Heroism Subdomain",
     "parentDomainTags": ["Glory"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "91-92"
+      }
+    ],
     "tag": "Heroism",
     "uuid": "Compendium.pf1.class-abilities.Item.OIC39qE2PPdjPuNk"
   },
   "OdjyOoQ39ZHogGUH": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Enthrall</li>\n<li>8th—Euphoric Tranquility</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Charm.</p><h3>Replacement Power</h3><p>The following granted power replaces the Dazing Touch (CLE) power of the Charm Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Enthrall</p></li><li><p>8th—Euphoric Tranquility</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:love:adoration",
+        "featureId": "nuqoiwsobKH2Vkp5",
         "level": 0,
         "name": "Adoration",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:love:adoration"
+        "uuid": "Compendium.pf1.class-abilities.Item.nuqoiwsobKH2Vkp5"
       },
       {
         "featureId": "1qz9sHHlXkyJDCxo",
@@ -1674,19 +1879,25 @@
     "id": "OdjyOoQ39ZHogGUH",
     "name": "Love Subdomain",
     "parentDomainTags": ["Charm"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "93"
+      }
+    ],
     "tag": "Love",
     "uuid": "Compendium.pf1.class-abilities.Item.OdjyOoQ39ZHogGUH"
   },
   "OxLSX3yUpgcf1J5O": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Calm Emotions</li>\n<li>3rd—Create Food and Water</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Community.</p><h3>Replacement Power</h3><p>The following power replaces the Calming Touch power of the Community Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Calm Emotions</p></li><li><p>3rd—Create Food and Water</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:family:binding-ties",
+        "featureId": "H1jBsPMYx5GH8U4g",
         "level": 0,
         "name": "Binding Ties",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:family:binding-ties"
+        "uuid": "Compendium.pf1.class-abilities.Item.H1jBsPMYx5GH8U4g"
       },
       {
         "featureId": "eEuj2X72Q5jP6xAj",
@@ -1699,8 +1910,45 @@
     "id": "OxLSX3yUpgcf1J5O",
     "name": "Family Subdomain",
     "parentDomainTags": ["Community"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "90"
+      }
+    ],
     "tag": "Family",
     "uuid": "Compendium.pf1.class-abilities.Item.OxLSX3yUpgcf1J5O"
+  },
+  "P2KLLJLgl71clPnO": {
+    "changes": [],
+    "description": "<p><em>Devils are a race of lawful evil outsiders (see PZO1112 p. 71).</em></p><p><strong>Associated Domain</strong>: Law.</p><h3>Replacement Power</h3><p>The following granted power replaces the Touch of Law power of the Law Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Command</p></li><li><p>3rd—Suggestion</p></li><li><p>6th—Planar Binding (devils only)</p></li></ul>",
+    "features": [
+      {
+        "featureId": "QDXZaSHgaJPulkpi",
+        "level": 0,
+        "name": "Hell's Corruption",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.QDXZaSHgaJPulkpi"
+      },
+      {
+        "featureId": "J4QibEdTUK559sGO",
+        "level": 8,
+        "name": "Staff of Order",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.J4QibEdTUK559sGO"
+      }
+    ],
+    "id": "P2KLLJLgl71clPnO",
+    "name": "Devil Subdomain (Law Domain)",
+    "parentDomainTags": ["Law"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "90"
+      }
+    ],
+    "tag": "Devil (Law Domain)",
+    "uuid": "Compendium.pf1.class-abilities.Item.P2KLLJLgl71clPnO"
   },
   "Q29rN7LtWcTWgtuZ": {
     "changes": [],
@@ -1804,14 +2052,14 @@
   },
   "QzNDIUZajHu8pdxg": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Pyrotechnics</li>\n<li>3rd—Stinking Cloud</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Fire.</p><h3>Replacement Power</h3><p>The following granted power replaces the Fire Bolt power of the Fire Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Pyrotechnics</p></li><li><p>3rd—Stinking Cloud</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:smoke:cloud-of-smoke",
+        "featureId": "crFYRQunvrXQNYFX",
         "level": 0,
         "name": "Cloud of Smoke",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:smoke:cloud-of-smoke"
+        "uuid": "Compendium.pf1.class-abilities.Item.crFYRQunvrXQNYFX"
       },
       {
         "featureId": "VFejQ7mOCxSp26xk",
@@ -1824,12 +2072,18 @@
     "id": "QzNDIUZajHu8pdxg",
     "name": "Smoke Subdomain",
     "parentDomainTags": ["Fire"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "96"
+      }
+    ],
     "tag": "Smoke",
     "uuid": "Compendium.pf1.class-abilities.Item.QzNDIUZajHu8pdxg"
   },
   "Rfib6GcSF86xCZZu": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Shield Other</li>\n<li>6th—Sacrificial Oath</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Nobility.</p><h3>Replacement Power</h3><p>The following granted power replaces the Leadership power of the Nobility Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Shield Other</p></li><li><p>6th—Sacrificial Oath</p></li></ul>",
     "features": [
       {
         "featureId": "8hVa9HwekAWpgHid",
@@ -1839,16 +2093,22 @@
         "uuid": "Compendium.pf1.class-abilities.Item.8hVa9HwekAWpgHid"
       },
       {
-        "featureId": "subdomain-power:martyr:sacrificial-bond",
+        "featureId": "DBP5hzLF2hnXeSYF",
         "level": 8,
         "name": "Sacrificial Bond",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:martyr:sacrificial-bond"
+        "uuid": "Compendium.pf1.class-abilities.Item.DBP5hzLF2hnXeSYF"
       }
     ],
     "id": "Rfib6GcSF86xCZZu",
     "name": "Martyr Subdomain",
     "parentDomainTags": ["Nobility"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "93"
+      }
+    ],
     "tag": "Martyr",
     "uuid": "Compendium.pf1.class-abilities.Item.Rfib6GcSF86xCZZu"
   },
@@ -1892,7 +2152,7 @@
         "type": "resist"
       }
     ],
-    "description": "<p><strong>Granted Powers</strong>: Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.</p><p><strong>Associated Domain</strong>: Protection</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Shield</li><li>2nd—Barkskin</li><li>3rd—Protection from Energy</li><li>4th—Spell Immunity</li><li>5th—Spell Resistance</li><li>6th—Antimagic Field</li><li>7th—Deflection</li><li>8th—Mind Blank</li><li>9th—Prismatic Sphere</li></ul>",
+    "description": "<p><strong>Associated Domain</strong>: Protection.</p><h3>Replacement Power</h3><p>The following granted power replaces the Resistant Touch power of the Protection Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Shield</p></li><li><p>2nd—Barkskin</p></li><li><p>7th—Deflection</p></li></ul>",
     "features": [
       {
         "featureId": "yDG7xVuH7oqWS4Mt",
@@ -1923,7 +2183,7 @@
   },
   "TsVqYiOKJyrLT9pF": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Vampiric Touch</li>\n<li>5th—Wall Of Thorns</li>\n<li>7th—Inflict Serious Wounds, Mass</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: War.</p><h3>Replacement Power</h3><p>The following granted power replaces the Weapon Master power of the War Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>3rd—Vampiric Touch</p></li><li><p>5th—Wall of Thorns</p></li><li><p>7th—Inflict Serious Wounds, Mass</p></li></ul>",
     "features": [
       {
         "featureId": "PXdTxpse6nHDdQyR",
@@ -1933,29 +2193,35 @@
         "uuid": "Compendium.pf1.class-abilities.Item.PXdTxpse6nHDdQyR"
       },
       {
-        "featureId": "subdomain-power:blood:wounding-blade",
+        "featureId": "1qA0W7xIIRGxOEdA",
         "level": 8,
         "name": "Wounding Blade",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:blood:wounding-blade"
+        "uuid": "Compendium.pf1.class-abilities.Item.1qA0W7xIIRGxOEdA"
       }
     ],
     "id": "TsVqYiOKJyrLT9pF",
     "name": "Blood Subdomain",
     "parentDomainTags": ["War"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "87"
+      }
+    ],
     "tag": "Blood",
     "uuid": "Compendium.pf1.class-abilities.Item.TsVqYiOKJyrLT9pF"
   },
   "U0EqUtAbofuADisW": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Faerie Fire</li>\n<li>3rd—Daylight</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Sun.</p><h3>Replacement Power</h3><p>The following granted power replaces the Sun's Blessing power of the Sun Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Faerie Fire</p></li><li><p>3rd—Daylight</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:light:blinding-flash",
+        "featureId": "PUOMft9SAMoityU0",
         "level": 0,
         "name": "Blinding Flash",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:light:blinding-flash"
+        "uuid": "Compendium.pf1.class-abilities.Item.PUOMft9SAMoityU0"
       },
       {
         "featureId": "QZJtfwamnWW0mHjJ",
@@ -1968,19 +2234,25 @@
     "id": "U0EqUtAbofuADisW",
     "name": "Light Subdomain",
     "parentDomainTags": ["Sun"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "93"
+      }
+    ],
     "tag": "Light",
     "uuid": "Compendium.pf1.class-abilities.Item.U0EqUtAbofuADisW"
   },
   "U14SmZ4MKr2UksTu": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Enlarge Person</li>\n<li>5th—Righteous Might</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Plant.</p><h3>Replacement Power</h3><p>The following granted power replaces the Wooden Fist power of the Plant Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Enlarge Person</p></li><li><p>5th—Righteous Might</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:growth:enlarge",
+        "featureId": "I22wXi9vOXV4Apwg",
         "level": 0,
         "name": "Enlarge",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:growth:enlarge"
+        "uuid": "Compendium.pf1.class-abilities.Item.I22wXi9vOXV4Apwg"
       },
       {
         "featureId": "GidNLmDQBdokwgUn",
@@ -1993,12 +2265,18 @@
     "id": "U14SmZ4MKr2UksTu",
     "name": "Growth Subdomain",
     "parentDomainTags": ["Plant"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "91"
+      }
+    ],
     "tag": "Growth",
     "uuid": "Compendium.pf1.class-abilities.Item.U14SmZ4MKr2UksTu"
   },
   "VQmmgl4iZJosmmIk": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>5th—Raise Dead</li>\n<li>7th—Resurrection</li>\n<li>9th—True Resurrection</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Healing.</p><h3>Replacement Power</h3><p>The following granted power replaces the Healer's Blessing power of the Healing Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>5th—Raise Dead</p></li><li><p>7th—Resurrection</p></li><li><p>9th—True Resurrection</p></li></ul>",
     "features": [
       {
         "featureId": "8iWGEKKdoKTHsDy5",
@@ -2008,22 +2286,28 @@
         "uuid": "Compendium.pf1.class-abilities.Item.8iWGEKKdoKTHsDy5"
       },
       {
-        "featureId": "subdomain-power:resurrection:gift-of-life",
+        "featureId": "32fPRb3zIgNVv6Av",
         "level": 8,
         "name": "Gift of Life",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:resurrection:gift-of-life"
+        "uuid": "Compendium.pf1.class-abilities.Item.32fPRb3zIgNVv6Av"
       }
     ],
     "id": "VQmmgl4iZJosmmIk",
     "name": "Resurrection Subdomain",
     "parentDomainTags": ["Healing"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "96"
+      }
+    ],
     "tag": "Resurrection",
     "uuid": "Compendium.pf1.class-abilities.Item.VQmmgl4iZJosmmIk"
   },
   "VciWXEALxtJwwIYk": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Bless</li>\n<li>6th—Heroes' Feast</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Strength.</p><h3>Replacement Power</h3><p>The following granted power replaces the Might of the Gods power of the Strength Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Bless</p></li><li><p>6th—Heroes' Feast</p></li></ul>",
     "features": [
       {
         "featureId": "Iu8gyBT93dRpGtgH",
@@ -2033,16 +2317,22 @@
         "uuid": "Compendium.pf1.class-abilities.Item.Iu8gyBT93dRpGtgH"
       },
       {
-        "featureId": "subdomain-power:resolve:bestow-resolve",
+        "featureId": "ujrmDoTMy0oWUEal",
         "level": 8,
         "name": "Bestow Resolve",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:resolve:bestow-resolve"
+        "uuid": "Compendium.pf1.class-abilities.Item.ujrmDoTMy0oWUEal"
       }
     ],
     "id": "VciWXEALxtJwwIYk",
     "name": "Resolve Subdomain",
     "parentDomainTags": ["Strength"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "95"
+      }
+    ],
     "tag": "Resolve",
     "uuid": "Compendium.pf1.class-abilities.Item.VciWXEALxtJwwIYk"
   },
@@ -2154,14 +2444,14 @@
   },
   "auclZiO7Vh7F2vbx": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Moonstruck</li>\n<li>6th—Phantasmal Web</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Madness.</p><h3>Replacement Power</h3><p>The following granted power replaces the Vision of Madness power of the Madness Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>4th—Moonstruck</p></li><li><p>6th—Phantasmal Web</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:insanity:insane-focus",
+        "featureId": "CItAoMTHm5BVVtVt",
         "level": 0,
         "name": "Insane Focus",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:insanity:insane-focus"
+        "uuid": "Compendium.pf1.class-abilities.Item.CItAoMTHm5BVVtVt"
       },
       {
         "featureId": "Aw4xfA8YSYHGiUXV",
@@ -2174,23 +2464,29 @@
     "id": "auclZiO7Vh7F2vbx",
     "name": "Insanity Subdomain",
     "parentDomainTags": ["Madness"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "92"
+      }
+    ],
     "tag": "Insanity",
     "uuid": "Compendium.pf1.class-abilities.Item.auclZiO7Vh7F2vbx"
   },
   "bCyOJTqkHjOCgPzx": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Bane</li>\n<li>3rd—Bestow Curse</li>\n<li>6th—Eyebite</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Luck.</p><h3>Replacement Power</h3><p>The following granted power replaces the Bit of Luck power of the Luck Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Bane</p></li><li><p>3rd—Bestow Curse</p></li><li><p>6th—Eyebite</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:curse:malign-eye",
+        "featureId": "RGVUWMi9hxULzXLX",
         "level": 0,
         "name": "Malign Eye",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:curse:malign-eye"
+        "uuid": "Compendium.pf1.class-abilities.Item.RGVUWMi9hxULzXLX"
       },
       {
         "featureId": "APcvztd1jGZJ4xm7",
-        "level": 6,
+        "level": 8,
         "name": "Good Fortune",
         "resolved": true,
         "uuid": "Compendium.pf1.class-abilities.Item.APcvztd1jGZJ4xm7"
@@ -2199,6 +2495,12 @@
     "id": "bCyOJTqkHjOCgPzx",
     "name": "Curse Subdomain",
     "parentDomainTags": ["Luck"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "88"
+      }
+    ],
     "tag": "Curse",
     "uuid": "Compendium.pf1.class-abilities.Item.bCyOJTqkHjOCgPzx"
   },
@@ -2210,14 +2512,14 @@
         "type": "untyped"
       }
     ],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Sleep</li>\n<li>6th—Nightmare</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Darkness.</p><h3>Replacement Power</h3><p>The following granted power replaces the Touch of Darkness power of the Darkness Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Sleep</p></li><li><p>6th—Nightmare</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:night:night-hunter",
+        "featureId": "sOXc6XpR4j7lA2rr",
         "level": 0,
         "name": "Night Hunter",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:night:night-hunter"
+        "uuid": "Compendium.pf1.class-abilities.Item.sOXc6XpR4j7lA2rr"
       },
       {
         "featureId": "M8IQnVMYyqh1Mrl7",
@@ -2230,6 +2532,12 @@
     "id": "bFQflm8KUQZ8qPMv",
     "name": "Night Subdomain",
     "parentDomainTags": ["Darkness"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "94"
+      }
+    ],
     "tag": "Night",
     "uuid": "Compendium.pf1.class-abilities.Item.bFQflm8KUQZ8qPMv"
   },
@@ -2316,7 +2624,7 @@
   },
   "cJ0PUlm41aroXQa8": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Create Pit</li>\n<li>3rd—Spiked Pit</li>\n<li>6th—Hungry Pit</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Earth.</p><h3>Replacement Power</h3><p>The following granted power replaces the Acid Resistance power of the Earth Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Create Pit</p></li><li><p>3rd—Spiked Pit</p></li><li><p>6th—Hungry Pit</p></li></ul>",
     "features": [
       {
         "featureId": "L5jrgNDA43dMH1wm",
@@ -2326,22 +2634,28 @@
         "uuid": "Compendium.pf1.class-abilities.Item.L5jrgNDA43dMH1wm"
       },
       {
-        "featureId": "subdomain-power:caves:tunnel-runner",
+        "featureId": "6sMuqfF59UWKJzkd",
         "level": 8,
         "name": "Tunnel Runner",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:caves:tunnel-runner"
+        "uuid": "Compendium.pf1.class-abilities.Item.6sMuqfF59UWKJzkd"
       }
     ],
     "id": "cJ0PUlm41aroXQa8",
     "name": "Caves Subdomain",
     "parentDomainTags": ["Earth"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "87-88"
+      }
+    ],
     "tag": "Caves",
     "uuid": "Compendium.pf1.class-abilities.Item.cJ0PUlm41aroXQa8"
   },
   "cN8MjvuVuNGfBDJL": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>7th—Limited Wish</li>\n<li>8th—Polymorph Any Object</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Artifice.</p><h3>Replacement Power</h3><p>The following granted power replaces the Dancing Weapons power of the Artifice Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>7th—Limited Wish</p></li><li><p>8th—Polymorph Any Object</p></li></ul>",
     "features": [
       {
         "featureId": "zeLaBkwTp9wlzZJv",
@@ -2351,36 +2665,35 @@
         "uuid": "Compendium.pf1.class-abilities.Item.zeLaBkwTp9wlzZJv"
       },
       {
-        "featureId": "9ezUAbso44HrKLyr",
-        "level": 8,
-        "name": "Dancing Weapons",
-        "resolved": true,
-        "uuid": "Compendium.pf1.class-abilities.Item.9ezUAbso44HrKLyr"
-      },
-      {
-        "featureId": "subdomain-power:construct:animate-servant",
+        "featureId": "xv3XFU7lww8OHQCW",
         "level": 8,
         "name": "Animate Servant",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:construct:animate-servant"
+        "uuid": "Compendium.pf1.class-abilities.Item.xv3XFU7lww8OHQCW"
       }
     ],
     "id": "cN8MjvuVuNGfBDJL",
     "name": "Construct Subdomain",
     "parentDomainTags": ["Artifice"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "88"
+      }
+    ],
     "tag": "Construct",
     "uuid": "Compendium.pf1.class-abilities.Item.cN8MjvuVuNGfBDJL"
   },
   "cwenReAVnI9Dtp4R": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Magic Aura</li>\n<li>4th—Arcane Eye</li>\n<li>6th—Analyze Dweomer</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Magic</p><h3>Replacement Power</h3><p>The following granted power replaces the Hand of the Acolyte power of the Magic Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Magic Aura</p></li><li><p>4th—Arcane Eye</p></li><li><p>6th—Analyze Dweomer</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:arcane:arcane-beacon",
+        "featureId": "18tugfzC8pP2m06b",
         "level": 0,
         "name": "Arcane Beacon",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:arcane:arcane-beacon"
+        "uuid": "Compendium.pf1.class-abilities.Item.18tugfzC8pP2m06b"
       },
       {
         "featureId": "hslkjPA3AVl3hDWu",
@@ -2393,12 +2706,18 @@
     "id": "cwenReAVnI9Dtp4R",
     "name": "Arcane Subdomain",
     "parentDomainTags": ["Magic"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "86"
+      }
+    ],
     "tag": "Arcane",
     "uuid": "Compendium.pf1.class-abilities.Item.cwenReAVnI9Dtp4R"
   },
   "dSieXFuoMusIuMN8": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>7th—Disintegrate</li>\n<li>9th—Fiery Body</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Fire.</p><h3>Replacement Power</h3><p>The following granted power replaces the Fire Resistance power of the Fire Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>7th—Disintegrate</p></li><li><p>9th—Fiery Body</p></li></ul>",
     "features": [
       {
         "featureId": "V57hEfKt1MroRI91",
@@ -2408,16 +2727,22 @@
         "uuid": "Compendium.pf1.class-abilities.Item.V57hEfKt1MroRI91"
       },
       {
-        "featureId": "subdomain-power:ash:wall-of-ashes",
+        "featureId": "tJ92ZMBb08mpbf5G",
         "level": 8,
         "name": "Wall of Ashes",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:ash:wall-of-ashes"
+        "uuid": "Compendium.pf1.class-abilities.Item.tJ92ZMBb08mpbf5G"
       }
     ],
     "id": "dSieXFuoMusIuMN8",
     "name": "Ash Subdomain",
     "parentDomainTags": ["Fire"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "86-87"
+      }
+    ],
     "tag": "Ash",
     "uuid": "Compendium.pf1.class-abilities.Item.dSieXFuoMusIuMN8"
   },
@@ -2448,7 +2773,7 @@
   },
   "eUqLGyU8jR5vIhgE": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Alarm</li>\n<li>3rd—Glyph Of Warding</li>\n<li>7th—Guards and Wards</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Community.</p><h3>Replacement Power</h3><p>The following granted power replaces the Unity power of the Community Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Alarm</p></li><li><p>3rd—Glyph of Warding</p></li><li><p>7th—Guards and Wards</p></li></ul>",
     "features": [
       {
         "featureId": "4diLPqggIUsWxR0N",
@@ -2458,29 +2783,35 @@
         "uuid": "Compendium.pf1.class-abilities.Item.4diLPqggIUsWxR0N"
       },
       {
-        "featureId": "subdomain-power:home:guarded-hearth",
+        "featureId": "PgM9OTpmavqN4JKm",
         "level": 8,
         "name": "Guarded Hearth",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:home:guarded-hearth"
+        "uuid": "Compendium.pf1.class-abilities.Item.PgM9OTpmavqN4JKm"
       }
     ],
     "id": "eUqLGyU8jR5vIhgE",
     "name": "Home Subdomain",
     "parentDomainTags": ["Community"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "92"
+      }
+    ],
     "tag": "Home",
     "uuid": "Compendium.pf1.class-abilities.Item.eUqLGyU8jR5vIhgE"
   },
   "f6Cu0YDPK0oYJ7jw": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>4th—Phantasmal Killer</li>\n<li>6th—Cloak of Dreams</li>\n<li>9th—Weird</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Madness.</p><h3>Replacement Power</h3><p>The following granted power replaces the Vision of Madness power of the Madness Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>4th—Phantasmal Killer</p></li><li><p>6th—Cloak of Dreams</p></li><li><p>9th—Weird</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:nightmare:fearful-touch",
+        "featureId": "q68c1enBp2oR7eUe",
         "level": 0,
         "name": "Fearful Touch",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:nightmare:fearful-touch"
+        "uuid": "Compendium.pf1.class-abilities.Item.q68c1enBp2oR7eUe"
       },
       {
         "featureId": "Aw4xfA8YSYHGiUXV",
@@ -2493,6 +2824,12 @@
     "id": "f6Cu0YDPK0oYJ7jw",
     "name": "Nightmare Subdomain",
     "parentDomainTags": ["Madness"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "94"
+      }
+    ],
     "tag": "Nightmare",
     "uuid": "Compendium.pf1.class-abilities.Item.f6Cu0YDPK0oYJ7jw"
   },
@@ -2523,7 +2860,7 @@
   },
   "fsDZNtCRYiKuPETc": {
     "changes": [],
-    "description": "<p><strong>Granted Powers:</strong> You can manipulate lightning, mist, and wind, traffic with air creatures, and are resistant to electricity damage.</p><p><strong>Associated Domain:</strong> Air</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Obscuring Mist</li><li>2nd—Wind Wall</li><li>3rd—Gaseous Form</li><li>4th—Solid Fog</li><li>5th—Control Winds</li><li>6th—Chain Lightning</li><li>7th—Elemental Body IV (air only)</li><li>8th— Whirlwind</li><li>9th—Storm Of Vengeance</li></ul>",
+    "description": "<p><strong>Associated Domain:</strong> Air.</p><h3>Replacement Power</h3><p>The following granted power replaces the Electricity Resistance power of the Air Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>4th—Solid Fog</p></li><li><p>9th—Storm of Vengeance</p></li></ul>",
     "features": [
       {
         "featureId": "o8rxNsQ7P7Yjlvvu",
@@ -2579,7 +2916,7 @@
   },
   "gcbkOtnZ09HTsFzb": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Contagion</li>\n<li>4th—Poison</li>\n<li>6th—Harm</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Plant.</p><h3>Replacement Power</h3><p>The following granted power replaces the Bramble Armor power of the Plant Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>3rd—Contagion</p></li><li><p>4th—Poison</p></li><li><p>6th—Harm</p></li></ul>",
     "features": [
       {
         "featureId": "LY6y8GWhXzK8wDDZ",
@@ -2589,29 +2926,35 @@
         "uuid": "Compendium.pf1.class-abilities.Item.LY6y8GWhXzK8wDDZ"
       },
       {
-        "featureId": "subdomain-power:decay:aura-of-decay",
+        "featureId": "wajEi32qMlGuuzVW",
         "level": 8,
         "name": "Aura of Decay",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:decay:aura-of-decay"
+        "uuid": "Compendium.pf1.class-abilities.Item.wajEi32qMlGuuzVW"
       }
     ],
     "id": "gcbkOtnZ09HTsFzb",
     "name": "Decay Subdomain",
     "parentDomainTags": ["Plant"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "88-89"
+      }
+    ],
     "tag": "Decay",
     "uuid": "Compendium.pf1.class-abilities.Item.gcbkOtnZ09HTsFzb"
   },
   "hFHJ4B9hwrGll8o4": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Heat Metal</li>\n<li>6th—Wall of Iron</li>\n<li>8th—Iron Body</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Earth.</p><h3>Replacement Power</h3><p>The following granted power replaces the Acid Dart power of the Earth Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Heat Metal</p></li><li><p>6th—Wall of Iron</p></li><li><p>8th—Iron Body</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:metal:metal-fist",
+        "featureId": "1cV21XA87dbzJwDZ",
         "level": 0,
         "name": "Metal Fist",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:metal:metal-fist"
+        "uuid": "Compendium.pf1.class-abilities.Item.1cV21XA87dbzJwDZ"
       },
       {
         "featureId": "An77ZbKHexO7P0UC",
@@ -2624,6 +2967,12 @@
     "id": "hFHJ4B9hwrGll8o4",
     "name": "Metal Subdomain",
     "parentDomainTags": ["Earth"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "94"
+      }
+    ],
     "tag": "Metal",
     "uuid": "Compendium.pf1.class-abilities.Item.hFHJ4B9hwrGll8o4"
   },
@@ -2654,14 +3003,14 @@
   },
   "hLrCEEh06Nsfrhe9": {
     "changes": [],
-    "description": "<p><b>Replacement Power:</b> Add Fly to your list of class skills. In addition, whenever you cast a spell that grants you a fly speed, your maneuverability increases by one step (up to perfect).</p>\n<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Feather Fall</li>\n<li>3rd—Fly</li>\n<li>6th—Fly, Mass</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Animal.</p><p>Add fly to your list of class skills. In addition, whenever you cast a spell that grants you a fly speed, your maneuverability increases by one step (up to perfect).</p><h3>Replacement Power</h3><p>The following granted power replaces the Speak with Animals power of the Animal Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Feather Fall</p></li><li><p>3rd—Fly</p></li><li><p>6th—Fly, Mass</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:feather:eyes-of-the-hawk",
+        "featureId": "CVyecjW52RuSAD1p",
         "level": 0,
         "name": "Eyes of the Hawk",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:feather:eyes-of-the-hawk"
+        "uuid": "Compendium.pf1.class-abilities.Item.CVyecjW52RuSAD1p"
       },
       {
         "featureId": "1jMb1iCiNjS5yfwe",
@@ -2674,12 +3023,18 @@
     "id": "hLrCEEh06Nsfrhe9",
     "name": "Feather Subdomain",
     "parentDomainTags": ["Animal"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "90"
+      }
+    ],
     "tag": "Feather",
     "uuid": "Compendium.pf1.class-abilities.Item.hLrCEEh06Nsfrhe9"
   },
   "hZlhs7dfhWOfR2P6": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Cause Fear</li>\n<li>3rd—Vampiric Touch</li>\n<li>6th—Planar Binding (daemons only)</li>\n</ul>",
+    "description": "<p><em>Daemons are a race of neutral evil outsiders (see PZO1116).</em></p><p><strong>Associated Domain</strong>: Evil.</p><h3>Replacement Power</h3><p>The following granted power replaces the Scythe of Evil power of the Evil Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Cause Fear</p></li><li><p>3rd—Vampiric Touch</p></li><li><p>6th—Planar Binding (daemons only)</p></li></ul>",
     "features": [
       {
         "featureId": "90Z23Z4U7ujOcvco",
@@ -2689,22 +3044,28 @@
         "uuid": "Compendium.pf1.class-abilities.Item.90Z23Z4U7ujOcvco"
       },
       {
-        "featureId": "subdomain-power:daemon:whispering-evil",
+        "featureId": "ADUgheC6QFoV34Cu",
         "level": 8,
         "name": "Whispering Evil",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:daemon:whispering-evil"
+        "uuid": "Compendium.pf1.class-abilities.Item.ADUgheC6QFoV34Cu"
       }
     ],
     "id": "hZlhs7dfhWOfR2P6",
     "name": "Daemon Subdomain",
     "parentDomainTags": ["Evil"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "88"
+      }
+    ],
     "tag": "Daemon",
     "uuid": "Compendium.pf1.class-abilities.Item.hZlhs7dfhWOfR2P6"
   },
   "ht94hVn9U6FmkEMz": {
     "changes": [],
-    "description": "<p><strong>Granted Powers:</strong> You are a spirit of freedom and a staunch foe against all who would enslave and oppress.</p><p><strong>Associated Domain:</strong> Liberation</p><h3>Domain Powers</h3><p></p><p></p><h3>Domain Spells</h3><ul><li>1st—Sanctuary</li><li>2nd—Remove Paralysis</li><li>3rd—Remove Curse</li><li>4th—Freedom of Movement</li><li>5th—Plane Shift</li><li>6th—Dispel Magic, Greater</li><li>7th—Refuge</li><li>8th—Mind Blank</li><li>9th—Freedom</li></ul>",
+    "description": "<p><strong>Associated Domain:</strong> Liberation.</p><h3>Replacement Power</h3><p>The following granted power replaces the Liberation (Domain Power) of the Liberation Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Sanctuary</p></li><li><p>5th—Plane Shift</p></li></ul>",
     "features": [
       {
         "featureId": "9QBWuc6VMnX9nUgC",
@@ -2883,6 +3244,37 @@
     "tag": "Cooperation",
     "uuid": "Compendium.pf1.class-abilities.Item.kmA5EX7k3Ol2rfPu"
   },
+  "l9fFIkJNr982pnWo": {
+    "changes": [],
+    "description": "<p><em>Demons are a race of chaotic evil outsiders (see PZO1112 p. 56).</em></p><p><strong>Associated Domain</strong>: Evil.</p><h3>Replacement Power</h3><p>The following granted power replaces the Touch of Evil power of the Evil Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Doom</p></li><li><p>3rd—Rage</p></li><li><p>6th—Planar Binding (demons only).</p></li></ul>",
+    "features": [
+      {
+        "featureId": "xNJl1YTfmDqielcJ",
+        "level": 0,
+        "name": "Fury of the Abyss",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.xNJl1YTfmDqielcJ"
+      },
+      {
+        "featureId": "wK9bxQqe49GfT9xh",
+        "level": 8,
+        "name": "Scythe of Evil",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.wK9bxQqe49GfT9xh"
+      }
+    ],
+    "id": "l9fFIkJNr982pnWo",
+    "name": "Demon Subdomain (Evil Domain)",
+    "parentDomainTags": ["Evil"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "89-90"
+      }
+    ],
+    "tag": "Demon (Evil Domain)",
+    "uuid": "Compendium.pf1.class-abilities.Item.l9fFIkJNr982pnWo"
+  },
   "lSQOZL8w9pzbDMj0": {
     "changes": [],
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>4th—Crushing Despair</li>\n<li>6th—Wall Of Force</li>\n<li>8th—Prismatic Wall</li>\n</ul>",
@@ -2910,14 +3302,14 @@
   },
   "ldjn3XcCkF7CqmNH": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Bless Water</li>\n<li>5th—Cleanse</li>\n<li>7th—Resurrection</li>\n<li>9th—Miracle</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Magic.</p><h3>Replacement Power</h3><p>The following granted power replaces the Hand of the Acolyte power of the Magic Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Bless Water</p></li><li><p>5th—Cleanse</p></li><li><p>7th—Resurrection</p></li><li><p>9th—Miracle</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:divine:divine-vessel",
+        "featureId": "uJckc0CpWQJ2Lify",
         "level": 0,
         "name": "Divine Vessel",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:divine:divine-vessel"
+        "uuid": "Compendium.pf1.class-abilities.Item.uJckc0CpWQJ2Lify"
       },
       {
         "featureId": "hslkjPA3AVl3hDWu",
@@ -2930,6 +3322,12 @@
     "id": "ldjn3XcCkF7CqmNH",
     "name": "Divine Subdomain",
     "parentDomainTags": ["Magic"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "90"
+      }
+    ],
     "tag": "Divine",
     "uuid": "Compendium.pf1.class-abilities.Item.ldjn3XcCkF7CqmNH"
   },
@@ -3010,14 +3408,14 @@
   },
   "nKiYWIhQdZuRzkU7": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Remove Disease</li>\n<li>4th—Neutralize Poison</li>\n<li>5th—Break Enchantment</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Healing.</p><h3>Replacement Power</h3><p>The following granted power replaces the Rebuke Death power of the Healing Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Remove Disease</p></li><li><p>4th—Neutralize Poison</p></li><li><p>5th—Break Enchantment</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:restoration:restorative-touch",
+        "featureId": "PDiHqRkoHr3AeTUv",
         "level": 0,
         "name": "Restorative Touch",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:restoration:restorative-touch"
+        "uuid": "Compendium.pf1.class-abilities.Item.PDiHqRkoHr3AeTUv"
       },
       {
         "featureId": "a7yviTyteK4X7A0c",
@@ -3030,19 +3428,25 @@
     "id": "nKiYWIhQdZuRzkU7",
     "name": "Restoration Subdomain",
     "parentDomainTags": ["Healing"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "95-96"
+      }
+    ],
     "tag": "Restoration",
     "uuid": "Compendium.pf1.class-abilities.Item.nKiYWIhQdZuRzkU7"
   },
   "og1N9lhODpNDQqEu": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Ghoul Touch</li>\n<li>4th—Enervation</li>\n<li>9th—Energy Drain</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Death.</p><h3>Replacement Power</h3><p>The following granted power replaces the Bleeding Touch power of the Death Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Ghoul Touch</p></li><li><p>4th—Enervation</p></li><li><p>9th—Energy Drain</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:undead:death-s-kiss",
+        "featureId": "XWgx2P8BeLQLWsKt",
         "level": 0,
         "name": "Death's Kiss",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:undead:death-s-kiss"
+        "uuid": "Compendium.pf1.class-abilities.Item.XWgx2P8BeLQLWsKt"
       },
       {
         "featureId": "IJo18Mq51RssxEqr",
@@ -3055,6 +3459,12 @@
     "id": "og1N9lhODpNDQqEu",
     "name": "Undead Subdomain",
     "parentDomainTags": ["Death"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "97"
+      }
+    ],
     "tag": "Undead",
     "uuid": "Compendium.pf1.class-abilities.Item.og1N9lhODpNDQqEu"
   },
@@ -3091,14 +3501,14 @@
         "type": "base"
       }
     ],
-    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>1st—Floating Disk</li>\n<li>5th—Overland Flight</li>\n<li>9th—Gate</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Travel.</p><h3>Replacement Power</h3><p>The following granted power replaces the Agile Feet (Domain Power) power of the Travel Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Floating Disk</p></li><li><p>5th—Overland Flight</p></li><li><p>9th—Gate</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:trade:silver-tongued-haggler",
+        "featureId": "YZnFYJppNYe6KtBF",
         "level": 0,
         "name": "Silver-Tongued Haggler",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:trade:silver-tongued-haggler"
+        "uuid": "Compendium.pf1.class-abilities.Item.YZnFYJppNYe6KtBF"
       },
       {
         "featureId": "fkjS3pJidUdLWsFF",
@@ -3111,12 +3521,18 @@
     "id": "q059IbvYqYLncBTM",
     "name": "Trade Subdomain",
     "parentDomainTags": ["Travel"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "97"
+      }
+    ],
     "tag": "Trade",
     "uuid": "Compendium.pf1.class-abilities.Item.q059IbvYqYLncBTM"
   },
   "qztav66jccDyasWd": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Confusion (lesser)</li>\n<li>3rd—Displacement</li>\n<li>6th—Planar Binding (proteans only)</li>\n</ul>",
+    "description": "<p><em>Proteans are a race of chaotic neutral outsiders (see PZO1116).</em></p><p><strong>Associated Domain</strong>: Chaos.</p><h3>Replacement Power</h3><p>The following granted power replaces the Chaos Blade power of the Chaos Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Confusion (lesser)</p></li><li><p>3rd—Displacement</p></li><li><p>6th—Planar Binding (proteans only)</p></li></ul>",
     "features": [
       {
         "featureId": "eZ569ZcO7BeZAqB6",
@@ -3126,29 +3542,35 @@
         "uuid": "Compendium.pf1.class-abilities.Item.eZ569ZcO7BeZAqB6"
       },
       {
-        "featureId": "subdomain-power:protean:aura-of-chaos",
+        "featureId": "7rSXC0YKhLa17VcD",
         "level": 8,
         "name": "Aura of Chaos",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:protean:aura-of-chaos"
+        "uuid": "Compendium.pf1.class-abilities.Item.7rSXC0YKhLa17VcD"
       }
     ],
     "id": "qztav66jccDyasWd",
     "name": "Protean Subdomain",
     "parentDomainTags": ["Chaos"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "94"
+      }
+    ],
     "tag": "Protean",
     "uuid": "Compendium.pf1.class-abilities.Item.qztav66jccDyasWd"
   },
   "rBKNzyyJDrM6rhVq": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>3rd—Rage</li>\n<li>6th—Bull's Strength, Mass</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Strength.</p><h3>Replacement Power</h3><p>The following granted power replaces the Strength Surge (Domain Power) power of the Strength Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>3rd—Rage</p></li><li><p>6th—Bull's Strength, Mass</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:ferocity:ferocious-strike",
+        "featureId": "hq27vag5DHQMOhrv",
         "level": 0,
         "name": "Ferocious Strike",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:ferocity:ferocious-strike"
+        "uuid": "Compendium.pf1.class-abilities.Item.hq27vag5DHQMOhrv"
       },
       {
         "featureId": "WMtJbAlvzaLnzYVy",
@@ -3161,6 +3583,12 @@
     "id": "rBKNzyyJDrM6rhVq",
     "name": "Ferocity Subdomain",
     "parentDomainTags": ["Strength"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "90-91"
+      }
+    ],
     "tag": "Ferocity",
     "uuid": "Compendium.pf1.class-abilities.Item.rBKNzyyJDrM6rhVq"
   },
@@ -3191,14 +3619,14 @@
   },
   "rPSf6FDCJOS2pkql": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Mirror Image</li>\n<li>7th—Project Image</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Trickery.</p><h3>Replacement Power</h3><p>The following granted power replaces the Copycat power of the Trickery Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Mirror Image</p></li><li><p>7th—Project Image</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:deception:sudden-shift",
+        "featureId": "XUOPtvbd4TYsTXff",
         "level": 0,
         "name": "Sudden Shift",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:deception:sudden-shift"
+        "uuid": "Compendium.pf1.class-abilities.Item.XUOPtvbd4TYsTXff"
       },
       {
         "featureId": "Jsa2hTi4YCwLzFdf",
@@ -3211,6 +3639,12 @@
     "id": "rPSf6FDCJOS2pkql",
     "name": "Deception Subdomain",
     "parentDomainTags": ["Trickery"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "89"
+      }
+    ],
     "tag": "Deception",
     "uuid": "Compendium.pf1.class-abilities.Item.rPSf6FDCJOS2pkql"
   },
@@ -3334,7 +3768,7 @@
   },
   "tPYmbs5ChEojyPSe": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>7th—Freezing Sphere</li>\n<li>9th—Polar Ray</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Water.</p><h3>Replacement Power</h3><p>The following granted power replaces the Cold Resistance power of the Water Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>7th—Freezing Sphere</p></li><li><p>9th—Polar Ray</p></li></ul>",
     "features": [
       {
         "featureId": "ructcpEg6rejcpYQ",
@@ -3344,22 +3778,28 @@
         "uuid": "Compendium.pf1.class-abilities.Item.ructcpEg6rejcpYQ"
       },
       {
-        "featureId": "subdomain-power:ice:body-of-ice",
+        "featureId": "A99UIwWIeHLx4O9m",
         "level": 8,
         "name": "Body of Ice",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:ice:body-of-ice"
+        "uuid": "Compendium.pf1.class-abilities.Item.A99UIwWIeHLx4O9m"
       }
     ],
     "id": "tPYmbs5ChEojyPSe",
     "name": "Ice Subdomain",
     "parentDomainTags": ["Water"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "92"
+      }
+    ],
     "tag": "Ice",
     "uuid": "Compendium.pf1.class-abilities.Item.tPYmbs5ChEojyPSe"
   },
   "tifxrlrlPH6xIb17": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Divine Favor</li>\n<li>3rd—Prayer</li>\n<li>6th—Planar Ally (archon only)</li>\n</ul>",
+    "description": "<p><em>Archons are a race of lawful good outsiders (PZO1112 p. 18).</em></p><p><strong>Associated Domain</strong>: Good.</p><h3>Replacement Power</h3><p>The following granted power replaces the Holy Lance power of the Good Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Divine Favor</p></li><li><p>3rd—Prayer</p></li><li><p>6th—Planar Ally (archon only)</p></li></ul>",
     "features": [
       {
         "featureId": "7td8qAPvj9YEasha",
@@ -3369,29 +3809,35 @@
         "uuid": "Compendium.pf1.class-abilities.Item.7td8qAPvj9YEasha"
       },
       {
-        "featureId": "subdomain-power:archon:aura-of-menace",
+        "featureId": "j8Z4O8Z7otvM8yXE",
         "level": 8,
         "name": "Aura of Menace",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:archon:aura-of-menace"
+        "uuid": "Compendium.pf1.class-abilities.Item.j8Z4O8Z7otvM8yXE"
       }
     ],
     "id": "tifxrlrlPH6xIb17",
-    "name": "Archon Subdomain",
+    "name": "Archon Subdomain (Good Domain)",
     "parentDomainTags": ["Good", "Law"],
-    "tag": "Archon",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "86"
+      }
+    ],
+    "tag": "Archon (Good Domain)",
     "uuid": "Compendium.pf1.class-abilities.Item.tifxrlrlPH6xIb17"
   },
   "uFSLnLZkYJycxB6b": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Slipstream</li>\n<li>3rd—Water Walk</li>\n<li>9th—Tsunami</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Water.</p><h3>Replacement Power</h3><p>The following granted power replaces the Icicle power of the Water Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Slipstream</p></li><li><p>3rd—Water Walk</p></li><li><p>9th—Tsunami</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:oceans:surge",
+        "featureId": "zUAVZeb4uCBcGgou",
         "level": 0,
         "name": "Surge",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:oceans:surge"
+        "uuid": "Compendium.pf1.class-abilities.Item.zUAVZeb4uCBcGgou"
       },
       {
         "featureId": "K7R4SXNKvzq5xmQK",
@@ -3404,6 +3850,12 @@
     "id": "uFSLnLZkYJycxB6b",
     "name": "Oceans Subdomain",
     "parentDomainTags": ["Water"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "94"
+      }
+    ],
     "tag": "Oceans",
     "uuid": "Compendium.pf1.class-abilities.Item.uFSLnLZkYJycxB6b"
   },
@@ -3509,14 +3961,14 @@
   },
   "yJr2uciQYegfwwcv": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b> </p>\n<ul>\n<li>2nd—Aid</li>\n<li>5th—Command, Greater</li>\n<li>8th—Planar Ally, Greater</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: War.</p><h3>Replacement Power</h3><p>The following granted power replaces the Battle Rage power of the War Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Aid</p></li><li><p>5th—Command, Greater</p></li><li><p>8th—Planar Ally, Greater</p></li></ul>",
     "features": [
       {
-        "featureId": "subdomain-power:tactics:seize-the-initiative",
+        "featureId": "Lebipph87ARrlM40",
         "level": 0,
         "name": "Seize the Initiative",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:tactics:seize-the-initiative"
+        "uuid": "Compendium.pf1.class-abilities.Item.Lebipph87ARrlM40"
       },
       {
         "featureId": "NDysrxC1AH0gLcqd",
@@ -3529,6 +3981,12 @@
     "id": "yJr2uciQYegfwwcv",
     "name": "Tactics Subdomain",
     "parentDomainTags": ["War"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "96"
+      }
+    ],
     "tag": "Tactics",
     "uuid": "Compendium.pf1.class-abilities.Item.yJr2uciQYegfwwcv"
   },
@@ -3559,7 +4017,7 @@
   },
   "yeH8WXsYDMJw23K6": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Gust Of Wind</li>\n<li>3rd—Call Lightning</li>\n<li>7th—Control Weather</li>\n</ul>",
+    "description": "<p><strong>Associated Domain</strong>: Destruction.</p><h3>Replacement Power</h3><p>The following granted power replaces the Destructive Aura power of the Destruction Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>2nd—Gust of Wind</p></li><li><p>3rd—Call Lightning</p></li><li><p>7th—Control Weather</p></li></ul>",
     "features": [
       {
         "featureId": "T4q7Ib0ED01PNDyT",
@@ -3569,22 +4027,28 @@
         "uuid": "Compendium.pf1.class-abilities.Item.T4q7Ib0ED01PNDyT"
       },
       {
-        "featureId": "subdomain-power:catastrophe:deadly-weather",
+        "featureId": "2JvXhtCQ6wCGp0YQ",
         "level": 8,
         "name": "Deadly Weather",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:catastrophe:deadly-weather"
+        "uuid": "Compendium.pf1.class-abilities.Item.2JvXhtCQ6wCGp0YQ"
       }
     ],
     "id": "yeH8WXsYDMJw23K6",
     "name": "Catastrophe Subdomain",
     "parentDomainTags": ["Destruction"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "87"
+      }
+    ],
     "tag": "Catastrophe",
     "uuid": "Compendium.pf1.class-abilities.Item.yeH8WXsYDMJw23K6"
   },
   "zinh3m68xSNlhHZ8": {
     "changes": [],
-    "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Shield Of Faith</li>\n<li>3rd—Tongues</li>\n<li>6th—Planar Ally (agathions only)</li>\n</ul>",
+    "description": "<p><em>Agathions are a race of neutral good outsiders (see PZO1116).</em></p><p><strong>Associated Domain</strong>: Good.</p><h3>Replacement Power</h3><p>The following granted power replaces the Holy Lance power of the Good Domain.</p><p></p><h3>Replacement Domain Spells</h3><ul><li><p>1st—Shield of Faith</p></li><li><p>3rd—Tongues</p></li><li><p>6th—Planar Ally (agathions only)</p></li></ul>",
     "features": [
       {
         "featureId": "7td8qAPvj9YEasha",
@@ -3594,16 +4058,22 @@
         "uuid": "Compendium.pf1.class-abilities.Item.7td8qAPvj9YEasha"
       },
       {
-        "featureId": "subdomain-power:agathion:protective-aura",
+        "featureId": "xD8I6VFbwDzMRTy8",
         "level": 8,
         "name": "Protective Aura",
         "resolved": true,
-        "uuid": "pfdata:subdomain-power:agathion:protective-aura"
+        "uuid": "Compendium.pf1.class-abilities.Item.xD8I6VFbwDzMRTy8"
       }
     ],
     "id": "zinh3m68xSNlhHZ8",
     "name": "Agathion Subdomain",
     "parentDomainTags": ["Good"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "86"
+      }
+    ],
     "tag": "Agathion",
     "uuid": "Compendium.pf1.class-abilities.Item.zinh3m68xSNlhHZ8"
   }

@@ -161,12 +161,26 @@ doc = prepareDomainSpell(doc, spellId(ref, "Magic Vestment")); // Strength, L3 (
   expendFirst(spellId(ref, "Magic Weapon"), "domain");
 }
 
+// Fixed instanceIds for the same reason `updatedAt` is pinned below: this
+// file is committed, so a freshly-minted uuid per run would show every
+// rebuild as a change and bury the real diff of a reference-data bump.
 doc = addBuff(
   doc,
-  makeActiveBuff(buff(ref, "Bull's Strength"), { casterLevel: 5, remainingRounds: 42 }),
+  makeActiveBuff(buff(ref, "Bull's Strength"), {
+    casterLevel: 5,
+    remainingRounds: 42,
+    instanceId: "buff-sample-bulls-strength",
+  }),
 );
 
-doc = addBuff(doc, makeActiveBuff(buff(ref, "Bless"), { casterLevel: 5, remainingRounds: 6 }));
+doc = addBuff(
+  doc,
+  makeActiveBuff(buff(ref, "Bless"), {
+    casterLevel: 5,
+    remainingRounds: 6,
+    instanceId: "buff-sample-bless",
+  }),
+);
 
 doc = { ...doc, live: { ...doc.live, heroPoints: 2 } };
 

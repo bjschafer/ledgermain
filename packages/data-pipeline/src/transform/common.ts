@@ -112,16 +112,26 @@ export function guessLevelFromProse(description: string | undefined): number {
 }
 
 /**
- * Extracts `system.description.value` and resolves Foundry's enrichers and
- * inline rolls to plain text (see {@link resolveFoundryMarkup}), so raw
- * authoring syntax never leaks into the rendered sheet.
+ * Extracts a doc's description and resolves Foundry's enrichers and inline
+ * rolls to plain text (see {@link resolveFoundryMarkup}), so raw authoring
+ * syntax never leaks into the rendered sheet.
  */
 export function descriptionValue(
   sys: Record<string, unknown>,
   resolveUuid: UuidResolver,
 ): string | undefined {
   const d = sys.description as Record<string, unknown> | undefined;
-  return typeof d?.value === "string" ? resolveFoundryMarkup(d.value, resolveUuid) : undefined;
+  // `unidentified` is Foundry's pre-identification blurb and `value` the real
+  // one, so `value` wins wherever both exist. But the pack rewrite that landed
+  // after v11.11 moved 1,392 items' only description into `unidentified` and
+  // left `value` unset — torches and bedrolls, but magic items too, and the
+  // text there is the published rule verbatim rather than a decoy. This app has
+  // no identification mechanic to hide anything from, so falling back is purely
+  // a matter of not throwing away the only description an item has.
+  const text = typeof d?.value === "string" && d.value !== "" ? d.value : d?.unidentified;
+  return typeof text === "string" && text !== ""
+    ? resolveFoundryMarkup(text, resolveUuid)
+    : undefined;
 }
 
 export function asNumber(value: unknown): number | undefined {
@@ -140,6 +150,33 @@ export function asNumber(value: unknown): number | undefined {
 export function readWeight(value: unknown): number | undefined {
   if (!isDict(value)) return undefined;
   return asNumber(value.value);
+}
+
+/** Coins per gold piece, for the `price.unit` denominations the packs use. */
+const COINS_PER_GP: Record<string, number> = { gp: 1, sp: 10, cp: 100 };
+
+/**
+ * Foundry stores price as `{ base: number, unit: "gp" | "sp" | "cp" }`. It was
+ * a bare gp number until the pack rewrite that landed after the v11.11 tag,
+ * and the bare form is still accepted here so the reader does not depend on
+ * which side of that change a pin sits on.
+ *
+ * Always returns **gold pieces**, converting the silver and copper entries
+ * (361 of them, all mundane gear) rather than carrying the unit downstream —
+ * every consumer of `price` treats it as gp, and a bare `base` would have
+ * silently overcharged a 4 cp cup of tea by 100x. An unrecognized unit throws
+ * rather than guessing, since guessing is how the 100x would come back.
+ */
+export function readPrice(value: unknown): number | undefined {
+  if (typeof value === "number" || typeof value === "string") return asNumber(value);
+  if (!isDict(value)) return undefined;
+  const base = asNumber(value.base);
+  if (base == null) return undefined;
+  const unit = value.unit === undefined ? "gp" : value.unit;
+  if (typeof unit !== "string" || COINS_PER_GP[unit] === undefined) {
+    throw new Error(`[transform] unknown price unit ${JSON.stringify(unit)} (base ${base})`);
+  }
+  return base / COINS_PER_GP[unit]!;
 }
 
 /**

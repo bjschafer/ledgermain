@@ -172,11 +172,6 @@ export const HAND_RESOLVED_USES_FORMULA: Readonly<Record<string, string>> = {
   // "enter a religious fervor for a number of rounds per day equal to her
   // class level."
   KmtDDLu690DySH1e: "@class.unlevel",
-  // Destructive Aura (Destruction domain, 8th level; hand-authored
-  // data-pipeline supplement — the Foundry pack has no document for it, see
-  // domains.test.ts): "emit a 30-foot aura of destruction for a number of
-  // rounds per day equal to your cleric level."
-  "domain:destruction:destructive-aura": "@class.unlevel",
   // Brachiation (Jungle domain, 1st level, hand-authored supplement): "for a
   // number of rounds per day equal to your druid level, you may climb..."
   "druid-domain:jungle:brachiation": "@class.unlevel",

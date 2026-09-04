@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-03-foundry-data-refresh",
+    date: "2026-09-03",
+    title: "The reference data catches up",
+    note: "The Pathfinder data behind the app moved forward a few months. Around five hundred pieces of gear that were showing no description at all now show one, including a lot of ordinary adventuring kit. Sixty subdomains take their granted powers from the official compendium instead of a community list, so their text and page citations match the book. Azata, Archon, Devil, and Demon are now listed once per parent domain rather than once overall, which is how the books present them. Elemental wizard schools got a round of corrections to their bonus spell lists.",
+  },
+  {
     id: "2026-09-03-cruelty-dc-wasting-curse-age-resistance",
     date: "2026-09-03",
     title: "Three numbers that were quietly wrong",

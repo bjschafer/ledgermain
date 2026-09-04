@@ -73,9 +73,10 @@ describe("kitContents", () => {
   it("snapshots an entry that resolves outside the items pack", () => {
     // The Vampire Slayer's Kit packs a Wooden Stake, which lives in the
     // weapons pack — `itemId` can't point at it, so it lands as mundane gear
-    // carrying the pipeline's name/weight snapshot.
+    // carrying the pipeline's name/weight/price snapshot. The price really is
+    // zero upstream.
     const stake = kitContents(kit(VAMPIRE_SLAYER_KIT)).find((r) => r.name === "Wooden Stake");
-    expect(stake).toEqual({ equipped: true, name: "Wooden Stake", weight: 1 });
+    expect(stake).toEqual({ equipped: true, name: "Wooden Stake", weight: 1, price: 0 });
   });
 });
 

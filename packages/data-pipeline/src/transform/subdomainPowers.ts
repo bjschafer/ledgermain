@@ -253,18 +253,28 @@ export function applySubdomainPowerSupplements(
   const result: SubdomainPowerSupplementResult = { supplemented: 0, vendored: 0, unmatched: [] };
 
   for (const sub of subdomains) {
-    if (sub.features.length > 0) {
-      result.vendored += 1;
-      continue;
-    }
     const set = powerSetFor(sub, sets);
     const parent = domainByTag.get(set?.parentDomainTag ?? sub.parentDomainTags[0] ?? "");
+    const replaced = new Set(
+      (set?.powers ?? []).map((p) => p.replaces).filter((r): r is string => !!r),
+    );
+
+    // A subdomain the Foundry pack documents in full needs none of the power
+    // synthesis below, but it still needs the parent-preamble inheritance at
+    // the bottom of the loop: that bonus lives on the parent domain either
+    // way, and a vendored subdomain states its powers, not its parent's flat
+    // bonus.
+    if (sub.features.length > 0) {
+      result.vendored += 1;
+      inheritSupplementalParentPowers(sub, parent, replaced);
+      inheritPreambleChanges(sub, parent, replaced);
+      continue;
+    }
     if (!set || !parent) {
       result.unmatched.push(sub.name);
       continue;
     }
 
-    const replaced = new Set(set.powers.map((p) => p.replaces).filter((r): r is string => !!r));
     const kept = parent.features.filter((g) => !replaced.has(normalizePowerName(g.name)));
 
     const granted: ClassFeatureGrant[] = [];
@@ -290,14 +300,61 @@ export function applySubdomainPowerSupplements(
 
     sub.features = [...kept, ...granted].sort((a, b) => a.level - b.level);
 
-    // A subdomain with a direct bonus of its own (Purity's save resistance)
-    // states the whole of it — inheriting the parent's on top would
-    // double-apply the same number.
-    if (sub.changes.length === 0 && parent.changes.length > 0) {
-      const preamble = PREAMBLE_ABILITY_NAMES[parent.tag];
-      if (!preamble || !replaced.has(preamble)) sub.changes = parent.changes.map((c) => ({ ...c }));
-    }
+    inheritPreambleChanges(sub, parent, replaced);
     result.supplemented += 1;
   }
   return result;
+}
+
+/**
+ * Carry a parent domain's hand-authored powers down to a subdomain the Foundry
+ * pack documents in full.
+ *
+ * The pack states such a subdomain's whole power list, so it is authoritative
+ * for anything upstream knows about — including which of the parent's powers it
+ * keeps. It cannot be authoritative about a power that exists only in
+ * `supplements.ts` (Glory's Channel Boost), because upstream has no document
+ * for it: those would silently vanish from every vendored subdomain of that
+ * parent. Identified by the synthetic `domain:` id prefix that supplement mints,
+ * and still subject to the subdomain's own replacement list.
+ */
+function inheritSupplementalParentPowers(
+  sub: Subdomain,
+  parent: Domain | undefined,
+  replaced: ReadonlySet<string>,
+): void {
+  if (!parent) return;
+  const present = new Set(sub.features.map((f) => normalizePowerName(f.name)));
+  const carried = parent.features.filter(
+    (g) =>
+      g.featureId?.startsWith("domain:") &&
+      !replaced.has(normalizePowerName(g.name)) &&
+      !present.has(normalizePowerName(g.name)),
+  );
+  if (carried.length === 0) return;
+  sub.features = [...sub.features, ...carried].sort((a, b) => a.level - b.level);
+}
+
+/**
+ * Give a subdomain its parent's preamble bonus (Travel's +10 ft, Darkness and
+ * Rune's bonus feat, Protection's resistance) unless it trades that bonus
+ * away — Portal is the one that does, swapping Travel's speed increase for
+ * Rift-Step.
+ *
+ * A subdomain with a direct bonus of its own (Purity's save resistance) states
+ * the whole of it, so inheriting the parent's on top would double-apply the
+ * same number. `replaced` comes from the Pf Data 1e catalog either way: the
+ * Foundry pack states a subdomain's powers but never which parent bonus it
+ * displaces, so that catalog is the only structured signal for it even when
+ * the powers themselves are vendored.
+ */
+function inheritPreambleChanges(
+  sub: Subdomain,
+  parent: Domain | undefined,
+  replaced: ReadonlySet<string>,
+): void {
+  if (!parent || sub.changes.length > 0 || parent.changes.length === 0) return;
+  const preamble = PREAMBLE_ABILITY_NAMES[parent.tag];
+  if (preamble && replaced.has(preamble)) return;
+  sub.changes = parent.changes.map((c) => ({ ...c }));
 }

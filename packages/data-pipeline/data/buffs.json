@@ -439,7 +439,7 @@
         "text": "Takes an additional -[[floor((@item.level + 2) / 6) * 2]] to attack rolls against attacks made by the rogue."
       }
     ],
-    "description": "<p>The target takes a –2 penalty on attack rolls. The target takes an additional –[[floor((@item.level + 2) / 6) * 2]] penalty to attack rolls against the rogue as per Debilitating Injury.</p><hr />",
+    "description": "<p>The target takes a –2 penalty on attack rolls. The target takes an additional –[[floor((@item.level + 2) / 6) * 2]] penalty to attack rolls against the rogue as per Debilitating Injury.</p>",
     "duration": {
       "end": "initiative",
       "units": "round",
@@ -1055,7 +1055,7 @@
       }
     ],
     "contextNotes": [],
-    "description": "<p>Triples the target's carrying capacity as per .</p>",
+    "description": "<p>Triples the target's carrying capacity as per Ant Haul.</p>",
     "duration": {
       "end": "initiative",
       "units": "hour",
@@ -1198,7 +1198,7 @@
     "contextNotes": [
       {
         "target": "attack",
-        "text": "+[[@abilities.cha.mod]] on weapon damage rolls against oathbreaking creature."
+        "text": "+[[@abilities.cha.mod]] on weapon damage rolls against oath-breaking creature."
       }
     ],
     "description": "<p>Grants +[[@abilities.cha.mod]] competence on weapon damage rolls against oathbreaking creatures as per Seek Retribution.</p>",
@@ -2633,7 +2633,7 @@
         "text": "Bodily contact prevented by Evil summoned creatures."
       }
     ],
-    "description": "<p>Grants low-light vision, resistance to acid 5, resistance to cold 5, and the benefits of Protection from Evil as per Angelic Aspect, Lesser.</p><hr />",
+    "description": "<p>Grants low-light vision, resistance to acid 5, resistance to cold 5, and the benefits of Protection from Evil as per Angelic Aspect, Lesser.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -2810,7 +2810,7 @@
   "UgjpRD8vtiSWRxuL": {
     "changes": [
       {
-        "formula": "4 + (floor((@classes.barbarian.level - 2) / 9) * 2)",
+        "formula": "4 + (floor(max(0, (@classes.barbarian.level - 2)) / 9) * 2)",
         "target": "con",
         "type": "morale"
       },
@@ -2820,12 +2820,12 @@
         "type": "untyped"
       },
       {
-        "formula": "4 + (floor((@classes.barbarian.level - 2) / 9) * 2)",
+        "formula": "4 + (floor(max(0, (@classes.barbarian.level - 2)) / 9) * 2)",
         "target": "str",
         "type": "morale"
       },
       {
-        "formula": "2 + floor((@classes.barbarian.level - 2) / 9)",
+        "formula": "2 + floor(max(0, (@classes.barbarian.level - 2)) / 9)",
         "target": "will",
         "type": "morale"
       }
@@ -4915,7 +4915,7 @@
   "p2JgcKLVXMawO3uL": {
     "changes": [],
     "contextNotes": [],
-    "description": "<p>Grants [[min(120, @item.level * 10)]] charges to track the amout of energy damage that can be absorbed as per Protection from Energy.</p>",
+    "description": "<p>Grants [[min(120, @item.level * 10)]] charges to track the amount of energy damage that can be absorbed as per Protection from Energy.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",
@@ -5709,7 +5709,7 @@
         "text": "+2 Morale vs existing Enchantment, [charm] and [compulsion] effects."
       }
     ],
-    "description": "<p>Grants low-light vision; darkvision 60 feet; DR 10/evil; immunity to acid, cold, and petrification; resistance to electricity 10 and fire 10; a +4 racial bonus on saves against poison; and protective aura and truespeech as supernatural abilities for the duration of the spell. Also, your wings give you a fly speed of 60 feet with good maneuverability.</p><p>Protective aura provides a +4 deflection bonus to AC and a +4 resistance bonus on saving throws against attacks made or effects created by evil creatures to anyone within 20 feet. Otherwise, it functions as a magic circle against evil and a lesser globe of invulnerability, both with a radius of 20 feet.</p><p>Truespeech allows you to speak with any creature that has a language, as though using the tongues spell as per Angelic Aspect, Greater.</p><hr />",
+    "description": "<p>Grants low-light vision; darkvision 60 feet; DR 10/evil; immunity to acid, cold, and petrification; resistance to electricity 10 and fire 10; a +4 racial bonus on saves against poison; and protective aura and truespeech as supernatural abilities for the duration of the spell. Also, your wings give you a fly speed of 60 feet with good maneuverability.</p><p>Protective aura provides a +4 deflection bonus to AC and a +4 resistance bonus on saving throws against attacks made or effects created by evil creatures to anyone within 20 feet. Otherwise, it functions as a magic circle against evil and a lesser globe of invulnerability, both with a radius of 20 feet.</p><p>Truespeech allows you to speak with any creature that has a language, as though using the tongues spell as per Angelic Aspect, Greater.</p>",
     "duration": {
       "end": "initiative",
       "units": "minute",

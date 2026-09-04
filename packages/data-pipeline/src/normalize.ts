@@ -78,7 +78,7 @@ import {
 } from "./transform/classes.js";
 import { transformFeat } from "./transform/feats.js";
 import { transformFocusedSchool } from "./transform/focusedSchools.js";
-import { transformItem } from "./transform/items.js";
+import { buildContainerContents, packedInsideContainer, transformItem } from "./transform/items.js";
 import { resolveNamedFeatPrereqs, resolveRacePrereqs } from "./transform/prereqs.js";
 import { transformPrestigeClassPack } from "./transform/prestigeClasses.js";
 import { transformRace } from "./transform/races.js";
@@ -438,6 +438,21 @@ export function normalize(opts: NormalizeOptions): {
       set.add(tag);
     }
   }
+  // A subdomain shared by two domains is now one doc per parent, and the
+  // parent is stated in the doc's own name ("Azata Subdomain (Good Domain)").
+  // The prose walk above can't see those: it matches a domain's "Subdomains:"
+  // list by display name, and both halves of a split pair are written there
+  // as the same bare word ("Azata"). Read the parent off the name instead,
+  // for any doc the prose left unparented.
+  const parentDomainTagSet = new Set(domains.map((dm) => dm.tag));
+  for (const d of subdomainDocs) {
+    if (subdomainParentTags.get(d._id)?.size) continue;
+    const parenthetical = /\(([^)]+?)(?: Domain)?\)\s*$/.exec(d.name)?.[1];
+    if (parenthetical && parentDomainTagSet.has(parenthetical)) {
+      subdomainParentTags.set(d._id, new Set([parenthetical]));
+    }
+  }
+
   const subdomains: Subdomain[] = subdomainDocs.map((d) =>
     transformSubdomain(
       d,
@@ -797,9 +812,47 @@ export function normalize(opts: NormalizeOptions): {
   // comment). Note: Foundry's pf1 system does not ship potions/scrolls/wands
   // as static compendium items — those are generated at runtime from the
   // spells compendium, so there is nothing to vendor for them here.
-  const items: Item[] = readPack(join(packsDir, "items"))
+  // Two kinds of doc share this pack: catalog entries, and the copies a
+  // container packs (see `packedInsideContainer`). Only the former are items
+  // anyone can browse or buy; the latter exist to describe what a kit holds.
+  const itemDocs = readPack(join(packsDir, "items"))
     .filter((pf) => !isFolderDoc(pf.doc))
-    .map((pf) => transformItem(pf.doc, resolveUuid));
+    .map((pf) => pf.doc);
+  const packedDocs = new Map<string, RawDoc[]>();
+  const catalogDocs: RawDoc[] = [];
+  for (const doc of itemDocs) {
+    const containerId = packedInsideContainer(doc);
+    if (containerId === undefined) {
+      catalogDocs.push(doc);
+      continue;
+    }
+    const bucket = packedDocs.get(containerId);
+    if (bucket) bucket.push(doc);
+    else packedDocs.set(containerId, [doc]);
+  }
+
+  const items: Item[] = catalogDocs.map((doc) => transformItem(doc, resolveUuid));
+
+  // Resolve packed copies back to the catalog entry they duplicate. Keyed
+  // case-insensitively because the two sides disagree on it ("Bit And Bridle"
+  // packed, "Bit and Bridle" in the catalog). Ambiguous names resolve to
+  // nothing and fall back to the snapshot rather than picking one of two
+  // arbitrarily.
+  const itemIdByName = new Map<string, string>();
+  const ambiguousItemNames = new Set<string>();
+  for (const item of items) {
+    const key = item.name.toLowerCase();
+    if (itemIdByName.has(key)) ambiguousItemNames.add(key);
+    else itemIdByName.set(key, item.id);
+  }
+  for (const name of ambiguousItemNames) itemIdByName.delete(name);
+
+  for (const item of items) {
+    const children = packedDocs.get(item.id);
+    if (!children || children.length === 0) continue;
+    const contents = buildContainerContents(children, itemIdByName);
+    if (contents.length > 0) item.contents = contents;
+  }
   // Published gear the pack doesn't carry at all, hand-authored — appended
   // after the pack read so the collision guard sees the full vendored set.
   applyItemSupplements(items);
