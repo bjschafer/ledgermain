@@ -200,6 +200,8 @@ export interface NormalizeOptions {
   pfDataJsonDir: string;
   sourceRepo: string;
   sourceSha: string;
+  /** The four pinned upstream SHAs, recorded verbatim into meta (see `RefDataMeta.sourcePins`). */
+  sourcePins: RefDataMeta["sourcePins"];
   systemVersion: string;
   /**
    * ISO timestamp recorded in meta. Pass the pinned commit's date (not the wall
@@ -1139,6 +1141,7 @@ export function normalize(opts: NormalizeOptions): {
     dataVersion: `${opts.systemVersion}+${opts.sourceSha.slice(0, 12)}`,
     sourceRepo: opts.sourceRepo,
     sourceSha: opts.sourceSha,
+    sourcePins: opts.sourcePins,
     systemVersion: opts.systemVersion,
     contentVersion,
     generatedAt: opts.generatedAt,

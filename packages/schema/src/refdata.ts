@@ -217,6 +217,21 @@ export interface RefDataMeta {
   sourceRepo: string;
   /** Exact upstream git SHA the data was generated from. */
   sourceSha: string;
+  /**
+   * Every pinned upstream source this dataset was generated from, keyed by the
+   * `*_SHA` constant in the data-pipeline's `config.ts` that names it. Recorded
+   * so a pin edit that never got a regeneration can be caught mechanically:
+   * `sourceSha` alone covered only Foundry, and the other three could drift out
+   * of agreement with the vendored JSON in total silence. `foundry` duplicates
+   * `sourceSha` on purpose, so a consumer reading pins never has to special-case
+   * one of the four.
+   */
+  sourcePins: {
+    foundry: string;
+    archetypes: string;
+    pfContent: string;
+    pfData: string;
+  };
   /** Foundry PF1 *system* version (e.g. "11.11"). */
   systemVersion: string;
   /** Foundry *content* core version (e.g. "13.351"). */

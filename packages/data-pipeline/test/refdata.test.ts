@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { FOUNDRY_SHA, loadRefData, SCHEMA_VERSION } from "../src/index.js";
+import { loadRefData } from "../src/index.js";
 import { SUPPLEMENTAL_BLOODLINE_TAGS, SUPPLEMENTAL_ITEMS } from "../src/supplements.js";
 
 /**
@@ -22,17 +22,10 @@ function byName<T extends { name: string }>(rec: Record<string, T>, name: string
   return found;
 }
 
-describe("metadata + provenance", () => {
-  it("is generated from the pinned source SHA", () => {
-    expect(ref.meta.sourceSha).toBe(FOUNDRY_SHA);
-    expect(ref.meta.systemVersion).toBe("11.11");
-    // Compared against the live constant (not hardcoded) so this assertion
-    // can't silently drift out of sync with a future SCHEMA_VERSION bump the
-    // way it did here: this line still read 19 after two prior bumps left
-    // `data:build` unrun against the committed fixture.
-    expect(ref.meta.schemaVersion).toBe(SCHEMA_VERSION);
-  });
+// Provenance (every pin vs. its constant, schemaVersion, dataVersion) lives in
+// pinIntegrity.test.ts.
 
+describe("metadata + provenance", () => {
   it("records a content hash for every emitted file", () => {
     expect(Object.keys(ref.meta.hashes).length).toBeGreaterThan(0);
     for (const hash of Object.values(ref.meta.hashes)) {

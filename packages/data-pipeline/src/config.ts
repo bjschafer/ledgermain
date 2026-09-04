@@ -177,9 +177,13 @@ export const SYSTEM_VERSION = "11.11";
  * hundreds of engine test processes that should not pay several extra
  * megabytes of statblock heap. Loaded on demand via `loadMonsters()`/
  * `loadMonsterTemplates()` instead; see `Monster`'s doc comment in
- * `@pf1/schema` and `util/monsterStatblock.ts` for the parsing postures.
+ * `@pf1/schema` and `util/monsterStatblock.ts` for the parsing postures. v29
+ * adds `meta.sourcePins` — all four pinned upstream SHAs, not just Foundry's
+ * `meta.sourceSha`. `test/pinIntegrity.test.ts` asserts they equal the
+ * constants below, so a pin edited without a regeneration fails the suite
+ * instead of shipping a `data/` directory the pin no longer describes.
  */
-export const SCHEMA_VERSION = 28;
+export const SCHEMA_VERSION = 29;
 
 /**
  * Second pinned source: archetype data (Foundry's pf1 system ships none).

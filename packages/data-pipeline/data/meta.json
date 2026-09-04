@@ -131,7 +131,13 @@
     "witch-patrons.json": "abe0bc21ba74cd13a5bd2230a6819764ff173dbe6d74a1b7074211f7428ec22c",
     "wizard-schools.json": "46662970340b24ee1a2dab6369de212dbd6c93e494fbb5a3a381cb2dd3a1e521"
   },
-  "schemaVersion": 28,
+  "schemaVersion": 29,
+  "sourcePins": {
+    "archetypes": "92ddcb60027e3088e5afd0645183c031ec3e9bb4",
+    "foundry": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
+    "pfContent": "c66bf333cafc451d817ead660473dd01d9846fb3",
+    "pfData": "33f1b75b8f62b43c59b96eab6bebb45e37c29229"
+  },
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
   "sourceSha": "10b87c070c86d4782e7bcc35ed8c49c7e7e3cec4",
   "systemVersion": "11.11"

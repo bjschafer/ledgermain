@@ -8,13 +8,16 @@ import { join } from "node:path";
 
 import {
   ARCHETYPE_CLONE_DIR,
+  ARCHETYPE_SHA,
   CLONE_DIR,
   FOUNDRY_REPO,
   FOUNDRY_SHA,
   OUTPUT_DIR,
   PACKS_DIR,
   PF_CONTENT_CLONE_DIR,
+  PF_CONTENT_SHA,
   PFDATA_CLONE_DIR,
+  PFDATA_SHA,
   SYSTEM_VERSION,
 } from "../config.js";
 
@@ -62,6 +65,12 @@ function main(): void {
     pfDataJsonDir: PFDATA_JSON_DIR,
     sourceRepo: FOUNDRY_REPO,
     sourceSha: FOUNDRY_SHA,
+    sourcePins: {
+      foundry: FOUNDRY_SHA,
+      archetypes: ARCHETYPE_SHA,
+      pfContent: PF_CONTENT_SHA,
+      pfData: PFDATA_SHA,
+    },
     systemVersion: SYSTEM_VERSION,
     generatedAt: sourceCommitDate(),
   });

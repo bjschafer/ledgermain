@@ -44,6 +44,42 @@ import type {
 import { slug } from "./transform/common.js";
 
 /**
+ * Every table below is a bet that upstream still lacks (or still gets wrong)
+ * the thing it patches. A source bump can win that bet back — the pack starts
+ * documenting a domain power, fixes a `maxFormula`, resolves an archetype
+ * feature's level — and a supplement that keeps shadowing correct upstream data
+ * is worse than no supplement at all: it silently pins the dataset to whatever
+ * was true the day the entry was authored, and nothing downstream can tell the
+ * difference.
+ *
+ * So each `apply*` function throws when its target is already satisfied
+ * upstream, and `data:build` is where that fires. A bump that makes an entry
+ * redundant fails the build naming the entry to delete, instead of quietly
+ * overwriting the newer value. The counterpart guards (target not found,
+ * renamed, or its description no longer saying what the entry was authored
+ * against) are the same idea pointed the other way.
+ */
+function redundant(what: string, action = "retire the supplement entry"): never {
+  throw new Error(`[supplements] ${what} is now covered upstream — ${action}`);
+}
+
+/** Identity of a `Change` for redundancy comparison: everything but its gates. */
+function changeKey(c: Change): string {
+  return JSON.stringify([c.target, c.type, c.formula, c.operator ?? "add"]);
+}
+
+/** True when `changes` already carries a change indistinguishable from `wanted`. */
+function hasChange(changes: readonly Change[], wanted: Change): boolean {
+  const key = changeKey(wanted);
+  return changes.some((c) => changeKey(c) === key);
+}
+
+/** True when `changes` already carries any change aimed at `target`. */
+function hasChangeTarget(changes: readonly Change[], target: string): boolean {
+  return changes.some((c) => c.target === target);
+}
+
+/**
  * Supplemental bonus-spell lists keyed by bloodline tag, then by spell level
  * (1–9), listing spell **names** (resolved to ids at build time). PF1 grants a
  * bloodline's level-`L` spell at sorcerer level `2L+1`.
@@ -295,10 +331,21 @@ export const SUPPLEMENTAL_CLASS_FEATURE_USES_MAX_FORMULA: Record<string, string>
  * exists).
  */
 export function applyClassFeatureUsesSupplements(features: ClassFeature[]): void {
+  const patched = new Set<string>();
   for (const feature of features) {
     const formula = SUPPLEMENTAL_CLASS_FEATURE_USES_MAX_FORMULA[feature.name];
-    if (formula && feature.uses) {
-      feature.uses = { ...feature.uses, maxFormula: formula };
+    if (formula === undefined || !feature.uses) continue;
+    if (feature.uses.maxFormula === formula) {
+      redundant(`class feature "${feature.name}" already carries maxFormula \`${formula}\``);
+    }
+    feature.uses = { ...feature.uses, maxFormula: formula };
+    patched.add(feature.name);
+  }
+  for (const name of Object.keys(SUPPLEMENTAL_CLASS_FEATURE_USES_MAX_FORMULA)) {
+    if (!patched.has(name)) {
+      throw new Error(
+        `[supplements] class feature "${name}" not found among vendored class features carrying a \`uses\` block — re-verify before re-authoring its maxFormula`,
+      );
     }
   }
 }
@@ -346,6 +393,12 @@ export function applyClassFeatureChangesSupplements(features: ClassFeature[]): v
     const feature = byName.get(name);
     if (feature === undefined) {
       throw new Error(`[supplements] class feature "${name}" not found in vendored class features`);
+    }
+    if (
+      feature.changes.length === changes.length &&
+      changes.every((c) => hasChange(feature.changes, c))
+    ) {
+      redundant(`class feature "${name}" changes`);
     }
     feature.changes = changes;
   }
@@ -520,6 +573,11 @@ export function applyClassFeatureEffectImmunitySupplements(features: ClassFeatur
         `[supplements] class feature "${supp.name}" (${id}) description no longer mentions ` +
           `"${supp.keyword}" — re-verify its immunity before trusting this supplement`,
       );
+    }
+    for (const effect of supp.effects) {
+      if (hasChangeTarget(feature.changes, `immEffect.${effect}`)) {
+        redundant(`class feature "${supp.name}" (${id}) immunity to ${effect}`);
+      }
     }
     feature.changes = [
       ...feature.changes,
@@ -1027,10 +1085,20 @@ export function applyBuffSupplements(buffs: Buff[]): void {
 
   for (const [id, supp] of Object.entries(SUPPLEMENTAL_BUFF_CHANGES)) {
     const buff = resolve(id, supp);
+    for (const entry of supp.entries) {
+      if (hasChange(buff.changes, entry)) {
+        redundant(`buff "${supp.name}" (${id}) change on ${entry.target}`);
+      }
+    }
     buff.changes = [...buff.changes, ...supp.entries];
   }
   for (const [id, supp] of Object.entries(SUPPLEMENTAL_BUFF_CONTEXT_NOTES)) {
     const buff = resolve(id, supp);
+    for (const entry of supp.entries) {
+      if (buff.contextNotes.some((n) => n.target === entry.target && n.text === entry.text)) {
+        redundant(`buff "${supp.name}" (${id}) context note on ${entry.target}`);
+      }
+    }
     buff.contextNotes = [...buff.contextNotes, ...supp.entries];
   }
 }
@@ -1072,6 +1140,11 @@ export function applyRaceEnergyResistanceSupplements(races: Race[]): void {
     const race = byName.get(name);
     if (race === undefined) {
       throw new Error(`[supplements] race "${name}" not found in vendored races`);
+    }
+    for (const energy of energies) {
+      if (hasChangeTarget(race.changes, `eres.${energy}`)) {
+        redundant(`race "${name}" resistance to ${energy}`);
+      }
     }
     race.changes = [
       ...race.changes,
@@ -1136,6 +1209,11 @@ export function applyRaceEffectImmunitySupplements(races: Race[]): void {
     const race = byName.get(name);
     if (race === undefined) {
       throw new Error(`[supplements] race "${name}" not found in vendored races`);
+    }
+    for (const effect of effects) {
+      if (hasChangeTarget(race.changes, `immEffect.${effect}`)) {
+        redundant(`race "${name}" immunity to ${effect}`);
+      }
     }
     race.changes = [
       ...race.changes,
@@ -1235,6 +1313,9 @@ export function applyDomainFeatureSupplements(
       throw new Error(`[supplements] domain "${tag}" not found in vendored domains`);
     }
     for (const power of powers) {
+      if (domain.features.some((f) => f.name === power.name)) {
+        redundant(`domain "${tag}" power "${power.name}"`);
+      }
       const id = `domain:${slug(tag)}:${power.slug}`;
       if (featureIds.has(id)) {
         throw new Error(`[supplements] duplicate domain power feature id: ${id}`);
@@ -1755,6 +1836,9 @@ export function applyDruidDomainFeatureSupplements(
       throw new Error(`[supplements] druid domain "${tag}" not found in vendored druid domains`);
     }
     for (const power of powers) {
+      if (domain.features.some((f) => f.name === power.name)) {
+        redundant(`druid domain "${tag}" power "${power.name}"`);
+      }
       const powerSlug = slug(power.name);
       const id = `druid-domain:${slug(tag)}:${powerSlug}`;
       if (featureIds.has(id)) {
@@ -1783,6 +1867,11 @@ export function applyDruidDomainFeatureSupplements(
     const domain = byTag.get(tag);
     if (domain === undefined) {
       throw new Error(`[supplements] druid domain "${tag}" not found in vendored druid domains`);
+    }
+    for (const change of changes) {
+      if (hasChange(domain.changes, change)) {
+        redundant(`druid domain "${tag}" change on ${change.target}`);
+      }
     }
     domain.changes = [...domain.changes, ...changes];
   }
@@ -1822,10 +1911,6 @@ export const SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL: Record<string, number> = {
   // appearance at will, as if using the alter self spell..." — vendored
   // level column reads 6.
   "druid:urban-druid:a-thousand-faces:6": 13,
-  // Prose: "At 4th level, a realm wanderer must choose an animal companion
-  // for his hunter's bond..." — vendored level column reads 0, which (unlike
-  // a too-early level) shows the whole ability as granted from 1st level on.
-  "ranger:realm-wanderer:queen-s-bond:0": 4,
 };
 
 /**
@@ -1852,6 +1937,9 @@ export function applyRaceSpellResistanceSupplements(races: Race[]): void {
     const race = byName.get(name);
     if (race === undefined) {
       throw new Error(`[supplements] race "${name}" not found in vendored races`);
+    }
+    if (hasChangeTarget(race.changes, "spellResist")) {
+      redundant(`race "${name}" spell resistance`);
     }
     race.changes = [...race.changes, { formula, target: "spellResist", type: "racial" }];
   }
@@ -2013,6 +2101,9 @@ export function applyRaceSenseSupplements(races: Race[]): void {
           `[supplements] race "${name}" has a supplemented ${target} sense, but its description never mentions ${keywords[0]}`,
         );
       }
+      if (hasChangeTarget(race.changes, target)) {
+        redundant(`race "${name}" ${target} sense`);
+      }
       race.changes = [
         ...race.changes,
         { formula: String(value), operator: "set", target, type: "racial" },
@@ -2027,9 +2118,19 @@ export function applyRaceSenseSupplements(races: Race[]): void {
  * untouched — see that map's doc comment for why).
  */
 export function applyArchetypeFeatureLevelSupplements(features: ArchetypeFeature[]): void {
-  for (const feature of features) {
-    const level = SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL[feature.id];
-    if (level !== undefined) feature.level = level;
+  const byId = new Map(features.map((f) => [f.id, f]));
+  for (const [id, level] of Object.entries(SUPPLEMENTAL_ARCHETYPE_FEATURE_LEVEL)) {
+    const feature = byId.get(id);
+    if (feature === undefined) {
+      throw new Error(`[supplements] archetype feature "${id}" not found in vendored set`);
+    }
+    // The id carries the upstream level as its suffix and is deliberately left
+    // alone (see the table's doc comment), so the suffix is the only record of
+    // what upstream said — compare against the live field, not against it.
+    if (feature.level === level) {
+      redundant(`archetype feature "${id}" level (upstream now reads ${level})`);
+    }
+    feature.level = level;
   }
 }
 
@@ -2151,6 +2252,9 @@ export function applySpellProjectileSupplements(spells: Spell[]): void {
       throw new Error(
         `[supplements] projectile-count spell "${name}" not found in vendored spells`,
       );
+    }
+    if (spell.projectileCount !== undefined) {
+      redundant(`spell "${name}" projectile count`);
     }
     spell.projectileCount = formula;
   }
