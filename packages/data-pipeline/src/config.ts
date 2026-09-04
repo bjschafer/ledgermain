@@ -6,10 +6,16 @@ import { fileURLToPath } from "node:url";
  * normalized output is fully reproducible and never drifts. To update the data:
  *
  *   1. Change FOUNDRY_SHA (and SYSTEM_VERSION) below.
- *   2. Run `pnpm data:fetch && pnpm data:build`.
- *   3. Review the diff in packages/data-pipeline/data/ and commit it.
+ *   2. Run `bun run data:bump` (fetch, build, then fmt — skipping the last one
+ *      makes every vendored file show as changed; see docs/refdata-update.md).
+ *   3. Review the diff in packages/data-pipeline/data/ and commit it together
+ *      with this file.
  *
- * Updating data is therefore always a deliberate, reviewable act.
+ * Updating data is therefore always a deliberate, reviewable act. Renovate
+ * watches all four pins and opens the PR (renovate.json), and
+ * .github/workflows/refdata-sync.yml runs step 2 on that branch — but step 3
+ * is still a person reading the regenerated diff, and `pinIntegrity.test.ts`
+ * fails the build if a pin ever lands without it.
  */
 export const FOUNDRY_REPO = "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git";
 

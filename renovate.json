@@ -1,0 +1,82 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "description": "Renovate watches two very different things here. Ordinary npm/bun dependencies are its own job start to finish. The four upstream data pins in packages/data-pipeline/src/config.ts are not: Renovate can move a pin, but only `bun run data:bump` can regenerate the vendored JSON the pin describes, and postUpgradeTasks is self-hosted-only. .github/workflows/refdata-sync.yml does that regeneration on the branch and pushes it back; packages/data-pipeline/test/pinIntegrity.test.ts is the backstop that turns a pin without its regeneration into a red check rather than a dataset whose provenance is a lie.",
+  "gitIgnoredAuthors": ["41898282+github-actions[bot]@users.noreply.github.com"],
+  "labels": ["dependencies"],
+  "schedule": ["before 6am on monday"],
+  "prConcurrentLimit": 5,
+  "ignorePaths": ["packages/data-pipeline/data/**"],
+  "packageRules": [
+    {
+      "description": "Nothing automerges. Every push to main is a deploy (Cloudflare Workers Builds, git-connected, see CLAUDE.md), so merging is shipping, and there is no staging step in between where a bad bump could surface. The test suite is good enough that a red PR is genuinely informative, which is exactly why a green one should still be looked at rather than landed unread.",
+      "matchPackageNames": ["*"],
+      "automerge": false
+    },
+    {
+      "description": "Bundle the dev toolchain into one weekly PR. These only lint, format, type-check or test: none of them can change a rendered number on a character sheet, so reading eight separate PRs to learn that oxlint went up a patch is pure overhead. Majors stay ungrouped and separate, since an oxfmt or typescript major is a behaviour change worth its own diff.",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "dev tooling"
+    },
+    {
+      "description": "wrangler is pinned separately in apps/web and apps/api and has drifted between them. Group it so the two always move together and the drift cannot reopen.",
+      "matchPackageNames": ["wrangler", "@cloudflare/**"],
+      "groupName": "cloudflare tooling"
+    },
+    {
+      "description": "The four upstream data pins. Never automerge and never group: each one regenerates a different slice of packages/data-pipeline/data/, and the whole point of the review is reading that regenerated diff against one source's changes. A grouped PR would interleave two sources' worth of content churn into one unattributable diff.",
+      "matchManagers": ["custom.regex"],
+      "groupName": null,
+      "automerge": false,
+      "labels": ["dependencies", "refdata"],
+      "prBodyNotes": [
+        "This PR moves a pinned upstream commit. The vendored JSON under `packages/data-pipeline/data/` is regenerated onto this branch by `.github/workflows/refdata-sync.yml` as a second commit -- **review that commit's diff, not just the pin**.",
+        "If the regeneration commit never appeared, the workflow failed or was skipped: `pinIntegrity.test.ts` will be red, and the fix is `bun run data:bump` locally. See `docs/refdata-update.md`.",
+        "A build that fails inside `supplements.ts` is not a bug: it means this bump made a hand-authored supplement redundant, and the error names the entry to delete."
+      ]
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "FOUNDRY_SHA -- Foundry VTT's pf1 system, the bulk of the data. Tracks master rather than a release tag on purpose: the pin has been ahead of the newest tag since v11.11 (2026-03-09), and pack-data corrections land on master without ever getting a release of their own. SYSTEM_VERSION next to it is a human-readable label for the tag this commit descends from, so it is deliberately not tracked here -- it changes only when upstream actually tags, which is a judgment call for the reviewer.",
+      "managerFilePatterns": ["/^packages/data-pipeline/src/config\\.ts$/"],
+      "matchStrings": ["export const FOUNDRY_SHA = \"(?<currentDigest>[0-9a-f]{40})\";"],
+      "depNameTemplate": "foundryvtt-pathfinder1",
+      "packageNameTemplate": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1",
+      "currentValueTemplate": "master",
+      "datasourceTemplate": "git-refs"
+    },
+    {
+      "customType": "regex",
+      "description": "ARCHETYPE_SHA -- Tryss_Farron/pf1e-archetypes, the sole source of archetypes and prestige classes.",
+      "managerFilePatterns": ["/^packages/data-pipeline/src/config\\.ts$/"],
+      "matchStrings": ["export const ARCHETYPE_SHA = \"(?<currentDigest>[0-9a-f]{40})\";"],
+      "depNameTemplate": "pf1e-archetypes",
+      "packageNameTemplate": "https://gitlab.com/Tryss_Farron/pf1e-archetypes",
+      "currentValueTemplate": "main",
+      "datasourceTemplate": "git-refs"
+    },
+    {
+      "customType": "regex",
+      "description": "PF_CONTENT_SHA -- the pf1-content community module, which supplies the large feats/traits/racial-traits packs.",
+      "managerFilePatterns": ["/^packages/data-pipeline/src/config\\.ts$/"],
+      "matchStrings": ["export const PF_CONTENT_SHA = \"(?<currentDigest>[0-9a-f]{40})\";"],
+      "depNameTemplate": "pf1-content",
+      "packageNameTemplate": "https://gitlab.com/foundryvtt_pathfinder1e/pf1-content",
+      "currentValueTemplate": "main",
+      "datasourceTemplate": "git-refs"
+    },
+    {
+      "customType": "regex",
+      "description": "PFDATA_SHA -- Pf Data 1e, a single-maintainer dataset supplying the prose-only subsystem catalogs and the monster sidecars. The widest blast radius of the four: a bump here moves roughly thirty catalogs plus ~3,000 statblocks at once, so `bun scripts/monster-oracle-diff.ts` is worth running against the result.",
+      "managerFilePatterns": ["/^packages/data-pipeline/src/config\\.ts$/"],
+      "matchStrings": ["export const PFDATA_SHA = \"(?<currentDigest>[0-9a-f]{40})\";"],
+      "depNameTemplate": "pathfinder-data-1-e",
+      "packageNameTemplate": "https://github.com/jasontankapps/pathfinder-data-1-e",
+      "currentValueTemplate": "master",
+      "datasourceTemplate": "git-refs"
+    }
+  ]
+}

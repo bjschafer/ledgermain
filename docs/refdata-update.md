@@ -17,7 +17,20 @@ A hand-authored supplement (`packages/data-pipeline/src/supplements.ts`) fills a
 
 ## When to bump it
 
-Only when you deliberately want newer upstream content -- a new Foundry PF1 release, a new archetype landing in the archetype module, etc. There's no auto-update; the app is never allowed to depend on a network fetch at runtime, and a data bump is a reviewable, committed change like any other.
+Only when you deliberately want newer upstream content -- a new Foundry PF1 release, a new archetype landing in the archetype module, etc. The app is never allowed to depend on a network fetch at runtime, and a data bump is a reviewable, committed change like any other.
+
+Nothing auto-_applies_ a bump, but you no longer have to remember to look for one. Renovate watches all four pins (`renovate.json`, four `custom.regex` managers against the constants in `config.ts`) and opens a PR when any of their default branches moves. Before that, CI's refusal to touch the network meant nothing ever said "you are behind": the Foundry pin sat 265 commits stale for two months without a prompt.
+
+## The automated path
+
+A Renovate pin PR arrives half-done, because Renovate can move a pin but cannot regenerate the data behind it (`postUpgradeTasks` is self-hosted-only, and this repo uses the hosted app). Two things close that gap:
+
+- **`.github/workflows/refdata-sync.yml`** runs `bun run data:bump` plus `sample:build` on the branch and pushes the result back as a second commit. That commit is the one worth reviewing; the pin change itself carries no information beyond which SHA. It needs a `REFDATA_SYNC_TOKEN` repo secret (a PAT with `contents: write`) -- `GITHUB_TOKEN` cannot be used, because pushes made with it never trigger a workflow run, so the regenerated commit would never be checked and Renovate would wait forever on checks that cannot arrive.
+- **`packages/data-pipeline/test/pinIntegrity.test.ts`** asserts that all four SHAs recorded in `meta.sourcePins` equal the constants in `config.ts`. If the sync workflow fails, is skipped, or gets removed, this is what makes the PR red instead of quietly mergeable. A pin without its regeneration can never land green.
+
+So the review is the same as ever -- read the regenerated diff, decide -- but the mechanical half happens without you, and the "nothing ever says you are behind" gap is closed.
+
+Everything below still applies verbatim to a bump you drive by hand, and driving one by hand stays perfectly normal.
 
 ## Procedure
 
@@ -47,6 +60,20 @@ Editing `supplements.ts` (rather than a pin) follows the same shape: edit the su
 The pipeline's JSON emitter writes every array expanded one element per line. The **committed** `data/*.json` is oxfmt-formatted, which collapses short arrays onto one line. If you run `data:fetch && data:build` and stop there, `git status` shows **thousands of lines changed across every data file** -- all whitespace -- even when only one value actually changed upstream. Worse, `bun run fmt:check` (the CI gate) fails on the unformatted output.
 
 Running `bun run fmt` immediately after `data:build` collapses the diff back down to just the real content change. `data:bump` runs fetch → build → fmt in one command specifically so this step can't be skipped by accident. If you ever do run the raw `data:fetch`/`data:build` commands by hand instead of `data:bump`, don't forget the `fmt` step.
+
+## When a bump makes a supplement redundant
+
+`supplements.ts` hand-authors content the four sources omit or state wrongly. Every entry there is a bet that upstream still lacks it, and a bump can win that bet back -- the pack starts documenting a domain power, fixes a `maxFormula`, resolves an archetype feature's level.
+
+A supplement that keeps shadowing correct upstream data is worse than no supplement: it silently pins that value to whatever was true the day the entry was written, and nothing downstream can tell. So every `apply*` function throws when its target is already satisfied upstream, and `data:build` is where that fires:
+
+```
+error: [supplements] domain "artifice" power "Dancing Weapons" is now covered upstream -- retire the supplement entry
+```
+
+That is the system working, not a broken bump. Delete the named entry, rerun `bun run data:bump`, and repeat until the build is clean -- there may be several. Each deletion is part of the same commit as the pin.
+
+The guards pointed the other way (target not found, renamed, or its description no longer saying what the entry was authored against) fire the same way and mean the opposite: the supplement is now aimed at something that moved, so re-verify it against the published rule before re-authoring.
 
 ## Verifying the result
 

@@ -1,0 +1,100 @@
+name: RefData sync
+
+# Renovate can move a pin in packages/data-pipeline/src/config.ts, but it
+# cannot regenerate the vendored JSON that pin describes: `postUpgradeTasks`
+# is self-hosted-only and this repo uses the hosted app. So a Renovate refdata
+# PR arrives half-done, and `pinIntegrity.test.ts` deliberately fails it. This
+# workflow is the other half -- it runs `bun run data:bump` on the branch and
+# pushes the result back as a second commit, which is the one worth reviewing.
+#
+# The `paths` filter is also what stops this looping: the commit pushed below
+# touches data/ and the sample character, never config.ts, so the run it
+# triggers is an ordinary CI run and not another sync.
+"on":
+  pull_request:
+    paths:
+      - packages/data-pipeline/src/config.ts
+
+concurrency:
+  group: refdata-sync-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    name: Regenerate vendored data
+    runs-on: ubuntu-latest
+    # A cold run clones four upstream repos and normalizes ~3,000 statblocks
+    # alongside everything else; the rest is headroom for a slow GitLab.
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    # Gate on who opened the PR, not on the branch name: this is a public repo
+    # and anyone can open a PR from a branch called renovate/anything. The
+    # head-repo test keeps it to in-repo branches -- fork PRs get no secrets
+    # anyway, so this fails them closed rather than confusingly at checkout.
+    if: >-
+      github.event.pull_request.user.login == 'renovate[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      # The branch itself, not the detached merge commit, since we push back to
+      # it. A PAT rather than GITHUB_TOKEN: pushes made with GITHUB_TOKEN never
+      # trigger a new workflow run, so CI would never judge the commit we make
+      # and Renovate would wait on checks that can no longer arrive.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.REFDATA_SYNC_TOKEN }}
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # fetch -> build -> fmt, in the order that avoids the whitespace-diff
+      # trap (docs/refdata-update.md). A failure inside supplements.ts here is
+      # the system working: it means this bump made a hand-authored supplement
+      # redundant, and the error names the entry to delete.
+      - name: Regenerate vendored RefData
+        run: bun run data:bump
+
+      # The shipped sample character is derived from RefData and its build
+      # runs compute() as a sanity check, so this both refreshes it and fails
+      # loudly if the bump renamed or dropped anything the sample references.
+      - name: Rebuild the sample character
+        run: |
+          bun run --filter @pf1/web sample:build
+          bun run fmt
+
+      # Deliberately the last step and deliberately ungated by the test suite:
+      # ci.yml re-runs on the commit this pushes and is the authority on
+      # whether the bump is good. Pushing a regeneration that turns CI red is
+      # strictly more useful than pushing nothing, because the red check then
+      # points at real content instead of at a pin with no data behind it.
+      - name: Push the regenerated data back onto the branch
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if git diff --quiet; then
+            echo "Pin moved but the normalized output is identical; nothing to push."
+            exit 0
+          fi
+          # Commit as github-actions[bot], which renovate.json lists under
+          # gitIgnoredAuthors. Without that pairing Renovate sees a commit from
+          # an author that isn't itself, marks the branch as modified by
+          # others, and then refuses to rebase it.
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore(data): regenerate vendored RefData for the new pin"
+          git push origin "HEAD:$HEAD_REF"
+
+      # Any earlier failure turns the push into a no-op, and left unannotated
+      # that is indistinguishable from an ordinary red check. Merging anyway
+      # would land a pin with no data behind it.
+      - name: Flag that the regeneration never ran
+        if: failure()
+        run: |
+          echo "::error::The regeneration failed, so packages/data-pipeline/data/ was NOT updated on this branch. Merging now would land a pin whose vendored data is from the previous commit. Run 'bun run data:bump' locally (docs/refdata-update.md) and push the result, or close this PR."
+          exit 1
