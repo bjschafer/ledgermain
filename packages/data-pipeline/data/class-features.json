@@ -34301,7 +34301,7 @@
   "subdomain-power:aristocracy:noble-visage": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You gain a bonus on Charisma checks and Charisma-based skill checks against creatures that share your creature type (and subtype, if you are a humanoid). This bonus is equal to 1 + one-fifth of your cleric level.</p>",
+    "description": "<p>You gain a bonus on Charisma checks and Charisma-based skill checks against creatures that share your creature type (and subtype, if you are a humanoid). @B-5y1-cleric. You can touch an ally to grant her your noble visage bonus against creatures that share her creature type (or subtype) for 1 minute. When you use this ability, you lose your noble visage bonus for 1 minute.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:aristocracy:noble-visage",
     "name": "Noble Visage",
@@ -34589,7 +34589,7 @@
   "subdomain-power:flotsam:sift": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Once per day you can reach into water and pull out an object with a maximum gp value of up to 50 gp &amp;times&amp; your class level. This object always has the broken condition upon being withdrawn from the water. The water you reach into must be at least deep enough to fully immerse yourself in. If you're retrieving an object that would not normally float, assume it rests on top of or is entwined with debris that does float. Objects retrieved in this manner disappear after 24 hours if they're not already used up or otherwise destroyed before then. At 12th level: The objects that you retrieve are not broken. At 20th level: You can retrieve objects worth up to 5,000 gp.</p>",
+    "description": "<p>Once per day you can reach into water and pull out an object with a maximum gp value of up to 50 gp × your class level. This object always has the broken condition upon being withdrawn from the water. The water you reach into must be at least deep enough to fully immerse yourself in. If you're retrieving an object that would not normally float, assume it rests on top of or is entwined with debris that does float. Objects retrieved in this manner disappear after 24 hours if they're not already used up or otherwise destroyed before then. At 12th level: The objects that you retrieve are not broken. At 20th level: You can retrieve objects worth up to 5,000 gp.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:flotsam:sift",
     "name": "Sift",
@@ -34684,7 +34684,7 @@
   "subdomain-power:hubris:divine-demand": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can petition your divine patron for far greater power than you deserve. This ability can be used only as you cast a spell that has a reduced (but not negated) effect on a successful save. The saving throw DC of the spell increases by 2, and you gain a +2 bonus on caster level checks to overcome spell resistance with the spell. Any creature that succeeds at the saving throw instead avoids the effect entirely. If half or more of the targets are unaffected, you become shaken for a number of rounds equal to the spell's level. If all of the targets are unaffected, you instead lose the ability to cast divine spells, channel energy, and use domain powers for 1d4+1 rounds; you can end this loss by loudly apologizing to your patron deity as a @HLfull-round_action that provokes attacks of opportunity.</p>",
+    "description": "<p>You can petition your divine patron for far greater power than you deserve. This ability can be used only as you cast a spell that has a reduced (but not negated) effect on a successful save. The saving throw DC of the spell increases by 2, and you gain a +2 bonus on caster level checks to overcome spell resistance with the spell. Any creature that succeeds at the saving throw instead avoids the effect entirely. If half or more of the targets are unaffected, you become shaken for a number of rounds equal to the spell's level. If all of the targets are unaffected, you instead lose the ability to cast divine spells, channel energy, and use domain powers for 1d4+1 rounds; you can end this loss by loudly apologizing to your patron deity as a full-round_action that provokes attacks of opportunity.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:hubris:divine-demand",
     "name": "Divine Demand",
@@ -34887,7 +34887,7 @@
   "subdomain-power:leshy:leshy-caller": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p>You can spontaneously swap out any of your domain spells for a <em>summon nature's ally</em> spell of the same level or lower, to a maximum of summon nature's ally VII. If you do, you must use the spell to summon one or more leshys. Add leaf leshy, gourd leshy, fungus leshy, seaweed leshy, and lotus leshy to your <em>summon nature's ally I, II, III, IV,</em> and <em>V</em> lists, respectively. You count as a plant creature for the purpose of creating leshys.</p>",
+    "description": "<p>You can spontaneously swap out any of your domain spells for a <em>summon nature's ally</em> spell of the same level or lower, to a maximum of summon nature's ally VII. If you do, you must use the spell to summon one or more leshys. Add leaf leshy, gourd leshy, fungus leshy, seaweed leshy, and lotus leshy to your <em>summon nature's ally I, II, III, IV,</em> and <em>V</em> lists, respectively. You can grant a single leshy within 30 feet a +4 sacred bonus on its next attack roll before the start of your next turn. You count as a plant creature for the purpose of creating leshys.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:leshy:leshy-caller",
     "name": "Leshy Caller",
@@ -34921,7 +34921,7 @@
   "subdomain-power:medicine:blessed-surgery": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can use this ability when using the Heal skill in order to roll the check twice and take the higher result. When you're using this ability, any use of the Heal skill requiring 1 hour instead takes at most 1 minute.</p>",
+    "description": "<p>Your divine patron guides your healing hands, allowing you to perform minor miracles with mundane cures. You can use this ability when using the Heal skill in order to roll the check twice and take the higher result. When you're using this ability, any use of the Heal skill requiring 1 hour instead takes at most 1 minute.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:medicine:blessed-surgery",
     "name": "Blessed Surgery",

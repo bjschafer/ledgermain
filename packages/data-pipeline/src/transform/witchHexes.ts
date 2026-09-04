@@ -6,6 +6,7 @@ import {
   pfDataSourceRefs,
   type PfDataDictionary,
   type PfDataEntry,
+  pfDataHeaderNameSuffix,
 } from "../util/pfdata.js";
 
 /** See `pfDataCatalogEntries`'s doc comment — the dataset's "not found" sentinel, structurally indistinguishable from a real entry. */
@@ -24,7 +25,7 @@ function transformWitchHex(id: string, entry: PfDataEntry): WitchHex {
     id,
     uuid: `pfdata:witch-hex:${id}`,
     name: entry.name!,
-    nameSuffix: entry.nameSuffix,
+    nameSuffix: entry.nameSuffix ?? pfDataHeaderNameSuffix(entry.description),
     tier: tierFromCategory(entry.category),
     description: pfDataDescriptionToHtml(entry.description!),
     sources: pfDataSourceRefs(entry),

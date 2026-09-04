@@ -6,6 +6,7 @@ import {
   pfDataSourceRefs,
   type PfDataDictionary,
   type PfDataEntry,
+  pfDataHeaderNameSuffix,
 } from "../util/pfdata.js";
 
 const SKIP_KEYS = new Set(["not_found"]);
@@ -16,7 +17,7 @@ function transformMonkKiPower(id: string, entry: PfDataEntry): MonkKiPower {
     id,
     uuid: `pfdata:monk-ki-power:${id}`,
     name: entry.name!,
-    nameSuffix: entry.nameSuffix,
+    nameSuffix: entry.nameSuffix ?? pfDataHeaderNameSuffix(entry.description),
     level: entry.level,
     description: pfDataDescriptionToHtml(entry.description!),
     sources: pfDataSourceRefs(entry),

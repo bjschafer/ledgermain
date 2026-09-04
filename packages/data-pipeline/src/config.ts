@@ -233,7 +233,7 @@ export const PF_CONTENT_SHA = "c66bf333cafc451d817ead660473dd01d9846fb3";
 export const PFDATA_REPO = "https://github.com/jasontankapps/pathfinder-data-1-e.git";
 
 /** Pinned commit (verified 2026-07-21). */
-export const PFDATA_SHA = "33f1b75b8f62b43c59b96eab6bebb45e37c29229";
+export const PFDATA_SHA = "3a7bd4c38a57a9a4094d56d3b26b7e672c6dd436";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const packageRoot = resolve(here, "..");

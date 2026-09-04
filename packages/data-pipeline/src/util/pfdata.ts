@@ -157,8 +157,17 @@ function resolveCrossRefs(text: string): string {
 
 /** `@ripple[protocol/text]` / `@hll[protocol/text]` — a link, same "protocol/text" convention as `‹…›`. Resolved to plain display text. */
 function resolveLinkDirectives(text: string): string {
-  return text.replace(/@(?:ripple|hll)\[([^\]]*)\]/g, (_m, inner: string) =>
-    linkDisplayText(inner),
+  return (
+    text
+      .replace(/@(?:ripple|hll)\[([^\]]*)\]/g, (_m, inner: string) => linkDisplayText(inner))
+      // A bracket-less `@HLfree_action` / `@hlMindless`, which the dataset uses
+      // wherever the display text is just the link slug. The slug IS the words,
+      // underscore-separated, so it reads correctly once they are spaces.
+      // Matched after the bracketed forms and guarded against `[` so it can
+      // never eat one of them.
+      .replace(/@(?:HL|hll|hl|ripple)(?!\[)([A-Za-z][A-Za-z0-9_]*)/g, (_m, slug: string) =>
+        slug.replace(/_/g, " "),
+      )
   );
 }
 
@@ -199,8 +208,16 @@ const NAMED_ENTITIES: Record<string, string> = {
   oacute: "ó",
 };
 
+/**
+ * The dataset closes an entity with either `;` or a second `&` (`&times;` and
+ * `&times&` both occur), and escapes a literal bracket numerically as `&#91&`
+ * so it cannot be read as directive syntax. An unrecognized name is left
+ * alone: `&L&`/`&FN&`/`&NextN&` are layout markers, not entities.
+ */
 function decodeNamedEntities(text: string): string {
-  return text.replace(/&([A-Za-z]+);/g, (m, name: string) => NAMED_ENTITIES[name] ?? m);
+  return text
+    .replace(/&#(\d+)[;&]/g, (_m, code: string) => String.fromCodePoint(Number(code)))
+    .replace(/&([A-Za-z]+)[;&]/g, (m, name: string) => NAMED_ENTITIES[name] ?? m);
 }
 
 function escapeHtml(text: string): string {
@@ -286,7 +303,10 @@ function renderTable(lines: string[]): string {
  */
 export function parseDirectiveProps(raw: string): Record<string, string | true> {
   const props: Record<string, string | true> = {};
-  const re = /([a-zA-Z][a-zA-Z0-9]*)(=(?:"([^"]*)"|(\S+)))?/g;
+  // Underscores are part of a key: the labelled-section props spell their
+  // label that way (`xAvailable_Patron_Themes`), and stopping at the first
+  // underscore meant they never matched a value at all.
+  const re = /([a-zA-Z][a-zA-Z0-9_]*)(=(?:"([^"]*)"|(\S+)))?/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(raw))) {
     const key = m[1]!;
@@ -469,6 +489,23 @@ const DIV_DIRECTIVE_RE = /^::div\{[^}]*\}$/;
  * are the trap's type and reset, printed as the books do; `start` is a layout
  * hint for the dataset's own renderer and carries nothing.
  */
+/**
+ * `::row[Label]{info="..."}` — one row of a label/value table, used by the
+ * eidolon-subtype entries for their Alignment / Base Form / Special lines.
+ * Rendered as the labelled line the books print rather than a real table,
+ * matching how the rest of this reader flattens the dataset's layout.
+ */
+const ROW_DIRECTIVE_RE = /^::row\[([^\]]*)\]\{([^}]*)\}$/;
+
+function renderRowDirective(label: string, propsRaw: string): string {
+  const props = parseDirectiveProps(propsRaw);
+  const info = typeof props.info === "string" ? inlineToHtml(props.info) : undefined;
+  const labelHtml = inlineToHtml(label);
+  return info === undefined
+    ? `<p><strong>${labelHtml}</strong></p>`
+    : `<p><strong>${labelHtml}:</strong> ${info}</p>`;
+}
+
 const TRAP_DIRECTIVE_RE = /^::trap(?:\[([^\]]*)\])?\{([^}]*)\}$/;
 const HAUNT_DIRECTIVE_RE = /^::haunt\{([^}]*)\}$/;
 const TRAP_FLAG_LABELS: [string, string][] = [
@@ -637,30 +674,86 @@ function ordinalSuffix(n: number): string {
  * `renderAbDirective`).
  */
 function abBodyText(props: Record<string, string | true>): string | undefined {
-  let mainText: string | undefined;
-  for (const key of AB_KIND_KEYS) {
-    const v = props[key];
-    if (typeof v === "string") {
-      mainText = v;
-      break;
-    }
-  }
-  if (mainText === undefined) return undefined;
+  const str = (key: string): string | undefined =>
+    typeof props[key] === "string" && props[key] !== "" ? props[key] : undefined;
+  const segments: string[] = [];
 
-  let text = inlineToHtml(mainText);
+  // Descriptive lead-in, where the entry has one.
+  for (const key of ["flavor", "info"]) {
+    const v = str(key);
+    if (v !== undefined) segments.push(inlineToHtml(v));
+  }
+
+  // EVERY action-type key present, not just the first: 51 directives carry two
+  // (a `passive` drawback beside the `ability` it qualifies, say), and taking
+  // only the first silently dropped the other's whole text.
+  for (const key of AB_KIND_KEYS) {
+    const v = str(key);
+    if (v !== undefined) segments.push(inlineToHtml(v));
+  }
+
   const improvements = Object.entries(props)
     .filter((e): e is [string, string] => /^imp\d+$/.test(e[0]) && typeof e[1] === "string")
     .map(([k, v]) => ({ level: Number(k.slice(3)), text: v }))
     .sort((a, b) => a.level - b.level);
   for (const imp of improvements) {
-    text += ` At ${imp.level}${ordinalSuffix(imp.level)} level: ${inlineToHtml(imp.text)}`;
+    segments.push(`At ${imp.level}${ordinalSuffix(imp.level)} level: ${inlineToHtml(imp.text)}`);
   }
-  if (typeof props.special === "string") text += ` ${inlineToHtml(props.special)}`;
-  if (typeof props.prereq === "string") {
-    text += ` (Prerequisite: ${inlineToHtml(props.prereq.split("~").join(", "))})`;
+
+  const special = str("special");
+  if (special !== undefined) segments.push(inlineToHtml(special));
+  // `replace` is deliberately not rendered: the subdomain-power transform
+  // already reads it as a structured field (`ClassFeatureGrant`'s displaced
+  // target), so printing it here would state the same thing twice.
+  const usage = str("usage");
+  if (usage !== undefined) segments.push(`(${inlineToHtml(usage)})`);
+  const prereq = str("prereq");
+  if (prereq !== undefined) {
+    segments.push(`(Prerequisite: ${inlineToHtml(prereq.split("~").join(", "))})`);
   }
-  if (typeof props.usage === "string") text += ` (${inlineToHtml(props.usage)})`;
-  return text;
+
+  // `sNN` spell-by-level and `lNN` stage-by-level progressions. Emitted even
+  // when the directive also carries body text: a unique witch patron states
+  // its drawback in `passive` AND its altered spell in `s16`.
+  const numbered = (prefix: string): { level: number; text: string }[] =>
+    Object.entries(props)
+      .filter(
+        (e): e is [string, string] =>
+          new RegExp(`^${prefix}\\d+$`).test(e[0]) && typeof e[1] === "string",
+      )
+      .map(([k, v]) => ({ level: Number(k.slice(prefix.length)), text: v }))
+      .sort((a, b) => a.level - b.level);
+
+  const spells = numbered("s");
+  if (spells.length > 0) {
+    // `Greater planar ally|(good outsiders only)` — the pipe separates a spell
+    // from the qualifier the entry prints beside it.
+    segments.push(
+      spells
+        .map((e) => `Level ${e.level}: ${inlineToHtml(e.text.split("|").join(" "))}`)
+        .join("; "),
+    );
+  }
+  const stages = numbered("l");
+  if (stages.length > 0) {
+    segments.push(
+      stages
+        .map((e) => `At ${e.level}${ordinalSuffix(e.level)} level: ${inlineToHtml(e.text)}`)
+        .join(" "),
+    );
+  }
+
+  // `xLabel`/`yLabel`/`zLabel` are labelled sections, the letter ordering them
+  // (a unique patron's Available Patron Themes, an eidolon's Arms/Head/Legs).
+  const labelled = Object.entries(props)
+    .filter((e): e is [string, string] => /^[xyz][A-Z]/.test(e[0]) && typeof e[1] === "string")
+    .sort((a, b) => a[0].localeCompare(b[0]));
+  for (const [key, value] of labelled) {
+    const label = key.slice(1).replace(/_/g, " ");
+    segments.push(`<strong>${inlineToHtml(label)}:</strong> ${inlineToHtml(value)}`);
+  }
+
+  return segments.length === 0 ? undefined : segments.join(" ");
 }
 
 /**
@@ -779,38 +872,10 @@ function renderAbDirective(name: string | undefined, propsRaw: string): string {
   const title = typeof props.title === "string" ? abTitleName(props.title) : undefined;
   const nameHtml = inlineToHtml(name ?? title ?? "");
   const text = abBodyText(props);
+  if (text === undefined) return `<p><strong>${nameHtml}</strong></p>`;
 
-  if (text === undefined) {
-    const spellLevelEntries = Object.entries(props)
-      .filter((e): e is [string, string] => /^s\d+$/.test(e[0]) && typeof e[1] === "string")
-      .map(([k, v]) => ({ level: Number(k.slice(1)), text: v }))
-      .sort((a, b) => a.level - b.level);
-    if (spellLevelEntries.length > 0) {
-      const items = spellLevelEntries
-        .map((e) => `Level ${e.level}: ${inlineToHtml(e.text)}`)
-        .join("; ");
-      return `<p><strong>${nameHtml}:</strong> ${items}</p>`;
-    }
-
-    // A level-scaling stat line with no action-type key at all — e.g. a
-    // bloodrager bloodline's Watersense: `l8="You gain tremorsense..."
-    // l12="...range of 60 feet..."`. Each `lNN` key is the CLASS level a
-    // stage comes online at, distinct from the single `l=N` "minimum level
-    // to use this ability" gate `abBodyText`'s caller reads off `props.l`.
-    const classLevelEntries = Object.entries(props)
-      .filter((e): e is [string, string] => /^l\d+$/.test(e[0]) && typeof e[1] === "string")
-      .map(([k, v]) => ({ level: Number(k.slice(1)), text: v }))
-      .sort((a, b) => a.level - b.level);
-    if (classLevelEntries.length > 0) {
-      const items = classLevelEntries
-        .map((e) => `At ${e.level}${ordinalSuffix(e.level)} level: ${inlineToHtml(e.text)}`)
-        .join(" ");
-      return `<p><strong>${nameHtml}:</strong> ${items}</p>`;
-    }
-
-    return `<p><strong>${nameHtml}</strong></p>`;
-  }
-
+  // `l=N` alone is the minimum level to take the ability, distinct from the
+  // `lNN` stage keys `abBodyText` folds into the body.
   const level = typeof props.l === "string" ? props.l : undefined;
   const label = level ? `${nameHtml} (Level ${level})` : nameHtml;
   return `<p><strong>${label}:</strong> ${text}</p>`;
@@ -832,6 +897,11 @@ function stripBlockLevelMarkers(lines: string[]): string[] {
     const bqOuter = /^>[ \t]?(.*)$/.exec(rawLine);
     const line = bqOuter ? bqOuter[1]! : rawLine;
     if (line.trim().startsWith(":::")) return "";
+    // A line that is nothing but a `&Marker&` is a layout hint for the
+    // dataset's own renderer and carries no prose. Blanked rather than kept,
+    // because a marker trailing a directive made its block multi-line, and a
+    // directive is only recognized as the whole of a block.
+    if (/^&[A-Za-z][A-Za-z0-9]*&$/.test(line.trim())) return "";
     // A lone `::` with no directive name after it is a source typo, not a
     // directive; keep the prose and drop the marker.
     const stray = /^::\s+(.*)$/.exec(line.trim());
@@ -887,6 +957,8 @@ function renderBlock(lines: string[]): string {
     if (DIV_DIRECTIVE_RE.test(lines[0]!)) return "";
     const prereq = PREREQ_DIRECTIVE_RE.exec(lines[0]!);
     if (prereq) return renderPrereqDirective(prereq[1]!);
+    const row = ROW_DIRECTIVE_RE.exec(lines[0]!);
+    if (row) return renderRowDirective(row[1]!, row[2]!);
     const trap = TRAP_DIRECTIVE_RE.exec(lines[0]!);
     if (trap) return renderHazardDirective("trap", trap[1], trap[2]!);
     const haunt = HAUNT_DIRECTIVE_RE.exec(lines[0]!);
@@ -919,6 +991,9 @@ export function pfDataDescriptionToHtml(lines: string[]): string {
 }
 
 const HEADER_SUFFIX_RE = /^##\s*.+?\(([A-Za-z][A-Za-z, /]*)\)\s*$/;
+// Two colons is the leaf directive, three the fenced container form; both
+// carry the title, and matching only the leaf lost nine linnorm death curses.
+const AB_TITLE_SUFFIX_RE = /^:{2,3}ab\{[^}]*?\btitle="[^"]*?\(([A-Za-z][A-Za-z, /]*)\)(?:&FN&)?"/;
 
 /**
  * Some subsystem files (arcanist exploits, kineticist wild talents) don't
@@ -933,6 +1008,12 @@ const HEADER_SUFFIX_RE = /^##\s*.+?\(([A-Za-z][A-Za-z, /]*)\)\s*$/;
 export function pfDataHeaderNameSuffix(description: string[] | undefined): string | undefined {
   const header = description?.[0];
   if (!header) return undefined;
+  // The rewrite that followed the v11.11 tag dropped the top-level
+  // `nameSuffix` field and moved the suffix into the `::ab` directive's own
+  // title (`title="&L&Animal Fury (Ex)&FN&"`). Read it back out, so an entry
+  // states its (Ex)/(Su)/(Sp) either way.
+  const ab = AB_TITLE_SUFFIX_RE.exec(header.trim());
+  if (ab) return `(${ab[1]})`;
   const m = HEADER_SUFFIX_RE.exec(header.trim());
   return m ? `(${m[1]})` : undefined;
 }

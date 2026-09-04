@@ -6,6 +6,7 @@ import {
   pfDataSourceRefs,
   type PfDataDictionary,
   type PfDataEntry,
+  pfDataHeaderNameSuffix,
 } from "../util/pfdata.js";
 
 /** Same dataset "not found" sentinel every subsystem file carries — see `ragePowers.ts`'s identical constant. */
@@ -23,7 +24,7 @@ function transformInvestigatorTalent(id: string, entry: PfDataEntry): Investigat
     id,
     uuid: `pfdata:investigator-talent:${id}`,
     name: entry.name!,
-    nameSuffix: entry.nameSuffix,
+    nameSuffix: entry.nameSuffix ?? pfDataHeaderNameSuffix(entry.description),
     category: entry.category,
     level: entry.level,
     description: pfDataDescriptionToHtml(entry.description!),

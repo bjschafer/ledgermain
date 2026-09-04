@@ -1,7 +1,7 @@
 {
   "agility": {
     "category": "basic",
-    "description": "<p>2nd - jump, 4th - cat's grace, 6th - haste, 8th - freedom of movement, 10th - polymorph, 12th - mass cat's grace, 14th - ethereal jaunt, 16th - animal shapes, 18th - shapechange.</p>",
+    "description": "<p><strong>Agility:</strong> The Agility patron grants the following spells at the listed witch levels. Level 2: Jump; Level 4: Cat's grace; Level 6: Haste; Level 8: Freedom of movement; Level 10: Polymorph; Level 12: Mass cat's grace; Level 14: Ethereal jaunt; Level 16: Animal shapes; Level 18: Shapechange</p>",
     "id": "agility",
     "name": "Agility",
     "sources": [
@@ -14,7 +14,7 @@
   },
   "ancestors": {
     "category": "basic",
-    "description": "<p>2nd - bless, 4th - aid, 6th - prayer, 8th - blessing of fervor, 10th - commune, 12th - greater heroism, 14th - refuge, 16th - euphoric tranquility, 18th - weird.</p>",
+    "description": "<p><strong>Ancestors:</strong> The Ancestors patron grants the following spells at the listed witch levels. Level 2: Bless; Level 4: Aid; Level 6: Prayer; Level 8: Blessing of fervor; Level 10: Commune; Level 12: Greater heroism; Level 14: Refuge; Level 16: Euphoric tranquility; Level 18: Weird</p>",
     "id": "ancestors",
     "name": "Ancestors",
     "sources": [
@@ -27,7 +27,7 @@
   },
   "animals": {
     "category": "basic",
-    "description": "<p>2nd - charm animal, 4th - speak with animals, 6th - dominate animal, 8th - summon nature's ally IV, 10th - animal growth, 12th - antilife shell, 14th - beast shape IV, 16th - animal shapes, 18th - summon nature's ally IX.</p>",
+    "description": "<p><strong>Animals:</strong> The Animals patron grants the following spells at the listed witch levels. Level 2: Charm animal; Level 4: Speak with animals; Level 6: Dominate animal; Level 8: Summon nature's ally IV; Level 10: Animal growth; Level 12: Antilife shell; Level 14: Beast shape IV; Level 16: Animal shapes; Level 18: Summon nature's ally IX</p>",
     "id": "animals",
     "name": "Animals",
     "sources": [
@@ -40,7 +40,7 @@
   },
   "aurora": {
     "category": "basic",
-    "description": "<p>2nd - color spray, 4th - hypnotic pattern, 6th - wall of nausea, 8th - rainbow pattern, 10th - blazing rainbow, 12th - programmed image, 14th - prismatic spray, 16th - prismatic wall, 18th - polar midnight.</p>",
+    "description": "<p><strong>Aurora:</strong> The Aurora patron grants the following spells at the listed witch levels. Level 2: Color spray; Level 4: Hypnotic pattern; Level 6: Wall of nausea; Level 8: Rainbow pattern; Level 10: Blazing rainbow; Level 12: Programmed image; Level 14: Prismatic spray; Level 16: Prismatic wall; Level 18: Polar midnight</p>",
     "id": "aurora",
     "name": "Aurora",
     "sources": [
@@ -53,7 +53,7 @@
   },
   "autumn": {
     "category": "basic",
-    "description": "<p>2nd - ray of enfeeblement, 4th - create pit, 6th - gentle repose, 8th - vitriolic mist, 10th - major creation, 12th - acid fog, 14th - caustic eruption, 16th - horrid wilting, 18th - wail of the banshee.</p>",
+    "description": "<p><strong>Autumn:</strong> The Autumn patron grants the following spells at the listed witch levels. Level 2: Ray of enfeeblement; Level 4: Create pit; Level 6: Gentle repose; Level 8: Vitriolic mist; Level 10: Major creation; Level 12: Acid fog; Level 14: Caustic eruption; Level 16: Horrid wilting; Level 18: Wail of the banshee</p>",
     "id": "autumn",
     "name": "Autumn",
     "sources": [
@@ -66,7 +66,7 @@
   },
   "boundaries": {
     "category": "basic",
-    "description": "<p>2nd - protection from evil, 4th - see invisibility, 6th - magic circle against evil, 8th - dimensional anchor, 10th - control summoned creature, 12th - banishment, 14th - ethereal jaunt, 16th - dimensional lock, 18th - gate.</p>",
+    "description": "<p><strong>Boundaries:</strong> The Boundaries patron grants the following spells at the listed witch levels. Level 2: Protection from evil; Level 4: See invisibility; Level 6: Magic circle against evil; Level 8: Dimensional anchor; Level 10: Control summoned creature; Level 12: Banishment; Level 14: Ethereal jaunt; Level 16: Dimensional lock; Level 18: Gate</p>",
     "id": "boundaries",
     "name": "Boundaries",
     "sources": [
@@ -79,7 +79,7 @@
   },
   "celestial_agenda": {
     "category": "unique",
-    "description": "<p>While good deities and empyreal lords have organized faiths to carry out their wills, powerfully ranked agathions, angels, and archons - and occasional intersectional councils of good outsiders - sometimes invest white witches with celestial might to defend the weak and heal the sick. You gain the ward hex at 1st level, but your patron holds you to a higher standard: you must be of good alignment, and you take a -2 penalty on Bluff, Intimidate, Sleight of Hand, and other skill checks to deceive or threaten others.</p>\n<p><strong>Available Patron Themes:</strong> Endurance, Healing, Light, Portents</p>\n<p><strong>Spell Changes:</strong> 4th-castigate, 10th-rebuke, 16th-greater planar ally (good outsiders only).</p>",
+    "description": "<p><strong>Celestial Agenda:</strong> While good deities and empyreal lords have organized faiths to carry out their wills, powerfully ranked agathions, angels, and archons - and occasional intersectional councils of good outsiders - sometimes invest white witches with celestial might to defend the weak and heal the sick. Your patron holds you to a higher standard: you must be of good alignment, and you take a -2 penalty on Bluff, Intimidate, Sleight of Hand, and other skill checks to deceive or threaten others. You gain the ward hex at 1st level. Level 4: Castigate; Level 10: Rebuke; Level 16: Greater planar ally (good outsiders only) <strong>Available Patron Themes:</strong> Endurance, Healing, Light, Portents <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
     "id": "celestial_agenda",
     "name": "Celestial Agenda",
     "sources": [
@@ -91,7 +91,7 @@
   },
   "conspiracies": {
     "category": "basic",
-    "description": "<p>2nd - lock gaze, 4th - disguise other, 6th - tongues, 8th - hypercognition, 10th - dominate person, 12th - symbol of persuasion, 14th - vision, 16th - frightful aspect, 18th - overwhelming presence.</p>",
+    "description": "<p><strong>Conspiracies:</strong> The Conspiracies patron grants the following spells at the listed witch levels. Level 2: Lock gaze; Level 4: Disguise other; Level 6: Tongues; Level 8: Hypercognition; Level 10: Dominate person; Level 12: Symbol of persuasion; Level 14: Vision; Level 16: Frightful aspect; Level 18: Overwhelming presence</p>",
     "id": "conspiracies",
     "name": "Conspiracies",
     "sources": [
@@ -104,7 +104,7 @@
   },
   "death": {
     "category": "basic",
-    "description": "<p>2nd - deathwatch, 4th - blessing of courage and life, 6th - speak with dead, 8th - rest eternal, 10th - suffocation, 12th - circle of death, 14th - finger of death, 16th - symbol of death, 18th - power word kill.</p>",
+    "description": "<p><strong>Death:</strong> The Death patron grants the following spells at the listed witch levels. Level 2: Deathwatch; Level 4: Blessing of courage and life; Level 6: Speak with dead; Level 8: Rest eternal; Level 10: Suffocation; Level 12: Circle of death; Level 14: Finger of death; Level 16: Symbol of death; Level 18: Power word kill</p>",
     "id": "death",
     "name": "Death",
     "sources": [
@@ -117,7 +117,7 @@
   },
   "decadence": {
     "category": "basic",
-    "description": "<p>2nd - negative reaction, 4th - demand offering, 6th - sepia snake sigil, 8th - charm monster, 10th - dream, 12th - envious urge, 14th - waves of ecstasy, 16th - euphoric tranquility, 18th - symbol of strife.</p>",
+    "description": "<p><strong>Decadence:</strong> The Decadence patron grants the following spells at the listed witch levels. Level 2: Negative reaction; Level 4: Demand offering; Level 6: Sepia snake sigil; Level 8: Charm monster; Level 10: Dream; Level 12: Envious urge; Level 14: Waves of ecstasy; Level 16: Euphoric tranquility; Level 18: Symbol of strife</p>",
     "id": "decadence",
     "name": "Decadence",
     "sources": [
@@ -130,7 +130,7 @@
   },
   "deception": {
     "category": "basic",
-    "description": "<p>2nd - ventriloquism, 4th - invisibility, 6th - blink, 8th - confusion, 10th - passwall, 12th - programmed image, 14th - mass invisibility, 16th - scintillating pattern, 18th - time stop.</p>",
+    "description": "<p><strong>Deception:</strong> The Deception patron grants the following spells at the listed witch levels. Level 2: Ventriloquism; Level 4: Invisibility; Level 6: Blink; Level 8: Confusion; Level 10: Passwall; Level 12: Programmed image; Level 14: Mass invisibility; Level 16: Scintillating pattern; Level 18: Time stop</p>",
     "id": "deception",
     "name": "Deception",
     "sources": [
@@ -143,7 +143,7 @@
   },
   "devotion": {
     "category": "basic",
-    "description": "<p>2nd - divine favor, 4th - martyr's bargain, 6th - magic vestment, 8th - greater magic weapon, 10th - flame strike, 12th - mass bull's strength, 14th - bestow grace of the champion, 16th - holy aura, 18th - mass heal.</p>",
+    "description": "<p><strong>Devotion:</strong> The Devotion patron grants the following spells at the listed witch levels. Level 2: Divine favor; Level 4: Martyr's bargain; Level 6: Magic vestment; Level 8: Greater magic weapon; Level 10: Flame strike; Level 12: Mass bull's strength; Level 14: Bestow grace of the champion; Level 16: Holy aura; Level 18: Mass heal</p>",
     "id": "devotion",
     "name": "Devotion",
     "sources": [
@@ -156,7 +156,7 @@
   },
   "elements": {
     "category": "basic",
-    "description": "<p>2nd - shocking grasp, 4th - flaming sphere, 6th - fireball, 8th - wall of ice, 10th - flame strike, 12th - freezing sphere, 14th - vortex, 16th - fire storm, 18th - meteor swarm.</p>",
+    "description": "<p><strong>Elements:</strong> The Elements patron grants the following spells at the listed witch levels. Level 2: Shocking grasp; Level 4: Flaming sphere; Level 6: Fireball; Level 8: Wall of ice; Level 10: Flame strike; Level 12: Freezing sphere; Level 14: Vortex; Level 16: Fire storm; Level 18: Meteor swarm</p>",
     "id": "elements",
     "name": "Elements",
     "sources": [
@@ -169,7 +169,7 @@
   },
   "empath": {
     "category": "unique",
-    "description": "<p>Your patron is a manifestation of the collective living experience - mortal desire and purpose given direction by the beliefs of countless minds and hearts. You gain the tongues hex at 1st level, but you cannot help but feel the despair, pain, and other negative emotions in those around you, taking a -5 penalty on saving throws against emotion effects.</p>\n<p><strong>Available Patron Themes:</strong> Ancestors, Mind, Spirits, Wisdom</p>\n<p><strong>Spell Changes:</strong> 2nd-burst of insight, 6th-analyze aura, 10th-retrocognition.</p>",
+    "description": "<p><strong>Empath:</strong> Your patron is a manifestation of the collective living experience - mortal desire and purpose given direction by the beliefs of countless minds and hearts. You cannot help but feel the despair, pain, and other negative emotions in those around you, taking a -5 penalty on saving throws against emotion effects. You gain the tongues hex at 1st level Level 2: Burst of insight; Level 6: Analyze aura; Level 10: Retrocognition <strong>Available Patron Themes:</strong> Ancestors, Mind, Spirits, Wisdom <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
     "id": "empath",
     "name": "Empath",
     "sources": [
@@ -181,7 +181,7 @@
   },
   "enchantment": {
     "category": "basic",
-    "description": "<p>2nd - unnatural lust, 4th - calm emotions, 6th - unadulterated loathing, 8th - overwhelming grief, 10th - dominate person, 12th - geas, 14th - euphoric tranquility, 16th - demand, 18th - dominate monster.</p>",
+    "description": "<p><strong>Enchantment:</strong> The Enchantment patron grants the following spells at the listed witch levels. Level 2: Unnatural lust; Level 4: Calm emotions; Level 6: Unadulterated loathing; Level 8: Overwhelming grief; Level 10: Dominate person; Level 12: Geas; Level 14: Euphoric tranquility; Level 16: Demand; Level 18: Dominate monster</p>",
     "id": "enchantment",
     "name": "Enchantment",
     "sources": [
@@ -194,7 +194,7 @@
   },
   "endurance": {
     "category": "basic",
-    "description": "<p>2nd - endure elements, 4th - bear's endurance, 6th - protection from energy, 8th - spell immunity, 10th - spell resistance, 12th - mass bear's endurance, 14th - greater restoration, 16th - iron body, 18th - miracle.</p>",
+    "description": "<p><strong>Endurance:</strong> The Endurance patron grants the following spells at the listed witch levels. Level 2: Endure elements; Level 4: Bear's endurance; Level 6: Protection from energy; Level 8: Spell immunity; Level 10: Spell resistance; Level 12: Mass bear's endurance; Level 14: Greater restoration; Level 16: Iron body; Level 18: Miracle</p>",
     "id": "endurance",
     "name": "Endurance",
     "sources": [
@@ -207,7 +207,7 @@
   },
   "entropy": {
     "category": "basic",
-    "description": "<p>2nd - lesser confusion, 4th - plague carrier, 6th - babble, 8th - wandering star motes, 10th - feeblemind, 12th - antimagic field, 14th - insanity, 16th - symbol of insanity, 18th - interplanetary teleport.</p>",
+    "description": "<p><strong>Entropy:</strong> The Entropy patron grants the following spells at the listed witch levels. Level 2: Lesser confusion; Level 4: Plague carrier; Level 6: Babble; Level 8: Wandering star motes; Level 10: Feeblemind; Level 12: Antimagic field; Level 14: Insanity; Level 16: Symbol of insanity; Level 18: Interplanetary teleport</p>",
     "id": "entropy",
     "name": "Entropy",
     "sources": [
@@ -220,7 +220,7 @@
   },
   "ethereal": {
     "category": "basic",
-    "description": "<p>2nd - detect undead, 4th - see invisibility, 6th - ectoplasmic snare, 8th - condensed ether, 10th - ethereal envelope, 12th - ethereal jaunt, 14th - ectoplasmic eruption, 16th - ethereal envelopment, 18th - etherealness.</p>",
+    "description": "<p><strong>Ethereal:</strong> The Ethereal patron grants the following spells at the listed witch levels. Level 2: Detect undead; Level 4: See invisibility; Level 6: Ectoplasmic snare; Level 8: Condensed ether; Level 10: Ethereal envelope; Level 12: Ethereal jaunt; Level 14: Ectoplasmic eruption; Level 16: Ethereal envelopment; Level 18: Etherealness</p>",
     "id": "ethereal",
     "name": "Ethereal",
     "sources": [
@@ -233,7 +233,7 @@
   },
   "fate": {
     "category": "basic",
-    "description": "<p>2nd - doom, 4th - anticipate peril, 6th - helping hand, 8th - blessing of fervor, 10th - greater forbid action, 12th - contingency, 14th - jolting portent, 16th - maze, 18th - wish.</p>",
+    "description": "<p><strong>Fate:</strong> The Fate patron grants the following spells at the listed witch levels. Level 2: Doom; Level 4: Anticipate peril; Level 6: Helping hand; Level 8: Blessing of fervor; Level 10: Greater forbid action; Level 12: Contingency; Level 14: Jolting portent; Level 16: Maze; Level 18: Wish</p>",
     "id": "fate",
     "name": "Fate",
     "sources": [
@@ -246,7 +246,7 @@
   },
   "fey_gifts": {
     "category": "unique",
-    "description": "<p>A powerful fey or other entity from the First World has offered you magic. You serve as an anchor and scrying focus in the Material Plane for your patron, but you also provide frequent amusement. You gain the charm hex at 1st level, but your fey patron delights in your failure and injury and frequently jinxes you; once each day, the GM can demand you reroll a single ability check, attack roll, saving throw, or skill check and use the worse result.</p>\n<p><strong>Available Patron Themes:</strong> Agility, Enchantment, Trickery, Winter</p>\n<p><strong>Spell Changes:</strong> 2nd-disguise self, 4th-hideous laughter, 16th-irresistible dance.</p>",
+    "description": "<p><strong>Fey Gifts:</strong> A powerful fey or other entity from the First World has offered you magic. You serve as an anchor and scrying focus in the Material Plane for your patron, but you also provide frequent amusement. Your fey patron delights in your failure and injury and frequently jinxes you; once each day, the GM can demand you reroll a single ability check, attack roll, saving throw, or skill check and use the worse result. You gain the charm hex at 1st level. Level 2: Disguise self; Level 4: Hideous laughter; Level 16: Irresistible dance <strong>Available Patron Themes:</strong> Agility, Enchantment, Trickery, Winter <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
     "id": "fey_gifts",
     "name": "Fey Gifts",
     "sources": [
@@ -258,7 +258,7 @@
   },
   "green_whispers": {
     "category": "unique",
-    "description": "<p>Your witch powers are a manifestation of the Green Faith or bestowed by a representative of natural forces, such as an ancient treant or nature spirit, who expects you to wield such gifts on its behalf. You gain the feral speech hex at 1st level, but you cannot abide the touch of iron or steel; contact with either metal deals 1d3 points of damage each round, and wearing metal armor prevents you from casting spells until it is removed.</p>\n<p><strong>Available Patron Themes:</strong> Animals, Endurance, Moon, Transformation</p>\n<p><strong>Spell Changes:</strong> 2nd-entangle, 6th-plant growth, 10th-tree stride.</p>",
+    "description": "<p><strong>Green Whispers:</strong> Your witch powers are a manifestation of the Green Faith or bestowed by a representative of natural forces, such as an ancient treant or nature spirit, who expects you to wield such gifts on its behalf. You cannot abide the touch of iron or steel; contact with either metal deals 1d3 points of damage each round, and wearing metal armor prevents you from casting spells until it is removed. You gain the feral speech hex at 1st level. Level 2: Entangle; Level 6: Plant growth; Level 10: Tree stride <strong>Available Patron Themes:</strong> Animals, Endurance, Moon, Transformation <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
     "id": "green_whispers",
     "name": "Green Whispers",
     "sources": [
@@ -270,7 +270,7 @@
   },
   "hags_calling": {
     "category": "unique",
-    "description": "<p>Hags of exceptional power - most often mute hags and dreamthief hags - sometimes invest mortal agents with the same well of ancient power they have mastered. Hags most often invest their changeling daughters with such power, either once they have proven loyal or else to tempt them into wickedness. You gain the coven hex at 1st level, but you can neither use the aid another action nor receive benefits from others' aid another actions.</p>\n<p><strong>Available Patron Themes:</strong> Moon, Plague, Shadow, Vengeance</p>\n<p><strong>Spell Changes:</strong> 2nd-disguise self, 8th-sending, 10th-commune (hag/patron rather than deity).</p>",
+    "description": "<p><strong>Hag's Calling:</strong> Hags of exceptional power - most often mute hags and dreamthief hags - sometimes invest mortal agents with the same well of ancient power they have mastered. Hags most often invest their changeling daughters with such power, either once they have proven loyal or else to tempt them into wickedness. You can neither use the aid another action nor receive benefits from others' aid another actions. You gain the coven hex at 1st level. Level 2: Disguise self; Level 8: Sending; Level 10: Commune (hag/patron rather than deity) <strong>Available Patron Themes:</strong> Moon, Plague, Shadow, Vengeance <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
     "id": "hags_calling",
     "name": "Hag's Calling",
     "sources": [
@@ -282,7 +282,7 @@
   },
   "healing": {
     "category": "basic",
-    "description": "<p>2nd - remove fear, 4th - lesser restoration, 6th - remove disease, 8th - restoration, 10th - cleanse, 12th - pillar of life, 14th - greater restoration, 16th - mass cure critical wounds, 18th - true resurrection.</p>",
+    "description": "<p><strong>Healing:</strong> The Healing patron grants the following spells at the listed witch levels. Level 2: Remove fear; Level 4: Lesser restoration; Level 6: Remove disease; Level 8: Restoration; Level 10: Cleanse; Level 12: Pillar of life; Level 14: Greater restoration; Level 16: Mass cure critical wounds; Level 18: True resurrection</p>",
     "id": "healing",
     "name": "Healing",
     "sources": [
@@ -295,7 +295,7 @@
   },
   "infernal_contract": {
     "category": "unique",
-    "description": "<p>Your power was brokered from a powerful daemon, demon, or devil to speed the corruption and moral decay of mortals. When you die, your soul goes to Abaddon, the Abyss, or Hell, and you can't be raised or resurrected except by extraordinary means - though bold service may earn you a favored position in damnation. You gain the misfortune hex at 1st level, but your magic requires sacrifice; each day when you prepare spells, you must deal 1d6 points of damage to yourself as part of your infernal ritual, feeding the lost blood to your familiar. At 5th level and every 5 levels thereafter, this damage increases by 1d6.</p>\n<p><strong>Available Patron Themes:</strong> Enchantment, Strength, Trickery, Vengeance</p>\n<p><strong>Spell Changes:</strong> 8th-lesser planar ally, 12th-planar ally, 16th-greater planar ally (your bonus spells can be used to summon only the type of outsider your patron represents).</p>",
+    "description": "<p><strong>Infernal Contract:</strong> Your power was brokered from a powerful daemon, demon, or devil to speed the corruption and moral decay of mortals. When you die, your soul goes to Abaddon, the Abyss, or Hell, and you can't be raised or resurrected except by extraordinary means - though bold service may earn you a favored position in damnation. Your magic requires sacrifice; each day when you prepare spells, you must deal 1d6 points of damage to yourself as part of your infernal ritual, feeding the lost blood to your familiar. You gain the misfortune hex at 1st level. Level 8: Lesser planar ally; Level 12: Planar ally; Level 16: Greater planar ally (your bonus spells can be used to summon only the type of outsider your patron represents) <strong>Available Patron Themes:</strong> Enchantment, Strength, Trickery, Vengeance <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
     "id": "infernal_contract",
     "name": "Infernal Contract",
     "sources": [
@@ -307,7 +307,7 @@
   },
   "insanity": {
     "category": "basic",
-    "description": "<p>2nd - memory lapse, 4th - hideous laughter, 6th - distracting cacophony, 8th - confusion, 10th - mind fog, 12th - envious urge, 14th - insanity, 16th - symbol of insanity, 18th - overwhelming presence.</p>",
+    "description": "<p><strong>Insanity:</strong> The Insanity patron grants the following spells at the listed witch levels. Level 2: Memory lapse; Level 4: Hideous laughter; Level 6: Distracting cacophony; Level 8: Confusion; Level 10: Mind fog; Level 12: Envious urge; Level 14: Insanity; Level 16: Symbol of insanity; Level 18: Overwhelming presence</p>",
     "id": "insanity",
     "name": "Insanity",
     "sources": [
@@ -320,7 +320,7 @@
   },
   "jynx": {
     "category": "basic",
-    "description": "<p>2nd - ill omen, 4th - shatter, 6th - bestow curse, 8th - retribution, 10th - mark of justice, 12th - eyebite, 14th - spell turning, 16th - antipathy, 18th - energy drain.</p>",
+    "description": "<p><strong>Jynx:</strong> The Jynx patron grants the following spells at the listed witch levels. Level 2: Ill omen; Level 4: Shatter; Level 6: Bestow curse; Level 8: Retribution; Level 10: Mark of justice; Level 12: Eyebite; Level 14: Spell turning; Level 16: Antipathy; Level 18: Energy drain</p>",
     "id": "jynx",
     "name": "Jynx",
     "sources": [
@@ -333,7 +333,7 @@
   },
   "light": {
     "category": "basic",
-    "description": "<p>2nd - dancing lantern, 4th - continual flame, 6th - daylight, 8th - rainbow pattern, 10th - fire snake, 12th - sirocco, 14th - sunbeam, 16th - sunburst, 18th - fiery body.</p>",
+    "description": "<p><strong>Light:</strong> The Light patron grants the following spells at the listed witch levels. Level 2: Dancing lantern; Level 4: Continual flame; Level 6: Daylight; Level 8: Rainbow pattern; Level 10: Fire snake; Level 12: Sirocco; Level 14: Sunbeam; Level 16: Sunburst; Level 18: Fiery body</p>",
     "id": "light",
     "name": "Light",
     "sources": [
@@ -346,7 +346,7 @@
   },
   "mercy": {
     "category": "basic",
-    "description": "<p>2nd - cure light wounds, 4th - eagle's splendor, 6th - remove curse, 8th - restoration, 10th - cleanse, 12th - heroes' feast, 14th - foe to friend, 16th - euphoric tranquility, 18th - true resurrection.</p>",
+    "description": "<p><strong>Mercy:</strong> The Mercy patron grants the following spells at the listed witch levels. Level 2: Cure light wounds; Level 4: Eagle's splendor; Level 6: Remove curse; Level 8: Restoration; Level 10: Cleanse; Level 12: Heroes' feast; Level 14: Foe to friend; Level 16: Euphoric tranquility; Level 18: True resurrection</p>",
     "id": "mercy",
     "name": "Mercy",
     "sources": [
@@ -359,7 +359,7 @@
   },
   "mind": {
     "category": "basic",
-    "description": "<p>2nd - mindlink, 4th - mental block, 6th - mindscape door, 8th - create mindscape, 10th - psychic asylum, 12th - greater create mindscape, 14th - psychic surgery, 16th - moment of prescience, 18th - microcosm.</p>",
+    "description": "<p><strong>Mind:</strong> The Mind patron grants the following spells at the listed witch levels. Level 2: Mindlink; Level 4: Mental block; Level 6: Mindscape door; Level 8: Create mindscape; Level 10: Psychic asylum; Level 12: Greater create mindscape; Level 14: Psychic surgery; Level 16: Moment of prescience; Level 18: Microcosm</p>",
     "id": "mind",
     "name": "Mind",
     "sources": [
@@ -372,7 +372,7 @@
   },
   "moon": {
     "category": "basic",
-    "description": "<p>2nd - darkness, 4th - darkvision, 6th - owl's wisdom, 8th - moonstruck, 10th - aspect of the wolf, 12th - control water, 14th - lunar veil, 16th - horrid wilting, 18th - meteor swarm.</p>",
+    "description": "<p><strong>Moon:</strong> The Moon patron grants the following spells at the listed witch levels. Level 2: Darkness; Level 4: Darkvision; Level 6: Owl's wisdom; Level 8: Moonstruck; Level 10: Aspect of the wolf; Level 12: Control water; Level 14: Lunar veil; Level 16: Horrid wilting; Level 18: Meteor swarm</p>",
     "id": "moon",
     "name": "Moon",
     "sources": [
@@ -385,7 +385,7 @@
   },
   "mountain": {
     "category": "basic",
-    "description": "<p>2nd - stone fist, 4th - stone call, 6th - stone shape, 8th - spike stones, 10th - wall of stone, 12th - flesh to stone, 14th - stone tell, 16th - repel metal or stone, 18th - clashing rocks.</p>",
+    "description": "<p><strong>Mountain:</strong> The Mountain patron grants the following spells at the listed witch levels. Level 2: Stone fist; Level 4: Stone call; Level 6: Stone shape; Level 8: Spike stones; Level 10: Wall of stone; Level 12: Flesh to stone; Level 14: Stone tell; Level 16: Repel metal or stone; Level 18: Clashing rocks</p>",
     "id": "mountain",
     "name": "Mountain",
     "sources": [
@@ -398,7 +398,7 @@
   },
   "nightmares": {
     "category": "basic",
-    "description": "<p>2nd - sleep, 4th - detect thoughts, 6th - oneiric horror, 8th - phantasmal killer, 10th - nightmare, 12th - dream travel, 14th - symbol of weakness, 16th - demand, 18th - polar midnight.</p>",
+    "description": "<p><strong>Nightmares:</strong> The Nightmares patron grants the following spells at the listed witch levels. Level 2: Sleep; Level 4: Detect thoughts; Level 6: Oneiric horror; Level 8: Phantasmal killer; Level 10: Nightmare; Level 12: Dream travel; Level 14: Symbol of weakness; Level 16: Demand; Level 18: Polar midnight</p>",
     "id": "nightmares",
     "name": "Nightmares",
     "sources": [
@@ -411,7 +411,7 @@
   },
   "occult": {
     "category": "basic",
-    "description": "<p>2nd - detect undead, 4th - command undead, 6th - twilight knife, 8th - black tentacles, 10th - snake staff, 12th - create undead, 14th - waves of exhaustion, 16th - trap the soul, 18th - gate.</p>",
+    "description": "<p><strong>Occult:</strong> The Occult patron grants the following spells at the listed witch levels. Level 2: Detect undead; Level 4: Command undead; Level 6: Twilight knife; Level 8: Black tentacles; Level 10: Snake staff; Level 12: Create undead; Level 14: Waves of exhaustion; Level 16: Trap the soul; Level 18: Gate</p>",
     "id": "occult",
     "name": "Occult",
     "sources": [
@@ -424,7 +424,7 @@
   },
   "peace": {
     "category": "basic",
-    "description": "<p>2nd - sanctuary, 4th - calm emotions, 6th - wind wall, 8th - dismissal, 10th - serenity, 12th - word of recall, 14th - forcecage, 16th - euphoric tranquility, 18th - antipathy.</p>",
+    "description": "<p><strong>Peace:</strong> The Peace patron grants the following spells at the listed witch levels. Level 2: Sanctuary; Level 4: Calm emotions; Level 6: Wind wall; Level 8: Dismissal; Level 10: Serenity; Level 12: Word of recall; Level 14: Forcecage; Level 16: Euphoric tranquility; Level 18: Antipathy</p>",
     "id": "peace",
     "name": "Peace",
     "sources": [
@@ -437,7 +437,7 @@
   },
   "plague": {
     "category": "basic",
-    "description": "<p>2nd - detect undead, 4th - command undead, 6th - contagion, 8th - animate dead, 10th - giant vermin, 12th - create undead, 14th - control undead, 16th - create greater undead, 18th - energy drain.</p>",
+    "description": "<p><strong>Plague:</strong> The Plague patron grants the following spells at the listed witch levels. Level 2: Detect undead; Level 4: Command undead; Level 6: Contagion; Level 8: Animate dead; Level 10: Giant vermin; Level 12: Create undead; Level 14: Control undead; Level 16: Create greater undead; Level 18: Energy drain</p>",
     "id": "plague",
     "name": "Plague",
     "sources": [
@@ -450,7 +450,7 @@
   },
   "plant": {
     "category": "basic",
-    "description": "<p>2nd - entangle, 4th - accelerate poison, 6th - lily pad stride, 8th - grove of respite, 10th - tree stride, 12th - repel wood, 14th - animate plants, 16th - control plants, 18th - shambler.</p>",
+    "description": "<p><strong>Plant:</strong> The Plant patron grants the following spells at the listed witch levels. Level 2: Entangle; Level 4: Accelerate poison; Level 6: Lily pad stride; Level 8: Grove of respite; Level 10: Tree stride; Level 12: Repel wood; Level 14: Animate plants; Level 16: Control plants; Level 18: Shambler</p>",
     "id": "plant",
     "name": "Plant",
     "sources": [
@@ -463,7 +463,7 @@
   },
   "portents": {
     "category": "basic",
-    "description": "<p>2nd - ill omen, 4th - locate object, 6th - blood biography, 8th - divination, 10th - contact other plane, 12th - legend lore, 14th - vision, 16th - moment of prescience, 18th - foresight.</p>",
+    "description": "<p><strong>Portents:</strong> The Portents patron grants the following spells at the listed witch levels. Level 2: Ill omen; Level 4: Locate object; Level 6: Blood biography; Level 8: Divination; Level 10: Contact other plane; Level 12: Legend lore; Level 14: Vision; Level 16: Moment of prescience; Level 18: Foresight</p>",
     "id": "portents",
     "name": "Portents",
     "sources": [
@@ -476,7 +476,7 @@
   },
   "protection": {
     "category": "basic",
-    "description": "<p>2nd - sanctuary, 4th - resist energy, 6th - wrathful mantle, 8th - stoneskin, 10th - interposing hand, 12th - forbiddance, 14th - greater spell immunity, 16th - prismatic wall, 18th - freedom.</p>",
+    "description": "<p><strong>Protection:</strong> The Protection patron grants the following spells at the listed witch levels. Level 2: Sanctuary; Level 4: Resist energy; Level 6: Wrathful mantle; Level 8: Stoneskin; Level 10: Interposing hand; Level 12: Forbiddance; Level 14: Greater spell immunity; Level 16: Prismatic wall; Level 18: Freedom</p>",
     "id": "protection",
     "name": "Protection",
     "sources": [
@@ -489,7 +489,7 @@
   },
   "recovery": {
     "category": "basic",
-    "description": "<p>2nd - liberating command, 4th - remove paralysis, 6th - sacred bond, 8th - freedom of movement, 10th - cleanse, 12th - heroes' feast, 14th - joyful rapture, 16th - protection from spells, 18th - mass heal.</p>",
+    "description": "<p><strong>Recovery:</strong> The Recovery patron grants the following spells at the listed witch levels. Level 2: Liberating command; Level 4: Remove paralysis; Level 6: Sacred bond; Level 8: Freedom of movement; Level 10: Cleanse; Level 12: Heroes' feast; Level 14: Joyful rapture; Level 16: Protection from spells; Level 18: Mass heal</p>",
     "id": "recovery",
     "name": "Recovery",
     "sources": [
@@ -502,7 +502,7 @@
   },
   "revenge": {
     "category": "basic",
-    "description": "<p>2nd - magic fang, 4th - slipstream, 6th - rage, 8th - moonstruck, 10th - beast shape III, 12th - vengeful outrage, 14th - phantasmal revenge, 16th - seamantle, 18th - storm of vengeance.</p>",
+    "description": "<p><strong>Revenge:</strong> The Revenge patron grants the following spells at the listed witch levels. Level 2: Magic fang; Level 4: Slipstream; Level 6: Rage; Level 8: Moonstruck; Level 10: Beast shape III; Level 12: Vengeful outrage; Level 14: Phantasmal revenge; Level 16: Seamantle; Level 18: Storm of vengeance</p>",
     "id": "revenge",
     "name": "Revenge",
     "sources": [
@@ -515,7 +515,7 @@
   },
   "rot": {
     "category": "basic",
-    "description": "<p>2nd - decompose corpse, 4th - warp wood, 6th - fungal infestation, 8th - fleshworm infestation, 10th - plague carrier, 12th - epidemic, 14th - creeping doom, 16th - horrid wilting, 18th - cursed earth.</p>",
+    "description": "<p><strong>Rot:</strong> The Rot patron grants the following spells at the listed witch levels. Level 2: Decompose corpse; Level 4: Warp wood; Level 6: Fungal infestation; Level 8: Fleshworm infestation; Level 10: Plague carrier; Level 12: Epidemic; Level 14: Creeping doom; Level 16: Horrid wilting; Level 18: Cursed earth</p>",
     "id": "rot",
     "name": "Rot",
     "sources": [
@@ -528,7 +528,7 @@
   },
   "shadow": {
     "category": "basic",
-    "description": "<p>2nd - silent image, 4th - darkness, 6th - deeper darkness, 8th - shadow conjuration, 10th - shadow evocation, 12th - shadow walk, 14th - greater shadow conjuration, 16th - greater shadow evocation, 18th - shades.</p>",
+    "description": "<p><strong>Shadow:</strong> The Shadow patron grants the following spells at the listed witch levels. Level 2: Silent image; Level 4: Darkness; Level 6: Deeper darkness; Level 8: Shadow conjuration; Level 10: Shadow evocation; Level 12: Shadow walk; Level 14: Greater shadow conjuration; Level 16: Greater shadow evocation; Level 18: Shades</p>",
     "id": "shadow",
     "name": "Shadow",
     "sources": [
@@ -541,7 +541,7 @@
   },
   "shadowbound": {
     "category": "unique",
-    "description": "<p>Deep exposure to entities from the Plane of Shadow - kytons, nightshades, owbs, and similar ethereal forces - has infused you with shadow. You gain the disguise hex at 1st level, but you also gain light blindness.</p>\n<p><strong>Available Patron Themes:</strong> Death, Deception, Ethereal, Shadow</p>\n<p><strong>Spell Changes:</strong> 8th-shadow conjuration, 12th-shadow walk, 16th-greater shadow evocation.</p>",
+    "description": "<p><strong>Shadowbound:</strong> Deep exposure to entities from the Plane of Shadow - kytons, nightshades, owbs, and similar ethereal forces - has infused you with shadow. You also gain light blindness. You gain the disguise hex at 1st level. Level 8: Shadow conjuration; Level 12: Shadow walk; Level 16: Greater shadow evocation <strong>Available Patron Themes:</strong> Death, Deception, Ethereal, Shadow <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
     "id": "shadowbound",
     "name": "Shadowbound",
     "sources": [
@@ -553,7 +553,7 @@
   },
   "space": {
     "category": "basic",
-    "description": "<p>2nd - mirror strike, 4th - twisted space, 6th - blink, 8th - dimension door, 10th - hostile juxtaposition, 12th - repulsion, 14th - walk through space, 16th - bilocation, 18th - teleportation circle.</p>",
+    "description": "<p><strong>Space:</strong> The Space patron grants the following spells at the listed witch levels. Level 2: Mirror strike; Level 4: Twisted space; Level 6: Blink; Level 8: Dimension door; Level 10: Hostile juxtaposition; Level 12: Repulsion; Level 14: Walk through space; Level 16: Bilocation; Level 18: Teleportation circle</p>",
     "id": "space",
     "name": "Space",
     "sources": [
@@ -566,7 +566,7 @@
   },
   "spirits": {
     "category": "basic",
-    "description": "<p>2nd - ghostbane dirge, 4th - invisibility, 6th - speak with dead, 8th - spiritual ally, 10th - mass ghostbane dirge, 12th - shadow walk, 14th - ethereal jaunt, 16th - planar ally, 18th - etherealness.</p>",
+    "description": "<p><strong>Spirits:</strong> The Spirits patron grants the following spells at the listed witch levels. Level 2: Ghostbane dirge; Level 4: Invisibility; Level 6: Speak with dead; Level 8: Spiritual ally; Level 10: Mass ghostbane dirge; Level 12: Shadow walk; Level 14: Ethereal jaunt; Level 16: Planar ally; Level 18: Etherealness</p>",
     "id": "spirits",
     "name": "Spirits",
     "sources": [
@@ -579,7 +579,7 @@
   },
   "spring": {
     "category": "basic",
-    "description": "<p>2nd - feather fall, 4th - alter self, 6th - pup shape, 8th - true form, 10th - lightning arc, 12th - chain lightning, 14th - control weather, 16th - stormbolts, 18th - time stop.</p>",
+    "description": "<p><strong>Spring:</strong> The Spring patron grants the following spells at the listed witch levels. Level 2: Feather fall; Level 4: Alter self; Level 6: Pup shape; Level 8: True form; Level 10: Lightning arc; Level 12: Chain lightning; Level 14: Control weather; Level 16: Stormbolts; Level 18: Time stop</p>",
     "id": "spring",
     "name": "Spring",
     "sources": [
@@ -592,7 +592,7 @@
   },
   "stars": {
     "category": "basic",
-    "description": "<p>2nd - faerie fire, 4th - dust of twilight, 6th - guiding star, 8th - wandering star motes, 10th - dream, 12th - cloak of dreams, 14th - circle of clarity, 16th - euphoric tranquility, 18th - astral projection.</p>",
+    "description": "<p><strong>Stars:</strong> The Stars patron grants the following spells at the listed witch levels. Level 2: Faerie fire; Level 4: Dust of twilight; Level 6: Guiding star; Level 8: Wandering star motes; Level 10: Dream; Level 12: Cloak of dreams; Level 14: Circle of clarity; Level 16: Euphoric tranquility; Level 18: Astral projection</p>",
     "id": "stars",
     "name": "Stars",
     "sources": [
@@ -605,7 +605,7 @@
   },
   "storms": {
     "category": "basic",
-    "description": "<p>2nd - obscuring mist, 4th - fog cloud, 6th - call lightning, 8th - ice storm, 10th - call lightning storm, 12th - wind walk, 14th - control weather, 16th - whirlwind, 18th - storm of vengeance.</p>",
+    "description": "<p><strong>Storms:</strong> The Storms patron grants the following spells at the listed witch levels. Level 2: Obscuring mist; Level 4: Fog cloud; Level 6: Call lightning; Level 8: Ice storm; Level 10: Call lightning storm; Level 12: Wind walk; Level 14: Control weather; Level 16: Whirlwind; Level 18: Storm of vengeance</p>",
     "id": "storms",
     "name": "Storms",
     "sources": [
@@ -618,7 +618,7 @@
   },
   "strength": {
     "category": "basic",
-    "description": "<p>2nd - divine favor, 4th - bull's strength, 6th - greater magic weapon, 8th - divine power, 10th - righteous might, 12th - mass bull's strength, 14th - giant form I, 16th - giant form II, 18th - shapechange.</p>",
+    "description": "<p><strong>Strength:</strong> The Strength patron grants the following spells at the listed witch levels. Level 2: Divine favor; Level 4: Bull's strength; Level 6: Greater magic weapon; Level 8: Divine power; Level 10: Righteous might; Level 12: Mass bull's strength; Level 14: Giant form I; Level 16: Giant form II; Level 18: Shapechange</p>",
     "id": "strength",
     "name": "Strength",
     "sources": [
@@ -631,20 +631,24 @@
   },
   "summer": {
     "category": "basic",
-    "description": "<p>2nd - goodberry, 4th - flaming sphere, 6th - daylight, 8th - greater flaming sphere, 10th - wall of fire, 12th - sirocco, 14th - sunbeam, 16th - sunburst, 18th - fiery body.[^D]</p>",
+    "description": "<p><strong>Summer:</strong> The Summer patron grants the following spells at the listed witch levels. Level 2: Goodberry; Level 4: Flaming sphere; Level 6: Daylight; Level 8: Greater flaming sphere; Level 10: Wall of fire; Level 12: Sirocco; Level 14: Sunbeam; Level 16: Sunburst; Level 18: Fiery body</p>",
     "id": "summer",
     "name": "Summer",
     "sources": [
       {
         "id": "heroes-of-the-wild",
         "pages": "13"
+      },
+      {
+        "id": "ultimate-wilderness",
+        "pages": "88"
       }
     ],
     "uuid": "pfdata:witch-patron:summer"
   },
   "the_condition_of_all": {
     "category": "unique",
-    "description": "<p>Aeons are often patrons to witches, seeking out mortals who share their vested interest in some agenda that helps them promote the cosmic balance. You gain the scar hex at 1st level, but such service requires unwavering commitment to their cause, and you lose your spellcasting and hexes (but not your familiar) if your alignment changes after taking your first witch level; you regain your spellcasting and hexes once you revert to your original alignment.</p>\n<p><strong>Available Patron Themes:</strong> Elements, Time, Transformation, Wisdom</p>\n<p><strong>Spell Changes:</strong> 2nd-forbid action, 8th-dismissal, 12th-geas/quest.</p>",
+    "description": "<p><strong>The Condition of All:</strong> Aeons are often patrons to witches, seeking out mortals who share their vested interest in some agenda that helps them promote the cosmic balance. Your patron requires unwavering commitment to their cause, and you lose your spellcasting and hexes (but not your familiar) if your alignment changes after taking your first witch level; you regain your spellcasting and hexes once you revert to your original alignment. You gain the scar hex at 1st level. Level 2: Forbid action; Level 8: Dismissal; Level 12: Geas/quest <strong>Available Patron Themes:</strong> Elements, Time, Transformation, Wisdom <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
     "id": "the_condition_of_all",
     "name": "The Condition of All",
     "sources": [
@@ -656,20 +660,24 @@
   },
   "thorns": {
     "category": "basic",
-    "description": "<p>2nd - thorn javelin, 4th - wrath, 6th - thorny entanglement, 8th - thorn body, 10th - wall of thorns, 12th - blade barrier, 14th - repulsion, 16th - mage's sword, 18th - wooden phalanx.[^D]</p>",
+    "description": "<p><strong>Thorns:</strong> The Thorns patron grants the following spells at the listed witch levels. Level 2: Thorn javelin; Level 4: Wrath; Level 6: Thorny entanglement; Level 8: Thorn body; Level 10: Wall of thorns; Level 12: Blade barrier; Level 14: Repulsion; Level 16: Mage's sword; Level 18: Wooden phalanx</p>",
     "id": "thorns",
     "name": "Thorns",
     "sources": [
       {
         "id": "heroes-of-the-wild",
         "pages": "13"
+      },
+      {
+        "id": "ultimate-wilderness",
+        "pages": "88"
       }
     ],
     "uuid": "pfdata:witch-patron:thorns"
   },
   "time": {
     "category": "basic",
-    "description": "<p>2nd - ventriloquism, 4th - silence, 6th - haste, 8th - threefold aspect, 10th - teleport, 12th - disintegrate, 14th - expend, 16th - temporal stasis, 18th - time stop.</p>",
+    "description": "<p><strong>Time:</strong> The Time patron grants the following spells at the listed witch levels. Level 2: Ventriloquism; Level 4: Silence; Level 6: Haste; Level 8: Threefold aspect; Level 10: Teleport; Level 12: Disintegrate; Level 14: Expend; Level 16: Temporal stasis; Level 18: Time stop</p>",
     "id": "time",
     "name": "Time",
     "sources": [
@@ -682,7 +690,7 @@
   },
   "touched_by_the_outer_gods": {
     "category": "unique",
-    "description": "<p>Your powers hail from an incomprehensible being from beyond the stars, whose motivations and needs erode your psyche. You gain the unnerve beasts hex at 1st level, but you take a -2 penalty on saving throws against confusion and emotion effects and are affected by such effects for at least 1 round even on a successful saving throw.</p>\n<p><strong>Available Patron Themes:</strong> Insanity, Occult, Stars, Transformation</p>\n<p><strong>Spell Changes:</strong> 2nd-lesser confusion, 8th-dreadscape, 10th-compelling rant.</p>",
+    "description": "<p><strong>Touched by the Outer Gods:</strong> Your powers hail from an incomprehensible being from beyond the stars, whose motivations and needs erode your psyche. You take a -2 penalty on saving throws against confusion and emotion effects and are affected by such effects for at least 1 round even on a successful saving throw. You gain the unnerve beasts hex at 1st level. Level 2: Lesser confusion; Level 8: Dreadscape; Level 10: Compelling rant <strong>Available Patron Themes:</strong> Insanity, Occult, Stars, Transformation <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
     "id": "touched_by_the_outer_gods",
     "name": "Touched by the Outer Gods",
     "sources": [
@@ -694,7 +702,7 @@
   },
   "transformation": {
     "category": "basic",
-    "description": "<p>2nd - jump, 4th - bear's endurance, 6th - beast shape I, 8th - beast shape II, 10th - beast shape III, 12th - form of the dragon I, 14th - form of the dragon II, 16th - form of the dragon III, 18th - shapechange.</p>\n<p>;;;aside</p>\n<p>When a witch with a Transformation patron gains the ability to choose a major hex, they may learn an annointing in place of a new hex.</p>\n<p>;;;</p>",
+    "description": "<p><strong>Transformation:</strong> The Transformation patron grants the following spells at the listed witch levels. When a witch with a Transformation patron gains the ability to choose a major hex, they may learn an annointing in place of a new hex. Level 2: Jump; Level 4: Bear's endurance; Level 6: Beast shape I; Level 8: Beast shape II; Level 10: Beast shape III; Level 12: Form of the dragon I; Level 14: Form of the dragon II; Level 16: Form of the dragon III; Level 18: Shapechange</p>",
     "id": "transformation",
     "name": "Transformation",
     "sources": [
@@ -707,7 +715,7 @@
   },
   "trickery": {
     "category": "basic",
-    "description": "<p>2nd - animate rope, 4th - mirror image, 6th - major image, 8th - hallucinatory terrain, 10th - mirage arcana, 12th - mislead, 14th - reverse gravity, 16th - screen, 18th - time stop.</p>",
+    "description": "<p><strong>Trickery:</strong> The Trickery patron grants the following spells at the listed witch levels. Level 2: Animate rope; Level 4: Mirror image; Level 6: Major image; Level 8: Hallucinatory terrain; Level 10: Mirage arcana; Level 12: Mislead; Level 14: Reverse gravity; Level 16: Screen; Level 18: Time stop</p>",
     "id": "trickery",
     "name": "Trickery",
     "sources": [
@@ -720,7 +728,7 @@
   },
   "vengeance": {
     "category": "basic",
-    "description": "<p>2nd - burning hands, 4th - burning gaze, 6th - pain strike, 8th - shout, 10th - symbol of pain, 12th - mass pain strike, 14th - phantasmal revenge, 16th - incendiary cloud, 18th - winds of vengeance.</p>",
+    "description": "<p><strong>Vengeance:</strong> The Vengeance patron grants the following spells at the listed witch levels. Level 2: Burning hands; Level 4: Burning gaze; Level 6: Pain strike; Level 8: Shout; Level 10: Symbol of pain; Level 12: Mass pain strike; Level 14: Phantasmal revenge; Level 16: Incendiary cloud; Level 18: Winds of vengeance</p>",
     "id": "vengeance",
     "name": "Vengeance",
     "sources": [
@@ -733,7 +741,7 @@
   },
   "water": {
     "category": "basic",
-    "description": "<p>2nd - bless water/curse water, 4th - slipstream, 6th - water breathing, 8th - control water, 10th - geyser, 12th - elemental body III (water only), 14th - elemental body IV (water only), 16th - seamantle, 18th - tsunami.</p>",
+    "description": "<p><strong>Water:</strong> The Water patron grants the following spells at the listed witch levels. Level 2: Bless water (or curse water); Level 4: Slipstream; Level 6: Water breathing; Level 8: Control water; Level 10: Geyser; Level 12: Elemental body III (water only); Level 14: Elemental body IV (water only); Level 16: Seamantle; Level 18: Tsunami</p>",
     "id": "water",
     "name": "Water",
     "sources": [
@@ -746,20 +754,24 @@
   },
   "winter": {
     "category": "basic",
-    "description": "<p>2nd - unshakable chill, 4th - resist energy (cold only), 6th - ice storm, 8th - wall of ice, 10th - cone of cold, 12th - freezing sphere, 14th - control weather, 16th - polar ray, 18th - polar midnight.[^D]</p>",
+    "description": "<p><strong>Winter:</strong> The Winter patron grants the following spells at the listed witch levels. Level 2: Unshakable chill; Level 4: Resist energy (cold only); Level 6: Ice storm; Level 8: Wall of ice; Level 10: Cone of cold; Level 12: Freezing sphere; Level 14: Control weather; Level 16: Polar ray; Level 18: Polar midnight</p>",
     "id": "winter",
     "name": "Winter",
     "sources": [
       {
         "id": "ultimate-magic",
         "pages": "83"
+      },
+      {
+        "id": "ultimate-wilderness",
+        "pages": "88"
       }
     ],
     "uuid": "pfdata:witch-patron:winter"
   },
   "wisdom": {
     "category": "basic",
-    "description": "<p>2nd - shield of faith, 4th - owl's wisdom, 6th - magic vestment, 8th - lesser globe of invulnerability, 10th - dream, 12th - globe of invulnerability, 14th - spell turning, 16th - protection from spells, 18th - mage's disjunction.</p>",
+    "description": "<p><strong>Wisdom:</strong> The Wisdom patron grants the following spells at the listed witch levels. Level 2: Shield of faith; Level 4: Owl's wisdom; Level 6: Magic vestment; Level 8: Lesser globe of invulnerability; Level 10: Dream; Level 12: Globe of invulnerability; Level 14: Spell turning; Level 16: Protection from spells; Level 18: Mage's disjunction</p>",
     "id": "wisdom",
     "name": "Wisdom",
     "sources": [
@@ -772,7 +784,7 @@
   },
   "woodlands": {
     "category": "basic",
-    "description": "<p>2nd - entangle, 4th - accelerate poison, 6th - lily pad stride, 8th - grove of respite, 10th - tree stride, 12th - repel wood, 14th - animate plants, 16th - control plants, 18th - shambler.</p>",
+    "description": "<p><strong>Woodlands:</strong> The Woodlands patron grants the following spells at the listed witch levels. Level 2: Entangle; Level 4: Accelerate poison; Level 6: Lily pad stride; Level 8: Grove of respite; Level 10: Tree stride; Level 12: Repel wood; Level 14: Animate plants; Level 16: Control plants; Level 18: Shambler</p>",
     "id": "woodlands",
     "name": "Woodlands",
     "sources": [

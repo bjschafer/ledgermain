@@ -6,6 +6,7 @@ import {
   pfDataSourceRefs,
   type PfDataDictionary,
   type PfDataEntry,
+  pfDataHeaderNameSuffix,
 } from "../util/pfdata.js";
 
 /** See `ragePowers.ts`'s `SKIP_KEYS` doc comment — the dataset's own "not found" sentinel, per file. */
@@ -17,7 +18,7 @@ function transformRogueTalent(id: string, entry: PfDataEntry): RogueTalent {
     id,
     uuid: `pfdata:rogue-talent:${id}`,
     name: entry.name!,
-    nameSuffix: entry.nameSuffix,
+    nameSuffix: entry.nameSuffix ?? pfDataHeaderNameSuffix(entry.description),
     category: entry.category,
     level: entry.level,
     description: pfDataDescriptionToHtml(entry.description!),

@@ -490,10 +490,27 @@ function resolveVendoredSpellName(refData: RefData, raw: string): string {
 }
 
 /** One `<level>(st|nd|rd|th) - <name>` list entry, as extracted verbatim (not yet spell-name-resolved). */
+/**
+ * Two shapes, because the vendored source changed its own. The published prose
+ * form is `"2nd - jump, 4th - cat's grace"`; the dataset later moved these
+ * progressions into a level-keyed directive, which the pipeline renders as
+ * `"Level 2: Jump; Level 4: Cat's grace"`. Both are accepted so a patron's
+ * progression survives whichever side of that change the pin sits on.
+ */
 function extractLevelList(text: string): { level: number; raw: string }[] {
   const body = text.replace(/\.\s*(\[\^\w+])?\s*$/, "").trim();
-  const re = /(\d+)(?:st|nd|rd|th)\s*-\s*(.+?)(?=,\s*\d+(?:st|nd|rd|th)\s*-|$)/g;
-  return [...body.matchAll(re)].map((m) => ({ level: Number(m[1]), raw: m[2]!.trim() }));
+  const prose = /(\d+)(?:st|nd|rd|th)\s*-\s*(.+?)(?=,\s*\d+(?:st|nd|rd|th)\s*-|$)/g;
+  const fromProse = [...body.matchAll(prose)].map((m) => ({
+    level: Number(m[1]),
+    raw: m[2]!.trim(),
+  }));
+  if (fromProse.length > 0) return fromProse;
+
+  const rendered = /\bLevel\s+(\d+):\s*(.+?)(?=;\s*Level\s+\d+:|;?\s*$)/g;
+  return [...body.matchAll(rendered)].map((m) => ({
+    level: Number(m[1]),
+    raw: m[2]!.trim(),
+  }));
 }
 
 function firstParagraphText(html: string): string | undefined {
@@ -533,29 +550,60 @@ export function parseVendoredPatronThemeInfo(
   const first = paragraphs[0];
   if (!first) return undefined;
 
-  const hexMatch = first.match(/You gain the (.+?) hex at 1st level,?\s*but\s+(.+)$/i);
-  if (!hexMatch) return undefined;
+  // Two shapes, because the vendored source changed its own. The published
+  // prose form runs the granted hex and its cost together in one sentence
+  // ("You gain the ward hex at 1st level, but your patron holds you to a
+  // higher standard: ..."). The dataset later split them into separate
+  // directive props, which the pipeline renders as neighbouring sentences in a
+  // single paragraph, with the cost stated first.
+  const joined = first.match(/You gain the (.+?) hex at 1st level,?\s*but\s+(.+)$/i);
+  const split = joined
+    ? undefined
+    : (first.match(/You gain the (.+?) hex at 1st level\.?/i) ?? undefined);
+  if (!joined && !split) return undefined;
+
+  const grantedHexRaw = (joined ?? split)![1]!;
+  // In the split shape the drawback is whatever prose sits outside the hex
+  // sentence, the level list and the labelled sections.
+  const drawbackRaw = joined
+    ? joined[2]!
+    : first
+        .replace(/You gain the .+? hex at 1st level\.?/i, " ")
+        .replace(/\bLevel\s+\d+:[\s\S]*$/, " ")
+        .replace(/\b(?:Available Patron Themes|Patron Spells):[\s\S]*$/i, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+  if (drawbackRaw === "") return undefined;
 
   const themesP = paragraphs.find((p) => /Available Patron Themes:/i.test(p));
   const availableThemes = themesP
     ? themesP
         .replace(/.*Available Patron Themes:\s*/i, "")
+        // The rendered shape continues into the next labelled section rather
+        // than ending the paragraph; stop at it.
+        .replace(/\b(?:Patron Spells|Spell Changes):[\s\S]*$/i, "")
         .split(",")
         .map((s) => s.trim())
         .filter((s) => s.length > 0)
     : [];
 
-  const changesP = paragraphs.find((p) => /Spell Changes:/i.test(p));
+  const changesP =
+    paragraphs.find((p) => /Spell Changes:/i.test(p)) ??
+    paragraphs.find((p) => /\bLevel\s+\d+:/.test(p));
   const spellChanges = changesP
-    ? extractLevelList(changesP.replace(/.*Spell Changes:\s*/i, "")).map((entry) => ({
+    ? extractLevelList(
+        changesP
+          .replace(/.*Spell Changes:\s*/i, "")
+          .replace(/\b(?:Available Patron Themes|Patron Spells):[\s\S]*$/i, ""),
+      ).map((entry) => ({
         level: entry.level,
         text: titleCase(entry.raw),
       }))
     : [];
 
   return {
-    grantedHex: titleCase(hexMatch[1]!.trim()),
-    drawback: capitalizeFirst(hexMatch[2]!.trim()),
+    grantedHex: titleCase(grantedHexRaw.trim()),
+    drawback: capitalizeFirst(drawbackRaw),
     availableThemes,
     spellChanges,
   };

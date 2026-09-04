@@ -21,7 +21,14 @@ import { loadMonsters, loadMonsterTemplates, loadRefData } from "../src/index.js
 const DIRECTIVE_RE = /::[a-z][a-zA-Z0-9]*[[{]/;
 /** The dataset's angle-quote cross-ref system, and its inline link directives. */
 const CROSS_REF_RE = /[‹›«»]/;
-const INLINE_DIRECTIVE_RE = /@(?:ripple|hll|HL|hl|b|strong|i|em|span|FN|list)\[/;
+// Two forms. Every inline directive has a bracketed one; only the link family
+// also has a bracket-less `@HLfree_action`, which the bracketed-only pattern
+// missed entirely (1,592 occurrences upstream). The bare form is deliberately
+// NOT extended to `b`/`i`/`em`/`span`: Foundry roll data is full of
+// `@item.level` and `@abilities.str.mod`, which such a pattern would read as a
+// leaked `@i`/`@b` directive.
+const INLINE_DIRECTIVE_RE =
+  /@(?:ripple|hll|HL|hl|b|strong|i|em|span|FN|list)\[|@(?:HL|hll|hl|ripple)[A-Za-z][A-Za-z0-9_]*/;
 
 /** Every string field that carries rendered prose to a reader. */
 const PROSE_FIELDS = [

@@ -6,6 +6,7 @@ import {
   pfDataSourceRefs,
   type PfDataDictionary,
   type PfDataEntry,
+  pfDataHeaderNameSuffix,
 } from "../util/pfdata.js";
 
 /** See `ragePowers.ts`'s `SKIP_KEYS` doc comment — the dataset's own "not found" sentinel, per file. */
@@ -17,7 +18,7 @@ function transformPhrenicAmplification(id: string, entry: PfDataEntry): PhrenicA
     id,
     uuid: `pfdata:phrenic-amplification:${id}`,
     name: entry.name!,
-    nameSuffix: entry.nameSuffix,
+    nameSuffix: entry.nameSuffix ?? pfDataHeaderNameSuffix(entry.description),
     tier: entry.category === "MajorAmp" ? "major" : "basic",
     description: pfDataDescriptionToHtml(entry.description!),
     sources: pfDataSourceRefs(entry),

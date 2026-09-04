@@ -6,6 +6,7 @@ import {
   pfDataSourceRefs,
   type PfDataDictionary,
   type PfDataEntry,
+  pfDataHeaderNameSuffix,
 } from "../util/pfdata.js";
 
 /** See `ragePowers.ts`'s `SKIP_KEYS` doc comment — the dataset's own "not found" sentinel, per file. */
@@ -17,7 +18,7 @@ function transformVigilanteTalent(id: string, entry: PfDataEntry): VigilanteTale
     id,
     uuid: `pfdata:vigilante-talent:${id}`,
     name: entry.name!,
-    nameSuffix: entry.nameSuffix,
+    nameSuffix: entry.nameSuffix ?? pfDataHeaderNameSuffix(entry.description),
     category: entry.category,
     level: entry.level,
     description: pfDataDescriptionToHtml(entry.description!),
@@ -38,7 +39,7 @@ function transformVigilanteSocialTalent(id: string, entry: PfDataEntry): Vigilan
     id,
     uuid: `pfdata:vigilante-social-talent:${id}`,
     name: entry.name!,
-    nameSuffix: entry.nameSuffix,
+    nameSuffix: entry.nameSuffix ?? pfDataHeaderNameSuffix(entry.description),
     category: entry.category,
     level: entry.level,
     description: pfDataDescriptionToHtml(entry.description!),

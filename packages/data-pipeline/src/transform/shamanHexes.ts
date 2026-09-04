@@ -6,6 +6,7 @@ import {
   pfDataSourceRefs,
   type PfDataDictionary,
   type PfDataEntry,
+  pfDataHeaderNameSuffix,
 } from "../util/pfdata.js";
 
 /**
@@ -26,7 +27,7 @@ function transformShamanHex(id: string, entry: PfDataEntry): ShamanHex {
     id,
     uuid: `pfdata:shaman-hex:${id}`,
     name: entry.name!,
-    nameSuffix: entry.nameSuffix,
+    nameSuffix: entry.nameSuffix ?? pfDataHeaderNameSuffix(entry.description),
     description: pfDataDescriptionToHtml(entry.description!),
     sources: pfDataSourceRefs(entry),
   };

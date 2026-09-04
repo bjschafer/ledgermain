@@ -6,6 +6,7 @@ import {
   pfDataSourceRefs,
   type PfDataDictionary,
   type PfDataEntry,
+  pfDataHeaderNameSuffix,
 } from "../util/pfdata.js";
 
 /**
@@ -29,7 +30,7 @@ function transformRagePower(id: string, entry: PfDataEntry): RagePower {
     id,
     uuid: `pfdata:rage-power:${id}`,
     name: entry.name!,
-    nameSuffix: entry.nameSuffix,
+    nameSuffix: entry.nameSuffix ?? pfDataHeaderNameSuffix(entry.description),
     category: entry.category,
     level: entry.level,
     description: pfDataDescriptionToHtml(entry.description!),

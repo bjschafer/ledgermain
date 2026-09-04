@@ -44,7 +44,9 @@ describe("RefData.witchPatrons", () => {
   it("tags a 'basic' patron's simple 9-spell progression and a 'unique' patron's themed prose distinctly", () => {
     const agility = ref.witchPatrons.agility!;
     expect(agility.category).toBe("basic");
-    expect(agility.description).toContain("jump");
+    // Title-cased since the source moved these progressions into a level-keyed
+    // directive; `parseVendoredPatronSpells` resolves either casing.
+    expect(agility.description).toContain("Level 2: Jump");
 
     const celestialAgenda = ref.witchPatrons.celestial_agenda!;
     expect(celestialAgenda.category).toBe("unique");
