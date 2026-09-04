@@ -41,6 +41,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-03-faster-second-load",
+    date: "2026-09-03",
+    title: "The sheet opens fast after the first time",
+    note: "Opening the app used to re-download the whole Pathfinder rules library every time, which is a slow and unhappy thing to do on venue wifi. It now keeps that library on your device and only fetches the parts that have actually changed, so a second visit puts your sheet on screen right away. The bestiary, which the sheet never used, is no longer part of that download at all.",
+  },
+  {
     id: "2026-09-03-discovery-prerequisites",
     date: "2026-09-03",
     title: "Reference text stops printing its own markup",

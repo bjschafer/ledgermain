@@ -1,0 +1,10 @@
+# Cloudflare Workers static-asset headers. Vite fingerprints everything under
+# /assets/, so those URLs can never change meaning and are safe to pin forever.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The reference data keeps stable filenames across data bumps, so it must always
+# be revalidated. The client stores it in IndexedDB keyed by meta.json's per-file
+# hashes (src/refdata/cache.ts), so a return visit normally requests none of it.
+/data/*
+  Cache-Control: public, no-cache

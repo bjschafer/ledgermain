@@ -4,15 +4,21 @@
  * places under `public/data/`. This is the ONE module that knows how RefData
  * reaches the client — Stage 5 swaps it for lazy R2 loading without touching the
  * rest of the app.
+ *
+ * Collections are read through `refdata/cache.ts`, so only a data bump costs a
+ * download. `meta.json` holds the per-file hashes that key that cache, so it is
+ * fetched ahead of the rest and always revalidated.
  */
 import type { RefData, RefDataMeta } from "@pf1/schema";
 
+import { cachedJson, openRefDataCache } from "./cache.js";
+
 const BASE = `${import.meta.env.BASE_URL}data`;
 
-async function getJson<T>(file: string): Promise<T> {
-  const res = await fetch(`${BASE}/${file}`);
+async function fetchText(file: string, init?: RequestInit): Promise<string> {
+  const res = await fetch(`${BASE}/${file}`, init);
   if (!res.ok) throw new Error(`Failed to load ${file}: ${res.status} ${res.statusText}`);
-  return (await res.json()) as T;
+  return await res.text();
 }
 
 let cache: Promise<RefData> | undefined;
@@ -24,8 +30,12 @@ export function loadRefData(): Promise<RefData> {
 }
 
 async function fetchAll(): Promise<RefData> {
+  const meta = JSON.parse(await fetchText("meta.json", { cache: "no-cache" })) as RefDataMeta;
+  const store = await openRefDataCache(meta.hashes);
+
+  const getJson = cachedJson(store, fetchText);
+
   const [
-    meta,
     races,
     racialTraits,
     classes,
@@ -85,7 +95,6 @@ async function fetchAll(): Promise<RefData> {
     inquisitions,
     blessings,
   ] = await Promise.all([
-    getJson<RefDataMeta>("meta.json"),
     getJson<RefData["races"]>("races.json"),
     getJson<RefData["racialTraits"]>("racial-traits.json"),
     getJson<RefData["classes"]>("classes.json"),
@@ -145,6 +154,7 @@ async function fetchAll(): Promise<RefData> {
     getJson<RefData["inquisitions"]>("inquisitions.json"),
     getJson<RefData["blessings"]>("blessings.json"),
   ]);
+  store.flush();
   return {
     meta,
     races,
