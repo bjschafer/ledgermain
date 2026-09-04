@@ -8,13 +8,15 @@ A **web-based, in-play character sheet and tracker for Pathfinder 1e** -- plus a
 
 ### Scope (decided)
 
-| Dimension        | v1                            | Designed-for-later                |
-| ---------------- | ----------------------------- | --------------------------------- |
-| Who it tracks    | Solo (one character)          | Party + GM session (real-time)    |
-| Character source | **Full builder from scratch** | Import (Pathbuilder/Foundry JSON) |
-| Connectivity     | Online-first                  | Full offline (PWA)                |
-| Frontend         | React + Vite SPA              | (PWA shell added later)           |
-| Host             | Cloudflare Pages + Workers    | + Durable Objects for party sync  |
+| Dimension        | Where it landed                                                    |
+| ---------------- | ------------------------------------------------------------------ |
+| Who it tracks    | Solo (one character). Party + GM session ruled out -- see §2.1     |
+| Character source | **Full builder from scratch**, plus best-effort import             |
+| Connectivity     | Online-first with cross-device sync. Offline PWA ruled out -- §2.1 |
+| Frontend         | React + Vite SPA                                                   |
+| Host             | Cloudflare Workers                                                 |
+
+**On import:** it ships, but as personal-use tooling rather than a compatibility promise. Two formats are written against a confirmed real sample and work: Pathbuilder 1e's HTML stat block (its only export) and Hero Lab classic's `.por` portfolio / statblock XML. A speculative Pathbuilder JSON path also exists, written defensively against an unknown shape because no Pathbuilder 1e JSON export was ever found; correcting it is a matter of editing one field-path table if a real sample ever turns up. Foundry JSON is unimplemented for the same reason. Nothing fabricates a mapping -- an unrecognized race, class, feat, or item is reported as unmapped rather than guessed at.
 
 ## 2. The one architectural rule that hedges every "later"
 

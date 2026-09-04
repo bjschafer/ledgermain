@@ -22,18 +22,20 @@ bun run screenshots  # regenerate docs/images/{tracker,builder}.png from the sam
 
 Bumping the pinned Foundry reference data has its own procedure with a formatting trap that produces a thousands-of-lines-changed diff if skipped — see `docs/refdata-update.md` (the `refdata-update` skill points there); after hand-editing the pins, `bun run data:bump` runs the fetch/build/format steps in the trap-proof order.
 
-**Deployment is automatic, not a command you run.** Both `apps/web` and `apps/api` deploy via Cloudflare Workers Builds — a git-connected build configured in the Cloudflare dashboard (not visible in this repo) that deploys on every push to `main`. `.github/workflows/ci.yml` only runs typecheck/lint/fmt/tests; it has no deploy step. Never run `wrangler deploy` (or suggest the user run it) to ship a change — committing and pushing to `main` is the deploy.
+**Deployment is automatic, not a command you run.** All three Workers — `apps/web`, `apps/api`, and `apps/reference` — deploy via Cloudflare Workers Builds: a git-connected build configured in the Cloudflare dashboard (not visible in this repo) that deploys on every push to `main`. `.github/workflows/ci.yml` only runs typecheck/lint/fmt/tests; it has no deploy step. Never run `wrangler deploy` (or suggest the user run it) to ship a change — committing and pushing to `main` is the deploy. The per-branch failure of the "Workers Builds: ledgermain" check is expected and documented in `CONTRIBUTING.md`.
 
 ## Architecture
 
-Five bun-workspace packages, one data-flow rule.
+Six bun-workspace packages, one data-flow rule.
 
 ```text
 packages/schema         shared types: CharacterDoc, DerivedSheet, RefData (the contracts everything imports)
 packages/data-pipeline  pinned Foundry YAML → normalized JSON (vendored under data/, committed)
 packages/engine         pure rules engine — compute(doc, refData) -> DerivedSheet (the crown jewel)
+packages/tokens         shared design tokens (palette, type stack) imported by both front ends
 apps/web                React + Vite builder + live tracker
 apps/api                Cloudflare Worker: dumb persistence for CharacterDoc blobs (Stage 5, docs/design.md §2.1)
+apps/reference          React + Vite quick-reference lookup site, its own Worker at ref.ledgermain.whizkid.dev
 ```
 
 ### The one rule that governs everything
@@ -52,9 +54,11 @@ The engine has two genuinely hard pieces, both clean-room (see licensing below):
 1. **Typed bonus-stacking** (`stacking.ts`) — highest-within-type; `dodge`/`untyped`/`circumstance` sum; penalties always stack. Retains per-source provenance (`applied` flag) so the UI can strike through overridden bonuses.
 2. **Formula DSL evaluator** (`formula.ts`) — recursive-descent parser + tree-walker (no `eval`) for the Foundry roll-formula dialect: `@data.paths`, functions (`if`, `gte`, `min`, `max`, …), and dice terms. Missing paths resolve to `0` (Foundry behavior). Dice terms parse but throw on numeric eval; use `tryEvaluateFormula` (returns `null`) so damage formulas never crash the static sheet. BAB/save numeric tables are hardcoded in `tables.ts` (the YAML only carries `high|med|low` tiers).
 
-### Web app structure
+### Front-end structure
 
-`apps/web/CLAUDE.md` covers the pure-logic-in-`model/` split, RefData loading, Dexie persistence, and the Vite alias gotcha.
+`apps/web/CLAUDE.md` covers the pure-logic-in-`model/` split, RefData loading, Dexie persistence, and the Vite alias gotcha. `apps/reference/CLAUDE.md` covers the lookup site: its build-time index/shard payload, hash routing and the `#/summon` deep-link contract the sheet calls into, and why the engine is imported through a subpath alias.
+
+The two front ends share `packages/tokens` (palette and type stack) and nothing else. Don't copy token values between stylesheets; app-specific tokens (spacing, z-index, tap targets) stay in each app's own `styles.css`.
 
 ## Licensing — clean-room discipline (important)
 

@@ -1,0 +1,14 @@
+{
+  "name": "@pf1/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared design tokens (palette, type stack, radius) imported by every Ledgermain front end.",
+  "license": "AGPL-3.0-or-later",
+  "files": [
+    "tokens.css"
+  ],
+  "type": "module",
+  "exports": {
+    "./tokens.css": "./tokens.css"
+  }
+}

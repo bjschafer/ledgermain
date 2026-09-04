@@ -2,38 +2,18 @@
    Scrivener — PF1e Character Forge
    Direction: "Illuminated ledger" (see DESIGN_NOTES.md). Dark gilded workbench;
    tabular ledger numerals; the signature is the gold stat seal + provenance.
+
+   The palette and type stack live in @pf1/tokens, shared with the reference
+   site; everything below is this app's own.
    ========================================================================== */
 
+@import "@pf1/tokens/tokens.css";
+
 :root {
-  /* Dark form controls + scrollbars from the browser; palette-matched thumb.
-     Text tokens (--ink/--muted/--faint and the *-ink variants) clear WCAG AA
-     4.5:1 on --surface-2, the lightest surface they sit on. --gold-dim and
-     --oxblood stay darker for borders/fills (3:1 UI-component bar) — use the
-     -ink variant when setting `color`. */
+  /* Dark form controls + scrollbars from the browser; palette-matched thumb. */
   color-scheme: dark;
   scrollbar-color: var(--line) transparent;
 
-  --bg: #15171c;
-  --surface: #1d2027;
-  --surface-2: #23262f;
-  --line: #33373f;
-  --line-soft: #2a2e36;
-  --ink: #e8e3d6;
-  --muted: #a49e91;
-  --faint: #94907f;
-  --gold: #c9a227;
-  --gold-2: #e8c34a;
-  --gold-dim: #8a7320;
-  --gold-dim-ink: #ad8e2e;
-  --oxblood: #b04a37;
-  --oxblood-ink: #d4705a;
-  --sage: #88a06a;
-
-  --display: "Fraunces", Georgia, serif;
-  --body: "Public Sans", system-ui, sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, monospace;
-
-  --radius: 4px;
   --gap: 16px;
 
   /* Spacing scale — used for new rules going forward; existing one-off values

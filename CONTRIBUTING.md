@@ -18,6 +18,7 @@ install.
 ```bash
 bun install
 bun run dev          # http://localhost:5173 (copies reference data, then starts Vite)
+bun run dev:ref      # http://localhost:5174 the companion quick-reference site
 ```
 
 ## The gates
@@ -40,6 +41,28 @@ One wrinkle in `bun run test`: everything runs on `bun test` except `apps/api`,
 whose Worker routes need a real Workers runtime
 (`@cloudflare/vitest-pool-workers`). Its test script shells out to `vitest run`,
 and the root script picks it up automatically.
+
+## Deployment, and the check that always fails
+
+There is no deploy command. All three Workers -- `apps/web`
+(ledgermain.whizkid.dev), `apps/api` (api.ledgermain.whizkid.dev), and
+`apps/reference` (ref.ledgermain.whizkid.dev) -- deploy through **Cloudflare
+Workers Builds**, a git-connected build configured in the Cloudflare dashboard
+rather than in this repo. A merge to `main` is the deploy.
+`.github/workflows/ci.yml` runs the gates only; it has no deploy step. Don't run
+`wrangler deploy`.
+
+**The "Workers Builds: ledgermain" check fails on every PR branch, and that is
+not your PR's fault.** On a non-production branch Workers Builds swaps the
+deploy for a preview `wrangler versions upload`, which fails for the web
+Worker -- it is assets-only (no `main`, just `assets` plus a custom-domain
+route). The same push produces a green `ledgermain-api` build, the local gates
+pass, and the deploy from `main` succeeds after merge. It has been red on every
+branch since early July 2026.
+
+So: judge a PR by the CI gates above, not by that check. The real error is
+visible only in the Cloudflare dashboard build log, and a fix means changing the
+worker's preview command there.
 
 ## Where code goes
 

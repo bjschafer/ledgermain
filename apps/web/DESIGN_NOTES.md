@@ -22,7 +22,7 @@ gold. Chosen specifically to avoid the three generic AI-design defaults:
 Instead: a **dark, panelled, gilded** sheet that reads at a dim table, with
 tabular ledger numerals because a character sheet is, fundamentally, a ledger.
 
-### Color (named tokens — see `src/styles.css`)
+### Color (named tokens — see `packages/tokens/tokens.css`)
 
 | token         | hex       | role                                     |
 | ------------- | --------- | ---------------------------------------- |
@@ -31,7 +31,7 @@ tabular ledger numerals because a character sheet is, fundamentally, a ledger.
 | `--surface-2` | `#23262f` | inset / controls                         |
 | `--line`      | `#33373f` | hairline rules                           |
 | `--ink`       | `#e8e3d6` | warm bone text (parchment ink, reversed) |
-| `--muted`     | `#9a9488` | secondary text / labels                  |
+| `--muted`     | `#a49e91` | secondary text / labels                  |
 | `--gold`      | `#c9a227` | illuminated accent — key numbers, active |
 | `--gold-2`    | `#e8c34a` | bright gold highlight                    |
 | `--oxblood`   | `#b04a37` | blocked / errors / danger                |

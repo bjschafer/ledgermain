@@ -1,0 +1,37 @@
+/* ============================================================================
+   Ledgermain design tokens — the "illuminated ledger" palette and type stack,
+   shared by apps/web (the sheet) and apps/reference (the lookup site) so the
+   two read as one product. See apps/web/DESIGN_NOTES.md for the art direction.
+
+   Tokens only. Anything app-specific — spacing scales, z-index tiers, tap
+   targets — stays in that app's own stylesheet.
+
+   Text tokens (--ink/--muted/--faint and the *-ink variants) clear WCAG AA
+   4.5:1 on --surface-2, the lightest surface they sit on. --gold-dim and
+   --oxblood stay darker for borders/fills (the 3:1 UI-component bar) — use the
+   -ink variant when setting `color`.
+   ========================================================================== */
+
+:root {
+  --bg: #15171c;
+  --surface: #1d2027;
+  --surface-2: #23262f;
+  --line: #33373f;
+  --line-soft: #2a2e36;
+  --ink: #e8e3d6;
+  --muted: #a49e91;
+  --faint: #94907f;
+  --gold: #c9a227;
+  --gold-2: #e8c34a;
+  --gold-dim: #8a7320;
+  --gold-dim-ink: #ad8e2e;
+  --oxblood: #b04a37;
+  --oxblood-ink: #d4705a;
+  --sage: #88a06a;
+
+  --display: "Fraunces", Georgia, serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+
+  --radius: 4px;
+}

@@ -1,34 +1,14 @@
 /* ============================================================================
    Ledgermain Reference — a table lookup tool, not a marketing page.
    Dense, dark, and quiet: the search box is the interface, everything else
-   stays out of the way. Palette matches the tracker so the two read as one
-   product without sharing a stylesheet.
+   stays out of the way. Palette and type stack come from @pf1/tokens, shared
+   with the sheet so the two read as one product.
    ========================================================================== */
+
+@import "@pf1/tokens/tokens.css";
 
 :root {
   color-scheme: dark;
-
-  --bg: #15171c;
-  --surface: #1d2027;
-  --surface-2: #23262f;
-  --line: #33373f;
-  --line-soft: #2a2e36;
-  --ink: #e8e3d6;
-  --muted: #a49e91;
-  --faint: #94907f;
-  --gold: #c9a227;
-  --gold-2: #e8c34a;
-  --gold-dim: #8a7320;
-  --gold-dim-ink: #ad8e2e;
-  --oxblood: #b04a37;
-  --oxblood-ink: #d4705a;
-  --sage: #88a06a;
-
-  --display: "Fraunces", Georgia, serif;
-  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
-
-  --radius: 4px;
 }
 
 * {

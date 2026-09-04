@@ -60,20 +60,23 @@ Toolchain is [**Bun**](https://bun.sh) (workspaces). No other runtime needed.
 ```bash
 bun install
 bun run dev          # → http://localhost:5173  (copies reference data, then starts Vite)
+bun run dev:ref      # → http://localhost:5174  the companion quick-reference site
 ```
 
 By default the app runs **local-only** (IndexedDB, no cloud sync) -- leave `VITE_API_URL` unset. See [`apps/api/README.md`](./apps/api/README.md) to run the sync Worker.
 
 ## How it's built
 
-Five Bun-workspace packages, one hard rule.
+Six Bun-workspace packages, one hard rule.
 
 ```text
 packages/schema         shared types: CharacterDoc, DerivedSheet, RefData (the contracts everything imports)
 packages/data-pipeline  pinned Foundry YAML → normalized JSON (vendored, committed)
 packages/engine         pure rules engine — compute(doc, refData) → DerivedSheet (the crown jewel)
+packages/tokens         shared design tokens, so the sheet and the reference site look like one product
 apps/web                React + Vite builder + live tracker
 apps/api                Cloudflare Worker: opaque CharacterDoc persistence + cross-device sync
+apps/reference          the companion quick-reference site at ref.ledgermain.whizkid.dev
 ```
 
 > **The client is authoritative for all game logic. The server is dumb persistence.**
