@@ -205,7 +205,8 @@ function evalChange(
  * here, unchanged) or when at least one currently active buff matches the gate
  * by `buffId` and/or `effectTag` — never by display name (see
  * `Change.activeWhenBuff`'s doc comment). A gate is satisfied by ANY match
- * across either list.
+ * across those two lists, plus EVERY `requiredEffectTags` match when that
+ * conjunctive list is present.
  *
  * Gated-but-currently-inactive changes are simply OMITTED from the
  * collected list rather than pushed through with a forced
@@ -224,11 +225,16 @@ function buffGateSatisfied(
 ): boolean {
   const gate = ch.activeWhenBuff;
   if (!gate) return true;
-  return activeBuffs.some(
+  const hasAnyMatchers = (gate.buffIds?.length ?? 0) > 0 || (gate.effectTags?.length ?? 0) > 0;
+  const anyMatched = activeBuffs.some(
     (b) =>
       (b.buffId !== undefined && (gate.buffIds?.includes(b.buffId) ?? false)) ||
       (b.effectTag !== undefined && (gate.effectTags?.includes(b.effectTag) ?? false)),
   );
+  const requiredMatched = (gate.requiredEffectTags ?? []).every((tag) =>
+    activeBuffs.some((buff) => buff.effectTag === tag),
+  );
+  return (!hasAnyMatchers || anyMatched) && requiredMatched;
 }
 
 export function collectModifiers(
@@ -240,7 +246,9 @@ export function collectModifiers(
 
   // Buff-gate check — see `buffGateSatisfied`. Consulted in every
   // hand-authored build-choice loop below (traits, bloodline powers, exploits,
-  // arcana, revelations, hexes, rage powers, discoveries, curse), both
+  // arcana, revelations, hexes, rage powers, discoveries, curse), all three
+  // feat loops (`doc.build.feats`, `extraFeats`, granted feats -- Crane Style's
+  // stance-gated changes ride this), both
   // racial-trait loops (hand-authored `RACIAL_TRAITS` and the vendored
   // `RefData.racialTraits` catalog — the latter's own hand-authored
   // `SUPPLEMENTAL_RACIAL_TRAIT_CHANGES` supplement is the first data-pipeline
@@ -1743,7 +1751,7 @@ export function collectModifiers(
   // machine-extracted FEAT_EFFECTS_EXTRACTED table (feat
   // batch-extraction pass — see feat-effects-resolve.ts for the precedence
   // rule and feat-classification.ts for the full per-feat audit).
-  //   Static entries: emit their changes unconditionally.
+  //   Static entries: emit their changes when any optional live-buff gate is open.
   //   Choice entries: read doc.build.featChoices[featId]; if a choice is set,
   //     call entry.build(choiceId) and emit the resulting changes. If no choice
   //     is set yet, emit nothing — never crash on an incomplete doc.
@@ -1756,6 +1764,7 @@ export function collectModifiers(
 
     if (entry?.type === "static") {
       for (const ch of entry.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(
           ch.formula,
           rollData,
@@ -1775,6 +1784,7 @@ export function collectModifiers(
       const choiceId = doc.build.featChoices?.[featId];
       if (choiceId) {
         for (const ch of entry.build(choiceId)) {
+          if (!gateOpen(ch)) continue;
           evalChange(
             ch.formula,
             rollData,
@@ -1851,6 +1861,7 @@ export function collectModifiers(
 
     if (entry?.type === "static") {
       for (const ch of entry.changes) {
+        if (!gateOpen(ch)) continue;
         evalChange(
           ch.formula,
           rollData,
@@ -1867,6 +1878,7 @@ export function collectModifiers(
       }
     } else if (entry?.type === "choice" && instance.choiceId) {
       for (const ch of entry.build(instance.choiceId)) {
+        if (!gateOpen(ch)) continue;
         evalChange(
           ch.formula,
           rollData,
@@ -1924,6 +1936,7 @@ export function collectModifiers(
       const resolved = resolveFeatEffect(featNameSlug(feat.name));
       if (resolved?.entry.type === "static") {
         for (const ch of resolved.entry.changes) {
+          if (!gateOpen(ch)) continue;
           evalChange(
             ch.formula,
             rollData,

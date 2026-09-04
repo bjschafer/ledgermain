@@ -6,6 +6,7 @@ import { AfflictionsPanel } from "./AfflictionsPanel.js";
 import { BlastLoadoutPanel } from "./BlastLoadoutPanel.js";
 import { BuffsPanel } from "./BuffsPanel.js";
 import { ClassFeaturesPanel } from "./ClassFeaturesPanel.js";
+import { CombatStancesPanel } from "./CombatStancesPanel.js";
 import { CompanionPanel } from "./CompanionPanel.js";
 import { ConditionsPanel } from "./ConditionsPanel.js";
 import { DeedsPanel } from "./DeedsPanel.js";
@@ -63,6 +64,7 @@ export function Tracker(props: BuilderProps) {
       sections: [
         { id: "play-hp", label: "Hit Points", node: <HpPanel {...props} /> },
         { id: "play-conditions", label: "Conditions", node: <ConditionsPanel {...props} /> },
+        { id: "play-stances", label: "Stances", node: <CombatStancesPanel {...props} /> },
         { id: "play-buffs", label: "Buffs", node: <BuffsPanel {...props} /> },
         { id: "play-spells", label: "Spells", node: <PreparedSpellsPanel {...props} /> },
         { id: "play-sla", label: "Spell-Like", node: <SpellLikeAbilitiesPanel {...props} /> },

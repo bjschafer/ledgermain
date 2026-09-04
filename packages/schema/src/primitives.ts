@@ -94,17 +94,17 @@ export interface Change {
    * unconditionally granted (the motivating case: a barbarian rage power like
    * Raging Climber only works "while raging", where "raging" is the
    * separately-toggled Rage buff, not the rage power itself — see
-   * `@pf1/engine` `rage-powers.ts`). Absent (the default, and the only value
-   * every other `Change` source in this codebase uses today) means always-on
-   * and unconditional — fully backward compatible, no doc migration needed.
+   * `@pf1/engine` `rage-powers.ts`). Absent means always-on and unconditional,
+   * so adding a gate remains backward compatible with no doc migration.
    *
    * Matched by `ActiveBuff.buffId` (a `RefData.buffs` id) and/or
    * `ActiveBuff.effectTag` (a hand-authored toggle id) — **never** by display
    * name; name-based reference-data lookups have caused real cross-branch bugs
    * in this project (the Seeker/summoner-archetype lesson), and a buff can be
-   * renamed/reworded upstream without this gate silently breaking. A change is
-   * active if it matches ANY id in either list (an OR across both lists and
-   * within each). Evaluated at collect-time by `@pf1/engine` `collect.ts`'s
+   * renamed/reworded upstream without this gate silently breaking. The
+   * `buffIds`/`effectTags` lists are one OR group; `requiredEffectTags`, when
+   * present, is an additional AND group whose entries must all be active.
+   * Evaluated at collect-time by `@pf1/engine` `collect.ts`'s
    * `buffGateSatisfied`, reading only `doc.live.activeBuffs` — `compute` stays
    * pure.
    */
@@ -176,16 +176,24 @@ export interface Change {
 
 /**
  * The match criteria for {@link Change.activeWhenBuff} — see that field's
- * doc comment for semantics. At least one of `buffIds`/`effectTags` should
- * be non-empty for the gate to ever be satisfiable; both may be set at once
- * (e.g. a gate that should fire off of either a vendored buff OR a
- * hand-authored toggle representing "morally the same" activated state).
+ * doc comment for semantics. `buffIds` and `effectTags` form an optional OR
+ * group; both may be set at once (e.g. a gate that should fire off of either
+ * a vendored buff OR a hand-authored toggle representing "morally the same"
+ * activated state). `requiredEffectTags` is a separate AND group and may be
+ * used alone or in combination with that OR group.
  */
 export interface BuffGate {
   /** `RefData.buffs` ids — matches `ActiveBuff.buffId`. */
   buffIds?: readonly string[];
   /** Hand-authored toggle ids — matches `ActiveBuff.effectTag`. */
   effectTags?: readonly string[];
+  /**
+   * Additional hand-authored toggle ids that must ALL be active. Combined
+   * with the ordinary OR match above when both are present. This expresses
+   * conjunctions such as "Crane Style is active AND the character is fighting
+   * defensively or using total defense" without inventing a combined toggle.
+   */
+  requiredEffectTags?: readonly string[];
 }
 
 /**

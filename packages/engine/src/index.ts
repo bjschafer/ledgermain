@@ -792,6 +792,19 @@ export {
 export { resourceTagSlug } from "./resource-tag.js";
 export type { ToggleBuffOption } from "./toggle-buffs.js";
 export {
+  COMBAT_STANCES,
+  COMBAT_STANCE_IDS,
+  COMBAT_STANCE_REFERENCE_BUFF_IDS,
+  COMBAT_STYLE_EFFECT_TAG_PREFIX,
+  combatStanceIdForActiveBuff,
+  combatStyleEffectTag,
+  isCombatStanceActiveBuff,
+  isCombatStanceEffectTag,
+  isCombatStyleEffectTag,
+  type CombatStance,
+  type CombatStanceId,
+} from "./combat-stances.js";
+export {
   INQUISITOR_JUDGMENTS,
   maxSimultaneousJudgments,
   judgmentPoolDetail,

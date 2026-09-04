@@ -3028,6 +3028,55 @@ button:focus-visible,
   font-weight: 500;
 }
 
+/* The Stances panel has two independent toggle axes. Keep the labels, current
+   state, and chips in a compact rhythm instead of crowding status text into
+   Panel's multi-item header. */
+.stance-groups {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.stance-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.tracker-col .stance-group-head h4.tracker-sub {
+  margin: 0;
+}
+
+.stance-group-head > .hint {
+  font-size: 0.6875rem;
+  white-space: nowrap;
+}
+
+.stance-chips {
+  column-gap: 12px;
+  row-gap: 8px;
+}
+
+.stance-empty {
+  margin: 0;
+}
+
+.stance-style-description {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.stance-style-description > :first-child {
+  margin-top: 0;
+}
+
+.stance-style-description > :last-child {
+  margin-bottom: 0;
+}
+
 /* shared action buttons */
 .btn-act {
   border: 1px solid var(--line);

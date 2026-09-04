@@ -5,6 +5,8 @@ import {
   SELECTABLE_ELEMENTS,
   buildRollData,
   evaluateBuffChange,
+  isCombatStanceActiveBuff,
+  isCombatStyleEffectTag,
   needsElementChoice,
   saveNoteCoverage,
   unappliedChanges,
@@ -56,6 +58,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
     return Object.values(refData.buffs)
+      .filter((buff) => !isCombatStanceActiveBuff({ buffId: buff.id }))
       .filter((b) => !q || b.name.toLowerCase().includes(q))
       .sort((a, b) => a.name.localeCompare(b.name))
       .slice(0, 60);
@@ -63,6 +66,16 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
 
   const activeBuffIds = useMemo(
     () => new Set(doc.live.activeBuffs.map((b) => b.buffId).filter((id): id is string => !!id)),
+    [doc.live.activeBuffs],
+  );
+
+  // Stances share ActiveBuff's modifier plumbing but have their own compact
+  // panel and toggle lifecycle, so don't duplicate their rows here.
+  const visibleActiveBuffs = useMemo(
+    () =>
+      doc.live.activeBuffs.filter(
+        (buff) => !isCombatStanceActiveBuff(buff) && !isCombatStyleEffectTag(buff.effectTag),
+      ),
     [doc.live.activeBuffs],
   );
 
@@ -103,11 +116,11 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
         </div>
       }
     >
-      {doc.live.activeBuffs.length === 0 ? (
+      {visibleActiveBuffs.length === 0 ? (
         <div className="empty">No active buffs.</div>
       ) : (
         <div className="buff-list">
-          {doc.live.activeBuffs.map((b) => (
+          {visibleActiveBuffs.map((b) => (
             <BuffRow
               key={b.instanceId}
               buff={b}

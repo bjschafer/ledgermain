@@ -21,8 +21,9 @@
  *                      The UI renders a picker for these feats (FeatsSection.tsx).
  */
 
-import type { AbilityId, CharacterDoc, ContextNote, RefData } from "@pf1/schema";
+import type { AbilityId, BuffGate, CharacterDoc, ContextNote, RefData } from "@pf1/schema";
 
+import { COMBAT_STANCE_REFERENCE_BUFF_IDS } from "./combat-stances.js";
 import type { PickChoice } from "./rage-powers.js";
 
 export interface FeatChange {
@@ -37,6 +38,8 @@ export interface FeatChange {
   maneuverCategories?: readonly string[];
   /** Same semantics as {@link Change.acCategories} — collect.ts passes it through. */
   acCategories?: readonly string[];
+  /** Same semantics as {@link Change.activeWhenBuff} — collect.ts omits it until the toggle is active. */
+  activeWhenBuff?: BuffGate;
 }
 
 /** A feat that unconditionally applies a fixed set of typed modifiers. */
@@ -231,6 +234,39 @@ function greaterManeuver(key: string): FeatChange[] {
  */
 export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
   // ── Static feats ───────────────────────────────────────────────────────────
+
+  // Crane Style (Ultimate Combat p. 93): while fighting defensively, reduce
+  // the attack penalty from -4 to -2; while fighting defensively or using
+  // total defense, gain another +1 dodge AC. The stance remains a deliberate
+  // player toggle, so owning the feat alone applies nothing.
+  "crane-style": {
+    type: "static",
+    changes: [
+      {
+        target: "attack",
+        type: "untyped",
+        formula: "2",
+        activeWhenBuff: {
+          buffIds: [COMBAT_STANCE_REFERENCE_BUFF_IDS["combatStance:fightingDefensively"]],
+          effectTags: ["combatStance:fightingDefensively"],
+          requiredEffectTags: ["combatStyle:crane-style"],
+        },
+      },
+      {
+        target: "ac",
+        type: "dodge",
+        formula: "1",
+        activeWhenBuff: {
+          buffIds: [
+            COMBAT_STANCE_REFERENCE_BUFF_IDS["combatStance:fightingDefensively"],
+            COMBAT_STANCE_REFERENCE_BUFF_IDS["combatStance:totalDefense"],
+          ],
+          effectTags: ["combatStance:fightingDefensively", "combatStance:totalDefense"],
+          requiredEffectTags: ["combatStyle:crane-style"],
+        },
+      },
+    ],
+  },
 
   // Toughness: +3 HP; +1 per HD beyond 3 (PF1 CRB p. 135).
   // Formula: max(3, @attributes.hd.total) → 3 at HD ≤ 3, then equals HD thereafter.

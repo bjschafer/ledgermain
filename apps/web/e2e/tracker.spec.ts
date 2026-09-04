@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { typeSearch } from "./search.js";
+
 /**
  * Stage 4 e2e: drive the real tracker UI and assert the gilded sheet recomputes.
  *   - toggle a condition -> a sheet stat changes (and reverts)
@@ -47,6 +49,86 @@ test("toggling a condition updates the sheet and reverts", async ({ page }) => {
   // Toggle off -> reverts.
   await page.getByRole("button", { name: "Prone" }).click();
   await expect(ac).toHaveText("10");
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
+test("combat stances update attack and AC, remain exclusive, and show their source", async ({
+  page,
+}) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoPlay(page);
+
+  const melee = sealValue(page, "Melee");
+  const ac = sealValue(page, "Armor Class");
+  await expect(melee).toHaveText("+0");
+  await expect(ac).toHaveText("10");
+
+  await page.getByRole("button", { name: "Fighting Defensively" }).click();
+  await expect(melee).toHaveText("-4");
+  await expect(ac).toHaveText("12");
+
+  await page.locator(".seal", { hasText: "Armor Class" }).click();
+  await expect(page.getByText("Fighting Defensively [dodge]", { exact: true })).toBeVisible();
+
+  await page.getByRole("button", { name: "Total Defense" }).click();
+  await expect(page.getByRole("button", { name: "Fighting Defensively" })).toHaveAttribute(
+    "aria-pressed",
+    "false",
+  );
+  await expect(melee).toHaveText("+0");
+  await expect(ac).toHaveText("14");
+
+  await page.getByRole("button", { name: "Charge" }).click();
+  await expect(melee).toHaveText("+2");
+  await expect(ac).toHaveText("8");
+
+  await page.getByRole("button", { name: "Charge" }).click();
+  await expect(melee).toHaveText("+0");
+  await expect(ac).toHaveText("10");
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
+test("an owned combat Style feat appears as an independent stance toggle with its rules", async ({
+  page,
+}) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await page.goto("/");
+  await expect(sealValue(page, "Armor Class")).toBeVisible({ timeout: 15_000 });
+  await page.getByRole("tab", { name: "Build" }).click();
+
+  const classes = page.locator(".panel", { hasText: "Classes" }).first();
+  await classes.getByRole("button", { name: "Fighter", exact: true }).click();
+  const feats = page.locator(".panel").filter({
+    has: page.getByRole("heading", { name: "Feats" }),
+  });
+  await feats.getByRole("button", { name: "Choose feats" }).click();
+
+  const dialog = page.getByRole("dialog");
+  await typeSearch(dialog.getByLabel("Search feats"), "Stick-Fighting Style");
+  const featRow = dialog
+    .locator(".spell-pane")
+    .first()
+    .locator(".pick-row")
+    .filter({ has: page.locator(".pname", { hasText: /^Stick-Fighting Style/ }) });
+  await featRow.getByRole("button", { name: "Add", exact: true }).click();
+  await page.keyboard.press("Escape");
+  await page.getByRole("tab", { name: "Play" }).click();
+
+  const stances = page.locator(".panel").filter({
+    has: page.getByRole("heading", { name: "Stances" }),
+  });
+  const style = stances.getByRole("button", { name: "Stick-Fighting Style" });
+  await expect(style).toHaveAttribute("aria-pressed", "false");
+  await style.click();
+  await expect(style).toHaveAttribute("aria-pressed", "true");
+  await expect(stances.getByText("1 active", { exact: true })).toBeVisible();
+
+  await stances.getByText("Stick-Fighting Style rules").click();
+  await expect(stances.getByText(/You know how to use batons/)).toBeVisible();
 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);

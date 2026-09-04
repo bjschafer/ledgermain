@@ -117,6 +117,12 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "Chained and unchained monk flurry labels are computed in the engine but stay display-only; nothing feeds them into iteratives or saved rolls. Chained flurry substitutes monk level for BAB, which the granted two-weapon-chain mechanism cannot express.",
   },
   {
+    category: "Combat stance feats",
+    note: "Feats that change what a combat stance does are not applied, apart from Crane Style. Crane Riposte's smaller attack penalty and Crane Wing's dodge bonus against melee stay rules text while Fighting Defensively is on, and every other Style feat toggles as a reminder without moving numbers.",
+    issueDetail:
+      "89 vendored feats tagged Combat and Style surface as stance toggles; only Crane Style carries structured changes. Crane Riposte and Crane Wing are tagged Combat without Style, so they do not surface as toggles at all, and their stance riders have no hand-authored entry.",
+  },
+  {
     category: "Character traits",
     note: "The full published trait catalog is searchable in the picker, and a trait whose benefit carries structured numbers or a class-skill grant applies to your sheet automatically; a trait that asks you to choose a skill offers that choice on the trait itself. The rest show their benefit as text to apply at the table. Anything still missing can be added as a homebrew trait.",
     issueDetail:
