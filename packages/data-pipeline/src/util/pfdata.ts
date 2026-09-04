@@ -428,12 +428,70 @@ function renderAfflictionBlock(name: string | undefined, propsRaw: string): stri
 const AFFLICTION_BLOCK_RE = /^::aff(?:\[([^\]]*)\])?\{([^}]*)\}$/;
 
 /**
- * `::h3[Text]{...props}` — a sub-heading (e.g. a sorcerer bloodline's
- * "Wildblooded Mutation" variant, a bloodrager bloodline's alternate form).
- * We don't model the variant structurally, just render its heading as a bold
+ * `::h3[Text]{...props}` and its siblings — a sub-heading (e.g. a sorcerer
+ * bloodline's "Wildblooded Mutation" variant, a bloodrager bloodline's
+ * alternate form; `::sh` for a monster's "Special Abilities" divider). We
+ * don't model the section structurally, just render its heading as a bold
  * paragraph so it doesn't leak raw directive syntax into the prose.
+ *
+ * The whole `h2`-`h6`/`gh`/`sh` family is matched rather than `h3` alone: they
+ * differ only in the visual weight the dataset's own renderer gives them,
+ * which this reader flattens anyway, and matching one of them meant the others
+ * leaked verbatim.
  */
-const H3_DIRECTIVE_RE = /^::h3\[([^\]]*)\](?:\{[^}]*\})?$/;
+const HEADING_DIRECTIVE_RE = /^::(?:h[2-6]|gh|sh)\[([^\]]*)\](?:\{([^}]*)\})?$/;
+
+/**
+ * `::prereq{...}` — an entry's prerequisites, which the dataset states
+ * structurally rather than as a prose line: `c`/`l` a class and its minimum
+ * level, `r` a race, `gN`/`gNtitle` a titled group of alternatives, and
+ * `other` free prose for everything that resists structure. Rendered as the
+ * "Prerequisite(s):" line the books print, since nothing downstream gates on
+ * it (feat prereqs come from the Foundry side; see the hybrid-prereq rule in
+ * CLAUDE.md) and dropping it would lose real published text.
+ */
+const PREREQ_DIRECTIVE_RE = /^::prereq\{([^}]*)\}$/;
+
+/**
+ * `::div{...}` — a layout container (`className=reduce` and friends), carrying
+ * no content of its own. The `:::div` fenced form is already blanked by
+ * `stripBlockLevelMarkers`; this is the leaf form.
+ */
+const DIV_DIRECTIVE_RE = /^::div\{[^}]*\}$/;
+
+function renderPrereqDirective(propsRaw: string): string {
+  const props = parseDirectiveProps(propsRaw);
+  const parts: string[] = [];
+
+  const cls = typeof props.c === "string" ? props.c : undefined;
+  const level = typeof props.l === "string" ? props.l : undefined;
+  if (cls && level) parts.push(`${inlineToHtml(cls)} ${level}`);
+  else if (cls) parts.push(inlineToHtml(cls));
+  else if (level) parts.push(`${level}${ordinalSuffix(Number(level))} level`);
+
+  if (typeof props.r === "string") parts.push(inlineToHtml(props.r));
+
+  // Titled groups of alternatives: `g1="anguish bomb" g1title="Class Feature
+  // or Discovery"`. Only `g1` exists today; read them generically so a `g2`
+  // appearing upstream doesn't silently vanish.
+  const groups = Object.keys(props)
+    .map((k) => /^g(\d+)$/.exec(k)?.[1])
+    .filter((n): n is string => n !== undefined)
+    .sort((a, b) => Number(a) - Number(b));
+  for (const n of groups) {
+    const value = props[`g${n}`];
+    if (typeof value !== "string") continue;
+    const title = props[`g${n}title`];
+    const items = inlineToHtml(value.split("~").join(", "));
+    parts.push(typeof title === "string" ? `${inlineToHtml(title)}: ${items}` : items);
+  }
+
+  if (typeof props.other === "string") parts.push(inlineToHtml(props.other));
+
+  if (parts.length === 0) return "";
+  const label = parts.length === 1 ? "Prerequisite" : "Prerequisites";
+  return `<p><strong>${label}:</strong> ${parts.join("; ")}</p>`;
+}
 
 /**
  * `::list[Label]{... all="A~B~C"}` — a tilde-separated named list (e.g. a
@@ -466,7 +524,25 @@ function renderListDirective(label: string, propsRaw: string): string {
  * text at all, only level-keyed spell names (`s7`/`s10`/...) — rendered as a
  * level list instead.
  */
-const AB_DIRECTIVE_RE = /^::ab\[([^\]]*)\]\{([^}]*)\}$/;
+// The label moved from a `[bracket]` into a `title="&L&Name (Ex)&FN&"` prop
+// in the pack rewrite that followed the v11.11 tag, so both forms are matched
+// and `renderAbDirective` takes whichever one carries the name. Matching only
+// the bracketed form meant every rewritten entry leaked its whole directive.
+const AB_DIRECTIVE_RE = /^::ab(?:\[([^\]]*)\])?\{([^}]*)\}$/;
+
+/**
+ * The dataset wraps a directive's display name in `&L&`/`&FN&` markers (a
+ * link-and-footnote hint for its own renderer). Strip them, and the ability
+ * type suffix with them: `nameSuffix` carries that separately, so leaving it
+ * on the heading prints "Animal Fury (Ex) (Ex)".
+ */
+function abTitleName(title: string): string {
+  return title
+    .replace(/&L&/g, "")
+    .replace(/&FN&/g, "")
+    .replace(/\s*\((?:Ex|Su|Sp|Ps)\)\s*$/i, "")
+    .trim();
+}
 const AB_KIND_KEYS = [
   "passive",
   "immediate",
@@ -522,6 +598,10 @@ function abBodyText(props: Record<string, string | true>): string | undefined {
     .sort((a, b) => a.level - b.level);
   for (const imp of improvements) {
     text += ` At ${imp.level}${ordinalSuffix(imp.level)} level: ${inlineToHtml(imp.text)}`;
+  }
+  if (typeof props.special === "string") text += ` ${inlineToHtml(props.special)}`;
+  if (typeof props.prereq === "string") {
+    text += ` (Prerequisite: ${inlineToHtml(props.prereq.split("~").join(", "))})`;
   }
   if (typeof props.usage === "string") text += ` (${inlineToHtml(props.usage)})`;
   return text;
@@ -638,9 +718,10 @@ export function parsePfDataAbility(line: string): PfDataAbility | null {
   };
 }
 
-function renderAbDirective(name: string, propsRaw: string): string {
+function renderAbDirective(name: string | undefined, propsRaw: string): string {
   const props = parseDirectiveProps(propsRaw);
-  const nameHtml = inlineToHtml(name);
+  const title = typeof props.title === "string" ? abTitleName(props.title) : undefined;
+  const nameHtml = inlineToHtml(name ?? title ?? "");
   const text = abBodyText(props);
 
   if (text === undefined) {
@@ -733,12 +814,19 @@ function renderBlock(lines: string[]): string {
   if (lines.length === 1) {
     const aff = AFFLICTION_BLOCK_RE.exec(lines[0]!);
     if (aff) return renderAfflictionBlock(aff[1], aff[2]!);
-    const h3 = H3_DIRECTIVE_RE.exec(lines[0]!);
-    if (h3) return `<p><strong>${inlineToHtml(h3[1]!)}</strong></p>`;
+    const heading = HEADING_DIRECTIVE_RE.exec(lines[0]!);
+    if (heading) {
+      const extra = heading[2] ? parseDirectiveProps(heading[2]).extra : undefined;
+      const suffix = typeof extra === "string" ? ` ${inlineToHtml(extra)}` : "";
+      return `<p><strong>${inlineToHtml(heading[1]!)}</strong>${suffix}</p>`;
+    }
+    if (DIV_DIRECTIVE_RE.test(lines[0]!)) return "";
+    const prereq = PREREQ_DIRECTIVE_RE.exec(lines[0]!);
+    if (prereq) return renderPrereqDirective(prereq[1]!);
     const list = LIST_DIRECTIVE_RE.exec(lines[0]!);
     if (list) return renderListDirective(list[1]!, list[2]!);
     const ab = AB_DIRECTIVE_RE.exec(lines[0]!);
-    if (ab) return renderAbDirective(ab[1]!, ab[2]!);
+    if (ab) return renderAbDirective(ab[1], ab[2]!);
     const header = INLINE_HEADER_RE.exec(lines[0]!.trim());
     if (header) return `<p><strong>${inlineToHtml(header[1]!)}</strong></p>`;
   }

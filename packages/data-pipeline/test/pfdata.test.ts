@@ -196,4 +196,62 @@ describe("pfDataDescriptionToHtml", () => {
       "<p><strong>Watersense (Ex):</strong> At 6th level: Gain resist electricity 10 At 12th level: Resistance increases to 20</p>",
     );
   });
+
+  // The dataset moved the ability name out of the `[bracket]` and into a
+  // `title` prop wrapped in its own `&L&`/`&FN&` markers. Both forms occur.
+  it("reads a bracket-less '::ab' directive's name from its title prop", () => {
+    const html = pfDataDescriptionToHtml([
+      '::ab{title="&L&Animal Fury (Ex)&FN&" icon=melee ability="The barbarian gains a bite attack."}',
+    ]);
+    expect(html).toBe("<p><strong>Animal Fury:</strong> The barbarian gains a bite attack.</p>");
+  });
+
+  it("folds an '::ab' directive's special and prereq props into its body", () => {
+    const html = pfDataDescriptionToHtml([
+      '::ab{title="&L&Greater Fury&FN&" ability="Works as animal fury." special="The bite deals more damage." prereq="‹ragepower/Animal fury›"}',
+    ]);
+    expect(html).toBe(
+      "<p><strong>Greater Fury:</strong> Works as animal fury. The bite deals more damage. (Prerequisite: Animal fury)</p>",
+    );
+  });
+
+  it("renders a '::prereq' directive as the prerequisite line the books print", () => {
+    expect(pfDataDescriptionToHtml(["::prereq{r=Goblin}"])).toBe(
+      "<p><strong>Prerequisite:</strong> Goblin</p>",
+    );
+    expect(pfDataDescriptionToHtml(["::prereq{l=6 c=alchemist}"])).toBe(
+      "<p><strong>Prerequisite:</strong> alchemist 6</p>",
+    );
+    expect(
+      pfDataDescriptionToHtml([
+        '::prereq{l=6 c=alchemist g1="anguish bomb" g1title="Class Feature or Discovery"}',
+      ]),
+    ).toBe(
+      "<p><strong>Prerequisites:</strong> alchemist 6; Class Feature or Discovery: anguish bomb</p>",
+    );
+  });
+
+  it("resolves cross-refs inside a '::prereq' directive's free-prose 'other'", () => {
+    const html = pfDataDescriptionToHtml([
+      '::prereq{other="A mooncursed must either be a ‹type/humanoid› or ‹type/monstrous humanoid›."}',
+    ]);
+    expect(html).toBe(
+      "<p><strong>Prerequisite:</strong> A mooncursed must either be a humanoid or monstrous humanoid.</p>",
+    );
+  });
+
+  it("renders the whole heading-directive family, not just ::h3", () => {
+    expect(pfDataDescriptionToHtml(["::sh[Special Abilities]"])).toBe(
+      "<p><strong>Special Abilities</strong></p>",
+    );
+    expect(pfDataDescriptionToHtml(['::h4[Archdevils]{jl extra="(aligned and racial)"}'])).toBe(
+      "<p><strong>Archdevils</strong> (aligned and racial)</p>",
+    );
+  });
+
+  it("drops a bare layout '::div' container, which carries no content", () => {
+    expect(pfDataDescriptionToHtml(["::div{className=reduce}", "", "Real prose."])).toBe(
+      "<p>Real prose.</p>",
+    );
+  });
 });

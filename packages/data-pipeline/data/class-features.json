@@ -34887,7 +34887,7 @@
   "subdomain-power:leshy:leshy-caller": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p>You can spontaneously swap out any of your domain spells for a <em>summon nature's ally</em> spell of the same level or lower, to a maximum of summon nature's ally VII. If you do, you must use the spell to summon one or more leshys. Add leaf leshy, gourd leshy, fungus leshy, seaweed leshy, and lotus leshy to your <em>summon nature's ally I, II, III, IV,</em> and <em>V</em> lists, respectively.</p>",
+    "description": "<p>You can spontaneously swap out any of your domain spells for a <em>summon nature's ally</em> spell of the same level or lower, to a maximum of summon nature's ally VII. If you do, you must use the spell to summon one or more leshys. Add leaf leshy, gourd leshy, fungus leshy, seaweed leshy, and lotus leshy to your <em>summon nature's ally I, II, III, IV,</em> and <em>V</em> lists, respectively. You count as a plant creature for the purpose of creating leshys.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:leshy:leshy-caller",
     "name": "Leshy Caller",
