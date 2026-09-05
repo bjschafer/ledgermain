@@ -3370,6 +3370,14 @@ button:focus-visible,
   border-style: dashed;
 }
 
+/* Same reference-only look on a style-feat chip in the Stances panel, which
+   asks the same question of the player: this one is toggleable, it just moves
+   no numbers. Kept on one rule so the two panels cannot drift apart. */
+.chip.stance-style.display-only {
+  opacity: 0.82;
+  border-style: dashed;
+}
+
 /* A ladder member currently superseded by a stricter active sibling (e.g.
    shaken while frightened is on) — covered, not independently toggleable.
    `.chip:disabled` already handles opacity/cursor; this just adjusts it. */

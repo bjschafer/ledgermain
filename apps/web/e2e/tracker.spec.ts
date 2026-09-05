@@ -123,10 +123,11 @@ test("an owned combat Style feat appears as an independent stance toggle with it
   });
   const style = stances.getByRole("button", { name: "Stick-Fighting Style" });
   await expect(style).toHaveAttribute("aria-pressed", "false");
-  // No "M": switching this style on surfaces its rules and moves no numbers.
-  // Crane Style, the one that does, is prereq-blocked from a bare character,
-  // so its badge and math are pinned in the model and engine fixtures instead.
-  await expect(style.locator(".badge-modeled")).toHaveCount(0);
+  // Dashed + degree marker: switching this style on surfaces its rules and
+  // moves no numbers. Crane Style, the one that does, is prereq-blocked from a
+  // bare character, so its plain chip and its math are pinned in the model and
+  // engine fixtures instead.
+  await expect(style).toHaveClass(/display-only/);
   await style.click();
   await expect(style).toHaveAttribute("aria-pressed", "true");
   await expect(stances.getByText("1 active", { exact: true })).toBeVisible();

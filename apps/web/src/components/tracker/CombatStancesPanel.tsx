@@ -63,18 +63,20 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
                 {styles.map((style) => (
                   <button
                     type="button"
-                    className="chip"
+                    className={`chip stance-style${style.movesNumbers ? "" : " display-only"}`}
                     key={style.effectTag}
                     aria-pressed={activeStyleTags.has(style.effectTag)}
+                    title={
+                      style.movesNumbers
+                        ? undefined
+                        : "Reference only: switching this on shows its rules and changes no numbers."
+                    }
                     onClick={() => update((d) => toggleCombatStyle(d, style))}
                   >
                     {style.name}
-                    {style.movesNumbers && (
-                      <span
-                        className="badge-modeled"
-                        title="Changes your numbers while switched on, not just a reminder"
-                      >
-                        M
+                    {style.movesNumbers ? null : (
+                      <span className="dot" aria-hidden="true">
+                        °
                       </span>
                     )}
                   </button>
@@ -103,9 +105,9 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
           actions, and Total Defense prevents attacks even though the sheet keeps their reference
           numbers visible. Style feats toggle separately and stay on until you change them. Most
           characters can use one at a time, while features such as Fuse Style allow more, so the
-          sheet leaves that limit to you. A style marked M changes your numbers while it is on; the
-          rest carry their rules text for you to apply. Attack and Armor Class breakdowns name every
-          applied source.
+          sheet leaves that limit to you. Dashed + ° = reference only, the same marker a condition
+          uses: the style shows its rules and changes no numbers. Attack and Armor Class breakdowns
+          name every applied source.
         </p>
       </Explainer>
     </Panel>
