@@ -19,7 +19,7 @@ import type { BuilderProps } from "../builder/types.js";
 export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
   const activeId = activeCombatStanceId(doc);
   const active = COMBAT_STANCES.find((stance) => stance.id === activeId);
-  const styles = useMemo(() => ownedCombatStyles(doc, refData), [doc, refData]);
+  const styles = useMemo(() => ownedCombatStyles(doc, refData, activeId), [doc, refData, activeId]);
   const activeStyleTags = activeCombatStyleTags(doc);
   const activeStyles = styles.filter((style) => activeStyleTags.has(style.effectTag));
 
@@ -69,6 +69,14 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
                     onClick={() => update((d) => toggleCombatStyle(d, style))}
                   >
                     {style.name}
+                    {style.movesNumbers && (
+                      <span
+                        className="badge-modeled"
+                        title="Changes your numbers while switched on, not just a reminder"
+                      >
+                        M
+                      </span>
+                    )}
                   </button>
                 ))}
               </div>
@@ -90,13 +98,14 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
       </div>
       <Explainer title="How combat stances work">
         <p className="hint">
-          Pick the combat action you are taking this round. Choosing another action replaces the
-          current one; choosing the active action turns it off. Style feats are a separate layer.
-          Most characters can use one style at a time, while features such as Fuse Style can allow
-          more, so the sheet leaves that limit to you. Three Acrobatics ranks improve the defensive
-          actions. Active Crane Style reduces the Fighting Defensively penalty and adds one more
-          dodge Armor Class. Total Defense prevents attacks even though the sheet keeps their
-          reference numbers visible. Attack and Armor Class breakdowns name every applied source.
+          Pick the combat action you are taking this round. Choosing another replaces it, and
+          choosing the active one turns it off. Three Acrobatics ranks improve both defensive
+          actions, and Total Defense prevents attacks even though the sheet keeps their reference
+          numbers visible. Style feats toggle separately and stay on until you change them. Most
+          characters can use one at a time, while features such as Fuse Style allow more, so the
+          sheet leaves that limit to you. A style marked M changes your numbers while it is on; the
+          rest carry their rules text for you to apply. Attack and Armor Class breakdowns name every
+          applied source.
         </p>
       </Explainer>
     </Panel>

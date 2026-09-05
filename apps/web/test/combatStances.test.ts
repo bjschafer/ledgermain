@@ -116,6 +116,44 @@ describe("combat style transitions", () => {
     ]);
   });
 
+  it("marks only the styles some owned feat gates a modifier on", () => {
+    const base = makeDoc();
+    const doc: CharacterDoc = {
+      ...base,
+      build: {
+        ...base.build,
+        feats: [featId("Crane Style"), featId("Dragon Style")],
+      },
+    };
+    const marked = Object.fromEntries(
+      ownedCombatStyles(doc, ref).map((style) => [style.name, style.movesNumbers]),
+    );
+    expect(marked).toEqual({ "Crane Style": true, "Dragon Style": false });
+  });
+
+  it("reads a style against the selected action, ranking the mechanical ones first", () => {
+    const base = makeDoc();
+    const withStyles: CharacterDoc = {
+      ...base,
+      // Boar Style sorts before Crane Style alphabetically, so Crane leading
+      // can only come from the interaction ranking.
+      build: { ...base.build, feats: [featId("Boar Style"), featId("Crane Style")] },
+    };
+
+    // Crane Style gates on fighting defensively and total defense, not charge,
+    // so charging leaves it mechanical in general but inert right now.
+    const charging = toggleCombatStance(withStyles, charge);
+    const whileCharging = ownedCombatStyles(charging, ref, activeCombatStanceId(charging));
+    expect(whileCharging.map((style) => style.name)).toEqual(["Crane Style", "Boar Style"]);
+    expect(whileCharging[0]!.appliesToActiveStance).toBe(false);
+
+    const defending = toggleCombatStance(withStyles, fightingDefensively);
+    const whileDefending = ownedCombatStyles(defending, ref, activeCombatStanceId(defending));
+    expect(whileDefending[0]!.name).toBe("Crane Style");
+    expect(whileDefending[0]!.appliesToActiveStance).toBe(true);
+    expect(whileDefending[1]!.appliesToActiveStance).toBe(false);
+  });
+
   it("toggles styles independently so class features may allow more than one", () => {
     const base = makeDoc();
     const doc: CharacterDoc = {
