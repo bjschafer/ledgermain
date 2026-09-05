@@ -30,6 +30,11 @@
  *    all of it is credited to the LAST level — the level every tail sum
  *    includes, so it helps as much as leniency allows.
  *
+ * The Background Skills variant's 2 ranks per level DO have a level, so they
+ * join each level's capacity directly. Which half of the skill list a rank
+ * belongs to is deliberately ignored here: this check is about purchase
+ * ORDER, and the pool-vs-pool accounting is `skillBudget`'s job.
+ *
  * The thresholds run past L, up to the highest stored rank total: rank m
  * of a skill with m > L has NO level that could host it (its domain
  * [m, L] is empty), so those thresholds fail against zero capacity. That
@@ -48,7 +53,7 @@
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { totalLevel } from "./doc.js";
-import { skillBudget } from "./skills.js";
+import { BACKGROUND_RANKS_PER_LEVEL, skillBudget } from "./skills.js";
 
 export interface SkillRankShortfall {
   /** The earliest threshold j (a character level, 1-indexed) that fails. */
@@ -72,15 +77,18 @@ export function skillRankShortfall(
   const level = totalLevel(doc);
   if (level === 0) return null;
 
-  // Per-character-level class budgets: one entry per level actually taken,
-  // regardless of which class it belongs to (order is unknown — see file doc).
+  const budget = skillBudget(doc, refData, intMod);
+  const backgroundPerLevel = budget.background ? BACKGROUND_RANKS_PER_LEVEL : 0;
+
+  // Per-character-level budgets: one entry per level actually taken, regardless
+  // of which class it belongs to (order is unknown — see file doc).
   let classTotal = 0;
   const perLevel: number[] = [];
   for (const c of doc.identity.classes) {
     const def = Object.values(refData.classes).find((cl) => cl.tag === c.tag);
     const grant = Math.max(1, (def ? def.skillsPerLevel : 2) + intMod);
     classTotal += grant * c.level;
-    for (let i = 0; i < c.level; i++) perLevel.push(grant);
+    for (let i = 0; i < c.level; i++) perLevel.push(grant + backgroundPerLevel);
   }
   perLevel.sort((a, b) => a - b);
 
@@ -88,7 +96,7 @@ export function skillRankShortfall(
   // favored-class/gmGrants) — reusing skillBudget keeps this in sync with
   // that logic instead of re-deriving it. Credited entirely to the last
   // (already-largest) level.
-  const addend = Math.max(0, skillBudget(doc, refData, intMod).total - classTotal);
+  const addend = Math.max(0, budget.total - classTotal);
   const lastIndex = perLevel.length - 1;
   perLevel[lastIndex] = (perLevel[lastIndex] ?? 0) + addend;
 

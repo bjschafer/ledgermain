@@ -7,22 +7,47 @@
  * favored-class "skill" picks add one each. A character may put at most `total
  * character level` ranks in one skill (enforced in doc.setSkillRank). This is
  * the running total the builder shows.
+ *
+ * A character using the Background Skills variant (`settings.backgroundSkills`)
+ * gets a second, parallel pool on top of all that: 2 ranks per level, Int
+ * irrelevant, spendable only on the background half of the skill list.
  */
 import type { CharacterDoc, RefData } from "@pf1/schema";
 import {
   buildRollData,
   compute,
+  isBackgroundSkill,
   resolveArchetypeFeatureEffect,
   tryEvaluateFormula,
 } from "@pf1/engine";
 import type { RollData } from "@pf1/engine";
 
+import { totalLevel } from "./doc.js";
 import { suppressedRaceTargets } from "./racialTraits.js";
+
+/** Ranks per level granted by the Background Skills variant (Int never adjusts it). */
+export const BACKGROUND_RANKS_PER_LEVEL = 2;
 
 export interface SkillBudget {
   total: number;
   spent: number;
   remaining: number;
+  /**
+   * The Background Skills pool, or `null` when the character isn't using the
+   * variant (in which case background skills draw on the normal budget like
+   * any other skill, exactly as they always did). `spent` counts only what the
+   * background pool actually paid for: ranks past `total` are `overflow`, and
+   * are charged to the normal budget instead, since RAW lets ordinary ranks
+   * buy background skills but never the reverse.
+   */
+  background: BackgroundSkillPool | null;
+}
+
+export interface BackgroundSkillPool {
+  total: number;
+  spent: number;
+  remaining: number;
+  overflow: number;
 }
 
 /**
@@ -102,6 +127,34 @@ export function skillBudget(doc: CharacterDoc, refData: RefData, intMod: number)
   // GM/homebrew addend (see build.gmGrants). Omitted/absent = 0.
   total += doc.build.gmGrants?.skillRanks ?? 0;
 
-  const spent = Object.values(doc.build.skillRanks).reduce((s, n) => s + n, 0);
-  return { total, spent, remaining: total - spent };
+  // Background Skills (Pathfinder Unchained, opt-in): a second pool of 2 ranks
+  // per level, spendable only on background skills. Ordinary ranks may still
+  // buy a background skill, so the pool pays first and the overflow falls back
+  // onto the normal budget.
+  const backgroundOn = doc.build.settings?.backgroundSkills ?? false;
+  const backgroundTotal = backgroundOn ? BACKGROUND_RANKS_PER_LEVEL * totalLevel(doc) : 0;
+
+  let backgroundRanks = 0;
+  let adventuringRanks = 0;
+  for (const [id, ranks] of Object.entries(doc.build.skillRanks)) {
+    if (backgroundOn && isBackgroundSkill(id)) backgroundRanks += ranks;
+    else adventuringRanks += ranks;
+  }
+  const backgroundSpent = Math.min(backgroundRanks, backgroundTotal);
+  const overflow = backgroundRanks - backgroundSpent;
+
+  const spent = adventuringRanks + overflow;
+  return {
+    total,
+    spent,
+    remaining: total - spent,
+    background: backgroundOn
+      ? {
+          total: backgroundTotal,
+          spent: backgroundSpent,
+          remaining: backgroundTotal - backgroundSpent,
+          overflow,
+        }
+      : null,
+  };
 }

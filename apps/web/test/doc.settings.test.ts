@@ -13,6 +13,7 @@ import {
   reconcileFavoredClassBonus,
   setAge,
   setAppearance,
+  setBackgroundSkills,
   setDeity,
   setEncumbranceEnabled,
   setFavoredClass,
@@ -262,6 +263,39 @@ describe("setFractionalBonuses()", () => {
     const next = setFractionalBonuses(d, true);
     expect(d.build.settings?.fractionalBonuses).toBeUndefined();
     expect(next.build.settings?.encumbranceEnabled).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setBackgroundSkills (Pathfinder Unchained optional rule)
+// ---------------------------------------------------------------------------
+describe("setBackgroundSkills()", () => {
+  it("is absent on a fresh doc (default off = RAW)", () => {
+    expect(doc().build.settings?.backgroundSkills).toBeUndefined();
+  });
+
+  it("stores true when enabled", () => {
+    expect(setBackgroundSkills(doc(), true).build.settings?.backgroundSkills).toBe(true);
+  });
+
+  it("stores false when disabled", () => {
+    expect(setBackgroundSkills(doc(), false).build.settings?.backgroundSkills).toBe(false);
+  });
+
+  it("does not mutate the original doc, and leaves sibling settings alone", () => {
+    const d = setFractionalBonuses(doc(), true);
+    const next = setBackgroundSkills(d, true);
+    expect(d.build.settings?.backgroundSkills).toBeUndefined();
+    expect(next.build.settings?.fractionalBonuses).toBe(true);
+  });
+
+  it("leaves already-assigned ranks alone when toggled off", () => {
+    const d = setBackgroundSkills(doc(), true);
+    const withRanks: CharacterDoc = {
+      ...d,
+      build: { ...d.build, skillRanks: { apr: 2 } },
+    };
+    expect(setBackgroundSkills(withRanks, false).build.skillRanks).toEqual({ apr: 2 });
   });
 });
 

@@ -29,6 +29,7 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
   );
 
   const over = budget.remaining < 0;
+  const background = budget.background;
 
   return (
     <Panel
@@ -37,8 +38,16 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
       icon={<BookIcon />}
       storageKey="panel:Skills"
       right={
-        <span className={`budge${over ? " over" : ""}`}>
-          ranks <b>{budget.spent}</b> / {budget.total} · <b>{budget.remaining}</b> left
+        <span className="skill-budget-badges">
+          <span className={`budge${over ? " over" : ""}`}>
+            ranks <b>{budget.spent}</b> / {budget.total} · <b>{budget.remaining}</b> left
+          </span>
+          {background && (
+            <span className="budge">
+              background <b>{background.spent}</b> / {background.total} ·{" "}
+              <b>{background.remaining}</b> left
+            </span>
+          )}
         </span>
       }
     >
@@ -56,8 +65,18 @@ export function SkillsSection({ doc, sheet, refData, update }: BuilderProps) {
                 : over
                   ? "over budget, trim some ranks"
                   : "all ranks assigned"}
+              {background && background.remaining > 0
+                ? `, ${background.remaining} background rank${background.remaining === 1 ? "" : "s"} left`
+                : ""}
             </span>
           </div>
+
+          {background && background.overflow > 0 && (
+            <p className="hint">
+              {background.overflow} background rank{background.overflow === 1 ? "" : "s"} past the
+              background pool, paid for out of your ordinary ranks.
+            </p>
+          )}
 
           {shortfall && (
             <p className="hint affliction-warn">

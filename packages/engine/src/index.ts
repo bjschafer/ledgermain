@@ -79,6 +79,8 @@ export {
   skillBaseId,
   skillUsesAcp,
   isTrainedOnly,
+  BACKGROUND_SKILL_IDS,
+  isBackgroundSkill,
   raceGrantsFlexibleAbility,
   baseSpellsPerDay,
   baseSpellsKnown,

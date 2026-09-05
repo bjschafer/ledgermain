@@ -24,6 +24,7 @@ function makeDoc(over: {
   skillRanks?: Record<string, number>;
   gmSkillRanks?: number;
   favoredClassBonus?: ("hp" | "skill" | "other")[];
+  backgroundSkills?: boolean;
 }): CharacterDoc {
   return {
     schemaVersion: 2,
@@ -45,6 +46,7 @@ function makeDoc(over: {
       gear: [],
       gmGrants: over.gmSkillRanks != null ? { skillRanks: over.gmSkillRanks } : undefined,
       favoredClassBonus: over.favoredClassBonus,
+      settings: over.backgroundSkills ? { backgroundSkills: true } : undefined,
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -150,5 +152,35 @@ describe("skillRankShortfall", () => {
       gmSkillRanks: 2,
     });
     expect(skillRankShortfall(doc, ref, 0)).toBeNull();
+  });
+});
+
+describe("skillRankShortfall: Background Skills variant (issue #161)", () => {
+  // Wizard 3, Int +0: 2 class ranks/level. Four skills at 3 ranks apiece is 12
+  // ranks against a 6-rank budget, so it can't be ordered at all...
+  const ranks = { apr: 3, khi: 3, per: 3, spl: 3 };
+
+  it("is infeasible without the variant", () => {
+    const doc = makeDoc({ classes: [{ tag: "wizard", level: 3 }], skillRanks: ranks });
+    expect(skillRankShortfall(doc, ref, 0)).toEqual({ level: 1, required: 12, available: 6 });
+  });
+
+  it("...but the variant's 2 ranks per level fund it exactly", () => {
+    // 4 ranks per level now: 12 at threshold 1, 8 at 2, 4 at 3, each met.
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 3 }],
+      skillRanks: ranks,
+      backgroundSkills: true,
+    });
+    expect(skillRankShortfall(doc, ref, 0)).toBeNull();
+  });
+
+  it("still flags a spread even the variant can't fund", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 3 }],
+      skillRanks: { ...ranks, ste: 3, lin: 3 },
+      backgroundSkills: true,
+    });
+    expect(skillRankShortfall(doc, ref, 0)).toEqual({ level: 1, required: 18, available: 12 });
   });
 });

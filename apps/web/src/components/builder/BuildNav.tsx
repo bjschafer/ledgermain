@@ -85,8 +85,10 @@ export function useAttentionBadges({
       };
     }
 
-    // Skills: ranks left to spend (or, rarely, overspent).
-    const { remaining } = skillBudget(doc, refData, permanentIntMod(doc, refData));
+    // Skills: ranks left to spend (or, rarely, overspent) across both pools —
+    // an unspent background rank is just as much an open build decision.
+    const budget = skillBudget(doc, refData, permanentIntMod(doc, refData));
+    const remaining = budget.remaining + (budget.background?.remaining ?? 0);
     if (remaining > 0) {
       badges["section-skills"] = {
         count: remaining,

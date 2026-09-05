@@ -267,6 +267,38 @@ export function isTrainedOnly(skillId: string): boolean {
 }
 
 /**
+ * The Pathfinder Unchained "Background Skills" optional rule splits the skill
+ * list in two: these are the background skills, everything else is an
+ * adventuring skill. Only meaningful when a character opts into the variant
+ * (`build.settings.backgroundSkills`), which grants a separate pool of 2 ranks
+ * per level spendable only on this list. Artistry and Lore are the two skills
+ * the variant itself introduces; the vendored class data already carries them
+ * on every base class's `classSkills`, so no class-skill fixup is needed for
+ * the variant's "Artistry follows Craft/Perform, Lore is always a class skill"
+ * clause.
+ */
+export const BACKGROUND_SKILL_IDS: ReadonlySet<string> = new Set([
+  "apr", // Appraise
+  "art", // Artistry
+  "crf", // Craft
+  "han", // Handle Animal
+  "ken", // Knowledge (engineering)
+  "kge", // Knowledge (geography)
+  "khi", // Knowledge (history)
+  "kno", // Knowledge (nobility)
+  "lin", // Linguistics
+  "lor", // Lore
+  "prf", // Perform
+  "pro", // Profession
+  "slt", // Sleight of Hand
+]);
+
+/** Returns true if `skillId` is a background skill under the Unchained variant. */
+export function isBackgroundSkill(skillId: string): boolean {
+  return BACKGROUND_SKILL_IDS.has(skillBaseId(skillId));
+}
+
+/**
  * Returns true when `race` grants a flexible +2 to an ability score of the
  * player's choice (Human, Half-Elf, Half-Orc in PF1). These races have NO
  * ability-score changes in `race.changes`; fixed-mod races (e.g. Elf: +2 Dex,

@@ -1413,6 +1413,24 @@ button:focus-visible,
   vertical-align: middle;
 }
 
+/* background-skill badge (Background Skills variant) — reads like the class
+   badge but muted, since it labels which pool a rank comes out of */
+.tag-bg {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  color: var(--faint);
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* the Skills panel/dialog shows two rank pools side by side under the variant */
+.skill-budget-badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  align-items: baseline;
+}
+
 /* remove button for a parameterized Craft/Profession/Perform instance */
 .skill-remove {
   background: none;

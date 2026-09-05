@@ -18,6 +18,7 @@ import { CHANGELOG } from "../../model/changelogEntries.js";
 import { COVERAGE_NOTES } from "../../model/coverageNotes.js";
 import { characterExportFilename, characterExportJson } from "../../model/exportCharacter.js";
 import {
+  setBackgroundSkills,
   setClericWisdomHouserule,
   setEarlyBonusSpells,
   setEncumbranceEnabled,
@@ -116,6 +117,7 @@ export function SettingsSection({
   const xpTrack = settings.xpTrack ?? DEFAULT_XP_TRACK;
   const encumbranceEnabled = settings.encumbranceEnabled ?? false;
   const fractionalBonuses = settings.fractionalBonuses ?? false;
+  const backgroundSkills = settings.backgroundSkills ?? false;
   const polymorphEnabled = settings.polymorphEnabled;
   const ignoreAlignmentRestrictions = settings.ignoreClassAlignmentRestrictions ?? false;
   const overrides = settings.statOverrides ?? {};
@@ -568,6 +570,44 @@ export function SettingsSection({
                 {doc.identity.classes.length > 1
                   ? "Usually raises your attack bonus and lowers a save two of your classes are both good at."
                   : "This character has one class, so the rule changes nothing until you multiclass."}
+              </p>
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-background-skills",
+          label: "Background Skills",
+          node: (
+            <Panel title="Background Skills" step="⚙" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                A Pathfinder Unchained optional rule. Every character gets 2 extra skill ranks per
+                level (Intelligence doesn't change that number) which can only be spent on
+                background skills: Appraise, Artistry, Craft, Handle Animal, Knowledge (engineering,
+                geography, history, nobility), Linguistics, Lore, Perform, Profession, and Sleight
+                of Hand. Your ordinary ranks can still buy those skills if you want them.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={backgroundSkills}
+                  onClick={() => update((d) => setBackgroundSkills(d, true))}
+                >
+                  Enabled
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={!backgroundSkills}
+                  onClick={() => update((d) => setBackgroundSkills(d, false))}
+                >
+                  Disabled (default)
+                </button>
+              </div>
+              <p className="hint" style={{ marginTop: 10, fontSize: "0.75rem" }}>
+                {backgroundSkills
+                  ? "The Skills panel tracks the two pools separately, and background skills are tagged in the skill list."
+                  : "Turning this on later keeps every rank you've already assigned: they just start drawing on the background pool."}
               </p>
             </Panel>
           ),

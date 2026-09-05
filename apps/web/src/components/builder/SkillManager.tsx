@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { PARAMETERIZED_SKILL_PREFIXES } from "@pf1/engine";
+import { isBackgroundSkill, PARAMETERIZED_SKILL_PREFIXES } from "@pf1/engine";
 
 import { addSkillInstance, setSkillRank, totalLevel } from "../../model/doc.js";
 import { signed, skillName, SKILL_NAMES } from "../../model/names.js";
@@ -45,6 +45,7 @@ export function SkillManager({
   }, [sheet.skills, query]);
 
   const over = budget.remaining < 0;
+  const background = budget.background;
 
   function addSubskill() {
     if (!newLabel.trim()) return;
@@ -56,8 +57,16 @@ export function SkillManager({
     <Dialog
       title="Skills"
       subtitle={
-        <span className={`budge${over ? " over" : ""}`}>
-          ranks <b>{budget.spent}</b> / {budget.total} · <b>{budget.remaining}</b> left
+        <span className="skill-budget-badges">
+          <span className={`budge${over ? " over" : ""}`}>
+            ranks <b>{budget.spent}</b> / {budget.total} · <b>{budget.remaining}</b> left
+          </span>
+          {background && (
+            <span className="budge">
+              background <b>{background.spent}</b> / {background.total} ·{" "}
+              <b>{background.remaining}</b> left
+            </span>
+          )}
         </span>
       }
       onClose={onClose}
@@ -91,6 +100,14 @@ export function SkillManager({
                     <span className="tag-cls" title="class skill">
                       class
                     </span>
+                  ) : null}
+                  {background && isBackgroundSkill(s.id) ? (
+                    <InfoTip
+                      className="tag-bg"
+                      content="Background skill: draws on the background rank pool first"
+                    >
+                      background
+                    </InfoTip>
                   ) : null}
                   {s.trainedOnly ? (
                     <InfoTip

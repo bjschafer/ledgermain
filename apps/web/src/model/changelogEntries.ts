@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-05-background-skills",
+    date: "2026-09-05",
+    title: "Background Skills, without the bookkeeping",
+    note: "Settings has a toggle for the Background Skills optional rule. Turn it on and every level grants two extra ranks that only background skills can spend, on top of your normal ranks, with no help from Intelligence. The Skills panel tracks the two pools side by side, the skill list tags which skills draw on the background pool, and ordinary ranks can still buy a background skill when you want more than two: those extras come out of your normal budget and the panel says so.",
+  },
+  {
     id: "2026-09-03-combat-stances",
     date: "2026-09-03",
     title: "Defensive fighting and charges move the sheet",

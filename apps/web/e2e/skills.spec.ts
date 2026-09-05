@@ -67,3 +67,42 @@ test("a rank spent in the manager lands in the panel's summary", async ({ page }
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
+
+test("the Background Skills variant splits the panel into two rank pools", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  const panel = await gotoRogueSkills(page);
+
+  // Off by default: one budget line, no background pool anywhere.
+  await expect(panel.locator(".budge")).toHaveCount(1);
+
+  await page.getByRole("tab", { name: "Settings" }).click();
+  const settings = page.locator(".panel", { hasText: "Background Skills" }).first();
+  await settings.getByRole("button", { name: "Enabled" }).click();
+
+  await page.getByRole("tab", { name: "Build" }).click();
+  // Rogue 1: 8 ordinary ranks and 2 background ranks, tracked separately.
+  await expect(panel.locator(".budge")).toHaveCount(2);
+  await expect(panel).toContainText("background 0 / 2");
+
+  // Appraise is a background skill, so its rank comes out of that pool.
+  await panel.getByRole("button", { name: "Assign skills" }).click();
+  const dialog = page.getByRole("dialog");
+  const appraise = skillRow(dialog, page, "Appraise");
+  await expect(appraise).toContainText("background");
+  await appraise.getByLabel("Appraise ranks").fill("1");
+  await appraise.getByLabel("Appraise ranks").blur();
+  await expect(dialog.locator(".dialog-subtitle")).toContainText("background 1 / 2");
+
+  // Stealth is an adventuring skill and leaves the background pool alone.
+  const stealth = skillRow(dialog, page, "Stealth");
+  await stealth.getByLabel("Stealth ranks").fill("1");
+  await stealth.getByLabel("Stealth ranks").blur();
+  await expect(dialog.locator(".dialog-subtitle")).toContainText("ranks 1 / 8");
+  await expect(dialog.locator(".dialog-subtitle")).toContainText("background 1 / 2");
+
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});

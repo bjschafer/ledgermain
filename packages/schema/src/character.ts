@@ -707,6 +707,21 @@ export interface CharacterDoc {
        * same posture as `fractionalBonuses`'s sibling toggles.
        */
       earlyBonusSpells?: "toSecond" | "all";
+      /**
+       * Whether this character uses the Pathfinder Unchained "Background
+       * Skills" optional rule: a second pool of 2 skill ranks per level
+       * (Intelligence does NOT adjust it) spendable only on the background
+       * skills (Appraise, Artistry, Craft, Handle Animal, Knowledge
+       * [engineering/geography/history/nobility], Linguistics, Lore, Perform,
+       * Profession, Sleight of Hand — see `@pf1/engine`'s
+       * `BACKGROUND_SKILL_IDS`). Ordinary ranks may still be spent on a
+       * background skill, so the builder charges background spending to the
+       * background pool first and spills the overflow into the normal budget.
+       * Default false (absent) = RAW, same posture as `fractionalBonuses`'s
+       * sibling toggles; nothing derived changes either way, only the
+       * builder's rank budget.
+       */
+      backgroundSkills?: boolean;
     };
     /**
      * Player-curated bookmarks into already-computed sheet numbers ("saved

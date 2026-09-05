@@ -1815,6 +1815,25 @@ export function setFractionalBonuses(doc: CharacterDoc, enabled: boolean): Chara
 }
 
 /**
+ * Toggle the Pathfinder Unchained "Background Skills" optional rule. Off by
+ * default (absent = false) = RAW, same posture as `setFractionalBonuses`. Only
+ * the builder's rank budget changes: a second pool of 2 ranks per level that
+ * only background skills may draw on (see `model/skills.ts:skillBudget`).
+ * Turning it back off doesn't touch already-assigned ranks — they simply go
+ * back to being charged against the normal budget, which may leave the
+ * character over budget until the player trims them.
+ */
+export function setBackgroundSkills(doc: CharacterDoc, enabled: boolean): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, backgroundSkills: enabled },
+    },
+  };
+}
+
+/**
  * Force the Polymorph / Wild Shape panel on (`true`) or off (`false`), or pass
  * `null` to restore auto-detection from the character's own polymorph sources
  * (see `model/polymorph.ts`'s `polymorphPanelVisible`).

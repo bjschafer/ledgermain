@@ -24,6 +24,7 @@ function makeDoc(over: {
   gmSkillRanks?: number;
   int?: number;
   archetypes?: string[];
+  backgroundSkills?: boolean;
 }): CharacterDoc {
   return {
     schemaVersion: 2,
@@ -53,6 +54,7 @@ function makeDoc(over: {
       gear: [],
       gmGrants: over.gmSkillRanks != null ? { skillRanks: over.gmSkillRanks } : undefined,
       archetypes: over.archetypes,
+      settings: over.backgroundSkills ? { backgroundSkills: true } : undefined,
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -259,5 +261,114 @@ describe("permanentIntMod: excludes active buffs (temporary Int bonuses grant no
     // grants +2 Int, so int 10 -> mod +1 via the race change, not a buff.
     const doc = makeDoc({ classes: [{ tag: "wizard", level: 1 }], race: "Elf", int: 10 });
     expect(permanentIntMod(doc, ref)).toBe(1);
+  });
+});
+
+describe("skillBudget: Background Skills variant (issue #161)", () => {
+  it("is off by default: no background pool, background skills spend the normal budget", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 2 }],
+      race: "Elf",
+      skillRanks: { apr: 2, per: 2 },
+    });
+    const b = skillBudget(doc, ref, 0);
+    expect(b.background).toBeNull();
+    expect(b.spent).toBe(4);
+    expect(b.remaining).toBe(0);
+  });
+
+  it("grants 2 ranks per level, unaffected by Intelligence", () => {
+    const lowInt = makeDoc({
+      classes: [{ tag: "wizard", level: 5 }],
+      race: "Elf",
+      backgroundSkills: true,
+    });
+    const highInt = makeDoc({
+      classes: [{ tag: "wizard", level: 5 }],
+      race: "Elf",
+      int: 18,
+      backgroundSkills: true,
+    });
+    expect(skillBudget(lowInt, ref, 0).background?.total).toBe(10);
+    expect(skillBudget(highInt, ref, 4).background?.total).toBe(10);
+    // The ordinary pool still scales with Int: wizard 2/level + Int.
+    expect(skillBudget(highInt, ref, 4).total).toBe(30);
+  });
+
+  it("counts every class's levels toward the pool on a multiclass build", () => {
+    const doc = makeDoc({
+      classes: [
+        { tag: "wizard", level: 3 },
+        { tag: "rogue", level: 2 },
+      ],
+      race: "Elf",
+      backgroundSkills: true,
+    });
+    expect(skillBudget(doc, ref, 0).background?.total).toBe(10);
+  });
+
+  it("charges background skills to the background pool, leaving the normal budget alone", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 2 }],
+      race: "Elf",
+      // apr/lin are background skills; per/spl are adventuring skills.
+      skillRanks: { apr: 2, lin: 2, per: 2, spl: 2 },
+      backgroundSkills: true,
+    });
+    const b = skillBudget(doc, ref, 0);
+    expect(b.total).toBe(4);
+    expect(b.spent).toBe(4);
+    expect(b.remaining).toBe(0);
+    expect(b.background).toEqual({ total: 4, spent: 4, remaining: 0, overflow: 0 });
+  });
+
+  it("treats a parameterized Craft/Perform/Profession instance as a background skill", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 2 }],
+      race: "Elf",
+      skillRanks: { "crf.alchemy": 2, "prf.oratory": 1, "pro.scribe": 1 },
+      backgroundSkills: true,
+    });
+    const b = skillBudget(doc, ref, 0);
+    expect(b.background?.spent).toBe(4);
+    expect(b.spent).toBe(0);
+  });
+
+  it("spills background spending past the pool onto the ordinary budget", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 2 }],
+      race: "Elf",
+      // 6 background ranks against a pool of 4: the extra 2 come out of the
+      // ordinary budget, which RAW allows (but never the other way round).
+      skillRanks: { apr: 2, lin: 2, khi: 2 },
+      backgroundSkills: true,
+    });
+    const b = skillBudget(doc, ref, 0);
+    expect(b.background).toEqual({ total: 4, spent: 4, remaining: 0, overflow: 2 });
+    expect(b.spent).toBe(2);
+    expect(b.remaining).toBe(2);
+  });
+
+  it("never pays for an adventuring skill out of the background pool", () => {
+    const doc = makeDoc({
+      classes: [{ tag: "wizard", level: 2 }],
+      race: "Elf",
+      skillRanks: { per: 2, spl: 2, ste: 2 },
+      backgroundSkills: true,
+    });
+    const b = skillBudget(doc, ref, 0);
+    expect(b.spent).toBe(6);
+    expect(b.remaining).toBe(-2);
+    expect(b.background).toEqual({ total: 4, spent: 0, remaining: 4, overflow: 0 });
+  });
+
+  it("a character with no levels has an empty background pool", () => {
+    const doc = makeDoc({ classes: [], race: "Elf", backgroundSkills: true });
+    expect(skillBudget(doc, ref, 0).background).toEqual({
+      total: 0,
+      spent: 0,
+      remaining: 0,
+      overflow: 0,
+    });
   });
 });
