@@ -7,6 +7,7 @@ import type { ActiveBuff, CharacterDoc } from "@pf1/schema";
 import {
   activeCombatStanceId,
   activeCombatStyleTags,
+  maxActiveCombatStyles,
   ownedCombatStyles,
   toggleCombatStance,
   toggleCombatStyle,
@@ -154,7 +155,7 @@ describe("combat style transitions", () => {
     expect(whileDefending[1]!.appliesToActiveStance).toBe(false);
   });
 
-  it("toggles styles independently so class features may allow more than one", () => {
+  it("holds one style at a time, so entering another replaces it", () => {
     const base = makeDoc();
     const doc: CharacterDoc = {
       ...base,
@@ -163,14 +164,61 @@ describe("combat style transitions", () => {
         feats: [featId("Crane Style"), featId("Dragon Style")],
       },
     };
+    expect(maxActiveCombatStyles(doc)).toBe(1);
+
     const [crane, dragon] = ownedCombatStyles(doc, ref);
-    const both = toggleCombatStyle(toggleCombatStyle(doc, crane!), dragon!);
-    expect(activeCombatStyleTags(both)).toEqual(
+    const craneOn = toggleCombatStyle(doc, crane!);
+    expect(activeCombatStyleTags(craneOn)).toEqual(new Set(["combatStyle:crane-style"]));
+
+    const dragonOn = toggleCombatStyle(craneOn, dragon!);
+    expect(activeCombatStyleTags(dragonOn)).toEqual(new Set(["combatStyle:dragon-style"]));
+
+    expect(activeCombatStyleTags(toggleCombatStyle(dragonOn, dragon!)).size).toBe(0);
+  });
+
+  it("raises the limit for Master of Many Styles, dropping the oldest stance past it", () => {
+    const base = makeDoc();
+    const moms = (level: number): CharacterDoc => ({
+      ...base,
+      identity: { ...base.identity, classes: [{ tag: "monk", level }] },
+      build: {
+        ...base.build,
+        archetypes: ["monk:master-of-many-styles"],
+        feats: [featId("Crane Style"), featId("Dragon Style"), featId("Snake Style")],
+      },
+    });
+
+    // Fuse Style: two stances at 1st, three at 8th, four at 15th, five at 20th.
+    expect([1, 8, 15, 20].map((level) => maxActiveCombatStyles(moms(level)))).toEqual([2, 3, 4, 5]);
+
+    const doc = moms(1);
+    const [crane, dragon, snake] = ownedCombatStyles(doc, ref);
+    const two = toggleCombatStyle(toggleCombatStyle(doc, crane!), dragon!);
+    expect(activeCombatStyleTags(two)).toEqual(
       new Set(["combatStyle:crane-style", "combatStyle:dragon-style"]),
     );
 
-    const dragonOnly = toggleCombatStyle(both, crane!);
-    expect(activeCombatStyleTags(dragonOnly)).toEqual(new Set(["combatStyle:dragon-style"]));
+    // A third at 1st level pushes out Crane Style, the stance entered first.
+    const three = toggleCombatStyle(two, snake!);
+    expect(activeCombatStyleTags(three)).toEqual(
+      new Set(["combatStyle:dragon-style", "combatStyle:snake-style"]),
+    );
+  });
+
+  it("leaves buffs that are not styles alone when the limit pushes one out", () => {
+    const base = makeDoc([
+      { instanceId: "spell", buffId: "some-vendored-buff", name: "Haste", changes: [] },
+    ]);
+    const doc: CharacterDoc = {
+      ...base,
+      build: {
+        ...base.build,
+        feats: [featId("Crane Style"), featId("Dragon Style")],
+      },
+    };
+    const [crane, dragon] = ownedCombatStyles(doc, ref);
+    const swapped = toggleCombatStyle(toggleCombatStyle(doc, crane!), dragon!);
+    expect(swapped.live.activeBuffs.map((buff) => buff.name)).toEqual(["Haste", "Dragon Style"]);
   });
 
   it("keeps combat action and style state on separate axes", () => {

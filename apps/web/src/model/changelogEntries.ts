@@ -48,7 +48,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-09-03-combat-stances",
     date: "2026-09-03",
     title: "Defensive fighting and charges move the sheet",
-    note: "The Play tab has three quick combat actions for math everyone used to do by hand. Fighting Defensively moves every attack down four and Armor Class up two, Total Defense adds four to Armor Class, and Charge adds two to melee attacks while taking two from Armor Class. Three Acrobatics ranks improve both defensive bonuses. Your Style feats also appear beside those actions as their own toggles, with their rules close at hand, and a dashed one with a ° is reference only, the same marker your conditions use. Active Crane Style applies its smaller attack penalty and extra point of dodge Armor Class. Open an attack or Armor Class breakdown and each part names its source.",
+    note: "The Play tab has three quick combat actions for math everyone used to do by hand. Fighting Defensively moves every attack down four and Armor Class up two, Total Defense adds four to Armor Class, and Charge adds two to melee attacks while taking two from Armor Class. Three Acrobatics ranks improve both defensive bonuses. Your Style feats also appear beside those actions as their own toggles, with their rules close at hand, and a dashed one with a ° is reference only, the same marker your conditions use. You hold one style at a time, so entering another swaps it out, unless a monk's Master of Many Styles lets you fuse more. Active Crane Style applies its smaller attack penalty and extra point of dodge Armor Class. Open an attack or Armor Class breakdown and each part names its source.",
   },
   {
     id: "2026-09-03-lighter-tracker-load",

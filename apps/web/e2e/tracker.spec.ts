@@ -92,7 +92,7 @@ test("combat stances update attack and AC, remain exclusive, and show their sour
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
 
-test("an owned combat Style feat appears as an independent stance toggle with its rules", async ({
+test("an owned combat Style feat toggles beside the actions and shows its rules", async ({
   page,
 }) => {
   const { consoleErrors, pageErrors } = guard(page);
@@ -130,7 +130,8 @@ test("an owned combat Style feat appears as an independent stance toggle with it
   await expect(style).toHaveClass(/display-only/);
   await style.click();
   await expect(style).toHaveAttribute("aria-pressed", "true");
-  await expect(stances.getByText("1 active", { exact: true })).toBeVisible();
+  // A character holds one style at a time, so the group head names it.
+  await expect(stances.getByText("Stick-Fighting Style", { exact: true })).toBeVisible();
 
   await stances.getByText("Stick-Fighting Style rules").click();
   await expect(stances.getByText(/You know how to use batons/)).toBeVisible();

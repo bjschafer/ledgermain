@@ -9,6 +9,7 @@ import { Panel } from "../builder/Panel.js";
 import {
   activeCombatStanceId,
   activeCombatStyleTags,
+  maxActiveCombatStyles,
   ownedCombatStyles,
   toggleCombatStance,
   toggleCombatStyle,
@@ -22,6 +23,7 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
   const styles = useMemo(() => ownedCombatStyles(doc, refData, activeId), [doc, refData, activeId]);
   const activeStyleTags = activeCombatStyleTags(doc);
   const activeStyles = styles.filter((style) => activeStyleTags.has(style.effectTag));
+  const styleLimit = maxActiveCombatStyles(doc);
 
   return (
     <Panel title="Stances" icon={<SwordIcon />} storageKey="panel:CombatStances">
@@ -54,7 +56,9 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
           <div className="stance-group-head">
             <h4 className="tracker-sub">Style feats</h4>
             <span className="hint">
-              {activeStyles.length > 0 ? `${activeStyles.length} active` : "None active"}
+              {styleLimit > 1
+                ? `${activeStyles.length} of ${styleLimit} active`
+                : (activeStyles[0]?.name ?? "None active")}
             </span>
           </div>
           {styles.length > 0 ? (
@@ -103,11 +107,12 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
           Pick the combat action you are taking this round. Choosing another replaces it, and
           choosing the active one turns it off. Three Acrobatics ranks improve both defensive
           actions, and Total Defense prevents attacks even though the sheet keeps their reference
-          numbers visible. Style feats toggle separately and stay on until you change them. Most
-          characters can use one at a time, while features such as Fuse Style allow more, so the
-          sheet leaves that limit to you. Dashed + ° = reference only, the same marker a condition
-          uses: the style shows its rules and changes no numbers. Attack and Armor Class breakdowns
-          name every applied source.
+          numbers visible. Style feats are a separate layer that stays on until you change it.
+          Entering one is a swift action and you hold a single style, so picking another replaces
+          it. A monk's Master of Many Styles holds more as levels rise, and the count above tracks
+          the limit. Dashed + ° = reference only, the same marker a condition uses: the style shows
+          its rules and changes no numbers. Attack and Armor Class breakdowns name every applied
+          source.
         </p>
       </Explainer>
     </Panel>

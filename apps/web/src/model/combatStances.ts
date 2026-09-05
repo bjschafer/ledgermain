@@ -156,17 +156,62 @@ export function activeCombatStyleTags(doc: CharacterDoc): Set<string> {
   );
 }
 
-/** Toggle one owned style independently; class features may permit several at once. */
+const MASTER_OF_MANY_STYLES = "monk:master-of-many-styles";
+
+/**
+ * How many style feat stances the character can hold at once.
+ *
+ * One by default: entering a style is a swift action, and a second replaces
+ * the first. The monk's Master of Many Styles archetype is the exception the
+ * rules spell out, and it spells out the whole schedule with it. Fuse Style
+ * fuses two styles at 1st, three at 8th, and four at 15th; Perfect Style takes
+ * it to five at 20th.
+ */
+export function maxActiveCombatStyles(doc: CharacterDoc): number {
+  if (!(doc.build.archetypes ?? []).includes(MASTER_OF_MANY_STYLES)) return 1;
+  const monkLevel = doc.identity.classes.find((c) => c.tag === "monk")?.level ?? 0;
+  if (monkLevel >= 20) return 5;
+  if (monkLevel >= 15) return 4;
+  if (monkLevel >= 8) return 3;
+  return monkLevel >= 1 ? 2 : 1;
+}
+
+/**
+ * Toggle one owned style, holding the character to the number of stances they
+ * can actually keep up. Entering one past the limit drops the stance entered
+ * longest ago, which is the closest a sheet gets to Fuse Style's "choose one
+ * whose stance persists" without asking mid-combat.
+ */
 export function toggleCombatStyle(doc: CharacterDoc, style: OwnedCombatStyle): CharacterDoc {
-  return toggleTableBuff(doc, {
+  const option = {
     id: style.effectTag,
     name: style.name,
     changes: [],
     contextNotes: [
       {
-        target: "allChecks",
+        target: "allChecks" as const,
         text: "This combat style is active; see its feat text for its rules.",
       },
     ],
-  });
+  };
+  if (doc.live.activeBuffs.some((buff) => buff.effectTag === style.effectTag)) {
+    return toggleTableBuff(doc, option);
+  }
+
+  const activeStyles = doc.live.activeBuffs.filter((buff) =>
+    isCombatStyleEffectTag(buff.effectTag),
+  );
+  const overflow = activeStyles.length - (maxActiveCombatStyles(doc) - 1);
+  if (overflow <= 0) return toggleTableBuff(doc, option);
+
+  // activeBuffs is insertion-ordered, so the front of the list is the oldest.
+  const dropped = new Set(activeStyles.slice(0, overflow).map((buff) => buff.instanceId));
+  const trimmed: CharacterDoc = {
+    ...doc,
+    live: {
+      ...doc.live,
+      activeBuffs: doc.live.activeBuffs.filter((buff) => !dropped.has(buff.instanceId)),
+    },
+  };
+  return toggleTableBuff(trimmed, option);
 }
