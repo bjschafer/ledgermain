@@ -5,8 +5,6 @@ import {
   SELECTABLE_ELEMENTS,
   buildRollData,
   evaluateBuffChange,
-  isCombatStanceActiveBuff,
-  isCombatStyleEffectTag,
   needsElementChoice,
   saveNoteCoverage,
   unappliedChanges,
@@ -33,6 +31,7 @@ import {
   roundsToDisplay,
   toRounds,
 } from "../../model/buffs.js";
+import { isPanelOwnedBuff } from "../../model/panelOwnedBuffs.js";
 import { isSharedWithCompanion, toggleSharedBuffCompanion } from "../../model/companion.js";
 import { isSharedWithEidolon, toggleSharedBuffEidolon } from "../../model/eidolon.js";
 import { isSharedWithFamiliar, toggleSharedBuff } from "../../model/familiar.js";
@@ -58,7 +57,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
     return Object.values(refData.buffs)
-      .filter((buff) => !isCombatStanceActiveBuff({ buffId: buff.id }))
+      .filter((buff) => !isPanelOwnedBuff({ buffId: buff.id }))
       .filter((b) => !q || b.name.toLowerCase().includes(q))
       .sort((a, b) => a.name.localeCompare(b.name))
       .slice(0, 60);
@@ -69,13 +68,11 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
     [doc.live.activeBuffs],
   );
 
-  // Stances share ActiveBuff's modifier plumbing but have their own compact
-  // panel and toggle lifecycle, so don't duplicate their rows here.
+  // Namespaces a dedicated panel renders itself (stances and styles today)
+  // are claimed in panelOwnedBuffs.ts rather than subtracted here, so a future
+  // one cannot forget to join and end up listed in both places.
   const visibleActiveBuffs = useMemo(
-    () =>
-      doc.live.activeBuffs.filter(
-        (buff) => !isCombatStanceActiveBuff(buff) && !isCombatStyleEffectTag(buff.effectTag),
-      ),
+    () => doc.live.activeBuffs.filter((buff) => !isPanelOwnedBuff(buff)),
     [doc.live.activeBuffs],
   );
 
