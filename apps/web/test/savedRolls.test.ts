@@ -21,6 +21,7 @@ import {
   removeSavedRollFeat,
   resolveSavedRoll,
   setSavedRollFeatOption,
+  setSavedRollFlurry,
   setSavedRollTwf,
   updateSavedRoll,
 } from "../src/model/savedRolls.js";
@@ -941,6 +942,106 @@ describe("resolveSavedRoll — two-weapon fighting", () => {
         offHandWeapon: "Shortsword",
       });
     });
+  });
+});
+
+/**
+ * Monk's Flurry of Blows: its own attack sequence, not the two-weapon chain
+ * a brawler's flurry lends. Fixtures are the published flurry columns plus
+ * Strength: an unchained monk 8 (full BAB 8, one extra attack at the highest
+ * bonus, no penalty) and a chained monk 8 (true BAB 6, but flurrying at monk
+ * level 8 with -2 on every attack).
+ */
+describe("monk's flurry of blows", () => {
+  function monk(tag: "monk" | "monkUnchained", level: number, on = true) {
+    let doc = createEmptyDoc("t");
+    doc = addClass(doc, tag);
+    doc = setClassLevel(doc, tag, level);
+    doc = setAbility(doc, "str", 14);
+    doc = addWeapon(doc, unarmedStrikeWeapon(doc, ref));
+    doc = addSavedRoll(doc, { kind: "weapon", weaponName: "Unarmed Strike" }, "Flurry");
+    const id = doc.build.savedRolls![0]!.id;
+    if (on) doc = setSavedRollFlurry(doc, id, true);
+    return {
+      doc,
+      resolved: resolveSavedRoll(
+        doc.build.savedRolls![0]!,
+        compute(doc, ref),
+        ownedFeatSlugs(doc, ref),
+      ),
+    };
+  }
+
+  it("a level 8 unchained monk flurries at +10/+10/+5", () => {
+    // Printed flurry column +8/+8/+3, plus Str 14 (+2).
+    expect(monk("monkUnchained", 8).resolved.display).toBe("+10/+10/+5");
+  });
+
+  it("the same monk's normal full attack is still +10/+5", () => {
+    expect(monk("monkUnchained", 8, false).resolved.display).toBe("+10/+5");
+  });
+
+  it("a level 8 chained monk flurries at +8/+8/+3/+3, off monk level", () => {
+    // Printed flurry column +6/+6/+1/+1, plus Str 14 (+2). Her true BAB is
+    // 6, so a normal full attack is +8/+3.
+    const { resolved } = monk("monk", 8);
+    expect(resolved.display).toBe("+8/+8/+3/+3");
+    expect(monk("monk", 8, false).resolved.display).toBe("+8/+3");
+  });
+
+  it("the chained monk's breakdown names the substitution and the penalty", () => {
+    const sources = monk("monk", 8).resolved.components.map((c) => c.source);
+    expect(sources).toContain("Flurry of blows (monk level as BAB)");
+    expect(sources).toContain("Flurry of blows (every attack)");
+  });
+
+  it("the unchained monk's breakdown adds neither", () => {
+    const sources = monk("monkUnchained", 8).resolved.components.map((c) => c.source);
+    expect(sources.some((src) => src.startsWith("Flurry of blows"))).toBe(false);
+  });
+
+  it("reminds the player what a flurry may be made with", () => {
+    expect(monk("monk", 8).resolved.notes).toContain(
+      "flurry of blows: unarmed strikes or monk weapons only",
+    );
+  });
+
+  it("stays correct as the monk levels: nothing about it is stored", () => {
+    const { doc } = monk("monk", 8);
+    expect(doc.build.savedRolls![0]!.flurry).toBe(true);
+    const at15 = setClassLevel(doc, "monk", 15);
+    const r = resolveSavedRoll(at15.build.savedRolls![0]!, compute(at15, ref));
+    // Printed column at 15th is +13/+13/+8/+8/+3/+3, plus Str 2.
+    expect(r.display).toBe("+15/+15/+10/+10/+5/+5");
+  });
+
+  it("a longsword is offered no flurry: the mode never resolves for it", () => {
+    let doc = createEmptyDoc("t");
+    doc = addClass(doc, "monk");
+    doc = setClassLevel(doc, "monk", 8);
+    doc = addWeapon(doc, { name: "Longsword", attackAbility: "str", damageDice: "1d8" });
+    doc = addSavedRoll(doc, { kind: "weapon", weaponName: "Longsword" }, "Sword");
+    doc = setSavedRollFlurry(doc, doc.build.savedRolls![0]!.id, true);
+    const r = resolveSavedRoll(doc.build.savedRolls![0]!, compute(doc, ref));
+    expect(r.flurry).toBeUndefined();
+    expect(r.display).toBe("+6/+1");
+  });
+
+  it("a non-monk is offered no flurry at all", () => {
+    let doc = fresh();
+    doc = addSavedRoll(doc, { kind: "melee" }, "Melee");
+    const r = resolveSavedRoll(doc.build.savedRolls![0]!, compute(doc, ref));
+    expect(r.flurry).toBeUndefined();
+  });
+
+  it("turning a flurry on drops two-weapon fighting, and the reverse", () => {
+    const { doc } = monk("monk", 8, false);
+    const id = doc.build.savedRolls![0]!.id;
+    const twf = setSavedRollTwf(doc, id, { offHand: "light" });
+    const flurried = setSavedRollFlurry(twf, id, true);
+    expect(flurried.build.savedRolls![0]!.twf).toBeUndefined();
+    const backToTwf = setSavedRollTwf(flurried, id, { offHand: "light" });
+    expect(backToTwf.build.savedRolls![0]!.flurry).toBeUndefined();
   });
 });
 

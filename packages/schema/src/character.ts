@@ -2583,6 +2583,15 @@ export interface SavedRoll {
    * about the feat chain is stored here.
    */
   twf?: SavedRollTwf;
+  /**
+   * True when this roll is a monk's flurry of blows: the sequence is rebuilt
+   * from `DerivedSheet.flurry` (extra attacks, and the chained monk's monk
+   * level as base attack bonus and -2 penalty) instead of the weapon's normal
+   * iteratives. Nothing about the flurry is stored here, so it stays correct
+   * as the monk levels. Mutually exclusive with {@link twf}: a flurry is not
+   * two-weapon fighting, whatever the chained monk's text borrows from it.
+   */
+  flurry?: boolean;
 }
 
 /**
@@ -3102,6 +3111,14 @@ export interface DerivedSheet {
   attack: { melee: ResolvedStat; ranged: ResolvedStat };
   /** Per-weapon attack + damage lines derived from build.weapons. */
   attacks: ResolvedWeaponAttack[];
+  /**
+   * The character's Flurry of Blows, when they have monk levels. Unlike
+   * two-weapon fighting (a per-round grip choice the engine never emits),
+   * flurry is a property of the character, so it is resolved here and the
+   * qualifying entries of `attacks` carry their own `flurry` sequence.
+   * A saved roll only stores whether that bookmark is the flurry one.
+   */
+  flurry?: FlurryMode;
   /**
    * The PC's OWN natural-attack lines (bite, claws, ...) granted by a
    * racial trait, class feature, archetype feature, or feat — see
@@ -3927,6 +3944,14 @@ export interface ResolvedWeaponAttack {
    */
   drBypass?: WeaponDrBypass[];
   /**
+   * This weapon's Flurry of Blows sequence, highest first — present only when
+   * the character has a flurry (`DerivedSheet.flurry`) AND this weapon
+   * qualifies for it (an unarmed strike or a monk-group weapon). Already
+   * carries the chained monk's base-attack-bonus substitution and -2 penalty,
+   * so it is not `attack.iteratives` with something added.
+   */
+  flurry?: number[];
+  /**
    * Range increment in feet, copied from `WeaponInstance.rangeIncrement`.
    * Ranged weapons only — omitted for melee and for a ranged weapon with no
    * snapshotted range.
@@ -3953,6 +3978,40 @@ export interface ResolvedWeaponAttack {
      */
     touchRangeFt?: number;
   };
+}
+
+/** Which of the two Flurry of Blows class features a character has. */
+export type FlurryStyle = "chained" | "unchained";
+
+/**
+ * A character's Flurry of Blows, resolved to everything needed to restate any
+ * qualifying weapon's attack line as a flurry (`@pf1/engine`'s `flurry.ts`
+ * owns the rules; see its module comment for how the two monks differ).
+ * Present on `DerivedSheet.flurry` only for a character with monk levels.
+ */
+export interface FlurryMode {
+  style: FlurryStyle;
+  /** Monk class level granting the flurry. */
+  level: number;
+  /**
+   * The base attack bonus the flurry's own iterative steps come off: the
+   * character's BAB recomputed with monk levels counting at full for the
+   * chained monk, their true BAB for the unchained one.
+   */
+  bab: number;
+  /**
+   * Added to a weapon's normal attack total to restate it at {@link bab}
+   * (`bab` less the character's true BAB). Zero for the unchained monk.
+   */
+  babDelta: number;
+  /** Flat penalty on every flurry attack: -2 chained, 0 unchained. */
+  penalty: number;
+  /** Extra attacks the flurry grants: 1/2/3 chained, 1/2 unchained. */
+  extraAttacks: number;
+  /** Feature name, for labels: "flurry of blows". */
+  source: string;
+  /** What may be flurried with, as an at-table reminder. */
+  restriction: string;
 }
 
 /**

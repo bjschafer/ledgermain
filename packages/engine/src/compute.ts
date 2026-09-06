@@ -27,6 +27,7 @@ import type {
   DerivedProficiencies,
   DerivedSheet,
   DerivedSkill,
+  FlurryMode,
   HitPoints,
   ModifierComponent,
   RefData,
@@ -93,6 +94,13 @@ import { hasSlowAndSteady } from "./racial-traits.js";
 import { abilityMod, buildRollData, totalLevel, type AbilityView } from "./rolldata.js";
 import { resolveStack, synthetic, toComponents, type TypedModifier } from "./stacking.js";
 import { normalizeWeaponGroup } from "./weapon-groups.js";
+import {
+  CHAINED_FLURRY_BAB_TIER,
+  flurryClass,
+  flurryMode,
+  flurrySequence,
+  isFlurryWeapon,
+} from "./flurry.js";
 import { gunTrainingMatches } from "./gun-training.js";
 import {
   babForLevels,
@@ -1363,6 +1371,7 @@ function computeWeaponAttacks(
   substitutions: readonly ActiveAbilitySubstitution[],
   baseSize: SizeId,
   effectiveSize: SizeId,
+  flurry: FlurryMode | undefined,
 ): ResolvedWeaponAttack[] {
   const flatAttackPenalty = flatAttackPenaltyComponents.reduce((s, c) => s + c.value, 0);
   const weapons = doc.build.weapons ?? [];
@@ -1568,6 +1577,10 @@ function computeWeaponAttacks(
     // off entirely for the plain steel weapon that bypasses nothing.
     const drBypass = weaponDrBypasses(doc, refData, w);
     if (drBypass.length > 0) result.drBypass = drBypass;
+    // The flurry line, for the unarmed strikes and monk weapons a flurry may
+    // be made with. Not `iteratives` plus something: the chained monk's
+    // sequence comes off a different base attack bonus entirely.
+    if (flurry && isFlurryWeapon(w)) result.flurry = flurrySequence(flurry, attackTotal);
     if (appliesAbilityDamage) {
       result.damageAbilityMod = damageAbilityMod;
       // Ranged ability damage is never damageMultiplier-scaled (see
@@ -1633,7 +1646,15 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
   // modifies it), so it's available before roll data is built. Vendored
   // formulas (e.g. Monk's Maneuver Training) reference `@attributes.bab.total`.
   const fractionalBonuses = doc.build.settings?.fractionalBonuses ?? false;
+  // The chained monk flurries at "a base attack bonus equal to her monk
+  // level", which is her BAB recomputed with the monk levels counting at the
+  // full tier — collected alongside the real tiers rather than patched
+  // arithmetically afterwards, so fractional base bonuses stay consistent
+  // between the two. The unchained monk needs no substitution (already full
+  // BAB), so his flurry tiers are the real ones.
+  const monk = flurryClass(doc.identity.classes);
   const babTiers: { tier: BabTier; level: number }[] = [];
+  const flurryBabTiers: { tier: BabTier; level: number }[] = [];
   for (const cls of doc.identity.classes) {
     const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
     if (!def) continue;
@@ -1648,13 +1669,27 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
     const tier =
       cls.tag === "vigilante" && doc.build.vigilanteSpecialization === "avenger" ? "high" : def.bab;
     babTiers.push({ tier, level: cls.level });
+    flurryBabTiers.push({
+      tier: monk?.style === "chained" && cls.tag === monk.tag ? CHAINED_FLURRY_BAB_TIER : tier,
+      level: cls.level,
+    });
   }
+  const sumBab = (tiers: readonly { tier: BabTier; level: number }[]): number =>
+    fractionalBonuses
+      ? fractionalBab(tiers)
+      : tiers.reduce((sum, t) => sum + babForLevels(t.tier, t.level), 0);
   // Under fractional base bonuses (Pathfinder Unchained, opt-in per character)
   // the per-class fractions are summed and rounded down once instead of each
   // class rounding down on its own.
-  const bab = fractionalBonuses
-    ? fractionalBab(babTiers)
-    : babTiers.reduce((sum, t) => sum + babForLevels(t.tier, t.level), 0);
+  const bab = sumBab(babTiers);
+  const flurry = monk
+    ? flurryMode({
+        style: monk.style,
+        level: monk.level,
+        bab,
+        flurryBab: sumBab(flurryBabTiers),
+      })
+    : undefined;
 
   const baseSize: SizeId = race?.size ?? "med";
 
@@ -2019,6 +2054,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
     substitutions,
     baseSize,
     size,
+    flurry,
   );
 
   // The PC's own body's natural attacks (bite, claws, ...) from a racial
@@ -2158,6 +2194,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
     initiative,
     attack,
     attacks,
+    ...(flurry ? { flurry } : {}),
     ...(naturalAttacks ? { naturalAttacks } : {}),
     kineticBlasts,
     hp,

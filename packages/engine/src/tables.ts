@@ -12,6 +12,8 @@
 import type { AbilityId, BabTier, Race, SaveTier, SizeId } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
+import { flurryMode, flurrySequence } from "./flurry.js";
+
 /** Base attack bonus contributed by `level` levels of a class at `tier`. */
 export function babForLevels(tier: BabTier, level: number): number {
   if (level <= 0) return 0;
@@ -1372,43 +1374,24 @@ export function unarmedDamageDie(classLevel: number, size: SizeId = "med"): Unar
 /* ------------------------------------------------------- flurry of blows -- */
 
 /**
- * Monk Flurry of Blows display summary, clean-room from the published PF1
- * SRD: as a full-attack action, a monk may forgo her normal attacks to make
- * a flurry of extra unarmed (or monk weapon) attacks, using her monk level
- * in place of her true BAB for those attacks, all at a flat -2 penalty (this
- * flat -2 applies at EVERY level — unlike the D&D 3.5 monk this PF1 feature
- * is descended from, the SRD never steps it down to -1 or drops it; the
- * published flurry attack-bonus column is always "monk level - 2"). She
- * gets 1 extra attack at 1st level (2 attacks total), a 2nd extra attack at
- * 8th level ("as if using Improved Two-Weapon Fighting"), and a 3rd extra
- * attack at 15th level ("as if using Greater Two-Weapon Fighting") — each
- * extra attack duplicates the top-most attack(s) of the normal monk-level
- * iterative sequence (monk level itself generates its own iteratives at
- * effective BAB 6/11/16, same -5-per-step rule as true BAB), so the total
- * attack count is 2 (L1-5), 3 (L6-7), 4 (L8-10), 5 (L11-14), 6 (L15), 7
- * (L16-20) — not the flat 2/3/4 an unwary reading of "1st/8th/15th" implies.
- * Published anchors this reproduces exactly: L1 -1/-1, L6 +4/+4/-1, L8
- * +6/+6/+1/+1, L11 +9/+9/+4/+4/-1, L15 +13/+13/+8/+8/+3/+3, L20
- * +18/+18/+13/+13/+8/+8/+3.
+ * Monk Flurry of Blows summary line for the Class Features panel: the printed
+ * flurry column at `monkLevel`, e.g. "+6/+6/+1/+1" at 8th.
  *
- * Display-only, since (per this project's scope) Flurry of Blows is NOT
- * wired into the live attacks/iteratives table at all (that table only
- * models true-BAB full-attack routines); this is a static reference note,
- * not a live roll input.
+ * The rules themselves (and the reasoning behind the sequence's shape) live in
+ * `flurry.ts`, which also drives the live per-weapon flurry lines. This is the
+ * bare column, off monk level alone: a multiclass monk's real flurry numbers
+ * come off her weapons' own attack lines.
  */
 export function flurryOfBlowsLabel(monkLevel: number): string {
   if (monkLevel <= 0) return "";
-  const bab = monkLevel;
-  // Monk-level-as-BAB's own iterative sequence, same -5-per-step/4-attack-cap
-  // shape as a true-BAB full attack (e.g. BAB 11 -> [11, 6, 1]).
-  const baseCount = Math.min(4, 1 + Math.floor((bab - 1) / 5));
-  const base = Array.from({ length: baseCount }, (_, k) => bab - 5 * k);
-  // Extra flurry attacks earned so far (1st/8th/15th level), each of which
-  // duplicates one more of the base sequence's attacks, from the top down.
-  const extraCount = Math.min(baseCount, monkLevel >= 15 ? 3 : monkLevel >= 8 ? 2 : 1);
-  const sequence = base.flatMap((bonus, i) => (i < extraCount ? [bonus, bonus] : [bonus]));
-  const withPenalty = sequence.map((bonus) => bonus - 2).map((n) => (n >= 0 ? `+${n}` : `${n}`));
-  return `${withPenalty.join("/")} (replaces full attack, using monk level as BAB)`;
+  const mode = flurryMode({
+    style: "chained",
+    level: monkLevel,
+    bab: monkLevel,
+    flurryBab: monkLevel,
+  })!;
+  const sequence = flurrySequence(mode, monkLevel).map((n) => (n >= 0 ? `+${n}` : `${n}`));
+  return `${sequence.join("/")} (replaces full attack, using monk level as BAB)`;
 }
 
 /* ------------------------------------------------------ barbarian DR ---- */
@@ -1501,8 +1484,9 @@ export function smiteGoodLabel(detail: SmiteEvilDetail): string {
  * Both extra attacks are at the monk's TRUE base attack bonus — unlike the
  * chained version, there is no -2 penalty and no "BAB = monk level" swap-in;
  * this is mechanically closer to Haste's bonus attack than the chained
- * Flurry. Display-only, same posture as {@link flurryOfBlowsLabel} — not
- * wired into the live attacks/iteratives table.
+ * Flurry. Summarized rather than spelled out as a sequence: with no
+ * substitution to explain, the count is the whole of it, and the real numbers
+ * are on the weapon's own flurry line.
  */
 export function flurryOfBlowsUnchainedLabel(monkLevel: number): string {
   if (monkLevel <= 0) return "";

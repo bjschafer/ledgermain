@@ -5956,6 +5956,25 @@ input[type="text"].saved-roll-name:focus {
   gap: 8px;
 }
 
+/* A monk's flurry sequence, under the weapon's stat row. Shares the bypass
+   row's shape (a labelled footnote to the seals above), but carries a number
+   rather than chips, so the sequence gets the seal value's tabular figures. */
+.weapon-attack-flurry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  padding-left: 2px;
+}
+
+.weapon-attack-flurry-seq {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
 /* DR qualifiers this weapon overcomes, under its stat row. Only rendered for a
    weapon that overcomes something, so the common case costs no vertical space. */
 .weapon-attack-bypass {

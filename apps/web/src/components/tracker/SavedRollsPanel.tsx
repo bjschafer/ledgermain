@@ -15,6 +15,7 @@ import {
   removeSavedRollRanger,
   resolveSavedRoll,
   setSavedRollFeatOption,
+  setSavedRollFlurry,
   setSavedRollTwf,
   updateSavedRoll,
   type AttachableFeatGroups,
@@ -99,6 +100,7 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
               offHandWeapons={offHandWeapons}
               onUpdate={(patch) => update((d) => updateSavedRoll(d, roll.id, patch))}
               onSetTwf={(twf) => update((d) => setSavedRollTwf(d, roll.id, twf))}
+              onSetFlurry={(on) => update((d) => setSavedRollFlurry(d, roll.id, on))}
               onRemove={() => update((d) => removeSavedRoll(d, roll.id))}
               onAddFeat={(ref) => update((d) => addSavedRollFeat(d, roll.id, ref))}
               onRemoveFeat={(slug) => update((d) => removeSavedRollFeat(d, roll.id, slug))}
@@ -133,8 +135,9 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
             <Explainer title="How adding a saved roll works">
               <p className="hint">
                 Pick a source below, then expand the saved row to attach feats (Rapid Shot, Deadly
-                Aim, Power Attack fold in automatically), flag it as two-weapon fighting, or layer a
-                manual adjustment: for "Custom", enter a value and damage note by hand.
+                Aim, Power Attack fold in automatically), flag it as two-weapon fighting or a monk's
+                flurry of blows, or layer a manual adjustment: for "Custom", enter a value and
+                damage note by hand.
               </p>
             </Explainer>
             <input
@@ -182,6 +185,7 @@ function SavedRollRow({
   offHandWeapons,
   onUpdate,
   onSetTwf,
+  onSetFlurry,
   onRemove,
   onAddFeat,
   onRemoveFeat,
@@ -198,6 +202,7 @@ function SavedRollRow({
     patch: Partial<Pick<SavedRoll, "label" | "attackModifier" | "damageModifier" | "customDamage">>,
   ) => void;
   onSetTwf: (twf: SavedRollTwf | undefined) => void;
+  onSetFlurry: (on: boolean) => void;
   onRemove: () => void;
   onAddFeat: (ref: SavedRollFeatRef) => void;
   onRemoveFeat: (slug: string) => void;
@@ -209,7 +214,11 @@ function SavedRollRow({
   const panelId = useId();
   const isCustom = roll.source.kind === "custom";
   const isWeapon = roll.source.kind === "weapon";
-  const twf = twfConfig(roll);
+  const flurry = roll.flurry === true && resolved.flurry !== undefined;
+  // A flurry replaces the whole full-attack routine, so the two-weapon
+  // controls come off the row entirely while it's on rather than sitting
+  // there inert.
+  const twf = flurry ? undefined : twfConfig(roll);
 
   const attached = new Set((roll.feats ?? []).map((f) => f.slug));
   const autoChoices = attachable.auto.filter((f) => !attached.has(f.slug));
@@ -399,7 +408,20 @@ function SavedRollRow({
             <Provenance title="Off-hand breakdown" components={resolved.offHandComponents} />
           ) : null}
 
-          {isAttackLikeSource(roll.source) ? (
+          {resolved.flurry ? (
+            <div className="saved-roll-adjust saved-roll-twf">
+              <label className="saved-roll-twf-toggle">
+                <input
+                  type="checkbox"
+                  checked={flurry}
+                  onChange={(e) => onSetFlurry(e.target.checked)}
+                />
+                Flurry of blows
+              </label>
+            </div>
+          ) : null}
+
+          {isAttackLikeSource(roll.source) && !flurry ? (
             <div className="saved-roll-adjust saved-roll-twf">
               <label className="saved-roll-twf-toggle">
                 <input

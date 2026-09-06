@@ -96,6 +96,13 @@ export interface PrintAttack {
    * reuses this slot for its own granting-def reminders instead.
    */
   sub?: string;
+  /**
+   * This weapon's flurry-of-blows sequence, for a monk swinging something a
+   * flurry may be made with. Its own column value rather than a note: on
+   * paper a monk reads the flurry line every round, and it is a different
+   * sequence, not an annotation on the normal one.
+   */
+  flurry?: string;
 }
 
 export interface PrintSkill {
@@ -477,6 +484,7 @@ export function buildPrintSheet(
           attack: signedSequence(atk.attack.total, atk.attack.iteratives),
           damage: dmgStr,
           crit: atk.crit,
+          ...(atk.flurry ? { flurry: signedSequence(atk.flurry[0]!, atk.flurry) } : {}),
           ...(atk.drBypass?.length ? { bypass: bypassLine(atk.drBypass) } : {}),
           ...(sub ? { sub } : {}),
         };

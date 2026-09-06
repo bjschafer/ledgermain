@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-05-monk-flurry",
+    date: "2026-09-05",
+    title: "A monk's flurry rolls itself",
+    note: "Flurry of Blows is a line on the sheet instead of a reference string you rebuilt every round. Your unarmed strike and any monk weapon carry their flurry sequence under the normal one, and a saved roll has a Flurry toggle that swaps the whole routine over: the extra attacks at the levels they arrive, and, for a monk who is not unchained, monk level standing in for base attack bonus with the two point penalty on every swing. Open the breakdown and both of those are named. An unchained monk gets his extra attack at full bonus with nothing taken off. Printed sheets carry the flurry line too.",
+  },
+  {
     id: "2026-09-05-background-skills",
     date: "2026-09-05",
     title: "Background Skills, without the bookkeeping",

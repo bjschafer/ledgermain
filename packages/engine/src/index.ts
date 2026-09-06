@@ -1104,6 +1104,15 @@ export {
   type WeaponGroup,
 } from "./weapon-groups.js";
 export {
+  CHAINED_FLURRY_BAB_TIER,
+  flurryClass,
+  flurryMode,
+  flurrySequence,
+  isFlurryWeapon,
+  type FlurryMode,
+  type FlurryStyle,
+} from "./flurry.js";
+export {
   BRAWLER_STRIKE_ALIGNMENT_LEVEL,
   weaponDrBypasses,
   type BrawlerStrikeAlignment,

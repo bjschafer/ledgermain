@@ -519,6 +519,24 @@ export function Sheet({
                       resetKey={doc.id}
                     />
                   </div>
+                  {/* A monk's flurry with this weapon: its own sequence, not
+                      the iteratives above with something added, so it gets a
+                      line of its own rather than a fourth seal. Only on the
+                      unarmed strikes and monk weapons a flurry may be made
+                      with. */}
+                  {atk.flurry ? (
+                    <div className="weapon-attack-flurry">
+                      <span className="weapon-attack-bypass-label">Flurry</span>
+                      <span className="weapon-attack-flurry-seq">
+                        {signedSequence(atk.flurry[0]!, atk.flurry)}
+                      </span>
+                      <CopyButton
+                        className="copy-btn--row"
+                        text={d20Formula(atk.flurry)}
+                        label={`${atk.name} flurry`}
+                      />
+                    </div>
+                  ) : null}
                   {/* What this weapon gets through: material, plus, alignment
                       ability, or a monk's/brawler's unarmed class feature. A
                       flag rather than a magnitude, so same chip the immunity

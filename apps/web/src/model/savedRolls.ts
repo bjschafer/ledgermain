@@ -25,12 +25,17 @@
  *
  * Two-weapon fighting is the one combat mode that is NOT a feat attachment —
  * it needs no feats at all, so it rides a `twf` flag on the roll and applies
- * every owned chain feat automatically. See `model/twf.ts`.
+ * every owned chain feat automatically. See `model/twf.ts`. A monk's flurry of
+ * blows rides a `flurry` flag the same way, and for the same reason: it's a
+ * per-round choice, not a property of the character. The two are mutually
+ * exclusive — the chained monk's text borrows two-weapon fighting's shape, but
+ * a flurry is not two-weapon fighting.
  */
 
 import type {
   CharacterDoc,
   DerivedSheet,
+  FlurryMode,
   ModifierComponent,
   RefData,
   ResolvedWeaponAttack,
@@ -46,6 +51,7 @@ import {
   SITUATIONAL_FEAT_EFFECTS,
   TWF_CHAIN_SLUGS,
   featNameSlug,
+  flurrySequence,
   type GrantedTwfChain,
   type SituationalFeatEntry,
 } from "@pf1/engine";
@@ -176,6 +182,42 @@ export interface ResolvedSavedRoll {
    * rather than only after it's switched on.
    */
   grantedTwf?: GrantedTwfChain;
+  /**
+   * The character's flurry of blows, when this roll's source is something a
+   * flurry could be made with ({@link flurryForSource}) — present whether or
+   * not THIS roll's flurry mode is on, so the UI can offer the toggle. The
+   * roll's own on/off state is `SavedRoll.flurry`.
+   */
+  flurry?: FlurryMode;
+}
+
+/**
+ * The character's flurry as it applies to `source`, or `undefined` when this
+ * roll can't be a flurry.
+ *
+ * A weapon source qualifies only when that weapon does (the engine puts a
+ * `flurry` line on the unarmed strikes and monk weapons a flurry may be made
+ * with, and on nothing else). The generic melee and custom sources are offered
+ * on the player's judgement, the same way every other saved-roll mode is; the
+ * generic ranged one is not, since a flurry off the ranged attack bonus would
+ * need a monk weapon the roll never names.
+ */
+export function flurryForSource(
+  source: SavedRollSource,
+  sheet: DerivedSheet,
+): FlurryMode | undefined {
+  if (!sheet.flurry) return undefined;
+  switch (source.kind) {
+    case "weapon":
+      return sheet.attacks.find((a) => a.name === source.weaponName)?.flurry
+        ? sheet.flurry
+        : undefined;
+    case "melee":
+    case "custom":
+      return sheet.flurry;
+    default:
+      return undefined;
+  }
 }
 
 /** Source kinds attack-like enough for feat effects to apply their numbers. */
@@ -240,6 +282,7 @@ function signedResult(
   baseComponents: ModifierComponent[],
   featFold: FeatFold = NO_FEAT_FOLD,
   twf?: TwfFold,
+  flurry?: FlurryMode,
 ): {
   display: string;
   formula: string;
@@ -251,7 +294,10 @@ function signedResult(
 } {
   const primaryPenalty = twf?.profile.primaryPenalty ?? 0;
   const totalDelta = modifier + featFold.attackDelta + primaryPenalty;
-  const base = iteratives ?? [total];
+  // A flurry replaces the whole sequence rather than adding to it: extra
+  // attacks, and (chained) a different base attack bonus and a flat -2 on
+  // every swing. Everything else the roll folds in still rides on top.
+  const base = flurry ? flurrySequence(flurry, total) : (iteratives ?? [total]);
   const adjusted = base.map((n) => n + totalDelta);
   const seq =
     featFold.extraAttacks > 0
@@ -270,6 +316,7 @@ function signedResult(
   const extraComponents = [
     ...attackComponents,
     ...(twf ? [twoWeaponComponent("main hand", primaryPenalty)] : []),
+    ...(flurry ? flurryComponents(flurry) : []),
   ];
   return {
     display: signedSequence(seq[0]!, seq.length > 1 ? seq : undefined),
@@ -280,6 +327,33 @@ function signedResult(
     components:
       extraComponents.length > 0 ? [...adjustedComponents, ...extraComponents] : adjustedComponents,
   };
+}
+
+/**
+ * Provenance for what the flurry itself changed: the chained monk's
+ * base-attack-bonus substitution and her flat penalty, each only when it moves
+ * a number (the unchained monk's flurry moves neither, and adds attacks
+ * instead, which the sequence itself shows).
+ */
+function flurryComponents(flurry: FlurryMode): ModifierComponent[] {
+  const out: ModifierComponent[] = [];
+  if (flurry.babDelta !== 0) {
+    out.push({
+      source: "Flurry of blows (monk level as BAB)",
+      type: "untyped",
+      value: flurry.babDelta,
+      applied: true,
+    });
+  }
+  if (flurry.penalty !== 0) {
+    out.push({
+      source: "Flurry of blows (every attack)",
+      type: "untyped",
+      value: flurry.penalty,
+      applied: true,
+    });
+  }
+  return out;
 }
 
 /** Provenance entry for the two-weapon penalty on one hand. */
@@ -580,8 +654,14 @@ export function resolveSavedRoll(
     ownedFeatSlugs,
   );
 
-  const cfg = isAttackLike ? twfConfig(roll) : undefined;
+  // The two modes are mutually exclusive (see the module comment), and a
+  // stored doc could hold both if a roll predates the flurry toggle: flurry
+  // wins, since it's the more specific claim about how the round is spent.
+  const flurryAvailable = isAttackLike ? flurryForSource(roll.source, sheet) : undefined;
+  const flurry = roll.flurry ? flurryAvailable : undefined;
+  const cfg = isAttackLike && !flurry ? twfConfig(roll) : undefined;
   const twf = cfg ? resolveTwf(roll, cfg, sheet, ownedFeatSlugs, grantedTwf) : undefined;
+  if (flurry) notes.push(`${flurry.source}: ${flurry.restriction}`);
   if (twf) {
     for (const feat of twf.profile.chain) {
       if (!feat.owned) continue;
@@ -618,7 +698,15 @@ export function resolveSavedRoll(
     notes.push(IMPROVED_UNARMED_STRIKE_NOTE);
   }
 
-  const resolved = resolveSource(roll.source, sheet, attackModifier, damageModifier, fold, twf);
+  const resolved = resolveSource(
+    roll.source,
+    sheet,
+    attackModifier,
+    damageModifier,
+    fold,
+    twf,
+    flurry,
+  );
   if (!resolved) {
     return {
       id: roll.id,
@@ -630,6 +718,7 @@ export function resolveSavedRoll(
       featChips,
       rangerChips,
       grantedTwf,
+      ...(flurryAvailable ? { flurry: flurryAvailable } : {}),
     };
   }
   const damage =
@@ -656,6 +745,7 @@ export function resolveSavedRoll(
     featChips,
     rangerChips,
     grantedTwf,
+    ...(flurryAvailable ? { flurry: flurryAvailable } : {}),
   };
 }
 
@@ -666,6 +756,7 @@ function resolveSource(
   damageModifier: number,
   featFold: FeatFold,
   twf: TwfFold | undefined,
+  flurry: FlurryMode | undefined,
 ): {
   display: string;
   formula?: string;
@@ -685,6 +776,7 @@ function resolveSource(
         sheet.attack.melee.components,
         featFold,
         twf,
+        flurry,
       );
     case "ranged":
       return signedResult(
@@ -706,6 +798,7 @@ function resolveSource(
           atk.attack.components,
           featFold,
           twf,
+          flurry,
         ),
         damage: weaponDamage(atk, damageModifier, featFold.damageDelta, featFold.damageComponents),
       };
@@ -739,7 +832,7 @@ function resolveSource(
       return signedResult(s.total, undefined, attackModifier, s.components, featFold);
     }
     case "custom":
-      return signedResult(0, undefined, attackModifier, [], featFold, twf);
+      return signedResult(0, undefined, attackModifier, [], featFold, twf, flurry);
   }
 }
 
@@ -863,6 +956,31 @@ export function setSavedRollTwf(
     const next: SavedRoll = { ...r, feats };
     if (twf) next.twf = twf;
     else delete next.twf;
+    // A flurry is not two-weapon fighting: turning one mode on turns the
+    // other off rather than stacking two full-attack routines.
+    if (twf) delete next.flurry;
+    return next;
+  });
+}
+
+/**
+ * Turn a saved roll's flurry-of-blows mode on or off. Nothing about the flurry
+ * is stored — the sequence is rebuilt from `DerivedSheet.flurry` every time —
+ * so a monk who levels sees her saved flurry grow on its own.
+ */
+export function setSavedRollFlurry(
+  doc: CharacterDoc,
+  rollId: string,
+  flurry: boolean,
+): CharacterDoc {
+  return mapSavedRoll(doc, rollId, (r) => {
+    const next: SavedRoll = { ...r };
+    if (flurry) {
+      next.flurry = true;
+      delete next.twf;
+    } else {
+      delete next.flurry;
+    }
     return next;
   });
 }

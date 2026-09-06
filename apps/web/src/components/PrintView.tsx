@@ -237,7 +237,12 @@ export function PrintView({
                         <span className="print-attack-bypass">Bypasses DR: {atk.bypass}</span>
                       ) : null}
                     </td>
-                    <td className="num">{atk.attack}</td>
+                    <td className="num">
+                      {atk.attack}
+                      {atk.flurry ? (
+                        <span className="print-attack-bypass">Flurry {atk.flurry}</span>
+                      ) : null}
+                    </td>
                     <td className="num">{atk.damage}</td>
                     <td>{atk.crit}</td>
                   </tr>

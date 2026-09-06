@@ -111,10 +111,10 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "All 84 vendored metamagic-tagged feats carry slot costs. Unmodeled free-application grants: Theologian Domain Secret and psychic Mimic Metamagic need stored feat-and-spell picks; magus metamagic arcana and oracle Guiding Star are once-a-day with no tracked pool; arcanist Metamixing, the Magician bard's Metamagic Mastery, and Arcane bloodline's Metamagic Adept only change casting time, which the sheet has no action surface for.",
   },
   {
-    category: "Monk flurry of blows",
-    note: "A monk's flurry sequence shows in Class Features as a reference string, but the sheet does not roll it: saved rolls and the attack lines use your normal attack progression. A brawler's flurry is the exception, rolled through a saved roll's two weapon fighting mode.",
+    category: "Monk flurry weapon lists",
+    note: "An archetype that trades what a flurry may be swung with is not reflected in the flurry line: a zen archer's bow, a far strike monk's thrown weapons, and a sacred fist warpriest's fists carry no flurry sequence of their own.",
     issueDetail:
-      "Chained and unchained monk flurry labels are computed in the engine but stay display-only; nothing feeds them into iteratives or saved rolls. Chained flurry substitutes monk level for BAB, which the granted two-weapon-chain mechanism cannot express.",
+      "The flurry line keys off the vendored monk weapon group plus the synthesized unarmed strike, so an archetype that swaps the list, or a non-monk class granted flurry as a monk of its own level, has no way to say so.",
   },
   {
     category: "Combat stance feats",
