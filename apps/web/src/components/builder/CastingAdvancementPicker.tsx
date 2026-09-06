@@ -6,6 +6,7 @@ import { eligibleAdvancementTargets } from "../../model/casterLevel.js";
 import { setCastingAdvancementTarget } from "../../model/doc.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { classByTag } from "@pf1/engine";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -28,7 +29,7 @@ const SLOT_EMPTY_HINT: Record<"arcane" | "divine" | "any", string> = {
 };
 
 function classNameByTag(refData: RefData, tag: string): string {
-  return Object.values(refData.classes).find((c) => c.tag === tag)?.name ?? tag;
+  return classByTag(refData, tag)?.name ?? tag;
 }
 
 interface AdvancementEntry {
@@ -53,7 +54,7 @@ export function CastingAdvancementPicker({ doc, refData, update }: CastingAdvanc
   const entries: AdvancementEntry[] = useMemo(() => {
     const out: AdvancementEntry[] = [];
     for (const c of doc.identity.classes) {
-      const def = Object.values(refData.classes).find((cl) => cl.tag === c.tag);
+      const def = classByTag(refData, c.tag);
       if (def?.castingAdvancement?.length) {
         out.push({ tag: c.tag, name: def.name, slots: def.castingAdvancement });
       }

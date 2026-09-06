@@ -6,7 +6,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { compute } from "@pf1/engine";
+import { classByTag, compute } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import {
@@ -584,9 +584,7 @@ export function useCharacter(): CharacterStore {
 
     const classSummary = doc.identity.classes
       .map((c) => {
-        const name = refData
-          ? (Object.values(refData.classes).find((def) => def.tag === c.tag)?.name ?? c.tag)
-          : c.tag;
+        const name = refData ? (classByTag(refData, c.tag)?.name ?? c.tag) : c.tag;
         return `${name} ${c.level}`;
       })
       .join(" / ");

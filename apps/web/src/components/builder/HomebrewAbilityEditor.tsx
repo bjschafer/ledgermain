@@ -15,6 +15,7 @@ import { HomebrewBadge } from "../HomebrewBadge.js";
 import { ChangeListEditor } from "./ChangeListEditor.js";
 import { NumberField } from "./NumberField.js";
 import type { BuilderProps } from "./types.js";
+import { classByTag } from "@pf1/engine";
 
 /**
  * Create/edit/delete UI for homebrew abilities — GM-granted campaign features
@@ -162,7 +163,7 @@ function AbilityDraftForm({
   // sheet knows nothing about.
   const classOptions = doc.identity.classes.map((c) => ({
     tag: c.tag,
-    name: Object.values(refData.classes).find((cls) => cls.tag === c.tag)?.name ?? c.tag,
+    name: classByTag(refData, c.tag)?.name ?? c.tag,
   }));
 
   return (

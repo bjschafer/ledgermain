@@ -54,6 +54,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { totalLevel } from "./doc.js";
 import { BACKGROUND_RANKS_PER_LEVEL, skillBudget } from "./skills.js";
+import { classByTag } from "@pf1/engine";
 
 export interface SkillRankShortfall {
   /** The earliest threshold j (a character level, 1-indexed) that fails. */
@@ -85,7 +86,7 @@ export function skillRankShortfall(
   let classTotal = 0;
   const perLevel: number[] = [];
   for (const c of doc.identity.classes) {
-    const def = Object.values(refData.classes).find((cl) => cl.tag === c.tag);
+    const def = classByTag(refData, c.tag);
     const grant = Math.max(1, (def ? def.skillsPerLevel : 2) + intMod);
     classTotal += grant * c.level;
     for (let i = 0; i < c.level; i++) perLevel.push(grant + backgroundPerLevel);

@@ -14,7 +14,9 @@
  */
 import type { CharacterDoc, RefData } from "@pf1/schema";
 import {
+  archetypeFeaturesOf,
   buildRollData,
+  classByTag,
   compute,
   isBackgroundSkill,
   resolveArchetypeFeatureEffect,
@@ -73,7 +75,7 @@ export function skillBudget(doc: CharacterDoc, refData: RefData, intMod: number)
   let total = 0;
 
   for (const c of doc.identity.classes) {
-    const def = Object.values(refData.classes).find((cl) => cl.tag === c.tag);
+    const def = classByTag(refData, c.tag);
     const perLevel = def ? def.skillsPerLevel : 2;
     total += Math.max(1, perLevel + intMod) * c.level;
   }
@@ -107,8 +109,8 @@ export function skillBudget(doc: CharacterDoc, refData: RefData, intMod: number)
     if (!archetype) continue;
     const clsLevel = doc.identity.classes.find((c) => c.tag === archetype.classTag)?.level ?? 0;
     const archRollData: RollData = { ...rollData, class: { level: clsLevel, unlevel: clsLevel } };
-    for (const f of Object.values(refData.archetypeFeatures)) {
-      if (f.archetypeId !== archetypeId || f.level > clsLevel) continue;
+    for (const f of archetypeFeaturesOf(refData, archetypeId)) {
+      if (f.level > clsLevel) continue;
       const entry = resolveArchetypeFeatureEffect(f.id)?.effect;
       if (!entry) continue;
       for (const ch of entry.changes) {

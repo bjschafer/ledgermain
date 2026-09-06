@@ -37,6 +37,7 @@ import {
 import { featInstances, grantedFeats } from "./feats.js";
 import { castableSpellsFor } from "./knownSpells.js";
 import { casterClassesOf } from "./spellcasting.js";
+import { classByTag } from "@pf1/engine";
 
 /** The item-creation feat that unlocks each consumable kind. */
 export interface ItemCreationFeatDef {
@@ -109,7 +110,7 @@ export function craftSources(
     const tradition = CASTER_KIND[tag];
     out.push({
       classTag: tag,
-      label: Object.values(refData.classes).find((c) => c.tag === tag)?.name ?? tag,
+      label: classByTag(refData, tag)?.name ?? tag,
       casterLevel,
       ...(tradition ? { tradition } : {}),
       spells: byId,

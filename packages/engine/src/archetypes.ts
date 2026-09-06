@@ -14,51 +14,21 @@
 import type {
   AbilityId,
   CharacterDoc,
-  ClassFeatureGrant,
-  ContextNote,
   DerivedArchetype,
   DerivedArchetypeFeature,
   DerivedClassFeature,
   RefData,
 } from "@pf1/schema";
 
-import { resolveAlchemistDiscovery } from "./alchemist-discoveries.js";
-import { ANTIPALADIN_CRUELTIES } from "./antipaladin-cruelties.js";
-import { resolveArcanistExploit } from "./arcanist-exploits.js";
 import { resolveArchetypeFeatureEffect } from "./archetype-effects-resolve.js";
 import { ARCHETYPE_TIER_REPLACEMENTS } from "./archetype-tier-replacements.js";
-import { resolveSorcererBloodlineOrMutation } from "./bloodline-mutations.js";
-import { type BloodlineResourcePool } from "./bloodlines.js";
-import { BLOODRAGER_BLOODLINES } from "./bloodrager-bloodlines.js";
-import { boldStareRiderSummary, resolveMesmeristBoldStare } from "./mesmerist-bold-stares.js";
-import { resolveMesmeristTrick } from "./mesmerist-tricks.js";
-import { resolveMagusArcanum } from "./magus-arcana.js";
-import { resolveNinjaTrick } from "./ninja-tricks.js";
-import { resolveMonkKiPower } from "./monk-ki-powers.js";
-import { resolveMonkStyleStrike } from "./monk-style-strikes.js";
-import { MEDIUM_SPIRITS } from "./medium-spirits.js";
-import { findOccultistFocusPower, OCCULTIST_SCHOOLS } from "./occultist-implements.js";
+import { boldStareRiderSummary } from "./mesmerist-bold-stares.js";
 import {
   chosenSimpleBlast,
-  eligibleCompositeBlasts,
   elementSimpleBlasts,
   KINETICIST_ELEMENTS,
-  mergedCompositeBlastCatalog,
 } from "./kineticist-elements.js";
 import { resolveKineticistDefense } from "./kineticist-defense.js";
-import { resolveKineticistWildTalent } from "./kineticist-wild-talents.js";
-import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
-import { resolvePhrenicAmplification } from "./phrenic-amplifications.js";
-import { PSYCHIC_DISCIPLINES } from "./psychic-disciplines.js";
-import { resolveRagePower } from "./rage-powers.js";
-import { resolveRogueTalent } from "./rogue-talents.js";
-import { resolveWitchHex } from "./witch-hexes.js";
-import { resolveGeneralShamanHex } from "./shaman-hexes.js";
-import { resolveSlayerTalent } from "./slayer-talents.js";
-import { findShamanHex, SHAMAN_SPIRITS } from "./shaman-spirits.js";
-import { resolveInvestigatorTalent } from "./investigator-talents.js";
-import { resolveVigilanteSocialTalent, resolveVigilanteTalent } from "./vigilante-talents.js";
-import { resolveShifterAspect } from "./shifter-aspects.js";
 import {
   sneakAttackDice,
   smiteEvilDetail,
@@ -86,94 +56,57 @@ import {
 import type { AbilityView } from "./rolldata.js";
 import { resolveSaveDCText, saveDCContext } from "./feature-save-dc.js";
 import { brawlersFlurryLabel } from "./two-weapon-fighting.js";
+import { archetypeFeaturesOf, classByTag, classFeatureByTag } from "./refdata-index.js";
+
+import {
+  collectBloodragerBloodlinePowers,
+  collectPsychicDisciplinePowers,
+  collectSorcererBloodlinePowers,
+} from "./granted-features/bloodlines.js";
+import { collectBaseClassFeatures } from "./granted-features/class-features.js";
+import {
+  collectAlchemistDiscoveries,
+  collectAntipaladinCruelties,
+  collectArcanistExploits,
+  collectMagusArcana,
+  collectMesmeristPowers,
+  collectOracleRevelations,
+  collectShamanSpiritPowers,
+  collectWarpriestBlessings,
+  collectWitchHexes,
+} from "./granted-features/class-powers.js";
+import {
+  collectDomainPowers,
+  collectDruidDomainPowers,
+  collectInquisitionPowers,
+  collectWizardSchoolPowers,
+} from "./granted-features/domains.js";
+import {
+  collectKineticistPowers,
+  collectMediumSpiritPowers,
+  collectOccultistPowers,
+} from "./granted-features/focus-classes.js";
+import { collectHomebrewFeatures } from "./granted-features/homebrew.js";
+import type { GrantedFeature, GrantedFeaturesContext } from "./granted-features/shared.js";
+import {
+  collectInvestigatorTalents,
+  collectMonkKiPowers,
+  collectNinjaTricks,
+  collectRagePowers,
+  collectRogueTalents,
+  collectShifterAspects,
+  collectSlayerTalents,
+  collectVigilanteTalents,
+} from "./granted-features/talents.js";
 
 export interface ResolvedClassFeatures {
   classFeatures: DerivedClassFeature[];
   activeArchetypes: DerivedArchetype[];
 }
 
-/** A single class-feature grant the character qualifies for, with its granting context. */
-export interface GrantedFeature {
-  classTag: string;
-  level: number;
-  grant: ClassFeatureGrant;
-  /**
-   * Set when this grant came from a chosen domain/school/bloodline/exploit/
-   * arcana/revelation/hex/discovery/spirit/discipline power/phrenic
-   * amplification/mesmerist trick/mesmerist bold stare/cruelty/ninja trick/
-   * ki power/style strike/rogue talent/investigator talent/vigilante talent/
-   * shifter aspect/rage power/occultist implement/focus power/kineticist
-   * composite blast/wild talent/medium spirit power/slayer talent/chosen
-   * inquisition/warpriest blessing rather than the class itself, or (kind
-   * `"custom"`) from a user-authored homebrew ability, which belongs to no
-   * class at all.
-   */
-  origin?: {
-    kind:
-      | "domain"
-      | "school"
-      | "bloodline"
-      | "exploit"
-      | "arcana"
-      | "revelation"
-      | "hex"
-      | "discovery"
-      | "spirit"
-      | "discipline"
-      | "amplification"
-      | "trick"
-      | "stare"
-      | "cruelty"
-      | "ragePower"
-      | "kiPower"
-      | "styleStrike"
-      | "rogueTalent"
-      | "investigatorTalent"
-      | "vigilanteSocialTalent"
-      | "vigilanteTalent"
-      | "shifterAspect"
-      | "implementSchool"
-      | "focusPower"
-      | "compositeBlast"
-      | "wildTalent"
-      | "spiritPower"
-      | "slayerTalent"
-      | "inquisition"
-      | "blessing"
-      | "custom";
-    label: string;
-  };
-  /**
-   * Pre-computed display detail for grants with no vendored `RefData.classFeatures`
-   * entry to look up (bloodline powers — see `bloodlines.ts`; hand-authored, not in
-   * the vendored pack). `undefined` for domain/school/base-class grants, which
-   * `resolveClassFeatures` derives `detail` for itself (or leaves undefined).
-   */
-  detail?: string;
-  /**
-   * Pre-computed uses/day pool for grants with no vendored `uses.maxFormula` to
-   * read (bloodline powers). `deriveResourcePools` uses this directly instead of
-   * looking up `refData.classFeatures[grant.featureId]` when set.
-   */
-  resourcePool?: BloodlineResourcePool;
-  /**
-   * Non-mechanical reminders (save DC, duration, activation shape,...) copied
-   * straight from the hand-authored table this grant resolved against — see
-   * that table's own `contextNotes` field (e.g. `WitchHexDef.contextNotes`).
-   * `resolveClassFeatures` copies this onto the resulting `DerivedClassFeature`
-   * unchanged.
-   */
-  contextNotes?: ContextNote[];
-}
+export type { GrantedFeature } from "./granted-features/shared.js";
+export { domainCasterLevel } from "./granted-features/shared.js";
 
-/**
- * Every class-feature grant a character currently qualifies for: base-class
- * features (gated by that class's level) plus any granted by a chosen cleric
- * domain or wizard arcane school (gated by the granting class's level — a
- * domain power scales off cleric level, a school power off wizard level).
- * Shared by `resolveClassFeatures` (display) and `deriveResourcePools`
- * (uses/day tracking) so both stay in sync automatically.
- */
 /**
  * Archetype id for the kineticist's Psychokinetcist (Occult Adventures p.56).
  * The misspelling is the vendored source's, not a typo here — see the
@@ -193,1073 +126,59 @@ export function isPsychokinetcist(doc: CharacterDoc): boolean {
 }
 
 /**
- * The class level a domain's granted powers scale off. Clerics are the common
- * case; inquisitors also pick a domain at 1st level and "use their inquisitor
- * level as their cleric level" for its granted powers (they get the powers
- * only — never the domain's bonus spell slots, which is why the web layer's
- * domain-spell wiring stays cleric-gated).
- *
- * `build.clericDomains` is a single flat list with no record of which class
- * granted each pick, so a cleric/inquisitor multiclass resolves to the cleric
- * level rather than trying to split one list across two progressions —
- * picking the class that would actually have granted a second domain slot.
+ * Every source of granted features, in the order they contribute. Order is not
+ * semantically load-bearing (callers group and sort by level), but it is the
+ * order fixtures were computed against, so keep it stable.
  */
-export function domainCasterLevel(doc: CharacterDoc): number {
-  const level = (tag: string): number =>
-    doc.identity.classes.find((c) => c.tag === tag)?.level ?? 0;
-  return level("cleric") || level("inquisitor");
-}
+const GRANT_SOURCES: readonly ((ctx: GrantedFeaturesContext) => void)[] = [
+  collectBaseClassFeatures,
+  collectDomainPowers,
+  collectInquisitionPowers,
+  collectWizardSchoolPowers,
+  collectDruidDomainPowers,
+  collectSorcererBloodlinePowers,
+  collectBloodragerBloodlinePowers,
+  collectArcanistExploits,
+  collectMagusArcana,
+  collectOracleRevelations,
+  collectWitchHexes,
+  collectAlchemistDiscoveries,
+  collectRagePowers,
+  collectMonkKiPowers,
+  collectRogueTalents,
+  collectShamanSpiritPowers,
+  collectPsychicDisciplinePowers,
+  collectMesmeristPowers,
+  collectAntipaladinCruelties,
+  collectNinjaTricks,
+  collectInvestigatorTalents,
+  collectVigilanteTalents,
+  collectSlayerTalents,
+  collectShifterAspects,
+  collectOccultistPowers,
+  collectKineticistPowers,
+  collectMediumSpiritPowers,
+  collectWarpriestBlessings,
+  collectHomebrewFeatures,
+];
 
+/**
+ * Every class-feature grant a character currently qualifies for: base-class
+ * features (gated by that class's level) plus any granted by a chosen cleric
+ * domain or wizard arcane school (gated by the granting class's level — a
+ * domain power scales off cleric level, a school power off wizard level).
+ * Shared by `resolveClassFeatures` (display) and `deriveResourcePools`
+ * (uses/day tracking) so both stay in sync automatically.
+ *
+ * The work itself lives one subsystem per function under `granted-features/`;
+ * this function only builds the shared context and runs them in order. Adding
+ * a source of grants means a new function there and a new entry in
+ * {@link GRANT_SOURCES}.
+ */
 export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): GrantedFeature[] {
   const out: GrantedFeature[] = [];
-
-  for (const cls of doc.identity.classes) {
-    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
-    if (!classDef) continue;
-    for (const grant of classDef.features) {
-      if (grant.level > cls.level || !grant.resolved) continue;
-      out.push({ classTag: cls.tag, level: grant.level, grant });
-    }
-  }
-
-  const domainLevel = domainCasterLevel(doc);
-  const domainClassTag = doc.identity.classes.some((c) => c.tag === "cleric")
-    ? "cleric"
-    : "inquisitor";
-  if (domainLevel > 0) {
-    for (const tag of doc.build.clericDomains ?? []) {
-      const domain = Object.values(refData.domains).find((d) => d.tag === tag);
-      if (domain) {
-        for (const grant of domain.features) {
-          if (grant.level > domainLevel || !grant.resolved) continue;
-          out.push({
-            classTag: domainClassTag,
-            level: grant.level,
-            grant,
-            origin: { kind: "domain", label: domain.name },
-          });
-        }
-        continue;
-      }
-      // Not a top-level domain tag — try a subdomain, whose `features` is
-      // already the complete merged list (kept parent powers + replacements;
-      // see its doc comment). The parent-domain fallback is dead weight
-      // against the current slice, kept only so a future data bump that drops
-      // a subdomain's power list degrades to the parent's rather than to
-      // nothing.
-      const subdomain = Object.values(refData.subdomains).find((s) => s.tag === tag);
-      if (!subdomain) continue;
-      const parentDomain = Object.values(refData.domains).find(
-        (d) => d.tag === subdomain.parentDomainTags[0],
-      );
-      const features =
-        subdomain.features.length > 0 ? subdomain.features : (parentDomain?.features ?? []);
-      for (const grant of features) {
-        if (grant.level > domainLevel || !grant.resolved) continue;
-        out.push({
-          classTag: domainClassTag,
-          level: grant.level,
-          grant,
-          origin: { kind: "domain", label: subdomain.name },
-        });
-      }
-    }
-  }
-
-  // Inquisitor's inquisition — the alternative to a domain (`build.
-  // inquisition`, mutually exclusive with `clericDomains`; the builder
-  // picker enforces that). Unlike a domain, an inquisition is never
-  // available to a cleric, so this gates on the inquisitor's own class
-  // level directly rather than `domainCasterLevel`.
-  const inquisitorLevel = doc.identity.classes.find((c) => c.tag === "inquisitor")?.level ?? 0;
-  if (inquisitorLevel > 0 && doc.build.inquisition) {
-    const inquisition = Object.values(refData.inquisitions).find(
-      (i) => i.tag === doc.build.inquisition,
-    );
-    if (inquisition) {
-      for (const grant of inquisition.features) {
-        if (grant.level > inquisitorLevel || !grant.resolved) continue;
-        out.push({
-          classTag: "inquisitor",
-          level: grant.level,
-          grant,
-          origin: { kind: "inquisition", label: inquisition.name },
-        });
-      }
-    }
-  }
-
-  const wizardLevel = doc.identity.classes.find((c) => c.tag === "wizard")?.level ?? 0;
-  if (wizardLevel > 0) {
-    // `build.wizardSchool` undefined means Universalist (back-compat — see
-    // `WizardSchoolTag` doc comment in @pf1/schema): a Universalist still gets
-    // Hand of the Apprentice / Metamagic Mastery, just no bonus spell slot.
-    const schoolTag = doc.build.wizardSchool ?? "uni";
-    const school = Object.values(refData.wizardSchools).find((s) => s.tag === schoolTag);
-    // A focused school (`build.wizardFocusedSchool`, e.g. Admixture) only
-    // changes WHICH powers are granted — the spell list/opposition mechanics
-    // still key off `schoolTag` unchanged, see `FocusedSchool` doc comment.
-    // `FocusedSchool.features` is already the complete merged list (parent's
-    // kept powers + its own), so it's used in place of, never alongside,
-    // `school.features`. A stale focus that no longer matches the current
-    // school (e.g. after `wizardSchool` changed without going through
-    // `setWizardSchool`) falls back to the plain school's powers.
-    const focused = doc.build.wizardFocusedSchool
-      ? Object.values(refData.focusedSchools).find(
-          (f) => f.tag === doc.build.wizardFocusedSchool && f.parentTag === schoolTag,
-        )
-      : undefined;
-    if (school) {
-      for (const grant of focused?.features ?? school.features) {
-        if (grant.level > wizardLevel || !grant.resolved) continue;
-        out.push({
-          classTag: "wizard",
-          level: grant.level,
-          grant,
-          origin: { kind: "school", label: focused?.name ?? school.name },
-        });
-      }
-    }
-  }
-
-  // Druid nature-bond domain powers — hand-authored (issue #117; see
-  // `supplements.ts`'s `SUPPLEMENTAL_DRUID_DOMAIN_FEATURES`), gated on druid
-  // level the same way a cleric domain gates on cleric/inquisitor level
-  // above. A non-druid with a stale `druidNatureBondDomain` field (or an
-  // unresolvable tag) gets nothing. Wolf's fixed bonus feat (Improved Trip)
-  // is NOT here — it comes through `DruidDomain.changes` and the web layer's
-  // `apps/web/src/model/feats.ts`, the same path Darkness/Rune's cleric-
-  // domain bonus feats use, so it never appears as a classFeatures entry.
-  const druidLevel = doc.identity.classes.find((c) => c.tag === "druid")?.level ?? 0;
-  if (druidLevel > 0 && doc.build.druidNatureBondDomain) {
-    const druidDomain = Object.values(refData.druidDomains).find(
-      (d) => d.tag === doc.build.druidNatureBondDomain,
-    );
-    if (druidDomain) {
-      for (const grant of druidDomain.features) {
-        if (grant.level > druidLevel || !grant.resolved) continue;
-        out.push({
-          classTag: "druid",
-          level: grant.level,
-          grant,
-          origin: { kind: "domain", label: druidDomain.name },
-        });
-      }
-    }
-  }
-
-  // Sorcerer bloodline powers — hand-authored (see bloodlines.ts), gated on
-  // actual sorcerer levels the same way domain/school grants are gated on
-  // cleric/wizard levels above. A non-sorcerer with a stale
-  // `sorcererBloodline` field (or an unresolvable bloodline tag) gets nothing.
-  // `doc.build.sorcererBloodline` may name a base bloodline OR a wildblooded
-  // mutation id (`resolveSorcererBloodlineOrMutation` resolves either) — the
-  // merged entry already carries the parent's kept powers plus the
-  // mutation's swapped-in ones (see `bloodline-mutations.ts`).
-  const sorcererLevel = doc.identity.classes.find((c) => c.tag === "sorcerer")?.level ?? 0;
-  if (sorcererLevel > 0 && doc.build.sorcererBloodline) {
-    const bloodline = resolveSorcererBloodlineOrMutation(doc.build.sorcererBloodline, refData);
-    if (bloodline && !bloodline.displayOnly) {
-      for (const power of bloodline.powers) {
-        if (power.level > sorcererLevel) continue;
-        out.push({
-          classTag: "sorcerer",
-          level: power.level,
-          grant: {
-            level: power.level,
-            uuid: `bloodline:${bloodline.tag}:${power.id}`,
-            featureId: `bloodline:${bloodline.tag}:${power.id}`,
-            name: power.name,
-            resolved: true,
-          },
-          origin: { kind: "bloodline", label: `${bloodline.name} Bloodline` },
-          detail: power.resourcePool?.detail,
-          resourcePool: power.resourcePool,
-          contextNotes: power.contextNotes,
-        });
-      }
-    }
-  }
-
-  // Bloodrager bloodline powers — hand-authored (see
-  // bloodrager-bloodlines.ts), gated on actual bloodrager levels the same way
-  // sorcerer bloodline powers are gated above (each power at its own
-  // 1st/4th/8th/12th/16th/20th level gate). A non-bloodrager with a stale
-  // `bloodragerBloodline` field (or an unresolvable bloodline tag) gets
-  // nothing.
-  const bloodragerLevel = doc.identity.classes.find((c) => c.tag === "bloodrager")?.level ?? 0;
-  if (bloodragerLevel > 0 && doc.build.bloodragerBloodline) {
-    const bloodline = BLOODRAGER_BLOODLINES[doc.build.bloodragerBloodline];
-    if (bloodline) {
-      for (const power of bloodline.powers) {
-        if (power.level > bloodragerLevel) continue;
-        out.push({
-          classTag: "bloodrager",
-          level: power.level,
-          grant: {
-            level: power.level,
-            uuid: `bloodragerBloodline:${bloodline.tag}:${power.id}`,
-            featureId: `bloodragerBloodline:${bloodline.tag}:${power.id}`,
-            name: power.name,
-            resolved: true,
-          },
-          origin: { kind: "bloodline", label: `${bloodline.name} Bloodline` },
-          detail: power.resourcePool?.detail,
-          resourcePool: power.resourcePool,
-          contextNotes: power.contextNotes,
-        });
-      }
-    }
-  }
-
-  // Arcanist exploits (vendored catalog overlay) — hand-authored table first,
-  // falling back to the vendored catalog via `resolveArcanistExploit` (see
-  // arcanist-exploits.ts), gated on actual arcanist levels the same way
-  // domain/school/bloodline grants are gated above. A non-arcanist with a
-  // stale `arcanistExploits` field gets nothing. Unlike bloodline powers, base
-  // exploits carry no individual level gate of their own (the ACG
-  // picks-per-level budget lives in `model/arcanistExploits.ts`, not here) —
-  // every chosen, recognized exploit id is granted at a flat display level of
-  // 1 so it groups with the character's earliest features rather than
-  // inventing a fake per-exploit level.
-  const arcanistLevel = doc.identity.classes.find((c) => c.tag === "arcanist")?.level ?? 0;
-  if (arcanistLevel > 0) {
-    for (const exploitId of doc.build.arcanistExploits ?? []) {
-      const exploit = resolveArcanistExploit(exploitId, refData);
-      if (!exploit) continue;
-      out.push({
-        classTag: "arcanist",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `exploit:${exploit.id}`,
-          featureId: `exploit:${exploit.id}`,
-          name: exploit.name,
-          resolved: true,
-        },
-        origin: { kind: "exploit", label: "Arcanist Exploit" },
-        // Exploits have no vendored RefData.classFeatures entry to derive a
-        // description from (unlike base class features), so `detail` carries
-        // the exploit's own rules summary rather than a terse dice/DC string
-        // — otherwise the row would show only a bare name.
-        detail: exploit.summary,
-        contextNotes: exploit.contextNotes,
-      });
-    }
-  }
-
-  // Magus arcana (vendored catalog) — hand-authored table first, falling back
-  // to the vendored catalog for a vendored-only pick (see `magus-arcana.ts`'s
-  // `resolveMagusArcanum`), gated on actual magus levels the same way arcanist
-  // exploits are gated above. A non-magus with a stale `magusArcana` field
-  // gets nothing. Like exploits, base arcana carry no individual level gate
-  // HERE (the picker's own `minLevel` soft-filters what's offered — see
-  // `model/magusArcana.ts`); every chosen, recognized arcana id is granted at
-  // a flat display level of 3 (the earliest a magus has any arcana at all) so
-  // it groups sensibly rather than inventing a fake per-arcana level.
-  const magusLevel = doc.identity.classes.find((c) => c.tag === "magus")?.level ?? 0;
-  if (magusLevel > 0) {
-    for (const arcanaId of doc.build.magusArcana ?? []) {
-      const arcana = resolveMagusArcanum(arcanaId, refData);
-      if (!arcana) continue;
-      out.push({
-        classTag: "magus",
-        level: 3,
-        grant: {
-          level: 3,
-          uuid: `arcana:${arcana.id}`,
-          featureId: `arcana:${arcana.id}`,
-          name: arcana.name,
-          resolved: true,
-        },
-        origin: { kind: "arcana", label: "Magus Arcana" },
-        // Arcana have no vendored RefData.classFeatures entry to derive a
-        // description from (unlike base class features), so `detail` carries
-        // the arcana's own rules summary — otherwise the row would show only
-        // a bare name.
-        detail: arcana.summary,
-        contextNotes: arcana.contextNotes,
-      });
-    }
-  }
-
-  // Oracle revelations — hand-authored (see oracle-revelations.ts), gated on
-  // actual oracle levels AND a chosen mystery (a revelation id from a
-  // DIFFERENT mystery than the one currently selected, or a non-oracle/stale
-  // field, is silently skipped — mirrors the "unresolvable id" tolerance every
-  // other hand-authored table here uses). Granted at a flat display level of
-  // 1, same rationale as exploits/arcana above.
-  const oracleLevel = doc.identity.classes.find((c) => c.tag === "oracle")?.level ?? 0;
-  if (oracleLevel > 0 && doc.build.oracleMystery) {
-    for (const revelationId of doc.build.oracleRevelations ?? []) {
-      const revelation = ORACLE_REVELATIONS[revelationId];
-      if (!revelation || revelation.mysteryTag !== doc.build.oracleMystery) continue;
-      out.push({
-        classTag: "oracle",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `revelation:${revelation.id}`,
-          featureId: `revelation:${revelation.id}`,
-          name: revelation.name,
-          resolved: true,
-        },
-        origin: { kind: "revelation", label: "Revelation" },
-        detail: revelation.summary,
-        contextNotes: revelation.contextNotes,
-      });
-    }
-  }
-
-  // Witch hexes (vendored catalog) — hand-authored table first, falling back
-  // to the vendored catalog for a vendored-only pick (see `witch-hexes.ts`'s
-  // `resolveWitchHex`), gated on actual witch levels the same way magus arcana
-  // is gated above. Unlike revelations, hexes are NOT patron-scoped (a witch's
-  // patron only grants bonus spells — see witch-patrons.ts) so every chosen,
-  // recognized hex id is granted regardless of `build.witchPatron`. Granted at
-  // a flat display level of 1, same rationale as exploits/arcana above.
-  const witchLevel = doc.identity.classes.find((c) => c.tag === "witch")?.level ?? 0;
-  if (witchLevel > 0) {
-    for (const hexId of doc.build.witchHexes ?? []) {
-      const hex = resolveWitchHex(hexId, refData);
-      if (!hex) continue;
-      out.push({
-        classTag: "witch",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `hex:${hex.id}`,
-          featureId: `hex:${hex.id}`,
-          name: hex.name,
-          resolved: true,
-        },
-        origin: {
-          kind: "hex",
-          label: hex.tier === "major" ? "Major Hex" : hex.tier === "grand" ? "Grand Hex" : "Hex",
-        },
-        detail: hex.summary,
-        contextNotes: hex.contextNotes,
-      });
-    }
-  }
-
-  // Alchemist discoveries — hand-authored (see alchemist-discoveries.ts),
-  // gated on actual alchemist levels the same way magus arcana is gated above.
-  // Granted at a flat display level of 2 (the earliest an alchemist has any
-  // discovery at all), same rationale as exploits/arcana above.
-  const alchemistLevel = doc.identity.classes.find((c) => c.tag === "alchemist")?.level ?? 0;
-  if (alchemistLevel > 0) {
-    for (const discoveryId of doc.build.alchemistDiscoveries ?? []) {
-      const discovery = resolveAlchemistDiscovery(discoveryId, refData);
-      if (!discovery) continue;
-      out.push({
-        classTag: "alchemist",
-        level: 2,
-        grant: {
-          level: 2,
-          uuid: `discovery:${discovery.id}`,
-          featureId: `discovery:${discovery.id}`,
-          name: discovery.name,
-          resolved: true,
-        },
-        origin: { kind: "discovery", label: "Discovery" },
-        detail: discovery.summary,
-        contextNotes: discovery.contextNotes,
-      });
-    }
-  }
-
-  // Barbarian rage powers — hand-authored (see rage-powers.ts), gated on
-  // actual barbarian levels (either edition — see `RAGE_POWERS`'s doc comment
-  // for why chained/barbarianUnchained share one table). Granted at a flat
-  // display level of 2 (the earliest a barbarian has any rage power at all),
-  // same rationale as exploits/arcana above. `classTag` uses whichever of the
-  // two the character actually has (falling back to "barbarian" if — unusually
-  // — both are present, matching `defenses.ts`'s barbarianLevel summing
-  // posture: display attribution to one tag is cosmetic only, the pick itself
-  // isn't scoped per edition).
-  const barbarianClassTag = doc.identity.classes.find(
-    (c) => c.tag === "barbarian" || c.tag === "barbarianUnchained",
-  )?.tag;
-  if (barbarianClassTag) {
-    for (const powerId of doc.build.ragePowers ?? []) {
-      const power = resolveRagePower(powerId, refData);
-      if (!power) continue;
-      out.push({
-        classTag: barbarianClassTag,
-        level: 2,
-        grant: {
-          level: 2,
-          uuid: `ragePower:${power.id}`,
-          featureId: `ragePower:${power.id}`,
-          name: power.name,
-          resolved: true,
-        },
-        origin: { kind: "ragePower", label: "Rage Power" },
-        detail: power.summary,
-        contextNotes: power.contextNotes,
-      });
-    }
-  }
-
-  // Monk (Unchained) ki powers + style strikes — hand-authored (see
-  // monk-ki-powers.ts/monk-style-strikes.ts), gated on actual monkUnchained
-  // levels the same way alchemist discoveries is gated above. Granted at a
-  // flat display level of 4 (ki powers)/5 (style strikes) — the earliest level
-  // each subsystem has any picks at all — same rationale as exploits/arcana
-  // above.
-  const monkUnchainedLevel =
-    doc.identity.classes.find((c) => c.tag === "monkUnchained")?.level ?? 0;
-  if (monkUnchainedLevel > 0) {
-    for (const powerId of doc.build.monkKiPowers ?? []) {
-      const power = resolveMonkKiPower(powerId, refData);
-      if (!power) continue;
-      out.push({
-        classTag: "monkUnchained",
-        level: 4,
-        grant: {
-          level: 4,
-          uuid: `kiPower:${power.id}`,
-          featureId: `kiPower:${power.id}`,
-          name: power.name,
-          resolved: true,
-        },
-        origin: { kind: "kiPower", label: "Ki Power" },
-        detail: power.summary,
-        contextNotes: power.contextNotes,
-      });
-    }
-    for (const strikeId of doc.build.monkStyleStrikes ?? []) {
-      const strike = resolveMonkStyleStrike(strikeId, refData);
-      if (!strike) continue;
-      out.push({
-        classTag: "monkUnchained",
-        level: 5,
-        grant: {
-          level: 5,
-          uuid: `styleStrike:${strike.id}`,
-          featureId: `styleStrike:${strike.id}`,
-          name: strike.name,
-          resolved: true,
-        },
-        origin: { kind: "styleStrike", label: "Style Strike" },
-        detail: strike.summary,
-        contextNotes: strike.contextNotes,
-      });
-    }
-  }
-
-  // Rogue talents — hand-authored (see rogue-talents.ts), SHARED between the
-  // chained rogue and Rogue (Unchained) (`build.rogueTalents`); gated on
-  // whichever of the two classes the character actually has, matching that
-  // class's own tag/level for display (a character with both, unusual but not
-  // illegal, is credited under "rogue"). Granted at a flat display level of 2,
-  // the earliest either class has any talent picks at all, same rationale as
-  // exploits/arcana above.
-  const rogueClass = doc.identity.classes.find(
-    (c) => c.tag === "rogue" || c.tag === "rogueUnchained",
-  );
-  if (rogueClass && rogueClass.level > 0) {
-    for (const talentId of doc.build.rogueTalents ?? []) {
-      const talent = resolveRogueTalent(talentId, refData);
-      if (!talent) continue;
-      out.push({
-        classTag: rogueClass.tag,
-        level: 2,
-        grant: {
-          level: 2,
-          uuid: `rogueTalent:${talent.id}`,
-          featureId: `rogueTalent:${talent.id}`,
-          name: talent.name,
-          resolved: true,
-        },
-        origin: { kind: "rogueTalent", label: "Rogue Talent" },
-        detail: talent.summary,
-        contextNotes: talent.contextNotes,
-      });
-    }
-  }
-
-  // Shaman spirit ability + hexes (general-hex catalog) — hand-authored (see
-  // shaman-spirits.ts), gated on actual shaman levels AND a chosen spirit,
-  // same shape as oracle revelations above. The spirit's own 1st-level Spirit
-  // Ability is granted automatically (not a budgeted pick); hexes are either
-  // the CURRENT spirit's own hex list (tolerating a leftover pick from a
-  // since-abandoned spirit the same way revelations tolerate a stale mystery)
-  // or, when a picked id isn't spirit-scoped, the vendored GENERAL shaman-hex
-  // catalog (`resolveGeneralShamanHex` — ACG's own spirit-agnostic "Shaman
-  // Hexes" table, see `shaman-hexes.ts`), which has no spirit-scoping
-  // restriction.
-  const shamanLevel = doc.identity.classes.find((c) => c.tag === "shaman")?.level ?? 0;
-  if (shamanLevel > 0 && doc.build.shamanSpirit) {
-    const spirit = SHAMAN_SPIRITS[doc.build.shamanSpirit];
-    if (spirit) {
-      out.push({
-        classTag: "shaman",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `spirit:${spirit.tag}:ability`,
-          featureId: `spirit:${spirit.tag}:ability`,
-          name: spirit.ability.name,
-          resolved: true,
-        },
-        origin: { kind: "spirit", label: `${spirit.name} Spirit` },
-        detail: spirit.ability.summary,
-      });
-      for (const hexId of doc.build.shamanHexes ?? []) {
-        const hexDef = findShamanHex(hexId);
-        const spiritHexDef = hexDef && hexDef.id.split(":")[0] === spirit.tag ? hexDef : undefined;
-        const generalHex = spiritHexDef ? undefined : resolveGeneralShamanHex(hexId, refData);
-        if (!spiritHexDef && !generalHex) continue;
-        const name = spiritHexDef?.name ?? generalHex!.name;
-        const detail = spiritHexDef?.summary ?? generalHex!.summary;
-        // `ShamanSpiritHex` (a spirit's own hex list) carries no `contextNotes`
-        // field, unlike the general shaman-hex catalog — only the latter has one.
-        const contextNotes = generalHex?.contextNotes;
-        out.push({
-          classTag: "shaman",
-          level: 1,
-          grant: {
-            level: 1,
-            uuid: `hex:${hexId}`,
-            featureId: `hex:${hexId}`,
-            name,
-            resolved: true,
-          },
-          origin: { kind: "hex", label: "Hex" },
-          detail,
-          contextNotes,
-        });
-      }
-    }
-  }
-
-  // Psychic discipline powers — hand-authored (see psychic-disciplines.ts's
-  // `powers` field), gated on actual psychic levels AND a chosen discipline,
-  // same shape as shaman spirit ability above: automatically granted (not a
-  // budgeted pick) at each power's own 1st/5th/13th-level gate. A non-psychic
-  // or unresolvable discipline tag gets nothing.
-  const psychicLevel = doc.identity.classes.find((c) => c.tag === "psychic")?.level ?? 0;
-  if (psychicLevel > 0 && doc.build.psychicDiscipline) {
-    const discipline = PSYCHIC_DISCIPLINES[doc.build.psychicDiscipline];
-    if (discipline) {
-      for (const power of discipline.powers) {
-        if (power.level > psychicLevel) continue;
-        out.push({
-          classTag: "psychic",
-          level: power.level,
-          grant: {
-            level: power.level,
-            uuid: `discipline:${discipline.tag}:${power.name}`,
-            featureId: `discipline:${discipline.tag}:${power.name}`,
-            name: power.name,
-            resolved: true,
-          },
-          origin: { kind: "discipline", label: `${discipline.name} Discipline` },
-          detail: power.summary,
-        });
-      }
-    }
-  }
-
-  // Phrenic amplifications — hand-authored (see phrenic-amplifications.ts),
-  // gated on actual psychic levels the same way magus arcana is gated above.
-  // Granted at a flat display level of 1, same rationale as exploits/arcana
-  // above.
-  if (psychicLevel > 0) {
-    for (const amplificationId of doc.build.psychicAmplifications ?? []) {
-      const amp = resolvePhrenicAmplification(amplificationId, refData);
-      if (!amp) continue;
-      out.push({
-        classTag: "psychic",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `amplification:${amp.id}`,
-          featureId: `amplification:${amp.id}`,
-          name: amp.name,
-          resolved: true,
-        },
-        origin: { kind: "amplification", label: "Phrenic Amplification" },
-        detail: `${amp.costLabel} — ${amp.summary}`,
-      });
-    }
-  }
-
-  // Mesmerist tricks — hand-authored (see mesmerist-tricks.ts), gated on
-  // actual mesmerist levels the same way magus arcana is gated above. Granted
-  // at a flat display level of 1, same rationale as exploits/arcana above.
-  // (Note: "trick" is also `witch`/ `ninja`'s hex/trick-flavored kind
-  // terminology elsewhere in this app, but `classTag` disambiguates every
-  // origin.kind consumer the same way it already disambiguates "hex" between
-  // witch and shaman.)
-  const mesmeristLevel = doc.identity.classes.find((c) => c.tag === "mesmerist")?.level ?? 0;
-  if (mesmeristLevel > 0) {
-    for (const trickId of doc.build.mesmeristTricks ?? []) {
-      const trick = resolveMesmeristTrick(trickId, refData);
-      if (!trick) continue;
-      out.push({
-        classTag: "mesmerist",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `trick:${trick.id}`,
-          featureId: `trick:${trick.id}`,
-          name: trick.name,
-          resolved: true,
-        },
-        origin: { kind: "trick", label: "Trick" },
-        detail: trick.actionNote ? `${trick.actionNote} — ${trick.summary}` : trick.summary,
-      });
-    }
-
-    // Bold stares — hand-authored (see mesmerist-bold-stares.ts). Each pick
-    // also enriches the Hypnotic Stare class feature's own `detail` line — see
-    // the "Hypnotic Stare" dispatch in `resolveClassFeatures` below — but is
-    // ALSO surfaced here as its own class-feature row (informational), same
-    // discoverability posture picked hexes/revelations/tricks get.
-    for (const stareId of doc.build.mesmeristBoldStares ?? []) {
-      const stare = resolveMesmeristBoldStare(stareId, refData);
-      if (!stare) continue;
-      out.push({
-        classTag: "mesmerist",
-        level: 3,
-        grant: {
-          level: 3,
-          uuid: `stare:${stare.id}`,
-          featureId: `stare:${stare.id}`,
-          name: stare.name,
-          resolved: true,
-        },
-        origin: { kind: "stare", label: "Bold Stare" },
-        detail: stare.summary,
-      });
-    }
-  }
-
-  // Antipaladin cruelties (B) — hand-authored (see antipaladin-cruelties.ts),
-  // gated on actual antipaladin levels the same way alchemist discoveries are
-  // gated above. Granted at a flat display level of 3 (the earliest an
-  // antipaladin has any cruelty at all), same rationale as
-  // discoveries/exploits/arcana above.
-  const antipaladinLevel = doc.identity.classes.find((c) => c.tag === "antipaladin")?.level ?? 0;
-  if (antipaladinLevel > 0) {
-    for (const crueltyId of doc.build.antipaladinCruelties ?? []) {
-      const cruelty = ANTIPALADIN_CRUELTIES[crueltyId];
-      if (!cruelty) continue;
-      out.push({
-        classTag: "antipaladin",
-        level: 3,
-        grant: {
-          level: 3,
-          uuid: `cruelty:${cruelty.id}`,
-          featureId: `cruelty:${cruelty.id}`,
-          name: cruelty.name,
-          resolved: true,
-        },
-        origin: { kind: "cruelty", label: "Cruelty" },
-        detail: cruelty.summary,
-        contextNotes: cruelty.contextNotes,
-      });
-    }
-  }
-
-  // Ninja tricks (B) — hand-authored (see ninja-tricks.ts), gated on actual
-  // ninja levels the same way alchemist discoveries are gated above. Granted
-  // at a flat display level of 2 (the earliest a ninja has any trick at all),
-  // same rationale as discoveries/exploits/arcana above.
-  const ninjaLevel = doc.identity.classes.find((c) => c.tag === "ninja")?.level ?? 0;
-  if (ninjaLevel > 0) {
-    for (const trickId of doc.build.ninjaTricks ?? []) {
-      const trick = resolveNinjaTrick(trickId, refData);
-      if (!trick) continue;
-      out.push({
-        classTag: "ninja",
-        level: 2,
-        grant: {
-          level: 2,
-          uuid: `trick:${trick.id}`,
-          featureId: `trick:${trick.id}`,
-          name: trick.name,
-          resolved: true,
-        },
-        origin: { kind: "trick", label: "Ninja Trick" },
-        detail: trick.summary,
-        contextNotes: trick.contextNotes,
-      });
-    }
-  }
-
-  // Investigator talents (vendored catalog overlay) — hand-authored table
-  // first, falling back to the vendored catalog via
-  // `resolveInvestigatorTalent` (see investigator-talents.ts), gated on actual
-  // investigator levels the same way alchemist discoveries are gated above.
-  // Granted at a flat display level of 3 (the earliest an investigator has any
-  // talent at all), same rationale as exploits/arcana above.
-  const investigatorLevel = doc.identity.classes.find((c) => c.tag === "investigator")?.level ?? 0;
-  if (investigatorLevel > 0) {
-    for (const talentId of doc.build.investigatorTalents ?? []) {
-      const talent = resolveInvestigatorTalent(talentId, refData);
-      if (!talent) continue;
-      out.push({
-        classTag: "investigator",
-        level: 3,
-        grant: {
-          level: 3,
-          uuid: `investigatorTalent:${talent.id}`,
-          featureId: `investigatorTalent:${talent.id}`,
-          name: talent.name,
-          resolved: true,
-        },
-        origin: { kind: "investigatorTalent", label: "Investigator Talent" },
-        detail: talent.summary,
-        contextNotes: talent.contextNotes,
-      });
-    }
-  }
-
-  // Vigilante social + vigilante talents — hand-authored (see
-  // vigilante-talents.ts), gated on actual vigilante levels. Two independent
-  // pools (PF1 RAW grants them from two different class features — see
-  // `build.vigilanteSocialTalents`/`vigilanteTalents`' doc comments), granted
-  // at flat display levels of 1 and 2 respectively (the earliest each pool has
-  // any pick at all).
-  const vigilanteLevel = doc.identity.classes.find((c) => c.tag === "vigilante")?.level ?? 0;
-  if (vigilanteLevel > 0) {
-    for (const talentId of doc.build.vigilanteSocialTalents ?? []) {
-      const talent = resolveVigilanteSocialTalent(talentId, refData);
-      if (!talent) continue;
-      out.push({
-        classTag: "vigilante",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `vigilanteSocialTalent:${talent.id}`,
-          featureId: `vigilanteSocialTalent:${talent.id}`,
-          name: talent.name,
-          resolved: true,
-        },
-        origin: { kind: "vigilanteSocialTalent", label: "Social Talent" },
-        detail: talent.summary,
-        contextNotes: talent.contextNotes,
-      });
-    }
-    for (const talentId of doc.build.vigilanteTalents ?? []) {
-      const talent = resolveVigilanteTalent(talentId, refData);
-      if (!talent) continue;
-      out.push({
-        classTag: "vigilante",
-        level: 2,
-        grant: {
-          level: 2,
-          uuid: `vigilanteTalent:${talent.id}`,
-          featureId: `vigilanteTalent:${talent.id}`,
-          name: talent.name,
-          resolved: true,
-        },
-        origin: { kind: "vigilanteTalent", label: "Vigilante Talent" },
-        detail: talent.summary,
-        contextNotes: talent.contextNotes,
-      });
-    }
-  }
-
-  // Slayer talents (hand-table follow-up) — resolved through
-  // `resolveSlayerTalent` (hand-authored table first, vendored catalog
-  // fallback — see slayer-talents.ts's doc comment). Gated on actual slayer
-  // levels. Granted at a flat display level of 2 (the earliest a slayer has
-  // any talent at all), same rationale as discoveries/exploits/arcana above.
-  const slayerLevel = doc.identity.classes.find((c) => c.tag === "slayer")?.level ?? 0;
-  if (slayerLevel > 0) {
-    for (const talentId of doc.build.slayerTalents ?? []) {
-      const talent = resolveSlayerTalent(talentId, refData);
-      if (!talent) continue;
-      out.push({
-        classTag: "slayer",
-        level: 2,
-        grant: {
-          level: 2,
-          uuid: `slayerTalent:${talent.id}`,
-          featureId: `slayerTalent:${talent.id}`,
-          name: talent.name,
-          resolved: true,
-        },
-        origin: { kind: "slayerTalent", label: "Slayer Talent" },
-        detail: talent.summary,
-        contextNotes: talent.contextNotes,
-      });
-    }
-  }
-
-  // Shifter aspects — hand-authored (see shifter-aspects.ts), gated on actual
-  // shifter levels. Granted at a flat display level of 1 (the earliest a
-  // shifter has any aspect at all), same rationale as exploits/arcana above.
-  // Whether the minor form is currently toggled ON (`live.activeBuffs`) is
-  // separate live-session state, not reflected here — this list is "aspects
-  // known", matching every other build-time pick.
-  const shifterLevel = doc.identity.classes.find((c) => c.tag === "shifter")?.level ?? 0;
-  if (shifterLevel > 0) {
-    for (const aspectId of doc.build.shifterAspects ?? []) {
-      const aspect = resolveShifterAspect(aspectId, refData);
-      if (!aspect) continue;
-      out.push({
-        classTag: "shifter",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `shifterAspect:${aspect.id}`,
-          featureId: `shifterAspect:${aspect.id}`,
-          name: aspect.name,
-          resolved: true,
-        },
-        origin: { kind: "shifterAspect", label: "Aspect" },
-        detail: aspect.summary,
-        contextNotes: aspect.contextNotes,
-      });
-    }
-  }
-
-  // Occultist implements — hand-authored (see occultist-implements.ts), gated
-  // on actual occultist levels. Two grant shapes from one
-  // `build.occultistImplements` multiset field: each DISTINCT school tag
-  // (deduped — a repeated pick grants no *additional* base/ resonant power,
-  // per RAW; see that field's schema doc comment) grants its school's base
-  // focus power AND resonant power automatically, both at a flat display level
-  // of 1 (the earliest an occultist has any implement at all).
-  // `build.occultistFocusPowers` is a SEPARATE budgeted pick from the school's
-  // full focus-power menu — scoped to a currently-known school the same
-  // "unresolvable id tolerated" way revelations/hexes tolerate a stale
-  // mystery/spirit — granted at a flat display level of 1 as well (the
-  // earliest an occultist selects a menu focus power, per RAW's "at 1st
-  // level... can select one more focus power").
-  const occultistClassLevel = doc.identity.classes.find((c) => c.tag === "occultist")?.level ?? 0;
-  if (occultistClassLevel > 0) {
-    const knownSchoolTags = new Set(doc.build.occultistImplements ?? []);
-    for (const tag of knownSchoolTags) {
-      const school = OCCULTIST_SCHOOLS[tag];
-      if (!school) continue;
-      out.push({
-        classTag: "occultist",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `implementBase:${tag}`,
-          featureId: `implementBase:${tag}`,
-          name: `${school.basePower.name} (${school.name})`,
-          resolved: true,
-        },
-        origin: { kind: "implementSchool", label: "Implement — Base Focus Power" },
-        detail: school.basePower.summary,
-      });
-      out.push({
-        classTag: "occultist",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `implementResonant:${tag}`,
-          featureId: `implementResonant:${tag}`,
-          name: `${school.resonantPower.name} (${school.name})`,
-          resolved: true,
-        },
-        origin: { kind: "implementSchool", label: "Implement — Resonant Power" },
-        detail: school.resonantPower.summary,
-      });
-    }
-    for (const focusPowerId of doc.build.occultistFocusPowers ?? []) {
-      const found = findOccultistFocusPower(focusPowerId);
-      if (!found || !knownSchoolTags.has(found.school.tag)) continue;
-      out.push({
-        classTag: "occultist",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `focusPower:${focusPowerId}`,
-          featureId: `focusPower:${focusPowerId}`,
-          name: `${found.power.name} (${found.school.name})`,
-          resolved: true,
-        },
-        origin: { kind: "focusPower", label: "Focus Power" },
-        detail: found.power.summary,
-      });
-    }
-  }
-
-  // Kineticist composite blasts + wild talents — hand-authored (see
-  // kineticist-elements.ts / kineticist-wild-talents.ts), gated on actual
-  // kineticist levels. Composite blasts are NOT a budgeted pick (RAW:
-  // automatic once the required element(s) are known — see
-  // `eligibleCompositeBlasts`'s doc comment); granted at a flat display level
-  // of 7 (the earliest Expanded Element can make any composite's prerequisites
-  // met, since every entry needs at least one expanded element).
-  // `build.kineticistWildTalents` covers BOTH infusions and utility talents in
-  // one field (disambiguated by `resolveKineticistWildTalent`'s `.category`,
-  // same "one field, helper disambiguates" shape `occultistFocusPowers` uses)
-  // — granted at a flat display level of 1 (infusions) or 2 (utility), the
-  // earliest each category's own cadence starts. A stale pick whose id no
-  // longer resolves (or a universal pick, always valid) is tolerated silently,
-  // matching every other budgeted picker's soft posture. Both
-  // `eligibleCompositeBlasts` and `resolveKineticistWildTalent` resolve
-  // against the vendored catalog overlay too, so a vendored-only pick shows up
-  // here exactly like a hand-authored one.
-  const kineticistLevel = doc.identity.classes.find((c) => c.tag === "kineticist")?.level ?? 0;
-  if (kineticistLevel > 0) {
-    const primaryElement = doc.build.kineticistElement;
-    const expandedElements = doc.build.kineticistExpandedElements ?? [];
-    const blastChoices = doc.build.kineticistSimpleBlasts ?? {};
-    const compositeCatalog = mergedCompositeBlastCatalog(refData);
-    for (const blast of eligibleCompositeBlasts(
-      primaryElement,
-      expandedElements,
-      compositeCatalog,
-      blastChoices,
-    )) {
-      out.push({
-        classTag: "kineticist",
-        level: 7,
-        grant: {
-          level: 7,
-          uuid: `compositeBlast:${blast.id}`,
-          featureId: `compositeBlast:${blast.id}`,
-          name: blast.name,
-          resolved: true,
-        },
-        origin: { kind: "compositeBlast", label: "Composite Blast" },
-        detail: `${blast.summary} (${blast.burn} burn)`,
-      });
-    }
-    for (const talentId of doc.build.kineticistWildTalents ?? []) {
-      const talent = resolveKineticistWildTalent(talentId, refData);
-      if (!talent) continue;
-      out.push({
-        classTag: "kineticist",
-        level: talent.category === "infusion" ? 1 : 2,
-        grant: {
-          level: talent.category === "infusion" ? 1 : 2,
-          uuid: `wildTalent:${talentId}`,
-          featureId: `wildTalent:${talentId}`,
-          name: talent.name,
-          resolved: true,
-        },
-        origin: {
-          kind: "wildTalent",
-          label: talent.category === "infusion" ? "Infusion" : "Utility Wild Talent",
-        },
-        detail: `${talent.summary} (${talent.burn} burn)`,
-        contextNotes: talent.contextNotes,
-      });
-    }
-  }
-
-  // Medium spirit powers — hand-authored (see medium-spirits.ts), gated on
-  // actual medium levels AND the currently channeled spirit
-  // (`live.mediumSpirit` — a LIVE daily séance choice, not a build pick, per
-  // that field's schema doc comment). Unlike a shaman's spirit ability
-  // (auto-granted at a flat level) or an occultist's implements (a budgeted
-  // build-time pick), each of a spirit's 4 named powers (lesser/intermediate/
-  // greater/supreme) is auto-granted the moment BOTH the medium's level
-  // reaches that power's own gate AND that spirit is the one currently
-  // channeled — same "automatic once you qualify" shape as psychic discipline
-  // powers above, just re-evaluated against whichever spirit is live today
-  // instead of a permanent build choice. A medium who switches spirits between
-  // sessions simply sees a different 4 powers; nothing is "kept" from a
-  // previously channeled spirit (matches RAW: the powers are a property of the
-  // spirit, not the medium).
-  const mediumLevel = doc.identity.classes.find((c) => c.tag === "medium")?.level ?? 0;
-  if (mediumLevel > 0 && doc.live.mediumSpirit) {
-    const spirit = MEDIUM_SPIRITS[doc.live.mediumSpirit];
-    if (spirit) {
-      for (const power of spirit.powers) {
-        if (power.level > mediumLevel) continue;
-        out.push({
-          classTag: "medium",
-          level: power.level,
-          grant: {
-            level: power.level,
-            uuid: `spiritPower:${spirit.tag}:${power.tier}`,
-            featureId: `spiritPower:${spirit.tag}:${power.tier}`,
-            name: power.name,
-            resolved: true,
-          },
-          origin: {
-            kind: "spiritPower",
-            label: `${spirit.name} Spirit — ${power.tier[0]?.toUpperCase()}${power.tier.slice(1)} Power`,
-          },
-          detail: power.summary,
-        });
-      }
-    }
-  }
-
-  // Warpriest blessings (vendored prose catalog, no hand-authored mechanics
-  // table — the ACG "Blessings" class feature's own vendored text already
-  // states the uses/day formula and save DC, so nothing here duplicates
-  // either). Each chosen blessing grants its minor power at 1st warpriest
-  // level and its major power at 10th — real level gates, unlike the flat
-  // display level most other hand-authored pick-lists above use, since a
-  // blessing's whole point is that split. `refData.classFeatures` carries a
-  // registered stub for each power (see `blessingClassFeatures` in the
-  // data-pipeline transform), so `resolveClassFeatures` picks up its full
-  // prose via `grant.featureId` the same way a domain's granted powers do.
-  const warpriestLevel = doc.identity.classes.find((c) => c.tag === "warpriest")?.level ?? 0;
-  if (warpriestLevel > 0) {
-    for (const blessingId of doc.build.blessings ?? []) {
-      const blessing = refData.blessings[blessingId];
-      if (!blessing) continue;
-      out.push({
-        classTag: "warpriest",
-        level: 1,
-        grant: {
-          level: 1,
-          uuid: `${blessing.uuid}:minor`,
-          featureId: blessing.minorPower.featureId,
-          name: blessing.minorPower.name,
-          resolved: true,
-        },
-        origin: { kind: "blessing", label: `${blessing.name} Blessing` },
-      });
-      if (warpriestLevel >= 10) {
-        out.push({
-          classTag: "warpriest",
-          level: 10,
-          grant: {
-            level: 10,
-            uuid: `${blessing.uuid}:major`,
-            featureId: blessing.majorPower.featureId,
-            name: blessing.majorPower.name,
-            resolved: true,
-          },
-          origin: { kind: "blessing", label: `${blessing.name} Blessing` },
-        });
-      }
-    }
-  }
-
-  // Homebrew abilities (`build.homebrew.classFeatures`): GM-granted campaign
-  // content with no class table to hang off, so the grant is synthesized here
-  // from the authored entry itself. Feeding them through this one funnel is
-  // what gets them display (`resolveClassFeatures`), resource pools
-  // (`resources.ts`'s `deriveResourcePools`, which reads `uses` off the
-  // overlaid `refData.classFeatures` entry), and provenance for free. Their
-  // `changes[]` are the one exception — vendored class-feature changes aren't
-  // applied generically, so `collect.ts` applies homebrew ones on its own
-  // path. The homebrew id doubles as the grant uuid: `hb-`-prefixed ids can
-  // never collide with a vendored uuid, so an archetype swap can't target one.
-  for (const [id, ability] of Object.entries(doc.build.homebrew?.classFeatures ?? {})) {
-    out.push({
-      classTag: ability.classTag ?? "",
-      level: ability.level,
-      grant: {
-        level: ability.level,
-        uuid: id,
-        featureId: id,
-        name: ability.name,
-        resolved: true,
-      },
-      origin: { kind: "custom", label: "Custom" },
-    });
-  }
-
+  const ctx: GrantedFeaturesContext = { doc, refData, out };
+  for (const collect of GRANT_SOURCES) collect(ctx);
   return out;
 }
 
@@ -1271,8 +190,8 @@ export function collectGrantedFeatures(doc: CharacterDoc, refData: RefData): Gra
  * replaces it. Shared by `resolveClassFeatures` (struck-through display) and
  * `collectModifiers` (so a swapped-out base feature's `changes[]` — e.g. Armor
  * Training's `mDexA`/`acpA`, Diamond Soul's `spellResist` — stop contributing
- * the moment the swap actually takes effect; see `collect.ts`'s "granted class
- * features" section, and the audit that found this WAS a real bug prior to
+ * the moment the swap actually takes effect; see `collect/class-features.ts`'s
+ * `collectGrantedClassFeatures`, and the audit that found this WAS a real bug prior to
  * this function existing: `collectModifiers` iterated `classDef.features` with
  * no awareness of `doc.build.archetypes` at all).
  */
@@ -1282,8 +201,8 @@ export function activeArchetypeSwaps(doc: CharacterDoc, refData: RefData): Map<s
     const archetype = refData.archetypes[archetypeId];
     if (!archetype) continue;
     const clsLevel = doc.identity.classes.find((c) => c.tag === archetype.classTag)?.level ?? 0;
-    for (const f of Object.values(refData.archetypeFeatures)) {
-      if (f.archetypeId !== archetypeId || f.level > clsLevel) continue;
+    for (const f of archetypeFeaturesOf(refData, archetypeId)) {
+      if (f.level > clsLevel) continue;
       const targetUuid = resolvedSwapTargetUuid(f);
       if (targetUuid) replacedByUuid.set(targetUuid, f.name);
       for (const extraUuid of additionalSwapTargetUuids(f)) {
@@ -1556,7 +475,7 @@ export function barbarianDamageReductionReplaced(doc: CharacterDoc, refData: Ref
     .reduce((sum, c) => sum + c.level, 0);
   if (barbLevel < 2) return false;
 
-  const barbClass = Object.values(refData.classes).find((c) => c.tag === "barbarian");
+  const barbClass = classByTag(refData, "barbarian");
   const drGrantUuid = barbClass?.features.find((f) => f.name === "Damage Reduction")?.uuid;
   if (drGrantUuid && activeArchetypeSwaps(doc, refData).has(drGrantUuid)) return true;
 
@@ -1585,7 +504,7 @@ export function antipaladinDamageReductionReplaced(doc: CharacterDoc, refData: R
   const antipaladinLevel = doc.identity.classes.find((c) => c.tag === "antipaladin")?.level ?? 0;
   if (antipaladinLevel < 17) return false;
 
-  const antipaladinClass = Object.values(refData.classes).find((c) => c.tag === "antipaladin");
+  const antipaladinClass = classByTag(refData, "antipaladin");
   const drGrantUuid = antipaladinClass?.features.find((f) => f.name === "Aura of Depravity")?.uuid;
   return !!drGrantUuid && activeArchetypeSwaps(doc, refData).has(drGrantUuid);
 }
@@ -1673,8 +592,7 @@ export function archetypeModeledEffectTier(
   archetypeId: string,
 ): ArchetypeEffectTier {
   let sawExtracted = false;
-  for (const f of Object.values(refData.archetypeFeatures)) {
-    if (f.archetypeId !== archetypeId) continue;
+  for (const f of archetypeFeaturesOf(refData, archetypeId)) {
     const resolved = resolveArchetypeFeatureEffect(f.id);
     if (!resolved || resolved.effect.changes.length === 0) continue;
     if (resolved.source === "verified") return "verified";
@@ -1717,8 +635,8 @@ export function resolveClassFeatures(
 
     const swappedSlots: Record<number, string> = {};
     const features: DerivedArchetypeFeature[] = [];
-    const archetypeFeatures = Object.values(refData.archetypeFeatures)
-      .filter((f) => f.archetypeId === archetypeId && f.level <= clsLevel)
+    const archetypeFeatures = archetypeFeaturesOf(refData, archetypeId)
+      .filter((f) => f.level <= clsLevel)
       .sort((a, b) => a.level - b.level);
 
     for (const f of archetypeFeatures) {
@@ -1927,7 +845,7 @@ export function resolveClassFeatures(
       // spent on it — resolved live, so this row states the value the sheet
       // is actually carrying rather than the rule that produces it. Clamped
       // to the burn held, same as `collect.ts`'s own resolution.
-      const burnFeature = Object.values(refData.classFeatures).find((f) => f.tag === "burn");
+      const burnFeature = classFeatureByTag(refData, "burn");
       const burnHeld = burnFeature ? (doc.live.resources[burnFeature.id]?.used ?? 0) : 0;
       const defense = resolveKineticistDefense(doc.build.kineticistElement, classLevel, {
         burnInvested: Math.min(doc.live.kineticistDefenseBurn ?? 0, burnHeld),
@@ -1980,7 +898,7 @@ export function resolveClassFeatures(
       // pool's current `used` value (same pool `resources.ts` derives from the
       // Burn feature's vendored `uses.maxFormula`) rather than re-deriving
       // burn tracking here.
-      const burnFeature = Object.values(refData.classFeatures).find((f) => f.tag === "burn");
+      const burnFeature = classFeatureByTag(refData, "burn");
       const currentBurn = burnFeature ? (doc.live.resources[burnFeature.id]?.used ?? 0) : 0;
       const upgrade = kineticOverflowUpgradeLabel(classLevel, currentBurn);
       detail = upgrade
@@ -2081,8 +999,7 @@ export function resolveClassFeatures(
  */
 export function archetypeSwappedUuids(refData: RefData, archetypeId: string): Set<string> {
   const uuids = new Set<string>();
-  for (const f of Object.values(refData.archetypeFeatures)) {
-    if (f.archetypeId !== archetypeId) continue;
+  for (const f of archetypeFeaturesOf(refData, archetypeId)) {
     const targetUuid = resolvedSwapTargetUuid(f);
     if (targetUuid) uuids.add(targetUuid);
     for (const extraUuid of additionalSwapTargetUuids(f)) {
@@ -2111,8 +1028,7 @@ export function archetypeReplacedSlotKeys(
   archetypeId: string,
 ): Map<string, { kind: string; level?: number }> {
   const slots = new Map<string, { kind: string; level?: number }>();
-  for (const f of Object.values(refData.archetypeFeatures)) {
-    if (f.archetypeId !== archetypeId) continue;
+  for (const f of archetypeFeaturesOf(refData, archetypeId)) {
     if (f.replacesSlot) slots.set(slotKey(f.replacesSlot), f.replacesSlot);
     // Hand-table single-tier replacements (one Armor Training tier, one
     // bonus-feat instance) claim the same kind of slot key, so two
@@ -2159,8 +1075,7 @@ export function archetypeReplacedSlotCount(
   for (const archetypeId of doc.build.archetypes ?? []) {
     const archetype = refData.archetypes[archetypeId];
     if (!archetype || archetype.classTag !== classTag) continue;
-    for (const f of Object.values(refData.archetypeFeatures)) {
-      if (f.archetypeId !== archetypeId) continue;
+    for (const f of archetypeFeaturesOf(refData, archetypeId)) {
       const slot = f.replacesSlot;
       if (slot?.kind === kind && slot.level !== undefined && slot.level <= clsLevel) count++;
     }

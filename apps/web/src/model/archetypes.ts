@@ -11,7 +11,12 @@
  * Blocking the pick up front beats letting the player discover a no-op
  * archetype later.
  */
-import { archetypeReplacedSlotKeys, archetypeSwappedUuids } from "@pf1/engine";
+import {
+  archetypeFeaturesOf,
+  archetypeReplacedSlotKeys,
+  archetypeSwappedUuids,
+  classByTag,
+} from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 export interface ArchetypeConflict {
@@ -75,8 +80,7 @@ export function checkArchetypeConflict(
  */
 function archetypeHasNoReplacementData(refData: RefData, archetypeId: string): boolean {
   let sawAny = false;
-  for (const f of Object.values(refData.archetypeFeatures)) {
-    if (f.archetypeId !== archetypeId) continue;
+  for (const f of archetypeFeaturesOf(refData, archetypeId)) {
     sawAny = true;
     if (f.pairedBaseFeatureUuid || f.replacesSlot || f.replacesText) return false;
   }
@@ -112,7 +116,7 @@ export function archetypeConflictWarnings(doc: CharacterDoc, refData: RefData): 
   const warnings: string[] = [];
   for (const [classTag, ids] of idsByClass) {
     if (ids.length < 2) continue;
-    const classDef = Object.values(refData.classes).find((c) => c.tag === classTag);
+    const classDef = classByTag(refData, classTag);
     for (let i = 0; i < ids.length; i++) {
       for (let j = i + 1; j < ids.length; j++) {
         const idA = ids[i]!;

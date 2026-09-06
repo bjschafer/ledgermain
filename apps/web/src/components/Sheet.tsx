@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { useId, useMemo, useState } from "react";
 
-import { EFFECT_IMMUNITY_LABELS, qualifierLabel } from "@pf1/engine";
+import { classByTag, EFFECT_IMMUNITY_LABELS, qualifierLabel } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, DerivedSkill, RefData } from "@pf1/schema";
 
 import { useFlashKey } from "../hooks/useFlashKey.js";
@@ -128,7 +128,7 @@ export function Sheet({
   const race = refData.races[doc.identity.race];
   const classLine = doc.identity.classes
     .map((c) => {
-      const def = Object.values(refData.classes).find((cl) => cl.tag === c.tag);
+      const def = classByTag(refData, c.tag);
       return `${def?.name ?? c.tag} ${c.level}`;
     })
     .join(" / ");
@@ -143,7 +143,7 @@ export function Sheet({
   const casterLine = doc.identity.classes
     .filter((c) => isCasterTag(c.tag))
     .map((c) => {
-      const def = Object.values(refData.classes).find((cl) => cl.tag === c.tag);
+      const def = classByTag(refData, c.tag);
       const cl = casterLevelForClass(c.tag, effectiveCasterClassLevel(doc, refData, c.tag));
       return `CL ${def?.name ?? c.tag} ${cl}`;
     })

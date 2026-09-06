@@ -28,6 +28,7 @@
  */
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
+import { classByTag } from "./refdata-index.js";
 
 export interface ChannelVariantDef {
   /** Vendored archetype id, `class:slug` — must equal this def's table key. */
@@ -210,7 +211,7 @@ export function hasBaseChannelClass(
   const channelName = /^Channel (Energy|Positive Energy|Negative Energy)( \(WAR\))?$/;
   for (const cls of doc.identity.classes) {
     if (cls.tag === excludeTag || cls.level <= 0) continue;
-    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const classDef = classByTag(refData, cls.tag);
     if (!classDef) continue;
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;

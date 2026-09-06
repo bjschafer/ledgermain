@@ -9,6 +9,7 @@ import type { AbilityId, CharacterDoc, RefData } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
 import type { RollData } from "./formula.js";
+import { classFeatureByTag } from "./refdata-index.js";
 
 export function abilityMod(score: number): number {
   return Math.floor((score - 10) / 2);
@@ -139,7 +140,7 @@ export function buildRollData(
   // Defense block and `compute.ts`'s kinetic-blast overflow bonus each look
   // this same value up independently. 0 for a non-kineticist (no "burn"-
   // tagged class feature to find).
-  const burnFeature = Object.values(refData.classFeatures ?? {}).find((f) => f.tag === "burn");
+  const burnFeature = classFeatureByTag(refData, "burn");
   const currentBurn = burnFeature ? (doc.live.resources[burnFeature.id]?.used ?? 0) : 0;
 
   return {

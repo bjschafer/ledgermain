@@ -35,6 +35,7 @@
  * numbers only, never accelerates a class feature).
  */
 import type { CharacterDoc, RefData } from "@pf1/schema";
+import { classByTag } from "@pf1/engine";
 
 /** Tags of classes recognised as casters in the Stage 1 data slice. */
 const FULL_CASTER_TAGS = new Set([
@@ -244,7 +245,7 @@ function slotAcceptsKind(slotKind: "arcane" | "divine" | "any", targetTag: strin
 
 /** First `RefData.classes` entry whose `tag` matches, or `undefined` — classes are keyed by Foundry id, not tag. */
 function classDefByTag(refData: RefData, tag: string) {
-  return Object.values(refData.classes).find((c) => c.tag === tag);
+  return classByTag(refData, tag);
 }
 
 /**

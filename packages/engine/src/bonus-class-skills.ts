@@ -38,6 +38,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 import { activeArchetypeSwaps } from "./archetypes.js";
 import { featNameSlug } from "./feat-effects.js";
 import { tryEvaluateFormula } from "./formula.js";
+import { classByTag } from "./refdata-index.js";
 
 /** A registry entry: one feature that grants player-chosen class skills. */
 export interface BonusClassSkillGrantDef {
@@ -98,7 +99,7 @@ export function collectBonusClassSkillGrants(
 
   const archetypeSwaps = activeArchetypeSwaps(doc, refData);
   for (const cls of doc.identity.classes) {
-    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const classDef = classByTag(refData, cls.tag);
     if (!classDef) continue;
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;

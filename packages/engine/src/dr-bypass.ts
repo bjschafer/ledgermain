@@ -40,6 +40,7 @@ import type { CharacterDoc, RefData, WeaponDrBypass, WeaponInstance } from "@pf1
 import { activeArchetypeSwaps } from "./archetypes.js";
 import { normalizeQualifier } from "./damage-types.js";
 import { isUnarmedStrikeWeapon } from "./weapon-groups.js";
+import { classByTag } from "./refdata-index.js";
 
 /**
  * The DR qualifier each special material satisfies. Materials with no DR
@@ -186,7 +187,7 @@ function unarmedFeatureReplaced(
   classTag: string,
   featureName: string,
 ): boolean {
-  const cls = Object.values(refData.classes).find((c) => c.tag === classTag);
+  const cls = classByTag(refData, classTag);
   const uuid = cls?.features.find((f) => f.name === featureName)?.uuid;
   return !!uuid && activeArchetypeSwaps(doc, refData).has(uuid);
 }

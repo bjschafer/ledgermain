@@ -39,6 +39,7 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { activeArchetypeSwaps } from "./archetypes.js";
 import { ROGUE_TALENTS } from "./rogue-talents.js";
+import { archetypeFeaturesOf, classByTag, domainByTag, subdomainByTag } from "./refdata-index.js";
 
 /** feat name (lowercased, trimmed) -> feat id, for fixed-grant detection. */
 function featIdByName(refData: RefData): Map<string, string> {
@@ -256,7 +257,7 @@ export interface GrantedFeat {
 
 /** The base domain tag a cleric `clericDomains` entry displays under. */
 function parentDomainTagOf(refData: RefData, tag: string): string {
-  const subdomain = Object.values(refData.subdomains).find((s) => s.tag === tag);
+  const subdomain = subdomainByTag(refData, tag);
   return subdomain?.parentDomainTags[0] ?? tag;
 }
 
@@ -285,7 +286,7 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
     });
   };
   for (const cls of doc.identity.classes) {
-    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const classDef = classByTag(refData, cls.tag);
     if (!classDef) continue;
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;
@@ -311,8 +312,7 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
     const archetype = refData.archetypes[archetypeId];
     if (!archetype) continue;
     const clsLevel = doc.identity.classes.find((c) => c.tag === archetype.classTag)?.level ?? 0;
-    for (const feature of Object.values(refData.archetypeFeatures)) {
-      if (feature.archetypeId !== archetypeId) continue;
+    for (const feature of archetypeFeaturesOf(refData, archetypeId)) {
       for (const prose of ARCHETYPE_PROSE_FEAT_GRANTS[feature.id] ?? []) {
         if (clsLevel < Math.max(feature.level, prose.minLevel ?? 0)) continue;
         const featId = byName.get(prose.feat);
@@ -333,9 +333,7 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
       const parentTag = parentDomainTagOf(refData, tag);
       const featName = DOMAIN_GRANTED_FEATS[parentTag];
       if (!featName) continue;
-      const entity =
-        Object.values(refData.domains).find((d) => d.tag === tag) ??
-        Object.values(refData.subdomains).find((s) => s.tag === tag);
+      const entity = domainByTag(refData, tag) ?? subdomainByTag(refData, tag);
       if (!entity?.changes.some((ch) => ch.target === "bonusFeats")) continue;
       const featId = byName.get(featName);
       if (!featId) continue;

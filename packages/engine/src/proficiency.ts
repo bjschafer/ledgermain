@@ -58,6 +58,7 @@ import type {
 
 import { featNameSlug } from "./feat-effects.js";
 import { normalizeWeaponGroup } from "./weapon-groups.js";
+import { classByTag } from "./refdata-index.js";
 
 /* --------------------------------------------------------- class tokens -- */
 
@@ -178,7 +179,7 @@ function weaponLabelForSlug(slug: string, doc: CharacterDoc, refData: RefData): 
 export function grantsDeityFavoredWeapon(doc: CharacterDoc, refData: RefData): boolean {
   return doc.identity.classes.some((cls) => {
     if (cls.level <= 0) return false;
-    const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const def = classByTag(refData, cls.tag);
     return (def?.weaponProf ?? []).includes(FAVORED_WEAPON_TOKEN);
   });
 }
@@ -289,7 +290,7 @@ export function deriveProficiencies(doc: CharacterDoc, refData: RefData): Derive
   // never lost by taking levels in another).
   for (const cls of doc.identity.classes) {
     if (cls.level <= 0) continue;
-    const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const def = classByTag(refData, cls.tag);
     if (!def) continue;
     const grant: ProficiencyGrant = { source: def.name, sourceType: "class" };
     for (const token of def.weaponProf ?? []) {

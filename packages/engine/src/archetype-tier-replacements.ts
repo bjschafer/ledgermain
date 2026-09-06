@@ -32,6 +32,7 @@
  */
 
 import type { CharacterDoc, RefData } from "@pf1/schema";
+import { archetypeFeaturesOf } from "./refdata-index.js";
 
 /** Fighter Armor Training's `ClassFeatureGrant.uuid` (the whole-grant swap key). */
 export const ARMOR_TRAINING_GRANT_UUID = "Compendium.pf1.class-abilities.Item.5JFfSqLMCpbRmERa";
@@ -253,8 +254,7 @@ export function replacedTierLevels(
   for (const archetypeId of doc.build.archetypes ?? []) {
     const archetype = refData.archetypes[archetypeId];
     if (!archetype || archetype.classTag !== classTag) continue;
-    for (const f of Object.values(refData.archetypeFeatures)) {
-      if (f.archetypeId !== archetypeId) continue;
+    for (const f of archetypeFeaturesOf(refData, archetypeId)) {
       const entry = ARCHETYPE_TIER_REPLACEMENTS[f.id];
       if (entry?.kind === kind) {
         for (const level of entry.levels) if (level <= clsLevel) out.add(level);

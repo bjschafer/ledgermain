@@ -34,9 +34,12 @@
 import type { CharacterDoc, ContextNote, Feat, RefData } from "@pf1/schema";
 import {
   activeArchetypeSwaps,
+  archetypeFeaturesOf,
   buildRollData,
+  classByTag,
   ENERGY_TYPES,
   featNameSlug,
+  type GrantedFeat,
   grantedFeatIdOf,
   grantedFeats,
   KINETIC_BLAST_WEAPON_GROUP,
@@ -44,9 +47,8 @@ import {
   resolveArchetypeFeatureEffect,
   resolveFeatEffect,
   ROGUE_TALENTS,
-  tryEvaluateFormula,
-  type GrantedFeat,
   type RollData,
+  tryEvaluateFormula,
 } from "@pf1/engine";
 
 import { parentBloodlineTagOf } from "./doc.js";
@@ -321,7 +323,7 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
   const out: ClassFeatSlot[] = [];
 
   for (const cls of doc.identity.classes) {
-    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const classDef = classByTag(refData, cls.tag);
     if (!classDef) continue;
     const featureRollData: RollData = {
       ...rollData,
@@ -385,8 +387,8 @@ export function classBonusFeatSlots(doc: CharacterDoc, refData: RefData): ClassF
     if (!archetype) continue;
     const clsLevel = doc.identity.classes.find((c) => c.tag === archetype.classTag)?.level ?? 0;
     const archRollData: RollData = { ...rollData, class: { level: clsLevel, unlevel: clsLevel } };
-    for (const f of Object.values(refData.archetypeFeatures)) {
-      if (f.archetypeId !== archetypeId || f.level > clsLevel) continue;
+    for (const f of archetypeFeaturesOf(refData, archetypeId)) {
+      if (f.level > clsLevel) continue;
       const entry = resolveArchetypeFeatureEffect(f.id)?.effect;
       if (!entry) continue;
       for (const ch of entry.changes) {

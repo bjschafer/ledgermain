@@ -97,7 +97,7 @@ const RAGE_UNCHAINED_TEMP_HP: Change = {
  * `BUFF_PROSE_RULINGS` (it now has a wired route), but its attack-vs-AoO
  * remainder still needs the reminder note the vendored contextNote carries.
  * Formula mirrors the buff's own scaling (`@item.level` is the
- * buff's own set level, per `collect.ts`'s "`@item.level` / `@cl` in a buff
+ * buff's own set level, per `collect/shared.ts`'s "`@item.level` / `@cl` in a buff
  * formula" comment) rather than a fresh derivation.
  */
 const ANIMAL_FOCUS_SNAKE_AOO_AC: Change = {

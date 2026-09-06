@@ -118,6 +118,7 @@ import {
   skillUsesAcp,
   specialSizeMod,
 } from "./tables.js";
+import { classByTag, classFeatureByTag } from "./refdata-index.js";
 
 const SCHEMA_VERSION = 1;
 
@@ -426,7 +427,7 @@ function computeSave(
 ): ResolvedStat {
   const tiers: { tier: SaveTier; level: number }[] = [];
   for (const c of classes) {
-    const def = Object.values(refData.classes).find((x) => x.tag === c.tag);
+    const def = classByTag(refData, c.tag);
     if (def) tiers.push({ tier: def.saves[which], level: c.level });
   }
   // Fractional base bonuses (Pathfinder Unchained, opt-in per character):
@@ -948,7 +949,7 @@ function computeHp(
   let isFirstLevel = true;
   let hd = 0;
   for (const cls of doc.identity.classes) {
-    const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const def = classByTag(refData, cls.tag);
     const die = def?.hd ?? 8;
     for (let i = 0; i < cls.level; i++) {
       let levelHp: number;
@@ -1028,7 +1029,7 @@ function computeSkills(
   // skillBaseId).
   const classSkillSet = new Set<string>();
   for (const cls of doc.identity.classes) {
-    const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const def = classByTag(refData, cls.tag);
     for (const s of def?.classSkills ?? []) classSkillSet.add(s);
   }
   const race = refData.races[doc.identity.race];
@@ -1656,7 +1657,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
   const babTiers: { tier: BabTier; level: number }[] = [];
   const flurryBabTiers: { tier: BabTier; level: number }[] = [];
   for (const cls of doc.identity.classes) {
-    const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const def = classByTag(refData, cls.tag);
     if (!def) continue;
     // Vigilante's Avenger specialization (Ultimate Intrigue, the "Vigilante
     // Specialization" class feature) reads "gains a base attack bonus equal to
@@ -2075,7 +2076,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
   // Kinetic blast lines (Occult Adventures) — every simple blast known plus
   // every composite qualified for, resolved with the live Elemental Overflow
   // bonus that scales with burn currently held. Empty for non-kineticists.
-  const burnFeature = Object.values(refData.classFeatures).find((f) => f.tag === "burn");
+  const burnFeature = classFeatureByTag(refData, "burn");
   const kineticBlasts = computeKineticBlasts(doc, refData, {
     bab,
     sizeAttackMod,

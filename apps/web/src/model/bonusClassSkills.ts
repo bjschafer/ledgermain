@@ -8,7 +8,7 @@
  * the picker needs.
  */
 
-import { collectBonusClassSkillGrants, skillBaseId } from "@pf1/engine";
+import { classByTag, collectBonusClassSkillGrants, skillBaseId } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 export { collectBonusClassSkillGrants };
@@ -59,7 +59,7 @@ export function setBonusClassSkill(
 export function existingClassSkills(doc: CharacterDoc, refData: RefData): Set<string> {
   const set = new Set<string>();
   for (const cls of doc.identity.classes) {
-    const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const def = classByTag(refData, cls.tag);
     for (const s of def?.classSkills ?? []) set.add(s);
   }
   for (const s of refData.races[doc.identity.race]?.classSkills ?? []) set.add(s);

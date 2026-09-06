@@ -5,7 +5,7 @@
  * a single plain-data shape the print view renders. No React here — kept
  * testable the same way every other `model/` module is.
  */
-import { deriveResourcePools, EFFECT_IMMUNITY_LABELS } from "@pf1/engine";
+import { classByTag, deriveResourcePools, EFFECT_IMMUNITY_LABELS } from "@pf1/engine";
 import type { AbilityId, CharacterDoc, DerivedAbilityDC, DerivedSheet, RefData } from "@pf1/schema";
 
 import { abilityTypeSuffix } from "./abilityTypes.js";
@@ -228,7 +228,7 @@ function buildHeader(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData): 
   const race = refData.races[doc.identity.race];
   const classLine = doc.identity.classes
     .map((c) => {
-      const def = Object.values(refData.classes).find((cl) => cl.tag === c.tag);
+      const def = classByTag(refData, c.tag);
       return `${def?.name ?? c.tag} ${c.level}`;
     })
     .join(" / ");
@@ -258,7 +258,7 @@ function buildCasters(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData):
     // bumps this class's effective level for slots/known- limits/CL display,
     // same as everywhere else this seam is threaded.
     const classLevel = effectiveCasterClassLevel(doc, refData, tag);
-    const classDef = Object.values(refData.classes).find((cl) => cl.tag === tag);
+    const classDef = classByTag(refData, tag);
     const abilityMod = sheet.abilities[model.ability].mod;
     const classTag = storedClassTag(doc, refData, tag);
     const levelMap = spellLevelMap(refData, tag);

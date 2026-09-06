@@ -42,8 +42,18 @@ export {
   collectModifiers,
   forTarget,
   evaluateBuffChange,
+  type CollectContext,
   type CollectedModifier,
 } from "./collect.js";
+export {
+  archetypeFeaturesOf,
+  classByTag,
+  classFeatureByTag,
+  domainByTag,
+  refDataIndex,
+  subdomainByTag,
+  type RefDataIndex,
+} from "./refdata-index.js";
 export {
   resolveStack,
   type TypedModifier,

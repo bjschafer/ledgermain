@@ -50,6 +50,7 @@ import { activeArchetypeSwaps } from "./archetypes.js";
 import { featNameSlug } from "./feat-effects.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { ORACLE_REVELATIONS } from "./oracle-revelations.js";
+import { classByTag } from "./refdata-index.js";
 
 /**
  * A derived term whose ability modifier can be substituted.
@@ -246,7 +247,7 @@ export function collectAbilitySubstitutions(
 
   const archetypeSwaps = activeArchetypeSwaps(doc, refData);
   for (const cls of doc.identity.classes) {
-    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const classDef = classByTag(refData, cls.tag);
     if (!classDef) continue;
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;

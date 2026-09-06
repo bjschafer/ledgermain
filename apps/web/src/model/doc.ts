@@ -20,9 +20,12 @@ import type {
 } from "@pf1/schema";
 
 import {
+  archetypeFeaturesOf,
+  type BrawlerStrikeAlignment,
+  classByTag,
   normalizeWeaponGroup,
   parentBloodlineTagFor,
-  type BrawlerStrikeAlignment,
+  subdomainByTag,
 } from "@pf1/engine";
 
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
@@ -278,7 +281,7 @@ export function setDruidNatureBondDomain(doc: CharacterDoc, tag: string | null):
  * matches neither collection (soft-warning posture — never throws).
  */
 export function parentDomainTagOf(refData: RefData, tag: string): string {
-  const subdomain = Object.values(refData.subdomains).find((s) => s.tag === tag);
+  const subdomain = subdomainByTag(refData, tag);
   return subdomain?.parentDomainTags[0] ?? tag;
 }
 
@@ -777,9 +780,7 @@ export function setArchetypes(
   const removed = (doc.build.archetypes ?? []).filter((a) => !trimmed.includes(a));
   if (refData && removed.length > 0 && pickChoices) {
     const removedFeatureIds = new Set(
-      Object.values(refData.archetypeFeatures)
-        .filter((f) => removed.includes(f.archetypeId))
-        .map((f) => f.id),
+      removed.flatMap((id) => archetypeFeaturesOf(refData, id)).map((f) => f.id),
     );
     const next: Record<string, string> = {};
     for (const [key, value] of Object.entries(pickChoices)) {
@@ -934,7 +935,7 @@ export function setCastingAdvancementTarget(
   slotIndex: number,
   targetTag: string | null,
 ): CharacterDoc {
-  const classDef = Object.values(refData.classes).find((c) => c.tag === prestigeTag);
+  const classDef = classByTag(refData, prestigeTag);
   const slotCount = classDef?.castingAdvancement?.length ?? 0;
   if (slotIndex < 0 || slotIndex >= slotCount) return doc;
   if (

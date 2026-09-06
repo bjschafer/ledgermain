@@ -32,7 +32,7 @@
  * usable as `refData.archetypeFeatures[id]` without a second lookup table.
  *
  * Applied through the same `collectModifiers` pipeline as every other change
- * source (see `collect.ts`'s "archetype feature effects" section): only when
+ * source (see `collect/archetype-features.ts`): only when
  * the granting archetype is active (`doc.build.archetypes`) AND the
  * character's level in that archetype's class has reached the feature's
  * `level` gate. `detail` produces the short summary `ClassFeaturesList` shows

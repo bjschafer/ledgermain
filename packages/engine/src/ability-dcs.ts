@@ -29,6 +29,7 @@ import { tryEvaluateFormula, type RollData } from "./formula.js";
 import { totalLevel, type AbilityView } from "./rolldata.js";
 import { resolveStack } from "./stacking.js";
 import { antipaladinCrueltyDC, witchHexDC } from "./tables.js";
+import { classByTag } from "./refdata-index.js";
 
 export interface AbilityDCFamily {
   /** Player-facing label, e.g. "Hex". Combined with " DC" for the sheet line. */
@@ -67,7 +68,7 @@ function classLevel(doc: CharacterDoc, tag: string): number {
 
 /** Vendored class display name (e.g. "Witch"), falling back to the bare tag if the class isn't in this data slice. */
 function classDisplayName(refData: RefData, tag: string): string {
-  return Object.values(refData.classes).find((c) => c.tag === tag)?.name ?? tag;
+  return classByTag(refData, tag)?.name ?? tag;
 }
 
 /** True when `doc.build.feats` contains a feat whose name slugs to `slug` (see `feat-effects.ts`'s `featNameSlug`). */
@@ -133,7 +134,7 @@ function channelInstances(doc: CharacterDoc, refData: RefData, rollData: RollDat
   const clericWisdomHouserule = doc.build.settings?.clericWisdomHouserule ?? false;
   for (const cls of doc.identity.classes) {
     if (cls.level <= 0) continue;
-    const classDef = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const classDef = classByTag(refData, cls.tag);
     if (!classDef) continue;
     for (const grant of classDef.features) {
       if (grant.level > cls.level || !grant.resolved) continue;

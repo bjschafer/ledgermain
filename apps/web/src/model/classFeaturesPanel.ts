@@ -22,6 +22,7 @@ import type {
   DerivedSheet,
   RefData,
 } from "@pf1/schema";
+import { classByTag } from "@pf1/engine";
 
 /**
  * One panel entry: a base class feature or an active archetype's own feature.
@@ -42,7 +43,7 @@ export interface ClassFeatureGroup {
 }
 
 function classDisplayName(classTag: string, refData: RefData): string {
-  const cls = Object.values(refData.classes).find((c) => c.tag === classTag);
+  const cls = classByTag(refData, classTag);
   return cls?.name ?? classTag;
 }
 

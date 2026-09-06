@@ -8,6 +8,7 @@ import { HeartIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
+import { classByTag } from "@pf1/engine";
 
 export function HitPointsSection({ doc, sheet, refData, update }: BuilderProps) {
   const auto = sheet.hp.auto;
@@ -132,7 +133,7 @@ function buildLevelRows(
   let isFirst = true;
   let charLv = 1;
   for (const cls of doc.identity.classes) {
-    const def = Object.values(refData.classes).find((c) => c.tag === cls.tag);
+    const def = classByTag(refData, cls.tag);
     const die = def?.hd ?? 8;
     for (let i = 0; i < cls.level && charLv <= charLevel; i++, charLv++) {
       rows.push({ charLv, die, isFirst });

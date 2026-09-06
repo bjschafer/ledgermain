@@ -41,7 +41,7 @@
  * always-on class feature or feat, or a buff's OWN `changes[]`, which
  * naturally only apply while that buff instance is active) — adds exactly that
  * mechanism (`Change.activeWhenBuff`, gated at collect-time by `@pf1/engine`
- * `collect.ts`'s `buffGateSatisfied`), so a clean subset of the while-raging
+ * `collect/shared.ts`'s `buffGateSatisfied`), so a clean subset of the while-raging
  * entries below is now promoted off `displayOnly`:
  *
  *   - **Raging Climber** / **Raging Swimmer**: RAW is an ENHANCEMENT bonus

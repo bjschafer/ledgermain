@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { archetypeModeledEffectTier, type ArchetypeEffectTier } from "@pf1/engine";
+import { type ArchetypeEffectTier, archetypeModeledEffectTier, classByTag } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { archetypeConflictWarnings, checkArchetypeConflict } from "../../model/archetypes.js";
@@ -114,7 +114,7 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
             const options = byClass.get(tag)!;
             const shown = q ? options.filter((o) => o.name.toLowerCase().includes(q)) : options;
             if (shown.length === 0) return null;
-            const classDef = Object.values(refData.classes).find((c) => c.tag === tag);
+            const classDef = classByTag(refData, tag);
             return (
               <div key={tag} className="archetype-class-group">
                 <span className="hint">{classDef?.name ?? tag}</span>
