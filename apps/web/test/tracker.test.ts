@@ -22,8 +22,10 @@ import {
 import {
   addBuff,
   advanceRound,
+  currentRound,
   makeCustomBuff,
   removeBuff,
+  resetRound,
   setBuffRounds,
 } from "../src/model/buffs.js";
 import {
@@ -300,6 +302,35 @@ describe("buffs add/remove/round-advance", () => {
     d = res.doc;
     expect(res.expired.map((b) => b.instanceId)).toEqual(["timed"]);
     expect(d.live.activeBuffs.map((b) => b.instanceId)).toEqual(["forever"]);
+  });
+
+  it("counts the round clock up as it advances, and back to 1 on reset", () => {
+    let d = doc();
+    // A document that never touched the clock reads as round 1 without
+    // storing anything.
+    expect(d.live.round).toBeUndefined();
+    expect(currentRound(d)).toBe(1);
+
+    d = advanceRound(d, 1).doc;
+    expect(currentRound(d)).toBe(2);
+    d = advanceRound(d, 3).doc;
+    expect(currentRound(d)).toBe(5);
+
+    d = resetRound(d);
+    expect(currentRound(d)).toBe(1);
+    expect(d.live.round).toBeUndefined();
+  });
+
+  it("ends combat without spending buff or condition durations", () => {
+    let d = doc();
+    d = addBuff(d, buff("timed", 4));
+    d = setConditionRounds(toggleCondition(d, "fatigued"), "fatigued", 6);
+    d = advanceRound(d, 2).doc;
+
+    const ended = resetRound(d);
+    expect(currentRound(ended)).toBe(1);
+    expect(ended.live.activeBuffs[0]!.remainingRounds).toBe(2);
+    expect(conditionRoundsLeft(ended, "fatigued")).toBe(4);
   });
 
   it("can set/clear a buff's remaining rounds", () => {

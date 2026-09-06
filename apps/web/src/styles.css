@@ -3548,6 +3548,47 @@ button:focus-visible,
   flex-shrink: 0;
 }
 
+/* Round clock readout in the Buffs panel header; the Play tab's stat strip
+   shows the same number (StatStrip.tsx) on the viewports where it exists. */
+.round-now {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.round-now .num {
+  color: var(--gold-2);
+  font-size: 0.875rem;
+}
+
+/* Shared by both round clocks (panel header and stat strip). */
+.round-reset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.round-reset:hover {
+  border-color: var(--gold-dim);
+  color: var(--gold-2);
+}
+
+.round-reset svg {
+  width: 14px;
+  height: 14px;
+}
+
 .buff-list {
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
@@ -6374,6 +6415,15 @@ input[type="text"].saved-roll-name:focus {
     min-height: var(--tap-min);
   }
 
+  .round-advance,
+  .round-reset {
+    min-height: var(--tap-min);
+  }
+
+  .round-reset {
+    width: var(--tap-min);
+  }
+
   .stepper input[type="number"],
   .stepper .stepper-val {
     padding-top: 12px;
@@ -6526,21 +6576,52 @@ input[type="text"].saved-roll-name:focus {
 @media (max-width: 940px) {
   .stat-strip {
     display: flex;
+    align-items: center;
     position: sticky;
     top: 0;
     z-index: 5;
-    gap: 16px;
+    gap: 10px;
     padding: 8px 14px;
     margin: 0 0 var(--gap);
     background: var(--surface);
     border-bottom: 1px solid var(--line);
+  }
+
+  /* The stats scroll; the round clock beside them does not, so the one
+     control here stays reachable on a narrow phone where the eight stat
+     items already overflow. */
+  .stat-strip-scroll {
+    display: flex;
+    gap: 16px;
+    min-width: 0;
+    flex: 1;
     overflow-x: auto;
     /* Scrollable, but reads as chrome — no visible scrollbar track/thumb. */
     scrollbar-width: none;
   }
 
-  .stat-strip::-webkit-scrollbar {
+  .stat-strip-scroll::-webkit-scrollbar {
     display: none;
+  }
+
+  .stat-strip-round {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 0 0 auto;
+    padding-left: 10px;
+    border-left: 1px solid var(--line);
+  }
+
+  .round-advance {
+    padding: 2px 8px;
+    border: 1px solid var(--gold-dim);
+    border-radius: var(--radius);
+    background: none;
+  }
+
+  .round-advance:active {
+    border-color: var(--gold-2);
   }
 
   .stat-strip-item {

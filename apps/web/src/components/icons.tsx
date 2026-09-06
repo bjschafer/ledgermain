@@ -310,3 +310,12 @@ export function CheckIcon() {
     </Icon>
   );
 }
+
+export function RotateIcon() {
+  return (
+    <Icon>
+      <path d="M20 12A8 8 0 1 1 17.66 6.34" />
+      <path d="M20 4V9H15" />
+    </Icon>
+  );
+}

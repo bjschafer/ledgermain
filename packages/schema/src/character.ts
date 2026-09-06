@@ -1499,6 +1499,20 @@ export interface CharacterDoc {
     conditionRounds?: Record<string, number>;
     /** Active buffs with remaining duration + the changes they apply (Stage 4). */
     activeBuffs: ActiveBuff[];
+    /**
+     * The combat round the table is currently on — a passive clock, not an
+     * action-economy tracker (which is ruled out). Incremented by the same
+     * `model/buffs.ts` `advanceRound` that ticks buff durations and timed
+     * conditions, so every control that advances the clock agrees on the
+     * number, and cleared by `resetRound` when combat ends.
+     *
+     * Absent/undefined means round 1 (the "omit the default" convention used
+     * throughout `live`), so a document that never touches the clock is
+     * unchanged. Nothing derived reads this: it is display-only bookkeeping,
+     * and rest deliberately leaves it alone for the same reason it leaves
+     * `activeBuffs` alone (see `model/rest.ts`).
+     */
+    round?: number;
     /** Resource pools: ki, rounds/day, item charges. */
     resources: Record<string, { used: number; max: number }>;
     /**

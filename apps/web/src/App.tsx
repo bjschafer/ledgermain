@@ -372,7 +372,7 @@ function Workbench({
                 {/* Same header machinery as Build: StatStrip over the PlayNav
                     jump rail (see components/tracker/PlayNav). */}
                 <div className="mobile-build-header">
-                  <StatStrip {...props} />
+                  <StatStrip {...props} showRound />
                   <PlayNav {...props} onActiveChange={onPlaySection} />
                 </div>
                 <div className="build-col">

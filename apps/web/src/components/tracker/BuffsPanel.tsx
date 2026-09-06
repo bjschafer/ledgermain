@@ -19,11 +19,13 @@ import { RulesNote } from "../RulesNote.js";
 import {
   addBuff,
   advanceRound,
+  currentRound,
   hasNoModeledEffect,
   isBuffOnMaster,
   makeActiveBuff,
   makeCustomBuff,
   removeBuff,
+  resetRound,
   setBuffRounds,
   suggestRounds,
   toggleBuffMaster,
@@ -38,7 +40,7 @@ import { isSharedWithFamiliar, toggleSharedBuff } from "../../model/familiar.js"
 import { isSharedWithPhantom, toggleSharedBuffPhantom } from "../../model/phantom.js";
 import { changeTargetLabel, signed } from "../../model/names.js";
 import { InfoTip } from "../InfoTip.js";
-import { SparkleIcon } from "../icons.js";
+import { RotateIcon, SparkleIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
 
 export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
@@ -89,6 +91,10 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
     );
 
   const tick = (n: number) => update((d) => advanceRound(d, n).doc);
+  // Same clock the Play tab's stat strip reads and drives (StatStrip.tsx) —
+  // the strip is hidden above 940px, so this readout is where a desktop
+  // player sees the round.
+  const round = currentRound(doc);
 
   return (
     <Panel
@@ -98,6 +104,9 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
       storageKey="panel:Buffs"
       right={
         <div className="round-ctl">
+          <span className="round-now">
+            Round <span className="num">{round}</span>
+          </span>
           <button type="button" className="btn-act round" onClick={() => tick(step)}>
             Advance {step === 1 ? "round" : `${step} rds`}
           </button>
@@ -110,6 +119,17 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
             onCommit={(n) => setStep(n)}
             aria-label="Rounds per advance"
           />
+          {round > 1 && (
+            <button
+              type="button"
+              className="round-reset"
+              onClick={() => update(resetRound)}
+              title="End combat (back to round 1)"
+              aria-label="End combat: back to round 1"
+            >
+              <RotateIcon />
+            </button>
+          )}
         </div>
       }
     >

@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-06-round-clock",
+    date: "2026-09-06",
+    title: "The round clock, out where you can see it",
+    note: "The stat strip at the top of Play now shows which round you are on, and tapping it advances the round: buff durations and timed conditions count down exactly as they did from the Buffs panel. Once combat starts, a second button beside it puts the clock back to round one. The Buffs panel shows the same number, so both controls agree no matter which one you reach for.",
+  },
+  {
     id: "2026-09-05-monk-flurry",
     date: "2026-09-05",
     title: "A monk's flurry rolls itself",

@@ -253,6 +253,7 @@ export function advanceRound(doc: CharacterDoc, rounds = 1): AdvanceRoundResult 
     ...doc,
     live: {
       ...doc.live,
+      round: currentRound(doc) + rounds,
       activeBuffs: buffs,
       conditions: ticked.conditions,
       conditionRounds: ticked.conditionRounds,
@@ -263,6 +264,26 @@ export function advanceRound(doc: CharacterDoc, rounds = 1): AdvanceRoundResult 
     expired,
     expiredConditions: ticked.expired,
   };
+}
+
+/**
+ * The round the clock is on. Absent means round 1 — the clock starts on the
+ * first round of combat rather than at zero, so the number reads the way a
+ * table says it ("we're on round 3").
+ */
+export function currentRound(doc: CharacterDoc): number {
+  return Math.max(1, Math.floor(doc.live.round ?? 1));
+}
+
+/**
+ * End combat: put the clock back to round 1. Only the counter — buffs and
+ * timed conditions keep their remaining rounds, since an encounter ending is
+ * not the same as their durations running out.
+ */
+export function resetRound(doc: CharacterDoc): CharacterDoc {
+  if (doc.live.round === undefined) return doc;
+  const { round: _dropped, ...live } = doc.live;
+  return { ...doc, live };
 }
 
 /**
