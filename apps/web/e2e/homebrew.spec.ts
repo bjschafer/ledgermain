@@ -159,3 +159,108 @@ test("creating a custom ability adds it to the class-feature timeline and a use 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
+
+/** Every homebrew feat description currently in IndexedDB. */
+async function storedFeatDescriptions(page: Page): Promise<string[]> {
+  return page.evaluate(
+    () =>
+      new Promise<string[]>((resolve, reject) => {
+        const open = indexedDB.open("pf1-tracker");
+        open.onerror = () => reject(open.error);
+        open.onsuccess = () => {
+          const all = open.result
+            .transaction("characters", "readonly")
+            .objectStore("characters")
+            .getAll();
+          all.onerror = () => reject(all.error);
+          all.onsuccess = () =>
+            resolve(
+              (all.result as { build?: { homebrew?: { feats?: Record<string, unknown> } } }[])
+                .flatMap((doc) => Object.values(doc.build?.homebrew?.feats ?? {}))
+                .map((feat) => String((feat as { description?: string }).description ?? "")),
+            );
+        };
+      }),
+  );
+}
+
+/**
+ * The authoring form escapes what an author types
+ * (`homebrewEditor.textToDescriptionHtml`), so typing a payload into it only
+ * proves that first layer. This rewrites the stored description to raw markup
+ * behind the form's back, which is the shape a hand-edited or imported doc
+ * arrives in, and leaves `components/RulesProse.tsx` as the only thing
+ * standing between it and the page.
+ */
+async function rewriteStoredFeatDescriptions(page: Page, html: string) {
+  // The app's save is debounced, so the feat has to be on disk before this
+  // read-modify-write, or it would put back the doc that predates it.
+  await expect.poll(() => storedFeatDescriptions(page)).toHaveLength(1);
+  await page.evaluate(
+    (description) =>
+      new Promise<void>((resolve, reject) => {
+        const open = indexedDB.open("pf1-tracker");
+        open.onerror = () => reject(open.error);
+        open.onsuccess = () => {
+          const tx = open.result.transaction("characters", "readwrite");
+          tx.onerror = () => reject(tx.error);
+          tx.oncomplete = () => resolve();
+          const store = tx.objectStore("characters");
+          const all = store.getAll();
+          all.onsuccess = () => {
+            for (const doc of all.result as {
+              build?: { homebrew?: { feats?: Record<string, { description?: string }> } };
+            }[]) {
+              for (const feat of Object.values(doc.build?.homebrew?.feats ?? {})) {
+                feat.description = description;
+              }
+              store.put(doc);
+            }
+          };
+        };
+      }),
+    html,
+  );
+}
+
+test("a homebrew description carrying real markup renders inert", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  // Flipped by the payload if the browser ever parses it as markup instead of
+  // showing it, which is what the render-time sanitizer exists to prevent.
+  await page.addInitScript(() => {
+    (window as unknown as { __xss?: boolean }).__xss = false;
+  });
+  await gotoBuild(page);
+
+  const featsPanel = panelByTitle(page, "Feats");
+  await featsPanel.getByText("Homebrew feats").click();
+  await featsPanel.getByRole("button", { name: "+ Create homebrew feat" }).click();
+  await featsPanel.getByLabel("Name").fill("Sharp Tongue");
+  await featsPanel.getByLabel("Description / benefit").fill("Cutting.");
+  await featsPanel.getByRole("button", { name: "Create feat" }).click();
+  await expect(featsPanel.locator(".scroll .pick-row", { hasText: "Sharp Tongue" })).toBeVisible();
+
+  await rewriteStoredFeatDescriptions(
+    page,
+    '<p>Cutting.</p><img src="x" onerror="window.__xss = true">' +
+      "<script>window.__xss = true</script>" +
+      '<a href="javascript:window.__xss = true">tap</a>',
+  );
+  await page.reload();
+
+  await page.getByRole("tab", { name: "Play" }).click();
+  const playFeatsPanel = panelByTitle(page, "Feats");
+  await playFeatsPanel.getByRole("button", { name: "Feats", exact: true }).click();
+  const row = playFeatsPanel.locator(".pick-row", { hasText: "Sharp Tongue" });
+  await row.getByText("details").click();
+
+  const desc = row.locator(".spell-detail-desc");
+  await expect(desc).toContainText("Cutting.");
+  await expect(desc.locator("img, script")).toHaveCount(0);
+  await expect(desc.locator("a")).not.toHaveAttribute("href", /javascript/);
+  await desc.getByText("tap").click();
+  expect(await page.evaluate(() => (window as unknown as { __xss?: boolean }).__xss)).toBe(false);
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});

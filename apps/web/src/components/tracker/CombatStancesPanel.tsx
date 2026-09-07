@@ -4,6 +4,7 @@ import { COMBAT_STANCES } from "@pf1/engine";
 
 import { Explainer } from "../Explainer.js";
 import { InfoTip } from "../InfoTip.js";
+import { RulesProse } from "../RulesProse.js";
 import { SwordIcon } from "../icons.js";
 import { Panel } from "../builder/Panel.js";
 import {
@@ -91,12 +92,7 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
               </div>
               {activeStyles.map((style) => (
                 <Explainer key={style.effectTag} title={`${style.name} rules`}>
-                  <div
-                    className="stance-style-description"
-                    // Vendored open-game-content formatting only, matching FeatsPanel.
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{ __html: style.description }}
-                  />
+                  <RulesProse className="stance-style-description" html={style.description} />
                 </Explainer>
               ))}
             </>

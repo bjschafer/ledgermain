@@ -8,6 +8,7 @@ import {
 import type { AppliedMetamagic, DerivedClChecks, Spell } from "@pf1/schema";
 
 import { resolveAppliedMetamagic, type ResolvedMetamagic } from "../model/metamagic.js";
+import { RulesProse } from "./RulesProse.js";
 import { concentrationDC, concentrationScenarios, spellSaveDC } from "../model/spellcasting.js";
 import { spellDCAdjustment, srCheckBonus, srCheckDetail } from "../model/spellDCs.js";
 import { detectSummonSpell, summonHelperHref } from "../model/summonLink.js";
@@ -338,17 +339,7 @@ function SpellDetailBody({
           </span>
         </div>
       )}
-      {spell.description && (
-        <div
-          className="spell-detail-desc"
-          // HTML descriptions come from the Foundry PF1 data (open game
-          // content) and contain only spell text — no user input. We render
-          // them with dangerouslySetInnerHTML because they use formatting
-          // tags (<p>, <i>, <strong>) that are meaningless as plain text.
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: spell.description }}
-        />
-      )}
+      {spell.description && <RulesProse className="spell-detail-desc" html={spell.description} />}
     </div>
   );
 }

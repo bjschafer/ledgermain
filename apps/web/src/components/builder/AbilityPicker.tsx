@@ -8,6 +8,7 @@ import {
   totalBonusEquivalent,
 } from "../../model/abilities.js";
 import { TipButton } from "../InfoTip.js";
+import { RulesProse } from "../RulesProse.js";
 
 /** "+2" for an enhancement-equivalent ability, "1,000 gp" for a flat-gp one. */
 function costLabel(opt: AbilityCatalogOption): string {
@@ -47,14 +48,7 @@ function AbilityDetail({ description }: { description: string }) {
     <details className="spell-detail">
       <summary className="spell-detail-summary">details</summary>
       <div className="spell-detail-body">
-        <div
-          className="spell-detail-desc"
-          // Ability descriptions come from the vendored Foundry PF1 data (open
-          // game content) and contain only formatting tags — no user input.
-          // Same posture as SpellDetail/FeatDetail.
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: description }}
-        />
+        <RulesProse className="spell-detail-desc" html={description} />
       </div>
     </details>
   );

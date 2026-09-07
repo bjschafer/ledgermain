@@ -18,6 +18,7 @@ import {
 } from "../../model/featureChoices.js";
 import { useInlineRolls } from "../../state/rollData.js";
 import { InfoTip } from "../InfoTip.js";
+import { RulesProse } from "../RulesProse.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -86,14 +87,7 @@ export function FeatureDescription({ html }: { html: string }) {
   return (
     <details className="spell-detail">
       <summary className="spell-detail-summary">description</summary>
-      <div
-        className="spell-detail-desc"
-        // Archetype feature descriptions come from the vendored third-party
-        // dataset (open game content) and contain only formatting tags
-        // (<p>, <i>, <strong>) — no user input.
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: resolve(html) }}
-      />
+      <RulesProse className="spell-detail-desc" html={resolve(html)} />
     </details>
   );
 }

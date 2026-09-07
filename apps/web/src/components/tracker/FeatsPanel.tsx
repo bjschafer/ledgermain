@@ -9,6 +9,7 @@ import {
   grantedFeats,
 } from "../../model/feats.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
+import { RulesProse } from "../RulesProse.js";
 import { StarIcon } from "../icons.js";
 import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
@@ -30,16 +31,7 @@ function FeatDetail({ feat }: { feat: Feat }) {
             <span className="spell-detail-value">{prereqText}</span>
           </div>
         )}
-        {feat.description && (
-          <div
-            className="spell-detail-desc"
-            // Feat descriptions come from the vendored Foundry PF1 data (open
-            // game content) and contain only formatting tags (<p>, <i>,
-            // <strong>) — no user input. Same posture as SpellDetail.
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: feat.description }}
-          />
-        )}
+        {feat.description && <RulesProse className="spell-detail-desc" html={feat.description} />}
       </div>
     </details>
   );

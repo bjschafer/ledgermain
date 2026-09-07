@@ -359,14 +359,14 @@ export function buildHomebrewAbility(
 /* --------------------------------------------------------- description HTML -- */
 
 /**
- * Every vendored `RefEntity.description` is HTML rendered via
- * `dangerouslySetInnerHTML` (`FeatDetail`/`FeatureDescription`) — a homebrew
- * feat's author-entered plain text goes through the same rendering path, so
- * it must be escaped first (this is the *local* player's own content, but
- * "trust the current user's textarea" is still worth avoiding when the
- * output feeds `dangerouslySetInnerHTML`). Blank lines split paragraphs;
- * single newlines become `<br>`. Returns `undefined` for empty input,
- * matching `RefEntity.description`'s optional/absent-when-none convention.
+ * Every `RefEntity.description` is HTML, so a homebrew feat's author-entered
+ * plain text has to be escaped on the way in rather than shown verbatim.
+ * `components/RulesProse.tsx` sanitizes again on the way out, which is what
+ * covers a description the doc picked up some other way (a hand-edited blob,
+ * an import); this pass is what keeps an honest author's `<` from vanishing.
+ * Blank lines split paragraphs; single newlines become `<br>`. Returns
+ * `undefined` for empty input, matching `RefEntity.description`'s
+ * optional/absent-when-none convention.
  */
 export function textToDescriptionHtml(text: string): string | undefined {
   const trimmed = text.trim();
