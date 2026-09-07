@@ -47,8 +47,8 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   {
     id: "2026-09-07-buy-consumables",
     date: "2026-09-07",
-    title: "Buy potions, and stack the ones you already carry",
-    note: "The potion, scroll, and wand picker can now pay for what you pick: tick \u201cPay from purse\u201d and the market price comes out of your coin, with your current total shown next to it. Buying another of something you already carry adds to that row instead of opening a second one, so four potions of cure moderate wounds read as one line at four. A part used wand and a stashed row keep to themselves.",
+    title: "Buy what you add, and stack what repeats",
+    note: "Every add in the build can now pay for itself: items, kits, potions and scrolls and wands, custom gear, armor, shields, and weapons. Tick \u201cPay from purse\u201d once and it stays ticked everywhere, with your coin shown next to it and the price on each row. A configured suit or weapon is priced as it is built, so masterwork full plate reads 1,650 gp and a +1 longsword 2,315 gp; special materials are still yours to price, and the row says so. Buying another of something you already carry adds to that row instead of opening a second one, so four potions of cure moderate wounds read as one line at four. A part used wand and a stashed row keep to themselves. Short on coin? The purchase still goes through and says what you could not cover.",
   },
   {
     id: "2026-09-07-spellbook-export",

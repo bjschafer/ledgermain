@@ -46,6 +46,30 @@ describe("addGearItem()", () => {
     expect(d.build.gear).toHaveLength(2);
   });
 
+  it("stacks onto the row already carried when asked", () => {
+    let d = addGearItem(doc(), "item-a", { stack: true });
+    d = addGearItem(d, "item-a", { stack: true });
+    expect(d.build.gear).toHaveLength(1);
+    expect(d.build.gear[0]!.quantity).toBe(2);
+    // A different item still opens its own row.
+    d = addGearItem(d, "item-b", { stack: true });
+    expect(d.build.gear).toHaveLength(2);
+  });
+
+  it("keeps a hand-edited copy of a ref item out of the stack", () => {
+    const base = addGearItem(doc(), "item-a", { stack: true });
+    const renamed = setGearDetails(base, 0, {
+      name: "Sela's wand",
+      quantity: 1,
+      weight: 0,
+      price: 0,
+      charges: 0,
+      chargesUsed: 0,
+    });
+    const d = addGearItem(renamed, "item-a", { stack: true });
+    expect(d.build.gear).toHaveLength(2);
+  });
+
   it("does not mutate the original doc", () => {
     const d = doc();
     addGearItem(d, "ring-of-protection");

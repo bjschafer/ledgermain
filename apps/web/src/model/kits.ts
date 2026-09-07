@@ -12,6 +12,8 @@
  */
 import type { CharacterDoc, Item, ItemInstance, RefData } from "@pf1/schema";
 
+import { appendGear } from "./doc.js";
+
 /** A vendored item that packs other items — i.e. one worth offering to expand. */
 export interface Kit extends Item {
   contents: NonNullable<Item["contents"]>;
@@ -58,10 +60,20 @@ export function kitContents(kit: Kit): ItemInstance[] {
 /**
  * Append a kit's contents to gear. A `kitId` that isn't a known kit is a no-op,
  * so the UI can call this straight from a click handler.
+ *
+ * `opts.stack` merges each packed row into an identical one already carried
+ * (10 more torches join the 10 you have), the same option every other gear-add
+ * path takes.
  */
-export function addKit(doc: CharacterDoc, kitId: string, refData: RefData): CharacterDoc {
+export function addKit(
+  doc: CharacterDoc,
+  kitId: string,
+  refData: RefData,
+  opts?: { stack?: boolean },
+): CharacterDoc {
   const item = refData.items[kitId];
   if (!item || !isKit(item)) return doc;
-  const gear = [...doc.build.gear, ...kitContents(item)];
+  let gear = doc.build.gear;
+  for (const inst of kitContents(item)) gear = appendGear(gear, inst, opts?.stack);
   return { ...doc, build: { ...doc.build, gear } };
 }

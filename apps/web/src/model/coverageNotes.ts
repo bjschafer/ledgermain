@@ -105,6 +105,12 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "1,090 entries carry structured changes[]; the imported catalog adds 3,832 whose effects exist only as prose. The gap is promotion rather than coverage, and the weapon and armor special ability catalog sits on the same axis: keen is the only entry that moves numbers.",
   },
   {
+    category: "Special material prices",
+    note: "Mithral, adamantine, cold iron, darkwood, and alchemical silver carry no price in the published data the sheet reads, so a picker quotes a suit or weapon made of one at its ordinary price. The surcharge is yours to take off your coin by hand.",
+    issueDetail:
+      "5 special materials in the picker, none priced: the vendored armor and weapon entries carry a single base price and the real surcharges are per weight class or per pound, so they would have to be hand-authored alongside the material table.",
+  },
+  {
     category: "Metamagic",
     note: "Most metamagic feats change something the sheet has no number for: a bouncing spell's redirect, an elemental spell's swapped damage type, a quickened spell's action. Those stay rules text on the feat. Class abilities that grant free or cheaper metamagic through a choice the sheet cannot store, like the Theologian's chosen domain spell or a magus arcana's once-a-day feat, are not applied either.",
     issueDetail:

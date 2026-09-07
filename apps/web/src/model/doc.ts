@@ -1234,11 +1234,66 @@ export function setGear(doc: CharacterDoc, gear: ItemInstance[]): CharacterDoc {
 
 /**
  * Append a magic item (by RefData id) to gear, equipped by default.
- * No deduplication — the user may carry multiple copies of the same item.
+ *
+ * `opts.stack` folds the add into an identical row already carried, which is
+ * how a second copy of the same item is meant to be tracked (a quantity, not
+ * a second row). Opt-in: an importer rebuilding a sheet row by row wants the
+ * rows it was given. See {@link appendGear}.
  */
-export function addGearItem(doc: CharacterDoc, itemId: string): CharacterDoc {
-  const gear = [...doc.build.gear, { itemId, equipped: true }];
+export function addGearItem(
+  doc: CharacterDoc,
+  itemId: string,
+  opts?: { stack?: boolean },
+): CharacterDoc {
+  const gear = appendGear(doc.build.gear, { itemId, equipped: true }, opts?.stack);
   return { ...doc, build: { ...doc.build, gear } };
+}
+
+/**
+ * Append `inst` to `gear`, or fold it into an identical row's quantity when
+ * `stack` is set — the shared tail of every gear-add path (see
+ * {@link addGearItem}, {@link addCustomGearItem}, and `model/kits.ts`).
+ */
+export function appendGear(
+  gear: readonly ItemInstance[],
+  inst: ItemInstance,
+  stack?: boolean,
+): ItemInstance[] {
+  if (stack) {
+    const at = gear.findIndex((g) => stacksWith(g, inst));
+    const existing = gear[at];
+    if (existing) {
+      const quantity = clampInt((existing.quantity ?? 1) + (inst.quantity ?? 1), 0, 99999);
+      const merged = { ...existing };
+      if (quantity === 1) delete merged.quantity;
+      else merged.quantity = quantity;
+      return gear.map((g, i) => (i === at ? merged : g));
+    }
+  }
+  return [...gear, inst];
+}
+
+/**
+ * Whether a freshly built entry can be absorbed into an existing gear row as
+ * another copy of the same thing (see {@link appendGear}).
+ *
+ * Everything the row displays has to match, because merging throws the new
+ * instance away and only bumps a count: a different price or weight is a
+ * different item, and a partly used wand can't swallow a fresh one without
+ * losing the charges already spent. Armor rows never stack, since a suit
+ * carries per-instance state this shallow comparison doesn't cover, and
+ * neither does an unequipped row, which is stashed rather than carried.
+ */
+function stacksWith(existing: ItemInstance, incoming: ItemInstance): boolean {
+  if (existing.armorId || existing.armor) return false;
+  if (!existing.equipped || existing.chargesUsed) return false;
+  return (
+    existing.itemId === incoming.itemId &&
+    existing.name === incoming.name &&
+    (existing.price ?? 0) === (incoming.price ?? 0) &&
+    (existing.weight ?? 0) === (incoming.weight ?? 0) &&
+    (existing.charges ?? 0) === (incoming.charges ?? 0)
+  );
 }
 
 /**
@@ -1468,7 +1523,7 @@ export function updateGearItem(
  * `opts.stack` folds the add into an identical row already carried (bumping
  * its quantity) instead of opening a second one — what a second potion of the
  * same spell should do. It's opt-in because a hand-typed entry is often a
- * deliberately separate row; see {@link stacksWith} for what counts as
+ * deliberately separate row; see {@link appendGear} for what counts as
  * identical.
  */
 export function addCustomGearItem(
@@ -1492,35 +1547,8 @@ export function addCustomGearItem(
     const q = clampInt(opts.quantity, 0, 99999);
     if (q !== 1) inst.quantity = q;
   }
-  if (opts?.stack) {
-    const at = doc.build.gear.findIndex((g) => stacksWith(g, inst));
-    const existing = doc.build.gear[at];
-    if (existing) return setGearQuantity(doc, at, (existing.quantity ?? 1) + (inst.quantity ?? 1));
-  }
-  const gear = [...doc.build.gear, inst];
+  const gear = appendGear(doc.build.gear, inst, opts?.stack);
   return { ...doc, build: { ...doc.build, gear } };
-}
-
-/**
- * Whether a freshly built custom entry can be absorbed into an existing gear
- * row as another copy of the same thing (see `addCustomGearItem`'s `stack`).
- *
- * Everything the row displays has to match, because merging throws the new
- * instance away and only bumps a count: a different price or weight is a
- * different item, and a partly used wand can't swallow a fresh one without
- * losing the charges already spent. Ref-linked, armor, and unequipped rows
- * never stack: the first two carry state this shallow comparison doesn't
- * cover, and an unequipped row is stashed rather than carried.
- */
-function stacksWith(existing: ItemInstance, incoming: ItemInstance): boolean {
-  if (existing.itemId || existing.armorId || existing.armor) return false;
-  if (!existing.equipped || existing.chargesUsed) return false;
-  return (
-    existing.name === incoming.name &&
-    (existing.price ?? 0) === (incoming.price ?? 0) &&
-    (existing.weight ?? 0) === (incoming.weight ?? 0) &&
-    (existing.charges ?? 0) === (incoming.charges ?? 0)
-  );
 }
 
 /**

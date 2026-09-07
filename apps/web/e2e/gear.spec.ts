@@ -63,7 +63,7 @@ test("buying the same potion twice stacks the row and pays for both", async ({ p
   await panel.getByRole("button", { name: "+ Add potion / scroll / wand" }).click();
   const picker = panel.locator(".gear-picker");
   await picker.getByLabel("Pay from purse").check();
-  await expect(picker.locator(".purse-note")).toContainText("carrying 1000 gp");
+  await expect(picker.locator(".purse-note")).toContainText("carrying 1,000 gp");
 
   // A potion of cure moderate wounds is spell level 2 at CL 3: 2 x 3 x 50 gp.
   async function buyCureModerate() {
@@ -89,4 +89,54 @@ test("buying the same potion twice stacks the row and pays for both", async ({ p
   await expect(row).toHaveCount(1);
   await expect(row.getByLabel("Potion of Cure Moderate Wounds quantity")).toHaveValue("2");
   await expect(panel.getByLabel("gp (coins)")).toHaveValue("400");
+});
+
+test("every add flow offers the same purchase, sharing one toggle", async ({ page }) => {
+  const panel = await gotoGear(page);
+  await panel.getByLabel("gp (coins)").fill("500");
+
+  // The toggle is ticked once, in the item picker.
+  await panel.getByRole("button", { name: "+ Add item" }).click();
+  const items = panel.locator(".gear-picker");
+  await items.getByLabel("Pay from purse").check();
+  await typeSearch(items.getByPlaceholder("Search items…"), "Alchemist's Fire");
+  const flask = items
+    .locator(".pick-row")
+    .filter({ has: page.locator(".pname", { hasText: "Alchemist's Fire" }) })
+    .first();
+  await expect(flask).toContainText("20 gp");
+  await flask.getByRole("button", { name: "Buy" }).click();
+  await expect(panel.getByLabel("gp (coins)")).toHaveValue("480");
+
+  // ...and is still on in the armor picker, which prices the suit it is
+  // configured to build: masterwork studded leather is 25 + 150 gp.
+  await panel.getByRole("button", { name: "+ Add worn armor / shield" }).click();
+  const armor = panel.locator(".gear-picker");
+  await expect(armor.getByLabel("Pay from purse")).toBeChecked();
+  await armor.getByRole("button", { name: "Masterwork" }).click();
+  await typeSearch(armor.getByPlaceholder("Search armor & shields…"), "Studded Leather");
+  const suit = armor
+    .locator(".pick-row")
+    .filter({ has: page.locator(".pname", { hasText: "Masterwork Studded Leather" }) })
+    .first();
+  await expect(suit).toContainText("175 gp");
+  await suit.getByRole("button", { name: "Buy" }).click();
+  await expect(panel.getByLabel("gp (coins)")).toHaveValue("305");
+
+  // A second flask joins the first rather than opening a second row.
+  await panel.getByRole("button", { name: "+ Add item" }).click();
+  await typeSearch(
+    panel.locator(".gear-picker").getByPlaceholder("Search items…"),
+    "Alchemist's Fire",
+  );
+  await panel
+    .locator(".gear-picker .pick-row")
+    .filter({ has: page.locator(".pname", { hasText: "Alchemist's Fire" }) })
+    .first()
+    .getByRole("button", { name: "Buy" })
+    .click();
+  const flaskRow = panel.locator(".gear-row", { hasText: "Alchemist's Fire" });
+  await expect(flaskRow).toHaveCount(1);
+  await expect(flaskRow.getByLabel("Alchemist's Fire quantity")).toHaveValue("2");
+  await expect(panel.getByLabel("gp (coins)")).toHaveValue("285");
 });

@@ -10,14 +10,12 @@ import {
   addWornArmorFromRef,
   type GearDetails,
   type MoneyField,
-  purseInCopper,
   removeGear,
   setGearCharges,
   setGearDetails,
   setGearEquipped,
   setGearQuantity,
   setMoney,
-  spendMoney,
   updateGearItem,
 } from "../../model/doc.js";
 import {
@@ -27,6 +25,14 @@ import {
   buildAbilityCatalog,
 } from "../../model/abilities.js";
 import { addKit, type Kit, listKits } from "../../model/kits.js";
+import {
+  armorQuote,
+  customQuote,
+  formatGp,
+  itemQuote,
+  kitQuote,
+  type Quote,
+} from "../../model/purchase.js";
 import {
   CONSUMABLE_KINDS,
   type ConsumableEntry,
@@ -50,11 +56,12 @@ import {
 import { ARMOR_MATERIALS } from "../../model/materials.js";
 import { changeTargetLabel } from "../../model/names.js";
 import { noteLines } from "../../model/rulesNotes.js";
-import { showToast } from "../../state/toast.js";
+import { usePayFromPurse } from "../../state/payFromPurse.js";
 import { InfoTip } from "../InfoTip.js";
 import { RulesNote } from "../RulesNote.js";
 import { BagIcon } from "../icons.js";
 import { AbilityPicker, pruneAbilityInfo, toggleAbilityPick } from "./AbilityPicker.js";
+import { addLabel, PayFromPurse, PriceTag, usePurchase } from "./PayFromPurse.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import { SearchMiss } from "./SearchMiss.js";
@@ -642,10 +649,10 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   const [craftClassTag, setCraftClassTag] = useState<string | null>(null);
   const [craftCasterLevel, setCraftCasterLevel] = useState<CasterLevelChoice>("min");
   const [showUncastable, setShowUncastable] = useState(false);
-  // Off by default on both sides of the picker: gear is often entered for a
-  // character whose purse was never filled in, and a default-on toggle would
-  // silently report a shortfall on every add.
-  const [payFromPurse, setPayFromPurse] = useState(false);
+  // Shared with every other add flow in the build, including the weapons
+  // panel, so the choice to track spending is made once.
+  const [payFromPurse] = usePayFromPurse();
+  const purchase = usePurchase(update);
 
   // Kit picker — class kits expand to their packed gear.
   const [showKitPicker, setShowKitPicker] = useState(false);
@@ -746,45 +753,37 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
     return listKits(refData).filter((k) => !q || k.name.toLowerCase().includes(q));
   }, [refData, kitQuery]);
 
-  function handleAddItem(itemId: string) {
-    update((d) => addGearItem(d, itemId));
+  function handleAddItem(item: Item) {
+    purchase({
+      name: item.name,
+      quote: itemQuote(item),
+      add: (d) => addGearItem(d, item.id, { stack: true }),
+    });
     setShowItemPicker(false);
     setItemQuery("");
   }
 
-  function handleAddKit(kitId: string) {
-    update((d) => addKit(d, kitId, refData));
+  function handleAddKit(kit: Kit) {
+    purchase({
+      name: kit.name,
+      quote: kitQuote(kit, refData.items),
+      add: (d) => addKit(d, kit.id, refData, { stack: true }),
+    });
     setShowKitPicker(false);
     setKitQuery("");
   }
 
-  /**
-   * Buying is the same add as crafting, at full price: another copy of an
-   * identical consumable stacks onto the row already carried rather than
-   * opening a second one, and the purse is only touched when asked. Too
-   * little coin doesn't block the add — see {@link handleAddCraft}.
-   */
   function handleAddConsumable(entry: ConsumableEntry) {
-    let short = false;
-    update((d) => {
-      const withItem = addCustomGearItem(d, entry.name, {
-        price: entry.price,
-        charges: entry.charges,
-        stack: true,
-      });
-      if (!payFromPurse) return withItem;
-      const paid = spendMoney(withItem, entry.price);
-      if (paid) return paid;
-      short = true;
-      return withItem;
+    purchase({
+      name: entry.name,
+      quote: { gp: entry.price },
+      add: (d) =>
+        addCustomGearItem(d, entry.name, {
+          price: entry.price,
+          charges: entry.charges,
+          stack: true,
+        }),
     });
-    if (payFromPurse) {
-      showToast({
-        message: short
-          ? `${entry.name} added, but there wasn't ${gp(entry.price)} gp to pay for it`
-          : `${entry.name} bought for ${gp(entry.price)} gp`,
-      });
-    }
     setShowConsumablePicker(false);
     setConsumableQuery("");
   }
@@ -792,40 +791,48 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   /**
    * A crafted item is worth its market price and costs half that to make, so
    * the gear row carries the former while the purse (optionally) loses the
-   * latter. Too little coin doesn't block the add — the item is still made,
-   * and the shortfall is reported rather than silently swallowed.
+   * latter.
    */
   function handleAddCraft(entry: CraftEntry) {
-    let short = false;
-    update((d) => {
-      const withItem = addCustomGearItem(d, entry.name, {
-        price: entry.price,
-        charges: entry.charges,
-        stack: true,
-      });
-      if (!payFromPurse) return withItem;
-      const paid = spendMoney(withItem, entry.cost);
-      if (paid) return paid;
-      short = true;
-      return withItem;
-    });
-    showToast({
-      message: short
-        ? `${entry.name} added, but there wasn't ${gp(entry.cost)} gp to pay for it`
-        : `${entry.name} crafted${payFromPurse ? ` for ${gp(entry.cost)} gp` : ""}`,
+    purchase({
+      name: entry.name,
+      quote: { gp: entry.cost },
+      verb: "crafted",
+      alwaysAnnounce: true,
+      add: (d) =>
+        addCustomGearItem(d, entry.name, {
+          price: entry.price,
+          charges: entry.charges,
+          stack: true,
+        }),
     });
     setShowConsumablePicker(false);
     setConsumableQuery("");
   }
 
+  /**
+   * "Add to gear", or what it will cost when the purse is paying: the form is
+   * the one add flow where the price is typed rather than looked up, so the
+   * button is where the number can be confirmed before committing.
+   */
+  function customGearLabel(): string {
+    const quote = customQuote(customGear.price, customGear.quantity);
+    if (!payFromPurse || quote.gp == null) return "Add to gear";
+    return `Buy for ${formatGp(quote.gp)} gp`;
+  }
+
   function handleAddCustomGear() {
-    update((d) =>
-      addCustomGearItem(d, customGear.name, {
-        weight: customGear.weight,
-        price: customGear.price,
-        quantity: customGear.quantity,
-      }),
-    );
+    purchase({
+      name: customGear.name.trim() || "Custom gear",
+      quote: customQuote(customGear.price, customGear.quantity),
+      add: (d) =>
+        addCustomGearItem(d, customGear.name, {
+          weight: customGear.weight,
+          price: customGear.price,
+          quantity: customGear.quantity,
+          stack: true,
+        }),
+    });
     setShowCustomGear(false);
     setCustomGear(BLANK_CUSTOM_GEAR);
   }
@@ -841,18 +848,51 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
     setArmorMasterwork(false);
   }
 
-  function handleAddArmorRef(armor: ArmorRef) {
-    update((d) =>
-      addWornArmorFromRef(
-        d,
-        armor,
-        armorEnhancement,
-        armorMaterial,
-        armorAbilities,
-        armorMasterwork,
-        armorAbilityInfo,
-      ),
+  /** The name the gear row will carry, mirroring `addWornArmorFromRef`. */
+  function armorPickName(a: ArmorRef): string {
+    const material =
+      armorMaterial === "steel"
+        ? null
+        : (ARMOR_MATERIALS.find((m) => m.id === armorMaterial)?.name ?? null);
+    return [
+      armorEnhancement === 0 && armorMasterwork ? "Masterwork" : null,
+      material,
+      a.name,
+      armorEnhancement > 0 ? `+${armorEnhancement}` : null,
+    ]
+      .filter(Boolean)
+      .join(" ");
+  }
+
+  /** What the suit as configured above the list would cost. */
+  function armorRefQuote(a: ArmorRef): Quote {
+    return armorQuote(
+      a,
+      {
+        enhancement: armorEnhancement,
+        masterwork: armorMasterwork,
+        material: armorMaterial,
+        abilities: armorAbilities,
+      },
+      armorRefAbilityCatalog,
     );
+  }
+
+  function handleAddArmorRef(armor: ArmorRef) {
+    purchase({
+      name: armorPickName(armor),
+      quote: armorRefQuote(armor),
+      add: (d) =>
+        addWornArmorFromRef(
+          d,
+          armor,
+          armorEnhancement,
+          armorMaterial,
+          armorAbilities,
+          armorMasterwork,
+          armorAbilityInfo,
+        ),
+    });
     closeArmorPicker();
   }
 
@@ -1164,6 +1204,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                 Cancel
               </button>
             </div>
+            <PayFromPurse doc={doc} />
             <div className="scroll">
               {filteredItems.length === 0 ? (
                 itemQuery.trim() ? (
@@ -1207,9 +1248,9 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                       <button
                         type="button"
                         className="pick-btn add"
-                        onClick={() => handleAddItem(item.id)}
+                        onClick={() => handleAddItem(item)}
                       >
-                        Add
+                        {addLabel(payFromPurse, itemQuote(item))}
                       </button>
                     </div>
                   );
@@ -1253,6 +1294,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                 Cancel
               </button>
             </div>
+            <PayFromPurse doc={doc} />
             <div className="scroll">
               {filteredKits.length === 0 ? (
                 <div className="empty">No kits match.</div>
@@ -1263,14 +1305,15 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                       <div className="pname">{kit.name}</div>
                       <div className="preq">
                         <span>{kitSummary(kit)}</span>
+                        <PriceTag quote={kitQuote(kit, refData.items)} />
                       </div>
                     </div>
                     <button
                       type="button"
                       className="pick-btn add"
-                      onClick={() => handleAddKit(kit.id)}
+                      onClick={() => handleAddKit(kit)}
                     >
-                      Add
+                      {addLabel(payFromPurse, kitQuote(kit, refData.items))}
                     </button>
                   </div>
                 ))
@@ -1347,19 +1390,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
               </button>
             </div>
 
-            {consumableMode === "buy" && (
-              <div className="picker-controls">
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    checked={payFromPurse}
-                    onChange={(e) => setPayFromPurse(e.target.checked)}
-                  />
-                  <span>Pay from purse</span>
-                </label>
-                <span className="purse-note">carrying {gp(purseInCopper(doc) / 100)} gp</span>
-              </div>
-            )}
+            <PayFromPurse doc={doc} />
 
             {consumableMode === "craft" && craftSource !== undefined && (
               <div className="picker-controls">
@@ -1393,14 +1424,6 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                       </option>
                     ))}
                   </select>
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    checked={payFromPurse}
-                    onChange={(e) => setPayFromPurse(e.target.checked)}
-                  />
-                  <span>Pay from purse</span>
                 </label>
                 <label className="check">
                   <input
@@ -1492,7 +1515,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                       className="pick-btn add"
                       onClick={() => handleAddConsumable(entry)}
                     >
-                      {payFromPurse ? "Buy" : "Add"}
+                      {addLabel(payFromPurse, { gp: entry.price })}
                     </button>
                   </div>
                 ))
@@ -1591,6 +1614,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                     )}
                   </label>
                 </div>
+                <PayFromPurse doc={doc} />
                 <div className="scroll">
                   {filteredArmors.length === 0 ? (
                     <div className="empty">No armor matches.</div>
@@ -1606,6 +1630,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                           <div className="preq">
                             <span>{armorRefMeta(a)}</span>
                             <span className="ck-met">AC +{a.ac}</span>
+                            <PriceTag quote={armorRefQuote(a)} />
                           </div>
                         </div>
                         <button
@@ -1613,7 +1638,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                           className="pick-btn add"
                           onClick={() => handleAddArmorRef(a)}
                         >
-                          Add
+                          {addLabel(payFromPurse, armorRefQuote(a))}
                         </button>
                       </div>
                     ))
@@ -1722,13 +1747,14 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                 />
               </label>
             </div>
+            <PayFromPurse doc={doc} />
             <button
               type="button"
               className="pick-btn add"
               disabled={!customGear.name.trim()}
               onClick={handleAddCustomGear}
             >
-              Add to gear
+              {customGearLabel()}
             </button>
           </div>
         )}

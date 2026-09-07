@@ -10,14 +10,17 @@ import {
   sanitizeAbilities,
 } from "../../model/abilities.js";
 import { WEAPON_MATERIALS } from "../../model/materials.js";
+import { type Quote, weaponQuote } from "../../model/purchase.js";
 import {
   staleUnarmedDamage,
   unarmedStrikeMeta,
   unarmedStrikeSource,
   unarmedStrikeWeapon,
 } from "../../model/unarmedStrike.js";
+import { usePayFromPurse } from "../../state/payFromPurse.js";
 import { SwordIcon } from "../icons.js";
 import { AbilityPicker, pruneAbilityInfo, toggleAbilityPick } from "./AbilityPicker.js";
+import { addLabel, PayFromPurse, PriceTag, usePurchase } from "./PayFromPurse.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
@@ -444,6 +447,9 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
   const [abilityInfo, setAbilityInfo] = useState<AbilityInfo>({});
   const [masterwork, setMasterwork] = useState<boolean>(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  // The same preference and receipt the gear panel's pickers use.
+  const [payFromPurse] = usePayFromPurse();
+  const purchase = usePurchase(update);
   const weapons = doc.build.weapons ?? [];
 
   const catalog = useMemo(() => buildAbilityCatalog(refData.itemAbilities), [refData]);
@@ -497,10 +503,31 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
     resetPickerState();
   }
 
+  /** The name the weapon row will carry, mirroring `addWeaponFromRef`. */
+  function weaponPickName(w: WeaponRef): string {
+    const matName =
+      material === "steel" ? null : (WEAPON_MATERIALS.find((m) => m.id === material)?.name ?? null);
+    return [
+      enhancement === 0 && masterwork ? "Masterwork" : null,
+      matName,
+      w.name,
+      enhancement > 0 ? `+${enhancement}` : null,
+    ]
+      .filter(Boolean)
+      .join(" ");
+  }
+
+  /** What the weapon as configured above the list would cost. */
+  function refQuote(w: WeaponRef): Quote {
+    return weaponQuote(w, { enhancement, masterwork, material, abilities }, catalog);
+  }
+
   function handleAddFromRef(w: WeaponRef) {
-    update((d) =>
-      addWeaponFromRef(d, w, enhancement, material, abilities, masterwork, abilityInfo),
-    );
+    purchase({
+      name: weaponPickName(w),
+      quote: refQuote(w),
+      add: (d) => addWeaponFromRef(d, w, enhancement, material, abilities, masterwork, abilityInfo),
+    });
     setShowAddCard(false);
     setAddMode("select");
     setWeaponQuery("");
@@ -671,6 +698,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
                     )}
                   </label>
                 </div>
+                <PayFromPurse doc={doc} />
                 <AbilityPicker
                   options={weaponAbilityOptions}
                   selected={abilities}
@@ -712,6 +740,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
                           </div>
                           <div className="preq">
                             <span>{weaponRefMeta(w)}</span>
+                            <PriceTag quote={refQuote(w)} />
                           </div>
                         </div>
                         <button
@@ -719,7 +748,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
                           className="pick-btn add"
                           onClick={() => handleAddFromRef(w)}
                         >
-                          Add
+                          {addLabel(payFromPurse, refQuote(w))}
                         </button>
                       </div>
                     ))

@@ -95,9 +95,18 @@ describe("addKit", () => {
     expect(doc.build.gear[0]!.name).toBe("Rope");
   });
 
-  it("stacks a second copy instead of deduplicating", () => {
+  it("adds a second copy as its own rows by default", () => {
     const once = addKit(createEmptyDoc("t"), WIZARD_KIT, ref);
     expect(addKit(once, WIZARD_KIT, ref).build.gear.length).toBe(26);
+  });
+
+  it("folds a second copy into the rows already carried when stacking", () => {
+    const once = addKit(createEmptyDoc("t"), WIZARD_KIT, ref, { stack: true });
+    const twice = addKit(once, WIZARD_KIT, ref, { stack: true });
+    expect(twice.build.gear.length).toBe(13);
+    // The kit packs 10 torches, so two kits is 20 on one row.
+    const torches = twice.build.gear.find((g) => g.itemId && ref.items[g.itemId]?.name === "Torch");
+    expect(torches?.quantity).toBe(20);
   });
 
   it("is a no-op for an unknown id or a non-kit item", () => {
