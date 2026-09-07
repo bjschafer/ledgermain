@@ -40,7 +40,7 @@ jobs:
       # it. A PAT rather than GITHUB_TOKEN: pushes made with GITHUB_TOKEN never
       # trigger a new workflow run, so CI would never judge the commit we make
       # and Renovate would wait on checks that can no longer arrive.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.REFDATA_SYNC_TOKEN }}
