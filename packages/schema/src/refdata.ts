@@ -373,6 +373,16 @@ export interface Class extends RefEntity {
     kind: "arcane" | "divine" | "any";
     /** The prestige-class levels (1-based) at which this slot advances its target. */
     levels: number[];
+    /**
+     * The class tags a slot may target, when the printed column names classes
+     * outright instead of a kind ("+1 level of witch class", "+1 level of
+     * cleric or paladin", "+1 level of alchemist"). Present means it REPLACES
+     * the `kind` check rather than narrowing it: an explicitly named class is
+     * eligible even when it is not an "existing spellcasting class" in the
+     * generic sense — Master Chymist advances an alchemist's extracts, which
+     * no `kind` slot may target.
+     */
+    classTags?: string[];
   }[];
   /**
    * Structured entry requirements (prestige classes). Hybrid prereq model

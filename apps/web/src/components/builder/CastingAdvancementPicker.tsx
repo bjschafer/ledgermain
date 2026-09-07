@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import type { CharacterDoc, RefData } from "@pf1/schema";
+import type { CharacterDoc, Class, RefData } from "@pf1/schema";
 
 import { eligibleAdvancementTargets } from "../../model/casterLevel.js";
 import { setCastingAdvancementTarget } from "../../model/doc.js";
@@ -32,10 +32,35 @@ function classNameByTag(refData: RefData, tag: string): string {
   return classByTag(refData, tag)?.name ?? tag;
 }
 
+/** "Witch", or "Cleric or Paladin" — the classes a named slot may advance. */
+function namedClassList(refData: RefData, tags: readonly string[]): string {
+  const names = tags.map((tag) => classNameByTag(refData, tag));
+  if (names.length < 2) return names[0] ?? "";
+  return `${names.slice(0, -1).join(", ")} or ${names[names.length - 1]}`;
+}
+
+type Slot = NonNullable<Class["castingAdvancement"]>[number];
+
+/**
+ * A slot whose published column names its classes ("+1 level of witch class")
+ * says so, rather than showing the kind the target happens to belong to — a
+ * Winter Witch advances a witch, not "arcane casting", and Master Chymist's
+ * alchemist is not arcane at all.
+ */
+function slotLabel(refData: RefData, slot: Slot): string {
+  if (!slot.classTags) return SLOT_LABEL[slot.kind];
+  return `Advances ${namedClassList(refData, slot.classTags)} casting`;
+}
+
+function slotEmptyHint(refData: RefData, slot: Slot): string {
+  if (!slot.classTags) return SLOT_EMPTY_HINT[slot.kind];
+  return `requires ${namedClassList(refData, slot.classTags)} in this build`;
+}
+
 interface AdvancementEntry {
   tag: string;
   name: string;
-  slots: { kind: "arcane" | "divine" | "any"; levels: number[] }[];
+  slots: Slot[];
 }
 
 /**
@@ -95,10 +120,10 @@ export function CastingAdvancementPicker({ doc, refData, update }: CastingAdvanc
                 return (
                   <div className="casting-advancement-slot" key={i}>
                     <label className="feat-choice-label">
-                      {SLOT_LABEL[slot.kind]}:
+                      {slotLabel(refData, slot)}:
                       {options.length === 0 ? (
                         <span className="hint" style={{ marginLeft: 6 }}>
-                          {SLOT_EMPTY_HINT[slot.kind]}
+                          {slotEmptyHint(refData, slot)}
                         </span>
                       ) : (
                         <select

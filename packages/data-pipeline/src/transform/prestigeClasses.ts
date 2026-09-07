@@ -49,10 +49,6 @@ import {
  *
  * ## What's NOT derived
  *
- * No `castingAdvancement` in the general case — the "Spells per Day" column is
- * prose ("+1 level of existing arcane spellcasting class"), not a structured
- * value, and hand-authoring ~108 tables is out of scope. Individual classes
- * get theirs transcribed on demand via {@link CASTING_ADVANCEMENT}.
  * No `armorProf`/`weaponProf` — the source class template carries neither
  * field at all (unlike the hand-authored set, which states "no proficiencies"
  * from the published text); defaulting to `[]` doesn't assert anything false,
@@ -66,27 +62,105 @@ import {
  * blocked).
  */
 /**
- * Hand-transcribed "Spells Per Day" columns for vendored prestige classes,
- * keyed by class NAME (the same key `excludeNames` matches on). Each entry is
- * read off the class's own published table, which survives in the vendored
- * `description` prose as a run of "+1 level of spellcasting class" cells — the
- * source carries no structured field for it, so this is the same
- * hand-authored posture `supplements.ts` uses for the CRB ten.
+ * Spells-per-day advancement read off the class's own published table, which
+ * survives verbatim in the vendored `description` prose (the "Spells Per Day"
+ * column of the level table, one `+1 level of ...` cell per advancing level).
+ * There is no structured field for it, so the table is the source.
  *
- * `kind` follows the column's own wording: "any" when it says "spellcasting
- * class" with no school restriction, "arcane"/"divine" only when the text
- * actually restricts it. Getting this wrong silently mis-advances a caster,
- * so transcribe from the published table rather than inferring from theme.
+ * Fails closed rather than guessing: a cell the descriptor vocabulary below
+ * doesn't recognize, or a column whose descriptor changes between rows (which
+ * one slot can't express), abandons the whole class and leaves
+ * `castingAdvancement` undefined — advancement untracked is honest, a wrong
+ * schedule silently mis-advances a caster.
  *
- * Deliberately sparse — a class absent from this map keeps `undefined`
- * (advancement untracked, prose-only), which is honest rather than a guess.
+ * `kind` follows the column's own wording: `"any"` when it says "spellcasting
+ * class" with no school restriction, `"arcane"`/`"divine"` only when the text
+ * restricts it, and `classTags` when it names classes outright.
+ *
+ * Two classes are deliberately skipped by the "Level" header requirement:
+ * Prophet of Kalistrade and Red Mantis Assassin print their OWN spell
+ * progression (numbered 1st-4th columns under a merged "Spells Per Day"
+ * banner) rather than advancing an existing class, a shape
+ * `Class.castingAdvancement` can't represent at all.
  */
-const CASTING_ADVANCEMENT: Readonly<Record<string, NonNullable<Class["castingAdvancement"]>>> = {
-  // Undead Slayer's Handbook p.30: "+1 level of spellcasting class" on every
-  // row, 1st-10th, with no arcane/divine restriction — the same shape as
-  // Loremaster's, hence "any".
-  "Soul Warden": [{ kind: "any", levels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }],
+const CELL_ADVANCEMENT = /^\+\s*1\s+level\s+of\s+(.+)$/i;
+
+/** A "no advancement this level" cell: an em/en dash, a hyphen, or nothing. */
+const CELL_EMPTY = /^[—–-]?$/;
+
+/**
+ * Columns that name specific classes instead of a kind. Keyed by the
+ * descriptor exactly as printed, so a wording this map hasn't seen abandons
+ * the class rather than being pattern-matched into a guess.
+ */
+const NAMED_CLASS_DESCRIPTORS: Readonly<Record<string, readonly string[]>> = {
+  "witch class": ["witch"],
+  alchemist: ["alchemist"],
+  "cleric or paladin": ["cleric", "paladin"],
 };
+
+/** A descriptor restricted to one school: "existing arcane spellcasting class" and its variants. */
+const KIND_DESCRIPTOR = /^(?:existing )?(arcane|divine)(?: spellcasting)?(?: class)?$/;
+
+/** An unrestricted descriptor: "existing class", "spellcasting class", "existing spellcasting class". */
+const ANY_DESCRIPTOR = /^(?:existing )?(?:spellcasting )?class$/;
+
+type Slot = NonNullable<Class["castingAdvancement"]>[number];
+
+function parseDescriptor(descriptor: string): Omit<Slot, "levels"> | undefined {
+  const text = descriptor.toLowerCase().replace(/\.$/, "").trim();
+  const named = NAMED_CLASS_DESCRIPTORS[text];
+  if (named) return { kind: "any", classTags: [...named] };
+  const kind = KIND_DESCRIPTOR.exec(text);
+  if (kind) return { kind: kind[1] as "arcane" | "divine" };
+  if (ANY_DESCRIPTOR.test(text)) return { kind: "any" };
+  return undefined;
+}
+
+/** Every `<table>` in `html`, each as a grid of tag-stripped cell texts. */
+function parseTables(html: string): string[][][] {
+  return [...html.matchAll(/<table[\s\S]*?<\/table>/gi)].map((table) =>
+    [...table[0].matchAll(/<tr[\s\S]*?<\/tr>/gi)].map((row) =>
+      [...row[0].matchAll(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi)].map((cell) => stripHtml(cell[1]!)),
+    ),
+  );
+}
+
+function extractCastingAdvancement(html: string | undefined): Slot[] | undefined {
+  for (const rows of parseTables(html ?? "")) {
+    // The level table's header row, not a merged banner row above it. Several
+    // tables also pad themselves out to ten `<tr></tr>` with empty rows past
+    // the class's real length (the Faction Guide's 3- and 5-level classes).
+    const header = rows.findIndex((row) => row[0] === "Level");
+    if (header === -1) continue;
+    const columns = rows[header]!.flatMap((cell, i) =>
+      /^spells?\s*per\s*day$/i.test(cell) ? [i] : [],
+    );
+    if (columns.length === 0) continue;
+
+    const slots: Slot[] = [];
+    for (const column of columns) {
+      const levels: number[] = [];
+      let shape: Omit<Slot, "levels"> | undefined;
+      for (const row of rows.slice(header + 1)) {
+        const level = /^(\d+)(?:st|nd|rd|th)$/.exec(row[0] ?? "");
+        if (!level) continue;
+        const cell = row[column] ?? "";
+        if (CELL_EMPTY.test(cell)) continue;
+        const descriptor = CELL_ADVANCEMENT.exec(cell);
+        if (!descriptor) return undefined;
+        const parsed = parseDescriptor(descriptor[1]!);
+        if (!parsed) return undefined;
+        if (shape && JSON.stringify(shape) !== JSON.stringify(parsed)) return undefined;
+        shape = parsed;
+        levels.push(Number(level[1]));
+      }
+      if (shape && levels.length > 0) slots.push({ ...shape, levels });
+    }
+    return slots.length > 0 ? slots : undefined;
+  }
+  return undefined;
+}
 
 export function transformPrestigeClassPack(
   classesDir: string,
@@ -140,7 +214,7 @@ export function transformPrestigeClassPack(
     const requirements = extractRequirementsText(cls.description);
     if (requirements) cls.prereqs = { prereqText: requirements };
 
-    const advancement = CASTING_ADVANCEMENT[doc.name];
+    const advancement = extractCastingAdvancement(cls.description);
     if (advancement) cls.castingAdvancement = advancement;
 
     assertNoCollision(existingClasses, cls);

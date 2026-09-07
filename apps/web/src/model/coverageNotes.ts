@@ -63,9 +63,9 @@ export interface CoverageNote {
 export const COVERAGE_NOTES: readonly CoverageNote[] = [
   {
     category: "Prestige classes",
-    note: "All of them are in the class picker. Only the ten core-rulebook ones, plus Student of War and Soul Warden, have their spellcasting progression and entry requirements tracked. The rest show their full rules text, and their requirements read as advice rather than something the sheet enforces. If one you're playing advances your spellcasting, say so and it can be added.",
+    note: "All of them are in the class picker, showing their full rules text. Outside the core rulebook ones, a class's entry requirements read as advice rather than something the sheet enforces. The Prophet of Kalistrade and the Red Mantis Assassin cast from a short spell list of their own, which the sheet does not give them.",
     issueDetail:
-      "108 vendored splatbook prestige classes: no structured castingAdvancement (the schedules are prose) and no structured prereqs (requirements stay soft advisories).",
+      "108 vendored splatbook prestige classes carry prereqText only, with no structured prereqs. Two print their own spells-per-day table rather than advancing an existing class, a shape Class.castingAdvancement cannot represent.",
   },
   {
     category:

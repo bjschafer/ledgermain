@@ -51,27 +51,80 @@ describe("vendored prestige catalog size", () => {
     }
   });
 
-  it("carries castingAdvancement only for the classes transcribed on demand", () => {
-    // The source's "Spells Per Day" column is prose, so advancement is
-    // hand-transcribed per class in `prestigeClasses.ts`'s
-    // CASTING_ADVANCEMENT rather than derived. Everything else stays
-    // undefined (untracked, prose-only) — the same posture as prereqs.
-    const TRANSCRIBED = new Set(["Soul Warden"]);
+  it("reads casting advancement off the published table for 55 classes", () => {
+    // Every advancing class the source's own "Spells Per Day" column can be
+    // read from. A class absent here has no such column (a non-caster
+    // prestige class) or prints its own spell progression instead.
     const vendored = allPrestige().filter((c) => !HAND_AUTHORED_NAMES.has(c.name));
-    for (const c of vendored) {
-      if (TRANSCRIBED.has(c.name)) continue;
-      expect(c.castingAdvancement, c.name).toBeUndefined();
-    }
+    expect(vendored.filter((c) => c.castingAdvancement).length).toBe(55);
   });
 
   it("Soul Warden advances a spellcasting class at every level 1-10", () => {
-    const soulWarden = allPrestige().find((c) => c.name === "Soul Warden");
     // Undead Slayer's Handbook p.30: all ten rows read "+1 level of
     // spellcasting class", unrestricted as to arcane/divine (its own Channel
     // Casting example advances a sorcerer).
-    expect(soulWarden?.castingAdvancement).toEqual([
+    expect(classByName("Soul Warden").castingAdvancement).toEqual([
       { kind: "any", levels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
     ]);
+  });
+
+  it("transcribes the skipped-level schedules exactly", () => {
+    // Advanced Player's Guide: the three classes whose column is blank on
+    // some rows — the failure this guards is an off-by-one that quietly hands
+    // a caster the levels the printed table withholds.
+    expect(classByName("Holy Vindicator").castingAdvancement).toEqual([
+      { kind: "divine", levels: [2, 3, 4, 6, 7, 8, 10] }, // blank at 1st, 5th, 9th
+    ]);
+    expect(classByName("Rage Prophet").castingAdvancement).toEqual([
+      { kind: "divine", levels: [2, 3, 4, 6, 7, 9, 10] }, // blank at 1st, 5th, 8th
+    ]);
+    expect(classByName("Master Chymist").castingAdvancement).toEqual([
+      { classTags: ["alchemist"], kind: "any", levels: [2, 3, 5, 6, 7, 9, 10] }, // blank at 1st, 4th, 8th
+    ]);
+  });
+
+  it("keeps a column that names its classes restricted to them", () => {
+    // Irrisen: Land of Eternal Winter — "+1 level of witch class", not of any
+    // arcane class, so an arcane `kind` would let it advance a sorcerer.
+    expect(classByName("Winter Witch").castingAdvancement).toEqual([
+      { classTags: ["witch"], kind: "any", levels: [2, 3, 4, 5, 6, 7, 8, 9, 10] },
+    ]);
+    // Faction Guide p.56: a 3-level class reading "+1 level of cleric or
+    // paladin" on every row.
+    expect(classByName("Inheritor's Crusader").castingAdvancement).toEqual([
+      { classTags: ["cleric", "paladin"], kind: "any", levels: [1, 2, 3] },
+    ]);
+  });
+
+  it("names only real class tags in a classTags restriction", () => {
+    const tags = new Set(Object.values(ref.classes).map((c) => c.tag));
+    for (const c of allPrestige()) {
+      for (const slot of c.castingAdvancement ?? []) {
+        for (const tag of slot.classTags ?? [])
+          expect(tags.has(tag), `${c.name}: ${tag}`).toBe(true);
+      }
+    }
+  });
+
+  it("leaves a class with its own spell progression untracked", () => {
+    // Prophet of Kalistrade and Red Mantis Assassin print numbered 1st-4th
+    // spells-per-day columns of their own rather than advancing an existing
+    // class — a shape `castingAdvancement` cannot represent, so claiming an
+    // advancement here would be worse than claiming nothing.
+    expect(classByName("Prophet of Kalistrade").castingAdvancement).toBeUndefined();
+    expect(classByName("Red Mantis Assassin").castingAdvancement).toBeUndefined();
+  });
+
+  it("advances at contiguous, in-range prestige levels", () => {
+    for (const c of allPrestige()) {
+      for (const slot of c.castingAdvancement ?? []) {
+        expect(slot.levels.length, c.name).toBeGreaterThan(0);
+        expect(slot.levels, c.name).toEqual([...slot.levels].sort((a, b) => a - b));
+        expect(new Set(slot.levels).size, c.name).toBe(slot.levels.length);
+        expect(Math.min(...slot.levels), c.name).toBeGreaterThanOrEqual(1);
+        expect(Math.max(...slot.levels), c.name).toBeLessThanOrEqual(10);
+      }
+    }
   });
 
   it("every vendored class's feature grants resolve to a real classFeature", () => {

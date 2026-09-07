@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-07-prestige-spell-progression",
+    date: "2026-09-07",
+    title: "Splatbook prestige classes advance your spellcasting",
+    note: "Fifty five more prestige classes now advance the caster you already are, read straight off each class's own published table: an Arclord of Nex, a Cyphermage, a Holy Vindicator, a Rage Prophet, a Winter Witch, a Hellknight Signifer, and the rest. Pick which of your casting classes each one feeds in Casting Advancement, and your spells per day, spells known, and caster level follow. The levels where a table goes blank stay blank, so a Holy Vindicator gains nothing at 1st, 5th, or 9th. A class whose column names its classes stays honest about it: Winter Witch only advances a witch, and Master Chymist advances an alchemist's extracts.",
+  },
+  {
     id: "2026-09-07-buy-consumables",
     date: "2026-09-07",
     title: "Buy what you add, and stack what repeats",

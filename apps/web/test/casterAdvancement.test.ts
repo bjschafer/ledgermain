@@ -273,3 +273,51 @@ describe("vendored prestige class casting advancement (Soul Warden)", () => {
     expect(effectiveCasterClassLevel(doc, ref, "sorcerer")).toBe(7);
   });
 });
+
+describe("named-class advancement slots (classTags)", () => {
+  it("Master Chymist advances an alchemist's extracts, which no kind slot may target", () => {
+    let doc = classed([
+      { tag: "alchemist", level: 5 },
+      { tag: "masterChymist", level: 3 },
+    ]);
+    doc = setCastingAdvancementTarget(doc, ref, "masterChymist", 0, "alchemist");
+
+    // APG: the column reads "+1 level of alchemist" and is blank at 1st and
+    // 4th, so 3 prestige levels are worth 2 (2nd and 3rd).
+    expect(eligibleAdvancementTargets(doc, ref, "masterChymist", 0)).toEqual(["alchemist"]);
+    expect(castingAdvancementBonus(doc, ref, "alchemist")).toBe(2);
+    expect(effectiveCasterClassLevel(doc, ref, "alchemist")).toBe(7);
+  });
+
+  it("Winter Witch advances a witch and refuses another arcane class", () => {
+    const doc = classed([
+      { tag: "witch", level: 5 },
+      { tag: "sorcerer", level: 3 },
+      { tag: "winterWitch", level: 4 },
+    ]);
+    // "+1 level of witch class", so the sorcerer is not a candidate at all.
+    expect(eligibleAdvancementTargets(doc, ref, "winterWitch", 0)).toEqual(["witch"]);
+
+    const advanced = setCastingAdvancementTarget(doc, ref, "winterWitch", 0, "witch");
+    expect(castingAdvancementBonus(advanced, ref, "witch")).toBe(3); // blank at 1st
+    expect(castingAdvancementBonus(advanced, ref, "sorcerer")).toBe(0);
+  });
+
+  it("Inheritor's Crusader accepts either class its column names", () => {
+    const doc = classed([
+      { tag: "cleric", level: 5 },
+      { tag: "paladin", level: 4 },
+      { tag: "wizard", level: 2 },
+      { tag: "inheritorsCrusader", level: 2 },
+    ]);
+    expect(eligibleAdvancementTargets(doc, ref, "inheritorsCrusader", 0)).toEqual([
+      "cleric",
+      "paladin",
+    ]);
+  });
+
+  it("a named target the doc no longer has contributes nothing", () => {
+    const doc = classed([{ tag: "masterChymist", level: 5 }]);
+    expect(effectiveCasterClassLevel(doc, ref, "alchemist")).toBe(0);
+  });
+});

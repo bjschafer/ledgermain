@@ -34,7 +34,7 @@
  * each such call site's own comment for why (advancement grants table
  * numbers only, never accelerates a class feature).
  */
-import type { CharacterDoc, RefData } from "@pf1/schema";
+import type { CharacterDoc, Class, RefData } from "@pf1/schema";
 import { classByTag } from "@pf1/engine";
 
 /** Tags of classes recognised as casters in the Stage 1 data slice. */
@@ -167,7 +167,7 @@ export function isCasterTag(tag: string): boolean {
  * a prestige class's casting-advancement slot target (`Class.castingAdvancement`
  * in `@pf1/schema`'s `refdata.ts`): an `"arcane"`/`"divine"` slot may only
  * advance a class of the matching kind; an `"any"` slot accepts any of the
- * three (see `slotAcceptsKind` below for why).
+ * three (see `slotAccepts` below for why).
  *
  * Bard, paladin, ranger, and antipaladin are all modeled by
  * `casterLevelForClass` above (bard: `FULL_CASTER_TAGS`; paladin/ranger/
@@ -188,10 +188,11 @@ export function isCasterTag(tag: string): boolean {
  *
  * Alchemist and investigator are deliberately ABSENT even though both are in
  * `FULL_CASTER_TAGS` above: PF1 RAW has them prepare "extracts", not spells,
- * from a "formula book", not a spellbook — a prestige casting-advancement
- * slot targets an "existing spellcasting class", which neither is. A slot
- * pointed at either always contributes 0 (see `castingAdvancementBonus`'s
- * `CASTER_KIND` guard).
+ * from a "formula book", not a spellbook — a `kind` slot targets an "existing
+ * spellcasting class", which neither is, so a kind slot pointed at either
+ * always contributes 0. A slot that NAMES the class instead (Master Chymist's
+ * "+1 level of alchemist") reaches it anyway via `classTags` — being named is
+ * the printed text's own answer to the question this table asks.
  */
 export const CASTER_KIND: Readonly<Record<string, "arcane" | "divine" | "psychic">> = {
   // Arcane
@@ -224,10 +225,21 @@ export const CASTER_KIND: Readonly<Record<string, "arcane" | "divine" | "psychic
   spiritualist: "psychic",
 };
 
+type AdvancementSlot = NonNullable<Class["castingAdvancement"]>[number];
+
 /**
- * Whether a casting-advancement slot of `slotKind` may target `targetTag`.
- * `"arcane"`/`"divine"` slots require an exact `CASTER_KIND` match. An
- * `"any"` slot (RAW: "+1 level of existing spellcasting class", no kind
+ * Whether a casting-advancement `slot` may target `targetTag`.
+ *
+ * A slot whose printed column names classes outright ("+1 level of witch
+ * class", "+1 level of cleric or paladin", "+1 level of alchemist") carries
+ * `classTags`, and that list REPLACES the kind check: the named class is
+ * eligible on the strength of being named. This is the only way Master
+ * Chymist can advance an alchemist, whose extracts are deliberately not a
+ * `CASTER_KIND` (see that table's doc comment). `isCasterTag` still gates it,
+ * so a slot can never advance a class the sheet computes no spellcasting for.
+ *
+ * Otherwise `"arcane"`/`"divine"` slots require an exact `CASTER_KIND` match.
+ * An `"any"` slot (RAW: "+1 level of existing spellcasting class", no kind
  * restriction in the printed text — e.g. Loremaster) accepts arcane, divine,
  * OR psychic: psychic casters postdate the classes that print `"any"` slots,
  * but nothing in the RAW text of an `"any"` slot excludes them either, so
@@ -237,10 +249,11 @@ export const CASTER_KIND: Readonly<Record<string, "arcane" | "divine" | "psychic
  * `CASTER_KIND` entry at all (a non-caster, or an extract-preparer like
  * alchemist/investigator) is never compatible with any slot kind.
  */
-function slotAcceptsKind(slotKind: "arcane" | "divine" | "any", targetTag: string): boolean {
+function slotAccepts(slot: AdvancementSlot, targetTag: string): boolean {
+  if (slot.classTags) return slot.classTags.includes(targetTag) && isCasterTag(targetTag);
   const kind = CASTER_KIND[targetTag];
   if (!kind) return false;
-  return slotKind === "any" || kind === slotKind;
+  return slot.kind === "any" || kind === slot.kind;
 }
 
 /** First `RefData.classes` entry whose `tag` matches, or `undefined` — classes are keyed by Foundry id, not tag. */
@@ -264,7 +277,7 @@ export function castingAdvancementBonus(
   refData: RefData,
   targetTag: string,
 ): number {
-  if (!CASTER_KIND[targetTag]) return 0;
+  if (!isCasterTag(targetTag)) return 0;
   if (!doc.identity.classes.some((c) => c.tag === targetTag)) return 0;
 
   let bonus = 0;
@@ -276,7 +289,7 @@ export function castingAdvancementBonus(
     if (!chosen) continue;
     slots.forEach((slot, i) => {
       if (chosen[i] !== targetTag) return;
-      if (!slotAcceptsKind(slot.kind, targetTag)) return;
+      if (!slotAccepts(slot, targetTag)) return;
       bonus += slot.levels.filter((level) => level <= prestige.level).length;
     });
   }
@@ -328,7 +341,7 @@ export function effectiveCasterLevel(doc: CharacterDoc, refData: RefData): numbe
  * `identity.classes` (other than the prestige class itself — which can never
  * target itself, since prestige classes carry no `CASTER_KIND` entry of their
  * own) that is a real caster of a kind the slot accepts. Exported for the
- * chunk-3 builder UI's target picker; the same `slotAcceptsKind` check
+ * chunk-3 builder UI's target picker; the same `slotAccepts` check
  * `castingAdvancementBonus` uses, so a stored choice this function would
  * reject is exactly the choice that contributes 0 there.
  */
@@ -342,5 +355,5 @@ export function eligibleAdvancementTargets(
   if (!slot) return [];
   return doc.identity.classes
     .map((c) => c.tag)
-    .filter((tag) => tag !== prestigeTag && slotAcceptsKind(slot.kind, tag));
+    .filter((tag) => tag !== prestigeTag && slotAccepts(slot, tag));
 }
