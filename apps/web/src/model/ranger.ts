@@ -333,21 +333,17 @@ export function attachableRangerBonuses(sheet: DerivedSheet): SavedRollRangerRef
   return [
     ...r.favoredEnemies
       .filter((e) => e.type)
-      .map(
-        (e): SavedRollRangerRef => ({
-          kind: "favored-enemy",
-          type: e.type,
-          name: label(ENEMY_LABELS, e.type),
-        }),
-      ),
+      .map((e): SavedRollRangerRef => ({
+        kind: "favored-enemy",
+        type: e.type,
+        name: label(ENEMY_LABELS, e.type),
+      })),
     ...r.favoredTerrains
       .filter((e) => e.type)
-      .map(
-        (e): SavedRollRangerRef => ({
-          kind: "favored-terrain",
-          type: e.type,
-          name: label(TERRAIN_LABELS, e.type),
-        }),
-      ),
+      .map((e): SavedRollRangerRef => ({
+        kind: "favored-terrain",
+        type: e.type,
+        name: label(TERRAIN_LABELS, e.type),
+      })),
   ];
 }
