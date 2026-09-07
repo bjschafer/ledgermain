@@ -1,0 +1,88 @@
+name: Formatter sync
+
+# A Renovate bump of oxfmt (or oxlint's fmt rules) is only half a change: the
+# new version's output style differs from the old one's, so the branch fails
+# `fmt:check` until every file is reformatted, and Renovate cannot run
+# `bun run fmt` itself (postUpgradeTasks is self-hosted-only; this repo uses
+# the hosted app). Same shape as refdata-sync.yml: run the missing half on the
+# branch and push it back as a second commit.
+#
+# The paths filter is also what stops this looping: the commit pushed below
+# touches formatted source files, never package.json or bun.lock, so the run
+# it triggers is an ordinary CI run and not another sync.
+"on":
+  pull_request:
+    paths:
+      - package.json
+      - bun.lock
+
+concurrency:
+  group: formatter-sync-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    name: Apply the new formatter output
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    # Gate on who opened the PR, not on the branch name: this is a public repo
+    # and anyone can open a PR from a branch called renovate/anything. Same
+    # fail-closed head-repo test as refdata-sync.yml.
+    if: >-
+      github.event.pull_request.user.login == 'renovate[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      # The branch itself, not the detached merge commit, since we push back to
+      # it. Shares REFDATA_SYNC_TOKEN with refdata-sync.yml rather than adding
+      # a second PAT: a push made with GITHUB_TOKEN never triggers a new
+      # workflow run, so CI would never judge the commit we make and Renovate
+      # would wait on checks that can no longer arrive.
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.REFDATA_SYNC_TOKEN }}
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # Deliberately ungated by the test suite: ci.yml re-runs on the commit
+      # this pushes and is the authority on whether the bump is good.
+      - name: Reformat with the new formatter
+        run: bun run fmt
+
+      # Commit as github-actions[bot], which renovate.json lists under
+      # gitIgnoredAuthors. Without that pairing Renovate sees a commit from an
+      # author that isn't itself, marks the branch as modified by others, and
+      # then refuses to rebase it.
+      - name: Push the reformatted files back onto the branch
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if git diff --quiet; then
+            echo "Bump needs no reformatting; nothing to push."
+            exit 0
+          fi
+          BOT_NAME="github-actions[bot]"
+          BOT_EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "$BOT_NAME"
+          git config user.email "$BOT_EMAIL"
+          git add -A
+          git commit -m "chore(fmt): apply new formatter output"
+          git push origin "HEAD:$HEAD_REF"
+
+      # A failed sync leaves the branch with a red `fmt:check`, which already
+      # says what is wrong; this annotation says the automation (not the
+      # reviewer) is the half that never arrived.
+      - name: Flag that the reformat never ran
+        if: failure()
+        run: |
+          echo "::error::The reformat failed, so the new formatter's" \
+            "output was NOT applied on this branch. Run 'bun run fmt'" \
+            "locally and push the result, or close this PR."
+          exit 1
