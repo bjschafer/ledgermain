@@ -270,12 +270,6 @@ export const VENDORED_CHARACTER_TRAIT_SAVE_NOTES: Readonly<Record<string, readon
   "-1 penalty against fear effects. If you would normally be immune to fear, you do not take this penalty, but instead lose your immunity to fear (regardless of its source).":
     [scopedSave("-1", "untyped", "fear")],
   "+2 Trait bonus against poison.": [scopedSave("2", "trait", "poison")],
-  // Domination effects and compelled truth-telling (zone-of-truth-style) are
-  //  both enchantment (compulsion) in PF1, so both fold into compulsion,
-  //  alongside the plain divinations clause.
-  "+1 trait bonus vs divinations, domination effects, effects that compel to speak the truth": [
-    scopedSave("1", "trait", "compulsion", "divination"),
-  ],
   "+1 Trait bonus against curses and fear effects.": [scopedSave("1", "trait", "curse", "fear")],
   "+2 Trait bonus to resist poison effects.": [scopedSave("2", "trait", "poison")],
   // Effects created by dragons is an attacker property; only the fear half promotes.
