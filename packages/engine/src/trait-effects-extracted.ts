@@ -99,7 +99,7 @@ export const TRAIT_EFFECTS_EXTRACTED: Readonly<Record<string, ExtractedTraitEntr
     provenance: "Heal becomes a class skill for you",
   },
   // Brastlewark Businessman (Gnome): Promoted the unconditional +2 Craft (alchemy) trait bonus (the compendium description's own "update the target" authoring note is what this promotion does).
-  KzD0s3ZhLGxc3I1X: {
+  NNpe0y32Olhq4HeY: {
     changes: [{ target: "skill.crf.alchemy", type: "trait", formula: "2" }],
     provenance: "You gain a +2 trait bonus on all Craft (alchemy) checks.",
   },
