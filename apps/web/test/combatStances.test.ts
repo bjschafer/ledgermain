@@ -7,8 +7,9 @@ import type { ActiveBuff, CharacterDoc } from "@pf1/schema";
 import {
   activeCombatStanceId,
   activeCombatStyleTags,
+  dropUnavailableCombatStyles,
   maxActiveCombatStyles,
-  ownedCombatStyles,
+  availableCombatStyles,
   toggleCombatStance,
   toggleCombatStyle,
 } from "../src/model/combatStances.js";
@@ -41,6 +42,13 @@ function featId(name: string): string {
   const feat = Object.values(ref.feats).find((entry) => entry.name === name);
   if (!feat) throw new Error(`feat not found: ${name}`);
   return feat.id;
+}
+
+/** Pick a style by name, so a ranking change can't silently retarget a test. */
+function style(doc: CharacterDoc, name: string) {
+  const found = availableCombatStyles(doc, ref).find((entry) => entry.name === name);
+  if (!found) throw new Error(`style not available: ${name}`);
+  return found;
 }
 
 describe("combat stance transitions", () => {
@@ -111,25 +119,28 @@ describe("combat style transitions", () => {
         feats: [featId("Crane Style"), featId("Dragon Style"), featId("Power Attack")],
       },
     };
-    expect(ownedCombatStyles(doc, ref).map((style) => style.name)).toEqual([
-      "Crane Style",
-      "Dragon Style",
-    ]);
+    expect(
+      availableCombatStyles(doc, ref)
+        .map((entry) => entry.name)
+        .sort(),
+    ).toEqual(["Crane Style", "Dragon Style"]);
   });
 
-  it("marks only the styles some owned feat gates a modifier on", () => {
+  it("marks only the styles some available feat gates a modifier on", () => {
     const base = makeDoc();
     const doc: CharacterDoc = {
       ...base,
+      // Boar Style's whole benefit is extra damage on a second unarmed strike,
+      // which has no target, so it stays a reference-only chip.
       build: {
         ...base.build,
-        feats: [featId("Crane Style"), featId("Dragon Style")],
+        feats: [featId("Crane Style"), featId("Boar Style")],
       },
     };
     const marked = Object.fromEntries(
-      ownedCombatStyles(doc, ref).map((style) => [style.name, style.movesNumbers]),
+      availableCombatStyles(doc, ref).map((entry) => [entry.name, entry.movesNumbers]),
     );
-    expect(marked).toEqual({ "Crane Style": true, "Dragon Style": false });
+    expect(marked).toEqual({ "Crane Style": true, "Boar Style": false });
   });
 
   it("reads a style against the selected action, ranking the mechanical ones first", () => {
@@ -144,12 +155,12 @@ describe("combat style transitions", () => {
     // Crane Style gates on fighting defensively and total defense, not charge,
     // so charging leaves it mechanical in general but inert right now.
     const charging = toggleCombatStance(withStyles, charge);
-    const whileCharging = ownedCombatStyles(charging, ref, activeCombatStanceId(charging));
+    const whileCharging = availableCombatStyles(charging, ref, activeCombatStanceId(charging));
     expect(whileCharging.map((style) => style.name)).toEqual(["Crane Style", "Boar Style"]);
     expect(whileCharging[0]!.appliesToActiveStance).toBe(false);
 
     const defending = toggleCombatStance(withStyles, fightingDefensively);
-    const whileDefending = ownedCombatStyles(defending, ref, activeCombatStanceId(defending));
+    const whileDefending = availableCombatStyles(defending, ref, activeCombatStanceId(defending));
     expect(whileDefending[0]!.name).toBe("Crane Style");
     expect(whileDefending[0]!.appliesToActiveStance).toBe(true);
     expect(whileDefending[1]!.appliesToActiveStance).toBe(false);
@@ -166,14 +177,15 @@ describe("combat style transitions", () => {
     };
     expect(maxActiveCombatStyles(doc)).toBe(1);
 
-    const [crane, dragon] = ownedCombatStyles(doc, ref);
-    const craneOn = toggleCombatStyle(doc, crane!);
+    const crane = style(doc, "Crane Style");
+    const dragon = style(doc, "Dragon Style");
+    const craneOn = toggleCombatStyle(doc, crane);
     expect(activeCombatStyleTags(craneOn)).toEqual(new Set(["combatStyle:crane-style"]));
 
-    const dragonOn = toggleCombatStyle(craneOn, dragon!);
+    const dragonOn = toggleCombatStyle(craneOn, dragon);
     expect(activeCombatStyleTags(dragonOn)).toEqual(new Set(["combatStyle:dragon-style"]));
 
-    expect(activeCombatStyleTags(toggleCombatStyle(dragonOn, dragon!)).size).toBe(0);
+    expect(activeCombatStyleTags(toggleCombatStyle(dragonOn, dragon)).size).toBe(0);
   });
 
   it("raises the limit for Master of Many Styles, dropping the oldest stance past it", () => {
@@ -192,14 +204,16 @@ describe("combat style transitions", () => {
     expect([1, 8, 15, 20].map((level) => maxActiveCombatStyles(moms(level)))).toEqual([2, 3, 4, 5]);
 
     const doc = moms(1);
-    const [crane, dragon, snake] = ownedCombatStyles(doc, ref);
-    const two = toggleCombatStyle(toggleCombatStyle(doc, crane!), dragon!);
+    const two = toggleCombatStyle(
+      toggleCombatStyle(doc, style(doc, "Crane Style")),
+      style(doc, "Dragon Style"),
+    );
     expect(activeCombatStyleTags(two)).toEqual(
       new Set(["combatStyle:crane-style", "combatStyle:dragon-style"]),
     );
 
     // A third at 1st level pushes out Crane Style, the stance entered first.
-    const three = toggleCombatStyle(two, snake!);
+    const three = toggleCombatStyle(two, style(doc, "Snake Style"));
     expect(activeCombatStyleTags(three)).toEqual(
       new Set(["combatStyle:dragon-style", "combatStyle:snake-style"]),
     );
@@ -216,9 +230,63 @@ describe("combat style transitions", () => {
         feats: [featId("Crane Style"), featId("Dragon Style")],
       },
     };
-    const [crane, dragon] = ownedCombatStyles(doc, ref);
-    const swapped = toggleCombatStyle(toggleCombatStyle(doc, crane!), dragon!);
+    const swapped = toggleCombatStyle(
+      toggleCombatStyle(doc, style(doc, "Crane Style")),
+      style(doc, "Dragon Style"),
+    );
     expect(swapped.live.activeBuffs.map((buff) => buff.name)).toEqual(["Haste", "Dragon Style"]);
+  });
+
+  it("offers a style a brawler is borrowing through Martial Flexibility", () => {
+    const base = makeDoc();
+    const doc: CharacterDoc = {
+      ...base,
+      live: { ...base.live, martialFlexibilityFeatId: featId("Dragon Style") },
+    };
+    const borrowed = style(doc, "Dragon Style");
+    expect(borrowed.movesNumbers).toBe(true);
+    expect(activeCombatStyleTags(toggleCombatStyle(doc, borrowed))).toEqual(
+      new Set(["combatStyle:dragon-style"]),
+    );
+  });
+
+  it("keeps a borrowed feat that is not a Style feat out of the panel", () => {
+    const base = makeDoc();
+    // Giant-Killer Stance is tagged Combat only: "Stance" is in its name, not
+    // its rules, and it is not a stance anyone enters.
+    const doc: CharacterDoc = {
+      ...base,
+      live: { ...base.live, martialFlexibilityFeatId: featId("Giant-Killer Stance") },
+    };
+    expect(availableCombatStyles(doc, ref)).toEqual([]);
+  });
+
+  it("clears a stance whose feat the character no longer has", () => {
+    const base = makeDoc();
+    const borrowing: CharacterDoc = {
+      ...base,
+      live: { ...base.live, martialFlexibilityFeatId: featId("Dragon Style") },
+    };
+    const entered = toggleCombatStyle(borrowing, style(borrowing, "Dragon Style"));
+    const returned: CharacterDoc = {
+      ...entered,
+      live: { ...entered.live, martialFlexibilityFeatId: undefined },
+    };
+
+    expect(activeCombatStyleTags(returned).size).toBe(1);
+    expect(activeCombatStyleTags(dropUnavailableCombatStyles(returned, ref)).size).toBe(0);
+  });
+
+  it("leaves an owned style and every non-style buff alone when clearing stances", () => {
+    const base = makeDoc([
+      { instanceId: "spell", buffId: "some-vendored-buff", name: "Haste", changes: [] },
+    ]);
+    const doc: CharacterDoc = {
+      ...base,
+      build: { ...base.build, feats: [featId("Crane Style")] },
+    };
+    const entered = toggleCombatStyle(doc, style(doc, "Crane Style"));
+    expect(dropUnavailableCombatStyles(entered, ref)).toBe(entered);
   });
 
   it("keeps combat action and style state on separate axes", () => {
@@ -227,8 +295,10 @@ describe("combat style transitions", () => {
       ...base,
       build: { ...base.build, feats: [featId("Crane Style")] },
     };
-    const crane = ownedCombatStyles(doc, ref)[0]!;
-    const result = toggleCombatStance(toggleCombatStyle(doc, crane), fightingDefensively);
+    const result = toggleCombatStance(
+      toggleCombatStyle(doc, style(doc, "Crane Style")),
+      fightingDefensively,
+    );
     expect(activeCombatStyleTags(result)).toEqual(new Set(["combatStyle:crane-style"]));
     expect(activeCombatStanceId(result)).toBe("combatStance:fightingDefensively");
   });

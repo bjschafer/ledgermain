@@ -21,6 +21,7 @@ import { NumberField } from "../builder/NumberField.js";
 import { Panel } from "../builder/Panel.js";
 import { FlaskIcon } from "../icons.js";
 import { toggleLinkedBuff, toggleTableBuff } from "../../model/buffs.js";
+import { dropUnavailableCombatStyles } from "../../model/combatStances.js";
 import { setMartialFlexibilityFeat } from "../../model/doc.js";
 import {
   clearKineticistDefenseBurn,
@@ -527,7 +528,11 @@ function MartialFlexibilityPicker({
             <button
               type="button"
               className="pick-btn remove"
-              onClick={() => update((d) => setMartialFlexibilityFeat(d, null))}
+              onClick={() =>
+                update((d) =>
+                  dropUnavailableCombatStyles(setMartialFlexibilityFeat(d, null), refData),
+                )
+              }
             >
               Clear
             </button>
@@ -543,7 +548,11 @@ function MartialFlexibilityPicker({
           refData={refData}
           borrowedId={borrowedId}
           onSelect={(featId) => {
-            update((d) => setMartialFlexibilityFeat(d, featId));
+            // Swapping the borrow can strand the style stance the old feat
+            // was holding, so clear it in the same transition.
+            update((d) =>
+              dropUnavailableCombatStyles(setMartialFlexibilityFeat(d, featId), refData),
+            );
             setPickerOpen(false);
           }}
           onClose={() => setPickerOpen(false)}

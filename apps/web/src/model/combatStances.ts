@@ -44,7 +44,7 @@ export function toggleCombatStance(doc: CharacterDoc, stance: CombatStance): Cha
   return alreadyActive ? withoutStances : toggleTableBuff(withoutStances, stance);
 }
 
-export interface OwnedCombatStyle {
+export interface CombatStyleOption {
   featId: string;
   name: string;
   description: string;
@@ -56,11 +56,11 @@ export interface OwnedCombatStyle {
 }
 
 /**
- * Which style tags an owned feat actually gates a modifier on, and whether
+ * Which style tags an available feat actually gates a modifier on, and whether
  * that modifier reaches the selected combat action.
  *
  * Read off the gates rather than a list of feat names: a style is mechanical
- * exactly when some owned feat carries a change whose `requiredEffectTags`
+ * exactly when some available feat carries a change whose `requiredEffectTags`
  * names its tag (Crane Style today), so a style modeled later earns its badge
  * without anybody remembering to come back here. The gate's OR group is the
  * set of actions the modifier applies to, so an empty one means every action.
@@ -70,6 +70,7 @@ function styleInteractions(
   refData: RefData,
   featIds: readonly string[],
   activeStanceId: CombatStanceId | undefined,
+  borrowedFeatId: string | undefined,
 ): Map<string, boolean> {
   const referenceBuffIds: Partial<Record<CombatStanceId, string>> =
     COMBAT_STANCE_REFERENCE_BUFF_IDS;
@@ -86,7 +87,10 @@ function styleInteractions(
     if (!feat) continue;
     const resolved = resolveFeatEffect(featNameSlug(feat.name));
     if (!resolved) continue;
-    const choiceId = doc.build.featChoices?.[featId];
+    // A borrowed feat has nowhere to store its own choice, so reading the
+    // stored one could apply an unrelated owned copy's pick. The engine skips
+    // choice-type borrows for the same reason (collect/feats.ts).
+    const choiceId = featId === borrowedFeatId ? undefined : doc.build.featChoices?.[featId];
     const changes =
       resolved.entry.type === "static"
         ? resolved.entry.changes
@@ -108,23 +112,31 @@ function styleInteractions(
 }
 
 /**
- * Every distinct Combat + Style tagged feat the character owns, including
- * fixed class grants, ordered so the ones that change the selected action's
- * numbers come first and the rest stay alphabetical.
+ * Every distinct Combat + Style tagged feat the character can enter right now,
+ * ordered so the ones that change the selected action's numbers come first and
+ * the rest stay alphabetical.
+ *
+ * That is the owned feats (fixed class grants included) plus whatever a
+ * brawler is currently borrowing through Martial Flexibility, which is a live
+ * field rather than a build one. The borrow is a real feat for as long as it
+ * lasts and the engine already applies its static effects, so leaving it out
+ * left the panel unable to enter a style the character genuinely had.
  */
-export function ownedCombatStyles(
+export function availableCombatStyles(
   doc: CharacterDoc,
   refData: RefData,
   activeStanceId?: CombatStanceId,
-): OwnedCombatStyle[] {
+): CombatStyleOption[] {
   const effective = withGrantedFeats(doc, refData);
+  const borrowedFeatId = doc.live.martialFlexibilityFeatId;
   const featIds = [
     ...(effective.build.feats ?? []),
     ...(effective.build.extraFeats ?? []).map((entry) => entry.featId),
+    ...(borrowedFeatId ? [borrowedFeatId] : []),
   ];
-  const interactions = styleInteractions(doc, refData, featIds, activeStanceId);
+  const interactions = styleInteractions(doc, refData, featIds, activeStanceId, borrowedFeatId);
   const seen = new Set<string>();
-  const styles: OwnedCombatStyle[] = [];
+  const styles: CombatStyleOption[] = [];
   for (const featId of featIds) {
     if (seen.has(featId)) continue;
     seen.add(featId);
@@ -146,6 +158,23 @@ export function ownedCombatStyles(
       Number(b.movesNumbers) - Number(a.movesNumbers) ||
       a.name.localeCompare(b.name),
   );
+}
+
+/**
+ * Drop any style stance whose feat the character no longer has, so a borrow
+ * that expires (or a build edit that removes a style feat) doesn't leave a
+ * stance the panel can't show and the player can't turn off. The engine
+ * already stops applying such a stance's numbers on its own, so this is
+ * bookkeeping rather than a correctness fix: it frees the slot that
+ * {@link maxActiveCombatStyles} counts against.
+ */
+export function dropUnavailableCombatStyles(doc: CharacterDoc, refData: RefData): CharacterDoc {
+  const available = new Set(availableCombatStyles(doc, refData).map((style) => style.effectTag));
+  const activeBuffs = doc.live.activeBuffs.filter(
+    (buff) => !isCombatStyleEffectTag(buff.effectTag) || available.has(buff.effectTag!),
+  );
+  if (activeBuffs.length === doc.live.activeBuffs.length) return doc;
+  return { ...doc, live: { ...doc.live, activeBuffs } };
 }
 
 export function activeCombatStyleTags(doc: CharacterDoc): Set<string> {
@@ -182,7 +211,7 @@ export function maxActiveCombatStyles(doc: CharacterDoc): number {
  * longest ago, which is the closest a sheet gets to Fuse Style's "choose one
  * whose stance persists" without asking mid-combat.
  */
-export function toggleCombatStyle(doc: CharacterDoc, style: OwnedCombatStyle): CharacterDoc {
+export function toggleCombatStyle(doc: CharacterDoc, style: CombatStyleOption): CharacterDoc {
   const option = {
     id: style.effectTag,
     name: style.name,

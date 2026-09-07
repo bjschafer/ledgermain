@@ -23,7 +23,11 @@
 
 import type { AbilityId, BuffGate, CharacterDoc, ContextNote, RefData } from "@pf1/schema";
 
-import { COMBAT_STANCE_REFERENCE_BUFF_IDS } from "./combat-stances.js";
+import {
+  COMBAT_STANCE_REFERENCE_BUFF_IDS,
+  combatStyleEffectTag,
+  type CombatStanceId,
+} from "./combat-stances.js";
 import type { PickChoice } from "./rage-powers.js";
 
 export interface FeatChange {
@@ -229,16 +233,71 @@ function greaterManeuver(key: string): FeatChange[] {
 }
 
 /**
- * Feat effects, keyed by name slug. Entries are either always-on (static) or
- * choice-based (player picks a target, engine emits changes after selection).
+ * A style feat's benefit gate. Every style feat's stance is a swift action the
+ * player declares, so its numbers hang off the `combatStyle:<slug>` toggle the
+ * Stances panel writes and NOTHING applies from owning the feat alone.
+ *
+ * `stances`, when given, narrows the benefit further to those combat actions,
+ * naming both the dedicated toggle tag and the vendored reference buff the
+ * pinned data still ships for the same action, so an older saved buff gates
+ * the same way.
  */
-export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
-  // ── Static feats ───────────────────────────────────────────────────────────
+function styleGate(slug: string, stances: readonly CombatStanceId[] = []): BuffGate {
+  const referenceBuffIds: Partial<Record<CombatStanceId, string>> =
+    COMBAT_STANCE_REFERENCE_BUFF_IDS;
+  const buffIds = stances
+    .map((id) => referenceBuffIds[id])
+    .filter((id): id is string => id !== undefined);
+  return {
+    ...(buffIds.length > 0 ? { buffIds } : {}),
+    ...(stances.length > 0 ? { effectTags: [...stances] } : {}),
+    requiredEffectTags: [combatStyleEffectTag(slug)],
+  };
+}
+
+/** Every change in `changes`, gated on the style's stance (and optional actions). */
+function styleEffect(
+  slug: string,
+  changes: readonly Omit<FeatChange, "activeWhenBuff">[],
+  stances: readonly CombatStanceId[] = [],
+): StaticFeatEntry {
+  const gate = styleGate(slug, stances);
+  return { type: "static", changes: changes.map((ch) => ({ ...ch, activeWhenBuff: gate })) };
+}
+
+/**
+ * Style feats whose printed benefit is a flat number the sheet can carry.
+ *
+ * Scope rule, matching `feat-effects-extracted-community.ts`'s own: only a
+ * clause prefixed "while using this style" belongs here, because only those
+ * are stance-gated. An unprefixed benefit sentence in a style feat applies
+ * unconditionally and belongs in that unconditional table instead (Snake
+ * Style's Sense Motive bonus, Monkey Style's Acrobatics bonus).
+ *
+ * A style whose stance benefit carries a SECOND condition the sheet can't see
+ * is left out rather than over-applied: Deadhand Style and Djinni Style both
+ * gate on a pool still having points, and Bulette Charge Style's bonus varies
+ * with worn armor. A benefit restricted to one weapon is also left out, since
+ * an attack or damage change reaches every weapon on the sheet: Aldori,
+ * Startoss, Stick-Fighting, Slipslinger, Swordplay. The gear conditions that
+ * DO appear below (a free hand, a worn gauntlet, a shield) only ever scope a
+ * whole-character number, so entering the stance is the player's declaration
+ * that they hold it.
+ */
+const STYLE_FEAT_EFFECTS: Readonly<Record<string, StaticFeatEntry>> = {
+  // Blood Frenzy Style: "While you are using Blood Frenzy Style, you gain a +2
+  // bonus to your Strength and Constitution, and you take a -2 penalty to AC."
+  // Printed as a plain bonus with no type, so untyped. The immediate-action
+  // entry condition governs when the stance may be entered, not what it does.
+  "blood-frenzy-style": styleEffect("blood-frenzy-style", [
+    { target: "str", type: "untyped", formula: "2" },
+    { target: "con", type: "untyped", formula: "2" },
+    { target: "ac", type: "untyped", formula: "-2" },
+  ]),
 
   // Crane Style (Ultimate Combat p. 93): while fighting defensively, reduce
   // the attack penalty from -4 to -2; while fighting defensively or using
-  // total defense, gain another +1 dodge AC. The stance remains a deliberate
-  // player toggle, so owning the feat alone applies nothing.
+  // total defense, gain another +1 dodge AC.
   "crane-style": {
     type: "static",
     changes: [
@@ -246,27 +305,116 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
         target: "attack",
         type: "untyped",
         formula: "2",
-        activeWhenBuff: {
-          buffIds: [COMBAT_STANCE_REFERENCE_BUFF_IDS["combatStance:fightingDefensively"]],
-          effectTags: ["combatStance:fightingDefensively"],
-          requiredEffectTags: ["combatStyle:crane-style"],
-        },
+        activeWhenBuff: styleGate("crane-style", ["combatStance:fightingDefensively"]),
       },
       {
         target: "ac",
         type: "dodge",
         formula: "1",
-        activeWhenBuff: {
-          buffIds: [
-            COMBAT_STANCE_REFERENCE_BUFF_IDS["combatStance:fightingDefensively"],
-            COMBAT_STANCE_REFERENCE_BUFF_IDS["combatStance:totalDefense"],
-          ],
-          effectTags: ["combatStance:fightingDefensively", "combatStance:totalDefense"],
-          requiredEffectTags: ["combatStyle:crane-style"],
-        },
+        activeWhenBuff: styleGate("crane-style", [
+          "combatStance:fightingDefensively",
+          "combatStance:totalDefense",
+        ]),
       },
     ],
   },
+
+  // Demonic Style: "when you use the charge action, the bonus on your attack
+  // roll increases by 1 and you deal 2 additional points of damage with melee
+  // attacks made as part of the charge." The charge's own +2 becomes +3, so
+  // this is the +1 on top, melee-only on both lines.
+  "demonic-style": styleEffect(
+    "demonic-style",
+    [
+      { target: "mattack", type: "untyped", formula: "1" },
+      { target: "mwdamage", type: "untyped", formula: "2" },
+    ],
+    ["combatStance:charge"],
+  ),
+
+  // Dragon Style: "+2 bonus on saving throws against sleep effects, paralysis
+  // effects, and stunning effects." Scoped to those three save categories, so
+  // it feeds the conditional save lines rather than the headline totals. The
+  // difficult-terrain and 1-1/2 Str unarmed damage clauses have no target.
+  "dragon-style": styleEffect("dragon-style", [
+    {
+      target: "allSavingThrows",
+      type: "untyped",
+      formula: "2",
+      saveCategories: ["sleep", "paralysis", "stun"],
+    },
+  ]),
+
+  // Janni Style: "you take only a -1 penalty to AC for charging", so the
+  // charge action's own -2 gets +1 back. Untyped, which is also what carries
+  // it through to CMD alongside the penalty it offsets. The flanking clause
+  // reduces an opponent's bonus, which is not a modifier on this sheet.
+  "janni-style": styleEffect(
+    "janni-style",
+    [{ target: "ac", type: "untyped", formula: "1" }],
+    ["combatStance:charge"],
+  ),
+
+  // Shield Gauntlet Style: "+1 shield bonus to AC" while a gauntlet is worn on
+  // the off hand and that hand holds nothing else. A real shield bonus, so it
+  // competes highest-wins with a carried shield rather than stacking.
+  "shield-gauntlet-style": styleEffect("shield-gauntlet-style", [
+    { target: "sac", type: "untyped", formula: "1" },
+  ]),
+
+  // Shielded Staff Style: attacks with the shielded staff "take a -1 penalty",
+  // and wielding it two-handed grants "+2 shield bonus to your AC (regardless
+  // of the shield or buckler's enhancement bonus)" - hence a flat 2, not the
+  // attached shield's own value.
+  "shielded-staff-style": styleEffect("shielded-staff-style", [
+    { target: "attack", type: "untyped", formula: "-1" },
+    { target: "sac", type: "untyped", formula: "2" },
+  ]),
+
+  // Sisterhood Style: "+1 bonus on Reflex and Will saving throws" while
+  // wielding a longsword and a light or heavy shield. The teamwork-feat
+  // sharing clause targets an ally.
+  "sisterhood-style": styleEffect("sisterhood-style", [
+    { target: "ref", type: "untyped", formula: "1" },
+    { target: "will", type: "untyped", formula: "1" },
+  ]),
+
+  // Snapping Turtle Style: "+1 shield bonus to AC" with at least one hand
+  // free. Same shield-type competition as Shield Gauntlet Style above.
+  "snapping-turtle-style": styleEffect("snapping-turtle-style", [
+    { target: "sac", type: "untyped", formula: "1" },
+  ]),
+
+  // Swift Iron Style: "you treat the armor check penalty of your armor as if
+  // it were 1 less, and the maximum Dexterity bonus to AC as if it were 1
+  // higher." The same two targets armor training uses, which is how the
+  // printed "These benefits stack with armor training" falls out for free.
+  "swift-iron-style": styleEffect("swift-iron-style", [
+    { target: "acpA", type: "untyped", formula: "1" },
+    { target: "mDexA", type: "untyped", formula: "1" },
+  ]),
+
+  // Tiger Style: "+2 bonus to your CMD against bull rush, overrun, and trip
+  // maneuvers." Maneuver-scoped, so it feeds those conditional CMD lines only.
+  // The slashing unarmed damage and bleed-on-crit clauses have no target.
+  "tiger-style": styleEffect("tiger-style", [
+    {
+      target: "cmd",
+      type: "untyped",
+      formula: "2",
+      maneuverCategories: ["bullRush", "overrun", "trip"],
+    },
+  ]),
+};
+
+/**
+ * Feat effects, keyed by name slug. Entries are either always-on (static) or
+ * choice-based (player picks a target, engine emits changes after selection).
+ */
+export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
+  // ── Static feats ───────────────────────────────────────────────────────────
+
+  ...STYLE_FEAT_EFFECTS,
 
   // Toughness: +3 HP; +1 per HD beyond 3 (PF1 CRB p. 135).
   // Formula: max(3, @attributes.hd.total) → 3 at HD ≤ 3, then equals HD thereafter.

@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-07-style-feat-stances",
+    date: "2026-09-07",
+    title: "Style feats that actually move your numbers",
+    note: "Ten more Style feat stances now change the sheet when you switch them on in Stances: Blood Frenzy, Demonic, Dragon, Janni, Shield Gauntlet, Shielded Staff, Sisterhood, Snapping Turtle, Swift Iron, and Tiger. A brawler borrowing a Style feat through Martial Flexibility can enter its stance too, and returning the borrow clears the stance with it.",
+  },
+  {
     id: "2026-09-06-metamagic-effects",
     date: "2026-09-06",
     title: "Metamagic changes the numbers, not just the slot",

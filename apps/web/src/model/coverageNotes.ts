@@ -118,9 +118,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Combat stance feats",
-    note: "Feats that change what a combat stance does are not applied, apart from Crane Style. Crane Riposte's smaller attack penalty and Crane Wing's dodge bonus against melee stay rules text while Fighting Defensively is on, and every other Style feat toggles as a reminder without moving numbers.",
+    note: "Most Style feats toggle as a reminder without moving numbers: only a stance whose whole benefit is a flat bonus is applied. Crane Riposte's smaller attack penalty and Crane Wing's dodge bonus against melee stay rules text while Fighting Defensively is on.",
     issueDetail:
-      "89 vendored feats tagged Combat and Style surface as stance toggles; only Crane Style carries structured changes. Crane Riposte and Crane Wing are tagged Combat without Style, so they do not surface as toggles at all, and their stance riders have no hand-authored entry.",
+      "89 vendored feats tagged Combat and Style surface as stance toggles; 78 carry no structured changes, being scoped to one weapon, gated on a pool that must hold points, or shaped as an event. Crane Riposte and Crane Wing are tagged Combat without Style, so they do not surface as toggles at all, and their riders have no entry.",
   },
   {
     category: "Character traits",

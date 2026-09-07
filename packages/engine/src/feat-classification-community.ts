@@ -280,7 +280,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "blood-for-the-empire": "situational",
   "blood-frenzy-assault": "subsystem",
   "blood-frenzy-strike": "subsystem",
-  "blood-frenzy-style": "subsystem",
+  "blood-frenzy-style": "situational",
   "blood-of-heroes": "subsystem",
   "blood-salvage": "subsystem",
   "blood-spurt": "subsystem",
@@ -2458,7 +2458,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "shielded-mage": "situational",
   "shielded-staff-ambush": "situational",
   "shielded-staff-master": "subsystem",
-  "shielded-staff-style": "subsystem",
+  "shielded-staff-style": "situational",
   "shielded-stand": "subsystem",
   "shifter-s-edge": "situational",
   "shifter-s-rush": "subsystem",
@@ -3205,6 +3205,10 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
 };
 
 export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string>> = {
+  "blood-frenzy-style":
+    "Reclassified from subsystem: the +2 Str/+2 Con/-2 AC is a real printed number, scoped to the style's stance rather than unconditional. Wired stance-gated in FEAT_EFFECTS, as Crane Style already was.",
+  "shielded-staff-style":
+    "Reclassified from subsystem: the -1 attack penalty and flat +2 shield bonus are real printed numbers, scoped to the style's stance. Wired stance-gated in FEAT_EFFECTS.",
   "aberration-bane-caster":
     "Bonus applies to spell save DC and to caster level checks vs SR, scoped to aberrations only; spellDC and clCheck have no enemy-type axis.",
   "accomplished-sneak-attacker":

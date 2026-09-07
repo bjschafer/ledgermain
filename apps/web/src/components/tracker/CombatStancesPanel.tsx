@@ -10,7 +10,7 @@ import {
   activeCombatStanceId,
   activeCombatStyleTags,
   maxActiveCombatStyles,
-  ownedCombatStyles,
+  availableCombatStyles,
   toggleCombatStance,
   toggleCombatStyle,
 } from "../../model/combatStances.js";
@@ -20,7 +20,10 @@ import type { BuilderProps } from "../builder/types.js";
 export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
   const activeId = activeCombatStanceId(doc);
   const active = COMBAT_STANCES.find((stance) => stance.id === activeId);
-  const styles = useMemo(() => ownedCombatStyles(doc, refData, activeId), [doc, refData, activeId]);
+  const styles = useMemo(
+    () => availableCombatStyles(doc, refData, activeId),
+    [doc, refData, activeId],
+  );
   const activeStyleTags = activeCombatStyleTags(doc);
   const activeStyles = styles.filter((style) => activeStyleTags.has(style.effectTag));
   const styleLimit = maxActiveCombatStyles(doc);
