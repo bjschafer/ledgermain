@@ -356,7 +356,7 @@ export function parseElementalSpellEntries(
       .split(",")
       .map((t) => t.trim())
       .filter((t) => t.length > 0);
-    for (let i = 0; i < names.length; ) {
+    for (let i = 0; i < names.length;) {
       // Longest match first: a two-token join covers the ", greater"/", mass"/
       // ", communal"/", lesser" variant names, which is the deepest the source goes.
       const pairId =
