@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-07-buy-consumables",
+    date: "2026-09-07",
+    title: "Buy potions, and stack the ones you already carry",
+    note: "The potion, scroll, and wand picker can now pay for what you pick: tick \u201cPay from purse\u201d and the market price comes out of your coin, with your current total shown next to it. Buying another of something you already carry adds to that row instead of opening a second one, so four potions of cure moderate wounds read as one line at four. A part used wand and a stashed row keep to themselves.",
+  },
+  {
     id: "2026-09-07-spellbook-export",
     date: "2026-09-07",
     title: "Export your spellbook as readable text",

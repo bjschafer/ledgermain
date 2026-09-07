@@ -10,6 +10,7 @@ import {
   addWornArmorFromRef,
   type GearDetails,
   type MoneyField,
+  purseInCopper,
   removeGear,
   setGearCharges,
   setGearDetails,
@@ -641,7 +642,10 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   const [craftClassTag, setCraftClassTag] = useState<string | null>(null);
   const [craftCasterLevel, setCraftCasterLevel] = useState<CasterLevelChoice>("min");
   const [showUncastable, setShowUncastable] = useState(false);
-  const [deductCraftCost, setDeductCraftCost] = useState(false);
+  // Off by default on both sides of the picker: gear is often entered for a
+  // character whose purse was never filled in, and a default-on toggle would
+  // silently report a shortfall on every add.
+  const [payFromPurse, setPayFromPurse] = useState(false);
 
   // Kit picker — class kits expand to their packed gear.
   const [showKitPicker, setShowKitPicker] = useState(false);
@@ -754,8 +758,33 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
     setKitQuery("");
   }
 
+  /**
+   * Buying is the same add as crafting, at full price: another copy of an
+   * identical consumable stacks onto the row already carried rather than
+   * opening a second one, and the purse is only touched when asked. Too
+   * little coin doesn't block the add — see {@link handleAddCraft}.
+   */
   function handleAddConsumable(entry: ConsumableEntry) {
-    update((d) => addCustomGearItem(d, entry.name, { price: entry.price, charges: entry.charges }));
+    let short = false;
+    update((d) => {
+      const withItem = addCustomGearItem(d, entry.name, {
+        price: entry.price,
+        charges: entry.charges,
+        stack: true,
+      });
+      if (!payFromPurse) return withItem;
+      const paid = spendMoney(withItem, entry.price);
+      if (paid) return paid;
+      short = true;
+      return withItem;
+    });
+    if (payFromPurse) {
+      showToast({
+        message: short
+          ? `${entry.name} added, but there wasn't ${gp(entry.price)} gp to pay for it`
+          : `${entry.name} bought for ${gp(entry.price)} gp`,
+      });
+    }
     setShowConsumablePicker(false);
     setConsumableQuery("");
   }
@@ -772,8 +801,9 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
       const withItem = addCustomGearItem(d, entry.name, {
         price: entry.price,
         charges: entry.charges,
+        stack: true,
       });
-      if (!deductCraftCost) return withItem;
+      if (!payFromPurse) return withItem;
       const paid = spendMoney(withItem, entry.cost);
       if (paid) return paid;
       short = true;
@@ -782,7 +812,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
     showToast({
       message: short
         ? `${entry.name} added, but there wasn't ${gp(entry.cost)} gp to pay for it`
-        : `${entry.name} crafted${deductCraftCost ? ` for ${gp(entry.cost)} gp` : ""}`,
+        : `${entry.name} crafted${payFromPurse ? ` for ${gp(entry.cost)} gp` : ""}`,
     });
     setShowConsumablePicker(false);
     setConsumableQuery("");
@@ -1317,8 +1347,22 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
               </button>
             </div>
 
+            {consumableMode === "buy" && (
+              <div className="picker-controls">
+                <label className="check">
+                  <input
+                    type="checkbox"
+                    checked={payFromPurse}
+                    onChange={(e) => setPayFromPurse(e.target.checked)}
+                  />
+                  <span>Pay from purse</span>
+                </label>
+                <span className="purse-note">carrying {gp(purseInCopper(doc) / 100)} gp</span>
+              </div>
+            )}
+
             {consumableMode === "craft" && craftSource !== undefined && (
-              <div className="craft-controls">
+              <div className="picker-controls">
                 {sources.length > 1 && (
                   <label className="field enh-field">
                     <span>Crafting as</span>
@@ -1353,8 +1397,8 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                 <label className="check">
                   <input
                     type="checkbox"
-                    checked={deductCraftCost}
-                    onChange={(e) => setDeductCraftCost(e.target.checked)}
+                    checked={payFromPurse}
+                    onChange={(e) => setPayFromPurse(e.target.checked)}
                   />
                   <span>Pay from purse</span>
                 </label>
@@ -1448,7 +1492,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
                       className="pick-btn add"
                       onClick={() => handleAddConsumable(entry)}
                     >
-                      Add
+                      {payFromPurse ? "Buy" : "Add"}
                     </button>
                   </div>
                 ))

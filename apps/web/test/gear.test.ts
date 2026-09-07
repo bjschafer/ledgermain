@@ -653,6 +653,75 @@ describe("addCustomGearItem()", () => {
     addCustomGearItem(d, "Arrows", { quantity: 20 });
     expect(d.build.gear).toHaveLength(0);
   });
+
+  it("stacks onto an identical row when asked, instead of opening a second one", () => {
+    const opts = { price: 300, stack: true };
+    let d = addCustomGearItem(doc(), "Potion of Cure Moderate Wounds", opts);
+    d = addCustomGearItem(d, "Potion of Cure Moderate Wounds", opts);
+    d = addCustomGearItem(d, "Potion of Cure Moderate Wounds", opts);
+    expect(d.build.gear).toHaveLength(1);
+    expect(d.build.gear[0]!.quantity).toBe(3);
+  });
+
+  it("adds the incoming quantity to the stack, not just one", () => {
+    let d = addCustomGearItem(doc(), "Alchemist's Fire", { price: 20, quantity: 2, stack: true });
+    d = addCustomGearItem(d, "Alchemist's Fire", { price: 20, quantity: 3, stack: true });
+    expect(d.build.gear).toHaveLength(1);
+    expect(d.build.gear[0]!.quantity).toBe(5);
+  });
+
+  it("opens a separate row without the stack option", () => {
+    let d = addCustomGearItem(doc(), "Potion of Cure Light Wounds", { price: 50 });
+    d = addCustomGearItem(d, "Potion of Cure Light Wounds", { price: 50 });
+    expect(d.build.gear).toHaveLength(2);
+  });
+
+  it("only stacks rows that match on name, price, weight, and charge cap", () => {
+    const base = addCustomGearItem(doc(), "Scroll of Fireball", {
+      price: 375,
+      weight: 0.5,
+      charges: 1,
+      stack: true,
+    });
+    const differs = [
+      { name: "Scroll of Fireball (divine)", price: 375, weight: 0.5, charges: 1 },
+      { name: "Scroll of Fireball", price: 750, weight: 0.5, charges: 1 },
+      { name: "Scroll of Fireball", price: 375, weight: 1, charges: 1 },
+      { name: "Scroll of Fireball", price: 375, weight: 0.5, charges: 2 },
+    ];
+    for (const d of differs) {
+      const next = addCustomGearItem(base, d.name, { ...d, stack: true });
+      expect(next.build.gear).toHaveLength(2);
+    }
+  });
+
+  it("leaves a part-used wand alone: a fresh one is its own row", () => {
+    const used = setGearCharges(
+      addCustomGearItem(doc(), "Wand of Cure Light Wounds", { price: 750, charges: 50 }),
+      0,
+      3,
+    );
+    const d = addCustomGearItem(used, "Wand of Cure Light Wounds", {
+      price: 750,
+      charges: 50,
+      stack: true,
+    });
+    expect(d.build.gear).toHaveLength(2);
+    expect(d.build.gear[0]!.chargesUsed).toBe(3);
+  });
+
+  it("does not stack onto a stashed (unequipped) row", () => {
+    const stashed = setGearEquipped(
+      addCustomGearItem(doc(), "Potion of Cure Light Wounds", { price: 50 }),
+      0,
+      false,
+    );
+    const d = addCustomGearItem(stashed, "Potion of Cure Light Wounds", {
+      price: 50,
+      stack: true,
+    });
+    expect(d.build.gear).toHaveLength(2);
+  });
 });
 
 // ---------------------------------------------------------------------------

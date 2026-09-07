@@ -2902,7 +2902,7 @@ button:focus-visible,
    the work, at what caster level, and the two opt-ins (pay from the purse,
    widen the list past what you can cast). Sits between the search head and the
    result list, so it carries the head's padding rather than the list's. */
-.gear-picker .craft-controls {
+.gear-picker .picker-controls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -2910,7 +2910,7 @@ button:focus-visible,
   padding: 10px 12px 0;
 }
 
-.gear-picker .craft-controls .check {
+.gear-picker .picker-controls .check {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -2919,9 +2919,15 @@ button:focus-visible,
   white-space: nowrap;
 }
 
-.gear-picker .craft-controls .check input {
+.gear-picker .picker-controls .check input {
   width: auto;
   margin: 0;
+}
+
+.gear-picker .picker-controls .purse-note {
+  font-size: 0.75rem;
+  color: var(--ink-dim);
+  white-space: nowrap;
 }
 
 /* The craft row's numbers are a wrapping list of separate facts, so they need

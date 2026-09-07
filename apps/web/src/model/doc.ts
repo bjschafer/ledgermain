@@ -1464,11 +1464,23 @@ export function updateGearItem(
  * "carried, not left behind" for the encumbrance total, and every other
  * gear-add path defaults it true). A blank `name` is a no-op (returns `doc`
  * unchanged) so the UI can call this unconditionally from a form submit.
+ *
+ * `opts.stack` folds the add into an identical row already carried (bumping
+ * its quantity) instead of opening a second one — what a second potion of the
+ * same spell should do. It's opt-in because a hand-typed entry is often a
+ * deliberately separate row; see {@link stacksWith} for what counts as
+ * identical.
  */
 export function addCustomGearItem(
   doc: CharacterDoc,
   name: string,
-  opts?: { weight?: number; price?: number; quantity?: number; charges?: number },
+  opts?: {
+    weight?: number;
+    price?: number;
+    quantity?: number;
+    charges?: number;
+    stack?: boolean;
+  },
 ): CharacterDoc {
   const label = name.trim();
   if (!label) return doc;
@@ -1480,8 +1492,35 @@ export function addCustomGearItem(
     const q = clampInt(opts.quantity, 0, 99999);
     if (q !== 1) inst.quantity = q;
   }
+  if (opts?.stack) {
+    const at = doc.build.gear.findIndex((g) => stacksWith(g, inst));
+    const existing = doc.build.gear[at];
+    if (existing) return setGearQuantity(doc, at, (existing.quantity ?? 1) + (inst.quantity ?? 1));
+  }
   const gear = [...doc.build.gear, inst];
   return { ...doc, build: { ...doc.build, gear } };
+}
+
+/**
+ * Whether a freshly built custom entry can be absorbed into an existing gear
+ * row as another copy of the same thing (see `addCustomGearItem`'s `stack`).
+ *
+ * Everything the row displays has to match, because merging throws the new
+ * instance away and only bumps a count: a different price or weight is a
+ * different item, and a partly used wand can't swallow a fresh one without
+ * losing the charges already spent. Ref-linked, armor, and unequipped rows
+ * never stack: the first two carry state this shallow comparison doesn't
+ * cover, and an unequipped row is stashed rather than carried.
+ */
+function stacksWith(existing: ItemInstance, incoming: ItemInstance): boolean {
+  if (existing.itemId || existing.armorId || existing.armor) return false;
+  if (!existing.equipped || existing.chargesUsed) return false;
+  return (
+    existing.name === incoming.name &&
+    (existing.price ?? 0) === (incoming.price ?? 0) &&
+    (existing.weight ?? 0) === (incoming.weight ?? 0) &&
+    (existing.charges ?? 0) === (incoming.charges ?? 0)
+  );
 }
 
 /**

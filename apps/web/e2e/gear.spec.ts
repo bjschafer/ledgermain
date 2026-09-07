@@ -54,3 +54,39 @@ test("adding a class kit expands it into the gear it packs", async ({ page }) =>
   // The kit itself is never carried alongside its contents (double-counting).
   await expect(panel.locator(".gear-row", { hasText: "Kit, Wizard's" })).toHaveCount(0);
 });
+
+test("buying the same potion twice stacks the row and pays for both", async ({ page }) => {
+  const panel = await gotoGear(page);
+
+  await panel.getByLabel("gp (coins)").fill("1000");
+
+  await panel.getByRole("button", { name: "+ Add potion / scroll / wand" }).click();
+  const picker = panel.locator(".gear-picker");
+  await picker.getByLabel("Pay from purse").check();
+  await expect(picker.locator(".purse-note")).toContainText("carrying 1000 gp");
+
+  // A potion of cure moderate wounds is spell level 2 at CL 3: 2 x 3 x 50 gp.
+  async function buyCureModerate() {
+    await typeSearch(picker.getByPlaceholder("Search spells…"), "Cure Moderate Wounds");
+    await picker
+      .locator(".pick-row")
+      .filter({ has: page.locator(".pname", { hasText: "Potion of Cure Moderate Wounds" }) })
+      .first()
+      .getByRole("button", { name: "Buy" })
+      .click();
+  }
+
+  await buyCureModerate();
+  const row = panel.locator(".gear-row", { hasText: "Potion of Cure Moderate Wounds" });
+  await expect(row).toHaveCount(1);
+  await expect(row.getByLabel("Potion of Cure Moderate Wounds quantity")).toHaveValue("1");
+  await expect(panel.getByLabel("gp (coins)")).toHaveValue("700");
+
+  await panel.getByRole("button", { name: "+ Add potion / scroll / wand" }).click();
+  await buyCureModerate();
+
+  // The second one joins the first rather than opening its own row.
+  await expect(row).toHaveCount(1);
+  await expect(row.getByLabel("Potion of Cure Moderate Wounds quantity")).toHaveValue("2");
+  await expect(panel.getByLabel("gp (coins)")).toHaveValue("400");
+});

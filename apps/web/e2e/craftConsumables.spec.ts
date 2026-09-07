@@ -72,7 +72,7 @@ test("Scribe Scroll unlocks the Craft side of the consumables picker", async ({ 
 
   await picker.getByRole("tab", { name: "Scrolls" }).click();
   await picker.getByRole("tab", { name: "Craft" }).click();
-  await expect(picker.locator(".craft-controls")).toBeVisible();
+  await expect(picker.getByLabel("Caster level")).toBeVisible();
 
   // A cleric scribes cure light wounds as a 1st-level spell at CL 1: a 25 gp
   // scroll, 12.5 gp to make, two hours, Spellcraft DC 6.
