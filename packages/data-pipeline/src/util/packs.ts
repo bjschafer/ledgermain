@@ -34,10 +34,19 @@ export function isFolderDoc(doc: RawDoc): boolean {
   return typeof doc._key === "string" && doc._key.startsWith("!folders!");
 }
 
-/** Recursively list all `*.yaml` files under a directory. */
+/**
+ * Recursively list all `*.yaml` files under a directory, in sorted order.
+ *
+ * The sort is what makes the pipeline reproducible: `readdirSync` returns
+ * whatever order the filesystem hands back (APFS and ext4 disagree), and pack
+ * order is load-bearing downstream — a container item's `contents` list keeps
+ * source order, and name-keyed lookups let the last writer win, so an
+ * unsorted read makes a CI regeneration and a laptop regeneration produce
+ * genuinely different data from the same pinned SHA.
+ */
 function listYamlFiles(dir: string, base = dir): string[] {
   const out: string[] = [];
-  for (const entry of readdirSync(dir)) {
+  for (const entry of readdirSync(dir).sort()) {
     const full = join(dir, entry);
     if (statSync(full).isDirectory()) {
       out.push(...listYamlFiles(full, base));

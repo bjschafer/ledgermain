@@ -2244,6 +2244,33 @@
     "traitType": "region",
     "uuid": "Compendium.pf1.traits.Item.39t7gqHy23PmUdph"
   },
+  "3B9yUEJZXFWGqI1e": {
+    "changes": [
+      {
+        "formula": "1",
+        "target": "skill.blf",
+        "type": "trait"
+      }
+    ],
+    "contextNotes": [
+      {
+        "target": "allSavingThrows",
+        "text": "+1 trait bonus vs divinations, domination effects, effects that compel to speak the truth"
+      }
+    ],
+    "description": "<p><em>Growing up in a land where paranoia fills the air and any accusation of heresy or dissent can spell doom for whole families, you learned very quickly to keep a secret.</em></p><p><strong>Benefits</strong>: You gain a +1 trait bonus on Bluff checks and a +1 trait bonus on saving throws against divinations, domination effects, and effects that would compel you to speak the truth.</p><p><strong>Suggested Characters</strong></p><p>Chelaxians, Galtans, Nidalese.</p>",
+    "id": "3B9yUEJZXFWGqI1e",
+    "name": "Secret-Keeper",
+    "sources": [
+      {
+        "id": "PZO9433",
+        "pages": "21"
+      }
+    ],
+    "tags": [],
+    "traitType": "social",
+    "uuid": "Compendium.pf1.traits.Item.3B9yUEJZXFWGqI1e"
+  },
   "3BKw1e8QT26wM3rK": {
     "changes": [],
     "contextNotes": [
@@ -15622,6 +15649,22 @@
     },
     "uuid": "Compendium.pf1.traits.Item.KyhoAvpzqEYZSa9P"
   },
+  "KzD0s3ZhLGxc3I1X": {
+    "changes": [],
+    "contextNotes": [],
+    "description": "<p><em>Your time among the Brastlewark elite has led to an extensive knowledge of alchemy and ready connections in the trade.<br /><strong>Requirements</strong></em></p><p><em>Gnome</em></p><p><em><strong>Benefits</strong><br />You gain a +2 trait bonus on all Craft (alchemy) checks.</em></p><hr /><em>Update the Skills tab of your Actor to add the Craft (alchemy). Update the target of the change on the Changes tab of this trait to reflect Craft (alchemy).</em>",
+    "id": "KzD0s3ZhLGxc3I1X",
+    "name": "Brastlewark Businessman (Gnome)",
+    "sources": [
+      {
+        "id": "PZO9407",
+        "pages": "19"
+      }
+    ],
+    "tags": ["Gnome"],
+    "traitType": "race",
+    "uuid": "Compendium.pf1.traits.Item.KzD0s3ZhLGxc3I1X"
+  },
   "Kzzs41Q3Mg1ewXc2": {
     "changes": [],
     "contextNotes": [],
@@ -17242,22 +17285,6 @@
     "tags": [],
     "traitType": "magic",
     "uuid": "Compendium.pf1.traits.Item.NNk7IczYtd4tT0De"
-  },
-  "NNpe0y32Olhq4HeY": {
-    "changes": [],
-    "contextNotes": [],
-    "description": "<p><em>Your time among the gnome elite of </em><span data-tooltip=\"Almost exclusively Gnomish city in eastern Cheliax\"><em><span style=\"text-decoration:underline\">Brastlewark</span> </em></span><em>in Cheliax has led to an extensive knowledge of alchemy and ready connections in the business.</em></p><p><strong>Requirements</strong>: Gnome</p><p><strong>Benefits</strong>: You gain a +2 trait bonus on all Craft (alchemy) checks.</p>",
-    "id": "NNpe0y32Olhq4HeY",
-    "name": "Brastlewark Businessman (Gnome)",
-    "sources": [
-      {
-        "id": "PZO9411",
-        "pages": "15"
-      }
-    ],
-    "tags": ["Gnome"],
-    "traitType": "social",
-    "uuid": "Compendium.pf1.traits.Item.NNpe0y32Olhq4HeY"
   },
   "NSL9bvX6kfy8CLfM": {
     "changes": [],
@@ -26080,27 +26107,6 @@
       "per": "day"
     },
     "uuid": "Compendium.pf1.traits.Item.Yyc3F8awZSrjjcBd"
-  },
-  "YyntFl6ejPOt45aX": {
-    "changes": [],
-    "contextNotes": [
-      {
-        "target": "skill.blf",
-        "text": "+3 trait when opposed by Sense Motive"
-      }
-    ],
-    "description": "<p><em>Avoiding inquisitors and agents of your enemies has required you to become a practiced liar.</em></p><p><strong>Benefits</strong>: You gain a +3 trait bonus on Bluff checks when they are opposed by another’s Sense Motive check.</p>",
-    "id": "YyntFl6ejPOt45aX",
-    "name": "Secret Keeper",
-    "sources": [
-      {
-        "id": "PZO9472",
-        "pages": "9"
-      }
-    ],
-    "tags": [],
-    "traitType": "faith",
-    "uuid": "Compendium.pf1.traits.Item.YyntFl6ejPOt45aX"
   },
   "YzlxjzzK9MbFIZCJ": {
     "changes": [],
