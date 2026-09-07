@@ -4949,6 +4949,16 @@ input[type="text"].saved-roll-name:focus {
   color: var(--oxblood-ink);
 }
 
+/* A rider a metamagic feat hangs on the spell (Dazing's daze, Persistent's
+   second save). Dashed rather than solid: it's a conditional effect the target
+   may still avoid, which also keeps it apart from the solid gold save chip it
+   sits beside. Hover for how they avoid it. */
+.spell-chip.is-rider {
+  border-style: dashed;
+  border-color: var(--gold-dim);
+  color: var(--gold-2);
+}
+
 /* The summon-helper deep link (SpellDetail.tsx) is a chip that's also an
    <a>, so it needs the anchor reset the span-based chips don't. */
 .spell-chip.is-link {

@@ -131,9 +131,9 @@ function spellRow(section: Locator, page: Page, name: string) {
  * Prepared caster: a level-5 wizard prepares Magic Missile plain, then takes
  * Empower Spell (+2) and Dazing Spell (+3). The Metamagic control is absent
  * until a metamagic feat is owned; once owned, applying Empower re-buckets the
- * prepared row from Level 1 to Level 3 (base+2) and marks its base level, and
- * Dazing is offered but disabled because base 1 + 3 = 4 exceeds the wizard's
- * highest slot (3).
+ * prepared row from Level 1 to Level 3 (base+2), marks its base level, and
+ * rewrites the damage chip; Dazing is offered but disabled because base 1 + 3
+ * = 4 exceeds the wizard's highest slot (3).
  */
 test("empowering a prepared spell re-buckets it two slot levels up", async ({ page }) => {
   // Two full manager round trips (spellbook + feats) plus four level-ups and
@@ -181,6 +181,10 @@ test("empowering a prepared spell re-buckets it two slot levels up", async ({ pa
   await expect(movedRow.locator(".prep-mm-badge")).toHaveText("base L1");
   await expect(level3.locator(".prep-count")).toContainText("1/1 prepared");
   await expect(spellRow(level1, page, "Magic Missile")).toHaveCount(0);
+
+  // The point of applying the feat: the damage line carries Empower's half
+  // again, alongside the three missiles a CL-5 caster fires.
+  await expect(movedRow.locator(".spell-chip.is-damage")).toHaveText("1d4+1 +50% force ×3");
 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);

@@ -55,7 +55,6 @@ import {
   metamagicSlotIncrease,
   NO_METAMAGIC_DISCOUNT,
   ownedMetamagic,
-  resolveAppliedMetamagic,
   setMetamagicLevels,
   toggleMetamagic,
 } from "../../model/metamagic.js";
@@ -1334,7 +1333,7 @@ function PreparedView({
                               slotLevel={level}
                               abilityMod={abilityMod}
                               casterLevel={casterLevel}
-                              metamagic={resolveAppliedMetamagic(r.metamagic)}
+                              metamagic={r.metamagic}
                             />
                           )}
                           {!isCantrip && (
@@ -1889,7 +1888,7 @@ function SpontaneousView({
                               slotLevel={castLevel}
                               abilityMod={abilityMod}
                               casterLevel={casterLevel}
-                              metamagic={resolveAppliedMetamagic(applied)}
+                              metamagic={applied}
                             />
                           )}
                           <MetamagicControl
@@ -2287,7 +2286,7 @@ function HybridView({
                                   slotLevel={castLevel}
                                   abilityMod={abilityMod}
                                   casterLevel={casterLevel}
-                                  metamagic={resolveAppliedMetamagic(applied)}
+                                  metamagic={applied}
                                 />
                               )}
                               <MetamagicControl

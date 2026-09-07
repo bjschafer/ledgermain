@@ -8,10 +8,12 @@
 import { describe, expect, it } from "bun:test";
 
 import { loadRefData } from "@pf1/data-pipeline";
+import { metamagicSpellEffects } from "@pf1/engine";
 import type { RefData, Spell } from "@pf1/schema";
 
 import {
   formatCastingTime,
+  formatSpellArea,
   formatSpellComponents,
   formatSpellDuration,
   formatSpellRange,
@@ -236,6 +238,108 @@ describe("robustness — prose values never throw", () => {
         formatSpellRange(spell, 9);
         formatSpellDuration(spell, 9);
         spellDamageParts(spell, 9);
+      }).not.toThrow();
+    }
+  });
+});
+
+/**
+ * The formatters under metamagic. The rules arithmetic itself is fixtured in
+ * the engine (`test/metamagicEffects.test.ts`); what's checked here is that
+ * each formatter actually spends the aggregate on the string it prints.
+ */
+describe("metamagic on the spell line", () => {
+  const fx = (spell: Spell, level: number, applied: { slug: string; levels?: number }[]) =>
+    metamagicSpellEffects(applied, spell, level);
+
+  it("Enlarge doubles the range band and Reach climbs it first", () => {
+    const fireball = spellByName("Fireball");
+    // Long range at CL 5 is 400 + 40x5 = 600 ft.; enlarged, 1200 ft.
+    expect(formatSpellRange(fireball, 5, fx(fireball, 3, [{ slug: "enlarge-spell" }]))).toBe(
+      "Long (1200 ft.)",
+    );
+    // Cure Light Wounds is a touch spell: Reach +2 makes it medium, which at
+    // CL 5 is 100 + 10x5 = 150 ft.
+    const clw = spellByName("Cure Light Wounds");
+    expect(formatSpellRange(clw, 5, fx(clw, 1, [{ slug: "reach-spell", levels: 2 }]))).toBe(
+      "Medium (150 ft.)",
+    );
+  });
+
+  it("Extend doubles a resolved duration and Fleeting halves it", () => {
+    const mageArmor = spellByName("Mage Armor");
+    expect(formatSpellDuration(mageArmor, 5)).toBe("5 hours");
+    expect(formatSpellDuration(mageArmor, 5, fx(mageArmor, 1, [{ slug: "extend-spell" }]))).toBe(
+      "10 hours",
+    );
+    expect(formatSpellDuration(mageArmor, 5, fx(mageArmor, 1, [{ slug: "fleeting-spell" }]))).toBe(
+      "2 hours",
+    );
+  });
+
+  it("leaves an instantaneous duration alone", () => {
+    const fireball = spellByName("Fireball");
+    expect(formatSpellDuration(fireball, 5, fx(fireball, 3, [{ slug: "extend-spell" }]))).toBe(
+      "Instantaneous",
+    );
+  });
+
+  it("Widen doubles the measurements in a spread", () => {
+    const fireball = spellByName("Fireball");
+    expect(formatSpellArea(fireball)).toBe("20-ft.-radius spread");
+    expect(formatSpellArea(fireball, fx(fireball, 3, [{ slug: "widen-spell" }]))).toBe(
+      "40-ft.-radius spread",
+    );
+  });
+
+  it("leaves an area Widen does not apply to alone", () => {
+    // "Spells that do not have an area of one of these four sorts are not
+    // affected by this feat" — a targeted spell keeps its printed target line.
+    const clw = spellByName("Cure Light Wounds");
+    const widened = formatSpellArea(clw, fx(clw, 1, [{ slug: "widen-spell" }]));
+    expect(widened).toBe(formatSpellArea(clw));
+  });
+
+  it("rewrites the damage chips", () => {
+    const fireball = spellByName("Fireball");
+    expect(spellDamageParts(fireball, 10, fx(fireball, 3, [{ slug: "maximize-spell" }]))).toEqual([
+      { text: "60", types: ["fire"] },
+    ]);
+    expect(spellDamageParts(fireball, 10, fx(fireball, 3, [{ slug: "empower-spell" }]))).toEqual([
+      { text: "10d6 +50%", types: ["fire"] },
+    ]);
+  });
+
+  it("adds Furious Spell's flat damage to the first part only", () => {
+    // Molten Orb's splash rider follows its direct hit; the once-per-target
+    // bonus rides on the first line.
+    const molten = spellByName("Molten Orb");
+    const parts = spellDamageParts(molten, 5, fx(molten, 3, [{ slug: "furious-spell" }]));
+    const plain = spellDamageParts(molten, 5);
+    expect(parts).toHaveLength(plain.length);
+    expect(parts[0]!.text).not.toBe(plain[0]!.text);
+    for (let i = 1; i < parts.length; i++) expect(parts[i]!.text).toBe(plain[i]!.text);
+  });
+
+  it("never throws across the whole catalog with metamagic applied", () => {
+    const applied = [
+      { slug: "empower-spell" },
+      { slug: "maximize-spell" },
+      { slug: "intensified-spell" },
+      { slug: "furious-spell" },
+      { slug: "extend-spell" },
+      { slug: "enlarge-spell" },
+      { slug: "widen-spell" },
+      { slug: "reach-spell", levels: 3 },
+      { slug: "dazing-spell" },
+    ];
+    for (const spell of Object.values(refData.spells)) {
+      const effects = metamagicSpellEffects(applied, spell, spell.level);
+      expect(() => {
+        formatSpellRange(spell, 9, effects);
+        formatSpellDuration(spell, 9, effects);
+        formatSpellArea(spell, effects);
+        spellDamageParts(spell, 9, effects);
       }).not.toThrow();
     }
   });

@@ -1,4 +1,10 @@
-import { formatDiceFormula, tryEvaluateFormula } from "@pf1/engine";
+import {
+  NO_METAMAGIC_EFFECTS,
+  metamagicDamageText,
+  reachRangeUnits,
+  tryEvaluateFormula,
+  type MetamagicSpellEffects,
+} from "@pf1/engine";
 import type { Spell, SpellAction } from "@pf1/schema";
 
 /**
@@ -12,6 +18,14 @@ import type { Spell, SpellAction } from "@pf1/schema";
  * `range`/`duration`/`area`/`damage`, plus `Spell.components`), which the
  * tracker's `SpellDetail` had until now left unshown.
  *
+ * Every formatter takes an optional {@link MetamagicSpellEffects} and applies
+ * it to the number it prints: Extend doubles the duration, Enlarge and Reach
+ * move the range band, Widen doubles the measurements in the area, and Empower
+ * / Maximize / Intensified / Furious rewrite the damage. The aggregate is
+ * built by the engine (`metamagic-effects.ts`) from the feats the player
+ * toggled onto this casting; `NO_METAMAGIC_EFFECTS` is the default and leaves
+ * every value exactly as it was.
+ *
  * Caller convention (mirrors `spellSave` in `SpellDetail`): range, area,
  * duration, casting time, and damage come from the FIRST action that carries
  * the field, preferring an action with a real casting-time activation over a
@@ -24,7 +38,7 @@ import type { Spell, SpellAction } from "@pf1/schema";
  */
 
 /**
- * `tryEvaluateFormula`/`formatDiceFormula` only swallow a {@link DiceTermError};
+ * `tryEvaluateFormula`/`metamagicDamageText` only swallow a {@link DiceTermError};
  * a genuine parse error still throws (the engine keeps that surfacing for its
  * own callers). But spell `range`/`duration`/`damage` fields carry prose the
  * DSL was never meant to parse — `"1 hour/level; see text"`, `"concentration"`,
@@ -40,9 +54,15 @@ function safeEvaluate(src: string, cl: number): number | null {
   }
 }
 
-function safeDice(src: string, cl: number): string | null {
+/** {@link metamagicDamageText} under the same "never crash the sheet" wrapper. */
+function safeMetamagicDamage(
+  src: string,
+  cl: number,
+  fx: MetamagicSpellEffects,
+  flat: number,
+): string | null {
   try {
-    return formatDiceFormula(src, { cl });
+    return metamagicDamageText(src, { cl }, fx, flat);
   } catch {
     return null;
   }
@@ -105,13 +125,23 @@ const BAND_LABEL: Record<string, string> = { close: "Close", medium: "Medium", l
  * Human range for the spell's primary action, e.g. `"Medium (140 ft.)"`,
  * `"Touch"`, `"30 ft."`, `"Personal"`. `null` when the data carries no range.
  */
-export function formatSpellRange(spell: Spell, cl: number): string | null {
+export function formatSpellRange(
+  spell: Spell,
+  cl: number,
+  fx: MetamagicSpellEffects = NO_METAMAGIC_EFFECTS,
+): string | null {
   const range = firstActionWith(spell, (a) => a.range);
   if (!range?.units) return null;
-  const { units, value } = range;
+  const { value } = range;
+  // Reach Spell climbs the band first, then Enlarge doubles whatever band the
+  // spell ends up in. Both only touch the named bands, so a touch/personal or
+  // fixed-distance range falls through to the switch untouched.
+  const units = reachRangeUnits(range.units, fx.rangeSteps);
 
   const bandFeet = bandRangeFeet(units, cl);
-  if (bandFeet !== null) return `${BAND_LABEL[units]} (${bandFeet} ft.)`;
+  if (bandFeet !== null) {
+    return `${BAND_LABEL[units]} (${bandFeet * fx.rangeMultiplier} ft.)`;
+  }
 
   switch (units) {
     case "touch":
@@ -139,10 +169,22 @@ export function formatSpellRange(spell: Spell, cl: number): string | null {
   }
 }
 
-/** Area / target text for the spell's primary action, verbatim. `null` if absent. */
-export function formatSpellArea(spell: Spell): string | null {
+/**
+ * Area / target text for the spell's primary action, verbatim. `null` if
+ * absent. Widen Spell multiplies every measurement in it ("20-ft.-radius
+ * spread" → "40-ft.-radius spread"), and only for the burst, emanation, and
+ * spread shapes the feat applies to — a text that names none of them is left
+ * alone rather than guessed at.
+ */
+export function formatSpellArea(
+  spell: Spell,
+  fx: MetamagicSpellEffects = NO_METAMAGIC_EFFECTS,
+): string | null {
   const area = firstActionWith(spell, (a) => a.area);
-  return area?.trim() ? area.trim() : null;
+  const text = area?.trim();
+  if (!text) return null;
+  if (fx.areaMultiplier === 1 || !/\b(burst|emanation|spread)\b/i.test(text)) return text;
+  return text.replace(/\d+(?:\.\d+)?/g, (n) => String(Number(n) * fx.areaMultiplier));
 }
 
 const DURATION_UNIT: Record<string, [singular: string, plural: string]> = {
@@ -159,10 +201,18 @@ const DURATION_UNIT: Record<string, [singular: string, plural: string]> = {
  * `{units:"round", value:"@cl"}` at CL 4), `"Instantaneous"`, or the verbatim
  * prose for `spec`/`seeText` values (`"1 minute/level (D) (see text)"`).
  */
-export function formatSpellDuration(spell: Spell, cl: number): string | null {
+export function formatSpellDuration(
+  spell: Spell,
+  cl: number,
+  fx: MetamagicSpellEffects = NO_METAMAGIC_EFFECTS,
+): string | null {
   const duration = firstActionWith(spell, (a) => a.duration);
   if (!duration?.units) return null;
   const { units, value } = duration;
+  const mult = fx.durationMultiplier;
+  // Instantaneous and permanent durations are the two Extend Spell explicitly
+  // doesn't touch, so the multiplier never reaches them.
+  const suffix = mult === 1 ? "" : ` ×${mult}`;
 
   switch (units) {
     case "inst":
@@ -171,14 +221,18 @@ export function formatSpellDuration(spell: Spell, cl: number): string | null {
       return "Permanent";
     case "seeText":
     case "spec":
-      return value?.trim() ? value.trim() : "See text";
+      // Prose duration: no number to scale, so the multiplier is stated
+      // rather than folded in ("1 minute/level (D) ×2").
+      return (value?.trim() ? value.trim() : "See text") + suffix;
   }
 
   const labels = DURATION_UNIT[units];
-  if (!labels) return value?.trim() ? value.trim() : units;
-  if (value === undefined) return labels[1];
-  const n = safeEvaluate(value, cl);
-  if (n === null) return `${value.trim()} ${labels[1]}`;
+  if (!labels) return (value?.trim() ? value.trim() : units) + suffix;
+  if (value === undefined) return mult === 1 ? labels[1] : `${mult} ${labels[1]}`;
+  const raw = safeEvaluate(value, cl);
+  if (raw === null) return `${value.trim()} ${labels[1]}${suffix}`;
+  // A halved duration (Fleeting Spell) rounds down but never to nothing.
+  const n = mult === 1 ? raw : Math.max(1, Math.floor(raw * mult));
   return `${n} ${n === 1 ? labels[0] : labels[1]}`;
 }
 
@@ -268,7 +322,11 @@ export interface SpellDamage {
  * formula) — resolved to `count` here so the per-hit dice stay honest and the
  * display appends a `×N` note rather than folding the count into the dice.
  */
-export function spellDamageParts(spell: Spell, cl: number): SpellDamage[] {
+export function spellDamageParts(
+  spell: Spell,
+  cl: number,
+  fx: MetamagicSpellEffects = NO_METAMAGIC_EFFECTS,
+): SpellDamage[] {
   const parts = firstActionWith(spell, (a) =>
     a.damage?.parts.length ? a.damage.parts : undefined,
   );
@@ -281,15 +339,14 @@ export function spellDamageParts(spell: Spell, cl: number): SpellDamage[] {
   for (const part of parts) {
     const formula = part.formula?.trim();
     if (!formula) continue;
-    let text = safeDice(formula, cl);
-    if (text === null) {
-      const n = safeEvaluate(formula, cl);
-      // Nothing resolved: drop the part. Printing the raw formula would put
-      // DSL source in front of a player mid-turn, which reads as a bug even
-      // when the number behind it is fine.
-      if (n === null) continue;
-      text = String(n);
-    }
+    // Furious Spell's flat damage lands once per target, so it rides on the
+    // first part only rather than on every damage line the spell prints.
+    const flat = out.length === 0 ? fx.flatDamage : 0;
+    const text = safeMetamagicDamage(formula, cl, fx, flat);
+    // Nothing resolved: drop the part. Printing the raw formula would put DSL
+    // source in front of a player mid-turn, which reads as a bug even when the
+    // number behind it is fine.
+    if (text === null) continue;
     out.push({ text, types: part.types, count });
   }
   return out;

@@ -15,7 +15,13 @@
  *     every other metamagic leaves it — and the DC — unchanged (PF1 RAW).
  */
 
-import { featNameSlug, metamagicDef, parentBloodlineTagFor, type MetamagicDef } from "@pf1/engine";
+import {
+  appliedMetamagicIncrease,
+  featNameSlug,
+  metamagicDef,
+  parentBloodlineTagFor,
+  type MetamagicDef,
+} from "@pf1/engine";
 import type { AppliedMetamagic, CharacterDoc, RefData } from "@pf1/schema";
 
 import { featInstances, grantedFeats } from "./feats.js";
@@ -46,17 +52,11 @@ export function ownedMetamagic(doc: CharacterDoc, refData: RefData): MetamagicDe
 }
 
 /**
- * The slot-level increase contributed by ONE applied metamagic entry: the
- * player-chosen `levels` for a variable feat (falling back to the registry
- * default), else the fixed registry increase. Unknown/removed slugs contribute
- * 0 (soft-degrade, never throw — mirrors the rest of the spell pipeline).
+ * Re-exported so the spell panels keep reaching for their metamagic math in
+ * one place; the rule itself (chosen `levels` for a variable feat, else the
+ * registry's fixed increase) lives with the registry in the engine.
  */
-export function appliedMetamagicIncrease(applied: AppliedMetamagic): number {
-  const def = metamagicDef(applied.slug);
-  if (!def) return 0;
-  if (def.variable) return Math.max(1, applied.levels ?? def.slotIncrease);
-  return def.slotIncrease;
-}
+export { appliedMetamagicIncrease };
 
 /**
  * Total slot-level increase from every applied metamagic (0 for none).

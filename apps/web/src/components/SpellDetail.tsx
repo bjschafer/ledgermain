@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-import type { DerivedClChecks, Spell } from "@pf1/schema";
+import {
+  NO_METAMAGIC_EFFECTS,
+  metamagicSpellEffects,
+  type MetamagicSpellEffects,
+} from "@pf1/engine";
+import type { AppliedMetamagic, DerivedClChecks, Spell } from "@pf1/schema";
 
-import type { ResolvedMetamagic } from "../model/metamagic.js";
+import { resolveAppliedMetamagic, type ResolvedMetamagic } from "../model/metamagic.js";
 import { concentrationDC, concentrationScenarios, spellSaveDC } from "../model/spellcasting.js";
 import { spellDCAdjustment, srCheckBonus, srCheckDetail } from "../model/spellDCs.js";
 import { detectSummonSpell, summonHelperHref } from "../model/summonLink.js";
@@ -62,7 +67,15 @@ function damageLabel(part: { text: string; types: string[]; count?: number }): s
  * the heightened level here. `slotLevel`, when it differs from `spellLevel`,
  * is the higher slot the spell occupies after metamagic and is surfaced as its
  * own line WITHOUT touching the DC (RAW: only Heighten changes the DC).
- * `metamagic` lists the applied feats as display-only context notes.
+ *
+ * `metamagic` is the feats applied to this casting. Every number they move
+ * lands in the strip and the detail rows already: the damage carries Empower's
+ * multiplier and Maximize's fixed total, the range band climbs for Reach and
+ * doubles for Enlarge, the duration doubles for Extend, the area grows for
+ * Widen, and riders like Dazing's daze get their own chips resolved against
+ * `spellLevel`. The feats themselves are still named, with their full rules
+ * text on hover, so a feat whose benefit the sheet can't compute is visible
+ * rather than silently dropped.
  *
  * The sheet's Spell Focus / Spell Penetration-family bonuses come from
  * `useSpellBonuses` (see `state/spellBonuses.tsx` for why a context): the DC
@@ -83,7 +96,7 @@ export function SpellDetail({
   abilityMod: number;
   casterLevel: number;
   slotLevel?: number;
-  metamagic?: ResolvedMetamagic[];
+  metamagic?: AppliedMetamagic[];
 }) {
   const { spellDCs, clChecks, summonFeats } = useSpellBonuses();
   const save = spellSave(spell);
@@ -91,9 +104,20 @@ export function SpellDetail({
   const dc = save ? spellSaveDC(spellLevel, abilityMod) + dcAdjust.bonus : null;
   const saveLabel = save ? (SAVE_LABEL[save.type] ?? save.type) : null;
 
+  // Both are pure derivations of the applied feats; memoized because the
+  // browse pane in the spell manager renders a row per spell on a class list.
+  const fx = useMemo(
+    () =>
+      metamagic?.length
+        ? metamagicSpellEffects(metamagic, spell, spellLevel)
+        : NO_METAMAGIC_EFFECTS,
+    [metamagic, spell, spellLevel],
+  );
+  const applied = useMemo(() => resolveAppliedMetamagic(metamagic), [metamagic]);
+
   const castingTime = formatCastingTime(spell);
-  const range = formatSpellRange(spell, casterLevel);
-  const damage = spellDamageParts(spell, casterLevel);
+  const range = formatSpellRange(spell, casterLevel, fx);
+  const damage = spellDamageParts(spell, casterLevel, fx);
   const summonSpell = detectSummonSpell(spell.name);
   const summonLink = summonSpell ? summonHelperHref(summonSpell, summonFeats, casterLevel) : null;
 
@@ -102,6 +126,7 @@ export function SpellDetail({
     range !== null ||
     dc !== null ||
     damage.length > 0 ||
+    fx.riders.length > 0 ||
     summonLink !== null;
 
   // The body is built only once the disclosure is opened. A closed <details>
@@ -125,6 +150,11 @@ export function SpellDetail({
           {damage.map((d, i) => (
             <span key={i} className="spell-chip is-damage">
               {damageLabel(d)}
+            </span>
+          ))}
+          {fx.riders.map((r) => (
+            <span key={r.short} className="spell-chip is-rider" title={r.full}>
+              {r.short}
             </span>
           ))}
           {summonLink && (
@@ -155,7 +185,8 @@ export function SpellDetail({
             dcDetail={dcAdjust.detail}
             save={save}
             slotLevel={slotLevel}
-            metamagic={metamagic}
+            metamagic={applied}
+            fx={fx}
             clChecks={clChecks}
           />
         )}
@@ -177,6 +208,7 @@ function SpellDetailBody({
   save,
   slotLevel,
   metamagic,
+  fx,
   clChecks,
 }: {
   spell: Spell;
@@ -190,10 +222,11 @@ function SpellDetailBody({
   save: { type: string; description: string } | null;
   slotLevel?: number;
   metamagic?: ResolvedMetamagic[];
+  fx: MetamagicSpellEffects;
   clChecks?: DerivedClChecks;
 }) {
-  const area = formatSpellArea(spell);
-  const duration = formatSpellDuration(spell, casterLevel);
+  const area = formatSpellArea(spell, fx);
+  const duration = formatSpellDuration(spell, casterLevel, fx);
   const components = formatSpellComponents(spell);
   const concDC = concentrationDC(spellLevel);
   const showSlot = slotLevel !== undefined && slotLevel !== spellLevel;
@@ -295,6 +328,11 @@ function SpellDetailBody({
               <span key={m.def.slug} className="spell-detail-metamagic" title={m.def.note}>
                 {m.def.name}
                 {m.def.variable ? ` +${m.increase}` : ""}
+              </span>
+            ))}
+            {fx.riders.map((r) => (
+              <span key={r.short} className="spell-detail-fine">
+                {r.full}
               </span>
             ))}
           </span>

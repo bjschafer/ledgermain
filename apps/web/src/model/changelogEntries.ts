@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-06-metamagic-effects",
+    date: "2026-09-06",
+    title: "Metamagic changes the numbers, not just the slot",
+    note: "Toggling a metamagic feat onto a spell rewrites the spell line the way the feat says it should. An empowered fireball reads 10d6 times 1.5, a maximized one reads 60, and both together read the maximum plus half the roll. Intensified raises the damage cap when your caster level can reach past it, Furious adds its damage, Extend doubles the duration, Enlarge and Reach move the range band, and Widen doubles the area. Feats that hang a condition on the spell, like Dazing, Sickening, Rime, or Persistent, get their own chip with the duration already worked out from the spell's level, and a feat whose descriptor the spell does not carry stays quiet instead of promising an effect that never lands.",
+  },
+  {
     id: "2026-09-06-round-clock",
     date: "2026-09-06",
     title: "The round clock, out where you can see it",

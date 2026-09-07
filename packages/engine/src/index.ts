@@ -67,6 +67,11 @@ export {
   tryEvaluateFormula,
   containsDice,
   formatDiceFormula,
+  diceChain,
+  diceChainOf,
+  formatDiceChain,
+  type DiceChain,
+  type DiceChainTerm,
   DiceTermError,
   FormulaSyntaxError,
   type RollData,
@@ -645,7 +650,21 @@ export {
   metamagicDefByName,
   isMetamagicFeat,
   type MetamagicDef,
+  type MetamagicEffect,
+  type MetamagicRider,
 } from "./metamagic.js";
+export {
+  NO_METAMAGIC_EFFECTS,
+  REACH_RANGE_ORDER,
+  appliedMetamagicIncrease,
+  hasMetamagicEffects,
+  metamagicDamageText,
+  metamagicSpellEffects,
+  reachRangeUnits,
+  riderText,
+  type MetamagicRiderLine,
+  type MetamagicSpellEffects,
+} from "./metamagic-effects.js";
 export { FAMILIARS, FAMILIAR_KINDS, type FamiliarDef } from "./familiars.js";
 export {
   BASE_FAMILIARS,

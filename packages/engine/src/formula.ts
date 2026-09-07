@@ -428,9 +428,20 @@ export function containsDice(node: FormulaNode): boolean {
 
 /* ------------------------------------------------ symbolic dice display -- */
 
-interface DiceChainParts {
-  /** Symbolic dice terms in source order, e.g. ["1d6"], sign-prefixed if negative. */
-  diceTerms: string[];
+/** One dice term isolated from a formula's root-level `+`/`-` chain. */
+export interface DiceChainTerm {
+  /** Resolved die count, e.g. 4 for `(min(10,@cl))d6` at CL 4. */
+  count: number;
+  /** Resolved die faces. */
+  faces: number;
+  /** The sign the term carries in the chain. */
+  sign: 1 | -1;
+}
+
+/** A formula split into symbolic dice terms plus one summed numeric modifier. */
+export interface DiceChain {
+  /** Dice terms in source order. */
+  terms: DiceChainTerm[];
   /** Sum of every non-dice term in the chain. */
   modifier: number;
 }
@@ -438,20 +449,14 @@ interface DiceChainParts {
 /**
  * Walk a formula's root-level `+`/`-` chain, evaluating everything EXCEPT
  * dice terms numerically and summing it into `modifier`, while keeping each
- * dice term as a symbolic `"NdF"` string (its own `count`/`faces`
- * sub-expressions ARE evaluated numerically — they must not themselves
- * contain nested dice, e.g. `(ceil(@class.unlevel / 2))d6`). Throws
- * {@link DiceTermError} if a dice term (or nested dice) turns up somewhere
- * this walk can't isolate (e.g. multiplied by a non-dice factor, such as
- * `2 * (1d6)`) — the vendored data never shapes a formula that way, so
- * `formatDiceFormula` treats that as "unsupported", not "no dice".
+ * dice term symbolic (its own `count`/`faces` sub-expressions ARE evaluated
+ * numerically — they must not themselves contain nested dice, e.g.
+ * `(ceil(@class.unlevel / 2))d6`). Throws {@link DiceTermError} if a dice term
+ * (or nested dice) turns up somewhere this walk can't isolate (e.g. multiplied
+ * by a non-dice factor, such as `2 * (1d6)`) — the vendored data never shapes a
+ * formula that way, so callers treat that as "unsupported", not "no dice".
  */
-function flattenDiceChain(
-  node: FormulaNode,
-  data: RollData,
-  sign: 1 | -1,
-  out: DiceChainParts,
-): void {
+function flattenDiceChain(node: FormulaNode, data: RollData, sign: 1 | -1, out: DiceChain): void {
   if (node.kind === "bin" && (node.op === "+" || node.op === "-")) {
     flattenDiceChain(node.left, data, sign, out);
     flattenDiceChain(node.right, data, node.op === "-" ? (-sign as 1 | -1) : sign, out);
@@ -462,13 +467,52 @@ function flattenDiceChain(
     return;
   }
   if (node.kind === "dice") {
-    const count = evaluateNode(node.count, data);
-    const faces = evaluateNode(node.faces, data);
-    const term = `${count}d${faces}`;
-    out.diceTerms.push(sign < 0 ? `-${term}` : term);
+    out.terms.push({
+      count: evaluateNode(node.count, data),
+      faces: evaluateNode(node.faces, data),
+      sign,
+    });
     return;
   }
   out.modifier += sign * evaluateNode(node, data);
+}
+
+/**
+ * Split an already-parsed formula into its symbolic dice terms and summed
+ * numeric modifier. `null` when the formula carries no dice term at all
+ * (callers fall back to {@link evaluateFormula} for a plain number) or when
+ * its dice appear in a shape {@link flattenDiceChain} can't isolate.
+ *
+ * This is the structured half of {@link formatDiceFormula}: a caller that
+ * needs the NUMBERS (to maximize the dice, or to add a flat rider) rather than
+ * a display string works from here — see the engine's `metamagic-effects.ts`.
+ */
+export function diceChainOf(node: FormulaNode, data: RollData = {}): DiceChain | null {
+  const chain: DiceChain = { terms: [], modifier: 0 };
+  try {
+    flattenDiceChain(node, data, 1, chain);
+  } catch (err) {
+    if (err instanceof DiceTermError) return null;
+    throw err;
+  }
+  return chain.terms.length > 0 ? chain : null;
+}
+
+/** {@link diceChainOf} straight from formula source. Parse errors still throw. */
+export function diceChain(src: string, data: RollData = {}): DiceChain | null {
+  return diceChainOf(parseFormula(src), data);
+}
+
+/** Render a {@link DiceChain} as `"10d6+3"` / `"1d6 - 1d4-2"`. */
+export function formatDiceChain(chain: DiceChain, modifier = chain.modifier): string {
+  let result = "";
+  for (const [i, term] of chain.terms.entries()) {
+    const text = `${term.count}d${term.faces}`;
+    if (i === 0) result = term.sign < 0 ? `-${text}` : text;
+    else result += term.sign < 0 ? ` - ${text}` : ` + ${text}`;
+  }
+  if (modifier !== 0) result += modifier > 0 ? `+${modifier}` : `${modifier}`;
+  return result;
 }
 
 /**
@@ -482,23 +526,6 @@ function flattenDiceChain(
  * parse or names an unknown function still does, so display callers wrap it.
  */
 export function formatDiceFormula(src: string, data: RollData = {}): string | null {
-  const node = parseFormula(src);
-  const parts: DiceChainParts = { diceTerms: [], modifier: 0 };
-  try {
-    flattenDiceChain(node, data, 1, parts);
-  } catch (err) {
-    if (err instanceof DiceTermError) return null;
-    throw err;
-  }
-  if (parts.diceTerms.length === 0) return null;
-
-  let result = parts.diceTerms[0]!;
-  for (let i = 1; i < parts.diceTerms.length; i++) {
-    const term = parts.diceTerms[i]!;
-    result += term.startsWith("-") ? ` - ${term.slice(1)}` : ` + ${term}`;
-  }
-  if (parts.modifier !== 0) {
-    result += parts.modifier > 0 ? `+${parts.modifier}` : `${parts.modifier}`;
-  }
-  return result;
+  const chain = diceChainOf(parseFormula(src), data);
+  return chain === null ? null : formatDiceChain(chain);
 }

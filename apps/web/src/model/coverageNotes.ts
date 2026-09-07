@@ -106,9 +106,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Metamagic",
-    note: "Applying a metamagic feat tracks the slot cost, not the effect: Empower's bigger numbers or Dazing's save stay rules text for you to apply at the table. Class abilities that grant free or cheaper metamagic through a choice the sheet cannot store yet, like the Theologian's chosen domain spell or a magus arcana's once-a-day feat, are not applied either.",
+    note: "Most metamagic feats change something the sheet has no number for: a bouncing spell's redirect, an elemental spell's swapped damage type, a quickened spell's action. Those stay rules text on the feat. Class abilities that grant free or cheaper metamagic through a choice the sheet cannot store, like the Theologian's chosen domain spell or a magus arcana's once-a-day feat, are not applied either.",
     issueDetail:
-      "All 84 vendored metamagic-tagged feats carry slot costs. Unmodeled free-application grants: Theologian Domain Secret and psychic Mimic Metamagic need stored feat-and-spell picks; magus metamagic arcana and oracle Guiding Star are once-a-day with no tracked pool; arcanist Metamixing, the Magician bard's Metamagic Mastery, and Arcane bloodline's Metamagic Adept only change casting time, which the sheet has no action surface for.",
+      "20 of the 84 vendored metamagic feats carry a structured spell-line transform; the rest turn on a component, action type, or target eligibility the spell data does not express. Unmodeled free-application grants: Theologian Domain Secret and psychic Mimic Metamagic need stored feat-and-spell picks; magus metamagic arcana and oracle Guiding Star are once-a-day with no tracked pool; Metamixing and Metamagic Adept only change casting time.",
   },
   {
     category: "Monk flurry weapon lists",

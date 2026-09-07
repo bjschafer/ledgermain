@@ -12,17 +12,21 @@
  * so a slug from the canonical name is the stable, human-authorable key.
  * Lookup path: `doc.build.feats` → `refData.feats[id].name` → slug.
  *
- * Honesty bar: the SLOT-LEVEL accounting is the modeled part. The feat's
- * numeric effect on the spell itself (Empower's +50%, Maximize's maximized
- * dice, Widen's doubled area, …) is a display-only `note`, never a sheet
- * number — the engine does not, and deliberately will not, recompute a spell's
- * damage/area/duration. The one exception is that a metamagic feat's slot
- * increase does NOT change the spell's EFFECTIVE level for save-DC /
- * concentration purposes — RAW, those still use the spell's actual level —
- * EXCEPT Heighten Spell, which genuinely raises the spell's effective level
- * ("all effects dependent on spell level are calculated according to the
- * heightened level"). `raisesEffectiveLevel` flags that single case so callers
- * can keep the save DC honest.
+ * Two things are modeled per feat. `slotIncrease` is the slot-level
+ * accounting. `effect` is the structured transform the sheet applies to the
+ * displayed spell line — Empower's +50%, Maximize's maximized dice, Extend's
+ * doubled duration, Dazing's save rider — resolved by `metamagic-effects.ts`.
+ * A feat with no `effect` moves no number: its `note` is the at-table
+ * reminder and nothing more, which is the honest answer for the many feats
+ * whose benefit is a narrative permission ("cast with no verbal component")
+ * rather than arithmetic.
+ *
+ * A metamagic feat's slot increase does NOT change the spell's EFFECTIVE
+ * level for save-DC / concentration purposes — RAW, those still use the
+ * spell's actual level — EXCEPT Heighten Spell, which genuinely raises the
+ * spell's effective level ("all effects dependent on spell level are
+ * calculated according to the heightened level"). `raisesEffectiveLevel`
+ * flags that single case so callers can keep the save DC honest.
  */
 
 /** Normalize a feat name to its slug key. Re-exported from `feat-effects.ts` to avoid a cycle at call sites. */
@@ -54,8 +58,71 @@ export interface MetamagicDef {
    * and therefore the save DC — unchanged.
    */
   raisesEffectiveLevel?: boolean;
-  /** At-table reminder of the feat's mechanical effect. Display-only context, never a sheet number. */
+  /** At-table reminder of the feat's mechanical effect, in full. */
   note: string;
+  /**
+   * The part of that effect the sheet can compute and show on the spell line.
+   * Absent when the feat changes no displayed number (Silent Spell, Quicken
+   * Spell, …) or when its benefit turns on something only the GM knows.
+   */
+  effect?: MetamagicEffect;
+}
+
+/**
+ * An extra effect a metamagic feat hangs on the spell, resolved against the
+ * spell's own level for display. Distinct from {@link MetamagicEffect}'s
+ * multipliers, which change a number the spell already prints; a rider is a
+ * new line the spell did not have.
+ */
+export interface MetamagicRider {
+  /** Leading label, e.g. `"Dazed"`, `"SR 5 lower"`. */
+  label: string;
+  /** Rounds it lasts, per point of the spell's level (all the modeled ones are 1). */
+  roundsPerLevel?: number;
+  /** Rounds it lasts when the duration doesn't scale with spell level. */
+  rounds?: number;
+  /** Extra damage, per point of the spell's level (Burning Spell: 2). */
+  damagePerLevel?: number;
+  /** Trailing clause, e.g. `"the spell's save negates"`. */
+  detail?: string;
+}
+
+/**
+ * The structured, sheet-applicable part of a metamagic feat's benefit.
+ *
+ * Multipliers describe what happens to a number the spell already prints;
+ * `rider` describes a line it gains. The `descriptors` / `needsDamage` /
+ * `needsSave` fields are eligibility gates checked against the spell the feat
+ * is applied to, so a Rime Spell toggled onto a fire spell contributes
+ * nothing rather than printing an entangle that never happens. Restrictions
+ * the vendored data can't express (Widen's burst/emanation/spread shapes,
+ * Focused Spell's multi-target requirement) stay in `note`.
+ */
+export interface MetamagicEffect {
+  /** Multiplier on the spell's variable numeric effects. Empower Spell: 1.5. */
+  numeric?: number;
+  /** Variable numeric effects are maximized instead of rolled. Maximize Spell. */
+  maximize?: boolean;
+  /** Flat damage added to the spell's first damage part, per point of its level. Furious Spell: 2. */
+  damagePerLevel?: number;
+  /** Caster levels added to the spell's damage-dice cap. Intensified Spell: 5. */
+  diceCapLevels?: number;
+  /** Multiplier on the spell's duration. Extend Spell: 2, Fleeting Spell: 0.5. */
+  duration?: number;
+  /** Multiplier on the spell's range. Enlarge Spell: 2. */
+  range?: number;
+  /** Range categories the spell's range climbs, per slot level spent. Reach Spell: 1. */
+  rangeSteps?: number;
+  /** Multiplier on the numbers in the spell's area. Widen Spell: 2. */
+  area?: number;
+  /** The line the spell gains. */
+  rider?: MetamagicRider;
+  /** Gate: the spell must carry one of these descriptors. */
+  descriptors?: string[];
+  /** Gate: the spell must deal damage. */
+  needsDamage?: boolean;
+  /** Gate: the spell must allow a saving throw. */
+  needsSave?: boolean;
 }
 
 /**
@@ -124,6 +191,15 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Burning Spell",
     slotIncrease: 2,
     note: "Acid or fire spells only. A creature damaged by the spell takes the same damage type again, equal to twice the spell's actual level, at the start of its next turn.",
+    effect: {
+      needsDamage: true,
+      descriptors: ["acid", "fire"],
+      rider: {
+        label: "Burn",
+        damagePerLevel: 2,
+        detail: "acid or fire, at the start of its next turn",
+      },
+    },
   },
   "centered-spell": {
     slug: "centered-spell",
@@ -148,6 +224,14 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Concussive Spell",
     slotIncrease: 2,
     note: "Sonic descriptor spells only. A creature damaged by the spell takes a penalty to attack rolls, saves, skill checks, and ability checks for a number of rounds equal to the spell's actual level.",
+    effect: {
+      needsDamage: true,
+      descriptors: ["sonic"],
+      rider: {
+        label: "-2 attacks, saves, skill and ability checks",
+        roundsPerLevel: 1,
+      },
+    },
   },
   "conditional-spell": {
     slug: "conditional-spell",
@@ -184,6 +268,14 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Dazing Spell",
     slotIncrease: 3,
     note: "Damaging spells only. A creature damaged by the spell becomes dazed for a number of rounds equal to the spell's original level, negated by the spell's own save if it has one.",
+    effect: {
+      needsDamage: true,
+      rider: {
+        label: "Dazed",
+        roundsPerLevel: 1,
+        detail: "the spell's save negates, or a Will save if it allows none",
+      },
+    },
   },
   "delayed-spell": {
     slug: "delayed-spell",
@@ -226,6 +318,7 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Empower Spell",
     slotIncrease: 2,
     note: "Variable, numeric effects (damage, healing, ability drain, etc.) increased by half (+50%). Does not affect the spell's save DC.",
+    effect: { numeric: 1.5 },
   },
   "encouraging-spell": {
     slug: "encouraging-spell",
@@ -238,12 +331,14 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Enlarge Spell",
     slotIncrease: 1,
     note: "Range doubled (close/medium/long only).",
+    effect: { range: 2 },
   },
   "extend-spell": {
     slug: "extend-spell",
     name: "Extend Spell",
     slotIncrease: 1,
     note: "Duration doubled (only for spells with a duration measured in rounds/minutes/hours).",
+    effect: { duration: 2 },
   },
   "familiar-spell": {
     slug: "familiar-spell",
@@ -256,30 +351,49 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Fearsome Spell",
     slotIncrease: 2,
     note: "A creature that fails its save against the spell, or, for spells without a save, fails a Will save, becomes shaken for rounds equal to the spell's original level. Can't cause frightened.",
+    effect: {
+      needsDamage: true,
+      rider: {
+        label: "Shaken",
+        roundsPerLevel: 1,
+        detail: "on a failed save, or a Will save if the spell allows none",
+      },
+    },
   },
   "flaring-spell": {
     slug: "flaring-spell",
     name: "Flaring Spell",
     slotIncrease: 1,
     note: "Fire, light, or electricity descriptor spells only. A creature that takes fire or electricity damage from the spell becomes dazzled for rounds equal to the spell's actual level.",
+    effect: {
+      needsDamage: true,
+      descriptors: ["fire", "light", "electricity"],
+      rider: { label: "Dazzled", roundsPerLevel: 1 },
+    },
   },
   "fleeting-spell": {
     slug: "fleeting-spell",
     name: "Fleeting Spell",
     slotIncrease: 0,
     note: "Spells lasting at least 2 rounds only, not instantaneous or permanent. Becomes dismissible as a swift action, harder to detect once dismissed, easier to dispel, and lasts only half as long.",
+    effect: { duration: 0.5 },
   },
   "focused-spell": {
     slug: "focused-spell",
     name: "Focused Spell",
     slotIncrease: 1,
     note: "Multi-target spells only. Increases the save DC by 2 against one target you choose before casting.",
+    effect: {
+      needsSave: true,
+      rider: { label: "+2 DC", detail: "against one target you choose before casting" },
+    },
   },
   "furious-spell": {
     slug: "furious-spell",
     name: "Furious Spell",
     slotIncrease: 1,
     note: "Damaging spells only. Adds twice the spell's original level to the damage dealt, once per target. Can be cast while raging, even with an emotion component.",
+    effect: { needsDamage: true, damagePerLevel: 2 },
   },
   "heighten-spell": {
     slug: "heighten-spell",
@@ -294,6 +408,7 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Intensified Spell",
     slotIncrease: 1,
     note: "Raises the spell's maximum number of damage dice by 5 caster levels' worth, if you have the caster level to exceed the normal cap.",
+    effect: { needsDamage: true, diceCapLevels: 5 },
   },
   "intuitive-spell": {
     slug: "intuitive-spell",
@@ -330,6 +445,7 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Maximize Spell",
     slotIncrease: 3,
     note: "Variable, numeric effects maximized (no roll); random variables (e.g. targets hit) still roll. Does not affect the spell's save DC.",
+    effect: { maximize: true },
   },
   "merciful-spell": {
     slug: "merciful-spell",
@@ -348,12 +464,25 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Persistent Spell",
     slotIncrease: 2,
     note: "Spells that allow a save only. A creature that succeeds on its save must save again; failing the second save applies the spell's full effect.",
+    effect: {
+      needsSave: true,
+      rider: {
+        label: "Save twice",
+        detail: "a target that succeeds saves again and takes the full effect if it fails",
+      },
+    },
   },
   "piercing-spell": {
     slug: "piercing-spell",
     name: "Piercing Spell",
     slotIncrease: 1,
     note: "Treats a target's spell resistance as 5 lower than actual.",
+    effect: {
+      rider: {
+        label: "SR 5 lower",
+        detail: "treat the target's spell resistance as 5 below its actual SR",
+      },
+    },
   },
   "quicken-spell": {
     slug: "quicken-spell",
@@ -368,12 +497,18 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     variable: true,
     maxIncrease: 3,
     note: "Range increased one category per +1 slot level (touch → close → medium → long).",
+    effect: { rangeSteps: 1 },
   },
   "rime-spell": {
     slug: "rime-spell",
     name: "Rime Spell",
     slotIncrease: 1,
     note: "Cold descriptor spells only. A creature that takes cold damage from the spell becomes entangled for rounds equal to the spell's original level.",
+    effect: {
+      needsDamage: true,
+      descriptors: ["cold"],
+      rider: { label: "Entangled", roundsPerLevel: 1 },
+    },
   },
   "scarring-spell": {
     slug: "scarring-spell",
@@ -410,6 +545,14 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Sickening Spell",
     slotIncrease: 2,
     note: "Damaging spells only. A creature damaged by the spell becomes sickened for rounds equal to the spell's original level, negated by the spell's own save if it has one.",
+    effect: {
+      needsDamage: true,
+      rider: {
+        label: "Sickened",
+        roundsPerLevel: 1,
+        detail: "the spell's save negates, or a Fortitude save if it allows none",
+      },
+    },
   },
   "silent-spell": {
     slug: "silent-spell",
@@ -506,6 +649,14 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Thundering Spell",
     slotIncrease: 2,
     note: "Damaging spells only. A creature damaged by the spell becomes deafened for rounds equal to the spell's original level, negated by the spell's own save if it has one.",
+    effect: {
+      needsDamage: true,
+      rider: {
+        label: "Deafened",
+        roundsPerLevel: 1,
+        detail: "the spell's save negates, or a Fortitude save if it allows none",
+      },
+    },
   },
   "toppling-spell": {
     slug: "toppling-spell",
@@ -566,6 +717,7 @@ export const METAMAGIC_FEATS: Readonly<Record<string, MetamagicDef>> = {
     name: "Widen Spell",
     slotIncrease: 3,
     note: "Burst/emanation/spread area increased by 100%. Does not affect the spell's save DC.",
+    effect: { area: 2 },
   },
   "yai-mimic-spell": {
     slug: "yai-mimic-spell",
