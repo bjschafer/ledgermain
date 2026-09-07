@@ -67,8 +67,8 @@
     "witchPatrons": 61,
     "wizardSchools": 17
   },
-  "dataVersion": "11.11+0b8d8615ef74",
-  "generatedAt": "2026-09-03T14:20:46+03:00",
+  "dataVersion": "11.11+a2fedb50da3e",
+  "generatedAt": "2026-09-06T13:25:19+03:00",
   "hashes": {
     "alchemist-discoveries.json": "d9abc7f47f222dde7184c665e7ee7c01c6d1b1ce555cff17a27c7ef6f1ce6ab8",
     "arcanist-exploits.json": "08b122c5d40463453ff40e08427344fac64eb5cfbc75b7161fa5d369b5b163ee",
@@ -94,7 +94,7 @@
     "inquisitions.json": "471c0b008222436e9cd2604b652611e3b8cedab0cf2abfdb7514eda465b91d11",
     "investigator-talents.json": "41a7b964940df6be8bb1eee7aa7e67295a4cf3db9de54a56c5723d7a6b2973a2",
     "item-abilities.json": "ff831b81271df2fde97440e56513209289d1284ebdd666f3f7888673a8d66d76",
-    "items.json": "ed9059a406eb778ad22d1b847a13f0fd660124f5c1e70fd71f4191f7ac7d8bd7",
+    "items.json": "79e054a0bc864e35df8df923103eaec57981dbc73aabe11b10f8319bc2139cdb",
     "kinetic-wild-talents.json": "93066de45f7c712d8294f2c83a6ac5f5daf3c0a4d1c4e23145115cf1550bc5c4",
     "magus-arcana.json": "ee5a863d4746e73380d62a5660ff80211c7cc0a891a834d3083a617e14b70b40",
     "medium-spirits.json": "40b241602946cd4ae20f7884276b26afd83ad6b6cb4ff06d9a8173f8121c7c02",
@@ -124,7 +124,7 @@
     "spells.json": "7126495070d0339b007a8216a98eeafd3a90dee749b480ff77e244f522156935",
     "subdomain-spell-lists.json": "dfedb0d2d7cb3e96fb8cde30aef6e788d45eb4646800ad1bebb34020cc0ac27e",
     "subdomains.json": "f335f0f4e852c34456cc01c3fd8c31698da018585ab61cd81f50fc3c41700707",
-    "traits.json": "01605bd35270ca38192929f0eb13faba450b7cd0a99180ddba39736d054cdec2",
+    "traits.json": "62d7f0e6dfbd00356c3fec1b909ba2d551e0085b1cf582c5e87bb8ecf7056a7b",
     "vigilante-social-talents.json": "14c56b12d4e1be0361269d5cdea79f68b6c8a8c69105163337e073ab1b936ad0",
     "vigilante-talents.json": "5a076b163b45b0c3bbf86b63091d3dcaa956e09bba50ab021223a152a7dab71a",
     "weapons.json": "5346c1ea6b500d307f8a785e2768270c0b5b8c78a3f0d2d97e958038bb317da3",
@@ -134,11 +134,11 @@
   "schemaVersion": 29,
   "sourcePins": {
     "archetypes": "92ddcb60027e3088e5afd0645183c031ec3e9bb4",
-    "foundry": "0b8d8615ef74b10fb93780c13deff4ca0630747b",
+    "foundry": "a2fedb50da3e1947d5bbd358f3a95f409d4024b6",
     "pfContent": "c66bf333cafc451d817ead660473dd01d9846fb3",
     "pfData": "3a7bd4c38a57a9a4094d56d3b26b7e672c6dd436"
   },
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
-  "sourceSha": "0b8d8615ef74b10fb93780c13deff4ca0630747b",
+  "sourceSha": "a2fedb50da3e1947d5bbd358f3a95f409d4024b6",
   "systemVersion": "11.11"
 }
