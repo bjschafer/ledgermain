@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-07-spellbook-export",
+    date: "2026-09-07",
+    title: "Export your spellbook as readable text",
+    note: "Settings can now write your spellbook out as markdown: every spell you know, grouped by level, each with its casting time, components, range, duration, save, damage, and full rules text, with your caster level already folded into the numbers. Copy it to the clipboard to paste into a chat when you want spell advice, or download it as a file to hand to another player. Casters who prepare from a full class list, like clerics and druids, get a note saying so instead of hundreds of spells.",
+  },
+  {
     id: "2026-09-07-style-feat-stances",
     date: "2026-09-07",
     title: "Style feats that actually move your numbers",

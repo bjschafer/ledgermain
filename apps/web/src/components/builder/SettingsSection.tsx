@@ -17,6 +17,7 @@ import { formatEntryDate } from "../../model/changelog.js";
 import { CHANGELOG } from "../../model/changelogEntries.js";
 import { COVERAGE_NOTES } from "../../model/coverageNotes.js";
 import { characterExportFilename, characterExportJson } from "../../model/exportCharacter.js";
+import { spellbookFilename, spellbookMarkdown } from "../../model/exportSpellbook.js";
 import {
   setBackgroundSkills,
   setClericWisdomHouserule,
@@ -41,10 +42,11 @@ import {
 import type { ImportReport } from "../../model/externalImport.js";
 import { HERO_POINT_CAP } from "../../model/heroPoints.js";
 import { importCharacterFile } from "../../model/importExternalFile.js";
+import { spellsPanelVisible } from "../../model/spellcasting.js";
 import { DEFAULT_XP_TRACK, type XpTrack } from "../../model/xp.js";
 import { showToast } from "../../state/toast.js";
 import { TEXT_SIZE_LABEL, TEXT_SIZES, type TextSize } from "../../state/useTextSize.js";
-import { CopyButton } from "../CopyButton.js";
+import { CopyButton, writeClipboard } from "../CopyButton.js";
 import { Explainer } from "../Explainer.js";
 import { GearIcon, HeartIcon, SparklesIcon } from "../icons.js";
 import { NumberField } from "./NumberField.js";
@@ -136,6 +138,24 @@ export function SettingsSection({
     a.download = characterExportFilename(doc);
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  function handleExportSpellbook() {
+    const blob = new Blob([spellbookMarkdown(doc, sheet, refData)], {
+      type: "text/markdown",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = spellbookFilename(doc);
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  /** Copy, not download: the primary use is pasting straight into a chat. */
+  async function handleCopySpellbook() {
+    const ok = await writeClipboard(spellbookMarkdown(doc, sheet, refData));
+    showToast({ message: ok ? "Copied spellbook as markdown" : "Couldn't reach the clipboard" });
   }
 
   /**
@@ -856,6 +876,34 @@ export function SettingsSection({
                   />
                 </label>
               </div>
+              {spellsPanelVisible(doc, refData) && (
+                <>
+                  <p className="hint" style={{ margin: "12px 0" }}>
+                    The spellbook export writes every spell this character knows as readable
+                    markdown, each with its full rules text and the numbers already resolved at
+                    their caster level. Paste it into a chat for spell advice, or hand it to another
+                    player.
+                  </p>
+                  <div className="settings-row">
+                    <button
+                      type="button"
+                      className="btn-ghost"
+                      disabled={actionPending}
+                      onClick={handleCopySpellbook}
+                    >
+                      Copy spellbook (markdown)
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-ghost"
+                      disabled={actionPending}
+                      onClick={handleExportSpellbook}
+                    >
+                      Download spellbook (.md)
+                    </button>
+                  </div>
+                </>
+              )}
               {importError && (
                 <p className="hint" style={{ color: "var(--oxblood-ink)", marginTop: 8 }}>
                   {importError}

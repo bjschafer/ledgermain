@@ -9,8 +9,11 @@ import { CheckIcon, CopyIcon } from "./icons.js";
  * context, and a tablet at the table pointed at a dev box over plain http is a
  * real way this app gets used — so fall back to the old hidden-textarea
  * `execCommand` path rather than failing there.
+ *
+ * Exported for one-off copy actions whose payload is too big for this button's
+ * own toast/title (e.g. the whole-spellbook markdown export).
  */
-async function writeClipboard(text: string): Promise<boolean> {
+export async function writeClipboard(text: string): Promise<boolean> {
   try {
     if (navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(text);
