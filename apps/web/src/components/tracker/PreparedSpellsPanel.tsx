@@ -1,6 +1,6 @@
 import { useMemo, useState, type ReactNode } from "react";
 
-import { deriveResourcePools, type MetamagicDef } from "@pf1/engine";
+import { deriveResourcePools, metamagicDef, type MetamagicDef } from "@pf1/engine";
 import type {
   AppliedMetamagic,
   Buff,
@@ -38,12 +38,18 @@ import {
   unprepareSpell,
 } from "../../model/preparedSpells.js";
 import {
-  type FreeMetamagicOffer,
-  freeMetamagicOffer,
+  domainSecretDefsFor,
+  domainSecretMetamagicFor,
+  domainSecretWaivers,
+  type FreeMetamagicPlan,
+  freeMetamagicPlan,
+  type FreeMetamagicSource,
   freeMetamagicSources,
   freeMetamagicSpendMessage,
+  grantedMetamagicSlugs,
+  NO_FREE_METAMAGIC,
+  paidMetamagicSlotIncrease,
   pluralUnit,
-  slotIncreaseWithFree,
   spendFreeMetamagic,
 } from "../../model/freeMetamagic.js";
 import {
@@ -108,8 +114,10 @@ interface PreparedRow {
   metamagic: AppliedMetamagic[];
   /** Always-on metamagic cost discount for this spell (see `metamagicDiscountFor`). */
   discount: MetamagicDiscount;
-  /** Free-application state for this instance (see `model/freeMetamagic.ts`), when the class has a source. */
-  freeOffer?: FreeMetamagicOffer;
+  /** Free-application state for this instance (see `model/freeMetamagic.ts`). */
+  freePlan: FreeMetamagicPlan;
+  /** Metamagic Domain Secret permanently applies to this spell, attachable even unowned. */
+  permanentDefs: MetamagicDef[];
 }
 
 // ---------------------------------------------------------------------------
@@ -117,54 +125,123 @@ interface PreparedRow {
 // ---------------------------------------------------------------------------
 
 /**
+ * Cast-button tooltip naming what an engaged free application also spends.
+ * `fallback` is the title when nothing is engaged (the ordinary paid wording,
+ * which differs between the two panels); `slotClause` is the slot the click
+ * itself costs, for the spontaneous panel (a prepared row's slot was already
+ * spent at preparation time).
+ */
+function freeMetamagicCastTitle(
+  spellName: string,
+  plan: FreeMetamagicPlan,
+  fallback: string | undefined,
+  slotClause?: string,
+): string | undefined {
+  const engaged = plan.offers.filter((o) => o.engaged && o.cost !== null);
+  if (engaged.length === 0) return fallback;
+  const spends = engaged.map((o) => `${o.cost} ${pluralUnit(o.source, o.cost!)}`);
+  return `Cast ${spellName} with metamagic via ${engaged
+    .map((o) => o.source.label)
+    .join(" and ")} (spend ${[...(slotClause ? [slotClause] : []), ...spends].join(" and ")})`;
+}
+
+/** No free-application source names extra feats on this panel (the arcanist's Metamixing waives no slot). */
+const NO_GRANTED_METAMAGIC: ReadonlyMap<string, FreeMetamagicSource> = new Map();
+
+/** One attachable metamagic chip on a spell row. */
+interface MetamagicChip {
+  def: MetamagicDef;
+  /**
+   * Set when the character does NOT own the feat and only a free-application
+   * source names it (a magus arcana, Guiding Star, Mimic Metamagic). Such a
+   * chip can only be attached while that source is armed — there is no paid
+   * path for a feat you don't have.
+   */
+  grantedBy?: FreeMetamagicSource;
+  /** Domain Secret's permanent application: always attachable, always free. */
+  permanent?: boolean;
+}
+
+/**
+ * The chip list for one spell row: the owned metamagic feats, plus any a free
+ * source names that the character doesn't own, plus the spell's own Domain
+ * Secret feats. Deduped by slug (an owned feat that a source also names stays
+ * a plain chip) and sorted by name.
+ */
+function metamagicChips(
+  owned: MetamagicDef[],
+  granted: ReadonlyMap<string, FreeMetamagicSource>,
+  permanent: MetamagicDef[],
+): MetamagicChip[] {
+  const bySlug = new Map<string, MetamagicChip>();
+  for (const def of owned) bySlug.set(def.slug, { def });
+  for (const [slug, source] of granted) {
+    if (bySlug.has(slug)) continue;
+    const def = metamagicDef(slug);
+    if (def) bySlug.set(slug, { def, grantedBy: source });
+  }
+  for (const def of permanent) bySlug.set(def.slug, { def, permanent: true });
+  return [...bySlug.values()].sort((a, b) => a.def.name.localeCompare(b.def.name));
+}
+
+/**
  * The per-prepared-instance metamagic picker: a collapsible chip list of the
- * owned metamagic feats, each toggling on/off for this instance. Variable
+ * attachable metamagic feats, each toggling on/off for this instance. Variable
  * feats (Reach/Heighten) expose a small level selector when active. A feat is
  * disabled when applying it (or raising a variable feat's level) would push
  * the spell's slot level past `maxSlotLevel` (the caster's highest slot). Only
- * rendered when the character owns at least one metamagic feat.
+ * rendered when at least one feat is attachable.
  *
  * `discount` is the spell's always-on metamagic cost reduction (Magical
  * Lineage and kin, see `metamagicDiscountFor`): it comes off the summed
  * increase (never below 0) in every slot computation here, and is surfaced as
  * a note line so the cheaper cost is visible rather than silently different.
  *
- * `free` is the row's resource-spend free-application state (universalist
- * Metamagic Mastery, Meta-Rage — see `model/freeMetamagic.ts`): an extra
- * "Free via <ability>" chip that, while armed, re-gates the feat chips by the
- * ability's own constraint instead of the paid slot math (the paid cap can be
- * stricter than the ability allows, e.g. Meta-Rage empowering a spell the
- * bloodrager has no higher slot for) and ignores `discount` (no double-dip:
- * with no higher slot consumed there is nothing for the trait to reduce).
+ * `plan` is the row's free-application state (see `model/freeMetamagic.ts`):
+ * one "Free via <ability>" chip per source the caster has. While a source is
+ * armed, the feats it covers are re-gated by the ability's own constraint
+ * instead of the paid slot math (the paid cap can be stricter than the ability
+ * allows, e.g. Meta-Rage empowering a spell the bloodrager has no higher slot
+ * for) and ignore `discount` (no double-dip: with no higher slot consumed
+ * there is nothing for the trait to reduce). Domain Secret's permanent feats
+ * are free with nothing to arm.
  */
 function MetamagicControl({
-  owned,
+  chips,
   applied,
   baseLevel,
   maxSlotLevel,
   discount = NO_METAMAGIC_DISCOUNT,
-  free,
+  plan = NO_FREE_METAMAGIC,
+  onToggleFree,
   onToggle,
   onSetLevels,
 }: {
-  owned: MetamagicDef[];
+  chips: MetamagicChip[];
   applied: AppliedMetamagic[];
   baseLevel: number;
   maxSlotLevel: number;
   discount?: MetamagicDiscount;
-  free?: { offer: FreeMetamagicOffer; onToggle: () => void };
+  plan?: FreeMetamagicPlan;
+  onToggleFree?: (sourceId: string) => void;
   onToggle: (slug: string) => void;
   onSetLevels: (slug: string, levels: number) => void;
 }) {
-  if (owned.length === 0) return null;
+  if (chips.length === 0) return null;
   const appliedBySlug = new Map(applied.map((a) => [a.slug, a]));
-  const currentIncrease = metamagicSlotIncrease(applied);
+  // Only the feats nobody is covering still cost slot levels, so the cap math
+  // below prices an addition against those alone.
+  const paidApplied = applied.filter((a) => !plan.waived.has(a.slug));
+  const currentIncrease = metamagicSlotIncrease(paidApplied);
   const activeCount = applied.length;
   // Slot level once the discount is taken off a total increase (floor: the
   // spell's own level — the total increase never goes below 0).
   const slotFor = (increase: number) => baseLevel + Math.max(0, increase - discount.amount);
-  const freeArmed = free?.offer.armed ?? false;
-  const freeCaps = free?.offer.source.capsAtMaxSlot ?? false;
+  // The armed source that would cover a given feat, if any — an armed source
+  // with no named feat list covers whatever single feat the cast applies.
+  const armedFor = (slug: string): FreeMetamagicSource | undefined =>
+    plan.offers.find((o) => o.armed && (o.source.featSlugs?.has(slug) ?? true))?.source;
+  const visibleOffers = plan.offers.filter((o) => o.remaining > 0 || o.armed);
 
   return (
     <details className="prep-metamagic">
@@ -177,50 +254,64 @@ function MetamagicControl({
           {discount.amount === 1 ? "level" : "levels"} less (never below level {baseLevel}).
         </p>
       )}
-      {free && (free.offer.remaining > 0 || free.offer.armed) && (
-        <div className="prep-metamagic-free">
+      {visibleOffers.map((offer) => (
+        <div key={offer.source.id} className="prep-metamagic-free">
           <button
             type="button"
-            className={`mm-chip mm-chip-free${free.offer.armed ? " is-active" : ""}`}
-            aria-pressed={free.offer.armed}
-            title={free.offer.source.note}
-            onClick={free.onToggle}
+            className={`mm-chip mm-chip-free${offer.armed ? " is-active" : ""}`}
+            aria-pressed={offer.armed}
+            title={offer.source.note}
+            onClick={() => onToggleFree?.(offer.source.id)}
           >
-            Free via {free.offer.source.label}
-            {free.offer.cost !== null &&
-              ` (${free.offer.cost} ${pluralUnit(free.offer.source, free.offer.cost)})`}
+            Free via {offer.source.label}
+            {offer.cost !== null && ` (${offer.cost} ${pluralUnit(offer.source, offer.cost)})`}
           </button>
           <span className="hint mm-free-remaining">
-            {free.offer.remaining} {pluralUnit(free.offer.source, free.offer.remaining)} left
+            {offer.remaining} {pluralUnit(offer.source, offer.remaining)} left
           </span>
-          {free.offer.armed && free.offer.blocked && (
-            <p className="hint mm-free-note">{free.offer.blocked}</p>
-          )}
-          {free.offer.armed && !free.offer.blocked && applied.length === 0 && (
-            <p className="hint mm-free-note">Pick one metamagic feat below to apply it free.</p>
+          {offer.armed && offer.blocked && <p className="hint mm-free-note">{offer.blocked}</p>}
+          {offer.armed && !offer.blocked && offer.cost === null && (
+            <p className="hint mm-free-note">
+              {offer.source.featSlugs
+                ? `Pick ${[...offer.source.featSlugs]
+                    .map((s) => metamagicDef(s)?.name ?? s)
+                    .join(" or ")} below to apply it free.`
+                : "Pick one metamagic feat below to apply it free."}
+            </p>
           )}
         </div>
-      )}
+      ))}
       <div className="prep-metamagic-list">
-        {owned.map((def) => {
+        {chips.map(({ def, grantedBy, permanent }) => {
           const active = appliedBySlug.get(def.slug);
           const isActive = active !== undefined;
           const thisIncrease = isActive ? appliedMetamagicIncrease(active) : def.slotIncrease;
-          const otherIncrease = currentIncrease - (isActive ? thisIncrease : 0);
+          const otherIncrease =
+            currentIncrease - (isActive && !plan.waived.has(def.slug) ? thisIncrease : 0);
+          // A permanent (Domain Secret) feat is always free; otherwise a feat
+          // is free exactly while a source that covers it is armed.
+          const freeSource = permanent ? undefined : armedFor(def.slug);
+          const isFree = permanent === true || freeSource !== undefined;
           // Adding a (default) increment must keep the slot level within
-          // reach — or, while a free application is armed, within the free
-          // ability's own cap (none for Meta-Rage; the modified-level cap for
-          // Metamagic Mastery, which never sees the trait discount).
-          const wouldExceed = freeArmed
-            ? !isActive && freeCaps && baseLevel + def.slotIncrease > maxSlotLevel
-            : !isActive && slotFor(otherIncrease + def.slotIncrease) > maxSlotLevel;
+          // reach — or, when the addition is free, within the covering
+          // ability's own cap (none for Meta-Rage or the once-a-day grants;
+          // the modified-level cap for Metamagic Mastery and Mimic Metamagic,
+          // neither of which ever sees the trait discount).
+          const needsArming = grantedBy !== undefined && !isFree;
+          const wouldExceed =
+            needsArming ||
+            (isFree
+              ? !isActive &&
+                (freeSource?.capsAtMaxSlot ?? false) &&
+                baseLevel + def.slotIncrease > maxSlotLevel
+              : !isActive && slotFor(otherIncrease + def.slotIncrease) > maxSlotLevel);
           // For a variable feat, how high its own level may go before the slot
           // would overflow (also capped by the feat's own `maxIncrease`). The
-          // discount widens the room by its amount. While a free application
-          // is armed the paid slot math no longer binds; Heighten past 9th is
+          // discount widens the room by its amount. A free application no
+          // longer binds to the paid slot math; Heighten past 9th is
           // meaningless, so 9 is the uncapped ceiling.
-          const roomForVariable = freeArmed
-            ? (freeCaps ? maxSlotLevel : 9) - baseLevel
+          const roomForVariable = isFree
+            ? (freeSource?.capsAtMaxSlot ? maxSlotLevel : 9) - baseLevel
             : maxSlotLevel - baseLevel - otherIncrease + discount.amount;
           const variableMax = Math.min(def.maxIncrease ?? roomForVariable, roomForVariable);
 
@@ -228,20 +319,26 @@ function MetamagicControl({
             <div key={def.slug} className="prep-metamagic-item">
               <button
                 type="button"
-                className={`mm-chip${isActive ? " is-active" : ""}`}
+                className={`mm-chip${isActive ? " is-active" : ""}${isFree ? " mm-chip-granted" : ""}`}
                 aria-pressed={isActive}
                 disabled={wouldExceed}
                 title={
-                  wouldExceed
-                    ? freeArmed
-                      ? `Applying ${def.name} would make the spell level ${baseLevel + def.slotIncrease}, above your highest castable level (${maxSlotLevel}).`
-                      : `Applying ${def.name} would need a level-${slotFor(otherIncrease + def.slotIncrease)} slot, beyond your highest (level ${maxSlotLevel}).`
-                    : def.note
+                  needsArming
+                    ? `${def.name} comes from ${grantedBy.label}: turn that on above to apply it.`
+                    : wouldExceed
+                      ? isFree
+                        ? `Applying ${def.name} would make the spell level ${baseLevel + def.slotIncrease}, above your highest castable level (${maxSlotLevel}).`
+                        : `Applying ${def.name} would need a level-${slotFor(otherIncrease + def.slotIncrease)} slot, beyond your highest (level ${maxSlotLevel}).`
+                      : permanent
+                        ? `${def.name} is permanently applied to this spell by Domain Secret, at no change to its level.`
+                        : def.note
                 }
                 onClick={() => onToggle(def.slug)}
               >
                 {def.name}
-                {def.variable ? "" : ` +${def.slotIncrease}`}
+                {/* A feat only a free source offers never costs slot levels,
+                    so it carries no "+N" whether or not that source is armed. */}
+                {def.variable || isFree || grantedBy !== undefined ? "" : ` +${def.slotIncrease}`}
               </button>
               {isActive && def.variable && variableMax >= 1 && (
                 <label className="mm-levels">
@@ -655,7 +752,16 @@ function DomainSlotsSection({
                           aria-label={`prepare ${sp.name} in the domain slot`}
                           disabled={full}
                           disabledReason="Domain slot is filled. Unprepare the current spell first."
-                          onClick={() => update((d) => prepareDomainSpell(d, sp.id, classTag))}
+                          onClick={() =>
+                            update((d) =>
+                              prepareDomainSpell(
+                                d,
+                                sp.id,
+                                classTag,
+                                domainSecretMetamagicFor(d, sp.id),
+                              ),
+                            )
+                          }
                         >
                           Prepare
                         </TipButton>
@@ -1053,11 +1159,17 @@ function PreparedView({
     () => deriveResourcePools(doc, refData, sheet.abilities, sheet.abilityDCs),
     [doc, refData, sheet.abilities, sheet.abilityDCs],
   );
-  const freeSource = useMemo(
-    () => freeMetamagicSources(doc, refData, casterTag, derivedPools)[0],
+  const freeSources = useMemo(
+    () => freeMetamagicSources(doc, refData, casterTag, derivedPools),
     [doc, refData, casterTag, derivedPools],
   );
-  const [freeArmedByIndex, setFreeArmedByIndex] = useState<Record<number, boolean>>({});
+  const grantedSlugs = useMemo(() => grantedMetamagicSlugs(freeSources), [freeSources]);
+  // Theologian Domain Secret's permanently modified domain spells — no pool
+  // behind them, so they never appear as an armable offer.
+  const permanentWaivers = useMemo(() => domainSecretWaivers(doc), [doc]);
+  // Armed sources, keyed `<prepared index>:<source id>` (a magus can hold
+  // several one-a-day arcana at once, each its own chip).
+  const [freeArmed, setFreeArmed] = useState<Record<string, boolean>>({});
 
   const cantripList = useMemo(
     () => (model.grantsAllCantrips ? grantedCantrips(refData, casterTag) : []),
@@ -1159,19 +1271,16 @@ function PreparedView({
     // An engaged free application (Metamagic Mastery) keeps the row at its
     // base level: the spell is prepared plain and modified as it is cast.
     const discount = metamagicDiscountFor(discountSources, p.spellId);
-    const freeOffer = freeSource
-      ? freeMetamagicOffer({
-          doc,
-          source: freeSource,
-          baseLevel,
-          applied: p.metamagic ?? [],
-          maxSlotLevel,
-          armed: freeArmedByIndex[index] === true,
-        })
-      : undefined;
-    const slotLevel =
-      baseLevel +
-      slotIncreaseWithFree(metamagicSlotIncrease(p.metamagic, discount.amount), freeOffer);
+    const freePlan = freeMetamagicPlan({
+      doc,
+      sources: freeSources,
+      baseLevel,
+      applied: p.metamagic ?? [],
+      maxSlotLevel,
+      armedIds: new Set(freeSources.filter((s) => freeArmed[`${index}:${s.id}`]).map((s) => s.id)),
+      permanentlyWaived: permanentWaivers.get(p.spellId),
+    });
+    const slotLevel = baseLevel + paidMetamagicSlotIncrease(p.metamagic, discount.amount, freePlan);
     const row: PreparedRow = {
       index,
       spellId: p.spellId,
@@ -1181,7 +1290,8 @@ function PreparedView({
       baseLevel,
       metamagic: p.metamagic ?? [],
       discount,
-      freeOffer,
+      freePlan,
+      permanentDefs: domainSecretDefsFor(doc, p.spellId),
     };
     (preparedByLevel.get(slotLevel) ?? preparedByLevel.set(slotLevel, []).get(slotLevel)!).push(
       row,
@@ -1338,25 +1448,17 @@ function PreparedView({
                           )}
                           {!isCantrip && (
                             <MetamagicControl
-                              owned={owned}
+                              chips={metamagicChips(owned, grantedSlugs, r.permanentDefs)}
                               applied={r.metamagic}
                               baseLevel={r.baseLevel}
                               maxSlotLevel={maxSlotLevel}
                               discount={r.discount}
-                              free={
-                                r.freeOffer
-                                  ? {
-                                      offer: r.freeOffer,
-                                      onToggle: () => {
-                                        setFreeArmedByIndex((prev) => ({
-                                          ...prev,
-                                          [r.index]: prev[r.index] !== true,
-                                        }));
-                                        flashRow(r.index);
-                                      },
-                                    }
-                                  : undefined
-                              }
+                              plan={r.freePlan}
+                              onToggleFree={(sourceId) => {
+                                const key = `${r.index}:${sourceId}`;
+                                setFreeArmed((prev) => ({ ...prev, [key]: prev[key] !== true }));
+                                flashRow(r.index);
+                              }}
                               onToggle={(slug) => {
                                 update((d) => togglePreparedMetamagic(d, r.index, slug));
                                 flashRow(r.index);
@@ -1381,7 +1483,7 @@ function PreparedView({
                                 : spendFreeMetamagic(
                                     setExpendedAt(d, r.index, true),
                                     derivedPools,
-                                    r.freeOffer,
+                                    r.freePlan,
                                   )
                             }
                           />
@@ -1420,18 +1522,14 @@ function PreparedView({
                           <button
                             type="button"
                             className="pick-btn remove prep-cast"
-                            title={
-                              r.freeOffer?.engaged
-                                ? `Cast ${r.name} with metamagic via ${r.freeOffer.source.label} (also spends ${r.freeOffer.cost} ${pluralUnit(r.freeOffer.source, r.freeOffer.cost ?? 0)})`
-                                : undefined
-                            }
+                            title={freeMetamagicCastTitle(r.name, r.freePlan, undefined)}
                             onClick={() => {
-                              const msg = freeMetamagicSpendMessage(r.freeOffer);
+                              const msg = freeMetamagicSpendMessage(r.freePlan);
                               update((d) =>
                                 spendFreeMetamagic(
                                   setExpendedAt(d, r.index, true),
                                   derivedPools,
-                                  r.freeOffer,
+                                  r.freePlan,
                                 ),
                               );
                               if (msg) showToast({ message: msg });
@@ -1516,7 +1614,16 @@ function PreparedView({
                                   ? `${sp.name} is an opposition-school spell and costs 2 slots: only ${remaining} remaining.`
                                   : `All ${total} level-${level} slot${total === 1 ? "" : "s"} are filled. Unprepare one first.`
                             }
-                            onClick={() => update((d) => prepareSpell(d, sp.id, classTag))}
+                            onClick={() =>
+                              update((d) =>
+                                prepareSpell(
+                                  d,
+                                  sp.id,
+                                  classTag,
+                                  domainSecretMetamagicFor(d, sp.id),
+                                ),
+                              )
+                            }
                           >
                             Prepare
                           </TipButton>
@@ -1668,11 +1775,14 @@ function SpontaneousView({
     () => deriveResourcePools(doc, refData, sheet.abilities, sheet.abilityDCs),
     [doc, refData, sheet.abilities, sheet.abilityDCs],
   );
-  const freeSource = useMemo(
-    () => freeMetamagicSources(doc, refData, casterTag, derivedPools)[0],
+  const freeSources = useMemo(
+    () => freeMetamagicSources(doc, refData, casterTag, derivedPools),
     [doc, refData, casterTag, derivedPools],
   );
-  const [freeArmedBySpell, setFreeArmedBySpell] = useState<Record<string, boolean>>({});
+  const grantedSlugs = useMemo(() => grantedMetamagicSlugs(freeSources), [freeSources]);
+  // Armed sources, keyed `<spell id>:<source id>` — a magus can hold several
+  // one-a-day arcana at once, each its own chip on the row.
+  const [freeArmed, setFreeArmed] = useState<Record<string, boolean>>({});
   const toggleCastMM = (spellId: string, slug: string) =>
     setCastMetamagic((prev) => ({
       ...prev,
@@ -1835,22 +1945,18 @@ function SpontaneousView({
                     // instead — the Heighten DC bump still applies.
                     const applied = castMetamagic[sp.id] ?? [];
                     const discount = metamagicDiscountFor(discountSources, sp.id);
-                    const freeOffer = freeSource
-                      ? freeMetamagicOffer({
-                          doc,
-                          source: freeSource,
-                          baseLevel: level,
-                          applied,
-                          maxSlotLevel,
-                          armed: freeArmedBySpell[sp.id] === true,
-                        })
-                      : undefined;
+                    const freePlan = freeMetamagicPlan({
+                      doc,
+                      sources: freeSources,
+                      baseLevel: level,
+                      applied,
+                      maxSlotLevel,
+                      armedIds: new Set(
+                        freeSources.filter((s) => freeArmed[`${sp.id}:${s.id}`]).map((s) => s.id),
+                      ),
+                    });
                     const castLevel =
-                      level +
-                      slotIncreaseWithFree(
-                        metamagicSlotIncrease(applied, discount.amount),
-                        freeOffer,
-                      );
+                      level + paidMetamagicSlotIncrease(applied, discount.amount, freePlan);
                     const effectiveLevel = level + metamagicEffectiveIncrease(applied);
                     const castRemaining = remainingByLevel.get(castLevel) ?? 0;
                     const castExhausted = castRemaining <= 0;
@@ -1867,7 +1973,7 @@ function SpontaneousView({
                           slotDeltas,
                         ),
                         derivedPools,
-                        freeOffer,
+                        freePlan,
                       );
                     return (
                       <div key={sp.id} className="prep-row">
@@ -1892,23 +1998,16 @@ function SpontaneousView({
                             />
                           )}
                           <MetamagicControl
-                            owned={owned}
+                            chips={metamagicChips(owned, grantedSlugs, [])}
                             applied={applied}
                             baseLevel={level}
                             maxSlotLevel={maxSlotLevel}
                             discount={discount}
-                            free={
-                              freeOffer
-                                ? {
-                                    offer: freeOffer,
-                                    onToggle: () =>
-                                      setFreeArmedBySpell((prev) => ({
-                                        ...prev,
-                                        [sp.id]: prev[sp.id] !== true,
-                                      })),
-                                  }
-                                : undefined
-                            }
+                            plan={freePlan}
+                            onToggleFree={(sourceId) => {
+                              const key = `${sp.id}:${sourceId}`;
+                              setFreeArmed((prev) => ({ ...prev, [key]: prev[key] !== true }));
+                            }}
                             onToggle={(slug) => toggleCastMM(sp.id, slug)}
                             onSetLevels={(slug, n) => setCastMMLevels(sp.id, slug, n)}
                           />
@@ -1928,15 +2027,16 @@ function SpontaneousView({
                           className="pick-btn remove prep-cast"
                           disabled={castExhausted}
                           disabledReason={`No level-${castLevel} slots remaining`}
-                          title={
-                            freeOffer?.engaged
-                              ? `Cast ${sp.name} with metamagic via ${freeOffer.source.label} (spend 1 level-${level} slot and ${freeOffer.cost} ${pluralUnit(freeOffer.source, freeOffer.cost ?? 0)})`
-                              : castLevel === level
-                                ? `Cast ${sp.name} (spend 1 level-${level} slot)`
-                                : `Cast ${sp.name} with metamagic (spend 1 level-${castLevel} slot)`
-                          }
+                          title={freeMetamagicCastTitle(
+                            sp.name,
+                            freePlan,
+                            castLevel === level
+                              ? `Cast ${sp.name} (spend 1 level-${level} slot)`
+                              : `Cast ${sp.name} with metamagic (spend 1 level-${castLevel} slot)`,
+                            `1 level-${castLevel} slot`,
+                          )}
                           onClick={() => {
-                            const msg = freeMetamagicSpendMessage(freeOffer);
+                            const msg = freeMetamagicSpendMessage(freePlan);
                             update(castSpend);
                             if (msg) showToast({ message: msg });
                           }}
@@ -2290,7 +2390,7 @@ function HybridView({
                                 />
                               )}
                               <MetamagicControl
-                                owned={owned}
+                                chips={metamagicChips(owned, NO_GRANTED_METAMAGIC, [])}
                                 applied={applied}
                                 baseLevel={level}
                                 maxSlotLevel={maxSlotLevel}
@@ -2504,7 +2604,16 @@ function HybridView({
                                     ? "Cantrips cast at will. No need to prepare more than one."
                                     : `All ${limit} level-${level} prepare slot${limit === 1 ? "" : "s"} are filled. Unprepare one first.`
                                 }
-                                onClick={() => update((d) => prepareSpell(d, sp.id, classTag))}
+                                onClick={() =>
+                                  update((d) =>
+                                    prepareSpell(
+                                      d,
+                                      sp.id,
+                                      classTag,
+                                      domainSecretMetamagicFor(d, sp.id),
+                                    ),
+                                  )
+                                }
                               >
                                 Prepare
                               </TipButton>

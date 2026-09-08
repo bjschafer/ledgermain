@@ -67,14 +67,27 @@ export function preparedSpells(doc: CharacterDoc): PreparedSpell[] {
  * `classTag` is the *stored* class tag (see `model/spellcasting.ts`
  * `storedClassTag`) — `undefined` for the primary caster class, so a
  * single-caster document's prepared entries are shaped exactly as before
- * multiclass support.
+ * multiclass support. `metamagic` seeds the instance already modified, for a
+ * spell that is permanently so (Domain Secret — see
+ * `model/freeMetamagic.ts`'s `domainSecretMetamagicFor`); omit it and the
+ * instance is prepared plain, exactly as before.
  */
-export function prepareSpell(doc: CharacterDoc, spellId: string, classTag?: string): CharacterDoc {
+export function prepareSpell(
+  doc: CharacterDoc,
+  spellId: string,
+  classTag?: string,
+  metamagic?: AppliedMetamagic[],
+): CharacterDoc {
   // `kind: "normal"` is the default per schema; omit so older docs/tests that
   // assert the bare shape continue to pass. Domain entries explicitly set it.
   return withPrepared(doc, [
     ...preparedSpells(doc),
-    { spellId, expended: false, ...(classTag ? { classTag } : {}) },
+    {
+      spellId,
+      expended: false,
+      ...(classTag ? { classTag } : {}),
+      ...(metamagic?.length ? { metamagic } : {}),
+    },
   ]);
 }
 
@@ -91,10 +104,17 @@ export function prepareDomainSpell(
   doc: CharacterDoc,
   spellId: string,
   classTag?: string,
+  metamagic?: AppliedMetamagic[],
 ): CharacterDoc {
   return withPrepared(doc, [
     ...preparedSpells(doc),
-    { spellId, expended: false, kind: "domain", ...(classTag ? { classTag } : {}) },
+    {
+      spellId,
+      expended: false,
+      kind: "domain",
+      ...(classTag ? { classTag } : {}),
+      ...(metamagic?.length ? { metamagic } : {}),
+    },
   ]);
 }
 

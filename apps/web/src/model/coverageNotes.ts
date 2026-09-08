@@ -112,9 +112,9 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
   },
   {
     category: "Metamagic",
-    note: "Most metamagic feats change something the sheet has no number for: a bouncing spell's redirect, an elemental spell's swapped damage type, a quickened spell's action. Those stay rules text on the feat. Class abilities that grant free or cheaper metamagic through a choice the sheet cannot store, like the Theologian's chosen domain spell or a magus arcana's once-a-day feat, are not applied either.",
+    note: "Most metamagic feats change something the sheet has no number for: a bouncing spell's redirect, an elemental spell's swapped damage type, a quickened spell's action. Those stay rules text on the feat.",
     issueDetail:
-      "20 of the 84 vendored metamagic feats carry a structured spell-line transform; the rest turn on a component, action type, or target eligibility the spell data does not express. Unmodeled free-application grants: Theologian Domain Secret and psychic Mimic Metamagic need stored feat-and-spell picks; magus metamagic arcana and oracle Guiding Star are once-a-day with no tracked pool; Metamixing and Metamagic Adept only change casting time.",
+      "20 of the 84 vendored metamagic feats carry a structured spell-line transform; the rest turn on a component, action type, or target eligibility the spell data does not express.",
   },
   {
     category: "Monk flurry weapon lists",
@@ -168,6 +168,11 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
     category: "Precision and nonlethal damage kinds",
     detail:
       "Damage lines carry no precision or lethality axis, so effects keyed to those kinds (precision riders, precision-immunity interactions, lethal-to-nonlethal conversions) have no target.",
+  },
+  {
+    category: "Casting-time metamagic waivers",
+    detail:
+      "Abilities whose whole benefit is removing the full-round action a spontaneous caster pays for metamagic have no target: a cast carries no action-economy line to move.",
   },
   {
     category: "Virtual feat prerequisites",

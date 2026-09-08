@@ -28,19 +28,41 @@ import {
   createEmptyDoc,
   setArchetypes,
   setClassLevel,
+  setClericDomains,
+  setOracleMystery,
   setWizardSchool,
   toggleFeat,
 } from "../src/model/doc.js";
+import { toggleMagusArcana } from "../src/model/magusArcana.js";
+import { toggleOracleRevelation } from "../src/model/oracleRevelations.js";
+import { togglePsychicAmplification } from "../src/model/psychicAmplifications.js";
 import {
+  type FreeMetamagicOffer,
+  domainSecretDefsFor,
+  domainSecretMetamagicFor,
+  domainSecretSlotCount,
+  domainSecretWaivers,
   freeMetamagicOffer,
+  type FreeMetamagicPlan,
+  freeMetamagicPlan,
   freeMetamagicRemaining,
   type FreeMetamagicSource,
   freeMetamagicSources,
   freeMetamagicSpendMessage,
-  slotIncreaseWithFree,
+  paidMetamagicSlotIncrease,
+  setDomainSecretFeat,
+  setDomainSecretSpell,
+  setMimicMetamagicFeat,
   spendFreeMetamagic,
 } from "../src/model/freeMetamagic.js";
-import { metamagicEffectiveIncrease, metamagicSlotIncrease } from "../src/model/metamagic.js";
+import { metamagicEffectiveIncrease } from "../src/model/metamagic.js";
+
+/** A one-source plan, the shape a spell row builds from its offers. */
+function planOf(...offers: FreeMetamagicOffer[]): FreeMetamagicPlan {
+  const waived = new Set<string>();
+  for (const o of offers) for (const slug of o.waived) waived.add(slug);
+  return { offers, waived };
+}
 
 const ref = loadRefData();
 
@@ -143,7 +165,7 @@ describe("freeMetamagicOffer", () => {
     expect(offer.cost).toBe(2);
     expect(offer.blocked).toBeUndefined();
     expect(offer.engaged).toBe(true);
-    expect(slotIncreaseWithFree(metamagicSlotIncrease(applied), offer)).toBe(0);
+    expect(paidMetamagicSlotIncrease(applied, 0, planOf(offer))).toBe(0);
   });
 
   it("does not engage while unarmed (the paid path is untouched)", () => {
@@ -157,7 +179,7 @@ describe("freeMetamagicOffer", () => {
       armed: false,
     });
     expect(offer.engaged).toBe(false);
-    expect(slotIncreaseWithFree(metamagicSlotIncrease(applied), offer)).toBe(3 + 2 - 3); // 2
+    expect(paidMetamagicSlotIncrease(applied, 0, planOf(offer))).toBe(2);
   });
 
   it("blocks a second applied feat (one feat per cast)", () => {
@@ -237,10 +259,10 @@ describe("freeMetamagicOffer", () => {
       armed: true,
     });
     expect(offer.cost).toBe(2);
-    expect(slotIncreaseWithFree(metamagicSlotIncrease(applied, 1), offer)).toBe(0);
+    expect(paidMetamagicSlotIncrease(applied, 1, planOf(offer))).toBe(0);
     // Unarmed, the discount applies as usual.
-    const unarmed = { ...offer, engaged: false };
-    expect(slotIncreaseWithFree(metamagicSlotIncrease(applied, 1), unarmed)).toBe(1);
+    const unarmed = { ...offer, engaged: false, waived: [] };
+    expect(paidMetamagicSlotIncrease(applied, 1, planOf(unarmed))).toBe(1);
   });
 
   it("keeps Heighten's DC bump under a free application (slot 0, effective +N)", () => {
@@ -255,7 +277,7 @@ describe("freeMetamagicOffer", () => {
     });
     expect(offer.cost).toBe(3); // 1 use + 1 per level above 1
     expect(offer.engaged).toBe(true);
-    expect(slotIncreaseWithFree(metamagicSlotIncrease(applied), offer)).toBe(0);
+    expect(paidMetamagicSlotIncrease(applied, 0, planOf(offer))).toBe(0);
     expect(metamagicEffectiveIncrease(applied)).toBe(3);
   });
 });
@@ -274,8 +296,10 @@ describe("spendFreeMetamagic", () => {
       armed: true,
     });
     expect(offer.engaged).toBe(true);
-    expect(freeMetamagicSpendMessage(offer)).toBe("Spent 6 rounds of Bloodrage (Meta-Rage)");
-    const after = spendFreeMetamagic(doc, pools, offer);
+    expect(freeMetamagicSpendMessage(planOf(offer))).toBe(
+      "Spent 6 rounds of Bloodrage (Meta-Rage)",
+    );
+    const after = spendFreeMetamagic(doc, pools, planOf(offer));
     expect(after.live.resources[source.pool.id]).toEqual({ used: 6, max: 12 });
     expect(freeMetamagicRemaining(after, source)).toBe(6);
     // Unarmed offer: a plain cast never touches the pool.
@@ -287,7 +311,7 @@ describe("spendFreeMetamagic", () => {
       maxSlotLevel: 1,
       armed: false,
     });
-    expect(spendFreeMetamagic(doc, pools, idle)).toBe(doc);
+    expect(spendFreeMetamagic(doc, pools, planOf(idle))).toBe(doc);
     expect(spendFreeMetamagic(doc, pools, undefined)).toBe(doc);
   });
 
@@ -303,7 +327,228 @@ describe("spendFreeMetamagic", () => {
       maxSlotLevel: 9,
       armed: true,
     });
-    expect(freeMetamagicSpendMessage(offer)).toBe("Spent 2 uses of Metamagic Mastery");
-    expect(freeMetamagicSpendMessage({ ...offer, engaged: false })).toBeNull();
+    expect(freeMetamagicSpendMessage(planOf(offer))).toBe("Spent 2 uses of Metamagic Mastery");
+    expect(freeMetamagicSpendMessage(planOf({ ...offer, engaged: false }))).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Named-feat sources: the once-a-day grants, Mimic Metamagic, Domain Secret.
+//
+// Expected values are hand-computed from the published ability texts:
+//   - Empowered Magic (UM, magus arcana, 6th): "the magus can cast one spell
+//     per day as if it were modified by the Empower Spell feat. This does not
+//     increase the casting time or the level of the spell."
+//   - Guiding Star (APG, Heavens mystery): "once per night while outdoors,
+//     you can cast one spell as if it were modified by the Empower Spell,
+//     Extend Spell, Silent Spell, or Still Spell feat."
+//   - Mimic Metamagic (OA, major phrenic amplification, 11th): "she chooses
+//     two metamagic feats; she need not have these feats to select them...
+//     She must spend a number of points equal to double the number of levels
+//     by which the feat normally increases a spell's level (minimum 2
+//     points)... only if the spellcaster can cast spells of a high enough
+//     level that she would be able to apply the metamagic feat."
+//   - Domain Secret (theologian cleric, 5th): "the theologian chooses one
+//     domain spell. That spell becomes permanently modified with one of the
+//     following metamagic feats... This metamagic feat does not increase the
+//     level of the spell... At every 5 levels after 5th, the domain
+//     specialist may choose an additional domain spell to modify in this way."
+// ---------------------------------------------------------------------------
+
+describe("named-feat free applications", () => {
+  function magus(level: number, ...arcana: string[]): CharacterDoc {
+    let doc = setClassLevel(addClass(createEmptyDoc("t"), "magus"), "magus", level);
+    for (const id of arcana) doc = toggleMagusArcana(doc, id);
+    return doc;
+  }
+
+  function sourcesFor(doc: CharacterDoc, casterTag: string): FreeMetamagicSource[] {
+    return freeMetamagicSources(doc, ref, casterTag, deriveResourcePools(doc, ref));
+  }
+
+  it("gives a magus one source per metamagic arcanum, each once a day", () => {
+    const sources = sourcesFor(magus(12, "empoweredMagic", "quickenedMagic"), "magus");
+    expect(sources.map((s) => s.label).sort()).toEqual(["Empowered Magic", "Quickened Magic"]);
+    const empowered = sources.find((s) => s.label === "Empowered Magic")!;
+    expect(empowered.pool.max).toBe(1);
+    expect([...empowered.featSlugs!]).toEqual(["empower-spell"]);
+    // A flat daily use whatever the feat would have added.
+    expect(empowered.costFor(3, 2)).toBe(1);
+    // Nothing to name means nothing to offer.
+    expect(sourcesFor(magus(12, "arcaneAccuracy"), "magus")).toEqual([]);
+  });
+
+  it("waives only the feat it names, leaving a second feat to pay as usual", () => {
+    // A magus need not own Empower Spell to use Empowered Magic, but Extend
+    // Spell alongside it is an ordinary paid application.
+    const doc = magus(12, "empoweredMagic");
+    const source = sourcesFor(doc, "magus")[0]!;
+    const applied = [{ slug: "empower-spell" }, { slug: "extend-spell" }];
+    const plan = freeMetamagicPlan({
+      doc,
+      sources: [source],
+      baseLevel: 2,
+      applied,
+      maxSlotLevel: 4,
+      armedIds: new Set([source.id]),
+    });
+    expect(plan.offers[0]!.engaged).toBe(true);
+    expect(plan.offers[0]!.cost).toBe(1);
+    expect([...plan.waived]).toEqual(["empower-spell"]);
+    // Empower's +2 drops out; Extend's +1 still lands on the slot.
+    expect(paidMetamagicSlotIncrease(applied, 0, plan)).toBe(1);
+  });
+
+  it("offers nothing when only a feat the arcanum does not name is applied", () => {
+    const doc = magus(12, "empoweredMagic");
+    const source = sourcesFor(doc, "magus")[0]!;
+    const offer = freeMetamagicOffer({
+      doc,
+      source,
+      baseLevel: 2,
+      applied: [{ slug: "extend-spell" }],
+      maxSlotLevel: 4,
+      armed: true,
+    });
+    expect(offer.cost).toBeNull();
+    expect(offer.engaged).toBe(false);
+    expect(offer.blocked).toBeUndefined();
+  });
+
+  it("charges two arcana separately when both cover a feat on one cast", () => {
+    const doc = magus(15, "empoweredMagic", "stillMagic");
+    const sources = sourcesFor(doc, "magus");
+    const applied = [{ slug: "empower-spell" }, { slug: "still-spell" }];
+    const plan = freeMetamagicPlan({
+      doc,
+      sources,
+      baseLevel: 3,
+      applied,
+      maxSlotLevel: 5,
+      armedIds: new Set(sources.map((s) => s.id)),
+    });
+    expect(plan.offers.every((o) => o.engaged)).toBe(true);
+    expect([...plan.waived].sort()).toEqual(["empower-spell", "still-spell"]);
+    expect(paidMetamagicSlotIncrease(applied, 0, plan)).toBe(0);
+    expect(freeMetamagicSpendMessage(plan)).toBe(
+      "Spent 1 use of Empowered Magic and 1 use of Still Magic",
+    );
+  });
+
+  it("offers Guiding Star's four feats once a night to a Heavens oracle", () => {
+    let doc = setClassLevel(addClass(createEmptyDoc("t"), "oracle"), "oracle", 7);
+    doc = setOracleMystery(doc, "heavens");
+    doc = toggleOracleRevelation(doc, "heavens:guidingStar");
+    const source = sourcesFor(doc, "oracle")[0]!;
+    expect(source.label).toBe("Guiding Star");
+    expect([...source.featSlugs!].sort()).toEqual([
+      "empower-spell",
+      "extend-spell",
+      "silent-spell",
+      "still-spell",
+    ]);
+    expect(source.pool.max).toBe(1);
+    // No modified-level clause: a 7th-level oracle (highest slot 3rd) may
+    // still empower a 3rd-level spell.
+    const offer = freeMetamagicOffer({
+      doc,
+      source,
+      baseLevel: 3,
+      applied: [{ slug: "empower-spell" }],
+      maxSlotLevel: 3,
+      armed: true,
+    });
+    expect(offer.engaged).toBe(true);
+    expect(offer.cost).toBe(1);
+  });
+
+  it("prices Mimic Metamagic off the phrenic pool and caps it at a real slot", () => {
+    let doc = setClassLevel(addClass(createEmptyDoc("t"), "psychic"), "psychic", 11);
+    doc = togglePsychicAmplification(doc, "mimicMetamagic");
+    // Not usable until both named feats are picked.
+    expect(sourcesFor(doc, "psychic")).toEqual([]);
+    doc = setMimicMetamagicFeat(doc, 1, "empower-spell");
+    doc = setMimicMetamagicFeat(doc, 2, "quicken-spell");
+    const source = sourcesFor(doc, "psychic")[0]!;
+    expect(source.label).toBe("Mimic Metamagic");
+    expect(source.unit).toBe("point");
+    // Double the levels the feat adds, minimum 2.
+    expect(source.costFor(3, 2)).toBe(4); // Empower (+2)
+    expect(source.costFor(3, 4)).toBe(8); // Quicken (+4)
+    expect(source.costFor(3, 0)).toBe(2);
+    // "only if the spellcaster can cast spells of a high enough level":
+    // an 11th-level psychic tops out at 6th, so Quicken on a 3rd is out.
+    const blocked = freeMetamagicOffer({
+      doc,
+      source,
+      baseLevel: 3,
+      applied: [{ slug: "quicken-spell" }],
+      maxSlotLevel: 6,
+      armed: true,
+    });
+    expect(blocked.blocked).toContain("level 7");
+    expect(blocked.engaged).toBe(false);
+  });
+});
+
+describe("Domain Secret", () => {
+  /** A theologian cleric with the Air domain (its 1st-level spell is Obscuring Mist). */
+  function theologian(level: number): CharacterDoc {
+    let doc = setClassLevel(addClass(createEmptyDoc("t"), "cleric"), "cleric", level);
+    doc = setArchetypes(doc, ["cleric:theologian"], ref);
+    return setClericDomains(doc, ["Air"]);
+  }
+
+  const airFirst = ref.domainSpellLists["Air"]![1]![0]!;
+
+  it("opens one slot at 5th and another every 5 levels after", () => {
+    expect(domainSecretSlotCount(theologian(4))).toBe(0);
+    expect(domainSecretSlotCount(theologian(5))).toBe(1);
+    expect(domainSecretSlotCount(theologian(9))).toBe(1);
+    expect(domainSecretSlotCount(theologian(10))).toBe(2);
+    expect(domainSecretSlotCount(theologian(20))).toBe(4);
+    // Without the archetype there is no ability at all.
+    const plain = setClassLevel(addClass(createEmptyDoc("t"), "cleric"), "cleric", 20);
+    expect(domainSecretSlotCount(plain)).toBe(0);
+  });
+
+  it("needs both halves of a pick before it waives anything", () => {
+    let doc = setDomainSecretSpell(theologian(5), 1, airFirst);
+    expect(domainSecretWaivers(doc).size).toBe(0);
+    doc = setDomainSecretFeat(doc, 1, "extend-spell");
+    expect([...domainSecretWaivers(doc).get(airFirst)!]).toEqual(["extend-spell"]);
+    // Clearing either half puts it back.
+    expect(domainSecretWaivers(setDomainSecretFeat(doc, 1, undefined)).size).toBe(0);
+  });
+
+  it("prepares the chosen spell already modified, at no change to its slot", () => {
+    let doc = setDomainSecretSpell(theologian(5), 1, airFirst);
+    doc = setDomainSecretFeat(doc, 1, "extend-spell");
+    const seeded = domainSecretMetamagicFor(doc, airFirst);
+    expect(seeded).toEqual([{ slug: "extend-spell" }]);
+    expect(domainSecretMetamagicFor(doc, "some-other-spell")).toBeUndefined();
+
+    // The permanent waiver takes Extend's +1 back out of the slot math, while
+    // a second, ordinary feat still pays.
+    const applied = [{ slug: "extend-spell" }, { slug: "empower-spell" }];
+    const plan = freeMetamagicPlan({
+      doc,
+      sources: [],
+      baseLevel: 1,
+      applied,
+      maxSlotLevel: 3,
+      armedIds: new Set(),
+      permanentlyWaived: domainSecretWaivers(doc).get(airFirst),
+    });
+    expect(paidMetamagicSlotIncrease(applied, 0, plan)).toBe(2);
+    // Nothing is spent: Domain Secret has no pool behind it.
+    expect(freeMetamagicSpendMessage(plan)).toBeNull();
+  });
+
+  it("offers its feat as an attachable chip even though the cleric lacks it", () => {
+    let doc = setDomainSecretSpell(theologian(5), 1, airFirst);
+    doc = setDomainSecretFeat(doc, 1, "bouncing-spell");
+    expect(domainSecretDefsFor(doc, airFirst).map((d) => d.name)).toEqual(["Bouncing Spell"]);
+    expect(domainSecretDefsFor(doc, "some-other-spell")).toEqual([]);
   });
 });

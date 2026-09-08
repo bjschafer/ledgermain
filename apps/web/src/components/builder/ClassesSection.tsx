@@ -32,6 +32,7 @@ import { CursePicker } from "./CursePicker.js";
 import { DisciplinePicker } from "./DisciplinePicker.js";
 import { DiscoveryPicker } from "./DiscoveryPicker.js";
 import { DomainPicker } from "./DomainPicker.js";
+import { DomainSecretPicker } from "./DomainSecretPicker.js";
 import { DruidDomainPicker } from "./DruidDomainPicker.js";
 import { EidolonPicker } from "./EidolonPicker.js";
 import { FavoredWeaponPicker } from "./FavoredWeaponPicker.js";
@@ -491,6 +492,10 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       {doc.identity.classes.some((c) => c.tag === "cleric") && (
         <DomainPicker doc={doc} refData={refData} update={update} />
       )}
+
+      {/* Theologian Domain Secret — the picker gates itself on the archetype
+          and the 5th-level grant. */}
+      <DomainSecretPicker doc={doc} refData={refData} update={update} />
 
       {/* Deity's favored weapon — cleric/inquisitor/warpriest; the picker
           gates itself off the class's vendored proficiency token. */}

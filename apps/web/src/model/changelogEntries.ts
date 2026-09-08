@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-07-free-metamagic",
+    date: "2026-09-07",
+    title: "The metamagic your class hands you for free",
+    note: "A magus who took Empowered Magic, Quickened Magic or their kin can now spend that day's use straight from the spell row: tick the feat, tick the arcanum, and the spell casts out of its own slot. A Heavens oracle's Guiding Star and the shaman hex of the same name work the same way, once a night, with Empower, Extend, Silent or Still. A psychic with Mimic Metamagic names her two feats in the builder and pays for them in phrenic points. A theologian cleric picks a domain spell and one of the nine feats Domain Secret offers, and from then on that spell prepares already modified at no change to its level. None of these need you to own the feat, so the chip is there whether or not you took it, and a second feat you add on top still costs its usual slot.",
+  },
+  {
     id: "2026-09-07-prestige-spell-progression",
     date: "2026-09-07",
     title: "Splatbook prestige classes advance your spellcasting",

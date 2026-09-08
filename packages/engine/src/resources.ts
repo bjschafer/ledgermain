@@ -67,6 +67,7 @@ import {
   type ChannelVariantDef,
 } from "./channel-variants.js";
 import { COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
+import { characterFreeMetamagicGrants, freeMetamagicGrantPoolId } from "./free-metamagic-grants.js";
 import { RASUGEN_BUFF_ID } from "./rasugen.js";
 import { characterFeatSlugs, FEAT_POOL_EFFECTS } from "./feat-effects.js";
 import { formatDiceFormula, tryEvaluateFormula, type RollData } from "./formula.js";
@@ -845,7 +846,31 @@ export function deriveResourcePools(
   // to a pool already derived above add nothing here.
   pools.push(...deriveSlaResourcePools(doc, refData, abilities));
 
+  // Magus arcana / oracle revelation / shaman hex selections that mimic a
+  // named metamagic feat once a day (`free-metamagic-grants.ts`). None of
+  // them is a vendored class feature, so there is no `uses` block to read —
+  // the allotment comes from the table.
+  pools.push(...deriveFreeMetamagicGrantPools(doc));
+
   return pools;
+}
+
+/**
+ * A one-use daily pool per selected free-metamagic grant, so the spell panel's
+ * free application has something to spend and a night's rest refills it. Flat
+ * counts (every entry is once per day), so nothing here evaluates a formula.
+ */
+function deriveFreeMetamagicGrantPools(doc: CharacterDoc): DerivedResourcePool[] {
+  return characterFreeMetamagicGrants(doc).map((def) => ({
+    id: freeMetamagicGrantPoolId(def),
+    name: def.label,
+    max: def.usesPerDay,
+    restValue: def.usesPerDay,
+    per: "day",
+    classTag: def.classTag,
+    detail: def.note,
+    linkedBuffIds: [],
+  }));
 }
 
 /**

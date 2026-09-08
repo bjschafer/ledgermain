@@ -1,8 +1,13 @@
 import { useMemo, useState } from "react";
 
-import { mergedPhrenicAmplificationCatalog } from "@pf1/engine";
+import { METAMAGIC_FEATS, mergedPhrenicAmplificationCatalog } from "@pf1/engine";
 import type { CharacterDoc, RefData } from "@pf1/schema";
 
+import {
+  MIMIC_METAMAGIC_ID,
+  mimicMetamagicFeatSlugs,
+  setMimicMetamagicFeat,
+} from "../../model/freeMetamagic.js";
 import {
   amplificationBelowLevel,
   chosenPsychicAmplificationCount,
@@ -63,6 +68,17 @@ export function PhrenicAmplificationPicker({
   );
 
   const catalog = useMemo(() => mergedPhrenicAmplificationCatalog(refData), [refData]);
+
+  // Mimic Metamagic names two metamagic feats when it is taken, owned or not
+  // (see `model/freeMetamagic.ts`), so the whole registry is offered.
+  const metamagicOptions = useMemo(
+    () =>
+      Object.values(METAMAGIC_FEATS)
+        .map((def) => ({ slug: def.slug, name: def.name, slotIncrease: def.slotIncrease }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
+    [],
+  );
+  const mimicSlugs = mimicMetamagicFeatSlugs(doc);
 
   const amplifications = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -165,6 +181,32 @@ export function PhrenicAmplificationPicker({
                         ))}
                       </div>
                     )}
+                    {isSel && a.id === MIMIC_METAMAGIC_ID
+                      ? ([1, 2] as const).map((slot) => (
+                          <label
+                            key={slot}
+                            className="hint"
+                            style={{ marginTop: 2, display: "block" }}
+                          >
+                            Chosen feat {slot}:{" "}
+                            <select
+                              value={mimicSlugs[slot - 1] ?? ""}
+                              onChange={(e) =>
+                                update((d) =>
+                                  setMimicMetamagicFeat(d, slot, e.target.value || undefined),
+                                )
+                              }
+                            >
+                              <option value="">Choose</option>
+                              {metamagicOptions.map((o) => (
+                                <option key={o.slug} value={o.slug}>
+                                  {o.name} (+{o.slotIncrease})
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                        ))
+                      : null}
                     {a.description ? <FeatureDescription html={a.description} /> : null}
                   </div>
                   <button

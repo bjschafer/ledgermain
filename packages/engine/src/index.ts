@@ -244,6 +244,13 @@ export {
   type MergedArcanistExploitEntry,
 } from "./arcanist-exploits.js";
 export {
+  FREE_METAMAGIC_GRANTS,
+  characterFreeMetamagicGrants,
+  freeMetamagicGrantPoolId,
+  type FreeMetamagicGrantDef,
+  type FreeMetamagicGrantKind,
+} from "./free-metamagic-grants.js";
+export {
   MAGUS_ARCANA,
   MAGUS_ARCANA_IDS,
   resolveMagusArcanum,

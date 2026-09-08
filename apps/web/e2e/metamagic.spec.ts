@@ -269,3 +269,112 @@ test("extending a spontaneous cast spends the higher slot until Magical Lineage 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
+
+/**
+ * Named-feat free metamagic, prepared side: a 6th-level magus who took the
+ * Empowered Magic arcana can empower one spell a day at no change to its
+ * slot, without owning Empower Spell. The chip is offered but locked until the
+ * arcanum is armed; armed and applied, the row stays in its own level bucket
+ * and the Cast button says what it will spend.
+ */
+test("a magus empowers one spell a day from the arcanum, not a higher slot", async ({ page }) => {
+  // A spellbook round trip, five level-ups, an arcana pick and three mode
+  // switches — same time-budget reasoning as the wizard test above.
+  test.slow();
+  const { consoleErrors, pageErrors } = guard(page);
+
+  const classes = await pickClass(page, "Magus");
+  await levelUp(page, classes, "Magus", 5); // level 6: Empowered Magic's own minimum
+  await addKnownSpell(page, "Spellbook", "Shocking Grasp");
+
+  const arcana = classes.locator(".magus-arcana-picker");
+  await typeSearch(arcana.locator("input.search"), "Empowered Magic");
+  await featRow(arcana, page, "Empowered Magic").getByRole("button", { name: "Add" }).click();
+
+  await page.getByRole("tab", { name: "Play" }).click();
+  const spells = spellsPanel(page);
+  const level1 = levelSection(spells, page, "Level 1");
+  await level1.locator("details.prep-add > summary").click();
+  await level1.getByRole("button", { name: "prepare Shocking Grasp", exact: true }).click();
+
+  const row = spellRow(level1, page, "Shocking Grasp");
+  await row.locator("details.prep-metamagic > summary").click();
+
+  // The magus does not have Empower Spell, so the chip is there but locked
+  // until the arcanum is armed.
+  const empower = row.getByRole("button", { name: "Empower Spell", exact: true });
+  await expect(empower).toBeDisabled();
+
+  await row.getByRole("button", { name: /^Free via Empowered Magic/ }).click();
+  await expect(empower).toBeEnabled();
+  await empower.click();
+
+  // The empowered spell stays in its own level-1 bucket: no higher slot is
+  // consumed, and the day's single use is what the Cast button spends.
+  await expect(spellRow(level1, page, "Shocking Grasp")).toBeVisible();
+  await expect(levelSection(spells, page, "Level 3")).toHaveCount(0);
+  await expect(row.getByRole("button", { name: "Cast", exact: true })).toHaveAttribute(
+    "title",
+    "Cast Shocking Grasp with metamagic via Empowered Magic (spend 1 use)",
+  );
+  await expect(row.locator(".spell-chip.is-damage")).toContainText("+50%");
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
+/**
+ * Theologian Domain Secret: a 5th-level cleric names one domain spell and one
+ * of the nine feats the ability offers, and that spell prepares already
+ * modified, in its own slot level rather than a higher one.
+ */
+test("a theologian's domain secret prepares its spell already extended", async ({ page }) => {
+  test.slow();
+  const { consoleErrors, pageErrors } = guard(page);
+
+  const classes = await pickClass(page, "Cleric");
+  await levelUp(page, classes, "Cleric", 4); // level 5: Domain Secret
+
+  const archetypes = classes.locator(".subsection").filter({
+    has: page.getByRole("heading", { name: "Archetypes" }),
+  });
+  await typeSearch(archetypes.locator("input.search"), "Theologian");
+  await archetypes
+    .getByRole("button", { name: /^Theologian/ })
+    .first()
+    .click();
+
+  // One domain, then the secret: Air's 1st-level spell is Obscuring Mist.
+  const domains = classes.locator(".subsection").filter({
+    has: page.getByRole("heading", { name: "Domains" }),
+  });
+  await domains.getByRole("button", { name: "Air", exact: true }).first().click();
+
+  const secret = classes.locator(".subsection").filter({
+    has: page.getByRole("heading", { name: "Domain Secret" }),
+  });
+  const row1 = secret.locator(".pick-row").first();
+  await row1.getByRole("combobox").first().selectOption({ label: "Obscuring Mist (level 1)" });
+  await row1.getByRole("combobox").nth(1).selectOption({ label: "Extend Spell" });
+
+  // Prepared into its domain slot, it arrives with Extend already on and
+  // still occupies a level-1 slot.
+  await page.getByRole("tab", { name: "Play" }).click();
+  const spells = spellsPanel(page);
+  const level1 = levelSection(spells, page, "Level 1");
+  await level1.locator("details.prep-add > summary").click();
+  await level1.getByRole("button", { name: "prepare Obscuring Mist", exact: true }).click();
+
+  const row = spellRow(level1, page, "Obscuring Mist");
+  await expect(row).toBeVisible();
+  await expect(levelSection(spells, page, "Level 2")).not.toContainText("Obscuring Mist");
+  await row.locator("details.prep-metamagic > summary").click();
+  await expect(row.locator("details.prep-metamagic > summary")).toHaveText("Metamagic (1)");
+  await expect(row.getByRole("button", { name: "Extend Spell", exact: true })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
