@@ -182,16 +182,12 @@ describe("minor-form Change formulas (applied as an active buff)", () => {
     }
   });
 
-  it("Mantis's reach bonus is 0 below 12th level and +5 at 12th+", () => {
-    const below = withMinorForm(makeShifter(11), "mantis");
-    const belowRollData = buildRollData(below, ref);
-    expect(
-      collectModifiers(below, ref, belowRollData).find((m) => m.target === "reach")?.value,
-    ).toBe(0);
+  it("Mantis's reach is a note, not a change the engine would drop", () => {
+    const doc = withMinorForm(makeShifter(12), "mantis");
+    const mods = collectModifiers(doc, ref, buildRollData(doc, ref));
+    expect(mods.some((m) => m.target === "reach")).toBe(false);
 
-    const at = withMinorForm(makeShifter(12), "mantis");
-    const atRollData = buildRollData(at, ref);
-    expect(collectModifiers(at, ref, atRollData).find((m) => m.target === "reach")?.value).toBe(5);
+    expect(SHIFTER_ASPECTS.mantis?.contextNotes?.map((n) => n.target)).toContain("reach");
   });
 
   it("Bat's darkvision scales 60 / 90 / 90 with shifter level", () => {

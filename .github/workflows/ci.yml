@@ -36,6 +36,14 @@ jobs:
       - name: Format check
         run: bun run fmt:check
 
+      # Reports unused exports and dependencies. Non-blocking on purpose: the
+      # baseline is 130 findings, mostly exports written once by extraction
+      # agents, and nobody should be forced to triage them to land a fix. Drop
+      # continue-on-error once the report reads clean.
+      - name: Dead code report (knip)
+        run: bun run knip
+        continue-on-error: true
+
       # Covers engine/data-pipeline/web (bun test) and apps/api (vitest +
       # Workers pool) via the root --filter '*' fan-out.
       - name: Unit tests

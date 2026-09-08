@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@pf1/data-pipeline": "workspace:*",
-    "@types/bun": "^1.1.14"
+    "@types/bun": "^1.1.14",
+    "fast-check": "^4.9.0"
   }
 }

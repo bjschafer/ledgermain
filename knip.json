@@ -1,0 +1,35 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/*.ts"],
+      "project": ["scripts/**/*.ts"]
+    },
+    "packages/schema": {
+      "project": ["src/**/*.ts"]
+    },
+    "packages/engine": {
+      "entry": ["test/**/*.test.ts"],
+      "project": ["src/**/*.ts", "test/**/*.ts"]
+    },
+    "packages/data-pipeline": {
+      "entry": ["src/cli/*.ts", "test/**/*.test.ts"],
+      "project": ["src/**/*.ts", "test/**/*.ts"]
+    },
+    "apps/web": {
+      "entry": ["test/**/*.test.ts", "e2e/**/*.ts", "scripts/**/*.ts"],
+      "project": ["src/**/*.{ts,tsx}", "test/**/*.ts", "e2e/**/*.ts", "scripts/**/*.ts"]
+    },
+    "apps/reference": {
+      "entry": ["test/**/*.test.ts", "scripts/**/*.ts"],
+      "project": ["src/**/*.{ts,tsx}", "test/**/*.ts", "scripts/**/*.ts"]
+    },
+    "apps/api": {
+      "entry": ["test/**/*.test.ts"],
+      "project": ["src/**/*.ts", "test/**/*.ts"]
+    }
+  },
+  "ignoreDependencies": ["@pf1/tokens", "cloudflare"],
+  "ignoreBinaries": ["distrobox", "ldd", "wrangler"],
+  "ignoreUnresolved": ["scripts/build-ref-index.ts"]
+}

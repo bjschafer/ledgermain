@@ -19,6 +19,7 @@
     "lint:fix": "oxlint . --fix",
     "fmt": "oxfmt .",
     "fmt:check": "oxfmt . --check",
+    "knip": "knip-bun --no-progress",
     "e2e": "bun run --filter @pf1/web e2e",
     "e2e:install": "bun run --filter @pf1/web e2e:install",
     "e2e:webkit": "bun run --filter @pf1/web e2e:webkit",
@@ -32,6 +33,7 @@
     "deploy": "bun run build && bun run --filter @pf1/web deploy"
   },
   "devDependencies": {
+    "knip": "^6.34.0",
     "oxfmt": "^0.67.0",
     "oxlint": "^1.72.0",
     "typescript": "^5.6.3"

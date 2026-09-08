@@ -301,10 +301,14 @@ const ASPECT_LIST: ShifterAspectDef[] = build([
     id: "mantis",
     name: "Mantis",
     summary: "Gain Lunge as a bonus feat. At 12th level, gain +5 ft. reach.",
-    minorFormChanges: [
-      { formula: "if(gte(@classes.shifter.level, 12), 5, 0)", target: "reach", type: "untyped" },
+    // Reach is a contextNote, not a Change: the sheet has no reach line for a
+    // `reach` target to land on, so a change aimed at it would be collected
+    // and dropped. Same posture as the sorcerer Long Limbs bloodline power.
+    minorFormChanges: [],
+    contextNotes: [
+      note("Grants a bonus feat — add it to Feats separately.", "bonusFeats"),
+      note("+5 ft. reach from 12th level, applied by hand.", "reach"),
     ],
-    contextNotes: [note("Grants a bonus feat — add it to Feats separately.", "bonusFeats")],
   },
   {
     id: "monkey",
