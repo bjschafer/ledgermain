@@ -52,13 +52,11 @@ export function collectPanelEntries(sheet: DerivedSheet): ClassFeaturePanelEntry
   return [
     ...sheet.classFeatures.map((feature): ClassFeaturePanelEntry => ({ kind: "base", feature })),
     ...sheet.activeArchetypes.flatMap((a) =>
-      a.features.map(
-        (feature): ClassFeaturePanelEntry => ({
-          kind: "archetype",
-          feature,
-          archetypeName: a.name,
-        }),
-      ),
+      a.features.map((feature): ClassFeaturePanelEntry => ({
+        kind: "archetype",
+        feature,
+        archetypeName: a.name,
+      })),
     ),
   ];
 }

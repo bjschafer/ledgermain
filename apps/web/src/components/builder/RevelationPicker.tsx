@@ -153,7 +153,11 @@ export function RevelationPicker({ doc, refData, update }: RevelationPickerProps
                         {belowLevel && (
                           <div className="hint" style={{ marginTop: 2 }}>
                             ⚠ Requires oracle {r.minLevel}
-                            {r.minLevel === 1 ? "st" : r.minLevel === 3 ? "rd" : "th"} (currently{" "}
+                            {r.minLevel === 1
+                              ? "st"
+                              : r.minLevel === 3
+                                ? "rd"
+                                : "th"} (currently{" "}
                             {level})
                           </div>
                         )}
