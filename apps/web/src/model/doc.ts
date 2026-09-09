@@ -2050,12 +2050,26 @@ export function reconcileFavoredClassBonus(doc: CharacterDoc, refData: RefData):
 }
 
 /**
+ * PF1's ability-score-increase cadence: one at every 4th character level, so
+ * `floor(level / 4)` total by `level`. Takes a bare level rather than a doc so
+ * the level-up toast can diff two of them.
+ */
+export function abilityIncreasesByLevel(level: number): number {
+  return Math.floor(level / 4);
+}
+
+/** How many ability score increases `doc` has earned in total. */
+export function abilityIncreaseBudget(doc: CharacterDoc): number {
+  return abilityIncreasesByLevel(totalLevel(doc));
+}
+
+/**
  * Append `ability` to `build.abilityIncreases` if the current length is below
- * `floor(totalLevel / 4)`. Returns the doc unchanged when the budget is
- * exhausted (so callers can always call unconditionally).
+ * the earned budget. Returns the doc unchanged when the budget is exhausted
+ * (so callers can always call unconditionally).
  */
 export function addAbilityIncrease(doc: CharacterDoc, ability: AbilityId): CharacterDoc {
-  const allowed = Math.floor(totalLevel(doc) / 4);
+  const allowed = abilityIncreaseBudget(doc);
   const current = doc.build.abilityIncreases ?? [];
   if (current.length >= allowed) return doc;
   return {
@@ -2079,7 +2093,7 @@ export function removeAbilityIncrease(doc: CharacterDoc, ability: AbilityId): Ch
 /**
  * Set the number of `ability` entries in `build.abilityIncreases` to `count`,
  * preserving every other ability's assignments. `count` is clamped to
- * `[0, remainingBudget]` so the global `floor(totalLevel / 4)` cap can never be
+ * `[0, remainingBudget]` so the global earned-increase cap can never be
  * exceeded. Used by the ability-increase stepper, which presents an absolute
  * count per ability.
  */
@@ -2088,7 +2102,7 @@ export function setAbilityIncreaseCount(
   ability: AbilityId,
   count: number,
 ): CharacterDoc {
-  const allowed = Math.floor(totalLevel(doc) / 4);
+  const allowed = abilityIncreaseBudget(doc);
   const current = doc.build.abilityIncreases ?? [];
   const others = current.filter((a) => a !== ability);
   const room = Math.max(0, allowed - others.length);

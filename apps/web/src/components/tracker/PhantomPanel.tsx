@@ -18,6 +18,7 @@ import {
   togglePhantomCondition,
 } from "../../model/phantom.js";
 import { creatureAbilityRows } from "../../model/creatureDisplay.js";
+import { effectiveHp, isHpLow } from "../../model/hp.js";
 import { signed } from "../../model/names.js";
 import {
   formatPhantomAttackDamage,
@@ -52,8 +53,8 @@ export function PhantomPanel({ doc, refData, update }: BuilderProps) {
 
   const amt = Number.isNaN(amount) ? 0 : amount;
   const { current, nonlethal } = phantom.hp;
-  const effective = current - nonlethal;
-  const isLow = phantom.hp.max > 0 && effective <= Math.floor(phantom.hp.max / 4);
+  const effective = effectiveHp(phantom.hp);
+  const isLow = isHpLow(effective, phantom.hp.max);
 
   const skillRows = phantomSkillRows(phantom);
 

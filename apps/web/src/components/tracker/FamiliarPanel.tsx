@@ -20,6 +20,7 @@ import {
   toggleFamiliarCondition,
 } from "../../model/familiar.js";
 import { creatureAbilityRows } from "../../model/creatureDisplay.js";
+import { effectiveHp, isHpLow } from "../../model/hp.js";
 import {
   familiarSlaDc,
   formatCreatureDefenses,
@@ -52,8 +53,8 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
 
   const amt = Number.isNaN(amount) ? 0 : amount;
   const { current, nonlethal } = familiar.hp;
-  const effective = current - nonlethal;
-  const isLow = familiar.hp.max > 0 && effective <= Math.floor(familiar.hp.max / 4);
+  const effective = effectiveHp(familiar.hp);
+  const isLow = isHpLow(effective, familiar.hp.max);
   const inReach = doc.live.familiarInReach ?? true;
 
   const skillIds = Array.from(

@@ -13,6 +13,7 @@ import {
   isCasterTag,
 } from "../model/casterLevel.js";
 import { bypassChipLabel, bypassTip } from "../model/drBypassDisplay.js";
+import { effectiveHp, isHpLow } from "../model/hp.js";
 import { blastBurnWarning, blastSubLine } from "../model/kineticistBlastDisplay.js";
 import { combinedLanguages } from "../model/languages.js";
 import {
@@ -155,9 +156,9 @@ export function Sheet({
 
   // Tie the HP box's fill level to remaining HP (drains as damage is taken).
   const hpMax = sheet.hp.max;
-  const hpEffective = doc.live.hp.current - doc.live.hp.nonlethal;
+  const hpEffective = effectiveHp(doc.live.hp);
   const hpPct = hpMax > 0 ? Math.max(0, Math.min(1, hpEffective / hpMax)) : 1;
-  const hpLow = hpMax > 0 && hpEffective <= Math.floor(hpMax / 4);
+  const hpLow = isHpLow(hpEffective, hpMax);
 
   return (
     <section className="sheet" aria-label="Live character sheet">

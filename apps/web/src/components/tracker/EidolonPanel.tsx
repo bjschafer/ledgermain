@@ -19,6 +19,7 @@ import {
   toggleEidolonSummoned,
 } from "../../model/eidolon.js";
 import { creatureAbilityRows } from "../../model/creatureDisplay.js";
+import { effectiveHp, isHpLow } from "../../model/hp.js";
 import {
   eidolonAttackInstanceCount,
   eidolonSkillRows,
@@ -56,8 +57,8 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
 
   const amt = Number.isNaN(amount) ? 0 : amount;
   const { current, nonlethal } = eidolon.hp;
-  const effective = current - nonlethal;
-  const isLow = eidolon.hp.max > 0 && effective <= Math.floor(eidolon.hp.max / 4);
+  const effective = effectiveHp(eidolon.hp);
+  const isLow = isHpLow(effective, eidolon.hp.max);
 
   const skillRows = eidolonSkillRows(eidolon);
   const attackInstanceCount = eidolonAttackInstanceCount(eidolon);

@@ -304,3 +304,22 @@ export function hpState(doc: CharacterDoc, derived: DerivedSheet): HpState {
   }
   return { status: "ok", diesAt };
 }
+
+/** Effective HP: what's left after nonlethal damage eats into current HP. */
+export function effectiveHp(hp: { current: number; nonlethal: number }): number {
+  return hp.current - hp.nonlethal;
+}
+
+/**
+ * The shared "in trouble" threshold: effective HP at or below a quarter of
+ * max. Not a PF1 rule — it's this tracker's own alarm line, the one place the
+ * sheet spends red — so every readout that paints it (the HP box, the stat
+ * strip, the play-tab badge, and each companion panel) has to agree on it or
+ * the sheet contradicts itself mid-fight.
+ *
+ * The `max > 0` guard keeps a character with no class levels yet from reading
+ * as bloodied at 0/0.
+ */
+export function isHpLow(effective: number, max: number): boolean {
+  return max > 0 && effective <= Math.floor(max / 4);
+}

@@ -13,9 +13,18 @@ import { Component, type ErrorInfo, type ReactNode } from "react";
  * Scope is render, lifecycle, and constructors only. Event handlers and async
  * work are outside React's boundary machinery -- those paths guard themselves
  * (`state/useCharacter.ts` routes load failures to its own error screen).
+ *
+ * `fallback` narrows the blast radius: without it the whole tree is replaced by
+ * the full-screen notice, which is right at the root and wrong around one
+ * tracker panel, where losing the rest of the sheet mid-fight costs far more
+ * than the panel does. See `PanelBoundary`.
  */
 interface Props {
   children: ReactNode;
+  /** What to render in place of `children` after a crash. Default: full screen. */
+  fallback?: (error: Error) => ReactNode;
+  /** Names the crashing region in the console line. Default: the whole sheet. */
+  label?: string;
 }
 
 interface State {
@@ -33,12 +42,14 @@ export class ErrorBoundary extends Component<Props, State> {
     // Nothing ships this anywhere: the app has no telemetry and the feedback
     // endpoint needs a Turnstile token this screen can't obtain. The console
     // is what a bug reporter can actually be walked through reading.
-    console.error("Ledgermain crashed while rendering:", error, info.componentStack);
+    const where = this.props.label ?? "the sheet";
+    console.error(`Ledgermain crashed while rendering ${where}:`, error, info.componentStack);
   }
 
   override render(): ReactNode {
     const { error } = this.state;
     if (!error) return this.props.children;
+    if (this.props.fallback) return this.props.fallback(error);
 
     const build = typeof __APP_VERSION__ === "string" ? __APP_VERSION__ : "unknown";
     return (

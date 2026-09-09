@@ -6,6 +6,8 @@
 import { describe, expect, it } from "bun:test";
 
 import {
+  abilityIncreaseBudget,
+  abilityIncreasesByLevel,
   addClass,
   createEmptyDoc,
   setAbilityIncreaseCount,
@@ -70,5 +72,25 @@ describe("setAbilityIncreaseCount()", () => {
   it("clamps a negative count to zero", () => {
     const d = setAbilityIncreaseCount(doc(), "str", -5);
     expect(count(d, "str")).toBe(0);
+  });
+});
+
+describe("abilityIncreasesByLevel() / abilityIncreaseBudget()", () => {
+  it("grants none before 4th level", () => {
+    expect(abilityIncreasesByLevel(1)).toBe(0);
+    expect(abilityIncreasesByLevel(3)).toBe(0);
+  });
+
+  it("grants one at each of 4th, 8th, 12th, 16th and 20th", () => {
+    expect([4, 8, 12, 16, 20].map(abilityIncreasesByLevel)).toEqual([1, 2, 3, 4, 5]);
+  });
+
+  it("counts total character level across a multiclass build", () => {
+    let d = createEmptyDoc("t");
+    d = addClass(d, "fighter");
+    d = setClassLevel(d, "fighter", 5);
+    d = addClass(d, "rogue");
+    d = setClassLevel(d, "rogue", 3);
+    expect(abilityIncreaseBudget(d)).toBe(2);
   });
 });

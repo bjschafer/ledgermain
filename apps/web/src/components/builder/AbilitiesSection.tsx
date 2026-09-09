@@ -1,9 +1,9 @@
 import {
+  abilityIncreaseBudget,
   ABILITY_IDS,
   setAbility,
   setAbilityIncreaseCount,
   setAbilityPointBuyBudget,
-  totalLevel,
 } from "../../model/doc.js";
 import { ABILITY_ABBR, signed } from "../../model/names.js";
 import { POINT_BUY_BUDGETS, totalPointBuyCost } from "../../model/pointBuy.js";
@@ -16,7 +16,7 @@ import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 
 export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
-  const allowed = Math.floor(totalLevel(doc) / 4);
+  const allowed = abilityIncreaseBudget(doc);
   const increases = doc.build.abilityIncreases ?? [];
   const assigned = increases.length;
   // Ability-score-increases subsection: default collapsed (only relevant every 4 levels)

@@ -29,6 +29,7 @@ import { VigilanteIdentityPanel } from "./VigilanteIdentityPanel.js";
 import { XpPanel } from "./XpPanel.js";
 import { heroPointsEnabled } from "../../model/heroPoints.js";
 import { xpEnabled } from "../../model/xp.js";
+import { PanelBoundary } from "../PanelBoundary.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
@@ -41,6 +42,9 @@ import type { BuilderProps } from "../builder/types.js";
  * Each panel is wrapped in a `.play-section` anchor whose `data-nav-*` feed the
  * sticky `PlayNav` jump rail (rendered from `App.tsx`'s layout header). Panels
  * self-hide when they don't apply; empty groups collapse away via CSS `:has`.
+ *
+ * Each is also wrapped in its own `PanelBoundary`, so one panel throwing during
+ * a fight loses that panel and not the sheet.
  */
 
 interface Section {
@@ -131,7 +135,7 @@ export function Tracker(props: BuilderProps) {
               data-nav-group={group.name}
               key={section.id}
             >
-              {section.node}
+              <PanelBoundary label={section.label}>{section.node}</PanelBoundary>
             </div>
           ))}
         </section>

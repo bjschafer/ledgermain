@@ -2,6 +2,7 @@ import { useMemo } from "react";
 
 import { baselineSheet } from "../../model/baseline.js";
 import { advanceRound, currentRound, resetRound } from "../../model/buffs.js";
+import { effectiveHp, isHpLow } from "../../model/hp.js";
 import { signed } from "../../model/names.js";
 import { RotateIcon } from "../icons.js";
 import type { BuilderProps } from "../builder/types.js";
@@ -35,8 +36,8 @@ export function StatStrip({ doc, sheet, refData, update, showRound }: StatStripP
   // nonlethal) at or below 1/4 max, with the `hpMax > 0` guard so a
   // not-yet-built character doesn't show a false "low HP" state.
   const hpMax = sheet.hp.max;
-  const hpEffective = doc.live.hp.current - doc.live.hp.nonlethal;
-  const hpLow = hpMax > 0 && hpEffective <= Math.floor(hpMax / 4);
+  const hpEffective = effectiveHp(doc.live.hp);
+  const hpLow = isHpLow(hpEffective, hpMax);
 
   const base = useMemo(() => baselineSheet(doc, refData), [doc, refData]);
 

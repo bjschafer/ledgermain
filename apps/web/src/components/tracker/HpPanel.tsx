@@ -10,8 +10,10 @@ import {
   addNonlethal,
   applyDamage,
   applyHealing,
+  effectiveHp,
   healNonlethal,
   hpState,
+  isHpLow,
   isImmuneToNonlethal,
   restHp,
   setStable,
@@ -66,8 +68,8 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   const max = sheet.hp.max;
   const restMode = doc.build.settings?.restMode ?? "full";
   const { current, temp, nonlethal } = doc.live.hp;
-  const effective = current - nonlethal;
-  const isLow = max > 0 && effective <= Math.floor(max / 4);
+  const effective = effectiveHp(doc.live.hp);
+  const isLow = isHpLow(effective, max);
   const fillPct = max > 0 ? Math.max(0, Math.min(1, effective / max)) : 1;
 
   const state = hpState(doc, sheet);

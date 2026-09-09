@@ -20,7 +20,7 @@ import {
   loadOrCreateActive,
   resetAllCharacters,
 } from "../db/characters.js";
-import { reconcileFavoredClassBonus } from "../model/doc.js";
+import { abilityIncreasesByLevel, reconcileFavoredClassBonus } from "../model/doc.js";
 import { migrateDoc } from "../model/migrations.js";
 import { HERO_POINT_CAP, heroPoints, heroPointsEnabled } from "../model/heroPoints.js";
 import { reconcileCurrentHp } from "../model/hp.js";
@@ -597,7 +597,8 @@ export function useCharacter(): CharacterStore {
     // still needs the player's input.
     const grants: string[] = [];
     if (maxHp > last.maxHp) grants.push(`max HP ${last.maxHp}→${maxHp}`);
-    const newAbilityIncreases = Math.floor(level / 4) - Math.floor(last.level / 4);
+    const newAbilityIncreases =
+      abilityIncreasesByLevel(level) - abilityIncreasesByLevel(last.level);
     if (newAbilityIncreases > 0) {
       grants.push(
         `${newAbilityIncreases} ability score increase${newAbilityIncreases === 1 ? "" : "s"}`,

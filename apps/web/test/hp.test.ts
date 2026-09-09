@@ -9,7 +9,9 @@ import { addBuff, makeActiveBuff } from "../src/model/buffs.js";
 import { addClass, createEmptyDoc, setClassLevel, setSorcererBloodline } from "../src/model/doc.js";
 import {
   applyGrantedTempHp,
+  effectiveHp,
   hpState,
+  isHpLow,
   isImmuneToNonlethal,
   reconcileCurrentHp,
   setStable,
@@ -315,5 +317,29 @@ describe("isImmuneToNonlethal()", () => {
     d = setSorcererBloodline(d, "Undead");
     const sheet = compute(d, ref);
     expect(isImmuneToNonlethal(sheet)).toBe(false);
+  });
+});
+
+describe("effectiveHp() / isHpLow()", () => {
+  it("subtracts nonlethal damage from current HP", () => {
+    expect(effectiveHp({ current: 30, nonlethal: 7 })).toBe(23);
+  });
+
+  it("fires at exactly a quarter of max, and not one point above", () => {
+    expect(isHpLow(10, 40)).toBe(true);
+    expect(isHpLow(11, 40)).toBe(false);
+  });
+
+  it("floors the quarter, so 4/17 is low but 5/17 is not", () => {
+    expect(isHpLow(4, 17)).toBe(true);
+    expect(isHpLow(5, 17)).toBe(false);
+  });
+
+  it("stays quiet for a character with no class levels yet (0 of 0)", () => {
+    expect(isHpLow(0, 0)).toBe(false);
+  });
+
+  it("is low once effective HP goes negative", () => {
+    expect(isHpLow(-3, 40)).toBe(true);
   });
 });

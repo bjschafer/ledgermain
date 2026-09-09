@@ -2619,6 +2619,22 @@ button:focus-visible,
   overflow-wrap: anywhere;
 }
 
+/* A panel whose render threw (`PanelBoundary`). Keeps the panel's own chrome so
+   it stays in place in the stack, but drops the gold header band: nothing here
+   is worth the accent budget, and the muted header reads as "this one is out"
+   next to its working neighbours. */
+.panel-crashed > header {
+  background: var(--surface-2);
+  border-bottom: 2px solid var(--line);
+}
+
+/* .crash-detail is centred for the full-screen notice; in a panel it sits in
+   the normal text flow. */
+.panel-crashed .crash-detail {
+  margin: 8px 0 0;
+  max-width: none;
+}
+
 .empty {
   color: var(--faint);
   font-style: italic;

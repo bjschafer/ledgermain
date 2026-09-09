@@ -28,6 +28,7 @@ import {
   formatCompanionSummary,
 } from "../../model/companionDisplay.js";
 import { creatureAbilityRows } from "../../model/creatureDisplay.js";
+import { effectiveHp, isHpLow } from "../../model/hp.js";
 import { signed } from "../../model/names.js";
 import { InfoTip } from "../InfoTip.js";
 import { StatSeal } from "../StatSeal.js";
@@ -57,8 +58,8 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
 
   const amt = Number.isNaN(amount) ? 0 : amount;
   const { current, nonlethal } = companion.hp;
-  const effective = current - nonlethal;
-  const isLow = companion.hp.max > 0 && effective <= Math.floor(companion.hp.max / 4);
+  const effective = effectiveHp(companion.hp);
+  const isLow = isHpLow(effective, companion.hp.max);
 
   const skillRows = companionSkillRows(companion);
 

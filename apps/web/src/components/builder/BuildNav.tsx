@@ -4,7 +4,7 @@ import {
   chosenArcanistExploitCount,
   expectedArcanistExploitCount,
 } from "../../model/arcanistExploits.js";
-import { totalLevel } from "../../model/doc.js";
+import { abilityIncreaseBudget } from "../../model/doc.js";
 import { chosenFeatCountExcludingGranted, expectedFeatCount } from "../../model/feats.js";
 import { chosenMagusArcanaCount, expectedMagusArcanaCount } from "../../model/magusArcana.js";
 import {
@@ -74,7 +74,7 @@ export function useAttentionBadges({
 
     // Abilities: unassigned ability-score increases (AbilitiesSection's
     // "N / M assigned" subsection header).
-    const allowedIncreases = Math.floor(totalLevel(doc) / 4);
+    const allowedIncreases = abilityIncreaseBudget(doc);
     const assignedIncreases = doc.build.abilityIncreases?.length ?? 0;
     const openIncreases = Math.max(0, allowedIncreases - assignedIncreases);
     if (openIncreases > 0) {

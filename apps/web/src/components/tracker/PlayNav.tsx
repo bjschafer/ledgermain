@@ -2,6 +2,7 @@ import { useMemo } from "react";
 
 import { activeAbilityAfflictions, totalNegativeLevels } from "../../model/afflictions.js";
 import { heroPoints } from "../../model/heroPoints.js";
+import { effectiveHp, isHpLow } from "../../model/hp.js";
 import type { BuilderProps } from "../builder/types.js";
 import { SectionNav, type NavBadge } from "../SectionNav.js";
 
@@ -27,8 +28,8 @@ function usePlayBadges({
     // Low HP mirrors StatStrip/Sheet: effective HP (current − nonlethal) at or
     // below a quarter of max, guarded so a not-yet-built sheet stays quiet.
     const hpMax = sheet.hp.max;
-    const hpEffective = doc.live.hp.current - doc.live.hp.nonlethal;
-    if (hpMax > 0 && hpEffective <= Math.floor(hpMax / 4)) {
+    const hpEffective = effectiveHp(doc.live.hp);
+    if (isHpLow(hpEffective, hpMax)) {
       badges["play-hp"] = { count: hpEffective, tone: "warn", title: "Low HP" };
     }
 
