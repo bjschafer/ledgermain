@@ -297,6 +297,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
                     {isSel && choiceDescriptor ? (
                       <ChoiceSelect
                         label={choiceDescriptor.label}
+                        owner={tr.name}
                         options={choiceDescriptor.options}
                         value={racialTraitChoice(doc, tr.id) ?? ""}
                         onChange={(optionId) =>

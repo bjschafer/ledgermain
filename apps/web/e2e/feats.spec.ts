@@ -64,10 +64,7 @@ test("a feat added in the manager lands in the panel's chosen list", async ({ pa
   // button, and a fresh fighter (all 10s) fails Dodge's Dex 13. `.first()`
   // skips past "Toughness (Mythic)", which sorts after the base feat.
   await typeSearch(dialog.getByLabel("Search feats"), "Toughness");
-  await featRow(catalog, page, "Toughness")
-    .first()
-    .getByRole("button", { name: "Add", exact: true })
-    .click();
+  await featRow(catalog, page, "Toughness").first().getByRole("button", { name: /^Add / }).click();
 
   // It appears in the taken pane immediately, without clearing the search.
   await expect(featRow(taken, page, "Toughness")).toBeVisible();

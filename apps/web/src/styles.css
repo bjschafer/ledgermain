@@ -1839,10 +1839,13 @@ button:focus-visible,
   border-color: var(--sage);
 }
 
+/* --sage on the sage-tinted active fill lands at 4.4:1, just under AA (it
+   clears easily on the untinted --surface the inactive chip sits on). Same hue,
+   lightened until it holds (5.0:1). */
 .buff-apply.is-active {
   border-color: var(--sage);
   background: rgba(136, 160, 106, 0.16);
-  color: var(--sage);
+  color: #94aa79;
 }
 
 /* Variant chooser for a spell mapping to several buffs (Resist Energy's energy
@@ -3400,7 +3403,7 @@ button:focus-visible,
    a preceding .btn-ghost.rest, floating the button away from the edge instead
    of sitting flush next to the caret. Let the button's own auto margin do the
    pushing and keep the caret adjacent. */
-.panel > header .btn-ghost.rest ~ .panel-caret {
+.panel > header .btn-ghost.rest ~ .panel-caret-btn {
   margin-left: 0;
 }
 
@@ -5380,6 +5383,22 @@ input[type="text"].saved-roll-name:focus {
   margin-left: auto;
   flex-shrink: 0;
   transition: transform 0.15s;
+}
+
+/* The real collapse toggle in a `Panel` header. Invisible chrome: the caret is
+   the whole affordance, and the header around it is clickable anyway. */
+.panel-caret-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: auto;
+  display: flex;
+  cursor: pointer;
+  color: inherit;
+}
+
+.panel-caret-btn .panel-caret {
+  margin-left: 0;
 }
 
 .panel-caret.is-collapsed {

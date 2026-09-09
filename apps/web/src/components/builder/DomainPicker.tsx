@@ -252,6 +252,10 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
                       {options.length > 0 && (
                         <select
                           className="subdomain-select"
+                          // One of these per domain slot, all rendering the
+                          // same option list, so the name has to carry the
+                          // domain it belongs to.
+                          aria-label={`${domain?.name ?? domainTag} subdomain`}
                           value={subdomain ? subdomain.tag : ""}
                           onChange={(e) => setSlot(index, e.target.value || domainTag)}
                         >

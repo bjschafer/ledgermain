@@ -236,6 +236,7 @@ export function VendoredRacialTraitPicker({
           {isSel && choiceDescriptor ? (
             <ChoiceSelect
               label={choiceDescriptor.label}
+              owner={t.name}
               options={choiceDescriptor.options}
               value={racialTraitChoice(doc, t.id) ?? ""}
               onChange={(optionId) => update((d) => setRacialTraitChoice(d, t.id, optionId))}

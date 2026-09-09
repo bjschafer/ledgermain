@@ -65,32 +65,26 @@ export function Panel({
   const onHeaderClick = isCollapsible
     ? (e: MouseEvent<HTMLElement>) => {
         // Don't collapse when the user interacts with controls inside the header
-        // (e.g. the "Advance round" or "Rest" buttons in tracker panels).
-        // e.target can be a text node, so resolve to the nearest Element first.
+        // (e.g. the "Advance round" or "Rest" buttons in tracker panels, or the
+        // caret, which toggles on its own). e.target can be a text node, so
+        // resolve to the nearest Element first.
         const node = e.target instanceof Element ? e.target : (e.target as Node).parentElement;
         const interactive = node?.closest(
           "button, input, select, textarea, [role='button'], [contenteditable='true']",
         );
-        // The header itself has role="button", so exclude it from the guard.
-        if (!interactive || interactive === e.currentTarget) toggle();
+        if (!interactive) toggle();
       }
     : undefined;
 
+  // The caret is the real toggle; the header's click handler is a mouse/touch
+  // convenience on top of it. The header used to BE the button, but several
+  // panels put their own buttons ("Rest", "Advance round") in that header, and
+  // a control nested inside a control is a WCAG 4.1.2 failure that leaves the
+  // inner button unreachable to assistive tech (axe `nested-interactive`, see
+  // e2e/a11y.spec.ts).
   const header = (
-    <header
-      onClick={onHeaderClick}
-      role={isCollapsible ? "button" : undefined}
-      tabIndex={isCollapsible ? 0 : undefined}
-      aria-label={isCollapsible ? title : undefined}
-      aria-expanded={isCollapsible ? !collapsed : undefined}
-      onKeyDown={
-        isCollapsible
-          ? (e) => {
-              if (e.key === "Enter" || e.key === " ") toggle();
-            }
-          : undefined
-      }
-    >
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
+    <header onClick={onHeaderClick}>
       <h2>
         {icon ? (
           <span className="panel-icon" aria-hidden="true">
@@ -106,7 +100,17 @@ export function Panel({
           reset size
         </button>
       ) : null}
-      {isCollapsible ? <Caret open={!collapsed} /> : null}
+      {isCollapsible ? (
+        <button
+          type="button"
+          className="panel-caret-btn"
+          aria-label={title}
+          aria-expanded={!collapsed}
+          onClick={toggle}
+        >
+          <Caret open={!collapsed} />
+        </button>
+      ) : null}
     </header>
   );
 

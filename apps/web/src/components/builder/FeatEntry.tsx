@@ -481,6 +481,7 @@ export function FeatEntry({
               <button
                 type="button"
                 className="pick-btn remove"
+                aria-label={`Remove ${feat.name}`}
                 onClick={() =>
                   update((d) =>
                     removeFeatInstance(d, feat.id, inst.isExtra ? inst.instanceId : undefined),
@@ -499,6 +500,7 @@ export function FeatEntry({
           <button
             type="button"
             className="pick-btn add"
+            aria-label={`Take ${feat.name} again`}
             onClick={() => update((d) => addFeatInstance(d, feat.id))}
           >
             + Take again
@@ -614,6 +616,14 @@ export function FeatEntry({
         className={`pick-btn ${isSel ? "remove" : "add"}`}
         disabled={blocked}
         title={blocked ? "Prerequisites not met" : undefined}
+        // Every row's button reads "Add"/"Remove", so the accessible name has
+        // to carry the feat; `title` doesn't stand in for it, and on the
+        // disabled variant it isn't announced at all.
+        aria-label={
+          blocked
+            ? `${feat.name}: prerequisites not met`
+            : `${isSel ? "Remove" : "Add"} ${feat.name}`
+        }
         onClick={() =>
           update((d) => (isSel ? removeFeatInstance(d, feat.id) : addFeatInstance(d, feat.id)))
         }

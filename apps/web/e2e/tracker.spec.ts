@@ -114,7 +114,7 @@ test("an owned combat Style feat toggles beside the actions and shows its rules"
     .first()
     .locator(".pick-row")
     .filter({ has: page.locator(".pname", { hasText: /^Stick-Fighting Style/ }) });
-  await featRow.getByRole("button", { name: "Add", exact: true }).click();
+  await featRow.getByRole("button", { name: /^Add / }).click();
   await page.keyboard.press("Escape");
   await page.getByRole("tab", { name: "Play" }).click();
 

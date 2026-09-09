@@ -27,14 +27,21 @@ type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
  * actually active on the sheet — shared markup for both row kinds, mirroring
  * `RagePowerPicker`'s dropdown. Renders nothing without both `doc` and
  * `update` (the Play tab's read-only `ClassFeaturesPanel` passes neither).
+ *
+ * `owner` is the feature or trait the choice belongs to. The visible label is
+ * only the choice's own name ("Bloodline"), which several rows on one screen
+ * can share, so a caller that knows the owner passes it and the select gets an
+ * accessible name that says which row it is.
  */
 export function ChoiceSelect({
   label,
+  owner,
   options,
   value,
   onChange,
 }: {
   label: string;
+  owner?: string;
   options: readonly { id: string; label: string }[];
   value: string;
   onChange: (optionId: string | undefined) => void;
@@ -49,7 +56,11 @@ export function ChoiceSelect({
       onClick={(e) => e.stopPropagation()}
     >
       {label}:{" "}
-      <select value={value} onChange={(e) => onChange(e.target.value || undefined)}>
+      <select
+        aria-label={owner ? `${owner}: ${label}` : undefined}
+        value={value}
+        onChange={(e) => onChange(e.target.value || undefined)}
+      >
         <option value="">Choose</option>
         {options.map((o) => (
           <option key={o.id} value={o.id}>
@@ -188,6 +199,7 @@ export function ClassFeatureRow({
       {doc && update && choiceDescriptor ? (
         <ChoiceSelect
           label={choiceDescriptor.label}
+          owner={feature.name}
           options={choiceDescriptor.options}
           value={classFeatureChoice(doc, feature.featureId) ?? ""}
           onChange={(optionId) =>
@@ -286,6 +298,7 @@ export function ArchetypeFeatureRow({
       {doc && update && choiceDescriptor ? (
         <ChoiceSelect
           label={choiceDescriptor.label}
+          owner={feature.name}
           options={choiceDescriptor.options}
           value={archetypeFeatureChoice(doc, feature.featureId) ?? ""}
           onChange={(optionId) =>

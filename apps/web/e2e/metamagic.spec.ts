@@ -80,7 +80,7 @@ async function addFeat(page: Page, name: string) {
   const dialog = page.getByRole("dialog");
   await typeSearch(dialog.getByLabel("Search feats"), name);
   await featRow(dialog.locator(".spell-pane").first(), page, name)
-    .getByRole("button", { name: "Add", exact: true })
+    .getByRole("button", { name: /^Add / })
     .click();
   await expect(featRow(dialog.locator(".spell-pane--known"), page, name)).toBeVisible();
 

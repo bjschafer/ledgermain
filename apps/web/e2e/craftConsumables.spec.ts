@@ -52,7 +52,7 @@ async function takeScribeScroll(page: Page) {
     .locator(".pick-row")
     .filter({ has: page.locator(".pname", { hasText: /^Scribe Scroll/ }) })
     .first()
-    .getByRole("button", { name: "Add", exact: true })
+    .getByRole("button", { name: /^Add / })
     .click();
   await page.keyboard.press("Escape");
   await expect(dialog).toHaveCount(0);

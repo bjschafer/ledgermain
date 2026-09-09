@@ -107,10 +107,7 @@ test("Student of War gates on entry, grants a chosen class skill, and substitute
   const catalog = featDialog.locator(".spell-pane").first();
   for (const feat of ["Combat Expertise", "Dodge"]) {
     await typeSearch(featDialog.getByLabel("Search feats"), feat);
-    await pickRow(catalog, page, feat)
-      .first()
-      .getByRole("button", { name: "Add", exact: true })
-      .click();
+    await pickRow(catalog, page, feat).first().getByRole("button", { name: /^Add / }).click();
   }
   await page.keyboard.press("Escape");
   await expect(featDialog).toHaveCount(0);
