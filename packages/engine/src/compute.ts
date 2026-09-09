@@ -22,6 +22,7 @@ import type {
   ArmorClass,
   BabTier,
   CharacterDoc,
+  ConditionalTotal,
   DerivedActiveForm,
   DerivedEncumbrance,
   DerivedProficiencies,
@@ -30,6 +31,7 @@ import type {
   FlurryMode,
   HitPoints,
   ModifierComponent,
+  Race,
   RefData,
   ResolvedStat,
   ResolvedWeaponAttack,
@@ -1626,27 +1628,89 @@ function computeWeaponAttacks(
   });
 }
 
-/* ----------------------------------------------------------------- compute */
+/**
+ * The base melee and ranged attack lines, and the flat attack penalty they
+ * share with every per-weapon line. Weapon non-proficiency (-4) is necessarily
+ * per-weapon (see {@link computeWeaponAttacks}); the non-proficient
+ * armor/shield ACP-on-attack penalty isn't weapon-specific, so it applies here
+ * too — same for the tower shield's flat -2 (CRB p.153, see
+ * {@link towerShieldAttackComponents}).
+ */
+function computeAttackLines(
+  doc: CharacterDoc,
+  proficiencies: DerivedProficiencies,
+  bab: number,
+  sizeAttackMod: number,
+  meleeAttackAbility: ResolvedAbility,
+  rangedAttackAbility: ResolvedAbility,
+  collected: CollectedModifier[],
+): {
+  flatAttackPenaltyComponents: ModifierComponent[];
+  attack: { melee: ResolvedStat; ranged: ResolvedStat };
+} {
+  const flatAttackPenaltyComponents = [
+    ...nonProficientArmorAttackComponents(doc, proficiencies),
+    ...towerShieldAttackComponents(doc),
+  ];
+  const flatAttackPenalty = flatAttackPenaltyComponents.reduce((s, c) => s + c.value, 0);
 
-export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet {
-  // Feats a class hands over outright (swashbuckler finesse's Weapon Finesse,
-  // a gunslinger's Gunsmithing, monk's Improved Unarmed Strike) are folded
-  // into `build.feats` once, here, so every feat-reading path below treats
-  // them as feats the character has — which is what the rules say they are.
-  // Never written back to the stored document; see `granted-feats.ts`.
-  const doc = withGrantedFeats(inputDoc, refData);
-  const level = totalLevel(doc);
-  const race = refData.races[doc.identity.race];
-  // Pre-buff base speeds, threaded into rollData so set-formulas (Slow,
-  // Debilitating Injury, ...) that reference `@attributes.speed.<mode>.total`
-  // evaluate against real values instead of the missing-path default of 0.
-  // Race base only (not race + passive bonuses) — see buildRollData's doc comment.
-  const baseSpeeds = race?.speeds ?? { land: 30 };
+  // `attack` applies to both lines; `mattack`/`rattack` are melee/ranged
+  // specific (e.g. prone's -4 is melee only).
+  const meleeStack = resolveStack([
+    ...forTarget(collected, "attack"),
+    ...forTarget(collected, "mattack"),
+  ]);
+  const rangedStack = resolveStack([
+    ...forTarget(collected, "attack"),
+    ...forTarget(collected, "rattack"),
+  ]);
+  const meleeComponents: ModifierComponent[] = [
+    synthetic("BAB", "base", bab),
+    synthetic(abilityLabelFor(meleeAttackAbility), "ability", meleeAttackAbility.mod),
+    ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
+    ...toComponents(meleeStack.modifiers),
+    ...flatAttackPenaltyComponents,
+  ];
+  const rangedComponents: ModifierComponent[] = [
+    synthetic("BAB", "base", bab),
+    synthetic(abilityLabelFor(rangedAttackAbility), "ability", rangedAttackAbility.mod),
+    ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
+    ...toComponents(rangedStack.modifiers),
+    ...flatAttackPenaltyComponents,
+  ];
+  const meleeTotal =
+    bab + meleeAttackAbility.mod + sizeAttackMod + meleeStack.total + flatAttackPenalty;
+  const rangedTotal =
+    bab + rangedAttackAbility.mod + sizeAttackMod + rangedStack.total + flatAttackPenalty;
+  const meleeIteratives = iterativeSequence(bab, meleeTotal);
+  const rangedIteratives = iterativeSequence(bab, rangedTotal);
+  return {
+    flatAttackPenaltyComponents,
+    attack: {
+      melee: {
+        total: meleeTotal,
+        components: meleeComponents,
+        ...(meleeIteratives ? { iteratives: meleeIteratives } : {}),
+      },
+      ranged: {
+        total: rangedTotal,
+        components: rangedComponents,
+        ...(rangedIteratives ? { iteratives: rangedIteratives } : {}),
+      },
+    },
+  };
+}
 
-  // BAB — computed from class levels alone (no feat/buff in this slice
-  // modifies it), so it's available before roll data is built. Vendored
-  // formulas (e.g. Monk's Maneuver Training) reference `@attributes.bab.total`.
-  const fractionalBonuses = doc.build.settings?.fractionalBonuses ?? false;
+/**
+ * BAB — computed from class levels alone (no feat/buff in this slice modifies
+ * it), so it's available before roll data is built. Vendored formulas (e.g.
+ * Monk's Maneuver Training) reference `@attributes.bab.total`.
+ */
+function computeBab(
+  doc: CharacterDoc,
+  refData: RefData,
+  fractionalBonuses: boolean,
+): { bab: number; flurry: FlurryMode | undefined } {
   // The chained monk flurries at "a base attack bonus equal to her monk
   // level", which is her BAB recomputed with the monk levels counting at the
   // full tier — collected alongside the real tiers rather than patched
@@ -1691,6 +1755,254 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
         flurryBab: sumBab(flurryBabTiers),
       })
     : undefined;
+  return { bab, flurry };
+}
+
+/**
+ * Combat maneuver bonus, combat maneuver defense, and flat-footed CMD, with
+ * the per-maneuver conditional lines a `Change.maneuverCategories` scope earns.
+ */
+function computeManeuvers(
+  bab: number,
+  strMod: number,
+  size: SizeId,
+  abilityMods: Record<AbilityId, number>,
+  substitutions: readonly ActiveAbilitySubstitution[],
+  collected: CollectedModifier[],
+): {
+  cmb: number;
+  cmd: number;
+  cmdFlatFooted: number;
+  cmbConditionals: ConditionalTotal[];
+  cmdConditionals: ConditionalTotal[];
+} {
+  const sizeSpecial = specialSizeMod(size);
+  // A maneuver-scoped modifier (Change.maneuverCategories — "+2 on attempts
+  // to trip") is held out of the headline stack, same as a save-category
+  // scope is held out of a save's headline total — applying it unconditionally
+  // would inflate every other maneuver too.
+  const cmbAllMods = forTarget(collected, "cmb");
+  const cmbUnconditional = cmbAllMods.filter((m) => (m.maneuverCategories?.length ?? 0) === 0);
+  const cmbScoped = cmbAllMods.filter((m) => (m.maneuverCategories?.length ?? 0) > 0);
+  const cmbStack = resolveStack(cmbUnconditional);
+  // Tiny or smaller creatures use Dex in place of Str for CMB (CRB p.199);
+  // Agile Maneuvers (APG p.150, "you can use your Dexterity modifier instead
+  // of your Strength modifier when calculating your Combat Maneuver Bonus")
+  // extends the same swap to any size. Both are ability SUBSTITUTIONS (not
+  // additive bonuses), so both route through `resolveSubstitution` — the size
+  // rule sets `cmbBaseAbility` first, then the feat (if present) competes
+  // against whichever ability that leaves in place, per
+  // `resolveSubstitution`'s highest-wins convention (see `ability-
+  // substitution.ts`'s doc comment). For a Tiny-or-smaller character (already
+  // on Dex) Agile Maneuvers is simply a no-op, matching RAW — there's nothing
+  // left to substitute. CMD's own Str term is unaffected by either — neither
+  // Agile Maneuvers nor the size rule targets the "cmd" slot, only "cmb".
+  const cmbBaseAbility = SIZE_LADDER.indexOf(size) <= SIZE_LADDER.indexOf("tiny") ? "dex" : "str";
+  const cmbAbility = resolveSubstitution("cmb", cmbBaseAbility, abilityMods, substitutions);
+  const cmbAbilityMod = cmbAbility.mod;
+  const cmb = bab + cmbAbilityMod + sizeSpecial + cmbStack.total;
+  const cmbConditionals = maneuverConditionalTotals(
+    bab + cmbAbilityMod + sizeSpecial,
+    cmbUnconditional,
+    cmbScoped,
+  );
+
+  // CMD = 10 + BAB + Str + Dex + special size mod, auto-including any of the
+  // eight RAW-named AC bonus types (CMD_AC_TYPES above), any "ac" PENALTY
+  // regardless of type ("any penalties to a creature's AC also apply to its
+  // CMD" — CRB p.199), plus whatever carries an explicit "cmd"-target change.
+  // Read from the same `collected` "ac" modifiers computeAc reads (armor/
+  // shield/natural bonuses live under the separate "aac"/"sac"/"nac" targets,
+  // so filtering to bare "ac" already excludes them without a category check).
+  //
+  // Some vendored sources (Iron Mask, the Deflection Aura buff, monk's
+  // Wis-to-AC class feature) carry BOTH a generic "ac" change and their own
+  // explicit "cmd" change with an identical formula. Auto-deriving both would
+  // double-count, so a source with an explicit "cmd" change is excluded from
+  // the auto-derivation entirely (the explicit change wins for that source —
+  // dedup by sourceId/source, matching the provenance key `collect.ts`
+  // already stamps on every modifier). The two pools are then stacked
+  // together in one `resolveStack` pass, so cross-pool same-type competition
+  // (e.g. an explicit cmd deflection bonus vs. a separate deflection ring)
+  // still resolves to the highest per type, per RAW.
+  //
+  // Note: neither `cmb` nor `cmd` carries a components/provenance array on
+  // DerivedSheet (unlike `ac.components`), so a deduped auto-derivation has
+  // nothing to mark `applied: false` on — it's simply absent from the sum.
+  const explicitCmdMods = forTarget(collected, "cmd");
+  const explicitCmdSourceIds = new Set(explicitCmdMods.map((m) => m.sourceId ?? m.source));
+  // The auto-derived-from-AC pool never carries a maneuver scope — only an
+  // explicit "cmd"-target Change can name one — but an explicit change CAN,
+  // so it's split the same way `cmbAllMods` is above before either stack
+  // is built.
+  const explicitCmdUnconditional = explicitCmdMods.filter(
+    (m) => (m.maneuverCategories?.length ?? 0) === 0,
+  );
+  const explicitCmdScoped = explicitCmdMods.filter((m) => (m.maneuverCategories?.length ?? 0) > 0);
+  // An AC-category-scoped modifier (Change.acCategories) is conditional and
+  // held out of headline AC, so it must not leak into headline CMD either —
+  // and it earns no CMD conditional line (AC categories describe attacks,
+  // not maneuvers; only Change.maneuverCategories feeds cmdConditionals).
+  const autoCmdFromAc = forTarget(collected, "ac").filter(
+    (m) =>
+      (m.acCategories?.length ?? 0) === 0 &&
+      (m.value < 0 || CMD_AC_TYPES.has(m.type.toLowerCase())) &&
+      !explicitCmdSourceIds.has(m.sourceId ?? m.source),
+  );
+  const cmdUnconditionalMods = [...autoCmdFromAc, ...explicitCmdUnconditional];
+  const cmdStack = resolveStack(cmdUnconditionalMods);
+  // CMD's Dex term is substitutable via the "cmd" slot (see the "AC" comment
+  // above) — unlike "ac", nothing sets a non-Dex base here, since CMD has no
+  // size-based substitution equivalent to CMB's Tiny-or-smaller rule.
+  const cmdDexAbility = resolveSubstitution("cmd", "dex", abilityMods, substitutions);
+  const cmd = 10 + bab + strMod + cmdDexAbility.mod + sizeSpecial + cmdStack.total;
+  const cmdConditionals = maneuverConditionalTotals(
+    10 + bab + strMod + cmdDexAbility.mod + sizeSpecial,
+    cmdUnconditionalMods,
+    explicitCmdScoped,
+  );
+
+  // Flat-footed CMD (CRB p.199, same "Flat-Footed" sidebar that defines
+  // flat-footed AC): loses the Dexterity bonus and any dodge bonus feeding
+  // `cmd` above, but a Dex/dodge PENALTY still counts (penalties always
+  // apply) — mirrors `computeAc`'s `flatFooted` derivation exactly. CMD has
+  // no `components` array to filter post hoc (see the note above), so the
+  // dodge exclusion happens on the input modifier list instead of on stacked
+  // output. Uses `cmdDexAbility.mod` rather than raw Dex for the same reason
+  // `computeAc`'s flat-footed line does — a substituted ability's penalty
+  // still applies even when its bonus doesn't (the oracle's Nature's
+  // Whispers spells this out for AC: "any condition that would cause you to
+  // lose your Dexterity modifier... instead causes you to lose your Charisma
+  // modifier"; CMD follows the same logic since it shares the same Dex term).
+  const flatFootedDexMod = Math.min(cmdDexAbility.mod, 0);
+  const flatFootedCmdMods = cmdUnconditionalMods.filter(
+    (m) => m.type.toLowerCase() !== "dodge" || m.value < 0,
+  );
+  const flatFootedCmdStack = resolveStack(flatFootedCmdMods);
+  const cmdFlatFooted =
+    10 + bab + strMod + flatFootedDexMod + sizeSpecial + flatFootedCmdStack.total;
+  return { cmb, cmd, cmdFlatFooted, cmbConditionals, cmdConditionals };
+}
+
+/**
+ * Speeds — start from race base, then apply per-mode targets. Each mode "foo"
+ * listens to "fooSpeed" (e.g. fly → "flySpeed") so feat/feature bonuses can
+ * slot in via the same evalChange path used for other stats.
+ */
+function computeSpeeds(
+  doc: CharacterDoc,
+  race: Race | undefined,
+  baseSpeeds: Readonly<Record<string, number>>,
+  collected: CollectedModifier[],
+  encumbrance: DerivedEncumbrance | undefined,
+): Record<string, number> {
+  const speeds: Record<string, number> = { ...baseSpeeds };
+  applySpeedTarget(speeds, collected, "land", "landSpeed");
+  applySpeedTarget(speeds, collected, "fly", "flySpeed");
+  applySpeedTarget(speeds, collected, "swim", "swimSpeed");
+  applySpeedTarget(speeds, collected, "climb", "climbSpeed");
+  applySpeedTarget(speeds, collected, "burrow", "burrowSpeed");
+  // Encumbrance (optional rule) and worn medium/heavy ARMOR (always-on core
+  // rule — unlike encumbrance, not settings-gated) both reduce land speed per
+  // the RAW "Table: Speed" mapping. The two don't stack: PF1 RAW reduces speed
+  // to the SAME tabled value regardless of which condition triggers it, so
+  // this is a single reduction gated by "either applies," not two sequential
+  // ones (chaining the table twice would over-reduce, e.g. 30 -> 20 -> 15).
+  // Takes the lower of the tabled value and whatever the above targets already
+  // produced (e.g. a "set" effect like Slow) — RAW load/armor speed penalties
+  // apply only to land speed, not fly/swim/etc.
+  //
+  // Slow and Steady (d20pfsrd core Dwarf/Duergar trait): "base speed is never
+  // modified by armor or encumbrance" — both reductions above are skipped
+  // entirely when the race has the trait (and hasn't swapped it away via an
+  // alternate racial trait), so a dwarf in full plate keeps her full 20 ft.
+  const armorSpeedPenalty = heaviestWornArmorType(doc) >= 2;
+  const slowAndSteady = hasSlowAndSteady(doc, race);
+  if (
+    !slowAndSteady &&
+    (encumbrance?.speedPenalty || armorSpeedPenalty) &&
+    speeds.land !== undefined
+  ) {
+    speeds.land = Math.min(speeds.land, encumberedSpeed(speeds.land));
+  }
+  return speeds;
+}
+
+/**
+ * Active polymorph-family transformation — resolved sheet for display:
+ * natural-attack lines (BAB/Str/size math done here, since `bab`/`strMod`/
+ * `sizeAttackMod` are only available at this point in `compute`) plus the
+ * tier/option's honesty-bar context notes and the gear-melding disclaimer. The
+ * ability-score/natural-armor adjustments themselves are NOT duplicated here —
+ * they already flow through `abilities.*.components`/`ac.components` via
+ * `collect.ts`.
+ */
+function computeActiveForm(
+  doc: CharacterDoc,
+  bab: number,
+  strMod: number,
+  sizeAttackMod: number,
+  collected: CollectedModifier[],
+): DerivedActiveForm | undefined {
+  let activeForm: DerivedActiveForm | undefined;
+  if (doc.live.activeForm) {
+    const af = doc.live.activeForm;
+    const option = polymorphFormOption(af.tier, af.creatureType, af.size, af.element);
+    const tierDef = POLYMORPH_TIERS[af.tier as PolymorphTier];
+    // A polymorph form's attacks ARE natural attacks, so nattack/ndamage
+    // (Change targets aimed at "natural attack rolls"/"natural attack
+    // damage" — see targets.ts) fold in here too; the general attack/damage
+    // buckets deliberately don't — see computePolymorphAttacks' doc comment.
+    const formNattackTotal = resolveStack(forTarget(collected, "nattack")).total;
+    const formNdamageTotal = resolveStack(forTarget(collected, "ndamage")).total;
+    activeForm = {
+      tier: af.tier,
+      tierName: tierDef?.name ?? af.tier,
+      creatureType: af.creatureType,
+      size: af.size,
+      element: af.element,
+      formName: af.formName,
+      naturalArmor: option?.naturalArmor ?? 0,
+      attacks: computePolymorphAttacks(
+        bab,
+        strMod,
+        sizeAttackMod,
+        af.naturalAttacks ?? [],
+        formNattackTotal,
+        formNdamageTotal,
+      ),
+      notes: [
+        ...(tierDef?.notes ?? []),
+        ...(option?.notes ?? []),
+        "Polymorph melds some worn/carried gear into the new form (PF1 RAW) — this app does not auto-suppress armor/gear bonuses; adjust equipped gear by hand if needed.",
+      ],
+      playerNotes: af.notes,
+      unresolved: option === undefined,
+    };
+  }
+  return activeForm;
+}
+
+/* ----------------------------------------------------------------- compute */
+
+export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet {
+  // Feats a class hands over outright (swashbuckler finesse's Weapon Finesse,
+  // a gunslinger's Gunsmithing, monk's Improved Unarmed Strike) are folded
+  // into `build.feats` once, here, so every feat-reading path below treats
+  // them as feats the character has — which is what the rules say they are.
+  // Never written back to the stored document; see `granted-feats.ts`.
+  const doc = withGrantedFeats(inputDoc, refData);
+  const level = totalLevel(doc);
+  const race = refData.races[doc.identity.race];
+  // Pre-buff base speeds, threaded into rollData so set-formulas (Slow,
+  // Debilitating Injury, ...) that reference `@attributes.speed.<mode>.total`
+  // evaluate against real values instead of the missing-path default of 0.
+  // Race base only (not race + passive bonuses) — see buildRollData's doc comment.
+  const baseSpeeds = race?.speeds ?? { land: 30 };
+
+  // Read by both BAB and the saves below, so it stays out here.
+  const fractionalBonuses = doc.build.settings?.fractionalBonuses ?? false;
+  const { bab, flurry } = computeBab(doc, refData, fractionalBonuses);
 
   const baseSize: SizeId = race?.size ?? "med";
 
@@ -1811,62 +2123,19 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
     ),
   };
 
-  // Proficiency — class/feat/race grants, and the non-proficient worn
-  // armor/shield attack penalty derived from them. Weapon non-proficiency (-4)
-  // is necessarily per-weapon (see computeWeaponAttacks below); the
-  // armor/shield ACP-on-attack penalty isn't weapon-specific, so it applies
-  // here too, on the base melee/ranged lines — same for the tower shield's
-  // flat -2 (CRB p.153, see {@link towerShieldAttackComponents}), which also
-  // isn't weapon-specific.
+  // Proficiency — class/feat/race grants. The non-proficient armor/shield
+  // attack penalty derived from them comes back out of the attack lines below,
+  // since the per-weapon lines need it too.
   const proficiencies = deriveProficiencies(doc, refData);
-  const flatAttackPenaltyComponents = [
-    ...nonProficientArmorAttackComponents(doc, proficiencies),
-    ...towerShieldAttackComponents(doc),
-  ];
-  const flatAttackPenalty = flatAttackPenaltyComponents.reduce((s, c) => s + c.value, 0);
-
-  // Attack. `attack` applies to both lines; `mattack`/`rattack` are melee/ranged
-  // specific (e.g. prone's -4 is melee only).
-  const meleeStack = resolveStack([
-    ...forTarget(collected, "attack"),
-    ...forTarget(collected, "mattack"),
-  ]);
-  const rangedStack = resolveStack([
-    ...forTarget(collected, "attack"),
-    ...forTarget(collected, "rattack"),
-  ]);
-  const meleeComponents: ModifierComponent[] = [
-    synthetic("BAB", "base", bab),
-    synthetic(abilityLabelFor(meleeAttackAbility), "ability", meleeAttackAbility.mod),
-    ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
-    ...toComponents(meleeStack.modifiers),
-    ...flatAttackPenaltyComponents,
-  ];
-  const rangedComponents: ModifierComponent[] = [
-    synthetic("BAB", "base", bab),
-    synthetic(abilityLabelFor(rangedAttackAbility), "ability", rangedAttackAbility.mod),
-    ...(sizeAttackMod !== 0 ? [synthetic("Size", "size", sizeAttackMod)] : []),
-    ...toComponents(rangedStack.modifiers),
-    ...flatAttackPenaltyComponents,
-  ];
-  const meleeTotal =
-    bab + meleeAttackAbility.mod + sizeAttackMod + meleeStack.total + flatAttackPenalty;
-  const rangedTotal =
-    bab + rangedAttackAbility.mod + sizeAttackMod + rangedStack.total + flatAttackPenalty;
-  const meleeIteratives = iterativeSequence(bab, meleeTotal);
-  const rangedIteratives = iterativeSequence(bab, rangedTotal);
-  const attack = {
-    melee: {
-      total: meleeTotal,
-      components: meleeComponents,
-      ...(meleeIteratives ? { iteratives: meleeIteratives } : {}),
-    },
-    ranged: {
-      total: rangedTotal,
-      components: rangedComponents,
-      ...(rangedIteratives ? { iteratives: rangedIteratives } : {}),
-    },
-  };
+  const { flatAttackPenaltyComponents, attack } = computeAttackLines(
+    doc,
+    proficiencies,
+    bab,
+    sizeAttackMod,
+    meleeAttackAbility,
+    rangedAttackAbility,
+    collected,
+  );
 
   // AC. The Dexterity line is substitutable via the "ac" slot; CMD's own Dex
   // term (below, the separate "cmd" slot) does NOT automatically follow it —
@@ -1880,111 +2149,14 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
   const ac = computeAc(doc, size, acAbility, collected, encumbrance);
 
   // CMB / CMD
-  const sizeSpecial = specialSizeMod(size);
-  // A maneuver-scoped modifier (Change.maneuverCategories — "+2 on attempts
-  // to trip") is held out of the headline stack, same as a save-category
-  // scope is held out of a save's headline total — applying it unconditionally
-  // would inflate every other maneuver too.
-  const cmbAllMods = forTarget(collected, "cmb");
-  const cmbUnconditional = cmbAllMods.filter((m) => (m.maneuverCategories?.length ?? 0) === 0);
-  const cmbScoped = cmbAllMods.filter((m) => (m.maneuverCategories?.length ?? 0) > 0);
-  const cmbStack = resolveStack(cmbUnconditional);
-  // Tiny or smaller creatures use Dex in place of Str for CMB (CRB p.199);
-  // Agile Maneuvers (APG p.150, "you can use your Dexterity modifier instead
-  // of your Strength modifier when calculating your Combat Maneuver Bonus")
-  // extends the same swap to any size. Both are ability SUBSTITUTIONS (not
-  // additive bonuses), so both route through `resolveSubstitution` — the size
-  // rule sets `cmbBaseAbility` first, then the feat (if present) competes
-  // against whichever ability that leaves in place, per
-  // `resolveSubstitution`'s highest-wins convention (see `ability-
-  // substitution.ts`'s doc comment). For a Tiny-or-smaller character (already
-  // on Dex) Agile Maneuvers is simply a no-op, matching RAW — there's nothing
-  // left to substitute. CMD's own Str term is unaffected by either — neither
-  // Agile Maneuvers nor the size rule targets the "cmd" slot, only "cmb".
-  const cmbBaseAbility = SIZE_LADDER.indexOf(size) <= SIZE_LADDER.indexOf("tiny") ? "dex" : "str";
-  const cmbAbility = resolveSubstitution("cmb", cmbBaseAbility, abilityMods, substitutions);
-  const cmbAbilityMod = cmbAbility.mod;
-  const cmb = bab + cmbAbilityMod + sizeSpecial + cmbStack.total;
-  const cmbConditionals = maneuverConditionalTotals(
-    bab + cmbAbilityMod + sizeSpecial,
-    cmbUnconditional,
-    cmbScoped,
+  const { cmb, cmd, cmdFlatFooted, cmbConditionals, cmdConditionals } = computeManeuvers(
+    bab,
+    strMod,
+    size,
+    abilityMods,
+    substitutions,
+    collected,
   );
-
-  // CMD = 10 + BAB + Str + Dex + special size mod, auto-including any of the
-  // eight RAW-named AC bonus types (CMD_AC_TYPES above), any "ac" PENALTY
-  // regardless of type ("any penalties to a creature's AC also apply to its
-  // CMD" — CRB p.199), plus whatever carries an explicit "cmd"-target change.
-  // Read from the same `collected` "ac" modifiers computeAc reads (armor/
-  // shield/natural bonuses live under the separate "aac"/"sac"/"nac" targets,
-  // so filtering to bare "ac" already excludes them without a category check).
-  //
-  // Some vendored sources (Iron Mask, the Deflection Aura buff, monk's
-  // Wis-to-AC class feature) carry BOTH a generic "ac" change and their own
-  // explicit "cmd" change with an identical formula. Auto-deriving both would
-  // double-count, so a source with an explicit "cmd" change is excluded from
-  // the auto-derivation entirely (the explicit change wins for that source —
-  // dedup by sourceId/source, matching the provenance key `collect.ts`
-  // already stamps on every modifier). The two pools are then stacked
-  // together in one `resolveStack` pass, so cross-pool same-type competition
-  // (e.g. an explicit cmd deflection bonus vs. a separate deflection ring)
-  // still resolves to the highest per type, per RAW.
-  //
-  // Note: neither `cmb` nor `cmd` carries a components/provenance array on
-  // DerivedSheet (unlike `ac.components`), so a deduped auto-derivation has
-  // nothing to mark `applied: false` on — it's simply absent from the sum.
-  const explicitCmdMods = forTarget(collected, "cmd");
-  const explicitCmdSourceIds = new Set(explicitCmdMods.map((m) => m.sourceId ?? m.source));
-  // The auto-derived-from-AC pool never carries a maneuver scope — only an
-  // explicit "cmd"-target Change can name one — but an explicit change CAN,
-  // so it's split the same way `cmbAllMods` is above before either stack
-  // is built.
-  const explicitCmdUnconditional = explicitCmdMods.filter(
-    (m) => (m.maneuverCategories?.length ?? 0) === 0,
-  );
-  const explicitCmdScoped = explicitCmdMods.filter((m) => (m.maneuverCategories?.length ?? 0) > 0);
-  // An AC-category-scoped modifier (Change.acCategories) is conditional and
-  // held out of headline AC, so it must not leak into headline CMD either —
-  // and it earns no CMD conditional line (AC categories describe attacks,
-  // not maneuvers; only Change.maneuverCategories feeds cmdConditionals).
-  const autoCmdFromAc = forTarget(collected, "ac").filter(
-    (m) =>
-      (m.acCategories?.length ?? 0) === 0 &&
-      (m.value < 0 || CMD_AC_TYPES.has(m.type.toLowerCase())) &&
-      !explicitCmdSourceIds.has(m.sourceId ?? m.source),
-  );
-  const cmdUnconditionalMods = [...autoCmdFromAc, ...explicitCmdUnconditional];
-  const cmdStack = resolveStack(cmdUnconditionalMods);
-  // CMD's Dex term is substitutable via the "cmd" slot (see the "AC" comment
-  // above) — unlike "ac", nothing sets a non-Dex base here, since CMD has no
-  // size-based substitution equivalent to CMB's Tiny-or-smaller rule.
-  const cmdDexAbility = resolveSubstitution("cmd", "dex", abilityMods, substitutions);
-  const cmd = 10 + bab + strMod + cmdDexAbility.mod + sizeSpecial + cmdStack.total;
-  const cmdConditionals = maneuverConditionalTotals(
-    10 + bab + strMod + cmdDexAbility.mod + sizeSpecial,
-    cmdUnconditionalMods,
-    explicitCmdScoped,
-  );
-
-  // Flat-footed CMD (CRB p.199, same "Flat-Footed" sidebar that defines
-  // flat-footed AC): loses the Dexterity bonus and any dodge bonus feeding
-  // `cmd` above, but a Dex/dodge PENALTY still counts (penalties always
-  // apply) — mirrors `computeAc`'s `flatFooted` derivation exactly. CMD has
-  // no `components` array to filter post hoc (see the note above), so the
-  // dodge exclusion happens on the input modifier list instead of on stacked
-  // output. Uses `cmdDexAbility.mod` rather than raw Dex for the same reason
-  // `computeAc`'s flat-footed line does — a substituted ability's penalty
-  // still applies even when its bonus doesn't (the oracle's Nature's
-  // Whispers spells this out for AC: "any condition that would cause you to
-  // lose your Dexterity modifier... instead causes you to lose your Charisma
-  // modifier"; CMD follows the same logic since it shares the same Dex term).
-  const flatFootedDexMod = Math.min(cmdDexAbility.mod, 0);
-  const flatFootedCmdMods = cmdUnconditionalMods.filter(
-    (m) => m.type.toLowerCase() !== "dodge" || m.value < 0,
-  );
-  const flatFootedCmdStack = resolveStack(flatFootedCmdMods);
-  const cmdFlatFooted =
-    10 + bab + strMod + flatFootedDexMod + sizeSpecial + flatFootedCmdStack.total;
 
   // Initiative
   const initStack = resolveStack(forTarget(collected, "init"));
@@ -1999,38 +2171,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
   // HP
   const hp = computeHp(doc, refData, abilities.con.mod, collected);
 
-  // Speeds — start from race base, then apply per-mode targets.
-  // Each mode "foo" listens to "fooSpeed" (e.g. fly → "flySpeed") so feat/feature
-  // bonuses can slot in via the same evalChange path used for other stats.
-  const speeds: Record<string, number> = { ...baseSpeeds };
-  applySpeedTarget(speeds, collected, "land", "landSpeed");
-  applySpeedTarget(speeds, collected, "fly", "flySpeed");
-  applySpeedTarget(speeds, collected, "swim", "swimSpeed");
-  applySpeedTarget(speeds, collected, "climb", "climbSpeed");
-  applySpeedTarget(speeds, collected, "burrow", "burrowSpeed");
-  // Encumbrance (optional rule) and worn medium/heavy ARMOR (always-on core
-  // rule — unlike encumbrance, not settings-gated) both reduce land speed per
-  // the RAW "Table: Speed" mapping. The two don't stack: PF1 RAW reduces speed
-  // to the SAME tabled value regardless of which condition triggers it, so
-  // this is a single reduction gated by "either applies," not two sequential
-  // ones (chaining the table twice would over-reduce, e.g. 30 -> 20 -> 15).
-  // Takes the lower of the tabled value and whatever the above targets already
-  // produced (e.g. a "set" effect like Slow) — RAW load/armor speed penalties
-  // apply only to land speed, not fly/swim/etc.
-  //
-  // Slow and Steady (d20pfsrd core Dwarf/Duergar trait): "base speed is never
-  // modified by armor or encumbrance" — both reductions above are skipped
-  // entirely when the race has the trait (and hasn't swapped it away via an
-  // alternate racial trait), so a dwarf in full plate keeps her full 20 ft.
-  const armorSpeedPenalty = heaviestWornArmorType(doc) >= 2;
-  const slowAndSteady = hasSlowAndSteady(doc, race);
-  if (
-    !slowAndSteady &&
-    (encumbrance?.speedPenalty || armorSpeedPenalty) &&
-    speeds.land !== undefined
-  ) {
-    speeds.land = Math.min(speeds.land, encumberedSpeed(speeds.land));
-  }
+  const speeds = computeSpeeds(doc, race, baseSpeeds, collected, encumbrance);
 
   // Arcane spell failure — display-only, only for arcane casters.
   const arcaneSpellFailure = computeArcaneSpellFailure(doc);
@@ -2092,49 +2233,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
   // Special senses (darkvision, low-light vision, scent, ...) — display-only.
   const senses = computeSenses(collected);
 
-  // Active polymorph-family transformation — resolved sheet for display:
-  // natural-attack lines (BAB/Str/size math done here, since `bab`/
-  // `strMod`/`sizeAttackMod` are only available at this point in `compute`)
-  // plus the tier/option's honesty-bar context notes and the gear-melding
-  // disclaimer. The ability-score/natural-armor adjustments themselves are NOT
-  // duplicated here — they already flow through `abilities.*.components`/
-  // `ac.components` via `collect.ts`.
-  let activeForm: DerivedActiveForm | undefined;
-  if (doc.live.activeForm) {
-    const af = doc.live.activeForm;
-    const option = polymorphFormOption(af.tier, af.creatureType, af.size, af.element);
-    const tierDef = POLYMORPH_TIERS[af.tier as PolymorphTier];
-    // A polymorph form's attacks ARE natural attacks, so nattack/ndamage
-    // (Change targets aimed at "natural attack rolls"/"natural attack
-    // damage" — see targets.ts) fold in here too; the general attack/damage
-    // buckets deliberately don't — see computePolymorphAttacks' doc comment.
-    const formNattackTotal = resolveStack(forTarget(collected, "nattack")).total;
-    const formNdamageTotal = resolveStack(forTarget(collected, "ndamage")).total;
-    activeForm = {
-      tier: af.tier,
-      tierName: tierDef?.name ?? af.tier,
-      creatureType: af.creatureType,
-      size: af.size,
-      element: af.element,
-      formName: af.formName,
-      naturalArmor: option?.naturalArmor ?? 0,
-      attacks: computePolymorphAttacks(
-        bab,
-        strMod,
-        sizeAttackMod,
-        af.naturalAttacks ?? [],
-        formNattackTotal,
-        formNdamageTotal,
-      ),
-      notes: [
-        ...(tierDef?.notes ?? []),
-        ...(option?.notes ?? []),
-        "Polymorph melds some worn/carried gear into the new form (PF1 RAW) — this app does not auto-suppress armor/gear bonuses; adjust equipped gear by hand if needed.",
-      ],
-      playerNotes: af.notes,
-      unresolved: option === undefined,
-    };
-  }
+  const activeForm = computeActiveForm(doc, bab, strMod, sizeAttackMod, collected);
 
   // Enemy-facing ability DCs (hex, channel energy, bomb, cruelty, mesmerist
   // trick, Stunning Fist, Quivering Palm) — computed from the FINAL pass's
