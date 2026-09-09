@@ -5,13 +5,7 @@ import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
 import { archetypeConflictWarnings, checkArchetypeConflict } from "../src/model/archetypes.js";
-import {
-  addClass,
-  createEmptyDoc,
-  migrateDoc,
-  setArchetypes,
-  setClassLevel,
-} from "../src/model/doc.js";
+import { addClass, createEmptyDoc, setArchetypes, setClassLevel } from "../src/model/doc.js";
 
 const ref = loadRefData();
 
@@ -78,20 +72,6 @@ describe("setArchetypes(): archetypeFeature pick-choice cleanup", () => {
     };
     doc = setArchetypes(doc, ["fighter:two-handed-fighter"], ref);
     expect(doc.build.pickChoices).toEqual({ other: "value" });
-  });
-});
-
-describe("migrateDoc() backfills build.archetypes", () => {
-  it("adds an empty archetypes array to a pre-Stage-11.3 doc", () => {
-    const legacy = { ...fresh(), build: { ...fresh().build } } as CharacterDoc;
-    delete (legacy.build as { archetypes?: string[] }).archetypes;
-    const migrated = migrateDoc(legacy);
-    expect(migrated.build.archetypes).toEqual([]);
-  });
-
-  it("is a no-op for an already-current doc", () => {
-    const doc = fresh();
-    expect(migrateDoc(doc)).toBe(doc);
   });
 });
 

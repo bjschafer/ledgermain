@@ -7,7 +7,6 @@ import {
   addClass,
   createEmptyDoc,
   domainSlotCount,
-  migrateDoc,
   parentDomainTagOf,
   setClericDomains,
   setDruidNatureBondDomain,
@@ -96,25 +95,6 @@ describe("preparedSpells transitions", () => {
     expect(removePreparedAt(doc, -1)).toBe(doc);
     expect(unprepareSpell(doc, "missing")).toBe(doc);
     expect(restPreparedSpells(doc)).toBe(doc); // nothing expended
-  });
-});
-
-describe("migrateDoc()", () => {
-  it("moves a legacy build.spells.prepared doc to live.spells", () => {
-    const legacy = {
-      ...fresh(),
-      build: { ...fresh().build, spells: { known: ["x"], prepared: [] } },
-      live: { ...fresh().live, spells: undefined },
-    } as unknown as CharacterDoc;
-    const migrated = migrateDoc(legacy);
-    expect(migrated.live.spells).toEqual({ prepared: [] });
-    expect(migrated.build.spells).toEqual({ known: ["x"] });
-    expect("prepared" in migrated.build.spells).toBe(false);
-  });
-
-  it("is a no-op for an already-current doc", () => {
-    const doc = fresh();
-    expect(migrateDoc(doc)).toBe(doc);
   });
 });
 
@@ -323,21 +303,6 @@ describe("domain spell slots (cleric)", () => {
   it("setClericDomains caps at two domains and ignores blanks", () => {
     const doc = setClericDomains(fresh(), ["Air", "Fire", "Void", "", " "]);
     expect(doc.build.clericDomains).toEqual(["Air", "Fire"]);
-  });
-
-  it("migrateDoc backfills clericDomains for older docs", () => {
-    const stale: CharacterDoc = {
-      ...createEmptyDoc("t"),
-      build: {
-        feats: [],
-        skillRanks: {},
-        classFeatureChoices: [],
-        spells: { known: [] },
-        gear: [],
-      } as unknown as CharacterDoc["build"],
-    };
-    const out = migrateDoc(stale);
-    expect(out.build.clericDomains).toEqual([]);
   });
 });
 

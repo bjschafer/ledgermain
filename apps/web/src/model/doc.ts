@@ -31,6 +31,7 @@ import {
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
 import { eligibleAdvancementTargets } from "./casterLevel.js";
 import { localId } from "./ids.js";
+import { CURRENT_SCHEMA_VERSION } from "./migrations.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
 import { normalizeAlignmentCode, slugifySkillLabel } from "./names.js";
 import { favoredClassBonusLevels } from "./race.js";
@@ -46,7 +47,7 @@ const ABILITY_IDS: AbilityId[] = ["str", "dex", "con", "int", "wis", "cha"];
 /** A fresh, valid level-0 document with default scores and no choices made. */
 export function createEmptyDoc(id: string): CharacterDoc {
   return {
-    schemaVersion: 2,
+    schemaVersion: CURRENT_SCHEMA_VERSION,
     id,
     ownerId: "local",
     version: 1,
@@ -70,61 +71,6 @@ export function createEmptyDoc(id: string): CharacterDoc {
       spells: { prepared: [] },
     },
   };
-}
-
-/**
- * Normalize a document loaded from persistence to the current shape. Older docs
- * stored `build.spells.prepared` (always empty/unused) and lacked `live.spells`;
- * this moves preparation to live state. v2 adds `build.clericDomains` and
- * `PreparedSpell.kind` (defaulting to `"normal"` for pre-existing entries —
- * domain slot support for clerics). Idempotent and non-destructive.
- */
-export function migrateDoc(doc: CharacterDoc): CharacterDoc {
-  const build = doc.build as typeof doc.build & {
-    spells?: { known?: string[]; prepared?: unknown };
-  };
-  const known = build.spells?.known ?? [];
-  let next = doc;
-  let changed = false;
-
-  if (!doc.live.spells) {
-    next = { ...next, live: { ...next.live, spells: { prepared: [] } } };
-    changed = true;
-  }
-  // Drop any legacy `build.spells.prepared`, keeping only `known`.
-  if (build.spells && "prepared" in build.spells) {
-    next = { ...next, build: { ...next.build, spells: { known } } };
-    changed = true;
-  }
-  // v2: ensure `clericDomains` exists (default empty). No schemaVersion bump
-  // here — the field is optional; this just backfills the canonical empty
-  // array so downstream `includes` checks don't crash on older docs.
-  if (!next.build.clericDomains) {
-    next = { ...next, build: { ...next.build, clericDomains: [] } };
-    changed = true;
-  }
-  // Same treatment for `archetypes` (Stage 11.3) — optional, backfilled to `[]`.
-  if (!next.build.archetypes) {
-    next = { ...next, build: { ...next.build, archetypes: [] } };
-    changed = true;
-  }
-  // `PreparedSpell.kind` is optional and defaults to "normal" — existing
-  // prepared entries need no rewrite; tracker code treats absent as normal.
-
-  // Alignment stored as a full label ("Neutral Good") instead of a code ("NG"):
-  // older imports and pre-normalization saves carry the label form, which the
-  // Identity select can't match (it silently showed "—"). `setAlignment` and
-  // the external importers normalize new writes; this backfills existing docs
-  // on load. Unknown strings are kept as-is (the sheet renders them raw).
-  if (next.identity.alignment) {
-    const code = normalizeAlignmentCode(next.identity.alignment);
-    if (code && code !== next.identity.alignment) {
-      next = { ...next, identity: { ...next.identity, alignment: code } };
-      changed = true;
-    }
-  }
-
-  return changed ? next : doc;
 }
 
 export { ABILITY_IDS };

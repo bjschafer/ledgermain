@@ -4,7 +4,7 @@
  * testable against a fake `SyncStore` with no IndexedDB involved.
  */
 import { db, listVersions } from "../db/characters.js";
-import { migrateDoc } from "../model/doc.js";
+import { migrateDoc } from "../model/migrations.js";
 import type { SyncStore } from "./backgroundSync.js";
 
 export const dexieSyncStore: SyncStore = {

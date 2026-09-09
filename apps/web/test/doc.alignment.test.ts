@@ -10,7 +10,8 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { createEmptyDoc, migrateDoc, setAlignment } from "../src/model/doc.js";
+import { createEmptyDoc, setAlignment } from "../src/model/doc.js";
+import { migrateDoc, migrateImportedDoc } from "../src/model/migrations.js";
 
 function doc() {
   return createEmptyDoc("t");
@@ -38,26 +39,36 @@ describe("setAlignment()", () => {
     expect(setAlignment(doc(), "True Neutral-ish").identity.alignment).toBe("True Neutral-ish");
   });
 
-  it("backfills label-form alignment to a code via migrateDoc (native imports / stored docs)", () => {
+  it("backfills label-form alignment to a code on a native import", () => {
     // Native imports bypass setAlignment entirely — parseImportedDoc hands the
-    // blob to migrateDoc, so the backfill must live there too (real bug: the
-    // owner's lyle-ledgermain.json stores "Neutral Good" and the Identity
-    // select showed "—" after import).
+    // blob to migrateImportedDoc, so the backfill must live there too (real
+    // bug: the owner's lyle-ledgermain.json stores "Neutral Good" and the
+    // Identity select showed "—" after import). The file's own schemaVersion
+    // is no evidence the step ran, so import runs it regardless.
     const labelled = {
       ...doc(),
       identity: { ...doc().identity, alignment: "Neutral Good" },
     };
-    expect(migrateDoc(labelled).identity.alignment).toBe("NG");
+    expect(migrateImportedDoc(labelled).identity.alignment).toBe("NG");
   });
 
-  it("migrateDoc leaves code-form and unknown alignments alone", () => {
+  it("backfills label-form alignment on a stored doc predating the step", () => {
+    const stored = {
+      ...doc(),
+      schemaVersion: 2,
+      identity: { ...doc().identity, alignment: "Neutral Good" },
+    };
+    expect(migrateDoc(stored).identity.alignment).toBe("NG");
+  });
+
+  it("leaves code-form and unknown alignments alone", () => {
     const coded = { ...doc(), identity: { ...doc().identity, alignment: "NG" } };
-    expect(migrateDoc(coded)).toBe(coded); // idempotent: no rewrite, same reference
+    expect(migrateImportedDoc(coded)).toBe(coded); // idempotent: no rewrite, same reference
     const weird = {
       ...doc(),
       identity: { ...doc().identity, alignment: "True Neutral-ish" },
     };
-    expect(migrateDoc(weird).identity.alignment).toBe("True Neutral-ish");
+    expect(migrateImportedDoc(weird).identity.alignment).toBe("True Neutral-ish");
   });
 
   it("round-trips every alignment label to its code", () => {

@@ -10,7 +10,8 @@ import Dexie, { type Table } from "dexie";
 
 import type { CharacterDoc } from "@pf1/schema";
 import sampleCharacterJson from "../data/sample-character.json";
-import { createEmptyDoc, migrateDoc } from "../model/doc.js";
+import { createEmptyDoc } from "../model/doc.js";
+import { migrateDoc } from "../model/migrations.js";
 import { localId } from "../model/ids.js";
 import { parseImportedDoc } from "../model/importCharacter.js";
 

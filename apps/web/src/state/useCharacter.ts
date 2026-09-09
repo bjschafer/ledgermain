@@ -20,7 +20,8 @@ import {
   loadOrCreateActive,
   resetAllCharacters,
 } from "../db/characters.js";
-import { migrateDoc, reconcileFavoredClassBonus } from "../model/doc.js";
+import { reconcileFavoredClassBonus } from "../model/doc.js";
+import { migrateDoc } from "../model/migrations.js";
 import { HERO_POINT_CAP, heroPoints, heroPointsEnabled } from "../model/heroPoints.js";
 import { reconcileCurrentHp } from "../model/hp.js";
 import { resolveRefData } from "../model/homebrew.js";
