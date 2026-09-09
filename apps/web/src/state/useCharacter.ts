@@ -20,12 +20,14 @@ import {
   loadOrCreateActive,
   resetAllCharacters,
 } from "../db/characters.js";
+import { attentionBadges, firstAttentionSection } from "../model/buildSections.js";
 import { abilityIncreasesByLevel, reconcileFavoredClassBonus } from "../model/doc.js";
 import { migrateDoc } from "../model/migrations.js";
 import { HERO_POINT_CAP, heroPoints, heroPointsEnabled } from "../model/heroPoints.js";
 import { reconcileCurrentHp } from "../model/hp.js";
 import { resolveRefData } from "../model/homebrew.js";
 import { reconcileGrantedCantrips } from "../model/preparedSpells.js";
+import { describeLiveChange, pushLogEntry, type SessionLogEntry } from "../model/sessionLog.js";
 import { loadRefData } from "../refdata/loader.js";
 import { pushOnChange, runOpenSync } from "../sync/backgroundSync.js";
 import { deleteRemoteCharacter, fetchMe, logout as apiLogout } from "../sync/client.js";
@@ -39,12 +41,15 @@ import {
 } from "../sync/session.js";
 import { dexieSyncStore } from "../sync/store.js";
 import type { SyncStatus } from "../sync/status.js";
+import { requestJump } from "./navigation.js";
+import { clearAllSessionLogs, readSessionLog, writeSessionLog } from "./sessionLog.js";
 import { showToast } from "./toast.js";
 import {
   consumeSnapshot,
-  createUndoSnapshotState,
+  createUndoHistoryState,
   invalidateSnapshot,
   recordSnapshot,
+  undoDepth,
 } from "./undoSnapshot.js";
 
 /**
@@ -79,17 +84,31 @@ export interface CharacterStore {
   /** Apply a pure transition (from model/doc) to the working document. */
   update: (fn: (doc: CharacterDoc) => CharacterDoc) => void;
   /**
-   * One-step undo (feedback/toasts+undo audit slice): restores the doc as it
-   * was immediately before the last `update()` call that actually changed
-   * it, through the same `setDoc` path `update()` uses (so compute + the
-   * autosave/push effects below all fire normally). Single-step — the
-   * snapshot is a one-deep pointer (see `state/undoSnapshot.ts`), so calling
-   * this twice in a row does nothing the second time rather than redoing.
-   * No-op if there's nothing to undo, or if the active character changed
-   * since the snapshot was taken (switch/create/import/reset/delete, a
-   * remote pull/delete, or conflict resolution all invalidate it).
+   * Undo: restores the doc as it was immediately before the last `update()`
+   * call that actually changed it, through the same `setDoc` path `update()`
+   * uses (so compute + the autosave/push effects below all fire normally).
+   * Steps back through a bounded history (see `state/undoSnapshot.ts`), so two
+   * damage taps take two presses to walk out of. Never redoes — a step walked
+   * back is gone. No-op once the history is empty, or if the active character
+   * changed since the snapshots were taken (switch/create/import/reset/delete,
+   * a remote pull/delete, or conflict resolution all invalidate it).
    */
   undoLast: () => void;
+  /**
+   * Whether `undoLast` currently has a step to walk back. Lets a control offer
+   * itself only when it would do something, which matters now that undo is
+   * more than one deep: the toast that raised it is long gone by the third
+   * press.
+   */
+  canUndo: boolean;
+  /**
+   * The passive session log for the active character, oldest first — what hit
+   * you, what you shook off (see `model/sessionLog.ts`). Device-local, not part
+   * of the document.
+   */
+  sessionLog: SessionLogEntry[];
+  /** Forget the active character's session log. */
+  clearSessionLog: () => void;
   /** Make a different saved character the active one. */
   switchCharacter: (id: string) => Promise<void>;
   /** Create a brand-new blank character and make it active. */
@@ -190,11 +209,11 @@ export function useCharacter(): CharacterStore {
     docRef.current = doc;
   }, [doc]);
 
-  // One-step undo bookkeeping (feedback/toasts+undo audit slice). The pure
-  // "what's the snapshot pointer" logic lives in `state/undoSnapshot.ts`
-  // (unit-tested there); this ref just gives it a stable home across
-  // renders, matching every other ref-based piece of bookkeeping in this hook.
-  const undoStateRef = useRef(createUndoSnapshotState());
+  // Undo bookkeeping. The pure "what's on the history stack" logic lives in
+  // `state/undoSnapshot.ts` (unit-tested there); this ref just gives it a
+  // stable home across renders, matching every other ref-based piece of
+  // bookkeeping in this hook.
+  const undoStateRef = useRef(createUndoHistoryState());
 
   // Level-up celebratory toast bookkeeping: the last total level (+ the max HP
   // it came with) the level-up effect below has actually seen, so it can tell
@@ -207,6 +226,24 @@ export function useCharacter(): CharacterStore {
   // left never misfires as a "level up".
   const lastSeenLevelRef = useRef<{ level: number; maxHp: number } | undefined>(undefined);
 
+  // Set while an `undoLast()` is on its way through `setDoc`, and consumed by
+  // the session-log effect below: an undo is a correction, not something that
+  // happened at the table, so the log takes the reversal as its new baseline
+  // rather than writing "Healed 4, no longer Prone" under the mis-tap it
+  // undoes.
+  const undoingRef = useRef(false);
+
+  // Mirror of the undo history's depth, which lives in a ref and so can't be
+  // rendered off directly. Refreshed from every `doc` change, which is the only
+  // thing that ever pushes to, pops from, or drops that history.
+  const [canUndo, setCanUndo] = useState(false);
+
+  // Session-log bookkeeping (the effect that fills it is further down, beside
+  // the other `doc`-watching effects): the log itself, and the doc it was last
+  // diffed against.
+  const [sessionLog, setSessionLog] = useState<SessionLogEntry[]>([]);
+  const logPrevDocRef = useRef<{ doc: CharacterDoc; maxHp: number } | undefined>(undefined);
+
   // Shared invalidation for anything that swaps the active character's doc
   // out from under per-character cross-transition tracking (switch/create/
   // import/reset/delete, a remote pull/delete landing on the active doc,
@@ -217,6 +254,9 @@ export function useCharacter(): CharacterStore {
   const invalidateCrossTransitionTracking = useCallback(() => {
     invalidateSnapshot(undoStateRef.current);
     lastSeenLevelRef.current = undefined;
+    logPrevDocRef.current = undefined;
+    prevMaxHpRef.current = undefined;
+    undoingRef.current = false;
   }, []);
 
   // Stage 5 open-sync (DESIGN.md §2.1: "each device pulls the latest on
@@ -384,11 +424,10 @@ export function useCharacter(): CharacterStore {
       // never called by a background effect, only by explicit user actions,
       // so bumping unconditionally on real transitions can't create a loop.
       if (next === prev) return prev;
-      // One-deep undo snapshot (feedback/toasts+undo audit slice): `prev` is
-      // exactly the doc a caller's `undoLast()` should restore. Recorded
-      // unconditionally on every real transition (not just the ones that
-      // surface an Undo toast) — cheap, and it's what makes `undoLast()`
-      // always undo whatever the player *actually* just did.
+      // Undo history: `prev` is exactly the doc a caller's `undoLast()` should
+      // restore. Recorded unconditionally on every real transition (not just
+      // the ones that surface an Undo toast) — cheap, and it's what makes
+      // `undoLast()` always undo whatever the player *actually* just did.
       recordSnapshot(undoStateRef.current, prev);
       pendingUserEditRef.current = true;
       return { ...next, version: prev.version + 1 };
@@ -412,10 +451,11 @@ export function useCharacter(): CharacterStore {
     if (!snapshot) return;
     // Same flagging `update()` does — undo is a genuine local edit too, so
     // it autosaves/pushes exactly like any other transition. Deliberately
-    // NOT routed through `update()` itself: that would `recordSnapshot` the
-    // pre-undo state, re-arming a second "undo" that would just redo the
-    // change — this is meant to be single-step, not a toggle.
+    // NOT routed through `update()` itself: that would push the pre-undo state
+    // onto the history, so the next press would redo the change instead of
+    // stepping further back.
     pendingUserEditRef.current = true;
+    undoingRef.current = true;
     setDoc((prev) => {
       // Pure: `snapshot` was already captured above, so this can safely run
       // more than once with no observable difference. Re-checks `prev.id`
@@ -492,6 +532,7 @@ export function useCharacter(): CharacterStore {
     () =>
       runAction(async () => {
         cancelPendingSave();
+        clearAllSessionLogs();
         await adopt(await resetAllCharacters());
       }),
     [adopt, cancelPendingSave, runAction],
@@ -501,6 +542,7 @@ export function useCharacter(): CharacterStore {
     (id: string) =>
       runAction(async () => {
         if (doc?.id === id) cancelPendingSave();
+        writeSessionLog(id, []);
         await adopt(await deleteCharacterDb(id));
         // Best-effort remote delete so the deletion leaves a server tombstone
         // and propagates to other devices instead of resurfacing. Never fails
@@ -536,7 +578,11 @@ export function useCharacter(): CharacterStore {
 
   // Keep live current HP consistent with a max that build-time edits moved —
   // see `reconcileCurrentHp` for the two rules (clamp down over max, pin up
-  // while at full health) and why each one holds.
+  // while at full health) and why each one holds. The remembered max belongs
+  // to the character it was measured on, so it is cleared by
+  // `invalidateCrossTransitionTracking` alongside the undo history: carrying
+  // the outgoing character's max into the incoming one would let the "max rose
+  // while at full health" rule fire on a max that never rose.
   const prevMaxHpRef = useRef<number | undefined>(undefined);
   useEffect(() => {
     if (!sheet || !doc) return;
@@ -630,13 +676,69 @@ export function useCharacter(): CharacterStore {
       }
     }
 
+    // Where to send a player who wants to spend what they just earned. The
+    // toast is raised from here, above the router, so the jump goes out through
+    // `state/navigation.ts` rather than a callback threaded down for one button.
+    const openSection = refData ? firstAttentionSection(attentionBadges(doc, refData)) : undefined;
+
     showToast({
       message: `Level ${level}!${classSummary ? ` ${classSummary}` : ""}${
         grants.length > 0 ? ` · ${grants.join(", ")}` : ""
       }`,
       tone: "level-up",
+      action: openSection
+        ? {
+            label: "Spend it",
+            onAction: () => requestJump({ mode: "build", section: openSection }),
+          }
+        : undefined,
     });
   }, [sheet, doc, refData]);
+
+  // Session log (`model/sessionLog.ts`): a passive record of what the table did
+  // to this character, diffed off the same `doc` every other effect here
+  // watches. `logPrevDocRef` is the doc as of the last check, and is cleared by
+  // `invalidateCrossTransitionTracking` for the same reason the undo history is
+  // — a character swap, a remote pull, or a conflict resolution is not
+  // something that happened at the table, and diffing across one would log the
+  // difference between two characters as damage.
+  useEffect(() => {
+    setCanUndo(undoDepth(undoStateRef.current) > 0);
+  }, [doc]);
+
+  useEffect(() => {
+    if (!doc || !sheet) return;
+    const prev = logPrevDocRef.current;
+    logPrevDocRef.current = { doc, maxHp: sheet.hp.max };
+    if (!prev || prev.doc.id !== doc.id) {
+      setSessionLog(readSessionLog(doc.id));
+      return;
+    }
+    if (undoingRef.current) {
+      undoingRef.current = false;
+      return;
+    }
+    const change = describeLiveChange(prev.doc, doc, {
+      maxHpMoved: sheet.hp.max !== prev.maxHp,
+    });
+    if (!change) return;
+    setSessionLog((log) => {
+      const next = pushLogEntry(log, {
+        id: `${doc.version}-${Date.now()}`,
+        at: Date.now(),
+        ...change,
+      });
+      writeSessionLog(doc.id, next);
+      return next;
+    });
+  }, [doc, sheet]);
+
+  const clearSessionLog = useCallback(() => {
+    const id = docRef.current?.id;
+    if (!id) return;
+    writeSessionLog(id, []);
+    setSessionLog([]);
+  }, []);
 
   const signIn = useCallback(() => {
     const apiBase = apiBaseUrl();
@@ -715,6 +817,9 @@ export function useCharacter(): CharacterStore {
     clearActionError,
     update,
     undoLast,
+    canUndo,
+    sessionLog,
+    clearSessionLog,
     switchCharacter,
     createCharacter,
     importCharacter,

@@ -32,6 +32,7 @@ import {
   naturalAttackNoteLine,
   naturalAttackTypeSuffix,
 } from "../model/naturalAttackDisplay.js";
+import { portraitSrc } from "../model/portrait.js";
 import { d20Formula, d20FormulaFor, damageFormula } from "../model/rollFormula.js";
 import { senseChipLabel, senseTip } from "../model/sensesDisplay.js";
 import { skillBreakdownComponents } from "../model/skillBreakdown.js";
@@ -154,6 +155,10 @@ export function Sheet({
     .filter((s) => s.usable)
     .sort((a, b) => skillName(a.id).localeCompare(skillName(b.id)));
 
+  // Never rendered straight from the document: an imported one can carry
+  // anything in that field (see model/portrait.ts).
+  const portrait = portraitSrc(doc.identity.portrait);
+
   // Tie the HP box's fill level to remaining HP (drains as damage is taken).
   const hpMax = sheet.hp.max;
   const hpEffective = effectiveHp(doc.live.hp);
@@ -162,6 +167,13 @@ export function Sheet({
 
   return (
     <section className="sheet" aria-label="Live character sheet">
+      {portrait ? (
+        <img
+          className="char-portrait"
+          src={portrait}
+          alt={`Portrait of ${doc.identity.name || "this character"}`}
+        />
+      ) : null}
       {hideName ? null : <div className="char-name">{doc.identity.name || "Unnamed"}</div>}
       <div className="char-sub">
         {race ? (
@@ -196,6 +208,7 @@ export function Sheet({
           <div className="char-identity char-languages">Languages: {languages.join(", ")}</div>
         ) : null;
       })()}
+      {doc.identity.notes ? <div className="char-notes">{doc.identity.notes}</div> : null}
 
       <div className="ability-strip">
         {ABILITY_IDS.map((id) => {

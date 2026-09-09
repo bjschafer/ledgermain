@@ -21,6 +21,7 @@ import { PhantomPanel } from "./PhantomPanel.js";
 import { PreparedSpellsPanel } from "./PreparedSpellsPanel.js";
 import { ResourcesPanel } from "./ResourcesPanel.js";
 import { SavedRollsPanel } from "./SavedRollsPanel.js";
+import { SessionLogPanel } from "./SessionLogPanel.js";
 import { ShifterAspectPanel } from "./ShifterAspectPanel.js";
 import { SkinwalkerChangeShapePanel } from "./SkinwalkerChangeShapePanel.js";
 import { SpellLikeAbilitiesPanel } from "./SpellLikeAbilitiesPanel.js";
@@ -117,6 +118,7 @@ export function Tracker(props: BuilderProps) {
           node: <ClassFeaturesPanel {...props} />,
         },
         { id: "play-feats", label: "Feats", node: <FeatsPanel {...props} /> },
+        { id: "play-log", label: "Session Log", node: <SessionLogPanel {...props} /> },
       ],
     },
   ];

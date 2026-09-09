@@ -1,16 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
+import { prefersReducedMotion } from "../state/motion.js";
 import { ChevronUpIcon } from "./icons.js";
 
 const SHOW_AFTER_PX = 400;
-
-/** Whether the visitor has asked for reduced motion (checked at click time). */
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
-  );
-}
 
 /**
  * Floating "scroll to top" button shown at every viewport width (unlike

@@ -5,6 +5,7 @@ import type { CharacterDoc } from "@pf1/schema";
 import type { AppLocation, Mode } from "./model/appLocation.js";
 import { hasUnseenEntries, initChangelogSeen, markChangelogSeen } from "./model/changelog.js";
 
+import { attentionTotal } from "./model/buildSections.js";
 import { useAttentionBadges } from "./components/builder/BuildNav.js";
 import type { BuilderProps } from "./components/builder/types.js";
 import { CharacterSwitcher } from "./components/CharacterSwitcher.js";
@@ -22,6 +23,8 @@ import { StatStrip } from "./components/tracker/StatStrip.js";
 import { Tracker } from "./components/tracker/Tracker.js";
 import { RollDataProvider } from "./state/rollData.js";
 import { SpellBonusesProvider } from "./state/spellBonuses.js";
+import { prefersReducedMotion } from "./state/motion.js";
+import { useJumpRequest, type JumpRequest } from "./state/navigation.js";
 import { useAppLocation } from "./state/useAppLocation.js";
 import { useCharacter } from "./state/useCharacter.js";
 import { useTextSize, type TextSize } from "./state/useTextSize.js";
@@ -122,9 +125,7 @@ function useChangelogCue(mode: Mode, ready: boolean): boolean {
  */
 function BuildTabBadge(props: Pick<BuilderProps, "doc" | "sheet" | "refData">) {
   const badges = useAttentionBadges(props);
-  const count = Object.values(badges)
-    .filter((b) => b != null && b.tone !== "dim")
-    .reduce((sum, b) => sum + b!.count, 0);
+  const count = attentionTotal(badges);
   if (count === 0) return null;
   return (
     <span className="mode-tab-badge" title={`${count} unspent build choices`}>
@@ -140,6 +141,7 @@ export function App() {
   const [printOpen, setPrintOpen] = useState(false);
   const [textSize, setTextSize] = useTextSize();
   const changelogUnseen = useChangelogCue(mode, store.status === "ready");
+  const jumpTarget = useJumpTarget(setMode);
 
   if (printOpen && store.doc && store.sheet && store.refData) {
     return (
@@ -247,12 +249,16 @@ export function App() {
         <Workbench
           mode={mode}
           initialLocation={initialLocation}
+          jumpTarget={jumpTarget}
           onActiveSection={setSection}
           doc={store.doc}
           sheet={store.sheet}
           refData={store.refData}
           update={store.update}
           undoLast={store.undoLast}
+          canUndo={store.canUndo}
+          sessionLog={store.sessionLog}
+          onClearSessionLog={store.clearSessionLog}
           onImportCharacter={(doc) => void store.importCharacter(doc)}
           onResetAll={() => void store.resetAll()}
           onDeleteCharacter={(id) => void store.deleteCharacter(id)}
@@ -264,6 +270,58 @@ export function App() {
       )}
     </div>
   );
+}
+
+/**
+ * Turn a `state/navigation.ts` jump request into a mode switch plus a section
+ * to scroll to. The mode switch happens here, where the router lives; the
+ * scroll waits on `SectionJump` inside the Suspense boundary, because a jump
+ * out of Play into Build is also a lazy chunk that hasn't downloaded yet and
+ * there is nothing to scroll to until it has.
+ *
+ * Returns the request itself rather than just its section id so a second jump
+ * to the same place still moves the reader (the ids differ).
+ */
+function useJumpTarget(setMode: (mode: Mode) => void): JumpRequest | null {
+  const request = useJumpRequest();
+  useEffect(() => {
+    if (request) setMode(request.mode);
+  }, [request, setMode]);
+  return request;
+}
+
+/**
+ * Scroll to a jump request's section once the mode it lives in has painted.
+ * Sibling of `SectionRestore` and for the same reason: both wait on the mode
+ * chunk, and both give the panels a frame to lay out before measuring. Unlike
+ * the restore, this one animates — the reader asked to be taken somewhere, and
+ * the movement is what tells them they went.
+ */
+function SectionJump({ request }: { request: JumpRequest | null }) {
+  const section = request?.section;
+  const id = request?.id;
+
+  useEffect(() => {
+    if (!section) return;
+    let cancelled = false;
+    let frame = requestAnimationFrame(() => {
+      frame = requestAnimationFrame(() => {
+        if (cancelled) return;
+        document.getElementById(section)?.scrollIntoView({
+          block: "start",
+          behavior: prefersReducedMotion() ? "auto" : "smooth",
+        });
+      });
+    });
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+    };
+    // `id` is in the deps on purpose: a repeat request for the same section is
+    // still a request to go there.
+  }, [section, id]);
+
+  return null;
 }
 
 /**
@@ -311,6 +369,7 @@ function useRestoreSection(sectionId: string | undefined) {
 function Workbench({
   mode,
   initialLocation,
+  jumpTarget,
   onActiveSection,
   onImportCharacter,
   onResetAll,
@@ -323,6 +382,7 @@ function Workbench({
 }: BuilderProps & {
   mode: Mode;
   initialLocation: AppLocation;
+  jumpTarget: JumpRequest | null;
   onActiveSection: (mode: Mode, sectionId: string) => void;
   onImportCharacter: (doc: CharacterDoc) => void;
   onResetAll: () => void;
@@ -353,6 +413,7 @@ function Workbench({
               scroll target arrives in. */}
           <Suspense fallback={<ModeFallback />}>
             <SectionRestore sectionId={initialLocation.section} />
+            <SectionJump request={jumpTarget} />
             {mode === "build" ? (
               <BuildMode {...props} onActiveSection={onBuildSection} />
             ) : mode === "settings" ? (

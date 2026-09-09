@@ -34,6 +34,7 @@ import { localId } from "./ids.js";
 import { CURRENT_SCHEMA_VERSION } from "./migrations.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
 import { normalizeAlignmentCode, slugifySkillLabel } from "./names.js";
+import { isPortraitDataUrl } from "./portrait.js";
 import { favoredClassBonusLevels } from "./race.js";
 import {
   isElementalSchoolTag,
@@ -772,6 +773,26 @@ export function setWeight(doc: CharacterDoc, weight: string): CharacterDoc {
 
 export function setAppearance(doc: CharacterDoc, appearance: string): CharacterDoc {
   return { ...doc, identity: { ...doc.identity, appearance } };
+}
+
+export function setNotes(doc: CharacterDoc, notes: string): CharacterDoc {
+  return { ...doc, identity: { ...doc.identity, notes } };
+}
+
+/**
+ * Set (or clear, with `null`) the character portrait. The data URL is expected
+ * to have come from `model/portrait.ts:encodePortrait`; anything else is
+ * refused rather than stored, so the one door a portrait enters the document
+ * through is the one that bounds its size.
+ */
+export function setPortrait(doc: CharacterDoc, portrait: string | null): CharacterDoc {
+  if (portrait === null) {
+    if (doc.identity.portrait === undefined) return doc;
+    const { portrait: _cleared, ...identity } = doc.identity;
+    return { ...doc, identity };
+  }
+  if (!isPortraitDataUrl(portrait)) return doc;
+  return { ...doc, identity: { ...doc.identity, portrait } };
 }
 
 export function setAbility(doc: CharacterDoc, ability: AbilityId, value: number): CharacterDoc {

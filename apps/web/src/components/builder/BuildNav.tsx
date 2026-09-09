@@ -1,19 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
-  chosenArcanistExploitCount,
-  expectedArcanistExploitCount,
-} from "../../model/arcanistExploits.js";
-import { abilityIncreaseBudget } from "../../model/doc.js";
-import { chosenFeatCountExcludingGranted, expectedFeatCount } from "../../model/feats.js";
-import { chosenMagusArcanaCount, expectedMagusArcanaCount } from "../../model/magusArcana.js";
-import {
-  chosenOracleRevelationCount,
-  expectedOracleRevelationCount,
-} from "../../model/oracleRevelations.js";
-import { permanentIntMod, skillBudget } from "../../model/skills.js";
-import { spellsPanelVisible } from "../../model/spellcasting.js";
-import { chosenTraitCount, expectedTraitCount } from "../../model/traits.js";
+  attentionBadges,
+  BUILD_SECTIONS,
+  visibleBuildSections,
+  type AttentionBadges,
+} from "../../model/buildSections.js";
+import { prefersReducedMotion } from "../../state/motion.js";
 import type { BuilderProps } from "./types.js";
 
 /**
@@ -26,159 +19,17 @@ import type { BuilderProps } from "./types.js";
  * places around each of the 11 build panels. Active-section tracking uses an
  * IntersectionObserver rather than scroll-position math so it stays correct
  * regardless of each panel's (highly variable) height.
+ *
+ * The section list and the badge counts are `model/buildSections.ts` — the
+ * mode tab and the level-up toast read the same answers.
  */
 
-interface NavSection {
-  id: string;
-  label: string;
-  step: string;
-}
-
-const SECTIONS: readonly NavSection[] = [
-  { id: "section-identity", label: "Identity", step: "i" },
-  { id: "section-abilities", label: "Abilities", step: "ii" },
-  { id: "section-race", label: "Race", step: "iii" },
-  { id: "section-traits", label: "Traits", step: "iii½" },
-  { id: "section-classes", label: "Classes", step: "iv" },
-  { id: "section-hp", label: "Hit Points", step: "v" },
-  { id: "section-skills", label: "Skills", step: "vi" },
-  { id: "section-feats", label: "Feats", step: "vii" },
-  { id: "section-gear", label: "Gear", step: "viii" },
-  { id: "section-weapons", label: "Weapons", step: "ix" },
-  { id: "section-spells", label: "Spells", step: "x" },
-];
-
-type BadgeTone = "gold" | "dim" | "warn";
-
-interface Badge {
-  count: number;
-  tone: BadgeTone;
-  title: string;
-}
-
-function plural(n: number, word: string): string {
-  return `${n} ${word}${n === 1 ? "" : "s"}`;
-}
-
-/**
- * Reads the "unfinished business" signals already computed by the model
- * layer for each section's own header (never reimplements the math — see
- * task instructions). Only sections with something outstanding get an entry.
- */
+/** React binding for `attentionBadges`; the math itself is pure and lives in the model. */
 export function useAttentionBadges({
   doc,
   refData,
-}: Pick<BuilderProps, "doc" | "refData">): Partial<Record<string, Badge>> {
-  return useMemo(() => {
-    const badges: Partial<Record<string, Badge>> = {};
-
-    // Abilities: unassigned ability-score increases (AbilitiesSection's
-    // "N / M assigned" subsection header).
-    const allowedIncreases = abilityIncreaseBudget(doc);
-    const assignedIncreases = doc.build.abilityIncreases?.length ?? 0;
-    const openIncreases = Math.max(0, allowedIncreases - assignedIncreases);
-    if (openIncreases > 0) {
-      badges["section-abilities"] = {
-        count: openIncreases,
-        tone: "gold",
-        title: `${plural(openIncreases, "ability score increase")} unassigned`,
-      };
-    }
-
-    // Skills: ranks left to spend (or, rarely, overspent) across both pools —
-    // an unspent background rank is just as much an open build decision.
-    const budget = skillBudget(doc, refData, permanentIntMod(doc, refData));
-    const remaining = budget.remaining + (budget.background?.remaining ?? 0);
-    if (remaining > 0) {
-      badges["section-skills"] = {
-        count: remaining,
-        tone: "gold",
-        title: `${plural(remaining, "skill rank")} left to spend`,
-      };
-    } else if (remaining < 0) {
-      badges["section-skills"] = {
-        count: -remaining,
-        tone: "warn",
-        title: `${plural(-remaining, "skill rank")} overspent`,
-      };
-    }
-
-    // Feats: open slots (or over budget).
-    const openFeats =
-      expectedFeatCount(doc, refData) - chosenFeatCountExcludingGranted(doc, refData);
-    if (openFeats > 0) {
-      badges["section-feats"] = {
-        count: openFeats,
-        tone: "gold",
-        title: `${plural(openFeats, "open feat slot")}`,
-      };
-    } else if (openFeats < 0) {
-      badges["section-feats"] = {
-        count: -openFeats,
-        tone: "warn",
-        title: `${plural(-openFeats, "feat")} over budget`,
-      };
-    }
-
-    // Classes: unpicked arcanist exploits / magus arcana / oracle
-    // revelations — whichever cheap picker budget applies to this
-    // character's classes (each is 0 for a character without that class, so
-    // summing is safe; only one of the three is ever nonzero in practice).
-    const openExploits = Math.max(
-      0,
-      expectedArcanistExploitCount(doc, refData) - chosenArcanistExploitCount(doc),
-    );
-    const openArcana = Math.max(
-      0,
-      expectedMagusArcanaCount(doc, refData) - chosenMagusArcanaCount(doc),
-    );
-    const openRevelations = Math.max(
-      0,
-      expectedOracleRevelationCount(doc, refData) - chosenOracleRevelationCount(doc),
-    );
-    if (openExploits > 0) {
-      badges["section-classes"] = {
-        count: openExploits,
-        tone: "gold",
-        title: `${plural(openExploits, "arcanist exploit")} unpicked`,
-      };
-    } else if (openArcana > 0) {
-      badges["section-classes"] = {
-        count: openArcana,
-        tone: "gold",
-        title: `${plural(openArcana, "magus arcana")} unpicked`,
-      };
-    } else if (openRevelations > 0) {
-      badges["section-classes"] = {
-        count: openRevelations,
-        tone: "gold",
-        title: `${plural(openRevelations, "revelation")} unpicked`,
-      };
-    }
-
-    // Traits: fewer than the budget (two, or three when a drawback is taken —
-    // see `expectedTraitCount`). Informational, not urgent — traits are
-    // optional — so this gets the dim/neutral tone rather than gold, and never
-    // fires over-count (more than the budget is fine).
-    const traitShortfall = expectedTraitCount(doc, refData) - chosenTraitCount(doc);
-    if (traitShortfall > 0) {
-      badges["section-traits"] = {
-        count: traitShortfall,
-        tone: "dim",
-        title: `${plural(traitShortfall, "trait")} short of the expected count`,
-      };
-    }
-
-    return badges;
-  }, [doc, refData]);
-}
-
-/** Whether the visitor has asked for reduced motion (checked at click time). */
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
-  );
+}: Pick<BuilderProps, "doc" | "refData">): AttentionBadges {
+  return useMemo(() => attentionBadges(doc, refData), [doc, refData]);
 }
 
 export function BuildNav({
@@ -187,14 +38,9 @@ export function BuildNav({
   onActiveChange,
 }: BuilderProps & { onActiveChange?: (sectionId: string) => void }) {
   const badges = useAttentionBadges({ doc, refData });
-  const [active, setActive] = useState<string>(SECTIONS[0]!.id);
+  const [active, setActive] = useState<string>(BUILD_SECTIONS[0]!.id);
 
-  // The Spells panel hides itself for a non-caster, so its jump target would
-  // lead nowhere — drop the nav entry with it.
-  const sections = useMemo(
-    () => SECTIONS.filter((s) => s.id !== "section-spells" || spellsPanelVisible(doc, refData)),
-    [doc, refData],
-  );
+  const sections = useMemo(() => visibleBuildSections(doc, refData), [doc, refData]);
   const orderRef = useRef(sections.map((s) => s.id));
   orderRef.current = sections.map((s) => s.id);
 

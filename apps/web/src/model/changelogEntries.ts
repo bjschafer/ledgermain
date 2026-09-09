@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-08-session-log-and-portrait",
+    date: "2026-09-08",
+    title: "A session log, a portrait, and a level-up that points somewhere",
+    note: "Play has a Session Log: every hit you take, every point you heal, and every condition that lands or lifts writes itself a line with the time beside it, so you can answer \u201cwait, what hit me?\u201d without anyone rewinding the fight. It is kept on this device only and never travels with the character. Undo goes back further too: two damage taps used to leave only the second one undoable, and now each press walks back another step. The level-up toast has a Spend it button that takes you straight to the first thing you have not spent, whether that is the feat, the ranks, or the ability increase. Identity gained a freeform notes field and a portrait, and the portrait shows on the sheet, shrinks itself down small, and travels with an export.",
+  },
+  {
     id: "2026-09-07-free-metamagic",
     date: "2026-09-07",
     title: "The metamagic your class hands you for free",

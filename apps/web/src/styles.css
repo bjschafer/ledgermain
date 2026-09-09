@@ -2100,6 +2100,31 @@ button:focus-visible,
   padding: 20px;
 }
 
+/* Portrait — floated so the name/race/class lines wrap beside it instead of
+   being pushed down a whole square on a column this narrow. */
+.sheet .char-portrait {
+  float: right;
+  width: 76px;
+  height: 76px;
+  margin: 0 0 var(--space-2) var(--space-3);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+/* Freeform player notes. Preserves the line breaks they typed; the sheet is
+   the only place it renders, and never as markup. */
+.sheet .char-notes {
+  clear: both;
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-left: 2px solid var(--gold-dim);
+  background: var(--surface-2);
+  font-size: 0.8125rem;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+
 .sheet .char-name {
   font-family: var(--display);
   font-size: 1.875rem;
@@ -5278,6 +5303,108 @@ input[type="text"].saved-roll-name:focus {
 .hero-spend-label {
   color: var(--text);
   font-weight: 600;
+}
+
+/* session log — the passive "what hit me?" record (model/sessionLog.ts).
+   Damage/healing borrow the tracker's existing oxblood/sage reading so a
+   glance down the list sorts itself without a legend. */
+.session-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.session-log-row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  padding: 6px var(--space-2);
+  border-left: 3px solid var(--line);
+  background: var(--surface-2);
+  font-size: 0.875rem;
+}
+
+.session-log-row--damage {
+  border-left-color: var(--oxblood);
+}
+
+.session-log-row--healing {
+  border-left-color: var(--sage);
+}
+
+.session-log-row--condition {
+  border-left-color: var(--gold-dim);
+}
+
+.session-log-time {
+  flex: none;
+  color: var(--faint);
+  font-size: 0.75rem;
+}
+
+.session-log-text {
+  color: var(--ink);
+}
+
+/* portrait picker (builder Identity panel). Not a `label.field`, so it repeats
+   that rule's label register rather than inheriting it. */
+.portrait-field > label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.portrait-field {
+  margin-bottom: 12px;
+}
+
+.portrait-row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.portrait-preview {
+  flex: none;
+  width: 96px;
+  height: 96px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+.portrait-preview--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--faint);
+  font-size: 1.5rem;
+  background: var(--surface-2);
+}
+
+.portrait-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.portrait-controls .hint {
+  margin: 0;
+}
+
+/* A file input sizes itself to its button plus the filename, which on a phone
+   is wider than the column it sits in (e2e/layout.spec.ts catches the spill).
+   Clamp it and let it wrap instead. */
+.portrait-controls input[type="file"] {
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.75rem;
 }
 
 /* xp tracking */

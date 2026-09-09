@@ -6,11 +6,13 @@ import {
   setGender,
   setHeight,
   setName,
+  setNotes,
   setWeight,
 } from "../../model/doc.js";
 import { ALIGNMENT_LABELS } from "../../model/names.js";
 import { PersonIcon } from "../icons.js";
 import { Panel } from "./Panel.js";
+import { PortraitField } from "./PortraitField.js";
 import type { BuilderProps } from "./types.js";
 
 const ALIGNMENTS = ["LG", "NG", "CG", "LN", "N", "CN", "LE", "NE", "CE"];
@@ -40,6 +42,16 @@ export function IdentitySection({ doc, update }: BuilderProps) {
           ))}
         </select>
       </label>
+      <label className="field">
+        <span>Notes</span>
+        <textarea
+          rows={4}
+          placeholder="Marching order, who owes you money, what the fortune teller said."
+          value={doc.identity.notes ?? ""}
+          onChange={(e) => update((d) => setNotes(d, e.target.value))}
+        />
+      </label>
+      <PortraitField doc={doc} update={update} />
       <details className="identity-more">
         <summary>More details</summary>
         <label className="field">

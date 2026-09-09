@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { prefersReducedMotion } from "../state/motion.js";
+
 /**
  * Section-jump navigation driven by the DOM rather than a hand-maintained list
  * — shared by the Play and Settings tabs (Build keeps its own static list,
@@ -30,14 +32,6 @@ interface Section {
 
 function sameIds(a: readonly Section[], b: readonly Section[]): boolean {
   return a.length === b.length && a.every((s, i) => s.id === b[i]!.id);
-}
-
-/** Whether the visitor has asked for reduced motion (checked at click time). */
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
-  );
 }
 
 export function SectionNav({

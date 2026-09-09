@@ -82,6 +82,28 @@ export interface CharacterDoc {
     /** Free-text physical description / appearance notes. */
     appearance?: string;
     /**
+     * Freeform player notes — the party's marching order, what the NPC in
+     * Sandpoint wanted, a reminder to buy rope. Never interpreted by the
+     * engine or the builder; the sheet only ever displays it.
+     */
+    notes?: string;
+    /**
+     * Optional character portrait, stored inline in the document as a `data:`
+     * URL rather than a link out, so it survives export/import and an offline
+     * table with no network. Written only by `model/portrait.ts`, which
+     * re-encodes whatever the player picked down to a small square JPEG (see
+     * `PORTRAIT_MAX_BYTES`) — the whole document has a 2 MB server cap, and a
+     * phone camera shot blows through that on its own. Inline rather than a
+     * blob store so it survives export/import and renders at a table with no
+     * signal, which a linked one would not.
+     *
+     * Untrusted on the way in (a hand-edited or imported document can carry
+     * anything here), so every render path goes through
+     * `model/portrait.ts:portraitSrc`, which passes only the image data URLs
+     * this app writes.
+     */
+    portrait?: string;
+    /**
      * Favored class tag (for the favored-class bonus). The per-level HP/skill
      * choices are recorded in `build.favoredClassBonus`; until the builder
      * populates that, the engine applies no FCB (see engine HP assumptions).
