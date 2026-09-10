@@ -322,24 +322,45 @@ message, stack }`, see `src/index.ts`) so they filter by `event`/`route`
 
 ### Alerting
 
-Logs and metrics answer "what happened" once you go looking. Alerting is the
-part that makes you look. It is **Cloudflare dashboard configuration, not repo
-code** — there is nothing here to deploy, which is exactly why it's written
-down:
+Alerting for this Worker is **Terraform, in the `tf-cloudflare` infrastructure
+repo** (`notifications.tf`) — not the dashboard, and not this repo. Don't
+hand-create a notification policy in the Cloudflare UI: it would sit outside
+Terraform state and drift silently.
 
-1. **Error rate** — Cloudflare dashboard → **Notifications → Add** → _Workers_
-   → **Worker Errors**. Scope it to `ledgermain-api` and pick the account
-   owner's email as the destination. This fires on the Worker's own 5xx/exception
-   rate, which is what `src/index.ts`'s catch-all turns every unhandled throw
-   into, so it covers the whole route table without per-route wiring.
-2. **Uptime** — dashboard → **Traffic → Health Checks** (or Notifications →
-   _Health Check Status_) against `https://api.ledgermain.whizkid.dev/api/me`.
-   That route needs no secrets, no KV write, and returns a flat `401` when
-   unauthenticated, so an unauthenticated probe expecting `401` proves the
-   Worker is routing and executing. Expecting `200` somewhere would need a
-   live session in the probe, which is a credential nobody should mint for a
-   health check.
-3. **Client crashes** — deliberately **not** automatic. See below.
+**As it stands, this Worker's 5xx notify nobody, and the reason is
+structural.** The zone-wide policy covering `whizkid.dev` is an _origin_ error
+alert (`http_alert_origin_error`), which derives an error rate from origin
+responses. `api.ledgermain.whizkid.dev` is a Workers custom domain: there is no
+origin behind it, so no request to it ever produces an origin response at all.
+Verifiable in the zone's `http_requests` Logpush data — every request to this
+hostname carries `OriginResponseStatus=0`, edge 5xx included. The policy is
+real and does its job for the zone's non-Worker hostnames; it simply cannot see
+this one. The `500` that `src/index.ts`'s catch-all returns is generated at the
+edge and is invisible to it.
+
+Two things would change that. Neither has been done, for a reason each:
+
+1. **Per-Worker error alerting** does exist, via Workers Observability — but
+   it's dashboard-only. There is no Terraform resource for it, and the infra
+   API token can't reach that surface even to read it. Building it by hand
+   would mean one alert living outside the file where every other alert lives.
+2. **An uptime check** is declined outright. Standalone Health Checks monitor
+   an _origin server address_, and a Workers custom domain has no origin, so
+   there is nothing for one to probe. If an external uptime service is ever
+   pointed here, `GET /api/me` with no `Authorization` header returns a flat
+   `401` — no secrets, no KV touch, no side effects — which makes it the right
+   liveness probe. Don't build one that expects `200`: that would need a real
+   session token minted for a health check, which is a credential nobody should
+   create.
+
+Note also that the zone alert can't be narrowed to one Worker — the
+notifications API scopes by zone, not by script. Even once something does watch
+this Worker, an alert will mean "something on `whizkid.dev` is 5xxing", so
+triage starts in the logs, not in the alert body.
+
+Until one of those lands, the honest posture is that failures here are found by
+looking (`wrangler tail`, the Observability tab, or the Analytics Engine query
+above), not by being told.
 
 **Automatic client-side crash reporting is declined.** Shipping unattended
 stack traces off a player's device is telemetry, and this project doesn't do

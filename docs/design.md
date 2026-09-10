@@ -50,7 +50,7 @@ Deliberately deferred, and _cheap because of this model_ -- they reuse the **sam
 > - **Short session TTLs with silent refresh.** A refresh-token dance buys a smaller revocation window, but revoke-all already closes the window on demand, and the app's whole auth story is "a random token in localStorage" precisely so there is nothing clever to get wrong. A single-player sheet does not earn a second credential lifecycle.
 > - **Automatic client-side crash reporting.** Shipping unattended stack traces off a player's device is telemetry, which this project does not do (see `apps/api/README.md`'s Observability section). The crash screen instead offers a **Send a report** button that opens the ordinary feedback form pre-filled with the error and the component stack. A player reads it and presses send, or does not.
 >
-> Server-side alerting (5xx rate, uptime) is Cloudflare dashboard configuration rather than repo code; the setup is written down in `apps/api/README.md`.
+> Server-side alerting lives in the `tf-cloudflare` infrastructure repo, not here. It does **not** currently cover these Workers: the zone's alert keys on origin responses, and a Workers custom domain has no origin, so a Worker-generated 5xx is invisible to it. `apps/api/README.md` records what that leaves uncovered and why the two obvious fixes were declined.
 
 Identity stays boring: Discord OAuth, sessions in KV/D1. (GitHub OAuth and email magic-link were the alternatives considered; Discord fits the actual TTRPG-player audience better than a dev-tool login, and needs no email-sending infra. Cloudflare Access is org-oriented overkill -- it assumes an IdP the project owner administers, the opposite of "a stranger can sign up.")
 
