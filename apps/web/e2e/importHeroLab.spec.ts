@@ -40,7 +40,14 @@ test("imports a Hero Lab .por portfolio and computes the sheet Hero Lab printed"
   await expect(sealValue(page, "Armor Class")).toBeVisible({ timeout: 15_000 });
 
   await page.getByRole("tab", { name: "Settings" }).click();
-  await page.locator('input[type="file"]').setInputFiles(PORTFOLIO);
+  // Scope to the Import control: the Build tab's portrait picker is also an
+  // `input[type="file"]`, and a bare locator races the Settings chunk finishing
+  // its load — under a slow CI it grabbed the portrait input and fed it the
+  // `.por`.
+  await page
+    .locator("label", { hasText: "Import character" })
+    .locator('input[type="file"]')
+    .setInputFiles(PORTFOLIO);
 
   // The toast names the character that just loaded.
   await expect(page.getByText(/Imported Crush/)).toBeVisible();
