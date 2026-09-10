@@ -43,6 +43,15 @@ Deliberately deferred, and _cheap because of this model_ -- they reuse the **sam
 
 > **DECIDED (2026-07-09): not pursuing Level 2, Level 3, or the offline PWA.** Level 1 sync shipped and is the end state for connectivity. The architectural rule above stays (it's what keeps the client fast and the server simple), but party sync / live mirror / CRDT / service-worker offline are off the roadmap entirely -- the product stays a single-player sheet. Content breadth limits are inventoried in issue #74. Future work is driven by real at-the-table feedback, not this list.
 
+> **DECIDED (2026-09-09): the account's ops floor.** Once strangers hold accounts, four things stop being optional. Three landed: a **purge** (`DELETE /api/me`) that removes an owner's documents, tombstones and sessions, paired with a **bulk export** (`GET /api/me/export`); a **per-owner write limit and document cap**, so the 2 MB per-doc ceiling is no longer the only bound on what one account can cost; and **session revoke** (`POST /auth/logout-all`), which needed sessions indexed by owner, since a token-keyed record can only be revoked by whoever already holds the token.
+>
+> Two things were declined, on the same reasoning each time: the cost is permanent and the problem is not.
+>
+> - **Short session TTLs with silent refresh.** A refresh-token dance buys a smaller revocation window, but revoke-all already closes the window on demand, and the app's whole auth story is "a random token in localStorage" precisely so there is nothing clever to get wrong. A single-player sheet does not earn a second credential lifecycle.
+> - **Automatic client-side crash reporting.** Shipping unattended stack traces off a player's device is telemetry, which this project does not do (see `apps/api/README.md`'s Observability section). The crash screen instead offers a **Send a report** button that opens the ordinary feedback form pre-filled with the error and the component stack. A player reads it and presses send, or does not.
+>
+> Server-side alerting (5xx rate, uptime) is Cloudflare dashboard configuration rather than repo code; the setup is written down in `apps/api/README.md`.
+
 Identity stays boring: Discord OAuth, sessions in KV/D1. (GitHub OAuth and email magic-link were the alternatives considered; Discord fits the actual TTRPG-player audience better than a dev-tool login, and needs no email-sending infra. Cloudflare Access is org-oriented overkill -- it assumes an IdP the project owner administers, the opposite of "a stranger can sign up.")
 
 ## 3. The backbone data model

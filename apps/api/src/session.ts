@@ -6,6 +6,7 @@
  * nonces are a short-lived KV entry rather than a signed value, since a KV
  * round trip is cheap and this avoids needing another secret.
  */
+import { listAllKeys } from "./kv.js";
 
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
 const OAUTH_STATE_TTL_SECONDS = 60 * 10; // 10 minutes — just long enough for the Discord redirect round trip
@@ -22,12 +23,27 @@ export function randomToken(bytes: number): string {
   return Array.from(buf, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+/**
+ * Reverse index for "sign out everywhere": `session:<token>` alone can only be
+ * read by someone who already holds the token, so revoking an owner's other
+ * devices needs a second entry keyed the other way round. Value is empty --
+ * the key name carries everything. `::` separates the parts because an
+ * `ownerId` is `discord:<snowflake>`, which contains single colons but never a
+ * doubled one (same convention as the CHARACTERS keys).
+ */
+function ownerSessionKey(ownerId: string, token: string): string {
+  return `ownersession::${ownerId}::${token}`;
+}
+
 export async function createSession(kv: KVNamespace, ownerId: string): Promise<string> {
   const token = randomToken(32);
   const session: Session = { ownerId, createdAt: new Date().toISOString() };
-  await kv.put(`session:${token}`, JSON.stringify(session), {
-    expirationTtl: SESSION_TTL_SECONDS,
-  });
+  await Promise.all([
+    kv.put(`session:${token}`, JSON.stringify(session), {
+      expirationTtl: SESSION_TTL_SECONDS,
+    }),
+    kv.put(ownerSessionKey(ownerId, token), "", { expirationTtl: SESSION_TTL_SECONDS }),
+  ]);
   return token;
 }
 
@@ -35,8 +51,34 @@ export async function getSession(kv: KVNamespace, token: string): Promise<Sessio
   return kv.get<Session>(`session:${token}`, "json");
 }
 
+/**
+ * Sign out one device. Reads the session first so the owner index entry goes
+ * with it -- an orphaned index key would make a later "sign out everywhere"
+ * report a device that is already gone.
+ */
 export async function deleteSession(kv: KVNamespace, token: string): Promise<void> {
-  await kv.delete(`session:${token}`);
+  const session = await getSession(kv, token);
+  await Promise.all([
+    kv.delete(`session:${token}`),
+    session ? kv.delete(ownerSessionKey(session.ownerId, token)) : Promise.resolve(),
+  ]);
+}
+
+/**
+ * Sign out every device: delete all of this owner's sessions, including the
+ * one making the call. Returns how many were revoked.
+ *
+ * Honest limit: this can only see sessions that carry an index entry, so any
+ * token minted before that index existed survives until its 30-day TTL runs
+ * out. That window closes on its own and cannot reopen.
+ */
+export async function revokeAllSessions(kv: KVNamespace, ownerId: string): Promise<number> {
+  const prefix = ownerSessionKey(ownerId, "");
+  const keys = await listAllKeys(kv, prefix);
+  await Promise.all(
+    keys.flatMap((key) => [kv.delete(key), kv.delete(`session:${key.slice(prefix.length)}`)]),
+  );
+  return keys.length;
 }
 
 /**

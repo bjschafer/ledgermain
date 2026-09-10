@@ -262,6 +262,7 @@ export function App() {
           onImportCharacter={(doc) => void store.importCharacter(doc)}
           onResetAll={() => void store.resetAll()}
           onDeleteCharacter={(id) => void store.deleteCharacter(id)}
+          onSignOut={() => void store.signOut()}
           actionPending={store.actionPending}
           onOpenPrint={() => setPrintOpen(true)}
           textSize={textSize}
@@ -374,6 +375,7 @@ function Workbench({
   onImportCharacter,
   onResetAll,
   onDeleteCharacter,
+  onSignOut,
   actionPending,
   onOpenPrint,
   textSize,
@@ -387,6 +389,7 @@ function Workbench({
   onImportCharacter: (doc: CharacterDoc) => void;
   onResetAll: () => void;
   onDeleteCharacter: (id: string) => void;
+  onSignOut: () => void;
   actionPending: boolean;
   onOpenPrint: () => void;
   textSize: TextSize;
@@ -423,6 +426,7 @@ function Workbench({
                 onImportCharacter={onImportCharacter}
                 onResetAll={onResetAll}
                 onDeleteCharacter={onDeleteCharacter}
+                onSignOut={onSignOut}
                 actionPending={actionPending}
                 onOpenPrint={onOpenPrint}
                 textSize={textSize}

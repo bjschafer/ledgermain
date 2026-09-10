@@ -15,6 +15,8 @@
  */
 import { PayloadTooLargeError, readBodyWithCap } from "./body.js";
 import { errorJson, json } from "./http.js";
+import { listAllKeys } from "./kv.js";
+import { overRateLimit, tooManyRequests, type RateLimitRule } from "./rateLimit.js";
 
 /**
  * 2 MB — generous for a fully-built character (deep gear list, full
@@ -37,6 +39,36 @@ const MAX_DOC_BYTES = 2_000_000;
  * resurrection).
  */
 const TOMBSTONE_TTL_SECONDS = 90 * 24 * 60 * 60;
+
+/**
+ * Per-owner ceiling on live documents. The 2 MB per-doc cap alone bounds a
+ * single write and nothing else: a client stuck in a create loop could mint
+ * documents until the namespace, not the account, ran out. Checked only when
+ * a *new* id appears, so a player at the cap can still edit everything they
+ * already have; the only thing they lose is "make one more".
+ *
+ * 100 is far past any real use (the app's own switcher is unusable well
+ * before that) and keeps a full purge or export inside one request's
+ * subrequest budget.
+ */
+const MAX_DOCS_PER_OWNER = 100;
+
+/**
+ * Per-owner write budget. Normal play pushes on change with a debounce, so an
+ * hour of heavy editing is dozens of writes; a client in a retry loop is
+ * hundreds. This catches the second without touching the first.
+ */
+const WRITE_RATE_LIMIT: RateLimitRule = { max: 240, windowSeconds: 60 * 60 };
+
+/**
+ * How many keys one purge call will delete. A purge walks documents *and*
+ * tombstones, and tombstones are unbounded by `MAX_DOCS_PER_OWNER` (a user
+ * who churns characters accumulates one per delete for 90 days), so the work
+ * can exceed a single invocation's subrequest budget. The route reports
+ * whether it finished and the caller repeats until it has -- deleting is
+ * idempotent, so a resumed purge is just a shorter one.
+ */
+const PURGE_KEY_BUDGET = 300;
 
 interface StoredMeta {
   version: number;
@@ -108,6 +140,13 @@ export async function putCharacter(
   request: Request,
   env: Env,
 ): Promise<Response> {
+  // Before the body is read, so a caller over budget doesn't get to stream
+  // 2 MB at us first. Keyed by owner, not IP: the session is the thing being
+  // spent here, and two players behind one NAT shouldn't share a budget.
+  if (await overRateLimit(env.KV, `charput:rl:${ownerId}`, WRITE_RATE_LIMIT)) {
+    return tooManyRequests("Too many writes — please try again later", WRITE_RATE_LIMIT);
+  }
+
   let raw: string;
   try {
     raw = await readBodyWithCap(request, MAX_DOC_BYTES);
@@ -140,6 +179,20 @@ export async function putCharacter(
 
   const key = keyFor(ownerId, id);
   const existing = await env.CHARACTERS.getWithMetadata<StoredMeta>(key, "text");
+  if (existing.value === null) {
+    // Only a new id pays for the count scan, and only up to the cap plus one —
+    // enough to answer "are we full?" without listing a whole namespace.
+    const owned = await env.CHARACTERS.list({
+      prefix: keyFor(ownerId, ""),
+      limit: MAX_DOCS_PER_OWNER + 1,
+    });
+    if (owned.keys.length >= MAX_DOCS_PER_OWNER) {
+      return errorJson(
+        403,
+        `This account already holds ${MAX_DOCS_PER_OWNER} characters — delete one to add another`,
+      );
+    }
+  }
   if (existing.metadata && existing.metadata.version >= version) {
     return json(
       {
@@ -178,4 +231,79 @@ export async function deleteCharacter(ownerId: string, id: string, env: Env): Pr
     expirationTtl: TOMBSTONE_TTL_SECONDS,
   });
   return new Response(null, { status: 204 });
+}
+
+/**
+ * `GET /api/me/export` — every document this owner has, as one JSON file.
+ *
+ * Streamed rather than assembled: the cap above allows 100 documents of up to
+ * 2 MB each, which is well past what a Worker may hold in memory at once. The
+ * stored blobs are already JSON *text*, so they are spliced in verbatim
+ * without a parse/re-serialize round trip — which also keeps this route from
+ * so much as looking at the game data it copies.
+ *
+ * Backpressure comes free from `pull`: the runtime asks for the next document
+ * only once the client has taken the last one.
+ */
+export function exportCharacters(ownerId: string, env: Env): Response {
+  const prefix = keyFor(ownerId, "");
+  const encoder = new TextEncoder();
+  let keys: string[] | null = null;
+  let index = 0;
+
+  const body = new ReadableStream<Uint8Array>({
+    async pull(controller) {
+      if (keys === null) {
+        keys = await listAllKeys(env.CHARACTERS, prefix);
+        const head = { ownerId, exportedAt: new Date().toISOString() };
+        controller.enqueue(
+          encoder.encode(
+            `{"ownerId":${JSON.stringify(head.ownerId)},` +
+              `"exportedAt":${JSON.stringify(head.exportedAt)},"characters":[`,
+          ),
+        );
+        return;
+      }
+      if (index >= keys.length) {
+        controller.enqueue(encoder.encode("]}"));
+        controller.close();
+        return;
+      }
+      const name = keys[index++]!;
+      const raw = await env.CHARACTERS.get(name);
+      // A document deleted between the listing and this read is simply absent
+      // from the export; nothing here is worth failing the whole download for.
+      if (raw === null) return;
+      controller.enqueue(encoder.encode(index === 1 ? raw : `,${raw}`));
+    },
+  });
+
+  return new Response(body, {
+    status: 200,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "content-disposition": 'attachment; filename="ledgermain-export.json"',
+    },
+  });
+}
+
+/**
+ * Delete this owner's documents and tombstones, up to {@link PURGE_KEY_BUDGET}
+ * keys. Returns what it removed and whether anything was left over, so the
+ * caller can call again — see that constant for why one call may not finish.
+ *
+ * No tombstones are written for the deletions: a tombstone exists to tell
+ * another *signed-in* device that a character is gone, and a purge revokes
+ * every session on its way out, so there is nobody left to tell.
+ */
+export async function purgeCharacters(
+  ownerId: string,
+  env: Env,
+): Promise<{ deleted: number; complete: boolean }> {
+  const docKeys = await listAllKeys(env.CHARACTERS, keyFor(ownerId, ""));
+  const tombKeys = await listAllKeys(env.CHARACTERS, tombKeyFor(ownerId, ""));
+  const all = [...docKeys, ...tombKeys];
+  const batch = all.slice(0, PURGE_KEY_BUDGET);
+  await Promise.all(batch.map((key) => env.CHARACTERS.delete(key)));
+  return { deleted: batch.length, complete: batch.length === all.length };
 }

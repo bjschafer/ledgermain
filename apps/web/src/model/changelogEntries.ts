@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-09-account-controls",
+    date: "2026-09-09",
+    title: "Your account, on your terms",
+    note: "If you sync your characters, Settings now has a Your Account panel: download every character on the account as one file, or sign out everywhere, which ends every signed-in session including the one you are using. The Danger Zone gained a matching Erase my server data, which removes every character and session the server holds for you and signs you out. Characters saved on your own device are left alone either way. And if the sheet ever breaks and gives you the reload screen, there is a Send a report button on it now that fills the feedback form in with what broke, so a blank page is something you can actually report.",
+  },
+  {
     id: "2026-09-09-session-log-everything",
     date: "2026-09-09",
     title: "The session log stops missing things",

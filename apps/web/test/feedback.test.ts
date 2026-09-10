@@ -3,6 +3,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 
 import {
+  buildCrashDraft,
   buildRequest,
   buildSearchMissDraft,
   DEFAULT_CATEGORY,
@@ -10,6 +11,7 @@ import {
   emptyDraft,
   formatContext,
   MAX_BUILD_LENGTH,
+  MAX_CRASH_STACK_LENGTH,
   MAX_MESSAGE_LENGTH,
   validateDraft,
   type FeedbackContext,
@@ -153,5 +155,47 @@ describe("buildSearchMissDraft", () => {
   it("produces a draft that passes validation as-is", () => {
     const draft = buildSearchMissDraft("Zzznotarealthing", "spell");
     expect(validateDraft(draft)).toBeNull();
+  });
+});
+
+describe("buildCrashDraft", () => {
+  const error = new Error("Cannot read properties of undefined");
+
+  it("files under bug with the error, the region, and the stack", () => {
+    const draft = buildCrashDraft(error, "\n    at Panel\n    at Sheet", "the spells panel");
+    expect(draft.category).toBe("bug");
+    expect(draft.message).toContain("the spells panel");
+    expect(draft.message).toContain("Cannot read properties of undefined");
+    expect(draft.message).toContain("at Panel");
+    // Never opts the character in on the player's behalf.
+    expect(draft.includeBuild).toBe(false);
+    expect(validateDraft(draft)).toBeNull();
+  });
+
+  it("stays submittable when the component stack is enormous", () => {
+    const draft = buildCrashDraft(error, "    at Deep\n".repeat(2000), "the sheet");
+    expect(draft.message.length).toBeLessThanOrEqual(MAX_MESSAGE_LENGTH);
+    expect(validateDraft(draft)).toBeNull();
+  });
+
+  it("keeps the frames nearest the throw", () => {
+    const stack = ["    at Nearest", ...Array.from({ length: 500 }, (_, i) => `    at F${i}`)].join(
+      "\n",
+    );
+    const draft = buildCrashDraft(error, stack, "the sheet");
+    expect(draft.message).toContain("at Nearest");
+    expect(draft.message).not.toContain("at F499");
+    expect(draft.message.length).toBeLessThan(MAX_CRASH_STACK_LENGTH + 500);
+  });
+
+  it("omits the stack section entirely when React gave us nothing", () => {
+    const draft = buildCrashDraft(error, "", "the sheet");
+    expect(draft.message).not.toContain("Component stack");
+    expect(validateDraft(draft)).toBeNull();
+  });
+
+  it("falls back to the stringified error when the message is empty", () => {
+    const draft = buildCrashDraft(new Error(""), "", "the sheet");
+    expect(draft.message).toContain("Error");
   });
 });

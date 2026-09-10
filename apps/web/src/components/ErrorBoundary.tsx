@@ -1,5 +1,10 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 
+import { feedbackEnabled } from "../feedback/config.js";
+import { buildCrashDraft } from "../model/feedback.js";
+
+import { FeedbackModal } from "./FeedbackButton.js";
+
 /**
  * Last-resort guard around a render-time crash.
  *
@@ -18,6 +23,12 @@ import { Component, type ErrorInfo, type ReactNode } from "react";
  * the full-screen notice, which is right at the root and wrong around one
  * tracker panel, where losing the rest of the sheet mid-fight costs far more
  * than the panel does. See `PanelBoundary`.
+ *
+ * Nothing about a crash leaves the browser unless the player sends it. The
+ * default screen offers a report button that opens the ordinary feedback form
+ * pre-filled with the error and the component stack, so a white screen becomes
+ * a report someone can act on -- but it is still a form the player reads and
+ * submits, not telemetry. See `model/feedback.ts`'s `buildCrashDraft`.
  */
 interface Props {
   children: ReactNode;
@@ -29,21 +40,25 @@ interface Props {
 
 interface State {
   error: Error | null;
+  /** React's component stack for `error`, kept for the crash report. */
+  componentStack: string;
+  reporting: boolean;
 }
 
 export class ErrorBoundary extends Component<Props, State> {
-  override state: State = { error: null };
+  override state: State = { error: null, componentStack: "", reporting: false };
 
-  static getDerivedStateFromError(error: Error): State {
+  static getDerivedStateFromError(error: Error): Partial<State> {
     return { error };
   }
 
   override componentDidCatch(error: Error, info: ErrorInfo): void {
-    // Nothing ships this anywhere: the app has no telemetry and the feedback
-    // endpoint needs a Turnstile token this screen can't obtain. The console
-    // is what a bug reporter can actually be walked through reading.
+    // Still logged unconditionally: the console is the one place a report is
+    // available without a network call, and the only one at all when the
+    // feedback endpoint isn't configured for this build.
     const where = this.props.label ?? "the sheet";
     console.error(`Ledgermain crashed while rendering ${where}:`, error, info.componentStack);
+    this.setState({ componentStack: info.componentStack ?? "" });
   }
 
   override render(): ReactNode {
@@ -52,6 +67,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.props.fallback) return this.props.fallback(error);
 
     const build = typeof __APP_VERSION__ === "string" ? __APP_VERSION__ : "unknown";
+    const where = this.props.label ?? "the sheet";
     return (
       <div className="state-screen">
         <div>
@@ -63,10 +79,28 @@ export class ErrorBoundary extends Component<Props, State> {
             <br />
             build {build}
           </p>
-          <button type="button" className="btn-gold" onClick={() => window.location.reload()}>
-            Reload
-          </button>
+          <div className="crash-actions">
+            <button type="button" className="btn-gold" onClick={() => window.location.reload()}>
+              Reload
+            </button>
+            {feedbackEnabled() && (
+              <button
+                type="button"
+                className="btn-ghost"
+                onClick={() => this.setState({ reporting: true })}
+              >
+                Send a report
+              </button>
+            )}
+          </div>
         </div>
+        {this.state.reporting && (
+          <FeedbackModal
+            mode="crash"
+            initialDraft={buildCrashDraft(error, this.state.componentStack, where)}
+            onClose={() => this.setState({ reporting: false })}
+          />
+        )}
       </div>
     );
   }

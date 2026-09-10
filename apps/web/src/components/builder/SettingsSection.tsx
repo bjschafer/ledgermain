@@ -49,6 +49,8 @@ import { TEXT_SIZE_LABEL, TEXT_SIZES, type TextSize } from "../../state/useTextS
 import { CopyButton, writeClipboard } from "../CopyButton.js";
 import { Explainer } from "../Explainer.js";
 import { GearIcon, HeartIcon, SparklesIcon } from "../icons.js";
+import { AccountErasePanel, AccountPanel } from "./AccountPanel.js";
+import { ConfirmAction } from "./ConfirmAction.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -94,6 +96,7 @@ export function SettingsSection({
   onImportCharacter,
   onResetAll,
   onDeleteCharacter,
+  onSignOut,
   actionPending,
   onOpenPrint,
   textSize,
@@ -102,6 +105,7 @@ export function SettingsSection({
   onImportCharacter: (doc: CharacterDoc) => void;
   onResetAll: () => void;
   onDeleteCharacter: (id: string) => void;
+  onSignOut: () => void;
   actionPending: boolean;
   onOpenPrint: () => void;
   textSize: TextSize;
@@ -914,6 +918,11 @@ export function SettingsSection({
           ),
         },
         {
+          id: "settings-account",
+          label: "Your Account",
+          node: <AccountPanel onSignedOut={onSignOut} />,
+        },
+        {
           id: "settings-print",
           label: "Print",
           node: (
@@ -962,6 +971,11 @@ export function SettingsSection({
               onResetAll={onResetAll}
             />
           ),
+        },
+        {
+          id: "settings-erase-account",
+          label: "Erase Server Data",
+          node: <AccountErasePanel onSignedOut={onSignOut} />,
         },
       ],
     },
@@ -1205,56 +1219,6 @@ function SupportPanel() {
         </a>
       </p>
     </Panel>
-  );
-}
-
-/**
- * A destructive action gated behind a type-to-confirm input: the button stays
- * disabled until the user types `confirmWord` exactly.
- */
-function ConfirmAction({
-  description,
-  confirmWord,
-  buttonLabel,
-  disabled,
-  onConfirm,
-}: {
-  description: string;
-  confirmWord: string;
-  buttonLabel: string;
-  disabled?: boolean;
-  onConfirm: () => void;
-}) {
-  const [confirmText, setConfirmText] = useState("");
-  const canConfirm = confirmText.trim().toUpperCase() === confirmWord;
-
-  return (
-    <>
-      <p className="hint" style={{ marginBottom: 12 }}>
-        {description}
-      </p>
-      <div className="settings-row">
-        <input
-          type="text"
-          className="danger-confirm"
-          placeholder={`Type "${confirmWord}" to confirm`}
-          value={confirmText}
-          onChange={(e) => setConfirmText(e.target.value)}
-          aria-label={`Type ${confirmWord} to confirm`}
-        />
-        <button
-          type="button"
-          className="btn-ghost btn-danger"
-          disabled={!canConfirm || disabled}
-          onClick={() => {
-            onConfirm();
-            setConfirmText("");
-          }}
-        >
-          {buttonLabel}
-        </button>
-      </div>
-    </>
   );
 }
 

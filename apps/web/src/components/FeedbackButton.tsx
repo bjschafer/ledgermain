@@ -72,7 +72,11 @@ export function FeedbackButton({ mode, doc }: { mode: string; doc?: CharacterDoc
   );
 }
 
-function FeedbackModal({
+/**
+ * Exported for `ErrorBoundary`: after a root crash the masthead is gone along
+ * with the rest of the tree, so the crash screen has to open this itself.
+ */
+export function FeedbackModal({
   mode,
   doc,
   initialDraft,
@@ -192,8 +196,9 @@ function FeedbackModal({
         ) : (
           <>
             <p className="hint feedback-intro">
-              Missing a feat or spell? Numbers look wrong? Tell me here: it opens a report I can
-              track. No account needed.
+              {mode === "crash"
+                ? "The message below is what broke. Add anything you were doing at the time, then send it: it opens a report I can track. No account needed."
+                : "Missing a feat or spell? Numbers look wrong? Tell me here: it opens a report I can track. No account needed."}
             </p>
 
             <label className="feedback-field">

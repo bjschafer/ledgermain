@@ -4,10 +4,13 @@ import { createEmptyDoc } from "../src/model/doc.js";
 import {
   ApiError,
   deleteRemoteCharacter,
+  fetchAccountExport,
   fetchMe,
   fetchRemoteCharacter,
   listRemoteCharacters,
   logout,
+  logoutEverywhere,
+  purgeAccount,
   pushCharacter,
 } from "../src/sync/client.js";
 
@@ -149,5 +152,55 @@ describe("logout", () => {
     });
     await logout(API_BASE, TOKEN);
     expect(calls.length).toBe(1);
+  });
+});
+
+describe("logoutEverywhere", () => {
+  test("POSTs to /auth/logout-all and returns the count", async () => {
+    mockFetch(() => Response.json({ revoked: 3 }));
+    expect(await logoutEverywhere(API_BASE, TOKEN)).toBe(3);
+    expect(calls[0]!.url).toBe(`${API_BASE}/auth/logout-all`);
+    expect(calls[0]!.init?.method).toBe("POST");
+  });
+
+  test("throws an ApiError on a failure", async () => {
+    mockFetch(() => new Response("nope", { status: 500 }));
+    expect(logoutEverywhere(API_BASE, TOKEN)).rejects.toBeInstanceOf(ApiError);
+  });
+});
+
+describe("fetchAccountExport", () => {
+  test("returns the response body as a blob", async () => {
+    mockFetch(() => Response.json({ ownerId: "discord:1", characters: [] }));
+    const blob = await fetchAccountExport(API_BASE, TOKEN);
+    expect(JSON.parse(await blob.text())).toMatchObject({ ownerId: "discord:1" });
+    expect(calls[0]!.url).toBe(`${API_BASE}/api/me/export`);
+  });
+});
+
+describe("purgeAccount", () => {
+  test("stops as soon as the server reports it finished", async () => {
+    mockFetch(() => Response.json({ deleted: 4, complete: true }));
+    await purgeAccount(API_BASE, TOKEN);
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.init?.method).toBe("DELETE");
+  });
+
+  test("keeps calling while the purge is still incomplete", async () => {
+    // The route deletes a bounded number of keys per call, so a large account
+    // takes several passes; the client's job is to keep asking.
+    mockFetch(() => Response.json({ deleted: 300, complete: calls.length >= 3 }));
+    await purgeAccount(API_BASE, TOKEN);
+    expect(calls).toHaveLength(3);
+  });
+
+  test("gives up rather than looping forever on a server that never completes", async () => {
+    mockFetch(() => Response.json({ deleted: 0, complete: false }));
+    expect(purgeAccount(API_BASE, TOKEN)).rejects.toBeInstanceOf(ApiError);
+  });
+
+  test("throws on an error status", async () => {
+    mockFetch(() => new Response("nope", { status: 401 }));
+    expect(purgeAccount(API_BASE, TOKEN)).rejects.toBeInstanceOf(ApiError);
   });
 });

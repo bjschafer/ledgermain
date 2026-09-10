@@ -124,3 +124,43 @@ export async function fetchMe(apiBase: string, token: string): Promise<string | 
 export async function logout(apiBase: string, token: string): Promise<void> {
   await authedFetch(apiBase, "/auth/logout", token, { method: "POST" });
 }
+
+/** `POST /auth/logout-all` — signs every device out, this one included. */
+export async function logoutEverywhere(apiBase: string, token: string): Promise<number> {
+  const res = await authedFetch(apiBase, "/auth/logout-all", token, { method: "POST" });
+  if (!res.ok) throw new ApiError(res.status, await res.text());
+  const body = (await res.json()) as { revoked: number };
+  return body.revoked;
+}
+
+/**
+ * `GET /api/me/export` — every character on the account as one JSON blob. The
+ * response is a stream on the wire, but the download it feeds is a single
+ * file, so it's collected here rather than piped.
+ */
+export async function fetchAccountExport(apiBase: string, token: string): Promise<Blob> {
+  const res = await authedFetch(apiBase, "/api/me/export", token);
+  if (!res.ok) throw new ApiError(res.status, await res.text());
+  return res.blob();
+}
+
+/**
+ * `DELETE /api/me` — erase the account's whole server-side footprint.
+ *
+ * The route deletes a bounded number of keys per call and reports whether it
+ * finished, so this repeats until it has. The attempt ceiling is a guard
+ * against a server that never reports completion, not a real expectation: one
+ * pass clears far more than an account can hold.
+ */
+export async function purgeAccount(apiBase: string, token: string): Promise<void> {
+  /* oxlint-disable no-await-in-loop -- each pass deletes what the last one
+     left; running them in parallel would just race the same keys. */
+  for (let attempt = 0; attempt < 20; attempt++) {
+    const res = await authedFetch(apiBase, "/api/me", token, { method: "DELETE" });
+    if (!res.ok) throw new ApiError(res.status, await res.text());
+    const body = (await res.json()) as { complete: boolean };
+    if (body.complete) return;
+  }
+  /* oxlint-enable no-await-in-loop */
+  throw new ApiError(500, "The account wasn't fully erased. Please try again.");
+}

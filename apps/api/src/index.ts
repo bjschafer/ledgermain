@@ -6,14 +6,21 @@
  * prefer bindings/small code over unnecessary layers).
  */
 import "./env.js";
+import { purgeAccount } from "./account.js";
 import { recordRequest } from "./analytics.js";
-import { deleteCharacter, getCharacter, listCharacters, putCharacter } from "./characters.js";
+import {
+  deleteCharacter,
+  exportCharacters,
+  getCharacter,
+  listCharacters,
+  putCharacter,
+} from "./characters.js";
 import { handlePreflight, withCors } from "./cors.js";
 import { handleCallback, handleStart } from "./discord-oauth.js";
 import { handleFeedback } from "./feedback.js";
 import { CONTACT_REF_PATTERN, handleContactLookup } from "./feedbackContacts.js";
 import { errorJson, json } from "./http.js";
-import { deleteSession, ownerIdFromRequest } from "./session.js";
+import { deleteSession, ownerIdFromRequest, revokeAllSessions } from "./session.js";
 
 const CHARACTER_PATH = /^\/api\/characters(?:\/([^/]+))?$/;
 const FEEDBACK_CONTACT_PATH = /^\/api\/feedback\/contact\/([^/]+)$/;
@@ -28,7 +35,9 @@ function routeLabel(method: string, pathname: string): string {
   if (pathname === "/auth/discord/start") return "auth.start";
   if (pathname === "/auth/discord/callback") return "auth.callback";
   if (pathname === "/auth/logout") return "auth.logout";
-  if (pathname === "/api/me") return "me";
+  if (pathname === "/auth/logout-all") return "auth.logoutAll";
+  if (pathname === "/api/me") return method === "DELETE" ? "me.purge" : "me";
+  if (pathname === "/api/me/export") return "me.export";
   if (pathname === "/api/feedback") return "feedback.submit";
   if (FEEDBACK_CONTACT_PATH.test(pathname)) return "feedback.contact";
   const charMatch = CHARACTER_PATH.exec(pathname);
@@ -68,10 +77,27 @@ async function route(request: Request, env: Env): Promise<Response> {
     return new Response(null, { status: 204 });
   }
 
-  if (pathname === "/api/me" && method === "GET") {
+  // "Sign out everywhere" — drops every session this account holds, including
+  // the caller's own. See `revokeAllSessions` for the one session it can miss.
+  if (pathname === "/auth/logout-all" && method === "POST") {
     const ownerId = await ownerIdFromRequest(request, env.KV);
     if (!ownerId) return errorJson(401, "Not authenticated");
-    return json({ ownerId });
+    return json({ revoked: await revokeAllSessions(env.KV, ownerId) });
+  }
+
+  if (pathname === "/api/me") {
+    const ownerId = await ownerIdFromRequest(request, env.KV);
+    if (!ownerId) return errorJson(401, "Not authenticated");
+    if (method === "GET") return json({ ownerId });
+    if (method === "DELETE") return purgeAccount(ownerId, env);
+    return errorJson(405, "Method not allowed");
+  }
+
+  if (pathname === "/api/me/export") {
+    if (method !== "GET") return errorJson(405, "Method not allowed");
+    const ownerId = await ownerIdFromRequest(request, env.KV);
+    if (!ownerId) return errorJson(401, "Not authenticated");
+    return exportCharacters(ownerId, env);
   }
 
   // Owner-only: reads back the contact handle a submission chose to leave,

@@ -93,6 +93,41 @@ export function buildSearchMissDraft(query: string, pickerLabel: string): Feedba
 }
 
 /**
+ * Ceiling on the React component stack folded into a crash report. The whole
+ * message has to fit `MAX_MESSAGE_LENGTH`, and the frames nearest the throw
+ * are the ones worth having, so a deep tree is cut from the bottom.
+ */
+export const MAX_CRASH_STACK_LENGTH = 1200;
+
+/**
+ * Seed a feedback draft from a render crash (`components/ErrorBoundary`).
+ *
+ * The app ships nothing anywhere on its own: a crash is reported when the
+ * player presses the button and not before, which is why this returns a draft
+ * for them to read and send rather than a payload. `where` names the region
+ * that broke, and the component stack is what makes a white-screen report
+ * actionable instead of a shrug.
+ */
+export function buildCrashDraft(
+  error: Error,
+  componentStack: string,
+  where: string,
+): FeedbackDraft {
+  const stack = componentStack.trim().slice(0, MAX_CRASH_STACK_LENGTH);
+  const parts = [
+    `Ledgermain crashed while rendering ${where}.`,
+    `Error: ${error.message || String(error)}`,
+    stack ? `Component stack:\n${stack}` : "",
+  ];
+  return {
+    category: "bug",
+    message: parts.filter(Boolean).join("\n\n"),
+    contact: "",
+    includeBuild: false,
+  };
+}
+
+/**
  * Validate a draft for submission. Returns an error string to show the user,
  * or `null` when the draft is submittable. The Turnstile token is checked
  * separately by the component (it gates the submit button on the widget).
@@ -114,6 +149,7 @@ const MODE_LABELS: Record<string, string> = {
   build: "Build mode",
   play: "Play mode",
   settings: "Settings",
+  crash: "Crash screen",
 };
 
 /**

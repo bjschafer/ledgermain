@@ -2647,6 +2647,16 @@ button:focus-visible,
   overflow-wrap: anywhere;
 }
 
+/* Reload sits first and gold; "Send a report" is the deliberate second choice,
+   so it stays ghost. Wraps because the crash screen is the one place we can't
+   assume anything about the viewport. */
+.crash-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
 /* A panel whose render threw (`PanelBoundary`). Keeps the panel's own chrome so
    it stays in place in the stack, but drops the gold header band: nothing here
    is worth the accent budget, and the muted header reads as "this one is out"

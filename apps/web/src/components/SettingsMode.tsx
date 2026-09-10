@@ -19,6 +19,7 @@ export function SettingsMode({
   onImportCharacter,
   onResetAll,
   onDeleteCharacter,
+  onSignOut,
   actionPending,
   onOpenPrint,
   textSize,
@@ -29,6 +30,7 @@ export function SettingsMode({
   onImportCharacter: (doc: CharacterDoc) => void;
   onResetAll: () => void;
   onDeleteCharacter: (id: string) => void;
+  onSignOut: () => void;
   actionPending: boolean;
   onOpenPrint: () => void;
   textSize: TextSize;
@@ -43,6 +45,7 @@ export function SettingsMode({
           onImportCharacter={onImportCharacter}
           onResetAll={onResetAll}
           onDeleteCharacter={onDeleteCharacter}
+          onSignOut={onSignOut}
           actionPending={actionPending}
           onOpenPrint={onOpenPrint}
           textSize={textSize}

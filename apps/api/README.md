@@ -22,9 +22,14 @@ redeploy.
   operational state and can be cleared wholesale in an incident; the other two
   hold data a user gave us, and can't.
   - `KV` — session tokens (`session:<token>` → `{ ownerId, createdAt }`,
-    30-day TTL), short-lived Discord OAuth CSRF-state nonces
-    (`oauthstate:<nonce>` → `redirect_uri`, 10-minute TTL), the cached GitHub
-    installation token, and per-IP feedback rate-limit counters.
+    30-day TTL) and their reverse index
+    (`ownersession::<ownerId>::<token>`, same TTL, empty value — the key name
+    is the record), which is what makes "sign out everywhere" expressible at
+    all: a token-keyed entry can only be revoked by whoever already holds the
+    token. Short-lived Discord OAuth CSRF-state nonces
+    live here too (`oauthstate:<nonce>` → `redirect_uri`, 10-minute TTL),
+    along with the cached GitHub installation token and the rate-limit
+    counters (`feedback:rl:<ip>`, `charput:rl:<ownerId>`).
   - `CHARACTERS` — one entry per document, keyed `<ownerId>::<docId>`, value
     = the raw `CharacterDoc` JSON. `version`/`updatedAt` are duplicated into
     the KV entry's `metadata` so listing a user's characters is a single
@@ -51,20 +56,30 @@ redeploy.
   body, so the client can implement DESIGN §2.1's "a newer version exists on
   another device — reload?" prompt (or let the user force-overwrite by
   re-pushing with a bumped version).
+- **Limits**: three, all envelope-level. 2 MB per document; **100 live
+  documents per owner** (checked only when a new id appears, so a player at
+  the cap can still edit everything they already have); and **240 writes per
+  owner per hour**, counted in KV before the body is read so a caller over
+  budget never gets to stream at us. The window slides — a client that keeps
+  hammering stays out until it goes quiet — and none of these is a security
+  boundary, only a bound on what one account can cost. See `src/rateLimit.ts`.
 
 ## Routes
 
-| Route                                           | Auth   | Notes                                                                                                                                    |
-| ----------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `GET /auth/discord/start?redirect_uri=<origin>` | none   | 302 → Discord's OAuth consent screen. `redirect_uri` must match one of `ALLOWED_APP_ORIGINS` (origin match) or this 400s.                |
-| `GET /auth/discord/callback?code&state`         | none   | Exchanges the code, mints a session, 302s to `<redirect_uri>#session=<token>`.                                                           |
-| `POST /auth/logout`                             | bearer | Deletes the session.                                                                                                                     |
-| `GET /api/me`                                   | bearer | `{ ownerId }` or 401.                                                                                                                    |
-| `GET /api/characters`                           | bearer | `{ characters: [{ id, version, updatedAt }] }` — envelope only.                                                                          |
-| `GET /api/characters/:id`                       | bearer | Full document JSON, or 404.                                                                                                              |
-| `PUT /api/characters/:id`                       | bearer | Body = full `CharacterDoc`. 400 on bad JSON/shape, 413 over 2 MB, 409 on a stale `version`, 200 `{ id, version, updatedAt }` on success. |
-| `DELETE /api/characters/:id`                    | bearer | 204, idempotent.                                                                                                                         |
-| `POST /api/feedback`                            | none   | In-app feedback → opens a GitHub issue as the App bot. Turnstile-gated + per-IP rate-limited. 201 `{ ok, url, number }`. See below.      |
+| Route                                           | Auth   | Notes                                                                                                                                                                                           |
+| ----------------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /auth/discord/start?redirect_uri=<origin>` | none   | 302 → Discord's OAuth consent screen. `redirect_uri` must match one of `ALLOWED_APP_ORIGINS` (origin match) or this 400s.                                                                       |
+| `GET /auth/discord/callback?code&state`         | none   | Exchanges the code, mints a session, 302s to `<redirect_uri>#session=<token>`.                                                                                                                  |
+| `POST /auth/logout`                             | bearer | Deletes the session.                                                                                                                                                                            |
+| `POST /auth/logout-all`                         | bearer | Sign out everywhere: revokes every session this owner holds, the caller's included. `{ revoked }`.                                                                                              |
+| `GET /api/me`                                   | bearer | `{ ownerId }` or 401.                                                                                                                                                                           |
+| `DELETE /api/me`                                | bearer | Account purge: deletes every document, tombstone and session. Bounded per call, so repeat until `complete`. `{ deleted, complete, sessionsRevoked }`.                                           |
+| `GET /api/me/export`                            | bearer | Every owned document as one streamed JSON file (`{ ownerId, exportedAt, characters }`).                                                                                                         |
+| `GET /api/characters`                           | bearer | `{ characters: [{ id, version, updatedAt }] }` — envelope only.                                                                                                                                 |
+| `GET /api/characters/:id`                       | bearer | Full document JSON, or 404.                                                                                                                                                                     |
+| `PUT /api/characters/:id`                       | bearer | Body = full `CharacterDoc`. 400 on bad JSON/shape, 413 over 2 MB, 429 over the write limit, 403 at the 100-document cap, 409 on a stale `version`, 200 `{ id, version, updatedAt }` on success. |
+| `DELETE /api/characters/:id`                    | bearer | 204, idempotent.                                                                                                                                                                                |
+| `POST /api/feedback`                            | none   | In-app feedback → opens a GitHub issue as the App bot. Turnstile-gated + per-IP rate-limited. 201 `{ ok, url, number }`. See below.                                                             |
 
 CORS: `ALLOWED_APP_ORIGINS` (comma-separated, exact origin match — never
 `*`) gates both the OAuth `redirect_uri` and the `Access-Control-Allow-Origin`
@@ -78,6 +93,29 @@ hostname check — and would make a plain-HTTP origin a valid delivery target fo
 a real session token. Local dev supplies its own value in `.dev.vars`, which
 replaces (not merges with) the deployed one; the test suite pins its own in
 `vitest.config.ts`.
+
+## Account operations
+
+Two whole-account routes that the per-character CRUD can't express. Both are
+scoped by the session alone: there is no admin path, no impersonation, and no
+way to name another owner in a request.
+
+- **`GET /api/me/export`** — every document the owner has, as one JSON file.
+  Streamed rather than assembled: 100 documents of up to 2 MB each is well past
+  what a Worker may hold at once. The stored blobs are already JSON _text_, so
+  they're spliced in verbatim without a parse/re-serialize round trip — which
+  also keeps this route from so much as looking at the data it copies.
+- **`DELETE /api/me`** — the purge. Deletes documents, tombstones, and then
+  every session. Sessions go last so the caller can finish their own purge, and
+  no tombstones are written for the deletions: a tombstone exists to tell
+  another _signed-in_ device that a character is gone, and there is nobody left
+  to tell. Bounded at 300 keys per call (tombstones aren't capped the way live
+  documents are, so the work can exceed one invocation's subrequest budget) and
+  idempotent, so the client repeats until the response says `complete`.
+
+Deleting a character deliberately does **not** cascade anywhere yet — there is
+nothing else keyed to a document. Anything added later that is (read-only share
+links, #174) has to be deleted by both the per-character delete and this purge.
 
 ## Local development
 
@@ -282,8 +320,46 @@ message, stack }`, see `src/index.ts`) so they filter by `event`/`route`
   deploy — no provisioning step. Sync-conflict rate falls out of this for free
   (`route = 'characters.put' AND status = '409'`).
 
+### Alerting
+
+Logs and metrics answer "what happened" once you go looking. Alerting is the
+part that makes you look. It is **Cloudflare dashboard configuration, not repo
+code** — there is nothing here to deploy, which is exactly why it's written
+down:
+
+1. **Error rate** — Cloudflare dashboard → **Notifications → Add** → _Workers_
+   → **Worker Errors**. Scope it to `ledgermain-api` and pick the account
+   owner's email as the destination. This fires on the Worker's own 5xx/exception
+   rate, which is what `src/index.ts`'s catch-all turns every unhandled throw
+   into, so it covers the whole route table without per-route wiring.
+2. **Uptime** — dashboard → **Traffic → Health Checks** (or Notifications →
+   _Health Check Status_) against `https://api.ledgermain.whizkid.dev/api/me`.
+   That route needs no secrets, no KV write, and returns a flat `401` when
+   unauthenticated, so an unauthenticated probe expecting `401` proves the
+   Worker is routing and executing. Expecting `200` somewhere would need a
+   live session in the probe, which is a credential nobody should mint for a
+   health check.
+3. **Client crashes** — deliberately **not** automatic. See below.
+
+**Automatic client-side crash reporting is declined.** Shipping unattended
+stack traces off a player's device is telemetry, and this project doesn't do
+telemetry (same reasoning as `apps/web` above: app-level errors happen in the
+browser and are never sent anywhere). What ships instead is a **Send a report**
+button on the crash screen (`apps/web/src/components/ErrorBoundary.tsx`), which
+opens the ordinary feedback form pre-filled with the error and the React
+component stack. It goes through `POST /api/feedback` like any other
+submission — Turnstile and all — because it _is_ one: a player read it and
+pressed send. That keeps the white-screen report actionable without making the
+app phone home.
+
 ## Deliberately out of scope for v1 (see DESIGN §2.1)
 
+- **Short session TTLs with silent refresh.** A refresh-token dance buys a
+  smaller revocation window, but `POST /auth/logout-all` already closes the
+  window on demand, and the whole auth story here is "a random token in
+  localStorage" precisely so there is nothing clever to get wrong. A
+  single-player sheet doesn't earn a second credential lifecycle.
+- **Automatic client crash reporting** — see the Alerting section above.
 - **Live mirror (Level 2)** and **CRDT concurrent editing (Level 3)** — both
   deferred; they'd reuse a Durable Object per session rather than this
   request/response KV model, so this Worker's shape doesn't block them.

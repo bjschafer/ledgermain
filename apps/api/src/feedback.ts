@@ -28,6 +28,7 @@ import { allowedHostnames } from "./cors.js";
 import { newContactRef, storeContact } from "./feedbackContacts.js";
 import { createIssue, getInstallationToken } from "./githubApp.js";
 import { errorJson, json } from "./http.js";
+import { overRateLimit, tooManyRequests, type RateLimitRule } from "./rateLimit.js";
 import { verifyTurnstile } from "./turnstile.js";
 
 const MAX_MESSAGE_CHARS = 4000;
@@ -45,8 +46,7 @@ const MAX_BODY_BYTES = 64_000;
 // Coarse per-IP limit: submissions per window. Turnstile is the real gate;
 // this only blunts a burst from one address that has (somehow) automated the
 // challenge.
-const RATE_LIMIT_MAX = 8;
-const RATE_LIMIT_WINDOW_SECONDS = 60 * 60;
+const RATE_LIMIT: RateLimitRule = { max: 8, windowSeconds: 60 * 60 };
 
 /**
  * Category ids the client may send, mapped to the human label shown in the
@@ -231,17 +231,9 @@ export function issueBody(value: FeedbackBody, contactRef?: string): string {
   return parts.join("\n");
 }
 
-/**
- * Coarse per-IP rate limit backed by KV. Returns true when the caller is over
- * budget. KV's eventual consistency makes this approximate — acceptable, since
- * Turnstile is the real gate and this is only a burst backstop.
- */
+/** Coarse per-IP rate limit (see `rateLimit.ts` for why it's approximate). */
 async function isRateLimited(env: Env, ip: string): Promise<boolean> {
-  const key = `feedback:rl:${ip}`;
-  const current = Number((await env.KV.get(key)) ?? "0");
-  if (current >= RATE_LIMIT_MAX) return true;
-  await env.KV.put(key, String(current + 1), { expirationTtl: RATE_LIMIT_WINDOW_SECONDS });
-  return false;
+  return overRateLimit(env.KV, `feedback:rl:${ip}`, RATE_LIMIT);
 }
 
 export async function handleFeedback(request: Request, env: Env): Promise<Response> {
@@ -287,7 +279,7 @@ export async function handleFeedback(request: Request, env: Env): Promise<Respon
   }
 
   if (await isRateLimited(env, ip)) {
-    return errorJson(429, "Too many submissions — please try again later");
+    return tooManyRequests("Too many submissions — please try again later", RATE_LIMIT);
   }
 
   // Minted before the issue so the body can name it, but only stored after the
