@@ -1,13 +1,14 @@
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import type { SessionLogEntry } from "../../model/sessionLog.js";
+import type { UpdateOptions } from "../../state/useCharacter.js";
 
 /** Props every builder section receives — a thin view over the character store. */
 export interface BuilderProps {
   doc: CharacterDoc;
   sheet: DerivedSheet;
   refData: RefData;
-  update: (fn: (doc: CharacterDoc) => CharacterDoc) => void;
+  update: (fn: (doc: CharacterDoc) => CharacterDoc, options?: UpdateOptions) => void;
   /**
    * Undo — see `useCharacter().undoLast`. Optional here since most sections
    * don't wire an Undo action; only surfaced by a couple of tracker panels

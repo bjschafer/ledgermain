@@ -6,7 +6,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { classByTag, compute } from "@pf1/engine";
+import { classByTag, compute, deriveResourcePools } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
 import {
@@ -27,7 +27,12 @@ import { HERO_POINT_CAP, heroPoints, heroPointsEnabled } from "../model/heroPoin
 import { reconcileCurrentHp } from "../model/hp.js";
 import { resolveRefData } from "../model/homebrew.js";
 import { reconcileGrantedCantrips } from "../model/preparedSpells.js";
-import { describeLiveChange, pushLogEntry, type SessionLogEntry } from "../model/sessionLog.js";
+import {
+  describeLiveChange,
+  pushLogEntry,
+  type SessionLogEntry,
+  type SessionLogKind,
+} from "../model/sessionLog.js";
 import { loadRefData } from "../refdata/loader.js";
 import { pushOnChange, runOpenSync } from "../sync/backgroundSync.js";
 import { deleteRemoteCharacter, fetchMe, logout as apiLogout } from "../sync/client.js";
@@ -67,6 +72,18 @@ function reconcileLoadedDoc(doc: CharacterDoc, refData: RefData): CharacterDoc {
 
 export type LoadStatus = "loading" | "ready" | "error";
 
+/** Per-call options for {@link CharacterStore.update}. */
+export interface UpdateOptions {
+  /**
+   * The session-log line this transition should produce, instead of whatever
+   * diffing the two documents would say. For the transitions that move half of
+   * `live.*` at once and would otherwise fill the log with the fields they
+   * touched: a New Day rest already writes its own receipt (`model/rest.ts`'s
+   * `newDaySummary`), and that receipt is the line worth keeping.
+   */
+  logAs?: { text: string; tone: SessionLogEntry["tone"]; kind: SessionLogKind };
+}
+
 export interface CharacterStore {
   status: LoadStatus;
   error?: string;
@@ -82,7 +99,7 @@ export interface CharacterStore {
   /** Dismiss the current `actionError` without taking another action. */
   clearActionError: () => void;
   /** Apply a pure transition (from model/doc) to the working document. */
-  update: (fn: (doc: CharacterDoc) => CharacterDoc) => void;
+  update: (fn: (doc: CharacterDoc) => CharacterDoc, options?: UpdateOptions) => void;
   /**
    * Undo: restores the doc as it was immediately before the last `update()`
    * call that actually changed it, through the same `setDoc` path `update()`
@@ -243,6 +260,9 @@ export function useCharacter(): CharacterStore {
   // diffed against.
   const [sessionLog, setSessionLog] = useState<SessionLogEntry[]>([]);
   const logPrevDocRef = useRef<{ doc: CharacterDoc; maxHp: number } | undefined>(undefined);
+  // Set by `update`'s `logAs` option, consumed by the session-log effect below
+  // on the render that transition causes.
+  const logOverrideRef = useRef<UpdateOptions["logAs"]>(undefined);
 
   // Shared invalidation for anything that swaps the active character's doc
   // out from under per-character cross-transition tracking (switch/create/
@@ -255,6 +275,7 @@ export function useCharacter(): CharacterStore {
     invalidateSnapshot(undoStateRef.current);
     lastSeenLevelRef.current = undefined;
     logPrevDocRef.current = undefined;
+    logOverrideRef.current = undefined;
     prevMaxHpRef.current = undefined;
     undoingRef.current = false;
   }, []);
@@ -411,7 +432,7 @@ export function useCharacter(): CharacterStore {
     }
   }, []);
 
-  const update = useCallback((fn: (d: CharacterDoc) => CharacterDoc) => {
+  const update = useCallback((fn: (d: CharacterDoc) => CharacterDoc, options?: UpdateOptions) => {
     setDoc((prev) => {
       if (!prev) return prev;
       const next = fn(prev);
@@ -423,7 +444,13 @@ export function useCharacter(): CharacterStore {
       // pattern throughout model/doc.ts, e.g. blank-input no-ops) — this is
       // never called by a background effect, only by explicit user actions,
       // so bumping unconditionally on real transitions can't create a loop.
-      if (next === prev) return prev;
+      if (next === prev) {
+        // Nothing moved, so no effect will run to consume a log override; drop
+        // it here or it would attach itself to whatever happens next.
+        logOverrideRef.current = undefined;
+        return prev;
+      }
+      logOverrideRef.current = options?.logAs;
       // Undo history: `prev` is exactly the doc a caller's `undoLast()` should
       // restore. Recorded unconditionally on every real transition (not just
       // the ones that surface an Undo toast) — cheap, and it's what makes
@@ -707,7 +734,7 @@ export function useCharacter(): CharacterStore {
   }, [doc]);
 
   useEffect(() => {
-    if (!doc || !sheet) return;
+    if (!doc || !sheet || !refData) return;
     const prev = logPrevDocRef.current;
     logPrevDocRef.current = { doc, maxHp: sheet.hp.max };
     if (!prev || prev.doc.id !== doc.id) {
@@ -716,11 +743,29 @@ export function useCharacter(): CharacterStore {
     }
     if (undoingRef.current) {
       undoingRef.current = false;
+      logOverrideRef.current = undefined;
       return;
     }
-    const change = describeLiveChange(prev.doc, doc, {
-      maxHpMoved: sheet.hp.max !== prev.maxHp,
-    });
+    const override = logOverrideRef.current;
+    logOverrideRef.current = undefined;
+    // Naming a resource pool means deriving every pool, which is why this is
+    // resolved on demand: pools move on a small fraction of the changes here.
+    let poolNames: Map<string, string> | undefined;
+    const change =
+      override ??
+      describeLiveChange(prev.doc, doc, {
+        maxHpMoved: sheet.hp.max !== prev.maxHp,
+        refData,
+        resourceName: (id) => {
+          poolNames ??= new Map(
+            deriveResourcePools(doc, refData, sheet.abilities, sheet.abilityDCs).map((pool) => [
+              pool.id,
+              pool.name,
+            ]),
+          );
+          return poolNames.get(id);
+        },
+      });
     if (!change) return;
     setSessionLog((log) => {
       const next = pushLogEntry(log, {
@@ -731,7 +776,7 @@ export function useCharacter(): CharacterStore {
       writeSessionLog(doc.id, next);
       return next;
     });
-  }, [doc, sheet]);
+  }, [doc, sheet, refData]);
 
   const clearSessionLog = useCallback(() => {
     const id = docRef.current?.id;

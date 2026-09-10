@@ -31,7 +31,15 @@ export function NewDayBar({ doc, sheet, refData, update, undoLast }: BuilderProp
         className="btn-act new-day"
         onClick={() => {
           const result = restNewDay(doc, sheet, refData);
-          update(() => result.doc);
+          // One line for the whole rest. Diffing a New Day field by field would
+          // spend a screenful of the log restating the receipt below.
+          update(() => result.doc, {
+            logAs: {
+              text: result.summary ? `New day: ${result.summary}` : "New day",
+              tone: "healing",
+              kind: "rest",
+            },
+          });
           showToast({
             message: result.summary || "New day: nothing to refresh",
             action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,

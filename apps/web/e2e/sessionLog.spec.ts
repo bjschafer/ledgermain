@@ -1,10 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
 
 /**
- * The three player-polish pieces that only exist once the real app is running:
- * the session log filling itself from taps elsewhere in the tracker, undo
- * walking back more than one of them, and the level-up toast's jump landing on
- * a build section that actually has something outstanding.
+ * The player-polish pieces that only exist once the real app is running: the
+ * session log filling itself from taps elsewhere in the tracker (including the
+ * panels that are not the HP one, and the New Day that gets a single line for
+ * everything it moves), undo walking back more than one of them, and the
+ * level-up toast's jump landing on a build section that actually has something
+ * outstanding.
  */
 
 const benign = (t: string) =>
@@ -137,6 +139,38 @@ test("levelling up offers a jump to the first thing left to spend", async ({ pag
   });
   await expect(flagged.first()).toContainText("Skills");
   await expect(page.locator("#section-skills")).toBeInViewport();
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
+test("the log records more than hit points, and a rest writes one line for the whole day", async ({
+  page,
+}) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoPlay(page);
+
+  await page.getByLabel("Amount").fill("5");
+  await page.getByRole("button", { name: "Damage", exact: true }).click();
+
+  // An affliction is not a hit point, and used to go by without a line.
+  const afflictions = page.locator(".panel", { hasText: "Afflictions" }).first();
+  await afflictions.scrollIntoViewIfNeeded();
+  // Afflictions ships collapsed (`defaultCollapsed`).
+  const caret = afflictions.locator(".panel-caret-btn");
+  if ((await caret.getAttribute("aria-expanded")) === "false") await caret.click();
+  await afflictions.getByLabel("Points").fill("4");
+  await afflictions.getByRole("button", { name: "Add", exact: true }).click();
+
+  await page.locator("#play-log").scrollIntoViewIfNeeded();
+  await expect(logRows(page).first()).toContainText("Took 4 Strength damage");
+
+  // A New Day moves half of the live state at once and gets one line for it,
+  // not one per field it touched.
+  const rowsBefore = await logRows(page).count();
+  await page.getByRole("button", { name: "New day" }).click();
+  await expect(logRows(page)).toHaveCount(rowsBefore + 1);
+  await expect(logRows(page).first()).toContainText("New day");
 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);

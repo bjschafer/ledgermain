@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-09-session-log-everything",
+    date: "2026-09-09",
+    title: "The session log stops missing things",
+    note: "The log used to watch your hit points and your conditions and nothing else, which meant the poison that took four points of Strength, the hero point you spent, and the spell you cast all went by without a line. Now they land: ability damage, drain and penalties by ability name, negative levels, hero points spent and gained, spells cast and slots recovered, buffs going up with the rounds they have left and ending when they end, resource pools with what is left in them, a shape you take and return from, and your familiar, companion, phantom or eidolon taking a hit of its own. A New Day writes one line for the whole rest rather than one for every field it touched. The log holds a full evening now instead of a single fight.",
+  },
+  {
     id: "2026-09-08-session-log-and-portrait",
     date: "2026-09-08",
     title: "A session log, a portrait, and a level-up that points somewhere",
