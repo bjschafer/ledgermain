@@ -327,40 +327,52 @@ repo** (`notifications.tf`) — not the dashboard, and not this repo. Don't
 hand-create a notification policy in the Cloudflare UI: it would sit outside
 Terraform state and drift silently.
 
-**As it stands, this Worker's 5xx notify nobody, and the reason is
-structural.** The zone-wide policy covering `whizkid.dev` is an _origin_ error
-alert (`http_alert_origin_error`), which derives an error rate from origin
-responses. `api.ledgermain.whizkid.dev` is a Workers custom domain: there is no
-origin behind it, so no request to it ever produces an origin response at all.
-Verifiable in the zone's `http_requests` Logpush data — every request to this
-hostname carries `OriginResponseStatus=0`, edge 5xx included. The policy is
-real and does its job for the zone's non-Worker hostnames; it simply cannot see
-this one. The `500` that `src/index.ts`'s catch-all returns is generated at the
-edge and is invisible to it.
+**The structural gap is fixed (#176).** The zone-wide policy covering
+`whizkid.dev` is an _origin_ error alert (`http_alert_origin_error`), which
+derives an error rate from origin responses. `api.ledgermain.whizkid.dev` is a
+Workers custom domain: there is no origin behind it, so no request to it ever
+produces an origin response at all — verifiable in the zone's `http_requests`
+Logpush data, where every request to this hostname carries
+`OriginResponseStatus=0`, edge 5xx included. That policy is real and does its
+job for the zone's non-Worker hostnames; it simply cannot see this one, and
+never will — narrowing it to one Worker isn't possible either, since the
+notifications API scopes by zone, not by script.
 
-Two things would change that. Neither has been done, for a reason each:
+What actually watches this Worker: `wrangler.jsonc` sets top-level
+`"logpush": true`, and `tf-cloudflare/logpush.tf` has an account-scoped
+`workers_trace_events` Logpush job (`ledgermain_api_trace_events`, filtered to
+`ScriptName: "ledgermain-api"`) pushing every invocation's outcome and status
+code to the same self-hosted VictoriaLogs instance the account's other
+Logpush jobs already feed. That destination (`logs.cmdcentral.xyz`) was
+already internet-reachable through an existing Cloudflare Tunnel, so this
+needed no new ingress, no OTLP collector, and no Workers-to-cluster VPC
+bridge. `k8s/generators`' `apps/logs/alerts.ts` carries a
+`LedgermainApiWorkerError` VmRule that fires on `Outcome:"exception"` (an
+uncaught throw) or `Event.Response.status:>=500` (the explicit catch-all in
+`src/index.ts`, which completes normally and so never sets `Outcome` to
+`exception`) — checking both because either alone misses a real failure mode.
+It reaches Pushover through the same Alertmanager routing every other
+homelab alert already uses.
 
-1. **Per-Worker error alerting** does exist, via Workers Observability — but
-   it's dashboard-only. There is no Terraform resource for it, and the infra
-   API token can't reach that surface even to read it. Building it by hand
-   would mean one alert living outside the file where every other alert lives.
-2. **An uptime check** is declined outright. Standalone Health Checks monitor
-   an _origin server address_, and a Workers custom domain has no origin, so
-   there is nothing for one to probe. If an external uptime service is ever
-   pointed here, `GET /api/me` with no `Authorization` header returns a flat
-   `401` — no secrets, no KV touch, no side effects — which makes it the right
-   liveness probe. Don't build one that expects `200`: that would need a real
-   session token minted for a health check, which is a credential nobody should
-   create.
+Two alternatives were considered and declined in favor of the above:
 
-Note also that the zone alert can't be narrowed to one Worker — the
-notifications API scopes by zone, not by script. Even once something does watch
-this Worker, an alert will mean "something on `whizkid.dev` is 5xxing", so
-triage starts in the logs, not in the alert body.
+1. **Per-Worker error alerting** via Workers Observability — dashboard-only.
+   There is no Terraform resource for it, and the infra API token can't reach
+   that surface even to read it. Building it by hand would mean one alert
+   living outside the file where every other alert lives.
+2. **An uptime check** — Standalone Health Checks monitor an _origin server
+   address_, and a Workers custom domain has no origin, so there is nothing
+   for one to probe. If an external uptime service is ever pointed here
+   anyway, `GET /api/me` with no `Authorization` header returns a flat `401`
+   — no secrets, no KV touch, no side effects — which is the right liveness
+   probe. Don't build one that expects `200`: that needs a real session token
+   minted for a health check, which is a credential nobody should create.
 
-Until one of those lands, the honest posture is that failures here are found by
-looking (`wrangler tail`, the Observability tab, or the Analytics Engine query
-above), not by being told.
+Requires the Workers Paid plan (Workers Trace Events Logpush isn't available
+on Free), and Cloudflare's combined 16,384-character limit on the `Logs` and
+`Exceptions` fields means a very verbose exception gets truncated before it
+arrives — `wrangler tail` and the Observability tab remain the tools for the
+full picture, the alert is only the "look now" signal.
 
 **Automatic client-side crash reporting is declined.** Shipping unattended
 stack traces off a player's device is telemetry, and this project doesn't do

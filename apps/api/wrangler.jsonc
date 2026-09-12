@@ -74,6 +74,11 @@
   // (which would reintroduce cookie/CORS complexity this design avoids).
   "routes": [{ "pattern": "api.ledgermain.whizkid.dev", "custom_domain": true }],
 
+  // Feeds tf-cloudflare's `ledgermain_api_trace_events` Logpush job (#176):
+  // without this, Cloudflare has nothing to push even once a job exists.
+  // See README.md's Alerting section for the rest of the pipeline.
+  "logpush": true,
+
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1,
