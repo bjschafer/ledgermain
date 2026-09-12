@@ -52,6 +52,8 @@ Deliberately deferred, and _cheap because of this model_ -- they reuse the **sam
 >
 > Server-side alerting lives in the `tf-cloudflare` infrastructure repo, not here. It does **not** currently cover these Workers: the zone's alert keys on origin responses, and a Workers custom domain has no origin, so a Worker-generated 5xx is invisible to it. `apps/api/README.md` records what that leaves uncovered and why the two obvious fixes were declined.
 
+> **DECIDED (2026-09-12): read-only share links, and why they are not party sync.** A player can publish a link to one character and chooses, per link, what it resolves to: a **snapshot** (a copy taken at publish time) or **live** (the synced document, read fresh each time). The reader's own client computes the sheet from the blob; the server strips `ownerId` and derives nothing. Nothing writes back through a link, and a live link is the reader polling the same Level 1 document, not a mirror, so the 2026-07-09 ruling stands. The token is the whole boundary on the unauthenticated read: 32 random bytes, listable only by its owner. Revoking deletes the keys rather than flagging them, and deleting the character or purging the account takes its links along.
+
 Identity stays boring: Discord OAuth, sessions in KV/D1. (GitHub OAuth and email magic-link were the alternatives considered; Discord fits the actual TTRPG-player audience better than a dev-tool login, and needs no email-sending infra. Cloudflare Access is org-oriented overkill -- it assumes an IdP the project owner administers, the opposite of "a stranger can sign up.")
 
 ## 3. The backbone data model

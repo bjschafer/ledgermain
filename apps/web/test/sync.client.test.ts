@@ -3,7 +3,11 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { createEmptyDoc } from "../src/model/doc.js";
 import {
   ApiError,
+  createShare,
   deleteRemoteCharacter,
+  fetchShared,
+  listShares,
+  revokeShare,
   fetchAccountExport,
   fetchMe,
   fetchRemoteCharacter,
@@ -202,5 +206,59 @@ describe("purgeAccount", () => {
   test("throws on an error status", async () => {
     mockFetch(() => new Response("nope", { status: 401 }));
     expect(purgeAccount(API_BASE, TOKEN)).rejects.toBeInstanceOf(ApiError);
+  });
+});
+
+describe("share links", () => {
+  const SHARE = "ab".repeat(32);
+  const summary = {
+    token: SHARE,
+    characterId: "c1",
+    kind: "live",
+    createdAt: "2026-09-12T00:00:00Z",
+  };
+
+  test("listShares reads the owner's list with a bearer token", async () => {
+    mockFetch(() => Response.json({ shares: [summary] }));
+    expect(await listShares(API_BASE, TOKEN)).toEqual([summary] as never);
+    expect(calls[0]!.url).toBe(`${API_BASE}/api/me/shares`);
+    expect(new Headers(calls[0]!.init?.headers).get("authorization")).toBe(`Bearer ${TOKEN}`);
+  });
+
+  test("createShare posts the character and kind", async () => {
+    mockFetch(() => Response.json(summary, { status: 201 }));
+    expect((await createShare(API_BASE, TOKEN, "c1", "live")).token).toBe(SHARE);
+    expect(calls[0]!.init?.method).toBe("POST");
+    expect(JSON.parse(calls[0]!.init?.body as string)).toEqual({ characterId: "c1", kind: "live" });
+  });
+
+  test("createShare throws on a character the server doesn't hold", async () => {
+    mockFetch(() => new Response("nope", { status: 404 }));
+    await expect(createShare(API_BASE, TOKEN, "c1", "snapshot")).rejects.toBeInstanceOf(ApiError);
+  });
+
+  test("revokeShare deletes, and tolerates a 404", async () => {
+    mockFetch(() => new Response(null, { status: 404 }));
+    await revokeShare(API_BASE, TOKEN, SHARE);
+    expect(calls[0]!.url).toBe(`${API_BASE}/api/me/shares/${SHARE}`);
+    expect(calls[0]!.init?.method).toBe("DELETE");
+  });
+
+  test("fetchShared sends no credential", async () => {
+    const doc = createEmptyDoc("c1");
+    mockFetch(() => Response.json({ kind: "snapshot", createdAt: "x", doc }));
+    const read = await fetchShared(API_BASE, SHARE);
+    expect(read).toEqual({ status: "ok", share: { kind: "snapshot", createdAt: "x", doc } });
+    expect(calls[0]!.url).toBe(`${API_BASE}/api/shared/${SHARE}`);
+    expect(new Headers(calls[0]!.init?.headers).get("authorization")).toBeNull();
+  });
+
+  test("fetchShared polls with since, and maps 204 and 404", async () => {
+    mockFetch(() => new Response(null, { status: 204 }));
+    expect(await fetchShared(API_BASE, SHARE, 7)).toEqual({ status: "unchanged" });
+    expect(calls[0]!.url).toBe(`${API_BASE}/api/shared/${SHARE}?since=7`);
+
+    mockFetch(() => new Response("gone", { status: 404 }));
+    expect(await fetchShared(API_BASE, SHARE)).toEqual({ status: "gone" });
   });
 });

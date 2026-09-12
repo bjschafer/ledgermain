@@ -51,6 +51,7 @@ import { Explainer } from "../Explainer.js";
 import { GearIcon, HeartIcon, SparklesIcon } from "../icons.js";
 import { AccountErasePanel, AccountPanel } from "./AccountPanel.js";
 import { ConfirmAction } from "./ConfirmAction.js";
+import { SharePanel } from "./SharePanel.js";
 import { NumberField } from "./NumberField.js";
 import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
@@ -916,6 +917,11 @@ export function SettingsSection({
               {importReport && <ImportReportPanel report={importReport} />}
             </Panel>
           ),
+        },
+        {
+          id: "settings-share",
+          label: "Share",
+          node: <SharePanel doc={doc} />,
         },
         {
           id: "settings-account",

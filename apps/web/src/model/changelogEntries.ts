@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-12-share-links",
+    date: "2026-09-12",
+    title: "Show your GM your sheet",
+    note: "If you sync your characters, Settings has a Share panel that makes a read-only link to the character you have open. Pick a snapshot to show the sheet as it stands, say for approval before a campaign, or a live link that keeps up with your hit points, conditions and buffs as you play. Whoever opens it sees the sheet and nothing else: no sign-in, and no way to change anything. Every link you have made is listed there, and Stop sharing turns one off for good. Deleting a character ends its links too.",
+  },
+  {
     id: "2026-09-09-account-controls",
     date: "2026-09-09",
     title: "Your account, on your terms",

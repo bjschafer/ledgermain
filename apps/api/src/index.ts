@@ -21,9 +21,12 @@ import { handleFeedback } from "./feedback.js";
 import { CONTACT_REF_PATTERN, handleContactLookup } from "./feedbackContacts.js";
 import { errorJson, json } from "./http.js";
 import { deleteSession, ownerIdFromRequest, revokeAllSessions } from "./session.js";
+import { createShare, listShares, readShare, revokeShare, SHARE_TOKEN_PATTERN } from "./shares.js";
 
 const CHARACTER_PATH = /^\/api\/characters(?:\/([^/]+))?$/;
 const FEEDBACK_CONTACT_PATH = /^\/api\/feedback\/contact\/([^/]+)$/;
+const OWNER_SHARE_PATH = /^\/api\/me\/shares(?:\/([^/]+))?$/;
+const SHARED_PATH = /^\/api\/shared\/([^/]+)$/;
 
 /**
  * Coarse, fixed-enum label for a request — for telemetry (analytics.ts) and
@@ -38,6 +41,14 @@ function routeLabel(method: string, pathname: string): string {
   if (pathname === "/auth/logout-all") return "auth.logoutAll";
   if (pathname === "/api/me") return method === "DELETE" ? "me.purge" : "me";
   if (pathname === "/api/me/export") return "me.export";
+  const ownerShareMatch = OWNER_SHARE_PATH.exec(pathname);
+  if (ownerShareMatch) {
+    if (ownerShareMatch[1]) return method === "DELETE" ? "shares.revoke" : "shares.other";
+    if (method === "GET") return "shares.list";
+    if (method === "POST") return "shares.create";
+    return "shares.other";
+  }
+  if (SHARED_PATH.test(pathname)) return "shared.read";
   if (pathname === "/api/feedback") return "feedback.submit";
   if (FEEDBACK_CONTACT_PATH.test(pathname)) return "feedback.contact";
   const charMatch = CHARACTER_PATH.exec(pathname);
@@ -98,6 +109,33 @@ async function route(request: Request, env: Env): Promise<Response> {
     const ownerId = await ownerIdFromRequest(request, env.KV);
     if (!ownerId) return errorJson(401, "Not authenticated");
     return exportCharacters(ownerId, env);
+  }
+
+  const ownerShareMatch = OWNER_SHARE_PATH.exec(pathname);
+  if (ownerShareMatch) {
+    const ownerId = await ownerIdFromRequest(request, env.KV);
+    if (!ownerId) return errorJson(401, "Not authenticated");
+    const token = ownerShareMatch[1];
+    if (token) {
+      if (method !== "DELETE") return errorJson(405, "Method not allowed");
+      // A token that can't exist can't be revoked, and there is nothing to
+      // look up for it.
+      if (!SHARE_TOKEN_PATTERN.test(token)) return new Response(null, { status: 204 });
+      return revokeShare(ownerId, token, env);
+    }
+    if (method === "GET") return listShares(ownerId, env);
+    if (method === "POST") return createShare(ownerId, request, env);
+    return errorJson(405, "Method not allowed");
+  }
+
+  // Public (unauthenticated): the token is the credential. Shape-checked
+  // before KV so a sweep of junk paths costs no reads.
+  const sharedMatch = SHARED_PATH.exec(pathname);
+  if (sharedMatch) {
+    if (method !== "GET") return errorJson(405, "Method not allowed");
+    const token = sharedMatch[1]!;
+    if (!SHARE_TOKEN_PATTERN.test(token)) return errorJson(404, "Not found");
+    return readShare(token, url, env);
   }
 
   // Owner-only: reads back the contact handle a submission chose to leave,

@@ -133,6 +133,95 @@ export async function logoutEverywhere(apiBase: string, token: string): Promise<
   return body.revoked;
 }
 
+/** What a share link resolves to: a frozen copy, or the character as it stands now. */
+export type ShareKind = "snapshot" | "live";
+
+export interface ShareSummary {
+  /** The link's credential. Anyone holding it can read the character. */
+  token: string;
+  characterId: string;
+  kind: ShareKind;
+  createdAt: string;
+}
+
+/** `GET /api/me/shares` — every share link this account has published, newest first. */
+export async function listShares(apiBase: string, token: string): Promise<ShareSummary[]> {
+  const res = await authedFetch(apiBase, "/api/me/shares", token);
+  if (!res.ok) throw new ApiError(res.status, await res.text());
+  const body = (await res.json()) as { shares: ShareSummary[] };
+  return body.shares;
+}
+
+/**
+ * `POST /api/me/shares` — publish a link. The server shares its own synced
+ * copy, so push the character first or a snapshot freezes whatever the last
+ * push left there.
+ */
+export async function createShare(
+  apiBase: string,
+  token: string,
+  characterId: string,
+  kind: ShareKind,
+): Promise<ShareSummary> {
+  const res = await authedFetch(apiBase, "/api/me/shares", token, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ characterId, kind }),
+  });
+  if (!res.ok) throw new ApiError(res.status, await res.text());
+  return (await res.json()) as ShareSummary;
+}
+
+/** `DELETE /api/me/shares/:token` — revoke. Idempotent. */
+export async function revokeShare(
+  apiBase: string,
+  token: string,
+  shareToken: string,
+): Promise<void> {
+  const res = await authedFetch(
+    apiBase,
+    `/api/me/shares/${encodeURIComponent(shareToken)}`,
+    token,
+    {
+      method: "DELETE",
+    },
+  );
+  if (!res.ok && res.status !== 404) throw new ApiError(res.status, await res.text());
+}
+
+export interface SharedCharacter {
+  kind: ShareKind;
+  createdAt: string;
+  doc: CharacterDoc;
+}
+
+export type SharedRead =
+  | { status: "ok"; share: SharedCharacter }
+  /** A live poll whose `since` version is still current. */
+  | { status: "unchanged" }
+  /** Revoked, never existed, or the character was deleted: the server doesn't say which. */
+  | { status: "gone" };
+
+/**
+ * `GET /api/shared/:token` — the unauthenticated read a share link makes.
+ * Pass the version already on screen as `since` to poll a live share without
+ * re-downloading it.
+ */
+export async function fetchShared(
+  apiBase: string,
+  shareToken: string,
+  since?: number,
+): Promise<SharedRead> {
+  const query = since === undefined ? "" : `?since=${since}`;
+  const res = await fetch(`${apiBase}/api/shared/${encodeURIComponent(shareToken)}${query}`, {
+    cache: "no-store",
+  });
+  if (res.status === 404) return { status: "gone" };
+  if (res.status === 204) return { status: "unchanged" };
+  if (!res.ok) throw new ApiError(res.status, await res.text());
+  return { status: "ok", share: (await res.json()) as SharedCharacter };
+}
+
 /**
  * `GET /api/me/export` — every character on the account as one JSON blob. The
  * response is a stream on the wire, but the download it feeds is a single

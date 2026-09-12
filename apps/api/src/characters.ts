@@ -17,6 +17,7 @@ import { PayloadTooLargeError, readBodyWithCap } from "./body.js";
 import { errorJson, json } from "./http.js";
 import { listAllKeys } from "./kv.js";
 import { overRateLimit, tooManyRequests, type RateLimitRule } from "./rateLimit.js";
+import { deleteSharesForCharacter, shareKeysForPurge } from "./shares.js";
 
 /**
  * 2 MB — generous for a fully-built character (deep gear list, full
@@ -224,6 +225,9 @@ export async function putCharacter(
  * to other devices via open-sync instead of the character resurfacing.
  */
 export async function deleteCharacter(ownerId: string, id: string, env: Env): Promise<Response> {
+  // Shares first: a live link to a deleted character already 404s, but a
+  // snapshot is a full copy and would outlive the character it was taken from.
+  await deleteSharesForCharacter(ownerId, id, env);
   await env.CHARACTERS.delete(keyFor(ownerId, id));
   const meta: TombstoneMeta = { deletedAt: new Date().toISOString() };
   await env.CHARACTERS.put(tombKeyFor(ownerId, id), "", {
@@ -300,9 +304,11 @@ export async function purgeCharacters(
   ownerId: string,
   env: Env,
 ): Promise<{ deleted: number; complete: boolean }> {
+  const shareKeys = await shareKeysForPurge(ownerId, env);
   const docKeys = await listAllKeys(env.CHARACTERS, keyFor(ownerId, ""));
   const tombKeys = await listAllKeys(env.CHARACTERS, tombKeyFor(ownerId, ""));
-  const all = [...docKeys, ...tombKeys];
+  // Shares lead: they are the only keys here a stranger can read.
+  const all = [...shareKeys, ...docKeys, ...tombKeys];
   const batch = all.slice(0, PURGE_KEY_BUDGET);
   await Promise.all(batch.map((key) => env.CHARACTERS.delete(key)));
   return { deleted: batch.length, complete: batch.length === all.length };
