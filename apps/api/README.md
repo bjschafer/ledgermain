@@ -348,7 +348,7 @@ already internet-reachable through an existing Cloudflare Tunnel, so this
 needed no new ingress, no OTLP collector, and no Workers-to-cluster VPC
 bridge. `k8s/generators`' `apps/logs/alerts.ts` carries a
 `LedgermainApiWorkerError` VmRule that fires on `Outcome:"exception"` (an
-uncaught throw) or `Event.Response.status:>=500` (the explicit catch-all in
+uncaught throw) or `Event.Response.Status:>=500` (the explicit catch-all in
 `src/index.ts`, which completes normally and so never sets `Outcome` to
 `exception`) — checking both because either alone misses a real failure mode.
 It reaches Pushover through the same Alertmanager routing every other
