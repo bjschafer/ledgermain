@@ -6,8 +6,8 @@
  * target that did nothing for months, and the shifter Mantis aspect shipped a
  * `reach` one; both were found by reading, not by a check.
  *
- * This walks every hand-authored `Change` literal in `src/` with the
- * TypeScript parser and fails on any target the allowlist doesn't cover. The
+ * This walks every hand-authored `Change` literal in `src/` with oxc's
+ * parser and fails on any target the allowlist doesn't cover. The
  * discriminator for "this object is a Change" is carrying both `formula` and
  * `target` — a `ContextNote` has `target` and `text`, so notes (the correct
  * home for an effect the sheet has no line for) are left alone.
@@ -19,7 +19,7 @@
 import { describe, expect, test } from "bun:test";
 import { readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
-import * as ts from "typescript";
+import { parseSync } from "oxc-parser";
 
 import { isTargetApplied } from "../src/targets.js";
 
@@ -33,11 +33,30 @@ const SRC_DIR = join(import.meta.dir, "..", "src");
  */
 const NO_CHANGE_SENTINEL = "";
 
+interface Node {
+  type: string;
+  start: number;
+  [key: string]: unknown;
+}
+
 function* sourceFiles(dir: string): Generator<string> {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) yield* sourceFiles(full);
     else if (entry.name.endsWith(".ts")) yield full;
+  }
+}
+
+function* walk(value: unknown): Generator<Node> {
+  if (value === null || typeof value !== "object") return;
+  if (Array.isArray(value)) {
+    for (const item of value) yield* walk(item);
+    return;
+  }
+  const node = value as Node;
+  if (typeof node.type === "string") yield node;
+  for (const [key, child] of Object.entries(node)) {
+    if (key !== "type") yield* walk(child);
   }
 }
 
@@ -48,9 +67,13 @@ function* sourceFiles(dir: string): Generator<string> {
  * identifier (`{ target, formula, type }` built from a variable) is
  * unknowable here and skipped.
  */
-function staticTarget(init: ts.Expression): string | undefined {
-  if (ts.isStringLiteral(init) || ts.isNoSubstitutionTemplateLiteral(init)) return init.text;
-  if (ts.isTemplateExpression(init)) return init.head.text;
+function staticTarget(init: Node): string | undefined {
+  if (init.type === "Literal" && typeof init.value === "string") return init.value;
+  if (init.type === "TemplateLiteral") {
+    const head = (init.quasis as Node[])[0];
+    const value = head?.value as { cooked: string | null; raw: string } | undefined;
+    return value ? (value.cooked ?? value.raw) : undefined;
+  }
   return undefined;
 }
 
@@ -60,28 +83,33 @@ interface Violation {
 }
 
 function violationsIn(file: string, text: string): Violation[] {
-  const sf = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true);
+  const parsed = parseSync(file, text, { lang: "ts" });
+  // A parse this walk can't trust would go quietly green on an empty AST.
+  if (parsed.errors.length > 0) {
+    throw new Error(`${relative(SRC_DIR, file)}: ${parsed.errors[0]?.message}`);
+  }
   const found: Violation[] = [];
-  const visit = (node: ts.Node): void => {
-    if (ts.isObjectLiteralExpression(node)) {
-      const props = new Map<string, ts.Expression>();
-      for (const p of node.properties) {
-        if (!ts.isPropertyAssignment(p)) continue;
-        const key = ts.isIdentifier(p.name) || ts.isStringLiteral(p.name) ? p.name.text : undefined;
-        if (key) props.set(key, p.initializer);
-      }
-      const target = props.get("target");
-      if (target && props.has("formula")) {
-        const value = staticTarget(target);
-        if (value !== undefined && value !== NO_CHANGE_SENTINEL && !isTargetApplied(value)) {
-          const { line } = sf.getLineAndCharacterOfPosition(target.getStart(sf));
-          found.push({ target: value, where: `${relative(SRC_DIR, file)}:${line + 1}` });
-        }
-      }
+  for (const node of walk(parsed.program)) {
+    if (node.type !== "ObjectExpression") continue;
+    const props = new Map<string, Node>();
+    for (const p of node.properties as Node[]) {
+      if (p.type !== "Property") continue;
+      const key = p.key as Node;
+      const name =
+        key.type === "Identifier"
+          ? (key.name as string)
+          : key.type === "Literal" && typeof key.value === "string"
+            ? key.value
+            : undefined;
+      if (name) props.set(name, p.value as Node);
     }
-    ts.forEachChild(node, visit);
-  };
-  visit(sf);
+    const target = props.get("target");
+    if (!target || !props.has("formula")) continue;
+    const value = staticTarget(target);
+    if (value === undefined || value === NO_CHANGE_SENTINEL || isTargetApplied(value)) continue;
+    const line = text.slice(0, target.start).split("\n").length;
+    found.push({ target: value, where: `${relative(SRC_DIR, file)}:${line}` });
+  }
   return found;
 }
 
