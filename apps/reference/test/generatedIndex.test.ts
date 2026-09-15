@@ -6,7 +6,7 @@
 import type { RefDataMeta } from "@pf1/schema";
 import { beforeAll, describe, expect, it } from "bun:test";
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -35,9 +35,9 @@ let index: RefIndex;
 let meta: RefDataMeta;
 
 beforeAll(() => {
-  if (!existsSync(join(refDir, "index.json"))) {
-    execFileSync("bun", ["scripts/build-ref-index.ts"], { cwd: appRoot, stdio: "ignore" });
-  }
+  // Unconditionally, in a fraction of a second: an index left from an earlier
+  // data pin otherwise fails here as an unexplained version mismatch.
+  execFileSync("bun", ["scripts/build-ref-index.ts"], { cwd: appRoot, stdio: "ignore" });
   index = decodeIndex(JSON.parse(readFileSync(join(refDir, "index.json"), "utf8")) as EncodedIndex);
   meta = JSON.parse(readFileSync(join(dataDir, "meta.json"), "utf8")) as RefDataMeta;
 });
