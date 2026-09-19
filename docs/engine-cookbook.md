@@ -187,7 +187,15 @@ An archetype either gets its own `archetypeId` entry (replacing the base grant o
 
 This route only ever carries the Dex-to-damage half. `ResolvedWeaponAttack` separately surfaces `rangeIncrement` and, for anything flagged as a firearm, a `firearm: { misfire?, capacity?, touchRangeFt? }` display block (touch AC within the first range increment for an early firearm, the first five for advanced/modern) -- both are read-only sheet display, not adjustable by any deed or Change. Misfire-chance adjustments, a broken-firearm state, reload economy, and deed action mechanics remain entirely unmodeled.
 
-### 3.9 Look something up in `RefData`
+### 3.9 Widen a weapon's threat range
+
+"Gains the benefit of the Improved Critical feat" is not a bonus and can never be a `Change`: it rewrites the weapon's crit line rather than adding to a total, and the rules forbid two such effects from combining. `crit-range.ts` resolves it per weapon, the way `dex-weapon-feats.ts` resolves the Weapon Finesse family, and `computeWeaponAttacks` reads the result into `crit` plus a `critWidenedBy` provenance string the sheet prints under the attack line.
+
+Two routes feed it. A FEAT whose whole effect is the doubling goes in `CRIT_RANGE_FEATS` (keyed by name slug) and matches the weapon-type pick stored in `build.featChoices` / `build.extraFeats[].choiceId` -- add the slug there and to `MECHANICAL_FEAT_CHOICES` in the web layer's `model/feats.ts` so the picker appears. A CLASS FEATURE goes in `CRIT_RANGE_GRANTS`, which follows the same class-tag/archetype resolution `GUN_TRAINING_GRANTS` documents above (an archetype that reflavors the feature gets its own entry; one that trades it away for something else goes in the base entry's `suppressedBy`). A grant's scope is either a list of `WeaponInstance.group` slugs or `piercingLightOrOneHanded`, the damage-type-plus-handedness family that reads `WeaponRef.damageTypes`/`weaponSubtype` because it cuts across the `WEAPON_GROUPS` taxonomy.
+
+The one rule to preserve when adding a route: the doubling only ever applies to a range still equal to the vendored `WeaponRef.critRange`. A stored range that has moved off it was already widened (the weapon picker applies keen at pick-time) or was typed in by hand, and a weapon with no `weaponId` has no base to double at all -- all three are left exactly as stored. Only ever ADD a source; never change that guard to double whatever is stored.
+
+### 3.10 Look something up in `RefData`
 
 `RefData` collections are keyed by Foundry id, so anything keyed by a _tag_ -- a class, a class feature, a domain -- used to be a `Object.values(...).find(...)` linear scan, and an archetype's features a scan of all 6,007 of them. Those scans ran several times per `compute()` and grew with every content wave.
 

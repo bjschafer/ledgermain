@@ -1231,8 +1231,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "improved-critical": {
     slug: "improved-critical",
     name: "Improved Critical",
-    bucket: "subsystem",
-    note: "doubles a weapon's threat range — no crit-range field exists on WeaponInstance/DerivedSheet",
+    bucket: "choice-numeric",
+    note: "doubles the chosen weapon's threat range — parameterized by the existing weapon choice-UI, but never a Change (it rewrites the crit line rather than adding to a total); wired per weapon through crit-range.ts",
   },
   "improved-dirty-trick": {
     slug: "improved-dirty-trick",

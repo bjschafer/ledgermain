@@ -45,7 +45,7 @@ export const REPEATABLE_FEAT_SLUGS: ReadonlySet<string> = new Set([
   "greater-spell-focus",
   "greater-weapon-focus",
   "greater-weapon-specialization",
-  "improved-critical", // display-only choice (no engine crit-range effect — see model/feats.ts DISPLAY_ONLY_FEAT_CHOICES)
+  "improved-critical",
   "mother-s-gift", // "up to three times", one manifestation per instance
   "skill-focus",
   "skill-focus-perform", // "applies to a new skill", same shape as skill-focus-craft

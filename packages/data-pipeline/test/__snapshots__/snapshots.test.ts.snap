@@ -410,6 +410,9 @@ exports[`normalized-output snapshots weapon: Longsword (martial melee, crit rang
   "critRange": 19,
   "damageAbility": "str",
   "damageDice": "1d8",
+  "damageTypes": [
+    "slashing",
+  ],
   "group": "longsword",
   "id": "zWRlna42PMJVX6un",
   "name": "Longsword",
@@ -445,6 +448,9 @@ exports[`normalized-output snapshots weapon: Composite Longbow (ranged, STR-to-d
   "critRange": 20,
   "damageAbility": "str",
   "damageDice": "1d8",
+  "damageTypes": [
+    "piercing",
+  ],
   "group": "longbow",
   "id": "msTiRxZVnecbPCA8",
   "name": "Composite Longbow",

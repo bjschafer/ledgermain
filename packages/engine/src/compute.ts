@@ -54,6 +54,7 @@ import {
   type ResolvedAbility,
 } from "./ability-substitution.js";
 import { acBonusType } from "./ac-bonus-types.js";
+import { critThreatRange } from "./crit-range.js";
 import { dexWeaponFeatSources } from "./dex-weapon-feats.js";
 import { chosenBonusClassSkills } from "./bonus-class-skills.js";
 import { traitGrantedClassSkills } from "./traits.js";
@@ -1558,8 +1559,10 @@ function computeWeaponAttacks(
     if (enh !== 0) damageComponents.push(synthetic(`${w.name} (enhancement)`, "enh", enh));
     damageComponents.push(...toComponents(weaponDamageStack.modifiers));
 
-    // Critical hit string: "19–20/×2" or "×2".
-    const critRange = w.critRange ?? 20;
+    // Critical hit string: "19–20/×2" or "×2". The range is the stored one
+    // unless a feat or class feature widens it — see `crit-range.ts`.
+    const critThreat = critThreatRange(doc, refData, w);
+    const critRange = critThreat.range;
     const critMult = w.critMult ?? 2;
     const crit = critRange < 20 ? `${critRange}–20/×${critMult}` : `×${critMult}`;
 
@@ -1574,6 +1577,7 @@ function computeWeaponAttacks(
       },
       damageBonus: { total: damageTotal, components: damageComponents },
       crit,
+      ...(critThreat.widenedBy !== undefined ? { critWidenedBy: critThreat.widenedBy } : {}),
     };
     // What this weapon overcomes for DR purposes — material, plus, alignment
     // abilities, and a monk's or brawler's unarmed-strike class feature. Left

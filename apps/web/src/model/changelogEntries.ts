@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-19-threat-range",
+    date: "2026-09-19",
+    title: "Threat ranges widen on their own",
+    note: "Improved Critical used to record which weapon you chose and leave the crit column alone. Now it doubles that weapon's threat range, and so does every class feature that hands you the same benefit: a swashbuckler's weapon training on her light and one-handed piercing weapons, a flying blade's daggers and starknives, an inspired blade's rapier. The sheet names what widened it under the attack line. A keen weapon keeps the range it already has, since the two never stack, and a weapon you typed in by hand is left exactly as you entered it.",
+  },
+  {
     id: "2026-09-12-share-links",
     date: "2026-09-12",
     title: "Show your GM your sheet",

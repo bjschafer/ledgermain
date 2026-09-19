@@ -574,6 +574,14 @@ export {
   type DeedDef,
 } from "./deeds.js";
 export {
+  CRIT_RANGE_FEATS,
+  CRIT_RANGE_GRANTS,
+  critThreatRange,
+  type CritRangeGrant,
+  type CritRangeScope,
+  type CritThreat,
+} from "./crit-range.js";
+export {
   DEX_WEAPON_FEATS,
   dexWeaponFeatSources,
   type DexWeaponFeatDef,

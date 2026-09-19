@@ -607,50 +607,29 @@ const SCHOOLS_OF_MAGIC: readonly { id: string; name: string }[] = [
 ];
 
 /**
- * Feats that need a player-chosen target for DISPLAY purposes only — no entry
- * exists (or should ever be added) for these slugs in the engine's
- * FEAT_EFFECTS/FEAT_EFFECTS_EXTRACTED tables, so `resolveFeatEffect` never
- * resolves them and no Change is emitted (following the "don't invent a
- * target" guidance from feat-classification.ts):
- *
- *  - Improved Critical: doubling a weapon's threat range is stacking-suspect
- *    against a player-entered `WeaponInstance.critRange` that may already
- *    reflect Keen or another range-doubling source, and there's no "base"
- *    range to double against (see feat-classification.ts's "subsystem" note)
- *    — same posture as Improved Natural Armor's "blocked" classification.
- *    The chosen weapon is recorded and shown, but the sheet's crit column
- *    isn't touched.
- *
- * (Spell Focus / Greater Spell Focus lived here while no spell-DC target
- * existed; they're engine-wired ChoiceFeatEntry feats now, and the school
- * choices this map recorded flow into real `spellDC.<school>` Changes with
- * no doc migration.)
+ * Weapon picks that ARE mechanically consumed, just never as a `Change`. Each
+ * is read straight off `doc.build.featChoices`/`extraFeats[].choiceId` by an
+ * engine module: `proficiency.ts`'s `deriveProficiencies` for the two
+ * proficiency picks (feeding the real -4 non-proficient attack penalty),
+ * `dex-weapon-feats.ts` for Slashing Grace, `crit-range.ts` for Improved
+ * Critical. None of them is a stacking bonus — a set-membership fact, an
+ * ability substitution, a rewritten threat range — so none has a `Change` for
+ * an entry to `build`.
  *
  * `setFeatChoice`/`doc.build.featChoices` (the storage) and the "one choice
  * per feat id" limitation (see `toggleFeat` in doc.ts — `build.feats` is a
- * de-duped array, so a feat legally takable multiple times, like Weapon
- * Focus or Improved Critical, only ever tracks ONE choice) are unchanged by
- * this map; it only widens what `featChoiceDescriptor` recognizes.
- */
-const DISPLAY_ONLY_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> = {
-  "improved-critical": { type: "weapon", label: "Weapon Type" },
-};
-
-/**
- * Weapon picks that ARE mechanically consumed, just never as a `Change` —
- * the opposite of `DISPLAY_ONLY_FEAT_CHOICES` above. Each is read straight
- * off `doc.build.featChoices`/`extraFeats[].choiceId` by an engine module:
- * `proficiency.ts`'s `deriveProficiencies` for the two proficiency picks
- * (feeding the real -4 non-proficient attack penalty), `dex-weapon-feats.ts`
- * for Slashing Grace. Neither shape is a stacking bonus — one is a
- * set-membership fact, the other an ability substitution — so neither has a
- * `Change` for an entry to `build`. Kept in its own map (rather than folded
- * into `DISPLAY_ONLY_FEAT_CHOICES`) so that map's own "no engine effect at
- * all" claim stays true.
+ * de-duped array, so a feat legally takable multiple times, like Weapon Focus
+ * or Improved Critical, only ever tracks ONE choice) apply here as everywhere
+ * else.
  */
 const MECHANICAL_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> = {
   "martial-weapon-proficiency": { type: "weapon", label: "Weapon" },
   "exotic-weapon-proficiency": { type: "weapon", label: "Weapon" },
+  // Improved Critical doubles the chosen weapon's threat range, which rewrites
+  // the crit line rather than adding to a total — `@pf1/engine`'s
+  // `critThreatRange` reads the pick off `featChoices` and widens the range
+  // there (only from the catalog's own range, so it never stacks with keen).
+  "improved-critical": { type: "weapon", label: "Weapon Type" },
   // Slashing Grace names its own weapon ("choose one kind of light or
   // one-handed slashing weapon"), and `@pf1/engine`'s `dexWeaponFeatSources`
   // reads the pick straight off `featChoices` to swap that weapon's damage
@@ -666,16 +645,15 @@ const MECHANICAL_FEAT_CHOICES: Readonly<Record<string, FeatChoiceDescriptor>> = 
  *     Focus, Master Craftsman, ...) via `resolveFeatEffect` — its `build()`
  *     emits a real Change once a choice is stored.
  *  2. `MECHANICAL_FEAT_CHOICES` — a choice consumed outside the Change
- *     pipeline (Martial/Exotic Weapon Proficiency, Slashing Grace).
- *  3. `DISPLAY_ONLY_FEAT_CHOICES` — a choice with no engine effect at all
- *     (Improved Critical's weapon).
+ *     pipeline (Martial/Exotic Weapon Proficiency, Slashing Grace, Improved
+ *     Critical).
  * The descriptor drives the UI picker rendered in FeatsSection/FeatsPanel.
  */
 export function featChoiceDescriptor(featName: string): FeatChoiceDescriptor | null {
   const resolved = resolveFeatEffect(featNameSlug(featName));
   if (resolved && resolved.entry.type === "choice") return resolved.entry.choice;
   const slug = featNameSlug(featName);
-  return MECHANICAL_FEAT_CHOICES[slug] ?? DISPLAY_ONLY_FEAT_CHOICES[slug] ?? null;
+  return MECHANICAL_FEAT_CHOICES[slug] ?? null;
 }
 
 /**

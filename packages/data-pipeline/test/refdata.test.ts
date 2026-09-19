@@ -1090,7 +1090,14 @@ describe("mundane weapons (new in schema v2)", () => {
       damageDice: "1d8",
       group: "longsword",
       weaponSubtype: "1h",
+      damageTypes: ["slashing"],
     });
+  });
+
+  it("carries the damage types the 'light or one-handed piercing' rules read", () => {
+    expect(byName(ref.weapons, "Rapier").damageTypes).toEqual(["piercing"]);
+    // A weapon whose attack deals either type carries both.
+    expect(byName(ref.weapons, "Dagger").damageTypes).toEqual(["piercing", "slashing"]);
   });
 
   it("Greatsword is a two-handed weapon with damageMultiplier 1.5", () => {

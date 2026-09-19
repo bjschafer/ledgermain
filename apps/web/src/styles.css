@@ -6272,6 +6272,14 @@ input[type="text"].saved-roll-name:focus {
   color: var(--sage);
 }
 
+/* The feat or class feature behind a widened threat range. Same footnote
+   sizing as the bypass chips, without their sage: this one names a source,
+   not a quality the weapon has. */
+.crit-source-chip {
+  padding: 2px 9px;
+  font-size: 0.6875rem;
+}
+
 /* A second line under a name: kinetic blast rows use it for touch/range/
    descriptor/burn cost, weapon attack rows for range increment and firearm
    misfire/capacity/touch-AC data. */

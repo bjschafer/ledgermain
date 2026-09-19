@@ -551,6 +551,15 @@ export function Sheet({
                       />
                     </div>
                   ) : null}
+                  {/* Why the threat range is wider than the weapon's own —
+                      the crit seal has no breakdown to expand, so the reason
+                      goes on a line of its own. */}
+                  {atk.critWidenedBy ? (
+                    <div className="weapon-attack-bypass">
+                      <span className="weapon-attack-bypass-label">Threat range</span>
+                      <span className="prof-chip crit-source-chip">{atk.critWidenedBy}</span>
+                    </div>
+                  ) : null}
                   {/* What this weapon gets through: material, plus, alignment
                       ability, or a monk's/brawler's unarmed class feature. A
                       flag rather than a magnitude, so same chip the immunity

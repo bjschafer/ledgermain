@@ -51,6 +51,7 @@ export function transformWeapon(doc: RawDoc): WeaponRef {
     proficiency: subType,
     weaponGroups: emittedWeaponGroups.length > 0 ? emittedWeaponGroups : undefined,
     weaponSubtype,
+    damageTypes: parseDamageTypes(action?.damage),
     baseTypes: baseTypes.length > 0 ? baseTypes : undefined,
     group: slugifyBase(baseTypes[0]),
     price: readPrice(sys.price),
@@ -129,6 +130,19 @@ function parseDamageDice(damage: WeaponAction["damage"]): string | undefined {
   if (m) return `${m[1]}d${m[2]}`;
 
   return undefined;
+}
+
+/**
+ * The physical damage types the primary attack deals, lowercased and deduped.
+ * Only the crit-multiplied `parts` count: a `nonCritParts` rider (a flaming
+ * burst's fire, say) isn't what the weapon itself is made of, and the rules
+ * that read this field ("light or one-handed piercing melee weapon") mean the
+ * weapon's own damage.
+ */
+function parseDamageTypes(damage: WeaponAction["damage"]): string[] | undefined {
+  const types = (damage?.parts ?? []).flatMap((p) => p.types ?? []);
+  const seen = [...new Set(types.map((t) => t.trim().toLowerCase()).filter((t) => t !== ""))];
+  return seen.length > 0 ? seen : undefined;
 }
 
 function categoryOf(

@@ -3973,6 +3973,14 @@ export interface ResolvedWeaponAttack {
   /** Critical hit string, e.g. "19–20/×2" or "×2". */
   crit: string;
   /**
+   * The feat or class feature that widened the threat range in `crit` past
+   * the weapon's own (Improved Critical, Swashbuckler Weapon Training).
+   * Omitted when nothing did — see `@pf1/engine`'s `crit-range.ts` for why a
+   * range that has already been widened (keen, a hand-entered value) is left
+   * alone.
+   */
+  critWidenedBy?: string;
+  /**
    * DR qualifiers this weapon overcomes in this character's hands, from its
    * material, enhancement bonus, alignment abilities and (for an unarmed
    * strike) monk/brawler class features. Omitted when there are none.

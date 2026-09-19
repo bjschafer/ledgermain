@@ -1034,6 +1034,15 @@ export interface WeaponRef extends RefEntity {
   weaponGroups?: string[];
   /** Foundry weapon subtype: "1h" | "2h" | "ranged" (drives damageMultiplier). */
   weaponSubtype?: string;
+  /**
+   * Physical damage types the weapon's primary attack deals, lowercased
+   * (e.g. `["piercing"]`, `["bludgeoning", "piercing"]` for a weapon that
+   * deals either). Needed by the rules that scope themselves by damage type
+   * rather than by weapon group: "light or one-handed piercing melee weapon"
+   * (swashbuckler, duelist) cuts across several `weaponGroups` tags and can't
+   * be expressed with them. Absent when the upstream action tags no type.
+   */
+  damageTypes?: string[];
   /** Canonical base type label(s), e.g. ["Longsword"]. */
   baseTypes?: string[];
   price?: number;
