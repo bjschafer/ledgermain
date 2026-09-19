@@ -784,3 +784,20 @@ export function featInstanceDisplayName(
       ?.name ?? choiceId;
   return `${feat.name}: ${label}`;
 }
+
+/**
+ * Display name for a class-GRANTED feat, including the pick the granting text
+ * fixed ("Weapon Focus: Rapier" for an inspired blade). A granted feat is
+ * rendered read-only with no picker, so without this the row would name a
+ * choice-bearing feat with no choice beside it while the engine quietly
+ * applied one.
+ */
+export function grantedFeatLabel(
+  granted: GrantedFeat,
+  doc: CharacterDoc,
+  refData: RefData,
+): string {
+  const feat = refData.feats[granted.featId];
+  if (!feat || granted.choiceId === undefined) return granted.featName;
+  return featInstanceDisplayName(feat, granted.choiceId, doc, refData);
+}

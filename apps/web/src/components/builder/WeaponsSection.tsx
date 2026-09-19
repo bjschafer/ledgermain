@@ -6,7 +6,9 @@ import { addWeapon, addWeaponFromRef, removeWeapon, replaceWeapon } from "../../
 import {
   abilityNotes,
   type AbilityInfo,
+  applyAbilitiesToWeapon,
   buildAbilityCatalog,
+  canonicalAbilityId,
   sanitizeAbilities,
 } from "../../model/abilities.js";
 import { WEAPON_MATERIALS } from "../../model/materials.js";
@@ -87,7 +89,9 @@ function WeaponForm({
   saveLabel: string;
 }) {
   const [form, setForm] = useState<WeaponInstance>({ ...initial });
-  const [abilities, setAbilities] = useState<string[]>(initial.abilities ?? []);
+  const [abilities, setAbilities] = useState<string[]>(
+    (initial.abilities ?? []).map(canonicalAbilityId),
+  );
   const [abilityInfo, setAbilityInfo] = useState<AbilityInfo>(initial.abilityInfo ?? {});
   const enh = form.enhancement ?? 0;
 
@@ -116,11 +120,33 @@ function WeaponForm({
   }
 
   function handleSave() {
+    // Abilities that rewrite one of the weapon's printed numbers (keen's
+    // threat range, distance's range increment, reliable's misfire) are
+    // derived from the CATALOG entry, because the form's own fields already
+    // show the result of the last save and re-deriving from them would
+    // compound. Without this the add-from-catalog path applied them and the
+    // edit path silently didn't, so a keen bought in the edit form left the
+    // threat range untouched. Deriving unconditionally (not only when an
+    // ability is selected) is what makes removing one put the printed number
+    // back. These three fields therefore belong to the abilities on a weapon
+    // picked from the catalog; a hand-entered weapon has no catalog entry and
+    // keeps whatever the player typed.
+    const catalogRef = form.weaponId ? refData.weapons[form.weaponId] : undefined;
+    const derived = catalogRef
+      ? applyAbilitiesToWeapon(catalogRef, (form.enhancement ?? 0) >= 1 ? abilities : [])
+      : undefined;
     const weapon: WeaponInstance = {
       ...form,
       name: form.name.trim(),
       damageDice: form.damageDice?.trim() || undefined,
       group: form.group?.trim() || undefined,
+      ...(derived
+        ? {
+            critRange: derived.critRange ?? 20,
+            rangeIncrement: derived.rangeIncrement,
+            misfire: derived.misfire,
+          }
+        : {}),
       abilities: abilities.length > 0 ? abilities : undefined,
       abilityInfo:
         abilities.length > 0 && Object.keys(abilityInfo).length > 0 ? abilityInfo : undefined,

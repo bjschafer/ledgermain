@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import { grantedFeatLabel } from "../../model/feats.js";
 import { FeatEntry, useFeatRenderContext } from "./FeatEntry.js";
 import { FeatManager } from "./FeatManager.js";
 import { InfoTip } from "../InfoTip.js";
@@ -91,7 +92,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
             return (
               <div key={g.featId} className="pick-row is-selected">
                 <div className="pmain">
-                  <div className="pname">{g.featName}</div>
+                  <div className="pname">{grantedFeatLabel(g, doc, refData)}</div>
                   <div className="preq">
                     <span className="soft">Granted by {g.classTag}, no feat slot used</span>
                   </div>

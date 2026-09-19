@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-19-granted-picks",
+    date: "2026-09-19",
+    title: "Feats your class picked for you",
+    note: "When a class hands you a feat and names the weapon or skill itself, the bonus now arrives. An inspired blade gets Weapon Focus with her rapier, a kapenia dancer with his bladed scarf, a Red Mantis assassin her sawtoothed sabre, a pain taster his whip. A dragoon gets Skill Focus on Ride, a chirurgeon on Heal. These used to be listed as granted and then do nothing, because the sheet had nowhere to record a choice you never made. If you bought the same feat yourself for something else, you keep both. Weapon abilities got the same treatment: keen bought while editing a weapon widens the threat range now instead of quietly doing nothing, distance doubles a range increment, and reliable drops a firearm's misfire value.",
+  },
+  {
     id: "2026-09-19-threat-range",
     date: "2026-09-19",
     title: "Threat ranges widen on their own",

@@ -111,6 +111,21 @@ interface ProseFeatGrant {
   /** Feat name (lowercased, trimmed), resolved through `featIdByName`. */
   feat: string;
   /**
+   * The pick a choice-bearing feat arrives with, when the granting text names
+   * it outright ("gains Weapon Focus (rapier) as a bonus feat") rather than
+   * leaving it to the player. A weapon-type grant stores a `WeaponInstance.
+   * group` slug, a skill grant a skill id — the same vocabulary
+   * `build.featChoices` holds, since that is where {@link withGrantedFeats}
+   * puts it.
+   *
+   * Without this a granted Weapon Focus resolves to nothing at all: the feat's
+   * effect is `build(choiceId)`, and a feat the player never picked has
+   * nowhere to store a choice. Only ever set it where the published text fixes
+   * the pick; a grant that lets the player choose still belongs nowhere near
+   * these tables (see the exclusion list above).
+   */
+  choiceId?: string;
+  /**
    * Class level the grant arrives at, when that's later than the level the
    * granting feature itself is listed at. Only the features that bundle
    * several grants across a level spread need it.
@@ -134,9 +149,10 @@ interface ProseFeatGrant {
  *   signifer's Arcane Armor Expertise).
  * - Abilities that hand the BENEFIT to allies (a battle herald's commands) or
  *   to a companion rather than to the character.
- * - Choice-bearing feats (Weapon Focus, Rapid Reload), which resolve to
- *   nothing until a choice is stored and there is nowhere to store one for a
- *   feat the player never picked.
+ * - Choice-bearing feats whose choice is the PLAYER's (a warpriest's sacred
+ *   weapon). A grant whose text fixes the pick outright ("Weapon Focus
+ *   (rapier)") carries it as `choiceId` instead — without one it would
+ *   resolve to nothing, since the feat's effect is `build(choiceId)`.
  *
  * Several entries grant a feat the published text scopes more narrowly than
  * the feat itself. A swashbuckler's finesse covers "light or one-handed
@@ -179,6 +195,19 @@ export const PROSE_FEAT_GRANTS: Readonly<Record<string, readonly ProseFeatGrant[
   // Duelist 4 / 9 — scoped to a light or one-handed piercing weapon in hand.
   "prestige-feature:duelist:combat-reflexes": [{ feat: "combat reflexes" }],
   "prestige-feature:duelist:deflect-arrows": [{ feat: "deflect arrows" }],
+  // Red Mantis Assassin's Sabre Fighting, which waives the feats' own
+  // fighter-level prerequisites. The vendored weapon is spelled "Sawtoothed
+  // Sabre", and `choiceId` has to match its `group` slug, not the prose.
+  "prestige-feature:ABIs1nU8Mbm32EDs": [
+    { feat: "weapon specialization", choiceId: "sawtoothed-sabre" },
+    { feat: "greater weapon focus", choiceId: "sawtoothed-sabre", minLevel: 5 },
+    { feat: "greater weapon specialization", choiceId: "sawtoothed-sabre", minLevel: 7 },
+  ],
+  // Pain Taster 1, "Scourge". A pain taster who already has Weapon Focus
+  // (whip) receives Whip Mastery instead — the same unmodeled substitution as
+  // the Aldori swordlord above, so only the base grant is modeled (and it
+  // correctly adds nothing for a character who already has that exact pick).
+  "prestige-feature:TjzOAFIvfKQ3J8yI": [{ feat: "weapon focus", choiceId: "whip" }],
   // Twilight Talon: one vendored feature listed at 2nd level whose text
   // spreads its two feats across 5th and 9th, which is what `minLevel` is for.
   "prestige-feature:hlMtSs6hjw7WDeEo": [
@@ -193,19 +222,28 @@ export const PROSE_FEAT_GRANTS: Readonly<Record<string, readonly ProseFeatGrant[
  * feat-granting ability for an equivalent one: without them, taking an Okayo
  * corsair or a daring champion loses a grant the published text keeps.
  *
- * Same inclusion rules as {@link PROSE_FEAT_GRANTS} — an archetype feature
- * that also hands out a choice-bearing feat (the inspired blade's Weapon
- * Focus (rapier), the musketeer's Rapid Reload (musket)) contributes only the
- * choice-free part of its grant.
+ * Same inclusion rules as {@link PROSE_FEAT_GRANTS}. A feat whose pick the
+ * text names carries it as `choiceId`; the musketeer's Rapid Reload (musket)
+ * is left out because reload economy has no engine effect to grant, not
+ * because the pick is unknown.
  */
 export const ARCHETYPE_PROSE_FEAT_GRANTS: Readonly<Record<string, readonly ProseFeatGrant[]>> = {
+  "alchemist:chirurgeon:anaesthetic:5": [{ feat: "skill focus", choiceId: "hea" }],
   "cavalier:daring-champion:champion-s-finesse:1": [{ feat: "weapon finesse" }],
   "cavalier:musketeer:musketeer-instruction:1": [
     { feat: "weapon finesse" },
     { feat: "gunsmithing" },
   ],
+  "fighter:dragoon:skilled-rider:1": [
+    { feat: "mounted combat" },
+    { feat: "skill focus", choiceId: "rid" },
+  ],
+  "magus:kapenia-dancer:weapon-focus:1": [{ feat: "weapon focus", choiceId: "bladed-scarf" }],
   "samurai:warrior-poet:graceful-warrior:1": [{ feat: "weapon finesse" }],
-  "swashbuckler:inspired-blade:inspired-finesse:1": [{ feat: "weapon finesse" }],
+  "swashbuckler:inspired-blade:inspired-finesse:1": [
+    { feat: "weapon finesse" },
+    { feat: "weapon focus", choiceId: "rapier" },
+  ],
   "swashbuckler:musketeer:musketeer-instruction:1": [
     { feat: "weapon finesse" },
     { feat: "gunsmithing" },
@@ -253,6 +291,8 @@ export interface GrantedFeat {
   /** Class that granted it (tag) and the granting feature's name, for display. */
   classTag: string;
   featureName: string;
+  /** The pick the granting text fixed, when it named one — see {@link ProseFeatGrant.choiceId}. */
+  choiceId?: string;
 }
 
 /** The base domain tag a cleric `clericDomains` entry displays under. */
@@ -275,14 +315,24 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
   const archetypeSwaps = activeArchetypeSwaps(doc, refData);
   const out: GrantedFeat[] = [];
   const seen = new Set<string>();
-  const push = (featId: string, classTag: string, featureName: string, fallbackName: string) => {
-    if (seen.has(featId)) return;
-    seen.add(featId);
+  const push = (
+    featId: string,
+    classTag: string,
+    featureName: string,
+    fallbackName: string,
+    choiceId?: string,
+  ) => {
+    // Keyed by feat AND pick: two features granting the same choice-bearing
+    // feat for two different weapons are two grants, not one.
+    const key = `${featId}\u0000${choiceId ?? ""}`;
+    if (seen.has(key)) return;
+    seen.add(key);
     out.push({
       featId,
       featName: refData.feats[featId]?.name ?? fallbackName,
       classTag,
       featureName,
+      ...(choiceId !== undefined ? { choiceId } : {}),
     });
   };
   for (const cls of doc.identity.classes) {
@@ -297,7 +347,7 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
       for (const prose of PROSE_FEAT_GRANTS[grant.uuid] ?? []) {
         if (cls.level < (prose.minLevel ?? grant.level)) continue;
         const featId = byName.get(prose.feat);
-        if (featId) push(featId, cls.tag, feature.name, prose.feat);
+        if (featId) push(featId, cls.tag, feature.name, prose.feat, prose.choiceId);
       }
       if (!(feature.changes ?? []).some((ch) => ch.target === "bonusFeats")) continue;
       const featId = grantedFeatIdOf(feature, byName, refData);
@@ -316,7 +366,7 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
       for (const prose of ARCHETYPE_PROSE_FEAT_GRANTS[feature.id] ?? []) {
         if (clsLevel < Math.max(feature.level, prose.minLevel ?? 0)) continue;
         const featId = byName.get(prose.feat);
-        if (featId) push(featId, archetype.classTag, feature.name, prose.feat);
+        if (featId) push(featId, archetype.classTag, feature.name, prose.feat, prose.choiceId);
       }
     }
   }
@@ -391,11 +441,43 @@ export function grantedFeats(doc: CharacterDoc, refData: RefData): GrantedFeat[]
 export function withGrantedFeats(doc: CharacterDoc, refData: RefData): CharacterDoc {
   const granted = grantedFeats(doc, refData);
   if (granted.length === 0) return doc;
-  const held = new Set<string>([
-    ...(doc.build.feats ?? []),
-    ...(doc.build.extraFeats ?? []).map((e) => e.featId),
-  ]);
-  const added = granted.map((g) => g.featId).filter((id) => !held.has(id));
-  if (added.length === 0) return doc;
-  return { ...doc, build: { ...doc.build, feats: [...(doc.build.feats ?? []), ...added] } };
+  const feats = [...(doc.build.feats ?? [])];
+  const extraFeats = [...(doc.build.extraFeats ?? [])];
+  const featChoices = { ...doc.build.featChoices };
+  let changed = false;
+
+  for (const grant of granted) {
+    const inFeats = feats.includes(grant.featId);
+    if (grant.choiceId === undefined) {
+      if (inFeats || extraFeats.some((e) => e.featId === grant.featId)) continue;
+      feats.push(grant.featId);
+      changed = true;
+      continue;
+    }
+    // A grant whose pick the class fixed. The player may already hold this
+    // feat with the very same pick (a pain taster who bought Weapon Focus
+    // (whip) before taking the class) — that's one feat, not two.
+    if (featChoices[grant.featId] === grant.choiceId) continue;
+    if (extraFeats.some((e) => e.featId === grant.featId && e.choiceId === grant.choiceId))
+      continue;
+    if (!inFeats) {
+      // `extraFeats` only ever holds 2nd-and-later copies (see the field's
+      // doc comment), so the first copy of a feat goes to `feats` with its
+      // pick in `featChoices`.
+      feats.push(grant.featId);
+      featChoices[grant.featId] = grant.choiceId;
+    } else {
+      // The player's own copy keeps `featChoices`; the class's copy becomes a
+      // second instance carrying its own pick, exactly as a repeat take does.
+      extraFeats.push({
+        instanceId: `granted:${grant.featId}:${grant.choiceId}`,
+        featId: grant.featId,
+        choiceId: grant.choiceId,
+      });
+    }
+    changed = true;
+  }
+
+  if (!changed) return doc;
+  return { ...doc, build: { ...doc.build, feats, extraFeats, featChoices } };
 }

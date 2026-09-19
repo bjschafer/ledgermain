@@ -16,6 +16,7 @@ import {
   replaceWeapon,
   updateWeapon,
 } from "../src/model/doc.js";
+import { applyAbilitiesToWeapon, canonicalAbilityId } from "../src/model/abilities.js";
 import { featChoiceOptions } from "../src/model/feats.js";
 
 const ref = loadRefData();
@@ -540,5 +541,79 @@ describe("addWeaponFromRef()", () => {
   it("omits abilityInfo when no abilityInfo is passed (back-compat)", () => {
     const d = addWeaponFromRef(doc(), longswordRef, 1, "steel", ["keen"]);
     expect(d.build.weapons![0]!.abilityInfo).toBeUndefined();
+  });
+});
+
+/**
+ * The three abilities that rewrite a weapon's own printed number, and the
+ * catalog-derivation the edit form performs so they land on the weapon no
+ * matter which path put them there (see `WeaponsSection`'s `handleSave`).
+ * Ranges/increments are the published ones: keen doubles a threat range,
+ * distance doubles a range increment, reliable drops a misfire value by 1.
+ */
+describe("abilities that rewrite a printed weapon number", () => {
+  const rapierRef = Object.values(ref.weapons).find((w) => w.name === "Rapier")!;
+  const doubleBarrelRef = Object.values(ref.weapons).find(
+    (w) => w.name === "Double-Barreled Pistol",
+  )!;
+
+  /** What the edit form's save does: re-derive the ability-owned fields from the catalog entry. */
+  function editTo(w: WeaponInstance, enhancement: number, abilities: string[]): WeaponInstance {
+    const catalogRef = ref.weapons[w.weaponId!]!;
+    const derived = applyAbilitiesToWeapon(catalogRef, enhancement >= 1 ? abilities : []);
+    return {
+      ...w,
+      enhancement,
+      abilities: abilities.length > 0 ? abilities : undefined,
+      critRange: derived.critRange,
+      rangeIncrement: derived.rangeIncrement,
+      misfire: derived.misfire,
+    };
+  }
+
+  it("keen added by editing an existing weapon doubles the threat range", () => {
+    const added = addWeaponFromRef(doc(), rapierRef, 0, "steel");
+    const plain = added.build.weapons![0]!;
+    expect(plain.critRange).toBe(18);
+    const edited = replaceWeapon(added, 0, editTo(plain, 1, ["keen"]));
+    expect(edited.build.weapons![0]!.critRange).toBe(15);
+  });
+
+  it("removing keen by editing puts the printed threat range back", () => {
+    const keen = addWeaponFromRef(doc(), rapierRef, 1, "steel", ["keen"]);
+    const w = keen.build.weapons![0]!;
+    expect(w.critRange).toBe(15);
+    const edited = replaceWeapon(keen, 0, editTo(w, 1, []));
+    expect(edited.build.weapons![0]!.critRange).toBe(18);
+  });
+
+  it("distance doubles a ranged weapon's range increment", () => {
+    const base = addWeaponFromRef(doc(), compositeLongbowRef, 1, "steel");
+    const increment = base.build.weapons![0]!.rangeIncrement!;
+    const d = addWeaponFromRef(doc(), compositeLongbowRef, 1, "steel", ["distance"]);
+    expect(d.build.weapons![0]!.rangeIncrement).toBe(increment * 2);
+  });
+
+  it("distance leaves a melee weapon (no range increment) alone", () => {
+    const d = addWeaponFromRef(doc(), rapierRef, 1, "steel", ["distance"]);
+    expect(d.build.weapons![0]!.rangeIncrement).toBeUndefined();
+  });
+
+  it("reliable drops a firearm's misfire value by one", () => {
+    const base = addWeaponFromRef(doc(), doubleBarrelRef, 1, "steel");
+    expect(base.build.weapons![0]!.misfire).toBe(2);
+    const d = addWeaponFromRef(doc(), doubleBarrelRef, 1, "steel", ["reliable"]);
+    expect(d.build.weapons![0]!.misfire).toBe(1);
+  });
+
+  it("a legacy pick stored under the vendored catalog id still applies", () => {
+    // Picks made before Distance joined the hand-curated table carry
+    // "ability:distance" — see `canonicalAbilityId`.
+    const base = addWeaponFromRef(doc(), compositeLongbowRef, 1, "steel");
+    const increment = base.build.weapons![0]!.rangeIncrement!;
+    const d = addWeaponFromRef(doc(), compositeLongbowRef, 1, "steel", ["ability:distance"]);
+    expect(d.build.weapons![0]!.rangeIncrement).toBe(increment * 2);
+    expect(canonicalAbilityId("ability:distance")).toBe("distance");
+    expect(canonicalAbilityId("ability:menacing")).toBe("ability:menacing");
   });
 });

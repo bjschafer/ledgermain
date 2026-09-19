@@ -4,10 +4,11 @@
  * in `ultimate-equipment/`) and ad-hoc per-item effects; no portable mechanics.
  * This table encodes the published rules for the common abilities.
  *
- * Only **keen** has a mechanical effect the engine tracks (crit range doubling,
- * applied at pick-time). All other abilities are display-only — the engine
- * doesn't roll dice, so "+1d6 fire" from Flaming is a note on the sheet, not a
- * computed value.
+ * Three abilities rewrite one of the weapon's own printed numbers, and those
+ * are applied at pick-time via {@link AbilityDef.applyToWeaponRef}: keen
+ * (threat range), distance (range increment) and reliable (misfire value).
+ * Every other ability is display-only — the engine doesn't roll dice, so
+ * "+1d6 fire" from Flaming is a note on the sheet, not a computed value.
  */
 import type { ItemAbilityRef, WeaponRef } from "@pf1/schema";
 
@@ -31,9 +32,14 @@ export interface AbilityDef {
   requires?: string;
   /**
    * Mechanical effect applied to a {@link WeaponRef} at pick-time before
-   * denormalization. Currently only `keen` uses this (doubles crit range).
+   * denormalization, for an ability that rewrites one of the weapon's own
+   * printed numbers rather than adding a bonus to a total. Reads the
+   * CATALOG entry, never a stored instance, so it can never compound on a
+   * value it already produced.
    */
-  applyToWeaponRef?: (w: WeaponRef) => Partial<Pick<WeaponRef, "critRange">>;
+  applyToWeaponRef?: (
+    w: WeaponRef,
+  ) => Partial<Pick<WeaponRef, "critRange" | "rangeIncrement" | "misfire">>;
   /**
    * Overrides the slot-derived default (weapon slot -> ["weapon"], armor slot
    * -> ["armor", "shield"]). Only needed for an ability the default would get
@@ -54,6 +60,28 @@ const ABILITIES: Record<string, AbilityDef> = {
       const base = w.critRange ?? 20;
       return { critRange: Math.max(1, 2 * base - 21) };
     },
+  },
+  distance: {
+    id: "distance",
+    name: "Distance",
+    slot: "weapon",
+    bonusEquivalent: 1,
+    note: "double range increment",
+    // "A distance weapon has double the range increment of other weapons of
+    // its kind." Melee weapons have no increment to double.
+    applyToWeaponRef: (w) =>
+      w.rangeIncrement === undefined ? {} : { rangeIncrement: w.rangeIncrement * 2 },
+  },
+  reliable: {
+    id: "reliable",
+    name: "Reliable",
+    slot: "weapon",
+    bonusEquivalent: 1,
+    note: "misfire value -1",
+    // Firearms only: "reduces the misfire value of the affected firearm by 1
+    // (minimum 0)". A weapon with no misfire value isn't a firearm.
+    applyToWeaponRef: (w) =>
+      w.misfire === undefined ? {} : { misfire: Math.max(0, w.misfire - 1) },
   },
   flaming: {
     id: "flaming",
@@ -234,6 +262,21 @@ export const WEAPON_ABILITIES = Object.values(ABILITIES).filter((a) => a.slot ==
 export const ARMOR_ABILITIES = Object.values(ABILITIES).filter((a) => a.slot === "armor");
 
 /**
+ * The hand-curated id for a stored ability pick. A catalog pick made before an
+ * ability joined {@link ABILITIES} is stored under the vendored id
+ * ("ability:distance"); the hand-curated entry now supersedes it in the picker
+ * (`buildAbilityCatalog` merges the two by name), so the stored id has to
+ * resolve to it or the ability would silently lose both its cost and its
+ * effect. Anything that isn't a prefixed form of a hand-curated id is returned
+ * unchanged.
+ */
+export function canonicalAbilityId(id: string): string {
+  if (ABILITIES[id]) return id;
+  const stripped = id.startsWith("ability:") ? id.slice("ability:".length) : id;
+  return ABILITIES[stripped] ? stripped : id;
+}
+
+/**
  * Apply mechanical effects of selected abilities to a {@link WeaponRef} and
  * return the patched ref. Currently only `keen` has a mechanical effect
  * (crit range doubling). Returns the original ref if no abilities apply.
@@ -242,7 +285,7 @@ export function applyAbilitiesToWeapon(weapon: WeaponRef, abilityIds?: string[])
   if (!abilityIds || abilityIds.length === 0) return weapon;
   let ref = weapon;
   for (const id of abilityIds) {
-    const def = ABILITIES[id];
+    const def = ABILITIES[canonicalAbilityId(id)];
     if (def?.applyToWeaponRef) {
       ref = { ...ref, ...def.applyToWeaponRef(ref) };
     }
@@ -261,7 +304,7 @@ export type AbilityInfo = Record<string, { name: string; cost?: number }>;
  * referencing a since-removed id doesn't lose the pick.
  */
 function abilityCost(id: string, info?: AbilityInfo): number {
-  return ABILITIES[id]?.bonusEquivalent ?? info?.[id]?.cost ?? 0;
+  return ABILITIES[canonicalAbilityId(id)]?.bonusEquivalent ?? info?.[id]?.cost ?? 0;
 }
 
 /**

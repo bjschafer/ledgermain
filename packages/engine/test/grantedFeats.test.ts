@@ -139,8 +139,11 @@ describe("class-granted feats move the numbers they grant", () => {
       archetypes: [archetypeId("Inspired Blade", "swashbuckler")],
     });
     const granted = grantedFeats(doc, ref);
-    expect(granted.map((g) => g.featName)).toEqual(["Weapon Finesse"]);
+    // Inspired Finesse grants both halves of its sentence: the finesse, and
+    // Weapon Focus with the rapier it names (see `ProseFeatGrant.choiceId`).
+    expect(granted.map((g) => g.featName)).toEqual(["Weapon Finesse", "Weapon Focus"]);
     expect(granted[0]!.featureName).toBe("Inspired Finesse");
+    expect(granted[1]!.choiceId).toBe("rapier");
     expect(rapierAttack(doc).ability).toBe("Dexterity (Weapon Finesse)");
   });
 });

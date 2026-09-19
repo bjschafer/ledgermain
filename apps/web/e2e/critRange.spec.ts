@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { typeSearch } from "./search.js";
+
 /**
  * A widened threat range, end to end. The engine fixtures
  * (`packages/engine/test/critRange.test.ts`) already prove the ranges against
@@ -67,6 +69,32 @@ test("a swashbuckler below 5th keeps the rapier's printed 18-20", async ({ page 
 
   const row = page.locator(".weapon-attack-row", { hasText: "Rapier" });
   await expect(row).toContainText("18–20/×2");
+  await expect(row.locator(".crit-source-chip")).toHaveCount(0);
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
+test("keen bought in the edit form widens the range too", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await swashbuckler(page, 1); // below 5th, so only the weapon's own magic applies
+
+  const weapons = panel(page, "Weapons");
+  await weapons.scrollIntoViewIfNeeded();
+  await weapons.getByRole("button", { name: "Edit" }).first().click();
+  await weapons.getByLabel("Enhancement bonus").selectOption({ label: "+1" });
+  await typeSearch(weapons.getByPlaceholder("Search special abilities…"), "Keen");
+  await weapons
+    .locator(".pick-row", { hasText: "Keen" })
+    .first()
+    .getByRole("button", { name: "Add" })
+    .click();
+  await weapons.getByRole("button", { name: "Save changes" }).click();
+
+  const row = page.locator(".weapon-attack-row", { hasText: "Rapier" });
+  await expect(row).toContainText("15–20/×2");
+  // Keen is the weapon's own magic, not something the character brings, so it
+  // gets no source chip.
   await expect(row.locator(".crit-source-chip")).toHaveCount(0);
 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
