@@ -78,7 +78,7 @@ function tokensIn(expr: string): string[] {
 }
 
 /** Reads the `className=` value that starts at `from`, quoted or braced. */
-function attributeValue(text: string, from: number): string {
+export function attributeValue(text: string, from: number): string {
   if (text[from] !== "{") {
     const quote = text[from]!;
     return text.slice(from, text.indexOf(quote, from + 1) + 1);
