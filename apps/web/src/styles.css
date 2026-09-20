@@ -1098,7 +1098,8 @@ button:focus-visible,
   white-space: nowrap;
 }
 
-.armor-custom-link {
+/* Qualified so it outranks `.btn-ghost`, which is defined later in this file. */
+.btn-ghost.armor-custom-link {
   margin-top: 4px;
   font-size: 0.8125rem;
 }
@@ -1361,7 +1362,8 @@ button:focus-visible,
   border-bottom: 1px solid var(--line-soft);
 }
 
-.spell-level-empty {
+/* Qualified so it outranks `.empty`, which is defined later in this file. */
+.empty.spell-level-empty {
   padding: 6px 12px;
   font-size: 0.75rem;
   font-style: italic;
@@ -3423,8 +3425,9 @@ button:focus-visible,
 }
 
 /* Immunity has no magnitude, so it reads as a chip inside the otherwise
-   numeric Damage Reduction & Resistances group. */
-.immunity-chip {
+   numeric Damage Reduction & Resistances group. Qualified with `.prof-chip` so
+   it outranks that base, which is defined later in this file. */
+.prof-chip.immunity-chip {
   color: var(--sage);
   border-color: var(--gold-dim);
 }
@@ -3642,8 +3645,9 @@ button:focus-visible,
 }
 
 /* Two labelled number fields and nothing else — no name column for the
-   controls to line up with, so this one keeps `.res-row`'s old centering. */
-.affliction-neglevels {
+   controls to line up with, so this one keeps `.res-row`'s old centering.
+   Qualified so it outranks `.res-row`, which is defined later in this file. */
+.res-row.affliction-neglevels {
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
@@ -6275,8 +6279,10 @@ input[type="text"].saved-roll-name:focus {
 }
 
 /* Smaller than the proficiency/immunity chips it inherits from: several can sit
-   on one attack line, and they're a footnote to the seals above them. */
-.bypass-chip {
+   on one attack line, and they're a footnote to the seals above them. This and
+   `.crit-source-chip` are qualified with `.prof-chip` so they outrank that base,
+   which is defined later in this file. */
+.prof-chip.bypass-chip {
   padding: 2px 9px;
   font-size: 0.6875rem;
   color: var(--sage);
@@ -6285,7 +6291,7 @@ input[type="text"].saved-roll-name:focus {
 /* The feat or class feature behind a widened threat range. Same footnote
    sizing as the bypass chips, without their sage: this one names a source,
    not a quality the weapon has. */
-.crit-source-chip {
+.prof-chip.crit-source-chip {
   padding: 2px 9px;
   font-size: 0.6875rem;
 }
