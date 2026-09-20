@@ -1227,6 +1227,16 @@ button:focus-visible,
    classes. `.deed-summary` is the one-line paraphrase under each deed's
    name/cost header; `.deed-live-number` (Precise Strike only) highlights the
    character-specific computed bonus. */
+/* A deed row is never expandable, so it drops `.cf-archetype-feature`'s
+   fixed 20px caret gutter and runs one full-width column: the summary is a
+   sentence that belongs under the name, and auto-placing it into that gutter
+   squeezed it to one word per line. Qualified by the class it overrides
+   because that rule is defined far below this one and would otherwise win the
+   cascade on equal specificity. */
+.cf-archetype-feature.deed-row {
+  grid-template-columns: 1fr;
+}
+
 .deed-summary {
   margin: 2px 0 0;
   font-size: 0.75rem;
