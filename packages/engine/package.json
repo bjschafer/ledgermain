@@ -22,6 +22,6 @@
     "@pf1/data-pipeline": "workspace:*",
     "@types/bun": "^1.1.14",
     "fast-check": "^4.9.0",
-    "oxc-parser": "^0.150.0"
+    "oxc-parser": "^0.151.0"
   }
 }
