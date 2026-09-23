@@ -16,6 +16,7 @@ import { makeUuid, parseUuid } from "../util/uuid.js";
 import {
   asNumber,
   asStringArray,
+  normalizeClassSkills,
   descriptionValue,
   normalizeChanges,
   normalizeSources,
@@ -180,7 +181,7 @@ export function transformClass(
       will: saveTier("will"),
     },
     skillsPerLevel: asNumber(sys.skillsPerLevel) ?? 0,
-    classSkills: asStringArray(sys.classSkills),
+    classSkills: normalizeClassSkills(sys.classSkills),
     armorProf: asStringArray(sys.armorProf),
     weaponProf: asStringArray(sys.weaponProf),
     features,

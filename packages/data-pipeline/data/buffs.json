@@ -109,7 +109,7 @@
     "changes": [
       {
         "formula": "10",
-        "target": "skill.stealth",
+        "target": "skill.ste",
         "type": "competence"
       }
     ],
@@ -212,7 +212,7 @@
     "changes": [
       {
         "formula": "10",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "competence"
       }
     ],
@@ -361,7 +361,7 @@
     "changes": [
       {
         "formula": "@item.level",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "competence"
       },
       {
@@ -371,12 +371,12 @@
       },
       {
         "formula": "@item.level",
-        "target": "skill.survival",
+        "target": "skill.sur",
         "type": "competence"
       },
       {
         "formula": "@item.level",
-        "target": "skill.knowledge.geography",
+        "target": "skill.kge",
         "type": "competence"
       }
     ],
@@ -402,7 +402,7 @@
     "changes": [
       {
         "formula": "4 + floor((@item.level - 1) / 7) * 2",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "competence"
       }
     ],
@@ -461,7 +461,7 @@
     "changes": [
       {
         "formula": "min(30, (10 + (floor(@item.level / 8) * 10)))",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "enh"
       }
     ],
@@ -935,7 +935,7 @@
     "changes": [
       {
         "formula": "3",
-        "target": "skill.stealth",
+        "target": "skill.ste",
         "type": "competence"
       }
     ],
@@ -1462,7 +1462,7 @@
     "changes": [
       {
         "formula": "clamp(floor((@item.level + 5) / 4), 2, 6)",
-        "target": "skill.acrobatics",
+        "target": "skill.acr",
         "type": "competence"
       }
     ],
@@ -1487,7 +1487,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "competence"
       }
     ],
@@ -1514,7 +1514,7 @@
     "changes": [
       {
         "formula": "5",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "competence"
       }
     ],
@@ -1587,7 +1587,7 @@
     "changes": [
       {
         "formula": "10",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "competence"
       }
     ],
@@ -1963,7 +1963,7 @@
       },
       {
         "formula": "2",
-        "target": "skill.stealth",
+        "target": "skill.ste",
         "type": "competence"
       }
     ],
@@ -2054,7 +2054,7 @@
     "changes": [
       {
         "formula": "4 + floor((@item.level - 1) / 7) * 2",
-        "target": "skill.stealth",
+        "target": "skill.ste",
         "type": "competence"
       }
     ],
@@ -2989,7 +2989,7 @@
       },
       {
         "formula": "5",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "competence"
       }
     ],
@@ -3227,7 +3227,7 @@
     "changes": [
       {
         "formula": "4 + floor((@item.level - 1) / 7) * 2",
-        "target": "skill.swim",
+        "target": "skill.swm",
         "type": "competence"
       }
     ],
@@ -4114,7 +4114,7 @@
     "changes": [
       {
         "formula": "4",
-        "target": "skill.climb",
+        "target": "skill.clm",
         "type": "competence"
       }
     ],
@@ -4354,12 +4354,12 @@
     "changes": [
       {
         "formula": "2 + max(0, floor((@item.level - 2) / 6))",
-        "target": "skill.survival",
+        "target": "skill.sur",
         "type": "untyped"
       },
       {
         "formula": "2 + max(0, floor((@item.level - 2) / 6))",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "untyped"
       },
       {
@@ -4369,12 +4369,12 @@
       },
       {
         "formula": "2 + max(0, floor((@item.level - 2) / 6))",
-        "target": "skill.stealth",
+        "target": "skill.ste",
         "type": "untyped"
       },
       {
         "formula": "2 + max(0, floor((@item.level - 2) / 6))",
-        "target": "skill.knowledge.geography",
+        "target": "skill.kge",
         "type": "untyped"
       }
     ],
@@ -4399,7 +4399,7 @@
     "changes": [
       {
         "formula": "4",
-        "target": "skill.survival",
+        "target": "skill.sur",
         "type": "sacred"
       }
     ],
@@ -4839,57 +4839,57 @@
     "changes": [
       {
         "formula": "if(@skills.kno.rank, 2)",
-        "target": "skill.knowledge.nobility",
+        "target": "skill.kno",
         "type": "competence"
       },
       {
         "formula": "if(@skills.kge.rank, 2)",
-        "target": "skill.knowledge.geography",
+        "target": "skill.kge",
         "type": "competence"
       },
       {
         "formula": "if(@skills.kpl.rank, 2)",
-        "target": "skill.knowledge.planes",
+        "target": "skill.kpl",
         "type": "competence"
       },
       {
         "formula": "if(@skills.klo.rank, 2)",
-        "target": "skill.knowledge.local",
+        "target": "skill.klo",
         "type": "competence"
       },
       {
         "formula": "if(@skills.kna.rank, 2)",
-        "target": "skill.knowledge.nature",
+        "target": "skill.kna",
         "type": "competence"
       },
       {
         "formula": "2",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "competence"
       },
       {
         "formula": "if(@skills.kdu.rank, 2)",
-        "target": "skill.knowledge.dungeoneering",
+        "target": "skill.kdu",
         "type": "competence"
       },
       {
         "formula": "if(@skills.kar.rank, 2)",
-        "target": "skill.knowledge.arcana",
+        "target": "skill.kar",
         "type": "competence"
       },
       {
         "formula": "if(@skills.kre.rank, 2)",
-        "target": "skill.knowledge.religion",
+        "target": "skill.kre",
         "type": "competence"
       },
       {
         "formula": "if(@skills.khi.rank, 2)",
-        "target": "skill.knowledge.history",
+        "target": "skill.khi",
         "type": "competence"
       },
       {
         "formula": "if(@skills.ken.rank, 2)",
-        "target": "skill.knowledge.engineering",
+        "target": "skill.ken",
         "type": "competence"
       }
     ],
@@ -5459,7 +5459,7 @@
     "changes": [
       {
         "formula": "4 + floor((@item.level - 1) / 7) * 2",
-        "target": "skill.climb",
+        "target": "skill.clm",
         "type": "competence"
       }
     ],

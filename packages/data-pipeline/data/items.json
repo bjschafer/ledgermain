@@ -845,7 +845,7 @@
     "changes": [
       {
         "formula": "5",
-        "target": "skill.climb",
+        "target": "skill.clm",
         "type": "competence"
       }
     ],
@@ -994,7 +994,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.craft",
+        "target": "skill.crf",
         "type": "circumstance"
       }
     ],
@@ -1398,7 +1398,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.perform",
+        "target": "skill.prf",
         "type": "circumstance"
       }
     ],
@@ -2148,7 +2148,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.disableDevice",
+        "target": "skill.dev",
         "type": "circumstance"
       }
     ],
@@ -2515,7 +2515,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.perform",
+        "target": "skill.prf",
         "type": "circumstance"
       }
     ],
@@ -3315,12 +3315,12 @@
     "changes": [
       {
         "formula": "-2",
-        "target": "skill.acrobatics",
+        "target": "skill.acr",
         "type": "untyped"
       },
       {
         "formula": "-2",
-        "target": "skill.stealth",
+        "target": "skill.ste",
         "type": "untyped"
       }
     ],
@@ -3392,7 +3392,7 @@
     "changes": [
       {
         "formula": "1",
-        "target": "skill.stealth",
+        "target": "skill.ste",
         "type": "circumstance"
       }
     ],
@@ -3754,7 +3754,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.perform",
+        "target": "skill.prf",
         "type": "circumstance"
       }
     ],
@@ -3870,7 +3870,7 @@
     "changes": [
       {
         "formula": "5",
-        "target": "skill.stealth",
+        "target": "skill.ste",
         "type": "competence"
       }
     ],
@@ -4512,7 +4512,7 @@
     "changes": [
       {
         "formula": "5",
-        "target": "skill.spellcraft",
+        "target": "skill.spl",
         "type": "competence"
       }
     ],
@@ -5301,7 +5301,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.diplomacy",
+        "target": "skill.dip",
         "type": "circumstance"
       }
     ],
@@ -6613,7 +6613,7 @@
     "changes": [
       {
         "formula": "1",
-        "target": "skill.climb",
+        "target": "skill.clm",
         "type": "circumstance"
       }
     ],
@@ -7079,7 +7079,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.disableDevice",
+        "target": "skill.dev",
         "type": "circumstance"
       }
     ],
@@ -7165,7 +7165,7 @@
     "changes": [
       {
         "formula": "10",
-        "target": "skill.swim",
+        "target": "skill.swm",
         "type": "competence"
       }
     ],
@@ -7467,7 +7467,7 @@
     "changes": [
       {
         "formula": "5",
-        "target": "skill.heal",
+        "target": "skill.hea",
         "type": "competence"
       }
     ],
@@ -7521,7 +7521,7 @@
     "changes": [
       {
         "formula": "5",
-        "target": "skill.swim",
+        "target": "skill.swm",
         "type": "competence"
       }
     ],
@@ -8255,7 +8255,7 @@
     "changes": [
       {
         "formula": "-2",
-        "target": "skill.disableDevice",
+        "target": "skill.dev",
         "type": "untyped"
       }
     ],
@@ -9482,7 +9482,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.disguise",
+        "target": "skill.dis",
         "type": "circumstance"
       }
     ],
@@ -10091,7 +10091,7 @@
     "changes": [
       {
         "formula": "1",
-        "target": "skill.craft.alchemy",
+        "target": "skill.crf.alchemy",
         "type": "circumstance"
       }
     ],
@@ -10790,7 +10790,7 @@
     "changes": [
       {
         "formula": "-4",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "untyped"
       }
     ],
@@ -11980,7 +11980,7 @@
     "changes": [
       {
         "formula": "-4",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "untyped"
       }
     ],
@@ -12168,7 +12168,7 @@
     "changes": [
       {
         "formula": "5",
-        "target": "skill.craft.alchemy",
+        "target": "skill.crf.alchemy",
         "type": "insight"
       }
     ],
@@ -12422,7 +12422,7 @@
     "changes": [
       {
         "formula": "1",
-        "target": "skill.swim",
+        "target": "skill.swm",
         "type": "circumstance"
       }
     ],
@@ -12722,7 +12722,7 @@
     "changes": [
       {
         "formula": "1",
-        "target": "skill.swim",
+        "target": "skill.swm",
         "type": "circumstance"
       }
     ],
@@ -12959,7 +12959,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.climb",
+        "target": "skill.clm",
         "type": "circumstance"
       }
     ],
@@ -13353,7 +13353,7 @@
     "changes": [
       {
         "formula": "5",
-        "target": "skill.stealth",
+        "target": "skill.ste",
         "type": "competence"
       }
     ],
@@ -13822,7 +13822,7 @@
     "changes": [
       {
         "formula": "5",
-        "target": "skill.acrobatics",
+        "target": "skill.acr",
         "type": "competence"
       }
     ],
@@ -100510,7 +100510,7 @@
     "changes": [
       {
         "formula": "5",
-        "target": "skill.perception",
+        "target": "skill.per",
         "type": "competence"
       }
     ],
@@ -101665,7 +101665,7 @@
     "changes": [
       {
         "formula": "1",
-        "target": "skill.intimidate",
+        "target": "skill.int",
         "type": "competence"
       }
     ],
@@ -102306,7 +102306,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.appraise",
+        "target": "skill.apr",
         "type": "circumstance"
       }
     ],
@@ -102637,7 +102637,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.heal",
+        "target": "skill.hea",
         "type": "circumstance"
       }
     ],
@@ -105616,7 +105616,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.craft.alchemy",
+        "target": "skill.crf.alchemy",
         "type": "circumstance"
       }
     ],
@@ -106345,7 +106345,7 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.bluff",
+        "target": "skill.blf",
         "type": "circumstance"
       }
     ],
