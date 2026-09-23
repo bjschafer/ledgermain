@@ -1,5 +1,5 @@
 {
-  "contentVersion": "14.365",
+  "contentVersion": "14.368",
   "counts": {
     "alchemistDiscoveries": 168,
     "arcanistExploits": 73,
@@ -67,8 +67,8 @@
     "witchPatrons": 61,
     "wizardSchools": 17
   },
-  "dataVersion": "11.11+7a143b03b012",
-  "generatedAt": "2026-09-14T18:17:55+03:00",
+  "dataVersion": "11.11+e35f1a67ef01",
+  "generatedAt": "2026-09-22T19:42:50+03:00",
   "hashes": {
     "alchemist-discoveries.json": "d9abc7f47f222dde7184c665e7ee7c01c6d1b1ce555cff17a27c7ef6f1ce6ab8",
     "arcanist-exploits.json": "08b122c5d40463453ff40e08427344fac64eb5cfbc75b7161fa5d369b5b163ee",
@@ -121,7 +121,7 @@
     "sorcerer-bloodline-mutations.json": "84f649a2171d018e065002e9eac11bb4179eb50d7aa52a2e35fe7f9b1b8fbb81",
     "sorcerer-bloodlines.json": "78b60ff5d6046b88ff5949e3d2de25cc8682e71661b23f863945b00c2c02cd20",
     "spell-lists.json": "b955e35ee16a2e4d391b3a32648d83c854e8b7477b472b95cdef50ed6cf0806c",
-    "spells.json": "7126495070d0339b007a8216a98eeafd3a90dee749b480ff77e244f522156935",
+    "spells.json": "1899395d484f90a165e517f4b8b8f565ec59e34a98bf6c19372085da2c8d5f21",
     "subdomain-spell-lists.json": "dfedb0d2d7cb3e96fb8cde30aef6e788d45eb4646800ad1bebb34020cc0ac27e",
     "subdomains.json": "f335f0f4e852c34456cc01c3fd8c31698da018585ab61cd81f50fc3c41700707",
     "traits.json": "01605bd35270ca38192929f0eb13faba450b7cd0a99180ddba39736d054cdec2",
@@ -134,11 +134,11 @@
   "schemaVersion": 29,
   "sourcePins": {
     "archetypes": "92ddcb60027e3088e5afd0645183c031ec3e9bb4",
-    "foundry": "7a143b03b012a09c4e93f03e50d93e685164dc4e",
+    "foundry": "e35f1a67ef01bc7d3f4c242f45ebce8e0542634e",
     "pfContent": "c66bf333cafc451d817ead660473dd01d9846fb3",
     "pfData": "3a7bd4c38a57a9a4094d56d3b26b7e672c6dd436"
   },
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
-  "sourceSha": "7a143b03b012a09c4e93f03e50d93e685164dc4e",
+  "sourceSha": "e35f1a67ef01bc7d3f4c242f45ebce8e0542634e",
   "systemVersion": "11.11"
 }

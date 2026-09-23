@@ -43176,6 +43176,14 @@
         "activation": {
           "type": "standard"
         },
+        "damage": {
+          "parts": [
+            {
+              "formula": "3d10",
+              "types": ["sonic"]
+            }
+          ]
+        },
         "duration": {
           "units": "inst"
         },
@@ -67119,7 +67127,7 @@
         "activation": {
           "type": "standard"
         },
-        "area": "10-ft.-radius emanation centered on the touched creature's space",
+        "area": "touched creature's space, up to one 5-foot-cube",
         "duration": {
           "units": "minute",
           "value": "@cl"
@@ -85841,6 +85849,29 @@
       {
         "actionType": "heal",
         "activation": {
+          "type": "nonaction"
+        },
+        "damage": {
+          "parts": [
+            {
+              "formula": "1d8 + min(25, @cl)",
+              "types": ["positive"]
+            }
+          ]
+        },
+        "duration": {
+          "units": "inst"
+        },
+        "id": "3yHJ0WFcspiFSPku",
+        "name": "Eruption",
+        "range": {
+          "units": "personal"
+        },
+        "save": {}
+      },
+      {
+        "actionType": "heal",
+        "activation": {
           "type": "minute"
         },
         "duration": {
@@ -85862,7 +85893,7 @@
       "somatic": true,
       "verbal": true
     },
-    "description": "<p>You charge your body with healing energy, which erupts from you if you are dying or are killed before 1 hour per level has passed. If you're brought below 0 hit points or killed (including by effects that kill without dealing damage, such as <i>phantasmal killer</i> and <i>power word</i> kill), the eruption of healing energy acts as <i>mass cure light wounds</i> on allies (other than you). Allies with the fewest Hit Dice are affected first. Among allies with equal HD, those closest to you are affected first. If the duration ends, the stored healing energy dissipates with no effect.</p>",
+    "description": "<p>You charge your body with healing energy, which erupts from you if you are dying or are killed before 1 hour per level has passed. If you're brought below 0 hit points or killed (including by effects that kill without dealing damage, such as <em>phantasmal killer</em> and <em>power word</em> kill), the eruption of healing energy acts as <em>mass cure light wounds</em> on allies (other than you). Allies with the fewest Hit Dice are affected first. Among allies with equal HD, those closest to you are affected first. If the duration ends, the stored healing energy dissipates with no effect.</p>",
     "descriptors": [],
     "id": "iq8qfne8fij8vo40",
     "learnedAt": {
@@ -86349,7 +86380,7 @@
       "somatic": true,
       "verbal": true
     },
-    "description": "<p>You summon a swarm of screeching, mischievous monkeys. The swarm understands and obeys your commands and has the statistics of a monkey swarm (<i>Bestiary 2</i> 212). Creatures failing a saving throw against the mad monkeys' distraction attack are deafened for 1 minute as well as nauseated. The monkeys attempt one disarm or steal combat maneuver each turn as a free action against any creature that begins its turn in the swarm, using your caster level plus your casting ability score bonus (Intelligence for wizards; Wisdom for druids; Charisma for bards, sorcerers, and summoners) for its CMB. Recovering an item from the monkeys requires a successful disarm or steal attempt against that CMB + 10. An object stolen by the monkeys takes swarm damage each round the swarm is in possession of the object.</p>",
+    "description": "<p>You summon a swarm of screeching, mischievous monkeys. The swarm understands and obeys your commands and has the statistics of a monkey swarm (PZO1116 p. 212). Creatures failing a saving throw against the mad monkeys' distraction attack are deafened for 1 minute as well as nauseated. The monkeys attempt one disarm or steal combat maneuver each turn as a free action against any creature that begins its turn in the swarm, using your caster level plus your casting ability score bonus (Intelligence for wizards; Wisdom for druids; Charisma for bards, sorcerers, and summoners) for its CMB. Recovering an item from the monkeys requires a successful disarm or steal attempt against that CMB + 10. An object stolen by the monkeys takes swarm damage each round the swarm is in possession of the object.</p>",
     "descriptors": [],
     "id": "itde2069xtim9l1d",
     "learnedAt": {
@@ -113980,7 +114011,7 @@
       "somatic": true,
       "verbal": true
     },
-    "description": "<p>You strip the targets of their senses of direction and recent memories of travel. They immediately forget the route they  took in the last hour (but not details of encounters along the way) and become lost (<i>Pathfinder RPG Core Rulebook</i> 424).</p>",
+    "description": "<p>You strip the targets of their senses of direction and recent memories of travel. They immediately forget the route they took in the last hour (but not details of encounters along the way) and become lost (CRB p. 424).</p>",
     "descriptors": ["mindAffecting"],
     "id": "otj5ldaj8v34z3z3",
     "learnedAt": {
@@ -153176,7 +153207,7 @@
       "somatic": true,
       "verbal": true
     },
-    "description": "<p>Your focus becomes a Medium arcane cannon that appears in an unoccupied square within the spell's range. If no unoccupied square is within range, the spell fails. The cannon comes into existence loaded. Each round thereafter, the cannon can either fire or load. A cannon must be loaded to fire. You do not need to supply ammunition for the cannon.</p><p>On your turn, you can spend a move action to direct the cannon to wheel itself to a new location, moving the cannon up to 20 feet. If the arcane cannon ever leaves your line of sight, it winks out of existence, and the spell's duration ends.</p><p>The cannon has a range increment of 50 feet. It targets touch attack in the first range increment, and it has no misfire chance.</p><p>The cannon acts as a weapon with the conductive special weapon ability (see page 286 of the Advanced Player's Guide), which you can use to channel your spell-like or supernatural abilities as long as you are within the range of arcane cannon. The cannon's attack bonus is equal to your caster level + your Intelligence bonus or your Charisma bonus (for wizards or sorcerers, respectively) with an additional +1 per four caster levels (maximum +5 at 20th level). On a hit, the cannon deals 4d10 damage. The arcane cannon attacks have a critical modifier of x4.</p><p>The cannon has AC 10, hardness 10, and 80 hit points. If the cannon is subject to a spell or effect that requires a save, it uses your saving throw modifiers. The cannon never provokes attacks of opportunity. If the cannon is destroyed, so is your focus.</p>",
+    "description": "<p>Your focus becomes a Medium arcane cannon that appears in an unoccupied square within the spell's range. If no unoccupied square is within range, the spell fails. The cannon comes into existence loaded. Each round thereafter, the cannon can either fire or load. A cannon must be loaded to fire. You do not need to supply ammunition for the cannon.</p><p>On your turn, you can spend a move action to direct the cannon to wheel itself to a new location, moving the cannon up to 20 feet. If the arcane cannon ever leaves your line of sight, it winks out of existence, and the spell's duration ends.</p><p>The cannon has a range increment of 50 feet. It targets touch attack in the first range increment, and it has no misfire chance.</p><p>The cannon acts as a weapon with the conductive special weapon ability (APG p. 286), which you can use to channel your spell-like or supernatural abilities as long as you are within the range of arcane cannon. The cannon's attack bonus is equal to your caster level + your Intelligence bonus or your Charisma bonus (for wizards or sorcerers, respectively) with an additional +1 per four caster levels (maximum +5 at 20th level). On a hit, the cannon deals 4d10 damage. The arcane cannon attacks have a critical modifier of x4.</p><p>The cannon has AC 10, hardness 10, and 80 hit points. If the cannon is subject to a spell or effect that requires a save, it uses your saving throw modifiers. The cannon never provokes attacks of opportunity. If the cannon is destroyed, so is your focus.</p>",
     "descriptors": [],
     "id": "xa4xvoswgiq54zzn",
     "learnedAt": {
@@ -157879,6 +157910,26 @@
       {
         "actionType": "spellsave",
         "activation": {
+          "type": "nonaction"
+        },
+        "damage": {
+          "parts": [
+            {
+              "formula": "2d6",
+              "types": ["slashing"]
+            }
+          ]
+        },
+        "id": "F1MDnRz64Rip2ddd",
+        "name": "Explosion",
+        "save": {
+          "description": "Reflex negates",
+          "type": "ref"
+        }
+      },
+      {
+        "actionType": "spellsave",
+        "activation": {
           "type": "standard"
         },
         "duration": {
@@ -157892,13 +157943,33 @@
         "save": {
           "description": "special; see text"
         }
+      },
+      {
+        "actionType": "spellsave",
+        "activation": {
+          "type": "nonaction"
+        },
+        "damage": {
+          "parts": [
+            {
+              "formula": "(min(@cl, 20))d6",
+              "types": ["slashing"]
+            }
+          ]
+        },
+        "id": "zHbXwWRBZeuTV1ZE",
+        "name": "Primary Damage",
+        "save": {
+          "description": "Fortitude half",
+          "type": "fort"
+        }
       }
     ],
     "components": {
       "somatic": true,
       "verbal": true
     },
-    "description": "<p>You cause incredible pressure to build in the target's head; this spell works only on a creature that has a head and would die from the loss of a head. The spell kills any such target that has 20 hit points or fewer, exploding its head and spreading debris in a 10-foot radius. Each creature in the area must succeed at a Reflex saving throw or take 2d6 points of slashing damage from the flying debris.</p>",
+    "description": "<p>You cause incredible pressure to build in the target's head; this spell works only on a creature that has a head and would die from the loss of a head. The spell kills any such target that has 20 hit points or fewer, exploding its head and spreading debris in a 10-foot radius. Each creature in the area must succeed at a Reflex saving throw or take 2d6 points of slashing damage from the flying debris.</p><p>A target with more than 20 hit points takes 1d6 points of damage per caster level (maximum 20d6), but can attempt a Fortitude save to take only half damage. If this damage would cause the target to become disabled or dying, the target dies and its head explodes as described above.</p>",
     "descriptors": [],
     "id": "yi0rf7b0v4lev9fl",
     "learnedAt": {

@@ -31,7 +31,7 @@ export function normalizeChanges(value: unknown): Change[] {
   return asRecordArray(value)
     .map((c) => ({
       formula: String(c.formula ?? ""),
-      target: String(c.target ?? ""),
+      target: normalizeSkillTarget(String(c.target ?? "")),
       type: String(c.type ?? "untyped"),
       // Only "set" is a meaningful departure from the default additive
       // behavior, so omit the field entirely otherwise (keeps the vendored
@@ -63,7 +63,7 @@ export function normalizeUntargetedChanges(value: unknown): Change[] {
 export function normalizeContextNotes(value: unknown, resolveUuid: UuidResolver): ContextNote[] {
   return asRecordArray(value)
     .map((n) => ({
-      target: String(n.target ?? ""),
+      target: normalizeSkillTarget(String(n.target ?? "")),
       text: resolveFoundryMarkup(String(n.text ?? ""), resolveUuid),
     }))
     .filter((n) => n.text !== "");
@@ -84,6 +84,71 @@ export function normalizeSources(value: unknown): SourceRef[] | undefined {
 export function asStringArray(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
   return value.filter((v): v is string => typeof v === "string");
+}
+
+/**
+ * Foundry renamed its skill keys from three-letter ids to full names
+ * (`kna` -> `knowledge.nature`) in class-skill lists and change targets, while
+ * formulas kept `@skills.<short>`. Every saved CharacterDoc keys ranks by the
+ * short id, so the pipeline maps back rather than letting the rename through.
+ */
+const LONG_SKILL_IDS: Readonly<Record<string, string>> = {
+  acrobatics: "acr",
+  appraise: "apr",
+  artistry: "art",
+  bluff: "blf",
+  climb: "clm",
+  craft: "crf",
+  diplomacy: "dip",
+  disableDevice: "dev",
+  disguise: "dis",
+  escapeArtist: "esc",
+  handleAnimal: "han",
+  heal: "hea",
+  intimidate: "int",
+  "knowledge.arcana": "kar",
+  "knowledge.dungeoneering": "kdu",
+  "knowledge.engineering": "ken",
+  "knowledge.geography": "kge",
+  "knowledge.history": "khi",
+  "knowledge.local": "klo",
+  "knowledge.nature": "kna",
+  "knowledge.nobility": "kno",
+  "knowledge.planes": "kpl",
+  "knowledge.religion": "kre",
+  linguistics: "lin",
+  lore: "lor",
+  perception: "per",
+  perform: "prf",
+  profession: "pro",
+  ride: "rid",
+  senseMotive: "sen",
+  sleightOfHand: "slt",
+  spellcraft: "spl",
+  stealth: "ste",
+  survival: "sur",
+  swim: "swm",
+  useMagicDevice: "umd",
+};
+
+/** Maps a Foundry skill key to its short id, keeping any subskill suffix (`craft.alchemy` -> `crf.alchemy`). */
+export function normalizeSkillId(id: string): string {
+  const whole = LONG_SKILL_IDS[id];
+  if (whole) return whole;
+  const dot = id.indexOf(".");
+  if (dot < 0) return id;
+  const base = LONG_SKILL_IDS[id.slice(0, dot)];
+  return base ? `${base}${id.slice(dot)}` : id;
+}
+
+/** {@link normalizeSkillId} for a `skill.<id>` target; other targets pass through. */
+export function normalizeSkillTarget(target: string): string {
+  return target.startsWith("skill.") ? `skill.${normalizeSkillId(target.slice(6))}` : target;
+}
+
+/** A class-skill list with every id shortened, sorted by id as upstream shipped it before the rename. */
+export function normalizeClassSkills(value: unknown): string[] {
+  return asStringArray(value).map(normalizeSkillId).sort();
 }
 
 /**

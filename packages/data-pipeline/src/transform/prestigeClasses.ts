@@ -5,6 +5,7 @@ import { readPack, type RawDoc } from "../util/packs.js";
 import { transformClassFeature } from "./classes.js";
 import {
   asStringArray,
+  normalizeClassSkills,
   descriptionValue,
   guessLevelFromProse,
   normalizeSources,
@@ -205,7 +206,7 @@ export function transformPrestigeClassPack(
         will: prestigeSaveTier(sys, "will"),
       },
       skillsPerLevel: typeof sys.skillsPerLevel === "number" ? sys.skillsPerLevel : 0,
-      classSkills: asStringArray(sys.classSkills),
+      classSkills: normalizeClassSkills(sys.classSkills),
       armorProf: [],
       weaponProf: [],
       features: [],
