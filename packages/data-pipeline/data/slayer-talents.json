@@ -392,7 +392,7 @@
   },
   "rogue_and_ninja_advanced_talents": {
     "category": "Advanced Slayer Talents",
-    "description": "<p>A slayer can select one of the following rogue <em>advanced talents</em> or ninja <em>master tricks</em> in place of a slayer advanced talent.</p>\n<p><strong>Advanced rogue talents:</strong> aligned disguise, blinding strike, dance of disorienting shadows, deadly sneak, feat, hunter's surprise, improved shadow's chill, knock-out blow, master of disguise, opportunist, reflexive shadow shield, see in darkness, stealthy sniper.</p>\n<p><strong>Master Tricks:</strong> evasion, feat.</p>",
+    "description": "<p><strong>Rogue and Ninja Advanced Talents:</strong> A slayer can select multiple rogue advanced talents or ninja master tricks by taking this slayer advanced talent multiple times, but can't select the same one more than once.</p>\n<p>A slayer can select one of the following rogue <em>advanced talents</em> or ninja <em>master tricks</em> in place of a slayer advanced talent.</p>\n<p><strong>Advanced rogue talents:</strong> aligned disguise, blinding strike, dance of disorienting shadows, deadly sneak, feat, hunter's surprise, improved shadow's chill, knock-out blow, master of disguise, opportunist, reflexive shadow shield, see in darkness, stealthy sniper.</p>\n<p><strong>Master Tricks:</strong> evasion, feat.</p>",
     "id": "rogue_and_ninja_advanced_talents",
     "name": "Rogue and Ninja Advanced Talents",
     "sources": [

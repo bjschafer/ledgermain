@@ -1,6 +1,6 @@
 {
   "anger": {
-    "description": "<p><strong>Deities</strong> Gorum, Rovagug</p>\n<p><strong>Granted Powers:</strong> Holy (or unholy) rage, granted by your patron deity, ensures that when you fight, the battle ends with a bloody victory.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Gorum, Rovagug</p>\n<p><strong>Granted Powers</strong></p>\n<p>Holy (or unholy) rage, granted by your patron deity, ensures that when you fight, the battle ends with a bloody victory.</p>",
     "features": [
       {
         "featureId": "inquisition-power:anger:hateful-resort",
@@ -28,7 +28,7 @@
     "uuid": "pfdata:inquisition:anger"
   },
   "banishment": {
-    "description": "<p><strong>Deities</strong> Iomedae, Sarenrae, Torag</p>\n<p><strong>Granted Powers:</strong> Your devotion to your deity is matched only by your hatred for fiends. You know the rites to cast evil outsiders back to the realms from which they hail.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Iomedae, Sarenrae, Torag</p>\n<p><strong>Granted Powers</strong></p>\n<p>Your devotion to your deity is matched only by your hatred for fiends. You know the rites to cast evil outsiders back to the realms from which they hail.</p>",
     "features": [
       {
         "featureId": "inquisition-power:banishment:righteous-awe",
@@ -56,8 +56,16 @@
     "uuid": "pfdata:inquisition:banishment"
   },
   "black_powder": {
-    "description": "<p><strong>Deities</strong> Any (with GM approval)</p>\n<p><strong>Granted Powers:</strong> You gain Exotic Weapon Proficiency (firearms) and Gunsmithing as bonus feats. When you hit an arcane spellcaster or a creature that uses spell-like abilities with a firearm attack, that creature must succeed at a Fortitude saving throw. If the spellcaster fails, he takes a -4 penalty on concentration checks for 1 round.</p>",
-    "features": [],
+    "description": "<p><strong>Associated Deities:</strong> Any (with GM approval)</p>",
+    "features": [
+      {
+        "featureId": "inquisition-power:black_powder:granted-powers",
+        "level": 0,
+        "name": "Granted Powers",
+        "resolved": true,
+        "uuid": "pfdata:inquisition-power:black_powder:granted-powers"
+      }
+    ],
     "id": "black_powder",
     "name": "Black Powder",
     "sources": [
@@ -69,7 +77,7 @@
     "uuid": "pfdata:inquisition:black_powder"
   },
   "chivalry": {
-    "description": "<p><strong>Deities</strong> Erastil, Iomedae, Sarenrae, Torag</p>\n<p><strong>Granted Powers:</strong> You embrace the spirit of chivalry, guarding your honor and training a noble mount.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Erastil, Iomedae, Sarenrae, Torag</p>\n<p><strong>Granted Powers</strong></p>\n<p>You embrace the spirit of chivalry, guarding your honor and training a noble mount.</p>",
     "features": [
       {
         "featureId": "inquisition-power:chivalry:mount",
@@ -97,7 +105,7 @@
     "uuid": "pfdata:inquisition:chivalry"
   },
   "clandestine": {
-    "description": "<p><strong>Deities</strong> Achaekek, Desna, Iomedae, Milani, Nethys, Norgorber, Sarenrae, Shelyn, Sivanah</p>\n<p><strong>Granted Powers:</strong> Secrecy is required of the faithful in lands where your deity's worshipers are hunted. Sleight of Hand is a class skill for you.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Achaekek, Desna, Iomedae, Milani, Nethys, Norgorber, Sarenrae, Shelyn, Sivanah</p>\n<p><strong>Granted Powers</strong></p>\n<p>Secrecy is required of the faithful in lands where your deity's worshipers are hunted.</p>\n<p>::cskill{gain=soh}</p>",
     "features": [
       {
         "featureId": "inquisition-power:clandestine:disappear",
@@ -132,7 +140,7 @@
     "uuid": "pfdata:inquisition:clandestine"
   },
   "conversion": {
-    "description": "<p><strong>Deities</strong> Any deity</p>\n<p><strong>Granted Powers:</strong> You are a powerful persuader. A honeyed tongue empowered by divine argumentation sways the indifferent and adversarial to your side.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Any deity</p>\n<p><strong>Granted Powers</strong></p>\n<p>You are a powerful persuader. A honeyed tongue empowered by divine argumentation sways the indifferent and adversarial to your side.</p>",
     "features": [
       {
         "featureId": "inquisition-power:conversion:charm-of-wisdom",
@@ -160,7 +168,7 @@
     "uuid": "pfdata:inquisition:conversion"
   },
   "crime": {
-    "description": "<p><strong>Deities</strong> Calistria, Norgorber</p>\n<p><strong>Granted Powers:</strong> Your connections to the criminal underworld run deeper than the physical, and your spiritual criminality grants you underhanded powers.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Calistria, Norgorber</p>\n<p><strong>Granted Powers</strong></p>\n<p>Your connections to the criminal underworld run deeper than the physical, and your spiritual criminality grants you underhanded powers.</p>",
     "features": [
       {
         "featureId": "inquisition-power:crime:criminal-minds",
@@ -188,7 +196,7 @@
     "uuid": "pfdata:inquisition:crime"
   },
   "damnation": {
-    "description": "<p><strong>Deities</strong> Asmodeus, Pharasma, Zon-Kuthon</p>\n<p><strong>Granted Powers:</strong> The prospect of an afterlife filled with torment can cause even the most stalwart to blanch - at least for a moment.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Asmodeus, Pharasma, Zon-Kuthon</p>\n<p><strong>Granted Powers</strong></p>\n<p>The prospect of an afterlife filled with torment can cause even the most stalwart to blanch - at least for a moment.</p>",
     "features": [
       {
         "featureId": "inquisition-power:damnation:fear-the-flames",
@@ -216,7 +224,7 @@
     "uuid": "pfdata:inquisition:damnation"
   },
   "excommunication": {
-    "description": "<p><strong>Deities</strong> Any</p>\n<p>Marked by your deity for your impressive will, you are among the few with the wherewithal to carry out the necessary work of removing dangerous influences from your church.</p>\n<p><strong>Granted Powers:</strong> You can repulse the influence of confused divine servants.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Any</p>\n<p>Marked by your deity for your impressive will, you are among the few with the wherewithal to carry out the necessary work of removing dangerous influences from your church.</p>\n<p><strong>Granted Powers</strong></p>\n<p>You can repulse the influence of confused divine servants.</p>",
     "features": [
       {
         "featureId": "inquisition-power:excommunication:touch-of-silence",
@@ -244,7 +252,7 @@
     "uuid": "pfdata:inquisition:excommunication"
   },
   "execution": {
-    "description": "<p><strong>Deities</strong> Abadar, Achaekek, Calistria, Norgorber, Pharasma</p>\n<p><strong>Granted Powers:</strong> Your deity guides you when you deliver death to your chosen targets.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Abadar, Achaekek, Calistria, Norgorber, Pharasma</p>\n<p><strong>Granted Powers</strong></p>\n<p>Your deity guides you when you deliver death to your chosen targets.</p>",
     "features": [
       {
         "featureId": "inquisition-power:execution:chosen-victim",
@@ -272,7 +280,7 @@
     "uuid": "pfdata:inquisition:execution"
   },
   "fate": {
-    "description": "<p><strong>Deities</strong> Nethys, Norgorber, Pharasma</p>\n<p><strong>Granted Powers:</strong> Fate is a powerful tool for those who dole out justice for their deity. You can read the strands of fate, and those strands guide your endeavors.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Nethys, Norgorber, Pharasma</p>\n<p><strong>Granted Powers</strong></p>\n<p>Fate is a powerful tool for those who dole out justice for their deity. You can read the strands of fate, and those strands guide your endeavors.</p>",
     "features": [
       {
         "featureId": "inquisition-power:fate:augury",
@@ -300,7 +308,7 @@
     "uuid": "pfdata:inquisition:fate"
   },
   "fervor": {
-    "description": "<p><strong>Deities</strong> Calistria, Cayden Cailean, Gozreh, Shelyn</p>\n<p><strong>Granted Powers:</strong> Only a passionate and righteous will such as yours can ensure that justice will be properly done.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Calistria, Cayden Cailean, Gozreh, Shelyn</p>\n<p><strong>Granted Powers</strong></p>\n<p>Only a passionate and righteous will such as yours can ensure that justice will be properly done.</p>",
     "features": [
       {
         "featureId": "inquisition-power:fervor:fire-of-belief",
@@ -328,7 +336,7 @@
     "uuid": "pfdata:inquisition:fervor"
   },
   "final_rest": {
-    "description": "<p><strong>Deities</strong> Iomedae, Pharasma, Sarenrae</p>\n<p><strong>Granted Powers:</strong> The dead have paid their dues; there is no need, and no excuse, for them to walk. You protect their rest personally.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Iomedae, Pharasma, Sarenrae</p>\n<p><strong>Granted Powers</strong></p>\n<p>The dead have paid their dues; there is no need, and no excuse, for them to walk. You protect their rest personally.</p>",
     "features": [
       {
         "featureId": "inquisition-power:final_rest:disrupt-animation",
@@ -356,7 +364,7 @@
     "uuid": "pfdata:inquisition:final_rest"
   },
   "heresy": {
-    "description": "<p><strong>Deities</strong> Abadar, Asmodeus, Calistria, Desna, Erastil, Gorum, Gozreh, Iomedae, Lamashtu, Nethys, Norgorber, Pharasma, Rovagug, Sarenrae, Shelyn, Torag, Urgathoa, Zon-Kuthon</p>\n<p><strong>Granted Powers:</strong> Often it is hard to tell heretics from the faithful. You use duplicity, stealth, and the heretics' own arguments to root them out and bring them to justice.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Abadar, Asmodeus, Calistria, Desna, Erastil, Gorum, Gozreh, Iomedae, Lamashtu, Nethys, Norgorber, Pharasma, Rovagug, Sarenrae, Shelyn, Torag, Urgathoa, Zon-Kuthon</p>\n<p><strong>Granted Powers</strong></p>\n<p>Often it is hard to tell heretics from the faithful. You use duplicity, stealth, and the heretics' own arguments to root them out and bring them to justice.</p>",
     "features": [
       {
         "featureId": "inquisition-power:heresy:righteous-infiltration",
@@ -391,7 +399,7 @@
     "uuid": "pfdata:inquisition:heresy"
   },
   "illumination": {
-    "description": "<p><strong>Deities</strong> Desna, Erastil, Irori, Sarenrae</p>\n<p><strong>Granted Powers:</strong> Many times an inquisitor's greatest weapon is pure and unflinching illumination; errors are often illuminated by light and wisdom.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Desna, Erastil, Irori, Sarenrae</p>\n<p><strong>Granted Powers</strong></p>\n<p>Many times an inquisitor's greatest weapon is pure and unflinching illumination; errors are often illuminated by light and wisdom.</p>",
     "features": [
       {
         "featureId": "inquisition-power:illumination:illuminating-touch",
@@ -419,7 +427,7 @@
     "uuid": "pfdata:inquisition:illumination"
   },
   "imprisonment": {
-    "description": "<p><strong>Deities</strong> Abadar, Asmodeus, Torag</p>\n<p><strong>Granted Powers:</strong> Sometimes it is better to capture foes than to kill them - whether your intention is to punish them for their crimes or to torture them for information.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Abadar, Asmodeus, Torag</p>\n<p><strong>Granted Powers</strong></p>\n<p>Sometimes it is better to capture foes than to kill them - whether your intention is to punish them for their crimes or to torture them for information.</p>",
     "features": [
       {
         "featureId": "inquisition-power:imprisonment:caging-strike",
@@ -447,7 +455,7 @@
     "uuid": "pfdata:inquisition:imprisonment"
   },
   "justice": {
-    "description": "<p><strong>Deities</strong> Iomedae, Pharasma</p>\n<p><strong>Granted Powers:</strong> Some must learn that to submit to one's fate often means submitting to your form of justice.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Iomedae, Pharasma</p>\n<p><strong>Granted Powers</strong></p>\n<p>Some must learn that to submit to one's fate often means submitting to your form of justice.</p>",
     "features": [
       {
         "featureId": "inquisition-power:justice:judicious-force",
@@ -475,7 +483,7 @@
     "uuid": "pfdata:inquisition:justice"
   },
   "oblivion": {
-    "description": "<p><strong>Deities</strong> Desna, Lamashtu, Pharasma, Zon-Kuthon</p>\n<p><strong>Granted Powers:</strong> Some inquisitors believe that without faith there is only oblivion. But there are some divine servants who know enough about the darkness that lies beyond faith to use it as a tool- and a weapon.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Desna, Lamashtu, Pharasma, Zon-Kuthon</p>\n<p><strong>Granted Powers</strong></p>\n<p>Some inquisitors believe that without faith there is only oblivion. But there are some divine servants who know enough about the darkness that lies beyond faith to use it as a tool- and a weapon.</p>",
     "features": [
       {
         "featureId": "inquisition-power:oblivion:life-anchor",
@@ -503,7 +511,7 @@
     "uuid": "pfdata:inquisition:oblivion"
   },
   "order": {
-    "description": "<p><strong>Deities</strong> Abadar, Iomedae, Sarenrae</p>\n<p><strong>Granted Powers:</strong> Most inquisitors fight insane aberrations and demonic creatures as well as the chaos of heresy. They use the dictum and the mantles of law in order to aid their struggle.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Abadar, Iomedae, Sarenrae</p>\n<p><strong>Granted Powers</strong></p>\n<p>Most inquisitors fight insane aberrations and demonic creatures as well as the chaos of heresy. They use the dictum and the mantles of law in order to aid their struggle.</p>",
     "features": [
       {
         "featureId": "inquisition-power:order:mantle-against-chaos",
@@ -531,8 +539,15 @@
     "uuid": "pfdata:inquisition:order"
   },
   "persistence": {
-    "description": "<p><strong>Deities</strong> Asmodeus, Iomedae, Urgathoa</p>\n<p><strong>Granted Powers:</strong> Your deity chose you for your persistence. You have vowed to pursue the enemies of the faith to the world's end if necessary. You receive Step Up as a bonus feat.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Asmodeus, Iomedae, Urgathoa</p>\n<p><strong>Granted Powers</strong></p>\n<p>Your deity chose you for your persistence. You have vowed to pursue the enemies of the faith to the world's end if necessary.</p>",
     "features": [
+      {
+        "featureId": "inquisition-power:persistence:step-up",
+        "level": 0,
+        "name": "Step Up",
+        "resolved": true,
+        "uuid": "pfdata:inquisition-power:persistence:step-up"
+      },
       {
         "featureId": "inquisition-power:persistence:relentless-footing",
         "level": 0,
@@ -559,7 +574,7 @@
     "uuid": "pfdata:inquisition:persistence"
   },
   "politics": {
-    "description": "<p><strong>Deities</strong> Abadar, Asmodeus, Calistria, Norgorber</p>\n<p><strong>Granted Powers:</strong> Your divine guidance twists agreements, laws, and policies to suit the interests of the faith.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Abadar, Asmodeus, Calistria, Norgorber</p>\n<p><strong>Granted Powers</strong></p>\n<p>Your divine guidance twists agreements, laws, and policies to suit the interests of the faith.</p>",
     "features": [
       {
         "featureId": "inquisition-power:politics:labyrinthine-words",
@@ -587,7 +602,7 @@
     "uuid": "pfdata:inquisition:politics"
   },
   "possession": {
-    "description": "<p><strong>Deities</strong> Calistria, Lamashtu, Nethys, Norgorber, Urgathoa</p>\n<p><strong>Granted Powers:</strong> You can invade the bodies of lesser beings and command them to bend to your will.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Calistria, Lamashtu, Nethys, Norgorber, Urgathoa</p>\n<p><strong>Granted Powers</strong></p>\n<p>You can invade the bodies of lesser beings and command them to bend to your will.</p>",
     "features": [
       {
         "featureId": "inquisition-power:possession:self-control",
@@ -622,7 +637,7 @@
     "uuid": "pfdata:inquisition:possession"
   },
   "recovery": {
-    "description": "<p><strong>Deities</strong> Abadar, Erastil, Nivi Rhombodazzle, Shelyn</p>\n<p><strong>Granted Powers:</strong> Some hunt down secrets, but you focus on the search for more tangible items.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Abadar, Erastil, Nivi Rhombodazzle, Shelyn</p>\n<p><strong>Granted Powers</strong></p>\n<p>Some hunt down secrets, but you focus on the search for more tangible items.</p>",
     "features": [
       {
         "featureId": "inquisition-power:recovery:focused-search",
@@ -650,7 +665,7 @@
     "uuid": "pfdata:inquisition:recovery"
   },
   "redemption": {
-    "description": "<p><strong>Deities</strong> Any</p>\n<p>Your deity inspires you with hope that wayward members of your faith can be brought back into the fold.</p>\n<p><strong>Granted Powers:</strong> You reach out to your misguided fellows and give them every chance to turn back from conflict with the true faith, even if your differences come to violence.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Any</p>\n<p>Your deity inspires you with hope that wayward members of your faith can be brought back into the fold.</p>\n<p><strong>Granted Powers</strong></p>\n<p>You reach out to your misguided fellows and give them every chance to turn back from conflict with the true faith, even if your differences come to violence.</p>",
     "features": [
       {
         "featureId": "inquisition-power:redemption:patient-sensibility",
@@ -685,7 +700,7 @@
     "uuid": "pfdata:inquisition:redemption"
   },
   "reformation": {
-    "description": "<p><strong>Deities</strong> Any</p>\n<p>Moved by divine disapproval of your church's mistakes, you seek to correct them however you can.</p>\n<p><strong>Granted Powers:</strong> You can speak with divine persuasiveness.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Any</p>\n<p>Moved by divine disapproval of your church's mistakes, you seek to correct them however you can.</p>\n<p><strong>Granted Powers</strong></p>\n<p>You can speak with divine persuasiveness.</p>",
     "features": [
       {
         "featureId": "inquisition-power:reformation:inspired-rhetoric",
@@ -720,7 +735,7 @@
     "uuid": "pfdata:inquisition:reformation"
   },
   "restoration": {
-    "description": "<p><strong>Deities</strong> Desna, Irori, Sarenrae, Shelyn</p>\n<p><strong>Granted Powers:</strong> You are a healer, not just of people but also of sacred sites tainted by enemies of your faith.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Desna, Irori, Sarenrae, Shelyn</p>\n<p><strong>Granted Powers</strong></p>\n<p>You are a healer, not just of people but also of sacred sites tainted by enemies of your faith.</p>",
     "features": [
       {
         "featureId": "inquisition-power:restoration:mend-the-broken",
@@ -748,7 +763,7 @@
     "uuid": "pfdata:inquisition:restoration"
   },
   "revelation": {
-    "description": "<p><strong>Deities</strong> Desna, Irori, Sarenrae, Shelyn</p>\n<p><strong>Granted Powers:</strong> Evil often hides itself behind a mask of good. You are an expert at ferreting out those who are not what they seem, and use your powers to reveal the true forms of the unworthy.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Desna, Irori, Sarenrae, Shelyn</p>\n<p><strong>Granted Powers</strong></p>\n<p>Evil often hides itself behind a mask of good. You are an expert at ferreting out those who are not what they seem, and use your powers to reveal the true forms of the unworthy.</p>",
     "features": [
       {
         "featureId": "inquisition-power:revelation:burn-shroud",
@@ -776,7 +791,7 @@
     "uuid": "pfdata:inquisition:revelation"
   },
   "secrets": {
-    "description": "<p><strong>Deities</strong> Calistria, Norgorber</p>\n<p><strong>Granted Powers:</strong> You have learned to keep your own secrets close, and your enemies' secrets closer.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Calistria, Norgorber</p>\n<p><strong>Granted Powers</strong></p>\n<p>You have learned to keep your own secrets close, and your enemies' secrets closer.</p>",
     "features": [
       {
         "featureId": "inquisition-power:secrets:detect-secrets",
@@ -804,7 +819,7 @@
     "uuid": "pfdata:inquisition:secrets"
   },
   "sedition": {
-    "description": "<p><strong>Deities</strong> Cayden Cailean, Desna, Iomedae, Milani, Nethys, Norgorber, Sarenrae, Shelyn</p>\n<p><strong>Granted Powers:</strong> Your deity calls you to cast down a hostile government. Stealth is a class skill for you.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Cayden Cailean, Desna, Iomedae, Milani, Nethys, Norgorber, Sarenrae, Shelyn</p>\n<p><strong>Granted Powers</strong></p>\n<p>Your deity calls you to cast down a hostile government. Stealth is a class skill for you.</p>",
     "features": [
       {
         "featureId": "inquisition-power:sedition:undermine-authority",
@@ -832,7 +847,7 @@
     "uuid": "pfdata:inquisition:sedition"
   },
   "seduction": {
-    "description": "<p><strong>Deities</strong> Arshea, Calistria, Cayden Cailean, Shelyn</p>\n<p><strong>Granted Powers:</strong> Your deity blesses your attempts to use sex and love for a higher purpose.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Arshea, Calistria, Cayden Cailean, Shelyn</p>\n<p><strong>Granted Powers</strong></p>\n<p>Your deity blesses your attempts to use sex and love for a higher purpose.</p>",
     "features": [
       {
         "featureId": "inquisition-power:seduction:disarming-flirtation",
@@ -860,7 +875,7 @@
     "uuid": "pfdata:inquisition:seduction"
   },
   "sin": {
-    "description": "<p><strong>Deities</strong> Asmodeus, Calistria, Norgorber, Rovagug, Urgathoa, Zon-Kuthon</p>\n<p><strong>Granted Powers:</strong> You know how to stoke the seven sins in others (envy, gluttony, greed, lust, pride, sloth, and wrath), and twist their dark desires to suit your own purposes.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Asmodeus, Calistria, Norgorber, Rovagug, Urgathoa, Zon-Kuthon</p>\n<p><strong>Granted Powers</strong></p>\n<p>You know how to stoke the seven sins in others (envy, gluttony, greed, lust, pride, sloth, and wrath), and twist their dark desires to suit your own purposes.</p>",
     "features": [
       {
         "featureId": "inquisition-power:sin:sin-sense",
@@ -888,8 +903,16 @@
     "uuid": "pfdata:inquisition:sin"
   },
   "spellkiller": {
-    "description": "<p><strong>Deities</strong> Any (with GM approval)</p>\n<p><strong>Granted Powers:</strong> You gain the Disruptive feat as a bonus feat (even if you do not meet the prerequisites). When you defeat an enemy (whether by reducing it to 0 or fewer hit points, taking the enemy captive, or accepting a truce), you gain a +2 sacred or profane bonus to AC for 1 minute per level. You gain a sacred bonus if you are good, profane if you are evil; if you are neutral, you choose either sacred or profane when you select this inquisition. After you choose which type of bonus you gain, you cannot change the bonus type. When you hit a creature with levels of alchemist or any arcane spellcasting class, or that uses spell-like abilities, you can end this effect to stagger that creature. The creature gets a Fortitude saving throw against this effect on each of its turns (including the turn in which it gained the effect). A successful save ends the staggered condition.</p>",
-    "features": [],
+    "description": "<p><strong>Associated Deities:</strong> Any (with GM approval)</p>",
+    "features": [
+      {
+        "featureId": "inquisition-power:spellkiller:granted-powers",
+        "level": 0,
+        "name": "Granted Powers",
+        "resolved": true,
+        "uuid": "pfdata:inquisition-power:spellkiller:granted-powers"
+      }
+    ],
     "id": "spellkiller",
     "name": "Spellkiller",
     "sources": [
@@ -901,7 +924,7 @@
     "uuid": "pfdata:inquisition:spellkiller"
   },
   "tactics": {
-    "description": "<p><strong>Deities</strong> Gorum, Irori, Torag</p>\n<p><strong>Granted Powers:</strong> It is the cold and tactical mind that often wins the day. A proper, carefully considered sacrifice can inspire one's allies to serve your cause.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Gorum, Irori, Torag</p>\n<p><strong>Granted Powers</strong></p>\n<p>It is the cold and tactical mind that often wins the day. A proper, carefully considered sacrifice can inspire one's allies to serve your cause.</p>",
     "features": [
       {
         "featureId": "inquisition-power:tactics:inquisitor-s-direction",
@@ -929,7 +952,7 @@
     "uuid": "pfdata:inquisition:tactics"
   },
   "torture": {
-    "description": "<p><strong>Deities</strong> Asmodeus, Calistria, Norgorber, Zon-Kuthon</p>\n<p><strong>Granted Powers:</strong> Only through pain can truth and justice come to the surface. And if that doesn't work, at least you've enacted divine vengeance.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Asmodeus, Calistria, Norgorber, Zon-Kuthon</p>\n<p><strong>Granted Powers</strong></p>\n<p>Only through pain can truth and justice come to the surface. And if that doesn't work, at least you've enacted divine vengeance.</p>",
     "features": [
       {
         "featureId": "inquisition-power:torture:torturer-s-presence",
@@ -964,7 +987,7 @@
     "uuid": "pfdata:inquisition:torture"
   },
   "true_death": {
-    "description": "<p><strong>Deities</strong> Abadar, Cayden Cailean, Pharasma</p>\n<p><strong>Granted Powers:</strong> You see undead as a perversion of the natural order, a misuse of magic, or an unjust enslavement of a departed spirit's body, and are sworn to destroying such beings.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Abadar, Cayden Cailean, Pharasma</p>\n<p><strong>Granted Powers</strong></p>\n<p>You see undead as a perversion of the natural order, a misuse of magic, or an unjust enslavement of a departed spirit's body, and are sworn to destroying such beings.</p>",
     "features": [
       {
         "featureId": "inquisition-power:true_death:back-to-the-graves",
@@ -992,7 +1015,7 @@
     "uuid": "pfdata:inquisition:true_death"
   },
   "truth": {
-    "description": "<p><strong>Deities</strong> Iomedae, Pharasma, Sarenrae</p>\n<p><strong>Granted Powers:</strong> To find truth, one has to wring honesty from others - whether in a friendly or hostile manner.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Iomedae, Pharasma, Sarenrae</p>\n<p><strong>Granted Powers</strong></p>\n<p>To find truth, one has to wring honesty from others - whether in a friendly or hostile manner.</p>",
     "features": [
       {
         "featureId": "inquisition-power:truth:justice-s-true-path",
@@ -1020,7 +1043,7 @@
     "uuid": "pfdata:inquisition:truth"
   },
   "valor": {
-    "description": "<p><strong>Deities</strong> Cayden Cailean, Erastil, Iomedae, Sarenrae</p>\n<p><strong>Granted Powers:</strong> It takes courage to confront the enemies of your faith.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Cayden Cailean, Erastil, Iomedae, Sarenrae</p>\n<p><strong>Granted Powers</strong></p>\n<p>It takes courage to confront the enemies of your faith.</p>",
     "features": [
       {
         "featureId": "inquisition-power:valor:touch-of-resolve",
@@ -1048,7 +1071,7 @@
     "uuid": "pfdata:inquisition:valor"
   },
   "vengeance": {
-    "description": "<p><strong>Deities</strong> Calistria, Lamashtu, Norgorber, Rovagug, Urgathoa</p>\n<p><strong>Granted Powers:</strong> Vengeance is justice naked of pretense. On your oath, you will deliver justice so unbounded.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Calistria, Lamashtu, Norgorber, Rovagug, Urgathoa</p>\n<p><strong>Granted Powers</strong></p>\n<p>Vengeance is justice naked of pretense. On your oath, you will deliver justice so unbounded.</p>",
     "features": [
       {
         "featureId": "inquisition-power:vengeance:divine-retribution",
@@ -1076,7 +1099,7 @@
     "uuid": "pfdata:inquisition:vengeance"
   },
   "zeal": {
-    "description": "<p><strong>Deities</strong> Erastil, Nethys</p>\n<p><strong>Granted Powers:</strong> An inquisitor needs unyielding zeal in order to make sure her deity's work is done.</p>",
+    "description": "<p><strong>Associated Deities:</strong> Erastil, Nethys</p>\n<p><strong>Granted Powers</strong></p>\n<p>An inquisitor needs unyielding zeal in order to make sure her deity's work is done.</p>",
     "features": [
       {
         "featureId": "inquisition-power:zeal:zealous-surge",

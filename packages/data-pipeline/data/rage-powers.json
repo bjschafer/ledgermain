@@ -304,7 +304,7 @@
     "uuid": "pfdata:rage-power:breathtaker"
   },
   "cairn_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a cairn linnorm. The character's melee attacks deal an additional 1 point of negative energy damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of decay</em> (Will negates).\" prereq=\"8th-level barbarian\"</p>\n<p><strong>Curse of Decay:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target takes 1 point of Con damage per day and ages at a rate of 1 year per day (eventually incurring all of the penalties of old age but none of the bonuses)</p>",
+    "description": "<p><strong>Cairn Linnorm Death Curse</strong></p>\n<p>The character channels the power of a cairn linnorm. The character's melee attacks deal an additional 1 point of negative energy damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of decay</em> (Will negates).\" prereq=\"8th-level barbarian\"</p>\n<p><strong>Curse of Decay:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target takes 1 point of Con damage per day and ages at a rate of 1 year per day (eventually incurring all of the penalties of old age but none of the bonuses)</p>",
     "id": "cairn_linnorm_death_curse",
     "name": "Cairn Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -407,7 +407,7 @@
     "uuid": "pfdata:rage-power:contagious_rage"
   },
   "crag_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a crag linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of fire</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Fire:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire</p>",
+    "description": "<p><strong>Crag Linnorm Death Curse</strong></p>\n<p>The character channels the power of a crag linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of fire</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Fire:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire</p>",
     "id": "crag_linnorm_death_curse",
     "name": "Crag Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -845,7 +845,7 @@
     "uuid": "pfdata:rage-power:fire_totem"
   },
   "fjord_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a fjord linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of drowning</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Drowning:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is unable to breathe water (even with magic), can hold its breath only half as long as normal, and is sickened whenever it holds its breath</p>",
+    "description": "<p><strong>Fjord Linnorm Death Curse</strong></p>\n<p>The character channels the power of a fjord linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of drowning</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Drowning:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is unable to breathe water (even with magic), can hold its breath only half as long as normal, and is sickened whenever it holds its breath</p>",
     "id": "fjord_linnorm_death_curse",
     "name": "Fjord Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -1518,7 +1518,7 @@
     "uuid": "pfdata:rage-power:guarded_stance_stance"
   },
   "hissing_rage": {
-    "description": "<p>Once per hour, the barbarian can spit venom at an adjacent enemy. She must make a touch attack to successfully spit on a foe in this way, but she can also apply this poison as a <strong>swift action</strong> when she hits with a bite attack.</p>\n<p><strong>Hissing Rage Poison:</strong> Bite-contact or injury; <em>save</em> Fort DC 10 + 1/2 the barbarian's level + their Con modifier; <em>frequency</em> 1/round for 6 rounds; <em>effect</em> 1d2 Str damage; <em>cure</em> 2 consecutive saves</p>",
+    "description": "<p><strong>Hissing Rage:</strong> (Once per hour)</p>\n<p>Once per hour, the barbarian can spit venom at an adjacent enemy. She must make a touch attack to successfully spit on a foe in this way, but she can also apply this poison as a <strong>swift action</strong> when she hits with a bite attack.</p>\n<p><strong>Hissing Rage Poison:</strong> Bite-contact or injury; <em>save</em> Fort DC 10 + 1/2 the barbarian's level + their Con modifier; <em>frequency</em> 1/round for 6 rounds; <em>effect</em> 1d2 Str damage; <em>cure</em> 2 consecutive saves</p>",
     "id": "hissing_rage",
     "name": "Hissing Rage",
     "nameSuffix": "(Su)",
@@ -1610,7 +1610,7 @@
     "uuid": "pfdata:rage-power:hurling_charge"
   },
   "ice_linnorm_death_curse": {
-    "description": "<p>The character channels the power of an ice linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed, the attacker suffers the <em>curse of frost.</em>\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Frost:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to cold</p>",
+    "description": "<p><strong>Ice Linnorm Death Curse</strong></p>\n<p>The character channels the power of an ice linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed, the attacker suffers the <em>curse of frost.</em>\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Frost:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to cold</p>",
     "id": "ice_linnorm_death_curse",
     "name": "Ice Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2539,7 +2539,7 @@
     "uuid": "pfdata:rage-power:roused_anger"
   },
   "savage_dirty_trick": {
-    "description": "<p>Once per round while <em>raging,</em> the barbarian can attempt a dirty trick combat maneuver in place of a melee attack. If successful, the target takes an amount of damage equal to the barbarian's Strength modifier and must succeed at a Fortitude save (DC 10 + 1/2 the barbarian's level + the barbarian's Strength modifier) or take an additional penalty from the dirty trick based on the type of dirty trick performed and the following table.</p>\n<table><thead><tr><th>Initial Penalty</th><th>Additional Penalty</th></tr></thead><tbody><tr><td>Blinded</td><td>Staggered</td></tr><tr><td>Dazzled</td><td>Dazed</td></tr><tr><td>Deafened</td><td>Staggered</td></tr><tr><td>Entangled</td><td>Anchored in place and unable to move from that square</td></tr><tr><td>Sickened</td><td>Nauseated</td></tr></tbody></table>\n<p>On a failed Fortitude save, the opponent takes this additional penalty on top of the dirty trick's original effect. The additional penalty lasts for 1 round (though the initial penalty lasts as long as normal), and can be removed with a move action. The initial effect cannot be removed via mundane means until the additional penalty is removed (though magical effects like remove blindness/deafness work). Removing the initial effect also removes the additional penalty. If the target is immune to the initial penalty, then it is unaffected by the additional penalty.</p>\n<p>For example, a barbarian using this rage power attempts a dirty trick combat maneuver against her opponent to blind him. She succeeds and her opponent fails his Fortitude save, so he becomes staggered as well as blinded. Regardless of whether he had succeeded at his saving throw, the opponent still takes an amount of damage from the barbarian's combat maneuver equal to the barbarian's Strength modifier (unless he has damage reduction or would otherwise be able to prevent this damage). Likewise, if her opponent were immune to blinding effects, he would not suffer from the blindness or the staggering effect, regardless of his saving throw.</p>",
+    "description": "<p><strong>Savage Dirty Trick:</strong> (Once per opponent per <em>rage</em>) (Prerequisite: 6th-level barbarian)</p>\n<p>Once per round while <em>raging,</em> the barbarian can attempt a dirty trick combat maneuver in place of a melee attack. If successful, the target takes an amount of damage equal to the barbarian's Strength modifier and must succeed at a Fortitude save (DC 10 + 1/2 the barbarian's level + the barbarian's Strength modifier) or take an additional penalty from the dirty trick based on the type of dirty trick performed and the following table.</p>\n<table><thead><tr><th>Initial Penalty</th><th>Additional Penalty</th></tr></thead><tbody><tr><td>Blinded</td><td>Staggered</td></tr><tr><td>Dazzled</td><td>Dazed</td></tr><tr><td>Deafened</td><td>Staggered</td></tr><tr><td>Entangled</td><td>Anchored in place and unable to move from that square</td></tr><tr><td>Sickened</td><td>Nauseated</td></tr></tbody></table>\n<p>On a failed Fortitude save, the opponent takes this additional penalty on top of the dirty trick's original effect. The additional penalty lasts for 1 round (though the initial penalty lasts as long as normal), and can be removed with a move action. The initial effect cannot be removed via mundane means until the additional penalty is removed (though magical effects like remove blindness/deafness work). Removing the initial effect also removes the additional penalty. If the target is immune to the initial penalty, then it is unaffected by the additional penalty.</p>\n<p>For example, a barbarian using this rage power attempts a dirty trick combat maneuver against her opponent to blind him. She succeeds and her opponent fails his Fortitude save, so he becomes staggered as well as blinded. Regardless of whether he had succeeded at his saving throw, the opponent still takes an amount of damage from the barbarian's combat maneuver equal to the barbarian's Strength modifier (unless he has damage reduction or would otherwise be able to prevent this damage). Likewise, if her opponent were immune to blinding effects, he would not suffer from the blindness or the staggering effect, regardless of his saving throw.</p>",
     "id": "savage_dirty_trick",
     "name": "Savage Dirty Trick",
     "nameSuffix": "(Ex)",
@@ -2850,7 +2850,7 @@
     "uuid": "pfdata:rage-power:swift_foot"
   },
   "taiga_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a taiga linnorm. The character's melee attacks deal an additional 1 point of electricity damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of electricity</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Electricity:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to electricity</p>",
+    "description": "<p><strong>Taiga Linnorm Death Curse</strong></p>\n<p>The character channels the power of a taiga linnorm. The character's melee attacks deal an additional 1 point of electricity damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of electricity</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Electricity:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to electricity</p>",
     "id": "taiga_linnorm_death_curse",
     "name": "Taiga Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2862,7 +2862,7 @@
     "uuid": "pfdata:rage-power:taiga_linnorm_death_curse"
   },
   "tarn_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a tarn linnorm. The character's melee attacks deal an additional 1 point of acid damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of death</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Death:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is no longer affected by healing spells and can't heal damage naturally by resting</p>",
+    "description": "<p><strong>Tarn Linnorm Death Curse</strong></p>\n<p>The character channels the power of a tarn linnorm. The character's melee attacks deal an additional 1 point of acid damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of death</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Death:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is no longer affected by healing spells and can't heal damage naturally by resting</p>",
     "id": "tarn_linnorm_death_curse",
     "name": "Tarn Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2900,7 +2900,7 @@
     "uuid": "pfdata:rage-power:terrifying_howl"
   },
   "tor_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a tor linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of boiling blood</em> (Will negates).\" prereq=\"8th-level barbarian\"</p>\n<p><strong>Curse of Boiling Blood:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire and is permanently staggered from the pain of its boiling blood (this is a pain effect)</p>",
+    "description": "<p><strong>Tor Linnorm Death Curse</strong></p>\n<p>The character channels the power of a tor linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of boiling blood</em> (Will negates).\" prereq=\"8th-level barbarian\"</p>\n<p><strong>Curse of Boiling Blood:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire and is permanently staggered from the pain of its boiling blood (this is a pain effect)</p>",
     "id": "tor_linnorm_death_curse",
     "name": "Tor Linnorm Death Curse",
     "nameSuffix": "(Su)",

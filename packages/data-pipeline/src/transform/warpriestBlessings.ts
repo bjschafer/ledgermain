@@ -1,6 +1,8 @@
 import type { Blessing, ClassFeature } from "@pf1/schema";
 
 import {
+  parseDirectiveProps,
+  parsePfDataAbility,
   pfDataBodyLines,
   pfDataCatalogEntries,
   pfDataDescriptionToHtml,
@@ -12,15 +14,15 @@ import {
 /** See `pfDataCatalogEntries`'s doc comment — the dataset's "not found" sentinel. */
 const SKIP_KEYS = new Set(["not_found"]);
 
-/** `**Deities:** ‹faith/Gozreh›, ‹faith/Shelyn›` — every real entry's first prose line after the header/citation. */
-const DEITIES_LINE_RE = /^\*\*Deities:\*\*\s*(.*)$/;
+/** `@HL[Deities:] ‹faith/Gozreh›, ‹faith/Shelyn›` — every real entry's first prose line after the header/citation. */
+const DEITIES_LINE_RE = /^@HL\[Deities:\]\s*(.*)$/;
 const FAITH_REF_RE = /‹faith\/([^›]+)›/g;
 
 /**
- * Parse a blessing's "**Deities:** ..." line into the deity names it lists,
- * when it names any. Four entries (Earthquake, Flood, Tornado, Wildfire)
- * state a conditional rule instead of a deity list ("Evil deities that offer
- * the ‹‹Water›› blessing or nonevil deities with disasters in their
+ * Parse a blessing's Deities line into the deity names it lists, when it
+ * names any. Four entries (Earthquake, Flood, Tornado, Wildfire) state a
+ * conditional rule instead of a deity list ("Evil deities that offer the
+ * ‹blessing/Air› blessing or nonevil deities with disasters in their
  * portfolios") — no `‹faith/...›` refs to extract, so those return
  * `undefined` rather than an empty, misleadingly-structured array.
  */
@@ -31,18 +33,52 @@ export function parseBlessingDeities(bodyLines: string[]): string[] | undefined 
   return names.length > 0 ? names : undefined;
 }
 
+/** `Zephyr's Gift (minor)` — the tier rides in the directive's label, not a prop. */
+const TIER_LABEL_RE = /^(.+?)\s*\((minor|major)\)$/i;
+
 /**
- * `**Zephyr's Gift (minor):** At 1st level, ...` — the bolded name+tier label
- * opening a blessing's minor/major power paragraph. The colon sits INSIDE the
- * bold markers (`(minor):**`, not `(minor)**:`), which is the easy part of
- * this to get backwards.
+ * The fenced form, `:::ab{title="Serpent Fang (major)" ...}` ... `:::`, used
+ * when a power's prose needs more than one block (Scalykind's venom).
  */
-const POWER_LINE_RE = /^\*\*(.+?)\s*\((minor|major)\):?\*\*\s*(.*)$/i;
+const AB_FENCE_OPEN_RE = /^:::ab\{(.*)\}$/;
 
 /** A power name + prose, before the `featureId` its owning `Blessing` attaches once its id is known. */
 interface ParsedPower {
   name: string;
   description: string;
+}
+
+type Tier = "minor" | "major";
+
+/** Each power in body order, from either `::ab[Name (tier)]{...}` or a fenced `:::ab{title=...}` block. */
+function blessingPowers(bodyLines: string[]): (ParsedPower & { tier: Tier })[] {
+  const out: (ParsedPower & { tier: Tier })[] = [];
+  for (let i = 0; i < bodyLines.length; i++) {
+    const line = bodyLines[i]!.trim();
+    let label: string | undefined;
+    let description: string | undefined;
+    const leaf = parsePfDataAbility(line);
+    const fence = AB_FENCE_OPEN_RE.exec(line);
+    if (leaf) {
+      label = leaf.name;
+      description = leaf.bodyHtml;
+    } else if (fence) {
+      const title = parseDirectiveProps(fence[1]!).title;
+      const close = bodyLines.findIndex((l, j) => j > i && l.trim() === ":::");
+      const end = close < 0 ? bodyLines.length : close;
+      label = typeof title === "string" ? title : undefined;
+      description = pfDataDescriptionToHtml(bodyLines.slice(i + 1, end));
+      i = end;
+    }
+    const tier = label ? TIER_LABEL_RE.exec(label) : null;
+    if (!tier || description === undefined) continue;
+    out.push({
+      name: tier[1]!.trim(),
+      description,
+      tier: tier[2]!.toLowerCase() as Tier,
+    });
+  }
+  return out;
 }
 
 /**
@@ -59,23 +95,24 @@ export function parseBlessingPowers(bodyLines: string[]): {
   minor: ParsedPower;
   major: ParsedPower;
 } {
-  let minor: ParsedPower | undefined;
-  let major: ParsedPower | undefined;
-  for (const raw of bodyLines) {
-    const m = POWER_LINE_RE.exec(raw.trim());
-    if (!m) continue;
-    const power: ParsedPower = {
-      name: m[1]!.trim(),
-      description: pfDataDescriptionToHtml([m[3]!]),
-    };
-    if (m[2]!.toLowerCase() === "minor") minor ??= power;
-    else major ??= power;
-    if (minor && major) break;
-  }
+  const powers = blessingPowers(bodyLines);
+  const first = (tier: Tier): ParsedPower | undefined => {
+    const p = powers.find((x) => x.tier === tier);
+    return p && { name: p.name, description: p.description };
+  };
+  const minor = first("minor");
+  const major = first("major");
   if (!minor || !major) {
     throw new Error("blessing entry is missing its minor and/or major power line");
   }
   return { minor, major };
+}
+
+/** The source spells this label `ReplacementBlessing`; spaced out for display. */
+function descriptionLines(bodyLines: string[]): string[] {
+  return bodyLines.map((line) =>
+    line.replace("@HL[ReplacementBlessing:]", "@HL[Replacement Blessing:]"),
+  );
 }
 
 /**
@@ -92,7 +129,7 @@ function transformBlessing(id: string, entry: PfDataEntry): Blessing {
     id,
     uuid: `pfdata:blessing:${id}`,
     name: entry.name!,
-    description: pfDataDescriptionToHtml(bodyLines),
+    description: pfDataDescriptionToHtml(descriptionLines(bodyLines)),
     sources: pfDataSourceRefs(entry),
     deities: parseBlessingDeities(bodyLines),
     minorPower: { ...minor, featureId: blessingPowerFeatureId(id, "minor") },

@@ -896,6 +896,11 @@ function stripBlockLevelMarkers(lines: string[]): string[] {
     // `:::` test below and leaked its container markup into the prose.
     const bqOuter = /^>[ \t]?(.*)$/.exec(rawLine);
     const line = bqOuter ? bqOuter[1]! : rawLine;
+    // A fenced ability's opener carries its title and often body props
+    // (`special=`); rewritten as the leaf form so those render instead of
+    // vanishing with the rest of the fence markup.
+    const abFence = /^:::(ab\{.*\})$/.exec(line.trim());
+    if (abFence) return `::${abFence[1]}`;
     if (line.trim().startsWith(":::")) return "";
     // A line that is nothing but a `&Marker&` is a layout hint for the
     // dataset's own renderer and carries no prose. Blanked rather than kept,
@@ -994,6 +999,8 @@ const HEADER_SUFFIX_RE = /^##\s*.+?\(([A-Za-z][A-Za-z, /]*)\)\s*$/;
 // Two colons is the leaf directive, three the fenced container form; both
 // carry the title, and matching only the leaf lost nine linnorm death curses.
 const AB_TITLE_SUFFIX_RE = /^:{2,3}ab\{[^}]*?\btitle="[^"]*?\(([A-Za-z][A-Za-z, /]*)\)(?:&FN&)?"/;
+/** The leaf form's label, colon or no: `::ab[Arcane Deed (Ex):]{...}`. */
+const AB_LABEL_SUFFIX_RE = /^::ab\[[^\]]*?\(([A-Za-z][A-Za-z, /]*)\):?\]/;
 
 /**
  * Some subsystem files (arcanist exploits, kineticist wild talents) don't
@@ -1006,15 +1013,18 @@ const AB_TITLE_SUFFIX_RE = /^:{2,3}ab\{[^}]*?\btitle="[^"]*?\(([A-Za-z][A-Za-z, 
  * e.g. several exploits state no activation type at all).
  */
 export function pfDataHeaderNameSuffix(description: string[] | undefined): string | undefined {
-  const header = description?.[0];
+  // Entries that dropped the header entirely open with their citation and
+  // then the ability itself (`::ab[Armored Mask (Su)]{...}`), so the first
+  // line past the citation stands in for it.
+  const header = description?.map((l) => l.trim()).find((l) => l !== "" && !SOURCE_LINE_RE.test(l));
   if (!header) return undefined;
   // The rewrite that followed the v11.11 tag dropped the top-level
   // `nameSuffix` field and moved the suffix into the `::ab` directive's own
-  // title (`title="&L&Animal Fury (Ex)&FN&"`). Read it back out, so an entry
-  // states its (Ex)/(Su)/(Sp) either way.
-  const ab = AB_TITLE_SUFFIX_RE.exec(header.trim());
+  // title (`title="&L&Animal Fury (Ex)&FN&"`) or label. Read it back out, so
+  // an entry states its (Ex)/(Su)/(Sp) either way.
+  const ab = AB_TITLE_SUFFIX_RE.exec(header) ?? AB_LABEL_SUFFIX_RE.exec(header);
   if (ab) return `(${ab[1]})`;
-  const m = HEADER_SUFFIX_RE.exec(header.trim());
+  const m = HEADER_SUFFIX_RE.exec(header);
   return m ? `(${m[1]})` : undefined;
 }
 
