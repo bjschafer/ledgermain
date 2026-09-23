@@ -16,11 +16,11 @@ import type { PfDataDictionary } from "../src/util/pfdata.js";
  */
 
 const AIR_BODY = [
-  "**Deities:** ‹faith/Gozreh›, ‹faith/Shelyn›",
+  "@HL[Deities:] ‹faith/Gozreh›, ‹faith/Shelyn›",
   "",
-  "**Zephyr's Gift (minor):** At 1st level, you can touch a ranged weapon.",
+  '::ab[Zephyr\'s Gift (minor)]{icon=boost-def flavor="You can touch any one ranged weapon." l1="For 1 minute, attacks with it take no range penalties."}',
   "",
-  "**Soaring Assault (major):** At 10th level, you can touch an ally and give her flight, as ‹spell/fly›.",
+  '::ab[Soaring Assault (major)]{icon=power-boost flavor="You can touch an ally and give her the gift of flight (as ‹spell/fly›)." l10="The ally gains a fly speed of 60 feet."}',
 ];
 
 const DICT: PfDataDictionary = {
@@ -41,11 +41,11 @@ const DICT: PfDataDictionary = {
       "",
       "‹SOURCE Advanced Class Guide/68›",
       "",
-      "**Deities:** Evil deities that offer the ‹blessing/Air› blessing or nonevil deities with disasters in their portfolios",
+      "@HL[Deities:] Evil deities that offer the ‹blessing/Air› blessing or nonevil deities with disasters in their portfolios",
       "",
-      "**Storm's Fury (minor):** At 1st level, you gain resistance.",
+      '::ab[Dust Devil (minor)]{icon=lower l1="The target is ‹misc/dazzled› for 1 minute."}',
       "",
-      "**Eye of the Storm (major):** At 10th level, you gain immunity.",
+      '::ab[Howling Gale (major)]{icon=aura l10="You invoke a howling windstorm around yourself."}',
     ],
   },
   // A splatbook-variant entry: its own replacement minor power appears AFTER the base pair.
@@ -56,19 +56,19 @@ const DICT: PfDataDictionary = {
       "## Community",
       "",
       "‹SOURCE Advanced Class Guide/65›  ",
-      "**Deities:** ‹faith/Erastil›",
+      "@HL[Deities:] ‹faith/Erastil›",
       "",
-      "**Communal Aid (minor):** At 1st level, you can aid another.",
+      '::ab[Communal Aid (minor)]{icon=boost l1="The aid another bonus increases to +4."}',
       "",
-      "**Fight as One (major):** At 10th level, allies gain a bonus.",
+      '::ab[Fight as One (major)]{icon=boost l10="Allies gain a +2 insight bonus on attacks."}',
       "",
       "### Cooperation",
       "",
       "‹SOURCE Healer's Handbook/13›",
       "",
-      "**Replacement Blessing:** The following minor blessing replaces the communal aid ability of the Community blessing.",
+      "@HL[ReplacementBlessing:] The following minor blessing replaces the *communal aid* ability of the Community blessing.",
       "",
-      "*Team Effort (minor):* At 1st level, you grant a teamwork feat.",
+      '::ab[Team Effort (minor)]{icon=power l1="The touched ally gains the benefit of the chosen teamwork feat."}',
     ],
   },
   // Structurally filtered out — never a catalog entry (see pfDataCatalogEntries).
@@ -82,53 +82,71 @@ describe("parseBlessingDeities", () => {
 
   it("returns undefined for a conditional-rule line with no named deity", () => {
     const lines = [
-      "**Deities:** Evil deities that offer the ‹blessing/Air› blessing or nonevil deities with disasters in their portfolios",
+      "@HL[Deities:] Evil deities that offer the ‹blessing/Air› blessing or nonevil deities with disasters in their portfolios",
       "",
-      "**X (minor):** text",
+      '::ab[X (minor)]{l1="text"}',
       "",
-      "**Y (major):** text",
+      '::ab[Y (major)]{l10="text"}',
     ];
     expect(parseBlessingDeities(lines)).toBeUndefined();
   });
 
   it("returns undefined when the body carries no Deities line at all", () => {
     expect(
-      parseBlessingDeities(["**X (minor):** text", "", "**Y (major):** text"]),
+      parseBlessingDeities(['::ab[X (minor)]{l1="text"}', "", '::ab[Y (major)]{l10="text"}']),
     ).toBeUndefined();
   });
 });
 
 describe("parseBlessingPowers", () => {
-  it("splits the minor/major label from its prose, colon inside the bold markers", () => {
+  it("splits the minor/major tier off the directive's label, keeping its prose", () => {
     const { minor, major } = parseBlessingPowers(AIR_BODY);
     expect(minor.name).toBe("Zephyr's Gift");
-    expect(minor.description).toBe("<p>At 1st level, you can touch a ranged weapon.</p>");
+    expect(minor.description).toBe(
+      "<p>You can touch any one ranged weapon. At 1st level: For 1 minute, attacks with it take no range penalties.</p>",
+    );
     expect(major.name).toBe("Soaring Assault");
-    expect(major.description).toContain("At 10th level, you can touch an ally");
+    expect(major.description).toContain("At 10th level: The ally gains a fly speed");
+  });
+
+  it("reads a fenced power's prose, led by the fence's action label", () => {
+    const { major } = parseBlessingPowers([
+      '::ab[Scaly Touch (minor)]{icon=def l1="You grant an ally reptilian scales."}',
+      "",
+      ':::ab{title="Serpent Fang (major)" icon=melee action="At 10th Level"}',
+      "",
+      "As a @HLstandard_action you can manifest venomous fangs for 1 minute.",
+      "",
+      ":::",
+    ]);
+    expect(major.name).toBe("Serpent Fang");
+    expect(major.description).toBe(
+      "<p><strong>At 10th level:</strong> As a standard action you can manifest venomous fangs for 1 minute.</p>",
+    );
   });
 
   it("resolves a ‹spell/...› cross-ref inside a power's own prose", () => {
     const { major } = parseBlessingPowers(AIR_BODY);
-    expect(major.description).toContain("as fly");
+    expect(major.description).toContain("(as fly)");
     expect(major.description).not.toMatch(/[‹›]/);
   });
 
   it("takes the FIRST minor/major pair, ignoring a later splatbook-variant replacement", () => {
     const { minor, major } = parseBlessingPowers([
-      "**Deities:** ‹faith/Erastil›",
+      "@HL[Deities:] ‹faith/Erastil›",
       "",
-      "**Communal Aid (minor):** At 1st level, you can aid another.",
+      '::ab[Communal Aid (minor)]{l1="The aid another bonus increases to +4."}',
       "",
-      "**Fight as One (major):** At 10th level, allies gain a bonus.",
+      '::ab[Fight as One (major)]{l10="Allies gain a +2 insight bonus on attacks."}',
       "",
-      "*Team Effort (minor):* At 1st level, you grant a teamwork feat.",
+      '::ab[Team Effort (minor)]{l1="The touched ally gains a teamwork feat."}',
     ]);
     expect(minor.name).toBe("Communal Aid");
     expect(major.name).toBe("Fight as One");
   });
 
   it("throws when an entry is missing a minor or major power line", () => {
-    expect(() => parseBlessingPowers(["**Deities:** ‹faith/Erastil›"])).toThrow();
+    expect(() => parseBlessingPowers(["@HL[Deities:] ‹faith/Erastil›"])).toThrow();
   });
 });
 

@@ -1,6 +1,7 @@
 import type { KineticInfusionKind, KineticWildTalent, KineticWildTalentKind } from "@pf1/schema";
 
 import {
+  parseDirectiveProps,
   pfDataBodyLines,
   pfDataCatalogEntries,
   pfDataDescriptionToHtml,
@@ -17,38 +18,50 @@ const SKIP_KEYS = new Set(["not_found"]);
  * Unlike every other Phase 3 subsystem file, `class_ability_kinetic_talents
  * .json` carries NO `category`/`level`/`compilationSources` dictionary
  * fields at all (confirmed: every catalog entry has exactly `name`/
- * `sources`/`topLink`/`description`) — the source's OWN renderer instead
- * bakes a stat-line into the description text itself, as a consistent
- * markdown line reading `**Element** fire; **Type** utility (Su); **Level**
- * 3; **Burn** 1` (or, for a simple/composite blast/defense talent, `**Level**
- * -` — no spell level). Verified present on EVERY ONE of the 278 catalog
- * entries (not just a majority), always with clean, unambiguous field
- * values (no "variable"/"0 or 1" burn text to simplify, no `Level` entry
- * missing its number for an infusion/utility talent) — so this parse is the
- * reliable source of truth for `KineticWildTalent`'s structured fields,
- * not a best-effort fallback.
+ * `sources`/`topLink`/`description`) — the structured fields live in a
+ * `::kinetics{el=fire type="utility (Su)" l=3 burn=1 ...}` directive inside
+ * the description instead. Present on every one of the 278 catalog entries,
+ * with `l=0` standing for a blast or defense talent's "no spell level".
  */
-const STAT_LINE_RE =
-  /\*\*Element\*\*\s*([^;]+);\s*\*\*Type\*\*\s*([^;]+);\s*\*\*Level\*\*\s*([^;]+);\s*\*\*Burn\*\*\s*([^\s;]+)/;
+const STAT_DIRECTIVE_RE = /^::kinetics\{(.*)\}$/;
 
 interface ParsedStatLine {
   elements: string[];
   typeRaw: string;
   level?: number;
   burn: number;
+  /** The directive's remaining props, rebuilt as the prose rows the talent reads with. */
+  rows: string[];
 }
 
 function parseStatLine(description: string[]): ParsedStatLine | undefined {
   for (const line of description) {
-    const m = STAT_LINE_RE.exec(line);
+    const m = STAT_DIRECTIVE_RE.exec(line.trim());
     if (!m) continue;
-    const elements = m[1]!.split(",").map((e) => e.trim().toLowerCase());
-    const levelRaw = m[3]!.trim();
+    const props = parseDirectiveProps(m[1]!);
+    const prop = (key: string): string | undefined =>
+      typeof props[key] === "string" && props[key] !== "" ? props[key] : undefined;
+    const level = Number(prop("l") ?? 0);
+    const row = (...cells: [string, string | undefined][]) =>
+      cells
+        .filter((c): c is [string, string] => c[1] !== undefined)
+        .map(([label, v]) => `**${label}** ${v}`)
+        .join("; ");
+    const rows = [
+      row(["Prerequisite", prop("prereq")]),
+      row(["Associated Blasts", prop("assoc")]),
+      row(["Blast Type", prop("btype")], ["Damage", prop("dmg")]),
+      row(["Saving Throw", prop("save")], ["SR", prop("sr")]),
+    ].filter((r) => r !== "");
     return {
-      elements,
-      typeRaw: m[2]!.trim(),
-      level: levelRaw === "-" ? undefined : Number(levelRaw),
-      burn: Number(m[4]!.trim()),
+      elements: (prop("el") ?? "")
+        .split(",")
+        .map((e) => e.trim().toLowerCase())
+        .filter(Boolean),
+      typeRaw: prop("type") ?? "",
+      level: level > 0 ? level : undefined,
+      burn: Number(prop("burn") ?? 0),
+      rows,
     };
   }
   return undefined;
@@ -105,14 +118,14 @@ function transformKineticWildTalent(id: string, entry: PfDataEntry): KineticWild
     elements: stat?.elements ?? [],
     level: stat?.level,
     burn: stat?.burn ?? 0,
-    // Header + `‹SOURCE …›` line stripped by `pfDataBodyLines` (redundant
-    // with `name`/`nameSuffix`/`sources`, see that helper's doc comment);
-    // the stat-line itself (`**Element** …; **Burn** …`) is ALSO stripped
-    // here — redundant with `elements`/`kind`/`level`/`burn` above, unlike
-    // the "Associated Blasts"/"Prerequisite"/"Saving Throw" lines that can
-    // follow it, which stay (useful prose this app doesn't otherwise carry).
+    // The directive's element/type/level/burn are redundant with the fields
+    // above, so only its prerequisite, associated-blast, damage, and save
+    // props come back as prose rows (useful text this app doesn't otherwise
+    // carry), in place of the directive line.
     description: pfDataDescriptionToHtml(
-      pfDataBodyLines(entry.description!).filter((line) => !STAT_LINE_RE.test(line)),
+      pfDataBodyLines(entry.description!).flatMap((line) =>
+        STAT_DIRECTIVE_RE.test(line.trim()) ? (stat?.rows ?? []) : [line],
+      ),
     ),
     sources: pfDataSourceRefs(entry),
   };

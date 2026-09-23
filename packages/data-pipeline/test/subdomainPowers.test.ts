@@ -59,7 +59,8 @@ describe("parseSubdomainPowerSets", () => {
         name: "Sudden Shift",
         abilityType: "sp",
         level: 0,
-        description: "<p>You can teleport up to 10 feet.</p>",
+        description:
+          "<p><em>Immediate action:</em> You can teleport up to 10 feet. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
         replaces: "copycat",
         // The daily cap is directive metadata, absent from the prose above.
         uses: { maxFormula: "3 + @abilities.wis.mod", per: "day" },

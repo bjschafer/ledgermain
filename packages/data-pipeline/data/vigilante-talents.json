@@ -181,7 +181,7 @@
   },
   "environmental_weapon": {
     "category": "Other Talents",
-    "description": "<p><strong>Environmental Weapon:</strong> While in the chosen terrain, the vigilante can find an improvised weapon if there are any loose or moveable objects around (subject to the GM's discretion). He doesn't take a penalty for using these improvised weapons.~~~For example, if the vigilante selected the urban environment, he might attack a foe with a chair, an empty bottle, or even a door.</p>",
+    "description": "<p><strong>Environmental Weapon:</strong> When the vigilante gains this talent, he must select one type of terrain from the ranger's list of favored terrains. <em>Swift action:</em> While in the chosen terrain, the vigilante can find an improvised weapon if there are any loose or moveable objects around (subject to the GM's discretion). He doesn't take a penalty for using these improvised weapons.</p>\n<p>For example, if the vigilante selected the urban environment, he might attack a foe with a chair, an empty bottle, or even a door. At 5th level and every 5 levels thereafter: The vigilante can select an additional type of terrain.</p>",
     "id": "environmental_weapon",
     "name": "Environmental Weapon",
     "nameSuffix": "(Ex)",
@@ -223,7 +223,7 @@
   },
   "fantastic_stride": {
     "category": "Other Talents",
-    "description": "<p><strong>Fantastic Stride:</strong> The vigilante gains Spring Attack as a bonus feat, ignoring its prerequisites. (Prerequisite: 6th-level vigilante)</p>",
+    "description": "<p><strong>Fantastic Stride:</strong> The vigilante gains Spring Attack as a bonus feat, ignoring its prerequisites. At 10th level and every 4 levels thereafter: The vigilante can designate one additional creature when he uses Spring Attack; the vigilante's movement this round does not provoke attacks of opportunity from any of the designated secondary creatures. (Prerequisite: 6th-level vigilante)</p>",
     "id": "fantastic_stride",
     "name": "Fantastic Stride",
     "nameSuffix": "(Ex)",
@@ -321,7 +321,7 @@
   },
   "inspired_vigilante": {
     "category": "Other Talents",
-    "description": "<p><strong>Inspired Vigilante:</strong> The vigilante's powers of deduction are far beyond the norm. This ability functions similarly to the investigator's <em>inspiration</em> ability, but the vigilante's <em>inspiration pool</em> is equal to his class level (do not add his Intelligence modifier), the vigilante can never use this ability without expending a use of <em>inspiration,</em> and it doesn't count as <em>inspiration</em> for any effects that interact with or require the <em>inspiration</em> class feature.</p>\n<p><strong>Inspiration (Ex):</strong> Relevant text from the investigator class ability. You can expend one use of inspiration from your pool to add 1d6 to the result of a check, including any on which you take 10 or 20. This choice is made after the check is rolled and before the results are revealed. You have an inspiration pool equal to half your level. Your inspiration pool refreshes each day, typically after you get a restful night's sleep. Using inspiration on attack rolls and saving throws costs two uses of inspiration each time. In the case of saving throws, using inspiration is an immediate action. (You can only use inspiration once per check or roll.)</p>",
+    "description": "<p><strong>Inspired Vigilante:</strong> The vigilante's powers of deduction are far beyond the norm. This ability functions similarly to the investigator's <em>inspiration</em> ability, but the vigilante's <em>inspiration pool</em> is equal to his class level (do not add his Intelligence modifier), the vigilante can never use this ability without expending a use of <em>inspiration,</em> and it doesn't count as <em>inspiration</em> for any effects that interact with or require the <em>inspiration</em> class feature.</p>\n<p><strong>Inspiration (Ex):</strong> Relevant text from the investigator class ability. <em>Free action:</em> You can expend one use of inspiration from your pool to add 1d6 to the result of a check, including any on which you take 10 or 20. This choice is made after the check is rolled and before the results are revealed. You have an inspiration pool equal to half your level. Your inspiration pool refreshes each day, typically after you get a restful night's sleep. Using inspiration on attack rolls and saving throws costs two uses of inspiration each time. In the case of saving throws, using inspiration is an immediate action. (You can only use inspiration once per check or roll.)</p>",
     "id": "inspired_vigilante",
     "name": "Inspired Vigilante",
     "nameSuffix": "(Ex)",
@@ -349,7 +349,7 @@
   },
   "leap_and_bound": {
     "category": "Other Talents",
-    "description": "<p><strong>Leap and Bound:</strong> A vigilante with this talent adds his Strength bonus on Acrobatics checks in addition to his Dexterity modifier. He is always treated as having a running start when jumping, and his high jumps are treated as long jumps when determining the DC.~~~When the vigilante jumps, he does not fall until the end of his turn, allowing him to attack or perform other actions in midair.~~~If the vigilante grapples a creature capable of bearing his weight, he does not fall, instead remaining adjacent to the creature as it moves. (Prerequisite: 10th-level vigilante)</p>",
+    "description": "<p><strong>Leap and Bound:</strong> A vigilante with this talent adds his Strength bonus on Acrobatics checks in addition to his Dexterity modifier. He is always treated as having a running start when jumping, and his high jumps are treated as long jumps when determining the DC.</p>\n<p>When the vigilante jumps, he does not fall until the end of his turn, allowing him to attack or perform other actions in midair.</p>\n<p>If the vigilante grapples a creature capable of bearing his weight, he does not fall, instead remaining adjacent to the creature as it moves. (Prerequisite: 10th-level vigilante)</p>",
     "id": "leap_and_bound",
     "name": "Leap and Bound",
     "nameSuffix": "(Ex)",
@@ -391,7 +391,7 @@
   },
   "living_shield": {
     "category": "Other Talents",
-    "description": "<p><strong>Living Shield:</strong> Whenever the vigilante is grappling a creature and is targeted by an attack, he can attempt a combat maneuver check against the target of his grapple (this combat maneuver check doesn't count as a grapple combat maneuver check). If he succeeds, the creature he is grappling becomes the new target of the attack. If the check fails, the creature escapes the grapple and the vigilante is the target of the attack as normal. This ability must be used after the attack is declared against the vigilante, but before the attack is made and the results revealed.</p>",
+    "description": "<p><strong>Living Shield:</strong> <em>Immediate action:</em> Whenever the vigilante is grappling a creature and is targeted by an attack, he can attempt a combat maneuver check against the target of his grapple (this combat maneuver check doesn't count as a grapple combat maneuver check). If he succeeds, the creature he is grappling becomes the new target of the attack. If the check fails, the creature escapes the grapple and the vigilante is the target of the attack as normal. This ability must be used after the attack is declared against the vigilante, but before the attack is made and the results revealed.</p>",
     "id": "living_shield",
     "name": "Living Shield",
     "nameSuffix": "(Ex)",
@@ -419,7 +419,7 @@
   },
   "magical_familiarity": {
     "category": "Other Talents",
-    "description": "<p><strong>Magical Familiarity:</strong> The vigilante taps into a past life's arcane secrets. He selects a 0-level spell from the spells_&gt;sorcerer/spells_&gt;wizard spell list. The vigilante can cast the chosen spell three times per day as a spell-like ability, using his vigilante level as his caster level. At 6th level: He chooses a second 0-level spell that he can also use three times per day as a spell-like ability. At 12th level: In addition to these 0-level spells, he chooses a 1st-level spell that he can cast once per day as a spell-like ability. At 18th level: He can cast his 1st-level spell three times per day and his 0-level spells at will. (Prerequisite: Intelligence 10+)</p>",
+    "description": "<p><strong>Magical Familiarity:</strong> The vigilante taps into a past life's arcane secrets. He selects a 0-level spell from the sorcerer/wizard spell list. The vigilante can cast the chosen spell three times per day as a spell-like ability, using his vigilante level as his caster level. At 6th level: He chooses a second 0-level spell that he can also use three times per day as a spell-like ability. At 12th level: In addition to these 0-level spells, he chooses a 1st-level spell that he can cast once per day as a spell-like ability. At 18th level: He can cast his 1st-level spell three times per day and his 0-level spells at will. (Prerequisite: Intelligence 10+)</p>",
     "id": "magical_familiarity",
     "name": "Magical Familiarity",
     "nameSuffix": "(Sp)",
@@ -476,7 +476,7 @@
   },
   "minor_magic": {
     "category": "Other Talents",
-    "description": "<p><strong>Minor Magic:</strong> The vigilante gains the ability to cast a 0-level spell from the selected spell list. This spell can be cast two times per day as a spell-like ability. The caster level for this ability is equal to the vigilante's level. The save DC for this spell is equal to 10 + the vigilante's Intelligence modifier (for psychic, sorcerer/wizard, and witch spells), Wisdom (for cleric, druid, and shaman spells), or Charisma (for bard spells).</p>",
+    "description": "<p><strong>Minor Magic:</strong> A vigilante with this talent selects one of the following spells lists: bard, cleric, druid, psychic, shaman, sorcerer/wizard spell list, or witch. Once this decision is made, the selection cannot be changed. The vigilante gains the ability to cast a 0-level spell from the selected spell list. This spell can be cast two times per day as a spell-like ability. The caster level for this ability is equal to the vigilante's level. The save DC for this spell is equal to 10 + the vigilante's Intelligence modifier (for psychic, sorcerer/wizard, and witch spells), Wisdom (for cleric, druid, and shaman spells), or Charisma (for bard spells).</p>",
     "id": "minor_magic",
     "name": "Minor Magic",
     "nameSuffix": "(Sp)",
@@ -519,7 +519,7 @@
   },
   "morphic_weaponry": {
     "category": "Other Talents",
-    "description": "<p><strong>Morphic Weaponry:</strong> The vigilante can shape his body into weaponry. This acts as the oozemorph shifter's <em>morphic weaponry</em> ability, treating the vigilante's level as his shifter level. (Prerequisite: The shapechanger subtype)</p>\n<p><strong>Morphic Weaponry (Ex):</strong> Text from the oozemorph ability. An oozemorph can change the damage type of any number of her natural weapons. An oozemorph can form two primary natural attacks that each deal 1d6 points of bludgeoning, piercing, or slashing damage, chosen by the oozemorph when she forms them. The total number of natural attacks an oozemorph has at any given time includes those gained via her current form. For example, an 8th-level oozemorph who has taken the form of a wolf with <em>beast shape I</em> has a bite attack as part of that form; she can create only two additional natural attacks via <em>morphic weaponry,</em> for a total of three attacks available to her at that level. If the oozemorph later reverts to a humanoid form with no natural weapons, she can instead create three <em>morphic weapons.</em></p>",
+    "description": "<p><strong>Morphic Weaponry:</strong> The vigilante can shape his body into weaponry. This acts as the oozemorph shifter's <em>morphic weaponry</em> ability, treating the vigilante's level as his shifter level. (Prerequisite: The shapechanger subtype)</p>\n<p><strong>Morphic Weaponry (Ex):</strong> Text from the oozemorph ability. <em>Swift action:</em> An oozemorph can change the damage type of any number of her natural weapons. <em>Move action:</em> An oozemorph can form two primary natural attacks that each deal 1d6 points of bludgeoning, piercing, or slashing damage, chosen by the oozemorph when she forms them. At 6th level and every 9 levels thereafter: An oozemorph gains an additional primary natural attack. The total number of natural attacks an oozemorph has at any given time includes those gained via her current form. For example, an 8th-level oozemorph who has taken the form of a wolf with <em>beast shape I</em> has a bite attack as part of that form; she can create only two additional natural attacks via <em>morphic weaponry,</em> for a total of three attacks available to her at that level. If the oozemorph later reverts to a humanoid form with no natural weapons, she can instead create three <em>morphic weapons.</em></p>",
     "id": "morphic_weaponry",
     "name": "Morphic Weaponry",
     "nameSuffix": "(Ex)",
@@ -576,7 +576,7 @@
   },
   "perfect_vulnerability": {
     "category": "Other Talents",
-    "description": "<p><strong>Perfect Vulnerability:</strong> The vigilante can cleverly strike his foe where that foe is weakest. This attack targets the foe's touch AC, and the foe is denied her Dexterity bonus against the attack. Once a foe has been the target of <em>perfect vulnerability,</em> she can't be the target of the same vigilante's perfect vulnerability for 24 hours. (Prerequisite: 8th-level vigilante)</p>",
+    "description": "<p><strong>Perfect Vulnerability:</strong> <em>Standard action:</em> The vigilante can cleverly strike his foe where that foe is weakest. This attack targets the foe's touch AC, and the foe is denied her Dexterity bonus against the attack. Once a foe has been the target of <em>perfect vulnerability,</em> she can't be the target of the same vigilante's perfect vulnerability for 24 hours. (Prerequisite: 8th-level vigilante)</p>",
     "id": "perfect_vulnerability",
     "name": "Perfect Vulnerability",
     "nameSuffix": "(Ex)",
@@ -604,7 +604,7 @@
   },
   "pull_into_the_shadows": {
     "category": "Other Talents",
-    "description": "<p><strong>Pull into the Shadows:</strong> The vigilante can move up to his speed toward an opponent who is unaware of his presence (or who considers him an ally) and make a single attack against that opponent. If the attack hits, he can attempt a drag combat maneuver against that enemy with a +4 bonus and without provoking an attack of opportunity. If the drag succeeds, the vigilante doesn't need to have enough movement remaining to move with the enemy. The vigilante can't use this ability on a true ally or a willing target.</p>",
+    "description": "<p><strong>Pull into the Shadows:</strong> <em>Full-round action:</em> The vigilante can move up to his speed toward an opponent who is unaware of his presence (or who considers him an ally) and make a single attack against that opponent. If the attack hits, he can attempt a drag combat maneuver against that enemy with a +4 bonus and without provoking an attack of opportunity. If the drag succeeds, the vigilante doesn't need to have enough movement remaining to move with the enemy. The vigilante can't use this ability on a true ally or a willing target.</p>",
     "id": "pull_into_the_shadows",
     "name": "Pull into the Shadows",
     "nameSuffix": "(Ex)",
@@ -618,7 +618,7 @@
   },
   "racial_paragon": {
     "category": "Other Talents",
-    "description": "<p><strong>Racial Paragon:</strong> The vigilante can gain the benefit of a feat with a racial prerequisite he meets but doesn't have. This effect lasts for 1 minute. The vigilante must meet all the feat's prerequisites. The vigilante can use this ability again before the duration expires to replace a previous racial feat with another choice.~~~If a feat temporarily gained in this way has a daily use limitation, any uses of that feat while using this ability count toward that feat's daily limit. This vigilante talent can be selected multiple times. Each time it is selected after the first, the vigilante can use this ability to gain the benefits of one additional racial feat at the same time, or to reduce the action required to activate this talent by one step (a move action becomes a swift action, a swift action becomes a free action, and a free action becomes an immediate action).~~~If the vigilante chooses to gain the benefits of multiple feats, the feats selected must share the same racial prerequisite. He can use one of these feats to meet a prerequisite of a second feat; doing so means he cannot replace a feat currently fulfilling another's prerequisite without also replacing those feats that require it. Each individual feat selected counts toward his daily uses of this ability. (3 + half his vigilante level times/day (minimum 4))</p>",
+    "description": "<p><strong>Racial Paragon:</strong> <em>Move action:</em> The vigilante can gain the benefit of a feat with a racial prerequisite he meets but doesn't have. This effect lasts for 1 minute. The vigilante must meet all the feat's prerequisites. The vigilante can use this ability again before the duration expires to replace a previous racial feat with another choice.</p>\n<p>If a feat temporarily gained in this way has a daily use limitation, any uses of that feat while using this ability count toward that feat's daily limit. You can use this ability 4 times per day. This vigilante talent can be selected multiple times. Each time it is selected after the first, the vigilante can use this ability to gain the benefits of one additional racial feat at the same time, or to reduce the action required to activate this talent by one step (a move action becomes a swift action, a swift action becomes a free action, and a free action becomes an immediate action).</p>\n<p>If the vigilante chooses to gain the benefits of multiple feats, the feats selected must share the same racial prerequisite. He can use one of these feats to meet a prerequisite of a second feat; doing so means he cannot replace a feat currently fulfilling another's prerequisite without also replacing those feats that require it. Each individual feat selected counts toward his daily uses of this ability. (3 + half his vigilante level times/day (minimum 4))</p>",
     "id": "racial_paragon",
     "name": "Racial Paragon",
     "sources": [
@@ -631,7 +631,7 @@
   },
   "returning_weapon": {
     "category": "Other Talents",
-    "description": "<p><strong>Returning Weapon:</strong> The vigilante has a signature type of thrown weapon that returns to him. Whenever the vigilante uses the chosen type of weapon, it automatically returns as if it had the returning property. At 14th level: If the vigilante chose a type of thrown weapon that is treated as ammunition, such as shuriken, and buys a set of 50 magic ammunition of that type, he automatically replenishes them at no cost and never runs out. If he chose a non-ammunition thrown weapon instead, he can apply the magical properties of the first weapon he throws in a round to any nonmagical thrown weapons of that type he throws that round. This allows him to make a full attack with the benefits of his magical thrown weapon, even though it only returns next round.</p>",
+    "description": "<p><strong>Returning Weapon:</strong> The vigilante has a signature type of thrown weapon that returns to him. Choose a type of thrown weapon, such as throwing axes. Whenever the vigilante uses the chosen type of weapon, it automatically returns as if it had the returning property. At 14th level: If the vigilante chose a type of thrown weapon that is treated as ammunition, such as shuriken, and buys a set of 50 magic ammunition of that type, he automatically replenishes them at no cost and never runs out. If he chose a non-ammunition thrown weapon instead, he can apply the magical properties of the first weapon he throws in a round to any nonmagical thrown weapons of that type he throws that round. This allows him to make a full attack with the benefits of his magical thrown weapon, even though it only returns next round.</p>",
     "id": "returning_weapon",
     "name": "Returning Weapon",
     "nameSuffix": "(Ex)",
@@ -715,7 +715,7 @@
   },
   "shield_of_blades": {
     "category": "Other Talents",
-    "description": "<p><strong>Shield of Blades:</strong> The vigilante's wild attacks allow him to block his foes' counterattacks. He gains Power Attack as a bonus feat. If he already has the Power Attack feat, he can immediately swap it for another feat for which he qualified at the level he chose Power Attack.~~~When he takes an attack or full attack action, if he uses Power Attack on every attack to make melee attacks that use his Strength bonus on attack rolls, he gains a shield bonus to his AC until his next turn equal to his penalty on attack rolls from Power Attack. This bonus applies only if he actually takes that penalty on at least one of the attack rolls.</p>",
+    "description": "<p><strong>Shield of Blades:</strong> The vigilante's wild attacks allow him to block his foes' counterattacks. He gains Power Attack as a bonus feat. If he already has the Power Attack feat, he can immediately swap it for another feat for which he qualified at the level he chose Power Attack.</p>\n<p>When he takes an attack or full attack action, if he uses Power Attack on every attack to make melee attacks that use his Strength bonus on attack rolls, he gains a shield bonus to his AC until his next turn equal to his penalty on attack rolls from Power Attack. This bonus applies only if he actually takes that penalty on at least one of the attack rolls.</p>",
     "id": "shield_of_blades",
     "name": "Shield of Blades",
     "nameSuffix": "(Ex)",
@@ -743,7 +743,7 @@
   },
   "signature_arrows": {
     "category": "Other Talents",
-    "description": "<p><strong>Signature Arrows:</strong> After the first time the vigilante buys a set of 50 pieces of magic ammunition intended for the selected type of bow or crossbow, he can pay the construction cost instead of the purchase price for additional ammunition with identical magical effects for the same weapon, even if he could not normally craft magic ammunition. This benefit applies only to the first type of magic ammunition that the vigilante buys 50 pieces of for the designated weapon. The vigilante can take this talent more than once; each time he takes it, he can purchase and gain this benefit with either a specific type of magic ammunition for a different type of bow or crossbow or a different type of magic ammunition for the original weapon. (Prerequisite: 14th-level vigilante)</p>",
+    "description": "<p><strong>Signature Arrows:</strong> The vigilante must select one type of bow or crossbow (such as shortbow or heavy crossbow) when he selects this talent. After the first time the vigilante buys a set of 50 pieces of magic ammunition intended for the selected type of bow or crossbow, he can pay the construction cost instead of the purchase price for additional ammunition with identical magical effects for the same weapon, even if he could not normally craft magic ammunition. This benefit applies only to the first type of magic ammunition that the vigilante buys 50 pieces of for the designated weapon. The vigilante can take this talent more than once; each time he takes it, he can purchase and gain this benefit with either a specific type of magic ammunition for a different type of bow or crossbow or a different type of magic ammunition for the original weapon. (Prerequisite: 14th-level vigilante)</p>",
     "id": "signature_arrows",
     "name": "Signature Arrows",
     "nameSuffix": "(Ex)",
@@ -827,7 +827,7 @@
   },
   "steely_resolve": {
     "category": "Other Talents",
-    "description": "<p><strong>Steely Resolve:</strong> Three times per day, when the vigilante fails a Will saving throw against a mind-affecting effect, the vigilante can delay the effect's onset for a number of rounds equal to half his vigilante level, after which the vigilante is affected as normal by the entire effect. Rounds spent delaying the effect do not count toward the effect's duration.</p>",
+    "description": "<p><strong>Steely Resolve:</strong> <em>Immediate action:</em> Three times per day, when the vigilante fails a Will saving throw against a mind-affecting effect, the vigilante can delay the effect's onset for a number of rounds equal to half his vigilante level, after which the vigilante is affected as normal by the entire effect. Rounds spent delaying the effect do not count toward the effect's duration.</p>",
     "id": "steely_resolve",
     "name": "Steely Resolve",
     "nameSuffix": "(Ex)",
@@ -855,7 +855,7 @@
   },
   "sucker_punch": {
     "category": "Avenger Talents",
-    "description": "<p><strong>Sucker Punch:</strong> Whenever the vigilante attacks a foe that is unaware of his presence (or who views him as an ally), and the attack deals nonlethal damage, the attack deals an additional 1d6 points of nonlethal damage.</p>",
+    "description": "<p><strong>Sucker Punch:</strong> Whenever the vigilante attacks a foe that is unaware of his presence (or who views him as an ally), and the attack deals nonlethal damage, the attack deals an additional 1d6 points of nonlethal damage. This additional damage increases to 2d6 at 6th level, 3d6 at 12th level, and 4d6 at 18th level.</p>",
     "id": "sucker_punch",
     "name": "Sucker Punch",
     "nameSuffix": "(Ex)",
@@ -883,7 +883,7 @@
   },
   "surprise_strike": {
     "category": "Other Talents",
-    "description": "<p><strong>Surprise Strike:</strong> The vigilante gains a greater advantage when his foe is unable to defend herself. Whenever he makes an attack against a foe that is denied her Dexterity bonus to AC, he gains a +1 bonus on his attack roll.</p>",
+    "description": "<p><strong>Surprise Strike:</strong> The vigilante gains a greater advantage when his foe is unable to defend herself. Whenever he makes an attack against a foe that is denied her Dexterity bonus to AC, he gains a +1 bonus on his attack roll. This bonus increases to +2 at 8th level and +3 at 16th level.</p>",
     "id": "surprise_strike",
     "name": "Surprise Strike",
     "nameSuffix": "(Ex)",
@@ -897,7 +897,7 @@
   },
   "swamp_concoctions": {
     "category": "Other Talents",
-    "description": "<p><strong>Swamp Concoctions:</strong> Twice per day, the vigilante can use the <em>environmental weapon</em> vigilante talent to improvise an alchemical weapon worth no more than 15 gp per vigilante level. This improvised weapon cannot be sold and must be used within 3 rounds before it becomes inert.~~~The vigilante gains the benefits of the Throw Anything feat for the purpose of these improvised weapons. This ability cannot create improvised weapons that incorporate special materials unless those materials are also present. (Prerequisite: Environmental weapon (jungle, swamp, or water))</p>",
+    "description": "<p><strong>Swamp Concoctions:</strong> <em>Full-round action:</em> Twice per day, the vigilante can use the <em>environmental weapon</em> vigilante talent to improvise an alchemical weapon worth no more than 15 gp per vigilante level. This improvised weapon cannot be sold and must be used within 3 rounds before it becomes inert.</p>\n<p>The vigilante gains the benefits of the Throw Anything feat for the purpose of these improvised weapons. This ability cannot create improvised weapons that incorporate special materials unless those materials are also present. (Prerequisite: Environmental weapon (jungle, swamp, or water))</p>",
     "id": "swamp_concoctions",
     "level": 1,
     "name": "Swamp Concoctions",
@@ -926,7 +926,7 @@
   },
   "take_em_alive": {
     "category": "Other Talents",
-    "description": "<p><strong>Take 'Em Alive:</strong> The vigilante doesn't take the usual -4 penalty on attack rolls made to deal nonlethal damage with weapons that normally deal lethal damage. In addition, the vigilante gains a +1 bonus on all attack and damage rolls for attacks that deal only nonlethal damage and have no secondary effects (such as poison).</p>",
+    "description": "<p><strong>Take 'Em Alive:</strong> The vigilante doesn't take the usual -4 penalty on attack rolls made to deal nonlethal damage with weapons that normally deal lethal damage. In addition, the vigilante gains a +1 bonus on all attack and damage rolls for attacks that deal only nonlethal damage and have no secondary effects (such as poison). This bonus increases to +2 at 5th level, +3 at 8th level, +4 at 11th level, and +5 at 14th level.</p>",
     "id": "take_em_alive",
     "name": "Take 'Em Alive",
     "nameSuffix": "(Ex)",
@@ -1042,7 +1042,7 @@
   },
   "up_close_and_personal": {
     "category": "Stalker Talents",
-    "description": "<p><strong>Up Close and Personal:</strong> When the vigilante attempts an Acrobatics check to move through an opponent's space during a move action, he can attempt a single melee attack against that opponent. If the Acrobatics check succeeds, this attack applies the vigilante's <em>hidden strike</em> damage as if the foe were unaware of the vigilante. Otherwise, the vigilante applies the <em>hidden strike</em> damage he would deal if the target were denied its Dexterity bonus to AC. (Prerequisite: 4th-level stalker)</p>",
+    "description": "<p><strong>Up Close and Personal:</strong> <em>Swift action:</em> When the vigilante attempts an Acrobatics check to move through an opponent's space during a move action, he can attempt a single melee attack against that opponent. If the Acrobatics check succeeds, this attack applies the vigilante's <em>hidden strike</em> damage as if the foe were unaware of the vigilante. Otherwise, the vigilante applies the <em>hidden strike</em> damage he would deal if the target were denied its Dexterity bonus to AC. (Prerequisite: 4th-level stalker)</p>",
     "id": "up_close_and_personal",
     "name": "Up Close and Personal",
     "nameSuffix": "(Ex)",
@@ -1070,7 +1070,7 @@
   },
   "vital_punishment": {
     "category": "Other Talents",
-    "description": "<p><strong>Vital Punishment:</strong> Once per round, before he makes an attack of opportunity, he can declare it to be a <em>vital punishment.</em> If the attack hits, the vigilante can apply the Vital Strike feat. The vigilante can apply the Improved Vital Strike or Greater Vital Strike feat as his <em>vital punishment</em> instead if he later gains those feats. (Prerequisite: 6th-level vigilante)</p>",
+    "description": "<p><strong>Vital Punishment:</strong> The vigilante gains Vital Strike as a bonus feat, though he does not have to meet the prerequisites for this feat. Once per round, before he makes an attack of opportunity, he can declare it to be a <em>vital punishment.</em> If the attack hits, the vigilante can apply the Vital Strike feat. The vigilante can apply the Improved Vital Strike or Greater Vital Strike feat as his <em>vital punishment</em> instead if he later gains those feats. (Prerequisite: 6th-level vigilante)</p>",
     "id": "vital_punishment",
     "name": "Vital Punishment",
     "nameSuffix": "(Ex)",
@@ -1084,7 +1084,7 @@
   },
   "volatile_arrows": {
     "category": "Other Talents",
-    "description": "<p><strong>Volatile Arrows:</strong> A vigilante with this talent gains the ability to attach an alchemist bomb to a ranged attack he makes with a bow or crossbow as part of firing the attack. If the attack hits, it deals an additional amount of damage equal to that of an alchemist bomb, using the vigilante's level as his alchemist level to determine the bomb's damage. The vigilante can takes this talent multiple times. Each time he does, he can use the ability one additional time per day and he gains one alchemist discovery that can modify bombs, treating his vigilante level as his alchemist level for any prerequisites. He can apply these discoveries to his bombs as normal.</p>\n<p><strong>Bomb:</strong> Relevant text from the alchemist class ability. On a direct hit, your bomb inflicts 1d6 points of fire damage + additional damage equal to your Intelligence modifier (this bonus damage is not multiplied on a critical hit or by using feats such as Vital Strike). At 3rd level: The base bomb damage becomes 2d6. At 5th level: The base bomb damage becomes 3d6. At 7th level: The base bomb damage becomes 4d6. At 9th level: The base bomb damage becomes 5d6. At 11th level: The base bomb damage becomes 6d6. At 13th level: The base bomb damage becomes 7d6. At 15th level: The base bomb damage becomes 8d6. At 17th level: The base bomb damage becomes 9d6. At 19th level: The base bomb damage becomes 10d6.</p>",
+    "description": "<p><strong>Volatile Arrows:</strong> A vigilante with this talent gains the ability to attach an alchemist bomb to a ranged attack he makes with a bow or crossbow as part of firing the attack. If the attack hits, it deals an additional amount of damage equal to that of an alchemist bomb, using the vigilante's level as his alchemist level to determine the bomb's damage. You can use this ability a number of times per day equal to 3 + your Intelligence modifier. The vigilante can takes this talent multiple times. Each time he does, he can use the ability one additional time per day and he gains one alchemist discovery that can modify bombs, treating his vigilante level as his alchemist level for any prerequisites. He can apply these discoveries to his bombs as normal.</p>\n<p><strong>Bomb (Su):</strong> Relevant text from the alchemist class ability. <em>Standard action:</em> On a direct hit, your bomb inflicts 1d6 points of fire damage + additional damage equal to your Intelligence modifier (this bonus damage is not multiplied on a critical hit or by using feats such as Vital Strike). This provokes attacks of opportunity. At 3rd level: The base bomb damage becomes 2d6. At 5th level: The base bomb damage becomes 3d6. At 7th level: The base bomb damage becomes 4d6. At 9th level: The base bomb damage becomes 5d6. At 11th level: The base bomb damage becomes 6d6. At 13th level: The base bomb damage becomes 7d6. At 15th level: The base bomb damage becomes 8d6. At 17th level: The base bomb damage becomes 9d6. At 19th level: The base bomb damage becomes 10d6.</p>",
     "id": "volatile_arrows",
     "name": "Volatile Arrows",
     "nameSuffix": "(Ex)",
@@ -1098,7 +1098,7 @@
   },
   "vortex_splash": {
     "category": "Other Talents",
-    "description": "<p><strong>Vortex Splash:</strong> When in rain or waist deep in water, the vigilante can make a whirling splash, allowing him to attempt a single dirty trick combat maneuver or feint against each adjacent foe. The vigilante can make a separate choice for each target.</p>",
+    "description": "<p><strong>Vortex Splash:</strong> <em>Full-round action:</em> When in rain or waist deep in water, the vigilante can make a whirling splash, allowing him to attempt a single dirty trick combat maneuver or feint against each adjacent foe. The vigilante can make a separate choice for each target.</p>",
     "id": "vortex_splash",
     "name": "Vortex Splash",
     "nameSuffix": "(Ex)",

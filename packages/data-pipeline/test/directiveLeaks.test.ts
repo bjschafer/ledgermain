@@ -14,11 +14,11 @@ import { loadMonsters, loadMonsterTemplates, loadRefData } from "../src/index.js
  * every prose field of every collection instead, so the next time the dataset
  * changes its authoring format the failure lands here rather than on screen.
  *
- * Matching is deliberately narrow: `::name{` / `::name[` is directive syntax,
- * while a bare `::` is not (the archetype module has a genuine "Bonus Feat::"
+ * Matching is deliberately narrow: `::name{` / `::name[` is directive syntax
+ * (and `~~~`, a prop value's paragraph break), while a bare `::` is not (the archetype module has a genuine "Bonus Feat::"
  * typo, which is upstream's prose to fix, not a parser gap).
  */
-const DIRECTIVE_RE = /::[a-z][a-zA-Z0-9]*[[{]/;
+const DIRECTIVE_RE = /::[a-z][a-zA-Z0-9]*[[{]|~~~/;
 /** The dataset's angle-quote cross-ref system, and its inline link directives. */
 const CROSS_REF_RE = /[‹›«»]/;
 // Two forms. Every inline directive has a bracketed one; only the link family

@@ -105,7 +105,7 @@
     "uuid": "pfdata:rage-power:atavism_totem"
   },
   "auspicious_mark": {
-    "description": "<p><strong>Auspicious Mark:</strong> The barbarian has been marked by the spirits, as indicated by an impressive tattoo, scar, or birthmark she possesses. By spending 2 rounds of <em>rage,</em> the barbarian can call upon the spirits' favor. Using <em>auspicious mark</em> grants her a +1d6 bonus on one d20 roll she has just made. She can call on the <em>auspicious</em> mark after seeing the result of the d20 roll. (Once per <em>rage</em>)</p>",
+    "description": "<p><strong>Auspicious Mark:</strong> The barbarian has been marked by the spirits, as indicated by an impressive tattoo, scar, or birthmark she possesses. <em>Swift action:</em> By spending 2 rounds of <em>rage,</em> the barbarian can call upon the spirits' favor. Using <em>auspicious mark</em> grants her a +1d6 bonus on one d20 roll she has just made. She can call on the <em>auspicious</em> mark after seeing the result of the d20 roll. (Once per <em>rage</em>)</p>",
     "id": "auspicious_mark",
     "name": "Auspicious Mark",
     "nameSuffix": "(Su)",
@@ -269,7 +269,7 @@
     "uuid": "pfdata:rage-power:boasting_taunt"
   },
   "body_bludgeon": {
-    "description": "<p><strong>Body Bludgeon:</strong> While <em>raging,</em> if the barbarian pins an opponent that is smaller than her, she can then use that opponent as a two-handed improvised weapon that deals 1d8 points of bludgeoning damage, assuming the opponent is sized Small. Larger or smaller creatures used as a bludgeon deal damage based on their size using this base damage. A size Tiny creature deals 1d6 points of damage, a size Medium creature deals 1d10 points of damage, and so on.~~~The barbarian can make a single attack using the pinned opponent as part of the action she uses to maintain the grapple, using her highest attack bonus. Whenever the barbarian hits using the pinned opponent as a weapon, she deals damage to her target normally, and the grappled opponent used as a bludgeon also takes the same damage she dealt to the target. If the pinned opponent is unable to resist being pinned for any reason, the barbarian can use that opponent as an improvised weapon without grappling or pinning the opponent, until the creature is reduced to 0 or fewer hit points, at which point the creature becomes useless as an improvised weapon. (Prerequisite: 10th-level barbarian)</p>",
+    "description": "<p><strong>Body Bludgeon:</strong> While <em>raging,</em> if the barbarian pins an opponent that is smaller than her, she can then use that opponent as a two-handed improvised weapon that deals 1d8 points of bludgeoning damage, assuming the opponent is sized Small. Larger or smaller creatures used as a bludgeon deal damage based on their size using this base damage. A size Tiny creature deals 1d6 points of damage, a size Medium creature deals 1d10 points of damage, and so on.</p>\n<p>The barbarian can make a single attack using the pinned opponent as part of the action she uses to maintain the grapple, using her highest attack bonus. Whenever the barbarian hits using the pinned opponent as a weapon, she deals damage to her target normally, and the grappled opponent used as a bludgeon also takes the same damage she dealt to the target. If the pinned opponent is unable to resist being pinned for any reason, the barbarian can use that opponent as an improvised weapon without grappling or pinning the opponent, until the creature is reduced to 0 or fewer hit points, at which point the creature becomes useless as an improvised weapon. (Prerequisite: 10th-level barbarian)</p>",
     "id": "body_bludgeon",
     "name": "Body Bludgeon",
     "nameSuffix": "(Ex)",
@@ -304,7 +304,7 @@
     "uuid": "pfdata:rage-power:breathtaker"
   },
   "cairn_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a cairn linnorm. The character's melee attacks deal an additional 1 point of negative energy damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of decay</em> (Will negates).\" prereq=\"8th-level barbarian\"</p>\n<p><strong>Curse of Decay:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target takes 1 point of Con damage per day and ages at a rate of 1 year per day (eventually incurring all of the penalties of old age but none of the bonuses)</p>",
+    "description": "<p><strong>Cairn Linnorm Death Curse</strong></p>\n<p>The character channels the power of a cairn linnorm. The character's melee attacks deal an additional 1 point of negative energy damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of decay</em> (Will negates).\" prereq=\"8th-level barbarian\"</p>\n<p><strong>Curse of Decay:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target takes 1 point of Con damage per day and ages at a rate of 1 year per day (eventually incurring all of the penalties of old age but none of the bonuses)</p>",
     "id": "cairn_linnorm_death_curse",
     "name": "Cairn Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -371,7 +371,7 @@
     "uuid": "pfdata:rage-power:chaos_totem"
   },
   "clear_mind": {
-    "description": "<p><strong>Clear Mind:</strong> A barbarian may reroll a failed Will save. This power is used after the first save is attempted, but before the results are revealed by the GM. The barbarian must take the second result, even if it is worse. This power can only be used once per <em>rage.</em> (Prerequisite: 8th-level barbarian)</p>",
+    "description": "<p><strong>Clear Mind:</strong> <em>Immediate action:</em> A barbarian may reroll a failed Will save. This power is used after the first save is attempted, but before the results are revealed by the GM. The barbarian must take the second result, even if it is worse. This power can only be used once per <em>rage.</em> (Prerequisite: 8th-level barbarian)</p>",
     "id": "clear_mind",
     "name": "Clear Mind",
     "nameSuffix": "(Ex)",
@@ -383,7 +383,7 @@
     "uuid": "pfdata:rage-power:clear_mind"
   },
   "come_and_get_me": {
-    "description": "<p><strong>Come and Get Me:</strong> While <em>raging,</em> the barbarian may leave herself open to attack while preparing devastating counterattacks. Enemies gain a +4 bonus on attack and damage rolls against the barbarian until the beginning of her next turn, but every attack against the barbarian provokes an attack of opportunity from her, which is resolved prior to resolving each enemy attack. (Prerequisite: 12th-level barbarian)</p>",
+    "description": "<p><strong>Come and Get Me:</strong> <em>Free action:</em> While <em>raging,</em> the barbarian may leave herself open to attack while preparing devastating counterattacks. Enemies gain a +4 bonus on attack and damage rolls against the barbarian until the beginning of her next turn, but every attack against the barbarian provokes an attack of opportunity from her, which is resolved prior to resolving each enemy attack. (Prerequisite: 12th-level barbarian)</p>",
     "id": "come_and_get_me",
     "name": "Come and Get Me",
     "nameSuffix": "(Ex)",
@@ -407,7 +407,7 @@
     "uuid": "pfdata:rage-power:contagious_rage"
   },
   "crag_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a crag linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of fire</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Fire:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire</p>",
+    "description": "<p><strong>Crag Linnorm Death Curse</strong></p>\n<p>The character channels the power of a crag linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of fire</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Fire:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire</p>",
     "id": "crag_linnorm_death_curse",
     "name": "Crag Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -520,7 +520,7 @@
   },
   "draconic_blood": {
     "category": "Blood",
-    "description": "<p><strong>Draconic Blood:</strong> While <em>raging,</em> the barbarian gains resistance 5 against the chosen energy type and a +1 natural armor bonus. (Prerequisite: 6th-level barbarian, lesser draconic blood)</p>",
+    "description": "<p><strong>Draconic Blood:</strong> Choose an energy type from the following: acid, cold, fire, or electricity. While <em>raging,</em> the barbarian gains resistance 5 against the chosen energy type and a +1 natural armor bonus. (Prerequisite: 6th-level barbarian, lesser draconic blood)</p>",
     "id": "draconic_blood",
     "level": 1,
     "name": "Draconic Blood",
@@ -534,7 +534,7 @@
   },
   "dragon_totem": {
     "category": "Totem",
-    "description": "<p><strong>Dragon Totem:</strong> While <em>raging,</em> she gains a +1 bonus on Perception checks and a +1 morale bonus on saving throws against fear, paralysis, and sleep effects. This bonus increases by +1 for each additional dragon totem rage power (such as dragon totem resilience and dragon totem wings) the barbarian possesses. (Prerequisite: Animal fury, intimidating glare, 6th-level barbarian)</p>",
+    "description": "<p><strong>Dragon Totem:</strong> The barbarian must select a single color of dragon (black, blue, brass, bronze, copper, gold, green, red, silver, or white) as her totem. While <em>raging,</em> she gains a +1 bonus on Perception checks and a +1 morale bonus on saving throws against fear, paralysis, and sleep effects. This bonus increases by +1 for each additional dragon totem rage power (such as dragon totem resilience and dragon totem wings) the barbarian possesses. (Prerequisite: Animal fury, intimidating glare, 6th-level barbarian)</p>",
     "id": "dragon_totem",
     "name": "Dragon Totem",
     "nameSuffix": "(Su)",
@@ -561,7 +561,7 @@
   },
   "dragon_totem_wings": {
     "category": "Totem",
-    "description": "<p><strong>Dragon Totem Wings:</strong> When a barbarian selects this rage power, the Fly (Dex) skill becomes a class skill for her. While <em>raging</em> and wearing medium or lighter armor, the barbarian can manifest a pair of spiritual dragon wings that grant her a fly speed equal to her base speed (average maneuverability). She can expend 2 rounds of her <em>rage</em> to instead use an immediate action to gain this fly speed. She can end her fly speed at any time, even when it is not her turn. Each round she spends <em>raging</em> and flying counts as 2 rounds of <em>rage.</em> Her ability to fly ends automatically when she ceases <em>raging.</em> (Prerequisite: Dragon totem, dragon totem resilience, 10th-level barbarian)</p>",
+    "description": "<p><strong>Dragon Totem Wings:</strong> When a barbarian selects this rage power, the Fly (Dex) skill becomes a class skill for her. <em>Standard action:</em> While <em>raging</em> and wearing medium or lighter armor, the barbarian can manifest a pair of spiritual dragon wings that grant her a fly speed equal to her base speed (average maneuverability). She can expend 2 rounds of her <em>rage</em> to instead use an immediate action to gain this fly speed. She can end her fly speed at any time, even when it is not her turn. Each round she spends <em>raging</em> and flying counts as 2 rounds of <em>rage.</em> Her ability to fly ends automatically when she ceases <em>raging.</em> (Prerequisite: Dragon totem, dragon totem resilience, 10th-level barbarian)</p>",
     "id": "dragon_totem_wings",
     "level": 2,
     "name": "Dragon Totem Wings",
@@ -666,7 +666,7 @@
     "uuid": "pfdata:rage-power:energy_absorption"
   },
   "energy_eruption": {
-    "description": "<p><strong>Energy Eruption:</strong> While <em>raging,</em> the barbarian can absorb energy from a single attack and unleash it upon her enemies. She does not make a saving throw against the effect but takes no damage from it.~~~At any point during the remainder of her <em>rage</em> she can unleash the stored energy as a breath weapon in either a 60-foot line or 30-foot cone. The breath weapon inflicts damage equal to the damage from the attack absorbed by the barbarian, but creatures within the area may make a Reflex save (DC 10 + 1/2 the barbarian's level + the barbarian's Constitution modifier) for half damage even if the original effect did not allow a save. (Once per <em>rage</em>) (Prerequisite: 16th-level barbarian, energy absorption)</p>",
+    "description": "<p><strong>Energy Eruption:</strong> While <em>raging,</em> the barbarian can absorb energy from a single attack and unleash it upon her enemies. She does not make a saving throw against the effect but takes no damage from it.</p>\n<p>At any point during the remainder of her <em>rage</em> she can unleash the stored energy as a breath weapon in either a 60-foot line or 30-foot cone. The breath weapon inflicts damage equal to the damage from the attack absorbed by the barbarian, but creatures within the area may make a Reflex save (DC 10 + 1/2 the barbarian's level + the barbarian's Constitution modifier) for half damage even if the original effect did not allow a save. (Once per <em>rage</em>) (Prerequisite: 16th-level barbarian, energy absorption)</p>",
     "id": "energy_eruption",
     "level": 3,
     "name": "Energy Eruption",
@@ -728,7 +728,7 @@
     "uuid": "pfdata:rage-power:fearless_rage"
   },
   "feast_of_blood": {
-    "description": "<p><strong>Feast of Blood:</strong> While <em>raging,</em> the barbarian may feast on the organs of her foes and absorb their power. After successfully ripping out a creature's vital organ, the barbarian may eat the organ within 1 minute of extracting it. Once the organ is consumed, the barbarian recovers a number of hit points equal to the Hit Dice of the organ's owner.~~~In addition, the barbarian gains any energy immunities or resistances the victim had, though the effectiveness of these resistances is halved (for instance, a barbarian who eats the heart of a creature with resist cold 10 would gain resist cold 5; energy immunities are reduced to resist energy 20). This energy resistance lasts for a number of rounds equal to half the Hit Dice of the creature whose organ was consumed. (Prerequisite: Bloody fist, 14th-level barbarian)</p>",
+    "description": "<p><strong>Feast of Blood:</strong> While <em>raging,</em> the barbarian may feast on the organs of her foes and absorb their power. <em>Full-round action:</em> After successfully ripping out a creature's vital organ, the barbarian may eat the organ within 1 minute of extracting it. Once the organ is consumed, the barbarian recovers a number of hit points equal to the Hit Dice of the organ's owner.</p>\n<p>In addition, the barbarian gains any energy immunities or resistances the victim had, though the effectiveness of these resistances is halved (for instance, a barbarian who eats the heart of a creature with resist cold 10 would gain resist cold 5; energy immunities are reduced to resist energy 20). This energy resistance lasts for a number of rounds equal to half the Hit Dice of the creature whose organ was consumed. This provokes attacks of opportunity. (Prerequisite: Bloody fist, 14th-level barbarian)</p>",
     "id": "feast_of_blood",
     "level": 1,
     "name": "Feast of Blood",
@@ -778,7 +778,7 @@
     "uuid": "pfdata:rage-power:ferocious_mount"
   },
   "ferocious_trample": {
-    "description": "<p><strong>Ferocious Trample:</strong> While <em>raging</em> and mounted, the barbarian's mount gains the trample special attack. This attack inflicts 1d8 points of damage for a Medium mount, 2d6 for a Large mount, or 2d8 for a Huge mount, plus 1-1/2 times the mount's Strength modifier. A successful Reflex save (DC 10 + 1/2 the barbarian's level + the mount's Strength modifier) halves this damage.~~~Creatures in the mount's path or that threaten squares it passes through may make attacks of opportunity against either the barbarian or the mount, but not both. (Prerequisite: 8th-level barbarian, ferocious mount)</p>",
+    "description": "<p><strong>Ferocious Trample:</strong> While <em>raging</em> and mounted, the barbarian's mount gains the trample special attack. This attack inflicts 1d8 points of damage for a Medium mount, 2d6 for a Large mount, or 2d8 for a Huge mount, plus 1-1/2 times the mount's Strength modifier. A successful Reflex save (DC 10 + 1/2 the barbarian's level + the mount's Strength modifier) halves this damage.</p>\n<p>Creatures in the mount's path or that threaten squares it passes through may make attacks of opportunity against either the barbarian or the mount, but not both. (Prerequisite: 8th-level barbarian, ferocious mount)</p>",
     "id": "ferocious_trample",
     "level": 1,
     "name": "Ferocious Trample",
@@ -845,7 +845,7 @@
     "uuid": "pfdata:rage-power:fire_totem"
   },
   "fjord_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a fjord linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of drowning</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Drowning:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is unable to breathe water (even with magic), can hold its breath only half as long as normal, and is sickened whenever it holds its breath</p>",
+    "description": "<p><strong>Fjord Linnorm Death Curse</strong></p>\n<p>The character channels the power of a fjord linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of drowning</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Drowning:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is unable to breathe water (even with magic), can hold its breath only half as long as normal, and is sickened whenever it holds its breath</p>",
     "id": "fjord_linnorm_death_curse",
     "name": "Fjord Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -869,7 +869,7 @@
     "uuid": "pfdata:rage-power:flesh_wound"
   },
   "flight_response": {
-    "description": "<p><strong>Flight Response:</strong> When a barbarian attempts a saving throw against a fear effect, she can enter a <em>rage</em> (as long as she would normally be able to enter <em>rage</em>). This consumes 3 rounds of the barbarian's daily allotment of <em>rage</em> rounds, but the barbarian can maintain the <em>rage</em> each round on her turn normally. Any benefits from the barbarian's <em>rage</em> apply immediately, so she gains her bonus on Will saves against the effect that required the initial saving throw. Unlike most rage powers, this rage power's effects are useful only when the barbarian is not <em>raging,</em> so a skald can't grant this rage power to allies with raging song.</p>",
+    "description": "<p><strong>Flight Response:</strong> <em>Immediate action:</em> When a barbarian attempts a saving throw against a fear effect, she can enter a <em>rage</em> (as long as she would normally be able to enter <em>rage</em>). This consumes 3 rounds of the barbarian's daily allotment of <em>rage</em> rounds, but the barbarian can maintain the <em>rage</em> each round on her turn normally. Any benefits from the barbarian's <em>rage</em> apply immediately, so she gains her bonus on Will saves against the effect that required the initial saving throw. Unlike most rage powers, this rage power's effects are useful only when the barbarian is not <em>raging,</em> so a skald can't grant this rage power to allies with raging song.</p>",
     "id": "flight_response",
     "name": "Flight Response",
     "sources": [
@@ -967,7 +967,7 @@
   },
   "greater_air_totem": {
     "category": "Totem",
-    "description": "<p><strong>Greater Air Totem:</strong> While <em>raging,</em> the barbarian is surrounded by an aura of howling winds. Creatures attempting to cast spells while adjacent to the barbarian must succeed at a concentration check (DC 15 + spell level), and ranged attack rolls against the barbarian take a -4 penalty.~~~Creatures smaller than the barbarian that attack the barbarian in melee with a natural weapon or touch attack must succeed at a Fortitude save (DC 10 + 1/2 the barbarian's level + the barbarian's Constitution modifier) or the attack fails and the creature is flung back 5 feet and knocked prone. The barbarian can suspend this aura as a free action. (Prerequisite: 10th-level barbarian, air totem)</p>",
+    "description": "<p><strong>Greater Air Totem:</strong> While <em>raging,</em> the barbarian is surrounded by an aura of howling winds. Creatures attempting to cast spells while adjacent to the barbarian must succeed at a concentration check (DC 15 + spell level), and ranged attack rolls against the barbarian take a -4 penalty.</p>\n<p>Creatures smaller than the barbarian that attack the barbarian in melee with a natural weapon or touch attack must succeed at a Fortitude save (DC 10 + 1/2 the barbarian's level + the barbarian's Constitution modifier) or the attack fails and the creature is flung back 5 feet and knocked prone. The barbarian can suspend this aura as a free action. (Prerequisite: 10th-level barbarian, air totem)</p>",
     "id": "greater_air_totem",
     "level": 2,
     "name": "Greater Air Totem",
@@ -981,7 +981,7 @@
   },
   "greater_ancestor_totem": {
     "category": "Totem",
-    "description": "<p><strong>Greater Ancestor Totem:</strong> The barbarian's insight bonus to her chosen skill increases to +6. Once per <em>rage,</em> she can spend one round of <em>rage</em> to reroll a skill check in the chosen skill. She must take the result of the second roll, even if it is lower. (Prerequisite: Ancestor totem, 10th-level barbarian)</p>",
+    "description": "<p><strong>Greater Ancestor Totem:</strong> The barbarian's insight bonus to her chosen skill increases to +6. <em>Immediate action:</em> Once per <em>rage,</em> she can spend one round of <em>rage</em> to reroll a skill check in the chosen skill. She must take the result of the second roll, even if it is lower. (Prerequisite: Ancestor totem, 10th-level barbarian)</p>",
     "id": "greater_ancestor_totem",
     "level": 2,
     "name": "Greater Ancestor Totem",
@@ -1469,7 +1469,7 @@
     "uuid": "pfdata:rage-power:greater_water_totem"
   },
   "ground_breaker": {
-    "description": "<p><strong>Ground Breaker:</strong> The barbarian can attack the floor around her. This attack automatically hits and deals damage normally. If the barbarian manages to deal more damage than the floor's hardness, the space she occupies and all of the squares adjacent to her become difficult terrain. Creatures in these squares, except the barbarian, must make a DC 15 Reflex save or be knocked prone. (Once per <em>rage</em>) (Prerequisite: 6th-level barbarian)</p>",
+    "description": "<p><strong>Ground Breaker:</strong> <em>Standard action:</em> The barbarian can attack the floor around her. This attack automatically hits and deals damage normally. If the barbarian manages to deal more damage than the floor's hardness, the space she occupies and all of the squares adjacent to her become difficult terrain. Creatures in these squares, except the barbarian, must make a DC 15 Reflex save or be knocked prone. (Once per <em>rage</em>) (Prerequisite: 6th-level barbarian)</p>",
     "id": "ground_breaker",
     "name": "Ground Breaker",
     "nameSuffix": "(Ex)",
@@ -1493,7 +1493,7 @@
     "uuid": "pfdata:rage-power:guarded_life"
   },
   "guarded_stance": {
-    "description": "<p><strong>Guarded Stance:</strong> The barbarian gains a dodge bonus to her Armor Class against melee attacks for a number of rounds equal to the barbarian's current Constitution modifier (minimum 1). This dodge bonus is equal to 1 + one-sixth her barbarian level.</p>",
+    "description": "<p><strong>Guarded Stance:</strong> <em>Move action:</em> The barbarian gains a dodge bonus to her Armor Class against melee attacks for a number of rounds equal to the barbarian's current Constitution modifier (minimum 1). This dodge bonus is equal to 1 + one-sixth her barbarian level. This does not provoke attacks of opportunity.</p>",
     "id": "guarded_stance",
     "name": "Guarded Stance",
     "nameSuffix": "(Ex)",
@@ -1518,7 +1518,7 @@
     "uuid": "pfdata:rage-power:guarded_stance_stance"
   },
   "hissing_rage": {
-    "description": "<p>Once per hour, the barbarian can spit venom at an adjacent enemy. She must make a touch attack to successfully spit on a foe in this way, but she can also apply this poison as a <strong>swift action</strong> when she hits with a bite attack.</p>\n<p><strong>Hissing Rage Poison:</strong> Bite-contact or injury; <em>save</em> Fort DC 10 + 1/2 the barbarian's level + their Con modifier; <em>frequency</em> 1/round for 6 rounds; <em>effect</em> 1d2 Str damage; <em>cure</em> 2 consecutive saves</p>",
+    "description": "<p><strong>Hissing Rage:</strong> (Once per hour)</p>\n<p><strong>Standard action:</strong> Once per hour, the barbarian can spit venom at an adjacent enemy. She must make a touch attack to successfully spit on a foe in this way, but she can also apply this poison as a <strong>swift action</strong> when she hits with a bite attack.</p>\n<p><strong>Hissing Rage Poison:</strong> Bite-contact or injury; <em>save</em> Fort DC 10 + 1/2 the barbarian's level + their Con modifier; <em>frequency</em> 1/round for 6 rounds; <em>effect</em> 1d2 Str damage; <em>cure</em> 2 consecutive saves</p>",
     "id": "hissing_rage",
     "name": "Hissing Rage",
     "nameSuffix": "(Su)",
@@ -1531,7 +1531,7 @@
   },
   "hive_totem": {
     "category": "Totem",
-    "description": "<p><strong>Hive Totem:</strong> While <em>raging,</em> the barbarian takes half damage from attacks by swarms of vermin, including spells and effects that act like a swarm of vermin (like summon swarm used to summon spiders or insect plague).~~~She also gains a bonus on Strength ability checks and to CMD against bull rush, drag, and trip attacks equal to one-fourth of her barbarian level. (Prerequisite: Animal fury, 4th-level barbarian)</p>",
+    "description": "<p><strong>Hive Totem:</strong> While <em>raging,</em> the barbarian takes half damage from attacks by swarms of vermin, including spells and effects that act like a swarm of vermin (like summon swarm used to summon spiders or insect plague).</p>\n<p>She also gains a bonus on Strength ability checks and to CMD against bull rush, drag, and trip attacks equal to one-fourth of her barbarian level. (Prerequisite: Animal fury, 4th-level barbarian)</p>",
     "id": "hive_totem",
     "name": "Hive Totem",
     "nameSuffix": "(Su)",
@@ -1610,7 +1610,7 @@
     "uuid": "pfdata:rage-power:hurling_charge"
   },
   "ice_linnorm_death_curse": {
-    "description": "<p>The character channels the power of an ice linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed, the attacker suffers the <em>curse of frost.</em>\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Frost:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to cold</p>",
+    "description": "<p><strong>Ice Linnorm Death Curse</strong></p>\n<p>The character channels the power of an ice linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed, the attacker suffers the <em>curse of frost.</em>\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Frost:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to cold</p>",
     "id": "ice_linnorm_death_curse",
     "name": "Ice Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -1622,7 +1622,7 @@
     "uuid": "pfdata:rage-power:ice_linnorm_death_curse"
   },
   "impelling_disarm": {
-    "description": "<p><strong>Impelling Disarm:</strong> The barbarian can make a disarm attempt against a target in place of a melee attack. This attempt does not provoke attacks of opportunity.~~~If successful, the barbarian sends the target's weapon flying - either straight at the target, or spinning away to strike another foe up to 20 feet away. This ranged attack has a -4 penalty, as it is treated as throwing a weapon that isn't designed to be thrown, even if the weapon disarmed is a thrown weapon.~~~The barbarian makes a ranged attack, which doesn't provoke attacks of opportunity, at either the target of his disarm maneuver or another creature within 20 feet. If the barbarian is aiming for the disarmed creature, the foe doesn't count as being in melee for determining any penalty on the ranged attack from throwing a ranged weapon into melee. If the ranged attack hits, the disarmed weapon deals damage as if the barbarian had thrown it. The barbarian can choose to aim the disarmed weapon at a square rather than at a foe. (Once per <em>rage</em>) (Prerequisite: 4th-level barbarian)</p>",
+    "description": "<p><strong>Impelling Disarm:</strong> The barbarian can make a disarm attempt against a target in place of a melee attack. This attempt does not provoke attacks of opportunity.</p>\n<p>If successful, the barbarian sends the target's weapon flying - either straight at the target, or spinning away to strike another foe up to 20 feet away. This ranged attack has a -4 penalty, as it is treated as throwing a weapon that isn't designed to be thrown, even if the weapon disarmed is a thrown weapon.</p>\n<p>The barbarian makes a ranged attack, which doesn't provoke attacks of opportunity, at either the target of his disarm maneuver or another creature within 20 feet. If the barbarian is aiming for the disarmed creature, the foe doesn't count as being in melee for determining any penalty on the ranged attack from throwing a ranged weapon into melee. If the ranged attack hits, the disarmed weapon deals damage as if the barbarian had thrown it. The barbarian can choose to aim the disarmed weapon at a square rather than at a foe. (Once per <em>rage</em>) (Prerequisite: 4th-level barbarian)</p>",
     "id": "impelling_disarm",
     "name": "Impelling Disarm",
     "nameSuffix": "(Ex)",
@@ -1660,7 +1660,7 @@
     "uuid": "pfdata:rage-power:infernal_blood"
   },
   "inspire_ferocity": {
-    "description": "<p><strong>Inspire Ferocity:</strong> While <em>raging,</em> the barbarian can impart her <em>reckless abandon</em> modifier to all willing allies within 30 feet for a number of rounds equal to her Charisma modifier (minimum 1). (Prerequisite: Reckless abandon)</p>",
+    "description": "<p><strong>Inspire Ferocity:</strong> <em>Move action:</em> While <em>raging,</em> the barbarian can impart her <em>reckless abandon</em> modifier to all willing allies within 30 feet for a number of rounds equal to her Charisma modifier (minimum 1). (Prerequisite: Reckless abandon)</p>",
     "id": "inspire_ferocity",
     "level": 1,
     "name": "Inspire Ferocity",
@@ -1685,7 +1685,7 @@
     "uuid": "pfdata:rage-power:internal_fortitude"
   },
   "intimidating_glare": {
-    "description": "<p><strong>Intimidating Glare:</strong> The barbarian can make an Intimidate check against one adjacent foe. If the barbarian successfully demoralizes her opponent, the foe is shaken for 1d4 rounds + 1 round for every 5 points by which the barbarian's check exceeds the DC.</p>",
+    "description": "<p><strong>Intimidating Glare:</strong> <em>Move action:</em> The barbarian can make an Intimidate check against one adjacent foe. If the barbarian successfully demoralizes her opponent, the foe is shaken for 1d4 rounds + 1 round for every 5 points by which the barbarian's check exceeds the DC.</p>",
     "id": "intimidating_glare",
     "name": "Intimidating Glare",
     "nameSuffix": "(Ex)",
@@ -1709,7 +1709,7 @@
   },
   "kelizandris_tide": {
     "category": "Elemental",
-    "description": "<p><strong>Kelizandri's Tide:</strong> Once per day after attempting this maneuver, she can attack each adjacent creature as if using the Whirlwind Attack feat. If she has the Whirlwind Attack feat, she can also use it as a free action in this way one additional time per day. The barbarian can attempt a single combat maneuver check against each creature within 10 feet of her. If her roll equals or exceeds a creature's CMD, she moves that creature 5 feet closer to her.</p>",
+    "description": "<p><strong>Kelizandri's Tide:</strong> Once per day after attempting this maneuver, she can attack each adjacent creature as if using the Whirlwind Attack feat. If she has the Whirlwind Attack feat, she can also use it as a free action in this way one additional time per day. <em>Full-round action:</em> When the barbarian <em>rages,</em> enemies find it difficult to escape the vortex of her fury. The barbarian can attempt a single combat maneuver check against each creature within 10 feet of her. If her roll equals or exceeds a creature's CMD, she moves that creature 5 feet closer to her.</p>",
     "id": "kelizandris_tide",
     "name": "Kelizandri's Tide",
     "nameSuffix": "(Su)",
@@ -1721,7 +1721,7 @@
     "uuid": "pfdata:rage-power:kelizandris_tide"
   },
   "knockback": {
-    "description": "<p><strong>Knockback:</strong> Once per round, the barbarian can make a bull rush attempt against one target in place of a melee attack. If successful, the target takes damage equal to the barbarian's Strength modifier and is moved back as normal. The barbarian does not need to move with the target if successful.</p>",
+    "description": "<p><strong>Knockback:</strong> Once per round, the barbarian can make a bull rush attempt against one target in place of a melee attack. If successful, the target takes damage equal to the barbarian's Strength modifier and is moved back as normal. The barbarian does not need to move with the target if successful. This does not provoke attacks of opportunity.</p>",
     "id": "knockback",
     "name": "Knockback",
     "nameSuffix": "(Ex)",
@@ -1733,7 +1733,7 @@
     "uuid": "pfdata:rage-power:knockback"
   },
   "knockdown": {
-    "description": "<p><strong>Knockdown:</strong> Once per <em>rage,</em> the barbarian can make a trip attack against one target in place of a melee attack. If successful, the target takes damage equal to the barbarian's Strength modifier and is knocked prone.</p>",
+    "description": "<p><strong>Knockdown:</strong> Once per <em>rage,</em> the barbarian can make a trip attack against one target in place of a melee attack. If successful, the target takes damage equal to the barbarian's Strength modifier and is knocked prone. This does not provoke attacks of opportunity.</p>",
     "id": "knockdown",
     "name": "Knockdown",
     "nameSuffix": "(Ex)",
@@ -1746,7 +1746,7 @@
   },
   "knockdown_stance": {
     "category": "Stance",
-    "description": "<p><strong>Knockdown Stance:</strong> The barbarian can focus on toppling her foes. Once per round, she can make a trip attack against one target in place of a melee attack. If she succeeds, the target is knocked prone.</p>",
+    "description": "<p><strong>Knockdown Stance:</strong> The barbarian can focus on toppling her foes. Once per round, she can make a trip attack against one target in place of a melee attack. If she succeeds, the target is knocked prone. This does not provoke attacks of opportunity.</p>",
     "id": "knockdown_stance",
     "name": "Knockdown Stance",
     "nameSuffix": "(Ex)",
@@ -1888,7 +1888,7 @@
   },
   "lesser_elemental_blood": {
     "category": "Blood",
-    "description": "<p><strong>Lesser Elemental Blood:</strong> While <em>raging,</em> the barbarian can imbue her melee attacks with elemental energy, dealing an additional 1d6 points of damage of the chosen energy type for 1 round. (3 times/day)</p>",
+    "description": "<p><strong>Lesser Elemental Blood:</strong> Choose an energy type: acid, cold, fire, or electricity. <em>Swift action:</em> While <em>raging,</em> the barbarian can imbue her melee attacks with elemental energy, dealing an additional 1d6 points of damage of the chosen energy type for 1 round. (3 times/day)</p>",
     "id": "lesser_elemental_blood",
     "name": "Lesser Elemental Blood",
     "nameSuffix": "(Su)",
@@ -1900,7 +1900,7 @@
     "uuid": "pfdata:rage-power:lesser_elemental_blood"
   },
   "lesser_elemental_rage": {
-    "description": "<p><strong>Lesser Elemental Rage:</strong> The barbarian can cause her melee attacks to deal an additional 1d6 points of energy damage (acid, cold, electricity, or fire) for 1 round. (Once per <em>rage</em>) (Prerequisite: 4th-level barbarian)</p>",
+    "description": "<p><strong>Lesser Elemental Rage:</strong> <em>Swift action:</em> The barbarian can cause her melee attacks to deal an additional 1d6 points of energy damage (acid, cold, electricity, or fire) for 1 round. (Once per <em>rage</em>) (Prerequisite: 4th-level barbarian)</p>",
     "id": "lesser_elemental_rage",
     "name": "Lesser Elemental Rage",
     "nameSuffix": "(Su)",
@@ -1913,7 +1913,7 @@
   },
   "lesser_elemental_totem": {
     "category": "Totem",
-    "description": "<p><strong>Lesser Elemental Totem:</strong> While <em>raging,</em> the barbarian gains a bonus on saving throws against spells with the selected elemental descriptor. @B-4f1-barbarian. The barbarian gains access to the elemental totem rage power matching the element she selected.</p>",
+    "description": "<p><strong>Lesser Elemental Totem:</strong> The barbarian selects one elemental type (air, earth, fire, or water). Once selected, this choice cannot be changed. While <em>raging,</em> the barbarian gains a bonus on saving throws against spells with the selected elemental descriptor. @B-4f1-barbarian. The barbarian gains access to the elemental totem rage power matching the element she selected.</p>",
     "id": "lesser_elemental_totem",
     "name": "Lesser Elemental Totem",
     "nameSuffix": "(Su)",
@@ -1951,7 +1951,7 @@
     "uuid": "pfdata:rage-power:lesser_fiend_totem"
   },
   "lesser_hurling": {
-    "description": "<p><strong>Lesser Hurling:</strong> While <em>raging,</em> the barbarian can lift and hurl an object up to one size category smaller than herself with both hands or two size categories smaller with one hand as an improvised weapon with a range increment of 10 feet. This inflicts damage as a falling object plus the barbarian's Strength bonus. This damage is halved if the object is not made of stone, metal, or similar material. This is a ranged touch attack, and the target may attempt a Reflex save (DC 10 + 1/2 the barbarian's level + the barbarian's Strength modifier) for half damage. The barbarian may apply Power Attack to this attack as a one- or two-handed weapon, as appropriate.</p>",
+    "description": "<p><strong>Lesser Hurling:</strong> <em>Full-round action:</em> While <em>raging,</em> the barbarian can lift and hurl an object up to one size category smaller than herself with both hands or two size categories smaller with one hand as an improvised weapon with a range increment of 10 feet. This inflicts damage as a falling object plus the barbarian's Strength bonus. This damage is halved if the object is not made of stone, metal, or similar material. This is a ranged touch attack, and the target may attempt a Reflex save (DC 10 + 1/2 the barbarian's level + the barbarian's Strength modifier) for half damage. The barbarian may apply Power Attack to this attack as a one- or two-handed weapon, as appropriate.</p>",
     "id": "lesser_hurling",
     "name": "Lesser Hurling",
     "nameSuffix": "(Ex)",
@@ -1964,7 +1964,7 @@
   },
   "lesser_infernal_blood": {
     "category": "Blood",
-    "description": "<p><strong>Lesser Infernal Blood:</strong> While <em>raging,</em> the barbarian can infuse her attacks with hellfire for 1 round. During this time, all of her melee attacks gain the flaming magic weapon special ability. (3 times/day)</p>",
+    "description": "<p><strong>Lesser Infernal Blood:</strong> <em>Swift action:</em> While <em>raging,</em> the barbarian can infuse her attacks with hellfire for 1 round. During this time, all of her melee attacks gain the flaming magic weapon special ability. (3 times/day)</p>",
     "id": "lesser_infernal_blood",
     "name": "Lesser Infernal Blood",
     "nameSuffix": "(Su)",
@@ -2115,7 +2115,7 @@
     "uuid": "pfdata:rage-power:low_light_vision"
   },
   "master_of_the_deep": {
-    "description": "<p><strong>Master of the Deep:</strong> The barbarian commands an aquatic creature to do her bidding. The barbarian selects a creature with the aquatic type within 30 feet and gives a terse command from those listed in the command spell. Alternatively, if the creature has an Intelligence of 1 or 2, the barbarian may instead command the creature to attack the closest creature to it. The creature must succeed at a Will save (DC equal to 10 + half the barbarian's level + her Strength modifier) or obey the command to the best of its ability on its next turn. Once a creature has attempted a saving throw against master of the deep (successful or not), it is immune to this power for 24 hours. This ability is a mind-affecting effect, but it is not language dependent; the creature need not understand the barbarian giving the command. (Prerequisite: 8th-level barbarian)</p>",
+    "description": "<p><strong>Master of the Deep:</strong> The barbarian commands an aquatic creature to do her bidding. <em>Standard action:</em> The barbarian selects a creature with the aquatic type within 30 feet and gives a terse command from those listed in the command spell. Alternatively, if the creature has an Intelligence of 1 or 2, the barbarian may instead command the creature to attack the closest creature to it. The creature must succeed at a Will save (DC equal to 10 + half the barbarian's level + her Strength modifier) or obey the command to the best of its ability on its next turn. Once a creature has attempted a saving throw against master of the deep (successful or not), it is immune to this power for 24 hours. This ability is a mind-affecting effect, but it is not language dependent; the creature need not understand the barbarian giving the command. (Prerequisite: 8th-level barbarian)</p>",
     "id": "master_of_the_deep",
     "name": "Master of the Deep",
     "nameSuffix": "(Su)",
@@ -2127,7 +2127,7 @@
     "uuid": "pfdata:rage-power:master_of_the_deep"
   },
   "mighty_swing": {
-    "description": "<p><strong>Mighty Swing:</strong> The barbarian automatically confirms a critical hit. This power can be used once a critical threat has been determined. This power can only be used once per <em>rage.</em> (Prerequisite: 12th-level barbarian)</p>",
+    "description": "<p><strong>Mighty Swing:</strong> <em>Immediate action:</em> The barbarian automatically confirms a critical hit. This power can be used once a critical threat has been determined. This power can only be used once per <em>rage.</em> (Prerequisite: 12th-level barbarian)</p>",
     "id": "mighty_swing",
     "name": "Mighty Swing",
     "nameSuffix": "(Ex)",
@@ -2139,7 +2139,7 @@
     "uuid": "pfdata:rage-power:mighty_swing"
   },
   "moment_of_clarity": {
-    "description": "<p><strong>Moment of Clarity:</strong> The barbarian does not gain any benefits or take any of the penalties from <em>rage</em> for 1 round. This includes the penalty to Armor Class and the restriction on what actions can be performed. This round still counts against her total number of rounds of <em>rage</em> per day. (Once per <em>rage</em>)</p>",
+    "description": "<p><strong>Moment of Clarity:</strong> <em>Swift action:</em> The barbarian does not gain any benefits or take any of the penalties from <em>rage</em> for 1 round. This includes the penalty to Armor Class and the restriction on what actions can be performed. This round still counts against her total number of rounds of <em>rage</em> per day. (Once per <em>rage</em>)</p>",
     "id": "moment_of_clarity",
     "name": "Moment of Clarity",
     "nameSuffix": "(Ex)",
@@ -2178,7 +2178,7 @@
     "uuid": "pfdata:rage-power:night_vision"
   },
   "no_escape": {
-    "description": "<p><strong>No Escape:</strong> When an adjacent foe uses a withdraw action to move away from her, the barbarian can move up to double her normal speed. She must end her movement adjacent to the enemy that used the withdraw action. The barbarian provokes attacks of opportunity as normal during this movement. (Once per <em>rage</em>)</p>",
+    "description": "<p><strong>No Escape:</strong> <em>Immediate action:</em> When an adjacent foe uses a withdraw action to move away from her, the barbarian can move up to double her normal speed. She must end her movement adjacent to the enemy that used the withdraw action. The barbarian provokes attacks of opportunity as normal during this movement. (Once per <em>rage</em>)</p>",
     "id": "no_escape",
     "name": "No Escape",
     "nameSuffix": "(Ex)",
@@ -2227,7 +2227,7 @@
     "uuid": "pfdata:rage-power:pack_rage"
   },
   "penetrating_bite": {
-    "description": "<p><strong>Penetrating Bite:</strong> When using the <em>animal fury</em> rage power while <em>raging,</em> the barbarian's bite is able to pierce most resistances. (Prerequisite: 4th-level barbarian, animal fury) At 4th level: Her bite is treated as a magic weapon for the purpose of overcoming damage reduction. At 7th level: Her bite is also treated as cold iron and silver for the purpose of overcoming damage reduction. At 10th level: Her bite is also treated as a chaotic weapon for the purpose of overcoming damage reduction. At 16th level: Her bite is treated as an adamantine weapon for the purpose of overcoming damage reduction and bypassing hardness.</p>",
+    "description": "<p><strong>Penetrating Bite:</strong> When using the <em>animal fury</em> rage power while <em>raging,</em> the barbarian's bite is able to pierce most resistances. At 4th level: Her bite is treated as a magic weapon for the purpose of overcoming damage reduction. At 7th level: Her bite is also treated as cold iron and silver for the purpose of overcoming damage reduction. At 10th level: Her bite is also treated as a chaotic weapon for the purpose of overcoming damage reduction. At 16th level: Her bite is treated as an adamantine weapon for the purpose of overcoming damage reduction and bypassing hardness. (Prerequisite: 4th-level barbarian, animal fury)</p>",
     "id": "penetrating_bite",
     "level": 1,
     "name": "Penetrating Bite",
@@ -2253,7 +2253,7 @@
     "uuid": "pfdata:rage-power:perfect_clarity"
   },
   "powerful_blow": {
-    "description": "<p><strong>Powerful Blow:</strong> The barbarian gains a bonus on a single damage roll. @B-4f1-barbarian. This power is used before the roll to hit is made. (Once per <em>rage</em>)</p>",
+    "description": "<p><strong>Powerful Blow:</strong> <em>Swift action:</em> The barbarian gains a bonus on a single damage roll. @B-4f1-barbarian. This power is used before the roll to hit is made. (Once per <em>rage</em>)</p>",
     "id": "powerful_blow",
     "name": "Powerful Blow",
     "nameSuffix": "(Ex)",
@@ -2278,7 +2278,7 @@
     "uuid": "pfdata:rage-power:powerful_stance"
   },
   "primal_scent": {
-    "description": "<p><strong>Primal Scent:</strong> When using her <em>scent</em> rage power, the barbarian adds half her barbarian level on Survival checks made to track by scent and on Perception checks to pinpoint the location of creatures she cannot see.~~~If she pinpoints the location of a creature that has total concealment, she treats it as having concealment. (Prerequisite: 8th-level barbarian, scent)</p>",
+    "description": "<p><strong>Primal Scent:</strong> When using her <em>scent</em> rage power, the barbarian adds half her barbarian level on Survival checks made to track by scent and on Perception checks to pinpoint the location of creatures she cannot see.</p>\n<p>If she pinpoints the location of a creature that has total concealment, she treats it as having concealment. (Prerequisite: 8th-level barbarian, scent)</p>",
     "id": "primal_scent",
     "level": 1,
     "name": "Primal Scent",
@@ -2328,7 +2328,7 @@
     "uuid": "pfdata:rage-power:raging_climber"
   },
   "raging_flier": {
-    "description": "<p><strong>Raging Flier:</strong> Once per <em>rage,</em> the character can fly up to her base speed. If she uses the charge action, she can use this flight as part of her movement during the charge. (Prerequisite: 6th-level barbarian, raging leaper)</p>",
+    "description": "<p><strong>Raging Flier:</strong> <em>Move action:</em> Once per <em>rage,</em> the character can fly up to her base speed. If she uses the charge action, she can use this flight as part of her movement during the charge. (Prerequisite: 6th-level barbarian, raging leaper)</p>",
     "id": "raging_flier",
     "level": 1,
     "name": "Raging Flier",
@@ -2353,7 +2353,7 @@
     "uuid": "pfdata:rage-power:raging_flyer"
   },
   "raging_grappler": {
-    "description": "<p><strong>Raging Grappler:</strong> While <em>raging,</em> the barbarian grapples her foes with the power and viciousness of a river crocodile. As long as she is <em>raging,</em> whenever the barbarian succeeds at a check to start a grapple, she can choose to deal damage as if she had also succeeded at a check to maintain the grapple.~~~In addition, while she is <em>raging,</em> whenever the barbarian succeeds at a combat maneuver check to maintain a grapple, she can choose to give herself, the target of her grapple, or both the prone condition as a free action while continuing to maintain the grapple.</p>",
+    "description": "<p><strong>Raging Grappler:</strong> While <em>raging,</em> the barbarian grapples her foes with the power and viciousness of a river crocodile. As long as she is <em>raging,</em> whenever the barbarian succeeds at a check to start a grapple, she can choose to deal damage as if she had also succeeded at a check to maintain the grapple.</p>\n<p>In addition, while she is <em>raging,</em> whenever the barbarian succeeds at a combat maneuver check to maintain a grapple, she can choose to give herself, the target of her grapple, or both the prone condition as a free action while continuing to maintain the grapple.</p>",
     "id": "raging_grappler",
     "name": "Raging Grappler",
     "nameSuffix": "(Ex)",
@@ -2389,7 +2389,7 @@
     "uuid": "pfdata:rage-power:raging_swimmer"
   },
   "raging_whirlwind": {
-    "description": "<p><strong>Raging Whirlwind:</strong> The barbarian can create a whirlwind with a powerful spinning move after she confirms a critical hit with a melee attack. The whirlwind circles the target of her melee attack, lifting it in the air slightly until the end of the barbarian's turn. The creature can attempt a Fortitude save (DC = 10 + half the barbarian's level + the barbarian's Constitution modifier) to negate this effect. If it fails the save, the target loses its Dexterity modifier to AC for the rest of the barbarian's turn and lands prone on the ground at the end of her turn. Raging whirlwind has no effect on flying creatures. (Prerequisite: 12th-level barbarian)</p>",
+    "description": "<p><strong>Raging Whirlwind:</strong> <em>Immediate action:</em> The barbarian can create a whirlwind with a powerful spinning move after she confirms a critical hit with a melee attack. The whirlwind circles the target of her melee attack, lifting it in the air slightly until the end of the barbarian's turn. The creature can attempt a Fortitude save (DC = 10 + half the barbarian's level + the barbarian's Constitution modifier) to negate this effect. If it fails the save, the target loses its Dexterity modifier to AC for the rest of the barbarian's turn and lands prone on the ground at the end of her turn. Raging whirlwind has no effect on flying creatures. (Prerequisite: 12th-level barbarian)</p>",
     "id": "raging_whirlwind",
     "name": "Raging Whirlwind",
     "nameSuffix": "(Su)",
@@ -2478,7 +2478,7 @@
     "uuid": "pfdata:rage-power:renewed_life"
   },
   "renewed_vigor": {
-    "description": "<p><strong>Renewed Vigor:</strong> The barbarian heals 1d8 points of damage + her Constitution modifier. For every four levels the barbarian has attained above 4th, this amount of damage healed increases by 1d8, to a maximum of 5d8 at 20th level. This power can be used only while <em>raging.</em> (Once per day) (Prerequisite: 4th-level barbarian)</p>",
+    "description": "<p><strong>Renewed Vigor:</strong> <em>Standard action:</em> The barbarian heals 1d8 points of damage + her Constitution modifier. For every four levels the barbarian has attained above 4th, this amount of damage healed increases by 1d8, to a maximum of 5d8 at 20th level. This power can be used only while <em>raging.</em> (Once per day) (Prerequisite: 4th-level barbarian)</p>",
     "id": "renewed_vigor",
     "name": "Renewed Vigor",
     "nameSuffix": "(Ex)",
@@ -2515,7 +2515,7 @@
     "uuid": "pfdata:rage-power:roaring_drunk"
   },
   "rolling_dodge": {
-    "description": "<p><strong>Rolling Dodge:</strong> The barbarian gains a dodge bonus to her Armor Class against ranged attacks for a number of rounds equal to the barbarian's current Constitution modifier (minimum 1). @B-6f1-barbarian.</p>",
+    "description": "<p><strong>Rolling Dodge:</strong> <em>Move action:</em> The barbarian gains a dodge bonus to her Armor Class against ranged attacks for a number of rounds equal to the barbarian's current Constitution modifier (minimum 1). @B-6f1-barbarian. This does not provoke attacks of opportunity.</p>",
     "id": "rolling_dodge",
     "name": "Rolling Dodge",
     "nameSuffix": "(Ex)",
@@ -2539,7 +2539,7 @@
     "uuid": "pfdata:rage-power:roused_anger"
   },
   "savage_dirty_trick": {
-    "description": "<p>Once per round while <em>raging,</em> the barbarian can attempt a dirty trick combat maneuver in place of a melee attack. If successful, the target takes an amount of damage equal to the barbarian's Strength modifier and must succeed at a Fortitude save (DC 10 + 1/2 the barbarian's level + the barbarian's Strength modifier) or take an additional penalty from the dirty trick based on the type of dirty trick performed and the following table.</p>\n<table><thead><tr><th>Initial Penalty</th><th>Additional Penalty</th></tr></thead><tbody><tr><td>Blinded</td><td>Staggered</td></tr><tr><td>Dazzled</td><td>Dazed</td></tr><tr><td>Deafened</td><td>Staggered</td></tr><tr><td>Entangled</td><td>Anchored in place and unable to move from that square</td></tr><tr><td>Sickened</td><td>Nauseated</td></tr></tbody></table>\n<p>On a failed Fortitude save, the opponent takes this additional penalty on top of the dirty trick's original effect. The additional penalty lasts for 1 round (though the initial penalty lasts as long as normal), and can be removed with a move action. The initial effect cannot be removed via mundane means until the additional penalty is removed (though magical effects like remove blindness/deafness work). Removing the initial effect also removes the additional penalty. If the target is immune to the initial penalty, then it is unaffected by the additional penalty.</p>\n<p>For example, a barbarian using this rage power attempts a dirty trick combat maneuver against her opponent to blind him. She succeeds and her opponent fails his Fortitude save, so he becomes staggered as well as blinded. Regardless of whether he had succeeded at his saving throw, the opponent still takes an amount of damage from the barbarian's combat maneuver equal to the barbarian's Strength modifier (unless he has damage reduction or would otherwise be able to prevent this damage). Likewise, if her opponent were immune to blinding effects, he would not suffer from the blindness or the staggering effect, regardless of his saving throw.</p>",
+    "description": "<p><strong>Savage Dirty Trick:</strong> This does not provoke attacks of opportunity. (Once per opponent per <em>rage</em>) (Prerequisite: 6th-level barbarian)</p>\n<p>Once per round while <em>raging,</em> the barbarian can attempt a dirty trick combat maneuver in place of a melee attack. If successful, the target takes an amount of damage equal to the barbarian's Strength modifier and must succeed at a Fortitude save (DC 10 + 1/2 the barbarian's level + the barbarian's Strength modifier) or take an additional penalty from the dirty trick based on the type of dirty trick performed and the following table.</p>\n<table><thead><tr><th>Initial Penalty</th><th>Additional Penalty</th></tr></thead><tbody><tr><td>Blinded</td><td>Staggered</td></tr><tr><td>Dazzled</td><td>Dazed</td></tr><tr><td>Deafened</td><td>Staggered</td></tr><tr><td>Entangled</td><td>Anchored in place and unable to move from that square</td></tr><tr><td>Sickened</td><td>Nauseated</td></tr></tbody></table>\n<p>On a failed Fortitude save, the opponent takes this additional penalty on top of the dirty trick's original effect. The additional penalty lasts for 1 round (though the initial penalty lasts as long as normal), and can be removed with a move action. The initial effect cannot be removed via mundane means until the additional penalty is removed (though magical effects like remove blindness/deafness work). Removing the initial effect also removes the additional penalty. If the target is immune to the initial penalty, then it is unaffected by the additional penalty.</p>\n<p>For example, a barbarian using this rage power attempts a dirty trick combat maneuver against her opponent to blind him. She succeeds and her opponent fails his Fortitude save, so he becomes staggered as well as blinded. Regardless of whether he had succeeded at his saving throw, the opponent still takes an amount of damage from the barbarian's combat maneuver equal to the barbarian's Strength modifier (unless he has damage reduction or would otherwise be able to prevent this damage). Likewise, if her opponent were immune to blinding effects, he would not suffer from the blindness or the staggering effect, regardless of his saving throw.</p>",
     "id": "savage_dirty_trick",
     "name": "Savage Dirty Trick",
     "nameSuffix": "(Ex)",
@@ -2574,7 +2574,7 @@
     "uuid": "pfdata:rage-power:savage_intuition"
   },
   "savage_jaw": {
-    "description": "<p><strong>Savage Jaw:</strong> While <em>raging,</em> the barbarian can open her jaw wide and latch her teeth firmly onto her opponent. While using the <em>animal fury</em> power, the barbarian can activate this power and gain the grab ability with her bite attack until the start of her next turn. (Once per <em>rage</em>) (Prerequisite: Animal fury)</p>",
+    "description": "<p><strong>Savage Jaw:</strong> While <em>raging,</em> the barbarian can open her jaw wide and latch her teeth firmly onto her opponent. <em>Free action:</em> While using the <em>animal fury</em> power, the barbarian can activate this power and gain the grab ability with her bite attack until the start of her next turn. (Once per <em>rage</em>) (Prerequisite: Animal fury)</p>",
     "id": "savage_jaw",
     "level": 1,
     "name": "Savage Jaw",
@@ -2624,7 +2624,7 @@
     "uuid": "pfdata:rage-power:smasher"
   },
   "spell_sunder": {
-    "description": "<p><strong>Spell Sunder:</strong> Once per <em>rage,</em> the barbarian can attempt to sunder an ongoing spell effect by succeeding at a combat maneuver check.~~~For any effect other than one on a creature, the barbarian must make her combat maneuver check against a CMD of 15 plus the effect's caster level. To sunder an effect on a creature, the barbarian must succeed at a normal sunder combat maneuver against the creature's CMD + 5, ignoring any miss chance caused by a spell or spell-like ability.~~~If successful, the barbarian suppresses the effect for 1 round, or 2 rounds if she exceeded the CMD by 5 to 9. If she exceeds the CMD by 10 or more, the effect is dispelled. (Prerequisite: 6th-level barbarian, witch hunter)</p>",
+    "description": "<p><strong>Spell Sunder:</strong> Once per <em>rage,</em> the barbarian can attempt to sunder an ongoing spell effect by succeeding at a combat maneuver check.</p>\n<p>For any effect other than one on a creature, the barbarian must make her combat maneuver check against a CMD of 15 plus the effect's caster level. To sunder an effect on a creature, the barbarian must succeed at a normal sunder combat maneuver against the creature's CMD + 5, ignoring any miss chance caused by a spell or spell-like ability.</p>\n<p>If successful, the barbarian suppresses the effect for 1 round, or 2 rounds if she exceeded the CMD by 5 to 9. If she exceeds the CMD by 10 or more, the effect is dispelled. (Prerequisite: 6th-level barbarian, witch hunter)</p>",
     "id": "spell_sunder",
     "level": 2,
     "name": "Spell Sunder",
@@ -2713,7 +2713,7 @@
     "uuid": "pfdata:rage-power:spring_rage"
   },
   "sprint": {
-    "description": "<p><strong>Sprint:</strong> The barbarian can move up to 6 times her speed or a single full-round charge action to move up to 3 times her speed. (Once per <em>rage</em>) (Prerequisite: 4th-level barbarian, swift foot)</p>",
+    "description": "<p><strong>Sprint:</strong> <em>Full-round action:</em> The barbarian can move up to 6 times her speed or a single full-round charge action to move up to 3 times her speed. (Once per <em>rage</em>) (Prerequisite: 4th-level barbarian, swift foot)</p>",
     "id": "sprint",
     "level": 1,
     "name": "Sprint",
@@ -2751,7 +2751,7 @@
     "uuid": "pfdata:rage-power:strength_stance"
   },
   "strength_surge": {
-    "description": "<p><strong>Strength Surge:</strong> The barbarian adds her barbarian level on one Strength check or combat maneuver check, or to her Combat Maneuver Defense when an opponent attempts a maneuver against her. (Once per <em>rage</em>)</p>",
+    "description": "<p><strong>Strength Surge:</strong> <em>Immediate action:</em> The barbarian adds her barbarian level on one Strength check or combat maneuver check, or to her Combat Maneuver Defense when an opponent attempts a maneuver against her. (Once per <em>rage</em>)</p>",
     "id": "strength_surge",
     "name": "Strength Surge",
     "nameSuffix": "(Ex)",
@@ -2826,7 +2826,7 @@
     "uuid": "pfdata:rage-power:superstition"
   },
   "surprise_accuracy": {
-    "description": "<p><strong>Surprise Accuracy:</strong> The barbarian gains a morale bonus on one attack roll equal to 1 + one-fourth of her barbarian level. This power must be used before the roll to hit is made. (Once per <em>rage</em>)</p>",
+    "description": "<p><strong>Surprise Accuracy:</strong> <em>Swift action:</em> The barbarian gains a morale bonus on one attack roll equal to 1 + one-fourth of her barbarian level. This power must be used before the roll to hit is made. (Once per <em>rage</em>)</p>",
     "id": "surprise_accuracy",
     "name": "Surprise Accuracy",
     "nameSuffix": "(Ex)",
@@ -2850,7 +2850,7 @@
     "uuid": "pfdata:rage-power:swift_foot"
   },
   "taiga_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a taiga linnorm. The character's melee attacks deal an additional 1 point of electricity damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of electricity</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Electricity:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to electricity</p>",
+    "description": "<p><strong>Taiga Linnorm Death Curse</strong></p>\n<p>The character channels the power of a taiga linnorm. The character's melee attacks deal an additional 1 point of electricity damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of electricity</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Electricity:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to electricity</p>",
     "id": "taiga_linnorm_death_curse",
     "name": "Taiga Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2862,7 +2862,7 @@
     "uuid": "pfdata:rage-power:taiga_linnorm_death_curse"
   },
   "tarn_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a tarn linnorm. The character's melee attacks deal an additional 1 point of acid damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of death</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Death:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is no longer affected by healing spells and can't heal damage naturally by resting</p>",
+    "description": "<p><strong>Tarn Linnorm Death Curse</strong></p>\n<p>The character channels the power of a tarn linnorm. The character's melee attacks deal an additional 1 point of acid damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of death</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Death:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is no longer affected by healing spells and can't heal damage naturally by resting</p>",
     "id": "tarn_linnorm_death_curse",
     "name": "Tarn Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2887,7 +2887,7 @@
     "uuid": "pfdata:rage-power:taunting_stance"
   },
   "terrifying_howl": {
-    "description": "<p><strong>Terrifying Howl:</strong> The barbarian unleashes a terrifying howl. All shaken enemies within 30 feet must make a Will save (DC equal to 10 + 1/2 the barbarian's level + the barbarian's Strength modifier) or be panicked for 1d4+1 rounds. Once an enemy has made a save versus <em>terrifying howl</em> (successful or not), it is immune to this power for 24 hours. (Prerequisite: Intimidating glare, 8th-level barbarian)</p>",
+    "description": "<p><strong>Terrifying Howl:</strong> <em>Standard action:</em> The barbarian unleashes a terrifying howl. All shaken enemies within 30 feet must make a Will save (DC equal to 10 + 1/2 the barbarian's level + the barbarian's Strength modifier) or be panicked for 1d4+1 rounds. Once an enemy has made a save versus <em>terrifying howl</em> (successful or not), it is immune to this power for 24 hours. (Prerequisite: Intimidating glare, 8th-level barbarian)</p>",
     "id": "terrifying_howl",
     "level": 1,
     "name": "Terrifying Howl",
@@ -2900,7 +2900,7 @@
     "uuid": "pfdata:rage-power:terrifying_howl"
   },
   "tor_linnorm_death_curse": {
-    "description": "<p>The character channels the power of a tor linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of boiling blood</em> (Will negates).\" prereq=\"8th-level barbarian\"</p>\n<p><strong>Curse of Boiling Blood:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire and is permanently staggered from the pain of its boiling blood (this is a pain effect)</p>",
+    "description": "<p><strong>Tor Linnorm Death Curse</strong></p>\n<p>The character channels the power of a tor linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of boiling blood</em> (Will negates).\" prereq=\"8th-level barbarian\"</p>\n<p><strong>Curse of Boiling Blood:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire and is permanently staggered from the pain of its boiling blood (this is a pain effect)</p>",
     "id": "tor_linnorm_death_curse",
     "name": "Tor Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2924,7 +2924,7 @@
   },
   "tyrant_totem": {
     "category": "Totem",
-    "description": "<p><strong>Tyrant Totem:</strong> While <em>raging,</em> the barbarian can begin a grapple against any creature she hits with her bite attack. (Prerequisite: 8th-level barbarian, lesser tyrant totem)</p>",
+    "description": "<p><strong>Tyrant Totem:</strong> <em>Free action:</em> While <em>raging,</em> the barbarian can begin a grapple against any creature she hits with her bite attack. (Prerequisite: 8th-level barbarian, lesser tyrant totem)</p>",
     "id": "tyrant_totem",
     "level": 1,
     "name": "Tyrant Totem",
@@ -3000,7 +3000,7 @@
     "uuid": "pfdata:rage-power:vipers_breath"
   },
   "vipers_kiss": {
-    "description": "<p><strong>Viper's Kiss:</strong> The barbarian can drink 1 dose of an ingested poison as a move action (instead of a standard action) as long as she starts the turn with the poison in her hand. She can hold this dose within her mouth for a number of rounds equal to her Constitution modifier (minimum 1 round) without suffering harmful effects. If the barbarian still holds the poison in her mouth after this time, she consumes the poison.~~~While the dose is held within her mouth, the barbarian's next successful bite attack applies the effect of the poison with an immediate onset; this consumes the dose. (Prerequisite: Animal fury or a has bite attack while <em>raging</em>)</p>",
+    "description": "<p><strong>Viper's Kiss:</strong> The barbarian can drink 1 dose of an ingested poison as a move action (instead of a standard action) as long as she starts the turn with the poison in her hand. She can hold this dose within her mouth for a number of rounds equal to her Constitution modifier (minimum 1 round) without suffering harmful effects. If the barbarian still holds the poison in her mouth after this time, she consumes the poison.</p>\n<p>While the dose is held within her mouth, the barbarian's next successful bite attack applies the effect of the poison with an immediate onset; this consumes the dose. (Prerequisite: Animal fury or a has bite attack while <em>raging</em>)</p>",
     "id": "vipers_kiss",
     "level": 1,
     "name": "Viper's Kiss",
@@ -3039,7 +3039,7 @@
     "uuid": "pfdata:rage-power:water_totem"
   },
   "winter_rage": {
-    "description": "<p><strong>Winter Rage:</strong> The barbarian can bellow a 20-foot cone of frigid, snowy air. Until the beginning of the barbarian's next turn, creatures moving through the cone move at half speed. A barbarian can have only one season-themed rage power, choosing between spring, summer, autumn, or winter rage.</p>",
+    "description": "<p><strong>Winter Rage:</strong> <em>Standard action:</em> The barbarian can bellow a 20-foot cone of frigid, snowy air. Until the beginning of the barbarian's next turn, creatures moving through the cone move at half speed. A barbarian can have only one season-themed rage power, choosing between spring, summer, autumn, or winter rage.</p>",
     "id": "winter_rage",
     "name": "Winter Rage",
     "nameSuffix": "(Su)",
@@ -3106,7 +3106,7 @@
   },
   "ymeris_pyre": {
     "category": "Elemental",
-    "description": "<p><strong>Ymeri's Pyre:</strong> The barbarian visibly burns with an inner flame that consumes all impurities affecting her. Each round that the barbarian <em>rages</em> reduces the duration of negative spells and effects inflicted upon her as if 2 rounds had passed; this has no effect on the duration of such effects against other creatures.</p>",
+    "description": "<p><strong>Ymeri's Pyre:</strong> The barbarian visibly burns with an inner flame that consumes all impurities affecting her. Each round that the barbarian <em>rages</em> reduces the duration of negative spells and effects inflicted upon her as if 2 rounds had passed; this has no effect on the duration of such effects against other creatures. Once per day, the barbarian can expend 5 rounds of <em>rage</em> to attempt a new saving throw against each non-permanent effect currently affecting her. Each successful saving throw ends the related effect, and she can choose not to make a save against an effect.</p>",
     "id": "ymeris_pyre",
     "name": "Ymeri's Pyre",
     "nameSuffix": "(Su)",
