@@ -713,8 +713,9 @@ function renderListDirective(label: string, propsRaw: string): string {
 /**
  * `::ab[Name]{l=N icon=... <kind>="text" impNN="text" usage="..."}` — a
  * bloodrager bloodline power/ability stat block (`icon` is non-textual
- * metadata this reader ignores; the `use*` family encodes a daily-use cap
- * and is read separately by `pfDataAbilityUses`). `<kind>` is
+ * metadata this reader ignores; the `use*` family encodes a daily-use cap,
+ * stated in prose by `abUsesText` and read structurally by
+ * `pfDataAbilityUses`). `<kind>` is
  * whichever action-type key the source used (`passive`/`immediate`/
  * `standard`/`swift`/`free`/`ability`) holding the actual ability text;
  * `impNN` keys are level-gated improvements, folded in as "At Nth level: ..."
@@ -744,7 +745,7 @@ function abTitleName(title: string): string {
 }
 /**
  * The action-type keys an `::ab` directive holds its prose under, in render
- * order. `ability2`/`ability3` are continuation paragraphs of `ability`.
+ * order. `ability2`/`ability3` continue `ability`.
  */
 const AB_KIND_KEYS = [
   "passive",
@@ -1106,13 +1107,17 @@ function abBodyText(props: Record<string, string | true>): string[] | undefined 
       return `<strong>${inlineToHtml(label)}:</strong> ${abProse(value)}`;
     });
 
-  // Level-gated improvements and scaling series, interleaved by level.
-  const progression: { level: number; html: string }[] = Object.entries(props)
-    .filter((e): e is [string, string] => /^imp\d+$/.test(e[0]) && typeof e[1] === "string")
-    .map(([k, v]) => {
-      const level = Number(k.slice(3));
-      return { level, html: `At ${ordinal(level)} level: ${abProse(v)}` };
+  // Level-gated text (`impNN` improvements, `lNN` stages) and scaling
+  // series, interleaved by level.
+  const progression: { level: number; html: string }[] = [];
+  for (const [key, value] of Object.entries(props)) {
+    const n = /^(?:imp|l)(\d+)$/.exec(key)?.[1];
+    if (n === undefined || typeof value !== "string") continue;
+    progression.push({
+      level: Number(n),
+      html: `At ${ordinal(Number(n))} level: ${abProse(value)}`,
     });
+  }
   for (const [key, value] of Object.entries(props)) {
     if (typeof value !== "string" || value === "") continue;
     const step = /^increment(?:Plain|Roman|At|Multi)?$/.test(key)
@@ -1138,19 +1143,13 @@ function abBodyText(props: Record<string, string | true>): string[] | undefined 
     tail.push(`(Prerequisite: ${inlineToHtml(prereq.split("~").join(", "))})`);
   }
 
-  // `sNN` spell-by-level and `lNN` stage-by-level progressions. Emitted even
-  // when the directive also carries body text: a unique witch patron states
-  // its drawback in `passive` AND its altered spell in `s16`.
-  const numbered = (prefix: string): { level: number; text: string }[] =>
-    Object.entries(props)
-      .filter(
-        (e): e is [string, string] =>
-          new RegExp(`^${prefix}\\d+$`).test(e[0]) && typeof e[1] === "string",
-      )
-      .map(([k, v]) => ({ level: Number(k.slice(prefix.length)), text: v }))
-      .sort((a, b) => a.level - b.level);
-
-  const spells = numbered("s");
+  // `sNN` spell-by-level progression. Emitted even when the directive also
+  // carries body text: a unique witch patron states its drawback in
+  // `passive` AND its altered spell in `s16`.
+  const spells = Object.entries(props)
+    .filter((e): e is [string, string] => /^s\d+$/.test(e[0]) && typeof e[1] === "string")
+    .map(([k, v]) => ({ level: Number(k.slice(1)), text: v }))
+    .sort((x, y) => x.level - y.level);
   if (spells.length > 0) {
     // `Greater planar ally|(good outsiders only)` — the pipe separates a spell
     // from the qualifier the entry prints beside it.
@@ -1159,10 +1158,6 @@ function abBodyText(props: Record<string, string | true>): string[] | undefined 
         .map((e) => `Level ${e.level}: ${inlineToHtml(e.text.split("|").join(" "))}`)
         .join("; "),
     );
-  }
-  const stages = numbered("l");
-  if (stages.length > 0) {
-    tail.push(stages.map((e) => `At ${ordinal(e.level)} level: ${abProse(e.text)}`).join(" "));
   }
 
   if (lead.length === 0 && labelled.length === 0 && tail.length === 0) return undefined;

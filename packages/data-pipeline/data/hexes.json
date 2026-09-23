@@ -531,7 +531,7 @@
     "uuid": "pfdata:witch-hex:feral_speech"
   },
   "flight": {
-    "description": "<p><strong>Flight:</strong> The witch grows lighter as she gains power, eventually gaining the ability to fly. This hex only affects the witch. At 1st level: The witch can use feather fall at will and gains a +4 racial bonus on Swim checks. At 3rd level: She can cast levitate once per day. At 5th level: She can fly, as per the spell, for a number of minutes per day equal to her level. These minutes do not need to be consecutive, but they must be spent in 1-minute increments.</p>",
+    "description": "<p><strong>Flight:</strong> The witch grows lighter as she gains power, eventually gaining the ability to fly. At 1st level: The witch can use feather fall at will and gains a +4 racial bonus on Swim checks. At 3rd level: She can cast levitate once per day. At 5th level: She can fly, as per the spell, for a number of minutes per day equal to her level. These minutes do not need to be consecutive, but they must be spent in 1-minute increments. This hex only affects the witch.</p>",
     "id": "flight",
     "name": "Flight",
     "nameSuffix": "(Su)",

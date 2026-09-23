@@ -2227,7 +2227,7 @@
     "uuid": "pfdata:rage-power:pack_rage"
   },
   "penetrating_bite": {
-    "description": "<p><strong>Penetrating Bite:</strong> When using the <em>animal fury</em> rage power while <em>raging,</em> the barbarian's bite is able to pierce most resistances. (Prerequisite: 4th-level barbarian, animal fury) At 4th level: Her bite is treated as a magic weapon for the purpose of overcoming damage reduction. At 7th level: Her bite is also treated as cold iron and silver for the purpose of overcoming damage reduction. At 10th level: Her bite is also treated as a chaotic weapon for the purpose of overcoming damage reduction. At 16th level: Her bite is treated as an adamantine weapon for the purpose of overcoming damage reduction and bypassing hardness.</p>",
+    "description": "<p><strong>Penetrating Bite:</strong> When using the <em>animal fury</em> rage power while <em>raging,</em> the barbarian's bite is able to pierce most resistances. At 4th level: Her bite is treated as a magic weapon for the purpose of overcoming damage reduction. At 7th level: Her bite is also treated as cold iron and silver for the purpose of overcoming damage reduction. At 10th level: Her bite is also treated as a chaotic weapon for the purpose of overcoming damage reduction. At 16th level: Her bite is treated as an adamantine weapon for the purpose of overcoming damage reduction and bypassing hardness. (Prerequisite: 4th-level barbarian, animal fury)</p>",
     "id": "penetrating_bite",
     "level": 1,
     "name": "Penetrating Bite",

@@ -258,10 +258,9 @@ describe("pfDataDescriptionToHtml", () => {
 });
 
 /**
- * The `::ab` props that carry rules text since the Pf Data 1e 0.15.3 rewrite.
- * Each fixture is a real source directive (trimmed); the expected text was
- * checked against the prose the previous pin printed for the same entry,
- * cited per test.
+ * The `::ab` props that carry rules text the prose no longer states. Each
+ * fixture is a real source directive (trimmed); the expected text matches
+ * what the book prints for the same ability, cited per test.
  */
 describe("pfDataDescriptionToHtml: ::ab scaling, uses, and sections", () => {
   const one = (line: string) => pfDataDescriptionToHtml([line]);
@@ -455,7 +454,7 @@ describe("pfDataDescriptionToHtml: ::ab scaling, uses, and sections", () => {
   });
 });
 
-describe("pfDataDescriptionToHtml: block-level forms of the 0.15.3 pin", () => {
+describe("pfDataDescriptionToHtml: fences, class skills, and link forms", () => {
   it("leads a fence's first prose line with its action label", () => {
     expect(
       pfDataDescriptionToHtml([

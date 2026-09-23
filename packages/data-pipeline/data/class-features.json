@@ -20280,7 +20280,7 @@
   },
   "blessing-power:animal:major": {
     "changes": [],
-    "description": "<p>You can summon a battle companion. This now behaves as summon nature's ally VI at 12th level, summon nature's ally VII at 14th level, summon nature's ally VIII at 16th level, and summon nature's ally IX at 18th level. At 10th level: This ability functions as summon nature's ally V with a duration of 1 minute. This ability can summon only one animal, regardless of the list used.</p>",
+    "description": "<p>You can summon a battle companion. At 10th level: This ability functions as summon nature's ally V with a duration of 1 minute. This ability can summon only one animal, regardless of the list used. This now behaves as summon nature's ally VI at 12th level, summon nature's ally VII at 14th level, summon nature's ally VIII at 16th level, and summon nature's ally IX at 18th level.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:animal:major",
     "name": "Battle Companion",
@@ -20336,7 +20336,7 @@
   },
   "blessing-power:chaos:major": {
     "changes": [],
-    "description": "<p>You can summon a battle companion. This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level. At 10th level: This ability functions as summon monster IV with a duration of 1 minute, but for only a chaotic outsider or an animal with the entropic creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
+    "description": "<p>You can summon a battle companion. At 10th level: This ability functions as summon monster IV with a duration of 1 minute, but for only a chaotic outsider or an animal with the entropic creature simple template. This ability can summon only one creature, regardless of the list used. This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:chaos:major",
     "name": "Battle Companion",
@@ -20350,7 +20350,7 @@
   },
   "blessing-power:chaos:minor": {
     "changes": [],
-    "description": "<p>You can touch one weapon and grant it a chaotic blessing. This blessing's additional damage doesn't stack with the additional damage from the anarchic weapon special ability. At 1st level: For 1 minute, the touched weapon glows yellow or purple and deals an additional 1d6 points of damage against lawful creatures. During this time, it's treated as chaotic for the purposes of overcoming damage reduction.</p>",
+    "description": "<p>You can touch one weapon and grant it a chaotic blessing. At 1st level: For 1 minute, the touched weapon glows yellow or purple and deals an additional 1d6 points of damage against lawful creatures. During this time, it's treated as chaotic for the purposes of overcoming damage reduction. This blessing's additional damage doesn't stack with the additional damage from the anarchic weapon special ability.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:chaos:minor",
     "name": "Anarchic Strike",
@@ -20392,7 +20392,7 @@
   },
   "blessing-power:community:major": {
     "changes": [],
-    "description": "<p>You can rally your allies to fight together. If you score a critical hit, this bonus increases to +4 until the start of your next turn. At 10th level: For 1 minute, whenever you make a successful melee or ranged attack against a foe, allies within 10 feet of you gain a +2 insight bonus on attacks of the same type you made against that foe - melee attacks if you made a melee attack, or ranged attacks if you made a ranged attack.</p>",
+    "description": "<p>You can rally your allies to fight together. At 10th level: For 1 minute, whenever you make a successful melee or ranged attack against a foe, allies within 10 feet of you gain a +2 insight bonus on attacks of the same type you made against that foe - melee attacks if you made a melee attack, or ranged attacks if you made a ranged attack. If you score a critical hit, this bonus increases to +4 until the start of your next turn.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:community:major",
     "name": "Fight as One",
@@ -20482,7 +20482,7 @@
   },
   "blessing-power:death:major": {
     "changes": [],
-    "description": "<p>These temporary negative levels stack. You gain no benefit from imposing these negative levels (such as the temporary hit points undead gain from enervation). At 10th level: You can make a melee touch attack against an opponent to deliver grim suffering. If you succeed, you inflict 1 temporary negative level on the target for 1 minute. Alternatively, you can activate this ability as a swift action upon hitting an opponent with a melee attack.</p>",
+    "description": "<p>At 10th level: You can make a melee touch attack against an opponent to deliver grim suffering. If you succeed, you inflict 1 temporary negative level on the target for 1 minute. Alternatively, you can activate this ability as a swift action upon hitting an opponent with a melee attack. These temporary negative levels stack. You gain no benefit from imposing these negative levels (such as the temporary hit points undead gain from enervation).</p>",
     "grantsBuffs": [],
     "id": "blessing-power:death:major",
     "name": "Death's Touch",
@@ -20538,7 +20538,7 @@
   },
   "blessing-power:earth:major": {
     "changes": [],
-    "description": "<p>The ally's DR improves to 2/- at 12th level, increases to 3/- at 14th level, increases to 4/- at 16th level, and increases to 5/- at 18th level. This doesn't stack with any other damage resistance. At 10th level: You can touch an ally and harden its armor or clothing. For 1 minute, the ally gains DR 1/-.</p>",
+    "description": "<p>At 10th level: You can touch an ally and harden its armor or clothing. For 1 minute, the ally gains DR 1/-. The ally's DR improves to 2/- at 12th level, increases to 3/- at 14th level, increases to 4/- at 16th level, and increases to 5/- at 18th level. This doesn't stack with any other damage resistance.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:earth:major",
     "name": "Armor of Earth",
@@ -20594,7 +20594,7 @@
   },
   "blessing-power:evil:major": {
     "changes": [],
-    "description": "<p>This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level. At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only an evil outsider or an animal with the fiendish creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
+    "description": "<p>At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only an evil outsider or an animal with the fiendish creature simple template. This ability can summon only one creature, regardless of the list used. This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:evil:major",
     "name": "Battle Companion",
@@ -20734,7 +20734,7 @@
   },
   "blessing-power:good:major": {
     "changes": [],
-    "description": "<p>This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level. At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only a good outsider or an animal with the celestial creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
+    "description": "<p>At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only a good outsider or an animal with the celestial creature simple template. This ability can summon only one creature, regardless of the list used. This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:good:major",
     "name": "Battle Companion",
@@ -20824,7 +20824,7 @@
   },
   "blessing-power:law:major": {
     "changes": [],
-    "description": "<p>This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level. At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only a lawful outsider or an animal with the resolute creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
+    "description": "<p>At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only a lawful outsider or an animal with the resolute creature simple template. This ability can summon only one creature, regardless of the list used. This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:law:major",
     "name": "Battle Companion",
@@ -21004,7 +21004,7 @@
   },
   "blessing-power:plant:major": {
     "changes": [],
-    "description": "<p>This now behaves as summon nature's ally V at 12th level, summon nature's ally VI at 14th level, and so on every 2 levels, to summon nature's ally IX at 20th level. At 10th level: You can summon a battle companion. This ability functions as summon nature's ally IV, with a duration of 1 minute. This ability can summon only one animal, regardless of the list used, and the creature's type changes to plant instead of animal.</p>",
+    "description": "<p>At 10th level: You can summon a battle companion. This ability functions as summon nature's ally IV, with a duration of 1 minute. This ability can summon only one animal, regardless of the list used, and the creature's type changes to plant instead of animal. This now behaves as summon nature's ally V at 12th level, summon nature's ally VI at 14th level, and so on every 2 levels, to summon nature's ally IX at 20th level.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:plant:major",
     "name": "Battle Companion",
@@ -21046,7 +21046,7 @@
   },
   "blessing-power:protection:minor": {
     "changes": [],
-    "description": "<p>The bonus increases to +2 at 10th level and +3 at 20th level. At 1st level: You can gain a +1 sacred bonus on saving throws and a +1 sacred bonus to AC for 1 minute.</p>",
+    "description": "<p>At 1st level: You can gain a +1 sacred bonus on saving throws and a +1 sacred bonus to AC for 1 minute. The bonus increases to +2 at 10th level and +3 at 20th level.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:protection:minor",
     "name": "Increased Defense",
@@ -21214,7 +21214,7 @@
   },
   "blessing-power:sun:minor": {
     "changes": [],
-    "description": "<p>This is a light effect. Sightless creatures are unaffected by this ability. At 1st level: You can create a flash of sunlight in the eyes of one of your opponents. The target is blinded for 1 round. If it succeeds at a Reflex saving throw, it's instead dazzled for 1 round. Creatures with light blindness or light sensitivity take a -4 penalty on this saving throw.</p>",
+    "description": "<p>At 1st level: You can create a flash of sunlight in the eyes of one of your opponents. The target is blinded for 1 round. If it succeeds at a Reflex saving throw, it's instead dazzled for 1 round. Creatures with light blindness or light sensitivity take a -4 penalty on this saving throw. This is a light effect. Sightless creatures are unaffected by this ability.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:sun:minor",
     "name": "Blinding Strike",
@@ -21256,7 +21256,7 @@
   },
   "blessing-power:travel:major": {
     "changes": [],
-    "description": "<p>You can bring other willing creatures with you, but each such creature requires expending one additional use of your <em>blessing,</em> regardless of the distance traveled. (For example, transporting yourself 40 feet costs 2 uses of your <em>blessing,</em> and transporting an additional person this distance costs 1 more use.) At 10th level: You can teleport up to 20 feet as a move action. You can increase this distance by expending another use of your <em>blessing</em> - each use spent grants an additional 20 feet. You must have line of sight to your destination. This teleportation doesn't provoke attacks of opportunity.</p>",
+    "description": "<p>At 10th level: You can teleport up to 20 feet as a move action. You can increase this distance by expending another use of your <em>blessing</em> - each use spent grants an additional 20 feet. You must have line of sight to your destination. This teleportation doesn't provoke attacks of opportunity. You can bring other willing creatures with you, but each such creature requires expending one additional use of your <em>blessing,</em> regardless of the distance traveled. (For example, transporting yourself 40 feet costs 2 uses of your <em>blessing,</em> and transporting an additional person this distance costs 1 more use.)</p>",
     "grantsBuffs": [],
     "id": "blessing-power:travel:major",
     "name": "Dimensional Hop",
@@ -21298,7 +21298,7 @@
   },
   "blessing-power:trickery:minor": {
     "changes": [],
-    "description": "<p>You can have no more than one double at a time. The double created by this ability doesn't stack with the additional images from the mirror image spell. At 1st level: As a move action you can create an illusory double of yourself. This double functions as a single mirror image, and lasts for a number of rounds equal to your warpriest level, or until the illusory duplicate is dispelled or destroyed.</p>",
+    "description": "<p>At 1st level: As a move action you can create an illusory double of yourself. This double functions as a single mirror image, and lasts for a number of rounds equal to your warpriest level, or until the illusory duplicate is dispelled or destroyed. You can have no more than one double at a time. The double created by this ability doesn't stack with the additional images from the mirror image spell.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:trickery:minor",
     "name": "Double",
@@ -21326,7 +21326,7 @@
   },
   "blessing-power:void:minor": {
     "changes": [],
-    "description": "<p>Creatures that don't need to breathe are unaffected. Regardless of whether it succeeds at its saving throw, the target is immune to further uses of your <em>airless touch</em> for 24 hours. At 1st level: With a successful melee touch attack you can steal the breath from an opponent's lungs, leaving it unable to speak, use breath weapons, cast spells with verbal components, or do anything else requiring breath for 1 round. If the target fails at a Fortitude saving throw, it's also staggered for 1 round as it catches its breath. If the target was attempting to hold its breath, it can no longer do so: it must breathe on its turn or risk suffocation and unconsciousness.</p>",
+    "description": "<p>At 1st level: With a successful melee touch attack you can steal the breath from an opponent's lungs, leaving it unable to speak, use breath weapons, cast spells with verbal components, or do anything else requiring breath for 1 round. If the target fails at a Fortitude saving throw, it's also staggered for 1 round as it catches its breath. If the target was attempting to hold its breath, it can no longer do so: it must breathe on its turn or risk suffocation and unconsciousness. Creatures that don't need to breathe are unaffected. Regardless of whether it succeeds at its saving throw, the target is immune to further uses of your <em>airless touch</em> for 24 hours.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:void:minor",
     "name": "Airless Touch",
