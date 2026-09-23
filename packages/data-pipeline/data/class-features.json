@@ -6838,7 +6838,7 @@
     "changes": [
       {
         "formula": "max(1, floor(@class.unlevel / 2))",
-        "target": "skill.per",
+        "target": "skill.perception",
         "type": "racial"
       }
     ],
@@ -7045,12 +7045,12 @@
     "changes": [
       {
         "formula": "max(1, floor(@class.unlevel / 2))",
-        "target": "skill.int",
+        "target": "skill.intimidate",
         "type": "morale"
       },
       {
         "formula": "max(1, floor(@class.unlevel / 2))",
-        "target": "skill.sen",
+        "target": "skill.senseMotive",
         "type": "morale"
       }
     ],
@@ -15816,12 +15816,12 @@
     "changes": [
       {
         "formula": "2 + (floor(@class.unlevel / 5))",
-        "target": "skill.dis",
+        "target": "skill.disguise",
         "type": "enh"
       },
       {
         "formula": "2 + (floor(@class.unlevel / 5))",
-        "target": "skill.blf",
+        "target": "skill.bluff",
         "type": "enh"
       }
     ],
@@ -16549,12 +16549,12 @@
     "changes": [
       {
         "formula": "2",
-        "target": "skill.sur",
+        "target": "skill.survival",
         "type": "untyped"
       },
       {
         "formula": "2",
-        "target": "skill.kna",
+        "target": "skill.knowledge.nature",
         "type": "untyped"
       }
     ],
@@ -18688,7 +18688,7 @@
       },
       {
         "formula": "2 + floor(@class.unlevel / 5)",
-        "target": "skill.swm",
+        "target": "skill.swim",
         "type": "enh"
       }
     ],
@@ -28958,7 +28958,7 @@
     "changes": [
       {
         "formula": "floor(@class.unlevel / 2)",
-        "target": "skill.umd",
+        "target": "skill.useMagicDevice",
         "type": "untyped"
       }
     ],
@@ -29557,62 +29557,62 @@
     "changes": [
       {
         "formula": "if(@skills.spl.rank, 1d6)",
-        "target": "skill.spl",
+        "target": "skill.spellcraft",
         "type": "untyped"
       },
       {
         "formula": "if(@skills.khi.rank, 1d6)",
-        "target": "skill.khi",
+        "target": "skill.knowledge.history",
         "type": "untyped"
       },
       {
         "formula": "if(@skills.kno.rank, 1d6)",
-        "target": "skill.kno",
+        "target": "skill.knowledge.nobility",
         "type": "untyped"
       },
       {
         "formula": "if(@skills.kar.rank, 1d6)",
-        "target": "skill.kar",
+        "target": "skill.knowledge.arcana",
         "type": "untyped"
       },
       {
         "formula": "if(@skills.kge.rank, 1d6)",
-        "target": "skill.kge",
+        "target": "skill.knowledge.geography",
         "type": "untyped"
       },
       {
         "formula": "if(@skills.lin.rank, 1d6)",
-        "target": "skill.lin",
+        "target": "skill.linguistics",
         "type": "untyped"
       },
       {
         "formula": "if(@skills.kdu.rank, 1d6)",
-        "target": "skill.kdu",
+        "target": "skill.knowledge.dungeoneering",
         "type": "untyped"
       },
       {
         "formula": "if(@skills.kpl.rank, 1d6)",
-        "target": "skill.kpl",
+        "target": "skill.knowledge.planes",
         "type": "untyped"
       },
       {
         "formula": "if(@skills.klo.rank, 1d6)",
-        "target": "skill.klo",
+        "target": "skill.knowledge.local",
         "type": "untyped"
       },
       {
         "formula": "if(@skills.ken.rank, 1d6)",
-        "target": "skill.ken",
+        "target": "skill.knowledge.engineering",
         "type": "untyped"
       },
       {
         "formula": "if(@skills.kna.rank, 1d6)",
-        "target": "skill.kna",
+        "target": "skill.knowledge.nature",
         "type": "untyped"
       },
       {
         "formula": "if(@skills.kre.rank, 1d6)",
-        "target": "skill.kre",
+        "target": "skill.knowledge.religion",
         "type": "untyped"
       }
     ],
@@ -30447,7 +30447,7 @@
     "changes": [
       {
         "formula": "max(1, floor(@class.unlevel / 2))",
-        "target": "skill.blf",
+        "target": "skill.bluff",
         "type": "untyped"
       }
     ],
@@ -30582,7 +30582,7 @@
     "changes": [
       {
         "formula": "max(1, floor(@class.unlevel / 2))",
-        "target": "skill.dev",
+        "target": "skill.disableDevice",
         "type": "untyped"
       }
     ],
@@ -33020,7 +33020,7 @@
     "changes": [
       {
         "formula": "2 + floor(@class.unlevel / 5)",
-        "target": "skill.slt",
+        "target": "skill.sleightOfHand",
         "type": "untyped"
       }
     ],
@@ -37072,7 +37072,7 @@
     "changes": [
       {
         "formula": "3",
-        "target": "skill.kpl",
+        "target": "skill.knowledge.planes",
         "type": "untyped"
       }
     ],
@@ -37458,17 +37458,17 @@
     "changes": [
       {
         "formula": "2 + floor(@class.unlevel / 5)",
-        "target": "skill.int",
+        "target": "skill.intimidate",
         "type": "untyped"
       },
       {
         "formula": "2 + floor(@class.unlevel / 5)",
-        "target": "skill.dip",
+        "target": "skill.diplomacy",
         "type": "untyped"
       },
       {
         "formula": "2 + floor(@class.unlevel / 5)",
-        "target": "skill.blf",
+        "target": "skill.bluff",
         "type": "untyped"
       }
     ],
