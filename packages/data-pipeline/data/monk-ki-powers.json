@@ -1,6 +1,6 @@
 {
   "abundant_step": {
-    "description": "<p><strong>Abundant Step:</strong> A monk with this ki power can slip magically between spaces, as if using the spell dimension door. Using this ability consumes 2 ki points. The monk's caster level for this effect is equal to his monk level. He cannot take other creatures with him when he uses this ability. (Prerequisite: 8th-level monk)</p>",
+    "description": "<p><strong>Abundant Step:</strong> <em>Move action:</em> A monk with this ki power can slip magically between spaces, as if using the spell dimension door. Using this ability consumes 2 ki points. The monk's caster level for this effect is equal to his monk level. He cannot take other creatures with him when he uses this ability. (Prerequisite: 8th-level monk)</p>",
     "id": "abundant_step",
     "name": "Abundant Step",
     "nameSuffix": "(Su)",
@@ -13,7 +13,7 @@
     "uuid": "pfdata:monk-ki-power:abundant_step"
   },
   "action_before_thought": {
-    "description": "<p><strong>Action Before Thought:</strong> A monk with this ability can spend 2 ki points as part of rolling initiative to roll twice on the initiative check and take the higher result. (Prerequisite: 6th-level monk)</p>",
+    "description": "<p><strong>Action Before Thought:</strong> <em>Free action:</em> A monk with this ability can spend 2 ki points as part of rolling initiative to roll twice on the initiative check and take the higher result. (Prerequisite: 6th-level monk)</p>",
     "id": "action_before_thought",
     "name": "Action Before Thought",
     "nameSuffix": "(Ex)",
@@ -26,7 +26,7 @@
     "uuid": "pfdata:monk-ki-power:action_before_thought"
   },
   "bare_hand_block": {
-    "description": "<p><strong>Bare-Hand Block:</strong> A monk with this ability can spend 1 ki point when attacked with a manufactured weapon to attempt an unarmed sunder combat maneuver check against it. If he successfully sunders the weapon and grants it the broken condition, the attack deals no damage. He can spend an additional 1 ki point when using this ability to activate <em>ki sunder</em> as a free action. (Prerequisite: 8th-level monk, ki sunder)</p>",
+    "description": "<p><strong>Bare-Hand Block:</strong> <em>Immediate action:</em> A monk with this ability can spend 1 ki point when attacked with a manufactured weapon to attempt an unarmed sunder combat maneuver check against it. If he successfully sunders the weapon and grants it the broken condition, the attack deals no damage. He can spend an additional 1 ki point when using this ability to activate <em>ki sunder</em> as a free action. (Prerequisite: 8th-level monk, ki sunder)</p>",
     "id": "bare_hand_block",
     "level": 1,
     "name": "Bare-Hand Block",
@@ -54,7 +54,7 @@
     "uuid": "pfdata:monk-ki-power:branch_runner"
   },
   "breaking_down_koan": {
-    "description": "<p><strong>Breaking-Down Koan:</strong> A monk with this ability can spend 1 ki point to present a paradox, riddle, or complicated question to a creature within 30 feet. The creature must succeed at a Will save (DC = 10 + 1/2 the monk's level + his Wisdom modifier) or be confused for 1 round. This is a mind-affecting, language-dependent effect. (Prerequisite: 8th-level monk)</p>",
+    "description": "<p><strong>Breaking-Down Koan:</strong> <em>Swift action:</em> A monk with this ability can spend 1 ki point to present a paradox, riddle, or complicated question to a creature within 30 feet. The creature must succeed at a Will save (DC = 10 + 1/2 the monk's level + his Wisdom modifier) or be confused for 1 round. This is a mind-affecting, language-dependent effect. (Prerequisite: 8th-level monk)</p>",
     "id": "breaking_down_koan",
     "name": "Breaking-Down Koan",
     "nameSuffix": "(Su)",
@@ -67,7 +67,7 @@
     "uuid": "pfdata:monk-ki-power:breaking_down_koan"
   },
   "building_up_koan": {
-    "description": "<p><strong>Building-Up Koan:</strong> A monk with this ability can spend 2 ki points to ask himself a koan, which he then tries to answer. The monk must attempt a Will save (DC 15 + 1/2 the monk's level). If successful, he gains an insight bonus equal to his Wisdom modifier to AC and on attack rolls, saving throws, skill checks and until the end of the round. If he fails, the monk is instead confused for 1 round. This is a mind-affecting, language-dependent effect. A character who can't become confused can't benefit from this ability. (Prerequisite: 8th-level monk)</p>",
+    "description": "<p><strong>Building-Up Koan:</strong> <em>Swift action:</em> A monk with this ability can spend 2 ki points to ask himself a koan, which he then tries to answer. The monk must attempt a Will save (DC 15 + 1/2 the monk's level). If successful, he gains an insight bonus equal to his Wisdom modifier to AC and on attack rolls, saving throws, skill checks and until the end of the round. If he fails, the monk is instead confused for 1 round. This is a mind-affecting, language-dependent effect. A character who can't become confused can't benefit from this ability. (Prerequisite: 8th-level monk)</p>",
     "id": "building_up_koan",
     "name": "Building-Up Koan",
     "nameSuffix": "(Su)",
@@ -107,7 +107,7 @@
     "uuid": "pfdata:monk-ki-power:diamond_body"
   },
   "diamond_mind": {
-    "description": "<p><strong>Diamond Mind:</strong> By spending 1 ki point, a monk with this power can suppress a fear effect affecting him as if using remove fear, using his monk level as his caster level. He can spend 2 ki points to activate this ability even when frightened or panicked. (Prerequisite: 6th-level monk)</p>",
+    "description": "<p><strong>Diamond Mind:</strong> <em>Swift action:</em> By spending 1 ki point, a monk with this power can suppress a fear effect affecting him as if using remove fear, using his monk level as his caster level. He can spend 2 ki points to activate this ability even when frightened or panicked. (Prerequisite: 6th-level monk)</p>",
     "id": "diamond_mind",
     "name": "Diamond Mind",
     "nameSuffix": "(Su)",
@@ -120,7 +120,7 @@
     "uuid": "pfdata:monk-ki-power:diamond_mind"
   },
   "diamond_resilience": {
-    "description": "<p><strong>Diamond Resilience:</strong> By spending 1 ki point, the monk gains DR 2/-. At 16th level: The damage reduction increases to 4/-. At 19th level: It increases to DR 6/-. This DR lasts for 1 minute. (Prerequisite: 12th-level monk)</p>",
+    "description": "<p><strong>Diamond Resilience:</strong> <em>Swift action:</em> By spending 1 ki point, the monk gains DR 2/-. At 16th level: The damage reduction increases to 4/-. At 19th level: It increases to DR 6/-. This DR lasts for 1 minute. (Prerequisite: 12th-level monk)</p>",
     "id": "diamond_resilience",
     "name": "Diamond Resilience",
     "nameSuffix": "(Ex)",
@@ -133,7 +133,7 @@
     "uuid": "pfdata:monk-ki-power:diamond_resilience"
   },
   "diamond_soul": {
-    "description": "<p><strong>Diamond Soul:</strong> A monk can spend 2 ki points to gain spell resistance equal to his monk level + 10. This spell resistance lasts for a number of rounds equal to the monk's level. (Prerequisite: 12th-level monk)</p>",
+    "description": "<p><strong>Diamond Soul:</strong> <em>Swift action:</em> A monk can spend 2 ki points to gain spell resistance equal to his monk level + 10. This spell resistance lasts for a number of rounds equal to the monk's level. (Prerequisite: 12th-level monk)</p>",
     "id": "diamond_soul",
     "name": "Diamond Soul",
     "nameSuffix": "(Ex)",
@@ -160,7 +160,7 @@
     "uuid": "pfdata:monk-ki-power:elemental_burst"
   },
   "elemental_fury": {
-    "description": "<p><strong>Elemental Fury:</strong> The monk can expend 1 ki point to imbue his natural attacks with the chosen energy, causing them to deal 1d6 points of damage of the chosen type for a number of rounds equal to 1/2 his monk level. (Prerequisite: 6th-level monk)</p>",
+    "description": "<p><strong>Elemental Fury:</strong> A monk who selects this ki power must select one type of energy: acid, cold, electricity, or fire. Once this choice is made, it cannot be changed. <em>Swift action:</em> The monk can expend 1 ki point to imbue his natural attacks with the chosen energy, causing them to deal 1d6 points of damage of the chosen type for a number of rounds equal to 1/2 his monk level. (Prerequisite: 6th-level monk)</p>",
     "id": "elemental_fury",
     "name": "Elemental Fury",
     "nameSuffix": "(Su)",
@@ -173,7 +173,7 @@
     "uuid": "pfdata:monk-ki-power:elemental_fury"
   },
   "empty_body": {
-    "description": "<p><strong>Empty Body:</strong> A monk with this ki power gains the ability to assume an ethereal state for 1 minute as though using the spell etherealness, using his monk level as his caster level. Using this ability consumes 3 points from the monk's ki pool. This ability affects only the monk and cannot be used to make other creatures ethereal.</p>",
+    "description": "<p><strong>Empty Body:</strong> <em>Move action:</em> A monk with this ki power gains the ability to assume an ethereal state for 1 minute as though using the spell etherealness, using his monk level as his caster level. Using this ability consumes 3 points from the monk's ki pool. This ability affects only the monk and cannot be used to make other creatures ethereal.</p>",
     "id": "empty_body",
     "name": "Empty Body",
     "nameSuffix": "(Su)",
@@ -186,7 +186,7 @@
     "uuid": "pfdata:monk-ki-power:empty_body"
   },
   "feather_balance": {
-    "description": "<p><strong>Feather Balance:</strong> A monk with this ability can spend 1 ki point to achieve perfect balance. While this is active, the monk treats any Acrobatics attempt made to balance as if he had rolled a 20. This ability lasts for 1 minute.</p>",
+    "description": "<p><strong>Feather Balance:</strong> <em>Swift action:</em> A monk with this ability can spend 1 ki point to achieve perfect balance. While this is active, the monk treats any Acrobatics attempt made to balance as if he had rolled a 20. This ability lasts for 1 minute.</p>",
     "id": "feather_balance",
     "name": "Feather Balance",
     "nameSuffix": "(Ex)",
@@ -199,7 +199,7 @@
     "uuid": "pfdata:monk-ki-power:feather_balance"
   },
   "floating_breath": {
-    "description": "<p><strong>Floating Breath:</strong> A monk with this ki power can spend 1 ki point to balance on the air, hovering in place, until the end of his next turn. This power does not allow the monk to fly or otherwise move into the air; he must jump or use some other ability to reach his position. This otherwise functions as air walk. (Prerequisite: 8th-level monk)</p>",
+    "description": "<p><strong>Floating Breath:</strong> <em>Swift action:</em> A monk with this ki power can spend 1 ki point to balance on the air, hovering in place, until the end of his next turn. This power does not allow the monk to fly or otherwise move into the air; he must jump or use some other ability to reach his position. This otherwise functions as air walk. (Prerequisite: 8th-level monk)</p>",
     "id": "floating_breath",
     "name": "Floating Breath",
     "nameSuffix": "(Su)",
@@ -212,7 +212,7 @@
     "uuid": "pfdata:monk-ki-power:floating_breath"
   },
   "formless_mastery": {
-    "description": "<p><strong>Formless Mastery:</strong> A monk with this ability varies his styles, never repeating the same move twice and capitalizing on the weaknesses of an opponent's style. As long as he does not possess any style feat, the monk can spend 1 ki point to gain the following against opponents in the stance of a style feat: a +4 dodge bonus to AC, a +4 circumstance bonus on attack rolls, and a bonus equal to his monk level on damage rolls. These bonuses last until the end of the monk's next turn (or his current turn if he uses this ability on his own turn). The monk can activate this ability and the furious defense ki power with the same immediate action for a total cost of 3 ki points. (Prerequisite: 7th-level monk)</p>",
+    "description": "<p><strong>Formless Mastery:</strong> A monk with this ability varies his styles, never repeating the same move twice and capitalizing on the weaknesses of an opponent's style. <em>Immediate action:</em> As long as he does not possess any style feat, the monk can spend 1 ki point to gain the following against opponents in the stance of a style feat: a +4 dodge bonus to AC, a +4 circumstance bonus on attack rolls, and a bonus equal to his monk level on damage rolls. These bonuses last until the end of the monk's next turn (or his current turn if he uses this ability on his own turn). The monk can activate this ability and the furious defense ki power with the same immediate action for a total cost of 3 ki points. (Prerequisite: 7th-level monk)</p>",
     "id": "formless_mastery",
     "name": "Formless Mastery",
     "nameSuffix": "(Ex)",
@@ -225,7 +225,7 @@
     "uuid": "pfdata:monk-ki-power:formless_mastery"
   },
   "freedom_of_movement": {
-    "description": "<p><strong>Freedom of Movement:</strong> A monk with this ability can spend 1 ki point to gain the effects of freedom of movement for 1 round. (Prerequisite: 8th-level monk)</p>",
+    "description": "<p><strong>Freedom of Movement:</strong> <em>Swift action:</em> A monk with this ability can spend 1 ki point to gain the effects of freedom of movement for 1 round. (Prerequisite: 8th-level monk)</p>",
     "id": "freedom_of_movement",
     "name": "Freedom of Movement",
     "nameSuffix": "(Su)",
@@ -238,7 +238,7 @@
     "uuid": "pfdata:monk-ki-power:freedom_of_movement"
   },
   "furious_defense": {
-    "description": "<p><strong>Furious Defense:</strong> By spending 1 ki point, a monk with this ki power can grant himself a +4 dodge bonus to AC until the end of his next turn. The monk can activate this ability and the formless mastery ki power with the same immediate action for a total cost of 3 ki points. (Prerequisite: 7th-level monk)</p>",
+    "description": "<p><strong>Furious Defense:</strong> <em>Immediate action:</em> By spending 1 ki point, a monk with this ki power can grant himself a +4 dodge bonus to AC until the end of his next turn. The monk can activate this ability and the formless mastery ki power with the same immediate action for a total cost of 3 ki points. (Prerequisite: 7th-level monk)</p>",
     "id": "furious_defense",
     "name": "Furious Defense",
     "nameSuffix": "(Ex)",
@@ -251,7 +251,7 @@
     "uuid": "pfdata:monk-ki-power:furious_defense"
   },
   "high_jump": {
-    "description": "<p><strong>High Jump:</strong> A monk with this ki power adds his level as a bonus on all Acrobatics checks to jump, both for vertical jumps and horizontal jumps. In addition, he always counts as having a running start when attempting Acrobatics checks to jump. By spending 1 ki point, the monk gains a +20 bonus on Acrobatics checks to jump for 1 round.</p>",
+    "description": "<p><strong>High Jump:</strong> A monk with this ki power adds his level as a bonus on all Acrobatics checks to jump, both for vertical jumps and horizontal jumps. In addition, he always counts as having a running start when attempting Acrobatics checks to jump. <em>Swift action:</em> By spending 1 ki point, the monk gains a +20 bonus on Acrobatics checks to jump for 1 round.</p>",
     "id": "high_jump",
     "name": "High Jump",
     "nameSuffix": "(Ex)",
@@ -277,7 +277,7 @@
     "uuid": "pfdata:monk-ki-power:improvised_weapon_proficiency"
   },
   "insightful_wisdom": {
-    "description": "<p><strong>Insightful Wisdom:</strong> A monk with this ability can spend 2 ki points to give another ally within 30 feet just the right word of advice to prevent disaster. If the ally can hear the monk, she can reroll a single attack roll or saving throw. The ally must take the second result, even if it is worse. (Prerequisite: 8th-level monk)</p>",
+    "description": "<p><strong>Insightful Wisdom:</strong> <em>Immediate action:</em> A monk with this ability can spend 2 ki points to give another ally within 30 feet just the right word of advice to prevent disaster. If the ally can hear the monk, she can reroll a single attack roll or saving throw. The ally must take the second result, even if it is worse. (Prerequisite: 8th-level monk)</p>",
     "id": "insightful_wisdom",
     "name": "Insightful Wisdom",
     "nameSuffix": "(Su)",
@@ -290,7 +290,7 @@
     "uuid": "pfdata:monk-ki-power:insightful_wisdom"
   },
   "ki_blocker": {
-    "description": "<p><strong>Ki Blocker:</strong> A monk with this ability can spend 1 ki point before making an unarmed strike against a foe. If the attack hits, the monk can interrupt the target's flow of ki.~~~If the monk successfully damages the target of his attack, that opponent's cost to activate abilities with ki increases by 1 ki point for 1 hour. If the monk spends 2 ki points, he can use this ability to affect the target's <em>arcane pool, arcane reservoir, grit points, inspiration,</em> or <em>panache points</em> instead of its ki pool. The effects of this ability do not stack, but multiple hits increase the duration by 1 hour for each hit. (Prerequisite: 10th-level monk)</p>",
+    "description": "<p><strong>Ki Blocker:</strong> <em>Free action:</em> A monk with this ability can spend 1 ki point before making an unarmed strike against a foe. If the attack hits, the monk can interrupt the target's flow of ki.</p>\n<p>If the monk successfully damages the target of his attack, that opponent's cost to activate abilities with ki increases by 1 ki point for 1 hour. If the monk spends 2 ki points, he can use this ability to affect the target's <em>arcane pool, arcane reservoir, grit points, inspiration,</em> or <em>panache points</em> instead of its ki pool. The effects of this ability do not stack, but multiple hits increase the duration by 1 hour for each hit. (Prerequisite: 10th-level monk)</p>",
     "id": "ki_blocker",
     "name": "Ki Blocker",
     "nameSuffix": "(Su)",
@@ -303,7 +303,7 @@
     "uuid": "pfdata:monk-ki-power:ki_blocker"
   },
   "ki_guardian": {
-    "description": "<p><strong>Ki Guardian:</strong> Before he rolls a saving throw against a targeted effect that also targets other allies or an area effect whose area includes other allies, a monk with this ability can spend any number of ki points and designate a number of adjacent allies equal to the number of ki points spent.~~~The monk rolls one saving throw for each designated ally, using his bonus instead of the ally's. For each successful saving throw, the corresponding ally treats the effect as if that ally had succeeded at the saving throw, and for each saving throw failed, the corresponding ally treats the effect as if that ally had failed the saving throw.~~~If the monk fails any of the saving throws (including his own original saving throw), the monk treats the effect as if he had failed the saving throw. (Prerequisite: 6th-level monk)</p>",
+    "description": "<p><strong>Ki Guardian:</strong> <em>Immediate action:</em> Before he rolls a saving throw against a targeted effect that also targets other allies or an area effect whose area includes other allies, a monk with this ability can spend any number of ki points and designate a number of adjacent allies equal to the number of ki points spent.</p>\n<p>The monk rolls one saving throw for each designated ally, using his bonus instead of the ally's. For each successful saving throw, the corresponding ally treats the effect as if that ally had succeeded at the saving throw, and for each saving throw failed, the corresponding ally treats the effect as if that ally had failed the saving throw.</p>\n<p>If the monk fails any of the saving throws (including his own original saving throw), the monk treats the effect as if he had failed the saving throw. (Prerequisite: 6th-level monk)</p>",
     "id": "ki_guardian",
     "name": "Ki Guardian",
     "nameSuffix": "(Su)",
@@ -316,7 +316,7 @@
     "uuid": "pfdata:monk-ki-power:ki_guardian"
   },
   "ki_hurricane": {
-    "description": "<p><strong>Ki Hurricane:</strong> A monk with this ability can move up to twice his speed. At any point in that movement, the monk can spend 1 ki point to make the first attack in his <em>flurry of blows.</em> He can later spend another ki point to make the next attack in his <em>flurry of blows,</em> and so on, until he either stops spending ki points or has exhausted all the attacks from his <em>flurry of blows.</em> (Prerequisite: 10th-level monk, sudden speed)</p>",
+    "description": "<p><strong>Ki Hurricane:</strong> <em>Full-round action:</em> A monk with this ability can move up to twice his speed. At any point in that movement, the monk can spend 1 ki point to make the first attack in his <em>flurry of blows.</em> He can later spend another ki point to make the next attack in his <em>flurry of blows,</em> and so on, until he either stops spending ki points or has exhausted all the attacks from his <em>flurry of blows.</em> (Prerequisite: 10th-level monk, sudden speed)</p>",
     "id": "ki_hurricane",
     "level": 1,
     "name": "Ki Hurricane",
@@ -330,7 +330,7 @@
     "uuid": "pfdata:monk-ki-power:ki_hurricane"
   },
   "ki_meditation": {
-    "description": "<p><strong>Ki Meditation:</strong> A monk with this ability can spend 2 ki points to meditate, as if using Combat Meditation. Alternatively, he can spend 4 ki points to meditate as a move action instead. Using these ki points does not count as one of the monk's daily uses of Combat Meditation, but it grants him the usual benefits he would gain from his meditation feats for doing so. (Prerequisite: Combat Meditation)</p>",
+    "description": "<p><strong>Ki Meditation:</strong> <em>Full-round action:</em> A monk with this ability can spend 2 ki points to meditate, as if using Combat Meditation. Alternatively, he can spend 4 ki points to meditate as a move action instead. Using these ki points does not count as one of the monk's daily uses of Combat Meditation, but it grants him the usual benefits he would gain from his meditation feats for doing so. (Prerequisite: Combat Meditation)</p>",
     "id": "ki_meditation",
     "name": "Ki Meditation",
     "nameSuffix": "(Su)",
@@ -343,7 +343,7 @@
     "uuid": "pfdata:monk-ki-power:ki_meditation"
   },
   "ki_metabolism": {
-    "description": "<p><strong>Ki Metabolism:</strong> A monk with this ability uses his ki to control his metabolism. As long as he has at least 1 point remaining in his ki pool, the monk needs to eat and drink only 1/4 as often as normal, needs only 2 hours of sleep each night (including to replenish his ki pool), and can hold his breath for up to 1 hour per point of Constitution. He can spend 1 ki point to enter a state of suspended animation, falling unconscious and appearing dead to all senses. At the time he enters this state, he indicates a preset period of time or a triggering condition, after which he awakens.</p>",
+    "description": "<p><strong>Ki Metabolism:</strong> A monk with this ability uses his ki to control his metabolism. As long as he has at least 1 point remaining in his ki pool, the monk needs to eat and drink only 1/4 as often as normal, needs only 2 hours of sleep each night (including to replenish his ki pool), and can hold his breath for up to 1 hour per point of Constitution. <em>Move action:</em> He can spend 1 ki point to enter a state of suspended animation, falling unconscious and appearing dead to all senses. At the time he enters this state, he indicates a preset period of time or a triggering condition, after which he awakens.</p>",
     "id": "ki_metabolism",
     "name": "Ki Metabolism",
     "nameSuffix": "(Su)",
@@ -356,7 +356,7 @@
     "uuid": "pfdata:monk-ki-power:ki_metabolism"
   },
   "ki_mount": {
-    "description": "<p><strong>Ki Mount:</strong> A monk with this ability can spend 1 ki point to grant 2 temporary hit points per monk level he possesses to his mount for 1 hour per monk level. As long as the monk and his mount are adjacent or the monk is mounted, the mount shares the benefits of whichever of the <em>AC bonus, evasion, high jump, improved evasion, ki strike, perfect self,</em> and <em>still mind</em> abilities the monk possesses. (Prerequisite: 6th-level monk)</p>",
+    "description": "<p><strong>Ki Mount:</strong> <em>Standard action:</em> A monk with this ability can spend 1 ki point to grant 2 temporary hit points per monk level he possesses to his mount for 1 hour per monk level. As long as the monk and his mount are adjacent or the monk is mounted, the mount shares the benefits of whichever of the <em>AC bonus, evasion, high jump, improved evasion, ki strike, perfect self,</em> and <em>still mind</em> abilities the monk possesses. (Prerequisite: 6th-level monk)</p>",
     "id": "ki_mount",
     "name": "Ki Mount",
     "nameSuffix": "(Su)",
@@ -369,7 +369,7 @@
     "uuid": "pfdata:monk-ki-power:ki_mount"
   },
   "ki_range": {
-    "description": "<p><strong>Ki Range:</strong> A monk with this ability can spend 1 ki point to increase the range increment of any thrown monk weapon by 20 feet. Apply this benefit before doubling the range increment with the Far Shot feat.</p>",
+    "description": "<p><strong>Ki Range:</strong> <em>Swift action:</em> A monk with this ability can spend 1 ki point to increase the range increment of any thrown monk weapon by 20 feet. Apply this benefit before doubling the range increment with the Far Shot feat.</p>",
     "id": "ki_range",
     "name": "Ki Range",
     "nameSuffix": "(Su)",
@@ -382,7 +382,7 @@
     "uuid": "pfdata:monk-ki-power:ki_range"
   },
   "ki_sunder": {
-    "description": "<p><strong>Ki Sunder:</strong> A monk with this ability can spend 1 ki point when attempting a sunder combat maneuver check to add his monk level as a bonus to the damage roll.</p>",
+    "description": "<p><strong>Ki Sunder:</strong> <em>Free action:</em> A monk with this ability can spend 1 ki point when attempting a sunder combat maneuver check to add his monk level as a bonus to the damage roll.</p>",
     "id": "ki_sunder",
     "name": "Ki Sunder",
     "nameSuffix": "(Ex)",
@@ -408,7 +408,7 @@
     "uuid": "pfdata:monk-ki-power:ki_visions"
   },
   "ki_volley": {
-    "description": "<p><strong>Ki Volley:</strong> When a targeted spell or spell-like ability fails to overcome the monk's spell resistance from <em>diamond soul,</em> he can spend 2 ki points to send that spell back at its caster as spell turning. (Prerequisite: 16th-level monk, diamond soul)</p>",
+    "description": "<p><strong>Ki Volley:</strong> <em>Immediate action:</em> When a targeted spell or spell-like ability fails to overcome the monk's spell resistance from <em>diamond soul,</em> he can spend 2 ki points to send that spell back at its caster as spell turning. (Prerequisite: 16th-level monk, diamond soul)</p>",
     "id": "ki_volley",
     "level": 1,
     "name": "Ki Volley",
@@ -450,7 +450,7 @@
     "uuid": "pfdata:monk-ki-power:master_thought_koan"
   },
   "one_touch": {
-    "description": "<p><strong>One Touch:</strong> As long as he has at least 1 point remaining in his ki pool, a monk with this power can make an unarmed strike against a foe as a touch attack. He adds 1/2 his monk level as a bonus on the damage roll. He can spend 1 ki point to double this bonus for that attack. (Prerequisite: 12th-level monk)</p>",
+    "description": "<p><strong>One Touch:</strong> <em>Standard action:</em> As long as he has at least 1 point remaining in his ki pool, a monk with this power can make an unarmed strike against a foe as a touch attack. He adds 1/2 his monk level as a bonus on the damage roll. He can spend 1 ki point to double this bonus for that attack. (Prerequisite: 12th-level monk)</p>",
     "id": "one_touch",
     "name": "One Touch",
     "nameSuffix": "(Ex)",
@@ -476,7 +476,7 @@
     "uuid": "pfdata:monk-ki-power:qinggong_power"
   },
   "quivering_palm": {
-    "description": "<p><strong>Quivering Palm:</strong> A monk can set up vibrations within the body of another creature that can thereafter be fatal if the monk so desires. Using this ability costs 4 ki points, and the monk must announce his intent to use this ability (and spend the ki points) before making the attack roll.~~~Creatures immune to critical hits cannot be affected. Otherwise, if the attack hits and the target takes damage from the blow, the <em>quivering palm</em> attack succeeds. Thereafter, the monk can try to slay the victim at any time within a number of days equal to his monk level. To make such an attempt, the monk merely wills the target to die (a free action); unless the target succeeds at a Fortitude saving throw (DC = 10 + 1/2 the monk's level + the monk's Wisdom modifier), it dies.~~~If the saving throw is successful, the target is no longer in danger from that particular <em>quivering palm</em> attack, but it can still be affected by another one at a later time. A monk can have no more than one <em>quivering palm</em> in effect at one time. If a monk uses <em>quivering palm</em> while another is still in effect, the previous one is negated. (Prerequisite: 16th-level monk)</p>",
+    "description": "<p><strong>Quivering Palm:</strong> <em>Standard action:</em> A monk can set up vibrations within the body of another creature that can thereafter be fatal if the monk so desires. Using this ability costs 4 ki points, and the monk must announce his intent to use this ability (and spend the ki points) before making the attack roll.</p>\n<p>Creatures immune to critical hits cannot be affected. Otherwise, if the attack hits and the target takes damage from the blow, the <em>quivering palm</em> attack succeeds. Thereafter, the monk can try to slay the victim at any time within a number of days equal to his monk level. To make such an attempt, the monk merely wills the target to die (a free action); unless the target succeeds at a Fortitude saving throw (DC = 10 + 1/2 the monk's level + the monk's Wisdom modifier), it dies.</p>\n<p>If the saving throw is successful, the target is no longer in danger from that particular <em>quivering palm</em> attack, but it can still be affected by another one at a later time. A monk can have no more than one <em>quivering palm</em> in effect at one time. If a monk uses <em>quivering palm</em> while another is still in effect, the previous one is negated. (Prerequisite: 16th-level monk)</p>",
     "id": "quivering_palm",
     "name": "Quivering Palm",
     "nameSuffix": "(Su)",
@@ -489,7 +489,7 @@
     "uuid": "pfdata:monk-ki-power:quivering_palm"
   },
   "racing_current": {
-    "description": "<p><strong>Racing Current:</strong> A monk with this ki power can create a wave to help him maneuver allies upon the battlefield, as if using the spell slipstream. Using this ability costs 2 ki points, and the ability remains in effect for 1 minute. (Prerequisite: 6th-level monk)</p>",
+    "description": "<p><strong>Racing Current:</strong> <em>Move action:</em> A monk with this ki power can create a wave to help him maneuver allies upon the battlefield, as if using the spell slipstream. Using this ability costs 2 ki points, and the ability remains in effect for 1 minute. (Prerequisite: 6th-level monk)</p>",
     "id": "racing_current",
     "name": "Racing Current",
     "nameSuffix": "(Su)",
@@ -515,7 +515,7 @@
     "uuid": "pfdata:monk-ki-power:slow_fall"
   },
   "sudden_speed": {
-    "description": "<p><strong>Sudden Speed:</strong> A monk with this ki power can spend 1 ki point to grant himself a sudden burst of speed. This increases the monk's base land speed by 30 feet for 1 minute.</p>",
+    "description": "<p><strong>Sudden Speed:</strong> <em>Swift action:</em> A monk with this ki power can spend 1 ki point to grant himself a sudden burst of speed. This increases the monk's base land speed by 30 feet for 1 minute.</p>",
     "id": "sudden_speed",
     "name": "Sudden Speed",
     "nameSuffix": "(Su)",
@@ -528,7 +528,7 @@
     "uuid": "pfdata:monk-ki-power:sudden_speed"
   },
   "water_sprint": {
-    "description": "<p><strong>Water Sprint:</strong> A monk with this ki power can spend 1 ki point to gain the ability to walk on water, as if under the effects of water walk. Once activated, this ability lasts for 1 minute per monk level. (Prerequisite: 6th-level monk)</p>",
+    "description": "<p><strong>Water Sprint:</strong> <em>Swift action:</em> A monk with this ki power can spend 1 ki point to gain the ability to walk on water, as if under the effects of water walk. Once activated, this ability lasts for 1 minute per monk level. (Prerequisite: 6th-level monk)</p>",
     "id": "water_sprint",
     "name": "Water Sprint",
     "nameSuffix": "(Su)",
@@ -554,7 +554,7 @@
     "uuid": "pfdata:monk-ki-power:wholeness_of_body"
   },
   "wind_jump": {
-    "description": "<p><strong>Wind Jump:</strong> A monk with this ki power can spend 1 ki point to grant himself a fly speed (with perfect maneuverability) equal to his base land speed. He must end his movement each round on solid ground (or some other surface that can support his weight) or fall as normal. Once activated, this ability lasts for 1 minute. (Prerequisite: 8th-level monk, high jump)</p>",
+    "description": "<p><strong>Wind Jump:</strong> <em>Move action:</em> A monk with this ki power can spend 1 ki point to grant himself a fly speed (with perfect maneuverability) equal to his base land speed. He must end his movement each round on solid ground (or some other surface that can support his weight) or fall as normal. Once activated, this ability lasts for 1 minute. (Prerequisite: 8th-level monk, high jump)</p>",
     "id": "wind_jump",
     "level": 1,
     "name": "Wind Jump",
@@ -568,7 +568,7 @@
     "uuid": "pfdata:monk-ki-power:wind_jump"
   },
   "zephyr_blow": {
-    "description": "<p><strong>Zephyr Blow:</strong> By spending 1 ki point, a monk with this power can disrupt the wind and create a sharp blast of air, as if using the spell gust of wind. The monk's caster level for this effect is equal to his monk level.</p>",
+    "description": "<p><strong>Zephyr Blow:</strong> <em>Standard action:</em> By spending 1 ki point, a monk with this power can disrupt the wind and create a sharp blast of air, as if using the spell gust of wind. The monk's caster level for this effect is equal to his monk level.</p>",
     "id": "zephyr_blow",
     "name": "Zephyr Blow",
     "nameSuffix": "(Su)",

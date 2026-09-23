@@ -148,7 +148,13 @@ export function pfDataSourceRefFromLine(line: string): SourceRef | undefined {
 function linkDisplayText(inner: string): string {
   const slash = inner.indexOf("/");
   const rest = slash === -1 ? inner : inner.slice(slash + 1);
-  return rest.replace(/<[^>]*>?/g, "").replace(/[«»]/g, "");
+  return (
+    rest
+      .replace(/<[^>]*>?/g, "")
+      // `spells_>necromancy`: everything before a bare `>` is URL-only too.
+      .replace(/^[^>]*>/, "")
+      .replace(/[«»]/g, "")
+  );
 }
 
 function resolveCrossRefs(text: string): string {
@@ -185,6 +191,8 @@ function resolveLinkDirectives(text: string): string {
  */
 const NAMED_ENTITIES: Record<string, string> = {
   amp: "&",
+  quot: '"',
+  nbsp: "\u00a0",
   lt: "<",
   gt: ">",
   copy: "©",
@@ -194,6 +202,7 @@ const NAMED_ENTITIES: Record<string, string> = {
   mdash: "—",
   ndash: "–",
   times: "×",
+  frac12: "½",
   pi: "π",
   dagger: "†",
   Dagger: "‡",
@@ -211,14 +220,19 @@ const NAMED_ENTITIES: Record<string, string> = {
 /**
  * The dataset closes an entity with either `;` or a second `&` (`&times;` and
  * `&times&` both occur), and escapes a literal bracket numerically as `&#91&`
- * so it cannot be read as directive syntax. An unrecognized name is left
- * alone: `&L&`/`&FN&`/`&NextN&` are layout markers, not entities.
+ * so it cannot be read as directive syntax. `&L&`/`&FN&`/`&NextN&` are
+ * layout markers for the dataset's own renderer and are dropped; any other
+ * unrecognized name is left alone.
  */
 function decodeNamedEntities(text: string): string {
   return text
     .replace(/&#(\d+)[;&]/g, (_m, code: string) => String.fromCodePoint(Number(code)))
-    .replace(/&([A-Za-z]+)[;&]/g, (m, name: string) => NAMED_ENTITIES[name] ?? m);
+    .replace(/&([A-Za-z][A-Za-z0-9]*)[;&]/g, (m, name: string) =>
+      LAYOUT_MARKER_RE.test(name) ? "" : (NAMED_ENTITIES[name] ?? m),
+    );
 }
+
+const LAYOUT_MARKER_RE = /^(?:L|FN|Next\d*)$/;
 
 function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -310,10 +324,23 @@ export function parseDirectiveProps(raw: string): Record<string, string | true> 
   let m: RegExpExecArray | null;
   while ((m = re.exec(raw))) {
     const key = m[1]!;
-    props[key] = m[2] === undefined ? true : (m[3] ?? m[4] ?? "");
+    const value = m[2] === undefined ? true : (m[3] ?? m[4] ?? "");
+    const prior = props[key];
+    // A handful of directives repeat a prose key (Interstellar Void's two
+    // `imp10`s); the second is more text, not a correction of the first.
+    props[key] =
+      typeof prior === "string" &&
+      prior !== "" &&
+      typeof value === "string" &&
+      REPEATABLE_PROSE_KEY_RE.test(key)
+        ? `${prior} ${value}`
+        : value;
   }
   return props;
 }
+
+const REPEATABLE_PROSE_KEY_RE =
+  /^(?:imp\d+|passive|immediate|standard|swift|free|ability\d*|full|fullround|reaction|move|special|flavor|info)$/;
 
 /**
  * The ability-damage/-drain keys an `::aff` directive spells its effect with
@@ -499,7 +526,7 @@ const ROW_DIRECTIVE_RE = /^::row\[([^\]]*)\]\{([^}]*)\}$/;
 
 function renderRowDirective(label: string, propsRaw: string): string {
   const props = parseDirectiveProps(propsRaw);
-  const info = typeof props.info === "string" ? inlineToHtml(props.info) : undefined;
+  const info = typeof props.info === "string" ? abProse(props.info) : undefined;
   const labelHtml = inlineToHtml(label);
   return info === undefined
     ? `<p><strong>${labelHtml}</strong></p>`
@@ -586,6 +613,84 @@ function renderPrereqDirective(propsRaw: string): string {
   return `<p><strong>${label}:</strong> ${parts.join("; ")}</p>`;
 }
 
+/** The dataset's own skill codes, as `::cskill` lists them. */
+const PFDATA_SKILL_NAMES: Record<string, string> = {
+  acro: "Acrobatics",
+  app: "Appraise",
+  bluff: "Bluff",
+  climb: "Climb",
+  craft: "Craft",
+  dd: "Disable Device",
+  diplo: "Diplomacy",
+  dis: "Disguise",
+  ea: "Escape Artist",
+  fly: "Fly",
+  ha: "Handle Animal",
+  heal: "Heal",
+  intm: "Intimidate",
+  ka: "Knowledge (arcana)",
+  kd: "Knowledge (dungeoneering)",
+  ke: "Knowledge (engineering)",
+  kg: "Knowledge (geography)",
+  kh: "Knowledge (history)",
+  kl: "Knowledge (local)",
+  kna: "Knowledge (nature)",
+  kno: "Knowledge (nobility)",
+  kp: "Knowledge (planes)",
+  kr: "Knowledge (religion)",
+  ling: "Linguistics",
+  per: "Perception",
+  perf: "Perform",
+  prof: "Profession",
+  ride: "Ride",
+  sm: "Sense Motive",
+  soh: "Sleight of Hand",
+  spc: "Spellcraft",
+  stl: "Stealth",
+  sur: "Survival",
+  swim: "Swim",
+  umd: "Use Magic Device",
+};
+
+/** One `::cskill` list item: a code, `perf|oratory` for a subskill, or literal prose. */
+function cskillName(item: string): string {
+  const [code = "", sub] = item.split("|");
+  const name = PFDATA_SKILL_NAMES[code];
+  if (name === undefined) return inlineToHtml(item);
+  return sub ? `${name} (${inlineToHtml(sub)})` : name;
+}
+
+/**
+ * `::cskill{gain=ling~ka~kd lose=intm pre="..." preTitle=Replaces post="..."}`
+ * — the class skills a mystery, inquisition, or archetype adds and removes,
+ * by the dataset's short codes.
+ */
+const CSKILL_DIRECTIVE_RE = /^::cskill\{([^}]*)\}$/;
+
+function renderCskillDirective(propsRaw: string): string {
+  const props = parseDirectiveProps(propsRaw);
+  const str = (key: string): string | undefined =>
+    typeof props[key] === "string" && props[key] !== "" ? props[key] : undefined;
+  const list = (key: string): string | undefined => {
+    const v = str(key);
+    return v === undefined ? undefined : listJoin(v.split("~").map(cskillName));
+  };
+  const titled = (title: string | undefined, text: string): string =>
+    title === undefined
+      ? `<p>${text}</p>`
+      : `<p><strong>${inlineToHtml(title)}:</strong> ${text}</p>`;
+  const out: string[] = [];
+  const pre = str("pre");
+  if (pre !== undefined) out.push(titled(str("preTitle"), inlineToHtml(pre)));
+  const gain = list("gain");
+  if (gain !== undefined) out.push(`<p><strong>Class Skills:</strong> ${gain}.</p>`);
+  const lose = list("lose");
+  if (lose !== undefined) out.push(`<p><strong>Loses Class Skills:</strong> ${lose}.</p>`);
+  const post = str("post");
+  if (post !== undefined) out.push(titled(str("postTitle"), inlineToHtml(post)));
+  return out.join("\n");
+}
+
 /**
  * `::list[Label]{... all="A~B~C"}` — a tilde-separated named list (e.g. a
  * bloodrager bloodline's "Bonus Feats"). Renders as a labeled, comma-joined
@@ -630,12 +735,17 @@ const AB_DIRECTIVE_RE = /^::ab(?:\[([^\]]*)\])?\{([^}]*)\}$/;
  * on the heading prints "Animal Fury (Ex) (Ex)".
  */
 function abTitleName(title: string): string {
-  return title
-    .replace(/&L&/g, "")
-    .replace(/&FN&/g, "")
-    .replace(/\s*\((?:Ex|Su|Sp|Ps)\)\s*$/i, "")
-    .trim();
+  // Only the entry's own title is `&L&`-marked; a nested ability's title
+  // (Morphic Form (Ex), inside a discipline) has no `nameSuffix` to carry
+  // its type, so it keeps it.
+  const own = title.includes("&L&");
+  const name = title.replace(/&L&/g, "").replace(/&FN&/g, "");
+  return (own ? name.replace(/\s*\((?:Ex|Su|Sp|Ps)\)\s*$/i, "") : name).trim();
 }
+/**
+ * The action-type keys an `::ab` directive holds its prose under, in render
+ * order. `ability2`/`ability3` are continuation paragraphs of `ability`.
+ */
 const AB_KIND_KEYS = [
   "passive",
   "immediate",
@@ -643,14 +753,31 @@ const AB_KIND_KEYS = [
   "swift",
   "free",
   "ability",
+  "ability2",
+  "ability3",
   "full",
   "reaction",
-  // The source uses both `full` and `fullround` for a full-round action.
-  // Listed last so a directive carrying one of the keys above keeps picking
-  // that one; these only ever supply the text when nothing else does.
   "fullround",
   "move",
 ] as const;
+
+/**
+ * The action a key implies. The source moved "As a standard action, ..." out
+ * of the prose and into the key itself, so without this the action type is
+ * simply gone. `pattern` spots prose that still says it, which then needs no
+ * label.
+ */
+const AB_ACTION_LABELS: Partial<
+  Record<(typeof AB_KIND_KEYS)[number], { label: string; pattern: RegExp }>
+> = {
+  immediate: { label: "Immediate action", pattern: /immediate[_ -]action/i },
+  standard: { label: "Standard action", pattern: /standard[_ -]action/i },
+  swift: { label: "Swift action", pattern: /swift[_ -]action/i },
+  free: { label: "Free action", pattern: /free[_ -]action/i },
+  full: { label: "Full-round action", pattern: /full[_ -]round[_ -]action/i },
+  fullround: { label: "Full-round action", pattern: /full[_ -]round[_ -]action/i },
+  move: { label: "Move action", pattern: /move(?:[_ -]equivalent)?[_ -]action/i },
+};
 
 function ordinalSuffix(n: number): string {
   if (n % 100 >= 11 && n % 100 <= 13) return "th";
@@ -666,22 +793,282 @@ function ordinalSuffix(n: number): string {
   }
 }
 
+function ordinal(n: number): string {
+  return `${n}${ordinalSuffix(n)}`;
+}
+
+/** `a, b, and c` / `a and b`. */
+function listJoin(items: string[]): string {
+  if (items.length <= 2) return items.join(" and ");
+  return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
+}
+
+/** One prop value as inline HTML; the source's `~~~` inside a value is a paragraph break. Only for a value rendered inside a `<p>`. */
+function abProse(value: string): string {
+  return value
+    .split("~~~")
+    .map((part) => inlineToHtml(part.trim()))
+    .join("</p>\n<p>");
+}
+
+const ROMAN_NUMERALS: [number, string][] = [
+  [10, "X"],
+  [9, "IX"],
+  [5, "V"],
+  [4, "IV"],
+  [1, "I"],
+];
+
+function roman(n: number): string {
+  let out = "";
+  for (const [value, numeral] of ROMAN_NUMERALS) {
+    while (n >= value) {
+      out += numeral;
+      n -= value;
+    }
+  }
+  return out;
+}
+
+/** The highest class level a scaling series runs to. */
+const MAX_LEVEL = 20;
+
 /**
- * The ability's prose, inline-converted: its action-type text plus any
- * level-gated `impNN` improvements and a trailing `usage` note. `undefined`
- * when the directive carries no action-type key at all (the level-keyed
- * "Bonus Spells by Bloodrager Level" shape, handled separately by
- * `renderAbDirective`).
+ * The `increment*` family: a value that scales with level, encoded as
+ * `text~base~interval[~first[~step]]`. The value changes at `base + interval`
+ * and every `interval` levels after, up to `incrementMax` (default 20),
+ * starting at `first` (default 2) and moving by `step` (default 1). So the
+ * shifter aspect's `The bonus~1~7~4~2` is "+4 at 8th level and +6 at 15th".
+ *
+ * - `increment` signs the value (`+4`); a `p!` text prefix makes its verb
+ *   plural. `incrementPlain` prints the bare value and `incrementRoman` a
+ *   numeral (for a spell name: `summon monster V`).
+ * - `incrementAt` lists its levels outright and ends in `first/step`:
+ *   `~7~15~19~1/1` is +1 at 7th, +2 at 15th, +3 at 19th.
+ * - `incrementMulti` fills each `~` in its text from its own series:
+ *   `...~3/4;6/2;4/2` is base 3, interval 4, then first/step per slot.
+ * - `incrementDesc` sits between the text and the value (`a~b` is its
+ *   wording the first time and every time after); `incrementEnd` follows
+ *   the value (`d6.`, ` feet.`).
+ *
+ * Returns the sentence and the level it first applies at, so it can sit
+ * among the `impNN` improvements in level order.
  */
-function abBodyText(props: Record<string, string | true>): string | undefined {
+function incrementSentence(
+  key: string,
+  raw: string,
+  props: Record<string, string | true>,
+): { level: number; html: string } | undefined {
+  const maxRaw = Number(props.incrementMax);
+  const max = Number.isFinite(maxRaw) && maxRaw > 0 ? maxRaw : MAX_LEVEL;
+
+  if (key === "incrementMulti") {
+    const parts = raw.split("~");
+    const series = (parts.pop() ?? "").split(";").map((s) => s.split("/").map(Number));
+    const [[base, interval] = [], ...slots] = series;
+    if (!Number.isFinite(base) || !(interval! > 0) || slots.length !== parts.length - 1) {
+      return undefined;
+    }
+    const sentences: string[] = [];
+    for (let k = 0, level = base! + interval!; level <= max; k++, level += interval!) {
+      const filled = parts.reduce(
+        (acc, part, i) =>
+          acc + part + (i < slots.length ? String(slots[i]![0]! + slots[i]![1]! * k) : ""),
+        "",
+      );
+      sentences.push(
+        `At ${ordinal(level)} level, ${inlineToHtml(filled.charAt(0).toLowerCase() + filled.slice(1))}`,
+      );
+    }
+    return sentences.length === 0
+      ? undefined
+      : { level: base! + interval!, html: sentences.join(" ") };
+  }
+
+  const plural = raw.startsWith("p!");
+  const [text = "", ...params] = (plural ? raw.slice(2) : raw).split("~");
+
+  let steps: { level: number; value: number }[] = [];
+  let every: number | undefined;
+  if (key === "incrementAt") {
+    const [first = 1, step = 1] = (params.at(-1) ?? "").split("/").map(Number);
+    steps = params
+      .slice(0, -1)
+      .map(Number)
+      .filter((level) => level <= max)
+      .map((level, k) => ({ level, value: first + step * k }));
+  } else {
+    const [base, interval, first = 2, step = 1] = params.map(Number);
+    if (!Number.isFinite(base) || !(interval! > 0)) return undefined;
+    every = interval;
+    for (let k = 0, level = base! + interval!; level <= max; k++, level += interval!) {
+      steps.push({ level, value: first + step * k });
+    }
+  }
+  if (steps.length === 0) return undefined;
+
+  const signed = key === "increment" || key === "incrementAt";
+  const format = (v: number): string =>
+    key === "incrementRoman" ? roman(v) : signed && v >= 0 ? `+${v}` : String(v);
+  const end = (typeof props.incrementEnd === "string" ? props.incrementEnd : "").replace(/\.$/, "");
+  const desc = typeof props.incrementDesc === "string" ? props.incrementDesc.split("~") : [];
+
+  // A numeral completes a cross-ref the text leaves open (`‹spell/summon`),
+  // so every item carries the whole ref and the text keeps only its lead-in.
+  const open = text.lastIndexOf("‹");
+  const refHead = open >= 0 && !text.slice(open).includes("›") ? text.slice(open) : undefined;
+  const lead = refHead === undefined ? text : text.slice(0, open).trimEnd();
+
+  const items = steps.map(({ level, value }, i) => {
+    let item: string;
+    if (refHead !== undefined) {
+      item = [refHead, desc[0], `${format(value)}${end}`].filter(Boolean).join(" ");
+    } else {
+      const d = i === 0 ? desc[0] : desc[1];
+      item = [d, `${format(value)}${end}`].filter(Boolean).join(" ");
+    }
+    return `${item} at ${ordinal(level)} level`;
+  });
+
+  // A long regular series reads better as its first two terms and its last.
+  const series =
+    every !== undefined && items.length > 4
+      ? `${items[0]}, ${items[1]}, and so on every ${every} levels, to ${items.at(-1)}`
+      : listJoin(items);
+
+  // Text that already carries its verb ("You can use", "The damage becomes
+  // the Charisma mod +", or a `desc` supplying one) takes none of its own.
+  const needsVerb =
+    key === "increment" || (key === "incrementPlain" && desc.length === 0 && !/\+\s*$/.test(lead));
+  const verb = needsVerb ? (plural || /^these\b/i.test(lead) ? "increase to" : "increases to") : "";
+  const sentence = [lead, verb, series].filter(Boolean).join(" ");
+  return { level: steps[0]!.level, html: `${inlineToHtml(sentence)}.` };
+}
+
+/**
+ * `repeat="text~first~interval"`: something gained again at `first` and
+ * every `interval` levels after (a `first` of 0 starts at `interval`).
+ * `repeatAt` lists its levels outright.
+ */
+function repeatSentence(key: string, raw: string): { level: number; html: string } | undefined {
+  const [text = "", ...params] = raw.split("~");
+  const nums = params.map(Number).filter((n) => Number.isFinite(n) && n > 0);
+  if (nums.length === 0) return undefined;
+  let when: string;
+  let level: number;
+  if (key === "repeatAt") {
+    level = nums[0]!;
+    when = `At ${listJoin(nums.map(ordinal))} level`;
+  } else {
+    const [first, interval] = params.map(Number);
+    if (!(interval! > 0)) return undefined;
+    level = first! > 0 ? first! : interval!;
+    when = `At ${ordinal(level)} level and every ${interval === 1 ? "level" : `${interval} levels`} thereafter`;
+  }
+  return { level, html: `${when}: ${inlineToHtml(text)}` };
+}
+
+const USE_ABILITY_NAMES: Record<string, string> = {
+  str: "Strength",
+  dex: "Dexterity",
+  con: "Constitution",
+  int: "Intelligence",
+  wis: "Wisdom",
+  cha: "Charisma",
+};
+
+function timesPerDay(n: number): string {
+  return n === 1 ? "once" : n === 2 ? "twice" : `${n} times`;
+}
+
+/**
+ * The daily-use cap `pfDataAbilityUses` reads structurally, as the sentence
+ * the books print. The source moved it out of the prose into the `use*`
+ * props, so an ability capped this way otherwise reads as unlimited.
+ *
+ * - `useMod=Wisdom3` is "3 + your Wisdom modifier", `useL=cleric` "your
+ *   cleric level"; `useM` adds "(minimum 1)".
+ * - `useUnit` counts rounds/minutes/hours instead of uses, and `useNC` says
+ *   they need not be consecutive (`useNC=1`: but are spent in 1-unit
+ *   increments).
+ * - Otherwise a flat count from `useF`'s second field, grown by
+ *   `useInc=class~step[~start|+]`: one more per `step` class levels beyond
+ *   `start`th, or (`+`) at `step`th level and every `step` levels after.
+ */
+function abUsesText(props: Record<string, string | true>): string | undefined {
   const str = (key: string): string | undefined =>
     typeof props[key] === "string" && props[key] !== "" ? props[key] : undefined;
-  const segments: string[] = [];
+  const unitKey = str("useUnit") ?? "time";
+  const unit = unitKey === "time" ? "times" : `${unitKey}s`;
 
-  // Descriptive lead-in, where the entry has one.
-  for (const key of ["flavor", "info"]) {
+  let expr: string | undefined;
+  const mod = /^([A-Za-z]+?)(\d*)(B?)$/.exec(str("useMod") ?? "");
+  if (mod) {
+    const ability = USE_ABILITY_NAMES[mod[1]!.slice(0, 3).toLowerCase()];
+    if (ability) {
+      const term = `your ${ability} ${mod[3] ? "bonus" : "modifier"}`;
+      expr = mod[2] ? `${mod[2]} + ${term}` : term;
+    }
+  }
+  const byLevel = /^([A-Za-z]+)(\d*)$/.exec(str("useL") ?? "");
+  if (expr === undefined && byLevel) {
+    const term = `your ${byLevel[1]!.toLowerCase()} level`;
+    expr = byLevel[2] ? `${byLevel[2]} + ${term}` : term;
+  }
+
+  let sentence: string;
+  if (expr !== undefined) {
+    const amount = unitKey === "time" ? "a number of times" : `for a number of ${unit}`;
+    const minimum = props.useM !== undefined ? " (minimum 1)" : "";
+    sentence = `You can use this ability ${amount} per day equal to ${expr}${minimum}.`;
+  } else if (unitKey === "time" && (str("useF") || str("useInc"))) {
+    const count = Number(str("useF")?.split("~")[1]);
+    sentence = `You can use this ability ${timesPerDay(count > 0 ? count : 1)} per day`;
+    const [cls, step, start] = (str("useInc") ?? "").split("~");
+    if (cls && Number(step) > 0) {
+      const levels = `${cls.toLowerCase()} levels`;
+      const more =
+        start === "+"
+          ? `at ${ordinal(Number(step))} level and every ${step} ${levels} thereafter`
+          : Number(start) > 0
+            ? `for every ${step} ${levels} beyond ${ordinal(Number(start))}`
+            : `for every ${step} ${levels}`;
+      sentence += `, plus one additional time per day ${more}`;
+    }
+    sentence += ".";
+  } else {
+    return undefined;
+  }
+  if (unitKey !== "time" && props.useNC !== undefined) {
+    // `useNC=1` adds the increment the books pair with it; a bare `useNC` doesn't.
+    sentence +=
+      props.useNC === "1"
+        ? ` These ${unit} do not need to be consecutive, but they must be spent in 1-${unitKey} increments.`
+        : ` These ${unit} do not need to be consecutive.`;
+  }
+  return inlineToHtml(sentence);
+}
+
+/** Labelled-section keys: `xPenalty`, `yPatron_Spells`, `XTorso`. */
+const AB_LABELLED_KEY_RE = /^[xyzXYZ][A-Z]/;
+
+/**
+ * The ability's prose, inline-converted, as paragraphs: the first is the
+ * lead (flavor, the action-type text, its daily uses) that follows the
+ * ability's name, and it is `""` when the directive has none. Labelled
+ * sections (`xPenalty`, `benefit`) get paragraphs of their own, then the
+ * level progression. `undefined` when the directive carries no prose.
+ */
+function abBodyText(props: Record<string, string | true>): string[] | undefined {
+  const str = (key: string): string | undefined =>
+    typeof props[key] === "string" && props[key] !== "" ? props[key] : undefined;
+  const lead: string[] = [];
+
+  // `xDescription` is flavor under another name; a "Description:" label
+  // would only restate that.
+  for (const key of ["flavor", "info", "xDescription", "choice"]) {
     const v = str(key);
-    if (v !== undefined) segments.push(inlineToHtml(v));
+    if (v !== undefined) lead.push(abProse(v));
   }
 
   // EVERY action-type key present, not just the first: 51 directives carry two
@@ -689,27 +1076,66 @@ function abBodyText(props: Record<string, string | true>): string | undefined {
   // only the first silently dropped the other's whole text.
   for (const key of AB_KIND_KEYS) {
     const v = str(key);
-    if (v !== undefined) segments.push(inlineToHtml(v));
+    if (v === undefined) continue;
+    const action = AB_ACTION_LABELS[key];
+    const label = action && !action.pattern.test(v) ? `<em>${action.label}:</em> ` : "";
+    lead.push(`${label}${abProse(v)}`);
   }
+  if (props.provokes !== undefined) {
+    lead.push(
+      props.provokes === "No"
+        ? "This does not provoke attacks of opportunity."
+        : "This provokes attacks of opportunity.",
+    );
+  }
+  const uses = abUsesText(props);
+  const leadText = lead.join(" ");
+  if (uses !== undefined && !/per day|\/day|a day\b/i.test(leadText)) lead.push(uses);
 
-  const improvements = Object.entries(props)
+  const labelled: string[] = Object.entries(props)
+    .filter(
+      (e): e is [string, string] =>
+        (AB_LABELLED_KEY_RE.test(e[0]) || e[0] === "benefit") &&
+        e[0] !== "xDescription" &&
+        typeof e[1] === "string",
+    )
+    // x, then benefit, then y, z: a curse states its penalty before its benefit.
+    .sort((a, b) => (sectionOrder(a[0]) < sectionOrder(b[0]) ? -1 : 1))
+    .map(([key, value]) => {
+      const label = key === "benefit" ? "Benefit" : key.slice(1).replace(/_/g, " ");
+      return `<strong>${inlineToHtml(label)}:</strong> ${abProse(value)}`;
+    });
+
+  // Level-gated improvements and scaling series, interleaved by level.
+  const progression: { level: number; html: string }[] = Object.entries(props)
     .filter((e): e is [string, string] => /^imp\d+$/.test(e[0]) && typeof e[1] === "string")
-    .map(([k, v]) => ({ level: Number(k.slice(3)), text: v }))
-    .sort((a, b) => a.level - b.level);
-  for (const imp of improvements) {
-    segments.push(`At ${imp.level}${ordinalSuffix(imp.level)} level: ${inlineToHtml(imp.text)}`);
+    .map(([k, v]) => {
+      const level = Number(k.slice(3));
+      return { level, html: `At ${ordinal(level)} level: ${abProse(v)}` };
+    });
+  for (const [key, value] of Object.entries(props)) {
+    if (typeof value !== "string" || value === "") continue;
+    const step = /^increment(?:Plain|Roman|At|Multi)?$/.test(key)
+      ? incrementSentence(key, value, props)
+      : key === "repeat" || key === "repeatAt"
+        ? repeatSentence(key, value)
+        : undefined;
+    // Some entries state the scaling in their prose as well; the series
+    // would say it twice.
+    if (step && !leadText.includes(`${ordinal(step.level)} level`)) progression.push(step);
   }
+  const tail = progression.sort((a, b) => a.level - b.level).map((p) => p.html);
 
   const special = str("special");
-  if (special !== undefined) segments.push(inlineToHtml(special));
+  if (special !== undefined) tail.push(abProse(special));
   // `replace` is deliberately not rendered: the subdomain-power transform
   // already reads it as a structured field (`ClassFeatureGrant`'s displaced
   // target), so printing it here would state the same thing twice.
   const usage = str("usage");
-  if (usage !== undefined) segments.push(`(${inlineToHtml(usage)})`);
+  if (usage !== undefined) tail.push(`(${inlineToHtml(usage)})`);
   const prereq = str("prereq");
   if (prereq !== undefined) {
-    segments.push(`(Prerequisite: ${inlineToHtml(prereq.split("~").join(", "))})`);
+    tail.push(`(Prerequisite: ${inlineToHtml(prereq.split("~").join(", "))})`);
   }
 
   // `sNN` spell-by-level and `lNN` stage-by-level progressions. Emitted even
@@ -728,7 +1154,7 @@ function abBodyText(props: Record<string, string | true>): string | undefined {
   if (spells.length > 0) {
     // `Greater planar ally|(good outsiders only)` — the pipe separates a spell
     // from the qualifier the entry prints beside it.
-    segments.push(
+    tail.push(
       spells
         .map((e) => `Level ${e.level}: ${inlineToHtml(e.text.split("|").join(" "))}`)
         .join("; "),
@@ -736,24 +1162,19 @@ function abBodyText(props: Record<string, string | true>): string | undefined {
   }
   const stages = numbered("l");
   if (stages.length > 0) {
-    segments.push(
-      stages
-        .map((e) => `At ${e.level}${ordinalSuffix(e.level)} level: ${inlineToHtml(e.text)}`)
-        .join(" "),
-    );
+    tail.push(stages.map((e) => `At ${ordinal(e.level)} level: ${abProse(e.text)}`).join(" "));
   }
 
-  // `xLabel`/`yLabel`/`zLabel` are labelled sections, the letter ordering them
-  // (a unique patron's Available Patron Themes, an eidolon's Arms/Head/Legs).
-  const labelled = Object.entries(props)
-    .filter((e): e is [string, string] => /^[xyz][A-Z]/.test(e[0]) && typeof e[1] === "string")
-    .sort((a, b) => a[0].localeCompare(b[0]));
-  for (const [key, value] of labelled) {
-    const label = key.slice(1).replace(/_/g, " ");
-    segments.push(`<strong>${inlineToHtml(label)}:</strong> ${inlineToHtml(value)}`);
-  }
+  if (lead.length === 0 && labelled.length === 0 && tail.length === 0) return undefined;
+  // Without labelled sections everything stays one paragraph, as it always
+  // has; with them, the progression follows them rather than splitting them
+  // from the lead.
+  if (labelled.length === 0) return [[...lead, ...tail].join(" ")];
+  return [lead.join(" "), ...labelled, ...(tail.length > 0 ? [tail.join(" ")] : [])];
+}
 
-  return segments.length === 0 ? undefined : segments.join(" ");
+function sectionOrder(key: string): string {
+  return key === "benefit" ? "x~" : key.toLowerCase();
 }
 
 /**
@@ -862,7 +1283,10 @@ export function parsePfDataAbility(line: string): PfDataAbility | null {
   return {
     name: m[1]!,
     ...(Number.isFinite(level) ? { level } : {}),
-    bodyHtml: `<p>${body}</p>`,
+    bodyHtml: body
+      .filter((p) => p !== "")
+      .map((p) => `<p>${p}</p>`)
+      .join("\n"),
     props,
   };
 }
@@ -870,15 +1294,28 @@ export function parsePfDataAbility(line: string): PfDataAbility | null {
 function renderAbDirective(name: string | undefined, propsRaw: string): string {
   const props = parseDirectiveProps(propsRaw);
   const title = typeof props.title === "string" ? abTitleName(props.title) : undefined;
-  const nameHtml = inlineToHtml(name ?? title ?? "");
-  const text = abBodyText(props);
-  if (text === undefined) return `<p><strong>${nameHtml}</strong></p>`;
+  // A leaf label can carry its own trailing colon (`::ab[Arcane Deed (Ex):]`).
+  const nameHtml = inlineToHtml((name ?? title ?? "").replace(/:\s*$/, ""));
+  const paragraphs = abBodyText(props) ?? [""];
 
   // `l=N` alone is the minimum level to take the ability, distinct from the
   // `lNN` stage keys `abBodyText` folds into the body.
   const level = typeof props.l === "string" ? props.l : undefined;
   const label = level ? `${nameHtml} (Level ${level})` : nameHtml;
-  return `<p><strong>${label}:</strong> ${text}</p>`;
+  const [lead = "", ...rest] = paragraphs;
+  // An unnamed directive is the entry's own ability (see `pfDataBodyLines`),
+  // whose name the entry already shows.
+  const first =
+    label === ""
+      ? lead === ""
+        ? []
+        : [`<p>${lead}</p>`]
+      : [
+          lead === ""
+            ? `<p><strong>${label}</strong></p>`
+            : `<p><strong>${label}:</strong> ${lead}</p>`,
+        ];
+  return [...first, ...rest.map((p) => `<p>${p}</p>`)].join("\n");
 }
 
 /**
@@ -891,6 +1328,9 @@ function renderAbDirective(name: string | undefined, propsRaw: string): string {
  * blockquoted rather than plain paragraphs.
  */
 function stripBlockLevelMarkers(lines: string[]): string[] {
+  // A fenced ability's `action` names what its body text is ("At 8th Level",
+  // "Standard Action"); it leads the fence's first line of prose.
+  let pendingLabel: string | undefined;
   return lines.map((rawLine) => {
     // Unwrap the blockquote FIRST: a `>:::div{...}` fence never matched the
     // `:::` test below and leaked its container markup into the prose.
@@ -899,9 +1339,26 @@ function stripBlockLevelMarkers(lines: string[]): string[] {
     // A fenced ability's opener carries its title and often body props
     // (`special=`); rewritten as the leaf form so those render instead of
     // vanishing with the rest of the fence markup.
-    const abFence = /^:::(ab\{.*\})$/.exec(line.trim());
-    if (abFence) return `::${abFence[1]}`;
-    if (line.trim().startsWith(":::")) return "";
+    const abFence = /^:::(ab\{(.*)\})$/.exec(line.trim());
+    if (abFence) {
+      pendingLabel = fenceActionLabel(abFence[2]!);
+      return `::${abFence[1]}`;
+    }
+    if (line.trim().startsWith(":::")) {
+      pendingLabel = undefined;
+      // A titled block (a discipline's "Bonus Spells" rows) keeps its title
+      // as a heading. An `&L&` title is the entry's own name, already shown.
+      const title = /^:::block\{(.*)\}$/.exec(line.trim());
+      const text = title ? parseDirectiveProps(title[1]!).title : undefined;
+      return typeof text === "string" && !text.includes("&L&") && !text.includes("]")
+        ? `::h4[${text}]`
+        : "";
+    }
+    if (pendingLabel !== undefined && /^[A-Za-z*‹(]/.test(line.trim())) {
+      const labelled = `@HL[${pendingLabel}:] ${line.trim()}`;
+      pendingLabel = undefined;
+      return labelled;
+    }
     // A line that is nothing but a `&Marker&` is a layout hint for the
     // dataset's own renderer and carries no prose. Blanked rather than kept,
     // because a marker trailing a directive made its block multi-line, and a
@@ -920,6 +1377,17 @@ function stripBlockLevelMarkers(lines: string[]): string[] {
     const bq = /^>[ \t]?(.*)$/.exec(line);
     return bq ? bq[1]! : line;
   });
+}
+
+/**
+ * A fence's `action` as a sentence-case label, or `undefined` for the
+ * `Ability`/`Info` values, which categorize the block rather than name
+ * anything a reader needs.
+ */
+function fenceActionLabel(propsRaw: string): string | undefined {
+  const action = parseDirectiveProps(propsRaw).action;
+  if (typeof action !== "string" || /^(Ability|Info)$/.test(action)) return undefined;
+  return action.charAt(0) + action.slice(1).toLowerCase();
 }
 
 /** Split an entry's `description` LINE array into blank-line-delimited blocks. */
@@ -970,10 +1438,21 @@ function renderBlock(lines: string[]): string {
     if (haunt) return renderHazardDirective("haunt", undefined, haunt[1]!);
     const list = LIST_DIRECTIVE_RE.exec(lines[0]!);
     if (list) return renderListDirective(list[1]!, list[2]!);
+    const cskill = CSKILL_DIRECTIVE_RE.exec(lines[0]!);
+    if (cskill) return renderCskillDirective(cskill[1]!);
     const ab = AB_DIRECTIVE_RE.exec(lines[0]!);
     if (ab) return renderAbDirective(ab[1], ab[2]!);
     const header = INLINE_HEADER_RE.exec(lines[0]!.trim());
     if (header) return `<p><strong>${inlineToHtml(header[1]!)}</strong></p>`;
+  }
+
+  // Directives stacked with no blank line between them (a fenced block's
+  // `::row` lines) are each still a block of their own.
+  if (lines.length > 1 && lines.every((l) => /^::[a-z][a-z0-9]*[[{]/.test(l.trim()))) {
+    return lines
+      .map((l) => renderBlock([l.trim()]))
+      .filter((html) => html !== "")
+      .join("\n");
   }
 
   // Soft-wrapped continuation lines within one paragraph join with a space.
@@ -1055,5 +1534,10 @@ export function pfDataBodyLines(description: string[]): string[] {
     lines = lines.slice(1);
     if (lines[0]?.trim() === "") lines = lines.slice(1);
   }
+  // Entries that dropped the header open with their own ability instead
+  // (`::ab[Acid Jet (Su)]{...}`), whose label restates the name and suffix
+  // the entry already carries; unlabelled, it renders as bare prose.
+  const own = /^::ab\[[^\]]*\](\{.*\})$/.exec(lines[0]?.trim() ?? "");
+  if (own) lines = [`::ab${own[1]}`, ...lines.slice(1)];
   return lines;
 }

@@ -56,16 +56,8 @@
     "uuid": "pfdata:inquisition:banishment"
   },
   "black_powder": {
-    "description": "<p><strong>Associated Deities:</strong> Any (with GM approval)</p>",
-    "features": [
-      {
-        "featureId": "inquisition-power:black_powder:granted-powers",
-        "level": 0,
-        "name": "Granted Powers",
-        "resolved": true,
-        "uuid": "pfdata:inquisition-power:black_powder:granted-powers"
-      }
-    ],
+    "description": "<p><strong>Associated Deities:</strong> Any (with GM approval)</p>\n<p><strong>Granted Powers:</strong> You gain Exotic Weapon Proficiency (firearms) and Gunsmithing as bonus feats.</p>\n<p>When you hit an arcane spellcaster or a creature that uses spell-like abilities with a firearm attack, that creature must succeed at a Fortitude saving throw. If the spellcaster fails, he takes a -4 penalty on concentration checks for 1 round.</p>",
+    "features": [],
     "id": "black_powder",
     "name": "Black Powder",
     "sources": [
@@ -105,7 +97,7 @@
     "uuid": "pfdata:inquisition:chivalry"
   },
   "clandestine": {
-    "description": "<p><strong>Associated Deities:</strong> Achaekek, Desna, Iomedae, Milani, Nethys, Norgorber, Sarenrae, Shelyn, Sivanah</p>\n<p><strong>Granted Powers</strong></p>\n<p>Secrecy is required of the faithful in lands where your deity's worshipers are hunted.</p>\n<p>::cskill{gain=soh}</p>",
+    "description": "<p><strong>Associated Deities:</strong> Achaekek, Desna, Iomedae, Milani, Nethys, Norgorber, Sarenrae, Shelyn, Sivanah</p>\n<p><strong>Granted Powers</strong></p>\n<p>Secrecy is required of the faithful in lands where your deity's worshipers are hunted.</p>\n<p><strong>Class Skills:</strong> Sleight of Hand.</p>",
     "features": [
       {
         "featureId": "inquisition-power:clandestine:disappear",
@@ -903,16 +895,8 @@
     "uuid": "pfdata:inquisition:sin"
   },
   "spellkiller": {
-    "description": "<p><strong>Associated Deities:</strong> Any (with GM approval)</p>",
-    "features": [
-      {
-        "featureId": "inquisition-power:spellkiller:granted-powers",
-        "level": 0,
-        "name": "Granted Powers",
-        "resolved": true,
-        "uuid": "pfdata:inquisition-power:spellkiller:granted-powers"
-      }
-    ],
+    "description": "<p><strong>Associated Deities:</strong> Any (with GM approval)</p>\n<p><strong>Granted Powers:</strong> You gain the Disruptive feat as a bonus feat (even if you do not meet the prerequisites).</p>\n<p>When you defeat an enemy (whether by reducing it to 0 or fewer hit points, taking the enemy captive, or accepting a truce), you gain a +2 sacred or profane bonus to AC for 1 minute per level. You gain a sacred bonus if you are good, profane if you are evil; if you are neutral, you choose either sacred or profane when you select this inquisition. After you choose which type of bonus you gain, you cannot change the bonus type.</p>\n<p>When you hit a creature with levels of alchemist or any arcane spellcasting class, or that uses spell-like abilities, you can end this effect to stagger that creature. The creature gets a Fortitude saving throw against this effect on each of its turns (including the turn in which it gained the effect). A successful save ends the staggered condition.</p>",
+    "features": [],
     "id": "spellkiller",
     "name": "Spellkiller",
     "sources": [

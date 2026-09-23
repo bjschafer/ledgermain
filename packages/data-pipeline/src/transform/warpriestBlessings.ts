@@ -67,7 +67,10 @@ function blessingPowers(bodyLines: string[]): (ParsedPower & { tier: Tier })[] {
       const close = bodyLines.findIndex((l, j) => j > i && l.trim() === ":::");
       const end = close < 0 ? bodyLines.length : close;
       label = typeof title === "string" ? title : undefined;
-      description = pfDataDescriptionToHtml(bodyLines.slice(i + 1, end));
+      // The opener goes along without its title, which `label` already
+      // carries, so its `action` ("At 10th Level") still leads the prose.
+      const opener = line.replace(/\btitle="[^"]*"/, "");
+      description = pfDataDescriptionToHtml([opener, ...bodyLines.slice(i + 1, end)]);
       i = end;
     }
     const tier = label ? TIER_LABEL_RE.exec(label) : null;

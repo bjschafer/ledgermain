@@ -79,7 +79,7 @@
   },
   "celestial_agenda": {
     "category": "unique",
-    "description": "<p><strong>Celestial Agenda:</strong> While good deities and empyreal lords have organized faiths to carry out their wills, powerfully ranked agathions, angels, and archons - and occasional intersectional councils of good outsiders - sometimes invest white witches with celestial might to defend the weak and heal the sick. Your patron holds you to a higher standard: you must be of good alignment, and you take a -2 penalty on Bluff, Intimidate, Sleight of Hand, and other skill checks to deceive or threaten others. You gain the ward hex at 1st level. Level 4: Castigate; Level 10: Rebuke; Level 16: Greater planar ally (good outsiders only) <strong>Available Patron Themes:</strong> Endurance, Healing, Light, Portents <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
+    "description": "<p><strong>Celestial Agenda:</strong> While good deities and empyreal lords have organized faiths to carry out their wills, powerfully ranked agathions, angels, and archons - and occasional intersectional councils of good outsiders - sometimes invest white witches with celestial might to defend the weak and heal the sick. Your patron holds you to a higher standard: you must be of good alignment, and you take a -2 penalty on Bluff, Intimidate, Sleight of Hand, and other skill checks to deceive or threaten others. You gain the ward hex at 1st level.</p>\n<p><strong>Available Patron Themes:</strong> Endurance, Healing, Light, Portents</p>\n<p><strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>\n<p>Level 4: Castigate; Level 10: Rebuke; Level 16: Greater planar ally (good outsiders only)</p>",
     "id": "celestial_agenda",
     "name": "Celestial Agenda",
     "sources": [
@@ -169,7 +169,7 @@
   },
   "empath": {
     "category": "unique",
-    "description": "<p><strong>Empath:</strong> Your patron is a manifestation of the collective living experience - mortal desire and purpose given direction by the beliefs of countless minds and hearts. You cannot help but feel the despair, pain, and other negative emotions in those around you, taking a -5 penalty on saving throws against emotion effects. You gain the tongues hex at 1st level Level 2: Burst of insight; Level 6: Analyze aura; Level 10: Retrocognition <strong>Available Patron Themes:</strong> Ancestors, Mind, Spirits, Wisdom <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
+    "description": "<p><strong>Empath:</strong> Your patron is a manifestation of the collective living experience - mortal desire and purpose given direction by the beliefs of countless minds and hearts. You cannot help but feel the despair, pain, and other negative emotions in those around you, taking a -5 penalty on saving throws against emotion effects. You gain the tongues hex at 1st level</p>\n<p><strong>Available Patron Themes:</strong> Ancestors, Mind, Spirits, Wisdom</p>\n<p><strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>\n<p>Level 2: Burst of insight; Level 6: Analyze aura; Level 10: Retrocognition</p>",
     "id": "empath",
     "name": "Empath",
     "sources": [
@@ -246,7 +246,7 @@
   },
   "fey_gifts": {
     "category": "unique",
-    "description": "<p><strong>Fey Gifts:</strong> A powerful fey or other entity from the First World has offered you magic. You serve as an anchor and scrying focus in the Material Plane for your patron, but you also provide frequent amusement. Your fey patron delights in your failure and injury and frequently jinxes you; once each day, the GM can demand you reroll a single ability check, attack roll, saving throw, or skill check and use the worse result. You gain the charm hex at 1st level. Level 2: Disguise self; Level 4: Hideous laughter; Level 16: Irresistible dance <strong>Available Patron Themes:</strong> Agility, Enchantment, Trickery, Winter <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
+    "description": "<p><strong>Fey Gifts:</strong> A powerful fey or other entity from the First World has offered you magic. You serve as an anchor and scrying focus in the Material Plane for your patron, but you also provide frequent amusement. Your fey patron delights in your failure and injury and frequently jinxes you; once each day, the GM can demand you reroll a single ability check, attack roll, saving throw, or skill check and use the worse result. You gain the charm hex at 1st level.</p>\n<p><strong>Available Patron Themes:</strong> Agility, Enchantment, Trickery, Winter</p>\n<p><strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>\n<p>Level 2: Disguise self; Level 4: Hideous laughter; Level 16: Irresistible dance</p>",
     "id": "fey_gifts",
     "name": "Fey Gifts",
     "sources": [
@@ -258,7 +258,7 @@
   },
   "green_whispers": {
     "category": "unique",
-    "description": "<p><strong>Green Whispers:</strong> Your witch powers are a manifestation of the Green Faith or bestowed by a representative of natural forces, such as an ancient treant or nature spirit, who expects you to wield such gifts on its behalf. You cannot abide the touch of iron or steel; contact with either metal deals 1d3 points of damage each round, and wearing metal armor prevents you from casting spells until it is removed. You gain the feral speech hex at 1st level. Level 2: Entangle; Level 6: Plant growth; Level 10: Tree stride <strong>Available Patron Themes:</strong> Animals, Endurance, Moon, Transformation <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
+    "description": "<p><strong>Green Whispers:</strong> Your witch powers are a manifestation of the Green Faith or bestowed by a representative of natural forces, such as an ancient treant or nature spirit, who expects you to wield such gifts on its behalf. You cannot abide the touch of iron or steel; contact with either metal deals 1d3 points of damage each round, and wearing metal armor prevents you from casting spells until it is removed. You gain the feral speech hex at 1st level.</p>\n<p><strong>Available Patron Themes:</strong> Animals, Endurance, Moon, Transformation</p>\n<p><strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>\n<p>Level 2: Entangle; Level 6: Plant growth; Level 10: Tree stride</p>",
     "id": "green_whispers",
     "name": "Green Whispers",
     "sources": [
@@ -270,7 +270,7 @@
   },
   "hags_calling": {
     "category": "unique",
-    "description": "<p><strong>Hag's Calling:</strong> Hags of exceptional power - most often mute hags and dreamthief hags - sometimes invest mortal agents with the same well of ancient power they have mastered. Hags most often invest their changeling daughters with such power, either once they have proven loyal or else to tempt them into wickedness. You can neither use the aid another action nor receive benefits from others' aid another actions. You gain the coven hex at 1st level. Level 2: Disguise self; Level 8: Sending; Level 10: Commune (hag/patron rather than deity) <strong>Available Patron Themes:</strong> Moon, Plague, Shadow, Vengeance <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
+    "description": "<p><strong>Hag's Calling:</strong> Hags of exceptional power - most often mute hags and dreamthief hags - sometimes invest mortal agents with the same well of ancient power they have mastered. Hags most often invest their changeling daughters with such power, either once they have proven loyal or else to tempt them into wickedness. You can neither use the aid another action nor receive benefits from others' aid another actions. You gain the coven hex at 1st level.</p>\n<p><strong>Available Patron Themes:</strong> Moon, Plague, Shadow, Vengeance</p>\n<p><strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>\n<p>Level 2: Disguise self; Level 8: Sending; Level 10: Commune (hag/patron rather than deity)</p>",
     "id": "hags_calling",
     "name": "Hag's Calling",
     "sources": [
@@ -295,7 +295,7 @@
   },
   "infernal_contract": {
     "category": "unique",
-    "description": "<p><strong>Infernal Contract:</strong> Your power was brokered from a powerful daemon, demon, or devil to speed the corruption and moral decay of mortals. When you die, your soul goes to Abaddon, the Abyss, or Hell, and you can't be raised or resurrected except by extraordinary means - though bold service may earn you a favored position in damnation. Your magic requires sacrifice; each day when you prepare spells, you must deal 1d6 points of damage to yourself as part of your infernal ritual, feeding the lost blood to your familiar. You gain the misfortune hex at 1st level. Level 8: Lesser planar ally; Level 12: Planar ally; Level 16: Greater planar ally (your bonus spells can be used to summon only the type of outsider your patron represents) <strong>Available Patron Themes:</strong> Enchantment, Strength, Trickery, Vengeance <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
+    "description": "<p><strong>Infernal Contract:</strong> Your power was brokered from a powerful daemon, demon, or devil to speed the corruption and moral decay of mortals. When you die, your soul goes to Abaddon, the Abyss, or Hell, and you can't be raised or resurrected except by extraordinary means - though bold service may earn you a favored position in damnation. Your magic requires sacrifice; each day when you prepare spells, you must deal 1d6 points of damage to yourself as part of your infernal ritual, feeding the lost blood to your familiar. You gain the misfortune hex at 1st level.</p>\n<p><strong>Available Patron Themes:</strong> Enchantment, Strength, Trickery, Vengeance</p>\n<p><strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>\n<p>You must deal 2d6 damage to yourself to get your spells at 5th level, 3d6 damage to yourself to get your spells at 10th level, 4d6 damage to yourself to get your spells at 15th level, and 5d6 damage to yourself to get your spells at 20th level. Level 8: Lesser planar ally; Level 12: Planar ally; Level 16: Greater planar ally (your bonus spells can be used to summon only the type of outsider your patron represents)</p>",
     "id": "infernal_contract",
     "name": "Infernal Contract",
     "sources": [
@@ -541,7 +541,7 @@
   },
   "shadowbound": {
     "category": "unique",
-    "description": "<p><strong>Shadowbound:</strong> Deep exposure to entities from the Plane of Shadow - kytons, nightshades, owbs, and similar ethereal forces - has infused you with shadow. You also gain light blindness. You gain the disguise hex at 1st level. Level 8: Shadow conjuration; Level 12: Shadow walk; Level 16: Greater shadow evocation <strong>Available Patron Themes:</strong> Death, Deception, Ethereal, Shadow <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
+    "description": "<p><strong>Shadowbound:</strong> Deep exposure to entities from the Plane of Shadow - kytons, nightshades, owbs, and similar ethereal forces - has infused you with shadow. You also gain light blindness. You gain the disguise hex at 1st level.</p>\n<p><strong>Available Patron Themes:</strong> Death, Deception, Ethereal, Shadow</p>\n<p><strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>\n<p>Level 8: Shadow conjuration; Level 12: Shadow walk; Level 16: Greater shadow evocation</p>",
     "id": "shadowbound",
     "name": "Shadowbound",
     "sources": [
@@ -648,7 +648,7 @@
   },
   "the_condition_of_all": {
     "category": "unique",
-    "description": "<p><strong>The Condition of All:</strong> Aeons are often patrons to witches, seeking out mortals who share their vested interest in some agenda that helps them promote the cosmic balance. Your patron requires unwavering commitment to their cause, and you lose your spellcasting and hexes (but not your familiar) if your alignment changes after taking your first witch level; you regain your spellcasting and hexes once you revert to your original alignment. You gain the scar hex at 1st level. Level 2: Forbid action; Level 8: Dismissal; Level 12: Geas/quest <strong>Available Patron Themes:</strong> Elements, Time, Transformation, Wisdom <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
+    "description": "<p><strong>The Condition of All:</strong> Aeons are often patrons to witches, seeking out mortals who share their vested interest in some agenda that helps them promote the cosmic balance. Your patron requires unwavering commitment to their cause, and you lose your spellcasting and hexes (but not your familiar) if your alignment changes after taking your first witch level; you regain your spellcasting and hexes once you revert to your original alignment. You gain the scar hex at 1st level.</p>\n<p><strong>Available Patron Themes:</strong> Elements, Time, Transformation, Wisdom</p>\n<p><strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>\n<p>Level 2: Forbid action; Level 8: Dismissal; Level 12: Geas/quest</p>",
     "id": "the_condition_of_all",
     "name": "The Condition of All",
     "sources": [
@@ -690,7 +690,7 @@
   },
   "touched_by_the_outer_gods": {
     "category": "unique",
-    "description": "<p><strong>Touched by the Outer Gods:</strong> Your powers hail from an incomprehensible being from beyond the stars, whose motivations and needs erode your psyche. You take a -2 penalty on saving throws against confusion and emotion effects and are affected by such effects for at least 1 round even on a successful saving throw. You gain the unnerve beasts hex at 1st level. Level 2: Lesser confusion; Level 8: Dreadscape; Level 10: Compelling rant <strong>Available Patron Themes:</strong> Insanity, Occult, Stars, Transformation <strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>",
+    "description": "<p><strong>Touched by the Outer Gods:</strong> Your powers hail from an incomprehensible being from beyond the stars, whose motivations and needs erode your psyche. You take a -2 penalty on saving throws against confusion and emotion effects and are affected by such effects for at least 1 round even on a successful saving throw. You gain the unnerve beasts hex at 1st level.</p>\n<p><strong>Available Patron Themes:</strong> Insanity, Occult, Stars, Transformation</p>\n<p><strong>Patron Spells:</strong> This unique patron grants these alternate spells at the listed witch levels.</p>\n<p>Level 2: Lesser confusion; Level 8: Dreadscape; Level 10: Compelling rant</p>",
     "id": "touched_by_the_outer_gods",
     "name": "Touched by the Outer Gods",
     "sources": [

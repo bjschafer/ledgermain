@@ -20280,7 +20280,7 @@
   },
   "blessing-power:animal:major": {
     "changes": [],
-    "description": "<p>You can summon a battle companion. At 10th level: This ability functions as summon nature's ally V with a duration of 1 minute. This ability can summon only one animal, regardless of the list used.</p>",
+    "description": "<p>You can summon a battle companion. This now behaves as summon nature's ally VI at 12th level, summon nature's ally VII at 14th level, summon nature's ally VIII at 16th level, and summon nature's ally IX at 18th level. At 10th level: This ability functions as summon nature's ally V with a duration of 1 minute. This ability can summon only one animal, regardless of the list used.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:animal:major",
     "name": "Battle Companion",
@@ -20308,7 +20308,7 @@
   },
   "blessing-power:artifice:major": {
     "changes": [],
-    "description": "<p>At 10th level: You can temporarily transfer a weapon special ability from one weapon to another. The bearers of each of the weapons must be willing, and you must be touching both weapons to activate this ability.~~~You can transfer a weapon special ability with a base price modifier of +1 or +2. If you are using this ability on a double weapon, only one end of the double weapon is affected. The transfer lasts for 1 minute, after which the transferred weapon special ability automatically returns to the source weapon.~~~You can use this ability multiple times on the same weapon or weapons. Alternatively, you can use <em>transfer magic</em> to move a +1 or +2 armor special ability from one touched suit of armor to another, or move a +1 or +2 armor or weapon enhancement bonus to another armor or weapon.</p>",
+    "description": "<p>At 10th level: You can temporarily transfer a weapon special ability from one weapon to another. The bearers of each of the weapons must be willing, and you must be touching both weapons to activate this ability.</p>\n<p>You can transfer a weapon special ability with a base price modifier of +1 or +2. If you are using this ability on a double weapon, only one end of the double weapon is affected. The transfer lasts for 1 minute, after which the transferred weapon special ability automatically returns to the source weapon.</p>\n<p>You can use this ability multiple times on the same weapon or weapons. Alternatively, you can use <em>transfer magic</em> to move a +1 or +2 armor special ability from one touched suit of armor to another, or move a +1 or +2 armor or weapon enhancement bonus to another armor or weapon.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:artifice:major",
     "name": "Transfer Magic",
@@ -20336,7 +20336,7 @@
   },
   "blessing-power:chaos:major": {
     "changes": [],
-    "description": "<p>You can summon a battle companion. At 10th level: This ability functions as summon monster IV with a duration of 1 minute, but for only a chaotic outsider or an animal with the entropic creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
+    "description": "<p>You can summon a battle companion. This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level. At 10th level: This ability functions as summon monster IV with a duration of 1 minute, but for only a chaotic outsider or an animal with the entropic creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:chaos:major",
     "name": "Battle Companion",
@@ -20426,7 +20426,7 @@
   },
   "blessing-power:curse:major": {
     "changes": [],
-    "description": "<p>At 10th level: As a swift or immediate action, you can inflict a curse on any adjacent creature that scores a critical hit against you or deals precision damage to you. The target must succeed at a Will saving throw or be cursed.~~~Select one of the following effects: the target takes a -2 penalty to one ability score of your choice (the ability cannot be reduced below 1); the target takes a -2 penalty on attack rolls, saving throws, ability checks, and skill checks; each turn, the target has a 25% chance of taking no action (otherwise, it acts normally).~~~This curse lasts for 1 hour. A creature can be subjected to only one instance of <em>retributive curse</em> at a time. This otherwise functions as bestow curse.</p>",
+    "description": "<p>At 10th level: As a swift or immediate action, you can inflict a curse on any adjacent creature that scores a critical hit against you or deals precision damage to you. The target must succeed at a Will saving throw or be cursed.</p>\n<p>Select one of the following effects: the target takes a -2 penalty to one ability score of your choice (the ability cannot be reduced below 1); the target takes a -2 penalty on attack rolls, saving throws, ability checks, and skill checks; each turn, the target has a 25% chance of taking no action (otherwise, it acts normally).</p>\n<p>This curse lasts for 1 hour. A creature can be subjected to only one instance of <em>retributive curse</em> at a time. This otherwise functions as bestow curse.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:curse:major",
     "name": "Retributive Curse",
@@ -20538,7 +20538,7 @@
   },
   "blessing-power:earth:major": {
     "changes": [],
-    "description": "<p>This doesn't stack with any other damage resistance. At 10th level: You can touch an ally and harden its armor or clothing. For 1 minute, the ally gains DR 1/-.</p>",
+    "description": "<p>The ally's DR improves to 2/- at 12th level, increases to 3/- at 14th level, increases to 4/- at 16th level, and increases to 5/- at 18th level. This doesn't stack with any other damage resistance. At 10th level: You can touch an ally and harden its armor or clothing. For 1 minute, the ally gains DR 1/-.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:earth:major",
     "name": "Armor of Earth",
@@ -20594,7 +20594,7 @@
   },
   "blessing-power:evil:major": {
     "changes": [],
-    "description": "<p>At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only an evil outsider or an animal with the fiendish creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
+    "description": "<p>This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level. At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only an evil outsider or an animal with the fiendish creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:evil:major",
     "name": "Battle Companion",
@@ -20734,7 +20734,7 @@
   },
   "blessing-power:good:major": {
     "changes": [],
-    "description": "<p>At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only a good outsider or an animal with the celestial creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
+    "description": "<p>This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level. At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only a good outsider or an animal with the celestial creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:good:major",
     "name": "Battle Companion",
@@ -20824,7 +20824,7 @@
   },
   "blessing-power:law:major": {
     "changes": [],
-    "description": "<p>At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only a lawful outsider or an animal with the resolute creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
+    "description": "<p>This now behaves as summon monster V at 12th level, summon monster VI at 14th level, and so on every 2 levels, to summon monster IX at 20th level. At 10th level: You can summon a battle companion. This ability functions as summon monster IV with a duration of 1 minute, but for only a lawful outsider or an animal with the resolute creature simple template. This ability can summon only one creature, regardless of the list used.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:law:major",
     "name": "Battle Companion",
@@ -20928,7 +20928,7 @@
   },
   "blessing-power:madness:minor": {
     "changes": [],
-    "description": "<p>At 1st level: As a swift action you can target a creature within 30 feet that has the cowering, frightened, panicked, or paralyzed condition. That condition is suspended for 1 round, and the chosen creature gains the confused condition instead. The confused creature rerolls any result other than &amp;quot&amp;attack self&amp;quot&amp; or &amp;quot&amp;attack nearest creature.&amp;quot&amp; The round spent confused counts toward the duration of the suspended effect. At the end of the confused round, the suspended condition resumes.</p>",
+    "description": "<p>At 1st level: As a swift action you can target a creature within 30 feet that has the cowering, frightened, panicked, or paralyzed condition. That condition is suspended for 1 round, and the chosen creature gains the confused condition instead. The confused creature rerolls any result other than \"attack self\" or \"attack nearest creature.\" The round spent confused counts toward the duration of the suspended effect. At the end of the confused round, the suspended condition resumes.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:madness:minor",
     "name": "Madness Supremacy",
@@ -21004,7 +21004,7 @@
   },
   "blessing-power:plant:major": {
     "changes": [],
-    "description": "<p>At 10th level: You can summon a battle companion. This ability functions as summon nature's ally IV, with a duration of 1 minute. This ability can summon only one animal, regardless of the list used, and the creature's type changes to plant instead of animal.</p>",
+    "description": "<p>This now behaves as summon nature's ally V at 12th level, summon nature's ally VI at 14th level, and so on every 2 levels, to summon nature's ally IX at 20th level. At 10th level: You can summon a battle companion. This ability functions as summon nature's ally IV, with a duration of 1 minute. This ability can summon only one animal, regardless of the list used, and the creature's type changes to plant instead of animal.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:plant:major",
     "name": "Battle Companion",
@@ -21046,7 +21046,7 @@
   },
   "blessing-power:protection:minor": {
     "changes": [],
-    "description": "<p>At 1st level: You can gain a +1 sacred bonus on saving throws and a +1 sacred bonus to AC for 1 minute.</p>",
+    "description": "<p>The bonus increases to +2 at 10th level and +3 at 20th level. At 1st level: You can gain a +1 sacred bonus on saving throws and a +1 sacred bonus to AC for 1 minute.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:protection:minor",
     "name": "Increased Defense",
@@ -21102,7 +21102,7 @@
   },
   "blessing-power:rune:minor": {
     "changes": [],
-    "description": "<p>At 1st level: You can create a blast rune in any adjacent square. Any creature entering this square takes an amount of damage equal to 1d6 + 1/2 your warpriest level. This rune deals either acid, cold, electricity, or fire damage, designated when you create the rune.~~~The rune is invisible, and lasts a number of rounds equal to your warpriest level or until discharged. You cannot create a blast rune in a square occupied by another creature. This rune counts as a 1st-level spell for the purposes of dispelling. It can be discovered with a successful DC 26 Perception skill check and disarmed with a successful DC 26 Disable Device skill check.</p>",
+    "description": "<p>At 1st level: You can create a blast rune in any adjacent square. Any creature entering this square takes an amount of damage equal to 1d6 + 1/2 your warpriest level. This rune deals either acid, cold, electricity, or fire damage, designated when you create the rune.</p>\n<p>The rune is invisible, and lasts a number of rounds equal to your warpriest level or until discharged. You cannot create a blast rune in a square occupied by another creature. This rune counts as a 1st-level spell for the purposes of dispelling. It can be discovered with a successful DC 26 Perception skill check and disarmed with a successful DC 26 Disable Device skill check.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:rune:minor",
     "name": "Blast Rune",
@@ -21116,7 +21116,7 @@
   },
   "blessing-power:scalykind:major": {
     "changes": [],
-    "description": "<p>As a standard action you can manifest venomous fangs for 1 minute. These fangs grant a bite attack that deals 1d4 points of damage (for a Medium warpriest, 1d3 if Small). A successful bite also afflicts the opponent with a debilitating venom.</p>\n<p><strong>Serpent Venom:</strong> Bite-injury; <em>save</em> Fort DC 10 + 1/2 the warpriest's level + their Con modifier; <em>frequency</em> 1/round for 4 rounds; <em>effect</em> 1d2 Con damage; <em>cure</em> 1 save</p>",
+    "description": "<p><strong>At 10th level:</strong> As a standard action you can manifest venomous fangs for 1 minute. These fangs grant a bite attack that deals 1d4 points of damage (for a Medium warpriest, 1d3 if Small). A successful bite also afflicts the opponent with a debilitating venom.</p>\n<p><strong>Serpent Venom:</strong> Bite-injury; <em>save</em> Fort DC 10 + 1/2 the warpriest's level + their Con modifier; <em>frequency</em> 1/round for 4 rounds; <em>effect</em> 1d2 Con damage; <em>cure</em> 1 save</p>",
     "grantsBuffs": [],
     "id": "blessing-power:scalykind:major",
     "name": "Serpent Fang",
@@ -21144,7 +21144,7 @@
   },
   "blessing-power:shadow:major": {
     "changes": [],
-    "description": "<p>At 10th level: You can spend a swift action to empower yourself or an ally within 30 feet to move over the ground as easily as its shadow. The subject's land speed increases by 10 feet and it takes no movement penalties for darkness, difficult terrain, or slickness. The creature can safely move over areas of ice and even those affected by a grease spell.~~~When a creature affected by this ability hits with a charge attack, that attack deals an amount of additional cold damage equal to your level.</p>",
+    "description": "<p>At 10th level: You can spend a swift action to empower yourself or an ally within 30 feet to move over the ground as easily as its shadow. The subject's land speed increases by 10 feet and it takes no movement penalties for darkness, difficult terrain, or slickness. The creature can safely move over areas of ice and even those affected by a grease spell.</p>\n<p>When a creature affected by this ability hits with a charge attack, that attack deals an amount of additional cold damage equal to your level.</p>",
     "grantsBuffs": [],
     "id": "blessing-power:shadow:major",
     "name": "Swift as Shadow",
@@ -25898,7 +25898,7 @@
   "inquisition-power:anger:divine-anger": {
     "abilityType": "ex",
     "changes": [],
-    "description": "<p><strong>Divine Anger (Ex) (Level 6):</strong> You gain the ability to <em>rage</em> like a barbarian. Your effective barbarian level for this ability is your inquisitor level - 3. If you have levels in barbarian, these levels stack when determining the effect of your <em>rage.</em>~~~You do not gain any rage powers from this granted power, though if you have rage powers from another class, you may use them with these rages. (You can <em>rage</em> a number of rounds per day equal to your Wisdom bonus, plus 1 round for every inquisitor level above 4th.)</p>\n<p><strong>Rage (Ex):</strong> Text from the barbarian class. While in <em>rage,</em> you take a -2 penalty to Armor Class, and you cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration. You are fatigued after <em>rage</em> for a number of rounds equal to 2 times the number of rounds spent in the <em>rage.</em> You cannot enter a new <em>rage</em> while fatigued or exhausted but can otherwise enter <em>rage</em> multiple times during a single encounter or combat. If you fall unconscious, your <em>rage</em> immediately ends, placing you in peril of death. You can enter (or end) a <em>rage.</em> You gain a +4 morale bonus to your Strength and Constitution, as well as a +2 morale bonus on Will saves. The increase to Constitution grants you 2 hit points per Hit Dice, but these disappear when the <em>rage</em> ends and are not lost first like temporary hit points. Temporary increases to Constitution, such as those gained from <em>rage</em> and spells like bear's endurance, do not increase the total number of rounds that a barbarian can <em>rage</em> per day. The total number of rounds of <em>rage</em> per day is renewed after resting for 8 hours, although these hours do not need to be consecutive.</p>",
+    "description": "<p><strong>Divine Anger (Ex) (Level 6):</strong> You gain the ability to <em>rage</em> like a barbarian. Your effective barbarian level for this ability is your inquisitor level - 3. If you have levels in barbarian, these levels stack when determining the effect of your <em>rage.</em></p>\n<p>You do not gain any rage powers from this granted power, though if you have rage powers from another class, you may use them with these rages. (You can <em>rage</em> a number of rounds per day equal to your Wisdom bonus, plus 1 round for every inquisitor level above 4th.)</p>\n<p><strong>Rage (Ex):</strong> Text from the barbarian class. While in <em>rage,</em> you take a -2 penalty to Armor Class, and you cannot use any Charisma-, Dexterity-, or Intelligence-based skills (except Acrobatics, Fly, Intimidate, and Ride) or any ability that requires patience or concentration. You are fatigued after <em>rage</em> for a number of rounds equal to 2 times the number of rounds spent in the <em>rage.</em> You cannot enter a new <em>rage</em> while fatigued or exhausted but can otherwise enter <em>rage</em> multiple times during a single encounter or combat. If you fall unconscious, your <em>rage</em> immediately ends, placing you in peril of death. <em>Free action:</em> You can enter (or end) a <em>rage.</em> You gain a +4 morale bonus to your Strength and Constitution, as well as a +2 morale bonus on Will saves. The increase to Constitution grants you 2 hit points per Hit Dice, but these disappear when the <em>rage</em> ends and are not lost first like temporary hit points. Temporary increases to Constitution, such as those gained from <em>rage</em> and spells like bear's endurance, do not increase the total number of rounds that a barbarian can <em>rage</em> per day. The total number of rounds of <em>rage</em> per day is renewed after resting for 8 hours, although these hours do not need to be consecutive.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:anger:divine-anger",
     "name": "Divine Anger",
@@ -25913,7 +25913,7 @@
   "inquisition-power:anger:hateful-resort": {
     "abilityType": "ex",
     "changes": [],
-    "description": "<p><strong>Hateful Resort (Ex):</strong> Once per day, after you have been hit with a melee attack, you can make a melee attack against the creature that hit you. This melee attack is at your highest attack bonus, even if you've already attacked in the round.</p>",
+    "description": "<p><strong>Hateful Resort (Ex):</strong> <em>Immediate action:</em> Once per day, after you have been hit with a melee attack, you can make a melee attack against the creature that hit you. This melee attack is at your highest attack bonus, even if you've already attacked in the round.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:anger:hateful-resort",
     "name": "Hateful Resort",
@@ -25943,7 +25943,7 @@
   "inquisition-power:banishment:righteous-awe": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Righteous Awe (Su):</strong> Whenever you make an unarmed touch attack against an evil creature, it must succeed at a Will save (DC 10 + 1/2 your inquisitor level + your Wisdom modifier) or become shaken for 1d4 rounds. If the creature touched is an evil outsider, it becomes frightened instead of shaken.</p>",
+    "description": "<p><strong>Righteous Awe (Su):</strong> Whenever you make an unarmed touch attack against an evil creature, it must succeed at a Will save (DC 10 + 1/2 your inquisitor level + your Wisdom modifier) or become shaken for 1d4 rounds. If the creature touched is an evil outsider, it becomes frightened instead of shaken. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:banishment:righteous-awe",
     "name": "Righteous Awe",
@@ -25954,20 +25954,6 @@
     ],
     "subType": "classFeat",
     "uuid": "pfdata:inquisition-power:banishment:righteous-awe"
-  },
-  "inquisition-power:black_powder:granted-powers": {
-    "changes": [],
-    "description": "<p><strong>Granted Powers:</strong> You gain Exotic Weapon Proficiency (firearms) and Gunsmithing as bonus feats.~~~When you hit an arcane spellcaster or a creature that uses spell-like abilities with a firearm attack, that creature must succeed at a Fortitude saving throw. If the spellcaster fails, he takes a -4 penalty on concentration checks for 1 round.</p>",
-    "grantsBuffs": [],
-    "id": "inquisition-power:black_powder:granted-powers",
-    "name": "Granted Powers",
-    "sources": [
-      {
-        "id": "ultimate-combat"
-      }
-    ],
-    "subType": "classFeat",
-    "uuid": "pfdata:inquisition-power:black_powder:granted-powers"
   },
   "inquisition-power:chivalry:faithful-steed": {
     "abilityType": "su",
@@ -25987,7 +25973,7 @@
   "inquisition-power:chivalry:mount": {
     "abilityType": "ex",
     "changes": [],
-    "description": "<p><strong>Mount (Ex):</strong> This ability acts as the cavalier ability of the same name.</p>\n<p><strong>Mount (Level 1):</strong> Your bond with your mount is strong, with the two of you learning to anticipate each other's moods and moves. Should your mount die, you may find another mount to serve you after 1 week of mourning. This new mount does not gain the <em>link, evasion, devotion,</em> or <em>improved evasion</em> special abilities until the next time you gain a level.</p>\n<p>You gain the service of a loyal and trusty steed to carry you into battle. This mount functions as a druid's animal companion, using your level as your effective druid level. The creature must be one that you are capable of riding and is suitable as a mount. This mount may come from the following list:</p>\n<p><strong>Medium Cavaliers:</strong> Axe Beak, Camel, Elk, Giraffe, Horse, Giant Seahorse, Giant Tortoise, Zebra; <strong>Small Cavaliers:</strong> Antelope, Boar (requires 4th level), Capybara, Dog (requires 4th level), Kangaroo, Giant Gecko, Pony, Ram, Reindeer (uses elk statistics), Stag, Giant Weasel, Wolf, Wolfdog</p>\n<p>The GM might approve other animals as suitable mounts.</p>\n<p>You do not take an armor check penalty on Ride checks while riding your mount. The mount is always considered combat trained and begins play with Light Armor Proficiency as a bonus feat. Your mount does not gain the <em>share spells</em> special ability.</p>",
+    "description": "<p><strong>Mount (Ex):</strong> This ability acts as the cavalier ability of the same name.</p>\n<p><strong>Mount (Ex) (Level 1):</strong> Your bond with your mount is strong, with the two of you learning to anticipate each other's moods and moves. Should your mount die, you may find another mount to serve you after 1 week of mourning. This new mount does not gain the <em>link, evasion, devotion,</em> or <em>improved evasion</em> special abilities until the next time you gain a level.</p>\n<p>You gain the service of a loyal and trusty steed to carry you into battle. This mount functions as a druid's animal companion, using your level as your effective druid level. The creature must be one that you are capable of riding and is suitable as a mount. This mount may come from the following list:</p>\n<p><strong>Medium Cavaliers:</strong> Axe Beak, Camel, Elk, Giraffe, Horse, Giant Seahorse, Giant Tortoise, Zebra; <strong>Small Cavaliers:</strong> Antelope, Boar (requires 4th level), Capybara, Dog (requires 4th level), Kangaroo, Giant Gecko, Pony, Ram, Reindeer (uses elk statistics), Stag, Giant Weasel, Wolf, Wolfdog</p>\n<p>The GM might approve other animals as suitable mounts.</p>\n<p>You do not take an armor check penalty on Ride checks while riding your mount. The mount is always considered combat trained and begins play with Light Armor Proficiency as a bonus feat. Your mount does not gain the <em>share spells</em> special ability.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:chivalry:mount",
     "name": "Mount",
@@ -26002,7 +25988,7 @@
   "inquisition-power:clandestine:blessed-secrecy": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Blessed Secrecy (Su) (Level 4):</strong> When you attempt a Bluff, Disguise, Sleight of Hand, or Stealth skill check, you can roll twice and take the more favorable result.</p>",
+    "description": "<p><strong>Blessed Secrecy (Su) (Level 4):</strong> When you attempt a Bluff, Disguise, Sleight of Hand, or Stealth skill check, you can roll twice and take the more favorable result. You can use this ability a number of times per day equal to your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:clandestine:blessed-secrecy",
     "name": "Blessed Secrecy",
@@ -26017,7 +26003,7 @@
   "inquisition-power:clandestine:delayed-spells": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Delayed Spells (Su) (Level 8):</strong> You can delay the effects of a spell you cast by up to 1 round per inquisitor level. You choose the duration of the delay when you cast the spell and can cause the spell to take effect immediately during the period of delay by concentrating as a standard action.</p>",
+    "description": "<p><strong>Delayed Spells (Su) (Level 8):</strong> You can delay the effects of a spell you cast by up to 1 round per inquisitor level. You choose the duration of the delay when you cast the spell and can cause the spell to take effect immediately during the period of delay by concentrating as a standard action. You can use this ability once per day, plus one additional time per day for every 4 inquisitor levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:clandestine:delayed-spells",
     "name": "Delayed Spells",
@@ -26032,7 +26018,7 @@
   "inquisition-power:clandestine:disappear": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Disappear (Sp):</strong> You can become invisible as per the spell. The invisibility lasts for 1 round per inquisitor level or until you attack.</p>",
+    "description": "<p><strong>Disappear (Sp):</strong> <em>Standard action:</em> You can become invisible as per the spell. The invisibility lasts for 1 round per inquisitor level or until you attack. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:clandestine:disappear",
     "name": "Disappear",
@@ -26077,7 +26063,7 @@
   "inquisition-power:crime:criminal-minds": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Criminal Minds (Sp):</strong> You can touch a creature and fill its mind with criminal impulses. This otherwise functions as per crime of opportunity, though a target that fails its saving throw and acts on an impulse gets those desires out of its system and becomes immune to the effects of your <em>criminal minds</em> ability for 24 hours.</p>",
+    "description": "<p><strong>Criminal Minds (Sp):</strong> You can touch a creature and fill its mind with criminal impulses. This otherwise functions as per crime of opportunity, though a target that fails its saving throw and acts on an impulse gets those desires out of its system and becomes immune to the effects of your <em>criminal minds</em> ability for 24 hours. You can use this ability a number of times per day equal to 3 + your Wisdom modifier (minimum 1).</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:crime:criminal-minds",
     "name": "Criminal Minds",
@@ -26107,7 +26093,7 @@
   "inquisition-power:damnation:collector-of-souls": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Collector of Souls (Sp) (Level 8):</strong> Once per day you call forth an illusory fiend and order it to temporarily drag a living and sentient creature into an afterlife of pain and misery. This otherwise acts identically to phantasmal killer, except targets that fail their Fortitude saving throws become paralyzed for a number of rounds equal to 1d4 + your inquisitor level instead of dying.</p>",
+    "description": "<p><strong>Collector of Souls (Sp) (Level 8):</strong> <em>Standard action:</em> Once per day you call forth an illusory fiend and order it to temporarily drag a living and sentient creature into an afterlife of pain and misery. This otherwise acts identically to phantasmal killer, except targets that fail their Fortitude saving throws become paralyzed for a number of rounds equal to 1d4 + your inquisitor level instead of dying.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:damnation:collector-of-souls",
     "name": "Collector of Souls",
@@ -26122,7 +26108,7 @@
   "inquisition-power:damnation:fear-the-flames": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Fear the Flames (Su):</strong> You can give a creature you can see within 60 feet one chance to avoid an eternity of suffering by ordering it to carry out any one simple action that would take no more than 1 round to complete. Good and neutral creatures that refuse become shaken for 1 round (Will negates), while evil creatures that obey gain a +2 morale bonus on all rolls and checks made for 1 round. This is a language-dependent, mind-affecting effect.</p>",
+    "description": "<p><strong>Fear the Flames (Su):</strong> You can give a creature you can see within 60 feet one chance to avoid an eternity of suffering by ordering it to carry out any one simple action that would take no more than 1 round to complete. Good and neutral creatures that refuse become shaken for 1 round (Will negates), while evil creatures that obey gain a +2 morale bonus on all rolls and checks made for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier. This is a language-dependent, mind-affecting effect.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:damnation:fear-the-flames",
     "name": "Fear the Flames",
@@ -26137,7 +26123,7 @@
   "inquisition-power:excommunication:excommunicate": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Excommunicate (Su) (Level 8):</strong> Once per day, you can silence a creature within 30 feet. A Will save against DC = 10 + 1/2 your inquisitor level + your Wisdom modifier negates the effect. A creature that fails its save gets a second save 1 round later. If it fails the second save, the target cannot speak, provide verbal components for spells, make use of language-dependent effects, write, pantomime, or take any other action meant to communicate anything more complex than a simple affirmative or negative for 1 day.</p>",
+    "description": "<p><strong>Excommunicate (Su) (Level 8):</strong> <em>Standard action:</em> Once per day, you can silence a creature within 30 feet. A Will save against DC = 10 + 1/2 your inquisitor level + your Wisdom modifier negates the effect. A creature that fails its save gets a second save 1 round later. If it fails the second save, the target cannot speak, provide verbal components for spells, make use of language-dependent effects, write, pantomime, or take any other action meant to communicate anything more complex than a simple affirmative or negative for 1 day.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:excommunication:excommunicate",
     "name": "Excommunicate",
@@ -26152,7 +26138,7 @@
   "inquisition-power:excommunication:touch-of-silence": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Touch of Silence (Su):</strong> With a melee touch attack, you render a target silent (as the spell silence, but only affecting the target) for 1 round.</p>",
+    "description": "<p><strong>Touch of Silence (Su):</strong> With a melee touch attack, you render a target silent (as the spell silence, but only affecting the target) for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:excommunication:touch-of-silence",
     "name": "Touch of Silence",
@@ -26182,7 +26168,7 @@
   "inquisition-power:execution:executioner-s-strike": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Executioner's Strike (Su) (Level 8):</strong> Your precision in combat has become incredible, and you can strike a lethal blow if your target cannot defend itself properly. Once per day, you can make an attack against your <em>chosen victim.</em> If the attack hits and the victim is denied its Dexterity bonus to AC against you, any critical threats are automatically confirmed.</p>",
+    "description": "<p><strong>Executioner's Strike (Su) (Level 8):</strong> Your precision in combat has become incredible, and you can strike a lethal blow if your target cannot defend itself properly. <em>Standard action:</em> Once per day, you can make an attack against your <em>chosen victim.</em> If the attack hits and the victim is denied its Dexterity bonus to AC against you, any critical threats are automatically confirmed.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:execution:executioner-s-strike",
     "name": "Executioner's Strike",
@@ -26197,7 +26183,7 @@
   "inquisition-power:fate:agent-of-fate": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Agent of Fate (Su) (Level 8):</strong> When you use your <em>augury</em> spell-like ability, you gain a benefit that lasts until the end of your next combat. If the result was &amp;quot&amp;weal,&amp;quot&amp; all curing effects used on you cure an additional +1d10 hit points. If the result was &amp;quot&amp;woe,&amp;quot&amp; your melee attacks deal an additional +1d6 points of damage. If the result is &amp;quot&amp;weal and woe&amp;quot&amp; or &amp;quot&amp;nothing,&amp;quot&amp; you gain a +2 insight bonus to your Armor Class.</p>",
+    "description": "<p><strong>Agent of Fate (Su) (Level 8):</strong> When you use your <em>augury</em> spell-like ability, you gain a benefit that lasts until the end of your next combat. If the result was \"weal,\" all curing effects used on you cure an additional +1d10 hit points. If the result was \"woe,\" your melee attacks deal an additional +1d6 points of damage. If the result is \"weal and woe\" or \"nothing,\" you gain a +2 insight bonus to your Armor Class.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:fate:agent-of-fate",
     "name": "Agent of Fate",
@@ -26227,7 +26213,7 @@
   "inquisition-power:fervor:fervent-action": {
     "abilityType": "ex",
     "changes": [],
-    "description": "<p><strong>Fervent Action (Ex) (Level 8):</strong> Once per day you can make a single melee attack at your highest attack bonus, move up to your speed, or cast a prepared inquisitor spell (of a spell level up to one lower than the highest level spell you can cast) as per Quicken Spell.</p>",
+    "description": "<p><strong>Fervent Action (Ex) (Level 8):</strong> <em>Swift action:</em> Once per day you can make a single melee attack at your highest attack bonus, move up to your speed, or cast a prepared inquisitor spell (of a spell level up to one lower than the highest level spell you can cast) as per Quicken Spell.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:fervor:fervent-action",
     "name": "Fervent Action",
@@ -26242,7 +26228,7 @@
   "inquisition-power:fervor:fire-of-belief": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Fire of Belief (Sp):</strong> You can unleash a gout of holy or unholy flame that sears one target within 30 feet as a ranged touch attack. The target takes 1d6 points of fire damage plus half your inquisitor level (minimum +1).~~~If you are good, the flames only harm nongood targets. If you are evil, the flames only harm nonevil targets. If you are neither good nor evil, when you gain this ability you must decide whether the flames harm only nongood or nonevil targets; once you make this decision, it cannot be changed (though if your alignment changes, the effect of the flames changes appropriately)</p>",
+    "description": "<p><strong>Fire of Belief (Sp):</strong> You can unleash a gout of holy or unholy flame that sears one target within 30 feet as a ranged touch attack. The target takes 1d6 points of fire damage plus half your inquisitor level (minimum +1).</p>\n<p>If you are good, the flames only harm nongood targets. If you are evil, the flames only harm nonevil targets. If you are neither good nor evil, when you gain this ability you must decide whether the flames harm only nongood or nonevil targets; once you make this decision, it cannot be changed (though if your alignment changes, the effect of the flames changes appropriately) You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:fervor:fire-of-belief",
     "name": "Fire of Belief",
@@ -26257,7 +26243,7 @@
   "inquisition-power:final_rest:disrupt-animation": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Disrupt Animation (Sp):</strong> You can use disrupt undead as a spell-like ability, adding your wisdom modifier to the damage.</p>",
+    "description": "<p><strong>Disrupt Animation (Sp):</strong> You can use disrupt undead as a spell-like ability, adding your wisdom modifier to the damage. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:final_rest:disrupt-animation",
     "name": "Disrupt Animation",
@@ -26287,7 +26273,7 @@
   "inquisition-power:heresy:blessed-infiltration": {
     "abilityType": "ex",
     "changes": [],
-    "description": "<p><strong>Blessed Infiltration (Ex) (Level 4):</strong> When you make a Bluff, Diplomacy, or Stealth check, you may roll twice and take the more favorable result.</p>",
+    "description": "<p><strong>Blessed Infiltration (Ex) (Level 4):</strong> When you make a Bluff, Diplomacy, or Stealth check, you may roll twice and take the more favorable result. You can use this ability a number of times per day equal to your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:heresy:blessed-infiltration",
     "name": "Blessed Infiltration",
@@ -26332,7 +26318,7 @@
   "inquisition-power:illumination:aura-of-enlightenment": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Aura of Enlightenment (Su) (Level 4):</strong> You can create a 30-foot-radius aura of normal light. Allies in this <em>aura</em> gain a +2 insight bonus on skill checks. This counts as a 2nd-level light effect for the purpose of countering or dispelling darkness effects.</p>",
+    "description": "<p><strong>Aura of Enlightenment (Su) (Level 4):</strong> You can create a 30-foot-radius aura of normal light. Allies in this <em>aura</em> gain a +2 insight bonus on skill checks. This counts as a 2nd-level light effect for the purpose of countering or dispelling darkness effects. You can use this ability a number of times per day equal to your inquisitor level.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:illumination:aura-of-enlightenment",
     "name": "Aura of Enlightenment",
@@ -26347,7 +26333,7 @@
   "inquisition-power:illumination:illuminating-touch": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Illuminating Touch (Sp):</strong> You cause your hand to shimmer with divine radiance, allowing you to touch a creature and give it a bonus equal to 1/2 your inquisitor level on a single Will saving throw, Knowledge check, Perception check, or Sense Motive check. This ability lasts for 1 hour or until the creature chooses to apply the bonus to a roll.</p>",
+    "description": "<p><strong>Illuminating Touch (Sp):</strong> <em>Standard action:</em> You cause your hand to shimmer with divine radiance, allowing you to touch a creature and give it a bonus equal to 1/2 your inquisitor level on a single Will saving throw, Knowledge check, Perception check, or Sense Motive check. This ability lasts for 1 hour or until the creature chooses to apply the bonus to a roll. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:illumination:illuminating-touch",
     "name": "Illuminating Touch",
@@ -26362,7 +26348,7 @@
   "inquisition-power:imprisonment:caging-strike": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Caging Strike (Su):</strong> With a devastating weapon strike, spectral chains wrap around your target for a short period of time. Whenever you confirm a critical hit with a melee or ranged weapon attack (including spells that require attack rolls), you can choose to also entangle that target for 1d4 rounds (Fortitude negates).</p>",
+    "description": "<p><strong>Caging Strike (Su):</strong> With a devastating weapon strike, spectral chains wrap around your target for a short period of time. Whenever you confirm a critical hit with a melee or ranged weapon attack (including spells that require attack rolls), you can choose to also entangle that target for 1d4 rounds (Fortitude negates). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:imprisonment:caging-strike",
     "name": "Caging Strike",
@@ -26406,7 +26392,7 @@
   "inquisition-power:justice:judicious-force": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Judicious Force (Su):</strong> If you or an ally within 10 feet makes a critical threat with a melee or ranged attack, you may add +4 to the confirmation roll. This does not stack with the Critical Focus feat.</p>",
+    "description": "<p><strong>Judicious Force (Su):</strong> <em>Immediate action:</em> If you or an ally within 10 feet makes a critical threat with a melee or ranged attack, you may add +4 to the confirmation roll. This does not stack with the Critical Focus feat. You can use this ability a number of times per day equal to your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:justice:judicious-force",
     "name": "Judicious Force",
@@ -26436,7 +26422,7 @@
   "inquisition-power:oblivion:stare-of-oblivion": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Stare of Oblivion (Sp) (Level 8):</strong> You can use feeblemind as a gaze attack against one creature (Will negates). This effect lasts 1d4 rounds.</p>",
+    "description": "<p><strong>Stare of Oblivion (Sp) (Level 8):</strong> You can use feeblemind as a gaze attack against one creature (Will negates). This effect lasts 1d4 rounds. You can use this ability once per day, plus one additional time per day for every 4 inquisitor levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:oblivion:stare-of-oblivion",
     "name": "Stare of Oblivion",
@@ -26451,7 +26437,7 @@
   "inquisition-power:order:commanding-order": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Commanding Order (Sp) (Level 8):</strong> You can use greater command, except it only affects a single target.</p>",
+    "description": "<p><strong>Commanding Order (Sp) (Level 8):</strong> You can use greater command, except it only affects a single target. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:order:commanding-order",
     "name": "Commanding Order",
@@ -26466,7 +26452,7 @@
   "inquisition-power:order:mantle-against-chaos": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Mantle against Chaos (Sp):</strong> You can use protection from chaos on yourself or another creature as a spell-like ability.</p>",
+    "description": "<p><strong>Mantle against Chaos (Sp):</strong> You can use protection from chaos on yourself or another creature as a spell-like ability. You can use this ability for a number of minutes per day equal to your inquisitor level (minimum 1). These minutes do not need to be consecutive, but they must be spent in 1-minute increments.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:order:mantle-against-chaos",
     "name": "Mantle against Chaos",
@@ -26481,7 +26467,7 @@
   "inquisition-power:persistence:inner-strength": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Inner Strength (Su) (Level 6):</strong> Once per day, you may heal yourself for 3d6 hit points. When you use this ability, you can also remove one of the following conditions from yourself: blinded, confused, dazzled, deafened, frightened, nauseated, shaken, sickened, or staggered.</p>",
+    "description": "<p><strong>Inner Strength (Su) (Level 6):</strong> <em>Swift action:</em> Once per day, you may heal yourself for 3d6 hit points. When you use this ability, you can also remove one of the following conditions from yourself: blinded, confused, dazzled, deafened, frightened, nauseated, shaken, sickened, or staggered. The amount you heal increases to 4d6 at 8th level, 5d6 at 10th level, and so on every 2 levels, to 10d6 at 20th level.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:persistence:inner-strength",
     "name": "Inner Strength",
@@ -26496,7 +26482,7 @@
   "inquisition-power:persistence:relentless-footing": {
     "abilityType": "ex",
     "changes": [],
-    "description": "<p><strong>Relentless Footing (Ex):</strong> You can add 10 feet to your land speed. This increase counts as an enhancement bonus, and it affects your acrobatics&gt;jumping distance as normal for increased speed.</p>",
+    "description": "<p><strong>Relentless Footing (Ex):</strong> <em>Swift action:</em> You can add 10 feet to your land speed. This increase counts as an enhancement bonus, and it affects your jumping distance as normal for increased speed. You can use this ability a number of times per day equal to 3 + your Wisdom modifier (minimum 1).</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:persistence:relentless-footing",
     "name": "Relentless Footing",
@@ -26555,7 +26541,7 @@
   "inquisition-power:possession:beast-ride": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Beast Ride (Su) (Level 4):</strong> Once per day you can vacate your body and inhabit that of any creature belonging to the animal type within 30 feet for a number of rounds up to your inquisitor level.~~~While you are possessing an animal in this way, your own body becomes helpless and unaware. You can travel any distance from your body so long as you remain on the same plane, and can return to your own body as a free action at any time.~~~If the animal or your body takes damage, or you attempt to make the animal attack or do anything out of character, the effect immediately ends and you return to your own body.</p>",
+    "description": "<p><strong>Beast Ride (Su) (Level 4):</strong> <em>Standard action:</em> Once per day you can vacate your body and inhabit that of any creature belonging to the animal type within 30 feet for a number of rounds up to your inquisitor level.</p>\n<p>While you are possessing an animal in this way, your own body becomes helpless and unaware. You can travel any distance from your body so long as you remain on the same plane, and can return to your own body as a free action at any time.</p>\n<p>If the animal or your body takes damage, or you attempt to make the animal attack or do anything out of character, the effect immediately ends and you return to your own body.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:possession:beast-ride",
     "name": "Beast Ride",
@@ -26570,7 +26556,7 @@
   "inquisition-power:possession:body-snatch": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Body Snatch (Sp) (Level 10):</strong> Once per day upon falling unconscious because of dropping below 0 hit points, you can cast your soul from your body and attempt to occupy the body of another creature within 30 feet. This ability otherwise functions identically to magic jar except that your actual body serves as the receptacle and you suppress the consciousness of your target rather than casting it out.~~~Your body continues to bleed as normal unless it is somehow stabilized, and if its hit points drop to a negative number equal to your Constitution score, the <em>magic jar</em> effect prematurely ends and you die as normal.</p>",
+    "description": "<p><strong>Body Snatch (Sp) (Level 10):</strong> <em>Immediate action:</em> Once per day upon falling unconscious because of dropping below 0 hit points, you can cast your soul from your body and attempt to occupy the body of another creature within 30 feet. This ability otherwise functions identically to magic jar except that your actual body serves as the receptacle and you suppress the consciousness of your target rather than casting it out.</p>\n<p>Your body continues to bleed as normal unless it is somehow stabilized, and if its hit points drop to a negative number equal to your Constitution score, the <em>magic jar</em> effect prematurely ends and you die as normal.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:possession:body-snatch",
     "name": "Body Snatch",
@@ -26660,7 +26646,7 @@
   "inquisition-power:redemption:second-chance": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Second Chance (Sp) (Level 8):</strong> You can give an enemy a second chance to correct the error of its ways. Once per day, you can cast atonement as a spell-like ability, targeting a creature that has violated the tenets of a religion you both share or that freely desires to convert to your alignment. If costly material components are required for the <em>atonement,</em> you may choose to accept a permanent negative level as a sacrifice in place of those components.~~~The target of this effect also receives the benefits of a cure serious wounds spell as part of the effects of the <em>atonement.</em></p>",
+    "description": "<p><strong>Second Chance (Sp) (Level 8):</strong> You can give an enemy a second chance to correct the error of its ways. <em>Standard action:</em> Once per day, you can cast atonement as a spell-like ability, targeting a creature that has violated the tenets of a religion you both share or that freely desires to convert to your alignment. If costly material components are required for the <em>atonement,</em> you may choose to accept a permanent negative level as a sacrifice in place of those components.</p>\n<p>The target of this effect also receives the benefits of a cure serious wounds spell as part of the effects of the <em>atonement.</em></p>",
     "grantsBuffs": [],
     "id": "inquisition-power:redemption:second-chance",
     "name": "Second Chance",
@@ -26675,7 +26661,7 @@
   "inquisition-power:reformation:awaken-discontent": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Awaken Discontent (Su) (Level 8):</strong> You can deliver a stirring speech condemning the mistakes of those in power and calling for reform, causing the target of your rhetoric to be affected by charm person with a caster level equal to your inquisitor level and a save DC of 10 + 1/2 your inquisitor level + your Wisdom modifier.</p>",
+    "description": "<p><strong>Awaken Discontent (Su) (Level 8):</strong> You can deliver a stirring speech condemning the mistakes of those in power and calling for reform, causing the target of your rhetoric to be affected by charm person with a caster level equal to your inquisitor level and a save DC of 10 + 1/2 your inquisitor level + your Wisdom modifier. You can use this ability a number of times per day equal to your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:reformation:awaken-discontent",
     "name": "Awaken Discontent",
@@ -26690,7 +26676,7 @@
   "inquisition-power:reformation:blessed-correction": {
     "abilityType": "ex",
     "changes": [],
-    "description": "<p><strong>Blessed Correction (Ex) (Level 4):</strong> When you make a Diplomacy, Intimidate, or Perform (oratory) check, you may roll twice and take the more favorable result.</p>",
+    "description": "<p><strong>Blessed Correction (Ex) (Level 4):</strong> When you make a Diplomacy, Intimidate, or Perform (oratory) check, you may roll twice and take the more favorable result. You can use this ability a number of times per day equal to your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:reformation:blessed-correction",
     "name": "Blessed Correction",
@@ -26720,7 +26706,7 @@
   "inquisition-power:restoration:cleanse-impunity": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Cleanse Impunity (Su) (Level 8):</strong> Add your Wisdom bonus on caster level checks to overcome the spell resistance of creatures with the chosen alignment subtype; dispel effects with the chosen alignment descriptor; and remove curses, diseases, and poisons. A neutral inquisitor gains only the bonus on caster level checks to remove curses, diseases, and poisons.</p>",
+    "description": "<p><strong>Cleanse Impunity (Su) (Level 8):</strong> Choose an alignment (chaotic, evil, good, or lawful) that is opposite to one axis of your own. Once chosen, this cannot be changed. Add your Wisdom bonus on caster level checks to overcome the spell resistance of creatures with the chosen alignment subtype; dispel effects with the chosen alignment descriptor; and remove curses, diseases, and poisons. A neutral inquisitor gains only the bonus on caster level checks to remove curses, diseases, and poisons.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:restoration:cleanse-impunity",
     "name": "Cleanse Impunity",
@@ -26735,7 +26721,7 @@
   "inquisition-power:restoration:mend-the-broken": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Mend the Broken (Su):</strong> You can touch an object or creature healing it of 1d4 points of damage + 1 for every 2 inquisitor levels you possess. You can use this ability only on a broken object or a creature with fewer than half its maximum hit points.</p>",
+    "description": "<p><strong>Mend the Broken (Su):</strong> <em>Standard action:</em> You can touch an object or creature healing it of 1d4 points of damage + 1 for every 2 inquisitor levels you possess. You can use this ability only on a broken object or a creature with fewer than half its maximum hit points. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:restoration:mend-the-broken",
     "name": "Mend the Broken",
@@ -26750,7 +26736,7 @@
   "inquisition-power:revelation:burn-shroud": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Burn Shroud (Su):</strong> You can make an unarmed touch attack against a creature. The target takes 1d4 points of fire damage + half your inquisitor level (minimum 1).~~~If the target is currently the subject of a polymorph effect that changes its appearance (such as by alter self, shapechange, or an innate shapechanging ability such as that possessed by doppelgangers), it instead takes 1d6 points of fire damage + half your inquisitor level (minimum 1).</p>",
+    "description": "<p><strong>Burn Shroud (Su):</strong> <em>Standard action:</em> You can make an unarmed touch attack against a creature. The target takes 1d4 points of fire damage + half your inquisitor level (minimum 1).</p>\n<p>If the target is currently the subject of a polymorph effect that changes its appearance (such as by alter self, shapechange, or an innate shapechanging ability such as that possessed by doppelgangers), it instead takes 1d6 points of fire damage + half your inquisitor level (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:revelation:burn-shroud",
     "name": "Burn Shroud",
@@ -26765,7 +26751,7 @@
   "inquisition-power:revelation:reveal-form": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Reveal Form (Su) (Level 8):</strong> Once per day you can invoke the name of your deity and order one shapechanged target within 30 feet to reveal its true form. The target must succeed at a Will save (DC 10 + 1/2 your inquisitor level + your Wisdom modifier) or be forced on its next turn to dispel any ongoing polymorph effects or innate shapechanging abilities to assume its natural form. If a creature affected by this ability fails its save and is for some reason unable to dispel any ongoing polymorph effects or innate shapechanging abilities, it is instead staggered for 1 round. This is a mind-affecting compulsion effect.</p>",
+    "description": "<p><strong>Reveal Form (Su) (Level 8):</strong> <em>Standard action:</em> Once per day you can invoke the name of your deity and order one shapechanged target within 30 feet to reveal its true form. The target must succeed at a Will save (DC 10 + 1/2 your inquisitor level + your Wisdom modifier) or be forced on its next turn to dispel any ongoing polymorph effects or innate shapechanging abilities to assume its natural form. If a creature affected by this ability fails its save and is for some reason unable to dispel any ongoing polymorph effects or innate shapechanging abilities, it is instead staggered for 1 round. This is a mind-affecting compulsion effect.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:revelation:reveal-form",
     "name": "Reveal Form",
@@ -26825,7 +26811,7 @@
   "inquisition-power:sedition:undermine-authority": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Undermine Authority (Sp):</strong> You can worsen the attitude of a character toward any governmental officer or leader acting against your religion. This likewise reduces that officer's or leader's influence with that character. The persuasion requires enough conversation to attempt a Diplomacy check (usually 1 minute) and you attempt a Diplomacy check as normal to influence the target's attitude. However, if you fail the check, the target is subject to a mind-affecting compulsion that alters its attitude for a number of days equal to your inquisitor level. The target can resist the compulsion with a successful Will saving throw (DC = 10 + 1/2 your inquisitor level + your Wisdom modifier). If the target is under a mind-affecting effect from that officer or leader, the effect is automatically suppressed for 1 minute.</p>",
+    "description": "<p><strong>Undermine Authority (Sp):</strong> You can worsen the attitude of a character toward any governmental officer or leader acting against your religion. This likewise reduces that officer's or leader's influence with that character. The persuasion requires enough conversation to attempt a Diplomacy check (usually 1 minute) and you attempt a Diplomacy check as normal to influence the target's attitude. However, if you fail the check, the target is subject to a mind-affecting compulsion that alters its attitude for a number of days equal to your inquisitor level. The target can resist the compulsion with a successful Will saving throw (DC = 10 + 1/2 your inquisitor level + your Wisdom modifier). If the target is under a mind-affecting effect from that officer or leader, the effect is automatically suppressed for 1 minute. You can use this ability a number of times per day equal to your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:sedition:undermine-authority",
     "name": "Undermine Authority",
@@ -26840,7 +26826,7 @@
   "inquisition-power:seduction:disarming-flirtation": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Disarming Flirtation (Sp):</strong> You can attempt a Charisma check to entice a target that could be sexually attracted to you into letting you speak for up to 1 minute when it would otherwise be unwilling to consider your words. The DC of this Charisma check is equal to 10 + the target's Wisdom modifier.~~~If successfully used in combat, this ability instead functions as a successful feint and the target cannot take any actions that would attack you as long as it is denied its Dexterity bonus against you.</p>",
+    "description": "<p><strong>Disarming Flirtation (Sp):</strong> You can attempt a Charisma check to entice a target that could be sexually attracted to you into letting you speak for up to 1 minute when it would otherwise be unwilling to consider your words. The DC of this Charisma check is equal to 10 + the target's Wisdom modifier.</p>\n<p>If successfully used in combat, this ability instead functions as a successful feint and the target cannot take any actions that would attack you as long as it is denied its Dexterity bonus against you.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:seduction:disarming-flirtation",
     "name": "Disarming Flirtation",
@@ -26870,7 +26856,7 @@
   "inquisition-power:sin:indulge": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Indulge (Su) (Level 8):</strong> Once per day you can awaken a creature's vice and overwhelm its senses with urgency. You must decide to use this ability before using your <em>sin sense</em> ability on a creature, and the target receives a Will save to negate the effect.~~~If the creature fails its saving throw, for the next 24 hours, whenever the affected creature is given an opportunity to indulge in its favored sin, that creature must yield to the impulse or make a second Will saving throw to avoid becoming sickened for 1 minute. This is a mind-affecting effect.</p>",
+    "description": "<p><strong>Indulge (Su) (Level 8):</strong> <em>Standard action:</em> Once per day you can awaken a creature's vice and overwhelm its senses with urgency. You must decide to use this ability before using your <em>sin sense</em> ability on a creature, and the target receives a Will save to negate the effect.</p>\n<p>If the creature fails its saving throw, for the next 24 hours, whenever the affected creature is given an opportunity to indulge in its favored sin, that creature must yield to the impulse or make a second Will saving throw to avoid becoming sickened for 1 minute. This is a mind-affecting effect.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:sin:indulge",
     "name": "Indulge",
@@ -26885,7 +26871,7 @@
   "inquisition-power:sin:sin-sense": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Sin Sense (Su):</strong> You can determine which sin most strongly influences a target by quickly reading its mind. Once you learn this fact, you gain a +4 bonus on your next Charisma-based skill check made against the target as long as it somehow incorporates a temptation that relates to that sin. This is a mind-affecting effect.</p>",
+    "description": "<p><strong>Sin Sense (Su):</strong> <em>Full-round action:</em> You can determine which sin most strongly influences a target by quickly reading its mind. Once you learn this fact, you gain a +4 bonus on your next Charisma-based skill check made against the target as long as it somehow incorporates a temptation that relates to that sin. You can use this ability a number of times per day equal to 3 + your Wisdom modifier. This is a mind-affecting effect.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:sin:sin-sense",
     "name": "Sin Sense",
@@ -26896,20 +26882,6 @@
     ],
     "subType": "classFeat",
     "uuid": "pfdata:inquisition-power:sin:sin-sense"
-  },
-  "inquisition-power:spellkiller:granted-powers": {
-    "changes": [],
-    "description": "<p><strong>Granted Powers:</strong> You gain the Disruptive feat as a bonus feat (even if you do not meet the prerequisites).~~~When you defeat an enemy (whether by reducing it to 0 or fewer hit points, taking the enemy captive, or accepting a truce), you gain a +2 sacred or profane bonus to AC for 1 minute per level. You gain a sacred bonus if you are good, profane if you are evil; if you are neutral, you choose either sacred or profane when you select this inquisition. After you choose which type of bonus you gain, you cannot change the bonus type.~~~When you hit a creature with levels of alchemist or any arcane spellcasting class, or that uses spell-like abilities, you can end this effect to stagger that creature. The creature gets a Fortitude saving throw against this effect on each of its turns (including the turn in which it gained the effect). A successful save ends the staggered condition.</p>",
-    "grantsBuffs": [],
-    "id": "inquisition-power:spellkiller:granted-powers",
-    "name": "Granted Powers",
-    "sources": [
-      {
-        "id": "ultimate-combat"
-      }
-    ],
-    "subType": "classFeat",
-    "uuid": "pfdata:inquisition-power:spellkiller:granted-powers"
   },
   "inquisition-power:tactics:grant-the-initiative": {
     "abilityType": "ex",
@@ -26929,7 +26901,7 @@
   "inquisition-power:tactics:inquisitor-s-direction": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Inquisitor's Direction (Su):</strong> At the start of your turn, you can choose to enter a tranquil, reflective state and forgo all actions (standard, move, swift, immediate, and free actions, including attacks of opportunity) for that round; one ally of your choice within 30 feet gains the benefit of haste for 1 round.</p>",
+    "description": "<p><strong>Inquisitor's Direction (Su):</strong> At the start of your turn, you can choose to enter a tranquil, reflective state and forgo all actions (standard, move, swift, immediate, and free actions, including attacks of opportunity) for that round; one ally of your choice within 30 feet gains the benefit of haste for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier (minimum 1).</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:tactics:inquisitor-s-direction",
     "name": "Inquisitor's Direction",
@@ -26974,7 +26946,7 @@
   "inquisition-power:torture:torturer-s-touch": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Torturer's Touch (Sp):</strong> You may use touch of fatigue as a spell-like ability. Creatures that are immune to pain effects are immune to this touch.</p>",
+    "description": "<p><strong>Torturer's Touch (Sp):</strong> You may use touch of fatigue as a spell-like ability. Creatures that are immune to pain effects are immune to this touch. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:torture:torturer-s-touch",
     "name": "Torturer's Touch",
@@ -26989,7 +26961,7 @@
   "inquisition-power:true_death:back-to-the-graves": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Back to the Graves (Su):</strong> When you cast cure spells (any spells with &amp;quot&amp;cure&amp;quot&amp; in their name) to deal damage to undead creatures, you add +2 points of damage per caster level instead of +1 point of damage per caster level. The maximum damage for each spell remains unchanged.</p>",
+    "description": "<p><strong>Back to the Graves (Su):</strong> When you cast cure spells (any spells with \"cure\" in their name) to deal damage to undead creatures, you add +2 points of damage per caster level instead of +1 point of damage per caster level. The maximum damage for each spell remains unchanged.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:true_death:back-to-the-graves",
     "name": "Back to the Graves",
@@ -27019,7 +26991,7 @@
   "inquisition-power:truth:grasp-of-honesty": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Grasp of Honesty (Su) (Level 8):</strong> Any creature you are grappling or pinning is affected by zone of truth (Will negates). Outside of combat, you may use this ability by touching a target with both hands. The effect ends if you stop grappling, pinning, or touching the target.</p>",
+    "description": "<p><strong>Grasp of Honesty (Su) (Level 8):</strong> Any creature you are grappling or pinning is affected by zone of truth (Will negates). Outside of combat, you may use this ability by touching a target with both hands. You can use this ability a number of times per day equal to your inquisitor level. The effect ends if you stop grappling, pinning, or touching the target.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:truth:grasp-of-honesty",
     "name": "Grasp of Honesty",
@@ -27034,7 +27006,7 @@
   "inquisition-power:truth:justice-s-true-path": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Justice's True Path (Sp):</strong> You can touch a creature, granting an insight bonus on one attack roll, skill check, ability check, or saving throw before your next turn; this bonus is equal to half your inquisitor level (minimum 1) and lasts for 1 round.</p>",
+    "description": "<p><strong>Justice's True Path (Sp):</strong> <em>Standard action:</em> You can touch a creature, granting an insight bonus on one attack roll, skill check, ability check, or saving throw before your next turn; this bonus is equal to half your inquisitor level (minimum 1) and lasts for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:truth:justice-s-true-path",
     "name": "Justice's True Path",
@@ -27064,7 +27036,7 @@
   "inquisition-power:valor:touch-of-resolve": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Touch of Resolve (Sp):</strong> You may use remove fear on a single creature.</p>",
+    "description": "<p><strong>Touch of Resolve (Sp):</strong> You may use remove fear on a single creature. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:valor:touch-of-resolve",
     "name": "Touch of Resolve",
@@ -27079,7 +27051,7 @@
   "inquisition-power:vengeance:divine-retribution": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Divine Retribution (Sp):</strong> You can point at one creature within 30 feet to indicate that it is the target of divine wrath. A mishap or an accident appropriate to the environment occurs, such as a branch falling on the creature, rocks falling from the ceiling, or some other nonmagical misfortune; regardless of the cause, the mishap deals damage equal to 1d6 + half your inquisitor level (Reflex half). The GM decides whether this damage is bludgeoning, piercing, or slashing damage.</p>",
+    "description": "<p><strong>Divine Retribution (Sp):</strong> <em>Standard action:</em> You can point at one creature within 30 feet to indicate that it is the target of divine wrath. A mishap or an accident appropriate to the environment occurs, such as a branch falling on the creature, rocks falling from the ceiling, or some other nonmagical misfortune; regardless of the cause, the mishap deals damage equal to 1d6 + half your inquisitor level (Reflex half). You can use this ability a number of times per day equal to 3 + your Wisdom modifier. The GM decides whether this damage is bludgeoning, piercing, or slashing damage.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:vengeance:divine-retribution",
     "name": "Divine Retribution",
@@ -34283,7 +34255,7 @@
   "subdomain-power:aeon:void-form": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can become semi-tangible. While in this form, you are immune to critical hits and gain a deflection bonus to AC equal to one-fourth of your cleric level.</p>",
+    "description": "<p><em>Standard action:</em> You can become semi-tangible. While in this form, you are immune to critical hits and gain a deflection bonus to AC equal to one-fourth of your cleric level. You can use this ability a number of times per day equal to your cleric level.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:aeon:void-form",
     "name": "Void Form",
@@ -34303,7 +34275,7 @@
   "subdomain-power:alchemy:divine-alchemy": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can perform a 1-minute ritual that infuses a flask of water with one of your prepared spells, creating an improvised potion that lasts until consumed or the next time you prepare spells. You can use this ability only with spells that target one or more creatures, and the maximum spell level you can infuse in this way is equal to 1 + 1 for every 4 cleric levels you have. These potions are treated as alchemist extracts for the purpose of your domain spells.</p>",
+    "description": "<p>You can perform a 1-minute ritual that infuses a flask of water with one of your prepared spells, creating an improvised potion that lasts until consumed or the next time you prepare spells. You can use this ability only with spells that target one or more creatures, and the maximum spell level you can infuse in this way is equal to 1 + 1 for every 4 cleric levels you have. These potions are treated as alchemist extracts for the purpose of your domain spells. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:alchemy:divine-alchemy",
     "name": "Divine Alchemy",
@@ -34323,7 +34295,7 @@
   "subdomain-power:ambush:chameleon-aspect": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can subtly alter the color of your scales, blending them with the surrounding environment. While under the effect of this power, you gain concealment from creatures more than 10 feet away (attacks have a 20% miss chance), and total concealment from creatures more than 40 feet away (attacks have a 50% miss chance).</p>",
+    "description": "<p><em>Swift action:</em> You can subtly alter the color of your scales, blending them with the surrounding environment. While under the effect of this power, you gain concealment from creatures more than 10 feet away (attacks have a 20% miss chance), and total concealment from creatures more than 40 feet away (attacks have a 50% miss chance). You can use this ability for a number of rounds per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:ambush:chameleon-aspect",
     "name": "Chameleon Aspect",
@@ -34343,7 +34315,7 @@
   "subdomain-power:aristocracy:noble-visage": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You gain a bonus on Charisma checks and Charisma-based skill checks against creatures that share your creature type (and subtype, if you are a humanoid). @B-5y1-cleric. You can touch an ally to grant her your noble visage bonus against creatures that share her creature type (or subtype) for 1 minute. When you use this ability, you lose your noble visage bonus for 1 minute.</p>",
+    "description": "<p>You gain a bonus on Charisma checks and Charisma-based skill checks against creatures that share your creature type (and subtype, if you are a humanoid). @B-5y1-cleric. <em>Standard action:</em> You can touch an ally to grant her your noble visage bonus against creatures that share her creature type (or subtype) for 1 minute. When you use this ability, you lose your noble visage bonus for 1 minute. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:aristocracy:noble-visage",
     "name": "Noble Visage",
@@ -34363,7 +34335,7 @@
   "subdomain-power:arson:call-fire": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can stretch out your hand toward any visible fire source within 60 feet and beckon it toward you. This causes a ribbon-thin streak of fire to approach you in a straight line through the air. Any creature directly in the fire ribbon's path takes 1d4 points of fire damage; a successful Reflex save (DC = 10 + half your class level + your Wisdom modifier) negates this damage. When the ribbon of fire reaches your hand, it either extinguishes or lights a flammable object of your choice that you're holding.</p>",
+    "description": "<p><em>Standard action:</em> You can stretch out your hand toward any visible fire source within 60 feet and beckon it toward you. This causes a ribbon-thin streak of fire to approach you in a straight line through the air. Any creature directly in the fire ribbon's path takes 1d4 points of fire damage; a successful Reflex save (DC = 10 + half your class level + your Wisdom modifier) negates this damage. When the ribbon of fire reaches your hand, it either extinguishes or lights a flammable object of your choice that you're holding. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:arson:call-fire",
     "name": "Call Fire",
@@ -34377,7 +34349,7 @@
   "subdomain-power:cannibalism:consume-the-enemy": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>As an evil act, you can bite a helpless living or freshly killed creature, dealing 1d3 points of damage. By consuming the creature's flesh, you gain a profane bonus on saving throw DCs for all spells, spell-like abilities, and supernatural abilities you use against creatures of the same type (and subtype, if humanoid or outsider) as the cannibalized creature. The profane bonus is equal to 1 + one-fifth of your cleric level. This effect lasts for a number of minutes equal to 1/2 your cleric level or until you use this ability against a different creature.</p>",
+    "description": "<p><em>Full-round action:</em> As an evil act, you can bite a helpless living or freshly killed creature, dealing 1d3 points of damage. By consuming the creature's flesh, you gain a profane bonus on saving throw DCs for all spells, spell-like abilities, and supernatural abilities you use against creatures of the same type (and subtype, if humanoid or outsider) as the cannibalized creature. The profane bonus is equal to 1 + one-fifth of your cleric level. This effect lasts for a number of minutes equal to 1/2 your cleric level or until you use this ability against a different creature. This provokes attacks of opportunity. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:cannibalism:consume-the-enemy",
     "name": "Consume the Enemy",
@@ -34397,7 +34369,7 @@
   "subdomain-power:captivation:entrancing-aura": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can emit an imperceptible 30-foot aura of distraction. Enemies within this aura take a -5 penalty on Perception checks and are treated as though they had 2 fewer Hit Dice (minimum 1 Hit Die) for the purpose of your effects that would give them the fascinated condition. At 16th level: Enemies are instead treated as if they had 3 fewer Hit Dice for such effects.</p>",
+    "description": "<p><em>Standard action:</em> You can emit an imperceptible 30-foot aura of distraction. Enemies within this aura take a -5 penalty on Perception checks and are treated as though they had 2 fewer Hit Dice (minimum 1 Hit Die) for the purpose of your effects that would give them the fascinated condition. You can use this ability a number of times per day equal to your cleric level. At 16th level: Enemies are instead treated as if they had 3 fewer Hit Dice for such effects.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:captivation:entrancing-aura",
     "name": "Entrancing Aura",
@@ -34417,7 +34389,7 @@
   "subdomain-power:chivalry:bolstering-touch": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p>You can touch a willing creature, bracing it against frightening situations and allowing it to remain calm. The first fear effect that would affect the subject within the next hour is suppressed for the first 1d4 rounds of its effect. If you touch a creature currently suffering from an ongoing fear effect, this ability instead suppresses the ongoing fear effect for 1 round. The rounds during which the subject ignores the triggering fear effect still count against the effect's duration. If the fear effect is suppressed for longer than it lasts, the subject isn't affected by the fear effect at all.</p>",
+    "description": "<p><em>Standard action:</em> You can touch a willing creature, bracing it against frightening situations and allowing it to remain calm. The first fear effect that would affect the subject within the next hour is suppressed for the first 1d4 rounds of its effect. If you touch a creature currently suffering from an ongoing fear effect, this ability instead suppresses the ongoing fear effect for 1 round. The rounds during which the subject ignores the triggering fear effect still count against the effect's duration. If the fear effect is suppressed for longer than it lasts, the subject isn't affected by the fear effect at all. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:chivalry:bolstering-touch",
     "name": "Bolstering Touch",
@@ -34437,7 +34409,7 @@
   "subdomain-power:competition:athletic-exploit": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You gain the ability to overcome physical obstacles with ease. Until the beginning of your next turn, you halve your armor check penalty when attempting Acrobatics, Climb, Escape Artist, and Swim skill checks, and you gain a bonus equal to 1/2 your cleric level (minimum +1) on such skill checks.</p>",
+    "description": "<p><em>Swift action:</em> You gain the ability to overcome physical obstacles with ease. Until the beginning of your next turn, you halve your armor check penalty when attempting Acrobatics, Climb, Escape Artist, and Swim skill checks, and you gain a bonus equal to 1/2 your cleric level (minimum +1) on such skill checks.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:competition:athletic-exploit",
     "name": "Athletic Exploit",
@@ -34453,7 +34425,7 @@
   "subdomain-power:cooperation:synergistic-touch": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p>You can touch a creature to confer upon it the benefits of any one teamwork feat that you possess. This effect persists for a number of rounds equal to 1/2 your cleric level (minimum 1).</p>",
+    "description": "<p><em>Standard action:</em> You can touch a creature to confer upon it the benefits of any one teamwork feat that you possess. This effect persists for a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:cooperation:synergistic-touch",
     "name": "Synergistic Touch",
@@ -34467,7 +34439,7 @@
   "subdomain-power:corruption:spark-malfeasance": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can awaken the sinful desires of a target within 30 feet with a ranged touch attack. The target suffers extreme guilt and is sickened for a number of rounds equal to 1/2 your cleric level. To end the effect earlier, the target can willingly commit an evil act (if it is of good alignment) or attempt a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier) at the beginning of its turn each round. Creatures that succeed at their saving throws are immune to this ability for 24 hours.</p>",
+    "description": "<p>You can awaken the sinful desires of a target within 30 feet with a ranged touch attack. The target suffers extreme guilt and is sickened for a number of rounds equal to 1/2 your cleric level. To end the effect earlier, the target can willingly commit an evil act (if it is of good alignment) or attempt a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier) at the beginning of its turn each round. Creatures that succeed at their saving throws are immune to this ability for 24 hours. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:corruption:spark-malfeasance",
     "name": "Spark Malfeasance",
@@ -34497,7 +34469,7 @@
   "subdomain-power:demodand:faith-stealing-strike": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can make a single melee attack using your highest base attack bonus against a creature capable of casting divine spells. If you damage the creature, it must succeed at a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier) or be unable to cast any divine spells for 1 round. If you do not damage your target with the attack, this ability is expended with no effect.</p>",
+    "description": "<p><em>Standard action:</em> You can make a single melee attack using your highest base attack bonus against a creature capable of casting divine spells. If you damage the creature, it must succeed at a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier) or be unable to cast any divine spells for 1 round. If you do not damage your target with the attack, this ability is expended with no effect. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:demodand:faith-stealing-strike",
     "name": "Faith-Stealing Strike",
@@ -34517,7 +34489,7 @@
   "subdomain-power:dragon:dragonbreath": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can use a breath weapon once per day. When you gain this ability, choose what kind of damage your breath weapon deals: acid, cold, electricity, or fire. Once you make this choice, you can't change it later. Your breath weapon fills a 15-foot cone and deals <strong>X</strong>d6 points of damage, where <strong>X</strong> is equal to 1 + one-half your cleric level. A creature hit by your dragonbreath attack can attempt a Reflex save (DC = 10 + half your class level + your Wisdom modifier) to take half damage.</p>",
+    "description": "<p><em>Standard action:</em> You can use a breath weapon once per day. When you gain this ability, choose what kind of damage your breath weapon deals: acid, cold, electricity, or fire. Once you make this choice, you can't change it later. Your breath weapon fills a 15-foot cone and deals <strong>X</strong>d6 points of damage, where <strong>X</strong> is equal to 1 + one-half your cleric level. A creature hit by your dragonbreath attack can attempt a Reflex save (DC = 10 + half your class level + your Wisdom modifier) to take half damage.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:dragon:dragonbreath",
     "name": "Dragonbreath",
@@ -34527,7 +34499,7 @@
   "subdomain-power:duels:divine-challenge": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can challenge a visible foe within 30 feet, gaining a +1 sacred bonus to your AC against that creature's attacks and a bonus equal to 1/2 your cleric level on Bluff skill checks to feint against it. These bonuses last for a number of rounds equal to 1/2 your cleric level.</p>",
+    "description": "<p><em>Swift action:</em> You can challenge a visible foe within 30 feet, gaining a +1 sacred bonus to your AC against that creature's attacks and a bonus equal to 1/2 your cleric level on Bluff skill checks to feint against it. These bonuses last for a number of rounds equal to 1/2 your cleric level. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:duels:divine-challenge",
     "name": "Divine Challenge",
@@ -34547,7 +34519,7 @@
   "subdomain-power:education:teaching-moment": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>When you or an ally within 30 feet rolls a natural 1 or a natural 20 on an attack roll, an ability check, a skill check, or a saving throw, you can grant all allies within 30 feet special insights that help them overcome similar challenges. Once during the next minute, each affected creature can choose to roll twice and take the better result before attempting an attack roll, ability check, skill check, or saving throw.</p>",
+    "description": "<p><em>Immediate action:</em> When you or an ally within 30 feet rolls a natural 1 or a natural 20 on an attack roll, an ability check, a skill check, or a saving throw, you can grant all allies within 30 feet special insights that help them overcome similar challenges. Once during the next minute, each affected creature can choose to roll twice and take the better result before attempting an attack roll, ability check, skill check, or saving throw. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:education:teaching-moment",
     "name": "Teaching Moment",
@@ -34567,7 +34539,7 @@
   "subdomain-power:entropy:hasten-the-end": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Upon successfully hitting an opponent with a melee attack, you may reduce the remaining duration of all beneficial magical effects currently affecting the target by 1 round, minute, hour, or day - whichever measurement is used to determine the duration of each particular magical effect.</p>",
+    "description": "<p><em>Immediate action:</em> Upon successfully hitting an opponent with a melee attack, you may reduce the remaining duration of all beneficial magical effects currently affecting the target by 1 round, minute, hour, or day - whichever measurement is used to determine the duration of each particular magical effect. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:entropy:hasten-the-end",
     "name": "Hasten the End",
@@ -34597,7 +34569,7 @@
   "subdomain-power:fear:feed-on-fear": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Upon successfully landing a melee attack on a creature that is already suffering from a fear effect, you can deal 2d6 extra points of damage and gain an equal amount of temporary hit points. These temporary hit points last for 24 hours or until lost.</p>",
+    "description": "<p><em>Immediate action:</em> Upon successfully landing a melee attack on a creature that is already suffering from a fear effect, you can deal 2d6 extra points of damage and gain an equal amount of temporary hit points. These temporary hit points last for 24 hours or until lost. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:fear:feed-on-fear",
     "name": "Feed on Fear",
@@ -34611,7 +34583,7 @@
   "subdomain-power:fist:wooden-fist": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Your hands can become as hard as wood, covered in tiny thorns. While you have wooden fists, your unarmed strikes do not provoke attacks of opportunity, deal lethal damage, and gain a bonus on damage rolls equal to 1/2 your cleric level (minimum +1).</p>",
+    "description": "<p><em>Free action:</em> Your hands can become as hard as wood, covered in tiny thorns. While you have wooden fists, your unarmed strikes do not provoke attacks of opportunity, deal lethal damage, and gain a bonus on damage rolls equal to 1/2 your cleric level (minimum +1). You can use this ability for a number of rounds per day equal to 3 + your Wisdom modifier. These rounds do not need to be consecutive.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:fist:wooden-fist",
     "name": "Wooden Fist",
@@ -34631,7 +34603,7 @@
   "subdomain-power:flotsam:sift": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Once per day you can reach into water and pull out an object with a maximum gp value of up to 50 gp × your class level. This object always has the broken condition upon being withdrawn from the water. The water you reach into must be at least deep enough to fully immerse yourself in. If you're retrieving an object that would not normally float, assume it rests on top of or is entwined with debris that does float. Objects retrieved in this manner disappear after 24 hours if they're not already used up or otherwise destroyed before then. At 12th level: The objects that you retrieve are not broken. At 20th level: You can retrieve objects worth up to 5,000 gp.</p>",
+    "description": "<p><em>Standard action:</em> Once per day you can reach into water and pull out an object with a maximum gp value of up to 50 gp × your class level. This object always has the broken condition upon being withdrawn from the water. The water you reach into must be at least deep enough to fully immerse yourself in. If you're retrieving an object that would not normally float, assume it rests on top of or is entwined with debris that does float. Objects retrieved in this manner disappear after 24 hours if they're not already used up or otherwise destroyed before then. At 12th level: The objects that you retrieve are not broken. At 20th level: You can retrieve objects worth up to 5,000 gp.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:flotsam:sift",
     "name": "Sift",
@@ -34641,7 +34613,7 @@
   "subdomain-power:flowing:go-with-the-flow": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can touch a creature to suppress its strong emotions. The target is affected as the calm emotions spell, except it can still take violent actions and violent actions against the target do not end the effect. This effect lasts a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this ability a number times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><em>Standard action:</em> You can touch a creature to suppress its strong emotions. The target is affected as the calm emotions spell, except it can still take violent actions and violent actions against the target do not end the effect. This effect lasts a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this ability a number times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:flowing:go-with-the-flow",
     "name": "Go with the Flow",
@@ -34657,7 +34629,7 @@
   "subdomain-power:friendship:powerful-bond": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can open a link to communicate telepathically with a single ally within 60 feet. The telepathic link is two-way and lasts for 1 minute. Unlike normal telepathy, this ability requires a shared language.</p>",
+    "description": "<p><em>Free action:</em> You can open a link to communicate telepathically with a single ally within 60 feet. The telepathic link is two-way and lasts for 1 minute. Unlike normal telepathy, this ability requires a shared language. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:friendship:powerful-bond",
     "name": "Powerful Bond",
@@ -34671,7 +34643,7 @@
   "subdomain-power:greed:more-for-me": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>When another character within 30 feet casts a spell with a range greater than touch, you can attempt a caster level check (DC = 15 + the spell's level). If you succeed at the check, you receive the spell's benefit instead of one of the spell's intended targets (chosen by you). If you are already a target of the spell, you are affected as though you were targeted by the same spell twice (which may or may not benefit you; remember that bonuses from the same source do not stack). This ability does not grant you knowledge of the spell being cast.</p>",
+    "description": "<p><em>Immediate action:</em> When another character within 30 feet casts a spell with a range greater than touch, you can attempt a caster level check (DC = 15 + the spell's level). If you succeed at the check, you receive the spell's benefit instead of one of the spell's intended targets (chosen by you). If you are already a target of the spell, you are affected as though you were targeted by the same spell twice (which may or may not benefit you; remember that bonuses from the same source do not stack). This ability does not grant you knowledge of the spell being cast. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:greed:more-for-me",
     "name": "More for Me",
@@ -34691,7 +34663,7 @@
   "subdomain-power:hatred:hateful-aura": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can emit a 30-foot aura of hatred. Enemies within this aura must attempt a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier). Characters who fail their save are filled with hatred, and cannot consider other characters allies for the purpose of any actions or use any teamwork feats. The effect ends immediately if the creature leaves the aura, you end the aura as a free action, or you expend all rounds of this ability.</p>",
+    "description": "<p><em>Standard action:</em> You can emit a 30-foot aura of hatred. Enemies within this aura must attempt a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier). Characters who fail their save are filled with hatred, and cannot consider other characters allies for the purpose of any actions or use any teamwork feats. The effect ends immediately if the creature leaves the aura, you end the aura as a free action, or you expend all rounds of this ability. You can use this ability a number of times per day equal to your cleric level.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:hatred:hateful-aura",
     "name": "Hateful Aura",
@@ -34726,7 +34698,7 @@
   "subdomain-power:hubris:divine-demand": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can petition your divine patron for far greater power than you deserve. This ability can be used only as you cast a spell that has a reduced (but not negated) effect on a successful save. The saving throw DC of the spell increases by 2, and you gain a +2 bonus on caster level checks to overcome spell resistance with the spell. Any creature that succeeds at the saving throw instead avoids the effect entirely. If half or more of the targets are unaffected, you become shaken for a number of rounds equal to the spell's level. If all of the targets are unaffected, you instead lose the ability to cast divine spells, channel energy, and use domain powers for 1d4+1 rounds; you can end this loss by loudly apologizing to your patron deity as a full-round_action that provokes attacks of opportunity.</p>",
+    "description": "<p><em>Swift action:</em> You can petition your divine patron for far greater power than you deserve. This ability can be used only as you cast a spell that has a reduced (but not negated) effect on a successful save. The saving throw DC of the spell increases by 2, and you gain a +2 bonus on caster level checks to overcome spell resistance with the spell. Any creature that succeeds at the saving throw instead avoids the effect entirely. If half or more of the targets are unaffected, you become shaken for a number of rounds equal to the spell's level. If all of the targets are unaffected, you instead lose the ability to cast divine spells, channel energy, and use domain powers for 1d4+1 rounds; you can end this loss by loudly apologizing to your patron deity as a full-round_action that provokes attacks of opportunity. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 6th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:hubris:divine-demand",
     "name": "Divine Demand",
@@ -34746,7 +34718,7 @@
   "subdomain-power:imagination:haze-of-daydreams": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can emit a 15-foot-radius haze of daydreams. Creatures within the haze gain the fascinated condition unless they succeed at a Will save (DC equal to 10 + 1/2 your cleric level + your Wisdom modifier). You may designate a number of creatures equal to your cleric level that are not affected by the haze. The fascinated condition ends immediately when the creatures leave the area or the aura expires.</p>",
+    "description": "<p><em>Standard action:</em> You can emit a 15-foot-radius haze of daydreams. Creatures within the haze gain the fascinated condition unless they succeed at a Will save (DC equal to 10 + 1/2 your cleric level + your Wisdom modifier). You may designate a number of creatures equal to your cleric level that are not affected by the haze. The fascinated condition ends immediately when the creatures leave the area or the aura expires. You can use this ability a number of times per day equal to your cleric level.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:imagination:haze-of-daydreams",
     "name": "Haze of Daydreams",
@@ -34766,7 +34738,7 @@
   "subdomain-power:industry:aura-of-efficiency": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can emit a 30-foot-radius aura that grants your allies a +4 bonus on all saving throws against effects that inflict the fatigued or exhausted condition. Any equipment wielded by your allies within this area gets a bonus to hardness equal to 1/2 your cleric level, and your allies' attacks against targets within this area ignore an equal amount of hardness.</p>",
+    "description": "<p><em>Standard action:</em> You can emit a 30-foot-radius aura that grants your allies a +4 bonus on all saving throws against effects that inflict the fatigued or exhausted condition. Any equipment wielded by your allies within this area gets a bonus to hardness equal to 1/2 your cleric level, and your allies' attacks against targets within this area ignore an equal amount of hardness. You can use this ability a number of times per day equal to your cleric level.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:industry:aura-of-efficiency",
     "name": "Aura of Efficiency",
@@ -34786,7 +34758,7 @@
   "subdomain-power:innuendo:fool-s-privilege": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can use this power when you fail a Bluff, Diplomacy, or Intimidate check outside of combat. You suffer no negative effects due to the failed check, and the next round you can attempt the check again without the usual penalty for a failed attempt.</p>",
+    "description": "<p><em>Swift action:</em> You can use this power when you fail a Bluff, Diplomacy, or Intimidate check outside of combat. You suffer no negative effects due to the failed check, and the next round you can attempt the check again without the usual penalty for a failed attempt. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 1st.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:innuendo:fool-s-privilege",
     "name": "Fool's Privilege",
@@ -34806,7 +34778,7 @@
   "subdomain-power:insect:exoskeleton": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Grow an exoskeleton that grants you a +1 enhancement bonus to your natural armor and 1d4 temporary hit points + 1 for every 2 cleric levels you have. The natural armor bonus increases by 1 for every 5 cleric levels you have. The exoskeleton retracts after 1 round, ending its benefits.</p>",
+    "description": "<p><em>Swift action:</em> Grow an exoskeleton that grants you a +1 enhancement bonus to your natural armor and 1d4 temporary hit points + 1 for every 2 cleric levels you have. The natural armor bonus increases by 1 for every 5 cleric levels you have. The exoskeleton retracts after 1 round, ending its benefits. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:insect:exoskeleton",
     "name": "Exoskeleton",
@@ -34826,7 +34798,7 @@
   "subdomain-power:isolation:aura-of-isolation": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can create a 20-foot aura that causes enemies within to be overcome with feelings of isolation and loss. Your enemies treat the aura as difficult terrain, as they become sluggish within its area of effect. Furthermore, while within the aura, your enemies can't flank with one another, nor can they use or benefit from the aid another action. This is a mind-affecting emotion effect.</p>",
+    "description": "<p><em>Standard action:</em> You can create a 20-foot aura that causes enemies within to be overcome with feelings of isolation and loss. Your enemies treat the aura as difficult terrain, as they become sluggish within its area of effect. Furthermore, while within the aura, your enemies can't flank with one another, nor can they use or benefit from the aid another action. This is a mind-affecting emotion effect. You can use this ability for a number of rounds per day equal to 3 + your Wisdom modifier. These rounds do not need to be consecutive.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:isolation:aura-of-isolation",
     "name": "Aura of Isolation",
@@ -34840,7 +34812,7 @@
   "subdomain-power:judgment:chastisement": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can cast a strengthened spell against a creature that damaged you since your last turn. This spell must target the creature that damaged you, and is cast at +1 caster level. Area of effect spells cannot be used in conjunction with this ability, but other spells that target multiple creatures may be.</p>",
+    "description": "<p><em>Standard action:</em> You can cast a strengthened spell against a creature that damaged you since your last turn. This spell must target the creature that damaged you, and is cast at +1 caster level. Area of effect spells cannot be used in conjunction with this ability, but other spells that target multiple creatures may be. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:judgment:chastisement",
     "name": "Chastisement",
@@ -34854,7 +34826,7 @@
   "subdomain-power:kyton:pain-is-power": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>After taking damage from any source, you may attempt a DC 25 concentration check. If you succeed, you gain the benefits of a blessing of fervor spell for a number of rounds equal to 1/2 your cleric level. If you fail, this ability is expended with no effect.</p>",
+    "description": "<p><em>Immediate action:</em> After taking damage from any source, you may attempt a DC 25 concentration check. If you succeed, you gain the benefits of a blessing of fervor spell for a number of rounds equal to 1/2 your cleric level. If you fail, this ability is expended with no effect. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:kyton:pain-is-power",
     "name": "Pain Is Power",
@@ -34889,7 +34861,7 @@
   "subdomain-power:legend:witness-the-legend": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can extol the virtues of yourself or an ally within 60 feet that you can see. This causes the target to shed light like a torch for 1 minute, and while the effect lasts, you can expend a daily use of your <em>touch of glory</em> domain ability as an immediate action to add 1d6 to an attack, saving throw, skill check, or ability check attempted by the target; for a roll to confirm a critical hit or save against a fear effect, you instead add 1d12.</p>",
+    "description": "<p><em>Move action:</em> You can extol the virtues of yourself or an ally within 60 feet that you can see. This causes the target to shed light like a torch for 1 minute, and while the effect lasts, you can expend a daily use of your <em>touch of glory</em> domain ability as an immediate action to add 1d6 to an attack, saving throw, skill check, or ability check attempted by the target; for a roll to confirm a critical hit or save against a fear effect, you instead add 1d12. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:legend:witness-the-legend",
     "name": "Witness the Legend",
@@ -34909,7 +34881,7 @@
   "subdomain-power:legislation:prohibition": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can command a creature within 30 feet to refrain from committing a particular action (including any referenced in the spell <em>forbid action</em>). If the creature performs the named action before the beginning of your next turn, it takes 1d6 points of damage + 1 point for every 2 cleric levels you possess and the effect ends. This is a language-dependent effect.</p>",
+    "description": "<p><em>Standard action:</em> You can command a creature within 30 feet to refrain from committing a particular action (including any referenced in the spell <em>forbid action</em>). If the creature performs the named action before the beginning of your next turn, it takes 1d6 points of damage + 1 point for every 2 cleric levels you possess and the effect ends. This is a language-dependent effect. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:legislation:prohibition",
     "name": "Prohibition",
@@ -34929,7 +34901,7 @@
   "subdomain-power:leshy:leshy-caller": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p>You can spontaneously swap out any of your domain spells for a <em>summon nature's ally</em> spell of the same level or lower, to a maximum of summon nature's ally VII. If you do, you must use the spell to summon one or more leshys. Add leaf leshy, gourd leshy, fungus leshy, seaweed leshy, and lotus leshy to your <em>summon nature's ally I, II, III, IV,</em> and <em>V</em> lists, respectively. You can grant a single leshy within 30 feet a +4 sacred bonus on its next attack roll before the start of your next turn. You count as a plant creature for the purpose of creating leshys.</p>",
+    "description": "<p>You can spontaneously swap out any of your domain spells for a <em>summon nature's ally</em> spell of the same level or lower, to a maximum of summon nature's ally VII. If you do, you must use the spell to summon one or more leshys. Add leaf leshy, gourd leshy, fungus leshy, seaweed leshy, and lotus leshy to your <em>summon nature's ally I, II, III, IV,</em> and <em>V</em> lists, respectively. <em>Standard action:</em> You can grant a single leshy within 30 feet a +4 sacred bonus on its next attack roll before the start of your next turn. You can use this ability a number of times per day equal to 3 + your Wisdom modifier. You count as a plant creature for the purpose of creating leshys.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:leshy:leshy-caller",
     "name": "Leshy Caller",
@@ -34949,7 +34921,7 @@
   "subdomain-power:loyalty:touch-of-loyalty": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>As a standard action, you can touch a willing creature, granting it a +4 sacred bonus on saving throws to resist charm, compulsion, and fear effects for 1 hour.</p>",
+    "description": "<p>As a standard action, you can touch a willing creature, granting it a +4 sacred bonus on saving throws to resist charm, compulsion, and fear effects for 1 hour. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:loyalty:touch-of-loyalty",
     "name": "Touch of Loyalty",
@@ -34963,7 +34935,7 @@
   "subdomain-power:medicine:blessed-surgery": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Your divine patron guides your healing hands, allowing you to perform minor miracles with mundane cures. You can use this ability when using the Heal skill in order to roll the check twice and take the higher result. When you're using this ability, any use of the Heal skill requiring 1 hour instead takes at most 1 minute.</p>",
+    "description": "<p>Your divine patron guides your healing hands, allowing you to perform minor miracles with mundane cures. You can use this ability when using the Heal skill in order to roll the check twice and take the higher result. When you're using this ability, any use of the Heal skill requiring 1 hour instead takes at most 1 minute. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:medicine:blessed-surgery",
     "name": "Blessed Surgery",
@@ -34983,7 +34955,7 @@
   "subdomain-power:monsoon:refreshing-rain": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can call a brief shower of rain in a 30-foot radius. Creatures in the area are healed of an amount of nonlethal damage equal to double your cleric level and are no longer exhausted, fatigued, nauseated, or sickened.</p>",
+    "description": "<p><em>Standard action:</em> You can call a brief shower of rain in a 30-foot radius. Creatures in the area are healed of an amount of nonlethal damage equal to double your cleric level and are no longer exhausted, fatigued, nauseated, or sickened. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:monsoon:refreshing-rain",
     "name": "Refreshing Rain",
@@ -35003,7 +34975,7 @@
   "subdomain-power:moon:moonfire": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can shoot a blast of divine moonlight from your eyes as a ranged touch attack against a single target within 30 feet. Moonfire deals 1d8 points of damage per 2 class levels you have, and the target is dazzled for 1 round per class level you have. Moonfire deals 1d10 points of damage per class level you have against lycanthropes.</p>",
+    "description": "<p><em>Standard action:</em> You can shoot a blast of divine moonlight from your eyes as a ranged touch attack against a single target within 30 feet. Moonfire deals 1d8 points of damage per 2 class levels you have, and the target is dazzled for 1 round per class level you have. Moonfire deals 1d10 points of damage per class level you have against lycanthropes. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:moon:moonfire",
     "name": "Moonfire",
@@ -35017,7 +34989,7 @@
   "subdomain-power:petrification:fossil-form": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>At the beginning of your turn, you can infuse your flesh with minerals, granting you cumbersome security. Until the beginning of your next turn, you are staggered, gain hardness 2, and gain a +2 bonus on saving throws against petrification. This hardness increases by 2 and your saving throw bonus increases by 1 for every 4 cleric levels you have.</p>",
+    "description": "<p><em>Swift action:</em> At the beginning of your turn, you can infuse your flesh with minerals, granting you cumbersome security. Until the beginning of your next turn, you are staggered, gain hardness 2, and gain a +2 bonus on saving throws against petrification. This hardness increases by 2 and your saving throw bonus increases by 1 for every 4 cleric levels you have. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:petrification:fossil-form",
     "name": "Fossil Form",
@@ -35037,7 +35009,7 @@
   "subdomain-power:plague:touch-of-virulence": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can touch a diseased creature and exacerbate its condition. If it fails a Fortitude save (DC = 10 + 1/2 your cleric level + your Wisdom modifier), the creature takes damage as though it had failed its Fortitude save against the disease and any remaining onset time for the disease ends.</p>",
+    "description": "<p><em>Standard action:</em> You can touch a diseased creature and exacerbate its condition. If it fails a Fortitude save (DC = 10 + 1/2 your cleric level + your Wisdom modifier), the creature takes damage as though it had failed its Fortitude save against the disease and any remaining onset time for the disease ends. You can use this ability once per day, plus one additional time per day for every 6 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:plague:touch-of-virulence",
     "name": "Touch of Virulence",
@@ -35057,7 +35029,7 @@
   "subdomain-power:portal:sacred-threshold": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>As a standard action, you can bless a door, a window, or another portal with a touch. For 1 minute, you can increase or decrease the DC of any check to unlock or force open the portal by an amount equal to half your cleric level. In addition, your first ally to pass through the portal during this time gains an amount of temporary hit points equal to 1d4 + 1 for every 2 cleric levels you have. These temporary hit points last for 1 minute.</p>",
+    "description": "<p>As a standard action, you can bless a door, a window, or another portal with a touch. For 1 minute, you can increase or decrease the DC of any check to unlock or force open the portal by an amount equal to half your cleric level. In addition, your first ally to pass through the portal during this time gains an amount of temporary hit points equal to 1d4 + 1 for every 2 cleric levels you have. These temporary hit points last for 1 minute. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:portal:sacred-threshold",
     "name": "Sacred Threshold",
@@ -35093,7 +35065,7 @@
   "subdomain-power:psychopomp:spirit-touch": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can give your natural weapons or any weapons you wield the ghost touch weapon special ability.</p>",
+    "description": "<p><em>Swift action:</em> You can give your natural weapons or any weapons you wield the ghost touch weapon special ability. You can use this ability a number of times per day equal to your cleric level.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:psychopomp:spirit-touch",
     "name": "Spirit Touch",
@@ -35113,7 +35085,7 @@
   "subdomain-power:radiation:radiating-touch": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can irradiate any unattended object for a number of rounds equal to your cleric level. While an object is irradiated, it emits a faint aura of transmutation. Any creature that passes within 5 feet of the aura must succeed at a Will save (DC equal to 10 + 1/2 your cleric level + your Wisdom modifier) or become sickened. You're immune to this object's effect.</p>",
+    "description": "<p><em>Standard action:</em> You can irradiate any unattended object for a number of rounds equal to your cleric level. While an object is irradiated, it emits a faint aura of transmutation. Any creature that passes within 5 feet of the aura must succeed at a Will save (DC equal to 10 + 1/2 your cleric level + your Wisdom modifier) or become sickened. You're immune to this object's effect. This provokes attacks of opportunity. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:radiation:radiating-touch",
     "name": "Radiating Touch",
@@ -35133,7 +35105,7 @@
   "subdomain-power:redemption:aura-of-sanctification": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can emit a 30-foot-radius aura of sanctification. Within this aura, effects that are specifically harmful to good-aligned creatures are inverted so that they no longer harm good creatures and instead harm evil creatures. Similarly, effects that are specifically beneficial to evil creatures instead become beneficial only to good creatures.</p>",
+    "description": "<p><em>Immediate action:</em> You can emit a 30-foot-radius aura of sanctification. Within this aura, effects that are specifically harmful to good-aligned creatures are inverted so that they no longer harm good creatures and instead harm evil creatures. Similarly, effects that are specifically beneficial to evil creatures instead become beneficial only to good creatures. You can use this ability a number of times per day equal to your cleric level.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:redemption:aura-of-sanctification",
     "name": "Aura of Sanctification",
@@ -35179,7 +35151,7 @@
   "subdomain-power:riot:aura-of-bedlam": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can emit a 30-foot-radius aura of chaos and strife. Enemies in the aura take a penalty on concentration checks and are treated as experiencing vigorous motion (concentration DC = 10 + spell level) when attempting to cast spells. The penalty is equal to one-half of your cleric level. This is a mind-affecting effect.</p>",
+    "description": "<p><em>Standard action:</em> You can emit a 30-foot-radius aura of chaos and strife. Enemies in the aura take a penalty on concentration checks and are treated as experiencing vigorous motion (concentration DC = 10 + spell level) when attempting to cast spells. The penalty is equal to one-half of your cleric level. This is a mind-affecting effect. You can use this ability a number of times per day equal to your cleric level.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:riot:aura-of-bedlam",
     "name": "Aura of Bedlam",
@@ -35199,7 +35171,7 @@
   "subdomain-power:rites:enduring-ritual": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>When you cast a spell with a duration of at least 1 minute per caster level, you can increase the spell's effective caster level by 1 for the purpose of determining its duration and preventing attempts to dispel it. At 10th level: The effective caster level increases by 2. At 20th level: The effective caster level increases by 3.</p>",
+    "description": "<p><em>Swift action:</em> When you cast a spell with a duration of at least 1 minute per caster level, you can increase the spell's effective caster level by 1 for the purpose of determining its duration and preventing attempts to dispel it. You can use this ability a number of times per day equal to 3 + your Wisdom modifier. At 10th level: The effective caster level increases by 2. At 20th level: The effective caster level increases by 3.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:rites:enduring-ritual",
     "name": "Enduring Ritual",
@@ -35219,7 +35191,7 @@
   "subdomain-power:rivers:current-flow": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can increase either your base speed or your swim speed by 10 feet. While swimming, you gain a bonus on Swim checks equal to half your class level (minimum 1). These effects last for a number of rounds equal to your Wisdom modifier (minimum 1).</p>",
+    "description": "<p><em>Free action:</em> You can increase either your base speed or your swim speed by 10 feet. While swimming, you gain a bonus on Swim checks equal to half your class level (minimum 1). These effects last for a number of rounds equal to your Wisdom modifier (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:rivers:current-flow",
     "name": "Current Flow",
@@ -35233,7 +35205,7 @@
   "subdomain-power:sahkil:touch-of-paranoia": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can imbue a target with great suspicion and doubt as a melee touch attack. A creature affected by your touch does not have allies and is not considered to be an ally to any other creature, including other creatures affected by this effect. The affected creature cannot move freely through its allies' spaces, flank creatures with them, cooperate with them using teamwork feats, or give or receive benefits from the aid another action or any spells or effect that affects only allies. This ability lasts for a number of rounds equal to 1/2 your cleric level (minimum 1).</p>",
+    "description": "<p>You can imbue a target with great suspicion and doubt as a melee touch attack. A creature affected by your touch does not have allies and is not considered to be an ally to any other creature, including other creatures affected by this effect. The affected creature cannot move freely through its allies' spaces, flank creatures with them, cooperate with them using teamwork feats, or give or receive benefits from the aid another action or any spells or effect that affects only allies. This ability lasts for a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:sahkil:touch-of-paranoia",
     "name": "Touch of Paranoia",
@@ -35253,7 +35225,7 @@
   "subdomain-power:saurian:dinosaur-companion": {
     "abilityType": "ex",
     "changes": [],
-    "description": "<p>At 4th level, you gain the service of a loyal animal companion. Your effective druid level for the purpose of this animal companion is equal to your class level - 2. You must choose a dinosaur as druid&gt;your companion.</p>",
+    "description": "<p>At 4th level, you gain the service of a loyal animal companion. Your effective druid level for the purpose of this animal companion is equal to your class level - 2. You must choose a dinosaur as your companion.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:saurian:dinosaur-companion",
     "name": "Dinosaur Companion",
@@ -35263,7 +35235,7 @@
   "subdomain-power:shadow:whispering-shadows": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can darken the shadows around you and cause them to hiss, confounding and distracting your enemies. You force a target within 30 feet to reroll a miss chance due to concealment or a saving throw against an illusion or necromancy spell. The target of this ability must keep the result of the second roll, even if it is worse than the original roll.</p>",
+    "description": "<p><em>Immediate action:</em> You can darken the shadows around you and cause them to hiss, confounding and distracting your enemies. You force a target within 30 feet to reroll a miss chance due to concealment or a saving throw against an illusion or necromancy spell. The target of this ability must keep the result of the second roll, even if it is worse than the original roll. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:shadow:whispering-shadows",
     "name": "Whispering Shadows",
@@ -35283,7 +35255,7 @@
   "subdomain-power:slavery:master-s-yoke": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can attempt to assert your dominance over any visible creature within 30 feet by declaring the target your property. The target can resist this effect with a successful Will save (DC = 10 + half your class level + your Wisdom modifier). If the target fails the save, it is affected as if by dominate monster for a number of rounds equal to half your class level. The target can choose to ignore any order you give and instead take 2 points of Constitution damage and become staggered for 1 round. This is a language-based, mind-affecting effect.</p>",
+    "description": "<p><em>Standard action:</em> You can attempt to assert your dominance over any visible creature within 30 feet by declaring the target your property. The target can resist this effect with a successful Will save (DC = 10 + half your class level + your Wisdom modifier). If the target fails the save, it is affected as if by dominate monster for a number of rounds equal to half your class level. The target can choose to ignore any order you give and instead take 2 points of Constitution damage and become staggered for 1 round. This is a language-based, mind-affecting effect. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:slavery:master-s-yoke",
     "name": "Master's Yoke",
@@ -35297,7 +35269,7 @@
   "subdomain-power:sovereignty:demand-subjugation": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p>You can force a defeated creature to accept a binding pact as a condition of its surrender, as if you are using lesser geas, except the creature must have a number of Hit Dice equal to or less than your cleric level. At 16th level: The ability functions as per geas/quest.</p>",
+    "description": "<p>You can force a defeated creature to accept a binding pact as a condition of its surrender, as if you are using lesser geas, except the creature must have a number of Hit Dice equal to or less than your cleric level. You can use this ability a number of times per day equal to 3 + your Wisdom modifier. At 16th level: The ability functions as per geas/quest.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:sovereignty:demand-subjugation",
     "name": "Demand Subjugation",
@@ -35327,7 +35299,7 @@
   "subdomain-power:thirst:wilting-glare": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can leach moisture and vitality from a living, corporeal creature you can see within 30 feet. The target takes an amount of nonlethal damage equal to 1d6 + 1 for every 2 cleric levels you have and becomes fatigued until the beginning of your next turn (Fortitude negates). Plant creatures and those with the aquatic or water subtype take lethal damage from this ability, and they are fatigued for a number of rounds equal to your Wisdom modifier.</p>",
+    "description": "<p><em>Standard action:</em> You can leach moisture and vitality from a living, corporeal creature you can see within 30 feet. The target takes an amount of nonlethal damage equal to 1d6 + 1 for every 2 cleric levels you have and becomes fatigued until the beginning of your next turn (Fortitude negates). Plant creatures and those with the aquatic or water subtype take lethal damage from this ability, and they are fatigued for a number of rounds equal to your Wisdom modifier. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:thirst:wilting-glare",
     "name": "Wilting Glare",
@@ -35347,7 +35319,7 @@
   "subdomain-power:thirst:withering-nimbus": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can emit a 30-foot nimbus of light. This acts as a daylight spell. In addition, <strong>creatures with the aquatic or water subtype</strong> within this radius take an amount of damage equal to your cleric level each round that they remain inside the nimbus. Spells and spell-like abilities with the darkness descriptor are automatically dispelled if brought inside this nimbus.</p>",
+    "description": "<p><em>Standard action:</em> You can emit a 30-foot nimbus of light. This acts as a daylight spell. In addition, <strong>creatures with the aquatic or water subtype</strong> within this radius take an amount of damage equal to your cleric level each round that they remain inside the nimbus. Spells and spell-like abilities with the darkness descriptor are automatically dispelled if brought inside this nimbus. You can use this ability a number of times per day equal to your cleric level.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:thirst:withering-nimbus",
     "name": "Withering Nimbus",
@@ -35367,7 +35339,7 @@
   "subdomain-power:thorns:cruel-thicket": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can cause the ground in a 5-foot-radius burst centered on you to sprout twisting, thorny vines. Any creature moving through it must travel at half speed or take bleed damage equal to half your cleric level; if you activate this ability in an area with numerous plants (grass, weeds, trees, etc.), the area also becomes difficult terrain. These effects last for 1 minute, after which the vines crumble to dust. Creatures able to move through natural undergrowth unhindered ignore the effects of this ability.</p>",
+    "description": "<p><em>Standard action:</em> You can cause the ground in a 5-foot-radius burst centered on you to sprout twisting, thorny vines. Any creature moving through it must travel at half speed or take bleed damage equal to half your cleric level; if you activate this ability in an area with numerous plants (grass, weeds, trees, etc.), the area also becomes difficult terrain. These effects last for 1 minute, after which the vines crumble to dust. Creatures able to move through natural undergrowth unhindered ignore the effects of this ability. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:thorns:cruel-thicket",
     "name": "Cruel Thicket",
@@ -35387,7 +35359,7 @@
   "subdomain-power:torture:painful-smite": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Prior to making a melee attack roll, you can choose to convert all damage from that strike into nonlethal damage, adding your Wisdom modifier to the damage. If your attack hits, as a free action you can attempt an Intimidate check to demoralize the target. You gain a bonus on this Intimidate check equal to the amount of nonlethal damage dealt by the painful smite.</p>",
+    "description": "<p>Prior to making a melee attack roll, you can choose to convert all damage from that strike into nonlethal damage, adding your Wisdom modifier to the damage. If your attack hits, as a free action you can attempt an Intimidate check to demoralize the target. You gain a bonus on this Intimidate check equal to the amount of nonlethal damage dealt by the painful smite. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:torture:painful-smite",
     "name": "Painful Smite",
@@ -35401,7 +35373,7 @@
   "subdomain-power:trap:supernatural-trap": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>When you gain this ability, select a supernatural ranger trap. You are now able make this trap. The DCs for Perception checks, Disable Device checks, and saving throws against the trap are equal to 10 + 1/2 your character level + your Wisdom bonus. The trap lasts for 1 hour or until triggered.</p>",
+    "description": "<p>When you gain this ability, select a supernatural ranger trap. You are now able make this trap. The DCs for Perception checks, Disable Device checks, and saving throws against the trap are equal to 10 + 1/2 your character level + your Wisdom bonus. The trap lasts for 1 hour or until triggered. You can use this ability a number of times per day equal to your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:trap:supernatural-trap",
     "name": "Supernatural Trap",
@@ -35421,7 +35393,7 @@
   "subdomain-power:truth:dawning-realization": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can impart a shared vision of unfathomable ineffability to a living creature you touch, after which your turn immediately ends. You are dazed and the target confused for 1 round by what you both learn. On the following round, you are both staggered for 1 round by the ramifications of your discovery. On the third round, you are confused and the target dazed for 1 round as you attempt to regain your bearings. Each round, the target can attempt a Will save with a DC equal to 10 + 1/2 your cleric level + your Wisdom modifier to negate that round's effects for both of you, though the effect does not end until the end of the third round. This is a mind-affecting effect.</p>",
+    "description": "<p><em>Standard action:</em> You can impart a shared vision of unfathomable ineffability to a living creature you touch, after which your turn immediately ends. You are dazed and the target confused for 1 round by what you both learn. On the following round, you are both staggered for 1 round by the ramifications of your discovery. On the third round, you are confused and the target dazed for 1 round as you attempt to regain your bearings. Each round, the target can attempt a Will save with a DC equal to 10 + 1/2 your cleric level + your Wisdom modifier to negate that round's effects for both of you, though the effect does not end until the end of the third round. This is a mind-affecting effect. You can use this ability 4 times per day, plus one additional time per day for every 2 cleric levels.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:truth:dawning-realization",
     "name": "Dawning Realization",
@@ -35441,7 +35413,7 @@
   "subdomain-power:tyranny:tyrannical-strike": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Upon successfully landing a melee attack on an opponent, you can choose to forgo the damage (but not any other effects of the attack) to instead affect the creature you hit as per a greater command spell, with a caster level equal to your class level.</p>",
+    "description": "<p><em>Immediate action:</em> Upon successfully landing a melee attack on an opponent, you can choose to forgo the damage (but not any other effects of the attack) to instead affect the creature you hit as per a greater command spell, with a caster level equal to your class level. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:tyranny:tyrannical-strike",
     "name": "Tyrannical Strike",
@@ -35455,7 +35427,7 @@
   "subdomain-power:venom:venomous-saliva": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Just as certain serpents can spray poison from their fangs, as a swift action, you can spit a gout of life-stealing venom onto a weapon you are wielding. The poison (see below) lasts for 1 minute or until you make an attack with that weapon that injures a foe.</p>",
+    "description": "<p>Just as certain serpents can spray poison from their fangs, as a swift action, you can spit a gout of life-stealing venom onto a weapon you are wielding. The poison (see below) lasts for 1 minute or until you make an attack with that weapon that injures a foe. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:venom:venomous-saliva",
     "name": "Venomous Saliva",
@@ -35469,7 +35441,7 @@
   "subdomain-power:whimsy:unexpected-whimsy": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You dance, act like a buffoon, or commit some other act of whimsy. When you do, enemies within 30 feet of you that can see and hear you must succeed a Will saving throw (DC = 10 + 1/2 your cleric level + half your Wisdom modifier) or they collapse into gales of manic laughter, falling prone. Those who fail their saving throws can take no actions other than laughing for 1 round, but are not considered helpless.</p>",
+    "description": "<p><em>Standard action:</em> You dance, act like a buffoon, or commit some other act of whimsy. When you do, enemies within 30 feet of you that can see and hear you must succeed a Will saving throw (DC = 10 + 1/2 your cleric level + half your Wisdom modifier) or they collapse into gales of manic laughter, falling prone. Those who fail their saving throws can take no actions other than laughing for 1 round, but are not considered helpless. You can use this ability once per day, plus one additional time per day for every 4 cleric levels beyond 8th.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:whimsy:unexpected-whimsy",
     "name": "Unexpected Whimsy",

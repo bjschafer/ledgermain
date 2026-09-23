@@ -14,6 +14,13 @@ import {
 /** See `pfDataCatalogEntries`'s doc comment — the dataset's "not found" sentinel. */
 const SKIP_KEYS = new Set(["not_found"]);
 
+/**
+ * Two entries (Black Powder, Spellkiller) state their whole grant as one
+ * ability labelled with the section's own heading; it is prose, not a
+ * named power.
+ */
+const GRANTED_POWERS_LABEL = "Granted Powers";
+
 const ABILITY_TYPE_SUFFIX_RE = /\s*\((Ex|Su|Sp)\)\s*$/i;
 const AB_FENCE_OPEN_RE = /^:::ab\{(.*)\}$/;
 
@@ -55,8 +62,8 @@ interface ParsedPower {
  * is an `::ab[Name (Ex)]{...}` directive; one flagged `next`, leaf or fenced
  * `:::ab{next ...}` ... `:::`, is reference text for the power above it
  * (Anger's Divine Anger quoting the barbarian's Rage) and folds into that
- * power's prose. Two entries (Black Powder, Spellkiller) carry no power
- * directives at all — their whole granted-powers text stays in `flavor`.
+ * power's prose. Two entries (Black Powder, Spellkiller) carry no named
+ * power at all — their whole granted-powers text stays in `flavor`.
  */
 function splitPowers(bodyLines: string[]): { flavor: string[]; powers: ParsedPower[] } {
   const flavor: string[] = [];
@@ -73,7 +80,7 @@ function splitPowers(bodyLines: string[]): { flavor: string[]; powers: ParsedPow
       i = end;
     } else if (ability?.props.next && current) {
       current.lines.push("", raw);
-    } else if (ability) {
+    } else if (ability && ability.name !== GRANTED_POWERS_LABEL) {
       const typeMatch = ABILITY_TYPE_SUFFIX_RE.exec(ability.name);
       powers.push({
         name: ability.name.replace(ABILITY_TYPE_SUFFIX_RE, "").trim(),

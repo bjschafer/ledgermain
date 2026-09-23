@@ -8,10 +8,10 @@ import type { PfDataDictionary } from "../src/util/pfdata.js";
 
 /**
  * Unit coverage for the inquisition granted-power parse, on hand-built input
- * shaped like the real `class_ability_inquisitions.json` (bold-led power
- * paragraphs, no `::ab[]` directives — a different shape than the subdomain
- * import). `RefData.inquisitions` below covers the result against the real
- * vendored slice.
+ * shaped like the real `class_ability_inquisitions.json` (an Associated
+ * Deities row, a Granted Powers heading, then one `::ab[Name (Ex)]{...}`
+ * directive per power). `RefData.inquisitions` below covers the result
+ * against the real vendored slice.
  */
 const CONVERSION: PfDataDictionary = {
   not_found: { name: "Unknown", description: ["## Error", "", "Unable to find."] },
@@ -21,44 +21,56 @@ const CONVERSION: PfDataDictionary = {
     description: [
       "## Conversion",
       "",
-      "‹SOURCE Ultimate Magic/41›  ",
-      "**Deities** Any deity",
+      "‹SOURCE Ultimate Magic/41›",
       "",
-      "**Granted Powers:** You are a powerful persuader.",
+      ":::block{size=simple}",
+      '::row[Associated Deities]{info="Any deity"}',
+      ":::",
       "",
-      "**Charm of Wisdom (Ex):** You use your Wisdom modifier instead of your Charisma modifier.",
+      "### Granted Powers",
       "",
-      "**Swaying Word (Sp):** At 8th level, once per day you may speak a word of power.",
+      "You are a powerful persuader.",
+      "",
+      '::ab[Charm of Wisdom (Ex)]{icon=boost ability="You use your Wisdom modifier instead of your Charisma modifier."}',
+      "",
+      '::ab[Swaying Word (Sp)]{l=8 icon=magic ability="Once per day you may speak a word of power."}',
     ],
   },
-  // No named power paragraphs at all — the whole "Granted Powers" text is one
-  // flat sentence, same shape as the real Black Powder/Spellkiller entries.
+  // The whole grant is one ability labelled "Granted Powers", same shape as
+  // the real Black Powder/Spellkiller entries: prose, not a named power.
   black_powder: {
     name: "Black Powder",
     description: [
       "## Black Powder",
       "",
-      "‹SOURCE Ultimate Combat/52›  ",
-      "**Deities** Any",
+      "‹SOURCE Ultimate Combat/52›",
       "",
-      "**Granted Powers:** You gain a bonus feat and a firearm trick.",
+      ":::block{size=simple}",
+      '::row[Associated Deities]{info="Any (with GM approval)"}',
+      ":::",
+      "",
+      '::ab[Granted Powers]{icon=power-lower ability="You gain a bonus feat and a firearm trick."}',
     ],
   },
-  // A power with no colon at all after its bold name (Imprisonment's "Divine
-  // Prison" in the real data) and a mid-chain level gate (6th, not 8th).
+  // A power with no ability type in its label (Imprisonment's "Divine
+  // Prison" in the real data), a gate stated only by its first `lNN` stage
+  // key, and a `next` block folding reference text into the power above it.
   justice: {
     name: "Justice",
     description: [
       "## Justice",
       "",
-      "‹SOURCE Ultimate Magic/43›  ",
-      "**Deities** Iomedae",
+      "‹SOURCE Ultimate Magic/43›",
       "",
-      "**Granted Powers:** Justice must be served.",
+      "### Granted Powers",
       "",
-      "**Judicious Force (Su):** Add +4 to a confirmation roll.",
+      "Justice must be served.",
       "",
-      "**Divine Prison** At 6th level, you can bind a foe in chains.",
+      '::ab[Judicious Force (Su)]{icon=boost ability="Add +4 to a confirmation roll."}',
+      "",
+      '::ab[Divine Prison]{icon=magic l6="You can bind a foe in chains." l12="The chains hold two foes."}',
+      "",
+      '::ab[Chains (Ex)]{next icon=boost flavor="Text from the paladin class." ability="Reference text for the power above."}',
     ],
   },
 };
@@ -71,7 +83,7 @@ describe("transformInquisitions", () => {
     expect(result).toHaveLength(3);
   });
 
-  it("parses each bold-led power into a level-gated ClassFeatureGrant, defaulting an unstated level to 0", () => {
+  it("parses each ::ab power into a level-gated ClassFeatureGrant, defaulting an unstated level to 0", () => {
     const classFeatures: ClassFeature[] = [];
     const [conversion] = transformInquisitions(CONVERSION, classFeatures);
     expect(conversion!.tag).toBe("conversion");
@@ -107,21 +119,31 @@ describe("transformInquisitions", () => {
     expect(charm!.description).toContain("Wisdom modifier instead of your Charisma modifier");
   });
 
-  it("reads a level gate stated as 'At Nth level' anywhere in the granted-power text, not just 8th", () => {
+  it("reads a level gate from the first lNN stage key when the directive states no l=", () => {
     const classFeatures: ClassFeature[] = [];
     const [, , justice] = transformInquisitions(CONVERSION, classFeatures);
     expect(justice!.features.map((f) => f.level)).toEqual([0, 6]);
   });
 
-  it("parses a power with no colon at all after its bold name (a real upstream quirk — Imprisonment's Divine Prison)", () => {
+  it("parses a power whose label carries no ability type (a real upstream quirk — Imprisonment's Divine Prison)", () => {
     const classFeatures: ClassFeature[] = [];
     const [, , justice] = transformInquisitions(CONVERSION, classFeatures);
     const divinePrison = justice!.features.find((f) => f.name === "Divine Prison");
     expect(divinePrison).toBeDefined();
     expect(divinePrison!.level).toBe(6);
+    const feature = classFeatures.find((f) => f.id === "inquisition-power:justice:divine-prison");
+    expect(feature!.abilityType).toBeUndefined();
   });
 
-  it("leaves `features` empty (never fabricated) for an entry with no bold-led power paragraph, keeping its full prose on `description`", () => {
+  it("folds a `next` block into the power above it rather than granting it", () => {
+    const classFeatures: ClassFeature[] = [];
+    const [, , justice] = transformInquisitions(CONVERSION, classFeatures);
+    expect(justice!.features.map((f) => f.name)).toEqual(["Judicious Force", "Divine Prison"]);
+    const feature = classFeatures.find((f) => f.id === "inquisition-power:justice:divine-prison");
+    expect(feature!.description).toContain("Reference text for the power above.");
+  });
+
+  it("leaves `features` empty (never fabricated) for an entry whose only ability is its Granted Powers text, keeping that prose on `description`", () => {
     const classFeatures: ClassFeature[] = [];
     const [, blackPowder] = transformInquisitions(CONVERSION, classFeatures);
     expect(blackPowder!.features).toEqual([]);

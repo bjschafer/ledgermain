@@ -1,7 +1,7 @@
 {
   "acceleration_of_form": {
     "category": "Master Ki Tricks",
-    "description": "<p><strong>Acceleration of Form:</strong> A ninja with this trick can spend 1 ki point to gain the benefits of displacement and haste for 1 round per 2 ninja levels.</p>",
+    "description": "<p><strong>Acceleration of Form:</strong> <em>Standard action:</em> A ninja with this trick can spend 1 ki point to gain the benefits of displacement and haste for 1 round per 2 ninja levels.</p>",
     "id": "acceleration_of_form",
     "name": "Acceleration of Form",
     "nameSuffix": "(Su)",
@@ -14,7 +14,7 @@
   },
   "acrobatic_master": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Acrobatic Master:</strong> A ninja with this trick can focus her ki to grant her a +20 bonus on one Acrobatics check of her choice made before the start of her next turn. Using this ability expends 1 ki point from her ki pool.</p>",
+    "description": "<p><strong>Acrobatic Master:</strong> <em>Swift action:</em> A ninja with this trick can focus her ki to grant her a +20 bonus on one Acrobatics check of her choice made before the start of her next turn. Using this ability expends 1 ki point from her ki pool.</p>",
     "id": "acrobatic_master",
     "name": "Acrobatic Master",
     "nameSuffix": "(Su)",
@@ -27,7 +27,7 @@
   },
   "advanced_talent": {
     "category": "Master Other Tricks",
-    "description": "<p><strong>Advanced Talent:</strong> The ninja can select a advanced_&gt;rogue talent from the list of Advanced Talents in place of a ninja trick. The ninja cannot select a rogue talent that has the same name as a ninja trick. The ninja cannot select improved evasion unless she has evasion (either as a class feature or as a ninja master trick).</p>",
+    "description": "<p><strong>Advanced Talent:</strong> The ninja can select a rogue talent from the list of Advanced Talents in place of a ninja trick. The ninja cannot select a rogue talent that has the same name as a ninja trick. The ninja cannot select improved evasion unless she has evasion (either as a class feature or as a ninja master trick).</p>",
     "id": "advanced_talent",
     "name": "Advanced Talent",
     "sources": [
@@ -65,7 +65,7 @@
   },
   "assassinate": {
     "category": "Master Sneak Attack Trick",
-    "description": "<p><strong>Assassinate:</strong> A ninja with this master trick can kill foes that are unable to defend themselves. To attempt to <em>assassinate</em> a target, the ninja must first study her target for 1 round as a standard action.~~~On the following round, if the ninja makes a sneak attack against the target and the target is denied its Dexterity bonus to AC, the sneak attack has the additional effect of possibly killing the target. This attempt automatically fails if the target recognizes the ninja as an enemy.~~~If the sneak attack is successful and the target of this attack fails a Fortitude save, it dies. The DC of this save is equal to 10 + 1/2 the ninja's level + the ninja's Charisma modifier.~~~If the save is successful, the target still takes the sneak attack damage as normal, but it is immune to that ninja's <em>assassinate</em> ability for 1 day.</p>",
+    "description": "<p><strong>Assassinate:</strong> A ninja with this master trick can kill foes that are unable to defend themselves. To attempt to <em>assassinate</em> a target, the ninja must first study her target for 1 round as a standard action.</p>\n<p>On the following round, if the ninja makes a sneak attack against the target and the target is denied its Dexterity bonus to AC, the sneak attack has the additional effect of possibly killing the target. This attempt automatically fails if the target recognizes the ninja as an enemy.</p>\n<p>If the sneak attack is successful and the target of this attack fails a Fortitude save, it dies. The DC of this save is equal to 10 + 1/2 the ninja's level + the ninja's Charisma modifier.</p>\n<p>If the save is successful, the target still takes the sneak attack damage as normal, but it is immune to that ninja's <em>assassinate</em> ability for 1 day.</p>",
     "id": "assassinate",
     "name": "Assassinate",
     "nameSuffix": "(Ex)",
@@ -104,7 +104,7 @@
   },
   "blood_debt": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Blood Debt:</strong> A ninja with this ability gains In Harm's Way as a bonus feat, even if she doesn't meet the prerequisites.</p>",
+    "description": "<p><strong>Blood Debt:</strong> A ninja with this ability gains In Harm's Way as a bonus feat, even if she doesn't meet the prerequisites. When the ninja intercepts an attack using this feat, she can spend 1 ki point to impose a <em>blood debt</em> on the aided ally. The ninja's ki pool is reduced by 1 until she ends this effect, which she may do as an immediate action. If the ninja ends the <em>blood debt</em> in response to a successful attack against her by a creature the indebted ally threatens, the ally (who must be willing) takes full damage from that attack and any associated effects instead of the ninja.</p>",
     "id": "blood_debt",
     "name": "Blood Debt",
     "nameSuffix": "(Su)",
@@ -117,7 +117,7 @@
   },
   "breath_of_the_ancestors": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Breath of the Ancestors:</strong> She can use supplies similar to those used for ninja smoke bombs to produce an alchemical breath weapon that deals the same kind of damage as the selected dragon (piercing damage for forest dragons, fire for sea dragons, and so on).~~~The breath weapon deals the same amount of damage as the ninja's sneak attack, with a Reflex save allowed for half damage. The breath weapon is a 15-foot cone (or a 30-foot line if the underworld dragon is selected). The save DC is equal to 10 + 1/2 the ninja's class level + the ninja's Intelligence modifier. Using this ability expends up 2 ki points, and once used it cannot be used again for 1d4 rounds.</p>",
+    "description": "<p><strong>Breath of the Ancestors:</strong> The ninja chooses one imperial dragon type (forest, sea, sky, sovereign, or underworld) when she gains this trick, and the choice can't be changed. <em>Standard action:</em> She can use supplies similar to those used for ninja smoke bombs to produce an alchemical breath weapon that deals the same kind of damage as the selected dragon (piercing damage for forest dragons, fire for sea dragons, and so on).</p>\n<p>The breath weapon deals the same amount of damage as the ninja's sneak attack, with a Reflex save allowed for half damage. The breath weapon is a 15-foot cone (or a 30-foot line if the underworld dragon is selected). The save DC is equal to 10 + 1/2 the ninja's class level + the ninja's Intelligence modifier. Using this ability expends up 2 ki points, and once used it cannot be used again for 1d4 rounds.</p>",
     "id": "breath_of_the_ancestors",
     "name": "Breath of the Ancestors",
     "nameSuffix": "(Su)",
@@ -183,7 +183,7 @@
   },
   "deadly_shuriken": {
     "category": "Master Other Tricks",
-    "description": "<p><strong>Deadly Shuriken:</strong> A ninja with this master trick can take careful aim and pool all of her attack potential into a single, deadly shuriken throw. When she does this, she throws a single shuriken at a single target, but makes as many attack rolls as she can, based on her base attack bonus. She makes the attack rolls in order from highest bonus to lowest, as if she were making a full attack. If any of the attack rolls hit the target, the attack hits. For each additional successful attack roll beyond the first, the ninja increases the damage by 1d6. Precision damage and extra damage from weapon special abilities (such as flaming) are added with damage modifiers and are not increased by this advanced talent.~~~If one or more rolls are critical threats, she confirms the critical once using her highest base attack bonus -5. For each critical threat beyond the first, she reduces this penalty by 1 (to a maximum of 0).</p>",
+    "description": "<p><strong>Deadly Shuriken:</strong> <em>Full-round action:</em> A ninja with this master trick can take careful aim and pool all of her attack potential into a single, deadly shuriken throw. When she does this, she throws a single shuriken at a single target, but makes as many attack rolls as she can, based on her base attack bonus. She makes the attack rolls in order from highest bonus to lowest, as if she were making a full attack. If any of the attack rolls hit the target, the attack hits. For each additional successful attack roll beyond the first, the ninja increases the damage by 1d6. Precision damage and extra damage from weapon special abilities (such as flaming) are added with damage modifiers and are not increased by this advanced talent.</p>\n<p>If one or more rolls are critical threats, she confirms the critical once using her highest base attack bonus -5. For each critical threat beyond the first, she reduces this penalty by 1 (to a maximum of 0).</p>",
     "id": "deadly_shuriken",
     "name": "Deadly Shuriken",
     "nameSuffix": "(Ex)",
@@ -274,7 +274,7 @@
   },
   "feather_fall": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Feather Fall:</strong> The ninja can slow her descent as if using feather fall. This ability uses her ninja level as the caster level. Each use of this ability uses up 1 ki point.</p>",
+    "description": "<p><strong>Feather Fall:</strong> <em>Immediate action:</em> The ninja can slow her descent as if using feather fall. This ability uses her ninja level as the caster level. Each use of this ability uses up 1 ki point.</p>",
     "id": "feather_fall",
     "name": "Feather Fall",
     "nameSuffix": "(Su)",
@@ -287,7 +287,7 @@
   },
   "flurry_of_stars": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Flurry of Stars:</strong> A ninja with this ability can expend 1 ki point from her ki pool before she makes a full-attack attack with shuriken. During that attack, she can throw two additional shuriken at her highest attack bonus, but all of her shuriken attacks are made at a -2 penalty, including the two extra attacks.</p>",
+    "description": "<p><strong>Flurry of Stars:</strong> <em>Swift action:</em> A ninja with this ability can expend 1 ki point from her ki pool before she makes a full-attack attack with shuriken. During that attack, she can throw two additional shuriken at her highest attack bonus, but all of her shuriken attacks are made at a -2 penalty, including the two extra attacks.</p>",
     "id": "flurry_of_stars",
     "name": "Flurry of Stars",
     "nameSuffix": "(Ex)",
@@ -313,7 +313,7 @@
   },
   "fractured_mirror": {
     "category": "Master Improved Tricks",
-    "description": "<p><strong>Fractured Mirror:</strong> By sending phantom selves across the battlefield, one may fight as many. When a ninja with this trick uses the <em>shadow clone</em> ninja trick, she gains an additional clone for every 3 ninja levels she has, to a maximum of eight clones.~~~In addition, while she has <em>shadow clones</em> deployed, the ninja can cause any number of her clones to split from herself as part of a move action. The <em>shadow clones</em> move up to the ninja's speed at her will each time she uses a move action to move. <em>Shadow clones</em> separated in this way are not considered part of the <em>shadow clone</em> trick until they return to the ninja's square, though they can still be destroyed while separated. <em>Shadow clones</em> separated from the ninja have an AC equal to the ninja's AC - 5 and cannot take any actions, though they can provide flanking. <em>Shadow clones</em> do not occupy any space and a creature can freely enter a <em>shadow clone's</em> square. (Prerequisite: Shadow clone)</p>",
+    "description": "<p><strong>Fractured Mirror:</strong> By sending phantom selves across the battlefield, one may fight as many. When a ninja with this trick uses the <em>shadow clone</em> ninja trick, she gains an additional clone for every 3 ninja levels she has, to a maximum of eight clones.</p>\n<p>In addition, while she has <em>shadow clones</em> deployed, the ninja can cause any number of her clones to split from herself as part of a move action. The <em>shadow clones</em> move up to the ninja's speed at her will each time she uses a move action to move. <em>Shadow clones</em> separated in this way are not considered part of the <em>shadow clone</em> trick until they return to the ninja's square, though they can still be destroyed while separated. <em>Shadow clones</em> separated from the ninja have an AC equal to the ninja's AC - 5 and cannot take any actions, though they can provide flanking. <em>Shadow clones</em> do not occupy any space and a creature can freely enter a <em>shadow clone's</em> square. (Prerequisite: Shadow clone)</p>",
     "id": "fractured_mirror",
     "name": "Fractured Mirror",
     "nameSuffix": "(Su)",
@@ -326,7 +326,7 @@
   },
   "ghost_step": {
     "category": "Master Ki Tricks",
-    "description": "<p><strong>Ghost Step:</strong> A ninja with this trick can pass through walls as if she were a ghost. Until the end of her turn, she can pass through a wall or other surface that is up to 5 feet thick per level as if she were incorporeal. She must exit the solid material by the end of her turn. Each use of this ability uses up 1 ki point.</p>",
+    "description": "<p><strong>Ghost Step:</strong> A ninja with this trick can pass through walls as if she were a ghost. <em>Swift action:</em> Until the end of her turn, she can pass through a wall or other surface that is up to 5 feet thick per level as if she were incorporeal. She must exit the solid material by the end of her turn. Each use of this ability uses up 1 ki point.</p>",
     "id": "ghost_step",
     "name": "Ghost Step",
     "nameSuffix": "(Su)",
@@ -352,7 +352,7 @@
   },
   "herbal_compound": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Herbal Compound:</strong> A ninja with this trick can consume specially prepared herbs to strengthen her mind. The ninja can spend 1 ki point and smoke, eat, or inject an <em>herbal compound.</em> The ninja takes a -2 penalty to AC and on Reflex saves but gains a +4 alchemical bonus on Will saves for 10 minutes per ninja level.</p>",
+    "description": "<p><strong>Herbal Compound:</strong> A ninja with this trick can consume specially prepared herbs to strengthen her mind. <em>Move action:</em> The ninja can spend 1 ki point and smoke, eat, or inject an <em>herbal compound.</em> The ninja takes a -2 penalty to AC and on Reflex saves but gains a +4 alchemical bonus on Will saves for 10 minutes per ninja level.</p>",
     "id": "herbal_compound",
     "name": "Herbal Compound",
     "nameSuffix": "(Ex)",
@@ -431,7 +431,7 @@
   },
   "kawarimi": {
     "category": "Master Ki Tricks",
-    "description": "<p><strong>Kawarimi:</strong> Once per day when a successful attack is made against a ninja with this ability, she can spend 1 ki point to attempt a Stealth check opposed by the attacker's Perception check. The ninja can attempt this check while being observed as long as she has cover or concealment (or an ability that allows her to attempt Stealth checks without cover or concealment).~~~If she's successful, the opponent's attack hits an inanimate object that the attacker mistook for the ninja, and the ninja may move into an adjacent square and is hidden from the attacker.</p>",
+    "description": "<p><strong>Kawarimi:</strong> <em>Immediate action:</em> Once per day when a successful attack is made against a ninja with this ability, she can spend 1 ki point to attempt a Stealth check opposed by the attacker's Perception check. The ninja can attempt this check while being observed as long as she has cover or concealment (or an ability that allows her to attempt Stealth checks without cover or concealment).</p>\n<p>If she's successful, the opponent's attack hits an inanimate object that the attacker mistook for the ninja, and the ninja may move into an adjacent square and is hidden from the attacker.</p>",
     "id": "kawarimi",
     "name": "Kawarimi",
     "nameSuffix": "(Su)",
@@ -457,7 +457,7 @@
   },
   "ki_charge": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Ki Charge:</strong> A ninja with this trick can invest a portion of her ki into a single thrown weapon, such as a shuriken, and throw it. The thrown weapon explodes on impact in a 5-foot burst, dealing 1d6 points of fire damage. Creatures caught in the blast receive a Reflex save to halve the damage. The DC of this save is 10 + 1/2 the ninja's level + the ninja's Charisma modifier.~~~If the thrown weapon hits a creature, that creature takes a -2 penalty on the saving throw. If the thrown weapon misses, treat it as a thrown splash weapon. Using this ability expends 1 ki point from her ki pool.</p>",
+    "description": "<p><strong>Ki Charge:</strong> <em>Standard action:</em> A ninja with this trick can invest a portion of her ki into a single thrown weapon, such as a shuriken, and throw it. The thrown weapon explodes on impact in a 5-foot burst, dealing 1d6 points of fire damage. Creatures caught in the blast receive a Reflex save to halve the damage. The DC of this save is 10 + 1/2 the ninja's level + the ninja's Charisma modifier.</p>\n<p>If the thrown weapon hits a creature, that creature takes a -2 penalty on the saving throw. If the thrown weapon misses, treat it as a thrown splash weapon. The fire damage increases to 2d6 at 6th level, 3d6 at 10th level, 4d6 at 14th level, and 5d6 at 18th level. Using this ability expends 1 ki point from her ki pool.</p>",
     "id": "ki_charge",
     "name": "Ki Charge",
     "nameSuffix": "(Su)",
@@ -497,7 +497,7 @@
   },
   "master_disguise": {
     "category": "Master Improved Tricks",
-    "description": "<p><strong>Master Disguise:</strong> A ninja with this trick can take on the appearance of other creatures and individuals. Whenever the ninja uses the <em>sudden disguise</em> ninja trick, the duration increases to 10 minutes per level. (Prerequisite: Sudden disguise)</p>",
+    "description": "<p><strong>Master Disguise:</strong> A ninja with this trick can take on the appearance of other creatures and individuals. Whenever the ninja uses the <em>sudden disguise</em> ninja trick, the duration increases to 10 minutes per level. Alternatively, the ninja can use the <em>sudden disguise</em> ninja trick to take on the appearance of a specific individual that the ninja has seen before for 1 minute per level. Creatures that are familiar with the individual receive a Will saving throw to see through the illusion. The DC of this saving throw is 10 + 1/2 the ninja's level + the ninja's Charisma modifier.</p>\n<p>This illusion also changes the ninja's speech, if she has heard the individual talk and can speak his language. (Prerequisite: Sudden disguise)</p>",
     "id": "master_disguise",
     "name": "Master Disguise",
     "nameSuffix": "(Su)",
@@ -575,7 +575,7 @@
   },
   "see_the_unseen": {
     "category": "Master Ki Tricks",
-    "description": "<p><strong>See the Unseen:</strong> A ninja with this trick learns how to see that which cannot be seen. The ninja can cast see invisibility, using her level as the caster level. Each use of this ability uses up 1 ki point.</p>",
+    "description": "<p><strong>See the Unseen:</strong> A ninja with this trick learns how to see that which cannot be seen. <em>Swift action:</em> The ninja can cast see invisibility, using her level as the caster level. Each use of this ability uses up 1 ki point.</p>",
     "id": "see_the_unseen",
     "name": "See the Unseen",
     "nameSuffix": "(Su)",
@@ -588,7 +588,7 @@
   },
   "shadow_clone": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Shadow Clone:</strong> The ninja can create 1d4 shadowy duplicates of herself that conceal her true location. This ability functions as mirror image, using the ninja's level as her caster level. Using this ability costs 1 ki point.</p>",
+    "description": "<p><strong>Shadow Clone:</strong> <em>Standard action:</em> The ninja can create 1d4 shadowy duplicates of herself that conceal her true location. This ability functions as mirror image, using the ninja's level as her caster level. Using this ability costs 1 ki point.</p>",
     "id": "shadow_clone",
     "name": "Shadow Clone",
     "nameSuffix": "(Su)",
@@ -601,7 +601,7 @@
   },
   "shadow_split": {
     "category": "Master Improved Tricks",
-    "description": "<p><strong>Shadow Split:</strong> This trick allows the ninja to create an illusory double of herself that moves away from her, allowing the ninja to create a distraction. When she uses this ability, an illusory double appears and moves away from the ninja, heading in one direction.~~~The double climbs walls, jumps pits, or simply passes through obstacles, moving at twice the ninja's speed in the direction indicated by the ninja when the ability is used. Its course cannot be changed.~~~The double persists for 1 round per level of the ninja. Those who interact with the double receive a Will saving throw to recognize that it is fake. The DC of this save is 10 + 1/2 the ninja's level + the ninja's Charisma modifier. Each use of this ability uses up 1 ki point. (Prerequisite: Shadow clone)</p>",
+    "description": "<p><strong>Shadow Split:</strong> This trick allows the ninja to create an illusory double of herself that moves away from her, allowing the ninja to create a distraction. When she uses this ability, an illusory double appears and moves away from the ninja, heading in one direction.</p>\n<p>The double climbs walls, jumps pits, or simply passes through obstacles, moving at twice the ninja's speed in the direction indicated by the ninja when the ability is used. Its course cannot be changed.</p>\n<p>The double persists for 1 round per level of the ninja. Those who interact with the double receive a Will saving throw to recognize that it is fake. The DC of this save is 10 + 1/2 the ninja's level + the ninja's Charisma modifier. Each use of this ability uses up 1 ki point. (Prerequisite: Shadow clone)</p>",
     "id": "shadow_split",
     "name": "Shadow Split",
     "nameSuffix": "(Su)",
@@ -640,7 +640,7 @@
   },
   "smoke_bomb": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Smoke Bomb:</strong> This ability allows a ninja to throw a <em>smoke bomb</em> that creates a cloud of smoke with a 15-foot radius. This acts like the smoke from a smokestick. The ninja can center this smoke on herself, or throw the bomb as a ranged touch attack with a range of 20 feet. Each use of this ability uses up 1 ki point.</p>",
+    "description": "<p><strong>Smoke Bomb:</strong> <em>Standard action:</em> This ability allows a ninja to throw a <em>smoke bomb</em> that creates a cloud of smoke with a 15-foot radius. This acts like the smoke from a smokestick. The ninja can center this smoke on herself, or throw the bomb as a ranged touch attack with a range of 20 feet. Each use of this ability uses up 1 ki point.</p>",
     "id": "smoke_bomb",
     "name": "Smoke Bomb",
     "nameSuffix": "(Ex)",
@@ -679,7 +679,7 @@
   },
   "strangler": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Strangler:</strong> In addition, when attempting a grapple combat maneuver check, the ninja can spend 1 ki point to gain the constrict special attack on that maneuver with damage equal to half the ninja's sneak attack dice (minimum 1d6). A ninja with this trick knows how to use a scarf, usually with a coin or large knot, as a lethal garrote. The ninja takes no penalties when using a scarf as an improvised garrote.</p>",
+    "description": "<p><strong>Strangler:</strong> <em>Free action:</em> In addition, when attempting a grapple combat maneuver check, the ninja can spend 1 ki point to gain the constrict special attack on that maneuver with damage equal to half the ninja's sneak attack dice (minimum 1d6). A ninja with this trick knows how to use a scarf, usually with a coin or large knot, as a lethal garrote. The ninja takes no penalties when using a scarf as an improvised garrote.</p>",
     "id": "strangler",
     "name": "Strangler",
     "nameSuffix": "(Ex)",
@@ -704,7 +704,7 @@
   },
   "sudden_disguise": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Sudden Disguise:</strong> A ninja can change her appearance for 1 minute per level. This ability functions as disguise self. Each use of this ability uses up 1 ki point.</p>",
+    "description": "<p><strong>Sudden Disguise:</strong> <em>Swift action:</em> A ninja can change her appearance for 1 minute per level. This ability functions as disguise self. Each use of this ability uses up 1 ki point.</p>",
     "id": "sudden_disguise",
     "name": "Sudden Disguise",
     "nameSuffix": "(Su)",
@@ -794,7 +794,7 @@
   },
   "vanishing_trick": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Vanishing Trick:</strong> The ninja can disappear for 1 round per level. This ability functions as invisibility. Using this ability uses up 1 ki point.</p>",
+    "description": "<p><strong>Vanishing Trick:</strong> <em>Swift action:</em> The ninja can disappear for 1 round per level. This ability functions as invisibility. Using this ability uses up 1 ki point.</p>",
     "id": "vanishing_trick",
     "name": "Vanishing Trick",
     "nameSuffix": "(Su)",
@@ -807,7 +807,7 @@
   },
   "ventriloquism": {
     "category": "Ninja Ki Tricks",
-    "description": "<p><strong>Ventriloquism:</strong> The ninja can throw her voice as if using the spell ventriloquism. She can use this ability for 1 minute per ninja level. Each use of this ability uses up 1 ki point.</p>",
+    "description": "<p><strong>Ventriloquism:</strong> <em>Swift action:</em> The ninja can throw her voice as if using the spell ventriloquism. She can use this ability for 1 minute per ninja level. Each use of this ability uses up 1 ki point.</p>",
     "id": "ventriloquism",
     "name": "Ventriloquism",
     "nameSuffix": "(Su)",

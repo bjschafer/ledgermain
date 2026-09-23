@@ -168,7 +168,7 @@
     "uuid": "pfdata:monk-style-strike:spin_kick"
   },
   "throat_crush": {
-    "description": "<p><strong>Throat Crush:</strong> The monk gives a sharp blow to a foe's throat, hampering its ability to speak for 1 round as if it had the minor&gt;caster croak spellblight. Creatures without a discernible throat, or with multiple vocal organs, are unaffected (subject to GM discretion).</p>",
+    "description": "<p><strong>Throat Crush:</strong> The monk gives a sharp blow to a foe's throat, hampering its ability to speak for 1 round as if it had the caster croak spellblight. Creatures without a discernible throat, or with multiple vocal organs, are unaffected (subject to GM discretion).</p>",
     "id": "throat_crush",
     "name": "Throat Crush",
     "sources": [
