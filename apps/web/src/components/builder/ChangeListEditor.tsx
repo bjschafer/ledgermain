@@ -5,6 +5,7 @@ import {
   CHANGE_TYPE_OPTIONS,
   emptyChangeDraft,
   type ChangeDraft,
+  type ChangeTargetGroup,
 } from "../../model/changeEditor.js";
 import { NumberField } from "./NumberField.js";
 
@@ -16,14 +17,16 @@ import { NumberField } from "./NumberField.js";
 export function ChangeTargetSelect({
   value,
   onChange,
+  groups = CHANGE_TARGET_GROUPS,
   ...rest
 }: {
   value: string;
   onChange: (next: string) => void;
+  groups?: readonly ChangeTargetGroup[];
 } & Omit<SelectHTMLAttributes<HTMLSelectElement>, "value" | "onChange">) {
   return (
     <select value={value} onChange={(e) => onChange(e.target.value)} {...rest}>
-      {CHANGE_TARGET_GROUPS.map((g) => (
+      {groups.map((g) => (
         <optgroup key={g.label} label={g.label}>
           {g.options.map((o) => (
             <option key={o.id} value={o.id}>
@@ -67,15 +70,18 @@ export function ChangeTypeSelect({
  * appends — the homebrew trait editor overrides it to default the type to
  * "trait" (every real PF1 trait bonus uses that stacking type; see
  * `@pf1/engine` `traits.ts`'s doc comment) instead of "untyped".
+ * `targetGroups` narrows the "applies to" list (default: every offered target).
  */
 export function ChangeListEditor({
   drafts,
   onChange,
   newDraft = emptyChangeDraft,
+  targetGroups,
 }: {
   drafts: readonly ChangeDraft[];
   onChange: (next: ChangeDraft[]) => void;
   newDraft?: () => ChangeDraft;
+  targetGroups?: readonly ChangeTargetGroup[];
 }) {
   function update(index: number, patch: Partial<ChangeDraft>) {
     onChange(drafts.map((d, i) => (i === index ? { ...d, ...patch } : d)));
@@ -98,6 +104,7 @@ export function ChangeListEditor({
         <div className="hb-change-row" key={i}>
           <ChangeTargetSelect
             value={d.target}
+            groups={targetGroups}
             aria-label="Bonus applies to"
             onChange={(target) => update(i, { target })}
           />

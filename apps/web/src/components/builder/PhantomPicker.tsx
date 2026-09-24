@@ -10,6 +10,7 @@ import {
 } from "../../model/phantom.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { CreatureChangesEditor } from "./CreatureChangesEditor.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -129,6 +130,11 @@ export function PhantomPicker({ doc, update }: PhantomPickerProps) {
                 value={phantom.notes ?? ""}
                 onChange={(e) => update((d) => setPhantomNotes(d, e.target.value))}
                 aria-label="Phantom notes"
+              />
+              <CreatureChangesEditor
+                creatureKey="phantom"
+                changes={phantom.changes}
+                update={update}
               />
               {focus && (
                 <p className="hint familiar-effect">

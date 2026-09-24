@@ -15,7 +15,7 @@
  * DR/resistances, and `operator: "set"` speed semantics).
  */
 
-import type { AbilityId, ActiveBuff } from "@pf1/schema";
+import type { AbilityId, ActiveBuff, Change } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
 import { acBonusType } from "./ac-bonus-types.js";
@@ -96,6 +96,47 @@ export interface RoutedSharedBuffs {
   damage: TypedModifier[];
   speed: Map<string, TypedModifier[]>;
   init: TypedModifier[];
+}
+
+/**
+ * True if {@link routeSharedBuffs} lands a change with this target anywhere
+ * on the creature's sheet; every other target is silently dropped there. Lets
+ * an authoring form offer only the targets that will actually do something.
+ * Must stay in step with the branches below.
+ */
+export function isSharedCreatureTarget(target: string): boolean {
+  return (
+    target === "ac" ||
+    target === "aac" ||
+    target === "sac" ||
+    target === "nac" ||
+    target === "fort" ||
+    target === "ref" ||
+    target === "will" ||
+    target === "allSavingThrows" ||
+    target === "skills" ||
+    target.startsWith("skill.") ||
+    (ABILITY_IDS as readonly string[]).includes(target) ||
+    target === "attack" ||
+    target === "mattack" ||
+    target === "damage" ||
+    target === "wdamage" ||
+    target === "init" ||
+    target in SPEED_TARGET_MODE
+  );
+}
+
+/**
+ * A creature's own permanent modifiers (`changes` on its build) as a synthetic
+ * buff, so they enter {@link routeSharedBuffs} alongside shared buffs and
+ * conditions. Empty when there are none.
+ */
+export function permanentChangesBuff(
+  build: { changes?: readonly Change[] } | undefined,
+): ActiveBuff[] {
+  const changes = build?.changes ?? [];
+  if (changes.length === 0) return [];
+  return [{ instanceId: "permanent", name: "Permanent bonuses", changes: [...changes] }];
 }
 
 /**

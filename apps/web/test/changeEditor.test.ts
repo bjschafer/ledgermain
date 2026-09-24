@@ -9,6 +9,7 @@ import {
   CHANGE_TARGET_GROUPS,
   CHANGE_TARGETS,
   CHANGE_TYPE_OPTIONS,
+  CREATURE_CHANGE_TARGET_GROUPS,
   changesToDrafts,
   draftsToChanges,
   emptyChangeDraft,
@@ -28,6 +29,20 @@ describe("CHANGE_TARGET_GROUPS", () => {
   it("gives every option a label distinct from its raw engine id", () => {
     const raw = CHANGE_TARGET_GROUPS.flatMap((g) => g.options).filter((o) => o.label === o.id);
     expect(raw).toEqual([]);
+  });
+});
+
+describe("CREATURE_CHANGE_TARGET_GROUPS", () => {
+  const ids = CREATURE_CHANGE_TARGET_GROUPS.flatMap((g) => g.options.map((o) => o.id));
+
+  it("keeps what a creature's sheet applies", () => {
+    expect(ids).toEqual(expect.arrayContaining(["int", "ref", "ac", "init", "skills", "attack"]));
+  });
+
+  it("drops what it would silently ignore, and any group left empty", () => {
+    for (const t of ["rattack", "cmb", "dr", "eres.fire", "sensedv"]) expect(ids).not.toContain(t);
+    expect(CREATURE_CHANGE_TARGET_GROUPS.every((g) => g.options.length > 0)).toBe(true);
+    expect(CREATURE_CHANGE_TARGET_GROUPS.map((g) => g.label)).not.toContain("Senses");
   });
 });
 

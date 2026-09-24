@@ -109,6 +109,20 @@ describe("homebrew abilities", () => {
     expect(withAbility.saves.will.total - base.saves.will.total).toBe(2);
   });
 
+  it("grants special senses through the sense change targets", () => {
+    const a = ability({
+      changes: [
+        { formula: "60", target: "sensedv", type: "untyped" },
+        { formula: "30", target: "sensesc", type: "untyped" },
+      ],
+    });
+    const sheet = compute(makeDoc([a]), overlaidRef(a));
+    expect(sheet.senses.map((s) => [s.kind, s.range])).toEqual([
+      ["darkvision", 60],
+      ["scent", 30],
+    ]);
+  });
+
   it("stacks by type like any other source (two sacred bonuses do not sum)", () => {
     const a = ability({ changes: [{ formula: "2", target: "will", type: "sacred" }] });
     const b = ability({

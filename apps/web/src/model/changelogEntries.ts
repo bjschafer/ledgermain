@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-24-creature-grants",
+    date: "2026-09-24",
+    title: "Bonuses for your familiar, and senses for you",
+    note: "When the GM rewards your familiar, animal companion, phantom or eidolon directly, the Build tab has a Permanent bonuses list under its notes. A +2 Intelligence or a +4 on Reflex saves lands on the creature's stat block and nowhere else, so your own sheet stays as it was. The list only offers what the creature's sheet can actually use. Custom abilities, homebrew races, feats and traits can now grant special senses too: darkvision, scent, blindsense and the rest, with the range in feet, show up in your Senses line.",
+  },
+  {
     id: "2026-09-19-granted-picks",
     date: "2026-09-19",
     title: "Feats your class picked for you",

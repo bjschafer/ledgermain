@@ -83,6 +83,7 @@ import {
   applySharedSpeeds,
   routeSharedBuffs,
   type AcCandidate,
+  permanentChangesBuff,
 } from "./shared-creature-buffs.js";
 import { resolveStack } from "./stacking.js";
 import { SIZE_AC_MOD, SKILL_ABILITY, specialSizeMod } from "./tables.js";
@@ -859,7 +860,10 @@ export function deriveFamiliar(
     .filter((c): c is NonNullable<typeof c> => c != null && c.changes.length > 0)
     .map((c) => ({ instanceId: `condition:${c.id}`, name: c.name, changes: c.changes }));
 
-  const routed = routeSharedBuffs([...sharedBuffs, ...conditionBuffs], rollData);
+  const routed = routeSharedBuffs(
+    [...permanentChangesBuff(doc.build.familiar), ...sharedBuffs, ...conditionBuffs],
+    rollData,
+  );
   const { ac: sharedAc, fort: sharedFort, ref: sharedRef, will: sharedWill } = routed;
   const sharedSkill = routed.skill;
   const {

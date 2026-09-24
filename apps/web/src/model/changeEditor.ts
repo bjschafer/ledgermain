@@ -11,6 +11,7 @@
  * only the chosen row shows: "Fire resistance", not "Fire" under a group
  * heading nobody can see at that point.
  */
+import { isSharedCreatureTarget } from "@pf1/engine";
 import type { Change } from "@pf1/schema";
 
 /** One option in a Change-authoring dropdown: the raw engine id plus its display label. */
@@ -109,7 +110,34 @@ export const CHANGE_TARGET_GROUPS: readonly ChangeTargetGroup[] = [
       { id: "imm.sonic", label: "Sonic immunity" },
     ],
   },
+  {
+    /* A ranged sense's value is its range in feet; the on/off ones read any
+       nonzero value as "has it". */
+    label: "Senses",
+    options: [
+      { id: "sensedv", label: "Darkvision (ft.)" },
+      { id: "sensell", label: "Low-light vision" },
+      { id: "sensesid", label: "See in darkness" },
+      { id: "sensesc", label: "Scent (ft.)" },
+      { id: "sensebse", label: "Blindsense (ft.)" },
+      { id: "sensebs", label: "Blindsight (ft.)" },
+      { id: "sensets", label: "Tremorsense (ft.)" },
+      { id: "sensels", label: "Lifesense (ft.)" },
+      { id: "senseths", label: "Thoughtsense (ft.)" },
+      { id: "sensetele", label: "Telepathy (ft.)" },
+      { id: "sensesi", label: "See invisibility" },
+      { id: "sensetr", label: "True seeing (ft.)" },
+    ],
+  },
 ];
+
+/**
+ * The subset a familiar, companion, phantom, or eidolon's own sheet actually
+ * applies; offering the rest there would author bonuses that silently vanish.
+ */
+export const CREATURE_CHANGE_TARGET_GROUPS: readonly ChangeTargetGroup[] = CHANGE_TARGET_GROUPS.map(
+  (g) => ({ ...g, options: g.options.filter((o) => isSharedCreatureTarget(o.id)) }),
+).filter((g) => g.options.length > 0);
 
 /** Flat list of every offered target id, in dropdown order. */
 export const CHANGE_TARGETS: readonly string[] = CHANGE_TARGET_GROUPS.flatMap((g) =>

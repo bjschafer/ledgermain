@@ -2002,6 +2002,14 @@ export interface FamiliarBuild {
   template?: string;
   /** Free-text notes (e.g. personality, tricks, house-rule tweaks). */
   notes?: string;
+  /**
+   * Permanent typed modifiers on the creature itself, typically a GM grant
+   * ("+2 Int for the familiar"). Applied to its own stat block only, never
+   * the master's, through the same routing as a buff shared with it, so only
+   * the targets that routing honors take effect (`@pf1/engine`
+   * `isSharedCreatureTarget`). Omitted/empty = none.
+   */
+  changes?: Change[];
 }
 
 /**
@@ -2087,6 +2095,14 @@ export interface AnimalCompanionBuild {
   skillRanks?: Record<string, number>;
   /** Free-text notes (e.g. personality, tricks, house-rule tweaks). */
   notes?: string;
+  /**
+   * Permanent typed modifiers on the creature itself, typically a GM grant
+   * ("+2 Int for the familiar"). Applied to its own stat block only, never
+   * the master's, through the same routing as a buff shared with it, so only
+   * the targets that routing honors take effect (`@pf1/engine`
+   * `isSharedCreatureTarget`). Omitted/empty = none.
+   */
+  changes?: Change[];
 }
 
 /**
@@ -2219,6 +2235,14 @@ export interface PhantomBuild {
   abilityIncreases?: AbilityId[];
   /** Free-text notes (e.g. personality, house-rule tweaks). */
   notes?: string;
+  /**
+   * Permanent typed modifiers on the creature itself, typically a GM grant
+   * ("+2 Int for the familiar"). Applied to its own stat block only, never
+   * the master's, through the same routing as a buff shared with it, so only
+   * the targets that routing honors take effect (`@pf1/engine`
+   * `isSharedCreatureTarget`). Omitted/empty = none.
+   */
+  changes?: Change[];
 }
 
 /**
@@ -2435,6 +2459,14 @@ export interface EidolonBuild {
   feats?: string[];
   /** Free-text notes (e.g. personality, tactics, house-rule tweaks). */
   notes?: string;
+  /**
+   * Permanent typed modifiers on the creature itself, typically a GM grant
+   * ("+2 Int for the familiar"). Applied to its own stat block only, never
+   * the master's, through the same routing as a buff shared with it, so only
+   * the targets that routing honors take effect (`@pf1/engine`
+   * `isSharedCreatureTarget`). Omitted/empty = none.
+   */
+  changes?: Change[];
 }
 
 /**

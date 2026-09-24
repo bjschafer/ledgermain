@@ -814,6 +814,8 @@ export {
   routeSharedBuffs,
   applySharedAbilityBonuses,
   applySharedSpeeds,
+  isSharedCreatureTarget,
+  permanentChangesBuff,
   type AcCandidate,
   type RoutedSharedBuffs,
 } from "./shared-creature-buffs.js";

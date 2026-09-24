@@ -95,6 +95,7 @@ import {
   DEVOTION_WILL_MODIFIER,
   routeSharedBuffs,
   type AcCandidate,
+  permanentChangesBuff,
 } from "./shared-creature-buffs.js";
 import { resolveStack } from "./stacking.js";
 import {
@@ -506,7 +507,10 @@ export function derivePhantom(doc: CharacterDoc, rollData: RollData): DerivedPha
     .filter((c): c is NonNullable<typeof c> => c != null && c.changes.length > 0)
     .map((c) => ({ instanceId: `condition:${c.id}`, name: c.name, changes: c.changes }));
 
-  const routed = routeSharedBuffs([...sharedBuffs, ...conditionBuffs], rollData);
+  const routed = routeSharedBuffs(
+    [...permanentChangesBuff(doc.build.phantom), ...sharedBuffs, ...conditionBuffs],
+    rollData,
+  );
 
   abilities = applySharedAbilityBonuses(abilities, routed.ability, abilityMod);
   const strMod = abilities.str.mod;

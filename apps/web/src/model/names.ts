@@ -236,8 +236,8 @@ const CHANGE_TARGET_LABELS: Record<string, string> = {
   // carrying capacity
   carryStr: "carrying capacity",
   carryMult: "carrying capacity",
-  // senses (computeSenses) — `sensell`/`sensesid`/`sensetele` are this
-  // engine's own targets (two boolean sense flags plus telepathy, which
+  // senses (computeSenses) — `sensell`/`sensesid`/`sensesi`/`sensetele` are this
+  // engine's own targets (three boolean sense flags plus telepathy, which
   // Foundry's actor model doesn't track at all); see engine `senses.ts`.
   sensedv: "darkvision",
   sensell: "low-light vision",
@@ -247,6 +247,7 @@ const CHANGE_TARGET_LABELS: Record<string, string> = {
   sensets: "tremorsense",
   sensesc: "scent",
   sensels: "lifesense",
+  sensesi: "see invisibility",
   sensetr: "true seeing",
   senseths: "thoughtsense",
   sensetele: "telepathy",

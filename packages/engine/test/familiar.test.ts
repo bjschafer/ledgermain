@@ -316,6 +316,48 @@ describe("deriveFamiliar (Mortlach the cat, hand-computed fixture)", () => {
 });
 
 /**
+ * A GM grant written onto the familiar itself (`build.familiar.changes`): +2
+ * Int and +4 Reflex for Mortlach. Same master stand-in as above, so the
+ * baseline is Int 7 (ML 4 table), Ref +4, Spellcraft +2 (4 ranks, Int -2),
+ * Linguistics -1 (1 rank, Int -2).
+ */
+describe("deriveFamiliar — permanent changes on the familiar", () => {
+  const doc = makeMasterDoc({
+    familiar: {
+      speciesId: "cat",
+      name: "Mortlach",
+      changes: [
+        { target: "int", type: "untyped", formula: "2" },
+        { target: "ref", type: "untyped", formula: "4" },
+      ],
+    },
+  });
+  const sheet = compute(doc, ref);
+  const master: FamiliarMasterInputs = {
+    maxHp: sheet.hp.max,
+    bab: sheet.bab,
+    baseSaves: { fort: 1, ref: 1, will: 4 },
+  };
+  const rollData = buildRollData(doc, ref, sheet.abilities, sheet.speeds, sheet.bab);
+  const familiar = deriveFamiliar(doc, master, rollData);
+
+  it("Int 9 (table 7 +2), cascading into Int skills: Spellcraft +3, Linguistics +0", () => {
+    expect(familiar!.abilities.int).toEqual({ score: 9, mod: -1 });
+    expect(familiar!.skills.spl!.total).toBe(3);
+    expect(familiar!.skills.lin!.total).toBe(0);
+  });
+
+  it("Ref +8 (+4 on top of the baseline +4)", () => {
+    expect(familiar!.saves.ref).toBe(8);
+  });
+
+  it("stays off the master's own sheet", () => {
+    expect(sheet.abilities.int.total).toBe(20);
+    expect(sheet.saves.ref.total).toBe(compute(makeMasterDoc(), ref).saves.ref.total);
+  });
+});
+
+/**
  * Hand-computed fixtures for two of the Ultimate Magic "New Familiars" table
  * additions (also mirrored on d20pfsrd.com's Familiars page), reusing the
  * same arcanist-4 master stand-in (BAB +2, base saves Fort 1/Ref 1/Will 4,

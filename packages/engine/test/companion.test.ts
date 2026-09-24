@@ -138,6 +138,19 @@ describe("deriveCompanion (druid-7 wolf, hand-computed fixture)", () => {
     expect(buffed!.ac.touch).toBe(12);
     expect(buffed!.ac.flatFooted).toBe(16);
   });
+
+  it("a permanent +4 Reflex on the companion's build raises Ref 8 -> 12", () => {
+    const granted = makeDoc({
+      classes: [{ tag: "druid", level: 7 }],
+      animalCompanion: {
+        speciesId: "wolf",
+        name: "Fang",
+        source: ["nature-bond"],
+        changes: [{ target: "ref", type: "untyped", formula: "4" }],
+      },
+    });
+    expect(deriveCompanion(granted, rollData)!.saves.ref).toBe(12);
+  });
 });
 
 describe("deriveCompanion (ranger-7 dog, effective level 4)", () => {

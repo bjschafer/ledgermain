@@ -112,6 +112,7 @@ import {
   DEVOTION_WILL_MODIFIER,
   routeSharedBuffs,
   type AcCandidate,
+  permanentChangesBuff,
 } from "./shared-creature-buffs.js";
 import { resolveStack } from "./stacking.js";
 import {
@@ -907,7 +908,12 @@ export function deriveCompanion(
   // very same routing as shared buffs and conditions — one synthetic buff
   // per table entry, evaluated against the MASTER's roll data.
   const routed = routeSharedBuffs(
-    [...sharedBuffs, ...conditionBuffs, ...(master?.buffs ?? [])],
+    [
+      ...permanentChangesBuff(doc.build.animalCompanion),
+      ...sharedBuffs,
+      ...conditionBuffs,
+      ...(master?.buffs ?? []),
+    ],
     rollData,
   );
 

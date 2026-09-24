@@ -48,6 +48,7 @@ import { useCollapsed } from "../../state/useCollapsed.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { NumberField } from "./NumberField.js";
 import { Caret } from "../Caret.js";
+import { CreatureChangesEditor } from "./CreatureChangesEditor.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -181,6 +182,11 @@ export function EidolonPicker({ doc, refData, update }: EidolonPickerProps) {
                 value={eidolon.notes ?? ""}
                 onChange={(e) => update((d) => setEidolonNotes(d, e.target.value))}
                 aria-label="Eidolon notes"
+              />
+              <CreatureChangesEditor
+                creatureKey="eidolon"
+                changes={eidolon.changes}
+                update={update}
               />
               <EvolutionSection doc={doc} update={update} />
               {derivedEidolon && featCtx && (

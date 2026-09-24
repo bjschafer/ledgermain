@@ -26,6 +26,7 @@ import { evaluatePrereqs } from "../../model/prereqs.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { NumberField } from "./NumberField.js";
 import { Caret } from "../Caret.js";
+import { CreatureChangesEditor } from "./CreatureChangesEditor.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -233,6 +234,11 @@ export function AnimalCompanionPicker({ doc, refData, update }: AnimalCompanionP
                 value={companion.notes ?? ""}
                 onChange={(e) => update((d) => setCompanionNotes(d, e.target.value))}
                 aria-label="Companion notes"
+              />
+              <CreatureChangesEditor
+                creatureKey="animalCompanion"
+                changes={companion.changes}
+                update={update}
               />
               {species && (
                 <p className="hint familiar-effect">

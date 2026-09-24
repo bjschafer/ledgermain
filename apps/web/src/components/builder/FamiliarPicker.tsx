@@ -21,6 +21,7 @@ import {
 } from "../../model/familiarDisplay.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { CreatureChangesEditor } from "./CreatureChangesEditor.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -124,6 +125,11 @@ export function FamiliarPicker({ doc, refData, update }: FamiliarPickerProps) {
                 value={familiar.notes ?? ""}
                 onChange={(e) => update((d) => setFamiliarNotes(d, e.target.value))}
                 aria-label="Familiar notes"
+              />
+              <CreatureChangesEditor
+                creatureKey="familiar"
+                changes={familiar.changes}
+                update={update}
               />
               {species && (
                 <p className="hint familiar-effect">
