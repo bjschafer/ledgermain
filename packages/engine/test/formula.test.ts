@@ -49,7 +49,7 @@ describe("formula: data-path resolution", () => {
   it("resolves a parameterized skill instance id's own embedded dot", () => {
     // rolldata.ts stores Craft/Perform/Profession instances under a FLAT key
     // that is the whole id ("crf.alchemy"), not a nested "crf" -> "alchemy"
-    // object — a rank-gated formula like Skill Focus (Craft)'s must resolve
+    // object — a rank-gated formula like Skill Focus on a Craft instance must resolve
     // the id as one unit rather than walking it segment by segment.
     const skillCtx = { skills: { "crf.alchemy": { rank: 12 }, acr: { rank: 3 } } };
     expect(evaluateFormula("@skills.crf.alchemy.rank", skillCtx)).toBe(12);

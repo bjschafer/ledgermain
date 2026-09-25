@@ -1,14 +1,20 @@
 import { describe, expect, it } from "bun:test";
 
+import { loadRefData } from "@pf1/data-pipeline";
 import type { CharacterDoc } from "@pf1/schema";
 
 import { createEmptyDoc } from "../src/model/doc.js";
 import {
+  BARE_FAMILY_ITEMS,
   CURRENT_SCHEMA_VERSION,
   MIGRATIONS,
+  SKILL_FOCUS_COPIES,
+  SKILL_FOCUS_ID,
   migrateDoc,
   migrateImportedDoc,
 } from "../src/model/migrations.js";
+
+const ref = loadRefData();
 
 /** A current-shape doc stamped with an older version, as persistence holds. */
 function stored(schemaVersion: number, patch: (doc: CharacterDoc) => CharacterDoc = (d) => d) {
@@ -212,5 +218,105 @@ describe("migrateImportedDoc()", () => {
   it("leaves a newer export's version alone", () => {
     const future = { ...createEmptyDoc("t"), schemaVersion: CURRENT_SCHEMA_VERSION + 5 };
     expect(migrateImportedDoc(future).schemaVersion).toBe(CURRENT_SCHEMA_VERSION + 5);
+  });
+});
+
+describe("step: fold-skill-focus-copies", () => {
+  const apply = stepById("fold-skill-focus-copies").apply;
+  const stealth = "2JWwVMFeqHnFDFSv";
+  const perception = "9yua5ZlomvDj1c7D";
+  const craft = "pslODOJK0u0wOxqL";
+  const withBuild = (patch: Partial<CharacterDoc["build"]>) => {
+    const doc = createEmptyDoc("t");
+    return { ...doc, build: { ...doc.build, ...patch } };
+  };
+
+  it("turns a lone copy into Skill Focus with the copy's skill, in place", () => {
+    const out = apply(
+      withBuild({ feats: ["a", stealth, "b"], featSlotAssignments: { [stealth]: "combat" } }),
+    );
+    expect(out.build.feats).toEqual(["a", SKILL_FOCUS_ID, "b"]);
+    expect(out.build.featChoices).toEqual({ [SKILL_FOCUS_ID]: "ste" });
+    expect(out.build.featSlotAssignments).toEqual({ [SKILL_FOCUS_ID]: "combat" });
+    expect(out.build.extraFeats).toBeUndefined();
+  });
+
+  it("adds further copies as extra instances beside a real Skill Focus", () => {
+    const out = apply(
+      withBuild({
+        feats: [stealth, SKILL_FOCUS_ID, perception],
+        featChoices: { [SKILL_FOCUS_ID]: "acr" },
+        featSlotAssignments: { [perception]: "bonus" },
+      }),
+    );
+    expect(out.build.feats).toEqual([SKILL_FOCUS_ID]);
+    expect(out.build.featChoices).toEqual({ [SKILL_FOCUS_ID]: "acr" });
+    expect(out.build.extraFeats).toEqual([
+      { instanceId: `feat-${stealth}`, featId: SKILL_FOCUS_ID, choiceId: "ste" },
+      { instanceId: `feat-${perception}`, featId: SKILL_FOCUS_ID, choiceId: "per" },
+    ]);
+    expect(out.build.featSlotAssignments).toEqual({ [`feat-${perception}`]: "bonus" });
+  });
+
+  it("carries a Craft copy's own instance pick, and its extra instances", () => {
+    const out = apply(
+      withBuild({
+        feats: [craft],
+        featChoices: { [craft]: "crf.alchemy" },
+        extraFeats: [{ instanceId: "x1", featId: craft, choiceId: "crf.armor" }],
+      }),
+    );
+    expect(out.build.feats).toEqual([SKILL_FOCUS_ID]);
+    expect(out.build.featChoices).toEqual({ [SKILL_FOCUS_ID]: "crf.alchemy" });
+    expect(out.build.extraFeats).toEqual([
+      { instanceId: "x1", featId: SKILL_FOCUS_ID, choiceId: "crf.armor" },
+    ]);
+  });
+
+  it("folds copies on a companion's and an eidolon's feat lists", () => {
+    const doc = createEmptyDoc("t");
+    const out = apply({
+      ...doc,
+      build: {
+        ...doc.build,
+        animalCompanion: { feats: [stealth, perception, "x"] },
+        eidolon: { feats: [stealth] },
+      } as CharacterDoc["build"],
+    });
+    expect(out.build.animalCompanion?.feats).toEqual([SKILL_FOCUS_ID, "x"]);
+    expect(out.build.eidolon?.feats).toEqual([SKILL_FOCUS_ID]);
+  });
+
+  it("names only feats the catalog no longer has, and lands on the real Skill Focus", () => {
+    expect(ref.feats[SKILL_FOCUS_ID]?.name).toBe("Skill Focus");
+    for (const id of Object.keys(SKILL_FOCUS_COPIES)) expect(ref.feats[id]).toBeUndefined();
+  });
+});
+
+describe("step: remap-bare-family-items", () => {
+  const apply = stepById("remap-bare-family-items").apply;
+  const withGear = (gear: CharacterDoc["build"]["gear"]) => {
+    const doc = createEmptyDoc("t");
+    return { ...doc, build: { ...doc.build, gear } };
+  };
+
+  it("moves a bare Ring of Protection onto the +1, keeping the entry's state", () => {
+    const out = apply(withGear([{ itemId: "mi:ring_of_protection", equipped: true }]));
+    expect(out.build.gear).toEqual([{ itemId: "iCuo14damYkdjuD5", equipped: true }]);
+    expect(ref.items["iCuo14damYkdjuD5"]?.name).toBe("Ring of Protection +1");
+  });
+
+  it("keeps an ambiguous family as a named custom entry", () => {
+    const out = apply(withGear([{ itemId: "mi:belt_of_physical_might", equipped: true }]));
+    expect(out.build.gear).toEqual([
+      { equipped: true, name: "Belt of Physical Might", price: 10000, weight: 1 },
+    ]);
+  });
+
+  it("names only items the catalog no longer has, and targets items it does", () => {
+    for (const [from, to] of Object.entries(BARE_FAMILY_ITEMS)) {
+      expect(ref.items[from]).toBeUndefined();
+      if (to) expect(ref.items[to]?.price).toBeGreaterThan(0);
+    }
   });
 });

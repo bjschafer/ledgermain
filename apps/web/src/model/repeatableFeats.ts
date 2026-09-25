@@ -48,8 +48,6 @@ export const REPEATABLE_FEAT_SLUGS: ReadonlySet<string> = new Set([
   "improved-critical",
   "mother-s-gift", // "up to three times", one manifestation per instance
   "skill-focus",
-  "skill-focus-perform", // "applies to a new skill", same shape as skill-focus-craft
-  "skill-focus-profession", // "applies to a new skill", same shape as skill-focus-craft
   "spell-focus",
   "weapon-focus",
   "weapon-specialization",
@@ -106,7 +104,6 @@ export const REPEATABLE_FEAT_SLUGS: ReadonlySet<string> = new Set([
   "martial-weapon-proficiency",
   "quicken-spell-like-ability",
   "rapid-reload",
-  "skill-focus-craft", // "applies to a new skill", same shape as skill-focus
   "spell-mastery",
   "versatile-summon-monster",
   "virtuous-creed", // "gain this feat multiple times... choose a new virtue" (each virtue itself stays unwired, see feat-classification-community.ts)

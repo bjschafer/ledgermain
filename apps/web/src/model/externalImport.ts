@@ -22,6 +22,7 @@ import {
   ABILITY_IDS,
   addClass,
   addCustomGearItem,
+  addFeatInstance,
   addWornArmorFromRef,
   createEmptyDoc,
   setAbility,
@@ -41,6 +42,12 @@ import {
   toggleFeat,
   toggleKnownSpell,
 } from "./doc.js";
+import {
+  featChoiceDescriptor,
+  featChoiceOptions,
+  setExtraFeatChoice,
+  setFeatChoice,
+} from "./feats.js";
 import { localId } from "./ids.js";
 import { normalizeAlignmentCode, SKILL_NAMES, slugifySkillLabel } from "./names.js";
 
@@ -164,6 +171,40 @@ export function buildNameIndex(entities: Record<string, { name: string }>): Map<
     if (slug && !idx.has(slug)) idx.set(slug, id);
   }
   return idx;
+}
+
+/**
+ * Resolve a parenthesized pick the catalog has no entry for ("Skill Focus
+ * (Perception)", "Weapon Focus (longsword)") to the base feat plus its
+ * choice, when the base feat takes that pick through its own picker and the
+ * parenthesized part names one of its options.
+ */
+function matchChoiceFeat(
+  featName: string,
+  featIdx: Map<string, string>,
+  refData: RefData,
+  doc: CharacterDoc,
+): { featId: string; choiceId: string; choiceName: string } | undefined {
+  const m = /^(.+?)\s*\((.+)\)$/.exec(featName.trim());
+  if (!m) return undefined;
+  const featId = featIdx.get(nameSlug(m[1]!));
+  const descriptor = featId ? featChoiceDescriptor(refData.feats[featId]!.name) : null;
+  if (!featId || !descriptor) return undefined;
+  const wanted = nameSlug(m[2]!);
+  const option = featChoiceOptions(descriptor.type, refData, doc, descriptor).find(
+    (o) => nameSlug(o.name) === wanted,
+  );
+  return option && { featId, choiceId: option.id, choiceName: option.name };
+}
+
+/** Take `featId` (again, if already held) with `choiceId` as that instance's pick. */
+function addFeatWithChoice(doc: CharacterDoc, featId: string, choiceId: string): CharacterDoc {
+  if (!doc.build.feats.includes(featId)) {
+    return setFeatChoice(toggleFeat(doc, featId), featId, choiceId);
+  }
+  const next = addFeatInstance(doc, featId);
+  const added = next.build.extraFeats!.at(-1)!;
+  return setExtraFeatChoice(next, added.instanceId, choiceId);
 }
 
 /**
@@ -390,9 +431,15 @@ export function buildDocFromExternalData(
     for (const featName of data.feats) {
       if (!featName.trim()) continue;
       const id = featIdx.get(nameSlug(featName));
+      const picked = id ? undefined : matchChoiceFeat(featName, featIdx, refData, doc);
       if (id) {
         if (!doc.build.feats.includes(id)) doc = toggleFeat(doc, id);
         report.mapped.push(`Feat: "${featName}" -> ${refData.feats[id]!.name}`);
+      } else if (picked) {
+        doc = addFeatWithChoice(doc, picked.featId, picked.choiceId);
+        report.mapped.push(
+          `Feat: "${featName}" -> ${refData.feats[picked.featId]!.name} (${picked.choiceName})`,
+        );
       } else {
         report.unmapped.push(`Feat "${featName}" not found in reference data; not added.`);
       }

@@ -993,13 +993,6 @@ describe("featChoiceDescriptor: options / energy / craft-family axes", () => {
       label: "Energy type",
     });
   });
-
-  it('Skill Focus (Craft) gets a "craft" descriptor', () => {
-    expect(featChoiceDescriptor("Skill Focus (Craft)")).toEqual({
-      type: "craft",
-      label: "Craft skill",
-    });
-  });
 });
 
 // ─── featDisplayName ─────────────────────────────────────────────────────────

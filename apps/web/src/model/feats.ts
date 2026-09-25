@@ -568,18 +568,8 @@ export function setExtraFeatChoice(
  *  - "options": a fixed named-option list the entry itself carries (Angelic
  *    Flesh's Brazen/Golden/Silver/Steel) — see `options` below.
  *  - "energy": the shared 5-type vocabulary (`ENERGY_TYPES`).
- *  - "craft" | "perform" | "profession": the character's OWN skill
- *    instances of that family.
  */
-export type FeatChoiceType =
-  | "skill"
-  | "weapon"
-  | "school"
-  | "options"
-  | "energy"
-  | "craft"
-  | "perform"
-  | "profession";
+export type FeatChoiceType = "skill" | "weapon" | "school" | "options" | "energy";
 
 export interface FeatChoiceDescriptor {
   type: FeatChoiceType;
@@ -683,9 +673,8 @@ export function featContextNotes(featName: string): ContextNote[] {
  *   umbrella rows, which aren't pickable skills on their own), sorted
  *   alphabetically by display name, followed by the character's own
  *   Craft/Perform/Profession instances (also alphabetical) when `doc` is
- *   provided — same instance enumeration as the "craft"/"perform"/
- *   "profession" branches below, so a feat that targets any skill (Skill
- *   Focus) can land on a specific Craft/Perform/Profession the player has.
+ *   provided, so a feat that targets any skill (Skill Focus) can land on a
+ *   specific Craft/Perform/Profession the player has.
  * - "weapon": the distinct non-empty `group` labels present on `doc.build.weapons`,
  *   sorted alphabetically, plus "kinetic blast" for a kineticist who has chosen
  *   an element ("Kinetic blasts count as a type of weapon for the purpose of
@@ -702,9 +691,9 @@ export function featContextNotes(featName: string): ContextNote[] {
  *   traditional order. `refData` and `doc` are unused.
  * - "craft" | "perform" | "profession": the character's OWN skill instances
  *   of that family (`doc.build.skillRanks` ids prefixed `crf.`/`prf.`/`pro.`),
- *   sorted alphabetically by display name. Empty when `doc` is not provided
- *   or the character has no instance of that family yet — the UI renders a
- *   soft hint in that case, same posture as "weapon".
+ *   sorted alphabetically by display name, for a trait's family pick. Empty
+ *   when `doc` is not provided or the character has no instance of that
+ *   family yet.
  */
 export function featChoiceOptions(
   choiceType: string,

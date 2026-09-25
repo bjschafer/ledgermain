@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-24-duplicate-entries",
+    date: "2026-09-24",
+    title: "One Skill Focus, one Ring of Protection",
+    note: "The feat list carried a separate Skill Focus for every skill alongside the real one, and the item list carried a plain Ring of Protection, Cloak of Resistance, stat belt or headband, and a few more, next to the graded versions that actually apply their bonus. The extras are gone. Skill Focus asks which skill once you take it, and a character who took one of the old copies keeps it as Skill Focus with that skill already picked. A plain ring, cloak, belt or headband you already own becomes its lowest grade, a +1 ring or a +2 belt, and starts applying its bonus. Importing Skill Focus (Perception) from Hero Lab or Pathbuilder picks Perception for you.",
+  },
+  {
     id: "2026-09-24-buff-switch",
     date: "2026-09-24",
     title: "Switch a buff off without losing it",

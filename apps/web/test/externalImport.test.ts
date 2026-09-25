@@ -116,6 +116,32 @@ describe("buildDocFromExternalData", () => {
     expect(() => compute(doc, ref)).not.toThrow();
   });
 
+  it("takes a parenthesized pick as the base feat with that choice, once per pick", () => {
+    const data = emptyExternalData();
+    data.classes = [{ name: "Fighter", level: 3 }];
+    data.skills = [{ name: "Craft (Alchemy)", ranks: 2 }];
+    data.feats = [
+      "Skill Focus (Perception)",
+      "Skill Focus (Knowledge (arcana))",
+      "Skill Focus (Craft (alchemy))",
+    ];
+
+    const { doc, report } = buildDocFromExternalData(data, ref, "herolab");
+
+    const skillFocus = Object.entries(ref.feats).find(([, f]) => f.name === "Skill Focus")![0];
+    expect(doc.build.feats).toEqual([skillFocus]);
+    expect(doc.build.featChoices).toEqual({ [skillFocus]: "per" });
+    expect(doc.build.extraFeats?.map((e) => [e.featId, e.choiceId])).toEqual([
+      [skillFocus, "kar"],
+      [skillFocus, "crf.alchemy"],
+    ]);
+    expect(report.unmapped).toEqual([]);
+    const plain = buildDocFromExternalData({ ...data, feats: [] }, ref, "herolab").doc;
+    expect(compute(doc, ref).skills.per?.total).toBe(
+      (compute(plain, ref).skills.per?.total ?? 0) + 3,
+    );
+  });
+
   it("stores an unrecognized alignment as free text but flags it in the report", () => {
     const data = emptyExternalData();
     data.alignment = "Neutral-ish, kind of a jerk";

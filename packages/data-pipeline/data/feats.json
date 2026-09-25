@@ -2861,18 +2861,6 @@
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.2GdfZL6LhVeILtTH"
   },
-  "2JWwVMFeqHnFDFSv": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "2JWwVMFeqHnFDFSv",
-    "name": "Skill Focus (Stealth)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.2JWwVMFeqHnFDFSv"
-  },
   "2JgVYyBhudInjqzb": {
     "description": "<p><em>You are a luminous beacon in the darkness, an icon of order and kindness through which the light of Heaven itself can shine, even in the most dreadful of realms.</em></p><p><strong>Prerequisites</strong>: Knowledge (planes) 1 rank.</p><p><strong>Benefits</strong>: As a standard action, you can emit an aura of bright light centered on a glowing halo above or behind your head. The illumination provided is equal in intensity to that of a torch. If you have at least 5 ranks in Knowledge (planes) the illumination is equivalent to that created by a daylight spell. If you have at least 15 ranks in Knowledge (planes), the light becomes further infused with Heavenly power, and each evil creature within 30 feet of you must succeed at a Fortitude save (DC = 10 + half your level + your Charisma modifier) or become sickened by the light for as long as it remains in range plus 1 additional round after leaving the area.</p><p> You can use this feat's benefit for a number of rounds per day equal to your ranks in Knowledge (planes). These rounds need not be consecutive.</p>",
     "id": "2JgVYyBhudInjqzb",
@@ -7962,18 +7950,6 @@
     "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.6U1yBxH0qeaKbswW"
   },
-  "6Unilb6yyaehF9fv": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "6Unilb6yyaehF9fv",
-    "name": "Skill Focus (Lore)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.6Unilb6yyaehF9fv"
-  },
   "6UzI2HapyOvfWZjM": {
     "description": "<p><em>Your devotion to battle inspires you to fight competently until death claims you.</em></p><p><strong>Prerequisites</strong>: Diehard, Endurance, worshiper of Gorum.</p><p><strong>Benefits</strong>: When you are disabled, you are not staggered, though performing standard actions still deals 1 point of damage to you. Taking a full-round action deals 2 points of damage to you.</p><h3>Combat Trick</h3><p>: You can spend 1 stamina when disabled to take a standard action without losing a hit point.</p>",
     "id": "6UzI2HapyOvfWZjM",
@@ -9493,13 +9469,7 @@
           "min": 13
         }
       ],
-      "feats": [
-        {
-          "id": "2JWwVMFeqHnFDFSv",
-          "name": "Skill Focus (Stealth)",
-          "uuid": "Compendium.pf1.feats.Item.2JWwVMFeqHnFDFSv"
-        }
-      ],
+      "feats": [],
       "prereqText": "Dex 13, Skill Focus (Stealth), Stealth 1 rank.",
       "skills": [
         {
@@ -9658,18 +9628,6 @@
     "subType": "feat",
     "tags": ["Combat", "Combat Trick", "Defensive"],
     "uuid": "Compendium.pf1.feats.Item.7mD4ZksvKFaorAfj"
-  },
-  "7mcNePI93Co2JbPF": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "7mcNePI93Co2JbPF",
-    "name": "Skill Focus (Intimidate)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.7mcNePI93Co2JbPF"
   },
   "7myQ3foxqbgbqpgU": {
     "description": "<p><em>You can manipulate acid to shield yourself and disable your enemies.</em></p><p><strong>Prerequisites</strong>: Con 15, Wis 15, Elemental Fist, Improved Unarmed Strike, Shaitan Style, base attack bonus +11 or monk level 9th.</p><p><strong>Benefits</strong>: You gain one additional Elemental Fist (Advanced Player's Guide 158) attempt per day. While using the Shaitan Style feat, you gain acid resistance equal to your base attack bonus, or your monk level plus BAB gained from levels in classes other than monk, whichever is higher. While denied your Dexterity bonus to AC you are also denied this resistance. Creatures that take acid damage from your Elemental Fist attack must succeed at a Reflex save (DC 10 + 1/2 your character level + your Wis modifier) or be staggered for 1 round.</p><h3>Combat Trick</h3><p>: When you make an Elemental Fist attack, you can spend up to 5 stamina points to increase the DC of the saving throw to avoid being staggered by an amount equal to the number of stamina points you spent.</p>",
@@ -12403,18 +12361,6 @@
     "tags": ["Coven", "Teamwork"],
     "uuid": "Compendium.pf1.feats.Item.9xgc3SiDuOULDePH"
   },
-  "9yua5ZlomvDj1c7D": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "9yua5ZlomvDj1c7D",
-    "name": "Skill Focus (Perception)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.9yua5ZlomvDj1c7D"
-  },
   "A0IxVIjBMBBzFCpn": {
     "description": "<p><em>You treat every combat as a performance, bringing flare and showmanship.</em></p><p><strong>Prerequisites</strong>: Dazzling Display, any one performance feat.</p><p><strong>Benefits</strong>: You can make performance combat checks in any combat. When making a performance check outside of performance combat, you can pick a single performance feat to use. You automatically gain any bonus on the performance combat check the feat grants, and then you make a DC 20 performance combat check. On a success, you gain the full effect of the performance feat you chose.</p><p><strong>Combat Trick</strong>: When using this feat, you can spend up to 5 stamina points to gain a bonus on your performance combat check equal to the number of stamina points you spent.</p>",
     "id": "A0IxVIjBMBBzFCpn",
@@ -12675,11 +12621,6 @@
           "id": "7i2uVUYd0h6qqKGP",
           "name": "Owl Style",
           "uuid": "Compendium.pf1.feats.Item.7i2uVUYd0h6qqKGP"
-        },
-        {
-          "id": "2JWwVMFeqHnFDFSv",
-          "name": "Skill Focus (Stealth)",
-          "uuid": "Compendium.pf1.feats.Item.2JWwVMFeqHnFDFSv"
         }
       ],
       "prereqText": "Dex 15, Owl Style, Skill Focus (Stealth), Acrobatics 1 rank, Stealth 1 rank.",
@@ -13961,11 +13902,6 @@
           "id": "L10V7jTzmMYz62zz",
           "name": "Persuasive",
           "uuid": "Compendium.pf1.feats.Item.L10V7jTzmMYz62zz"
-        },
-        {
-          "id": "7mcNePI93Co2JbPF",
-          "name": "Skill Focus (Intimidate)",
-          "uuid": "Compendium.pf1.feats.Item.7mcNePI93Co2JbPF"
         }
       ],
       "prereqText": "Nerve-Racking Negotiator, Persuasive, Skill Focus (Intimidate).",
@@ -15534,18 +15470,6 @@
     },
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.CSr9tqZiLFKPsKJc"
-  },
-  "CT5OvOkf7Z2KxPxa": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "CT5OvOkf7Z2KxPxa",
-    "name": "Skill Focus (Knowledge [Local])",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.CT5OvOkf7Z2KxPxa"
   },
   "CTXRDCXQRyjH4CCL": {
     "description": "<p><em>Your blood boils with latent energy, filling you with an intense fury.</em></p><p><strong>Prerequisites</strong>: Eldritch Heritage or sorcerer bloodline class feature.</p><p><strong>Benefits</strong>: You gain the 1st-level bloodrager bloodline power for your bloodline. In addition, you gain the ability to enter a state similar to (but less powerful than) a bloodrager's bloodrage. You can enter this lesser bloodrage twice per day, for up to 4 rounds. During this lesser bloodrage, you gain a +2 morale bonus to Strength and Constitution, and no morale bonus on Will saving throws. Otherwise, this benefit is the same as the bloodrage class feature.</p><p>If you have more than one bloodline, you choose the bloodline this applies to upon taking the feat.</p>",
@@ -19868,18 +19792,6 @@
     "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.G3hvgEOC1fr321Vz"
   },
-  "G3yPmoVa0D7uIbEF": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "G3yPmoVa0D7uIbEF",
-    "name": "Skill Focus (Handle Animal)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.G3yPmoVa0D7uIbEF"
-  },
   "G44jAJNMGpqdDRml": {
     "description": "<p><em>Whether a smuggler or spy, you've learned to use misdirection and legerdemain to conceal your own magical abilities.</em></p><p><strong>Prerequisites</strong>: Deceitful, ability to cast 1st-level spells.</p><p><strong>Benefits</strong>: When casting a spell, you can attempt a Bluff check (opposed by observers' Perception checks) to conceal your actions from onlookers. If the spell requires material components, you take a -4 penalty on the Bluff check. If the spell requires somatic components, you take a -4 penalty on the Bluff check. If the spell requires verbal components, you take a -4 penalty on the Bluff check. If the spell requires a focus or divine focus, you take a -4 penalty on the Bluff check. If the spell produces an obvious effect (such as a summoned creature or visible spell effect), you take a -4 penalty on the Bluff check, and even if your check is successful, observers still see the spell effect (though they fail to notice that you are responsible for it). All Bluff check penalties are cumulative.</p>",
     "id": "G44jAJNMGpqdDRml",
@@ -20824,18 +20736,6 @@
     },
     "tags": ["Racial", "Half-Elf"],
     "uuid": "Compendium.pf1.feats.Item.GkXR16mJaUmUbjhJ"
-  },
-  "GkcekdZwcwMwI6ss": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "GkcekdZwcwMwI6ss",
-    "name": "Skill Focus (Disable Device)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.GkcekdZwcwMwI6ss"
   },
   "Glr7G4tA1G2pGqdg": {
     "description": "<p><em>With a single curse, you make your rival less fearsome in combat.</em></p><p><strong>Prerequisites</strong>: Int 13, base attack bonus +6, Use Magic Device 1 rank.</p><p><strong>Benefits</strong>: As a standard action, you can curse the accuracy of an enemy you have dealt damage to in the last minute. The target must succeed at a Fortitude save or it automatically fails to confirm all critical threats. This effect lasts for 1 round.</p><p><strong>Special</strong>: If a shaman or witch uses this blood hex, the target is unable to deal precision damage or sneak attack damage for the hex's duration.</p>",
@@ -22844,18 +22744,6 @@
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.IFkJusznqSCdgeeQ"
   },
-  "IGlL6mwZTu6RScYr": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "IGlL6mwZTu6RScYr",
-    "name": "Skill Focus (Knowledge [Nobility])",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.IGlL6mwZTu6RScYr"
-  },
   "IHFL3Jm9WRw2Wtuv": {
     "description": "<p><em>Your stare penetrates right through your foe's strongest mental defenses.</em></p><p><strong>Prerequisites</strong>: Mesmerist level 7th, painful stare class feature.</p><p><strong>Benefits</strong>: When you trigger your painful stare, the damage dealt ignores 5 points of the target's damage reduction, unless that damage reduction is untyped (for example, DR 10/--).</p>",
     "id": "IHFL3Jm9WRw2Wtuv",
@@ -22982,13 +22870,7 @@
     "name": "Bloody Mess",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "7mcNePI93Co2JbPF",
-          "name": "Skill Focus (Intimidate)",
-          "uuid": "Compendium.pf1.feats.Item.7mcNePI93Co2JbPF"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Intimidate).",
       "skills": []
     },
@@ -23300,13 +23182,7 @@
     "name": "Esoteric Linguistics",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "TA7qGwyL5uXk7dfP",
-          "name": "Skill Focus (Linguistics)",
-          "uuid": "Compendium.pf1.feats.Item.TA7qGwyL5uXk7dfP"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Linguistics).",
       "skills": []
     },
@@ -27365,18 +27241,6 @@
     "tags": ["Racial", "Gnome"],
     "uuid": "Compendium.pf1.feats.Item.Lm9Um4Oma0f5akBE"
   },
-  "LmV6WT0Dv5FZO4Qy": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "LmV6WT0Dv5FZO4Qy",
-    "name": "Skill Focus (Knowledge [Dungeoneering])",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.LmV6WT0Dv5FZO4Qy"
-  },
   "LnD5rgCpPKR0ZKVj": {
     "description": "<p><em>You can imbue your familiar with a spell.</em></p><p><strong>Prerequisites</strong>: Spellcaster with familiar class feature.</p><p><strong>Benefits</strong>: You can transfer a prepared spell to your familiar, allowing the familiar to cast that spell at a later time. Variables that rely on caster level function according to your caster level, not your familiar's Hit Dice, though your familiar's Intelligence may influence how precisely it can follow your instructions on how to use these spells.</p><p>Your familiar must be able to speak to cast spells with a verbal component (the ability to speak with its master or creatures of its kind is insufficient). Your familiar must be carrying any material or focus components necessary, unless the materials cost less than 1 gp and the spell is prepared with Eschew Materials. Attack rolls use your familiar's ability scores. A familiar spell counts against the number of spells you may prepare for as long as your familiar retains the spell. Once your familiar casts a retained spell, you can prepare a new spell in that slot the next time you prepare spells.</p><p>A familiar spell uses up a spell slot 3 levels higher than the spell's actual level. Your familiar can store a number of spell levels (including this modifier) equal to your caster level, but no spell's adjusted level can exceed half your caster level.</p><p><strong>Special</strong>: If you are a spontaneous caster, you must select a specific spell with which to imbue your familiar; you cannot imbue your familiar with an open spell slot.</p>",
     "id": "LnD5rgCpPKR0ZKVj",
@@ -27938,18 +27802,6 @@
     },
     "tags": ["Meditation"],
     "uuid": "Compendium.pf1.feats.Item.MLKCnA1Qthaqj7iR"
-  },
-  "MMZxRlkELezwGDlL": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "MMZxRlkELezwGDlL",
-    "name": "Skill Focus (Heal)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.MMZxRlkELezwGDlL"
   },
   "MND3pQAsaMOyMxeY": {
     "description": "<p><em>You know the urgency of treating wounds in the heat of battle, applying first aid to your allies with such speed that you assure no one gets left behind.</em></p><p><strong>Prerequisites</strong>: Heal 5 ranks.</p><p><strong>Benefits</strong>: Whenever you use Heal to provide first aid, treat caltrop wounds, or treat poison on an ally who also has this feat, you provoke no attacks of opportunity, and can take 10 on the check. Unlike with other teamwork feats, allies that are paralyzed, stunned, unconscious, or cannot otherwise act still count for the purposes of this feat.</p>",
@@ -30602,13 +30454,7 @@
     "name": "Blight Survivalist",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "XnJjz7As3jJkS4iF",
-          "name": "Skill Focus (Survival)",
-          "uuid": "Compendium.pf1.feats.Item.XnJjz7As3jJkS4iF"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Survival).",
       "skills": []
     },
@@ -34647,13 +34493,7 @@
     "name": "Needle in a Haystack",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "9yua5ZlomvDj1c7D",
-          "name": "Skill Focus (Perception)",
-          "uuid": "Compendium.pf1.feats.Item.9yua5ZlomvDj1c7D"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Perception), Perception 3 ranks.",
       "skills": [
         {
@@ -34711,13 +34551,7 @@
     "name": "Orator",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "TA7qGwyL5uXk7dfP",
-          "name": "Skill Focus (Linguistics)",
-          "uuid": "Compendium.pf1.feats.Item.TA7qGwyL5uXk7dfP"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Linguistics).",
       "skills": []
     },
@@ -35033,13 +34867,7 @@
         }
       ],
       "bab": 8,
-      "feats": [
-        {
-          "id": "cKTRogbjMedE2Dk5",
-          "name": "Skill Focus (Fly)",
-          "uuid": "Compendium.pf1.feats.Item.cKTRogbjMedE2Dk5"
-        }
-      ],
+      "feats": [],
       "prereqText": "Str 13, Skill Focus (Fly), base attack bonus +8.",
       "skills": []
     },
@@ -35601,13 +35429,7 @@
     "name": "Hellcat Stealth",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "2JWwVMFeqHnFDFSv",
-          "name": "Skill Focus (Stealth)",
-          "uuid": "Compendium.pf1.feats.Item.2JWwVMFeqHnFDFSv"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Stealth), Stealth 6 ranks.",
       "skills": [
         {
@@ -36038,18 +35860,6 @@
     },
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.T9xwOIyXI05snz2M"
-  },
-  "TA7qGwyL5uXk7dfP": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "TA7qGwyL5uXk7dfP",
-    "name": "Skill Focus (Linguistics)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.TA7qGwyL5uXk7dfP"
   },
   "TBu5U06cihlGy6MD": {
     "description": "<p><em>When you engage in unarmed combat, you know just where to strike to stagger your foe.</em></p><p><strong>Prerequisites</strong>: Dex 13, Wis 13, Improved Unarmed Strike, base attack bonus +2.</p><p><strong>Benefits</strong>: When you damage a foe with your unarmed attack, you can also cause it to be staggered for 1 round (until just before your next turn). The target can avoid this with a successful Fortitude saving throw (DC = 10 + 1/2 your character level + your Wisdom modifier). You must declare that you are using this feat before you make your attack roll; thus, a failed attack roll ruins the attempt. You can attempt to use this feat once per day for every 4 character levels you have, but no more than once per round. Constructs, incorporeal creatures, plants, undead, and creatures that are immune to critical hits cannot be affected by this ability.</p><h3>Combat Trick</h3><p>: You can spend 5 stamina points to declare that you are using this feat after you've hit with an unarmed strike.</p>",
@@ -37397,18 +37207,6 @@
     },
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.UGLCGqd0MMBRwRlM"
-  },
-  "UHGTb3NPHxp6v7yl": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "UHGTb3NPHxp6v7yl",
-    "name": "Skill Focus (Knowledge [Engineering])",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.UHGTb3NPHxp6v7yl"
   },
   "UHVjW5BgPqGwopFH": {
     "description": "<p><em>You relish hot climates, as the equatorial heat does not sap your strength.</em></p><p><strong>Prerequisites</strong>: Desert Dweller or Jungle Survivalist.</p><p><strong>Benefits</strong>: You treat hot environments (Core Rulebook 444) as though they were one step less severe; if you have a similar ability from another feat (like Desert Dweller), the benefits stack and you treat hot conditions as if they were two steps less severe. You do not take a penalty on Constitution checks for wearing armor in hot climates.</p>",
@@ -39338,18 +39136,6 @@
     "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.Vi7zwhoHlGM8J4v8"
   },
-  "Vi8Fh4JceKVHZ7jK": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "Vi8Fh4JceKVHZ7jK",
-    "name": "Skill Focus (Bluff)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.Vi8Fh4JceKVHZ7jK"
-  },
   "ViwAwl9iKWgh77pP": {
     "description": "<p><em>You can throw more bombs per day.</em></p><p><strong>Prerequisites</strong>: Bomb class feature.</p><p><strong>Benefit</strong>: You can throw two additional bombs per day.</p><p><strong>Special</strong>: You can gain Extra Bombs multiple times. Its effects stack.</p>",
     "id": "ViwAwl9iKWgh77pP",
@@ -39699,18 +39485,6 @@
     },
     "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.VvZq1IIwkShKAkHq"
-  },
-  "Vvz4wGmyxEdAaJa0": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "Vvz4wGmyxEdAaJa0",
-    "name": "Skill Focus (Knowledge [Arcana])",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.Vvz4wGmyxEdAaJa0"
   },
   "VwYz6ieJnqzvIug7": {
     "description": "<p><em>You are adept at instigating wars among those you advise or antagonize.</em></p><p><strong>Prerequisites</strong>: Cha 13, hobgoblin.</p><p><strong>Benefits</strong>: You gain Bluff and Diplomacy as class skills. In addition, you receive a +4 competence bonus on Bluff and Diplomacy skill checks when using either skill to convince another character to go to war against or attack another creature or group.</p>",
@@ -40291,18 +40065,6 @@
     "tags": ["Combat", "Shield Mastery"],
     "uuid": "Compendium.pf1.feats.Item.WKrCMnPTxN3M55kR"
   },
-  "WMfe0yuef5IYgE7i": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "WMfe0yuef5IYgE7i",
-    "name": "Skill Focus (Knowledge [Nature])",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.WMfe0yuef5IYgE7i"
-  },
   "WNXSNzGJ2YpF2QPb": {
     "description": "<p><em>You can use your body as an implement to focus spells.</em></p><p><strong>Prerequisites</strong>: Caster level 5th, implements class feature, mental focus class feature, wyrwood.</p><p><strong>Benefits</strong>: You can invest mental focus in your body rather than an implement. When you invest mental focus this way, you treat your body as an implement of any implement school you know. You do not gain the resonant power for the chosen school, but you treat your occultist level as 1 higher for the purposes of that school's focus powers. You can change which implement school is tied to your body when you invest your chosen implements for the day.</p>",
     "id": "WNXSNzGJ2YpF2QPb",
@@ -40759,13 +40521,7 @@
     "name": "Night Stalker",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "2JWwVMFeqHnFDFSv",
-          "name": "Skill Focus (Stealth)",
-          "uuid": "Compendium.pf1.feats.Item.2JWwVMFeqHnFDFSv"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Stealth), darkvision, half-ogre or ogre, size Large or larger.",
       "skills": []
     },
@@ -41931,18 +41687,6 @@
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.Xkx9xQep3MY1PRYU"
   },
-  "XnJjz7As3jJkS4iF": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "XnJjz7As3jJkS4iF",
-    "name": "Skill Focus (Survival)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.XnJjz7As3jJkS4iF"
-  },
   "XoN7Y6KUcJvM7UfY": {
     "description": "<p><em>You can infuse a healing spell into a potion that produces a different effect.</em></p><p><strong>Prerequisites</strong>: Brew Potion, ability to cast cure serious wounds.</p><p><strong>Benefits</strong>: When you brew a potion, you can add the effects of one of the following spells to the potion's effects: cure light wounds, cure moderate wounds, or cure serious wounds. When imbibed, the potion has the effect of both the chosen cure spell and the spell used to brew the potion. When brewing the potion, you must expend both spells as though you were creating two separate potions. Due to the intricacies of making such a carefully blended potion, you must use particularly fine and rare ingredients, meaning you must pay twice the cost of creating each potion separately. The combined spell levels of the cure spell and the other spell used in the potion must be level 3 or less (for example, you could combine cure light wounds with a 2nd-level spell to create a healing potion, or cure moderate wounds with a 1st-level spell, or cure serious wounds with a 0-level spell).</p><p><strong>Versatile Brewing</strong>: The above feat allows potion brewers to concoct unusual variations in their potions, altering the potions' effects in strange and useful ways. This feat functions similarly to metamagic feats, though it affects the creation of potions instead of the normal casting of spells. Level limits for potions apply to their level after the application of any relevant metamagic feats (if the feat affects the component spell's level).</p>",
     "id": "XoN7Y6KUcJvM7UfY",
@@ -41968,13 +41712,7 @@
     "name": "Maze Expert",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "XnJjz7As3jJkS4iF",
-          "name": "Skill Focus (Survival)",
-          "uuid": "Compendium.pf1.feats.Item.XnJjz7As3jJkS4iF"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Survival), Survival 5 ranks.",
       "skills": [
         {
@@ -42440,13 +42178,7 @@
           "min": 13
         }
       ],
-      "feats": [
-        {
-          "id": "cKTRogbjMedE2Dk5",
-          "name": "Skill Focus (Fly)",
-          "uuid": "Compendium.pf1.feats.Item.cKTRogbjMedE2Dk5"
-        }
-      ],
+      "feats": [],
       "prereqText": "Str 13, Skill Focus (Fly), strix, wing-clipped racial trait.",
       "races": ["Strix"],
       "skills": []
@@ -43389,18 +43121,6 @@
     "tags": ["Combat", "Teamwork"],
     "uuid": "Compendium.pf1.feats.Item.Z7NmvzpFUS7xuITx"
   },
-  "Z7kvSCJd3aMgwXrn": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "Z7kvSCJd3aMgwXrn",
-    "name": "Skill Focus (Ride)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.Z7kvSCJd3aMgwXrn"
-  },
   "Z8MNJ7ekNySaffDh": {
     "description": "<p><em>Time spent learning the mystic arts of disguise has given you insight into the anonymity of the everyday.</em></p><p><strong>Prerequisites</strong>: Cha 17, Disguise 17 ranks, master disguise master ninja trick or master of disguise advanced rogue talent, ninja level 10th or rogue level 10th.</p><p><strong>Benefits</strong>: When using the master disguise master ninja trick or master of disguise advanced rogue talent to take on the appearance of a specific individual, you can fool divination magic and effects designed to locate the subject of your disguise as per the vigilante's any guise social talent. In addition, you gain a +10 bonus on Bluff checks to act like that individual.</p>",
     "id": "Z8MNJ7ekNySaffDh",
@@ -43648,18 +43368,6 @@
     },
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.ZRABRISj2DZOYzFW"
-  },
-  "ZRkknePy6wjAgoVH": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "ZRkknePy6wjAgoVH",
-    "name": "Skill Focus (Swim)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.ZRkknePy6wjAgoVH"
   },
   "ZTTzqRzFug6fVlJX": {
     "description": "<p><em>You can strike from afar with double weapons.</em></p><p><strong>Prerequisites</strong>: Dex 17, Spear Dancing Spiral, Spear Dancing Style, Two-Weapon Fighting, Weapon Finesse, Weapon Focus with the chosen weapon.</p><p><strong>Benefits</strong>: While using Spear Dancing Style and making a full attack using the chosen weapon as a double weapon, you can grant the reach special weapon feature to one or both of the weapon's ends until the end of your turn as a swift action.</p>",
@@ -44998,11 +44706,6 @@
           "id": "OZGTN4tTw006xLV2",
           "name": "Blight Survivalist",
           "uuid": "Compendium.pf1.feats.Item.OZGTN4tTw006xLV2"
-        },
-        {
-          "id": "XnJjz7As3jJkS4iF",
-          "name": "Skill Focus (Survival)",
-          "uuid": "Compendium.pf1.feats.Item.XnJjz7As3jJkS4iF"
         }
       ],
       "prereqText": "Blight Survivalist, Skill Focus (Survival).",
@@ -45679,11 +45382,6 @@
           "id": "u7rGDZUL296QIuA0",
           "name": "Combat Casting",
           "uuid": "Compendium.pf1.feats.Item.u7rGDZUL296QIuA0"
-        },
-        {
-          "id": "xgRstzkd1nDznrjH",
-          "name": "Skill Focus (Acrobatics)",
-          "uuid": "Compendium.pf1.feats.Item.xgRstzkd1nDznrjH"
         }
       ],
       "prereqText": "Combat Casting, Skill Focus (Acrobatics).",
@@ -46807,13 +46505,7 @@
     "name": "Dampen Presence",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "2JWwVMFeqHnFDFSv",
-          "name": "Skill Focus (Stealth)",
-          "uuid": "Compendium.pf1.feats.Item.2JWwVMFeqHnFDFSv"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Stealth), Stealth 5 ranks.",
       "skills": [
         {
@@ -46961,18 +46653,6 @@
     },
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.cJQNUETFUcn9lMMA"
-  },
-  "cKTRogbjMedE2Dk5": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "cKTRogbjMedE2Dk5",
-    "name": "Skill Focus (Fly)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.cKTRogbjMedE2Dk5"
   },
   "cKZLRzjSKYfqUWVL": {
     "description": "<p><em>Secrets of the First Vault help you perfect your spellcasting.</em></p><p><strong>Prerequisites</strong>: Combat Casting, ability to cast divine spells, worshiper of Abadar.</p><p><strong>Benefits</strong>: Three times per day, as a free action when you cast a harmless divine spell or a domain spell, you can choose for the casting to not provoke attacks of opportunity.</p><p><strong>Special</strong>: You can take this feat multiple times. When you do, you can use this feat three more times per day.</p>",
@@ -49526,18 +49206,6 @@
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.eJaPE2e9sqmDXBeV"
   },
-  "eLQUV5Hswm8vNLfE": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "eLQUV5Hswm8vNLfE",
-    "name": "Skill Focus (Climb)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.eLQUV5Hswm8vNLfE"
-  },
   "eLRlEq4mP25bmqrU": {
     "description": "<p><em>In the throes of blood frenzy, you can unleash a whirlwind of claws and teeth against your foes.</em></p><p><strong>Prerequisites</strong>: Combat Expertise, Greater Blood Frenzy, base attack bonus +6, blood frenzy ability, sahuagin.</p><p><strong>Benefits</strong>: When you make a full attack while in a blood frenzy, you can give up your regular attacks to instead make one melee attack at your highest base attack bonus against each bleeding or wounded opponent within reach. You must use a natural weapon with these attacks, and you must make a separate attack roll against each opponent. You do not need to use the same natural weapon against each opponent.</p><p>When you use Blood Tide, you also forfeit any extra attacks granted by other feats, spells, or abilities.</p>",
     "id": "eLRlEq4mP25bmqrU",
@@ -51463,18 +51131,6 @@
     "tags": ["Monster", "Vampire"],
     "uuid": "Compendium.pf1.feats.Item.fxiP8tcuwUepg5k6"
   },
-  "fyP8yuS4Wd8RxV5r": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "fyP8yuS4Wd8RxV5r",
-    "name": "Skill Focus (Artistry)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.fyP8yuS4Wd8RxV5r"
-  },
   "fyqn8fgNDAcIYFDu": {
     "description": "<p><em>Blind mesmerists have learned to navigate the world without relying on sight and can use their hypnotic stare regardless of their sight level.</em></p><p><strong>Prerequisites</strong>: Hypnotic stare class feature.</p><p><strong>Benefits</strong>: You can use your hypnotic stare ability without relying on sight and do not have to attempt concentration checks to use this ability while blinded.</p>",
     "id": "fyqn8fgNDAcIYFDu",
@@ -52508,13 +52164,7 @@
     "name": "Diabolical Negotiator",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "sQi2KLYCUMUZ1zj3",
-          "name": "Skill Focus (Diplomacy)",
-          "uuid": "Compendium.pf1.feats.Item.sQi2KLYCUMUZ1zj3"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Diplomacy), worshiper of Asmodeus.",
       "skills": []
     },
@@ -54950,18 +54600,6 @@
     "tags": ["Grit"],
     "uuid": "Compendium.pf1.feats.Item.iuP1UGshvb3yG1f7"
   },
-  "iuyQGv9f6vdPC1Nj": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "iuyQGv9f6vdPC1Nj",
-    "name": "Skill Focus (Spellcraft)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.iuyQGv9f6vdPC1Nj"
-  },
   "ixPtXlw0q40BPOml": {
     "description": "<p><em>You can turn your shield to deflect rays and other ranged attacks without harming it.</em></p><p><strong>Prerequisites</strong>: Dex 17, Missile Shield, Ray Shield, Spellbreaker.</p><p><strong>Benefits</strong>: When you use the Ray Shield feat, your shield is not affected by the deflected ranged touch attack.</p><h3>Combat Trick</h3><p>When you successfully deflect a ranged touch attack, you can spend 10 stamina points as a swift or immediate action to reflect the attack toward another target, which must be within 60 feet of you. The total distance from the original attacker, to you, and then to the new target cannot exceed the original attack's maximum range. You take a -5 penalty on the ranged touch attack to hit the new target. (See page 18.)</p>",
     "id": "ixPtXlw0q40BPOml",
@@ -56547,18 +56185,6 @@
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.kM5Wd6E0rTwV4yxT"
   },
-  "kNe3aEHS1byqAX50": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "kNe3aEHS1byqAX50",
-    "name": "Skill Focus (Sense Motive)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.kNe3aEHS1byqAX50"
-  },
   "kPcj4RDxPMJ8kvLz": {
     "description": "<p><em>Your walk, stance, and voice all amplify your status as a Hellknight when you cast spells or use spell-like abilities against opponents.</em></p><p><strong>Prerequisites</strong>: Hellknight rank, Hellknight 10 TPA.</p><p><strong>Benefits</strong>: Whenever you cast a spell or use a spell-like ability from the compulsion, fear, phantasm, or shadow sub-schools, add +1 to the DC of the saving throw against that spell or effect.</p>",
     "id": "kPcj4RDxPMJ8kvLz",
@@ -56571,18 +56197,6 @@
     },
     "tags": ["Faction"],
     "uuid": "Compendium.pf1.feats.Item.kPcj4RDxPMJ8kvLz"
-  },
-  "kSI3WpP2rsR2VRH5": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "kSI3WpP2rsR2VRH5",
-    "name": "Skill Focus (Perform)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.kSI3WpP2rsR2VRH5"
   },
   "kSLd3MM9myI6zhU6": {
     "description": "<p><em>You can grab an ally and move her to a position near you.</em></p><p><strong>Prerequisites</strong>: Escape Route.</p><p><strong>Benefits</strong>: If you have a free hand, as a move action you can grab a willing adjacent ally who also has this feat and place her in any other space adjacent to you. This movement does not provoke attacks of opportunity. You can do this only with allies who are able to move freely (not grappled, held, prone, slowed, or otherwise suffering restricted movement) and who are of your size or smaller.</p>",
@@ -58037,18 +57651,6 @@
     },
     "tags": ["Racial", "Gathlain"],
     "uuid": "Compendium.pf1.feats.Item.lVxr2z4mjykzc46F"
-  },
-  "lXmRbAWO1KhZuBuh": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "lXmRbAWO1KhZuBuh",
-    "name": "Skill Focus (Profession)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.lXmRbAWO1KhZuBuh"
   },
   "lXqVX3zL9FAWFBhX": {
     "description": "<p><em>You've made a peaceful and permanent bargain with a ghost, spirit, or outsider. It possesses your hand, guiding and aiding you in exchange for help in return.</em></p><p><strong>Benefits</strong>: You attract a ghost, spirit, or outsider with personal motivations to possess your hand. This usually involves some sort of mutually beneficial pact or agreement. Your possessed hand helps you in numerous ways, but its periodic, uncontrolled antics are distracting; you take a permanent -2 penalty on concentration checks once you gain this feat.</p><p>Any attack you make with a one-handed weapon, light weapon, unarmed strike, or natural attack with your possessed hand gains a +1 insight bonus on the attack roll and damage roll. You also gain a +1 insight bonus on Disable Device and Sleight of Hand checks. Once per day as a swift action, you can retrieve any stowed object you carry on your person, provided the object weighs no more than 5 pounds.</p>",
@@ -60399,13 +60001,7 @@
     "name": "Graceful Flier",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "cKTRogbjMedE2Dk5",
-          "name": "Skill Focus (Fly)",
-          "uuid": "Compendium.pf1.feats.Item.cKTRogbjMedE2Dk5"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Fly), fly speed.",
       "skills": []
     },
@@ -63019,18 +62615,6 @@
     "tags": ["Combat", "Teamwork"],
     "uuid": "Compendium.pf1.feats.Item.prl9FDe7Xqs10Lyz"
   },
-  "pslODOJK0u0wOxqL": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "pslODOJK0u0wOxqL",
-    "name": "Skill Focus (Craft)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.pslODOJK0u0wOxqL"
-  },
   "psmYqhAKtNKkXD7m": {
     "description": "<p><em>The toxic slime from your skin hardens into a thick, venomous resin that you can craft into various shapes.</em></p><p><strong>Prerequisites</strong>: Grippli, toxic skin alternate racial trait.</p><p><strong>Benefits</strong>: As a standard action, you can spend a use of your toxic skin alternate racial trait to create any simple light weapon out of your hardened secretions. This weapon remains intact and usable for 1 hour. Once per minute when making an attack, you can treat this weapon as if you had applied your grippli racial poison to it. You can use this envenoming function a number of times per day equal to your Constitution modifier for any individual weapon created. Anyone other than you who attempts to wield the weapon is exposed to your poison.</p>",
     "id": "psmYqhAKtNKkXD7m",
@@ -63712,18 +63296,6 @@
     "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.qV4k0miQDubNShC4"
   },
-  "qWcruct7zqZyKtbX": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "qWcruct7zqZyKtbX",
-    "name": "Skill Focus (Disguise)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.qWcruct7zqZyKtbX"
-  },
   "qXtHHjhWOTv0hciA": {
     "description": "<p><em>You hold strong against aberrations.</em></p><p><strong>Prerequisites</strong>: Favored enemy (aberration) class feature.</p><p><strong>Benefits</strong>: Choose either Fortitude saves against transformation effects (including transmutation spells and spell-like abilities) or Will saves against mind-affecting effects. You gain a bonus on the selected saving throw equal to half your favored enemy (aberration) bonus. Against aberrations' spells and abilities, you gain this bonus on Fortitude saves against transmutation effects and on Will saves against mind-affecting effects.</p>",
     "id": "qXtHHjhWOTv0hciA",
@@ -63888,11 +63460,6 @@
           "id": "AEgF9fHk9qUkt4cd",
           "name": "Owl Swoop",
           "uuid": "Compendium.pf1.feats.Item.AEgF9fHk9qUkt4cd"
-        },
-        {
-          "id": "2JWwVMFeqHnFDFSv",
-          "name": "Skill Focus (Stealth)",
-          "uuid": "Compendium.pf1.feats.Item.2JWwVMFeqHnFDFSv"
         }
       ],
       "prereqText": "Dex 17, Owl Style, Owl Swoop, Skill Focus (Stealth), base attack bonus +7 or monk level 5th, Acrobatics 1 rank, Fly 1 rank, Stealth 1 rank.",
@@ -64292,13 +63859,7 @@
     "name": "Master Swimmer",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "ZRkknePy6wjAgoVH",
-          "name": "Skill Focus (Swim)",
-          "uuid": "Compendium.pf1.feats.Item.ZRkknePy6wjAgoVH"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Swim), Swim 10 ranks.",
       "skills": [
         {
@@ -64733,18 +64294,6 @@
     },
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.r7c5Urdl5332rYzt"
-  },
-  "r9XAvlQ9lvVRl5LA": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "r9XAvlQ9lvVRl5LA",
-    "name": "Skill Focus (Knowledge [Geography])",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.r9XAvlQ9lvVRl5LA"
   },
   "rARPxkOvcsKxx0LK": {
     "description": "<p><em>You have refined your ability to leap through the shadows.</em></p><p><strong>Prerequisites</strong>: Shadow jump shadowdancer class feature.</p><p><strong>Benefits</strong>: When you travel between shadows using the shadow jump ability, the minimum increment that you can jump is 5 feet, allowing you to split your shadow jumps into 5-foot increments instead of 10-foot increments. In addition, your shadow jump ability counts as the ability to cast dimension door for the purpose of meeting the prerequisites of the Dimensional Agility feat as well as any feat that lists that feat as a prerequisite, and your shadow jump benefits from such feats as if you were casting dimension door.</p><p><strong>Normal</strong>: Each shadow jump, no matter how small, counts as a 10-foot increment.</p>",
@@ -65907,18 +65456,6 @@
     "tags": ["Combat", "Teamwork"],
     "uuid": "Compendium.pf1.feats.Item.s6QrabM8XDQwAAuq"
   },
-  "s6Sy6KxxYSXDOmJa": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "s6Sy6KxxYSXDOmJa",
-    "name": "Skill Focus (Use Magic Device)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.s6Sy6KxxYSXDOmJa"
-  },
   "sEMPXZbDGsE1w2Sh": {
     "description": "<p><em>You have an expansive personality and can forge more affiliations than normal.</em></p><p><strong>Benefits</strong>: Increase your affiliation slot total by 2.</p><p><strong>Normal</strong>: You have a number of affiliation slots equal to your Charisma modifier + 1 (minimum 1).</p><p><strong>Special</strong>: You can take this feat multiple times; each time you do so, your number of affiliation slots increases by 2.</p>",
     "id": "sEMPXZbDGsE1w2Sh",
@@ -66025,18 +65562,6 @@
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.sP6WfQX0CzTDDBnh"
   },
-  "sQi2KLYCUMUZ1zj3": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "sQi2KLYCUMUZ1zj3",
-    "name": "Skill Focus (Diplomacy)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.sQi2KLYCUMUZ1zj3"
-  },
   "sRA506Q1aVWrJ0PY": {
     "description": "<p><em>Your staff is valuable for attack and defensive balance.</em></p><p><strong>Prerequisites</strong>: Tripping Staff.</p><p><strong>Benefits</strong>: You add half your tier to CMD against trip maneuvers and on combat maneuver checks to trip with a quarterstaff. When you're wielding a quarterstaff and an opponent you threaten attempts to trip you and fails, it provokes an attack of opportunity from you. You must use your staff for this attack of opportunity.</p>",
     "id": "sRA506Q1aVWrJ0PY",
@@ -66136,18 +65661,6 @@
     },
     "tags": ["Racial", "Dwarf"],
     "uuid": "Compendium.pf1.feats.Item.sUJC4Ig5T64LHO0J"
-  },
-  "sUwMFZMDtVqqLswV": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "sUwMFZMDtVqqLswV",
-    "name": "Skill Focus (Knowledge [Planes])",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.sUwMFZMDtVqqLswV"
   },
   "sWUweHL54Ai6YB9Q": {
     "description": "<p><em>Your knowledge of strange life forms makes you adept at piercing their disguises and detecting their hiding places.</em></p><p><strong>Prerequisites</strong>: Skill Focus (Knowledge [any]), Knowledge (any) 3 ranks.</p><p><strong>Benefits</strong>: You can substitute a Knowledge skill for opposed Perception checks against creatures' Disguise and Stealth checks, and for Survival checks to track creatures. You must have 3 ranks in the Knowledge skill that corresponds to the creature's type .</p>",
@@ -66274,13 +65787,7 @@
     "name": "Deft Catcher",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "zWybSUTo0L3ti0Ve",
-          "name": "Skill Focus (Sleight of Hand)",
-          "uuid": "Compendium.pf1.feats.Item.zWybSUTo0L3ti0Ve"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Sleight of Hand).",
       "skills": []
     },
@@ -69063,18 +68570,6 @@
     "tags": ["Combat", "Performance"],
     "uuid": "Compendium.pf1.feats.Item.vd62vtADz4PTTlgg"
   },
-  "vdQNZjiXvUQiwmvk": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "vdQNZjiXvUQiwmvk",
-    "name": "Skill Focus (Escape Artist)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.vdQNZjiXvUQiwmvk"
-  },
   "vhN413T0ASvOxBL1": {
     "description": "<p>This multi-armed creature is skilled at making attacks with multiple weapons.</p><p><strong>Prerequisites</strong>: Dex 13, three or more hands.</p><p><strong>Benefit</strong>: Penalties for fighting with multiple weapons are reduced by –2 with the primary hand and by –6 with off hands.</p><p><strong>Normal</strong>: A creature without this feat takes a –6 penalty on attacks made with its primary hand and a –10 penalty on attacks made with all of its off hands. (It has one primary hand, and all the others are off hands.) See Two-Weapon Fighting.</p><p><strong>Special</strong>: This feat replaces the Two-Weapon Fighting feat for creatures with more than two arms.</p>",
     "id": "vhN413T0ASvOxBL1",
@@ -69150,18 +68645,6 @@
     },
     "tags": ["Monster", "Giant"],
     "uuid": "Compendium.pf1.feats.Item.vk5vM2DwqirZoTNZ"
-  },
-  "vkie3lLGq6LgYp8D": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "vkie3lLGq6LgYp8D",
-    "name": "Skill Focus (Appraise)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.vkie3lLGq6LgYp8D"
   },
   "vkuibBZujxmi57jo": {
     "description": "<p><em>You keep an eye out while focusing on your weapon, allowing you to avoid attacks while shooting and reloading firearms.</em></p><p><strong>Prerequisites</strong>: Grit class feature or Amateur Gunslinger feat, Dodge, Mobility.</p><p><strong>Benefits</strong>: As long as you have at least 1 grit point, you do not provoke attacks of opportunity when shooting or reloading a firearm.</p>",
@@ -70169,18 +69652,6 @@
     "tags": ["General"],
     "uuid": "Compendium.pf1.feats.Item.we7qzOwcMMVnYXPP"
   },
-  "weePoRFNXCKBgP1S": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "weePoRFNXCKBgP1S",
-    "name": "Skill Focus (Knowledge [Religion])",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.weePoRFNXCKBgP1S"
-  },
   "wehcjQxFeR0JRnSo": {
     "description": "<p><em>You can assume the aspects of an animal for longer stretches of time than most of your rivals and allies.</em></p><p><strong>Prerequisites</strong>: Animal focus class feature.</p><p><strong>Benefits</strong>: Add your Wisdom bonus (minimum 1) to the number of minutes per day that you can use your animal focus ability to assume the aspects of an animal.</p>",
     "id": "wehcjQxFeR0JRnSo",
@@ -71042,18 +70513,6 @@
     "tags": ["Combat", "Combat Trick"],
     "uuid": "Compendium.pf1.feats.Item.xfNjK0Tph2BC0IF0"
   },
-  "xgRstzkd1nDznrjH": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "xgRstzkd1nDznrjH",
-    "name": "Skill Focus (Acrobatics)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.xgRstzkd1nDznrjH"
-  },
   "xizQKO1GdAx3jySf": {
     "description": "<p><em>Thinking back, you discover a lie in what you once thought to be words of truth.</em></p><p><strong>Prerequisites</strong>: Discern lies class feature.</p><p><strong>Benefits</strong>: Once per day as a free action, you can think back about a single statement you heard in the last day and determine if it was a lie. This acts like the discern lies spell, but instead of affecting a creature, it affects a single statement a creature has made.</p><p>For example, if the king told you, 'My daughter is in the monster's dungeon' before you left to find her, as long as the king said that to you within the past day, you can use this feat to determine whether or not the king deliberately and knowingly lied to you when he made that statement.</p>",
     "id": "xizQKO1GdAx3jySf",
@@ -71303,13 +70762,7 @@
     "name": "Dog-Sniff-Hate",
     "prerequisites": {
       "abilities": [],
-      "feats": [
-        {
-          "id": "9yua5ZlomvDj1c7D",
-          "name": "Skill Focus (Perception)",
-          "uuid": "Compendium.pf1.feats.Item.9yua5ZlomvDj1c7D"
-        }
-      ],
+      "feats": [],
       "prereqText": "Skill Focus (Perception), goblin.",
       "races": ["Goblin"],
       "skills": []
@@ -73056,18 +72509,6 @@
     "tags": ["General", "Mythic"],
     "uuid": "Compendium.pf1.feats.Item.zW5RRkuifjW9gmKR"
   },
-  "zWybSUTo0L3ti0Ve": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "zWybSUTo0L3ti0Ve",
-    "name": "Skill Focus (Sleight of Hand)",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.zWybSUTo0L3ti0Ve"
-  },
   "zZCAMcfrQpXLO8hA": {
     "description": "<p><em>Your vocal chords are especially tough and allow you to croak more often.</em></p><p><strong>Prerequisites</strong>: Boggard, terrifying croak.</p><p><strong>Benefits</strong>: You gain one extra use of terrifying croak per hour. If your recharge time is less than 1 hour, you instead gain an extra use each time the ability recharges.</p>",
     "id": "zZCAMcfrQpXLO8hA",
@@ -73148,11 +72589,6 @@
           "id": "Sy1Oj9L3AKXIvfqK",
           "name": "Hellcat Stealth",
           "uuid": "Compendium.pf1.feats.Item.Sy1Oj9L3AKXIvfqK"
-        },
-        {
-          "id": "2JWwVMFeqHnFDFSv",
-          "name": "Skill Focus (Stealth)",
-          "uuid": "Compendium.pf1.feats.Item.2JWwVMFeqHnFDFSv"
         }
       ],
       "prereqText": "Hellcat Stealth, Skill Focus (Stealth), sneak attack +2d6.",
@@ -73160,18 +72596,6 @@
     },
     "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.zdrniFwyVM26yns1"
-  },
-  "zes8vxX3D6CKoYC2": {
-    "description": "<p><em>Choose a skill. You are particularly adept at that skill.</em></p><p><strong>Benefits</strong>: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.</p><p><strong>Special</strong>: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.</p>",
-    "id": "zes8vxX3D6CKoYC2",
-    "name": "Skill Focus (Knowledge [History])",
-    "prerequisites": {
-      "abilities": [],
-      "feats": [],
-      "skills": []
-    },
-    "tags": ["General"],
-    "uuid": "Compendium.pf1.feats.Item.zes8vxX3D6CKoYC2"
   },
   "zeyA4Vw8wdkuDpg9": {
     "description": "<p><em>You have a gift for making authentic-sounding threats you never intend to follow through on.</em></p><p><strong>Prerequisites</strong>: Bluff 5 ranks.</p><p><strong>Benefits</strong>: You can use the Bluff skill to demoralize opponents in combat instead of Intimidate. You can attempt a Bluff check in place of an Intimidate check when using the Dazzling Display feat and feats that list Dazzling Display as a prerequisite. If you use the Bluff skill to demoralize, you cannot use it to feint until the beginning of your next turn, and vice versa.</p>",

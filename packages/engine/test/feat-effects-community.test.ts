@@ -75,25 +75,6 @@ describe("community feat sweep: extracted static effects", () => {
     expect(sheet.skills.swm?.total).toBe((base.skills.swm?.total ?? 0) + 2);
   });
 
-  it("Skill Focus (Perception): +3, and +6 once Perception has 10 ranks (CRB shape)", () => {
-    const base = compute(makeDoc(), ref);
-    const low = compute(makeDoc({ feats: [featId("Skill Focus (Perception)")] }), ref);
-    expect(low.skills.per?.total).toBe((base.skills.per?.total ?? 0) + 3);
-
-    const ranked = makeDoc({
-      classes: [{ tag: "fighter", level: 10 }],
-      feats: [featId("Skill Focus (Perception)")],
-      skillRanks: { per: 10 },
-    });
-    const rankedBase = makeDoc({
-      classes: [{ tag: "fighter", level: 10 }],
-      skillRanks: { per: 10 },
-    });
-    expect(compute(ranked, ref).skills.per?.total).toBe(
-      (compute(rankedBase, ref).skills.per?.total ?? 0) + 6,
-    );
-  });
-
   it("Storm Soul: immunity to electricity (giant feat)", () => {
     const sheet = compute(makeDoc({ feats: [featId("Storm Soul")] }), ref);
     const qualifiers = (sheet.defenses?.immunities ?? []).map((i) => i.qualifier);
@@ -397,23 +378,22 @@ describe("feat-choice axes: options / energy / craft", () => {
     expect(sheet.defenses?.resistances.find((r) => r.qualifier === "cold")?.total).toBe(5);
   });
 
-  const skillFocusCraft = featId("Skill Focus (Craft)");
+  // The base feat's skill picker also offers the character's own Craft,
+  // Perform, and Profession instances.
+  const skillFocus = featId("Skill Focus");
 
-  it("Skill Focus (Craft): no choice stored emits nothing", () => {
+  it("Skill Focus on Craft: no choice stored emits nothing", () => {
     const base = compute(makeDoc({ skillRanks: { "crf.alchemy": 5 } }), ref);
-    const sheet = compute(
-      makeDoc({ feats: [skillFocusCraft], skillRanks: { "crf.alchemy": 5 } }),
-      ref,
-    );
+    const sheet = compute(makeDoc({ feats: [skillFocus], skillRanks: { "crf.alchemy": 5 } }), ref);
     expect(sheet.skills["crf.alchemy"]?.total).toBe(base.skills["crf.alchemy"]?.total);
   });
 
-  it("Skill Focus (Craft): +3 on the chosen Craft instance below 10 ranks, +6 at 10+", () => {
+  it("Skill Focus on Craft: +3 on the chosen Craft instance below 10 ranks, +6 at 10+", () => {
     // crf.alchemy: 5 ranks + 3 class skill (fighter) + 0 Int mod = 8 -> +3 = 11.
     const low = compute(
       makeDoc({
-        feats: [skillFocusCraft],
-        featChoices: { [skillFocusCraft]: "crf.alchemy" },
+        feats: [skillFocus],
+        featChoices: { [skillFocus]: "crf.alchemy" },
         skillRanks: { "crf.alchemy": 5 },
       }),
       ref,
@@ -423,8 +403,8 @@ describe("feat-choice axes: options / energy / craft", () => {
     // crf.alchemy: 10 ranks + 3 class skill + 0 Int mod = 13 -> +6 = 19.
     const high = compute(
       makeDoc({
-        feats: [skillFocusCraft],
-        featChoices: { [skillFocusCraft]: "crf.alchemy" },
+        feats: [skillFocus],
+        featChoices: { [skillFocus]: "crf.alchemy" },
         skillRanks: { "crf.alchemy": 10 },
       }),
       ref,
@@ -432,13 +412,13 @@ describe("feat-choice axes: options / energy / craft", () => {
     expect(high.skills["crf.alchemy"]?.total).toBe(19);
   });
 
-  it("Skill Focus (Craft): repeatable, primary + extraFeats instance each target their own instance", () => {
+  it("Skill Focus on Craft: repeatable, primary + extraFeats instance each target their own instance", () => {
     const sheet = compute(
       makeDoc({
-        feats: [skillFocusCraft],
-        featChoices: { [skillFocusCraft]: "crf.alchemy" },
+        feats: [skillFocus],
+        featChoices: { [skillFocus]: "crf.alchemy" },
         skillRanks: { "crf.alchemy": 5, "crf.armor": 5 },
-        extraFeats: [{ instanceId: "x1", featId: skillFocusCraft, choiceId: "crf.armor" }],
+        extraFeats: [{ instanceId: "x1", featId: skillFocus, choiceId: "crf.armor" }],
       }),
       ref,
     );
@@ -446,14 +426,11 @@ describe("feat-choice axes: options / energy / craft", () => {
     expect(sheet.skills["crf.armor"]?.total).toBe(11);
   });
 
-  const skillFocusPerform = featId("Skill Focus (Perform)");
-  const skillFocusProfession = featId("Skill Focus (Profession)");
-
-  it("Skill Focus (Perform): +3 below 10 ranks, +6 at 10+, mirrors Skill Focus (Craft)", () => {
+  it("Skill Focus on Perform: +3 below 10 ranks, +6 at 10+", () => {
     const low = compute(
       makeDoc({
-        feats: [skillFocusPerform],
-        featChoices: { [skillFocusPerform]: "prf.oratory" },
+        feats: [skillFocus],
+        featChoices: { [skillFocus]: "prf.oratory" },
         skillRanks: { "prf.oratory": 5 },
       }),
       ref,
@@ -462,8 +439,8 @@ describe("feat-choice axes: options / energy / craft", () => {
     expect(low.skills["prf.oratory"]?.total).toBe(7);
     const high = compute(
       makeDoc({
-        feats: [skillFocusPerform],
-        featChoices: { [skillFocusPerform]: "prf.oratory" },
+        feats: [skillFocus],
+        featChoices: { [skillFocus]: "prf.oratory" },
         skillRanks: { "prf.oratory": 10 },
       }),
       ref,
@@ -472,11 +449,11 @@ describe("feat-choice axes: options / energy / craft", () => {
     expect(high.skills["prf.oratory"]?.total).toBe(15);
   });
 
-  it("Skill Focus (Profession): +3 below 10 ranks, +6 at 10+, mirrors Skill Focus (Craft)", () => {
+  it("Skill Focus on Profession: +3 below 10 ranks, +6 at 10+", () => {
     const low = compute(
       makeDoc({
-        feats: [skillFocusProfession],
-        featChoices: { [skillFocusProfession]: "pro.brewer" },
+        feats: [skillFocus],
+        featChoices: { [skillFocus]: "pro.brewer" },
         skillRanks: { "pro.brewer": 5 },
       }),
       ref,
@@ -485,8 +462,8 @@ describe("feat-choice axes: options / energy / craft", () => {
     expect(low.skills["pro.brewer"]?.total).toBe(12);
     const high = compute(
       makeDoc({
-        feats: [skillFocusProfession],
-        featChoices: { [skillFocusProfession]: "pro.brewer" },
+        feats: [skillFocus],
+        featChoices: { [skillFocus]: "pro.brewer" },
         skillRanks: { "pro.brewer": 10 },
       }),
       ref,

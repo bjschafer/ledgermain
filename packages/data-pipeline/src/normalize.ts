@@ -159,6 +159,7 @@ import { transformWeapon, isMundaneWeapon } from "./transform/weapons.js";
 import { transformWitchHexes } from "./transform/witchHexes.js";
 import { transformWitchPatrons } from "./transform/witchPatrons.js";
 import { blessingClassFeatures, transformBlessings } from "./transform/warpriestBlessings.js";
+import { stripHtml } from "./util/html.js";
 import { isFolderDoc, readPack, readPackById, type RawDoc } from "./util/packs.js";
 import { readPfDataDictionary } from "./util/pfdata.js";
 import { applyPfDataPrestigeChassis } from "./transform/prestigeClassSkills.js";
@@ -577,6 +578,22 @@ export function normalize(opts: NormalizeOptions): {
   // -refs in its prose fall back to prose-only soft warnings (see prereqs.ts).
   const normalizeFeatName = (name: string): string => name.toLowerCase().replace(/[^a-z0-9]+/g, "");
   const systemFeatNames = new Set(systemFeats.map((f) => normalizeFeatName(f.name)));
+  // The community pack also ships one copy of a choose-a-skill feat per skill
+  // ("Skill Focus (Stealth)"), each carrying the system feat's text verbatim.
+  // The system feat already takes that pick through its own choice picker, so
+  // a copy is a second entry for the same feat rather than a distinct one.
+  // Matching on identical text keeps variants that really differ, like
+  // "Skill Focus (Mythic)" or the per-skill Signature Skill unlocks.
+  const featText = (html: string | undefined): string => normalizeFeatName(stripHtml(html ?? ""));
+  const systemFeatTextByName = new Map(
+    systemFeats.map((f) => [normalizeFeatName(f.name), featText(f.description)]),
+  );
+  const isChoiceCopyOfSystemFeat = (feat: Feat): boolean => {
+    const base = /^(.+?) \(.+\)$/.exec(feat.name)?.[1];
+    if (base === undefined) return false;
+    const text = featText(feat.description);
+    return text !== "" && systemFeatTextByName.get(normalizeFeatName(base)) === text;
+  };
   const seenPfContentNames = new Set<string>();
   const pfContentFeats: Feat[] = [];
   for (const pf of readPack(opts.pfContentFeatsDir)) {
@@ -584,7 +601,9 @@ export function normalize(opts: NormalizeOptions): {
     const key = normalizeFeatName(pf.doc.name);
     if (systemFeatNames.has(key) || seenPfContentNames.has(key)) continue;
     seenPfContentNames.add(key);
-    pfContentFeats.push(transformFeat(pf.doc, resolveUuid));
+    const feat = transformFeat(pf.doc, resolveUuid);
+    if (isChoiceCopyOfSystemFeat(feat)) continue;
+    pfContentFeats.push(feat);
   }
 
   const feats: Feat[] = [...systemFeats, ...pfContentFeats];
@@ -864,10 +883,29 @@ export function normalize(opts: NormalizeOptions): {
   // display-only entries; anything already present by name is skipped so the
   // vendored entry keeps its real `changes[]` and a hand-authored supplement
   // keeps its id — the standing "hand-authored wins mechanics" rule.
+  //
+  // Pf Data 1e also lists a graded family once under its bare name at the
+  // entry-level price ("Ring of Protection", 2,000 gp), where the pack ships
+  // each grade as its own item ("Ring of Protection +1" through "+5"). A bare
+  // name that a pack item extends at the same price is that family's first
+  // grade, already present with real changes, so it's skipped too.
   const magicItems = transformMagicItems(opts.pfDataJsonDir, SLICE.magicItemFiles);
   const itemNames = new Set(items.map((it) => normalizeEntityName(it.name)));
+  const gradedBy = items.map((it) => ({ name: it.name.toLowerCase(), price: it.price }));
+  const isBareFamilyName = (imported: Item): boolean => {
+    const name = imported.name.toLowerCase();
+    return (
+      imported.price !== undefined &&
+      gradedBy.some(
+        (it) =>
+          it.price === imported.price &&
+          (it.name.startsWith(`${name} `) || it.name.startsWith(`${name},`)),
+      )
+    );
+  };
   for (const imported of magicItems.items) {
     if (itemNames.has(normalizeEntityName(imported.name))) continue;
+    if (isBareFamilyName(imported)) continue;
     itemNames.add(normalizeEntityName(imported.name));
     items.push(imported);
   }

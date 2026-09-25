@@ -108,10 +108,6 @@ export const ENERGY_TYPES: readonly FeatChoiceOption[] = [
  *   - "options" → a fixed named-option list the entry itself carries (e.g.
  *     Angelic Flesh's Brazen/Golden/Silver/Steel).
  *   - "energy" → {@link ENERGY_TYPES}.
- *   - "craft" | "perform" | "profession" → the character's OWN skill
- *     instances of that family (`doc.build.skillRanks` keys prefixed
- *     `crf.`/`prf.`/`pro.`, enumerated web-side); `build(choiceId)` receives
- *     the instance id (e.g. `"crf.alchemy"`) and targets `skill.<id>`.
  * `build(choiceId)` produces the changes to emit once a choice is stored in
  * `doc.build.featChoices[featId]`.
  */
@@ -121,10 +117,7 @@ export type ChoiceFeatEntry = {
   build(choiceId: string): FeatChange[];
 } & (
   | {
-      choice: {
-        type: "skill" | "weapon" | "school" | "energy" | "craft" | "perform" | "profession";
-        label: string;
-      };
+      choice: { type: "skill" | "weapon" | "school" | "energy"; label: string };
     }
   | { choice: { type: "options"; label: string; options: readonly FeatChoiceOption[] } }
 );

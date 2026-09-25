@@ -60,9 +60,16 @@ describe("metadata + provenance", () => {
     // `vendoredPrestigeClasses.test.ts`).
     expect(Object.keys(ref.classes)).toHaveLength(163);
     // 390 system-pack feats + ~3,150 merged in from the community pf1-content
-    // module (390 + 3,251 - 77 name collisions - 1 internal dupe; see
-    // config.ts's PF_CONTENT_REPO and normalize.ts's feats merge).
-    expect(Object.keys(ref.feats)).toHaveLength(3563);
+    // module (390 + 3,251 - 77 name collisions - 1 internal dupe - 37
+    // per-skill Skill Focus copies; see config.ts's PF_CONTENT_REPO and
+    // normalize.ts's feats merge).
+    expect(Object.keys(ref.feats)).toHaveLength(3526);
+    const featNames = new Set(Object.values(ref.feats).map((f) => f.name));
+    expect(featNames.has("Skill Focus")).toBe(true);
+    expect(featNames.has("Skill Focus (Stealth)")).toBe(false);
+    // Variants whose text differs from the base feat stay.
+    expect(featNames.has("Skill Focus (Mythic)")).toBe(true);
+    expect(featNames.has("Signature Skill (Stealth)")).toBe(true);
     // 1,998 pf-traits YAML files, deduped by normalized name within the pack
     // itself (no system-pack traits exist to prefer).
     expect(Object.keys(ref.traits)).toHaveLength(1981);
@@ -1220,7 +1227,7 @@ describe("magic-item catalog (Pf Data 1e import)", () => {
   it("imports the published catalog the pack omits", () => {
     // The pack carries ~5% of published magic items. Bumping PFDATA_SHA may
     // shift this; a change here should be deliberate + reviewed.
-    expect(imported.length).toBe(3832);
+    expect(imported.length).toBe(3813);
   });
 
   it("every import is display-only", () => {
@@ -1245,6 +1252,18 @@ describe("magic-item catalog (Pf Data 1e import)", () => {
     expect(cloak.id).not.toStartWith("mi:");
     expect(cloak.changes.length).toBeGreaterThan(0);
     expect(byName(ref.items, "Boots of the Cat").id).toBe("item:boots-of-the-cat");
+  });
+
+  it("skips a bare family name the pack already carries as its first grade", () => {
+    // "Ring of Protection" at 2,000 gp is the pack's "Ring of Protection +1".
+    const names = new Set(Object.values(ref.items).map((it) => it.name));
+    expect(names.has("Ring of Protection")).toBe(false);
+    expect(names.has("Cloak of Resistance")).toBe(false);
+    expect(names.has("Belt of Physical Might")).toBe(false);
+    // A pack item that only shares the name's opening at a different price is
+    // a different item: Ambrosia is not a vial of it.
+    expect(names.has("Ambrosia")).toBe(true);
+    expect(names.has("Ambrosia (vial)")).toBe(true);
   });
 
   it("parses the stat block into structured fields", () => {
