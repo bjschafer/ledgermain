@@ -24,6 +24,11 @@ describe("advanceRounds", () => {
     expect(expired.map((b) => b.name)).toEqual(["Bless"]);
   });
 
+  it("a paused buff accrues no elapsed rounds", () => {
+    const { buffs } = advanceRounds([buff({ name: "Rage", paused: true, roundsActive: 2 })], 3);
+    expect(buffs[0]!.roundsActive).toBe(2);
+  });
+
   it("counts elapsed rounds on an indefinite buff", () => {
     const one = advanceRounds([buff({ name: "Rage" })], 1).buffs;
     const three = advanceRounds(one, 2).buffs;

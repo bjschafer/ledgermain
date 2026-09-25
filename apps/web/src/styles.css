@@ -3723,6 +3723,17 @@ button:focus-visible,
   border-bottom: 0;
 }
 
+/* Switched off but kept (see `ActiveBuff.paused`): the row stays readable so
+   the player can find it again, but reads as not counting. */
+.buff-row.paused .buff-main {
+  opacity: 0.55;
+}
+
+.buff-off {
+  font-weight: 400;
+  color: var(--muted);
+}
+
 .buff-main {
   flex: 1;
   min-width: 0;

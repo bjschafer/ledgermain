@@ -258,6 +258,17 @@ describe("describeLiveChange: buffs", () => {
     ).toBe("Bull's Strength is up");
   });
 
+  it("logs a buff switched off and back on", () => {
+    const on = buff("b1", "Tactical Acumen");
+    const off = { ...on, paused: true };
+    expect(text(withLive({ activeBuffs: [on] }), withLive({ activeBuffs: [off] }))).toBe(
+      "Tactical Acumen switched off",
+    );
+    expect(text(withLive({ activeBuffs: [off] }), withLive({ activeBuffs: [on] }))).toBe(
+      "Tactical Acumen switched back on",
+    );
+  });
+
   it("logs a buff ending", () => {
     expect(
       text(withLive({ activeBuffs: [buff("b1", "Bless")] }), withLive({ activeBuffs: [] })),

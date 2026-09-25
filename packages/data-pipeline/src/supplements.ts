@@ -1113,6 +1113,77 @@ export function applyBuffSupplements(buffs: Buff[]): void {
 }
 
 /**
+ * Tactical Acumen's insight bonus (Ultimate Combat p. 246): +1, plus 1 per
+ * five caster levels above 5th, maximum +4.
+ */
+const TACTICAL_ACUMEN_BONUS = "[[min(4, 1 + floor(max(0, @item.level - 5) / 5))]]";
+
+/**
+ * Whole buffs for spells the vendored buff pack never modeled, where the gap
+ * isn't a missing number on an existing buff (the tables above) but the buff
+ * itself. Each is keyed to its vendored spell by exact name, the same edge
+ * the tracker's spell-to-buff link matches on, and both ends are checked on
+ * apply: the spell must exist, and no vendored buff may already carry the
+ * name (upstream shipping one retires the entry here).
+ *
+ * - False Life (CRB p. 239): the temp HP is `1d10 + CL`, dice, so it's a
+ *   note. Its id predates this table (the entry used to live in the engine)
+ *   and is kept so stored characters still recognize their active copy.
+ * - Tactical Acumen (Ultimate Combat p. 246): the bonus only applies on top
+ *   of a positional one (flanking, higher ground, cover), which the sheet
+ *   doesn't track, so it's notes carrying the scaled number.
+ */
+export const HAND_AUTHORED_BUFFS: readonly Buff[] = [
+  {
+    id: "engine:spell-false-life",
+    uuid: "Local.pf1-clean-room.buffs.false-life",
+    name: "False Life",
+    subType: "spell",
+    changes: [],
+    contextNotes: [
+      {
+        target: "tempHp",
+        text: "Grants 1d10 + 1 per caster level (max +10) temporary hit points. That's dice based, not modeled as a static bonus: roll it and add it by hand.",
+      },
+    ],
+    duration: { end: "initiative", units: "hour", value: "@item.level" },
+  },
+  {
+    id: "hand:spell-tactical-acumen",
+    uuid: "Local.pf1-clean-room.buffs.tactical-acumen",
+    name: "Tactical Acumen",
+    subType: "spell",
+    changes: [],
+    contextNotes: [
+      {
+        target: "attack",
+        text: `+${TACTICAL_ACUMEN_BONUS} insight bonus on an attack roll that already gets a bonus from battlefield position, such as flanking or higher ground. The sheet doesn't track position, so add it by hand.`,
+      },
+      {
+        target: "ac",
+        text: `+${TACTICAL_ACUMEN_BONUS} insight bonus to AC whenever you get an AC bonus from battlefield position, such as cover. The sheet doesn't track position, so add it by hand.`,
+      },
+    ],
+    duration: { units: "round", value: "@item.level" },
+  },
+];
+
+/**
+ * Append {@link HAND_AUTHORED_BUFFS} to the vendored buffs, throwing if one's
+ * spell is missing from `spellNames` or a vendored buff already has its name.
+ */
+export function addHandAuthoredBuffs(buffs: Buff[], spellNames: ReadonlySet<string>): void {
+  const vendoredNames = new Set(buffs.map((b) => b.name));
+  for (const buff of HAND_AUTHORED_BUFFS) {
+    if (!spellNames.has(buff.name)) {
+      throw new Error(`[supplements] hand-authored buff "${buff.name}" names no vendored spell`);
+    }
+    if (vendoredNames.has(buff.name)) redundant(`hand-authored buff "${buff.name}"`);
+    buffs.push(structuredClone(buff));
+  }
+}
+
+/**
  * Hand-authored fixed energy resistances for the six planetouched races,
  * prose-only upstream (races.json carries no mechanical `eres.*` changes for
  * any race). Values per the published Bestiary/Advanced Race Guide entries:

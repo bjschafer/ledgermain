@@ -4,8 +4,10 @@ import type { Buff } from "@pf1/schema";
 
 import { loadRefData } from "../src/index.js";
 import {
+  HAND_AUTHORED_BUFFS,
   SUPPLEMENTAL_BUFF_CHANGES,
   SUPPLEMENTAL_BUFF_CONTEXT_NOTES,
+  addHandAuthoredBuffs,
   applyBuffSupplements,
 } from "../src/supplements.js";
 
@@ -82,5 +84,33 @@ describe("applyBuffSupplements drift guards", () => {
       target: "dr.adamantine",
       type: "untyped",
     });
+  });
+});
+
+describe("hand-authored buffs", () => {
+  const spellNames = new Set(HAND_AUTHORED_BUFFS.map((b) => b.name));
+
+  it.each(HAND_AUTHORED_BUFFS.map((b) => [b.name, b.id] as const))(
+    "%s ships in RefData.buffs under %s",
+    (name, id) => {
+      expect(ref.buffs[id]?.name).toBe(name);
+    },
+  );
+
+  it("throws once upstream ships a buff of the same name", () => {
+    const upstream: Buff = {
+      id: "vendored",
+      uuid: "vendored",
+      name: "Tactical Acumen",
+      changes: [],
+      contextNotes: [],
+    };
+    expect(() => addHandAuthoredBuffs([upstream], spellNames)).toThrow(/covered upstream/);
+  });
+
+  it("throws when the spell it stands for is gone", () => {
+    expect(() => addHandAuthoredBuffs([], new Set(["False Life"]))).toThrow(
+      /"Tactical Acumen" names no vendored spell/,
+    );
   });
 });

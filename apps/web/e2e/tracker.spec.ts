@@ -140,6 +140,27 @@ test("an owned combat Style feat toggles beside the actions and shows its rules"
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
 
+test("an untimed buff switches off and back on without being removed", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoPlay(page);
+
+  const melee = sealValue(page, "Melee");
+  await page.getByText("Custom buff (expert)").click();
+  await page.locator(".cb-grid").getByRole("button", { name: "Add" }).click();
+  await expect(melee).toHaveText("+1");
+
+  const on = page.locator(".buff-row").getByRole("checkbox", { name: "On" });
+  await on.uncheck();
+  await expect(melee).toHaveText("+0");
+  await expect(page.locator(".buff-row.paused")).toHaveCount(1);
+
+  await on.check();
+  await expect(melee).toHaveText("+1");
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
 test("a timed buff changes a stat then expires when rounds advance", async ({ page }) => {
   const { consoleErrors, pageErrors } = guard(page);
   await gotoPlay(page);

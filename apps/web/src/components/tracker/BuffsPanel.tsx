@@ -16,9 +16,11 @@ import { NumberField } from "../builder/NumberField.js";
 import { ChangeTargetSelect, ChangeTypeSelect } from "../builder/ChangeListEditor.js";
 import { SearchMiss } from "../builder/SearchMiss.js";
 import { RulesNote } from "../RulesNote.js";
+import { BuffRollDataScope } from "../../state/rollData.js";
 import {
   addBuff,
   advanceRound,
+  canPauseBuff,
   currentRound,
   hasNoModeledEffect,
   isBuffOnMaster,
@@ -29,6 +31,7 @@ import {
   setBuffRounds,
   suggestRounds,
   toggleBuffMaster,
+  toggleBuffPaused,
   type DurationUnit,
   roundsToDisplay,
   toRounds,
@@ -189,15 +192,17 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
                     </InfoTip>
                   ))}
                 </div>
-                {buff.contextNotes?.map((n, i) => (
-                  <RulesNote
-                    key={i}
-                    text={n.text}
-                    appliedAutomatically={
-                      saveNoteCoverage({ catalog: "buff", buffName: buff.name }, n) === "full"
-                    }
-                  />
-                ))}
+                <BuffRollDataScope casterLevel={casterLevel}>
+                  {buff.contextNotes?.map((n, i) => (
+                    <RulesNote
+                      key={i}
+                      text={n.text}
+                      appliedAutomatically={
+                        saveNoteCoverage({ catalog: "buff", buffName: buff.name }, n) === "full"
+                      }
+                    />
+                  ))}
+                </BuffRollDataScope>
               </div>
               {isActive ? (
                 <InfoTip
@@ -219,13 +224,20 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
       </div>
 
       <CustomBuffForm
-        onAdd={(name, target, type, value, rounds) =>
+        onAdd={(name, target, type, value, rounds, note) =>
           update((d) =>
             addBuff(
               d,
-              makeCustomBuff(name, [{ formula: String(value), target, type }], {
-                remainingRounds: rounds,
-              }),
+              // A zero bonus with a note is a reminder-only buff (a conditional
+              // bonus the sheet can't apply), not a "+0" line under it.
+              makeCustomBuff(
+                name,
+                value === 0 && note ? [] : [{ formula: String(value), target, type }],
+                {
+                  remainingRounds: rounds,
+                  contextNotes: note ? [{ target, text: note }] : undefined,
+                },
+              ),
             ),
           )
         }
@@ -379,10 +391,11 @@ function BuffRow({
       : undefined;
 
   return (
-    <div className="buff-row">
+    <div className={buff.paused ? "buff-row paused" : "buff-row"}>
       <div className="buff-main">
         <div className="buff-name">
           {buff.name}
+          {buff.paused ? <span className="buff-off"> (off)</span> : null}
           {buff.element ? <span className="buff-element"> ({buff.element})</span> : null}{" "}
           <PartialBadge changes={buff.changes} />{" "}
           <NoEffectHint
@@ -399,16 +412,31 @@ function BuffRow({
             </InfoTip>
           ))}
         </div>
-        {buff.contextNotes?.map((n, i) => (
-          <RulesNote
-            key={i}
-            text={n.text}
-            appliedAutomatically={
-              saveNoteCoverage({ catalog: "buff", buffName: buff.name }, n) === "full"
-            }
-          />
-        ))}
+        <BuffRollDataScope casterLevel={buff.casterLevel}>
+          {buff.contextNotes?.map((n, i) => (
+            <RulesNote
+              key={i}
+              text={n.text}
+              appliedAutomatically={
+                saveNoteCoverage({ catalog: "buff", buffName: buff.name }, n) === "full"
+              }
+            />
+          ))}
+        </BuffRollDataScope>
       </div>
+      {canPauseBuff(buff) ? (
+        <label
+          className="buff-share-toggle buff-on-toggle"
+          title="Switch this buff off without removing it (it keeps its place, and switching it back on restores it)"
+        >
+          <input
+            type="checkbox"
+            checked={!buff.paused}
+            onChange={() => update((d) => toggleBuffPaused(d, buff.instanceId))}
+          />
+          <span>On</span>
+        </label>
+      ) : null}
       <label className="buff-rounds">
         <NumberField
           className="num"
@@ -525,6 +553,7 @@ function CustomBuffForm({
     type: string,
     value: number,
     rounds: number | undefined,
+    note: string | undefined,
   ) => void;
 }) {
   const [name, setName] = useState("");
@@ -533,6 +562,7 @@ function CustomBuffForm({
   const [value, setValue] = useState(1);
   const [durVal, setDurVal] = useState<number | undefined>(undefined);
   const [durUnit, setDurUnit] = useState<DurationUnit>("rds");
+  const [note, setNote] = useState("");
 
   return (
     <details className="custom-buff">
@@ -543,6 +573,13 @@ function CustomBuffForm({
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Note, e.g. +2 when flanking (optional)"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          aria-label="Reminder note"
         />
         <ChangeTargetSelect value={target} onChange={setTarget} aria-label="Bonus applies to" />
         <ChangeTypeSelect value={type} onChange={setType} aria-label="Bonus type" />
@@ -580,13 +617,15 @@ function CustomBuffForm({
           className="pick-btn add"
           onClick={() => {
             onAdd(
-              name || `${target} ${signed(value)}`,
+              name || (value === 0 && note.trim() ? "Reminder" : `${target} ${signed(value)}`),
               target,
               type,
               Number.isNaN(value) ? 0 : value,
               durVal == null ? undefined : toRounds(durVal, durUnit),
+              note.trim() || undefined,
             );
             setName("");
+            setNote("");
             setDurVal(undefined);
           }}
         >

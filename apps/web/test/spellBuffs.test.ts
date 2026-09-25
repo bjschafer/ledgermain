@@ -3,6 +3,9 @@ import { describe, expect, it } from "bun:test";
 import { loadRefData } from "@pf1/data-pipeline";
 import type { Buff, RefData, Spell } from "@pf1/schema";
 
+import { withBuffCasterLevel } from "@pf1/engine";
+
+import { resolveInlineRolls } from "../src/model/inlineRolls.js";
 import { buffsForSpell } from "../src/model/spellBuffs.js";
 
 const ref = loadRefData();
@@ -82,31 +85,34 @@ describe("buffsForSpell (synthetic edge cases)", () => {
 });
 
 /**
- * False Life (CRB p. 239): unlike Divine Power/Greater Heroism/ Aid, all of
- * which correctly resolve to a vendored buff, False Life has NO
- * `RefData.buffs` entry at all — confirmed against the real vendored slice.
- * `@pf1/engine`'s `FALSE_LIFE_BUFF` (see that module's doc comment) fills the
- * gap as a hand-authored fallback, checked only once the vendored index comes
- * up empty.
+ * Spells whose buff the vendored pack never modeled get one from the
+ * data-pipeline's `HAND_AUTHORED_BUFFS`, which lands in `RefData.buffs` like
+ * any other, so the ordinary name index links them with no fallback path.
  */
-describe("buffsForSpell (False Life hand-authored fallback)", () => {
-  it("resolves False Life to the hand-authored buff (no vendored buff exists)", () => {
+describe("buffsForSpell (hand-authored buffs)", () => {
+  it("resolves False Life to its hand-authored buff", () => {
     const buffs = buffsForSpell(spell("False Life"), ref);
     expect(buffs.map((b) => b.name)).toEqual(["False Life"]);
     expect(buffs[0]?.contextNotes[0]?.text).toContain("1d10 + 1 per caster level");
   });
 
-  it("a real vendored buff of the same name would win over the hand-authored fallback", () => {
-    const vendored: Buff = {
-      id: "vendored-false-life",
-      uuid: "vendored-false-life",
-      name: "False Life",
-      subType: "spell",
-      changes: [],
-      contextNotes: [],
-    };
-    const rd: RefData = { ...ref, buffs: { ...ref.buffs, [vendored.id]: vendored } };
-    const buffs = buffsForSpell(spell("False Life"), rd);
-    expect(buffs).toEqual([vendored]);
+  it("resolves Tactical Acumen to its hand-authored buff", () => {
+    const buffs = buffsForSpell(spell("Tactical Acumen"), ref);
+    expect(buffs.map((b) => b.name)).toEqual(["Tactical Acumen"]);
+    expect(buffs[0]?.contextNotes.map((n) => n.target)).toEqual(["attack", "ac"]);
+  });
+
+  it.each([
+    [1, 1],
+    [9, 1],
+    [10, 2],
+    [15, 3],
+    [20, 4],
+    [25, 4],
+  ])("Tactical Acumen at CL %i notes +%i", (cl, bonus) => {
+    // UC p. 246: +1, +1 per five caster levels above 5th, max +4.
+    const note = ref.buffs["hand:spell-tactical-acumen"]!.contextNotes[0]!.text;
+    const rollData = withBuffCasterLevel({ casterLevel: cl }, { item: { level: 0 } });
+    expect(resolveInlineRolls(note, rollData)).toStartWith(`+${bonus} insight bonus`);
   });
 });

@@ -8,8 +8,10 @@ import {
   hasNoModeledEffect,
   isBuffOnMaster,
   roundsToDisplay,
+  setBuffRounds,
   suggestRounds,
   toggleBuffMaster,
+  toggleBuffPaused,
   toggleLinkedBuff,
   toggleTableBuff,
   toRounds,
@@ -373,5 +375,29 @@ describe("toggleBuffMaster / isBuffOnMaster (Share Spells: cast on companion ins
 
   it("isBuffOnMaster returns false for an unknown instance id", () => {
     expect(isBuffOnMaster(makeDoc([mageArmor]), "nope")).toBe(false);
+  });
+});
+
+describe("toggleBuffPaused (switching an untimed buff off and on)", () => {
+  const tacticalAcumen = { instanceId: "ta-1", name: "Tactical Acumen", changes: [] };
+
+  it("round-trips an untimed buff without leaving a stray flag", () => {
+    const off = toggleBuffPaused(makeDoc([tacticalAcumen]), "ta-1");
+    expect(off.live.activeBuffs[0]!.paused).toBe(true);
+    const on = toggleBuffPaused(off, "ta-1");
+    expect(on.live.activeBuffs[0]).toEqual(tacticalAcumen);
+  });
+
+  it("won't pause a timed buff", () => {
+    const bless = { instanceId: "bless-1", name: "Bless", changes: [], remainingRounds: 10 };
+    const doc = toggleBuffPaused(makeDoc([bless]), "bless-1");
+    expect(doc.live.activeBuffs[0]!.paused).toBeUndefined();
+  });
+
+  it("giving a paused buff a duration switches it back on", () => {
+    const off = toggleBuffPaused(makeDoc([tacticalAcumen]), "ta-1");
+    const timed = setBuffRounds(off, "ta-1", 5);
+    expect(timed.live.activeBuffs[0]!.paused).toBeUndefined();
+    expect(timed.live.activeBuffs[0]!.remainingRounds).toBe(5);
   });
 });

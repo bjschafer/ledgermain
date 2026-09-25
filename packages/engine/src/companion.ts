@@ -114,6 +114,7 @@ import {
   type AcCandidate,
   permanentChangesBuff,
 } from "./shared-creature-buffs.js";
+import { isBuffLive } from "./duration.js";
 import { resolveStack } from "./stacking.js";
 import {
   babForLevels,
@@ -893,7 +894,9 @@ export function deriveCompanion(
 
   // --- shared buffs: evaluate + bucket by target (mirrors familiar.ts) --
   const sharedIds = new Set(doc.live.animalCompanion?.sharedBuffIds ?? []);
-  const sharedBuffs = (doc.live.activeBuffs ?? []).filter((b) => sharedIds.has(b.instanceId));
+  const sharedBuffs = (doc.live.activeBuffs ?? []).filter(
+    (b) => isBuffLive(b) && sharedIds.has(b.instanceId),
+  );
 
   // --- the companion's OWN active conditions: reshaped as
   // synthetic ActiveBuffs so `routeSharedBuffs` applies their Change[] through

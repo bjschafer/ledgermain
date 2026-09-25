@@ -212,7 +212,41 @@ export function toggleBuffMaster(doc: CharacterDoc, instanceId: string): Charact
   };
 }
 
-/** Set (or clear, with `undefined`) the remaining rounds of an active buff. */
+/**
+ * Whether an active buff can be switched off and back on. Only untimed buffs:
+ * a timed one is a casting with a clock running, which pausing would quietly
+ * stretch, so ending it early is a Remove.
+ */
+export function canPauseBuff(buff: Pick<ActiveBuff, "remainingRounds">): boolean {
+  return buff.remainingRounds === undefined;
+}
+
+/**
+ * Switch an untimed buff off or back on (see `ActiveBuff.paused`). A no-op
+ * for a timed buff, per {@link canPauseBuff}.
+ */
+export function toggleBuffPaused(doc: CharacterDoc, instanceId: string): CharacterDoc {
+  return {
+    ...doc,
+    live: {
+      ...doc.live,
+      activeBuffs: doc.live.activeBuffs.map((b) => {
+        if (b.instanceId !== instanceId) return b;
+        if (b.paused) {
+          const { paused: _dropped, ...on } = b;
+          return on;
+        }
+        return canPauseBuff(b) ? { ...b, paused: true } : b;
+      }),
+    },
+  };
+}
+
+/**
+ * Set (or clear, with `undefined`) the remaining rounds of an active buff.
+ * Giving a paused buff a duration switches it back on, since only untimed
+ * buffs can be paused.
+ */
 export function setBuffRounds(
   doc: CharacterDoc,
   instanceId: string,
@@ -224,9 +258,12 @@ export function setBuffRounds(
     ...doc,
     live: {
       ...doc.live,
-      activeBuffs: doc.live.activeBuffs.map((b) =>
-        b.instanceId === instanceId ? { ...b, remainingRounds } : b,
-      ),
+      activeBuffs: doc.live.activeBuffs.map((b) => {
+        if (b.instanceId !== instanceId) return b;
+        if (remainingRounds === undefined) return { ...b, remainingRounds };
+        const { paused: _dropped, ...on } = b;
+        return { ...on, remainingRounds };
+      }),
     },
   };
 }

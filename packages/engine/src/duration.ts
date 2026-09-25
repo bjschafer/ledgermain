@@ -10,6 +10,15 @@
 
 import type { ActiveBuff } from "@pf1/schema";
 
+/**
+ * Whether an active buff is switched on. Every reader deciding what a buff
+ * applies to goes through this, so a paused buff (see `ActiveBuff.paused`)
+ * drops out of the master's sheet, companion sheets, and buff gates alike.
+ */
+export function isBuffLive(buff: Pick<ActiveBuff, "paused">): boolean {
+  return !buff.paused;
+}
+
 export interface AdvanceResult {
   /** Buffs still active after advancing time (timers decremented). */
   buffs: ActiveBuff[];
@@ -34,8 +43,12 @@ export function advanceRounds(buffs: ActiveBuff[], rounds = 1): AdvanceResult {
   for (const buff of buffs) {
     // A buff that expires mid-step ran for however much of the step it had
     // left, not the whole step.
-    const elapsed =
-      buff.remainingRounds === undefined ? step : Math.min(step, Math.max(0, buff.remainingRounds));
+    // A paused buff isn't running, so it doesn't accrue time either.
+    const elapsed = buff.paused
+      ? 0
+      : buff.remainingRounds === undefined
+        ? step
+        : Math.min(step, Math.max(0, buff.remainingRounds));
     const ticked = { ...buff, roundsActive: (buff.roundsActive ?? 0) + elapsed };
 
     if (buff.remainingRounds === undefined) {

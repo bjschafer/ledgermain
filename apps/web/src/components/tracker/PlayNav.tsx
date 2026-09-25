@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+import { isBuffLive } from "@pf1/engine";
+
 import { activeAbilityAfflictions, totalNegativeLevels } from "../../model/afflictions.js";
 import { heroPoints } from "../../model/heroPoints.js";
 import { effectiveHp, isHpLow } from "../../model/hp.js";
@@ -42,7 +44,7 @@ function usePlayBadges({
       };
     }
 
-    const buffs = doc.live.activeBuffs.length;
+    const buffs = doc.live.activeBuffs.filter(isBuffLive).length;
     if (buffs > 0) {
       badges["play-buffs"] = {
         count: buffs,

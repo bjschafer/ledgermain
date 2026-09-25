@@ -97,6 +97,7 @@ import {
   type AcCandidate,
   permanentChangesBuff,
 } from "./shared-creature-buffs.js";
+import { isBuffLive } from "./duration.js";
 import { resolveStack } from "./stacking.js";
 import {
   babForLevels,
@@ -496,7 +497,9 @@ export function derivePhantom(doc: CharacterDoc, rollData: RollData): DerivedPha
 
   // --- shared buffs: evaluate + bucket by target (mirrors companion.ts) ------
   const sharedIds = new Set(doc.live.phantom?.sharedBuffIds ?? []);
-  const sharedBuffs = (doc.live.activeBuffs ?? []).filter((b) => sharedIds.has(b.instanceId));
+  const sharedBuffs = (doc.live.activeBuffs ?? []).filter(
+    (b) => isBuffLive(b) && sharedIds.has(b.instanceId),
+  );
 
   // --- the phantom's OWN active conditions: reshaped as synthetic
   // ActiveBuffs so `routeSharedBuffs` applies their Change[] through the

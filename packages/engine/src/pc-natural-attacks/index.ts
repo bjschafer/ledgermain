@@ -30,6 +30,7 @@ import { collectGrantedFeatures } from "../archetypes.js";
 import type { CollectedModifier } from "../collect.js";
 import { forTarget } from "../collect.js";
 import { scaleWeaponDamageDice } from "../compute.js";
+import { isBuffLive } from "../duration.js";
 import { characterFeatSlugs, featNameSlug } from "../feat-effects.js";
 import {
   classifyNaturalAttacks,
@@ -167,7 +168,7 @@ function collectPcNaturalAttackGrants(
 ): ResolvedPcNaturalAttackGrant[] {
   const grants: ResolvedPcNaturalAttackGrant[] = [];
   const characterLevel = doc.identity.classes.reduce((sum, c) => sum + c.level, 0);
-  const activeBuffs = doc.live.activeBuffs ?? [];
+  const activeBuffs = (doc.live.activeBuffs ?? []).filter(isBuffLive);
   const pushed = new Set<PcNaturalAttackDef>();
 
   const classLevelOf = (tag: string): number =>

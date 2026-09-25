@@ -3986,6 +3986,24 @@
     "subType": "spell",
     "uuid": "Compendium.pf1.buffs.Item.efd99dVtQUUSoz5Z"
   },
+  "engine:spell-false-life": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "tempHp",
+        "text": "Grants 1d10 + 1 per caster level (max +10) temporary hit points. That's dice based, not modeled as a static bonus: roll it and add it by hand."
+      }
+    ],
+    "duration": {
+      "end": "initiative",
+      "units": "hour",
+      "value": "@item.level"
+    },
+    "id": "engine:spell-false-life",
+    "name": "False Life",
+    "subType": "spell",
+    "uuid": "Local.pf1-clean-room.buffs.false-life"
+  },
   "fKqcMkjlkUL70WJ0": {
     "changes": [
       {
@@ -4058,6 +4076,27 @@
     ],
     "subType": "feat",
     "uuid": "Compendium.pf1.buffs.Item.gBRAvqqjrLw4Cnhm"
+  },
+  "hand:spell-tactical-acumen": {
+    "changes": [],
+    "contextNotes": [
+      {
+        "target": "attack",
+        "text": "+[[min(4, 1 + floor(max(0, @item.level - 5) / 5))]] insight bonus on an attack roll that already gets a bonus from battlefield position, such as flanking or higher ground. The sheet doesn't track position, so add it by hand."
+      },
+      {
+        "target": "ac",
+        "text": "+[[min(4, 1 + floor(max(0, @item.level - 5) / 5))]] insight bonus to AC whenever you get an AC bonus from battlefield position, such as cover. The sheet doesn't track position, so add it by hand."
+      }
+    ],
+    "duration": {
+      "units": "round",
+      "value": "@item.level"
+    },
+    "id": "hand:spell-tactical-acumen",
+    "name": "Tactical Acumen",
+    "subType": "spell",
+    "uuid": "Local.pf1-clean-room.buffs.tactical-acumen"
   },
   "hiSHFDTHqBYTvsaR": {
     "changes": [

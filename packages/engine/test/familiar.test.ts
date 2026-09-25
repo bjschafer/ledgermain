@@ -166,6 +166,32 @@ describe("deriveFamiliar (Mortlach the cat, hand-computed fixture)", () => {
     expect(buffedFamiliar!.ac.normal).toBe(20);
   });
 
+  it("a paused shared buff reaches neither the master nor the familiar", () => {
+    const withBuff: CharacterDoc = {
+      ...doc,
+      live: {
+        ...doc.live,
+        activeBuffs: [
+          {
+            instanceId: "mage-armor-1",
+            name: "Mage Armor",
+            changes: [{ target: "aac", type: "untyped", formula: "4" }],
+            paused: true,
+          },
+        ],
+        familiar: { sharedBuffIds: ["mage-armor-1"] },
+      },
+    };
+    expect(compute(withBuff, ref).ac.normal).toBe(10);
+    const pausedFamiliar = deriveFamiliar(withBuff, master, rollData);
+    const bareFamiliar = deriveFamiliar(
+      { ...withBuff, live: { ...withBuff.live, activeBuffs: [] } },
+      master,
+      rollData,
+    );
+    expect(pausedFamiliar!.ac.normal).toBe(bareFamiliar!.ac.normal);
+  });
+
   it("issue #44: shared Bless (+1 morale attack) raises bite/claw attack, not damage", () => {
     const withBuff: CharacterDoc = {
       ...doc,

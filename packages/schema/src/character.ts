@@ -2797,6 +2797,15 @@ export interface ActiveBuff {
    */
   excludeMaster?: boolean;
   /**
+   * Switched off without being removed: the buff stays listed but applies to
+   * nothing (not the master, not any companion it's shared with) until it's
+   * switched back on. Only offered for untimed buffs (no `remainingRounds`),
+   * the standing grants a player wants to keep rather than re-add, e.g. a
+   * GM-granted permanent spell effect that only matters some of the time.
+   * Absent/false → the buff applies as usual.
+   */
+  paused?: boolean;
+  /**
    * Energy type chosen when this buff was activated, for spells that protect
    * against "one energy type you select" (*resist energy*, *protection from
    * energy*). A `Change` has nowhere to record a player's choice, so the

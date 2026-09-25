@@ -42,6 +42,7 @@ export {
   collectModifiers,
   forTarget,
   evaluateBuffChange,
+  withBuffCasterLevel,
   type CollectContext,
   type CollectedModifier,
 } from "./collect.js";
@@ -230,7 +231,6 @@ export {
   type MergedBloodragerBloodlineEntry,
 } from "./bloodrager-bloodlines.js";
 export { BLOODRAGE_BUFF, BLOODRAGE_BUFF_ID } from "./bloodrage.js";
-export { FALSE_LIFE_BUFF, FALSE_LIFE_BUFF_ID } from "./false-life.js";
 export { COGNATOGEN_BUFFS, COGNATOGEN_BUFF_IDS, COGNATOGEN_DISCOVERY_ID } from "./cognatogen.js";
 export { RASUGEN_BUFF, RASUGEN_BUFF_ID } from "./rasugen.js";
 export {
@@ -829,6 +829,7 @@ export {
 export {
   advanceConditionRounds,
   advanceRounds,
+  isBuffLive,
   type AdvanceConditionsResult,
   type AdvanceResult,
 } from "./duration.js";

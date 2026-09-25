@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-24-buff-switch",
+    date: "2026-09-24",
+    title: "Switch a buff off without losing it",
+    note: "A buff with no duration has an On switch now. Turn it off and it stays in your list, dimmed, applying nothing, until you turn it back on: handy for a standing grant from your GM that only matters some of the time. Tactical Acumen joins the buff list, with its insight bonus worked out from its caster level; the sheet doesn't know when you're flanking or in cover, so it reads as a reminder with the right number. Custom buffs can carry a note of their own, and a note with a bonus of 0 makes a reminder that changes nothing.",
+  },
+  {
     id: "2026-09-24-creature-grants",
     date: "2026-09-24",
     title: "Bonuses for your familiar, and senses for you",

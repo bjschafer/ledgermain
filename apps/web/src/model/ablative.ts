@@ -11,6 +11,7 @@
  */
 import {
   buffInstanceState,
+  isBuffLive,
   tryEvaluateFormula,
   type AblativePool,
   type DamageTypeId,
@@ -33,6 +34,7 @@ export interface LivePool extends AblativePool {
 export function livePools(doc: CharacterDoc, characterLevel: number): LivePool[] {
   const pools: LivePool[] = [];
   for (const buff of doc.live.activeBuffs) {
+    if (!isBuffLive(buff)) continue;
     const spec = buffInstanceState(buff.buffId)?.ablative;
     if (!spec) continue;
     const capacity = poolCapacity(buff, characterLevel);

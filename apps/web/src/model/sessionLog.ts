@@ -359,11 +359,17 @@ function describeBuffs(
   castNames: ReadonlySet<string>,
   add: Add,
 ): void {
-  const was = new Set(before.live.activeBuffs.map((b) => b.instanceId));
+  const was = new Map(before.live.activeBuffs.map((b) => [b.instanceId, b]));
   const is = new Set(after.live.activeBuffs.map((b) => b.instanceId));
 
   for (const buff of after.live.activeBuffs) {
-    if (was.has(buff.instanceId) || castNames.has(buff.name)) continue;
+    const prior = was.get(buff.instanceId);
+    if (prior) {
+      if (!prior.paused && buff.paused) add(`${buff.name} switched off`, "buff");
+      else if (prior.paused && !buff.paused) add(`${buff.name} switched back on`, "buff");
+      continue;
+    }
+    if (castNames.has(buff.name)) continue;
     const rounds = buff.remainingRounds;
     add(
       rounds ? `${buff.name} is up for ${plural(rounds, "round")}` : `${buff.name} is up`,

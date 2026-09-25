@@ -101,6 +101,7 @@ import {
 import {
   applyArchetypeFeatureLevelSupplements,
   applyArchetypeFeaturePairingSupplements,
+  addHandAuthoredBuffs,
   applyBuffSupplements,
   applyClassFeatureChangesSupplements,
   applyClassFeatureEffectImmunitySupplements,
@@ -800,6 +801,7 @@ export function normalize(opts: NormalizeOptions): {
     .filter((pf) => pf.doc.type === "buff")
     .map((pf) => transformBuff(pf.doc, resolveUuid));
   applyBuffSupplements(buffs);
+  addHandAuthoredBuffs(buffs, new Set(spells.map((s) => s.name)));
 
   // --- items (full usable breadth of the `items` pack) -----------------------
   // Every real (non-folder) doc in the pack is one of five Item subtypes —

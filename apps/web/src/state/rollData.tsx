@@ -16,7 +16,12 @@
 import { createContext, useContext, useMemo } from "react";
 import type { ReactNode } from "react";
 
-import { buildRollData, deriveResourcePools, resourcePoolRollDataResources } from "@pf1/engine";
+import {
+  buildRollData,
+  deriveResourcePools,
+  resourcePoolRollDataResources,
+  withBuffCasterLevel,
+} from "@pf1/engine";
 import type { RollData } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
@@ -61,4 +66,25 @@ export function RollDataProvider({
 export function useInlineRolls(): (text: string) => string {
   const rollData = useContext(RollDataContext);
   return useMemo(() => (text: string) => resolveInlineRolls(text, rollData), [rollData]);
+}
+
+/**
+ * Re-scope the rules text inside to one buff, so its notes' `@item.level` /
+ * `@cl` read the buff's own caster level, the value `compute()` evaluates
+ * that buff's changes at. Outside it, `@item.level` is 0 and a level-scaled
+ * note would print its level-1 number.
+ */
+export function BuffRollDataScope({
+  casterLevel,
+  children,
+}: {
+  casterLevel: number | undefined;
+  children: ReactNode;
+}) {
+  const rollData = useContext(RollDataContext);
+  const scoped = useMemo(
+    () => withBuffCasterLevel({ casterLevel }, rollData),
+    [casterLevel, rollData],
+  );
+  return <RollDataContext.Provider value={scoped}>{children}</RollDataContext.Provider>;
 }

@@ -13,6 +13,7 @@
 
 import type { ActiveBuff, Change, CharacterDoc, RefData } from "@pf1/schema";
 
+import { isBuffLive } from "./duration.js";
 import { tryEvaluateFormula, type RollData } from "./formula.js";
 import {
   buffGateSatisfied,
@@ -66,6 +67,7 @@ import { collectSlayerTalents, collectTalentFamilies } from "./collect/talents.j
 import { collectHomebrewAbilities, collectTraits } from "./collect/traits.js";
 
 export type { CollectContext, CollectedModifier } from "./collect/shared.js";
+export { withBuffCasterLevel };
 
 /**
  * Resolve one buff change's formula to a number, honoring the buff's
@@ -151,7 +153,7 @@ export function collectModifiers(
   // gates correctly no matter which table it lands in. Items, class features,
   // buffs, and conditions deliberately skip the check: nothing authors the
   // field on those sources.
-  const masterBuffs = (doc.live.activeBuffs ?? []).filter((b) => !b.excludeMaster);
+  const masterBuffs = (doc.live.activeBuffs ?? []).filter((b) => isBuffLive(b) && !b.excludeMaster);
   const ctx: CollectContext = {
     doc,
     refData,
