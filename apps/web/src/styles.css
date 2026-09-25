@@ -4002,7 +4002,7 @@ button:focus-visible,
 
 .hb-change-row {
   display: grid;
-  grid-template-columns: 1.5fr 1.2fr 76px auto;
+  grid-template-columns: 1.5fr 1.2fr auto auto;
   gap: 6px;
   align-items: center;
 }

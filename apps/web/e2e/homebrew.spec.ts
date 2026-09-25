@@ -160,6 +160,25 @@ test("creating a custom ability adds it to the class-feature timeline and a use 
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
 
+test("a typed-bonus row keeps its amount stepper clear of the Remove button", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoBuild(page);
+
+  const classesPanel = panelByTitle(page, "Classes");
+  await classesPanel.getByText("Custom abilities").click();
+  await classesPanel.getByRole("button", { name: "+ Create custom ability" }).click();
+  await classesPanel.getByRole("button", { name: "+ Add modifier" }).click();
+
+  const row = classesPanel.locator(".hb-change-row:not(.hb-change-head)");
+  const plus = await row.getByRole("button", { name: "increment" }).boundingBox();
+  const remove = await row.getByRole("button", { name: "Remove" }).boundingBox();
+  expect(plus && remove).toBeTruthy();
+  expect(plus!.x + plus!.width).toBeLessThanOrEqual(remove!.x);
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
 /** Every homebrew feat description currently in IndexedDB. */
 async function storedFeatDescriptions(page: Page): Promise<string[]> {
   return page.evaluate(
