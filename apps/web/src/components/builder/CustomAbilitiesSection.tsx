@@ -12,25 +12,31 @@ import {
   type HomebrewAbilityDraft,
 } from "../../model/homebrewEditor.js";
 import { HomebrewBadge } from "../HomebrewBadge.js";
+import { SparkleIcon } from "../icons.js";
 import { ChangeListEditor } from "./ChangeListEditor.js";
 import { NumberField } from "./NumberField.js";
+import { Panel } from "./Panel.js";
 import type { BuilderProps } from "./types.js";
 import { classByTag } from "@pf1/engine";
 
 /**
  * Create/edit/delete UI for homebrew abilities — GM-granted campaign features
  * and stand-ins for anything the app doesn't model yet, stored as
- * `build.homebrew.classFeatures` (see `model/homebrew.ts`). Sits above
- * `ClassFeaturesList`, whose timeline is where the saved entries show up.
+ * `build.homebrew.classFeatures` (see `model/homebrew.ts`). Saved entries also
+ * show up in the Classes panel's feature timeline, under the level they were
+ * gained at.
+ *
+ * Its own panel rather than a door inside Classes: most of these belong to no
+ * class, and at the bottom of that panel they sat under the companion pickers
+ * where they read as part of whichever came last.
  *
  * Unlike its race/feat/trait siblings this has no add/remove control per
  * entry: an authored ability is a granted one (there's no catalog to pick
- * from), so the list below is management only. That's also the reason to
- * author one here rather than as a homebrew feat — a feat would eat a feat
- * slot and force a matching GM grant to keep the builder's budget honest.
+ * from), so the list is management only. That's also the reason to author
+ * one here rather than as a homebrew feat — a feat would eat a feat slot and
+ * force a matching GM grant to keep the builder's budget honest.
  */
-export function HomebrewAbilityEditor({ doc, refData, update }: BuilderProps) {
-  const [detailsOpen, setDetailsOpen] = useState(false);
+export function CustomAbilitiesSection({ doc, refData, update }: BuilderProps) {
   const [formOpen, setFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState<HomebrewAbilityDraft>(emptyHomebrewAbilityDraft());
@@ -43,7 +49,6 @@ export function HomebrewAbilityEditor({ doc, refData, update }: BuilderProps) {
     setDraft(emptyHomebrewAbilityDraft());
     setError(null);
     setFormOpen(true);
-    setDetailsOpen(true);
   }
 
   function startEdit(id: string, ability: HomebrewClassFeature) {
@@ -51,7 +56,6 @@ export function HomebrewAbilityEditor({ doc, refData, update }: BuilderProps) {
     setDraft(abilityToDraft(ability));
     setError(null);
     setFormOpen(true);
-    setDetailsOpen(true);
   }
 
   function cancel() {
@@ -79,13 +83,19 @@ export function HomebrewAbilityEditor({ doc, refData, update }: BuilderProps) {
   }
 
   return (
-    <details
-      className="hb-editor"
-      open={detailsOpen}
-      onToggle={(e) => setDetailsOpen(e.currentTarget.open)}
+    <Panel
+      title="Custom Abilities"
+      step="vii½"
+      icon={<SparkleIcon />}
+      storageKey="panel:CustomAbilities"
+      right={entries.length > 0 ? <span className="hint">{entries.length}</span> : undefined}
     >
-      <summary>Custom abilities{entries.length > 0 ? ` (${entries.length})` : ""}</summary>
-      {entries.length > 0 && (
+      {entries.length === 0 ? (
+        <div className="empty">
+          Something your GM granted, or anything the app doesn't cover yet. It joins your feature
+          list, and can carry bonuses and a use count.
+        </div>
+      ) : (
         <div className="hb-list">
           {entries.map(([id, ability]) => (
             <div key={id} className="pick-row is-selected">
@@ -131,7 +141,7 @@ export function HomebrewAbilityEditor({ doc, refData, update }: BuilderProps) {
           + Create custom ability
         </button>
       )}
-    </details>
+    </Panel>
   );
 }
 
@@ -192,7 +202,7 @@ function AbilityDraftForm({
 
       <div className="hb-row">
         <div className="hb-field">
-          <span className="hb-field-label">Gained at level</span>
+          <span className="hb-field-label">Gained at character level</span>
           <div className="hb-inline-controls">
             <NumberField
               className="num"

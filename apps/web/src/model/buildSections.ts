@@ -37,6 +37,7 @@ export const BUILD_SECTIONS: readonly BuildSection[] = [
   { id: "section-hp", label: "Hit Points", step: "v" },
   { id: "section-skills", label: "Skills", step: "vi" },
   { id: "section-feats", label: "Feats", step: "vii" },
+  { id: "section-custom-abilities", label: "Custom", step: "vii½" },
   { id: "section-gear", label: "Gear", step: "viii" },
   { id: "section-weapons", label: "Weapons", step: "ix" },
   { id: "section-spells", label: "Spells", step: "x" },

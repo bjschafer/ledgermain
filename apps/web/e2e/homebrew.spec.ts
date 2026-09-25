@@ -4,7 +4,7 @@ import { typeSearch } from "./search.js";
 
 /**
  * Homebrew authoring: drives the real "Homebrew races" / "Homebrew feats" /
- * "Custom abilities" authoring doors in the Build tab and asserts the created
+ * "Custom Abilities" authoring surfaces in the Build tab and asserts the created
  * content actually flows through `compute()` (a fixed +2 Str race changes the
  * sheet's Strength) and through the normal display paths (a created feat
  * shows up, marked homebrew, in the Play tab's feat list; a created ability
@@ -130,20 +130,20 @@ test("creating a custom ability adds it to the class-feature timeline and a use 
   const { consoleErrors, pageErrors } = guard(page);
   await gotoBuild(page);
 
-  const classesPanel = panelByTitle(page, "Classes");
-  await classesPanel.getByText("Custom abilities").click();
-  await classesPanel.getByRole("button", { name: "+ Create custom ability" }).click();
+  const abilitiesPanel = panelByTitle(page, "Custom Abilities");
+  await abilitiesPanel.getByRole("button", { name: "+ Create custom ability" }).click();
 
-  await classesPanel.getByLabel("Name").fill("Mark of the Storm Herald");
-  await classesPanel.getByLabel("Description").fill("Lightning answers you.");
-  const level = classesPanel.getByLabel("Level gained");
+  await abilitiesPanel.getByLabel("Name").fill("Mark of the Storm Herald");
+  await abilitiesPanel.getByLabel("Description").fill("Lightning answers you.");
+  const level = abilitiesPanel.getByLabel("Level gained");
   await level.fill("3");
   await level.press("Enter"); // NumberField commits on blur/Enter
-  const uses = classesPanel.getByLabel("Uses", { exact: true });
+  const uses = abilitiesPanel.getByLabel("Uses", { exact: true });
   await uses.fill("2");
   await uses.press("Enter");
-  await classesPanel.getByRole("button", { name: "Create ability" }).click();
+  await abilitiesPanel.getByRole("button", { name: "Create ability" }).click();
 
+  const classesPanel = panelByTitle(page, "Classes");
   // The timeline groups by level, so the ability lands under its own "Lv 3".
   const timeline = classesPanel.locator(".class-features");
   const levelGroup = timeline.locator(".cf-level-group", { hasText: "Lv 3" });
@@ -164,12 +164,11 @@ test("a typed-bonus row keeps its amount stepper clear of the Remove button", as
   const { consoleErrors, pageErrors } = guard(page);
   await gotoBuild(page);
 
-  const classesPanel = panelByTitle(page, "Classes");
-  await classesPanel.getByText("Custom abilities").click();
-  await classesPanel.getByRole("button", { name: "+ Create custom ability" }).click();
-  await classesPanel.getByRole("button", { name: "+ Add modifier" }).click();
+  const abilitiesPanel = panelByTitle(page, "Custom Abilities");
+  await abilitiesPanel.getByRole("button", { name: "+ Create custom ability" }).click();
+  await abilitiesPanel.getByRole("button", { name: "+ Add modifier" }).click();
 
-  const row = classesPanel.locator(".hb-change-row:not(.hb-change-head)");
+  const row = abilitiesPanel.locator(".hb-change-row:not(.hb-change-head)");
   const plus = await row.getByRole("button", { name: "increment" }).boundingBox();
   const remove = await row.getByRole("button", { name: "Remove" }).boundingBox();
   expect(plus && remove).toBeTruthy();

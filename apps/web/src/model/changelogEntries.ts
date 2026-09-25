@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-24-custom-abilities-panel",
+    date: "2026-09-24",
+    title: "Custom abilities have their own panel",
+    note: "Custom abilities moved out of the bottom of the Classes panel, where they were easy to mistake for part of your familiar or companion, into a Custom Abilities panel of their own right after Feats. It has its own spot in the Build tab's jump list too. Nothing about what you already made changes: they still show in your class feature timeline and your Play tab resources.",
+  },
+  {
     id: "2026-09-24-duplicate-entries",
     date: "2026-09-24",
     title: "One Skill Focus, one Ring of Protection",

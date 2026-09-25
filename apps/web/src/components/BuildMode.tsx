@@ -1,6 +1,7 @@
 import { AbilitiesSection } from "./builder/AbilitiesSection.js";
 import { BuildNav } from "./builder/BuildNav.js";
 import { ClassesSection } from "./builder/ClassesSection.js";
+import { CustomAbilitiesSection } from "./builder/CustomAbilitiesSection.js";
 import { FeatsSection } from "./builder/FeatsSection.js";
 import { GearSection } from "./builder/GearSection.js";
 import { HitPointsSection } from "./builder/HitPointsSection.js";
@@ -15,7 +16,7 @@ import { StatStrip } from "./tracker/StatStrip.js";
 
 /**
  * Build mode's whole render tree, in its own module so `App.tsx` can reach it
- * through `React.lazy`: the eleven builder panels and their pickers are the
+ * through `React.lazy`: the twelve builder panels and their pickers are the
  * app's largest body of code and none of it runs at the table.
  *
  * Returns the two layout-grid children (rail, column) as a fragment, so the
@@ -60,6 +61,9 @@ export function BuildMode({
         </div>
         <div id="section-feats">
           <FeatsSection {...props} />
+        </div>
+        <div id="section-custom-abilities">
+          <CustomAbilitiesSection {...props} />
         </div>
         <div id="section-gear">
           <GearSection {...props} />

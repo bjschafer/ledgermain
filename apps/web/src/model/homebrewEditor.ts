@@ -9,7 +9,7 @@
  * `buildHomebrewRace`'s doc comment) is unit-testable without React.
  * Components (`components/builder/HomebrewRaceEditor.tsx`,
  * `HomebrewFeatEditor.tsx`, `HomebrewTraitEditor.tsx`,
- * `HomebrewAbilityEditor.tsx`) stay thin wrappers around this module.
+ * `CustomAbilitiesSection.tsx`) stay thin wrappers around this module.
  */
 import type {
   AbilityId,

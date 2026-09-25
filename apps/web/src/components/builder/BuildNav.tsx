@@ -16,7 +16,7 @@ import type { BuilderProps } from "./types.js";
  * chip row under that on narrow ones (see styles.css's "Build nav" section).
  *
  * Anchors are `id="section-<id>"` wrapper `div`s that `App.tsx`'s Workbench
- * places around each of the 11 build panels. Active-section tracking uses an
+ * places around each of the 12 build panels. Active-section tracking uses an
  * IntersectionObserver rather than scroll-position math so it stays correct
  * regardless of each panel's (highly variable) height.
  *
