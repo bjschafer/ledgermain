@@ -5,11 +5,16 @@
  * a single plain-data shape the print view renders. No React here — kept
  * testable the same way every other `model/` module is.
  */
-import { classByTag, deriveResourcePools, EFFECT_IMMUNITY_LABELS } from "@pf1/engine";
+import {
+  classByTag,
+  deriveResourcePools,
+  EFFECT_IMMUNITY_LABELS,
+  casterLevelForClass,
+  effectiveCasterClassLevel,
+} from "@pf1/engine";
 import type { AbilityId, CharacterDoc, DerivedAbilityDC, DerivedSheet, RefData } from "@pf1/schema";
 
 import { abilityTypeSuffix } from "./abilityTypes.js";
-import { casterLevelForClass, effectiveCasterClassLevel } from "./casterLevel.js";
 import { ABILITY_IDS } from "./doc.js";
 import { bypassLine } from "./drBypassDisplay.js";
 import { featInstanceDisplayName, featInstances, grantedFeats } from "./feats.js";
@@ -151,6 +156,8 @@ export interface PrintCaster {
   levels: PrintSpellLevel[];
   /** Bonus on CL checks to overcome SR (Spell Penetration family); absent when zero. */
   srCheckBonus?: number;
+  /** Concentration check bonus; absent for extract casters. */
+  concentration?: number;
   /**
    * Per-school DC deltas over the printed DC column (which already folds an
    * all-schools bonus in), e.g. `["Evocation +1"]` — Spell Focus family.
@@ -333,6 +340,7 @@ function buildCasters(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData):
       }));
 
     const srBonus = srCheckBonus(sheet.clChecks);
+    const concentration = sheet.concentration?.find((c) => c.classTag === tag)?.total;
     const dcNotes = spellDCSchoolDeltas(sheet.spellDCs);
     out.push({
       classTag: tag,
@@ -342,6 +350,7 @@ function buildCasters(doc: CharacterDoc, sheet: DerivedSheet, refData: RefData):
       preparation: model.preparation,
       levels,
       ...(srBonus !== 0 ? { srCheckBonus: srBonus } : {}),
+      ...(concentration !== undefined ? { concentration } : {}),
       ...(dcNotes.length > 0 ? { dcNotes } : {}),
     });
   }

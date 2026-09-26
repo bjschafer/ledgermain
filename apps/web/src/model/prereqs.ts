@@ -26,9 +26,8 @@
  * check.
  */
 import type { AbilityId, CharacterDoc, DerivedSheet, Feat, RefData } from "@pf1/schema";
-import { featNameSlug } from "@pf1/engine";
+import { featNameSlug, CASTER_KIND, casterLevelForClass, effectiveCasterLevel } from "@pf1/engine";
 
-import { CASTER_KIND, casterLevelForClass, effectiveCasterLevel } from "./casterLevel.js";
 import { ABILITY_IDS, totalLevel } from "./doc.js";
 import { grantedFeats } from "./feats.js";
 import { ABILITY_ABBR } from "./names.js";

@@ -1,6 +1,6 @@
 /**
  * Unit tests for chunk 2 (prestige casting advancement) additions to
- * `model/casterLevel.ts`: `CASTER_KIND`, `castingAdvancementBonus`,
+ * `engine caster-level.ts`: `CASTER_KIND`, `castingAdvancementBonus`,
  * `effectiveCasterClassLevel`, `effectiveCasterLevel`, and
  * `eligibleAdvancementTargets`. Uses the real vendored refdata (loadRefData)
  * since the Eldritch Knight / Mystic Theurge chassis (1) only exists there,
@@ -17,7 +17,7 @@ import {
   effectiveCasterClassLevel,
   effectiveCasterLevel,
   eligibleAdvancementTargets,
-} from "../src/model/casterLevel.js";
+} from "@pf1/engine";
 import {
   addClass,
   createEmptyDoc,

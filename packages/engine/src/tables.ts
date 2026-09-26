@@ -812,7 +812,7 @@ const WARPRIEST_SPELLS_PER_DAY: readonly (readonly (number | null)[])[] = [
  * ("equal to her class level in the class she's using to cast the spell")
  * and confirmed by Paizo designers Owen K.C. Stephens / Mark Seifter on the
  * official rules forums (a bloodrager's minimum caster level for 1st-level
- * spells is 4, not 1) — see `model/casterLevel.ts`'s doc comment for how
+ * spells is 4, not 1) — see `caster-level.ts`'s doc comment for how
  * this is wired. Column 0 (cantrips) is always null: bloodragers get no
  * orisons at all (no "Orisons" class feature; the vendored `spell-lists.json`
  * bloodrager entry has no 0-level key). Bonus spells from a high Charisma
@@ -911,7 +911,7 @@ const SPIRITUALIST_SPELLS_KNOWN = BARD_SPELLS_KNOWN;
  * spellcasting.ts`. Column 0 (cantrips) is always null: psychics cast
  * cantrips ("knacks") at will, capped separately by the spells-known table's
  * column 0. This is also the reason "psychic" MUST be added to
- * `FULL_CASTER_TAGS` in `apps/web/src/model/casterLevel.ts` — unlike Medium
+ * `FULL_CASTER_TAGS` in `caster-level.ts` — unlike Medium
  * (below) or Bloodrager, a psychic's caster level equals her class level
  * starting at 1st level, with no late-start gate.
  */
@@ -944,7 +944,7 @@ const PSYCHIC_SPELLS_PER_DAY = SORCERER_SPELLS_PER_DAY;
  * modifier") who gains NO spellcasting at all until 4th level — same
  * "late-start quarter-ish caster" shape as paladin/ranger/bloodrager, which
  * is why "medium" is deliberately NOT added to `FULL_CASTER_TAGS` in
- * `apps/web/src/model/casterLevel.ts` (that module's binary "classLevel or 0"
+ * `caster-level.ts` (that module's binary "classLevel or 0"
  * switch can't represent a level-gated start; see bloodrager's own doc
  * comment there for the precedent). Hand-typed from the raw "Table: Medium"
  * on legacy.aonprd.com (fetched directly and quoted verbatim, not

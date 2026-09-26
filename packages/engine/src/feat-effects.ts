@@ -498,6 +498,13 @@ export const FEAT_EFFECTS: Readonly<Record<string, FeatEntry>> = {
   "improved-reposition": { type: "static", changes: improvedManeuver("reposition") },
   "improved-steal": { type: "static", changes: improvedManeuver("steal") },
   "improved-sunder": { type: "static", changes: improvedManeuver("sunder") },
+
+  // Combat Casting: +4 on concentration checks to cast defensively or while
+  // grappled (PF1 CRB p. 119). Scoped, so it never reaches the headline total.
+  "combat-casting": {
+    type: "static",
+    changes: [{ target: "concentration.defensive", type: "untyped", formula: "4" }],
+  },
   "improved-trip": { type: "static", changes: improvedManeuver("trip") },
   "greater-bull-rush": { type: "static", changes: greaterManeuver("bullRush") },
   "greater-dirty-trick": { type: "static", changes: greaterManeuver("dirtyTrick") },

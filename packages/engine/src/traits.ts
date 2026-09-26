@@ -36,11 +36,11 @@
  * to just that instance via `compute.ts`'s baseId fallback). Only grants
  * whose instance is player-chosen or ambiguous (Child of the Temple's
  * "temple-related Profession") stay a `contextNotes` reminder.
- * - `cl` (caster level) and `concentration` are real `Change` targets used
- * elsewhere in the vendored data (see `targets.ts`) but are not folded
- * into any discrete number on today's static sheet — Magical Knack and
- * Focused Mind still carry a real `Change` (for provenance / the existing
- * "not auto-applied" badge machinery) plus a clarifying `contextNotes`.
+ * - `cl` (caster level) is a real `Change` target used elsewhere in the
+ * vendored data (see `targets.ts`) but is not folded into any discrete
+ * number on today's static sheet — Magical Knack still carries a real
+ * `Change` (for provenance / the existing "not auto-applied" badge
+ * machinery) plus a clarifying `contextNotes`.
  */
 
 import type { Change, RefData, Trait, TraitCategory, TraitDef } from "@pf1/schema";
@@ -256,12 +256,6 @@ const TRAIT_LIST: TraitDef[] = [
     category: "Magic",
     summary: "+2 trait bonus on concentration checks.",
     changes: [t("2", "concentration")],
-    contextNotes: [
-      {
-        target: "concentration",
-        text: "Concentration checks aren't tracked on the sheet as a discrete number — apply manually.",
-      },
-    ],
   },
   {
     id: "classicallySchooled",

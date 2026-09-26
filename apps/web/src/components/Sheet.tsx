@@ -1,17 +1,19 @@
 import type { CSSProperties } from "react";
 import { useId, useMemo, useState } from "react";
 
-import { classByTag, EFFECT_IMMUNITY_LABELS, qualifierLabel } from "@pf1/engine";
+import {
+  classByTag,
+  EFFECT_IMMUNITY_LABELS,
+  qualifierLabel,
+  casterLevelForClass,
+  effectiveCasterClassLevel,
+  isCasterTag,
+} from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, DerivedSkill, RefData } from "@pf1/schema";
 
 import { useFlashKey } from "../hooks/useFlashKey.js";
 import { baselineSheet } from "../model/baseline.js";
 import { ABILITY_IDS } from "../model/doc.js";
-import {
-  casterLevelForClass,
-  effectiveCasterClassLevel,
-  isCasterTag,
-} from "../model/casterLevel.js";
 import { bypassChipLabel, bypassTip } from "../model/drBypassDisplay.js";
 import { effectiveHp, isHpLow } from "../model/hp.js";
 import { blastBurnWarning, blastSubLine } from "../model/kineticistBlastDisplay.js";
@@ -135,7 +137,7 @@ export function Sheet({
     })
     .join(" / ");
   // Per-class caster level. PF1 CL is per casting class, never summed; the
-  // engine's `@cl` and model/casterLevel.ts both treat CL as max over
+  // engine's `@cl` and engine caster-level.ts both treat CL as max over
   // full-caster tags, but the sheet lists each so a multiclass caster can read
   // them off. `casterLevelForClass` is the seam where paladin/ranger-style
   // divergences (CL != class level) get wired in — don't read c.level directly
@@ -446,25 +448,47 @@ export function Sheet({
         </div>
       ) : null}
 
-      {/* Casting — arcane spell failure —
-          display-only, shown only for arcane casters (wizard/sorcerer/
-          arcanist/magus/bard/summoner/skald/witch/bloodrager). Not a
-          defense stat, so it gets its own group rather than living under
-          Defense. */}
-      {sheet.arcaneSpellFailure ? (
+      {/* Casting — concentration per casting class, plus arcane spell
+          failure for arcane casters. Not a defense stat, so it gets its own
+          group rather than living under Defense. */}
+      {sheet.concentration || sheet.arcaneSpellFailure ? (
         <div className="stat-group">
           <div className="stat-group-header">
             <span className="stat-group-legend">Casting</span>
             <div className="stat-group-rule" />
           </div>
           <div className="stat-group-grid stat-group-grid--2">
-            <StatSeal
-              label="Spell Failure"
-              value={`${sheet.arcaneSpellFailure.total}%`}
-              foot={sheet.arcaneSpellFailure.exemptNote}
-              className="seal--compact"
-              resetKey={doc.id}
-            />
+            {sheet.concentration?.map((c) => {
+              const multiclass = sheet.concentration!.length > 1;
+              return (
+                <StatSeal
+                  key={c.classTag}
+                  label="Concentration"
+                  value={signed(c.total)}
+                  foot={multiclass ? c.className : undefined}
+                  conditionals={c.conditionals}
+                  components={c.components}
+                  provTitle={multiclass ? `${c.className} concentration` : "Concentration"}
+                  className="seal--compact"
+                  resetKey={doc.id}
+                  baseline={baseline.concentration?.find((b) => b.classTag === c.classTag)?.total}
+                  numericValue={c.total}
+                  copy={{
+                    formula: d20FormulaFor(c.total),
+                    label: multiclass ? `${c.className} concentration` : "concentration",
+                  }}
+                />
+              );
+            })}
+            {sheet.arcaneSpellFailure ? (
+              <StatSeal
+                label="Spell Failure"
+                value={`${sheet.arcaneSpellFailure.total}%`}
+                foot={sheet.arcaneSpellFailure.exemptNote}
+                className="seal--compact"
+                resetKey={doc.id}
+              />
+            ) : null}
           </div>
         </div>
       ) : null}

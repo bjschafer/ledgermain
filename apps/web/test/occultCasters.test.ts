@@ -2,7 +2,7 @@
  * Occult Adventures caster wiring (17-class expansion follow-up wave):
  * psychic + medium caster models and — the known per-class gotcha — the
  * FULL_CASTER_TAGS regression (a prior class shipped with the Sheet header
- * showing CL 0 because casterLevel.ts wasn't updated; see
+ * showing CL 0 because caster-level.ts wasn't updated; see
  * lyle.integration.test.ts's arcanist regression note). Kineticist casts no
  * spells and must stay out of every caster surface.
  */
@@ -11,7 +11,7 @@ import { describe, expect, it } from "bun:test";
 import type { CharacterDoc } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
-import { casterLevel, casterLevelForClass, isCasterTag } from "../src/model/casterLevel.js";
+import { casterLevel, casterLevelForClass, isCasterTag } from "@pf1/engine";
 import {
   casterModelFor,
   disciplineSpellsKnown,
@@ -36,7 +36,7 @@ describe("psychic caster level (FULL_CASTER_TAGS regression)", () => {
 
   it("medium is level-gated (issue #65), NOT in the flat full-caster set; kineticist never casts at all", () => {
     // Medium casts nothing before 4th level — a flat classLevel would wrongly
-    // reported CL 1-3 before that (the bloodrager posture, see casterLevel.ts).
+    // reported CL 1-3 before that (the bloodrager posture, see caster-level.ts).
     // Medium is a `LEVEL_GATED_CASTER_TAGS` entry: CL 0 below the
     // gate, CL = classLevel from the gate on (still never a plain
     // `FULL_CASTER_TAGS` member — the binary switch would still be wrong

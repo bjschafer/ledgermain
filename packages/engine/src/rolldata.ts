@@ -8,6 +8,7 @@
 import type { AbilityId, CharacterDoc, RefData } from "@pf1/schema";
 import { ABILITY_IDS } from "@pf1/schema";
 
+import { OFFSET_CASTER_TAGS } from "./caster-level.js";
 import type { RollData } from "./formula.js";
 import { classFeatureByTag } from "./refdata-index.js";
 
@@ -16,23 +17,12 @@ export function abilityMod(score: number): number {
 }
 
 /**
- * Classes whose caster level lags class level by a fixed offset once
- * spellcasting begins (the CRB half-caster shape: no spells through 3rd
- * level, then CL = classLevel - 3 from 4th on). Mirrors
- * `apps/web/src/model/casterLevel.ts`'s `OFFSET_CASTER_TAGS` — the engine
- * can't import from `apps/web`, so this is a small parallel constant. Keep
- * the two lists in sync; bard/bloodrager/medium do NOT belong here (their CL
- * equals class level once casting starts — no offset).
+ * `classLevel`, offset per `OFFSET_CASTER_TAGS` for the three CRB half-casters
+ * (so a paladin 9's `@cl` reads 6); passed through unchanged for every other
+ * tag, level-gated casters and non-casters included.
  */
-const CL_OFFSET_CASTER_TAGS: Readonly<Record<string, { gate: number; offset: number }>> = {
-  paladin: { gate: 4, offset: 3 },
-  ranger: { gate: 4, offset: 3 },
-  antipaladin: { gate: 4, offset: 3 },
-};
-
-/** `classLevel`, offset per `CL_OFFSET_CASTER_TAGS` for the three CRB half-casters; passed through unchanged for every other tag. */
 function casterLevelForRollData(tag: string, classLevel: number): number {
-  const shape = CL_OFFSET_CASTER_TAGS[tag];
+  const shape = OFFSET_CASTER_TAGS[tag];
   if (shape === undefined) return classLevel;
   return classLevel >= shape.gate ? classLevel - shape.offset : 0;
 }
@@ -157,7 +147,7 @@ export function buildRollData(
     // `buildRollData` takes no `refData` parameter and can't cheaply gain one
     // just for this, so `@cl` does NOT account for a prestige class's
     // `castingAdvancement` bonus the way
-    // `apps/web/src/model/casterLevel.ts`'s `effectiveCasterClassLevel` does
+    // `caster-level.ts`'s `effectiveCasterClassLevel` does
     // — a Wizard 5 / Eldritch Knight 1 with an EK slot targeting wizard reads
     // `@cl` = 5 here, not the effective 6 that module and the UI display. In
     // practice this doesn't yet miscompute any vendored formula: the

@@ -1,7 +1,6 @@
 /**
  * `buildRollData`'s `@cl` field — specifically the paladin/ranger/antipaladin
- * CRB half-caster offset (`CL_OFFSET_CASTER_TAGS` in `rolldata.ts`, mirroring
- * `apps/web/src/model/casterLevel.ts`'s `OFFSET_CASTER_TAGS`).
+ * CRB half-caster offset (`caster-level.ts`'s `OFFSET_CASTER_TAGS`).
  */
 import { describe, expect, it } from "bun:test";
 

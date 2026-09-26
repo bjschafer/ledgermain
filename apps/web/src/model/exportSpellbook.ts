@@ -15,10 +15,14 @@
  * (cleric/druid/…) has no known list to export, so their section says so
  * rather than dumping the entire class list.
  */
-import { classByTag, featNameSlug } from "@pf1/engine";
+import {
+  classByTag,
+  featNameSlug,
+  casterLevelForClass,
+  effectiveCasterClassLevel,
+} from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, RefData, Spell } from "@pf1/schema";
 
-import { casterLevelForClass, effectiveCasterClassLevel } from "./casterLevel.js";
 import { spellLevelMap } from "./preparedSpells.js";
 import {
   casterClassesOf,

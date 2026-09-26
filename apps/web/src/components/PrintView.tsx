@@ -321,6 +321,8 @@ export function PrintView({
                 CL {c.casterLevel}
                 {c.srCheckBonus !== undefined &&
                   ` (${c.srCheckBonus > 0 ? "+" : ""}${c.srCheckBonus} vs SR)`}
+                {c.concentration !== undefined &&
+                  ` · Concentration ${c.concentration >= 0 ? "+" : ""}${c.concentration}`}
                 {c.dcNotes !== undefined && ` · DC ${c.dcNotes.join(", ")}`}
               </span>
             </h3>

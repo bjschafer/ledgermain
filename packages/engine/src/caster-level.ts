@@ -6,10 +6,8 @@
  * progression, so this module is the single seam where a data-driven version
  * can later replace the tag-keyed tables below.
  *
- * Note: the engine's `@cl` roll-data field (packages/engine/src/rolldata.ts)
- * holds the parallel assumption for formula evaluation and is intentionally
- * separate — keep both in sync when extending this. `buildRollData`'s own
- * `CL_OFFSET_CASTER_TAGS` constant mirrors this module's `OFFSET_CASTER_TAGS`
+ * Note: the `@cl` roll-data field (`rolldata.ts`) is a separate, looser
+ * reading for formula evaluation. It shares `OFFSET_CASTER_TAGS`
  * (paladin/ranger/antipaladin's `-3` offset), so a formula like Divine
  * Favor's `min(3, floor(@cl/3))` reads the same CL a paladin's sheet
  * displays. For bloodrager/medium (level-gated, no offset), `rolldata.ts`'s
@@ -34,8 +32,9 @@
  * each such call site's own comment for why (advancement grants table
  * numbers only, never accelerates a class feature).
  */
-import type { CharacterDoc, Class, RefData } from "@pf1/schema";
-import { classByTag } from "@pf1/engine";
+import type { AbilityId, CharacterDoc, Class, RefData } from "@pf1/schema";
+
+import { classByTag } from "./refdata-index.js";
 
 /** Tags of classes recognised as casters in the Stage 1 data slice. */
 const FULL_CASTER_TAGS = new Set([
@@ -108,7 +107,7 @@ const LEVEL_GATED_CASTER_TAGS: Readonly<Record<string, number>> = {
  * per-day table). Distinct from `LEVEL_GATED_CASTER_TAGS`'s "late start, then
  * FLAT classLevel" shape (bloodrager/medium) — do not merge the two tables.
  */
-const OFFSET_CASTER_TAGS: Readonly<Record<string, { gate: number; offset: number }>> = {
+export const OFFSET_CASTER_TAGS: Readonly<Record<string, { gate: number; offset: number }>> = {
   paladin: { gate: 4, offset: 3 },
   ranger: { gate: 4, offset: 3 },
   antipaladin: { gate: 4, offset: 3 },
@@ -157,6 +156,46 @@ export function casterLevel(doc: CharacterDoc): number {
 export function isCasterTag(tag: string): boolean {
   return FULL_CASTER_TAGS.has(tag) || tag in LEVEL_GATED_CASTER_TAGS || tag in OFFSET_CASTER_TAGS;
 }
+
+/**
+ * The ability score that governs each casting class's spells: bonus slots,
+ * save DCs, and concentration. One entry per `isCasterTag` class.
+ */
+export const CASTING_ABILITY: Readonly<Record<string, AbilityId>> = {
+  wizard: "int",
+  sorcerer: "cha",
+  cleric: "wis",
+  paladin: "cha",
+  ranger: "wis",
+  bard: "cha",
+  druid: "wis",
+  arcanist: "int",
+  magus: "int",
+  oracle: "cha",
+  alchemist: "int",
+  investigator: "int",
+  inquisitor: "wis",
+  summoner: "cha",
+  skald: "cha",
+  witch: "int",
+  shaman: "wis",
+  warpriest: "wis",
+  hunter: "wis",
+  bloodrager: "cha",
+  antipaladin: "cha",
+  summonerUnchained: "cha",
+  mesmerist: "cha",
+  occultist: "int",
+  spiritualist: "wis",
+  psychic: "int",
+  medium: "cha",
+};
+
+/**
+ * Casters whose "spells" are extracts: drunk, not cast, so they never make a
+ * concentration check.
+ */
+export const EXTRACT_CASTER_TAGS: ReadonlySet<string> = new Set(["alchemist", "investigator"]);
 
 // ---------------------------------------------------------------------------
 // Prestige casting advancement (2)

@@ -44,6 +44,7 @@ import { ABILITY_IDS } from "@pf1/schema";
 
 import { computeAbilityDCs } from "./ability-dcs.js";
 import { computeClChecks, computeSpellDCs } from "./spell-dcs.js";
+import { computeConcentration } from "./concentration.js";
 import { resolveBonusKnownSpells, resolveCastingAdjustments } from "./casting-economy/index.js";
 import { deriveSpellLikeAbilities } from "./spell-like-abilities/index.js";
 import {
@@ -2259,6 +2260,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
   // nothing targets them, which is every non-caster character.
   const spellDCs = computeSpellDCs(collected);
   const clChecks = computeClChecks(collected);
+  const concentration = computeConcentration(doc, refData, abilityMods, collected);
 
   // Castable spell-like-ability rows (racial innates, heritage traits, class
   // features, feats) — derived from the final pass's abilities so score
@@ -2317,6 +2319,7 @@ export function compute(inputDoc: CharacterDoc, refData: RefData): DerivedSheet 
     ...(abilityDCs.length > 0 ? { abilityDCs } : {}),
     ...(spellDCs ? { spellDCs } : {}),
     ...(clChecks ? { clChecks } : {}),
+    ...(concentration.length > 0 ? { concentration } : {}),
     ...(spellLikeAbilities.length > 0 ? { spellLikeAbilities } : {}),
     ...(castingAdjustments.length > 0 ? { castingAdjustments } : {}),
     ...(bonusKnownSpells !== undefined ? { bonusKnownSpells } : {}),

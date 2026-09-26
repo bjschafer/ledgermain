@@ -94,6 +94,7 @@
  */
 
 import {
+  CASTING_ABILITY,
   baseSpellsKnown,
   baseSpellsPerDay,
   baseSpellsPrepared,
@@ -254,10 +255,9 @@ export interface CasterModel {
   preparesFromClassList: boolean;
 }
 
-export const CASTER_MODELS: Record<string, CasterModel> = {
+const CASTER_MODEL_DEFS: Record<string, Omit<CasterModel, "ability">> = {
   wizard: {
     preparation: "prepared",
-    ability: "int",
     progression: "wizard",
     knownLabel: "Spellbook",
     learnGuidance:
@@ -269,7 +269,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   sorcerer: {
     preparation: "spontaneous",
-    ability: "cha",
     progression: "sorcerer",
     knownProgression: "sorcerer",
     knownLabel: "Spells Known",
@@ -282,7 +281,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   cleric: {
     preparation: "prepared",
-    ability: "wis",
     progression: "cleric",
     knownLabel: "Cleric List",
     learnGuidance:
@@ -294,7 +292,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   paladin: {
     preparation: "prepared",
-    ability: "cha",
     progression: "paladin",
     knownLabel: "Paladin List",
     learnGuidance:
@@ -306,7 +303,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   ranger: {
     preparation: "prepared",
-    ability: "wis",
     progression: "ranger",
     knownLabel: "Ranger List",
     learnGuidance:
@@ -318,7 +314,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   bard: {
     preparation: "spontaneous",
-    ability: "cha",
     progression: "bard",
     knownProgression: "bard",
     knownLabel: "Spells Known",
@@ -331,7 +326,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   druid: {
     preparation: "prepared",
-    ability: "wis",
     progression: "druid",
     knownLabel: "Druid List",
     learnGuidance:
@@ -343,7 +337,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   arcanist: {
     preparation: "hybrid",
-    ability: "int",
     progression: "arcanist",
     preparedProgression: "arcanist",
     knownLabel: "Spellbook",
@@ -356,7 +349,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   magus: {
     preparation: "prepared",
-    ability: "int",
     progression: "magus",
     knownLabel: "Spellbook",
     learnGuidance:
@@ -368,7 +360,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   oracle: {
     preparation: "spontaneous",
-    ability: "cha",
     // Oracle's Spells per Day / Spells Known tables are numerically identical
     // to the sorcerer's (PF1 SRD — verified against aonprd.com/d20pfsrd.com:
     // both match at every spot-checked level, including L20's all-6s/all-3s-
@@ -387,7 +378,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   alchemist: {
     preparation: "prepared",
-    ability: "int",
     progression: "alchemist",
     knownLabel: "Formula Book",
     learnGuidance:
@@ -399,7 +389,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   investigator: {
     preparation: "prepared",
-    ability: "int",
     // Investigator (ACG) extracts-per-day are numerically identical to the
     // alchemist's own table (PF1 ACG SRD — cross-checked against aonprd.com
     // and d20pfsrd.com, both matching exactly at every level), so the
@@ -417,7 +406,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   inquisitor: {
     preparation: "spontaneous",
-    ability: "wis",
     // Inquisitor's Spells per Day / Spells Known tables (APG) are numerically
     // identical to the bard's (verified against aonprd.com and
     // legacy.aonprd.com: both match at every spot-checked level, 1-20,
@@ -436,7 +424,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   summoner: {
     preparation: "spontaneous",
-    ability: "cha",
     // Summoner's Spells per Day / Spells Known tables (APG) are numerically
     // identical to the bard's (verified against aonprd.com and
     // legacy.aonprd.com, both matching exactly), so the bard progression
@@ -454,7 +441,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   skald: {
     preparation: "spontaneous",
-    ability: "cha",
     // Skald's Spells per Day / Spells Known tables (ACG) are numerically
     // identical to the bard's — unsurprising, since a skald casts "arcane
     // spells drawn from the bard spell list" (verified against aonprd.com and
@@ -473,7 +459,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   witch: {
     preparation: "prepared",
-    ability: "int",
     // Witch's Spells per Day table is numerically identical to the wizard's
     // (PF1 APG SRD — verified against aonprd.com's "Table: Witch": exact
     // match at every level, including the L20 all-4s row), so the wizard
@@ -490,7 +475,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   shaman: {
     preparation: "prepared",
-    ability: "wis",
     // Shaman's Spells per Day table is numerically identical to the
     // cleric's/wizard's (PF1 ACG SRD — verified against aonprd.com's "Table:
     // Shaman": exact match at every level, including the L20 all-4s row), so
@@ -507,7 +491,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   warpriest: {
     preparation: "prepared",
-    ability: "wis",
     progression: "warpriest",
     knownLabel: "Warpriest List",
     learnGuidance:
@@ -519,7 +502,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   hunter: {
     preparation: "spontaneous",
-    ability: "wis",
     // Hunter's Spells per Day / Spells Known tables (ACG) are numerically
     // identical to the bard's (verified against the raw "Table: Hunter" /
     // "Table: Hunter Spells Known" on legacy.aonprd.com, both capping at
@@ -538,7 +520,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   bloodrager: {
     preparation: "spontaneous",
-    ability: "cha",
     progression: "bloodrager",
     knownProgression: "bloodrager",
     knownLabel: "Spells Known",
@@ -551,7 +532,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   antipaladin: {
     preparation: "prepared",
-    ability: "cha",
     // Antipaladin (APG) is a mirror of paladin: "His base daily spell
     // allotment is the same as that of a paladin" (vendored "Antipaladin
     // Spells" class-feature description, verbatim) — reuses the paladin
@@ -569,7 +549,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   summonerUnchained: {
     preparation: "spontaneous",
-    ability: "cha",
     // Summoner (Unchained)'s Spells per Day / Spells Known tables (PZO1128)
     // are numerically identical to the base summoner's — see
     // `SUMMONER_UNCHAINED_SPELLS_PER_DAY`/`_KNOWN`'s doc comment in
@@ -592,7 +571,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   mesmerist: {
     preparation: "spontaneous",
-    ability: "cha",
     // Mesmerist's Spells per Day / Spells Known tables (Occult Adventures)
     // are numerically identical to the bard's (verified against aonprd.com,
     // all 20 rows for both tables), so the bard progression tables are
@@ -610,7 +588,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   occultist: {
     preparation: "spontaneous",
-    ability: "int",
     // Occultist's Spells per Day table (Occult Adventures) is numerically
     // identical to the bard's (verified against aonprd.com, all 20 rows) —
     // same posture as hunter's direct bard-table reuse above. UNLIKE every
@@ -639,7 +616,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   spiritualist: {
     preparation: "spontaneous",
-    ability: "wis",
     // Spiritualist's Spells per Day / Spells Known tables (Occult
     // Adventures) are numerically identical to the bard's (verified against
     // aonprd.com, all 20 rows for both tables) — same posture as
@@ -658,7 +634,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   psychic: {
     preparation: "spontaneous",
-    ability: "int",
     // Psychic's Spells per Day AND Spells Known tables (Occult Adventures)
     // are numerically identical to the sorcerer's — verified against the raw
     // "Table: Psychic" / "Table: Psychic Spells Known" on legacy.aonprd.com,
@@ -677,7 +652,6 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
   },
   medium: {
     preparation: "spontaneous",
-    ability: "cha",
     progression: "medium",
     knownProgression: "medium",
     knownLabel: "Spells Known",
@@ -689,6 +663,13 @@ export const CASTER_MODELS: Record<string, CasterModel> = {
     preparesFromClassList: false,
   },
 };
+
+export const CASTER_MODELS: Record<string, CasterModel> = Object.fromEntries(
+  Object.entries(CASTER_MODEL_DEFS).map(([tag, def]) => [
+    tag,
+    { ...def, ability: CASTING_ABILITY[tag] ?? "int" },
+  ]),
+);
 
 /** Returns the CasterModel for `tag`, or `undefined` if it is not in the registry. */
 export function casterModelFor(tag: string): CasterModel | undefined {

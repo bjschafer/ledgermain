@@ -17,11 +17,11 @@ import {
   resolveSorcererBloodlineOrMutation,
   type DerivedFamiliar,
   type ImprovedFamiliarPrereq,
+  effectiveCasterLevel,
 } from "@pf1/engine";
 import type { CharacterDoc, DerivedSheet, FamiliarBuild, RefData, ResolvedStat } from "@pf1/schema";
 
 import { alignmentWithinOneStep } from "./alignment.js";
-import { effectiveCasterLevel } from "./casterLevel.js";
 import { toggleConditionIn } from "./conditions.js";
 import { normalizeAlignmentCode } from "./names.js";
 

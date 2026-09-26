@@ -6,9 +6,8 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 
-import { deriveResourcePools } from "@pf1/engine";
+import { deriveResourcePools, casterLevelForClass, effectiveCasterClassLevel } from "@pf1/engine";
 
-import { casterLevelForClass, effectiveCasterClassLevel } from "../../../model/casterLevel.js";
 import {
   classSpellsByLevel,
   clearPrepared,
@@ -109,7 +108,7 @@ export function PreparedView({
   const levelMap = useMemo(() => spellLevelMap(refData, casterTag), [refData, casterTag]);
   // RAW class level — feeds the class-FEATURE shaman spirit-magic merge below
   // (prestige casting advancement grants table numbers only, never accelerates
-  // a class feature — see model/casterLevel.ts's header comment).
+  // a class feature — see engine caster-level.ts's header comment).
   const classLevel = doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 0;
   // Advancement-aware effective class level — feeds the slot-table lookup
   // (spellSlotsByLevel) below.

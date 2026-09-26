@@ -2981,7 +2981,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY: Readonly<Record<string, FeatClassifi
   "uncanny-activation": "subsystem",
   "uncanny-alertness": "numeric",
   "uncanny-ally": "subsystem",
-  "uncanny-concentration": "blocked",
+  "uncanny-concentration": "numeric",
   "uncanny-defense": "situational",
   uncertainty: "subsystem",
   "uncivilized-tactics": "subsystem",
@@ -3513,7 +3513,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "poison-focus":
     "Raises the save DC of crafted poisons (not modeled) and poison-descriptor spells; spellDC has no descriptor axis for the spell half either.",
   "possessed-hand":
-    "Only the unconditional +1 insight bonus to Disable Device and Sleight of Hand is drafted; the possessed-hand attack/damage bonus and permanent concentration penalty aren't captured. [flag: unsure]",
+    "The +1 insight bonus to Disable Device and Sleight of Hand and the permanent -2 concentration penalty are drafted; the possessed-hand attack/damage bonus isn't captured. [flag: unsure]",
   "practiced-tactician": "Grants one additional daily use of the tactician ability.",
   "precocious-youth":
     "Removes an ability penalty tied to the Young age category, a state the engine doesn't model.",
@@ -3614,7 +3614,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
   "uncanny-alertness":
     "Unconditional Perception and Sense Motive bonus (the vs-sleep/charm save bonus is an enumerated subset and left unmodeled as situational).",
   "uncanny-concentration":
-    "Grants immunity to certain concentration-check triggers and a +2 concentration bonus; concentration checks have no engine target.",
+    "Skips concentration checks for vigorous motion and violent weather, so its +2 on all other concentration checks applies to every check actually rolled.",
   "undaunted-bravery":
     "Intimidate half wired via @classes.fighter.level; the DC-to-intimidate-you half targets an incoming check the engine doesn't model and stays prose.",
   "unfair-grip":
@@ -3637,7 +3637,7 @@ export const FEAT_CLASSIFICATION_COMMUNITY_NOTES: Readonly<Record<string, string
     "Each of the six virtues' bonus is conditioned on maintaining that virtue's creed (suspended for 24h on any violation); this engine has no adherence-tracking state to gate a Change on, so applying any virtue's bonus unconditionally would overclaim for a character who's broken their creed.",
   "warren-digger": "Unconditional burrow speed grant of 10 feet (repeatable).",
   "warrior-priest":
-    "Unconditional initiative bonus (the concentration-check bonus has no engine target and is left unmodeled).",
+    "Unconditional initiative bonus; the concentration bonus is scoped to casting defensively or grappled (concentration.defensive).",
   "waterway-caster":
     "Grants concentration-check bonuses/auto-successes; concentration checks have no engine target.",
   "whispered-knowledge":

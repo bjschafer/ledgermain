@@ -373,8 +373,8 @@ export const FEAT_CLASSIFICATION: Readonly<Record<string, FeatClassificationEntr
   "combat-casting": {
     slug: "combat-casting",
     name: "Combat Casting",
-    bucket: "situational",
-    note: "+4 concentration bonus, but only when casting defensively or grappled — concentration also has no engine target (see traits.ts's Focused Mind precedent) — doubly excluded",
+    bucket: "numeric",
+    note: "+4 concentration bonus when casting defensively or grappled, wired to the scoped concentration.defensive target so it shows as a conditional total rather than inflating the headline",
   },
   "combat-expertise": {
     slug: "combat-expertise",

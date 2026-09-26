@@ -26,10 +26,10 @@ import {
   normalizeWeaponGroup,
   parentBloodlineTagFor,
   subdomainByTag,
+  eligibleAdvancementTargets,
 } from "@pf1/engine";
 
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
-import { eligibleAdvancementTargets } from "./casterLevel.js";
 import { localId } from "./ids.js";
 import { CURRENT_SCHEMA_VERSION } from "./migrations.js";
 import { applyMaterialToArmor, MATERIALS } from "./materials.js";
@@ -888,7 +888,7 @@ export function removeClass(doc: CharacterDoc, tag: string): CharacterDoc {
  * prestige class's casting-advancement slot (2) — see
  * `CharacterDoc.build.castingAdvancement`'s doc comment for the storage shape.
  * Validated via `eligibleAdvancementTargets` — the same check
- * `model/casterLevel.ts`'s `castingAdvancementBonus` enforces defensively at
+ * `engine caster-level.ts`'s `castingAdvancementBonus` enforces defensively at
  * read time — so an ineligible target (not on `identity.classes`, not a real
  * caster, or the wrong kind for this slot) is silently ignored rather than
  * stored: the doc should never carry a choice `castingAdvancementBonus` would

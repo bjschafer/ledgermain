@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 import type { RefData } from "@pf1/schema";
 
-import { casterLevelForClass, effectiveCasterClassLevel } from "../../model/casterLevel.js";
+import { casterLevelForClass, effectiveCasterClassLevel } from "@pf1/engine";
 import { parentBloodlineTagOf, toggleKnownSpell } from "../../model/doc.js";
 import {
   bloodlineSpellsKnown,
@@ -65,7 +65,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   // (bloodline/mystery/discipline/patron/shaman), which stay pinned to the
   // character's actual class level (prestige casting advancement grants table
   // numbers only, never accelerates a class feature — see
-  // model/casterLevel.ts's header comment).
+  // engine caster-level.ts's header comment).
   const classLevel = useMemo(
     () => doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 1,
     [doc.identity.classes, casterTag],

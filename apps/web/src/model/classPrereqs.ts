@@ -16,9 +16,8 @@
  */
 import type { CharacterDoc, Class, RefData } from "@pf1/schema";
 
-import { featNameSlug } from "@pf1/engine";
+import { featNameSlug, CASTER_KIND, effectiveCasterClassLevel } from "@pf1/engine";
 
-import { CASTER_KIND, effectiveCasterClassLevel } from "./casterLevel.js";
 import { SKILL_NAMES } from "./names.js";
 import { accessibleSpellLevels, casterModelFor } from "./spellcasting.js";
 
@@ -59,7 +58,7 @@ function ordinal(n: number): string {
  * *effective* class level (advancement-aware, so an existing prestige class's
  * casting-advancement slot counts), access spells of `req.spellLevel` and
  * matches `req.kind` (an `"any"` requirement accepts arcane, divine, OR
- * psychic — same posture as `slotAcceptsKind` in `casterLevel.ts`). A caster
+ * psychic — same posture as `slotAcceptsKind` in `caster-level.ts`). A caster
  * class with no `CASTER_MODELS` entry (none in the current registry, but
  * defensive against future gaps) can't be verified structurally and is skipped
  * here — honest per this module's doc comment; the class's `prereqText`

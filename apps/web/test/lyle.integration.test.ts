@@ -21,7 +21,7 @@
  */
 import { describe, expect, it } from "bun:test";
 
-import { compute, deriveResourcePools } from "@pf1/engine";
+import { compute, deriveResourcePools, casterLevel } from "@pf1/engine";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import { buildLyleDoc } from "./lyle.fixture.js";
@@ -32,7 +32,6 @@ import {
   expectedArcanistExploitCount,
 } from "../src/model/arcanistExploits.js";
 import { chosenFeatCount, expectedFeatCount } from "../src/model/feats.js";
-import { casterLevel } from "../src/model/casterLevel.js";
 import { skillBudget } from "../src/model/skills.js";
 import {
   casterModelFor,
@@ -89,8 +88,8 @@ describe("Lyle — identity, build choices recorded on the document", () => {
     expect(expectedArcanistExploitCount(baseDoc, ref)).toBe(3);
   });
 
-  it("regression: arcanist is now recognised as a caster class (casterLevel.ts fix)", () => {
-    // Before this fix, `FULL_CASTER_TAGS` in model/casterLevel.ts didn't list
+  it("regression: arcanist is now recognised as a caster class (caster-level.ts fix)", () => {
+    // Before this fix, `FULL_CASTER_TAGS` in engine caster-level.ts didn't list
     // "arcanist", so `casterLevel()` (used by the Sheet header's per-class CL
     // line, and by feat-prerequisite checks) silently returned 0 for every
     // arcanist. Not a `compute()`/DerivedSheet bug — `compute()` never reads

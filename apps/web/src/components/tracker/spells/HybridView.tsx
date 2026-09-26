@@ -7,7 +7,7 @@ import { useMemo, useState, type ReactNode } from "react";
 
 import type { AppliedMetamagic } from "@pf1/schema";
 
-import { casterLevelForClass, effectiveCasterClassLevel } from "../../../model/casterLevel.js";
+import { casterLevelForClass, effectiveCasterClassLevel } from "@pf1/engine";
 import {
   clearPrepared,
   prepareSpell,

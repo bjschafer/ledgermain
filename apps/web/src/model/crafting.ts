@@ -25,7 +25,12 @@
 
 import type { CharacterDoc, DerivedSheet, RefData, Spell } from "@pf1/schema";
 
-import { casterLevelForClass, CASTER_KIND, effectiveCasterClassLevel } from "./casterLevel.js";
+import {
+  casterLevelForClass,
+  CASTER_KIND,
+  effectiveCasterClassLevel,
+  classByTag,
+} from "@pf1/engine";
 import {
   type ConsumableKind,
   consumableKindDef,
@@ -37,7 +42,6 @@ import {
 import { featInstances, grantedFeats } from "./feats.js";
 import { castableSpellsFor } from "./knownSpells.js";
 import { casterClassesOf } from "./spellcasting.js";
-import { classByTag } from "@pf1/engine";
 
 /** The item-creation feat that unlocks each consumable kind. */
 export interface ItemCreationFeatDef {

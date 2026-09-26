@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-25-concentration",
+    date: "2026-09-25",
+    title: "Your concentration bonus is on the sheet",
+    note: "The Casting group shows your concentration bonus for every class you cast spells with: caster level plus your casting ability, plus traits and buffs like Focused Mind. Tap it for the breakdown. Combat Casting shows as a second number for casting defensively or while grappled, so the everyday total stays honest. A multiclass caster gets one per class, and the printed sheet lists it beside each class's caster level.",
+  },
+  {
     id: "2026-09-25-spell-targets",
     date: "2026-09-25",
     title: "Spells say what they target",

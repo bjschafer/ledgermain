@@ -195,6 +195,7 @@ const CHANGE_TARGET_LABELS: Record<string, string> = {
   critConfirm: "crit confirmation rolls",
   // misc
   concentration: "concentration checks",
+  "concentration.defensive": "concentration checks to cast defensively or grappled",
   cl: "caster level",
   reach: "reach",
   allChecks: "all ability checks",

@@ -1622,7 +1622,7 @@ export interface CharacterDoc {
      * and −5 max HP (synthetic `hp` change). It also imposes −1 effective
      * caster level per negative level, which has no home in the current engine
      * (no derived "caster level" stat outside build-time prereqs — see
-     * `model/casterLevel.ts`'s doc comment for why folding it in there would
+     * `engine caster-level.ts`'s doc comment for why folding it in there would
      * be wrong), and −1 on ability checks, which the engine also doesn't model
      * as a distinct roll — both are documented gaps, not silently dropped. If
      * total negative levels reach or exceed the character's Hit Dice, PF1 RAW
@@ -3329,6 +3329,14 @@ export interface DerivedSheet {
    */
   clChecks?: DerivedClChecks;
   /**
+   * Concentration check bonus per casting class: caster level + that class's
+   * casting ability modifier + `concentration` modifiers, with Combat
+   * Casting-style `concentration.defensive` bonuses as a conditional total.
+   * Omitted when the character has no class that casts spells yet (extract
+   * casters included, since extracts aren't cast).
+   */
+  concentration?: DerivedConcentration[];
+  /**
    * Spell-like abilities the character can cast — racial innates (gnome
    * magic, a tiefling's darkness), heritage traits, class features, and
    * feats that grant a specific named spell usable N/day, at will, or
@@ -3467,6 +3475,18 @@ export interface DerivedSpellSchoolDC {
 export interface DerivedClChecks {
   sr?: DerivedClCheckBonus;
   dispel?: DerivedClCheckBonus;
+}
+
+/** One casting class's concentration check bonus — see `DerivedSheet.concentration`. */
+export interface DerivedConcentration {
+  classTag: string;
+  className: string;
+  casterLevel: number;
+  ability: AbilityId;
+  total: number;
+  components: ModifierComponent[];
+  /** The total when casting defensively or grappled, when that differs. */
+  conditionals?: ConditionalTotal[];
 }
 
 /** One caster-level check bonus with provenance. */

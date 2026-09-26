@@ -2,11 +2,10 @@ import { useMemo } from "react";
 
 import type { CharacterDoc, Class, RefData } from "@pf1/schema";
 
-import { eligibleAdvancementTargets } from "../../model/casterLevel.js";
+import { eligibleAdvancementTargets, classByTag } from "@pf1/engine";
 import { setCastingAdvancementTarget } from "../../model/doc.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
-import { classByTag } from "@pf1/engine";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -70,7 +69,7 @@ interface AdvancementEntry {
  * /`FamiliarPicker`: renders nothing when no class on the build has any
  * `castingAdvancement` slots at all. All the validation logic (eligible
  * targets, storage, cleanup on class removal) already lives in
- * `model/casterLevel.ts` / `model/doc.ts` (2) — this is a thin view over
+ * `engine caster-level.ts` / `model/doc.ts` (2) — this is a thin view over
  * `eligibleAdvancementTargets` + `setCastingAdvancementTarget`.
  */
 export function CastingAdvancementPicker({ doc, refData, update }: CastingAdvancementPickerProps) {

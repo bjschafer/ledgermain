@@ -106,6 +106,9 @@ const APPLIED_TARGETS = new Set<string>([
   // computeClChecks in spell-dcs.ts; the scoped forms are prefix-matched below)
   "spellDC",
   "clCheck",
+  // concentration checks, general and defensive-only (concentration.ts)
+  "concentration",
+  "concentration.defensive",
 ]);
 
 /**
@@ -168,7 +171,6 @@ export function unappliedChanges(changes: readonly Change[]): Change[] {
  * bothered to give a target a friendly name yet.
  */
 export const UNAPPLIED_TARGET_LABELS: Record<string, string> = {
-  concentration: "concentration checks",
   cl: "caster level",
   critConfirm: "crit confirmation rolls",
   reach: "reach",

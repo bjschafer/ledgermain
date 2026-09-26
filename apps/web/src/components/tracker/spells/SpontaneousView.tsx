@@ -6,10 +6,9 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 
-import { deriveResourcePools } from "@pf1/engine";
+import { deriveResourcePools, casterLevelForClass, effectiveCasterClassLevel } from "@pf1/engine";
 import type { AppliedMetamagic, CharacterDoc } from "@pf1/schema";
 
-import { casterLevelForClass, effectiveCasterClassLevel } from "../../../model/casterLevel.js";
 import { spellLevelMap } from "../../../model/preparedSpells.js";
 import {
   freeMetamagicPlan,
@@ -85,7 +84,7 @@ export function SpontaneousView({
   // RAW class level — feeds the bloodline/mystery/discipline/patron bonus-
   // spell-known merges below (prestige casting advancement grants table
   // numbers only, never accelerates a class feature — see
-  // model/casterLevel.ts's header comment).
+  // engine caster-level.ts's header comment).
   const classLevel = doc.identity.classes.find((c) => c.tag === casterTag)?.level ?? 0;
   // Advancement-aware effective class level — feeds the slot-table lookups
   // (spellSlotsByLevel/spontaneousSlotStatus/castSpontaneousSlot) below.

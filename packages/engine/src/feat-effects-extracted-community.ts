@@ -1064,15 +1064,17 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     provenance:
       "You gain a +2 bonus on Knowledge (planes) checks and on Sense Motive checks against outsiders, and Knowledge (planes) is a class skill for you. If you have 10 or more ranks in either of these skills, the bonus for that skill increases to +4.",
   },
-  // Only the unconditional +1 insight bonus to Disable Device and Sleight of Hand is drafted; the possessed-hand attack/damage bonus and permanent concentration penalty aren't captured.
+  // The possessed-hand attack/damage bonus is per-hand and stays uncaptured.
   "possessed-hand": {
     type: "static",
     changes: [
       { target: "skill.dev", type: "insight", formula: "1" },
       { target: "skill.slt", type: "insight", formula: "1" },
+      { target: "concentration", type: "untyped", formula: "-2" },
     ],
     confidence: "high",
-    provenance: "You also gain a +1 insight bonus on Disable Device and Sleight of Hand checks.",
+    provenance:
+      "you take a permanent -2 penalty on concentration checks once you gain this feat. Any attack you make with a one-handed weapon, light weapon, unarmed strike, or natural attack with your possessed hand gains a +1 insight bonus on the attack roll and damage roll. You also gain a +1 insight bonus on Disable Device and Sleight of Hand checks.",
   },
   // Unconditional +2 bonus on Appraise checks.
   "scavenger-s-eye": {
@@ -1482,12 +1484,23 @@ export const FEAT_EFFECTS_EXTRACTED_COMMUNITY: Readonly<Record<string, Extracted
     confidence: "high",
     provenance: "You gain a burrow speed of 10 feet through earth, sand, or soil.",
   },
-  // Unconditional initiative bonus (the concentration-check bonus has no engine target and is left unmodeled).
+  // Unconditional initiative bonus; the concentration bonus only applies when casting defensively or grappled.
   "warrior-priest": {
     type: "static",
-    changes: [{ target: "init", type: "untyped", formula: "1" }],
+    changes: [
+      { target: "init", type: "untyped", formula: "1" },
+      { target: "concentration.defensive", type: "untyped", formula: "2" },
+    ],
     confidence: "high",
-    provenance: "You gain a +1 bonus on initiative checks",
+    provenance:
+      "You gain a +1 bonus on initiative checks and a +2 bonus on concentration checks made to cast a spell or use a spell-like ability when casting defensively or while grappled",
+  },
+  // The skipped checks (vigorous motion, violent weather) are never rolled, so the +2 covers every check still made.
+  "uncanny-concentration": {
+    type: "static",
+    changes: [{ target: "concentration", type: "untyped", formula: "2" }],
+    confidence: "high",
+    provenance: "You gain a +2 bonus on all other concentration checks.",
   },
   // Four undead "secrets"; only Secret of Bone's DR 5/bludgeoning is a real,
   // permanent Change (dr.<qualifier> is a live target — see how Invulnerable

@@ -12,7 +12,7 @@
 
 import type { CharacterDoc, DerivedSheet, RefData } from "@pf1/schema";
 
-import { effectiveCasterClassLevel } from "./casterLevel.js";
+import { effectiveCasterClassLevel } from "@pf1/engine";
 import { parentBloodlineTagOf } from "./doc.js";
 import { spellLevelMap } from "./preparedSpells.js";
 import {

@@ -2,7 +2,9 @@ import { describe, expect, it } from "bun:test";
 
 import type { CharacterDoc } from "@pf1/schema";
 
-import { casterLevel, casterLevelForClass, isCasterTag } from "../src/model/casterLevel.js";
+import { CASTING_ABILITY, casterLevel, casterLevelForClass, isCasterTag } from "@pf1/engine";
+
+import { CASTER_MODELS } from "../src/model/spellcasting.js";
 
 function docWith(classes: { tag: string; level: number }[]): Pick<CharacterDoc, "identity"> {
   return { identity: { name: "", race: "", classes } } as unknown as Pick<CharacterDoc, "identity">;
@@ -119,5 +121,13 @@ describe("casterLevel", () => {
         ]) as CharacterDoc,
       ),
     ).toBe(6);
+  });
+});
+
+describe("CASTING_ABILITY", () => {
+  it("covers exactly the caster models and the caster-level tags", () => {
+    const models = Object.keys(CASTER_MODELS).sort();
+    expect(Object.keys(CASTING_ABILITY).sort()).toEqual(models);
+    for (const tag of models) expect(isCasterTag(tag)).toBe(true);
   });
 });
