@@ -130,7 +130,7 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
             const stored = doc.live.resources[pool.id];
             const used = stored?.used ?? 0;
             return (
-              <div key={pool.id}>
+              <div key={pool.id} className="res-group">
                 <ResourceRow
                   name={pool.name}
                   sub={poolCadenceLabel(pool.per)}
@@ -282,45 +282,20 @@ function ResourceRow({
   casterLevel?: number;
   update?: (fn: (d: CharacterDoc) => CharacterDoc) => void;
 }) {
+  // Manual pools carry no toggles, so none of this context is passed for them.
+  const toggleCtx =
+    refData && activeBuffs && update && (linkedBuffIds?.length || tableOptions?.length)
+      ? { refData, activeBuffs, update }
+      : null;
+  const hasBody = Boolean(detail || description || toggleCtx);
   return (
-    <div className="res-row">
-      <div className="res-main">
-        <div className="res-head">
-          <span className="res-name">
-            {name}
-            <AbilityTypeTag abilityType={abilityType} />
-          </span>
-          {sub ? <span className="res-sub">{sub}</span> : null}
-        </div>
-        {detail ? <div className="res-detail">{detail}</div> : null}
-        {description ? <FeatureDescription html={description} /> : null}
-        {linkedBuffIds && linkedBuffIds.length > 0 && refData && activeBuffs && update ? (
-          <div className="res-linked-buffs">
-            {linkedBuffIds.map((buffId) => (
-              <LinkedBuffToggle
-                key={buffId}
-                buffId={buffId}
-                refData={refData}
-                activeBuffs={activeBuffs}
-                casterLevel={casterLevel ?? 1}
-                update={update}
-              />
-            ))}
-          </div>
-        ) : null}
-        {tableOptions && tableOptions.length > 0 && refData && activeBuffs && update ? (
-          <div className="res-linked-buffs">
-            {tableOptions.map((option) => (
-              <TableBuffToggle
-                key={option.id}
-                option={option}
-                refData={refData}
-                activeBuffs={activeBuffs}
-                update={update}
-              />
-            ))}
-          </div>
-        ) : null}
+    <div className="res-row pool-row">
+      <div className="res-head">
+        <span className="res-name">
+          {name}
+          <AbilityTypeTag abilityType={abilityType} />
+        </span>
+        {sub ? <span className="res-sub">{sub}</span> : null}
       </div>
       <div className="res-count num">
         {left}
@@ -357,6 +332,27 @@ function ResourceRow({
           </button>
         ) : null}
       </div>
+      {hasBody ? (
+        <div className="res-body">
+          {detail ? <div className="res-detail">{detail}</div> : null}
+          {toggleCtx ? (
+            <div className="res-linked-buffs">
+              {linkedBuffIds?.map((buffId) => (
+                <LinkedBuffToggle
+                  key={buffId}
+                  buffId={buffId}
+                  casterLevel={casterLevel ?? 1}
+                  {...toggleCtx}
+                />
+              ))}
+              {tableOptions?.map((option) => (
+                <TableBuffToggle key={option.id} option={option} {...toggleCtx} />
+              ))}
+            </div>
+          ) : null}
+          {description ? <FeatureDescription html={description} /> : null}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -739,47 +735,49 @@ function PhrenicAmplificationActionRow({
   const noCost = action.cost === 0;
 
   return (
-    <div className="phrenic-amplification-row">
-      <div className="res-field-row">
-        <span className="res-field-label">
+    <div className="res-action-row phrenic-amplification-row">
+      <div className="res-action-head">
+        <span className="res-action-name">
           {action.name}
-          <span className="tag-mystery"> {action.tier === "major" ? "Major" : "Amp"}</span>
+          <span className="tag-mystery">{action.tier === "major" ? "Major" : "Amp"}</span>
         </span>
-        {flatCost ? (
-          <button
-            type="button"
-            className="pick-btn"
-            disabled={left < (action.cost ?? 0)}
-            onClick={() => onSpend(action.cost!)}
-          >
-            Spend {action.cost} {action.cost === 1 ? "point" : "points"}
-          </button>
-        ) : noCost ? (
-          <span className="hint">No pool cost</span>
-        ) : (
-          <>
-            <NumberField
-              value={amount}
-              min={1}
-              max={Math.max(left, 1)}
-              size={2}
-              onCommit={setAmount}
-              aria-label={`${action.name} points to spend`}
-            />
+        <div className="res-action-slot">
+          {flatCost ? (
             <button
               type="button"
               className="pick-btn"
-              disabled={left < amount}
-              onClick={() => onSpend(amount)}
+              disabled={left < (action.cost ?? 0)}
+              onClick={() => onSpend(action.cost!)}
             >
-              Spend
+              Spend {action.cost} {action.cost === 1 ? "point" : "points"}
             </button>
-          </>
-        )}
+          ) : noCost ? (
+            <span className="res-sub">no cost</span>
+          ) : (
+            <>
+              <NumberField
+                value={amount}
+                min={1}
+                max={Math.max(left, 1)}
+                size={2}
+                onCommit={setAmount}
+                aria-label={`${action.name} points to spend`}
+              />
+              <button
+                type="button"
+                className="pick-btn"
+                disabled={left < amount}
+                onClick={() => onSpend(amount)}
+              >
+                Spend
+              </button>
+            </>
+          )}
+        </div>
       </div>
-      <span className="hint">
+      <div className="res-detail">
         {action.costLabel}: {action.summary}
-      </span>
+      </div>
       {action.description ? <FeatureDescription html={action.description} /> : null}
     </div>
   );
@@ -851,55 +849,57 @@ function ArcanistExploitActionRow({
     .join(" · ");
 
   return (
-    <div className="arcanist-exploit-row">
-      <div className="res-field-row">
-        <span className="res-field-label">
+    <div className="res-action-row arcanist-exploit-row">
+      <div className="res-action-head">
+        <span className="res-action-name">
           {action.name}
-          {action.category ? <span className="tag-mystery"> Greater</span> : null}
+          {action.category ? <span className="tag-mystery">Greater</span> : null}
+          {action.scaleValue ? (
+            <span className="exploit-scale">
+              {action.scaleLabel} <b>{action.scaleValue}</b>
+            </span>
+          ) : null}
         </span>
-        {action.scaleValue ? (
-          <span className="exploit-scale">
-            {action.scaleLabel} <b>{action.scaleValue}</b>
-          </span>
-        ) : null}
-        {flatCost ? (
-          <button
-            type="button"
-            className="pick-btn"
-            disabled={left < (action.cost ?? 0)}
-            onClick={() => onSpend(action.cost!)}
-          >
-            Spend {action.cost} {action.cost === 1 ? "point" : "points"}
-          </button>
-        ) : noCost ? (
-          <span className="hint">No reservoir cost</span>
-        ) : (
-          <>
-            <NumberField
-              value={amount}
-              min={1}
-              max={Math.max(left, 1)}
-              size={2}
-              onCommit={setAmount}
-              aria-label={`${action.name} points to spend`}
-            />
+        <div className="res-action-slot">
+          {flatCost ? (
             <button
               type="button"
               className="pick-btn"
-              disabled={left < amount}
-              onClick={() => onSpend(amount)}
+              disabled={left < (action.cost ?? 0)}
+              onClick={() => onSpend(action.cost!)}
             >
-              Spend
+              Spend {action.cost} {action.cost === 1 ? "point" : "points"}
             </button>
-          </>
-        )}
+          ) : noCost ? (
+            <span className="res-sub">no cost</span>
+          ) : (
+            <>
+              <NumberField
+                value={amount}
+                min={1}
+                max={Math.max(left, 1)}
+                size={2}
+                onCommit={setAmount}
+                aria-label={`${action.name} points to spend`}
+              />
+              <button
+                type="button"
+                className="pick-btn"
+                disabled={left < amount}
+                onClick={() => onSpend(amount)}
+              >
+                Spend
+              </button>
+            </>
+          )}
+        </div>
       </div>
-      <span className="hint">
+      <div className="res-detail">
         {meta ? `${meta}: ` : ""}
         {action.summary}
-      </span>
+      </div>
       {action.hasToggle ? (
-        <span className="hint">Its lasting effect toggles on the reservoir row above.</span>
+        <div className="res-detail">Its lasting effect toggles on the reservoir row above.</div>
       ) : null}
       {action.description ? <FeatureDescription html={action.description} /> : null}
     </div>

@@ -4391,6 +4391,40 @@ label.sr-check-field input[type="number"] {
   border-bottom: 0;
 }
 
+/* A derived pool and the sub-rows hanging off it. The group owns the divider
+   below it: the pool's own row is always its group's last child when nothing
+   hangs off it, so `.res-row:last-child` would drop the line. */
+.res-group:not(:last-child) {
+  border-bottom: 1px solid var(--line-soft);
+}
+
+/* Resources-panel pool rows: name | counter | buttons on one line, then the
+   body full-width underneath. Fixed counter and button columns keep every
+   row's numbers and −/+ on the same x, whether or not the row has a ✕. */
+.res-row.pool-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(4.5rem, auto) calc(3 * 30px + 2 * 4px);
+  align-items: center;
+  gap: 2px 10px;
+}
+
+.pool-row .res-count {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.res-body {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+/* Full width already gives the prose room; a scroll box inside the page's own
+   scroll just clipped it mid-sentence. */
+.res-body .spell-detail-desc {
+  max-height: none;
+  overflow: visible;
+}
+
 .res-main {
   flex: 1;
   min-width: 0;
@@ -4479,17 +4513,21 @@ input[type="text"].saved-roll-name:focus {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
-.res-linked-buff {
+/* Same size as the sub-rows' spend buttons below, so the panel has one small
+   button, not three. */
+.res-linked-buff,
+.res-sub-row .pick-btn {
   flex-shrink: 0;
   border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--surface-2);
   color: var(--ink);
-  padding: 3px 10px;
-  font-size: 0.6875rem;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  min-width: 0;
 }
 
 .res-linked-buff:hover {
@@ -4551,44 +4589,51 @@ input[type="text"].saved-roll-name:focus {
   gap: 4px;
 }
 
-/* Each picked phrenic amplification row carries a cost line and a collapsed
-   description, richer than the single-line field rows above it — a divider
-   between entries keeps a multi-amplification list from reading as one
-   run-on block. */
-.phrenic-amplification-row + .phrenic-amplification-row {
+/* A pool-spending action hanging off its pool (phrenic amplifications,
+   arcanist exploits): named like an ability, with its cost control in a
+   right-hand slot that lines up with the pool's buttons above. */
+.res-sub-row > .res-name + .res-action-row {
+  margin-top: 8px;
+}
+
+.res-action-row + .res-action-row {
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px solid var(--line-soft);
 }
 
-/* Each picked exploit row carries a cost/action line, its scaled number, and
-   a collapsed description — same divider treatment as the amplification rows
-   above, for the same reason. */
-.arcanist-exploit-row + .arcanist-exploit-row {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--line-soft);
+.res-action-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* The one number an exploit scales, resolved at this character's level. Sits
-   right of the name so a stack of them lines up beside the spend buttons
-   instead of tracking the name column's ragged width. */
-/* A row's cost/action line and its toggle pointer are separate sentences:
-   inline spans would run them together without so much as a space. */
-.arcanist-exploit-row > .hint {
-  display: block;
-  margin-top: 4px;
-}
-
-.exploit-scale {
-  margin-left: auto;
+.res-action-name {
+  flex: 1;
+  min-width: 0;
   font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.res-action-slot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* The one number an exploit scales, resolved at this character's level. */
+.exploit-scale {
+  margin-left: 8px;
+  font-size: 0.75rem;
+  font-weight: 400;
   color: var(--muted);
   white-space: nowrap;
 }
 
 .exploit-scale b {
   color: var(--ink);
+  font-weight: 600;
 }
 
 /* Polymorph / Wild Shape panel (issue #70) */
@@ -6723,6 +6768,7 @@ input[type="text"].saved-roll-name:focus {
 
   .chip,
   .pick-btn,
+  .res-linked-buff,
   .field-toggle,
   .filter-toggle,
   .fcb-chip {

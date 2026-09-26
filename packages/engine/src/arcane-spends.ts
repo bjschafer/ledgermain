@@ -39,8 +39,13 @@ import type { ToggleBuffOption } from "./toggle-buffs.js";
 /** Resource-pool `detail` line for the Arcane Pool — see `resources.ts`'s `feature.tag === "arcanePool"` branch. */
 export const ARCANE_POOL_DETAIL = "points/day · toggle arcana below";
 
-/** Resource-pool `detail` line for the Arcane Reservoir — see `resources.ts`'s `feature.tag === "arcaneReservoir"` branch. */
-export const ARCANE_RESERVOIR_DETAIL = "points · toggle exploits below";
+/**
+ * Resource-pool `detail` line for the Arcane Reservoir — see `resources.ts`'s
+ * `feature.tag === "arcaneReservoir"` branch. Just the unit: its toggles are
+ * reservoir spends (Spell DC/CL), not exploits, and the exploits get their
+ * own spend block under the row.
+ */
+export const ARCANE_RESERVOIR_DETAIL = "points";
 
 /** RAW schedule shared by both the base weapon spend and the Armored Battlemage armor redirect: +1 enhancement at 1st, +1 per 4 magus levels beyond 1st, max +5 at 17th. */
 const ARCANE_POOL_ENHANCEMENT_FORMULA = "min(5, 1 + floor((@classes.magus.level - 1) / 4))";
