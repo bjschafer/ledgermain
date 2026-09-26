@@ -85,7 +85,7 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
       <div className="hp-controls">
         <NumberField
           className="hp-amt num"
-          size={4}
+          block
           value={amount}
           min={0}
           commitOnChange
