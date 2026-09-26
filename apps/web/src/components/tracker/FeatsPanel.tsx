@@ -15,25 +15,23 @@ import { Panel } from "../builder/Panel.js";
 import type { BuilderProps } from "../builder/types.js";
 
 /**
- * Collapsible HTML description + prereq text, same visual pattern as
- * `SpellDetail`/`ClassFeaturesList`'s "prose reveal" (reuses its CSS classes).
+ * Prereqs sit on the row as a quiet line (at the table they're trivia, not
+ * something to open a disclosure for); the description is the only thing
+ * behind the toggle, set off by a gold rule so it reads as belonging to the
+ * feat above it.
  */
 function FeatDetail({ feat }: { feat: Feat }) {
   const prereqText = feat.prerequisites.prereqText;
-  if (!feat.description && !prereqText) return null;
   return (
-    <details className="spell-detail">
-      <summary className="spell-detail-summary">details</summary>
-      <div className="spell-detail-body">
-        {prereqText && (
-          <div className="spell-detail-row">
-            <span className="spell-detail-label">Prereqs</span>
-            <span className="spell-detail-value">{prereqText}</span>
-          </div>
-        )}
-        {feat.description && <RulesProse className="spell-detail-desc" html={feat.description} />}
-      </div>
-    </details>
+    <>
+      {prereqText && <div className="feat-prereq">Prereqs: {prereqText}</div>}
+      {feat.description && (
+        <details className="spell-detail feat-detail">
+          <summary className="spell-detail-summary">details</summary>
+          <RulesProse className="spell-detail-desc" html={feat.description} />
+        </details>
+      )}
+    </>
   );
 }
 

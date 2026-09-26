@@ -6007,6 +6007,26 @@ input[type="text"].saved-roll-name:focus {
   color: inherit;
 }
 
+/* ------------------------------------------------ Feats panel (play tab) -- */
+.feat-prereq {
+  margin-top: 2px;
+  font-size: 0.6875rem;
+  color: var(--faint);
+}
+
+/* Open, the prose hangs off a gold rule under the row, the same treatment as
+   an expanded class feature, so it reads as part of the feat rather than a
+   separate block of fine print. */
+.feat-detail[open] > .spell-detail-desc {
+  margin-top: 6px;
+  padding-left: 10px;
+  padding-top: 0;
+  border-top: 0;
+  border-left: 2px solid var(--gold-dim);
+  font-size: 0.8125rem;
+  color: var(--ink);
+}
+
 /* --------------------------------------- Class Features panel (play tab) -- */
 /* Feature entries are multi-line blocks here, so they need a real separator:
    the shared `.subsection` this used to lean on drew a stray hairline against
