@@ -13,7 +13,7 @@ import type { RefData, Spell } from "@pf1/schema";
 
 import {
   formatCastingTime,
-  formatSpellArea,
+  formatSpellCoverage,
   formatSpellComponents,
   formatSpellDuration,
   formatSpellRange,
@@ -286,18 +286,42 @@ describe("metamagic on the spell line", () => {
 
   it("Widen doubles the measurements in a spread", () => {
     const fireball = spellByName("Fireball");
-    expect(formatSpellArea(fireball)).toBe("20-ft.-radius spread");
-    expect(formatSpellArea(fireball, fx(fireball, 3, [{ slug: "widen-spell" }]))).toBe(
-      "40-ft.-radius spread",
-    );
+    expect(formatSpellCoverage(fireball)).toEqual([
+      { label: "Area", text: "20-ft.-radius spread" },
+    ]);
+    expect(formatSpellCoverage(fireball, fx(fireball, 3, [{ slug: "widen-spell" }]))).toEqual([
+      { label: "Area", text: "40-ft.-radius spread" },
+    ]);
   });
 
-  it("leaves an area Widen does not apply to alone", () => {
+  it("widens a spread printed as an effect", () => {
+    // CRB p. 368: Web's statblock line is "Effect webs in a 20-ft.-radius spread".
+    const web = spellByName("Web");
+    expect(formatSpellCoverage(web)).toEqual([
+      { label: "Effect", text: "webs in a 20-ft.-radius spread" },
+    ]);
+    expect(formatSpellCoverage(web, fx(web, 2, [{ slug: "widen-spell" }]))).toEqual([
+      { label: "Effect", text: "webs in a 40-ft.-radius spread" },
+    ]);
+  });
+
+  it("leaves a target line Widen does not apply to alone", () => {
     // "Spells that do not have an area of one of these four sorts are not
     // affected by this feat" — a targeted spell keeps its printed target line.
     const clw = spellByName("Cure Light Wounds");
-    const widened = formatSpellArea(clw, fx(clw, 1, [{ slug: "widen-spell" }]));
-    expect(widened).toBe(formatSpellArea(clw));
+    expect(formatSpellCoverage(clw)).toEqual([
+      { label: "Target", text: "living creature touched" },
+    ]);
+    const widened = formatSpellCoverage(clw, fx(clw, 1, [{ slug: "widen-spell" }]));
+    expect(widened).toEqual(formatSpellCoverage(clw));
+  });
+
+  it("prints Target before Effect, as the statblock does", () => {
+    // CRB p. 314: Mislead lists "Target you; Effect one illusory double".
+    expect(formatSpellCoverage(spellByName("Mislead")).map((l) => l.label)).toEqual([
+      "Target",
+      "Effect",
+    ]);
   });
 
   it("rewrites the damage chips", () => {
@@ -338,7 +362,7 @@ describe("metamagic on the spell line", () => {
       expect(() => {
         formatSpellRange(spell, 9, effects);
         formatSpellDuration(spell, 9, effects);
-        formatSpellArea(spell, effects);
+        formatSpellCoverage(spell, effects);
         spellDamageParts(spell, 9, effects);
       }).not.toThrow();
     }

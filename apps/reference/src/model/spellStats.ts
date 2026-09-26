@@ -110,10 +110,21 @@ export function formatSpellRange(spell: Spell, cl: number): string | null {
   }
 }
 
-/** Area / target text for the spell's primary action, verbatim. `null` if absent. */
-export function formatSpellArea(spell: Spell): string | null {
-  const area = firstActionWith(spell, (a) => a.area);
-  return area?.trim() ? area.trim() : null;
+/**
+ * The statblock's Target, Effect, and Area lines for the spell's first action
+ * carrying any of them, verbatim, in print order.
+ */
+export function formatSpellCoverage(
+  spell: Spell,
+): { label: "Target" | "Effect" | "Area"; text: string }[] {
+  const action = firstActionWith(spell, (a) => (a.target || a.effect || a.area ? a : null));
+  if (!action) return [];
+  const lines = [
+    { label: "Target", text: action.target?.trim() },
+    { label: "Effect", text: action.effect?.trim() },
+    { label: "Area", text: action.area?.trim() },
+  ] as const;
+  return lines.filter((l): l is (typeof lines)[number] & { text: string } => !!l.text);
 }
 
 const DURATION_UNIT: Record<string, [singular: string, plural: string]> = {

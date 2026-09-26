@@ -169,22 +169,37 @@ export function formatSpellRange(
   }
 }
 
+export interface SpellCoverageLine {
+  label: "Target" | "Effect" | "Area";
+  text: string;
+}
+
 /**
- * Area / target text for the spell's primary action, verbatim. `null` if
- * absent. Widen Spell multiplies every measurement in it ("20-ft.-radius
+ * The statblock's Target, Effect, and Area lines for the spell's primary
+ * action, verbatim, in print order; a spell prints whichever apply. Widen
+ * Spell multiplies every measurement in an area or effect ("20-ft.-radius
  * spread" → "40-ft.-radius spread"), and only for the burst, emanation, and
- * spread shapes the feat applies to — a text that names none of them is left
+ * spread shapes the feat applies to. A text that names none of them is left
  * alone rather than guessed at.
  */
-export function formatSpellArea(
+export function formatSpellCoverage(
   spell: Spell,
   fx: MetamagicSpellEffects = NO_METAMAGIC_EFFECTS,
-): string | null {
-  const area = firstActionWith(spell, (a) => a.area);
-  const text = area?.trim();
-  if (!text) return null;
-  if (fx.areaMultiplier === 1 || !/\b(burst|emanation|spread)\b/i.test(text)) return text;
-  return text.replace(/\d+(?:\.\d+)?/g, (n) => String(Number(n) * fx.areaMultiplier));
+): SpellCoverageLine[] {
+  const action = firstActionWith(spell, (a) => (a.target || a.effect || a.area ? a : null));
+  if (!action) return [];
+  const widen = (text: string) =>
+    fx.areaMultiplier === 1 || !/\b(burst|emanation|spread)\b/i.test(text)
+      ? text
+      : text.replace(/\d+(?:\.\d+)?/g, (n) => String(Number(n) * fx.areaMultiplier));
+  const out: SpellCoverageLine[] = [];
+  const target = action.target?.trim();
+  const effect = action.effect?.trim();
+  const area = action.area?.trim();
+  if (target) out.push({ label: "Target", text: target });
+  if (effect) out.push({ label: "Effect", text: widen(effect) });
+  if (area) out.push({ label: "Area", text: widen(area) });
+  return out;
 }
 
 const DURATION_UNIT: Record<string, [singular: string, plural: string]> = {

@@ -29,7 +29,7 @@ import {
 } from "./spellcasting.js";
 import {
   formatCastingTime,
-  formatSpellArea,
+  formatSpellCoverage,
   formatSpellComponents,
   formatSpellDuration,
   formatSpellRange,
@@ -105,8 +105,7 @@ function spellBlock(spell: Spell, cl: number): string[] {
   if (components) out.push(`- **Components:** ${components}`);
   const range = formatSpellRange(spell, cl);
   if (range) out.push(`- **Range:** ${range}`);
-  const area = formatSpellArea(spell);
-  if (area) out.push(`- **Area/Target:** ${area}`);
+  for (const { label, text } of formatSpellCoverage(spell)) out.push(`- **${label}:** ${text}`);
   const duration = formatSpellDuration(spell, cl);
   if (duration) out.push(`- **Duration:** ${duration}`);
   const damage = spellDamageParts(spell, cl);

@@ -15,7 +15,7 @@ import { detectSummonSpell, summonHelperHref } from "../model/summonLink.js";
 import { useSpellBonuses } from "../state/spellBonuses.js";
 import {
   formatCastingTime,
-  formatSpellArea,
+  formatSpellCoverage,
   formatSpellComponents,
   formatSpellDuration,
   formatSpellRange,
@@ -56,8 +56,8 @@ function damageLabel(part: { text: string; types: string[]; count?: number }): s
  * Renders in two parts: an always-visible compact **stat strip** with the
  * at-the-table facts a caster reaches for mid-turn (casting time · range ·
  * save DC · damage),
- * and a collapsible **details** disclosure with the full breakdown (area,
- * duration, components, SR, concentration) plus the HTML description.
+ * and a collapsible **details** disclosure with the full breakdown (target/
+ * effect/area, duration, components, SR, concentration) plus the HTML description.
  *
  * `casterLevel` resolves every `@cl`-scaled value — range bands (`medium` →
  * `"Medium (140 ft.)"`), durations (`{units:"round", value:"@cl"}`), and damage
@@ -226,7 +226,7 @@ function SpellDetailBody({
   fx: MetamagicSpellEffects;
   clChecks?: DerivedClChecks;
 }) {
-  const area = formatSpellArea(spell, fx);
+  const coverage = formatSpellCoverage(spell, fx);
   const duration = formatSpellDuration(spell, casterLevel, fx);
   const components = formatSpellComponents(spell);
   const concDC = concentrationDC(spellLevel);
@@ -246,12 +246,12 @@ function SpellDetailBody({
           <span className="spell-detail-value">{range}</span>
         </div>
       )}
-      {area && (
-        <div className="spell-detail-row">
-          <span className="spell-detail-label">Area/Target</span>
-          <span className="spell-detail-value">{area}</span>
+      {coverage.map(({ label, text }) => (
+        <div key={label} className="spell-detail-row">
+          <span className="spell-detail-label">{label}</span>
+          <span className="spell-detail-value">{text}</span>
         </div>
-      )}
+      ))}
       {duration && (
         <div className="spell-detail-row">
           <span className="spell-detail-label">Duration</span>

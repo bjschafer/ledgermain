@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-25-spell-targets",
+    date: "2026-09-25",
+    title: "Spells say what they target",
+    note: "A spell's details now show its Target, Effect, and Area lines the way the rulebook prints them, so Web tells you it fills a 20-ft.-radius spread and Hold Person names the humanoid it holds. Most spells were missing the line entirely before. Widen Spell doubles an effect's spread too, not just an area's. The quick-reference site and the spellbook export show the same lines.",
+  },
+  {
     id: "2026-09-25-safer-sync",
     date: "2026-09-25",
     title: "Sync never quietly drops your edits",

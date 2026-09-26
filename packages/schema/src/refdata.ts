@@ -835,7 +835,15 @@ export interface SpellAction {
   actionType?: string;
   save?: { type?: string; description?: string };
   range?: { units?: string; value?: string };
+  /**
+   * The statblock's three "what does it cover" lines, verbatim. A spell prints
+   * whichever apply: `area` ("20-ft.-radius burst"), `effect` for spells that
+   * conjure something ("webs in a 20-ft.-radius spread"), `target` ("one
+   * creature/level, no two of which can be more than 30 ft. apart").
+   */
   area?: string;
+  effect?: string;
+  target?: string;
   duration?: { units?: string; value?: string };
   damage?: { parts: { formula: string; types: string[] }[] };
   /**

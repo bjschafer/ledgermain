@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import {
   formatCastingTime,
-  formatSpellArea,
+  formatSpellCoverage,
   formatSpellComponents,
   formatSpellDuration,
   formatSpellRange,
@@ -85,7 +85,11 @@ export function SpellView({ spell }: { spell: Spell }) {
       <div className="rows">
         <Row label="Components">{formatSpellComponents(spell)}</Row>
         <Row label="Duration">{formatSpellDuration(spell, cl)}</Row>
-        <Row label="Area / Target">{formatSpellArea(spell)}</Row>
+        {formatSpellCoverage(spell).map(({ label, text }) => (
+          <Row key={label} label={label}>
+            {text}
+          </Row>
+        ))}
         <Row label="Spell Resistance">{spell.sr ? capitalize(spell.sr) : null}</Row>
         <Row label="Class levels">
           {classLevels.length > 0

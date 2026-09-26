@@ -23,7 +23,7 @@ function numberMap(value: unknown): Record<string, number> {
 }
 
 /**
- * An action's free-text fields (area, save description, and the range/duration
+ * An action's free-text fields (area/effect/target, save description, and the range/duration
  * quantities, which a few entries write as prose) can carry the same Foundry
  * markup a description does, and reach the sheet the same way.
  */
@@ -41,6 +41,7 @@ function transformActions(value: unknown, resolveUuid: UuidResolver): SpellActio
     const duration = a.duration as Record<string, unknown> | undefined;
     const damage = a.damage as Record<string, unknown> | undefined;
     const activation = a.activation as Record<string, unknown> | undefined;
+    const target = a.target as Record<string, unknown> | undefined;
     const parts = Array.isArray(damage?.parts)
       ? (damage!.parts as Record<string, unknown>[]).map((p) => ({
           formula: String(p.formula ?? ""),
@@ -65,6 +66,8 @@ function transformActions(value: unknown, resolveUuid: UuidResolver): SpellActio
           }
         : undefined,
       area: typeof a.area === "string" ? text(a.area) : undefined,
+      effect: typeof a.effect === "string" ? text(a.effect) : undefined,
+      target: typeof target?.value === "string" ? text(target.value) : undefined,
       duration: duration
         ? {
             units: typeof duration.units === "string" ? duration.units : undefined,
