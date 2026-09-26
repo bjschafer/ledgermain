@@ -3907,6 +3907,16 @@ button:focus-visible,
   text-align: center;
 }
 
+/* Stepper-less, so the inline `width: 3ch` lands on a bare input under the
+   global border-box + 10px side padding: a few pixels of visible content.
+   content-box makes the inline width the digit width, as `.stepper` does. */
+label.sr-check-field input[type="number"] {
+  box-sizing: content-box;
+  display: block;
+  text-align: center;
+  padding: 6px 10px;
+}
+
 .scroll.short {
   max-height: 200px;
 }

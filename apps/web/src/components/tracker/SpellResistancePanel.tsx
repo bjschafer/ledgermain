@@ -37,7 +37,7 @@ export function SpellResistancePanel({ sheet }: BuilderProps) {
         so only the total matters.
       </p>
 
-      <label className="field">
+      <label className="field sr-check-field">
         <span>Attacker's caster level</span>
         <NumberField
           value={casterLevel}
@@ -60,7 +60,7 @@ export function SpellResistancePanel({ sheet }: BuilderProps) {
         </p>
       ) : null}
 
-      <label className="field">
+      <label className="field sr-check-field">
         <span>Attacker's check total (1d20 + caster level)</span>
         <NumberField
           value={checkTotal}
