@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-09-25-safer-sync",
+    date: "2026-09-25",
+    title: "Sync never quietly drops your edits",
+    note: "If a character changes on two devices before they catch up with each other, you now get asked which to keep, and Keep both saves this device's version as a copy so nothing is thrown away. Before, whichever device had made more edits won without a word. Staying signed in keeps you signed in, and if a sign-in does expire, a banner says this device has stopped syncing instead of a small label. Coming back to the app after a while catches up with your other devices before you start editing.",
+  },
+  {
     id: "2026-09-24-custom-abilities-panel",
     date: "2026-09-24",
     title: "Custom abilities have their own panel",

@@ -1,7 +1,7 @@
 import { env } from "cloudflare:test";
 import { describe, expect, it } from "vitest";
 
-import { createSession, getSession } from "../src/session.js";
+import { createSession, getSession, renewSessionIfStale } from "../src/session.js";
 import { request } from "./helpers.js";
 
 describe("GET /auth/discord/start", () => {
@@ -130,6 +130,19 @@ describe("session-gated routes", () => {
       headers: { authorization: "not-a-bearer-token" },
     });
     expect(res.status).toBe(401);
+  });
+
+  it("renews a session that hasn't been renewed in a day", async () => {
+    const token = await createSession(env.KV, "discord:42");
+    const session = (await getSession(env.KV, token))!;
+    const created = Date.parse(session.createdAt);
+
+    await renewSessionIfStale(env.KV, token, session, created + 1000 * 60 * 60);
+    expect((await getSession(env.KV, token))?.renewedAt).toBeUndefined();
+
+    const later = created + 1000 * 60 * 60 * 25;
+    await renewSessionIfStale(env.KV, token, session, later);
+    expect((await getSession(env.KV, token))?.renewedAt).toBe(new Date(later).toISOString());
   });
 
   it("POST /auth/logout invalidates the session", async () => {

@@ -19,5 +19,11 @@ export const dexieSyncStore: SyncStore = {
   // Local drop of a server-tombstoned character during open-sync. This deletes
   // only from Dexie — it never re-hits the API (the tombstone is already the
   // server's authoritative state).
-  delete: (id) => db.characters.delete(id),
+  delete: async (id) => {
+    await Promise.all([db.characters.delete(id), db.syncState.delete(id)]);
+  },
+  markSynced: async (id, syncedVersion) => {
+    await db.syncState.put({ id, syncedVersion });
+  },
+  syncedVersion: async (id) => (await db.syncState.get(id))?.syncedVersion,
 };

@@ -6,6 +6,7 @@
  * entirely (documented in `apps/api/README.md`).
  */
 const TOKEN_KEY = "pf1-tracker:sessionToken";
+const EXPIRED_KEY = "pf1-tracker:sessionExpired";
 
 /** Parse a `#session=<token>` URL fragment (left by the API's OAuth-callback redirect). Pure. */
 export function parseSessionFragment(hash: string): string | null {
@@ -48,6 +49,37 @@ export function clearStoredToken(): void {
 }
 
 /**
+ * Drop a token the server rejected, remembering that it was rejected rather
+ * than signed out on purpose, so a reload still says "your sign-in expired"
+ * instead of quietly offering a sign-in button.
+ */
+export function markSessionExpired(): void {
+  try {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.setItem(EXPIRED_KEY, "1");
+  } catch {
+    // See setStoredToken.
+  }
+}
+
+/** Forget an expiry: the player signed in again, or signed out on purpose. */
+export function clearSessionExpired(): void {
+  try {
+    localStorage.removeItem(EXPIRED_KEY);
+  } catch {
+    // See setStoredToken.
+  }
+}
+
+export function isSessionExpired(): boolean {
+  try {
+    return localStorage.getItem(EXPIRED_KEY) !== null;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * The bits of `Location`/`History` this module actually touches. `window.location`
  * / `window.history` satisfy these structurally, but narrowing to just what's
  * used lets tests pass small plain objects instead of casting real DOM types.
@@ -75,6 +107,7 @@ export function consumeSessionFragment(
   const token = parseSessionFragment(location.hash);
   if (!token) return null;
   setStoredToken(token);
+  clearSessionExpired();
   history.replaceState(null, "", location.pathname + location.search);
   return token;
 }

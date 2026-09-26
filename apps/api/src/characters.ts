@@ -134,6 +134,11 @@ export async function getCharacter(ownerId: string, id: string, env: Env): Promi
  * currently-stored document so the client can implement "a newer version
  * exists on another device — reload?" (or let the user force-overwrite by
  * re-pushing with a bumped version).
+ *
+ * A client that knows which version its edits started from sends it as
+ * `X-Base-Version`, and then the stored version must be exactly that one.
+ * "Higher wins" alone can't see two devices that both edited since their last
+ * sync: whichever made more edits would silently overwrite the other.
  */
 export async function putCharacter(
   ownerId: string,
@@ -178,6 +183,12 @@ export async function putCharacter(
     return errorJson(400, "Body `updatedAt` must be an ISO-8601 timestamp string");
   }
 
+  const baseHeader = request.headers.get("x-base-version");
+  const baseVersion = baseHeader === null ? null : Number(baseHeader);
+  if (baseVersion !== null && (!Number.isInteger(baseVersion) || baseVersion < 0)) {
+    return errorJson(400, "`X-Base-Version` must be a non-negative integer");
+  }
+
   const key = keyFor(ownerId, id);
   const existing = await env.CHARACTERS.getWithMetadata<StoredMeta>(key, "text");
   if (existing.value === null) {
@@ -194,7 +205,11 @@ export async function putCharacter(
       );
     }
   }
-  if (existing.metadata && existing.metadata.version >= version) {
+  if (
+    existing.metadata &&
+    (existing.metadata.version >= version ||
+      (baseVersion !== null && existing.metadata.version !== baseVersion))
+  ) {
     return json(
       {
         error: "conflict: a newer version exists on another device",

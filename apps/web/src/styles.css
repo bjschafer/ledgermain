@@ -233,34 +233,60 @@ a {
   color: var(--oxblood-ink);
 }
 
-.sync-conflict {
-  max-width: 320px;
+.sync-signin.sync-expired {
+  border-color: var(--oxblood);
+  color: var(--oxblood-ink);
+}
+
+/* Expired session / sync conflict (SyncBanner): full width under the
+   masthead, because both quietly cost the player edits if missed. */
+.sync-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding: 10px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--oxblood);
+  border-left-width: 4px;
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-size: 0.8125rem;
+}
+
+.sync-banner-body {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-  background: none;
-  border: 1px solid var(--oxblood);
-  border-radius: var(--radius);
-  color: var(--oxblood-ink);
-  font-size: 0.75rem;
-  padding: 6px 10px;
-  text-align: right;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 320px;
 }
 
-.sync-conflict-actions {
+.sync-banner-body strong {
+  color: var(--oxblood-ink);
+}
+
+.sync-banner-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 }
 
-.sync-conflict-actions button {
+.sync-banner-actions button {
   background: none;
-  border: 1px solid var(--oxblood);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  color: var(--oxblood-ink);
-  font-size: 0.6875rem;
-  padding: 3px 8px;
+  color: var(--ink);
+  font-size: 0.75rem;
+  padding: 6px 12px;
   cursor: pointer;
+}
+
+.sync-banner-actions .sync-banner-primary {
+  border-color: var(--oxblood);
+  color: var(--oxblood-ink);
 }
 
 /* Phone pass: below 640px the masthead wraps and `.masthead-right` lands on
@@ -294,9 +320,8 @@ a {
     display: none;
   }
 
-  .sync-conflict {
-    flex-basis: 100%;
-    max-width: 100%;
+  .sync-banner-actions button {
+    min-height: var(--tap-min);
   }
 }
 

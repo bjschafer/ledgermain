@@ -117,6 +117,34 @@ describe("character CRUD", () => {
     expect(okRes.status).toBe(200);
   });
 
+  it("with X-Base-Version, rejects a higher version pushed over edits it never saw", async () => {
+    const put = (version: number, base?: number) =>
+      authedRequest(ownerId, "/api/characters/char-base", {
+        method: "PUT",
+        headers: base === undefined ? {} : { "x-base-version": String(base) },
+        body: JSON.stringify(docBody({ id: "char-base", version })),
+      });
+    expect((await put(10)).status).toBe(200);
+    // Another device synced from 10 and pushed 12.
+    expect((await put(12, 10)).status).toBe(200);
+    // This device also started from 10 but made more edits: 25 > 12, yet it
+    // never saw 11-12, so it must not win silently.
+    const diverged = await put(25, 10);
+    expect(diverged.status).toBe(409);
+    expect(((await diverged.json()) as { current: { version: number } }).current.version).toBe(12);
+    // Built on the stored version, it goes through.
+    expect((await put(26, 12)).status).toBe(200);
+  });
+
+  it("rejects a malformed X-Base-Version", async () => {
+    const res = await authedRequest(ownerId, "/api/characters/char-bad-base", {
+      method: "PUT",
+      headers: { "x-base-version": "nope" },
+      body: JSON.stringify(docBody({ id: "char-bad-base" })),
+    });
+    expect(res.status).toBe(400);
+  });
+
   it("scopes documents per owner", async () => {
     await authedRequest(ownerId, "/api/characters/char-3", {
       method: "PUT",

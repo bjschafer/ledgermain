@@ -9,11 +9,16 @@
 import { listAllKeys } from "./kv.js";
 
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
+// A session in use slides forward, so an active device never gets signed out
+// from under an unsynced edit. Renewed at most daily to keep KV writes rare.
+const SESSION_RENEW_AFTER_MS = 1000 * 60 * 60 * 24;
 const OAUTH_STATE_TTL_SECONDS = 60 * 10; // 10 minutes — just long enough for the Discord redirect round trip
 
 export interface Session {
   ownerId: string;
   createdAt: string;
+  /** When the TTL was last pushed forward; absent until the first renewal. */
+  renewedAt?: string;
 }
 
 /** Random lowercase-hex token of `bytes` bytes; the id primitive for anything opaque. */
@@ -35,16 +40,31 @@ function ownerSessionKey(ownerId: string, token: string): string {
   return `ownersession::${ownerId}::${token}`;
 }
 
-export async function createSession(kv: KVNamespace, ownerId: string): Promise<string> {
-  const token = randomToken(32);
-  const session: Session = { ownerId, createdAt: new Date().toISOString() };
+async function writeSession(kv: KVNamespace, token: string, session: Session): Promise<void> {
   await Promise.all([
     kv.put(`session:${token}`, JSON.stringify(session), {
       expirationTtl: SESSION_TTL_SECONDS,
     }),
-    kv.put(ownerSessionKey(ownerId, token), "", { expirationTtl: SESSION_TTL_SECONDS }),
+    kv.put(ownerSessionKey(session.ownerId, token), "", { expirationTtl: SESSION_TTL_SECONDS }),
   ]);
+}
+
+export async function createSession(kv: KVNamespace, ownerId: string): Promise<string> {
+  const token = randomToken(32);
+  await writeSession(kv, token, { ownerId, createdAt: new Date().toISOString() });
   return token;
+}
+
+/** Push a session's expiry a full TTL out, if it hasn't been renewed in the last day. */
+export async function renewSessionIfStale(
+  kv: KVNamespace,
+  token: string,
+  session: Session,
+  now = Date.now(),
+): Promise<void> {
+  const last = Date.parse(session.renewedAt ?? session.createdAt);
+  if (!Number.isNaN(last) && now - last < SESSION_RENEW_AFTER_MS) return;
+  await writeSession(kv, token, { ...session, renewedAt: new Date(now).toISOString() });
 }
 
 export async function getSession(kv: KVNamespace, token: string): Promise<Session | null> {
@@ -83,8 +103,9 @@ export async function revokeAllSessions(kv: KVNamespace, ownerId: string): Promi
 
 /**
  * Resolve the caller's `ownerId` from the `Authorization: Bearer <token>`
- * header. Returns `null` for a missing/malformed header or an unknown/expired
- * token — callers turn that into a 401, never a crash.
+ * header, renewing the session as a side effect. Returns `null` for a
+ * missing/malformed header or an unknown/expired token — callers turn that
+ * into a 401, never a crash.
  */
 export async function ownerIdFromRequest(
   request: Request,
@@ -95,7 +116,9 @@ export async function ownerIdFromRequest(
   const token = auth.slice("Bearer ".length).trim();
   if (!token) return null;
   const session = await getSession(kv, token);
-  return session?.ownerId ?? null;
+  if (!session) return null;
+  await renewSessionIfStale(kv, token, session);
+  return session.ownerId;
 }
 
 // --- OAuth state (CSRF nonce + redirect_uri round-trip) ---------------------

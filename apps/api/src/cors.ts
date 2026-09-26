@@ -7,7 +7,7 @@
  * headers/methods this API actually uses.
  */
 const ALLOWED_METHODS = "GET,POST,PUT,DELETE,OPTIONS";
-const ALLOWED_HEADERS = "authorization,content-type";
+const ALLOWED_HEADERS = "authorization,content-type,x-base-version";
 
 export function allowedOrigins(env: Env): string[] {
   return env.ALLOWED_APP_ORIGINS.split(",")

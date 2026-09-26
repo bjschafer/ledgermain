@@ -16,7 +16,7 @@ import { PreviewNotice } from "./components/PreviewNotice.js";
 import { ReferenceLink } from "./components/ReferenceLink.js";
 import { ScrollTopButton } from "./components/ScrollTopButton.js";
 import { Sheet } from "./components/Sheet.js";
-import { SyncStatus } from "./components/SyncStatus.js";
+import { SyncBanner, SyncStatus } from "./components/SyncStatus.js";
 import { ToastHost } from "./components/ToastHost.js";
 import { PlayNav } from "./components/tracker/PlayNav.js";
 import { StatStrip } from "./components/tracker/StatStrip.js";
@@ -207,9 +207,8 @@ export function App() {
           <FeedbackButton mode={mode} doc={store.doc} />
           <SyncStatus
             status={store.syncStatus}
-            onSignIn={store.signIn}
+            onSignIn={() => void store.signIn()}
             onSignOut={() => void store.signOut()}
-            onResolveConflict={(action) => void store.resolveConflict(action)}
           />
           {store.doc && (
             <CharacterSwitcher
@@ -232,6 +231,12 @@ export function App() {
           )}
         </div>
       </header>
+
+      <SyncBanner
+        status={store.syncStatus}
+        onSignIn={() => void store.signIn()}
+        onResolveConflict={(action) => void store.resolveConflict(action)}
+      />
 
       {store.status === "loading" && <LoadingScreen />}
 

@@ -16,6 +16,11 @@ export class ApiError extends Error {
   }
 }
 
+/** The session token was rejected: expired, revoked, or signed out elsewhere. */
+export function isUnauthorized(e: unknown): boolean {
+  return e instanceof ApiError && e.status === 401;
+}
+
 export interface RemoteCharacterSummary {
   id: string;
   version: number;
@@ -79,15 +84,20 @@ export type PushResult =
  * `PUT /api/characters/:id`. A `409` (stale `version`) is a normal, expected
  * outcome here — not an error — so it resolves to `{ kind: "conflict" }`
  * rather than throwing; callers decide what to do (see `planSync.ts`).
+ * `baseVersion` is the server version these edits started from; with it, the
+ * server also refuses to overwrite a version this device never saw.
  */
 export async function pushCharacter(
   apiBase: string,
   token: string,
   doc: CharacterDoc,
+  baseVersion?: number,
 ): Promise<PushResult> {
+  const headers: Record<string, string> = { "content-type": "application/json" };
+  if (baseVersion !== undefined) headers["x-base-version"] = String(baseVersion);
   const res = await authedFetch(apiBase, `/api/characters/${encodeURIComponent(doc.id)}`, token, {
     method: "PUT",
-    headers: { "content-type": "application/json" },
+    headers,
     body: JSON.stringify(doc),
   });
   if (res.status === 409) {

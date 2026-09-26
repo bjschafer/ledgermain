@@ -26,6 +26,7 @@ import { migrateDoc } from "../model/migrations.js";
 import { HERO_POINT_CAP, heroPoints, heroPointsEnabled } from "../model/heroPoints.js";
 import { reconcileCurrentHp } from "../model/hp.js";
 import { resolveRefData } from "../model/homebrew.js";
+import { localId } from "../model/ids.js";
 import { reconcileGrantedCantrips } from "../model/preparedSpells.js";
 import {
   describeLiveChange,
@@ -34,15 +35,23 @@ import {
   type SessionLogKind,
 } from "../model/sessionLog.js";
 import { loadRefData } from "../refdata/loader.js";
-import { pushOnChange, runOpenSync } from "../sync/backgroundSync.js";
-import { deleteRemoteCharacter, fetchMe, logout as apiLogout } from "../sync/client.js";
+import { pushOnChange, runOpenSync, type PushOutcome } from "../sync/backgroundSync.js";
+import { deleteRemoteCharacter, isUnauthorized, logout as apiLogout } from "../sync/client.js";
 import { apiBaseUrl } from "../sync/config.js";
-import { acceptRemoteDoc, forceOverwriteDoc } from "../sync/planSync.js";
 import {
+  acceptRemoteDoc,
+  forceOverwriteDoc,
+  splitConflict,
+  type SyncConflict,
+} from "../sync/planSync.js";
+import {
+  clearSessionExpired,
   clearStoredToken,
   consumeSessionFragment,
   getStoredToken,
+  isSessionExpired,
   loginUrl,
+  markSessionExpired,
 } from "../sync/session.js";
 import { dexieSyncStore } from "../sync/store.js";
 import type { SyncStatus } from "../sync/status.js";
@@ -71,6 +80,12 @@ function reconcileLoadedDoc(doc: CharacterDoc, refData: RefData): CharacterDoc {
 }
 
 export type LoadStatus = "loading" | "ready" | "error";
+
+export type ConflictResolution = "reload" | "overwrite" | "keep-both";
+
+// Regaining focus re-syncs, but not more often than this: each pass lists the
+// account's characters, and alt-tabbing at the table shouldn't cost one each time.
+const RESYNC_THROTTLE_MS = 60_000;
 
 /** Per-call options for {@link CharacterStore.update}. */
 export interface UpdateOptions {
@@ -142,18 +157,19 @@ export interface CharacterStore {
    * that case, matching this app's pre-Stage-5 behavior exactly.
    */
   syncStatus: SyncStatus;
-  /** Redirect to GitHub OAuth login. No-op if sync is disabled. */
-  signIn: () => void;
+  /** Redirect to Discord OAuth login. No-op if sync is disabled. */
+  signIn: () => Promise<void>;
   /** Sign out of sync on this device — clears the local session token; characters stay local. */
   signOut: () => Promise<void>;
   /**
    * Resolve a sync conflict (only meaningful while `syncStatus.kind ===
    * "conflict"`): `"reload"` discards local edits and adopts the server's
    * copy; `"overwrite"` keeps local edits and force-pushes past the
-   * server's version. Matches DESIGN §2.1's "prompts... reload?" —
-   * this never auto-picks a side.
+   * server's version; `"keep-both"` adopts the server's copy and saves the
+   * local edits as a separate character. Matches DESIGN §2.1's "prompts...
+   * reload?" — this never auto-picks a side.
    */
-  resolveConflict: (action: "reload" | "overwrite") => Promise<void>;
+  resolveConflict: (action: ConflictResolution) => Promise<void>;
 }
 
 export function useCharacter(): CharacterStore {
@@ -170,9 +186,10 @@ export function useCharacter(): CharacterStore {
   // Seeded synchronously (no flash of "disabled" then "signed-out") — the
   // open-sync effect below upgrades this to "syncing"/"idle"/"error" once it
   // has actually checked the stored token against the API.
-  const [syncStatus, setSyncStatus] = useState<SyncStatus>(() =>
-    apiBaseUrl() ? { kind: "signed-out" } : { kind: "disabled" },
-  );
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>(() => {
+    if (!apiBaseUrl()) return { kind: "disabled" };
+    return !getStoredToken() && isSessionExpired() ? { kind: "expired" } : { kind: "signed-out" };
+  });
 
   const clearActionError = useCallback(() => setActionError(undefined), []);
 
@@ -280,70 +297,6 @@ export function useCharacter(): CharacterStore {
     undoingRef.current = false;
   }, []);
 
-  // Stage 5 open-sync (DESIGN.md §2.1: "each device pulls the latest on
-  // open"). Runs once, after the initial local load, and never blocks
-  // rendering — the app is fully usable the moment `status` is "ready"
-  // regardless of how long (or whether) this resolves.
-  const openSyncRanRef = useRef(false);
-  useEffect(() => {
-    if (status !== "ready" || openSyncRanRef.current) return;
-    openSyncRanRef.current = true;
-    const apiBase = apiBaseUrl();
-    if (!apiBase) return; // local-only mode — no network call ever attempted
-    void (async () => {
-      const fragmentToken = consumeSessionFragment(window.location, window.history);
-      const token = fragmentToken ?? getStoredToken();
-      if (!token) {
-        setSyncStatus({ kind: "signed-out" });
-        return;
-      }
-      setSyncStatus({ kind: "syncing" });
-      try {
-        const ownerId = await fetchMe(apiBase, token);
-        if (!ownerId) {
-          clearStoredToken();
-          setSyncStatus({ kind: "signed-out" });
-          return;
-        }
-        const result = await runOpenSync(apiBase, token, dexieSyncStore);
-        setSyncStatus(
-          result.errors.length > 0
-            ? {
-                kind: "error",
-                message: result.errors.map((e) => `${e.id}: ${e.message}`).join("; "),
-              }
-            : { kind: "idle" },
-        );
-        // If another device's newer copy of the character currently on
-        // screen was just pulled in, refresh in-memory state immediately
-        // rather than waiting for an unrelated re-render to notice.
-        const activeId = docRef.current?.id;
-        if (activeId && result.deleted.includes(activeId) && rawRefData) {
-          // The character on screen was deleted on another device; adopt
-          // whatever remains (or a fresh blank doc) rather than keep showing a
-          // doc that no longer exists in the store.
-          invalidateCrossTransitionTracking();
-          const fresh = await loadOrCreateActive();
-          setDoc(reconcileLoadedDoc(fresh, resolveRefData(fresh, rawRefData)));
-        } else if (activeId && result.pulled.includes(activeId) && rawRefData) {
-          const refreshed = await db.characters.get(activeId);
-          if (refreshed) {
-            // The doc on screen was just overwritten by another device's
-            // copy — any local undo snapshot is now for a doc that no longer
-            // exists in this lineage, so drop it rather than risk restoring
-            // over the just-pulled remote state.
-            invalidateCrossTransitionTracking();
-            setDoc(reconcileLoadedDoc(refreshed, resolveRefData(refreshed, rawRefData)));
-          }
-        }
-        if (result.pulled.length > 0 || result.pushed.length > 0 || result.deleted.length > 0)
-          void refreshList();
-      } catch (e) {
-        setSyncStatus({ kind: "error", message: e instanceof Error ? e.message : String(e) });
-      }
-    })();
-  }, [status, rawRefData, refreshList, invalidateCrossTransitionTracking]);
-
   // Autosave to IndexedDB (debounced). The pending timer is kept in a ref
   // (not just the effect's local closure) so character-switching actions
   // below can flush or cancel it explicitly instead of losing the race to it.
@@ -369,51 +322,6 @@ export function useCharacter(): CharacterStore {
     };
   }, [doc, upsertLocalSummary]);
 
-  // Stage 5 push-on-change (DESIGN.md §2.1: "...and pushes on change").
-  // `pendingUserEditRef` is set by `update()` immediately before the `doc`
-  // change that triggers this effect, and consumed (read + cleared) here —
-  // this is what distinguishes "the user actually edited something" from
-  // every *other* reason `doc` can change (switching/importing/resetting a
-  // character, the HP-autofill effect below, the initial load itself), none
-  // of which should provoke a push: those either aren't new information for
-  // the server, or (switch/import/reset) go through their own explicit
-  // `adopt()` path instead. Best-effort and silent-by-default: a flaky
-  // connection or a stale-version conflict only ever update `syncStatus`,
-  // never the doc-editing path itself (the project's "never require a
-  // server round trip" rule, applied to sync).
-  const pendingUserEditRef = useRef(false);
-  const pendingPushRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    if (!doc || !pendingUserEditRef.current) return;
-    pendingUserEditRef.current = false;
-    const apiBase = apiBaseUrl();
-    if (!apiBase) return;
-    const token = getStoredToken();
-    if (!token) return;
-    const docToPush = doc;
-    pendingPushRef.current = setTimeout(() => {
-      pendingPushRef.current = null;
-      void (async () => {
-        setSyncStatus((prev) => (prev.kind === "conflict" ? prev : { kind: "syncing" }));
-        const outcome = await pushOnChange(apiBase, token, docToPush);
-        if (outcome.kind === "ok") {
-          setSyncStatus((prev) => (prev.kind === "conflict" ? prev : { kind: "idle" }));
-        } else if (outcome.kind === "conflict") {
-          setSyncStatus({ kind: "conflict", conflict: outcome.conflict });
-        } else {
-          setSyncStatus({ kind: "error", message: outcome.message });
-        }
-      })();
-    }, 2000);
-    return () => {
-      if (pendingPushRef.current != null) {
-        clearTimeout(pendingPushRef.current);
-        pendingPushRef.current = null;
-      }
-    };
-  }, [doc]);
-
   /** Write the current doc immediately if an autosave is pending, then clear the timer. */
   const flushPendingSave = useCallback(async () => {
     if (pendingSaveRef.current == null || !doc) return;
@@ -431,6 +339,220 @@ export function useCharacter(): CharacterStore {
       pendingSaveRef.current = null;
     }
   }, []);
+
+  // --- Stage 5 sync (DESIGN.md §2.1) ---------------------------------------
+  // Everything below is best-effort and never on the editing path: a flaky
+  // connection, a conflict, or an expired session only ever change
+  // `syncStatus`, never block or fail a local edit.
+
+  // Sync passes read Dexie, so an edit still sitting in the autosave debounce
+  // has to land first. Held in a ref so listeners registered once still flush
+  // the current doc, not the one they closed over.
+  const flushSaveRef = useRef(flushPendingSave);
+  useEffect(() => {
+    flushSaveRef.current = flushPendingSave;
+  }, [flushPendingSave]);
+
+  // One sync operation at a time. A focus-triggered pass racing a debounced
+  // push could otherwise send an older copy after a newer one.
+  const syncChainRef = useRef<Promise<void>>(Promise.resolve());
+  const enqueueSync = useCallback((fn: () => Promise<void>): Promise<void> => {
+    const next = syncChainRef.current.then(fn, fn);
+    syncChainRef.current = next.catch(() => undefined);
+    return next;
+  }, []);
+
+  // Every unresolved conflict, one per character; the status shows the first.
+  // A sync pass rediscovers all of them (they persist until resolved, because
+  // the divergence does), so it replaces this list wholesale.
+  const conflictsRef = useRef<SyncConflict[]>([]);
+  const publishConflicts = useCallback(() => {
+    const [head, ...rest] = conflictsRef.current;
+    setSyncStatus((prev) =>
+      head
+        ? { kind: "conflict", conflict: head, queued: rest.length }
+        : prev.kind === "conflict"
+          ? { kind: "idle" }
+          : prev,
+    );
+  }, []);
+  const upsertConflict = useCallback(
+    (conflict: SyncConflict) => {
+      const others = conflictsRef.current.filter((c) => c.local.id !== conflict.local.id);
+      conflictsRef.current = [conflict, ...others];
+      publishConflicts();
+    },
+    [publishConflicts],
+  );
+
+  const handleUnauthorized = useCallback(() => {
+    markSessionExpired();
+    conflictsRef.current = [];
+    setSyncStatus({ kind: "expired" });
+  }, []);
+
+  const handlePushOutcome = useCallback(
+    (outcome: PushOutcome) => {
+      if (outcome.kind === "ok") {
+        setSyncStatus((prev) =>
+          prev.kind === "syncing" || prev.kind === "error" ? { kind: "idle" } : prev,
+        );
+      } else if (outcome.kind === "conflict") {
+        upsertConflict(outcome.conflict);
+      } else if (outcome.kind === "unauthorized") {
+        handleUnauthorized();
+      } else {
+        setSyncStatus((prev) =>
+          prev.kind === "conflict" ? prev : { kind: "error", message: outcome.message },
+        );
+      }
+    },
+    [upsertConflict, handleUnauthorized],
+  );
+
+  /**
+   * Reconcile every character with the server: on open, on regaining focus or
+   * connectivity, and after signing in. This is what pushes edits an earlier
+   * failed push left behind, and what catches a tab left open for days up
+   * with edits made on another device before more get stacked on top.
+   */
+  const lastPassRef = useRef(0);
+  const runSyncPass = useCallback(
+    () =>
+      enqueueSync(async () => {
+        const apiBase = apiBaseUrl();
+        const token = getStoredToken();
+        if (!apiBase || !token) return;
+        lastPassRef.current = Date.now();
+        await flushSaveRef.current();
+        const activeBefore = docRef.current;
+        setSyncStatus((prev) => (prev.kind === "conflict" ? prev : { kind: "syncing" }));
+        try {
+          const result = await runOpenSync(apiBase, token, dexieSyncStore);
+          // Only swap the doc on screen if nothing was edited while the pass
+          // ran. If something was, the next pass sees both sides moved and asks.
+          const active = docRef.current;
+          const untouched = active && active.version === activeBefore?.version;
+          if (untouched && rawRefData && result.deleted.includes(active.id)) {
+            // The character on screen was deleted on another device; adopt
+            // whatever remains (or a fresh blank doc) rather than keep showing
+            // a doc that no longer exists in the store.
+            invalidateCrossTransitionTracking();
+            const fresh = await loadOrCreateActive();
+            setDoc(reconcileLoadedDoc(fresh, resolveRefData(fresh, rawRefData)));
+          } else if (untouched && rawRefData && result.pulled.includes(active.id)) {
+            const refreshed = await db.characters.get(active.id);
+            if (refreshed) {
+              // Any undo snapshot is for the copy that was just replaced.
+              invalidateCrossTransitionTracking();
+              setDoc(reconcileLoadedDoc(refreshed, resolveRefData(refreshed, rawRefData)));
+            }
+          }
+          if (result.pulled.length > 0 || result.pushed.length > 0 || result.deleted.length > 0)
+            void refreshList();
+          conflictsRef.current = result.conflicts;
+          if (result.conflicts.length > 0) publishConflicts();
+          else
+            setSyncStatus(
+              result.errors.length > 0
+                ? {
+                    kind: "error",
+                    message: result.errors.map((e) => `${e.id}: ${e.message}`).join("; "),
+                  }
+                : { kind: "idle" },
+            );
+        } catch (e) {
+          if (isUnauthorized(e)) handleUnauthorized();
+          else
+            setSyncStatus((prev) =>
+              prev.kind === "conflict"
+                ? prev
+                : { kind: "error", message: e instanceof Error ? e.message : String(e) },
+            );
+        }
+      }),
+    [
+      enqueueSync,
+      rawRefData,
+      refreshList,
+      invalidateCrossTransitionTracking,
+      publishConflicts,
+      handleUnauthorized,
+    ],
+  );
+
+  // Open-sync (DESIGN.md §2.1: "each device pulls the latest on open"). Runs
+  // once, after the initial local load, and never blocks rendering — the app
+  // is fully usable the moment `status` is "ready" regardless of how long (or
+  // whether) this resolves.
+  const openSyncRanRef = useRef(false);
+  useEffect(() => {
+    if (status !== "ready" || openSyncRanRef.current) return;
+    openSyncRanRef.current = true;
+    if (!apiBaseUrl()) return; // local-only mode — no network call ever attempted
+    consumeSessionFragment(window.location, window.history);
+    if (!getStoredToken()) {
+      setSyncStatus(isSessionExpired() ? { kind: "expired" } : { kind: "signed-out" });
+      return;
+    }
+    void runSyncPass();
+  }, [status, runSyncPass]);
+
+  useEffect(() => {
+    if (status !== "ready" || !apiBaseUrl()) return;
+    const onResume = () => {
+      if (document.visibilityState !== "visible") return;
+      if (Date.now() - lastPassRef.current < RESYNC_THROTTLE_MS) return;
+      void runSyncPass();
+    };
+    const onOnline = () => void runSyncPass();
+    document.addEventListener("visibilitychange", onResume);
+    window.addEventListener("focus", onResume);
+    window.addEventListener("online", onOnline);
+    return () => {
+      document.removeEventListener("visibilitychange", onResume);
+      window.removeEventListener("focus", onResume);
+      window.removeEventListener("online", onOnline);
+    };
+  }, [status, runSyncPass]);
+
+  // Push-on-change (DESIGN.md §2.1: "...and pushes on change").
+  // `pendingUserEditRef` is set by `update()` immediately before the `doc`
+  // change that triggers this effect, and consumed (read + cleared) here —
+  // this is what distinguishes "the user actually edited something" from
+  // every *other* reason `doc` can change (switching/importing/resetting a
+  // character, the HP-autofill effect below, the initial load itself), none
+  // of which should provoke a push: those either aren't new information for
+  // the server, or (switch/import/reset) go through their own explicit
+  // `adopt()` path instead. An edit that can't be pushed (offline, signed
+  // out) isn't lost to sync: the next pass sees it as unsynced and sends it.
+  const pendingUserEditRef = useRef(false);
+  const pendingPushRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!doc || !pendingUserEditRef.current) return;
+    pendingUserEditRef.current = false;
+    if (!apiBaseUrl()) return;
+    const docToPush = doc;
+    pendingPushRef.current = setTimeout(() => {
+      pendingPushRef.current = null;
+      void enqueueSync(async () => {
+        const apiBase = apiBaseUrl();
+        const token = getStoredToken();
+        if (!apiBase || !token) return;
+        setSyncStatus((prev) =>
+          prev.kind === "conflict" || prev.kind === "expired" ? prev : { kind: "syncing" },
+        );
+        handlePushOutcome(await pushOnChange(apiBase, token, docToPush, dexieSyncStore));
+      });
+    }, 2000);
+    return () => {
+      if (pendingPushRef.current != null) {
+        clearTimeout(pendingPushRef.current);
+        pendingPushRef.current = null;
+      }
+    };
+  }, [doc, enqueueSync, handlePushOutcome]);
 
   const update = useCallback((fn: (d: CharacterDoc) => CharacterDoc, options?: UpdateOptions) => {
     setDoc((prev) => {
@@ -785,9 +907,11 @@ export function useCharacter(): CharacterStore {
     setSessionLog([]);
   }, []);
 
-  const signIn = useCallback(() => {
+  const signIn = useCallback(async () => {
     const apiBase = apiBaseUrl();
     if (!apiBase) return; // sync disabled — nothing to sign in to
+    // Leaving the page for OAuth: don't strand the last edit in the debounce.
+    await flushSaveRef.current();
     window.location.href = loginUrl(apiBase, window.location.origin);
   }, []);
 
@@ -795,6 +919,8 @@ export function useCharacter(): CharacterStore {
     const apiBase = apiBaseUrl();
     const token = getStoredToken();
     clearStoredToken();
+    clearSessionExpired();
+    conflictsRef.current = [];
     setSyncStatus(apiBase ? { kind: "signed-out" } : { kind: "disabled" });
     if (apiBase && token) {
       try {
@@ -808,46 +934,68 @@ export function useCharacter(): CharacterStore {
   }, []);
 
   const resolveConflict = useCallback(
-    async (action: "reload" | "overwrite") => {
-      if (syncStatus.kind !== "conflict") return;
-      const { conflict } = syncStatus;
-      // `acceptRemoteDoc` may hand back a doc from another device that
-      // predates this device's schema version — migrate before use, same as
-      // every other doc that enters this app (dexieSyncStore.put does this
-      // too, independently, for the copy it persists).
-      const resolved = migrateDoc(
-        action === "reload" ? acceptRemoteDoc(conflict) : forceOverwriteDoc(conflict),
-      );
-      await dexieSyncStore.put(resolved);
-      // Only replace the in-memory doc if the conflict was actually for the
-      // character currently on screen — the user may have switched
-      // characters while this conflict was pending.
-      if (doc?.id === conflict.local.id && rawRefData) {
-        // The doc content is being replaced by whichever side won the
-        // conflict — any pending undo snapshot predates that and would
-        // restore over it, so drop it (and the level-up tracker alongside it).
-        invalidateCrossTransitionTracking();
-        setDoc(reconcileLoadedDoc(resolved, resolveRefData(resolved, rawRefData)));
-      }
-      void refreshList();
+    (action: ConflictResolution) =>
+      enqueueSync(async () => {
+        const pending = conflictsRef.current[0];
+        if (!pending) return;
+        const id = pending.local.id;
+        const isActive = docRef.current?.id === id;
+        if (isActive) await flushSaveRef.current();
+        // Edits made on screen while the prompt was up count as "mine" too.
+        const conflict: SyncConflict = {
+          local: (isActive ? docRef.current : undefined) ?? pending.local,
+          remote: pending.remote,
+        };
+        // Whichever side wins, this device has now seen the server's copy, so
+        // that's the base the next push builds on.
+        await dexieSyncStore.markSynced(id, conflict.remote.version);
+        // Docs from another device may predate this device's schema version —
+        // migrate before use (dexieSyncStore.put migrates its own copy too).
+        let shown: CharacterDoc;
+        const toPush: CharacterDoc[] = [];
+        if (action === "reload") {
+          shown = migrateDoc(acceptRemoteDoc(conflict));
+        } else if (action === "overwrite") {
+          shown = migrateDoc(forceOverwriteDoc(conflict));
+          toPush.push(shown);
+        } else {
+          const split = splitConflict(conflict, localId(), new Date().toISOString());
+          shown = migrateDoc(split.remote);
+          const copy = migrateDoc(split.copy);
+          await dexieSyncStore.put(copy);
+          toPush.push(copy);
+          showToast({ message: `Your version is saved as "${copy.identity.name}".` });
+        }
+        await dexieSyncStore.put(shown);
+        conflictsRef.current = conflictsRef.current.filter((c) => c.local.id !== id);
+        if (isActive && rawRefData) {
+          // The doc content is being replaced by whichever side won the
+          // conflict — any pending undo snapshot predates that and would
+          // restore over it, so drop it (and the level-up tracker alongside it).
+          invalidateCrossTransitionTracking();
+          setDoc(reconcileLoadedDoc(shown, resolveRefData(shown, rawRefData)));
+        }
+        void refreshList();
+        publishConflicts();
+        if (conflictsRef.current.length === 0)
+          setSyncStatus((prev) => (prev.kind === "expired" ? prev : { kind: "idle" }));
 
-      if (action === "reload") {
-        setSyncStatus({ kind: "idle" });
-        return;
-      }
-      const apiBase = apiBaseUrl();
-      const token = getStoredToken();
-      if (!apiBase || !token) {
-        setSyncStatus({ kind: "idle" });
-        return;
-      }
-      const outcome = await pushOnChange(apiBase, token, resolved);
-      if (outcome.kind === "ok") setSyncStatus({ kind: "idle" });
-      else if (outcome.kind === "conflict")
-        setSyncStatus({ kind: "conflict", conflict: outcome.conflict });
-      else setSyncStatus({ kind: "error", message: outcome.message });
-    },
-    [syncStatus, doc, rawRefData, refreshList, invalidateCrossTransitionTracking],
+        const apiBase = apiBaseUrl();
+        const token = getStoredToken();
+        if (!apiBase || !token) return;
+        for (const next of toPush) {
+          // oxlint-disable-next-line no-await-in-loop -- at most one doc
+          handlePushOutcome(await pushOnChange(apiBase, token, next, dexieSyncStore));
+        }
+      }),
+    [
+      enqueueSync,
+      rawRefData,
+      refreshList,
+      invalidateCrossTransitionTracking,
+      publishConflicts,
+      handlePushOutcome,
+    ],
   );
 
   return {

@@ -10,19 +10,28 @@ export interface VersionedSummary {
   version: number;
 }
 
+/** A local character's envelope, plus the server version this device last agreed with. */
+export interface LocalSummary extends VersionedSummary {
+  /** Absent for a character this device has never synced (or synced before this was tracked). */
+  syncedVersion?: number;
+}
+
 export type SyncAction =
   | { kind: "push"; id: string }
   | { kind: "pull"; id: string }
   | { kind: "same"; id: string }
-  | { kind: "delete-local"; id: string };
+  | { kind: "delete-local"; id: string }
+  | { kind: "conflict"; id: string };
 
 /**
- * Decide what one character id needs, on app open (DESIGN.md §2.1: "each
- * device pulls the latest on open and pushes on change"). `version` is a
- * monotonic counter bumped on every local save (`db/characters.ts
- * saveCharacter`) and on every successful server write, so "higher version
- * wins" is unambiguous in either direction — there is no merge, only a
- * choice of which side is already caught up:
+ * Decide what one character id needs (DESIGN.md §2.1: "each device pulls the
+ * latest on open and pushes on change"). `version` is a monotonic counter
+ * bumped on every local edit, and `syncedVersion` is the server version this
+ * device last pushed or pulled: the common ancestor. Comparing both sides to
+ * it is what tells "only one side moved" from "both did". Comparing the two
+ * versions to each other can't: a device that made more edits offline would
+ * look "ahead" and silently overwrite the other device's work, or be
+ * silently overwritten by it.
  *
  * - `tombstoned` (the server holds a delete record for this id) → the deletion
  *   wins: drop any local copy, and never pull it back. This is a deliberate
@@ -34,10 +43,15 @@ export type SyncAction =
  *   id.
  * - No remote copy at all → this device has the only copy; push it up.
  * - No local copy → another device created/owns it; pull it down.
- * - Local ahead → push. Remote ahead → pull. Equal → nothing to do.
+ * - Only local moved since the last sync → push. Only remote moved → pull.
+ *   Neither → nothing to do.
+ * - Both moved, or there's no record of a last sync to tell → conflict. Equal
+ *   versions don't rule that out: five edits on each device from the same
+ *   base land both on the same number. The caller compares contents before
+ *   asking the user, so a conflict that isn't one costs a fetch, not a prompt.
  */
 export function planAction(
-  local: VersionedSummary | undefined,
+  local: LocalSummary | undefined,
   remote: VersionedSummary | undefined,
   id: string,
   tombstoned = false,
@@ -45,14 +59,18 @@ export function planAction(
   if (tombstoned) return local ? { kind: "delete-local", id } : { kind: "same", id };
   if (!remote) return { kind: "push", id };
   if (!local) return { kind: "pull", id };
-  if (local.version > remote.version) return { kind: "push", id };
-  if (remote.version > local.version) return { kind: "pull", id };
-  return { kind: "same", id };
+  const base = local.syncedVersion;
+  if (base === undefined) return { kind: "conflict", id };
+  const localMoved = local.version !== base;
+  const remoteMoved = remote.version !== base;
+  if (localMoved && remoteMoved) return { kind: "conflict", id };
+  if (localMoved) return { kind: "push", id };
+  return remoteMoved ? { kind: "pull", id } : { kind: "same", id };
 }
 
 /** Plan a full on-open sync pass across every character known locally and/or remotely. */
 export function planSync(
-  locals: VersionedSummary[],
+  locals: LocalSummary[],
   remotes: VersionedSummary[],
   tombstones: { id: string }[] = [],
 ): SyncAction[] {
@@ -63,6 +81,15 @@ export function planSync(
   return [...ids].map((id) =>
     planAction(localById.get(id), remoteById.get(id), id, tombstonedIds.has(id)),
   );
+}
+
+/**
+ * True when two copies differ only in their sync envelope. Two devices that
+ * made no real edits, or the same one, don't need the user to pick a side.
+ */
+export function sameContent(a: CharacterDoc, b: CharacterDoc): boolean {
+  const strip = ({ version: _v, updatedAt: _u, ownerId: _o, ...rest }: CharacterDoc) => rest;
+  return JSON.stringify(strip(a)) === JSON.stringify(strip(b));
 }
 
 /**
@@ -81,6 +108,28 @@ export interface SyncConflict {
 /** "Reload": discard the local unsynced edits and adopt the server's copy. */
 export function acceptRemoteDoc(conflict: SyncConflict): CharacterDoc {
   return conflict.remote;
+}
+
+/**
+ * "Keep both": the other device's copy keeps this id, and the local edits
+ * become a separate character, so nothing either device did is lost.
+ */
+export function splitConflict(
+  conflict: SyncConflict,
+  newId: string,
+  now: string,
+): { remote: CharacterDoc; copy: CharacterDoc } {
+  const { local } = conflict;
+  return {
+    remote: conflict.remote,
+    copy: {
+      ...local,
+      id: newId,
+      identity: { ...local.identity, name: `${local.identity.name || "Unnamed"} (copy)` },
+      version: 1,
+      updatedAt: now,
+    },
+  };
 }
 
 /**

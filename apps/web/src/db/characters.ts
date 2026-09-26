@@ -15,12 +15,24 @@ import { migrateDoc } from "../model/migrations.js";
 import { localId } from "../model/ids.js";
 import { parseImportedDoc } from "../model/importCharacter.js";
 
+/**
+ * The server version this device last agreed with for a character: the
+ * common ancestor that tells "only I edited" apart from "we both edited".
+ * Kept out of `CharacterDoc` because it's per-device, never per-document.
+ */
+export interface SyncStateRow {
+  id: string;
+  syncedVersion: number;
+}
+
 class CharacterDb extends Dexie {
   characters!: Table<CharacterDoc, string>;
+  syncState!: Table<SyncStateRow, string>;
 
   constructor() {
     super("pf1-tracker");
     this.version(1).stores({ characters: "id, updatedAt" });
+    this.version(2).stores({ characters: "id, updatedAt", syncState: "id" });
   }
 }
 
@@ -135,13 +147,22 @@ export async function listCharacters(): Promise<CharacterSummary[]> {
 }
 
 /**
- * Envelope-only `{ id, version }` for every locally-stored character (Stage 5
- * sync — `src/sync/backgroundSync.ts`'s open-sync pass compares these against
- * the server's list without needing to read/parse every full document).
+ * Envelope-only `{ id, version, syncedVersion }` for every locally-stored
+ * character (Stage 5 sync — `src/sync/backgroundSync.ts`'s open-sync pass
+ * compares these against the server's list without needing to read/parse
+ * every full document).
  */
-export async function listVersions(): Promise<{ id: string; version: number }[]> {
-  const all = await db.characters.toArray();
-  return all.map((doc) => ({ id: doc.id, version: doc.version }));
+export async function listVersions(): Promise<
+  { id: string; version: number; syncedVersion?: number }[]
+> {
+  const [all, synced] = await Promise.all([db.characters.toArray(), db.syncState.toArray()]);
+  const syncedById = new Map(synced.map((row) => [row.id, row.syncedVersion]));
+  return all.map((doc) => {
+    const syncedVersion = syncedById.get(doc.id);
+    return syncedVersion === undefined
+      ? { id: doc.id, version: doc.version }
+      : { id: doc.id, version: doc.version, syncedVersion };
+  });
 }
 
 /** Load a specific saved character by id and mark it active (bumps `updatedAt`). */
@@ -174,7 +195,7 @@ export async function importCharacter(doc: CharacterDoc): Promise<CharacterDoc> 
 
 /** Wipe every saved character and start over with one fresh blank doc. */
 export async function resetAllCharacters(): Promise<CharacterDoc> {
-  await db.characters.clear();
+  await Promise.all([db.characters.clear(), db.syncState.clear()]);
   return createCharacter();
 }
 
@@ -183,6 +204,6 @@ export async function resetAllCharacters(): Promise<CharacterDoc> {
  * character becomes active, or a fresh blank one if none remain.
  */
 export async function deleteCharacter(id: string): Promise<CharacterDoc> {
-  await db.characters.delete(id);
+  await Promise.all([db.characters.delete(id), db.syncState.delete(id)]);
   return loadOrCreateActive();
 }
