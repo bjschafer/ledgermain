@@ -16037,7 +16037,7 @@
       "somatic": true,
       "verbal": true
     },
-    "description": "<p>You imbue one or more objects with magic that dramatically slows down natural processes that lead to decay and spoilage. For the duration of the spell, food, water, plants, and other perishable objects affected by the spell remain as fresh as they were when the spell was cast. The spell also protects these objects against spells of the same level or lower that cause spoilage, such as <i>putrefy food and</i> drinkAPG. When the duration of <i>preserve</i> expires, the objects resume aging at their normal rate.  The spell also works on severed body parts and the bodies of small creatures as per <i>gentle repose</i>, provided that the weight of the creature or part does not exceed the spell's limit. <i>Preserve</i> can be made permanent with a <i>permanency</i> spell by a caster of 9th level or higher for 500 gp.</p>",
+    "description": "<p>You imbue one or more objects with magic that dramatically slows down natural processes that lead to decay and spoilage. For the duration of the spell, food, water, plants, and other perishable objects affected by the spell remain as fresh as they were when the spell was cast. The spell also protects these objects against spells of the same level or lower that cause spoilage, such as <em>putrefy food and drink</em><sup>APG</sup>. When the duration of preserve expires, the objects resume aging at their normal rate. The spell also works on severed body parts and the bodies of small creatures as per <em>gentle repose</em>, provided that the weight of the creature or part does not exceed the spell's limit.</p><p><em>Preserve</em> can be made permanent with a <em>permanency</em> spell by a caster of 9th level or higher for 500 gp.</p>",
     "descriptors": [],
     "id": "3bwngymjyund4di0",
     "learnedAt": {
@@ -152272,6 +152272,14 @@
         "activation": {
           "type": "standard"
         },
+        "damage": {
+          "parts": [
+            {
+              "formula": "1d6",
+              "types": ["cold"]
+            }
+          ]
+        },
         "duration": {
           "units": "spec",
           "value": "10 minutes/level; see text"
@@ -152292,7 +152300,7 @@
       "somatic": true,
       "verbal": true
     },
-    "description": "<p>The target is filled with an unshakable chill for the duration of the spell, and suffers from the effects of severe cold (<i>Core Rulebook</i> 442). Severe cold means if the initial saving throw fails, the target takes 1d6 points of nonlethal cold damage and must save every 10 minutes (using the DC of severe cold instead of this spell's DC) or take additional damage.</p>",
+    "description": "<p>The target is filled with an unshakable chill for the duration of the spell, and suffers from the effects of severe cold (CRB p. 442). Severe cold means if the initial saving throw fails, the target takes 1d6 points of nonlethal cold damage and must save every 10 minutes (using the DC of severe cold instead of this spell's DC) or take additional damage.</p>",
     "descriptors": ["cold"],
     "id": "wifi44l62ymqdvt8",
     "learnedAt": {
