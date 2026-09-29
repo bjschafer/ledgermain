@@ -62,7 +62,7 @@ export type TurnstileStatus = "loading" | "ready" | "error";
 
 export interface UseTurnstile {
   /** Attach to the element the widget renders into. */
-  containerRef: RefObject<HTMLDivElement>;
+  containerRef: RefObject<HTMLDivElement | null>;
   /** The current verification token, or `null` before solve / after expiry. */
   token: string | null;
   status: TurnstileStatus;

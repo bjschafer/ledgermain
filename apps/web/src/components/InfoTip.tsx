@@ -192,7 +192,7 @@ function TipBubble({
 }: {
   id: string;
   content: ReactNode;
-  bubbleRef: RefObject<HTMLSpanElement>;
+  bubbleRef: RefObject<HTMLSpanElement | null>;
 }) {
   return createPortal(
     <span role="tooltip" id={id} ref={bubbleRef} className="info-tip-bubble">
