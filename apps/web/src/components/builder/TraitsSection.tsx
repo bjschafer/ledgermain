@@ -64,7 +64,7 @@ export function TraitsSection(props: BuilderProps) {
   return (
     <Panel
       title="Traits"
-      step="iii½"
+      step="4"
       icon={<GemIcon />}
       storageKey="panel:Traits"
       right={

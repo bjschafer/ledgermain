@@ -914,6 +914,20 @@ button:focus-visible,
   gap: 8px;
 }
 
+/* Heads the second half of the conditions grid: the chips the sheet tracks
+   without touching the math. A flat grid needed a legend to say which chips
+   move numbers; a heading says it where the split happens. Quieter than a
+   panel heading, which this sits inside. */
+.cond-group-label {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 14px 0 8px;
+}
+
 /* Rarity-tier section within the race picker (Core / Featured / …). */
 .race-group + .race-group {
   margin-top: 14px;
@@ -2193,6 +2207,15 @@ button:focus-visible,
 
 .sheet .char-identity.char-languages {
   margin-top: 2px;
+}
+
+/* Identity splits on how often a line is read, not on what kind of fact it
+   holds. Alignment and deity are adjudicated at the table; gender, age and
+   size are set once and never looked at again, so they sit a step quieter
+   with a gap wide enough to read as a break rather than as the next item. */
+.sheet .char-identity.char-flavour {
+  color: var(--faint);
+  margin-top: 8px;
 }
 
 .rule-gold {
@@ -7093,10 +7116,14 @@ input[type="text"].saved-roll-name:focus {
   background: var(--surface-2);
 }
 
+/* Right-aligned in a two-digit box so the labels start on one line instead of
+   jogging over at step 10. */
 .build-nav-step {
   font-family: var(--mono);
   color: var(--gold-dim-ink);
   flex-shrink: 0;
+  min-width: 1.25em;
+  text-align: right;
 }
 
 .build-nav-item.active .build-nav-step {

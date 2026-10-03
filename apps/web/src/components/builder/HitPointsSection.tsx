@@ -24,7 +24,7 @@ export function HitPointsSection({ doc, sheet, refData, update }: BuilderProps) 
   return (
     <Panel
       title="Hit Points"
-      step="v"
+      step="6"
       icon={<HeartIcon />}
       storageKey="panel:HitPoints"
       right={

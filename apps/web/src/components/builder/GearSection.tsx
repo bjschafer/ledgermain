@@ -626,7 +626,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   return (
     <Panel
       title="Gear & Inventory"
-      step="viii"
+      step="10"
       icon={<BagIcon />}
       storageKey="panel:Gear"
       defaultCollapsed={false}

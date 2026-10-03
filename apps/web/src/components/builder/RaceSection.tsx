@@ -152,7 +152,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   }
 
   return (
-    <Panel title="Race" step="iii" icon={<LeafIcon />} storageKey="panel:Race">
+    <Panel title="Race" step="3" icon={<LeafIcon />} storageKey="panel:Race">
       <input
         className="search"
         type="text"
