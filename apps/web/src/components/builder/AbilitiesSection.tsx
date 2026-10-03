@@ -35,7 +35,7 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
   return (
     <Panel
       title="Ability Scores"
-      step="ii"
+      step="2"
       icon={<DumbbellIcon />}
       storageKey="panel:AbilityScores"
       right={<span className="hint">base scores · racial mods shown below</span>}

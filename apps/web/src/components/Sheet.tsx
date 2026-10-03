@@ -190,24 +190,37 @@ export function Sheet({
         {sheet.level > 0 ? ` · Lvl ${sheet.level}` : ""}
       </div>
       {casterLine ? <div className="char-sub char-caster">{casterLine}</div> : null}
+      {/* Identity splits on how often a line gets read, not on what kind of
+          fact it holds. Alignment and deity are adjudicated at the table:
+          they gate channel energy, domains, a handful of spells, and most
+          arguments. Gender, age and size are looked at when the character is
+          made and essentially never again. They were one run-on line sharing
+          a separator, a size and a colour, which made the eye walk the whole
+          chain to find the half that matters. */}
       {(() => {
         const id = doc.identity;
         const alignLabel = id.alignment ? (ALIGNMENT_LABELS[id.alignment] ?? id.alignment) : null;
-        const details = [
-          alignLabel,
-          id.deity ? `Deity: ${id.deity}` : null,
-          id.gender,
-          id.age ? `Age ${id.age}` : null,
-          [id.height, id.weight].filter(Boolean).join(", ") || null,
-        ].filter(Boolean);
-        return details.length > 0 ? (
-          <div className="char-identity">{details.join(" · ")}</div>
-        ) : null;
+        const ruled = [alignLabel, id.deity ? `Deity: ${id.deity}` : null].filter(Boolean);
+        return ruled.length > 0 ? <div className="char-identity">{ruled.join(" · ")}</div> : null;
       })()}
       {(() => {
         const languages = combinedLanguages(doc, refData);
         return languages.length > 0 ? (
           <div className="char-identity char-languages">Languages: {languages.join(", ")}</div>
+        ) : null;
+      })()}
+      {(() => {
+        const id = doc.identity;
+        const flavour = [
+          id.gender,
+          id.age ? `Age ${id.age}` : null,
+          // Height and weight stay comma-joined inside the dot-separated run:
+          // they are one fact about the body, the way the class line keeps "/"
+          // inside its own "·".
+          [id.height, id.weight].filter(Boolean).join(", ") || null,
+        ].filter(Boolean);
+        return flavour.length > 0 ? (
+          <div className="char-identity char-flavour">{flavour.join(" · ")}</div>
         ) : null;
       })()}
       {doc.identity.notes ? <div className="char-notes">{doc.identity.notes}</div> : null}

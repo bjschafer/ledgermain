@@ -588,7 +588,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
   return (
     <Panel
       title="Weapons"
-      step="ix"
+      step="11"
       icon={<SwordIcon />}
       storageKey="panel:Weapons"
       defaultCollapsed={false}

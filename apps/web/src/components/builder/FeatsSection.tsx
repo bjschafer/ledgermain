@@ -35,7 +35,7 @@ export function FeatsSection({ doc, sheet, refData, update }: BuilderProps) {
   return (
     <Panel
       title="Feats"
-      step="vii"
+      step="8"
       icon={<StarIcon />}
       storageKey="panel:Feats"
       right={

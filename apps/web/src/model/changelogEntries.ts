@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-10-03-condition-groups",
+    date: "2026-10-03",
+    title: "The conditions panel is in two groups",
+    note: "Conditions that change your numbers stay at the top. The rest gather under Reference only, so you can tell at a glance which chips the sheet will do math with. Nothing moved between the two groups: a condition lands in Reference only when the rules give it no modifier of its own. The markers for a condition another one already implies, or one you are immune to, stay on the chip itself, because those depend on what is switched on right now.",
+  },
+  {
     id: "2026-09-25-concentration",
     date: "2026-09-25",
     title: "Your concentration bonus is on the sheet",

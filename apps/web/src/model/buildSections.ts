@@ -24,23 +24,32 @@ export interface BuildSection {
   /** DOM id of the anchor `App.tsx`'s Workbench wraps the panel in. */
   id: string;
   label: string;
-  /** The step numeral the nav rail prints beside the label. */
+  /**
+   * The step numeral the nav rail prints beside the label. Plain arabic
+   * sequence, for the same reason it is not a half-step sequence: a numeral
+   * here is a place in a queue, and anything a reader has to decode before
+   * they can count is spending them to say "4". Traits and Custom were once
+   * `3½` and `7½` because they were slotted in late, which read as a
+   * rendering fault rather than as an ordering; roman numerals were the same
+   * trade in a slower key. Each section component repeats its own numeral, so
+   * a renumber has to move both.
+   */
   step: string;
 }
 
 export const BUILD_SECTIONS: readonly BuildSection[] = [
-  { id: "section-identity", label: "Identity", step: "i" },
-  { id: "section-abilities", label: "Abilities", step: "ii" },
-  { id: "section-race", label: "Race", step: "iii" },
-  { id: "section-traits", label: "Traits", step: "iii½" },
-  { id: "section-classes", label: "Classes", step: "iv" },
-  { id: "section-hp", label: "Hit Points", step: "v" },
-  { id: "section-skills", label: "Skills", step: "vi" },
-  { id: "section-feats", label: "Feats", step: "vii" },
-  { id: "section-custom-abilities", label: "Custom", step: "vii½" },
-  { id: "section-gear", label: "Gear", step: "viii" },
-  { id: "section-weapons", label: "Weapons", step: "ix" },
-  { id: "section-spells", label: "Spells", step: "x" },
+  { id: "section-identity", label: "Identity", step: "1" },
+  { id: "section-abilities", label: "Abilities", step: "2" },
+  { id: "section-race", label: "Race", step: "3" },
+  { id: "section-traits", label: "Traits", step: "4" },
+  { id: "section-classes", label: "Classes", step: "5" },
+  { id: "section-hp", label: "Hit Points", step: "6" },
+  { id: "section-skills", label: "Skills", step: "7" },
+  { id: "section-feats", label: "Feats", step: "8" },
+  { id: "section-custom-abilities", label: "Custom", step: "9" },
+  { id: "section-gear", label: "Gear", step: "10" },
+  { id: "section-weapons", label: "Weapons", step: "11" },
+  { id: "section-spells", label: "Spells", step: "12" },
 ];
 
 export type BadgeTone = "gold" | "dim" | "warn";

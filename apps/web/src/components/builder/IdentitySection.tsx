@@ -19,7 +19,7 @@ const ALIGNMENTS = ["LG", "NG", "CG", "LN", "N", "CN", "LE", "NE", "CE"];
 
 export function IdentitySection({ doc, update }: BuilderProps) {
   return (
-    <Panel title="Identity" step="i" icon={<PersonIcon />} storageKey="panel:Identity">
+    <Panel title="Identity" step="1" icon={<PersonIcon />} storageKey="panel:Identity">
       <label className="field">
         <span>Character name</span>
         <input

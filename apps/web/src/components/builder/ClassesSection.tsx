@@ -206,7 +206,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
   return (
     <Panel
       title="Classes"
-      step="iv"
+      step="5"
       icon={<ShieldIcon />}
       right={<span className="hint">multiclass-capable · total level {totalLevel}</span>}
       storageKey="panel:Classes"

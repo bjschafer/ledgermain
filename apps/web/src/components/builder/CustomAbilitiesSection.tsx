@@ -85,7 +85,7 @@ export function CustomAbilitiesSection({ doc, refData, update }: BuilderProps) {
   return (
     <Panel
       title="Custom Abilities"
-      step="vii½"
+      step="9"
       icon={<SparkleIcon />}
       storageKey="panel:CustomAbilities"
       right={entries.length > 0 ? <span className="hint">{entries.length}</span> : undefined}

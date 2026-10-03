@@ -324,7 +324,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   if (!casterTag) {
     if (!spellsPanelVisible(doc, refData)) return null;
     return (
-      <Panel title="Spells" step="vii" icon={<SparklesIcon />} storageKey="panel:Spells">
+      <Panel title="Spells" step="12" icon={<SparklesIcon />} storageKey="panel:Spells">
         <p className="empty">No spellcasting class selected.</p>
       </Panel>
     );
@@ -364,7 +364,7 @@ export function SpellsSection({ doc, sheet, refData, update }: BuilderProps) {
   return (
     <Panel
       title={model ? knownLabel : "Spells"}
-      step="x"
+      step="12"
       icon={<SparklesIcon />}
       storageKey="panel:Spells"
       right={
