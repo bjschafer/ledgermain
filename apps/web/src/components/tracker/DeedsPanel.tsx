@@ -23,13 +23,9 @@ import type { BuilderProps } from "../builder/types.js";
  * these are hand-authored rather than reusing the vendored gunslinger
  * class-feature prose (which `ClassFeaturesList` already renders unchanged).
  *
- * Precise Strike (swashbuckler L3) additionally gets a live computed number
- * (current swashbuckler level, and its doubled swift-action variant) since
- * it's the one deed with a genuine flat numeric effect — see
- * `preciseStrikeBonus`'s doc comment for why that number is shown as text
- * here rather than folded into the sheet's attack/damage totals
- * automatically (the "light or one-handed piercing weapon, 1+ panache"
- * condition can't be checked from the data this app tracks per weapon).
+ * Precise Strike (swashbuckler L3) additionally gets a live computed number.
+ * Its plain bonus reaches the damage lines through the Panache pool's toggle;
+ * the doubled swift-action version lasts one attack, so it's only shown here.
  */
 export function DeedsPanel({ doc }: BuilderProps) {
   const gunslingerLevel = doc.identity.classes.find((c) => c.tag === "gunslinger")?.level ?? 0;
@@ -103,8 +99,8 @@ function DeedGroup({
                       <p className="deed-summary deed-live-number">
                         Currently: +{preciseStrikeBonus(preciseStrikeLevel)} damage (+
                         {preciseStrikeBonus(preciseStrikeLevel, true)} if you spend 1 panache to
-                        double it). Verify your weapon is light/one-handed piercing (or thrown
-                        within 30 ft.) and panache ≥ 1.
+                        double it). Turn on the Precise Strike toggle on your Panache pool to add it
+                        to your piercing weapons' damage.
                       </p>
                     ) : null}
                   </div>

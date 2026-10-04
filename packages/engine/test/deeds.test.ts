@@ -151,12 +151,6 @@ describe("Precise Strike numeric bonus", () => {
     expect(preciseStrikeBonus(0)).toBe(0);
     expect(preciseStrikeBonus(-3)).toBe(0);
   });
-
-  it("Precise Strike's table entry carries a contextNotes caveat about the unchecked weapon/panache condition", () => {
-    const entry = SWASHBUCKLER_DEEDS["swashbuckler:preciseStrike"];
-    expect(entry?.contextNotes?.length).toBeGreaterThan(0);
-    expect(entry?.displayOnly).toBe(true);
-  });
 });
 
 describe("Deed table sanity", () => {

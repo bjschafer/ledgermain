@@ -33,6 +33,15 @@
  *     unconditional +2 Bluff half is already wired in
  *     `feat-classification-community.ts`; this adds the activated
  *     grit-for-Disguise half that entry's note used to disclaim.
+ *   - Swashbuckler Initiative (3rd): +2 initiative while she holds at least
+ *     1 panache point. The vendored data only carries a "Swashbuckler Deeds"
+ *     stub, so unlike Gunslinger Initiative there is no dead upstream Change
+ *     to compete with.
+ *   - Precise Strike (3rd): swashbuckler level on damage with a light or
+ *     one-handed piercing weapon, routed through the
+ *     `damage.weapon.<PIERCING_LIGHT_OR_ONE_HANDED_KEY>` key that
+ *     `computeWeaponAttacks` adds only to qualifying weapons, so a longsword
+ *     or a bow never picks it up.
  *   - Dizzying Defense (15th): the swashbuckler's improved fighting-
  *     defensively numbers, flat dodge AC and attack-penalty Changes.
  *   - Courser's Swift Target (1st) / Confounding Target (4th): the same
@@ -106,6 +115,57 @@ export function gritToggleOptions(
 
 const COURSER_ARCHETYPE_ID = "swashbuckler:courser";
 const AZATARIEL_ARCHETYPE_ID = "swashbuckler:azatariel";
+/** Archetypes whose replacement deed takes Swashbuckler Initiative's slot. */
+const NO_SWASHBUCKLER_INITIATIVE: ReadonlySet<string> = new Set([
+  "swashbuckler:arrow-champion",
+  "swashbuckler:daring-infiltrator",
+]);
+
+/**
+ * The `damage.weapon.<key>` key `computeWeaponAttacks` adds to a light or
+ * one-handed piercing weapon used in melee or thrown. Not a weapon group: it
+ * exists because "light or one-handed piercing" cuts across the group
+ * taxonomy (see `crit-range.ts`'s `piercingLightOrOneHanded` scope).
+ */
+export const PIERCING_LIGHT_OR_ONE_HANDED_KEY = "piercingLightOrOneHanded";
+
+/** Swashbuckler Initiative (3rd level, base class deed). */
+export const SWASHBUCKLER_INITIATIVE: ToggleBuffOption = {
+  id: "panache:swashbucklerInitiative",
+  name: "Swashbuckler Initiative",
+  changes: [{ formula: "2", target: "init", type: "untyped" }],
+  contextNotes: [
+    {
+      target: "init",
+      text: "Requires at least 1 panache point. With Quick Draw, draw a light or one-handed piercing weapon as part of the initiative check.",
+    },
+  ],
+};
+
+/**
+ * Precise Strike (3rd level, base class deed). The doubled swift-action
+ * version lasts a single attack, so it stays in the note rather than becoming
+ * a second toggle the player would have to remember to switch back off.
+ */
+function preciseStrike(classLevel: number): ToggleBuffOption {
+  return {
+    id: "panache:preciseStrike",
+    name: "Precise Strike",
+    changes: [
+      {
+        formula: String(classLevel),
+        target: `damage.weapon.${PIERCING_LIGHT_OR_ONE_HANDED_KEY}`,
+        type: "untyped",
+      },
+    ],
+    contextNotes: [
+      {
+        target: "wdamage",
+        text: "Requires at least 1 panache point and nothing in the other hand but a buckler; thrown only within 30 feet. Precision damage: not multiplied on a crit, and lost against creatures immune to sneak attack. Spend 1 panache as a swift action to double it on your next attack.",
+      },
+    ],
+  };
+}
 
 /** Dizzying Defense (15th level, base class deed). */
 export const DIZZYING_DEFENSE: ToggleBuffOption = {
@@ -166,13 +226,23 @@ export const ELYSIAN_CONVICTION: ToggleBuffOption = {
  * Panache's `tableOptions`, filtered to the deeds the character qualifies for
  * by level, with the character's swashbuckler archetypes gating the
  * archetype-specific entries (Courser's speed increase, Azatariel's Elysian
- * Conviction).
+ * Conviction) and dropping the base deeds an archetype replaces.
  */
 export function panacheToggleOptions(
   classLevel: number,
   classArchetypeIds: readonly string[],
 ): ToggleBuffOption[] {
   const options: ToggleBuffOption[] = [];
+  if (classLevel >= 3) {
+    if (!classArchetypeIds.some((id) => NO_SWASHBUCKLER_INITIATIVE.has(id))) {
+      options.push(SWASHBUCKLER_INITIATIVE);
+    }
+    // Azatariel's Whimsical Riposte replaces it; Arrow Champion's Precise Aim
+    // keeps the melee half unchanged.
+    if (!classArchetypeIds.includes(AZATARIEL_ARCHETYPE_ID)) {
+      options.push(preciseStrike(classLevel));
+    }
+  }
   if (classLevel >= 15) options.push(DIZZYING_DEFENSE);
   if (classArchetypeIds.includes(COURSER_ARCHETYPE_ID)) {
     options.push(courserStride(classLevel >= 4 ? 10 : 5));

@@ -114,13 +114,22 @@ function groupSlug(w: WeaponInstance): string {
   return (w.group ?? "").trim().toLowerCase();
 }
 
-/** True when `w` is a light or one-handed piercing melee weapon, per the vendored catalog entry. */
-function isPiercingLightOrOneHanded(w: WeaponInstance, refData: RefData): boolean {
-  if ((w.category ?? "melee") !== "melee") return false;
+/**
+ * True when `w`'s vendored catalog entry is a light or one-handed piercing
+ * weapon, whichever way this instance is being used. A hand-entered custom
+ * weapon has no catalog entry and never matches.
+ */
+export function isPiercingLightOrOneHandedWeapon(w: WeaponInstance, refData: RefData): boolean {
   const ref = w.weaponId ? refData.weapons[w.weaponId] : undefined;
   if (!ref) return false;
   if (!(ref.damageTypes ?? []).includes("piercing")) return false;
   return ref.weaponSubtype === "light" || ref.weaponSubtype === "1h";
+}
+
+/** True when `w` is a light or one-handed piercing melee weapon, per the vendored catalog entry. */
+function isPiercingLightOrOneHanded(w: WeaponInstance, refData: RefData): boolean {
+  if ((w.category ?? "melee") !== "melee") return false;
+  return isPiercingLightOrOneHandedWeapon(w, refData);
 }
 
 /** True when `scope` covers `w`. */

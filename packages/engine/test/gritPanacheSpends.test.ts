@@ -14,7 +14,7 @@
 
 import { describe, expect, it } from "bun:test";
 
-import type { ActiveBuff, CharacterDoc } from "@pf1/schema";
+import type { ActiveBuff, CharacterDoc, WeaponInstance } from "@pf1/schema";
 import { loadRefData } from "@pf1/data-pipeline";
 
 import { compute, deriveResourcePools } from "../src/index.js";
@@ -25,6 +25,7 @@ import {
   gritToggleOptions,
   NO_NAME_DISGUISE,
   panacheToggleOptions,
+  SWASHBUCKLER_INITIATIVE,
 } from "../src/grit-panache-spends.js";
 
 const ref = loadRefData();
@@ -46,6 +47,7 @@ function makeDoc(opts: {
   feats?: string[];
   archetypes?: string[];
   activeBuffs?: ActiveBuff[];
+  weapons?: WeaponInstance[];
 }): CharacterDoc {
   return {
     schemaVersion: 1,
@@ -66,7 +68,7 @@ function makeDoc(opts: {
       classFeatureChoices: [],
       spells: { known: [] },
       gear: [],
-      weapons: [],
+      weapons: opts.weapons ?? [],
     },
     live: {
       hp: { current: 0, temp: 0, nonlethal: 0 },
@@ -74,6 +76,20 @@ function makeDoc(opts: {
       activeBuffs: opts.activeBuffs ?? [],
       resources: {},
     },
+  };
+}
+
+function weapon(name: string, overrides: Partial<WeaponInstance> = {}): WeaponInstance {
+  const entry = Object.entries(ref.weapons).find(([, w]) => w.name === name);
+  if (!entry) throw new Error(`weapon not found: ${name}`);
+  return {
+    name,
+    weaponId: entry[0],
+    group: name.toLowerCase(),
+    weaponGroups: entry[1].weaponGroups,
+    attackAbility: "str",
+    category: "melee",
+    ...overrides,
   };
 }
 
@@ -178,6 +194,31 @@ describe("drift guard: the vendored Gunslinger Initiative Change stays a no-op",
 });
 
 describe("panacheToggleOptions", () => {
+  it("swashbuckler 3+ offers Swashbuckler Initiative and Precise Strike at her level", () => {
+    const options = panacheToggleOptions(7, []);
+    expect(options.map((o) => o.id)).toContain("panache:swashbucklerInitiative");
+    expect(options.find((o) => o.id === "panache:preciseStrike")?.changes[0]?.formula).toBe("7");
+    expect(panacheToggleOptions(2, []).map((o) => o.id)).not.toContain("panache:preciseStrike");
+    expect(panacheToggleOptions(2, []).map((o) => o.id)).not.toContain(
+      "panache:swashbucklerInitiative",
+    );
+  });
+
+  it("drops the base deeds an archetype replaces", () => {
+    for (const id of ["swashbuckler:arrow-champion", "swashbuckler:daring-infiltrator"]) {
+      expect(panacheToggleOptions(3, [id]).map((o) => o.id)).not.toContain(
+        "panache:swashbucklerInitiative",
+      );
+    }
+    expect(panacheToggleOptions(3, [AZATARIEL_ID]).map((o) => o.id)).not.toContain(
+      "panache:preciseStrike",
+    );
+    // Arrow Champion's Precise Aim keeps the melee half of Precise Strike.
+    expect(panacheToggleOptions(3, ["swashbuckler:arrow-champion"]).map((o) => o.id)).toContain(
+      "panache:preciseStrike",
+    );
+  });
+
   it("swashbuckler 15+ offers Dizzying Defense", () => {
     expect(panacheToggleOptions(15, []).map((o) => o.id)).toContain("panache:dizzyingDefense");
   });
@@ -211,6 +252,37 @@ describe("panacheToggleOptions", () => {
 });
 
 describe("deriveResourcePools: Panache pool (swashbuckler)", () => {
+  // Advanced Class Guide: "+2 bonus on
+  // initiative checks" while she has at least 1 panache point.
+  it("swashbuckler 3 gets +2 initiative from Swashbuckler Initiative when toggled", () => {
+    const sheet = compute(makeDoc({ tag: "swashbuckler", level: 3 }), ref);
+    const withToggle = compute(
+      makeDoc({ tag: "swashbuckler", level: 3, activeBuffs: [tableBuff(SWASHBUCKLER_INITIATIVE)] }),
+      ref,
+    );
+    expect(withToggle.initiative.total).toBe(sheet.initiative.total + 2);
+  });
+
+  // Advanced Class Guide: swashbuckler level as precision damage with a
+  // light or one-handed piercing melee weapon, or one thrown within 30 ft.
+  it("swashbuckler 6 Precise Strike adds +6 damage to piercing light/one-handed weapons only", () => {
+    const weapons = [
+      weapon("Rapier"),
+      weapon("Longsword"),
+      weapon("Dagger", { name: "Thrown dagger", category: "ranged" }),
+      weapon("Longbow", { category: "ranged" }),
+    ];
+    const option = panacheToggleOptions(6, []).find((o) => o.id === "panache:preciseStrike")!;
+    const off = compute(makeDoc({ tag: "swashbuckler", level: 6, weapons }), ref).attacks;
+    const on = compute(
+      makeDoc({ tag: "swashbuckler", level: 6, weapons, activeBuffs: [tableBuff(option)] }),
+      ref,
+    ).attacks;
+    const delta = on.map((a, i) => a.damageBonus.total - off[i]!.damageBonus.total);
+    expect(delta).toEqual([6, 0, 6, 0]);
+    expect(on.map((a, i) => a.attack.total - off[i]!.attack.total)).toEqual([0, 0, 0, 0]);
+  });
+
   it("swashbuckler 15 gets Dizzying Defense: +4 dodge AC, -2 melee attack when toggled", () => {
     const doc = makeDoc({ tag: "swashbuckler", level: 15 });
     const sheet = compute(doc, ref);

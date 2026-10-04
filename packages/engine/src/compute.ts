@@ -55,13 +55,14 @@ import {
   type ResolvedAbility,
 } from "./ability-substitution.js";
 import { acBonusType } from "./ac-bonus-types.js";
-import { critThreatRange } from "./crit-range.js";
+import { critThreatRange, isPiercingLightOrOneHandedWeapon } from "./crit-range.js";
 import { dexWeaponFeatSources } from "./dex-weapon-feats.js";
 import { chosenBonusClassSkills } from "./bonus-class-skills.js";
 import { traitGrantedClassSkills } from "./traits.js";
 import { featGrantedClassSkills } from "./feat-effects-resolve.js";
 import { resolveClassFeatures } from "./archetypes.js";
 import { withGrantedFeats } from "./granted-feats.js";
+import { PIERCING_LIGHT_OR_ONE_HANDED_KEY } from "./grit-panache-spends.js";
 import { computeRanger } from "./ranger.js";
 import { orderByTag } from "./cavalier-orders.js";
 import { collectModifiers, forTarget, type CollectedModifier } from "./collect.js";
@@ -1419,6 +1420,12 @@ function computeWeaponAttacks(
     // deliberately does NOT pick up a thrown-only bonus; a player who wants
     // to model throwing it can add a second instance with category "ranged".
     const isThrownAttack = category === "ranged" && groupKeys.includes("thrown");
+    // Damage-only: Precise Strike scopes itself by damage type and
+    // handedness, which no weapon group expresses.
+    const damageKeys =
+      (category === "melee" || isThrownAttack) && isPiercingLightOrOneHandedWeapon(w, refData)
+        ? [...groupKeys, PIERCING_LIGHT_OR_ONE_HANDED_KEY]
+        : groupKeys;
     const weaponProficient = isWeaponProficient(proficiencies, w);
     const weaponProfPenalty = weaponProficient ? 0 : -4;
     const weaponProfComponents: ModifierComponent[] = weaponProficient
@@ -1533,7 +1540,7 @@ function computeWeaponAttacks(
             ...forTarget(collected, "rwdamage"),
             ...(isThrownAttack ? forTarget(collected, "twdamage") : []),
           ]),
-      ...groupKeys.flatMap((g) => forTarget(collected, `damage.weapon.${g}`)),
+      ...damageKeys.flatMap((g) => forTarget(collected, `damage.weapon.${g}`)),
     ]);
     const damageTotal = abilityDamage + enh + weaponDamageStack.total;
 

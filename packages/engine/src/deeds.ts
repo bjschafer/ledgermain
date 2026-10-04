@@ -36,34 +36,13 @@
  * filter over the static table, called directly by the level the character
  * has in that class.
  *
- * **Precise Strike** (swashbuckler 3rd level) is the one deed with a genuine
- * flat numeric effect (add swashbuckler level to damage with a light or
- * one-handed piercing melee weapon, while panache >= 1) — see
- * `preciseStrikeBonus`. It is NOT modeled as an automatic `damage.weapon.
- * <group>` Change: the vendored weapon-group vocabulary
- * (`@pf1/engine` `weapon-groups.ts`'s `WEAPON_GROUPS` — axes, blades-heavy/
- * light, bows, close, crossbows, double, firearms, flails, hammers, monk,
- * polearms, spears, thrown, tribal) is a weapon-FAMILY taxonomy, not a
- * damage-TYPE/encumbrance-category one — "light or one-handed piercing"
- * cuts across several of those groups (a rapier is blades-light, a piercing
- * spear is spears, a starknife is thrown-or-close depending on build) and
- * neither `WeaponRef` nor `WeaponInstance` carries a piercing/slashing/
- * bludgeoning damage-type field at all (confirmed: `refdata.ts`'s
- * `WeaponRef` has no such field). So there is no clean automatic target to
- * attach the Change to without either inventing a damage-type field the rest
- * of the schema doesn't have, or over-applying to weapons that don't
- * qualify. Per this project's honesty bar (see `traits.ts`), the computed
- * number is instead surfaced as a `contextNotes` reminder on the deed entry
- * itself, AND `DeedsPanel` additionally renders the live number (from
- * `preciseStrikeBonus(swashbucklerLevel)`) inline for the current character
- * — a context note with the real number already substituted in, not a
- * generic reminder — so the player sees "+7 damage" rather than having to
- * do the arithmetic by hand, while the sheet's actual attack/damage totals
- * are left untouched (matching every other "requires manual verification of
- * a condition the engine can't check" entry in this codebase).
+ * **Precise Strike** and **Swashbuckler Initiative** (both 3rd level) have
+ * real numeric effects, which live as toggles on the Panache pool
+ * (`grit-panache-spends.ts`), the same way Gunslinger Initiative does on
+ * Grit. This table only describes them; `DeedsPanel` additionally prints
+ * Precise Strike's doubled swift-action number, which lasts a single attack
+ * and so isn't a toggle.
  */
-
-import type { ContextNote } from "@pf1/schema";
 
 export interface DeedDef {
   /** `<classTag>:<camelCaseName>` — unique across both tables. */
@@ -78,13 +57,9 @@ export interface DeedDef {
   cost: string;
   /** Short paraphrased rules summary (not verbatim SRD text) shown in the deeds reference panel. */
   summary: string;
-  /** Non-mechanical reminders — used for Precise Strike's computed-number caveat and a couple of nested-choice pointers. */
-  contextNotes?: ContextNote[];
-  /** Always true — no deed here has a flat always-on numeric Change (Precise Strike's bonus is context-note tier, see file doc comment). */
+  /** Always true — the deeds with a numeric effect apply through Panache/Grit pool toggles, not this table (see file doc comment). */
   displayOnly: true;
 }
-
-const note = (text: string, target = "allChecks"): ContextNote => ({ target, text });
 
 interface RawDeed {
   id: string;
@@ -93,7 +68,6 @@ interface RawDeed {
   actionType: string;
   cost: string;
   summary: string;
-  contextNotes?: ContextNote[];
 }
 
 function forClass(classTag: DeedDef["classTag"], entries: RawDeed[]): DeedDef[] {
@@ -105,7 +79,6 @@ function forClass(classTag: DeedDef["classTag"], entries: RawDeed[]): DeedDef[] 
     actionType: e.actionType,
     cost: e.cost,
     summary: e.summary,
-    contextNotes: e.contextNotes,
     displayOnly: true,
   }));
 }
@@ -346,22 +319,16 @@ const SWASHBUCKLER_DEED_LIST: DeedDef[] = forClass("swashbuckler", [
     actionType: "passive (swift to double)",
     cost: "0 (1 to double on your next attack)",
     summary:
-      "Add your swashbuckler level as precision damage with a light or one-handed piercing melee weapon (or a thrown one within 30 ft.) while you have 1+ panache; spend 1 panache as a swift action to double it on your next attack this turn.",
-    contextNotes: [
-      note(
-        "Numeric bonus is target-scoped (requires a light/one-handed piercing weapon and 1+ panache) — the tracker doesn't verify your weapon choice automatically; the current computed bonus is shown live in the Deeds panel.",
-        "wdamage",
-      ),
-    ],
+      "Add your swashbuckler level as precision damage with a light or one-handed piercing melee weapon (or a thrown one within 30 ft.) while you have 1+ panache; spend 1 panache as a swift action to double it on your next attack this turn. Available as a toggle on the Panache pool.",
   },
   {
     id: "swashbucklerInitiative",
     name: "Swashbuckler Initiative",
     minLevel: 3,
     actionType: "passive",
-    cost: "0",
+    cost: "0 (requires 1+ panache)",
     summary:
-      "+2 initiative; with Quick Draw, draw a light/one-handed piercing weapon as part of the initiative check.",
+      "+2 initiative while holding at least 1 panache point; with Quick Draw, draw a light/one-handed piercing weapon as part of the initiative check. Available as a toggle on the Panache pool.",
   },
   {
     id: "superiorFeint",
@@ -489,10 +456,8 @@ export function deedsForClass(classTag: "gunslinger" | "swashbuckler", level: nu
  * Precise Strike's precision-damage bonus (swashbuckler 3rd level, APG...
  * Pathfinder Unchained p. 16): flat +swashbuckler level, or double that when
  * the swashbuckler spends the swift-action/1-panache upgrade before the end
- * of her turn. Callers are responsible for checking the "light or one-handed
- * piercing melee weapon (or thrown within 30 ft.), 1+ panache" condition —
- * see `DeedDef`'s `preciseStrike` entry doc comment for why that can't be
- * checked automatically.
+ * of her turn. Display only: the sheet's damage lines get the undoubled
+ * bonus from the Panache pool's Precise Strike toggle.
  */
 export function preciseStrikeBonus(swashbucklerLevel: number, doubled = false): number {
   const base = Math.max(0, Math.trunc(swashbucklerLevel));

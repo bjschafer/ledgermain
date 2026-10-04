@@ -594,6 +594,7 @@ export {
   CRIT_RANGE_FEATS,
   CRIT_RANGE_GRANTS,
   critThreatRange,
+  isPiercingLightOrOneHandedWeapon,
   type CritRangeGrant,
   type CritRangeScope,
   type CritThreat,
@@ -902,6 +903,8 @@ export {
 export {
   gritToggleOptions,
   panacheToggleOptions,
+  PIERCING_LIGHT_OR_ONE_HANDED_KEY,
+  SWASHBUCKLER_INITIATIVE,
   GRIT_DETAIL,
   PANACHE_DETAIL,
 } from "./grit-panache-spends.js";

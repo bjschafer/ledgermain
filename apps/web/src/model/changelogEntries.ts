@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-10-04-swashbuckler-deeds",
+    date: "2026-10-04",
+    title: "Swashbuckler deeds reach the sheet",
+    note: "Swashbuckler Initiative and Precise Strike are now toggles on the Panache pool. Switch them on while you hold panache: Initiative adds its +2, and Precise Strike adds your swashbuckler level to damage with light or one-handed piercing weapons, thrown ones included, while a longsword or bow line stays untouched. Archetypes that trade either deed away don't get the toggle.",
+  },
+  {
     id: "2026-09-25-concentration",
     date: "2026-09-25",
     title: "Your concentration bonus is on the sheet",
