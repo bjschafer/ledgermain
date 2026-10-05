@@ -7297,6 +7297,12 @@
       "prereqText": "Weapon Finesse, base attack bonus +1.",
       "skills": []
     },
+    "sources": [
+      {
+        "id": "PZO9412",
+        "pages": "24"
+      }
+    ],
     "subType": "feat",
     "tags": [],
     "uuid": "Compendium.pf1.feats.Item.5xhMBEM8iB0xrE3X"
@@ -18325,6 +18331,12 @@
       "prereqText": "Bardic performance class feature.",
       "skills": []
     },
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "164"
+      }
+    ],
     "subType": "feat",
     "tags": [],
     "uuid": "Compendium.pf1.feats.Item.F2GJXemdlPolvx4D"
@@ -30927,6 +30939,12 @@
       "prereqText": "Size Huge or larger.",
       "skills": []
     },
+    "sources": [
+      {
+        "id": "PZO1112",
+        "pages": "316"
+      }
+    ],
     "subType": "feat",
     "tags": ["Monster"],
     "uuid": "Compendium.pf1.feats.Item.PBqk2ZYEdehWcprC"
@@ -32268,6 +32286,12 @@
       "prereqText": "Quick Draw, base attack bonus +1.",
       "skills": []
     },
+    "sources": [
+      {
+        "id": "PZO1136",
+        "pages": "128"
+      }
+    ],
     "subType": "feat",
     "tags": ["Combat"],
     "uuid": "Compendium.pf1.feats.Item.QQE5EGIh7KDABnv2"
@@ -71095,7 +71119,7 @@
     "uuid": "Compendium.pf1.feats.Item.yDpr0uGhEinHerME"
   },
   "yE3hVOvBq9rx6TAw": {
-    "description": "<p><em>You can strike at enemy spellcasters who fail to cast defensively when you threaten them.</em></p><p><strong>Prerequisites</strong>: Disruptive, 10th-level fighter.</p><p><strong>Benefits</strong>: Enemies in your threatened area that fail their checks to cast spells defensively provoke attacks of opportunity from you.</p><p><strong>Normal</strong>: Enemies that fail to cast spells defensively do not provoke attacks of opportunity.</p>",
+    "description": "<p><em>You can strike at enemy spellcasters who fail to cast defensively when you threaten them.</em></p><p><strong>Prerequisites</strong>: Disruptive, 10th-level fighter.</p><p><strong>Benefits</strong>: Enemies in your threatened area that fail their checks to cast spells defensively provoke attacks of opportunity from you.</p><p><strong>Normal</strong>: Enemies that fail to cast spells defensively do not provoke attacks of opportunity.</p><h3>Combat Trick</h3><p>When you hit a caster with an attack of opportunity it provoked by failing to cast defensively, you can spend 5 stamina points to daze the caster until the end of its next turn. If the caster succeeds at a Fortitude save with a DC equal to 10 + your base attack bonus, it is staggered instead.</p>",
     "id": "yE3hVOvBq9rx6TAw",
     "name": "Spellbreaker",
     "prerequisites": {
@@ -71110,6 +71134,16 @@
       "prereqText": "Disruptive, 10th-level fighter.",
       "skills": []
     },
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "134"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "132"
+      }
+    ],
     "subType": "feat",
     "tags": ["Combat", "Magic", "Offensive"],
     "uuid": "Compendium.pf1.feats.Item.yE3hVOvBq9rx6TAw"
