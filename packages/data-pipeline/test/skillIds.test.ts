@@ -1,7 +1,11 @@
 import { describe, expect, it } from "bun:test";
 
 import { loadRefData } from "../src/index.js";
-import { normalizeSkillId, normalizeSkillTarget } from "../src/transform/common.js";
+import {
+  normalizeClassSkills,
+  normalizeSkillId,
+  normalizeSkillTarget,
+} from "../src/transform/common.js";
 
 describe("normalizeSkillId", () => {
   it("maps Foundry's full-name keys to the short ids", () => {
@@ -17,6 +21,22 @@ describe("normalizeSkillId", () => {
   it("leaves short ids alone", () => {
     expect(normalizeSkillId("kna")).toBe("kna");
     expect(normalizeSkillId("crf.alchemy")).toBe("crf.alchemy");
+  });
+
+  it("fans a bare knowledge class skill out to all ten Knowledge ids", () => {
+    expect(normalizeClassSkills(["perception", "knowledge", "knowledge.arcana"])).toEqual([
+      "kar",
+      "kdu",
+      "ken",
+      "kge",
+      "khi",
+      "klo",
+      "kna",
+      "kno",
+      "kpl",
+      "kre",
+      "per",
+    ]);
   });
 
   it("only rewrites skill targets, and keeps the Knowledge group target", () => {

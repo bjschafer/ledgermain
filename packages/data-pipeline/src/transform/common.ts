@@ -146,9 +146,19 @@ export function normalizeSkillTarget(target: string): string {
   return target.startsWith("skill.") ? `skill.${normalizeSkillId(target.slice(6))}` : target;
 }
 
-/** A class-skill list with every id shortened, sorted by id as upstream shipped it before the rename. */
+const KNOWLEDGE_IDS = Object.entries(LONG_SKILL_IDS)
+  .filter(([long]) => long.startsWith("knowledge."))
+  .map(([, short]) => short);
+
+/**
+ * A class-skill list with every id shortened, sorted by id as upstream shipped it before the rename.
+ * A bare `knowledge` means every Knowledge skill, so it fans out to all ten ids.
+ */
 export function normalizeClassSkills(value: unknown): string[] {
-  return asStringArray(value).map(normalizeSkillId).sort();
+  const ids = asStringArray(value).flatMap((id) =>
+    id === "knowledge" ? KNOWLEDGE_IDS : [normalizeSkillId(id)],
+  );
+  return [...new Set(ids)].sort();
 }
 
 /**
