@@ -1080,9 +1080,9 @@ describe("mundane armor & shields (new in schema v2)", () => {
 
 describe("mundane weapons (new in schema v2)", () => {
   it("vendors the expected mundane slice (no named magical weapons, no ammo)", () => {
-    // 340 entries as of the pinned SHA (v11.11). Includes simple/martial/exotic
+    // 339 entries as of the pinned SHA (v11.11). Includes simple/martial/exotic
     // (firearms & exotic melee count as mundane exotic in PF1).
-    expect(Object.keys(ref.weapons).length).toBe(340);
+    expect(Object.keys(ref.weapons).length).toBe(339);
   });
 
   it("Longsword is martial, melee, crit 19/×2, damage 1d8, group 'longsword'", () => {

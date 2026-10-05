@@ -5998,7 +5998,7 @@
     "damageTypes": ["slashing"],
     "group": "dueling-sword",
     "id": "cKJ0wG42qRrrJJeI",
-    "name": "Aldori dueling sword",
+    "name": "Aldori Dueling Sword",
     "price": 20,
     "proficiency": "exotic",
     "sources": [
@@ -6969,31 +6969,6 @@
     "weaponGroups": ["bladesLight", "monk"],
     "weaponSubtype": "light",
     "weight": 2
-  },
-  "ioPvNyyv6L4hv0aW": {
-    "attackAbility": "str",
-    "baseTypes": ["Aldori Dueling Sword"],
-    "category": "melee",
-    "critMult": 2,
-    "critRange": 19,
-    "damageAbility": "str",
-    "damageDice": "1d8",
-    "damageTypes": ["slashing"],
-    "group": "aldori-dueling-sword",
-    "id": "ioPvNyyv6L4hv0aW",
-    "name": "Aldori Dueling Sword",
-    "price": 20,
-    "proficiency": "exotic",
-    "sources": [
-      {
-        "id": "PZO1138",
-        "pages": "24"
-      }
-    ],
-    "uuid": "Compendium.pf1.weapons-and-ammo.Item.ioPvNyyv6L4hv0aW",
-    "weaponGroups": ["bladesHeavy"],
-    "weaponSubtype": "1h",
-    "weight": 3
   },
   "j1ZxglTWSOgubdHH": {
     "attackAbility": "str",
