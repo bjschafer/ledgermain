@@ -20,7 +20,7 @@ import { fileURLToPath } from "node:url";
 export const FOUNDRY_REPO = "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git";
 
 /** Pinned upstream commit (Foundry PF1 system v11.11). */
-export const FOUNDRY_SHA = "c350b42d48ec9cff14316f978a3aad4fabde8bc4";
+export const FOUNDRY_SHA = "e6b533e599dc271999811c7f9ecd68788a68995b";
 
 /** Human-readable system version corresponding to FOUNDRY_SHA. */
 export const SYSTEM_VERSION = "11.11";
