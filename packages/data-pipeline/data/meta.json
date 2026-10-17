@@ -67,8 +67,8 @@
     "witchPatrons": 61,
     "wizardSchools": 17
   },
-  "dataVersion": "11.11+e6b533e599dc",
-  "generatedAt": "2026-10-05T16:48:10+03:00",
+  "dataVersion": "11.11+3e7561a024ad",
+  "generatedAt": "2026-10-17T14:44:58+03:00",
   "hashes": {
     "alchemist-discoveries.json": "2039cec1588b4bbfbae3498bf8d6b55a27ffe06dec14883236743f76376cc283",
     "arcanist-exploits.json": "10424852ff90d5ffa9865e4ec1036b386c5564ef3153f505807551572394bbc2",
@@ -94,7 +94,7 @@
     "inquisitions.json": "2dde076ba55ff002cc8984b4e1f2ca08cab3a63aef50262bcf1b3b67ec35b794",
     "investigator-talents.json": "2ff033b37691563298290f31b3807d0452be36050d2197f95e38f9714eabcf23",
     "item-abilities.json": "ff831b81271df2fde97440e56513209289d1284ebdd666f3f7888673a8d66d76",
-    "items.json": "a2d7f443cacdc3477da7dba25e4f901ad949daa510fca74a485df4db29294650",
+    "items.json": "a72360cbd5cf3eae49a437ae4fc2216fff60fd987d15a74a03482fc73bd29fa2",
     "kinetic-wild-talents.json": "5141aededbd63667493e3f9d13d5bf0ff98c0e994e5b0371f3ca4cdc8927b85e",
     "magus-arcana.json": "aaf140cdd8db9312130212c0253a03147d9c96a05d0acbe1eccf5c5ee51d34ef",
     "medium-spirits.json": "4bba7346296a782a3a6e6da8aa31b417d97a6e7ff98fae18bbe75ff3926b41b5",
@@ -134,11 +134,11 @@
   "schemaVersion": 29,
   "sourcePins": {
     "archetypes": "92ddcb60027e3088e5afd0645183c031ec3e9bb4",
-    "foundry": "e6b533e599dc271999811c7f9ecd68788a68995b",
+    "foundry": "3e7561a024ad5270426a8a5f5cf14a6449640e7e",
     "pfContent": "c66bf333cafc451d817ead660473dd01d9846fb3",
     "pfData": "4a63ddb770e24987cca1d9ae47877cf43098b6e5"
   },
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
-  "sourceSha": "e6b533e599dc271999811c7f9ecd68788a68995b",
+  "sourceSha": "3e7561a024ad5270426a8a5f5cf14a6449640e7e",
   "systemVersion": "11.11"
 }
