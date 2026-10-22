@@ -302,7 +302,7 @@ For this Worker:
   with `wrangler tail` (from `apps/api/`), or browse/search them under
   **Workers → ledgermain-api → Observability** in the dashboard. Unhandled
   exceptions are logged as structured JSON (`{ level, event, route, method,
-message, stack }`, see `src/index.ts`) so they filter by `event`/`route`
+  message, stack }`, see `src/index.ts`) so they filter by `event`/`route`
   instead of a free-text grep.
 - **Usage / health metrics** — every request writes one PII-free
   [Analytics Engine](https://developers.cloudflare.com/analytics/analytics-engine/)
