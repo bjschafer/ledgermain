@@ -227,7 +227,11 @@ describe("POST /api/feedback — Turnstile hostname assertion", () => {
 
   it("gets past the assertion for one of our own hostnames", async () => {
     siteverify({ success: true, hostname: "ledgermain.whizkid.dev" });
+    // The GitHub App call past the gate fails on the unset private key; mute
+    // the resulting unhandled_exception log so it doesn't read as a failure.
+    const errorLog = vi.spyOn(console, "error").mockImplementation(() => {});
     const res = await post({ message: "hi", turnstileToken: "t" });
+    errorLog.mockRestore();
     // Past the gate; the same stub then feeds the GitHub App call nonsense, so
     // anything but a 403 proves the hostname check let this through.
     expect(res.status).not.toBe(403);
