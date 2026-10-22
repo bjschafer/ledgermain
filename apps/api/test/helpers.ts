@@ -6,7 +6,7 @@ import { createSession } from "../src/session.js";
 
 /**
  * Run one request through the Worker's exported `fetch` handler inside
- * Miniflare (vitest-pool-workers) — no deployed environment. `new Request()`
+ * Miniflare (vitest-plugin) — no deployed environment. `new Request()`
  * produces the DOM/outgoing `Request` shape (`CfProperties`), while
  * `ExportedHandlerFetchHandler` expects the incoming-request shape
  * (`IncomingRequestCfProperties`, which adds edge-only fields like `colo`);

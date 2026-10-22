@@ -39,7 +39,7 @@ change your code; don't fight the tool or hand-format around it.
 
 One wrinkle in `bun run test`: everything runs on `bun test` except `apps/api`,
 whose Worker routes need a real Workers runtime
-(`@cloudflare/vitest-pool-workers`). Its test script shells out to `vitest run`,
+(`@cloudflare/vitest-plugin`). Its test script shells out to `vitest run`,
 and the root script picks it up automatically.
 
 ## Deployment

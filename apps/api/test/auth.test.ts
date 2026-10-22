@@ -95,7 +95,7 @@ describe("OAuth login-CSRF (browser-nonce cookie)", () => {
 
   it("a matching nonce cookie passes the CSRF gate (proceeds to the Discord exchange)", async () => {
     // This test runtime has no fetch mocking available (`fetchMock` is not
-    // exported by this vitest-pool-workers version) and no real network, so
+    // exported by this vitest-plugin version) and no real network, so
     // full login success can't be exercised here — instead assert the
     // matching cookie gets PAST the nonce gate: the failure we get back is
     // the 502 from the (unreachable) Discord token exchange, NOT the 400

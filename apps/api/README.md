@@ -146,7 +146,7 @@ or, easier, exercise the routes through the test suite below. Exercising the
 bun run test                 # from apps/api/, or from the repo root: bun run test
 ```
 
-This runs `vitest run` against `@cloudflare/vitest-pool-workers` — the
+This runs `vitest run` against `@cloudflare/vitest-plugin` — the
 Worker's routes run for real inside Miniflare, not a plain Node mock. It is
 **not** `bun test` (bun's runner doesn't know how to boot a Workers
 runtime); the root `bun run test` script (`bun run --filter '*' test`) picks

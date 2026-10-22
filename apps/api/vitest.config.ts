@@ -1,8 +1,8 @@
-import { cloudflareTest } from "@cloudflare/vitest-pool-workers";
+import { cloudflareTest } from "@cloudflare/vitest-plugin";
 import { defineConfig } from "vitest/config";
 
 /**
- * Runs the Worker's route tests inside Miniflare via vitest-pool-workers —
+ * Runs the Worker's route tests inside Miniflare via vitest-plugin —
  * no deployed environment, no real Cloudflare account resources touched.
  * This is why apps/api has its own `test` script (`vitest run`) instead of
  * `bun test`: bun's built-in runner doesn't know how to boot a Workers

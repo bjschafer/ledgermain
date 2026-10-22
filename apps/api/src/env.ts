@@ -19,7 +19,7 @@ declare global {
   }
 }
 
-// `cloudflare:test`'s `env` export (used by the vitest-pool-workers test
+// `cloudflare:test`'s `env` export (used by the vitest-plugin test
 // suite) is typed as `Cloudflare.Env`, a separate declaration from the
 // top-level global `Env` above (see worker-configuration.d.ts) — augment
 // both so tests and the Worker itself see the same shape.

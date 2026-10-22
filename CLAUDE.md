@@ -4,7 +4,7 @@ Ledgermain is a web-based **in-play character sheet, tracker, and builder for Pa
 
 ## Commands
 
-Toolchain is **bun** with workspaces. Tests run on **`bun test`** — **except** `apps/api`, whose Worker routes need a real Workers runtime to test against (`@cloudflare/vitest-pool-workers`); its `test` script shells out to `vitest run`, and `bun run test` (root) picks it up automatically via the existing `--filter '*'` mechanism, no special-casing needed.
+Toolchain is **bun** with workspaces. Tests run on **`bun test`** — **except** `apps/api`, whose Worker routes need a real Workers runtime to test against (`@cloudflare/vitest-plugin`); its `test` script shells out to `vitest run`, and `bun run test` (root) picks it up automatically via the existing `--filter '*'` mechanism, no special-casing needed.
 
 ```bash
 bun install

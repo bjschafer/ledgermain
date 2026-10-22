@@ -11,7 +11,7 @@
  * error/conflict rate?", "how slow are writes?") without becoming tracking.
  *
  * `env.ANALYTICS` is optional-chained so local `wrangler dev` and the
- * vitest-pool-workers suite (where the binding is a Miniflare no-op) never
+ * vitest-plugin suite (where the binding is a Miniflare no-op) never
  * fail on it. `writeDataPoint` is fire-and-forget — no await, no `waitUntil`
  * — so telemetry never adds latency to a response.
  */

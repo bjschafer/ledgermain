@@ -186,7 +186,7 @@ export default {
   // matches `ExportedHandlerFetchHandler`'s 3-arg signature exactly, rather
   // than relying on JS's "extra call args are ignored" — `satisfies` checks
   // structural compatibility but doesn't widen the literal's own inferred
-  // type, so callers (including the vitest-pool-workers tests) need the real
+  // type, so callers (including the vitest-plugin tests) need the real
   // arity here.
   async fetch(request, env, ctx): Promise<Response> {
     void ctx;
