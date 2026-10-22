@@ -30,6 +30,6 @@
     }
   },
   "ignoreDependencies": ["@pf1/tokens", "cloudflare"],
-  "ignoreBinaries": ["distrobox", "ldd", "wrangler"],
+  "ignoreBinaries": ["distrobox", "ldd"],
   "ignoreUnresolved": ["scripts/build-ref-index.ts"]
 }

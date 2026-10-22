@@ -22,7 +22,7 @@ bun run screenshots  # regenerate docs/images/{tracker,builder}.png from the sam
 
 Bumping the pinned Foundry reference data has its own procedure with a formatting trap that produces a thousands-of-lines-changed diff if skipped — see `docs/refdata-update.md` (the `refdata-update` skill points there); after hand-editing the pins, `bun run data:bump` runs the fetch/build/format steps in the trap-proof order.
 
-**Deployment is automatic, not a command you run.** All three Workers — `apps/web`, `apps/api`, and `apps/reference` — deploy via Cloudflare Workers Builds: a git-connected build configured in the Cloudflare dashboard (not visible in this repo) that deploys on every push to `main`. `.github/workflows/ci.yml` only runs typecheck/lint/fmt/tests; it has no deploy step. Never run `wrangler deploy` (or suggest the user run it) to ship a change — committing and pushing to `main` is the deploy. The per-branch failure of the "Workers Builds: ledgermain" check is expected and documented in `CONTRIBUTING.md`.
+**Deployment is automatic, not a command you run.** All three Workers — `apps/web`, `apps/api`, and `apps/reference` — deploy via Cloudflare Workers Builds: a git-connected build configured in the Cloudflare dashboard (not visible in this repo) that deploys on every push to `main`. `.github/workflows/ci.yml` only runs typecheck/lint/fmt/tests; it has no deploy step. Never run `wrangler deploy` (or suggest the user run it) to ship a change — committing and pushing to `main` is the deploy. The dashboard's deploy command runs `npx wrangler` from the repo root, so `wrangler` must stay a root devDependency (see `CONTRIBUTING.md`).
 
 ## Architecture
 

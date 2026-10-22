@@ -36,6 +36,7 @@
     "knip": "^6.34.0",
     "oxfmt": "^0.71.0",
     "oxlint": "^1.72.0",
-    "typescript": "^7.0.0"
+    "typescript": "^7.0.0",
+    "wrangler": "^4.107.0"
   }
 }
