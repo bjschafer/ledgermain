@@ -356,7 +356,7 @@
         "type": "resist"
       }
     ],
-    "cl": 9,
+    "cl": 5,
     "contextNotes": [],
     "description": "<p>This garment offers magic protection in the form of a +1 to +5 <em>resistance bonus</em> on all saving throws (<em>Fortitude</em>, <em>Reflex</em>, and <em>Will</em>).</p>",
     "id": "2rDdqODASJmbq7WP",
@@ -5898,7 +5898,7 @@
         "type": "resist"
       }
     ],
-    "cl": 6,
+    "cl": 5,
     "contextNotes": [],
     "description": "<p>This garment offers magic protection in the form of a +1 to +5 <em>resistance bonus</em> on all saving throws (<em>Fortitude</em>, <em>Reflex</em>, and <em>Will</em>).</p>",
     "id": "PIbBQB3Ijy20VkcZ",
@@ -103096,7 +103096,7 @@
         "type": "resist"
       }
     ],
-    "cl": 12,
+    "cl": 5,
     "contextNotes": [],
     "description": "<p>This garment offers magic protection in the form of a +1 to +5 <em>resistance bonus</em> on all saving throws (<em>Fortitude</em>, <em>Reflex</em>, and <em>Will</em>).</p>",
     "id": "sXdgwJBAyNAGaYZy",
@@ -105388,7 +105388,7 @@
         "type": "resist"
       }
     ],
-    "cl": 15,
+    "cl": 5,
     "contextNotes": [],
     "description": "<p>This garment offers magic protection in the form of a +1 to +5 <em>resistance bonus</em> on all saving throws (<em>Fortitude</em>, <em>Reflex</em>, and <em>Will</em>).</p>",
     "id": "wU8UByas24WFXOMn",
