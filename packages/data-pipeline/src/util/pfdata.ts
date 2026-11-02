@@ -238,9 +238,59 @@ function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+/**
+ * `@I-boost-def` is an icon hint with no words in it. `@B-dodge_bonus-4m1-cavalier`
+ * stands in for the scaling sentence the books print ("+1 dodge bonus. This
+ * bonus increases by 1 for every 4 cavalier levels"): an optional noun
+ * (default bonus), the level interval, a kind letter, `p` for a plural
+ * subject, an optional starting value, and the class. A missing start means
+ * the first step lands at the interval level, trap-sense style. The kind
+ * letter's distinctions aren't recoverable from the prose, so it's dropped.
+ */
+const ICON_MARKER_RE = /@I-[a-z]+(?:-[a-z]+)*\s?/g;
+const SCALING_MARKER_RE = /@B-(?:([A-Za-z_]+)-)?(\d+)[fmyt](p?)(\d?)-([a-z]+)(?:-x)?/g;
+
+function resolveIconAndScalingMarkers(text: string): string {
+  return text
+    .replace(ICON_MARKER_RE, "")
+    .replace(
+      SCALING_MARKER_RE,
+      (
+        _m,
+        noun: string | undefined,
+        interval: string,
+        plural: string,
+        start: string,
+        cls: string,
+      ) => {
+        const singular = (noun ?? "bonus").replace(/_/g, " ");
+        const subject = plural
+          ? `These ${singular.replace(/y$/, "ie").replace(/s$/, "se")}s`
+          : `This ${singular}`;
+        const s = plural ? "" : "s";
+        const sign = singular.endsWith("bonus") ? "+" : singular.endsWith("penalty") ? "-" : "";
+        const from = start ? `start${s} at ${sign}${start} and ` : "";
+        return `${subject} ${from}increase${s} by 1 for every ${interval} ${cls} levels`;
+      },
+    );
+}
+
+/**
+ * Footnotes: `@FN1` (or `@FN[1]`) marks the reference, and a
+ * `@FN[text]{from=1}` line in a trailing `:::fakeFootnotes` fence holds the
+ * note. Both keep their number as a superscript so the two still pair up.
+ */
+function resolveFootnotes(text: string): string {
+  return text
+    .replace(/@FN\[(\d+)\]/g, "<sup>$1</sup>")
+    .replace(/@FN\[([^\]]*)\]\{[^}]*?\bfrom=(\d+)[^}]*\}/g, "<sup>$2</sup> $1")
+    .replace(/@FN\[([^\]]*)\](?:\{[^}]*\})?/g, "$1")
+    .replace(/@FN(\d+(?:-\d+)?)/g, "<sup>$1</sup>");
+}
+
 /** `@HL[text]`/`@hl[text]`/`@b[text]`/`@strong[text]`/`@i[text]`/`@em[text]`/`@span[text]` (any trailing `{…}` properties are ignored — this app has no use for e.g. a `className` prop). Run AFTER `escapeHtml` so the tags these introduce survive. */
 function resolveFormattingDirectives(text: string): string {
-  return text
+  return resolveFootnotes(text)
     .replace(/@(?:HL|hl|b|strong)\[([^\]]*)\](?:\{[^}]*\})?/g, "<strong>$1</strong>")
     .replace(/@(?:i|em)\[([^\]]*)\](?:\{[^}]*\})?/g, "<em>$1</em>")
     .replace(/@span\[([^\]]*)\](?:\{[^}]*\})?/g, "$1");
@@ -254,7 +304,7 @@ function resolveFormattingDirectives(text: string): string {
  * inline text fragment in exactly this dialect, never a block.
  */
 export function inlineToHtml(raw: string): string {
-  let text = resolveCrossRefs(raw);
+  let text = resolveCrossRefs(resolveIconAndScalingMarkers(raw));
   text = resolveLinkDirectives(text);
   text = decodeNamedEntities(text);
   text = escapeHtml(text);
@@ -272,9 +322,12 @@ export function inlineToHtml(raw: string): string {
  * renders as text nodes — HTML tags there would print literally.
  */
 export function inlineToPlainText(raw: string): string {
-  let text = resolveCrossRefs(raw);
+  let text = resolveCrossRefs(resolveIconAndScalingMarkers(raw));
   text = resolveLinkDirectives(text);
   text = decodeNamedEntities(text);
+  text = text
+    .replace(/@FN(?:\[\d+\]|\d+(?:-\d+)?)/g, "")
+    .replace(/@FN\[([^\]]*)\](?:\{[^}]*\})?/g, "$1");
   text = text.replace(/@(?:HL|hl|b|strong|i|em|span)\[([^\]]*)\](?:\{[^}]*\})?/g, "$1");
   text = text.replace(/\*\*([^*]+?)\*\*/g, "$1");
   text = text.replace(/\*([^*]+?)\*/g, "$1");
@@ -521,13 +574,27 @@ const DIV_DIRECTIVE_RE = /^::div\{[^}]*\}$/;
  * eidolon-subtype entries for their Alignment / Base Form / Special lines.
  * Rendered as the labelled line the books print rather than a real table,
  * matching how the rest of this reader flattens the dataset's layout.
+ *
+ * The bloodline rows dropped the bracket for `::row{title="Bonus Feats"
+ * br="~" info="A~B~C"}`, with `br` naming the value's line-break token; those
+ * breaks join with commas, the line the `::list` form they replaced printed.
  */
-const ROW_DIRECTIVE_RE = /^::row\[([^\]]*)\]\{([^}]*)\}$/;
+const ROW_DIRECTIVE_RE = /^::row(?:\[([^\]]*)\])?\{([^}]*)\}$/;
 
-function renderRowDirective(label: string, propsRaw: string): string {
+function renderRowDirective(bracketLabel: string | undefined, propsRaw: string): string {
   const props = parseDirectiveProps(propsRaw);
-  const info = typeof props.info === "string" ? abProse(props.info) : undefined;
-  const labelHtml = inlineToHtml(label);
+  const br = typeof props.br === "string" && props.br !== "" ? props.br : undefined;
+  const info =
+    typeof props.info === "string"
+      ? br
+        ? props.info
+            .split(br)
+            .map((s) => inlineToHtml(s.trim()))
+            .join(", ")
+        : abProse(props.info)
+      : undefined;
+  const title = typeof props.title === "string" ? abTitleName(props.title) : "";
+  const labelHtml = inlineToHtml(bracketLabel ?? title);
   return info === undefined
     ? `<p><strong>${labelHtml}</strong></p>`
     : `<p><strong>${labelHtml}:</strong> ${info}</p>`;
@@ -663,11 +730,12 @@ function cskillName(item: string): string {
 /**
  * `::cskill{gain=ling~ka~kd lose=intm pre="..." preTitle=Replaces post="..."}`
  * — the class skills a mystery, inquisition, or archetype adds and removes,
- * by the dataset's short codes.
+ * by the dataset's short codes. A bloodline's `::cskill[Name]{...}` names
+ * the power that grants them.
  */
-const CSKILL_DIRECTIVE_RE = /^::cskill\{([^}]*)\}$/;
+const CSKILL_DIRECTIVE_RE = /^::cskill(?:\[([^\]]*)\])?\{([^}]*)\}$/;
 
-function renderCskillDirective(propsRaw: string): string {
+function renderCskillDirective(label: string | undefined, propsRaw: string): string {
   const props = parseDirectiveProps(propsRaw);
   const str = (key: string): string | undefined =>
     typeof props[key] === "string" && props[key] !== "" ? props[key] : undefined;
@@ -679,7 +747,7 @@ function renderCskillDirective(propsRaw: string): string {
     title === undefined
       ? `<p>${text}</p>`
       : `<p><strong>${inlineToHtml(title)}:</strong> ${text}</p>`;
-  const out: string[] = [];
+  const out: string[] = label ? [`<p><strong>${inlineToHtml(label)}</strong></p>`] : [];
   const pre = str("pre");
   if (pre !== undefined) out.push(titled(str("preTitle"), inlineToHtml(pre)));
   const gain = list("gain");
@@ -1292,6 +1360,13 @@ function renderAbDirective(name: string | undefined, propsRaw: string): string {
   // A leaf label can carry its own trailing colon (`::ab[Arcane Deed (Ex):]`).
   const nameHtml = inlineToHtml((name ?? title ?? "").replace(/:\s*$/, ""));
   const paragraphs = abBodyText(props) ?? [""];
+  // Prose readers need the displaced feature spelled out; `abBodyText` leaves
+  // it to `parsePfDataAbility` callers, which carry it as a structured field.
+  if (typeof props.replace === "string" && props.replace !== "") {
+    const last = paragraphs.length - 1;
+    const note = `This replaces <em>${inlineToHtml(props.replace)}</em>.`;
+    paragraphs[last] = paragraphs[last] === "" ? note : `${paragraphs[last]} ${note}`;
+  }
 
   // `l=N` alone is the minimum level to take the ability, distinct from the
   // `lNN` stage keys `abBodyText` folds into the body.
@@ -1426,7 +1501,7 @@ function renderBlock(lines: string[]): string {
     const prereq = PREREQ_DIRECTIVE_RE.exec(lines[0]!);
     if (prereq) return renderPrereqDirective(prereq[1]!);
     const row = ROW_DIRECTIVE_RE.exec(lines[0]!);
-    if (row) return renderRowDirective(row[1]!, row[2]!);
+    if (row) return renderRowDirective(row[1], row[2]!);
     const trap = TRAP_DIRECTIVE_RE.exec(lines[0]!);
     if (trap) return renderHazardDirective("trap", trap[1], trap[2]!);
     const haunt = HAUNT_DIRECTIVE_RE.exec(lines[0]!);
@@ -1434,7 +1509,7 @@ function renderBlock(lines: string[]): string {
     const list = LIST_DIRECTIVE_RE.exec(lines[0]!);
     if (list) return renderListDirective(list[1]!, list[2]!);
     const cskill = CSKILL_DIRECTIVE_RE.exec(lines[0]!);
-    if (cskill) return renderCskillDirective(cskill[1]!);
+    if (cskill) return renderCskillDirective(cskill[1], cskill[2]!);
     const ab = AB_DIRECTIVE_RE.exec(lines[0]!);
     if (ab) return renderAbDirective(ab[1], ab[2]!);
     const header = INLINE_HEADER_RE.exec(lines[0]!.trim());

@@ -28,7 +28,7 @@ const CROSS_REF_RE = /[‹›«»]/;
 // `@item.level` and `@abilities.str.mod`, which such a pattern would read as a
 // leaked `@i`/`@b` directive.
 const INLINE_DIRECTIVE_RE =
-  /@(?:ripple|hll|HL|hl|b|strong|i|em|span|FN|list)\[|@(?:HL|hll|hl|ripple)[A-Za-z][A-Za-z0-9_]*/;
+  /@(?:ripple|hll|HL|hl|b|strong|i|em|span|FN|list)\[|@(?:HL|hll|hl|ripple)[A-Za-z][A-Za-z0-9_]*|@FN\d|@[IB]-[A-Za-z0-9]/;
 
 /** Every string field that carries rendered prose to a reader. */
 const PROSE_FIELDS = [

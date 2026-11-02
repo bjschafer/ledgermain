@@ -15,7 +15,7 @@
   },
   "accurate_stance": {
     "category": "Stance",
-    "description": "<p><strong>Accurate Stance:</strong> The barbarian can focus her strikes. She gains a competence bonus on melee attack rolls and thrown weapon attack rolls. @B-4f1-barbarian.</p>",
+    "description": "<p><strong>Accurate Stance:</strong> The barbarian can focus her strikes. She gains a competence bonus on melee attack rolls and thrown weapon attack rolls. This bonus starts at +1 and increases by 1 for every 4 barbarian levels.</p>",
     "id": "accurate_stance",
     "name": "Accurate Stance",
     "nameSuffix": "(Ex)",
@@ -143,7 +143,7 @@
   },
   "beast_totem": {
     "category": "Totem",
-    "description": "<p><strong>Beast Totem:</strong> While <em>raging,</em> the barbarian gains a natural armor bonus. @B-4f1-barbarian. (Prerequisite: Lesser beast totem, 6th-level barbarian)</p>",
+    "description": "<p><strong>Beast Totem:</strong> While <em>raging,</em> the barbarian gains a natural armor bonus. This bonus starts at +1 and increases by 1 for every 4 barbarian levels. (Prerequisite: Lesser beast totem, 6th-level barbarian)</p>",
     "id": "beast_totem",
     "level": 1,
     "name": "Beast Totem",
@@ -1506,7 +1506,7 @@
   },
   "guarded_stance_stance": {
     "category": "Stance",
-    "description": "<p><strong>Guarded Stance:</strong> The barbarian can take on a more defensive posture. This grants her a dodge bonus to her Armor Class for the duration of her current <em>rage.</em> @B-4f1-barbarian.</p>",
+    "description": "<p><strong>Guarded Stance:</strong> The barbarian can take on a more defensive posture. This grants her a dodge bonus to her Armor Class for the duration of her current <em>rage.</em> This bonus starts at +1 and increases by 1 for every 4 barbarian levels.</p>",
     "id": "guarded_stance_stance",
     "name": "Guarded Stance",
     "nameSuffix": "(Ex)",
@@ -1913,7 +1913,7 @@
   },
   "lesser_elemental_totem": {
     "category": "Totem",
-    "description": "<p><strong>Lesser Elemental Totem:</strong> The barbarian selects one elemental type (air, earth, fire, or water). Once selected, this choice cannot be changed. While <em>raging,</em> the barbarian gains a bonus on saving throws against spells with the selected elemental descriptor. @B-4f1-barbarian. The barbarian gains access to the elemental totem rage power matching the element she selected.</p>",
+    "description": "<p><strong>Lesser Elemental Totem:</strong> The barbarian selects one elemental type (air, earth, fire, or water). Once selected, this choice cannot be changed. While <em>raging,</em> the barbarian gains a bonus on saving throws against spells with the selected elemental descriptor. This bonus starts at +1 and increases by 1 for every 4 barbarian levels. The barbarian gains access to the elemental totem rage power matching the element she selected.</p>",
     "id": "lesser_elemental_totem",
     "name": "Lesser Elemental Totem",
     "nameSuffix": "(Su)",
@@ -2253,7 +2253,7 @@
     "uuid": "pfdata:rage-power:perfect_clarity"
   },
   "powerful_blow": {
-    "description": "<p><strong>Powerful Blow:</strong> <em>Swift action:</em> The barbarian gains a bonus on a single damage roll. @B-4f1-barbarian. This power is used before the roll to hit is made. (Once per <em>rage</em>)</p>",
+    "description": "<p><strong>Powerful Blow:</strong> <em>Swift action:</em> The barbarian gains a bonus on a single damage roll. This bonus starts at +1 and increases by 1 for every 4 barbarian levels. This power is used before the roll to hit is made. (Once per <em>rage</em>)</p>",
     "id": "powerful_blow",
     "name": "Powerful Blow",
     "nameSuffix": "(Ex)",
@@ -2266,7 +2266,7 @@
   },
   "powerful_stance": {
     "category": "Stance",
-    "description": "<p><strong>Powerful Stance:</strong> The barbarian can focus her ferocity. She gains a bonus on melee damage rolls and thrown weapon damage rolls. @B-4f1-barbarian.</p>",
+    "description": "<p><strong>Powerful Stance:</strong> The barbarian can focus her ferocity. She gains a bonus on melee damage rolls and thrown weapon damage rolls. This bonus starts at +1 and increases by 1 for every 4 barbarian levels.</p>",
     "id": "powerful_stance",
     "name": "Powerful Stance",
     "nameSuffix": "(Ex)",
@@ -2515,7 +2515,7 @@
     "uuid": "pfdata:rage-power:roaring_drunk"
   },
   "rolling_dodge": {
-    "description": "<p><strong>Rolling Dodge:</strong> <em>Move action:</em> The barbarian gains a dodge bonus to her Armor Class against ranged attacks for a number of rounds equal to the barbarian's current Constitution modifier (minimum 1). @B-6f1-barbarian. This does not provoke attacks of opportunity.</p>",
+    "description": "<p><strong>Rolling Dodge:</strong> <em>Move action:</em> The barbarian gains a dodge bonus to her Armor Class against ranged attacks for a number of rounds equal to the barbarian's current Constitution modifier (minimum 1). This bonus starts at +1 and increases by 1 for every 6 barbarian levels. This does not provoke attacks of opportunity.</p>",
     "id": "rolling_dodge",
     "name": "Rolling Dodge",
     "nameSuffix": "(Ex)",
@@ -2814,7 +2814,7 @@
     "uuid": "pfdata:rage-power:sunder_enchantment"
   },
   "superstition": {
-    "description": "<p><strong>Superstition:</strong> The barbarian gains a morale bonus on saving throws made to resist spells, supernatural abilities, and spell-like abilities. @B-4f2-barbarian. While <em>raging,</em> the barbarian cannot be a willing target of any spell and must make saving throws to resist all spells, even those cast by allies.</p>",
+    "description": "<p><strong>Superstition:</strong> The barbarian gains a morale bonus on saving throws made to resist spells, supernatural abilities, and spell-like abilities. This bonus starts at +2 and increases by 1 for every 4 barbarian levels. While <em>raging,</em> the barbarian cannot be a willing target of any spell and must make saving throws to resist all spells, even those cast by allies.</p>",
     "id": "superstition",
     "name": "Superstition",
     "nameSuffix": "(Ex)",
