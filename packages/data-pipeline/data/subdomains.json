@@ -644,6 +644,13 @@
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>1st—Hydraulic Push</li>\n<li>2nd—Slipstream</li>\n<li>5th—Elemental Body II</li>\n<li>6th—Fluid Form</li>\n</ul>",
     "features": [
       {
+        "featureId": "ructcpEg6rejcpYQ",
+        "level": 0,
+        "name": "Icicle",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ructcpEg6rejcpYQ"
+      },
+      {
         "featureId": "subdomain-power:rivers:current-flow",
         "level": 0,
         "name": "Current Flow",
@@ -1487,6 +1494,13 @@
     "description": "<p><b>Replacement Domain Spells:</b></p>\n<ul>\n<li>2nd—Cat's Grace</li>\n<li>4th—Freedom of Movement</li>\n<li>6th—Fluid Form</li>\n<li>8th—Mind Blank</li>\n</ul>",
     "features": [
       {
+        "featureId": "ructcpEg6rejcpYQ",
+        "level": 0,
+        "name": "Icicle",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.ructcpEg6rejcpYQ"
+      },
+      {
         "featureId": "subdomain-power:flowing:go-with-the-flow",
         "level": 0,
         "name": "Go with the Flow",
@@ -1963,7 +1977,7 @@
       },
       {
         "featureId": "subdomain-power:saurian:dinosaur-companion",
-        "level": 0,
+        "level": 4,
         "name": "Dinosaur Companion",
         "resolved": true,
         "uuid": "pfdata:subdomain-power:saurian:dinosaur-companion"
@@ -2607,6 +2621,13 @@
         "name": "Calming Touch",
         "resolved": true,
         "uuid": "Compendium.pf1.class-abilities.Item.4diLPqggIUsWxR0N"
+      },
+      {
+        "featureId": "eEuj2X72Q5jP6xAj",
+        "level": 8,
+        "name": "Unity",
+        "resolved": true,
+        "uuid": "Compendium.pf1.class-abilities.Item.eEuj2X72Q5jP6xAj"
       },
       {
         "featureId": "subdomain-power:education:teaching-moment",

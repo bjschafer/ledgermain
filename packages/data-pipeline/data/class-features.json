@@ -26452,7 +26452,7 @@
   "inquisition-power:order:mantle-against-chaos": {
     "abilityType": "sp",
     "changes": [],
-    "description": "<p><strong>Mantle against Chaos (Sp):</strong> You can use protection from chaos on yourself or another creature as a spell-like ability. You can use this ability for a number of minutes per day equal to your inquisitor level (minimum 1). These minutes do not need to be consecutive, but they must be spent in 1-minute increments.</p>",
+    "description": "<p><strong>Mantle against Chaos (Sp):</strong> You can use protection from chaos on yourself or another creature as a spell-like ability. You can use this ability for a number of ms per day equal to your inquisitor level (minimum 1). These ms do not need to be consecutive, but they must be spent in 1-m increments.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:order:mantle-against-chaos",
     "name": "Mantle against Chaos",
@@ -26721,7 +26721,7 @@
   "inquisition-power:restoration:mend-the-broken": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><strong>Mend the Broken (Su):</strong> <em>Standard action:</em> You can touch an object or creature healing it of 1d4 points of damage + 1 for every 2 inquisitor levels you possess. You can use this ability only on a broken object or a creature with fewer than half its maximum hit points. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><strong>Mend the Broken (Su):</strong> <em>Standard action:</em> You can touch an object or creature healing it of an amount of damage equal to 1d4 + half of your inquisitor level. You can use this ability only on a broken object or a creature with fewer than half its maximum hit points. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "inquisition-power:restoration:mend-the-broken",
     "name": "Mend the Broken",
@@ -34275,7 +34275,7 @@
   "subdomain-power:alchemy:divine-alchemy": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>You can perform a 1-minute ritual that infuses a flask of water with one of your prepared spells, creating an improvised potion that lasts until consumed or the next time you prepare spells. You can use this ability only with spells that target one or more creatures, and the maximum spell level you can infuse in this way is equal to 1 + 1 for every 4 cleric levels you have. These potions are treated as alchemist extracts for the purpose of your domain spells. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p>You can perform a 1-minute ritual that infuses a flask of water with one of your prepared spells, creating an improvised potion that lasts until consumed or the next time you prepare spells. You can use this ability only with spells that target one or more creatures, and the maximum spell level you can infuse in this way is equal to 1 + one-fourth of your cleric level. These potions are treated as alchemist extracts for the purpose of your domain spells. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:alchemy:divine-alchemy",
     "name": "Divine Alchemy",
@@ -34295,7 +34295,7 @@
   "subdomain-power:ambush:chameleon-aspect": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><em>Swift action:</em> You can subtly alter the color of your scales, blending them with the surrounding environment. While under the effect of this power, you gain concealment from creatures more than 10 feet away (attacks have a 20% miss chance), and total concealment from creatures more than 40 feet away (attacks have a 50% miss chance). You can use this ability for a number of rounds per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><em>Swift action:</em> You can subtly alter the color of your scales, blending them with the surrounding environment. While under the effect of this power, you gain concealment from creatures more than 10 feet away (attacks have a 20% miss chance), and total concealment from creatures more than 40 feet away (attacks have a 50% miss chance). You can use this ability for a number of rs per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:ambush:chameleon-aspect",
     "name": "Chameleon Aspect",
@@ -34459,7 +34459,7 @@
   "subdomain-power:dark-tapestry:it-came-from-beyond": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Once per day when you cast a summoning spell, any one creature you summon is more powerful than normal. The creature gains the advanced creature simple template. If you summon more than one creature with a spell, only one of the summoned creatures gains the advanced creature simple template. A summoned creature that gains the advanced creature simple template in this manner looks unusually deformed or hideous. This ability only works on spells you cast as a cleric - it does not work on spellcasting abilities gained from any other spellcasting classes you might have.</p>",
+    "description": "<p>Once per day when you cast a summoning spell, any one creature you summon is more powerful than normal. The creature gains the advanced creature simple template. If you summon more than one creature with a spell, only one of the summoned creatures gains the advanced creature simple template.</p>\n<p>A summoned creature that gains the advanced creature simple template in this manner looks unusually deformed or hideous. This ability only works on spells you cast as a cleric - it does not work on spellcasting abilities gained from any other spellcasting classes you might have.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:dark-tapestry:it-came-from-beyond",
     "name": "It Came from Beyond",
@@ -34553,7 +34553,7 @@
   "subdomain-power:espionage:deep-cover": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>When you prepare your spells, you can also choose one cover identity - whether that of a real person or a fictitious one. You can assume the disguise of your cover identity in half the normal amount of time. When targeted by a spell or effect that would compromise your chosen disguise (such as detect evil, detect thoughts, or zone of truth), as an immediate action you can force the creature using the ability to attempt a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier). If the creature fails, it gains false information in keeping with your cover identity. You can use this false information ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><em>Immediate action:</em> When targeted by a spell or effect that would compromise your chosen disguise (such as detect evil, detect thoughts, or zone of truth), you can force the creature using the ability to attempt a Will save (DC = 10 + 1/2 your cleric level + your Wisdom modifier). If the creature fails, it gains false information in keeping with your cover identity. You can use this false information ability a number of times per day equal to 3 + your Wisdom modifier. When you prepare your spells, you can also choose one cover identity - whether that of a real person or a fictitious one. You can assume the disguise of your cover identity in half the normal amount of time.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:espionage:deep-cover",
     "name": "Deep Cover",
@@ -34583,7 +34583,7 @@
   "subdomain-power:fist:wooden-fist": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><em>Free action:</em> Your hands can become as hard as wood, covered in tiny thorns. While you have wooden fists, your unarmed strikes do not provoke attacks of opportunity, deal lethal damage, and gain a bonus on damage rolls equal to 1/2 your cleric level (minimum +1). You can use this ability for a number of rounds per day equal to 3 + your Wisdom modifier. These rounds do not need to be consecutive.</p>",
+    "description": "<p><em>Free action:</em> Your hands can become as hard as wood, covered in tiny thorns. While you have wooden fists, your unarmed strikes do not provoke attacks of opportunity, deal lethal damage, and gain a bonus on damage rolls equal to 1/2 your cleric level (minimum +1). You can use this ability for a number of rs per day equal to 3 + your Wisdom modifier. These rs do not need to be consecutive.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:fist:wooden-fist",
     "name": "Wooden Fist",
@@ -34613,7 +34613,7 @@
   "subdomain-power:flowing:go-with-the-flow": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><em>Standard action:</em> You can touch a creature to suppress its strong emotions. The target is affected as the calm emotions spell, except it can still take violent actions and violent actions against the target do not end the effect. This effect lasts a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this ability a number times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><em>Standard action:</em> You can touch a creature to suppress its strong emotions. The target is affected as the calm emotions spell, except it can still take violent actions and violent actions against the target do not end the effect. This effect lasts a number of rounds equal to 1/2 your cleric level (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:flowing:go-with-the-flow",
     "name": "Go with the Flow",
@@ -34624,6 +34624,10 @@
       }
     ],
     "subType": "classFeat",
+    "uses": {
+      "maxFormula": "3 + @abilities.wis.mod",
+      "per": "day"
+    },
     "uuid": "pfdata:subdomain-power:flowing:go-with-the-flow"
   },
   "subdomain-power:friendship:powerful-bond": {
@@ -34778,7 +34782,7 @@
   "subdomain-power:insect:exoskeleton": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><em>Swift action:</em> Grow an exoskeleton that grants you a +1 enhancement bonus to your natural armor and 1d4 temporary hit points + 1 for every 2 cleric levels you have. The natural armor bonus increases by 1 for every 5 cleric levels you have. The exoskeleton retracts after 1 round, ending its benefits. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><em>Swift action:</em> Grow an exoskeleton that grants you an enhancement bonus to your natural armor and an amount of temporary hit points. The enhancement bonus is equal to 1 + one-fifth of your cleric level, and the tempoerary hit points are equal to 1d4 + half of your cleric level. The exoskeleton retracts after 1 round, ending its benefits. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:insect:exoskeleton",
     "name": "Exoskeleton",
@@ -34798,7 +34802,7 @@
   "subdomain-power:isolation:aura-of-isolation": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><em>Standard action:</em> You can create a 20-foot aura that causes enemies within to be overcome with feelings of isolation and loss. Your enemies treat the aura as difficult terrain, as they become sluggish within its area of effect. Furthermore, while within the aura, your enemies can't flank with one another, nor can they use or benefit from the aid another action. This is a mind-affecting emotion effect. You can use this ability for a number of rounds per day equal to 3 + your Wisdom modifier. These rounds do not need to be consecutive.</p>",
+    "description": "<p><em>Standard action:</em> You can create a 20-foot aura that causes enemies within to be overcome with feelings of isolation and loss. Your enemies treat the aura as difficult terrain, as they become sluggish within its area of effect. Furthermore, while within the aura, your enemies can't flank with one another, nor can they use or benefit from the aid another action. This is a mind-affecting emotion effect. You can use this ability for a number of rs per day equal to 3 + your Wisdom modifier. These rs do not need to be consecutive.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:isolation:aura-of-isolation",
     "name": "Aura of Isolation",
@@ -34881,7 +34885,7 @@
   "subdomain-power:legislation:prohibition": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><em>Standard action:</em> You can command a creature within 30 feet to refrain from committing a particular action (including any referenced in the spell <em>forbid action</em>). If the creature performs the named action before the beginning of your next turn, it takes 1d6 points of damage + 1 point for every 2 cleric levels you possess and the effect ends. This is a language-dependent effect. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><em>Standard action:</em> You can command a creature within 30 feet to refrain from committing a particular action (including any referenced in the spell <em>forbid action</em>). If the creature performs the named action before the beginning of your next turn, it takes an amount of damage equal to 1d6 + half of your cleric level and the effect ends. This is a language-dependent effect. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:legislation:prohibition",
     "name": "Prohibition",
@@ -34921,7 +34925,7 @@
   "subdomain-power:loyalty:touch-of-loyalty": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>As a standard action, you can touch a willing creature, granting it a +4 sacred bonus on saving throws to resist charm, compulsion, and fear effects for 1 hour. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><em>Standard action:</em> You can touch a willing creature, granting it a +4 sacred bonus on saving throws to resist charm, compulsion, and fear effects for 1 hour. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:loyalty:touch-of-loyalty",
     "name": "Touch of Loyalty",
@@ -34989,7 +34993,7 @@
   "subdomain-power:petrification:fossil-form": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><em>Swift action:</em> At the beginning of your turn, you can infuse your flesh with minerals, granting you cumbersome security. Until the beginning of your next turn, you are staggered, gain hardness 2, and gain a +2 bonus on saving throws against petrification. This hardness increases by 2 and your saving throw bonus increases by 1 for every 4 cleric levels you have. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><em>Swift action:</em> At the beginning of your turn, you can infuse your flesh with minerals, granting you cumbersome security. Until the beginning of your next turn, you are staggered, gain hardness 2, and gain a +2 bonus on saving throws against petrification. This hardness increases by 2 and your saving throw bonus increases by 1 for every 4 cleric levels you have. You can use this ability a number of times per day equal to 3 + your Wisdom modifier. At 4th level, the hardness becomes 4 and the save bonus increases to +3. At 8th level, the hardness becomes 6 and the save bonus increases to +4. At 12th level, the hardness becomes 8 and the save bonus increases to +5. At 16th level, the hardness becomes 10 and the save bonus increases to +6. At 20th level, the hardness becomes 12 and the save bonus increases to +7.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:petrification:fossil-form",
     "name": "Fossil Form",
@@ -35029,7 +35033,7 @@
   "subdomain-power:portal:sacred-threshold": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>As a standard action, you can bless a door, a window, or another portal with a touch. For 1 minute, you can increase or decrease the DC of any check to unlock or force open the portal by an amount equal to half your cleric level. In addition, your first ally to pass through the portal during this time gains an amount of temporary hit points equal to 1d4 + 1 for every 2 cleric levels you have. These temporary hit points last for 1 minute. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><em>Standard action:</em> You can bless a door, a window, or another portal with a touch. For 1 minute, you can increase or decrease the DC of any check to unlock or force open the portal by an amount equal to half your cleric level. In addition, your first ally to pass through the portal during this time gains an amount of temporary hit points equal to 1d4 + 1 for every 2 cleric levels you have. These temporary hit points last for 1 minute. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:portal:sacred-threshold",
     "name": "Sacred Threshold",
@@ -35049,7 +35053,7 @@
   "subdomain-power:portal:travel-as-one": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>When you cast a spell with the teleportation descriptor, treat your caster level as 3 higher for the purpose of determining how many additional creatures you can bring with you. In addition, you and any creatures you teleport gain a number of temporary hit points equal to your level that disappear after you reach your destination; these offset any damage you might take from teleportation mishaps or attempting to teleport into a solid body.</p>",
+    "description": "<p>When you cast a spell with the teleportation descriptor, treat your caster level as 3 higher for the purpose of determining how many additional creatures you can bring with you.</p>\n<p>In addition, you and any creatures you teleport gain a number of temporary hit points equal to your level that disappear after you reach your destination; these offset any damage you might take from teleportation mishaps or attempting to teleport into a solid body.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:portal:travel-as-one",
     "name": "Travel as One",
@@ -35225,7 +35229,7 @@
   "subdomain-power:saurian:dinosaur-companion": {
     "abilityType": "ex",
     "changes": [],
-    "description": "<p>At 4th level, you gain the service of a loyal animal companion. Your effective druid level for the purpose of this animal companion is equal to your class level - 2. You must choose a dinosaur as your companion.</p>",
+    "description": "<p>You gain the service of a loyal animal companion. Your effective druid level for the purpose of this animal companion is equal to your class level - 2. You must choose a dinosaur as your companion.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:saurian:dinosaur-companion",
     "name": "Dinosaur Companion",
@@ -35299,7 +35303,7 @@
   "subdomain-power:thirst:wilting-glare": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><em>Standard action:</em> You can leach moisture and vitality from a living, corporeal creature you can see within 30 feet. The target takes an amount of nonlethal damage equal to 1d6 + 1 for every 2 cleric levels you have and becomes fatigued until the beginning of your next turn (Fortitude negates). Plant creatures and those with the aquatic or water subtype take lethal damage from this ability, and they are fatigued for a number of rounds equal to your Wisdom modifier. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><em>Standard action:</em> You can leach moisture and vitality from a living, corporeal creature you can see within 30 feet. The target takes an amount of nonlethal damage equal to 1d6 + half of your cleric level and becomes fatigued until the beginning of your next turn (Fortitude negates). Plant creatures and those with the aquatic or water subtype take lethal damage from this ability, and they are fatigued for a number of rounds equal to your Wisdom modifier. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:thirst:wilting-glare",
     "name": "Wilting Glare",
@@ -35319,7 +35323,7 @@
   "subdomain-power:thirst:withering-nimbus": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p><em>Standard action:</em> You can emit a 30-foot nimbus of light. This acts as a daylight spell. In addition, <strong>creatures with the aquatic or water subtype</strong> within this radius take an amount of damage equal to your cleric level each round that they remain inside the nimbus. Spells and spell-like abilities with the darkness descriptor are automatically dispelled if brought inside this nimbus. You can use this ability a number of times per day equal to your cleric level.</p>",
+    "description": "<p><em>Standard action:</em> You can emit a 30-foot nimbus of light. This acts as a daylight spell. In addition, creatures with the aquatic or water subtype within this radius take an amount of damage equal to your cleric level each round that they remain inside the nimbus. Spells and spell-like abilities with the darkness descriptor are automatically dispelled if brought inside this nimbus. You can use this ability a number of times per day equal to your cleric level.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:thirst:withering-nimbus",
     "name": "Withering Nimbus",
@@ -35427,7 +35431,7 @@
   "subdomain-power:venom:venomous-saliva": {
     "abilityType": "su",
     "changes": [],
-    "description": "<p>Just as certain serpents can spray poison from their fangs, as a swift action, you can spit a gout of life-stealing venom onto a weapon you are wielding. The poison (see below) lasts for 1 minute or until you make an attack with that weapon that injures a foe. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
+    "description": "<p><em>Swift action:</em> Just as certain serpents can spray poison from their fangs, you can spit a gout of life-stealing venom onto a weapon you are wielding. The poison (see below) lasts for 1 minute or until you make an attack with that weapon that injures a foe. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.</p>",
     "grantsBuffs": [],
     "id": "subdomain-power:venom:venomous-saliva",
     "name": "Venomous Saliva",

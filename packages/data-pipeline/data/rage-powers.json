@@ -304,7 +304,7 @@
     "uuid": "pfdata:rage-power:breathtaker"
   },
   "cairn_linnorm_death_curse": {
-    "description": "<p><strong>Cairn Linnorm Death Curse</strong></p>\n<p>The character channels the power of a cairn linnorm. The character's melee attacks deal an additional 1 point of negative energy damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of decay</em> (Will negates).\" prereq=\"8th-level barbarian\"</p>\n<p><strong>Curse of Decay:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target takes 1 point of Con damage per day and ages at a rate of 1 year per day (eventually incurring all of the penalties of old age but none of the bonuses)</p>",
+    "description": "<p><strong>Cairn Linnorm Death Curse:</strong> (Prerequisite: 8th-level barbarian)</p>\n<p>The character channels the power of a cairn linnorm. The character's melee attacks deal an additional 1 point of negative energy damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of decay</em> (Will negates).</p>\n<p><strong>Curse of Decay:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target takes 1 point of Con damage per day and ages at a rate of 1 year per day (eventually incurring all of the penalties of old age but none of the bonuses)</p>",
     "id": "cairn_linnorm_death_curse",
     "name": "Cairn Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -407,7 +407,7 @@
     "uuid": "pfdata:rage-power:contagious_rage"
   },
   "crag_linnorm_death_curse": {
-    "description": "<p><strong>Crag Linnorm Death Curse</strong></p>\n<p>The character channels the power of a crag linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of fire</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Fire:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire</p>",
+    "description": "<p><strong>Crag Linnorm Death Curse:</strong> (Prerequisite: 4th-level barbarian)</p>\n<p>The character channels the power of a crag linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of fire</em> (Will negates).</p>\n<p><strong>Curse of Fire:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire</p>",
     "id": "crag_linnorm_death_curse",
     "name": "Crag Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -561,7 +561,7 @@
   },
   "dragon_totem_wings": {
     "category": "Totem",
-    "description": "<p><strong>Dragon Totem Wings:</strong> When a barbarian selects this rage power, the Fly (Dex) skill becomes a class skill for her. <em>Standard action:</em> While <em>raging</em> and wearing medium or lighter armor, the barbarian can manifest a pair of spiritual dragon wings that grant her a fly speed equal to her base speed (average maneuverability). She can expend 2 rounds of her <em>rage</em> to instead use an immediate action to gain this fly speed. She can end her fly speed at any time, even when it is not her turn. Each round she spends <em>raging</em> and flying counts as 2 rounds of <em>rage.</em> Her ability to fly ends automatically when she ceases <em>raging.</em> (Prerequisite: Dragon totem, dragon totem resilience, 10th-level barbarian)</p>",
+    "description": "<p><strong>Dragon Totem Wings:</strong> When a barbarian selects this rage power, Fly (Dex) becomes a class skill for her. <em>Standard action:</em> While <em>raging</em> and wearing medium or lighter armor, the barbarian can manifest a pair of spiritual dragon wings that grant her a fly speed equal to her base speed (average maneuverability). She can expend 2 rounds of her <em>rage</em> to instead use an immediate action to gain this fly speed. She can end her fly speed at any time, even when it is not her turn. Each round she spends <em>raging</em> and flying counts as 2 rounds of <em>rage.</em> Her ability to fly ends automatically when she ceases <em>raging.</em> (Prerequisite: Dragon totem, dragon totem resilience, 10th-level barbarian)</p>",
     "id": "dragon_totem_wings",
     "level": 2,
     "name": "Dragon Totem Wings",
@@ -845,7 +845,7 @@
     "uuid": "pfdata:rage-power:fire_totem"
   },
   "fjord_linnorm_death_curse": {
-    "description": "<p><strong>Fjord Linnorm Death Curse</strong></p>\n<p>The character channels the power of a fjord linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of drowning</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Drowning:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is unable to breathe water (even with magic), can hold its breath only half as long as normal, and is sickened whenever it holds its breath</p>",
+    "description": "<p><strong>Fjord Linnorm Death Curse:</strong> (Prerequisite: 4th-level barbarian)</p>\n<p>The character channels the power of a fjord linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of drowning</em> (Will negates).</p>\n<p><strong>Curse of Drowning:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is unable to breathe water (even with magic), can hold its breath only half as long as normal, and is sickened whenever it holds its breath</p>",
     "id": "fjord_linnorm_death_curse",
     "name": "Fjord Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -1610,7 +1610,7 @@
     "uuid": "pfdata:rage-power:hurling_charge"
   },
   "ice_linnorm_death_curse": {
-    "description": "<p><strong>Ice Linnorm Death Curse</strong></p>\n<p>The character channels the power of an ice linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed, the attacker suffers the <em>curse of frost.</em>\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Frost:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to cold</p>",
+    "description": "<p><strong>Ice Linnorm Death Curse:</strong> (Prerequisite: 4th-level barbarian)</p>\n<p>The character channels the power of an ice linnorm. The character's melee attacks deal an additional 1 point of cold damage. If the character is knocked unconscious or killed, the attacker suffers the <em>curse of frost.</em></p>\n<p><strong>Curse of Frost:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to cold</p>",
     "id": "ice_linnorm_death_curse",
     "name": "Ice Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2563,7 +2563,7 @@
     "uuid": "pfdata:rage-power:savage_hurl"
   },
   "savage_intuition": {
-    "description": "<p><strong>Savage Intuition:</strong> Your bestial senses allow you to sense danger and become enraged before you even have time to consciously react to danger. sWhen combat begins, if you have rounds of <em>rage</em> remaining, you may automatically enter a <em>rage</em> without using an action at the start of the first round of combat (or at the start of the surprise round, if there is one), even if you are not otherwise aware that combat has begun. (Prerequisite: Wereboar-kin or associated with wereboar-kin)</p>",
+    "description": "<p><strong>Savage Intuition:</strong> Your bestial senses allow you to sense danger and become enraged before you even have time to consciously react to danger. When combat begins, if you have rounds of <em>rage</em> remaining, you may automatically enter a <em>rage</em> without using an action at the start of the first round of combat (or at the start of the surprise round, if there is one), even if you are not otherwise aware that combat has begun. (Prerequisite: Wereboar-kin or associated with wereboar-kin)</p>",
     "id": "savage_intuition",
     "name": "Savage Intuition",
     "sources": [
@@ -2850,7 +2850,7 @@
     "uuid": "pfdata:rage-power:swift_foot"
   },
   "taiga_linnorm_death_curse": {
-    "description": "<p><strong>Taiga Linnorm Death Curse</strong></p>\n<p>The character channels the power of a taiga linnorm. The character's melee attacks deal an additional 1 point of electricity damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of electricity</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Electricity:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to electricity</p>",
+    "description": "<p><strong>Taiga Linnorm Death Curse:</strong> (Prerequisite: 4th-level barbarian)</p>\n<p>The character channels the power of a taiga linnorm. The character's melee attacks deal an additional 1 point of electricity damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of electricity</em> (Will negates).</p>\n<p><strong>Curse of Electricity:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to electricity</p>",
     "id": "taiga_linnorm_death_curse",
     "name": "Taiga Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2862,7 +2862,7 @@
     "uuid": "pfdata:rage-power:taiga_linnorm_death_curse"
   },
   "tarn_linnorm_death_curse": {
-    "description": "<p><strong>Tarn Linnorm Death Curse</strong></p>\n<p>The character channels the power of a tarn linnorm. The character's melee attacks deal an additional 1 point of acid damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of death</em> (Will negates).\" prereq=\"4th-level barbarian\"</p>\n<p><strong>Curse of Death:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is no longer affected by healing spells and can't heal damage naturally by resting</p>",
+    "description": "<p><strong>Tarn Linnorm Death Curse:</strong> (Prerequisite: 4th-level barbarian)</p>\n<p>The character channels the power of a tarn linnorm. The character's melee attacks deal an additional 1 point of acid damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of death</em> (Will negates).</p>\n<p><strong>Curse of Death:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target is no longer affected by healing spells and can't heal damage naturally by resting</p>",
     "id": "tarn_linnorm_death_curse",
     "name": "Tarn Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2900,7 +2900,7 @@
     "uuid": "pfdata:rage-power:terrifying_howl"
   },
   "tor_linnorm_death_curse": {
-    "description": "<p><strong>Tor Linnorm Death Curse</strong></p>\n<p>The character channels the power of a tor linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of boiling blood</em> (Will negates).\" prereq=\"8th-level barbarian\"</p>\n<p><strong>Curse of Boiling Blood:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire and is permanently staggered from the pain of its boiling blood (this is a pain effect)</p>",
+    "description": "<p><strong>Tor Linnorm Death Curse:</strong> (Prerequisite: 8th-level barbarian)</p>\n<p>The character channels the power of a tor linnorm. The character's melee attacks deal an additional 1 point of fire damage. If the character is knocked unconscious or killed by an attack or spell, the attacker suffers the <em>curse of boiling blood</em> (Will negates).</p>\n<p><strong>Curse of Boiling Blood:</strong> Curse; <em>save</em> Will DC 10 + 1/2 the character's level + their Charisma modifier; <em>effect</em> Target gains vulnerability to fire and is permanently staggered from the pain of its boiling blood (this is a pain effect)</p>",
     "id": "tor_linnorm_death_curse",
     "name": "Tor Linnorm Death Curse",
     "nameSuffix": "(Su)",
@@ -2976,7 +2976,7 @@
     "uuid": "pfdata:rage-power:unexpected_strike"
   },
   "unrestrained_rage": {
-    "description": "<p><strong>Unrestrained Rage:</strong> While <em>raging,</em> the barbarian is immune to paralysis. If the barbarian is targeted by an effect that would cause her to become paralyzed, she can enter a <em>rage</em> as an immediate action, as long as she still has rounds of <em>rage</em> remaining. (Prerequisite: 12th-level barbarian)</p>",
+    "description": "<p><strong>Unrestrained Rage:</strong> While <em>raging,</em> the barbarian is immune to paralysis. <em>Immediate action:</em> If the barbarian is targeted by an effect that would cause her to become paralyzed, she can enter a <em>rage</em> immediately, as long as she still has rounds of <em>rage</em> remaining. (Prerequisite: 12th-level barbarian)</p>",
     "id": "unrestrained_rage",
     "name": "Unrestrained Rage",
     "sources": [
