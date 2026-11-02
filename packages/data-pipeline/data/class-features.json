@@ -103,6 +103,12 @@
     "grantsBuffs": [],
     "id": "0AXAMXGLJIw7CGBd",
     "name": "Heavy Armor",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.0AXAMXGLJIw7CGBd"
   },
@@ -185,6 +191,12 @@
     "grantsBuffs": [],
     "id": "0R8c0js1gWlCtbCY",
     "name": "Implement Mastery",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "50"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.0R8c0js1gWlCtbCY"
   },
@@ -221,6 +233,12 @@
     "grantsBuffs": [],
     "id": "0aMIOpu0ZbBvQpao",
     "name": "Shared Seance",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "31"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.0aMIOpu0ZbBvQpao"
   },
@@ -283,6 +301,12 @@
     "grantsBuffs": [],
     "id": "0gO5orp5nly2nFjy",
     "name": "Swashbuckler Finesse",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "59"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.0gO5orp5nly2nFjy"
   },
@@ -439,6 +463,12 @@
     "grantsBuffs": [],
     "id": "10EysX8x5hvz48lr",
     "name": "Solo Tactics",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "40"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.10EysX8x5hvz48lr"
   },
@@ -598,6 +628,12 @@
     "grantsBuffs": [],
     "id": "1HQUUhQhowqKfmCA",
     "name": "Inspired Rage",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "50"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.1HQUUhQhowqKfmCA"
   },
@@ -685,6 +721,12 @@
     "grantsBuffs": [],
     "id": "1SnLu7RJAq1hJzYg",
     "name": "True Judgment",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "41"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.1SnLu7RJAq1hJzYg"
   },
@@ -756,6 +798,12 @@
     "grantsBuffs": [],
     "id": "1Yy6Fn3UD82uviFg",
     "name": "Greater Banner",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "34"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.1Yy6Fn3UD82uviFg"
   },
@@ -786,6 +834,12 @@
     "grantsBuffs": [],
     "id": "1aP0lmJYDqM5pMHY",
     "name": "Bedeviling Aura",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "147"
+      }
+    ],
     "subType": "classFeat",
     "tag": "bedevilingAura",
     "uses": {
@@ -997,6 +1051,12 @@
     "grantsBuffs": [],
     "id": "1omEP6hrq86Bt46B",
     "name": "Gather Power",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.1omEP6hrq86Bt46B"
   },
@@ -1229,6 +1289,12 @@
     "grantsBuffs": [],
     "id": "2Od2zrFivfso93Iz",
     "name": "Metakinesis",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.2Od2zrFivfso93Iz"
   },
@@ -1276,6 +1342,12 @@
     "grantsBuffs": [],
     "id": "2PdDTBiOuBlZ1YgE",
     "name": "Terror",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146-147"
+      }
+    ],
     "subType": "classFeat",
     "tag": "terror",
     "uses": {
@@ -1395,6 +1467,12 @@
     "grantsBuffs": [],
     "id": "2YA3Ken4K90rB0EE",
     "name": "Aura of Evil",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "120"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.2YA3Ken4K90rB0EE"
   },
@@ -1661,6 +1739,12 @@
     "grantsBuffs": [],
     "id": "2tq8HQ4ZQpiL3njr",
     "name": "Frightening Appearance",
+    "sources": [
+      {
+        "id": "PZO1134",
+        "pages": "17"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.2tq8HQ4ZQpiL3njr"
   },
@@ -1670,6 +1754,12 @@
     "grantsBuffs": [],
     "id": "2uDIHsepFL6PRyRj",
     "name": "Social Talent",
+    "sources": [
+      {
+        "id": "PZO1134",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.2uDIHsepFL6PRyRj"
   },
@@ -1741,6 +1831,12 @@
     "grantsBuffs": [],
     "id": "31CVgcirb74C3ieQ",
     "name": "Aura of Despair (APA)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "121"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.31CVgcirb74C3ieQ"
   },
@@ -1771,6 +1867,12 @@
     "grantsBuffs": [],
     "id": "35iKiKfbpaHKdBmw",
     "name": "Wild Talents",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.35iKiKfbpaHKdBmw"
   },
@@ -1892,6 +1994,12 @@
     "grantsBuffs": [],
     "id": "3MqENnx0U6aWGZ4o",
     "name": "Physical Kinetic Blast",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "15"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.3MqENnx0U6aWGZ4o"
   },
@@ -1902,6 +2010,12 @@
     "grantsBuffs": [],
     "id": "3QJ79Cq3qXHRxJZq",
     "name": "Infusion Specialization",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.3QJ79Cq3qXHRxJZq"
   },
@@ -2096,6 +2210,12 @@
     "grantsBuffs": [],
     "id": "40X1l46RRbJE02qU",
     "name": "Hypnotic Stare",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "39"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.40X1l46RRbJE02qU"
   },
@@ -2228,6 +2348,12 @@
     "grantsBuffs": [],
     "id": "4IIOGeT5qafH4HRa",
     "name": "Masterful Tricks",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "43"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.4IIOGeT5qafH4HRa"
   },
@@ -2304,6 +2430,12 @@
     "grantsBuffs": [],
     "id": "4QeavCZeba7ApFD2",
     "name": "Blessings",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "60"
+      }
+    ],
     "subType": "classFeat",
     "tag": "blessings",
     "uses": {
@@ -2319,6 +2451,12 @@
     "grantsBuffs": [],
     "id": "4RSsmGUZBhTiGmSj",
     "name": "Detect Good",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "120"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.4RSsmGUZBhTiGmSj"
   },
@@ -2329,6 +2467,12 @@
     "grantsBuffs": [],
     "id": "4Tls63kS3Gq9MH7X",
     "name": "Touch Treatment",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "43"
+      }
+    ],
     "subType": "classFeat",
     "tag": "touchTreatment",
     "uses": {
@@ -2344,6 +2488,12 @@
     "grantsBuffs": [],
     "id": "4U69gg3altKZvFHD",
     "name": "Unshakable",
+    "sources": [
+      {
+        "id": "PZO1134",
+        "pages": "17"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.4U69gg3altKZvFHD"
   },
@@ -3041,6 +3191,12 @@
     "grantsBuffs": [],
     "id": "5fTHyPmis1IyBmNF",
     "name": "Greater Aspect (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "28"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.5fTHyPmis1IyBmNF"
   },
@@ -3051,6 +3207,12 @@
     "grantsBuffs": [],
     "id": "5gI26LbbY4Rk93We",
     "name": "Spiritual Bond",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "76"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.5gI26LbbY4Rk93We"
   },
@@ -3084,6 +3246,28 @@
     "grantsBuffs": [],
     "id": "5lDEyC6WejFyTEho",
     "name": "Exchange Spell (Medium)",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "35"
+      },
+      {
+        "id": "PZO1129",
+        "pages": "26,49"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38,55"
+      },
+      {
+        "id": "PZO1132",
+        "pages": "30,38,47,72"
+      },
+      {
+        "id": "PZO1131",
+        "pages": "25"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.5lDEyC6WejFyTEho"
   },
@@ -3227,6 +3411,12 @@
     "grantsBuffs": [],
     "id": "5yPVt0Gip4Q1TTs4",
     "name": "Greater Resolve",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "20"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.5yPVt0Gip4Q1TTs4"
   },
@@ -3279,6 +3469,12 @@
     "grantsBuffs": [],
     "id": "64m65Z8ayGAHNDLT",
     "name": "Remade Self",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "64"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.64m65Z8ayGAHNDLT"
   },
@@ -3662,6 +3858,12 @@
     "grantsBuffs": [],
     "id": "6wtTc1PRWBKZuF9D",
     "name": "Brawler's Cunning",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "23"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.6wtTc1PRWBKZuF9D"
   },
@@ -3728,6 +3930,12 @@
     "grantsBuffs": [],
     "id": "717fyDCcfLtD345B",
     "name": "Teamwork Feat",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "40"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.717fyDCcfLtD345B"
   },
@@ -3901,6 +4109,12 @@
     "grantsBuffs": [],
     "id": "7ORiNdGyLzGddgNK",
     "name": "Brawler's Strike",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "25"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.7ORiNdGyLzGddgNK"
   },
@@ -3927,6 +4141,12 @@
     "grantsBuffs": [],
     "id": "7QulGFMelZdF9pPl",
     "name": "Unstable Bonds",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144"
+      }
+    ],
     "subType": "classFeat",
     "tag": "unstableBonds",
     "uses": {
@@ -3989,6 +4209,12 @@
     "grantsBuffs": [],
     "id": "7bJF48eC3lZpL1LG",
     "name": "Towering Ego",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "42"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.7bJF48eC3lZpL1LG"
   },
@@ -4630,6 +4856,12 @@
     "grantsBuffs": [],
     "id": "8u2spZD9qVCOi7Lw",
     "name": "Spirit Mastery",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "33"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.8u2spZD9qVCOi7Lw"
   },
@@ -4639,6 +4871,12 @@
     "grantsBuffs": [],
     "id": "8vF0UoXribL1DOG2",
     "name": "Final Revelation",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "45"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.8vF0UoXribL1DOG2"
   },
@@ -4649,6 +4887,12 @@
     "grantsBuffs": [],
     "id": "8wPhoiyqd0HQvMl5",
     "name": "Utility Shot",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "11"
+      }
+    ],
     "subType": "classFeat",
     "tag": "utilityShot",
     "uses": {
@@ -4986,6 +5230,12 @@
     "grantsBuffs": [],
     "id": "9Y9dpXEcjXGtH6Pe",
     "name": "Monster Lore",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "40"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.9Y9dpXEcjXGtH6Pe"
   },
@@ -5123,6 +5373,12 @@
     "grantsBuffs": [],
     "id": "9iDmR626f7nfGE3k",
     "name": "Close Weapon Mastery",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "25"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.9iDmR626f7nfGE3k"
   },
@@ -5295,6 +5551,12 @@
     "grantsBuffs": [],
     "id": "A1QrvmpPlh7SuixM",
     "name": "Arcanist Exploits",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "9"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.A1QrvmpPlh7SuixM"
   },
@@ -5614,6 +5876,12 @@
     "grantsBuffs": [],
     "id": "AOasku7u72NB0q3J",
     "name": "Challenge (SAM)",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "18"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.AOasku7u72NB0q3J"
   },
@@ -5707,6 +5975,12 @@
     "grantsBuffs": [],
     "id": "ATsERP3UJdSOvi14",
     "name": "Glib Lie",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "43"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ATsERP3UJdSOvi14"
   },
@@ -6128,6 +6402,12 @@
     "grantsBuffs": [],
     "id": "BDP3HgB0vmZ9vbQY",
     "name": "Demanding Challenge (SAM)",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "20"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.BDP3HgB0vmZ9vbQY"
   },
@@ -6227,6 +6507,12 @@
     "grantsBuffs": [],
     "id": "BOUqxGDega0y1JOX",
     "name": "Psychic Discipline",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "62-63"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.BOUqxGDega0y1JOX"
   },
@@ -6300,6 +6586,12 @@
     "grantsBuffs": [],
     "id": "BTkYdjVLcQMfFsv9",
     "name": "Nimble",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.BTkYdjVLcQMfFsv9"
   },
@@ -6355,6 +6647,12 @@
     "grantsBuffs": [],
     "id": "BeXGJBlieLrwpJps",
     "name": "Rule Minds",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "44"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.BeXGJBlieLrwpJps"
   },
@@ -6577,6 +6875,12 @@
     "grantsBuffs": [],
     "id": "C5Th67iHrKgKss6o",
     "name": "Menacing Shot",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "source": "grit"
@@ -6644,6 +6948,12 @@
     "grantsBuffs": [],
     "id": "C7d96scKQaGqfOdL",
     "name": "Fused Consciousness",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "76"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.C7d96scKQaGqfOdL"
   },
@@ -6898,6 +7208,12 @@
     "grantsBuffs": [],
     "id": "CZrFfvYMX3HK03lC",
     "name": "True Resolve",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "21"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.CZrFfvYMX3HK03lC"
   },
@@ -7016,6 +7332,12 @@
     "grantsBuffs": [],
     "id": "CtDtLshBC8pc64JV",
     "name": "Arcane Reservoir",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "9"
+      }
+    ],
     "subType": "classFeat",
     "tag": "arcaneReservoir",
     "uses": {
@@ -7058,6 +7380,12 @@
     "grantsBuffs": [],
     "id": "CzEGD1Fv60Sa4UXe",
     "name": "Stern Gaze",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "40"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.CzEGD1Fv60Sa4UXe"
   },
@@ -7084,6 +7412,12 @@
     "grantsBuffs": [],
     "id": "D13TR3rNmjwMPXuD",
     "name": "Deadeye",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "source": "grit"
@@ -7359,6 +7693,12 @@
     "grantsBuffs": [],
     "id": "DbC7QZBYYIClw1m6",
     "name": "Smite Good",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "120"
+      }
+    ],
     "subType": "classFeat",
     "tag": "smiteGood",
     "uses": {
@@ -7374,6 +7714,12 @@
     "grantsBuffs": [],
     "id": "Deoj4aUYuCQzFwJo",
     "name": "Metakinetic Master",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "14"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Deoj4aUYuCQzFwJo"
   },
@@ -7889,6 +8235,12 @@
     "grantsBuffs": [],
     "id": "EbVLpbO2masMTMBC",
     "name": "Painful Stare",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "42"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.EbVLpbO2masMTMBC"
   },
@@ -7899,6 +8251,12 @@
     "grantsBuffs": [],
     "id": "EcplvDrXlpIkYfeg",
     "name": "Life Link (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "26"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.EcplvDrXlpIkYfeg"
   },
@@ -7941,6 +8299,12 @@
     "grantsBuffs": [],
     "id": "EnMgClQRxY1GXg4e",
     "name": "Awesome Blow",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "25"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.EnMgClQRxY1GXg4e"
   },
@@ -7951,6 +8315,12 @@
     "grantsBuffs": [],
     "id": "EpDI0Qi5SDRmL4lK",
     "name": "Mount (SAM)",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "18"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.EpDI0Qi5SDRmL4lK"
   },
@@ -8023,6 +8393,12 @@
     "grantsBuffs": [],
     "id": "ExWRko4dFi2DV7ZP",
     "name": "Reshape Space",
+    "sources": [
+      {
+        "id": "PZO9462",
+        "pages": "26"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ExWRko4dFi2DV7ZP"
   },
@@ -8033,6 +8409,12 @@
     "grantsBuffs": [],
     "id": "EzZ8XZHjMCBwaL5o",
     "name": "Assume Control",
+    "sources": [
+      {
+        "id": "PZO9414",
+        "pages": "29"
+      }
+    ],
     "subType": "classFeat",
     "tag": "assumeControl",
     "uses": {
@@ -8120,6 +8502,12 @@
     "grantsBuffs": [],
     "id": "F7PCKVItCxiXoBi6",
     "name": "Focus Powers",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "47"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.F7PCKVItCxiXoBi6"
   },
@@ -8145,6 +8533,12 @@
     "grantsBuffs": [],
     "id": "FE7Ab3fEPntAwdNw",
     "name": "Outside Contact",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "49"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.FE7Ab3fEPntAwdNw"
   },
@@ -8244,6 +8638,12 @@
     "grantsBuffs": [],
     "id": "FSCREL7v6iMkIbAZ",
     "name": "Spirit Surge",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "31"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.FSCREL7v6iMkIbAZ"
   },
@@ -8302,6 +8702,12 @@
     "grantsBuffs": [],
     "id": "FXSiQ0ppo3K6Xsrg",
     "name": "Spirit Bonus",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "31"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.FXSiQ0ppo3K6Xsrg"
   },
@@ -8458,6 +8864,12 @@
     "grantsBuffs": [],
     "id": "Fjsv2wNC223ofCE8",
     "name": "Expanded Element",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Fjsv2wNC223ofCE8"
   },
@@ -8474,6 +8886,12 @@
     "grantsBuffs": [],
     "id": "FkPoMSAx3FTGvnXy",
     "name": "Cunning Initiative",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "40"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.FkPoMSAx3FTGvnXy"
   },
@@ -8668,6 +9086,12 @@
     "grantsBuffs": [],
     "id": "G1z392b58wRybqjL",
     "name": "Improved Spell Combat",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.G1z392b58wRybqjL"
   },
@@ -8790,6 +9214,16 @@
     "grantsBuffs": [],
     "id": "GBkIhC1Bpp2MAD4e",
     "name": "Hex",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "35-36"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "66"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.GBkIhC1Bpp2MAD4e"
   },
@@ -8846,6 +9280,12 @@
     "grantsBuffs": [],
     "id": "GH57XmJVGC97z6hM",
     "name": "Magic Circles",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "49"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.GH57XmJVGC97z6hM"
   },
@@ -8856,6 +9296,12 @@
     "grantsBuffs": [],
     "id": "GJQ0VVH3rishb9X1",
     "name": "Burn",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "11"
+      }
+    ],
     "subType": "classFeat",
     "tag": "burn",
     "uses": {
@@ -8930,6 +9376,12 @@
     "grantsBuffs": [],
     "id": "GRfwR4nZHTx7JifZ",
     "name": "See Invisibility",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "76"
+      }
+    ],
     "subType": "classFeat",
     "tag": "seeInvisibility",
     "uses": {
@@ -9167,6 +9619,12 @@
     "grantsBuffs": [],
     "id": "H13C5vWmFxF6NRdZ",
     "name": "Detect Thoughts",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "63"
+      }
+    ],
     "subType": "classFeat",
     "tag": "detectThoughts",
     "uses": {
@@ -9307,6 +9765,12 @@
     "grantsBuffs": [],
     "id": "HJ2vLLDYkihPxFkD",
     "name": "Magus Arcana",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.HJ2vLLDYkihPxFkD"
   },
@@ -9343,6 +9807,12 @@
     "grantsBuffs": [],
     "id": "HL0mn3TDEKQWeF03",
     "name": "Bonus Feats (WAR)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "62"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.HL0mn3TDEKQWeF03"
   },
@@ -9383,6 +9853,12 @@
     "grantsBuffs": [],
     "id": "HMmsaPUiNgB5Xa8u",
     "name": "Creator's Will",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "145"
+      }
+    ],
     "subType": "classFeat",
     "tag": "creatorsWill",
     "uses": {
@@ -9459,6 +9935,12 @@
     "grantsBuffs": [],
     "id": "HZ2oSGU7xXLjz8Rp",
     "name": "Targeting",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "11"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "source": "grit"
@@ -9542,6 +10024,12 @@
     "grantsBuffs": ["Compendium.pf1.feats.Item.vWiTqHC4Y3Xn1Pme"],
     "id": "HmNDcFTlaEqr60Vw",
     "name": "Finesse Training (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "20"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.HmNDcFTlaEqr60Vw"
   },
@@ -9693,6 +10181,12 @@
     "grantsBuffs": [],
     "id": "IA4Z4xwEeubcDqF4",
     "name": "Mounted Archer",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "19"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.IA4Z4xwEeubcDqF4"
   },
@@ -9837,6 +10331,12 @@
     "grantsBuffs": [],
     "id": "IMhG1JjaWP6p9ORe",
     "name": "Grand Hex",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "69"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.IMhG1JjaWP6p9ORe"
   },
@@ -10065,6 +10565,12 @@
     "grantsBuffs": [],
     "id": "IeX7of9cT8M7c0xy",
     "name": "Binding Darkness",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "147"
+      }
+    ],
     "subType": "classFeat",
     "tag": "bindingDarkness",
     "uses": {
@@ -10095,6 +10601,12 @@
     "grantsBuffs": [],
     "id": "Ih0QO6eZ3XmrDkQS",
     "name": "Create Gear",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144-145"
+      }
+    ],
     "subType": "classFeat",
     "tag": "createGear",
     "uses": {
@@ -10202,6 +10714,12 @@
     "grantsBuffs": [],
     "id": "IyfoUjtyaS8lakWc",
     "name": "Spell Recall",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.IyfoUjtyaS8lakWc"
   },
@@ -10218,6 +10736,12 @@
     "grantsBuffs": [],
     "id": "J0CtwXcv94eGCSaW",
     "name": "Unholy Resilience",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "120"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.J0CtwXcv94eGCSaW"
   },
@@ -10269,6 +10793,12 @@
     "grantsBuffs": [],
     "id": "J2rIdwacRuGkgwVJ",
     "name": "Shared Consciousness",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "73"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.J2rIdwacRuGkgwVJ"
   },
@@ -10517,6 +11047,12 @@
     "grantsBuffs": [],
     "id": "JZlCwRBCgOeFxIk7",
     "name": "Mesmerist Tricks",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "39"
+      }
+    ],
     "subType": "classFeat",
     "tag": "mesmeristTricks",
     "uses": {
@@ -10654,6 +11190,12 @@
     "grantsBuffs": [],
     "id": "Js83QWyHQQ4PjP0m",
     "name": "Medium Armor",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Js83QWyHQQ4PjP0m"
   },
@@ -10717,6 +11259,12 @@
     "grantsBuffs": [],
     "id": "JtCZXN41TLQG48bo",
     "name": "Rage Powers (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "8"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.JtCZXN41TLQG48bo"
   },
@@ -10727,6 +11275,12 @@
     "grantsBuffs": [],
     "id": "Jw6BEoNMBxfSN4cu",
     "name": "Maker's Call",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "57"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "maxFormula": "floor((@class.unlevel - 2) / 4)",
@@ -11039,6 +11593,12 @@
     "grantsBuffs": [],
     "id": "KGjeQOeDKBMUt98q",
     "name": "Detect Alignment",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "40"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.KGjeQOeDKBMUt98q"
   },
@@ -11048,6 +11608,12 @@
     "grantsBuffs": [],
     "id": "KOfYE2fC3zYkrSPj",
     "name": "Deeds",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.KOfYE2fC3zYkrSPj"
   },
@@ -11134,6 +11700,12 @@
     "grantsBuffs": [],
     "id": "KUwXUOcHG054iBHQ",
     "name": "Magical Supremacy",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "14"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.KUwXUOcHG054iBHQ"
   },
@@ -11228,6 +11800,12 @@
     "grantsBuffs": [],
     "id": "KeqW25zOjSQAl3n2",
     "name": "Gun Training",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.KeqW25zOjSQAl3n2"
   },
@@ -11304,6 +11882,12 @@
     "grantsBuffs": [],
     "id": "KnnoxYDiEydW3vFo",
     "name": "Death's Shot",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "source": "grit"
@@ -11570,6 +12154,12 @@
     "grantsBuffs": [],
     "id": "L7qwZSab2Ql99gha",
     "name": "Expert Loading",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "source": "grit"
@@ -11599,6 +12189,12 @@
     "grantsBuffs": [],
     "id": "L9DSWVtX0siTfaXL",
     "name": "Second Judgment",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "41"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.L9DSWVtX0siTfaXL"
   },
@@ -11867,6 +12463,12 @@
     "grantsBuffs": [],
     "id": "LYWqXODjRJjVJeQ1",
     "name": "Fiendish Boon",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "121"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.LYWqXODjRJjVJeQ1"
   },
@@ -11960,6 +12562,12 @@
     "grantsBuffs": [],
     "id": "LkbGAZaa2KDrnS89",
     "name": "Aura of Depravity",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "121"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.LkbGAZaa2KDrnS89"
   },
@@ -12063,6 +12671,12 @@
     "grantsBuffs": [],
     "id": "Lz9i4zNAH50umw3s",
     "name": "Shape Emotions",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146"
+      }
+    ],
     "subType": "classFeat",
     "tag": "shapeEmotions",
     "uses": {
@@ -12452,6 +13066,12 @@
     "grantsBuffs": [],
     "id": "MoYtXZ0fYDw7If8G",
     "name": "Startling Shot",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "11"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.MoYtXZ0fYDw7If8G"
   },
@@ -12462,6 +13082,12 @@
     "grantsBuffs": [],
     "id": "MpvhQz62qw68D2pd",
     "name": "Bane",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "40-41"
+      }
+    ],
     "subType": "classFeat",
     "tag": "bane",
     "uses": {
@@ -12692,6 +13318,12 @@
     "grantsBuffs": [],
     "id": "NHMFpVAXvR6jBOio",
     "name": "Trance of Three",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "32"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.NHMFpVAXvR6jBOio"
   },
@@ -12722,6 +13354,12 @@
     "grantsBuffs": [],
     "id": "NKPkvMia6t5ERnmY",
     "name": "Master of the Veil",
+    "sources": [
+      {
+        "id": "PZO9414",
+        "pages": "29"
+      }
+    ],
     "subType": "classFeat",
     "tag": "masterOfTheVeil",
     "uses": {
@@ -12834,6 +13472,12 @@
     "grantsBuffs": [],
     "id": "NOhmhKgboJ9qdGvg",
     "name": "Elemental Overflow",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.NOhmhKgboJ9qdGvg"
   },
@@ -12864,6 +13508,12 @@
     "grantsBuffs": [],
     "id": "NUsLshXpE3d8W3AI",
     "name": "Phantom Recall",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "75"
+      }
+    ],
     "subType": "classFeat",
     "tag": "phantomRecall",
     "uses": {
@@ -13189,6 +13839,12 @@
     "grantsBuffs": [],
     "id": "OLh9DNRqDf7yjSwM",
     "name": "Send Senses",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "147"
+      }
+    ],
     "subType": "classFeat",
     "tag": "sendSenses",
     "uses": {
@@ -13251,6 +13907,12 @@
     "grantsBuffs": [],
     "id": "OWWDDPpcBLyZAXAr",
     "name": "Subtle Misdirection",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "35"
+      }
+    ],
     "subType": "classFeat",
     "tag": "subtleMisdirection",
     "uses": {
@@ -13548,6 +14210,12 @@
     "grantsBuffs": [],
     "id": "OpfGzOdY5kGrK3fA",
     "name": "Fast Circles",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "49"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.OpfGzOdY5kGrK3fA"
   },
@@ -13558,6 +14226,12 @@
     "grantsBuffs": [],
     "id": "OsEuRDHP7jcJ2fIJ",
     "name": "Spellstrike",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.OsEuRDHP7jcJ2fIJ"
   },
@@ -13568,6 +14242,12 @@
     "grantsBuffs": [],
     "id": "OsRZD888rDOpHqoZ",
     "name": "Call Spirit",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "76"
+      }
+    ],
     "subType": "classFeat",
     "tag": "callSpirit",
     "uses": {
@@ -13583,6 +14263,12 @@
     "grantsBuffs": [],
     "id": "Ox5Sq8qp4gBjQpyu",
     "name": "Shift",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "147"
+      }
+    ],
     "subType": "classFeat",
     "tag": "shift",
     "uses": {
@@ -13649,6 +14335,12 @@
     "grantsBuffs": [],
     "id": "P2XyBCDEUGOFwRAF",
     "name": "Mount",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "33"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.P2XyBCDEUGOFwRAF"
   },
@@ -14074,6 +14766,12 @@
     "grantsBuffs": [],
     "id": "PuzIaPLe5w4eF72t",
     "name": "Empowered Consciousness",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "76"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.PuzIaPLe5w4eF72t"
   },
@@ -14245,6 +14943,12 @@
     "grantsBuffs": [],
     "id": "QGv2YjclwgkruFE6",
     "name": "Cavalier's Charge",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "33"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.QGv2YjclwgkruFE6"
   },
@@ -14303,6 +15007,12 @@
     "grantsBuffs": [],
     "id": "QR23m2NMKvwnLKh4",
     "name": "Healing Grace",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.QR23m2NMKvwnLKh4"
   },
@@ -14313,6 +15023,12 @@
     "grantsBuffs": [],
     "id": "QTEANZz5ALZQcSIR",
     "name": "Gunsmith",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "9"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.QTEANZz5ALZQcSIR"
   },
@@ -14323,6 +15039,12 @@
     "grantsBuffs": [],
     "id": "QXskUuwbmQtFoFti",
     "name": "Third Judgment",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "41"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.QXskUuwbmQtFoFti"
   },
@@ -14396,6 +15118,12 @@
     "grantsBuffs": [],
     "id": "QhHS0Qr5FxH4LtaI",
     "name": "Knowledge Pool",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.QhHS0Qr5FxH4LtaI"
   },
@@ -14533,6 +15261,12 @@
     "grantsBuffs": [],
     "id": "QqMg8O5rYRKoGtHW",
     "name": "Versatile Evocation",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "143"
+      }
+    ],
     "subType": "classFeat",
     "tag": "versatileEvocation",
     "uses": {
@@ -14639,6 +15373,12 @@
     "grantsBuffs": [],
     "id": "QyW6ly6dN84Ev6AY",
     "name": "Banner (SAM)",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "20"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.QyW6ly6dN84Ev6AY"
   },
@@ -14993,6 +15733,12 @@
     "grantsBuffs": [],
     "id": "Rao7jnaGBzSbltiw",
     "name": "Spiritual Interference",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "75"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Rao7jnaGBzSbltiw"
   },
@@ -15108,6 +15854,12 @@
     "grantsBuffs": [],
     "id": "Rh4www7gtV7wvUzg",
     "name": "Grit",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "9"
+      }
+    ],
     "subType": "classFeat",
     "tag": "grit",
     "uses": {
@@ -15326,6 +16078,12 @@
     "grantsBuffs": [],
     "id": "S9lYCsz7oA7v3GzR",
     "name": "Discern Lies",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "41"
+      }
+    ],
     "subType": "classFeat",
     "tag": "discernLies",
     "uses": {
@@ -15408,6 +16166,12 @@
     "grantsBuffs": [],
     "id": "SDe1qkWV2217wSao",
     "name": "Weapon Expertise",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "19"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.SDe1qkWV2217wSao"
   },
@@ -15418,6 +16182,12 @@
     "grantsBuffs": [],
     "id": "SEqzaRbIn7ePwIOt",
     "name": "Cheat Death",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "source": "grit"
@@ -15498,6 +16268,12 @@
     "grantsBuffs": [],
     "id": "SQXP7EIAIH22DM39",
     "name": "Knockout",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "24"
+      }
+    ],
     "subType": "classFeat",
     "tag": "knockout",
     "uses": {
@@ -15639,6 +16415,12 @@
     "grantsBuffs": [],
     "id": "SqTaI2sHPIZpLDtQ",
     "name": "Aura of Vengeance",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "121"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.SqTaI2sHPIZpLDtQ"
   },
@@ -15829,6 +16611,12 @@
     "grantsBuffs": [],
     "id": "TF9JLx9PwVnN5QPx",
     "name": "Deceptive Flourish",
+    "sources": [
+      {
+        "id": "PZO1138",
+        "pages": "35"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.TF9JLx9PwVnN5QPx"
   },
@@ -15902,6 +16690,12 @@
     "grantsBuffs": [],
     "id": "TMpfSlpC7To6uXGE",
     "name": "Seamless Guise",
+    "sources": [
+      {
+        "id": "PZO1134",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.TMpfSlpC7To6uXGE"
   },
@@ -15912,6 +16706,12 @@
     "grantsBuffs": [],
     "id": "TNYCH3v1Y9lUQDPT",
     "name": "Greater Bane",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "41"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.TNYCH3v1Y9lUQDPT"
   },
@@ -16390,6 +17190,12 @@
     "grantsBuffs": [],
     "id": "U6LZteLyMA4gLAFF",
     "name": "Greater Shield Ally (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "27"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.U6LZteLyMA4gLAFF"
   },
@@ -16456,6 +17262,12 @@
     "grantsBuffs": [],
     "id": "UBv1y1h93jrnhWxO",
     "name": "Sacred Armor",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "63"
+      }
+    ],
     "subType": "classFeat",
     "tag": "sacredArmor",
     "uses": {
@@ -16526,6 +17338,12 @@
     "grantsBuffs": [],
     "id": "UGtjpdIwNF8mAh4z",
     "name": "Exploit Weakness",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "41"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.UGtjpdIwNF8mAh4z"
   },
@@ -16577,6 +17395,12 @@
     "grantsBuffs": [],
     "id": "US5ZPnvMTejXFcBZ",
     "name": "Greater Exploits",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.US5ZPnvMTejXFcBZ"
   },
@@ -16607,6 +17431,12 @@
     ],
     "id": "UXMvElITxkDl5HJW",
     "name": "Evasive",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.UXMvElITxkDl5HJW"
   },
@@ -16649,6 +17479,12 @@
     "grantsBuffs": [],
     "id": "UcMtpUH9UqAn9429",
     "name": "Lightning Reload",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.UcMtpUH9UqAn9429"
   },
@@ -16739,6 +17575,12 @@
     "grantsBuffs": [],
     "id": "UmMT57HYbdF3qJep",
     "name": "Life Bond (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "27"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.UmMT57HYbdF3qJep"
   },
@@ -16781,6 +17623,12 @@
     "grantsBuffs": [],
     "id": "Uo3yrfkyguM5wkI2",
     "name": "Order (SAM)",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "18"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Uo3yrfkyguM5wkI2"
   },
@@ -16791,6 +17639,12 @@
     "grantsBuffs": [],
     "id": "Uo6HdLirmPk8haqz",
     "name": "Elemental Manipulation",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144"
+      }
+    ],
     "subType": "classFeat",
     "tag": "elementalManipulation",
     "uses": {
@@ -16925,6 +17779,12 @@
     "grantsBuffs": [],
     "id": "V3TQ2f5HeX4K6l4p",
     "name": "No Trace",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "16"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.V3TQ2f5HeX4K6l4p"
   },
@@ -16935,6 +17795,12 @@
     "grantsBuffs": [],
     "id": "V4rFQp52p7nzcijL",
     "name": "Ki Pool (NIN)",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "14"
+      }
+    ],
     "subType": "classFeat",
     "tag": "kiPool",
     "uses": {
@@ -17264,6 +18130,12 @@
     "grantsBuffs": [],
     "id": "W1gEXsOJYt7oDOr7",
     "name": "Inspiring Prediction",
+    "sources": [
+      {
+        "id": "PZO9488",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "tag": "inspiringPrediction",
     "uses": {
@@ -17299,6 +18171,12 @@
     "grantsBuffs": [],
     "id": "W3RCSHE7qjDNKp7c",
     "name": "Dead Shot",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "11"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "source": "grit"
@@ -17342,6 +18220,12 @@
     "grantsBuffs": [],
     "id": "W6lurGAdeDsAch3G",
     "name": "Improved Awesome Blow",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "25"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.W6lurGAdeDsAch3G"
   },
@@ -17573,6 +18457,12 @@
     "grantsBuffs": [],
     "id": "WNi2SBF6Z2zhBMCl",
     "name": "Challenge (CAV)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "32"
+      }
+    ],
     "subType": "classFeat",
     "tag": "challengeCav",
     "uses": {
@@ -17692,6 +18582,12 @@
     "grantsBuffs": [],
     "id": "WTa2ReRBiF6meIzM",
     "name": "Force of Will",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.WTa2ReRBiF6meIzM"
   },
@@ -18085,6 +18981,12 @@
     "grantsBuffs": [],
     "id": "XAMIufM24q2qAB7o",
     "name": "True Magus",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.XAMIufM24q2qAB7o"
   },
@@ -18248,6 +19150,12 @@
     "grantsBuffs": [],
     "id": "XfN89DtlUrwHGNrp",
     "name": "Exchange Spell (Low)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "16"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.XfN89DtlUrwHGNrp"
   },
@@ -18389,6 +19297,12 @@
     "grantsBuffs": [],
     "id": "XuRBVEMC7oaHPR9V",
     "name": "Counterspell Mastery",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144"
+      }
+    ],
     "subType": "classFeat",
     "tag": "counterspellMastery",
     "uses": {
@@ -18532,6 +19446,12 @@
     "grantsBuffs": [],
     "id": "YGbFrqaGvnCbAKKV",
     "name": "Sacred Weapon",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "60"
+      }
+    ],
     "subType": "classFeat",
     "tag": "sacredWeapon",
     "uses": {
@@ -18598,6 +19518,12 @@
     "grantsBuffs": [],
     "id": "YJ0NcsmHi9AIkwlX",
     "name": "Propitiation",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "32"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.YJ0NcsmHi9AIkwlX"
   },
@@ -18624,6 +19550,12 @@
     "grantsBuffs": [],
     "id": "YKyAQ2o5Yzox79B8",
     "name": "Tactician",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "33"
+      }
+    ],
     "subType": "classFeat",
     "tag": "tactician",
     "uses": {
@@ -18800,6 +19732,12 @@
     "grantsBuffs": [],
     "id": "Yjps5mzhrDe2gJMr",
     "name": "Aspect of War",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "63"
+      }
+    ],
     "subType": "classFeat",
     "tag": "aspectOfWar",
     "uses": {
@@ -18877,6 +19815,12 @@
     "grantsBuffs": [],
     "id": "Yr1ZNxgxDVsRwxtj",
     "name": "Eidolon (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "25"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Yr1ZNxgxDVsRwxtj"
   },
@@ -18973,6 +19917,12 @@
     "grantsBuffs": [],
     "id": "YzrlG02loZdwCJwV",
     "name": "Share Essence",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146"
+      }
+    ],
     "subType": "classFeat",
     "tag": "shareEssence",
     "uses": {
@@ -19046,6 +19996,12 @@
     "grantsBuffs": [],
     "id": "Z53orCz6KeTS5LOb",
     "name": "AC Bonus (BRA)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "24"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Z53orCz6KeTS5LOb"
   },
@@ -19272,6 +20228,12 @@
     "grantsBuffs": [],
     "id": "ZgzF1CxwvRBQX8xN",
     "name": "Disruption",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144"
+      }
+    ],
     "subType": "classFeat",
     "tag": "disruption",
     "uses": {
@@ -19286,6 +20248,12 @@
     "grantsBuffs": [],
     "id": "ZhQM4K4dqStS6qRn",
     "name": "Mystery",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "43"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ZhQM4K4dqStS6qRn"
   },
@@ -19311,6 +20279,12 @@
     "grantsBuffs": [],
     "id": "Zpd2gNTIy9U84n79",
     "name": "Implements",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "47"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Zpd2gNTIy9U84n79"
   },
@@ -19357,6 +20331,12 @@
     "grantsBuffs": [],
     "id": "ZtvIQOXhB0yWYIIR",
     "name": "Internal Buffer",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ZtvIQOXhB0yWYIIR"
   },
@@ -19419,6 +20399,12 @@
     "grantsBuffs": [],
     "id": "Zy94TROPC7Es6yA7",
     "name": "Aspect (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "27"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.Zy94TROPC7Es6yA7"
   },
@@ -19586,6 +20572,12 @@
     "grantsBuffs": [],
     "id": "aBXAFSi18n9Sndjf",
     "name": "Bonded Manifestation",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "74"
+      }
+    ],
     "subType": "classFeat",
     "tag": "bondedManifestation",
     "uses": {
@@ -19707,6 +20699,12 @@
     "grantsBuffs": [],
     "id": "aVMtWqERshuxhmr6",
     "name": "Irresistible Demand",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144"
+      }
+    ],
     "subType": "classFeat",
     "tag": "irresistibleDemand",
     "uses": {
@@ -19753,6 +20751,12 @@
     "grantsBuffs": [],
     "id": "aZ5eCIRrsvax5CZZ",
     "name": "Major Hex",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "67"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.aZ5eCIRrsvax5CZZ"
   },
@@ -19816,6 +20820,12 @@
     "grantsBuffs": [],
     "id": "adu4NROFqgwv70sw",
     "name": "Revelation",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "45"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.adu4NROFqgwv70sw"
   },
@@ -19848,6 +20858,12 @@
     "grantsBuffs": [],
     "id": "agVFqf3mfxf0l8oT",
     "name": "Martial Training",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "23"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.agVFqf3mfxf0l8oT"
   },
@@ -19906,6 +20922,12 @@
     "grantsBuffs": [],
     "id": "aqB7IymBc8kzJbzQ",
     "name": "Unholy Champion",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "121"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.aqB7IymBc8kzJbzQ"
   },
@@ -19931,6 +20953,12 @@
     "grantsBuffs": [],
     "id": "awBIJLvjcQIaPoCq",
     "name": "True Grit",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.awBIJLvjcQIaPoCq"
   },
@@ -20167,6 +21195,12 @@
     "grantsBuffs": ["Compendium.pf1.feats.Item.n250dFlbykAIAg5Z"],
     "id": "bXznpN0piipekXTH",
     "name": "Focus Weapon",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "60"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.bXznpN0piipekXTH"
   },
@@ -21549,6 +22583,12 @@
     "grantsBuffs": [],
     "id": "bwPeas5tuLvKhuE4",
     "name": "Calm Spirit",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "76"
+      }
+    ],
     "subType": "classFeat",
     "tag": "calmSpirit",
     "uses": {
@@ -21570,6 +22610,12 @@
     "grantsBuffs": [],
     "id": "c1DXh24tF5vQFLaI",
     "name": "Bonus Feats (GUN)",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.c1DXh24tF5vQFLaI"
   },
@@ -21596,6 +22642,12 @@
     "grantsBuffs": [],
     "id": "c3MSLdplxdRZrSxL",
     "name": "Order",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "33"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.c3MSLdplxdRZrSxL"
   },
@@ -21816,6 +22868,12 @@
     "grantsBuffs": [],
     "id": "caHXpWVlJLxRKvOS",
     "name": "Dual Identity",
+    "sources": [
+      {
+        "id": "PZO1134",
+        "pages": "9"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.caHXpWVlJLxRKvOS"
   },
@@ -21847,6 +22905,12 @@
     "grantsBuffs": [],
     "id": "cbRqq4Zwspgr3681",
     "name": "Slayer",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "41"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.cbRqq4Zwspgr3681"
   },
@@ -22068,6 +23132,12 @@
     "grantsBuffs": [],
     "id": "d6zcYlRQmpj9D5oy",
     "name": "Astral Beacon",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "33"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.d6zcYlRQmpj9D5oy"
   },
@@ -22093,6 +23163,12 @@
     "grantsBuffs": [],
     "id": "d7ywi83kzYsEVlyy",
     "name": "Etheric Tether",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "74"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.d7ywi83kzYsEVlyy"
   },
@@ -22168,6 +23244,12 @@
     "grantsBuffs": [],
     "id": "dMtxCqoMLtD9nEjU",
     "name": "Domain (INQ)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.dMtxCqoMLtD9nEjU"
   },
@@ -22228,6 +23310,12 @@
     "grantsBuffs": [],
     "id": "da7y3jU5mLVcBXsj",
     "name": "Spacious Soul",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "33"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.da7y3jU5mLVcBXsj"
   },
@@ -22238,6 +23326,12 @@
     "grantsBuffs": [],
     "id": "dakApiblq3ad7AZI",
     "name": "Improved Spell Recall",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.dakApiblq3ad7AZI"
   },
@@ -22248,6 +23342,12 @@
     "grantsBuffs": [],
     "id": "dcCZW51UewXFLLGo",
     "name": "Bolster",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "147"
+      }
+    ],
     "subType": "classFeat",
     "tag": "bolster",
     "uses": {
@@ -22311,6 +23411,12 @@
     "grantsBuffs": [],
     "id": "dhBZs1g1QQNQM3vm",
     "name": "Aura of Cowardice",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "120"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.dhBZs1g1QQNQM3vm"
   },
@@ -23301,6 +24407,12 @@
     "grantsBuffs": [],
     "id": "dv8TDGs9c7h4awY2",
     "name": "Mental Focus",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "48"
+      }
+    ],
     "subType": "classFeat",
     "tag": "mentalFocus",
     "uses": {
@@ -23611,6 +24723,12 @@
     "grantsBuffs": [],
     "id": "ePNt8fgtaAxmLnHs",
     "name": "Fighter Training",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ePNt8fgtaAxmLnHs"
   },
@@ -23741,6 +24859,12 @@
     "grantsBuffs": [],
     "id": "ecaBwckdxXf22eSg",
     "name": "Elemental Defense",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ecaBwckdxXf22eSg"
   },
@@ -23751,6 +24875,12 @@
     "grantsBuffs": [],
     "id": "ei3z5reJYduGyrrC",
     "name": "Lingering Evocations",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ei3z5reJYduGyrrC"
   },
@@ -23864,6 +24994,12 @@
     "grantsBuffs": [],
     "id": "etOoJgoeaBRenCir",
     "name": "Charmed Life",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "59"
+      }
+    ],
     "subType": "classFeat",
     "tag": "charmedLife",
     "uses": {
@@ -23914,6 +25050,12 @@
     "grantsBuffs": [],
     "id": "f2Xg4pkJelnVyTCH",
     "name": "Greater Banner (SAM)",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "20"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.f2Xg4pkJelnVyTCH"
   },
@@ -23976,6 +25118,12 @@
     "grantsBuffs": [],
     "id": "fCaw2ldaQlkktvsB",
     "name": "Stunning Appearance",
+    "sources": [
+      {
+        "id": "PZO1134",
+        "pages": "17"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.fCaw2ldaQlkktvsB"
   },
@@ -24043,6 +25191,12 @@
     "grantsBuffs": [],
     "id": "fJuxnPlNDncuHuT5",
     "name": "Bond Senses (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "27"
+      }
+    ],
     "subType": "classFeat",
     "tag": "bondSenses",
     "uses": {
@@ -24058,6 +25212,12 @@
     "grantsBuffs": [],
     "id": "fOGTp6cD9Oy33dcu",
     "name": "In Accordance with Prophecy",
+    "sources": [
+      {
+        "id": "PZO9488",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "tag": "inAccordanceWithProphecy",
     "uses": {
@@ -24083,6 +25243,12 @@
     "grantsBuffs": [],
     "id": "fP8eQtvrzz3zTseu",
     "name": "Wind Servant",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146"
+      }
+    ],
     "subType": "classFeat",
     "tag": "windServant",
     "uses": {
@@ -24098,6 +25264,12 @@
     "grantsBuffs": [],
     "id": "fVnL2yhENozMMZ8j",
     "name": "Telepathy",
+    "sources": [
+      {
+        "id": "PZO9237",
+        "pages": "31"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.fVnL2yhENozMMZ8j"
   },
@@ -24108,6 +25280,12 @@
     "grantsBuffs": [],
     "id": "fX0nacm4MAQCJ5fB",
     "name": "Ask the Spirits",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "32"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.fX0nacm4MAQCJ5fB"
   },
@@ -24149,6 +25327,12 @@
     "grantsBuffs": [],
     "id": "fdEn4hZJkIhJEwrQ",
     "name": "Resolve",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "19"
+      }
+    ],
     "subType": "classFeat",
     "tag": "resolve",
     "uses": {
@@ -24283,6 +25467,12 @@
     "grantsBuffs": [],
     "id": "fo3SQLOjFcQSmVMJ",
     "name": "Mighty Charge",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "34"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.fo3SQLOjFcQSmVMJ"
   },
@@ -24837,6 +26027,12 @@
     "grantsBuffs": [],
     "id": "gzBR0qkMdu0KkLV0",
     "name": "Bonus Feats (MAG)",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.gzBR0qkMdu0KkLV0"
   },
@@ -24926,6 +26122,12 @@
     "grantsBuffs": [],
     "id": "hArwE7SbM3qGvlMs",
     "name": "Supercharge",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "14"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.hArwE7SbM3qGvlMs"
   },
@@ -25092,6 +26294,12 @@
     "grantsBuffs": [],
     "id": "hPgtTh79AeIocmpt",
     "name": "Shield Ally (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "27"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.hPgtTh79AeIocmpt"
   },
@@ -25174,6 +26382,12 @@
     "grantsBuffs": [],
     "id": "hbttw8IQ2kKnpOnB",
     "name": "Shadow Step",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "147"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.hbttw8IQ2kKnpOnB"
   },
@@ -25462,6 +26676,12 @@
     "grantsBuffs": [],
     "id": "i495GvOqGUcml6yW",
     "name": "Pistol-Whip",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "11"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.i495GvOqGUcml6yW"
   },
@@ -25488,6 +26708,12 @@
     "grantsBuffs": [],
     "id": "i64BU7HTfaRJEYFj",
     "name": "Greater Spell Access",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.i64BU7HTfaRJEYFj"
   },
@@ -25778,6 +27004,12 @@
     "grantsBuffs": [],
     "id": "igyMWtX3cB2HZeSF",
     "name": "Stalwart",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "41"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.igyMWtX3cB2HZeSF"
   },
@@ -25824,6 +27056,12 @@
     "grantsBuffs": [],
     "id": "ijE8aHAZOvoFPFr4",
     "name": "Location Channel",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "32"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ijE8aHAZOvoFPFr4"
   },
@@ -25849,6 +27087,12 @@
     "grantsBuffs": [],
     "id": "ik7YjF6IXgTNeqrq",
     "name": "Ectoplasmic Bonded Manifestation",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "75"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ik7YjF6IXgTNeqrq"
   },
@@ -25892,6 +27136,12 @@
     "grantsBuffs": [],
     "id": "ikVwT8b9zfj701k1",
     "name": "Greater Tactician",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "34"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ikVwT8b9zfj701k1"
   },
@@ -27230,6 +28480,12 @@
     "grantsBuffs": [],
     "id": "iyYyc3rKW0cBZ1cs",
     "name": "Rogue's Edge (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "23"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.iyYyc3rKW0cBZ1cs"
   },
@@ -27556,6 +28812,12 @@
     "grantsBuffs": [],
     "id": "jkigrVeg3TUKg0Gy",
     "name": "Consume Spells",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "tag": "consumeSpells",
     "uses": {
@@ -27659,6 +28921,12 @@
     "grantsBuffs": [],
     "id": "jqXRcfZYvBL50z0q",
     "name": "Demanding Challenge",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "34"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.jqXRcfZYvBL50z0q"
   },
@@ -27704,6 +28972,12 @@
     "grantsBuffs": [],
     "id": "jttL7NeMj1wGPkDO",
     "name": "Tireless Rage (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.jttL7NeMj1wGPkDO"
   },
@@ -27745,6 +29019,12 @@
     "grantsBuffs": [],
     "id": "jz0LkAoq9lgyZXGM",
     "name": "Plague Bringer",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "120"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.jz0LkAoq9lgyZXGM"
   },
@@ -27775,6 +29055,12 @@
     "grantsBuffs": [],
     "id": "k2CQRwlyblNHuius",
     "name": "Last Stand",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "21"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.k2CQRwlyblNHuius"
   },
@@ -27824,6 +29110,12 @@
     "grantsBuffs": [],
     "id": "k5jZbHNa0BdrcSGn",
     "name": "Manifold Tricks",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "43"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.k5jZbHNa0BdrcSGn"
   },
@@ -27850,6 +29142,12 @@
     "grantsBuffs": [],
     "id": "k9ZGUwUB9yJiz4Ea",
     "name": "Merge Forms (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "27"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "maxFormula": "@class.unlevel",
@@ -28085,6 +29383,12 @@
     "grantsBuffs": [],
     "id": "kVqL3rw5mcAMhiEq",
     "name": "Aura Sight",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "49"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.kVqL3rw5mcAMhiEq"
   },
@@ -28206,6 +29510,12 @@
     "grantsBuffs": [],
     "id": "kYewJH9317exDQ6q",
     "name": "Prescience",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "145-146"
+      }
+    ],
     "subType": "classFeat",
     "tag": "prescience",
     "uses": {
@@ -28279,6 +29589,12 @@
     "grantsBuffs": [],
     "id": "kkVnlOkjhww8MoHc",
     "name": "Oracle's Curse",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "43-44"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.kkVnlOkjhww8MoHc"
   },
@@ -28308,6 +29624,12 @@
     "grantsBuffs": [],
     "id": "krNQXh76ArUBtdOW",
     "name": "Incorporeal Bonded Manifestation",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "75"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.krNQXh76ArUBtdOW"
   },
@@ -28554,6 +29876,12 @@
     "grantsBuffs": [],
     "id": "lKnfkRSOpPjT4qRy",
     "name": "Bonus Feat (SAM)",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "20"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.lKnfkRSOpPjT4qRy"
   },
@@ -28663,6 +29991,12 @@
     "grantsBuffs": [],
     "id": "lj4yLDvoxGFHiwSk",
     "name": "Spell Combat",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.lj4yLDvoxGFHiwSk"
   },
@@ -28673,6 +30007,12 @@
     "grantsBuffs": [],
     "id": "lkVGkpsywFpdtoIs",
     "name": "Shift Focus",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "48-49"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.lkVGkpsywFpdtoIs"
   },
@@ -28757,6 +30097,12 @@
     "grantsBuffs": [],
     "id": "m1uPDPwBd5mm6COj",
     "name": "Bold Stare",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "42"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.m1uPDPwBd5mm6COj"
   },
@@ -28980,6 +30326,12 @@
     "grantsBuffs": [],
     "id": "mMVzwNJo1A7g7TO4",
     "name": "Magic Item Skill",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "48"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.mMVzwNJo1A7g7TO4"
   },
@@ -29202,6 +30554,12 @@
     "grantsBuffs": [],
     "id": "mpe3JHJMINddqLWr",
     "name": "Arcane Pool",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "9"
+      }
+    ],
     "subType": "classFeat",
     "tag": "arcanePool",
     "uses": {
@@ -29358,6 +30716,12 @@
     "grantsBuffs": [],
     "id": "n1PlbzPfZGklyUVV",
     "name": "Maneuver Training (BRA)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "24"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.n1PlbzPfZGklyUVV"
   },
@@ -29477,6 +30841,12 @@
     "grantsBuffs": [],
     "id": "nBCKHaM5edwuFFnk",
     "name": "Aura of Banishment",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "144"
+      }
+    ],
     "subType": "classFeat",
     "tag": "auraOfBanishment",
     "uses": {
@@ -29492,6 +30862,12 @@
     "grantsBuffs": [],
     "id": "nBpz562qzAntafUI",
     "name": "Expert Trainer",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "33"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.nBpz562qzAntafUI"
   },
@@ -29655,6 +31031,12 @@
     "grantsBuffs": [],
     "id": "nL9Ds9nflmID84vo",
     "name": "Debilitating Injury",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "22-23"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.nL9Ds9nflmID84vo"
   },
@@ -29690,6 +31072,12 @@
     "grantsBuffs": [],
     "id": "nO6cI6JoY2THQoxZ",
     "name": "Major Amplifications",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "63"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.nO6cI6JoY2THQoxZ"
   },
@@ -29700,6 +31088,12 @@
     "grantsBuffs": [],
     "id": "nOLAYJpzuRmt1GdB",
     "name": "Greater Spiritual Interference",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "76"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.nOLAYJpzuRmt1GdB"
   },
@@ -29764,6 +31158,12 @@
     "grantsBuffs": [],
     "id": "nWDMATASYzzAShr6",
     "name": "Greater Spell Combat",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.nWDMATASYzzAShr6"
   },
@@ -29848,6 +31248,12 @@
     "grantsBuffs": [],
     "id": "nlcLhyRFeHkJRwIy",
     "name": "Astral Journey",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "32"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.nlcLhyRFeHkJRwIy"
   },
@@ -30002,6 +31408,12 @@
     "grantsBuffs": [],
     "id": "nyz3JgtYMrJZF6o5",
     "name": "Aura of Sin",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "121"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.nyz3JgtYMrJZF6o5"
   },
@@ -30093,6 +31505,12 @@
     "grantsBuffs": [],
     "id": "o4FeJzhEdocIO4mY",
     "name": "Vigilante Talent",
+    "sources": [
+      {
+        "id": "PZO1134",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.o4FeJzhEdocIO4mY"
   },
@@ -30108,6 +31526,12 @@
     "grantsBuffs": [],
     "id": "o8AEIzEXMjEZ2EX1",
     "name": "Bonus Combat Feats (BRA)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "24"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.o8AEIzEXMjEZ2EX1"
   },
@@ -30247,6 +31671,12 @@
     "grantsBuffs": [],
     "id": "oI2zqavECPLFkIHv",
     "name": "Object Reading",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "48"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.oI2zqavECPLFkIHv"
   },
@@ -30469,6 +31899,12 @@
     "grantsBuffs": [],
     "id": "ou85mTXBHWjreUYw",
     "name": "Consummate Liar",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "39"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ou85mTXBHWjreUYw"
   },
@@ -30654,6 +32090,12 @@
     "grantsBuffs": [],
     "id": "pI96OyLrjc1EyhaE",
     "name": "Telepathic Bond",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "63"
+      }
+    ],
     "subType": "classFeat",
     "tag": "telepathicBond",
     "uses": {
@@ -30685,6 +32127,12 @@
     "grantsBuffs": [],
     "id": "pMpN2f4mTgLt2NaR",
     "name": "Summon Monster (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "26"
+      }
+    ],
     "subType": "classFeat",
     "tag": "summonMonster",
     "uses": {
@@ -30851,6 +32299,12 @@
     "grantsBuffs": [],
     "id": "pZaZcT8gMPQGX9Ur",
     "name": "Supreme Charge",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "34"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.pZaZcT8gMPQGX9Ur"
   },
@@ -31040,6 +32494,12 @@
     "grantsBuffs": [],
     "id": "pqu1Mvo46iRpVH3I",
     "name": "Banner",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "34"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.pqu1Mvo46iRpVH3I"
   },
@@ -32657,6 +34117,12 @@
     "grantsBuffs": [],
     "id": "qCl2cw0leReIXuRn",
     "name": "Startling Appearance",
+    "sources": [
+      {
+        "id": "PZO1134",
+        "pages": "17"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.qCl2cw0leReIXuRn"
   },
@@ -32830,6 +34296,12 @@
     "grantsBuffs": [],
     "id": "qUVgcfJUUPTeubNm",
     "name": "Phrenic Amplifications",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "60"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.qUVgcfJUUPTeubNm"
   },
@@ -32856,6 +34328,12 @@
     "grantsBuffs": [],
     "id": "qXbFw1qEdelMGNH4",
     "name": "Gunslinger's Dodge",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "source": "grit"
@@ -33168,6 +34646,12 @@
     "grantsBuffs": [],
     "id": "qzCj0dGiKmIMw4wf",
     "name": "Perfection of Self",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "145"
+      }
+    ],
     "subType": "classFeat",
     "tag": "perfectionOfSelf",
     "uses": {
@@ -33188,6 +34672,12 @@
     "grantsBuffs": [],
     "id": "qzrYai2tj5Ehg6Um",
     "name": "Bonus Feats (SWA)",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "59"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.qzrYai2tj5Ehg6Um"
   },
@@ -33617,6 +35107,12 @@
     "grantsBuffs": [],
     "id": "rmzUjpMld0deM9Aa",
     "name": "Mighty Rage (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.rmzUjpMld0deM9Aa"
   },
@@ -33731,6 +35227,12 @@
     "grantsBuffs": [],
     "id": "ryQboCpsLfFBCzdL",
     "name": "Phantom",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "72"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.ryQboCpsLfFBCzdL"
   },
@@ -33999,6 +35501,12 @@
     "grantsBuffs": [],
     "id": "sO5cLMTyyJARtKto",
     "name": "Dual Bond",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "76"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.sO5cLMTyyJARtKto"
   },
@@ -34050,6 +35558,12 @@
     "grantsBuffs": [],
     "id": "sOwXPOtI5IlEBKwr",
     "name": "Martial Flexibility",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "23"
+      }
+    ],
     "subType": "classFeat",
     "tag": "martialFlexibility",
     "uses": {
@@ -35537,6 +37051,12 @@
     "grantsBuffs": [],
     "id": "t2XEI2AKkv1CY8to",
     "name": "Honorable Stand",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "20"
+      }
+    ],
     "subType": "classFeat",
     "tag": "honorableStand",
     "uses": {
@@ -35614,6 +37134,12 @@
     "grantsBuffs": [],
     "id": "tFy3rxyljSq56HSg",
     "name": "Phrenic Pool",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "60"
+      }
+    ],
     "subType": "classFeat",
     "tag": "phrenicPool",
     "uses": {
@@ -35705,6 +37231,12 @@
     "grantsBuffs": [],
     "id": "tJCegZfiuMpDkVEd",
     "name": "Battleshaping",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "147"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "maxFormula": "3 + @abilities.int.mod",
@@ -35870,6 +37402,12 @@
     "grantsBuffs": [],
     "id": "tX50itDqdNfe1qpj",
     "name": "Mental Potency",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "43"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.tX50itDqdNfe1qpj"
   },
@@ -35989,6 +37527,12 @@
     "grantsBuffs": [],
     "id": "tlvQVJUUFUVQ92EH",
     "name": "Spell Kenning",
+    "sources": [
+      {
+        "id": "PZO1129",
+        "pages": "50"
+      }
+    ],
     "subType": "classFeat",
     "tag": "spellKenning",
     "uses": {
@@ -36149,6 +37693,12 @@
     "grantsBuffs": [],
     "id": "u6q3Zk8XL1AMPxY4",
     "name": "Energy Kinetic Blast",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "15"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.u6q3Zk8XL1AMPxY4"
   },
@@ -36159,6 +37709,12 @@
     "grantsBuffs": [],
     "id": "u7r3RkiMNAhv9I2d",
     "name": "Augment",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "145"
+      }
+    ],
     "subType": "classFeat",
     "tag": "augment",
     "uses": {
@@ -36381,6 +37937,12 @@
     "grantsBuffs": [],
     "id": "uURWe8xOp8w7YBQY",
     "name": "Twin Eidolon (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "28"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "maxFormula": "@class.unlevel",
@@ -36446,6 +38008,12 @@
     "grantsBuffs": [],
     "id": "uhfXFDZBrYHwQnZX",
     "name": "Transposition (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "27"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.uhfXFDZBrYHwQnZX"
   },
@@ -36796,6 +38364,12 @@
     "grantsBuffs": [],
     "id": "vQ6i4zS5T7z1UNOM",
     "name": "Foretell",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146"
+      }
+    ],
     "subType": "classFeat",
     "tag": "foretell",
     "uses": {
@@ -36831,6 +38405,12 @@
     "grantsBuffs": [],
     "id": "vTE94sQboMmdAakT",
     "name": "Vigilante Specialization",
+    "sources": [
+      {
+        "id": "PZO1134",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.vTE94sQboMmdAakT"
   },
@@ -36983,6 +38563,12 @@
     "grantsBuffs": [],
     "id": "vfu0FW2XYF7cBUQp",
     "name": "Bonus Feat (CAV)",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "34"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.vfu0FW2XYF7cBUQp"
   },
@@ -37098,6 +38684,12 @@
     "grantsBuffs": [],
     "id": "w6blUIDEc7Yfr5g4",
     "name": "Planar Knowledge",
+    "sources": [
+      {
+        "id": "PZO9414",
+        "pages": "29"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.w6blUIDEc7Yfr5g4"
   },
@@ -37108,6 +38700,12 @@
     "grantsBuffs": [],
     "id": "w7TIla7F0RcPW0ga",
     "name": "Composite Specialization",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "14"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.w7TIla7F0RcPW0ga"
   },
@@ -37166,6 +38764,12 @@
     "grantsBuffs": [],
     "id": "wHfy3OJmTimVgXuO",
     "name": "Aura of Justice",
+    "sources": [
+      {
+        "id": "PZO1110",
+        "pages": "63"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.wHfy3OJmTimVgXuO"
   },
@@ -37229,6 +38833,12 @@
     "grantsBuffs": [],
     "id": "wO5J51vEaMyWpgWQ",
     "name": "Stunning Shot",
+    "sources": [
+      {
+        "id": "PZO1118",
+        "pages": "12"
+      }
+    ],
     "subType": "classFeat",
     "uses": {
       "source": "grit"
@@ -37242,6 +38852,12 @@
     "grantsBuffs": [],
     "id": "wQzDpnuEOloBB7ZH",
     "name": "Greater Rage (UC)",
+    "sources": [
+      {
+        "id": "PZO1131",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.wQzDpnuEOloBB7ZH"
   },
@@ -37298,6 +38914,12 @@
     "grantsBuffs": [],
     "id": "wa9VINqzFWWOnS6g",
     "name": "Beguiling Touch",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "146"
+      }
+    ],
     "subType": "classFeat",
     "tag": "beguilingTouch",
     "uses": {
@@ -37557,6 +39179,12 @@
     "grantsBuffs": [],
     "id": "wxPsA25DTWBHcX9O",
     "name": "Connection Channel",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "32"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.wxPsA25DTWBHcX9O"
   },
@@ -37637,6 +39265,12 @@
     "grantsBuffs": [],
     "id": "x8cEHXOa8OXWG86M",
     "name": "Face in the Crowd (WIZ)",
+    "sources": [
+      {
+        "id": "PZO9414",
+        "pages": "29"
+      }
+    ],
     "subType": "classFeat",
     "tag": "faceInTheCrowdWiz",
     "uses": {
@@ -37672,6 +39306,12 @@
     "grantsBuffs": [],
     "id": "x9TM9MHoUl4cv9Ht",
     "name": "Elemental Focus",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "10"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.x9TM9MHoUl4cv9Ht"
   },
@@ -37869,6 +39509,12 @@
     "grantsBuffs": [],
     "id": "xj7Dp0lzyv7IYHcz",
     "name": "Omnikinesis",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "14"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.xj7Dp0lzyv7IYHcz"
   },
@@ -37956,6 +39602,12 @@
     "grantsBuffs": [],
     "id": "xrruZUG1zqIHe35h",
     "name": "Vengeance Strike",
+    "sources": [
+      {
+        "id": "PZO1134",
+        "pages": "17"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.xrruZUG1zqIHe35h"
   },
@@ -37966,6 +39618,12 @@
     "grantsBuffs": [],
     "id": "xtSXGphDhzkMwbpW",
     "name": "Bonded Senses",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "74"
+      }
+    ],
     "subType": "classFeat",
     "tag": "bondedSenses",
     "uses": {
@@ -38122,6 +39780,12 @@
     "grantsBuffs": [],
     "id": "y5VEa0kjV1UKYnZW",
     "name": "Binding Circles",
+    "sources": [
+      {
+        "id": "PZO1132",
+        "pages": "49"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.y5VEa0kjV1UKYnZW"
   },
@@ -38208,6 +39872,12 @@
     "grantsBuffs": [],
     "id": "yIVUP0keOg2PctKq",
     "name": "Imp Familiar",
+    "sources": [
+      {
+        "id": "PZO9414",
+        "pages": "29"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.yIVUP0keOg2PctKq"
   },
@@ -38618,6 +40288,12 @@
     "grantsBuffs": [],
     "id": "zLXBKnWXbZ2YKOBo",
     "name": "Counterstrike",
+    "sources": [
+      {
+        "id": "PZO1117",
+        "pages": "13"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.zLXBKnWXbZ2YKOBo"
   },
@@ -38928,6 +40604,12 @@
     "grantsBuffs": [],
     "id": "zwZnq5WCBCijev6o",
     "name": "Cruelty",
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "120"
+      }
+    ],
     "subType": "classFeat",
     "uuid": "Compendium.pf1.class-abilities.Item.zwZnq5WCBCijev6o"
   },

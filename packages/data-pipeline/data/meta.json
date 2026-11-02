@@ -67,8 +67,8 @@
     "witchPatrons": 61,
     "wizardSchools": 17
   },
-  "dataVersion": "11.11+d3084f7c5ef2",
-  "generatedAt": "2026-10-25T16:25:16+02:00",
+  "dataVersion": "11.11+e8acc223027c",
+  "generatedAt": "2026-11-02T18:21:46+02:00",
   "hashes": {
     "alchemist-discoveries.json": "9a8883ccd6b65fc33646f34466481f4241a9aee7baf9157d1a53bc200ea0feb0",
     "arcanist-exploits.json": "10424852ff90d5ffa9865e4ec1036b386c5564ef3153f505807551572394bbc2",
@@ -80,7 +80,7 @@
     "bloodrager-bloodlines.json": "df33d41024014679c1bff5f73f845daa698b816fa37c2ecbdf7a24e12bbe49a6",
     "buffs.json": "84c8847d20365a9af15ee5622ca587974194349476f7e09ef21b6338823444cb",
     "cavalier-orders.json": "ff778d49686b9bb0e011fc0111a98463f6db3a075af0e8076770e01550c86ce6",
-    "class-features.json": "ef952f02ac530d9a97e434ff487b132968b5af905e2595c0901d228fad3b394e",
+    "class-features.json": "2a1b66566c4e2ad257883d6632539dae97fabef12a52e7e9eb3b6708776d24cc",
     "classes.json": "036002d8462e297bda8ee5c1906284bbef32c720bc7d4f1d0e3634ceaa9e046b",
     "domain-spell-lists.json": "442e3bd1a6330bfcdde1592d714db1769657149af8681940bb08278534cdeb66",
     "domains.json": "30be7c019eabe48c2382c0b3b29327b6ec10a4bbda4e85632f86b6260a75c12f",
@@ -121,9 +121,9 @@
     "sorcerer-bloodline-mutations.json": "9d5fb49e730d3129fcd70f765c6cb142a783a88895dcefd190a658ec6c434fd2",
     "sorcerer-bloodlines.json": "77c462096923c213259affcc08cc51e84ea61fb1510daa4aee9f67e94c161a9a",
     "spell-lists.json": "b955e35ee16a2e4d391b3a32648d83c854e8b7477b472b95cdef50ed6cf0806c",
-    "spells.json": "415fffeba138c233adbf21f5f7d268d5b2b7cf6d22715f904f8db3700679f6c2",
+    "spells.json": "9a6b63abe8bd4e9f7f3bae011ffb66de841ed61fd20213083ff38d5a1e029a80",
     "subdomain-spell-lists.json": "dfedb0d2d7cb3e96fb8cde30aef6e788d45eb4646800ad1bebb34020cc0ac27e",
-    "subdomains.json": "e46523090aa3c1c4b1f8962b6de1370f2a390892614b145c33367f4f6431be80",
+    "subdomains.json": "fc799ec3181d0ef2e8ec9e0c8cb2e242731dccc65eed0ebca2f9461a9aef6ddb",
     "traits.json": "01605bd35270ca38192929f0eb13faba450b7cd0a99180ddba39736d054cdec2",
     "vigilante-social-talents.json": "f4b64f932d8b229d5267b47f5c0dafd8dc351539c492c8caa92bb47f56e30637",
     "vigilante-talents.json": "eae45434ba0760cbfa06e504cc4af120828427b537cac0d9487358e28dc2f62a",
@@ -134,11 +134,11 @@
   "schemaVersion": 29,
   "sourcePins": {
     "archetypes": "92ddcb60027e3088e5afd0645183c031ec3e9bb4",
-    "foundry": "d3084f7c5ef20940e8b6367359fab77ff216531c",
+    "foundry": "e8acc223027c84fe5577ccde2523cfb5c502e6cb",
     "pfContent": "c66bf333cafc451d817ead660473dd01d9846fb3",
     "pfData": "08ea71f24375908d0190c822fd1fd080797667a9"
   },
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
-  "sourceSha": "d3084f7c5ef20940e8b6367359fab77ff216531c",
+  "sourceSha": "e8acc223027c84fe5577ccde2523cfb5c502e6cb",
   "systemVersion": "11.11"
 }
