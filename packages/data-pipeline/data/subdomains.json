@@ -52,6 +52,16 @@
     "id": "0iu50uQrFKQrR0pj",
     "name": "Corruption Subdomain",
     "parentDomainTags": ["Evil"],
+    "sources": [
+      {
+        "id": "PZO9450",
+        "pages": "18"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Corruption",
     "uuid": "Compendium.pf1.class-abilities.Item.0iu50uQrFKQrR0pj"
   },
@@ -77,6 +87,16 @@
     "id": "0mXAs4PZgXIKUbl4",
     "name": "Sahkil Subdomain",
     "parentDomainTags": ["Evil"],
+    "sources": [
+      {
+        "id": "PZO90143",
+        "pages": "61"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Sahkil",
     "uuid": "Compendium.pf1.class-abilities.Item.0mXAs4PZgXIKUbl4"
   },
@@ -270,6 +290,16 @@
     "id": "51FDels17DGl7Yq9",
     "name": "Legend Subdomain",
     "parentDomainTags": ["Glory"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "23"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Legend",
     "uuid": "Compendium.pf1.class-abilities.Item.51FDels17DGl7Yq9"
   },
@@ -493,6 +523,16 @@
     "id": "7RxmCyoga9W3WADT",
     "name": "Riot Subdomain",
     "parentDomainTags": ["Chaos"],
+    "sources": [
+      {
+        "id": "PZO9460",
+        "pages": "19"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Riot",
     "uuid": "Compendium.pf1.class-abilities.Item.7RxmCyoga9W3WADT"
   },
@@ -518,6 +558,12 @@
     "id": "8GVwxb8WviIeUq0L",
     "name": "Entropy Subdomain",
     "parentDomainTags": ["Chaos"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Entropy",
     "uuid": "Compendium.pf1.class-abilities.Item.8GVwxb8WviIeUq0L"
   },
@@ -636,6 +682,16 @@
     "id": "9EGisgvR26lfHRbq",
     "name": "Leshy Subdomain",
     "parentDomainTags": ["Plant"],
+    "sources": [
+      {
+        "id": "PZO1140",
+        "pages": "23"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Leshy",
     "uuid": "Compendium.pf1.class-abilities.Item.9EGisgvR26lfHRbq"
   },
@@ -661,6 +717,12 @@
     "id": "9L6D7WcLuGX58Wc6",
     "name": "Rivers Subdomain",
     "parentDomainTags": ["Water"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Rivers",
     "uuid": "Compendium.pf1.class-abilities.Item.9L6D7WcLuGX58Wc6"
   },
@@ -686,6 +748,16 @@
     "id": "9lMpmvKhps8DBPG5",
     "name": "Alchemy Subdomain",
     "parentDomainTags": ["Artifice", "Magic"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "22"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Alchemy",
     "uuid": "Compendium.pf1.class-abilities.Item.9lMpmvKhps8DBPG5"
   },
@@ -711,6 +783,12 @@
     "id": "9lg0RmVr8Qw2kkI9",
     "name": "Whimsy Subdomain",
     "parentDomainTags": ["Chaos"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Whimsy",
     "uuid": "Compendium.pf1.class-abilities.Item.9lg0RmVr8Qw2kkI9"
   },
@@ -798,6 +876,12 @@
     "id": "AW8RWHDiMKhwglcQ",
     "name": "Torture Subdomain",
     "parentDomainTags": ["Destruction"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Torture",
     "uuid": "Compendium.pf1.class-abilities.Item.AW8RWHDiMKhwglcQ"
   },
@@ -823,6 +907,16 @@
     "id": "BnDWyEkl77V3FjCw",
     "name": "Captivation Subdomain",
     "parentDomainTags": ["Charm"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "22"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Captivation",
     "uuid": "Compendium.pf1.class-abilities.Item.BnDWyEkl77V3FjCw"
   },
@@ -917,6 +1011,16 @@
     "id": "CgDxKisDe3MCRPg5",
     "name": "Demodand Subdomain",
     "parentDomainTags": ["Chaos", "Evil"],
+    "sources": [
+      {
+        "id": "PZO9450",
+        "pages": "19"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Demodand",
     "uuid": "Compendium.pf1.class-abilities.Item.CgDxKisDe3MCRPg5"
   },
@@ -942,6 +1046,16 @@
     "id": "DJu9WtuvbR1UkcvZ",
     "name": "Plague Subdomain",
     "parentDomainTags": ["Death", "Evil"],
+    "sources": [
+      {
+        "id": "PZO9460",
+        "pages": "19"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Plague",
     "uuid": "Compendium.pf1.class-abilities.Item.DJu9WtuvbR1UkcvZ"
   },
@@ -967,6 +1081,12 @@
     "id": "DPaGRvfkKANynD7M",
     "name": "Friendship Subdomain",
     "parentDomainTags": ["Good"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Friendship",
     "uuid": "Compendium.pf1.class-abilities.Item.DPaGRvfkKANynD7M"
   },
@@ -999,6 +1119,16 @@
     "id": "ER2tTsoeC0AWtRYn",
     "name": "Portal Subdomain",
     "parentDomainTags": ["Travel"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "25"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Portal",
     "uuid": "Compendium.pf1.class-abilities.Item.ER2tTsoeC0AWtRYn"
   },
@@ -1124,6 +1254,16 @@
     "id": "GoOZGKSbOmodZHqF",
     "name": "Chivalry Subdomain",
     "parentDomainTags": ["Glory"],
+    "sources": [
+      {
+        "id": "PZO9476",
+        "pages": "21"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Chivalry",
     "uuid": "Compendium.pf1.class-abilities.Item.GoOZGKSbOmodZHqF"
   },
@@ -1186,6 +1326,16 @@
     "id": "H5BScdULGUCOEt5L",
     "name": "Shadow Subdomain",
     "parentDomainTags": ["Darkness", "Death"],
+    "sources": [
+      {
+        "id": "PZO9466",
+        "pages": "17"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Shadow",
     "uuid": "Compendium.pf1.class-abilities.Item.H5BScdULGUCOEt5L"
   },
@@ -1211,6 +1361,16 @@
     "id": "HeeQpOyLQXsOtIJG",
     "name": "Insect Subdomain",
     "parentDomainTags": ["Animal"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "23"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Insect",
     "uuid": "Compendium.pf1.class-abilities.Item.HeeQpOyLQXsOtIJG"
   },
@@ -1311,6 +1471,16 @@
     "id": "J1v8s4Ao05VehDTq",
     "name": "Industry Subdomain",
     "parentDomainTags": ["Artifice"],
+    "sources": [
+      {
+        "id": "PZO9460",
+        "pages": "19"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Industry",
     "uuid": "Compendium.pf1.class-abilities.Item.J1v8s4Ao05VehDTq"
   },
@@ -1404,6 +1574,16 @@
     "id": "KWGUqoIm1WTcohBG",
     "name": "Aeon Subdomain",
     "parentDomainTags": ["Knowledge"],
+    "sources": [
+      {
+        "id": "PZO9443",
+        "pages": "16"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Aeon",
     "uuid": "Compendium.pf1.class-abilities.Item.KWGUqoIm1WTcohBG"
   },
@@ -1429,6 +1609,12 @@
     "id": "KXnHUgJXQvUAwJSP",
     "name": "Flotsam Subdomain",
     "parentDomainTags": ["Water"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Flotsam",
     "uuid": "Compendium.pf1.class-abilities.Item.KXnHUgJXQvUAwJSP"
   },
@@ -1454,6 +1640,12 @@
     "id": "KZ4dIav1Qcto78xO",
     "name": "Stars Subdomain",
     "parentDomainTags": ["Void"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Stars",
     "uuid": "Compendium.pf1.class-abilities.Item.KZ4dIav1Qcto78xO"
   },
@@ -1479,6 +1671,16 @@
     "id": "KcRbd3s76GwqyJi1",
     "name": "Redemption Subdomain",
     "parentDomainTags": ["Good"],
+    "sources": [
+      {
+        "id": "PZO9431",
+        "pages": "21"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Redemption",
     "uuid": "Compendium.pf1.class-abilities.Item.KcRbd3s76GwqyJi1"
   },
@@ -1504,6 +1706,16 @@
     "id": "LDI7nsgF5UL75dLv",
     "name": "Flowing Subdomain",
     "parentDomainTags": ["Water"],
+    "sources": [
+      {
+        "id": "PZO9443",
+        "pages": "17"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Flowing",
     "uuid": "Compendium.pf1.class-abilities.Item.LDI7nsgF5UL75dLv"
   },
@@ -1536,6 +1748,16 @@
     "id": "LIb8sgvAtUL7r11Q",
     "name": "Thirst Subdomain",
     "parentDomainTags": ["Sun"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "26"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Thirst",
     "uuid": "Compendium.pf1.class-abilities.Item.LIb8sgvAtUL7r11Q"
   },
@@ -1598,6 +1820,12 @@
     "id": "LdTgQd53LA9JUQaj",
     "name": "Revelry Subdomain",
     "parentDomainTags": ["Chaos"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Revelry",
     "uuid": "Compendium.pf1.class-abilities.Item.LdTgQd53LA9JUQaj"
   },
@@ -1623,6 +1851,16 @@
     "id": "LwwjHf6ORZKi0tTa",
     "name": "Radiation Subdomain",
     "parentDomainTags": ["Earth"],
+    "sources": [
+      {
+        "id": "PZO9432",
+        "pages": "13"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Radiation",
     "uuid": "Compendium.pf1.class-abilities.Item.LwwjHf6ORZKi0tTa"
   },
@@ -1710,6 +1948,16 @@
     "id": "MMzblKaO4G5vayvK",
     "name": "Hatred Subdomain",
     "parentDomainTags": ["Destruction"],
+    "sources": [
+      {
+        "id": "PZO9450",
+        "pages": "19"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Hatred",
     "uuid": "Compendium.pf1.class-abilities.Item.MMzblKaO4G5vayvK"
   },
@@ -1735,6 +1983,16 @@
     "id": "MOfNOb76twm8Rhse",
     "name": "Trap Subdomain",
     "parentDomainTags": ["Artifice"],
+    "sources": [
+      {
+        "id": "PZO9432",
+        "pages": "13"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Trap",
     "uuid": "Compendium.pf1.class-abilities.Item.MOfNOb76twm8Rhse"
   },
@@ -1760,6 +2018,16 @@
     "id": "N1TVJ8y9XF9PzEht",
     "name": "Truth Subdomain",
     "parentDomainTags": ["Madness"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "27"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Truth",
     "uuid": "Compendium.pf1.class-abilities.Item.N1TVJ8y9XF9PzEht"
   },
@@ -1816,6 +2084,16 @@
     "id": "O2TI9qvCdf45jvBX",
     "name": "Thorns Subdomain",
     "parentDomainTags": ["Plant"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "26"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Thorns",
     "uuid": "Compendium.pf1.class-abilities.Item.O2TI9qvCdf45jvBX"
   },
@@ -1972,6 +2250,12 @@
     "id": "Q29rN7LtWcTWgtuZ",
     "name": "Saurian Subdomain",
     "parentDomainTags": ["Scalykind"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Saurian",
     "uuid": "Compendium.pf1.class-abilities.Item.Q29rN7LtWcTWgtuZ"
   },
@@ -1997,6 +2281,12 @@
     "id": "QJi75fvhCPwa2e5U",
     "name": "Dark Tapestry Subdomain",
     "parentDomainTags": ["Void"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Dark Tapestry",
     "uuid": "Compendium.pf1.class-abilities.Item.QJi75fvhCPwa2e5U"
   },
@@ -2022,6 +2312,12 @@
     "id": "QKE50owA3SkjjESt",
     "name": "Arson Subdomain",
     "parentDomainTags": ["Fire"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Arson",
     "uuid": "Compendium.pf1.class-abilities.Item.QKE50owA3SkjjESt"
   },
@@ -2047,6 +2343,12 @@
     "id": "QO6oW3l5Oio6fyDP",
     "name": "Fear Subdomain",
     "parentDomainTags": ["Evil"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Fear",
     "uuid": "Compendium.pf1.class-abilities.Item.QO6oW3l5Oio6fyDP"
   },
@@ -2141,6 +2443,16 @@
     "id": "S3e7NaopczIYCfO8",
     "name": "Hubris Subdomain",
     "parentDomainTags": ["Glory", "Nobility"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "23"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Hubris",
     "uuid": "Compendium.pf1.class-abilities.Item.S3e7NaopczIYCfO8"
   },
@@ -2389,6 +2701,16 @@
     "id": "WsTeyXwNCOSvvcoU",
     "name": "Monsoon Subdomain",
     "parentDomainTags": ["Weather"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "25"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Monsoon",
     "uuid": "Compendium.pf1.class-abilities.Item.WsTeyXwNCOSvvcoU"
   },
@@ -2414,6 +2736,16 @@
     "id": "X8hwy7iMWx9yjJeM",
     "name": "Psychopomp Subdomain",
     "parentDomainTags": ["Death", "Repose"],
+    "sources": [
+      {
+        "id": "PZO9443",
+        "pages": "17"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Psychopomp",
     "uuid": "Compendium.pf1.class-abilities.Item.X8hwy7iMWx9yjJeM"
   },
@@ -2439,6 +2771,16 @@
     "id": "YvkymTmb5YLbqsjK",
     "name": "Fist Subdomain",
     "parentDomainTags": ["Strength"],
+    "sources": [
+      {
+        "id": "PZO9443",
+        "pages": "17"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Fist",
     "uuid": "Compendium.pf1.class-abilities.Item.YvkymTmb5YLbqsjK"
   },
@@ -2563,6 +2905,16 @@
     "id": "bqJOJF5OXJlOxjf3",
     "name": "Ambush Subdomain",
     "parentDomainTags": ["Trickery"],
+    "sources": [
+      {
+        "id": "PZO9432",
+        "pages": "13"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Ambush",
     "uuid": "Compendium.pf1.class-abilities.Item.bqJOJF5OXJlOxjf3"
   },
@@ -2594,6 +2946,12 @@
     "id": "btjzccR1YDUNW1td",
     "name": "Moon Subdomain",
     "parentDomainTags": ["Darkness"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Moon",
     "uuid": "Compendium.pf1.class-abilities.Item.btjzccR1YDUNW1td"
   },
@@ -2619,6 +2977,16 @@
     "id": "cILuW33UDhe2DYsk",
     "name": "Education Subdomain",
     "parentDomainTags": ["Community", "Knowledge"],
+    "sources": [
+      {
+        "id": "PZO9460",
+        "pages": "18"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Education",
     "uuid": "Compendium.pf1.class-abilities.Item.cILuW33UDhe2DYsk"
   },
@@ -2768,6 +3136,12 @@
     "id": "dkcWJ80XYWvnM1h7",
     "name": "Venom Subdomain",
     "parentDomainTags": ["Scalykind"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Venom",
     "uuid": "Compendium.pf1.class-abilities.Item.dkcWJ80XYWvnM1h7"
   },
@@ -2855,6 +3229,16 @@
     "id": "fOrSCrSzq2R79Xne",
     "name": "Duels Subdomain",
     "parentDomainTags": ["War"],
+    "sources": [
+      {
+        "id": "PZO9460",
+        "pages": "18"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Duels",
     "uuid": "Compendium.pf1.class-abilities.Item.fOrSCrSzq2R79Xne"
   },
@@ -2911,6 +3295,16 @@
     "id": "gOMQuX8vUnNclNXT",
     "name": "Rites Subdomain",
     "parentDomainTags": ["Magic"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "26"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Rites",
     "uuid": "Compendium.pf1.class-abilities.Item.gOMQuX8vUnNclNXT"
   },
@@ -2998,6 +3392,12 @@
     "id": "hJV8YVdSn0NnTxww",
     "name": "Judgment Subdomain",
     "parentDomainTags": ["Law"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Judgment",
     "uuid": "Compendium.pf1.class-abilities.Item.hJV8YVdSn0NnTxww"
   },
@@ -3116,6 +3516,16 @@
     "id": "j4uzXCLo91dJszhU",
     "name": "Aristocracy Subdomain",
     "parentDomainTags": ["Nobility"],
+    "sources": [
+      {
+        "id": "PZO9443",
+        "pages": "16"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Aristocracy",
     "uuid": "Compendium.pf1.class-abilities.Item.j4uzXCLo91dJszhU"
   },
@@ -3141,6 +3551,12 @@
     "id": "jYOMxBxMHT6MXajA",
     "name": "Dragon Subdomain",
     "parentDomainTags": ["Scalykind"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Dragon",
     "uuid": "Compendium.pf1.class-abilities.Item.jYOMxBxMHT6MXajA"
   },
@@ -3166,6 +3582,16 @@
     "id": "kCDtKTsnJekhb4lL",
     "name": "Innuendo Subdomain",
     "parentDomainTags": ["Trickery"],
+    "sources": [
+      {
+        "id": "PZO9443",
+        "pages": "17"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Innuendo",
     "uuid": "Compendium.pf1.class-abilities.Item.kCDtKTsnJekhb4lL"
   },
@@ -3191,6 +3617,16 @@
     "id": "kgFOpFrVPIw9vfWf",
     "name": "Greed Subdomain",
     "parentDomainTags": ["Trickery"],
+    "sources": [
+      {
+        "id": "PZO9450",
+        "pages": "19"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Greed",
     "uuid": "Compendium.pf1.class-abilities.Item.kgFOpFrVPIw9vfWf"
   },
@@ -3216,6 +3652,16 @@
     "id": "khH8Lg8cYd7GW6ZI",
     "name": "Sovereignty Subdomain",
     "parentDomainTags": ["Law"],
+    "sources": [
+      {
+        "id": "PZO9476",
+        "pages": "21"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Sovereignty",
     "uuid": "Compendium.pf1.class-abilities.Item.khH8Lg8cYd7GW6ZI"
   },
@@ -3241,6 +3687,12 @@
     "id": "kmA5EX7k3Ol2rfPu",
     "name": "Cooperation Subdomain",
     "parentDomainTags": ["Community"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Cooperation",
     "uuid": "Compendium.pf1.class-abilities.Item.kmA5EX7k3Ol2rfPu"
   },
@@ -3297,6 +3749,12 @@
     "id": "lSQOZL8w9pzbDMj0",
     "name": "Isolation Subdomain",
     "parentDomainTags": ["Void"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Isolation",
     "uuid": "Compendium.pf1.class-abilities.Item.lSQOZL8w9pzbDMj0"
   },
@@ -3353,6 +3811,16 @@
     "id": "mHGqr3eA8cupQ2BW",
     "name": "Competition Subdomain",
     "parentDomainTags": ["Strength"],
+    "sources": [
+      {
+        "id": "PZO9460",
+        "pages": "18"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Competition",
     "uuid": "Compendium.pf1.class-abilities.Item.mHGqr3eA8cupQ2BW"
   },
@@ -3378,6 +3846,16 @@
     "id": "mKu7cXOlntB043QS",
     "name": "Imagination Subdomain",
     "parentDomainTags": ["Luck"],
+    "sources": [
+      {
+        "id": "PZO9431",
+        "pages": "21"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Imagination",
     "uuid": "Compendium.pf1.class-abilities.Item.mKu7cXOlntB043QS"
   },
@@ -3403,6 +3881,16 @@
     "id": "mO0pMgYsKx98oiHg",
     "name": "Legislation Subdomain",
     "parentDomainTags": ["Law", "Rune"],
+    "sources": [
+      {
+        "id": "PZO9460",
+        "pages": "19"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Legislation",
     "uuid": "Compendium.pf1.class-abilities.Item.mO0pMgYsKx98oiHg"
   },
@@ -3490,6 +3978,16 @@
     "id": "p9yDKj9mQz1bBiJp",
     "name": "Petrification Subdomain",
     "parentDomainTags": ["Earth"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "25"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Petrification",
     "uuid": "Compendium.pf1.class-abilities.Item.p9yDKj9mQz1bBiJp"
   },
@@ -3614,6 +4112,16 @@
     "id": "rOSQZD57Jz4eNLt3",
     "name": "Espionage Subdomain",
     "parentDomainTags": ["Knowledge", "Trickery"],
+    "sources": [
+      {
+        "id": "PZO9460",
+        "pages": "18"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Espionage",
     "uuid": "Compendium.pf1.class-abilities.Item.rOSQZD57Jz4eNLt3"
   },
@@ -3707,6 +4215,16 @@
     "id": "s8IfMD55rv71JTur",
     "name": "Cannibalism Subdomain",
     "parentDomainTags": ["Evil"],
+    "sources": [
+      {
+        "id": "PZO9450",
+        "pages": "18"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Cannibalism",
     "uuid": "Compendium.pf1.class-abilities.Item.s8IfMD55rv71JTur"
   },
@@ -3732,6 +4250,16 @@
     "id": "s9LwNl1ZzPJvRjIs",
     "name": "Medicine Subdomain",
     "parentDomainTags": ["Healing"],
+    "sources": [
+      {
+        "id": "PZO9472",
+        "pages": "24"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Medicine",
     "uuid": "Compendium.pf1.class-abilities.Item.s9LwNl1ZzPJvRjIs"
   },
@@ -3881,6 +4409,16 @@
     "id": "vrBRbL0zpUVLqBjF",
     "name": "Loyalty Subdomain",
     "parentDomainTags": ["Law"],
+    "sources": [
+      {
+        "id": "PZO9424",
+        "pages": "27"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Loyalty",
     "uuid": "Compendium.pf1.class-abilities.Item.vrBRbL0zpUVLqBjF"
   },
@@ -3906,6 +4444,16 @@
     "id": "xDLxqe463zMv22QC",
     "name": "Kyton Subdomain",
     "parentDomainTags": ["Evil", "Law"],
+    "sources": [
+      {
+        "id": "PZO9450",
+        "pages": "19"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Kyton",
     "uuid": "Compendium.pf1.class-abilities.Item.xDLxqe463zMv22QC"
   },
@@ -3931,6 +4479,12 @@
     "id": "xSNDqJG0Bt9J6ZOY",
     "name": "Slavery Subdomain",
     "parentDomainTags": ["Law"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Slavery",
     "uuid": "Compendium.pf1.class-abilities.Item.xSNDqJG0Bt9J6ZOY"
   },
@@ -3956,6 +4510,12 @@
     "id": "yAz6IHIN1xd9vZjR",
     "name": "Tyranny Subdomain",
     "parentDomainTags": ["Law"],
+    "sources": [
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Tyranny",
     "uuid": "Compendium.pf1.class-abilities.Item.yAz6IHIN1xd9vZjR"
   },
@@ -4012,6 +4572,16 @@
     "id": "yPoebbIxW5vyKOZN",
     "name": "Revelation Subdomain",
     "parentDomainTags": ["Sun"],
+    "sources": [
+      {
+        "id": "PZO9431",
+        "pages": "21"
+      },
+      {
+        "id": "PZO1115",
+        "pages": "38"
+      }
+    ],
     "tag": "Revelation",
     "uuid": "Compendium.pf1.class-abilities.Item.yPoebbIxW5vyKOZN"
   },
