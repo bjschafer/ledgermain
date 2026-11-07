@@ -5,9 +5,9 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 
-import type { AppliedMetamagic } from "@pf1/schema";
+import type { AppliedMetamagic, CharacterDoc } from "@pf1/schema";
 
-import { casterLevelForClass, effectiveCasterClassLevel } from "@pf1/engine";
+import { casterLevelForClass, deriveResourcePools, effectiveCasterClassLevel } from "@pf1/engine";
 import {
   clearPrepared,
   prepareSpell,
@@ -17,6 +17,7 @@ import {
   spellLevelMap,
   unprepareSpell,
 } from "../../../model/preparedSpells.js";
+import { payArmedReservoirDc, reservoirDcArmed } from "../../../model/arcaneReservoirSpend.js";
 import { domainSecretMetamagicFor } from "../../../model/freeMetamagic.js";
 import {
   metamagicDiscountFor,
@@ -101,6 +102,26 @@ export function HybridView({
   const earlyBonusSpells = doc.build.settings?.earlyBonusSpells;
   const slotDeltas = castingDeltasFor(sheet.castingAdjustments, casterTag, "slots");
   const preparedDeltas = castingDeltasFor(sheet.castingAdjustments, casterTag, "prepared");
+  const pools = useMemo(
+    () => deriveResourcePools(doc, refData, sheet.abilities, sheet.abilityDCs),
+    [doc, refData, sheet],
+  );
+  // A cast also pays for an armed reservoir DC spend, in the same step, so one
+  // log line and one undo cover both.
+  const castSlot = (d: CharacterDoc, castLevel: number): CharacterDoc => {
+    const cast = castSpontaneousSlot(
+      d,
+      model,
+      effectiveClassLevel,
+      abilityMod,
+      castLevel,
+      classTag,
+      earlyBonusSpells,
+      slotDeltas,
+    );
+    return cast === d ? d : payArmedReservoirDc(cast, pools);
+  };
+  const reservoirNote = reservoirDcArmed(doc) ? ", plus 1 arcane reservoir point for the DC" : "";
 
   // Prepare: wizard-shaped daily readying cap (no ability bonus under RAW; the
   // early-bonus-spells homebrew is the one exception — see
@@ -400,18 +421,7 @@ export function HybridView({
                                 update={update}
                                 casterLevel={casterLevel}
                                 castExhausted={castExhausted}
-                                onCast={(d) =>
-                                  castSpontaneousSlot(
-                                    d,
-                                    model,
-                                    effectiveClassLevel,
-                                    abilityMod,
-                                    castLevel,
-                                    classTag,
-                                    earlyBonusSpells,
-                                    slotDeltas,
-                                  )
-                                }
+                                onCast={(d) => castSlot(d, castLevel)}
                               />
                             )}
                             <TipButton
@@ -420,23 +430,10 @@ export function HybridView({
                               disabledReason={`No level-${castLevel} slots remaining`}
                               title={
                                 castLevel === level
-                                  ? `Cast ${sp.name} (spend 1 level-${level} slot)`
-                                  : `Cast ${sp.name} with metamagic (spend 1 level-${castLevel} slot)`
+                                  ? `Cast ${sp.name} (spend 1 level-${level} slot${reservoirNote})`
+                                  : `Cast ${sp.name} with metamagic (spend 1 level-${castLevel} slot${reservoirNote})`
                               }
-                              onClick={() =>
-                                update((d) =>
-                                  castSpontaneousSlot(
-                                    d,
-                                    model,
-                                    effectiveClassLevel,
-                                    abilityMod,
-                                    castLevel,
-                                    classTag,
-                                    earlyBonusSpells,
-                                    slotDeltas,
-                                  ),
-                                )
-                              }
+                              onClick={() => update((d) => castSlot(d, castLevel))}
                             >
                               Cast
                             </TipButton>

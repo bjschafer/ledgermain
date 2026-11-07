@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-06-reservoir-dc-on-cast",
+    date: "2026-11-06",
+    title: "Arcane Reservoir's DC boost pays for itself on Cast",
+    note: "Switch on Arcane Reservoir: Spell DC before you cast, and the next arcanist spell you cast spends the reservoir point and switches it back off. One Undo puts back the slot, the point, and the boost together.",
+  },
+  {
     id: "2026-11-06-undo-clears-log",
     date: "2026-11-06",
     title: "Undo follows the session log",

@@ -898,6 +898,7 @@ export {
   arcanePoolToggleOptions,
   arcaneReservoirToggleOptions,
   ARCANE_POOL_DETAIL,
+  ARCANE_RESERVOIR_SPELL_DC_ID,
   ARCANE_RESERVOIR_DETAIL,
 } from "./arcane-spends.js";
 export {

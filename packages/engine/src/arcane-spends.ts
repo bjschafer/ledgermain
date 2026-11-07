@@ -168,6 +168,12 @@ export function arcanePoolToggleOptions(
   return options;
 }
 
+/**
+ * The base spell-DC spend's toggle id. It is armed for the next arcanist
+ * spell: the tracker's Cast spends the reservoir point and switches it off.
+ */
+export const ARCANE_RESERVOIR_SPELL_DC_ID = "arcaneReservoir:spellDC";
+
 /** RAW: free action when casting an arcanist spell, 1 reservoir point (max 1 per spell cast) to increase that spell's DC by 1 (Potent Magic doubles it to 2) — the caster-level half of the spend stays unmodeled, see `cl`'s doc comment in spell-dcs.ts. */
 function arcaneReservoirSpellDcOption(exploitIds: readonly string[]): ToggleBuffOption {
   const hasPotentMagic = exploitIds.includes("potentMagic");
@@ -177,7 +183,7 @@ function arcaneReservoirSpellDcOption(exploitIds: readonly string[]): ToggleBuff
   const contextNotes: ContextNote[] = [
     {
       target: "spellDC",
-      text: "Costs 1 arcane reservoir point per spell cast (maximum 1 point per spell): only toggle this on while it's actually being spent on the spells you're casting, and back off once you stop spending reservoir points on DC. The caster-level half of this spend (a +1, or +2 with Potent Magic, to that spell's caster level instead of its DC) is not modeled.",
+      text: "Costs 1 arcane reservoir point per spell (maximum 1 point per spell). Switch it on before casting: casting an arcanist spell spends the point and switches it back off. The caster-level half of this spend (a +1, or +2 with Potent Magic, to that spell's caster level instead of its DC) is not modeled.",
     },
   ];
   if (hasPotentMagic) {
@@ -187,7 +193,7 @@ function arcaneReservoirSpellDcOption(exploitIds: readonly string[]): ToggleBuff
     });
   }
   return {
-    id: "arcaneReservoir:spellDC",
+    id: ARCANE_RESERVOIR_SPELL_DC_ID,
     name: "Arcane Reservoir: Spell DC",
     changes,
     contextNotes,
