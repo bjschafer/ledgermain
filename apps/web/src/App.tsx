@@ -3,7 +3,12 @@ import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react"
 import type { CharacterDoc } from "@pf1/schema";
 
 import type { AppLocation, Mode } from "./model/appLocation.js";
-import { hasUnseenEntries, initChangelogSeen, markChangelogSeen } from "./model/changelog.js";
+import {
+  hasUnseenEntries,
+  initChangelogSeen,
+  LATEST_ENTRY_ID,
+  markChangelogSeen,
+} from "./model/changelog.js";
 
 import { attentionTotal } from "./model/buildSections.js";
 import { useAttentionBadges } from "./components/builder/BuildNav.js";
@@ -77,39 +82,25 @@ function ModeFallback() {
 /**
  * Whether to dot the Settings tab, and the bookkeeping that clears it.
  *
- * The entries are fetched rather than imported: the list is the single largest
- * string in the app and lives with the Settings panel that renders it, so the
- * dot resolves a beat late instead of holding the whole prose in the initial
- * chunk. Undecided reads as no dot, which is also what a reader on their
- * first-ever visit sees.
- *
- * Held until the sheet is up, so the fetch never races the reference data a
- * player is actually waiting on. Nobody is looking for the dot on a screen
- * that hasn't drawn a character yet.
+ * Decided from `LATEST_ENTRY_ID` alone, synchronously, so the entries
+ * themselves stay in the Settings chunk and nothing here waits on a fetch.
+ * Held until the sheet is up: nobody is looking for the dot on a screen that
+ * hasn't drawn a character yet.
  */
 function useChangelogCue(mode: Mode, ready: boolean): boolean {
   const [unseen, setUnseen] = useState(false);
 
   useEffect(() => {
     if (!ready) return;
-    let cancelled = false;
-    void import("./model/changelogEntries.js").then(({ CHANGELOG }) => {
-      if (cancelled) return;
-      setUnseen(hasUnseenEntries(CHANGELOG, initChangelogSeen(CHANGELOG)));
-    });
-    return () => {
-      cancelled = true;
-    };
+    setUnseen(hasUnseenEntries(LATEST_ENTRY_ID, initChangelogSeen(LATEST_ENTRY_ID)));
   }, [ready]);
 
   // Opening Settings *is* seeing the list — the newest entries render inline
   // at the top of the What's New panel, so there's nothing further to click.
   useEffect(() => {
     if (mode !== "settings" || !unseen) return;
-    void import("./model/changelogEntries.js").then(({ CHANGELOG }) => {
-      markChangelogSeen(CHANGELOG);
-      setUnseen(false);
-    });
+    markChangelogSeen(LATEST_ENTRY_ID);
+    setUnseen(false);
   }, [mode, unseen]);
 
   return unseen;

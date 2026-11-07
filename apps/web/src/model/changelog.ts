@@ -2,16 +2,23 @@
  * The "what's new" cue's state: which entry the reader has already been shown,
  * and whether anything has landed since.
  *
- * Holds no copy of its own. The entries live in `changelogEntries.ts` and are
- * always passed in, so the app shell can carry this logic without carrying the
- * list: the mode tab decides whether to show its dot from a list it fetches
- * separately, and only Settings ever loads the prose.
+ * Holds no copy of the entries, which live in `changelogEntries.ts` and load
+ * only with the Settings panel. The mode tab's dot needs nothing but the
+ * newest id, so that one string is kept here and the dot is decided
+ * synchronously. Waiting on the entries chunk instead meant a state update
+ * landing mid-render whenever the chunk arrived during the first paint.
  */
 import type { ChangelogEntry } from "./changelogEntries.js";
 
 export type { ChangelogEntry };
 
 const LAST_SEEN_KEY = "pf1-tracker:changelogLastSeen";
+
+/**
+ * The id of the newest entry in `changelogEntries.ts`. Update it with every new
+ * entry; `test/changelog.test.ts` fails, naming the value, if the two differ.
+ */
+export const LATEST_ENTRY_ID = "2026-11-06-reservoir-dc-on-cast";
 
 const MONTH_NAMES = [
   "Jan",
@@ -48,19 +55,17 @@ export function latestEntryId(entries: readonly ChangelogEntry[]): string | null
 }
 
 /**
- * Whether anything has landed since the reader's high-water mark.
+ * Whether anything has landed since the reader's high-water mark: any mark but
+ * the newest id.
  *
  * A `null` mark means "never recorded" — a first-ever visit — and gets no cue:
  * nothing is *new* to someone who has never seen the app. An unrecognizable
  * mark (an entry that was pruned) counts as unseen, so the cue errs toward
  * showing once and then settling rather than going permanently dark.
  */
-export function hasUnseenEntries(
-  entries: readonly ChangelogEntry[],
-  lastSeen: string | null,
-): boolean {
-  if (entries.length === 0 || lastSeen == null) return false;
-  return entries.findIndex((e) => e.id === lastSeen) !== 0;
+export function hasUnseenEntries(latest: string | null, lastSeen: string | null): boolean {
+  if (latest == null || lastSeen == null) return false;
+  return lastSeen !== latest;
 }
 
 /** The stored high-water mark, or `null` if none has been written. */
@@ -86,16 +91,14 @@ function writeLastSeen(id: string): void {
  * "new" cue over a list they've never not seen; the cost is that the deploy
  * introducing this panel is silent for existing readers too.
  */
-export function initChangelogSeen(entries: readonly ChangelogEntry[]): string | null {
+export function initChangelogSeen(latest: string | null): string | null {
   const stored = readLastSeen();
   if (stored != null) return stored;
-  const latest = latestEntryId(entries);
   if (latest != null) writeLastSeen(latest);
   return latest;
 }
 
 /** Record that the reader has been shown the current list. */
-export function markChangelogSeen(entries: readonly ChangelogEntry[]): void {
-  const latest = latestEntryId(entries);
+export function markChangelogSeen(latest: string | null): void {
   if (latest != null) writeLastSeen(latest);
 }

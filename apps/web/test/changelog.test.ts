@@ -4,6 +4,7 @@ import { CHANGELOG } from "../src/model/changelogEntries.js";
 import {
   formatEntryDate,
   hasUnseenEntries,
+  LATEST_ENTRY_ID,
   latestEntryId,
   type ChangelogEntry,
 } from "../src/model/changelog.js";
@@ -65,6 +66,15 @@ describe("CHANGELOG", () => {
   });
 });
 
+describe("LATEST_ENTRY_ID", () => {
+  it("is the newest entry's id, so the mode tab's dot tracks the real list", () => {
+    expect(
+      LATEST_ENTRY_ID,
+      `set LATEST_ENTRY_ID in src/model/changelog.ts to "${CHANGELOG[0]?.id}"`,
+    ).toBe(latestEntryId(CHANGELOG)!);
+  });
+});
+
 describe("latestEntryId()", () => {
   it("returns the first entry's id, or null when the list is empty", () => {
     expect(latestEntryId([entry("a"), entry("b")])).toBe("a");
@@ -73,27 +83,24 @@ describe("latestEntryId()", () => {
 });
 
 describe("hasUnseenEntries()", () => {
-  const entries = [entry("c", "2026-03-01"), entry("b", "2026-02-01"), entry("a", "2026-01-01")];
-
   it("stays quiet for a first-ever visit with no recorded mark", () => {
-    expect(hasUnseenEntries(entries, null)).toBe(false);
+    expect(hasUnseenEntries("c", null)).toBe(false);
   });
 
   it("stays quiet when the mark is already the newest entry", () => {
-    expect(hasUnseenEntries(entries, "c")).toBe(false);
+    expect(hasUnseenEntries("c", "c")).toBe(false);
   });
 
   it("fires when entries have landed since the mark", () => {
-    expect(hasUnseenEntries(entries, "b")).toBe(true);
-    expect(hasUnseenEntries(entries, "a")).toBe(true);
+    expect(hasUnseenEntries("c", "b")).toBe(true);
   });
 
   it("fires for an unrecognized mark, so a pruned entry shows once rather than going dark", () => {
-    expect(hasUnseenEntries(entries, "long-gone")).toBe(true);
+    expect(hasUnseenEntries("c", "long-gone")).toBe(true);
   });
 
   it("stays quiet when there is nothing to announce", () => {
-    expect(hasUnseenEntries([], "anything")).toBe(false);
+    expect(hasUnseenEntries(null, "anything")).toBe(false);
   });
 });
 

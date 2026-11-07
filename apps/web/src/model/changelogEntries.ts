@@ -14,6 +14,10 @@
  * Dated, not versioned: the app ships continuously and has no release number
  * to hang entries off.
  *
+ * A new entry also moves `LATEST_ENTRY_ID` in `changelog.ts`, which the mode
+ * tab's dot reads so it never waits on this file; `test/changelog.test.ts`
+ * names the value when they disagree.
+ *
  * Split from `changelog.ts` (the seen-state helpers) so the list itself only
  * loads with the Settings panel that renders it: the entries outweigh the
  * rest of the app shell, and a player who opens the tracker never reads them.
