@@ -2613,8 +2613,8 @@ button:focus-visible,
   border-radius: var(--radius);
 }
 
-/* A plain search box as the list's first row, so it reads as something to
-   type into; the Escape-to-clear handler stands in for the native cancel. */
+/* A plain text box as the list's first row, so it reads as something to type
+   into. */
 .sheet-skill-filter-row {
   padding: 6px;
   border-bottom: 1px solid var(--line-soft);
@@ -2624,10 +2624,6 @@ button:focus-visible,
   width: 100%;
   padding: 5px 9px;
   font-size: 0.8125rem;
-}
-
-.sheet-skill-filter::-webkit-search-cancel-button {
-  display: none;
 }
 
 .sheet-skill-fold {

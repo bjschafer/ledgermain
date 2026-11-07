@@ -893,7 +893,7 @@ export function Sheet({
         <div className="sheet-skill-list" aria-labelledby={skillsHeadingId}>
           <div className="sheet-skill-filter-row">
             <input
-              type="search"
+              type="text"
               className="sheet-skill-filter"
               placeholder="Filter skills…"
               aria-label="Filter skills"
