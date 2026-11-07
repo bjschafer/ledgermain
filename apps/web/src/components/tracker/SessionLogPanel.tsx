@@ -17,10 +17,9 @@ import { BookmarkIcon } from "../icons.js";
  *
  * Device-local and not part of the character (see `state/sessionLog.ts`), so
  * "Clear" throws away this browser's memory of the evening and nothing else.
- * Undo, by contrast, is a real edit to the character. It is not itself logged,
- * but it takes back out the line of the step it reverses, so the log shows
- * the walk back. Steps that never wrote a line (builder edits, notes) are
- * undone silently, which is why the button names what it does in its title.
+ * Undo, by contrast, is a real edit to the character. It walks back the
+ * newest line here and takes that line out, and nothing else: a change that
+ * never wrote a line (a build edit, a note) is not something it can undo.
  */
 export function SessionLogPanel({
   sessionLog,
@@ -47,7 +46,7 @@ export function SessionLogPanel({
               // first of the pair so the two buttons group at that edge.
               className="btn-ghost rest"
               disabled={!canUndo}
-              title="Undo your last change to this character, logged or not, one step at a time"
+              title="Undo the newest line in this log"
               onClick={(e) => {
                 e.stopPropagation();
                 undoLast();

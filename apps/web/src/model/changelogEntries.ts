@@ -47,8 +47,8 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   {
     id: "2026-11-06-undo-clears-log",
     date: "2026-11-06",
-    title: "Undo takes its line out of the session log",
-    note: "Pressing Undo, in the Session Log or on a toast, now removes the line for the change it walked back, so you can see each step come off. Edits that never wrote a line, like build changes or notes, are still undone in turn.",
+    title: "Undo follows the session log",
+    note: "Undo, in the Session Log or on a toast, walks back the newest line in the log and takes that line out, so you can see each step come off. It only ever undoes what the log recorded: a build change or a note made in between stays put.",
   },
   {
     id: "2026-10-04-swashbuckler-deeds",

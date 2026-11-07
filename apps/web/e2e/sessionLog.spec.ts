@@ -4,9 +4,9 @@ import { expect, test, type Page } from "@playwright/test";
  * The player-polish pieces that only exist once the real app is running: the
  * session log filling itself from taps elsewhere in the tracker (including the
  * panels that are not the HP one, and the New Day that gets a single line for
- * everything it moves), undo walking back more than one of them, and the
- * level-up toast's jump landing on a build section that actually has something
- * outstanding.
+ * everything it moves), undo walking back more than one of them and nothing
+ * the log didn't record, and the level-up toast's jump landing on a build
+ * section that actually has something outstanding.
  */
 
 const benign = (t: string) =>
@@ -99,6 +99,35 @@ test("the session log records damage and conditions, and undo walks back through
   await expect(hp).toContainText(String(startHp));
   // Last line gone, so the panel (and its Undo) hides like any empty panel.
   await expect(page.locator(".session-log")).toHaveCount(0);
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
+test("undo walks back only what the log recorded, leaving edits made in between", async ({
+  page,
+}) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoPlay(page);
+
+  const hp = page.locator(".hp-big");
+  const startHp = Number((await hp.innerText()).split("/")[0]!.trim());
+  await page.getByLabel("Amount").fill("2");
+  await page.getByRole("button", { name: "Damage", exact: true }).click();
+  await expect(hp).toContainText(String(startHp - 2));
+
+  // A rename writes no log line, so it is not an undo step of its own.
+  await page.getByRole("tab", { name: "Build" }).click();
+  const name = page.getByLabel("Character name");
+  await name.fill("Undo Survivor");
+  await page.getByRole("tab", { name: "Play" }).click();
+
+  await page.locator("#play-log").getByRole("button", { name: "Undo" }).click();
+  await expect(hp).toContainText(String(startHp));
+  await expect(page.locator(".session-log")).toHaveCount(0);
+
+  await page.getByRole("tab", { name: "Build" }).click();
+  await expect(name).toHaveValue("Undo Survivor");
 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);

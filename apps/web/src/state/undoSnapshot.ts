@@ -5,17 +5,17 @@
  * `state/useCharacter.ts` owns an instance of `UndoHistoryState` in a ref and
  * is the only caller.
  *
- * A stack, not a single slot: two damage taps in a fight used to leave only
- * the second one undoable, which is the wrong answer at exactly the moment a
- * player needs it. It is still not a redo stack — undo pops, and a popped
- * snapshot is gone.
+ * Undo is scoped to the session log: every step is a change that wrote a log
+ * line, and undoing it takes that line back out. A change the log doesn't
+ * record (a build edit, a note) is never a step of its own. It is carried
+ * forward into every step already on the stack instead (`rebaseHistory`), so
+ * walking back a logged hit restores the HP without also reverting the note
+ * typed after it.
  *
  * Rules:
  *   - `recordSnapshot` pushes, dropping the oldest entry past `HISTORY_LIMIT`.
  *   - `consumeSnapshot` pops. Popping is what keeps undo from oscillating: the
- *     doc it returns is never pushed back.
- *   - `tagNewestSnapshot` remembers which session-log line the newest step
- *     wrote, so undoing that step can take its line back out of the log.
+ *     doc it returns is never pushed back. It is not a redo stack.
  *   - A snapshot for a different character than the one on screen is discarded
  *     rather than returned, and the whole stack is dropped by
  *     `invalidateSnapshot` on anything that swaps the active character out
@@ -34,8 +34,8 @@ export const HISTORY_LIMIT = 20;
 export interface UndoStep {
   /** The doc as it was before the step: what undoing it restores. */
   doc: CharacterDoc;
-  /** The session-log line the step wrote, if it wrote one. */
-  logEntryId?: string;
+  /** The session-log line the step wrote. */
+  logEntryId: string;
 }
 
 export interface UndoHistoryState {
@@ -48,35 +48,56 @@ export function createUndoHistoryState(): UndoHistoryState {
 }
 
 /**
- * Record `before` as an undo point ahead of a just-committed transition.
+ * Record `before` as an undo point ahead of a logged transition.
  *
- * Idempotent for a document already on top of the stack. The caller records
- * from inside a `setDoc` updater, and React does not promise to invoke one
- * exactly once — under StrictMode it always runs them twice. Two pushes of the
- * *same object* are always that, never two real transitions: every transition
- * produces a fresh document, so a genuine second edit can never arrive
- * reference-equal to the first. Without this guard one tap would cost two
- * presses to walk back, the second of them a visible no-op.
+ * Idempotent for a document already on top of the stack: every transition
+ * produces a fresh document, so a second push of the same object can only be
+ * the same transition seen twice.
  */
-export function recordSnapshot(state: UndoHistoryState, before: CharacterDoc): void {
+export function recordSnapshot(
+  state: UndoHistoryState,
+  before: CharacterDoc,
+  logEntryId: string,
+): void {
   if (state.history[state.history.length - 1]?.doc === before) return;
-  state.history.push({ doc: before });
+  state.history.push({ doc: before, logEntryId });
   if (state.history.length > HISTORY_LIMIT) state.history.shift();
 }
 
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 /**
- * Attach `logEntryId` to the newest step, but only if that step starts from
- * `from`. A log line is diffed across whatever landed in one render, which can
- * be more than one step; tagging only an exact match keeps an undo from
- * erasing a line it only partly reverses.
+ * `target` with every part that moved between `before` and `after` taken from
+ * `after`. Docs are immutable with structural sharing, so reference equality
+ * finds exactly what a transition touched; it recurses through plain objects
+ * and replaces arrays and leaves whole.
  */
-export function tagNewestSnapshot(
+export function carryChanges<T>(target: T, before: T, after: T): T {
+  if (before === after) return target;
+  if (!isPlainObject(before) || !isPlainObject(after) || !isPlainObject(target)) return after;
+  let out: Record<string, unknown> | undefined;
+  for (const key of new Set([...Object.keys(before), ...Object.keys(after)])) {
+    if (before[key] === after[key]) continue;
+    out ??= { ...target };
+    if (key in after) out[key] = carryChanges(target[key], before[key], after[key]);
+    else delete out[key];
+  }
+  return (out ?? target) as T;
+}
+
+/**
+ * Fold an unlogged transition (`before` → `after`) into every step on the
+ * stack, so no later undo reverts it.
+ */
+export function rebaseHistory(
   state: UndoHistoryState,
-  from: CharacterDoc,
-  logEntryId: string,
+  before: CharacterDoc,
+  after: CharacterDoc,
 ): void {
-  const top = state.history[state.history.length - 1];
-  if (top?.doc === from) top.logEntryId = logEntryId;
+  if (before === after) return;
+  for (const step of state.history) step.doc = carryChanges(step.doc, before, after);
 }
 
 /** Drop the whole history (the active character is about to change out from under it). */

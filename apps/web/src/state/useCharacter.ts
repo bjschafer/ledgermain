@@ -62,8 +62,8 @@ import {
   consumeSnapshot,
   createUndoHistoryState,
   invalidateSnapshot,
+  rebaseHistory,
   recordSnapshot,
-  tagNewestSnapshot,
   undoDepth,
 } from "./undoSnapshot.js";
 
@@ -117,11 +117,12 @@ export interface CharacterStore {
   /** Apply a pure transition (from model/doc) to the working document. */
   update: (fn: (doc: CharacterDoc) => CharacterDoc, options?: UpdateOptions) => void;
   /**
-   * Undo: restores the doc as it was immediately before the last `update()`
-   * call that actually changed it, through the same `setDoc` path `update()`
-   * uses (so compute + the autosave/push effects below all fire normally).
-   * Steps back through a bounded history (see `state/undoSnapshot.ts`), so two
-   * damage taps take two presses to walk out of. Never redoes — a step walked
+   * Undo: walks back the newest change that wrote a session-log line and
+   * removes that line, through the same `setDoc` path `update()` uses (so
+   * compute + the autosave/push effects below all fire normally). Unlogged
+   * edits made since survive it (see `state/undoSnapshot.ts`). Steps back
+   * through a bounded history, so two damage taps take two presses to walk
+   * out of. Never redoes — a step walked
    * back is gone. No-op once the history is empty, or if the active character
    * changed since the snapshots were taken (switch/create/import/reset/delete,
    * a remote pull/delete, or conflict resolution all invalidate it).
@@ -573,12 +574,9 @@ export function useCharacter(): CharacterStore {
         logOverrideRef.current = undefined;
         return prev;
       }
+      // The undo history is fed by the session-log effect, not here: only a
+      // change that writes a log line becomes an undo step.
       logOverrideRef.current = options?.logAs;
-      // Undo history: `prev` is exactly the doc a caller's `undoLast()` should
-      // restore. Recorded unconditionally on every real transition (not just
-      // the ones that surface an Undo toast) — cheap, and it's what makes
-      // `undoLast()` always undo whatever the player *actually* just did.
-      recordSnapshot(undoStateRef.current, prev);
       pendingUserEditRef.current = true;
       return { ...next, version: prev.version + 1 };
     });
@@ -600,15 +598,12 @@ export function useCharacter(): CharacterStore {
     const step = consumeSnapshot(undoStateRef.current, activeId);
     if (!step) return;
     const snapshot = step.doc;
-    const undoneLine = step.logEntryId;
-    if (undoneLine !== undefined) {
-      setSessionLog((log) => {
-        const next = log.filter((entry) => entry.id !== undoneLine);
-        if (next.length === log.length) return log;
-        writeSessionLog(activeId, next);
-        return next;
-      });
-    }
+    setSessionLog((log) => {
+      const next = log.filter((entry) => entry.id !== step.logEntryId);
+      if (next.length === log.length) return log;
+      writeSessionLog(activeId, next);
+      return next;
+    });
     // Same flagging `update()` does — undo is a genuine local edit too, so
     // it autosaves/pushes exactly like any other transition. Deliberately
     // NOT routed through `update()` itself: that would push the pre-undo state
@@ -863,10 +858,6 @@ export function useCharacter(): CharacterStore {
   // something that happened at the table, and diffing across one would log the
   // difference between two characters as damage.
   useEffect(() => {
-    setCanUndo(undoDepth(undoStateRef.current) > 0);
-  }, [doc]);
-
-  useEffect(() => {
     if (!doc || !sheet || !refData) return;
     const prev = logPrevDocRef.current;
     logPrevDocRef.current = { doc, maxHp: sheet.hp.max };
@@ -899,9 +890,12 @@ export function useCharacter(): CharacterStore {
           return poolNames.get(id);
         },
       });
-    if (!change) return;
+    if (!change) {
+      rebaseHistory(undoStateRef.current, prev.doc, doc);
+      return;
+    }
     const entryId = `${doc.version}-${Date.now()}`;
-    tagNewestSnapshot(undoStateRef.current, prev.doc, entryId);
+    recordSnapshot(undoStateRef.current, prev.doc, entryId);
     setSessionLog((log) => {
       const next = pushLogEntry(log, {
         id: entryId,
@@ -912,6 +906,12 @@ export function useCharacter(): CharacterStore {
       return next;
     });
   }, [doc, sheet, refData]);
+
+  // After the log effect, which is what pushes to the undo history; the pops
+  // and invalidations land on a `doc` change too.
+  useEffect(() => {
+    setCanUndo(undoDepth(undoStateRef.current) > 0);
+  }, [doc]);
 
   const clearSessionLog = useCallback(() => {
     const id = docRef.current?.id;
