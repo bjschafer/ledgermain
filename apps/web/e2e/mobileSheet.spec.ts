@@ -15,15 +15,23 @@ const ACTIVE_ID_KEY = "pf1-tracker:activeCharacterId";
 const acValue = (page: Page) =>
   page.locator(".seal", { hasText: "Armor Class" }).locator(".seal-value");
 
-/** Point the store at the sample character, whose sheet is long enough to scroll. */
+/**
+ * Point the store at the sample character, whose sheet is long enough to
+ * scroll. Every load starts with no remembered place: the app's one-shot
+ * scroll-back-to-your-section waits on the mode's lazy chunk, and when it
+ * lands after the dialog opens it moves the page behind it mid-test.
+ */
 async function gotoSample(page: Page) {
+  await page.addInitScript(() => localStorage.removeItem("lm:location"));
   await page.goto("/");
   await expect(acValue(page)).toBeVisible({ timeout: 20_000 });
   await page.evaluate(([key, id]: readonly [string, string]) => localStorage.setItem(key, id), [
     ACTIVE_ID_KEY,
     SAMPLE_ID,
   ] as const);
-  await page.reload();
+  // A fresh goto rather than reload(): the first load wrote its section into
+  // the fragment, and a reload would restore from that.
+  await page.goto("/");
   await expect(acValue(page)).not.toHaveText("10", { timeout: 20_000 });
 }
 
@@ -32,6 +40,17 @@ async function openSheetDialog(page: Page) {
   // chrome, so a phone-sized first paint has nothing to wait for.
   await gotoSample(page);
   await page.setViewportSize({ width: 390, height: 844 });
+  // Off the top, so a scroll leaking out of the dialog has room to show.
+  // Retried because the phone layout fills in a beat after the resize, and
+  // until then the page has almost nothing to scroll.
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        window.scrollTo(0, 400);
+        return window.scrollY;
+      }),
+    )
+    .toBe(400);
   await page.getByRole("button", { name: "Sheet" }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
 }
@@ -55,7 +74,6 @@ test("the phone sheet dialog scrolls to the skills at the bottom", async ({ page
   const skills = scroller.locator(".sheet-skill-list");
   await expect(skills).not.toBeInViewport();
 
-  // Not zero: the page behind is wherever the section-restore left it.
   const pageScroll = await page.evaluate(() => window.scrollY);
 
   // Wheel over the dialog rather than `scrollIntoViewIfNeeded`: the point is
