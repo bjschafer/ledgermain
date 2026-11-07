@@ -2613,38 +2613,17 @@ button:focus-visible,
   border-radius: var(--radius);
 }
 
-/* The filter closes the Skills heading's rule and borrows the legend's mono
-   caps voice, so at rest it reads as part of the heading, not a form field. */
-.sheet-skill-filter {
-  appearance: none;
-  width: 9em;
-  min-width: 0;
-  background: transparent;
-  border: 0;
+/* A plain search box as the list's first row, so it reads as something to
+   type into; the Escape-to-clear handler stands in for the native cancel. */
+.sheet-skill-filter-row {
+  padding: 6px;
   border-bottom: 1px solid var(--line-soft);
-  border-radius: 0;
-  padding: 0 2px 2px;
-  color: var(--ink);
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  text-align: right;
 }
 
-.sheet-skill-filter::placeholder {
-  color: var(--faint);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.sheet-skill-filter:hover {
-  border-bottom-color: var(--gold-dim);
-}
-
-.sheet-skill-filter:focus-visible {
-  outline: none;
-  border-bottom-color: var(--gold-2);
-  box-shadow: 0 1px 0 var(--gold-2);
+.sheet-skill-filter {
+  width: 100%;
+  padding: 5px 9px;
+  font-size: 0.8125rem;
 }
 
 .sheet-skill-filter::-webkit-search-cancel-button {

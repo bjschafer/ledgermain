@@ -889,45 +889,46 @@ export function Sheet({
             Skills
           </span>
           <div className="stat-group-rule" />
-          <input
-            type="search"
-            className="sheet-skill-filter"
-            placeholder="Filter"
-            aria-label="Filter skills"
-            value={skillQuery}
-            onChange={(e) => setSkillQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Escape" && skillQuery) {
-                e.stopPropagation();
-                setSkillQuery("");
-              }
-            }}
-          />
         </div>
-        {skillView.shown.length === 0 && skillView.foldedCount === 0 ? (
-          <div className="empty">
-            {skillQuery.trim() ? "No skill matches." : "No skills available."}
+        <div className="sheet-skill-list" aria-labelledby={skillsHeadingId}>
+          <div className="sheet-skill-filter-row">
+            <input
+              type="search"
+              className="sheet-skill-filter"
+              placeholder="Filter skills…"
+              aria-label="Filter skills"
+              value={skillQuery}
+              onChange={(e) => setSkillQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape" && skillQuery) {
+                  e.stopPropagation();
+                  setSkillQuery("");
+                }
+              }}
+            />
           </div>
-        ) : (
-          <div className="sheet-skill-list" aria-labelledby={skillsHeadingId}>
-            {skillView.shown.map((s) => (
-              <SkillRow key={s.id} s={s} resetKey={doc.id} />
-            ))}
-            {skillView.foldedCount > 0 || (foldUntrained && showUntrained && !skillQuery.trim()) ? (
-              <button
-                type="button"
-                className="sheet-skill-fold"
-                aria-expanded={showUntrained}
-                onClick={() => setShowUntrained((v) => !v)}
-              >
-                <span className="caret">
-                  <Caret open={showUntrained} />
-                </span>
-                {showUntrained ? "Hide untrained" : `Show ${skillView.foldedCount} untrained`}
-              </button>
-            ) : null}
-          </div>
-        )}
+          {skillView.shown.length === 0 && skillView.foldedCount === 0 ? (
+            <div className="empty">
+              {skillQuery.trim() ? "No skill matches." : "No skills available."}
+            </div>
+          ) : null}
+          {skillView.shown.map((s) => (
+            <SkillRow key={s.id} s={s} resetKey={doc.id} />
+          ))}
+          {skillView.foldedCount > 0 || (foldUntrained && showUntrained && !skillQuery.trim()) ? (
+            <button
+              type="button"
+              className="sheet-skill-fold"
+              aria-expanded={showUntrained}
+              onClick={() => setShowUntrained((v) => !v)}
+            >
+              <span className="caret">
+                <Caret open={showUntrained} />
+              </span>
+              {showUntrained ? "Hide untrained" : `Show ${skillView.foldedCount} untrained`}
+            </button>
+          ) : null}
+        </div>
       </div>
 
       {/* Proficiencies — read-only, provenance on hover/tap. Last
