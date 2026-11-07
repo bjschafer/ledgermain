@@ -23,7 +23,12 @@ export function SkinwalkerChangeShapePanel({ doc, refData, update }: BuilderProp
   const hasEffect = changeShapeHasEffect(doc, refData);
 
   return (
-    <Panel title="Change Shape" icon={<PawIcon />} storageKey="panel:Change Shape">
+    <Panel
+      resizable={false}
+      title="Change Shape"
+      icon={<PawIcon />}
+      storageKey="panel:Change Shape"
+    >
       <p className="hint">
         Toggle your bestial form on/off. Only the ability bonus from your heritage is modeled:
         natural attacks, bestial speed, and senses are not.

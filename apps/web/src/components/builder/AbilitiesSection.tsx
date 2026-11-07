@@ -34,6 +34,7 @@ export function AbilitiesSection({ doc, sheet, update }: BuilderProps) {
 
   return (
     <Panel
+      resizable={false}
       title="Ability Scores"
       step="ii"
       icon={<DumbbellIcon />}

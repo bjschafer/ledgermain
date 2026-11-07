@@ -547,7 +547,21 @@ a {
   border-right: 2px solid var(--gold);
   border-bottom: 2px solid var(--gold);
   border-bottom-right-radius: 2px;
+  /* Faint until the panel is hovered, so a page of panels isn't a page of grips. */
+  opacity: 0.2;
+  transition: opacity 0.15s;
+}
+
+.panel:hover > .body > .panel-resize-handle,
+.panel-resize-handle:focus-visible {
   opacity: 0.85;
+}
+
+/* Dragging is mouse-only, so a touch screen gets no grip at all. */
+@media (hover: none) {
+  .panel-resize-handle {
+    display: none;
+  }
 }
 
 /* Inner bracket — the second crop mark that makes this read as a grip. */

@@ -15,7 +15,7 @@ export function AbilityDcsPanel({ sheet }: BuilderProps) {
   if (!sheet.abilityDCs || sheet.abilityDCs.length === 0) return null;
 
   return (
-    <Panel title="Ability DCs" icon={<BoltIcon />} storageKey="panel:AbilityDCs">
+    <Panel resizable={false} title="Ability DCs" icon={<BoltIcon />} storageKey="panel:AbilityDCs">
       <AbilityDcList abilityDCs={sheet.abilityDCs} />
     </Panel>
   );

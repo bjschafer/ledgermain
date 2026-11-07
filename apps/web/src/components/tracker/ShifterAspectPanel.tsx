@@ -24,7 +24,12 @@ export function ShifterAspectPanel({ doc, update }: BuilderProps) {
   if (!isShifter || known.length === 0) return null;
 
   return (
-    <Panel title="Shifter Aspects" icon={<ClawIcon />} storageKey="panel:Shifter Aspects">
+    <Panel
+      resizable={false}
+      title="Shifter Aspects"
+      icon={<ClawIcon />}
+      storageKey="panel:Shifter Aspects"
+    >
       <p className="hint">
         Toggle a known aspect's minor form on/off. For major form (Wild Shape), use the Polymorph
         panel.

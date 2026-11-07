@@ -12,10 +12,11 @@ import { Caret } from "../Caret.js";
  * the header and clicking the header toggles the body. The collapsed state is
  * persisted to localStorage so it survives reloads. Default is expanded.
  *
- * Every panel is also resizable: a corner grip in the bottom-right lets the
+ * Panels are resizable by default: a corner grip in the bottom-right lets the
  * user drag the body taller/shorter (persisted per `storageKey`/title). Once
  * resized, a "reset size" control appears in the header to return to the
- * natural, content-driven height.
+ * natural, content-driven height. Pass `resizable={false}` for a short,
+ * fixed-size panel, where a grip has nothing to do.
  */
 export function Panel({
   title,
@@ -25,6 +26,7 @@ export function Panel({
   children,
   storageKey,
   defaultCollapsed = false,
+  resizable = true,
 }: {
   title: string;
   step?: string;
@@ -36,11 +38,14 @@ export function Panel({
   storageKey?: string;
   /** Initial collapsed state when no localStorage value exists. Default false. */
   defaultCollapsed?: boolean;
+  /** False for a short, fixed panel: no grip, and any stored height is ignored. */
+  resizable?: boolean;
 }) {
   const [collapsed, toggle] = useCollapsed(storageKey ?? "", defaultCollapsed);
   const isCollapsible = storageKey != null;
 
-  const [height, setHeight, resetHeight] = useResizableHeight(storageKey ?? title);
+  const [storedHeight, setHeight, resetHeight] = useResizableHeight(storageKey ?? title);
+  const height = resizable ? storedHeight : null;
   const bodyRef = useRef<HTMLDivElement>(null);
 
   const onResizeStart = useCallback(
@@ -128,14 +133,16 @@ export function Panel({
           style={height != null ? { height, overflowY: "auto" } : undefined}
         >
           {children}
-          <div
-            className="panel-resize-handle"
-            onMouseDown={onResizeStart}
-            role="separator"
-            aria-orientation="horizontal"
-            aria-label={`Resize ${title} panel`}
-            title="Drag to resize"
-          />
+          {resizable ? (
+            <div
+              className="panel-resize-handle"
+              onMouseDown={onResizeStart}
+              role="separator"
+              aria-orientation="horizontal"
+              aria-label={`Resize ${title} panel`}
+              title="Drag to resize"
+            />
+          ) : null}
         </div>
       ) : null}
     </section>

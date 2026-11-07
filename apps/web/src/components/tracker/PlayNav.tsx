@@ -6,6 +6,7 @@ import { activeAbilityAfflictions, totalNegativeLevels } from "../../model/affli
 import { heroPoints } from "../../model/heroPoints.js";
 import { effectiveHp, isHpLow } from "../../model/hp.js";
 import type { BuilderProps } from "../builder/types.js";
+import { NARROW_LAYOUT_QUERY, useMediaQuery } from "../../state/useMediaQuery.js";
 import { SectionNav, type NavBadge } from "../SectionNav.js";
 
 /**
@@ -81,11 +82,14 @@ export function PlayNav({
   onActiveChange,
 }: BuilderProps & { onActiveChange?: (sectionId: string) => void }) {
   const badges = usePlayBadges({ doc, sheet });
+  // Crossing the layout breakpoint adds or drops the phone-only panels.
+  const narrow = useMediaQuery(NARROW_LAYOUT_QUERY);
+  const revision = useMemo(() => [doc, narrow], [doc, narrow]);
 
   return (
     <SectionNav
       containerSelector=".tracker-col [data-nav-label]"
-      revision={doc}
+      revision={revision}
       ariaLabel="Jump to play section"
       className="play-nav"
       badges={badges}

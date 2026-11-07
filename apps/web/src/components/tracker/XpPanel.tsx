@@ -17,7 +17,7 @@ export function XpPanel({ doc, update }: BuilderProps) {
   const [amount, setAmount] = useState(0);
 
   return (
-    <Panel title="Experience" icon={<TrendingUpIcon />} storageKey="panel:Xp">
+    <Panel resizable={false} title="Experience" icon={<TrendingUpIcon />} storageKey="panel:Xp">
       <div className="xp-display">
         <span className="xp-count num">{progress.current.toLocaleString()} XP</span>
         <span className="hint">

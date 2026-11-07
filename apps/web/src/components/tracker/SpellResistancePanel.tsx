@@ -29,7 +29,12 @@ export function SpellResistancePanel({ sheet }: BuilderProps) {
   const outcome = checkTotal == null ? undefined : srCheckOutcome(sr.total, checkTotal);
 
   return (
-    <Panel title="Spell Resistance" icon={<ShieldIcon />} storageKey="panel:SpellResistance">
+    <Panel
+      resizable={false}
+      title="Spell Resistance"
+      icon={<ShieldIcon />}
+      storageKey="panel:SpellResistance"
+    >
       <p className="hint">
         Your SR is <span className="num">{sr.total}</span>. A spell's own Spell Resistance line says
         whether a check is even required; this only adjudicates the check once one applies. Caster

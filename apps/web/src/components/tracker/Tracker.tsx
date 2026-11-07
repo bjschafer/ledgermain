@@ -32,6 +32,7 @@ import { heroPointsEnabled } from "../../model/heroPoints.js";
 import { xpEnabled } from "../../model/xp.js";
 import { PanelBoundary } from "../PanelBoundary.js";
 import type { BuilderProps } from "../builder/types.js";
+import { NARROW_LAYOUT_QUERY, useMediaQuery } from "../../state/useMediaQuery.js";
 
 /**
  * The in-play tracker — Stage 4's differentiator. Thin views over the pure live
@@ -62,6 +63,7 @@ interface Group {
 export function Tracker(props: BuilderProps) {
   const heroOn = heroPointsEnabled(props.doc);
   const xpOn = xpEnabled(props.doc);
+  const narrow = useMediaQuery(NARROW_LAYOUT_QUERY);
 
   const groups: Group[] = [
     {
@@ -74,7 +76,11 @@ export function Tracker(props: BuilderProps) {
         { id: "play-spells", label: "Spells", node: <PreparedSpellsPanel {...props} /> },
         { id: "play-sla", label: "Spell-Like", node: <SpellLikeAbilitiesPanel {...props} /> },
         { id: "play-resources", label: "Resources", node: <ResourcesPanel {...props} /> },
-        { id: "play-abilitydcs", label: "Ability DCs", node: <AbilityDcsPanel {...props} /> },
+        // The sheet beside the tracker already lists these; only a phone, where
+        // the sheet hides behind a button, needs them repeated here.
+        ...(narrow
+          ? [{ id: "play-abilitydcs", label: "Ability DCs", node: <AbilityDcsPanel {...props} /> }]
+          : []),
         { id: "play-blast", label: "Blast Loadout", node: <BlastLoadoutPanel {...props} /> },
         { id: "play-rolls", label: "Saved Rolls", node: <SavedRollsPanel {...props} /> },
       ],

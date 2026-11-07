@@ -60,6 +60,7 @@ export function MediumSpiritPanel({ doc, refData, update }: BuilderProps) {
 
   return (
     <Panel
+      resizable={false}
       title="Séance"
       icon={<CandleIcon />}
       storageKey="panel:Medium Séance"

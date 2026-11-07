@@ -81,7 +81,7 @@ export function SharePanel({ doc }: { doc: CharacterDoc }) {
   const title = "Share";
   if (!token) {
     return (
-      <Panel title={title} step="⚙" icon={<GearIcon />}>
+      <Panel resizable={false} title={title} icon={<GearIcon />}>
         <p className="hint">
           Sign in to sync, and you can hand your GM a read-only link to this character.
         </p>
@@ -131,7 +131,7 @@ export function SharePanel({ doc }: { doc: CharacterDoc }) {
   };
 
   return (
-    <Panel title={title} step="⚙" icon={<GearIcon />}>
+    <Panel resizable={false} title={title} icon={<GearIcon />}>
       <p className="hint" style={{ marginBottom: 12 }}>
         A share link shows this character's sheet to anyone who opens it, with no sign-in and no way
         to change anything. A snapshot shows the sheet as it is right now. A live link follows along

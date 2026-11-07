@@ -90,7 +90,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   const nonlethalImmune = isImmuneToNonlethal(sheet);
 
   return (
-    <Panel title="Hit Points" icon={<HeartIcon />} storageKey="panel:PlayHP">
+    <Panel resizable={false} title="Hit Points" icon={<HeartIcon />} storageKey="panel:PlayHP">
       <div className="hp-display">
         <div className="hp-big num" data-low={isLow}>
           {current}

@@ -30,7 +30,7 @@ export function CombatStancesPanel({ doc, refData, update }: BuilderProps) {
   const styleLimit = maxActiveCombatStyles(doc);
 
   return (
-    <Panel title="Stances" icon={<SwordIcon />} storageKey="panel:CombatStances">
+    <Panel resizable={false} title="Stances" icon={<SwordIcon />} storageKey="panel:CombatStances">
       <div className="stance-groups">
         <section>
           <div className="stance-group-head">

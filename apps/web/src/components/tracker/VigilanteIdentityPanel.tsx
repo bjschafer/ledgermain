@@ -20,7 +20,12 @@ export function VigilanteIdentityPanel({ doc, update }: BuilderProps) {
   const identity = currentVigilanteIdentity(doc);
 
   return (
-    <Panel title="Identity" icon={<MaskIcon />} storageKey="panel:Vigilante Identity">
+    <Panel
+      resizable={false}
+      title="Identity"
+      icon={<MaskIcon />}
+      storageKey="panel:Vigilante Identity"
+    >
       <div className="chips">
         <button
           type="button"

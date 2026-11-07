@@ -23,6 +23,7 @@ export function HitPointsSection({ doc, sheet, refData, update }: BuilderProps) 
 
   return (
     <Panel
+      resizable={false}
       title="Hit Points"
       step="v"
       icon={<HeartIcon />}
