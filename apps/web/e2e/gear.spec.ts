@@ -19,7 +19,7 @@ async function gotoGear(page: Page) {
 test("a wand's charge cap and spent charges are editable after creation", async ({ page }) => {
   const panel = await gotoGear(page);
 
-  await panel.getByRole("button", { name: "+ Add custom gear (ammo, consumables, ...)" }).click();
+  await panel.getByRole("button", { name: "Custom gear", exact: true }).click();
   await panel.getByLabel("Name").fill("Wand of Cure Light Wounds");
   await panel.getByRole("button", { name: "Add to gear" }).click();
 
@@ -37,7 +37,7 @@ test("a wand's charge cap and spent charges are editable after creation", async 
 test("adding a class kit expands it into the gear it packs", async ({ page }) => {
   const panel = await gotoGear(page);
 
-  await panel.getByRole("button", { name: "+ Add kit" }).click();
+  await panel.getByRole("button", { name: "Kit", exact: true }).click();
   await typeSearch(panel.getByPlaceholder("Search kits…"), "wizard");
 
   const pick = panel.locator(".pick-row", { hasText: "Kit, Wizard's" });
@@ -60,7 +60,7 @@ test("buying the same potion twice stacks the row and pays for both", async ({ p
 
   await panel.getByLabel("gp (coins)").fill("1000");
 
-  await panel.getByRole("button", { name: "+ Add potion / scroll / wand" }).click();
+  await panel.getByRole("button", { name: "Potion / scroll / wand", exact: true }).click();
   const picker = panel.locator(".gear-picker");
   await picker.getByLabel("Pay from purse").check();
   await expect(picker.locator(".purse-note")).toContainText("carrying 1,000 gp");
@@ -82,7 +82,7 @@ test("buying the same potion twice stacks the row and pays for both", async ({ p
   await expect(row.getByLabel("Potion of Cure Moderate Wounds quantity")).toHaveValue("1");
   await expect(panel.getByLabel("gp (coins)")).toHaveValue("700");
 
-  await panel.getByRole("button", { name: "+ Add potion / scroll / wand" }).click();
+  await panel.getByRole("button", { name: "Potion / scroll / wand", exact: true }).click();
   await buyCureModerate();
 
   // The second one joins the first rather than opening its own row.
@@ -96,7 +96,7 @@ test("every add flow offers the same purchase, sharing one toggle", async ({ pag
   await panel.getByLabel("gp (coins)").fill("500");
 
   // The toggle is ticked once, in the item picker.
-  await panel.getByRole("button", { name: "+ Add magic item" }).click();
+  await panel.getByRole("button", { name: "Magic item", exact: true }).click();
   const items = panel.locator(".gear-picker");
   await items.getByLabel("Pay from purse").check();
   await typeSearch(items.getByPlaceholder("Search items…"), "Alchemist's Fire");
@@ -110,7 +110,7 @@ test("every add flow offers the same purchase, sharing one toggle", async ({ pag
 
   // ...and is still on in the armor picker, which prices the suit it is
   // configured to build: masterwork studded leather is 25 + 150 gp.
-  await panel.getByRole("button", { name: "+ Add worn armor / shield" }).click();
+  await panel.getByRole("button", { name: "Armor / shield", exact: true }).click();
   const armor = panel.locator(".gear-picker");
   await expect(armor.getByLabel("Pay from purse")).toBeChecked();
   await armor.getByRole("button", { name: "Masterwork" }).click();
@@ -124,7 +124,7 @@ test("every add flow offers the same purchase, sharing one toggle", async ({ pag
   await expect(panel.getByLabel("gp (coins)")).toHaveValue("305");
 
   // A second flask joins the first rather than opening a second row.
-  await panel.getByRole("button", { name: "+ Add magic item" }).click();
+  await panel.getByRole("button", { name: "Magic item", exact: true }).click();
   await typeSearch(
     panel.locator(".gear-picker").getByPlaceholder("Search items…"),
     "Alchemist's Fire",

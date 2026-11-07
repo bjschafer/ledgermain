@@ -11,6 +11,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { Caret } from "../Caret.js";
+import { ChoiceBrowseHead, ChoiceSummary } from "./ChoiceSummary.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -57,6 +58,7 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
   );
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Domains", false);
+  const [changing, setChanging] = useState(false);
 
   const domains = useMemo(
     () =>
@@ -98,6 +100,14 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
   if (slots === 0) return null;
 
   const parentTagOf = (tag: string): string => parentDomainTagOf(refData, tag);
+  // Once every slot is filled the picker folds away behind "Change", leaving
+  // the chosen domains' descriptions and subdomain selects in view.
+  const settled = mode === "inquisition" ? chosenInquisition != null : chosen.length >= slots;
+  const showPicker = !settled || changing;
+  function closePicker() {
+    setChanging(false);
+    setQuery("");
+  }
 
   const q = query.trim().toLowerCase();
   const shown = q ? domains.filter((d) => d.toLowerCase().includes(q)).slice(0, 100) : domains;
@@ -154,7 +164,28 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
       </div>
       {!collapsed && (
         <>
-          {isInquisitorSlot && (
+          {showPicker && changing ? (
+            <ChoiceBrowseHead
+              title={mode === "inquisition" ? "Change inquisition" : "Change domains"}
+              closeLabel="Done"
+              onClose={closePicker}
+            >
+              {mode === "inquisition"
+                ? "Pick a different inquisition."
+                : "Click a chosen domain to drop it, then pick its replacement."}
+            </ChoiceBrowseHead>
+          ) : null}
+          {!showPicker ? (
+            <ChoiceSummary
+              actionLabel={mode === "inquisition" ? "Change inquisition" : "Change domains"}
+              onAction={() => setChanging(true)}
+            >
+              <span className="choice-summary-name">
+                {mode === "inquisition" ? chosenInquisition?.name : chosen.join(", ")}
+              </span>
+            </ChoiceSummary>
+          ) : null}
+          {showPicker && isInquisitorSlot && (
             <div
               className="chips domain-mode-toggle"
               role="group"
@@ -180,30 +211,34 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
           )}
           {mode === "inquisition" ? (
             <>
-              <p className="hint domain-picker-hint">
-                Pick one inquisition (an inquisitor's alternative to a domain: its own granted
-                powers, but no domain spell slots at all). Free-choice, no deity validation.
-              </p>
-              <input
-                className="search"
-                type="text"
-                placeholder={`Search ${inquisitions.length} inquisitions…`}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              <div className="chips domain-chips">
-                {shownInquisitions.map((i) => (
-                  <button
-                    key={i.tag}
-                    type="button"
-                    className="chip"
-                    aria-pressed={doc.build.inquisition === i.tag}
-                    onClick={() => update((d) => setInquisition(d, i.tag))}
-                  >
-                    {i.name}
-                  </button>
-                ))}
-              </div>
+              {showPicker ? (
+                <>
+                  <p className="hint domain-picker-hint">
+                    Pick one inquisition (an inquisitor's alternative to a domain: its own granted
+                    powers, but no domain spell slots at all). Free-choice, no deity validation.
+                  </p>
+                  <input
+                    className="search"
+                    type="text"
+                    placeholder={`Search ${inquisitions.length} inquisitions…`}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                  <div className="chips domain-chips">
+                    {shownInquisitions.map((i) => (
+                      <button
+                        key={i.tag}
+                        type="button"
+                        className="chip"
+                        aria-pressed={doc.build.inquisition === i.tag}
+                        onClick={() => update((d) => setInquisition(d, i.tag))}
+                      >
+                        {i.name}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              ) : null}
               {chosenInquisition?.description && (
                 <div className="domain-description">
                   <FeatureDescription html={chosenInquisition.description} />
@@ -212,33 +247,37 @@ export function DomainPicker({ doc, refData, update }: DomainPickerProps) {
             </>
           ) : (
             <>
-              <p className="hint domain-picker-hint">
-                {slots === 1
-                  ? "Pick one domain (an inquisitor gets one at level 1). You gain its granted powers, but not its spells."
-                  : "Clerics choose two domains at 1st level. Each grants one bonus prepare-slot per accessible spell level, drawable from that domain's spell list."}{" "}
-                Free-choice, no deity validation. A domain with subdomains may swap in one of them
-                below, entirely replacing that domain choice.
-              </p>
-              <input
-                className="search"
-                type="text"
-                placeholder={`Search ${domains.length} domains…`}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              <div className="chips domain-chips">
-                {shown.map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    className="chip"
-                    aria-pressed={chosen.some((c) => parentTagOf(c) === tag)}
-                    onClick={() => toggleDomain(tag)}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
+              {showPicker ? (
+                <>
+                  <p className="hint domain-picker-hint">
+                    {slots === 1
+                      ? "Pick one domain (an inquisitor gets one at level 1). You gain its granted powers, but not its spells."
+                      : "Clerics choose two domains at 1st level. Each grants one bonus prepare-slot per accessible spell level, drawable from that domain's spell list."}{" "}
+                    Free-choice, no deity validation. A domain with subdomains may swap in one of
+                    them below, entirely replacing that domain choice.
+                  </p>
+                  <input
+                    className="search"
+                    type="text"
+                    placeholder={`Search ${domains.length} domains…`}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                  <div className="chips domain-chips">
+                    {shown.map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        className="chip"
+                        aria-pressed={chosen.some((c) => parentTagOf(c) === tag)}
+                        onClick={() => toggleDomain(tag)}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              ) : null}
               {chosen.map((tag, index) => {
                 const domainTag = parentTagOf(tag);
                 const domain = domainByTag.get(domainTag);

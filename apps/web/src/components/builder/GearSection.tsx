@@ -140,6 +140,24 @@ const MONEY_FIELDS: { field: MoneyField; label: string }[] = [
 
 const BLANK_CUSTOM_GEAR = { name: "", weight: 0, price: 0, quantity: 1 };
 
+type GearAddKind = "magic" | "kit" | "consumable" | "armor" | "custom";
+
+const GEAR_ADD_KINDS: { kind: GearAddKind; label: string; title: string }[] = [
+  {
+    kind: "armor",
+    label: "Armor / shield",
+    title: "Worn armor or a shield, with enhancement and material",
+  },
+  { kind: "magic", label: "Magic item", title: "Rings, cloaks, belts and other wondrous items" },
+  { kind: "consumable", label: "Potion / scroll / wand", title: "Buy or craft a spell consumable" },
+  { kind: "kit", label: "Kit", title: "A bundle of adventuring gear" },
+  {
+    kind: "custom",
+    label: "Custom gear",
+    title: "Ammo, rations, rope, anything not in the catalog",
+  },
+];
+
 export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   // Magic item picker state
   const [itemQuery, setItemQuery] = useState("");
@@ -182,6 +200,25 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
   // Kit picker — class kits expand to their packed gear.
   const [showKitPicker, setShowKitPicker] = useState(false);
   const [kitQuery, setKitQuery] = useState("");
+  const openAddKind: GearAddKind | null = showItemPicker
+    ? "magic"
+    : showKitPicker
+      ? "kit"
+      : showConsumablePicker
+        ? "consumable"
+        : showArmorPicker
+          ? "armor"
+          : showCustomGear
+            ? "custom"
+            : null;
+  /** Opens one add picker and closes the rest; `null` closes them all. */
+  function openAdd(kind: GearAddKind | null) {
+    setShowItemPicker(kind === "magic");
+    setShowKitPicker(kind === "kit");
+    setShowConsumablePicker(kind === "consumable");
+    setShowArmorPicker(kind === "armor");
+    setShowCustomGear(kind === "custom");
+  }
 
   const gear = doc.build.gear;
   const money = doc.live.money ?? {};
@@ -696,13 +733,28 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
         </div>
       )}
 
+      {/* One "Add" row choosing the kind; each kind's picker opens below it. */}
+      <div className="gear-add-chooser" role="group" aria-label="Add to inventory">
+        <span className="eyebrow">Add</span>
+        <div className="chips">
+          {GEAR_ADD_KINDS.map((k) => (
+            <button
+              key={k.kind}
+              type="button"
+              className="chip"
+              aria-pressed={openAddKind === k.kind}
+              title={k.title}
+              onClick={() => openAdd(openAddKind === k.kind ? null : k.kind)}
+            >
+              {k.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Add magic item */}
       <div className="gear-add-row">
-        {!showItemPicker ? (
-          <button type="button" className="btn-ghost" onClick={() => setShowItemPicker(true)}>
-            + Add magic item
-          </button>
-        ) : (
+        {!showItemPicker ? null : (
           <div className="gear-picker">
             <p className="hint">
               Browses the full published catalog. Entries marked{" "}
@@ -793,11 +845,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
           the kit row itself is never added, since a container's weight and
           price already account for its contents. */}
       <div className="gear-add-row">
-        {!showKitPicker ? (
-          <button type="button" className="btn-ghost" onClick={() => setShowKitPicker(true)}>
-            + Add kit
-          </button>
-        ) : (
+        {!showKitPicker ? null : (
           <div className="gear-picker">
             <div className="gear-picker-head">
               <input
@@ -856,11 +904,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
           item-creation feat: their own spells, their own caster level, half
           price. See model/crafting.ts. */}
       <div className="gear-add-row">
-        {!showConsumablePicker ? (
-          <button type="button" className="btn-ghost" onClick={() => setShowConsumablePicker(true)}>
-            + Add potion / scroll / wand
-          </button>
-        ) : (
+        {!showConsumablePicker ? null : (
           <div className="gear-picker">
             <div className="gear-picker-head">
               <div className="kind-toggle" role="tablist" aria-label="Consumable type">
@@ -1055,11 +1099,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
 
       {/* Add worn armor / shield */}
       <div className="gear-add-row">
-        {!showArmorPicker ? (
-          <button type="button" className="btn-ghost" onClick={() => setShowArmorPicker(true)}>
-            + Add worn armor / shield
-          </button>
-        ) : (
+        {!showArmorPicker ? null : (
           <div className="gear-armor-form">
             <div className="gear-armor-head">
               <span className="eyebrow">
@@ -1210,11 +1250,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
           else not in the vendored items pack. Weight/price are entered by
           hand since there's no RefData entry to look them up from. */}
       <div className="gear-add-row">
-        {!showCustomGear ? (
-          <button type="button" className="btn-ghost" onClick={() => setShowCustomGear(true)}>
-            + Add custom gear (ammo, consumables, ...)
-          </button>
-        ) : (
+        {!showCustomGear ? null : (
           <div className="gear-armor-form">
             <div className="gear-armor-head">
               <span className="eyebrow">New Custom Gear</span>

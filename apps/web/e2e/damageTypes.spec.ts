@@ -200,7 +200,7 @@ test("the amount clears after applying, ready for the next hit", async ({ page }
   await expect(amount).toHaveValue("");
 
   await amount.fill("3");
-  await page.getByRole("button", { name: "Heal", exact: true }).click();
+  await page.locator("#play-hp").getByRole("button", { name: "Heal", exact: true }).click();
   await expect(amount).toHaveValue("");
 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);

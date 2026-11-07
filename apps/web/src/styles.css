@@ -8698,3 +8698,67 @@ input[type="text"].saved-roll-name:focus {
   margin: -2px 0 10px;
   font-size: 0.75rem;
 }
+
+/* A settled pick (race, domains) collapsed to one line, and the heading over
+   its picker once reopened. */
+.choice-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.choice-summary-main {
+  min-width: 0;
+}
+
+.choice-summary-name {
+  font-weight: 600;
+  color: var(--gold-2);
+}
+
+.choice-summary > .btn-ghost {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.choice-browse-head {
+  margin-bottom: 10px;
+}
+
+.choice-browse-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.choice-browse-hint {
+  margin: 4px 0 0;
+}
+
+.class-add-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.class-add-picker {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.gear-add-chooser {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: 12px;
+}

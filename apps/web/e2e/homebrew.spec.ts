@@ -78,6 +78,8 @@ test("creating a homebrew race with a fixed +2 Str updates the sheet's Strength"
   await expect(
     racePanel.locator(".hb-list").getByRole("button", { name: "Selected" }),
   ).toBeVisible();
+  // A chosen race folds its picker away; reopen it to find the chip.
+  await racePanel.getByRole("button", { name: "Change race" }).click();
   // A homebrew race with an unrecognized name defaults to the "Exotic"
   // rarity tier, which is collapsed by default — search forces every tier
   // open (`RaceSection`'s `forceOpen`) so the chip is actually in the DOM.

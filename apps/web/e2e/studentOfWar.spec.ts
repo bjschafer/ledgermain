@@ -96,6 +96,8 @@ test("Student of War gates on entry, grants a chosen class skill, and substitute
   });
   await classes.getByRole("button", { name: "Fighter", exact: true }).click();
   await levelUp(page, classes, "Fighter", 4);
+  // With a class chosen the picker folds away; multiclassing reopens it.
+  await classes.getByRole("button", { name: "+ Add another class" }).click();
   await expect(row.locator(".ck-met").first()).toContainText("BAB +5");
   await expect(pick).toHaveText("Locked");
 
@@ -134,7 +136,7 @@ test("Student of War gates on entry, grants a chosen class skill, and substitute
   const gear = page.locator(".panel").filter({
     has: page.getByRole("heading", { name: "Gear & Inventory" }),
   });
-  await gear.getByRole("button", { name: "+ Add worn armor / shield" }).click();
+  await gear.getByRole("button", { name: "Armor / shield", exact: true }).click();
   await typeSearch(gear.getByPlaceholder("Search armor & shields…"), "Breastplate");
   await pickRow(gear, page, "Breastplate").first().getByRole("button", { name: "Add" }).click();
 

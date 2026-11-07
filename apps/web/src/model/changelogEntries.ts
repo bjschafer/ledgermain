@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-06-tidier-build-pickers",
+    date: "2026-11-06",
+    title: "Build folds away the choices you've made",
+    note: "Once you pick a race, it shows as one line with a Change race button instead of every race in the book, and filled domains do the same. Your classes now come first, with an Add another class button that explains how multiclassing works before showing the list. Gear has a single Add row: pick armor, a magic item, a consumable, a kit, or custom gear.",
+  },
+  {
     id: "2026-11-06-clearer-rest-buttons",
     date: "2026-11-06",
     title: "Each refresh button says what it refreshes",

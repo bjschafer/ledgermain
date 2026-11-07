@@ -37,6 +37,7 @@ import { HomebrewBadge } from "../HomebrewBadge.js";
 import { LeafIcon } from "../icons.js";
 import { RulesNote } from "../RulesNote.js";
 import { ChoiceSelect } from "./ClassFeaturesList.js";
+import { ChoiceBrowseHead, ChoiceSummary } from "./ChoiceSummary.js";
 import { HomebrewRaceEditor } from "./HomebrewRaceEditor.js";
 import { Panel } from "./Panel.js";
 import { SearchMiss } from "./SearchMiss.js";
@@ -89,6 +90,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   const [pendingRaceId, setPendingRaceId] = useState<string | null>(null);
   const [langInput, setLangInput] = useState("");
   const [query, setQuery] = useState("");
+  const [browsing, setBrowsing] = useState(false);
 
   // Alphabetical within each rarity tier; the tier sections (below) carry the
   // top-level ordering, and the selected race stays marked via aria-pressed
@@ -103,6 +105,11 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
   const hasMatches = raceGroups.some((g) => g.items.length > 0);
   const searchActive = query.trim().length > 0;
   const selected = refData.races[doc.identity.race];
+  const showPicker = !selected || browsing;
+  function closePicker() {
+    setBrowsing(false);
+    setQuery("");
+  }
   const flexible = selected ? raceGrantsFlexibleAbility(selected) : false;
   const flexibleSuppressed = suppressedRaceTargets(doc, refData).has(
     FLEXIBLE_ABILITY_SUPPRESS_TARGET,
@@ -148,47 +155,66 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
       setPendingRaceId("");
     } else {
       update((d) => setRace(d, id));
+      closePicker();
     }
   }
 
   return (
     <Panel title="Race" step="iii" icon={<LeafIcon />} storageKey="panel:Race">
-      <input
-        className="search"
-        type="text"
-        placeholder="Search races…"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      {raceGroups.map((group) => (
-        <RaceGroupSection
-          key={group.category}
-          category={group.category}
-          label={group.label}
-          count={group.items.length}
-          forceOpen={searchActive}
-        >
-          {group.items.map(([id, race]) => (
-            <button
-              key={id}
-              type="button"
-              className="chip"
-              aria-pressed={doc.identity.race === id}
-              onClick={() => selectRace(id)}
+      {showPicker ? (
+        <>
+          {selected ? (
+            <ChoiceBrowseHead title="Change race" onClose={closePicker}>
+              Switching resets racial modifiers and alternate racial traits.
+            </ChoiceBrowseHead>
+          ) : null}
+          <input
+            className="search"
+            type="text"
+            placeholder="Search races…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          {raceGroups.map((group) => (
+            <RaceGroupSection
+              key={group.category}
+              category={group.category}
+              label={group.label}
+              count={group.items.length}
+              forceOpen={searchActive}
             >
-              {race.name}
-              <HomebrewBadge id={id} interactive={false} />
-            </button>
+              {group.items.map(([id, race]) => (
+                <button
+                  key={id}
+                  type="button"
+                  className="chip"
+                  aria-pressed={doc.identity.race === id}
+                  onClick={() => selectRace(id)}
+                >
+                  {race.name}
+                  <HomebrewBadge id={id} interactive={false} />
+                </button>
+              ))}
+            </RaceGroupSection>
           ))}
-        </RaceGroupSection>
-      ))}
-      {!hasMatches ? (
-        searchActive ? (
-          <SearchMiss query={query.trim()} picker="races" />
-        ) : (
-          <div className="empty">No races match.</div>
-        )
-      ) : null}
+          {!hasMatches ? (
+            searchActive ? (
+              <SearchMiss query={query.trim()} picker="races" />
+            ) : (
+              <div className="empty">No races match.</div>
+            )
+          ) : null}
+        </>
+      ) : (
+        <ChoiceSummary actionLabel="Change race" onAction={() => setBrowsing(true)}>
+          <span className="choice-summary-name">{selected.name}</span>{" "}
+          <HomebrewBadge id={doc.identity.race} />
+          <span className="hint">
+            {" "}
+            · size {selected.size} · speed {selected.speeds.land ?? 30} ft.
+          </span>
+        </ChoiceSummary>
+      )}
       {pendingRaceId != null && (
         <ConfirmDialog
           title={pendingRaceId ? "Switch race?" : "Clear race?"}
@@ -200,15 +226,14 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
           onConfirm={() => {
             update((d) => setRace(d, pendingRaceId));
             setPendingRaceId(null);
+            closePicker();
           }}
           onCancel={() => setPendingRaceId(null)}
         />
       )}
       {selected ? (
         <p className="hint" style={{ marginTop: 12 }}>
-          {selected.name} <HomebrewBadge id={doc.identity.race} /> · size {selected.size} · speed{" "}
-          {selected.speeds.land ?? 30} ft. Racial ability and skill bonuses flow into the sheet
-          automatically.
+          Racial ability and skill bonuses flow into the sheet automatically.
         </p>
       ) : (
         <p className="hint" style={{ marginTop: 12 }}>

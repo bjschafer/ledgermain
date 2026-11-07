@@ -64,7 +64,7 @@ test("Scribe Scroll unlocks the Craft side of the consumables picker", async ({ 
   const { consoleErrors, pageErrors } = guard(page);
   const panel = await takeScribeScroll(page);
 
-  await panel.getByRole("button", { name: "+ Add potion / scroll / wand" }).click();
+  await panel.getByRole("button", { name: "Potion / scroll / wand", exact: true }).click();
 
   // Buying is unchanged and stays the default.
   const picker = panel.locator(".gear-picker");
@@ -99,7 +99,7 @@ test("the caster-level chooser reprices a scroll and names the stronger one", as
   const { consoleErrors, pageErrors } = guard(page);
   const panel = await takeScribeScroll(page);
 
-  await panel.getByRole("button", { name: "+ Add potion / scroll / wand" }).click();
+  await panel.getByRole("button", { name: "Potion / scroll / wand", exact: true }).click();
   const picker = panel.locator(".gear-picker");
   await picker.getByRole("tab", { name: "Scrolls" }).click();
   await picker.getByRole("tab", { name: "Craft" }).click();

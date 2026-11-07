@@ -25,6 +25,7 @@ import { BonusClassSkillsPicker } from "./BonusClassSkillsPicker.js";
 import { BloodragerBloodlinePicker } from "./BloodragerBloodlinePicker.js";
 import { BrawlerStrikePicker } from "./BrawlerStrikePicker.js";
 import { CastingAdvancementPicker } from "./CastingAdvancementPicker.js";
+import { ChoiceBrowseHead } from "./ChoiceSummary.js";
 import { ClassFeaturesList } from "./ClassFeaturesList.js";
 import { CrueltyPicker } from "./CrueltyPicker.js";
 import { CursePicker } from "./CursePicker.js";
@@ -137,6 +138,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
   const [fcbOpen, setFcbOpen] = useState(true);
   const [confirmRemoveTag, setConfirmRemoveTag] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [adding, setAdding] = useState(false);
 
   // "base" = every ordinary (non-prestige, non-NPC) playable class; "prestige"
   // = the hand-authored CRB prestige classes plus Student of War (1 + 4) AND
@@ -175,6 +177,21 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
   const hasMatches = classGroups.some((g) => g.items.length > 0);
 
   const chosen = new Set(doc.identity.classes.map((c) => c.tag));
+  const hasClass = doc.identity.classes.length > 0;
+  const showPicker = !hasClass || adding;
+  function closePicker() {
+    setAdding(false);
+    setQuery("");
+  }
+  // Picking always adds: the picker never removes (that's each row's Remove),
+  // and a multiclass pick closes it again since one class at a time is the norm.
+  function pickClass(tag: string) {
+    update((d) => addClass(d, tag));
+    closePicker();
+  }
+  const currentNames = doc.identity.classes
+    .map((c) => pickerClasses.find((p) => p.tag === c.tag)?.name ?? c.tag)
+    .join(" and ");
   const totalLevel = doc.identity.classes.reduce((s, c) => s + c.level, 0);
 
   const fcbHouserule = doc.build.settings?.fcbHouserule ?? false;
@@ -208,113 +225,13 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
       title="Classes"
       step="iv"
       icon={<ShieldIcon />}
-      right={<span className="hint">multiclass-capable · total level {totalLevel}</span>}
+      right={hasClass ? <span className="hint">total level {totalLevel}</span> : undefined}
       storageKey="panel:Classes"
     >
-      <input
-        className="search"
-        type="text"
-        placeholder="Search classes…"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        aria-label="Search classes"
-      />
-      <div style={{ marginBottom: 14 }}>
-        {classGroups.map((group) =>
-          group.category === "prestige" ? (
-            // Prestige classes carry structured entry requirements (4) —
-            // unlike the plain name-only chips every other tier uses, each
-            // not-yet-added entry here shows its own live ✓/✗ check list (same
-            // visual language as FeatsSection's `.pick-row`/`.preq`) and
-            // disables Add while a structured prerequisite is unmet. An
-            // already-added prestige class is never retroactively re-checked
-            // (evaluateClassPrereqs only gates adding) — it just renders as a
-            // plain selected row.
-            <ClassGroupSection
-              key={group.category}
-              category={group.category}
-              label={group.label}
-              count={group.items.length}
-              forceOpen={searchActive}
-              plain
-            >
-              <div className="prestige-class-list">
-                {group.items.map((c) => {
-                  const isChosen = chosen.has(c.tag);
-                  const res = isChosen ? null : evaluateClassPrereqs(c, doc, refData, sheet.bab);
-                  const blocked = res?.blocked ?? false;
-                  return (
-                    <div
-                      key={c.tag}
-                      className={`pick-row${isChosen ? " is-selected" : ""}${blocked ? " is-blocked" : ""}`}
-                    >
-                      <div className="pmain">
-                        <div className="pname">{c.name}</div>
-                        {res && (res.checks.length > 0 || res.softText) && (
-                          <div className="preq">
-                            {res.checks.map((chk, i) => (
-                              <span key={i} className={chk.met ? "ck-met" : "ck-unmet"}>
-                                {chk.met ? "✓" : "✗"} {chk.label}
-                              </span>
-                            ))}
-                            {res.softText ? (
-                              <InfoTip
-                                className="desc-text"
-                                content="Prerequisite text: verify manually (not auto-enforced)"
-                              >
-                                ⚠ {res.softText}
-                              </InfoTip>
-                            ) : null}
-                          </div>
-                        )}
-                      </div>
-                      <button
-                        type="button"
-                        className={`pick-btn ${isChosen ? "remove" : "add"}`}
-                        disabled={!isChosen && blocked}
-                        title={!isChosen && blocked ? "Prerequisites not met" : undefined}
-                        onClick={() =>
-                          isChosen ? setConfirmRemoveTag(c.tag) : update((d) => addClass(d, c.tag))
-                        }
-                      >
-                        {isChosen ? "Remove" : blocked ? "Locked" : "Add"}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            </ClassGroupSection>
-          ) : (
-            <ClassGroupSection
-              key={group.category}
-              category={group.category}
-              label={group.label}
-              count={group.items.length}
-              forceOpen={searchActive}
-            >
-              {group.items.map((c) => (
-                <button
-                  key={c.tag}
-                  type="button"
-                  className="chip"
-                  aria-pressed={chosen.has(c.tag)}
-                  onClick={() =>
-                    chosen.has(c.tag)
-                      ? setConfirmRemoveTag(c.tag)
-                      : update((d) => addClass(d, c.tag))
-                  }
-                >
-                  {c.name}
-                </button>
-              ))}
-            </ClassGroupSection>
-          ),
-        )}
-        {!hasMatches ? <SearchMiss query={query.trim()} picker="classes" /> : null}
-      </div>
-
-      {doc.identity.classes.length === 0 ? (
-        <p className="empty">No class chosen. Pick one or more above.</p>
+      {!hasClass ? (
+        <p className="hint" style={{ marginBottom: 10 }}>
+          Pick your class to start. You can add more classes later to multiclass.
+        </p>
       ) : (
         doc.identity.classes.map((cls) => {
           const def = pickerClasses.find((c) => c.tag === cls.tag);
@@ -380,6 +297,128 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
         })
       )}
 
+      {showPicker ? (
+        <div className={hasClass ? "class-add-picker" : undefined}>
+          {hasClass ? (
+            <ChoiceBrowseHead title="Add a class" onClose={closePicker}>
+              The class you pick joins {currentNames} at level 1. Raise each class with its own
+              level stepper; your character level is the total.
+            </ChoiceBrowseHead>
+          ) : null}
+          <input
+            className="search"
+            type="text"
+            placeholder="Search classes…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            aria-label="Search classes"
+          />
+          <div>
+            {classGroups.map((group) =>
+              group.category === "prestige" ? (
+                // Prestige classes carry structured entry requirements (4) —
+                // unlike the plain name-only chips every other tier uses, each
+                // not-yet-added entry here shows its own live ✓/✗ check list (same
+                // visual language as FeatsSection's `.pick-row`/`.preq`) and
+                // disables Add while a structured prerequisite is unmet. An
+                // already-added prestige class is never retroactively re-checked
+                // (evaluateClassPrereqs only gates adding) — it just renders as a
+                // plain selected row.
+                <ClassGroupSection
+                  key={group.category}
+                  category={group.category}
+                  label={group.label}
+                  count={group.items.length}
+                  forceOpen={searchActive}
+                  plain
+                >
+                  <div className="prestige-class-list">
+                    {group.items.map((c) => {
+                      const isChosen = chosen.has(c.tag);
+                      const res = isChosen
+                        ? null
+                        : evaluateClassPrereqs(c, doc, refData, sheet.bab);
+                      const blocked = res?.blocked ?? false;
+                      return (
+                        <div
+                          key={c.tag}
+                          className={`pick-row${isChosen ? " is-selected" : ""}${blocked ? " is-blocked" : ""}`}
+                        >
+                          <div className="pmain">
+                            <div className="pname">{c.name}</div>
+                            {res && (res.checks.length > 0 || res.softText) && (
+                              <div className="preq">
+                                {res.checks.map((chk, i) => (
+                                  <span key={i} className={chk.met ? "ck-met" : "ck-unmet"}>
+                                    {chk.met ? "✓" : "✗"} {chk.label}
+                                  </span>
+                                ))}
+                                {res.softText ? (
+                                  <InfoTip
+                                    className="desc-text"
+                                    content="Prerequisite text: verify manually (not auto-enforced)"
+                                  >
+                                    ⚠ {res.softText}
+                                  </InfoTip>
+                                ) : null}
+                              </div>
+                            )}
+                          </div>
+                          <button
+                            type="button"
+                            className="pick-btn add"
+                            disabled={isChosen || blocked}
+                            title={
+                              isChosen
+                                ? "Already one of your classes"
+                                : blocked
+                                  ? "Prerequisites not met"
+                                  : undefined
+                            }
+                            onClick={() => pickClass(c.tag)}
+                          >
+                            {isChosen ? "Added" : blocked ? "Locked" : "Add"}
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </ClassGroupSection>
+              ) : (
+                <ClassGroupSection
+                  key={group.category}
+                  category={group.category}
+                  label={group.label}
+                  count={group.items.length}
+                  forceOpen={searchActive}
+                >
+                  {group.items.map((c) => (
+                    <button
+                      key={c.tag}
+                      type="button"
+                      className="chip"
+                      aria-pressed={chosen.has(c.tag)}
+                      disabled={chosen.has(c.tag)}
+                      title={chosen.has(c.tag) ? "Already one of your classes" : undefined}
+                      onClick={() => pickClass(c.tag)}
+                    >
+                      {c.name}
+                    </button>
+                  ))}
+                </ClassGroupSection>
+              ),
+            )}
+            {!hasMatches ? <SearchMiss query={query.trim()} picker="classes" /> : null}
+          </div>
+        </div>
+      ) : (
+        <div className="class-add-row">
+          <button type="button" className="btn-ghost" onClick={() => setAdding(true)}>
+            + Add another class
+          </button>
+          <span className="hint">Multiclass: the new class starts at level 1.</span>
+        </div>
+      )}
       {confirmRemoveTag != null &&
         (() => {
           const removingCls = doc.identity.classes.find((c) => c.tag === confirmRemoveTag);
