@@ -62,8 +62,7 @@ import {
   consumeSnapshot,
   createUndoHistoryState,
   invalidateSnapshot,
-  rebaseHistory,
-  recordSnapshot,
+  observeTransition,
   undoDepth,
 } from "./undoSnapshot.js";
 
@@ -890,12 +889,9 @@ export function useCharacter(): CharacterStore {
           return poolNames.get(id);
         },
       });
-    if (!change) {
-      rebaseHistory(undoStateRef.current, prev.doc, doc);
-      return;
-    }
-    const entryId = `${doc.version}-${Date.now()}`;
-    recordSnapshot(undoStateRef.current, prev.doc, entryId);
+    const entryId = change ? `${doc.version}-${Date.now()}` : null;
+    observeTransition(undoStateRef.current, prev.doc, doc, entryId);
+    if (!change || entryId === null) return;
     setSessionLog((log) => {
       const next = pushLogEntry(log, {
         id: entryId,

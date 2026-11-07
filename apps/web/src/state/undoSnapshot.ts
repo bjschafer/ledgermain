@@ -71,11 +71,15 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 /**
  * `target` with every part that moved between `before` and `after` taken from
  * `after`. Docs are immutable with structural sharing, so reference equality
- * finds exactly what a transition touched; it recurses through plain objects
- * and replaces arrays and leaves whole.
+ * finds exactly what a transition touched. Plain objects merge key by key and
+ * arrays item by item (`carryArray`), so a change to one buff or one prepared
+ * spell never drags its neighbours' state along with it.
  */
 export function carryChanges<T>(target: T, before: T, after: T): T {
   if (before === after) return target;
+  if (Array.isArray(before) && Array.isArray(after) && Array.isArray(target)) {
+    return carryArray(target, before, after) as T;
+  }
   if (!isPlainObject(before) || !isPlainObject(after) || !isPlainObject(target)) return after;
   let out: Record<string, unknown> | undefined;
   for (const key of new Set([...Object.keys(before), ...Object.keys(after)])) {
@@ -85,6 +89,107 @@ export function carryChanges<T>(target: T, before: T, after: T): T {
     else delete out[key];
   }
   return (out ?? target) as T;
+}
+
+/** The `instanceId` of each item, or `null` unless every item has a distinct one. */
+function instanceIds(list: readonly unknown[]): string[] | null {
+  const ids = list.map((item) =>
+    isPlainObject(item) && typeof item.instanceId === "string" ? item.instanceId : null,
+  );
+  if (ids.some((id) => id === null)) return null;
+  return new Set(ids).size === ids.length ? (ids as string[]) : null;
+}
+
+function distinctPrimitives(list: readonly unknown[]): boolean {
+  return (
+    list.every((item) => item === null || typeof item !== "object") &&
+    new Set(list).size === list.length
+  );
+}
+
+/**
+ * Three ways to line items up, strongest first:
+ *  - by `instanceId` (active buffs): edits, removals and additions each apply
+ *    to the matching item, wherever it sits in `target`.
+ *  - as a set (condition ids): drop what `after` dropped, append what it added.
+ *  - by position (prepared spells), valid only while `target` still has the
+ *    same length as `before`. Same length means items edited in place; a
+ *    different length is matched by reference to find what was inserted and
+ *    removed.
+ * Anything none of them fits takes `after` whole.
+ */
+function carryArray(target: unknown[], before: unknown[], after: unknown[]): unknown[] {
+  if (target === before) return after;
+
+  const targetIds = instanceIds(target);
+  const beforeIds = instanceIds(before);
+  const afterIds = instanceIds(after);
+  if (targetIds && beforeIds && afterIds) {
+    const was = new Map(beforeIds.map((id, i) => [id, before[i]]));
+    const is = new Map(afterIds.map((id, i) => [id, after[i]]));
+    const out: unknown[] = [];
+    targetIds.forEach((id, i) => {
+      const prior = was.get(id);
+      const next = is.get(id);
+      if (prior === undefined) out.push(target[i]);
+      else if (next !== undefined) out.push(carryChanges(target[i], prior, next));
+    });
+    const present = new Set(targetIds);
+    afterIds.forEach((id, i) => {
+      if (!was.has(id) && !present.has(id)) out.push(after[i]);
+    });
+    return out;
+  }
+
+  if (distinctPrimitives(target) && distinctPrimitives(before) && distinctPrimitives(after)) {
+    const was = new Set(before);
+    const is = new Set(after);
+    const out = target.filter((item) => !was.has(item) || is.has(item));
+    for (const item of after) if (!was.has(item) && !out.includes(item)) out.push(item);
+    return out;
+  }
+
+  if (target.length !== before.length) return after;
+  if (before.length === after.length) {
+    return target.map((item, i) => carryChanges(item, before[i], after[i]));
+  }
+  return spliceByReference(target, before, after);
+}
+
+/**
+ * Replay the inserts and removals that turned `before` into `after` onto
+ * `target`, a same-length sibling of `before`. Items are matched by
+ * reference along a longest common subsequence; each kept `before` item
+ * stands in for the `target` item at the same index.
+ */
+function spliceByReference(target: unknown[], before: unknown[], after: unknown[]): unknown[] {
+  const n = before.length;
+  const m = after.length;
+  const lcs: number[][] = Array.from({ length: n + 1 }, () => Array<number>(m + 1).fill(0));
+  for (let i = n - 1; i >= 0; i--) {
+    for (let j = m - 1; j >= 0; j--) {
+      lcs[i]![j] =
+        before[i] === after[j]
+          ? lcs[i + 1]![j + 1]! + 1
+          : Math.max(lcs[i + 1]![j]!, lcs[i]![j + 1]!);
+    }
+  }
+  const out: unknown[] = [];
+  let i = 0;
+  let j = 0;
+  while (i < n || j < m) {
+    if (i < n && j < m && before[i] === after[j]) {
+      out.push(target[i]);
+      i++;
+      j++;
+    } else if (j < m && (i === n || lcs[i]![j + 1]! >= lcs[i + 1]![j]!)) {
+      out.push(after[j]);
+      j++;
+    } else {
+      i++;
+    }
+  }
+  return out;
 }
 
 /**
@@ -98,6 +203,20 @@ export function rebaseHistory(
 ): void {
   if (before === after) return;
   for (const step of state.history) step.doc = carryChanges(step.doc, before, after);
+}
+
+/**
+ * Feed one committed transition to the history: a logged one (`logEntryId`
+ * set) becomes a step, an unlogged one is folded into the steps already there.
+ */
+export function observeTransition(
+  state: UndoHistoryState,
+  before: CharacterDoc,
+  after: CharacterDoc,
+  logEntryId: string | null,
+): void {
+  if (logEntryId === null) rebaseHistory(state, before, after);
+  else recordSnapshot(state, before, logEntryId);
 }
 
 /** Drop the whole history (the active character is about to change out from under it). */
