@@ -19,6 +19,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -135,102 +136,109 @@ export function PhrenicAmplificationPicker({
             place of a basic one, and stay locked until then. The count above is a guide only,
             picking more than expected never blocks.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search amplifications…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {amplifications.map((a) => {
-              const isSel = selected.has(a.id);
-              const belowLevel = amplificationBelowLevel(doc, a.minLevel);
-              const prereq = phrenicAmplificationPrereqResult(doc, a.id, a.description);
-              const prereqUnmet = prereq ? prereq.checks.some((c) => !c.met) : false;
-              // Only a not-yet-picked entry is locked — an already-picked one
-              // (a legacy build, or a since-dropped other amplification) keeps
-              // working, same as a feat whose prereqs later lapse.
-              const blocked = (belowLevel || prereqUnmet) && !isSel;
-              return (
-                <div
-                  key={a.id}
-                  className={`pick-row${isSel ? " is-selected" : ""}${blocked ? " is-blocked" : ""}`}
-                >
-                  <div className="pmain">
-                    <div className="pname">
-                      {a.name} <span className="tag-mystery">{TIER_LABEL[a.tier] ?? a.tier}</span>
-                      {belowLevel && (
-                        <span className="level-badge" title="Psychic level required">
-                          Level {a.minLevel}
-                        </span>
-                      )}
-                    </div>
-                    <div className="preq">
-                      <span className="desc-text">
-                        {a.costLabel}: {a.summary}
-                      </span>
-                    </div>
-                    {prereq && (
-                      <div className="preq">
-                        <span className="hint">Requires</span>
-                        {prereq.checks.map((c, i) => (
-                          <span key={i} className={c.met ? "ck-met" : "ck-unmet"}>
-                            {c.met ? "✓" : "✗"} {c.label}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    {isSel && a.id === MIMIC_METAMAGIC_ID
-                      ? ([1, 2] as const).map((slot) => (
-                          <label
-                            key={slot}
-                            className="hint"
-                            style={{ marginTop: 2, display: "block" }}
-                          >
-                            Chosen feat {slot}:{" "}
-                            <select
-                              value={mimicSlugs[slot - 1] ?? ""}
-                              onChange={(e) =>
-                                update((d) =>
-                                  setMimicMetamagicFeat(d, slot, e.target.value || undefined),
-                                )
-                              }
-                            >
-                              <option value="">Choose</option>
-                              {metamagicOptions.map((o) => (
-                                <option key={o.slug} value={o.slug}>
-                                  {o.name} (+{o.slotIncrease})
-                                </option>
-                              ))}
-                            </select>
-                          </label>
-                        ))
-                      : null}
-                    {a.description ? <FeatureDescription html={a.description} /> : null}
-                  </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    disabled={blocked}
-                    title={
-                      blocked
-                        ? belowLevel
-                          ? `Unlocks at psychic level ${a.minLevel}`
-                          : "Requirement not met"
-                        : undefined
-                    }
-                    onClick={() => update((d) => togglePsychicAmplification(d, a.id))}
+          <PickFold
+            noun="amplifications"
+            catalog={catalog}
+            selected={selected}
+            owed={chosen < expected}
+          >
+            <input
+              className="search"
+              type="text"
+              placeholder="Search amplifications…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {amplifications.map((a) => {
+                const isSel = selected.has(a.id);
+                const belowLevel = amplificationBelowLevel(doc, a.minLevel);
+                const prereq = phrenicAmplificationPrereqResult(doc, a.id, a.description);
+                const prereqUnmet = prereq ? prereq.checks.some((c) => !c.met) : false;
+                // Only a not-yet-picked entry is locked — an already-picked one
+                // (a legacy build, or a since-dropped other amplification) keeps
+                // working, same as a feat whose prereqs later lapse.
+                const blocked = (belowLevel || prereqUnmet) && !isSel;
+                return (
+                  <div
+                    key={a.id}
+                    className={`pick-row${isSel ? " is-selected" : ""}${blocked ? " is-blocked" : ""}`}
                   >
-                    {isSel ? "Remove" : blocked ? "Locked" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {amplifications.length === 0 ? (
-              <div className="empty">No amplifications match.</div>
-            ) : null}
-          </div>
+                    <div className="pmain">
+                      <div className="pname">
+                        {a.name} <span className="tag-mystery">{TIER_LABEL[a.tier] ?? a.tier}</span>
+                        {belowLevel && (
+                          <span className="level-badge" title="Psychic level required">
+                            Level {a.minLevel}
+                          </span>
+                        )}
+                      </div>
+                      <div className="preq">
+                        <span className="desc-text">
+                          {a.costLabel}: {a.summary}
+                        </span>
+                      </div>
+                      {prereq && (
+                        <div className="preq">
+                          <span className="hint">Requires</span>
+                          {prereq.checks.map((c, i) => (
+                            <span key={i} className={c.met ? "ck-met" : "ck-unmet"}>
+                              {c.met ? "✓" : "✗"} {c.label}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {isSel && a.id === MIMIC_METAMAGIC_ID
+                        ? ([1, 2] as const).map((slot) => (
+                            <label
+                              key={slot}
+                              className="hint"
+                              style={{ marginTop: 2, display: "block" }}
+                            >
+                              Chosen feat {slot}:{" "}
+                              <select
+                                value={mimicSlugs[slot - 1] ?? ""}
+                                onChange={(e) =>
+                                  update((d) =>
+                                    setMimicMetamagicFeat(d, slot, e.target.value || undefined),
+                                  )
+                                }
+                              >
+                                <option value="">Choose</option>
+                                {metamagicOptions.map((o) => (
+                                  <option key={o.slug} value={o.slug}>
+                                    {o.name} (+{o.slotIncrease})
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                          ))
+                        : null}
+                      {a.description ? <FeatureDescription html={a.description} /> : null}
+                    </div>
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      disabled={blocked}
+                      title={
+                        blocked
+                          ? belowLevel
+                            ? `Unlocks at psychic level ${a.minLevel}`
+                            : "Requirement not met"
+                          : undefined
+                      }
+                      onClick={() => update((d) => togglePsychicAmplification(d, a.id))}
+                    >
+                      {isSel ? "Remove" : blocked ? "Locked" : "Add"}
+                    </button>
+                  </div>
+                );
+              })}
+              {amplifications.length === 0 ? (
+                <div className="empty">No amplifications match.</div>
+              ) : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

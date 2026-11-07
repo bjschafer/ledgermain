@@ -14,6 +14,7 @@ import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { Explainer } from "../Explainer.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -154,62 +155,64 @@ export function HexPicker({ doc, sheet, refData, update }: HexPickerProps) {
               </p>
             </Explainer>
           </div>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search hexes…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {hexes.map((h) => {
-              const isSel = selected.has(h.id);
-              const belowLevel = level > 0 && level < h.minLevel;
-              return (
-                <div key={h.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {h.name}
-                      {h.nameSuffix ? ` ${h.nameSuffix}` : ""}
-                      {h.tier === "hex" ? null : (
-                        <span className="tag-mystery">{TIER_LABEL[h.tier] ?? h.tier}</span>
-                      )}
-                      {!h.displayOnly && (
-                        <span
-                          className="badge-modeled"
-                          title="Carries a real, live mechanical effect"
-                        >
-                          M
-                        </span>
-                      )}
-                    </div>
-                    <div className="preq">
-                      <span className="desc-text">{h.summary}</span>
-                    </div>
-                    {belowLevel && (
-                      <div className="hint feature-note">
-                        ⚠ Requires witch {ordinal(h.minLevel)} level (currently {level})
+          <PickFold noun="hexes" catalog={catalog} selected={selected} owed={chosen < expected}>
+            <input
+              className="search"
+              type="text"
+              placeholder="Search hexes…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {hexes.map((h) => {
+                const isSel = selected.has(h.id);
+                const belowLevel = level > 0 && level < h.minLevel;
+                return (
+                  <div key={h.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {h.name}
+                        {h.nameSuffix ? ` ${h.nameSuffix}` : ""}
+                        {h.tier === "hex" ? null : (
+                          <span className="tag-mystery">{TIER_LABEL[h.tier] ?? h.tier}</span>
+                        )}
+                        {!h.displayOnly && (
+                          <span
+                            className="badge-modeled"
+                            title="Carries a real, live mechanical effect"
+                          >
+                            M
+                          </span>
+                        )}
                       </div>
-                    )}
-                    {h.contextNotes?.map((n, i) => (
-                      <div key={i} className="hint feature-note">
-                        {resolveSaveDCText(n.text, dcCtx)}
+                      <div className="preq">
+                        <span className="desc-text">{h.summary}</span>
                       </div>
-                    ))}
-                    {h.description ? <FeatureDescription html={h.description} /> : null}
+                      {belowLevel && (
+                        <div className="hint feature-note">
+                          ⚠ Requires witch {ordinal(h.minLevel)} level (currently {level})
+                        </div>
+                      )}
+                      {h.contextNotes?.map((n, i) => (
+                        <div key={i} className="hint feature-note">
+                          {resolveSaveDCText(n.text, dcCtx)}
+                        </div>
+                      ))}
+                      {h.description ? <FeatureDescription html={h.description} /> : null}
+                    </div>
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d) => toggleWitchHex(d, h.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d) => toggleWitchHex(d, h.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {hexes.length === 0 ? <div className="empty">No hexes match.</div> : null}
-          </div>
+                );
+              })}
+              {hexes.length === 0 ? <div className="empty">No hexes match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

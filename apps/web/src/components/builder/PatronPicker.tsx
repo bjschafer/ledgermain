@@ -9,6 +9,7 @@ import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { Explainer } from "../Explainer.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { ChoiceBrowseHead } from "./ChoiceSummary.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -76,6 +77,7 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
   const isWitch = doc.identity.classes.some((c) => c.tag === "witch");
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Patron", false);
+  const [browsing, setBrowsing] = useState(false);
 
   const catalog = useMemo(() => mergedWitchPatronCatalog(refData), [refData]);
   const chosen = doc.build.witchPatron ?? "";
@@ -97,6 +99,14 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
   }, [catalog, query, chosen]);
 
   if (!isWitch) return null;
+
+  // With a patron chosen, only its row (and its spell list) stays in view.
+  const showAll = !chosenDef || browsing;
+  const rows = showAll ? patrons : [chosenDef];
+  function closeBrowse() {
+    setBrowsing(false);
+    setQuery("");
+  }
 
   return (
     <div className="subsection patron-picker">
@@ -131,16 +141,21 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
               it overrides at a level or two. Those are shown for you to apply by hand.
             </p>
           </Explainer>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search patrons…"
-            aria-label="Search patrons"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {patrons.map((p) => {
+          {showAll && chosenDef ? (
+            <ChoiceBrowseHead title="Change patron" closeLabel="Done" onClose={closeBrowse} />
+          ) : null}
+          {showAll ? (
+            <input
+              className="search"
+              type="text"
+              placeholder="Search patrons…"
+              aria-label="Search patrons"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          ) : null}
+          <div className={showAll ? "scroll" : undefined}>
+            {rows.map((p) => {
               const isSel = p.tag === chosen;
               return (
                 <div key={p.tag} className={`pick-row${isSel ? " is-selected" : ""}`}>
@@ -218,15 +233,25 @@ export function PatronPicker({ doc, refData, update }: PatronPickerProps) {
                     className={`pick-btn ${isSel ? "remove" : "add"}`}
                     aria-pressed={isSel}
                     aria-label={isSel ? `Clear ${p.name} as patron` : `Choose ${p.name} as patron`}
-                    onClick={() => update((d) => setWitchPatron(d, isSel ? null : p.tag))}
+                    onClick={() => {
+                      update((d) => setWitchPatron(d, isSel ? null : p.tag));
+                      if (!isSel) closeBrowse();
+                    }}
                   >
                     {isSel ? "Chosen" : "Choose"}
                   </button>
                 </div>
               );
             })}
-            {patrons.length === 0 ? <div className="empty">No patrons match.</div> : null}
+            {rows.length === 0 ? <div className="empty">No patrons match.</div> : null}
           </div>
+          {!showAll ? (
+            <div className="class-add-row">
+              <button type="button" className="btn-ghost" onClick={() => setBrowsing(true)}>
+                Change patron
+              </button>
+            </div>
+          ) : null}
         </>
       )}
     </div>

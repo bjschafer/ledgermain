@@ -13,6 +13,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -118,59 +119,66 @@ export function DiscoveryPicker({ doc, refData, update }: DiscoveryPickerProps) 
             Free-choice: never blocks past the expected count; a "Requires alchemist Nth" note is a
             soft reminder, not a hard gate.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search discoveries…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {discoveries.map((d) => {
-              const isSel = selected.has(d.id);
-              const belowLevel = level > 0 && level < d.minLevel;
-              return (
-                <div key={d.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {d.name}
-                      {d.nameSuffix ? ` ${d.nameSuffix}` : ""}
-                      {!d.displayOnly && (
-                        <span
-                          className="badge-modeled"
-                          title="Carries a real, live mechanical effect (see Class Features)"
-                        >
-                          M
-                        </span>
+          <PickFold
+            noun="discoveries"
+            catalog={catalog}
+            selected={selected}
+            owed={chosen < expected}
+          >
+            <input
+              className="search"
+              type="text"
+              placeholder="Search discoveries…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {discoveries.map((d) => {
+                const isSel = selected.has(d.id);
+                const belowLevel = level > 0 && level < d.minLevel;
+                return (
+                  <div key={d.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {d.name}
+                        {d.nameSuffix ? ` ${d.nameSuffix}` : ""}
+                        {!d.displayOnly && (
+                          <span
+                            className="badge-modeled"
+                            title="Carries a real, live mechanical effect (see Class Features)"
+                          >
+                            M
+                          </span>
+                        )}
+                      </div>
+                      <div className="preq">
+                        <span className="desc-text">{d.summary}</span>
+                      </div>
+                      {belowLevel && (
+                        <div className="hint" style={{ marginTop: 2 }}>
+                          ⚠ Requires alchemist {d.minLevel}th (currently {level})
+                        </div>
                       )}
+                      {d.contextNotes?.map((note, i) => (
+                        <div key={i} className="hint" style={{ marginTop: 2 }}>
+                          ⚠ {note.text}
+                        </div>
+                      ))}
+                      {d.description ? <FeatureDescription html={d.description} /> : null}
                     </div>
-                    <div className="preq">
-                      <span className="desc-text">{d.summary}</span>
-                    </div>
-                    {belowLevel && (
-                      <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Requires alchemist {d.minLevel}th (currently {level})
-                      </div>
-                    )}
-                    {d.contextNotes?.map((note, i) => (
-                      <div key={i} className="hint" style={{ marginTop: 2 }}>
-                        ⚠ {note.text}
-                      </div>
-                    ))}
-                    {d.description ? <FeatureDescription html={d.description} /> : null}
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d2) => toggleAlchemistDiscovery(d2, d.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d2) => toggleAlchemistDiscovery(d2, d.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {discoveries.length === 0 ? <div className="empty">No discoveries match.</div> : null}
-          </div>
+                );
+              })}
+              {discoveries.length === 0 ? <div className="empty">No discoveries match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

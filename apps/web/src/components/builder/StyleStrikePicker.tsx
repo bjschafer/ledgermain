@@ -12,6 +12,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -101,46 +102,53 @@ export function StyleStrikePicker({ doc, refData, update }: StyleStrikePickerPro
             apply to one unarmed strike during a flurry of blows (two per round at 15th), no
             automatic sheet effect. Free-choice: never blocks past the expected count.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search style strikes…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {strikes.map((s) => {
-              const isSel = selected.has(s.id);
-              return (
-                <div key={s.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {s.name}
-                      {s.fistOnly ? <span className="tag-mystery">Fist only</span> : null}
-                      {s.kickOnly ? <span className="tag-mystery">Kick only</span> : null}
-                    </div>
-                    <div className="preq">
-                      <span className="desc-text">{s.summary}</span>
-                    </div>
-                    {s.contextNotes?.map((n, i) => (
-                      <div key={i} className="hint" style={{ marginTop: 2 }}>
-                        ⚠ {n.text}
+          <PickFold
+            noun="style strikes"
+            catalog={catalog}
+            selected={selected}
+            owed={chosen < expected}
+          >
+            <input
+              className="search"
+              type="text"
+              placeholder="Search style strikes…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {strikes.map((s) => {
+                const isSel = selected.has(s.id);
+                return (
+                  <div key={s.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {s.name}
+                        {s.fistOnly ? <span className="tag-mystery">Fist only</span> : null}
+                        {s.kickOnly ? <span className="tag-mystery">Kick only</span> : null}
                       </div>
-                    ))}
-                    {s.description ? <FeatureDescription html={s.description} /> : null}
+                      <div className="preq">
+                        <span className="desc-text">{s.summary}</span>
+                      </div>
+                      {s.contextNotes?.map((n, i) => (
+                        <div key={i} className="hint" style={{ marginTop: 2 }}>
+                          ⚠ {n.text}
+                        </div>
+                      ))}
+                      {s.description ? <FeatureDescription html={s.description} /> : null}
+                    </div>
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d) => toggleMonkStyleStrike(d, s.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d) => toggleMonkStyleStrike(d, s.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {strikes.length === 0 ? <div className="empty">No style strikes match.</div> : null}
-          </div>
+                );
+              })}
+              {strikes.length === 0 ? <div className="empty">No style strikes match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

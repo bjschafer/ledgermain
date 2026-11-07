@@ -14,6 +14,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -80,6 +81,10 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
   }, [generalCatalog, generalQuery, selected]);
 
   const chosen = chosenShamanHexCount(doc) + chosenGeneralShamanHexCount(doc, refData);
+  const allHexes = useMemo(
+    () => [...(spiritTag ? hexesForSpirit(spiritTag) : []), ...generalCatalog],
+    [spiritTag, generalCatalog],
+  );
   const expected = expectedShamanHexCount(doc, refData);
   const warn = shamanHexesNeedWarning(doc, refData);
   const countClass = warn ? "hint warn-over" : "hint";
@@ -128,104 +133,111 @@ export function ShamanHexPicker({ doc, refData, update }: ShamanHexPickerProps) 
                 is note-tier; entries marked <span className="badge-modeled">M</span> carry a real,
                 live mechanical effect (see Class Features).
               </p>
-              <input
-                className="search"
-                type="text"
-                placeholder="Search hexes…"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              <div className="scroll">
-                {hexes.map((h) => {
-                  const isSel = hasShamanHex(doc, h.id);
-                  return (
-                    <div key={h.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                      <div className="pmain">
-                        <div className="pname">
-                          {h.name}
-                          {!h.displayOnly && (
-                            <span
-                              className="badge-modeled"
-                              title="Carries a real, live mechanical effect (see Class Features)"
-                            >
-                              M
-                            </span>
-                          )}
-                        </div>
-                        <div className="preq">
-                          <span className="desc-text">{h.summary}</span>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        className={`pick-btn ${isSel ? "remove" : "add"}`}
-                        onClick={() => update((d) => toggleShamanHex(d, h.id))}
-                      >
-                        {isSel ? "Remove" : "Add"}
-                      </button>
-                    </div>
-                  );
-                })}
-                {hexes.length === 0 ? <div className="empty">No hexes match.</div> : null}
-              </div>
-
-              <p className="hint revelation-picker-hint" style={{ marginTop: 10 }}>
-                General Hexes: the Advanced Class Guide's own spirit-agnostic hex table, available
-                to any shaman (draws from the same pick budget above). A shaman may also select from
-                the witch's own Hex list (excluding major/grand hexes), using shaman level as witch
-                level. See the Witch class's Hexes section to browse those. Entries marked{" "}
-                <span className="badge-modeled">M</span> carry a real, live mechanical effect (see
-                Class Features). The rest are prose-only.
-              </p>
-              <input
-                className="search"
-                type="text"
-                placeholder="Search general hexes…"
-                value={generalQuery}
-                onChange={(e) => setGeneralQuery(e.target.value)}
-              />
-              <div className="scroll">
-                {generalHexes.map((h) => {
-                  const isSel = selected.has(h.id);
-                  return (
-                    <div key={h.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                      <div className="pmain">
-                        <div className="pname">
-                          {h.name}
-                          {h.nameSuffix ? ` ${h.nameSuffix}` : ""}
-                          {!h.displayOnly && (
-                            <span
-                              className="badge-modeled"
-                              title="Carries a real, live mechanical effect (see Class Features)"
-                            >
-                              M
-                            </span>
-                          )}
-                        </div>
-                        <div className="preq">
-                          <span className="desc-text">{h.summary}</span>
-                        </div>
-                        {h.contextNotes?.map((noteEntry, i) => (
-                          <div key={i} className="hint" style={{ marginTop: 2 }}>
-                            ⚠ {noteEntry.text}
+              <PickFold
+                noun="hexes"
+                catalog={allHexes}
+                selected={selected}
+                owed={chosen < expected}
+              >
+                <input
+                  className="search"
+                  type="text"
+                  placeholder="Search hexes…"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+                <div className="scroll">
+                  {hexes.map((h) => {
+                    const isSel = hasShamanHex(doc, h.id);
+                    return (
+                      <div key={h.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                        <div className="pmain">
+                          <div className="pname">
+                            {h.name}
+                            {!h.displayOnly && (
+                              <span
+                                className="badge-modeled"
+                                title="Carries a real, live mechanical effect (see Class Features)"
+                              >
+                                M
+                              </span>
+                            )}
                           </div>
-                        ))}
-                        {h.description ? <FeatureDescription html={h.description} /> : null}
+                          <div className="preq">
+                            <span className="desc-text">{h.summary}</span>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          className={`pick-btn ${isSel ? "remove" : "add"}`}
+                          onClick={() => update((d) => toggleShamanHex(d, h.id))}
+                        >
+                          {isSel ? "Remove" : "Add"}
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        className={`pick-btn ${isSel ? "remove" : "add"}`}
-                        onClick={() => update((d) => toggleShamanHex(d, h.id))}
-                      >
-                        {isSel ? "Remove" : "Add"}
-                      </button>
-                    </div>
-                  );
-                })}
-                {generalHexes.length === 0 ? (
-                  <div className="empty">No general hexes match.</div>
-                ) : null}
-              </div>
+                    );
+                  })}
+                  {hexes.length === 0 ? <div className="empty">No hexes match.</div> : null}
+                </div>
+
+                <p className="hint revelation-picker-hint" style={{ marginTop: 10 }}>
+                  General Hexes: the Advanced Class Guide's own spirit-agnostic hex table, available
+                  to any shaman (draws from the same pick budget above). A shaman may also select
+                  from the witch's own Hex list (excluding major/grand hexes), using shaman level as
+                  witch level. See the Witch class's Hexes section to browse those. Entries marked{" "}
+                  <span className="badge-modeled">M</span> carry a real, live mechanical effect (see
+                  Class Features). The rest are prose-only.
+                </p>
+                <input
+                  className="search"
+                  type="text"
+                  placeholder="Search general hexes…"
+                  value={generalQuery}
+                  onChange={(e) => setGeneralQuery(e.target.value)}
+                />
+                <div className="scroll">
+                  {generalHexes.map((h) => {
+                    const isSel = selected.has(h.id);
+                    return (
+                      <div key={h.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                        <div className="pmain">
+                          <div className="pname">
+                            {h.name}
+                            {h.nameSuffix ? ` ${h.nameSuffix}` : ""}
+                            {!h.displayOnly && (
+                              <span
+                                className="badge-modeled"
+                                title="Carries a real, live mechanical effect (see Class Features)"
+                              >
+                                M
+                              </span>
+                            )}
+                          </div>
+                          <div className="preq">
+                            <span className="desc-text">{h.summary}</span>
+                          </div>
+                          {h.contextNotes?.map((noteEntry, i) => (
+                            <div key={i} className="hint" style={{ marginTop: 2 }}>
+                              ⚠ {noteEntry.text}
+                            </div>
+                          ))}
+                          {h.description ? <FeatureDescription html={h.description} /> : null}
+                        </div>
+                        <button
+                          type="button"
+                          className={`pick-btn ${isSel ? "remove" : "add"}`}
+                          onClick={() => update((d) => toggleShamanHex(d, h.id))}
+                        >
+                          {isSel ? "Remove" : "Add"}
+                        </button>
+                      </div>
+                    );
+                  })}
+                  {generalHexes.length === 0 ? (
+                    <div className="empty">No general hexes match.</div>
+                  ) : null}
+                </div>
+              </PickFold>
             </>
           )}
         </>

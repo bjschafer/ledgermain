@@ -15,6 +15,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -117,83 +118,90 @@ export function RagePowerPicker({ doc, refData, update }: RagePowerPickerProps) 
             Free-choice: never blocks past the expected count; a "Requires barbarian Nth" note is a
             soft reminder, not a hard gate.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search rage powers…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {powers.map((p) => {
-              const isSel = selected.has(p.id);
-              const belowLevel = level > 0 && level < p.minLevel;
-              return (
-                <div key={p.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {p.name}
-                      {p.nameSuffix ? ` ${p.nameSuffix}` : ""}
-                      {!p.displayOnly && (
-                        <span
-                          className="badge-modeled"
-                          title="Carries a real, live mechanical effect (see Class Features)"
-                        >
-                          M
-                        </span>
+          <PickFold
+            noun="rage powers"
+            catalog={catalog}
+            selected={selected}
+            owed={chosen < expected}
+          >
+            <input
+              className="search"
+              type="text"
+              placeholder="Search rage powers…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {powers.map((p) => {
+                const isSel = selected.has(p.id);
+                const belowLevel = level > 0 && level < p.minLevel;
+                return (
+                  <div key={p.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {p.name}
+                        {p.nameSuffix ? ` ${p.nameSuffix}` : ""}
+                        {!p.displayOnly && (
+                          <span
+                            className="badge-modeled"
+                            title="Carries a real, live mechanical effect (see Class Features)"
+                          >
+                            M
+                          </span>
+                        )}
+                      </div>
+                      <div className="preq">
+                        <span className="desc-text">{p.summary}</span>
+                      </div>
+                      {belowLevel && (
+                        <div className="hint" style={{ marginTop: 2 }}>
+                          ⚠ Requires barbarian {p.minLevel}th (currently {level})
+                        </div>
                       )}
+                      {p.contextNotes?.map((noteEntry, i) => (
+                        <div key={i} className="hint" style={{ marginTop: 2 }}>
+                          ⚠ {noteEntry.text}
+                        </div>
+                      ))}
+                      {isSel && p.choice ? (
+                        // Choose-one selection (RAW locks it in when the power
+                        // is gained) — stored via model/ragePowers.ts's
+                        // setRagePowerChoice; chain powers keyed off this pick
+                        // apply nothing until one is chosen.
+                        <label className="hint" style={{ marginTop: 2, display: "block" }}>
+                          {p.choice.label}:{" "}
+                          <select
+                            value={ragePowerChoice(doc, p.id) ?? ""}
+                            onChange={(e) =>
+                              update((d2) =>
+                                setRagePowerChoice(d2, p.id, e.target.value || undefined),
+                              )
+                            }
+                          >
+                            <option value="">Choose</option>
+                            {p.choice.options.map((o) => (
+                              <option key={o.id} value={o.id}>
+                                {o.label}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      ) : null}
+                      {p.description ? <FeatureDescription html={p.description} /> : null}
                     </div>
-                    <div className="preq">
-                      <span className="desc-text">{p.summary}</span>
-                    </div>
-                    {belowLevel && (
-                      <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Requires barbarian {p.minLevel}th (currently {level})
-                      </div>
-                    )}
-                    {p.contextNotes?.map((noteEntry, i) => (
-                      <div key={i} className="hint" style={{ marginTop: 2 }}>
-                        ⚠ {noteEntry.text}
-                      </div>
-                    ))}
-                    {isSel && p.choice ? (
-                      // Choose-one selection (RAW locks it in when the power
-                      // is gained) — stored via model/ragePowers.ts's
-                      // setRagePowerChoice; chain powers keyed off this pick
-                      // apply nothing until one is chosen.
-                      <label className="hint" style={{ marginTop: 2, display: "block" }}>
-                        {p.choice.label}:{" "}
-                        <select
-                          value={ragePowerChoice(doc, p.id) ?? ""}
-                          onChange={(e) =>
-                            update((d2) =>
-                              setRagePowerChoice(d2, p.id, e.target.value || undefined),
-                            )
-                          }
-                        >
-                          <option value="">Choose</option>
-                          {p.choice.options.map((o) => (
-                            <option key={o.id} value={o.id}>
-                              {o.label}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                    ) : null}
-                    {p.description ? <FeatureDescription html={p.description} /> : null}
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d2) => toggleRagePower(d2, p.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d2) => toggleRagePower(d2, p.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {powers.length === 0 ? <div className="empty">No rage powers match.</div> : null}
-          </div>
+                );
+              })}
+              {powers.length === 0 ? <div className="empty">No rage powers match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

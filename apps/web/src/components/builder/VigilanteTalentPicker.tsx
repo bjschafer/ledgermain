@@ -25,6 +25,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -127,6 +128,13 @@ function TalentSection({
   const [query, setQuery] = useState("");
   const [collapsed, toggleCollapsed] = useCollapsed(storageKey, false);
   const countClass = warn ? "hint warn-over" : "hint";
+  const catalog = list;
+  // `chosen` stands in for the doc: it moves whenever a pick does.
+  const selected = useMemo(
+    () => new Set(list.filter((t) => has(t.id)).map((t) => t.id)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [list, chosen],
+  );
 
   const talents = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -164,59 +172,66 @@ function TalentSection({
       {!collapsed && (
         <>
           <p className="hint revelation-picker-hint">{hint}</p>
-          <input
-            className="search"
-            type="text"
-            placeholder={`Search ${title.toLowerCase()}…`}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {talents.map((t) => {
-              const isSel = has(t.id);
-              const belowLevel = level > 0 && level < t.minLevel;
-              return (
-                <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {t.name}
-                      {t.nameSuffix ? ` ${t.nameSuffix}` : ""}
-                      {t.changes.length > 0 && (
-                        <span
-                          className="badge-modeled"
-                          title="Carries a real, live mechanical effect"
-                        >
-                          M
-                        </span>
+          <PickFold
+            noun={title.toLowerCase()}
+            catalog={catalog}
+            selected={selected}
+            owed={chosen < expected}
+          >
+            <input
+              className="search"
+              type="text"
+              placeholder={`Search ${title.toLowerCase()}…`}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {talents.map((t) => {
+                const isSel = has(t.id);
+                const belowLevel = level > 0 && level < t.minLevel;
+                return (
+                  <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {t.name}
+                        {t.nameSuffix ? ` ${t.nameSuffix}` : ""}
+                        {t.changes.length > 0 && (
+                          <span
+                            className="badge-modeled"
+                            title="Carries a real, live mechanical effect"
+                          >
+                            M
+                          </span>
+                        )}
+                      </div>
+                      <div className="preq">
+                        <span className="desc-text">{t.summary}</span>
+                      </div>
+                      {belowLevel && (
+                        <div className="hint" style={{ marginTop: 2 }}>
+                          ⚠ Requires vigilante {t.minLevel} (currently {level})
+                        </div>
                       )}
+                      {t.contextNotes?.map((n: ContextNote, i: number) => (
+                        <div key={i} className="hint" style={{ marginTop: 2 }}>
+                          ⚠ {n.text}
+                        </div>
+                      ))}
+                      {t.description ? <FeatureDescription html={t.description} /> : null}
                     </div>
-                    <div className="preq">
-                      <span className="desc-text">{t.summary}</span>
-                    </div>
-                    {belowLevel && (
-                      <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Requires vigilante {t.minLevel} (currently {level})
-                      </div>
-                    )}
-                    {t.contextNotes?.map((n: ContextNote, i: number) => (
-                      <div key={i} className="hint" style={{ marginTop: 2 }}>
-                        ⚠ {n.text}
-                      </div>
-                    ))}
-                    {t.description ? <FeatureDescription html={t.description} /> : null}
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => onToggle(t.id)}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => onToggle(t.id)}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {talents.length === 0 ? <div className="empty">No talents match.</div> : null}
-          </div>
+                );
+              })}
+              {talents.length === 0 ? <div className="empty">No talents match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

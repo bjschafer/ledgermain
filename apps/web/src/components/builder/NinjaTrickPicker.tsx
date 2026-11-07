@@ -13,6 +13,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -109,53 +110,55 @@ export function NinjaTrickPicker({ doc, refData, update }: NinjaTrickPickerProps
             tricks unlock at 10th, chosen in place of a normal trick (Ultimate Combat tricks only).
             Free-choice, never blocks past the expected count.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search tricks…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {tricks.map((t) => {
-              const isSel = selected.has(t.id);
-              const belowLevel = level > 0 && level < t.minLevel;
-              return (
-                <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {t.name}
-                      {t.nameSuffix ? ` ${t.nameSuffix}` : ""}{" "}
-                      <span className="tag-mystery">{TIER_LABEL[t.tier] ?? t.tier}</span>
-                    </div>
-                    <div className="preq">
-                      <span className="desc-text">{t.summary}</span>
-                    </div>
-                    {belowLevel && (
-                      <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Requires ninja {t.minLevel}
-                        {t.minLevel === 2 ? "nd" : "th"} (currently {level})
+          <PickFold noun="tricks" catalog={catalog} selected={selected} owed={chosen < expected}>
+            <input
+              className="search"
+              type="text"
+              placeholder="Search tricks…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {tricks.map((t) => {
+                const isSel = selected.has(t.id);
+                const belowLevel = level > 0 && level < t.minLevel;
+                return (
+                  <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {t.name}
+                        {t.nameSuffix ? ` ${t.nameSuffix}` : ""}{" "}
+                        <span className="tag-mystery">{TIER_LABEL[t.tier] ?? t.tier}</span>
                       </div>
-                    )}
-                    {t.contextNotes?.map((n, i) => (
-                      <div key={i} className="hint" style={{ marginTop: 2 }}>
-                        ⚠ {n.text}
+                      <div className="preq">
+                        <span className="desc-text">{t.summary}</span>
                       </div>
-                    ))}
-                    {t.description ? <FeatureDescription html={t.description} /> : null}
+                      {belowLevel && (
+                        <div className="hint" style={{ marginTop: 2 }}>
+                          ⚠ Requires ninja {t.minLevel}
+                          {t.minLevel === 2 ? "nd" : "th"} (currently {level})
+                        </div>
+                      )}
+                      {t.contextNotes?.map((n, i) => (
+                        <div key={i} className="hint" style={{ marginTop: 2 }}>
+                          ⚠ {n.text}
+                        </div>
+                      ))}
+                      {t.description ? <FeatureDescription html={t.description} /> : null}
+                    </div>
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d) => toggleNinjaTrick(d, t.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d) => toggleNinjaTrick(d, t.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {tricks.length === 0 ? <div className="empty">No tricks match.</div> : null}
-          </div>
+                );
+              })}
+              {tricks.length === 0 ? <div className="empty">No tricks match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

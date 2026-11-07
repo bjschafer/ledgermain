@@ -9,6 +9,7 @@ import { TipButton } from "../InfoTip.js";
 import { SearchMiss } from "./SearchMiss.js";
 import { Caret } from "../Caret.js";
 import { Explainer } from "../Explainer.js";
+import { ChoiceBrowseHead, ChoiceSummary } from "./ChoiceSummary.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -23,13 +24,14 @@ interface ArchetypePickerProps {
  * dataset covers. A candidate that would swap the same base-class feature slot
  * as an already-chosen archetype is hard-blocked (structured signal — see
  * `model/archetypes.ts`), since `resolveClassFeatures` applies swaps last-wins
- * and the earlier pick would silently do nothing. Open by default: it's the
- * second decision after picking a class, right after the per-class rows, so
- * it stays collapsible for players who don't want one.
+ * and the earlier pick would silently do nothing. Archetypes are optional, so
+ * the list stays folded behind a button (or a summary of the picks) until the
+ * player asks for it.
  */
 export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) {
   const [open, setOpen] = useState(true);
   const [query, setQuery] = useState("");
+  const [browsing, setBrowsing] = useState(false);
   const chosen = doc.build.archetypes ?? [];
 
   const byClass = useMemo(() => {
@@ -103,60 +105,87 @@ export function ArchetypePicker({ doc, refData, update }: ArchetypePickerProps) 
               ⚠ {w}
             </p>
           ))}
-          <input
-            className="search"
-            type="text"
-            placeholder="Search archetypes…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          {classTags.map((tag) => {
-            const options = byClass.get(tag)!;
-            const shown = q ? options.filter((o) => o.name.toLowerCase().includes(q)) : options;
-            if (shown.length === 0) return null;
-            const classDef = classByTag(refData, tag);
-            return (
-              <div key={tag} className="archetype-class-group">
-                <span className="hint">{classDef?.name ?? tag}</span>
-                <div className="chips">
-                  {shown.map((a) => {
-                    const isChosen = chosen.includes(a.id);
-                    const conflict = isChosen
-                      ? { blocked: false }
-                      : checkArchetypeConflict(refData, chosen, a.id);
-                    return (
-                      <TipButton
-                        key={a.id}
-                        className="chip"
-                        aria-pressed={isChosen}
-                        disabled={conflict.blocked}
-                        disabledReason={`Conflicts with ${conflict.conflictsWith}: both swap the same ability`}
-                        onClick={() => toggle(a.id, conflict.blocked)}
-                      >
-                        {a.name}
-                        {a.tier === "verified" ? (
-                          <span
-                            className="badge-modeled"
-                            title="Changes real numbers on your sheet (see Class Features)"
-                          >
-                            M
-                          </span>
-                        ) : a.tier === "extracted" ? (
-                          <span
-                            className="badge-modeled badge-modeled--extracted"
-                            title="Changes real numbers on your sheet. The values were read from the rules text automatically, so check them against the book. Details under Class Features."
-                          >
-                            M
-                          </span>
-                        ) : null}
-                      </TipButton>
-                    );
-                  })}
-                </div>
+          {!browsing ? (
+            chosen.length > 0 ? (
+              <ChoiceSummary actionLabel="Change archetypes" onAction={() => setBrowsing(true)}>
+                <span className="choice-summary-name">
+                  {chosen.map((id) => refData.archetypes[id]?.name ?? id).join(", ")}
+                </span>
+              </ChoiceSummary>
+            ) : (
+              <div className="class-add-row">
+                <button type="button" className="btn-ghost" onClick={() => setBrowsing(true)}>
+                  + Add an archetype
+                </button>
+                <span className="hint">Optional: trades some class abilities for others.</span>
               </div>
-            );
-          })}
-          {!hasMatches && q ? <SearchMiss query={query.trim()} picker="archetypes" /> : null}
+            )
+          ) : (
+            <>
+              <ChoiceBrowseHead
+                title="Choose archetypes"
+                closeLabel="Done"
+                onClose={() => {
+                  setBrowsing(false);
+                  setQuery("");
+                }}
+              />
+              <input
+                className="search"
+                type="text"
+                placeholder="Search archetypes…"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              {classTags.map((tag) => {
+                const options = byClass.get(tag)!;
+                const shown = q ? options.filter((o) => o.name.toLowerCase().includes(q)) : options;
+                if (shown.length === 0) return null;
+                const classDef = classByTag(refData, tag);
+                return (
+                  <div key={tag} className="archetype-class-group">
+                    <span className="hint">{classDef?.name ?? tag}</span>
+                    <div className="chips">
+                      {shown.map((a) => {
+                        const isChosen = chosen.includes(a.id);
+                        const conflict = isChosen
+                          ? { blocked: false }
+                          : checkArchetypeConflict(refData, chosen, a.id);
+                        return (
+                          <TipButton
+                            key={a.id}
+                            className="chip"
+                            aria-pressed={isChosen}
+                            disabled={conflict.blocked}
+                            disabledReason={`Conflicts with ${conflict.conflictsWith}: both swap the same ability`}
+                            onClick={() => toggle(a.id, conflict.blocked)}
+                          >
+                            {a.name}
+                            {a.tier === "verified" ? (
+                              <span
+                                className="badge-modeled"
+                                title="Changes real numbers on your sheet (see Class Features)"
+                              >
+                                M
+                              </span>
+                            ) : a.tier === "extracted" ? (
+                              <span
+                                className="badge-modeled badge-modeled--extracted"
+                                title="Changes real numbers on your sheet. The values were read from the rules text automatically, so check them against the book. Details under Class Features."
+                              >
+                                M
+                              </span>
+                            ) : null}
+                          </TipButton>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+              {!hasMatches && q ? <SearchMiss query={query.trim()} picker="archetypes" /> : null}
+            </>
+          )}
         </>
       )}
     </div>

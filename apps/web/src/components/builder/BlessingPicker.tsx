@@ -7,6 +7,7 @@ import { useCollapsed } from "../../state/useCollapsed.js";
 import { InfoTip } from "../InfoTip.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
 import { Caret } from "../Caret.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -66,6 +67,7 @@ export function BlessingPicker({ doc, refData, update }: BlessingPickerProps) {
   const byId = useMemo(() => new Map(blessings.map((b) => [b.id, b])), [blessings]);
 
   const chosen = doc.build.blessings ?? [];
+  const chosenSet = new Set(chosen);
   const warpriestLevel = doc.identity.classes.find((c) => c.tag === "warpriest")?.level ?? 0;
 
   if (!isWarpriest) return null;
@@ -116,26 +118,33 @@ export function BlessingPicker({ doc, refData, update }: BlessingPickerProps) {
             deity validation blocks a pick, though a mismatch with this blessing's own deity list
             shows a hint below.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder={`Search ${blessings.length} blessings…`}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="chips blessing-chips">
-            {shown.map((b) => (
-              <button
-                key={b.id}
-                type="button"
-                className="chip"
-                aria-pressed={chosen.includes(b.id)}
-                onClick={() => toggle(b.id)}
-              >
-                {b.name}
-              </button>
-            ))}
-          </div>
+          <PickFold
+            noun="blessings"
+            catalog={blessings}
+            selected={chosenSet}
+            owed={chosen.length < 2}
+          >
+            <input
+              className="search"
+              type="text"
+              placeholder={`Search ${blessings.length} blessings…`}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="chips blessing-chips">
+              {shown.map((b) => (
+                <button
+                  key={b.id}
+                  type="button"
+                  className="chip"
+                  aria-pressed={chosen.includes(b.id)}
+                  onClick={() => toggle(b.id)}
+                >
+                  {b.name}
+                </button>
+              ))}
+            </div>
+          </PickFold>
           {chosen.map((id) => {
             const blessing = byId.get(id);
             if (!blessing) return null;

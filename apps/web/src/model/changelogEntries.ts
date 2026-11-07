@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-06-class-options-fold",
+    date: "2026-11-06",
+    title: "Class options fold away once you've picked",
+    note: "Hexes, rage powers, exploits, talents, blessings and the other picks you earn by level shrink to a list of what you chose once you've spent every pick, with a Change button to reopen them. They stay open while you still have picks to make. Archetypes wait behind an Add an archetype button, and a chosen patron or familiar shows just that choice.",
+  },
+  {
     id: "2026-11-06-tidier-build-pickers",
     date: "2026-11-06",
     title: "Build folds away the choices you've made",

@@ -13,6 +13,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -111,59 +112,61 @@ export function MagusArcanaPicker({ doc, refData, update }: MagusArcanaPickerPro
             live mechanical effect, the rest are prose-only. Free-choice: never blocks past the
             expected count; a "Requires magus Nth" note is a soft reminder, not a hard gate.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search arcana…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {arcana.map((a) => {
-              const isSel = selected.has(a.id);
-              const belowLevel = level > 0 && level < a.minLevel;
-              return (
-                <div key={a.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {a.name}
-                      {a.nameSuffix ? ` ${a.nameSuffix}` : ""}
-                      {!a.displayOnly && (
-                        <span
-                          className="badge-modeled"
-                          title="Carries a real, live mechanical effect"
-                        >
-                          M
-                        </span>
+          <PickFold noun="arcana" catalog={catalog} selected={selected} owed={chosen < expected}>
+            <input
+              className="search"
+              type="text"
+              placeholder="Search arcana…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {arcana.map((a) => {
+                const isSel = selected.has(a.id);
+                const belowLevel = level > 0 && level < a.minLevel;
+                return (
+                  <div key={a.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {a.name}
+                        {a.nameSuffix ? ` ${a.nameSuffix}` : ""}
+                        {!a.displayOnly && (
+                          <span
+                            className="badge-modeled"
+                            title="Carries a real, live mechanical effect"
+                          >
+                            M
+                          </span>
+                        )}
+                      </div>
+                      <div className="preq">
+                        <span className="desc-text">{a.summary}</span>
+                      </div>
+                      {belowLevel && (
+                        <div className="hint" style={{ marginTop: 2 }}>
+                          ⚠ Requires magus {a.minLevel}th (currently {level})
+                        </div>
                       )}
+                      {a.contextNotes?.map((note, i) => (
+                        <div key={i} className="hint" style={{ marginTop: 2 }}>
+                          ⚠ {note.text}
+                        </div>
+                      ))}
+                      {a.description ? <FeatureDescription html={a.description} /> : null}
                     </div>
-                    <div className="preq">
-                      <span className="desc-text">{a.summary}</span>
-                    </div>
-                    {belowLevel && (
-                      <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Requires magus {a.minLevel}th (currently {level})
-                      </div>
-                    )}
-                    {a.contextNotes?.map((note, i) => (
-                      <div key={i} className="hint" style={{ marginTop: 2 }}>
-                        ⚠ {note.text}
-                      </div>
-                    ))}
-                    {a.description ? <FeatureDescription html={a.description} /> : null}
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d) => toggleMagusArcana(d, a.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d) => toggleMagusArcana(d, a.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {arcana.length === 0 ? <div className="empty">No arcana match.</div> : null}
-          </div>
+                );
+              })}
+              {arcana.length === 0 ? <div className="empty">No arcana match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

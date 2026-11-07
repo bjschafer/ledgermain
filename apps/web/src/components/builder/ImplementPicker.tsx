@@ -26,6 +26,7 @@ import { useCollapsed } from "../../state/useCollapsed.js";
 import type { BuilderProps } from "./types.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = BuilderProps["update"];
 
@@ -246,6 +247,12 @@ function FocusPowerSection({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, knownTags, chosen]);
 
+  const powerCatalog = OCCULTIST_SCHOOL_TAGS.filter((tag) => knownTags.has(tag)).flatMap((tag) =>
+    OCCULTIST_SCHOOLS[tag]!.focusPowers.map((p) => ({ id: `${tag}:${p.slug}`, name: p.name })),
+  );
+  const selectedPowers = new Set(
+    powerCatalog.filter((p) => hasOccultistFocusPower(doc, p.id)).map((p) => p.id),
+  );
   const level = occultistLevel(doc);
 
   return (
@@ -283,44 +290,51 @@ function FocusPowerSection({
             <div className="empty">Pick an implement school above to see its focus powers.</div>
           ) : (
             <>
-              <input
-                className="search"
-                type="text"
-                placeholder="Search focus powers…"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              <div className="scroll">
-                {powers.map((p) => {
-                  const isSel = hasOccultistFocusPower(doc, p.id);
-                  const belowLevel = level > 0 && p.minLevel !== undefined && level < p.minLevel;
-                  return (
-                    <div key={p.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                      <div className="pmain">
-                        <div className="pname">
-                          {p.name} <span className="hint">({p.schoolName})</span>
-                        </div>
-                        <div className="preq">
-                          <span className="desc-text">{p.summary}</span>
-                        </div>
-                        {belowLevel && (
-                          <div className="hint" style={{ marginTop: 2 }}>
-                            ⚠ Requires occultist {p.minLevel}th (currently {level})
+              <PickFold
+                noun="focus powers"
+                catalog={powerCatalog}
+                selected={selectedPowers}
+                owed={chosen < expected}
+              >
+                <input
+                  className="search"
+                  type="text"
+                  placeholder="Search focus powers…"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+                <div className="scroll">
+                  {powers.map((p) => {
+                    const isSel = hasOccultistFocusPower(doc, p.id);
+                    const belowLevel = level > 0 && p.minLevel !== undefined && level < p.minLevel;
+                    return (
+                      <div key={p.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                        <div className="pmain">
+                          <div className="pname">
+                            {p.name} <span className="hint">({p.schoolName})</span>
                           </div>
-                        )}
+                          <div className="preq">
+                            <span className="desc-text">{p.summary}</span>
+                          </div>
+                          {belowLevel && (
+                            <div className="hint" style={{ marginTop: 2 }}>
+                              ⚠ Requires occultist {p.minLevel}th (currently {level})
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          className={`pick-btn ${isSel ? "remove" : "add"}`}
+                          onClick={() => update((d) => toggleOccultistFocusPower(d, p.id))}
+                        >
+                          {isSel ? "Remove" : "Add"}
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        className={`pick-btn ${isSel ? "remove" : "add"}`}
-                        onClick={() => update((d) => toggleOccultistFocusPower(d, p.id))}
-                      >
-                        {isSel ? "Remove" : "Add"}
-                      </button>
-                    </div>
-                  );
-                })}
-                {powers.length === 0 ? <div className="empty">No focus powers match.</div> : null}
-              </div>
+                    );
+                  })}
+                  {powers.length === 0 ? <div className="empty">No focus powers match.</div> : null}
+                </div>
+              </PickFold>
             </>
           )}
         </>

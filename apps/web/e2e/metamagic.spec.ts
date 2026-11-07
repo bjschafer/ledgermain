@@ -338,6 +338,7 @@ test("a theologian's domain secret prepares its spell already extended", async (
   const archetypes = classes.locator(".subsection").filter({
     has: page.getByRole("heading", { name: "Archetypes" }),
   });
+  await archetypes.getByRole("button", { name: "+ Add an archetype" }).click();
   await typeSearch(archetypes.locator("input.search"), "Theologian");
   await archetypes
     .getByRole("button", { name: /^Theologian/ })

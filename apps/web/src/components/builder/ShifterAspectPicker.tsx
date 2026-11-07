@@ -12,6 +12,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -102,47 +103,49 @@ export function ShifterAspectPicker({ doc, refData, update }: ShifterAspectPicke
             minor form on/off in the tracker's Shifter Aspects panel; major form (Wild Shape) lives
             in the Polymorph panel. Free choice: never blocks past the expected count.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search aspects…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {aspects.map((a) => {
-              const isSel = selected.has(a.id);
-              return (
-                <div key={a.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {a.name}
-                      {a.minorFormChanges.length > 0 ? (
-                        <span className="tag-mystery">toggleable</span>
-                      ) : null}
-                    </div>
-                    <div className="preq">
-                      <span className="desc-text">{a.summary}</span>
-                    </div>
-                    {a.contextNotes?.map((n, i) => (
-                      <div key={i} className="hint" style={{ marginTop: 2 }}>
-                        ⚠ {n.text}
+          <PickFold noun="aspects" catalog={catalog} selected={selected} owed={chosen < expected}>
+            <input
+              className="search"
+              type="text"
+              placeholder="Search aspects…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {aspects.map((a) => {
+                const isSel = selected.has(a.id);
+                return (
+                  <div key={a.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {a.name}
+                        {a.minorFormChanges.length > 0 ? (
+                          <span className="tag-mystery">toggleable</span>
+                        ) : null}
                       </div>
-                    ))}
-                    {a.description ? <FeatureDescription html={a.description} /> : null}
+                      <div className="preq">
+                        <span className="desc-text">{a.summary}</span>
+                      </div>
+                      {a.contextNotes?.map((n, i) => (
+                        <div key={i} className="hint" style={{ marginTop: 2 }}>
+                          ⚠ {n.text}
+                        </div>
+                      ))}
+                      {a.description ? <FeatureDescription html={a.description} /> : null}
+                    </div>
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d) => toggleShifterAspect(d, a.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d) => toggleShifterAspect(d, a.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {aspects.length === 0 ? <div className="empty">No aspects match.</div> : null}
-          </div>
+                );
+              })}
+              {aspects.length === 0 ? <div className="empty">No aspects match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

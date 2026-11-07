@@ -33,6 +33,7 @@ import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { InfoTip } from "../InfoTip.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -307,6 +308,10 @@ function WildTalentSection({
   const level = kineticistLevel(doc);
 
   const catalog = useMemo(() => mergedKineticistWildTalentCatalog(refData), [refData]);
+  const categoryCatalog = catalog.filter((t) => t.category === category);
+  const selected = new Set(
+    categoryCatalog.filter((t) => hasKineticistWildTalent(doc, t.id)).map((t) => t.id),
+  );
 
   const elementLabel = (tags: readonly string[]): string =>
     tags
@@ -407,84 +412,92 @@ function WildTalentSection({
               Pick a primary element above to see element-specific talents.
             </div>
           )}
-          <input
-            className="search"
-            type="text"
-            placeholder={`Search ${title.toLowerCase()}…`}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {talents.map((t) => {
-              const isSel = hasKineticistWildTalent(doc, t.id);
-              const belowLevel = level > 0 && t.unlockLevel !== undefined && level < t.unlockLevel;
-              // Only a not-yet-picked talent is locked — an already-picked one
-              // (a legacy build, or the character's level since dropped) keeps
-              // working, same as a feat whose prereqs later lapse.
-              const blocked = belowLevel && !isSel;
-              return (
-                <div
-                  key={t.id}
-                  className={`pick-row${isSel ? " is-selected" : ""}${blocked ? " is-blocked" : ""}`}
-                >
-                  <div className="pmain">
-                    <div className="pname">
-                      {t.name}
-                      {t.nameSuffix ? ` ${t.nameSuffix}` : ""}{" "}
-                      <span className="hint">({t.elementName})</span>
-                      {t.isModeled && (
-                        <span
-                          className="badge-modeled"
-                          title="Carries a real, live mechanical effect"
-                        >
-                          M
-                        </span>
-                      )}
-                      {belowLevel && (
-                        <span className="level-badge" title="Kineticist level required">
-                          Level {t.unlockLevel}
-                        </span>
-                      )}
-                    </div>
-                    <div className="preq">
-                      <span className="desc-text">
-                        {t.summary} ({t.burn} burn)
-                      </span>
-                    </div>
-                    {t.requirement && (
-                      <div className="preq">
-                        <span className="hint">Requires</span>
-                        {t.requirement.checks.map((c, i) => (
-                          <span key={i} className={c.met ? "ck-met" : "ck-unmet"}>
-                            {c.met ? "✓" : "✗"} {c.label}
-                          </span>
-                        ))}
-                        {t.requirement.softText ? (
-                          <InfoTip
-                            className="desc-text"
-                            content="Prerequisite text: verify manually (not auto-enforced)"
-                          >
-                            ⚠ {t.requirement.softText}
-                          </InfoTip>
-                        ) : null}
-                      </div>
-                    )}
-                    {t.description ? <FeatureDescription html={t.description} /> : null}
-                  </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    disabled={blocked}
-                    title={blocked ? `Unlocks at kineticist level ${t.unlockLevel}` : undefined}
-                    onClick={() => update((d) => toggleKineticistWildTalent(d, t.id))}
+          <PickFold
+            noun={`${title.toLowerCase()}`}
+            catalog={categoryCatalog}
+            selected={selected}
+            owed={chosen < expected}
+          >
+            <input
+              className="search"
+              type="text"
+              placeholder={`Search ${title.toLowerCase()}…`}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {talents.map((t) => {
+                const isSel = hasKineticistWildTalent(doc, t.id);
+                const belowLevel =
+                  level > 0 && t.unlockLevel !== undefined && level < t.unlockLevel;
+                // Only a not-yet-picked talent is locked — an already-picked one
+                // (a legacy build, or the character's level since dropped) keeps
+                // working, same as a feat whose prereqs later lapse.
+                const blocked = belowLevel && !isSel;
+                return (
+                  <div
+                    key={t.id}
+                    className={`pick-row${isSel ? " is-selected" : ""}${blocked ? " is-blocked" : ""}`}
                   >
-                    {isSel ? "Remove" : blocked ? "Locked" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {talents.length === 0 ? <div className="empty">No talents match.</div> : null}
-          </div>
+                    <div className="pmain">
+                      <div className="pname">
+                        {t.name}
+                        {t.nameSuffix ? ` ${t.nameSuffix}` : ""}{" "}
+                        <span className="hint">({t.elementName})</span>
+                        {t.isModeled && (
+                          <span
+                            className="badge-modeled"
+                            title="Carries a real, live mechanical effect"
+                          >
+                            M
+                          </span>
+                        )}
+                        {belowLevel && (
+                          <span className="level-badge" title="Kineticist level required">
+                            Level {t.unlockLevel}
+                          </span>
+                        )}
+                      </div>
+                      <div className="preq">
+                        <span className="desc-text">
+                          {t.summary} ({t.burn} burn)
+                        </span>
+                      </div>
+                      {t.requirement && (
+                        <div className="preq">
+                          <span className="hint">Requires</span>
+                          {t.requirement.checks.map((c, i) => (
+                            <span key={i} className={c.met ? "ck-met" : "ck-unmet"}>
+                              {c.met ? "✓" : "✗"} {c.label}
+                            </span>
+                          ))}
+                          {t.requirement.softText ? (
+                            <InfoTip
+                              className="desc-text"
+                              content="Prerequisite text: verify manually (not auto-enforced)"
+                            >
+                              ⚠ {t.requirement.softText}
+                            </InfoTip>
+                          ) : null}
+                        </div>
+                      )}
+                      {t.description ? <FeatureDescription html={t.description} /> : null}
+                    </div>
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      disabled={blocked}
+                      title={blocked ? `Unlocks at kineticist level ${t.unlockLevel}` : undefined}
+                      onClick={() => update((d) => toggleKineticistWildTalent(d, t.id))}
+                    >
+                      {isSel ? "Remove" : blocked ? "Locked" : "Add"}
+                    </button>
+                  </div>
+                );
+              })}
+              {talents.length === 0 ? <div className="empty">No talents match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

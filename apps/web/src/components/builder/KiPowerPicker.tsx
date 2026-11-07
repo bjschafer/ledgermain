@@ -13,6 +13,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -99,59 +100,61 @@ export function KiPowerPicker({ doc, refData, update }: KiPowerPickerProps) {
             activated, limited-use ability (spends ki points), no automatic sheet effect. Free-
             choice: never blocks past the expected count.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search ki powers…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {powers.map((p) => {
-              const isSel = selected.has(p.id);
-              const belowLevel = level > 0 && level < p.minLevel;
-              return (
-                <div key={p.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {p.name}
-                      {p.nameSuffix ? ` ${p.nameSuffix}` : ""}
-                      {!p.displayOnly && (
-                        <span
-                          className="badge-modeled"
-                          title="Carries a real, live mechanical effect (see Class Features)"
-                        >
-                          M
-                        </span>
+          <PickFold noun="ki powers" catalog={catalog} selected={selected} owed={chosen < expected}>
+            <input
+              className="search"
+              type="text"
+              placeholder="Search ki powers…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {powers.map((p) => {
+                const isSel = selected.has(p.id);
+                const belowLevel = level > 0 && level < p.minLevel;
+                return (
+                  <div key={p.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {p.name}
+                        {p.nameSuffix ? ` ${p.nameSuffix}` : ""}
+                        {!p.displayOnly && (
+                          <span
+                            className="badge-modeled"
+                            title="Carries a real, live mechanical effect (see Class Features)"
+                          >
+                            M
+                          </span>
+                        )}
+                      </div>
+                      <div className="preq">
+                        <span className="desc-text">{p.summary}</span>
+                      </div>
+                      {belowLevel && (
+                        <div className="hint" style={{ marginTop: 2 }}>
+                          ⚠ Requires monk {p.minLevel}th (currently {level})
+                        </div>
                       )}
+                      {p.contextNotes?.map((n, i) => (
+                        <div key={i} className="hint" style={{ marginTop: 2 }}>
+                          ⚠ {n.text}
+                        </div>
+                      ))}
+                      {p.description ? <FeatureDescription html={p.description} /> : null}
                     </div>
-                    <div className="preq">
-                      <span className="desc-text">{p.summary}</span>
-                    </div>
-                    {belowLevel && (
-                      <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Requires monk {p.minLevel}th (currently {level})
-                      </div>
-                    )}
-                    {p.contextNotes?.map((n, i) => (
-                      <div key={i} className="hint" style={{ marginTop: 2 }}>
-                        ⚠ {n.text}
-                      </div>
-                    ))}
-                    {p.description ? <FeatureDescription html={p.description} /> : null}
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d) => toggleMonkKiPower(d, p.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d) => toggleMonkKiPower(d, p.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {powers.length === 0 ? <div className="empty">No ki powers match.</div> : null}
-          </div>
+                );
+              })}
+              {powers.length === 0 ? <div className="empty">No ki powers match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

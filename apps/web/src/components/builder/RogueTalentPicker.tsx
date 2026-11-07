@@ -14,6 +14,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -102,57 +103,59 @@ export function RogueTalentPicker({ doc, refData, update }: RogueTalentPickerPro
             is a reminder only. Advanced talents (10th+) and chained/Unchained-only talents are
             flagged, never hidden. Free-choice: never blocks past the expected count.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search talents…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {talents.map((t) => {
-              const isSel = hasRogueTalent(doc, t.id);
-              const belowLevel = level > 0 && level < t.minLevel;
-              return (
-                <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {t.name}
-                      {t.nameSuffix ? ` ${t.nameSuffix}` : ""}
-                      {t.minLevel >= 10 ? <span className="tag-mystery">Advanced</span> : null}
-                      {t.unchainedOnly ? <span className="tag-mystery">Unchained</span> : null}
-                      {t.chainedOnly ? <span className="tag-mystery">Chained</span> : null}
-                      {t.bonusFeatSlot || t.grantsFeat ? (
-                        <span className="tag-mystery">Grants a feat</span>
+          <PickFold noun="talents" catalog={catalog} selected={selected} owed={chosen < expected}>
+            <input
+              className="search"
+              type="text"
+              placeholder="Search talents…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {talents.map((t) => {
+                const isSel = hasRogueTalent(doc, t.id);
+                const belowLevel = level > 0 && level < t.minLevel;
+                return (
+                  <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {t.name}
+                        {t.nameSuffix ? ` ${t.nameSuffix}` : ""}
+                        {t.minLevel >= 10 ? <span className="tag-mystery">Advanced</span> : null}
+                        {t.unchainedOnly ? <span className="tag-mystery">Unchained</span> : null}
+                        {t.chainedOnly ? <span className="tag-mystery">Chained</span> : null}
+                        {t.bonusFeatSlot || t.grantsFeat ? (
+                          <span className="tag-mystery">Grants a feat</span>
+                        ) : null}
+                      </div>
+                      <div className="preq">
+                        <span className="desc-text">{t.summary}</span>
+                      </div>
+                      {belowLevel ? (
+                        <div className="hint" style={{ marginTop: 2 }}>
+                          ⚠ Requires rogue {t.minLevel}th (currently {level})
+                        </div>
                       ) : null}
+                      {t.contextNotes?.map((n, i) => (
+                        <div key={i} className="hint" style={{ marginTop: 2 }}>
+                          ⚠ {n.text}
+                        </div>
+                      ))}
+                      {t.description ? <FeatureDescription html={t.description} /> : null}
                     </div>
-                    <div className="preq">
-                      <span className="desc-text">{t.summary}</span>
-                    </div>
-                    {belowLevel ? (
-                      <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Requires rogue {t.minLevel}th (currently {level})
-                      </div>
-                    ) : null}
-                    {t.contextNotes?.map((n, i) => (
-                      <div key={i} className="hint" style={{ marginTop: 2 }}>
-                        ⚠ {n.text}
-                      </div>
-                    ))}
-                    {t.description ? <FeatureDescription html={t.description} /> : null}
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d) => toggleRogueTalent(d, t.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d) => toggleRogueTalent(d, t.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {talents.length === 0 ? <div className="empty">No talents match.</div> : null}
-          </div>
+                );
+              })}
+              {talents.length === 0 ? <div className="empty">No talents match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

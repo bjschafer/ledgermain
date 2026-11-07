@@ -13,6 +13,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -116,56 +117,58 @@ export function MesmeristTrickPicker({ doc, refData, update }: MesmeristTrickPic
             live mechanical effect: the rest are prose-only. Free-choice: never blocks past the
             expected count.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search tricks…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {tricks.map((t) => {
-              const isSel = selected.has(t.id);
-              const belowLevel = level > 0 && level < t.minLevel;
-              return (
-                <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {t.name} <span className="tag-mystery">{TIER_LABEL[t.tier] ?? t.tier}</span>
-                      {!t.displayOnly && (
-                        <span
-                          className="badge-modeled"
-                          title="Carries a real, live mechanical effect"
-                        >
-                          M
-                        </span>
-                      )}
-                    </div>
-                    <div className="preq">
-                      <span className="desc-text">
-                        {t.actionNote ? `${t.actionNote}: ${t.summary}` : t.summary}
-                      </span>
-                    </div>
-                    {belowLevel && (
-                      <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Requires mesmerist {t.minLevel}
-                        {t.minLevel === 12 ? "th" : "st"} (currently {level})
+          <PickFold noun="tricks" catalog={catalog} selected={selected} owed={chosen < expected}>
+            <input
+              className="search"
+              type="text"
+              placeholder="Search tricks…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {tricks.map((t) => {
+                const isSel = selected.has(t.id);
+                const belowLevel = level > 0 && level < t.minLevel;
+                return (
+                  <div key={t.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {t.name} <span className="tag-mystery">{TIER_LABEL[t.tier] ?? t.tier}</span>
+                        {!t.displayOnly && (
+                          <span
+                            className="badge-modeled"
+                            title="Carries a real, live mechanical effect"
+                          >
+                            M
+                          </span>
+                        )}
                       </div>
-                    )}
-                    {t.description ? <FeatureDescription html={t.description} /> : null}
+                      <div className="preq">
+                        <span className="desc-text">
+                          {t.actionNote ? `${t.actionNote}: ${t.summary}` : t.summary}
+                        </span>
+                      </div>
+                      {belowLevel && (
+                        <div className="hint" style={{ marginTop: 2 }}>
+                          ⚠ Requires mesmerist {t.minLevel}
+                          {t.minLevel === 12 ? "th" : "st"} (currently {level})
+                        </div>
+                      )}
+                      {t.description ? <FeatureDescription html={t.description} /> : null}
+                    </div>
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d) => toggleMesmeristTrick(d, t.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d) => toggleMesmeristTrick(d, t.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {tricks.length === 0 ? <div className="empty">No tricks match.</div> : null}
-          </div>
+                );
+              })}
+              {tricks.length === 0 ? <div className="empty">No tricks match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

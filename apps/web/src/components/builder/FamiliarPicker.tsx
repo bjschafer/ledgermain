@@ -22,6 +22,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { CreatureChangesEditor } from "./CreatureChangesEditor.js";
+import { ChoiceBrowseHead } from "./ChoiceSummary.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -64,6 +65,7 @@ interface FamiliarPickerProps {
 export function FamiliarPicker({ doc, refData, update }: FamiliarPickerProps) {
   const [collapsed, toggleCollapsed] = useCollapsed("subsection:Familiar", false);
   const [query, setQuery] = useState("");
+  const [browsing, setBrowsing] = useState(false);
   const familiar = doc.build.familiar;
   const species = familiar ? BASE_FAMILIARS[familiar.speciesId] : undefined;
   const currentIsImproved = familiar != null && IMPROVED_FAMILIARS[familiar.speciesId] != null;
@@ -187,106 +189,134 @@ export function FamiliarPicker({ doc, refData, update }: FamiliarPickerProps) {
             </>
           )}
 
-          <input
-            className="search"
-            type="text"
-            placeholder={`Search ${options.length} familiar species…`}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            aria-label="Familiar species"
-          />
-          <div className="scroll">
-            {shown.length === 0 ? (
-              <div className="empty">No species match.</div>
-            ) : (
-              shown.map((o) => {
-                const isSelected = familiar?.speciesId === o.id;
-                const attacks = formatFamiliarSpeciesAttacks(o.species.attacks);
-                return (
-                  <div key={o.id} className={`pick-row${isSelected ? " is-selected" : ""}`}>
-                    <div className="pmain">
-                      <div className="pname">{o.species.name}</div>
-                      <div className="preq">
-                        <span>{formatFamiliarSpeciesSummary(o.species)}</span>
-                        {attacks && <span>{attacks}</span>}
-                      </div>
-                      {(o.masterBonus || o.masterBonusNote) && (
-                        <div className="preq">
-                          <span className="desc-text">
-                            {o.masterBonus ? `Master bonus: ${o.masterBonus}.` : null}
-                            {o.masterBonusNote ? ` ${o.masterBonusNote}.` : null}
-                          </span>
+          {familiar && !browsing ? (
+            <div className="class-add-row">
+              <button type="button" className="btn-ghost" onClick={() => setBrowsing(true)}>
+                Change species
+              </button>
+            </div>
+          ) : (
+            <>
+              {familiar ? (
+                <ChoiceBrowseHead
+                  title="Change species"
+                  onClose={() => {
+                    setBrowsing(false);
+                    setQuery("");
+                  }}
+                />
+              ) : null}
+              <input
+                className="search"
+                type="text"
+                placeholder={`Search ${options.length} familiar species…`}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                aria-label="Familiar species"
+              />
+              <div className="scroll">
+                {shown.length === 0 ? (
+                  <div className="empty">No species match.</div>
+                ) : (
+                  shown.map((o) => {
+                    const isSelected = familiar?.speciesId === o.id;
+                    const attacks = formatFamiliarSpeciesAttacks(o.species.attacks);
+                    return (
+                      <div key={o.id} className={`pick-row${isSelected ? " is-selected" : ""}`}>
+                        <div className="pmain">
+                          <div className="pname">{o.species.name}</div>
+                          <div className="preq">
+                            <span>{formatFamiliarSpeciesSummary(o.species)}</span>
+                            {attacks && <span>{attacks}</span>}
+                          </div>
+                          {(o.masterBonus || o.masterBonusNote) && (
+                            <div className="preq">
+                              <span className="desc-text">
+                                {o.masterBonus ? `Master bonus: ${o.masterBonus}.` : null}
+                                {o.masterBonusNote ? ` ${o.masterBonusNote}.` : null}
+                              </span>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      className="pick-btn"
-                      onClick={() => update((d) => setFamiliar(d, o.id, familiar?.name ?? ""))}
-                    >
-                      {isSelected ? "Selected" : "Select"}
-                    </button>
-                  </div>
-                );
-              })
-            )}
-          </div>
+                        <button
+                          type="button"
+                          className="pick-btn"
+                          onClick={() => {
+                            update((d) => setFamiliar(d, o.id, familiar?.name ?? ""));
+                            setBrowsing(false);
+                            setQuery("");
+                          }}
+                        >
+                          {isSelected ? "Selected" : "Select"}
+                        </button>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
 
-          <h4 className="tracker-sub familiar-improved-heading">Improved familiars</h4>
-          <p className="hint familiar-hint">
-            Non-animal species from the Improved Familiar feat. Prerequisites show as warnings below
-            each option: picking one is never blocked, even if a prerequisite isn't met yet.
-          </p>
-          <div className="scroll">
-            {shownImproved.length === 0 ? (
-              <div className="empty">No improved familiars match.</div>
-            ) : (
-              shownImproved.map((o) => {
-                const isSelected = familiar?.speciesId === o.id;
-                const warnings = improvedFamiliarPrereqWarnings(doc, refData, o.species.prereq);
-                return (
-                  <div
-                    key={o.id}
-                    className={`pick-row${isSelected ? " is-selected" : ""}${warnings.length > 0 ? " is-unqualified" : ""}`}
-                  >
-                    <div className="pmain">
-                      <div className="pname">{o.species.name}</div>
-                      <div className="preq">
-                        <span>{o.compareLine}</span>
+              <h4 className="tracker-sub familiar-improved-heading">Improved familiars</h4>
+              <p className="hint familiar-hint">
+                Non-animal species from the Improved Familiar feat. Prerequisites show as warnings
+                below each option: picking one is never blocked, even if a prerequisite isn't met
+                yet.
+              </p>
+              <div className="scroll">
+                {shownImproved.length === 0 ? (
+                  <div className="empty">No improved familiars match.</div>
+                ) : (
+                  shownImproved.map((o) => {
+                    const isSelected = familiar?.speciesId === o.id;
+                    const warnings = improvedFamiliarPrereqWarnings(doc, refData, o.species.prereq);
+                    return (
+                      <div
+                        key={o.id}
+                        className={`pick-row${isSelected ? " is-selected" : ""}${warnings.length > 0 ? " is-unqualified" : ""}`}
+                      >
+                        <div className="pmain">
+                          <div className="pname">{o.species.name}</div>
+                          <div className="preq">
+                            <span>{o.compareLine}</span>
+                          </div>
+                          {o.defensesLine && (
+                            <div className="preq">
+                              <span className="desc-text">{o.defensesLine}</span>
+                            </div>
+                          )}
+                          {o.slaHint && (
+                            <div className="preq">
+                              <span className="desc-text">{o.slaHint}</span>
+                            </div>
+                          )}
+                          <div className="preq">
+                            <span className="desc-text">{o.prereqLine}</span>
+                          </div>
+                          {warnings.length > 0 && (
+                            <div className="preq">
+                              <span className="desc-text familiar-prereq-warning">
+                                {warnings.join(". ")}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          className="pick-btn"
+                          onClick={() => {
+                            update((d) => setFamiliar(d, o.id, familiar?.name ?? ""));
+                            setBrowsing(false);
+                            setQuery("");
+                          }}
+                        >
+                          {isSelected ? "Selected" : "Select"}
+                        </button>
                       </div>
-                      {o.defensesLine && (
-                        <div className="preq">
-                          <span className="desc-text">{o.defensesLine}</span>
-                        </div>
-                      )}
-                      {o.slaHint && (
-                        <div className="preq">
-                          <span className="desc-text">{o.slaHint}</span>
-                        </div>
-                      )}
-                      <div className="preq">
-                        <span className="desc-text">{o.prereqLine}</span>
-                      </div>
-                      {warnings.length > 0 && (
-                        <div className="preq">
-                          <span className="desc-text familiar-prereq-warning">
-                            {warnings.join(". ")}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      className="pick-btn"
-                      onClick={() => update((d) => setFamiliar(d, o.id, familiar?.name ?? ""))}
-                    >
-                      {isSelected ? "Selected" : "Select"}
-                    </button>
-                  </div>
-                );
-              })
-            )}
-          </div>
+                    );
+                  })
+                )}
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

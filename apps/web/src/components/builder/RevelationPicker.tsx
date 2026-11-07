@@ -18,6 +18,7 @@ import {
 } from "../../model/oracleRevelations.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -61,17 +62,20 @@ export function RevelationPicker({ doc, refData, update }: RevelationPickerProps
   );
   const level = oracleLevel(doc);
 
+  const catalog = useMemo(
+    () => (mysteryTag ? revelationsForMystery(mysteryTag) : []),
+    [mysteryTag],
+  );
   const revelations = useMemo(() => {
-    if (!mysteryTag) return [];
     const q = query.trim().toLowerCase();
-    return revelationsForMystery(mysteryTag)
+    return catalog
       .filter((r) => !q || r.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.name.localeCompare(b.name);
       });
-  }, [mysteryTag, query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenOracleRevelationCount(doc);
   const expected = expectedOracleRevelationCount(doc, refData);
@@ -122,88 +126,95 @@ export function RevelationPicker({ doc, refData, update }: RevelationPickerProps
                 real, live mechanical effect (see Class Features). The rest are prose-only.
                 Free-choice: never blocks past the expected count.
               </p>
-              <input
-                className="search"
-                type="text"
-                placeholder="Search revelations…"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              <div className="scroll">
-                {revelations.map((r) => {
-                  const isSel = selected.has(r.id);
-                  const belowLevel = level > 0 && level < r.minLevel;
-                  return (
-                    <div key={r.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                      <div className="pmain">
-                        <div className="pname">
-                          {r.name}
-                          {!r.displayOnly && (
-                            <span
-                              className="badge-modeled"
-                              title="Carries a real, live mechanical effect (see Class Features)"
-                            >
-                              M
-                            </span>
+              <PickFold
+                noun="revelations"
+                catalog={catalog}
+                selected={selected}
+                owed={chosen < expected}
+              >
+                <input
+                  className="search"
+                  type="text"
+                  placeholder="Search revelations…"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+                <div className="scroll">
+                  {revelations.map((r) => {
+                    const isSel = selected.has(r.id);
+                    const belowLevel = level > 0 && level < r.minLevel;
+                    return (
+                      <div key={r.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                        <div className="pmain">
+                          <div className="pname">
+                            {r.name}
+                            {!r.displayOnly && (
+                              <span
+                                className="badge-modeled"
+                                title="Carries a real, live mechanical effect (see Class Features)"
+                              >
+                                M
+                              </span>
+                            )}
+                          </div>
+                          <div className="preq">
+                            <span className="desc-text">{r.summary}</span>
+                          </div>
+                          {belowLevel && (
+                            <div className="hint" style={{ marginTop: 2 }}>
+                              ⚠ Requires oracle {r.minLevel}
+                              {r.minLevel === 1
+                                ? "st"
+                                : r.minLevel === 3
+                                  ? "rd"
+                                  : "th"} (currently{" "}
+                              {level})
+                            </div>
                           )}
+                          {r.contextNotes?.map((note, i) => (
+                            <div key={i} className="hint" style={{ marginTop: 2 }}>
+                              ⚠ {note.text}
+                            </div>
+                          ))}
+                          {isSel && r.choice ? (
+                            // Choose-one selection (RAW locks it in when the
+                            // revelation is gained) — stored via
+                            // setOracleRevelationChoice; mirrors RagePowerPicker.
+                            <label className="hint" style={{ marginTop: 2, display: "block" }}>
+                              {r.choice.label}:{" "}
+                              <select
+                                value={oracleRevelationChoice(doc, r.id) ?? ""}
+                                onChange={(e) =>
+                                  update((d) =>
+                                    setOracleRevelationChoice(d, r.id, e.target.value || undefined),
+                                  )
+                                }
+                              >
+                                <option value="">Choose…</option>
+                                {r.choice.options.map((o) => (
+                                  <option key={o.id} value={o.id}>
+                                    {o.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                          ) : null}
                         </div>
-                        <div className="preq">
-                          <span className="desc-text">{r.summary}</span>
-                        </div>
-                        {belowLevel && (
-                          <div className="hint" style={{ marginTop: 2 }}>
-                            ⚠ Requires oracle {r.minLevel}
-                            {r.minLevel === 1
-                              ? "st"
-                              : r.minLevel === 3
-                                ? "rd"
-                                : "th"} (currently{" "}
-                            {level})
-                          </div>
-                        )}
-                        {r.contextNotes?.map((note, i) => (
-                          <div key={i} className="hint" style={{ marginTop: 2 }}>
-                            ⚠ {note.text}
-                          </div>
-                        ))}
-                        {isSel && r.choice ? (
-                          // Choose-one selection (RAW locks it in when the
-                          // revelation is gained) — stored via
-                          // setOracleRevelationChoice; mirrors RagePowerPicker.
-                          <label className="hint" style={{ marginTop: 2, display: "block" }}>
-                            {r.choice.label}:{" "}
-                            <select
-                              value={oracleRevelationChoice(doc, r.id) ?? ""}
-                              onChange={(e) =>
-                                update((d) =>
-                                  setOracleRevelationChoice(d, r.id, e.target.value || undefined),
-                                )
-                              }
-                            >
-                              <option value="">Choose…</option>
-                              {r.choice.options.map((o) => (
-                                <option key={o.id} value={o.id}>
-                                  {o.label}
-                                </option>
-                              ))}
-                            </select>
-                          </label>
-                        ) : null}
+                        <button
+                          type="button"
+                          className={`pick-btn ${isSel ? "remove" : "add"}`}
+                          onClick={() => update((d) => toggleOracleRevelation(d, r.id))}
+                        >
+                          {isSel ? "Remove" : "Add"}
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        className={`pick-btn ${isSel ? "remove" : "add"}`}
-                        onClick={() => update((d) => toggleOracleRevelation(d, r.id))}
-                      >
-                        {isSel ? "Remove" : "Add"}
-                      </button>
-                    </div>
-                  );
-                })}
-                {revelations.length === 0 ? (
-                  <div className="empty">No revelations match.</div>
-                ) : null}
-              </div>
+                    );
+                  })}
+                  {revelations.length === 0 ? (
+                    <div className="empty">No revelations match.</div>
+                  ) : null}
+                </div>
+              </PickFold>
               {finalRevelation && (
                 <p className="hint revelation-final-hint" style={{ marginTop: 8 }}>
                   <strong>Final Revelation (20th, automatic):</strong> {finalRevelation.summary}

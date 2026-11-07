@@ -12,6 +12,7 @@ import {
 } from "../../model/antipaladinCruelties.js";
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -55,16 +56,20 @@ export function CrueltyPicker({ doc, sheet, update }: CrueltyPickerProps) {
   const level = getAntipaladinLevel(doc);
   const dc = antipaladinCrueltyDC(level, sheet.abilities.cha.mod);
 
+  const catalog = useMemo(
+    () => ANTIPALADIN_CRUELTY_IDS.map((id) => ANTIPALADIN_CRUELTIES[id]!),
+    [],
+  );
   const cruelties = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return ANTIPALADIN_CRUELTY_IDS.map((id) => ANTIPALADIN_CRUELTIES[id]!)
+    return catalog
       .filter((c) => !q || c.name.toLowerCase().includes(q))
       .sort((a, b) => {
         const sa = selected.has(a.id) ? 0 : 1;
         const sb = selected.has(b.id) ? 0 : 1;
         return sa - sb || a.minLevel - b.minLevel || a.name.localeCompare(b.name);
       });
-  }, [query, selected]);
+  }, [catalog, query, selected]);
 
   const chosen = chosenAntipaladinCrueltyCount(doc);
   const expected = expectedAntipaladinCrueltyCount(doc);
@@ -109,50 +114,52 @@ export function CrueltyPicker({ doc, sheet, update }: CrueltyPickerProps) {
             3rd/6th/9th/12th. Cruelty save DC: {dc > 0 ? dc : "10 + 1/2 level + Cha mod"}.
             Free-choice: never blocks past the expected count.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search cruelties…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {cruelties.map((c) => {
-              const isSel = selected.has(c.id);
-              const belowLevel = level > 0 && level < c.minLevel;
-              return (
-                <div key={c.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {c.name} <span className="tag-mystery">{TIER_LABEL[c.tier] ?? c.tier}</span>
-                    </div>
-                    <div className="preq">
-                      <span className="desc-text">{c.summary}</span>
-                    </div>
-                    {belowLevel && (
-                      <div className="hint" style={{ marginTop: 2 }}>
-                        ⚠ Requires antipaladin {c.minLevel}
-                        {c.minLevel === 3 ? "rd" : "th"} (currently {level})
+          <PickFold noun="cruelties" catalog={catalog} selected={selected} owed={chosen < expected}>
+            <input
+              className="search"
+              type="text"
+              placeholder="Search cruelties…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {cruelties.map((c) => {
+                const isSel = selected.has(c.id);
+                const belowLevel = level > 0 && level < c.minLevel;
+                return (
+                  <div key={c.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {c.name} <span className="tag-mystery">{TIER_LABEL[c.tier] ?? c.tier}</span>
                       </div>
-                    )}
-                    {c.contextNotes?.map((n, i) => (
-                      <div key={i} className="hint" style={{ marginTop: 2 }}>
-                        ⚠ {n.text}
+                      <div className="preq">
+                        <span className="desc-text">{c.summary}</span>
                       </div>
-                    ))}
+                      {belowLevel && (
+                        <div className="hint" style={{ marginTop: 2 }}>
+                          ⚠ Requires antipaladin {c.minLevel}
+                          {c.minLevel === 3 ? "rd" : "th"} (currently {level})
+                        </div>
+                      )}
+                      {c.contextNotes?.map((n, i) => (
+                        <div key={i} className="hint" style={{ marginTop: 2 }}>
+                          ⚠ {n.text}
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d) => toggleAntipaladinCruelty(d, c.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d) => toggleAntipaladinCruelty(d, c.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {cruelties.length === 0 ? <div className="empty">No cruelties match.</div> : null}
-          </div>
+                );
+              })}
+              {cruelties.length === 0 ? <div className="empty">No cruelties match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>

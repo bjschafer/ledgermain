@@ -12,6 +12,7 @@ import {
 import { useCollapsed } from "../../state/useCollapsed.js";
 import { Caret } from "../Caret.js";
 import { FeatureDescription } from "./ClassFeaturesList.js";
+import { PickFold } from "./PickFold.js";
 
 type Updater = (fn: (doc: CharacterDoc) => CharacterDoc) => void;
 
@@ -101,45 +102,52 @@ export function MesmeristBoldStarePicker({ doc, refData, update }: MesmeristBold
             summary line: see Class Features for its own entry instead). Browses the full published
             catalog. Free-choice: never blocks past the expected count.
           </p>
-          <input
-            className="search"
-            type="text"
-            placeholder="Search bold stares…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="scroll">
-            {stares.map((s) => {
-              const isSel = selected.has(s.id);
-              return (
-                <div key={s.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
-                  <div className="pmain">
-                    <div className="pname">
-                      {s.name}
-                      {!s.riderText && (
-                        <span className="hint" title="No hand-verified rider text: prose-only">
-                          {" "}
-                          (prose-only)
-                        </span>
-                      )}
+          <PickFold
+            noun="bold stares"
+            catalog={catalog}
+            selected={selected}
+            owed={chosen < expected}
+          >
+            <input
+              className="search"
+              type="text"
+              placeholder="Search bold stares…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="scroll">
+              {stares.map((s) => {
+                const isSel = selected.has(s.id);
+                return (
+                  <div key={s.id} className={`pick-row${isSel ? " is-selected" : ""}`}>
+                    <div className="pmain">
+                      <div className="pname">
+                        {s.name}
+                        {!s.riderText && (
+                          <span className="hint" title="No hand-verified rider text: prose-only">
+                            {" "}
+                            (prose-only)
+                          </span>
+                        )}
+                      </div>
+                      <div className="preq">
+                        <span className="desc-text">{s.summary}</span>
+                      </div>
+                      {s.description ? <FeatureDescription html={s.description} /> : null}
                     </div>
-                    <div className="preq">
-                      <span className="desc-text">{s.summary}</span>
-                    </div>
-                    {s.description ? <FeatureDescription html={s.description} /> : null}
+                    <button
+                      type="button"
+                      className={`pick-btn ${isSel ? "remove" : "add"}`}
+                      onClick={() => update((d) => toggleMesmeristBoldStare(d, s.id))}
+                    >
+                      {isSel ? "Remove" : "Add"}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className={`pick-btn ${isSel ? "remove" : "add"}`}
-                    onClick={() => update((d) => toggleMesmeristBoldStare(d, s.id))}
-                  >
-                    {isSel ? "Remove" : "Add"}
-                  </button>
-                </div>
-              );
-            })}
-            {stares.length === 0 ? <div className="empty">No bold stares match.</div> : null}
-          </div>
+                );
+              })}
+              {stares.length === 0 ? <div className="empty">No bold stares match.</div> : null}
+            </div>
+          </PickFold>
         </>
       )}
     </div>
