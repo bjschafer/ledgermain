@@ -39,8 +39,11 @@ test("a first-ever visit is seeded silently, with no 'new' cue", async ({ page }
   await bootApp(page);
 
   await expect(page.locator(".mode-tab-dot")).toHaveCount(0);
-  const stored = await page.evaluate((key) => localStorage.getItem(key), SEEN_KEY);
-  expect(stored).toMatch(/^\d{4}-\d{2}-\d{2}-/);
+  // The seed lands once the lazily-imported changelog chunk arrives, which
+  // can be after the sheet is up, so wait for it rather than read once.
+  await expect
+    .poll(() => page.evaluate((key) => localStorage.getItem(key), SEEN_KEY))
+    .toMatch(/^\d{4}-\d{2}-\d{2}-/);
 
   expect(consoleErrors).toEqual([]);
   expect(pageErrors).toEqual([]);
@@ -74,8 +77,11 @@ test("a returning reader sees a dot that clears once Settings is opened", async 
   await expect(panel.locator("li").first()).toBeVisible();
   await expect(page.locator(".mode-tab-dot")).toHaveCount(0);
 
-  const stored = await page.evaluate((key) => localStorage.getItem(key), SEEN_KEY);
-  expect(stored).toMatch(/^\d{4}-\d{2}-\d{2}-/);
+  // The seed lands once the lazily-imported changelog chunk arrives, which
+  // can be after the sheet is up, so wait for it rather than read once.
+  await expect
+    .poll(() => page.evaluate((key) => localStorage.getItem(key), SEEN_KEY))
+    .toMatch(/^\d{4}-\d{2}-\d{2}-/);
 
   // ...and it stays cleared across a reload.
   await page.reload();
