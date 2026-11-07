@@ -14,6 +14,7 @@ import {
   HISTORY_LIMIT,
   invalidateSnapshot,
   recordSnapshot,
+  tagNewestSnapshot,
   undoDepth,
 } from "../src/state/undoSnapshot.js";
 
@@ -29,7 +30,7 @@ describe("undoSnapshot", () => {
     const before = createEmptyDoc("char-1");
     recordSnapshot(state, before);
 
-    expect(consumeSnapshot(state, "char-1")).toBe(before);
+    expect(consumeSnapshot(state, "char-1")?.doc).toBe(before);
   });
 
   it("walks back through several steps, newest first", () => {
@@ -40,8 +41,8 @@ describe("undoSnapshot", () => {
     recordSnapshot(state, second);
 
     expect(undoDepth(state)).toBe(2);
-    expect(consumeSnapshot(state, "char-1")).toBe(second);
-    expect(consumeSnapshot(state, "char-1")).toBe(first);
+    expect(consumeSnapshot(state, "char-1")?.doc).toBe(second);
+    expect(consumeSnapshot(state, "char-1")?.doc).toBe(first);
     expect(consumeSnapshot(state, "char-1")).toBeNull();
   });
 
@@ -67,7 +68,7 @@ describe("undoSnapshot", () => {
     const before = createEmptyDoc("char-1");
     recordSnapshot(state, before);
 
-    expect(consumeSnapshot(state, "char-1")).toBe(before);
+    expect(consumeSnapshot(state, "char-1")?.doc).toBe(before);
     expect(undoDepth(state)).toBe(0);
   });
 
@@ -80,7 +81,7 @@ describe("undoSnapshot", () => {
     expect(undoDepth(state)).toBe(HISTORY_LIMIT);
     // Walk all the way back: the very first snapshot fell off the end.
     const seen: unknown[] = [];
-    for (let i = 0; i < HISTORY_LIMIT; i += 1) seen.push(consumeSnapshot(state, "char-1"));
+    for (let i = 0; i < HISTORY_LIMIT; i += 1) seen.push(consumeSnapshot(state, "char-1")?.doc);
     expect(seen).not.toContain(oldest);
   });
 
@@ -103,6 +104,29 @@ describe("undoSnapshot", () => {
     // so a second press can't reach the ones underneath either.
     expect(consumeSnapshot(state, "char-B")).toBeNull();
     expect(consumeSnapshot(state, "char-A")).toBeNull();
+  });
+
+  it("hands back the log line a step wrote, so undo can take it out", () => {
+    const state = createUndoHistoryState();
+    const first = docNamed("char-1", "First");
+    const second = docNamed("char-1", "Second");
+    recordSnapshot(state, first);
+    tagNewestSnapshot(state, first, "log-1");
+    recordSnapshot(state, second);
+
+    expect(consumeSnapshot(state, "char-1")?.logEntryId).toBeUndefined();
+    expect(consumeSnapshot(state, "char-1")?.logEntryId).toBe("log-1");
+  });
+
+  it("won't tag a step that doesn't start where the log line did", () => {
+    const state = createUndoHistoryState();
+    const first = docNamed("char-1", "First");
+    recordSnapshot(state, first);
+    recordSnapshot(state, docNamed("char-1", "Second"));
+    // One log line spanning both steps: undoing only the newest mustn't erase it.
+    tagNewestSnapshot(state, first, "log-1");
+
+    expect(consumeSnapshot(state, "char-1")?.logEntryId).toBeUndefined();
   });
 
   it("consumeSnapshot on an empty state returns null", () => {

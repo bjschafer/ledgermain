@@ -14,6 +14,8 @@
  *   - `recordSnapshot` pushes, dropping the oldest entry past `HISTORY_LIMIT`.
  *   - `consumeSnapshot` pops. Popping is what keeps undo from oscillating: the
  *     doc it returns is never pushed back.
+ *   - `tagNewestSnapshot` remembers which session-log line the newest step
+ *     wrote, so undoing that step can take its line back out of the log.
  *   - A snapshot for a different character than the one on screen is discarded
  *     rather than returned, and the whole stack is dropped by
  *     `invalidateSnapshot` on anything that swaps the active character out
@@ -29,9 +31,16 @@ import type { CharacterDoc } from "@pf1/schema";
  */
 export const HISTORY_LIMIT = 20;
 
+export interface UndoStep {
+  /** The doc as it was before the step: what undoing it restores. */
+  doc: CharacterDoc;
+  /** The session-log line the step wrote, if it wrote one. */
+  logEntryId?: string;
+}
+
 export interface UndoHistoryState {
   /** Oldest first; the last entry is what the next undo restores. */
-  history: CharacterDoc[];
+  history: UndoStep[];
 }
 
 export function createUndoHistoryState(): UndoHistoryState {
@@ -50,9 +59,24 @@ export function createUndoHistoryState(): UndoHistoryState {
  * presses to walk back, the second of them a visible no-op.
  */
 export function recordSnapshot(state: UndoHistoryState, before: CharacterDoc): void {
-  if (state.history[state.history.length - 1] === before) return;
-  state.history.push(before);
+  if (state.history[state.history.length - 1]?.doc === before) return;
+  state.history.push({ doc: before });
   if (state.history.length > HISTORY_LIMIT) state.history.shift();
+}
+
+/**
+ * Attach `logEntryId` to the newest step, but only if that step starts from
+ * `from`. A log line is diffed across whatever landed in one render, which can
+ * be more than one step; tagging only an exact match keeps an undo from
+ * erasing a line it only partly reverses.
+ */
+export function tagNewestSnapshot(
+  state: UndoHistoryState,
+  from: CharacterDoc,
+  logEntryId: string,
+): void {
+  const top = state.history[state.history.length - 1];
+  if (top?.doc === from) top.logEntryId = logEntryId;
 }
 
 /** Drop the whole history (the active character is about to change out from under it). */
@@ -73,10 +97,10 @@ export function undoDepth(state: UndoHistoryState): number {
  * happen even if one is missed). A mismatched snapshot is discarded along with
  * the rest of the history rather than left to be hit again on the next press.
  */
-export function consumeSnapshot(state: UndoHistoryState, activeId: string): CharacterDoc | null {
+export function consumeSnapshot(state: UndoHistoryState, activeId: string): UndoStep | null {
   const snapshot = state.history.pop();
   if (!snapshot) return null;
-  if (snapshot.id !== activeId) {
+  if (snapshot.doc.id !== activeId) {
     state.history = [];
     return null;
   }

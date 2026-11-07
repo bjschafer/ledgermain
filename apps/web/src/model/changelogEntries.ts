@@ -45,6 +45,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-06-undo-clears-log",
+    date: "2026-11-06",
+    title: "Undo takes its line out of the session log",
+    note: "Pressing Undo, in the Session Log or on a toast, now removes the line for the change it walked back, so you can see each step come off. Edits that never wrote a line, like build changes or notes, are still undone in turn.",
+  },
+  {
     id: "2026-10-04-swashbuckler-deeds",
     date: "2026-10-04",
     title: "Swashbuckler deeds reach the sheet",

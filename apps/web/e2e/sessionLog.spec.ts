@@ -86,16 +86,19 @@ test("the session log records damage and conditions, and undo walks back through
   // the 3, back to where the fight started.
   // Scoped to the panel: the damage toast is still up and carries its own Undo.
   const undo = page.locator("#play-log").getByRole("button", { name: "Undo" });
+  // Each step takes its own line back out of the log with it.
   await undo.click();
   await expect(page.getByRole("button", { name: "Prone" })).not.toHaveClass(/active/);
+  await expect(logRows(page)).toHaveCount(2);
+  await expect(logRows(page).first()).toContainText("Took 4 damage");
   await undo.click();
   await expect(hp).toContainText(String(startHp - 3));
+  await expect(logRows(page)).toHaveCount(1);
+  await expect(logRows(page).first()).toContainText("Took 3 damage");
   await undo.click();
   await expect(hp).toContainText(String(startHp));
-  await expect(undo).toBeDisabled();
-
-  // Undo is a correction, not a table event: it leaves the record alone.
-  await expect(logRows(page)).toHaveCount(3);
+  // Last line gone, so the panel (and its Undo) hides like any empty panel.
+  await expect(page.locator(".session-log")).toHaveCount(0);
 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);

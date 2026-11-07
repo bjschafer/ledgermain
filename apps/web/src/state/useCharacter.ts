@@ -63,6 +63,7 @@ import {
   createUndoHistoryState,
   invalidateSnapshot,
   recordSnapshot,
+  tagNewestSnapshot,
   undoDepth,
 } from "./undoSnapshot.js";
 
@@ -264,7 +265,7 @@ export function useCharacter(): CharacterStore {
   // the session-log effect below: an undo is a correction, not something that
   // happened at the table, so the log takes the reversal as its new baseline
   // rather than writing "Healed 4, no longer Prone" under the mis-tap it
-  // undoes.
+  // undoes. The mis-tap's own line is removed by `undoLast` itself.
   const undoingRef = useRef(false);
 
   // Mirror of the undo history's depth, which lives in a ref and so can't be
@@ -596,8 +597,18 @@ export function useCharacter(): CharacterStore {
     // the updater and undo silently no-op'd every other click.
     const activeId = docRef.current?.id;
     if (activeId === undefined) return;
-    const snapshot = consumeSnapshot(undoStateRef.current, activeId);
-    if (!snapshot) return;
+    const step = consumeSnapshot(undoStateRef.current, activeId);
+    if (!step) return;
+    const snapshot = step.doc;
+    const undoneLine = step.logEntryId;
+    if (undoneLine !== undefined) {
+      setSessionLog((log) => {
+        const next = log.filter((entry) => entry.id !== undoneLine);
+        if (next.length === log.length) return log;
+        writeSessionLog(activeId, next);
+        return next;
+      });
+    }
     // Same flagging `update()` does — undo is a genuine local edit too, so
     // it autosaves/pushes exactly like any other transition. Deliberately
     // NOT routed through `update()` itself: that would push the pre-undo state
@@ -889,9 +900,11 @@ export function useCharacter(): CharacterStore {
         },
       });
     if (!change) return;
+    const entryId = `${doc.version}-${Date.now()}`;
+    tagNewestSnapshot(undoStateRef.current, prev.doc, entryId);
     setSessionLog((log) => {
       const next = pushLogEntry(log, {
-        id: `${doc.version}-${Date.now()}`,
+        id: entryId,
         at: Date.now(),
         ...change,
       });
