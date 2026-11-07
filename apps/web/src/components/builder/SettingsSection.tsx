@@ -34,6 +34,7 @@ import {
   setPolymorphEnabled,
   setRestMode,
   setStatOverride,
+  setFoldUntrainedSkills,
   setXpEnabled,
   setXpTrack,
   STAT_OVERRIDE_KEYS,
@@ -123,6 +124,7 @@ export function SettingsSection({
   const heroEnabled = settings.heroPointsEnabled ?? true;
   const heroCap = settings.heroPointsCap ?? HERO_POINT_CAP;
   const xpEnabled = settings.xpEnabled ?? false;
+  const foldUntrainedSkills = settings.foldUntrainedSkills ?? false;
   const xpTrack = settings.xpTrack ?? DEFAULT_XP_TRACK;
   const encumbranceEnabled = settings.encumbranceEnabled ?? false;
   const fractionalBonuses = settings.fractionalBonuses ?? false;
@@ -236,6 +238,37 @@ export function SettingsSection({
                     {TEXT_SIZE_LABEL[s]}
                   </button>
                 ))}
+              </div>
+            </Panel>
+          ),
+        },
+        {
+          id: "settings-skill-list",
+          label: "Skill List",
+          node: (
+            <Panel resizable={false} title="Skill List" icon={<GearIcon />}>
+              <p className="hint" style={{ marginBottom: 12 }}>
+                Which skills the sheet lists. Hiding untrained skills keeps the list to what you put
+                ranks in, with a button to show the rest; the skill filter still finds every skill.
+                Saved with {doc.identity.name || "this character"}.
+              </p>
+              <div className="chips">
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={!foldUntrainedSkills}
+                  onClick={() => update((d) => setFoldUntrainedSkills(d, false))}
+                >
+                  All skills (default)
+                </button>
+                <button
+                  type="button"
+                  className="chip"
+                  aria-pressed={foldUntrainedSkills}
+                  onClick={() => update((d) => setFoldUntrainedSkills(d, true))}
+                >
+                  Hide untrained
+                </button>
               </div>
             </Panel>
           ),

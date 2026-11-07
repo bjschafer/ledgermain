@@ -38,6 +38,7 @@ import { portraitSrc } from "../model/portrait.js";
 import { d20Formula, d20FormulaFor, damageFormula } from "../model/rollFormula.js";
 import { senseChipLabel, senseTip } from "../model/sensesDisplay.js";
 import { skillBreakdownComponents } from "../model/skillBreakdown.js";
+import { sheetSkillView } from "../model/sheetSkills.js";
 import { weaponAttackSubLine } from "../model/weaponAttackDisplay.js";
 import { AbilityDcList } from "./AbilityDcList.js";
 import { CopyButton } from "./CopyButton.js";
@@ -131,6 +132,9 @@ export function Sheet({
   // compute() itself; memoized on [doc, refData] since it's a second full
   // compute() pass, just not on every render for free.
   const baseline = useMemo(() => baselineSheet(doc, refData), [doc, refData]);
+  const [skillQuery, setSkillQuery] = useState("");
+  const [showUntrained, setShowUntrained] = useState(false);
+  const skillsHeadingId = useId();
 
   const race = refData.races[doc.identity.race];
   const classLine = doc.identity.classes
@@ -156,9 +160,12 @@ export function Sheet({
     })
     .join(" / ");
 
-  const rollableSkills = Object.values(sheet.skills)
-    .filter((s) => s.usable)
-    .sort((a, b) => skillName(a.id).localeCompare(skillName(b.id)));
+  const foldUntrained = doc.build.settings?.foldUntrainedSkills ?? false;
+  const skillView = sheetSkillView(Object.values(sheet.skills), {
+    query: skillQuery,
+    foldUntrained,
+    showUntrained,
+  });
 
   // Never rendered straight from the document: an imported one can carry
   // anything in that field (see model/portrait.ts).
@@ -876,16 +883,52 @@ export function Sheet({
         </div>
       </div>
 
-      <h3>Skills</h3>
-      {rollableSkills.length === 0 ? (
-        <div className="empty">No skills available.</div>
-      ) : (
-        <div className="sheet-skill-list">
-          {rollableSkills.map((s) => (
-            <SkillRow key={s.id} s={s} resetKey={doc.id} />
-          ))}
+      <div className="stat-group">
+        <div className="stat-group-header">
+          <span className="stat-group-legend" id={skillsHeadingId}>
+            Skills
+          </span>
+          <div className="stat-group-rule" />
+          <input
+            type="search"
+            className="sheet-skill-filter"
+            placeholder="Filter"
+            aria-label="Filter skills"
+            value={skillQuery}
+            onChange={(e) => setSkillQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" && skillQuery) {
+                e.stopPropagation();
+                setSkillQuery("");
+              }
+            }}
+          />
         </div>
-      )}
+        {skillView.shown.length === 0 && skillView.foldedCount === 0 ? (
+          <div className="empty">
+            {skillQuery.trim() ? "No skill matches." : "No skills available."}
+          </div>
+        ) : (
+          <div className="sheet-skill-list" aria-labelledby={skillsHeadingId}>
+            {skillView.shown.map((s) => (
+              <SkillRow key={s.id} s={s} resetKey={doc.id} />
+            ))}
+            {skillView.foldedCount > 0 || (foldUntrained && showUntrained && !skillQuery.trim()) ? (
+              <button
+                type="button"
+                className="sheet-skill-fold"
+                aria-expanded={showUntrained}
+                onClick={() => setShowUntrained((v) => !v)}
+              >
+                <span className="caret">
+                  <Caret open={showUntrained} />
+                </span>
+                {showUntrained ? "Hide untrained" : `Show ${skillView.foldedCount} untrained`}
+              </button>
+            ) : null}
+          </div>
+        )}
+      </div>
 
       {/* Proficiencies — read-only, provenance on hover/tap. Last
           on the sheet on purpose: what you're proficient with is settled at

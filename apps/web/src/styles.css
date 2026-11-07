@@ -2606,11 +2606,70 @@ button:focus-visible,
   margin: 18px 0 8px;
 }
 
+/* No height cap: `.sheet-col` already scrolls, and a second scroller nested
+   in it swallowed wheel input and hid rows below its fold. */
 .sheet-skill-list {
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
-  max-height: 260px;
-  overflow-y: auto;
+}
+
+/* The filter closes the Skills heading's rule and borrows the legend's mono
+   caps voice, so at rest it reads as part of the heading, not a form field. */
+.sheet-skill-filter {
+  appearance: none;
+  width: 9em;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line-soft);
+  border-radius: 0;
+  padding: 0 2px 2px;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-align: right;
+}
+
+.sheet-skill-filter::placeholder {
+  color: var(--faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.sheet-skill-filter:hover {
+  border-bottom-color: var(--gold-dim);
+}
+
+.sheet-skill-filter:focus-visible {
+  outline: none;
+  border-bottom-color: var(--gold-2);
+  box-shadow: 0 1px 0 var(--gold-2);
+}
+
+.sheet-skill-filter::-webkit-search-cancel-button {
+  display: none;
+}
+
+.sheet-skill-fold {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 10px;
+  background: none;
+  border: 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sheet-skill-fold:hover {
+  color: var(--ink);
 }
 
 /* A skill row is a column (like `.saved-roll-row`): the head line stays the
@@ -8694,6 +8753,7 @@ input[type="text"].saved-roll-name:focus {
    reserved for the baseline tint marker, which means higher/lower. */
 .seal .caret,
 .sheet-skill-toggle .caret,
+.sheet-skill-fold .caret,
 .saved-roll-value-btn .caret {
   display: inline-flex;
   line-height: 0;
@@ -8701,6 +8761,7 @@ input[type="text"].saved-roll-name:focus {
 
 .seal .caret .panel-caret,
 .sheet-skill-toggle .caret .panel-caret,
+.sheet-skill-fold .caret .panel-caret,
 .saved-roll-value-btn .caret .panel-caret {
   width: 0.75rem;
   height: 0.75rem;

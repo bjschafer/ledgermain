@@ -1806,6 +1806,16 @@ export function setHeroPointsCap(doc: CharacterDoc, cap: number | null): Charact
  * points, the app's default posture is milestone leveling. The live `xp` total
  * is left untouched so re-enabling restores the prior count.
  */
+export function setFoldUntrainedSkills(doc: CharacterDoc, fold: boolean): CharacterDoc {
+  return {
+    ...doc,
+    build: {
+      ...doc.build,
+      settings: { ...doc.build.settings, foldUntrainedSkills: fold },
+    },
+  };
+}
+
 export function setXpEnabled(doc: CharacterDoc, enabled: boolean): CharacterDoc {
   return {
     ...doc,

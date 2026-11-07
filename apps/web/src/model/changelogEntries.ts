@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-06-skill-list-filter",
+    date: "2026-11-06",
+    title: "Find a skill faster",
+    note: 'The sheet\'s skill list no longer scrolls inside its own little box: every skill shows at once, with a Filter field in the Skills heading. Type part of a name, like "know pla", to jump straight to it. Settings has a new Skill List option that hides skills you have no ranks in, with a button to show them when you need one.',
+  },
+  {
     id: "2026-11-06-class-options-fold",
     date: "2026-11-06",
     title: "Class options fold away once you've picked",

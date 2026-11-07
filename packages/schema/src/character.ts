@@ -744,6 +744,12 @@ export interface CharacterDoc {
        * builder's rank budget.
        */
       backgroundSkills?: boolean;
+      /**
+       * Display preference, kept per character: the live sheet lists only
+       * skills with ranks and folds the 0-rank ones behind a toggle. A filter
+       * query still searches every skill. Absent (default) = list them all.
+       */
+      foldUntrainedSkills?: boolean;
     };
     /**
      * Player-curated bookmarks into already-computed sheet numbers ("saved
