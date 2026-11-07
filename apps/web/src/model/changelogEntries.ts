@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-06-clearer-rest-buttons",
+    date: "2026-11-06",
+    title: "Each refresh button says what it refreshes",
+    note: "New day at the top of Play is the one button that rests everything. The Spells panel's own button is now Refresh slots, and Resources has Refill all, which shows what it refilled with an Undo. In Settings, the rules sections say they're saved with the current character, and every choice marks which option is the default.",
+  },
+  {
     id: "2026-11-06-reservoir-dc-on-cast",
     date: "2026-11-06",
     title: "Arcane Reservoir's DC boost pays for itself on Cast",

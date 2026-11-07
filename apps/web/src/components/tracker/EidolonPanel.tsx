@@ -67,7 +67,7 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
   return (
     <Panel
       title={`Eidolon: ${eidolon.name}`}
-      step="edln"
+
       icon={<EyeIcon />}
       storageKey="panel:Eidolon"
       defaultCollapsed
@@ -144,7 +144,7 @@ export function EidolonPanel({ doc, refData, update }: BuilderProps) {
           className="btn-ghost rest"
           onClick={() => update((d) => restEidolon(d))}
         >
-          Rest ⤿
+          Rest
         </button>
       </div>
 

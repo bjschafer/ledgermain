@@ -67,7 +67,7 @@ import {
  * `spellSlotsByLevel`/`progression`, ability-bonus slots included) that offers
  * whatever is CURRENTLY prepared at that level. Casting never expends the
  * specific prepared instance — unlike {@link PreparedView}, prepared rows here
- * have no Cast/Recover button, only Prepare/Unprepare; "New day" only needs to
+ * have no Cast/Recover button, only Prepare/Unprepare; "Refresh slots" only needs to
  * reset the slot pool (`resetSpontaneousSlots`) since nothing in the prepared
  * loadout is ever marked expended, but `restPreparedSpells` is called too for
  * defense-in-depth (a harmless no-op today, matching `model/rest.ts`'s global
@@ -244,7 +244,7 @@ export function HybridView({
   return (
     <Panel
       title="Spells"
-      step="ps"
+
       icon={<SparklesIcon />}
       storageKey="panel:Prepared"
       right={
@@ -252,7 +252,7 @@ export function HybridView({
           type="button"
           className="btn-ghost rest"
           disabled={!anyCastUsed}
-          title="Same as the global New day action, scoped to this class's spells"
+          title="Restore this class's spell slots only. The New day button at the top refreshes everything."
           onClick={() => {
             const next = resetSpontaneousSlots(restPreparedSpells(doc, classTag), classTag);
             update(() => next);
@@ -263,7 +263,7 @@ export function HybridView({
             });
           }}
         >
-          New day
+          Refresh slots
         </button>
       }
     >
@@ -273,7 +273,7 @@ export function HybridView({
           Hybrid caster: in the <strong>Prepare</strong> tab, ready spells from your{" "}
           {model.knownLabel.toLowerCase()}; in the <strong>Cast</strong> tab, cast any of them by
           spending a slot; casting never uses up the prepared spell itself, only a slot.{" "}
-          <strong>New day</strong> refreshes every slot without changing what's prepared.
+          <strong>Refresh slots</strong> restores every slot without changing what's prepared.
         </p>
       </Explainer>
 
@@ -531,6 +531,7 @@ export function HybridView({
                           <button
                             type="button"
                             className="btn-ghost prep-x"
+                            title="Unprepare: frees the slot"
                             aria-label={`unprepare ${r.name}`}
                             onClick={() => update((d) => removePreparedAt(d, r.index))}
                           >

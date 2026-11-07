@@ -79,7 +79,7 @@ export function FeatsPanel({ doc, refData }: BuilderProps) {
   return (
     <Panel
       title="Feats"
-      step="ft"
+
       icon={<StarIcon />}
       storageKey="panel:PlayFeats"
       defaultCollapsed

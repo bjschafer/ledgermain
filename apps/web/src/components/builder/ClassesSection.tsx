@@ -373,7 +373,7 @@ export function ClassesSection({ doc, sheet, refData, update }: BuilderProps) {
                 className="btn-ghost"
                 onClick={() => setConfirmRemoveTag(cls.tag)}
               >
-                remove
+                Remove
               </button>
             </div>
           );

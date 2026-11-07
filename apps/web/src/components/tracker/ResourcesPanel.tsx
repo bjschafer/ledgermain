@@ -31,6 +31,8 @@ import {
 } from "../../model/kineticistBuild.js";
 import { applyGrantedTempHp, isImmuneToNonlethal } from "../../model/hp.js";
 import { MartialFlexibilityDialog } from "./MartialFlexibilityDialog.js";
+import { newDaySummary } from "../../model/rest.js";
+import { showToast } from "../../state/toast.js";
 import {
   knownOccultistSchoolTags,
   setOccultistFocusInvested,
@@ -66,7 +68,7 @@ import type { BuilderProps } from "../builder/types.js";
  * spell slots have their own panel ({@link PreparedSpellsPanel}); this is no
  * longer where spells are tracked.
  */
-export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
+export function ResourcesPanel({ doc, sheet, refData, update, undoLast }: BuilderProps) {
   const derived = useMemo(
     () => deriveResourcePools(doc, refData, sheet.abilities, sheet.abilityDCs),
     [doc, refData, sheet.abilities, sheet.abilityDCs],
@@ -107,18 +109,24 @@ export function ResourcesPanel({ doc, sheet, refData, update }: BuilderProps) {
   return (
     <Panel
       title="Resources"
-      step="rs"
+
       icon={<FlaskIcon />}
       storageKey="panel:Resources"
       right={
         <button
           type="button"
           className="btn-ghost rest"
-          onClick={() =>
-            update((d) => clearKineticistDefenseBurn(restAllResourcesWithRecovery(d, derived)))
-          }
+          title="Refill every pool below. The New day button at the top also heals and refreshes spells."
+          onClick={() => {
+            const next = clearKineticistDefenseBurn(restAllResourcesWithRecovery(doc, derived));
+            update(() => next);
+            showToast({
+              message: newDaySummary(doc, next, derived) || "Pools already full",
+              action: undoLast ? { label: "Undo", onAction: undoLast } : undefined,
+            });
+          }}
         >
-          Rest (full)
+          Refill all
         </button>
       }
     >

@@ -1842,6 +1842,12 @@ button:focus-visible,
   color: var(--gold-2);
 }
 
+/* Removing something you own: as quiet as its Edit neighbour until hovered. */
+.pick-btn.drop:hover:not(:disabled) {
+  border-color: var(--oxblood-ink);
+  color: var(--oxblood-ink);
+}
+
 .pick-btn:disabled,
 .pick-btn[aria-disabled="true"] {
   cursor: not-allowed;
@@ -4841,6 +4847,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .prep-head-label {
+  white-space: nowrap;
   font-family: var(--mono);
   font-size: 0.6875rem;
   letter-spacing: 0.1em;
@@ -4849,6 +4856,7 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .prep-count {
+  text-align: right;
   font-size: 0.6875rem;
   font-family: var(--mono);
   color: var(--faint);
@@ -4949,6 +4957,8 @@ input[type="text"].saved-roll-name:focus {
 }
 
 .prep-x {
+  /* Kept a step apart from Cast so a hurried tap doesn't unprepare. */
+  margin-left: 6px;
   width: 28px;
   text-align: center;
   padding: 2px 0;
@@ -5795,7 +5805,10 @@ input[type="text"].saved-roll-name:focus {
    this the picker refuses to shrink and hangs off the end of its header row on
    a phone. */
 .subdomain-select {
-  width: auto;
+  /* A fixed width so stacked domain slots line up instead of each select
+     sizing to its own longest subdomain name. */
+  width: 15rem;
+  max-width: 60%;
   min-width: 0;
 }
 
@@ -6590,6 +6603,11 @@ input[type="text"].saved-roll-name:focus {
   gap: 8px;
 }
 
+.lang-add-row > button {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 /* Compact label above the race's bonus-language option chips, tighter than
    the standard `.hint` spacing since it sits directly under a chip row. */
 .lang-suggested-label {
@@ -7011,6 +7029,11 @@ input[type="text"].saved-roll-name:focus {
     overflow-x: auto;
     /* Scrollable, but reads as chrome — no visible scrollbar track/thumb. */
     scrollbar-width: none;
+    /* With no scrollbar, a stat sliced at the edge reads as a stray glyph.
+       Fade the edge so it reads as "more this way"; the end padding lets the
+       last stat scroll clear of the fade. */
+    padding-right: 24px;
+    mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
   }
 
   .stat-strip-scroll::-webkit-scrollbar {
@@ -8650,4 +8673,28 @@ input[type="text"].saved-roll-name:focus {
    keeps its own `⚠`. */
 .feature-note {
   margin-top: 2px;
+}
+
+/* Disclosure chevron inside seals, sheet skill rows and saved-roll values:
+   the same Caret every collapsible header uses, sized down. ▲/▼ glyphs are
+   reserved for the baseline tint marker, which means higher/lower. */
+.seal .caret,
+.sheet-skill-toggle .caret,
+.saved-roll-value-btn .caret {
+  display: inline-flex;
+  line-height: 0;
+}
+
+.seal .caret .panel-caret,
+.sheet-skill-toggle .caret .panel-caret,
+.saved-roll-value-btn .caret .panel-caret {
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-left: 0;
+  color: var(--faint);
+}
+
+.settings-group-note {
+  margin: -2px 0 10px;
+  font-size: 0.75rem;
 }

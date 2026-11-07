@@ -63,7 +63,7 @@ export function AfflictionsPanel({ doc, sheet, update }: BuilderProps) {
   return (
     <Panel
       title="Afflictions"
-      step="af"
+
       icon={<DropletIcon />}
       storageKey="panel:Afflictions"
       defaultCollapsed

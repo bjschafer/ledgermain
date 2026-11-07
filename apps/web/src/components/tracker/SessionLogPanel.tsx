@@ -37,7 +37,7 @@ export function SessionLogPanel({
   return (
     <Panel
       title="Session Log"
-      step="✦"
+
       icon={<BookmarkIcon />}
       storageKey="panel:SessionLog"
       right={

@@ -45,6 +45,7 @@ import { HomebrewBadge } from "./HomebrewBadge.js";
 import { InfoTip } from "./InfoTip.js";
 import { Provenance } from "./Provenance.js";
 import { StatSeal } from "./StatSeal.js";
+import { Caret } from "./Caret.js";
 
 /**
  * One skill row — split out from `Sheet` so it can own its own `useFlashKey`
@@ -78,7 +79,9 @@ function SkillRow({ s, resetKey }: { s: DerivedSkill; resetKey: string | number 
           aria-controls={panelId}
           onClick={() => setOpen((o) => !o)}
         >
-          <span className="caret">{open ? "▲" : "▼"}</span>
+          <span className="caret">
+            <Caret open={open} />
+          </span>
           <span className="sk-name">
             {skillName(s.id)}
             {s.classSkill ? (

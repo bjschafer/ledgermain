@@ -90,7 +90,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   const nonlethalImmune = isImmuneToNonlethal(sheet);
 
   return (
-    <Panel title="Hit Points" step="hp" icon={<HeartIcon />} storageKey="panel:PlayHP">
+    <Panel title="Hit Points" icon={<HeartIcon />} storageKey="panel:PlayHP">
       <div className="hp-display">
         <div className="hp-big num" data-low={isLow}>
           {current}
@@ -352,7 +352,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
             }
             onClick={() => update((d) => restHp(d, max, { mode: restMode, level: sheet.level }))}
           >
-            Rest ⤿
+            Rest
           </button>
           <InfoTip
             className="chip-info"

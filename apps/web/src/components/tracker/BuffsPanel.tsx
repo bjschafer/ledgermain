@@ -102,7 +102,7 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
   return (
     <Panel
       title="Buffs"
-      step="bf"
+
       icon={<SparkleIcon />}
       storageKey="panel:Buffs"
       right={

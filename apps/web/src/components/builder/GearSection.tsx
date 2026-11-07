@@ -612,7 +612,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
           </button>
           <button
             type="button"
-            className="pick-btn remove"
+            className="pick-btn drop"
             onClick={() => update((d) => removeGear(d, i))}
             title="Remove from gear"
           >
@@ -700,7 +700,7 @@ export function GearSection({ doc, sheet, refData, update }: BuilderProps) {
       <div className="gear-add-row">
         {!showItemPicker ? (
           <button type="button" className="btn-ghost" onClick={() => setShowItemPicker(true)}>
-            + Add item
+            + Add magic item
           </button>
         ) : (
           <div className="gear-picker">

@@ -45,7 +45,7 @@ export function ActiveFormPanel({ doc, sheet, refData, update }: BuilderProps) {
   return (
     <Panel
       title="Polymorph / Wild Shape"
-      step="wsh"
+
       icon={<SwapIcon />}
       storageKey="panel:Polymorph"
       defaultCollapsed

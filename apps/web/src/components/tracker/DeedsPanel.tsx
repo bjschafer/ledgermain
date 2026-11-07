@@ -43,7 +43,7 @@ export function DeedsPanel({ doc }: BuilderProps) {
   if (gunslingerLevel === 0 && swashbucklerLevel === 0) return null;
 
   return (
-    <Panel title="Deeds" step="dd" icon={<RibbonIcon />} storageKey="panel:Deeds">
+    <Panel title="Deeds" icon={<RibbonIcon />} storageKey="panel:Deeds">
       {gunslingerLevel > 0 && <DeedGroup title="Gunslinger Deeds (grit)" deeds={gunslingerDeeds} />}
       {swashbucklerLevel > 0 && (
         <DeedGroup

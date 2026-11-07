@@ -78,7 +78,7 @@ test("burn spent on Shroud of Water raises armor class, and a rest gives it back
   await expect(ac).toHaveText("14");
 
   // A rest removes the burn and the boost with it.
-  await page.getByRole("button", { name: "Rest (full)" }).click();
+  await page.getByRole("button", { name: "Refill all" }).click();
   await expect(defense).toContainText("of 0 held");
   await expect(ac).toHaveText("13"); // shield base 3, no burn
 

@@ -188,7 +188,7 @@ export function SpontaneousView({
   return (
     <Panel
       title="Spells"
-      step="ps"
+
       icon={<SparklesIcon />}
       storageKey="panel:Prepared"
       right={
@@ -196,7 +196,7 @@ export function SpontaneousView({
           type="button"
           className="btn-ghost rest"
           disabled={!anyUsed}
-          title="Same as the global New day action, scoped to this class's spells"
+          title="Restore this class's spell slots only. The New day button at the top refreshes everything."
           onClick={() => {
             const next = resetSpontaneousSlots(doc, classTag);
             update(() => next);
@@ -206,7 +206,7 @@ export function SpontaneousView({
             });
           }}
         >
-          New day
+          Refresh slots
         </button>
       }
     >
@@ -214,7 +214,7 @@ export function SpontaneousView({
       <div className="spell-hints">
         <p className="hint spell-hint-line">
           Spontaneous caster: spend a slot of the required level to cast any spell you know.{" "}
-          <strong>New day</strong> restores all slots.
+          <strong>Refresh slots</strong> restores all slots.
         </p>
       </div>
 

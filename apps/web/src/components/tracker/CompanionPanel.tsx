@@ -66,7 +66,7 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
   return (
     <Panel
       title={`Companion: ${companion.name}`}
-      step="comp"
+
       icon={<PawIcon />}
       storageKey="panel:Companion"
       defaultCollapsed
@@ -131,7 +131,7 @@ export function CompanionPanel({ doc, refData, update }: BuilderProps) {
           className="btn-ghost rest"
           onClick={() => update((d) => restCompanion(d))}
         >
-          Rest ⤿
+          Rest
         </button>
       </div>
 

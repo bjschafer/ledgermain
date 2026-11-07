@@ -1,8 +1,8 @@
 /**
  * The single "new day" rest action — composes the independent per-module rest
- * transitions that used to live behind separate panel buttons (HP's "Rest ⤿",
- * Resources' "Rest (full)", Prepared Spells'/ spontaneous casting's per-class
- * "New day") into one call, and wires in ability damage's natural healing,
+ * transitions that used to live behind separate panel buttons (HP's "Rest",
+ * Resources' "Refill all", Prepared Spells'/ spontaneous casting's per-class
+ * "Refresh slots") into one call, and wires in ability damage's natural healing,
  * which had no daily event to hook until now.
  *
  * This module does not reimplement any of the underlying rules — it only
@@ -160,7 +160,7 @@ function classSpellSegment(
  * multiclass, rather than one opaque "2 spell slots refreshed". Pass the
  * document's caster classes (see `model/spellcasting.ts`'s
  * `casterClassesOf`/`storedClassTag`) with a display `name` each; omit it (as
- * the narrower per-class "New day" ghost buttons do — their before/after diff
+ * the narrower per-class "Refresh slots" ghost buttons do — their before/after diff
  * is already scoped to one class, so the combined count and a per-class
  * breakdown would say the same thing) to fall back to the original single
  * combined segment.

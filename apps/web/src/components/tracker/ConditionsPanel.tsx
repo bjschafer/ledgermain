@@ -21,7 +21,7 @@ export function ConditionsPanel({ doc, sheet, update }: BuilderProps) {
   return (
     <Panel
       title="Conditions"
-      step="cd"
+
       icon={<AlertTriangleIcon />}
       storageKey="panel:Conditions"
       right={<span className="hint">{active.size} active</span>}

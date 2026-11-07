@@ -441,7 +441,7 @@ export function FeatEntry({
               </div>
               <button
                 type="button"
-                className="pick-btn remove"
+                className="pick-btn drop"
                 aria-label={`Remove ${feat.name}`}
                 onClick={() =>
                   update((d) =>

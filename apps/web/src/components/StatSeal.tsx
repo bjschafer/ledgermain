@@ -5,6 +5,7 @@ import type { ConditionalTotal, ModifierComponent } from "@pf1/schema";
 import { signed } from "../model/names.js";
 import { useFlashKey } from "../hooks/useFlashKey.js";
 import { Provenance, type ProvenanceCopy } from "./Provenance.js";
+import { Caret } from "./Caret.js";
 
 /**
  * A gilded stat "seal" — the big tabular total for one derived value. When given
@@ -83,7 +84,11 @@ export function StatSeal({
 
   const inner = (
     <>
-      {expandable ? <span className="caret">{open ? "▲" : "▼"}</span> : null}
+      {expandable ? (
+        <span className="caret">
+          <Caret open={open} />
+        </span>
+      ) : null}
       {tint ? (
         <span className="seal-tint-marker" data-tint={tint} aria-hidden="true">
           {tint === "higher" ? "▲" : "▼"}

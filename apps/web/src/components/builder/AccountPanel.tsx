@@ -52,7 +52,7 @@ export function AccountPanel({ onSignedOut }: { onSignedOut: () => void }) {
   if (!signedIn()) return null;
 
   return (
-    <Panel title="Your account" step="⚙" icon={<GearIcon />}>
+    <Panel title="Your account" icon={<GearIcon />}>
       <p className="hint" style={{ marginBottom: 12 }}>
         Characters you sync are kept on the server so your other devices can see them. These cover
         the whole account, not just the character you have open.
@@ -110,7 +110,7 @@ export function AccountErasePanel({ onSignedOut }: { onSignedOut: () => void }) 
   if (!signedIn()) return null;
 
   return (
-    <Panel title="Erase server data" step="⚙" icon={<GearIcon />}>
+    <Panel title="Erase server data" icon={<GearIcon />}>
       <ConfirmAction
         description="Removes every character and session this account has on the server, and signs you out. Characters saved on this device stay where they are, but the server's copies are gone: download them first if you want them. This cannot be undone."
         confirmWord="ERASE"

@@ -73,7 +73,7 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
   return (
     <Panel
       title={`Familiar: ${familiar.name}`}
-      step="fam"
+
       icon={<BirdIcon />}
       storageKey="panel:Familiar"
       defaultCollapsed
@@ -157,7 +157,7 @@ export function FamiliarPanel({ doc, sheet, refData, update }: BuilderProps) {
           className="btn-ghost rest"
           onClick={() => update((d) => restFamiliar(d))}
         >
-          Rest ⤿
+          Rest
         </button>
       </div>
 

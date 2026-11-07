@@ -96,7 +96,7 @@ test("every add flow offers the same purchase, sharing one toggle", async ({ pag
   await panel.getByLabel("gp (coins)").fill("500");
 
   // The toggle is ticked once, in the item picker.
-  await panel.getByRole("button", { name: "+ Add item" }).click();
+  await panel.getByRole("button", { name: "+ Add magic item" }).click();
   const items = panel.locator(".gear-picker");
   await items.getByLabel("Pay from purse").check();
   await typeSearch(items.getByPlaceholder("Search items…"), "Alchemist's Fire");
@@ -124,7 +124,7 @@ test("every add flow offers the same purchase, sharing one toggle", async ({ pag
   await expect(panel.getByLabel("gp (coins)")).toHaveValue("305");
 
   // A second flask joins the first rather than opening a second row.
-  await panel.getByRole("button", { name: "+ Add item" }).click();
+  await panel.getByRole("button", { name: "+ Add magic item" }).click();
   await typeSearch(
     panel.locator(".gear-picker").getByPlaceholder("Search items…"),
     "Alchemist's Fire",

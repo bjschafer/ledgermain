@@ -85,7 +85,7 @@ export function SavedRollsPanel({ doc, sheet, refData, update }: BuilderProps) {
   }, [options, query]);
 
   return (
-    <Panel title="Saved Rolls" step="sr" icon={<BookmarkIcon />} storageKey="panel:SavedRolls">
+    <Panel title="Saved Rolls" icon={<BookmarkIcon />} storageKey="panel:SavedRolls">
       {saved.length === 0 ? (
         <div className="empty">No saved rolls yet: pin one below.</div>
       ) : (
@@ -252,7 +252,9 @@ function SavedRollRow({
               aria-controls={panelId}
               onClick={() => setOpen((o) => !o)}
             >
-              <span className="caret">{open ? "▲" : "▼"}</span>
+              <span className="caret">
+                <Caret open={open} />
+              </span>
               {resolved.offHand ? <span className="saved-roll-hand-label">Main-hand</span> : null}
               <span className="saved-roll-value-num">{resolved.display}</span>
             </button>

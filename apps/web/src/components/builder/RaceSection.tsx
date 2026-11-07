@@ -346,6 +346,7 @@ export function RaceSection({ doc, sheet, refData, update }: BuilderProps) {
             : ""}
         </p>
         <div className="chips" style={{ marginTop: 6 }}>
+          {bonusLanguages.length === 0 ? <span className="hint">None chosen yet.</span> : null}
           {bonusLanguages.map((lang, i) => (
             <button
               key={`${lang}-${i}`}

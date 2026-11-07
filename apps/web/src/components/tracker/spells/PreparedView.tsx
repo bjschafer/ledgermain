@@ -287,7 +287,7 @@ export function PreparedView({
   const totalPrepared = classPrepared.length;
 
   // Shaman Spirit Magic (ACG): a separate bonus spontaneous-slot pool, so its
-  // own usage also has to enable this class's "New day" button and get reset
+  // own usage also has to enable this class's "Refresh slots" button and get reset
   // alongside the ordinary prepared loadout — see
   // `model/preparedSpells.ts`'s "Shaman Spirit Magic" section.
   const isShaman = casterTag === "shaman";
@@ -297,7 +297,7 @@ export function PreparedView({
   return (
     <Panel
       title="Spells"
-      step="ps"
+
       icon={<SparklesIcon />}
       storageKey="panel:Prepared"
       right={
@@ -305,7 +305,7 @@ export function PreparedView({
           type="button"
           className="btn-ghost rest"
           disabled={!anyExpended && !anySpiritMagicUsed}
-          title="Same as the global New day action, scoped to this class's spells"
+          title="Restore this class's spell slots only. The New day button at the top refreshes everything."
           onClick={() => {
             let next = restPreparedSpells(doc, classTag);
             if (isShaman) next = resetSpiritMagicSlots(next);
@@ -317,7 +317,7 @@ export function PreparedView({
             });
           }}
         >
-          New day
+          Refresh slots
         </button>
       }
     >
@@ -325,7 +325,7 @@ export function PreparedView({
       <div className="spell-hints">
         <p className="hint spell-hint-line">
           Prepare spells from your {model.knownLabel.toLowerCase()} into the day's slots, then{" "}
-          <strong>Cast</strong> to expend them. <strong>New day</strong> refreshes every slot
+          <strong>Cast</strong> to expend them. <strong>Refresh slots</strong> restores every slot
           without changing what's prepared.
         </p>
       </div>
@@ -526,6 +526,7 @@ export function PreparedView({
                         <button
                           type="button"
                           className="btn-ghost prep-x"
+                          title="Unprepare: frees the slot"
                           aria-label={`unprepare ${r.name}`}
                           onClick={() => update((d) => removePreparedAt(d, r.index))}
                         >

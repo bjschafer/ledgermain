@@ -635,7 +635,7 @@ export function WeaponsSection({ doc, refData, update }: BuilderProps) {
                 </button>
                 <button
                   type="button"
-                  className="pick-btn remove"
+                  className="pick-btn drop"
                   onClick={() => update((d) => removeWeapon(d, i))}
                 >
                   Remove

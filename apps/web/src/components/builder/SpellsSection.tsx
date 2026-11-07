@@ -782,7 +782,7 @@ function SpellLevelGroup({
                   <p className="hint spell-undercast-note">{undercastGrantLabel(undercast)}</p>
                 )}
               </div>
-              <button type="button" className="pick-btn remove" onClick={() => onRemove(sp.id)}>
+              <button type="button" className="pick-btn drop" onClick={() => onRemove(sp.id)}>
                 Remove
               </button>
             </div>

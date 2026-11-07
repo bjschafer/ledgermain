@@ -61,7 +61,7 @@ export function PhantomPanel({ doc, refData, update }: BuilderProps) {
   return (
     <Panel
       title={`Phantom: ${phantom.name}`}
-      step="phtm"
+
       icon={<GhostIcon />}
       storageKey="panel:Phantom"
       defaultCollapsed
@@ -149,7 +149,7 @@ export function PhantomPanel({ doc, refData, update }: BuilderProps) {
           className="btn-ghost rest"
           onClick={() => update((d) => restPhantom(d))}
         >
-          Rest ⤿
+          Rest
         </button>
       </div>
 

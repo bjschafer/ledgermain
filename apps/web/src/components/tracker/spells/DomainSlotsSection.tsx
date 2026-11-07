@@ -188,6 +188,7 @@ export function DomainSlotsSection({
                       <button
                         type="button"
                         className="btn-ghost prep-x"
+                        title="Unprepare: frees the slot"
                         aria-label={`unprepare ${r.name}`}
                         onClick={() => update((d) => removePreparedAt(d, r.index))}
                       >

@@ -37,7 +37,7 @@ export function PreparedSpellsPanel({ doc, sheet, refData, update }: BuilderProp
     // message — that's a gap worth surfacing, not an absent feature.
     if (!casterTag && !spellsPanelVisible(doc, refData)) return null;
     return (
-      <Panel title="Spells" step="ps" icon={<SparklesIcon />} storageKey="panel:Prepared">
+      <Panel title="Spells" icon={<SparklesIcon />} storageKey="panel:Prepared">
         <p className="empty">
           {casterTag
             ? "Spell tracking isn't modelled for this class yet."
