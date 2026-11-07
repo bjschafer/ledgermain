@@ -262,6 +262,7 @@ export function App() {
           update={store.update}
           undoLast={store.undoLast}
           canUndo={store.canUndo}
+          undoNextLineId={store.undoNextLineId}
           sessionLog={store.sessionLog}
           onClearSessionLog={store.clearSessionLog}
           onImportCharacter={(doc) => void store.importCharacter(doc)}

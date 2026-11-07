@@ -7,10 +7,14 @@
  *
  * Undo is scoped to the session log: every step is a change that wrote a log
  * line, and undoing it takes that line back out. A change the log doesn't
- * record (a build edit, a note) is never a step of its own. It is carried
- * forward into every step already on the stack instead (`rebaseHistory`), so
- * walking back a logged hit restores the HP without also reverting the note
- * typed after it.
+ * record (a build edit, a note, the round clock) is never a step of its own.
+ *
+ * Undo is exact or unavailable, never approximately right. An unlogged change
+ * is copied into each step already on the stack only where that step's own
+ * change is not pending: wherever the step's saved doc still holds the very
+ * same object the unlogged change started from. Where it doesn't, the two
+ * changes touched the same thing and no copy could be trusted, so that step
+ * and every step older than it are dropped (`rebaseHistory`).
  *
  * Rules:
  *   - `recordSnapshot` pushes, dropping the oldest entry past `HISTORY_LIMIT`.
@@ -68,133 +72,47 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+/** Returned by {@link carryExact} when `target` can't take the change exactly. */
+export const CONFLICT: unique symbol = Symbol("undo conflict");
+
 /**
- * `target` with every part that moved between `before` and `after` taken from
- * `after`. Docs are immutable with structural sharing, so reference equality
- * finds exactly what a transition touched. Plain objects merge key by key and
- * arrays item by item (`carryArray`), so a change to one buff or one prepared
- * spell never drags its neighbours' state along with it.
+ * `target` with the change from `before` to `after` applied, or `CONFLICT`.
+ *
+ * Docs are immutable with structural sharing, so wherever `target` holds the
+ * same object as `before`, nothing else changed it there and `after` drops in
+ * exactly. Plain objects are descended into key by key to find those spots;
+ * anything else that moved (a list, a number) where `target` differs from
+ * `before` is a conflict. Nothing is merged.
  */
-export function carryChanges<T>(target: T, before: T, after: T): T {
+export function carryExact<T>(target: T, before: T, after: T): T | typeof CONFLICT {
   if (before === after) return target;
-  if (Array.isArray(before) && Array.isArray(after) && Array.isArray(target)) {
-    return carryArray(target, before, after) as T;
-  }
-  if (!isPlainObject(before) || !isPlainObject(after) || !isPlainObject(target)) return after;
-  let out: Record<string, unknown> | undefined;
+  if (target === before) return after;
+  if (!isPlainObject(before) || !isPlainObject(after) || !isPlainObject(target)) return CONFLICT;
+  const out: Record<string, unknown> = { ...target };
   for (const key of new Set([...Object.keys(before), ...Object.keys(after)])) {
     if (before[key] === after[key]) continue;
-    out ??= { ...target };
-    if (key in after) out[key] = carryChanges(target[key], before[key], after[key]);
+    const next = carryExact(target[key], before[key], after[key]);
+    if (next === CONFLICT) return CONFLICT;
+    if (key in after) out[key] = next;
     else delete out[key];
   }
-  return (out ?? target) as T;
-}
-
-/** The `instanceId` of each item, or `null` unless every item has a distinct one. */
-function instanceIds(list: readonly unknown[]): string[] | null {
-  const ids = list.map((item) =>
-    isPlainObject(item) && typeof item.instanceId === "string" ? item.instanceId : null,
-  );
-  if (ids.some((id) => id === null)) return null;
-  return new Set(ids).size === ids.length ? (ids as string[]) : null;
-}
-
-function distinctPrimitives(list: readonly unknown[]): boolean {
-  return (
-    list.every((item) => item === null || typeof item !== "object") &&
-    new Set(list).size === list.length
-  );
+  return out as T;
 }
 
 /**
- * Three ways to line items up, strongest first:
- *  - by `instanceId` (active buffs): edits, removals and additions each apply
- *    to the matching item, wherever it sits in `target`.
- *  - as a set (condition ids): drop what `after` dropped, append what it added.
- *  - by position (prepared spells), valid only while `target` still has the
- *    same length as `before`. Same length means items edited in place; a
- *    different length is matched by reference to find what was inserted and
- *    removed.
- * Anything none of them fits takes `after` whole.
+ * Every edit bumps `version` (and saving stamps `updatedAt`), so those two
+ * would read as a conflict on every carry. They are sync bookkeeping, not
+ * character state, and undo re-stamps `version` when it restores anyway.
  */
-function carryArray(target: unknown[], before: unknown[], after: unknown[]): unknown[] {
-  if (target === before) return after;
-
-  const targetIds = instanceIds(target);
-  const beforeIds = instanceIds(before);
-  const afterIds = instanceIds(after);
-  if (targetIds && beforeIds && afterIds) {
-    const was = new Map(beforeIds.map((id, i) => [id, before[i]]));
-    const is = new Map(afterIds.map((id, i) => [id, after[i]]));
-    const out: unknown[] = [];
-    targetIds.forEach((id, i) => {
-      const prior = was.get(id);
-      const next = is.get(id);
-      if (prior === undefined) out.push(target[i]);
-      else if (next !== undefined) out.push(carryChanges(target[i], prior, next));
-    });
-    const present = new Set(targetIds);
-    afterIds.forEach((id, i) => {
-      if (!was.has(id) && !present.has(id)) out.push(after[i]);
-    });
-    return out;
-  }
-
-  if (distinctPrimitives(target) && distinctPrimitives(before) && distinctPrimitives(after)) {
-    const was = new Set(before);
-    const is = new Set(after);
-    const out = target.filter((item) => !was.has(item) || is.has(item));
-    for (const item of after) if (!was.has(item) && !out.includes(item)) out.push(item);
-    return out;
-  }
-
-  if (target.length !== before.length) return after;
-  if (before.length === after.length) {
-    return target.map((item, i) => carryChanges(item, before[i], after[i]));
-  }
-  return spliceByReference(target, before, after);
+function withoutSyncStamp(doc: CharacterDoc): CharacterDoc {
+  return { ...doc, version: 0, updatedAt: "" };
 }
 
 /**
- * Replay the inserts and removals that turned `before` into `after` onto
- * `target`, a same-length sibling of `before`. Items are matched by
- * reference along a longest common subsequence; each kept `before` item
- * stands in for the `target` item at the same index.
- */
-function spliceByReference(target: unknown[], before: unknown[], after: unknown[]): unknown[] {
-  const n = before.length;
-  const m = after.length;
-  const lcs: number[][] = Array.from({ length: n + 1 }, () => Array<number>(m + 1).fill(0));
-  for (let i = n - 1; i >= 0; i--) {
-    for (let j = m - 1; j >= 0; j--) {
-      lcs[i]![j] =
-        before[i] === after[j]
-          ? lcs[i + 1]![j + 1]! + 1
-          : Math.max(lcs[i + 1]![j]!, lcs[i]![j + 1]!);
-    }
-  }
-  const out: unknown[] = [];
-  let i = 0;
-  let j = 0;
-  while (i < n || j < m) {
-    if (i < n && j < m && before[i] === after[j]) {
-      out.push(target[i]);
-      i++;
-      j++;
-    } else if (j < m && (i === n || lcs[i]![j + 1]! >= lcs[i + 1]![j]!)) {
-      out.push(after[j]);
-      j++;
-    } else {
-      i++;
-    }
-  }
-  return out;
-}
-
-/**
- * Fold an unlogged transition (`before` → `after`) into every step on the
- * stack, so no later undo reverts it.
+ * Fold an unlogged transition (`before` → `after`) into the stack. Steps it
+ * carries into exactly are kept; the newest step it conflicts with is
+ * dropped together with everything older, since undoing past it would mean
+ * restoring through the conflict.
  */
 export function rebaseHistory(
   state: UndoHistoryState,
@@ -202,7 +120,19 @@ export function rebaseHistory(
   after: CharacterDoc,
 ): void {
   if (before === after) return;
-  for (const step of state.history) step.doc = carryChanges(step.doc, before, after);
+  const from = withoutSyncStamp(before);
+  const to = withoutSyncStamp(after);
+  const kept: UndoStep[] = [];
+  for (let i = state.history.length - 1; i >= 0; i--) {
+    const step = state.history[i]!;
+    const doc = carryExact(withoutSyncStamp(step.doc), from, to);
+    if (doc === CONFLICT) break;
+    kept.unshift({
+      ...step,
+      doc: { ...doc, version: step.doc.version, updatedAt: step.doc.updatedAt },
+    });
+  }
+  state.history = kept;
 }
 
 /**
@@ -222,6 +152,11 @@ export function observeTransition(
 /** Drop the whole history (the active character is about to change out from under it). */
 export function invalidateSnapshot(state: UndoHistoryState): void {
   state.history = [];
+}
+
+/** The log line the next undo would take back, if there is a step to undo. */
+export function nextUndoLine(state: UndoHistoryState): string | undefined {
+  return state.history[state.history.length - 1]?.logEntryId;
 }
 
 /** How many steps back undo can currently go. */

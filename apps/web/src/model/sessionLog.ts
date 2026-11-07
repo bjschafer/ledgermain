@@ -48,6 +48,7 @@ export type SessionLogKind =
   | "form"
   | "companion"
   | "rest"
+  | "round"
   | "other";
 
 export interface SessionLogEntry {
@@ -61,7 +62,17 @@ export interface SessionLogEntry {
   tone: "damage" | "healing" | "condition" | "neutral";
   /** See {@link SessionLogKind}. Set from whatever moved first in the line. */
   kind: SessionLogKind;
+  /**
+   * A round marker rather than an event: the clock moving, plus anything that
+   * ran out with it. Never an undo step (see {@link classifyTransition}).
+   */
+  divider?: true;
 }
+
+export type LogLine = Pick<SessionLogEntry, "text" | "tone" | "kind">;
+
+/** What a committed change puts in the log, and whether undo can take it back. */
+export type LogDecision = { line: LogLine; undoable: boolean } | null;
 
 type Tone = SessionLogEntry["tone"];
 
@@ -78,6 +89,7 @@ const KINDS: ReadonlySet<SessionLogKind> = new Set([
   "form",
   "companion",
   "rest",
+  "round",
   "other",
 ]);
 
@@ -471,6 +483,35 @@ export function pushLogEntry(
 ): SessionLogEntry[] {
   const next = [...log, entry];
   return next.length > SESSION_LOG_LIMIT ? next.slice(next.length - SESSION_LOG_LIMIT) : next;
+}
+
+/**
+ * Where a change lands in the log. A change that moves the round clock is a
+ * round marker, never an undo step, even when it also ends a buff: undoing a
+ * round is not something the table does, and folding what ran out into the
+ * marker keeps every Next Round the same kind of line. Anything else that
+ * describes as a line is an undoable step; `override` is a caller's own line
+ * for a many-field change like New Day, and is a step too.
+ */
+export function classifyTransition(
+  before: CharacterDoc,
+  after: CharacterDoc,
+  context: LiveChangeContext = {},
+  override?: LogLine,
+): LogDecision {
+  if (override) return { line: override, undoable: true };
+  const change = describeLiveChange(before, after, context);
+  if (before.live.round !== after.live.round) {
+    const label =
+      after.live.round === undefined
+        ? "Combat over"
+        : `Round ${Math.max(1, Math.floor(after.live.round))}`;
+    return {
+      line: { text: change ? `${label} · ${change.text}` : label, tone: "neutral", kind: "round" },
+      undoable: false,
+    };
+  }
+  return change ? { line: change, undoable: true } : null;
 }
 
 /** Drop anything that isn't a log entry this app wrote (a hand-edited store, an older shape). */

@@ -292,7 +292,10 @@ export function advanceRound(doc: CharacterDoc, rounds = 1): AdvanceRoundResult 
       ...doc.live,
       round: currentRound(doc) + rounds,
       activeBuffs: buffs,
-      conditions: ticked.conditions,
+      // Kept as the same list when nothing ran out, so an undo of the
+      // condition change before this round isn't blocked by a list that only
+      // looks different (state/undoSnapshot.ts compares by reference).
+      conditions: ticked.expired.length > 0 ? ticked.conditions : doc.live.conditions,
       conditionRounds: ticked.conditionRounds,
     },
   };

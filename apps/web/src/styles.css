@@ -5515,6 +5515,44 @@ input[type="text"].saved-roll-name:focus {
   color: var(--ink);
 }
 
+.session-log-row--undo-next {
+  outline: 1px dashed var(--gold-dim);
+  outline-offset: -1px;
+}
+
+.session-log-undo-tag {
+  margin-left: auto;
+  flex: none;
+  color: var(--muted);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Round markers: the clock passing, drawn as a rule rather than a row so they
+   read as structure, not as something Undo could take back. */
+.session-log-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 0;
+  color: var(--faint);
+  font-size: 0.75rem;
+}
+
+.session-log-divider::before,
+.session-log-divider::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--line);
+}
+
+.session-log-divider-text {
+  flex: none;
+  max-width: 75%;
+  text-align: center;
+}
+
 /* portrait picker (builder Identity panel). Not a `label.field`, so it repeats
    that rule's label register rather than inheriting it. */
 .portrait-field > label {

@@ -17,6 +17,8 @@ export interface BuilderProps {
   undoLast?: () => void;
   /** Whether `undoLast` has a step left to walk back. Paired with `undoLast`. */
   canUndo?: boolean;
+  /** The session-log line the next undo takes back. Paired with `undoLast`. */
+  undoNextLineId?: string;
   /**
    * The passive session log (`model/sessionLog.ts`), oldest first. Only the
    * Session Log panel reads it, hence optional here like `undoLast`.

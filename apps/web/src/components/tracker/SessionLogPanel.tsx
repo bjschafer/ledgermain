@@ -17,15 +17,18 @@ import { BookmarkIcon } from "../icons.js";
  *
  * Device-local and not part of the character (see `state/sessionLog.ts`), so
  * "Clear" throws away this browser's memory of the evening and nothing else.
- * Undo, by contrast, is a real edit to the character. It walks back the
- * newest line here and takes that line out, and nothing else: a change that
- * never wrote a line (a build edit, a note) is not something it can undo.
+ * Undo, by contrast, is a real edit to the character. It takes back one line
+ * at a time, and the line it would take next is marked, so nobody has to guess
+ * what the button does. Round markers are dividers, not lines: the clock is
+ * never undone, and a line whose undo a later change made unsafe simply stops
+ * being marked (`state/undoSnapshot.ts`).
  */
 export function SessionLogPanel({
   sessionLog,
   onClearSessionLog,
   undoLast,
   canUndo,
+  undoNextLineId,
 }: BuilderProps) {
   if (!sessionLog || sessionLog.length === 0) return null;
 
@@ -46,7 +49,7 @@ export function SessionLogPanel({
               // first of the pair so the two buttons group at that edge.
               className="btn-ghost rest"
               disabled={!canUndo}
-              title="Undo the newest line in this log"
+              title="Undo the marked line"
               onClick={(e) => {
                 e.stopPropagation();
                 undoLast();
@@ -71,16 +74,31 @@ export function SessionLogPanel({
       }
     >
       <ol className="session-log">
-        {newestFirst.map((entry) => (
-          <li key={entry.id} className={`session-log-row session-log-row--${entry.tone}`}>
-            <span className="session-log-time num">{formatLogTime(entry.at)}</span>
-            <span className="session-log-text">{entry.text}</span>
-          </li>
-        ))}
+        {newestFirst.map((entry) =>
+          entry.divider ? (
+            <li key={entry.id} className="session-log-divider">
+              <span className="session-log-divider-text">{entry.text}</span>
+            </li>
+          ) : (
+            <li
+              key={entry.id}
+              className={`session-log-row session-log-row--${entry.tone}${
+                entry.id === undoNextLineId ? " session-log-row--undo-next" : ""
+              }`}
+            >
+              <span className="session-log-time num">{formatLogTime(entry.at)}</span>
+              <span className="session-log-text">{entry.text}</span>
+              {entry.id === undoNextLineId ? (
+                <span className="session-log-undo-tag">next undo</span>
+              ) : null}
+            </li>
+          ),
+        )}
       </ol>
       <p className="hint">
         Kept on this device only, newest first. It never leaves your browser and never travels with
-        the character.
+        the character. Undo takes back the line marked next undo. Round markers note the clock and
+        are never undone.
       </p>
     </Panel>
   );

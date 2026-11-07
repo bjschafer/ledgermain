@@ -133,6 +133,46 @@ test("undo walks back only what the log recorded, leaving edits made in between"
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
 });
 
+test("a round is a marker undo steps over, and the line undo takes next is marked", async ({
+  page,
+}) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await gotoPlay(page);
+
+  const hp = page.locator(".hp-big");
+  const startHp = Number((await hp.innerText()).split("/")[0]!.trim());
+  await page.getByLabel("Amount").fill("3");
+  await page.getByRole("button", { name: "Damage", exact: true }).click();
+  await page.getByRole("button", { name: "Prone" }).click();
+  await page.getByRole("button", { name: "Advance round" }).click();
+
+  const log = page.locator("#play-log");
+  await log.scrollIntoViewIfNeeded();
+  const divider = log.locator(".session-log-divider");
+  await expect(divider).toHaveText("Round 2");
+  await expect(logRows(page)).toHaveCount(2);
+  // The round never moved Prone, so Prone is still what Undo takes next.
+  const marked = log.locator(".session-log-row--undo-next");
+  await expect(marked).toContainText("Became Prone");
+
+  const undo = log.getByRole("button", { name: "Undo" });
+  await undo.click();
+  await expect(page.getByRole("button", { name: "Prone" })).not.toHaveClass(/active/);
+  await expect(marked).toContainText("Took 3 damage");
+  await undo.click();
+  await expect(hp).toContainText(String(startHp));
+
+  // Both lines are gone; the marker stays, and so does the round it marks.
+  await expect(logRows(page)).toHaveCount(0);
+  await expect(divider).toHaveText("Round 2");
+  await expect(undo).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Advance round" })).toBeVisible();
+  await expect(page.locator(".round-now")).toContainText("2");
+
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+});
+
 test("the log survives a reload, and Clear forgets it", async ({ page }) => {
   await gotoPlay(page);
 

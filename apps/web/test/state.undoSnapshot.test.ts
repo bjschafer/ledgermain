@@ -14,7 +14,9 @@ import {
   HISTORY_LIMIT,
   invalidateSnapshot,
   recordSnapshot,
-  carryChanges,
+  CONFLICT,
+  carryExact,
+  nextUndoLine,
   rebaseHistory,
   undoDepth,
 } from "../src/state/undoSnapshot.js";
@@ -130,15 +132,57 @@ describe("undoSnapshot", () => {
     expect(restored?.live.hp).toBe(fresh.live.hp);
   });
 
-  it("carryChanges copies only the keys that moved, down to nested fields", () => {
-    const target = { a: { x: 1, y: 1 }, b: [1], c: 1 } as Record<string, unknown>;
-    const before = { a: { x: 2, y: 2 }, b: [1], c: 2, gone: true } as Record<string, unknown>;
-    const after = { a: { x: 2, y: 3 }, b: [1], c: 2 } as Record<string, unknown>;
-    // `b` differs by reference but not content: an array moves whole.
-    after.b = [2];
+  it("carryExact drops the change in wherever the target still holds the original", () => {
+    const shared = { x: 1 };
+    // Untouched by the change, so `before` and `after` share it, as real docs do.
+    const untouched = [2];
+    const target = { a: shared, b: [1], c: 1 } as Record<string, unknown>;
+    const before = { a: shared, b: untouched, c: 1 } as Record<string, unknown>;
+    const after = { a: { x: 9 }, b: untouched, c: 1 } as Record<string, unknown>;
 
-    expect(carryChanges(target, before, after)).toEqual({ a: { x: 1, y: 3 }, b: [2], c: 1 });
-    expect(carryChanges(target, before, before)).toBe(target);
+    expect(carryExact(target, before, after)).toEqual({ a: { x: 9 }, b: [1], c: 1 });
+    expect(carryExact(target, before, before)).toBe(target);
+  });
+
+  it("carryExact refuses rather than merges when the target changed the same spot", () => {
+    const target = { list: [1, 2] } as Record<string, unknown>;
+    const before = { list: [1] } as Record<string, unknown>;
+    const after = { list: [1, 3] } as Record<string, unknown>;
+
+    expect(carryExact(target, before, after)).toBe(CONFLICT);
+  });
+
+  it("a conflict drops that step and everything older, and keeps what's newer", () => {
+    const state = createUndoHistoryState();
+    const start = createEmptyDoc("char-1");
+    const proned = { ...start, live: { ...start.live, conditions: ["prone"] } };
+    recordSnapshot(state, start, "prone");
+    const hurt = { ...proned, live: { ...proned.live, hp: { ...proned.live.hp, current: 3 } } };
+    recordSnapshot(state, proned, "hurt");
+    // An unlogged edit to the conditions list collides with the Prone step only.
+    const edited = { ...hurt, live: { ...hurt.live, conditions: ["prone", "shaken"] } };
+    rebaseHistory(state, hurt, edited);
+
+    expect(undoDepth(state)).toBe(1);
+    expect(nextUndoLine(state)).toBe("hurt");
+    expect(consumeSnapshot(state, "char-1")?.doc.live.conditions).toEqual(["prone", "shaken"]);
+  });
+
+  it("a version bump alone is never a conflict", () => {
+    const state = createUndoHistoryState();
+    const start = createEmptyDoc("char-1");
+    const hurt = {
+      ...start,
+      version: 2,
+      live: { ...start.live, hp: { ...start.live.hp, current: 3 } },
+    };
+    recordSnapshot(state, start, "hurt");
+    const renamed = { ...hurt, version: 3, identity: { ...hurt.identity, name: "Renamed" } };
+    rebaseHistory(state, hurt, renamed);
+
+    const restored = consumeSnapshot(state, "char-1")?.doc;
+    expect(restored?.identity.name).toBe("Renamed");
+    expect(restored?.version).toBe(start.version);
   });
 
   it("consumeSnapshot on an empty state returns null", () => {

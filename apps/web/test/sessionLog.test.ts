@@ -4,12 +4,14 @@ import type { CharacterDoc, RefData } from "@pf1/schema";
 
 import { createEmptyDoc } from "../src/model/doc.js";
 import {
+  classifyTransition,
   describeLiveChange,
   parseSessionLog,
   pushLogEntry,
   SESSION_LOG_LIMIT,
   type SessionLogEntry,
 } from "../src/model/sessionLog.js";
+import { addBuff, advanceRound, resetRound } from "../src/model/buffs.js";
 
 function withLive(over: Partial<CharacterDoc["live"]>): CharacterDoc {
   const doc = createEmptyDoc("char-1");
@@ -467,5 +469,48 @@ describe("parseSessionLog", () => {
   it("truncates an over-long stored log to the limit", () => {
     const stored = Array.from({ length: SESSION_LOG_LIMIT + 10 }, (_, i) => entry(`${i}`, i));
     expect(parseSessionLog(stored)).toHaveLength(SESSION_LOG_LIMIT);
+  });
+});
+
+describe("classifyTransition", () => {
+  const start = createEmptyDoc("c");
+  const hasted = addBuff(start, {
+    instanceId: "haste",
+    name: "Haste",
+    changes: [],
+    remainingRounds: 1,
+  });
+
+  it("makes Next Round a marker that undo never takes", () => {
+    expect(classifyTransition(start, advanceRound(start).doc)).toEqual({
+      line: { text: "Round 2", tone: "neutral", kind: "round" },
+      undoable: false,
+    });
+  });
+
+  it("folds whatever ran out into the round marker instead of a line of its own", () => {
+    expect(classifyTransition(hasted, advanceRound(hasted).doc)).toEqual({
+      line: { text: "Round 2 · Haste ended", tone: "neutral", kind: "round" },
+      undoable: false,
+    });
+  });
+
+  it("marks the end of combat", () => {
+    const fighting = advanceRound(start).doc;
+    expect(classifyTransition(fighting, resetRound(fighting))?.line.text).toBe("Combat over");
+  });
+
+  it("keeps a caller's own line, such as New Day's, an undo step", () => {
+    const line = { text: "Rested", tone: "healing", kind: "rest" } as const;
+    expect(classifyTransition(start, advanceRound(start).doc, {}, line)).toEqual({
+      line,
+      undoable: true,
+    });
+  });
+
+  it("leaves a change the log doesn't describe out entirely", () => {
+    expect(
+      classifyTransition(start, { ...start, identity: { ...start.identity, name: "X" } }),
+    ).toBeNull();
   });
 });

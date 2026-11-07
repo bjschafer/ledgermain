@@ -29,7 +29,7 @@ import { resolveRefData } from "../model/homebrew.js";
 import { localId } from "../model/ids.js";
 import { reconcileGrantedCantrips } from "../model/preparedSpells.js";
 import {
-  describeLiveChange,
+  classifyTransition,
   pushLogEntry,
   type SessionLogEntry,
   type SessionLogKind,
@@ -62,6 +62,7 @@ import {
   consumeSnapshot,
   createUndoHistoryState,
   invalidateSnapshot,
+  nextUndoLine,
   observeTransition,
   undoDepth,
 } from "./undoSnapshot.js";
@@ -134,6 +135,8 @@ export interface CharacterStore {
    * press.
    */
   canUndo: boolean;
+  /** The session-log line the next undo takes back, so the log can mark it. */
+  undoNextLineId: string | undefined;
   /**
    * The passive session log for the active character, oldest first — what hit
    * you, what you shook off (see `model/sessionLog.ts`). Device-local, not part
@@ -272,6 +275,7 @@ export function useCharacter(): CharacterStore {
   // rendered off directly. Refreshed from every `doc` change, which is the only
   // thing that ever pushes to, pops from, or drops that history.
   const [canUndo, setCanUndo] = useState(false);
+  const [undoNextLineId, setUndoNextLineId] = useState<string | undefined>(undefined);
 
   // Session-log bookkeeping (the effect that fills it is further down, beside
   // the other `doc`-watching effects): the log itself, and the doc it was last
@@ -874,9 +878,10 @@ export function useCharacter(): CharacterStore {
     // Naming a resource pool means deriving every pool, which is why this is
     // resolved on demand: pools move on a small fraction of the changes here.
     let poolNames: Map<string, string> | undefined;
-    const change =
-      override ??
-      describeLiveChange(prev.doc, doc, {
+    const decision = classifyTransition(
+      prev.doc,
+      doc,
+      {
         maxHpMoved: sheet.hp.max !== prev.maxHp,
         refData,
         resourceName: (id) => {
@@ -888,15 +893,18 @@ export function useCharacter(): CharacterStore {
           );
           return poolNames.get(id);
         },
-      });
-    const entryId = change ? `${doc.version}-${Date.now()}` : null;
-    observeTransition(undoStateRef.current, prev.doc, doc, entryId);
-    if (!change || entryId === null) return;
+      },
+      override,
+    );
+    const entryId = `${doc.version}-${Date.now()}`;
+    observeTransition(undoStateRef.current, prev.doc, doc, decision?.undoable ? entryId : null);
+    if (!decision) return;
     setSessionLog((log) => {
       const next = pushLogEntry(log, {
         id: entryId,
         at: Date.now(),
-        ...change,
+        ...decision.line,
+        ...(decision.undoable ? {} : { divider: true as const }),
       });
       writeSessionLog(doc.id, next);
       return next;
@@ -907,6 +915,7 @@ export function useCharacter(): CharacterStore {
   // and invalidations land on a `doc` change too.
   useEffect(() => {
     setCanUndo(undoDepth(undoStateRef.current) > 0);
+    setUndoNextLineId(nextUndoLine(undoStateRef.current));
   }, [doc]);
 
   const clearSessionLog = useCallback(() => {
@@ -1020,6 +1029,7 @@ export function useCharacter(): CharacterStore {
     update,
     undoLast,
     canUndo,
+    undoNextLineId,
     sessionLog,
     clearSessionLog,
     switchCharacter,
