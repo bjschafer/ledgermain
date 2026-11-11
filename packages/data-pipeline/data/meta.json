@@ -1,5 +1,5 @@
 {
-  "contentVersion": "14.368",
+  "contentVersion": "14.370",
   "counts": {
     "alchemistDiscoveries": 168,
     "arcanistExploits": 73,
@@ -67,8 +67,8 @@
     "witchPatrons": 61,
     "wizardSchools": 17
   },
-  "dataVersion": "11.11+e8acc223027c",
-  "generatedAt": "2026-11-02T18:21:46+02:00",
+  "dataVersion": "11.11+e03b02bc9292",
+  "generatedAt": "2026-11-11T00:38:45Z",
   "hashes": {
     "alchemist-discoveries.json": "9a8883ccd6b65fc33646f34466481f4241a9aee7baf9157d1a53bc200ea0feb0",
     "arcanist-exploits.json": "10424852ff90d5ffa9865e4ec1036b386c5564ef3153f505807551572394bbc2",
@@ -110,7 +110,7 @@
     "oracle-mysteries.json": "44890e7cef99e0ff3ed857405d6891e184fc7aa8895a81db4bfa22c842b01f62",
     "phrenic-amplifications.json": "1007331c1051bf26b44c15674a0f3098d8931da3a9b13c95bf5066913e42bf17",
     "psychic-disciplines.json": "69411239751604515900880a08cb133970e9d7a5f51f7f9a402ad2f4df00df1d",
-    "races.json": "7e6387cf643bcbe6e7d94f3e2df85ce322a80cc03b6d040d1c048ef869de5e3c",
+    "races.json": "f38c6b97470ce304b499998b536fe9da7269ed668f13cd37220792c512033397",
     "racial-traits.json": "7a54d67ee33172e604775d5a1a0e47467badd5ee662a4a5cf73eed0a91e13177",
     "rage-powers.json": "6391cbdb41c55690e18ca427ede325509a881d2b53e25c099ab73cb2fa85db2e",
     "rogue-talents.json": "132cc4c904ace9d4748aa8150dc671df5e9e05dfdb8581a51e82e5dc5e40181f",
@@ -134,11 +134,11 @@
   "schemaVersion": 29,
   "sourcePins": {
     "archetypes": "92ddcb60027e3088e5afd0645183c031ec3e9bb4",
-    "foundry": "e8acc223027c84fe5577ccde2523cfb5c502e6cb",
+    "foundry": "e03b02bc9292bacb0fcc988ec7aa60f270ccdd44",
     "pfContent": "c66bf333cafc451d817ead660473dd01d9846fb3",
     "pfData": "08ea71f24375908d0190c822fd1fd080797667a9"
   },
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
-  "sourceSha": "e8acc223027c84fe5577ccde2523cfb5c502e6cb",
+  "sourceSha": "e03b02bc9292bacb0fcc988ec7aa60f270ccdd44",
   "systemVersion": "11.11"
 }

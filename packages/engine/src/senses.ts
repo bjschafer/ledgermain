@@ -6,9 +6,9 @@
  * other change target (race / alternate racial trait / item / class feature /
  * buff — see `collect.ts`). The vendored slice already carries `sensedv`,
  * `sensesc`, `sensets` and `sensebse` changes on 20 alternate racial traits
- * and 11 buffs (Darkvision, Darkvision Greater, Animal Focus (Bat), …); race
- * entries carry their senses as description prose only, mechanized by the
- * data-pipeline's `SUPPLEMENTAL_RACE_SENSES` table.
+ * and 11 buffs (Darkvision, Darkvision Greater, Animal Focus (Bat), …), and
+ * race entries carry `sensedv`; the data-pipeline's `SUPPLEMENTAL_RACE_SENSES`
+ * table mechanizes the race senses that are still description prose only.
  *
  * Four targets here are this engine's own convention rather than Foundry's:
  * `sensell`/`sensesid`/`sensesi` because the fields they write are booleans
