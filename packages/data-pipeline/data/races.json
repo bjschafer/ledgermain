@@ -12,14 +12,14 @@
         "type": "racial"
       },
       {
-        "formula": "2",
-        "target": "dex",
-        "type": "racial"
-      },
-      {
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "dex",
         "type": "racial"
       }
     ],
@@ -143,6 +143,12 @@
   "4i8qiF2QnGnPOyKC": {
     "changes": [
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "-2",
         "target": "int",
         "type": "racial"
@@ -155,12 +161,6 @@
       {
         "formula": "2",
         "target": "dex",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       },
       {
@@ -199,6 +199,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "-2",
         "target": "cha",
         "type": "racial"
@@ -212,12 +218,6 @@
         "formula": "5",
         "target": "eres.acid",
         "type": "untyped"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -252,6 +252,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "dex",
         "type": "racial"
@@ -264,12 +270,6 @@
       {
         "formula": "2",
         "target": "skill.ste",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       },
       {
@@ -338,6 +338,12 @@
   "9FBT6uqlRgaw9gug": {
     "changes": [
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "cha",
         "type": "racial"
@@ -355,12 +361,6 @@
       {
         "formula": "2",
         "target": "wis",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -394,6 +394,12 @@
         "formula": "2",
         "target": "dex",
         "type": "racial"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
       },
       {
         "formula": "-2",
@@ -441,12 +447,6 @@
         "type": "untyped"
       },
       {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
-      },
-      {
         "formula": "1",
         "operator": "set",
         "target": "sensell",
@@ -490,6 +490,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "nac",
         "type": "base"
@@ -497,12 +503,6 @@
       {
         "formula": "-2",
         "target": "dex",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       },
       {
@@ -615,6 +615,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "skill.dip",
         "type": "racial"
@@ -633,12 +639,6 @@
         "formula": "5",
         "target": "eres.electricity",
         "type": "untyped"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -808,6 +808,12 @@
   "H6tsZqHiaTOcFSOn": {
     "changes": [
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "con",
         "type": "racial"
@@ -821,12 +827,6 @@
         "formula": "1",
         "target": "immEffect.undeath",
         "type": "untyped"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "classSkills": ["kar", "kdu", "ken", "kge", "khi", "klo", "kna", "kno", "kpl", "kre"],
@@ -851,6 +851,12 @@
   },
   "HKRRq2tdZVEGlmHG": {
     "changes": [
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
       {
         "formula": "2",
         "target": "wis",
@@ -880,12 +886,6 @@
         "formula": "1",
         "target": "immEffect.undeath",
         "type": "untyped"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -982,6 +982,12 @@
         "type": "base"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "str",
         "type": "racial"
@@ -989,12 +995,6 @@
       {
         "formula": "2",
         "target": "con",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -1035,14 +1035,14 @@
         "type": "racial"
       },
       {
-        "formula": "-2",
-        "target": "cha",
-        "type": "racial"
-      },
-      {
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "cha",
         "type": "racial"
       }
     ],
@@ -1090,7 +1090,7 @@
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
-        "type": "racial"
+        "type": "untyped"
       },
       {
         "formula": "30",
@@ -1131,6 +1131,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "con",
         "type": "racial"
@@ -1143,12 +1149,6 @@
       {
         "formula": "2",
         "target": "wis",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       },
       {
@@ -1190,6 +1190,18 @@
         "type": "base"
       },
       {
+        "formula": "30",
+        "operator": "set",
+        "target": "sensebse",
+        "type": "untyped"
+      },
+      {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "con",
         "type": "racial"
@@ -1210,21 +1222,9 @@
         "type": "racial"
       },
       {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
-      },
-      {
         "formula": "1",
         "operator": "set",
         "target": "sensell",
-        "type": "racial"
-      },
-      {
-        "formula": "30",
-        "operator": "set",
-        "target": "sensebse",
         "type": "racial"
       }
     ],
@@ -1280,7 +1280,7 @@
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
-        "type": "racial"
+        "type": "untyped"
       }
     ],
     "classSkills": ["ste"],
@@ -1397,6 +1397,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "4",
         "target": "dex",
         "type": "racial"
@@ -1414,12 +1420,6 @@
       {
         "formula": "-2",
         "target": "wis",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -1452,14 +1452,14 @@
         "type": "racial"
       },
       {
-        "formula": "2",
-        "target": "dex",
-        "type": "racial"
-      },
-      {
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "dex",
         "type": "racial"
       },
       {
@@ -1511,6 +1511,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "wis",
         "type": "racial"
@@ -1518,12 +1524,6 @@
       {
         "formula": "-2",
         "target": "str",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -1664,6 +1664,12 @@
   "NhEPoXIZWOOunSH7": {
     "changes": [
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "dex",
         "type": "racial"
@@ -1682,12 +1688,6 @@
         "formula": "2",
         "target": "nac",
         "type": "base"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "classSkills": ["swm"],
@@ -1714,6 +1714,12 @@
   "PsRZOF49ZKtorZbs": {
     "changes": [
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "-2",
         "target": "cha",
         "type": "racial"
@@ -1726,12 +1732,6 @@
       {
         "formula": "2",
         "target": "int",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       },
       {
@@ -1773,6 +1773,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "skill.sen",
         "type": "racial"
@@ -1785,12 +1791,6 @@
       {
         "formula": "2",
         "target": "skill.sur",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -1821,6 +1821,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "dex",
         "type": "racial"
@@ -1834,12 +1840,6 @@
         "formula": "5",
         "target": "eres.fire",
         "type": "untyped"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -1869,6 +1869,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "str",
         "type": "racial"
@@ -1884,12 +1890,6 @@
         "type": "racial"
       },
       {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
-      },
-      {
         "formula": "30",
         "operator": "set",
         "target": "sensebse",
@@ -1900,7 +1900,7 @@
     "contextNotes": [],
     "creatureSubtypes": ["aquatic"],
     "creatureTypes": ["monstrousHumanoid"],
-    "description": "<h2>Standard Racial Traits</h2><ul><li><strong>Ability Scores Modifiers</strong>: +2 <em>Strength</em>, +2 <em>Wisdom</em>, –2 <em>Charisma</em>: While sahuagin are powerful and cunning, they are repulsive creatures.</li><li><strong>Type</strong>: Sahuagin are <em>monstrous humanoids</em> with the <em>aquatic</em> subtype.</li><li><strong>Size</strong>: Sahuagin are Medium creatures and have no bonuses or penalties due to their size.</li><li><strong>Base Speed</strong>: Sahuagin have a base speed of 30 feet.</li><li><strong>Languages</strong>: Sahuagin begin play speaking Aquan and Common. Sahuagin with high <em>Intelligence</em> scores can choose from the following: Aboleth, Abyssal, Aklo, Draconic, Giant, Goblin, and Infernal.</li></ul><h3>Defense Racial Traits</h3><ul><li><strong>Natural Armor</strong>: Sahuagin have a +3 <em>natural armor bonus</em>.</li></ul><h3>Movement Racial Traits</h3><ul><li><strong>Fast Swimmer (5 RP)</strong>: Sahuagin have a swim speed of 60 feet.</li></ul><h3>Offensive Racial Traits</h3><ul><li><strong>Bite</strong>: Sahuagin have a natural bite attack that deals 1d4 points of damage. This bite is a primary attack, or a secondary attack if the creature is wielding manufactured weapons.</li><li><strong>Claws</strong>: Sahuagin have two claw attacks that deal 1d4 points of damage. These are primary natural attacks.</li><li><strong>Blood Frenzy</strong>: Once per day, whenever a sahuagin takes damage, it can fly into a frenzy for 1 minute; gaining a +2 <em>racial bonus</em> to <em>Constitution</em> and <em>Strength</em> but a –2 penalty to AC.</li></ul><h3>Senses Racial Traits</h3><ul><li><strong>Blindsense</strong>: Sahuagin have <em>blindsense</em> with a range of 30 feet.</li><li><strong>Darkvision</strong>: Sahuagin have <em>darkvision</em> with a range of 60 feet.</li></ul><h3>Weakness Racial Traits</h3><ul><li><strong>Light Blindness</strong>: Sahuagin have the <em>light blindness</em> trait.</li></ul><h3>Other Racial Traits</h3><ul><li><strong>Speak with Sharks</strong>: Sahuagin can communicate telepathically with <em>sharks</em> to a distance of 100 feet. This communication is limited to simple concepts, such as \"attack,\" \"come,\" and \"defend.\"</li></ul>",
+    "description": "<h2>Standard Racial Traits</h2><ul><li><p><strong>Ability Scores Modifiers</strong>: +2 <em>Strength</em>, +2 <em>Wisdom</em>, –2 <em>Charisma</em>: While sahuagin are powerful and cunning, they are repulsive creatures.</p></li><li><p><strong>Type</strong>: Sahuagin are <em>monstrous humanoids</em> with the <em>aquatic</em> subtype.</p></li><li><p><strong>Size</strong>: Sahuagin are Medium creatures and have no bonuses or penalties due to their size.</p></li><li><p><strong>Base Speed</strong>: Sahuagin have a base speed of 30 feet.</p></li><li><p><strong>Languages</strong>: Sahuagin begin play speaking Aquan and Common. Sahuagin with high <em>Intelligence</em> scores can choose from the following: Aboleth, Abyssal, Aklo, Draconic, Giant, Goblin, and Infernal.</p></li></ul><h3>Defense Racial Traits</h3><ul><li><p><strong>Natural Armor</strong>: Sahuagin have a +3 <em>natural armor bonus</em>.</p></li></ul><h3>Movement Racial Traits</h3><ul><li><p><strong>Fast Swimmer (5 RP)</strong>: Sahuagin have a swim speed of 60 feet.</p></li></ul><h3>Offensive Racial Traits</h3><ul><li><p><strong>Bite</strong>: Sahuagin have a natural bite attack that deals 1d4 points of damage. This bite is a primary attack, or a secondary attack if the creature is wielding manufactured weapons.</p></li><li><p><strong>Claws</strong>: Sahuagin have two claw attacks that deal 1d4 points of damage. These are primary natural attacks.</p></li><li><p><strong>Blood Frenzy</strong>: Once per day, whenever a sahuagin takes damage, it can fly into a frenzy for 1 minute; gaining a +2 <em>racial bonus</em> to <em>Constitution</em> and <em>Strength</em> but a –2 penalty to AC.</p></li></ul><h3>Senses Racial Traits</h3><ul><li><p><strong>Blindsense</strong>: Sahuagin have <em>blindsense</em> with a range of 30 feet.</p></li><li><p><strong>Darkvision</strong>: Sahuagin have <em>darkvision</em> with a range of 60 feet.</p></li></ul><h3>Weakness Racial Traits</h3><ul><li><p><strong>Light Blindness</strong>: Sahuagin have the <em>light blindness</em> trait.</p></li></ul><h3>Other Racial Traits</h3><ul><li><p><strong>Speak with Sharks</strong>: Sahuagin can communicate telepathically with <em>sharks</em> to a distance of 100 feet. This communication is limited to simple concepts, such as \"attack,\" \"come,\" and \"defend.\"</p></li></ul>",
     "id": "TbZmYyDUxRn9baWy",
     "languages": ["common", "aquan"],
     "name": "Sahuagin",
@@ -2071,6 +2071,12 @@
   "Vaf5bV3wpk24pVt2": {
     "changes": [
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "skill.ste",
         "type": "racial"
@@ -2093,12 +2099,6 @@
       {
         "formula": "2",
         "target": "dex",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -2541,6 +2541,12 @@
   "ZYWZL5BWLfZyMif9": {
     "changes": [
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "-2",
         "target": "con",
         "type": "racial"
@@ -2564,12 +2570,6 @@
         "formula": "1",
         "target": "immEffect.precisionDamage",
         "type": "untyped"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       },
       {
         "formula": "1",
@@ -2816,14 +2816,14 @@
         "type": "racial"
       },
       {
-        "formula": "-2",
-        "target": "str",
-        "type": "racial"
-      },
-      {
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "str",
         "type": "racial"
       }
     ],
@@ -2897,14 +2897,14 @@
   "dCAXgdA6Db1Z3ccz": {
     "changes": [
       {
-        "formula": "2",
-        "target": "skill.int",
-        "type": "racial"
-      },
-      {
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
+        "type": "untyped"
+      },
+      {
+        "formula": "2",
+        "target": "skill.int",
         "type": "racial"
       }
     ],
@@ -2962,6 +2962,11 @@
   "eV9USBGHA1rYd5P7": {
     "changes": [
       {
+        "formula": "120",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "con",
         "type": "racial"
@@ -2990,12 +2995,6 @@
         "formula": "1",
         "target": "immEffect.poison",
         "type": "untyped"
-      },
-      {
-        "formula": "120",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -3232,14 +3231,14 @@
         "type": "racial"
       },
       {
-        "formula": "4",
-        "target": "str",
-        "type": "racial"
-      },
-      {
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
+        "type": "untyped"
+      },
+      {
+        "formula": "4",
+        "target": "str",
         "type": "racial"
       },
       {
@@ -3252,7 +3251,7 @@
     "contextNotes": [],
     "creatureSubtypes": ["giant"],
     "creatureTypes": ["humanoid"],
-    "description": "<h2>Standard Racial Traits</h2><ul><li><strong>Ability Score Modifiers</strong>: +4 <em>Str</em>, +2 <em>Con</em>, –2 <em>Int</em>, –2 <em>Cha</em></li><li><strong>Type</strong>: Humanoid (giant)</li><li><strong>Size</strong>: Large</li><li><strong>Base Speed</strong>: Normal</li><li><strong>Languages</strong>: Xenophobic (racial only)</li></ul><h3>Defense Racial Traits</h3><ul><li><strong>Natural Armor</strong>: +3</li></ul><h3>Senses Racial Trait</h3><ul><li><strong>Darkvision</strong>: 60 ft</li><li><strong>Low-Light Vision</strong></li></ul>",
+    "description": "<h2>Standard Racial Traits</h2><ul><li><p><strong>Ability Score Modifiers</strong>: +4 <em>Str</em>, +2 <em>Con</em>, –2 <em>Int</em>, –2 <em>Cha</em></p></li><li><p><strong>Type</strong>: Humanoid (giant)</p></li><li><p><strong>Size</strong>: Large</p></li><li><p><strong>Base Speed</strong>: Normal</p></li><li><p><strong>Languages</strong>: Xenophobic (racial only)</p></li></ul><h3>Defense Racial Traits</h3><ul><li><p><strong>Natural Armor</strong>: +2</p></li></ul><h3>Senses Racial Trait</h3><ul><li><p><strong>Darkvision</strong>: 60 ft</p></li><li><p><strong>Low-Light Vision</strong></p></li></ul>",
     "id": "gZxiUYLYsGqQYwGZ",
     "languages": ["giant"],
     "name": "Ogre",
@@ -3281,6 +3280,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "-2",
         "target": "str",
         "type": "racial"
@@ -3289,12 +3294,6 @@
         "formula": "5",
         "target": "eres.cold",
         "type": "untyped"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "classSkills": ["swm"],
@@ -3337,6 +3336,12 @@
         "type": "racial"
       },
       {
+        "formula": "120",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "-2",
         "target": "con",
         "type": "racial"
@@ -3360,12 +3365,6 @@
         "formula": "1",
         "target": "immEffect.magicSleep",
         "type": "untyped"
-      },
-      {
-        "formula": "120",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -3420,14 +3419,14 @@
         "type": "racial"
       },
       {
-        "formula": "-2",
-        "target": "str",
-        "type": "racial"
-      },
-      {
         "formula": "120",
         "operator": "set",
         "target": "sensedv",
+        "type": "untyped"
+      },
+      {
+        "formula": "-2",
+        "target": "str",
         "type": "racial"
       }
     ],
@@ -3545,6 +3544,12 @@
   "nEltI9y37rKJTeWo": {
     "changes": [
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "wis",
         "type": "racial"
@@ -3557,12 +3562,6 @@
       {
         "formula": "-2",
         "target": "cha",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -3613,6 +3612,12 @@
   "nVjKDLZSRONzYm8f": {
     "changes": [
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "skill.blf",
         "type": "racial"
@@ -3651,12 +3656,6 @@
         "formula": "5",
         "target": "eres.fire",
         "type": "untyped"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -3691,6 +3690,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "int",
         "type": "racial"
@@ -3699,12 +3704,6 @@
         "formula": "5",
         "target": "eres.electricity",
         "type": "untyped"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -3734,6 +3733,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "cha",
         "type": "racial"
@@ -3751,12 +3756,6 @@
       {
         "formula": "2",
         "target": "skill.blf",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       },
       {
@@ -3788,6 +3787,12 @@
   "qdFPM6gztJxvdiRf": {
     "changes": [
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "-2",
         "target": "cha",
         "type": "racial"
@@ -3805,12 +3810,6 @@
       {
         "formula": "-2",
         "target": "int",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -3837,6 +3836,12 @@
   "rAKaCt6BW3rVv2kN": {
     "changes": [
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "dex",
         "type": "racial"
@@ -3859,12 +3864,6 @@
       {
         "formula": "2",
         "target": "skill.umd",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       }
     ],
@@ -3908,7 +3907,7 @@
         "formula": "60",
         "operator": "set",
         "target": "sensedv",
-        "type": "racial"
+        "type": "untyped"
       },
       {
         "formula": "1",
@@ -4027,6 +4026,12 @@
         "type": "base"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "-2",
         "target": "wis",
         "type": "racial"
@@ -4035,12 +4040,6 @@
         "formula": "1",
         "target": "immEffect.magicalAging",
         "type": "untyped"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "contextNotes": [],
@@ -4173,6 +4172,12 @@
   "yLaDS5HGbwtgpkbP": {
     "changes": [
       {
+        "formula": "120",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "skill.per",
         "type": "racial"
@@ -4196,12 +4201,6 @@
         "formula": "1",
         "target": "immEffect.magicSleep",
         "type": "untyped"
-      },
-      {
-        "formula": "120",
-        "operator": "set",
-        "target": "sensedv",
-        "type": "racial"
       }
     ],
     "contextNotes": [
@@ -4236,6 +4235,12 @@
         "type": "racial"
       },
       {
+        "formula": "60",
+        "operator": "set",
+        "target": "sensedv",
+        "type": "untyped"
+      },
+      {
         "formula": "2",
         "target": "int",
         "type": "racial"
@@ -4243,12 +4248,6 @@
       {
         "formula": "2",
         "target": "str",
-        "type": "racial"
-      },
-      {
-        "formula": "60",
-        "operator": "set",
-        "target": "sensedv",
         "type": "racial"
       }
     ],

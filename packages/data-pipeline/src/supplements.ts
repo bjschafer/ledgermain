@@ -2003,22 +2003,23 @@ export function applyRaceSpellResistanceSupplements(races: Race[]): void {
 }
 
 /**
- * Hand-authored special senses for every vendored race, mechanizing what each
- * race's own description prose already says. No race in the pinned pack
- * carries a `sense*` change (senses live in the "Senses Racial Traits"
- * section of `description` as text), while 20 of the pack's ALTERNATE racial
- * traits DO carry `sensedv`/`sensesc`/`sensets` changes — so before this
- * table a half-orc who took Acute Darkvision showed a 90-ft. darkvision line
- * and a stock half-orc showed none at all.
+ * Hand-authored special senses for vendored races, mechanizing what each
+ * race's own description prose says where the pack's `changes` don't. The
+ * pack carries race `sensedv` (and Adaro's `sensebse`) changes itself, so
+ * this table is mostly the senses Foundry has no change target for.
  *
  * Every entry is transcribed from the sentence in that race's own vendored
  * description (`applyRaceSenseSupplements` re-checks each one against the
  * description text at build time and throws on a mismatch), so this table
  * carries no independent numbers — it only makes the prose machine-readable.
- * The ten races with no entry (Ghoran, Gillman, Green Martian, Halfling,
- * Human, Kasatha, both Lashunta, Lizardfolk, Primitive Human) have no Senses
- * racial trait in their write-up; that absence is asserted by
- * `races.senses.test.ts` rather than assumed.
+ * An entry for a target upstream already sets is a correction: it replaces
+ * the upstream change, and becomes `redundant` once upstream agrees.
+ * Svirfneblin is the one: the pack's change says 60 ft. while its own
+ * description says "darkvision 120 feet".
+ * The ten races with no sense change from either source (Ghoran, Gillman,
+ * Green Martian, Halfling, Human, Kasatha, both Lashunta, Lizardfolk,
+ * Primitive Human) have no Senses racial trait in their write-up; that
+ * absence is asserted by `raceSenses.test.ts` rather than assumed.
  *
  * Targets: Foundry's `sensedv`/`sensesc`/`sensebse`, plus this engine's own
  * `sensell` (low-light vision) and `sensesid` (see in darkness) for the two
@@ -2035,84 +2036,49 @@ export function applyRaceSpellResistanceSupplements(races: Race[]): void {
  *   - Cecaelia "Tentacle Sense": blindsight 10 ft., a swift action that lasts
  *     only while concentrating.
  *   - Skinwalker's darkvision 60 ft.: bestial (change shape) form only.
- *
- * Astomoi are the one race whose entry needs reading alongside the prose:
- * their darkvision 60 IS unconditional, but it is a sightless telepathic
- * sense ("can't speak or see, but can mentally sense the area within 60 feet,
- * as per darkvision") and also caps their vision at 60 ft. — the cap is not
- * modeled.
  */
 export const SUPPLEMENTAL_RACE_SENSES: Record<string, Readonly<Record<string, number>>> = {
-  Aasimar: { sensedv: 60 },
-  Adaro: { sensedv: 60, sensell: 1, sensebse: 30 },
-  Android: { sensedv: 60, sensell: 1 },
-  Aphorite: { sensedv: 60 },
+  Adaro: { sensell: 1 },
+  Android: { sensell: 1 },
   "Aquatic Elf": { sensell: 1 },
-  Astomoi: { sensedv: 60, sensesc: 30 },
-  "Being of Ib": { sensedv: 60, sensell: 1 },
+  Astomoi: { sensesc: 30 },
+  "Being of Ib": { sensell: 1 },
   Caligni: { sensesid: 1 },
   Catfolk: { sensell: 1 },
-  Cecaelia: { sensedv: 60 },
-  Changeling: { sensedv: 60 },
   "Deep One Hybrid": { sensell: 1 },
-  Dhampir: { sensedv: 60, sensell: 1 },
-  Drow: { sensedv: 120 },
-  "Drow Noble": { sensedv: 120 },
-  Duergar: { sensedv: 120 },
-  Duskwalker: { sensedv: 60 },
-  Dwarf: { sensedv: 60 },
+  Dhampir: { sensell: 1 },
   Elf: { sensell: 1 },
-  Fetchling: { sensedv: 60, sensell: 1 },
-  Ganzi: { sensedv: 60 },
+  Fetchling: { sensell: 1 },
   Gathlain: { sensell: 1 },
-  Gnoll: { sensedv: 60 },
   Gnome: { sensell: 1 },
-  Goblin: { sensedv: 60 },
-  Grindylow: { sensedv: 60 },
-  Grippli: { sensedv: 60 },
   "Half-Elf": { sensell: 1 },
-  "Half-Orc": { sensedv: 60 },
-  Hobgoblin: { sensedv: 60 },
-  Ifrit: { sensedv: 60 },
   Kitsune: { sensell: 1 },
-  Kobold: { sensedv: 60 },
   Kuru: { sensell: 1 },
   Locathah: { sensell: 1 },
   Merfolk: { sensell: 1 },
   "Monkey Goblin": { sensell: 1 },
-  Munavri: { sensedv: 120 },
   Nagaji: { sensell: 1 },
   Naiad: { sensell: 1 },
-  Ogre: { sensedv: 60, sensell: 1 },
+  Ogre: { sensell: 1 },
   "Orang-Pendak": { sensell: 1 },
-  Orc: { sensedv: 60 },
-  Oread: { sensedv: 60 },
-  Ratfolk: { sensedv: 60 },
   "Reborn Samsaran": { sensell: 1 },
   Reptoid: { sensell: 1 },
   Rougarou: { sensell: 1, sensesc: 30 },
-  Sahuagin: { sensedv: 60, sensebse: 30 },
+  Sahuagin: { sensebse: 30 },
   Samsaran: { sensell: 1 },
-  Shabti: { sensedv: 60 },
   Skinwalker: { sensell: 1 },
-  Strix: { sensedv: 60, sensell: 1 },
+  Strix: { sensell: 1 },
   Suli: { sensell: 1 },
   Svirfneblin: { sensedv: 120, sensell: 1 },
-  Sylph: { sensedv: 60 },
-  Syrinx: { sensedv: 60, sensell: 1 },
+  Syrinx: { sensell: 1 },
   Tengu: { sensell: 1 },
-  Tiefling: { sensedv: 60 },
   Triaxian: { sensell: 1 },
-  Triton: { sensedv: 60, sensell: 1 },
-  Trox: { sensedv: 60 },
-  Undine: { sensedv: 60 },
+  Triton: { sensell: 1 },
   Vanara: { sensell: 1 },
-  "Vine Leshy": { sensedv: 60, sensell: 1 },
+  "Vine Leshy": { sensell: 1 },
   Vishkanya: { sensell: 1 },
-  Wayang: { sensedv: 60 },
-  Wyrwood: { sensedv: 60, sensell: 1 },
-  Wyvaran: { sensedv: 60, sensell: 1 },
-  Yaddithian: { sensedv: 60 },
+  Wyrwood: { sensell: 1 },
+  Wyvaran: { sensell: 1 },
 };
 
 /**
@@ -2130,8 +2096,8 @@ const SENSE_DESCRIPTION_KEYWORDS: Record<string, readonly string[]> = {
 };
 
 /**
- * Apply `SUPPLEMENTAL_RACE_SENSES` in place, appending one `set` change per
- * sense to the matching race's `changes`. Throws if a named race is absent
+ * Apply `SUPPLEMENTAL_RACE_SENSES` in place, giving the matching race one
+ * `set` change per sense (replacing any upstream change on that target). Throws if a named race is absent
  * from the vendored slice (a data-drift guard, mirroring
  * `resolveBloodlineSupplements`) or if a supplemented sense isn't mentioned
  * anywhere in that race's own description — the latter catches both a typo
@@ -2158,12 +2124,14 @@ export function applyRaceSenseSupplements(races: Race[]): void {
           `[supplements] race "${name}" has a supplemented ${target} sense, but its description never mentions ${keywords[0]}`,
         );
       }
-      if (hasChangeTarget(race.changes, target)) {
+      const formula = String(value);
+      const upstream = race.changes.filter((c) => c.target === target);
+      if (upstream.length > 0 && upstream.every((c) => c.formula === formula)) {
         redundant(`race "${name}" ${target} sense`);
       }
       race.changes = [
-        ...race.changes,
-        { formula: String(value), operator: "set", target, type: "racial" },
+        ...race.changes.filter((c) => c.target !== target),
+        { formula, operator: "set", target, type: "racial" },
       ];
     }
   }

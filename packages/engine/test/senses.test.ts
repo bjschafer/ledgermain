@@ -145,7 +145,7 @@ describe("race senses reach the sheet", () => {
       {
         source: "Dwarf",
         sourceId: raceId("Dwarf"),
-        type: "racial",
+        type: "untyped",
         value: 60,
         applied: true,
       },

@@ -5,14 +5,15 @@ import { SUPPLEMENTAL_RACE_SENSES } from "../src/supplements.js";
 
 /**
  * Race-level senses (darkvision, low-light vision, …) against the real
- * vendored slice. Upstream carries them as description prose only; this pins
- * both halves of `SUPPLEMENTAL_RACE_SENSES` — that every supplemented range
- * matches the race's own write-up, and that the races WITHOUT an entry
- * genuinely have no Senses racial trait rather than having been forgotten.
+ * vendored slice. Upstream carries race darkvision as a change and the rest as
+ * description prose, mechanized by `SUPPLEMENTAL_RACE_SENSES`; this pins that
+ * every supplemented range lands, and that the races with NO sense change
+ * from either source genuinely have no Senses racial trait rather than having
+ * been forgotten.
  *
- * The second half is the audit trap the table exists to close: a race that
- * grows a darkvision line upstream, or one skipped by a typo, fails here
- * instead of silently showing a sightless dwarf.
+ * The second half is the audit trap: a race whose sense prose loses its
+ * change upstream, or one skipped by a typo, fails here instead of silently
+ * showing a sightless dwarf.
  */
 const ref = loadRefData();
 
@@ -71,18 +72,23 @@ describe("race senses", () => {
     expect(senseChanges("Adaro").sensesc).toBeUndefined();
   });
 
-  it("every supplemented race exists and got exactly the table's senses", () => {
+  it("every supplemented race exists and got the table's senses", () => {
     for (const [name, senses] of Object.entries(SUPPLEMENTAL_RACE_SENSES)) {
-      expect(senseChanges(name)).toEqual({ ...senses });
+      expect(senseChanges(name)).toMatchObject({ ...senses });
     }
   });
 
-  it("every race with sense prose is in the table — no silent gaps", () => {
+  it("a supplement on an upstream target replaces it rather than competing", () => {
+    const svirfneblin = Object.values(ref.races).find((r) => r.name === "Svirfneblin")!;
+    expect(svirfneblin.changes.filter((c) => c.target === "sensedv")).toHaveLength(1);
+  });
+
+  it("every race with sense prose has a sense change — no silent gaps", () => {
     // Exempt: prose that names a sense the race does not actually have as an
     // unconditional trait (see SUPPLEMENTAL_RACE_SENSES's exclusion list).
     const KEYWORDS = ["darkvision", "low-light", "lowlight", "low light", "see in darkness"];
     const missing = Object.values(ref.races)
-      .filter((race) => SUPPLEMENTAL_RACE_SENSES[race.name] === undefined)
+      .filter((race) => Object.keys(senseChanges(race.name)).length === 0)
       .filter((race) => {
         const text = descriptionText(race.name);
         return KEYWORDS.some((k) => text.includes(k));
@@ -91,9 +97,9 @@ describe("race senses", () => {
     expect(missing).toEqual([]);
   });
 
-  it("races left out of the table have no Senses racial trait at all", () => {
+  it("races with no sense change have no Senses racial trait at all", () => {
     const uncovered = Object.values(ref.races)
-      .filter((race) => SUPPLEMENTAL_RACE_SENSES[race.name] === undefined)
+      .filter((race) => Object.keys(senseChanges(race.name)).length === 0)
       .map((race) => race.name)
       .sort();
     expect(uncovered).toEqual([
