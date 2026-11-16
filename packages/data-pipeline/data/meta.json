@@ -67,8 +67,8 @@
     "witchPatrons": 61,
     "wizardSchools": 17
   },
-  "dataVersion": "11.11+e03b02bc9292",
-  "generatedAt": "2026-11-11T00:38:45Z",
+  "dataVersion": "11.11+748ac05af5aa",
+  "generatedAt": "2026-11-16T22:37:26+02:00",
   "hashes": {
     "alchemist-discoveries.json": "9a8883ccd6b65fc33646f34466481f4241a9aee7baf9157d1a53bc200ea0feb0",
     "arcanist-exploits.json": "10424852ff90d5ffa9865e4ec1036b386c5564ef3153f505807551572394bbc2",
@@ -134,11 +134,11 @@
   "schemaVersion": 29,
   "sourcePins": {
     "archetypes": "92ddcb60027e3088e5afd0645183c031ec3e9bb4",
-    "foundry": "e03b02bc9292bacb0fcc988ec7aa60f270ccdd44",
+    "foundry": "748ac05af5aa2f24f165df1827ddab93c8bcb69e",
     "pfContent": "c66bf333cafc451d817ead660473dd01d9846fb3",
     "pfData": "08ea71f24375908d0190c822fd1fd080797667a9"
   },
   "sourceRepo": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1.git",
-  "sourceSha": "e03b02bc9292bacb0fcc988ec7aa60f270ccdd44",
+  "sourceSha": "748ac05af5aa2f24f165df1827ddab93c8bcb69e",
   "systemVersion": "11.11"
 }
