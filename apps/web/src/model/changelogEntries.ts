@@ -64,7 +64,7 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     id: "2026-11-21-sheet-at-a-glance",
     date: "2026-11-21",
     title: "A sheet that's easier to scan at the table",
-    note: "Gold headings mark the sections, and the side sheet keeps a large HP bar with boxed stats and more room for attack sequences. Buffs sit just below Hit Points in Play, with search when you need to add one and an Advance round button nearby. AC, saves, and initiative stay together on the sheet and in the phone's stat strip. Build, Play, and Settings work with arrow keys and Enter. The character picker is on the right, and long names wrap in its menu. The reference site uses the same header style, with Search and Summons up front.",
+    note: "Buffs now sit just below Hit Points in Play, with a search field and a clearly labeled Advance round button. The side sheet gives attack sequences more room and puts saves and initiative next to Armor Class. Build, Play, and Settings are centered on wide screens and work with arrow keys and Enter. The character picker stays on the right when you're signed in, and long names wrap in its menu. The reference site uses the same header style, with Search and Summons up front.",
   },
   {
     id: "2026-11-21-special-material-prices",
