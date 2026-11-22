@@ -265,6 +265,7 @@ export function Sheet({
           <StatSeal
             label="Armor Class"
             value={sheet.ac.normal}
+            className="seal--key"
             components={sheet.ac.components}
             provTitle="AC components"
             conditionals={sheet.ac.conditionals}
@@ -425,10 +426,11 @@ export function Sheet({
           <span className="stat-group-legend">Offense</span>
           <div className="stat-group-rule" />
         </div>
-        <div className="stat-group-grid stat-group-grid--4">
+        <div className="stat-group-grid stat-group-grid--2">
           <StatSeal
             label="Melee"
             value={signedSequence(sheet.attack.melee.total, sheet.attack.melee.iteratives)}
+            className="seal--sequence"
             components={sheet.attack.melee.components}
             provTitle="Melee attack"
             resetKey={doc.id}
@@ -442,6 +444,7 @@ export function Sheet({
           <StatSeal
             label="Ranged"
             value={signedSequence(sheet.attack.ranged.total, sheet.attack.ranged.iteratives)}
+            className="seal--sequence"
             components={sheet.attack.ranged.components}
             provTitle="Ranged attack"
             resetKey={doc.id}

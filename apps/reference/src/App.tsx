@@ -26,14 +26,25 @@ export function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <div className="summon-nav-group">
-          <a className="app-title" href="#/">
-            Ledgermain <span className="app-title-sub">Reference</span>
+        <a className="app-title" href="#/">
+          <span className="app-wordmark">
+            Ledger<span>main</span>
+          </span>
+          <span className="app-title-sub">Pathfinder 1e Reference</span>
+        </a>
+        <nav className="app-nav" aria-label="Reference">
+          <a
+            href="#/"
+            aria-current={
+              route.kind === "summon" ? undefined : route.kind === "search" ? "page" : "location"
+            }
+          >
+            Search
           </a>
-          <a className="summon-nav-link" href="#/summon">
+          <a href="#/summon" aria-current={route.kind === "summon" ? "page" : undefined}>
             Summons
           </a>
-        </div>
+        </nav>
         <span className="app-version">
           {index
             ? `Data: PF1 v${index.meta.dataVersion.split("+")[0]} · content ${index.meta.contentVersion}`

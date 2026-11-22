@@ -129,8 +129,7 @@ a {
   border-bottom: 1px solid var(--line);
 }
 
-.masthead:not(.masthead--workbench),
-.masthead-top {
+.masthead:not(.masthead--workbench) {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -139,8 +138,29 @@ a {
   padding: var(--space-4) 0;
 }
 
-.masthead--workbench .masthead-top {
-  padding-bottom: var(--space-2);
+.masthead--workbench {
+  display: grid;
+  grid-template: "brand modes tools" minmax(64px, auto) / minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--space-3);
+}
+
+.masthead-brand {
+  grid-area: brand;
+}
+
+.masthead--workbench .mode-tabs {
+  grid-area: modes;
+  align-self: stretch;
+}
+
+@media (max-width: 940px) {
+  .masthead--workbench {
+    grid-template:
+      "brand tools" auto
+      "modes modes" auto / auto minmax(0, 1fr);
+    padding-top: var(--space-3);
+  }
 }
 
 .masthead .wordmark {
@@ -170,9 +190,9 @@ a {
 }
 
 .masthead-tools {
+  grid-area: tools;
   flex-wrap: wrap;
   justify-content: flex-end;
-  margin-left: auto;
   min-width: 0;
   max-width: 100%;
 }
@@ -369,9 +389,8 @@ a {
     padding-inline: clamp(12px, 4vw, 24px);
   }
 
-  .masthead--workbench .masthead-top {
+  .masthead--workbench {
     column-gap: var(--space-2);
-    padding-top: var(--space-3);
   }
 
   .masthead-brand .wordmark {
@@ -2415,6 +2434,79 @@ a:focus-visible,
   font-size: 0.6875rem;
 }
 
+/* Ruled entries in the main sheet; keep the boxed seals in companion panels. */
+.sheet .stat-group-grid,
+.sheet .weapon-attack-stats {
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.sheet :is(.stat-group-grid, .weapon-attack-stats) > * {
+  min-width: 0;
+}
+
+.sheet :is(.stat-group-grid, .weapon-attack-stats) .seal {
+  justify-content: flex-start;
+  min-height: 0;
+  padding: 10px 4px 8px;
+  background: none;
+  border-color: transparent;
+}
+
+.sheet
+  :is(.stat-group-grid, .weapon-attack-stats)
+  .seal:is(:hover, :focus-visible, [aria-expanded="true"])[data-expandable="true"] {
+  background: var(--surface-2);
+}
+
+.sheet :is(.stat-group-grid, .weapon-attack-stats) .seal-label {
+  letter-spacing: 0.08em;
+}
+
+.sheet .stat-group :is(.seal-label, .seal-value, .seal-foot, .seal-conditionals) {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.sheet .stat-group .seal-value:not([data-tint]) {
+  color: var(--ink);
+}
+
+.sheet .stat-group .seal--compact .seal-value:not([data-tint]) {
+  color: var(--muted);
+}
+
+.sheet .stat-group .seal--key .seal-value:not([data-tint]) {
+  color: var(--gold-2);
+}
+
+.sheet .stat-group .seal-value {
+  font-size: 1.5rem;
+}
+
+.sheet .stat-group .seal:is(.seal--compact, .seal--sequence) .seal-value {
+  font-size: 1.125rem;
+}
+
+.sheet .stat-group-header {
+  margin-bottom: var(--space-1);
+}
+
+.sheet .stat-group-legend {
+  display: block;
+  min-width: 0;
+  flex-shrink: 1;
+  white-space: normal;
+  font: 600 0.8125rem var(--body);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.sheet .stat-group-legend::before,
+.sheet .stat-group-rule {
+  display: none;
+}
+
 /* A labeled group: legend + hairline + sub-grid */
 .stat-group {
   margin-top: 20px;
@@ -2609,8 +2701,8 @@ a:focus-visible,
 .ability-strip {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 6px;
-  margin-bottom: 14px;
+  gap: 0;
+  margin: var(--space-3) 0;
 }
 
 @media (max-width: 420px) {
@@ -2620,18 +2712,20 @@ a:focus-visible,
 }
 
 .ability-pip {
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 7px 4px;
+  border-top: 1px solid var(--line);
+  padding: 6px 2px;
   text-align: center;
+}
+
+.ability-pip:is(:hover, :focus-visible, [aria-expanded="true"]) {
+  background: var(--surface-2);
 }
 
 .ability-pip .ap-abbr {
   font-family: var(--mono);
   font-size: 0.625rem;
   letter-spacing: 0.1em;
-  color: var(--gold);
+  color: var(--muted);
 }
 
 .ability-pip .ap-mod {
@@ -3258,7 +3352,9 @@ a:focus-visible,
 
 /* A flat folio rail: the active mode shares its rule with the page edge. */
 .mode-tabs {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   gap: var(--space-1);
   margin-bottom: -1px;
 }
@@ -6925,7 +7021,6 @@ input[type="text"].saved-roll-name:focus {
    play grow to a comfortable ~44px tap target. Desktop/iPad are untouched. */
 @media (max-width: 640px) {
   .mode-tab {
-    flex: 1;
     min-height: var(--tap-min);
     padding-inline: var(--space-2);
   }

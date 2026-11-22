@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-21-ruled-sheet",
+    date: "2026-11-21",
+    title: "A quieter sheet and centered navigation",
+    note: "Build, Play, and Settings sit in the center on wide screens. The sheet uses ruled rows instead of boxes for every stat, with more space for attack sequences. Tap a stat with a chevron to see how it adds up. The reference site shares the same header, with Search and Summons up front.",
+  },
+  {
     id: "2026-11-21-table-ready-sheet",
     date: "2026-11-21",
     title: "The numbers you need at the table come first",

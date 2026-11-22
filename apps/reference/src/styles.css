@@ -23,8 +23,7 @@ body,
 }
 
 body {
-  background: radial-gradient(1200px 600px at 80% -10%, #1c2733 0%, transparent 60%), var(--bg);
-  background-repeat: no-repeat;
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--body);
   font-size: 15px;
@@ -56,6 +55,11 @@ a:hover {
   text-decoration: underline;
 }
 
+:is(a, button, input, select, summary):focus-visible {
+  outline: 2px solid var(--gold-2);
+  outline-offset: 2px;
+}
+
 code {
   font-family: var(--mono);
   font-size: 0.85em;
@@ -73,34 +77,100 @@ code {
 }
 
 .app-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 4px 12px;
-  padding: 14px 0 10px;
+  display: grid;
+  grid-template: "brand modes version" minmax(64px, auto) / minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
   border-bottom: 1px solid var(--line);
 }
 
 .app-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  grid-area: brand;
+  display: grid;
+  justify-self: start;
+  color: var(--ink);
+}
+
+.app-wordmark {
+  font: 600 1.625rem / 1.1 var(--display);
+}
+
+.app-wordmark > span {
   color: var(--gold);
 }
 
 .app-title:hover {
   text-decoration: none;
-  color: var(--gold-2);
 }
 
 .app-title-sub {
+  font: 0.6875rem / 1.45 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.app-nav {
+  grid-area: modes;
+  align-self: stretch;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 4px;
+  margin-bottom: -1px;
+}
+
+.app-nav a {
+  display: grid;
+  place-items: center;
+  padding: 8px 18px;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.app-nav a:hover {
   color: var(--ink);
-  font-weight: 500;
+  background: var(--surface);
+  text-decoration: none;
+}
+
+.app-nav a[aria-current] {
+  border-bottom-color: var(--gold);
+  color: var(--gold-2);
+}
+
+.app-nav a:focus-visible {
+  outline-offset: -2px;
+}
+
+@media (max-width: 640px) {
+  .app-header {
+    grid-template:
+      "brand version" auto
+      "modes modes" auto / auto minmax(0, 1fr);
+    padding-top: 12px;
+  }
+
+  .app-wordmark {
+    font-size: 1.375rem;
+  }
+
+  .app-title-sub {
+    letter-spacing: 0.04em;
+  }
+
+  .app-nav a {
+    min-height: 44px;
+    padding-inline: 8px;
+  }
 }
 
 /* The pinned dataset is the whole trust story of this site — never hide it. */
 .app-version {
+  grid-area: version;
+  text-align: right;
   font-family: var(--mono);
   font-size: 0.6875rem;
   letter-spacing: 0.03em;
@@ -147,7 +217,6 @@ code {
 }
 
 .search-box:focus {
-  outline: none;
   border-color: var(--gold-dim);
 }
 
@@ -254,18 +323,15 @@ code {
 }
 
 .board-title {
-  margin: 0 0 8px;
-  font-size: 0.6875rem;
-  font-family: var(--mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold-dim-ink);
+  margin: 0 0 4px;
+  font: 600 0.8125rem var(--body);
+  color: var(--ink);
 }
 
 .condition-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 6px;
+  gap: 0 12px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -273,17 +339,24 @@ code {
 
 .condition-tile {
   display: block;
-  padding: 8px 10px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--surface);
+  padding: 8px 4px;
+  border-top: 1px solid var(--line);
   color: var(--ink);
   font-size: 0.875rem;
 }
 
 .condition-tile:hover {
-  border-color: var(--gold-dim);
+  background: var(--surface);
+  color: var(--gold-2);
   text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .condition-tile {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
 }
 
 .board-hint {
@@ -327,18 +400,16 @@ code {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px 6px;
+  gap: 0 16px;
   margin-bottom: 12px;
+  border-block: 1px solid var(--line);
 }
 
 .stat-chip {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 2px 8px;
-  border: 1px solid var(--line-soft);
-  border-radius: 10px;
-  background: var(--surface-2);
+  padding: 6px 0;
   font-family: var(--mono);
   font-size: 0.6875rem;
   letter-spacing: 0.03em;
@@ -347,13 +418,11 @@ code {
 }
 
 .stat-chip.is-save {
-  border-color: var(--gold-dim);
   color: var(--gold-2);
 }
 
 /* --oxblood is a border/fill token; text uses the AA-compliant --oxblood-ink. */
 .stat-chip.is-damage {
-  border-color: var(--oxblood);
   color: var(--oxblood-ink);
 }
 
@@ -912,29 +981,6 @@ code {
 }
 
 /* ------------------------------------------------------------------ */
-/* Summon helper (SummonPage) and its header nav link (App header).   */
-
-/* Sits in the app header next to the site title, so it isn't scoped `summon-`
-   in behavior, only in name (the header markup lives in App.tsx). */
-.summon-nav-group {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-}
-
-.summon-nav-link {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.summon-nav-link:hover {
-  color: var(--gold-2);
-  text-decoration: none;
-}
-
 .summon-page {
   display: flex;
   flex-direction: column;

@@ -158,41 +158,11 @@ export function App() {
       <PreviewNotice />
       <ToastHost />
       <header className="masthead masthead--workbench">
-        <div className="masthead-top">
-          <div className="masthead-brand">
-            <div className="wordmark">
-              Ledger<span className="gilt">main</span>
-            </div>
-            <div className="tagline">Pathfinder 1e</div>
+        <div className="masthead-brand">
+          <div className="wordmark">
+            Ledger<span className="gilt">main</span>
           </div>
-          <div className="masthead-tools">
-            <ReferenceLink />
-            <FeedbackButton mode={mode} doc={store.doc} />
-            <SyncStatus
-              status={store.syncStatus}
-              onSignIn={() => void store.signIn()}
-              onSignOut={() => void store.signOut()}
-            />
-            {store.doc && (
-              <CharacterSwitcher
-                characters={store.characters}
-                activeId={store.doc.id}
-                disabled={store.actionPending}
-                onSwitch={(id) => void store.switchCharacter(id)}
-                onCreate={() => void store.createCharacter()}
-              />
-            )}
-            {store.actionError && (
-              <button
-                type="button"
-                className="action-error"
-                onClick={store.clearActionError}
-                title="Dismiss"
-              >
-                ⚠ {store.actionError}
-              </button>
-            )}
-          </div>
+          <div className="tagline">Pathfinder 1e</div>
         </div>
         <div
           className="mode-tabs"
@@ -250,6 +220,34 @@ export function App() {
               ) : null}
             </button>
           ))}
+        </div>
+        <div className="masthead-tools">
+          <ReferenceLink />
+          <FeedbackButton mode={mode} doc={store.doc} />
+          <SyncStatus
+            status={store.syncStatus}
+            onSignIn={() => void store.signIn()}
+            onSignOut={() => void store.signOut()}
+          />
+          {store.doc && (
+            <CharacterSwitcher
+              characters={store.characters}
+              activeId={store.doc.id}
+              disabled={store.actionPending}
+              onSwitch={(id) => void store.switchCharacter(id)}
+              onCreate={() => void store.createCharacter()}
+            />
+          )}
+          {store.actionError && (
+            <button
+              type="button"
+              className="action-error"
+              onClick={store.clearActionError}
+              title="Dismiss"
+            >
+              ⚠ {store.actionError}
+            </button>
+          )}
         </div>
       </header>
 

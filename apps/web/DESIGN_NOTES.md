@@ -1,6 +1,6 @@
 # apps/web — Design Notes
 
-Visual direction for the character builder and live sheet.
+Visual direction for the character builder, live sheet, and reference site.
 
 ## Subject & job
 
@@ -40,19 +40,23 @@ of the page, and set figures in tabular mono so they scan down a column.
 
 ### Signature element
 
-**The seal + provenance reveal.** Each core derived stat (AC, HP, saves, BAB,
-CMB/CMD, attacks, skills) is a gilded "seal" showing the big tabular total.
-Expanding a seal unrolls its **modifier breakdown straight from `compute()`'s
-per-source provenance** — each contributor labelled, with overridden
-(non-stacking) bonuses struck through. The differentiator (knowing _why_ a
-number is what it is) is the memorable interaction; everything else stays quiet.
+**Ruled stat rows + provenance.** Use one rule across a row rather than a box
+around each value. Keep HP and Armor Class prominent, and let the color and
+marker on a changed value carry the signal. A chevron identifies entries that
+expand into a modifier breakdown from `compute()`'s per-source provenance.
+Give successive attack bonuses room to read as a sequence.
 
 ## Restraint
 
 Gold marks the current place, key totals, and controls that affect play. Keep
 routine panel headers and secondary actions neutral so a gold cue means
-something. Use sentence case and the body face for navigation and controls;
-reserve small mono labels for the sheet's keys and section legends.
+something. Use sentence case and the body face for navigation, controls,
+and sheet headings; reserve small mono labels for the individual stat keys.
+
+Center primary navigation between the Ledgermain wordmark and utilities on
+wide screens. On narrow screens, give it its own row. The reference site
+follows the same masthead and rules, with Search and Summons in place of
+character modes. Both apps share the palette and type stack in `@pf1/tokens`.
 
 Lead Play with HP and running effects. Keep catalog results out of the way
 until requested, and keep less frequent actions like New day in the chrome,
