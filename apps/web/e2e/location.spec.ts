@@ -20,11 +20,15 @@ function guard(page: Page) {
   return { consoleErrors, pageErrors };
 }
 
-async function bootApp(page: Page, path = "/") {
-  await page.goto(path);
+async function waitForSheet(page: Page) {
   await expect(
     page.locator(".seal", { hasText: "Armor Class" }).locator(".seal-value"),
   ).toBeVisible({ timeout: 15_000 });
+}
+
+async function bootApp(page: Page, path = "/") {
+  await page.goto(path);
+  await waitForSheet(page);
 }
 
 test("the tab you're on survives a reload", async ({ page }) => {
@@ -37,8 +41,24 @@ test("the tab you're on survives a reload", async ({ page }) => {
   await expect(page).toHaveURL(/#\/play/);
 
   await page.reload();
+  await waitForSheet(page);
+  await expect(page.getByRole("tab", { name: "Play" })).toHaveAttribute("aria-selected", "true");
+
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+});
+
+test("a fresh load of a built character opens on Play", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+
+  await bootApp(page);
+  await page.evaluate(() =>
+    localStorage.setItem("pf1-tracker:activeCharacterId", "sample-kordrek-ironvein"),
+  );
+  // A fresh load, not a reload: the first load wrote `#/build` into the URL.
   await bootApp(page);
   await expect(page.getByRole("tab", { name: "Play" })).toHaveAttribute("aria-selected", "true");
+  await expect(page).toHaveURL(/#\/play/);
 
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);

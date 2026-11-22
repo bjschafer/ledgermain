@@ -2,11 +2,13 @@ import { describe, expect, it } from "bun:test";
 
 import {
   absoluteLink,
+  defaultLocation,
   formatLocationHash,
   parseLocationHash,
   sameLocation,
   whatsNewHash,
 } from "../src/model/appLocation.js";
+import { addClass, createEmptyDoc } from "../src/model/doc.js";
 
 describe("parseLocationHash", () => {
   it("reads a bare mode", () => {
@@ -88,5 +90,13 @@ describe("absoluteLink", () => {
     expect(absoluteLink("http://192.168.1.4:5173/?debug=1", "#/whats-new")).toBe(
       "http://192.168.1.4:5173/?debug=1#/whats-new",
     );
+  });
+});
+
+describe("defaultLocation", () => {
+  it("opens a built character on Play and a blank one on Build", () => {
+    const blank = createEmptyDoc("t");
+    expect(defaultLocation(blank)).toEqual({ mode: "build" });
+    expect(defaultLocation(addClass(blank, "fighter"))).toEqual({ mode: "play" });
   });
 });

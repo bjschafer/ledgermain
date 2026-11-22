@@ -22,7 +22,8 @@
  *      Arcane Reservoir's is lower per RAW). Requires `refData` to derive
  *      pools; without it, falls back to the old always-full reset. A tracked
  *      familiar's own metered spell-like abilities (`resetFamiliarSlaUses`)
- *      reset alongside, unconditionally (no `refData` needed).
+ *      reset alongside, unconditionally (no `refData` needed). Gear that
+ *      refills daily (a 3/day metamagic rod) gets its charges back too.
  *   4. Spells — `restPreparedSpells` + `resetSpontaneousSlots`, once per
  *      caster class (multiclass support) when `refData` is given, so a
  *      multiclass character's prepared loadout AND spontaneous slots reset for
@@ -49,6 +50,7 @@ import { resetFamiliarSlaUses } from "./familiar.js";
 import { restHp } from "./hp.js";
 import { clearKineticistDefenseBurn } from "./kineticistBuild.js";
 import { resetSpiritMagicSlots, restPreparedSpells } from "./preparedSpells.js";
+import { itemsRecharged, rechargeDailyItems } from "./playItems.js";
 import { remaining, restAllResources } from "./resources.js";
 import { casterClassesOf, storedClassTag } from "./spellcasting.js";
 import { resetSpontaneousSlots } from "./spontaneousSpells.js";
@@ -201,6 +203,9 @@ export function newDaySummary(
   }
   if (refreshedPools.length > 0) segments.push(refreshedPools.join(", "));
 
+  const recharged = itemsRecharged(before, after);
+  if (recharged > 0) segments.push(`${recharged} item${recharged === 1 ? "" : "s"} recharged`);
+
   if (before.live.hp.temp > 0 && after.live.hp.temp === 0) segments.push("temp HP cleared");
   if (before.live.hp.nonlethal > 0 && after.live.hp.nonlethal === 0) {
     segments.push("nonlethal healed");
@@ -238,6 +243,7 @@ export function restNewDay(
   // An Improved Familiar's own metered spell-like abilities (e.g. the imp's
   // 1/day suggestion) reset the same as any other daily resource.
   next = resetFamiliarSlaUses(next);
+  if (refData) next = rechargeDailyItems(next, refData);
 
   let casterClasses: { classTag: string | undefined; name: string }[] | undefined;
   if (refData) {

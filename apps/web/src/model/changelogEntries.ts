@@ -49,6 +49,18 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-21-items-on-play",
+    date: "2026-11-21",
+    title: "Drink potions and spend wand charges from the Play tab",
+    note: "A new Items panel on the Play tab lists every potion, scroll, wand, and other consumable in your gear. Tap to use one, and it comes off your inventory. Items that recharge daily refill on New Day.",
+  },
+  {
+    id: "2026-11-21-opens-on-play",
+    date: "2026-11-21",
+    title: "Open straight to the Play tab",
+    note: "Opening the app now lands on the Play tab for any character with a class. A brand new character still starts on Build, and reloading keeps you where you were.",
+  },
+  {
     id: "2026-11-21-character-picker-layout",
     date: "2026-11-21",
     title: "Find your character picker beside the wordmark",

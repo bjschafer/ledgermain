@@ -10,7 +10,8 @@
  * form, and a companion's own damage and conditions. A build edit is not a
  * table event and produces no line, and neither is the round counter or a
  * condition's countdown: both tick often enough to flush a fight out of the
- * ring before anyone scrolls back to it.
+ * ring before anyone scrolls back to it. Gear lives in `build`, so an item
+ * spent from the Play tab names its own line (`model/playItems.ts`).
  *
  * Pure: {@link describeLiveChange} diffs two documents into at most one line,
  * and {@link pushLogEntry} is a fixed-size ring. `state/sessionLog.ts` binds
@@ -45,6 +46,7 @@ export type SessionLogKind =
   | "spell"
   | "buff"
   | "resource"
+  | "item"
   | "form"
   | "companion"
   | "rest"
@@ -86,6 +88,7 @@ const KINDS: ReadonlySet<SessionLogKind> = new Set([
   "spell",
   "buff",
   "resource",
+  "item",
   "form",
   "companion",
   "rest",

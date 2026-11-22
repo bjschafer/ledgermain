@@ -17,12 +17,12 @@ const acValue = (page: Page) =>
 
 /**
  * Point the store at the sample character, whose sheet is long enough to
- * scroll. Every load starts with no remembered place: the app's one-shot
- * scroll-back-to-your-section waits on the mode's lazy chunk, and when it
- * lands after the dialog opens it moves the page behind it mid-test.
+ * scroll. Every load starts with no fragment, so no remembered place: the
+ * app's one-shot scroll-back-to-your-section waits on the mode's lazy chunk,
+ * and when it lands after the dialog opens it moves the page behind it
+ * mid-test.
  */
 async function gotoSample(page: Page) {
-  await page.addInitScript(() => localStorage.removeItem("lm:location"));
   await page.goto("/");
   await expect(acValue(page)).toBeVisible({ timeout: 20_000 });
   await page.evaluate(([key, id]: readonly [string, string]) => localStorage.setItem(key, id), [

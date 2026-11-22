@@ -29,9 +29,9 @@ export function changeLabel(change: { formula: string; target: string; type: str
  * numeric constant (no `@item.level`/`@cl` reference — verified against the
  * full items pack), so this never needs item-instance context;
  * `tryEvaluateFormula` still guards against a future non-numeric value by
- * returning `null` rather than crashing the gear list. Only "charges"-style
- * pools are surfaced (potions/scrolls with `per: "single"` are one-shot and
- * tracked by removing the gear entry instead, not a charge counter).
+ * returning `null` rather than crashing the gear list. A `maxFormula` makes the
+ * item charge-tracked; one-shot potions and scrolls carry none and are spent
+ * by quantity instead (`model/playItems.ts`).
  */
 export function itemMaxCharges(
   item: { uses?: { maxFormula?: string; per?: string } } | undefined,

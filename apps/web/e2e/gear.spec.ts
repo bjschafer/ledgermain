@@ -140,3 +140,35 @@ test("every add flow offers the same purchase, sharing one toggle", async ({ pag
   await expect(flaskRow.getByLabel("Alchemist's Fire quantity")).toHaveValue("2");
   await expect(panel.getByLabel("gp (coins)")).toHaveValue("285");
 });
+
+test("a potion bought on Build is drunk from the Play tab", async ({ page }) => {
+  const panel = await gotoGear(page);
+
+  const name = "Potion of Cure Light Wounds";
+  async function addPotion() {
+    await panel.getByRole("button", { name: "Potion / scroll / wand", exact: true }).click();
+    const picker = panel.locator(".gear-picker");
+    await typeSearch(picker.getByPlaceholder("Search spells…"), "Cure Light Wounds");
+    await picker
+      .locator(".pick-row")
+      .filter({ has: page.locator(".pname", { hasText: name }) })
+      .first()
+      .getByRole("button")
+      .click();
+  }
+  await addPotion();
+  await addPotion();
+  await expect(panel.getByLabel(`${name} quantity`)).toHaveValue("2");
+
+  await page.getByRole("tab", { name: "Play" }).click();
+  const items = page.locator(".panel", { has: page.getByRole("heading", { name: "Items" }) });
+  const row = items.locator(".res-row", { hasText: name });
+  await expect(row.locator(".res-count")).toHaveText("2 left");
+
+  await row.getByRole("button", { name: `use ${name}` }).click();
+  await expect(row.locator(".res-count")).toHaveText("1 left");
+  await expect(page.getByText(`Used ${name} (1 left)`)).toBeVisible();
+
+  await page.getByRole("tab", { name: /^Build/ }).click();
+  await expect(panel.getByLabel(`${name} quantity`)).toHaveValue("1");
+});

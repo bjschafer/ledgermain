@@ -8,7 +8,13 @@
  * callback parks a `#session=<token>` fragment on the URL that
  * `sync/session.ts` consumes later in the load, and anything that doesn't
  * start with `/` here is somebody else's fragment to leave alone.
+ *
+ * A load with no fragment of ours (a bookmark, a fresh tab, the home-screen
+ * icon) opens on {@link defaultLocation}; a plain reload keeps its fragment,
+ * so it still lands where the reader was.
  */
+
+import type { CharacterDoc } from "@pf1/schema";
 
 export type Mode = "build" | "play" | "settings";
 
@@ -32,7 +38,14 @@ const ALIASES: Readonly<Record<string, AppLocation>> = {
   "whats-new": { mode: "settings", section: "settings-whats-new" },
 };
 
-export const DEFAULT_LOCATION: AppLocation = { mode: "build" };
+/**
+ * Where a load with no fragment opens: Play, since the app is mostly opened at
+ * the table, unless the character has no class levels yet and Play would be
+ * an empty sheet.
+ */
+export function defaultLocation(doc: CharacterDoc): AppLocation {
+  return doc.identity.classes.some((c) => c.level > 0) ? { mode: "play" } : { mode: "build" };
+}
 
 /** The alias to share; `parseLocationHash` resolves it to the Settings panel. */
 export function whatsNewHash(): string {

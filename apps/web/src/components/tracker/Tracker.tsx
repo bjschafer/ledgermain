@@ -15,6 +15,7 @@ import { FamiliarPanel } from "./FamiliarPanel.js";
 import { FeatsPanel } from "./FeatsPanel.js";
 import { HeroPointsPanel } from "./HeroPointsPanel.js";
 import { HpPanel } from "./HpPanel.js";
+import { ItemsPanel } from "./ItemsPanel.js";
 import { MediumSpiritPanel } from "./MediumSpiritPanel.js";
 import { NewDayBar } from "./NewDayBar.js";
 import { PhantomPanel } from "./PhantomPanel.js";
@@ -78,6 +79,7 @@ export function Tracker(props: BuilderProps) {
         { id: "play-spells", label: "Spells", node: <PreparedSpellsPanel {...props} /> },
         { id: "play-sla", label: "Spell-Like", node: <SpellLikeAbilitiesPanel {...props} /> },
         { id: "play-resources", label: "Resources", node: <ResourcesPanel {...props} /> },
+        { id: "play-items", label: "Items", node: <ItemsPanel {...props} /> },
         // The sheet beside the tracker already lists these; only a phone, where
         // the sheet hides behind a button, needs them repeated here.
         ...(narrow

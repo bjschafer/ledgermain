@@ -2,7 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react"
 
 import type { CharacterDoc } from "@pf1/schema";
 
-import type { AppLocation, Mode } from "./model/appLocation.js";
+import { defaultLocation, type Mode } from "./model/appLocation.js";
 import {
   hasUnseenEntries,
   initChangelogSeen,
@@ -87,7 +87,7 @@ function ModeFallback() {
  * Held until the sheet is up: nobody is looking for the dot on a screen that
  * hasn't drawn a character yet.
  */
-function useChangelogCue(mode: Mode, ready: boolean): boolean {
+function useChangelogCue(mode: Mode | undefined, ready: boolean): boolean {
   const [unseen, setUnseen] = useState(false);
 
   useEffect(() => {
@@ -133,8 +133,14 @@ const MODE_TABS = [
 
 export function App() {
   const store = useCharacter();
-  const { location, initial: initialLocation, setMode, setSection } = useAppLocation();
-  const mode = location.mode;
+  const {
+    location,
+    initial: initialLocation,
+    setMode,
+    setSection,
+  } = useAppLocation(store.doc ? defaultLocation(store.doc) : null);
+  // Undefined only while the character loads with no fragment to go on.
+  const mode = location?.mode;
   const [printOpen, setPrintOpen] = useState(false);
   const [textSize, setTextSize] = useTextSize();
   const changelogUnseen = useChangelogCue(mode, store.status === "ready");
@@ -214,7 +220,7 @@ export function App() {
               role="tab"
               aria-selected={mode === id}
               aria-controls="mode-panel"
-              tabIndex={mode === id ? 0 : -1}
+              tabIndex={(mode ?? "build") === id ? 0 : -1}
               className="mode-tab"
               onClick={() => setMode(id)}
             >
@@ -234,7 +240,7 @@ export function App() {
         </div>
         <div className="masthead-tools">
           <ReferenceLink />
-          <FeedbackButton mode={mode} doc={store.doc} />
+          <FeedbackButton mode={mode ?? "loading"} doc={store.doc} />
           <SyncStatus
             status={store.syncStatus}
             onSignIn={() => void store.signIn()}
@@ -261,7 +267,11 @@ export function App() {
       />
 
       <main>
-        <div id="mode-panel" role="tabpanel" aria-labelledby={`mode-tab-${mode}`}>
+        <div
+          id="mode-panel"
+          role="tabpanel"
+          aria-labelledby={mode ? `mode-tab-${mode}` : undefined}
+        >
           {store.status === "loading" && <LoadingScreen />}
 
           {store.status === "error" && (
@@ -274,10 +284,10 @@ export function App() {
             </div>
           )}
 
-          {store.status === "ready" && store.doc && store.sheet && store.refData && (
+          {store.status === "ready" && mode && store.doc && store.sheet && store.refData && (
             <Workbench
               mode={mode}
-              initialLocation={initialLocation}
+              restoreSection={initialLocation?.section}
               jumpTarget={jumpTarget}
               onActiveSection={setSection}
               doc={store.doc}
@@ -401,7 +411,7 @@ function useRestoreSection(sectionId: string | undefined) {
 
 function Workbench({
   mode,
-  initialLocation,
+  restoreSection,
   jumpTarget,
   onActiveSection,
   onImportCharacter,
@@ -415,7 +425,8 @@ function Workbench({
   ...props
 }: BuilderProps & {
   mode: Mode;
-  initialLocation: AppLocation;
+  /** The section this page load's fragment named, scrolled back to once. */
+  restoreSection: string | undefined;
   jumpTarget: JumpRequest | null;
   onActiveSection: (mode: Mode, sectionId: string) => void;
   onImportCharacter: (doc: CharacterDoc) => void;
@@ -447,7 +458,7 @@ function Workbench({
               is a sibling of the mode tree, so it waits on the same chunk the
               scroll target arrives in. */}
           <Suspense fallback={<ModeFallback />}>
-            <SectionRestore sectionId={initialLocation.section} />
+            <SectionRestore sectionId={restoreSection} />
             <SectionJump request={jumpTarget} />
             {mode === "build" ? (
               <BuildMode {...props} onActiveSection={onBuildSection} />
