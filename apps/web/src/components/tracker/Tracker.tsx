@@ -57,6 +57,7 @@ interface Section {
 
 interface Group {
   name: string;
+  action?: ReactNode;
   sections: Section[];
 }
 
@@ -68,11 +69,12 @@ export function Tracker(props: BuilderProps) {
   const groups: Group[] = [
     {
       name: "Combat",
+      action: <NewDayBar {...props} />,
       sections: [
         { id: "play-hp", label: "Hit Points", node: <HpPanel {...props} /> },
+        { id: "play-buffs", label: "Buffs", node: <BuffsPanel {...props} /> },
         { id: "play-conditions", label: "Conditions", node: <ConditionsPanel {...props} /> },
         { id: "play-stances", label: "Stances", node: <CombatStancesPanel {...props} /> },
-        { id: "play-buffs", label: "Buffs", node: <BuffsPanel {...props} /> },
         { id: "play-spells", label: "Spells", node: <PreparedSpellsPanel {...props} /> },
         { id: "play-sla", label: "Spell-Like", node: <SpellLikeAbilitiesPanel {...props} /> },
         { id: "play-resources", label: "Resources", node: <ResourcesPanel {...props} /> },
@@ -131,10 +133,16 @@ export function Tracker(props: BuilderProps) {
 
   return (
     <div className="tracker-col">
-      <NewDayBar {...props} />
       {groups.map((group) => (
         <section className="play-group" data-group={group.name} key={group.name}>
-          <h3 className="play-group-head">{group.name}</h3>
+          {group.action ? (
+            <div className="play-group-toolbar">
+              <h3 className="play-group-head">{group.name}</h3>
+              {group.action}
+            </div>
+          ) : (
+            <h3 className="play-group-head">{group.name}</h3>
+          )}
           {group.sections.map((section) => (
             <div
               className="play-section"

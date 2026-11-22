@@ -1,26 +1,18 @@
 # apps/web — Design Notes
 
-Visual direction for the Stage 3 builder + live sheet. Established with the
-`frontend-design` skill (a deliberate art direction, not a template default).
+Visual direction for the character builder, live sheet, and reference site.
 
 ## Subject & job
 
-A Pathfinder 1e **character builder** whose center of gravity is _play at the
-table_. The page's single job: make build choices and watch every derived number
-recompute — correctly, with its provenance visible. The product's real claim is
-"it knows the rules," so the design makes **the math and its sources the hero.**
+Ledgermain is a Pathfinder 1e character sheet for use at the table. A player
+should be able to read a number, change the state that drives it, and check
+where it came from without leaving the sheet.
 
 ## Direction: "Illuminated ledger"
 
-A scribe's nighttime accounting of a hero — a dark workbench with illuminated
-gold. Chosen specifically to avoid the three generic AI-design defaults:
-
-- not the cream + high-contrast-serif + terracotta look,
-- not near-black with a single acid-green/vermilion accent,
-- not a hairline broadsheet.
-
-Instead: a **dark, panelled, gilded** sheet that reads at a dim table, with
-tabular ledger numerals because a character sheet is, fundamentally, a ledger.
+An illuminated ledger, not a fantasy dashboard. Use flat ink surfaces and
+hairline rules to separate entries. Let the serif titles carry the character
+of the page, and set figures in tabular mono so they scan down a column.
 
 ### Color (named tokens — see `packages/tokens/tokens.css`)
 
@@ -48,15 +40,27 @@ tabular ledger numerals because a character sheet is, fundamentally, a ledger.
 
 ### Signature element
 
-**The seal + provenance reveal.** Each core derived stat (AC, HP, saves, BAB,
-CMB/CMD, attacks, skills) is a gilded "seal" showing the big tabular total.
-Expanding a seal unrolls its **modifier breakdown straight from `compute()`'s
-per-source provenance** — each contributor labelled, with overridden
-(non-stacking) bonuses struck through. The differentiator (knowing _why_ a
-number is what it is) is the memorable interaction; everything else stays quiet.
+**Boxed stats + provenance.** Use colored labels to find the right group and
+stat in the side sheet. The full Hit Points box is a gauge: its fill recedes
+with damage and turns red at low HP. Keep Armor Class prominent and let
+color and a marker flag changed values. A chevron identifies entries that
+expand into a modifier breakdown from `compute()`'s per-source provenance.
+Give successive attack bonuses room to read as a sequence.
 
 ## Restraint
 
-Boldness is spent only on the gold seals + provenance. Panels are hairline-ruled
-and calm. Quality floor: responsive to mobile, visible keyboard focus,
-`prefers-reduced-motion` respected.
+Use gold-tinted panel headers with an ink title and a gold bottom rule so
+players can find sections in the main column. Keep secondary actions neutral.
+Use sentence case and the body face for navigation, controls, and sheet
+headings; reserve small mono labels for the individual stat keys.
+
+Center primary navigation between the Ledgermain wordmark and utilities on
+wide screens. On narrow screens, give it its own row. The reference site
+follows the same masthead and rules, with Search and Summons in place of
+character modes. Both apps share the palette and type stack in `@pf1/tokens`.
+
+Lead Play with HP and running effects. Keep catalog results out of the way
+until requested, and keep less frequent actions like New day in the chrome,
+not in front of those numbers. On phones, HP, AC, saves, initiative, and the
+round clock stay together above the section rail. Preserve visible keyboard
+focus, comfortable touch targets, and reduced-motion behavior.

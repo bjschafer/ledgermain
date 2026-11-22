@@ -7,9 +7,7 @@ import type { BuilderProps } from "../builder/types.js";
  * One-click "new day" rest. Composes the HP/ability-damage/
  * resource-pool/prepared-and-spontaneous-spell resets that used to live behind
  * independent panel buttons — those buttons stay put (a solo top-off
- * mid-session, e.g. just draining a wand, doesn't warrant a full rest). Sits
- * above every tracker panel since it's a cross-cutting action that doesn't
- * belong to any single one.
+ * mid-session, e.g. just draining a wand, doesn't warrant a full rest).
  *
  * Temporary negative levels are never auto-cleared by rest (PF1 RAW requires
  * a Fortitude save 24h after each was gained, rolled at the table) — while
@@ -28,7 +26,7 @@ export function NewDayBar({ doc, sheet, refData, update, undoLast }: BuilderProp
     <div className="new-day-bar">
       <button
         type="button"
-        className="btn-act new-day"
+        className="btn-ghost new-day"
         onClick={() => {
           const result = restNewDay(doc, sheet, refData);
           // One line for the whole rest. Diffing a New Day field by field would

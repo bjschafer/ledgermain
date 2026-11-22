@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { Fragment, useId, useState } from "react";
 
 import type { ConditionalTotal, ModifierComponent } from "@pf1/schema";
 
@@ -104,7 +104,16 @@ export function StatSeal({
           {conditionals.map((c) => (
             <span key={c.categories.join("/")}>
               <b className="num">{unsignedConditionals ? c.total : signed(c.total)}</b>{" "}
-              {c.labels.join("/")}
+              {c.labels.map((label, index) => (
+                <Fragment key={label}>
+                  {index ? (
+                    <>
+                      /<wbr />
+                    </>
+                  ) : null}
+                  {label}
+                </Fragment>
+              ))}
             </span>
           ))}
         </div>

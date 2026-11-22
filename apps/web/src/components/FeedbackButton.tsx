@@ -23,11 +23,7 @@ type SubmitState =
   | { kind: "done"; url?: string };
 
 /**
- * Global "Send feedback" control (masthead) + its modal. Renders nothing unless
- * both the API and a Turnstile sitekey are configured (see `feedback/config`),
- * so local dev and un-provisioned deploys show no button at all. The heavy
- * lifting — validation, payload shape — lives in `model/feedback.ts`; this is a
- * thin view over it, matching the app's model/view split.
+ * Masthead feedback control, shown only when the API and Turnstile are configured.
  */
 export function FeedbackButton({ mode, doc }: { mode: string; doc?: CharacterDoc }) {
   const [open, setOpen] = useState(false);

@@ -5,10 +5,8 @@
  * Feedback needs two things wired up: the persistence API (which hosts the
  * `POST /api/feedback` endpoint) and a Cloudflare Turnstile **sitekey** (the
  * public half of the CAPTCHA; the secret half lives only in the Worker). When
- * either is absent the whole feature is hidden — there's no point showing a
- * form that can't produce a verifiable submission. So local dev and any deploy
- * that hasn't set `VITE_TURNSTILE_SITEKEY` simply have no feedback button,
- * exactly like sync degrades to a no-op without `VITE_API_URL`.
+ * either is absent, hide the feedback controls rather than offer a form
+ * that can't produce a verified submission.
  */
 import { apiBaseUrl } from "../sync/config.js";
 
