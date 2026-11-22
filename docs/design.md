@@ -1,6 +1,6 @@
 # Pathfinder 1e In-Play Tracker -- Design
 
-> Architecture decisions and rationale -- the source of truth for _why_ the code is shaped the way it is. For what the project is and how to run it, see [`README.md`](./README.md).
+> Architecture decisions and rationale -- the source of truth for _why_ the code is shaped the way it is. For what the project is and how to run it, see [`README.md`](../README.md); for the package layout and commands, see [`CLAUDE.md`](../CLAUDE.md). Section numbers are cited from code comments, so they stay stable.
 
 ## 1. What this is (and isn't)
 
@@ -16,32 +16,23 @@ A **web-based, in-play character sheet and tracker for Pathfinder 1e** -- plus a
 | Frontend         | React + Vite SPA                                                   |
 | Host             | Cloudflare Workers                                                 |
 
-**On import:** it ships, but as personal-use tooling rather than a compatibility promise. Two formats are written against a confirmed real sample and work: Pathbuilder 1e's HTML stat block (its only export) and Hero Lab classic's `.por` portfolio / statblock XML. A speculative Pathbuilder JSON path also exists, written defensively against an unknown shape because no Pathbuilder 1e JSON export was ever found; correcting it is a matter of editing one field-path table if a real sample ever turns up. Foundry JSON is unimplemented for the same reason. Nothing fabricates a mapping -- an unrecognized race, class, feat, or item is reported as unmapped rather than guessed at.
+**On import:** it ships, but as personal-use tooling rather than a compatibility promise. Two formats are written against a confirmed real sample and work: Pathbuilder 1e's HTML stat block (its only export) and Hero Lab classic's `.por` portfolio / statblock XML. A speculative Pathbuilder JSON path also exists, written defensively against an unknown shape because no Pathbuilder 1e JSON export was ever found; correcting it is a matter of editing one field-path table if a real sample ever turns up. Foundry JSON is unimplemented. Nothing fabricates a mapping -- an unrecognized race, class, feat, or item is reported as unmapped rather than guessed at.
 
-## 2. The one architectural rule that hedges every "later"
+## 2. The one architectural rule
 
 > **The client is authoritative for all game logic. The server is dumb persistence.**
 
-Derived stats are **never** computed server-side and **never** stored. The server stores and (later) syncs an opaque JSON document. This single rule makes all three deferred features cheap:
-
-- **Solo → Party:** a party is N self-contained documents + a session room. The document already serializes; nothing to refactor.
-- **Online → Offline:** the document and engine already live in the browser. Offline = add a service worker + IndexedDB cache + sync reconciliation. No core changes.
-- **Builder + Tracker:** both edit the same document through the same engine. One brain, two UIs.
+Derived stats are **never** computed server-side and **never** stored. The server stores and syncs an opaque JSON document; the browser holds the document and the engine, so the sheet recomputes locally on every change and the server can never be the reason a number is wrong.
 
 The corner to avoid: ever requiring a server round-trip to toggle a buff, apply damage, or compute a modifier.
 
-### 2.1 Cross-device sync -- Level 1 for v1 (DECIDED)
+### 2.1 Cross-device sync -- Level 1 (DECIDED)
 
-The payoff of the rule above: because the document is an opaque blob and the client owns all logic, syncing across a user's devices (build on desktop → play on laptop) is a _persistence + identity_ problem, not a rules problem.
+Because the document is an opaque blob and the client owns all logic, syncing across a user's devices (build on desktop → play on laptop) is a _persistence + identity_ problem, not a rules problem.
 
-**v1 = Level 1:** account-scoped cloud document. Each device pulls the latest on open and pushes on change. Single-user multi-device, so concurrency is handled by **optimistic concurrency**, not a merge engine: every save carries the `version` it was based on; the server rejects a stale write and the client prompts _"a newer version exists on another device -- reload?"_ The document therefore carries `ownerId` / `version` / `updatedAt` (see §3.1).
+**Level 1:** account-scoped cloud document. Each device pulls the latest on open and pushes on change. Single-user multi-device, so concurrency is handled by **optimistic concurrency**, not a merge engine: every save carries the `version` it was based on; the server rejects a stale write and the client prompts _"a newer version exists on another device -- reload?"_ The document therefore carries `ownerId` / `version` / `updatedAt` (see §3.1).
 
-Deliberately deferred, and _cheap because of this model_ -- they reuse the **same Durable Object sync infra**, so cross-device and party are one investment, not two:
-
-- **Level 2 -- live mirror:** changes appear on the other device in near-real-time (DO + WebSocket).
-- **Level 3 -- conflict-free concurrent editing:** CRDT (Yjs/Automerge); only if simultaneous editing becomes a real need.
-
-> **DECIDED (2026-07-09): not pursuing Level 2, Level 3, or the offline PWA.** Level 1 sync shipped and is the end state for connectivity. The architectural rule above stays (it's what keeps the client fast and the server simple), but party sync / live mirror / CRDT / service-worker offline are off the roadmap entirely -- the product stays a single-player sheet. Content breadth limits are inventoried in issue #74. Future work is driven by real at-the-table feedback, not this list.
+> **DECIDED (2026-07-09): Level 1 is the end state.** Not pursuing a live mirror (Durable Object + WebSocket), CRDT concurrent editing, party sync, or the offline PWA. The architectural rule above stays (it's what keeps the client fast and the server simple), but the product stays a single-player sheet. Content breadth limits are inventoried in issue #74. Future work is driven by real at-the-table feedback.
 
 > **DECIDED (2026-09-09): the account's ops floor.** Once strangers hold accounts, four things stop being optional. Three landed: a **purge** (`DELETE /api/me`) that removes an owner's documents, tombstones and sessions, paired with a **bulk export** (`GET /api/me/export`); a **per-owner write limit and document cap**, so the 2 MB per-doc ceiling is no longer the only bound on what one account can cost; and **session revoke** (`POST /auth/logout-all`), which needed sessions indexed by owner, since a token-keyed record can only be revoked by whoever already holds the token.
 >
@@ -62,30 +53,26 @@ Two objects, one engine.
 
 ### 3.1 Character Document (the single source of truth)
 
-A serializable JSON object holding **build choices** and **live state**, but never derived values:
+A serializable JSON object holding **build choices** and **live state**, but never derived values. The real type is `CharacterDoc` in `packages/schema/src/character.ts`; this sketch shows the split, not the fields:
 
 ```ts
 interface CharacterDoc {
-  schemaVersion: number;
+  schemaVersion: number; // saved docs migrate forward through apps/web/src/model/migrations.ts
   id: string;
-  ownerId: string; // sync: whose document this is (added in Stage 5)
+  ownerId: string; // sync: whose document this is
   version: number; // sync: optimistic-concurrency counter, bumped on each save
   updatedAt: string; // sync: ISO timestamp of last change
-  identity: { name; race; classes: { tag; level }[]; alignment; deity };
-  abilities: { str; dex; con; int; wis; cha }; // base scores only
+  identity: { name; race; classes: { tag; level }[]; alignment; deity /* ... */ };
+  abilities: Record<AbilityId, number>; // base scores only
   build: {
-    feats: FeatRef[];
-    skillRanks: Record<SkillId, number>;
-    classFeatureChoices: ChoiceRef[]; // archetypes, bonus feats, etc.
-    spells: { known: SpellRef[]; prepared: PreparedSpell[] };
-    gear: ItemInstance[];
+    // choices made in the builder: feats, skill ranks, class options, spells, gear, ...
   };
   live: {
     // session state, mutated at the table
     hp: { current; temp; nonlethal };
     conditions: ConditionId[];
     activeBuffs: ActiveBuff[]; // { sourceId, remainingRounds, changes }
-    resources: Record<ResourceId, { used; max }>; // spell slots, ki, rounds/day, charges
+    resources: Record<ResourceId, { used; max }>; // ki, rounds/day, item charges
   };
 }
 ```
@@ -96,29 +83,11 @@ interface CharacterDoc {
 function compute(doc: CharacterDoc, refData: RefData): DerivedSheet;
 ```
 
-Pure, framework-agnostic, exhaustively unit-tested. Takes a document + reference data, returns every displayed number (AC, attack lines, saves, skill totals, CMB/CMD, etc.). Toggle a condition → document changes → recompute. This package is the crown jewel and ships as a standalone module shared by builder and tracker.
+Pure, framework-agnostic, exhaustively unit-tested. Takes a document + reference data, returns every displayed number (AC, attack lines, saves, skill totals, CMB/CMD, etc.). Toggle a condition → document changes → recompute. The pipeline and the recipe for each common kind of change are in [`docs/engine-cookbook.md`](./engine-cookbook.md).
 
-## 4. Data: what we mine, and in what shape (VERIFIED against the repo)
+## 4. Data: what we mine, and in what shape
 
-Source: `gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1` (cloned, **system v11.11**, content `coreVersion 13.351`).
-
-**The packs are source YAML, one entity per file** -- _not_ compiled LevelDB. This eliminates the hardest part of the original Stage 1 (no binary extraction). They live in `packs/<type>/<name>.<foundryId>.yaml`, sometimes nested in folders.
-
-### Verified entity volumes
-
-| Pack                 | Count | Notes                                          |
-| -------------------- | ----: | ---------------------------------------------- |
-| `spells`             |  3037 | foldered by school                             |
-| `class-abilities`    |  4710 | class features, referenced by classes via UUID |
-| `items`              |  1124 | magic items, gear                              |
-| `weapons-and-ammo`   |   508 |                                                |
-| `feats`              |   390 |                                                |
-| `races`              |    82 |                                                |
-| `armors-and-shields` |    75 |                                                |
-| `classes`            |    49 | base + archetypes + NPC/prestige               |
-| `buffs`              |   207 | **pre-authored typed-modifier buffs**          |
-
-Total ~48 MB YAML. → Normalize to our JSON schema, **ship as static assets in R2**, lazy-load by category, build a client search index (Orama).
+Source: the Foundry PF1 system repo, pinned to an exact commit in `packages/data-pipeline/src/config.ts`, plus a few community datasets credited in `README.md`. The packs are **source YAML, one entity per file** (`packs/<type>/<name>.<foundryId>.yaml`), not compiled LevelDB, so there is no binary extraction. The pipeline normalizes them to JSON under `packages/data-pipeline/data/` (committed); the web app ships that JSON as static assets and caches it client-side keyed by the data version.
 
 ### How key things are actually encoded
 
@@ -146,7 +115,7 @@ system:
       - { level: 1, uuid: Compendium.pf1.class-abilities.Item.WSqWT9ZIshtC5vlV }
 ```
 
-**Correction to an earlier assumption:** feature-by-level grants _are_ data (UUID links), not code. Only the BAB/save _numbers_ per tier are fixed lookup tables we hardcode (trivial -- three BAB tiers, two save tiers).
+Feature-by-level grants _are_ data (UUID links), not code. Only the BAB/save _numbers_ per tier are fixed lookup tables we hardcode (three BAB tiers, two save tiers).
 
 **Spells are richly structured**, including per-class spell level (`packs/spells/evocation/fireball.*.yaml`):
 
@@ -171,57 +140,22 @@ Per-class spell lists are derivable by inverting `learnedAt.class`.
 <p>Prerequisites: Str 13, @UUID[Compendium.pf1.feats.Item.FUW5...]{Power Attack}, base attack bonus +1.</p>
 ```
 
-There is no structured prereq field. Feat→feat dependencies are extractable from embedded `@UUID` refs, but ability/BAB/skill prereqs are prose. **→ Hybrid validation: parse what we can, soft-warn the rest. Do not promise perfect prereq enforcement in v1.**
+There is no structured prereq field. Feat→feat dependencies are extractable from embedded `@UUID` refs, but ability/BAB/skill prereqs are prose. **→ Hybrid validation: parse what we can, soft-warn the rest. Do not promise perfect prereq enforcement.**
 
-## 5. The two genuinely hard components
+## 5. The genuinely hard components
 
-1. **Bonus-stacking engine** -- typed modifiers, "highest within type," dodge+untyped stack, penalties always stack. The data is pre-typed (§4); the algorithm is the work. Reference: their `module/utils/apply-changes.mjs` (808 lines).
-2. **Formula DSL evaluator** -- changes/spells use a Foundry roll-formula dialect with `@data.paths` and functions (`if`, `gte`, `min`, dice). The engine must evaluate these against a character data context. Reference: `module/utils/formulas.mjs` (422), `module/dice/roll.mjs` (145), `module/utils/roll-functions.mjs` (288).
+1. **Bonus-stacking engine** -- typed modifiers, "highest within type," dodge+untyped stack, penalties always stack. The data is pre-typed (§4); the algorithm is the work.
+2. **Formula DSL evaluator** -- changes/spells use a Foundry roll-formula dialect with `@data.paths` and functions (`if`, `gte`, `min`, dice). The engine must evaluate these against a character data context.
 3. _(builder)_ **Prerequisite validation graph** -- hybrid structured/soft per §4.
 
-Everything else (sheets, search, CRUD, level-up wizard UI) is conventional app work.
+Everything else (sheets, search, CRUD, level-up UI) is conventional app work. Both engine cores are clean-room (§6).
 
-## 6. Licensing -- DECIDED: AGPL-3.0-or-later (clean-room engine, Option B → AGPL)
+## 6. Licensing -- DECIDED: AGPL-3.0-or-later (clean-room engine)
 
-> **Decision (2026-07-10):** Source code is licensed **`AGPL-3.0-or-later`**. We reimplement the stacking + formula engine ourselves from the published PF1 rules; their GPL-3.0 code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle -- never copied or pasted**. Compendium _data_ remains usable under OGL/Paizo Community Use with attribution intact.
+> **Decision (2026-07-10):** Source code is licensed **`AGPL-3.0-or-later`**. We reimplement the stacking + formula engine ourselves from the published PF1 rules; Foundry's GPL-3.0 system code (`apply-changes.mjs`, `formulas.mjs`, etc.) may be used **only as a behavioral test oracle -- never copied or pasted**. Compendium _data_ remains usable under OGL/Paizo Community Use with attribution intact.
 >
-> **Why AGPL rather than the "license-free" outcome Option B nominally allows:** two reasons converged. (1) _Provenance honesty._ The engine was authored clean-room, but a chunk of it was written with an LLM assistant whose training corpus plausibly includes Foundry's public GPL-3.0 source, and the owner can't personally certify line-by-line that no protected _expression_ carried over. A permissive license (MIT) is only correct in the world where the clean-room held perfectly; AGPL-3.0 is correct in _both_ worlds, because GPL-3.0 §13 expressly permits combining GPL-3.0 with AGPL-3.0 code -- copyleft copies through either way. Under genuine uncertainty you pick the license valid regardless of which world is true. (2) _Network copyleft has teeth for a hosted app._ Plain GPL's copyleft triggers on distribution, which a SaaS deployment never does; AGPL §13 ensures a hosted fork of this web app must share its modified source. This also matches the spirit of building on shared OGL content. See `NOTICE.md` §1.
+> **Why AGPL rather than a permissive license:** two reasons converged. (1) _Provenance honesty._ The engine was authored clean-room, but a chunk of it was written with an LLM assistant whose training corpus plausibly includes Foundry's public GPL-3.0 source, and the owner can't personally certify line-by-line that no protected _expression_ carried over. A permissive license (MIT) is only correct in the world where the clean-room held perfectly; AGPL-3.0 is correct in _both_ worlds, because GPL-3.0 §13 expressly permits combining GPL-3.0 with AGPL-3.0 code -- copyleft copies through either way. Under genuine uncertainty you pick the license valid regardless of which world is true. (2) _Network copyleft has teeth for a hosted app._ Plain GPL's copyleft triggers on distribution, which a SaaS deployment never does; AGPL §13 ensures a hosted fork of this web app must share its modified source. This also matches the spirit of building on shared OGL content. See `NOTICE.md` §1.
 >
 > **Clean-room discipline:** implement from the rules text and observed behavior; don't transcribe their source. When validating, compare _outputs_ (given input X, both produce Y), not code structure.
 
-### Background (why this was the choice)
-
-- **Game content (the compendium data): OGL / Paizo Community Use.** Usable. We keep attribution and OGL section 15 intact, and respect Paizo's Community Use Policy (no Product Identity, proper notices). This part is fine.
-- **The system _code_ is GPL-3.0** (`LICENSE.txt`). Copyleft. If we **port or copy** their `apply-changes.mjs`/`formulas.mjs`, our entire app inherits GPL-3.0 obligations (must be open-sourced under GPL-3.0).
-
-Three options:
-
-| Option                                                                                                                                    | License outcome                                                                         | Effort |
-| ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------ |
-| **A. Port their engine code**                                                                                                             | Whole app must be GPL-3.0                                                               | Lowest |
-| **B. Clean-room reimplement** the engine from the published PF1 rules; use their code only as a _correctness oracle_ in tests, not copied | License-free (algorithms/rules aren't copyrightable; only their specific expression is) | Medium |
-| **C. Reimplement + only use OGL data**                                                                                                    | License-free                                                                            | Medium |
-
-**Chosen: B (clean-room engine), released under AGPL-3.0-or-later.** The stacking and formula _algorithms_ are simple and rules-derived, so reimplementing them is cheap and lets us validate against Foundry's behavior. Option B nominally permits a "license-free"/permissive outcome, but we deliberately adopt AGPL-3.0 instead -- see the Decision note above for the provenance-honesty and network-copyleft reasons. (Option A -- porting their code -- was never on the table; it would force GPL-3.0 anyway and violate clean-room discipline.)
-
-## 7. Stack (decided)
-
-- **Frontend:** React + Vite, structured to become a PWA later.
-- **Rules engine:** standalone pure-TS package (`@app/engine`), no framework deps, heavy unit tests.
-- **Reference data:** build-time pipeline (YAML → normalized JSON → R2), client-side Orama search index, lazy-loaded by category.
-- **Local state:** IndexedDB (Dexie) for the character document, even in the online-first phase (sets up offline).
-- **Server (v1):** thin Worker storing character-doc blobs (D1 or KV).
-- **Server (later):** Durable Object per session for party/GM real-time sync.
-- **Host:** Cloudflare Pages + Workers.
-
-## 8. Repo shape (proposed monorepo)
-
-```
-/packages
-  /engine        # pure rules engine + formula evaluator (the crown jewel)
-  /data-pipeline # YAML -> normalized JSON -> R2; schema definitions
-  /schema        # shared TS types: CharacterDoc, RefData, DerivedSheet
-/apps
-  /web           # React + Vite SPA (builder + tracker)
-  /api           # Cloudflare Worker (persistence; later: DO sync)
-```
+Porting Foundry's engine code was never on the table: it would force GPL-3.0 anyway and violate the discipline above.
