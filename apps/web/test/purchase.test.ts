@@ -134,9 +134,43 @@ describe("armorQuote()", () => {
     expect(quote.gp).toBe(5350);
   });
 
-  it("says so when a special material it cannot price is chosen", () => {
-    const quote = armorQuote(armor("Full Plate"), { material: "mithral" }, catalog);
-    expect(quote.gp).toBe(1500);
+  it("prices mithral and adamantine by weight class, with masterwork included", () => {
+    // Core Rulebook, Special Materials: mithral chain shirt 1,100 gp, mithral
+    // full plate 10,500 gp, mithral heavy steel shield 1,020 gp; adamantine
+    // full plate 16,500 gp.
+    expect(armorQuote(armor("Chain Shirt"), { material: "mithral" }, catalog)).toEqual({
+      gp: 1100,
+    });
+    expect(armorQuote(armor("Full Plate"), { material: "mithral" }, catalog)).toEqual({
+      gp: 10500,
+    });
+    expect(armorQuote(armor("Heavy Steel Shield"), { material: "mithral" }, catalog)).toEqual({
+      gp: 1020,
+    });
+    expect(armorQuote(armor("Full Plate"), { material: "adamantine" }, catalog)).toEqual({
+      gp: 16500,
+    });
+    // +2 mithral full plate: 1,500 + 9,000 + 4,000, no separate masterwork charge.
+    expect(
+      armorQuote(armor("Full Plate"), { material: "mithral", enhancement: 2 }, catalog).gp,
+    ).toBe(14500);
+  });
+
+  it("prices darkwood at 10 gp/lb on top of the masterwork shield", () => {
+    // Core Rulebook armor table: darkwood heavy shield 257 gp, light 203 gp.
+    expect(armorQuote(armor("Heavy Wooden Shield"), { material: "darkwood" }, catalog)).toEqual({
+      gp: 257,
+    });
+    expect(armorQuote(armor("Light Wooden Shield"), { material: "darkwood" }, catalog)).toEqual({
+      gp: 203,
+    });
+  });
+
+  it("says so when the rules list no price for the material on that item", () => {
+    // Adamantine's price table has rows for armor by weight class and for
+    // weapons, none for shields.
+    const quote = armorQuote(armor("Heavy Steel Shield"), { material: "adamantine" }, catalog);
+    expect(quote.gp).toBe(20);
     expect(quote.caveat).toBeTruthy();
   });
 });
@@ -151,6 +185,36 @@ describe("weaponQuote()", () => {
 
   it("charges masterwork alone at 300 gp", () => {
     expect(weaponQuote(weapon("Longsword"), { masterwork: true }, catalog).gp).toBe(315);
+  });
+
+  it("prices mithral weapons at 500 gp/lb and adamantine at 3,000, masterwork included", () => {
+    // Longsword, 4 lb: 15 + 2,000; +1 adds only the 2,000 enhancement.
+    expect(weaponQuote(weapon("Longsword"), { material: "mithral" }, catalog)).toEqual({
+      gp: 2015,
+    });
+    expect(
+      weaponQuote(weapon("Longsword"), { material: "mithral", enhancement: 1 }, catalog).gp,
+    ).toBe(4015);
+    expect(weaponQuote(weapon("Longsword"), { material: "adamantine" }, catalog)).toEqual({
+      gp: 3015,
+    });
+  });
+
+  it("doubles a cold iron weapon's base and adds 2,000 gp once it is enchanted", () => {
+    expect(weaponQuote(weapon("Longsword"), { material: "cold-iron" }, catalog)).toEqual({
+      gp: 30,
+    });
+    // +1 cold iron longsword: 30 + 300 + 2,000 + 2,000.
+    expect(
+      weaponQuote(weapon("Longsword"), { material: "cold-iron", enhancement: 1 }, catalog).gp,
+    ).toBe(4330);
+  });
+
+  it("prices alchemical silver by handedness, and not at all on a ranged weapon", () => {
+    expect(weaponQuote(weapon("Dagger"), { material: "silver" }, catalog)).toEqual({ gp: 22 });
+    expect(weaponQuote(weapon("Longsword"), { material: "silver" }, catalog)).toEqual({ gp: 105 });
+    expect(weaponQuote(weapon("Greatsword"), { material: "silver" }, catalog)).toEqual({ gp: 230 });
+    expect(weaponQuote(weapon("Longbow"), { material: "silver" }, catalog).caveat).toBeTruthy();
   });
 });
 

@@ -21,14 +21,16 @@
  *   point of the rule: a +1 shadow suit is priced as +2.
  * - special abilities priced in flat gp are added on top and consume no bonus
  *   budget.
+ * - special materials (Core Rulebook and Ultimate Equipment, Special
+ *   Materials): mithral and adamantine by armor weight class, shield, or
+ *   weapon (mithral weapons at 500 gp/lb), both with masterwork included;
+ *   darkwood at 10 gp/lb on top of masterwork; alchemical silver by
+ *   handedness; cold iron at double the base, plus 2,000 gp once enchanted.
  *
- * ### What is deliberately not priced
- *
- * Special materials (mithral, adamantine, cold iron, ...). The vendored data
- * carries no price for them and their real surcharges are per weight class or
- * per pound, so a quote for a special-material item says so rather than
- * quietly charging the steel price. {@link Quote.caveat} carries that sentence
- * to the picker.
+ * A material whose published price keys off something the data does not
+ * carry (an adamantine shield, a silvered ranged weapon, an item with no
+ * listed weight) is quoted without its surcharge and says so through
+ * {@link Quote.caveat}, rather than quietly charging the steel price.
  */
 import type { ArmorRef, CharacterDoc, Item, WeaponRef } from "@pf1/schema";
 
@@ -55,6 +57,56 @@ const ENHANCEMENT_COST = { armor: 1000, shield: 1000, weapon: 2000 } as const;
 const MATERIAL_CAVEAT = "special material not priced";
 
 type Craftable = keyof typeof MASTERWORK_COST;
+
+/** Body-armor surcharge by weight class (1 light, 2 medium, 3 heavy). */
+const MITHRAL_ARMOR: Partial<Record<number, number>> = { 1: 1000, 2: 4000, 3: 9000 };
+const ADAMANTINE_ARMOR: Partial<Record<number, number>> = { 1: 5000, 2: 10000, 3: 15000 };
+/** Alchemical silver by `WeaponRef.weaponSubtype`. */
+const SILVER_WEAPON: Partial<Record<string, number>> = { light: 20, "1h": 90, "2h": 180 };
+
+/** The base-item facts a material's price is keyed by. */
+interface Craft {
+  price?: number;
+  weight?: number;
+  weightClass?: number;
+  weaponSubtype?: string;
+}
+
+interface MaterialCost {
+  gp: number;
+  /** Mithral and adamantine include masterwork; darkwood is priced on top of it. */
+  masterwork: "included" | "required" | "optional";
+}
+
+/** A material's surcharge, or `null` when the published price keys off something unknown. */
+function materialCost(
+  material: string,
+  kind: Craftable,
+  item: Craft,
+  base: number,
+  enchanted: boolean,
+): MaterialCost | null {
+  const priced = (gp: number | undefined, masterwork: MaterialCost["masterwork"]) =>
+    gp == null ? null : { gp, masterwork };
+  switch (material) {
+    case "mithral":
+      if (kind === "shield") return priced(1000, "included");
+      if (kind === "armor") return priced(MITHRAL_ARMOR[item.weightClass ?? 0], "included");
+      return priced(item.weight == null ? undefined : 500 * item.weight, "included");
+    case "adamantine":
+      if (kind === "weapon") return priced(3000, "included");
+      if (kind === "armor") return priced(ADAMANTINE_ARMOR[item.weightClass ?? 0], "included");
+      return null;
+    case "darkwood":
+      return priced(item.weight == null ? undefined : 10 * item.weight, "required");
+    case "silver":
+      return kind === "weapon" ? priced(SILVER_WEAPON[item.weaponSubtype ?? ""], "optional") : null;
+    case "cold-iron":
+      return priced(base + (enchanted ? 2000 : 0), "optional");
+    default:
+      return null;
+  }
+}
 
 /** A vendored item, at its listed price. */
 export function itemQuote(item: Item | undefined, quantity = 1): Quote {
@@ -94,7 +146,7 @@ export function customQuote(price: number, quantity = 1): Quote {
 export interface BuildOptions {
   enhancement?: number;
   masterwork?: boolean;
-  /** Material id from `model/materials.ts`; anything but steel makes the quote incomplete. */
+  /** Material id from `model/materials.ts`. */
   material?: string;
   /** Selected ability ids, resolved against `catalog` for their cost. */
   abilities?: readonly string[];
@@ -102,16 +154,17 @@ export interface BuildOptions {
 
 /**
  * Price a configured armor/shield or weapon: mundane base, plus masterwork,
- * plus the squared-total enhancement surcharge, plus flat-priced abilities.
- * Returns an unpriced quote when the base itself has no listed price, since a
- * surcharge on an unknown number is not a price.
+ * plus the squared-total enhancement surcharge, plus flat-priced abilities,
+ * plus any special material. Returns an unpriced quote when the base itself
+ * has no listed price, since a surcharge on an unknown number is not a price.
  */
 function buildQuote(
-  base: number | undefined,
+  item: Craft,
   kind: Craftable,
   opts: BuildOptions,
   catalog: AbilityCatalog,
 ): Quote {
+  const base = item.price;
   if (base == null) return UNPRICED;
   const enhancement = Math.max(0, Math.trunc(opts.enhancement ?? 0));
   const magic = enhancement > 0;
@@ -125,20 +178,30 @@ function buildQuote(
     if (option.price != null) flat += option.price;
   }
 
-  const masterwork = magic || opts.masterwork === true ? MASTERWORK_COST[kind] : 0;
-  const gp = base + masterwork + bonusTotal * bonusTotal * ENHANCEMENT_COST[kind] + flat;
-  const material = opts.material && opts.material !== "steel";
-  return material ? { gp, caveat: MATERIAL_CAVEAT } : { gp };
+  const special = opts.material && opts.material !== "steel" ? opts.material : undefined;
+  const material = special
+    ? materialCost(special, kind, item, base, bonusTotal > 0 || flat > 0)
+    : undefined;
+  const wantsMasterwork = magic || opts.masterwork === true || material?.masterwork === "required";
+  const masterwork =
+    wantsMasterwork && material?.masterwork !== "included" ? MASTERWORK_COST[kind] : 0;
+  const gp =
+    base +
+    masterwork +
+    bonusTotal * bonusTotal * ENHANCEMENT_COST[kind] +
+    flat +
+    (material?.gp ?? 0);
+  return material === null ? { gp, caveat: MATERIAL_CAVEAT } : { gp };
 }
 
 /** Price an armor or shield as configured in the gear picker. */
 export function armorQuote(ref: ArmorRef, opts: BuildOptions, catalog: AbilityCatalog): Quote {
-  return buildQuote(ref.price, ref.slot === "shield" ? "shield" : "armor", opts, catalog);
+  return buildQuote(ref, ref.slot === "shield" ? "shield" : "armor", opts, catalog);
 }
 
 /** Price a weapon as configured in the weapons picker. */
 export function weaponQuote(ref: WeaponRef, opts: BuildOptions, catalog: AbilityCatalog): Quote {
-  return buildQuote(ref.price, "weapon", opts, catalog);
+  return buildQuote(ref, "weapon", opts, catalog);
 }
 
 /** `1650` -> `"1,650"`, and `12.5` -> `"12.5"` — prices run from copper to kingdoms. */

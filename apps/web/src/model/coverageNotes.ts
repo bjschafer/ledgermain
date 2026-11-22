@@ -105,12 +105,6 @@ export const COVERAGE_NOTES: readonly CoverageNote[] = [
       "1,090 entries carry structured changes[]; the imported catalog adds 3,832 whose effects exist only as prose. The gap is promotion rather than coverage, and the weapon and armor special ability catalog sits on the same axis: keen, distance and reliable are the only entries that move numbers.",
   },
   {
-    category: "Special material prices",
-    note: "Mithral, adamantine, cold iron, darkwood, and alchemical silver carry no price in the published data the sheet reads, so a picker quotes a suit or weapon made of one at its ordinary price. The surcharge is yours to take off your coin by hand.",
-    issueDetail:
-      "5 special materials in the picker, none priced: the vendored armor and weapon entries carry a single base price and the real surcharges are per weight class or per pound, so they would have to be hand-authored alongside the material table.",
-  },
-  {
     category: "Metamagic",
     note: "Most metamagic feats change something the sheet has no number for: a bouncing spell's redirect, an elemental spell's swapped damage type, a quickened spell's action. Those stay rules text on the feat.",
     issueDetail:
@@ -157,7 +151,7 @@ export const INTERNAL_GAPS: readonly InternalGap[] = [
   {
     category: "Immunity grants",
     detail:
-      "Features and traits that grant an immunity have no display target: the derived sheet carries no immunities block, so every immunity grant stays prose.",
+      "Items, traits, and feats that grant an immunity carry no structured change for it, so those grants stay prose.",
   },
   {
     category: "Skill substitutions",

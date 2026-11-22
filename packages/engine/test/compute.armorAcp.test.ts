@@ -79,6 +79,14 @@ describe("armorPieceAcp() (CRB, Equipment: masterwork armor)", () => {
     expect(armorPieceAcp({ acp: -2, enhancement: 1, material: "mithral" })).toBe(-2);
   });
 
+  it("darkwood +1 tower shield: -8 listed (already includes masterwork) stays -8, not -7", () => {
+    // Core Rulebook, Special Materials: a darkwood shield's armor check
+    // penalty "is lessened by 2 compared to an ordinary shield of its type",
+    // and darkwood is always masterwork. A tower shield's listed 10 is
+    // applied at pick time as 8; the +1 must not stack a further -1.
+    expect(armorPieceAcp({ acp: -8, enhancement: 1, material: "darkwood" })).toBe(-8);
+  });
+
   it("non-mithral special material still gets the ordinary masterwork -1", () => {
     // Adamantine has no mechanical ACP adjustment in this repo's material
     // table, so a masterwork adamantine breastplate reduces normally.

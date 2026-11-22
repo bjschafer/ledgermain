@@ -757,9 +757,9 @@ function heaviestWornArmorType(doc: CharacterDoc): number {
  * masterwork/enhancement reduction, so it applies uniformly whether the
  * armor came from `RefData` or was entered by hand.
  *
- * Mithral is excluded: per RAW, mithral armor "is also always considered
- * masterwork," and this repo's -3 mithral ACP adjustment (see
- * `apps/web/src/model/materials.ts`) already represents that combined
+ * Mithral and darkwood are excluded: per RAW both are always masterwork, and
+ * their pick-time ACP adjustments (mithral -3, a darkwood shield -2; see
+ * `apps/web/src/model/materials.ts`) already represent that combined
  * reduction, not an additional stack on top of it.
  */
 export function armorPieceAcp(
@@ -768,7 +768,7 @@ export function armorPieceAcp(
   const raw = armor.acp ?? 0;
   if (raw >= 0) return 0;
   const masterworked = armor.masterwork === true || (armor.enhancement ?? 0) >= 1;
-  if (!masterworked || armor.material === "mithral") return raw;
+  if (!masterworked || armor.material === "mithral" || armor.material === "darkwood") return raw;
   return Math.min(0, raw + 1);
 }
 

@@ -32,7 +32,7 @@ import {
 import { applyAbilitiesToWeapon, sanitizeAbilities } from "./abilities.js";
 import { localId } from "./ids.js";
 import { CURRENT_SCHEMA_VERSION } from "./migrations.js";
-import { applyMaterialToArmor, MATERIALS } from "./materials.js";
+import { applyMaterialToArmor, MATERIALS, materialWeight } from "./materials.js";
 import { normalizeAlignmentCode, slugifySkillLabel } from "./names.js";
 import { isPortraitDataUrl } from "./portrait.js";
 import { favoredClassBonusLevels } from "./race.js";
@@ -1417,10 +1417,8 @@ export function addWornArmorFromRef(
     // ASF is read from `ref`, not the base `armor`, so mithral's -10% (applied
     // by `applyMaterialToArmor`) is captured in the snapshot.
     ...(ref.asf ? { asf: ref.asf } : {}),
-    // Weight (encumbrance) is read from the base ref, not
-    // `applyMaterialToArmor`'s output — mithral's real-world weight halving
-    // isn't modeled by that helper yet (documented gap in materials.ts).
-    ...(armor.weight ? { weight: armor.weight } : {}),
+    // Weight (encumbrance) comes from `ref` too: mithral and darkwood halve it.
+    ...(ref.weight ? { weight: ref.weight } : {}),
     ...(shieldTier ? { shieldTier } : {}),
   });
   const inst: ItemInstance = {
@@ -2259,7 +2257,7 @@ export function addWeaponFromRef(
     ...(ref.weaponGroups && ref.weaponGroups.length > 0
       ? { weaponGroups: ref.weaponGroups.map(normalizeWeaponGroup) }
       : {}),
-    ...(ref.weight ? { weight: ref.weight } : {}),
+    ...(ref.weight ? { weight: materialWeight(ref.weight, material) } : {}),
     ...(ref.rangeIncrement ? { rangeIncrement: ref.rangeIncrement } : {}),
     ...(ref.misfire ? { misfire: ref.misfire } : {}),
     ...(ref.capacity ? { capacity: ref.capacity } : {}),

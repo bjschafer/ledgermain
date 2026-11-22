@@ -188,6 +188,17 @@ describe("addWornArmorFromRef()", () => {
     } satisfies WornArmor);
   });
 
+  it("halves weight for mithral and darkwood, and eases a darkwood shield's ACP by 2", () => {
+    // Core Rulebook, Special Materials: both weigh half as much; a darkwood
+    // shield's check penalty is lessened by 2 (heavy wooden shield 2 -> 0).
+    const plate = addWornArmorFromRef(doc(), { ...FULL_PLATE, weight: 50 }, 0, "mithral");
+    expect(plate.build.gear[0]!.armor!.weight).toBe(25);
+    const shield: ArmorRef = { ...COMP_BUCKLER, name: "Heavy Wooden Shield", acp: 2, weight: 10 };
+    const wooden = addWornArmorFromRef(doc(), shield, 0, "darkwood");
+    expect(wooden.build.gear[0]!.armor).toMatchObject({ weight: 5, material: "darkwood" });
+    expect(wooden.build.gear[0]!.armor!.acp).toBeUndefined();
+  });
+
   it("applies +3 enhancement: name suffix, enhancement field set", () => {
     const d = addWornArmorFromRef(doc(), FULL_PLATE, 3);
     const inst = d.build.gear[0]!;

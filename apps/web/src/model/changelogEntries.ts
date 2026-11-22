@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-21-special-material-prices",
+    date: "2026-11-21",
+    title: "Mithral, adamantine and friends cost what they should",
+    note: "Buying armor or a weapon made of mithral, adamantine, darkwood, cold iron or alchemical silver charges the published surcharge, with masterwork folded in where the material includes it. Mithral and darkwood gear weighs half as much, so it counts that way toward your load, and a darkwood shield's armor check penalty drops by 2.",
+  },
+  {
     id: "2026-11-21-ledgermain-app",
     date: "2026-11-21",
     title: "Ledgermain has its own address",
