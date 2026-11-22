@@ -140,13 +140,20 @@ a {
 
 .masthead--workbench {
   display: grid;
-  grid-template: "brand modes tools" minmax(64px, auto) / minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template: "context modes tools" minmax(64px, auto) / minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   column-gap: var(--space-3);
 }
 
+.masthead-context {
+  grid-area: context;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 .masthead-brand {
-  grid-area: brand;
+  flex: none;
 }
 
 .masthead--workbench .mode-tabs {
@@ -154,12 +161,13 @@ a {
   align-self: stretch;
 }
 
-@media (max-width: 940px) {
+@media (max-width: 1040px) {
   .masthead--workbench {
     grid-template:
-      "brand tools" auto
-      "modes modes" auto / auto minmax(0, 1fr);
-    padding-top: var(--space-3);
+      "context tools" auto
+      "modes modes" auto / minmax(0, 1fr) minmax(0, 1fr);
+    row-gap: var(--space-2);
+    padding-top: var(--space-2);
   }
 }
 
@@ -193,6 +201,7 @@ a {
   grid-area: tools;
   flex-wrap: wrap;
   justify-content: flex-end;
+  padding-block: var(--space-2);
   min-width: 0;
   max-width: 100%;
 }
@@ -216,20 +225,6 @@ a {
 .ref-link:hover {
   color: var(--gold-2);
   border-color: var(--gold-dim);
-}
-
-.char-switcher {
-  min-width: 0;
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  color: var(--ink);
-  font-size: 0.75rem;
-}
-
-.char-switcher:disabled {
-  opacity: 0.6;
-  cursor: wait;
 }
 
 .action-error {
@@ -390,7 +385,11 @@ a {
   }
 
   .masthead--workbench {
-    column-gap: var(--space-2);
+    grid-template: "context" auto "tools" auto "modes" auto / minmax(0, 1fr);
+  }
+
+  .masthead-context {
+    justify-content: space-between;
   }
 
   .masthead-brand .wordmark {
@@ -399,6 +398,7 @@ a {
 
   .masthead-tools {
     gap: var(--space-2);
+    padding-block: 0;
   }
 
   .masthead-right {
@@ -7824,26 +7824,23 @@ input[type="text"].saved-roll-name:focus {
   }
 }
 
-/* ------------------------------------------------- character switcher (v2)
-   Issue #63: the masthead character switcher (`CharacterSwitcher.tsx`) was a
-   bare native <select> — replaced with a small styled listbox dropdown. The
-   wrapper keeps the original `.char-switcher` pill styling declared earlier
-   in this file (background/border/radius/color/font-size, from when that
-   class named the <select> itself); these rules only ADD popover
-   positioning to that same selector and style the new trigger button +
-   listbox it now contains, so the two blocks combine rather than conflict. */
+/* ------------------------------------------------------ character switcher -- */
 
 .char-switcher {
   position: relative;
-  display: inline-block;
+  min-width: 0;
+  max-width: 220px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
 }
 
 .char-switcher-trigger {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  min-width: 120px;
-  max-width: 220px;
+  width: 100%;
+  min-height: 32px;
   background: none;
   border: none;
   color: var(--ink);
@@ -7885,9 +7882,11 @@ input[type="text"].saved-roll-name:focus {
 .char-switcher-list {
   position: absolute;
   top: calc(100% + 4px);
-  right: 0;
+  left: 0;
   z-index: var(--z-dropdown);
-  min-width: 220px;
+  width: max-content;
+  min-width: max(100%, 220px);
+  max-width: min(24rem, calc(100vw - 48px));
   max-height: 320px;
   overflow-y: auto;
   margin: 0;
@@ -7911,9 +7910,7 @@ input[type="text"].saved-roll-name:focus {
   font-size: 0.8125rem;
   color: var(--ink);
   cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
 }
 
 .char-switcher-opt.is-highlighted {
@@ -7945,8 +7942,7 @@ input[type="text"].saved-roll-name:focus {
 
 @media (max-width: 640px) {
   .char-switcher-trigger {
-    min-width: 0;
-    max-width: 128px;
+    padding-inline: var(--space-3);
     min-height: var(--tap-min);
   }
 
@@ -7955,17 +7951,14 @@ input[type="text"].saved-roll-name:focus {
   }
 
   .char-switcher-list {
-    max-width: calc(100vw - 24px);
+    left: auto;
+    right: 0;
   }
 }
 
 @media (max-width: 360px) {
   .masthead-brand .wordmark {
     font-size: 1.25rem;
-  }
-
-  .char-switcher-trigger {
-    max-width: 112px;
   }
 }
 

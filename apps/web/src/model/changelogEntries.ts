@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-21-character-picker-layout",
+    date: "2026-11-21",
+    title: "Find your character picker beside the wordmark",
+    note: "The character picker stays beside the Ledgermain wordmark, even when you're signed in. Long character names wrap in the open list so you can tell them apart.",
+  },
+  {
     id: "2026-11-21-sheet-at-a-glance",
     date: "2026-11-21",
     title: "Find your stats at a glance",

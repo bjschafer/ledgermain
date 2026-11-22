@@ -54,10 +54,11 @@ players can find sections in the main column. Keep secondary actions neutral.
 Use sentence case and the body face for navigation, controls, and sheet
 headings; reserve small mono labels for the individual stat keys.
 
-Center primary navigation between the Ledgermain wordmark and utilities on
-wide screens. On narrow screens, give it its own row. The reference site
-follows the same masthead and rules, with Search and Summons in place of
-character modes. Both apps share the palette and type stack in `@pf1/tokens`.
+Keep the character picker beside the wordmark so account controls can't push
+it onto another row. Center primary navigation on wide screens and give it a
+full row on narrower ones. On phones, utilities sit below the wordmark and
+picker. The reference site uses Search and Summons in place of character
+modes. Both apps share the palette and type stack in `@pf1/tokens`.
 
 Lead Play with HP and running effects. Keep catalog results out of the way
 until requested, and keep less frequent actions like New day in the chrome,

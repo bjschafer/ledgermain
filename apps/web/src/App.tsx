@@ -158,11 +158,22 @@ export function App() {
       <PreviewNotice />
       <ToastHost />
       <header className="masthead masthead--workbench">
-        <div className="masthead-brand">
-          <div className="wordmark">
-            Ledger<span className="gilt">main</span>
+        <div className="masthead-context">
+          <div className="masthead-brand">
+            <div className="wordmark">
+              Ledger<span className="gilt">main</span>
+            </div>
+            <div className="tagline">Pathfinder 1e</div>
           </div>
-          <div className="tagline">Pathfinder 1e</div>
+          {store.doc && (
+            <CharacterSwitcher
+              characters={store.characters}
+              activeId={store.doc.id}
+              disabled={store.actionPending}
+              onSwitch={(id) => void store.switchCharacter(id)}
+              onCreate={() => void store.createCharacter()}
+            />
+          )}
         </div>
         <div
           className="mode-tabs"
@@ -229,15 +240,6 @@ export function App() {
             onSignIn={() => void store.signIn()}
             onSignOut={() => void store.signOut()}
           />
-          {store.doc && (
-            <CharacterSwitcher
-              characters={store.characters}
-              activeId={store.doc.id}
-              disabled={store.actionPending}
-              onSwitch={(id) => void store.switchCharacter(id)}
-              onCreate={() => void store.createCharacter()}
-            />
-          )}
           {store.actionError && (
             <button
               type="button"
