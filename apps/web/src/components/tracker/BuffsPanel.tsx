@@ -48,6 +48,9 @@ import type { BuilderProps } from "../builder/types.js";
 
 export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
   const [query, setQuery] = useState("");
+  const [browsing, setBrowsing] = useState(false);
+  const matchQuery = query.trim().toLowerCase();
+  const showMatches = browsing || matchQuery.length > 0;
   const [step, setStep] = useState(1);
   const casterLevel = Math.max(1, sheet.level);
 
@@ -60,13 +63,13 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
   );
 
   const matches = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    if (!showMatches) return [];
     return Object.values(refData.buffs)
       .filter((buff) => !isPanelOwnedBuff({ buffId: buff.id }))
-      .filter((b) => !q || b.name.toLowerCase().includes(q))
+      .filter((b) => b.name.toLowerCase().includes(matchQuery))
       .sort((a, b) => a.name.localeCompare(b.name))
       .slice(0, 60);
-  }, [refData.buffs, query]);
+  }, [refData.buffs, matchQuery, showMatches]);
 
   const activeBuffIds = useMemo(
     () => new Set(doc.live.activeBuffs.map((b) => b.buffId).filter((id): id is string => !!id)),
@@ -160,68 +163,81 @@ export function BuffsPanel({ doc, sheet, refData, update }: BuilderProps) {
         </div>
       )}
 
-      <h4 className="tracker-sub">Add a buff</h4>
-      <input
-        className="search"
-        type="text"
-        placeholder="Search the buff compendium…"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <div className="scroll short">
-        {matches.length === 0 && query.trim() ? (
-          <SearchMiss query={query.trim()} picker="buffs" />
+      <div className="buff-search">
+        <input
+          type="text"
+          aria-label="Search buffs"
+          placeholder="Search the buff compendium…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        {!matchQuery ? (
+          <button
+            type="button"
+            className="btn-ghost"
+            aria-expanded={browsing}
+            onClick={() => setBrowsing((open) => !open)}
+          >
+            Browse buffs
+          </button>
         ) : null}
-        {matches.map((buff) => {
-          const isActive = activeBuffIds.has(buff.id);
-          return (
-            <div className="pick-row" key={buff.id}>
-              <div className="pmain">
-                <div className="pname">
-                  {buff.name} <PartialBadge changes={buff.changes} />{" "}
-                  <NoEffectHint
-                    buffId={buff.id}
-                    changes={buff.changes}
-                    contextNotes={buff.contextNotes}
-                  />
-                </div>
-                <div className="preq">
-                  {buff.changes.slice(0, 4).map((c, i) => (
-                    <InfoTip key={i} content={c.formula}>
-                      {changeTargetLabel(c.target)} {formulaHint(c, { casterLevel }, rollData)}
-                    </InfoTip>
-                  ))}
-                </div>
-                <BuffRollDataScope casterLevel={casterLevel}>
-                  {buff.contextNotes?.map((n, i) => (
-                    <RulesNote
-                      key={i}
-                      text={n.text}
-                      appliedAutomatically={
-                        saveNoteCoverage({ catalog: "buff", buffName: buff.name }, n) === "full"
-                      }
-                    />
-                  ))}
-                </BuffRollDataScope>
-              </div>
-              {isActive ? (
-                <InfoTip
-                  className="buff-already-active"
-                  content="Already active: remove the active copy first to add another"
-                >
-                  Active ✓
-                </InfoTip>
-              ) : needsElementChoice(buff.id) ? (
-                <ElementAdd onAdd={(element) => add(buff, element)} />
-              ) : (
-                <button type="button" className="pick-btn add" onClick={() => add(buff)}>
-                  Add
-                </button>
-              )}
-            </div>
-          );
-        })}
       </div>
+      {showMatches ? (
+        <div className="scroll short">
+          {matches.length === 0 && query.trim() ? (
+            <SearchMiss query={query.trim()} picker="buffs" />
+          ) : null}
+          {matches.map((buff) => {
+            const isActive = activeBuffIds.has(buff.id);
+            return (
+              <div className="pick-row" key={buff.id}>
+                <div className="pmain">
+                  <div className="pname">
+                    {buff.name} <PartialBadge changes={buff.changes} />{" "}
+                    <NoEffectHint
+                      buffId={buff.id}
+                      changes={buff.changes}
+                      contextNotes={buff.contextNotes}
+                    />
+                  </div>
+                  <div className="preq">
+                    {buff.changes.slice(0, 4).map((c, i) => (
+                      <InfoTip key={i} content={c.formula}>
+                        {changeTargetLabel(c.target)} {formulaHint(c, { casterLevel }, rollData)}
+                      </InfoTip>
+                    ))}
+                  </div>
+                  <BuffRollDataScope casterLevel={casterLevel}>
+                    {buff.contextNotes?.map((n, i) => (
+                      <RulesNote
+                        key={i}
+                        text={n.text}
+                        appliedAutomatically={
+                          saveNoteCoverage({ catalog: "buff", buffName: buff.name }, n) === "full"
+                        }
+                      />
+                    ))}
+                  </BuffRollDataScope>
+                </div>
+                {isActive ? (
+                  <InfoTip
+                    className="buff-already-active"
+                    content="Already active: remove the active copy first to add another"
+                  >
+                    Active ✓
+                  </InfoTip>
+                ) : needsElementChoice(buff.id) ? (
+                  <ElementAdd onAdd={(element) => add(buff, element)} />
+                ) : (
+                  <button type="button" className="pick-btn add" onClick={() => add(buff)}>
+                    Add
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
 
       <CustomBuffForm
         onAdd={(name, target, type, value, rounds, note) =>

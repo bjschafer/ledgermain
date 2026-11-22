@@ -101,7 +101,9 @@ export function StatStrip({ doc, sheet, refData, update, showRound }: StatStripP
             onClick={() => update((d) => advanceRound(d).doc)}
             aria-label={`Round ${round}. Advance to round ${round + 1}`}
           >
-            <span className="stat-strip-label">Round</span>
+            <span className="stat-strip-label">
+              Round <span aria-hidden="true">→</span>
+            </span>
             <span className="stat-strip-value num">{round}</span>
           </button>
           {round > 1 && (

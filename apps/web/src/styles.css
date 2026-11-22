@@ -1,5 +1,5 @@
 /* ============================================================================
-   Scrivener — PF1e Character Forge
+   Ledgermain — Pathfinder 1e character sheet
    Direction: "Illuminated ledger" (see DESIGN_NOTES.md). Dark gilded workbench;
    tabular ledger numerals; the signature is the gold stat seal + provenance.
 
@@ -75,8 +75,7 @@ body,
 }
 
 body {
-  background: radial-gradient(1200px 600px at 80% -10%, #1c2733 0%, transparent 60%), var(--bg);
-  background-repeat: no-repeat;
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--body);
   font-size: 0.9375rem;
@@ -127,19 +126,28 @@ a {
 }
 
 .masthead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 22px 0 16px;
   border-bottom: 1px solid var(--line);
+}
+
+.masthead:not(.masthead--workbench),
+.masthead-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-4) 0;
+}
+
+.masthead--workbench .masthead-top {
+  padding-bottom: var(--space-2);
 }
 
 .masthead .wordmark {
   font-family: var(--display);
   font-size: 1.625rem;
   font-weight: 600;
+  line-height: 1.1;
 }
 
 .masthead .wordmark .gilt {
@@ -154,10 +162,19 @@ a {
   color: var(--muted);
 }
 
-.masthead-right {
+.masthead-right,
+.masthead-tools {
   display: flex;
   align-items: center;
   gap: var(--space-3);
+}
+
+.masthead-tools {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  margin-left: auto;
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* Masthead link out to the companion reference site (ReferenceLink.tsx).
@@ -182,13 +199,12 @@ a {
 }
 
 .char-switcher {
-  width: auto;
+  min-width: 0;
   background: var(--surface-2);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--ink);
   font-size: 0.75rem;
-  padding: 4px 8px;
 }
 
 .char-switcher:disabled {
@@ -348,21 +364,26 @@ a {
   color: var(--muted);
 }
 
-/* Phone pass: below 640px the masthead wraps and `.masthead-right` lands on
-   its own line — let it become a full-width row (switcher on the left, sync
-   control on the right, matching where the character switcher trigger's
-   dropdown now anchors — see `.char-switcher-list` below) instead of a
-   cluster floating at an arbitrary x-offset. Sync/error controls grow to
-   `--tap-min` alongside the switcher trigger's own phone-pass rule. */
 @media (max-width: 640px) {
-  .masthead-right {
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  .app {
+    padding-inline: clamp(12px, 4vw, 24px);
   }
 
-  .masthead-right .char-switcher {
-    order: -1;
+  .masthead--workbench .masthead-top {
+    column-gap: var(--space-2);
+    padding-top: var(--space-3);
+  }
+
+  .masthead-brand .wordmark {
+    font-size: 1.375rem;
+  }
+
+  .masthead-tools {
+    gap: var(--space-2);
+  }
+
+  .masthead-right {
+    flex-wrap: wrap;
   }
 
   .sync-signin,
@@ -376,6 +397,7 @@ a {
   /* Phone: the book glyph carries it. The word costs a line-wrap in a row
      that's already fighting for width. */
   .ref-link-label {
+    /* The link keeps its accessible label when the text is hidden. */
     display: none;
   }
 
@@ -412,6 +434,11 @@ a {
        whole grid, and therefore the page, wider than the viewport. This was
        a real horizontal-scroll bug on phone (Ability Scores' header hint). */
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .layout {
+    gap: var(--space-2);
+    margin-top: var(--space-3);
   }
 }
 
@@ -516,28 +543,14 @@ a {
   overflow: hidden;
 }
 
-/* Gold-tinted band rather than solid gold. Headers need to break up the page's
-   wall-of-text, but a full-chroma band is the brightest thing on a --bg page
-   and it repeats once per panel — stacked, they all compete and the eye never
-   settles. Tinting keeps the section break while spending the accent budget on
-   small areas instead: the bottom rule and the icon. The title itself is --ink,
-   which separates from the gold-tinted band by lightness rather than restating
-   its hue.
-   Solid `linear-gradient(--gold-2, --gold)` is also .floating-btn's fill, i.e.
-   the primary-action signature; headers aren't actions and shouldn't wear it.
-
-   The band (#38352e) is lighter than --surface-2, so it — not surface-2 — is
-   now the lightest surface text sits on. --ink (9.6:1) and --muted (4.6:1)
-   still clear AA on it; --faint and --oxblood-ink don't, and get lighter
-   header-scoped variants below. */
 .panel > header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 12px 16px;
-  background: color-mix(in oklab, var(--gold) 18%, var(--surface));
-  border-bottom: 2px solid var(--gold);
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
 }
 
 .panel > header h2 {
@@ -562,26 +575,7 @@ a {
 .panel-icon svg {
   width: 1.125rem;
   height: 1.125rem;
-  color: var(--gold-2);
-}
-
-/* --faint drops to 3.8:1 on the band; --muted is the next step up that holds
-   AA while still reading quieter than the title. */
-.panel > header .warn-under {
-  color: var(--muted);
-}
-
-/* --oxblood-ink is 3.6:1 on the band. Same hue, lightened until it clears AA
-   (5.2:1) so the warning stays legible without going dark-on-light. */
-.panel > header .warn-over,
-.panel > header .budge.over b {
-  color: #e59484;
-}
-
-/* --line all but vanishes on the band (1.02:1); --gold-dim-ink clears the 3:1
-   UI-component bar and ties the button to the band's warmth. */
-.panel > header .btn-ghost {
-  border-color: var(--gold-dim-ink);
+  color: var(--gold);
 }
 
 .panel .body {
@@ -869,6 +863,7 @@ input[type="number"] {
 input:focus-visible,
 select:focus-visible,
 button:focus-visible,
+a:focus-visible,
 .seal:focus-visible,
 [role="button"]:focus-visible {
   outline: 2px solid var(--gold-2);
@@ -2210,8 +2205,9 @@ button:focus-visible,
 /* ================================================================ the SHEET -- */
 
 .sheet {
-  background: linear-gradient(180deg, rgba(201, 162, 39, 0.05), transparent 120px), var(--surface);
+  background: var(--surface);
   border: 1px solid var(--line);
+  border-top: 2px solid var(--gold-dim);
   border-radius: var(--radius);
   padding: 20px;
 }
@@ -2272,12 +2268,6 @@ button:focus-visible,
 
 .sheet .char-identity.char-languages {
   margin-top: 2px;
-}
-
-.rule-gold {
-  height: 1px;
-  background: linear-gradient(90deg, var(--gold), transparent);
-  margin: 16px 0;
 }
 
 /* seal-cell wraps expandable seals so the button fills the grid cell height */
@@ -2384,43 +2374,45 @@ button:focus-visible,
 
 /* ------------------------------------------------------------ stat groups -- */
 
-/* Full-width hero band housing the HP seal */
+/* A short gauge leaves the number on the same readable surface at any HP. */
 .stat-hero-band {
-  margin-bottom: 16px;
-  /* Default fill level; the inline style on this element overrides it per-HP.
-	   It MUST live here (not on `.seal`) so `.seal` inherits the live value — a
-	   `--hp-pct` declared on `.seal` would shadow the inherited one and pin it. */
+  margin: var(--space-4) 0;
   --hp-pct: 100%;
+  --hp-fill: var(--gold-dim);
+}
+
+.stat-hero-band[data-hp-low="true"] {
+  --hp-fill: var(--oxblood);
 }
 
 .stat-hero-band .seal {
-  /* HP-driven gauge: the box itself is a horizontal bar — a gold fill recedes
-	   left→right as HP drops (`--hp-pct`, inherited from `.stat-hero-band`), the
-	   spent portion darkened. Turns oxblood when HP is low. */
-  --hp-fill: rgba(201, 162, 39, 0.42);
-  background:
-    linear-gradient(to right, var(--hp-fill) var(--hp-pct), rgba(0, 0, 0, 0.5) var(--hp-pct)),
-    var(--surface-2);
-  border-color: var(--gold-dim);
-  min-height: 100px;
-  transition:
-    background 0.4s ease,
-    border-color 0.4s ease;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: var(--space-2);
+  min-height: 0;
+  padding: 9px 24px 13px 12px;
+  text-align: left;
 }
-.stat-hero-band[data-hp-low="true"] .seal {
-  --hp-fill: rgba(176, 74, 55, 0.6);
-  border-color: var(--oxblood);
+
+.stat-hero-band .seal::before {
+  content: "";
+  position: absolute;
+  inset: auto 12px 5px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(to right, var(--hp-fill) var(--hp-pct), var(--line) 0);
 }
 
 .stat-hero-band .seal .seal-value {
-  font-size: 2.75rem;
+  font-size: 1.875rem;
 }
 
-/* The HP box sits on a gold fill, so the dim default foot color is unreadable. */
+.stat-hero-band[data-hp-low="true"] .seal .seal-value {
+  color: var(--oxblood-ink);
+}
+
 .stat-hero-band .seal .seal-foot {
-  color: var(--ink);
   font-size: 0.6875rem;
-  opacity: 0.8;
 }
 
 /* A labeled group: legend + hairline + sub-grid */
@@ -3264,29 +3256,35 @@ button:focus-visible,
 
 /* ============================================================ the TRACKER -- */
 
-/* mode tabs (Build / Play) */
+/* A flat folio rail: the active mode shares its rule with the page edge. */
 .mode-tabs {
-  display: inline-flex;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  overflow: hidden;
-  background: var(--surface-2);
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: -1px;
 }
 
 .mode-tab {
   background: none;
   border: 0;
-  padding: 6px 18px;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-family: var(--mono);
+  border-bottom: 2px solid transparent;
+  padding: 8px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--muted);
 }
 
-.mode-tab.active {
-  background: linear-gradient(180deg, #2c2718, #211d12);
+.mode-tab:hover {
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.mode-tab[aria-selected="true"] {
+  border-bottom-color: var(--gold);
   color: var(--gold-2);
+}
+
+.mode-tab:focus-visible {
+  outline-offset: -2px;
 }
 
 /* Aggregate unfinished-business count on the Build tab (see App.tsx's
@@ -3403,29 +3401,18 @@ button:focus-visible,
   padding: 6px 12px;
 }
 
-/* new-day bar (issue #30) — sits above the tracker panels, one level up from
-   any single panel's own "rest" button since it acts across all of them. */
 .new-day-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: var(--gap);
+  min-width: 0;
+  text-align: right;
 }
 
-.btn-act.new-day {
+.btn-ghost.new-day:hover {
   border-color: var(--gold-dim);
-  color: var(--gold-2);
-  font-weight: 600;
-}
-
-.btn-act.new-day:hover {
-  border-color: var(--gold-2);
-  background: var(--surface-2);
 }
 
 .new-day-reminder {
   font-size: 0.75rem;
+  margin-top: var(--space-1);
 }
 
 /* HP panel */
@@ -3521,38 +3508,29 @@ button:focus-visible,
 
 .hp-controls {
   display: grid;
-  grid-template-columns: minmax(9ch, 0.8fr) 1fr 1fr;
+  grid-template-columns: minmax(0, 1.6fr) 1fr 1fr;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-2);
 }
 
-/* The amount field takes free text ("12b 6c"), so it needs room for more than
-   a two-digit number — and its ⓘ rides alongside without adding a grid column. */
-.hp-amt-wrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.hp-controls .hp-amt {
+  min-width: 0;
+  font-family: var(--mono);
 }
 
-/* The input flexes; the ⓘ must not be squeezed to a sliver beside it. */
-.hp-amt {
-  flex: 1 1 auto;
-  min-width: 6ch;
-}
-
-.hp-amt-wrap > .chip-info {
-  flex: 0 0 auto;
-}
-
-.hp-damage-hint {
-  font-size: 0.6875rem;
+.hp-damage-help {
+  font-size: 0.75rem;
   color: var(--muted);
-  margin: -4px 0 10px;
+  margin-bottom: var(--space-3);
 }
 
-.hp-damage-hint code,
+.hp-damage-help-link {
+  color: var(--gold-2);
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
 .hp-damage-note code {
-  font-size: 0.9em;
   padding: 1px 4px;
   border-radius: 4px;
   border: 1px solid var(--line);
@@ -3876,6 +3854,20 @@ button:focus-visible,
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
   margin-bottom: 8px;
+}
+
+.buff-search {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.buff-search input {
+  min-width: 0;
+}
+
+.buff-search button {
+  flex-shrink: 0;
 }
 
 .buff-row {
@@ -6933,8 +6925,13 @@ input[type="text"].saved-roll-name:focus {
    play grow to a comfortable ~44px tap target. Desktop/iPad are untouched. */
 @media (max-width: 640px) {
   .mode-tab {
-    padding: 12px 16px;
-    font-size: 0.75rem;
+    flex: 1;
+    min-height: var(--tap-min);
+    padding-inline: var(--space-2);
+  }
+
+  .hp-controls .hp-amt {
+    font-size: 1rem;
   }
 
   .btn-act {
@@ -7154,9 +7151,7 @@ input[type="text"].saved-roll-name:focus {
     border-bottom: 1px solid var(--line);
   }
 
-  /* The stats scroll; the round clock beside them does not, so the one
-     control here stays reachable on a narrow phone where the eight stat
-     items already overflow. */
+  /* The clock stays in view even if the numbers need to scroll. */
   .stat-strip-scroll {
     display: flex;
     gap: 16px;
@@ -7192,6 +7187,7 @@ input[type="text"].saved-roll-name:focus {
     background: none;
   }
 
+  .round-advance:hover,
   .round-advance:active {
     border-color: var(--gold-2);
   }
@@ -7235,6 +7231,37 @@ input[type="text"].saved-roll-name:focus {
   }
 }
 
+@media (max-width: 640px) {
+  .stat-strip {
+    gap: var(--space-2);
+    padding-inline: var(--space-2);
+  }
+
+  /* Keep saves in sight as well as AC. Only scroll at very narrow widths
+     with enlarged text rather than shrinking the numbers. */
+  .stat-strip-scroll {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(max-content, 1fr));
+    gap: var(--space-1);
+    padding-right: 0;
+    mask-image: none;
+    scrollbar-width: thin;
+  }
+
+  .stat-strip-scroll::-webkit-scrollbar {
+    display: block;
+    height: 4px;
+  }
+
+  .stat-strip-scroll .stat-strip-item {
+    min-width: 0;
+  }
+
+  .stat-strip-round {
+    padding-left: var(--space-2);
+  }
+}
+
 /* ============================================================================
    Build nav — section-jump navigation for Build mode (UX audit: "Build-tab
    navigation + attention badges"). One `<nav class="build-nav">` (see
@@ -7270,7 +7297,7 @@ input[type="text"].saved-roll-name:focus {
   padding: 5px 8px;
   text-align: left;
   color: var(--faint);
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   line-height: 1.3;
 }
 
@@ -7303,9 +7330,6 @@ input[type="text"].saved-roll-name:focus {
 .build-nav-label {
   flex: 1;
   min-width: 0;
-  font-family: var(--mono);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -7345,8 +7369,8 @@ input[type="text"].saved-roll-name:focus {
     overflow-x: auto;
     overflow-y: visible;
     gap: 4px;
-    padding: 8px 4px;
-    margin: 0 0 4px;
+    padding: 0;
+    margin: 0;
     background: var(--bg);
     border-bottom: 1px solid var(--line);
     z-index: 5;
@@ -7354,12 +7378,13 @@ input[type="text"].saved-roll-name:focus {
   }
 
   .build-nav-item {
-    flex-direction: row;
+    align-items: center;
     flex-shrink: 0;
     width: auto;
     border-left: none;
     border-bottom: 2px solid transparent;
     border-radius: var(--radius);
+    min-height: var(--tap-min);
     padding: 6px 10px;
     white-space: nowrap;
   }
@@ -7434,11 +7459,23 @@ input[type="text"].saved-roll-name:focus {
   border-top: 1px solid var(--line);
 }
 
+.play-group-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
 .tracker-col > .play-group:first-of-type .play-group-head,
 .settings-col > .settings-group:first-of-type .settings-group-head {
   margin-top: 0;
   padding-top: 0;
   border-top: none;
+}
+
+.play-group-toolbar .play-group-head {
+  margin-bottom: 0;
 }
 
 /* Collapse a whole group (label included) when none of its panels rendered —
@@ -7468,6 +7505,14 @@ input[type="text"].saved-roll-name:focus {
   .settings-section {
     /* Settings' sticky header is the chip row alone — no stat strip above it. */
     scroll-margin-top: 60px;
+  }
+}
+
+@media (max-width: 640px) {
+  .build-col > [id^="section-"],
+  .play-section {
+    /* The phone stat strip adds a row of numbers and scales with text size. */
+    scroll-margin-top: calc(64px + 4.25rem);
   }
 }
 
@@ -7817,6 +7862,8 @@ input[type="text"].saved-roll-name:focus {
 
 @media (max-width: 640px) {
   .char-switcher-trigger {
+    min-width: 0;
+    max-width: 128px;
     min-height: var(--tap-min);
   }
 
@@ -7824,16 +7871,18 @@ input[type="text"].saved-roll-name:focus {
     min-height: var(--tap-min);
   }
 
-  /* Below this width `.masthead-right` (see its own phone-pass rule above)
-     puts the switcher trigger on the LEFT of a full-width row instead of
-     tucked under a right-aligned cluster. A right-anchored menu would then
-     open mostly off the left edge of the screen (issue: switcher dropdown
-     clipped on iPhone-width viewports) — anchor from the left instead, and
-     cap the width so it never runs past the right edge either. */
   .char-switcher-list {
-    left: 0;
-    right: auto;
-    max-width: calc(100vw - 48px);
+    max-width: calc(100vw - 24px);
+  }
+}
+
+@media (max-width: 360px) {
+  .masthead-brand .wordmark {
+    font-size: 1.25rem;
+  }
+
+  .char-switcher-trigger {
+    max-width: 112px;
   }
 }
 

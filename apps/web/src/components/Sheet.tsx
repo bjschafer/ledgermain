@@ -174,7 +174,7 @@ export function Sheet({
   // Tie the HP box's fill level to remaining HP (drains as damage is taken).
   const hpMax = sheet.hp.max;
   const hpEffective = effectiveHp(doc.live.hp);
-  const hpPct = hpMax > 0 ? Math.max(0, Math.min(1, hpEffective / hpMax)) : 1;
+  const hpPct = hpMax > 0 ? Math.max(0, Math.min(1, hpEffective / hpMax)) : 0;
   const hpLow = isHpLow(hpEffective, hpMax);
 
   return (
@@ -239,8 +239,6 @@ export function Sheet({
         })}
       </div>
 
-      <div className="rule-gold" />
-
       {/* HP hero band — current HP as dominant numeral, max in foot */}
       <div
         className="stat-hero-band"
@@ -293,6 +291,42 @@ export function Sheet({
             conditionals={sheet.cmdConditionals}
             resetKey={doc.id}
             baseline={baseline.cmd}
+          />
+        </div>
+      </div>
+
+      {/* Saving Throws ---------------------------------------------- */}
+      <div className="stat-group">
+        <div className="stat-group-header">
+          <span className="stat-group-legend">Saves &amp; Initiative</span>
+          <div className="stat-group-rule" />
+        </div>
+        <div className="stat-group-grid stat-group-grid--4">
+          {(["fort", "ref", "will"] as const).map((save) => (
+            <StatSeal
+              key={save}
+              label={SAVE_ABBR[save]}
+              value={signed(sheet.saves[save].total)}
+              components={sheet.saves[save].components}
+              conditionals={sheet.saves[save].conditionals}
+              provTitle={`${SAVE_NAMES[save]} save`}
+              resetKey={doc.id}
+              baseline={baseline.saves[save].total}
+              numericValue={sheet.saves[save].total}
+              copy={{
+                formula: d20Formula([sheet.saves[save].total]),
+                label: `${SAVE_NAMES[save]} save`,
+              }}
+            />
+          ))}
+          <StatSeal
+            label="Init"
+            value={signed(sheet.initiative.total)}
+            components={sheet.initiative.components}
+            resetKey={doc.id}
+            baseline={baseline.initiative.total}
+            numericValue={sheet.initiative.total}
+            copy={{ formula: d20Formula([sheet.initiative.total]), label: "initiative" }}
           />
         </div>
       </div>
@@ -788,50 +822,13 @@ export function Sheet({
         </div>
       )}
 
-      {/* Saving Throws ---------------------------------------------- */}
+      {/* Movement --------------------------------------------------- */}
       <div className="stat-group">
         <div className="stat-group-header">
-          <span className="stat-group-legend">Saves</span>
-          <div className="stat-group-rule" />
-        </div>
-        <div className="stat-group-grid stat-group-grid--3">
-          {(["fort", "ref", "will"] as const).map((save) => (
-            <StatSeal
-              key={save}
-              label={SAVE_ABBR[save]}
-              value={signed(sheet.saves[save].total)}
-              components={sheet.saves[save].components}
-              conditionals={sheet.saves[save].conditionals}
-              provTitle={`${SAVE_NAMES[save]} save`}
-              resetKey={doc.id}
-              baseline={baseline.saves[save].total}
-              numericValue={sheet.saves[save].total}
-              copy={{
-                formula: d20Formula([sheet.saves[save].total]),
-                label: `${SAVE_NAMES[save]} save`,
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Tactical --------------------------------------------------- */}
-      <div className="stat-group">
-        <div className="stat-group-header">
-          <span className="stat-group-legend">Tactical</span>
+          <span className="stat-group-legend">Movement</span>
           <div className="stat-group-rule" />
         </div>
         <div className="stat-group-grid stat-group-grid--2">
-          <StatSeal
-            label="Init"
-            value={signed(sheet.initiative.total)}
-            components={sheet.initiative.components}
-            className="seal--compact"
-            resetKey={doc.id}
-            baseline={baseline.initiative.total}
-            numericValue={sheet.initiative.total}
-            copy={{ formula: d20Formula([sheet.initiative.total]), label: "initiative" }}
-          />
           <StatSeal
             label="Speed"
             value={sheet.speeds.land ?? 30}

@@ -70,7 +70,7 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
   const { current, temp, nonlethal } = doc.live.hp;
   const effective = effectiveHp(doc.live.hp);
   const isLow = isHpLow(effective, max);
-  const fillPct = max > 0 ? Math.max(0, Math.min(1, effective / max)) : 1;
+  const fillPct = max > 0 ? Math.max(0, Math.min(1, effective / max)) : 0;
 
   const state = hpState(doc, sheet);
   // The stabilize toggle only makes sense in the negative-but-above-the-death-
@@ -126,48 +126,14 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
       ) : null}
 
       <div className="hp-controls">
-        <span className="hp-amt-wrap">
-          <input
-            type="text"
-            className="hp-amt num"
-            value={amountText}
-            onChange={(e) => setAmountText(e.target.value)}
-            placeholder="12b 6c"
-            aria-label="Amount"
-          />
-          <InfoTip
-            className="chip-info"
-            content={
-              <>
-                <strong>A plain number works as always.</strong> You can also name damage types the
-                way your GM says them, and your DR and resistances come off automatically:
-                <br />
-                <br />
-                <code>12b 6c</code>: 12 bludgeoning and 6 cold
-                <br />
-                <code>18 fire</code>: one energy type
-                <br />
-                <code>9, 3 of which are cold</code>: a 9-point total, 3 of it cold
-                <br />
-                <code>12 untyped</code>: damage nothing should reduce
-                <br />
-                <code>12 ad</code>: names what the attacker was swinging (adamantine), so the DR it
-                bypasses steps aside
-                <br />
-                <br />
-                First letters work: b, p, s, f, c, e, a, w. Use <code>so</code> for sonic and{" "}
-                <code>ph</code> for physical.
-                <br />
-                <br />
-                Materials and alignments set the bypass switches below, and shorten too:{" "}
-                <code>ad</code>, <code>ci</code> (cold iron), <code>sil</code>, <code>ma</code>gic,{" "}
-                <code>go</code>od, <code>ev</code>il, <code>la</code>wful, <code>ch</code>aotic.
-              </>
-            }
-          >
-            ⓘ
-          </InfoTip>
-        </span>
+        <input
+          type="text"
+          className="hp-amt num"
+          value={amountText}
+          onChange={(e) => setAmountText(e.target.value)}
+          placeholder="Amount"
+          aria-label="Amount"
+        />
         <button
           type="button"
           className="btn-act dmg"
@@ -212,16 +178,41 @@ export function HpPanel({ doc, sheet, update, undoLast }: BuilderProps) {
           Heal
         </button>
       </div>
-
-      {/* Discoverability for the free-text field: shown while the amount is a
-          single bare number (nobody has typed a damage type yet) and retired
-          the moment one is used, so it teaches once rather than nagging. */}
-      {!preview.ok || (preview.bare && !preview.reduced) ? (
-        <div className="hp-damage-hint">
-          Tip: name the damage type (<code>12b 6c</code>, <code>18 fire</code>,{" "}
-          <code>9, 3 of which are cold</code>)
-        </div>
-      ) : null}
+      <div className="hp-damage-help">
+        Try <code>18 fire</code> for typed damage.{" "}
+        <InfoTip
+          className="hp-damage-help-link"
+          content={
+            <>
+              <strong>A plain number works as always.</strong> You can also name damage types the
+              way your GM says them, and your DR and resistances come off automatically:
+              <br />
+              <br />
+              <code>12b 6c</code>: 12 bludgeoning and 6 cold
+              <br />
+              <code>18 fire</code>: one energy type
+              <br />
+              <code>9, 3 of which are cold</code>: a 9-point total, 3 of it cold
+              <br />
+              <code>12 untyped</code>: damage nothing should reduce
+              <br />
+              <code>12 ad</code>: names what the attacker was swinging (adamantine), so the DR it
+              bypasses steps aside
+              <br />
+              <br />
+              First letters work: b, p, s, f, c, e, a, w. Use <code>so</code> for sonic and{" "}
+              <code>ph</code> for physical.
+              <br />
+              <br />
+              Materials and alignments set the bypass switches below, and shorten too:{" "}
+              <code>ad</code>, <code>ci</code> (cold iron), <code>sil</code>, <code>ma</code>gic,{" "}
+              <code>go</code>od, <code>ev</code>il, <code>la</code>wful, <code>ch</code>aotic.
+            </>
+          }
+        >
+          Damage types
+        </InfoTip>
+      </div>
 
       {preview.showTerms ? (
         <div className="hp-damage-preview">

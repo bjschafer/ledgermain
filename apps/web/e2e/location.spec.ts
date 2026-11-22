@@ -44,6 +44,30 @@ test("the tab you're on survives a reload", async ({ page }) => {
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
 });
 
+test("the mode tabs can be browsed and opened with the keyboard", async ({ page }) => {
+  const { consoleErrors, pageErrors } = guard(page);
+  await bootApp(page);
+
+  const build = page.getByRole("tab", { name: /^Build/ });
+  const play = page.getByRole("tab", { name: "Play" });
+  const settings = page.getByRole("tab", { name: /^Settings/ });
+
+  await build.focus();
+  await page.keyboard.press("ArrowLeft");
+  await expect(settings).toBeFocused();
+  await page.keyboard.press("ArrowLeft");
+  await expect(play).toBeFocused();
+  await expect(page.getByRole("tabpanel", { name: /^Build/ })).toBeVisible();
+  await page.keyboard.press("Enter");
+  await expect(
+    page.getByRole("tabpanel", { name: "Play" }).getByRole("textbox", { name: "Amount" }),
+  ).toBeVisible();
+  await expect(page).toHaveURL(/#\/play/);
+
+  expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
+  expect(pageErrors, pageErrors.join("\n")).toEqual([]);
+});
+
 test("a section deep link opens its tab and scrolls to it", async ({ page }) => {
   const { consoleErrors, pageErrors } = guard(page);
 

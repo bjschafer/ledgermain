@@ -125,6 +125,12 @@ function BuildTabBadge(props: Pick<BuilderProps, "doc" | "sheet" | "refData">) {
   );
 }
 
+const MODE_TABS = [
+  { id: "build", label: "Build" },
+  { id: "play", label: "Play" },
+  { id: "settings", label: "Settings" },
+] as const;
+
 export function App() {
   const store = useCharacter();
   const { location, initial: initialLocation, setMode, setSection } = useAppLocation();
@@ -151,75 +157,99 @@ export function App() {
     <div className="app">
       <PreviewNotice />
       <ToastHost />
-      <header className="masthead">
-        <div>
-          <div className="wordmark">
-            Ledger<span className="gilt">main</span>
+      <header className="masthead masthead--workbench">
+        <div className="masthead-top">
+          <div className="masthead-brand">
+            <div className="wordmark">
+              Ledger<span className="gilt">main</span>
+            </div>
+            <div className="tagline">Pathfinder 1e</div>
           </div>
-          <div className="tagline">Pathfinder 1e · build &amp; live sheet</div>
-        </div>
-        <div className="mode-tabs" role="tablist" aria-label="Mode">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={mode === "build"}
-            className={`mode-tab${mode === "build" ? " active" : ""}`}
-            onClick={() => setMode("build")}
-          >
-            Build
-            {store.status === "ready" && store.doc && store.sheet && store.refData ? (
-              <BuildTabBadge doc={store.doc} sheet={store.sheet} refData={store.refData} />
-            ) : null}
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={mode === "play"}
-            className={`mode-tab${mode === "play" ? " active" : ""}`}
-            onClick={() => setMode("play")}
-          >
-            Play
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={mode === "settings"}
-            className={`mode-tab${mode === "settings" ? " active" : ""}`}
-            onClick={() => setMode("settings")}
-          >
-            Settings
-            {changelogUnseen ? (
-              <span className="mode-tab-dot" title="Something new since your last visit" />
-            ) : null}
-          </button>
-        </div>
-        <div className="masthead-right">
-          <ReferenceLink />
-          <FeedbackButton mode={mode} doc={store.doc} />
-          <SyncStatus
-            status={store.syncStatus}
-            onSignIn={() => void store.signIn()}
-            onSignOut={() => void store.signOut()}
-          />
-          {store.doc && (
-            <CharacterSwitcher
-              characters={store.characters}
-              activeId={store.doc.id}
-              disabled={store.actionPending}
-              onSwitch={(id) => void store.switchCharacter(id)}
-              onCreate={() => void store.createCharacter()}
+          <div className="masthead-tools">
+            <ReferenceLink />
+            <FeedbackButton mode={mode} doc={store.doc} />
+            <SyncStatus
+              status={store.syncStatus}
+              onSignIn={() => void store.signIn()}
+              onSignOut={() => void store.signOut()}
             />
-          )}
-          {store.actionError && (
+            {store.doc && (
+              <CharacterSwitcher
+                characters={store.characters}
+                activeId={store.doc.id}
+                disabled={store.actionPending}
+                onSwitch={(id) => void store.switchCharacter(id)}
+                onCreate={() => void store.createCharacter()}
+              />
+            )}
+            {store.actionError && (
+              <button
+                type="button"
+                className="action-error"
+                onClick={store.clearActionError}
+                title="Dismiss"
+              >
+                ⚠ {store.actionError}
+              </button>
+            )}
+          </div>
+        </div>
+        <div
+          className="mode-tabs"
+          role="tablist"
+          aria-label="Mode"
+          onKeyDown={(event) => {
+            const tabs = Array.from(
+              event.currentTarget.querySelectorAll<HTMLButtonElement>("[role=tab]"),
+            );
+            const index = tabs.findIndex((tab) => tab === event.target);
+            if (index < 0) return;
+            let next: number;
+            switch (event.key) {
+              case "ArrowLeft":
+                next = (index + tabs.length - 1) % tabs.length;
+                break;
+              case "ArrowRight":
+                next = (index + 1) % tabs.length;
+                break;
+              case "Home":
+                next = 0;
+                break;
+              case "End":
+                next = tabs.length - 1;
+                break;
+              default:
+                return;
+            }
+            event.preventDefault();
+            tabs[next]?.focus();
+          }}
+        >
+          {MODE_TABS.map(({ id, label }) => (
             <button
+              key={id}
+              id={`mode-tab-${id}`}
               type="button"
-              className="action-error"
-              onClick={store.clearActionError}
-              title="Dismiss"
+              role="tab"
+              aria-selected={mode === id}
+              aria-controls="mode-panel"
+              tabIndex={mode === id ? 0 : -1}
+              className="mode-tab"
+              onClick={() => setMode(id)}
             >
-              ⚠ {store.actionError}
+              {label}
+              {id === "build" &&
+              store.status === "ready" &&
+              store.doc &&
+              store.sheet &&
+              store.refData ? (
+                <BuildTabBadge doc={store.doc} sheet={store.sheet} refData={store.refData} />
+              ) : null}
+              {id === "settings" && changelogUnseen ? (
+                <span className="mode-tab-dot" title="Something new since your last visit" />
+              ) : null}
             </button>
-          )}
+          ))}
         </div>
       </header>
 
@@ -230,43 +260,47 @@ export function App() {
         refData={store.refData}
       />
 
-      {store.status === "loading" && <LoadingScreen />}
+      <main>
+        <div id="mode-panel" role="tabpanel" aria-labelledby={`mode-tab-${mode}`}>
+          {store.status === "loading" && <LoadingScreen />}
 
-      {store.status === "error" && (
-        <div className="state-screen">
-          <div>
-            <div className="glyph">⚠</div>
-            <p>Couldn't load reference data.</p>
-            <p className="hint">{store.error}</p>
-          </div>
+          {store.status === "error" && (
+            <div className="state-screen">
+              <div>
+                <div className="glyph">⚠</div>
+                <p>Couldn't load reference data.</p>
+                <p className="hint">{store.error}</p>
+              </div>
+            </div>
+          )}
+
+          {store.status === "ready" && store.doc && store.sheet && store.refData && (
+            <Workbench
+              mode={mode}
+              initialLocation={initialLocation}
+              jumpTarget={jumpTarget}
+              onActiveSection={setSection}
+              doc={store.doc}
+              sheet={store.sheet}
+              refData={store.refData}
+              update={store.update}
+              undoLast={store.undoLast}
+              canUndo={store.canUndo}
+              undoNextLineId={store.undoNextLineId}
+              sessionLog={store.sessionLog}
+              onClearSessionLog={store.clearSessionLog}
+              onImportCharacter={(doc) => void store.importCharacter(doc)}
+              onResetAll={() => void store.resetAll()}
+              onDeleteCharacter={(id) => void store.deleteCharacter(id)}
+              onSignOut={() => void store.signOut()}
+              actionPending={store.actionPending}
+              onOpenPrint={() => setPrintOpen(true)}
+              textSize={textSize}
+              onTextSizeChange={setTextSize}
+            />
+          )}
         </div>
-      )}
-
-      {store.status === "ready" && store.doc && store.sheet && store.refData && (
-        <Workbench
-          mode={mode}
-          initialLocation={initialLocation}
-          jumpTarget={jumpTarget}
-          onActiveSection={setSection}
-          doc={store.doc}
-          sheet={store.sheet}
-          refData={store.refData}
-          update={store.update}
-          undoLast={store.undoLast}
-          canUndo={store.canUndo}
-          undoNextLineId={store.undoNextLineId}
-          sessionLog={store.sessionLog}
-          onClearSessionLog={store.clearSessionLog}
-          onImportCharacter={(doc) => void store.importCharacter(doc)}
-          onResetAll={() => void store.resetAll()}
-          onDeleteCharacter={(id) => void store.deleteCharacter(id)}
-          onSignOut={() => void store.signOut()}
-          actionPending={store.actionPending}
-          onOpenPrint={() => setPrintOpen(true)}
-          textSize={textSize}
-          onTextSizeChange={setTextSize}
-        />
-      )}
+      </main>
     </div>
   );
 }

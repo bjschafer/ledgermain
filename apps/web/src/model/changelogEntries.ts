@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-21-table-ready-sheet",
+    date: "2026-11-21",
+    title: "The numbers you need at the table come first",
+    note: "Buffs sits just below Hit Points in Play. Search or browse when you need to add one; the compendium list stays out of the way otherwise. Saves and initiative sit next to AC on the sheet and in the phone's stat strip. On a phone, the header takes less space, and the round button shows that it advances the clock. Use arrow keys to move between Build, Play, and Settings, then Enter to open one.",
+  },
+  {
     id: "2026-11-21-ledgermain-app",
     date: "2026-11-21",
     title: "Ledgermain has its own address",

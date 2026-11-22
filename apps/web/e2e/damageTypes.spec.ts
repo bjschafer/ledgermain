@@ -179,10 +179,10 @@ test("naming a type is echoed back even when no defense touches it", async ({ pa
   await expect(page.locator(".hp-damage-preview")).toContainText("5 fire");
   await expect(page.locator(".hp-damage-result")).toHaveCount(0);
 
-  // A plain number stays quiet and shows the syntax tip instead.
+  // A plain number needs no preview, and the typed-damage help remains available.
   await amount.fill("5");
   await expect(page.locator(".hp-damage-preview")).toHaveCount(0);
-  await expect(page.locator(".hp-damage-hint")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Damage types", exact: true })).toBeVisible();
 
   expect(pageErrors, pageErrors.join("\n")).toEqual([]);
   expect(consoleErrors, consoleErrors.join("\n")).toEqual([]);
