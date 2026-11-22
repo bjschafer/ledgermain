@@ -234,9 +234,10 @@ Defense in depth for the one public, unauthenticated write:
   or repos it wasn't aimed at, and quoted text goes in a fence sized to be
   unclosable by its own content.
 
-Until configured the endpoint fails closed (verification/issue creation error,
-never a silent open), and the web app hides the feedback button entirely unless
-both `VITE_API_URL` **and** `VITE_TURNSTILE_SITEKEY` are set at build time.
+Until configured the endpoint fails closed (verification/issue creation error).
+The masthead opens the in-app form only when both `VITE_API_URL` **and**
+`VITE_TURNSTILE_SITEKEY` are set at build time. Otherwise Feedback links directly
+to GitHub, where the player needs an account to file an issue.
 
 ### One-time owner setup
 
@@ -245,9 +246,8 @@ both `VITE_API_URL` **and** `VITE_TURNSTILE_SITEKEY` are set at build time.
      let anyone serve a page from their own machine under this sitekey, solve
      the challenge there, and produce a token whose reported hostname the Worker
      can't distinguish from a real one — which is the whole basis of the
-     endpoint's "came from our app" check. Local dev doesn't need it: the
-     feedback button is hidden unless `VITE_TURNSTILE_SITEKEY` is set at build
-     time, which a dev build normally leaves unset.
+     endpoint's "came from our app" check. Local dev leaves
+     `VITE_TURNSTILE_SITEKEY` unset and uses the GitHub link.
    - Copy the **Site Key** → set it as the web build var `VITE_TURNSTILE_SITEKEY`
      (same place as `VITE_API_URL`: Workers Builds → the `ledgermain` Worker →
      Settings → Build → Build variables). The site key is public.

@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-21-sheet-at-a-glance",
+    date: "2026-11-21",
+    title: "See your HP at a glance",
+    note: "The side sheet has a full-size HP bar again, with gold headings and labeled stat boxes to help you find the right number. Feedback stays in the top bar, with a GitHub link when the in-app form is unavailable.",
+  },
+  {
     id: "2026-11-21-ruled-sheet",
     date: "2026-11-21",
     title: "A quieter sheet and centered navigation",

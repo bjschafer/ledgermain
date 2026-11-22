@@ -409,6 +409,7 @@ a {
   .sync-signout,
   .sync-status,
   .ref-link,
+  .feedback-open,
   .action-error {
     min-height: var(--tap-min);
   }
@@ -2393,52 +2394,37 @@ a:focus-visible,
 
 /* ------------------------------------------------------------ stat groups -- */
 
-/* A short gauge leaves the number on the same readable surface at any HP. */
+/* The full seal is the gauge; the fill stops at the live HP percentage. */
 .stat-hero-band {
   margin: var(--space-4) 0;
-  --hp-pct: 100%;
-  --hp-fill: var(--gold-dim);
+  --hp-fill: color-mix(in srgb, var(--gold) 42%, var(--surface-2));
 }
 
 .stat-hero-band[data-hp-low="true"] {
-  --hp-fill: var(--oxblood);
+  --hp-fill: color-mix(in srgb, var(--oxblood) 60%, var(--surface-2));
 }
 
 .stat-hero-band .seal {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  gap: var(--space-2);
-  min-height: 0;
-  padding: 9px 24px 13px 12px;
-  text-align: left;
-}
-
-.stat-hero-band .seal::before {
-  content: "";
-  position: absolute;
-  inset: auto 12px 5px;
-  height: 3px;
-  border-radius: 2px;
-  background: linear-gradient(to right, var(--hp-fill) var(--hp-pct), var(--line) 0);
+  min-height: 100px;
+  border-color: var(--gold-dim);
+  background: linear-gradient(to right, var(--hp-fill) var(--hp-pct), var(--surface-2) 0);
 }
 
 .stat-hero-band .seal .seal-value {
-  font-size: 1.875rem;
+  font-size: 2.75rem;
 }
 
-.stat-hero-band[data-hp-low="true"] .seal .seal-value {
-  color: var(--oxblood-ink);
+.stat-hero-band[data-hp-low="true"] .seal {
+  border-color: var(--oxblood);
+}
+
+.stat-hero-band :is(.seal-label, .seal-foot, .caret),
+.stat-hero-band[data-hp-low="true"] .seal-value {
+  color: var(--ink);
 }
 
 .stat-hero-band .seal .seal-foot {
   font-size: 0.6875rem;
-}
-
-/* Ruled entries in the main sheet; keep the boxed seals in companion panels. */
-.sheet .stat-group-grid,
-.sheet .weapon-attack-stats {
-  gap: 0;
-  border-top: 1px solid var(--line);
 }
 
 .sheet :is(.stat-group-grid, .weapon-attack-stats) > * {
@@ -2448,19 +2434,12 @@ a:focus-visible,
 .sheet :is(.stat-group-grid, .weapon-attack-stats) .seal {
   justify-content: flex-start;
   min-height: 0;
-  padding: 10px 4px 8px;
-  background: none;
-  border-color: transparent;
-}
-
-.sheet
-  :is(.stat-group-grid, .weapon-attack-stats)
-  .seal:is(:hover, :focus-visible, [aria-expanded="true"])[data-expandable="true"] {
-  background: var(--surface-2);
+  padding: 10px 6px 8px;
 }
 
 .sheet :is(.stat-group-grid, .weapon-attack-stats) .seal-label {
   letter-spacing: 0.08em;
+  color: var(--gold);
 }
 
 .sheet .stat-group :is(.seal-label, .seal-value, .seal-foot, .seal-conditionals) {
@@ -2493,18 +2472,13 @@ a:focus-visible,
 }
 
 .sheet .stat-group-legend {
-  display: block;
+  color: var(--gold);
   min-width: 0;
   flex-shrink: 1;
   white-space: normal;
   font: 600 0.8125rem var(--body);
   letter-spacing: normal;
   text-transform: none;
-}
-
-.sheet .stat-group-legend::before,
-.sheet .stat-group-rule {
-  display: none;
 }
 
 /* A labeled group: legend + hairline + sub-grid */
@@ -2701,7 +2675,7 @@ a:focus-visible,
 .ability-strip {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 0;
+  gap: 6px;
   margin: var(--space-3) 0;
 }
 
@@ -2712,7 +2686,8 @@ a:focus-visible,
 }
 
 .ability-pip {
-  border-top: 1px solid var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   padding: 6px 2px;
   text-align: center;
 }
@@ -2725,7 +2700,7 @@ a:focus-visible,
   font-family: var(--mono);
   font-size: 0.625rem;
   letter-spacing: 0.1em;
-  color: var(--muted);
+  color: var(--gold);
 }
 
 .ability-pip .ap-mod {
@@ -2745,7 +2720,7 @@ a:focus-visible,
   font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--muted);
+  color: var(--gold);
   font-family: var(--mono);
   font-weight: 500;
   margin: 18px 0 8px;
@@ -8345,6 +8320,9 @@ input[type="text"].saved-roll-name:focus {
 /* Mirrors the preview-notice modal's backdrop/surface vocabulary so the
    feedback dialog reads as a sibling of the app's other overlays. */
 .feedback-open {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
   white-space: nowrap;
 }
 

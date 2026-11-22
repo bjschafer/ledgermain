@@ -23,11 +23,8 @@ type SubmitState =
   | { kind: "done"; url?: string };
 
 /**
- * Global "Send feedback" control (masthead) + its modal. Renders nothing unless
- * both the API and a Turnstile sitekey are configured (see `feedback/config`),
- * so local dev and un-provisioned deploys show no button at all. The heavy
- * lifting — validation, payload shape — lives in `model/feedback.ts`; this is a
- * thin view over it, matching the app's model/view split.
+ * Global "Feedback" control. Use the in-app form when the API and Turnstile
+ * are configured; otherwise send players to the public issue tracker.
  */
 export function FeedbackButton({ mode, doc }: { mode: string; doc?: CharacterDoc }) {
   const [open, setOpen] = useState(false);
@@ -45,7 +42,19 @@ export function FeedbackButton({ mode, doc }: { mode: string; doc?: CharacterDoc
     }
   }, [pendingPrefill]);
 
-  if (!feedbackEnabled()) return null;
+  if (!feedbackEnabled()) {
+    return (
+      <a
+        className="btn-ghost feedback-open"
+        href="https://github.com/bjschafer/ledgermain/issues/new"
+        target="_blank"
+        rel="noreferrer"
+        title="Send feedback on GitHub"
+      >
+        Feedback
+      </a>
+    );
+  }
 
   return (
     <>

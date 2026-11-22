@@ -40,18 +40,19 @@ of the page, and set figures in tabular mono so they scan down a column.
 
 ### Signature element
 
-**Ruled stat rows + provenance.** Use one rule across a row rather than a box
-around each value. Keep HP and Armor Class prominent, and let the color and
-marker on a changed value carry the signal. A chevron identifies entries that
+**Boxed stats + provenance.** Use colored labels to find the right group and
+stat in the side sheet. The full Hit Points box is a gauge: its fill recedes
+with damage and turns red at low HP. Keep Armor Class prominent and let
+color and a marker flag changed values. A chevron identifies entries that
 expand into a modifier breakdown from `compute()`'s per-source provenance.
 Give successive attack bonuses room to read as a sequence.
 
 ## Restraint
 
-Gold marks the current place, key totals, and controls that affect play. Keep
-routine panel headers and secondary actions neutral so a gold cue means
-something. Use sentence case and the body face for navigation, controls,
-and sheet headings; reserve small mono labels for the individual stat keys.
+Gold marks the current place, sheet labels, key totals, and controls that
+affect play. Keep routine panel headers outside the sheet and secondary actions
+neutral. Use sentence case and the body face for navigation, controls, and
+sheet headings; reserve small mono labels for the individual stat keys.
 
 Center primary navigation between the Ledgermain wordmark and utilities on
 wide screens. On narrow screens, give it its own row. The reference site
