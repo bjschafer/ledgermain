@@ -3,9 +3,15 @@
   "account_id": "5b51f634ca1cf16a0c47a4fcd00a5cf3",
   "compatibility_date": "2026-06-30",
   // Off for the same reason as apps/web: a live workers.dev subdomain would
-  // bypass zone-level WAF, bot management, and rate limiting on whizkid.dev.
+  // bypass zone-level WAF, bot management, and rate limiting.
   "workers_dev": false,
-  "routes": [{ "pattern": "ref.ledgermain.whizkid.dev", "custom_domain": true }],
+  // The old hostname is answered by a redirect rule on whizkid.dev before it
+  // reaches this Worker (tf-cloudflare redirects.tf). It stays attached only
+  // so its DNS record keeps existing for that rule to match.
+  "routes": [
+    { "pattern": "ref.ledgermain.app", "custom_domain": true },
+    { "pattern": "ref.ledgermain.whizkid.dev", "custom_domain": true },
+  ],
   "assets": {
     "directory": "./dist",
     // Routing is hash-based, so any real path should land on the shell.

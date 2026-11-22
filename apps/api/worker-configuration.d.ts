@@ -6,7 +6,7 @@ interface __BaseEnv_Env {
   CHARACTERS: KVNamespace;
   FEEDBACK_CONTACTS: KVNamespace;
   ANALYTICS: AnalyticsEngineDataset;
-  ALLOWED_APP_ORIGINS: "https://ledgermain.whizkid.dev";
+  ALLOWED_APP_ORIGINS: "https://ledgermain.app,https://ledgermain.whizkid.dev";
   DISCORD_CLIENT_ID: "1523090357108346941";
   GITHUB_APP_ID: "4310904";
   GITHUB_APP_INSTALLATION_ID: "146878087";

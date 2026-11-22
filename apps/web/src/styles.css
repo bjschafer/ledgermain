@@ -2797,6 +2797,35 @@ button:focus-visible,
   font-style: italic;
 }
 
+/* Moving from the app's old address (LegacyMove.tsx, HandoffImport.tsx). */
+.legacy-move {
+  max-width: 560px;
+  margin: var(--space-5) auto 0;
+  padding: 0 var(--space-4);
+}
+
+.legacy-move h1 {
+  font-size: 1.375rem;
+  margin-bottom: var(--space-4);
+}
+
+.legacy-move-names {
+  margin: 0 0 var(--space-4);
+  padding-left: var(--space-5);
+  display: grid;
+  gap: var(--space-1);
+}
+
+.legacy-move-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.legacy-move a.btn-gold {
+  display: inline-block;
+  text-decoration: none;
+}
+
 /* Published links in Settings (SharePanel.tsx). */
 .share-list {
   list-style: none;

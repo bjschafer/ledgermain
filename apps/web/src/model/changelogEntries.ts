@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-21-ledgermain-app",
+    date: "2026-11-21",
+    title: "Ledgermain has its own address",
+    note: "Ledgermain now lives at ledgermain.app, and the quick reference at ref.ledgermain.app. The old address offers to carry over every character saved in that browser, session logs included, and asks before anything is added here. If you sync, sign in again at the new address. If you added Ledgermain to your home screen, add it again from ledgermain.app.",
+  },
+  {
     id: "2026-11-21-compare-sync-conflicts",
     date: "2026-11-21",
     title: "Tell two copies apart before you pick one",

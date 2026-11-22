@@ -3,11 +3,18 @@ import { createRoot } from "react-dom/client";
 
 import { App } from "./App.js";
 import { ErrorBoundary } from "./components/ErrorBoundary.js";
+import { isLegacyHost, parseHandoffHash } from "./model/legacyHost.js";
 import { parseShareHash } from "./model/shareLink.js";
 import "./styles.css";
 
 const SharedSheet = lazy(() =>
   import("./components/SharedSheet.js").then((m) => ({ default: m.SharedSheet })),
+);
+const LegacyMove = lazy(() =>
+  import("./components/LegacyMove.js").then((m) => ({ default: m.LegacyMove })),
+);
+const HandoffImport = lazy(() =>
+  import("./components/HandoffImport.js").then((m) => ({ default: m.HandoffImport })),
 );
 
 /**
@@ -16,9 +23,14 @@ const SharedSheet = lazy(() =>
  * mounts the player's storage, sync, or location tracking at all. It also
  * follows `hashchange`, since pasting a share link into an open tab changes
  * only the fragment.
+ *
+ * The app's old address and the move it hands over (`model/legacyHost.ts`)
+ * are decided here for the same reason: the old address must never mount the
+ * app, and the new one must not mount it until the move has been written.
  */
 function Root() {
   const [shareToken, setShareToken] = useState(() => parseShareHash(window.location.hash));
+  const [handoff, setHandoff] = useState(() => parseHandoffHash(window.location.hash));
 
   useEffect(() => {
     const onHashChange = () => setShareToken(parseShareHash(window.location.hash));
@@ -26,6 +38,20 @@ function Root() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
+  if (isLegacyHost(window.location.hostname)) {
+    return (
+      <Suspense fallback={null}>
+        <LegacyMove />
+      </Suspense>
+    );
+  }
+  if (handoff) {
+    return (
+      <Suspense fallback={null}>
+        <HandoffImport encoded={handoff} onDone={() => setHandoff(null)} />
+      </Suspense>
+    );
+  }
   if (shareToken) {
     return (
       <Suspense fallback={null}>

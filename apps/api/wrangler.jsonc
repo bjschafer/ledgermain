@@ -25,7 +25,10 @@
     // "came from our app" check. It would equally make a plain-HTTP origin a
     // valid post-login redirect target for a real session token. Local dev
     // overrides this via `.dev.vars` (see .dev.vars.example).
-    "ALLOWED_APP_ORIGINS": "https://ledgermain.whizkid.dev",
+    //
+    // The old app origin stays listed while ledgermain.whizkid.dev still
+    // serves: a tab opened there before the move keeps syncing until reload.
+    "ALLOWED_APP_ORIGINS": "https://ledgermain.app,https://ledgermain.whizkid.dev",
     "DISCORD_CLIENT_ID": "1523090357108346941",
 
     // Feedback -> GitHub-issue path (src/feedback.ts). Non-secret App
@@ -69,10 +72,14 @@
   // binding as a Miniflare no-op.
   "analytics_engine_datasets": [{ "binding": "ANALYTICS", "dataset": "ledgermain_api_requests" }],
 
-  // Same zone as apps/web (ledgermain.whizkid.dev) — a sibling subdomain
-  // keeps the two origins obviously related without sharing one origin
-  // (which would reintroduce cookie/CORS complexity this design avoids).
-  "routes": [{ "pattern": "api.ledgermain.whizkid.dev", "custom_domain": true }],
+  // Same zone as apps/web (ledgermain.app) — a sibling subdomain keeps the two
+  // origins obviously related without sharing one origin (which would
+  // reintroduce cookie/CORS complexity this design avoids). The whizkid.dev
+  // hostname serves bundles built before the move.
+  "routes": [
+    { "pattern": "api.ledgermain.app", "custom_domain": true },
+    { "pattern": "api.ledgermain.whizkid.dev", "custom_domain": true },
+  ],
 
   // Feeds tf-cloudflare's `ledgermain_api_trace_events` Logpush job (#176):
   // without this, Cloudflare has nothing to push even once a job exists.

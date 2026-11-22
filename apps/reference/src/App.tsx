@@ -66,7 +66,7 @@ export function App() {
           </a>
           .
         </span>
-        <a href="https://ledgermain.whizkid.dev" target="_blank" rel="noreferrer">
+        <a href="https://ledgermain.app" target="_blank" rel="noreferrer">
           Ledgermain tracker →
         </a>
       </footer>

@@ -14,6 +14,7 @@ import { createEmptyDoc } from "../model/doc.js";
 import { migrateDoc } from "../model/migrations.js";
 import { localId } from "../model/ids.js";
 import { parseImportedDoc } from "../model/importCharacter.js";
+import { isWorthMoving } from "../model/legacyHost.js";
 import { stampLocalSave } from "../state/deviceName.js";
 
 /**
@@ -59,7 +60,7 @@ export async function saveCharacter(doc: CharacterDoc): Promise<CharacterDoc> {
 // and fall back to recency.
 const ACTIVE_ID_KEY = "pf1-tracker:activeCharacterId";
 
-function getStoredActiveId(): string | null {
+export function getStoredActiveId(): string | null {
   try {
     return localStorage.getItem(ACTIVE_ID_KEY);
   } catch {
@@ -148,6 +149,15 @@ export async function listCharacters(): Promise<CharacterSummary[]> {
 }
 
 /**
+ * The player's own characters as stored, unmigrated, for carrying to the app's
+ * new address: the receiving side migrates them as it would a file import.
+ */
+export async function charactersToMove(): Promise<CharacterDoc[]> {
+  const all = await db.characters.orderBy("updatedAt").reverse().toArray();
+  return all.filter((doc) => isWorthMoving(doc, sampleCharacterJson.id));
+}
+
+/**
  * Envelope-only `{ id, version, syncedVersion }` for every locally-stored
  * character (Stage 5 sync — `src/sync/backgroundSync.ts`'s open-sync pass
  * compares these against the server's list without needing to read/parse
@@ -192,6 +202,33 @@ export async function importCharacter(doc: CharacterDoc): Promise<CharacterDoc> 
   const next = stampLocalSave(doc);
   await db.characters.put(next);
   return rememberActive(next);
+}
+
+/**
+ * Insert characters carried over from the app's old address
+ * (`model/legacyHost.ts`). Unlike {@link importCharacter} this never
+ * overwrites the player's own work: a character already here was either moved
+ * before, and may have been edited since, or arrived through sync, and either
+ * way the copy already here wins. The one exception is a copy the app made on
+ * its own, which is how an edited sample character gets past the pristine one
+ * seeded on first load. Returns the ids actually added. `activeId` becomes
+ * active only if it was one of them.
+ */
+export async function addMovedCharacters(
+  docs: readonly CharacterDoc[],
+  activeId: string | null,
+): Promise<string[]> {
+  const added = await db.transaction("rw", db.characters, async () => {
+    const existing = await db.characters.bulkGet(docs.map((d) => d.id));
+    const fresh = docs.filter((_, i) => {
+      const here = existing[i];
+      return here === undefined || !isWorthMoving(here, sampleCharacterJson.id);
+    });
+    await db.characters.bulkPut(fresh.map((d) => stampLocalSave(d)));
+    return fresh.map((d) => d.id);
+  });
+  if (activeId && added.includes(activeId)) setStoredActiveId(activeId);
+  return added;
 }
 
 /** Wipe every saved character and start over with one fresh blank doc. */

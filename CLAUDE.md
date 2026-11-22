@@ -35,7 +35,7 @@ packages/engine         pure rules engine — compute(doc, refData) -> DerivedSh
 packages/tokens         shared design tokens (palette, type stack) imported by both front ends
 apps/web                React + Vite builder + live tracker
 apps/api                Cloudflare Worker: dumb persistence for CharacterDoc blobs (Stage 5, docs/design.md §2.1)
-apps/reference          React + Vite quick-reference lookup site, its own Worker at ref.ledgermain.whizkid.dev
+apps/reference          React + Vite quick-reference lookup site, its own Worker at ref.ledgermain.app
 ```
 
 ### The one rule that governs everything

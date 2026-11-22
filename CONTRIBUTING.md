@@ -45,8 +45,8 @@ and the root script picks it up automatically.
 ## Deployment
 
 There is no deploy command. All three Workers -- `apps/web`
-(ledgermain.whizkid.dev), `apps/api` (api.ledgermain.whizkid.dev), and
-`apps/reference` (ref.ledgermain.whizkid.dev) -- deploy through **Cloudflare
+(ledgermain.app), `apps/api` (api.ledgermain.app), and
+`apps/reference` (ref.ledgermain.app) -- deploy through **Cloudflare
 Workers Builds**, a git-connected build configured in the Cloudflare dashboard
 rather than in this repo. A merge to `main` is the deploy.
 `.github/workflows/ci.yml` runs the gates only; it has no deploy step. Don't run

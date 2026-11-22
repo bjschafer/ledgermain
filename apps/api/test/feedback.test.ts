@@ -226,7 +226,7 @@ describe("POST /api/feedback — Turnstile hostname assertion", () => {
   });
 
   it("gets past the assertion for one of our own hostnames", async () => {
-    siteverify({ success: true, hostname: "ledgermain.whizkid.dev" });
+    siteverify({ success: true, hostname: "ledgermain.app" });
     // The GitHub App call past the gate fails on the unset private key; mute
     // the resulting unhandled_exception log so it doesn't read as a failure.
     const errorLog = vi.spyOn(console, "error").mockImplementation(() => {});

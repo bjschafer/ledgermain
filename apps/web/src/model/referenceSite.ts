@@ -6,5 +6,5 @@
  */
 export function referenceSiteUrl(): string {
   const raw = import.meta.env.VITE_REFERENCE_URL as string | undefined;
-  return raw?.trim() || "https://ref.ledgermain.whizkid.dev/";
+  return raw?.trim() || "https://ref.ledgermain.app/";
 }

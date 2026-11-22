@@ -21,7 +21,7 @@ export default defineConfig({
           // carries production origins only. These tests are about the
           // allowed-vs-disallowed *behavior*, so they supply both kinds of
           // origin themselves — and stay green when the deployed list changes.
-          ALLOWED_APP_ORIGINS: "http://localhost:5173,https://ledgermain.whizkid.dev",
+          ALLOWED_APP_ORIGINS: "http://localhost:5173,https://ledgermain.app",
           // Likewise pinned: the route tests care that *an* owner is
           // distinguished from everyone else, not which account it is. The
           // unset case is a behavior of its own and is covered directly

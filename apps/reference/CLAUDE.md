@@ -1,6 +1,6 @@
 ## Reference site structure
 
-`@pf1/reference` (port 5174, root script `dev:ref`) is a standalone read-only lookup site for the same vendored data the sheet uses, deployed on its own Worker at **`ref.ledgermain.whizkid.dev`**. It shares `packages/engine` and `packages/schema`; it shares **no code** with `apps/web`. The sheet reaches it only through `apps/web/src/components/ReferenceLink.tsx`, the one module that knows this site's URL.
+`@pf1/reference` (port 5174, root script `dev:ref`) is a standalone read-only lookup site for the same vendored data the sheet uses, deployed on its own Worker at **`ref.ledgermain.app`**. It shares `packages/engine` and `packages/schema`; it shares **no code** with `apps/web`. The sheet reaches it only through `apps/web/src/components/ReferenceLink.tsx`, the one module that knows this site's URL.
 
 Same split as the web app: **pure logic in `src/model/` and `src/shared/`**, tested directly; components in `src/components/` are thin views. `src/shared/` is the subset both the browser and the build-time generator import, so a change there has two callers.
 

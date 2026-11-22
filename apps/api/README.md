@@ -8,7 +8,7 @@ ever reads are the three envelope fields `CharacterDoc` already carries for
 this purpose (`id`, `version`, `updatedAt`), plus writing a server-assigned
 `ownerId`.
 
-Deployed and live at `api.ledgermain.whizkid.dev` (three KV namespaces, the
+Deployed and live at `api.ledgermain.app` (three KV namespaces, the
 custom-domain route, the Discord Application, and the `DISCORD_CLIENT_SECRET`
 are all in place). The remaining opt-in step is client-side: the web app only
 talks to this API when built with `VITE_API_URL` set — unset (the default)
@@ -160,8 +160,8 @@ bun run typecheck            # tsc --noEmit; included automatically in the root'
 ## Deploy steps
 
 The Worker is already deployed and live. The KV namespaces,
-`ALLOWED_APP_ORIGINS`, custom-domain route (`api.ledgermain.whizkid.dev`,
-sibling to `apps/web`'s `ledgermain.whizkid.dev`), Discord Application, and
+`ALLOWED_APP_ORIGINS`, custom-domain route (`api.ledgermain.app`, sibling to
+`apps/web`'s `ledgermain.app`), Discord Application, and
 `DISCORD_CLIENT_SECRET` are all in place. This section records how the pieces
 fit — for reference, a fresh redeploy, or a forker standing up their own copy.
 Steps 1–2 are the Cloudflare-account/Discord setup (done once); a routine
@@ -169,7 +169,7 @@ redeploy is just `wrangler deploy`.
 
 1. **Register a Discord Application** (discord.com/developers/applications →
    New Application → OAuth2 tab):
-   - Add a redirect: `https://api.ledgermain.whizkid.dev/auth/discord/callback`
+   - Add a redirect: `https://api.ledgermain.app/auth/discord/callback`
      (must match exactly, including scheme/host/path — Discord rejects any
      mismatch at the authorize step, not just the token exchange).
    - Copy the **Client ID** (not secret — OAuth client ids are public) and
@@ -188,13 +188,13 @@ redeploy is just `wrangler deploy`.
    nothing without a session for that account.
 3. **Deploy**: `wrangler deploy` (from `apps/api/`).
 4. **Wire the web app** — set `apps/web`'s API-base env var (`VITE_API_URL`,
-   see `apps/web/src/sync/config.ts`) to `https://api.ledgermain.whizkid.dev`.
+   see `apps/web/src/sync/config.ts`) to `https://api.ledgermain.app`.
    This is a **build-time** value: Vite inlines `import.meta.env.VITE_API_URL`
    when `vite build` runs, so it must be present in the build environment, not
    the runtime one. For the auto-deploy (Workers Builds on push to `main`),
    set it as a **Build variable** in the Cloudflare dashboard: the
    `ledgermain` Worker → **Settings → Build → Build variables and secrets** →
-   add `VITE_API_URL=https://api.ledgermain.whizkid.dev`, then re-run the
+   add `VITE_API_URL=https://api.ledgermain.app`, then re-run the
    latest build (or push a commit) so the next bundle picks it up. It is
    deliberately **not** committed and **not** in `wrangler.jsonc`: wrangler
    `vars` are runtime bindings (wrong layer — the bundle is already frozen by
@@ -202,7 +202,7 @@ redeploy is just `wrangler deploy`.
    build defaults to safe local-only mode. Leaving it unset keeps the app in
    local-only mode — the intended default (see that module's doc comment).
    (For a one-off _manual_ deploy from a laptop, instead run
-   `VITE_API_URL=https://api.ledgermain.whizkid.dev bun run --filter @pf1/web build`
+   `VITE_API_URL=https://api.ledgermain.app bun run --filter @pf1/web build`
    then `wrangler deploy` from `apps/web/`.)
 
 ## In-app feedback (`POST /api/feedback`)
@@ -241,7 +241,7 @@ both `VITE_API_URL` **and** `VITE_TURNSTILE_SITEKEY` are set at build time.
 ### One-time owner setup
 
 1. **Create a Turnstile widget** (Cloudflare dashboard → Turnstile → Add):
-   - Add `ledgermain.whizkid.dev`, and **only** that. Listing `localhost` would
+   - Add `ledgermain.app`, and **only** that. Listing `localhost` would
      let anyone serve a page from their own machine under this sitekey, solve
      the challenge there, and produce a token whose reported hostname the Worker
      can't distinguish from a real one — which is the whole basis of the
@@ -333,7 +333,7 @@ Terraform state and drift silently.
 
 **The structural gap is fixed (#176).** The zone-wide policy covering
 `whizkid.dev` is an _origin_ error alert (`http_alert_origin_error`), which
-derives an error rate from origin responses. `api.ledgermain.whizkid.dev` is a
+derives an error rate from origin responses. `api.ledgermain.app` is a
 Workers custom domain: there is no origin behind it, so no request to it ever
 produces an origin response at all — verifiable in the zone's `http_requests`
 Logpush data, where every request to this hostname carries

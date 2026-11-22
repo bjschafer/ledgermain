@@ -8,11 +8,11 @@ afterEach(() => vi.unstubAllGlobals());
 describe("verifyTurnstile", () => {
   it("POSTs secret + token to siteverify and returns success + solving hostname", async () => {
     const calls = stubFetch(async () =>
-      Response.json({ success: true, hostname: "ledgermain.whizkid.dev" }),
+      Response.json({ success: true, hostname: "ledgermain.app" }),
     );
     const result = await verifyTurnstile("secret", "good-token", "203.0.113.9");
     expect(result.success).toBe(true);
-    expect(result.hostname).toBe("ledgermain.whizkid.dev");
+    expect(result.hostname).toBe("ledgermain.app");
 
     expect(calls).toHaveLength(1);
     expect(String(calls[0]!.input)).toBe(

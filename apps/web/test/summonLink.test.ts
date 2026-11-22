@@ -93,7 +93,7 @@ describe("summonFeatSlugs", () => {
 describe("summonHelperHref", () => {
   it("always includes cl, and omits feats when empty", () => {
     const href = summonHelperHref({ list: "sm", level: 3 }, [], 7);
-    expect(href).toBe("https://ref.ledgermain.whizkid.dev/#/summon/sm/3?cl=7");
+    expect(href).toBe("https://ref.ledgermain.app/#/summon/sm/3?cl=7");
   });
 
   it("includes feats when present, in the given order", () => {
@@ -103,13 +103,13 @@ describe("summonHelperHref", () => {
       7,
     );
     expect(href).toBe(
-      "https://ref.ledgermain.whizkid.dev/#/summon/sm/3?feats=augment-summoning%2Csuperior-summoning&cl=7",
+      "https://ref.ledgermain.app/#/summon/sm/3?feats=augment-summoning%2Csuperior-summoning&cl=7",
     );
   });
 
   it("builds the sna variant", () => {
     expect(summonHelperHref({ list: "sna", level: 1 }, [], 1)).toBe(
-      "https://ref.ledgermain.whizkid.dev/#/summon/sna/1?cl=1",
+      "https://ref.ledgermain.app/#/summon/sna/1?cl=1",
     );
   });
 });

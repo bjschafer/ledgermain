@@ -2,7 +2,7 @@
 
 **A rules-aware, in-play character sheet, tracker, and builder for Pathfinder 1e.**
 
-Live at **[ledgermain.whizkid.dev](https://ledgermain.whizkid.dev)**
+Live at **[ledgermain.app](https://ledgermain.app)**
 
 Ledgermain is built for _play_. It's a tracker that knows the rules well enough to recompute the right numbers as your session state changes. Take damage, fail a save, toggle a buff, spend a resource, gain a condition -- every derived value (AC, attack lines, saves, skills, CMB/CMD, DCs) updates on the spot. See [Comparison to other tools](#comparison-to-other-tools) for how it stacks up against PCGen, HeroLab, Pathbuilder, and Foundry.
 
@@ -51,7 +51,7 @@ _The builder. Every choice updates the same sheet the same engine drives at the 
 
 ## Try it
 
-The hosted instance is at **[ledgermain.whizkid.dev](https://ledgermain.whizkid.dev)**. No account needed. Start building, and your character autosaves locally in the browser.
+The hosted instance is at **[ledgermain.app](https://ledgermain.app)**. No account needed. Start building, and your character autosaves locally in the browser.
 
 ## Run it locally
 
@@ -76,7 +76,7 @@ packages/engine         pure rules engine — compute(doc, refData) → DerivedS
 packages/tokens         shared design tokens, so the sheet and the reference site look like one product
 apps/web                React + Vite builder + live tracker
 apps/api                Cloudflare Worker: opaque CharacterDoc persistence + cross-device sync
-apps/reference          the companion quick-reference site at ref.ledgermain.whizkid.dev
+apps/reference          the companion quick-reference site at ref.ledgermain.app
 ```
 
 > **The client is authoritative for all game logic. The server is dumb persistence.**
