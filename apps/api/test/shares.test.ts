@@ -24,6 +24,7 @@ async function putDoc(ownerId: string, id: string, version: number, hp = 10) {
       id,
       version,
       updatedAt: "2026-01-01T00:00:00.000Z",
+      savedOn: "Ben's work laptop",
       identity: { name: id, race: "human", classes: [] },
       live: { hp },
     }),
@@ -108,7 +109,7 @@ describe("share links", () => {
     expect(moved.status).toBe(200);
   });
 
-  it("never serves the owner's account id", async () => {
+  it("never serves the owner's account id or device name", async () => {
     const ownerId = "discord:share-private";
     await putDoc(ownerId, "hero", 1);
     const snap = await share(ownerId, "hero", "snapshot");
@@ -119,7 +120,10 @@ describe("share links", () => {
     );
     for (const text of texts) {
       expect(text).not.toContain(ownerId);
-      expect((JSON.parse(text) as SharedBody).doc).not.toHaveProperty("ownerId");
+      expect(text).not.toContain("work laptop");
+      const doc = (JSON.parse(text) as SharedBody).doc;
+      expect(doc).not.toHaveProperty("ownerId");
+      expect(doc).not.toHaveProperty("savedOn");
     }
   });
 

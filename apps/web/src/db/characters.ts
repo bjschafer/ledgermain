@@ -14,6 +14,7 @@ import { createEmptyDoc } from "../model/doc.js";
 import { migrateDoc } from "../model/migrations.js";
 import { localId } from "../model/ids.js";
 import { parseImportedDoc } from "../model/importCharacter.js";
+import { stampLocalSave } from "../state/deviceName.js";
 
 /**
  * The server version this device last agreed with for a character: the
@@ -169,7 +170,7 @@ export async function listVersions(): Promise<
 export async function loadCharacter(id: string): Promise<CharacterDoc> {
   const doc = await db.characters.get(id);
   if (!doc) throw new Error(`No saved character with id ${id}`);
-  const next = { ...migrateDoc(doc), updatedAt: new Date().toISOString() };
+  const next = stampLocalSave(migrateDoc(doc));
   await db.characters.put(next);
   return rememberActive(next);
 }
@@ -188,7 +189,7 @@ export async function createCharacter(): Promise<CharacterDoc> {
  * the active character either way.
  */
 export async function importCharacter(doc: CharacterDoc): Promise<CharacterDoc> {
-  const next = { ...doc, updatedAt: new Date().toISOString() };
+  const next = stampLocalSave(doc);
   await db.characters.put(next);
   return rememberActive(next);
 }

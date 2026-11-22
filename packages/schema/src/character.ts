@@ -67,6 +67,12 @@ export interface CharacterDoc {
   version: number;
   /** sync: ISO timestamp of last change. */
   updatedAt: string;
+  /**
+   * sync: the name of the device that last saved this copy, shown when two
+   * devices conflict. Envelope like `updatedAt`: never a real edit, and
+   * removed from shared sheets.
+   */
+  savedOn?: string;
   identity: {
     name: string;
     /** Race id (key into RefData.races). */

@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { DEVICE_NAME_MAX, defaultDeviceName, useCustomDeviceName } from "../../state/deviceName.js";
 import { showToast } from "../../state/toast.js";
 import { fetchAccountExport, logoutEverywhere, purgeAccount } from "../../sync/client.js";
 import { apiBaseUrl } from "../../sync/config.js";
@@ -46,6 +47,38 @@ function signedIn(): boolean {
   return Boolean(apiBaseUrl() && getStoredToken());
 }
 
+/**
+ * What this device is called when its edits clash with another device's.
+ * Committed on blur, not per keystroke, so a half-typed name never gets
+ * stamped onto a save.
+ */
+function DeviceNameField() {
+  const [name, setName] = useCustomDeviceName();
+  const [draft, setDraft] = useState(name);
+  return (
+    <>
+      <label className="field" style={{ marginBottom: 16 }}>
+        <span>This device's name</span>
+        <input
+          type="text"
+          value={draft}
+          maxLength={DEVICE_NAME_MAX}
+          placeholder={defaultDeviceName()}
+          onChange={(e) => setDraft(e.target.value)}
+          onBlur={() => {
+            setName(draft);
+            setDraft(draft.trim());
+          }}
+        />
+      </label>
+      <p className="hint" style={{ marginTop: -8, marginBottom: 16 }}>
+        Shown when this device and another both changed a character, so you can tell the two copies
+        apart. Leave it blank to use the browser's name. Never included in a shared sheet.
+      </p>
+    </>
+  );
+}
+
 /** Take everything out, or sign every device out. */
 export function AccountPanel({ onSignedOut }: { onSignedOut: () => void }) {
   const { busy, run } = useAccountAction();
@@ -57,6 +90,8 @@ export function AccountPanel({ onSignedOut }: { onSignedOut: () => void }) {
         Characters you sync are kept on the server so your other devices can see them. These cover
         the whole account, not just the character you have open.
       </p>
+
+      <DeviceNameField />
 
       <div className="settings-row">
         <button

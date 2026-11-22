@@ -88,7 +88,8 @@ export function planSync(
  * made no real edits, or the same one, don't need the user to pick a side.
  */
 export function sameContent(a: CharacterDoc, b: CharacterDoc): boolean {
-  const strip = ({ version: _v, updatedAt: _u, ownerId: _o, ...rest }: CharacterDoc) => rest;
+  const strip = ({ version: _v, updatedAt: _u, ownerId: _o, savedOn: _s, ...rest }: CharacterDoc) =>
+    rest;
   return JSON.stringify(strip(a)) === JSON.stringify(strip(b));
 }
 
@@ -112,12 +113,14 @@ export function acceptRemoteDoc(conflict: SyncConflict): CharacterDoc {
 
 /**
  * "Keep both": the other device's copy keeps this id, and the local edits
- * become a separate character, so nothing either device did is lost.
+ * become a separate character named for this device, so nothing either device
+ * did is lost and the two read apart in the character list.
  */
 export function splitConflict(
   conflict: SyncConflict,
   newId: string,
   now: string,
+  device: string,
 ): { remote: CharacterDoc; copy: CharacterDoc } {
   const { local } = conflict;
   return {
@@ -125,9 +128,10 @@ export function splitConflict(
     copy: {
       ...local,
       id: newId,
-      identity: { ...local.identity, name: `${local.identity.name || "Unnamed"} (copy)` },
+      identity: { ...local.identity, name: `${local.identity.name || "Unnamed"} (${device})` },
       version: 1,
       updatedAt: now,
+      savedOn: device,
     },
   };
 }

@@ -1,6 +1,14 @@
+import { useState } from "react";
+
+import type { RefData } from "@pf1/schema";
+
+import { deviceName } from "../state/deviceName.js";
+import type { ConflictResolution } from "../state/useCharacter.js";
+import { describeGap } from "../sync/compareConflict.js";
 import type { SyncConflict } from "../sync/planSync.js";
 import type { SyncStatus as SyncStatusValue } from "../sync/status.js";
-import type { ConflictResolution } from "../state/useCharacter.js";
+
+import { ConflictCompare } from "./ConflictCompare.js";
 
 export interface SyncStatusProps {
   status: SyncStatusValue;
@@ -65,6 +73,8 @@ export interface SyncBannerProps {
   status: SyncStatusValue;
   onSignIn: () => void;
   onResolveConflict: (action: ConflictResolution) => void;
+  /** Reference data for the comparison; it waits until this has loaded. */
+  refData?: RefData;
 }
 
 function savedAt(iso: string): string {
@@ -78,23 +88,35 @@ function ConflictPrompt({
   conflict,
   queued,
   onResolve,
+  refData,
 }: {
   conflict: SyncConflict;
   queued: number;
   onResolve: (action: ConflictResolution) => void;
+  refData?: RefData;
 }) {
+  const [comparing, setComparing] = useState(false);
   const name = conflict.local.identity.name || "An unnamed character";
+  const here = deviceName();
+  const there = conflict.remote.savedOn;
+  const gap = describeGap(conflict.local.updatedAt, conflict.remote.updatedAt);
   return (
     <div className="sync-banner" role="alert">
       <div className="sync-banner-body">
         <strong>{name} was changed on this device and on another one.</strong>
         <span>
-          This device saved it {savedAt(conflict.local.updatedAt)}; the other{" "}
-          {savedAt(conflict.remote.updatedAt)}. Pick which to keep.
+          This device ({here}) saved it {savedAt(conflict.local.updatedAt)}; the other device
+          {there ? ` (${there})` : ""} saved it {savedAt(conflict.remote.updatedAt)}
+          {gap ? `, ${gap}` : ""}. Pick which to keep.
           {queued > 0 ? ` (${queued} more after this.)` : ""}
         </span>
       </div>
       <div className="sync-banner-actions">
+        {refData && (
+          <button type="button" aria-expanded={comparing} onClick={() => setComparing((v) => !v)}>
+            {comparing ? "Hide differences" : "Compare"}
+          </button>
+        )}
         <button
           type="button"
           className="sync-banner-primary"
@@ -109,6 +131,14 @@ function ConflictPrompt({
           Use the other device's
         </button>
       </div>
+      {comparing && refData && (
+        <ConflictCompare
+          conflict={conflict}
+          refData={refData}
+          localLabel={`This device (${here})`}
+          remoteLabel={there ? `Other device (${there})` : "Other device"}
+        />
+      )}
     </div>
   );
 }
@@ -120,13 +150,16 @@ function ConflictPrompt({
  * a conflict (both devices edited, and only the player can pick). Neither
  * resolves itself, so neither is left to a masthead label to explain.
  */
-export function SyncBanner({ status, onSignIn, onResolveConflict }: SyncBannerProps) {
+export function SyncBanner({ status, onSignIn, onResolveConflict, refData }: SyncBannerProps) {
   if (status.kind === "conflict") {
     return (
       <ConflictPrompt
+        // A new conflict starts collapsed rather than inheriting the last one's state.
+        key={status.conflict.local.id}
         conflict={status.conflict}
         queued={status.queued}
         onResolve={onResolveConflict}
+        refData={refData}
       />
     );
   }

@@ -49,6 +49,12 @@ export interface ChangelogEntry {
 /** Newest first — `CHANGELOG[0]` is the entry the unseen cue keys off. */
 export const CHANGELOG: readonly ChangelogEntry[] = [
   {
+    id: "2026-11-21-compare-sync-conflicts",
+    date: "2026-11-21",
+    title: "Tell two copies apart before you pick one",
+    note: "When a character was changed on two devices, the sync notice has a Compare button that lays both copies side by side: hit points, AC, saves, buffs and conditions first, then every feat, item, skill rank and pool that differs, plus this device's recent session log. The notice names each device and says how far apart the saves were. Name this device under Your Account in Settings, or it goes by its browser, like Chrome on macOS. Keep both now names your copy after this device.",
+  },
+  {
     id: "2026-11-06-skill-list-filter",
     date: "2026-11-06",
     title: "Find a skill faster",

@@ -289,6 +289,65 @@ a {
   color: var(--oxblood-ink);
 }
 
+/* Conflict comparison (ConflictCompare): a full-width row inside the banner,
+   capped so a heavily diverged pair scrolls instead of pushing the sheet away. */
+.sync-compare {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.sync-compare-scroll {
+  max-height: 50vh;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.sync-compare-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sync-compare-table th,
+.sync-compare-table td {
+  padding: 4px 10px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+
+.sync-compare-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.sync-compare-table tbody th {
+  color: var(--muted);
+  font-weight: 400;
+  width: 28%;
+}
+
+.sync-compare-section th {
+  padding-top: 10px;
+  color: var(--gold-dim);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sync-compare-heading {
+  margin: var(--space-2) 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
 /* Phone pass: below 640px the masthead wraps and `.masthead-right` lands on
    its own line — let it become a full-width row (switcher on the left, sync
    control on the right, matching where the character switcher trigger's

@@ -227,6 +227,7 @@ export function App() {
         status={store.syncStatus}
         onSignIn={() => void store.signIn()}
         onResolveConflict={(action) => void store.resolveConflict(action)}
+        refData={store.refData}
       />
 
       {store.status === "loading" && <LoadingScreen />}

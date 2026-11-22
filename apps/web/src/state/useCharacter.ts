@@ -56,6 +56,7 @@ import {
 import { dexieSyncStore } from "../sync/store.js";
 import type { SyncStatus } from "../sync/status.js";
 import { requestJump } from "./navigation.js";
+import { deviceName, stampLocalSave } from "./deviceName.js";
 import { clearAllSessionLogs, readSessionLog, writeSessionLog } from "./sessionLog.js";
 import { showToast } from "./toast.js";
 import {
@@ -311,7 +312,7 @@ export function useCharacter(): CharacterStore {
     if (!doc) return;
     pendingSaveRef.current = setTimeout(() => {
       pendingSaveRef.current = null;
-      const next = { ...doc, updatedAt: new Date().toISOString() };
+      const next = stampLocalSave(doc);
       void db.characters
         .put(next)
         .then(() => upsertLocalSummary(next))
@@ -332,7 +333,7 @@ export function useCharacter(): CharacterStore {
     if (pendingSaveRef.current == null || !doc) return;
     clearTimeout(pendingSaveRef.current);
     pendingSaveRef.current = null;
-    const next = { ...doc, updatedAt: new Date().toISOString() };
+    const next = stampLocalSave(doc);
     await db.characters.put(next);
     upsertLocalSummary(next);
   }, [doc, upsertLocalSummary]);
@@ -977,7 +978,7 @@ export function useCharacter(): CharacterStore {
           shown = migrateDoc(forceOverwriteDoc(conflict));
           toPush.push(shown);
         } else {
-          const split = splitConflict(conflict, localId(), new Date().toISOString());
+          const split = splitConflict(conflict, localId(), new Date().toISOString(), deviceName());
           shown = migrateDoc(split.remote);
           const copy = migrateDoc(split.copy);
           await dexieSyncStore.put(copy);

@@ -146,9 +146,16 @@ describe("conflict resolution", () => {
 });
 
 describe("sameContent", () => {
-  test("ignores the sync envelope", () => {
+  test("ignores the sync envelope, including which device saved it", () => {
     const a = doc(3);
-    expect(sameContent(a, { ...a, version: 9, updatedAt: "2030-01-01T00:00:00.000Z" })).toBe(true);
+    expect(
+      sameContent(a, {
+        ...a,
+        version: 9,
+        updatedAt: "2030-01-01T00:00:00.000Z",
+        savedOn: "iPad",
+      }),
+    ).toBe(true);
   });
 
   test("sees a real edit", () => {
@@ -164,10 +171,12 @@ describe("splitConflict", () => {
       { local, remote },
       "new-id",
       "2026-09-25T00:00:00.000Z",
+      "Work laptop",
     );
     expect(kept).toBe(remote);
     expect(copy.id).toBe("new-id");
-    expect(copy.identity.name).toBe("Valeros (copy)");
+    expect(copy.identity.name).toBe("Valeros (Work laptop)");
+    expect(copy.savedOn).toBe("Work laptop");
     expect(copy.build).toEqual(local.build);
     expect(copy.version).toBe(1);
   });

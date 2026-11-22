@@ -71,14 +71,16 @@ function docKey(ownerId: string, characterId: string): string {
 }
 
 /**
- * The stored document with the server-assigned `ownerId` removed. That field
- * is a Discord account id, which a reader of someone else's character has no
- * business learning. It is the only field touched: everything else is the
- * opaque game data the player chose to publish.
+ * The stored document without the fields that describe its owner rather than
+ * the character: `ownerId` (a Discord account id) and `savedOn` (the name of
+ * whichever device last saved it). A reader of someone else's character has
+ * no business learning either. Everything else is the opaque game data the
+ * player chose to publish.
  */
-function withoutOwner(raw: string): string {
+function withoutOwnerFields(raw: string): string {
   const doc = JSON.parse(raw) as Record<string, unknown>;
   delete doc["ownerId"];
+  delete doc["savedOn"];
   return JSON.stringify(doc);
 }
 
@@ -145,7 +147,7 @@ export async function createShare(ownerId: string, request: Request, env: Env): 
   // see and revoke what exists. The reverse order could leave a readable share
   // nobody can find.
   await env.CHARACTERS.put(ownerShareKey(ownerId, token), "", { metadata: ownerMeta });
-  await env.CHARACTERS.put(shareKey(token), kind === "snapshot" ? withoutOwner(raw) : "", {
+  await env.CHARACTERS.put(shareKey(token), kind === "snapshot" ? withoutOwnerFields(raw) : "", {
     metadata: meta,
   });
   return json({ token, ...ownerMeta }, { status: 201 });
@@ -191,7 +193,7 @@ export async function readShare(token: string, url: URL, env: Env): Promise<Resp
     if (since !== null && live.metadata && String(live.metadata.version) === since) {
       return new Response(null, { status: 204, headers: noStore() });
     }
-    docJson = withoutOwner(live.value);
+    docJson = withoutOwnerFields(live.value);
   }
 
   // The document is spliced in as text: a snapshot is already stored
