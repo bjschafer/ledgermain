@@ -54,11 +54,12 @@ players can find sections in the main column. Keep secondary actions neutral.
 Use sentence case and the body face for navigation, controls, and sheet
 headings; reserve small mono labels for the individual stat keys.
 
-Keep the character picker beside the wordmark so account controls can't push
-it onto another row. Center primary navigation on wide screens and give it a
-full row on narrower ones. On phones, utilities sit below the wordmark and
-picker. The reference site uses Search and Summons in place of character
-modes. Both apps share the palette and type stack in `@pf1/tokens`.
+Leave the wordmark on its own on wide screens. Center primary navigation
+when there is room, and anchor the character picker at the outer right edge
+so it stays put when account status changes. On phones the wordmark and
+picker share the top row, with utilities and navigation below. The reference
+site uses Search and Summons in place of character modes. Both apps share
+the palette and type stack in `@pf1/tokens`.
 
 Lead Play with HP and running effects. Keep catalog results out of the way
 until requested, and keep less frequent actions like New day in the chrome,

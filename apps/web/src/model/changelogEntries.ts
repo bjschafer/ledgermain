@@ -61,34 +61,16 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
     note: "Opening the app now lands on the Play tab for any character with a class. A brand new character still starts on Build, and reloading keeps you where you were.",
   },
   {
-    id: "2026-11-21-character-picker-layout",
-    date: "2026-11-21",
-    title: "Find your character picker beside the wordmark",
-    note: "The character picker stays beside the Ledgermain wordmark, even when you're signed in. Long character names wrap in the open list so you can tell them apart.",
-  },
-  {
     id: "2026-11-21-sheet-at-a-glance",
     date: "2026-11-21",
-    title: "Find your stats at a glance",
-    note: "Gold panel headers make it easier to spot sections in Build and Play. The side sheet has a full-size HP bar, gold headings, and labeled stat boxes to help you find the right number.",
+    title: "A sheet that's easier to scan at the table",
+    note: "Gold headings mark the sections, and the side sheet keeps a large HP bar with boxed stats and more room for attack sequences. Buffs sit just below Hit Points in Play, with search when you need to add one and an Advance round button nearby. AC, saves, and initiative stay together on the sheet and in the phone's stat strip. Build, Play, and Settings work with arrow keys and Enter. The character picker is on the right, and long names wrap in its menu. The reference site uses the same header style, with Search and Summons up front.",
   },
   {
     id: "2026-11-21-special-material-prices",
     date: "2026-11-21",
     title: "Mithral, adamantine and friends cost what they should",
     note: "Buying armor or a weapon made of mithral, adamantine, darkwood, cold iron or alchemical silver charges the published surcharge, with masterwork folded in where the material includes it. Mithral and darkwood gear weighs half as much, so it counts that way toward your load, and a darkwood shield's armor check penalty drops by 2.",
-  },
-  {
-    id: "2026-11-21-ruled-sheet",
-    date: "2026-11-21",
-    title: "Centered navigation and room for attack bonuses",
-    note: "Build, Play, and Settings sit in the center on wide screens. Attack sequences have more room on the sheet. Tap a stat with a chevron to see how it adds up. The reference site shares the same header, with Search and Summons up front.",
-  },
-  {
-    id: "2026-11-21-table-ready-sheet",
-    date: "2026-11-21",
-    title: "The numbers you need at the table come first",
-    note: "Buffs sits just below Hit Points in Play. Search or browse when you need to add one; the compendium list stays out of the way otherwise. Saves and initiative sit next to AC on the sheet and in the phone's stat strip. On a phone, the header takes less space, and the round button shows that it advances the clock. Use arrow keys to move between Build, Play, and Settings, then Enter to open one.",
   },
   {
     id: "2026-11-21-ledgermain-app",

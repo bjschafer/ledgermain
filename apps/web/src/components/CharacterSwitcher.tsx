@@ -106,9 +106,7 @@ export function CharacterSwitcher({
         onClick={() => (open ? closeMenu(true) : openMenu())}
       >
         <span className="char-switcher-name">{activeLabel}</span>
-        <span className="char-switcher-caret" aria-hidden="true">
-          ▾
-        </span>
+        <span className="char-switcher-caret" aria-hidden="true" />
       </button>
       {open ? (
         <ul
