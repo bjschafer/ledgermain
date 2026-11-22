@@ -49,10 +49,10 @@ Give successive attack bonuses room to read as a sequence.
 
 ## Restraint
 
-Gold marks the current place, sheet labels, key totals, and controls that
-affect play. Keep routine panel headers outside the sheet and secondary actions
-neutral. Use sentence case and the body face for navigation, controls, and
-sheet headings; reserve small mono labels for the individual stat keys.
+Use gold-tinted panel headers with an ink title and a gold bottom rule so
+players can find sections in the main column. Keep secondary actions neutral.
+Use sentence case and the body face for navigation, controls, and sheet
+headings; reserve small mono labels for the individual stat keys.
 
 Center primary navigation between the Ledgermain wordmark and utilities on
 wide screens. On narrow screens, give it its own row. The reference site

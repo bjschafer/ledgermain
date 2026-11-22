@@ -5,8 +5,8 @@
  * Feedback needs two things wired up: the persistence API (which hosts the
  * `POST /api/feedback` endpoint) and a Cloudflare Turnstile **sitekey** (the
  * public half of the CAPTCHA; the secret half lives only in the Worker). When
- * either is absent, don't mount a form that can't submit. The masthead links
- * to GitHub instead, and contextual in-app reports stay unavailable.
+ * either is absent, hide the feedback controls rather than offer a form
+ * that can't produce a verified submission.
  */
 import { apiBaseUrl } from "../sync/config.js";
 

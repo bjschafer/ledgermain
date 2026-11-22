@@ -51,8 +51,8 @@ export const CHANGELOG: readonly ChangelogEntry[] = [
   {
     id: "2026-11-21-sheet-at-a-glance",
     date: "2026-11-21",
-    title: "See your HP at a glance",
-    note: "The side sheet has a full-size HP bar again, with gold headings and labeled stat boxes to help you find the right number. Feedback stays in the top bar, with a GitHub link when the in-app form is unavailable.",
+    title: "Find your stats at a glance",
+    note: "Gold panel headers make it easier to spot sections in Build and Play. The side sheet has a full-size HP bar, gold headings, and labeled stat boxes to help you find the right number.",
   },
   {
     id: "2026-11-21-ruled-sheet",

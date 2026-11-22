@@ -23,8 +23,7 @@ type SubmitState =
   | { kind: "done"; url?: string };
 
 /**
- * Global "Feedback" control. Use the in-app form when the API and Turnstile
- * are configured; otherwise send players to the public issue tracker.
+ * Masthead feedback control, shown only when the API and Turnstile are configured.
  */
 export function FeedbackButton({ mode, doc }: { mode: string; doc?: CharacterDoc }) {
   const [open, setOpen] = useState(false);
@@ -42,19 +41,7 @@ export function FeedbackButton({ mode, doc }: { mode: string; doc?: CharacterDoc
     }
   }, [pendingPrefill]);
 
-  if (!feedbackEnabled()) {
-    return (
-      <a
-        className="btn-ghost feedback-open"
-        href="https://github.com/bjschafer/ledgermain/issues/new"
-        target="_blank"
-        rel="noreferrer"
-        title="Send feedback on GitHub"
-      >
-        Feedback
-      </a>
-    );
-  }
+  if (!feedbackEnabled()) return null;
 
   return (
     <>

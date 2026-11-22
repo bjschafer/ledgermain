@@ -409,7 +409,6 @@ a {
   .sync-signout,
   .sync-status,
   .ref-link,
-  .feedback-open,
   .action-error {
     min-height: var(--tap-min);
   }
@@ -569,8 +568,8 @@ a {
   justify-content: space-between;
   gap: 12px;
   padding: 12px 16px;
-  background: var(--surface-2);
-  border-bottom: 1px solid var(--line);
+  background: color-mix(in oklab, var(--gold) 18%, var(--surface));
+  border-bottom: 2px solid var(--gold);
 }
 
 .panel > header h2 {
@@ -595,7 +594,21 @@ a {
 .panel-icon svg {
   width: 1.125rem;
   height: 1.125rem;
-  color: var(--gold);
+  color: var(--gold-2);
+}
+
+/* Header hints and outlines need more contrast against the gold band. */
+.panel > header .warn-under {
+  color: var(--muted);
+}
+
+.panel > header .warn-over,
+.panel > header .budge.over b {
+  color: #e59484;
+}
+
+.panel > header .btn-ghost {
+  border-color: var(--gold-dim-ink);
 }
 
 .panel .body {
@@ -8320,9 +8333,6 @@ input[type="text"].saved-roll-name:focus {
 /* Mirrors the preview-notice modal's backdrop/surface vocabulary so the
    feedback dialog reads as a sibling of the app's other overlays. */
 .feedback-open {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
   white-space: nowrap;
 }
 
