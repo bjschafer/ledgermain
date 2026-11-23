@@ -8,6 +8,10 @@
  * half the die plus one) and the diff compares what Con, Toughness and the
  * rest add on top of it.
  */
+import { ARCANE_SPECS } from "./specs/arcane.js";
+import { DIVINE_SPECS } from "./specs/divine.js";
+import { HYBRID_SPECS } from "./specs/hybrid.js";
+import { MARTIAL_SPECS } from "./specs/martial.js";
 
 export type FoundryAbility = "str" | "dex" | "con" | "int" | "wis" | "cha";
 
@@ -63,144 +67,8 @@ export interface OracleSpec {
 }
 
 export const ORACLE_SPECS: OracleSpec[] = [
-  {
-    id: "human-fighter-6",
-    race: "Human",
-    flexibleAbility: "str",
-    alignment: "ln",
-    abilities: { str: 16, dex: 14, con: 14, int: 10, wis: 12, cha: 8 },
-    classes: [{ name: "Fighter", level: 6, hp: 40 }],
-    feats: [
-      "Power Attack",
-      "Toughness",
-      "Dodge",
-      "Iron Will",
-      "Improved Initiative",
-      "Lightning Reflexes",
-    ],
-    skills: { climb: 6, intimidate: 6, perception: 6 },
-    items: [
-      {
-        pack: "pf1.armors-and-shields",
-        name: "Breastplate",
-        equipped: true,
-        enh: 1,
-        material: { id: "mithral", maxDex: 5, acp: 1, spellFailure: 15 },
-      },
-      { pack: "pf1.armors-and-shields", name: "Heavy Steel Shield", equipped: true },
-      { pack: "pf1.items", name: "Cloak of Resistance +1", equipped: true },
-    ],
-    scenarios: {
-      base: {},
-      buffs: {
-        buffs: [
-          { name: "Bless", level: 1 },
-          { name: "Haste", level: 5 },
-          { name: "Enlarge Person", level: 5 },
-        ],
-      },
-      conditions: { conditions: ["shaken", "fatigued"] },
-    },
-  },
-  {
-    id: "elf-wizard-6",
-    race: "Elf",
-    alignment: "cg",
-    abilities: { str: 8, dex: 14, con: 14, int: 16, wis: 12, cha: 10 },
-    classes: [{ name: "Wizard", level: 6, hp: 26 }],
-    feats: ["Improved Initiative", "Great Fortitude", "Alertness", "Combat Casting"],
-    skills: {
-      spellcraft: 6,
-      "knowledge.arcana": 6,
-      "knowledge.planes": 6,
-      perception: 6,
-      linguistics: 6,
-      fly: 6,
-    },
-    items: [
-      { pack: "pf1.items", name: "Headband of Vast Intelligence +2", equipped: true },
-      { pack: "pf1.items", name: "Ring of Protection +1", equipped: true },
-    ],
-    scenarios: {
-      base: {},
-      buffs: {
-        buffs: [
-          { name: "Mage Armor", level: 6 },
-          { name: "Shield", level: 6 },
-          { name: "Bull's Strength", level: 6 },
-        ],
-      },
-      conditions: { conditions: ["grappled"], drain: { con: 2 }, negativeLevels: 1 },
-    },
-  },
-  {
-    id: "dwarf-cleric-3-barbarian-2",
-    race: "Dwarf",
-    alignment: "cn",
-    abilities: { str: 16, dex: 12, con: 14, int: 8, wis: 14, cha: 10 },
-    classes: [
-      { name: "Cleric", level: 3, hp: 18 },
-      { name: "Barbarian", level: 2, hp: 14 },
-    ],
-    feats: ["Power Attack", "Toughness", "Iron Will"],
-    skills: { heal: 3, "knowledge.religion": 3, climb: 2, perception: 2 },
-    items: [
-      { pack: "pf1.armors-and-shields", name: "Scale Mail", equipped: true },
-      { pack: "pf1.items", name: "Belt of Giant Strength +2", equipped: true },
-    ],
-    scenarios: {
-      base: {},
-      buffs: {
-        buffs: [
-          { name: "Rage", level: 2 },
-          { name: "Bless", level: 3 },
-        ],
-      },
-      conditions: { conditions: ["sickened", "entangled"] },
-    },
-  },
-  {
-    id: "half-orc-two-handed-fighter-5",
-    race: "Half-Orc",
-    flexibleAbility: "str",
-    alignment: "cn",
-    abilities: { str: 16, dex: 13, con: 14, int: 10, wis: 12, cha: 8 },
-    classes: [{ name: "Fighter", level: 5, hp: 34 }],
-    feats: [
-      "Power Attack",
-      "Cleave",
-      "Toughness",
-      "Iron Will",
-      "Great Fortitude",
-      "Improved Initiative",
-    ],
-    skills: { climb: 5, acrobatics: 5, intimidate: 5 },
-    items: [{ pack: "pf1.armors-and-shields", name: "Breastplate", equipped: true }],
-    // APG p. 108: Shattering Strike replaces bravery, Overhand Chop replaces
-    // armor training 1, and the archetype's weapon training replaces the base one.
-    archetype: {
-      name: "Fighter (Two-Handed Fighter)",
-      features: [
-        "Shattering Strike (Two-Handed Fighter)",
-        "Overhand Chop (Two-Handed Fighter)",
-        "Weapon Training (Two-Handed Fighter)",
-      ],
-      replaces: ["Bravery", "Armor Training", "Weapon Training"],
-    },
-    // ARG p. 52: Rock Climber replaces Intimidating, the race's +2 Intimidate.
-    racialTraits: {
-      names: ["Sacred Tattoo", "Rock Climber"],
-      replacesRaceChanges: ["skill.intimidate"],
-    },
-    scenarios: {
-      base: {},
-      buffs: {
-        buffs: [
-          { name: "Heroism", level: 5 },
-          { name: "Shield of Faith", level: 5 },
-        ],
-      },
-      conditions: { conditions: ["frightened"] },
-    },
-  },
+  ...MARTIAL_SPECS,
+  ...ARCANE_SPECS,
+  ...DIVINE_SPECS,
+  ...HYBRID_SPECS,
 ];
