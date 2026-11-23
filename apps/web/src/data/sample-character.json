@@ -87,6 +87,7 @@
         "damageAbility": "str",
         "category": "melee",
         "damageDice": "1d8",
+        "damageDiceSize": "med",
         "group": "heavy-mace",
         "weaponGroups": ["hammers"],
         "weight": 8,
